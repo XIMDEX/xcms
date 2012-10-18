@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="form"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+  <kupu:id>$Id: form.kupu 9520 2005-02-26 16:30:23Z duncan $</kupu:id>
+
+  <!-- This is an example of how to wrap the kupu editor in an HTML
+       form. -->
+
+  <kupu:part name="form">
+    <form id="kupuform" action="handler" method="post">
+      <kupu:define-slot name="form" />
+    </form>
+  </kupu:part>
+
+  <!-- Now you need the appropriate wiring, too. Instead of appending
+  the fulleditor part directly to the body, we append form part first
+  and the fulleditor to that. -->
+
+  <kupu:wire append-slot="body" feature="form" part="form" />
+  <kupu:wire append-slot="form" feature="body" part="fulleditor" />
+
+</kupu:feature>

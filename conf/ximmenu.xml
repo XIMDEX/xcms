@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menubar>
+	<menu>
+		<menuitem id="mnuFile" text="Archivo" accel="" icon="">
+			<menu>
+				<menuitem id="mnuMsg" text="Mensajeria" accel="" icon="icons/envelope.gif" />
+				<menuitem id="mnuUserData" text="Mostrar datos de usuario" accel="" icon="icons/key.gif" />
+				<menuitem id="mnuQuit" text="Cerrar sesion" accel="" icon="icons/logout.gif" />
+			</menu>
+		</menuitem>
+		<menuitem id="mnuShow" text="Ver" accel="" icon="">
+			<menu>
+				<menuitem id="mnuShowTree" text="Arbol de ximDEX" accel="" icon="icons/tree_ximdex.gif" />
+				<menuitem id="mnuShowStatusbar" text="Barra de estado" accel="" icon="icons/hand.gif" />
+			</menu>
+		</menuitem>
+		<menuitem id="mnuReports" text="Informes" accel="" icon="">
+			<menu>
+				<menuitem id="mnuActions" text="Acciones" accel="" icon="">
+					<menu>
+						<menuitem id="mnuTotalActions" text="Total de acciones" accel="" icon="" />
+						<menuitem id="mnuTempAvarage" text="Promedio temporal" accel="" icon="" />
+					</menu>
+				</menuitem>
+				<menuitem id="mnuSincronizer" text="Sincronizador" accel="" icon="" ifModule="XIMPUBLISHTOOLS">
+					<menu>
+						<menuitem id="mnuView1" text="Vista I" accel="" icon="" />
+						<menuitem id="mnuView2" text="Vista II" accel="" icon="" />
+					</menu>
+				</menuitem>
+			</menu>
+		</menuitem>
+		<menuitem id="mnuTools" text="Tools" accel="" icon="">
+			<menu>
+				<menuitem id="mnuXimdexClose" text="Cerrar Ximdex" accel="" icon="" hasPermission="ximdex_close" />
+				<menuitem id="mnuNodeFilter" text="Filtrar nodos" accel="" icon="" allowedRoles="administrador" />
+				<menuitem id="mnuGrep" text="Busqueda Grep" accel="" icon="" allowedRoles="administrador" />
+				<menuitem id="mnuManageThemes" text="Establecer Layout" accel="" icon="" allowedRoles="administrador" />
+				<menuitem id="mnuCloseTabs" text="Cerrar tabs" accel="" icon="" />
+			</menu>
+		</menuitem>
+		<menuitem id="mnuDebug" text="Debug" accel="" icon="" allowedRoles="administrador">
+			<menu>
+				<menuitem id="mnuShowLogs" text="Ver logs" accel="" icon="" />
+				<menuitem id="mnuActionsInWindows" text="Acciones en ventanas" accel="" icon="" />
+				<menuitem id="mnuSmartyConsole" text="Consola Smarty" accel="" icon="" />
+			</menu>
+		</menuitem>
+		<menuitem id="mnuInfo" text="Info" accel="" icon="" allowedRoles="administrador">
+			<menu>
+				<menuitem id="mnuActiveModules" text="Modulos activos" accel="" icon="" />
+				<menuitem id="mnuNodeInfo" text="Node info" accel="" icon="" />
+				<menuitem id="mnuPHPInfo" text="Phpinfo" accel="" icon="" />
+				<menuitem id="mnuShowNodesId" text="Ver Id Nodos" accel="" icon="" />
+			</menu>
+		</menuitem>
+		<menuitem id="mnuRenders" text="Renders" accel="" icon="" allowedRoles="administrador">
+			<menu>
+				<menuitem id="mnuSmartyRender" text="Smarty" accel="" icon="" />
+				<menuitem id="mnuJSONRender" text="JSON" accel="" icon="" />
+				<menuitem id="mnuDebugRender" text="Debug" accel="" icon="" />
+			</menu>
+		</menuitem>
+		<menuitem id="mnuLanguages" text="Idiomas" accel="" icon="" allowedRoles="administrador">
+			<menu>
+				<menuitem id="mnuSpanishLang" text="Español" accel="" icon="menu/spain.gif" />
+				<menuitem id="mnuEnglishLang" text="Ingles" accel="" icon="menu/greatbr.gif" />
+				<menuitem id="mnuDeutchLang" text="Aleman" accel="" icon="menu/germany.gif" />
+			</menu>
+		</menuitem>
+		<menuitem id="mnuHelp" text="Help" accel="" icon="">
+			<menu>
+				<menuitem id="mnuXimdexManual" text="Manual de ximDEX" accel="" icon="icons/help.gif" />
+				<menuitem id="mnuAbout" text="Acerca de ximDEX" accel="" icon="" />
+			</menu>
+		</menuitem>
+	</menu>
+</menubar>

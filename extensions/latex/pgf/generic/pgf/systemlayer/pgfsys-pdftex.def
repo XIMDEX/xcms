@@ -1,0 +1,272 @@
+% Copyright 2006 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+\ProvidesFileRCS $Header: /cvsroot/pgf/pgf/generic/pgf/systemlayer/pgfsys-pdftex.def,v 1.12 2006/10/11 15:22:26 tantau Exp $
+
+
+% Driver commands for pdf
+
+%
+% Load common pdf commands:
+%
+\input pgfsys-common-pdf.def
+
+%
+% pdftex-specific stuff:
+%
+\def\pgfsys@invoke#1{\pdfliteral{#1}}
+
+\def\pgfsys@hboxsynced#1{%
+  {%
+    \pgfsys@beginscope%
+    \setbox\pgf@hbox=\hbox{%
+      \hskip\pgf@pt@x%
+      \raise\pgf@pt@y\hbox{%
+        \pgf@pt@x=0pt%
+        \pgf@pt@y=0pt%
+        \pgflowlevelsynccm% 
+        \pgfsys@hbox#1}%
+      \hss%
+    }%
+    \wd\pgf@hbox=0pt%
+    \ht\pgf@hbox=0pt%
+    \dp\pgf@hbox=0pt%
+    \box\pgf@hbox%
+    \pgfsys@endscope%
+  }%
+}
+
+\let\pgf@sys@pgf@resource@list@extgs=\pgf@empty%
+\let\pgf@sys@pgf@resource@list@patterns=\pgf@empty%
+
+\def\pgf@sys@pdf@addtopageresources@extgs#1{%
+  \xdef\pgf@sys@pgf@resource@list@extgs{\pgf@sys@pgf@resource@list@extgs\space#1}%
+  \pgf@sys@pdf@updateresources%
+}
+
+\def\pgf@sys@pdf@addtopageresources@patterns#1{%
+  \xdef\pgf@sys@pgf@resource@list@patterns{\pgf@sys@pgf@resource@list@patterns\space#1}%
+  \pgf@sys@pdf@updateresources%
+}
+
+\def\pgf@sys@pdf@updateresources{%
+  \let\pgf@temp=\pgf@empty%
+  \ifx\pgf@sys@pgf@resource@list@extgs\pgf@empty%
+  \else%
+    \immediate\pdfobj{<<\pgf@sys@pgf@resource@list@extgs>>}%
+    \edef\pgf@temp{/ExtGState \the\pdflastobj\space 0 R\space}%
+  \fi%
+  \ifx\pgf@sys@pgf@resource@list@patterns=\pgf@empty%
+  \else%
+    \immediate\pdfobj{<<\pgf@sys@pgf@resource@list@patterns>>}%
+    \edef\pgf@temp{%
+      \pgf@temp%
+      /ColorSpace << /pgfprgb [/Pattern /DeviceRGB] >>
+      /Pattern \the\pdflastobj\space 0 R\space%
+    }%
+  \fi%
+  \expandafter\global\expandafter\pdfpageresources\expandafter{\pgf@temp}%
+}
+
+
+\def\pgfsys@imagesuffixlist{pdf:jpg:jpeg:png}
+\def\pgfsys@defineimage{% width, height, page number
+  \ifx\pgf@imagewidth\pgf@empty\else\edef\pgf@imagewidth{ width \pgf@imagewidth }\fi%
+  \ifx\pgf@imageheight\pgf@empty\else\edef\pgf@imageheight{ height \pgf@imageheight }\fi%
+  \ifx\pgf@imagepage\pgf@empty\else\edef\pgf@imagepage{ page \pgf@imagepage }\fi%
+  \ifx\pdfximage\@undefined% old version of pdflatex
+    \ifx\pgf@imagepage\pgf@empty\else%
+      \PackageWarning{pgf}{Page selection not supported. Ignoring
+        page selection}%
+    \fi%
+    \setbox\@tempboxa=\hbox{%
+      \pdfimage \pgf@imageheight \pgf@imagewidth {\pgf@filename}}%
+    \pdfform\@tempboxa%
+    \edef\pgf@image{\noexpand\pdfrefform\the\pdflastform}%
+  \else% new version
+    {\pdfximage \pgf@imageheight \pgf@imagewidth attr
+      {\pgf@imageinterpolate\space\pgf@imagemask} \pgf@imagepage
+      {\pgf@filename}}%
+    \edef\pgf@image{\noexpand\pdfrefximage\the\pdflastximage}%
+  \fi
+}%
+\def\pgfsys@definemask{%
+  \ifx\pgf@maskmatte\pgf@empty%
+  \else%
+    \edef\pgf@maskmatte{/Matte [\pgf@maskmatte]}%
+  \fi%
+  \edef\pgf@attr{{\pgf@maskmatte\space /Decode [1 0]}}%
+  \immediate\pdfximage attr \pgf@attr {\pgf@filename}%
+  \edef\pgf@mask{\the\pdflastximage}%
+}
+\def\pgfsys@horishading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \setbox\@tempboxa=\hbox to\pgf@max{\vbox to#2{\vfil\pdfliteral{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{\pgf@max}{#2}}%
+    \pdfxform resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace /DeviceRGB
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@doma\space0 \pgf@domb\space0]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\@tempboxa%
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{\leavevmode\noexpand\pdfrefxform\the\pdflastxform}% 
+  }%
+}
+\def\pgfsys@vertshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \setbox\@tempboxa=\hbox to#2{\vbox to\pgf@max{\vfil\pdfliteral{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{#2}{\pgf@max}}%
+    \pdfxform resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace /DeviceRGB
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [0 \pgf@doma\space0 \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\@tempboxa%
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{\leavevmode\noexpand\pdfrefxform\the\pdflastxform}%
+  }%
+}
+\def\pgfsys@radialshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \setbox\@tempboxa=\hbox to2\pgf@max{\vbox to2\pgf@max{\vfil\pdfliteral{/Sh sh}}\hfil}%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
+    \advance\pgf@xa by \pgf@x%
+    \advance\pgf@ya by \pgf@y%
+    \pgf@sys@bp@correct{\pgf@x}%
+    \pgf@sys@bp@correct{\pgf@y}%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \pdfxform resources {%
+      /Shading << /Sh << /ShadingType 3
+      /ColorSpace /DeviceRGB
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@sys@tonumber{\pgf@xa} \pgf@sys@tonumber{\pgf@ya} \pgf@doma\space \pgf@sys@tonumber{\pgf@x} \pgf@sys@tonumber{\pgf@y} \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [true false] >> >>}\@tempboxa%
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{\leavevmode\noexpand\pdfrefxform\the\pdflastxform}%
+  }%
+}%
+
+
+
+% Patterns
+
+\def\pgfsys@declarepattern#1#2#3#4#5#6#7#8#9{%
+  % Start building the pattern dictionary:
+  \pgf@xa=#2\relax%
+  \pgf@ya=#3\relax% 
+  \pgf@xb=#4\relax%
+  \pgf@yb=#5\relax%
+  \pgf@xc=#6\relax%
+  \pgf@yc=#7\relax%
+  \pgf@sys@bp@correct\pgf@xa%
+  \pgf@sys@bp@correct\pgf@ya%
+  \pgf@sys@bp@correct\pgf@xb%
+  \pgf@sys@bp@correct\pgf@yb%
+  \pgf@sys@bp@correct\pgf@xc%
+  \pgf@sys@bp@correct\pgf@yc%
+  % Now create the pattern object:
+  \immediate\pdfobj stream
+  attr
+  {
+    /Type /Pattern
+    /PatternType 1
+    /PaintType \ifnum#9=0 2 \else 1 \fi
+    /TilingType 1
+    /BBox [\pgf@sys@tonumber\pgf@xa\space\pgf@sys@tonumber\pgf@ya\space\pgf@sys@tonumber\pgf@xb\space\pgf@sys@tonumber\pgf@yb]
+    /XStep \pgf@sys@tonumber\pgf@xc\space
+    /YStep \pgf@sys@tonumber\pgf@yc\space
+    /Resources << >>
+  }
+  {#8}%
+  \pgf@sys@pdf@addtopageresources@patterns{/pgfpat#1\space \the\pdflastobj\space 0 R}%
+}
+
+\def\pgfsys@setpatternuncolored#1#2#3#4{%
+  \pgfsysprotocol@literal{/pgfprgb cs #2 #3 #4 /pgfpat#1\space scn}%
+}
+
+\def\pgfsys@setpatterncolored#1{%
+  \pgfsysprotocol@literal{/Pattern cs /pgfpat#1\space scn}%
+}
+
+
+\def\pgfsys@papersize#1#2{%
+  \pdfpageheight#2%
+  \pdfpagewidth#1}
+
+
+  % XForm version, crashes ghostview.
+  %\def\pgfsys@defobject#1#2#3#4{%
+  %  \pgf@process{#2}
+  %  \setbox\pgfobjectbox\hbox{\raise-\pgf@y\hbox{\hskip-\pgf@x\relax#4}}
+  %  \pgf@process{#3}
+  %  \pgf@xa=\pgf@x
+  %  \pgf@ya=\pgf@y
+  %  \pgf@process{#2}
+  %  \advance\pgf@xa by-\pgf@x
+  %  \advance\pgf@ya by-\pgf@y  
+  %  \wd\pgfobjectbox=\pgf@xa
+  %  \dp\pgfobjectbox=0pt
+  %  \ht\pgfobjectbox=\pgf@ya
+  %  \pdfxform\pgfobjectbox
+  %  \expandafter\xdef\csname#1\endcsname{\the\pdflastxform}
+  %  \expandafter\xdef\csname pgf@trans#1\endcsname
+  %  {{\pgfget x}{\pgfget y}}}
+  %\def\pgfsys@useobject#1#2{%
+  %  \setbox\pgfobjectbox\hbox{\pdfrefxform \csname#1\endcsname}%
+  %  \dp\pgfobjectbox=0pt%
+  %  \ht\pgfobjectbox=0pt%
+  %  \wd\pgfobjectbox=0pt%
+  %  \pgfsys@discardpath%
+  %  \pgfsys@beginscope%
+  %  #2%
+  %  \edef\pgf@temp{{1}{0}{0}{1}\csname pgf@trans#1\endcsname}%
+  %  \expandafter\pgfsys@transform\pgf@temp%
+  %  \box\pgfobjectbox%
+  %  \pgfsys@endscope}
+
+
+
+%
+% Position tracking
+%
+\def\pgfsys@markposition#1{%
+  \pdfsavepos%
+  \edef\pgf@temp{#1}%
+  \expandafter\write\expandafter\@auxout\expandafter{%
+    \expandafter\noexpand\expandafter\pgf@sys@pdf@mark\expandafter{\pgf@temp}{\the\pdflastxpos}{\the\pdflastypos}}%
+}
+
+\def\pgf@sys@pdf@mark#1#2#3{%
+  \expandafter\gdef\csname pgf@sys@pdf@mark@pos@#1\endcsname{\pgfqpoint{#2sp}{#3sp}}%
+}
+
+\def\pgfsys@getposition#1#2{%
+  \edef\pgf@marshal{\let\noexpand#2=\expandafter\noexpand\csname pgf@sys@pdf@mark@pos@#1\endcsname}%
+  \pgf@marshal%
+}
+
+\def\pgf@sys@pdf@mark@pos@pgfpageorigin{\pgfpointorigin}
+
+
+
+\endinput
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% End: 

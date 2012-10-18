@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!-- $Id: sitetree_link_library.xml.jx 8771 2005-01-31 19:05:00Z gregor $ -->
+
+<collection 
+  xmlns:jx="http://apache.org/cocoon/templates/jx/1.0"
+  >
+  
+  <uri>FIXME URI</uri>
+  <icon></icon>
+  <title>Sitetree Library</title>
+  <description>A list of all (internal) links to pages within a Lenya publication.</description>
+  <items>
+    <jx:forEach var="resource" items="${resources}" begin="0" end="${resources.size()}" step="1">
+      <resource id="${resource.fullid}">
+        <title>${resource.id}</title>
+        <uri>${resource.url}</uri>
+        <icon>${parameters.getParameter("resource-icon-url")}</icon>
+        <description>${resource.label}</description>
+        <preview>${resource.url}</preview>
+        <language>${resource.language}</language>
+      </resource>
+    </jx:forEach>    
+  </items>
+</collection>

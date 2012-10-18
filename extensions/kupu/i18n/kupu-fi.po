@@ -1,0 +1,910 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: Wed Aug  3 16:07:37 2005\n"
+"PO-Revision-Date: 2005-08-05 15:50+0200\n"
+"Last-Translator: Petri Savolainen <petri.savolainen@iki.fi>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"Language-code: fi\n"
+"Language-name: Finnish\n"
+"Preferred-encodings: utf-8 latin1\n"
+"Domain: kupu\n"
+"Language-Team: \n"
+
+#: /common/kupu.pox:None
+msgid "Properties modified"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed with parameter ${param}"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Not inside a definition list element!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Add table"
+msgstr "Lisää taulukko"
+
+#: /common/kupu.pox:None
+msgid "Table added"
+msgstr "Taulukko lisätty"
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Source edit tool initialized"
+msgstr "Lähdekoodityökalu alustettu"
+
+#: /common/kupu.pox:None
+msgid "Delete row"
+msgstr "Poista rivi"
+
+#: /common/kupu.pox:None
+msgid "Recursion detected when counting column position"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "List style changed"
+msgstr "Listn tyyli muutettu"
+
+#: /common/kupu.pox:None
+msgid "Create image"
+msgstr "Luo kuva"
+
+#: /common/kupu.pox:None
+msgid "You have unsaved changes. Do you want to save before leaving the page?"
+msgstr "Dokumenttiin on tehty muutoksia. Haluatko tallentaa ne ennen poistumistasi?"
+
+#: /common/kupu.pox:None
+msgid "Table row removed"
+msgstr "Rivi poistettu"
+
+#: /common/kupu.pox:None
+msgid "Document saved"
+msgstr "Dokumentti tallennettu"
+
+#: /common/kupu.pox:None
+msgid "Color chosen"
+msgstr "Väri valittu"
+
+#: /common/kupu.pox:None
+msgid "Table row added"
+msgstr "Rivi lisätty"
+
+#: /common/kupu.pox:None
+msgid "Error saving document"
+msgstr "Dokumenttia tallennettaessa tapahtui virhe"
+
+#: /common/kupu.pox:None
+msgid "No destination URL available!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Link removed"
+msgstr "Linkki poistettu"
+
+#: /common/kupu.pox:None
+msgid "No row to delete"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Delete Table"
+msgstr "Poista taulukko"
+
+#: /common/kupu.pox:None
+msgid "Cleanup done, sending document to server"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Image tool initialized"
+msgstr "Kuvatyökalu alustettu"
+
+#: /common/kupu.pox:None
+msgid "End offset out of range!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "tdindex: ${tdindex}"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Create link"
+msgstr "Luo linkki"
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Starting HTML cleanup"
+msgstr "Aloitetaan HTML - lähdekoodin järkeistäminen"
+
+#: /common/kupu.pox:None
+msgid "Link modified"
+msgstr "Linkkiä muutettu"
+
+#: /common/kupu.pox:None
+msgid "Request sent to server"
+msgstr "Pyyntö lähetetty palvelimelle"
+
+#: /common/kupu.pox:None
+msgid "Table tool initialized"
+msgstr "Taulukkotyökalu alustettu"
+
+#: /common/kupu.pox:None
+msgid "There were no errors."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "exception ${message} while registering an event handler for element ${element}, event ${event}, method ${method}"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Error loading translation (status ${status} ), falling back to english"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Start node offset detected in a node without children!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuTool._selectSelectItem"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Couldn\\'t set design mode. Kupu will not work on this browser."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "No element found in the config island!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Start offset out of range!"
+msgstr ""
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Pasting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
+msgstr "Leikepöydän sisällön liittäminen toimii tässä sovelluksessa JavaScript - koodia käyttäen. Toiminnon salliminen muodostaa kuitenkin teoriassa tietoturvariskin ja se on siksi selaimessasi lähtökohtaisesti estetty. Halutessasi voit kuitenkin muuttaa selaimen tietoturva-asetuksia leikepöydän sisällön liittämisen sallimiseksi. Osoitteessa http://www.mozilla.org/editor/midasdemo/securityprefs.html on annettu ohjeet siitä, miten asetuksia tulee muuttaa."
+
+#: /common/kupu.pox:None
+msgid "Property tool initialized"
+msgstr "Ominaisuustyökalu alustettu"
+
+#: /common/kupu.pox:None
+msgid "Colorchooser tool initialized"
+msgstr "Värinvalintaityökalu alustettu"
+
+#: /common/kupu.pox:None
+msgid "No parentcolumn found!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Row repeated"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Table removed"
+msgstr "Taulukko poistettu"
+
+#: /common/kupu.pox:None
+msgid "Cut"
+msgstr "Leikkaa"
+
+#: /common/kupu.pox:None
+msgid "Unsupported browser!"
+msgstr "Tämä editori ei toimi käyttämässäsi selaimessa."
+
+#: /common/kupu.pox:None
+msgid "Add row"
+msgstr "Lisää rivi"
+
+#: /common/kupu.pox:None
+msgid "Link tool initialized"
+msgstr "Linkkityökalu alustettu"
+
+#: /common/kupu.pox:None
+msgid "Sending request to server"
+msgstr "Lähetetään pyyntö palvelimelle"
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Invalid table size"
+msgstr "Epäkelpo taulukon koko"
+
+#: /common/kupu.pox:None
+msgid "Error placing back selection"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Delete link"
+msgstr "Poista linkki"
+
+#: /common/kupu.pox:None
+msgid "Add column"
+msgstr "Lisää sarake"
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Cutting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
+msgstr "Leikepöydän sisällön leikkaaminen toimii tässä sovelluksessa JavaScript - koodia käyttäen. Toiminnon salliminen muodostaa kuitenkin teoriassa tietoturvariskin ja se on siksi selaimessasi lähtökohtaisesti estetty. Halutessasi voit kuitenkin muuttaa selaimen tietoturva-asetuksia leikepöydän sisällön leikkaamisen sallimiseksi. Osoitteessa http://www.mozilla.org/editor/midasdemo/securityprefs.html on annettu ohjeet siitä, miten asetuksia tulee muuttaa."
+
+#: /common/kupu.pox:None
+msgid "Exception while processing updateState on ${id}: ${msg}"
+msgstr ""
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Cleaning up HTML..."
+msgstr "Järkeistetään HTML-lähdekoodia..."
+
+#: /common/kupu.pox:None
+msgid "List style tool initialized"
+msgstr "Listatyylinmäärittelytyökalu alustettu"
+
+#: /common/kupu.pox:None
+msgid "Row repeat turned off"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "There was a problem initializing the drawers. Most likely the XSLT or XML files aren\\'t available. If this is not the Kupu demo version, check your files or the service that provide them (error: ${error})."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuToolBox._selectSelectItem"
+msgstr ""
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Copying from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html"
+msgstr "Leikepöydän sisällön kopioiminen toimii tässä sovelluksessa JavaScript - koodia käyttäen. Toiminnon salliminen muodostaa teoriassa tietoturvariskin ja se on siksi selaimessasi lähtökohtaisesti estetty. Halutessasi voit kuitenkin muuttaa selaimen tietoturva-asetuksia leikepöydän sisällön liittämisen sallimiseksi. Osoitteessa http://www.mozilla.org/editor/midasdemo/securityprefs.html on annettu ohjeet siitä, miten asetuksia tulee muuttaa."
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Delete column"
+msgstr "Poista rivi"
+
+#: /common/kupu.pox:None
+msgid ""
+"Error saving your data.\\n"
+"Response status: ${status}.\\n"
+"Check your server log for more information."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "This feature requires pop-ups to be enabled on your browser!"
+msgstr "Tämä toiminto edellyttää, että selaimesi sallii \"pop-up\" - ikkunoiden avaamisen!"
+
+#: /common/kupu.pox:None
+msgid "Not inside link"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "View source"
+msgstr "Näytä lähdekoodi"
+
+#: /common/kupu.pox:None
+msgid "Image inserted"
+msgstr "Kuva lisätty"
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Browser not supported!"
+msgstr "Tämä editori ei toimi käyttämässäsi selainohjelmassa."
+
+#: /common/kupu.pox:None
+msgid "Please wait while saving document..."
+msgstr "Tallennetaan dokumenttia, ole hyvä ja odota hetki..."
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Editor initialized"
+msgstr "Editori alustettu"
+
+#: /common/kupu.pox:None
+msgid "Copy"
+msgstr "Kopioi"
+
+#: /common/kupu.pox:None
+msgid "Paste"
+msgstr "Liitä"
+
+#: /common/kupu.pox:None
+msgid "Zoom tool initialized"
+msgstr "Zoomaustyökalu alustettu"
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Table column deleted"
+msgstr "Sarake poistettu"
+
+#: /common/kupu.pox:None
+msgid "Offset out of document range"
+msgstr ""
+
+#: /common/kupu.pox:None
+#, fuzzy
+msgid "Table cleaned up"
+msgstr "Taulukko järkeistetty"
+
+#: /common/kupu.pox:None
+msgid "Error loading data, status ${status}"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Could not set status bar message, check your browser\\'s security settings."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "End node offset detected in a node without children!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Your form has not been saved. All changes you have made will be lost"
+msgstr "Sisältöä ei ole tallennettu - kaikki tallentamattomat muutokset menetetään."
+
+#: /common/kupu.pox:None
+msgid "Link added"
+msgstr "Linkki lisätty"
+
+#: /common/kupu.pox:None
+msgid "No head in document!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Not inside a row!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Not inside a table!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Selection not inside the node!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Editor not initialized yet!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Table column added"
+msgstr "Sarake lisätty"
+
+# Default: "Caption"
+#: /common/kupudrawers/drawer.xsl:None
+#, fuzzy
+msgid "imagedrawer_caption_label"
+msgstr "Otsikko"
+
+# Default: "Insert Link"
+#: /common/kupudrawers/drawer.xsl:None
+#, fuzzy
+msgid "linkdrawer_title"
+msgstr "Lisää linkki"
+
+# Default: "Left"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_left"
+msgstr "Vasen"
+
+# Default: "(${width} by ${height})"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_size"
+msgstr "(${width} kertaa ${height})"
+
+# Default: "Insert Image"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_title"
+msgstr "Lisää kuva"
+
+# Default: "Upload to: ${folder}"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_to_label"
+msgstr "Tuo kansioon: ${folder}"
+
+# Default: "Name"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_name_label"
+msgstr "Nimi"
+
+# Default: "Preview"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_preview_label"
+msgstr "Esikatselu"
+
+# Default: ""
+# "Select an image from your computer and click ok to have it\n"
+# "            automatically uploaded to selected folder and inserted into the\n"
+# "            editor."
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_instructions"
+msgstr "Valitse ensin kuva tietokoneeltasi ja sen jälkeen valitse \"ok\". Kuva tuodaan tällöin valitsemaasi kansioon ja lisätään muokkaimeen."
+
+# Default: "Upload ..."
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_link"
+msgstr "Tuo..."
+
+# Default: "Title:"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_title_label"
+msgstr "Otsikko"
+
+# Default: "Title"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_title_label"
+msgstr "Otsikko"
+
+# Default: "Description"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_description_label"
+msgstr "Kuvaus"
+
+# Default: "ALT-text"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_alt_text"
+msgstr "vaihtoehtoinen (ALT) teksti"
+
+# Default: "search"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "kupudrawer_search"
+msgstr "Haku"
+
+# Default: "Inline"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_inline"
+msgstr "Inline"
+
+# Default: "Target"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_target_label"
+msgstr "Kohde"
+
+# Default: "Right"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_right"
+msgstr "Oikea"
+
+#: /default/body.kupu:None
+msgid "Kupu Editor Test Page"
+msgstr "Kupu - editorin testisivu"
+
+#: /default/colorchooser.kupu:None
+msgid "text color: alt-f"
+msgstr "tekstin väri: alt-f"
+
+#: /default/colorchooser.kupu:None
+msgid "background color: alt-h"
+msgstr "taustan väri: alt-h"
+
+# Default: "Row"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_row_label"
+msgstr "Rivi"
+
+# Default: "Right"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_right_option"
+msgstr "Oikea"
+
+# Default: "Current column alignment"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_alignment_label"
+msgstr "Tämänhetkinen saraketasaus"
+
+#: /default/drawers.kupu:None
+msgid "external link"
+msgstr "Järjestelmän ulkopuolelle osoittava linkki"
+
+# Default: "Center"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_center_option"
+msgstr "Keskitetty"
+
+# Default: "Fix All Tables"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_tables_button"
+msgstr "Korjaa kaikki taulukot"
+
+#: /default/drawers.kupu:None
+msgid "External Link"
+msgstr "Ulkoinen Linkki"
+
+# Default: "Columns"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_columns_label"
+msgstr "Sarakkeet"
+
+# Default: "Left"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_left_option"
+msgstr "Vasen"
+
+#: /default/drawers.kupu:None
+msgid "image"
+msgstr "Kuva"
+
+#: /default/drawers.kupu:None
+msgid "table"
+msgstr "Taulukko"
+
+#: /default/drawers.kupu:None
+msgid "Preview"
+msgstr "Esikatselu"
+
+# Default: "Rows"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_rows_label"
+msgstr "Rivejä"
+
+#: /default/drawers.kupu:None
+msgid "internal link"
+msgstr "Järjestelmän sisälle osoittava linkki"
+
+# Default: "Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_title"
+msgstr "Taulukko"
+
+# Default: "Add Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_table_button"
+msgstr "Lisää taulukko"
+
+# Default: "Close"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_close_button"
+msgstr "Sulje"
+
+# Default: "Column"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_column_label"
+msgstr "Sarakkeita"
+
+# Default: "Create Headings"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_headings_label"
+msgstr "Lisää otsakerivi"
+
+# Default: "Fix"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_button"
+msgstr "Korjaa"
+
+# Default: "Fix Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_table_label"
+msgstr "Korjaa taulukko"
+
+#: /default/drawers.kupu:None
+#: /common/kupudrawers/drawer.xsl:None
+msgid "Ok"
+msgstr "Ok"
+
+#: /default/drawers.kupu:None
+#: /common/kupudrawers/drawer.xsl:None
+msgid "Cancel"
+msgstr "Peru"
+
+# Default: "Add"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_button"
+msgstr "Lisää"
+
+# Default: "Remove"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_remove_button"
+msgstr "Poista"
+
+# Default: "Table Class"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_class_label"
+msgstr "Taulukon CSS-luokka"
+
+#: /default/drawers.kupu:None
+#: /default/toolboxes.kupu:None
+msgid "Link the highlighted text to this URL:"
+msgstr "Linkitä korostettu teksti WWW-osoitteeseen:"
+
+#: /default/save.kupu:None
+msgid "save: alt-s"
+msgstr "tallenna: alt-s"
+
+#: /default/sourceedit.kupu:None
+msgid "edit HTML code"
+msgstr "muokkaa HTML-lähdekoodia"
+
+#: /default/spellchecker.kupu:None
+msgid "check spelling"
+msgstr "tarkista kirjoitusasu"
+
+# Default: "1"
+#: /default/toolbar.kupu:None
+msgid "list-decimal"
+msgstr "1"
+
+# Default: "A"
+#: /default/toolbar.kupu:None
+msgid "list-upperalpha"
+msgstr "A"
+
+#: /default/toolbar.kupu:None
+msgid "bold: alt-b"
+msgstr "vahvenna: alt-b"
+
+#: /default/toolbar.kupu:None
+msgid "superscript: alt-+"
+msgstr "yläteksti: alt-+"
+
+# Default: "&#9675;"
+#: /default/toolbar.kupu:None
+msgid "list-circle"
+msgstr ""
+
+#: /default/toolbar.kupu:None
+msgid "Formatted"
+msgstr "Muotoiltu"
+
+# Default: "a"
+#: /default/toolbar.kupu:None
+msgid "list-loweralpha"
+msgstr ""
+
+# Default: "no bullet"
+#: /default/toolbar.kupu:None
+msgid "list-nobullet"
+msgstr "lista-eimerkkiä"
+
+# Default: "i"
+#: /default/toolbar.kupu:None
+msgid "list-lowerroman"
+msgstr "lista-pienetnumerot"
+
+#: /default/toolbar.kupu:None
+msgid "Kupu SVN/unreleased"
+msgstr "Kupu SVN/julkaisematon"
+
+#: /default/toolbar.kupu:None
+msgid "Remove image"
+msgstr "Poista kuva"
+
+#: /default/toolbar.kupu:None
+msgid "undo: alt-z"
+msgstr "peru: alt-z"
+
+# Default: "&#9679;"
+#: /default/toolbar.kupu:None
+msgid "list-disc"
+msgstr ""
+
+#: /default/toolbar.kupu:None
+msgid "definition list: alt-="
+msgstr "määrittelylista: alt-="
+
+#: /default/toolbar.kupu:None
+msgid "indent: alt->"
+msgstr "sisennä: alt- >"
+
+#: /default/toolbar.kupu:None
+msgid "Remove link"
+msgstr "Poista linkki"
+
+#: /default/toolbar.kupu:None
+msgid "Normal"
+msgstr "Normaali"
+
+#: /default/toolbar.kupu:None
+msgid "Heading"
+msgstr "Otsikko"
+
+#: /default/toolbar.kupu:None
+msgid "Subheading"
+msgstr "Alaotsikko"
+
+#: /default/toolbar.kupu:None
+msgid "left justify: alt-l"
+msgstr "tasaa vasemmalle: alt-l"
+
+#: /default/toolbar.kupu:None
+msgid "right justify: alt-r"
+msgstr "tasaa oikealle: alt-r"
+
+#: /default/toolbar.kupu:None
+msgid "outdent: alt-<"
+msgstr "ulonna: alt- <"
+
+# Default: "&#9632;"
+#: /default/toolbar.kupu:None
+msgid "list-square"
+msgstr ""
+
+#: /default/toolbar.kupu:None
+msgid "underline: alt-u"
+msgstr "alleviivaa: alt-u"
+
+#: /default/toolbar.kupu:None
+msgid "redo: alt-y"
+msgstr "uudestaan: alt-y"
+
+#: /default/toolbar.kupu:None
+msgid "subscript: alt--"
+msgstr "alateksti: alt--"
+
+#: /default/toolbar.kupu:None
+msgid "center justify: alt-c"
+msgstr "keskitä: alt-c"
+
+#: /default/toolbar.kupu:None
+msgid "unordered list: alt-*"
+msgstr "järjestämätön lista: alt-*"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 3"
+msgstr "Otsikko 3"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 2"
+msgstr "Otsikko 2"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 1"
+msgstr "Otsikko 1"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 6"
+msgstr "Otsikko 6"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 5"
+msgstr "Otsikko 5"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 4"
+msgstr "Otsikko 4"
+
+#: /default/toolbar.kupu:None
+msgid "numbered list: alt-#"
+msgstr "numeroitu lista: alt-#"
+
+#: /default/toolbar.kupu:None
+msgid "italic: alt-i"
+msgstr "kursivoi: alt-i"
+
+# Default: "I"
+#: /default/toolbar.kupu:None
+msgid "list-upperroman"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Headings:"
+msgstr "Otsakkeet:"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix"
+msgstr "Korjaa"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Column"
+msgstr "Poista sarake"
+
+#: /default/toolboxes.kupu:None
+msgid "Inline"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Select a cleanup action:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Links"
+msgstr "Linkit"
+
+#: /default/toolboxes.kupu:None
+msgid "Rows:"
+msgstr "Sarakkeet:"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Row"
+msgstr "Poista rivi"
+
+#: /default/toolboxes.kupu:None
+msgid "Tables"
+msgstr "Taulukot"
+
+#: /default/toolboxes.kupu:None
+msgid "Create"
+msgstr "Luo"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert image at the following URL:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Title:"
+msgstr "Otsikko"
+
+#: /default/toolboxes.kupu:None
+msgid "Description:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Image class:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Add Column"
+msgstr "Lisää sarake"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix Table"
+msgstr "Korjaa taulukko"
+
+#: /default/toolboxes.kupu:None
+msgid "Images"
+msgstr "Kuvat"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert Image"
+msgstr "Lisää kuva"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Table"
+msgstr "Lisää taulukko"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Row"
+msgstr "Lisää rivi"
+
+#: /default/toolboxes.kupu:None
+msgid "Properties"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Col Align:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Center"
+msgstr "Keskitä"
+
+#: /default/toolboxes.kupu:None
+msgid "Debug Log"
+msgstr "Loki"
+
+#: /default/toolboxes.kupu:None
+msgid "Make Link"
+msgstr "Tee linkki"
+
+#: /default/toolboxes.kupu:None
+msgid "Cleanup expressions"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Columns:"
+msgstr "Sarakkeet:"
+
+#: /default/toolboxes.kupu:None
+msgid "Table Class:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Right"
+msgstr "Oikea"
+
+#: /default/toolboxes.kupu:None
+msgid "Left"
+msgstr "Vasen"
+
+#: /plone/body.kupu
+msgid "force-kupu"
+msgstr ""
+
+#: /plone/body.kupu
+msgid "suppress-kupu"
+msgstr ""
+

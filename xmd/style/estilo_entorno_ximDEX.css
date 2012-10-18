@@ -1,0 +1,140 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+body
+	{
+	border:		0;
+	margin:		0;
+	overflow:	hidden;
+	border:		0px inset;
+	background-color:	buttonface;
+	}
+
+	
+/* State toolbar */
+td.boxes
+	{
+	border:		0;
+	margin:		0;
+	overflow:	hidden;
+	border:		1px groove;
+	background-color:	buttonface;
+	height:		18px;
+	font-family:	arial;
+	font-size:	10px;
+	}
+
+DIV.clock {
+	background:	transparent;
+	border:		1px solid black;
+	font-size:	10px;
+	text-align:	center;
+	vertical-align:	middle;
+	cursor:		pointer;
+	height:		13px;
+	font-family:	arial;
+	padding:	0px;
+	overflow:	hidden;
+	width:		60px;
+
+}
+
+IMG.clockicon {
+	cursor:		pointer;
+}
+
+/* End of State toolbar */
+
+/* treecontainer */
+
+body
+	{
+	border:		0;
+	margin:		0;
+	overflow:	hidden;
+	border:		0px inset;
+	background-color:	buttonface;
+	}
+iframe.showncontent
+	{
+	margin:		0px;
+	overflow:	hidden;
+	border:		0px groove;
+	background-color:	white;
+	width:		100%;
+	height:		100%;
+	font-family:	arial;
+	font-size:	10px;
+	}
+
+td.tabrow
+	{
+	border:		0;
+	margin:		0;
+	overflow:	hidden;
+	border:		0px;
+	background-color:	buttonface;
+	font-family:	arial;
+	font-size:	10px;
+	height:		20;
+	}
+
+div.tab
+	{
+	background-color:	white;
+	font-family:	arial;
+	font-size:	10px;
+	vertical-align:	bottom;
+	text-align:		left;
+	margin:		0px;
+	height:		17;
+	width:		25;
+	overflow:	hidden;
+	border:		2px groove;
+	border-bottom:	0px groove;
+	}
+
+td.content
+	{
+	margin:		0;
+	border:		2px groove;
+	border-top:	0px;
+	background-color:	white;
+	font-family:	arial;
+	font-size:	10px;
+	}
+
+td.tabdriver
+	{
+	border:		0;
+	margin:		0;
+	background-color:	buttonface;
+	font-family:	arial;
+	font-size:	10px;
+	height:		20;
+	width: 100px;
+	}
+/* End of treecontainer */

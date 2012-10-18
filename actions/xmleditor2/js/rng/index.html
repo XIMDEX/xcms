@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+<script language="javascript" type="text/javascript" src="../../../../extensions/kupu/common/sarissa.js"></script>
+<script language="javascript" type="text/javascript" src="../../../../extensions/jquery/jquery-1.2.6.pack.js"></script>
+
+<script language="javascript" type="text/javascript" src="../helpers.js"></script>
+<script language="javascript" type="text/javascript" src="../DOMNodeIterator.class.js"></script>
+<script language="javascript" type="text/javascript" src="../DOMAttrIterator.class.js"></script>
+
+<script language="javascript" type="text/javascript" src="../XimDocument.class.js"></script>
+<script language="javascript" type="text/javascript" src="../XimElement.class.js"></script>
+<script language="javascript" type="text/javascript" src="./RngDocument.class.js"></script>
+
+<script language="javascript" type="text/javascript" src="./patterns/RngPattern.class.js"></script>
+<script language="javascript" type="text/javascript" src="./patterns/RngElement.class.js"></script>
+<script language="javascript" type="text/javascript" src="./patterns/RngElement_choice.class.js"></script>
+<script language="javascript" type="text/javascript" src="./patterns/RngElement_optional.class.js"></script>
+<script language="javascript" type="text/javascript" src="./patterns/RngElement_interleave.class.js"></script>
+<script language="javascript" type="text/javascript" src="./patterns/RngElement_zeroOrMore.class.js"></script>
+<script language="javascript" type="text/javascript" src="./patterns/RngElement_oneOrMore.class.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+	var rngdom = null;
+	var rngdoc = null;
+	var xmldom = null;
+	var xmldoc = null;
+
+	window.onload = function() {
+		$.get('./rng-example.rng.xml', function(data) {
+			rngdom = data;
+			dosomething();
+		});
+		$.get('./xml-example.xml', function(data) {
+			xmldom = data;
+			dosomething();
+		});
+	}
+
+	dosomething = function() {
+
+		if (!rngdom || !xmldom) return;
+
+		rngdoc = new RngDocument();
+		rngdoc.loadXML(rngdom);
+		console.log(rngdoc._schemaModel);
+
+		/*
+		it does not work...
+		xmldoc = new XimDocument();
+		xmldoc.loadXML(xmldom, rngdoc);
+		console.log(xmldom, xmldoc._ximModel);
+		*/
+
+
+		var email = createElement('email', [], 'card');
+		var name = createElement('name', [], 'card');
+		var givenName = createElement('givenName', [], 'card');
+		var familyName = createElement('familyName', [], 'card');
+
+		//var card = createElement('card', [], 'docxap');
+		//var card = createElement('card', [name], 'docxap');
+		//var card = createElement('card', [name, email], 'docxap');
+		//var card = createElement('card', [givenName], 'docxap');
+		var card = createElement('card', [familyName], 'docxap');
+		//var card = createElement('card', [givenName, familyName], 'docxap');
+		//var card = createElement('card', [givenName, email], 'docxap');
+		//var card = createElement('card', [givenName, familyName, email], 'docxap');
+		//var card = createElement('card', [email], 'docxap');
+
+		//var docxap = createElement('docxap', [], null);
+		var docxap = createElement('docxap', [card], null);
+
+		console.log(docxap);
+
+
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+
+									// Siblings
+
+		//console.info('docxap', rngdoc._schemaModel['docxap'].allowedNodes(docxap).siblings);
+		console.info('card', rngdoc._schemaModel['card']['docxap'].allowedNodes(card).siblings);
+		//console.info('name', rngdoc._schemaModel['name']['card'].allowedNodes(name).siblings);
+		//console.info('email', rngdoc._schemaModel['email']['card'].allowedNodes(email).siblings);
+		//console.info('givenName', rngdoc._schemaModel['givenName']['card'].allowedNodes(givenName).siblings);
+		//console.info('familyName', rngdoc._schemaModel['familyName']['card'].allowedNodes(familyName).siblings);
+
+		//console.info('name near card', rngdoc._schemaModel['card']['docxap'].allowedSiblings(name));
+
+
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------
+
+									// Childrens
+
+		//console.info('docxap', rngdoc._schemaModel['docxap'].allowedNodes(docxap).childrens);
+		console.info('card', rngdoc._schemaModel['card']['docxap'].allowedNodes(card).childrens);
+		//console.info('name', rngdoc._schemaModel['name']['card'].allowedNodes(name).childrens);
+		//console.info('email', rngdoc._schemaModel['email']['card'].allowedNodes(email).childrens);
+		//console.info('givenName', rngdoc._schemaModel['givenName']['card'].allowedNodes(givenName).childrens);
+		//console.info('familyName', rngdoc._schemaModel['familyName']['card'].allowedNodes(familyName).childrens);
+
+		//console.info('name under card', rngdoc._schemaModel['card']['docxap'].allowedChildrens(name));
+	}
+
+
+
+	createElement = function(tagName, childNodes, parent) {
+
+		childNodes = childNodes || [];
+		var obj = {
+			tagName: tagName,
+			parentElement: null,
+			childNodes: childNodes,
+			schemaNode: (tagName != 'docxap' ? rngdoc._schemaModel[tagName][parent] : rngdoc._schemaModel['docxap'])
+		};
+
+		for (var i=0; i<childNodes.length; i++) {
+			childNodes[i].parentElement = obj;
+		}
+		return obj;
+	}
+
+</script>
+
+
+</head>
+<body>
+
+
+
+</body>
+</html>

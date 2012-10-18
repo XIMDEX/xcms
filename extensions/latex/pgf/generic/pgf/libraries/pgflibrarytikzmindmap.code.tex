@@ -1,0 +1,320 @@
+% Copyright 2006 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+\ProvidesFileRCS[v\pgfversion] $Header: /cvsroot/pgf/pgf/generic/pgf/libraries/pgflibrarytikzmindmap.code.tex,v 1.14 2006/10/11 15:22:26 tantau Exp $
+
+
+
+% A snake for connecting circle nodes
+%
+% Parameters: \pgfsnakecirclestartradius, \pgfsnakecircleendradius,
+%             \pgfsnakesegmentamplitude, \pgfsnakesegmentangle
+
+\pgfdeclaresnake{circle connection bar}{initial}
+{
+  \state{initial}[width=0pt,next state=bar]
+  {
+    {
+    \pgftransformxshift{-\pgfsnakecirclestartradius}%
+    \pgfpathmoveto{\pgfpointpolar{\pgfsnakesegmentangle}{\pgfsnakecirclestartradius}}
+    \pgfpatharc{\pgfsnakesegmentangle}{-\pgfsnakesegmentangle}{\pgfsnakecirclestartradius}
+    \@tempcnta=-\pgfsnakesegmentangle\relax
+    \advance\@tempcnta by90\relax
+    \setlength\@tempdima{\pgfsnakecirclestartradius}
+    \setlength\@tempdimb{\pgfsnakesegmentamplitude}
+    \pgfpathcurveto
+    {\pgfpointadd
+      {\pgfpointpolar{-\pgfsnakesegmentangle}{\pgfsnakecirclestartradius}}
+      {\pgfpointpolar{\the\@tempcnta}{.25\@tempdima}}}
+    {\pgfpoint{1.25\@tempdima}{-.5\@tempdimb}}
+    {\pgfpoint{1.5\@tempdima}{-.5\@tempdimb}}
+    \pgfpathlineto{\pgfpoint{1.5\@tempdima}{.5\@tempdimb}}
+    \@tempcnta=\pgfsnakesegmentangle\relax
+    \advance\@tempcnta by-90\relax
+    \pgfpathcurveto
+    {\pgfpoint{1.25\@tempdima}{.5\@tempdimb}}
+    {\pgfpointadd
+      {\pgfpointpolar{\pgfsnakesegmentangle}{\pgfsnakecirclestartradius}}
+      {\pgfpointpolar{\the\@tempcnta}{.25\@tempdima}}}
+    {\pgfpointpolar{\pgfsnakesegmentangle}{\pgfsnakecirclestartradius}}
+    \pgfpathclose
+    }
+  }
+  \state{bar}[width=0pt,next state=end]
+  {
+    \setlength\@tempdima{\pgfsnakecirclestartradius}%
+    \setlength\@tempdimb{\pgfsnakecircleendradius}%
+    \setlength\pgf@xc{\pgfsnakesegmentamplitude}%
+    \pgfpathrectangle
+    {\pgfpoint{.5\@tempdima}{-.5\pgf@xc}}
+    {\pgfpoint{\pgfsnakeremainingdistance-.5\@tempdimb-.5\@tempdima}{\pgf@xc}}
+  }
+  \state{end}[width=0pt,next state=final]
+  {
+    {
+    \pgftransformxshift{\pgfsnakeremainingdistance}%
+    \pgftransformxscale{-1}%
+    \pgftransformxshift{-\pgfsnakecircleendradius}%
+    \pgfpathmoveto{\pgfpointpolar{\pgfsnakesegmentangle}{\pgfsnakecircleendradius}}
+    \pgfpatharc{\pgfsnakesegmentangle}{-\pgfsnakesegmentangle}{\pgfsnakecircleendradius}
+    \@tempcnta=-\pgfsnakesegmentangle\relax
+    \advance\@tempcnta by90\relax
+    \setlength\@tempdima{\pgfsnakecircleendradius}
+    \setlength\@tempdimb{\pgfsnakesegmentamplitude}%
+    \pgfpathcurveto
+    {\pgfpointadd
+      {\pgfpointpolar{-\pgfsnakesegmentangle}{\pgfsnakecircleendradius}}
+      {\pgfpointpolar{\the\@tempcnta}{.25\@tempdima}}}
+    {\pgfpoint{1.25\@tempdima}{-.5\@tempdimb}}
+    {\pgfpoint{1.5\@tempdima}{-.5\@tempdimb}}
+    \pgfpathlineto{\pgfpoint{1.5\@tempdima}{.5\@tempdimb}}
+    \@tempcnta=\pgfsnakesegmentangle\relax
+    \advance\@tempcnta by-90\relax
+    \pgfpathcurveto
+    {\pgfpoint{1.25\@tempdima}{.5\@tempdimb}}
+    {\pgfpointadd
+      {\pgfpointpolar{\pgfsnakesegmentangle}{\pgfsnakecircleendradius}}
+      {\pgfpointpolar{\the\@tempcnta}{.25\@tempdima}}}
+    {\pgfpointpolar{\pgfsnakesegmentangle}{\pgfsnakecircleendradius}}
+    \pgfpathclose
+    }
+  }
+  \state{final}
+  {}
+}
+
+
+\def\pgfsnakecirclestartradius{1cm}
+\def\pgfsnakecircleendradius{1cm}
+\def\pgfsnakesegmentangle{20}
+
+
+
+
+% To paths for connecting circle nodes
+
+\tikzstyle{circle connection bar}=
+[to path={
+  \pgfextra{\tikz@compute@circle@radii\tikz@compute@segmentamplitude}
+  [fill=\tikz@concept@color,draw=none]
+  [snake=circle connection bar]
+  [every circle connection bar]
+  -- (\tikztotarget) \tikztonodes
+}]
+\tikzstyle{every circle connection bar}=[]
+
+\def\tikz@compute@circle@radii{%
+  \pgf@process{\pgfpointtransformed{\pgfpointanchor{\tikztostart}{center}}}%
+  \pgf@xa=\pgf@x%
+  \pgf@process{\pgfpointtransformed{\pgfpointanchor{\tikztostart}{west}}}%
+  \advance\pgf@xa by-\pgf@x%
+  \edef\pgfsnakecirclestartradius{\the\pgf@xa}%
+  \pgf@process{\pgfpointtransformed{\pgfpointanchor{\tikztotarget}{center}}}%
+  \pgf@xa=\pgf@x%
+  \pgf@process{\pgfpointtransformed{\pgfpointanchor{\tikztotarget}{west}}}%
+  \advance\pgf@xa by-\pgf@x%
+  \edef\pgfsnakecircleendradius{\the\pgf@xa}%
+}
+\def\tikz@compute@segmentamplitude{%
+  \pgf@x=\pgfsnakecirclestartradius\relax%
+  \ifdim\pgf@x>\pgfsnakecircleendradius\relax%
+    \pgf@x=\pgfsnakecircleendradius\relax%
+  \fi%
+  \pgf@x=.175\pgf@x\relax%
+  \edef\pgfsnakesegmentamplitude{\the\pgf@x}%
+}
+
+
+% Switch color in a mindmap
+
+\tikzoption{circle connection bar switch color}{\tikz@parse@switch#1\pgf@unique}
+\def\tikz@parse@switch from (#1) to (#2)\pgf@unique{%
+  \def\tikz@to@path{%
+    \pgfextra{%
+      \colorlet{tikz@switch@from}{#1}%
+      \colorlet{tikz@switch@to}{#2}%
+      \tikz@compute@circle@radii\tikz@compute@segmentamplitude%
+      \tikz@compute@rotation%
+    }
+    [fill=none,draw=none]
+    [snake=circle connection bar]
+    [every circle connection bar]
+    -- (\tikztotarget) \tikztonodes
+    [shading=tikz@shade@bar]
+  }
+}
+
+\tikzoption{concept color}{%
+  \let\tikz@old@concept@color=\tikz@concept@color%
+  \def\tikz@edge@to@parent@path{
+    (\tikzparentnode)
+    to[circle connection bar switch color=from (\tikz@old@concept@color) to (#1)]
+    (\tikzchildnode)}
+  \def\tikz@concept@color{#1}%
+}
+
+\pgfdeclarehorizontalshading[tikz@switch@from,tikz@switch@to]{tikz@shade@bar}{100bp}{%
+  color(0pt)=(tikz@switch@from);
+  color(45bp)=(tikz@switch@from);
+  color(50bp)=(tikz@switch@to);
+  color(100bp)=(tikz@switch@to)}
+
+\def\tikz@compute@rotation{%
+  \pgf@process{\pgfpointnormalised{\pgfpointdiff{\pgfpointanchor{\tikztostart}{center}}{\pgfpointanchor{\tikztotarget}{center}}}}%
+  \pgf@ya=-\pgf@y%
+  \edef\pgf@marshal{%
+    \noexpand\pgfsetadditionalshadetransform{%
+      \noexpand\pgftransformcm
+      {\pgf@sys@tonumber{\pgf@x}}{\pgf@sys@tonumber{\pgf@y}}%
+      {\pgf@sys@tonumber{\pgf@ya}}{\pgf@sys@tonumber{\pgf@x}}%
+      {\noexpand\pgfpointorigin}%
+    }%
+  }%
+  \pgf@marshal%
+}
+
+
+
+
+% A concept node
+
+\tikzstyle{concept}=          [circle,fill=\tikz@concept@color,draw=\tikz@concept@color,every concept]
+\tikzstyle{every concept}=    []
+
+\def\tikz@concept@color{black}
+
+\tikzstyle{tikz@concept@setting}=[edge from parent path={(\tikzparentnode) to [circle connection bar] (\tikzchildnode)}]
+\tikzstyle{tikz@concept@color@set}=[]
+
+
+\tikzstyle{extra concept}=     [concept color=black!50,level 2 concept,concept,every extra concept]
+\tikzstyle{every extra concept}=[]
+
+\tikzstyle{concept connection}=[line width=1mm,shorten <=2mm,shorten >=2mm,cap=round,draw=black!50]
+
+
+% A mindmap
+
+\tikzstyle{mindmap}=
+  [fill,draw,very thick,outer sep=0pt,inner sep=1pt,%
+   set style={{every child}+=[style=tikz@concept@setting,style=tikz@concept@color@set]},%
+   style=root concept,
+   set style={{level 1}+=[style=level 1 concept]},
+   set style={{level 2}+=[style=level 2 concept]},
+   set style={{level 3}+=[style=level 3 concept]},
+   set style={{level 4}+=[style=level 4 concept]},
+   text centered,%       
+   segment angle=20,
+   style=every mindmap,
+  ]
+\tikzstyle{every mindmap}=[]
+
+
+\tikzstyle{root concept}=   [minimum size=4cm,text width=3.5cm,font=\large]
+\tikzstyle{level 1 concept}=[minimum size=2.25cm,
+                             level distance=5cm,
+                             text width=2cm,
+                             sibling angle=60,
+                             font=\small]
+\tikzstyle{level 2 concept}=[minimum size=1.75cm,%
+                             level distance=2.9cm,%
+                             text width=1.5cm,%
+                             sibling angle=60,%
+                             font=\footnotesize]
+\tikzstyle{level 3 concept}=[minimum size=1.15cm,%
+                             text width=1cm,%
+                             level distance=2.4cm,%
+                             sibling angle=30,%
+                             font=\tiny]
+\tikzstyle{level 4 concept}=[minimum size=0.9cm,%
+                             text width=0.7cm,
+                             level distance=1.85cm,%
+                             sibling angle=30,%
+                             font=\tiny]
+  
+\tikzstyle{large mindmap}=
+  [%
+  set style={{root concept}=[minimum size=5.6cm,text width=4.5cm,font=\Large]},
+  set style={{level 1 concept}=[%
+    minimum size=3.2cm,
+    level distance=7cm,
+    text width=2.8cm,
+    sibling angle=60,
+    font=]},%
+  set style={{level 2 concept}=[%
+    minimum size=2.45cm,%
+    level distance=4cm,%
+    text width=2.2cm,%
+    sibling angle=60,%
+    font=\small%
+    ]},%
+  set style={{level 3 concept}=[%
+    minimum size=1.63cm,%
+    text width=1.4cm,%
+    level distance=3.38cm,%
+    sibling angle=30,%
+    font=\scriptsize]},%
+  set style={{level 4 concept}=[%
+    minimum size=1.27cm,%
+    text width=1cm,
+    level distance=2.60cm,%
+    sibling angle=30,%
+    font=\tiny]},%
+  mindmap,%
+  line width=2pt
+  ]
+  
+\tikzstyle{huge mindmap}=
+  [%
+  set style={{root concept}=[minimum size=8cm,text width=7cm,font=\huge]},
+  set style={{level 1 concept}+=[%
+    minimum size=4.5cm,
+    level distance=10cm,
+    text width=4cm,
+    sibling angle=60,
+    font=\large]},%
+  set style={{level 2 concept}+=[%
+    minimum size=3.5cm,%
+    level distance=5.8cm,%
+    text width=3cm,%
+    sibling angle=60,%
+    font=%
+    ]},%
+  set style={{level 3 concept}+=[%
+    minimum size=2.3cm,%
+    text width=2cm,%
+    level distance=4.8cm,%
+    sibling angle=30,%
+    font=\footnotesize]},%
+  set style={{level 4 concept}+=[%
+    minimum size=1.7cm,%
+    text width=1.4cm,
+    level distance=3.7cm,%
+    sibling angle=30,%
+    font=\scriptsize]},%
+  mindmap,%
+  line width=3pt
+  ]
+  
+
+% Annotations
+
+\tikzstyle{annotation}=[shape=rectangle,
+                        minimum size=0pt,
+                        text width=3.5cm,
+                        outer sep=1.5mm,
+                        inner sep=1mm,
+                        text badly ragged,
+                        rounded corners,
+                        font=\tiny,
+                        every annotation]
+\tikzstyle{every annotation}=[]
+
+\endinput
+

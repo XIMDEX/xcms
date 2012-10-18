@@ -1,0 +1,35 @@
+% Copyright 2006 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+
+\RequirePackage{pgfrcs}
+
+\ProvidesPackageRCS[v\pgfversion] $Header: /cvsroot/pgf/pgf/latex/pgf/basiclayer/pgf.sty,v 1.7 2006/10/11 15:22:27 tantau Exp $
+
+\def\pgf@draft{}
+\DeclareOption{draft}{\def\pgf@draft{\pgf@draftmodetrue}}
+
+\def\pgf@obsolete{\RequirePackage{pgfcomp-version-0-65}}
+\DeclareOption{version=0.65}{}
+\DeclareOption{version=0.96}{\def\pgf@obsolete{}}
+
+\ProcessOptions
+
+\RequirePackage{pgfcore}
+\RequirePackage{pgfbaseshapes}
+\RequirePackage{pgfbaseplot}
+\RequirePackage{pgfbaseimage}
+\RequirePackage{pgfbaselayers}
+\RequirePackage{pgfbasesnakes}
+\RequirePackage{pgfbasepatterns}
+
+\pgf@obsolete
+\pgf@draft
+
+\endinput

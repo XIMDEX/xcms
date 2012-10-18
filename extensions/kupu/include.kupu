@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<kupu:include
+  xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  >
+
+  <!-- Include all available implementations;
+       order does not matter at all -->
+  <xi:include href="default/include.kupu" />
+  <xi:include href="form/include.kupu" />
+  <xi:include href="multi/include.kupu" />
+  <xi:include href="zope2/include.kupu" />
+  <xi:include href="silva/include.kupu" />
+  <xi:include href="plone/include.kupu" />
+  <xi:include href="apache-lenya/kupu/include.kupu" />
+  <xi:include href="cnf/include.kupu" />
+
+</kupu:include>

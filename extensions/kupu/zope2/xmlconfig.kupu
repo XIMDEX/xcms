@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="xmlconfig"
+    implementation="zope2"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:define-macro="dummy"
+    >
+
+  <kupu:part name="defaultconfig">
+    <dst><metal:block define-slot="dst" /></dst>
+    <use_css>1</use_css>
+    <reload_after_save>0</reload_after_save>
+    <strict_output>1</strict_output>
+    <content_type>application/xhtml+xml</content_type>
+    <compatible_singletons>1</compatible_singletons>
+    <cleanup_expressions>
+      <set>
+        <name>Convert single quotes to curly ones</name>
+        <expression>
+          <reg>
+            (\W)'
+          </reg>
+          <replacement>
+            \1‘
+          </replacement>
+        </expression>
+        <expression>
+          <reg>
+            '
+          </reg>
+          <replacement>
+            ’
+          </replacement>
+        </expression>
+      </set>
+      <set>
+        <name>Reduce whitespace</name>
+        <expression>
+          <reg>
+            [\n\r\t]
+          </reg>
+          <replacement>
+            \x20
+          </replacement>
+        </expression>
+        <expression>
+          <reg>
+            [ ]{2}
+          </reg>
+          <replacement>
+            \x20
+          </replacement>
+        </expression>
+      </set>
+    </cleanup_expressions>
+  </kupu:part>
+
+  <kupu:part name="drawerconfig">
+    <image_xsl_uri tal:content="string:${kupu_url}/kupudrawers/drawer.xsl">kupudrawers/drawer.xsl</image_xsl_uri>
+    <link_xsl_uri tal:content="string:${kupu_url}/kupudrawers/drawer.xsl">kupudrawers/drawer.xsl</link_xsl_uri>
+    <image_libraries_uri tal:content="string:${kupu_url}/kupudrawers/imagelibrary.xml">kupudrawers/imagelibrary.xml</image_libraries_uri>
+    <link_libraries_uri tal:content="string:${kupu_url}/kupudrawers/linklibrary.xml">kupudrawers/linklibrary.xml</link_libraries_uri>
+    <search_images_uri> </search_images_uri>
+    <search_links_uri> </search_links_uri>
+  </kupu:part>
+
+</kupu:feature>

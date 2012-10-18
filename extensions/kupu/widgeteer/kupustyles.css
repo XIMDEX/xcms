@@ -1,0 +1,221 @@
+/*****************************************************************************
+ *
+ * Kupu common styles
+ *
+ * Copyright (c) 2003-2005 Kupu Contributors. See CREDITS.txt
+ *
+ * Instead of customizing this file, it is recommended to add your own
+ * CSS file.  Feel free to use whole or parts of this for your own
+ * designs, but give credit where credit is due.
+ *
+ *****************************************************************************/
+
+/* $Id: kupustyles.css 13226 2005-06-09 12:31:46Z duncan $ */
+
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+/* couldn't get it right without one... */
+table.layouttable {
+  width: 100%;
+  height: 100%;
+  border-width: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+
+table.layouttable td, table.layouttable tr {
+  margin: 0px;
+  padding: 0px;
+}
+
+.kupu-fulleditor {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+}
+
+div.kupu-fulleditor .kupu-fulleditor-zoomed {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+div.kupu-fulleditor .kupu-editorframe {
+  height: 100%;
+  width: 100%;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+div.kupu-fulleditor-zoomed {
+   z-index: 100;
+   margin: 0; border: none;
+   position: fixed;
+   top: 0; left: 0;
+   background-color: white;
+}
+
+* html div.kupu-fulleditor-zoomed {
+   position: absolute; /* IE */
+}
+
+div.kupu-fulleditor-zoomed .kupu-editor-iframe {
+  border: none;
+  margin: 0;
+}
+
+div.kupu-smalleditor .kupu-editorframe {
+  margin-right: 0.2em;
+}
+
+div.kupu-sourcemode span.kupu-tb-buttongroup,
+body.kupu-fulleditor-zoomed select { display: none; }
+body.kupu-fulleditor-zoomed div.kupu-fulleditor-zoomed select { display: inline; }
+div.kupu-sourcemode select { display: none !IMPORTANT; }
+div.kupu-sourcemode span#kupu-logo,
+div.kupu-sourcemode span#kupu-zoom,
+div.kupu-sourcemode span#kupu-source { display: inline; }
+
+div.kupu-smalleditor {
+  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif;
+  border: solid 3px ButtonHighlight;
+  margin: 0.2em;
+  height: 100%;
+}
+
+.kupu-tb {
+  margin: 0px;
+  padding: 0px;
+  background-image: url('../common/kupuimages/toolbarbg_purple.png');
+  padding: 2px;
+  border-width: 0px;
+  border-style: solid;
+  border-color: black;
+  border-bottom-width: 1px;
+}
+
+.kupu-tb-buttons button {
+  background-color: transparent;
+  border: 1px solid #ddd;
+  margin: 0px;
+  height: 24px;
+  width: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.kupu-tb-buttons button:hover {
+  cursor: default;
+  border: 1px solid;
+  border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
+}
+
+.kupu-tb-buttons button:active {
+  border: 1px solid;
+  border-color: ButtonShadow ButtonHighlight ButtonHighlight ButtonShadow;
+}
+
+.kupu-tb-buttongroup {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+
+.kupu-bold {background-image: url("../common/kupuimages/bold.png");}
+.kupu-bold-pressed {background-image: url("../common/kupuimages/bold.png"); background-color: white;}
+.kupu-forecolor {background-image: url("../common/kupuimages/text-color.png");}
+.kupu-hilitecolor {background-image: url("../common/kupuimages/background-color.png");}
+
+.kupu-inthyperlink {background-image: url("../common/kupuimages/inthyperlink.png");}
+.kupu-inthyperlink-pressed {background-image: url("../common/kupuimages/inthyperlink.png"); background-color: white}
+.kupu-exthyperlink {background-image: url("../common/kupuimages/exthyperlink.png");}
+.kupu-exthyperlink-pressed {background-image: url("../common/kupuimages/exthyperlink.png"); background-color: white}
+
+.kupu-image {background-image: url("../common/kupuimages/image.png");}
+.kupu-indent {background-image: url("../common/kupuimages/indent.png");}
+.kupu-inserthorizontalrule {background-image: url("../common/kupuimages/hr.png");}
+.kupu-insertorderedlist {background-image: url("../common/kupuimages/ordered-list.png");}
+.kupu-insertunorderedlist {background-image: url("../common/kupuimages/unordered-list.png");}
+.kupu-insertdefinitionlist {background-image: url("../common/kupuimages/definitionlist.png");}
+.kupu-italic {background-image: url("../common/kupuimages/italic.png");}
+.kupu-italic-pressed {background-image: url("../common/kupuimages/italic.png"); background-color: white}
+.kupu-justifycenter {background-image: url("../common/kupuimages/justify-center.png");}
+.kupu-justifyleft {background-image: url("../common/kupuimages/justify-left.png");}
+.kupu-justifyright {background-image: url("../common/kupuimages/justify-right.png");}
+button.kupu-logo {background-image: url("../common/kupuimages/kupu_icon.gif");}
+.kupu-outdent {background-image: url("../common/kupuimages/outdent.png");}
+.kupu-redo {background-image: url("../common/kupuimages/redo.png");}
+.kupu-save {background-image: url("../common/kupuimages/save.png");}
+.kupu-save-and-exit {background-image: url("../common/kupuimages/exit.gif");}
+.kupu-space {background-image: url("../common/kupuimages/space.gif");}
+.kupu-source {background-image: url("../common/kupuimages/view-source.png");}
+.kupu-spellchecker {background-image: url("../common/kupuimages/text-check.png");}
+.kupu-subscript {background-image: url("../common/kupuimages/subscript.png");}
+.kupu-subscript-pressed {background-image: url("../common/kupuimages/subscript.png"); background-color: white}
+.kupu-superscript {background-image: url("../common/kupuimages/superscript.png");}
+.kupu-superscript-pressed {background-image: url("../common/kupuimages/superscript.png"); background-color: white}
+.kupu-table {background-image: url("../common/kupuimages/table.png");}
+.kupu-underline {background-image: url("../common/kupuimages/underline.png");}
+.kupu-underline-pressed {background-image: url("../common/kupuimages/underline.png"); background-color: white}
+.kupu-undo {background-image: url("../common/kupuimages/undo.png");}
+.kupu-removelink {background-image: url("../common/kupuimages/remove.png");}
+.kupu-removeimage {background-image: url("../common/kupuimages/remove.png");}
+.kupu-zoom {background-image: url("../common/kupuimages/zoom-in.gif");}
+.kupu-zoom-pressed {background-image: url("../common/kupuimages/zoom-out.gif");}
+
+.kupu-tb-buttons button.invisible { 
+  display: none;
+  /*visibility: hidden;*/
+}
+
+.kupu-tb-buttons button.visible { 
+  display: inline;
+}
+
+div.kupu-editorframe {
+  border: solid 2px ButtonFace;
+}
+
+iframe.kupu-editor-iframe {
+  width: 100%;
+  height: 100%;
+}
+
+textarea.kupu-editor-textarea {
+  width: 100%;
+  height: 100%;
+  border-width: 0px;
+  padding: 0px;
+  margin: 0px;
+  display: none;
+}
+
+div#kupu-colorchooser {
+  position: absolute;
+  visibility: hidden;
+  border: solid black 1px;
+  background-color: white;
+  padding: 0.2em;
+  font-size: small;
+}
+
+.kupu-toolboxes input, .kupu-toolboxes select, .kupu-toolboxes textarea {
+  font-size: x-small;
+  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+div#kupu-fgcolorchooser div:hover {
+  /* border: outset 1px; */
+}
+
+div.kupu-drawer {
+   overflow: auto;
+}
+
+button.disabled {
+   opacity:0.5;
+   filter:alpha(opacity=50);
+}

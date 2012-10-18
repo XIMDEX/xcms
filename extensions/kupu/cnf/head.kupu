@@ -1,0 +1,24 @@
+<kupu:feature
+    name="head"
+    implementation="cnf"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+
+  <kupu:part name="bootstrap-editor">
+    <script type="text/javascript" 
+            src="kupucnftable.js"> 
+    </script>
+    <script type="text/javascript" 
+            src="../../tools/genericelements/genericelementstool.js"> 
+    </script>
+    <script type="text/javascript" 
+            src="kupuinit_genericelements.js">
+    </script>
+    <script type="text/javascript" 
+            src="kupustart_form.js">
+    </script>
+  </kupu:part>
+
+</kupu:feature>

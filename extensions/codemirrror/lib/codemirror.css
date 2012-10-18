@@ -1,0 +1,102 @@
+.CodeMirror {
+ /* line-height: 1em;*/
+  font-family: monospace;
+  background-color: #fff;
+  max-height: 300px;
+  height: auto;
+  max-width: 300px;
+  width: auto;
+}
+
+.CodeMirror-scroll {
+  /* overflow: auto;*/
+  max-height: 300px;
+  height: auto;
+   overflow-y: auto;
+  overflow-x: auto;
+  max-width: 300px;
+  width: auto;
+	/*font-size: 1.1em;
+	line-height: 1.6em;*/
+  /* This is needed to prevent an IE[67] bug where the scrolled content
+     is visible outside of the scrolling box. */
+  position: relative;
+
+}
+
+.CodeMirror-gutter {
+  position: absolute; left: 0; top: 0px;
+  /*z-index: 10;*/
+  background-color: #f7f7f7;
+  border-right: 1px solid #eee;
+  min-width: 2em;
+}
+.CodeMirror-gutter-text {
+  color: #aaa;
+  text-align: right;
+ padding: 0 3px;
+  white-space: pre !important;
+}
+.CodeMirror-lines {
+ /* font-size:1.2em;
+  padding: .4em;*/
+  padding-left: 5px;
+}
+
+.CodeMirror pre {
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  border-width: 0; margin: 0; padding: 0; background: transparent;
+  font-family: inherit;
+  /*font-size: inherit;*/
+  padding: 0; margin: 0;
+  white-space: pre;
+  word-wrap: normal;
+  font-size: 1.3em;
+}
+.CodeMirror pre:focus {
+	background: red;
+}
+.CodeMirror pre span{
+	padding: 1px 0;
+}
+.CodeMirror-wrap pre {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.CodeMirror pre.currentLine{
+	background-color:#ccc;
+}
+
+.CodeMirror-wrap .CodeMirror-scroll {
+  overflow-x: hidden;
+}
+
+.CodeMirror textarea {
+  font-family: inherit !important;
+  font-size: inherit !important;
+}
+
+.CodeMirror-cursor {
+  z-index: 10;
+  position: absolute;
+  visibility: hidden;
+  border-left: 1px solid black !important;
+}
+.CodeMirror-focused .CodeMirror-cursor {
+  visibility: visible;
+}
+
+span.CodeMirror-selected {
+  background: #ccc !important;
+  color: HighlightText !important;
+}
+.CodeMirror-focused span.CodeMirror-selected {
+  background: Highlight !important;
+}
+
+.CodeMirror-matchingbracket {color: #0f0 !important;}
+.CodeMirror-nonmatchingbracket {color: #f22 !important;}

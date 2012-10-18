@@ -1,0 +1,100 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+.createnews-tab {
+	top: 70px;
+	position: relative;
+}
+
+.action_container fieldset .languages-news{
+	top: -30px;
+	margin: 0px;
+}
+
+
+
+.action_container div.ui-tabs ul.ui-tabs-nav li.ui-state-default{
+	padding-bottom: 7px;
+	-moz-box-shadow: none;
+	background: none;
+}
+
+
+.action_container div.ui-tabs ul.ui-tabs-nav li.ui-tabs-selected{
+	background: url('../../../../../../xmd/images/action/fnd-legend.png') no-repeat 10px bottom;
+	padding-bottom: 7px;
+	-moz-box-shadow: none;
+	margin-top: 1px;
+}
+.action_container div.ui-tabs ul.ui-tabs-nav li.ui-state-default .ui-tab-close{
+	display: none;	
+}
+
+.action_container div.ui-tabs ul.ui-tabs-nav li.ui-state-default a{
+	padding: 0px 10px;
+	color: #D1DFDF;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	padding: 0px 10px;
+	background: url('../../../../../../xmd/images/action/fnd-lang-span-default.png') repeat-x left bottom;
+	text-transform: uppercase;
+	text-shadow: 1px -1px 0px #228481;
+	font-size: .9em;
+	display: block;
+}
+
+.action_container div.ui-tabs ul.ui-tabs-nav li.ui-tabs-selected a{
+	background: url('../../../../../../xmd/images/action/fnd-legend-span.png') repeat-x left bottom;
+	color: #fff;
+}
+
+.action_container fieldset .languages-news .ui-tabs .createnews-tab{
+	top: 35px !important;	
+}
+
+.action_container fieldset .languages-news textarea{
+	border: 1px solid #ccc;
+}
+
+p.sub-section{
+	background: #fff;
+	padding: 5px 10px;
+	font-weight: bold;
+	clear: left;
+}
+
+.action_container fieldset .languages-news+ol{
+	margin-bottom: 20px;	
+}
+
+.action_container fieldset.langs .left{
+	margin-top: 25px;
+}
+
+.action_container fieldset.langs .left ol{
+	margin-top: 15px;	
+}

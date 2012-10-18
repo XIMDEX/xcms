@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="xmlconfig"
+    implementation="plone"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+  <kupu:id>$Id: xmlconfig.kupu 18097 2005-10-03 09:51:28Z duncan $</kupu:id>
+
+  <!-- Default configuration -->
+  <kupu:part name="defaultconfig">
+    <dst>fulldoc.html</dst>
+    <use_css>0</use_css>
+    <reload_after_save>0</reload_after_save>
+    <strict_output>1</strict_output>
+    <content_type>application/xhtml+xml</content_type>
+    <compatible_singletons>1</compatible_singletons>
+    <!-- example of how to create a list of classnames for the table tool -->
+    <tal:block define="table_classnames here/get_table_classnames|here/kupu_library_tool/getTableClassnames|nothing">
+    <table_classes tal:condition="table_classnames">
+      <tal:loop repeat="klass table_classnames">
+      <class tal:define="parts python:klass.split('|', 1)*2;" tal:condition="python:parts[0].strip()">
+          <xcaption i18n:translate="" tal:content="python:parts[1]" />
+          <classname tal:content="python:parts[0]" />
+      </class>
+      </tal:loop>
+    </table_classes>
+    </tal:block>
+
+<tal:block define="excludes here/kupu_library_tool/getHtmlExclusions">
+<htmlfilter tal:condition="excludes">
+<tal:block repeat="exclude excludes"><tal:block
+     define="tags python:exclude[0]; attributes python:exclude[1];"
+  ><c tal:omit-tag="not:python:tags and attributes"
+  ><a tal:repeat="attr attributes" tal:content="attr">
+  </a><t tal:repeat="tag tags" tal:content="tag"></t></c
+  ></tal:block></tal:block
+>
+<xstyle tal:repeat="st here/kupu_library_tool/getStyleWhitelist"
+        tal:content="st"></xstyle>
+<class tal:repeat="cl here/kupu_library_tool/getClassBlacklist"
+        tal:content="cl"></class>
+</htmlfilter>
+</tal:block>
+  </kupu:part>
+ 
+</kupu:feature>

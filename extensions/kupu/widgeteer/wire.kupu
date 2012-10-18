@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<kupu:wire
+    implementation="widgeteer"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:fill-slot name="head">
+    <kupu:insert-part feature="head" part="meta" />
+    <kupu:insert-part feature="head" part="styles" />
+    <!-- <kupu:insert-part feature="drawers" part="styles" /> -->
+    <kupu:insert-part feature="head" part="jsincludes" />
+    <kupu:insert-part feature="contextmenu" part="jsincludes" />
+    <!-- <kupu:insert-part feature="drawers" part="jsincludes" /> -->
+    <kupu:insert-part feature="head" part="bootstrap-editor" />
+    <kupu:insert-part feature="saveonpart" part="jsincludes" />
+    <kupu:insert-part feature="sourceedit" part="jsincludes" />
+    <kupu:insert-part feature="spellchecker" part="jsincludes" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="fulleditor">
+    <table class="layouttable" border="0" cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>
+          <td height="1%">
+            <kupu:insert-part feature="toolbar" part="toolbar" />
+            <kupu:insert-part feature="colorchooser" part="colorchooser" />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <kupu:insert-part feature="body" part="editorframe" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="toolbar-buttons">
+    <kupu:insert-part feature="toolbar" part="logo" />
+    <!-- <kupu:insert-part feature="toolbar" part="zoom" /> -->
+    <kupu:insert-part feature="toolbar" part="select-styles" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-basicmarkup" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-subsuper" />
+    <kupu:insert-part feature="colorchooser" part="buttons" />
+    <kupu:insert-part feature="browser" part="buttons" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-justify" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-list" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-definitionlist" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-indent" />
+    <!-- <kupu:insert-part feature="drawers" part="buttons" /> -->
+    <kupu:insert-part feature="toolbar" part="buttongroup-remove" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-undo" />
+    <kupu:insert-part feature="spellchecker" part="buttons" />
+    <kupu:insert-part feature="sourceedit" part="buttons" />
+  </kupu:fill-slot>
+
+</kupu:wire>

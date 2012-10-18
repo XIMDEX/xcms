@@ -1,0 +1,58 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+.action_container .xim-listview-results .xim-listview-table-container table{
+	margin: 0px;	
+	/*border-collapse: separate;*/
+}
+
+.xim-listview-results .xim-listview-table-container table tr{
+	border-bottom: 1px dashed #ccc;
+	background: none;
+}
+.xim-listview-results .xim-listview-table-container table tr.xim-listview-selected{
+	background: #43a1a2;
+	-moz-border-radius: 3px;
+	color: #f2f2f2;
+	border: transparent;
+	padding-right: 8px;
+}
+.xim-listview-results .xim-listview-table-container table tr:hover{
+	background: #43a1a2;
+	color: #f2f2f2;
+	border-bottom: 1px dashed #ccc;
+}
+.xim-listview-results .xim-listview-table-container table tr td.xim-listview-grid-icon{
+	position: relative;
+	display: block;
+
+}
+.xim-listview-results .xim-listview-table-container table tr td.xim-listview-grid-icon .xim-listview-actions-dropdown {
+	background-position: -2px -506px;
+	left: 7px;	
+	cursor:  pointer;
+	top: -1px;
+}

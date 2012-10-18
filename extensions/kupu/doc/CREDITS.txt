@@ -1,0 +1,157 @@
+============
+kupu credits
+============
+
+Thanks to the people at ETH for initial funding and continuing inspiration.
+
+Main developers
+---------------
+
+* Paul Everitt
+
+  - Initial leadership and guidance in Kupu development
+
+  - JavaScript God
+
+  - made the original proposal to refactor Epoz using Page Template
+    macros and CSS styles.
+
+  - much of the initial hacking, conversion to OO, async saving etc.
+
+* Guido Wesdorp
+
+  - Mr. Kupu :)
+
+  - Maintainer, bugfixer and feature adder
+
+  - Came up with the idea to make Kupu server-independent (runs on
+    'plain' webservers such as Apache now)
+
+  - Came up with the idea for the cleanup functionality that uses
+    browser's DOM functionality to get well-formed XML out of Kupu
+
+  - Improved table support, link support, etc.
+
+  - Refactored the kupu editor to MVC-like components, making it much
+    more flexible for customization.
+
+  - Silva integration (most of that is in Silva itself, though)
+
+  - Many, many features, such as context menus, stateful buttons, DOM
+    inspector, unit tests.
+
+* Duncan Booth
+
+  - Wrote (more) advanced ContentFilter system, zoom mode and a lot of 
+    other smaller features.
+    
+  - Did a most of the Plone integration work.
+
+  - Fixed a *lot* of bugs.
+
+* Philipp von Weitershausen
+
+  - Came up with the directory structure that lets Kupu be both a
+    Zope2, CMF, and Plone product as well as a Zope3 package.
+
+  - Invented and implemented XML/XSLT based templating system.
+
+  - Implemented library drawers with help from Paul and Guido.
+
+  - Zope2, CMF, Plone 2 and Zope3 integration
+
+  - Administrative tasks, thanks again Philipp...
+
+Special thanks to
+-----------------
+
+* Petri Savolainen
+
+  - Added image drawer upload code.
+
+* Donovan Baarda
+
+  - Fixed some bugs in SaveOnPart.
+
+* Danny Bloemendaal
+
+  - Fixed some Plone CSS issues.
+
+* Rolf Kulemann
+
+  - Added Lenya support.
+
+* Morten Petersen
+
+  - Compress.py script.
+
+Translations
+------------
+
+* Roman Joost and Carsten Senger - German
+
+* Michiel Meeuwissen - Esperanto
+
+* Godefroid Chapelle - French
+
+* Ofer Weisglass - Hebrew
+
+* Vlada Macek - Czech
+
+* Junyong Pan - Chinese
+
+* Dorneles Treméa - Brazilian
+
+* Filip Miletic - Serbian
+
+* Guido Wesdorp - Dutch
+
+* Nikos Papagrigoriou - Greek
+
+* Anton Stonor - Danish
+
+* J (?), Suzuki Takanori - Japanese
+
+Third party products included
+-----------------------------
+
+  - Sarissa ECMAScript library written by Manos Batsis, released under
+    the Kupu License with kind permission by the author. See the Sarissa
+    homepage at http://sarissa.sourceforge.net for more information.
+
+Also thanks to
+--------------
+
+  - Holger Krekel for being so kind to provide resources on his
+    Codespeak server (subversion, the issuetracker and the
+    mailinglists). See http://codespeak.net for more information about
+    this cool project.
+
+  - Michael Wechner and OSCOM for providing us with a new home.
+
+  - Eric Casteleijn for the new name.
+
+  - Felicia Wong for the kupu logo.
+
+  - Igor Stroh for some bugfixes.
+
+  - Jan Smith for finding bugs (and believe us, she did! ;)
+
+  - Ver.di and project di.ver for funding the multi-editor feature
+
+  - Doron Rosenberg for providing a solution to a nasty selection
+    bug in Mozilla.
+
+  - Damian Gajda for providing the SourceEdit tool (a rewrite of some 
+    function).
+
+  - Donovan Baarda for a number of patches.
+
+  - Kit Blake for documentation and administrative tasks.
+
+  - Danny Hope from Adaptive Technologies for help on icons.
+
+Missing your name here?
+-----------------------
+
+If so, you probably have checkin rights... So add it yourself! ;)

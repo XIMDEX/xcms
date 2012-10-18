@@ -1,0 +1,81 @@
+<tal:block define="charset here/portal_properties/site_properties/default_charset|here/portal_properties/default_charset|string:utf-8;
+        content_type python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=%s' % charset);"
+ replace='structure string:&lt;?xml version="1.0" encoding="${charset}" ?&gt;'>
+<?xml version="1.0"?>
+</tal:block>
+<collection
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    >
+  <tal:with define="info python:context.kupuInfoForBrains([context])[0]">
+    <metal:macro use-macro="here/kupucollection.xml/macros/commonToAllItems" />
+    <src tal:define="resource_type request/resource_type | string:mediaobject;
+        global supportsupload python:resource_type=='mediaobject';
+        global showimagesize python:resource_type=='mediaobject';"
+         tal:content="string:${here/absolute_url}/${template/getId}?resource_type=${resource_type}">Source</src>
+  </tal:with>
+
+  <items metal:define-macro="collectionItems">
+     <tal:var define="global resource_type request/resource_type | string:mediaobject;" />
+     <metal:slot define-slot="defineItems">
+       <tal:comment condition="nothing">
+         The default resource type is mediaobject
+       </tal:comment>
+       <tal:var define="
+           list_types  python:context.kupuGetResourceTypes(resource_type, True);
+           link_types  python:context.kupuGetResourceTypes(resource_type, False)['portal_type'];
+           content     python:context.getFolderContents(contentFilter=list_types);
+           global items python:context.kupuInfoForBrains(content,
+                linkhere=context.portal_type in link_types,
+                linkparent=True, showimagesize=showimagesize);
+           " />
+     </metal:slot>
+
+
+    <tal:loop repeat="info items">
+
+      <tal:comment condition="nothing">
+        We use the URI as ID here, because all resource need to have a
+        site-wide unique id
+      </tal:comment>
+
+      <resource tal:attributes="id info/url"
+                tal:condition="not:info/collection">
+        <metal:macro define-macro="commonToAllItems">
+          <uri metal:define-slot="uri"
+               tal:content="info/url">URI</uri>
+          <icon metal:define-slot="icon"
+                tal:content="info/icon">icon</icon>
+          <size metal:define-slot="size"
+                tal:condition="info/size"
+                tal:content="info/size">size</size>
+          <tal:block condition="python:info.get('width') and info.get('height')">
+              <width metal:define-slot="width"
+                     tal:content="info/width">width</width>
+              <height metal:define-slot="height"
+                     tal:content="info/height">height</height>
+          </tal:block>
+          <preview metal:define-slot="preview"
+                   tal:condition="info/preview"
+                   tal:content="string:${info/url}/${info/preview}"></preview>
+          <label metal:define-slot="label"
+                tal:condition="info/label|nothing"
+                tal:content="info/label">label</label>
+          <title metal:define-slot="title"
+                 tal:content="info/title">title</title>
+          <description metal:define-slot="description"
+                       tal:content="info/description">description</description>
+        </metal:macro>
+      </resource>
+
+      <collection tal:attributes="id info/url"
+                  tal:condition="info/collection">
+        <metal:insert use-macro="here/kupucollection.xml/macros/commonToAllItems" />
+        <src tal:content="string:${info/url}/kupucollection.xml?resource_type=${resource_type}">Source</src>
+      </collection>
+
+    </tal:loop>
+    <uploadbutton tal:condition="supportsupload|nothing" />
+  </items>
+
+</collection>

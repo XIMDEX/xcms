@@ -1,0 +1,356 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+*{
+	margin: 0px;
+	padding: 0px;
+	outline: 0px;
+}
+
+body {
+	font-family: Verdana, Arial, Geneva, sans-serif;
+	font-size: 62.5%;
+	background-color: #006b6c;
+	color: #6b6b6b;
+	overflow: hidden;
+	height: 100%;
+}
+
+
+div#ximdex-splash {
+
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	background: #fff url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat;
+}
+
+div.loading p{
+	color: #9ac7c8;
+	font-size: 1.2em;
+	display: inline-block;
+	text-shadow: 0 1px 0 #252525;
+	position: absolute;
+	top: 20px;
+	left: 25px;
+}
+
+div#ximdex-splash div.loading
+{
+	width: 98%;
+	height: 22px;
+	margin: 15px 1%;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px solid #4f4f4f;
+	
+}
+
+div#ximdex-splash  div.loading span.progress
+{
+	-moz-box-shadow: 0 1px 0 #9c9c9c inset;
+	-webkit-box-shadow: 0 1px 0 #9c9c9c inset;
+	box-shadow: 0 1px 0 #9c9c9c inset;
+	display: inline-block;
+	height: 22px;
+	background: #4f4f4f url(../../../../xmd/images/browser/splash/bg-pattern-grey.png) repeat;
+	max-width: 100%;
+}
+
+div#ximdex-splash div.ximdex_splash_content {
+	position: absolute;
+	bottom: 0;
+	top: 45px;
+	left: 0;
+	right: 0;
+	background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom;
+	padding: 7% 9% 3%;
+	overflow: auto;
+}
+
+div#ximdex-splash div.ximdex_splash_content h2{
+	font-family: Coustard, serif;
+	font-size: 2.5em;
+	text-transform: none;
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.4), 0 -2px 1px rgba(0, 0, 0, 0.1), 0 0 2px #FFFFFF;
+	margin: 0 0 18px 2%;
+	color: #898989;
+}
+
+div.ximdex_splash_content li{
+	list-style: none;
+	width: 50%;
+	padding: 4px 2% 15px;
+	font-size: 1.5em;
+	color: #9f9f9f;
+}
+
+
+
+
+div.ximdex_splash_content li strong{
+	font-family: Coustard, serif;
+	font-weight: normal;
+	font-size: 1.3em;
+	display: block;
+	background: url(../../../../xmd/images/browser/splash/dots.png) no-repeat left 20px;
+	padding: 15px 0 4px 60px;
+	border-top: 1px solid #d9d9d9;
+	-moz-box-shadow: 0 2px 0 #fff inset;
+	-webkit-box-shadow: 0 2px 0 #fff inset;
+	box-shadow: 0 2px 0 #fff inset;
+	color: #626262;
+}
+
+div.ximdex_splash_content li:first-child strong{
+	border-top: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.ximdex_splash_content .more{
+	text-align: right;
+	width: 50%;
+	margin-top: 45px;
+}
+.more a{
+	background: #6d6d6d;
+	color: #E4E4E4;
+    font-family: Coustard,serif;
+    padding: 7px 12px 5px;
+    text-transform: uppercase;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    text-shadow: 0 1px 0 #252525;
+}
+
+
+.more a:hover{
+	background: #484848;
+}
+
+button::-moz-focus-inner{
+	border: 0px;
+}
+
+div#header {
+	background: url('../../../../xmd/images/header/cabecera_fnd.png') repeat left top;
+	height: 38px;
+	/*float: left;*/
+	width: 100%;
+}
+
+div#header h1{
+	float: left;
+	margin-top: 3px;
+}
+
+div#header .session-info {
+	padding-top: 18px;
+	float: right;
+	margin-right: 250px;
+	color: #e8e8e8;
+
+
+}
+
+.session-info a {
+	padding: 3px 8px;
+	color: #e8e8e8;
+	font-family: Tahoma, Geneva, sans-serif;
+	text-shadow: 1px 1px 0px #006b6c;
+	text-transform: uppercase;
+}
+
+div#header .session-info div.language {
+	position: relative;
+	padding: 12px 0px 15px 8px;
+	cursor: default;
+	text-transform: uppercase;
+	display: inline;
+	margin-right: 8px;
+	cursor: pointer;
+}
+
+div#header .session-info div.language:hover {
+	color: #fff;
+}
+div.language span.current{
+	 color: #369e9f;
+    font-size: 0.85em;
+    font-weight: bold;
+    letter-spacing: -0.1em;
+    position: absolute;
+    text-shadow: none;
+    top: 2px;
+     background: url("../../../../xmd/images/header/session-icon.png") no-repeat center 2px;
+     height: 21px;
+     left: -24px;
+     width: 25px;
+     padding-top: 3px;
+     text-align: right;
+     padding-right: 4px;
+     text-transform: none;
+}
+
+div.language span.login-name{
+	cursor: pointer;
+}
+
+div.language:hover span.current{
+	background-position: center -25px;
+	color: #fff;
+	}
+
+.selector_language{
+	position: absolute;
+	top: 27px;
+	z-index: 3;
+	padding-top: 15px;
+	left: -41px;
+	display: none;
+	z-index: 101;
+}
+
+div.language:hover .selector_language{
+	display: block;
+}
+.selector_language:before{
+	content: ' ';
+	background: url(../../../../xmd/images/header/arrow-greyT.png) no-repeat left 3px;
+	width: 32px;
+	height: 15px;
+	position: absolute;
+	top: 1px;
+	left: 7px;
+
+}
+.selector_language ul{
+	padding: 15px 15px 7px;
+	white-space: nowrap;
+	list-style: none;
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	background: #ECECEC;
+		text-shadow: none;
+	color: #888;
+	text-transform: none;
+	-moz-box-shadow: 0 2px 0 #b3b3b3;
+	-webkit-box-shadow: 0 2px 0 #b3b3b3;
+	box-shadow: 0 2px 0 #b3b3b3;
+	border: 1px solid #eee;
+}
+.selector_language ul li:first-child{
+	border-top: none;
+}
+.selector_language ul li{
+	padding: 5px 20px 8px 25px;
+	border-top: 1px dotted #ccc;
+	cursor: pointer;
+}
+
+.selector_language ul li:hover{
+	color: #5bc3b3;
+}
+
+.selector_language li.selected{
+	color: #5bc3b3;
+	background: url(../../../../xmd/images/header/tic.png) no-repeat 6px 3px;
+	cursor: default;
+}
+
+li.unactive a{
+	color: #bababa;
+	text-shadow: 1px 1px 0 #fff;
+	text-transform: none;
+	display: block;
+}
+
+/*li.unactive a:hover{
+	background: url(../../../../xmd/images/header/bg-pattern.png);
+}*/
+
+
+div#header .session-info .session-logout:before{
+	content: ' ';
+	background: url('../../../../xmd/images/header/session-sep.png') no-repeat -3px center;
+	width: 2px;
+	position: absolute;
+	height: 15px;
+	left: -8px;
+	top: 2px;
+}
+
+div#header .session-info .session-logout {
+	text-decoration: none;
+	position: relative;
+	margin-left: 10px;
+}
+
+div#header .session-info .session-logout:hover {
+	color: #98dad8;
+	-moz-border-radius: 12px;
+	-moz-box-shadow: 1px 1px 0px #8DC7C7;
+	background-color: #2c4b4b;
+	-webkit-box-shadow: 1px 1px 0px #8DC7C7;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	box-shadow: 1px 1px 0px #8DC7C7;
+}
+
+
+div#body {
+	position: absolute;
+	top: 40px;
+	bottom: 0px;
+	width: 100%;
+	margin: 0px;
+	font-size: 1.1em;
+	letter-spacing: .05em;
+}
+
+div.browser-window {
+	height: 100%;
+}
+
+div.browser-window-content {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+}
+
+.hidden{
+		display:none;
+}
+.novisible{
+	visibility: hidden;
+}

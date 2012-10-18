@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="contextmenu"
+    implementation="silva"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="kupucontextmenu.js"
+            tal:attributes="src string:${root_url}/kupu/kupucontextmenu.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

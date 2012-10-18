@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title>Add Directory View</title>
+</head>
+
+<body>
+
+<h2>Add Directory View</h2>
+
+<form action="manage_addKupuEditor" method="post">
+<table cellspacing="2">
+  <tbody>
+    <tr>
+      <td align="left" valign="top">
+        <strong>Id</strong>
+      </td>
+      <td align="left" valign="top">
+        <input type="text" name="id" size="40">
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td><br />
+        <input type="submit" name="submit" value=" Add ">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,250 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+/* @override http://samuelgarneau.com/default.css */
+
+/* 00 - HTML */
+
+body {
+	background-image: url(images/back.jpg);
+	margin: 0;
+	height: 100%;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	color: #545454;
+}
+
+h1 {
+	color: #545454;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 1.7em;
+}
+
+h4 {
+	margin: 0;
+	font-weight: normal;
+	font-style: normal;
+	opacity: 0.5;
+	font-size: 0.94em;
+}
+
+h5 {
+	color: #859a72;
+	font-weight: normal;
+	font-style: normal;
+	border-bottom-style: dashed;
+	border-bottom-width: 1px;
+	padding-top: 12px;
+	margin: 0 0 15px;
+	font-size: 1.25em;
+}
+
+h5.name {
+	border-bottom-style: none;
+}
+
+p {
+	font-size: 0.9em;
+}
+
+/* 01 - Structure */
+
+#profile {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#left-column {
+	background: url(images/left-back.png) repeat-y;
+	position: absolute;
+	width: 330px;
+	min-height: 100%;
+	padding-left: 15px;
+	padding-right: 70px;
+}
+
+#middle-column {
+	width: 430px;
+	position: absolute;
+	min-height: 100%;
+	background: url(images/middle-back.png) repeat-y;
+	margin-left: 400px;
+	padding-left: 70px;
+	padding-right: 70px;
+}
+
+#soontobe {
+	writing-mode: tb-rl;
+	filter: flipv fliph;
+	height: 526px;
+	width: 56px;
+	background-image: url(images/soonto.png);
+	position: absolute;
+	right: 0;
+	margin-top: 60px;
+}
+
+/* 02 - Specifications */
+
+img.main-avatar {
+	width: 75px;
+	height: 75px;
+	background-color: rgba(255,255,255,0.75);
+	padding: 5px;
+	border: 1px solid #859A72;
+	float: left;
+	margin-right: 15px;
+}
+
+.diggLink {
+	float: left;
+	opacity: 1;
+	border: 1px solid #97ad7e;
+	background-color: #fff;
+	padding: 5px;
+	margin-right: 15px;
+}
+
+img.profile {
+	width: 50px;
+	padding: 3px;
+	background-color: rgba(255,255,255,0.75);
+	border: 1px solid #859a72;
+	margin-right: 4px;
+}
+
+.box {
+	width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.box p {
+	margin-bottom: 0;
+	line-height: 25px;
+}
+
+.box h1 {
+	margin: 0;
+}
+
+.box h5 {
+	margin-bottom: 0;
+	border-bottom-style: none;
+	font-size: 1em;
+	margin-top: -12px;
+}
+
+.box h5 span {
+	font-weight: normal;
+	font-style: normal;
+	font-size: 0.9em;
+	color: #545454;
+}
+
+.box-top {
+	background-image: url(../images/box-top.png);
+	height: 30px;
+}
+
+.box-bottom {
+	background-image: url(../images/box-bottom.png);
+	height: 30px;
+}
+
+.box-middle {
+	padding-left: 40px;
+	padding-right: 40px;
+	background: url(../images/box-middle.png) repeat-y;
+}
+
+ul.params {
+	font-size: 0.9em;
+	font-weight: bold;
+	padding-bottom: 30px;
+	margin: 0;
+}
+
+ul.params li span {
+	font-weight: normal;
+	font-style: normal;
+}
+
+#vertical-pub {
+	float: left;
+	width: 200px;
+	margin-top: 20px;
+	margin-left: 15px;
+	opacity: 0.5;
+}
+
+#vertical-pub:hover {
+	opacity: 1;
+}
+
+#horizontal-pub {
+	
+}
+
+a {
+	background-color: #97ad7e;
+	text-decoration: none;
+	color: #fff;
+	padding: 3px;
+}
+
+a:hover {
+	color: #97ad7e;
+	background-color: #fff;
+}
+
+pre.big {
+	width: 80%;
+	margin-left: -60px;
+	margin-right: auto;
+}
+
+span.notag {
+	font-weight: normal;
+	font-style: normal;
+}
+
+ul.params li span {
+	font-weight: bold;
+}
+
+ul.params li span.notag {
+	font-weight: normal;
+	font-style: normal;
+}
+
+ul.params li {
+	margin-top: 5px;
+}
+
+ul {
+	list-style-type: none;
+}

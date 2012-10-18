@@ -1,0 +1,25 @@
+<kupu:feature
+    name="xmlconfig"
+    implementation="apache-lenya"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="defaultconfig">
+    <dst/>
+    <use_css>1</use_css>
+    <reload_after_save>1</reload_after_save>
+    <strict_output>1</strict_output>
+    <content_type>application/xml</content_type>
+    <compatible_singletons>1</compatible_singletons>
+    <table_classes>
+      <class>plain</class>
+      <class>listing</class>
+      <class>grid</class>
+      <class>data</class>
+    </table_classes>
+    
+    <exit_destination/>
+  </kupu:part>
+
+</kupu:feature>

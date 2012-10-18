@@ -1,0 +1,1315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="kupu">
+	<message filenames="./ximdex/kupuinit.js ./ximdex/kupuinit_genericelements.js">
+		<msgid>
+			There was a problem initializing the drawers. Most likely the XSLT or XML files aren\'t available. If this is not the Kupu demo version, check your files or the service that provide them (error: ${error}).
+		</msgid>
+		<msgstr i18n:translate="">
+			Hay problemas inicializando los drawers. Probablemente los ficheros XSLT o XML no est\xe1n disponibles. Chequee los ficheros o el servicio que los sirve (error: ${error}).
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubeforeunload.js">
+		<msgid>
+			Your form has not been saved. All changes you have made will be lost
+		</msgid>
+		<msgstr i18n:translate="">
+			El formulario no se ha guardado. Se perder\xe1n los cambios realizados
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusourceedit.js">
+		<msgid>
+			Source edit tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de edici\xf3n de c\xf3digo inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusourceedit.js">
+		<msgid>
+			Cleaning up HTML...
+		</msgid>
+		<msgstr i18n:translate="">
+			Limpiando HTML...
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupumultieditor.js ./ximdex/kupueditor.js ./ximdex/kupueditor.js">
+		<msgid>
+			Editor initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Editor inicializado
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupumultieditor.js ./ximdex/kupueditor.js">
+		<msgid>
+			Couldn\'t set design mode. Kupu will not work on this browser.
+		</msgid>
+		<msgstr i18n:translate="">
+			No es posible establecer el modo de edici\xf3n. El editor no funcionar\xe1 en este navegador.
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupumultieditor.js ./ximdex/kupueditor.js">
+		<msgid>
+			Please wait while saving document...
+		</msgid>
+		<msgstr i18n:translate="">
+			Por favor, espere mientras se guarda el documento...
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupumultieditor.js ./ximdex/kupueditor.js">
+		<msgid>
+			Starting HTML cleanup
+		</msgid>
+		<msgstr i18n:translate="">
+			Comenzando limpieza HTML
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupumultieditor.js ./ximdex/kupueditor.js">
+		<msgid>
+			Cleanup done, sending document to server
+		</msgid>
+		<msgstr i18n:translate="">
+			Limpieza realizada, enviando documento al servidor
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Exception while processing updateState on ${id}: ${msg}
+		</msgid>
+		<msgstr i18n:translate="">
+			Exception mientras se procesa updateState en ${id}: ${msg}
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			No destination URL available!
+		</msgid>
+		<msgstr i18n:translate="">
+			Ninguna URL de destino disponible!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Request sent to server
+		</msgid>
+		<msgstr i18n:translate="">
+			Petici\xf3n enviada al servidor
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Sending request to server
+		</msgid>
+		<msgstr i18n:translate="">
+			Enviando petici\xf3n al servidor
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Editor not initialized yet!
+		</msgid>
+		<msgstr i18n:translate="">
+			El editor no ha sido inicializado todav\xeda!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Command ${command} executed
+		</msgid>
+		<msgstr i18n:translate="">
+			Ejecutado comando ${command}
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Command ${command} executed with parameter ${param}
+		</msgid>
+		<msgstr i18n:translate="">
+			Ejecutado comando ${command} con par\xe1metro ${param}
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Browser not supported!
+		</msgid>
+		<msgstr i18n:translate="">
+			Navegador no soportado!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Error saving your data.\nResponse status: ${status}.\nCheck your server log for more information.
+		</msgid>
+		<msgstr i18n:translate="">
+			Error guardando datos.\nEstado de la respuesta: ${status}.\nConsulte el log del servidor para m\xe1s informaci\xf3n.
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Error saving document
+		</msgid>
+		<msgstr i18n:translate="">
+			Error guardando el documento
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Document saved
+		</msgid>
+		<msgstr i18n:translate="">
+			Documento guardado
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupueditor.js">
+		<msgid>
+			Error placing back selection
+		</msgid>
+		<msgstr i18n:translate="">
+			Error placing back selection
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Deprecation warning: KupuTool._selectSelectItem
+		</msgid>
+		<msgstr i18n:translate="">
+			KupuTool._selectSelectItem est\xe1 en desuso
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Deprecation warning: KupuToolBox._selectSelectItem
+		</msgid>
+		<msgstr i18n:translate="">
+			KupuToolBox._selectSelectItem est\xe1 en desuso
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Cutting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html
+		</msgid>
+		<msgstr i18n:translate="">
+			Cortar texto desde javascript est\xe1 deshabilitado en su navegador por razones de seguridad. Para m\xe1s informaci\xf3n, lea a http://www.mozilla.org/editor/midasdemo/securityprefs.html
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Copying from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html
+		</msgid>
+		<msgstr i18n:translate="">
+			Copiar texto desde javascript est\xe1 deshabilitado en su navegador por razones de seguridad. Para m\xe1s informaci\xf3n, lea a http://www.mozilla.org/editor/midasdemo/securityprefs.html
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Pasting from JavaScript is disabled on your Mozilla due to security settings. For more information, read http://www.mozilla.org/editor/midasdemo/securityprefs.html
+		</msgid>
+		<msgstr i18n:translate="">
+			Pegar texto desde javascript est\xe1 deshabilitado en su navegador por razones de seguridad. Para m\xe1s informaci\xf3n, lea a http://www.mozilla.org/editor/midasdemo/securityprefs.html
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Cut
+		</msgid>
+		<msgstr i18n:translate="">
+			Cortar
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Copy
+		</msgid>
+		<msgstr i18n:translate="">
+			Copiar
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Paste
+		</msgid>
+		<msgstr i18n:translate="">
+			Pegar
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Colorchooser tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de elecci\xf3n de color inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Color chosen
+		</msgid>
+		<msgstr i18n:translate="">
+			Color elegido
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			No head in document!
+		</msgid>
+		<msgstr i18n:translate="">
+			El documento no tiene cabecera
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Property tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de propiedades inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Properties modified
+		</msgid>
+		<msgstr i18n:translate="">
+			Propiedades modificadas
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Link tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de enlaces inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Link added
+		</msgid>
+		<msgstr i18n:translate="">
+			Enlace a\xf1adido
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Not inside link
+		</msgid>
+		<msgstr i18n:translate="">
+			Not inside link
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Link removed
+		</msgid>
+		<msgstr i18n:translate="">
+			Enlace eliminado
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Delete link
+		</msgid>
+		<msgstr i18n:translate="">
+			Eliminar enlace
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Create link
+		</msgid>
+		<msgstr i18n:translate="">
+			Crear enlace
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Link modified
+		</msgid>
+		<msgstr i18n:translate="">
+			Enlace modificado
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Image tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de im\xe1genes inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Image inserted
+		</msgid>
+		<msgstr i18n:translate="">
+			Imagen insertada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Create image
+		</msgid>
+		<msgstr i18n:translate="">
+			Crear imagen
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Add table
+		</msgid>
+		<msgstr i18n:translate="">
+			A\xf1adir tabla
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Add row
+		</msgid>
+		<msgstr i18n:translate="">
+			A\xf1adir fila
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Delete row
+		</msgid>
+		<msgstr i18n:translate="">
+			Eliminar fila
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Add column
+		</msgid>
+		<msgstr i18n:translate="">
+			A\xf1adir columna
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Delete column
+		</msgid>
+		<msgstr i18n:translate="">
+			Eliminar columna
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Delete Table
+		</msgid>
+		<msgstr i18n:translate="">
+			Eliminar tabla
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Invalid table size
+		</msgid>
+		<msgstr i18n:translate="">
+			Tama\xf1o de tabla no v\xe1lido
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Table added
+		</msgid>
+		<msgstr i18n:translate="">
+			Tabla a\xf1adida
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Table row added
+		</msgid>
+		<msgstr i18n:translate="">
+			Fila a\xf1adida
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			No row to delete
+		</msgid>
+		<msgstr i18n:translate="">
+			No hay filas que eliminar
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Table row removed
+		</msgid>
+		<msgstr i18n:translate="">
+			Fila eliminada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			No parentcolumn found!
+		</msgid>
+		<msgstr i18n:translate="">
+			No se ha encontrado columna padre
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			tdindex: ${tdindex}
+		</msgid>
+		<msgstr i18n:translate="">
+			tdindex: ${tdindex}
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Table column added
+		</msgid>
+		<msgstr i18n:translate="">
+			Columna a\xf1adida
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Table column deleted
+		</msgid>
+		<msgstr i18n:translate="">
+			Columna borrada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Not inside a table!
+		</msgid>
+		<msgstr i18n:translate="">
+			Fuera de una tabla!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Table removed
+		</msgid>
+		<msgstr i18n:translate="">
+			Tabla eliminada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Recursion detected when counting column position
+		</msgid>
+		<msgstr i18n:translate="">
+			Recursividad detectada calculando la posici\xf3n de la columna
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Table cleaned up
+		</msgid>
+		<msgstr i18n:translate="">
+			Tabla limpiada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js ./ximdex/kupucnftable.js">
+		<msgid>
+			Table tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de tablas inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			List style tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta Lista de estilos inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			List style changed
+		</msgid>
+		<msgstr i18n:translate="">
+			Lista de estilos modificada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Could not set status bar message, check your browser\'s security settings.
+		</msgid>
+		<msgstr i18n:translate="">
+			No se puede definir mensaje en la barra de estado, revise la configuraci\xf3n de seguridad de su navegador.
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			View source
+		</msgid>
+		<msgstr i18n:translate="">
+			Ver c\xf3digo fuente
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Not inside a definition list element!
+		</msgid>
+		<msgstr i18n:translate="">
+			Fuera de una definicion de elemento lista!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Zoom tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de zoom inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuspellchecker.js">
+		<msgid>
+			There were no errors.
+		</msgid>
+		<msgstr i18n:translate="">
+			No hubo errores.
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuspellchecker.js">
+		<msgid>
+			Error loading data, status ${status}
+		</msgid>
+		<msgstr i18n:translate="">
+			Error cargando datos, estado ${status}
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuspellchecker.js">
+		<msgid>
+			This feature requires pop-ups to be enabled on your browser!
+		</msgid>
+		<msgstr i18n:translate="">
+			Esta caracter\xedstica requiere que habilite los pop-ups en su navegador
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			Unsupported browser!
+		</msgid>
+		<msgstr i18n:translate="">
+			Navegador no soportado!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			exception ${message} while registering an event handler for element ${element}, event ${event}, method ${method}
+		</msgid>
+		<msgstr i18n:translate="">
+			exception ${message} mientras se registraba un manejador de eventos para el elemento ${element}, evento ${event}, m\xe9todo ${method}
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			No element found in the config island!
+		</msgid>
+		<msgstr i18n:translate="">
+			Elemento no encontrado en el fichero de configuración
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			Selection not inside the node!
+		</msgid>
+		<msgstr i18n:translate="">
+			La selecci\xf3n no pertenece al nodo!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			Start node offset detected in a node without children!
+		</msgid>
+		<msgstr i18n:translate="">
+			Start node offset detected in a node without children!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			End node offset detected in a node without children!
+		</msgid>
+		<msgstr i18n:translate="">
+			End node offset detected in a node without children!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			Start offset out of range!
+		</msgid>
+		<msgstr i18n:translate="">
+			Start offset out of range!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			End offset out of range!
+		</msgid>
+		<msgstr i18n:translate="">
+			End offset out of range!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupuhelpers.js">
+		<msgid>
+			Offset out of document range
+		</msgid>
+		<msgstr i18n:translate="">
+			Offset out of document range
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupustart_multi.js ./ximdex/kupustart_form.js">
+		<msgid>
+			Error loading translation (status ${status} ), falling back to english
+		</msgid>
+		<msgstr i18n:translate="">
+			Error cargando cat\xe1logo de traducci\xf3n (estado ${status} ), volviendo a ingl\xe9s
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupucnftable.js">
+		<msgid>
+			Not inside a row!
+		</msgid>
+		<msgstr i18n:translate="">
+			Fuera de una fila!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupucnftable.js">
+		<msgid>
+			Row repeated
+		</msgid>
+		<msgstr i18n:translate="">
+			Fila repetida
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupucnftable.js">
+		<msgid>
+			Row repeat turned off
+		</msgid>
+		<msgstr i18n:translate="">
+			Row repeat turned off
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			You have unsaved changes. Do you want to save before leaving the page?
+		</msgid>
+		<msgstr i18n:translate="">
+			Tiene cambios sin guardar. \xBFDesea guardar antes de abandonar la p\xe1gina?
+		</msgstr>
+	</message>
+  <message filenames="./ximdex/kupusaveonpart.js">
+	  <msgid>
+		  You have applied to open the editor in a new window. Changes not saved will be lost. Do you want to continue?
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Usted ha solicitado abrir el editor en una ventana nueva. Los cambios no guardados se perder\xe1n.\xBFDesea continuar?
+		</msgstr>
+  </message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			UndoToolBox tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de recuperación de cambios inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Changeset not found!
+		</msgid>
+		<msgstr i18n:translate="">
+			Changeset no encontrado!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Restoring changeset
+		</msgid>
+		<msgstr i18n:translate="">
+			Recuperando changeset
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			DraggablesToolBox tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de dragdrop inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			HighlightToolBox tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de resalte de elementos inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			ScrollerToolBox tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de scroll inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			ERROR: Trying to apply an element to more than one selected elements.
+		</msgid>
+		<msgstr i18n:translate="">
+			ERROR: Intentando aplicar un elemento a m\xe1s de una selecci\xf3n
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Error adding new element when clicked on
+		</msgid>
+		<msgstr i18n:translate="">
+			Error a\xf1adiendo nuevo elemento al hacer click
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Update
+		</msgid>
+		<msgstr i18n:translate="">
+			Actualizar
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Attributes updated!
+		</msgid>
+		<msgstr i18n:translate="">
+			Attributos actualizados!
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Channel changed to
+		</msgid>
+		<msgstr i18n:translate="">
+			Canal cambiado a
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			ToolbarButtonsToolBox tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Botonera inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			XimdocContextMenuTool tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Menús contextuales inicializados
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			spell checking tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de control ortogr\xe1fico inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Ximlet tool initialized
+		</msgid>
+		<msgstr i18n:translate="">
+			Herramienta de gesti\xf3n de ximlets inicializada
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			View changed to
+		</msgid>
+		<msgstr i18n:translate="">
+			Vista cambiada a
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Add Sibling:
+		</msgid>
+		<msgstr i18n:translate="">
+			Insertar hermano:
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Remove:
+		</msgid>
+		<msgstr i18n:translate="">
+			Eliminar:
+		</msgstr>
+	</message>
+	<message filenames="RNGElementsToolBox.class.js">
+		<msgid>
+			Add
+		</msgid>
+		<msgstr i18n:translate="">
+			A\xf1adir
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Add Child:
+		</msgid>
+		<msgstr i18n:translate="">
+			Anidar:
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Apply:
+		</msgid>
+		<msgstr i18n:translate="">
+			Aplicar:
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Replace
+		</msgid>
+		<msgstr i18n:translate="">
+			Sustituir
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			by
+		</msgid>
+		<msgstr i18n:translate="">
+			por
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Leave word
+		</msgid>
+		<msgstr i18n:translate="">
+			Dejar palabra
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			as it.
+		</msgid>
+		<msgstr i18n:translate="">
+			tal cual.
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Spell checking
+		</msgid>
+		<msgstr i18n:translate="">
+			Comprobaci\xf3n ortogr\xe1fica
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Element
+		</msgid>
+		<msgstr i18n:translate="">
+			Elemento
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Attributes
+		</msgid>
+		<msgstr i18n:translate="">
+			Atributos
+		</msgstr>
+	</message>
+	<message filenames="actions/xmleditor2/js/editor/AttributesToolBox.class.js">
+		<msgid>
+			Name:
+		</msgid>
+		<msgstr i18n:translate="">
+			Nombre:
+		</msgstr>
+	</message>
+	<message filenames="actions/xmleditor2/js/editor/AttributesToolBox.class.js">
+		<msgid>
+			Text:
+		</msgid>
+		<msgstr i18n:translate="">
+			Texto:
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Annotations
+		</msgid>
+		<msgstr i18n:translate="">
+			Anotaciones
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			External references
+		</msgid>
+		<msgstr i18n:translate="">
+			Referencias Externas
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Links
+		</msgid>
+		<msgstr i18n:translate="">
+			Enlaces
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Images
+		</msgid>
+		<msgstr i18n:translate="">
+			Im\xe1genes
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Articles
+		</msgid>
+		<msgstr i18n:translate="">
+			Art\xedculos
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Change history
+		</msgid>
+		<msgstr i18n:translate="">
+			Historial de cambios
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Debug log
+		</msgid>
+		<msgstr i18n:translate="">
+			Log de debug
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Clear
+		</msgid>
+		<msgstr i18n:translate="">
+			Limpiar
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Available elements
+		</msgid>
+		<msgstr i18n:translate="">
+			Elementos disponibles
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupubasetools.js">
+		<msgid>
+			Channels
+		</msgid>
+		<msgstr i18n:translate="">
+			Canales
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			No valid xslt templates or no docxap template detected. Changing back to tree view.
+		</msgid>
+		<msgstr i18n:translate="">
+			No se ha detectado docxap o plantillas xslt v\xe1lidas. Se volver\xe1 a la vista \xe1rbol.
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			No docxap template detected. Changing back to tree view.
+		</msgid>
+		<msgstr i18n:translate="">
+			No se ha detectado plantilla docxap. Se volver\xe1 a la vista \xe1rbol.
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Cannot show Remote View
+		</msgid>
+		<msgstr i18n:translate="">
+			No se puede mostrar la vista remota
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			PreviewInServer mode is disabled
+		</msgid>
+		<msgstr i18n:translate="">
+			El modo 'PreviewInServer' est\xe1 desactivado
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			No Preview Servers for this channel
+		</msgid>
+		<msgstr i18n:translate="">
+			No existen servidores de previos asociados a este canal
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Error accessing remote server. Please, verify permissions and synchro base path
+		</msgid>
+		<msgstr i18n:translate="">
+			Error accediendo a servidor remoto. Por favor, compruebe permisos y rutas en la configuraci\xf3n del sincronizador
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Error connecting remote server. Please, verify synchro data (IP, access keys)
+		</msgid>
+		<msgstr i18n:translate="">
+			Error conectando a servidor remoto. Por favor, compruebe datos de sincronizaci\xf3n (IP, claves de acceso)
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			Unknown error
+		</msgid>
+		<msgstr i18n:translate="">
+			Error desconocido
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			tree
+		</msgid>
+		<msgstr i18n:translate="">
+			\xe1rbol
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			normal
+		</msgid>
+		<msgstr i18n:translate="">
+			local
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/kupusaveonpart.js">
+		<msgid>
+			pro
+		</msgid>
+		<msgstr i18n:translate="">
+			remota
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/ximdexeditor.js">
+		<msgid>
+			No head element detected. Changing back to tree view
+		</msgid>
+		<msgstr i18n:translate="">
+			No se ha encontrado elemento head. Volviendo a vista \xe1rbol
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/ximdexeditor.js">
+		<msgid>
+			No body element detected. Changing back to tree view
+		</msgid>
+		<msgstr i18n:translate="">
+			No se ha encontrado elemento body. Volviendo a vista \xe1rbol
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/ximdexeditor.js">
+		<msgid>
+			Toggle
+		</msgid>
+		<msgstr i18n:translate="">
+			Mostrar/Ocultar
+		</msgstr>
+	</message>
+	<message filenames="./ximdex/ximdexeditor.js">
+		<msgid>
+			Edit ximlet content
+		</msgid>
+		<msgstr i18n:translate="">
+			Editar contenido del ximlet
+		</msgstr>
+	</message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Subtitle
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Subt\xedtulo
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Link
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Enlace
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Tag
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Etiqueta
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  External Link
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Link externo
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Navigation Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Bloque de navegaci\xf3n
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Title
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  T\xedtulo
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Paragraph
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  P\xe1rrafo
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Header Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Bloque cabecera
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Top Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Bloque Superior
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Spacer Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Bloque Espaciador
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  List
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Lista
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  List Item
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Elemento de Lista
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Blockquote
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Bloque de Cita
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Divider Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Bloque Separador
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Content Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Bloque de Contenido
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Item Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Elemento de Bloque
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Item Body
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Elemento de Body
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Item Metadata
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Elemento de Metadatos
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Item Title
+	  </msgid>
+	  <msgstr i18n:translate="">
+		  Elemento de t\xedtulo
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Pattern Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		 Patrón de bloque
+	  </msgstr>
+  </message>
+  <message filenames="RngDocument.class.js">
+	  <msgid>
+		  Footer Block
+	  </msgid>
+	  <msgstr i18n:translate="">
+		 Bloque de pie
+	  </msgstr>
+  </message>
+</catalog>

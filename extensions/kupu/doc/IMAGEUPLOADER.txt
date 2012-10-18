@@ -1,0 +1,64 @@
+===============================
+Local image upload enhancement
+===============================
+
+This document gives an overview of the enhancement and describes how
+to add support for other back-end servers or CMSes.
+
+Overview
+---------
+
+Usage of the enhancement should be practically self-evident. Use the
+image drawer to navigate to the folder/directory you want to upload
+the image to, click "upload", which opens up an upload form, select an
+image from your computer, enter a title for it, and click "insert".
+
+
+Installation
+-------------
+
+By default, the enhancement is disabled. This is because initially,
+there is only back-end server / CMS support for plone. Once we get
+support for a few other backends, the enhancement will be enabled by
+default.
+
+To enable the enhancement include a tag `<uploadbutton>` in the xml
+for the folder. See plone/kupu_plone_layer/kupucollection.xml.pt for
+an example.
+
+Technical notes
+----------------
+
+The image uploader adds new code to the following files:
+
+ * common/kupudrawers.js
+
+ * common/kupudrawerstyles.css
+ 
+ * common/kupudrawers/drawer.xsl
+
+
+It adds the following:
+
+ * this file
+
+ * plone/kupu_plone_layer/kupuUploadImage.py
+
+ * plone/kupu_plone_layer/kupuUploadImage.py.metadata
+
+
+See kupuUploadImage.py on how to add support for uploading images to
+another server/CMS.
+
+
+Bugs, caveats et cetera
+------------------------
+
+* After image upload, the library/collection of images does not get
+  reloaded if you're using a Mozilla browser, such as FireFox. In order
+  for the uploaded image(s) to be listed in the image drawer, save your
+  changes and reload kupu (ie. "edit" the document again by clicking the
+  "edit" tab on plone.
+
+* Because of the above problem, there's an extra "reload current"
+  button to manually refresh the image drawer contents

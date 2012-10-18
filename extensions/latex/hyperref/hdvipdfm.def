@@ -1,0 +1,904 @@
+%%
+%% This is file `hdvipdfm.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hyperref.dtx  (with options: `dvipdfm,pdfform,outlines')
+%% 
+%% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
+%% RCS: $Id: hyperref.dtx 6.71 2000/10/04 rahtz Exp rahtz $
+%%
+%% This file is part of the `Hyperref Bundle'.
+%% -------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% The list of all files belonging to the `Hyperref Bundle' is
+%% given in the file `manifest.txt'.
+%%
+\ProvidesFile{hdvipdfm.def}
+  [2003/01/22 v6.73n
+  Hyperref driver for dvipdfm]
+\def\Hy@PutCatalog#1{\@pdfm@mark{docview << #1 >>}}
+\ifHy@pagelabels
+  \def\HyPL@StorePageLabel#1{%
+    \if@filesw
+      \begingroup
+        \edef\Hy@tempa{\the\Hy@abspage\space<< #1 >> }%
+        \immediate\write\@mainaux{%
+          \string\HyPL@Entry{\Hy@tempa}%
+        }%
+      \endgroup
+    \fi
+  }
+  \AfterBeginDocument{%
+    \if@filesw
+      \immediate\write\@mainaux{%
+        \string\providecommand\string*\string\HyPL@Entry[1]{}%
+      }%
+    \fi
+    \ifx\HyPL@Labels\@empty
+      \Hy@WarningNoLine{Rerun to get /PageLabels entry}%
+    \else
+      \HyPL@SetPageLabels
+    \fi
+    \let\HyPL@Entry\@gobble
+  }%
+  \def\HyPL@Entry#1{%
+    \expandafter\gdef\expandafter\HyPL@Labels\expandafter{%
+      \HyPL@Labels
+      #1%
+    }%
+  }
+\fi
+\newsavebox{\pdfm@box}
+\def\@pdfm@mark#1{\special{pdf:#1}}
+\def\@pdfm@dest#1{%
+  \Hy@SaveLastskip
+  \@pdfm@mark{dest (#1) [@thispage /\@pdfview\space @xpos @ypos]}%
+  \Hy@RestoreLastskip
+}
+\providecommand\@pdfview{XYZ}
+\providecommand\@pdfborder{0 0 1}
+\def\hyper@anchor#1{%
+  \@pdfm@dest{#1}%
+}
+\def\hyper@anchorstart#1{%
+  \Hy@activeanchortrue
+  \@pdfm@dest{#1}%
+}
+\def\hyper@anchorend{%
+  \Hy@activeanchorfalse
+}
+\def\Hy@undefinedname{UNDEFINED}
+\def\hyper@linkstart#1#2{%
+  \protected@edef\Hy@testname{#2}%
+  \ifx\Hy@testname\@empty
+    \let\Hy@testname\Hy@undefinedname
+  \fi
+  \@pdfm@mark{%
+    bann <<
+      /Type /Annot
+      /Subtype /Link
+      /Border [\@pdfborder]
+      /C [\csname @#1bordercolor\endcsname]
+      /A <<
+        /S /GoTo
+        /D (\Hy@testname)
+      >>
+    >>
+  }%
+  \Hy@colorlink{\csname @#1color\endcsname}%
+}
+\def\hyper@linkend{%
+  \Hy@endcolorlink
+  \@pdfm@mark{eann}%
+}
+\def\hyper@link#1#2#3{%
+  \hyper@linkstart{#1}{#2}#3\hyper@linkend
+}
+\def\hyper@linkfile#1#2#3{%
+  \@pdfm@mark{%
+    bann <<
+      /Type /Annot
+      /Subtype /Link
+      /Border [\@pdfborder]
+      /C [\@filebordercolor]
+      /A <<
+        /S /GoToR
+        /F (#2)
+        /D \ifx\\#3\\[0 \@pdfstartview]\else(#3)\fi\space
+        \ifHy@newwindow /NewWindow true \fi
+      >>
+    >>%
+  }%
+  \Hy@colorlink{\@filecolor}#1\Hy@endcolorlink
+  \@pdfm@mark{eann}%
+}
+\def\@hyper@launch run:#1\\#2#3{% filename, anchor text linkname
+  \@pdfm@mark{%
+    bann <<
+      /Type /Annot
+      /Subtype /Link
+      /Border [\@pdfborder]
+      /C [\@filebordercolor]
+      /A <<
+        /S /Launch
+        /F (#1)
+        \ifHy@newwindow /NewWindow true \fi
+        \ifx\\#3\\%
+        \else
+          /Win << /P (#3) /F (#1) >>
+        \fi
+      >>
+    >>%
+  }%
+  \Hy@colorlink{\@filecolor}#2\Hy@endcolorlink
+  \@pdfm@mark{eann}%
+}
+\def\hyper@linkurl#1#2{%
+  \@pdfm@mark{%
+    bann <<
+      /Type /Annot
+      /Subtype /Link
+      /Border [\@pdfborder]
+      /C [\@urlbordercolor]
+      /A <<
+        /S /URI
+        /URI (#2)
+      >>
+    >>%
+  }%
+  \Hy@colorlink{\@urlcolor}#1\Hy@endcolorlink
+  \@pdfm@mark{eann}%
+}
+\def\Acrobatmenu#1#2{%
+  \@pdfm@mark{%
+    bann <<
+      /Type /Annot
+      /Subtype /Link
+      /A <<
+        /S /Named
+        /N /#1
+      >>
+      /Border [\@pdfborder]
+      /C [\@menubordercolor]
+    >>%
+  }%
+  \Hy@colorlink{\@menucolor}#2\Hy@endcolorlink
+  \@pdfm@mark{eann}%
+}
+\def\@pdfproducer{dvipdfm}
+\def\PDF@FinishDoc{%
+  \Hy@UseMaketitleInfos
+  \@pdfm@mark{%
+    docinfo <<
+      /Title (\@pdftitle)
+      /Subject (\@pdfsubject)
+      /Creator (\@pdfcreator)
+      /Author (\@pdfauthor)
+      /Producer (\@pdfproducer)
+      /Keywords (\@pdfkeywords)
+    >>%
+  }%
+  \Hy@DisableOption{pdfauthor}%
+  \Hy@DisableOption{pdftitle}%
+  \Hy@DisableOption{pdfsubject}%
+  \Hy@DisableOption{pdfcreator}%
+  \Hy@DisableOption{pdfproducer}%
+  \Hy@DisableOption{pdfkeywords}%
+}
+\def\PDF@SetupDoc{%
+  \@pdfm@mark{%
+    docview <<%
+      \ifx\@pdfstartview\@empty
+      \else
+        /OpenAction[@page\@pdfstartpage\@pdfstartview]%
+      \fi
+      \ifx\@baseurl\@empty
+      \else
+        /URI<</Base(\@baseurl)>>%
+      \fi
+      /PageMode \@pdfpagemode
+      /ViewerPreferences<<%
+        \ifHy@toolbar\else /HideToolbar true\fi
+        \ifHy@menubar\else /HideMenubar true\fi
+        \ifHy@windowui\else /HideWindowUI true\fi
+        \ifHy@fitwindow /FitWindow true\fi
+        \ifHy@centerwindow /CenterWindow true\fi
+      >>
+      \ifx\pdf@pagelayout\@empty
+      \else
+        /PageLayout/\pdf@pagelayout\space
+      \fi
+    >>%
+  }%
+  \ifx\@pdfpagescrop\@empty
+  \else
+    \@pdfm@mark{put @pages <</CropBox[\@pdfpagescrop]>>}
+  \fi
+}
+\def\@Gauge[#1]#2#3#4{% parameters, label, minimum, maximum
+  \typeout{Sorry, dvipdfm does not support FORM gauges}%
+}
+\def\@Form[#1]{%
+  \@ifundefined{textcolor}{\let\textcolor\@gobble}{}%
+  \setkeys{Form}{#1}%
+  \@pdfm@mark{obj @afields [ ]}%
+  \@pdfm@mark{obj @corder [ ]}%
+  \@pdfm@mark{%
+    obj @aform <<
+      /Fields @afields
+      /DR << /Font << /ZaDb @OBJZaDb /Helv @OBJHelv >> >>
+      /DA (/Helv 10 Tf 0 g )
+      /CO @corder
+      /NeedAppearances true
+    >>%
+  }%
+  \@pdfm@mark{put @catalog << /AcroForm @aform >>}%
+}
+\def\@endForm{}
+\def\dvipdfm@setdim{%
+  height \the\ht\pdfm@box\space
+  width  \the\wd\pdfm@box\space
+  depth  \the\dp\pdfm@box\space
+}
+\def\@TextField[#1]#2{% parameters, label
+  \def\Fld@name{#2}%
+  \def\Fld@default{}%
+  \let\Fld@value\@empty
+  \def\Fld@width{\DefaultWidthofText}%
+  \def\Fld@height{\DefaultHeightofText}%
+  \ifFld@multiline
+    \begingroup
+      \dimen@=\DefaultHeightofText
+      \dimen@=4\dimen@
+      \edef\x{\endgroup
+        \def\noexpand\Fld@height{\the\dimen@}%
+      }%
+    \x
+  \fi
+  \bgroup
+    \Field@toks={ }%
+    \setkeys{Field}{#1}%
+    \ifFld@hidden\def\Fld@width{1sp}\fi
+    \ifx\Fld@value\@empty\def\Fld@value{\Fld@default}\fi
+    \setbox\pdfm@box=\hbox{%
+      \MakeTextField{\Fld@width}{\Fld@height}%
+    }%
+    \LayoutTextField{#2}{%
+      \@pdfm@mark{%
+        ann @\Fld@name\space \dvipdfm@setdim << \PDFForm@Text >>%
+      }%
+    }%
+    \unhbox\pdfm@box
+    \@pdfm@mark{put @afields @\Fld@name}% record in @afields array
+  \egroup
+}
+\def\@ChoiceMenu[#1]#2#3{% parameters, label, choices
+  \def\Fld@name{#2}%
+  \def\Fld@default{}%
+  \def\Fld@width{\DefaultWidthofChoiceMenu}%
+  \def\Fld@height{\DefaultHeightofChoiceMenu}%
+  \bgroup
+    \Fld@menulength=0
+    \@tempdima\z@
+    \@for\@curropt:=#3\do{%
+      \expandafter\Fld@checkequals\@curropt==\\%
+      \Hy@StepCount\Fld@menulength
+      \settowidth{\@tempdimb}{\@currDisplay}%
+      \ifdim\@tempdimb>\@tempdima\@tempdima\@tempdimb\fi
+    }%
+    \advance\@tempdima by 15\p@
+    \Field@toks={ }%
+    \setkeys{Field}{#1}%
+    \ifFld@hidden\def\Fld@width{1sp}\fi
+    \LayoutChoiceField{#2}{%
+      \ifFld@radio
+        \@@Radio{#3}%
+      \else
+        {%
+          \ifdim\Fld@width<\@tempdima
+            \ifdim\@tempdima<1cm\@tempdima1cm\fi
+            \edef\Fld@width{\the\@tempdima}%
+          \fi
+          \def\Fld@flags{}%
+          \ifFld@combo\def\Fld@flags{/Ff 917504}\fi
+          \ifFld@popdown\def\Fld@flags{/Ff 131072}\fi
+          \ifx\Fld@flags\@empty
+            \@tempdima=\the\Fld@menulength\Fld@charsize
+            \advance\@tempdima by \Fld@borderwidth bp
+            \advance\@tempdima by \Fld@borderwidth bp
+            \edef\Fld@height{\the\@tempdima}%
+          \fi
+          \@@Listbox{#3}%
+        }%
+      \fi
+    }%
+  \egroup
+}
+\def\@@Radio#1{%
+  \Fld@listcount=0
+  \setbox\pdfm@box=\hbox{\MakeRadioField{\Fld@width}{\Fld@height}}%
+  \@for\@curropt:=#1\do{%
+    \expandafter\Fld@checkequals\@curropt==\\%
+    \Hy@StepCount\Fld@listcount
+    \@currDisplay\space
+    \leavevmode
+    \@pdfm@mark{%
+      ann \ifnum\Fld@listcount=1 @\Fld@name\space\fi
+      \dvipdfm@setdim
+      <<
+        \PDFForm@Radio\space
+        /AP << /N << /\@currValue /null >> >>
+      >>%
+    }%
+    \unhcopy\pdfm@box\space% deliberate space between radio buttons
+    \ifnum\Fld@listcount=1\@pdfm@mark{put @afields @\Fld@name}\fi
+  }%
+}
+\newcount\Fld@listcount
+\def\@@Listbox#1{%
+  \Choice@toks={ }%
+  \Fld@listcount=0
+  \@for\@curropt:=#1\do{%
+    \expandafter\Fld@checkequals\@curropt==\\%
+    \Hy@StepCount\Fld@listcount
+    \edef\@processme{%
+      \Choice@toks{\the\Choice@toks [(\@currValue) (\@currDisplay)]}%
+    }\@processme
+  }%
+  \setbox\pdfm@box=\hbox{\MakeChoiceField{\Fld@width}{\Fld@height}}%
+  \leavevmode
+  \@pdfm@mark{%
+    ann @\Fld@name\space\dvipdfm@setdim
+    << \PDFForm@List >>%
+  }%
+  \unhbox\pdfm@box
+  \@pdfm@mark{put @afields @\Fld@name}%
+}
+\def\@PushButton[#1]#2{% parameters, label
+  \def\Fld@name{#2}%
+  \bgroup
+    \Field@toks={ }%
+    \setkeys{Field}{#1}%
+    \ifFld@hidden\def\Fld@width{1sp}\fi
+    \setbox\pdfm@box=\hbox{\MakeButtonField{#2}}%
+    \LayoutPushButtonField{%
+      \leavevmode
+      \@pdfm@mark{%
+        ann @\Fld@name\space\dvipdfm@setdim
+        << \PDFForm@Push >>%
+      }%
+    }%
+    \unhbox\pdfm@box
+    \@pdfm@mark{put @afields @\Fld@name}%
+  \egroup
+}
+\def\@Submit[#1]#2{%
+  \Field@toks={ }%
+  \def\Fld@width{\DefaultWidthofSubmit}%
+  \def\Fld@height{\DefaultHeightofSubmit}%
+  \bgroup
+    \def\Fld@name{Submit}%
+    \setkeys{Field}{#1}%
+    \ifFld@hidden\def\Fld@width{1sp}\fi
+    \setbox\pdfm@box=\hbox{\MakeButtonField{#2}}%
+    \leavevmode
+    \@pdfm@mark{%
+      ann @\Fld@name\space\dvipdfm@setdim
+      << \PDFForm@Submit >>%
+    }%
+    \unhbox\pdfm@box%
+    \@pdfm@mark{put @afields @\Fld@name}%
+  \egroup
+}
+\def\@Reset[#1]#2{%
+  \Field@toks={ }%
+  \def\Fld@width{\DefaultWidthofReset}%
+  \def\Fld@height{\DefaultHeightofReset}%
+  \bgroup
+    \def\Fld@name{Reset}%
+    \setkeys{Field}{#1}%
+    \ifFld@hidden\def\Fld@width{1sp}\fi
+    \setbox\pdfm@box=\hbox{\MakeButtonField{#2}}%
+    \leavevmode
+    \@pdfm@mark{%
+      ann @\Fld@name\space\dvipdfm@setdim
+      << \PDFForm@Reset >>%
+    }%
+    \unhbox\pdfm@box
+    \@pdfm@mark{put @afields @\Fld@name}%
+  \egroup
+}
+\def\@CheckBox[#1]#2{% parameters, label
+  \def\Fld@name{#2}%
+  \def\Fld@default{0}%
+  \bgroup
+    \def\Fld@width{\DefaultWidthofCheckBox}%
+    \def\Fld@height{\DefaultHeightofCheckBox}%
+    \Field@toks={ }%
+    \setkeys{Field}{#1}%
+    \ifFld@hidden\def\Fld@width{1sp}\fi
+    \setbox\pdfm@box=\hbox{\MakeCheckField{\Fld@width}{\Fld@height}}%
+    \LayoutCheckField{#2}{%
+      \@pdfm@mark{%
+        ann @\Fld@name\space\dvipdfm@setdim
+        << \PDFForm@Check >>%
+      }%
+      \unhbox\pdfm@box
+      \@pdfm@mark{put @afields @\Fld@name}%
+    }%
+  \egroup
+}
+\@pdfm@mark{obj @OBJpdfdocencoding << /Type /Encoding /Differences [%
+   24 /breve /caron /circumflex /dotaccent /hungarumlaut /ogonek /ring
+      /tilde
+   39 /quotesingle
+   96 /grave
+  128 /bullet /dagger /daggerdbl /ellipsis /emdash /endash /florin
+      /fraction /guilsinglleft /guilsinglright /minus /perthousand
+      /quotedblbase /quotedblleft /quotedblright /quoteleft /quoteright
+      /quotesinglbase /trademark /fi /fl /Lslash /OE /Scaron /Ydieresis
+      /Zcaron /dotlessi /lslash /oe /scaron /zcaron
+  164 /currency
+  166 /brokenbar
+  168 /dieresis /copyright /ordfeminine
+  172 /logicalnot /.notdef /registered /macron /degree /plusminus
+      /twosuperior /threesuperior /acute /mu
+  183 /periodcentered /cedilla /onesuperior /ordmasculine
+  188 /onequarter /onehalf /threequarters
+  192 /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE
+      /Ccedilla /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute
+      /Icircumflex /Idieresis /Eth /Ntilde /Ograve /Oacute /Ocircumflex
+      /Otilde /Odieresis /multiply /Oslash /Ugrave /Uacute /Ucircumflex
+      /Udieresis /Yacute /Thorn /germandbls /agrave /aacute /acircumflex
+      /atilde /adieresis /aring /ae /ccedilla /egrave /eacute
+      /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+      /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis
+      /divide /oslash /ugrave /uacute /ucircumflex /udieresis /yacute
+      /thorn /ydieresis%
+  ] >>
+}
+\@pdfm@mark{obj @OBJZaDb
+  <<
+    /Type /Font
+    /Subtype /Type1
+    /Name /ZaDb
+    /BaseFont /ZapfDingbats
+  >>
+}
+\@pdfm@mark{obj @OBJHelv
+  <<
+    /Type /Font
+    /Subtype /Type1
+    /Name /Helv
+    /BaseFont /Helvetica
+    /Encoding @OBJpdfdocencoding
+  >>
+}
+\def\PDFForm@Check{%
+  /Subtype /Widget
+  \ifFld@hidden /F 6 \else /F 4 \fi
+  /T (\Fld@name)
+  /Q \Fld@align\space
+  /BS << /W \Fld@borderwidth\space /S /\Fld@borderstyle\space >>
+  /MK <<
+    /BC [\Fld@bordercolor]
+    \ifx\Fld@bcolor\@empty
+    \else
+      /BG [\Fld@bcolor]
+    \fi
+    /CA (\Fld@cbsymbol)
+  >>
+  /DA (/ZaDb \strip@pt\Fld@charsize\space Tf \Fld@color\space rg)
+  /FT /Btn
+  /H /P
+  \ifFld@checked /V /Yes \else /V /Off \fi
+}
+\def\PDFForm@Push{%
+  /Subtype /Widget
+  \ifFld@hidden /F 6 \else /F 4 \fi
+  /T (\Fld@name)
+  /FT /Btn
+  /Ff 65540
+  /H /P
+  /BS << /W \Fld@borderwidth\space /S /\Fld@borderstyle\space >>
+  /MK <<
+    /BC [\Fld@bordercolor]
+  >>
+  /A << /S /JavaScript /JS (\Fld@onclick;) >>
+}
+\def\Fld@additionalactions{%
+  /AA <<
+    \ifx\Fld@keystroke@code\@empty
+    \else
+      /K << /S /JavaScript /JS (\Fld@keystroke@code) >>
+    \fi
+    \ifx\Fld@format@code\@empty
+    \else
+      /F << /S /JavaScript /JS (\Fld@format@code) >>
+    \fi
+    \ifx\Fld@validate@code\@empty
+    \else
+      /V << /S /JavaScript /JS (\Fld@validate@code) >>
+    \fi
+    \ifx\Fld@calculate@code\@empty
+    \else
+      /C << /S /JavaScript /JS (\Fld@calculate@code) >>
+    \fi
+    \ifx\Fld@onfocus@code\@empty
+    \else
+      /Fo << /S /JavaScript /JS (\Fld@onfocus@code) >>
+    \fi
+    \ifx\Fld@onblur@code\@empty
+    \else
+      /Bl << /S /JavaScript /JS (\Fld@onblur@code) >>
+    \fi
+    \ifx\Fld@onmousedown@code\@empty
+    \else
+      /D << /S /JavaScript /JS (\Fld@onmousedown@code) >>
+    \fi
+    \ifx\Fld@onmouseup@code\@empty
+    \else
+      /U << /S /JavaScript /JS (\Fld@onmouseup@code) >>
+    \fi
+    \ifx\Fld@onenter@code\@empty
+    \else
+      /E << /S /JavaScript /JS (\Fld@onenter@code) >>
+    \fi
+    \ifx\Fld@onexit@code\@empty
+    \else
+      /X << /S /JavaScript /JS (\Fld@onexit@code) >>
+    \fi
+  >>
+}
+\def\PDFForm@List{%
+  /Subtype /Widget
+  \ifFld@hidden /F 6 \else /F 4 \fi
+  /T (\Fld@name)
+  /FT /Ch
+  /Q \Fld@align\space
+  /BS << /W \Fld@borderwidth\space /S /\Fld@borderstyle\space >>
+  /MK <<
+    /BC [\Fld@bordercolor]
+    \ifx\Fld@bcolor\@empty
+    \else
+      /BG [\Fld@bcolor]
+    \fi
+  >>
+  /DA (/Helv \strip@pt\Fld@charsize\space Tf \Fld@color\space rg )
+  /Opt [\the\Choice@toks]
+  /DV (\Fld@default)
+  \Fld@additionalactions
+  \Fld@flags
+}
+\def\PDFForm@Radio{%
+  /Subtype /Widget
+  \ifFld@hidden /F 6 \else /F 4 \fi
+  /T (\Fld@name)
+  /FT /Btn
+  /Ff 49152
+  /H /P
+  /BS << /W \Fld@borderwidth\space /S /\Fld@borderstyle\space >>
+  /MK <<
+    /BC [\Fld@bordercolor]
+    \ifx\Fld@bcolor\@empty
+    \else
+      /BG [\Fld@bcolor]
+    \fi
+    /CA (H)
+  >>
+  /DA (/ZaDb \strip@pt\Fld@charsize\space Tf \Fld@color\space rg)
+  \ifx\@currValue\Fld@default
+    /V /\Fld@default\space
+  \else
+    /V /Off
+  \fi
+  \Fld@additionalactions
+}
+\def\PDFForm@Text{%
+  /Subtype /Widget
+  \ifFld@hidden /F 6 \else /F 4 \fi
+  /T (\Fld@name)
+  /Q \Fld@align\space
+  /FT /Tx
+  /BS << /W \Fld@borderwidth\space /S /\Fld@borderstyle\space >>
+  /MK <<
+    /BC [\Fld@bordercolor]
+    \ifx\Fld@bcolor\@empty
+    \else
+      /BG [\Fld@bcolor]
+    \fi
+  >>
+  /DA (/Helv \strip@pt\Fld@charsize\space Tf \Fld@color\space rg )
+  /DV (\Fld@default)
+  /V (\Fld@value)
+  \Fld@additionalactions
+  \ifFld@multiline
+    \ifFld@readonly /Ff 4097 \else /Ff 4096 \fi
+  \else
+    \ifFld@password
+      \ifFld@readonly /Ff 8193 \else /Ff 8192 \fi
+    \else
+      \ifFld@readonly /Ff 1 \fi
+    \fi
+  \fi
+  \ifnum\Fld@maxlen>0/MaxLen \Fld@maxlen \fi
+}
+\def\PDFForm@Submit{%
+  /Subtype /Widget
+  \ifFld@hidden /F 6 \else /F 4 \fi
+  /T (\Fld@name)
+  /FT /Btn
+  /Ff 65540
+  /H /P
+  /BS << /W \Fld@borderwidth\space /S /\Fld@borderstyle\space >>
+  /MK <<
+    /BC [\Fld@bordercolor]
+  >>
+  /A <<
+    /S /SubmitForm
+    /F <<
+      /FS /URL
+      /F (\Form@action)
+    >>
+    \ifForm@html /Flags 4 \fi
+  >>
+}
+\def\PDFForm@Reset{%
+  /Subtype /Widget
+  \ifFld@hidden /F 6 \else /F 4 \fi
+  /T (\Fld@name)
+  /FT /Btn
+  /H /P
+  /DA (/Helv \strip@pt\Fld@charsize\space Tf 0 0 1 rg)
+  /Ff 65540
+  /MK <<
+    /BC [\Fld@bordercolor]
+  >>
+  /BS << /W \Fld@borderwidth\space /S /\Fld@borderstyle\space >>
+  /A << /S /ResetForm >>
+}
+\newwrite\@outlinefile
+\def\Hy@writebookmark#1#2#3#4#5{% section number, text, label, level, file
+ \ifx\WriteBookmarks\relax%
+ \else
+  \ifnum#4>\c@tocdepth
+  \else
+   \@@writetorep{#1}{#2}{#3}{#4}{#5}%
+  \fi
+ \fi}
+\def\Hy@currentbookmarklevel{0}
+\def\Hy@numberline#1{#1 }
+\def\@@writetorep#1#2#3#4#5{%
+  \begingroup
+    \edef\Hy@tempa{#5}%
+    \ifx\Hy@tempa\Hy@bookmarkstype
+      \edef\Hy@level{#4}%
+      \ifx\Hy@levelcheck Y%
+        \@tempcnta\Hy@level\relax
+        \advance\@tempcnta by -1
+        \ifnum\Hy@currentbookmarklevel<\@tempcnta
+          \advance\@tempcnta by -\Hy@currentbookmarklevel\relax
+          \advance\@tempcnta by 1
+          \Hy@Warning{%
+            Difference (\the\@tempcnta) between bookmark levels is %
+            greater \MessageBreak than one, level fixed%
+          }%
+          \@tempcnta\Hy@currentbookmarklevel
+          \advance\@tempcnta by 1
+          \edef\Hy@level{\the\@tempcnta}%
+        \fi
+      \else
+        \global\let\Hy@levelcheck Y%
+      \fi
+      \global\let\Hy@currentbookmarklevel\Hy@level
+      \@tempcnta\Hy@level\relax
+      \expandafter\xdef\csname Parent\Hy@level\endcsname{#3}%
+      \advance\@tempcnta by -1
+      \edef\Hy@tempa{#3}%
+      \edef\Hy@tempb{\csname Parent\the\@tempcnta\endcsname}%
+      \ifx\Hy@tempa\Hy@tempb
+        \Hy@Warning{%
+          The anchor of a bookmark and its parent's must not%
+          \MessageBreak be the same. Added a new anchor%
+        }%
+        \phantomsection
+      \fi
+      \ifHy@bookmarksnumbered
+        \let\numberline\Hy@numberline
+      \else
+        \let\numberline\@gobble
+      \fi
+      \pdfstringdef\Hy@tempa{#2}%
+      \protected@write\@outlinefile{}{%
+        \protect\BOOKMARK
+          [\Hy@level][\@bookmarkopenstatus{\Hy@level}]{#3}%
+          {\Hy@tempa}{\Hy@tempb}%
+      }%
+    \fi
+  \endgroup
+}
+\newcommand{\currentpdfbookmark}{%
+  \pdfbookmark[\Hy@currentbookmarklevel]%
+}
+\newcommand{\subpdfbookmark}{%
+  \@tempcnta\Hy@currentbookmarklevel
+  \Hy@StepCount\@tempcnta
+  \expandafter\pdfbookmark\expandafter[\the\@tempcnta]%
+}
+\newcommand{\belowpdfbookmark}[2]{%
+  \@tempcnta\Hy@currentbookmarklevel
+  \Hy@StepCount\@tempcnta
+  \expandafter\pdfbookmark\expandafter[\the\@tempcnta]{#1}{#2}%
+  \advance\@tempcnta by -1
+  \xdef\Hy@currentbookmarklevel{\the\@tempcnta}%
+}
+\renewcommand\pdfbookmark[3][0]{%
+  \Hy@writebookmark{}{#2}{#3.#1}{#1}{toc}%
+  \hyper@anchorstart{#3.#1}\hyper@anchorend
+}
+\def\BOOKMARK{\@ifnextchar[{\@BOOKMARK}{\@@BOOKMARK[1][-]}}
+\def\@BOOKMARK[#1]{\@ifnextchar[{\@@BOOKMARK[#1]}{\@@BOOKMARK[#1][-]}}
+\def\ReadBookmarks{%
+  \begingroup
+    \escapechar=`\\%
+    \let\escapechar\@gobble %
+    \def\@@BOOKMARK [##1][##2]##3##4##5{\calc@bm@number{##5}}%
+    \InputIfFileExists{\jobname.out}{}{}%
+    \ifx\WriteBookmarks\relax
+      \global\let\WriteBookmarks\relax
+    \fi
+    \def\@@BOOKMARK[##1][##2]##3##4##5{%
+      \def\Hy@temp{##4}%
+      \@pdfm@mark{%
+        outline ##1 <<
+          /Title (\expandafter\strip@prefix\meaning\Hy@temp)
+          /A <<
+            /S /GoTo
+            /D (##3)
+          >>
+        >>
+      }%
+   }%
+   {%
+    \def\WriteBookmarks{0}%
+    \InputIfFileExists{\jobname.out}{}{}%
+   }%
+   %{\escapechar\m@ne\InputIfFileExists{\jobname.out}{}{}}%
+   \ifx\WriteBookmarks\relax\else
+     \if@filesw\immediate\openout\@outlinefile=\jobname.out
+      \ifHy@typexml
+       \immediate\write\@outlinefile{<relaxxml>\relax}%
+      \fi
+     \fi
+   \fi
+   \endgroup
+}
+\def\check@bm@number#1{%
+  \expandafter\ifx\csname B_#1\endcsname\relax
+    0%
+  \else
+    \csname B_#1\endcsname
+  \fi
+}
+\def\calc@bm@number#1{%
+  \@tempcnta=\check@bm@number{#1}\relax
+  \advance\@tempcnta by1
+  \expandafter\xdef\csname B_#1\endcsname{\the\@tempcnta}%
+}
+\ifHy@implicit
+\else
+  \def\@begindvi{%
+    \unvbox\@begindvibox
+    \HyPL@EveryPage
+    \global\let\@begindvi\HyPL@EveryPage
+  }%
+  \expandafter\endinput
+\fi
+\let\H@old@ssect\@ssect
+\def\@ssect#1#2#3#4#5{%
+  \H@old@ssect{#1}{#2}{#3}{#4}{#5}%
+  \phantomsection
+}
+\let\H@old@schapter\@schapter
+\def\@schapter#1{%
+  \H@old@schapter{#1}%
+  \begingroup
+    \let\@mkboth\@gobbletwo
+    \Hy@GlobalStepCount\Hy@linkcounter
+    \xdef\@currentHref{\Hy@chapapp*.\the\Hy@linkcounter}%
+    \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+  \endgroup
+}
+\@ifundefined{@chapter}{}{%
+  \let\Hy@org@chapter\@chapter
+  \def\@chapter{%
+    \def\Hy@next{%
+      \Hy@GlobalStepCount\Hy@linkcounter
+      \xdef\@currentHref{\Hy@chapapp*.\the\Hy@linkcounter}%
+      \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+    }%
+    \ifnum\c@secnumdepth>\m@ne
+      \@ifundefined{if@mainmatter}%
+      \iftrue{\csname if@mainmatter\endcsname}
+        \let\Hy@next\relax
+      \fi
+    \fi
+    \Hy@next
+    \Hy@org@chapter
+  }%
+}
+\let\H@old@spart\@spart
+\def\@spart#1{%
+  \H@old@spart{#1}%
+  \Hy@GlobalStepCount\Hy@linkcounter
+  \xdef\@currentHref{part*.\the\Hy@linkcounter}%
+  \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+}
+\let\H@old@sect\@sect
+\def\@sect#1#2#3#4#5#6[#7]#8{%
+  \ifnum #2>\c@secnumdepth
+    \Hy@GlobalStepCount\Hy@linkcounter
+    \xdef\@currentHref{section*.\the\Hy@linkcounter}%
+  \fi
+  \H@old@sect{#1}{#2}{#3}{#4}{#5}{#6}[{#7}]{#8}%
+  \ifnum #2>\c@secnumdepth
+    \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+  \fi
+}
+\expandafter\def\csname Parent-4\endcsname{}
+\expandafter\def\csname Parent-3\endcsname{}
+\expandafter\def\csname Parent-2\endcsname{}
+\expandafter\def\csname Parent-1\endcsname{}
+\expandafter\def\csname Parent0\endcsname{}
+\expandafter\def\csname Parent1\endcsname{}
+\expandafter\def\csname Parent2\endcsname{}
+\expandafter\def\csname Parent3\endcsname{}
+\expandafter\def\csname Parent4\endcsname{}
+\def\Hy@tempa{%
+  \def\@addchap[##1]##2{%
+    \typeout{##2}%
+    \if@twoside
+      \@mkboth{##1}{}%
+    \else
+      \@mkboth{}{##1}%
+    \fi
+    \addtocontents{lof}{\protect\addvspace{10\p@}}%
+    \addtocontents{lot}{\protect\addvspace{10\p@}}%
+    \Hy@GlobalStepCount\Hy@linkcounter
+    \xdef\@currentHref{\Hy@chapapp*.\the\Hy@linkcounter}%
+    \Hy@raisedlink{\hyper@anchorstart{\@currentHref}\hyper@anchorend}%
+    \if@twocolumn
+       \@topnewpage[\@makeschapterhead{##2}]%
+    \else
+       \@makeschapterhead{##2}%
+       \@afterheading
+    \fi
+    \addcontentsline{toc}{chapter}{##1}%
+  }%
+}
+\@ifclassloaded{scrbook}{%
+  \@ifclasslater{scrbook}{2001/01/01}{%
+    \let\Hy@tempa\@empty
+  }{}%
+}{%
+  \@ifclassloaded{scrreprt}{%
+    \@ifclasslater{scrreprt}{2001/01/01}{%
+      \let\Hy@tempa\@empty
+    }{}%
+  }{%
+    \let\Hy@tempa\@empty
+  }%
+}%
+\Hy@tempa
+\endinput
+%%
+%% End of file `hdvipdfm.def'.

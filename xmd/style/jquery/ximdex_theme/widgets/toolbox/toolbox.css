@@ -1,0 +1,124 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+/*demo page css*/
+body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px; margin: 0px;}
+.demoHeaders { margin-top: 2em; }
+#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+ul#icons {margin: 0; padding: 0;}
+ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+ul#icons span.ui-icon {float: left; margin: 0 4px;}
+
+div.xedit-toolbar {
+	width: 99%;
+	/*height: 20px;*/
+	margin-bottom: 2px;
+	position: relative;
+}
+
+div.xedit-container {
+	border: 1px solid #444444;
+	margin-left: auto;
+	margin-right: auto;
+	width: 99%;
+	height: 90%;
+}
+
+/*div.xedit-pbox-1,
+div.xedit-pbox-group-1 {
+	position: absolute;
+	width: 350px;
+}*/
+
+div.xedit-groupbox {
+	position: absolute;
+	width: 200px;
+	padding: 0.5em;
+}
+
+div.xedit-groupbox h3 {
+	overflow: hidden;
+	text-align: center;
+	margin: 0;
+}
+
+div.xedit-groupbox-item {
+	position: relative;
+	padding: 0.5em;
+}
+
+div.xedit-toolbox {
+	position: absolute;
+	width: 250px;
+	height: 150px;
+	padding: 0.5em;
+}
+
+div.xedit-toolbox-container {
+	/*height: 92%;*/
+	padding: 0;
+	margin: 0;
+}
+
+div.xedit-toolbox h3 {
+	overflow: hidden;
+	text-align: center;
+	margin: 0;
+}
+
+div.xedit-toolbox-content {
+	overflow: auto;
+	height: 90%;
+	/*margin-top: 5px;*/
+	margin-left: auto;
+	margin-right: auto;
+	overflow: auto;
+	/*background-color: transparent;
+	background-color: #cc4000;*/
+}
+
+div.xedit-statusbar {
+	position: absolute;
+	width: 99%;
+	height: 25px;
+	border: 1px solid #444444;
+	margin-top: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.xedit-panel {
+	height: 90%;
+	border: 1px solid #444444;
+	float: left;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+/* Overwrite default jQuery UI styles */
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #d3d3d3; background: #e6e6e6 url(../extensions/jquery/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #555555; outline: none; }
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #555555; text-decoration: none; outline: none; }
+.ui-state-active .ui-icon { background-image: url(../extensions/jquery/css/smoothness/images/ui-icons_888888_256x240.png); }

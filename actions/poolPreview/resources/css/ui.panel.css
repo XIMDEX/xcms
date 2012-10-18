@@ -1,0 +1,45 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+/* Panel
+----------------------------------*/
+.ui-panel {text-align:left;}
+.ui-panel-header {margin:0;padding:0.1em;width:100%;}
+.ui-panel-header .ui-icon {border:0;float:left;margin-top:0.2em;}
+.ui-panel-title {margin:0.3em 0;}
+.ui-panel-title-text {margin-left:0.3em;}
+.ui-panel-title-text,.ui-panel .ui-icon {cursor:pointer;}
+.ui-panel-rightbox {float:right;}
+.ui-panel-rightbox .ui-icon {margin-right:0.1em;}
+.ui-panel-controls {float:left;margin:0.2em 0.7em 0 0;}
+.ui-panel-content {padding:0.1em;width:100%;}
+.ui-panel-content-text {padding:0.7em 0.4em;}
+.ui-panel-clps-pnl {float:left;padding:0.1em 0.25em 0.3em;position:relative;top:-0.1em;}
+.ui-panel-vtitle {overflow:hidden;position:relative;white-space:nowrap;}
+.ui-panel-vtext {display:block;}
+.ui-panel-vtext-ie {bottom:1.5em;filter:flipv() fliph();left:0.2em;position:absolute;writing-mode:tb-rl;}
+body { font-size: 62.5%; font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif"; }
+.panel { margin-top:2em; }

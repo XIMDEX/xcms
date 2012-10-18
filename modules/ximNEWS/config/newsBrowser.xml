@@ -1,0 +1,18 @@
+<datagrid>
+	<filters>
+		<filter type="selectCriteria" extended="no" name="area" label="Thematic area" >
+			<options from="XimNewsAreas" name="Name" value="Idarea" />
+		</filter>
+		<filter type="searchText" extended="no" name="name" label="" >
+		</filter>
+	</filters>
+	<datamodel>
+		<data name="name" width="20%" event="show_new(this)"/>
+		<data name="titular"  width="50%"/>
+		<data name="fecha"  width="25%"/>
+	</datamodel>
+	<toolbar>
+		<item type="icon" label="Delete" icon="delete_new.png" event="delete_news()" />
+ 		<item type="icon" label="Associate with bulletin" icon="link_n2b.png" event="link_news_bulletin(this)" estado="0" />
+	</toolbar>
+</datagrid>

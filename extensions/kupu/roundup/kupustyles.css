@@ -1,0 +1,181 @@
+/*****************************************************************************
+ *
+ * Kupu common styles
+ *
+ * Copyright (c) 2003-2005 Kupu Contributors. See CREDITS.txt
+ *
+ * Instead of customizing this file, it is recommended to customize
+ * kupucustom.css. Feel free to use whole or parts of this for your
+ * own designs, but give credit where credit is due.
+ *
+ *****************************************************************************/
+
+
+div.kupu-fulleditor {
+  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif;
+  border: solid 3px ButtonHighlight;
+  margin: 0.2em;
+  height: 100%;
+}
+
+div.kupu-fulleditor .kupu-editorframe {
+  margin-right: 20em;
+}
+
+div.kupu-smalleditor .kupu-editorframe {
+  margin-right: 0.2em;
+}
+
+div.kupu-smalleditor {
+  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif;
+  border: solid 3px ButtonHighlight;
+  margin: 0.2em;
+  height: 100%;
+}
+
+.kupu-tb {
+  padding: 3px;
+  margin-bottom: 0.4em;
+}
+
+.kupu-tb-buttongroup {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+div.kupu-tb button {
+  margin-top: 0;
+  margin-left: 0;
+  height: 26px;
+  width: 26px;
+  background-repeat: no-repeat;
+}
+
+div.kupu-tb button:hover {
+  cursor: pointer;
+}
+
+.kupu-save {display: none; background-image: url("../common/kupuimages/save.png");}
+.kupu-save-and-exit {background-image: url("../common/kupuimages/exit.gif");}
+.kupu-bold {background-image: url("../common/kupuimages/bold.png");}
+.kupu-italic {background-image: url("../common/kupuimages/italic.png");}
+.kupu-hilitecolor {display: none; background-image: url("../common/kupuimages/background-color.png");}
+.kupu-justifycenter {background-image: url("../common/kupuimages/justify-centre.png");}
+.kupu-inserthorizontalrule {background-image: url("../common/kupuimages/hr.png");}
+.kupu-hyperlink {background-image: url("../common/kupuimages/inthyperlink.png");}
+.kupu-image {background-image: url("../common/kupuimages/image.png");}
+.kupu-indent {display: none; background-image: url("../common/kupuimages/indent.png");}
+.kupu-italic {background-image: url("../common/kupuimages/italic.png");}
+.kupu-justifyleft {background-image: url("../common/kupuimages/justify_left.png");}
+.kupu-insertunorderedlist {background-image: url("../common/kupuimages/unordered-list.png");}
+.kupu-insertorderedlist {background-image: url("../common/kupuimages/ordered-list.png");}
+.kupu-outdent {display: none; background-image: url("../common/kupuimages/outdent.png");}
+.kupu-redo {background-image: url("../common/kupuimages/redo.png");}
+.kupu-justifyright {background-image: url("../common/kupuimages/justify-right.png");}
+.kupu-space {background-image: url("../common/kupuimages/space.gif");}
+.kupu-subscript {background-image: url("../common/kupuimages/subscript.png");}
+.kupu-superscript {background-image: url("../common/kupuimages/superscript.png");}
+.kupu-table {background-image: url("../common/kupuimages/table.png");}
+.kupu-forecolor {display: none; background-image: url("../common/kupuimages/text-color.png");}
+.kupu-underline {background-image: url("../common/kupuimages/underline.png");}
+.kupu-undo {background-image: url("../common/kupuimages/undo.png");}
+.kupu-logo {display: none; background-image: url("../common/kupuimages/kupu_icon.gif");}
+
+div.kupu-editorframe {
+ 
+  margin-left: 0.3em;
+  margin-bottom: 0.3em;
+  border: solid 2px ButtonFace;
+}
+
+
+iframe.kupu-editor-iframe {
+  height: 450px;
+  width: 99%;
+}
+
+div.kupu-toolboxes {
+  float: right;	
+  border: solid 2px ButtonFace;
+  height: 100%;
+  width: 19.4em;
+  margin-right: 0.3em;
+  margin-bottom: 0.3em;
+  font-size: 0.8em;
+}
+
+div.kupu-toolbox {
+  margin-bottom: 1em;
+}
+
+div.kupu-toolbox h1 {
+  text-align: center;
+  width: 100%;
+  background-color: ButtonFace;
+  margin-top: 0;
+  font-size: 1.1em;
+}
+
+div.kupu-toolbox-label, span.kupu-toolbox-searchterm, 
+input.kupu-toolbox-st, button.kupu-toolbox-action, 
+div.kupu-toolbox-results {
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+
+div.kupu-toolbox-label {
+  margin-bottom: 0.4em;
+}
+
+div.kupu-toolbox-results {
+  border: solid 2px ButtonFace;
+  margin-top: 0.8em;
+  text-decoration: underline;
+  padding: 0.2em;
+  display: none;
+}
+
+div.kupu-toolbox table#kupu-toolbox-addtable input, 
+div.kupu-toolbox table#kupu-toolbox-edittable input {
+  width: 20px;
+}
+
+
+table#kupu-toolbox-addtable {
+
+}
+
+
+#kupu-toolbox-editlink, #kupu-toolbox-edittable,
+select.kupu-ulstyles, select.kupu-olstyles {
+  display: none;
+}
+
+
+div#kupu-colorchooser {
+  position: absolute;
+  visibility: hidden;
+  border: solid black 1px;
+  background-color: white;
+  padding: 0.2em;
+  font-size: small;
+}
+
+div#kupu-fgcolorchooser div:hover {
+  /* border: outset 1px; */
+}
+
+#kupu-toolbox-properties input {
+  width: 16em;
+}
+
+textarea#kupu-properties-description {
+  width: 22em;
+}
+
+table#kupu-properties input, table#kupu-toolbox-linktable input,
+div.kupu-toolbox input, textarea#kupu-properties-description {
+  font-size: x-small;
+  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif;
+
+}

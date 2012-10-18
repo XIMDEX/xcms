@@ -1,0 +1,183 @@
+%%
+%% This is file `estonian.ldf',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% estonian.dtx  (with options: `code')
+%% This is a generated file.
+%% 
+%% Copyright 1989-2005 Johannes L. Braams and any individual authors
+%% listed elsewhere in this file.  All rights reserved.
+%% 
+%% This file was generated from file(s) of the Babel system.
+%% ---------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status "maintained".
+%% 
+%% The Current Maintainer of this work is Johannes Braams.
+%% 
+%% This file may only be distributed together with a copy of the Babel
+%% system. You may however distribute the Babel system without
+%% such generated files.
+%% 
+%% The list of all files belonging to the Babel distribution is
+%% given in the file `manifest.bbl'. See also `legal.bbl for additional
+%% information.
+%% 
+%% The list of derived (unpacked) files belonging to the distribution
+%% and covered by LPPL is defined by the unpacking scripts (with
+%% extension .ins) which are part of the distribution.
+\ProvidesLanguage{estonian}
+        [2005/03/30 v1.0h Estonian support from the babel system]
+%% File `estonian.dtx'
+%% Babel package for LaTeX version 2e
+%% Copyright (C) 1989 - 2005
+%%           by Johannes Braams, TeXniek
+%% Estonian language Definition File
+%% Copyright (C) 1991 - 2005
+%%           by Enn Saar, Tartu Astrophysical Observatory
+%% Please report errors to: Enn Saar saar at aai.ee
+%%                          (or J.L. Braams babel atbraams.cistron.nl
+\LdfInit{estonian}\captionsestonian
+\ifx\l@estonian\@undefined
+  \@nopatterns{Estonian}
+  \adddialect\l@estonian0
+\fi
+\addto\captionsestonian{%
+  \def\prefacename{Sissejuhatus}%
+  \def\refname{Viited}%
+  \def\bibname{Kirjandus}%
+  \def\appendixname{Lisa}%
+  \def\contentsname{Sisukord}%
+  \def\listfigurename{Joonised}%
+  \def\listtablename{Tabelid}%
+  \def\indexname{Indeks}%
+  \def\figurename{Joonis}%
+  \def\tablename{Tabel}%
+  \def\partname{Osa}%
+  \def\enclname{Lisa(d)}%
+  \def\ccname{Koopia(d)}%
+  \def\headtoname{}%
+  \def\pagename{Lk.}%
+  \def\seename{vt.}%
+  \def\alsoname{vt. ka}%
+  \def\proofname{Korrektuur}%
+  \def\glossaryname{Glossary}% <-- Needs translation
+  }
+\begingroup \catcode`\"\active
+\def\x{\endgroup
+\addto\captionsestonian{%
+  \def\abstractname{Kokkuv~ote}%
+  \def\chaptername{Peat"ukk}}}
+\x
+\begingroup \catcode`\"\active
+\def\x{\endgroup
+  \def\month@estonian{\ifcase\month\or
+    jaanuar\or veebruar\or m"arts\or aprill\or mai\or juuni\or
+    juuli\or august\or september\or oktoober\or november\or
+    detsember\fi}}
+\x
+\def\dateestonian{%
+  \def\today{\number\day.\space\month@estonian
+    \space\number\year.\space a.}}
+\initiate@active@char{"}
+\initiate@active@char{~}
+\addto\extrasestonian{\languageshorthands{estonian}}
+\addto\extrasestonian{\bbl@activate{"}\bbl@activate{~}}
+\addto\extrasestonian{\babel@save\"\umlautlow\babel@save\~\tildelow}
+\addto\extrasestonian{\bbl@frenchspacing}
+\addto\noextrasestonian{\bbl@nonfrenchspacing}
+\providehyphenmins{\CurrentOption}{\tw@\tw@}
+\def\tildelow{\def\~{\protect\gentilde}}
+\def\gentilde#1{\if#1o\newtilde{#1}\else\if#1O\newtilde{#1}%
+    \else\newcheck{#1}%
+    \fi\fi}
+\def\newtilde#1{\leavevmode\allowhyphens
+  {\U@D 1ex%
+  {\setbox\z@\hbox{\char126}\dimen@ -.45ex\advance\dimen@\ht\z@
+  \ifdim 1ex<\dimen@ \fontdimen5\font\dimen@ \fi}%
+  \accent126\fontdimen5\font\U@D #1}\allowhyphens}
+\def\newcheck#1{\leavevmode\allowhyphens
+  {\U@D 1ex%
+  {\setbox\z@\hbox{\char20}\dimen@ -.45ex\advance\dimen@\ht\z@
+  \ifdim 1ex<\dimen@ \fontdimen5\font\dimen@ \fi}%
+  \accent20\fontdimen5\font\U@D #1}\allowhyphens}
+\begingroup \catcode`\"12
+\edef\x{\endgroup
+  \def\noexpand\dq{"}
+  \def\noexpand\til{~}}
+\x
+\let\dieresis\"
+\let\texttilde\~
+\ifx\f@encoding\bbl@t@one
+  \let\@umlaut\dieresis
+  \let\@tilde\texttilde
+  \DeclareTextComposite{\~}{T1}{s}{178}
+  \DeclareTextComposite{\~}{T1}{S}{146}
+  \DeclareTextComposite{\~}{T1}{z}{186}
+  \DeclareTextComposite{\~}{T1}{Z}{154}
+  \DeclareTextComposite{\"}{T1}{'}{17}
+  \DeclareTextComposite{\"}{T1}{`}{18}
+  \DeclareTextComposite{\"}{T1}{<}{19}
+  \DeclareTextComposite{\"}{T1}{>}{20}
+\else
+  \wlog{Warning: Hyphenation would work better for the T1 encoding.}
+  \let\@umlaut\newumlaut
+  \let\@tilde\gentilde
+\fi
+\declare@shorthand{estonian}{"a}{\textormath{\"{a}}{\ddot a}}
+\declare@shorthand{estonian}{"A}{\textormath{\"{A}}{\ddot A}}
+\declare@shorthand{estonian}{"o}{\textormath{\"{o}}{\ddot o}}
+\declare@shorthand{estonian}{"O}{\textormath{\"{O}}{\ddot O}}
+\declare@shorthand{estonian}{"u}{\textormath{\"{u}}{\ddot u}}
+\declare@shorthand{estonian}{"U}{\textormath{\"{U}}{\ddot U}}
+\declare@shorthand{estonian}{"`}{%
+  \textormath{\quotedblbase}{\mbox{\quotedblbase}}}
+\declare@shorthand{estonian}{"'}{%
+  \textormath{\textquotedblleft}{\mbox{\textquotedblleft}}}
+\declare@shorthand{estonian}{"<}{%
+  \textormath{\guillemotleft}{\mbox{\guillemotleft}}}
+\declare@shorthand{estonian}{">}{%
+  \textormath{\guillemotright}{\mbox{\guillemotright}}}
+\declare@shorthand{estonian}{~o}{\textormath{\@tilde o}{\tilde o}}
+\declare@shorthand{estonian}{~O}{\textormath{\@tilde O}{\tilde O}}
+\declare@shorthand{estonian}{~s}{\textormath{\@tilde s}{\check s}}
+\declare@shorthand{estonian}{~S}{\textormath{\@tilde S}{\check S}}
+\declare@shorthand{estonian}{~z}{\textormath{\@tilde z}{\check z}}
+\declare@shorthand{estonian}{~Z}{\textormath{\@tilde Z}{\check Z}}
+\declare@shorthand{estonian}{"-}{\nobreak\-\bbl@allowhyphens}
+\declare@shorthand{estonian}{"|}{%
+  \textormath{\nobreak\discretionary{-}{}{\kern.03em}%
+              \allowhyphens}{}}
+\declare@shorthand{estonian}{""}{\dq}
+\declare@shorthand{estonian}{~~}{\til}
+\ldf@finish{estonian}
+%%
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\endinput
+%%
+%% End of file `estonian.ldf'.

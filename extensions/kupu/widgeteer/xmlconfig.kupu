@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="xmlconfig"
+    implementation="widgeteer"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+  <kupu:id>$Id: xmlconfig.kupu 12162 2005-05-10 15:53:10Z guido $</kupu:id>
+
+  <!-- Default configuration -->
+  <kupu:part name="defaultconfig">
+    <dst>fulldoc.html</dst>
+    <use_css>0</use_css>
+    <reload_after_save>0</reload_after_save>
+    <strict_output>1</strict_output>
+    <content_type>application/xhtml+xml</content_type>
+    <compatible_singletons>1</compatible_singletons>
+    <table_classes>
+      <class>plain</class>
+      <class>listing</class>
+      <class>grid</class>
+      <class>data</class>
+    </table_classes>
+  </kupu:part>
+ 
+</kupu:feature>

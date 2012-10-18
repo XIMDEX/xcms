@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<libraries
+  xmlns:jx="http://apache.org/cocoon/templates/jx/1.0"
+  xmlns:i18n="http://apache.org/cocoon/i18n/2.1" 
+  >
+
+  <library id="sitetree">
+    <uri>FIXME URI</uri>
+    <title>Sitetree Links</title>
+    <src>${parameters.getParameter('pubLibUrl')}</src>
+    <icon>${parameters.getParameter('imageBaseUrl')}/sitetree-link.png</icon>
+  </library>
+  
+  <!-- Not yet implemented
+  <library id="other">
+    <uri>FIXME URI</uri>
+    <title>Other Links</title>
+    <src>${parameters.getParameter('pageLibUrl')}</src>
+    <icon>${parameters.getParameter('imageBaseUrl')}/emblem-generic.png</icon>
+  </library>
+  -->
+</libraries>

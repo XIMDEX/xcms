@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<grammar datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+	ns="http://relaxng.org/ns/structure/1.0"
+	xmlns="http://relaxng.org/ns/structure/1.0">
+
+	<start>
+		<!-- <element name="addressBook"> -->
+		<element name="docxap">
+			<oneOrMore>
+				<ref name="Card" />
+			</oneOrMore>
+			<!-- ref name="Card" /-->
+		</element>
+	</start>
+
+	<define name="Card">
+		<element name="card">
+			<choice>
+				<ref name="Name" />
+				<interleave>
+					<ref name="GivenName" />
+					<ref name="FamilyName" />
+				</interleave>
+			</choice>
+			<ref name="Email" />
+		</element>
+	</define>
+
+	<define name="Name">
+		<element name="name">
+			<text />
+		</element>
+	</define>
+
+	<define name="GivenName">
+		<element name="givenName">
+			<text />
+		</element>
+	</define>
+
+	<define name="FamilyName">
+		<element name="familyName">
+			<text />
+		</element>
+	</define>
+
+	<define name="Email">
+		<element name="email">
+			<text />
+		</element>
+	</define>
+
+</grammar>

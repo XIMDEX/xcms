@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    lang="en"
+    metal:use-macro="here/kupu_config/macros/master"
+    i18n:domain="kupuconfig">
+
+<body>
+
+    <div class="documentContent" metal:fill-slot="kupu_content">
+<h3 i18n:translate="heading_kupu_configuration">Kupu Configuration</h3>
+<form action="" method="post" tal:attributes="action here/absolute_url">
+<p i18n:translate="text_resource_types">While libraries provide abstract locations for objects of any type,
+Kupu distinguishes objects by resource type. For example, a user might
+request a library showing objects to link to or a library showing
+objects to be inserted into a document. The abstract location
+(library) might be the same, but the former library would contain
+documents, the latter images.</p>
+
+<p i18n:translate="text_resource_types2">This management screen allows you to define resource types using a
+list of portal types. A special resource type, <code>collection</code>,
+identifies portal types that are to be treated as collections.</p>
+
+<fieldset>
+<legend i18n:translate="legend_map_resource_types">Map resource types</legend>
+
+<table>
+
+  <tr>
+    <td></td>
+    <th i18n:translate="resource_type">Resource type</th>
+    <th i18n:translate="portal_types">Portal types</th>
+  </tr>
+
+  <tr tal:repeat="type_tuple here/zmi_get_type_mapping">
+    <tal:with define="resource_type python:type_tuple[0];
+                      portal_types  python:type_tuple[1]">
+    <td valign="top">
+      <input type="checkbox" name="resource_types:list"
+             tal:attributes="value resource_type" />
+      <input type="hidden" name="type_info.old_type:records"
+             tal:attributes="value resource_type" />
+    </td>
+
+    <td valign="top">
+      <input type="text" name="type_info.resource_type:records"
+             tal:attributes="value resource_type" />
+    </td>
+
+    <td valign="top">
+      <textarea name="type_info.portal_types:lines:records"
+                rows="5" cols="50"
+                style="width:40em;"
+                tal:content="python:'\n'.join(portal_types)">
+      </textarea>
+    </td>
+    </tal:with>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <input class="context" type="submit" name="zmi_update_resource_types:method" value="Save" i18n:attributes="value" />
+      <input class="context" type="submit" name="zmi_delete_resource_types:method" value="Delete" i18n:attributes="value" />
+    </td>
+  </tr>
+
+</table>
+</fieldset>
+
+<fieldset>
+<legend i18n:translate="legend_add_resource_type">Add new resource type</legend>
+<table>
+  <tr>
+    <th i18n:translate="resource_type">Resource type</th>
+    <th i18n:translate="portal_types">Portal types</th>
+  </tr>
+  <tr>
+    <td valign="top"><input type="text" name="resource_type" /></td>
+    <td valign="top">
+      <textarea name="portal_types:lines" rows="5" cols="30"></textarea>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"><input class="context" type="submit" name="zmi_add_resource_type:method" value="Add" i18n:attributes="value" /></td>
+  </tr>
+</table>
+</fieldset>
+</form>
+
+</div>
+</body>
+</html>
+
+

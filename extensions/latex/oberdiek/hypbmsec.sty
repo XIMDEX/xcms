@@ -1,0 +1,149 @@
+%%
+%% This is file `hypbmsec.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hypbmsec.dtx  (with options: `package')
+%% 
+%% This file is part of the package `hypbmsec' for use with LaTeX2e.
+%% 
+%% Function: Bookmarks in sectioning commands.
+%% 
+%% Copyright (C) 1998,1999,2000 Heiko Oberdiek.
+%% 
+%% This program may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.2
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%% 
+%% Please send error reports and suggestions for improvements to
+%%   Heiko Oberdiek <oberdiek@ruf.uni-freiburg.de>.
+%% 
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{hypbmsec}
+  [2000/03/22 v2.1 Bookmarks in sectioning commands (HO).]
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\@ifundefined{hbs@do}{}{%
+  \PackageInfo{hypbmsec}{Package 'hypbmsec' is already loaded}
+  \endinput
+}
+\def\hbs@do#1{%
+  \@ifstar{#1*}{%
+    \let\hbs@tocstring\relax
+    \let\hbs@bmstring\relax
+    \let\hbs@seccmd#1%
+    \hbs@checkarg
+  }%
+}
+\def\hbs@checkarg{%
+  \@ifnextchar[\hbs@getsquare{%
+    \@ifnextchar(\hbs@getbookmark\hbs@process
+  }%
+}
+\long\def\hbs@getsquare[#1]{%
+  \ifx\hbs@tocstring\relax
+    \def\hbs@tocstring{#1}%
+  \else
+    \hbs@bmdef{#1}%
+  \fi
+  \hbs@checkarg
+}
+\def\hbs@getbookmark(#1){%
+  \hbs@bmdef{#1}%
+  \hbs@checkarg
+}
+\def\hbs@bmdef#1{%
+  \ifx\hbs@bmstring\relax
+    \def\hbs@bmstring{#1}%
+  \else
+    \PackageError{hypbmsec}{%
+      Sectioning command with too many parameters%
+    }{%
+      You can only give one outline entry.%
+    }%
+  \fi
+}
+\long\def\hbs@process#1{%
+  \ifx\hbs@tocstring\relax
+    \ifx\hbs@bmstring\relax
+      \hbs@seccmd{#1}%
+    \else
+      \hbs@seccmd{\texorpdfstring{#1}\hbs@bmstring}%
+    \fi
+  \else
+    \ifx\hbs@bmstring\relax
+      \hbs@seccmd[\hbs@tocstring]{#1}%
+    \else
+      \hbs@seccmd[\texorpdfstring\hbs@tocstring\hbs@bmstring]{#1}%
+    \fi
+  \fi
+}
+\AtBeginDocument{%
+  \@ifundefined{texorpdfstring}{%
+    \@ifundefined{ifbookmark}{%
+      \let\texorpdfstring\@firstoftwo
+      \@ifpackageloaded{hyperref}{%
+        \PackageInfo{hypbmsec}{%
+          \ifx\hy@driver\@empty
+            Default driver
+          \else
+            '\hy@driver'
+          \fi
+          of hyperref not supported,\MessageBreak
+          bookmark parameters will be ignored%
+        }%
+      }{%
+        \PackageInfo{hypbmsec}{%
+          Package hyperref not loaded,\MessageBreak
+          bookmark parameters will be ignored%
+        }%
+      }%
+    }%
+    {%
+      \newcommand\texorpdfstring[2]{\ifbookmark{#2}{#1}}%
+      \PackageWarningNoLine{hypbmsec}{%
+        Old hyperref version found,\MessageBreak
+        update of hyperref recommended%
+      }%
+    }%
+  }{}%
+  \let\hbs@part         \part
+  \let\hbs@section      \section
+  \let\hbs@subsection   \subsection
+  \let\hbs@subsubsection\subsubsection
+  \let\hbs@paragraph    \paragraph
+  \let\hbs@subparagraph \subparagraph
+  \renewcommand\part         {\hbs@do\hbs@part}
+  \renewcommand\section      {\hbs@do\hbs@section}
+  \renewcommand\subsection   {\hbs@do\hbs@subsection}
+  \renewcommand\subsubsection{\hbs@do\hbs@subsubsection}
+  \renewcommand\paragraph    {\hbs@do\hbs@paragraph}
+  \renewcommand\subparagraph {\hbs@do\hbs@subparagraph}
+  \begingroup\expandafter\expandafter\expandafter\endgroup
+  \expandafter\ifx\csname chapter\endcsname\relax\else
+    \let\hbs@chapter    \chapter
+    \renewcommand\chapter    {\hbs@do\hbs@chapter}
+  \fi
+}
+\endinput
+%%
+%% End of file `hypbmsec.sty'.

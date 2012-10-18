@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="spellchecker"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+  <kupu:id>$Id: sourceedit.kupu 9779 2005-03-15 11:34:47Z duncan $</kupu:id>
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="kupuspellchecker.js"> </script>
+  </kupu:part>
+
+  <kupu:part name="buttons">
+    <span class="kupu-tb-buttongroup kupu-spellchecker-span" id="kupu-spellchecker">
+      <button type="button"
+              class="kupu-spellchecker"
+              id="kupu-spellchecker-button"
+              title="check spelling"
+              i18n:attributes="title"
+              >&#160;</button>
+    </span>
+  </kupu:part>
+
+</kupu:feature>

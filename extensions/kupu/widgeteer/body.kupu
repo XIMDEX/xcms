@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="body"
+    implementation="widgeteer"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+    <kupu:id>$Id: body.kupu 9779 2005-03-15 11:34:47Z duncan $</kupu:id>
+
+  <kupu:part name="body">
+    <body onload="kupu = startKupu()">
+      <kupu:define-slot name="body" />
+    </body>
+  </kupu:part>
+
+  <kupu:part name="editorframe">
+    <div class="kupu-editorframe">
+      <form>
+        <iframe id="kupu-editor"
+                class="kupu-editor-iframe"
+                frameborder="0"
+                src="../widgeteer/empty.html"
+                scrolling="auto">
+        </iframe>
+        <!-- XXX this should be moved to sourceedit.kupu somehow -->
+        <textarea class="kupu-editor-textarea" id="kupu-editor-textarea"> </textarea>
+      </form>
+    </div>
+  </kupu:part>
+
+</kupu:feature>

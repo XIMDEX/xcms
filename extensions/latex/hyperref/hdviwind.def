@@ -1,0 +1,372 @@
+%%
+%% This is file `hdviwind.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hyperref.dtx  (with options: `dviwindo,pdfmarkbase')
+%% 
+%% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
+%% RCS: $Id: hyperref.dtx 6.71 2000/10/04 rahtz Exp rahtz $
+%%
+%% This file is part of the `Hyperref Bundle'.
+%% -------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% The list of all files belonging to the `Hyperref Bundle' is
+%% given in the file `manifest.txt'.
+%%
+\ProvidesFile{hdviwind.def}
+  [2003/01/22 v6.73n
+  Hyperref driver for dviwindo]
+\def\Hy@PutCatalog#1{%
+  \pdfmark{pdfmark=/PUT,Raw={\string{Catalog\string} << #1 >>}}%
+}
+\ifHy@pagelabels
+  \def\HyPL@StorePageLabel#1{%
+    \if@filesw
+      \begingroup
+        \edef\Hy@tempa{\the\Hy@abspage\space<< #1 >> }%
+        \immediate\write\@mainaux{%
+          \string\HyPL@Entry{\Hy@tempa}%
+        }%
+      \endgroup
+    \fi
+  }
+  \AfterBeginDocument{%
+    \if@filesw
+      \immediate\write\@mainaux{%
+        \string\providecommand\string*\string\HyPL@Entry[1]{}%
+      }%
+    \fi
+    \ifx\HyPL@Labels\@empty
+      \Hy@WarningNoLine{Rerun to get /PageLabels entry}%
+    \else
+      \HyPL@SetPageLabels
+    \fi
+    \let\HyPL@Entry\@gobble
+  }%
+  \def\HyPL@Entry#1{%
+    \expandafter\gdef\expandafter\HyPL@Labels\expandafter{%
+      \HyPL@Labels
+      #1%
+    }%
+  }
+\fi
+\providecommand\wwwbrowser{c:\string\netscape\string\netscape}
+\def\hyper@anchor#1{%
+  \Hy@SaveLastskip
+  \begingroup
+    \let\protect=\string
+    \special{mark: #1}%
+  \endgroup
+  \Hy@activeanchortrue
+  \Hy@colorlink{\@anchorcolor}\anchor@spot\Hy@endcolorlink
+  \Hy@activeanchorfalse
+  \Hy@RestoreLastskip
+}
+\def\hyper@anchorstart#1{%
+  \Hy@SaveLastskip
+  \special{mark: #1}%
+  \Hy@activeanchortrue
+}
+\def\hyper@anchorend{%
+  \Hy@activeanchorfalse
+  \Hy@RestoreLastskip
+}
+\def\hyper@linkstart#1#2{%
+  \Hy@colorlink{\csname @#1color\endcsname}%
+  \special{button:
+    10000000
+    \number\baselineskip\space
+    #2%
+  }%
+}
+\def\hyper@linkend{%
+  \Hy@endcolorlink
+}
+\def\hyper@link#1#2#3{%
+  \setbox\@tempboxa=\color@hbox #3\color@endbox
+  \leavevmode
+  \ifHy@raiselinks
+    \@linkdim\dp\@tempboxa
+    \lower\@linkdim\hbox{%
+      \special{button:
+        \number\wd\@tempboxa\space
+        \number\ht\@tempboxa\space
+        #2%
+      }%
+      \Hy@colorlink{\csname @#1color\endcsname}#3%
+      \Hy@endcolorlink
+    }%
+    \@linkdim\ht\@tempboxa
+    \advance\@linkdim by -6.5\p@
+    \raise\@linkdim\hbox{}%
+  \else
+    \special{button:
+      \number\wd\@tempboxa\space
+      \number\ht\@tempboxa\space
+      #2%
+    }%
+    \Hy@colorlink{\csname @#1color\endcsname}#3\Hy@endcolorlink
+  \fi
+}
+\def\hyper@linkurl#1#2{%
+  \begingroup
+    \hyper@chars
+    \leavevmode
+    \setbox\@tempboxa=\color@hbox #1\color@endbox
+    \ifHy@raiselinks
+      \@linkdim\dp\@tempboxa
+      \lower\@linkdim\hbox{%
+        \special{button:
+          \number\wd\@tempboxa\space
+          \number\ht\@tempboxa\space
+          launch: \wwwbrowser\space
+          #2%
+        }%
+        \Hy@colorlink{\@urlcolor}#1\Hy@endcolorlink
+      }%
+      \@linkdim\ht\@tempboxa
+      \advance\@linkdim by -6.5\p@
+      \raise\@linkdim\hbox{}%
+    \else
+      \special{button:
+        \number\wd\@tempboxa\space
+        \number\ht\@tempboxa\space
+        launch: \wwwbrowser\space
+        #2%
+      }%
+      \Hy@colorlink{\@urlcolor}#1\Hy@endcolorlink
+    \fi
+  \endgroup
+}
+\def\hyper@linkfile#1#2#3{%
+  \begingroup
+    \hyper@chars
+    \leavevmode
+    \setbox\@tempboxa=\color@hbox #1\color@endbox
+    \ifHy@raiselinks
+      \@linkdim\dp\@tempboxa
+      \lower\@linkdim\hbox{%
+        \special{button:
+          \number\wd\@tempboxa\space
+          \number\ht\@tempboxa\space
+          #3,
+          file: #2%
+        }%
+        \Hy@colorlink{\@filecolor}#1\Hy@endcolorlink
+      }%
+      \@linkdim\ht\@tempboxa
+      \advance\@linkdim by -6.5\p@
+      \raise\@linkdim\hbox{}%
+    \else
+      \special{button:
+        \number\wd\@tempboxa\space
+        \number\ht\@tempboxa\space
+        #3,
+        file: #2
+      }%
+      \Hy@colorlink{\@filecolor}#1\Hy@endcolorlink
+    \fi
+  \endgroup
+}
+\def\@pdfproducer{dviwindo + Distiller}
+\def\PDF@FinishDoc{%
+  \Hy@UseMaketitleInfos
+  \special{PDF: Keywords \@pdfkeywords}%
+  \special{PDF: Title \@pdftitle}%
+  \special{PDF: Creator \@pdfcreator}%
+  \special{PDF: Author \@pdfauthor}%
+  \special{PDF: Producer \@pdfproducer}%
+  \special{PDF: Subject \@pdfsubject}%
+  \Hy@DisableOption{pdfauthor}%
+  \Hy@DisableOption{pdftitle}%
+  \Hy@DisableOption{pdfsubject}%
+  \Hy@DisableOption{pdfcreator}%
+  \Hy@DisableOption{pdfproducer}%
+  \Hy@DisableOption{pdfkeywords}%
+}
+\def\PDF@SetupDoc{%
+  \ifx\@baseurl\@empty\else
+    \special{PDF: Base \@baseurl}%
+  \fi
+  \ifx\@pdfpagescrop\@empty\else
+    \special{PDF: BBox \@pdfpagescrop}%
+  \fi
+  \pdfmark{pdfmark=/DOCVIEW,
+    Page=\@pdfstartpage,
+    View=\@pdfstartview,
+    PageMode=\@pdfpagemode
+  }%
+  \ifx\@pdfpagescrop\@empty
+  \else
+    \pdfmark{pdfmark=/PAGES,CropBox=\@pdfpagescrop}%
+  \fi
+  \pdfmark{pdfmark=/PUT,
+    Raw={%
+      \string{Catalog\string} <<
+        /ViewerPreferences <<
+          \ifHy@toolbar\else /HideToolbar true \fi
+          \ifHy@menubar\else /HideMenubar true \fi
+          \ifHy@windowui\else /HideWindowUI true \fi
+          \ifHy@fitwindow /FitWindow true \fi
+          \ifHy@centerwindow /CenterWindow true \fi
+        >>
+        \ifx\pdf@pagelayout\@empty
+        \else
+          /PageLayout /\pdf@pagelayout\space
+        \fi
+      >>%
+    }%
+  }%
+}
+\def\literalps@out#1{\special{ps:#1}}%
+\def\Hy@DistillerDestFix{%
+  \begingroup
+    \let\x\literalps@out
+    \ifnum \@ifundefined{OpMode}{0}{%
+           \@ifundefined{gexmode}{0}{%
+           \ifnum\gexmode>0 \OpMode\else 0\fi
+           }}>1 %
+      \def\x##1{%
+        \immediate\special{!=##1}%
+      }%
+    \fi
+    \x{%
+      /product where{%
+        pop %
+        product(Distiller)search{%
+          pop pop pop %
+          version(.)search{%
+            exch pop exch pop%
+            (3011)eq{%
+              gsave %
+              newpath 0 0 moveto closepath clip%
+              /Courier findfont 10 scalefont setfont %
+              72 72 moveto(.)show %
+              grestore%
+            }if%
+          }{pop}ifelse%
+        }{pop}ifelse%
+      }if%
+    }%
+  \endgroup
+}
+\def\pdfmark{\@ifnextchar[{\pdfmark@}{\pdfmark@[]}}
+\def\pdfmark@[#1]#2{%
+    \edef\@processme{\noexpand\pdf@toks={\the\pdf@defaulttoks}}%
+    \@processme
+    \let\pdf@type\relax
+    \setkeys{PDF}{#2}%
+    \ifx\pdf@type\relax
+       \Hy@WarningNoLine{no pdfmark type specified in #2!!}%
+       \ifx\\#1\\\relax\else\pdf@rect{#1}\fi
+    \else
+       \ifx\\#1\\\relax
+  \literalps@out{[\the\pdf@toks\space\pdf@type\space pdfmark}%
+       \else
+         \Hy@colorlink{\@ifundefined{@\pdf@linktype color}%
+                      {\@linkcolor}%
+                      {\csname @\pdf@linktype color\endcsname}}%
+         \pdf@rect{#1}%
+  \literalps@out{[\the\pdf@toks\space\pdf@type\space pdfmark}%
+         \Hy@endcolorlink
+       \fi
+    \fi
+}
+\newsavebox{\pdf@box}
+\def\pdf@rect#1{%
+  \leavevmode
+  \sbox\pdf@box{#1}%
+  \dimen@\ht\pdf@box
+  \leavevmode
+  \ifdim\dp\pdf@box=\z@
+    \literalps@out{H.S}%
+  \else
+    \lower\dp\pdf@box\hbox{\literalps@out{H.S}}%
+  \fi
+  \ifHy@breaklinks\unhbox\else\box\fi\pdf@box
+  \ifdim\dimen@=\z@
+    \literalps@out{H.R}%
+  \else
+    \raise\dimen@\hbox{\literalps@out{H.R}}%
+  \fi
+  \pdf@addtoksx{H.B}%
+}
+\newtoks\pdf@toks
+\newtoks\pdf@defaulttoks
+\pdf@defaulttoks={}%
+\def\pdf@addtoks#1#2{%
+  \edef\@processme{\pdf@toks{\the\pdf@toks\space /#2 #1}}%
+  \@processme
+}
+\def\pdf@addtoksx#1{%
+  \edef\@processme{\pdf@toks{\the\pdf@toks\space #1}}%
+  \@processme
+}
+\def\PDFdefaults#1{%
+  \pdf@defaulttoks={#1}%
+}
+\define@key{PDF}{pdfmark}{\def\pdf@type{#1}}
+\define@key{PDF}{linktype}{\def\pdf@linktype{#1}}
+\def\pdf@linktype{link}
+\define@key{PDF}{Raw}{\pdf@addtoksx{#1}}
+\define@key{PDF}{Action}{\pdf@addtoks{#1}{Action}}
+\define@key{PDF}{Border}{\pdf@addtoks{[#1]}{Border}}
+\define@key{PDF}{Color}{\pdf@addtoks{[#1]}{Color}}
+\define@key{PDF}{Contents}{\pdf@addtoks{(#1)}{Contents}}
+\define@key{PDF}{Count}{\pdf@addtoks{#1}{Count}}
+\define@key{PDF}{CropBox}{\pdf@addtoks{[#1]}{CropBox}}
+\define@key{PDF}{DOSFile}{\pdf@addtoks{(#1)}{DOSFile}}
+\define@key{PDF}{DataSource}{\pdf@addtoks{(#1)}{DataSource}}
+\define@key{PDF}{Dest}{%
+  \begingroup
+    \edef\x{#1}%
+  \expandafter\endgroup
+  \ifx\x\@empty\else\pdf@addtoks{(#1) cvn}{Dest}\fi
+}
+\define@key{PDF}{DestAnchor}{%
+  \begingroup
+    \edef\x{#1}%
+  \expandafter\endgroup
+  \ifx\x\@empty\else\pdf@addtoks{(#1) cvn}{Dest}\fi
+}
+\define@key{PDF}{Dir}{\pdf@addtoks{(#1)}{Dir}}
+\define@key{PDF}{File}{\pdf@addtoks{(#1)}{File}}
+\define@key{PDF}{Flags}{\pdf@addtoks{#1}{Flags}}
+\define@key{PDF}{AcroHighlight}{\pdf@addtoks{#1}{H}}
+\define@key{PDF}{ID}{\pdf@addtoks{[#1]}{ID}}
+\define@key{PDF}{MacFile}{\pdf@addtoks{(#1)}{MacFile}}
+\define@key{PDF}{ModDate}{\pdf@addtoks{(#1)}{ModDate}}
+\define@key{PDF}{Op}{\pdf@addtoks{(#1)}{Op}}
+\define@key{PDF}{Open}{\pdf@addtoks{#1}{Open}}
+\define@key{PDF}{Page}{\pdf@addtoks{#1}{Page}}
+\define@key{PDF}{PageMode}{\pdf@addtoks{#1}{PageMode}}
+\define@key{PDF}{Params}{\pdf@addtoks{(#1)}{Params}}
+\define@key{PDF}{Rect}{\pdf@addtoks{[#1]}{Rect}}
+\define@key{PDF}{SrcPg}{\pdf@addtoks{#1}{SrcPg}}
+\define@key{PDF}{Subtype}{\pdf@addtoks{#1}{Subtype}}
+\define@key{PDF}{Title}{\pdf@addtoks{(#1)}{Title}}
+\define@key{PDF}{Unix}{\pdf@addtoks{(#1)}{Unix}}
+\define@key{PDF}{UnixFile}{\pdf@addtoks{(#1)}{UnixFile}}
+\define@key{PDF}{View}{\pdf@addtoks{[#1]}{View}}
+\define@key{PDF}{WinFile}{\pdf@addtoks{(#1)}{WinFile}}
+\define@key{PDF}{Author}{\pdf@addtoks{(#1)}{Author}}
+\define@key{PDF}{CreationDate}{\pdf@addtoks{(#1)}{CreationDate}}
+\define@key{PDF}{Creator}{\pdf@addtoks{(#1)}{Creator}}
+\define@key{PDF}{Producer}{\pdf@addtoks{(#1)}{Producer}}
+\define@key{PDF}{Subject}{\pdf@addtoks{(#1)}{Subject}}
+\define@key{PDF}{Keywords}{\pdf@addtoks{(#1)}{Keywords}}
+\define@key{PDF}{ModDate}{\pdf@addtoks{(#1)}{ModDate}}
+\define@key{PDF}{Base}{\pdf@addtoks{(#1)}{Base}}
+\define@key{PDF}{URI}{\pdf@addtoks{#1}{URI}}
+\endinput
+%%
+%% End of file `hdviwind.def'.

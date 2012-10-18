@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="saveonpart"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+  <kupu:id>$Id: saveonpart.kupu 9520 2005-02-26 16:30:23Z duncan $</kupu:id>
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="kupusaveonpart.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

@@ -1,0 +1,473 @@
+================================
+Image and Link Libraries in Kupu
+================================
+
+Abstract
+--------
+
+This document describes the Library feature of the Kupu WYSIWYG
+editor. It defines the behaviour on both the client and the server and
+serves as a specification for the XML protocol that is used for their
+interaction.
+
+
+Motivation
+----------
+
+Kupu is a visual editor for content management systems, with a target
+audience of regular users without a high technical profile.  For this
+audience, Word is the incumbent.
+
+In addition to text, Kupu users need a simple, usable, and
+high-performance system for getting images and hyperlinks into their
+pages.  Sometimes they want to *browse* to find these assets.
+Sometimes they want to *search*, particularly for large collections.
+
+Regarding usability, open source CMS projects don't have many
+browser-side developers with good usability backgrounds.  Since Kupu
+is an oscom.org project, it is a goal to move the UI rendering from
+the server (where talent would be dispersed among projects) to the
+client (where one UI can work for many servers).  Therefore, the Kupu
+Library only requests XML from the CMS, not HTML.
+
+Note: Though Kupu will work with IE 5.5 sans service packs, Kupu
+requires MS XML 3.0 or higher.  Any IE 5.5 that is up-to-date on
+security updates, and any IE 6 or Mozilla 1.3+ can use the Kupu
+Library.
+
+
+Definitions
+-----------
+
+Library
+
+  A static or dynamic collection of resources and collections defined
+  at a top level. Libraries have no parents from a UI perspective,
+  where as the collection they represent might have a parent
+  collection.
+
+Collection
+
+  A static or dynamic collection of resources and collections,
+  modelled after WebDAV collections.
+
+Resource
+
+  A named and URI-locatable object with associated metadata, such as
+  title, description, preview, size, etc.
+
+
+Process overview 
+----------------
+
+1. The user opens a drawer in Kupu. Kupu requests a list of available
+   libraries. The server answers with a list of libraries possibly
+   containing URIs at which to get the content listing of each library.
+
+2. Upon user request, Kupu loads the contents of a library and present
+   it to the user. Already opened libraries are not reloaded from the
+   server
+
+3. A user selects a resource at which point Kupu presents the
+   associated metadata and may optionally load a preview image.
+
+4. Double clicking on a collection or selecting a new library triggers
+   step 2 again.
+
+5. Clicking on a resource and clicking "Insert" (for an image) or
+   "Link" (for links) updates the document and closes the drawer.
+
+6. If the cursor is on a link or image, the drawer allows editing the
+   image/link attributes.
+
+
+List of libraries
+-----------------
+
+Kupu issues a simple HTTP GET request to a URL defined in the
+'libraries' attribute of the iframe. The server returns XML conforming
+to the following schema::
+
+ <grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+   <start>
+     <ref name="librariesDocumentElement" />
+   </start>
+
+   <define name="librariesDocumentElement">
+     <element name="libraries">
+       <zeroOrMore>
+         <ref name="library" />
+       </zeroOrMore>
+     </element>
+   </define>
+
+   <define name="library"
+     <element name="library">
+       <interleave>
+         <ref name="commonToAllItems" />
+         <choice>
+           <ref name="collectionItems" />
+           <ref name="itemsSource" />
+         </choice>
+       </interleave>
+       </element>
+   </define>
+
+   <define name="commonToAllItems">
+     <attribute name="id">
+       <!-- Must be unique among all libraries, resources and collections. -->
+       <text />
+     </attribute>
+
+     <interleave>
+       <element name="uri">
+         <text />
+       </element>
+
+       <optional>
+         <element name="label">
+           <text />
+         </element>
+       </optional>
+
+       <element name="title">
+         <text />
+       </element>
+
+       <optional>
+         <element name="icon">
+           <text />
+         </element>
+       </optional>
+     </interleave>
+   </define>
+
+   <define name="collectionItems">
+     <element name="items">
+       <zeroOrMore>
+         <ref name="collectionItem" />
+       </zeroOrMore>
+       <optional>
+         <element name="uploadbutton" />
+       </optional>
+     </element>
+   </define>
+
+   <define name="itemsSource">
+     <element name="src">
+       <text />
+     </element>
+   </define>
+
+   <define name="collectionItem">
+     <choice>
+       <element name="resource">
+         <ref name="commonToAllItems" />
+         <ref name="extraResourceInfo" />
+       </element>
+       <element name="collection">
+         <ref name="commonToAllItems" />
+         <ref name="itemsSource" />
+       </element>
+     </choice>
+   <define>
+
+   <define name="extraResourceInfo">
+     <interleave>
+       <optional>
+         <element name="preview">
+           <text />
+         </element>
+       </optional>
+
+       <optional>
+         <element name="size">
+           <text />
+         </element>
+       </optional>
+
+       <optional>
+         <element name="type">
+           <text />
+         </element>
+       </optional>
+     </interleave>
+   </define>
+
+ </grammar>
+
+
+For example::
+
+ <libraries>
+
+   <library id="http://path/to/folder">
+     <title>Current Folder</title>
+     <icon>http://path/to/icon.jpg</icon>
+     <src>http://server/current/folder/resources.kupu</src>
+   </library>
+
+   <library id="http://path/to/other/someotherfolder">
+     <title>Some Other Folder</title>
+     <icon>http://path/to/icon.jpg</icon>
+     <src>http:/server/other/folder/resources.kupu</src>
+   </library>
+
+   <library id="recentitems">
+     <title>Recent Items</title>
+     <icon>http://path/to/icon.jpg</icon>
+     <items />
+   </library>
+
+ </libraries>
+
+
+Kupu parses this XML to a DOM managed in JavaScript and displays it
+using an XSLT stylesheet. The DOM tree is stored throughout the whole
+Kupu session.
+
+
+Browser-side architecture
+------------------------------------
+
+When the drawer is opened, Kupu loads the XML data about the libraries
+into a JS property that holds an XML DOM.  The Sarissa cross-browser
+abstraction for XML (http://sarissa.sf.net) is used.
+
+As the user clicks, more XML data are loaded if that collection hasn't
+been visited yet.  The loaded XML is then appended into the XML DOM.
+The node that was clicked on has an attribute set to mark it as
+selected.  Kupu then runs an XSLT on the XML DOM to re-generate the
+drawer contents (as HTML), and updates the HTML node with the output.
+The use of XSLT and XPath give increased performance, lower line
+count, and better IE/Mozilla compatibility.
+
+As an implementation note, XML is extremely compressible.  With
+mod_deflate and other server-compression approaches, at least a
+thousand entries can be encoded in 100 Kb.
+
+User opens on a library
+-----------------------
+
+In case a collection or library has been active before, it is
+deselected (by removing the 'selected' attribute on the DOM node). The
+DOM node of the library the user has chosen is selected (by setting
+the 'selected' attribute). Also, visually deselect the before selected
+library (by unsetting a CSS class) and mark the newly selected library
+(with a CSS class).
+
+In case its <library> element provides the <src> subelement, an HTTP
+GET to that URI is made, the returned XML retrieved, turned into a DOM
+tree and the resulting <items> node of the result appended to the
+library DOM node. That step is not made in case the <library> node
+directly provides the <items> node.
+
+Now, the XSLT is executed again, presenting the newly selected node
+(by querying for the node with the 'selected' attribute) and its
+contents.
+
+When a library's contents has to be retrieved with an extra request,
+it is returned according to the following schema (using definitions
+from above)::
+
+ <grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+   <start>
+     <ref name="libraryDocumentElement" />
+   </start>
+
+   <define name="libraryDocumentElement">
+     <element name="library">
+       <ref name="commonToAllItems" />
+       <ref name="collectionItems" />
+     </element>
+   </define>
+
+ </grammar>
+
+
+For example::
+
+ <library id="some_unique_id">
+   <title>Current folder</title>
+   <uri>http://server/current/folder</uri>
+   <icon>http://server/folder.ico</icon>
+   <items>
+     <resource id="another_unique_id">
+       <title>Foo img</title>
+       <uri>http://server/current/folder/foo.jpg</uri>
+       <icon>http://server/image.ico</icon>
+     </resource>
+     <collection id="a_collections_unique_id">
+       <title>Some collection</title>
+       <uri>http://server/current/folder/collection</uri>
+       <icon>http://server/folder.ico</icon>
+     </collection>
+   </items>
+ </library>
+
+
+User opens a collection
+-----------------------
+
+Unselect the previously selected collection and try to execute one of
+three cases in order:
+
+  * The node of selected collection is queried for an attribute
+    'loadedInNode'. If it exists, it refers to an id of a node which
+    already contains that collection's items. Select that node and
+    execute the XSLT to present changes.
+
+  * The selected collection node does not have a 'loadedInNode'
+    attribute. Therefore, the selected collection's URI is read and the
+    document element's children are queried with an XPath to check
+    whether the collection with that URI was already loaded before and
+    attached to the document element. If so, the selected collection
+    node receives an attribute 'loadedInNode' with the value of the
+    corresponding collection node below the document element, which is
+    selected (by setting the 'selected' attribute). The XSLT is executed
+    to present the changes.
+
+  * The selected collection node has no 'loadedInNode' attribute and
+    there is no preloaded collection node of that URI. The selected
+    node's <src> subelement is read. An HTTP GET request is made to that
+    URI and the items XML data retrieved and turned into a DOM tree. The
+    <collection> node of that resulting tree is given a new unique ID,
+    appended to the document element of the library DOM tree and
+    selected (by setting the 'selected' attribute). The selected
+    collection node receives an attribute 'loadedInNode' with the value
+    that newly generated id. The XSLT is executed to present the
+    changes.
+
+When a collection's contents has to be retrieved with an extra
+request, it is returned according to the following schema (using
+definitions from above)::
+
+  <grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+    <start>
+      <ref name="collectionDocumentElement" />
+    </start>
+
+    <define name="collectionDocumentElement">
+      <element name="collection">
+        <ref name="commonToAllItems" />
+        <ref name="collectionItems" />
+      </element>
+    </define>
+
+  </grammar>
+
+This grammar is modeled after the WebDAV response grammar, without
+using the namespace parts of WebDAV. For example::
+
+  <collection id="some_unique_id">
+    <title>Some folder</title>
+    <uri>http://server/some/folder</uri>
+    <icon>http://server/folder.ico</icon>
+
+    <items>
+      <resource id="another_unique_id">
+        <title>Foo img</title>
+        <uri>http://server/some/folder/foo.jpg</uri>
+        <icon>http://server/image.ico</icon>
+      </resource>
+
+      <collection id="a_subfolders_unique_id">
+        <title>Some subfolder</title>
+        <uri>http://server/some/folder/subfolder</uri>
+        <icon>http://server/folder.ico</icon>
+        <src>http://server/some/folder/resources.kupu</src>
+      </collection>
+    </items>
+
+  </library>
+
+
+If a collection's parent collection shall be accessible, then the
+server has to return an entry for it explicitly.
+
+
+Searching
+---------
+
+For searching, Kupu sends an HTTP POST request to the server (to a
+configurable URI). The server does the search based on the POST form
+values and return the results as if they were the contents of a
+library. The document element of the returned XML, <library>, does not
+have to have a unique id nor an icon subelement.
+
+The POST request can contain an optional parameter for the size of the
+result set. The server can enforce an upper limit itself, and if the
+request parameter is higher, ignore it. By default, this value is 500.
+
+Kupu treats the search result as a library, with the exception of
+generating a unique id and icon for it. The search result library is
+attached to the root node of the DOM tree and thus visible and later
+accessible via the library list.
+
+
+Implementation on the Plone side
+--------------------------------
+
+On the Plone side, a set of Page Templates is responsible for
+generating the XML. They are aided by a special tool, KupuLibraryTool.
+
+In order to use the XML generation for inclusion of media objects,
+such as images and photos, as well as for searching documents that one
+can link to from Kupu, the library tool keeps a mapping from resource
+types to portal types. It provides a management interface in which the
+site administrator can define, which portal types are to be treated as
+collections, as linkable documents, as insertable media objects, etc.
+
+The library tool also keeps a list of available libraries on the
+site. The site administrator can add, modify, delete and reorder
+libraries in the tool's management interface. The searching aspect of
+Kupu Libraries is handled by the portal catalog.
+
+Permissions used by the library tool:
+
+- Kupu: Query libraries
+
+  This permission is required for all users who want to query
+  libraries from the library tool.
+
+- Kupu: Manage libraries
+
+  This permissions is required for all administrators who need to add,
+  edit and delete existing libraries.
+
+In order to be able to present special previews for resources without
+having to load the resource itself in Kupu, a portal type can provide
+an action called 'kupupreview', pointing to the URL where the object's
+preview can be retrieved. If a portal_type does not provide that
+action, preview is disabled for it.
+
+Example: Preview action for CMFPhoto showing each photo's thumbnail
+version:
+
+  - Go to the portal_types tool and click on the 'Photo' portal
+    type. Then click on its 'Actions' tab.
+
+  - Down below enter information for a new action:
+
+    Name:       Kupu Preview
+    Id:         kupupreview
+    Action:     string:${object_url}/variant/thumbnail
+    Condition:  [empty]
+    Permission: View
+    Category:   object
+    Visible?    False
+
+  - Hit the 'Add' button.
+
+
+Futures
+-------
+
+  * Cached XSLT (need Sarissa support for this)
+
+  * Deeper standards support (WebDAV/DASL)
+
+

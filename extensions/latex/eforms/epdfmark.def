@@ -1,0 +1,95 @@
+%%
+%% This is file `epdfmark.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% eforms.dtx  (with options: `copyright,epdfmark')
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% eForm package,             2004-3-15                 %%
+%% Copyright (C) 2002-2004  D. P. Story                 %%
+%%   dpstory@uakron.edu                                 %%
+%%                                                      %%
+%% This program can redistributed and/or modified under %%
+%% the terms of the LaTeX Project Public License        %%
+%% Distributed from CTAN archives in directory          %%
+%% macros/latex/base/lppl.txt; either version 1 of the  %%
+%% License, or (at your option) any later version.      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\Rect#1{\pdf@rect{\textcolor{\@linkcolor}{#1}}}
+\def\noPeek#1#2{\literalps@out{%
+     [ {ThisPage} << \noPeekAction{#1}{#2} >> /PUT pdfmark}}
+\def\eq@choice@driver
+{%
+    \centerWidget\eq@rectH\if\autoCenter n\eqcenterWidget=0pt\fi
+    \pdf@rect{\lower\eqcenterWidget\Bbox{\eq@rectW}{\eq@rectH}}%
+    \literalps@out{%
+    [ /Rect [pdf@llx pdf@lly pdf@urx pdf@ury]
+        \common@choiceCode
+    /ANN pdfmark}\endgroup
+}
+\def\eq@Button@driver
+{%
+    \centerWidget\eq@rectH\if\autoCenter n\eqcenterWidget=0pt\fi
+    \Hy@pdfstringtrue\ifx\eq@rectW\@empty\def\eq@rectW{\wd\eq@tmpbox}\fi
+    \pdf@rect{\lower\eqcenterWidget\Bbox{\eq@rectW}{\eq@rectH}}%
+    \literalps@out{%
+    [ /Rect [pdf@llx pdf@lly pdf@urx pdf@ury]
+        \common@pushButtonCode
+    /ANN pdfmark}\endgroup
+}
+\def\eq@RadioCheck@driver
+{%
+    \centerWidget\eq@rectH\Hy@pdfstringtrue
+    \if\autoCenter n\eqcenterWidget=0pt\fi
+    \ifx\eq@rectW\@empty\def\eq@rectW{\wd\eq@tmpbox}\fi
+    \pdf@rect{\lower\eqcenterWidget\Bbox{\eq@rectW}{\eq@rectH}}%
+    \literalps@out{%
+    [ /Rect [pdf@llx pdf@lly pdf@urx pdf@ury]
+        \common@RadioCheckCode
+    /ANN pdfmark}\endgroup
+}
+\def\eq@l@check@driver
+{%
+    \pdf@rect{\makebox[\eq@tmpdima]{\phantom{\link@@Content}}}%
+    \literalps@out{%
+    [ /Rect [pdf@llx pdf@lly pdf@urx pdf@ury]
+        \common@RadioCheckCode
+    /ANN pdfmark}\endgroup
+}
+\def\eq@TextField
+{%
+    \centerWidget\eq@rectH\if\autoCenter n\eqcenterWidget=0pt\fi
+    \pdf@rect{\lower\eqcenterWidget\Bbox{\eq@rectW}{\eq@rectH}}%
+    \literalps@out{%
+    [ /Rect [pdf@llx pdf@lly pdf@urx pdf@ury]
+        \common@TextFieldCode
+    /ANN pdfmark}\endgroup
+}
+\def\eq@calcTextField{\centerWidget\eq@rectH
+    \if\autoCenter n\eqcenterWidget=0pt\fi
+    \leavevmode\pdf@rect{\lower\eqcenterWidget\Bbox{\eq@rectW}%
+    {\eq@rectH}}\literalps@out{%
+    [ /_objdef {\Fld@name}
+    /Rect [pdf@llx pdf@lly pdf@urx pdf@ury]
+    \common@TextFieldCode
+    /ANN pdfmark
+    [ {corder} {\Fld@name} /APPEND pdfmark
+    }\endgroup}
+\def\convertAToAction/A#1\@nil{\def\eq@A{/Action #1}}
+\def\setLink@driver
+{%
+    \ifx\eq@A\@empty\else\expandafter\convertAToAction\eq@A\@nil\fi
+    \pdf@rect{\link@@Box}%
+    \literalps@out{%
+    [ /Rect [pdf@llx pdf@lly pdf@urx pdf@ury]
+    \eq@Border
+    \common@LinkCode
+    /Subtype /Link
+    /ANN pdfmark}%
+    \endgroup
+}
+\endinput
+%%
+%% End of file `epdfmark.def'.

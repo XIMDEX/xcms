@@ -1,0 +1,171 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    lang="en"
+    metal:use-macro="here/kupu_config/macros/master"
+    i18n:domain="kupuconfig">
+
+<body>
+
+    <div class="documentContent" metal:fill-slot="kupu_content">
+<h3 i18n:translate="heading_kupu_configuration">Kupu Configuration</h3>
+<h4 i18n:translate="label_manage_libraries">Manage libraries</h4>
+
+<p i18n:translate="text_kupu_drawers">In the below form, you may manage the list of drawer libraries for
+the kupu editor. Each property of a library is dynamically expanded at
+execution time using TALES expressions. That way it is possible, to
+support libraries like <em>Current folder</em> or <em>My folder</em>
+very easily.</p>
+
+<form action="" method="post" tal:attributes="action here/absolute_url">
+
+<table>
+
+  <tal:loop repeat="library here/zmi_get_libraries">
+
+  <tr>
+    <td><input type="checkbox" name="indices:int:list"
+               tal:attributes="value repeat/library/index"/></td>
+    <th>ID</th>
+    <td><input type="text" name="libraries.id:records" size="60"
+               tal:attributes="value library/id" /></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <th>Title</th>
+    <td><input type="text" name="libraries.title:records" size="60"
+               tal:attributes="value library/title" /></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <th>URI</th>
+    <td><input type="text" name="libraries.uri:records" size="60"
+               tal:attributes="value library/uri" /></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <th i18n:translate="label_source_uri">Source URI</th>
+    <td><input type="text" name="libraries.src:records" size="60"
+               tal:attributes="value library/src" /></td>
+  </tr>
+
+  <tr>
+    <td></td>
+    <th i18n:translate="label_icon_uri">Icon URI</th>
+    <td><input type="text" name="libraries.icon:records" size="60"
+               tal:attributes="value library/icon" /></td>
+ </tr>
+
+  <tr>
+    <td colspan="3">
+      <hr />
+    </td>
+  </tr>
+
+  </tal:loop>
+</table>
+
+<p>
+  <input class="context" type="submit" name="zmi_update_libraries:method" value="Save" i18n:attributes="value" />
+  <input class="context" type="submit" name="zmi_delete_libraries:method" value="Delete" i18n:attributes="value" />
+  <input class="context" type="submit" name="zmi_move_up:method" value="Move Up" i18n:attributes="value" />
+  <input class="context" type="submit" name="zmi_move_down:method" value="Move Down" i18n:attributes="value" />
+</p>
+
+</form>
+
+<form action="" tal:attributes="action string:${here/absolute_url}/zmi_add_library" method="post">
+<table>
+
+  <tr>
+    <th>ID</th>
+    <td><input type="text" name="id" size="60" /></td>
+  </tr>
+
+  <tr>
+    <th i18n:translate="label_title">Title</th>
+    <td><input type="text" name="title" size="60" /></td>
+  </tr>
+
+  <tr>
+    <th i18n:translate="uri">URI</th>
+    <td><input type="text" name="uri" size="60" /></td>
+  </tr>
+
+  <tr>
+    <th i18n:translate="source_uri">Source URI</th>
+    <td><input type="text" name="src" size="60" /></td>
+  </tr>
+
+  <tr>
+    <th i18n:translate="icon_uri">Icon URI</th>
+    <td><input type="text" name="icon" size="60" /></td>
+  </tr>
+
+</table>
+
+<p>
+  <input class="context" type="submit" value="Add" i18n:attributes="value"/>
+</p>
+</form>
+
+<form action="" tal:attributes="action string:${here/absolute_url}/zmi_set_default_library" method="post">
+<table>
+
+  <tr>
+    <th i18n:translate="default">Default</th>
+    <td><input type="text" name="defid" size="60" tal:attributes="value here/zmi_get_default_library;" /></td>
+  </tr>
+
+</table>
+
+<p>
+  <input class="context" type="submit" value="Set" i18n:attributes="value" />
+</p>
+</form>
+
+<p>&nbsp;</p>
+
+<p i18n:translate="available_tales">The following variables are available in the TALES expressions:</p>
+
+<table>
+  <tr>
+    <td><code>object</code></td>
+    <td i18n:translate="current_context">The current context object</td>
+  </tr>
+  <tr>
+    <td><code>object_url</code></td>
+    <td i18n:translate="current_context_url">The URL of the current context object</td>
+  </tr>
+  <tr>
+    <td><code>folder</code></td>
+    <td i18n:translate="context_folder">The folder the context object is located in</td>
+  </tr>
+  <tr>
+    <td><code>folder_url</code></td>
+    <td i18n:translate="context_folder_uri">The URL of the folder the context object is located in</td>
+  </tr>
+  <tr>
+    <td><code>portal</code></td>
+    <td i18n:translate="portal_object">The portal object</td>
+  </tr>
+  <tr>
+    <td><code>portal_url</code></td>
+    <td i18n:translate="portal_object_url">URL of the portal</td>
+  </tr>
+  <tr>
+    <td><code>member</code></td>
+    <td i18n:translate="authenticated_member">Authenticated member</td>
+  </tr>
+  <tr>
+    <td><code>request</code></td>
+    <td i18n:translate="request">Request</td>
+  </tr>
+</table>
+
+</div>
+</body>
+</html>
+
+

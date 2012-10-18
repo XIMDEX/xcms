@@ -1,0 +1,149 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+#actioncontainer {
+	padding:20px 
+}
+#dialog {
+	position:absolute; 
+	width:425px; 
+	padding:10px; 
+	z-index:200; 
+	background:#fff; 
+	margin:0; 
+	font-family:Verdana, Arial, Helvetica; 
+	font-size:14px
+}
+#dialog-header {
+	display:block; 
+	position:relative; 
+	width:411px; 
+	padding:3px 6px 7px; 
+	height:14px; 
+	font-size:14px; 
+	font-weight:bold
+}
+#dialog-title {
+	float:left
+}
+#dialog-close {
+	float:right; 
+	cursor:pointer; 
+	margin:3px 3px 0 0; 
+	height:11px; 
+	width:11px; 
+	background:url(../../images/viewers/dialogs/dialog_close.gif) no-repeat
+}
+#dialog-content {
+	display:block; 
+	min-height:190px; 
+	color:#666666; 
+	font-size:12px; 
+	font-weight: bold; 
+	padding: 6px; 
+}
+#dialog-mask {
+	position:absolute; 
+	top:0; 
+	left:0; 
+	min-height:100%; 
+	width:100%; 
+	background:#FFF; o
+	pacity:.75; 
+	filter:alpha(opacity=75); 
+	z-index:100
+}
+.error {
+	background:#fff url(../../images/viewers/dialogs/error_bg.jpg) bottom right no-repeat; 
+	border:1px solid #924949; 
+	border-top:none
+}
+.errorheader {
+	background:url(../../images/viewers/dialogs/error_header.gif) repeat-x; 
+	color:#6f2c2c; 
+	border:1px solid #924949; 
+	border-bottom:none
+}
+.warning {
+	background:#fff url(../../images/viewers/dialogs/warning_bg.jpg) bottom right no-repeat; 
+	border:1px solid #c5a524; 
+	border-top:none
+}
+.warningheader {
+	background:url(../../images/viewers/dialogs/warning_header.gif) repeat-x; 
+	color:#957c17; 
+	border:1px solid #c5a524; 
+	border-bottom:none
+}
+.success {
+	background:#fff url(../../images/viewers/dialogs/success_bg.jpg) bottom right no-repeat; 
+	border:1px solid #60a174; 
+	border-top:none
+}
+.successheader {
+	background:url(../../images/viewers/dialogs/success_header.gif) repeat-x; 
+	color:#3c7f51; 
+	border:1px solid #60a174; 
+	border-bottom:none
+}
+.prompt {
+	background:#fff url(../../images/viewers/dialogs/prompt_bg.jpg) bottom right no-repeat; 
+	border:1px solid #4f6d81; 
+	border-top:none
+}
+.promptheader {
+	background:url(../../images/viewers/dialogs/prompt_header.gif) repeat-x; 
+	color:#355468; 
+	border:1px solid #4f6d81; 
+	border-bottom:none
+}
+
+
+#dialog-buttons { 
+	margin: 70px 70px 50px 90px;
+}
+
+.warning #dialog-buttons input{ 
+	background-color: #fffacd;
+	color: #a38c31;
+	border: 1px solid #a38c31;
+}
+
+
+.prompt #dialog-buttons input{ 
+	background-color: #e3e9ee;
+	color: #496577;
+	border: 1px solid #607b8d;
+}
+
+#dialog-buttons #dialog-input_ok {
+	margin-left: 60px;
+}
+
+.field_in_error {
+	border: 2px solid #2546FF !important;
+	background-color: #f9f9f9;
+}

@@ -1,0 +1,108 @@
+===============
+Installing Kupu
+===============
+
+Abstract
+--------
+
+This document describes the installation of Kupu into a web
+application.  Since Kupu itself makes little assumptions about the
+environment, this document too is very general.
+
+If you need specific instructions on how to install Kupu in
+
+  o Zope 2.x, please refer to ZOPE2.txt_
+
+  o Plone 2.x, please refer to PLONE2.txt_
+
+.. _ZOPE2.txt: ZOPE2.html
+.. _PLONE2.txt: PLONE2.html
+
+
+Requirements
+------------
+
+o An XSLT processor with XInclude support, such as xsltproc from
+  Gnome's libxml/libxslt.
+
+  Windows users: You can get libxml/libxslt binaries at
+  http://www.zlatkovic.com/pub/libxml/. As a minimum you need to
+  download the zipfiles for libxslt, libxml2, iconv and zlib.
+  Extracting all of the .dll and .exe files into c:\libxslt is
+  sufficient for make.bat to work (ignore subdirectories in the
+  zipfiles).
+
+o A webserver that can handle some form of server-side processing, and
+  preferrably also HTTP PUT requests (POST is also supported, see 'PUT
+  or POST' below).
+
+
+Quick installation
+------------------
+
+Basic install on a 'plain' webserver (Apache, IIS, etc.):
+
+Unpack the kupu tarball. XXX xsl transformation, copy default dir XXX
+
+
+Configuration and customization
+-------------------------------
+
+The default kupu.html is quite sober: it serves as an example or base
+document rather then as an out-of-the-box webpage. To configure Kupu
+you can set some attribute values on the iframe, change the CSS or
+override initKupu() (the initialization function). The latter is only
+necessary for larger customizations, simpler ones (like removing a
+tool from the UI or changing a button image) will usually only mean
+overriding the CSS. For more information about customization and
+configuration see CUSTOMIZING.txt.
+
+
+Adding dynamics
+---------------
+  
+To use the kupu.html file for editing multiple files, you will
+probably want to make the 'src' and 'dst' attributes get filled from
+script (SSI, PHP, ASP, etc.). Kupu will load it's content from the URL
+in the 'src' attribute (actually it lets the browser do that, it's the
+default behaviour of an iframe) and will send the results to the URL
+in the 'dst' attribute (this obviously is done by Kupu rather than by
+the browser).  Although this sort of thing isn't hard to accomplish,
+writing dynamic web applications is beyond the scope of this document,
+partially because there are many different platforms on which Kupu
+will run (and as many different server-side scripting languages and
+technologies). There is, however, plenty of documentation about this
+subject available on-line.
+
+
+PUT or POST
+-----------
+
+Kupu will by default send its data to the server the HTTP PUT request
+method. Using PUT rather than POST has some advantages: Kupu can make
+asynchronous PUT requests (currently async POST is not implemented) so
+when a user saves the page doesn't have to be reloaded, and since PUT
+is invented for storing full documents and Kupu edits full documents,
+it is the most logical and elegant request method to use.
+
+If for some reason PUT is not available on your platform, Kupu can
+also be used inside an HTML form to participate in a POST
+situation. This way Kupu behaves like it is a field in a form, when
+the form gets submitted Kupu will add a hidden form field to the form
+and place it's contents in the field, so it is part of the request
+body when the form is submitted. To accomplish this, a method called
+'prepareForm' should be called just before the form is submitted. For
+an example of how to use this method, see kupuform.html (which can
+also be used as the basis for your Kupu editor page, like kupu.html).
+
+Setting up a webserver is or explaining the details about writing a
+script that handles POST or PUT requests is out of scope for this
+document but there should be plenty documentation available on the
+internet.
+ 
+If problems occur...
+--------------------
+
+If you have installation problems, see http://kupu.oscom.org for a
+list of possible places to ask questions (mailinglist, IRC channel) or
+send an email to kupu-dev@codespeak.net.

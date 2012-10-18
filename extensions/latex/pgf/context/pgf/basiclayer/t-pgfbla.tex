@@ -1,0 +1,26 @@
+% Copyright 2006 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+
+% ConTeXt module pgfbaselayers.
+
+\edef\pgfbaselayersatcode{\the\catcode`\@}
+\edef\pgfbaselayersbarcode{\the\catcode`\|}
+\catcode`\@=11
+\catcode`\|=12
+
+\input pgfbaselayers.code.tex
+
+\catcode`\@=\pgfbaselayersatcode
+\catcode`\|=\pgfbaselayersbarcode
+
+\let\startpgfonlayer=\pgfonlayer
+\let\stoppgfonlayer=\endpgfonlayer
+
+\endinput

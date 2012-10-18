@@ -1,0 +1,30 @@
+<tal:block define="charset here/portal_properties/site_properties/default_charset|here/portal_properties/default_charset|string:utf-8;
+        content_type python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=%s' % charset);"
+ replace='structure string:&lt;?xml version="1.0" encoding="${charset}" ?&gt;'>
+<?xml version="1.0"?>
+</tal:block>
+<libraries
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+
+<tal:with define="
+    getToolByName nocall:modules/Products/CMFCore/utils/getToolByName;
+    kupu_tool     python:getToolByName(context, 'kupu_library_tool');
+    libraries     python:kupu_tool.getLibraries(context);
+    default_library python:kupu_tool.zmi_get_default_library();
+    resource_type request/resource_type | string:mediaobject;
+    ">
+
+  <library tal:repeat="library libraries"
+           tal:attributes="id python:library['id'];selected python:library['id']==default_library;">
+    <uri tal:content="library/uri">URI</uri>
+    <title i18n:translate="" tal:content="library/title">Title</title>
+    <src tal:content="string:${library/src}?resource_type=${resource_type}">Source</src>
+    <icon tal:content="library/icon">Icon</icon>
+  </library>
+
+</tal:with>
+
+</libraries>

@@ -1,0 +1,559 @@
+%%
+%% This is file `eforms.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% eforms.dtx  (with options: `copyright,package')
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% eForm package,             2004-3-15                 %%
+%% Copyright (C) 2002-2004  D. P. Story                 %%
+%%   dpstory@uakron.edu                                 %%
+%%                                                      %%
+%% This program can redistributed and/or modified under %%
+%% the terms of the LaTeX Project Public License        %%
+%% Distributed from CTAN archives in directory          %%
+%% macros/latex/base/lppl.txt; either version 1 of the  %%
+%% License, or (at your option) any later version.      %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{eforms}
+ [2004/3/15 v1.0 Provides general eForm support (dps)]
+\DeclareOption{dvipsone}{\def\eq@drivernum{0}%
+    \PassOptionsToPackage{dvipsone}{insdljs}
+    \PassOptionsToPackage{dvipsone}{hyperref}
+}
+\DeclareOption{dvips}{\def\eq@drivernum{0}%
+    \PassOptionsToPackage{dvips}{insdljs}
+    \PassOptionsToPackage{dvips}{hyperref}
+}
+\DeclareOption{pdftex}{\def\eq@drivernum{1}%
+   \def\eq@driver{pdftex}\def\eq@drivercode{epdftex.def}
+   \PassOptionsToPackage{pdftex}{insdljs}
+   \PassOptionsToPackage{pdftex}{hyperref}
+}
+\DeclareOption{dvipdfm}{\def\eq@drivernum{2}%
+     \def\eq@driver{dvipdfm}\def\eq@drivercode{edvipdfm.def}
+     \PassOptionsToPackage{dvipdfm}{insdljs}
+     \PassOptionsToPackage{dvipdfm}{hyperref}
+}
+\DeclareOption{textures}{\def\eq@drivernum{3}%
+  \def\eq@driver{textures}\def\eq@drivercode{epdfmark.def}%
+  \PassOptionsToPackage{textures}{insdljs}%
+  \PassOptionsToPackage{textures}{hyperref}
+}
+\def\eq@drivernum{0}
+\def\eq@driver{dvipsone/dvips}
+\def\eq@drivercode{epdfmark.def}
+\DeclareOption{preview}{\previewtrue}
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{insdljs}}
+\newif\ifpreview \previewfalse
+\ProcessOptions
+\RequirePackage{hyperref}
+\RequirePackage{insdljs}
+\newsavebox{\eq@tmpbox}
+\newdimen\eq@tmpdima
+\def\Bbox#1#2{%
+    \hbox{\ifpreview\setlength\fboxrule{0.4pt}\setlength\fboxsep{0pt}%
+    \@tempdima=#1\advance\@tempdima by-\fboxrule
+    \@tempdimb=#2\advance\@tempdimb by-\fboxrule
+    \fbox{\parbox[b][\@tempdimb][c]{\@tempdima}{\hfill\vfill}}\else
+    \parbox[b][#2][c]{#1}{\hfill\vfill}\fi}%
+}
+\def\processAppArgs#1#2{%
+    \ifx\end#1% if #1=\end, #2=\@nil.
+        \let\@next=\relax
+    \else
+        \ifx#1\@empty
+            \def\@next{\processAppArgs}%
+        \else
+            \@getCmdName{\Ff}\edef\arg@Ff{\@CmdName}%
+            \@getCmdName{#1}%
+            \ifx\arg@Ff\@CmdName  % if \Ff, let's  add arguments
+                \ifx\eq@Ff\@empty\def\eq@FfValue{0}\else
+                    \expandafter\getFfValue\eq@Ff\@nil\fi
+                \@tempcnta = \eq@FfValue
+                \def\eq@arg{#2}%
+                \ifx\eq@arg\@empty\else
+                \advance\@tempcnta by#2\fi
+                \edef\eq@Ff{/Ff \the\@tempcnta}%
+                \def\@next{\processAppArgs}%
+            \else
+                \@getCmdName{\F}\edef\arg@F{\@CmdName}%
+                \@getCmdName{#1}%
+                \ifx\arg@F\@CmdName  % if \Ff, let's  add arguments
+                \ifx\eq@F\@empty\def\eq@FValue{0}\else
+                    \expandafter\getFValue\eq@F\@nil\fi
+                \@tempcnta = \eq@FValue
+                \def\eq@arg{#2}%
+                \ifx\eq@arg\@empty\else
+                \advance\@tempcnta by#2\fi
+                \edef\eq@F{/F \the\@tempcnta}%
+                \def\@next{\processAppArgs}%
+                \else
+                    \csname @eq%
+                        \expandafter\@gobble\string#1\endcsname{#2}%
+                    \def\@next{\processAppArgs}%
+                \fi
+            \fi
+        \fi
+    \fi
+    \@next
+}
+\def\@processEvery{\edef\eqtemp{}\toks0={}\@@processEvery}
+\def\@@processEvery#1{%
+    \ifx#1\end\def\@next{\the\toks0 }%
+    \else
+        \edef\eqtemp{\the\toks0 }%
+        \toks0=\expandafter{\eqtemp
+            \expandafter\processAppArgs#1\end\@nil}%
+        \def\@next{\@@processEvery}%
+    \fi
+    \@next
+}
+\newdimen\eqcenterWidget
+\def\centerWidget#1{%
+    \eqcenterWidget=#1\relax
+    \eqcenterWidget=.5\eqcenterWidget
+    \advance\eqcenterWidget by -4bp
+}
+\def\@eqF#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@F=\@empty\else\def\eq@F{/F #1}\fi}\def\eq@F{}
+    \def\@eqW#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@W=\@empty\else\def\eq@W{/W #1}\fi}
+    \def\eq@W{}
+    \def\@eqS#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@S=\@empty\else\def\eq@S{/S/#1}\fi}
+    \def\eq@S{}
+\def\@eqBorder#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@Border=\@empty\else\def\eq@Border{/Border [#1]}\fi}%
+\def\eq@Border{/Border [0 0 0]}
+\def\@eqAP#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@AP=\@empty\else\def\eq@AP{/AP<<#1>>}\fi}%
+    \def\eq@AP{}
+    % In the AP dictionary for checkboxes is the `On' value.
+    % It is introduced into AP by passing a TeX parameter
+    % normally, this variable is not used.
+    \def\@eqOn#1{\def\eq@On{/#1}}\def\eq@On{/Yes}
+\def\@eqAS#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@AS=\@empty\else\def\eq@AS{/AS/#1}\fi}%
+    \def\eq@AS{}
+\def\@eqA#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@A=\@empty\else\def\eq@A{/A <<#1>>}\fi}\def\eq@A{}
+\def\@eqAA#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@AA=\@empty\else\def\eq@AA{/AA <<#1>>}\fi}\def\eq@AA{}
+\def\@eqDA#1{\def\eq@DA{#1}}
+\def\eq@DA{\eq@textFont\space\eq@textSize\space Tf \eq@textColor}%
+\def\@eqtextFont#1{\def\eq@textFont{/#1}}
+\def\eq@textFont{/Helv}
+\def\@eqtextSize#1{\def\eq@textSize{#1}}
+\def\eq@textSize{9}
+\def\@eqRV#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@RV=\@empty\else\def\eq@RV{/RV (#1)\fi}}\def\eq@RV{}
+\def\@eqDS#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@DS=\@empty\else\def\eq@DS{/DS (#1)\fi}}\def\eq@DS{}
+\def\@eqtextColor#1{\def\eq@textColor{#1}}
+\def\eq@textColor{0 g}
+\def\@eqQ#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@Q=\@empty\else\def\eq@Q{/Q #1}\fi}\def\eq@Q{}
+\def\@eqDV#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@DV=\@empty\else\def\eq@DV{/DV (#1)}\fi}
+    \def\eq@DV{}
+\def\@eqV#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@V=\@empty\else\def\eq@V{/V (#1)}\fi}%
+    \def\eq@V{}
+\def\@eqTU#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@TU=\@empty\else\def\eq@TU{/TU (#1)}\fi}
+    \def\eq@TU{}
+\def\@eqFf#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@Ff=\@empty\else\def\eq@Ff{/Ff #1}\fi}
+    \def\eq@Ff{}
+\def\@eqMaxLen#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@MaxLen=\@empty\else\def\eq@MaxLen{/MaxLen #1}\fi}%
+    \def\eq@MaxLen{}
+\def\@eqH#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@H=\@empty\else\def\eq@H{/H/#1}\fi}\def\eq@H{}
+\def\@eqMK#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@MK=\@empty\else\def\eq@MK{/MK << #1 >> }\fi}%
+    \def\eq@MK{}
+    \def\@eqR#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@R=\@empty\else\def\eq@R{/R #1}\fi}
+    \def\eq@R{}
+    %   Boundary color
+    \def\@eqBC#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@BC=\@empty\else\def\eq@BC{/BC [#1]}\fi}
+    \def\eq@BC{}
+    %   Background color
+    \def\@eqBG#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@BG=\@empty\else\def\eq@BG{/BG [#1]}\fi}
+    \def\eq@BG{}
+    %   normal appearance text
+    \def\@eqCA#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@CA=\@empty\else\def\eq@CA{#1}\fi}
+    \def\eq@CA{}
+    %   Roll over text
+    \def\@eqRC#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@RC=\@empty\else\def\eq@RC{#1}\fi}
+    \def\eq@RC{}
+    %   Push text
+    \def\@eqAC#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+        \let\eq@AC=\@empty\else\def\eq@AC{#1}\fi}
+    \def\eq@AC{}
+\def\@eqmkIns#1{\def\eq@mkIns{#1}}\def\eq@mkIns{}
+\def\@eqOpt#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@Opt=\@empty\else\def\eq@Opt{/Opt [#1]}\fi}
+    \def\eq@Opt{}
+\def\@eqTI#1{\def\eq@arg{#1}\ifx\eq@arg\@empty
+    \let\eq@TI=\@empty\else\def\eq@TI{/TI #1}\fi}
+    \def\eq@TI{}
+\def\@eqrawPDF#1{\def\eq@rawPDF{#1}}\def\eq@rawPDF{}
+\def\@eqrectH#1{\def\eq@rectH{#1}}
+\def\@eqrectW#1{\def\eq@rectW{#1}}
+\def\@eqautoCenter#1{\let\autoCenter=#1}
+\let\autoCenter=y
+\def\@eqsymbolchoice#1{\expandafter\ifx\csname eq@#1\endcsname\relax
+   \typeout{exerquiz: `#1' is not an acceptable option
+   for \string\symbolechoice, inserting default, `check'.}
+   \edef\symbol@choice{\eq@check}\else
+   \edef\symbol@choice{\csname eq@#1\endcsname}\fi
+}
+\def\eq@protect#1{\let#1=\@empty}
+\def\tallywidth#1{\def\tally@width{#1}}
+\def\tally@width{15bp}
+\def\DefaultHeightOfWidget{11bp}
+\def\RadioFieldSize{11bp}
+\def\RBW{2in}
+\def\SFW{1.5in}
+\def\eq@check{4}
+\def\eq@circle{l}
+\def\eq@cross{8}
+\def\eq@diamond{u}
+\def\eq@square{n}
+\def\eq@star{H}
+\let\symbolchoice=\@eqsymbolchoice
+\symbolchoice{check}
+\newcommand\JS[1]{/S/JavaScript/JS(#1)}
+\newcommand\AAMouseUp[1]{/U<<#1>>}
+\newcommand\AAMouseDown[1]{/D<<#1>>}
+\newcommand\AAMouseEnter[1]{/E<<#1>>}
+\newcommand\AAMouseExit[1]{/X<<#1>>}
+\newcommand\AAOnFocus[1]{/Fo<<#1>>}
+\newcommand\AAOnBlur[1]{/Bl<<#1>>}
+\newcommand\AAFormat[1]{/F<<\JS{#1}>>}
+\newcommand\AAKeystroke[1]{/K<<\JS{#1}>>}
+\newcommand\AAValidate[1]{/V<<\JS{#1}>>}
+\newcommand\AACalculate[1]{/C<<\JS{#1}>>}
+\newcommand\checkColor{["RGB", 0, .6, 0]}
+\newcommand\crossColor{color.red}
+\newcommand\correctColor{["RGB", 0, .6, 0]} % same as webgreen
+\newcommand\wrongColor{color.red}
+\newcommand\eqDefaultColor{color.black}
+\def\FHidden{2}                     % bit 2: hidden field
+\def\FPrint{4}                      % bit 3: print
+\def\FNoView{32}                    % bit 6: no view
+\def\FLock{128}                     % bit 8: locked field (PDF 1.4)
+\def\FfReadOnly{1}                   % all
+\def\FfRequired{2}                   % all
+\def\FfNoExport{4}                   % all
+\def\FfMultiline{4096}               % text
+\def\FfPassword{8192}                % text
+\def\FfNoToggleToOff{16384}          % radio
+\def\FfRadio{32768}                  % radio
+\def\FfPushButton{65536}             % Pushbuton
+\def\FfCombo{131072}                 % choice
+\def\FfEdit{262144}                  % combo
+\def\FfSort{524288}                  % choice
+\def\FfFileSelect{1048576}           % text (PDF 1.4)
+\def\FfMultiSelect{2097152}          % choice (PDF 1.4)
+\def\FfDoNotSpellCheck{4194304}      % text, combo (PDF 1.4)
+\def\FfDoNotScroll{8388608}          % text (PDF 1.4)
+\def\FfComb{16777216}                % text (PDF 1.5)
+\def\FfRadiosInUnison{33554432}      % radio (PDF 1.5)
+\def\FfCommitOnSelChange{67108864}   % choice (PDF 1.5)
+\def\FfRichText{33554432}            % radio (PDF 1.5)
+\def\getFfValue/Ff#1\@nil{\def\eq@FfValue{#1}}
+\def\getFValue/F#1\@nil{\def\eq@FValue{#1}}
+\def\@getCmdName#1{\edef\@CmdName{\expandafter\@gobble\string#1}}
+\newcommand\everyTextField[1]{\def\every@TextField{#1}}
+\def\every@TextField{}
+\newcommand\everyCheckBox[1]{\def\every@CheckBox{#1}}
+\def\every@CheckBox{}
+\newcommand\everyRadioButton[1]{\def\every@RadioButton{#1}}
+\def\every@RadioButton{}
+\newcommand\everyButtonField[1]{\def\every@ButtonField{#1}}
+\def\every@ButtonField{}
+\newcommand\everyPushButton[1]{\def\every@PushButton{#1}}
+\def\every@PushButton{}
+\newcommand\everyListBox[1]{\def\every@listBox{#1}}
+\newcommand\everyComboBox[1]{\def\every@comboBox{#1}}
+\def\every@listBox{}\def\every@comboBox{}
+\newcommand\everyLink[1]{\def\every@Link{#1}}
+\def\every@Link{}
+\def\makeJSspecials
+{%
+    \def\\{\eqbs\eqbs}%         % define \\ to be \\
+    \makespecialJS              % make \r=\jsR and \t=\jsT
+}
+\def\eq@setButtonProps#1#2%
+{%
+    \makeJSspecials
+    \processAppArgs#2\end\@nil  % set widget properties
+    \Hy@pdfstringfalse
+    \ifx\eq@rectW\@empty
+        \sbox{\eq@tmpbox}{\ \eq@CA\ }\eq@tmpdima=\wd\eq@tmpbox
+        \sbox{\eq@tmpbox}{\ \eq@RC\ }%
+        \ifdim\eq@tmpdima>\wd\eq@tmpbox\else\eq@tmpdima=\wd\eq@tmpbox\fi%
+        \sbox{\eq@tmpbox}{\ \eq@AC\ }%
+        \ifdim\eq@tmpdima>\wd\eq@tmpbox\else\eq@tmpdima=\wd\eq@tmpbox\fi%
+        \wd\eq@tmpbox = \eq@tmpdima
+    \else
+        \wd\eq@tmpbox=\eq@rectW
+    \fi
+    #1%
+}
+\def\eq@setWidgetProps#1#2%
+{%
+    \makeJSspecials
+    \processAppArgs#2\end\@nil  % set widget properties
+    #1%
+}
+\def\common@choiceCode
+{%
+    /Subtype /Widget
+    /T (\Fld@name)
+    /FT /Ch
+    \eq@Ff
+    \eq@F
+    \eq@TU
+    \eq@TI
+    /BS << \eq@W\eq@S >>
+    /MK <<\eq@R\eq@BC\eq@BG\eq@mkIns>>
+    /DA (\eq@DA)
+    /Opt [\eq@Opt]
+    \eq@DV\eq@V
+    \eq@A\eq@AA
+    \eq@rawPDF
+}
+\newcommand\list@@Box[8]
+{%
+    \begingroup
+    \edef\Fld@name{#2}\def\eq@rectW{#3}\def\eq@rectH{#4}\def\eq@Opt{#5}%
+    \def\eq@DA{\eq@textFont\space\eq@textSize\space Tf \eq@textColor}%
+    \@processEvery#8\end\noindent#6#7{#1}%
+}
+\def\listBoxDefaults
+{%
+    \W{1}\S{I}\F{\FPrint}\BC{0 0 0}
+}
+\newcommand\listBox[5][]
+{%
+    \list@@Box{#1}{#2}{#3}{#4}{#5}{}{\eq@setWidgetProps
+        \eq@choice@driver}{\listBoxDefaults\every@listBox}%
+}
+\newcommand\combo@@Box[8]
+{%
+   \begingroup
+    \@eqFf{\FfCombo}\edef\Fld@name{#2}\def\eq@rectW{#3}%
+    \def\eq@rectH{#4}\def\eq@Opt{#5}%
+    \def\eq@DA{\eq@textFont\space\eq@textSize\space Tf \eq@textColor}%
+    \@processEvery#8\end\noindent#6#7{#1}%
+}
+\def\comboBoxDefaults
+{%
+    \W{1}\S{I}\F{\FPrint}\BC{0 0 0}
+}
+\newcommand\comboBox[5][]
+{%
+    \combo@@Box{#1}{#2}{#3}{#4}{#5}{}{\eq@setWidgetProps
+        \eq@choice@driver}{\comboBoxDefaults\every@comboBox}%
+}
+\def\common@pushButtonCode
+{%
+    /Subtype /Widget
+    /T (\Fld@name)
+    /FT /Btn
+    \eq@Ff
+    \eq@TU
+    \eq@H
+    \eq@F
+    /BS <<\eq@W\eq@S >>
+    /MK <<\eq@R\eq@BC\eq@BG%
+            /CA(\eq@CA)/RC(\eq@RC)/AC(\eq@AC)\eq@mkIns>>
+    /DA (\eq@DA)
+    \eq@A\eq@AA
+    \eq@rawPDF
+}
+\def\common@RadioCheckCode
+{%
+    /Subtype /Widget
+    /T (\Fld@name)
+    /FT /Btn
+    \eq@Ff
+    \eq@F
+    \eq@TU
+    /BS <<\eq@W\eq@S>>
+    \eq@MK
+    /DA (\eq@DA)
+    \eq@AP
+    \eq@AS
+    \eq@DV\eq@V
+    \eq@A\eq@AA
+    \eq@rawPDF
+}
+\newcommand\push@@Button[7]
+{%
+    \begingroup
+    \def\eq@Ff{/Ff \FfPushButton}%
+    \def\eq@DA{\eq@textFont\space\eq@textSize\space Tf \eq@textColor}%
+    \edef\Fld@name{#2}\def\eq@rectW{#3}\def\eq@rectH{#4}%
+    \@processEvery#7\end\noindent#5#6{#1}%
+}
+\def\pushButtonDefaults
+{%
+    \W{1}\S{B}\F{\FPrint}\BC{0 0 0}
+    \H{P}\BG{.7529 .7529 .7529}
+}
+\newcommand\pushButton[4][]
+{%
+    \push@@Button{#1}{#2}{#3}{#4}{}{\eq@setButtonProps\eq@Button@driver}%
+        {\pushButtonDefaults\every@PushButton}%
+}
+\newcommand\check@@Box[8]
+{%
+    \begingroup
+    \def\@eqDV##1{\def\eq@arg{##1}\ifx\eq@arg\@empty\let\eq@DV=\@empty
+        \else\def\eq@DV{/DV/##1}\fi}%
+    \def\@eqV##1{\def\eq@arg{##1}\ifx\eq@arg\@empty
+        \let\eq@V=\@empty\else\def\eq@V{/V/##1}\fi}%
+    \edef\Fld@name{#2}\def\eq@rectW{#3}\def\eq@rectH{#4}\def\eq@On{/#5}%
+    \@eqAP{/N <<\eq@On<<>>>> }\@eqtextFont{ZaDb}\@eqAS{Off}% \eq@On <<>>? \space/null
+    \def\eq@DA{\eq@textFont\space\eq@textSize\space Tf \eq@textColor}%
+    \@eqMK{\eq@R\eq@BC\eq@BG/CA(\symbol@choice)\eq@mkIns}%
+    \@processEvery#8\end\noindent#6#7{#1}%
+}
+\def\checkBoxDefaults
+{%
+    \F{\FPrint}\W{1}\S{S}\BC{0 0 0}
+}
+\newcommand\checkBox[5][]
+{%
+    \check@@Box{#1}{#2}{#3}{#4}{#5}{}{\eq@setWidgetProps
+        \eq@RadioCheck@driver}{\checkBoxDefaults\every@CheckBox}%
+}
+\newcommand\radio@@Button[8]
+{%
+    \begingroup
+    \def\@eqDV##1{\def\eq@arg{##1}\ifx\eq@arg\@empty\let\eq@DV=\@empty
+        \else\def\eq@DV{/DV/##1}\fi}%
+    \def\@eqV##1{\def\eq@arg{##1}\ifx\eq@arg\@empty\let\eq@V=\@empty
+        \else\def\eq@V{/V/##1}\fi}%
+    \def\eq@Ff{/Ff \FfRadio}\@eqtextFont{ZaDb}\@eqAS{Off}%
+    \def\eq@DA{\eq@textFont\space\eq@textSize\space Tf \eq@textColor}%
+    \@eqAP{/N <<\eq@On<<>>>>}%  \eq@On <<>>? /null
+    \@eqMK{\eq@R\eq@BC\eq@BG/CA(\symbol@choice)\eq@mkIns}%
+    \edef\Fld@name{#2}\def\eq@rectW{#3}\def\eq@rectH{#4}\def\eq@On{/#5}%
+    \@processEvery#8\end\noindent#6#7{#1}%
+}
+\def\radioButtonDefaults
+{%
+    \W{1}\S{S}\BC{0 0 0}\F{\FPrint}
+}
+\newcommand\radioButton[5][]
+{%
+    \radio@@Button{#1}{#2}{#3}{#4}{#5}{}{\eq@setWidgetProps
+        \eq@RadioCheck@driver}{\radioButtonDefaults\every@RadioButton}%
+}
+\def\common@TextFieldCode
+{%
+    /Subtype /Widget
+    /T (\Fld@name)
+    /FT /Tx
+    \eq@Ff
+    \eq@F
+    \eq@Q
+    \eq@TU
+    \eq@MaxLen
+    /BS <<\eq@W\eq@S>>
+    /MK <<\eq@R\eq@BC\eq@BG\eq@mkIns>>
+    /DA (\eq@DA)
+    \eq@DV\eq@V
+    \eq@RV\eq@DS
+    \eq@A\eq@AA
+    \eq@rawPDF
+}
+\newcommand\text@@Field[7]
+{%
+    \begingroup
+    \edef\Fld@name{#2}\def\eq@Title{#2}\def\eq@rectW{#3}\def\eq@rectH{#4}%
+    \def\eq@DA{\eq@textFont\space\eq@textSize\space Tf \eq@textColor}%
+    \@processEvery#7\end\noindent#5#6{#1}%
+}
+\def\textFieldDefaults
+{%
+    \F{\FPrint}\BC{0 0 0}\W{1}\S{S}
+}
+\newcommand\textField[4][]
+{%
+    \text@@Field{#1}{#2}{#3}{#4}{}{\eq@setWidgetProps\eq@TextField}%
+        {\textFieldDefaults\every@TextField}%
+}
+\let\eqTextField=\textField
+\def\textFieldDefaults
+{%
+    \F{\FPrint}\BC{0 0 0}\W{1}\S{S}
+}
+\newcommand\calcTextField[4][]
+{%
+    \text@@Field{#1}{#2}{#3}{#4}{}{\eq@setWidgetProps\eq@calcTextField}%
+        {\textFieldDefaults\every@TextField}%
+}
+\def\common@LinkCode
+{%
+    \eq@A           % Action
+    \eq@rawPDF      % everything else
+}
+\newcommand\set@@Link[7]
+{%
+    \begingroup
+    \def\eq@rectW{#2}%
+    \ifx\eq@rectW\@empty
+        \def\link@@Box{#4}%
+    \else
+        \def\eq@rectH{#3}%
+        \def\eq@arg{#4}\ifx\eq@arg\@empty
+            \def\eq@content{\hfill\vfill}\else\def\eq@content{#4}\fi
+        \def\link@@Box{\parbox[\eq@pos][\eq@rectH][\eq@innerpos]%
+            {\eq@rectW}{\centering\eq@content}}%
+    \fi
+    \@processEvery#7\end\noindent#5#6{#1}%
+}
+\def\set@LinkTextDefaults{\Border{0 0 0}}
+\newcommand\setLinkText[2][]
+{%
+    \set@@Link{#1}{}{}{#2}{}{\eq@setWidgetProps\setLink@driver}%
+        {\set@LinkTextDefaults\every@Link}%
+}
+\def\set@LinkBboxDefaults{\Border{0 0 0}}
+\newcommand\setLinkBbox[3][]
+{%
+    \@setLinkBbox{#1}{#2}{#3}%
+}
+\def\@setLinkBbox#1#2#3{\@ifnextchar[{\@@setLinkBbox{#1}{#2}{#3}}%
+    {\@@setLinkBbox{#1}{#2}{#3}[c]}}
+\def\@@setLinkBbox#1#2#3[#4]%
+{%
+    \@ifnextchar[{\@@@setLinkBbox{#1}{#2}{#3}{#4}}%
+        {\@@@setLinkBbox{#1}{#2}{#3}{#4}[#4]}
+}
+\def\@@@setLinkBbox#1#2#3#4[#5]#6%
+{%
+    \def\eq@pos{#4}\def\eq@innerpos{#5}%
+    \set@@Link{#1}{#2}{#3}{#6}{\eq@setWidgetProps\setLink@driver}%
+        {}{\set@LinkBboxDefaults\every@Link}%
+}
+
+\input{\eq@drivercode}
+\endinput
+%%
+%% End of file `eforms.sty'.

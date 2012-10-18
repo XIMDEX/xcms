@@ -1,0 +1,86 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+.ximnews_tabPane{
+		height:21px;	/* Height of tabs */
+		border-bottom:1px solid #919b9c;
+	}
+	.ximnews_aTab{
+		border-left:1px solid #919b9c;
+		border-right:1px solid #919b9c;
+		border-bottom:1px solid #919b9c;
+		font-family: Trebuchet MS, Lucida Sans Unicode, Arial, sans-serif;
+		padding:5px;	
+
+	}
+	.ximnews_tabPane DIV{
+		float:left;
+		height:100%;	/* Height of tabs */
+		padding-left:3px;
+		vertical-align:middle;
+		background-repeat:no-repeat;
+		background-position:bottom left;
+		cursor:pointer;
+		position:relative;
+		bottom:-1px;
+		margin-left:0px;
+		margin-right:0px;
+	}
+	.ximnews_tabPane .tabActive{
+		background-image:url('images/tab_left_active.gif');
+		margin-left:0px;
+		margin-right:0px;	
+		z-index:10;	
+	}
+	.ximnews_tabPane .tabInactive{
+		background-image:url('images/tab_left_inactive.gif');
+		margin-left:0px;
+		margin-right:0px;
+		z-index:1;
+	}
+
+	.ximnews_tabPane .inactiveTabOver{
+		background-image:url('images/tab_left_over.gif');
+		margin-left:0px;
+		margin-right:0px;
+	}
+	.ximnews_tabPane span{
+		font-family:arial;
+		vertical-align:top;
+		font-size:11px;
+		padding-left:3px;
+		padding-right:3px;		
+		line-height:21px;
+		float:left;
+	}
+	.ximnews_tabPane .tabActive span{
+		padding-bottom:1px;
+		line-height:20px;
+	}
+	
+	.ximnews_tabPane img{
+		float:left;
+	}

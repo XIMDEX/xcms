@@ -1,0 +1,55 @@
+=====================================
+Header template for JavaScript files:
+=====================================
+
+/*****************************************************************************
+ *
+ * Copyright (c) 2003-2005 Kupu Contributors. All rights reserved.
+ *
+ * This software is distributed under the terms of the Kupu
+ * License. See LICENSE.txt for license text. For a list of Kupu
+ * Contributors see CREDITS.txt.
+ *
+ *****************************************************************************/
+
+// $Id$
+
+
+
+=================================
+Header template for Python files:
+=================================
+
+##############################################################################
+#
+# Copyright (c) 2003-2005 Kupu Contributors. All rights reserved.
+#
+# This software is distributed under the terms of the Kupu
+# License. See LICENSE.txt for license text. For a list of Kupu
+# Contributors see CREDITS.txt.
+#
+##############################################################################
+"""XXXShort description
+
+XXXLonger description
+
+$Id$
+"""
+
+
+==========================
+Template for feature files
+==========================
+
+<kupu:feature
+    name="FEATURE"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="PART">
+
+  </kupu:part>
+
+</kupu:feature>

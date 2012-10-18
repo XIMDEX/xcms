@@ -1,0 +1,142 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+div.mini-spotlight {
+	position: absolute;
+	top: 0px;
+	right: 20px;
+	width: 220px;
+	padding: 12px 0px 10px 0px;
+}
+
+
+div.mini-spotlight input {
+	background: #2c4b4b ;/*url('../../../../xmd/images/header/search-icon.png') no-repeat  10px center*/
+	border: none;
+	-moz-box-shadow: 1px 1px 0px #8dc7c7;
+	-moz-border-radius: 12px 0px 0px 12px;
+	-webkit-box-shadow: 1px 1px 0px #8dc7c7;
+	-webkit-border-radius: 12px 0px 0px 12px;
+	box-shadow: 1px 1px 0px #8dc7c7;
+	border-radius: 12px 0px 0px 12px;
+	width: 130px;
+	padding-left: 20px;/*30 para la búsqueda avanzada*/
+	margin: 0px;
+	float: left;
+	color: #ebebeb;
+}
+div.mini-spotlight input:hover {
+	background: #3ea8a9 ;/*url('../../../../xmd/images/header/search-icon-hover.png') no-repeat  10px center*/
+}
+div.mini-spotlight input:focus {
+	background: #fff url('../../../../xmd/images/header/search-icon-focus.png') no-repeat  10px center;
+	-moz-box-shadow: inset 1px 1px 5px #D1DFDF;
+	-webkit-box-shadow: inset 1px 1px 5px #D1DFDF;
+	box-shadow: inset 1px 1px 5px #D1DFDF;
+	margin-top: 1px;
+	color: #666;
+	
+}
+
+div.mini-spotlight div.mini-spotlight-advanced, div.mini-spotlight div.mini-spotlight-advanced-no {
+	float: left;
+	background: #16999a url('../../../../../images/header/advanced-search-over.png') no-repeat 7px center;
+	-moz-box-shadow: 1px 1px 0px #8dc7c7;
+	-moz-border-radius: 0px 12px 12px 0px;
+	-webkit-box-shadow: 1px 1px 0px #8dc7c7;
+	-webkit-border-radius: 0px 12px 12px 0px;
+	box-shadow: 1px 1px 0px #8dc7c7;
+	border-radius: 0px 12px 12px 0px;
+	text-indent: -9999px;
+	* font-size: 0;
+	*line-height: 0px;
+	cursor: pointer;
+	width: 26px;
+	height: 22px;
+	position: relative;
+}
+
+div.mini-spotlight div.mini-spotlight-advanced{
+	z-index: 1;
+	margin-left: -9px;
+	width: 30px;
+}
+
+
+div.mini-spotlight div.mini-spotlight-advanced:hover {
+	background: #2c4b4b url('../../../../../images/header/advanced-search.png') no-repeat 7px center;
+}
+
+
+div.mini-spotlight div.mini-spotlight-advanced-no {
+	background: #2c4b4b url('../../../../../images/header/advanced-no-search.png') no-repeat 1px center;
+	z-index: 2;
+}
+
+
+div.mini-spotlight div.mini-spotlight-advanced-no:hover {
+	background: #16999a url('../../../../../images/header/advanced-no-search-hover.png') no-repeat 1px center;
+}
+
+.ui-autocomplete{
+	background: #ececec;
+	border: 1px solid #EEEEEE;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 15px 15px 12px;
+	box-shadow: 0 2px 0 #b3b3b3;
+	-moz-box-shadow: 0 2px 0 #b3b3b3;
+	-webkit-box-shadow: 0 2px 0 #b3b3b3;
+	top: 48px !important;
+}
+
+.ui-autocomplete:before{
+	 background: url("../../../../../images/header/arrow-greyT.png") no-repeat scroll left 3px ;
+    content: " ";
+    height: 15px;
+    left: 7px;
+    position: absolute;
+    top: -15px;
+    width: 32px;
+		
+}
+.ui-autocomplete .ui-menu-item:first-child{
+	border-top: 1px solid transparent;
+}
+.ui-autocomplete .ui-menu-item{
+	border-top: 1px dotted #CCCCCC;
+	padding: 3px 5px;
+}
+
+.ui-autocomplete .ui-menu-item:hover a{
+	border: none;
+	background: none;
+	color: #5BC3B3;
+	cursor: pointer;
+	padding: 2px 4px;
+	margin: 0;
+}

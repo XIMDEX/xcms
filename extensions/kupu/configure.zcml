@@ -1,0 +1,8 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope">
+
+  <!-- all we do is include the zope3 package which contains all the
+       Zope3 specific stuff -->
+  <include package=".zope3" />
+
+</configure>

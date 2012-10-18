@@ -1,0 +1,113 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="xmlconfig"
+    implementation="cnf"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="xmlconfig">
+    <div style="display: none;">
+      <xml id="kupuconfig" class="kupuconfig">
+        <kupuconfig>
+          <kupu:define-slot name="kupuconfig" />
+        </kupuconfig>
+      </xml>
+    </div>
+  </kupu:part>
+
+  <kupu:part name="genelxmlconfig">
+    <div style="display: none;">
+      <xml id="genericelementsxml">
+        <elements>
+            <element>
+                <id>openvraag</id>
+                <name>Open Vraag</name>
+                <formdef>
+                    <field>
+                        <id>breedte</id>
+                        <name>Breedte</name>
+                        <type>text</type>
+                        <validator>optionalInteger</validator>
+                    </field>
+                    <field>
+                        <id>hoogte</id>
+                        <name>Hoogte</name>
+                        <type>text</type>
+                        <validator>optionalInteger</validator>
+                    </field>
+                    <field>
+                        <id>antwoord</id>
+                        <name>Antwoord</name>
+                        <type>text</type>
+                        <validator>optionalString</validator>
+                    </field>
+                    <field>
+                        <id>foofile</id>
+                        <name>Foo file</name>
+                        <type>button_field</type>
+                        <validator>requiredString</validator>
+                        <value>http://localhost</value>
+                    </field>
+                </formdef>
+                <replacement>
+                    <element name="textarea">
+                        <property name="cols">{{breedte}}</property>
+                        <property name="rows">{{hoogte}}</property>
+                        <property name="class">formfield</property>
+                        <children>
+                            {{antwoord}}
+                        </children>
+                    </element>
+                </replacement>
+            </element>
+            <element>
+                <id>checkbox_example</id>
+                <name>Checkbox voorbeeld</name>
+                <formdef>
+                    <field>
+                        <id>question</id>
+                        <name>Vraag</name>
+                        <type>text</type>
+                        <validator>requiredString</validator>
+                    </field>
+                    <field>
+                        <id>checkbox_choices</id>
+                        <name>Opties</name>
+                        <type>text</type>
+                        <validator>requiredString</validator>
+                    </field>
+                </formdef>
+                <replacement>
+                    <element name="div">
+                        <children>
+                            Rendering of special element:
+                            <element name="special">
+                                <property name="function">createCheckBoxList</property>
+                            </element>
+                        </children>
+                    </element>
+                </replacement>
+            </element>
+        </elements>
+      </xml>
+    </div>
+  </kupu:part>
+
+  <!-- Default configuration -->
+  <kupu:part name="defaultconfig">
+    <dst>fulldoc.html</dst>
+    <use_css>1</use_css>
+    <reload_after_save>0</reload_after_save>
+    <strict_output>1</strict_output>
+    <content_type>application/xhtml+xml</content_type>
+    <compatible_singletons>1</compatible_singletons>
+    <table_classes>
+      <class>plain</class>
+      <class>listing</class>
+      <class>grid</class>
+      <class>data</class>
+    </table_classes>
+  </kupu:part>
+ 
+</kupu:feature>

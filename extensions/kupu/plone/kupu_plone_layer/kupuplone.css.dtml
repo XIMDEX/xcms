@@ -1,0 +1,240 @@
+/*****************************************************************************
+ *
+ * Kupu plone styles
+ *
+ * Copyright (c) 2003-2005 Kupu Contributors. See CREDITS.txt
+ *
+ * Feel free to use whole or parts of this for your own designs, but
+ * give credit where credit is due.
+ *
+ *****************************************************************************/
+
+/* $Id: kupuplone.css 7217 2004-11-11 13:20:56Z duncan $ */
+/*
+<dtml-var "enableHTTPCompression(request=REQUEST, debug=1, js=1)">
+<dtml-let last_modified="_.DateTime()-14"
+expires="_.DateTime()+7" >
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">
+<dtml-call "REQUEST.RESPONSE.setHeader( 'Expires', expires.toZone('GMT').rfc822() )" >
+</dtml-let>
+*/
+/* <dtml-with base_properties><dtml-let buttonhighlight="'#fff'" buttonshadow="contentViewBorderColor"> */
+
+div.kupu-toolboxes {display: none}
+
+/*select.kupu-tb-styles {display: block}*/
+
+div.kupu-tb { margin: 0; }
+div.kupu-fulleditor { margin-right: 0; }
+div.kupu-fulleditor .kupu-editorframe {
+  margin-right: 0;
+}
+
+.drawer {
+    left: 25%;
+}
+
+/* Kupu pulls in Plone stylesheets. If you want a paragraph to look
+different in Kupu from Plone, then don't add rules here, add them in
+ploneCustom.css and use the kupu class to distinguish them. e.g.
+
+.pullQuote { float: right; width: 30%; }
+.kupu .pullQuote { float:none; width: auto; }
+*/
+.kupu table { 
+  border-left:1px solid ThreeDLightShadow; 
+  border-top:1px solid ThreeDLightShadow; 
+  border-right:1px solid ThreeDDarkShadow; 
+  border-bottom:1px solid ThreeDDarkShadow; 
+} 
+
+.kupu table tr td { 
+  border-left:1px solid ThreeDDarkShadow; 
+  border-top:1px solid ThreeDDarkShadow; 
+  border-right:1px solid ThreeDLightShadow; 
+  border-bottom:1px solid ThreeDLightShadow; 
+} 
+/* Hide the 'target' field in the LinkLibraryDrawer 
+
+   I've used a class as an identifier here because somehow using id
+   doesn't seem to work (Mozilla doesn't seem to apply CSS defined for
+   an id when generating HTML using XSLT).
+*/
+.kupu-linkdrawer-target-row, .kupu-linkdrawer-name-row {
+  display: none
+}
+
+textarea { width: 90%; } /* Override buggy Plone setting */
+
+/* plone customizations regarding color and borders etc */
+
+.kupu-tb {
+  background-color:&dtml-contentViewBackgroundColor;;
+  padding-bottom:0px; margin:0;
+  width:99%;
+  border:1px solid &dtml-contentViewBorderColor;;
+}
+
+span.kupu-tb-buttons button {
+  width: 24px;
+  height: 24px;
+  border-color:&dtml-contentViewBackgroundColor;;
+  background-color: &dtml-contentViewBackgroundColor;;
+  background-position: center center;
+  margin-bottom:4px;
+  margin-right:-2px;
+}
+
+div div.kupu-panels {
+  background-color: &dtml-contentViewBackgroundColor;;
+}
+
+span.kupu-tb-buttons button:hover {
+  border:1px solid;
+  border-color:  &dtml-buttonhighlight; &dtml-buttonshadow; &dtml-buttonshadow; &dtml-buttonhighlight;;
+}
+
+div.kupu-tb-buttongroup {
+  margin-right:1px;
+}
+
+.kupu-tb-styles, .kupu-ulstyles, .kupu-olstyles {
+  margin-top:3px;
+  margin-bottom:4px;
+}
+
+body.documentContent { padding: 1em !important; }
+
+html.kupu-html {
+  font-size: &dtml-fontBaseSize;;
+}
+
+iframe.kupu-editor-iframe{
+  border:1px solid &dtml-globalBorderColor;;
+  width:100%;
+  border-top:none;
+  margin-right: 0;
+}
+
+div.kupu-fulleditor-zoomed .kupu-editor-iframe {
+  border: none;
+  margin: 0;
+}
+
+.kupu-fulleditor-zoomed .kupu-tb {
+  width:100%;
+}
+
+
+span.kupu-tb-buttons .kupu-bold-pressed,
+span.kupu-tb-buttons .kupu-italic-pressed,
+span.kupu-tb-buttons .kupu-subscript-pressed,
+span.kupu-tb-buttons .kupu-superscript-pressed,
+span.kupu-tb-buttons .kupu-underline-pressed {
+  border-color: &dtml-buttonshadow; &dtml-buttonhighlight; &dtml-buttonhighlight; &dtml-buttonshadow;;
+}
+
+
+.kupu-bold,
+.kupu-bold-pressed {background-image: url("kupuimages/bold.gif");}
+
+.kupu-forecolor {background-image: url("plonekupuimages/text-color.gif");}
+.kupu-inthyperlink {background-image: url("plonekupuimages/anchor.gif");}
+.kupu-inthyperlink-pressed {
+  border-color: &dtml-buttonshadow; &dtml-buttonhighlight; &dtml-buttonhighlight; &dtml-buttonshadow;;
+}
+.kupu-exthyperlink {background-image: url("plonekupuimages/hyperlink.gif");}
+.kupu-exthyperlink-pressed {
+  border-color: &dtml-buttonshadow; &dtml-buttonhighlight; &dtml-buttonhighlight; &dtml-buttonshadow;;
+}
+
+.kupu-image {background-image: url("kupuimages/image.png");}
+
+.kupu-indent {background-image: url("kupuimages/indent.gif");}
+.kupu-inserthorizontalrule {background-image: url("plonekupuimages/hr.gif");}
+
+.kupu-insertorderedlist,
+.kupu-insertorderedlist-pressed {background-image: url("plonekupuimages/numbered_list.gif");}
+
+.kupu-insertunorderedlist,
+.kupu-insertunorderedlist-pressed {background-image: url("plonekupuimages/list.gif");}
+
+.kupu-insertdefinitionlist {background-image: url("plonekupuimages/definitionlist.gif");}
+
+.kupu-italic, 
+.kupu-italic-pressed {background-image: url("kupuimages/italic.gif");}
+
+.kupu-justifycenter,
+.kupu-justifycenter-pressed {background-image: url("plonekupuimages/center.gif");}
+
+.kupu-justifyleft,
+.kupu-justifyleft-pressed {background-image: url("plonekupuimages/left_just.gif");}
+
+.kupu-justifyright,
+.kupu-justifyright-pressed {background-image: url("plonekupuimages/right_just.gif");}
+
+button.kupu-logo {background-image: url("kupuimages/kupu_icon.gif");}
+.kupu-outdent {background-image: url("plonekupuimages/outdent.gif");}
+.kupu-redo {background-image: url("plonekupuimages/redo.gif");}
+.kupu-save {background-image: url("kupuimages/save.png");}
+.kupu-save-and-exit {background-image: url("kupuimages/exit.gif");}
+.kupu-space {background-image: url("plonekupuimages/space.gif");}
+.kupu-source {background-image: url("plonekupuimages/view-source.gif");}
+.kupu-subscript,
+.kupu-subscript-pressed  {background-image: url("plonekupuimages/subscript.gif");}
+.kupu-superscript,
+.kupu-superscript-pressed {background-image: url("plonekupuimages/superscript.gif");}
+
+.kupu-table {background-image: url("plonekupuimages/table.gif");}
+.kupu-underline, 
+.kupu-underline-pressed {background-image: url("kupuimages/underline.gif");}
+
+.kupu-undo {background-image: url("plonekupuimages/undo.gif");}
+.kupu-removelink {background-image: url("plonekupuimages/delete_icon.gif");}
+.kupu-removeimage {background-image: url("plonekupuimages/delete_icon.gif");}
+
+div.kupu-drawer {
+  border: solid 1px &dtml-contentViewBorderColor;;
+  background-color: &dtml-contentViewBackgroundColor;;
+  font-family: &dtml.-fontFamily;;;
+}
+
+div.kupu-drawer h1 {
+  border: none;
+}
+
+div.kupu-drawer table td {
+  font-size: 85%;
+}
+div.kupu-drawer table td td {
+  font-size: 100%;
+}
+
+div.kupu-drawer table td button, 
+div.kupu-drawer table td td {
+  font-size: 100%;
+}
+
+div.kupuoverride {
+    margin-left: 0.75em;
+}
+.forcekupu {
+    background: transparent url(kupuimages/kupu_icon.gif) 5px 2px no-repeat;
+    padding: 6px 6px 1px 30px;
+    text-transform: &dtml-textTransform;;
+    height: 32px; width: auto; 
+}
+
+.kupu-dialog-button {
+    background: transparent url(&dtml-portal_url;/linkTransparent.gif) 9px 1px no-repeat;
+    cursor: pointer;
+    font-size: &dtml-fontSmallSize;;
+    padding: 1px 1px 1px 15px;
+    text-transform: &dtml-textTransform;;
+    border: &dtml-borderWidth; solid &dtml-globalBorderColor;;
+    background-color: white;
+}
+/* </dtml-let></dtml-with> */
+

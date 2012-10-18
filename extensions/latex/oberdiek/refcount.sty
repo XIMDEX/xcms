@@ -1,0 +1,124 @@
+% File:      refcount.sty
+% Version:   2000/09/07 v2.0
+% Author:    Heiko Oberdiek <oberdiek@ruf.uni-freiburg.de>
+%
+% Function:  Converting references to numbers.
+%
+% Copyright: Copyright (C) 1998, 2000 Heiko Oberdiek.
+%
+%   This program may be distributed and/or modified under
+%   the conditions of the LaTeX Project Public License,
+%   either version 1.2 of this license or (at your option)
+%   any later version. The latest version of this license
+%   is in
+%     http://www.latex-project.org/lppl.txt
+%   and version 1.2 or later is part of all distributions
+%   of LaTeX version 1999/12/01 or later.
+%
+% Use:
+%   * Commands similar to LaTeX's \setcounter and \addtocounter,
+%     but that extracts the number value from a reference:
+%       \setcounterref, \addtocounterref
+%       \setcounterpageref, \addtocounterpageref
+%     They take two arguments:
+%       \...counter...ref{<LaTeX counter>}{<reference>}
+%     An undefined references produces the usual LaTeX warning
+%     and its value is assumed to be zero.
+%     Example:
+%       \newcounter{ctrA}
+%       \newcounter{ctrB}
+%       \refstepcounter{ctrA}\label{ref:A}
+%       \setcounterref{ctrB}{ref:A}
+%       \addtocounterpageref{ctrB}{ref:A}
+%   * Commands that can be used in expandible contexts:
+%       \getrefnumber, \getpagerefnumber
+%     They take one argument, the reference:
+%       \get...refnumber{<reference>}
+%     Because warnings and assignments cannot be used in
+%     expandible contexts, undefined references do not
+%     produce a warning, their values are assumed to be zero.
+%     Example:
+%       \label{ref:here}% somewhere
+%       \ifodd\getpagerefnumber{ref:here}%
+%         reference is on an odd page
+%       \else
+%         reference is on an even page
+%       \fi
+%   * The default for undefined references can be changed
+%     with macro \setrefcountdefault, for example this
+%     package calls:
+%       \setrefcountdefault{0}
+%   * This method of extracting the number is more safe
+%     than the use of the reference directly, because
+%     there are packages such as hyperref, that add
+%     additional stuff, so that the reference cannot
+%     be used as number any more.
+%   * If the reference does not contain a number,
+%     assignments to a counter will fail of course.
+%   * Tested with packages hyperref and calc.
+%
+% History:
+%   1998/04/08 v1.0:
+%    * First public release, written as answer in the
+%      newsgroup `comp.text.tex' in the thread
+%      `Re: Adding a \ref to a counter?', date: 1998/08/04.
+%   2000/09/07 v2.0:
+%    * Documentation added.
+%    * LPPL 1.2
+%    * Package rewritten, new commands added.
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{refcount}
+  [2000/09/07 v2.0 Converting references to numbers (HO)]
+
+\def\setrefcountdefault#1{%
+  \def\rc@default{#1}%
+}
+\setrefcountdefault{0}
+
+% \def\@car#1#2\@nil{#1} % defined in LaTeX kernel
+\def\rc@cartwo#1#2#3\@nil{#2}
+
+% Generic command for "\{set,addto}counter{page,}ref":
+% #1: \setcounter, \addtocounter
+% #2: \@car (for \ref), \@cartwo (for \pageref)
+% #3: LaTeX counter
+% #4: reference
+\def\rc@set#1#2#3#4{%
+  \expandafter\ifx\csname r@#4\endcsname\relax
+    \protect\G@refundefinedtrue % LaTeX: rerun warning
+    \@latex@warning{Reference `#4' on page \thepage\space
+      undefined}%
+    #1{#3}{\rc@default}%
+  \else
+    #1{#3}{%
+      \expandafter\expandafter\expandafter#2%
+      \csname r@#4\endcsname\rc@default\rc@default\@nil
+    }%
+  \fi
+}
+
+% user commands:
+
+\newcommand*{\setcounterref}{\rc@set\setcounter\@car}
+\newcommand*{\addtocounterref}{\rc@set\addtocounter\@car}
+\newcommand*{\setcounterpageref}{\rc@set\setcounter\rc@cartwo}
+\newcommand*{\addtocounterpageref}{\rc@set\addtocounter\rc@cartwo}
+
+\newcommand*{\getrefnumber}[1]{%
+  \expandafter\ifx\csname r@#1\endcsname\relax
+    \rc@default
+  \else
+    \expandafter\expandafter\expandafter\@car
+    \csname r@#1\endcsname\@nil
+  \fi
+}
+\newcommand*{\getpagerefnumber}[1]{%
+  \expandafter\ifx\csname r@#1\endcsname\relax
+    \rc@default
+  \else
+    \expandafter\expandafter\expandafter\rc@cartwo
+    \csname r@#1\endcsname\rc@default\rc@default\@nil
+  \fi
+}
+\endinput

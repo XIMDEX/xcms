@@ -1,0 +1,181 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="toolbar"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+  <kupu:id>$Id: toolbar.kupu 22958 2006-02-02 13:52:44Z guido $</kupu:id>
+
+  <kupu:part name="toolbar">
+    <div class="kupu-tb" id="toolbar">
+      <kupu:define-slot name="toolbar" />
+    </div>
+  </kupu:part>
+
+  <kupu:part name="buttons">
+    <span id="kupu-tb-buttons" class="kupu-tb-buttons">
+      <kupu:define-slot name="toolbar-buttons" />
+    </span>
+  </kupu:part>
+
+  <kupu:part name="liststyles">
+    <select id="kupu-ulstyles" class="kupu-ulstyles">
+      <option value="disc" i18n:translate="list-disc">&#9679;</option>
+      <option value="square" i18n:translate="list-square">&#9632;</option>
+      <option value="circle" i18n:translate="list-circle">&#9675;</option>
+      <option value="none" i18n:translate="list-nobullet">no bullet</option>
+    </select>
+    <select id="kupu-olstyles" class="kupu-olstyles">
+      <option value="decimal" 
+              i18n:translate="list-decimal">1</option>
+      <option value="upper-roman" 
+              i18n:translate="list-upperroman">I</option>
+      <option value="lower-roman" 
+              i18n:translate="list-lowerroman">i</option>
+      <option value="upper-alpha" 
+              i18n:translate="list-upperalpha">A</option>
+      <option value="lower-alpha" 
+              i18n:translate="list-loweralpha">a</option>
+    </select>
+  </kupu:part>
+
+  <kupu:part name="zoom">
+    <span class="kupu-tb-buttongroup" style="float: right" id="kupu-zoom">
+      <button type="button" class="kupu-zoom" id="kupu-zoom-button"
+                i18n:attributes="title"
+                title="zoom: alt-x" accesskey="x">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="logo">
+    <span class="kupu-tb-buttongroup kupu-logo" style="float: right" id="kupu-logo">
+      <button type="button" class="kupu-logo" title="Kupu 1.3.5" 
+              i18n:attributes="title" accesskey="k"
+              onclick="window.open('http://kupu.oscom.org');">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="select-styles">
+    <select id="kupu-tb-styles">
+      <option value="P" i18n:translate="">
+        Normal
+      </option>
+      <option value="H1">
+        <span i18n:translate="">Heading 1</span>
+      </option>
+      <option value="H2">
+        <span i18n:translate="">Heading 2</span>
+      </option>
+      <option value="H3">
+        <span i18n:translate="">Heading 3</span>
+      </option>
+      <option value="H4">
+        <span i18n:translate="">Heading 4</span>
+      </option>
+      <option value="H5">
+        <span i18n:translate="">Heading 5</span>
+      </option>
+      <option value="H6">
+        <span i18n:translate="">Heading 6</span>
+      </option>
+      <option value="PRE" i18n:translate="">
+        Formatted
+      </option>
+    </select>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-basicmarkup">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-basicmarkup">
+      <button type="button" class="kupu-bold" id="kupu-bold-button" title="bold: alt-b"
+              i18n:attributes="title" accesskey="b">&#160;</button>
+      <button type="button" class="kupu-italic" id="kupu-italic-button" title="italic: alt-i"
+              i18n:attributes="title" accesskey="i">&#160;</button>
+      <button type="button" class="kupu-underline" id="kupu-underline-button" title="underline: alt-u"
+              i18n:attributes="title" accesskey="u">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-subsuper">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-subsuper">
+      <button type="button" class="kupu-subscript" id="kupu-subscript-button" title="subscript: alt--"
+              i18n:attributes="title" accesskey="-">&#160;</button>
+      <button type="button" class="kupu-superscript" id="kupu-superscript-button" title="superscript: alt-+"
+              i18n:attributes="title" accesskey="+">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-justify">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-justify">
+      <button type="button" class="kupu-justifyleft" id="kupu-justifyleft-button" 
+              title="left justify: alt-l" i18n:attributes="title"
+              accesskey="l">&#160;</button>
+      <button type="button" class="kupu-justifycenter" 
+              id="kupu-justifycenter-button" title="center justify: alt-c" 
+              i18n:attributes="title" accesskey="c">&#160;</button>
+      <button type="button" class="kupu-justifyright" 
+              id="kupu-justifyright-button" title="right justify: alt-r"
+              i18n:attributes="title" accesskey="r">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-list">
+              <span class="kupu-tb-buttongroup" id="kupu-bg-list">
+      <!-- list button events are set on the list tool -->
+      <button type="button" class="kupu-insertorderedlist" 
+              title="numbered list: alt-#" id="kupu-list-ol-addbutton" 
+              i18n:attributes="title" accesskey="#">&#160;</button>
+      <button type="button" class="kupu-insertunorderedlist" 
+              title="unordered list: alt-*" id="kupu-list-ul-addbutton" 
+              i18n:attributes="title" accesskey="*">&#160;</button>
+              </span>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-definitionlist">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-definitionlist">
+      <!-- list button events are set on the list tool -->
+      <button type="button" class="kupu-insertdefinitionlist" 
+              title="definition list: alt-=" id="kupu-list-dl-addbutton" 
+              i18n:attributes="title" accesskey="=">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-indent">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-indent">
+      <button type="button" class="kupu-outdent" 
+              id="kupu-outdent-button" title="outdent: alt-&lt;"
+              i18n:attributes="title" accesskey="&lt;">&#160;</button>
+      <button type="button" class="kupu-indent" 
+              id="kupu-indent-button" title="indent: alt-&gt;"
+              i18n:attributes="title" accesskey="&gt;">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-undo">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-undo">
+      <button type="button" class="kupu-undo" 
+              id="kupu-undo-button" title="undo: alt-z"
+              i18n:attributes="title" accesskey="z">&#160;</button>
+      <button type="button" class="kupu-redo" 
+              id="kupu-redo-button" title="redo: alt-y"
+              i18n:attributes="title" accesskey="y">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="buttongroup-remove">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-remove">
+      <button type="button" class="kupu-removeimage invisible"
+              id="kupu-removeimage-button" title="Remove image"
+              i18n:attributes="title">&#160;</button>
+      <button type="button" class="kupu-removelink invisible"
+              id="kupu-removelink-button" title="Remove link"
+              i18n:attributes="title">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <!-- We will have the button tool configuration here, too, once we
+       do tool definitions in XML config. -->
+
+</kupu:feature>

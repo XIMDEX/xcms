@@ -1,0 +1,191 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+body{
+	background-color : #ffffff;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+}
+a{
+	text-decoration : none;
+}
+h1{
+	margin: 0px;
+	font-weight: normal;
+}
+h2{
+	margin: 0px;
+	font-weight: normal;
+}
+h3{
+	margin: 0px;
+	font-weight: normal;
+}
+h4{
+	margin: 0px;
+	font-weight: normal;
+}
+h5{
+	margin: 0px;
+	font-weight: normal;
+}
+.PVcajap{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 40px;
+}
+.PVcajaxp{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 20px;
+}
+.PVcaja{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 100px;
+}
+.PVcajag{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 200px;
+}
+.PVcajaxg{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 300px;
+}
+.PVnormal{
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+}
+.PVnormalnegrita{
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	font-weight: bold;
+}
+.PVnormalgris{
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 9px;
+	color: #A6A6A6;
+}
+.PVtabla{
+	border : thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #FAFAFA;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 9px;
+}
+.ximporta{
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 9px;
+	color: #AB1683;
+	font-weight: bold;
+}
+
+
+.ed_cajap{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 40px;
+}
+.ed_cajaxp{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 20px;
+}
+.ed_caja{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 100px;
+}
+.ed_cajag{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 200px;
+}
+.ed_cajaxg{
+	border: thin;
+	border-color : #E5E5E5;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #ffffff;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	width : 300px;
+}
+
+/* entorno */
+
+

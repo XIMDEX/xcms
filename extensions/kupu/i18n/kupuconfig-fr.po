@@ -1,0 +1,479 @@
+# --- PLEASE EDIT THE LINES BELOW CORRECTLY ---
+# SOME DESCRIPTIVE TITLE.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"POT-Creation-Date: Wed Aug  3 16:07:37 2005\n"
+"PO-Revision-Date: 2005-08-29 \n"
+"Last-Translator: Godefroid Chapelle <gotcha@bubblenet.be>\n"
+"Language-Team: Godefroid Chapelle\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: French\n"
+"Language-code: fr\n"
+"Language-name: French\n"
+"Preferred-encodings: utf-8 latin1\n"
+"X-Is-Fallback-For: fr-be fr-ca fr-lu fr-mc fr-ch fr-fr\n"
+"Domain: kupuconfig\n"
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <input class="context" i18n:attributes="value" type="submit" value="Add"/>
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <input class="context" i18n:attributes="value" name="zmi_add_resource_type:method" type="submit" value="Add"/>
+msgid "Add"
+msgstr "Ajouter"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <input class="context" i18n:attributes="value" name="zmi_delete_libraries:method" type="submit" value="Delete"/>
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <input class="context" i18n:attributes="value" name="zmi_delete_resource_types:method" type="submit" value="Delete"/>
+msgid "Delete"
+msgstr "Supprimer"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <input class="context" i18n:attributes="value" name="zmi_move_down:method" type="submit" value="Move Down"/>
+msgid "Move Down"
+msgstr "Vers le bas"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <input class="context" i18n:attributes="value" name="zmi_move_up:method" type="submit" value="Move Up"/>
+msgid "Move Up"
+msgstr "Vers le haut"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <input class="context" i18n:attributes="value" name="configure_kupu:method" tabindex="" tal:attributes="tabindex tabindex|nothing;" type="submit" value="Save"/>
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <input class="context" i18n:attributes="value" name="zmi_update_libraries:method" type="submit" value="Save"/>
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <input class="context" i18n:attributes="value" name="zmi_update_resource_types:method" type="submit" value="Save"/>
+msgid "Save"
+msgstr "Enregistrer"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <input class="context" i18n:attributes="value" type="submit" value="Set"/>
+msgid "Set"
+msgstr "Mettre à jour"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <em i18n:translate="any_tag" tal:condition="not:tags">
+#.  Any tag
+#. </em>
+msgid "any_tag"
+msgstr "N'importe quel élément"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="authenticated_member">
+#.  Authenticated member
+#. </td>
+msgid "authenticated_member"
+msgstr "Le membre identifié"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <p i18n:translate="available_tales">
+#.  The following variables are available in the TALES expressions:
+#. </p>
+msgid "available_tales"
+msgstr "Les variables suivantes sont disponibles dans les expressions TALES :"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="context_folder">
+#.  The folder the context object is located in
+#. </td>
+msgid "context_folder"
+msgstr "Le dossier dans lequel l'objet contexte est situé"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="context_folder_uri">
+#.  The URL of the folder the context object is located in
+#. </td>
+msgid "context_folder_uri"
+msgstr "L'URL du dossier dans lequel l'objet contexte est situé"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="current_context">
+#.  The current context object
+#. </td>
+msgid "current_context"
+msgstr "L'object contexte courant"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="current_context_url">
+#.  The URL of the current context object
+#. </td>
+msgid "current_context_url"
+msgstr "L'URL de l'objet contexte courant"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <th i18n:translate="default">
+#.  Default
+#. </th>
+msgid "default"
+msgstr "Par défaut"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <h3 i18n:translate="heading_configuration">
+#.  Kupu Configuration
+#. </h3>
+msgid "heading_configuration"
+msgstr "Configuration de l'éditeur visuel Kupu"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <h3 i18n:translate="heading_kupu_configuration">
+#.  Kupu Configuration
+#. </h3>
+## 1 more: c:\zopep21\Products\kupu\plone\resource_types.pt
+msgid "heading_kupu_configuration"
+msgstr "Configuration de l'éditeur visuel Kupu"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <div class="formHelp" i18n:translate="help_class_blacklist">
+#.  Enter a list of classnames to be excluded (one per line)
+#. </div>
+msgid "help_class_blacklist"
+msgstr "Saisissez une liste de nom de classes à exclure (une par ligne)"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <div class="formHelp" i18n:translate="help_link_uid">
+#.  Links to objects on this site created by Kupu can use unique
+#. object ids so that the links remain valid even if the target object is
+#. renamed or moved elsewhere on the site.
+#. </div>
+msgid "help_link_uid"
+msgstr "Les liens créés par l'éditeur vers des objets de ce site peuvent utiliser des identifiants uniques de telle façon que les liens restent valides même si l'objet cible est renommé ou déplacé dans le site."
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <div class="formHelp" i18n:translate="help_navigate_away">
+#.  Kupu can install a handler to warn before navigating
+#. away from a page where a form (even the non-Kupu fields) has been edited.
+#. Turn this off to prevent Kupu loading its own handler.
+#. </div>
+msgid "help_navigate_away"
+msgstr "L'éditeur peut installer un mécanisme qui avertit, avant de quitter une page, que le formulaire a été modifié mais n'a pas été enregistré (ceci même pour les champs en dehors de l'éditeur). Veuillez mettre ce champs à zéro pour empêcher l'éditeur de charger son propre mécanisme."
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <div class="formHelp" i18n:translate="help_paragraph_styles">
+#.  Enter a list of paragraph styles to appear in the style pulldown. Format is title|tag or title|tag|className, one per line.
+#. </div>
+msgid "help_paragraph_styles"
+msgstr "Saisissez une liste de styles pour les paragraphes. Ces styles apparaissent dans la liste déroulante des styles. Le format est titre|élément ou titre|élément|classe, un par ligne."
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <div class="formHelp" i18n:translate="help_remove_entities">
+#.  Enter HTML tags and attributes to be removed when saving documents. (Uncheck to remove entries)
+#. </div>
+msgid "help_remove_entities"
+msgstr "Saisissez les éléments et attributs HTML qui doivent êtres supprimés lorsque les documents sont enregistrés. (Dé-cochez pour supprimer un entrée)"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <div class="formHelp" i18n:translate="help_style_whitelist">
+#.  Enter a list of style elements to be permitted (one per line)
+#. </div>
+msgid "help_style_whitelist"
+msgstr "Saisissez une liste d'éléments de style CSS qui doivent être conservés (un par ligne)"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <div class="formHelp" i18n:translate="help_table_classes">
+#.  Enter a list of class names to be made available in the table drawer
+#. </div>
+msgid "help_table_classes"
+msgstr "Saisissez une liste de noms de classes HTML à présenter dans le tiroir des tables HTML"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <th i18n:translate="icon_uri">
+#.  Icon URI
+#. </th>
+msgid "icon_uri"
+msgstr "URI de l'icône"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <th i18n:translate="label_attributes">
+#.  Attributes
+#. </th>
+msgid "label_attributes"
+msgstr "Attributs"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <th colspan="2" i18n:translate="label_class_blacklist">
+#.  Class Blacklist
+#. </th>
+msgid "label_class_blacklist"
+msgstr "Liste de classes à exclure"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <th i18n:translate="label_icon_uri">
+#.  Icon URI
+#. </th>
+msgid "label_icon_uri"
+msgstr "URI de l'icône"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <label for="kupu_installBeforeUnload" i18n:translate="label_install_kupu">
+#.  Install Kupu code to detect form changes
+#. </label>
+msgid "label_install_kupu"
+msgstr "Installer le code de l'éditeur pour détecter les changements dans les formulaires"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <label for="kupu_linkbyuid" i18n:translate="label_link_uid">
+#.  Link using UIDs
+#. </label>
+msgid "label_link_uid"
+msgstr "Liens avec identifiants uniques"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <h4 i18n:translate="label_manage_libraries">
+#.  Manage libraries
+#. </h4>
+msgid "label_manage_libraries"
+msgstr "Gérer les bibliothèques"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <label for="parastyles" i18n:translate="label_paragraph_styles">
+#.  Paragraph Styles
+#. </label>
+msgid "label_paragraph_styles"
+msgstr "Styles de paragraphes"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <th i18n:translate="label_source_uri">
+#.  Source URI
+#. </th>
+msgid "label_source_uri"
+msgstr "URI de la source"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <th colspan="2" i18n:translate="label_style_whitelist">
+#.  Style Whitelist
+#. </th>
+msgid "label_style_whitelist"
+msgstr "Styles CSS à conserver"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <label for="table_classnames" i18n:translate="label_tables">
+#.  Tables
+#. </label>
+msgid "label_tables"
+msgstr "Tables"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <th i18n:translate="label_tags">
+#.  Tags
+#. </th>
+msgid "label_tags"
+msgstr "Eléments"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <th i18n:translate="label_title">
+#.  Title
+#. </th>
+msgid "label_title"
+msgstr "Titre"
+
+
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <legend i18n:translate="legend_add_resource_type">
+#.  Add new resource type
+#. </legend>
+msgid "legend_add_resource_type"
+msgstr "Ajouter un nouveau type de ressources"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <legend i18n:translate="legend_html_filter">
+#.  HTML Filter
+#. </legend>
+msgid "legend_html_filter"
+msgstr "Filtre HTML"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <legend i18n:translate="legend_link_options">
+#.  Link options
+#. </legend>
+msgid "legend_link_options"
+msgstr "Options des liens"
+
+
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <legend i18n:translate="legend_map_resource_types">
+#.  Map resource types
+#. </legend>
+msgid "legend_map_resource_types"
+msgstr "Associer les types de ressources"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <legend i18n:translate="legend_styles">
+#.  Styles
+#. </legend>
+msgid "legend_styles"
+msgstr "Styles"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <legend i18n:translate="legend_warning">
+#.  Warn before losing changes
+#. </legend>
+msgid "legend_warning"
+msgstr "Avertissement avant de perdre les changements"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="portal_object">
+#.  The portal object
+#. </td>
+msgid "portal_object"
+msgstr "L'objet portail"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="portal_object_url">
+#.  URL of the portal
+#. </td>
+msgid "portal_object_url"
+msgstr "L'URL du portail"
+
+
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <th i18n:translate="portal_types">
+#.  Portal types
+#. </th>
+## 1 more: c:\zopep21\Products\kupu\plone\resource_types.pt
+msgid "portal_types"
+msgstr "Types du portail"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <td i18n:translate="request">
+#.  Request
+#. </td>
+msgid "request"
+msgstr "La requête"
+
+
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <th i18n:translate="resource_type">
+#.  Resource type
+#. </th>
+## 1 more: c:\zopep21\Products\kupu\plone\resource_types.pt
+msgid "resource_type"
+msgstr "Type de ressource"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <th i18n:translate="source_uri">
+#.  Source URI
+#. </th>
+msgid "source_uri"
+msgstr "URI de la source"
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <p i18n:translate="text_kupu_drawers">
+#.  In the below form, you may manage the list of drawer libraries for
+#. the kupu editor. Each property of a library is dynamically expanded at
+#. execution time using TALES expressions. That way it is possible, to
+#. support libraries like
+#.  <em>
+#.   Current folder
+#.  </em>
+#.   or
+#.  <em>
+#.   My folder
+#.  </em>
+#. very easily.
+#. </p>
+msgid "text_kupu_drawers"
+msgstr "Dans le formulaire ci-dessous, vous pouvez gérer la liste des bibliothèques des tiroirs de l'éditeur. Chaque propriété d'une librairie est calculée dynamiquement lors de l'exécution. Elles utilisent des expressions TALES. De cette façon, il est très facile de proposer des bibliothèques comme <em>Dossier courant</em> ou <em>Mon dossier</em>."
+
+
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <p i18n:translate="text_resource_types">
+#.  While libraries provide abstract locations for objects of any type,
+#. Kupu distinguishes objects by resource type. For example, a user might
+#. request a library showing objects to link to or a library showing
+#. objects to be inserted into a document. The abstract location
+#. (library) might be the same, but the former library would contain
+#. documents, the latter images.
+#. </p>
+msgid "text_resource_types"
+msgstr "Bien que les bibliothéques permettent de proposer des localisations abstraites pour des objets de n'importe quel type, l'éditeur différencie les objets en types de ressources. Par example, un utilisateur peut demander une bibliothèque montrant des objets à lier ou une bibliothèque d'objets à insérer dans un document. La localisation abstraite (bibliothèque) pourrait être la même, mais la première librairie contiendrait des documents tandis que la deuxième proposerait des images."
+
+
+#: c:\zopep21\Products\kupu\plone\resource_types.pt
+#. <p i18n:translate="text_resource_types2">
+#.  This management screen allows you to define resource types using a
+#. list of portal types. A special resource type,
+#.  <code>
+#.   collection
+#.  </code>
+#.  ,
+#. identifies portal types that are to be treated as collections.
+#. </p>
+msgid "text_resource_types2"
+msgstr "Cet ecran de configuration vous permet de définir les types de ressource comme des liste de types du portail. Un type de ressource spécial, <code>collection</code> identifie les types du portail qui doivent être traités comme des collections."
+
+
+#: c:\zopep21\Products\kupu\plone\libraries.pt
+#. <th i18n:translate="uri">
+#.  URI
+#. </th>
+msgid "uri"
+msgstr "URI"
+
+
+#: c:\zopep21\Products\kupu\plone\kupu_config.pt
+#. <em i18n:translate="whole_tag_removed" tal:condition="not:attributes">
+#.  Whole tag removed
+#. </em>
+msgid "whole_tag_removed"
+msgstr "Elément entier supprimé"
+
+msgid "Config"
+msgstr "Configuration"
+
+msgid "Libraries"
+msgstr "Bibliothèques"
+
+msgid "Resource Types"
+msgstr "Types de ressources"
+
+msgid "Documentation"
+msgstr "Documentation"
+

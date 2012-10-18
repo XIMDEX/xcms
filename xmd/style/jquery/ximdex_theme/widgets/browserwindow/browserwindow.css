@@ -1,0 +1,375 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+.window-toolbar-button {
+	border: none;
+	float: left;
+	height: 22px;
+	width: 25px;
+	margin: 8px 0px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	cursor: pointer;
+}
+
+.view-action {
+	color: transparent;
+}
+
+.xim-actions-menu-list{
+	/*width: 160px;*/
+	z-index: 100;
+}
+
+.list-icon-browser{
+	display:none;
+}
+
+/*.window-toolbar-button:hover {
+}
+
+.window-toolbar-button:active {
+}*/
+
+a.window-toolbar-link {
+	float: left;
+	margin: 11px 10px 0px;
+	color: #004c4c;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a.window-toolbar-link:hover {
+	color: #cd4e36;
+  	border-bottom: 1px dotted #e8563b;
+}
+
+div.setbuttons-container {
+	color: #004C4C;
+}
+
+div.set-button {
+	padding: 3px 0px 3px 22px;
+	background: url('../../../../../images/panel/sets.png') no-repeat left center;
+	margin-bottom: 2px;
+	margin-left: 15px;
+	cursor: pointer;
+
+}
+
+div.set-button:hover {
+	text-decoration:underline;
+}
+
+div.set-button-drophover {
+	background-color: #cacaca;
+}
+div.filterbuttons-container{
+	color: #004C4C;
+}
+
+div.filter-button {
+	padding: 3px 0px 3px 22px;
+	background: url('../../../../../images/panel/saved-searchs.png') no-repeat left center;
+	margin-bottom: 2px;
+	margin-left: 15px;
+	cursor: pointer;
+}
+div.searchesbuttons-container{
+		color:#004C4C;
+}
+div.search-button {
+	cursor: pointer;
+}
+
+div.search-button-icon {
+	cursor: pointer;
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	background-image: url(../../../../../actions/browser3/resources/images/bookmark-new.png);
+}
+
+div.search-button-label {
+	padding: 3px 0px 3px 22px;
+	background: url('../../../../../images/panel/searchs.png') no-repeat left center;
+	margin-bottom: 2px;
+	margin-left: 15px;
+	cursor: pointer;
+
+}
+
+.css_to_include, .js_to_include {
+	display: none;
+}
+
+
+
+/*.view-group button:first-child{
+	margin-left: 15px;
+}*/
+
+
+
+
+.action-group {
+	display: none;
+}
+
+.action-group button:first-child {
+	margin-left: 15px;
+}
+
+.destroy-on-click{
+	background: #f5f5f5;
+	border: 1px solid #ebebeb;
+	-moz-border-radius: 5px;
+	-moz-box-shadow: 1px 1px 2px #bbb;
+
+}
+.xim-actions-menu button{
+	background: url('../../../../../images/action/sep-btn-actions.png') no-repeat left center;
+	width: 37px;
+	height: 37px;
+	margin: 0px;
+}
+
+/*.xim-actions-menu button:first-child{
+	background: none;
+}
+*/
+.xim-actions-menu button:hover{
+	background: url('../../../../../images/action/sep-btn-actions-over.png') no-repeat left center;
+}
+
+.xim-actions-menu button.icon-browser{
+	display:none;
+}
+.xim-actions-menu button span{
+	background: url('../../../../../images/action/icons-actions.png') no-repeat 5px 4px;
+	display: block;
+	text-indent: -99999999px;
+	height: 33px;
+}
+
+.xim-actions-menu button span.tooltip, .xim-actions-menu button span.triangle{
+	text-indent: 0px;
+	display: none;
+	background: none;
+}
+
+.xim-actions-menu button:hover span.triangle{
+	display: block;
+	position: absolute;
+	border-bottom: 9px solid #777;
+	border-left: 9px dotted transparent;
+	border-right: 9px dotted transparent;
+	z-index: 80px;
+	top: 8px;
+	left: 11px;
+}
+
+.xim-actions-menu button:hover span.tooltip{
+	position: absolute;
+	display: block;
+	z-index: 80px;
+	color: #fff;
+	text-shadow: 1px 1px 0px #444;
+	white-space: nowrap;
+	padding: 0 15px 1px 15px;
+	-moz-border-radius: 15px;
+	height: 22px;
+	line-height: 1.7em;
+	top: 47px;
+	left: -3px;
+	background: #777;
+}
+.xim-actions-menu button span.addfoldernode, .xim-actions-menu button.createcolector span,, .xim-actions-menu button.createcolector span{
+	background: url('../../../../../images/action/icons-actions.png') no-repeat 7px 4px;
+}
+/*.xim-actions-menu button:after{
+	content: url('../../../../../images/action/sep-btn-actions.png');
+	float:right;
+}*/
+
+.xim-actions-menu button.copy span{
+	background-position: -275px 4px;
+}
+
+.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span{
+	background-position: -313px 4px;
+}
+
+.xim-actions-menu button.modifygroupsnode span, .xim-actions-menu button.renamenode span, .xim-actions-menu button.relsectionschema span, .xim-actions-menu button.modifylink span, .xim-actions-menu button.addximlet span, .xim-actions-menu button.manageareas span, .xim-actions-menu button.manageproperties span, .xim-actions-menu button.modifygroup span, .xim-actions-menu button.modifystatesrole span, .xim-actions-menu button.modifyrole span, .xim-actions-menu button.modifygruposusuario span, .xim-actions-menu button.modifyuser span, .xim-actions-menu button.modifystates span, .xim-actions-menu button.addtoarea span, .xim-actions-menu button.addtocolector span, .xim-actions-menu button.modifyserver span, .xim-actions-menu button.modifychannel span, .xim-actions-menu button.modifyusuariosgrupo span, .xim-actions-menu button.modifylanguage span, .xim-actions-menu button.modifynodetype span, .xim-actions-menu button.icon-edit_cat span, .xim-actions-menu button.showassocnodes span{
+	background-position: -24px 4px;
+}
+
+.xim-actions-menu button.browser span, .xim-actions-menu button.linkreport span{
+	background-position: -236px 4px;
+}
+
+.xim-actions-menu button.edittext span{
+	background-position: -54px 4px;
+}
+
+.xim-actions-menu button.filedownload span, .xim-actions-menu button.filedownload_multiple span{
+	background-position: -89px 4px;
+}
+
+.xim-actions-menu button.workflow_backward span{
+	background-position: -162px 4px;
+}
+.xim-actions-menu button.workflow_forward span, .xim-actions-menu button.publicatesection span, .xim-actions-menu button.publicateximlet span, .xim-actions-menu button.generatecolector span{
+	background-position: -126px 6px;
+}
+
+.xim-actions-menu button.fileupload span, .xim-actions-menu button.fileupload_common_multiple span, .xim-actions-menu button.updatefile span{
+	background-position: -347px 4px;
+}
+
+.xim-actions-menu button.movenode span{
+	background-position: -383px 4px;
+}
+
+.xim-actions-menu button.manageversions span{
+	background-position: -418px 4px;
+}
+
+.xim-actions-menu button.filepreview span, .xim-actions-menu button.preview span, .xim-actions-menu button.browserimages span{
+	background-position: -200px 4px;
+}
+
+.xim-actions-menu button.xmleditor span, .xim-actions-menu button.xmleditor2 span, .xim-actions-menu button.htmleditor span{
+	background-position: -451px 4px;
+}
+
+.xim-actions-menu button.xmlsetlink span{
+	background-position: -492px 4px;
+}
+
+.xim-actions-menu button.viewaddednews span{
+	background-position: -533px 4px;
+}
+
+.xim-actions-menu button.setmetadata span{
+	background-position: -567px 4px;
+}
+
+
+.xim-actions-menu button.managebatchs span{
+	background-position: -601px 4px;
+}
+
+/** ****************************** LIST MENU ***************************************** */
+
+
+.xim-actions-menu-list span.list-icon {
+	background: url('../../../../../images/action/icons-actions-mini.png') no-repeat 4px 7px;
+	text-indent: -99999999px;
+	height: 15px;
+	float: left;
+	clear: left;
+	position: relative;
+	left: -5px;
+}
+
+
+
+.xim-actions-menu-list  span.addfoldernode, .xim-actions-menu-list span.createcolector , .xim-actions-menu-list span.createcolector {
+	background: url('../../../../../images/action/icons-actions-mini.png') no-repeat 3px 7px;
+}
+/*.xim-actions-menu-list span:after{
+	content: url('../../../../../images/action/sep-btn-actions.png');
+	float:right;
+}*/
+
+.xim-actions-menu-list span.copy {
+	background-position: -223px 7px;
+}
+ 
+.xim-actions-menu-list span.deletenode, .xim-actions-menu-list span.deletetemplates, .xim-actions-menu-list span.deleteuser, .xim-actions-menu-list span.unlinknewscolector, .xim-actions-menu-list span.unlinknews, .xim-actions-menu-list span.deleterelnewsarea {
+	background-position: -249px 7px;
+}
+
+.xim-actions-menu-list span.modifygroupsnode, .xim-actions-menu-list span.renamenode, .xim-actions-menu-list span.relsectionschema, .xim-actions-menu-list span.modifylink, .xim-actions-menu-list span.addximlet, .xim-actions-menu-list span.manageareas, .xim-actions-menu-list span.manageproperties, .xim-actions-menu-list span.modifygroup, .xim-actions-menu-list span.modifystatesrole, .xim-actions-menu-list span.modifyrole, .xim-actions-menu-list span.modifygruposusuario, .xim-actions-menu-list span.modifyuser, .xim-actions-menu-list span.modifystates, .xim-actions-menu-list span.addtoarea, .xim-actions-menu-list span.addtocolector, .xim-actions-menu-list span.modifyserver, .xim-actions-menu-list span.modifychannel, .xim-actions-menu-list span.modifyusuariosgrupo, .xim-actions-menu-list span.modifylanguage, .xim-actions-menu-list span.modifynodetype, .xim-actions-menu-list span.icon-edit_cat, .xim-actions-menu-list span.showassocnodes {
+	background-position: -23px 7px;
+}
+
+.xim-actions-menu-list span.browser, .xim-actions-menu-list span.linkreport {
+	background-position: -193px 7px;
+}
+
+.xim-actions-menu-list span.edittext {
+	background-position: -51px 10px;
+}
+
+.xim-actions-menu-list span.filedownload, .xim-actions-menu-list span.filedownload_multiple {
+	background-position: -80px 7px;
+}
+
+.xim-actions-menu-list span.workflow_backward {
+	background-position: -138px 9px;
+}
+.xim-actions-menu-list span.workflow_forward, .xim-actions-menu-list span.publicatesection, .xim-actions-menu-list span.publicateximlet, .xim-actions-menu-list span.generatecolector {
+	background-position: -109px 8px;
+}
+
+.xim-actions-menu-list span.fileupload, .xim-actions-menu-list span.fileupload_common_multiple, .xim-actions-menu-list span.updatefile {
+	background-position: -278px 8px;
+}
+
+.xim-actions-menu-list span.movenode {
+	background-position: -306px 6px;
+}
+
+.xim-actions-menu-list span.manageversions {
+	background-position: -339px 8px;
+}
+
+.xim-actions-menu-list span.filepreview, .xim-actions-menu-list span.preview, .xim-actions-menu-list span.browserimages {
+	background-position: -168px 8px;
+}
+
+.xim-actions-menu-list span.xmleditor, .xim-actions-menu-list span.xmleditor2, .xim-actions-menu-list span.htmleditor {
+	background-position: -371px 7px;
+}
+
+.xim-actions-menu-list span.xmlsetlink {
+	background-position: -399px 7px;
+}
+
+.xim-actions-menu-list span.viewaddednews {
+	background-position: -425px 7px;
+}
+
+.xim-actions-menu-list span.setmetadata {
+	background-position: -457px 7px;
+}
+
+.xim-actions-menu-list span.managebatchs {
+	background-position: -487px 8px;
+}

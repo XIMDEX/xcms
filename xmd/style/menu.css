@@ -1,0 +1,209 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+body
+	{
+	margin:		0;
+	overflow:	hidden;
+	border: 1px inset;
+	background-color:	buttonface;
+	}
+
+.menu-bar {
+	width: 100%;
+}
+
+.coolBar {
+	text-align:		left;
+	overflow:	hidden;
+
+}
+
+.coolButton {
+	vertical-align: middle;
+}
+
+
+/* --- menu styles ---
+note:
+	not all browsers render styles the same way so try out your style sheet
+	on different browsers before publishing;
+*/
+
+/* level 0 inner */
+.m0l0iout {
+	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
+	font-size: 11px;
+	text-decoration: none;
+	margin: 0px 0 0 0px;
+	color: #000000;
+	text-align: center;
+
+
+}
+.m0l0iover {
+	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
+	font-size: 11px;
+	text-decoration: none;
+	margin: 0px 0 0 0px;
+	color: #000000;
+	text-align: center;
+}
+
+/* level 0 outer */
+.m0l0oout {
+	text-decoration : none;
+	/*background-image: url(img/lev0_bg1.gif);
+	border: 1px solid #000000;*/
+	background-color: #E0DFE3;
+}
+.m0l0oover {
+	text-decoration : none;
+	/*background-image: url(img/lev0_bg2.gif);	*/
+	border: 1px solid #000000;
+	background-color: #B6BDD2;
+
+}
+
+/* level 1 inner */
+.m0l1iout {
+	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
+	font-size: 11px;
+	margin: 1px 0 0 1px;
+	color: #000000;
+}
+.m0l1iover {
+	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
+	font-size: 11px;
+	margin: 1px 0 0 1px;
+	color: #000000;
+}
+
+/* level 1 outer */
+.m0l1oout {
+	text-decoration : none;
+	background-color: #F9F8F7;
+	border: 1px solid #000000;
+	padding: 0;
+}
+.m0l1oover {
+	text-decoration : none;
+	background-color: #B6BDD2;
+	/*background-image: url(img/lev1_arrow.gif);	*/
+	border: 1px solid #000000;
+	background-repeat: no-repeat;
+	padding: 0;
+}
+
+
+/** **************************** MENU ************************ */
+#menusup  {
+	width: 100%;  
+	padding: 2px; 
+	padding-bottom: 0px; 
+	vertical-align: middle; 
+	border-bottom: 2px groove; 
+	background-color: buttonface; 
+	z-index:100;
+}
+
+#selectnode {
+	width: 100%; 
+	height: 17px; 
+	font-size: 9px; 
+	font-weight: bold; 
+	font-family: tahoma; 
+	vertical-align: top; 
+	text-align: left; 
+	padding: 2px; 
+	overflow: hidden; 
+	display: inline; 
+	border: 1px solid buttonshadow; 
+	background-Color: white;
+}
+
+#selectaction {
+	width: 215; 
+	height: 17px; 
+	font-size: 9px; 
+	font-weight: bold; 
+	font-family: tahoma; 
+	vertical-align: top; 
+	text-align: center; 
+	padding: 2px; 
+	overflow: hidden; 
+	display: inline; 
+	border: 1px solid buttonshadow; 
+	background-Color: white;
+}
+
+#botonera {
+	height: 28px; 
+	background-color: buttonface; 
+	margin: 0px;
+}
+
+#seleccion {
+	font-size: 9px; 
+	font-weight: bold; 
+	font-family: tahoma;
+}
+
+#coolbar_accion {
+	font-size: 9px; 
+	font-weight: bold; 
+	font-family: tahoma;
+}
+
+
+#fieldset_botonera {
+	border-top: 0px #9D9DA1;
+	border-bottom: 0px inset; 
+	height: 18px; 
+	margin: 0px;
+}
+
+
+#fieldset_coolbar {
+	border-top: 0px #9D9DA1;
+	border-bottom: 0px inset; 
+	height: 12px; 
+	margin: 0px;
+}
+
+#fieldset_coolbar div {
+	width: 100%; 
+	height: 28px; 
+	background-color: buttonface;
+}
+
+#coolbar_container {
+	border-top: 1px inset; 
+	width: 100%; 
+	background-color: buttonface; 
+	text-align: right; 
+	boder-color: #9D9DA1;
+}
+

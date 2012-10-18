@@ -1,0 +1,134 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+
+.xim-search-panel {
+	overflow: none;
+}
+
+.xim-search-panel select,
+.xim-search-panel input,
+.xim-search-panel button {
+	font-size: 13px;
+	border:none;
+	background:#0CC;
+}
+
+.xim-search-filters {
+	position: relative;
+	height: 90px;
+	overflow: auto;
+	/*margin-left: auto;*/
+	margin-right: 1px;
+	border: 1px dotted #ff674b ;
+	padding: 8px 8px;
+}
+
+.xim-search-panel-loading {
+	position: relative;
+	background-repeat: no-repeat;
+	top: 80px;
+	margin-left: auto;
+	margin-right: auto;
+	/*background-color: #BB0000;*/
+	width: 16px;
+	height: 16px;
+	z-index: 2000;
+}
+
+div.xim-listview-results {
+	position: absolute;
+	top: 215px;
+	bottom: 90px;
+	margin-left: 15px;
+	margin-right: 15px;
+	border: 1px solid #CCCCCC;
+}
+
+.xim-search-options {
+	position: relative;
+	margin-top: 20px;
+	margin-bottom: 5px;
+	width: 98%;
+	margin-left: auto;
+	margin-right: auto;
+	border-left: 10px solid #004C4C;
+}
+
+.xim-search-filters button {
+	width: 40px;
+}
+
+.xim-search-filter {
+	margin-bottom: 3px;
+}
+
+.xim-filter-type {
+	width: 150px;
+}
+
+.xim-filter-comparation {
+	width: 120px;
+}
+
+.xim-filter-nodetype-comparation {
+	width: 120px;
+}
+
+.xim-filter-date-comparation {
+	width: 120px;
+}
+
+.xim-filter-content {
+	width: 180px;
+}
+
+.xim-filter-nodetypes {
+	width: 180px;
+}
+
+.xim-filter-date, .xim-filter-date-to {
+	width: 85px;
+	text-align: center;
+}
+
+.xim-filter-date-alone {
+	width: 180px;
+}
+.ui-datepicker {
+	z-index: 2000;
+}
+
+.searchpanel-paginator {
+	position: absolute;
+	width: 190px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	bottom: 65px;
+	left: 0px;
+	right: 0px;
+}

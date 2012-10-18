@@ -1,0 +1,71 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+div.cmDiv {
+	font-family: Sans;
+	font-size: 12px;
+	z-index: 1000;
+	white-space: nowrap;
+/*	border: 1px solid #77d5f7;*/ 
+	font-weight: normal; 
+	outline: none;
+	text-decoration: none;
+	border: 1px solid transparent;
+}
+
+html>body div.shadowbox1 {
+/*	position: absolute;
+	right: 0;
+	bottom: 5px;
+	width: 5px;
+	height: 100%;
+	background: url(../../../img/myshadow.png) no-repeat right top;*/
+	display: none;
+}
+
+html>body div.shadowbox2 {
+/*	position: absolute;
+	bottom: 0;
+	right: 5px;
+	height: 5px;
+	width: 100%;
+	background: url(../../../img/myshadow.png) left bottom;*/
+	display: none;
+}
+
+html>body div.shadowbox3 {
+/*	position: absolute;
+	bottom: 0;
+	right: 0;
+	height: 5px;
+	width: 5px;
+	background: url(../../../img/myshadow.png) no-repeat right bottom;*/
+	display: none;
+}
+
+li.main {
+	white-space: nowrap;
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="body"
+    implementation="form"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="body">
+    <body onload="kupu = startKupu()">
+      <h1>Kupu Editor Test Page</h1>
+      <form action="http://debris.demon.nl/printpost" method="POST">
+        <kupu:define-slot name="body" />
+      </form>
+    </body>
+  </kupu:part>
+
+  <kupu:part name="editorframe">
+    <div class="kupu-editorframe">
+      <iframe id="kupu-editor"
+              class="kupu-editor-iframe"
+              frameborder="0"
+              src="fulldoc.html"
+              scrolling="auto">
+      </iframe>
+      <textarea class="kupu-editor-textarea" id="kupu-editor-textarea"> </textarea>
+    </div>
+  </kupu:part>
+
+</kupu:feature>

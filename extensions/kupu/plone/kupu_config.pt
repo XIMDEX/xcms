@@ -1,0 +1,230 @@
+<metal:page define-macro="master">
+<metal:master use-macro="here/main_template/macros/master"
+    i18n:domain="kupuconfig">
+
+<metal:block metal:fill-slot="top_slot" define-slot="top_slot"
+             tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:fillbase fill-slot="base">
+  <metal:baseslot define-slot="base">
+    <base href="" tal:attributes="href template/absolute_url" />
+  </metal:baseslot>
+</metal:fillbase>
+
+    <metal:cssslot fill-slot="css_slot">
+      <!-- A slot where you can insert CSS in the header from a template -->
+      <metal:cssslot define-slot="css_slot" />
+    </metal:cssslot>
+
+    <metal:override fill-slot="portlets_one_slot">
+      <metal:prefs use-macro="here/portlet_prefs/macros/portlet" />
+    </metal:override>
+
+    <metal:override fill-slot="column_two_slot" />
+
+<body>
+<div metal:fill-slot="main" metal:define-slot="prefs_configlet_main"
+    tal:define="errors python:request.get('errors', {});">
+
+<div class="configlet">
+
+<div class="documentEditable">
+
+    <!-- simulating views -->
+    <ul class="contentViews"
+       tal:define="tabs python:('Config','kupu_config'),('Libraries','zmi_libraries'),('Resource Types','zmi_resource_types'),
+        ('Documentation', 'zmi_docs'),;
+                   tabs python:[ {'label':label, 'name':name} for (label,name) in tabs ];"
+    >
+        <li tal:repeat="tab tabs"
+                class="selected" tal:attributes="class python:template.pt_source_file()==tab['name'] and 'selected' or ''">
+        <a href=""
+        tal:attributes="href string:${here/absolute_url}/${tab/name}"
+        i18n:translate="" tal:content="tab/label">Config</a>
+        </li>
+    </ul>
+
+    <div class="contentActions">
+    &nbsp;
+    </div>        
+    <!-- End of tabs -->
+    <div class="documentContent" metal:define-slot="kupu_content">
+<h3 i18n:translate="heading_configuration">Kupu Configuration</h3>
+<form action=""
+    name="configure_kupu"
+    method="post"
+    tal:attributes="action here/absolute_url">
+
+<fieldset>
+<legend i18n:translate="legend_link_options">Link options</legend>
+<div class="field">
+<input type="hidden" name="linkbyuid:int:default" value="0" />
+<input type="checkbox"
+    class="noborder"
+    name="linkbyuid:int"
+    id = "kupu_linkbyuid"
+    value="1"
+    tal:attributes="checked here/getLinkbyuid" />
+<label for="kupu_linkbyuid" i18n:translate="label_link_uid">Link using UIDs</label>
+
+<div class="formHelp" i18n:translate="help_link_uid">Links to objects on this site created by Kupu can use unique
+object ids so that the links remain valid even if the target object is
+renamed or moved elsewhere on the site.</div>
+</div>
+
+</fieldset>
+<fieldset>
+<legend i18n:translate="legend_warning">Warn before losing changes</legend>
+<div class="field">
+<input type="hidden" name="installBeforeUnload:int:default" value="0" />
+<input type="checkbox"
+    class="noborder"
+    name="installBeforeUnload:int"
+    id = "kupu_installBeforeUnload"
+    value="1"
+    tal:attributes="checked here/installBeforeUnload|python:1" />
+<label for="kupu_installBeforeUnload" i18n:translate="label_install_kupu">Install Kupu code to detect form changes</label>
+
+<div class="formHelp" i18n:translate="help_navigate_away">Kupu can install a handler to warn before navigating
+away from a page where a form (even the non-Kupu fields) has been edited.
+Turn this off to prevent Kupu loading its own handler.
+</div>
+</div>
+
+</fieldset>
+<fieldset>
+<legend i18n:translate="legend_styles">Styles</legend>
+<div class="field">
+<label for="table_classnames" i18n:translate="label_tables">Tables</label>
+<div class="formHelp" i18n:translate="help_table_classes">Enter a list of class names to be made available in the table drawer</div>
+<input type="hidden" name="table_classnames:list:default" value=" " />
+
+<textarea name="table_classnames:lines" id="table_classnames"
+         rows="5" cols="30"
+         tal:content="python:'\n'.join(here.getTableClassnames())">
+</textarea>
+</div>
+
+<div class="field">
+<label for="parastyles" i18n:translate="label_paragraph_styles">Paragraph Styles</label>
+<div class="formHelp" i18n:translate="help_paragraph_styles">Enter a list of paragraph styles to appear in the style pulldown. Format is title|tag or title|tag|className, one per line.</div>
+<input type="hidden" name="parastyles:list:default" value=" " />
+<textarea name="parastyles:lines" id="parastyles"
+         rows="5" cols="30"
+         tal:content="python:'\n'.join(here.getParagraphStyles())">
+</textarea>
+</div>
+</fieldset>
+
+<fieldset>
+<legend i18n:translate="legend_html_filter">HTML Filter</legend>
+
+<table>
+  <tr>
+    <td></td>
+    <th i18n:translate="label_tags">Tags</th>
+    <th i18n:translate="label_attributes">Attributes</th>
+  </tr>
+
+  <tr>
+    <td></td>
+    <td colspan="2">
+      <div class="formHelp" i18n:translate="help_remove_entities">Enter HTML tags and attributes to be removed when saving documents. (Uncheck to remove entries)</div>
+    </td>
+  </tr>
+  
+  <tr tal:repeat="exclusion_tuple here/getHtmlExclusions">
+    <tal:with define="tags python:exclusion_tuple[0];
+                      attributes python:exclusion_tuple[1]">
+    <td valign="top">
+      <input type="hidden" name="html_exclusions.recordmark:records" value="1" />
+      <input type="checkbox" name="html_exclusions.keep:records" checked="1"
+             tal:attributes="value python:1;" />
+      <input type="hidden" name="html_exclusions.tags:records:list"
+             tal:repeat="tag tags"
+             tal:attributes="value tag" />
+      <input type="hidden" name="html_exclusions.attributes:records:list"
+             tal:repeat="attr attributes"
+             tal:attributes="value attr" />
+    </td>
+
+    <td valign="top"><div tal:replace="python:', '.join(tags)"></div>
+        <em tal:condition="not:tags" i18n:translate="any_tag">Any tag</em>
+    </td>
+    <td valign="top"><div tal:replace="python:', '.join(attributes)"></div>
+        <em tal:condition="not:attributes" i18n:translate="whole_tag_removed">Whole tag removed</em>
+    </td>
+
+    </tal:with>
+  </tr>
+  <tr>
+    <td valign="top">
+      <input type="checkbox" name="html_exclusions.keep:records" checked="1" disabled="1"
+             tal:attributes="value python:1;" />
+    </td>
+    <td valign="top">
+      <textarea name="html_exclusions.tags:records"
+                rows="5" cols="30"></textarea>
+    </td>
+
+    <td valign="top">
+      <textarea name="html_exclusions.attributes:records"
+                rows="5" cols="30"></textarea>
+    </td>
+  </tr>
+
+<tr>
+    <td></td>
+    <th colspan="2" i18n:translate="label_style_whitelist">Style Whitelist</th></tr>
+<tr>
+    <td></td>
+    <td colspan="2">
+      <div class="formHelp" i18n:translate="help_style_whitelist">Enter a list of style elements to be permitted (one per line)</div>
+
+      <textarea name="style_whitelist:lines"
+               rows="5" cols="60"
+               tal:content="python:'\n'.join(here.getStyleWhitelist())">
+      </textarea>
+    </td>
+</tr>
+
+<tr>
+    <td></td>
+    <th colspan="2" i18n:translate="label_class_blacklist">Class Blacklist</th>
+</tr>
+<tr>
+    <td></td>
+    <td colspan="2">
+      <div class="formHelp" i18n:translate="help_class_blacklist">Enter a list of classnames to be excluded (one per line)</div>
+
+      <textarea name="class_blacklist:lines"
+               rows="5" cols="60"
+               tal:content="python:'\n'.join(here.getClassBlacklist())">
+      </textarea>
+    </td>
+</tr>
+</table>
+</fieldset>
+
+<input class="context"
+        tabindex=""
+        type="submit"
+        name="configure_kupu:method"
+        value="Save"
+        i18n:attributes="value"
+        tal:attributes="tabindex tabindex|nothing;"
+        />
+</form>
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+  </metal:master>
+</metal:page>
+
+

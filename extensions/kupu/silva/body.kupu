@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="body"
+    implementation="silva"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    >
+
+  <kupu:part name="body">
+    <body>
+      <metal:macro define-macro="body">
+        <kupu:define-slot name="body" />
+      </metal:macro>
+    </body>
+  </kupu:part>
+
+  <kupu:part name="fulleditor">
+    <div class="kupu-fulleditor">
+      <kupu:define-slot name="fulleditor" />
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    
+        <tr>
+          <td colspan="2">
+            <kupu:define-slot name="fulleditor-toolbar" />
+          </td>
+        </tr>
+
+        <tr>
+          <td valign="top">
+            <kupu:define-slot name="fulleditor-frame" />
+          </td>
+    
+          <td style="width: 23em;" valign="top">
+            <kupu:define-slot name="fulleditor-toolboxes" />
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  </kupu:part>
+
+  <kupu:part name="editorframe">
+    <div class="kupu-editorframe">
+      <iframe id="kupu-editor" 
+              class="kupu-editor-iframe"
+              width="99%"
+              frameborder="0" 
+              src="kupu_content"
+              scrolling="auto"
+              charset="UTF-8">
+      </iframe>
+    </div>
+    <textarea class="kupu-editor-textarea" id="kupu-editor-textarea"> </textarea>
+  </kupu:part>
+
+</kupu:feature>

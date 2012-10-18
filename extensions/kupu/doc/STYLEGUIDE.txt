@@ -1,0 +1,94 @@
+==========================
+Kupu JavaScript styleguide
+==========================
+
+Small style guide for the JavaScript code.  Please adhere to this
+style guide whenever possible.  Of course if something isn't mentioned
+here that doesn't mean you can do whatever you like, try to find a
+similar pattern in the code and follow that, if you think it's useful
+to add a line about that pattern in this guide you are very welcome to
+do so.  If something is not mentioned here and a similar pattern can
+not be found in the code find a sensible solution and add the pattern
+here if appropriate.
+
+Some general rules:
+-------------------
+
+* Explicit is better than implicit ;)
+
+  When writing code, try to avoid implementing magic, don't *ever*
+  think users/integrators are stupid and need magic.  Usually adding
+  magic means obscuring logic and removing flexibility and we would
+  like to avoid both.
+
+* Use verbose variable names rather then short ones.
+
+  Variable names like 'i' and 'n' can be used, but only in small
+  blocks like for and while loops
+
+Some syntactical rules:
+-----------------------
+
+* A comma should be followed by a whitespace
+
+* Operands (+, -, = etc.) are surroned by exactly one space, e.g.::
+
+    a = b + c;   instead of   a=b+c;
+
+* The body of loops should *always* be surrounded by curly braces, even
+  if it's only a single line. A loop starts with the loop statement,
+  then a space, then a curly brace and on the next line the body starts
+  with indentation.
+
+* Opening parentheses are not followed by a space nor are closing
+  preceded by one, e.g.::
+
+    doSomething(some_var);   instead of   doSomething( some_var );
+
+* A closing curly brace should be followed by a semi-colon, except
+  when used inline, e.g.::
+
+    doSomething(some_var, function() {alert('foo')});
+
+* Indentation in ECMAScript should be done using four spaces, in
+  HTML/XML markup two spaces for child elements and four spaces for
+  attributes. *Never* use tabs.
+
+* We use UNIX line endings (no \r!).
+
+* Try (at least *try*) not to make lines more than 80 characters wide.
+
+* Short comments should be lowercase.
+
+* Each method (at least when it's public) should have a docstring, the
+  first line of that docstring should be a brief explanation of the
+  method, when the docstring consists of only one line the comment is
+  closed on the same line, else the line is followed by a whiteline,
+  the next line is indented deeper than the first one and the comment
+  is closed a line below the last line of the comment.
+
+* Even though the original way of defining class methods was inline, we
+  found out that there are certain problems with that, so we switched
+  the recommended way of attachin methods to the more common notation
+  of 'Class.prototype.method = function() {...}'. Please make sure all
+  code you check in follows this notation, as the old notation can lead
+  to subtle bugs in your code (for instance, attributes with an instance
+  value are shared in instances of classes when using the old notation).
+
+* For the above mentioned reason, all objects that have attributes should
+  have a method called 'initialize', which should be called after object
+  instantiation from the calling code. All instance variables must be defined
+  in that method, since if they're defined in the constructor they're,
+  under certain circumstanced, shared by all instances of the class. 
+
+* No double newlines, classes and functions are seperated with a
+  single white line.
+
+* Class names are camel cased starting with an upper case char,
+  methods are also camel cased but they start with a lowercase char,
+  variables can vary (usually depending on the type of var: an
+  instance will usually be camel cased and a simple integer or string
+  will usually be completely lowercase).
+
+* When writing documentation, use reStructuredText rules. Most of the
+  kupu documentation you find is reST.

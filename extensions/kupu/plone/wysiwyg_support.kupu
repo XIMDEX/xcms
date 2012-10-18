@@ -1,0 +1,126 @@
+<kupu:feature
+    name="wysiwyg_support"
+    implementation="plone"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    >
+  <kupu:id>$Id: wysiwyg_support.kupu 14903 2005-07-22 09:56:09Z duncan $</kupu:id>
+
+  <kupu:part name="editorbox">
+
+    <div metal:define-macro="wysiwygEditorBox" id="kupu-editor"
+        tal:define="name fieldName|inputname;
+                editorid string:kupu-editor-${name}"
+        tal:attributes="id editorid">
+     <tal:usekupu define="fname fieldName|inputname|nothing;
+                  usekupu python:here.contentUsesKupu(fname);">
+      <div tal:condition="usekupu">
+        <kupu:define-slot name="has_kupu" />
+      </div>
+
+      <div tal:condition="not:usekupu">
+        <kupu:define-slot name="not_has_kupu" />
+      </div>
+     </tal:usekupu>
+    </div>
+  </kupu:part>
+
+  <kupu:part name="eventhandler">
+    <script type="text/javascript"
+      tal:content="string:
+      addEventHandler(window, 'load',  function() {
+          window.kupu = initPloneKupu('${editorid}');
+          window.kupuui = window.kupu.getTool('ui');
+          window.drawertool = window.kupu.getTool('drawertool');
+          window.kupu.initialize();}  , document);"></script>
+  </kupu:part>
+
+  <kupu:part name="textarea">
+    <textarea
+        cols="80"
+        rows="25"
+        tabindex=""
+        name="fieldName"
+        tal:content="inputvalue"
+        tal:attributes="name fieldName|inputname;
+                        id fieldName|inputname;
+                        onfocus onfocus|nothing;
+                        onblur onblur|nothing;
+                        tabindex tabindex|nothing;
+                        rows rows|default;
+                        cols cols|default;">
+    </textarea>
+  </kupu:part>
+
+  <kupu:part name="textformatselector">
+
+<div metal:define-macro="textFormatSelector" class="field">
+ <tal:usekupu define="fname fieldName|inputname|nothing;
+              usekupu python:here.contentUsesKupu(fname);">
+  <tal:editor tal:condition="usekupu">
+     <input type="hidden" name="text_format" value="text/html"
+        tal:define="fieldName fieldName|inputname|nothing;
+                val python:fieldName and 'text/html' or 'html';
+                fieldName python:fieldName and fieldName+'_text_format' or 'text_format';"
+        tal:attributes="name fieldName;value val;"
+     />
+  </tal:editor>                 
+  <tal:noeditor  tal:condition="not:usekupu">
+    <tal:archetypes tal:condition="fieldName|nothing">
+         <div metal:use-macro="here/widgets/visual/macros/area_format" />
+         <span tal:condition="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=context.REQUEST)"
+                tal:define="global kupu_convert_message_generated python:True">
+           <a href="#"
+                tal:attributes="href string:${request/URL0}?kupu.convert=${fieldName};">Convert to HTML and edit with Kupu</a></span>
+    </tal:archetypes>
+    <tal:nonat condition="not:fieldName|nothing">
+     <label for="text_format" i18n:translate="label_format">Format</label>
+
+     <div class="formHelp" i18n:translate="help_format">
+       If you are unsure of which format to use, just select Plain
+       Text and type the document as you usually do.
+     </div>
+
+     <input class="noborder"
+            type="radio"
+            name="text_format"
+            value="structured-text"
+            tabindex=""
+            id="cb_structuredtext"
+            tal:attributes="checked python:test(text_format=='structured-text', 1, None);
+                            tabindex tabindex;"
+            />
+     <label for="cb_structuredtext" i18n:translate="structured_text">Structured Text</label> <br />
+
+     <input class="noborder"
+            type="radio"
+            name="text_format"
+            value="html"
+            tabindex=""
+            id="cb_html"
+            tal:attributes="checked python:test(text_format=='html', 1, None);
+                            tabindex tabindex;"
+            />
+     <label for="cb_html" i18n:translate="html">HTML</label> <br />
+
+     <input class="noborder"
+            type="radio"
+            name="text_format"
+            value="plain"
+            tabindex=""
+            id="cb_plain"
+            tal:attributes="checked python:test(text_format=='plain', 1, None);
+                            tabindex tabindex;"
+            />
+     <label for="cb_plain" i18n:translate="plain_text">Plain Text</label>
+    </tal:nonat>
+  </tal:noeditor>
+ </tal:usekupu>
+</div>
+
+  </kupu:part>
+
+</kupu:feature>

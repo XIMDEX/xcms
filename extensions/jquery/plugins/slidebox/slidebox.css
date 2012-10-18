@@ -1,0 +1,101 @@
+/* @override 
+	http://samuelgarneau.com/slidebox.css
+	http://samuelgarneau.com/lab/validator/slidebox.css
+	http://samuelgarneau.com/lab/slidebox.css
+*/
+
+body {
+	margin: 0;
+	padding: 0 0 0;
+}
+
+.slide-panel-top {
+	position: absolute;
+	z-index: 25;
+}
+.slide-panel-bottom {
+	position: absolute;
+	z-index: 25;
+}
+
+.bottom {
+	bottom: 0;
+}
+
+.top {
+	top: 0;
+}
+
+.content-top {
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 10;
+	overflow: hidden;
+	text-align: left;
+	background-color: #CCCCCC;
+	height: 0;
+	width: 100%;
+	padding-left:15px;
+	padding-right: 15px;
+	border: solid 1px black;
+	-moz-border-radius-bottomleft: 6px;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+	-moz-border-radius-bottomright:6px;
+	overflow: auto;
+}
+.content-bottom {
+	border: solid 1px black;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 10;
+	overflow: hidden;
+	text-align: left;
+	background-color: #CCCCCC;
+	height: 0;
+	width: 100%;
+	padding-left:15px;
+	padding-right: 15px;
+	-moz-border-radius-bottomleft: 6px;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+	-moz-border-radius-bottomright:6px;
+}
+
+.slide-button-top {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	width: 200px;
+	z-index: 20;
+	cursor: pointer;
+	height: 25px;
+	padding-top: 10px;
+	text-align: center;
+	background-color: #CCCCCC;
+	-moz-border-radius-bottomleft: 6px;
+	-moz-border-radius-bottomright:6px;
+}
+.slide-button-bottom {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	width: 200px;
+	z-index: 20;
+	cursor: pointer;
+	height: 25px;
+	padding-top: 10px;
+	text-align: center;
+	background-color: #CCCCCC;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+}
+
+.slide-button:hover {
+	color: #9f9d8e;
+}
+.ui-dropdownchecklist-dropcontainer-wrapper{
+	z-index:26;	
+}
+
+

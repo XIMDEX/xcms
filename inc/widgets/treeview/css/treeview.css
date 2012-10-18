@@ -1,0 +1,131 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision: 7805 $
+ */
+
+
+div.xim-treeview-container {
+	overflow: hidden;
+}
+
+ul.xim-treeview-loading {
+	font-size: 12px;
+	list-style: none;
+	margin-left: 0px;
+	margin-top: 5px;
+}
+
+div.xim-treeview-branch-container {
+	position: absolute;
+	overflow: auto;
+	margin-top: 30px;
+	/*width: 100%;*/
+	top: 25px;
+	bottom: 0px;
+	left: 5px;
+	right: 0px;
+}
+
+ul.xim-treeview-branch {
+	font-size: 12px;
+	list-style: none;
+	/*margin-left: -20px;*/
+	margin-top: 5px;
+}
+
+li.xim-treeview-node {
+	cursor: default;
+	margin-left: -8px;
+	margin-top: 3px;
+}
+
+li.xim-treeview-node, .xim-treeview-label {
+	padding-right: 5px;
+	white-space: nowrap;
+}
+
+.xim-treeview-selected {
+	background-color: #eee;
+	font-weight: bold;
+}
+
+ul.xim-treeview-expanded {
+
+}
+
+ul.xim-treeview-collapsed {
+
+}
+.xim-treeview-icon {
+	width: 16px;
+	height: 16px;
+	/*float: left;*/
+	vertical-align: middle;
+}
+
+.xim-treeview-btnreload {
+	cursor: default;
+	border: 1px solid #333333;
+	background-color: #cccccc;
+	font-weight: bold;
+	margin: 8px auto 8px auto;
+	text-align: center;
+	width: 200px;
+}
+
+.ui-icon {
+	float: left;
+	clear: left;
+}
+
+.ui-no-icon {
+	width: 16px;
+	height: 16px;
+	background: transparent;
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	float: left;
+	clear: left;
+}
+
+.xim-treeview-itemsSelector {
+	position: absolute;
+	overflow: hidden;
+	width: 300px;
+}
+
+.xim-treeview-branch-container ul {
+	padding-left: 6px;
+	*margin-left: 0px;
+}
+
+.xim-treeview-branch-container ul li ul {
+	padding-left: 6px;
+	*margin-left: 0px;
+}
+.xim-treeview-branch-container ul li ul li {
+	padding-left: 25px;
+	*margin-left: 0px;
+}

@@ -1,0 +1,90 @@
+% File:      epstopdf.sty
+% Version:   2001/02/04 v1.1
+% Author:    Heiko Oberdiek
+% Email:     <oberdiek@ruf.uni-freiburg.de>
+%
+% Copyright: Copyright (C) 2001 Heiko Oberdiek.
+%
+%            This program may be distributed and/or modified under
+%            the conditions of the LaTeX Project Public License,
+%            either version 1.2 of this license or (at your option)
+%            any later version. The latest version of this license
+%            is in
+%              http://www.latex-project.org/lppl.txt
+%            and version 1.2 or later is part of all distributions
+%            of LaTeX version 1999/12/01 or later.
+%
+% Function:  This packages adds support of handling eps images
+%            to package graphic{s,x} with option `pdftex'.
+%            If an eps image is detected, epstopdf is automatically
+%            called to convert it to pdf format.
+%
+% Required:  * The program `epstopdf'.
+%            * The feature `\write18' has to be enabled to get
+%              the conversion via the program epstopdf work:
+%              * command line option: -shell-escape
+%                example: pdflatex -shell-escape test.tex
+%              * configuraton file `texmf.cnf': shell_escape = 1
+%
+% Use:       The package is loaded after graphic{s,x}, eg:
+%              \usepackage[pdftex]{graphicx}
+%              \usepackage{epstopdf}
+%            Images with extension `.eps' are now detected
+%            and supported:
+%            * Implicitly: \includegraphics{bild}
+%              If `bild.eps' can only be found,
+%              then it is converted to the file `bild.pdf',
+%              that will be used by pdfTeX.
+%              On the next ocurrences or on the next pdfTeX run,
+%              the pdf file is already available, so the
+%              conversion step is skipped.
+%            * Explicitly: \includegraphics{bild.eps}
+%              Each time the conversion program is called.
+%
+% History:   2001/01/06 v1.0:
+%              * first public version,
+%                published in the pdftex mailing list.
+%            2001/02/04 v1.1:
+%              * minor documentation update.
+%              * CTAN.
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{epstopdf}%
+  [2001/02/04 v1.1 Conversion with epstopdf on the fly (HO)]
+
+% Check, whether package graphics is loaded
+% (also graphicx loads graphics)
+\@ifpackageloaded{graphics}{}{%
+  \PackageWarningNoLine{epstopdf}{%
+    No graphics package \string`graphic{s,x}\string' loaded%
+  }%
+  \endinput
+}
+% Check, whether pdftex.def is loaded
+\@ifundefined{ver@pdftex.def}{%
+  \PackageWarningNoLine{epstopdf}{%
+    Graphics driver file \string`pdftex.def\string' not loaded%
+  }
+  \endinput
+}
+
+% Patch \Gin@setfile to execute #3, if it contains
+% a command
+\let\orgGin@setfile\Gin@setfile
+\def\Gin@setfile#1#2#3{%
+  \if`\@car #3\relax\@nil
+    \immediate\write18{\@cdr #3\@empty\@nil}%
+    \orgGin@setfile{#1}{#2}{\Gin@base #2}%
+  \else
+    \orgGin@setfile{#1}{#2}{#3}%
+  \fi
+}
+
+% Adding .eps at the end of the list of extensions,
+% defined by \DeclareGraphicsExtensions
+\g@addto@macro\Gin@extensions{,.eps}
+
+% \DeclareGraphicsRule for .eps
+\@namedef{Gin@rule@.eps}#1{{pdf}{.pdf}{`epstopdf #1}}
+
+\endinput

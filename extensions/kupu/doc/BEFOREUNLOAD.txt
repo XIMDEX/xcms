@@ -1,0 +1,168 @@
+=================
+BeforeUnload Tool
+=================
+
+The BeforeUnload tool will check forms when navigating away from a
+page and will warn a user if they are about to lost changes and give
+them the option to remain editing the page.
+
+How to use the tool
+===================
+
+The tool will install itself automatically provided the javascript
+is loaded, and provided no other handler has been installed for the
+window.onbeforeunload event.
+
+To test for the presence of the tool and use it if it is present use
+the following code::
+
+    var beforeunloadTool = window.onbeforeunload && window.onbeforeunload.tool;
+    if (beforeunloadTool) { ... };
+
+Although the tool is installed by default, it does not check any
+forms unless they are added. Use the addForm method to add a single
+form or addForms method to add multiple forms. When a form is added,
+its onsubmit method will be hooked by the tool: if your form needs to
+perform its own onsubmit processing you must replace this event
+after calling addForm.
+
+The following input field types may be checked::
+
+    <input type="text">
+    <textarea>
+    <input type="radio">
+    <input type="checkbox">
+    <input type="password">
+    <select>
+    <select multiple>
+    <input type="hidden">
+
+Single selection fields where nothing was initially selected are
+considered to have changed if the first entry is not selected. Single
+selection fields where multiple entries were marked as selected
+initially are always considered changed.
+
+Field which do not have a `name` attribute are assumed to be
+client-side only (as they are not submitted to the server) and are
+ignored when checking.
+
+Note that hidden fields are checked for changes although a bug in
+Mozilla means that this is done by storing their original value when
+the handler is notified of the form.
+
+These field types are always assumed to be unchanged::
+
+    <input type="button">
+    <input type="file">
+    <input type="image">
+    <input type="reset">
+    <input type="submit">
+
+Handler functions return false to indicate there is no change to be
+lost, true to indicate that something has changed and the default
+message should be displayed, or they may return a string to show a
+custom message. Once a handler function has returned a value other
+than false no other handler functions are called.
+
+API
+===
+
+Global variables
+----------------
+
+None. The BeforeUnload tool does not create or modify any global
+javascript variables. The only way to access it is through the
+onbeforeunload event of the window object.
+
+
+Methods
+-------
+
+isAnyFormChanged()
+++++++++++++++++++
+
+Calls isElementChanged() for all watched forms and returns the first non-false
+value. This is the first handler function called when the page is
+unloading.
+
+addHandler(fn)
+++++++++++++++
+
+Appends another handler function to be called when the page is
+unloading. The handler should not assume anything about the value of
+'this' when it is called.
+
+Example::
+
+        var initialBody = ibody.innerHTML;
+        beforeunloadTool.addHandler(function() {
+            return ibody.innerHTML != initialBody;
+        });
+
+
+onsubmit()
+++++++++++
+
+This method is used as the default form.onsubmit event. If you replace
+form.onsubmit you should call beforeunloadTool.onsubmit() after
+validating the form.
+
+addForm(form)
++++++++++++++
+
+Enables checking for a single form and sets the form's onsubmit handler.
+
+addForms(el1, el2, ...)
++++++++++++++++++++++++
+
+Finds all forms which are the specified elements or children of the
+elements at any depth and enables checking for those forms.
+
+removeForms(el1, el2, ...)
+++++++++++++++++++++++++++
+
+Finds all forms in the parameters and disables checking for those
+forms.
+
+isElementChanged(element)
++++++++++++++++++++++++++
+
+Returns true (or a string) if the specified element has changed, false
+if it has not. element may be a form or a control on form.
+
+Properties
+----------
+
+submitting
+++++++++++
+
+Set true by the default form onsubmit handler. If you cancel form
+submission you must set it false.
+
+chkId
++++++
+
+beforeunloadTool.chkId is an object which may contain methods whose
+names are the same as the ids of form controls. By default there are
+no such methods. Add a method if you wish to override checking for a
+single control. the method should return true or a string if the field
+has changed, false if it has not.
+
+For example, to ignore a control which is only used client-side::
+
+   beforeunloadTool.chkId['kupu-tb-styles'] = function() { return false; }
+
+chkType
++++++++
+
+This property contains methods which check a field based on its 'type'
+attribute. For example, to turn off checking for all radio buttons::
+
+   beforeunloadTool.chkType['radio'] = function() { return false; }
+
+The chkType method is not called if a matching chkId method is found.
+
+message
++++++++
+
+This string is displayed if a handler function returns true.

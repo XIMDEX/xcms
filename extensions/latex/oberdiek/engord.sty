@@ -1,0 +1,171 @@
+% File:      engord.sty
+% Version:   2003/04/28 v1.1
+% Author:    Heiko Oberdiek <oberdiek@uni-freiburg.de>
+%
+% Function:  Converts numbers to english ordinal numbers.
+%
+% Copyright: Copyright (C) 2000, 2003 Heiko Oberdiek.
+%
+%   This program may be distributed and/or modified under
+%   the conditions of the LaTeX Project Public License,
+%   either version 1.2 of this license or (at your option)
+%   any later version. The latest version of this license
+%   is in
+%     http://www.latex-project.org/lppl.txt
+%   and version 1.2 or later is part of all distributions
+%   of LaTeX version 1999/12/01 or later.
+%
+% Use:
+%   * \engord{<LaTeX counter name>}
+%     It prints the value of the LaTeX counter as English
+%     ordinal number. It can be used so as \arabic, \roman,
+%     or \alph.
+%   * \engordnumber{<any TeX number>}
+%     It prints the number as English ordinal number.
+%   * \engordletters#1
+%     This command formats the English ordinal letters
+%     after the number. It defaults to \textsuperscript.
+%   * \engorderror#1
+%     It can be redefined, if an other error handling is
+%     wanted. The argument is a negative number or zero.
+%
+% Examples:
+%   * \engordnumber{1}   ==> 1st
+%     \engordnumber{12}  ==> 12th
+%     \engordnumber{123} ==> 123rd
+%     \engord{page}      ==> 1st (if page has the value of one)
+%   * The default output of a counter can be redefined:
+%       \newcounter{mycounter}
+%       \renewcommand{\theengcounter}{\engord{mycounter}}
+%   * Because the implementation of \engord and \engordnumber
+%     is kept expandable, these commands can be used to make
+%     command names with an appropriate definition of
+%     \engordletters:
+%       \renewcommand*{\engordletters}[#1]{#1}
+%       \@namedef{My\engordnumber{3}Command}{...}
+%     This generates the command name `\My4rdCommand'.
+%   * If the letters should not be raised, \engordletters
+%     can be redefined as follows:
+%       \renewcommand*{\engordletters}[1]{#1}
+%
+% History:
+%   2000/05/23 v1.0: first public release
+%   2003/04/28 v1.1:
+%    * Bug fix for 30, 40, 50, ..., 100, 130, ...
+%    * \ordletters renamed to documented \engordletters
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{engord}%
+  [2003/04/28 v1.1 English ordinal numbers (HO)]
+
+% \engordletters is called with one argument, the english
+% ord letters, and contains the code to format them. It
+% defaults to \textsuperscript:
+\providecommand{\engordletters}{\textsuperscript}
+
+% \engorderror is called, if the number is zero
+% or negative.
+\providecommand*{\engorderror}[1]{%
+  #1\engordletters{!ERROR!}%
+  \PackageWarning{engord}{%
+    `#1' is not an ordinal number%
+  }%
+}
+
+% \engord expects a LaTeX counter name as argument and
+% calls \engordnumber
+\newcommand*{\engord}[1]{%
+  \engordnumber{\value{#1}}%
+}
+
+% \engordnumber is the user command to print a number as
+% english ordinal number. The argument can be any
+% TeX number like explicit numbers, register values, ...
+%
+% In a safe way it converts the TeX number argument
+% into a form that only consists of decimal digits
+\newcommand*{\engordnumber}[1]{%
+  \expandafter\EO@number\expandafter{\number#1}%
+}
+
+% \EO@number expects a number with decimal digits as
+% argument and looks at the size of the number and
+% the count of the digits:
+\def\EO@number#1{%
+  \ifnum#1<1 % handle the error case
+    \engorderror{#1}%
+  \else
+    \ifnum#1<21
+      \EO@ord{#1}%
+    \else
+      \ifnum#1<100
+        \EO@twodigits#1%
+      \else
+        \@ReturnAfterFi{%
+          \EO@reverse#1\@nil{}\EO@afterreverse
+        }%
+      \fi
+    \fi
+  \fi
+}
+
+% An internal help macro to prevent a too deep \if nesting.
+\long\def\@ReturnAfterFi#1\fi{\fi#1}
+
+% \EO@ord prints the number with ord letters
+% #1: decimal digits, #1 < 21
+\def\EO@ord#1{%
+  #1%
+  \expandafter\engordletters
+  \ifcase#1{th}\or
+    {st}\or
+    {nd}\or
+    {rd}\else
+    {th}%
+  \fi
+}
+
+% \EO@twodigits expects a number with two digits,
+% 20 < number < 100
+\def\EO@twodigits#1#2{%
+  #1\EO@ord{#2}%
+}
+
+% \EO@reverse reverses the digits of the number
+% #1: next digit
+% #2: rest of the digits
+% #3: already reversed digits
+% #4: next command to call with the reversed number
+%     as argument
+\def\EO@reverse#1#2\@nil#3#4{%
+  \ifx\\#2\\%
+    #4{#1#3}%
+  \else
+    \@ReturnAfterFi{%
+      \EO@reverse#2\@nil{#1#3}{#4}%
+    }%
+  \fi
+}
+
+% \EO@afterreverse calls \EO@reverseback so that
+% \EO@reverseback can inspect the digits of the number
+\def\EO@afterreverse#1{%
+  \EO@reverseback#1\@nil
+}
+
+% \EO@reverseback reverses the reversion
+% #1: the last digit of the number
+% #2: the second last digit of the number
+% #3: first digits of the number in reversed order,
+%     it is not empty, because \EO@reverseback is
+%     only called with numbers > 100.
+\def\EO@reverseback#1#2#3\@nil{%
+  \EO@reverse#3\@nil{}\@firstofone
+  \ifnum#2#1<21
+    \EO@ord{#2#1}%
+  \else
+    #2\EO@ord{#1}%
+  \fi
+}
+
+\endinput

@@ -1,0 +1,15 @@
+<addressBook>
+
+	<card>
+		<name>John Doe</name>
+		<email>jdoe@example.net</email>
+		<note>Nobody knows</note>
+	</card>
+
+	<card>
+		<name>Bugs Bunny</name>
+		<email>bunny@example.net</email>
+		<note>Likes carrots</note>
+	</card>
+
+</addressBook>

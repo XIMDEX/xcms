@@ -1,0 +1,100 @@
+<kupu:feature
+    name="body"
+    implementation="plone"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    >
+  <kupu:id>$Id: body.kupu 18006 2005-09-30 12:14:10Z duncan $</kupu:id>
+  <kupu:part name="editorframe"><script type="text/javascript">var focuscount = 0;</script>
+    <iframe
+	class="kupu-editor-iframe"
+        frameborder="0"
+        src="emptypage"
+        onfocus="this.contentWindow.focus();"
+        tal:define="
+                base here/absolute_url;
+                posfactory python:base.find('/portal_factory/');
+                base python:posfactory > 0 and base[:posfactory+15] or base;
+                base kupu_base_override|base;"
+        tal:attributes="src string:${base}/emptypage; tabindex python:tabindex+1;"
+        >
+    </iframe>
+     <input type="hidden" name="text_format:default" value="text/html"
+        tal:define="fieldName fieldName|inputname|nothing;
+                val python:fieldName and 'text/html' or 'html';
+                fieldName python:test(fieldName, fieldName+'_', '') + 'text_format:default';"
+        tal:attributes="name fieldName;value val;"
+     />
+<tal:test condition="fieldName|nothing">
+    <textarea cols="80" rows="25"
+        tabindex=""
+        class="kupu-editor-textarea"
+        name="description"
+        tal:condition="fieldName|nothing"
+        tal:define="global kupu_content python:here.convertContentForKupu(fieldName, inputvalue);"
+        tal:content="kupu_content"
+        tal:attributes="name inputname;
+                        onfocus onfocus|nothing;
+                        onblur onblur|nothing;
+                        tabindex tabindex|nothing;
+                        rows rows|default;
+                        cols cols|default;">
+    </textarea>
+</tal:test>
+    <textarea cols="80" rows="25"
+        tabindex=""
+        class="kupu-editor-textarea"
+        name="description"
+        id="kupu-editor-textarea"
+        tal:define="pss modules/Products/PythonScripts/standard;
+                text_format python: getattr(here,'text_format','html');
+                is_stx python:text_format=='structured-text';
+                is_ptx python:text_format=='plain';"
+
+        tal:condition="not:fieldName|nothing"
+        tal:content="python:(is_stx and pss.structured_text(inputvalue))
+                                    			or (is_ptx and pss.newline_to_br(inputvalue))
+                                    			or inputvalue"
+        tal:attributes="name inputname;
+                        onfocus onfocus|nothing;
+                        onblur onblur|nothing;
+                        tabindex tabindex|nothing;
+                        rows rows|default;
+                        cols cols|default;">
+    </textarea>
+  </kupu:part>
+
+  <kupu:part name="suppress-kupu">
+    <div class="kupuoverride"
+        tal:condition="python:exists('kupu_content') and len(kupu_content)==0"
+        tal:define="floated widget/allow_file_upload | python:1;"
+        tal:attributes="style python:test(floated, 'float:left;;', '');"
+      ><span class="discreet"><a class="forcekupu" href="#"
+        i18n:translate="suppress-kupu"
+        tal:attributes="href string:${request/URL0}?kupu.suppress=${fieldName};"
+        title="reload current page without kupu">
+         edit without using Kupu
+      </a></span>
+    </div>
+  </kupu:part>
+
+  <kupu:part name="force-kupu">
+    <tal:archetypes tal:condition="fieldName|nothing">
+      <div class="kupuoverride"
+        tal:condition="python:path('widget/allow_format_edit|python:True') and not path('kupu_convert_message_generated|nothing')"
+        tal:define="floated widget/allow_file_upload | python:1;"
+        tal:attributes="style python:test(floated, 'float:left;;', '');"
+        >
+        <span class="discreet"><a class="forcekupu" href="#"
+           i18n:translate="force-kupu"
+           tal:condition="python:portal.kupu_library_tool.isKupuEnabled(REQUEST=context.REQUEST)"
+           tal:attributes="href string:${request/URL0}?kupu.convert=${fieldName};"
+           title="reload current page using kupu to edit this field">
+           edit with Kupu
+        </a></span>
+      </div>
+    </tal:archetypes>
+  </kupu:part>
+</kupu:feature>

@@ -1,0 +1,998 @@
+%%
+%% This is file `vtex.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% vtexdef.dtx  (with options: `package')
+%%
+%%
+%% LaTeX Colour and Graphics support for VTeX
+%%
+%% Copyright (c) 1998-2001 by MicroPress, Inc.
+%% All Rights Reserved.
+%%
+%% Based on other drivers by David Carlisle.
+%%
+%% NOTE::: This package MUST NOT be used with VTeX drivers prior
+%% to version 7.45. It has no chance of working and the results
+%% are not predictable.
+%%
+%% It may be used by specifying the vtex option to any of the
+%% supported packages, for example:
+%%
+%% \usepackage[vtex]{graphicx}
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+\ProvidesFile{vtex.def}%
+     [2001/10/02 v7.45 graphics/color for VTeX]
+\expandafter\ifx\csname vtex-def\endcsname\relax
+  \expandafter\gdef\csname vtex-def\endcsname{}%
+\else
+  \expandafter\endinput
+\fi
+\let\vtexdef@plus\+
+\let\+\relax
+\edef\vtexdef@catcodes{%
+  \catcode`\noexpand\+\the\catcode`\+\relax
+  \catcode`\noexpand\^\the\catcode`\^\relax
+}%
+\@makeother\+%
+\AtBeginDocument{%
+\expandafter\def\csname sin(0)\endcsname{0}%
+\expandafter\def\csname cos(0)\endcsname{1}%
+\expandafter\def\csname sin(90)\endcsname{1}%
+\expandafter\def\csname cos(90)\endcsname{0}%
+\expandafter\def\csname sin(-90)\endcsname{-1}%
+\expandafter\def\csname cos(-90)\endcsname{0}%
+\expandafter\def\csname sin(180)\endcsname{0}%
+\expandafter\def\csname cos(180)\endcsname{-1}}%
+\ifx\OpMode\@undefined
+  \csname newcount\endcsname\OpMode
+  \OpMode=0 %
+\fi
+\def\vtexdef@xxx#1"#2#3{%
+  \ifx\@empty#30\fi#2#3}
+\def\vtexdef@fixedhex#1#2{%
+  \dimen@255sp
+  \dimen@#1\dimen@
+  \chardef\@tempa\dimen@
+  \edef#2{\expandafter\vtexdef@xxx\meaning\@tempa\@empty}%
+}%
+\def\vtexdef@checkarg#1#2#3{%
+  \dimen@#1\p@
+  \ifdim\dimen@<\z@\dimen@\maxdimen\fi
+  \ifdim\dimen@>#2\p@
+    \PackageError{vtex.def}{#3 argument `#1' not in range %
+      [0,#2]}\@ehd
+  \fi
+}%
+\def\color@cmyk#1#2{\c@lor@@cmyk#2\@@#1}
+\def\c@lor@@cmyk#1,#2,#3,#4\@@#5{%
+  \vtexdef@checkarg{#1}{1}{cmyk}%
+  \vtexdef@fixedhex{#1}\vtexdef@hex@a
+  \vtexdef@checkarg{#2}{1}{cmyk}%
+  \vtexdef@fixedhex{#2}\vtexdef@hex@b
+  \vtexdef@checkarg{#3}{1}{cmyk}%
+  \vtexdef@fixedhex{#3}\vtexdef@hex@c
+  \vtexdef@checkarg{#4}{1}{cmyk}%
+  \vtexdef@fixedhex{#4}\vtexdef@hex@d
+  \edef#5{c:\vtexdef@hex@a\vtexdef@hex@b\vtexdef@hex@c\vtexdef@hex@d}%
+}%
+\def\color@gray#1#2{%
+  \vtexdef@checkarg{#2}{1}{gray}%
+  \vtexdef@fixedhex{#2}\vtexdef@hex@a
+  \edef#1{c"\vtexdef@hex@a\vtexdef@hex@a\vtexdef@hex@a}%
+}%
+\def\color@rgb#1#2{\c@lor@@rgb#2\@@#1}
+\def\c@lor@@rgb#1,#2,#3\@@#4{%
+  \vtexdef@checkarg{#1}{1}{rgb}%
+  \vtexdef@fixedhex{#1}\vtexdef@hex@a
+  \vtexdef@checkarg{#2}{1}{rgb}%
+  \vtexdef@fixedhex{#2}\vtexdef@hex@b
+  \vtexdef@checkarg{#3}{1}{rgb}%
+  \vtexdef@fixedhex{#3}\vtexdef@hex@c
+  \edef#4{c"\vtexdef@hex@a\vtexdef@hex@b\vtexdef@hex@c}%
+}%
+\def\vtexdef@inthex#1#2{%
+  \dimen@1sp
+  \dimen@#1\dimen@
+  \chardef\@tempa\dimen@
+  \edef#2{\expandafter\vtexdef@xxx\meaning\@tempa\@empty}%
+}%
+\def\color@RGB#1#2{\c@lor@@RGB#2\@@#1}
+\def\c@lor@@RGB#1,#2,#3\@@#4{%
+  \vtexdef@checkarg{#1}{255}{RGB}%
+  \vtexdef@inthex{#1}\vtexdef@hex@a
+  \vtexdef@checkarg{#2}{255}{RGB}%
+  \vtexdef@inthex{#2}\vtexdef@hex@b
+  \vtexdef@checkarg{#3}{255}{RGB}%
+  \vtexdef@inthex{#3}\vtexdef@hex@c
+  \edef#4{c"\vtexdef@hex@a\vtexdef@hex@b\vtexdef@hex@c}%
+}%
+\def\color@GRAY#1#2{%
+  \vtexdef@checkarg{#2}{255}{GRAY}%
+  \vtexdef@inthex{#2}\vtexdef@hex@a
+  \edef#1{c"\vtexdef@hex@a\vtexdef@hex@a\vtexdef@hex@a}%
+}%
+\def\color@CMYK#1#2{\c@lor@@CMYK#2\@@#1}
+\def\c@lor@@CMYK#1,#2,#3,#4\@@#5{%
+  \vtexdef@checkarg{#1}{255}{CMYK}%
+  \vtexdef@inthex{#1}\vtexdef@hex@a
+  \vtexdef@checkarg{#2}{255}{CMYK}%
+  \vtexdef@inthex{#2}\vtexdef@hex@b
+  \vtexdef@checkarg{#3}{255}{CMYK}%
+  \vtexdef@inthex{#3}\vtexdef@hex@c
+  \vtexdef@checkarg{#4}{255}{CMYK}%
+  \vtexdef@inthex{#4}\vtexdef@hex@d
+  \edef#5{c:\vtexdef@hex@a\vtexdef@hex@b\vtexdef@hex@c\vtexdef@hex@d}%
+}%
+\def\color@named#1#2{\c@lor@@named#2,,\@@#1}
+\def\c@lor@@named#1,#2,#3\@@#4{%
+  \@ifundefined{col@#1}%
+  {%
+    \PackageError{vtex.def}{Undefined color `#1'}\@ehd
+  }%
+  {%
+    \edef#4{\csname col@#1\endcsname}%
+  }%
+}%
+\special{!balancecolor+}%
+\def\pdfliteral#1{\special{!=#1}}
+\def\STset@color{%
+  \special{G(}\special{\current@color}\aftergroup\reset@color}
+\def\STreset@color{%\special{\current@color}
+  \special{G)}}
+\def\NSset@color{%
+  \special{\current@color}\aftergroup\reset@color}
+\def\NSreset@color{\special{\current@color}}
+\newif\if@colorstack
+\ifnum\OpMode=0 %
+  \@colorstacktrue
+\fi
+\ifnum\OpMode=1 %
+  \@colorstacktrue
+\fi
+\ifnum\OpMode=2 %
+  \@colorstacktrue
+\fi
+\def\set@color
+{%
+  \if@colorstack
+    \STset@color
+  \else
+    \NSset@color
+  \fi
+}
+\def\reset@color
+{%
+  \if@colorstack
+    \STreset@color
+  \else
+    \NSreset@color
+  \fi
+}
+\def\set@page@color{\immediate\special{b\current@color}}
+\def\define@color@named#1#2{%
+  \expandafter\edef\csname col@#1\endcsname{#2}}
+\def\current@color{c"000000}
+\def\c@lor@to@ps#1#2#3\@@
+{%
+  (#3) (#2) 0 get 58 ne {dorgb} {docmyk} ifelse
+}
+\newif\if@vtexdef@sizeproblem
+\def\Gread@@gen#1#2{%
+  \@vtexdef@sizeproblemfalse
+  \sizegraph<#1>\relax
+  \xdef\vtexdef@filename{\lastfilename}%
+  \def\Gin@llx{0}%
+  \let\Gin@lly\Gin@llx
+  \def\Gin@urx{\the\graphx}%
+  \def\Gin@ury{\the\graphy}%
+  \ifnum-1=\Gin@urx\relax
+    \ifnum-1=\Gin@ury\relax
+      \@vtexdef@sizeproblemtrue
+      \@latex@error
+        {Cannot determine size of graphic in #1}\@ehc
+      \global\let\vtexdef@filename\@undefined
+      \def\Gin@urx{#2}%
+      \let\Gin@ury\Gin@urx
+    \fi
+  \fi
+}
+\def\Gread@@#1{%
+  \Gread@@gen{#1}{72}%
+}%
+\def\Gread@@sp#1{%
+  \Gread@@gen{#1}{4736232}%
+  \count@\Gin@urx\relax
+  \divide\count@ 65781 %
+  \edef\Gin@urx{\the\count@}%
+  \count@\Gin@ury\relax
+  \divide\count@ 65781 %
+  \edef\Gin@ury{\the\count@}%
+}
+\let\Gread@gif=\Gread@@
+\let\Gread@png=\Gread@@
+\let\Gread@bmp=\Gread@@
+\let\Gread@pcx=\Gread@@
+\let\Gread@tga=\Gread@@
+\let\Gread@tif=\Gread@@
+\let\Gread@jpg=\Gread@@
+\let\Gread@wmf=\Gread@@sp
+\let\Gread@emf=\Gread@@sp
+\newbox\vtexdef@tempbox
+\newif\ifGin@viagex
+\def\vtexdef@make@GeX@cmd#1%
+{%
+  \ifx#1\@nil
+    \let\next\relax
+  \else
+    \let\next\vtexdef@make@GeX@cmd
+    \vtexdef@@make@GeX@cmd#1%
+  \fi
+  \next
+}%
+\def\vtexdef@@make@GeX@cmd@bit#1#2%
+{%
+  \ifnum#1=\vtexdef@transbit\relax
+    \vtexdef@load@plugin{transbit}%
+    \edef\vtexdef@@GeX@cmd{\vtexdef@@GeX@cmd\space#2}%
+  \fi
+  \if@enable@degrade
+  \ifnum#1=\vtexdef@degrade\relax
+    \ifx\vtexdef@degrade@factor\@empty
+    \else
+      \vtexdef@load@plugin{degrade}%
+      \edef\vtexdef@pS@scale
+      {%
+        \vtexdef@scale@x\space
+        \vtexdef@degrade@factor\space div %
+        \vtexdef@scale@y\space
+        \vtexdef@degrade@factor\space div scale %
+      }%
+      \edef\vtexdef@@GeX@cmd{\vtexdef@@GeX@cmd\space#2}%
+      \global\let\vtexdef@degrade@factor\@empty
+    \fi
+  \fi
+  \fi
+  \ifnum#1=\vtexdef@phfilter\relax
+    \vtexdef@load@plugin{gexapih}%
+    \edef\vtexdef@@GeX@cmd{\vtexdef@@GeX@cmd\space#2}%
+  \fi
+}%
+\def\vtexdef@insert@bitmap@viagex#1#2#3%
+{%
+  \edef\vtexdef@pS@scale
+  {%
+    \vtexdef@scale@x\space \vtexdef@scale@y\space scale%
+  }%
+  \let\vtexdef@@GeX@cmd\@empty
+  \ifx\vtexdef@GeX@cmd\@empty
+  \else
+    \let\vtexdef@@make@GeX@cmd\vtexdef@@make@GeX@cmd@bit
+    \@enable@degradetrue
+    \expandafter
+      \vtexdef@make@GeX@cmd\vtexdef@GeX@cmd\@nil
+  \fi
+  \Remove@@PT{#2}\vtexdef@y
+  \setbox\vtexdef@tempbox=\hbox{%
+    \if@vtexdef@sizeproblem
+    \else
+      \Gin@PS@restored
+      {%
+        0 \vtexdef@y\space 1.00375 div translate %
+        \vtexdef@pS@scale\space
+        (#3) .readimage \vtexdef@@GeX@cmd\space .produceimage %
+      }%
+    \fi
+  }%
+  \wlog{^^JGeX command (Bitmap inclusion)^^J
+    \vtexdef@@GeX@cmd^^J}%
+  \wd\vtexdef@tempbox=#1\relax
+  \ht\vtexdef@tempbox=#2\relax
+  \dp\vtexdef@tempbox\z@
+  \leavevmode\box\vtexdef@tempbox
+  \global\let\vtexdef@GeX@cmd\@empty
+}%
+\newcount\vtexdef@ca
+\newdimen\vtexdef@da
+\def\vtexdef@bitmap@scale#1#2%
+{%
+  \vtexdef@da=#1mm\relax
+  \edef\vtexdef@scale@num{\number\vtexdef@da}%
+  \vtexdef@da=72mm\relax
+  \vtexdef@ca=\number\vtexdef@da\relax
+  \divide\vtexdef@ca by \vtexdef@scale@num\relax
+  \edef#2{\the\vtexdef@ca}%
+}%
+\def\vtexdef@insert@bitmap@viaG#1#2#3%
+{%
+  \vtexdef@bitmap@scale\vtexdef@scale@x\vtexdef@scaleG@x
+  \vtexdef@bitmap@scale\vtexdef@scale@y\vtexdef@scaleG@y
+  \leavevmode
+  \hbox to #1{%
+    \hss
+    \vbox
+    {%
+      \vss
+      \if@vtexdef@sizeproblem
+      \else
+        \special{G:\vtexdef@scaleG@x,\vtexdef@scaleG@y,%
+          \ifx\vtexdef@filename\@undefined#3\else\vtexdef@filename\fi}%
+      \fi
+      \vss
+    }%
+    \kern#1\relax
+    \hss
+  }%
+}%
+\def\Ginclude@@#1%
+{%
+  \if@vtexdef@sizeproblem
+  \else
+    \if1\vtex@imagemask\special{!imagemask+}\fi
+    \ifGin@reindeximages\special{!reindeximages+}\fi
+    \ifGin@repackjpeg\special{!repackjpeg+}\fi
+    \ifGin@useCCITT\special{!useccitt+}\fi
+    \ifGin@useDCT
+      \special{!usedct+}\special{!dctquality=\vtex@dctquality}%
+    \fi
+  \fi
+  \def\vtexdef@tempa{!}%
+  \ifx\vtexdef@tempa\Gin@scalex
+    \edef\vtexdef@scale@x{\Gin@scaley}%
+  \else
+    \edef\vtexdef@scale@x{\Gin@scalex}%
+  \fi
+  \ifx\vtexdef@tempa\Gin@scaley
+    \edef\vtexdef@scale@y{\Gin@scalex}%
+  \else
+    \edef\vtexdef@scale@y{\Gin@scaley}%
+  \fi
+  \ifGin@viagex
+    \vtexdef@insert@bitmap@viagex\Gin@req@width
+      \Gin@req@height{#1}%
+  \else
+    \vtexdef@insert@bitmap@viaG\Gin@req@width
+      \Gin@req@height{#1}%
+  \fi
+  \if@vtexdef@sizeproblem
+    \if1\vtex@imagemask\special{!imagemask-}\fi
+    \ifGin@reindeximages
+      \special{!reindeximages^}%
+    \fi
+    \ifGin@repackjpeg
+      \special{!repackjpeg^}%
+    \fi
+    \ifGin@useCCITT
+      \special{!useccitt^}%
+    \fi
+    \ifGin@useDCT
+      \special{!usedct^}%
+    \fi
+  \fi
+  \@vtexdef@sizeproblemfalse
+  \Gin@viagexfalse
+  \Gin@reindeximagesfalse
+  \Gin@repackjpegfalse
+  \Gin@useCCITTfalse
+  \Gin@useDCTfalse
+  \global\let\vtexdef@filename\@undefined
+}%
+\def\Ginclude@@Xmf#1#2%
+{%
+  \leavevmode
+  \hbox to \Gin@req@width
+  {%
+    \vbox to \Gin@req@height
+    {%
+      \if@vtexdef@sizeproblem
+        \@vtexdef@sizeproblemfalse
+      \else
+        \special{!#2 %
+          \ifx\vtexdef@filename\@undefined#1\else\vtexdef@filename\fi;%
+          w=\the\Gin@req@width,h=\the\Gin@req@height
+          \ifGin@clip;c\fi}%
+      \fi
+      \vss
+    }%
+    \hss
+  }%
+  \global\let\vtexdef@filename\@undefined
+}%
+\def\Ginclude@emf#1%
+{%
+  \Ginclude@@Xmf{#1}{emf}%
+}%
+\def\Ginclude@wmf#1%
+{%
+  \Ginclude@@Xmf{#1}{wmf}%
+}%
+\let\Ginclude@gif=\Ginclude@@
+\let\Ginclude@png=\Ginclude@@
+\let\Ginclude@bmp=\Ginclude@@
+\let\Ginclude@pcx=\Ginclude@@
+\let\Ginclude@tga=\Ginclude@@
+\let\Ginclude@tif=\Ginclude@@
+\let\Ginclude@jpg=\Ginclude@@
+\newcount\@llx
+\newcount\@lly
+\newcount\@urx
+\newcount\@ury
+\newcount\@w
+\newcount\@h
+\newdimen\@T
+\newcount\@clip
+\newcount\@innerscale
+\newif\if@useinnerscale
+\newif\if@vtexdef@mp
+\def\Remove@@PT#1#2{\edef#2{\expandafter\remove@@PT\the#1}}
+{\catcode`p=12\catcode`t=12\gdef\remove@@PT#1pt{#1}}
+\def\vtexdef@load@plugin#1%
+{%
+  \csname if@#1loaded\endcsname
+  \else
+    \immediate\Gin@PS@raw{(#1) .extend}%
+    \global\csname @#1loadedtrue\endcsname
+  \fi
+}%
+\newif\if@vtexPSmode
+\ifnum\OpMode=1 %
+  \@vtexPSmodetrue
+\else
+  \ifnum\OpMode=2 %
+    \@vtexPSmodetrue
+  \fi
+\fi
+\def\Ginclude@eps#1{%
+  \IfFileExists{#1}{%
+  \bgroup
+  \xdef\vtexdef@filename{\lastfilename}%
+  \if@vtexPSmode
+    \if@vtexdef@mp
+      \Gin@PS@raw{1 .autofontload}%
+    \fi
+    \vtexdef@set@languagelevel
+    \ifGin@disablepdfmarks
+    \else
+       \Gin@PS@raw{/disablepdfmarks false def}%
+    \fi
+    \ifx\vtexdef@pspage\@empty
+    \else
+      \special{!psselectpage \vtexdef@pspage}%
+      \global\let\vtexdef@pspage\@empty
+    \fi
+  \fi
+  \def\@tempa{!}%
+  \dimen@\Gin@req@width
+  \dimen@ii.1bp%
+  \divide\dimen@\dimen@ii
+  \@tempdima\Gin@req@height
+  \divide\@tempdima\dimen@ii
+  \@T=\Gin@llx bp\@llx=\@T
+  \@T=\Gin@lly bp\@lly=\@T
+  \@T=\Gin@urx bp\@urx=\@T
+  \@T=\Gin@ury bp\@ury=\@T
+  \@T=\vtex@innerscale pt\@innerscale=\@T
+  \@innerscale=\vtex@innerscale
+  \@w=\Gin@req@width
+  \@h=\Gin@req@height
+  \@useinnerscalefalse
+  \ifnum\@innerscale=1 %
+  \else
+    \if@vtexPSmode
+      \@useinnerscaletrue
+    \fi
+  \fi
+  \let\vtexdef@colorimage@redef\@empty
+  \let\vtexdef@@GeX@cmd\@empty
+  \ifx\vtexdef@GeX@cmd\@empty
+  \else
+    \let\vtexdef@@make@GeX@cmd\vtexdef@@make@GeX@cmd@bit
+    \@enable@degradefalse
+    \expandafter\vtexdef@make@GeX@cmd\vtexdef@GeX@cmd\@nil
+    \edef\vtexdef@colorimage@redef
+    {%
+      /save@colorimage /colorimage load def %
+      /colorimage
+      { .loadcolorimage %
+        \vtexdef@@GeX@cmd\space
+        .produceimage %
+      } bind def %
+      /save@image /image load def %
+      /image
+      { .loadimage %
+        \vtexdef@@GeX@cmd\space
+        .produceimage %
+      } bind def %
+    }%
+    \expandafter\Gin@PS@raw
+      \expandafter{\vtexdef@colorimage@redef}%
+    \wlog{^^JGeX command (EPS inclusion)^^J
+      \vtexdef@colorimage@redef^^J}%
+  \fi
+  \if@useinnerscale
+    \multiply\@llx\@innerscale
+    \multiply\@lly\@innerscale
+    \multiply\@urx\@innerscale
+    \multiply\@ury\@innerscale
+    \multiply\@w\@innerscale
+    \multiply\@h\@innerscale
+    \@T=10pt \divide\@T\@innerscale \divide\@T10
+    \Remove@@PT\@T\@Factor
+    \special{!direct q}%
+    \special{pdfscale: \@Factor}%
+    \Gin@PS@raw{/gexsc \the\@innerscale\space def gsave %
+      \the\@innerscale\space
+      \the\@innerscale\space scale}%
+  \fi
+  \if@vtexPSmode
+  \else
+    \special{ps?vpsfig.pro}%
+  \fi
+  \special{Psbb: 1\ifGin@clip1 \else0 \fi\space \the\@llx\space
+    \the\@lly\space \the\@urx\space \the\@ury\space
+    \the\@w\space \the\@h\space}%
+  \special{ps=\vtexdef@filename}%
+  \special{ps>}%
+  \ifx\vtexdef@colorimage@redef\@empty
+  \else
+    \Gin@PS@raw{/colorimage{ save@colorimage }bind def %
+      /image{ save@image }bind def}%
+  \fi
+  \if@useinnerscale
+    \Gin@PS@raw{grestore}%
+    \special{!direct Q}%
+  \fi
+  \if@vtexPSmode
+    \ifGin@disablepdfmarks
+    \else
+       \Gin@PS@raw{/disablepdfmarks true def}%
+    \fi
+    \vtexdef@restore@languagelevel
+    \if@vtexdef@mp
+      \Gin@PS@raw{0 .autofontload}%
+    \fi
+  \fi
+  \egroup
+  }{}%
+  \global\let\vtexdef@set@languagelevel\@empty
+  \global\let\vtexdef@restore@languagelevel\@empty
+  \global\let\vtexdef@GeX@cmd\@empty
+  \global\Gin@disablepdfmarkstrue
+  \global\let\vtexdef@filename\@undefined
+}%
+\def\Ginclude@mps#1%
+{%
+  \@vtexdef@mptrue
+  \Ginclude@eps{#1}%
+  \@vtexdef@mpfalse
+}%
+\def\Gin@extensions{.gif,.png,.jpg,.tif,.bmp,.tga,.pcx,%
+  .eps,.ps,.mps,.emf,.wmf}
+\@namedef{Gin@rule@.wmf}#1{{wmf}{.wmf}{#1}}
+\@namedef{Gin@rule@.emf}#1{{emf}{.emf}{#1}}
+\@namedef{Gin@rule@.png}#1{{png}{.png}{#1}}
+\@namedef{Gin@rule@.gif}#1{{gif}{.gif}{#1}}
+\@namedef{Gin@rule@.pcx}#1{{pcx}{.pcx}{#1}}
+\@namedef{Gin@rule@.tif}#1{{tif}{.tif}{#1}}
+\@namedef{Gin@rule@.tiff}#1{{tif}{.tiff}{#1}}
+\@namedef{Gin@rule@.bmp}#1{{bmp}{.bmp}{#1}}
+\@namedef{Gin@rule@.tga}#1{{tga}{.tga}{#1}}
+\@namedef{Gin@rule@.targa}#1{{tga}{.targa}{#1}}
+\@namedef{Gin@rule@.jpg}#1{{jpg}{.jpg}{#1}}
+\@namedef{Gin@rule@.jpeg}#1{{jpg}{.jpeg}{#1}}
+\@namedef{Gin@rule@.ps}#1{{eps}{.ps}{#1}}
+\@namedef{Gin@rule@.mps}#1{{mps}{.mps}{#1}}
+\@namedef{Gin@rule@.eps}#1{{eps}{.eps}{#1}}
+\@namedef{Gin@rule@*}#1{{eps}{\Gin@ext}{#1}}
+\def\Grot@start{%
+ \special{r(\Grot@cos,\Grot@sin,-\Grot@sin,\Grot@cos,0,0}%
+}
+\def\Grot@end{%
+ \special{r)}%
+}
+\def\Gscale@start{%
+ \special{r(\Gscale@x,0,0,\Gscale@y,0,0}%
+}
+\let\Gscale@end\Grot@end
+\def\Gin@PS@raw#1{\special{pS:#1}}
+\def\Gin@PS@restored#1%
+{%
+   \Gin@PS@raw{gsave currentpoint translate #1 grestore}%
+}%
+\def\Gin@PS@file@header#1{\AtBeginDvi{\special{header=#1}}}
+\def\Gin@PS@literal@header#1%
+{%
+   \AtBeginDvi{\immediate\special{pS:#1}}%
+}%
+\edef\Grot@cos{1}%
+\edef\Grot@sin{0}%
+\newtoks\PS@Console
+\edef\PS@consolenum{\the\allocationnumber}
+\ifx\gexmode\@undefined
+\else
+  \ifnum\gexmode>\z@
+    \def\vtexdef@redefine@trig
+    {%
+      \def\CalculateCos##1{{%
+        \expandafter\ifx\csname cos(\number##1)\endcsname\relax
+          \psconsole\PS@consolenum\relax
+          \PS@Console{}%
+          \dimen@=##1\p@
+          \Remove@@PT\dimen@\vtexdef@trig@ps@arg
+          \immediate\Gin@PS@raw{\vtexdef@trig@ps@arg\space
+             cos 10 string cvs print}%
+          \expandafter\xdef\csname cos(\number##1)\endcsname
+             {\the\PS@Console}%
+        \fi
+      }}%
+      \def\CalculateSin##1{{%
+        \expandafter\ifx\csname sin(\number##1)\endcsname\relax
+          \psconsole\PS@consolenum\relax
+          \PS@Console{}%
+          \dimen@=##1\p@
+          \Remove@@PT\dimen@\vtexdef@trig@ps@arg
+          \immediate\Gin@PS@raw{\vtexdef@trig@ps@arg\space
+             sin 10 string cvs print}%
+          \expandafter\xdef\csname sin(\number##1)\endcsname
+             {\the\PS@Console}%
+        \fi
+      }}%
+      \def\CalculateTan##1{{%
+        \expandafter\ifx\csname tan(\number##1)\endcsname\relax
+          \psconsole\PS@consolenum\relax
+          \PS@Console{}%
+          \dimen@=##1\p@
+          \Remove@@PT\dimen@\vtexdef@trig@ps@arg
+          \immediate\Gin@PS@raw{\vtexdef@trig@ps@arg\space
+            sin \vtexdef@trig@ps@arg\space
+            cos div 10 string cvs print}%
+          \expandafter\xdef\csname tan(\number##1)\endcsname
+             {\the\PS@Console}%
+        \fi
+      }}%
+    }%
+    \AtBeginDocument{\vtexdef@redefine@trig}%
+  \fi
+\fi
+\def\vtex@innerscale{1}%
+\def\vtex@imagemask{0}%
+\def\vtex@dctquality{0}%
+\newif\ifGin@reindeximages
+\newif\ifGin@repackjpeg
+\newif\ifGin@useCCITT
+\newif\ifGin@useDCT
+\RequirePackage{keyval}%
+\newif\ifGin@disablepdfmarks
+\Gin@disablepdfmarkstrue
+\define@key{Gin}{pdfmarks}[true]{%
+  \lowercase{\Gin@boolkey{#1}}{dopdfmarks}%
+}%
+\define@key{Gin}{imagemask}[1]{\def\vtex@imagemask{#1}}%
+\define@key{Gin}{reindex}[true]{%
+  \ifx\VTeXversion\@undefined
+  \else
+     \ifnum\VTeXversion>659 %
+        \lowercase{\Gin@boolkey{#1}}{reindeximages}%
+     \fi
+  \fi
+}%
+\define@key{Gin}{repackjpeg}[true]{%
+  \ifx\VTeXversion\@undefined
+  \else
+     \ifnum\VTeXversion>659 %
+        \lowercase{\Gin@boolkey{#1}}{repackjpeg}%
+     \fi
+  \fi
+}%
+\define@key{Gin}{ccitt}[true]{%
+  \ifx\VTeXversion\@undefined
+  \else
+     \ifnum\VTeXversion>659 %
+        \lowercase{\Gin@boolkey{#1}}{useCCITT}%
+     \fi
+  \fi
+}%
+\define@key{Gin}{dct}[true]{%
+  \ifx\VTeXversion\@undefined
+  \else
+     \ifnum\VTeXversion>659 %
+        \lowercase{\Gin@boolkey{#1}}{useDCT}%
+     \fi
+  \fi
+}%
+\define@key{Gin}{dctquality}{\def\vtex@dctquality{#1}}%
+\define@key{Gin}{innerscale}{\def\vtex@innerscale{#1}}%
+\define@key{Gin}{page}{\def\vtexdef@pspage{#1}}%
+\let\vtexdef@set@languagelevel\@empty
+\let\vtexdef@restore@languagelevel\@empty
+\let\vtexdef@pspage\@empty
+\define@key{Gin}{gexlevel}%
+{%
+  \ifnum\ifnum#1=2 1\else#1\fi=1 %
+    \def\vtexdef@set@languagelevel
+    {%
+       \Gin@PS@raw
+       {%
+         /languagelevel where{pop languagelevel}{ 1 }ifelse %
+         #1 .setlanguagelevel%
+       }%
+    }%
+    \def\vtexdef@restore@languagelevel
+    {%
+       \Gin@PS@raw{.setlanguagelevel}%
+    }%
+  \else
+    \@warning{Invalid GeX level #1\space ignored}%
+  \fi
+}%
+\def\vtexdef@getfilename#1#2%
+{%
+  \xdef\vtexdef@filename{#2}%
+  \begingroup
+    \let\input@path\Ginput@path
+    \filename@parse{#2}%
+    \ifx\filename@ext\relax
+      \@for\Gin@temp:=\Gin@extensions\do
+      {%
+        \ifx\Gin@ext\relax
+          \Gin@getbase\Gin@temp
+        \fi
+      }%
+    \else
+      \Gin@getbase{\Gin@sepdefault\filename@ext}%
+    \fi
+    \ifx\Gin@ext\relax
+    \else
+      \xdef\vtexdef@filename{\Gin@base\Gin@ext}%
+    \fi
+  \endgroup
+}%
+\define@key{Gin}{atres}{%
+  \expandafter\vtexdef@getfilename\the\toks@\relax
+  \sizegraph<\vtexdef@filename>\relax
+  \ifnum\graphx>\z@
+    \vtexdef@da=1in
+    \divide\vtexdef@da by #1\relax
+    \multiply\vtexdef@da by \graphx
+    \edef\Gin@ewidth{\the\vtexdef@da}%
+    \vtexdef@da=1in
+    \divide\vtexdef@da by #1\relax
+    \multiply\vtexdef@da by \graphy
+    \edef\Gin@eheight{\the\vtexdef@da}%
+  \fi
+}%
+\def\vtexdef@GeXwarning#1%
+{%
+  \@warning{Use the `viagex' key to enable the `#1' key}%
+}%
+\def\vtexdef@validateGeX
+{%
+  \ifGin@viagex
+  \else
+    \ifx\gexmode\@undefined
+    \else
+      \ifnum\gexmode=\z@
+      \else
+        \Gin@viagextrue
+      \fi
+    \fi
+  \fi
+}%
+\define@key{Gin}{viagex}[true]{%
+  \lowercase{\Gin@boolkey{#1}}{viagex}%
+  \ifGin@viagex
+    \ifx\gexmode\@undefined
+    \else
+       \ifnum\gexmode=\z@
+          \@warning{Not in GeX mode: the `viagex' key ignored}%
+          \Gin@viagexfalse
+       \fi
+    \fi
+  \fi
+}%
+\newif\if@transbitloaded
+\@transbitloadedfalse
+\def\vtexdef@transbit{0}%
+\let\vtexdef@GeX@cmd\@empty
+\def\vtexdef@addup@transbit@com@line#1%
+{%
+  \edef\vtexdef@GeX@cmd
+    {\vtexdef@GeX@cmd {{\vtexdef@transbit}{(#1) transbit }}}%
+}%
+\define@key{Gin}{brightness}%
+{%
+  \vtexdef@validateGeX
+  \ifGin@viagex
+    \@tempdima=#1\p@
+    \ifdim\@tempdima<\z@
+      \multiply\@tempdima -1 %
+    \fi
+    \ifdim\@tempdima<\p@
+      \@tempdima=#1\p@
+      \multiply\@tempdima 100 %
+      \Remove@@PT\@tempdima\vtexdef@temp
+    \else
+      \def\vtexdef@temp{#1 px}%
+    \fi
+    \vtexdef@addup@transbit@com@line{toBright \vtexdef@temp}%
+  \else
+    \vtexdef@GeXwarning{brightness}%
+  \fi
+}%
+\define@key{Gin}{contrast}%
+{%
+  \vtexdef@validateGeX
+  \ifGin@viagex
+    \@tempdima=#1\p@
+    \multiply\@tempdima 100 %
+    \Remove@@PT\@tempdima\vtexdef@temp
+    \vtexdef@addup@transbit@com@line{toContrast \vtexdef@temp}%
+  \else
+    \vtexdef@GeXwarning{contrast}%
+  \fi
+}%
+\def\vtexdef@colorspace@bw{bw}%
+\def\vtexdef@colorspace@grayscale{grayscale}%
+\def\vtexdef@colorspace@rgb{rgb}%
+\edef\vtexdef@colorspace@void{\expandafter\@gobble\string\*}%
+\def\vtexdef@parse@grayscale#1 #2\@nil
+{%
+  \vtexdef@addup@transbit@com@line{toGrayScale#1 #2}%
+}%
+\def\vtexdef@parse@colorspace#1 #2\@nil
+{%
+  \edef\vtexdef@temp{#1}%
+  \ifx\vtexdef@temp\vtexdef@colorspace@bw
+    \vtexdef@addup@transbit@com@line{toBW}%
+  \else
+    \ifx\vtexdef@temp\vtexdef@colorspace@void
+      \vtexdef@addup@transbit@com@line{toColor#2}%
+    \else
+      \ifx\vtexdef@temp\vtexdef@colorspace@rgb
+        \vtexdef@addup@transbit@com@line{toRGB#2}%
+      \else
+        \ifx\vtexdef@temp\vtexdef@colorspace@grayscale
+          \vtexdef@parse@grayscale#2\@nil
+        \else
+          \@warning{Unknown colorspace identifier `#1' ignored}%
+        \fi
+      \fi
+    \fi
+  \fi
+}%
+\define@key{Gin}{colorspace}%
+{%
+  \vtexdef@validateGeX
+  \ifGin@viagex
+    \vtexdef@parse@colorspace#1 \@nil
+  \else
+    \vtexdef@GeXwarning{colorspace}%
+  \fi
+}%
+\newif\if@degradeloaded
+\@degradeloadedfalse
+\newif\if@enable@degrade
+\def\vtexdef@degrade{1}%
+\def\vtexdef@invalid@degrade@factor#1%
+{%
+  \@warning{Invalid degrade factor `#1' ignored}%
+}%
+\let\vtexdef@degrade@factor\@empty
+\define@key{Gin}{degrade}%
+{%
+  \vtexdef@validateGeX
+  \ifGin@viagex
+    \@tempdima=#1\p@
+    \ifdim\@tempdima<\p@
+      \ifdim\@tempdima>\z@
+        \ifx\vtexdef@degrade@factor\@empty
+          \edef\vtexdef@degrade@factor{#1}%
+          \vtexdef@addup@degrade@com@line\vtexdef@degrade@factor
+        \fi
+      \else
+        \vtexdef@invalid@degrade@factor{#1}%
+      \fi
+    \else
+      \vtexdef@invalid@degrade@factor{#1}%
+    \fi
+  \else
+    \vtexdef@GeXwarning{degrade}%
+  \fi
+}%
+\def\vtexdef@addup@degrade@com@line#1%
+{%
+  \edef\vtexdef@GeX@cmd
+    {\vtexdef@GeX@cmd {{\vtexdef@degrade}{#1 degrade }}}%
+}%
+\def\vtexdef@phfilter{2}%
+\newif\if@gexapihloaded
+\@gexapihloadedfalse
+\let\phshoppath\@empty
+\begingroup
+\catcode`\+=12 %
+\gdef\vtexdef@fornoop#1\@@#2#3{}%
+\long\gdef\vtexdef@for#1==#2\do#3%
+{%
+   \expandafter\def\expandafter\vtexdef@fortmp\expandafter{#2}%
+   \ifx\vtexded@fortmp\@empty
+   \else
+      \expandafter\vtexdef@forloop#2+\@nil+\@nil\@@#1{#3}%
+   \fi
+}%
+\long\gdef\vtexdef@forloop#1+#2+#3\@@#4#5%
+{%
+   \def#4{#1}%
+   \ifx#4\@nnil
+   \else
+      #5%
+      \def#4{#2}%
+      \ifx#4\@nnil
+      \else
+         #5%
+         \vtexdef@iforloop#3\@@#4{#5}%
+      \fi
+   \fi
+}%
+\long\gdef\vtexdef@iforloop#1+#2\@@#3#4%
+{%
+   \def#3{#1}%
+   \ifx#3\@nnil
+      \expandafter\vtexdef@fornoop
+      \else
+         #4%
+      \relax
+      \expandafter\vtexdef@iforloop
+   \fi
+   #2\@@#3{#4}%
+}%
+\endgroup
+\define@key{Gin}{Phfilter}%
+{%
+  \vtexdef@validateGeX
+  \ifGin@viagex
+    \vtexdef@for\vtexdef@temp==#1\do
+    {%
+      \vtexdef@init@phparse
+      \expandafter\vtexdef@phparse\vtexdef@temp
+    }%
+  \else
+    \vtexdef@GeXwarning{Phfilter}%
+  \fi
+}%
+\define@key{vtex@Gin}{params}%
+{%
+  \gdef\vtexdef@phparams{#1}%
+}%
+\def\vtexdef@init@phparse
+{%
+  \let\vtexdef@phparams\@empty
+}%
+\def\vtexdef@phparse
+{%
+  \@ifnextchar[{\vtexdef@phparse@opt}{\vtexdef@phparse@opt[]}%
+}%
+\def\vtexdef@phparse@opt[#1]#2%
+{%
+   {\setkeys{vtex@Gin}{#1}}%
+   \edef\vtexdef@GeX@cmd
+   {%
+     \vtexdef@GeX@cmd
+     {%
+       {\vtexdef@phfilter}%
+       {%
+         \vtexdef@phparams\space
+         (\phshoppath) (#2) 16 (ff) imagefilter %
+       }%
+     }%
+   }%
+}%
+\InputIfFileExists{vtexdef.cfg}{}{}%
+\vtexdef@catcodes
+\let\+\vtexdef@plus
+\endinput
+%%
+%% End of file `vtex.def'.

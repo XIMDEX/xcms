@@ -1,0 +1,629 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+/*++++++++++++++++++++++  General stypes for action panel elements +++++++++++++++++++*/
+
+.ui-widget-content{
+	color: #6b6b6b;	
+}
+
+h2, h3, h4, h5, h6 {
+	color: #666;
+	text-transform:uppercase;
+	font-size: 1em;
+	font-weight: normal;
+}
+a {
+	text-decoration: none;
+	color: #006b6c;
+}
+a:hover {
+	color: #41a8a5;
+}
+input, select {
+	border: 1px solid #d4d4d4;
+	padding: 3px 4px;
+	/*margin: 3px 5px;*/
+	color: #555;
+	margin: 0px 5px 0px 0px;
+}
+input:hover {
+	-moz-box-shadow: 0px 0px 4px #CCC;
+	-webkit-box-shadow: 0px 0px 4px #CCC;
+	box-shadow: 0px 0px 4px #CCC;
+}
+input:focus {
+	-moz-box-shadow: 1px 1px 5px #999;
+	-webkit-box-shadow: 1px 1px 5px #999;
+	-box-shadow: 1px 1px 5px #999;
+	color: #666;
+}
+input.short, textarea.short, select.short {
+	width: 	100px;
+}
+input.medium, textarea.medium, select.medium {
+	width: 	200px;
+}
+input.long, textarea.long, select.long {
+	width: 	350px;
+}
+input.button {
+	background: none;
+	border: 1px solid #999;
+}
+input[type="file"] {
+	border: none;
+}
+
+.disabled{
+	opacity: .35;
+}
+
+/*label {
+	background: url('../../../../../images/action/img-label.png') no-repeat right 2px;
+	padding-right: 23px;
+	text-align: right;
+}*/
+input+label {
+	background:none;
+}
+label:after {
+}
+
+label+input[type="file"]{
+	margin-top: 0px;
+}
+.resaltado {
+	font-weight: bold;
+}
+
+
+fieldset {
+	background: #eaeaea;
+	border: none;
+	margin: 20px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	padding: 15px;
+}
+fieldset legend {
+	background: url('../../../../../images/action/fnd-legend.png') no-repeat 15px bottom;
+	/*height: 40px;*/
+	padding-bottom: 7px;
+}
+fieldset legend span {
+	background: url('../../../../../images/action/fnd-legend-span.png') repeat-x left bottom;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	padding: 4px 12px;
+	margin-left: 0px;
+	margin-top: 12px;
+	color: #FFF;
+	text-transform: uppercase;
+	text-shadow: 1px -1px 0px #228481;
+	font-size: .9em;
+	display: block;
+}
+fieldset.child {
+	background: #fff;
+	/*display: inline;*/
+	margin: 0px;
+	padding: 1px 15px 3px 5px;
+	overflow:auto;
+	max-height: 200px;
+	margin-top: 7px;
+}
+fieldset.resaltado {
+}
+fieldset.lite {
+	background: none;
+	padding: 0px;
+	border: 1px solid
+}
+.msg-error {
+}
+.msg-warning {
+}
+li.msg-info {
+	line-height: 1.7em;
+	padding: 5px;
+}
+li.msg-info span.ui-icon-info {
+	background: url('../../../../../images/action/icon-msg.png') no-repeat left -5px;
+	margin-top: 0px;
+	padding: 0px 15px 5px 0px;
+}
+li.ui-state-primary span.ui-icon-info {
+	display: none;
+}
+.msg-done {
+}
+.destacado {
+	color: #F60;
+}
+
+/*button{
+	background: url('../../../../../images/action/fnd-buttons-form.png') repeat-x left center;
+	border: none;
+	-moz-border-radius: 6px;
+	-moz-box-shadow: inset 0px 2px 0px #fff;
+	-webkit-border-radius: 6px;
+	-webkit-box-shadow: inset 0px 2px 0px #fff;
+	border-radius: 6px;
+	box-shadow: inset 0px 2px 0px #fff;
+	border: 1px solid #e1e1e1;
+	padding: 5px 9px;
+	letter-spacing: 0px;
+	text-shadow: 1px 1px 0px #fff;
+	margin-right: 8px;
+	font-size: .825em;
+	cursor: pointer;
+	float: none;
+}*/
+
+/*+++++++++++++++++++++++ Action styles +++++++++++++++++++++++*/
+.container {
+	overflow: hidden;
+	height: 100%;
+}
+.action_container {
+	overflow: auto;
+	height: 90%;
+}
+fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
+	background: none;
+	text-align: right;
+	margin-right: 15px;
+}
+
+fieldset.buttons-form{
+	margin-top: 0;
+	padding-top: 0;
+}
+
+fieldset.fixed{
+	background: rgba(157,157,157,.5);
+	position: fixed;
+	right: 56px;
+	padding: 15px 6px 15px 15px;
+	border: 1px solid #FDFDFD;
+	-moz-box-shadow: 0 0 3px rgba(157,157,157,.5);
+	-webkit-box-shadow: 0 0 3px rgba(157,157,157,.5);
+	-o-box-shadow: 0 0 3px rgba(157,157,157,.5);
+	-ms-box-shadow: 0 0 3px rgba(157,157,157,.5);
+	box-shadow: 0 0 3px rgba(157,157,157,.5);
+}
+
+fieldset.buttons-form a.ui-state-default, div.buttonset button, .ui-dialog .ui-dialog-buttonpane button, fieldset.buttons-form input.ui-state-default, fieldset td a.ui-state-default {
+	background: url('../../../../../images/action/fnd-buttons-form.png') repeat-x left center;
+	border: none;
+	-moz-border-radius: 6px;
+	-moz-box-shadow: inset 0px 2px 0px #fff;
+	-webkit-border-radius: 6px;
+	-webkit-box-shadow: inset 0px 2px 0px #fff;
+	border-radius: 6px;
+	box-shadow: inset 0px 2px 0px #fff;
+	border: 1px solid #e1e1e1;
+	padding: 5px 9px;
+	letter-spacing: 0px;
+	text-shadow: 1px 1px 0px #fff;
+	margin-right: 8px;
+	font-size: .825em;
+	cursor: pointer;
+	float: none;
+}
+fieldset.buttons-form input.ui-state-default {
+	padding: 4px 8px;
+}
+fieldset.buttons-form a.ui-state-default:hover, div.buttonset button:hover, .ui-dialog .ui-dialog-buttonpane button:hover, fieldset.buttons-form input.ui-state-default:hover, fieldset td a.ui-state-default:hover {
+	background: url('../../../../../images/action/fnd-buttons-form-hover.png') repeat-x left center;
+	-moz-box-shadow: inset 0px 2px 0px #ebebeb;
+	-webkit-box-shadow: inset 0px 2px 0px #ebebeb;
+	box-shadow: inset 0px 2px 0px #ebebeb;
+}
+.ui-dialog .ui-dialog-buttonpane button span {
+	padding: 1px;
+}
+.action_container fieldset ol {
+	list-style: none;
+	margin: 0px 5px 0px 20px;
+	clear: both;
+	float:	left;
+	width: 99%;
+}
+
+.action_container fieldset .right-block ol {
+	margin: 0px 5px 0px 5px;
+}
+.action_container fieldset>p, .action_container fieldset>div {
+	margin: 5px 20px 20px 20px; /*paragraphs in 'create project' needs 15 on the left*/
+}
+.left {
+	float: left;
+	/*padding-top: 5px;*/
+}
+.right {
+	float: right;
+	/*padding-top: 5px;*/
+}
+.inline-block{
+	display: inline-block;	
+}
+.extrainfo {
+    padding-top: 130px;
+}
+/*.browser-action-view-content*/ .container .nodo_path {
+	text-transform:none;
+	/*text-shadow: 1px 1px 0px #333;*/
+	color: #666;
+	/*border-bottom: 1px solid #e1e1e1;*/
+	padding: 12px 5px 11px 15px;
+	background: url('../../../../../images/action/border-b-node.png') repeat-x left bottom;
+}
+/*.browser-action-view-content*/ .container .action_desc {
+	background: url('../../../../../images/action/action_desc.png') no-repeat left top;
+	position: absolute;
+	right: 20px;
+	top: 7px;
+	height: 25px;
+	width: 25px;
+	cursor: pointer;
+	text-transform: none;
+}
+/*.browser-action-view-content*/ .container .action_desc span {
+	display: none;
+}
+/*.browser-action-view-content*/ .container .action_desc:hover span {
+	display: block;
+	z-index: 2;
+	background: #e7e7e7 url('../../../../../images/action/fnd-description.png') repeat-x left bottom;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #FCFCFC;
+	width: 300px;
+	/*height: 200px;*/
+	position: absolute;
+	top: 25px;
+	right: 7px;
+	padding: 15px;
+	-moz-box-shadow: 0px 0px 5px #ccc;
+	-wekit-box-shadow: 0px 0px 5px #ccc;
+	box-shadow: 0px 0px 5px #ccc;/*-moz-border-top-image: url('../../../../../images/action/triangle-description.png')27 27 27 27 round round;*/
+}
+.action_container form fieldset>ol.numbered {
+	list-style: decimal;
+	list-style-position: inside;
+	margin: 0px 0px 15px 10px;
+	float: left;
+}
+.action_container form fieldset>ol.numbered>li {
+	background: url('../../../../../images/action/fieldset-list.png') no-repeat left 3px;
+	color: #fff;
+	padding: 1px 10px;
+	margin-bottom: 2px;
+	font-size: .9em;
+}
+.action_container form fieldset ol>li, .action_container form fieldset>ol.numbered li ol li {
+	/*padding: 6px 10px 5px 15px;*/
+	float: left;
+	clear: left;
+	line-height:1.9em;
+	width: 100%;
+	margin: 3px 0px;
+}
+.action_container form fieldset.buttons-form ol li {
+	float:none;
+	clear: none;
+}
+.action_container form fieldset>ol.numbered li span {
+	color: #333;
+	font-size: 1em;
+	font-weight: normal;
+	padding-top: 3px;
+	display: inline-table;
+}
+.action_container form fieldset>ol.numbered p {
+	padding: 7px 35px;
+	clear: left;
+}
+.action_container form fieldset p.delete {
+	background: url('../../../../../images/action/delete-nodes.png') no-repeat left center;
+	padding: 7px 35px;
+	margin: 20px 0 15px 10px;
+	font-size: .9em;
+	text-transform: uppercase;
+	clear: left;
+}
+.action_container form fieldset>ol.numbered ul {
+	margin-left: 28px;
+	font-size: 1.1em;
+	list-style: none;
+}
+.action_container form fieldset>ol.numbered li ol {
+	color: #333;
+	margin-top: 8px;
+}
+.action_container form fieldset>ol.numbered ul li.no-node {
+	background: url('../../../../../images/action/delete-nonode.png') no-repeat left center;
+	padding: 3px 0px 4px 35px;
+}
+.action_container form fieldset ul {
+	margin-left: 25px;
+	margin-bottom: 15px;
+}
+
+.action_container form fieldset .xim-treeview-container ul, 
+.action_container form fieldset ul.xim-treeview-branch li ul li ul li {
+	margin-left: 5px;
+}
+
+.action_container form fieldset .xim-treeview-container .xim-treeview-branch-container > .xim-treeview-branch > .xim-treeview-node > .xim-treeview-branch{
+	padding-left: 3px;
+	
+}
+.action_container form fieldset ul div.deletenodes {
+	margin-bottom: 15px;
+	margin-left: 25px;
+}
+.action_container form fieldset ul div.deletenodes li {
+	color: #CC3333;
+}
+.xim-treeview-selector {
+	/*width: 38%;*/
+	display: inline-table;
+	background: #fff;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	padding: 25px 15px;
+	margin-bottom: 15px;
+	}
+.xim-treeview-selector .xim-treeview-branch-container {
+	position: static;
+}
+.right-block {
+	display:inline-table;/*margin-top: 3px;*/
+	/*width: 50%;*/
+}
+.action_container fieldset>div.right-block {
+	margin: 0px;
+}
+.right-block p {
+	line-height: 1.7em;
+	margin-left: 5px;
+}
+
+label {
+	/*clear: left;*/
+	line-height: 1.6em;
+	padding-bottom: 2px;
+	margin-right: 5px;/*margin-left: 15px;*/
+}
+
+label.aligned{
+	display: inline;
+	float: left;
+	background: url('../../../../../images/action/img-label.png') no-repeat right 2px;
+	padding-right: 23px;
+	text-align: right;
+}
+label.aligned-left{
+	display: inline;
+	background: url('../../../../../images/action/img-label.png') no-repeat right 2px;
+	padding-right: 23px;
+	padding-bottom: 5px;
+	text-align: right;
+}
+
+/*fieldset input[type="checkbox"] + label {
+	vertical-align: middle; 
+}
+fieldset input[type="radio"] {
+	margin-top: 4px;
+}
+fieldset input[type="radio"] + label {
+	vertical-align: top;
+}
+fieldset label + input[type="text"], fieldset label + input[type="password"], fieldset label + input[type="textbox"], fieldset label + select {
+	vertical-align: middle;
+	float: left;
+	margin-top: 1px;
+	margin-left: 4px;
+}
+fieldset input[type="checkbox"] {
+	vertical-align: middle;
+}*/
+input.error, select.error, input.error + label.error + label, input.error + label.error + input{
+	float: left;
+}
+
+input.error + label.error + label{
+	margin-left: 5px;
+}
+
+input[type="checkbox"].error, select.error{
+	margin-top: 3px;
+}
+
+input[type="checkbox"].error + label.error{
+	float:right;
+}
+
+label.error {
+	margin: 0px 15px;
+	padding: 4px 15px;
+	color: #fff;
+	float: none;
+	display: inline;
+	clear: none;
+	background: #CF5A5A;
+}
+/*fieldset table{
+	margin: 0px auto;	
+	border-collapse: separate;
+}*/
+fieldset table th {
+	color: #666;
+	font-weight: normal;
+	text-transform: uppercase;
+	/*border-bottom: 1px solid #999;*/
+	padding: 5px 15px;
+	font-size: .9em;
+}
+.action_container form {
+	padding-left: 15px;
+}
+.action_container form textarea.normal {
+	width: 100%;
+	border:none;
+	border-bottom: 1px solid #eee;
+	padding-top: 5px;
+}
+.action_container form textarea.normal+.buttons-form {
+	margin-bottom: 0px;
+	margin-top: 10px;
+}
+.browser-action-view-content iframe.action_iframe {
+	border: none;
+}
+fieldset table {
+	margin: 10px 10px;
+	width: 98%;
+}
+fieldset table.versions {
+	border-collapse: collapse;
+}
+fieldset table tr {
+	background: #e1e1e1;
+	border-bottom: 5px solid #eaeaea;
+}
+fieldset table th {
+	background: #c7c7c7;
+}
+fieldset table.versions tr td:first-child {
+	background: #d5d5d5 url('../../../../../images/action/manage-td.png') no-repeat right center;
+	font-size: .9em;
+	padding-left: 5px;
+}
+
+fieldset table.versions tr.version-info td{
+	padding: 5px;	
+}
+fieldset table tr td {
+	padding: 5px 20px;
+}
+
+fieldset table tr td.evenrow {
+	background: #dadada;
+}
+
+fieldset table tr td.buttons {
+	background: #EAEAEA;
+}
+
+
+.ui-widget-content fieldset .ui-state-highlight, .ui-widget-content fieldset  .ui-state-error {
+	background: none;
+	border: none;
+	line-height: 2.1em;
+	color: #666;
+	margin-bottom: 5px;
+}
+
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-notice, 
+.ui-widget-content fieldset .ui-state-error .ui-icon-alert,
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-info{
+	background: url('../../../../../images/action/icon-msg.png') no-repeat left top;
+	margin-top: 0px;
+	padding-bottom: 8px;
+	padding-left: 15px;
+}
+
+.ui-widget-content fieldset .ui-state-error .ui-icon-alert{
+	background-position: -33px top;
+}
+
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-info{
+	background-position: -66px top;
+}
+
+#publishing_message{
+	position: absolute;
+	/*height: 60px;
+	width: 100px;*/
+	opacity: .94;
+	background: #555;
+	top: 35%;
+	left: 40%;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-box-shadow: 0px 0px 5px #888;
+	-webkit-box-shadow: 0px 0px 5px #888;
+	box-shadow: 0px 0px 5px #888;
+	padding: 20px 40px 18px;
+		
+}
+
+#publishing_message img{
+	margin: 8px 0px 5px 0px;
+}
+
+#publishing_message p{
+	color: #eeeeee;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px #333;
+	text-align:center;
+	padding: 3px 5px;
+	font-weight: bold;
+	font-size: .9em;
+}
+
+#publishing_message p.small{
+		font-size: .75em;
+}
+
+.inline{
+	display: inline !important; 
+}
+.nofloat{
+	float: none !important; 
+}
+
+/*.browser-action-view-content*/ .container .action_tour {
+	background: url('../../../../../images/action/action_desc.png') no-repeat left bottom;
+	position: absolute;
+	right: 50px;
+	top: 7px;
+	height: 25px;
+	width: 25px;
+	cursor: pointer;
+	text-transform: none;
+	display: none;
+}

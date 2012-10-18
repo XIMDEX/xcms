@@ -1,0 +1,899 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: Wed Aug  3 17:19:15 2005\n"
+"PO-Revision-Date: 2005-08-02 02:46+0200\n"
+"Last-Translator: Ofer Weisglass <ofer@plone.org.il>\n"
+"Language-Team: Silva i18n team <walco@infrae.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/translation_files/extract.py\n"
+"Language-code: he\n"
+"Language-name: Hebrew\n"
+"Preferred-encodings: utf-8 latin1\n"
+"Domain: kupu\n"
+
+#: /common/kupu.pox:None
+msgid "Properties modified"
+msgstr "הגדרות עודכנו"
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed with parameter ${param}"
+msgstr "פקודה ${command} בוצעה עם פרמטר${param}"
+
+#: /common/kupu.pox:None
+msgid "Not inside a definition list element!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Add table"
+msgstr "הוסף טבלה"
+
+#: /common/kupu.pox:None
+msgid "Table added"
+msgstr "טבלה הוספה"
+
+#: /common/kupu.pox:None
+msgid "Source edit tool initialized"
+msgstr "כי עורך מקור הותחל"
+
+#: /common/kupu.pox:None
+msgid "Delete row"
+msgstr "מחק שורה"
+
+#: /common/kupu.pox:None
+msgid "Recursion detected when counting column position"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "List style changed"
+msgstr "סטייל רשימה שונה"
+
+#: /common/kupu.pox:None
+msgid "Create image"
+msgstr "צור תמונה"
+
+#: /common/kupu.pox:None
+msgid "You have unsaved changes. Do you want to save before leaving the page?"
+msgstr "יש שינויים שלא נשמרו.  האם ברצונך לשמור לפני שהנך עוזב את העמוד?"
+
+#: /common/kupu.pox:None
+msgid "Table row removed"
+msgstr "שורת טבלה הוסרה"
+
+#: /common/kupu.pox:None
+msgid "Document saved"
+msgstr "מסמך נשמר"
+
+#: /common/kupu.pox:None
+msgid "Color chosen"
+msgstr "צבע נבחר"
+
+#: /common/kupu.pox:None
+msgid "Table row added"
+msgstr "שורת טבלה נוספה"
+
+#: /common/kupu.pox:None
+msgid "Error saving document"
+msgstr "שגיאה בשמירת מסמך"
+
+#: /common/kupu.pox:None
+msgid "No destination URL available!"
+msgstr "אין קישור מטרה זמין!"
+
+#: /common/kupu.pox:None
+msgid "Link removed"
+msgstr "קישור הוסר"
+
+#: /common/kupu.pox:None
+msgid "No row to delete"
+msgstr "אין שורה למחיקה"
+
+#: /common/kupu.pox:None
+msgid "Delete Table"
+msgstr "מחק טבלה"
+
+#: /common/kupu.pox:None
+msgid "Cleanup done, sending document to server"
+msgstr "נקיון הסתיים, שוח מסמך לשרת."
+
+#: /common/kupu.pox:None
+msgid "Image tool initialized"
+msgstr "מכשיר תמונה אותחל"
+
+#: /common/kupu.pox:None
+msgid "End offset out of range!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "tdindex: ${tdindex}"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Create link"
+msgstr "צור קישור"
+
+#: /common/kupu.pox:None
+msgid "Starting HTML cleanup"
+msgstr "מתחיל HTML נקיון"
+
+#: /common/kupu.pox:None
+msgid "Link modified"
+msgstr "קישור עודכן"
+
+#: /common/kupu.pox:None
+msgid "Request sent to server"
+msgstr "בקשה נשלחה לשרת"
+
+#: /common/kupu.pox:None
+msgid "Table tool initialized"
+msgstr "טבלה לא הותחלה"
+
+#: /common/kupu.pox:None
+msgid "There were no errors."
+msgstr "היו שגיאות!"
+
+#: /common/kupu.pox:None
+msgid ""
+"exception ${message} while registering an event handler for element "
+"${element}, event ${event}, method ${method}"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Error loading translation (status ${status} ), falling back to english"
+msgstr "שגיאה במהלך קריאת תרגום (status ${status} ), חוזר חזרה לאנגלית"
+
+#: /common/kupu.pox:None
+msgid "Start node offset detected in a node without children!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuTool._selectSelectItem"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Couldn\\'t set design mode. Kupu will not work on this browser."
+msgstr "לא יכול להגדיר מצב עריכה.  קופו לא יעבוד בדפדפן זה"
+
+#: /common/kupu.pox:None
+msgid "No element found in the config island!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Start offset out of range!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid ""
+"Pasting from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr ""
+"כתיבה מתוך סקירפט גווה אינו זמין מדפדפן המוזילה שלך מכיוון בעיות אבטחה.למידע "
+"נוסף, קראhttp://www.mozilla.org/editor/midasdemo/securityprefs.html"
+
+#: /common/kupu.pox:None
+msgid "Property tool initialized"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Colorchooser tool initialized"
+msgstr "בוחרצבא א הוגדר"
+
+#: /common/kupu.pox:None
+msgid "No parentcolumn found!"
+msgstr "לא נמצאו עמודות הורה"
+
+#: /common/kupu.pox:None
+msgid "Row repeated"
+msgstr "שורה חוזרת"
+
+#: /common/kupu.pox:None
+msgid "Table removed"
+msgstr "טבלה הוסרה"
+
+#: /common/kupu.pox:None
+msgid "Cut"
+msgstr "גזור"
+
+#: /common/kupu.pox:None
+msgid "Unsupported browser!"
+msgstr "דפדפן לא נתמך!"
+
+#: /common/kupu.pox:None
+msgid "Add row"
+msgstr "הוסף שורה"
+
+#: /common/kupu.pox:None
+msgid "Link tool initialized"
+msgstr "מכשיר קישור אותחל"
+
+#: /common/kupu.pox:None
+msgid "Sending request to server"
+msgstr "שולח בקשה לשרת"
+
+#: /common/kupu.pox:None
+msgid "Invalid table size"
+msgstr "אין הגדרות טבה"
+
+#: /common/kupu.pox:None
+msgid "Error placing back selection"
+msgstr "שגיאה בהשמת בחירה חזרה"
+
+#: /common/kupu.pox:None
+msgid "Delete link"
+msgstr "מחק קישור"
+
+#: /common/kupu.pox:None
+msgid "Add column"
+msgstr " הוסף עמודה"
+
+#: /common/kupu.pox:None
+msgid ""
+"Cutting from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr ""
+"גזירה מסקיפט הגאווה לא זמין בדפדפן המוזילה שלך כתוצאה מהגדרות אבטחה.  למידע "
+"נוסף, קראhttp://www.mozilla.org/editor/midasdemo/securityprefs.html"
+
+#: /common/kupu.pox:None
+msgid "Exception while processing updateState on ${id}: ${msg}"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Cleaning up HTML..."
+msgstr "מנקה  HTML.."
+
+#: /common/kupu.pox:None
+msgid "List style tool initialized"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Row repeat turned off"
+msgstr "שורה חוזרת הופסקה"
+
+#: /common/kupu.pox:None
+msgid ""
+"There was a problem initializing the drawers. Most likely the XSLT or XML "
+"files aren\\'t available. If this is not the Kupu demo version, check your "
+"files or the service that provide them (error: ${error})."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuToolBox._selectSelectItem"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid ""
+"Copying from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr ""
+"העתקה מסקיפט הגאווה לא זמין בדפדפן המוזילה שלך כתוצאה מהגדרות אבטחה.  למידע "
+"נוסף, קראhttp://www.mozilla.org/editor/midasdemo/securityprefs.html"
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed"
+msgstr "פקודה ${command} בוצעה"
+
+#: /common/kupu.pox:None
+msgid "Delete column"
+msgstr "מחק עמודה"
+
+#: /common/kupu.pox:None
+msgid ""
+"Error saving your data.\\nResponse status: ${status}.\\nCheck your server "
+"log for more information."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "This feature requires pop-ups to be enabled on your browser!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Not inside link"
+msgstr "לא קישור פנימי"
+
+#: /common/kupu.pox:None
+msgid "View source"
+msgstr "צפה במקור"
+
+#: /common/kupu.pox:None
+msgid "Image inserted"
+msgstr "תמונה הוכנסה"
+
+#: /common/kupu.pox:None
+msgid "Browser not supported!"
+msgstr "דפדפן לא נתמך!"
+
+#: /common/kupu.pox:None
+msgid "Please wait while saving document..."
+msgstr "אנא המתן בזמן שהמסמך נשמר..."
+
+#: /common/kupu.pox:None
+msgid "Editor initialized"
+msgstr "עורך הותחל"
+
+#: /common/kupu.pox:None
+msgid "Copy"
+msgstr "העתק"
+
+#: /common/kupu.pox:None
+msgid "Paste"
+msgstr "הדבק"
+
+#: /common/kupu.pox:None
+msgid "Zoom tool initialized"
+msgstr "זום "
+
+#: /common/kupu.pox:None
+msgid "Table column deleted"
+msgstr "עמודת טבלה נמחקה"
+
+#: /common/kupu.pox:None
+msgid "Offset out of document range"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Table cleaned up"
+msgstr "טבלה נוקתה"
+
+#: /common/kupu.pox:None
+msgid "Error loading data, status ${status}"
+msgstr "שגיאה בהעלאת נתונים , מצב ${status}"
+
+#: /common/kupu.pox:None
+msgid ""
+"Could not set status bar message, check your browser\\'s security settings."
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "End node offset detected in a node without children!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Your form has not been saved. All changes you have made will be lost"
+msgstr "הטופס שך לא נשמר.  כל השינויים שערת יאבדו."
+
+#: /common/kupu.pox:None
+msgid "Link added"
+msgstr "קישור הוסף"
+
+#: /common/kupu.pox:None
+msgid "No head in document!"
+msgstr "אין ראש למסמך"
+
+#: /common/kupu.pox:None
+msgid "Not inside a row!"
+msgstr "לא בתוך שורה!"
+
+#: /common/kupu.pox:None
+msgid "Not inside a table!"
+msgstr "לא בתוך טבלה!"
+
+#: /common/kupu.pox:None
+msgid "Selection not inside the node!"
+msgstr "בחירה לא בתוך נוד זה!"
+
+#: /common/kupu.pox:None
+msgid "Editor not initialized yet!"
+msgstr "עורך לא הותחל עדיין!"
+
+#: /common/kupu.pox:None
+msgid "Table column added"
+msgstr "עמודת טבלה נוספה"
+
+# Original: Caption
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_caption_label"
+msgstr "לכידה"
+
+# Original: Insert Link
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_title"
+msgstr "הכנס קישור"
+
+# Original: Left
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_left"
+msgstr "שמאל"
+
+# Original: (${width} by ${height})
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_size"
+msgstr "(${width} על ${height})"
+
+# Original: Insert Image
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_title"
+msgstr "הכנס תמונה"
+
+# Original: Upload to: ${folder}
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_to_label"
+msgstr "העלה ל: ${folder}"
+
+# Original: Name
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_name_label"
+msgstr "שם"
+
+# Original: Preview
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_preview_label"
+msgstr "תצוגה מקדמת"
+
+# Original: Select an image from your computer and click ok to have it
+# automatically uploaded to selected folder and inserted into the
+# editor.
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_instructions"
+msgstr ""
+"בחר תמונה מהמחשב שלך והקלד אוקי ע מנת לעלות את התמונה בצורה אוטומטית לספריה "
+"שנבחרה ולהכניסה לעורך."
+
+# Original: Upload...
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_link"
+msgstr "מעלה..."
+
+# Original: Title: 
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_title_label"
+msgstr "כותרת:"
+
+# Original: Title
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_title_label"
+msgstr "כותרת"
+
+# Original: Description
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_description_label"
+msgstr "תיאור"
+
+# Original: ALT-text
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_alt_text"
+msgstr "ALT-טקסט"
+
+# Original: search
+#: /common/kupudrawers/drawer.xsl:None
+msgid "kupudrawer_search"
+msgstr "חיפוש"
+
+# Original: Inline
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_inline"
+msgstr "בתוך שורה"
+
+# Original: Target
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_target_label"
+msgstr "מטרה"
+
+# Original: Right
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_right"
+msgstr "ימין"
+
+#: /default/body.kupu:None
+msgid "Kupu Editor Test Page"
+msgstr "עמוד בחינה עורך קופו"
+
+#: /default/colorchooser.kupu:None
+msgid "text color: alt-f"
+msgstr "צבע טקסט: : alt-f"
+
+#: /default/colorchooser.kupu:None
+msgid "background color: alt-h"
+msgstr "צבע רקע : alt-h"
+
+# Original: Row
+#: /default/drawers.kupu:None
+msgid "tabledrawer_row_label"
+msgstr "שורה"
+
+# Original: Right
+#: /default/drawers.kupu:None
+msgid "tabledrawer_right_option"
+msgstr "ימין"
+
+# Original: Current column alignment
+#: /default/drawers.kupu:None
+msgid "tabledrawer_alignment_label"
+msgstr "יישור עמודה נוכחי"
+
+#: /default/drawers.kupu:None
+msgid "external link"
+msgstr "קישור חיצוני"
+
+# Original: Center
+#: /default/drawers.kupu:None
+msgid "tabledrawer_center_option"
+msgstr "מרכז"
+
+# Original: Fix All Tables
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_tables_button"
+msgstr "תקן את כל הטבלאות"
+
+#: /default/drawers.kupu:None
+msgid "External Link"
+msgstr "קישור חיצוני"
+
+# Original: Rows
+#: /default/drawers.kupu:None
+msgid "tabledrawer_columns_label"
+msgstr "שורות"
+
+# Original: Left
+#: /default/drawers.kupu:None
+msgid "tabledrawer_left_option"
+msgstr "שמאל"
+
+#: /default/drawers.kupu:None
+msgid "image"
+msgstr "תמונה"
+
+#: /default/drawers.kupu:None
+msgid "table"
+msgstr "טבלה"
+
+#: /default/drawers.kupu:None
+msgid "Preview"
+msgstr "תצוגה מקדמת"
+
+# Original: Rows
+#: /default/drawers.kupu:None
+msgid "tabledrawer_rows_label"
+msgstr "שורות"
+
+#: /default/drawers.kupu:None
+msgid "internal link"
+msgstr "קישור פנימי"
+
+# Original: Table
+#: /default/drawers.kupu:None
+msgid "tabledrawer_title"
+msgstr "טבלה"
+
+# Original: Add Table
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_table_button"
+msgstr "הוסף טבלה"
+
+# Original: Close
+#: /default/drawers.kupu:None
+msgid "tabledrawer_close_button"
+msgstr "סגור"
+
+# Original: Column
+#: /default/drawers.kupu:None
+msgid "tabledrawer_column_label"
+msgstr "עמודה"
+
+# Original: Create Headings
+#: /default/drawers.kupu:None
+msgid "tabledrawer_headings_label"
+msgstr "צור כותרות"
+
+# Original: Fix
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_button"
+msgstr "תקן"
+
+# Original: Fix Table
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_table_label"
+msgstr "תקן טבלה"
+
+#: /default/drawers.kupu:None /common/kupudrawers/drawer.xsl:None
+msgid "Ok"
+msgstr "אשר"
+
+#: /default/drawers.kupu:None /common/kupudrawers/drawer.xsl:None
+msgid "Cancel"
+msgstr "ביטול"
+
+# Original: Add
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_button"
+msgstr "הוסף"
+
+# Original: Remove
+#: /default/drawers.kupu:None
+msgid "tabledrawer_remove_button"
+msgstr "הסר"
+
+# Original: Table Class
+#: /default/drawers.kupu:None
+msgid "tabledrawer_class_label"
+msgstr "קלאס טבלה"
+
+#: /default/drawers.kupu:None /default/toolboxes.kupu:None
+msgid "Link the highlighted text to this URL:"
+msgstr "קשר את הטקסט המודגש לקישור זה:"
+
+#: /default/save.kupu:None
+msgid "save: alt-s"
+msgstr "שמור: alt-s"
+
+#: /default/sourceedit.kupu:None
+msgid "edit HTML code"
+msgstr "ערוך HTML קוד"
+
+#: /default/spellchecker.kupu:None
+msgid "check spelling"
+msgstr "בדוק איות"
+
+# Default: "1"
+#: /default/toolbar.kupu:None
+msgid "list-decimal"
+msgstr "1"
+
+# Default: "A"
+#: /default/toolbar.kupu:None
+msgid "list-upperalpha"
+msgstr ""
+
+#: /default/toolbar.kupu:None
+msgid "bold: alt-b"
+msgstr "מודגש: alt-b"
+
+#: /default/toolbar.kupu:None
+msgid "superscript: alt-+"
+msgstr "superscript: alt-+"
+
+# Default: "&#9675;"
+#: /default/toolbar.kupu:None
+msgid "list-circle"
+msgstr "&#9675"
+
+#: /default/toolbar.kupu:None
+msgid "Formatted"
+msgstr "פורמט"
+
+# Default: "a"
+#: /default/toolbar.kupu:None
+msgid "list-loweralpha"
+msgstr "ז"
+
+# Default: "no bullet"
+#: /default/toolbar.kupu:None
+msgid "list-nobullet"
+msgstr ""
+
+# Default: "i"
+#: /default/toolbar.kupu:None
+msgid "list-lowerroman"
+msgstr ""
+
+#: /default/toolbar.kupu:None
+msgid "Kupu SVN/unreleased"
+msgstr "קופו SVN/לא שוחרר"
+
+#: /default/toolbar.kupu:None
+msgid "Remove image"
+msgstr "הסר תמונה"
+
+#: /default/toolbar.kupu:None
+msgid "undo: alt-z"
+msgstr "בטל פעולה : alt-z"
+
+# Default: "&#9679;"
+#: /default/toolbar.kupu:None
+msgid "list-disc"
+msgstr "&#9679;"
+
+#: /default/toolbar.kupu:None
+msgid "definition list: alt-="
+msgstr "רשימת הגדרות: alt-="
+
+#: /default/toolbar.kupu:None
+msgid "indent: alt->"
+msgstr ""
+
+#: /default/toolbar.kupu:None
+msgid "Remove link"
+msgstr "הסר קישור"
+
+#: /default/toolbar.kupu:None
+msgid "Normal"
+msgstr "נורמלי"
+
+#: /default/toolbar.kupu:None
+msgid "left justify: alt-l"
+msgstr "שמאל justify: alt-l"
+
+#: /default/toolbar.kupu:None
+msgid "right justify: alt-r"
+msgstr "ימין justify: alt-r"
+
+#: /default/toolbar.kupu:None
+msgid "outdent: alt-<"
+msgstr ""
+
+# Default: "&#9632;"
+#: /default/toolbar.kupu:None
+msgid "list-square"
+msgstr "&#9632;"
+
+#: /default/toolbar.kupu:None
+msgid "underline: alt-u"
+msgstr "קו תחתון: alt-u"
+
+#: /default/toolbar.kupu:None
+msgid "redo: alt-y"
+msgstr "עשה שוב: alt-y"
+
+#: /default/toolbar.kupu:None
+msgid "subscript: alt--"
+msgstr "תת סקריפט: alt--"
+
+#: /default/toolbar.kupu:None
+msgid "center justify: alt-c"
+msgstr "מרכז justify: alt-c"
+
+#: /default/toolbar.kupu:None
+msgid "unordered list: alt-*"
+msgstr "רשימה לא ממוספרת: alt-*"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 3"
+msgstr "כותרת 3"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 2"
+msgstr "כותרת 2"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 1"
+msgstr "כותרת 1"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 6"
+msgstr "כותרת 6"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 5"
+msgstr "כותרת 5"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 4"
+msgstr "כותרת 4"
+
+#: /default/toolbar.kupu:None
+msgid "numbered list: alt-#"
+msgstr "רשימה ממוספרת: alt-#"
+
+#: /default/toolbar.kupu:None
+msgid "italic: alt-i"
+msgstr "אטליק: alt-i"
+
+# Default: "I"
+#: /default/toolbar.kupu:None
+msgid "list-upperroman"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Headings:"
+msgstr "כותרת:"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix"
+msgstr "תקן"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Column"
+msgstr "הסר עמודה"
+
+#: /default/toolboxes.kupu:None
+msgid "Inline"
+msgstr "בתוך שורה"
+
+#: /default/toolboxes.kupu:None
+msgid "Select a cleanup action:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Links"
+msgstr "קישורים"
+
+#: /default/toolboxes.kupu:None
+msgid "Rows:"
+msgstr "שורות:"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Row"
+msgstr "הסר שורה"
+
+#: /default/toolboxes.kupu:None
+msgid "Tables"
+msgstr "טבלה"
+
+#: /default/toolboxes.kupu:None
+msgid "Create"
+msgstr "צור"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert image at the following URL:"
+msgstr "הכנס תמונה בקישור הבא:"
+
+#: /default/toolboxes.kupu:None
+msgid "Title:"
+msgstr "כותרת"
+
+#: /default/toolboxes.kupu:None
+msgid "Description:"
+msgstr "תיאור:"
+
+#: /default/toolboxes.kupu:None
+msgid "Image class:"
+msgstr "קלאס תמונה:"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Column"
+msgstr "הוסף עמודה"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix Table"
+msgstr "תקן טבלה"
+
+#: /default/toolboxes.kupu:None
+msgid "Images"
+msgstr "תמונות"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert Image"
+msgstr "הכנס תמונה"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Table"
+msgstr "הוסף טבלה"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Row"
+msgstr "הוסף שורה"
+
+#: /default/toolboxes.kupu:None
+msgid "Properties"
+msgstr "מאפיינים"
+
+#: /default/toolboxes.kupu:None
+msgid "Col Align:"
+msgstr "יישור עמודה:"
+
+#: /default/toolboxes.kupu:None
+msgid "Center"
+msgstr "מרכז"
+
+#: /default/toolboxes.kupu:None
+msgid "Debug Log"
+msgstr "לוג DEBUG"
+
+#: /default/toolboxes.kupu:None
+msgid "Make Link"
+msgstr "הפוך לקישור"
+
+#: /default/toolboxes.kupu:None
+msgid "Cleanup expressions"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Columns:"
+msgstr "עמודות:"
+
+#: /default/toolboxes.kupu:None
+msgid "Table Class:"
+msgstr "קלאס טבלה:"
+
+#: /default/toolboxes.kupu:None
+msgid "Right"
+msgstr "שמאל"
+
+#: /default/toolboxes.kupu:None
+msgid "Left"
+msgstr "שמאל"

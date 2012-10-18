@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:param name="xmlcontent"/>
+<xsl:include href="__ABSOLUTE_PATH__/templates_include.xsl"/>
+<xsl:template name="docxap" match="docxap"> 
+
+	<html lang="en">
+	<head>
+	<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="@@@RMximdex.dotdot(css/style.css)@@@"/>
+
+	<title>Armonico</title>
+	</head>
+
+	<body uid="{@uid}">
+
+	<!--  Header -->
+
+	<div id="header">
+		<a class="logo" href="#"/>
+	</div>
+
+	<div id="wrapper">
+	
+		<div id="top-menu">
+			<ul>	
+				<li><a href="#introduction">Introduction</a></li>
+				<li><a href="#compliance">Compliance</a></li>
+				<li><a href="#Staff">Staff</a></li>
+				<li><a href="#noTables">No Tables</a></li>
+				<li><a href="#browserSpec">Browser Spec</a></li>
+				<li><a href="#conclusion">Conclusion</a></li>
+				<li><a href="#contact">Contact</a></li>
+			</ul>
+		</div>
+
+		<!-- Body Text -->
+	
+		<div id="container">
+			<xsl:call-template name="page"/>
+		</div>
+	
+	</div>
+	
+	<!-- Footer -->
+
+	<div id="footer">
+
+		<p>
+			<a class="footerImg" href="http://validator.w3.org/check/referer">Valid XHTML 1.0 Strict</a>
+			|
+			<a class="footerImg" href="http://jigsaw.w3.org/css-validator/validator">Valid CSS</a>
+		</p>
+
+	</div>
+	
+	</body>
+	</html>
+
+</xsl:template>
+</xsl:stylesheet>

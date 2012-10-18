@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pooler>
+
+	<server>
+		<address>127.0.0.1</address>
+		<port>8001</port>
+
+		<user>www-data</user>
+		<group>www-data</group>
+
+		<!-- Defaults to /var/run/poolerd.pid -->
+		<pidfile>/tmp/poolerd.pid</pidfile>
+
+		<!-- If empty defaults to 0033 -->
+		<umask>0033</umask>
+
+		<!-- If empty default user dir or /tmp -->
+		<userdir>/tmp</userdir>
+
+		<!-- If empty defaults to 2048 -->
+		<clientSocketBufferSize>2048</clientSocketBufferSize>
+	</server>
+
+	<client>
+		<url>http://127.0.0.1:8001/</url>
+	</client>
+
+	<queues>
+		<queue>
+			<name>Solr</name>
+			<wait>1000</wait>
+			<command>
+				<path>modules/ximRAM/inc/</path>
+				<class>SolrConector</class>
+				<method>indexNode</method>
+				<params>
+					<!-- The order of the params is important! -->
+					<param>versionid</param>
+					<param>commit</param>
+				</params>
+			</command>
+		</queue>
+	</queues>
+
+</pooler>

@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<libraries
+  xmlns:jx="http://apache.org/cocoon/templates/jx/1.0"
+  >
+
+  <library id="pub">
+    <uri>FIXME URI</uri>
+    <title>Pub&#160;Library</title>
+    <src>${parameters.getParameter('pubLibUrl')}</src>
+    <icon>${parameters.getParameter('imageBaseUrl')}/pub-image.png</icon>
+  </library>
+  
+  <library id="page">
+    <uri>FIXME URI</uri>
+    <title>Page&#160;Library</title>
+    <src>${parameters.getParameter('pageLibUrl')}</src>
+    <icon>${parameters.getParameter('imageBaseUrl')}/page-image.png</icon>
+  </library>
+
+</libraries>

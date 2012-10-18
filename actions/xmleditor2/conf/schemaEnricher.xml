@@ -1,0 +1,5 @@
+<define name="def_anotator">
+    <element name="dextag">
+        <attribute name="type"/>
+    </element>
+</define>

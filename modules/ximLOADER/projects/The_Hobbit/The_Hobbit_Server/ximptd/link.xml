@@ -1,0 +1,5 @@
+<link>
+    <a href="%%%file%%%" id="%%%id%%%">
+        %%%_BODY_%%%
+    </a>
+</link>

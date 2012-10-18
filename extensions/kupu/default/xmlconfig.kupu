@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="xmlconfig"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+  <kupu:id>$Id: xmlconfig.kupu 12162 2005-05-10 15:53:10Z guido $</kupu:id>
+
+  <kupu:part name="xmlconfig">
+    <div style="display: none;">
+      <xml id="kupuconfig" class="kupuconfig">
+        <kupuconfig>
+          <kupu:define-slot name="kupuconfig" />
+        </kupuconfig>
+      </xml>
+    </div>
+  </kupu:part>
+
+  <!-- Default configuration -->
+  <kupu:part name="defaultconfig">
+    <dst>fulldoc.html</dst>
+    <use_css>1</use_css>
+    <reload_after_save>0</reload_after_save>
+    <strict_output>1</strict_output>
+    <content_type>application/xhtml+xml</content_type>
+    <compatible_singletons>1</compatible_singletons>
+    <table_classes>
+      <class>plain</class>
+      <class>listing</class>
+      <class>grid</class>
+      <class>data</class>
+    </table_classes>
+
+    <cleanup_expressions>
+      <set>
+        <name>Convert single quotes to curly ones</name>
+        <expression>
+          <reg>
+            (\W)'
+          </reg>
+          <replacement>
+            \1‘
+          </replacement>
+        </expression>
+        <expression>
+          <reg>
+            '
+          </reg>
+          <replacement>
+            ’
+          </replacement>
+        </expression>
+      </set>
+      <set>
+        <name>Reduce whitespace</name>
+        <expression>
+          <reg>
+            [\n\r\t]
+          </reg>
+          <replacement>
+            \x20
+          </replacement>
+        </expression>
+        <expression>
+          <reg>
+            [ ]{2}
+          </reg>
+          <replacement>
+            \x20
+          </replacement>
+        </expression>
+      </set>
+    </cleanup_expressions>
+  </kupu:part>
+ 
+</kupu:feature>

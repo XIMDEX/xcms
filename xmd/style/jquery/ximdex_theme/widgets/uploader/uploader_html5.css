@@ -1,0 +1,261 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+div.xim-uploader-container {
+
+}
+
+
+/* ###################################### CONTAINER ################################## */
+div.xim-uploader-container  div.xim-loader-list-container {
+	/*background-color: #fff;*/
+	
+}
+
+div.xim-uploader-container  div.xim-loader-list-container.drop {	
+	border: 1px solid #036D6E;
+} 
+
+div.xim-uploader-container div.xim-loader-list-container  ul.xim-loader-list {
+	margin: 8px 0 0 0;
+	padding: 10px 15px;
+	/*width: 715px;*/
+	height: 250px;
+	overflow: auto;
+	overflow-x: hidden;
+	background: #f2f2f2;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	border: 1px dashed #C8C8C8;
+	color: #727272;
+}
+
+div.xim-uploader-container div.xim-loader-list-container  ul.xim-loader-list li {
+  	float: left;
+	height: 25px;
+	padding: 1px 3px 1px 3px;
+	width: 98.5%;
+	/*overflow: hidden;*/
+	border-bottom: 1px solid #dee3e3;
+	
+}
+
+/*div.xim-uploader-container div.xim-loader-list-container  ul.xim-loader-list li:hover {
+	background-color: #D0D0D0;
+}*/
+
+div.xim-uploader-container div.xim-loader-list-container  ul.xim-loader-list li input {
+	float: left;
+	margin: 6px 8px 5px 0;
+	width: 2.5%;
+}
+
+div.xim-uploader-container div.xim-loader-list-container  ul.xim-loader-list li img {
+	margin-right: 5px;
+	width: 20px;
+	height: 20px;
+	display: none;
+	float: left;
+	margin-top: 2px;
+}
+
+div.xim-uploader-container div.xim-loader-list-container  ul.xim-loader-list li span.xim-loader-options {
+	height: 25px;
+	padding-left: .3%;
+	width: 18.5%;
+	margin-top: -2px;
+}
+
+span.xim-loader-options select{
+	border: 1px solid #d4d4d4;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	padding: 3px;
+}
+
+/* _________________________________________ HEADERS AND CONTENTS _________________________________________  */
+
+div.xim-uploader-container div.xim-loader-header {
+	background: #d4d4d4;
+	height: 25px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	/*width: 705px;
+	overflow: hidden;*/
+	padding: 0 18px;	
+
+}
+
+div.xim-uploader-container span {
+	display: block;
+	float: left;
+	overflow: hidden;
+	text-shadow: 1px 1px 0 #FFFFFF, 2px 2px 1px rgba(255, 255, 255, 0.2);
+	color: #727272;
+	margin-right: 1%;
+}
+
+div.xim-loader-header span{
+	margin-top: 6px;
+	text-transform: uppercase;
+	color: #8f8f8f;
+	font-size: .9em;
+	border-right: 2px dotted #EAEAEA;
+
+}
+
+div.xim-uploader-container div.xim-loader-header span {
+	font-weight: bold;
+}
+
+div.xim-uploader-container div.xim-loader-header  span.xim-loader-name {
+	/*margin-left: 20px;*/
+}
+div.xim-loader-header span.xim-loader-name {
+	width: 34%;
+}
+ul.xim-loader-list span.xim-loader-name {
+	width: 31.5%;
+}
+
+div.xim-uploader-container span.xim-loader-size, div.xim-uploader-container span.xim-loader-progress {
+	width: 20%;
+}
+
+div.xim-uploader-container span.xim-loader-options {
+	width: 20%;
+	font-size: 10px;
+}
+
+div.xim-uploader-container div.xim-loader-progress {
+	margin-top: 0;
+	padding: 0;
+	overflow: hidden;
+	height: 18px;
+	width: 96.4% !important;
+	text-align: center;
+	color: #fff;
+	font-size: .9em;
+	margin-right: 1%;
+	padding-right: 2%;
+	border:none;
+	text-transform: uppercase;
+	letter-spacing: 0;
+	font-weight: bold;
+	line-height: 1.6em;
+}
+
+
+div.xim-uploader-container div.xim-loader-progress.upload{
+	border: 1px solid #308384;
+	background-color: #43a1a2;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: inset 0 1px 1px #90c8c8;
+	-webkit-box-shadow: inset 0 1px 1px #90c8c8;
+	box-shadow: inset 0 1px 1px #90c8c8;
+	text-shadow: 0 1px 0 #308384;
+}
+
+div.xim-uploader-container div.xim-loader-progress.error{
+	border: 1px solid #ab2e07;
+	background-color: #b93107;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	-moz-box-shadow: inset 0 1px 1px #d6876e;
+	-webkit-box-shadow: inset 0 1px 1px #d6876e;
+	box-shadow: inset 0 1px 1px #d6876e;
+	text-shadow: 0 1px 0 #ab2e07;
+}
+
+/* ###################################### ACTIONS ################################## */
+div.xim-uploader-container ul.xim-loader-list-actions {
+	display: block;
+	float: right;
+	margin: 10px 0 0 10px;
+	padding: 0;
+}
+
+div.xim-uploader-container ul.xim-loader-list-actions li {
+	margin: 0;
+	float: left;
+}
+div.xim-uploader-container ul.xim-loader-list-actions li a{
+	border: 1px solid #9cbebe;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	background: #9bcbcc;
+	background: -webkit-gradient(linear,0 0, 0 100%, from (#cbe4e5), to(#94c8c8));
+	background: -moz-linear-gradient(to top, #cbe4e5, #94c8c8);
+	font-size: .9em;
+	letter-spacing: 0;
+	color: #467879;
+	text-shadow: 0 1px 0 #d6eaea;
+	padding: 5px 8px;
+	-moz-box-shadow: inset 0 1px 0 #e1f0f0, 0 0 5px #ced6d7;
+	-webkit-box-shadow: inset 0 1px 0 #e1f0f0, 0 0 5px #ced6d7;;
+	box-shadow: inset 0 1px 0 #e1f0f0, 0 0 5px #ced6d7;
+	margin: 0 6px;
+}
+
+div.xim-uploader-container ul.xim-loader-list-actions li a:hover{
+	background: #9bcbcc;
+	background: -webkit-gradient(linear, 0 0, 0 100%, from (#94c8c8), to(#cbe4e5));
+	background: -moz-linear-gradient(top, #94c8c8, #cbe4e5);
+	text-shadow: 0 -1px 0 #d6eaea;
+	-moz-box-shadow: inset 0 -1px 0 #e1f0f0, 0 0 5px #ced6d7;
+	-webkit-box-shadow: inset 0 -1px 0 #e1f0f0, 0 0 5px #ced6d7;;
+	box-shadow: inset 0 -1px 0 #e1f0f0, 0 0 5px #ced6d7;
+}
+
+
+div.xim-uploader-container ul.xim-loader-list-actions li a.xim-uploader{
+	position:relative;
+	display: block;
+	overflow: hidden;
+	padding: 0 8px;
+}
+
+input.xim-uploader{
+	position:absolute;
+	right: 0;
+	top: 0;
+	margin: 2px 0;
+	opacity: 0;
+	filter: Alpha(Opacity=0);
+   -moz-opacity: 0;
+   cursor: pointer;
+}
+
+div.xim-uploader-container ul.xim-loader-list-actions  a.xim-uploader-selected,div.xim-uploader-container ul.xim-loader-list-actions  input.xim-uploader, div.xim-uploader-container ul.xim-loader-list-actions a.xim-uploader-delete   {
+	display: none;
+}

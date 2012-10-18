@@ -1,0 +1,269 @@
+% File:      pdflscape.sty
+% Version:   2004/05/11 v0.3
+% Author:    Heiko Oberdiek
+% Email:     oberdiek@uni-freiburg.de
+%
+% Copyright: Copyright (C) 2004 Heiko Oberdiek.
+%
+%            This program may be distributed and/or modified under
+%            the conditions of the LaTeX Project Public License,
+%            either version 1.2 of this license or (at your option)
+%            any later version. The latest version of this license
+%            is in
+%              http://www.latex-project.org/lppl.txt
+%            and version 1.2 or later is part of all distributions
+%            of LaTeX version 1999/12/01 or later.
+%
+% Function:  Package `pdflscape' adds PDF support to the
+%            environment `landscape' of package `lscape'
+%            by setting the PDF page attribute `/Rotate'.
+%            Driver options:
+%              `pdftex'
+%              `dvips', `dvipsone', `pctex32', `pctexps'
+%                   (and other drivers that provide a
+%                   non-empty \Gin@PS@raw)
+%              `dvipdfm'
+%
+% Required:  * The package `lscape'.
+%
+% Use:       Load this package instead of package `lscape':
+%              \usepackage{pdflscape}
+%              \begin{landscape}...\end{landscape}
+%
+% History:   2001/01/15 v0.1:
+%              * first public version,
+%                published in de.comp.text.tex.
+%            2001/02/04 v0.2:
+%              * minor documentation update.
+%              * CTAN.
+%            2004/05/11 v0.3:
+%              * Support for dvipdfm added.
+%
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{pdflscape}
+  [2004/05/11 v0.3 Landscape pages in PDF (HO)]
+\let\PLS@driver\@empty
+\DeclareOption{pdftex}{%
+  \PassOptionsToPackage\CurrentOption{lscape}%
+  \def\PLS@driver{pdftex}%
+}
+\DeclareOption{dvips}{%
+  \PassOptionsToPackage\CurrentOption{lscape}%
+  \def\PLS@driver{dvips}%
+}
+\DeclareOption{dvipsone}{%
+  \PassOptionsToPackage\CurrentOption{lscape}%
+  \def\PLS@driver{dvips}%
+}
+\DeclareOption{pctexps}{%
+  \PassOptionsToPackage\CurrentOption{lscape}%
+  \def\PLS@driver{dvips}%
+}
+\DeclareOption{dvipdfm}{%
+  \PassOptionsToPackage\CurrentOption{dvipdfm}%
+  \def\PLS@driver{dvipdfm}%
+}
+\DeclareOption*{\PassOptionsToPackage\CurrentOption{lscape}}
+\ProcessOptions
+\RequirePackage{lscape}
+
+% Autodetection of driver
+\def\PLS@temp{pdftex}
+\ifnum 1=0\ifx\pdfoutput\@undefined
+          \else
+            \ifx\pdfoutput\relax
+            \else
+              \ifnum\pdfoutput>0 %
+                1%
+              \fi
+            \fi
+          \fi
+          \space
+  \ifx\PLS@driver\@empty
+    \let\PLS@driver\PLS@temp
+    \PackageInfo{pdflscape}{Auto-detected driver: `\PLS@temp'}%
+  \fi
+  \ifx\PLS@driver\PLS@temp
+  \else
+    \PackageError{pdflscape}{%
+      The driver option `\PLS@driver' is not compatible\MessageBreak
+      with pdfTeX in PDF mode, using driver `pdftex' instead%
+    }\@ehc
+    \let\PLS@driver\PLS@temp
+  \fi
+\fi
+
+\def\PLS@temp{dvips}
+\ifnum 1=0\ifx\Gin@PS@raw\@undefined
+          \else
+            \ifx\Gin@PS@raw\relax
+            \else
+              \ifx\Gin@PS@raw\@empty
+              \else
+                1%
+              \fi
+            \fi
+          \fi
+          \space
+  \ifx\PLS@driver\@empty
+    \let\PLS@driver\PLS@temp
+    \PackageInfo{pdflscape}{Auto-detected driver: `\PLS@temp'}%
+  \fi
+  \ifx\PLS@driver\PLS@temp
+  \else
+    \PackageError{pdflscape}{%
+      The driver option `\PLS@driver' is not compatible\MessageBreak
+      with detected PostScript driver,\MessageBreak
+      Will try using driver `dvips'%
+    }\@ehc
+    \let\PLS@driver\PLS@temp
+  \fi
+\fi
+
+% dvipdfm
+\def\PLS@temp{dvipdfm.def}
+\ifx\PLS@temp\Gin@driver
+  \def\PLS@temp{dvipdfm}%
+  \ifx\PLS@driver\@empty
+    \let\PLS@driver\PLS@temp
+    \PackageInfo{pdflscape}{Auto-detected driver: `\PLS@temp'}%
+  \fi
+  \ifx\PLS@driver\PLS@temp
+  \else
+    \PackageError{pdflscape}{%
+      Graphics driver `dvipdfm.def' is loaded, but this\MessageBreak
+      is incompatible with driver `\PLS@driver'.\MessageBreak
+      Will try using driver `dvipdfm'%
+    }\@ehc
+    \let\PLS@driver\PLS@temp
+  \fi
+\fi
+
+\ifx\PLS@driver\@empty
+  \PackageError{pdflscape}{%
+    Neither pdfTeX, PostScript, nor dvipdfm driver found%
+  }\@ehc
+\fi
+
+% Driver stuff:
+% * \PLS@AddRotate#1
+%   it expects the correct rotation number in #1
+%   and implements the adding of the /Rotation entry
+%   in the /Page object of the current page.
+% * \PLS@RemoveRotate
+%   it removes a previous /Rotate entry, if necessary.
+
+% Driver pdfTeX
+\def\PLS@temp{pdftex}
+\ifx\PLS@temp\PLS@driver
+  \def\PLS@AddRotate#1{%
+    \ifnum#1=0
+      % already the default
+    \else
+      \global\pdfpageattr\expandafter{%
+        \the\pdfpageattr
+        /Rotate #1%
+      }%
+    \fi
+  }
+  % Removes a /Rotate entry. It has to be called inside
+  % a group.
+  \def\PLS@RemoveRotate{%
+    \global\pdfpageattr\expandafter{\expandafter}%
+    \expandafter\PLS@@RemoveRotate
+      \the\pdfpageattr /Rotate\@nil
+  }
+  \def\PLS@@RemoveRotate#1/Rotate#2\@nil{%
+    % append /Rotate free stuff to \pdfpageattr
+    \global\pdfpageattr\expandafter{\the\pdfpageattr#1}%
+    \ifx\\#2\\%
+      % ready, because the detected /Rotate is part of
+      % the end marker: /Rotate\@nil
+    \else
+      % first read in the argument of /Rotate,
+      % then continue parsing.
+      \afterassignment\PLS@@RemoveRotate
+      \count0=#2\@nil
+    \fi
+  }
+\fi
+
+% Driver PostScript
+\def\PLS@temp{dvips}
+\ifx\PLS@temp\PLS@driver
+  \def\PLS@AddRotate#1{%
+    \ifnum#1=0
+    \else
+      \Gin@PS@raw{%
+        [{ThisPage}\string<\string</Rotate #1\string>\string>%
+        /PUT pdfmark%
+      }%
+    \fi
+  }%
+  \let\PLS@RemoveRotate\relax
+\fi
+
+% Driver dvipdfm
+\def\PLS@temp{dvipdfm}
+\ifx\PLS@temp\PLS@driver
+  \def\PLS@AddRotate#1{%
+    \ifnum#1=0
+    \else
+      \special{pdf: put @thispage << /Rotate #1 >>}%
+    \fi
+  }%
+  \let\PLS@RemoveRotate\relax
+\fi
+
+% Driver independent stuff
+%
+% The landscape environment is extended by
+% adding the correct /Rotate entries.
+\g@addto@macro{\landscape}{\PLS@Rotate{90}}
+\g@addto@macro{\endlandscape}{\PLS@Rotate{0}}
+
+% Main macro, that sets the /Rotate entry.
+% Argument: any TeX number or
+%           nothing, that means zero.
+% Driver independent.
+\def\PLS@Rotate#1{%
+  \begingroup
+    % 1. Check and validate the argument
+    \PLS@CheckAngle{#1}%
+    % 2. Delete an existing /Rotate entry
+    \PLS@RemoveRotate
+    % 3. Add /Rotate entry
+    \expandafter\PLS@AddRotate\expandafter{\the\count@}%
+  \endgroup
+}
+
+% Validates the rotation angle.
+% The result is stored in the count register \count@.
+% Driver independent.
+\def\PLS@CheckAngle#1{%
+  % noting means zero:
+  \ifx\\#1\\%
+    \count@=0
+  \else
+    \count@=#1\relax
+  \fi
+  % normalise to interval -360 < \count@ < 360
+  \@whilenum\count@>359\do{\addtocounter\count@ -360 }%
+  \@whilenum\count@<-359\do{\addtocounter\count@ 360 }%
+  % check values: 0, +/-90, +/-180, +/-270
+  \ifnum 1=0\ifnum\count@=0 \else
+            \ifnum\count@=90 \else
+            \ifnum\count@=-90 \else
+            \ifnum\count@=180 \else
+            \ifnum\count@=-180 \else
+            \ifnum\count@=270 \else
+            \ifnum\count@=-270 \else
+           1\fi\fi\fi\fi\fi\fi\fi\relax
+    \PackageError{pdflscape}{%
+      Invalid value \the\count@\space for /Rotate%
+    }\@ehc
+    \count@=0
+  \fi
+}
+
+\endinput

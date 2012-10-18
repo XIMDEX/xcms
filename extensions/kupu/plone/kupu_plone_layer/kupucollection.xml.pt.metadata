@@ -1,0 +1,5 @@
+[default]
+title=Present collection object in Kupu Library XML
+
+[security]
+View=0:Authenticated

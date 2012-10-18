@@ -1,0 +1,92 @@
+% File:        dvipscol.sty
+% Version:     2000/08/31 v1.0
+% Author:      Heiko Oberdiek
+% Email:       <oberdiek@ruf.uni-freiburg.de>
+%
+% Copyright:   Copyright (C) 2000 Heiko Oberdiek.
+%
+%              This program may be distributed and/or modified under
+%              the conditions of the LaTeX Project Public License,
+%              either version 1.2 of this license or (at your option)
+%              any later version. The latest version of this license
+%              is in
+%                http://www.latex-project.org/lppl.txt
+%              and version 1.2 or later is part of all distributions
+%              of LaTeX version 1999/12/01 or later.
+%
+% Function:    This package tries a solution, if the program
+%              dvips complains:
+%                "! out of color stack space"
+%              The driver file `dvips.def' contains the
+%              low level color commands for the package `color'.
+%                Each time a color is set, the current color is
+%              pushed on the color stack before and after the
+%              current group the old color is popped from
+%              the stack and set again (via \aftergroup).
+%              But the color stack size of dvips is limited,
+%              so a stack overflow can occur, if there are
+%              too many color setting operations in a group.
+%                Only at the bottom group level (no group),
+%              the color can be set directly without pushing
+%              the current color on the stack before, because
+%              there is no group at bottom level that can end.
+%                With e-TeX the group level can easily be
+%              detected (\currentgrouplevel).  Alone with TeX
+%              this is not possible.
+%
+% Recommended: e-TeX (explanation see above)
+%
+% Use:         * With e-TeX the package fixes \set@color, therefore
+%              no interaction with the user is required.
+%              * Without e-TeX the package defines \nogroupcolor,
+%              that the user can use manually instead of \color.
+%              But caution: it should only be used outside of all
+%              groups, for example the following will not work:
+%                \textcolor{black}{\nogroupcolor{blue}...}
+%
+% History:     2000/08/31 v1.0:
+%                first public release created as answer to
+%                a question of Deepak Goel in comp.text.tex:
+%                  "\color{} problems.. :Out of stack space.."
+%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{dvipscol}[2000/08/31 v1.0 Fix for dvips.def (HO)]
+
+\@ifundefined{ver@dvips.def}{%
+  \PackageWarningNoLine{dvipscol}{%
+    Nothing to fix, because \string`dvips.def\string' not loaded%
+  }%
+  \endinput
+}
+
+\CheckCommand*{\set@color}{%
+  \special{color push \current@color}%
+  \aftergroup\reset@color
+}
+
+\newcommand*{\nogroupcolor}{%
+  \let\saved@org@set@color\set@color
+  \def\set@color{%
+    \let\set@color\saved@org@set@color
+    \special{color \current@color}%
+  }%
+  \color
+}
+
+\ifx\currentgrouplevel\@undefined
+  \PackageWarningNoLine{dvipscol}{%
+    \string\set@color\space cannot be fixed, %
+    because the\MessageBreak
+    e-TeX extensions are not available%
+  }%
+  \expandafter\endinput
+\fi
+\def\set@color{%
+  \ifcase\currentgrouplevel
+    \special{color \current@color}%
+  \else
+    \special{color push \current@color}%
+    \aftergroup\reset@color
+  \fi
+}
+\endinput

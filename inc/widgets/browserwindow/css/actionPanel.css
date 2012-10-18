@@ -1,0 +1,101 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+div.action-panel-droppable {
+	position: absolute;
+	background-image: url(../../../../../actions/browser3/resources/images/system-run-128.png);
+	background-repeat: no-repeat;
+}
+
+div.action-panel-droppable-hover {
+	/* opacity ??? */
+}
+
+div.action-panel-container {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	background-color: #ffffff;
+}
+
+div.action-panel-main div.action-panel-droppable {
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	background-position: center center;
+}
+
+div.action-panel-options div.action-panel-droppable,
+div.action-panel-executing div.action-panel-droppable {
+	top: 0px;
+	right: 0px;
+	/*bottom: 0px;*/
+	left: 0px;
+	height: 60px;
+	background-image: url(../../../../../actions/browser3/resources/images/system-run-64.png);
+	background-position: 15px 8px;
+	border-bottom: 1px dashed #333333;
+	padding-top: 30px;
+}
+
+div.action-panel-node-selection {
+	margin-left: 100px;
+}
+
+button.action-panel-cancel, button.action-panel-done {
+	float: right;
+	margin-right: 20px;
+}
+
+div.action-panel-options-container {
+	/*background-color: #EEEEEE;*/
+	position: absolute;
+	top: 60px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	width: 60%;
+	height: 60%;
+}
+
+button.action-panel-button {
+	width: 200px;
+	/*height: 42px;*/
+	margin: 2px;
+}
+
+div.action-panel-tabs {
+	background-color: #EEEEEE;
+	position: absolute;
+	top: 92px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+

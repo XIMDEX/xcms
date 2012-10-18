@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="head"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+  <kupu:id>$Id: head.kupu 16467 2005-08-25 11:08:10Z guido $</kupu:id>
+
+  <kupu:part name="head">
+    <head>
+      <kupu:define-slot name="head" />
+    </head>
+  </kupu:part>
+
+  <kupu:part name="meta">
+    <title>Test Editor</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </kupu:part>
+
+  <kupu:part name="styles">
+    <link href="kupustyles.css" rel="stylesheet" type="text/css" />
+  </kupu:part>
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="sarissa.js"> </script>
+    <script type="text/javascript" src="sarissa_ieemu_xpath.js"> </script>
+    <script type="text/javascript" src="kupuhelpers.js"> </script>
+    <script type="text/javascript" src="kupueditor.js"> </script>
+    <script type="text/javascript" src="kupubasetools.js"> </script>
+    <script type="text/javascript" src="kupuloggers.js"> </script>
+    <script type="text/javascript" src="kupunoi18n.js"> </script>
+    <script type="text/javascript" src="../../i18n.js/i18n.js"> </script>
+    <script type="text/javascript" src="kupucleanupexpressions.js"> </script>
+    <script type="text/javascript" src="kupucontentfilters.js"> </script>
+    <script type="text/javascript" src="kuputoolcollapser.js"> </script>
+  </kupu:part>
+
+  <!-- XXX this could be a separate feature, maybe -->
+  <kupu:part name="bootstrap-editor">
+    <script type="text/javascript" src="kupuinit.js"> </script>
+    <script type="text/javascript" src="kupustart.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

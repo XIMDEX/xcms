@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="head"
+    implementation="form"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="bootstrap-editor">
+    <script type="text/javascript" src="kupuinit_form.js"> </script>
+    <script type="text/javascript" src="kupustart_form.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="kupu here/kupu; 
+                  macros kupu/kupumacros/macros;
+                  kupu_url kupu/absolute_url;
+                  document_url here/REQUEST/URL1">
+
+  <!--
+   Create a 'kupu editor' object in the folder where you want to
+   enable visual editing with kupu. Call it 'kupu' (you can call it
+   something else, but this template relies on this name being
+   'kupu'). Add a Page Template next to the kupu object and copy the
+   contents of this file into it. Call the Page Template 'kupu_edit'
+   or something like that. You can now point your browser at any object's
+   URL, append '/kupu_edit' and you will be able to edit the object
+   with kupu.
+   
+   Note: kupumacros require kupu_url and document_url be defined.
+   -->
+
+  <head>
+    <title>Kupu Editor example template</title>
+
+    <!-- include the standard scripts/stylesheets -->
+    <metal:macro use-macro="macros/head">
+    <!-- 
+    Slots in this macro can be used to add/remove/change functionality.
+    As a miniumum the kupu_bootstrap slot should be used for your own
+    startKupu() and initKupu() javascripts.
+    Changes here usually require corresponding changes to slots in the
+    fulleditor macro below.
+    -->
+    </metal:macro>
+
+  </head>
+
+  <body onload="kupu = startKupu();">
+
+    <!-- include the xmlconfig -->
+    <metal:macro use-macro="macros/xmlconfig">
+      <!-- 
+      Slots in this macro can be used to add/remove/change config settings.
+      -->
+      <metal:slot fill-slot="dst"><tal:block replace="document_url" /></metal:slot>
+    </metal:macro>
+
+    <!-- include the fulleditor -->
+    <metal:macro use-macro="macros/fulleditor">
+      <!-- 
+      Slots in this macro can be used to add/remove/change functionality.
+      Anything more than minor changes here will also require changes to
+      coresponding slots in the head macro above.
+      -->
+    </metal:macro>
+    
+  </body>
+</html>

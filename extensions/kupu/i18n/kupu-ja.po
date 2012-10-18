@@ -1,0 +1,948 @@
+# Translation of kupu-ja.po to Japanese
+# J <naotaka@we.care.jp> 2005
+# Suzuki Takanori <takanori@takanory.net> 2005
+msgid ""
+msgstr ""
+"POT-Creation-Date: Wed Aug  7 16:07:37 2005\n"
+"PO-Revision-Date: 2005-05-03 16:41+0200\n"
+"Last-Translator: J <Naotaka@we.care.jp>\n"
+"Language-Team: gocept i18n team <rj@gocept.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/translation_files/extract.py\n"
+"Language-code: Ja\n"
+"Language-name: Japanese\n"
+"Domain: kupu\n"
+
+#: /common/kupu.pox:None
+msgid "Properties modified"
+msgstr "プロパティが変更されました。"
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed with parameter ${param}"
+msgstr "${command} コマンドが、パラメータ：${param} で実行されました。"
+
+#: /common/kupu.pox:None
+msgid "Not inside a definition list element!"
+msgstr "定義リストエレメントの中にありません！"
+
+#: /common/kupu.pox:None
+msgid "Add table"
+msgstr "表を追加"
+
+#: /common/kupu.pox:None
+msgid "Table added"
+msgstr "表が追加されました。"
+
+#: /common/kupu.pox:None
+msgid "Source edit tool initialized"
+msgstr "ソース編集ツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "Delete row"
+msgstr "行を削除"
+
+#: /common/kupu.pox:None
+msgid "Recursion detected when counting column position"
+msgstr "列位置をカウントする際に、Recursionが削除されました。"
+
+#: /common/kupu.pox:None
+msgid "List style changed"
+msgstr "リストスタイルが変更されました。"
+
+#: /common/kupu.pox:None
+msgid "Create image"
+msgstr "画像を追加"
+
+#: /common/kupu.pox:None
+msgid "You have unsaved changes. Do you want to save before leaving the page?"
+msgstr "変更が保存されていません。別のページに移行する前に変更を保存しますか？"
+
+#: /common/kupu.pox:None
+msgid "Table row removed"
+msgstr "行が削除されました。"
+
+#: /common/kupu.pox:None
+msgid "Document saved"
+msgstr "ドキュメントが保存されました。"
+
+#: /common/kupu.pox:None
+msgid "Color chosen"
+msgstr "選択色"
+
+#: /common/kupu.pox:None
+msgid "Table row added"
+msgstr "行が追加されました。"
+
+#: /common/kupu.pox:None
+msgid "Error saving document"
+msgstr "ドキュメントの保存中にエラーがありました。"
+
+#: /common/kupu.pox:None
+msgid "No destination URL available!"
+msgstr "リンク先の URL がありません"
+
+#: /common/kupu.pox:None
+msgid "Link removed"
+msgstr "リンクが削除されました。"
+
+#: /common/kupu.pox:None
+msgid "No row to delete"
+msgstr "行が削除されませんでした。"
+
+#: /common/kupu.pox:None
+msgid "Delete Table"
+msgstr "表を削除"
+
+#: /common/kupu.pox:None
+msgid "Cleanup done, sending document to server"
+msgstr "整理が終わりました。ドキュメントをサーバに送ります。"
+
+#: /common/kupu.pox:None
+msgid "Image tool initialized"
+msgstr "画像ツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "End offset out of range!"
+msgstr "終了オフセットが範囲外です！"
+
+#: /common/kupu.pox:None
+msgid "tdindex: ${tdindex}"
+msgstr "tdインデックス: ${tdindex}"
+
+#: /common/kupu.pox:None
+msgid "Create link"
+msgstr "リンクする"
+
+#: /common/kupu.pox:None
+msgid "Starting HTML cleanup"
+msgstr "HTML の整理を始めます。"
+
+#: /common/kupu.pox:None
+msgid "Link modified"
+msgstr "リンク変更されました。"
+
+#: /common/kupu.pox:None
+msgid "Request sent to server"
+msgstr "要求がサーバに送られました。"
+
+#: /common/kupu.pox:None
+msgid "Table tool initialized"
+msgstr "表ツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "There were no errors."
+msgstr "エラーはありません。"
+
+#: /common/kupu.pox:None
+msgid ""
+"exception ${message} while registering an event handler for element "
+"${element}, event ${event}, method ${method}"
+msgstr ""
+"エレメントのイベントのハンドラーの登録中に例外 ${message}"
+"${element}, event ${event}, method ${method}"
+
+#: /common/kupu.pox:None
+msgid "Error loading translation (status ${status} ), falling back to english"
+msgstr ""
+"日本語化用 po ファイルの読み込みに失敗しました（status ${status}）。"
+"英語に戻ります。"
+
+#: /common/kupu.pox:None
+msgid "Start node offset detected in a node without children!"
+msgstr "Start node offset detected in a node without children!"
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuTool._selectSelectItem"
+msgstr "非難警告: KupuTool._selectSelectItem"
+
+#: /common/kupu.pox:None
+msgid "Couldn\\'t set design mode. Kupu will not work on this browser."
+msgstr ""
+"デザインモードへ移行できません。"
+"Kupu はこのブラウザでは利用できません。"
+
+#: /common/kupu.pox:None
+msgid "No element found in the config island!"
+msgstr "設定領域内でエレメントが発見できませんでした。"
+
+#: /common/kupu.pox:None
+msgid "Start offset out of range!"
+msgstr "開始オフセットが範囲外です！"
+
+#: /common/kupu.pox:None
+msgid ""
+"Pasting from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr "Mozilla のセキュリティの設定のため、JavaScript からの貼り付けが無効化されています。詳細については、 http://www.mozilla.org/editor/midasdemo/ を読んでください。"
+
+#: /common/kupu.pox:None
+msgid "Property tool initialized"
+msgstr "プロパティツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "Colorchooser tool initialized"
+msgstr "色選択ツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "No parentcolumn found!"
+msgstr "上位の列が見つかりませんでした。"
+
+#: /common/kupu.pox:None
+msgid "Row repeated"
+msgstr "行が繰り返されました。"
+
+#: /common/kupu.pox:None
+msgid "Table removed"
+msgstr "表が削除されました。"
+
+#: /common/kupu.pox:None
+msgid "Cut"
+msgstr "削除"
+
+#: /common/kupu.pox:None
+msgid "Unsupported browser!"
+msgstr "非対応ブラウザです！"
+
+#: /common/kupu.pox:None
+msgid "Add row"
+msgstr "行を追加"
+
+#: /common/kupu.pox:None
+msgid "Link tool initialized"
+msgstr "リンクツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "Sending request to server"
+msgstr "要求をサーバに送ります。"
+
+#: /common/kupu.pox:None
+msgid "Invalid table size"
+msgstr "表サイズが異常です。"
+
+#: /common/kupu.pox:None
+msgid "Error placing back selection"
+msgstr "セレクションを戻す際のエラー"
+
+#: /common/kupu.pox:None
+msgid "Delete link"
+msgstr "リンクを削除"
+
+#: /common/kupu.pox:None
+msgid "Add column"
+msgstr "列を追加"
+
+#: /common/kupu.pox:None
+msgid ""
+"Cutting from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr "Mizilla のセキュリティの設定のため、JavaScript からの切り取りが無効化されています。詳細については、 http://www.mozilla.org/editor/midasdemo/ を読んでください。"
+
+
+#: /common/kupu.pox:None
+msgid "Exception while processing updateState on ${id}: ${msg}"
+msgstr "${id}: ${msg} について状態を更新する時に例外が発生しました。"
+
+#: /common/kupu.pox:None
+msgid "Cleaning up HTML..."
+msgstr "HTML の整理をします。"
+
+#: /common/kupu.pox:None
+msgid "List style tool initialized"
+msgstr "リストスタイルツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "Row repeat turned off"
+msgstr "行の反復をしない"
+
+#: /common/kupu.pox:None
+msgid ""
+"There was a problem initializing the drawers. Most likely the XSLT or XML "
+"files aren\\'t available. If this is not the Kupu demo version, check your "
+"files or the service that provide them (error: ${error})."
+msgstr ""
+"ドローソフトの初期化に失敗しました。多くの場合 XSLT か XML ファイルが存在しないことが原因です。"
+"もしも、この Kupu がデモバージョンでない場合、ファイルや（error: ${error}）で表示されてたサービスをチェックしてください。"
+
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuToolBox._selectSelectItem"
+msgstr "非難警告: KupuToolBox._selectSelectItem"
+
+#: /common/kupu.pox:None
+msgid ""
+"Copying from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr "Mozilla のセキュリティの設定のため、JavaScript からのコピーが無効化されています。詳細については、 http://www.mozilla.org/editor/midasdemo/ を読んでください。"
+
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed"
+msgstr "${command}コマンドを実行しました。"
+
+#: /common/kupu.pox:None
+msgid "Delete column"
+msgstr "列を削除"
+
+#: /common/kupu.pox:None
+msgid ""
+"Error saving your data.\\nResponse status: ${status}.\\nCheck your server "
+"log for more information."
+msgstr ""
+"データの保存に失敗しました。\\nResponse status: ${status}"
+"詳細に関しては、サーバのログを確認してください。"
+
+#: /common/kupu.pox:None
+msgid "This feature requires pop-ups to be enabled on your browser!"
+msgstr "この機能を利用するのには、ブラウザのポップアップ（pop-up）機能を有効にする必要があります！"
+
+#: /common/kupu.pox:None
+msgid "Not inside link"
+msgstr "内部リンクではありません。"
+
+#: /common/kupu.pox:None
+msgid "View source"
+msgstr "ソース閲覧"
+
+#: /common/kupu.pox:None
+msgid "Image inserted"
+msgstr "画像を追加"
+
+#: /common/kupu.pox:None
+msgid "Browser not supported!"
+msgstr "非対応ブラウザ！"
+
+#: /common/kupu.pox:None
+msgid "Please wait while saving document..."
+msgstr "ドキュメントの保存中です。しばらくお待ちください・・・"
+
+#: /common/kupu.pox:None
+msgid "Editor initialized"
+msgstr "エディタが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "Copy"
+msgstr "コピー"
+
+#: /common/kupu.pox:None
+msgid "Paste"
+msgstr "貼り付け"
+
+#: /common/kupu.pox:None
+msgid "Zoom tool initialized"
+msgstr "ズームツールが初期化されました。"
+
+#: /common/kupu.pox:None
+msgid "Table column deleted"
+msgstr "表の列が削除されました。"
+
+#: /common/kupu.pox:None
+msgid "Offset out of document range"
+msgstr "オフセットがドキュメントの範囲を超えています"
+
+#: /common/kupu.pox:None
+msgid "Table cleaned up"
+msgstr "表を整理"
+
+#: /common/kupu.pox:None
+msgid "Error loading data, status ${status}"
+msgstr "データ読み込みエラー：status ${status"
+
+#: /common/kupu.pox:None
+msgid ""
+"Could not set status bar message, check your browser\\'s security settings."
+msgstr ""
+"ステータスバーのメッセージを設定できませんでした。ブラウザのセキュリティ設定を確認してください。"
+
+#: /common/kupu.pox:None
+msgid "End node offset detected in a node without children!"
+msgstr "End node offset detected in a node without children!"
+
+#: /common/kupu.pox:None
+msgid "Your form has not been saved. All changes you have made will be lost"
+msgstr "フォームが保存されませんでした。変更した内容の情報はすべて失われました。"
+
+#: /common/kupu.pox:None
+msgid "Link added"
+msgstr "リンクが追加されました。"
+
+#: /common/kupu.pox:None
+msgid "No head in document!"
+msgstr "ドキュメントに見出しがありません！"
+
+#: /common/kupu.pox:None
+msgid "Not inside a row!"
+msgstr "行の中ではできません！"
+
+#: /common/kupu.pox:None
+msgid "Not inside a table!"
+msgstr "表の中ではできません！"
+
+#: /common/kupu.pox:None
+msgid "Selection not inside the node!"
+msgstr "セレクションがノードの中ではありません！"
+
+#: /common/kupu.pox:None
+msgid "Editor not initialized yet!"
+msgstr "エディタが初期化されていません！"
+
+#: /common/kupu.pox:None
+msgid "Table column added"
+msgstr "表の列が追加されました。"
+
+# Default: "Caption"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_caption_label"
+msgstr "キャプション"
+
+# Default: "Insert Link"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_title"
+msgstr "リンクを追加"
+
+# Default: "Left"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_left"
+msgstr "左"
+
+# Default: "(${width} by ${height})"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_size"
+msgstr "（幅×高）"
+
+# Default: "Insert Image"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_title"
+msgstr "画像を追加"
+
+# Default: "Upload to: ${folder}"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_to_label"
+msgstr "${folder} へアップロード"
+
+# Default: "Name"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_name_label"
+msgstr "名前"
+
+# Default: "Preview"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_preview_label"
+msgstr "プレビュー"
+
+# Default: ""
+# "Select an image from your computer and click ok to have it\n"
+# "            automatically uploaded to selected folder and inserted into the\n"
+# "            editor."
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_instructions"
+msgstr ""
+
+# Default: "Upload ..."
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_link"
+msgstr "アップロード..."
+
+# Default: "Title:"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_title_label"
+msgstr "タイトル"
+
+# Default: "Title"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_title_label"
+msgstr "タイトル"
+
+# Default: "Description"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_description_label"
+msgstr "説明"
+
+# Default: "ALT-text"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_alt_text"
+msgstr "ALT-text"
+
+# Default: "search"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "kupudrawer_search"
+msgstr "検索"
+
+# Default: "Inline"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_inline"
+msgstr "一列に並べる"
+
+# Default: "Target"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_target_label"
+msgstr "設置先"
+
+# Default: "Right"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_right"
+msgstr "右"
+
+#: /default/body.kupu:None
+msgid "Kupu Editor Test Page"
+msgstr "Kupu エディタテストページ"
+
+#: /default/colorchooser.kupu:None
+msgid "text color: alt-f"
+msgstr "テキスト色: alt-f"
+
+#: /default/colorchooser.kupu:None
+msgid "background color: alt-h"
+msgstr "背景色: alt-h"
+
+# Default: "Row"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_row_label"
+msgstr "行"
+
+# Default: "Right"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_right_option"
+msgstr "右"
+
+# Default: "Current column alignment"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_alignment_label"
+msgstr "現在の列を整列"
+
+#: /default/drawers.kupu:None
+msgid "external link"
+msgstr "インターネットリンク"
+
+# Default: "Center"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_center_option"
+msgstr "中央"
+
+# Default: "Fix All Tables"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_tables_button"
+msgstr "全ての表を調整"
+
+#: /default/drawers.kupu:None
+msgid "External Link"
+msgstr "インターネットリンク"
+
+# Default: "Columns"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_columns_label"
+msgstr "列"
+
+# Default: "Left"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_left_option"
+msgstr "左"
+
+#: /default/drawers.kupu:None
+msgid "image"
+msgstr "画像"
+
+#: /default/drawers.kupu:None
+msgid "table"
+msgstr "表"
+
+#: /default/drawers.kupu:None
+msgid "Preview"
+msgstr "プレビュ"
+
+# Default: "Rows"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_rows_label"
+msgstr "行"
+
+#: /default/drawers.kupu:None
+msgid "internal link"
+msgstr "サイト内リンク"
+
+# Default: "Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_title"
+msgstr "表"
+
+# Default: "Add Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_table_button"
+msgstr "表を追加"
+
+# Default: "Close"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_close_button"
+msgstr "閉じる"
+
+# Default: "Column"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_column_label"
+msgstr "列"
+
+# Default: "Create Headings"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_headings_label"
+msgstr "列見出しを付ける"
+
+# Default: "Fix"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_button"
+msgstr "調整"
+
+# Default: "Fix Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_table_label"
+msgstr "表を調整"
+
+#: /default/drawers.kupu:None /common/kupudrawers/drawer.xsl:None
+msgid "Ok"
+msgstr "Ok"
+
+#: /default/drawers.kupu:None /common/kupudrawers/drawer.xsl:None
+msgid "Cancel"
+msgstr "キャンセル"
+
+# Default: "Add"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_button"
+msgstr "追加"
+
+# Default: "Remove"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_remove_button"
+msgstr "削除"
+
+# Default: "Table Class"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_class_label"
+msgstr "表の枠線の種類"
+
+#: /default/drawers.kupu:None /default/toolboxes.kupu:None
+msgid "Link the highlighted text to this URL:"
+msgstr "選択反転テキストにリンクするURL:"
+
+#: /default/save.kupu:None
+msgid "save: alt-s"
+msgstr "保存: alt-s"
+
+#: /default/sourceedit.kupu:None
+msgid "edit HTML code"
+msgstr "HTML コードを編集"
+
+#: /default/spellchecker.kupu:None
+msgid "check spelling"
+msgstr "スペルチェックを実施します"
+
+# Default: "1"
+#: /default/toolbar.kupu:None
+msgid "list-decimal"
+msgstr "1"
+
+# Default: "A"
+#: /default/toolbar.kupu:None
+msgid "list-upperalpha"
+msgstr "A"
+
+#: /default/toolbar.kupu:None
+msgid "bold: alt-b"
+msgstr "太字: alt-b"
+
+#: /default/toolbar.kupu:None
+msgid "superscript: alt-+"
+msgstr "上付き: alt-+"
+
+# Default: "&#9675;"
+#: /default/toolbar.kupu:None
+msgid "list-circle"
+msgstr "&#9675;"
+
+#: /default/toolbar.kupu:None
+msgid "Formatted"
+msgstr "枠で囲む"
+
+# Default: "a"
+#: /default/toolbar.kupu:None
+msgid "list-loweralpha"
+msgstr "a"
+
+# Default: "no bullet"
+#: /default/toolbar.kupu:None
+msgid "list-nobullet"
+msgstr "（点なし）"
+
+# Default: "i"
+#: /default/toolbar.kupu:None
+msgid "list-lowerroman"
+msgstr "i(小文字ローマ数字)"
+
+#: /default/toolbar.kupu:None
+msgid "Kupu SVN/unreleased"
+msgstr "Kupu SVN/unreleased"
+
+#: /default/toolbar.kupu:None
+msgid "Remove image"
+msgstr "画像を削除"
+
+#: /default/toolbar.kupu:None
+msgid "undo: alt-z"
+msgstr "戻す: alt-z"
+
+# Default: "&#9679;"
+#: /default/toolbar.kupu:None
+msgid "list-disc"
+msgstr "&#9679;"
+
+#: /default/toolbar.kupu:None
+msgid "definition list: alt-="
+msgstr "定義リスト: alt-="
+
+#: /default/toolbar.kupu:None
+msgid "indent: alt->"
+msgstr "インデント: alt->"
+
+#: /default/toolbar.kupu:None
+msgid "Remove link"
+msgstr "リンクを削除"
+
+#: /default/toolbar.kupu:None
+msgid "Normal"
+msgstr "本文"
+
+#: /default/toolbar.kupu:None
+msgid "left justify: alt-l"
+msgstr "左寄せ: alt-l"
+
+#: /default/toolbar.kupu:None
+msgid "right justify: alt-r"
+msgstr "右寄せ: alt-r"
+
+#: /default/toolbar.kupu:None
+msgid "outdent: alt-<"
+msgstr "アウトデント: alt<"
+
+# Default: "&#9632;"
+#: /default/toolbar.kupu:None
+msgid "list-square"
+msgstr "&#9632;"
+
+#: /default/toolbar.kupu:None
+msgid "underline: alt-u"
+msgstr "下線: alt-u"
+
+#: /default/toolbar.kupu:None
+msgid "redo: alt-y"
+msgstr "再操作: alt-y"
+
+#: /default/toolbar.kupu:None
+msgid "subscript: alt--"
+msgstr "下付き: alt--"
+
+#: /default/toolbar.kupu:None
+msgid "center justify: alt-c"
+msgstr "中央揃え: alt-c"
+
+#: /default/toolbar.kupu:None
+msgid "unordered list: alt-*"
+msgstr "箇条書き: alt-*"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 3"
+msgstr "見出し3"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 2"
+msgstr "見出し2"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 1"
+msgstr "見出し1"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 6"
+msgstr "見出し6"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 5"
+msgstr "見出し5"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 4"
+msgstr "見出し4"
+
+#: /default/toolbar.kupu:None
+msgid "numbered list: alt-#"
+msgstr "数字箇条書き: alt-#"
+
+#: /default/toolbar.kupu:None
+msgid "italic: alt-i"
+msgstr "斜体: alt-i"
+
+# Default: "I"
+#: /default/toolbar.kupu:None
+msgid "list-upperroman"
+msgstr "I（大文字ローマ数字）"
+
+#: /default/toolboxes.kupu:None
+msgid "Headings:"
+msgstr "見出し"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix"
+msgstr "修正"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Column"
+msgstr "列を削除"
+
+#: /default/toolboxes.kupu:None
+msgid "Inline"
+msgstr "整列"
+
+#: /default/toolboxes.kupu:None
+msgid "Select a cleanup action:"
+msgstr "整理の内容の選択:"
+
+#: /default/toolboxes.kupu:None
+msgid "Links"
+msgstr "リンク"
+
+#: /default/toolboxes.kupu:None
+msgid "Rows:"
+msgstr "行"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Row"
+msgstr "行を削除"
+
+#: /default/toolboxes.kupu:None
+msgid "Tables"
+msgstr "表"
+
+#: /default/toolboxes.kupu:None
+msgid "Create"
+msgstr "作成"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert image at the following URL:"
+msgstr "後記のURLの画像を追加する:"
+
+#: /default/toolboxes.kupu:None
+msgid "Title:"
+msgstr "タイトル"
+
+#: /default/toolboxes.kupu:None
+msgid "Description:"
+msgstr "解説"
+
+#: /default/toolboxes.kupu:None
+msgid "Image class:"
+msgstr "画像クラス:"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Column"
+msgstr "列を追加"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix Table"
+msgstr "表を修正"
+
+#: /default/toolboxes.kupu:None
+msgid "Images"
+msgstr "画像"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert Image"
+msgstr "画像を追加"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Table"
+msgstr "表を追加"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Row"
+msgstr "行を追加"
+
+#: /default/toolboxes.kupu:None
+msgid "Properties"
+msgstr "プロパティ"
+
+#: /default/toolboxes.kupu:None
+msgid "Col Align:"
+msgstr "列整列:"
+
+#: /default/toolboxes.kupu:None
+msgid "Center"
+msgstr "中央"
+
+#: /default/toolboxes.kupu:None
+msgid "Debug Log"
+msgstr "デバッグログ"
+
+#: /default/toolboxes.kupu:None
+msgid "Make Link"
+msgstr "リンクを作る"
+
+#: /default/toolboxes.kupu:None
+msgid "Cleanup expressions"
+msgstr "表現を掃除"
+
+#: /default/toolboxes.kupu:None
+msgid "Columns:"
+msgstr "列:"
+
+#: /default/toolboxes.kupu:None
+msgid "Table Class:"
+msgstr "表クラス:"
+
+#: /default/toolboxes.kupu:None
+msgid "Right"
+msgstr "右"
+
+#: /default/toolboxes.kupu:None
+msgid "Left"
+msgstr "左"
+
+#: /plone/body.kupu
+msgid "force-kupu"
+msgstr ""
+
+#: /plone/body.kupu
+msgid "suppress-kupu"
+msgstr ""
+
+#: Libraries
+msgid "Home"
+msgstr "ホーム"
+
+msgid "Current Folder"
+msgstr "現在のフォルダ"
+
+msgid "My Recent Items"
+msgstr "私の最近のアイテム"
+
+msgid "Recent Items"
+msgstr "最近のアイテム"
+
+#: Default Table classes
+msgid "plain"
+msgstr "白枠線(データ部沈み込み）表"
+
+msgid "listing"
+msgstr "標準的な表"
+
+msgid "vertical listing"
+msgstr ""
+
+msgid "unsorted listing"
+msgstr ""
+
+msgid "grid"
+msgstr "グリッド"
+
+msgid "data"
+msgstr "データ"
+

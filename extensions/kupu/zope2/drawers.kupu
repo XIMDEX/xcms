@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="drawers"
+    implementation="zope2"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+
+  <kupu:part name="styles">
+    <link rel="stylesheet" type="text/css" href="kupudrawerstyles.css"
+          tal:attributes="href string:${kupu_url}/kupudrawerstyles.css" />
+  </kupu:part>
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="kupudrawers.js"
+          tal:attributes="src string:${kupu_url}/kupudrawers.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

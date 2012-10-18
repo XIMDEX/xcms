@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="head"
+    implementation="widgeteer"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="styles">
+    <link href="../widgeteer/kupustyles.css" rel="stylesheet" type="text/css" />
+  </kupu:part>
+
+  <kupu:part name="bootstrap-editor">
+    <script type="text/javascript" src="../widgeteer/kupuinit.js"> </script>
+    <script type="text/javascript" src="../widgeteer/kupustart.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

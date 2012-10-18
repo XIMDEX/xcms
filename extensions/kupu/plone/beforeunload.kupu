@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="beforeunload"
+    implementation="plone"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+    <kupu:id>$Id: beforeunload.kupu 14546 2005-07-12 14:35:55Z duncan $</kupu:id>
+
+  <kupu:part name="jsincludes">
+<tal:condition condition="python:here.kupu_library_tool.installBeforeUnload() and not path('haveBeforeUnload|nothing')">
+    <script tal:condition="not:exists:portal/portal_javascripts"
+        type="text/javascript" src="kupubeforeunload.js"
+        tal:attributes="src string:${portal_url}/kupubeforeunload.js"
+        tal:define="global haveBeforeUnload python:True;"> </script>
+</tal:condition>
+  </kupu:part>
+
+</kupu:feature>

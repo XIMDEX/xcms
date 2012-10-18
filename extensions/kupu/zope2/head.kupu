@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="head"
+    implementation="zope2"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    >
+
+  <kupu:part name="meta" />
+
+  <kupu:part name="styles">
+    <link rel="stylesheet" type="text/css" href="kupustyles.css"
+          tal:attributes="href string:${kupu_url}/kupustyles.css" />
+  </kupu:part>
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="sarissa.js"
+        tal:attributes="src string:${kupu_url}/sarissa.js"> </script>
+    <script type="text/javascript" src="kupuhelpers.js"
+        tal:attributes="src string:${kupu_url}/kupuhelpers.js"> </script>
+    <script type="text/javascript" src="kupueditor.js"
+        tal:attributes="src string:${kupu_url}/kupueditor.js"> </script>
+    <script type="text/javascript" src="kupubasetools.js"
+        tal:attributes="src string:${kupu_url}/kupubasetools.js"> </script>
+    <script type="text/javascript" src="kupuloggers.js"
+        tal:attributes="src string:${kupu_url}/kupuloggers.js"> </script>
+    <script type="text/javascript" src="kupunoi18n.js"
+        tal:attributes="src string:${kupu_url}/kupunoi18n.js"> </script>
+    <script type="text/javascript" src="kupucontentfilters.js"
+        tal:attributes="src string:${kupu_url}/kupucontentfilters.js"> </script>
+    <script type="text/javascript" src="kupuspellchecker.js"
+        tal:attributes="src string:${kupu_url}/kupuspellchecker.js"> </script>
+    <script type="text/javascript" src="kuputoolcollapser.js"
+        tal:attributes="src string:${kupu_url}/kuputoolcollapser.js"> </script>
+    <script type="text/javascript" src="kupucleanupexpressions.js"
+        tal:attributes="src string:${kupu_url}/kupucleanupexpressions.js"> </script>
+  </kupu:part>
+
+  <!-- XXX this could be a separate feature, maybe -->
+  <kupu:part name="bootstrap-editor">
+    <script type="text/javascript" src="kupuinit.js"
+        tal:attributes="src string:${kupu_url}/kupuinit.js"> </script>
+    <script type="text/javascript" src="kupustart.js"
+        tal:attributes="src string:${kupu_url}/kupustart.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="head"
+    implementation="plone"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+    <kupu:id>$Id: head.kupu 21720 2006-01-05 15:59:25Z paul $</kupu:id>
+
+  <kupu:part name="styles">
+   <tal:test condition="not:exists:portal/portal_css">
+    <link href="kupustyles.css" rel="stylesheet" type="text/css"
+          tal:attributes="href string:${portal_url}/kupustyles.css" />
+    <link href="kupuplone.css" rel="stylesheet" type="text/css"
+          tal:attributes="href string:${portal_url}/kupuplone.css" />
+    <link href="kupudrawerstyles.css" rel="stylesheet" type="text/css"
+          tal:attributes="href string:${portal_url}/kupudrawerstyles.css" />
+   </tal:test>
+  </kupu:part>
+
+  <kupu:part name="jsincludes">
+   <tal:test condition="not:exists:portal/portal_javascripts">
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupunoi18n.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/sarissa.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/sarissa_ieemu_xpath.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupuhelpers.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupueditor.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupubasetools.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupuloggers.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupucontentfilters.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupucontextmenu.js"> </script>
+
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupuploneeditor.js"> </script>
+    <script type="text/javascript"
+            tal:attributes="src string:${portal_url}/kupuploneui.js"> </script>
+
+    <script type="text/javascript" src="kupusourceedit.js"
+        tal:attributes="src string:${portal_url}/kupusourceedit.js"> </script>
+
+    <script type="text/javascript" src="kupudrawers.js"
+            tal:attributes="src string:${portal_url}/kupudrawers.js"> </script>
+    <script type="text/javascript" src="kupuspellchecker.js"
+            tal:attributes="src string:${portal_url}/kupuspellchecker.js"> </script>
+   </tal:test>
+  </kupu:part>
+
+  <!-- XXX this could be a separate feature, maybe -->
+  <kupu:part name="bootstrap-editor">
+    <script tal:condition="not:exists:portal/portal_javascripts"
+        type="text/javascript" src="kupuploneinit.js"
+        tal:attributes="src string:${portal_url}/kupuploneinit.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

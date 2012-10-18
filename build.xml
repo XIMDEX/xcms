@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<project name="ximDEX" default="xslt" basedir=".">
+	<target name="xslt">
+		<echo msg="Making backup of original file" />
+		<copy file="./modules/dexT/xslt/dext_main.xsl.base" tofile="./modules/dexT/xslt/dext_main.xsl" overwrite="true" />
+
+		<echo msg="Estimation of absolute path" />
+
+		<property name="relative_path_to_xslt" value="./modules/dexT/xslt/"/>
+		<resolvepath propertyName="absolute_path_to_xslt" file="${relative_path_to_xslt}"/>
+
+		<echo>Resolved [absolute] path: ${absolute_path_to_xslt}</echo>
+		<reflexive>
+			<fileset dir="${absolute_path_to_xslt}">
+				<include pattern="dext_main.xsl" />
+			</fileset>
+			<filterchain>
+				<replaceregexp>
+					<regexp pattern="__ABSOLUTE_PATH__" replace="${absolute_path_to_xslt}"/>
+				</replaceregexp>
+			</filterchain>
+		</reflexive>
+	</target>
+
+</project>
+

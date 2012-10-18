@@ -1,0 +1,42 @@
+====================
+Contributing to kupu
+====================
+
+Who can contribute?
+-------------------
+
+Anyone. If possible, you will be given appropriate credit in the
+CREDITS.txt file. In case we should not mention you, please write us an
+email.
+
+How can I contribute?
+---------------------
+
+For small contributions, please send an email with a UNIX patchfile attached
+to kupu-dev@codespeak.net. Make sure you say what version the patch applies
+to, what it changes and why this was necessary.
+
+Alternatively, you can submit bug reports and/or patches to the issue
+tracker: http://codespeak.net/issues/kupu/ (mind the trailing slash).
+
+If you have written a target-platform customization layer for kupu and would
+like us to include it in the main distribution, please send a detailed email
+to kupu-dev@codespeak.net. Depending on our decision whether to include it or
+not, you will receive SVN checkin rights. You will then also be responsible
+for maintaining this customization layer.
+
+What are the rules?
+-------------------
+
+1. Contributions must only only contain code written by you. You may
+not contribute code copyrighted by anyone else. You will be held
+responsible if you violate this rule.
+
+2. By contributing, you agree that the code contributed by you will be
+published in the kupu distribution under the Kupu License. See
+LICENSE.txt for license text.
+
+3. Code in the kupu/common layer may not contain any platform specific
+code, neither the ZPT macros nor the JavaScript. The unwritten law is:
+The common layer shall be viewable in a web browser directly off of
+the filesystem.

@@ -1,0 +1,140 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+/* @override 
+	http://samuelgarneau.com/slidebox.css
+	http://samuelgarneau.com/lab/validator/slidebox.css
+	http://samuelgarneau.com/lab/slidebox.css
+*/
+
+body {
+	margin: 0;
+	padding: 0 0 0;
+}
+
+.slide-panel-top {
+	position: absolute;
+
+}
+.slide-panel-bottom {
+	position: absolute;
+}
+
+.bottom {
+	bottom: 0;
+}
+
+.top {
+	top: 0;
+}
+
+.content-top {
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 10;
+	overflow: hidden;
+	text-align: left;
+	background-color: #CCCCCC;
+	height: 0;
+	width: 100%;
+	padding-left:15px;
+	padding-right: 15px;
+	border: solid 1px black;
+	-moz-border-radius-bottomleft: 6px;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+	-moz-border-radius-bottomright:6px;
+	-webkit-border-top-left-radius:  6px;
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+	overflow: auto;
+}
+.content-bottom {
+	border: solid 1px black;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 10;
+	overflow: hidden;
+	text-align: left;
+	background-color: #CCCCCC;
+	height: 0;
+	width: 100%;
+	padding-left:15px;
+	padding-right: 15px;
+	-moz-border-radius-bottomleft: 6px;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+	-moz-border-radius-bottomright:6px;
+	-webkit-border-top-left-radius:  6px;
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -webkit-border-bottom-right-radius: 6px;
+}
+
+.slide-button-top {
+	margin-left: 35%;
+	position: relative;
+	width: 200px;
+	z-index: 20;
+	cursor: pointer;
+	height: 25px;
+	padding-top: 10px;
+	text-align: center;
+	background-color: #5E5E5E;
+	-moz-border-radius-bottomleft: 6px;
+	-moz-border-radius-bottomright:6px;
+	-webkit-border-bottom-left-radius:  6px;
+	-webkit-border-bottom-right-radius: 6px;
+	color:white;
+	font-weight: bold;
+}
+.slide-button-bottom {
+	margin-left: 35%;
+	position: relative;
+	width: 200px;
+	z-index: 20;
+	cursor: pointer;
+	height: 25px;
+	padding-top: 10px;
+	text-align: center;
+	background-color: #5E5E5E;
+	-moz-border-radius-topleft:6px;
+	-moz-border-radius-topright:6px;
+	-webkit-border-top-left-radius:  6px;
+    -webkit-border-top-right-radius: 6px;
+	color:white;
+	font-weight: bold;
+}
+
+.slide-button:hover {
+	color: #9f9d8e;
+}
+.ui-dropdownchecklist-dropcontainer-wrapper{
+	z-index:26;	
+}
+
+

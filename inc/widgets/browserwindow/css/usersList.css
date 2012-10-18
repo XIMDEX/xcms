@@ -1,0 +1,58 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+.userslist {
+	border: 1px solid #cccccc;
+	/*width: 100%;
+	height: 50px;*/
+	top: 100px;
+	bottom: 60px;
+	left: 18px;
+	right: 18px;
+	position: absolute;
+	overflow: auto;
+	padding: 2px;
+}
+
+.userslist-user {
+	padding: 1px;
+	cursor: default;
+	border: 1px solid transparent;
+}
+
+/*.ui-dialog .dialog-user-container:hover {
+	background-color: #CCCCCC;
+}*/
+
+.userslist-user-selected {
+	background-color: #DCE5E5;
+	border-top: 1px solid #EEEEEE;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.userslist-user-owner {
+	font-weight: bold;
+	font-size: small;
+}

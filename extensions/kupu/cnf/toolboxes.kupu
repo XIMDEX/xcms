@@ -1,0 +1,90 @@
+<kupu:feature
+    name="toolboxes"
+    implementation="cnf"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+
+  <kupu:part name="tables">
+
+    <div class="kupu-toolbox" id="genericelements-toolbox">
+      <h1>Additional elements</h1>
+
+      <select id="genericelements-elid">
+      </select>
+
+      <div id="genericelements-form"> </div>
+
+      <br />
+      <input type="button" id="genericelements-addbutton" value="Add" />
+      <input type="button" id="genericelements-cancelbutton" value="Cancel" />
+      <input type="button" id="genericelements-copybutton" value="Copy" />
+      <input type="button" id="genericelements-pastebutton" value="Paste" />
+      <input type="button" id="genericelements-delbutton" value="Delete" />
+    </div>
+
+    <div class="kupu-toolbox" id="kupu-toolbox-tables">
+      <h1 i18n:translate="table-inspector">Tables</h1>
+
+      <div class="kupu-toolbox-label">Table Class
+        <select id="kupu-table-classchooser"> </select>
+      </div>
+
+      <div id="kupu-toolbox-addtable" class="kupu-toolbox-addtable">
+        <div class="kupu-toolbox-label">Rows</div>
+        <input type="text" id="kupu-table-newrows" style="width: 98%" />
+
+        <div class="kupu-toolbox-label">Columns</div>
+        <input type="text" id="kupu-table-newcols" style="width: 98%" />
+
+        <div class="kupu-toolbox-label">
+          Headings
+          <input name="kupu-table-makeheader"
+                 id="kupu-table-makeheader"
+                 type="checkbox"
+                 />
+          <label for="kupu-table-makeheader">Create</label>
+        </div>
+
+        <div style="text-align: center">
+          <button type="button" id="kupu-table-fixall-button">Fix Table</button> 
+          <button type="button" id="kupu-table-addtable-button">Add Table</button> 
+        </div>
+
+      </div>
+
+      <div id="kupu-toolbox-edittable" class="kupu-toolbox-edittable">
+      
+          <div class="kupu-toolbox-label">Col Align
+            <select id="kupu-table-alignchooser">
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+      
+          <br />
+          <button type="button" id="kupu-table-addcolumn-button">Add Column</button>
+          <button type="button" id="kupu-table-delcolumn-button">Remove Column</button>
+          
+          <br />
+          <button type="button" id="kupu-table-addrow-button">Add Row</button>
+          <button type="button" id="kupu-table-delrow-button">Remove Row</button>
+          
+          <br />
+          <button type="button" id="kupu-table-setrowrepeat-button">Make Row Repeat</button>
+          <button type="button" id="kupu-table-delrowrepeat-button">Remove Row Repeat</button>
+          
+          <div style="text-align: center">
+            <button type="button" id="kupu-table-fix-button">Fix</button>
+          </div>
+          
+      </div>
+
+    </div>
+
+  </kupu:part>
+  
+</kupu:feature>

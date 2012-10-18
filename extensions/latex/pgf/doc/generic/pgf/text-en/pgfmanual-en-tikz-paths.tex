@@ -1,0 +1,1570 @@
+% Copyright 2006 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Free Documentation License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+\section{Syntax for Path Specifications}
+
+A \emph{path} is a series of straight and curved line segments. It is
+specified following a |\path| command and the specification must
+follow a special syntax, which is described in the subsections of the
+present section.
+
+
+\begin{command}{\path\meta{specification}|;|}
+  This command is available only inside a |{tikzpicture}| environment.
+
+  The \meta{specification} is a long stream of \emph{path
+  operations}. Most of these path operations tell \tikzname\ how the path
+  is build. For example, when you write |--(0,0)|, you use a
+  \emph{line-to operation} and it means ``continue the path from
+  wherever you are to the origin.''
+
+  At any point where \tikzname\ expects a path operation, you can also
+  give some graphic options, which is a list of options in brackets,
+  such as |[rounded corners]|. These options can have different
+  effects:
+  \begin{enumerate}
+  \item
+    Some options take ``immediate'' effect and apply to all subsequent
+    path operations on the path. For example, the |rounded corners|
+    option will round all following corners, but not the corners
+    ``before'' and if the |sharp corners| is given later on the path
+    (in a new set of brackets), the rounding effect will end.
+
+\begin{codeexample}[]
+\tikz \draw (0,0) -- (1,1)
+           [rounded corners] -- (2,0) -- (3,1)
+           [sharp corners] -- (3,0) -- (2,1);
+\end{codeexample}
+    Another example are the transformation options, which also apply
+    only to subsequent coordinates.
+  \item
+    The options that have immediate effect can be ``scoped'' by
+    putting part of a path in curly braces. For example, the above
+    example could also be written as follows:
+
+\begin{codeexample}[]
+\tikz \draw (0,0) -- (1,1)
+           {[rounded corners] -- (2,0) -- (3,1)}
+           -- (3,0) -- (2,1);
+\end{codeexample}
+  \item
+    Some options only apply to the path as a whole. For example, the
+    |color=| option for determining the color used for, say, drawing
+    the path always applies to all parts of the path. If several
+    different colors are given for different parts of the path, only
+    the last one (on the outermost scope) ``wins'':
+ 
+\begin{codeexample}[]
+\tikz \draw (0,0) -- (1,1)
+           [color=red] -- (2,0) -- (3,1)
+           [color=blue] -- (3,0) -- (2,1);
+\end{codeexample}
+
+    Most options are of this type. In the above example, we would have
+    had to ``split up'' the path into several |\path| commands:
+\begin{codeexample}[]
+\tikz{\draw (0,0) -- (1,1);
+      \draw [color=red] (2,0) -- (3,1);
+      \draw [color=blue] (3,0) -- (2,1);}
+\end{codeexample}
+  \end{enumerate}
+
+  By default, the |\path| command does ``nothing'' with the
+  path, it just ``throws it away.'' Thus, if you write
+  |\path(0,0)--(1,1);|, nothing is drawn 
+  in your picture. The only effect is that the area occupied by the
+  picture is (possibly) enlarged so that the path fits inside the
+  area. To actually ``do'' something with the path, an option like
+  |draw| or |fill| must be given somewhere on the path. Commands like
+  |\draw| do this implicitly.
+  
+  Finally, it is also possible to give \emph{node specifications} on a
+  path. Such specifications can come at different locations, but they
+  are always allowed when a normal path operation could follow. A node
+  specification starts with |node|. Basically, the effect is to
+  typeset the node's text as normal \TeX\ text and to place
+  it at the ``current location'' on the path. The details are explained
+  in Section~\ref{section-nodes}.
+
+  Note, however, that the nodes are \emph{not} part of the path in any
+  way. Rather, after everything has been done with the path what is
+  specified by the path options (like filling and drawing the path due
+  to a |fill| and a |draw| option somewhere in the
+  \meta{specification}), the nodes are added in a post-processing
+  step.   
+  
+  The following style influences scopes:
+  \begin{itemize}
+    \itemstyle{every path}
+    This style is installed at the beginning of every path. This can
+    be useful for (temporarily) adding, say, the |draw| option to
+    everything in a scope.
+\begin{codeexample}[]
+\begin{tikzpicture}[fill=examplefill] % only sets the color
+  \tikzstyle{every path}=[draw]           % all paths are drawn
+  \fill  (0,0) rectangle +(1,1);
+  \shade (2,0) rectangle +(1,1);
+\end{tikzpicture}
+\end{codeexample}
+  \end{itemize}
+\end{command}
+
+
+
+
+\subsection{The Move-To Operation}
+
+The perhaps simplest operation is the move-to operation, which is
+specified by just giving a coordinate where a path operation is
+expected.
+
+\begin{pathoperation}[noindex]{}{\meta{coordinate}}
+  \index{empty@\protect\meta{empty} path operation}%
+  \index{Path operations!empty@\protect\texttt{\meta{empty}}}%
+  The move-to operation normally starts a path at a certain
+  point. This does not cause a line segment to be created, but it  
+  specifies the starting point of the next segment. If a path is
+  already under construction, that is, if several segments have
+  already been created, a move-to operation will start a new part of the
+  path that is not connected to any of the previous segments.
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (0,0) --(2,0) (0,1) --(2,1);
+\end{tikzpicture}
+\end{codeexample}
+
+  In the specification |(0,0) --(2,0) (0,1) --(2,1)| two move-to
+  operations are specified: |(0,0)| and |(0,1)|. The other two
+  operations, namely |--(2,0)| and |--(2,1)| are line-to operations,
+  described next.
+\end{pathoperation}
+
+
+\subsection{The Line-To Operation}
+
+
+\subsubsection{Straight Lines}
+
+\begin{pathoperation}{--}{\meta{coordinate}}
+  The line-to operation extends the current path from the current
+  point in a straight line to the given coordinate. The ``current
+  point'' is the endpoint of the previous drawing operation or the point
+  specified by a prior move-to operation.
+
+  You use two minus signs followed by a coordinate in round
+  brackets. You can add spaces before and after the~|--|.
+
+  When a line-to operation is used and some path segment has just been
+  constructed, for example by another line-to operation, the two line
+  segments become joined. This means that if they are drawn, the point
+  where they meet is ``joined'' smoothly. To appreciate the difference,
+  consider the following two examples: In the left example, the path
+  consists of two path segments that are not joined, but that happen to
+  share a point, while in the right example a smooth join is shown.
+
+\begin{codeexample}[]
+\begin{tikzpicture}[line width=10pt]
+  \draw (0,0) --(1,1)  (1,1) --(2,0);
+  \draw (3,0) -- (4,1) -- (5,0);
+  \useasboundingbox (0,1.5); % make bounding box higher
+\end{tikzpicture}
+\end{codeexample}
+
+\end{pathoperation}
+
+
+\subsubsection{Horizontal and Vertical Lines}
+
+Sometimes you want to connect two points via straight lines that are
+only horizontal and vertical. For this, you can use two path
+construction operations.
+
+{\catcode`\|=12
+\begin{pathoperation}[noindex]{-|}{\meta{coordinate}}
+  \index{--1@\protect\texttt{-\protect\pgfmanualbar} path operation}%
+  \index{Path operations!--1@\protect\texttt{-\protect\pgfmanualbar}}%
+  This operation means ``first horizontal, then vertical.''
+
+  \begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (0,0) node(a) [draw] {A}  (1,1) node(b) [draw] {B};
+  \draw (a.north) |- (b.west);
+  \draw[color=red] (a.east) -| (2,1.5) -| (b.north);
+\end{tikzpicture}
+\end{codeexample}
+\end{pathoperation}
+\begin{pathoperation}[noindex]{|-}{\meta{coordinate}}
+  \index{--2@\protect\texttt{\protect\pgfmanualbar-} path operation}%
+  \index{Path operations!--2@\protect\texttt{\protect\pgfmanualbar-}}%
+  This operations means  ``first vertical, then horizontal.''
+\end{pathoperation}
+}
+
+
+\subsubsection{Snaked Lines}
+\label{section-tikz-snakes}
+
+The line-to operation can not only be used to append straight lines to
+the path, but also ``snaked'' lines (called thus because they look a
+little bit like snakes seen from above).
+
+\tikzname\ and \pgfname\ use a concept that I termed \emph{snakes}
+for appending such ``squiggly'' lines. A snake specifies a way of
+extending a path between two points in a ``fancy manner.''
+
+Normally, a snake will just connect the start point to the end point
+without starting new subpaths. Thus, a path containing a snaked line
+can, nevetheless, still be used for filling. However, this is not
+always the case. Some snakes consist of numerous unconnected
+segments. ``Lines'' consisting of such snakes cannot be used as the
+borders of enclosed areas.
+
+Here are some examples of snakes in action:
+
+\begin{codeexample}[]
+\begin{tikzpicture}[thick]
+  \draw                                        (0,3)   -- (3,3);
+  \draw[snake=zigzag]                          (0,2.5) -- (3,2.5);
+  \draw[snake=brace]                           (0,2)   -- (3,2);
+  \draw[snake=triangles]                       (0,1.5) -- (3,1.5);
+  \draw[snake=coil,segment length=4pt]         (0,1)   -- (3,1);
+  \draw[snake=coil,segment aspect=0]           (0,.5)  -- (3,.5);
+  \draw[snake=expanding waves,segment angle=7] (0,0)   -- (3,0);
+\end{tikzpicture}
+\end{codeexample}
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \filldraw[fill=red!20,snake=bumps] (0,0) rectangle (3,2);
+\end{tikzpicture}
+\end{codeexample}
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \filldraw[fill=blue!20]              (0,3)
+  [snake=saw]                       -- (3,3)
+  [snake=coil,segment aspect=0]     -- (2,1)
+  [snake=bumps]                     -| (0,3);
+\end{tikzpicture}
+\end{codeexample}
+
+No special path operation is needed to use a snake. Instead, you use
+the following option to ``switch on'' snaking:
+
+\begin{itemize}
+  \itemoption{snake}\opt{|=|\meta{snake name}}
+  This option causes the snake \meta{snake name} to be used for
+  subsequent line-to operations. So, whenever you use the |--| syntax
+  to specify that a straight line should be added to the path, a snake
+  to this path will be added instead. Snakes will also be used when
+  you use the \verb!-|! and \verb!|-! syntax and also when you use the
+  |rectangle| operation. Snakes will \emph{not} be used when you use
+  the curve-to operation nor when any other ``curved'' line is added
+  to the path.
+
+  This option has to be given anew for each path. However, you can
+  also leave out the \meta{snake name}. In this case, the enclosing
+  scope's \meta{snake name} is used. Thus, you can specify a
+  ``standard'' snake name for scope and then just say |\draw[snake]|
+  every time this snake should actually be used.
+
+  The \meta{snake name} |none| is special. It can be used to switch
+  off snaking after it has been switched on on a path.
+
+  A bit strangely, no valid \meta{snake names} are defined by
+  \tikzname\ by default. Instead, you have to include the library
+  package |pgflibrarysnakes|. This package defines numerous snakes,
+  see Section~\ref{section-library-snakes} for the complete list.
+\end{itemize}
+
+Most snakes can be configured. For example, for a snake that looks
+like a sine curve, you might wish to change the amplitude or the
+frequency. There are numerous options that influence these
+parameters. Not all options apply to all snakes, see
+Section~\ref{section-library-snakes} once more for details.
+
+\begin{itemize}
+  \itemoption{gap before snakes}|=|\meta{dimension}
+  This option allows you to add a certain ``gap'' to the snake at its
+  beginning. The snake will not start at the current point; instead
+  the start point of the snake is move be \meta{dimension} in the
+  direction of the target.
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[help lines] (0,0) grid (3,2);
+  \draw[snake=zigzag]                      (0,1) -- ++(3,1);
+  \draw[snake=zigzag,gap before snake=1cm] (0,0) -- ++(3,1);
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{gap after snake}|=|\meta{dimension}
+  This option has the same effect as |gap before snake|, only it
+  affects the end of the snake, which will ``end early.''
+  \itemoption{gap around snake}|=|\meta{dimension}
+  This option sets the gap before and after the gap to
+  \meta{dimension}. 
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[help lines] (0,0) grid (3,2);
+  \draw[snake=brace]                      (0,1) -- ++(3,1);
+  \draw[snake=brace,gap around snake=5mm] (0,0) -- ++(3,1);
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{line before snake}|=|\meta{dimension}
+  This option works like |gap before snake|, only it will connect the
+  current point with a straight line to the start of the snake.
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[help lines] (0,0) grid (3,2);
+  \draw[snake=zigzag]                       (0,1) -- ++(3,1);
+  \draw[snake=zigzag,line before snake=1cm] (0,0) -- ++(3,1);
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{line after snake}|=|\meta{dimension}
+  Works line |gap after snake|, only it adds a straight line.
+  \itemoption{line around snake}|=|\meta{dimension}
+  Works line |gap around snake|, only it adds straight lines.
+  \itemoption{raise snake}|=|\meta{dimension}
+  This option can be used with all snakes. It will offset the snake by
+  ``raising'' it by \meta{dimension}. A negative \meta{dimension} will
+  lower the snake. Raising and lowering is always relative to the line
+  along which the snake is drawn. Here is an example:
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \node (a) {A};
+  \node (b) at (2,1) {B};
+  \draw                                  (a) -- (b);
+  \draw[snake=brace]                     (a) -- (b);
+  \draw[snake=brace,raise snake=5pt,red] (a) -- (b);
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{mirror snake}
+  This option causes the snake to be ``reflected along the path.''
+  This is best understood by looking at an example:
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \node (a) {A};
+  \node (b) at (2,1) {B};
+  \draw                                     (a) -- (b);
+  \draw[snake=brace]                        (a) -- (b);
+  \draw[snake=brace,mirror snake,red,thick] (a) -- (b);
+\end{tikzpicture}
+\end{codeexample}
+  This option can be used with every snake and can be combined with
+  the |raise snake| option.
+  \itemoption{segment amplitude}|=|\meta{dimension}
+  This option sets the ``amplitude'' of the snake. For a snake that is
+  a sine wave this would be the amplitude of this line. For other
+  snakes this value typically describes how far the snakes ``rises
+  above'' or ``falls below'' the path. For some snakes, this value is
+  ignored. 
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \node (a) {A}   node (b) at (2,1) {B}  node (c) at (2,-1) {C};
+  \draw[snake=zigzag]                                 (a) -- (b);
+  \draw[snake=zigzag,segment amplitude=5pt,red,thick] (a) -- (c);
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{segment length}|=|\meta{dimension}
+  This option sets the length of each ``segment'' of a snake. For a
+  sine wave this would be the wave length, for other snakes it is the
+  length of each ``repetitive part'' of the snake.
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \node (a) {A}   node (b) at (2,1) {B}  node (c) at (2,-1) {C};
+  \draw[snake=zigzag]                               (a) -- (b);
+  \draw[snake=zigzag,segment length=20pt,red,thick] (a) -- (c);
+\end{tikzpicture}
+\end{codeexample}
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \node (a) {A}   node (b) at (2,1) {B}  node (c) at (2,-1) {C};
+  \draw[snake=bumps]                               (a) -- (b);
+  \draw[snake=bumps,segment length=20pt,red,thick] (a) -- (c);
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{segment object length}|=|\meta{dimension}
+  This option sets the length of the objects inside each segment of a
+  snake. This option is only used for snakes in which each segment
+  contains an object like a triangle or a star. 
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \node (a) {A}   node (b) at (2,1) {B}  node (c) at (2,-1) {C};
+  \draw[snake=triangles]                                     (a) -- (b);
+  \draw[snake=triangles,segment object length=8pt,red,thick] (a) -- (c);
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{segment angle}|=|\meta{degrees}
+  This option sets an angle that is interpreted in a snake-specific
+  way. For example, the |waves| and |expanding waves| snakes interpret
+  this as (half the) opening angle of the wave. The |border| snake
+  uses this value for the angle of the little ticks.
+\begin{codeexample}[]
+\begin{tikzpicture}[segment amplitude=10pt]
+  \node (a) {A}   node (b) at (2,0) {B};
+  \draw[snake=border]                            (a) -- (b);
+  \draw[snake=border,segment angle=20,red,thick] (a) -- (b);
+\end{tikzpicture}
+\end{codeexample}
+\begin{codeexample}[]
+\begin{tikzpicture}[segment amplitude=10pt]
+  \node (a)            {A}   node (b)  at (2,0)  {B};
+  \node (a') at (0,-1) {A}   node (b') at (2,-1) {B};
+  \draw[snake=expanding waves]                            (a)  -- (b);
+  \draw[snake=expanding waves,segment angle=20,red,thick] (a') -- (b');
+\end{tikzpicture}
+\end{codeexample}
+  \itemoption{segment aspect}|=|\meta{ratio}
+  This option sets an aspect ratio that is interpreted in a
+  snake-specific way. For example, for the |coils| snake this
+  describes the ``direction'' from which the coil is viewed.
+\begin{codeexample}[]
+\begin{tikzpicture}[segment amplitude=5pt,segment length=5pt]
+  \node (a) {A}   node (b) at (2,1) {B}  node (c) at (2,-1) {C};
+  \draw[snake=coil]                            (a) -- (b);
+  \draw[snake=coil,segment aspect=0,red,thick] (a) -- (c);
+\end{tikzpicture}
+\end{codeexample}
+\end{itemize}
+
+It is possible to define new snakes, but this cannot be done inside
+\tikzname. You need to use the command |\pgfdeclaresnake| from the
+basic level directly, see Section~\ref{section-base-snakes}.
+
+The following styles define combinations of segment settings that may
+be useful:
+\begin{itemize}
+  \itemstyle{snake triangles 45}
+  Installs a snake the consists of little triangles with an opening
+  angle of $45^\circ$.
+  \itemstyle{snake triangles 60}
+  Installs a snake the consists of little triangles with an opening
+  angle of $60^\circ$.
+  \itemstyle{snake triangles 90}
+  Installs a snake the consists of little triangles with an opening
+  angle of $90^\circ$.
+\end{itemize}
+
+
+
+\subsection{The Curve-To Operation}
+
+The curve-to operation allows you to extend a path using a Bézier
+curve.
+
+\begin{pathoperation}{..}{\declare{|controls|}\meta{c}\opt{|and|\meta{d}}\declare{|..|\meta{y}}}
+  This operation extends the current path from the current
+  point, let us call it $x$, via a curve to a the current point~$y$.
+  The curve is a cubic Bézier curve. For such a curve, 
+  apart from $y$, you also specify two control points $c$ and $d$. The
+  idea is that the curve starts at $x$, ``heading'' in the direction
+  of~$c$. Mathematically spoken, the tangent of the curve at $x$ goes
+  through $c$. Similarly, the curve ends at $y$, ``coming from'' the
+  other control point,~$d$. The larger the distance between $x$ and~$c$
+  and between $d$ and~$y$, the larger the curve will be.
+
+  If the ``|and|\meta{d}'' part is not given, $d$ is assumed to be
+  equal to $c$.
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[line width=10pt] (0,0) .. controls (1,1) .. (4,0)
+                               .. controls (5,0) and (5,1) .. (4,1);
+  \draw[color=gray] (0,0) -- (1,1) -- (4,0) -- (5,0) -- (5,1) -- (4,1);
+\end{tikzpicture}
+\end{codeexample}
+
+  As with the line-to operation, it makes a difference whether two curves
+  are joined because they resulted from consecutive curve-to or line-to
+  operations, or whether they just happen to have the same ending:
+
+\begin{codeexample}[]
+\begin{tikzpicture}[line width=10pt]
+  \draw (0,0) -- (1,1) (1,1) .. controls (1,0) and (2,0) .. (2,0);
+  \draw (3,0) -- (4,1) .. controls (4,0) and (5,0) .. (5,0);
+  \useasboundingbox (0,1.5); % make bounding box higher
+\end{tikzpicture}
+\end{codeexample}
+\end{pathoperation}
+
+
+\subsection{The Cycle Operation}
+
+\begin{pathoperation}{--cycle}{}
+  This operation adds a straight line from the current
+  point to the last point specified by a move-to operation. Note that
+  this need not be the beginning of the path. Furthermore, a smooth join
+  is created between the first segment created after the last move-to
+  operation and the straight line appended by the cycle operation.
+
+  Consider the following example. In the left example, two triangles are
+  created using three straight lines, but they are not joined at the
+  ends. In the second example cycle operations are used.
+
+\begin{codeexample}[]
+\begin{tikzpicture}[line width=10pt]
+  \draw (0,0) -- (1,1) -- (1,0) -- (0,0) (2,0) -- (3,1) -- (3,0) -- (2,0);
+  \draw (5,0) -- (6,1) -- (6,0) -- cycle (7,0) -- (8,1) -- (8,0) -- cycle;
+  \useasboundingbox (0,1.5); % make bounding box higher
+\end{tikzpicture}
+\end{codeexample}
+\end{pathoperation}
+
+
+
+\subsection{The Rectangle Operation}
+
+A rectangle can obviously be created using four straight lines and a
+cycle operation. However, since rectangles are needed so often, a
+special syntax is available for them.
+
+\begin{pathoperation}{rectangle}{\meta{corner}}
+  When this operation is used, one corner will be the current point,
+  another corner is given by \meta{corner}, which becomes the new
+  current point.
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (0,0) rectangle (1,1);
+  \draw (.5,1) rectangle (2,0.5) (3,0) rectangle (3.5,1.5) -- (2,0);
+\end{tikzpicture}
+\end{codeexample}
+\end{pathoperation}
+
+
+\subsection{Rounding Corners}
+
+All of the path construction operations mentioned up to now are
+influenced by the following option:
+\begin{itemize}
+  \itemoption{rounded corners}\opt{|=|\meta{inset}}
+  When this option is in force, all corners (places where a line is
+  continued either via line-to or a curve-to operation) are replaced by
+  little arcs so that the corner becomes smooth. 
+
+\begin{codeexample}[]
+\tikz \draw [rounded corners] (0,0) -- (1,1)
+           -- (2,0) .. controls (3,1) .. (4,0);
+\end{codeexample}
+
+  The \meta{inset} describes how big the corner is. Note that the
+  \meta{inset} is \emph{not} scaled along if you use a scaling option
+  like |scale=2|. 
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[color=gray,very thin] (10pt,15pt) circle (10pt);
+  \draw[rounded corners=10pt] (0,0) -- (0pt,25pt) -- (40pt,25pt);
+\end{tikzpicture}
+\end{codeexample}
+
+  You can switch the rounded corners on and off ``in the middle of
+  path'' and different corners in the same path can have different
+  corner radii:
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (0,0) [rounded corners=10pt] -- (1,1) -- (2,1)
+                     [sharp corners] -- (2,0)
+               [rounded corners=5pt] -- cycle;
+\end{tikzpicture}
+\end{codeexample}
+
+Here is a rectangle with rounded corners:
+\begin{codeexample}[]
+\tikz \draw[rounded corners=1ex] (0,0) rectangle (20pt,2ex);
+\end{codeexample}
+
+  You should be aware, that there are several pitfalls when using this
+  option. First, the rounded corner will only be an arc (part of a
+  circle) if the angle is $90^\circ$. In other cases, the rounded
+  corner will still be round, but ``not as nice.''
+
+  Second, if there are very short line segments in a path, the
+  ``rounding'' may cause inadverted effects. In such case it may be
+  necessary to temporarily switch off the rounding using
+  |sharp corners|. 
+
+  \itemoption{sharp corners}
+  This options switches off any rounding on subsequent corners of the
+  path.   
+\end{itemize}
+
+
+
+\subsection{The Circle and Ellipse Operations}
+
+A circle can be approximated well using four Bézier curves. However,
+it is difficult to do so correctly. For this reason, a special syntax
+is available for adding such an approximation of a circle to the
+current path.
+
+\begin{pathoperation}{circle}{|(|\meta{radius}|)|}
+  The center of the circle is given by the current point. The new
+  current point of the path will remain to be the center of the
+  circle.  
+\end{pathoperation}
+
+\begin{pathoperation}{ellipse}{|(|\meta{half width}| and |\meta{half height}|)|}
+  Note that you can add spaces after |ellipse|, but you have to place
+  spaces around |and|.
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (1,0) circle (.5cm);
+  \draw (3,0) ellipse (1cm and .5cm) -- ++(3,0) circle (.5cm)
+    -- ++(2,-.5) circle (.25cm);
+\end{tikzpicture}
+\end{codeexample}
+\end{pathoperation}
+
+
+\subsection{The Arc Operation}
+
+The \emph{arc operation} allows you to add an arc to the current
+path.
+\begin{pathoperation}{arc}{|(|\meta{start angle}|:|\meta{end
+    angle}|:|\meta{radius}\opt{| and |\meta{half height}}|)|}
+  The arc operation adds a part of a circle of the given radius
+  between the given angles. The arc will start at the current point
+  and will end at the end of the arc.
+
+  \begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (0,0) arc (180:90:1cm) -- (2,.5) arc (90:0:1cm);
+  \draw (4,0) -- +(30:1cm) arc (30:60:1cm) -- cycle;
+  \draw (8,0) arc (0:270:1cm and .5cm) -- cycle;
+\end{tikzpicture}
+\end{codeexample}
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (-1,0) -- +(3.5,0);
+  \draw (1,0) ++(210:2cm) -- +(30:4cm);
+  \draw (1,0) +(0:1cm) arc (0:30:1cm);      
+  \draw (1,0) +(180:1cm) arc (180:210:1cm);
+  \path (1,0) ++(15:.75cm) node{$\alpha$};
+  \path (1,0) ++(15:-.75cm) node{$\beta$};
+\end{tikzpicture}
+\end{codeexample}
+\end{pathoperation}
+
+
+\subsection{The Grid Operation}
+
+You can add a grid to the current path using the |grid| path
+operation. 
+
+\begin{pathoperation}{grid}{\opt{\oarg{options}}\meta{corner}}
+  This operations adss a grid filling a rectangle whose two corners
+  are given by \meta{corner} and by the previous coordinate. Thus, the
+  typical way in which a grid is drawn is |\draw (1,1) grid (3,3);|,
+  which yields a grid filling the rectangle whose corners are at
+  $(1,1)$ and $(3,3)$. All coordinate transformations apply to the
+  grid.
+
+\begin{codeexample}[]
+\tikz[rotate=30] \draw[step=1mm] (0,0) grid (2,2);
+\end{codeexample}
+
+  The \meta{options}, which are local to the |grid| operation, can be
+  used to influence the appearance of the grid. The stepping of the
+  grid is governed by the following options: 
+
+\begin{itemize}
+  \itemoption{step}|=|\meta{number or dimension or coordinate} sets the stepping in both the
+  $x$ and $y$-direction. If a dimension is provided, this is used
+  directly. If a number is provided, this number is interpreted in the
+  $xy$-coordinate system. For example, if you provide the number |2|,
+  then the $x$-step is twice the $x$-vector and the $y$-step is twice
+  the $y$-vector set by the |x=| and |y=| options. Finally, if you
+  provide a coordinate, then the $x$-part of this coordinate will be
+  used as the $x$-step and the $y$-part will be used as the
+  $y$-coordinate.
+
+\begin{codeexample}[]
+\begin{tikzpicture}[x=.5cm]
+  \draw[thick] (0,0) grid [step=1]     (3,2);
+  \draw[red]   (0,0) grid [step=.75cm] (3,2);
+\end{tikzpicture}
+\begin{tikzpicture}
+  \draw        (0,0) circle (1);
+  \draw[blue]  (0,0) grid [step=(45:1)] (3,2);
+\end{tikzpicture}
+\end{codeexample}  
+
+  A complication arises when the $x$- and/or $y$-vector do not point
+  along the axes. Because of this, the actual rule for computing the
+  $x$-step and the $y$-step is the following: As the $x$- and
+  $y$-steps we use the $x$- and $y$-components or the following two
+  vectors: The first vector is either $(\meta{x-grid-step-number},0)$
+  or $(\meta{x-grid-step-dimension},0\mathrm{pt})$, the second vector
+  is  $(0,\meta{y-grid-step-number})$ or
+  $(0\mathrm{pt},\meta{x-grid-step-dimension})$. 
+  
+  \itemoption{xstep}|=|\meta{dimension or number} sets the stepping in the
+  $x$-direction. 
+\begin{codeexample}[]
+\tikz \draw (0,0) grid [xstep=.5,ystep=.75] (3,2);
+\end{codeexample}
+\itemoption{ystep}|=|\meta{dimension or number} sets the stepping in the
+  $y$-direction. 
+\end{itemize}
+
+  It is important to note that the grid is always ``phased'' such that
+  it contains the point $(0,0)$ if that point happens to be inside the
+  rectangle. Thus, the grid does \emph{not} always have an intersection
+  at the corner points; this occurs only if the corner points are
+  multiples of the stepping. Note that due to rounding errors, the
+  ``last'' lines of a grid may be omitted. In this case, you have to
+  add an epsilon to the corner points.
+
+  The following style is useful for drawing grids:
+\begin{itemize}
+  \itemstyle{help lines}
+  This style makes lines ``subdued'' by using thin gray lines for
+  them. However, this style is not installed automatically and you
+  have to say for example:
+\begin{codeexample}[]
+\tikz \draw[style=help lines] (0,0) grid (3,3);
+\end{codeexample}
+\end{itemize}
+\end{pathoperation}
+
+
+
+\subsection{The Parabola Operation}
+
+The |parabola| path operation continues the current path with a
+parabola. A parabola is a (shifted and scaled) curve defined by the
+equation $f(x) = x^2$ and looks like this: \tikz \draw (-1ex,1.5ex)
+parabola[parabola height=-1.5ex] +(2ex,0ex);.
+
+\begin{pathoperation}{parabola}{\opt{\oarg{options}|bend|\meta{bend
+        coordinate}}\meta{coordinate}}
+  This operation adds a parabola through the current point and the
+  given \meta{coordinate}. If the |bend| is given, it specifies where
+  the bend should go; the \meta{options} can also be used to specify
+  where the bend is. By default, the bend is at the old current point. 
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw               (0,0) rectangle                (1,1.5)
+                      (0,0) parabola                 (1,1.5);
+  \draw[xshift=1.5cm] (0,0) rectangle                (1,1.5)
+                      (0,0) parabola[bend at end]    (1,1.5);
+  \draw[xshift=3cm]   (0,0) rectangle                (1,1.5)
+                      (0,0) parabola bend (.75,1.75) (1,1.5);
+\end{tikzpicture}
+\end{codeexample}
+
+  The following options influence parabolas:
+\begin{itemize}
+  \itemoption{bend}|=|\meta{coordinate}
+  Has the same effect as saying |bend|\meta{coordinate} outside the
+  \meta{options}. The option specifies that the bend of the parabola
+  should be at the given \meta{coordinate}. You have to take care
+  yourself that the bend position is a ``valid'' position; which means
+  that if there is no parabola of the form $f(x) = a x^2 + b x + c$
+  that goes through the old current point, the given bend, and the new
+  current point, the result will not be a parabola.
+
+  There is one special property of the \meta{coordinate}: When a
+  relative coordinate is given like |+(0,0)|, the position relative
+  to which this coordinate is ``flexible.'' More precisely, this
+  position lies somewhere on a line from the old current point to the
+  new current point. The exact position depends on the next
+  option.
+
+  \itemoption{bend pos}|=|\meta{fraction}
+  Specifies where the ``previous'' point is relative to which the bend
+  is calculated. The previous point will be at the \meta{fraction}th
+  part of the line from the old current point to the new current
+  point.
+
+  The idea is the following: If you say |bend pos=0| and
+  |bend +(0,0)|, the bend will be at the old current point. If you say
+  |bend pos=1| and |bend +(0,0)|, the bend will be at the new current
+  point. If you say |bend pos=0.5| and |bend +(0,2cm)| the bend will
+  be 2cm above the middle of the line between the start and end
+  point. This is most useful in situations such as the following:
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[help lines] (0,0) grid (3,2);
+  \draw (-1,0) parabola[bend pos=0.5] bend +(0,2) +(3,0);
+\end{tikzpicture}
+\end{codeexample}
+
+  In the above example, the |bend +(0,2)| essentially means ``a
+  parabola that is 2cm high'' and |+(3,0)| means ``and 3cm wide.''
+  Since this situation arises often, there is a special shortcut
+  option:
+  \itemoption{parabola height}|=|\meta{dimension} This option has the
+  same effect as if you had written the following instead:
+  |[bend pos=0.5,bend={+(0pt,|\meta{dimension}|)}]|. 
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[help lines] (0,0) grid (3,2);
+  \draw (-1,0) parabola[parabola height=2cm] +(3,0);
+\end{tikzpicture}
+\end{codeexample}
+\end{itemize}
+
+The following styles are useful shortcuts:
+\begin{itemize}
+  \itemstyle{bend at start} This places the bend at the start of a
+  parabola. It is a shortcut for the following options:
+  |bend pos=0,bend={+(0,0)}|. 
+  \itemstyle{bend at end} This places the bend at the end of a
+  parabola.
+\end{itemize}
+\end{pathoperation}
+
+
+\subsection{The Sine and Cosine Operation}
+
+The |sin| and |cos| operations are similar to the |parabola|
+operation. They, too, can be used to draw (parts of) a sine or cosine
+curve.
+
+\begin{pathoperation}{sin}{\meta{coordinate}}
+  The effect of |sin| is to draw a scaled and shifted version of a sine
+  curve in the interval $[0,\pi/2]$. The scaling and shifting is done in
+  such a way that the start of the sine curve in the interval is at the
+  old current point and that the end of the curve in the interval is at
+  \meta{coordinate}. Here is an example that should clarify this:
+
+\begin{codeexample}[]
+\tikz \draw (0,0) rectangle (1,1)     (0,0) sin (1,1)
+            (2,0) rectangle +(1.57,1) (2,0) sin +(1.57,1);
+\end{codeexample}
+\end{pathoperation}
+
+\begin{pathoperation}{cos}{\meta{coordinate}}
+  This operation works similarly, only a cosine in the interval
+  $[0,\pi/2]$ is drawn. By correctly alternating |sin| and |cos|
+  operations, you can create a complete sine or cosine curve:
+
+\begin{codeexample}[]
+\begin{tikzpicture}[xscale=1.57]
+  \draw (0,0) sin (1,1) cos (2,0) sin (3,-1) cos (4,0) sin (5,1);
+  \draw[color=red] (0,1.5) cos (1,0) sin (2,-1.5) cos (3,0) sin (4,1.5) cos (5,0);
+\end{tikzpicture}
+\end{codeexample}
+\end{pathoperation}
+
+Note that there is no way to (conveniently) draw an interval on a sine
+or cosine curve whose end points are not multiples of $\pi/2$.
+
+
+
+\subsection{The Plot Operation}
+
+The |plot| operation can be used to append a line or curve to the path
+that goes through a large number of coordinates. These coordinates are
+either given in a simple list of coordinates or they are read from
+some file.
+
+The syntax of the |plot| comes in different versions.
+
+\begin{pathoperation}{--plot}{\meta{further arguments}}
+  This operation plots the curve through the coordinates specified in
+  the \meta{further arguments}. The current (sub)path is simply
+  continued, that is, a line-to operation to the first point of the
+  curve is implicitly added. The details of the \meta{further
+    arguments}  will be explained in a moment.
+\end{pathoperation}
+
+\begin{pathoperation}{plot}{\meta{further arguments}}
+  This operation plots the curve through the coordinates specified in
+  the \meta{further arguments} by first ``moving'' to the first
+  coordinate of the curve.
+\end{pathoperation}
+
+The \meta{further arguments} are used in three different ways to
+specifying the coordinates of the points to be plotted:
+
+\begin{enumerate}
+\item
+  \opt{|--|}|plot|\oarg{local options}\declare{|coordinates{|\meta{coordinate
+    1}\meta{coordinate 2}\dots\meta{coordinate $n$}|}|}
+\item
+  \opt{|--|}|plot|\oarg{local options}\declare{|file{|\meta{filename}|}|}
+\item
+  \opt{|--|}|plot|\oarg{local options}\declare{|function{|\meta{gnuplot formula}|}|}
+\end{enumerate}
+
+These different ways are explained in the following.
+
+
+\subsubsection{Plotting Points Given Inline}
+
+In the first two cases, the points are given directly in the \TeX-file
+as in the following example:
+
+\begin{codeexample}[]
+\tikz \draw plot coordinates {(0,0) (1,1) (2,0) (3,1) (2,1) (10:2cm)};
+\end{codeexample}
+
+Here is an example showing the difference between |plot| and |--plot|:
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (0,0) -- (1,1) plot coordinates {(2,0)  (4,0)};
+  \draw[color=red,xshift=5cm]
+        (0,0) -- (1,1) -- plot coordinates {(2,0)  (4,0)};
+\end{tikzpicture}
+\end{codeexample}
+
+
+\subsubsection{Plotting Points Read From an External File}
+
+The second way of specifying points is to put them in an external
+file named \meta{filename}. Currently, the only file format that
+\tikzname\ allows is the following: Each line of the \meta{filename}
+should contain one line starting with two numbers, separated by a
+space. Anything following the two numbers on the line is
+ignored. Also, lines starting with a |%| or a |#| are ignored as well
+as empty lines. (This is exactly the format that \textsc{gnuplot}
+produces when you say |set terminal table|.) If necessary, more
+formats will be supported in the future, but it is usually easy to
+produce a file containing data in this form.
+
+\begin{codeexample}[]
+\tikz \draw plot[mark=x,smooth] file {plots/pgfmanual-sine.table};
+\end{codeexample}
+
+The file |plots/pgfmanual-sine.table| reads:
+\begin{codeexample}[code only]
+#Curve 0, 20 points
+#x y type
+0.00000 0.00000  i
+0.52632 0.50235  i
+1.05263 0.86873  i
+1.57895 0.99997  i
+...
+9.47368 -0.04889  i
+10.00000 -0.54402  i
+\end{codeexample}
+It was produced from the following source, using |gnuplot|:
+\begin{codeexample}[code only]
+set terminal table
+set output "../plots/pgfmanual-sine.table"
+set format "%.5f"
+set samples 20
+plot [x=0:10] sin(x)
+\end{codeexample}
+
+The \meta{local options} of the |plot| operation are local to each
+plot and do not affect other plots ``on the same path.'' For example,
+|plot[yshift=1cm]| will locally shift the plot 1cm upward. Remember,
+however, that most options can only be applied to paths as a
+whole. For example, |plot[red]| does not have the effect of making the
+plot red. After all, you are trying to ``locally'' make part of the
+path red, which is not possible.
+
+\subsubsection{Plotting a Function}
+\label{section-tikz-gnuplot}
+
+Often, you will want to plot points that are given via a function like
+$f(x) = x \sin x$. Unfortunately, \TeX\ does not really have enough
+computational power to generate the points on such a function
+efficiently (it is a text processing program, after all). However,
+if you allow it, \TeX\ can try to call external programs that can
+easily produce the necessary points. Currently, \tikzname\ knows how to
+call \textsc{gnuplot}.
+
+When \tikzname\ encounters your operation
+|plot[id=|\meta{id}|] function{x*sin(x)}| for 
+the first time, it will create a file called
+\meta{prefix}\meta{id}|.gnuplot|, where \meta{prefix} is |\jobname.| by
+default, that is, the name of you main |.tex| file. If no \meta{id} is
+given, it will be empty, which is alright, but it is better when each
+plot has a unique \meta{id} for reasons explained in a moment. Next,
+\tikzname\ writes some initialization code into this file followed by
+|plot x*sin(x)|. The initialization code sets up things 
+such that the |plot| operation will write the coordinates into another
+file called \meta{prefix}\meta{id}|.table|. Finally, this table file
+is read as if you had said |plot file{|\meta{prefix}\meta{id}|.table}|. 
+
+For the plotting mechanism to work, two conditions must be met:
+\begin{enumerate}
+\item
+  You must have allowed \TeX\ to call external programs. This is often
+  switched off by default since this is a security risk (you might,
+  without knowing, run a \TeX\ file that calls all sorts of ``bad''
+  commands). To enable this ``calling external programs'' a command
+  line option must be given to the \TeX\ program. Usually, it is
+  called something like |shell-escape| or |enable-write18|. For
+  example, for my |pdflatex| the option |--shell-escape| can be
+  given.
+\item
+  You must have installed the |gnuplot| program and \TeX\ must find it
+  when compiling your file.
+\end{enumerate}
+
+Unfortunately, these conditions will not always be met. Especially if
+you pass some source to a coauthor and the coauthor does not have
+\textsc{gnuplot} installed, he or she will have trouble compiling your
+files.
+
+For this reason, \tikzname\ behaves differently when you compile your
+graphic for the second time: If upon reaching
+|plot[id=|\meta{id}|] function{...}| the file \meta{prefix}\meta{id}|.table|
+already exists \emph{and} if the \meta{prefix}\meta{id}|.gnuplot| file
+contains what \tikzname\ thinks that it ``should'' contain, the |.table|
+file is immediately read without trying to call a |gnuplot|
+program. This approach has the following advantages: 
+\begin{enumerate}
+\item
+  If you pass a bundle of your |.tex| file and all |.gnuplot| and
+  |.table| files to someone else, that person can \TeX\ the |.tex|
+  file without having to have |gnuplot| installed.
+\item
+  If the |\write18| feature is switched off for security reasons (a
+  good idea), then, upon the first compilation of the |.tex| file, the
+  |.gnuplot| will still be generated, but not the |.table|
+  file. You can then simply call |gnuplot| ``by hand'' for each
+  |.gnuplot| file, which will produce all necessary |.table| files.
+\item
+  If you change the function that you wish to plot or its
+  domain, \tikzname\ will automatically try to regenerate the |.table|
+  file.
+\item
+  If, out of laziness, you do not provide an |id|, the same |.gnuplot|
+  will be used for different plots, but this is not a problem since
+  the |.table| will automatically be regenerated for each plot
+  on-the-fly. \emph{Note: If you intend to share your files with
+  someone else, always use an id, so that the file can by typeset
+  without having \textsc{gnuplot} installed.} Also, having unique ids
+  for each plot will improve compilation speed since no external
+  programs need to be called, unless it is really necessary.
+\end{enumerate}
+
+When you use |plot function{|\meta{gnuplot formula}|}|, the \meta{gnuplot
+  formula} must be given in the |gnuplot| syntax, whose details are
+beyond the scope of this manual. Here is the ultra-condensed
+essence: Use |x| as the variable and use the C-syntax for normal
+plots, use |t| as the variable for parametric plots. Here are some examples:
+
+\begin{codeexample}[]
+\begin{tikzpicture}[domain=0:4]
+  \draw[very thin,color=gray] (-0.1,-1.1) grid (3.9,3.9);
+  
+  \draw[->] (-0.2,0) -- (4.2,0) node[right] {$x$};
+  \draw[->] (0,-1.2) -- (0,4.2) node[above] {$f(x)$};
+  
+  \draw[color=red]    plot[id=x]   function{x}           node[right] {$f(x) =x$};
+  \draw[color=blue]   plot[id=sin] function{sin(x)}      node[right] {$f(x) = \sin x$};
+  \draw[color=orange] plot[id=exp] function{0.05*exp(x)} node[right] {$f(x) = \frac{1}{20} \mathrm e^x$};
+\end{tikzpicture}
+\end{codeexample}
+
+
+The following options influence the plot:
+
+\begin{itemize}
+  \itemoption{samples}|=|\meta{number}
+  sets the number of samples used in the plot. The default is 25.
+  \itemoption{domain}|=|\meta{start}|:|\meta{end}
+  sets the domain between which the samples are taken. The default is
+  |-5:5|. 
+  \itemoption{parametric}\opt{|=|\meta{true or false}}
+  sets whether the plot is a parametric plot. If true, then |t| must
+  be used instead of |x| as the parameter and two comma-separated
+  functions must be given in the \meta{gnuplot formula}. An example is
+  the following:
+\begin{codeexample}[]
+\tikz \draw[scale=0.5,domain=-3.141:3.141,smooth]
+  plot[parametric,id=parametric-example] function{t*sin(t),t*cos(t)};
+\end{codeexample}
+  
+  \itemoption{id}|=|\meta{id}
+  sets the identifier of the current plot. This should be a unique
+  identifier for each plot (though things will also work if it is not,
+  but not as well, see the explanations above). The \meta{id} will be
+  part of a filename, so it should not contain anything fancy like |*|
+  or |$|.%$
+  \itemoption{prefix}|=|\meta{prefix}
+  is put before each plot file name. The default is |\jobname.|, but
+  if you have many plots, it might be better to use, say |plots/| and
+  have all plots placed in a directory. You have to create the
+  directory yourself.
+  \itemoption{raw gnuplot}
+  causes the \meta{gnuplot formula} to be passed on to
+  \textsc{gnuplot} without setting up the samples or the |plot|
+  operation. Thus, you could write
+\begin{codeexample}[code only]
+plot[raw gnuplot,id=raw-example] function{set samples 25; plot sin(x)}
+\end{codeexample}
+  This can be 
+  useful for complicated things that need to be passed to
+  \textsc{gnuplot}. However, for really complicated situations you
+  should create a special external generating \textsc{gnuplot} file
+  and use the |file|-syntax to include the table ``by hand.''
+\end{itemize}
+
+The following styles influence the plot:
+\begin{itemize}
+  \itemstyle{every plot}
+  This style is installed in each plot, that is, as if you always said
+\begin{codeexample}[code only]
+  plot[style=every plot,...]
+\end{codeexample}
+ This is most useful for globally setting a prefix for all plots by saying:
+\begin{codeexample}[code only]
+\tikzstyle{every plot}=[prefix=plots/]
+\end{codeexample}
+\end{itemize}
+
+
+
+\subsubsection{Placing Marks on the Plot}
+
+As we saw already, it is possible to add \emph{marks} to a plot using
+the |mark| option. When this option is used, a copy of the plot
+mark is placed on each point of the plot. Note that the marks are
+placed \emph{after} the whole path has been drawn/filled/shaded. In
+this respect, they are handled like text nodes. 
+
+In detail, the following options govern how marks are drawn:
+\begin{itemize}
+  \itemoption{mark}|=|\meta{mark mnemonic}
+  Sets the mark to a mnemonic that has previously been defined using
+  the |\pgfdeclareplotmark|. By default, |*|, |+|, and |x| are available,
+  which draw a filled circle, a plus, and a cross as marks. Many more
+  marks become available when the library |pgflibraryplotmarks| is
+  loaded. Section~\ref{section-plot-marks} lists the available plot
+  marks.
+
+  One plot mark is special: the |ball| plot mark is available only
+  it \tikzname. The |ball color| determines the balls's color. Do not use
+  this option with a large number of marks since it will take very long
+  to render in PostScript.
+  
+  \begin{tabular}{lc}
+    Option & Effect \\\hline \vrule height14pt width0pt
+    \plotmarkentrytikz{ball}
+  \end{tabular}
+
+  \itemoption{mark repeat}|=|\meta{r}
+  This option tells \tikzname\ that only every $r$th mark should be
+  drawn.
+  
+\begin{codeexample}[]
+\tikz \draw plot[mark=x,mark repeat=3,smooth] file {plots/pgfmanual-sine.table};
+\end{codeexample}
+
+  \itemoption{mark phase}|=|\meta{p}
+  This option tells \tikzname\ that the first mark to be draw should
+  be the $p$th, followed by the $(p+r)$th, then the $(p+2r)$th, and so
+  on.
+  
+\begin{codeexample}[]
+\tikz \draw plot[mark=x,mark repeat=3,mark phase=6,smooth] file {plots/pgfmanual-sine.table};
+\end{codeexample}
+
+  \itemoption{mark indices}|=|\meta{list}
+  This option allows you to specify explicitly the indices at which a
+  mark should be placed. Counting starts with 1. You can use the
+  |\foreach| syntax, that is, |...| can be used.
+    
+\begin{codeexample}[]
+\tikz \draw plot[mark=x,mark indices={1,4,...,10,11,12,...,16,20},smooth]
+  file {plots/pgfmanual-sine.table};
+\end{codeexample}
+  
+  \itemoption{mark size}|=|\meta{dimension}
+  Sets the size of the plot marks. For circular plot marks,
+  \meta{dimension} is the radius, for other plot marks
+  \meta{dimension} should be about half the width and height.
+
+  This option is not really necessary, since you achieve the same
+  effect by specifying |scale=|\meta{factor} as a local option, where
+  \meta{factor} is the quotient of the desired size and the default
+  size. However, using |mark size| is a bit faster and more natural. 
+
+  \itemoption{mark options}|=|\meta{options}
+  These options are applied to marks when they are drawn. For example,
+  you can scale (or otherwise transform) the plot mark or set its
+  color. 
+\begin{codeexample}[]
+\tikz \fill[fill=blue!20]
+  plot[mark=triangle*,mark options={color=blue,rotate=180}]
+    file{plots/pgfmanual-sine.table} |- (0,0);
+\end{codeexample}
+\end{itemize}
+
+
+
+\subsubsection{Smooth Plots, Sharp Plots, and Comb Plots}
+
+There are different things the |plot| operation can do with the points
+it reads from a file or from the inlined list of points. By default,
+it will connect these points by straight lines. However, you can also
+use options to change the behavior of |plot|.
+
+\begin{itemize}
+  \itemoption{sharp plot}
+  This is the default and causes the points to be connected by
+  straight lines. This option is included only so that you can
+  ``switch back'' if you ``globally'' install, say, |smooth|.
+  
+  \itemoption{smooth}
+  This option causes the points on the path to be connected using a
+  smooth curve:
+
+\begin{codeexample}[]
+\tikz\draw plot[smooth] file{plots/pgfmanual-sine.table};
+\end{codeexample}
+
+  Note that the smoothing algorithm is not very intelligent. You will
+  get the best results if the bending angles are small, that is, less
+  than about $30^\circ$ and, even more importantly, if the distances
+  between points are about the same all over the plotting path.
+
+  \itemoption{tension}|=|\meta{value}
+  This option influences how ``tight'' the smoothing is. A lower value
+  will result in sharper corners, a higher value in more ``round''
+  curves. A value of $1$ results in a circle if four points at
+  quarter-positions on a circle are given. The default is $0.55$. The
+  ``correct'' value depends on the details of plot.
+  
+\begin{codeexample}[]
+\begin{tikzpicture}[smooth cycle]
+  \draw                 plot[tension=0.2]
+    coordinates{(0,0) (1,1) (2,0) (1,-1)};
+  \draw[yshift=-2.25cm] plot[tension=0.5]
+    coordinates{(0,0) (1,1) (2,0) (1,-1)};
+  \draw[yshift=-4.5cm]  plot[tension=1]
+    coordinates{(0,0) (1,1) (2,0) (1,-1)};
+\end{tikzpicture}
+\end{codeexample}
+  
+  \itemoption{smooth cycle}
+  This option causes the points on the path to be connected using a
+  closed smooth curve. 
+
+\begin{codeexample}[]
+\tikz[scale=0.5]
+  \draw plot[smooth cycle] coordinates{(0,0) (1,0) (2,1) (1,2)}
+        plot               coordinates{(0,0) (1,0) (2,1) (1,2)} -- cycle;
+\end{codeexample}
+
+  \itemoption{ycomb}
+  This option causes the |plot| operation to interpret the plotting
+  points differently. Instead of connecting them, for each point of
+  the plot a straight line is added to the path from the $x$-axis to the point,
+  resulting in a sort of ``comb'' or ``bar diagram.''
+
+\begin{codeexample}[]
+\tikz\draw[ultra thick] plot[ycomb,thin,mark=*] file{plots/pgfmanual-sine.table};
+\end{codeexample}
+
+\begin{codeexample}[]
+\begin{tikzpicture}[ycomb]
+  \draw[color=red,line width=6pt]
+    plot coordinates{(0,1) (.5,1.2) (1,.6) (1.5,.7) (2,.9)};
+  \draw[color=red!50,line width=4pt,xshift=3pt]
+    plot coordinates{(0,1.2) (.5,1.3) (1,.5) (1.5,.2) (2,.5)};
+\end{tikzpicture}
+\end{codeexample}
+
+  \itemoption{xcomb}
+  This option works like |ycomb| except that the bars are horizontal. 
+
+\begin{codeexample}[]
+\tikz \draw plot[xcomb,mark=x] coordinates{(1,0) (0.8,0.2) (0.6,0.4) (0.2,1)};
+\end{codeexample}
+
+  \itemoption{polar comb}
+  This option causes a line from the origin to the point to be added
+  to the path for each plot point.
+
+\begin{codeexample}[]
+\tikz \draw plot[polar comb,
+     mark=pentagon*,mark options={fill=white,draw=red},mark size=4pt]
+   coordinates {(0:1cm) (30:1.5cm) (160:.5cm) (250:2cm) (-60:.8cm)};
+\end{codeexample}
+
+
+  \itemoption{only marks}
+  This option causes only marks to be shown; no path segments are
+  added to the actual path. This can be useful for quickly adding some
+  marks to a path.
+
+\begin{codeexample}[]
+\tikz \draw (0,0) sin (1,1) cos (2,0)
+  plot[only marks,mark=x] coordinates{(0,0) (1,1) (2,0) (3,-1)};
+\end{codeexample}
+\end{itemize}
+
+
+
+\subsection{The To Path Operation}
+
+The |to| operation is used to add a user-defined path
+from the previous coordinate to the following coordinate. When you
+write |(a) to (b)|, a straight line is added from |a|
+to |b|, exactly as if you had written |(a) -- (b)|. However, if you
+write |(a) to [out=135,in=45] (b)| a curve is added to the path,
+which leaves at an angle of 135$^\circ$ at |a| and arrives at an angle
+of 45$^\circ$ at |b|. This is because the options |in| and |out|
+trigger a special path to be used instead of the straight line. 
+
+\begin{pathoperation}{to}{\opt{|[|\meta{options}|]|}
+    \opt{\meta{nodes}} |(|\meta{coordinate}|)|}
+
+  This path operation inserts the path current set via the |to path|
+  option at the current position. The \meta{options} can be used to
+  modify (perhaps implicitly) the |to path| and to setup how the path
+  will be rendered. 
+
+  Before the |to path| is inserted, a number of macros are setup that
+  can ``help'' the |to path|. These are |\tikztostart|,
+  |\tikztotarget|, and |\tikztonodes|; they are explained in the
+  following. 
+  
+  \medskip
+  \textbf{Start and Target Coordinates.}\ \ 
+  The |to| operation is always followed by a \meta{coordinate}, called
+  the target coordinate. The macro |\tikztotarget| is set to this
+  coordinate (without the parantheses). There is also a \emph{start
+    coordinate}, which is the coordinate preceding the |to|
+  operation. This coordinate can be accessed via the macro
+  |\tikztostart|. In the following example, for the first |to|, the
+  macro |\tikztostart| is |0pt,0pt| and the |\tikztotarget| is
+  |0,2|. For the second |to|, the macro |\tikztostart| is |10pt,10pt|
+  and |\tikztotarget| is |a|.
+  
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw[help lines] (0,0) grid (3,2);
+  
+  \draw      (0,0)       to (0,2);
+  \node      (a)         at (2,2) {a};
+  \draw[red] (10pt,10pt) to (a);
+\end{tikzpicture}
+\end{codeexample}
+
+
+  \medskip
+  \textbf{Nodes on tos.}\ \
+  It is possible to add nodes to the paths constructed by a |to|
+  operation. To do so, you specify the nodes between the |to|
+  keyword and the coordinate (if there are options to the |to|
+  operation, these come first). The effect of |(a) to node {x} (b)| 
+  (typically) is the same as if you had written
+  |(a) -- node {x} (b)|, namely that the node is placed on the
+  to. This can be used to add labels to tos: 
+  
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw (0,0) to node [sloped,above] {x} (3,2);
+
+  \draw (0,0) to[out=90,in=180] node [sloped,above] {x} (3,2);
+\end{tikzpicture}
+\end{codeexample}
+
+  \medskip
+  \textbf{Styles for nodes.}\ \
+  In addition to the \meta{options} given after the |to| operation,
+  the following style is also set at the beginning of the to path:
+  \begin{itemize}
+    \itemstyle{every to}
+    This style is installed at the beginning of every to. By
+    default, it is set to |draw|. 
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \tikzstyle{every to}=[draw,dashed]
+  \path (0,0) to (3,2);
+\end{tikzpicture}
+\end{codeexample}
+  \end{itemize}
+
+  \medskip
+  \textbf{Options.}\ \ 
+  The \meta{options} given with the |to| allow you to influence the
+  appearance of the |to path|. Mostly, these options are used to
+  change the |to path|. This can be used to change the path from a 
+  straight line to, say, a curve.
+
+  The path used is set using the following option:
+  \begin{itemize}
+    \itemoption{to path}|=|\meta{path}
+    Whenever an |to| operation is used, the \meta{path} is
+    inserted. More precisely, the following path is added:
+
+    \begin{quote}
+      |[every to,|\meta{options}|] |\meta{path}
+    \end{quote}
+  
+    The \meta{options} are the options given to the |to| operation,
+    the \meta{path} is the path set by this option |to path|.
+
+    Inside the \meta{path}, different macros are used to reference the
+    from- and to-coordinates. In detail, these are:
+    \begin{itemize}
+    \item \declare{|\tikztostart|} will expand to the from-coordinate
+      (without the parantheses).
+    \item \declare{|\tikztotarget|} will expand to the to-coordinate.
+    \item \declare{|\tikztonodes|} will expand to the nodes between
+      the |to| operation and the coordinate. Furthermore, these
+      nodes will have the |pos| option set implicitly.      
+    \end{itemize}
+
+    Let us have a look at a simple example. The standard straight line
+    for an to is achieved by the following \meta{path}:
+    \begin{quote}
+      |-- (\tikztotarget) \tikztonodes|
+    \end{quote}
+
+    Indeed, this is the default setting for the path. When we write
+    |(a) to (b)|, the \meta{path} will expand to |(a) -- (b)|, when
+    we write
+    \begin{quote}
+      |(a) to[red] node {x} (b)|
+    \end{quote}
+    the \meta{path} will expand to
+    \begin{quote}
+      |(a) -- (b) node[pos] {x}|
+    \end{quote}
+
+    It is not possible to specify the path
+    \begin{quote}
+      |-- \tikztonodes (\tikztotarget)|
+    \end{quote}
+    since \tikzname\ does not allow one to have a macro after |--|
+    that expands to a node.
+
+    Now let us have a look at how we can modify the \meta{path}
+    sensibly. The simplest way is to use a curve.
+    
+\begin{codeexample}[]
+\begin{tikzpicture}[to path={
+    .. controls +(1,0) and +(1,0) .. (\tikztotarget) \tikztonodes}]
+
+  \node (a) at (0,0) {a};
+  \node (b) at (2,1) {b};
+  \node (c) at (1,2) {c};
+                  
+  \draw (a) to node {x} (b)
+        (a) to          (c);
+\end{tikzpicture}
+\end{codeexample}
+
+    Here is another example:
+
+\begin{codeexample}[]
+\tikzstyle{my loop}=[->,to path={
+  .. controls +(80:1) and +(100:1) .. (\tikztotarget) \tikztonodes}]
+\tikzstyle{my state}=          [circle,draw]
+                           
+\begin{tikzpicture}[shorten >=2pt]
+  \node [my state] (a) at (210:1) {$q_a$};
+  \node [my state] (b) at (330:1) {$q_b$};
+                  
+  \draw (a) to           node[below]       {1} (b)
+            to [my loop] node[above right] {0} (b);
+\end{tikzpicture}
+\end{codeexample}
+
+    \itemoption{execute at begin to}|=|\meta{code}
+    The \meta{code} is executed prior to the to. This can be used to
+    draw one or more additional paths or to do additional
+    computations.
+
+    \itemoption{executed at end to}|=|\meta{code}
+    Works like the previous option, only this code is executed after
+    the to path has been added.
+
+  \itemstyle{every to}
+    This style is installed at the beginning of every to. It is empty
+    by default.
+  \end{itemize}
+\end{pathoperation}
+
+There are a number of predefined |to path|s, see
+Section~\ref{library-to-paths} for a reference.
+
+
+  
+
+\subsection{The Scoping Operation}
+
+When \tikzname\ encounters and opening or a closing brace (|{| or~|}|) at
+some point where a path operation should come, it will open or close a
+scope. All options that can be applied ``locally'' will be scoped
+inside the scope. For example, if you apply a transformation like
+|[xshift=1cm]| inside the scoped area, the shifting only applies to
+the scope. On the other hand, an option like |color=red| does not have
+any effect inside a scope since it can only be applied to the path as
+a whole. 
+
+
+\subsection{The Node Operation}
+
+There are teo more operations that can be found in paths:
+|node| and |edge|. The first is used to add a so-called node to a
+path. This operation is special in the following sense: It does not 
+change the current path in any way. In other words, this operation 
+is not really a path operation, but has an effect that is
+``external''  to the path. The |edge| operation has similar effect in
+that it adds something \emph{after} the main parth has been
+drawn. However, it works like the |to| operation, that is, it adds a
+|to| path to the picture after the main path has been drawn.
+
+Since these operations are quite complex, they are described in the
+separate Section~\ref{section-nodes}.  
+
+
+
+\subsection{The PGF-Extra Operation}
+
+In some cases you may need to ``do some calculations or some other
+stuff'' while a path is constructed. For this, you would like to
+suspend the construction of the path and suspend \tikzname's parsing
+of the path, you would then like to have some \TeX\ code executed, and
+would then like to resume the parsing of the path. This effect can be
+achieved using the following path operation |\pgfextra|. Note that
+this operation should only be used by real experts and should only be
+used deep inside clever macros, not on normal paths.
+
+\begin{command}{\pgfextra\marg{code}}
+  This command may only be used inside a \tikzname\ path. There it is
+  used like a normal path operation. The construction of the path is
+  temporarily suspended and the \meta{code} is executed. Then, the
+  path construction is resumed.
+
+\begin{codeexample}[]
+\newdimen\mydim
+\begin{tikzpicture}
+  \mydim=1cm
+  \draw (0pt,\mydim) \pgfextra{\mydim=2cm} -- (0pt,\mydim);
+\end{tikzpicture}
+\end{codeexample}
+\end{command}
+
+\begin{command}{\pgfextra \meta{code} \texttt{\char`\\endpgfextra}}
+  This is an alternative syntax for the |\pgfextra| command. If the
+  code following |\pgfextra| does not start with a brace, the
+  \meta{code} is executed until |\endpgfextra| is encountered. What
+  actually happens is that |\pgfextra| that is not followed by a brace
+  completely shuts down the \tikzname\ parse and |\endpgfextra| is a
+  normal macro that restarts the parser.
+
+\begin{codeexample}[]
+\newdimen\mydim
+\begin{tikzpicture}
+  \mydim=1cm
+  \draw (0pt,\mydim)
+    \pgfextra \mydim=2cm \endpgfextra -- (0pt,\mydim);
+\end{tikzpicture}
+\end{codeexample}
+\end{command}

@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="sourceedit"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+  <kupu:id>$Id: sourceedit.kupu 22224 2006-01-16 15:25:03Z guido $</kupu:id>
+<!--
+This feature provides Source Editing functionality. Source editing is
+enabled by clicking on a button (provided in the 'button' part) which
+triggers the switchSourceEdit() function.
+-->
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="kupusourceedit.js"> </script>
+  </kupu:part>
+
+  <kupu:part name="buttons">
+    <span class="kupu-tb-buttongroup kupu-source-span" id="kupu-source">
+      <button type="button"
+              class="kupu-source"
+              id="kupu-source-button"
+              title="edit HTML code"
+              i18n:attributes="title"
+              accesskey="h"
+              >&#160;</button>
+    </span>
+  </kupu:part>
+
+</kupu:feature>

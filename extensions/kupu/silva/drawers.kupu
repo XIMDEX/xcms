@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="drawers"
+    implementation="silva"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+
+  <kupu:part name="styles">
+    <link href="kupu_silva/kupudrawerstyles.css" rel="stylesheet" type="text/css" 
+            tal:attributes="href string:${root_url}/kupu_silva/kupudrawerstyles.css" />
+  </kupu:part>
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="kupu/kupudrawers.js"
+            tal:attributes="src string:${root_url}/kupu/kupudrawers.js"> </script>
+  </kupu:part>
+
+  <kupu:part name="buttons">
+    <span class="kupu-tb-buttongroup">
+      <button type="button" class="kupu-image" id="kupu-imagelibdrawer-button"
+              title="Insert image" i18n:attributes="title">&#160;</button>
+      <button type="button" class="kupu-hyperlink" id="kupu-linklibdrawer-button"
+              title="Insert link" i18n:attributes="title">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <kupu:part name="xmlconfig">
+    <image_xsl_uri tal:content="string:${root_url}/kupu_silva/imagedrawer.xsl">kupudrawers/imagedrawer.xsl</image_xsl_uri>
+    <link_xsl_uri tal:content="string:${root_url}/kupu/kupudrawers/linkdrawer.xsl">kupudrawers/linkdrawer.xsl</link_xsl_uri>
+    <image_libraries_uri tal:content="string:${model/absolute_url}/edit/kupu_imagelibraries">kupu_imagelibraries</image_libraries_uri>
+    <link_libraries_uri>kupudrawers/demolibraries.xml</link_libraries_uri>
+    <search_images_uri> </search_images_uri>
+    <search_links_uri> </search_links_uri>
+  </kupu:part>
+
+</kupu:feature>

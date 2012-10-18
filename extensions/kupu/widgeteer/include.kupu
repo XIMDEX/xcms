@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<kupu:include
+  xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  >
+
+  <!-- Include features -->
+  <xi:include href="wire.kupu" />
+  <xi:include href="head.kupu" />
+  <xi:include href="body.kupu" />
+  <xi:include href="xmlconfig.kupu" />
+  <xi:include href="browser.kupu" />
+
+</kupu:include>

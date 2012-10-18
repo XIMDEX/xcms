@@ -1,0 +1,465 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="toolboxes"
+    implementation="silva"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+    
+  <kupu:part name="properties">
+    <div class="kupu-toolbox" id="kupu-toolbox-properties">
+      <h1 class="kupu-toolbox-heading" i18n:translate="">properties</h1>
+
+      <div class="kupu-tooltray">
+        <form name="kupu-properties-form" id="kupu-properties-form">
+          <table width="99%" style="color: #333;" border="0">
+            <tr id="propsrow">
+              <td valign="top">
+                name
+              </td>
+              <td valign="top">
+                input
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+    </div>
+  </kupu:part>
+
+  <kupu:part name="characters">
+    <div class="kupu-toolbox" id="kupu-toolbox-characters">
+      <h1 class="kupu-toolbox-heading" i18n:translate="">non-standard characters</h1>
+
+      <div class="kupu-tooltray">
+        <form name="kupu-characters-form">
+          <select id="charselect">
+            <option value="">select</option>
+          </select>
+        </form>
+      </div>
+
+    </div>
+  </kupu:part>
+
+
+  <kupu:part name="links">
+    <div class="kupu-toolbox" id="kupu-toolbox-links">
+      <script type="text/javascript" tal:define="container model/get_container; folder_context python: '/'.join(container.getPhysicalPath())" tal:content="string:
+        function getLink() {
+          reference.getReference(
+            function(path, id, title) {
+              kupu.getTool('linktool').createLink(path);
+            }, '${container/absolute_url}',
+            '', true);;
+        }
+      "></script>
+
+      <h1 class="kupu-toolbox-heading" i18n:translate="">link</h1>
+
+      <div class="kupu-tooltray">
+        <div id="kupu-toolbox-addlink"> </div>
+        <div id="kupu-toolbox-editlink" class="kupu-toolbox-editlink"> </div>
+
+        <form name="kupu_link_form" onsubmit="return false;">
+          <input type="button" class="transport" style="margin-bottom:0.2em;" onclick="getLink(); return false;" value="get link reference..." />
+          <input class="store" type="text" id="kupu-link-input" name="kupu_link_href" style="margin-left:0.2em; width:96%" /><br />
+          &#160;link target 
+          <select id="kupu-linktarget-select">
+            <option value="_self">same window</option>
+            <option value="_blank">new window</option>
+            <option value="input">custom target</option>
+          </select><br />
+          <input class="store" type="text" id="kupu-linktarget-input" name="kupu_link_target" style="margin-left: 0.2em; width: 96%" />
+          <input type="button" class="button" value="add link" id="kupu-link-addbutton" />
+          <input type="button" class="button" value="update link" id="kupu-link-updatebutton" />
+          <input type="button" class="warning" value="remove" id="kupu-link-delbutton" />
+        </form>
+
+      </div>
+    </div>
+  </kupu:part>
+
+  <kupu:part name="indexes">
+    <div class="kupu-toolbox" id="kupu-toolbox-indexes">
+
+      <h1 class="kupu-toolbox-heading" i18n:translate="">index item</h1>
+
+      <div class="kupu-tooltray">
+
+        <form name="kupu_index_form" onsubmit="return false;">
+          <input class="store" type="text" id="kupu-index-input" name="kupu_index_href" style="margin-left:0.2em; width:96%" />
+          <input type="button" class="button" value="add index" id="kupu-index-addbutton" />
+          <input type="button" class="button" value="update index" id="kupu-index-updatebutton" />
+          <input type="button" class="warning" value="remove" id="kupu-index-deletebutton" />
+        </form>
+
+      </div>
+
+    </div>
+
+  </kupu:part>
+
+  <kupu:part name="images">
+
+    <div class="kupu-toolbox" id="kupu-toolbox-images">
+
+    <script type="text/javascript" tal:define="container model/get_container; folder_context python: container" tal:content="string:
+      function getImage() {
+        reference.getReference(
+          function(path, id, title) {
+            var imgtool = kupu.getTool('imagetool');
+            imgtool.createImage(path);
+            if (title) {
+                var selNode = kupu.getSelectedNode();
+                var image = kupu.getNearestParentOfType(selNode, 'img');
+                image.setAttribute('title', title);
+                imgtool.updateState(selNode);
+            };
+          }, '${folder_context/absolute_url}',
+          'Silva Image', true);;
+      }
+    "></script>
+
+
+    <h1 class="kupu-toolbox-heading" i18n:translate="">image</h1>
+
+    <div class="kupu-tooltray">
+
+      <form name="kupu_image_form" onsubmit="return false" tal:define="container model/get_container">
+
+        <input type="button" class="transport" onclick="getImage()" value="get image reference..." />
+              
+        <div id="kupu-toolbox-image-edit" style="color: black; display: none">
+          <input type="button" class="transport" value="edit image..."
+                  tal:attributes="onclick string:window.open('${container/absolute_url}/' + getFromSelector('kupu-toolbox-image-src').value + '/edit')" />
+          <input type="text" id="kupu-toolbox-image-src" style="margin-left:0.2em; width:96%" />
+          &#160;link to:<br />
+          <input type="text" id="kupu-toolbox-image-link" style="margin-left:0.2em; width:96%" />
+          <input type="checkbox" id="kupu-toolbox-image-link-checkbox-hires" name="linkcb" value="hires" checked="checked" />link to high resolution version<br />
+          &#160;target for link
+          <select id="kupu-toolbox-image-target" style="margin-left:0.2em">
+            <option value="_self">same window</option>
+            <option value="_blank">new window</option>
+            <option value="input">custom target</option>
+          </select><br />
+          <input type="text" id="kupu-toolbox-image-target-input" style="margin-left:0.2em; width:96%; display: none" />
+          &#160;image alignment
+          <select id="kupu-toolbox-image-align" style="margin-left:0.2em">
+            <option value="default">default</option>
+            <option value="image-left">align left</option>
+            <option value="image-center">align center</option>
+            <option value="image-right">align right</option>
+            <option value="float-left">float left</option>
+            <option value="float-right">float right</option>
+          </select><br />
+          &#160;tooltip:<br />
+          <input type="text" id="kupu-toolbox-image-alt" style="margin-left:0.2em; width: 96%" /><br />
+          <input type="button" class="button" value="update image" />
+        
+        </div>
+      </form>
+
+    </div>
+
+    </div>
+  </kupu:part>
+
+  <kupu:part name="citation">
+
+    <div class="kupu-toolbox" id="kupu-toolbox-citation">
+
+      <h1 class="kupu-toolbox-heading" i18n:translate="">citation</h1>
+
+      <div class="kupu-tooltray">
+
+        <form name="kupu-citation-form">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td>
+                  <table width="100%" style="color: #333;" border="0">
+                    <tr>
+                      <td width="30%">author</td>
+                      <td><input class="store" type="text" id="kupu-citation-authorinput" /></td>
+                    </tr>
+                    <tr>
+                      <td>source</td>
+                      <td><input class="store" type="text" id="kupu-citation-sourceinput" /></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="button" class="button" value="add citation" id="kupu-citation-addbutton" />
+                  <input type="button" class="button" value="update citation" id="kupu-citation-updatebutton" />
+                  <input type="button" class="warning" value="remove" id="kupu-citation-deletebutton" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+      </div>
+    
+    </div>
+
+  </kupu:part>
+
+  <kupu:part name="abbr">
+
+    <div class="kupu-toolbox" id="kupu-toolbox-abbr">
+
+      <h1 class="kupu-toolbox-heading" i18n:translate="">abbreviations and acronyms</h1>
+
+      <div class="kupu-tooltray">
+
+        <form name="kupu-abbr-form">
+          <table width="100%" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td>
+                  <table width="100%" style="color: #333;" border="0">
+                    <tr>
+                      <td>title</td>
+                      <td><input class="store" type="text" id="kupu-abbr-title" /></td>
+                    </tr>
+                    <tr id="kupu-abbr-radiorow">
+                      <td>type</td>
+                      <td>
+                        <input type="radio" id="kupu-abbr-type-abbr" 
+                              name="kupu-abbr-type" value="abbr" checked="checked" /> 
+                        abbreviation
+                        <input type="radio" id="kupu-abbr-type-acronym" 
+                              name="kupu-abbr-type" value="acronym" /> 
+                        acronym
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="button" class="button" value="add element" id="kupu-abbr-addbutton" />
+                  <input type="button" class="button" value="update element" id="kupu-abbr-updatebutton" />
+                  <input type="button" class="warning" value="remove element" id="kupu-abbr-deletebutton" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+
+      </div>
+    
+    </div>
+
+  </kupu:part>
+
+  <kupu:part name="tables">
+
+    <div class="kupu-toolbox" id="kupu-toolbox-tables">
+    <!-- start kupu toolbox tables -->
+    
+    <h1 class="kupu-toolbox-heading" i18n:translate="">table</h1>
+
+    <div class="kupu-tooltray">
+
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tbody>
+          <tr>
+            <td>
+                <table width="100%" style="color: #333;">
+                  <tr>
+                    <td class="align-right" width="30%">table class</td>
+                    <td>
+                      <select class="manipulator" id="kupu-table-classchooser">
+                        <option value="plain">plain</option>
+                        <option value="list">list</option>
+                        <option value="grid">grid</option>
+                        <option value="datagrid">datagrid</option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <div id="kupu-toolbox-addtable" class="kupu-toolbox-addtable">
+                <table width="100%" style="color: #333;">
+                  <tr>
+                    <td class="align-right" width="30%">rows</td>
+                    <td><input class="store" id="kupu-table-newrows"/></td>
+                  </tr>
+                  <tr>
+                    <td class="align-right">columns</td>
+                    <td><input class="store" id="kupu-table-newcols"/></td>
+                  </tr>
+                  <tr>
+                    <td class="align-right">heading</td>
+                    <td>
+                      <input id="kupu-table-makeheader" type="checkbox"/>
+                        <label for="kupu-table-makeheader">create</label>
+                    </td>
+                  </tr>
+                </table>
+                <input type="button" class="button" id="kupu-table-addtable-button" value="add table" />
+              </div>
+              <div id="kupu-toolbox-edittable" class="kupu-toolbox-edittable" style="display: none">
+                <table width="100%">
+                  <tr>
+                    <td class="align-right" style="padding-right:0.3em" width="30%">column align</td>
+                    <td>
+                      <select class="manipulator" id="kupu-table-alignchooser">
+                        <option value="left">left</option>
+                        <option value="center">center</option>
+                        <option value="right">right</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="align-right" style="padding-right: 0.3em">column widths</td>
+                    <td><input type="text" id="kupu-table-columnwidth" /></td>
+                  </tr>
+                  <tr>
+                    <td class="align-right">column</td>
+                    <td>
+                        <input type="button" class="button" id="kupu-table-addcolumn-button" value="add column" />
+                        <input type="button"  class="warning" id="kupu-table-delcolumn-button" value="remove" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="align-right">row</td>
+                    <td>
+                      <input type="button"  class="button" id="kupu-table-addrow-button" value="add row" />
+                      <input type="button"  class="warning" id="kupu-table-delrow-button" value="remove" /></td>
+                  </tr>
+                  <tr>
+                    <td class="align-right">table</td>
+                    <td>
+                      <input type="button" class="button" id="kupu-table-fix-button" value="cleanup" />
+                      <input type="button" class="warning" id="kupu-table-delete-button" value="remove" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="align-right" colspan="2">
+                      <input type="button" class="button" value="update table" />
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    
+    </div>
+
+    <!-- end kupu toolbox tables -->
+      </div>
+
+  </kupu:part>
+
+
+  <kupu:part name="toc">
+    <div class="kupu-toolbox" id="kupu-toolbox-toc">
+
+      <h1 class="kupu-toolbox-heading" i18n:translate="">table of contents</h1>
+
+      <div class="kupu-tooltray">
+
+        <form name="kupu_index_form" onsubmit="return false;">
+          <select id="kupu-toolbox-toc-depth">
+            <option value="1">1 level</option>
+            <option value="2">2 levels</option>
+            <option value="3">3 levels</option>
+            <option value="4">4 levels</option>
+            <option value="5">5 levels</option>
+            <option value="6">6 levels</option>
+            <option value="7">7 levels</option>
+            <option value="8">8 levels</option>
+            <option value="9">9 levels</option>
+            <option value="-1">unlimited</option>
+          </select>
+          <input class="button" type="button" value="add toc" id="kupu-toc-add-button" />
+          <input class="warning" type="button" value="remove" id="kupu-toc-del-button" />
+        </form>
+        
+      </div>
+
+    </div>
+
+  </kupu:part>
+
+  <kupu:part name="external_source">
+    <div class="kupu-toolbox" id="kupu-toolbox-extsource">
+
+      <h1 class="kupu-toolbox-heading" i18n:translate="">external source</h1>
+
+      <div class="kupu-tooltray">
+        
+        <div id="kupu-extsource-formcontainer">
+        </div>
+           
+        <form name="kupu_extsource_form" onsubmit="return false">
+          <select id="kupu-toolbox-extsource-id">
+            <tal:block repeat="extsource here/get_available_sources">
+              <tal:block define="id python: extsource[0]; object python:extsource[1]">
+                <option tal:attributes="value id" tal:content="python:object.get_title() or id" />
+              </tal:block>
+            </tal:block>
+          </select>
+          
+          <input class="button" type="button" value="add external source" id="kupu-extsource-addbutton" />
+          <input class="cancel" type="button" value="cancel" id="kupu-extsource-cancelbutton" />
+          <input class="button" type="button" value="update source" id="kupu-extsource-updatebutton" />
+          <input class="warning" type="button" value="remove" id="kupu-extsource-delbutton" />
+        </form>
+      
+      </div>
+    
+    </div>
+  </kupu:part>
+  
+  <kupu:part name="typochars">
+    <div class="kupu-toolbox" id="kupu-toolbox-typochars">
+    
+      <h1 class="kupu-toolbox-heading" i18n:translate="">typographical characters</h1>
+      <div class="kupu-tooltray">
+        <!-- euro , ` ' ,, `` '' << >> - - -->
+        &#x20AC; &#8218; &#145; &#146; &#132; &#147; &#148; &#171; &#187; &#8212; &#8211; &#183;
+      </div>
+
+    </div>
+  </kupu:part>
+
+  <kupu:part name="save">
+    <div class="kupu-toolbox" id="kupu-toolbox-save">
+    
+      <h1 class="kupu-toolbox-heading" i18n:translate="">save</h1>
+      <div class="kupu-tooltray">
+        <form action="." method="POST" onsubmit="return false">
+          <input type="button" class="button" value="save document" id="kupu-save-toolbox-button" onclick="kupu.saveDocument()" />
+        </form>
+      </div>
+
+    </div>
+  </kupu:part>
+
+  <kupu:part name="cleanupexpressions">
+    <div class="kupu-toolbox" id="kupu-toolbox-cleanupexpressions">
+      <h1 class="kupu-toolbox-heading" i18n:translate="">cleanup</h1>
+      <div class="kupu-tooltray">
+        <select id="kupucleanupexpressionselect" class="kupu-toolbox-st">
+        </select>
+        <input class="button" type="button" id="kupucleanupexpressionbutton"
+                value="perform" />
+      </div>
+    </div>
+  </kupu:part>
+
+</kupu:feature>

@@ -1,0 +1,399 @@
+==============
+Extending Kupu
+==============
+
+XXX this document needs a major overhaul
+XXX we should cover the the typical process of implementing a new feature
+XXX writing a new implementation of features -> INTEGRATING.txt
+
+Abstract
+--------
+
+This document describes the typical process of extending Kupu with a
+new feature, such as a toolbox with the underlying functionality.
+Both, the ECMAScript API and the templating system are explained.
+
+1. Kupu Tools
+-------------
+
+Apart from the context menu, all UI functionality in Kupu is added to
+the core using a simple plugin mechanism. This can also be used to
+write your own extensions, either by copying existing tools and
+modifying them or by subclassing KupuTool (and sometimes KupuToolBox)
+and writing your own functionality.
+
+2. Tool interface
+-----------------
+
+The plugins have a simple interface to adhere to:
+
+    interface KupuTool:
+
+    attribute toolboxes = {};
+      - id -> toolbox mapping
+
+    method initialize(editor):
+      - store reference to the editor, register event handlers, etc.
+
+    method registerToolBox(id, toolbox):
+      - register a UI element (ToolBox, more about those later)
+
+    method updateState(selNode, event):
+      - update the state of self and any toolboxes
+
+    method createContextMenuElements(selNode, event) (optional):
+      - return an array of ContextMenuElements
+
+3. Writing a simple tool
+------------------------
+
+As an example we'll write our first simple tool, which displays the
+path to the current node in the tree in the status bar. This is an
+actual tool in the current Kupu code and you can see the result in the
+status bar of any default Kupu installation. First we'll write a
+class, and add a method called 'updateState' that will change the
+status bar::
+
+    // Example tool class
+    function ExampleTool() {
+        this.updateState = function(selNode, event) {
+        };
+    };
+
+The updateState method is a method each tool can implement (actually
+the code assumes it's available on each tool, but since the superclass
+defines it as well it's not strictly necessary to add it to your
+class) and that will be called when the user clicks inside the iframe,
+presses enter or hits a cursor key (so basically, when the cursor can
+end up in a different element).
+
+As you can see we use in-line methods in Kupu, this is a choice of
+style rather than for a functional reason, and if you wish you can
+choose to use another coding style. Using
+'<class>.prototype.<method> = function() {...};' will do equally well.
+
+Now we'll add some functionality to our updateState method. The
+updateState method's first argument will always be a reference to the
+current selected element (or the element currently containing the
+selection). To get a path to that element from the root, we can write
+something like::
+    
+    // Example tool class
+    function ExampleTool() {
+        /* shows the path to the current element in the status bar */
+        this.updateState = function(selNode, event) {
+            /* calculate and display the path */
+            var path = '';
+            var currnode = selNode;
+            while (currnode.nodeName != '#document') {
+                path = '/' + currnode.nodeName.toLowerCase() + path;
+                currnode = currnode.parentNode;
+            };
+            
+            window.status = path;
+        };
+    };
+
+The second argument is the event, if any, which started the
+updateState chain (this doesn't have to be available, since
+updateState can also be called by tools in certain situations).
+
+Now that we have the updateState method complete, we have the
+functionality we wanted available. To make sure the tool provides all
+functionality required by the system, the tool should subclass
+KupuTool. This is not strictly required, but is a nice way to provide
+all the methods the editor requires to be available.
+
+    // subclass KupuTool
+    ExampleTool.prototype = new KupuTool;
+
+To hook the tool up with the editor, it needs to be registered. For
+this purpose the registerTool method is available on the KupuEditor
+object, which should be called with an id and a tool as arguments
+(note that the KupuEditor is called 'kupu' here, like in the default
+initKupu function, where registration of our tool will most likely be
+done)::
+
+    var exampletool = new ExampleTool();
+    kupu.registerTool('exampletool', exampletool);
+
+That's it, we just wrote a replacement for (or actually a copy of) the
+ShowPathTool, the most basic Kupu tool.
+
+4. A more complex example
+-------------------------
+
+Now we'll take a look at a more complex example: the ImageTool. This
+will provide a way for users to add images to the iframe. First thing
+we do is write a class like we did for the example tool::
+
+    function ImageTool() {
+        this.initialize = function(editor) {
+            this.editor = editor;
+            this.editor.logMessage('Image tool initialized');
+        };
+    };
+
+As you can see we override the superclass' initialize method, we don't
+strictly have to here, but it's a custom to send a message to the log
+window telling the user the tool has initialized, and it shows us how
+a reference to the editor object is stored on the tool and used to
+call logMessage on (which in turn calls the logger registered in
+initKupu).
+
+Now let's add some functionality to the tool::
+
+    function ImageTool() {
+
+        // this will be required for later use, when the toolbox is added
+        this.toolboxes = {};
+        
+        this.initialize  = function(editor) {
+            this.editor = editor;
+            this.editor.logMessage('Image tool initialized');
+        };
+
+        this.createImage = function(url) {
+            /* insert an image */
+            this.editor.execCommand('InsertImage', url);
+            this.editor.logMessage('Image inserted');
+        };
+    };
+
+This method calls 'execCommand' on the editor object, which in turn
+calls execCommand on the iframe (actually there's another step, but
+that's not important now). execCommand is a built-in method provided
+by browsers, that provides a limited amount of commands to WYSIWYG
+editor applications. The InsertImage command will, as you may have
+guessed, insert an image at the cursor location.
+
+All that is left to turn the tool into an Kupu Tool is set the prototype::
+
+    ImageTool.prototype = new KupuTool;
+
+register it to the editor (in initKupu or the HTML page)::
+
+    var imagetool = new ImageTool();
+    kupu.registerTool('imagetool', imagetool);
+
+and we're done with the basic tool.
+
+5. ToolBoxes
+------------
+
+Now we have a class with a method that is capable of inserting an
+image, but no way to call the method yet. The most basic way to call
+the method would be from an HTML button, so we could simply create an
+HTML button that would call the method. For larger tools, however,
+it's nice to attach the event handlers from the code rather then from
+the HTML itself, keeps things neat and clean, but on the other hand
+it's nasty to have references to UI elements in the classes that
+contain the functionality, for instance since someone using your tool
+may want to use an element with another event or interface, or perhaps
+even a completely different type of input (e.g. the context menu
+mentioned below). Therefore we want another abstraction layer,
+toolboxes.
+
+A ToolBox is basically a UI part of a Tool, containing references to
+the HTML elements and containing and registering event handlers. For
+the image tool we'd probably want a class with a reference to 2 HTML
+elements: an input field to enter a URL in and a button to click on to
+create the image::
+
+    function ImageToolBox(inputel, buttonel) {
+        this.inputel = inputel;
+        this.buttonel = buttonel;
+
+        this.initialize(tool, editor) {
+            // always store the references to the tool and editor
+            this.tool = tool;
+            this.editor = editor;
+
+            // addEventHandler registers an event handler in both IE and
+            // Mozilla, last argument is the context in which to call the 
+            // method
+            addEventHandler(this.button, 'click', this.createImage, this);
+        };
+        
+        this.createImage = function() {
+            var src = this.inputel.value;
+            if (!src) {
+                this.editor.logMessage('No image created since no URL was ' +
+                                        'specified');
+                return;
+            };
+            this.tool.createImage(src);
+        };
+    };
+
+We don't create an updateState method here, although we could, since
+we don't have a way to change the image's src attribute anyway. The
+updateState method of toolboxes will usually update the state of the
+UI elements of the tool (as happens with the TableTool, when inside a
+tool you will see editing elements, when you're not inside one you'll
+find elements to add a new table) or set the value of certain form
+fields (as in the LinkTool, when inside a link it will show you the
+href of the link), both not appropriate in this case (although a
+usecase could easily be written I would say ;).
+
+6. ContentFilters
+-----------------
+
+Before Kupu sends its contents to the server, it is converted from
+HTML to XHTML and then passed through any registered content filters.
+
+Content filters are simple classes that should have 2 methods::
+initialize, which will be called on registration of the filter, with a
+single argument which is a reference to the editor, and filter, which
+will be called with 2 arguments: a reference to the owner document
+(the document element of the iframe) and the html node of the
+document. The idea is that the filter should use DOM functionality to
+filter the incoming DOM and return the filtered version.  To register
+a content filter to Kupu, use 'kupu.registerFilter(filter)'.
+
+The XHTML conversion is configurable. By default it accepts any tags
+defined in XHTML 1.0 transitional, as well as any attributes except
+for the event attributes (those beginning with 'on'). Tags not in the
+html namespace are stripped.
+
+A tag is permitted if it is defined in XHTML and not blacklisted.
+Optionally kupu can also filter to maintain a valid XHTML nesting of
+tags, but this option is off by default (put a
+`<filterstructure>1</filterstructure>` tags into the htmlfilter
+configuration to turn it on, or set `editor.xhtmlvalid.filterstructure`
+to true. When the structure filtering is turned on a tag is permitted
+if it is allowed within the current context (e.g. you cannot nest `<A>`
+tags directly inside other `<A>` tags, so any nested `<A>` tags will be
+stripped). If a tag is stripped its content will still be present.  An
+attribute is permitted if it is defined in XHTML and not blacklisted
+for that tag. Text data is stripped if it occurs in a context not
+valid in XHTML (e.g. inside a table but outside `<TH>` or `<TD>`).
+
+The blacklist is taken from Kupu's xml configuration. An `<htmlfilter>` tag
+encloses the blacklist, `<t>` marks a tag to be blacklisted, <a> marks
+an attribute to be blacklisted, `<c>` marks attributes to be excluded
+for specific tags. e.g. the following would blacklist the `center`
+and `font` tags, the `cellspacing` attribute everywhere, and the
+`width` attribute for the `th` and `td` tags only. ::
+
+        <htmlfilter>
+                <t>center></t><t>font</t>
+                <a>cellspacing</a>
+                <c><t>th</t><t>td</t><a>width</a></c>
+        </htmlfilter>
+
+From Javascript you can use the excludeAttributes, excludeTags and
+excludeTagAttributes methods of `editor.xhtmlvalid` to get the same
+effect.
+
+The `style` attribute filters its content to permit `text-align` and
+`list-style-type` styles and reject all others (these styles are used
+by kupu). The style whitelist may be extended by adding additional
+entries to `editor.xhtmlvalid.styleWhitelist`.
+
+The `class` attribute is filtered to reject classnames which appear in
+the class blacklist. Add entries to `editor.xhtmlvalid.classBlacklist`
+to reject additional classes.
+
+Entries may be added to the style whitelist or the class blacklist
+through the `<htmlfilter>` section of the configuration::
+
+        <htmlfilter>
+          ... as above ...
+            <xstyle>list-style-image</xstyle>
+            <class>badClassName</class>
+        </htmlfilter>
+
+Additional attributes may be added to existing tags by calling the
+`setTagAttributes` and `setAttrFilter` methods. e.g. ::
+
+    editor.xhtmlvalid.setTagAttributes(['div'], ['special']);
+    editor.xhtmlvalid.setAttrFilter(['special']);
+
+adds an attribute `special` to the `div` tag. The method tags three
+parameters: a list of attributes, a list of tags, and optionally a
+filter method to be called for that attribute. If the filter method is
+omitted the attribute is simply copied.
+
+The validation API is as follows (for the purposes of this api, a
+`dict` means an object whose property names are the dict keys):
+
+Set
+  a javascript class used to quickly create a 'dict' where all
+  the values are 1. The constructor takes a single keyname, or a list
+  of keynames, or a Set.
+
+attrFilters
+  a dict keyed by attributeName, of filter functions for each
+  attribute. Any attribute not in this dict is invalid.
+
+tagAttributes
+  a dict keyed by tagName, of arrays of valid attribute names for
+  each tag. Any tag not in this dict is invalid.  N.B. Tags which share
+  a common set of attributes may be sharing the same array.
+
+  All attributeNames in the sets in tagAttributes must exist in
+  attrFilters.
+
+setAttrFilter(attributes,filter)
+  sets the filter function in attrFilters for the list of attributes,
+  adding the attributes if they don't already exist. A simple copy
+  function is used if filter is not provided.
+
+setTagAttributes(tags,attributes)
+  for each tag in the list of tags, sets tagAttributes[tag] to the list of
+  attributes. An empty list of attributes is used if attributes is
+  omitted.
+ 
+includeTagAttributes(tags, attributes)
+  for each tag in the list of tags, adds the list of attributes to
+  tagAttributes[tag]
+ 
+excludeTagAttributes(tags, attributes)
+  for each tag in the list of tags, removes any attribute in the list
+  of attributes from the list in tagAttributes[tag].
+ 
+excludeTags(tags)
+   removes the list of tags from tagAttributes.
+ 
+excludeAttributes(attributes)
+  removes the set of attributes from attrFilters and all tags in
+  tagAttributes.
+
+styleWhitelist
+  a Set. Each key is the css name of a style. e.g. text-align.
+  Only those elements of the style attribute which are present in this
+  set are permitted through the filtering.
+  The default setting includes only those styles which may be set by
+  kupu.
+
+classBlacklist
+  a Set. Each key is a classname which should not be permitted. All
+  other classnames are allowed through the filtering. The default
+  setting is a list of styles likely to be present when a pasting text
+  copied out of Microsoft Word.
+ 
+
+7. Loggers
+----------
+
+Loggers are classes to log messages. A logger will usually do nothing,
+or at most send everything to some text area or div, unless an error
+log message comes in, in which case most loggers will probably raise
+an exception.  Loggers should have a single method called 'log' that
+gets one mandatory and one optional argument: it must get a message
+(which is a string that will, or in some cases will not, get logged)
+and it may get a severity argument, which can be 0 for debug messages,
+1 for warnings and 2 for errors. The default should be 0.
+
+A logger should be passed to the editor on instantiation time (it's
+one of the constructor's arguments).
+
+8. And the rest
+---------------
+
+Of course there's a lot more to Kupu that can be customized, added or
+rewritten. For more details see the source: it should be quite clear
+and simple and is written in a nice object oriented manner. Also make
+sure to check out JSAPI.txt, which is a reference to Kupu' JavaScript
+JSAPI.

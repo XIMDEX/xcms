@@ -1,0 +1,178 @@
+% Copyright 2006 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+\ProvidesPackageRCS[v\pgfversion] $Header: /cvsroot/pgf/pgf/generic/pgf/basiclayer/pgfbasepatterns.code.tex,v 1.8 2006/10/11 15:22:25 tantau Exp $
+
+
+% Creates a new uncolored pattern
+%
+% #1 = pattern name
+% #2 = lower left of bounding box
+% #3 = upper right of bounding box
+% #4 = step vector
+% #5 = pattern code
+%
+% Description:
+%
+% Declares a new uncolored pattern. An uncolored pattern is a pattern
+% that has no inherent color. When the pattern is used, a color for
+% the pattern must be supplied.
+%
+% See the pdf-manual for more details on uncolored patterns.
+%
+% The bounding box must be a bounding box of the pattern cell.
+%
+% The step vector must provide the x- and y-step by which the cells
+% are spaced.
+%
+% The pattern code should be pgf code that can be protocolled.
+%
+% The transformation matrix will be reset prior to invoking the
+% pattern code.
+%
+% Example:
+%
+% \pgfdeclarepatternformonly{stars}{\pgfpointorigin}{\pgfpoint{1cm}{1cm}}
+% {\pgfpoint{1cm}{1cm}}{
+%   \pgftransformshift{\pgfpoint{.5cm}{.5cm}}
+%   \pgfpathmoveto{\pgfpointpolar{0}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{144}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{288}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{72}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{216}{4mm}}
+%   \pgfpathclose%
+%   \pgfusepath{stroke}
+% }
+
+\def\pgfdeclarepatternformonly#1#2#3#4#5{\pgf@declarepattern{#1}{#2}{#3}{#4}{#5}{0}}
+
+% Creates a new colored pattern
+%
+% #1 = pattern name
+% #2 = lower left of bounding box
+% #3 = upper right of bounding box
+% #4 = step vector
+% #5 = pattern code
+%
+% Description:
+%
+% Declares a new colored pattern. Such patterns have a one or more
+% fixed inherent colors. See the pdf-manual for more details on
+% uncolored patterns.
+%
+% The parameters have the same effect as for uncolored patterns.
+%
+% Example:
+%
+% \pgfdeclarepatterninherentlycolored{red stars}{\pgfpointorigin}{\pgfpoint{1cm}{1cm}}
+% {\pgfpoint{1cm}{1cm}}{
+%   \pgfsetfillcolor{red}
+%   \pgfsetstrokecolor{black}
+%   \pgftransformshift{\pgfpoint{.5cm}{.5cm}}
+%   \pgfpathmoveto{\pgfpointpolar{0}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{144}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{288}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{72}{4mm}}
+%   \pgfpathlineto{\pgfpointpolar{216}{4mm}}
+%   \pgfpathclose%
+%   \pgfusepath{stroke,fill}
+% }
+
+\def\pgfdeclarepatterninherentlycolored#1#2#3#4#5{\pgf@declarepattern{#1}{#2}{#3}{#4}{#5}{1}}
+
+\def\pgf@declarepattern#1#2#3#4#5#6{%
+  \pgf@ifundefined{pgf@pattern@name@#1}{%
+  \pgfsysprotocol@getcurrentprotocol\pgf@pattern@temp%
+  {%
+    \pgfinterruptpath%
+      \pgfpicturetrue%
+      \pgf@relevantforpicturesizefalse%
+      \pgftransformreset%
+      \pgfsysprotocol@setcurrentprotocol\pgf@empty%
+      \pgfsysprotocol@bufferedtrue%
+      \pgfsys@beginscope%
+      #5%
+      \pgfsys@endscope%
+      \pgfsysprotocol@getcurrentprotocol\pgf@pattern@code%
+      \global\let\pgf@pattern@code=\pgf@pattern@code%
+    \endpgfinterruptpath%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{#3}%
+    \pgf@xb=\pgf@x%
+    \pgf@yb=\pgf@y%
+    \pgf@process{#4}%
+    \pgf@xc=\pgf@x%
+    \pgf@yc=\pgf@y%
+    % Now, build a name for the pattern
+    \@tempcnta=\pgf@pattern@number%
+    \advance\@tempcnta by1\relax%
+    \xdef\pgf@pattern@number{\the\@tempcnta}%
+    \expandafter\xdef\csname pgf@pattern@name@#1\endcsname{\the\@tempcnta}%
+    \expandafter\gdef\csname pgf@pattern@type@#1\endcsname{#6}%
+    \xdef\pgf@marshal{\noexpand\pgfsys@declarepattern
+      {\csname pgf@pattern@name@#1\endcsname}
+      {\the\pgf@xa}{\the\pgf@ya}{\the\pgf@xb}{\the\pgf@yb}{\the\pgf@xc}{\the\pgf@yc}{\pgf@pattern@code}{#6}}%
+  }%
+  \pgfsysprotocol@setcurrentprotocol\pgf@pattern@temp%
+  \expandafter\global\expandafter\let\csname pgf@pattern@instantiate@#1\endcsname=\pgf@marshal%
+  }
+  {%
+    \PackageError{pgfbasepatterns}{Pattern `#1' already defined}{}%
+  }%
+}
+
+\def\pgf@pattern@number{0}%
+
+\def\pgf@ifpatternisinherentlycolored#1#2#3{%
+  \expandafter\ifnum\csname pgf@pattern@type@#1\endcsname=1\relax#2\else#3\fi%
+}
+
+
+
+% Set an pattern as fill color
+%
+% #1 = Name of the pattern
+% #2 = Color to be used for the pattern. If the pattern is already
+%      colored, this parameter is ignored.
+%
+% Description:
+%
+% Sets the pattern for subsequent filling operations.
+%
+% Example:
+%
+% \pgfsetfillpattern{stars}{red}
+
+\def\pgfsetfillpattern#1#2{%
+  \pgf@ifundefined{pgf@pattern@name@#1}{%
+    \PackageError{pgfbasepatterns}{Undefined pattern `#1'}{}}
+  {%
+    \csname pgf@pattern@instantiate@#1\endcsname%
+    \expandafter\global\expandafter\let\csname pgf@pattern@instantiate@#1\endcsname=\relax%
+    \pgf@ifpatternisinherentlycolored{#1}{%
+      \pgfsys@setpatterncolored{\csname pgf@pattern@name@#1\endcsname}%
+    }{%
+      \colorlet{pgf@tempcolor}{#2}%
+      \pgf@ifundefined{applycolormixins}{}{\applycolormixins{pgf@tempcolor}}%
+      \extractcolorspec{pgf@tempcolor}{\pgf@tempcolor}%
+      \expandafter\convertcolorspec\pgf@tempcolor{rgb}{\pgf@rgbcolor}%
+      \expandafter\pgf@set@fill@patternuncolored\pgf@rgbcolor\relax{#1}%
+    }%
+  }%
+}
+\def\pgf@set@fill@patternuncolored#1,#2,#3\relax#4{%
+  \pgfsys@setpatternuncolored{\csname pgf@pattern@name@#4\endcsname}{#1}{#2}{#3}%
+}
+
+
+
+
+\endinput

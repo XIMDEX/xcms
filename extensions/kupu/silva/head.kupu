@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="head"
+    implementation="silva"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="sarissa.js"
+            tal:attributes="src string:${root_url}/kupu/sarissa.js"> </script>
+    <script type="text/javascript" src="kupuhelpers.js"
+            tal:attributes="src string:${root_url}/kupu/kupuhelpers.js"> </script>
+    <script type="text/javascript" src="kupunoi18n.js"
+            tal:attributes="src string:${root_url}/kupu/kupunoi18n.js"> </script>
+    <script type="text/javascript" src="kupueditor.js"
+            tal:attributes="src string:${root_url}/kupu/kupueditor.js"> </script>
+    <script type="text/javascript" src="kupubasetools.js"
+            tal:attributes="src string:${root_url}/kupu/kupubasetools.js"> </script>
+    <script type="text/javascript" src="kupuloggers.js"
+            tal:attributes="src string:${root_url}/kupu/kupuloggers.js"> </script>
+    <script type="text/javascript" src="kupudrawers.js"
+            tal:attributes="src string:${root_url}/kupu/kupudrawers.js"> </script>
+    <script type="text/javascript" src="kupucontentfilters.js"
+            tal:attributes="src string:${root_url}/kupu/kupucontentfilters.js"> </script>
+    <script type="text/javascript" src="kupusourceedit.js"
+            tal:attributes="src string:${root_url}/kupu/kupusourceedit.js"> </script>
+    <script type="text/javascript" src="kupucleanupexpressions.js"
+            tal:attributes="src string:${root_url}/kupu/kupucleanupexpressions.js"> </script>
+    <!-- 
+    <script type="text/javascript" src="kupuspellchecker.js"
+            tal:attributes="src string:${root_url}/kupu/kupuspellchecker.js"> </script>
+    -->
+    <script type="text/javascript" src="kuputoolcollapser.js"
+            tal:attributes="src string:${root_url}/kupu/kuputoolcollapser.js"> </script>
+
+    <script type="text/javascript" src="kupusilvatools.js"
+            tal:attributes="src string:${root_url}/kupu_silva/kupusilvatools.js"> </script>
+  </kupu:part>
+
+  <kupu:part name="bootstrap-editor">
+    <script type="text/javascript" src="kupusilvainit.js"
+            tal:attributes="src string:${root_url}/kupu_silva/kupusilvainit.js"> </script>
+    <script type="text/javascript">
+	var kupu = null;
+	var kupuui = null;
+	function startKupu() {
+	    var frame = getFromSelector('kupu-editor'); 
+	    kupu = initSilvaKupu(frame); 
+	    kupuui = kupu.getTool('ui'); 
+	    kupu.initialize();
+	};
+        // register the function to the unload registry
+        window.onload_registry.register(startKupu);
+    </script>
+  </kupu:part>
+
+  <kupu:part name="meta">
+  </kupu:part>
+
+</kupu:feature>

@@ -1,0 +1,915 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: Wed Aug  3 16:07:37 2005\n"
+"PO-Revision-Date: 2005-05-10 17:58+0200\n"
+"Last-Translator: Guido Wesdorp <guido@infrae.com>\n"
+"Language-Team: Silva i18n team <walco@infrae.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/translation_files/extract.py\n"
+"Language-code: nl\n"
+"Language-name: Nederlands\n"
+"Domain: kupu\n"
+
+#: /common/kupu.pox:None
+msgid "Properties modified"
+msgstr "Attributen gewijzigd"
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed with parameter ${param}"
+msgstr "Commando ${command} uitgevoerd met parameters ${param}"
+
+#: /common/kupu.pox:None
+msgid "Not inside a definition list element!"
+msgstr "Niet in een definitie lijst"
+
+#: /common/kupu.pox:None
+msgid "Add table"
+msgstr "Tabel toevoegen"
+
+#: /common/kupu.pox:None
+msgid "Table added"
+msgstr "Tabel toegevoegd"
+
+#: /common/kupu.pox:None
+msgid "Source edit tool initialized"
+msgstr "Source tool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "Delete row"
+msgstr "Rij verwijderen"
+
+#: /common/kupu.pox:None
+msgid "Recursion detected when counting column position"
+msgstr "Recursie opgetreden bij het bepalen van de kolom positie"
+
+#: /common/kupu.pox:None
+msgid "List style changed"
+msgstr "List stijl gewijzigd"
+
+#: /common/kupu.pox:None
+msgid "Create image"
+msgstr "Afbeelding gecreeërd"
+
+#: /common/kupu.pox:None
+msgid "You have unsaved changes. Do you want to save before leaving the page?"
+msgstr ""
+"U heeft niet opgeslagen wijzigingen. Wilt u opslaan voordat u de pagina "
+"verlaat?"
+
+#: /common/kupu.pox:None
+msgid "Table row removed"
+msgstr "Tabelrij verwijderd"
+
+#: /common/kupu.pox:None
+msgid "Document saved"
+msgstr "Document weggeschreven"
+
+#: /common/kupu.pox:None
+msgid "Color chosen"
+msgstr "Kleur gekozen"
+
+#: /common/kupu.pox:None
+msgid "Table row added"
+msgstr "Tabel rij toegevoegd"
+
+#: /common/kupu.pox:None
+msgid "Error saving document"
+msgstr "Fout opgetreden bij het wegschrijven van het document"
+
+#: /common/kupu.pox:None
+msgid "No destination URL available!"
+msgstr "Geen doel URL beschikbaar!"
+
+#: /common/kupu.pox:None
+msgid "Link removed"
+msgstr "Link verwijderd"
+
+#: /common/kupu.pox:None
+msgid "No row to delete"
+msgstr "Geen rij om te verwijderen"
+
+#: /common/kupu.pox:None
+msgid "Delete Table"
+msgstr "Tabel verwijderen"
+
+#: /common/kupu.pox:None
+msgid "Cleanup done, sending document to server"
+msgstr "Cleanup klaar, document wordt naar de server gestuurd"
+
+#: /common/kupu.pox:None
+msgid "Image tool initialized"
+msgstr "Afbeeldingstool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "End offset out of range!"
+msgstr "End offset niet binnen range!"
+
+#: /common/kupu.pox:None
+msgid "tdindex: ${tdindex}"
+msgstr "kolomindex: ${tdindex}"
+
+#: /common/kupu.pox:None
+msgid "Create link"
+msgstr "Link creeëren"
+
+#: /common/kupu.pox:None
+msgid "Starting HTML cleanup"
+msgstr "HTML cleanup begonnen"
+
+#: /common/kupu.pox:None
+msgid "Link modified"
+msgstr "Link gewijzigd"
+
+#: /common/kupu.pox:None
+msgid "Request sent to server"
+msgstr "Het request is naar de server verstuurd"
+
+#: /common/kupu.pox:None
+msgid "Table tool initialized"
+msgstr "Tabel tool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "There were no errors."
+msgstr "Geen fouten opgetreden"
+
+#: /common/kupu.pox:None
+msgid ""
+"exception ${message} while registering an event handler for element "
+"${element}, event ${event}, method ${method}"
+msgstr ""
+"exceptie ${message} opgetreden tijdens het registreren van een event handler "
+"voor element ${element}, event ${event}, method ${method}"
+
+#: /common/kupu.pox:None
+msgid "Error loading translation (status ${status} ), falling back to english"
+msgstr ""
+"Error bij het laden van de translatie (status ${status}), nu wordt Engels "
+"gebruikt in plaats van uw land-keuze"
+
+#: /common/kupu.pox:None
+msgid "Start node offset detected in a node without children!"
+msgstr "Start node offset ontdekt in een node zonder children!"
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuTool._selectSelectItem"
+msgstr "Deprecation warning: KupuTool._selectSelectItem"
+
+#: /common/kupu.pox:None
+msgid "Couldn\\'t set design mode. Kupu will not work on this browser."
+msgstr "Kupu initializatie mislukt. Kupu zal niet werken op uw browser."
+
+#: /common/kupu.pox:None
+msgid "No element found in the config island!"
+msgstr "Geen element gevonden in het configuratie eiland!"
+
+#: /common/kupu.pox:None
+msgid "Start offset out of range!"
+msgstr "Start offset niet binnen range!"
+
+#: /common/kupu.pox:None
+msgid ""
+"Pasting from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr ""
+"Uit veiligheidsoverwegingen zijn clipboard acties niet ingeschakeld in uw "
+"browser. Voor mmer informatie, lees http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+
+#: /common/kupu.pox:None
+msgid "Property tool initialized"
+msgstr "Attribuut tool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "Colorchooser tool initialized"
+msgstr "Kleurkiezer tool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "No parentcolumn found!"
+msgstr "Geen parent kolom gevonden!"
+
+#: /common/kupu.pox:None
+msgid "Row repeated"
+msgstr "Kolom herhaald"
+
+#: /common/kupu.pox:None
+msgid "Table removed"
+msgstr "Tabel verwijderd"
+
+#: /common/kupu.pox:None
+msgid "Cut"
+msgstr "Knippen"
+
+#: /common/kupu.pox:None
+msgid "Unsupported browser!"
+msgstr "Niet ondersteunde browser!"
+
+#: /common/kupu.pox:None
+msgid "Add row"
+msgstr "Rij toevoegen"
+
+#: /common/kupu.pox:None
+msgid "Link tool initialized"
+msgstr "Link tool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "Sending request to server"
+msgstr "Verstuur het request naar de server"
+
+#: /common/kupu.pox:None
+msgid "Invalid table size"
+msgstr "Ongeldige tabel grootte"
+
+#: /common/kupu.pox:None
+msgid "Error placing back selection"
+msgstr "Fout opgetreden bij het terug plaatsen van de selectie"
+
+#: /common/kupu.pox:None
+msgid "Delete link"
+msgstr "Link verwijderen"
+
+#: /common/kupu.pox:None
+msgid "Add column"
+msgstr "Kolom toevoegen"
+
+#: /common/kupu.pox:None
+msgid ""
+"Cutting from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr ""
+"Uit veiligheidsoverwegingen zijn clipboard acties niet ingeschakeld in uw "
+"browser. Voor mmer informatie, lees http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+
+#: /common/kupu.pox:None
+msgid "Exception while processing updateState on ${id}: ${msg}"
+msgstr ""
+"Exceptie opgetreden tijdens het verwerken van updateState op ${id}: ${msg}"
+
+#: /common/kupu.pox:None
+msgid "Cleaning up HTML..."
+msgstr "Cleanup van de HTML..."
+
+#: /common/kupu.pox:None
+msgid "List style tool initialized"
+msgstr "List stijl tool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "Row repeat turned off"
+msgstr "Kolom herhaling uitgeschakeld"
+
+#: /common/kupu.pox:None
+msgid ""
+"There was a problem initializing the drawers. Most likely the XSLT or XML "
+"files aren\\'t available. If this is not the Kupu demo version, check your "
+"files or the service that provide them (error: ${error})."
+msgstr ""
+"Er is een probleem opgetreden bij het initializeren van de drawers. "
+"Waarschijnlijk zijn de XML of XSLT bestanden niet aanwezig. Als dit geen "
+"demo versie van Kupu is, controleer de service die de XML bestanden aan zou "
+"moeten leveren (error: ${error})"
+
+#: /common/kupu.pox:None
+msgid "Deprecation warning: KupuToolBox._selectSelectItem"
+msgstr "Deprecation warning: KupuToolBox._selectSelectItem"
+
+#: /common/kupu.pox:None
+msgid ""
+"Copying from JavaScript is disabled on your Mozilla due to security "
+"settings. For more information, read http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+msgstr ""
+"Uit veiligheidsoverwegingen zijn clipboard acties niet ingeschakeld in uw "
+"browser. Voor mmer informatie, lees http://www.mozilla.org/editor/midasdemo/"
+"securityprefs.html"
+
+#: /common/kupu.pox:None
+msgid "Command ${command} executed"
+msgstr "Commando ${command} uitgevoerd"
+
+#: /common/kupu.pox:None
+msgid "Delete column"
+msgstr "Kolom verwijderen"
+
+#: /common/kupu.pox:None
+msgid ""
+"Error saving your data.\\nResponse status: ${status}.\\nCheck your server "
+"log for more information."
+msgstr ""
+"Er is een fout opgetreden bij het wegscrhijven van uw data.\\nResponse "
+"status: ${status}.\\nBekijk de server log voor meer informatie."
+
+#: /common/kupu.pox:None
+msgid "This feature requires pop-ups to be enabled on your browser!"
+msgstr ""
+
+#: /common/kupu.pox:None
+msgid "Not inside link"
+msgstr "Dit kan alleen binnen een link"
+
+#: /common/kupu.pox:None
+msgid "View source"
+msgstr "Bekijk de source"
+
+#: /common/kupu.pox:None
+msgid "Image inserted"
+msgstr "Afbeelding toegevoegd"
+
+#: /common/kupu.pox:None
+msgid "Browser not supported!"
+msgstr "Uw browser wordt niet ondersteund!"
+
+#: /common/kupu.pox:None
+msgid "Please wait while saving document..."
+msgstr "Even geduld alstublieft, Kupu is het document aan het wegschrijven"
+
+#: /common/kupu.pox:None
+msgid "Editor initialized"
+msgstr "Editor geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "Copy"
+msgstr "Kopieren"
+
+#: /common/kupu.pox:None
+msgid "Paste"
+msgstr "Plakken"
+
+#: /common/kupu.pox:None
+msgid "Zoom tool initialized"
+msgstr "Zoom tool geïnitializeerd"
+
+#: /common/kupu.pox:None
+msgid "Table column deleted"
+msgstr "Kolom verwijderd"
+
+#: /common/kupu.pox:None
+msgid "Offset out of document range"
+msgstr "Offset buiten document range!"
+
+#: /common/kupu.pox:None
+msgid "Table cleaned up"
+msgstr "Tabel cleanup klaar"
+
+#: /common/kupu.pox:None
+msgid "Error loading data, status ${status}"
+msgstr "Fout opgetreden tijdens het laden van de data, status ${status}"
+
+#: /common/kupu.pox:None
+msgid ""
+"Could not set status bar message, check your browser\\'s security settings."
+msgstr ""
+"Kan geen status bar bericht plaatsen, controleer uw browser\\'s configuratie."
+
+#: /common/kupu.pox:None
+msgid "End node offset detected in a node without children!"
+msgstr "End node offset ontdekt in een node zonder children!"
+
+#: /common/kupu.pox:None
+msgid "Your form has not been saved. All changes you have made will be lost"
+msgstr ""
+"Uw formulier is niet opgeslagen. Alle wijzgingen die u gemaakt hebt gaan "
+"verloren"
+
+#: /common/kupu.pox:None
+msgid "Link added"
+msgstr "Link toegevoegd"
+
+#: /common/kupu.pox:None
+msgid "No head in document!"
+msgstr "Geen head element in document!"
+
+#: /common/kupu.pox:None
+msgid "Not inside a row!"
+msgstr "Niet in een rij!"
+
+#: /common/kupu.pox:None
+msgid "Not inside a table!"
+msgstr "Niet in een tabel!"
+
+#: /common/kupu.pox:None
+msgid "Selection not inside the node!"
+msgstr "Selectie niet binnen het element!"
+
+#: /common/kupu.pox:None
+msgid "Editor not initialized yet!"
+msgstr "Editor nog niet geïnitializeerd!"
+
+#: /common/kupu.pox:None
+msgid "Table column added"
+msgstr "Kolom toegevoegd"
+
+# Default: "Caption"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_caption_label"
+msgstr ""
+
+# Default: "Insert Link"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_title"
+msgstr ""
+
+# Default: "Left"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_left"
+msgstr ""
+
+# Default: "(${width} by ${height})"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_size"
+msgstr ""
+
+# Default: "Insert Image"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_title"
+msgstr ""
+
+# Default: "Upload to: ${folder}"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_to_label"
+msgstr ""
+
+# Default: "Name"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_name_label"
+msgstr ""
+
+# Default: "Preview"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_preview_label"
+msgstr ""
+
+# Default: ""
+# "Select an image from your computer and click ok to have it\n"
+# "            automatically uploaded to selected folder and inserted into the\n"
+# "            editor."
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_instructions"
+msgstr ""
+
+# Default: "Upload ..."
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_link"
+msgstr ""
+
+# Default: "Title:"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_title_label"
+msgstr ""
+
+# Default: "Title"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_title_label"
+msgstr ""
+
+# Default: "Description"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_description_label"
+msgstr ""
+
+# Default: "ALT-text"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_upload_alt_text"
+msgstr ""
+
+# Default: "search"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "kupudrawer_search"
+msgstr ""
+
+# Default: "Inline"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_inline"
+msgstr ""
+
+# Default: "Target"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "linkdrawer_target_label"
+msgstr ""
+
+# Default: "Right"
+#: /common/kupudrawers/drawer.xsl:None
+msgid "imagedrawer_right"
+msgstr ""
+
+#: /default/body.kupu:None
+msgid "Kupu Editor Test Page"
+msgstr "Kupu Editor Test Pagina"
+
+#: /default/colorchooser.kupu:None
+msgid "text color: alt-f"
+msgstr "text kleur: alt-f"
+
+#: /default/colorchooser.kupu:None
+msgid "background color: alt-h"
+msgstr "achtergrond kleur: alt-h"
+
+# Default: "Row"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_row_label"
+msgstr ""
+
+# Default: "Right"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_right_option"
+msgstr ""
+
+# Default: "Current column alignment"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_alignment_label"
+msgstr ""
+
+#: /default/drawers.kupu:None
+msgid "external link"
+msgstr "externe link"
+
+# Default: "Center"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_center_option"
+msgstr ""
+
+# Default: "Fix All Tables"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_tables_button"
+msgstr ""
+
+#: /default/drawers.kupu:None
+msgid "External Link"
+msgstr "Externe Link"
+
+# Default: "Columns"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_columns_label"
+msgstr ""
+
+# Default: "Left"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_left_option"
+msgstr ""
+
+#: /default/drawers.kupu:None
+msgid "image"
+msgstr "afbeelding"
+
+#: /default/drawers.kupu:None
+msgid "table"
+msgstr "tabel"
+
+#: /default/drawers.kupu:None
+msgid "Preview"
+msgstr "Preview"
+
+# Default: "Rows"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_rows_label"
+msgstr ""
+
+#: /default/drawers.kupu:None
+msgid "internal link"
+msgstr "interne link"
+
+# Default: "Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_title"
+msgstr ""
+
+# Default: "Add Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_table_button"
+msgstr ""
+
+# Default: "Close"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_close_button"
+msgstr ""
+
+# Default: "Column"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_column_label"
+msgstr ""
+
+# Default: "Create Headings"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_headings_label"
+msgstr ""
+
+# Default: "Fix"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_button"
+msgstr ""
+
+# Default: "Fix Table"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_fix_table_label"
+msgstr ""
+
+#: /default/drawers.kupu:None /common/kupudrawers/drawer.xsl:None
+msgid "Ok"
+msgstr "Ok"
+
+#: /default/drawers.kupu:None /common/kupudrawers/drawer.xsl:None
+msgid "Cancel"
+msgstr "Afbreken"
+
+# Default: "Add"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_add_button"
+msgstr ""
+
+# Default: "Remove"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_remove_button"
+msgstr ""
+
+# Default: "Table Class"
+#: /default/drawers.kupu:None
+msgid "tabledrawer_class_label"
+msgstr ""
+
+#: /default/drawers.kupu:None /default/toolboxes.kupu:None
+msgid "Link the highlighted text to this URL:"
+msgstr "Maak een link naar de volgende URL:"
+
+#: /default/save.kupu:None
+msgid "save: alt-s"
+msgstr "wegschrijven: alt-s"
+
+#: /default/sourceedit.kupu:None
+msgid "edit HTML code"
+msgstr "wijzig HTML code"
+
+#: /default/spellchecker.kupu:None
+msgid "check spelling"
+msgstr "controleer spelling"
+
+# Default: "1"
+#: /default/toolbar.kupu:None
+msgid "list-decimal"
+msgstr "lijst-decimal"
+
+# Default: "A"
+#: /default/toolbar.kupu:None
+msgid "list-upperalpha"
+msgstr "lijst-upperalpha"
+
+#: /default/toolbar.kupu:None
+msgid "bold: alt-b"
+msgstr "vet: alt-b"
+
+#: /default/toolbar.kupu:None
+msgid "superscript: alt-+"
+msgstr "superscript: alt-+"
+
+# Default: "&#9675;"
+#: /default/toolbar.kupu:None
+msgid "list-circle"
+msgstr "lijst-circle"
+
+#: /default/toolbar.kupu:None
+msgid "Formatted"
+msgstr "Geformatteerd"
+
+# Default: "a"
+#: /default/toolbar.kupu:None
+msgid "list-loweralpha"
+msgstr "lijst-loweralpha"
+
+# Default: "no bullet"
+#: /default/toolbar.kupu:None
+msgid "list-nobullet"
+msgstr "lijst-nobullet"
+
+# Default: "i"
+#: /default/toolbar.kupu:None
+msgid "list-lowerroman"
+msgstr "lijst-lowerroman"
+
+#: /default/toolbar.kupu:None
+msgid "Kupu SVN/unreleased"
+msgstr "Kupu SVN/unreleased"
+
+#: /default/toolbar.kupu:None
+msgid "Remove image"
+msgstr "Afbeelding verwijderen"
+
+#: /default/toolbar.kupu:None
+msgid "undo: alt-z"
+msgstr "ongedaan maken: alt-z"
+
+# Default: "&#9679;"
+#: /default/toolbar.kupu:None
+msgid "list-disc"
+msgstr "lijst-disc"
+
+#: /default/toolbar.kupu:None
+msgid "definition list: alt-="
+msgstr "definitie lijst: alt-="
+
+#: /default/toolbar.kupu:None
+msgid "indent: alt->"
+msgstr "inspringen: alt->"
+
+#: /default/toolbar.kupu:None
+msgid "Remove link"
+msgstr "Link verwijderen"
+
+#: /default/toolbar.kupu:None
+msgid "Normal"
+msgstr "Normaal"
+
+#: /default/toolbar.kupu:None
+msgid "left justify: alt-l"
+msgstr "links uitlijnen: alt-l"
+
+#: /default/toolbar.kupu:None
+msgid "right justify: alt-r"
+msgstr "rechts uitlijnen: alt-r"
+
+#: /default/toolbar.kupu:None
+msgid "outdent: alt-<"
+msgstr "uitspringen: alt-<"
+
+# Default: "&#9632;"
+#: /default/toolbar.kupu:None
+msgid "list-square"
+msgstr "lijst-square"
+
+#: /default/toolbar.kupu:None
+msgid "underline: alt-u"
+msgstr "onderlijnen: alt-u"
+
+#: /default/toolbar.kupu:None
+msgid "redo: alt-y"
+msgstr "herdoen: alt-y"
+
+#: /default/toolbar.kupu:None
+msgid "subscript: alt--"
+msgstr "subscript: alt--"
+
+#: /default/toolbar.kupu:None
+msgid "center justify: alt-c"
+msgstr "midden uitlijnen: alt-c"
+
+#: /default/toolbar.kupu:None
+msgid "unordered list: alt-*"
+msgstr "ongenummerde lijst: alt-*"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 3"
+msgstr "Kop 3"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 2"
+msgstr "Kop 2"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 1"
+msgstr "Kop 1"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 6"
+msgstr "Kop 6"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 5"
+msgstr "Kop 5"
+
+#: /default/toolbar.kupu:None
+msgid "Heading 4"
+msgstr "Kop 4"
+
+#: /default/toolbar.kupu:None
+msgid "numbered list: alt-#"
+msgstr "genummerde lijst: alt-#"
+
+#: /default/toolbar.kupu:None
+msgid "italic: alt-i"
+msgstr "schuin: alt-i"
+
+# Default: "I"
+#: /default/toolbar.kupu:None
+msgid "list-upperroman"
+msgstr "lijst-upperroman"
+
+#: /default/toolboxes.kupu:None
+msgid "Headings:"
+msgstr "Kop:"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix"
+msgstr "Repareren"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Column"
+msgstr "Kolom verwijderen"
+
+#: /default/toolboxes.kupu:None
+msgid "Inline"
+msgstr "Inline"
+
+#: /default/toolboxes.kupu:None
+msgid "Select a cleanup action:"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Links"
+msgstr "Links"
+
+#: /default/toolboxes.kupu:None
+msgid "Rows:"
+msgstr "Rijen:"
+
+#: /default/toolboxes.kupu:None
+msgid "Remove Row"
+msgstr "Rij verwijderen"
+
+#: /default/toolboxes.kupu:None
+msgid "Tables"
+msgstr "Tabellen"
+
+#: /default/toolboxes.kupu:None
+msgid "Create"
+msgstr "Aanmaken"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert image at the following URL:"
+msgstr "Afbeelding van de volgende URL invoegen:"
+
+#: /default/toolboxes.kupu:None
+msgid "Title:"
+msgstr "Titel:"
+
+#: /default/toolboxes.kupu:None
+msgid "Description:"
+msgstr "Omschrijving:"
+
+#: /default/toolboxes.kupu:None
+msgid "Image class:"
+msgstr "Afbeelding class:"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Column"
+msgstr "Kolom toevoegen"
+
+#: /default/toolboxes.kupu:None
+msgid "Fix Table"
+msgstr "Tabel repareren"
+
+#: /default/toolboxes.kupu:None
+msgid "Images"
+msgstr "Afbeeldingen"
+
+#: /default/toolboxes.kupu:None
+msgid "Insert Image"
+msgstr "Afbeelding invoegen"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Table"
+msgstr "Tabel toevoegen"
+
+#: /default/toolboxes.kupu:None
+msgid "Add Row"
+msgstr "Rij toevoegen"
+
+#: /default/toolboxes.kupu:None
+msgid "Properties"
+msgstr "Attributen"
+
+#: /default/toolboxes.kupu:None
+msgid "Col Align:"
+msgstr "Kolom uitlijning:"
+
+#: /default/toolboxes.kupu:None
+msgid "Center"
+msgstr "Center"
+
+#: /default/toolboxes.kupu:None
+msgid "Debug Log"
+msgstr "Debug Log"
+
+#: /default/toolboxes.kupu:None
+msgid "Make Link"
+msgstr "Link aanmaken"
+
+#: /default/toolboxes.kupu:None
+msgid "Cleanup expressions"
+msgstr ""
+
+#: /default/toolboxes.kupu:None
+msgid "Columns:"
+msgstr "Kolommen:"
+
+#: /default/toolboxes.kupu:None
+msgid "Table Class:"
+msgstr "Tabel class:"
+
+#: /default/toolboxes.kupu:None
+msgid "Right"
+msgstr "Rechts"
+
+#: /default/toolboxes.kupu:None
+msgid "Left"
+msgstr "Links"

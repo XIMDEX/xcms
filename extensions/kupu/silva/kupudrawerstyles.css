@@ -1,0 +1,112 @@
+/*****************************************************************************
+ *
+ * Kupu drawer styles
+ *
+ * Copyright (c) 2003-2005 Kupu Contributors. See CREDITS.txt
+ *
+ * Instead of customizing this file, it is recommended to add your own
+ * CSS file.  Feel free to use whole or parts of this for your own
+ * designs, but give credit where credit is due.
+ *
+ *****************************************************************************/
+
+/* $Id: kupudrawerstyles.css 9879 2005-03-18 12:04:00Z yuppie $ */
+
+.kupu-drawer {
+  position: absolute;
+  display: none;
+  border: solid 1px gray;
+  border-top: solid 10px #c0c0c0;
+  background-color: #dde5ee;
+  color: #2d374c;
+  height: 340px;
+  width: 520px;
+  z-index: 2;
+}
+
+div#kupu-drawerheader, div#kupu-dialogbuttons { 
+  font-family: sans-serif;
+}
+
+input#kupu-searchbox {
+  margin-left: 350px;
+  width: 8em;
+  margin-bottom: 6px;
+}
+
+div#kupu-dialogbuttons {
+  position: absolute;
+  left: 20em;  
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+div#kupu-dialogbuttons button {
+  width: 4.5em;
+  margin-left: 0.3em;
+}
+
+div#kupu-panels {
+  margin-left: 6px;
+  margin-right: 6px;
+  background-color: #dde5ee;
+}
+
+div#kupu-panels td {
+  font-family: sans-serif;
+  font-size: 12px;
+  background-color: white;
+  vertical-align: top;
+  padding: 6px;
+}
+
+td#kupu-librariespanel {
+  width: 27%;
+  height: 240px;
+}
+
+td#kupu-resourcespanel {
+  width: 43%;
+}
+
+td#kupu-propertiespanel {
+  width: 30%;
+  height: 240px;
+}
+
+div#kupu-resourceitems {
+  height: 230px;
+}
+
+.overflow {
+  overflow: auto;
+  height: 230px;
+}
+
+div.kupu-libsource {
+}
+
+div.response, div.collection {
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  height: 15px;
+  margin-top: 0.1em;
+  overflow: hidden;
+  padding-top: 4px;
+}
+
+div.kupu-libsource:hover,
+div.response:hover,
+div.collection:hover,
+div.selected:hover {
+  cursor: pointer;
+}
+
+div.selected {
+  background-repeat: no-repeat;
+  background-color: ButtonFace;
+}
+
+#kupu-tabledrawer-edittable {
+  display: none;
+}

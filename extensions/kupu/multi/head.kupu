@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="head"
+    implementation="multi"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="bootstrap-editor">
+    <script type="text/javascript" src="kupumultieditor.js"> </script>
+    <script type="text/javascript" src="kupuinit_multi.js"> </script>
+    <script type="text/javascript" src="kupustart_multi.js"> </script>
+  </kupu:part>
+
+</kupu:feature>

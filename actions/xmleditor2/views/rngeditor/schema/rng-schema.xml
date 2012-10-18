@@ -1,0 +1,166 @@
+ki<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:xim="http://ximdex.com/schema/1.0" ns="" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <start>
+        <element name="docxap">
+            <ref name="def_grammar"/>
+        </element>
+    </start>
+    <define name="def_grammar">
+        <element name="grammar">
+            <attribute name="datatypeLibrary"/>
+            <attribute name="uid"/>
+            <ref name="def_start"/>
+            <zeroOrMore>
+                <ref name="def_define"/>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_start">
+        <element name="start">
+            <attribute name="uid"/>
+            <ref name="def_element"/>
+        </element>
+    </define>
+    <define name="def_define">
+        <element name="define">
+            <attribute name="name"/>
+            <attribute name="uid"/>
+            <ref name="def_element"/>
+        </element>
+    </define>
+    <define name="def_element">
+        <element name="element">
+            <attribute name="name"/>
+            <attribute name="uid"/>
+            <zeroOrMore>
+            	<choice>
+					<ref name="def_attribute"/>
+					<ref name="def_xim_default_content"/>
+					<ref name="def_xim_type"/>
+					<ref name="def_text"/>
+	                <ref name="def_zero_or_more"/>
+	                <ref name="def_one_or_more"/>
+	                <ref name="def_interleave"/>
+				</choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_interleave">
+        <element name="interleave">
+            <attribute name="uid"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_ref"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_attribute">
+        <element name="attribute">
+            <attribute name="uid"/>
+            <attribute name="name"/>
+            <zeroOrMore>
+                <ref name="def_choice"/>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_xim_attribute">
+        <element name="xim:attribute">
+            <attribute name="uid"/>
+            <attribute name="name"/>
+            <attribute name="value"/>
+            <zeroOrMore>
+                <ref name="def_choice"/>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_xim_default_content">
+        <element name="xim:default_content">
+            <attribute name="uid"/>
+            <text/>
+        </element>
+    </define>
+    <define name="def_text">
+        <element name="text">
+            <attribute name="uid"/>
+        </element>
+    </define>
+    <define name="def_xim_type">
+        <element name="xim:type">
+            <attribute name="uid"/>
+            <text/>
+        </element>
+    </define>
+    <define name="def_choice">
+        <element name="choice">
+            <attribute name="uid"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_text"/>
+                </choice>
+            </zeroOrMore>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_ref"/>
+                </choice>
+            </zeroOrMore>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_value"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_value">
+        <element name="value">
+            <attribute name="uid"/>
+            <text/>
+        </element>
+    </define>
+    <define name="def_zero_or_more">
+        <element name="zeroormore">
+            <attribute name="uid"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_choice"/>
+                </choice>
+            </zeroOrMore>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_text"/>
+                </choice>
+            </zeroOrMore>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_ref"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_one_or_more">
+        <element name="oneormore">
+            <attribute name="uid"/>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_choice"/>
+                </choice>
+            </zeroOrMore>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_text"/>
+                </choice>
+            </zeroOrMore>
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_ref"/>
+                </choice>
+            </zeroOrMore>
+        </element>
+    </define>
+    <define name="def_ref">
+        <element name="ref">
+            <attribute name="uid"/>
+            <attribute name="name"/>
+        </element>
+    </define>
+</grammar>

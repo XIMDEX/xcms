@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<kupu:include
+  xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  >
+  <kupu:id>$Id: include.kupu 11657 2005-04-30 17:19:15Z guido $</kupu:id>
+
+  <!-- Include features -->
+  <xi:include href="wire.kupu" />
+  <xi:include href="html.kupu" />
+  <xi:include href="head.kupu" />
+  <xi:include href="body.kupu" />
+  <xi:include href="xmlconfig.kupu" />
+  <xi:include href="saveonpart.kupu" />
+  <xi:include href="sourceedit.kupu" />
+  <xi:include href="spellchecker.kupu" />
+  <xi:include href="contextmenu.kupu" />
+  <xi:include href="toolbar.kupu" />
+  <xi:include href="toolboxes.kupu" />
+  <xi:include href="colorchooser.kupu" />
+  <xi:include href="save.kupu" />
+  <xi:include href="drawers.kupu" />
+
+</kupu:include>

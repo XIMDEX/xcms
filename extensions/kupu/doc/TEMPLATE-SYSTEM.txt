@@ -1,0 +1,424 @@
+==========================
+The kupu Templating System
+==========================
+
+Problem
+=======
+
+kupu is an editor with many features, many of them optional or
+specific to certain integration implementations. While it is fairly
+easy to maintain the JavaScript side of features through separate
+files, the HTML template has to be custom constructed for every
+feature combination.
+
+Kupu 1.0 thus comes with five different templates. Zope-based
+applications would just require one template because they could turn
+certain parts of the template on and off by filling ZPT
+slots. However, applications not using Zope Page Templates (ZPTs) have
+to customize one of the provided templates. That not only means manual
+editing of the templates in order to configure the feature set, it
+also means the lack of an automatic update when a new kupu version is
+released.
+
+
+Goals
+-----
+
+We want to...
+
+  * involve as few files as possible when adding a new feature to
+    kupu. We preferrably only want to add a file for the JavaScript
+    part of the feature and a file for the template part of the
+    feature.
+
+  * be able to disable a feature whenever we want under any
+    circumstance.
+
+  * allow and encourage third party developers to develop plugins
+    (i.e. new features) for kupu that can be distributed outside the
+    main kupu integration and yet be included without manual
+    adjustments.
+
+  * be able to include platform specific markup when necessary.
+
+  * rely on templating standards (XML, XSLT, XInclude, etc.)
+
+It is clear, that a system-indepentend templating system is needed to
+ease kupu's integration into other systems and any customization that
+is required by such a process.
+
+
+Definitions
+-----------
+
+Slot
+
+  A position in a template, at which markup can be inserted. Example:
+  the HTML header, the HTML body.
+
+Feature
+
+  A bundle of code and markup providing a certain set of
+  functionality. Examples for basic features are: the editor frame,
+  toolbar with buttons, colorchooser, synchronous form-based or
+  asynchronous document-centric editing support. Examples for more
+  advanced and optional features are: save on part, autosave, context
+  menu, source editing, library drawer.
+
+Part
+
+  A part of a Feature. While order usually does not matter when
+  writing JavaScript prototypes (or including them from a file), order
+  in a template *does* matter. Therefore, a Feature can consist of
+  different parts which are distributed throughout the template at the
+  appropriate places (Slots). Example: The parts of the source edit
+  feature are the button in the toolbar that enables source editing
+  and the function that is called when the button is clicked.
+
+Implementation
+
+  Combination of target platform specific Features or Parts of
+  Features. The way Features are implemented might vary througout
+  different integration layers, due to the requirements of the target
+  platforms. Examples of Implementations are: Default (the default set
+  of Features), Zope (re-implementation of certain features for Zope
+  integration), Plone, Silva, Apache Lenya, MMBase, etc.
+
+Distribution
+
+  Set of Feature definitions or Feature disablings in the context of a
+  certain Implementation or order of Implementations. Distributions
+  can not only differ from integration layer to integration layer, but
+  also be customized for every application or system Kupu is part
+  of. Kupu thus only provides *default* distributions, e.g.:
+  Distribution for default Features, Distribution for Plone,
+  Distribution for Silva, Distributon for Silva, etc. Web Developer
+  XYZ might choose to make a custom distribution for the application
+  (s)he's building for customer ABC.
+
+
+Whenever the above defined words appear in the text below, their first
+letter is capitalized. Otherwise, the term is used in its conventional
+meaning.
+
+
+Perceptions
+-----------
+
+* An Implementation overrides one or more features defined by default
+  Implementations or defines new features
+
+* Wiring Parts to Slots is Distribution-specific.
+
+* Implementation Order is Distribution-specific.
+
+* Feature enabling/disabling is Distribution-specific, but usually
+  more specific to the target application than to the pre-packaged
+  Distribution.
+
+
+Proposal
+========
+
+
+File system structure
+---------------------
+
+kupu's former main template (kupumacros.html) is split into logical
+chunks resembling Features and Parts as defined above. Each Feature
+and all its parts resides in an XML file with the file ending '.kupu'.
+All features of an Implementation reside in the same directory.  The
+main kupu distribution includes a directory named 'default'.  It
+contains a default set of Features in their default Implementation.
+Platform specific markup resides in other Implementation directories.
+
+A Distribution is represented in an XML file typically named
+'dist.kupu'. It defines an order in which Features are looked up in
+Implementations and can optionally disable Features.
+
+A system consisting of XSLT templates is used to parse a Distribution
+configuration file and construct markup custom to that particular
+Distribution. The XInclude standard is used to combine all .kupu XML
+files to one large tree that can be fed to an XSLT processor.
+
+Overview:
+~~~~~~~~~
+
+=============================== ================================================
+kupu/                           (the root directory of the kupu distribution)
+kupu/dist.kupu                  (kupu's default Distribution file)
+kupu/default/                   ('default' Implementation of Features)
+kupu/default/feature1.kupu
+kupu/default/feature2.kupu
+kupu/default/wire.kupu          (wires Parts to Slots)
+kupu/default/include.kupu       (imports all Features and the wiring from the
+                                'default' Implementation for convenience)
+kupu/foo/                       ('Foo' Implementation)
+kupu/foo/feature1.kupu
+kupu/foo/feature2.kupu
+kupu/foo/wire.kupu              ([re-]wires [additional] Parts to Slots)
+kupu/foo/include.kupu           (imports all Features and the wiring from the
+                                'default' Implementation for convenience)
+kupu/foo/foo.py                 (some additional platform specific files)
+kupu/foo/Foo.class
+kupu/foo/fooicon.png
+=============================== ================================================
+
+XML format
+----------
+
+::
+
+ <grammar xmlns="http://relaxng.org/ns/structure/1.0">
+
+   <start>
+     <ref name="dist" />
+   </start>
+
+   <define name="dist">
+     <element name="dist">
+       <interleave>
+         <ref name="featureOrInclude" />
+         <ref name="implementationOrder" />
+         <ref name="expand" />
+       </interleave>
+     </element>
+   </define>
+
+   <define name="feature">
+     <element name="feature">
+       <attribute name="name">
+         <text />
+       </attribute>
+       <attribute name="implementation">
+         <text />
+       </attribute>
+       <element name="part">
+         <attribute name="name">
+           <text />
+         </attribute>
+         <ref name="partContents" />
+       <element>
+     </element>
+   </define>
+
+   <define name="featureOrInclude">
+     <zeroOrMore>
+       <choice>
+         <!-- we can either include more features from elsewhere -->
+         <element name="include">
+           <ref name="featureOrInclude" />
+         </element>
+
+         <!-- or provide actual features -->
+         <ref name="feature" />
+       </choice>
+     </zeroOrMore>
+   </define>
+
+   <define name="wire">
+     <element name="wire">
+       <attribute name="implementation">
+         <text />
+       </attribute>
+       <zeroOrMore>
+         <ref name="fillSlot" />
+       </zeroOrMore>
+     </element>
+   </define>
+
+   <define name="fillSlot">
+     <element name="fill-slot">
+       <attribute name="name">
+         <text />
+       </attribute>
+       <zeroOrMore>
+         <choice>
+           <ref name="arbitraryMarkup" />
+           <ref name="insertPart" />
+         </choice>
+       </zeroOrMore>
+     </element>
+   </define>
+
+   <define name="expand">
+     <oneOrMore>
+       <element name="expand">
+         <zeroOrMore>
+           <ref name="defineSlot" />
+         </zeroOrMore>
+       </element>
+     </oneOrMore>
+   </define>
+
+   <define name="defineSlot">
+     <element name="define-slot">
+       <attribute name="name">
+         <text />
+       </attribute>
+     </element>
+   </define>
+
+   <define name="implementationOrder">
+     <element name="implementation-order>
+       <oneOrMore>
+         <element name="implementation">
+           <attribute name="name">
+             <text />
+           </attribute>
+         </element>
+       </oneOrMore>
+     </element>
+   </define>
+
+   <define name="arbitraryMarkup">
+     <element name=""> <!-- XXX arbitrary markup -->
+       <ref name="partContents" />
+     </element>
+   </define>
+
+   <define name="insertPart">
+     <element name="insert-part">
+       <attribute name="name">
+         <text />
+       </attribute>
+       <attribute name="part">
+         <text />
+       </attribute>
+     </element>
+   </define>
+
+   <define name="partContents">
+     <zeroOrMore>
+       <choice>
+         <ref name="arbitraryMarkup" />
+         <ref name="defineSlot" />
+       </choice>
+     </zeroOrMore>
+   </define>
+
+ </grammar>
+
+
+Example markup:
+---------------
+
+dist.kupu
+~~~~~~~~~
+
+::
+
+ <kupu:dist
+   xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+   xmlns:xi="http://www.w3.org/2001/XInclude"
+   >
+
+   <!-- Include implementations -->
+   <xi:include href="default/include.kupu" />
+   <xi:include href="zope2/include.kupu" />
+   <xi:include href="zope3/include.kupu" />
+   <xi:include href="silva/include.kupu" />
+   <xi:include href="plone/include.kupu" />
+   <xi:include href="apache-lenya/include.kupu" />
+   <xi:include href="roundup/include.kupu" />
+   <!-- ... -->
+
+   <!-- Define the default slot to start with -->
+   <kupu:expand>
+     <kupu:define-slot name="start" />
+   </kupu:expand>
+
+   <!-- Define an order for the implementations that are to be used. The
+        most specific one is located at the top, the last one should
+        always be 'default'. -->
+   <kupu:implementation-order>
+     <!-- most specific one at top -->
+     <kupu:implementation name="plone" />
+     <kupu:implementation name="default" />
+   </kupu:implementation-order>
+
+   <!-- Plone does not want to use certain features -->
+   <kupu:disable-feature name="toolboxes" />
+   <kupu:disable-feature name="save" />
+   <kupu:disable-feature name="colorchooser" />
+
+ </kupu:dist>
+
+
+some_impl/include.kupu
+~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+ <kupu:include
+   xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+   xmlns:xi="http://www.w3.org/2001/XInclude"
+   >
+
+   <!-- Include features -->
+   <xi:include href="feature1.kupu" />
+   <xi:include href="feature2.kupu" />
+
+ </kupu:include>
+
+some_impl/feature1.kupu
+~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+ <kupu:feature
+     name="feature1"
+     implementation="some_impl"
+     >
+
+   <kupu:part name="part1">
+     <div>
+       <p>Part 1 of Feature 1</p>
+     </div>
+   </kupu:part>
+
+   <kupu:part name="part2">
+     <p>
+
+       This part defines a slot that can be filled with more markup by
+       other features:
+
+       <div id="foobar">
+         <kupu:define-slot name="foobar" />
+       </div>
+
+     </p>
+   </kupu:part>
+
+ </kupu:feature>
+
+some_impl/wire.kupu
+~~~~~~~~~~~~~~~~~~~
+
+::
+
+ <kupu:wire
+   implementation="some_impl"
+   xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+   >
+
+   <kupu:fill-slot name="foobar">
+     <kupu:insert-part feature="some_feature" part="some_part" />
+     <kupu:insert-part feature="another_feature" part="a_part" />
+   </kupu:fill-slot>
+
+ </kupu:wire>
+
+
+Questions/Problems
+==================
+
+- Yet to be solved: How to handle i18n in templates? Temporary
+  solution: use ZPT's i18n markup so that we have at least a declaration
+  of what is to be i18n'd.
+
+
+Futures
+=======
+
+- Feature/Part dependencies

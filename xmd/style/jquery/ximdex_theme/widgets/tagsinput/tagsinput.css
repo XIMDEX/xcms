@@ -1,0 +1,141 @@
+
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+div.xim-tagsinput-container {
+   /*border: 1px solid #d3d3d3;
+   width: 500px;*/
+   padding: 10px 10px 0 10px;
+   /*margin: 0 auto;
+   margin-top: 10px;*/
+	overflow: auto;
+}
+
+.kupu-toolbox-tags-button{
+	background-position: -7px -161px;	
+}
+
+/** Tags list */
+div.xim-tagsinput-container ul.xim-tagsinput-list{
+   padding: 0;
+   margin: 0;
+   overflow: auto;
+}
+
+li.xim-tagsinput-newtag {
+   display: inline;
+   float: left;
+   list-style: none;
+   margin: 0 10px 10px 0;
+   padding: 0 2px 2px 0;
+   width: 23px;
+}
+
+ li.xim-tagsinput-tag {
+   border: 1px solid #56B0B1;
+   -moz-border-radius: 6px;
+   -webkit-border-radius: 6px;
+   border-radius: 6px;
+   background: #8DC7C7;
+   display: inline;
+   float: left;
+   width: auto;
+   list-style: none;
+   margin: 0 10px 10px 0;
+   padding: 0 3px 4px 5px;
+   
+}
+li.xim-tagsinput-tag:hover {
+   border-color: #0099cc;
+   background: #43A1A2;
+   color: #fff;
+}
+
+
+div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label {
+   color: #000;
+   text-decoration: none;
+   font-size: 12px;
+}
+div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label:hover {
+   color: #000;
+}
+div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label a {
+   font-size: 12px;
+   text-decoration: none;
+   font-weight: bold;
+   padding: 1px 6x 1px 4px;
+   background: #0099cc;
+   color: #ffffff;
+   position: relative;
+}
+div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label a:hover {
+   background: #ff0000;
+}
+
+/** Tags list suggest */
+div.xim-tagsinput-container div.xim-tagsinput-container-suggested, div.xim-tagsinput-container div.xim-tagsinput-container-related   {
+	display: none;
+	float: left;
+	clear: both;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li, div.xim-tagsinput-container ul.xim-tagsinput-list-related li  {
+   border: 1px solid #56B0B1;
+   -moz-border-radius: 6px;
+   -webkit-border-radius: 6px;
+   border-radius: 6px;
+   display: inline;
+   float: left;
+   width: auto;
+   list-style: none;
+   margin: 0 10px 10px 7px;
+   padding: 0 3px 2px 23px;
+   background-color: #BBD4F1;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-people, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-people {
+	background: #BBD4F1 url(imgs/people.png) no-repeat 3px 1px;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-places, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-places {
+	background: #add8e6 url(imgs/places.png) no-repeat 3px 1px;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-organisations, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-organisations {
+  	background: #bfbfbf url(imgs/organisations.png) no-repeat 3px 1px;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li a:hover, div.xim-tagsinput-container ul.xim-tagsinput-list-related li a:hover {
+   color: #fff;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li img, div.xim-tagsinput-container ul.xim-tagsinput-list-related li img {
+	margin: 8px 4px 2px 0px;
+	padding: 0;
+	width: 16px;
+	height: 16px;
+}

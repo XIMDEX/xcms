@@ -1,0 +1,27 @@
+<kupu:dist
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  >
+
+  <!-- Include implementations -->
+  <xi:include href="include.kupu" />
+
+  <!-- Define the default slot to start with -->
+  <kupu:expand>
+    <kupu:define-slot name="start" />
+  </kupu:expand>
+
+  <!-- Define an implementation order -->
+  <kupu:implementation-order>
+    <kupu:implementation name="plone" />
+    <kupu:implementation name="default" />
+  </kupu:implementation-order>
+
+
+  <!-- Plone does not want to use certain features -->
+  <kupu:disable-feature name="toolboxes" />
+  <kupu:disable-feature name="save" />
+  <kupu:disable-feature name="colorchooser" />
+
+</kupu:dist>

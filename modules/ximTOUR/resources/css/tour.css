@@ -1,0 +1,283 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+.tour_tooltip{
+	position:absolute;
+	width:250px;
+	left:0;
+	top:0;
+	background: url("../../../../xmd/images/action/bg_strike.png") repeat scroll 0 0 rgba(0, 0, 0, 0.85);
+	color:white;
+	z-index:10000;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=85);
+	-moz-box-shadow: 0 2px 3px rgba(0,0,0,.5);
+	-webkit-box-shadow: 0 2px 3px rgba(0,0,0,.5);
+	box-shadow: 0 2px 3px rgba(0,0,0,.5);
+}
+.tour_tooltip p, .tour_tooltip ul{
+	padding:10px 15px 10px 20px;
+	font-size:1.3em;
+	text-shadow:none;
+	line-height: 1.4em;
+}
+.tooltip_arrow{
+	position:absolute;
+	/*background-color:transparent;
+	background-repeat:no-repeat;*/
+	height: 0;
+	width: 0;
+	
+}
+.tooltip_arrow_T,
+.tooltip_arrow_TL,
+.tooltip_arrow_TR{
+	border-bottom: 7px solid rgba(0, 0, 0, 0.75);
+	border-left: 11px solid transparent;
+	border-right: 11px solid transparent;
+	top: -7px;
+	left: 42%;
+}
+
+
+.tooltip_arrow_B,
+.tooltip_arrow_BL,
+.tooltip_arrow_BR{
+	border-top: 7px solid rgba(0, 0, 0, 0.75);
+	border-left: 11px solid transparent;
+	border-right: 11px solid transparent;
+	bottom: -7px;
+	left: 42%;
+}
+
+.tooltip_arrow_L,
+.tooltip_arrow_LT,
+.tooltip_arrow_LB{
+	border-right: 7px solid rgba(0, 0, 0, 0.75);
+	border-top: 11px solid transparent;
+	border-bottom: 11px solid transparent;
+	left: -7px;
+	top: 42%;
+}
+
+.tooltip_arrow_R,
+.tooltip_arrow_RT,
+.tooltip_arrow_RB{
+	border-left: 7px solid rgba(0, 0, 0, 0.75);
+	border-top: 11px solid transparent;
+	border-bottom: 11px solid transparent;
+	right: -7px;
+	top: 42%;
+}
+
+.tooltip_arrow_TL, .tooltip_arrow_BL{
+	left:10%;
+}
+.tooltip_arrow_TR, .tooltip_arrow_BR {
+	right:10%;
+}
+
+
+.tooltip_arrow_LT, .tooltip_arrow_RT{
+	top:10%;
+}
+.tooltip_arrow_LB, .tooltip_arrow_RB{
+	bottom:10%;
+}
+
+
+.tour_overlay{
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0px;
+	left:0px;
+	background:#fff;
+	opacity:0.23;
+	z-index:9998;
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+}
+.tour_mark{
+	z-index: 99999 !important;	
+}
+
+/*@keyframes tour{
+	from{left: -150px;}
+	to{left: 10px;}
+}
+
+@-moz-keyframes tour{
+	from{left: -150px;}
+	to{left: 10px;}
+}
+
+@-webkit-keyframes tour{
+	from{left: -150px;}
+	to{left: 10px;}
+}*/
+
+.tourcontrols{
+	position:fixed;
+	/*right:-300px;*/
+	width:270px;
+	background: url(../../../../xmd/images/action/bg_strike.png) rgba(0,0,0,.8);
+	color:#fff;
+	font-size:1.3em;
+	padding:10px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	font-weight:bold;
+	z-index:999999;
+	text-shadow: 1px 1px 0 #000;
+	border: 1px solid #464646;
+	-moz-box-shadow: 0 0 3px rgba(152,152,152,.3);
+	-webkit-box-shadow: 0 0 3px rgba(152,152,152,.3);
+	-ms-box-shadow: 0 0 3px rgba(152,152,152,.3);
+	-o-box-shadow: 0 0 3px rgba(152,152,152,.3);
+	box-shadow: 0 0 3px rgba(152,152,152,.3);
+	-moz-animation: tour 1s;
+	-webkit-animation: tour 1s;
+	animation: tour 1s;
+	
+}
+.tourcontrols p:first-child{
+	color: #75c4c2;
+	font: normal 1.35em Coustard, sans-serif;
+	text-shadow: 1px 1px 0 rgba(0,0,0,.6);
+}
+
+
+.tourcontrols a{
+	font-size:11px;
+	color:#f0f0f0;
+	cursor:pointer;
+	font-weight:normal;
+	margin:10px 8px 10px 0;
+	background:  url(../../../../xmd/images/action/controls_tour.png) no-repeat left top;
+	padding-left: 15px;
+}
+
+.controls{
+ 	padding-left: 10px;
+ }
+
+#restarttour{
+	background-position: 0 -8px;
+}
+
+#endtour{
+	background-position: 0 -33px;
+}
+
+.tourcontrols a:hover{
+	color:#75c4c2;
+}
+
+#restarttour:hover{
+	background-position: 0 -58px;
+}
+
+#endtour:hover{
+	background-position: 0 -83px;
+}
+.tour_close{
+	position:absolute;
+	top:6px;
+	right:7px;
+	width:10px;
+	height:10px;
+	background: url(../images/close.gif) no-repeat center center;
+	cursor:pointer;
+	padding: 2px;
+}
+.tourcontrols p{
+	padding:10px;
+}
+
+.step{
+	font-size: .85em;
+}
+.tour_button{
+	white-space: nowrap;
+	display:block;
+	float:left;
+	margin:10px 6px;
+	cursor:pointer;
+	background: #c63929;
+	background: -moz-linear-gradient(0% 100% 90deg, #014b4c 0%, #015e5f 50%, #018c8d 50%, #01a2a3 100%);
+	background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #014b4c), color-stop(0.5, #015e5f), color-stop(0.5, #018c8d), color-stop(1, #01a2a3));
+	border: 1px solid #117c7d;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4), 0 1px 3px #333;
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4), 0 1px 3px #333;
+	box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4), 0 1px 3px #333;
+	color: #fff;
+	font-size: .8em;
+	font-weight: bold;
+	letter-spacing: 1px;
+	line-height: 1;
+	padding:6px 7px;
+	text-align: center;
+	text-shadow: 0px -1px 1px rgba(0, 0, 0, .8);
+	letter-spacing: 0;
+	text-transform: uppercase;
+	
+}
+.tour_button:hover {
+	background: #cb0500;
+	background: -moz-linear-gradient(0% 100% 90deg, #014c4c 0%, #015a5b 50%, #2e999a 50%, #4db8b9 100%);
+	background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #014c4c), color-stop(0.5, #015a5b), color-stop(0.5, #2e999a), color-stop(1, #4db8b9));
+}
+.tour_button:active{
+	background: #b30300;
+	background: -moz-linear-gradient(0% 100% 90deg, #013d3e 0%, #015152 50%, #0a7576 50%, #1a8586 100%);
+	background: -webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #013d3e), color-stop(0.5, #015152), color-stop(0.5, #0a7576), color-stop(1, #1a8586));
+	-moz-box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4);
+	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4);
+	box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4);
+}
+.tour_nav{
+	clear:both;
+	width:100%;
+	float:left;
+}
+.container .action_tour {
+	display: block !important;
+}
+
+
+.hidden{
+	display: none;
+}
+
+.disabled{
+	opacity: .5;
+	cursor: default;
+}

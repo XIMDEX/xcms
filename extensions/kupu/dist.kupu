@@ -1,0 +1,20 @@
+<kupu:dist
+  xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  >
+
+  <!-- Include implementations -->
+  <xi:include href="include.kupu" />
+
+  <!-- Define the default slot to start with -->
+  <kupu:expand>
+    <kupu:define-slot name="start" />
+  </kupu:expand>
+
+  <!-- Define an implementation order. Default contains only one
+       implementation, itself. -->
+  <kupu:implementation-order>
+    <kupu:implementation name="default" />
+  </kupu:implementation-order>
+
+</kupu:dist>

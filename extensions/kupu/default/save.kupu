@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="save"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+  <kupu:id>$Id: save.kupu 9520 2005-02-26 16:30:23Z duncan $</kupu:id>
+
+  <kupu:part name="buttons">
+    <span class="kupu-tb-buttongroup">
+      <button type="button" class="kupu-save" id="kupu-save-button" 
+              title="save: alt-s" i18n:attributes="title" accesskey="s">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <!-- We will have the button tool configuration here, too, once we
+       do tool definitions in XML config. -->
+
+</kupu:feature>

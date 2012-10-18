@@ -1,0 +1,193 @@
+%%
+%% This is file `htexture.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hyperref.dtx  (with options: `textures')
+%% 
+%% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
+%% RCS: $Id: hyperref.dtx 6.71 2000/10/04 rahtz Exp rahtz $
+%%
+%% This file is part of the `Hyperref Bundle'.
+%% -------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% The list of all files belonging to the `Hyperref Bundle' is
+%% given in the file `manifest.txt'.
+%%
+\ProvidesFile{htexture.def}
+  [2003/01/22 v6.73n
+  Hyperref driver for Textures]
+\begingroup
+  \obeylines %
+  \gdef\Hy@ps@CR{\noexpand
+  }%
+\endgroup %
+\def\literalps@out#1{%
+  \special{postscript 0 0 transform}%
+  \special{rawpostscript itransform moveto\Hy@ps@CR #1}%
+}%
+\def\headerps@out#1{%
+  \special{%
+    prepostscript TeXdict begin\Hy@ps@CR
+      #1\Hy@ps@CR
+    end%
+  }%
+}%
+\AtBeginDvi{%
+  \headerps@out{%
+    /betterpdfmark {%
+      systemdict begin
+        dup /BP eq
+        {cleartomark gsave nulldevice [}
+        {dup /EP eq
+          {cleartomark cleartomark grestore}
+          {cleartomark}
+          ifelse
+        }ifelse
+      end
+    }def\Hy@ps@CR
+    __pdfmark__ not{/pdfmark /betterpdfmark load def}if
+  }% end of \headerps@out
+}% end of \AtBeginDvi
+\input{pdfmark.def}%
+\def\@pdfproducer{Textures + Distiller}%
+\providecommand\@pdfborder{0 0 1}
+\providecommand\@pdfview{XYZ}
+\providecommand\@pdfviewparams{ H.V}
+\headerps@out{%
+  /vsize {\Hy@pageheight} def
+  /DvipsToPDF {} def
+  /PDFToDvips {} def
+  /HyperBorder  { 1 PDFToDvips } def\Hy@ps@CR
+  /H.V {pdf@hoff pdf@voff null} def\Hy@ps@CR
+  /H.B {/Rect[pdf@llx pdf@lly pdf@urx pdf@ury]} def\Hy@ps@CR
+  /H.S {
+    currentpoint
+    HyperBorder add /pdf@lly exch def
+    dup DvipsToPDF  /pdf@hoff exch def
+    HyperBorder sub /pdf@llx exch def
+  } def\Hy@ps@CR
+  /H.L {
+    2 sub
+    PDFToDvips /HyperBase exch def
+    currentpoint
+    HyperBase sub /pdf@ury exch def
+    /pdf@urx exch def
+  } def\Hy@ps@CR
+  /H.A {
+    H.L
+    currentpoint exch pop
+    vsize 72 sub exch DvipsToPDF
+    HyperBase sub % baseline skip
+    sub /pdf@voff exch def
+  } def\Hy@ps@CR
+  /H.R {
+    currentpoint
+    HyperBorder sub /pdf@ury exch def
+    HyperBorder add /pdf@urx exch def
+    currentpoint exch pop vsize 72 sub
+    exch DvipsToPDF sub /pdf@voff exch def
+  } def\Hy@ps@CR
+}
+\AfterBeginDocument{%
+  \ifHy@colorlinks
+    \headerps@out{/PDFBorder{/Border [0 0 0]}def}%
+  \fi
+}
+\expandafter\let\expandafter\keepPDF@SetupDoc
+  \csname PDF@SetupDoc\endcsname
+\def\PDF@SetupDoc{%
+  \ifx\@baseurl\@empty\else
+    \special{html:<base href="\@baseurl">}%
+  \fi
+  \keepPDF@SetupDoc
+}
+\def\hyper@anchor#1{%
+  \Hy@SaveLastskip
+  \begingroup
+    \let\protect=\string
+    \special{html:<a name=\hyper@quote #1\hyper@quote>}%
+  \endgroup
+  \Hy@activeanchortrue
+  \Hy@colorlink{\@anchorcolor}\anchor@spot\Hy@endcolorlink
+  \special{html:</a>}%
+  \Hy@activeanchorfalse
+  \Hy@RestoreLastskip
+}
+\def\hyper@anchorstart#1{%
+  \Hy@SaveLastskip
+  \begingroup
+    \hyper@chars
+    \special{html:<a name=\hyper@quote#1\hyper@quote>}%
+  \endgroup
+  \Hy@activeanchortrue
+}
+\def\hyper@anchorend{%
+  \special{html:</a>}%
+  \Hy@activeanchorfalse
+  \Hy@RestoreLastskip
+}
+\def\@urltype{url}
+\def\hyper@linkstart#1#2{%
+  \Hy@colorlink{\csname @#1color\endcsname}%
+  \def\Hy@tempa{#1}%
+  \ifx\Hy@tempa\@urltype
+    \special{html:<a href=\hyper@quote#2\hyper@quote>}%
+  \else
+    \begingroup
+      \hyper@chars
+      \special{html:<a href=\hyper@quote\##2\hyper@quote>}%
+    \endgroup
+  \fi
+}
+\def\hyper@linkend{%
+  \special{html:</a>}%
+  \Hy@endcolorlink
+}
+\def\hyper@linkfile#1#2#3{%
+  \hyper@linkurl{#1}{file:#2\ifx\\#3\\\else\##3\fi}%
+}
+\def\hyper@linkurl#1#2{%
+  \leavevmode
+  \ifHy@raiselinks
+    \setbox\@tempboxa=\color@hbox #1\color@endbox
+    \@linkdim\dp\@tempboxa
+    \lower\@linkdim\hbox{%
+      \hyper@chars
+      \special{html:<a href=\hyper@quote#2\hyper@quote>}%
+    }%
+    \Hy@colorlink{\@urlcolor}#1%
+    \@linkdim\ht\@tempboxa
+    \advance\@linkdim by -6.5\p@
+    \raise\@linkdim\hbox{\special{html:</a>}}%
+    \Hy@endcolorlink
+  \else
+    \begingroup
+      \hyper@chars
+      \special{html:<a href=\hyper@quote#2\hyper@quote>}%
+      \Hy@colorlink{\@urlcolor}#1%
+      \special{html:</a>}%
+      \Hy@endcolorlink
+    \endgroup
+  \fi
+}
+\def\hyper@link#1#2#3{%
+  \hyper@linkurl{#3}{\##2}%
+}
+\def\hyper@image#1#2{%
+  \begingroup
+    \hyper@chars
+    \special{html:<img src=\hyper@quote#1\hyper@quote>}%
+  \endgroup
+}
+\endinput
+%%
+%% End of file `htexture.def'.

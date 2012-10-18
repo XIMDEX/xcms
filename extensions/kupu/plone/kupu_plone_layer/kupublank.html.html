@@ -1,0 +1,11 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+tal:define="last_modified python:DateTime()-14;
+ expires python:DateTime()+7;
+ response request/response;
+ h1 python:response.setHeader('Content-Type', 'text/html' );
+ h2 python:response.setHeader('Last-Modified', last_modified.toZone('GMT').rfc822());
+ h3 python:response.setHeader('Cache-Control', 'max-age=36000, must-revalidate');
+ h4 python:response.setHeader('Expires', expires.toZone('GMT').rfc822());" >
+<title></title><body></body></html>

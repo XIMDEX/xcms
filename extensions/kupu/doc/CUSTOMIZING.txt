@@ -1,0 +1,158 @@
+================
+Customizing Kupu
+================
+
+XXX - cover customizing a feature (templating system)
+
+Abstract
+--------
+
+This is a document describing in detail how to customize Kupu on
+different levels: using CSS and HTML to change or remove parts of the
+UI, overriding initKupu() to reduce or extend the amount of tools used
+and hook in custom tools, writing tools and overriding default Kupu
+behaviour.
+
+Sidenote: in the Kupu package there's a subdirectory called 'silva'
+which contains the customizing code used for a Zope based CMS (well,
+not strictly but anyway ;) called 'Silva'. This code uses all the
+customization techniques described below, and can serve as an example
+for how to perform heavy customizations.
+
+Integration and customization
+-----------------------------
+
+Kupu is a feature-rich WYSIWYG editor and will provide a lot of
+ready-to-use features out-of-the-box. When one takes the default
+generated file kupu.html one doesn't have to change anything to use
+those features, but in a real-life situation, where issues like the
+available amount of real-estate, the capabilites of the back-end or
+even the expected knowledge of the users can play important roles,
+integrators will most likely want to perform some customization. The
+Kupu developers have tried to make customization clean and clear, and
+to provide different ways of doing customization, either changing the
+HTML or CSS for small customization (we understand most people
+deploying a tool like Kupu will usually not want to hack JavaScript,
+so in most cases customizing Kupu should not involve any programming)
+or overriding core Kupu functionality using JavaScript.
+
+Configuration
+-------------
+
+Even though it really doesn't belong in this document, we would like
+to mention configuration options as well, since they can be really
+useful for people who want to perform customizations, and we don't
+want to overlook them, ending up doing things from JavaScript that can
+easily be changed in the configuration... ;) Unless special features
+are included, Kupu has a very limited set of configuration options,
+which can all be set through inline XML 'islands' within the document
+containing Kupu.
+
+===================== ================================================
+Directive             Possible values
+===================== ================================================
+src                   the source URL of the document
+dst                   the URL to PUT to (not used for POST setups)
+use_css               whether Kupu should try to (it will succeed in
+                      Mozilla use CSS for bold, italic etc. rather
+                      then plain <b>, <i> or <strong>, <em> tags
+reload_after_save     whether Kupu should reload the iframe's content
+                      after saving, or keep it in tact, retaining
+                      cursor position, selection etc. (the last is
+                      obviously the nicest)
+
+strict_output         when set to 1, Kupu will send a full XHTML
+                      compliant document, including document type
+                      declaration and xmlns namespace declaration to
+                      the server
+===================== ================================================
+  
+CSS customization
+-----------------
+
+If an integrator wants to customize small issues, like the image of a
+toolbar button, the font of a toolbox but also whether a toolbox or a
+button should appear in the client's page, he can modify the
+CSS. There's one main CSS, kupustyles.css, which contains classnames
+or ids for each button and toolbar. To change a color, image or font
+of that element, just override the CSS for the class or id that points
+to that element (note that classes are sometimes chosen where ids seem
+more appropriate, this is because one can do more with CSS classes
+from JavaScript: when dynamically changing an id of an element, any
+CSS directives connected to that id will not be performed, when doing
+so with a class instead the CSS directives *will* be performed),
+perferrably in another CSS file (having a seperate CSS file for
+overriding CSS will improve maintainability: when you upgrade from an
+already customized Kupu to a newer version you don't have to modify
+the core's CSS).
+
+To remove an element from the page easily, you can add 'display: none'
+as a style directive for the element, it will be hidden from
+view. Note that it is also possible to remove the complete tool from
+the view using JavaScript, which has the advantage that less data has
+to be sent to the client and the HTML will become a bit smaller, but
+is a bit harder.
+  
+Changing initKupu
+-----------------
+
+In one of the JavaScript files, kupuinit.js, there's a function called
+initKupu(). Here's where the bootstrapping takes place: the editor is
+instantiated and configuration and a logger are fed to it, the
+contextmenu and the tools are instantiated and registered etc. If you
+want to override or completely remove tools and context menu etc. from
+Kupu, you will need to override (probably copy and change) this
+function.  When you want to remove a tool from Kupu, remove the lines
+in which it is instantiated and registered from your custom
+initKupu. When you subclass an existing tool or want to plug in your
+own, copy the lines of code used to instantiate an existing tool and
+change them.  Since Kupu is still in development (even thought we
+passed 1.0 a while ago, unfortunatly it showed things aren't
+completely the way they should be, hopefully at some point the API and
+core will be frozen for a while) you can expect customized initKupu's
+need modification after an Kupu upgrade. For instance, in 1.0.1 a
+toolbox was reflected by 1 JavaScript class, nowadays there's a
+seperate class for the functionality of that tool and one for the UI
+elements. The initKupu functions that are written for 1.0.1 need to be
+modified to reflect this change. If you override this function, before
+starting an upgrade be sure to check out the documentation or the
+mailinglist, where changes that break customized initKupu functions
+will be mentioned.
+
+Removing or changing tools
+--------------------------
+
+As mentioned in the previous paragraph, to remove a tool from Kupu
+completely you can just remove the lines in which it (and it's UI
+element) is instantiated. However, in some cases you will want to use
+or re-use the functionality of the tool class and get rid of or
+override the UI element.  If you don't want the UI toolbox element of
+the TableTool to be part of the HTML, but *do* want the contextmenu's
+table functionality available (which is also provided via the tools),
+the UI element shouldn't be visible but the tool itself should be
+available. This case could be solved using CSS (display: none) but if
+you have an overridden initKupu anyway, or if you really appreciate
+clean HTML it can be done using initKupu as well, by just not
+registering the UI element (TableToolBox) to the tool (TableTool).
+When you want to change the UI part of a tool, or want to override
+such a toolbox you can just register it to the tool in a similar way.
+
+The KupuTool and KupuToolBox APIs
+---------------------------------
+
+For a reference of the KupuTool and KupuToolBox API's, see
+JSAPI.txt. For a description of how to write them, see EXTENDING.txt.
+
+Overriding KupuEditor methods
+-----------------------------
+
+To override methods on the KupuEditor object, you can either attach a
+method with the name of the one to override to the prototype of the
+class or create a subclass. We did our best to make the API available
+on this core object clean and small, and to keep the methods single
+operations as much as possible, so overriding a method on this object
+usually won't involve much code duplication. Note: unfortunately this
+is not really the case for saveDocument (although I guess the need for
+overriding this is a lot smaller now that prepareForm is available ;)
+and especially not for insertNodeAtSelection (if someone wants to
+rewrite that to something a bit more compact, please do! ;).

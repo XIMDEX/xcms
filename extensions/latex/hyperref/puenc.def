@@ -1,0 +1,665 @@
+%%
+%% This is file `puenc.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hyperref.dtx  (with options: `puenc')
+%% 
+%% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
+%% RCS: $Id: hyperref.dtx 6.71 2000/10/04 rahtz Exp rahtz $
+%%
+%% This file is part of the `Hyperref Bundle'.
+%% -------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% The list of all files belonging to the `Hyperref Bundle' is
+%% given in the file `manifest.txt'.
+%%
+\ProvidesFile{puenc.def}
+  [2003/01/22 v6.73n
+  Hyperref: PDF Unicode definition (HO)]
+\DeclareFontEncoding{PU}{}{}
+\DeclareTextCommand{\textLF}{PU}{\80\012} % line feed
+\DeclareTextCommand{\textCR}{PU}{\80\015} % carriage return
+\DeclareTextCommand{\textHT}{PU}{\80\011} % horizontal tab
+\DeclareTextCommand{\textBS}{PU}{\80\010} % backspace
+\DeclareTextCommand{\textFF}{PU}{\80\014} % formfeed
+\DeclareTextAccent{\`}{PU}{\textgrave}
+\DeclareTextAccent{\'}{PU}{\textacute}
+\DeclareTextAccent{\^}{PU}{\textcircumflex}
+\DeclareTextAccent{\~}{PU}{\texttilde}
+\DeclareTextAccent{\"}{PU}{\textdieresis}
+\DeclareTextAccent{\r}{PU}{\textring}
+\DeclareTextAccent{\v}{PU}{\textcaron}
+\DeclareTextAccent{\.}{PU}{\textdotaccent}
+\DeclareTextAccent{\c}{PU}{\textcedilla}
+\DeclareTextAccent{\U}{PU}{\textbreve}
+\DeclareTextAccent{\C}{PU}{\textdoublegrave}
+\DeclareTextCompositeCommand{\`}{PU}{\@empty}{\textgrave}
+\DeclareTextCompositeCommand{\'}{PU}{\@empty}{\textacute}
+\DeclareTextCompositeCommand{\^}{PU}{\@empty}{\textcircumflex}
+\DeclareTextCompositeCommand{\~}{PU}{\@empty}{\texttilde}
+\DeclareTextCompositeCommand{\"}{PU}{\@empty}{\textdieresis}
+\DeclareTextCompositeCommand{\r}{PU}{\@empty}{\textring}
+\DeclareTextCompositeCommand{\v}{PU}{\@empty}{\textcaron}
+\DeclareTextCompositeCommand{\.}{PU}{\@empty}{\textdotaccent}
+\DeclareTextCompositeCommand{\c}{PU}{\@empty}{\textcedilla}
+\DeclareTextCompositeCommand{\U}{PU}{\@empty}{\textbreve}
+\DeclareTextCompositeCommand{\C}{PU}{\@empty}{\textdoublegrave}
+\DeclareTextCommand{\textbreve}{PU}{\80\030} % breve
+\DeclareTextCommand{\textcaron}{PU}{\80\031} % caron
+\DeclareTextCommand{\textcircumflex}{PU}{\80\032} % circumflex
+\DeclareTextCommand{\textdotaccent}{PU}{\80\033} % dotaccent
+\DeclareTextCommand{\texthungarumlaut}{PU}{\80\034} % hungarumlaut
+\DeclareTextCommand{\textogonek}{PU}{\80\035} % ogonek
+\DeclareTextCommand{\textring}{PU}{\80\036} % ring
+\DeclareTextCommand{\texttilde}{PU}{\80\037} % tilde
+\DeclareTextCommand{\textdoublegrave}{PU}{\83\017} % double grave
+\DeclareTextCommand{\textquotedbl}{PU}{\string"} % quotedbl \80\042
+\DeclareTextCommand{\textnumbersign}{PU}{\80\043} % numbersign
+\DeclareTextCommand{\textdollar}{PU}{\80\044} % dollar
+\DeclareTextCommand{\textpercent}{PU}{\80\045} % percent
+\DeclareTextCommand{\textampersand}{PU}{\80\046} % ampersand
+\DeclareTextCommand{\textparenleft}{PU}{\80\050} % parenleft
+\DeclareTextCommand{\textparenright}{PU}{\80\051} % parenright
+\DeclareTextCommand{\textless}{PU}{<} % less \80\074
+\DeclareTextCommand{\textgreater}{PU}{>} % greater \80\076
+\DeclareTextCommand{\textbackslash}{PU}{\80\134} % backslash
+\DeclareTextCommand{\textasciicircum}{PU}{\80\136} % asciicircum
+\DeclareTextCommand{\textunderscore}{PU}{\80\137} % underscore
+\DeclareTextCommand{\textgrave}{PU}{\80\140} % grave
+\DeclareTextCompositeCommand{\.}{PU}{i}{i} % i
+\DeclareTextCommand{\j}{PU}{j} % jdotless
+\DeclareTextCommand{\textbraceleft}{PU}{\80\173} % braceleft
+\DeclareTextCommand{\textbar}{PU}{|} % bar
+\DeclareTextCommand{\textbraceright}{PU}{\80\175} % braceright
+\DeclareTextCommand{\textasciitilde}{PU}{\80\176} % asciitilde
+\DeclareTextCommand{\textbullet}{PU}{\80\200} % bullet
+\DeclareTextCommand{\textdagger}{PU}{\80\201} % dagger
+\DeclareTextCommand{\textdaggerdbl}{PU}{\80\202} % daggerdbl
+\DeclareTextCommand{\textellipsis}{PU}{\80\203} % ellipsis
+\DeclareTextCommand{\textemdash}{PU}{\80\204} % emdash
+\DeclareTextCommand{\textendash}{PU}{\80\205} % endash
+\DeclareTextCommand{\textflorin}{PU}{\80\206} % florin
+\DeclareTextCommand{\textfractionmark}{PU}{/} % fraction, \80\207
+\DeclareTextCommand{\guilsinglleft}{PU}{\80\210} % guilsinglleft
+\DeclareTextCommand{\guilsinglright}{PU}{\80\211} % guilsinglright
+\DeclareTextCommand{\textminus}{PU}{-} % minus, \80\212
+\DeclareTextCommand{\textperthousand}{PU}{\80\213} % perthousand
+\DeclareTextCommand{\quotedblbase}{PU}{\80\214} % quotedblbase
+\DeclareTextCommand{\textquotedblleft}{PU}{\80\215} % quotedblleft
+\DeclareTextCommand{\textquotedblright}{PU}{\80\216} % quotedblright
+\DeclareTextCommand{\textquoteleft}{PU}{\80\217} % quoteleft
+\DeclareTextCommand{\textquoteright}{PU}{\80\220} % quoteright
+\DeclareTextCommand{\quotesinglbase}{PU}{\80\221} % quotesinglbase
+\DeclareTextCommand{\texttrademark}{PU}{\80\222} % trademark
+\DeclareTextCommand{\textfi}{PU}{fi} % fi ?? \80\223
+\DeclareTextCommand{\textfl}{PU}{fl} % fl ?? \80\224
+\DeclareTextCommand{\OE}{PU}{\80\226} % OE
+\DeclareTextCommand{\oe}{PU}{\80\234} % oe
+\DeclareTextCommand{\textexclamdown}{PU}{\80\241} % exclamdown
+\DeclareTextCommand{\textcent}{PU}{\80\242} % cent
+\DeclareTextCommand{\textsterling}{PU}{\80\243} % sterling
+\DeclareTextCommand{\textcurrency}{PU}{\80\244} % currency
+\DeclareTextCommand{\textyen}{PU}{\80\245} % yen
+\DeclareTextCommand{\textbrokenbar}{PU}{\80\246} % brokenbar
+\DeclareTextCommand{\textsection}{PU}{\80\247} % section
+\DeclareTextCommand{\textdieresis}{PU}{\80\250} % dieresis
+\DeclareTextCommand{\textcopyright}{PU}{\80\251} % copyright
+\DeclareTextCommand{\textordfeminine}{PU}{\80\252} % ordfeminine
+\DeclareTextCommand{\guillemotleft}{PU}{\80\253} % guillemotleft
+\DeclareTextCommand{\textlogicalnot}{PU}{\80\254} % logicalnot
+\DeclareTextCommand{\textregistered}{PU}{\80\256} % registered
+\DeclareTextCommand{\textmacron}{PU}{\80\257} % macron
+\DeclareTextCommand{\textdegree}{PU}{\80\260} % degree
+\DeclareTextCommand{\textplusminus}{PU}{\80\261} % plusminus
+\DeclareTextCommand{\texttwosuperior}{PU}{\80\262} % twosuperior
+\DeclareTextCommand{\textthreesuperior}{PU}{\80\263} % threesuperior
+\DeclareTextCommand{\textacute}{PU}{\80\264} % acute
+\DeclareTextCommand{\textmu}{PU}{\80\265} % mu
+\DeclareTextCommand{\textparagraph}{PU}{\80\266} % paragraph
+\DeclareTextCommand{\textperiodcentered}{PU}{\80\267} % periodcentered
+\DeclareTextCommand{\textcedilla}{PU}{\80\270} % cedilla
+\DeclareTextCommand{\textonesuperior}{PU}{\80\271} % onesuperior
+\DeclareTextCommand{\textordmasculine}{PU}{\80\272} % ordmasculine
+\DeclareTextCommand{\guillemotright}{PU}{\80\273} % guillemotright
+\DeclareTextCommand{\textonequarter}{PU}{\80\274} % onequarter
+\DeclareTextCommand{\textonehalf}{PU}{\80\275} % onehalf
+\DeclareTextCommand{\textthreequarters}{PU}{\80\276} % threequarters
+\DeclareTextCommand{\textquestiondown}{PU}{\80\277} % questiondown
+\DeclareTextCompositeCommand{\`}{PU}{A}{\80\300} % Agrave
+\DeclareTextCompositeCommand{\'}{PU}{A}{\80\301} % Aacute
+\DeclareTextCompositeCommand{\^}{PU}{A}{\80\302} % Acircumflex
+\DeclareTextCompositeCommand{\~}{PU}{A}{\80\303} % Atilde
+\DeclareTextCompositeCommand{\"}{PU}{A}{\80\304} % Adieresis
+\DeclareTextCompositeCommand{\r}{PU}{A}{\80\305} % Aring
+\DeclareTextCommand{\AE}{PU}{\80\306} % AE
+\DeclareTextCompositeCommand{\c}{PU}{C}{\80\307} % Ccedilla
+\DeclareTextCompositeCommand{\`}{PU}{E}{\80\310} % Egrave
+\DeclareTextCompositeCommand{\'}{PU}{E}{\80\311} % Eacute
+\DeclareTextCompositeCommand{\^}{PU}{E}{\80\312} % Ecircumflex
+\DeclareTextCompositeCommand{\"}{PU}{E}{\80\313} % Edieresis
+\DeclareTextCompositeCommand{\`}{PU}{I}{\80\314} % Igrave
+\DeclareTextCompositeCommand{\'}{PU}{I}{\80\315} % Iacute
+\DeclareTextCompositeCommand{\^}{PU}{I}{\80\316} % Icircumflex
+\DeclareTextCompositeCommand{\"}{PU}{I}{\80\317} % Idieresis
+\DeclareTextCommand{\DH}{PU}{\80\320} % Eth
+\DeclareTextCompositeCommand{\~}{PU}{N}{\80\321} % Ntilde
+\DeclareTextCompositeCommand{\`}{PU}{O}{\80\322} % Ograve
+\DeclareTextCompositeCommand{\'}{PU}{O}{\80\323} % Oacute
+\DeclareTextCompositeCommand{\^}{PU}{O}{\80\324} % Ocircumflex
+\DeclareTextCompositeCommand{\~}{PU}{O}{\80\325} % Otilde
+\DeclareTextCompositeCommand{\"}{PU}{O}{\80\326} % Odieresis
+\DeclareTextCommand{\textmultiply}{PU}{\80\327} % multiply
+\DeclareTextCommand{\O}{PU}{\80\330} % Oslash
+\DeclareTextCompositeCommand{\`}{PU}{U}{\80\331} % Ugrave
+\DeclareTextCompositeCommand{\'}{PU}{U}{\80\332} % Uacute
+\DeclareTextCompositeCommand{\^}{PU}{U}{\80\333} % Ucircumflex
+\DeclareTextCompositeCommand{\"}{PU}{U}{\80\334} % Udieresis
+\DeclareTextCompositeCommand{\'}{PU}{Y}{\80\335} % Yacute
+\DeclareTextCommand{\TH}{PU}{\80\336} % Thorn
+\DeclareTextCommand{\ss}{PU}{\80\337} % germandbls
+\DeclareTextCompositeCommand{\`}{PU}{a}{\80\340} % agrave
+\DeclareTextCompositeCommand{\'}{PU}{a}{\80\341} % aacute
+\DeclareTextCompositeCommand{\^}{PU}{a}{\80\342} % acircumflex
+\DeclareTextCompositeCommand{\~}{PU}{a}{\80\343} % atilde
+\DeclareTextCompositeCommand{\"}{PU}{a}{\80\344} % adieresis
+\DeclareTextCompositeCommand{\r}{PU}{a}{\80\345} % aring
+\DeclareTextCommand{\ae}{PU}{\80\346} % ae
+\DeclareTextCompositeCommand{\c}{PU}{c}{\80\347} % ccedilla
+\DeclareTextCompositeCommand{\`}{PU}{e}{\80\350} % egrave
+\DeclareTextCompositeCommand{\'}{PU}{e}{\80\351} % eacute
+\DeclareTextCompositeCommand{\^}{PU}{e}{\80\352} % ecircumflex
+\DeclareTextCompositeCommand{\"}{PU}{e}{\80\353} % edieresis
+\DeclareTextCompositeCommand{\`}{PU}{i}{\80\354} % igrave
+\DeclareTextCompositeCommand{\`}{PU}{\i}{\80\354} % igrave
+\DeclareTextCompositeCommand{\'}{PU}{i}{\80\355} % iacute
+\DeclareTextCompositeCommand{\'}{PU}{\i}{\80\355} % iacute
+\DeclareTextCompositeCommand{\^}{PU}{i}{\80\356} % icircumflex
+\DeclareTextCompositeCommand{\^}{PU}{\i}{\80\356} % icircumflex
+\DeclareTextCompositeCommand{\"}{PU}{i}{\80\357} % idieresis
+\DeclareTextCompositeCommand{\"}{PU}{\i}{\80\357} % idieresis
+\DeclareTextCommand{\dh}{PU}{\80\360} % eth
+\DeclareTextCompositeCommand{\~}{PU}{n}{\80\361} % ntilde
+\DeclareTextCompositeCommand{\`}{PU}{o}{\80\362} % ograve
+\DeclareTextCompositeCommand{\'}{PU}{o}{\80\363} % oacute
+\DeclareTextCompositeCommand{\^}{PU}{o}{\80\364} % ocircumflex
+\DeclareTextCompositeCommand{\~}{PU}{o}{\80\365} % otilde
+\DeclareTextCompositeCommand{\"}{PU}{o}{\80\366} % odieresis
+\DeclareTextCommand{\textdivide}{PU}{\80\367} % divide
+\DeclareTextCommand{\o}{PU}{\80\370} % oslash
+\DeclareTextCompositeCommand{\`}{PU}{u}{\80\371} % ugrave
+\DeclareTextCompositeCommand{\'}{PU}{u}{\80\372} % uacute
+\DeclareTextCompositeCommand{\^}{PU}{u}{\80\373} % ucircumflex
+\DeclareTextCompositeCommand{\"}{PU}{u}{\80\374} % udieresis
+\DeclareTextCompositeCommand{\'}{PU}{y}{\80\375} % yacute
+\DeclareTextCommand{\th}{PU}{\80\376} % thorn
+\DeclareTextCompositeCommand{\"}{PU}{y}{\80\377} % ydieresis
+\DeclareTextCommand{\ij}{PU}{\80\377}
+\DeclareTextCommand{\SS}{PU}{SS}
+\DeclareTextCommand{\textcelsius}{PU}{\textdegree C}
+\DeclareTextCommand{\textglqq}{PU}{\quotedblbase}
+\DeclareTextCommand{\textgrqq}{PU}{\textquotedblleft}
+\DeclareTextCommand{\textglq}{PU}{\quotesinglbase}
+\DeclareTextCommand{\textgrq}{PU}{\textquoteleft}
+\DeclareTextCommand{\textflqq}{PU}{\guillemotleft}
+\DeclareTextCommand{\textfrqq}{PU}{\guillemotright}
+\DeclareTextCommand{\textflq}{PU}{\guilsinglleft}
+\DeclareTextCommand{\textfrq}{PU}{\guilsinglright}
+\DeclareTextCommand{\textneg}{PU}{\textlogicalnot}
+\DeclareTextCommand{\texttimes}{PU}{\textmultiply}
+\DeclareTextCommand{\textdiv}{PU}{\textdivide}
+\DeclareTextCommand{\textpm}{PU}{\textplusminus}
+\DeclareTextCommand{\textcdot}{PU}{\textperiodcentered}
+\DeclareTextCommand{\textbeta}{PU}{\ss}
+\DeclareTextCompositeCommand{\=}{PU}{A}{\81\000}% Amacron
+\DeclareTextCompositeCommand{\=}{PU}{a}{\81\001}% amacron
+\DeclareTextCompositeCommand{\u}{PU}{A}{\81\002}% Abreve
+\DeclareTextCompositeCommand{\u}{PU}{a}{\81\003}% abreve
+\DeclareTextCompositeCommand{\k}{PU}{A}{\81\004} % Aogonek
+\DeclareTextCompositeCommand{\k}{PU}{a}{\81\005} % aogonek
+\DeclareTextCompositeCommand{\'}{PU}{C}{\81\006} % Cacute
+\DeclareTextCompositeCommand{\'}{PU}{c}{\81\007} % cacute
+\DeclareTextCompositeCommand{\^}{PU}{C}{\81\010} % Ccircumflex
+\DeclareTextCompositeCommand{\^}{PU}{c}{\81\011} % ccircumflex
+\DeclareTextCompositeCommand{\.}{PU}{C}{\81\012} % Cdot
+\DeclareTextCompositeCommand{\.}{PU}{c}{\81\013} % cdot
+\DeclareTextCompositeCommand{\v}{PU}{C}{\81\014} % Ccaron
+\DeclareTextCompositeCommand{\v}{PU}{c}{\81\015} % ccaron
+\DeclareTextCompositeCommand{\v}{PU}{D}{\81\016} % Dcaron
+\DeclareTextCompositeCommand{\v}{PU}{d}{\81\017} % dcaron
+\DeclareTextCommand{\DJ}{PU}{\81\020} % Dslash
+\DeclareTextCommand{\dj}{PU}{\81\021} % dslash
+\DeclareTextCompositeCommand{\=}{PU}{E}{\81\022} % Emacron
+\DeclareTextCompositeCommand{\=}{PU}{e}{\81\023} % emacron
+\DeclareTextCompositeCommand{\u}{PU}{E}{\81\024} % Ebreve
+\DeclareTextCompositeCommand{\u}{PU}{e}{\81\025} % ebreve
+\DeclareTextCompositeCommand{\.}{PU}{E}{\81\026} % Edot
+\DeclareTextCompositeCommand{\.}{PU}{e}{\81\027} % edot
+\DeclareTextCompositeCommand{\k}{PU}{E}{\81\030} % Eogonek
+\DeclareTextCompositeCommand{\k}{PU}{e}{\81\031} % eogonek
+\DeclareTextCompositeCommand{\v}{PU}{E}{\81\032} % Ecaron
+\DeclareTextCompositeCommand{\v}{PU}{e}{\81\033} % ecaron
+\DeclareTextCompositeCommand{\^}{PU}{G}{\81\034} % Gcircumflex
+\DeclareTextCompositeCommand{\^}{PU}{g}{\81\035} % gcircumflex
+\DeclareTextCompositeCommand{\u}{PU}{G}{\81\036} % Gbreve
+\DeclareTextCompositeCommand{\u}{PU}{g}{\81\037} % gbreve
+\DeclareTextCompositeCommand{\.}{PU}{G}{\81\040} % Gdot
+\DeclareTextCompositeCommand{\.}{PU}{g}{\81\041} % gdot
+\DeclareTextCompositeCommand{\c}{PU}{G}{\81\042} % Gcedilla
+\DeclareTextCompositeCommand{\c}{PU}{g}{\81\043} % gcedilla
+\DeclareTextCompositeCommand{\^}{PU}{H}{\81\044} % Hcircumflex
+\DeclareTextCompositeCommand{\^}{PU}{h}{\81\045} % hcircumflex
+\DeclareTextCommand{\textHslash}{PU}{\81\046} % Hslash
+\DeclareTextCommand{\texthslash}{PU}{\81\047} % hslash
+\DeclareTextCompositeCommand{\~}{PU}{I}{\81\050} % Itilde
+\DeclareTextCompositeCommand{\~}{PU}{i}{\81\051} % itilde
+\DeclareTextCompositeCommand{\~}{PU}{\i}{\81\051} % itilde
+\DeclareTextCompositeCommand{\=}{PU}{I}{\81\052} % Imacron
+\DeclareTextCompositeCommand{\=}{PU}{i}{\81\053} % imacron
+\DeclareTextCompositeCommand{\=}{PU}{\i}{\81\053} % imacron
+\DeclareTextCompositeCommand{\u}{PU}{I}{\81\054} % Ibreve
+\DeclareTextCompositeCommand{\u}{PU}{i}{\81\055} % ibreve
+\DeclareTextCompositeCommand{\u}{PU}{\i}{\81\055} % ibreve
+\DeclareTextCompositeCommand{\k}{PU}{I}{\81\056} % Iogonek
+\DeclareTextCompositeCommand{\k}{PU}{i}{\81\057} % iogonek
+\DeclareTextCompositeCommand{\k}{PU}{\i}{\81\057} % iogonek
+\DeclareTextCompositeCommand{\.}{PU}{I}{\81\060} % Idot
+\DeclareTextCommand{\i}{PU}{\81\061} % idotless
+\DeclareTextCompositeCommand{\^}{PU}{J}{\81\064} % Jcircumflex
+\DeclareTextCompositeCommand{\^}{PU}{j}{\81\065} % jcircumflex
+\DeclareTextCompositeCommand{\^}{PU}{\j}{\81\065} % jcircumflex
+\DeclareTextCompositeCommand{\c}{PU}{K}{\81\066} % Kcedilla
+\DeclareTextCompositeCommand{\c}{PU}{k}{\81\067} % kcedilla
+\DeclareTextCompositeCommand{\'}{PU}{L}{\81\071} % Lacute
+\DeclareTextCompositeCommand{\'}{PU}{l}{\81\072} % lacute
+\DeclareTextCompositeCommand{\c}{PU}{L}{\81\073} % Lcedilla
+\DeclareTextCompositeCommand{\c}{PU}{l}{\81\074} % lcedilla
+\DeclareTextCompositeCommand{\v}{PU}{L}{\81\075} % Lcaron
+\DeclareTextCompositeCommand{\v}{PU}{l}{\81\076} % lcaron
+\DeclareTextCommand{\L}{PU}{\81\101} % Lslash
+\DeclareTextCommand{\l}{PU}{\81\102} % lslash
+\DeclareTextCompositeCommand{\'}{PU}{N}{\81\103} % Nacute
+\DeclareTextCompositeCommand{\'}{PU}{n}{\81\104} % nacute
+\DeclareTextCompositeCommand{\c}{PU}{N}{\81\105} % Ncedilla
+\DeclareTextCompositeCommand{\c}{PU}{n}{\81\106} % ncedilla
+\DeclareTextCompositeCommand{\v}{PU}{N}{\81\107} % Ncaron
+\DeclareTextCompositeCommand{\v}{PU}{n}{\81\110} % ncaron
+\DeclareTextCommand{\NG}{PU}{NG} % \81\112
+\DeclareTextCommand{\ng}{PU}{ng} % \81\113
+\DeclareTextCompositeCommand{\=}{PU}{O}{\81\114} % Omacron
+\DeclareTextCompositeCommand{\=}{PU}{o}{\81\115} % omacron
+\DeclareTextCompositeCommand{\u}{PU}{O}{\81\116} % Obreve
+\DeclareTextCompositeCommand{\u}{PU}{o}{\81\117} % obreve
+\DeclareTextCompositeCommand{\H}{PU}{O}{\81\120} % Odoubleacute
+\DeclareTextCompositeCommand{\H}{PU}{o}{\81\121} % odoubleacute
+\DeclareTextCompositeCommand{\'}{PU}{R}{\81\124} % Racute
+\DeclareTextCompositeCommand{\'}{PU}{r}{\81\125} % racute
+\DeclareTextCompositeCommand{\c}{PU}{R}{\81\126} % Rcedilla
+\DeclareTextCompositeCommand{\c}{PU}{r}{\81\127} % rcedilla
+\DeclareTextCompositeCommand{\v}{PU}{R}{\81\130} % Rcaron
+\DeclareTextCompositeCommand{\v}{PU}{r}{\81\131} % rcaron
+\DeclareTextCompositeCommand{\'}{PU}{S}{\81\132} % Sacute
+\DeclareTextCompositeCommand{\'}{PU}{s}{\81\133} % sacute
+\DeclareTextCompositeCommand{\^}{PU}{S}{\81\134} % Scircumflex
+\DeclareTextCompositeCommand{\^}{PU}{s}{\81\135} % scircumflex
+\DeclareTextCompositeCommand{\c}{PU}{S}{\81\136} % Scedilla
+\DeclareTextCompositeCommand{\c}{PU}{s}{\81\137} % scedilla
+\DeclareTextCompositeCommand{\v}{PU}{S}{\81\140} % Scaron
+\DeclareTextCompositeCommand{\v}{PU}{s}{\81\141} % scaron
+\DeclareTextCompositeCommand{\c}{PU}{T}{\81\142} % Tcedilla
+\DeclareTextCompositeCommand{\c}{PU}{t}{\81\143} % tcedilla
+\DeclareTextCompositeCommand{\v}{PU}{T}{\81\144} % Tcaron
+\DeclareTextCompositeCommand{\v}{PU}{t}{\81\145} % tcaron
+\DeclareTextCommand{\textTslash}{PU}{\81\146} % Tslash
+\DeclareTextCommand{\texttslash}{PU}{\81\147} % tslash
+\DeclareTextCompositeCommand{\~}{PU}{U}{\81\150} % Utilde
+\DeclareTextCompositeCommand{\~}{PU}{u}{\81\151} % utilde
+\DeclareTextCompositeCommand{\=}{PU}{U}{\81\152} % Umacron
+\DeclareTextCompositeCommand{\=}{PU}{u}{\81\153} % umacron
+\DeclareTextCompositeCommand{\u}{PU}{U}{\81\154} % Ubreve
+\DeclareTextCompositeCommand{\u}{PU}{u}{\81\155} % ubreve
+\DeclareTextCompositeCommand{\r}{PU}{U}{\81\156} % Uring
+\DeclareTextCompositeCommand{\r}{PU}{u}{\81\157} % uring
+\DeclareTextCompositeCommand{\H}{PU}{U}{\81\160} % Udoubleacute
+\DeclareTextCompositeCommand{\H}{PU}{u}{\81\161} % udoubleacute
+\DeclareTextCompositeCommand{\k}{PU}{U}{\81\162} % Uogonek
+\DeclareTextCompositeCommand{\k}{PU}{u}{\81\163} % uogonek
+\DeclareTextCompositeCommand{\^}{PU}{W}{\81\164} % Wcircumflex
+\DeclareTextCompositeCommand{\^}{PU}{w}{\81\165} % wcircumflex
+\DeclareTextCompositeCommand{\^}{PU}{Y}{\81\166} % Ycircumflex
+\DeclareTextCompositeCommand{\^}{PU}{y}{\81\167} % ycircumflex
+\DeclareTextCompositeCommand{\"}{PU}{Y}{\81\170} % Ydieresis
+\DeclareTextCommand{\IJ}{PU}{\81\170}
+\DeclareTextCompositeCommand{\'}{PU}{Z}{\81\171} % Zacute
+\DeclareTextCompositeCommand{\'}{PU}{z}{\81\172} % zacute
+\DeclareTextCompositeCommand{\.}{PU}{Z}{\81\173} % Zdot
+\DeclareTextCompositeCommand{\.}{PU}{z}{\81\174} % zdot
+\DeclareTextCompositeCommand{\v}{PU}{Z}{\81\175} % Zcaron
+\DeclareTextCompositeCommand{\v}{PU}{z}{\81\176} % zcaron
+\DeclareTextCompositeCommand{\v}{PU}{A}{\81\315} % Acaron
+\DeclareTextCompositeCommand{\v}{PU}{a}{\81\316} % acaron
+\DeclareTextCompositeCommand{\v}{PU}{I}{\81\317} % Icaron
+\DeclareTextCompositeCommand{\v}{PU}{i}{\81\320} % icaron
+\DeclareTextCompositeCommand{\v}{PU}{\i}{\81\320} % icaron
+\DeclareTextCompositeCommand{\v}{PU}{O}{\81\321} % Ocaron
+\DeclareTextCompositeCommand{\v}{PU}{o}{\81\322} % ocaron
+\DeclareTextCompositeCommand{\v}{PU}{U}{\81\323} % Ucaron
+\DeclareTextCompositeCommand{\v}{PU}{u}{\81\324} % ucaron
+\DeclareTextCommand{\textGslash}{PU}{\81\344} % Gslash
+\DeclareTextCommand{\textgslash}{PU}{\81\345} % gslash
+\DeclareTextCompositeCommand{\v}{PU}{G}{\81\346} % Gcaron
+\DeclareTextCompositeCommand{\v}{PU}{g}{\81\347} % gcaron
+\DeclareTextCompositeCommand{\v}{PU}{K}{\81\350} % Kcaron
+\DeclareTextCompositeCommand{\v}{PU}{k}{\81\351} % kcaron
+\DeclareTextCompositeCommand{\k}{PU}{O}{\81\352} % Oogonek
+\DeclareTextCompositeCommand{\k}{PU}{o}{\81\353} % oogonek
+\DeclareTextCompositeCommand{\'}{PU}{\textAlpha}{\83\206}
+\DeclareTextCompositeCommand{\'}{PU}{\textEpsilon}{\83\210}
+\DeclareTextCompositeCommand{\'}{PU}{\textEta}{\83\211}
+\DeclareTextCompositeCommand{\'}{PU}{\textIota}{\83\212}
+\DeclareTextCompositeCommand{\'}{PU}{\textOmicron}{\83\214}
+\DeclareTextCompositeCommand{\'}{PU}{\textUpsilon}{\83\216}
+\DeclareTextCompositeCommand{\'}{PU}{\textOmega}{\83\217}
+\DeclareTextCommand{\textIotadieresis}{PU}{\83\252}
+\DeclareTextCompositeCommand{\'}{PU}{\textIotadieresis}{\83\220}
+\DeclareTextCommand{\textAlpha}{PU}{\83\221}
+\DeclareTextCommand{\textBeta}{PU}{\83\222}
+\DeclareTextCommand{\textGamma}{PU}{\83\223}
+\DeclareTextCommand{\textDelta}{PU}{\83\224}
+\DeclareTextCommand{\textEpsilon}{PU}{\83\225}
+\DeclareTextCommand{\textZeta}{PU}{\83\226}
+\DeclareTextCommand{\textEta}{PU}{\83\227}
+\DeclareTextCommand{\textTheta}{PU}{\83\230}
+\DeclareTextCommand{\textIota}{PU}{\83\231}
+\DeclareTextCommand{\textKappa}{PU}{\83\232}
+\DeclareTextCommand{\textLambda}{PU}{\83\233}
+\DeclareTextCommand{\textMu}{PU}{\83\234}
+\DeclareTextCommand{\textNu}{PU}{\83\235}
+\DeclareTextCommand{\textXi}{PU}{\83\236}
+\DeclareTextCommand{\textOmicron}{PU}{\83\237}
+\DeclareTextCommand{\textPi}{PU}{\83\240}
+\DeclareTextCommand{\textRho}{PU}{\83\241}
+\DeclareTextCommand{\textSigma}{PU}{\83\243}
+\DeclareTextCommand{\textTau}{PU}{\83\244}
+\DeclareTextCommand{\textUpsilon}{PU}{\83\245}
+\DeclareTextCommand{\textPhi}{PU}{\83\246}
+\DeclareTextCommand{\textChi}{PU}{\83\247}
+\DeclareTextCommand{\textPsi}{PU}{\83\250}
+\DeclareTextCommand{\textOmega}{PU}{\83\251}
+\DeclareTextCompositeCommand{\"}{PU}{\textIota}{\83\252}
+\DeclareTextCompositeCommand{\"}{PU}{\textUpsilon}{\83\253}
+\DeclareTextCompositeCommand{\'}{PU}{\textalpha}{\83\254}
+\DeclareTextCompositeCommand{\'}{PU}{\textepsilon}{\83\255}
+\DeclareTextCompositeCommand{\'}{PU}{\texteta}{\83\256}
+\DeclareTextCompositeCommand{\'}{PU}{\textiota}{\83\257}
+\DeclareTextCommand{\textupsilonacute}{PU}{\83\315}
+\DeclareTextCompositeCommand{\"}{PU}{\textupsilonacute}{\83\260}
+\DeclareTextCommand{\textalpha}{PU}{\83\261}
+\DeclareTextCommand{\textbeta}{PU}{\83\262}
+\DeclareTextCommand{\textgamma}{PU}{\83\263}
+\DeclareTextCommand{\textdelta}{PU}{\83\264}
+\DeclareTextCommand{\textepsilon}{PU}{\83\265}
+\DeclareTextCommand{\textzeta}{PU}{\83\266}
+\DeclareTextCommand{\texteta}{PU}{\83\267}
+\DeclareTextCommand{\texttheta}{PU}{\83\270}
+\DeclareTextCommand{\textiota}{PU}{\83\271}
+\DeclareTextCommand{\textkappa}{PU}{\83\272}
+\DeclareTextCommand{\textlambda}{PU}{\83\273}
+\DeclareTextCommand{\textmu}{PU}{\83\274}
+\DeclareTextCommand{\textnu}{PU}{\83\275}
+\DeclareTextCommand{\textxi}{PU}{\83\276}
+\DeclareTextCommand{\textomicron}{PU}{\83\277}
+\DeclareTextCommand{\textpi}{PU}{\83\300}
+\DeclareTextCommand{\textrho}{PU}{\83\301}
+\DeclareTextCommand{\textvarsigma}{PU}{\83\302}
+\DeclareTextCommand{\textsigma}{PU}{\83\303}
+\DeclareTextCommand{\texttau}{PU}{\83\304}
+\DeclareTextCommand{\textupsilon}{PU}{\83\305}
+\DeclareTextCommand{\textphi}{PU}{\83\306}
+\DeclareTextCommand{\textchi}{PU}{\83\307}
+\DeclareTextCommand{\textpsi}{PU}{\83\310}
+\DeclareTextCommand{\textomega}{PU}{\83\311}
+\DeclareTextCompositeCommand{\"}{PU}{\textiota}{\83\312}
+\DeclareTextCompositeCommand{\"}{PU}{\textupsilon}{\83\313}
+\DeclareTextCompositeCommand{\'}{PU}{\textomicron}{\83\314}
+\DeclareTextCompositeCommand{\'}{PU}{\textupsilon}{\83\315}
+\DeclareTextCompositeCommand{\'}{PU}{\textomega}{\83\316}
+\DeclareTextCommand{\CYRYO}{PU}{\84\001}% IO
+\DeclareTextCompositeCommand{\"}{PU}{\CYRE}{\84\001}%
+\DeclareTextCommand{\CYRDJE}{PU}{\84\002}% DJE
+\DeclareTextCompositeCommand{\'}{PU}{\CYRG}{\84\003}% GJE
+\DeclareTextCommand{\CYRIE}{PU}{\84\004}% ukrainian IE
+\DeclareTextCommand{\CYRDZE}{PU}{\84\005}% DZE
+\DeclareTextCommand{\CYRII}{PU}{\84\006}% byelorussian-ukrainian I
+\DeclareTextCommand{\CYRYI}{PU}{\84\007}% YI
+\DeclareTextCommand{\CYRJE}{PU}{\84\010}% JE
+\DeclareTextCommand{\CYRLJE}{PU}{\84\011}% LJE
+\DeclareTextCommand{\CYRNJE}{PU}{\84\012}% NJE
+\DeclareTextCommand{\CYRTSHE}{PU}{\84\013}% TSHE
+\DeclareTextCompositeCommand{\'}{PU}{\CYRK}{\84\014}% KJE
+\DeclareTextCommand{\CYRUSHRT}{PU}{\84\016}% short U
+\DeclareTextCommand{\CYRDZHE}{PU}{\84\017}% DZHE
+\DeclareTextCommand{\CYRA}{PU}{\84\020}% A
+\DeclareTextCommand{\CYRB}{PU}{\84\021}% BE
+\DeclareTextCommand{\CYRV}{PU}{\84\022}% VE
+\DeclareTextCommand{\CYRG}{PU}{\84\023}% GHE
+\DeclareTextCommand{\CYRD}{PU}{\84\024}% DE
+\DeclareTextCommand{\CYRE}{PU}{\84\025}% IE
+\DeclareTextCommand{\CYRZH}{PU}{\84\026}% ZHE
+\DeclareTextCommand{\CYRZ}{PU}{\84\027}% ZE
+\DeclareTextCommand{\CYRI}{PU}{\84\030}% I
+\DeclareTextCommand{\CYRISHRT}{PU}{\84\031}% short I
+\DeclareTextCompositeCommand{\U}{PU}{\CYRI}{\84\031}%
+\DeclareTextCommand{\CYRK}{PU}{\84\032}% KA
+\DeclareTextCommand{\CYRL}{PU}{\84\033}% EL
+\DeclareTextCommand{\CYRM}{PU}{\84\034}% EM
+\DeclareTextCommand{\CYRN}{PU}{\84\035}% EN
+\DeclareTextCommand{\CYRO}{PU}{\84\036}% O
+\DeclareTextCommand{\CYRP}{PU}{\84\037}% PE
+\DeclareTextCommand{\CYRR}{PU}{\84\040}% ER
+\DeclareTextCommand{\CYRS}{PU}{\84\041}% ES
+\DeclareTextCommand{\CYRT}{PU}{\84\042}% TE
+\DeclareTextCommand{\CYRU}{PU}{\84\043}% U
+\DeclareTextCommand{\CYRF}{PU}{\84\044}% EF
+\DeclareTextCommand{\CYRH}{PU}{\84\045}% HA
+\DeclareTextCommand{\CYRC}{PU}{\84\046}% TSE
+\DeclareTextCommand{\CYRCH}{PU}{\84\047}% CHE
+\DeclareTextCommand{\CYRSH}{PU}{\84\050}% SHA
+\DeclareTextCommand{\CYRSHCH}{PU}{\84\051}% SHCHA
+\DeclareTextCommand{\CYRHRDSN}{PU}{\84\052}% HARD SIGN
+\DeclareTextCommand{\CYRERY}{PU}{\84\053}% YERU
+\DeclareTextCommand{\CYRSFTSN}{PU}{\84\054}% SOFT SIGN
+\DeclareTextCommand{\CYREREV}{PU}{\84\055}% E
+\DeclareTextCommand{\CYRYU}{PU}{\84\056}% YU
+\DeclareTextCommand{\CYRYA}{PU}{\84\057}% YA
+\DeclareTextCommand{\cyra}{PU}{\84\060}% a
+\DeclareTextCommand{\cyrb}{PU}{\84\061}% be
+\DeclareTextCommand{\cyrv}{PU}{\84\062}% ve
+\DeclareTextCommand{\cyrg}{PU}{\84\063}% ghe
+\DeclareTextCommand{\cyrd}{PU}{\84\064}% de
+\DeclareTextCommand{\cyre}{PU}{\84\065}% ie
+\DeclareTextCommand{\cyrzh}{PU}{\84\066}% zhe
+\DeclareTextCommand{\cyrz}{PU}{\84\067}% ze
+\DeclareTextCommand{\cyri}{PU}{\84\070}% i
+\DeclareTextCommand{\cyrishrt}{PU}{\84\071}% short i
+\DeclareTextCompositeCommand{\U}{PU}{\cyri}{\84\071}%
+\DeclareTextCommand{\cyrk}{PU}{\84\072}% ka
+\DeclareTextCommand{\cyrl}{PU}{\84\073}% el
+\DeclareTextCommand{\cyrm}{PU}{\84\074}% em
+\DeclareTextCommand{\cyrn}{PU}{\84\075}% en
+\DeclareTextCommand{\cyro}{PU}{\84\076}% o
+\DeclareTextCommand{\cyrp}{PU}{\84\077}% pe
+\DeclareTextCommand{\cyrr}{PU}{\84\100}% er
+\DeclareTextCommand{\cyrs}{PU}{\84\101}% es
+\DeclareTextCommand{\cyrt}{PU}{\84\102}% te
+\DeclareTextCommand{\cyru}{PU}{\84\103}% u
+\DeclareTextCommand{\cyrf}{PU}{\84\104}% ef
+\DeclareTextCommand{\cyrh}{PU}{\84\105}% ha
+\DeclareTextCommand{\cyrc}{PU}{\84\106}% tse
+\DeclareTextCommand{\cyrch}{PU}{\84\107}% che
+\DeclareTextCommand{\cyrsh}{PU}{\84\110}% sha
+\DeclareTextCommand{\cyrshch}{PU}{\84\111}% shcha
+\DeclareTextCommand{\cyrhrdsn}{PU}{\84\112}% hard sign
+\DeclareTextCommand{\cyrery}{PU}{\84\113}% yeru
+\DeclareTextCommand{\cyrsftsn}{PU}{\84\114}% soft sign
+\DeclareTextCommand{\cyrerev}{PU}{\84\115}% e
+\DeclareTextCommand{\cyryu}{PU}{\84\116}% yu
+\DeclareTextCommand{\cyrya}{PU}{\84\117}% ya
+\DeclareTextCommand{\cyryo}{PU}{\84\121}% io
+\DeclareTextCompositeCommand{\"}{PU}{\cyre}{\84\121}%
+\DeclareTextCommand{\cyrdje}{PU}{\84\122}% dje
+\DeclareTextCompositeCommand{\'}{PU}{\cyrg}{\84\123}% gje
+\DeclareTextCommand{\cyrie}{PU}{\84\124}% ukrainian ie
+\DeclareTextCommand{\cyrdze}{PU}{\84\125}% dze
+\DeclareTextCommand{\cyrii}{PU}{\84\126}% byelorussian-ukrainian i
+\DeclareTextCommand{\cyryi}{PU}{\84\127}% yi
+\DeclareTextCommand{\cyrje}{PU}{\84\130}% je
+\DeclareTextCommand{\cyrlje}{PU}{\84\131}% lje
+\DeclareTextCommand{\cyrnje}{PU}{\84\132}% nje
+\DeclareTextCommand{\cyrtshe}{PU}{\84\133}% tshe
+\DeclareTextCompositeCommand{\'}{PU}{\cyrk}{\84\134}% kje
+\DeclareTextCommand{\cyrushrt}{PU}{\84\136}% short u
+\DeclareTextCommand{\cyrdzhe}{PU}{\84\137}% dzhe
+\DeclareTextCommand{\CYROMEGA}{PU}{\84\140}% OMEGA
+\DeclareTextCommand{\cyromega}{PU}{\84\141}% omega
+\DeclareTextCommand{\CYRYAT}{PU}{\84\142}% YAT
+\DeclareTextCommand{\cyryat}{PU}{\84\143}% yat
+\DeclareTextCommand{\CYRIOTE}{PU}{\84\144}% iotified E
+\DeclareTextCommand{\cyriote}{PU}{\84\145}% iotified e
+\DeclareTextCommand{\CYRLYUS}{PU}{\84\146}% little YUS
+\DeclareTextCommand{\cyrlyus}{PU}{\84\147}% little yus
+\DeclareTextCommand{\CYRIOTLYUS}{PU}{\84\150}% iotified little YUS
+\DeclareTextCommand{\cyriotlyus}{PU}{\84\151}% iotified little yus
+\DeclareTextCommand{\CYRBYUS}{PU}{\84\152}% big YUS
+\DeclareTextCommand{\cyrbyus}{PU}{\84\153}% big yus
+\DeclareTextCommand{\CYRIOTBYUS}{PU}{\84\154}% iotified big YUS
+\DeclareTextCommand{\cyriotbyus}{PU}{\84\155}% iotified big yus
+\DeclareTextCommand{\CYRKSI}{PU}{\84\156}% KSI
+\DeclareTextCommand{\cyrksi}{PU}{\84\157}% ksi
+\DeclareTextCommand{\CYRPSI}{PU}{\84\160}% PSI
+\DeclareTextCommand{\cyrpsi}{PU}{\84\161}% psi
+\DeclareTextCommand{\CYRFITA}{PU}{\84\162}% FITA
+\DeclareTextCommand{\cyrfita}{PU}{\84\163}% fita
+\DeclareTextCommand{\CYRIZH}{PU}{\84\164}% IZHITSA
+\DeclareTextCommand{\cyrizh}{PU}{\84\165}% izhitsa
+\DeclareTextCompositeCommand{\C}{PU}{\CYRIZH}{\84\166}% IZHITSA double grave
+\DeclareTextCompositeCommand{\C}{PU}{\cyrizh}{\84\167}% izhitsa double grave
+\DeclareTextCommand{\CYRUK}{PU}{\84\170}% UK
+\DeclareTextCommand{\cyruk}{PU}{\84\171}% uk
+\DeclareTextCommand{\CYROMEGARND}{PU}{\84\172}% round OMEGA
+\DeclareTextCommand{\cyromegarnd}{PU}{\84\173}% round omega
+\DeclareTextCommand{\CYROMEGATITLO}{PU}{\84\174}% OMEGA titlo
+\DeclareTextCommand{\cyromegatitlo}{PU}{\84\175}% omega titlo
+\DeclareTextCommand{\CYROT}{PU}{\84\176}% OT
+\DeclareTextCommand{\cyrot}{PU}{\84\177}% ot
+\DeclareTextCommand{\CYRKOPPA}{PU}{\84\200}% KOPPA
+\DeclareTextCommand{\cyrkoppa}{PU}{\84\201}% koppa
+\DeclareTextCommand{\cyrthousands}{PU}{\84\202}% thousands sign
+\DeclareTextCommand{\CYRGUP}{PU}{\84\220}% GHE upturn
+\DeclareTextCommand{\cyrgup}{PU}{\84\221}% ghe upturn
+\DeclareTextCommand{\CYRGHCRS}{PU}{\84\222}% GHE stroke
+\DeclareTextCommand{\cyrghcrs}{PU}{\84\223}% ghe stroke
+\DeclareTextCommand{\CYRGHK}{PU}{\84\224}% GHE middle hook
+\DeclareTextCommand{\cyrghk}{PU}{\84\225}% ghe middle hook
+\DeclareTextCommand{\CYRZHDSC}{PU}{\84\226}% ZHE descender
+\DeclareTextCommand{\cyrzhdsc}{PU}{\84\227}% zhe descender
+\DeclareTextCommand{\CYRZDSC}{PU}{\84\230}% ZE descender
+\DeclareTextCommand{\cyrzdsc}{PU}{\84\231}% ze descender
+\DeclareTextCommand{\CYRKDSC}{PU}{\84\232}% KA descender
+\DeclareTextCommand{\cyrkdsc}{PU}{\84\233}% ka descender
+\DeclareTextCommand{\CYRKVCRS}{PU}{\84\234}% KA vertical stroke
+\DeclareTextCommand{\cyrkvcrs}{PU}{\84\235}% ka vertical stroke
+\DeclareTextCommand{\CYRKHCRS}{PU}{\84\236}% KA stroke
+\DeclareTextCommand{\cyrkhcrs}{PU}{\84\237}% ka stroke
+\DeclareTextCommand{\CYRKBEAK}{PU}{\84\240}% bashkir KA
+\DeclareTextCommand{\cyrkbeak}{PU}{\84\241}% bashkir ka
+\DeclareTextCommand{\CYRNDSC}{PU}{\84\242}% EN descender
+\DeclareTextCommand{\cyrndsc}{PU}{\84\243}% en descender
+\DeclareTextCommand{\CYRNG}{PU}{\84\244}% ligature EN GHE
+\DeclareTextCommand{\cyrng}{PU}{\84\245}% ligature en ghe
+\DeclareTextCommand{\CYRPHK}{PU}{\84\246}% PE middle hook
+\DeclareTextCommand{\cyrphk}{PU}{\84\247}% pe middle hook
+\DeclareTextCommand{\CYRABHHA}{PU}{\84\250}% abkhasian HA
+\DeclareTextCommand{\cyrabhha}{PU}{\84\251}% abkhasian ha
+\DeclareTextCommand{\CYRSDSC}{PU}{\84\252}% ES descender
+\DeclareTextCommand{\cyrsdsc}{PU}{\84\253}% es descender
+\DeclareTextCommand{\CYRTDSC}{PU}{\84\254}% TE descender
+\DeclareTextCommand{\cyrtdsc}{PU}{\84\255}% te descender
+\DeclareTextCommand{\CYRY}{PU}{\84\256}% straight U
+\DeclareTextCommand{\cyry}{PU}{\84\257}% straight u
+\DeclareTextCommand{\CYRYHCRS}{PU}{\84\260}% straight U stroke
+\DeclareTextCommand{\cyryhcrs}{PU}{\84\261}% straight u stroke
+\DeclareTextCommand{\CYRHDSC}{PU}{\84\262}% HA descender
+\DeclareTextCommand{\cyrhdsc}{PU}{\84\263}% ha descender
+\DeclareTextCommand{\CYRTETSE}{PU}{\84\264}% ligature TE TSE
+\DeclareTextCommand{\cyrtetse}{PU}{\84\265}% ligature te tse
+\DeclareTextCommand{\CYRCHRDSC}{PU}{\84\266}% CHE descender
+\DeclareTextCommand{\cyrchrdsc}{PU}{\84\267}% che descender
+\DeclareTextCommand{\CYRCHVCRS}{PU}{\84\270}% CHE vertical stroke
+\DeclareTextCommand{\cyrchvcrs}{PU}{\84\271}% che vertical stroke
+\DeclareTextCommand{\CYRSHHA}{PU}{\84\272}% SHHA
+\DeclareTextCommand{\cyrshha}{PU}{\84\273}% shha
+\DeclareTextCommand{\CYRABHCH}{PU}{\84\274}% abkhasian CHE
+\DeclareTextCommand{\cyrabhch}{PU}{\84\275}% abkhasian che
+\DeclareTextCommand{\CYRABHCHDSC}{PU}{\84\276}% abkhasian CHE descender
+\DeclareTextCommand{\cyrabhchdsc}{PU}{\84\277}% abkhasian che descender
+\DeclareTextCommand{\CYRpalochka}{PU}{\84\300}% palochka
+\DeclareTextCompositeCommand{\U}{PU}{\CYRZH}{\84\301}% ZHE breve
+\DeclareTextCompositeCommand{\U}{PU}{\cyrzh}{\84\302}% zhe breve
+\DeclareTextCommand{\CYRKHK}{PU}{\84\303}% KA hook
+\DeclareTextCommand{\cyrkhk}{PU}{\84\304}% ka hook
+\DeclareTextCommand{\CYRNHK}{PU}{\84\307}% EN hook
+\DeclareTextCommand{\cyrnhk}{PU}{\84\310}% en hook
+\DeclareTextCommand{\CYRCHLDSC}{PU}{\84\313}% khakassian CHE
+\DeclareTextCommand{\cyrchldsc}{PU}{\84\314}% khakassian che
+\DeclareTextCompositeCommand{\U}{PU}{\CYRA}{\84\320}% A breve
+\DeclareTextCompositeCommand{\U}{PU}{\cyra}{\84\321}% a breve
+\DeclareTextCompositeCommand{\"}{PU}{\CYRA}{\84\322}% A diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyra}{\84\323}% a diaeresis
+\DeclareTextCommand{\CYRAE}{PU}{\84\324}% ligature A IE
+\DeclareTextCommand{\cyrae}{PU}{\84\325}% ligature a ie
+\DeclareTextCompositeCommand{\U}{PU}{\CYRE}{\84\326}% IE breve
+\DeclareTextCompositeCommand{\U}{PU}{\cyre}{\84\327}% ie breve
+\DeclareTextCommand{\CYRSCHWA}{PU}{\84\330}% SCHWA
+\DeclareTextCommand{\cyrschwa}{PU}{\84\331}% schwa
+\DeclareTextCompositeCommand{\"}{PU}{\CYRSCHWA}{\84\332}% SCHWA diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyrschwa}{\84\333}% schwa diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\CYRZH}{\84\334}% ZHE diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyrzh}{\84\335}% zhe diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\CYRZ}{\84\336}% ZE diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyrz}{\84\337}% ze diaeresis
+\DeclareTextCommand{\CYRABHDZE}{PU}{\84\340}% abkhasian DZE
+\DeclareTextCommand{\cyrabhdze}{PU}{\84\341}% abkhasian dze
+\DeclareTextCompositeCommand{\=}{PU}{\CYRI}{\84\342}% I macron
+\DeclareTextCompositeCommand{\=}{PU}{\cyri}{\84\343}% i macron
+\DeclareTextCompositeCommand{\"}{PU}{\CYRI}{\84\344}% I diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyri}{\84\345}% i diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\CYRO}{\84\346}% O diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyro}{\84\347}% o diaeresis
+\DeclareTextCommand{\CYROTLD}{PU}{\84\350}% barred O
+\DeclareTextCommand{\cyrotld}{PU}{\84\351}% barred o
+\DeclareTextCompositeCommand{\"}{PU}{\CYROTLD}{\84\352}% barred O diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyrotld}{\84\353}% barred o diaeresis
+\DeclareTextCompositeCommand{\=}{PU}{\CYRU}{\84\356}% U macron
+\DeclareTextCompositeCommand{\=}{PU}{\cyru}{\84\357}% u macron
+\DeclareTextCompositeCommand{\"}{PU}{\CYRU}{\84\360}% U diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyru}{\84\361}% u diaeresis
+\DeclareTextCompositeCommand{\H}{PU}{\CYRU}{\84\362}% U double acute
+\DeclareTextCompositeCommand{\H}{PU}{\cyru}{\84\363}% u double acute
+\DeclareTextCompositeCommand{\"}{PU}{\CYRCH}{\84\364}% CHE diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyrch}{\84\365}% che diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\CYRERY}{\84\370}% YERU diaeresis
+\DeclareTextCompositeCommand{\"}{PU}{\cyrery}{\84\371}% yeru diaeresis
+\DeclareTextCommand{\texteuro}{PU}{\9040\254} % Euro
+\DeclareTextCommand{\textnumero}{PU}{\9041\026}
+\endinput
+%%
+%% End of file `puenc.def'.

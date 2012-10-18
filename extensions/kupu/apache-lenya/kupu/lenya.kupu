@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="lenya"
+    implementation="apache-lenya"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    >
+
+  <kupu:part name="jsincludes">
+    <script type="text/javascript" src="../apache-lenya/kupu/lenya.js">
+    </script>
+  </kupu:part>
+  
+  <kupu:part name="styles">
+    <link href="../apache-lenya/kupu/kupudrawerstyles.css" rel="stylesheet" type="text/css" />
+    <link href="../apache-lenya/kupu/kupustyles.css" rel="stylesheet" type="text/css" />
+  </kupu:part>
+
+</kupu:feature>

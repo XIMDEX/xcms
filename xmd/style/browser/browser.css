@@ -1,0 +1,650 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+#acciones{
+	background: #e0dfe3;
+	clear:both;
+	border-bottom: 1px solid #9d9da1;
+	padding:1px;
+}
+
+#filtros{
+	background: #eeeeee;
+	clear:both;
+	border-bottom: 1px solid #9d9da1;
+}
+
+#filtros_fila1{
+	clear:both;
+	padding-left:5px;
+}
+
+#filtros_fila2{
+	clear:both;
+	padding-left:5px;
+}
+
+#filtros_fila3{
+	clear:both;
+}
+
+#browser_cuerpo{
+	height:95%;
+}
+
+#browser_iz{
+	float:left;
+	height:100%;
+}
+
+.browser_lateral{
+	border:1px solid #dddddd;
+}
+
+.browser_lateral_sel{
+	border:1px solid #000000;
+}
+
+.panel{
+	height:10px;
+	background:#ffffff;
+	padding:1px;
+	color:#000000;
+	font-weight:normal;
+}
+
+.panel_sel{
+	height:10px;
+	background:#aa1682;
+	padding:1px;
+	color:#ffffff;
+	font-weight:bold;	
+}
+
+#area1{
+	margin:1%;
+	overflow-x:auto;
+	overflow-y:auto;
+	width:98%;
+}
+
+#botonera_area1{
+	clear:both;
+	padding-top:5px;
+	border-top: 1px solid #9d9da1;
+	border-bottom: 2px solid #9d9da1;
+	background: #eeeeee;
+	height:25px;
+
+}
+
+#browser_der{
+	height:100%;
+	overflow-x:auto;
+}
+
+#botonera_area2{
+	clear:both;
+	padding-top:5px;
+	border-top: 1px solid #9d9da1;
+	border-bottom: 2px solid #9d9da1;
+	background: #eeeeee;
+	height:25px;
+}
+
+#area2{
+	margin:5px;
+	overflow:auto;
+	width:100%;
+	border:2px solid red;
+}
+
+#browser_cuerpo{
+	clear:both;
+}
+
+#contenedor_lista{
+	z-index:100;
+	position:absolute;
+	visibility:visible;
+}
+
+.browser_boton{
+	cursor:pointer;
+	padding:5px;
+}
+
+.browser_boton_over{
+	cursor:pointer;
+	padding:5px;
+	background:#eeeeee;
+}
+
+
+.doc{
+	cursor:pointer;
+}
+
+.celda_icono{
+	 width:18px;
+}
+
+.doc td, .doc_sel td, .doc_sel_ultimo td{
+	padding-left:5px;
+}
+
+.doc_sel{
+	cursor:pointer;
+	background:#dddddd;
+}
+
+.doc_sel_ultimo{
+	cursor:pointer;
+	background:#dddddd;
+}
+
+/*
+.doc_sel_ultimo td {
+	border:1px dotted #000000;
+}
+*/
+
+.tabla_resultados{
+	width:100%;
+}
+
+.tabla_resultados_intermedio{
+	width:100%;
+	/*height:100%;*/
+	margin-top:0px;
+}
+
+.resultados_intermedio{
+	width:100%;
+	top:-30;
+}
+.cabecera_resultados_intermedio{
+	background: #bbbbbb;
+	font-weight:bold;
+	height:100%;
+}
+
+#tabla_area2{
+	width:96%;
+	overflow:auto;
+}
+
+.celda_check{
+	width:2.5%;
+	background: #eeeeee;
+}
+
+
+.celda_check_all{
+	width:2%;
+	background: #bbbbbb;
+}
+
+.check_all{
+	background: #DDD2E3;
+}
+
+.filacampos{
+	background: #cccccc;
+	/*width:100%;*/
+}
+
+.filacampos td {
+	font-weight:bold;
+	cursor:pointer;
+}
+
+.celdacampo{
+	padding-left:5px;
+	border-right:1px solid #000000;
+}
+
+.celdacampo_centro{
+	padding-left:5px;
+	text-align:center;
+}
+
+.celda_fecha{
+	text-align:center;
+	width:70px;
+}
+
+
+.celda_centro{
+	text-align:center;
+}
+
+#desplegable{
+	border: thin;
+	border-style: solid;
+	color: #222222;
+	width: 400px;
+	height: 80px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+}
+
+#sin_resultados{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #AAAAAA;
+	color: #222222;
+	width: 150px;
+	height: 70px;
+	padding:5px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	visibility:visible;
+	background:#dddddd;
+	z-index:4;
+}
+
+#texto_buscar{
+	width:150px;
+}
+
+.alinleft{
+	float:left;
+	border:1px solid red;
+}
+
+#paginador_area{
+	border-top:1px solid #888888;
+	height:10px;
+	width: 100%;
+	overflow-x:scroll;
+}
+
+#paginador_radios{
+	border-top:1px solid #e0e0e0;
+	height:15px;
+}
+
+#paginador td{
+	text-align:center;
+	padding:5px;
+}
+
+#paginador td a{
+	color:#000000;
+	text-decoration:underline;
+}
+
+.pag{
+	cursor:pointer;
+}
+
+.pag_sel{
+	font-weight:bold;
+}
+
+
+/*AREA MEDIA (BOTONES) */
+
+#browser_medio_btn{
+	float:left;
+	width:80px;
+	padding-top:60px;
+	height:100%;
+	border:1px solid #dddddd;
+	background:#eeeeee;
+	text-align:center;
+}
+
+#browser_medio_btn img{
+	padding-top:4px;
+}
+
+/*TABLA DE AREA INTERMEDIA (VENTANA)*/
+
+#browser_intermedio{
+	position:absolute;
+	height:95%;
+	margin-top:2px;
+	padding-top:2px;
+	clear:both;
+	visibility:hidden;
+	width:100%;
+	border:2px solid #898989;
+}
+
+#area3{
+	/*overflow:auto;*/
+	width:100%;
+	height:100%;
+	position: relative;
+	top:-5px;
+	/*background-color:#EEEEEE;*/
+}
+
+
+.br_int_cab-iz{
+	background-image:url(../../images/browser/cab-iz.gif);
+}
+
+.br_int_cab-centro{
+	padding-top:2px;
+	padding-right:2px;
+	background-image:url(../../images/browser/cab-centro.gif);
+}
+
+.br_int_cab-der{
+	background-image:url(../../images/browser/cab-der.gif);
+}
+
+.br_int_cuerpo-iz{
+	background-image:url(../../images/browser/cuerpo-iz.gif);
+}
+
+.br_int_cuerpo-centro{
+	background:#ffffff;
+	width:100%;
+}
+
+.br_int_cuerpo-der{
+	background-image:url(../../images/browser/cuerpo-der.gif);
+}
+
+.br_int_pie-iz{
+	background-image:url(../../images/browser/pie-iz.gif);
+}
+
+.br_int_pie-centro{
+	background-image:url(../../images/browser/pie-centro.gif);
+}
+
+.br_int_pie-der{
+	background-image:url(../../images/browser/pie-der.gif);
+}
+
+/*SOLAPAS*/
+
+.solapa{
+	cursor:pointer;
+	height:21px;
+	padding:5px;
+	margin-left:1px;
+	margin-top:1px;
+	border-left:1px solid #000000;
+	border-right:1px solid #000000;
+	border-top:1px solid #000000;
+	background:#eeeeee;
+	color:#aaaaaa;
+}
+
+.solapa_activa{
+	cursor:pointer;
+	height:21px;
+	padding:5px;
+	margin-left:1px;
+	margin-top:1px;
+	border-left:1px solid #000000;
+	border-right:1px solid #000000;
+	border-top:1px solid #000000;
+	background:#ffffff;
+	color:#000000;
+}
+
+.tabla_solapa{
+	width:99%;
+}
+
+.ficha_activa{
+	position:absolute;
+	top:0px;
+	visibility:visible;
+	z-index:2;
+}
+
+.ficha_oculta{
+	position:absolute;
+	top:0px;
+	visibility:hidden;
+	z-index:1;
+}
+
+#asociados{
+	border:1px solid #000000;
+	overflow:auto;
+}
+
+#no_asociados{
+	border:1px solid #000000;
+	overflow:auto;
+}
+
+/*FECHAS*/
+.Bbotong{
+ 	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color : #FFFFFF;
+	background-color: #999999;
+	font-weight: normal;
+        border:0px;
+        height:17px;
+        width:50px;
+}
+
+.buscadoravanzado{
+	font-family : Geneva, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	color : #4b4b4b;
+	font-weight: normal;
+	text-align: left;
+}
+
+.ayudagris{
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 9px;
+	color: #969595;
+	margin-left:60px;
+	margin-top:5px;
+}
+
+.fecha{
+	font-size:9px;
+	font-family:Verdana,Helvetica;
+}  
+
+.Basterisco{
+	color:#ff8000;
+	font-size:14px;
+}
+
+.Bfilaboton{
+	width: 465px;
+	margin-right:15px;
+	text-align:right;
+}
+
+/*Estilos para tabla de propiedades de la accion asociar propiedades*/
+
+.filaprop{
+	background-color:#EEEEEE;
+	font-size:10px;
+}
+
+.filafinal{
+	background-color:#B8429B;
+	color:#ffffff;
+	font-size:10px;
+}
+
+.celda_checkP{
+	width:6%;
+	background: #eeeeee;
+
+}
+
+
+.celda_checkC{
+	width:3.1%;
+	background: #eeeeee;
+	padding-right:18px;
+}
+
+.celda_prop{
+	font-size:10px;
+	font-weight:bold;
+	color:#5B5050;
+	text-indent:2px;
+}
+
+.celda_cjto{
+	font-size:10px;
+	font-weight:bold;
+	color:#AB1683;
+	text-indent:2px;
+}
+
+.celda_p{
+	font-size:10px;
+	font-weight:bold;
+	color:#ffffff;
+	text-indent:4px;
+	/*padding-right:4px;*/
+	width:5%;
+}
+
+.celda_p2{
+	font-size:10px;
+	font-weight:bold;
+	color:#ffffff;
+	text-indent:4px;
+	padding-right:25px;
+	width:10%;
+	align:center;
+}
+
+.celda_valor{
+	font-size:10px;
+	font-weight:bold;
+	color:#ffffff;
+	width:85%;
+	align:center;
+	/*text-indent:100px;*/
+}
+
+.celda_resul{
+	font-size:10px;
+	font-weight:bold;
+	color:#898989;
+}
+
+
+.tabla_resultados_final{
+	width:100%;
+}
+
+.pie_p{
+	width:100%;
+	height:100%;
+	float:right;
+	padding-right:-15;
+}
+
+
+.filaP{
+	font-size:10px;
+	font-family:Verdana,Helvetica;
+	color:#000000;
+	font-weight:bold;
+} 
+
+.cabecera_area3{
+	padding:0px;
+	margin:0px;
+} 
+
+.listatr{
+	/*border:2px solid #E0DDD6;*/
+	background-color:#E0DDD6;
+}
+
+.filacerrar{
+	background-color: #cccccc;
+	border-color: #cccccc;
+	color: black;
+	font-weight: bolder;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	text-align: right;
+}
+
+a.filacerrar:hover{
+	text-decoration: underline;
+	color: #666666;
+}
+
+.filaclara{
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color : #3D3D3D;
+	background-color :#F1F1F1;
+	border-color: #F1F1F1;
+}
+
+.cabeceratabla{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8429B;
+	background-color: #B8429B;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: White;
+	font-weight: bold;
+}
+
+.cajabusqueda{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #3E3E3E;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	color: #3D3D3D;
+	width: 100px;
+}
+
+/**************REDIMENSION DINAMICA DE LA TABLA*******************/
+td.resize-handle-active {
+	cursor: e-resize;
+}
+
+div.resize-handle {
+	cursor: e-resize;
+	width: 2px;
+	border-right: 1px dashed #898989;
+	position:absolute;
+	top:0;
+	left:0;
+}

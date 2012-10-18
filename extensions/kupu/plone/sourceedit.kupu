@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="sourceedit"
+    implementation="plone"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+    <kupu:id>$Id: sourceedit.kupu 14546 2005-07-12 14:35:55Z duncan $</kupu:id>
+
+  <kupu:part name="jsincludes">
+  </kupu:part>
+
+</kupu:feature>

@@ -1,0 +1,488 @@
+%%
+%% This is file `textures.def',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% textures.dtx  (with options: `copyright')
+%% AI3_Crops.dtx  (with options: `copyright')
+%% portable.dtx  (with options: `copyright')
+%% textures.dtx  (with options: `banner,Textures')
+%% AI3_Crops.dtx  (with options: `graphicsRepairs,AI3Crops')
+%% portable.dtx  (with options: `Textures,supportsEPS,AlwaysReadFile,color2')
+%% textures.dtx  (with options: `TexturesRules,')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file textures.dtx AI3_Crops.dtx portable.dtx textures.dtx AI3_Crops.dtx portable.dtx textures.dtx.
+%% 
+%% Textures.dtx Portions copyright (C) 1994, 1995, 1996, 1997 Arthur Ogawa (ogawa@teleport.com).
+%% {28 May 1997}
+%% AI3_Crops.dtx Portions copyright (C) 1994, 1995, 1996, 1997 Arthur Ogawa (ogawa@teleport.com).
+%% {28 May 1997}
+%% Portable.dtx Portions copyright (C) 1994, 1995, 1996, 1997 Arthur Ogawa (ogawa@teleport.com).
+%% {28 May 1997}
+%% This code may be distributed only as part of
+%% the full Blue Sky Research LaTeX distribution or as part of
+%% the Standard LaTeX `Graphics Bundle'.
+%%
+%% It may be distributed under the terms of the LaTeX Project Public
+%% License, as described in lppl.txt in the base LaTeX distribution.
+%% Either version 1.0 or, at your option, any later version.
+%%
+\ProvidesFile{textures.def}%
+[1997/5/28 v0.3
+  Graphics extensions for Textures 1.7 and later
+  (Arthur Ogawa/ogawa@teleport.com)%
+]%
+\AtBeginDocument\Gin@graphics@alts
+\let\Gin@graphics@alts\@empty
+\ifx\define@key\undefined\else
+ \define@key{Gin}{trim}{\Gread@parse@KV#1 \\{TR}}%
+ \define@key{Gin}{viewport}{\Gread@parse@KV#1 \\{VP}}%
+ \g@addto@macro\Gin@graphics@alts{%
+  \def\Gin@eread{\relax}%
+  \def\Gin@sep{}%
+  \def\Gin@eext{}%
+  }%
+ \fi
+\def\Gin@setfile#1#2#3{%
+  \ifx\\#2\\\Gread@false\fi
+  \@tempswafalse
+  \ifGin@bbox\else\@tempswatrue\fi
+  \if@always@read\@tempswatrue\fi
+  \if@tempswa
+    \ifGread@
+      \csname Gread@%
+         \expandafter\ifx\csname Gread@#1\endcsname\relax
+           \Gtype@default
+         \else
+           #1%
+         \fi
+      \endcsname{\Gin@base#2}%
+    \else
+    \@latex@error
+      {Cannot determine size of graphic in #3 (no size specifed)}%
+      \@ehc
+    \fi
+  \fi
+  \Gin@viewport@code
+  \Gin@nat@height\Gin@ury bp%
+  \advance\Gin@nat@height-\Gin@lly bp%
+  \Gin@nat@width\Gin@urx bp%
+  \advance\Gin@nat@width-\Gin@llx bp%
+  \Gin@req@sizes
+  \expandafter\ifx\csname Ginclude@#1\endcsname\relax
+    \Gin@drafttrue
+    \expandafter\ifx\csname Gread@#1\endcsname\relax
+      \@latex@error{Can not include graphics of type: #1}\@ehc
+      \global\expandafter\let\csname Gread@#1\endcsname\@empty
+    \fi
+  \fi
+  \leavevmode
+  \ifGin@draft
+      \hbox to \Gin@req@width{%
+        \vrule\hss
+        \vbox to \Gin@req@height{%
+           \hrule \@width \Gin@req@width
+           \vss
+           \edef\@tempa{#3}%
+           \rlap{ \ttfamily\expandafter\strip@prefix\meaning\@tempa}%
+           \vss
+           \hrule}%
+        \hss\vrule}%
+  \else
+    \@addtofilelist{#3}%
+    \ProvidesFile{#3}[Graphic file (type #1)]%
+    \setbox\z@\hbox{\csname Ginclude@#1\endcsname{#3}}%
+    \dp\z@\z@
+    \ht\z@\Gin@req@height
+    \wd\z@\Gin@req@width
+  \box\z@
+  \fi}
+\newif\if@always@read
+\def\Gtype@default{eps}%
+\let\@alt@Gin@setfile\Gin@setfile
+\g@addto@macro\Gin@graphics@alts{%
+ \let\Gin@setfile\@alt@Gin@setfile
+ }%
+\chardef\cat@ignore=14
+\chardef\cat@linend=5
+\def\Gread@EPSF#1{%
+ \begingroup
+  \@tempcnta\z@\loop\ifnum\@tempcnta<32\relax
+   \catcode\@tempcnta\cat@ignore
+   \advance\@tempcnta\@ne\repeat
+  \catcode127\cat@ignore
+  \let\do\@makeother\dospecials\catcode`\ 10\relax
+  \catcode\endlinechar\cat@linend
+  \immediate\openin\@inputcheck#1 %
+  \ifeof\@inputcheck
+   \@latex@error
+    {Imported graphic `#1' not found}\@ehc
+   \else
+   \Gread@true
+   \loop\read\@inputcheck to\Gread@string
+    \ifeof\@inputcheck\Gread@false\else
+     \expandafter\Gread@find\Gread@string:.\\\Gread@BBox{BB}%
+     \expandafter\Gread@find\Gread@string:.\\\Gread@AICrop{AI}%
+     \ifG@AtEnd@\else\ifx\Gread@string\Gread@EndComments\Gread@false
+     \fi\fi
+     \fi
+    % We've seen all. Bail out immediately.
+    \ifx\BB@llx\@empty\else\ifx\AI@llx\@empty\else\Gread@false\fi\fi
+    \ifGread@
+    \repeat
+   \immediate\closein\@inputcheck
+   \fi
+  \edef\@tempa{%
+   \def\noexpand\BB@llx{\BB@llx}\def\noexpand\BB@lly{\BB@lly}%
+   \def\noexpand\BB@urx{\BB@urx}\def\noexpand\BB@ury{\BB@ury}%
+   \def\noexpand\AI@llx{\AI@llx}\def\noexpand\AI@lly{\AI@lly}%
+   \def\noexpand\AI@urx{\AI@urx}\def\noexpand\AI@ury{\AI@ury}%
+   }%
+  \expandafter\endgroup\@tempa
+ \ifx\BB@llx\@empty
+  \@latex@error
+   {Cannot determine BoundingBox of EPS graphic #1.}\@ehc
+   %help{This file is not compliant with EPS. Fix it.}
+  \else
+  \ifGin@bbox\else
+   \ifx\AI@llx\@empty % Only BB was given
+    \let\Gin@llx\BB@llx\let\Gin@lly\BB@lly
+    \let\Gin@urx\BB@urx\let\Gin@ury\BB@ury
+    \relax
+    \else % BB and AI were both given
+    \let\Gin@llx\AI@llx\let\Gin@lly\AI@lly
+    \let\Gin@urx\AI@urx\let\Gin@ury\AI@ury
+    \relax
+    \fi
+   \fi
+  \if@SupportsEPS
+   % Subtle: calculations are performed wholly
+   % in pt to allow using \strip@onlypt
+   \dimen@\Gin@llx\p@\advance\dimen@-\BB@llx\p@
+     \edef\Gin@llx{\strip@onlypt\dimen@}%
+   \dimen@\Gin@lly\p@\advance\dimen@-\BB@lly\p@
+     \edef\Gin@lly{\strip@onlypt\dimen@}%
+   \dimen@\Gin@urx\p@\advance\dimen@-\BB@llx\p@
+     \edef\Gin@urx{\strip@onlypt\dimen@}%
+   \dimen@\Gin@ury\p@\advance\dimen@-\BB@lly\p@
+     \edef\Gin@ury{\strip@onlypt\dimen@}%
+   \fi
+  \fi
+ \dimen@ii\p@\dimen@ii.99626\dimen@ii
+ \ifx\VP@llx\@empty\else
+  \let\Gin@urx\Gin@llx
+  \@Gin@addptbp\Gin@llx\VP@llx\@Gin@addptbp\Gin@urx\VP@urx
+  \let\Gin@ury\Gin@lly
+  \@Gin@addptbp\Gin@lly\VP@lly\@Gin@addptbp\Gin@ury\VP@ury
+  \fi
+ \ifx\TR@llx\@empty\else
+  \@Gin@addptbp\Gin@llx\TR@llx\@Gin@addptbp\Gin@urx{-\TR@urx}%
+  \@Gin@addptbp\Gin@lly\TR@lly\@Gin@addptbp\Gin@ury{-\TR@ury}%
+  \fi
+ }%
+\newif\if@SupportsEPS
+\def\@Gin@addptbp#1#2{%
+ % #1 operand in units of bp; #2 summand in units of pt;
+ \dimen@#1\p@\advance\dimen@#2\dimen@ii\edef#1{\strip@onlypt\dimen@}%
+ }%
+\def\Gread@minimal#1{%
+ \ifGin@bbox% signifies that \Gin@llx, etc., have been set
+  \ifx\VP@llx\@empty\else
+   \let\Gin@urx\Gin@llx
+   \@Gin@addptbp\Gin@llx\VP@llx\@Gin@addptbp\Gin@urx\VP@urx
+   \let\Gin@ury\Gin@lly
+   \@Gin@addptbp\Gin@lly\VP@lly\@Gin@addptbp\Gin@ury\VP@ury
+   \fi
+  \else
+  \ifx\VP@llx\@empty
+   \@latex@error{Size of graphic is unknown}\@ehc
+   %\def\Gin@llx{0}\def\Gin@lly{0}\def\Gin@urx{72}\def\Gin@ury{72}%
+   \else
+   \def\Gin@llx{0}\def\Gin@lly{0}%
+   \let\Gin@urx\Gin@llx
+   \@Gin@addptbp\Gin@llx\VP@llx\@Gin@addptbp\Gin@urx\VP@urx
+   \let\Gin@ury\Gin@lly
+   \@Gin@addptbp\Gin@lly\VP@lly\@Gin@addptbp\Gin@ury\VP@ury
+   \fi
+  \fi
+ \ifx\TR@llx\@empty\else
+  \@Gin@addptbp\Gin@llx\TR@llx\@Gin@addptbp\Gin@urx{-\TR@urx}%
+  \@Gin@addptbp\Gin@lly\TR@lly\@Gin@addptbp\Gin@ury{-\TR@ury}%
+  \fi
+ }%
+\long\def\Gread@find#1:#2#3\\#4#5{%
+ \def\@tempa{#1}\ifx\@tempa#4\Gread@test@AtEnd#2#3()\\{#5}\fi
+ }%
+\def\Gread@test@AtEnd#1(#2)#3\\#4{%
+ \def\@tempa{#2}%
+ \ifx\@tempa\Gread@atend\G@AtEnd@true\else\Gread@parse#1\\{#4}\fi
+ }%
+\newif\ifG@AtEnd@
+\def\Gread@parse#1 #2 #3 #4 #5\\#6{%
+ \Gin@set{#6}{llx}{#1}\Gin@set{#6}{lly}{#2}%
+ \Gin@set{#6}{urx}{#3}\Gin@set{#6}{ury}{#4}%
+ }%
+\def\Gin@set#1#2#3{\expandafter\def\csname#1@#2\endcsname{#3}}%
+\def\Gread@parse@KV#1 #2 #3 #4 #5\\#6{%
+ \Gread@parse@cs{#1}{#6}{llx}\Gread@parse@cs{#2}{#6}{lly}%
+ \Gread@parse@cs{#3}{#6}{urx}\Gread@parse@cs{#4}{#6}{ury}%
+ }%
+\def\Gread@parse@cs#1#2#3{%
+ \@defaultunits\dimen@#1bp\relax\@nnil
+ \expandafter\edef\csname#2@#3\endcsname{\strip@onlypt\dimen@}%
+ }%
+\begingroup
+ \catcode`\_=12\relax
+ \xdef\Gread@AICrop{\@percentchar AI3_Cropmarks}%
+ \xdef\Gread@EndComments{\@percentchar\@percentchar EndComments }%
+ \endgroup
+\let\AI@llx\@empty\let\AI@lly\@empty\let\AI@urx\@empty\let\AI@ury\@empty
+\let\BB@llx\@empty\let\BB@lly\@empty\let\BB@urx\@empty\let\BB@ury\@empty
+\let\TR@llx\@empty\let\TR@lly\@empty\let\TR@urx\@empty\let\TR@ury\@empty
+\let\VP@llx\@empty\let\VP@lly\@empty\let\VP@urx\@empty\let\VP@ury\@empty
+\ifx\strip@onlypt\undefined
+ {\catcode`t=12\catcode`p=12\gdef\rem@onlyPT#1pt{#1}}%
+ \def\strip@onlypt#1{\expandafter\rem@onlyPT\the#1\space}%
+ \fi
+\def\Grot@start{\Gtrans@start\Grotate@\Grot@angle\Gtrans@trats}%
+\def\Grot@end{\Gtrans@end}%
+\def\Gscale@start{\Gtrans@start\Gscale@\Gscale@x\Gscale@y\Gtrans@trats}%
+\def\Gscale@end{\Gtrans@end}%
+\def\Gclip@start#1#2{\Gtrans@start\Gclip@rect{#1}{#2}\Gtrans@trats}%
+\def\Gclip@end{\Gtrans@end}%
+\def\Ginclude@PS#1{\Ginclude@graphic{PS}{#1}}%
+\def\Ginclude@EPSF#1{\Ginclude@graphic{EPSF}{#1}}%
+\def\Ginclude@tiff#1{\Ginclude@graphic{TIFF}{#1}}%
+\def\Ginclude@bmp#1{\Ginclude@graphic{BMP}{#1}}%
+\def\Ginclude@bmp#1{\Ginclude@graphic{WIN}{#1}}%
+\def\Ginclude@pcl#1{\Ginclude@graphic{PCL}{#1}}%
+\def\Ginclude@hpgl#1{\Ginclude@graphic{HPGL}{#1}}%
+\def\Ginclude@pictfile#1{\Ginclude@graphic{PICTf}{#1}}%
+\def\Ginclude@picture#1{\Ginclude@graphic{PICTr}{#1}}%
+\def\Ginclude@graphic#1#2{%
+ \hbox\bgroup
+  \def\@tempa{!}%
+  \ifx\Gin@scaley\@tempa\let\Gin@scaley\Gin@scalex\else
+   \ifx\Gin@scalex\@tempa\let\Gin@scalex\Gin@scaley\fi
+   \fi
+  \ifGin@clip
+   \dimen@\Gin@urx bp%
+   \advance\dimen@-\Gin@llx bp%
+   \dimen@\Gin@scalex\dimen@
+   \@tempdima\Gin@ury bp%
+   \advance\@tempdima-\Gin@lly bp%
+   \@tempdima\Gin@scaley\@tempdima
+   \edef\@tempa{%
+    \noexpand\Gclip@start{\strip@onlypt\dimen@}%
+     {\strip@onlypt\@tempdima}%
+    }\@tempa
+   \fi
+  \dimen@\Gin@llx bp\dimen@\Gin@scalex\dimen@
+  \kern-\dimen@
+  \dimen@\Gin@lly bp\dimen@\Gin@scaley\dimen@
+  \raise-\dimen@\hbox\bgroup
+   \special@P@graphic{#1}{#2}%
+   \egroup
+  \ifGin@clip\Gclip@end\fi
+  \egroup
+ }%
+\@SupportsEPStrue
+\@always@readtrue
+\def\color@gray#1#2{%
+ \expandafter\def\expandafter#1\color@P@gray{#2}%
+ }%
+\def\color@cmyk#1#2{\c@lor@@cmyk#2\@@#1}%
+\def\c@lor@@cmyk#1,#2,#3,#4\@@#5{%
+ \expandafter\def\expandafter#5\color@P@cmyk{#1}{#2}{#3}{#4}%
+ }%
+\def\color@rgb#1#2{\c@lor@@rgb#2\@@#1}%
+\def\c@lor@@rgb#1,#2,#3\@@#4{%
+ \expandafter\def\expandafter#4\color@P@rgb{#1}{#2}{#3}%
+ }%
+\def\color@hsb#1#2{\c@lor@@hsb#2\@@#1}%
+\def\c@lor@@hsb#1,#2,#3\@@#4{%
+ \expandafter\def\expandafter#4\color@P@hsb{#1}{#2}{#3}%
+ }%
+\def\color@named#1#2{\c@lor@@named#2,,\@@#1}
+\def\c@lor@@named#1,#2,#3\@@#4{%
+ \@ifundefined{col@#1}{%
+  \PackageError{color}{Undefined color `#1'}\@ehd
+  }{%
+  \edef\@tempa{\color@P@custom{#1}{\if!#2!1\else#2\fi}}%
+  \expandafter\def\expandafter#4\@tempa
+  }%
+ }%
+\AtEndOfPackage{%
+ \expandafter\def\expandafter\current@color\color@P@gray{0}%
+ }%
+\def\set@color{%
+ \color@P@push
+  \color@P@set\current@color
+  \color@P@hsup
+ \aftergroup\reset@color
+ }%
+\def\reset@color{\color@P@pop}%
+\def\set@page@color{%
+ \color@P@page
+  \color@P@set\current@color
+  \color@P@egap
+ }%
+\def\define@color@named#1#2{%
+ \edef\@tempa{{#1}{#2}}\expandafter\AddCustomColor\@tempa
+ \expandafter\edef\csname col@#1\endcsname{#2}%
+ }%
+\def\AddCustomColor#1#2{%
+ \g@addto@macro\@FirstPageSpecials{\color@P@define{#1}{#2}}%
+ }%
+\AtBeginDocument\@FirstPageSpecials
+\let\@FirstPageSpecials\@empty
+\ifx\strip@onlypt\undefined
+ {\catcode`t=12\catcode`p=12\gdef\rem@onlyPT#1pt{#1}}%
+ \def\strip@onlypt#1{\expandafter\rem@onlyPT\the#1\space}%
+ \fi
+\def\Gtrans@start{%
+\Raw@PS{gsave}%
+\special{postscript 0 0 transform}\special{rawpostscript itransform}%
+\Raw@PS{2 copy translate 72.27 72 div}%
+\Raw@PS{dup dup}%
+\Raw@PS{neg}%
+\Raw@PS{scale}%
+ }%
+\def\Gtrans@trats{%
+\Raw@PS{1 exch div dup}%
+\Raw@PS{neg}%
+\Raw@PS{scale neg exch neg exch translate}%
+ }%
+\def\Gtrans@end{%
+\Raw@PS{grestore}%
+ }%
+\def\Grotate@#1{%
+\Raw@PS{#1\space rotate }%
+ }%
+\def\Gskew@#1{%
+\Raw@PS{1 #1\space 0 1 0 0 concat }%
+ }%
+\def\Gscale@#1#2{%
+\Raw@PS{#1\space#2\space scale }%
+ }%
+\def\Gtranslate@#1#2{%
+\Raw@PS{#1\space#2\space translate }%
+ }%
+\def\Gaffine@#1#2#3#4#5#6{%
+\Raw@PS{#1 #2 #3 #4 #5 #6 concat }%
+ }%
+\def\Gprojective@#1#2#3#4#5#6#7#8#9{%
+ }%
+\def\Gclip@rect#1#2{%
+ \Raw@PS{%
+  #1 #2 0 0
+  moveto 1 index 0 rlineto 0 exch rlineto neg 0 rlineto closepath
+  clip
+  }%
+ }%
+\def\Raw@PS#1{%
+ \special{%
+rawpostscript %
+  #1}%
+ }%
+\def\special@P@graphic#1#2{%
+\csname Gimport@#1\endcsname{#2}%
+ }%
+\def\Gimport@PS#1{%
+\Textures@Include{postscriptfile}{#1}%
+ }%
+\def\Gimport@EPSF#1{%
+\Textures@Include{illustration}{#1}%
+ }%
+\def\Gimport@PICTf#1{%
+\Textures@Include{pictfile}{#1}%
+ }%
+\def\Gimport@PICTr#1{%
+\Textures@Include{picture}{#1}%
+ }%
+\def\Gimport@BMP#1{%
+ }%
+\def\Gimport@TIFF#1{%
+ }%
+\def\Textures@Include#1#2{%
+ \special{#1 #2 scaled \Gin@scalex. \Gin@scaley. }%
+ }%
+\def\color@P@gray#1{%
+{rgb #1. #1. #1.}%
+ }%
+\def\color@P@cmyk#1#2#3#4{%
+{cmyk #1. #2. #3. #4.}%
+ }%
+\def\color@P@rgb#1#2#3{%
+{rgb #1. #2. #3.}%
+ }%
+\def\color@P@hsb#1#2#3{%
+ }%
+\def\color@P@custom#1#2{%
+{#1 #2}%
+ }%
+\def\color@P@push{%
+\special{color push}%
+ }%
+\def\color@P@hsup{%
+ }%
+\def\color@P@set#1{%
+\special{color #1}%
+ }%
+\def\color@P@pop{%
+\special{color pop}%
+ }%
+\def\color@P@page{%
+\special{color push}%
+ }%
+\def\color@P@egap{%
+\special{color pop}%
+ }%
+\def\color@P@define#1#2{%
+\special{color define #1 #2}%
+ }%
+\def\c@lor@to@ps#1 #2\@@{\csname c@lor@ps@#1\endcsname#2 \@@}%
+\def\c@lor@to@ps@#1 #2\@@{\csname c@lor@ps@#1@\endcsname#2 \@@}%
+\def\c@lor@ps@#1 #2\@@{%
+ \expandafter\expandafter
+ \expandafter\c@lor@to@ps@
+ \csname col@#1%
+ \expandafter\endcsname\space
+ #2. \@@{#1}%
+}%
+\def\c@lor@ps@rgb#1. #2. #3. #4\@@{\color@P@rgb{#1.}{#2.}{#3.}}%
+\def\c@lor@ps@rgb@#1. #2. #3. #4. #5\@@#6{\color@P@rgb{#1.}{#2.}{#3.}}%
+\def\c@lor@ps@cmyk#1. #2. #3. #4. #5. #6\@@{\color@P@cmyk{#1.}{#2.}{#3.}{#4.}}%
+\def\c@lor@ps@cmyk@#1. #2. #3. #4. #5. #6\@@#7{%
+ #1 #2 #3 #4  (#7)  findcustomcmykcolor
+ \if!\@firstofone#5!1 \else#5 \fi
+ setcustomcolor
+}%
+\@namedef{Gin@rule@*}#1{{\Gtype@default}{\Gin@ext}{#1}}%
+\def\Gtype@default{EPSF}%
+\@namedef{Gin@rule@.rps}#1{{PS}{\Gin@ext}{#1}}
+\def\Gread@PS{\Gread@minimal}%
+\@namedef{Gin@rule@.ps}#1{{EPSF}{\Gin@ext}{#1}}%
+\@namedef{Gin@rule@.eps}#1{{EPSF}{\Gin@ext}{#1}}%
+\@namedef{Gin@rule@.pict}#1{{pictfile}{\Gin@ext}{#1}}%
+\def\Gread@pictfile{\Gread@minimal}%
+\@namedef{Gin@rule@.picture}#1{{picture}{\Gin@ext}{#1}}%
+\def\Gread@picture{\Gread@minimal}%
+\def\Gin@sepdefault{.}%
+\def\Gin@extensions{{},.ps,.eps,.pict}%
+\begingroup\catcode`\_12
+ \g@addto@macro\@FirstPageSpecials{%
+  \special{prepostscript
+   userdict /AI3_noCropMarks true put
+   }%
+  }%
+ \endgroup
+\endinput
+%%
+%% End of file `textures.def'.

@@ -1,0 +1,160 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+/* @override http://samuelgarneau.com/slidebox.css */
+
+.slide-button {
+	margin-left: auto;
+	margin-right: auto;
+	cursor: pointer;
+	color: #4c5153;
+	background-color: #333;
+}
+
+.slide-button:hover {
+	color: #9f9d8e;
+}
+
+#workspace {
+	padding-top: 50px;
+}
+
+#list-1 {
+	display: inline;
+	float: left;
+}
+
+#list-2 {
+	display: inline;
+	float: left;
+}
+
+#list-3 {
+	float: left;
+}
+
+#list-4 {
+	float: left;
+}
+
+ul.list {
+	line-height: 20px;
+	list-style-type: none;
+	width: 20%;
+	font-size: 0.85em;
+}
+
+ul.list li {
+	border-bottom: 1px solid rgba(73,81,84,0.49);
+	padding-top: 3px;
+	padding-bottom: 3px;
+	cursor: pointer;
+}
+
+ul.list li:hover {
+	color: #9f9d8e;
+}
+
+ul.list li.header {
+	color: #e56f03;
+	letter-spacing: 3px;
+	padding-bottom: 20px;
+	font-variant: small-caps;
+	font-size: 1.7em;
+	margin-top: 10px;
+	cursor: text;
+}
+
+ul.list li.header:hover {
+	font-size: 1.7em;
+}
+
+label {
+	display: block;
+}
+
+.box {
+	width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.box p {
+	margin-bottom: 0;
+}
+
+.box h1 {
+	margin: 0;
+}
+
+.box h5 {
+	margin-bottom: 0;
+	border-bottom-style: none;
+	font-size: 1em;
+	margin-top: -12px;
+}
+
+.box h5 span {
+	font-weight: normal;
+	font-style: normal;
+	font-size: 0.9em;
+	color: #545454;
+}
+
+.box-top {
+	background-image: url(images/box-top.png);
+	height: 30px;
+}
+
+.box-bottom {
+	background-image: url(images/box-bottom.png);
+	height: 30px;
+}
+
+.box-middle {
+	padding-left: 40px;
+	padding-right: 40px;
+	background: url(images/box-middle.png) repeat-y;
+}
+
+ul.params {
+	font-size: 0.9em;
+	font-weight: bold;
+	padding-bottom: 30px;
+	margin: 0;
+}
+
+ul.params li span {
+	font-weight: normal;
+	font-style: normal;
+}
+
+a {
+	background-color: #97ad7e;
+	text-decoration: none;
+	color: #fff;
+	padding: 3px;
+}

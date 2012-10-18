@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<search>
+	<parentid>1</parentid>          
+	<depth>0</depth>                
+	<items>50</items>               
+	<page>1</page>                  
+	<select>catid as tagId, parentId, descripcion as tagName</select>
+	<operator>and</operator>
+	<joins>
+		<join>DOCINDICE</join>
+	</joins>
+	<filters>
+		<filter content=":parentid" comparation="equal" field="parentid" />
+	</filters>
+</search>

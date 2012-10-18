@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+ <head>
+ <title>Test Content Document</title>
+
+ <link href="kupucontentstyles.css" rel="stylesheet" type="text/css" />
+
+ <!-- headers to prevent the browser from caching, these *must* be provided,
+        either in meta-tag form or as HTTP headers -->
+ <meta http-equiv="Pragma" content="no-cache" />
+ <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+
+ <!-- make sure the browser's charset is UTF-8 -->
+ <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+ <!-- some meta data, customizations could build property tools that
+        edit more of them -->
+ <meta name="Subject" content="" />
+ <meta name="Publisher" content="No publisher" />
+ <meta name="Description" content="Document-centric editing overview." />
+ <meta name="Contributors" content="" />
+ <meta name="Effective_date" content="None" />
+ <meta name="Expiration_date" content="None" />
+ <meta name="Type" content="Document" />
+ <meta name="Format" content="text/html" />
+ <meta name="Language" content="" />
+ <meta name="Rights" content="" />
+ </head>
+<body>
+
+<h1>Document-Centric Editing</h1>
+
+<p>There are two approaches to content editing in a web browser.  The
+first is a <em>data-oriented</em> approach, where the content is split into
+concrete parts.  The editing occurs in a <code>&lt;form&gt;</code> with various 
+fields. This approach fits best when there are specific pieces of information 
+needed for the resource.</p>
+<p>The second is a <em>document-oriented</em> approach, where the essence of 
+the resource is free-flowing. This does not mean that the content is 
+unstructured, but it is less rigid than fields. Often there are elements that
+provide metadata for the resource.</p>
+
+<p>Most information in organizations is free-flowing, as studies show.
+For these cases, a rich editor like Kupu makes sense.  Equally, these
+cases point towards a <em>document-centric</em> approach, rather than
+rigid <a title="HTML Specification" href="http://www.w3.org/Markup">HTML</a> 
+forms.</p>
+
+<p>The following table shows different aspects, and happens to give 
+us a chance to test table editing in Kupu:</p>
+
+<h4>Comparing Data- and Document-Centric</h4>
+<table border="0" class="plain" cellspacing="0">
+<tbody>
+    <tr>
+        <th>&nbsp;</th>
+        <th>Data-centric</th>
+        <th>Document-centric</th>
+    </tr>
+    <tr>
+        <td>Implementation</td>
+        <td>form fields</td>
+        <td>iframe</td>
+    </tr>
+    <tr>
+        <td>Metadata</td>
+        <td>form elements</td>
+        <td>iframe document "head"</td>
+    </tr>
+</tbody>
+</table>
+
+
+</body>
+</html>

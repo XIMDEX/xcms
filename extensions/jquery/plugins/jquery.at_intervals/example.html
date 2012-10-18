@@ -1,0 +1,70 @@
+<html>
+<head>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
+  <script type="text/javascript" src="./jquery.at_intervals.js"></script>
+</head>
+<body>
+  <h1>Observe the Firebug Console</h1>
+ 
+  <a href="#" id="pause">Pause</a> /
+  <a href="#" id="resume">Resume</a><br />
+  <a href="#" id="stop">Stop</a><br />
+  <a href="#" id="start_another">Start another</a><br />
+  <a href="#" id="toggle_visibility">Toggle visibility (pauses/resumes the intervals)</a><br />
+  <a href="#" id="remove_from_dom">Remove widget from DOM (stops the intervals)</a><br />
+ 
+  <script type="text/javascript">
+    $("#remove_from_dom").click(function(){
+      $("#tagsoup1").empty()
+      return false
+    });
+ 
+    $("#toggle_visibility").click(function(){
+      $("#tagsoup1").toggle()
+      return false
+    });
+ 
+    $("#pause").click(function(){
+      $("#widget").data("foo").should_pause = true
+      return false
+    });
+ 
+    $("#resume").click(function(){
+      $("#widget").data("foo").should_pause = false
+      return false
+    });
+ 
+    $("#stop").click(function(){
+      $("#widget").data("foo").should_stop = true
+      return false
+    });
+    
+    $("#start_another").click(function(){
+      $("#widget").at_intervals(function(){
+        console.log("Doing some other work now...")
+      }, { name: "foo", delay: 500 })
+      return false
+    })
+  </script>
+ 
+  <div id="tagsoup1">
+    <div id="tagsoup2">
+ 
+      <div id="widget" style="border: 1px dotted gray; margin: 2em; padding: 1em; height: 150px">
+        <p>A widget. Self-contained piece of code and looks.</p>
+        <div id="logic" style="background-color: red; width: 66px; height: 66px"></div>
+ 
+        <script type="text/javascript">
+          $("#widget").at_intervals(function(){
+            console.log("Working...")
+            $("#logic").toggle(200)
+          }, { name: "foo" });
+        </script>
+      </div>
+ 
+    </div>
+  </div>
+ 
+</body>
+</html>
+ 

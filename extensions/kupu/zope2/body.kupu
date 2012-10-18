@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="body"
+    implementation="zope2"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:define-macro="dummy"
+    >
+
+  <kupu:part name="editorframe">
+    <div class="kupu-editorframe">
+      <form>
+        <!-- XXX: fulldoc.html gets the .html stripped by FSS -->
+        <iframe metal:define-slot="editorframe"
+                class="kupu-editor-iframe"
+                id="kupu-editor"
+                frameborder="0"
+                scrolling="auto"
+                src="fulldoc"
+                tal:attributes="src document_url">
+        </iframe>
+        <textarea class="kupu-editor-textarea" id="kupu-editor-textarea"> </textarea>
+      </form>
+    </div>
+  </kupu:part>
+
+</kupu:feature>

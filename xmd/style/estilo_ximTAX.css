@@ -1,0 +1,128 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+body{
+	background-color: #F5F5F5;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: x-small;
+	margin: 1px;
+}
+td{
+	
+}
+.etiqueta{
+	font-weight: bold;
+	font-size: 115%;
+}
+.cabecera{
+	background-color: #AFAFAF;
+	color: white;
+	text-align: center;
+}
+.npropiedad{
+	font-weight: bold;
+	font-size: 110%;	
+}
+.vpropiedad{
+	color: #505050;
+}
+.contenido{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #AAAAAA;
+	color: #535353;
+	width: 190px;
+	height: 80px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+}
+.caja{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #AAAAAA;
+	color: #535353;
+	width: 150px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+}
+.contenidoe{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #AAAAAA;
+	color: #535353;
+	width: 190px;
+	height: 80px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	background-color: White;
+}
+.cajae{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #AAAAAA;
+	color: #535353;
+	width: 122px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	background-color: White;
+}
+.tabla{
+	border: thin;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #AFAFAF;	
+}
+.filaclara{
+	color : #3D3D3D;
+	background-color :#E2E2E2;
+	border-color: #F9F9F9;
+}
+.filaoscura{
+	color : #3D3D3D;
+	background-color :#EBEBEB;
+	border-color :#EBEBEB;
+}
+
+
+.boton{
+	border : thin;
+	border-color : #006699;
+	border-style : solid;
+	border-width : 1px;
+	background-color : #006699;
+	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size : 10px;
+	color: #FAFAFA;
+	font-weight : bold;
+	vertical-align : middle;
+	text-align : center;
+	height: 15px;
+	width: 120px;
+	}

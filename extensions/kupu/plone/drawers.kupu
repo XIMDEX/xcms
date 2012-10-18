@@ -1,0 +1,38 @@
+<kupu:feature
+    name="drawers"
+    implementation="plone"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    >
+    <kupu:id>$Id: drawers.kupu 14546 2005-07-12 14:35:55Z duncan $</kupu:id>
+
+  <kupu:part name="styles">
+  </kupu:part>
+
+  <kupu:part name="jsincludes">
+  </kupu:part>
+
+  <kupu:part name="xmlconfig">
+    <tal:var define="field field|nothing;
+        usecaptions python:field and field.default_output_type=='text/x-html-captioned'">
+        <captions tal:condition="usecaptions">1</captions>
+    </tal:var>
+    <image_xsl_uri tal:content="string:${portal_url}/kupudrawers/drawer.xsl" />
+    <link_xsl_uri tal:content="string:${portal_url}/kupudrawers/drawer.xsl" />
+    <tal:var define="
+        base kupu_base_override|here/absolute_url;
+        posfactory python:base.find('/portal_factory/');
+        base python:posfactory > 0 and base[:posfactory] or base;
+        lib_prefix    string:${base}/kupulibraries.xml?resource_type=;
+        search_prefix string:${portal_url}/kupusearch.xml?resource_type=;"
+        >
+      <image_libraries_uri tal:content="string:${lib_prefix}mediaobject" />
+      <link_libraries_uri tal:content="string:${lib_prefix}linkable" />
+      <search_images_uri tal:content="string:${search_prefix}mediaobject" />
+      <search_links_uri tal:content="string:${search_prefix}linkable" />
+    </tal:var>
+  </kupu:part>
+
+</kupu:feature>

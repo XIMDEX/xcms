@@ -1,0 +1,159 @@
+%%
+%% This is file `galician.ldf',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% galician.dtx  (with options: `code')
+%% This is a generated file.
+%% 
+%% Copyright 1989-2005 Johannes L. Braams and any individual authors
+%% listed elsewhere in this file.  All rights reserved.
+%% 
+%% This file was generated from file(s) of the Babel system.
+%% ---------------------------------------------------------
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status "maintained".
+%% 
+%% The Current Maintainer of this work is Johannes Braams.
+%% 
+%% This file may only be distributed together with a copy of the Babel
+%% system. You may however distribute the Babel system without
+%% such generated files.
+%% 
+%% The list of all files belonging to the Babel distribution is
+%% given in the file `manifest.bbl'. See also `legal.bbl for additional
+%% information.
+%% 
+%% The list of derived (unpacked) files belonging to the distribution
+%% and covered by LPPL is defined by the unpacking scripts (with
+%% extension .ins) which are part of the distribution.
+\ProvidesLanguage{galician}
+        [2005/03/30 v1.2l Galician support from the babel system]
+%% File `galician.dtx'
+%% Babel package for LaTeX version 2e
+%% Copyright (C) 1989 - 2005
+%%           by Johannes Braams, TeXniek
+%% Galician Language Definition File
+%% Copyright (C) 1989 - 2005
+%%           by Manuel Carriba mcarriba at eunetcom.net
+%%              Johannes Braams, TeXniek
+%% Please report errors to: J.L. Braams
+%%                          babel at braams.cistron.nl
+\LdfInit{galician}\captionsgalician
+\ifx\l@galician\@undefined
+  \@nopatterns{Galician}
+  \adddialect\l@galician0\fi
+\addto\captionsgalician{%
+  \def\prefacename{Prefacio}%
+  \def\refname{Referencias}%
+  \def\abstractname{Resumo}%
+  \def\bibname{Bibliograf\'{\i}a}%
+  \def\chaptername{Cap\'{\i}tulo}%
+  \def\appendixname{Ap\'endice}%
+  \def\contentsname{\'Indice Xeral}%
+  \def\listfigurename{\'Indice de Figuras}%
+  \def\listtablename{\'Indice de T\'aboas}%
+  \def\indexname{\'Indice de Materias}%
+  \def\figurename{Figura}%
+  \def\tablename{T\'aboa}%
+  \def\partname{Parte}%
+  \def\enclname{Adxunto}%
+  \def\ccname{Copia a}%
+  \def\headtoname{A}%
+  \def\pagename{P\'axina}%
+  \def\seename{v\'exase}%
+  \def\alsoname{v\'exase tam\'en}%
+  \def\proofname{Demostraci\'on}%
+  \def\glossaryname{Glosario}%
+}
+\def\dategalician{%
+  \def\today{\number\day~de\space\ifcase\month\or
+    xaneiro\or febreiro\or marzo\or abril\or maio\or xu\~no\or
+    xullo\or agosto\or setembro\or outubro\or novembro\or decembro\fi
+    \space de~\number\year}}
+\addto\extrasgalician{\languageshorthands{galician}}
+\initiate@active@char{"}
+\initiate@active@char{~}
+\addto\extrasgalician{%
+  \bbl@activate{"}\bbl@activate{~}}
+\@ifpackagewith{babel}{activeacute}{%
+  \initiate@active@char{'}}{}
+\@ifpackagewith{babel}{activeacute}{%
+  \addto\extrasgalician{\bbl@activate{'}}}{}
+\addto\noextrasgalician{%
+  \bbl@deactivate{"}\bbl@deactivate{~}}
+\@ifpackagewith{babel}{activeacute}{%
+  \addto\noextrascatalan{\bbl@deactivate{'}}}{}
+\addto\extrasgalician{%
+  \babel@save\"\babel@save\~%
+  \def\"{\protect\@umlaut}%
+  \def\~{\protect\@tilde}}
+\@ifpackagewith{babel}{activeacute}{%
+  \babel@save\'%
+  \addto\extrasgalician{\def\'{\protect\@acute}}
+  }{}
+\let\dieresis\"
+\let\texttilde\~
+\@ifpackagewith{babel}{activeacute}{\let\textacute\'}{}
+\def\@umlaut#1{\allowhyphens\dieresis{#1}\allowhyphens}
+\def\@tilde#1{\allowhyphens\texttilde{#1}\allowhyphens}
+\@ifpackagewith{babel}{activeacute}{%
+  \def\@acute#1{\allowhyphens\textacute{#1}\allowhyphens}}{}
+\declare@shorthand{galician}{"-}{\nobreak-\bbl@allowhyphens}
+\declare@shorthand{galician}{"|}{\discretionary{-}{}{\kern.03em}}
+\declare@shorthand{galician}{"u}{\@umlaut{u}}
+\declare@shorthand{galician}{"U}{\@umlaut{U}}
+\declare@shorthand{galician}{"o}{%
+  \leavevmode\raise1ex\hbox{\underbar{\scriptsize o}}}
+\declare@shorthand{galician}{"a}{%
+  \leavevmode\raise1ex\hbox{\underbar{\scriptsize a}}}
+\@ifpackagewith{babel}{activeacute}{%
+  \declare@shorthand{galician}{'a}{\textormath{\@acute a}{^{\prime} a}}
+  \declare@shorthand{galician}{'e}{\textormath{\@acute e}{^{\prime} e}}
+  \declare@shorthand{galician}{'i}{\textormath{\@acute\i{}}{^{\prime}i}}
+  \declare@shorthand{galician}{'o}{\textormath{\@acute o}{^{\prime} o}}
+  \declare@shorthand{galician}{'u}{\textormath{\@acute u}{^{\prime} u}}
+  \declare@shorthand{galician}{'A}{\textormath{\@acute A}{^{\prime} A}}
+  \declare@shorthand{galician}{'E}{\textormath{\@acute E}{^{\prime} E}}
+  \declare@shorthand{galician}{'I}{\textormath{\@acute I}{^{\prime} I}}
+  \declare@shorthand{galician}{'O}{\textormath{\@acute O}{^{\prime} O}}
+  \declare@shorthand{galician}{'U}{\textormath{\@acute U}{^{\prime} U}}
+  \declare@shorthand{galician}{'n}{\textormath{\~n}{^{\prime} n}}
+  \declare@shorthand{galician}{'N}{\textormath{\~N}{^{\prime} N}}
+  \declare@shorthand{galician}{''}{%
+    \textormath{\textquotedblright}{\sp\bgroup\prim@s'}}
+  }{}
+\declare@shorthand{galician}{~n}{\textormath{\~n}{\@tilde n}}
+\declare@shorthand{galician}{~N}{\textormath{\~N}{\@tilde N}}
+\addto\extrasgalician{%
+  \babel@save{\-}%
+  \def\-{\bbl@allowhyphens\discretionary{-}{}{}\bbl@allowhyphens}}
+\ldf@finish{galician}
+%% \CharacterTable
+%%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
+%%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
+%%   Digits        \0\1\2\3\4\5\6\7\8\9
+%%   Exclamation   \!     Double quote  \"     Hash (number) \#
+%%   Dollar        \$     Percent       \%     Ampersand     \&
+%%   Acute accent  \'     Left paren    \(     Right paren   \)
+%%   Asterisk      \*     Plus          \+     Comma         \,
+%%   Minus         \-     Point         \.     Solidus       \/
+%%   Colon         \:     Semicolon     \;     Less than     \<
+%%   Equals        \=     Greater than  \>     Question mark \?
+%%   Commercial at \@     Left bracket  \[     Backslash     \\
+%%   Right bracket \]     Circumflex    \^     Underscore    \_
+%%   Grave accent  \`     Left brace    \{     Vertical bar  \|
+%%   Right brace   \}     Tilde         \~}
+%%
+\endinput
+%%
+%% End of file `galician.ldf'.

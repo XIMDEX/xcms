@@ -1,0 +1,205 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+div.xedit-toolbox,.ui-dialog,.kupu-tabledrawer {
+	position: absolute;
+	padding: 0.5em;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	background:  #fff url('../../../../../xmd/images/search/fnd-search.png') repeat-x left top;
+	border: 1px solid #eeeeee;
+	-moz-box-shadow: 0px 2px 6px #BBB;
+	padding:  0px;
+	height: auto !important;
+
+}
+.ui-widget-content .ui-dialog-content {
+	max-height: 550px !important;
+	overflow: auto !important;
+	font-size: .9em;
+	padding: 15px 15px 25px;
+}
+
+
+.ui-dialog .ui-dialog-title{
+	float: none;
+}
+
+.xedit-toolbox .ui-dialog-titlebar, .ui-dialog .ui-dialog-titlebar{
+	border: none;
+	background:  none;
+	padding: 9px 3px 9px 8px;
+	border-bottom:  1px solid #DEDEDE;
+	color: #7e7e7e;
+	font-size:  .9em;
+	margin:  0px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close{
+	margin-right: 7px;
+}
+.ui-dialog .ui-dialog-titlebar-close:hover{
+	background:  none;
+	border: none;
+	padding: 1px;
+	}
+
+
+.ui-dialog .ui-dialog-titlebar-close span{
+	background:url("../../../../../xmd/images/browser/hbox/views-icons.png") no-repeat scroll -3px -119px transparent;
+	cursor:pointer;
+	float:left;
+	height:16px;
+	width:16px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span:hover{
+	background-position: -3px -141px;
+	border: none;
+}
+
+
+
+/*.xedit-toolbox .ui-dialog-title {
+	font-size: 10pt;
+	margin: 0px;
+}*/
+
+.ui-dialog .ui-resizable-se{
+	background:url("../../../../../xmd/images/browser/hbox/views-icons.png") no-repeat scroll -2px -166px transparent;
+	height:18px;
+	width:18px;
+	}
+
+.ui-dialog .ui-dialog-buttonpane, .kupu-toolbox-buttonbar{
+	background:none repeat scroll 0 0 transparent;
+	margin-right:15px;
+	text-align:right;
+	border: none;
+	padding: 0.3em 1em 0.5em 0.4em;
+	margin: 0.5em 0 0;
+	}
+
+.ui-dialog .ui-dialog-buttonpane button, .kupu-toolbox-buttonbar button {
+	-moz-border-radius:6px 6px 6px 6px;
+	-moz-box-shadow:0 2px 0 #FFFFFF inset;
+	background:url("../../../../../xmd/images/action/fnd-buttons-form.png") repeat-x scroll left center transparent;
+	border:1px solid #E1E1E1;
+	cursor:pointer;
+	float:none;
+	font-size:0.825em;
+	letter-spacing:0;
+	margin-right:8px;
+	padding:5px 9px;
+	text-shadow:1px 1px 0 #FFFFFF;
+	color: #222222;
+}
+
+.kupu-toolbox-buttonbar button {
+	font-size: .9em;
+}
+
+	.ui-dialog .ui-dialog-buttonpane button:hover{
+	background: url('../../../../../xmd/images/action/fnd-buttons-form-hover.png') repeat-x left center;
+	-moz-box-shadow: inset 0px 2px 0px #ebebeb;
+	-webkit-box-shadow: inset 0px 2px 0px #ebebeb;
+	box-shadow: inset 0px 2px 0px #ebebeb;
+	color: #222222;
+}
+
+/*.xedit-toolbox .xedit-element-name {
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 5px;
+	margin-bottom: 8px;
+}*/
+
+div.xedit-toolbox-container {
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	padding: 0px;
+	margin: 8px;
+}
+
+div.xedit-toolbox .xedit-toolbox-title {
+	overflow: hidden;
+	text-align: center;
+	margin: 0;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+}
+
+div.xedit-toolbox-content {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	overflow: auto;
+	height: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	overflow: auto;
+}
+
+div.xedit-toolbox-content .xedit-element-name {
+	text-align: center;
+}
+
+/*div.xedit-toolbox div.xedit-element-attribute {
+	clear: both;
+	margin-bottom: 8px;
+	height: 20px;
+}
+
+div.xedit-toolbox div.xedit-element-attribute div.kupu-toolbox-label {
+	float: left;
+}
+
+div.xedit-toolbox div.xedit-element-attribute div.kupu-toolbox-attribute-value {
+	float: right;
+}*/
+
+div.xedit-toolbox div.kupu-toolbox-buttons {
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	clear: both;
+	bottom: 8px;
+}
+
+div.xedit-toolbox .kupu-attribute-value {
+	width: 160px;
+}
+
+
+
+/* Overwrite default jQuery UI styles */
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #d3d3d3; background: #e6e6e6 url(../../../../../xmd/style/jquery/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; font-weight: normal; color: #555555; outline: none; }
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { color: #555555; text-decoration: none; outline: none; }
+.ui-state-active .ui-icon { background-image: url(../../../../../xmd/style/jquery/css/smoothness/images/ui-icons_888888_256x240.png); }

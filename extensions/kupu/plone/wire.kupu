@@ -1,0 +1,47 @@
+<kupu:wire
+  implementation="plone"
+  xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+  >
+  <kupu:id>$Id: wire.kupu 14903 2005-07-22 09:56:09Z duncan $</kupu:id>
+
+  <!-- Plone specific wiring -->
+
+  <kupu:fill-slot name="html">
+    <kupu:insert-ids />
+    <kupu:insert-part feature="wysiwyg_support" part="editorbox" />
+    <kupu:insert-part feature="wysiwyg_support" part="textformatselector" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="has_kupu">
+    <kupu:insert-part feature="xmlconfig" part="xmlconfig" />
+    <kupu:insert-part feature="body" part="fulleditor" />
+    <kupu:insert-part feature="wysiwyg_support" part="eventhandler" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="not_has_kupu">
+    <!-- insert styles even if kupu is disabled -->
+    <kupu:insert-part feature="head" part="styles" />
+    <kupu:insert-part feature="wysiwyg_support" part="textarea" />
+    <kupu:insert-part feature="body" part="force-kupu" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="fulleditor">
+    <!-- because we don't have access to the head tag from the wysiwyg 
+         macro in Plone, we need to put styles and JS includes in 
+         fulleditor -->
+    <kupu:insert-part feature="head" part="styles" />
+    <kupu:insert-part feature="drawers" part="styles" />
+    <kupu:insert-part feature="head" part="jsincludes" />
+    <kupu:insert-part feature="beforeunload" part="jsincludes" />
+    <kupu:insert-part feature="sourceedit" part="jsincludes" />
+    <kupu:insert-part feature="drawers" part="jsincludes" />
+    <kupu:insert-part feature="head" part="bootstrap-editor" />
+
+    <kupu:insert-part feature="toolbar" part="toolbar" />
+    <kupu:insert-part feature="toolboxes" part="toolboxes" />
+    <kupu:insert-part feature="colorchooser" part="colorchooser" />
+    <kupu:insert-part feature="body" part="editorframe" />
+    <kupu:insert-part feature="body" part="suppress-kupu" />
+  </kupu:fill-slot>
+
+</kupu:wire>

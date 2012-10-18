@@ -1,0 +1,338 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+ 
+ .gral{
+ 	background: url(../imgs/project.png) no-repeat 35px top;
+ }
+ 
+ .content_header{
+ 	border-bottom: 2px dotted #e4e4e4;
+ 	margin: 20px 40px 20px 77px;
+ 	padding: 13px 10px 15px 50px;
+ }
+ 
+ .content_header h2, .content_header h3{
+	font-family: Coustard;
+	text-transform: none;
+ }
+
+.content_header h2{
+	color: #3fb7b8;
+	font-size: 1.901em;
+	padding-bottom: 2px;
+}
+
+.content_header h3{
+	color: #b7b7b7;
+	font-size: 1.405em;
+}
+
+.content{
+	margin: 28px 60px 28px 100px;
+	color: #707070;
+	font-size: 1.1em;
+}
+
+.content span{
+    font-size: .9em;
+    padding: 1px 0 1px 17px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.content p span:nth-child(1){
+	background:  url(../imgs/sp-demo.png) no-repeat -4px -4px;
+}
+
+.content p span:nth-child(2){
+	background:  url(../imgs/sp-demo.png) no-repeat -4px -47px;
+}
+
+.content p span:nth-child(3){
+	background:  url(../imgs/sp-demo.png) no-repeat -4px -86px;
+}
+
+.content p span:nth-child(4){
+	background: url(../imgs/sp-demo.png) no-repeat -5px -127px;
+}
+
+.content .nav-left:before{
+	content: ' ';
+	position: absolute;
+	height: 100%;
+	width: 35px;
+	background: url(../imgs/narrow-l.png) no-repeat left center;
+	top: 0;
+	left: 0;
+}
+
+.content .nav-left{
+	width: 36%;
+	margin-right: 2%;
+	background: url(../imgs/pt-left.png) repeat;
+	color: #5d5d5d;
+	text-shadow: 1px 1px 0 #fbfdfd, 2px 2px 0 #fff;
+	font-size: 1.1em;
+	position: relative;
+	padding: 15px 10px 15px 47px;
+	margin: 15px 0 15px -11px;
+	float: left;
+}
+
+
+.content .nav-right{
+    margin-left: 44%;
+	background: url(../imgs/pt-right.png) repeat;
+	color: #5d5d5d;
+	text-shadow: 1px 1px 0 #fbfdfd, 2px 2px 0 #fff;
+	font-size: 1.1em;
+	position: relative;
+	padding: 15px 47px 15px 20px;
+	margin-top: 25px;
+}
+
+.content .nav-right:after{
+	content: ' ';
+	position: absolute;
+	height: 100%;
+	width: 35px;
+	background: url(../imgs/narrow-r.png) no-repeat right center;
+	top: 0;
+	right: 0;
+}
+.content h4{
+	background: url(../imgs/bgh4.png) no-repeat;
+	color: #43a1a2;
+	text-transform: none;
+	font-family: Coustard;
+	font-size: 1.352em;
+	padding: 20px 62px 28px;
+	clear: both;
+	margin-top: 50px;
+	position: relative;
+}
+
+.content h4:after{
+	content: ' ';
+	position: absolute;
+	width: 5px;
+	height: 5%;
+	border-left: 3px dotted #3fb7b8;
+	bottom: 5px;
+	left: 25px;
+}
+	
+
+.content p {
+	padding: 15px 0 25px 0;
+	font-size: 1.1em;
+	line-height: 1.4em;
+}
+
+.content ol{
+	margin: 0 10px 20px 41px;
+	font-family: Coustard;
+	font-size: 1.126em;
+}
+
+.content ol li{
+	/*width: 40%;
+	float: left;*/
+	margin: 25px 10% 25px 0;
+	position: relative;
+	line-height: 1.7em;
+	color: #fff;
+	padding-left: 7px;
+}
+
+.content ol li:first-child{
+	margin-top: 0;
+}
+
+.content ol li:before{
+	content: ' ';
+	float: left;
+	background: url(../imgs/bg-li.png) no-repeat;
+	width: 27px;
+	height: 27px;
+	margin-left: -36px;
+}
+
+.content ol li:after{
+	content: ' ';
+	position: absolute;
+	width: 5px;
+	height: 80%;
+	border-left: 3px dotted #3fb7b8;
+	top: 32px;
+	left: -17px;
+}
+
+.content ol li:last-child:before{
+	border:none;
+}
+
+/*.content ol li:nth-child(odd){
+	clear: both;
+}
+
+.content ol li:after{
+	content: ' ';
+	position: absolute;
+	background: url(../imgs/sep.png) no-repeat center center;
+	margin: 10px auto;
+	width: 32px;
+	height: 32px;
+	top: 0;
+}
+
+/*.content ol li:nth-child(even):after{
+	background: none;
+}*/
+
+.content ol li:last-child:after{
+	background: none;
+}
+
+.content li span.tutorial{
+	color: #707070;
+	/*font-family: Coustard;*/
+	font-size: .8em;
+	text-transform: uppercase;
+	display: block;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+	
+
+.content li span{
+	font-family: Verdana, sans-serif;
+	font-size: .8em;
+	padding: 0;
+	color: #606060;
+	text-transform: none;
+	font-weight: normal;
+}
+
+ol strong.icon{
+	padding-right: 50px;
+	position: relative;
+	white-space: nowrap;
+}
+
+ol strong.icon:after{
+	content: ' ';
+	width: 51px;
+	height: 46px;	
+	position: absolute;
+	top: -15px;
+}
+
+strong.new-doc:after{
+	background: url(../imgs/icons.png) no-repeat center top;
+}
+
+strong.ximdoc:after{
+	background: url(../imgs/icons.png) no-repeat center -52px;
+}
+strong.edit:after{
+	background: url(../imgs/icons.png) no-repeat center -112px;
+}
+
+strong.version:after{
+	background: url(../imgs/icons.png) no-repeat center -446px;
+}
+
+strong.more:after{
+	background: url(../imgs/icons.png) no-repeat center -223px;
+}
+
+strong.preview:after{
+	background: url(../imgs/icons.png) no-repeat center -282px;
+}
+
+strong.next:after{
+	background: url(../imgs/icons.png) no-repeat center -343px;
+}
+
+strong.server:after{
+	background: url(../imgs/icons.png) no-repeat center -391px;
+}
+
+strong.container:after{
+	background: url(../imgs/icons.png) no-repeat center -165px;
+}
+
+strong.ccenter:after{
+        background: url(../imgs/icons.png) no-repeat center -556px;
+}
+
+strong.user:after{
+        background: url(../imgs/icons.png) no-repeat center -503px;
+}
+
+strong.modify:after{
+        background: url(../imgs/icons.png) no-repeat center -605px;
+}
+
+
+.content p.print{
+	text-align: right;
+	margin: 35px 50px 0 0;
+}
+
+.content p.print a{
+	position: relative;
+	background: url(../imgs/pt-print.png) repeat;
+	padding: 5px 8px 4px 38px;
+	font-size: 0.8em;
+	color: #43a1a2;
+	border-radius: 25px;
+	-webkit-border-radius: 25px;
+	-moz-border-radius: 25px;
+	box-shadow: 1px 1px 0 #fff, 3px 3px 0 #d6d6d6;
+	-webkit-box-shadow: 1px 1px 0 #fff, 3px 3px 0 #d6d6d6;
+	-moz-box-shadow: 1px 1px 0 #fff, 3px 3px 0 #d6d6d6;
+	text-shadow: -1px -1px 0 #c2c2c2, 1px 1px 0 #fff;
+	text-transform: uppercase;
+}
+.content p.print a:before{
+	content: ' ';
+	background:url(../imgs/icon-print.png) no-repeat left -1px;
+	width: 40px;
+	height: 40px;
+	position:absolute;
+	left: -3px;
+	bottom: -11px;
+}
+
+.content p.print a:hover{
+	background:url(../imgs/pt-print-over.png) repeat;
+	box-shadow: 1px 1px 0 #fff, 2px 2px 0 #d6d6d6;
+	-webkit-box-shadow: 1px 1px 0 #fff, 2px 2px 0 #d6d6d6;
+	-moz-box-shadow: 1px 1px 0 #fff, 2px 2px 0 #d6d6d6;
+	color: #fdfdfd;
+	text-shadow: -1px -1px 0 #2a8283;
+}

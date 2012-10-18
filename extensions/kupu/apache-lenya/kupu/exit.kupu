@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="exit"
+    implementation="apache-lenya"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    >
+
+  <kupu:part name="buttons">
+    <span class="kupu-tb-buttongroup">
+      <button type="button" class="kupu-exit" 
+        id="kupu-exit-button" title="exit: alt-e" 
+        i18n:attributes="title" accesskey="e"> &#160;</button>
+    </span>
+  </kupu:part>
+
+</kupu:feature>

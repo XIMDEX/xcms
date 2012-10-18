@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="toolboxes"
+    implementation="apache-lenya"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    >
+
+  <kupu:part name="debug"/>
+
+</kupu:feature>

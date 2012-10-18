@@ -1,0 +1,297 @@
+%%
+%% This is file `hycheck.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hyperref.dtx  (with options: `check')
+%% 
+%% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
+%% RCS: $Id: hyperref.dtx 6.71 2000/10/04 rahtz Exp rahtz $
+%%
+%% This file is part of the `Hyperref Bundle'.
+%% -------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% The list of all files belonging to the `Hyperref Bundle' is
+%% given in the file `manifest.txt'.
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesFile{hycheck.tex}
+  [2003/01/22 v6.73n
+  Hyperref test file]
+\documentclass{article}
+\makeatletter
+\newcommand*{\checklatex}[1][]{%
+  \typeout{}%
+  \typeout{* Format: `LaTeX2e' #1}%
+  \typeout{\space\space Loaded: `\fmtname' \fmtversion}%
+}%
+\newcommand*{\checkpackage}[1]{%
+  \def\HyC@package{#1}%
+  \let\HyC@date\@empty
+  \@ifnextchar[\HyC@getDate\HyC@checkPackage
+}
+\def\HyC@getDate[#1]{%
+  \def\HyC@date{#1}%
+  \HyC@checkPackage
+}
+\def\HyC@checkPackage{%
+  \typeout{}
+  \begingroup
+    \edef\x{\endgroup
+      \noexpand\RequirePackage{\HyC@package}%
+      \ifx\HyC@date\@empty\relax\else[\HyC@date]\fi%
+    }%
+  \x
+  \typeout{}%
+  \typeout{%
+    * Package `\HyC@package'%
+    \ifx\HyC@date\@empty
+    \else
+      \space\HyC@date
+    \fi
+  }%
+  \@ifundefined{ver@\HyC@package.sty}{%
+  }{%
+    \typeout{%
+      \space\space Loaded: `\HyC@package' %
+      \csname ver@\HyC@package.sty\endcsname
+    }%
+  }%
+}
+\newcommand*{\checkcommand}[1]{%
+  \begingroup
+  \ifx\long#1\relax
+    \expandafter\HyC@checklong
+  \else
+    \def\HyC@defcmd{#1}%
+    \expandafter\let\expandafter\HyC@next
+      \csname HyC@\expandafter\@gobble\string#1\endcsname
+    \expandafter\HyC@checkcommand
+  \fi
+}
+\def\HyC@checklong#1{%
+  \def\HyC@defcmd{\long#1}%
+  \expandafter\let\expandafter\HyC@next
+    \csname HyC@\expandafter\@gobble\string#1\endcsname
+  \HyC@checkcommand
+}
+\def\HyC@checkcommand{%
+  \ifx\HyC@next\relax
+    \PackageError{hycheck}{%
+      Unknown command `\expandafter\strip@prefix\meaning\HyC@cmd'%
+    }\@ehd
+    \expandafter\endinput
+  \fi
+  \@ifstar{%
+    \def\HyC@star{*}%
+    \HyC@check
+  }{%
+    \let\HyC@star\@empty
+    \HyC@check
+  }%
+}
+\def\HyC@check#1{%
+  \def\HyC@cmd{#1}%
+  \let\HyC@org@cmd#1%
+  \let#1\relax
+  \let\HyC@param\@empty
+  \HyC@Toks{}%
+  \let\HyC@org@optcmd\HyC@noValue
+  \let\HyC@org@robustcmd\HyC@noValue
+  \let\HyC@org@robustoptcmd\HyC@noValue
+  \HyC@next
+}
+\def\HyC@noValue{NoValue}
+\def\HyC@newcommand{%
+  \let\HyC@@cmd\HyC@cmd
+  \@ifnextchar[\HyC@nc@opt\HyC@nc@noopt
+}
+\newtoks\HyC@Toks
+\long\def\HyC@nc@noopt#1{%
+  \edef\x{%
+    \expandafter\noexpand\HyC@defcmd
+    \HyC@star
+    \expandafter\noexpand\HyC@cmd
+    \HyC@param\the\HyC@Toks
+  }%
+  \x{#1}%
+  \HyC@doCheck
+}
+\def\HyC@nc@opt[#1]{%
+  \def\HyC@param{[#1]}%
+  \@ifnextchar[\HyC@nc@default\HyC@nc@noopt
+}
+\def\HyC@nc@default[#1]{%
+  \HyC@Toks={[{#1}]}%
+  \edef\HyC@optcmd{%
+    \expandafter\noexpand
+    \csname\expandafter\string\HyC@@cmd\endcsname
+  }%
+  \expandafter\let\expandafter\HyC@org@optcmd\HyC@optcmd
+  \HyC@nc@noopt
+}
+\def\HyC@DeclareRobustCommand{%
+  \edef\HyC@robustcmd{%
+    \expandafter\noexpand
+    \csname\expandafter\expandafter\expandafter\@gobble
+      \expandafter\string\HyC@cmd\space\endcsname
+  }%
+  \expandafter\let\expandafter\HyC@org@robustcmd\HyC@robustcmd
+  \expandafter\let\HyC@robustcmd\relax
+  \let\HyC@@cmd\HyC@robustcmd
+  \@ifnextchar[\HyC@nc@opt\HyC@nc@noopt
+}
+\def\HyC@def#1#{%
+  \HyC@Toks={#1}%
+  \HyC@nc@noopt
+}
+\let\HyC@edef\HyC@def
+\def\HyC@doCheck{%
+  \typeout{* Checking `\HyC@string\HyC@cmd':}%
+  \HyC@checkItem{cmd}%
+  \HyC@checkItem{robustcmd}%
+  \HyC@checkItem{optcmd}%
+  \HyC@checkItem{robustoptcmd}%
+  \endgroup
+}
+\def\HyC@checkItem#1{%
+  \expandafter\ifx\csname HyC@org@#1\endcsname\HyC@noValue
+  \else
+    \expandafter\expandafter\expandafter\ifx
+    \csname HyC@#1\expandafter\endcsname
+    \csname HyC@org@#1\endcsname
+      \expandafter\HyC@checkOk\csname HyC@#1\endcsname
+    \else
+      \expandafter\HyC@checkFailed
+        \csname HyC@#1\expandafter\endcsname
+        \csname HyC@org@#1\endcsname
+    \fi
+  \fi
+}
+\def\HyC@string#1{\expandafter\string#1}
+\def\HyC@meaning#1{\expandafter\meaning#1}
+\def\HyC@checkOk#1{%
+  \typeout{\space\space`\HyC@string#1' ok.}}
+\def\HyC@checkFailed#1#2{%
+  \typeout{\space\space`\HyC@string#1' failed.}%
+  \typeout{\space\space* original: \meaning#2}%
+  \typeout{\space\space* expected: \HyC@meaning#1}%
+}
+\checkpackage{lastpage}[1994/06/25]
+\checkcommand\def\lastpage@putlabel{%
+  \addtocounter{page}{-1}%
+  \immediate\write\@auxout{%
+    \string\newlabel{LastPage}{{}{\thepage}}%
+  }%
+  \addtocounter{page}{1}%
+}
+\checklatex
+\checkcommand\def\@xfootnotenext[#1]{%
+  \begingroup
+    \csname c@\@mpfn\endcsname #1\relax
+    \unrestored@protected@xdef\@thefnmark{\thempfn}%
+  \endgroup
+  \@footnotetext
+}
+\checkcommand\def\@xfootnotemark[#1]{%
+  \begingroup
+    \c@footnote #1\relax
+    \unrestored@protected@xdef\@thefnmark{\thefootnote}%
+  \endgroup
+  \@footnotemark
+}
+\checkcommand\def\@footnotemark{%
+  \leavevmode
+  \ifhmode\edef\@x@sf{\the\spacefactor}\nobreak\fi
+  \@makefnmark
+  \ifhmode\spacefactor\@x@sf\fi
+  \relax
+}
+\checklatex[1999/06/01 - 2000/06/01]
+\checkcommand\def\caption{%
+  \ifx\@captype\@undefined
+    \@latex@error{\noexpand\caption outside float}\@ehd
+    \expandafter\@gobble
+  \else
+    \refstepcounter\@captype
+    \expandafter\@firstofone
+  \fi
+  {\@dblarg{\@caption\@captype}}%
+}
+\checkcommand\long\def\@caption#1[#2]#3{%
+  \par
+  \addcontentsline{\csname ext@#1\endcsname}{#1}%
+    {\protect\numberline{\csname the#1\endcsname}{\ignorespaces #2}}%
+  \begingroup
+    \@parboxrestore
+    \if@minipage
+      \@setminipage
+    \fi
+    \normalsize
+    \@makecaption{\csname fnum@#1\endcsname}{\ignorespaces #3}\par
+  \endgroup
+}
+\checklatex
+\checkcommand\def\@lbibitem[#1]#2{%
+  \item[\@biblabel{#1}\hfill]%
+  \if@filesw
+    {%
+      \let\protect\noexpand
+      \immediate\write\@auxout{%
+        \string\bibcite{#2}{#1}%
+      }%
+    }%
+  \fi
+  \ignorespaces
+}
+\checkcommand\def\@bibitem#1{%
+  \item
+  \if@filesw
+    \immediate\write\@auxout{%
+      \string\bibcite{#1}{\the\value{\@listctr}}%
+    }%
+  \fi
+  \ignorespaces
+}
+\checklatex
+\checkcommand\def\addcontentsline#1#2#3{%
+  \addtocontents{#1}{\protect\contentsline{#2}{#3}{\thepage}}%
+}
+\checkcommand\def\contentsline#1{\csname l@#1\endcsname}
+\checkpackage{amsmath}[1999/12/14 - 2000/06/06]
+\checkcommand\newcommand{\numberwithin}[3][\arabic]{%
+  \@ifundefined{c@#2}{\@nocounterr{#2}}{%
+    \@ifundefined{c@#3}{\@nocnterr{#3}}{%
+      \@addtoreset{#2}{#3}%
+      \@xp\xdef\csname the#2\endcsname{%
+        \@xp\@nx\csname the#3\endcsname .\@nx#1{#2}%
+      }%
+    }%
+  }%
+}%
+\checklatex
+\checkcommand\def\@setref#1#2#3{%
+  \ifx#1\relax
+    \protect\G@refundefinedtrue
+    \nfss@text{\reset@font\bfseries ??}%
+    \@latex@warning{%
+      Reference `#3' on page \thepage\space undefined%
+    }%
+  \else
+    \expandafter#2#1\null
+  \fi
+}
+\typeout{}
+\begin{document}
+\end{document}
+\endinput
+%%
+%% End of file `hycheck.tex'.

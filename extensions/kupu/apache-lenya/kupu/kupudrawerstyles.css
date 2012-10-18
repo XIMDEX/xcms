@@ -1,0 +1,51 @@
+/*****************************************************************************
+ *
+ * Kupu drawer styles
+ *
+ * Copyright (c) 2003-2005 Kupu Contributors. See CREDITS.txt
+ *
+ * Instead of customizing this file, it is recommended to add your own
+ * CSS file.  Feel free to use whole or parts of this for your own
+ * designs, but give credit where credit is due.
+ *
+ *****************************************************************************/
+
+/* $Id: kupudrawerstyles.css 9879 2005-03-18 12:04:00Z yuppie $ */
+
+img.library-icon-collection, img.library-icon-resource {
+  margin-right: 5px;
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+}
+
+span.drawer-item-title {
+  padding-left: 2px;
+  padding-right: 2px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.kupu-drawer {
+  width: 650px;
+}
+
+td#kupu-librariespanel {
+  width: 120px;
+  height: 260px;
+}
+
+td#kupu-resourcespanel {
+  width: 180px;
+  height: 260px;
+}
+
+td#kupu-propertiespanel {
+  width: 340px;
+  height: 260px;
+}
+
+table.resource-properties td, .resource-properties div {
+  margin: 0;
+  padding: 0 0 10px 0;
+}

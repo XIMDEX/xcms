@@ -1,0 +1,92 @@
+Old browsers and Kupu
+=====================
+
+  Written by: Guido Wesdorp
+  Email: guido@infrae.com
+  Valid for: Kupu 1.0.2
+
+Partially supporting other browsers in Kupu
+-------------------------------------------
+
+When the client is using a browser that is not supported in Kupu, currently 
+the results are unpredictable, but quite certainly not graceful. Kupu does
+*not* try to degrade in older browsers, it will just not work. The reason
+nothing has been added to Kupu to make it for instance show a textarea where
+the iframe would have been, is that it's almost impossible to write a good
+solution using the JavaScript techniques Kupu uses, since in Kupu' setup
+(where the HTML contains part of the editor, unlike systems where the editor
+pane isn't configurable and is added to the document using document.write)
+it would mean elements should be removed from the page, which may not be 
+possible using JavaScript or CSS since those technologies may not even be
+available.
+
+What to do then?
+----------------
+
+The only proper solution to create a feel of 'graceful degradation' is by
+serving different pages according to the HTTP UserAgent header. A script
+on the server should try to figure out what browser the client is using (well
+actually it just needs to know if it's one of the browsers supported by Kupu)
+and if it's an Kupu capable one send the Kupu page, and if it's not, it should
+serve a page containing some fallback form or so. Since this process differs
+a *lot* from server to server, we will not provide a sample implementation,
+but instead we will try to tell how to create one yourself.
+
+First step: is the client Kupu capable?
+---------------------------------------
+
+When you're going to write a script to serve different pages to different 
+clients, you will probably want to examine the HTTP 'UserAgent' header. This
+is a header the client sends along with the request, that contains information
+about the user agent (browser) the client is using. The browser is supported 
+if:
+
+    - the string starts with 'Mozilla'
+    - the string contains one of the following elements: 'IE 5.5', 'IE 6' (the
+        part after 'IE ' should be higher than 5.5 after a convertion to 
+        float) for Internet Explorer or one of: 'rv:1.3.1', 'rv:1.4', 'rv:1.5', 
+        'rv:1.6' (the part after 'rv:' should be higher than 1.3.1 after 
+        conversion to float) for Mozilla and Netscape Navigator.
+        
+If the UserAgent string matches those criteria, the browser is supported. Note
+that that doesn't necessarily mean that Kupu will work: the client must have
+JavaScript enabled as well, and the supported browsers all allow the client to
+turn it off. However, Kupu will (XXX currently *should*!) provide some feedback
+to the client about what can be done to get Kupu to work.
+
+Second step: create a response
+------------------------------
+
+The second step will be to create a response suitable for the client's user 
+agent. In most cases there will be 1 response for Kupu capable browsers (the 
+Kupu page) and 1 for non-capable ones. The one for non-supported browsers will
+probably contain a form and send the contents of some textarea that contains 
+the HTML that would normally be edited in the Kupu iframe to a script on the
+server that cleans it up (since Kupu is not available the server should do the
+cleanup by itself!) and saves it. The page will probably be a normal HTML form
+without too much fancy stuff, since the client's browser may well be one that
+doesn't know how to display fancy stuff anyway.
+
+Third step: process the response
+--------------------------------
+
+The last step will involve writing a script to process the data coming from 
+the form. The script will have to receive its data in a POST request, since 
+plain HTML forms don't provide PUT support. The script will probably look a 
+lot different from the one that saves Kupu' output, so it's advised to not use 
+the same script for handling both form output and Kupu, but instead to write
+a new one that handles only one task. The goal of both scripts will be the 
+same, however: make the content ready for storage and store it.
+
+And that's it
+-------------
+
+And basically that's it: now if a non-capable browser requests a page, it will
+receive something it can handle, the page will (probably) contain only the
+most basic HTML elements, and it will use one of the most basic ways of 
+sending data to the client, HTTP POST. The proposed way is not easy to 
+implement, since it requires a lot of effort from integrators of Kupu compared
+to other systems, but it will allow flexibility and configurability without
+making concessions in flexibility and technologies chosen (Kupu won't have to
+resort to document.write and customization can be done in the HTML rather than
+having to hack background colors, button images etc. in the JavaScript).

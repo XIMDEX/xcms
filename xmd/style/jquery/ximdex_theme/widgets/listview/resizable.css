@@ -1,0 +1,308 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+
+
+/*!
+* jquery.fixheadertable
+*
+* Copyright (c) 2010 Benjamin Léouzon
+* http://www.tablefixedheader.com/
+*
+* Licensed under MIT
+* http://www.opensource.org/licenses/mit-license.php
+*
+* Launch  : December 2010
+* Version : 2.0
+*/
+
+/* CALCULATE SCROLLBAR WIDTH */
+
+p.t_fixed_header_scroll_inner {
+	width			: 100%;
+	height			: 200px;
+}
+
+div.t_fixed_header_scroll_outer {
+	top 			: 0;
+	left 			: 0;
+	visibility 		: hidden;
+	width 			: 200px;
+	height 			: 150px;
+	overflow 		: hidden;
+}
+
+/* BASE */
+
+.t_fixed_header_main_wrapper_child div.t_fixed_header {
+	position		: relative;
+	margin 			: 0; 
+	width			: 100%;
+	background: none;
+}
+
+div.t_fixed_header * {
+	margin			: 0;
+	padding			: 0;
+}
+
+div.t_fixed_header table.head {
+	position		: relative;	
+}
+
+div.t_fixed_header table {
+	/*width			: 100%;*/
+	table-layout 	: fixed;
+	empty-cells 	: show;
+	border-collapse	: collapse;
+	border-spacing	: 0;
+}
+
+div.t_fixed_header table.headtable td.fillScrollbar {
+	font-size		: 0px;
+	-o-text-overflow: inherit; /* IE TRAFF */
+	text-overflow 	: inherit; /* IE TRAFF */
+}
+
+div.t_fixed_header tr th, div.t_fixed_header tr td {
+	overflow		: hidden;
+	white-space		: nowrap;	
+	-o-text-overflow: ellipsis;
+	text-overflow 	: ellipsis;
+}
+
+div.t_fixed_header.t_fixed_header_wrap tr th, div.t_fixed_header.t_fixed_header_wrap tr td {
+	white-space		: normal;
+}
+
+div.t_fixed_header div.body {
+	padding			: 0;
+	width			: 100%;
+	overflow-x		: auto;
+}
+
+div.t_fixed_header_main_wrapper {
+	position 		: relative; 
+	overflow 		: hidden; 
+	background: none;
+}
+
+div.t_fixed_header_main_wrapper_child {
+	position 		: relative; 
+	width 			: 100% 
+}
+
+/* BASE THEME : UI */
+/*
+div.t_fixed_header_main_wrapper.ui {
+	border-width 	: 1px 1px 1px 1px;
+	border-style 	: solid;
+	font-weight		: normal;
+	font-size		: 1.1em;
+}*/
+
+div.t_fixed_header_main_wrapper.ui  div.t_fixed_header_caption {
+	text-align		: center;
+	font-weight		: bold;
+	padding			: 0 5px;
+	height			: 30px;
+	line-height		: 30px;
+	border-width 	: 0 0 1px 0;
+	border-style 	: solid;
+}
+
+div.t_fixed_header_main_wrapper.ui  div.t_fixed_header_caption.toggle {
+	border-width 	: 0;	
+}
+
+div.t_fixed_header {
+	background: #fff;
+}
+
+div.t_fixed_header div.headtable {
+	border			: 0;	
+	overflow-x		: hidden;
+    overflow-y		: auto;
+    background: none;   
+    padding-right: 12px;  
+}
+
+div.t_fixed_header.ui .body {
+	border: none;
+	margin-top: 4px;
+	background: none;   
+}
+div.t_fixed_header.ui .headtable tr{
+	border:none;
+	
+}
+div.t_fixed_header.ui .headtable th {
+	/*padding			: 5px;*/
+	text-align 		: left;
+	border: none;
+	background: #d8d8d8;
+	text-transform: uppercase;
+	font-size: .8em;
+	font-weight: bold;
+}
+
+div.t_fixed_header.ui .headtable th:hover, div.t_fixed_header.ui .headtable th:hover a{
+	background: #ababab;
+	color: #fff;
+	cursor: pointer;
+}
+
+div.t_fixed_header.ui .headtable th a{
+	margin: 11px 7px 0 5px;
+	display: block;
+	overflow: hidden;	
+	color: #606060;
+}
+
+div.t_fixed_header.ui .headtable .hover {
+	cursor			: pointer;
+	height			: 16px;
+}
+
+div.t_fixed_header.ui .headtable th span.ui-resize {
+	/*border-right	: 1px dashed;*/
+	background		: url(../../../../../images/viewers/bg-pattern-resizable.png) repeat-y right;
+	cursor			: col-resize;
+	display			: inline;
+	float			: right;
+	height			: 27px;
+	/*margin			: -3px -5px -5px 0;*/
+	width			: 5px;
+	z-index			: 10000;
+}
+
+div.t_fixed_header.ui div.ui-resize-ghost {
+	display 		: none; 
+	position 		: absolute; 
+	top 			: 0; 
+	width 			: 2px; 
+	border			: none;
+}
+
+div.t_fixed_header.ui .body tr {
+	border			: 0px;
+}
+
+div.t_fixed_header.ui .body td {
+	padding			: 5px;
+	text-align 		: left;
+	line-height		: 15px;
+	background: none;
+}
+
+div.t_fixed_header.ui .body tr td {
+	border: none;
+	background: url(../../../../../images/viewers/bg-pattern-resizable-even.png) repeat-y right;
+}
+
+div.t_fixed_header.ui .body tr:nth-child(odd) {
+	background: #efefef;
+}
+
+div.t_fixed_header.ui .body tr:nth-child(odd) td{
+	background: url(../../../../../images/viewers/bg-pattern-resizable-odd.png) repeat-y right;
+}
+
+div.t_fixed_header.ui .body tr:hover {
+	background: #8DC7C7;
+}
+
+div.t_fixed_header.ui .body tr.xim-listview-selected{
+	background: #43A1A2;
+}
+
+
+div.t_fixed_header.ui .body tr td span{
+	margin: 0 5px;
+	display: block;
+	overflow: hidden;
+}
+
+div.t_fixed_header.ui .body tr:hover td, div.t_fixed_header.ui .body tr.xim-listview-selected td{
+	color: #fff;	
+	cursor: pointer;
+}
+
+div.t_fixed_header.ui .body tr td:first-child span{
+	display:inherit;
+	margin: 0;
+}
+
+div.t_fixed_header.ui .body tr td:first-child span.xim-listview-actions-dropdown{
+	display: none;
+}
+
+div.t_fixed_header.ui .body tr:hover td:first-child span.xim-listview-actions-dropdown{
+	display: inline;
+	top: 1px;
+	left: 5px;
+}
+/*
+div.t_fixed_header.ui .body tr:last-child td {
+	border-bottom-width : 0px;
+}
+
+div.t_fixed_header.ui.default .headtable th:last-child, div.t_fixed_header.ui.default .body td:last-child  {
+	border-right-width : 0px;
+}
+
+div.t_fixed_header.ui .body td.last_td, div.t_fixed_header.ui .headtable th.last_td {
+	border-right-width : 0px;
+}*/
+
+div.t_fixed_header_main_wrapper.ui div.pager {
+	border-width	: 0 0 0 0;
+	padding			: 4px 2px 2px 3px;
+	overflow		: hidden;
+	background-image: none;
+}
+
+div.t_fixed_header_main_wrapper.ui div.pager .button {
+	float			: right;
+	padding			: 4px 0;
+	cursor			: pointer;
+}
+
+/*div.t_fixed_header_main_wrapper.ui div.pager .button.noborder {
+	border-right-width : 0px;
+}*/
+
+div.t_fixed_header_main_wrapper.ui div.pager .button span {
+	margin			: 0 4px;
+}
+
+div.t_fixed_header_main_wrapper.ui div.pager div.page_infos {
+	height			: 27px;
+	line-height		: 27px;
+	float			: right;
+	margin-right	: 10px;
+	font-weight		: normal;
+}

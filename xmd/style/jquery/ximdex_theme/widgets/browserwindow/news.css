@@ -1,0 +1,85 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+.language-tabs div.tabs-container{
+	overflow:hidden;
+}
+
+.languages-news .xim-tabs-list-selector{
+	background: url("../../../../../../xmd/images/action/fnd-legend-span.png") repeat-x scroll left bottom transparent;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	margin-top: 4px;
+	height: 24px;
+	width: 24px;
+	right: 6px;
+}
+
+.languages-news .xim-tabs-list-selector:before{
+	display: block;
+	width: 24px;
+	height: 24px;
+	/*background: red;*/
+	content: '...';
+	color: #fff;
+	text-shadow: 0px -1px 0px #006b6c;
+	text-indent: 0px;
+	padding: 2px 5px;
+}
+
+.languages-news .xim-tabs-list-selector:hover{
+	background: url("../../../../../../xmd/images/action/fnd-lang-span-default.png") repeat-x scroll left bottom transparent;
+}
+	
+.languages-news .xim-tabs-list:before{
+	content:' ';
+	background: url("../../../../../../xmd/images/action/fnd-legend.png") no-repeat scroll left bottom transparent;
+	display: block;
+	width: 22px;
+	height: 8px;
+	top: 26px;
+	right: 6px;
+	position: absolute;
+}
+
+.langs ul.xim-tabs-list li{
+	line-height: 1.2em;
+}
+
+.languages-news {
+/*	height:300px; */
+	width:750px;
+	position:relative;
+}
+
+.language-tabs ol{
+         padding-bottom: 35px;
+}
+

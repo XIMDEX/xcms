@@ -1,0 +1,289 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+.ui-tabs-panel ul li div, .ui-tabs-panel ul li.xim-listview-node, .xim-listview-item{
+	border-bottom: 1px dashed #ccc;
+	/*padding:5px 5px 6px 2px;*/
+	
+	position:  relative;
+}
+
+.ui-icon {
+	float: left;
+	margin-top:  4px;
+}
+
+/*.controlcenter ul.xim-treeview-branch>li.xim-treeview-node .isLeaf div .ui-no-icon + .xim-treeview-icon{
+	margin-left: 16px;
+	
+}*/
+
+.xim-treeview-icon, .xim-listview-icon{
+		background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
+		width: 18px;
+		height: 1.4em;
+		float: left;
+		margin-right: 5px;
+		margin: 0.3em 5px 0.2em 0px;
+		padding-bottom: .1em;
+		outline-style:none;
+		/*margin-top: 6px;*/
+}
+.icon-projects{
+	background-position: -1px -233px;
+}
+
+.icon-nodetype{
+	background-position: -2px -22px;
+}	
+.icon-folder_links{
+	background-position: -22px -21px;
+}
+.folder_links + .xim-treeview-branch .icon-folder_links {
+	background-position: -22px -22px;
+}
+.icon-folder_templates{
+	background-position: -2px -42px;
+}
+
+.icon-folder_template_view{
+	background-position: -22px -42px;
+}
+
+.icon-server{
+	background-position: -2px -62px;
+}
+
+.icon-folder_common{
+	background-position: -22px -61px;
+}
+
+.icon-folder_css{
+	background-position: -2px -81px;
+}
+
+.icon-folder_images{
+	background-position: -22px -82px;
+}
+
+.icon-folder_import{
+	background-position: -2px -102px;
+}
+
+.icon-folder_xml{
+	background-position: -22px -102px;
+}
+
+.icon-folder_ximlet{
+		background-position: -2px -123px;
+}
+
+/*.icon-controlcenter{
+	
+}*/
+
+.icon-channel{
+	background-position: -22px -123px;
+}
+
+.icon-group{
+	background-position: -2px -141px;
+}
+.icon-language{
+	background-position: -22px -142px;
+}
+
+.icon-folder_system_properties{
+	
+}
+
+
+.icon-permissions, .icon-permission{
+	background-position: -2px -164px;
+}
+
+
+
+.icon-rol{
+	background-position: -22px -163px;
+}
+
+
+.icon-user{
+	background-position: -2px -186px;
+}
+
+.icon-workflow{
+	background-position: -22px -185px;
+}
+
+.icon-xix{
+	background-position: -2px -208px;
+}
+.icon-modulesconfig{
+	background-position: -2px -208px;	
+}
+.icon-folder_a-z{
+	background-position: -22px -209px;
+}
+
+.icon-link{
+	background-position: -1px -314px;
+}
+
+.icon-xml_document, .icon-doc, .icon-text_file, .icon-nodeht_file, .icon-binary_file{
+	background-position: -22px -315px;
+}
+
+.binary_file .icon-binary_file{
+	background-position: -1px -580px;
+}
+
+.icon-image{
+	background-position: -1px -336px;
+}
+
+.icon-css_document{
+	background-position: -22px -336px;
+}
+
+.icon-folder_xml .icon-contenedordoc{
+	background-position: -2px -362px;
+}
+.icon-contenedordoc{
+	background-position: -22px -358px;
+}
+
+.icon-folder{
+	background-position: -2px -379px;	
+}
+
+.icon-folder_news{
+	background-position: -2px -400px;	
+}
+.icon-folder_ximnews{
+	background-position:-22px -400px;	
+}
+
+.icon-folder_bulletins{
+	background-position: -22px -378px;
+}
+
+
+
+.folder_bulletins+.xim-treeview-branch .folder_bulletins .icon-folder_bulletins{
+	background-position: -2px -420px;
+}
+
+
+
+div.folder_xml + ul.xim-treeview-branch li div img.icon-contenedordoc{
+	background-position: -2px -358px;
+	}
+	
+	
+.folder_bulletins + .xim-treeview-branch .icon-contenedordoc{
+	background-position: -22px -421px;
+}
+
+.folder_news + .xim-treeview-branch .icon-contenedordoc{
+	background-position: -2px -443px;
+}
+
+.icon-folder_system_properties, .icon-foldergray, .icon-property{
+	background-position: -22px -444px;
+}
+
+.icon-controlcenter{
+	background-position: -2px -466px;
+}
+
+.icon-doc-link{
+	background-position: -21px -466px;
+}
+
+
+
+li.xim-treeview-node .xim-treeview-actions-dropdown, li.xim-listview-node .xim-listview-actions-dropdown{
+	/*float: right;*/
+	position: absolute; 
+	top: 2px;
+	left: 16px;
+	background: url("../../../../../images/tree/treeview-icons.png") no-repeat scroll -22px -228px transparent;
+	display: none;
+	height: 22px;
+	width: 18px;
+	margin-top: 0px;
+}
+
+li.xim-listview-node .xim-listview-actions-dropdown{
+	left: 10px;
+}
+
+tr.xim-listview-item .xim-listview-actions-dropdown{
+		position: absolute; 
+	/*top: 0px;*/
+	left: 27px;
+	background: url("../../../../../images/tree/treeview-icons.png") no-repeat scroll -23px -228px transparent;
+	display: none;
+	height: 22px;
+	width: 18px;
+	margin-top: 3px;
+}
+
+
+
+li.xim-treeview-node .xim-treeview-container-selected .xim-treeview-actions-dropdown,  li.xim-listview-selected .xim-listview-actions-dropdown{
+	background-position: -1px -253px;
+}
+
+tr.xim-listview-selected .xim-listview-actions-dropdown{
+	background-position: -2px -253px;
+}
+
+ul.xim-treeview-branch li div:hover .xim-treeview-actions-dropdown,
+.xim-listview-node .xim-listview-actions-dropdown, tr.xim-listview-item:hover .xim-listview-actions-dropdown, li.xim-listview-node:hover .xim-listview-actions-dropdown {
+	display: inline;
+}
+
+ul.xim-treeview-branch li div .xim-treeview-actions-dropdown:hover {
+	/*background-color: #8DC7C7;*/
+}
+
+li.isLeaf .xim-actions-dropdown, .isLeaf .xim-actions-dropdown{
+	left: 6px;
+	top: 3px;
+}
+ul.xim-treeview-branch li div.xim-treeview-container-selected .xim-treeview-actions-dropdown:hover,
+.xim-listview-selected .xim-listview-actions-dropdown:hover {
+	/*background-color: #43A1A2;*/
+	display: inline;
+}
+
+
+.ui-icon-triangle-1-se{
+	background-position: -48px -15px;
+}

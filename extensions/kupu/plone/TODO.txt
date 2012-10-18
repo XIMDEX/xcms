@@ -1,0 +1,225 @@
+==============
+TODO for Plone
+==============
+
+[also some general todos. Some of these are firm ideas, others are
+just idle thoughts]
+
+===============
+Plone 2.1 todo
+===============
+1. fix bugs
+2. Make Kupu use the Resource registry to optimise JS and CSS files.
+
+Other thoughts
+===============
+Make the toolbar customisable from Plone control panel, possibly by
+making the kupu tool into an action provider.
+[DB: I'm not sure this will work as I think the information we need is
+rather different than the usual action provider. After all, our
+actions are all client side javascript not server-side methods.
+However the general idea is good.]
+
+Make the initialisation data driven so it can be more easily
+customised (and driven from plone cpanel.
+
+Add user-level documentation to kupu.oscom.org. Make the Plone
+butterfly direct to a plone specific documentation page?
+
+Improved source editing mode? At the least we should apply the content
+filtering when switching into source mode.
+
+Need a pulldown to set classes on non-block tags: e.g. span, a, etc.
+
+Make the ul/li pulldown options customisable through cpanel, allow
+them to set classes as well as list-style-type.
+
+Refactor classes to do proper base class initialisation. This also
+means we need to use .prototype. consistently for methods.
+
+Move Plone paragraph styling back into the common code.
+
+Generic RPC mechanism to allow tools to be defined entirely on the
+server?? JSON-RPC?
+
+Triage on the issue tracker: which issues are still valid, which are
+fixed or otherwise outdated, which do we fix and which are unfixable.
+
+Make it easier to enable the output transforms. Hotfix ATCT?
+
+====================
+Backport into common
+====================
+Merge PloneKupuUI class back into common so that other variants of
+kupu can support classnames on styles.
+
+Code to make links relative should also be shareable.
+
+Collapse saveDataField and prepareForm together:
+
+-  Maybe make _serializeOutputToString use config to select body or
+   full html.
+
+-  prepareForm should accept field name or field object and only
+   create output field if it doesn't already exist.
+
+-  makeLinksRelative should accept configurable pattern for URLs which
+   are to lose their path completely. For Plone this should default to
+   resolveuid.
+
+================
+TODO for drawers
+================
+
+These are probably core issues rather than specifically Plone.
+
+- image drawer should go straight to the correct location when opened
+  on an existing image (is this even possible?) so you can adjust
+  alignment, captioning etc. without having to reinsert the image.
+
+- add toolbox drawer to run macros which aren't deemed important
+  enough to be directly on the toolbar.
+
+- Uploading an image doesn't let you float the image. Perhaps the
+  upload handler should simply refresh the drawer with the uploaded
+  file selected, then you can set all the usual image options on an
+  uploaded image.
+
+And a Plone one:
+
+- Want an Archetypes widget which uses Kupu drawers so we can easily
+  incorporate them into reference pickers etc. This should be easier
+  now we have multi-instance Kupu as we no longer need to care whether
+  or not there is already a Kupu on the page.
+
+=====================
+IE problems and fixes
+=====================
+
+o importNode(node) fails on XML Document nodes. Use
+  node.cloneNode(true) as a hack.
+
+o drawer changes height when navigating with IE. Fixed by forcing the
+  entire drawer to refresh in IE, but there must be something simpler we
+  could do to have the same effect.
+
+========================
+Other assorted ideas
+========================
+Florian Schulze wrote:
+> In plone with ATContentTypes, Images can have various sizes. I would
+> like to be able to select the scale when inserting the image into a
+> document, how can I achieve that. I guess I have to change the drawer
+> somehow, but I have no clue where and how.
+> 
+
+To do this properly will require some effort (which is why I haven't 
+attempted to do it prior to the Plone 2.1 release).
+
+On the server we need to find out the available sizes for the images. I 
+guess that information isn't in the catalog, and we don't want to hit every 
+image when sending a listing, so the only option would be to assume that 
+every object with a given portal type has the same list of scales (I'm not 
+even sure how it easy it is to get a list of scales from the type rather 
+than from an instance of the type). Alternatively we add a list of scales 
+to the configlet which would allow you to restrict the list to a useful 
+subset.
+
+That information then has to be sent to the kupu client. I think probably 
+we have to send a separate list of sizes for each image (you might have 
+multiple portal types not all of which are scalable) or maybe just for 
+each portal type. By this point I'm thinking that what we actually have is 
+a set of qualifiers which can be added to the image URL rather than 
+necessarily being sizes. For example you might want to add support for 
+greyscaling images or for cropping.
+
+On the client side we need to add the modifier to the image dialog, either 
+as a select box or radio buttons (probably determined by the number of 
+options) and then we need to modify the url to match.
+
+I would like to see if we can rationalise the xml to avoid adding new tags 
+for every new feature to be sent from the server. Also it would be nice to 
+see if there is a way to avoid changing the client js every time some 
+feature such as this is added. This might be part of a more general 
+refactoring of the drawers such as I know Paul is keen to try.
+
+One option would be for the xml to include a section such as:
+
+<options>
+  <type name="Image">
+    <input name="alt" size="40">Alt text</input>
+    <radio name="align">
+       <option value="image-left">Left</option>
+       <option value="image-centre">Centre</option>
+       <option value="image-right">Right</option>
+    </radio>
+    <select name="size">
+       <option value="">Normal</option>
+       <option value="/mini">Medium</option>
+       <option value="/thumb">Small</option>
+    </select>
+
+    <checkbox name="captioned">Add a caption</checkbox>
+
+    <action type="text/javascript"><![CDATA[
+       if (options.alt) node.alt = options.alt;
+       node.className = options.align.value;
+       node.url = url + options.size.value;
+       if (options.captioned) {
+         node.className += " captioned";
+       }
+    ]]></action>
+  </type>
+</options>
+
+So for a given portal_type (and we would have to add the type to the xml 
+returned) some controls (select, checkbox, radio, text input) could be 
+added to the dialog, and when the image is inserted the associated 
+javascript would be executed in a function with parameters node, 
+url,className,options to modify the newly inserted image.
+
+[This isn't fully thought through yet: we also need to get the drawer 
+picking up existing image settings, the alt text needs to get a default 
+from somewhere, and the image size needs to be set somewhere on the tag.]
+
+The last of these makes life a bit harder since the size now depends on the 
+exact URL we generated. I suspect we should add an onload handler to every 
+image in kupu and when the image successfully loads make it update the tag 
+to the correct size. The onload attribute will of course be stripped when 
+the file is saved.
+
+
+=================================================
+
+
+Arrange a Kupu sprint
+
+=================================================
+Drawer improvements:
+
+Access schema to find things like image sizes, and possibly also
+control other fields to appear in the drawer form. See
+http://svn.plone.org/view/collective/ATContentSearch/trunk/ATContentSearch.py?op=file&rev=0&sc=0
+
+Enable xsl includes in the drawer code so that the form can be
+customised.
+
+Change selection to display using a radio button instead of (or as
+well as) highlighing the line. This allows clicking on the radio
+button to select folderish content, clicking on the title navigates
+into folders but selects other content.
+
+Multiple selection done by replacing radio button with a checkbox.
+Also add a library which shows just selected content. Make popup a
+reference widget for Archetypes which uses kupu drawers in multiple
+selection mode.
+
+Make the widget aggressive: i.e. it will actively seek
+out schemas which use the default AT reference widget and replace it,
+but if the user does not have Kupu selected as their editor the
+original reference widget will display instead. (This means nobody
+will have to modify their content types to get the new behaviour).
+
+Make ReferenceTextField aggressive in the same way. Add configuration
+options to select whether TextField and ReferenceWidget are hijacked.
+

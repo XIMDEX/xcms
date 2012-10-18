@@ -1,0 +1,417 @@
+============
+Kupu changes
+============
+
+- 1.3.4
+
+  - Silva 
+
+      * Fixed some small issues in external sources support.
+
+      * Fixed some problems with tables, table column alignment and relative
+        width settings should not clash anymore.
+
+  - General
+
+      * Zope related: changed imports so they try to import Zope2 rather than
+        Zope (with Zope as a fallback) to not have Zope 2.8.x issue warnings.
+
+- 1.3.3
+
+  - Plone
+
+      * Text is no longer automatically forced into a paragraph as
+        this caused problems on Mozilla when editing at the end of the
+        file. The style pulldown now distinguishes text with 'no
+        style' from 'Normal'.
+
+      * Fixes to Plone issues:
+
+        4434 - 'int' object is not callable on editing
+
+        4896 - Kupu interface invisible if color changed
+
+        4911 - Kupu creates incorrect relative link in new page
+
+        4801 - Kupu Links: search for private objects fails
+
+        4622 - It's not possible to insert link to local folder using kupu
+
+        4873 - Kupu removes u-tag
+
+      * Added some table styles to the sample customisation.
+
+- 1.3.2
+
+  - Zope 2
+  
+    * Updated Zope 2 distribution, it was broken in several ways.
+
+  - Silva
+    
+    * Fixed problem with ExternalSources, which made that sources could not be
+      added to a page (clicking 'add' would not do anything).
+
+- 1.3.1
+
+  - Silva:
+    
+    * Fixed problem with IE that turned all src attributes (images) and hrefs
+      (links) into absolute URLs, failing miserably on Zope/Silva setups.
+
+    * Fixed bug with IE that made that all possible attributes were stored
+      on external source elements.
+
+  - Plone
+
+    * Fix error opening drawers when there is non-AT content around.
+
+    * Fix for content type not being set on AT content with only one allowed type.
+
+    * Fix for error when converting content from another format such as reST.
+
+  - Fix for style whitelist not working on Mozilla/Firefox (N.B. xml config schema has been changed)
+
+- 1.3
+
+  - Disabled entity escaping since it causes problems with Plone indexing.
+    (this should be fixed properly in Plone's PortalTransform code).
+
+  - Plone:
+
+    * removed the hardwired styles Heading, Subheading and
+      Formatted, added them by default on installation (but if you are
+      upgrading you may have to add them explicitly).
+
+    * Fixed a bug which prevented editing legacy (non-AT) content.
+
+    * Turned linkByUid off by default. Made resolveuid.py do a status 301 (moved permanently) redirection.
+
+    * Fixed linking to folder types which was broken when Plone 2.1 support was added.
+
+  - More i18n work.
+
+  - table classnames now take an optional caption.
+
+  - Style pulldown no longer goes wrong inside tables.
+
+  - Fixed font size issue. Plone documentContent class is now applied
+    to the editor body tag, so scaling and background color are picked
+    up automatically.
+
+- 1.3rc1
+
+  - Added support for i18n - the Kupu interface can now be displayed in
+    multiple languages (provided language catalogs are available).
+
+  - Lots of changes for Plone 2.1 compatability.
+
+    * Drawers use catalog lookups to avoid loading objects.
+
+    * ResourceRegistry used to load js and css.
+
+    * Sarissa upgraded, and not loaded when ResourceRegistry is
+      present.
+
+    * Drawer layouts tidied up.
+
+    * Drawers i18n enabled.
+
+- Post 1.2.1
+
+  - Tidied up zoom mode. Added kupu-fulleditor-zoomed class to body
+    when zoomed so you can use css to hide other controls on page (IE
+    ignores z-index on SELECT boxes).
+
+  - Further adjustment for issue 70 to give slightly prettier
+    formatting.
+
+- 1.2.1
+
+  - Fixed some context bugs with External Sources (Silva specific), now Kupu
+    uses the same functionality to find code sources as the rest of Silva
+    does.
+
+  The following issue has been resolved:
+
+  - 70: Content duplication (when pasting into IE from Microsoft Word or Works).
+
+- 1.2 final
+
+  - Linking to the current folder produced an empty link. Now it links to "."
+
+  - Changed how kupu in Plone handles non-HTML content e.g. STX. Now it won't
+    load for fields in Archetypes content if the content type isn't HTML (but 
+    it does put in a link allowing you to force a conversion). See
+    http://plone.org/collector/3900
+
+  - Added support for spell checking.
+
+- Since 1.2rc1
+
+  - Creating links was broken by the fixes to #146, rewrote link
+    creation to be more robust and predictable.
+
+  - Changed 'halign' as the attribute to set the alignment of tables
+    and tablecells to 'align'.
+
+  Apache Lenya enhancements:
+  
+  * improved handling of image assets
+  * enabled roundtrip of image editing between Kupu and BXE
+    (http://issues.apache.org/bugzilla/show_bug.cgi?id=29164)
+  * fixed bug that inserted multiple meta charset entries per save.
+  * slight wording changes here and there
+  
+- Kupu 1.2rc1
+
+  The following issues have been resolved (see the `issue tracker`_
+  for details of the numbered ones):
+
+  - 153: Exit from bulleted list: next paragraph becomes a list item
+  - 152: Install.py does not work with CMF
+  - 151: This function requires better XML support in your browser
+  - 150: Javscript error in IE when viewing empty html source and style select changed
+  - 149: When using Zoom on Plone site, the right portlets are not disabled
+  - 146: kupu 1.2b tagName is null or not an object javascript error in IE
+  - 143: Invalid request error when trying to edit raw HTML using Safari
+  - 141: Inserting links in Gecko browsers sometimes replaced the selected
+    text with the link title.
+  - 94: Using kupu with Plone via SSL gives error on IE
+    (this was already marked as resolved but had recurred).
+  - Fixed 'phantom whitespace' problem. Saved format was 'text/html'
+    which non-AT content types interpret as an alias for 'stx'. Now
+    sets format to 'html' for non-AT content types.
+  - Opening a drawer gave error 404 on Plone systems when Archetypes 
+    was not installed.
+
+
+.. _`issue tracker`: http://codespeak.net/issues/kupu/
+
+- Kupu 1.2 beta 1
+
+  * Added image upload.
+
+  * Added support for CSS 'float' for images.
+
+  * Fixed some documentation that said Netscape 7.0 was supported, which
+    it never was, the minimal Netscape version required to use Kupu has
+    always been 7.1
+
+  * Fixed problem where empty title tags broke rendering on IE after a save.
+
+  * Configurable filtering with whitelists and blacklists which
+    significantly speeds up save time on IE.
+
+  * Zoom mode to make Kupu fill the browser window.
+
+  * BeforeUnload handler added which controls all form fields.
+
+  * Plone enhancements:
+
+    - Drawer support now fully integrated.
+    - Customisation by control panel or Python script.
+    - Paragraph styles may be defined globally or for Archetypes
+      fields.
+    - Links to Archetypes objects done by UID.
+    - Optionally Archetypes can store references for links created by
+      Kupu.
+    - Optional output transform to hide UIDs and add captions to
+      images.
+    - Kupu and Epoz can now coexist on the same Plone site.
+
+- Kupu 1.1
+
+  * Re-added experimental dist with inspector.
+
+  * Moved drawers to the experimental dist.
+
+  * Some fixes in the Citation tool and External Source tools
+
+  * Fixed bug that made Kupu break on certain type of meta-tags in the
+    editable document.
+
+  * Moved definition list tool to the main and form dist.
+
+  * Made Damian Gajda's SourceEditTool replace the switchSourceEdit function.
+
+- Kupu 1.1 beta 2 (2004-05-27)
+
+  * Added source editing for Silva.
+
+  * Fixed the Image tool in Silva: URL's are now editable and will be made
+    relative if at all possible.
+
+  * Fixed some small bugs for Silva.
+
+  * Assured proper hiding of RemoveElementButtons in IE.
+
+  * Updated unit tests to reflect new ECMAUnit API
+
+- Kupu 1.1 beta 1 (2004-05-21)
+
+  * Added Selection object that provides a cross-browser API for working
+    with the document's selection and cursor. This can be used to e.g. add
+    and manipulate arbitrary elements (it's used for instance in Silva's 
+    definition lists code).
+
+  * Templates for different systems are now generated with an
+    XML/XSLT-based templating system.
+
+  * Added state for buttons, if one is inside a tag controlled by a button
+    the button gets a new class (this way when inside e.g. a bold tag the
+    bold button can look pressed).
+
+  * Added access key functionality.
+
+  * Implemented a new way of inserting images and linking to
+    documents, library drawers. Drawers are windows that open up
+    inside the browser without invoking a browser popup. Library
+    drawers load information about linkable/insertable objects from
+    the server via standardized XML.
+
+  * Some core functionality is now covered by unit tests, based on the
+    JavaScript testing framework ECMAUnit.
+
+  * Fixed bug in preserving selection in IE.
+
+  * Added double-click catching, now double-clicking stuff results in correct
+    behaviour.
+
+  * Added a few useful helpers, such as a strip() method to String objects.
+
+- 1.0.3 (2004-03-25)
+
+  * Renamed epoz to kupu to end the name confusion with Maik
+    Jablonski's editor once and for all. Thanks to Eric Casteleijn for
+    the name suggestion.
+
+  * Kupu is distributed under the BSD-style Kupu license. See
+    LICENSE.txt for license text.
+
+  * Kupu is an official OSCOM project now. Its new homepage is
+    available at http://kupu.oscom.org. The development home remains
+    with Codespeak.
+
+  * Improved preliminary Plone support. Thanks to Duncan G. Booth for
+    this work.
+
+  * Fixed bug that made IE throw an exception on re-selecting text in
+    a removed element.
+
+  * Removed the 'locales' directory for the time being. We will
+    support i18n in the future, but not in this Zope-specific way.
+
+- 1.0.2 (2004-03-06)
+
+  * Added POST support
+
+  * Finally added some more documentation, made some older docs less 
+    Zope specific
+
+  * Added toolboxes, a plugin for tools, to seperate functionality from
+    view dependencies (this means a change in initEpoz, so custom versions
+    need to be updated!)
+
+  * Chopped epozeditor.js into several pieces (this means all existing
+    installations need to be updated!)
+
+  * Table editing in IE 5.5 is fixed, the tables don't end up
+    in the parent document anymore
+
+  * Fixed some subtle bug that caused the parent element of the
+    selection to be the selected element instead of the element
+    itself when a selection spanned a full element (thanks Igor
+    Stroh for the IE fix!)
+
+  * Cleaned up the HTML files and pagetemplates, there's now only 1 piece
+    of JavaScript for initialization.
+
+  * Added experimental context menu
+
+  * Added experimental inspector tool
+
+  * A lot of small bugfixes...
+
+- 1.0.1 (2003-12-10)
+  
+  * Fixed bug that caused saving to fail in Mozilla 1.3.1
+
+  * Fixed bug that prevented Zope from booting when Epoz and Plone were
+    installed on the same instance
+
+  * Added an example pagetemplate for Zope 2 integration
+
+- 1.0 final (2003-11-21)
+
+  * Fixed text style support for IE
+
+  * Renamed epoztoolbar macro to epoz_toolbar for consistency
+
+  * Added style sheet and headers to prevent caching in the
+    example document fulldoc.html
+
+- 1.0 beta 1 (2003-11-14)
+
+  * Some API cleanups done
+
+  * Added some code to 'disable' the editor during init and save
+    [Issue 11]
+
+  * Added Silva-specific JavaScript, also as an example for large
+    customizations
+
+  * Fixed major problem with IE that removed the selection from the
+    iframe as soon as some other element got clicked (resulting in
+    actions to be performed on the wrong location). [issue 31]
+
+  * Fixed colorchooser in IE, also fixed background color support.
+
+- 1.0 alpha 2 (2003-11-07)
+
+  * Refactored epozeditor.js to a MVC-style component architecture.
+    [Issue 26]
+
+  * Added a path tool [Issue 24]
+
+  * Added epoz logo
+
+- 1.0 alpha 1 (2003-10-24)
+
+  * Fix useCSS (generates a Midas error)
+
+  * When in a list, a style picker will appear for the shape of the
+    list symbols.
+
+  *  Dumb down the link and image toolboxes
+
+  * Let the iframe src work from Apache via a tal:attributes to
+    replace the src with nothing when served from Zope
+
+  * Added new attributes on <iframe> to configure the Epoz instance:
+
+    - dst specifices the URL to PUT to.
+  
+    - usecss is either 0 or 1, to tell Midas whether to use CSS or
+      element styles like <b>.
+
+    - reloadsrc is either 0 or 1, to tell Epoz whether the server
+      wants the editor to reload the source after saving.  This is
+      true in Silva, which transforms the XHTML after saving.
+
+  * Improved error message that appears if an async save fails.
+
+  * Added plain Zope2 integration (philikon)
+
+  * Added functionality for editing tables (adding and deleting
+    rows and columns, setting alignment etc.)
+
+  * Fixed bug in link code, the url is now added to the link 
+    correctly and can also be modified
+
+  * Replaced some timeout code with a poll loop, which should work
+    better in extreme situations (slow setup, large documents etc.)
+
+  * When the cursor is in a list, a drop-down appears to set the style
+    of the list symbols (e.g. disc for ul, roman numerals for ol)
+

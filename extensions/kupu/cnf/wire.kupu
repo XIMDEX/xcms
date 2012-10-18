@@ -1,0 +1,12 @@
+<kupu:wire
+    implementation="cnf"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:fill-slot name="body">
+    <kupu:insert-part feature="xmlconfig" part="xmlconfig" />
+    <kupu:insert-part feature="xmlconfig" part="genelxmlconfig" />
+    <kupu:insert-part feature="body" part="fulleditor" />
+  </kupu:fill-slot>
+
+</kupu:wire>

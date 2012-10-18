@@ -1,0 +1,114 @@
+===============================
+Kupu Frequently Asked Questions
+===============================
+
+* Will this work with Safari or Opera or ...?
+
+  No, Kupu will only run on browsers with the IE engine (IE 5.5+) or those
+  with a Gecko engine (Mozilla 1.3.1+ and Netscape 7.1+), not on the 
+  Konqueror one (which Safari uses) or on Opera or any other browser. 
+  Actually Mozilla copied a feature unique to Internet Explorer, which is 
+  not part of any standard, which Kupu uses. Because it's not part of a
+  standard, it is not very likely any other browsers will implement it,
+  although we keep hoping some day they will.
+
+* Kupu allows users to do all kinds of things - like coloring text -
+  that I don't want in my system.
+
+  All of the kupu style functions can be turned on and off using CSS or in 
+  the configuration. Additionally, the element controls can be extended to
+  accomodate special needs of your content.
+
+* Is my platform supported?
+
+  It probably is: Kupu has requirements on the client side, but works with
+  just about any web server. As long as your server supports POST and some
+  server-side scripting language or CGI (to process form variables if Kupu
+  is part of a form) or HTTP PUT you can install Kupu on your website or
+  application.
+
+* Why do I get all kinds of weird characters?
+
+  Kupu seems to work correctly when you use UTF-8 as the character set for
+  encoding, but gives unpredictable results when you use another one such
+  as latin-1 (ISO-8859-1). Make sure to always use UTF-8 as the character
+  set for incoming data and set the correct Content-Type header or meta-tag,
+  and Kupu will send back UTF-8 data.
+
+* Saving seems to work, but my browser keeps showing old stuff
+
+  Browsers tend to store web pages a while to reduce the amount of data that
+  has to be transferred. Obviously this can get in the way when using Kupu,
+  so the browsers need to be told not to store (cache) the Kupu iframe contents
+  on retrieval. This can be done either with HTTP headers or with meta-tags.
+  For an example of which meta-tags to use, see fulldoc.html (the example
+  content page).
+
+* What's this '1223' status code I see in the code?
+
+  There seems to be a bug in Internet Explorer that in some cases it says that
+  the status code of a save action is '1223' (a code that doesn't exist in
+  HTTP, it's not described in the specs and there seems to be no information
+  about this on the web). Since it looks like this code is only returned on a
+  succeeding save action, it seems that reasonable safe work-around is to add
+  the status code as one of the allowed codes in common/kupueditor.js (search
+  for '204' and you'll find a line that checks if the status code is either 200
+  or 204, add 1223 there). This is what we've done, however, if you find 
+  something can go wrong with that workaround, please let us know.
+  
+* Does Kupu produce valid XHTML?
+
+  Well... Kupu produces *well-formed XML*, which out-of-the-box does not 
+  contain any elements that aren't allowed in XHTML anymore, and are written 
+  in a form compliant to the XHTML notation (lowercase tag and attribute 
+  names, attributes all have values and all values are in quotes) but it is
+  theoretically possible to create constructions that are not valid according
+  to the XHTML DTD. For most cases, however, the data produced by Kupu is
+  perfectly usable, even after copied from another website or notorious Word.
+
+* What about i18n?
+
+  Currently Kupu is not adapted to i18n. The plan is to write i18n support for
+  the JavaScript sources in one of the next versions (probably using XML 
+  inside the HTML, a technique sometimes called 'XML data islands', to store 
+  all the JavaScript strings) but currently it's not possible to convert the 
+  JavaScript strings on the server without having to hack in the sources.
+  Current technologies make it hard to handle i18n in a clean way on the 
+  client, so therefore Kupu will at first choose to let the server take care 
+  of it. Since Kupu is not dependent on a specific server, however, we can not 
+  guarantee that support for your server will be available even in the future, 
+  but we will at least provide infrastructure and probably also dictionaries 
+  for different languages.
+
+* What about Bitflux, Xopus, and others?
+
+  The authors of these editors have done great work. They are superb
+  applications, but the major drawback is they work in only one browser (as of 
+  this writing). Kupu was created to work in both Mozilla/Netscape and Internet 
+  Explorer.
+
+* What's with the xsltproc error when 'make'ing kupu?
+
+  xsltproc wants to load external entities references in the XML
+  files, such as DTDs. External entities that are referenced by URIs
+  are typically loaded when you have a network
+  connection. Alternatively, you can install the DTD on your harddrive
+  and point xsltproc to an XML catalog that resolves the URIs to local
+  harddrive directories.
+
+  Most users that generate the kupu macros probably don't have the
+  DTDs installed on their harddrive. When they invoke xsltproc, it
+  will load them from the net. If you don't have an internet
+  connection, you'll see the above error.
+
+  To stop xsltproc from getting resources from the net (because it is
+  time consuming and unnecessary), we pass it the --nonet switch. A
+  bug (?) in xsltproc makes it then complain about not being able to
+  load entities from the net--but that's exactly what we want to
+  achieve! So, this error message is not an error message for us--it
+  is the contrary!
+
+Other questions
+---------------
+Additional questions for the FAQ are welcome. Please post them on:
+kupu-dev@codespeak.net

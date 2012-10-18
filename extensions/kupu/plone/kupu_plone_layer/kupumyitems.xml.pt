@@ -1,0 +1,24 @@
+<tal:block define="charset here/portal_properties/site_properties/default_charset|here/portal_properties/default_charset|string:utf-8;
+        content_type python:request.RESPONSE.setHeader('Content-Type', 'text/xml;;charset=%s' % charset);"
+ replace='structure string:&lt;?xml version="1.0" encoding="${charset}" ?&gt;'>
+<?xml version="1.0"?>
+</tal:block>
+<library
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n_domain="plone"
+    >
+  <uri tal:content="template/absolute_url">URI</uri>
+  <icon tal:content="string:${here/portal_url}/kupuimages/kupusearch_icon.gif">icon</icon>
+  <title i18n_translate="box_myitems">My Items</title>
+  <description>My recently edited items.</description>
+  <src tal:define="resource_type request/resource_type | string:mediaobject;"
+       tal:content="string:${here/absolute_url}/${template/getId}?resource_type=${resource_type}">Source</src>
+
+  <items metal:use-macro="here/kupucollection.xml/macros/collectionItems">
+    <metal:slot fill-slot="defineItems">
+       <tal:var define="global items context/kupuMyItems"/>
+    </metal:slot>
+  </items>
+</library>

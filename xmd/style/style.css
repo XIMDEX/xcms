@@ -1,0 +1,217 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+body.login {
+	/*border: 2px groove;*/
+	background-attachment: fixed;
+	background-repeat : no-repeat;
+	background-position : center;
+}
+
+TABLE.login {
+	background-attachment: fixed;
+	background-repeat : no-repeat;
+	background-position : center;
+}
+	
+INPUT.login {
+	background : #E3E3E3;
+	border : 1px solid Black;
+}
+
+INPUT.button {
+	border : 1px solid Gray;
+	background : #E3E3E3;
+	cursor : pointer;
+}
+
+.treebutton{
+	filter:alpha(Opacity=75); 
+	border : 1px solid Gray;
+	background : #E3E3E3;
+	color : Black;
+	text-decoration : none;
+	text-align : center;
+	display : block;
+	font-size : xx-small;
+	font-family : Verdana;
+	font-weight : bold;
+	width : 100%;
+	margin-left: 1px;
+}
+
+BODY{
+	font-weight: normal;
+	font-family : Verdana;
+	font-size : xx-small;
+	text-indent : 0px;
+	background-color: #ffffff;
+	margin-top : 0px;
+	margin-bottom : 0px;
+	margin-left : 0px;
+	margin-right : 0px;
+	/*
+	scrollbar-face-color: #E3E3E3;
+	scrollbar-highlight-color: buttonface;	( black para el borde negro )
+	scrollbar-3dlight-color: white;
+	scrollbar-darkshadow-color: white;
+	scrollbar-shadow-color: buttonshadow;	( black para el borde negro )
+	scrollbar-arrow-color: Silver;
+	scrollbar-track-color: white;
+	*/
+	/*
+	SCROLLBAR-FACE-COLOR: #e1e1e1;
+	SCROLLBAR-HIGHLIGHT-COLOR: #ffffff;
+	SCROLLBAR-SHADOW-COLOR: #e1e1e1;
+	SCROLLBAR-3DLIGHT-COLOR: #d3d3d3;
+	SCROLLBAR-ARROW-COLOR: #656565;
+	SCROLLBAR-DARKSHADOW-COLOR: #d3d3d3;
+	SCROLLBAR-BASE-COLOR: #ffffff;
+	*/
+	scrollbar-3dlight-color:Gray;
+	scrollbar-arrow-color:#656565;
+	scrollbar-base-color:#FFFFFF;
+	scrollbar-darkshadow-color:Gray;
+	scrollbar-face-color: #E3E3E3;
+	scrollbar-highlight-color:#FFFFFF;
+	scrollbar-shadow-color: #E3E3E3;
+}
+
+A {
+	text-decoration: none;
+}
+
+TABLE, UL, TD, FONT  {
+	font-weight: normal;
+	font-family : Verdana;
+	font-size : xx-small;
+	text-indent : 0px;
+}
+
+SELECT {
+	border : 1px solid Gray;
+	background : #F3F3F3;
+	font-size : xx-small;
+	font-weight : bold;
+}
+
+HR {
+	border : 1px solid #e3e3e3;;
+}
+
+TEXTAREA {
+	border : 1px solid Black;
+	background : #eeeeee;
+	background-color : #eeeeee;
+	font-family : "Courier New", Courier, monospace;
+}
+
+TD {
+	font-size: 10px; 
+	font-family: verdana
+}
+
+.actionname {
+	font-size : medium;
+	font-family : Verdana;
+	font-weight : bold;
+	width : 100%;
+	margin-left: 1px;
+}
+
+.actionbar {
+	width: 100%;
+	border-top : 1px solid Black;
+	border-bottom : 1px solid Black;
+	background : #eeeeee;
+	background-color : #eeeeee;
+	font-family : "Courier New", Courier, monospace;
+}
+
+/*Aligning property boxes*/
+.propCaja{
+	width:250px;
+	float:right;
+}
+
+.propCaja input{
+	width:100px;
+}
+
+.propText{
+	width:150px;
+	float:left;
+	text-align:right;
+}
+
+.prop{
+	clear:both;
+}
+
+/*Property selecction form init.php*/
+.celdap{
+	font-size:10px;
+	font-weight:bold;
+	color:#898989;
+}
+
+.celdaT{
+	background-color:#DDD2E3;
+	font-weight:bold;
+	font-size:10px;
+	color:#898989;
+	border-top:1px solid #898989;
+	border-left:1px solid #898989;
+	border-right:1px solid #898989;
+	text-indent:5px;
+}
+
+.type_button_left {
+	background-image: url(../images/button/button_left.png);
+	background-repeat: no-repeat;
+	width: 4px;
+	height: 15px;
+	float: left;
+}
+
+.type_button_center {
+	background-image: url(../images/button/button_center.png);
+	background-repeat: repeat-x;
+	height: 15px;
+	padding-top: 4px;
+	float: left;
+	font-family: verdana;
+	padding: 0px 5px 0px 5px;
+	
+}
+
+.type_button_right {
+	background-image: url(../images/button/button_right.png);
+	background-repeat: no-repeat;
+	width: 4px;
+	height: 15px;
+	float: left;
+	padding-left: 10px;
+}

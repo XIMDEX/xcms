@@ -1,0 +1,53 @@
+% File:      settobox.sty
+% Version:   2000/09/07 v1.1
+% Author:    Heiko Oberdiek <oberdiek@ruf.uni-freiburg.de>
+%
+% Function:  Command for getting box sizes.
+%
+% Copyright: Copyright (C) 2000 Heiko Oberdiek.
+%
+%   This program may be distributed and/or modified under
+%   the conditions of the LaTeX Project Public License,
+%   either version 1.2 of this license or (at your option)
+%   any later version. The latest version of this license
+%   is in
+%     http://www.latex-project.org/lppl.txt
+%   and version 1.2 or later is part of all distributions
+%   of LaTeX version 1999/12/01 or later.
+%
+% Use:
+%   For easier reusing of boxes, that can be saved
+%   with `\sbox' or environment `lrbox' commands
+%   are defined similar to \settowidth ...
+%     \settoboxwidth
+%     \settoboxheight
+%     \settoboxdepth
+%     \settoboxtotalheight
+%   They all take two arguments:
+%     \settobox...{<LaTeX length>}{<LaTeX box name>}
+%
+% Example:
+%   \newsavebox{\mybox}
+%   \newlength{\mylength}
+%   \sbox{\mybox}{Hello World}
+%   \settoboxwidth{\mylength}{\mybox}
+%
+% History:
+%   2000/02/11 v1.0:
+%     * First public release, written as answer in the
+%       newsgroup `de.comp.text.tex' in the thread
+%       `Die Hoehe von Minipages und Bild', date: 2000/02/11.
+%   2000/09/07 v1.1:
+%     * Documentation added.
+%     * CTAN release.
+%
+\NeedsTeXFormat{LaTeX2e}%
+\ProvidesPackage{settobox}[2000/09/07 v1.1 Getting box sizes (HO)]
+\newcommand*{\settoboxwidth}[2]{\setlength{#1}{\wd#2}}
+\newcommand*{\settoboxheight}[2]{\setlength{#1}{\ht#2}}
+\newcommand*{\settoboxdepth}[2]{\setlength{#1}{\dp#2}}
+\newcommand*{\settoboxtotalheight}[2]{%
+  \setlength{#1}{\ht#2}%
+  \addtolength{#1}{\dp#2}%
+}
+\endinput

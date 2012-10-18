@@ -1,0 +1,26 @@
+<html class="kupu-html">
+  <head>
+    <title>Kupu contentarea</title>
+    <link rel="stylesheet" type="text/css" href="#" tal:attributes="href string:${here/portal_url}/kupuplone.css" />
+    <tal:plone21 condition="exists:here/portal_css">
+    <metal:css metal:use-macro="here/renderAllTheStylesheets/macros/cssrenderer|nothing">
+        <!-- Fetch stylesheets from the CSS Registry -->
+    </metal:css>
+    </tal:plone21>
+    <tal:plone20 condition="not:exists:here/portal_css">
+    <link rel="stylesheet" type="text/css" href="#" tal:attributes="href string:${here/portal_url}/plone.css" />
+    <link rel="stylesheet" type="text/css" href="#" tal:attributes="href string:${here/portal_url}/ploneCustom.css" />
+    </tal:plone20>
+    <base href="emptypage"
+        tal:define="folderish here/isPrincipiaFolderish; tail python:test(folderish, '/', '');"
+        tal:attributes="href string:${request/URL1}${tail}" />
+  </head>
+  <body class="kupu documentContent">
+   
+   <tal:comment replace="nothing">    
+      This template is an empty placeholder, used for loading contents
+      into the Kupu editor-iframe.
+   </tal:comment>
+   
+  </body>
+</html>

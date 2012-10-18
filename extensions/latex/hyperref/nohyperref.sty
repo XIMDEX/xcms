@@ -1,0 +1,56 @@
+%%
+%% This is file `nohyperref.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% hyperref.dtx  (with options: `nohyperref')
+%% 
+%% File: hyperref.dtx Copyright 1995-2001 Sebastian Rahtz,
+%% RCS: $Id: hyperref.dtx 6.71 2000/10/04 rahtz Exp rahtz $
+%%
+%% This file is part of the `Hyperref Bundle'.
+%% -------------------------------------------
+%%
+%% It may be distributed under the conditions of the LaTeX Project Public
+%% License, either version 1.2 of this license or (at your option) any
+%% later version.  The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.2 or later is part of all distributions of LaTeX
+%% version 1999/12/01 or later.
+%%
+%% The list of all files belonging to the `Hyperref Bundle' is
+%% given in the file `manifest.txt'.
+%%
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{nohyperref}
+  [2003/01/22 v6.73n
+  Dummy hyperref (SR)]
+\let\hyper@@anchor\@gobble
+\def\hyper@link#1#2#3{#3}%
+\let\hyper@anchorstart\@gobble
+\let\hyper@anchorend\@empty
+\let\hyper@linkstart\@gobbletwo
+\let\hyper@linkend\@empty
+\def\hyper@linkurl#1#2{#1}%
+\def\hyper@linkfile#1#2#3{#1}%
+\let\PDF@SetupDoc\@empty
+\let\PDF@FinishDoc\@empty
+\let\Acrobatmenu\@gobble
+\let\pdfstringdefDisableCommands\@gobbletwo
+\let\texorpdfstring\@firstoftwo
+\let\pdfbookmark\@undefined
+\newcommand\pdfbookmark[3][]{}
+\let\phantomsection\@empty
+\let\hypersetup\@gobble
+\let\hyperbaseurl\@gobble
+\let\href\@gobble
+\let\hyperdef\@gobbletwo
+\let\hyperlink\@gobble
+\let\hypertarget\@gobble
+\def\hyperref{\@ifnextchar[\@gobbleopt{\expandafter\@gobbletwo\@gobble}}
+\long\def\@gobbleopt[#1]{}
+\let\hyperpage\@empty
+\endinput
+%%
+%% End of file `nohyperref.sty'.

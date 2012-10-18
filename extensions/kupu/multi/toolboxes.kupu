@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="toolboxes"
+    implementation="multi"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    >
+
+  <kupu:part name="properties">
+  </kupu:part>
+
+</kupu:feature>

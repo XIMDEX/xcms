@@ -1,0 +1,444 @@
+=========================
+Installing Kupu in Plone2
+=========================
+
+.. contents:: Table of Contents
+   :depth: 2
+   :backlinks: top
+
+.. sectnum::
+   :depth: 2
+
+Requirements
+------------
+
+* Zope 2.7 and Python 2.3.3 or greater
+
+* Plone 2.0 or greater
+
+* CMF 1.4 or greater
+
+If you are installing a development build checked out from SVN then
+you also need:
+
+* An XSLT processor with XInclude support, such as xsltproc from
+  Gnome's libxml/libxslt.
+
+You do not require an XSLT processor if you are installing a released
+version of Kupu.
+
+Installation
+------------
+
+Drop the 'kupu' directory into your instance home's Products
+directory.
+
+If you are installing from a release tar bundle, the following build
+steps may be skipped. Skip down to the paragraph starting `Now restart
+the Zope instance`_.
+
+If you are installing a version checked out of SVN then you must
+generate the Plone template by typing::
+
+  $ make plonemacros
+
+If you see xsltproc throw an error about not being able to load
+external entities, ignore it.
+
+Windows users need to first get a copy of xsltproc.exe from
+http://www.zlatkovic.com/pub/libxml/. As a minimum you need to
+download the zipfiles for libxslt, libxml2, iconv and zlib.
+Extracting all of the .dll and .exe files into ``c:\libxslt`` is
+sufficient for the make command to work (ignore subdirectories in the
+zipfiles). Then just start a command prompt in the kupu directory and
+run the same command as for other users (on windows it runs make.bat
+so you don't need a separate make program)::
+
+   C:\>cd \Plone 2\Data\Products\kupu
+   C:\Plone 2\Data\Products\kupu>make plonemacros
+
+.. _Now restart the Zope instance:
+
+Now restart the Zope instance. Now go to the Plone Control Panel,
+section Add/remove Products and select 'kupu' for installation.
+
+Usually, every user has to explicitly set their preferred editor to
+'kupu' in 'My Preferences' in order to use kupu. Kupu and recent
+versions of Epoz may both be installed on the same Plone site allowing
+users to choose whichever they prefer. You can specify Kupu as the
+default editor for new users from the ZMI::
+
+  "portal_memberdata" -> "Properties" -> "wysiwyg_editor" = "Kupu"
+
+Upgrading
+=========
+If you are upgrading from an earlier version of Kupu then be aware
+that some of the default settings for Plone may have changed.
+
+If you have not changed any of the default settings, then you should
+run the new 'sample-kupu-customisation-policy' script in the
+kupu-plone skin folder. This will reset all configuration options to
+their defaults.
+
+If you have customised your own setting then you should create your
+own 'kupu-customisation-policy' script based on the sample. The script
+has been written such that in most cases only the data declarations at
+the beginning of the script will need changing.
+
+Installation Problems
+=====================
+
+Macro Nesting
+~~~~~~~~~~~~~
+
+When attempting to use Kupu, if you see the message::
+
+       Kupu not installed correctly: macro nesting limit (100) exceeded ...
+
+it probably means that the ``make`` command was not run, or failed to
+run for some reason.
+
+Zoom
+~~~~
+
+If zooming the Kupu window leaves parts of the underlying page still
+visible it is possible that some part of the page is specifying an
+explicit z-index. Try customising kupustyles.css and increasing the
+setting for z-index in::
+
+    div.kupu-fulleditor-zoomed {
+       z-index: 1;
+       margin: 0; border: none;
+       position: fixed;
+       top: 0; left: 0;
+    }
+
+
+This function requires better XML support in your browser.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can get this alert in Firefox and Mozilla if your Plone site has
+an incompatible copy of Sarissa installed. Check your Plone skin
+folders to see if there is a second copy of sarissa.js present and
+if so ensure that the kupu skin folders are higher priority.
+
+Plone Configlet
+---------------
+
+When logged in as a Manager use the 'Plone Setup' to get to the Plone
+control panel. Kupu appears as a configurable product on the control
+panel.
+
+You can also define a customisation policy script called
+`kupu-customisation-policy` in a skin folder. If there is a script of
+this name then it will be run automatically every time you install (or
+reinstall) kupu in your plone site. This script should use the
+kupu_library_tool to set up the configuration as you wish it for your
+site.
+
+Creating a customisation policy script is optional, but is a simple
+way to ensure that you do not lose customised configuration settings
+when upgrading. A sample script is in the kupu_plone_layer folder.
+
+config tab
+==========
+
+.. contents:: config tab
+        :depth: 1
+        :local:
+        :backlinks: top
+
+Link options
+~~~~~~~~~~~~
+When this is checked:
+
+ - If you insert an image, or create an internal link to an Archetypes
+   object, then the link will indirect through Archetypes catalog. This
+   means that you can move the target object to a different location, or
+   even rename it, and the link will continue to work.
+
+ - the URL used for the link will require an extra hit on the server,
+   and will contain the internal UID. These issues may be avoided by
+   configuring the output transform for image caption support (`see
+   below`__).
+
+__ captioning_
+
+ - Links to non-Archetypes objects are not affected by this option.
+
+When this is not checked:
+
+ - Links to all objects simply link to the current URL of the object.
+
+Warn before losing changes
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When this is checked:
+
+ - Kupu installs its own support to detect changes to any form
+   containing Kupu. It will warn before leaving the page if any
+   controls appear to have changed.
+
+When this is not checked:
+
+ - Kupu does not install its own code, but it will use the code if it
+   installed by anything else. For example, if your copy of Plone
+   includes the support by default for all main forms Kupu you might
+   turn this option off and Kupu would continue to work with the
+   default code.
+
+Styles
+~~~~~~
+
+Tables
+::::::
+Enter a list of styles to be used for tables. The classname in the CSS
+must exactly match the style displayed in the table style pulldown.
+
+The default list of table styles is ``plain``, ``listing``, ``grid``,
+``data``. Only ``listing`` is defined in the default Plone css, you
+should add suitable rules for the other styles to ``ploneCustom.css``.
+
+Paragraph Styles
+::::::::::::::::
+Enter a list of styles to be added to the style pulldown. See `Custom
+Paragraph Styles`_.
+
+
+HTML Filter
+~~~~~~~~~~~
+
+Tags & Attributes
+:::::::::::::::::
+
+This section lists combinations of tags and attributes which are
+stripped out of documents when they are being saved. By default all
+combinations of tags and attributes which are defined for
+xhtml-transitional are permitted (except for the event attributes such
+as ``onload``). Any other combination of tags and attributes will be
+removed.
+
+You may further restrict the permitted combination of tags and
+attributes by entering a combination to be blacklisted in the two
+textareas. If you leave the tag box blank then any attributes listed
+are blacklisted for all tags. If you leave the attribute box blank,
+then any tags entered are removed entirely. If you enter both tags and
+attributes then the attributes are removed when they occur on those
+specific tags.
+
+To delete a filter rule remove the checkmark next to any existing line
+of tags and attributes, then save the form.
+
+Style Whitelist
+:::::::::::::::
+
+CSS style elements may be embedded in the style attribute, but by
+default these are all removed by filtering. Add any style elements you
+wish to have preserved to the style whitelist.
+
+The styles ``text-align`` and ``list-style-type`` are set by Kupu, so
+if you remove them from the whitelist you should also hide the
+relevant toolbar buttons to prevent users setting styles which are
+lost on saving. 
+
+Class Blacklist
+:::::::::::::::
+
+This box contains a list of CSS classnames which are to be stripped
+when a document is saved. You could, for example, fill the list with
+all the styles commonly used in Microsoft Word documents (MsoNormal
+etc.) to cleanup text pasted from Word.
+
+
+libraries tab
+=============
+
+This form supplies the list of libraries which form the leftmost
+column of the image and internal link drawers.
+
+resource types tab
+==================
+
+While libraries provide abstract locations for objects of any type,
+Kupu distinguishes objects by resource type. For example, a user might
+request a library showing objects to link to or a library showing
+objects to be inserted into a document. The abstract location
+(library) might be the same, but the former library would contain
+documents, the latter images.
+
+This management screen allows you to define resource types using a
+list of portal types.
+
+   linkable
+       This entry lists all of the content types which are
+       available in the internal link drawer.
+
+   mediaobject
+       This entry lists all of the content types which are available
+       in the image drawer.
+
+   collection
+       This entry lists all the folder types which may be used when
+       navigating in the drawers. collection types may be navigated
+       but not selected.
+
+documentation tab
+=================
+
+This tab will display the file you are reading. If your Plone system
+has Portal Transforms and docutils installed the file will be
+formatted, otherwise it displays the reStructuredText source of the
+file.
+
+Custom Paragraph styles
+-----------------------
+Paragraph styles come from 3 sources:
+
+   a) The style ``Normal`` is always defined
+
+   b) Use the Plone control panel to add additional styles to be
+      available on all content types. ``Heading``, ``Subheading`` and 
+      ``Formatted`` are added automatically on installation.
+
+   c) For Archetypes content types additional styles may be defined for
+      individual fields.
+
+Styles defined under `Paragraph Styles`_ in the control panel are in the format ``title|tag``
+or ``title|tag|class``. e.g.::
+
+    Heading|h2
+    Subheading|h3
+    Formatted|pre
+    Pull Quote|div|pullQuote
+
+Each rich text field can define its own set of paragraph styles to be
+made available in kupu. These are defined on the ``parastyles`` attribute
+of the ``RichWidget``. For example, a typical field definition might be::
+
+        TextField('bodyCopy',
+            allowable_content_types=('text/html',),
+            default_output_type='text/x-html-captioned', # see below
+            required=1,
+            searchable=1,
+            widget=RichWidget
+            (description='Please paste or type your article here',
+                label='Body Copy',
+                parastyles=(
+                 ('div|pullQuote','Pull Quote'),
+                 ('div|Caption','Caption'),
+                 ('div|contactInformation','Contact Information'),
+                 ('div|notesToEditors','Notes to editors'),
+                ),
+            ),
+        ),
+
+``parastyles`` is a sequence of style definitions. Each definition should
+be a 2-tuple of strings. The first string if either the tag to be
+added, or tag, vertical bar, class to be assigned to the tag. The
+second string is the caption that appears in the style pulldown.
+
+Images
+------
+
+The image drawer contains radio buttons to select left, inline or
+right alignment on pasted images. For this to work your CSS must
+define classes ``image-left``, ``image-inline`` and ``image-right``. You
+should add these as in the example below even if you do not require
+the optional captioning support.
+
+.. _captioning:
+
+Optionally kupu can automatically add captions to images. To enable
+this feature you must be linking to an Archetypes based image type,
+and the field you are editing must have its ``default_output_type`` set to
+``text/x-html-captioned`` in the Archetypes schema. If both of these
+conditions are filled, then the image drawer will include a checkbox
+for captioning an image. By default this is checked, turn it off to
+disable the caption on that image.
+
+The caption is added when the page is viewed. All img tags for
+captioned images are replaced by an img tag in nested divs. The class
+for the img tag is moved to the enclosing div, and the current image
+description is appended in a div with class ``image-caption``. If the
+original image was in a div or paragraph by itself then the enclosing
+tag is also removed. In other words::
+
+    <img class="image-left captioned" width="200" ... />
+
+is replaced by::
+
+    <div class="image-left captioned" style="width:200px;">
+      <div><img width="200" ... /></div>
+      <div class="image-caption">
+         ...description text...
+      </div>
+    </div>
+
+You need to add some styles to your ``ploneCustom.css``. At the least, you
+should set ``div.image-caption`` appropriately, you probably also want to
+set classes for displaying images floated left, inline or right::
+
+    div.image-caption {
+      background: #e0e0e0;
+      border: 0 none black;
+      overflow: hidden;
+    }
+    .image-left {
+       float: left;
+       clear: both;
+    }
+    .image-inline {
+       float: none;
+    }
+    .image-right {
+       float: right;
+       clear: both;
+    }
+
+References from HTML text
+-------------------------
+Kupu can be made to store archetypes references for any HTML field.
+You can use these references for a variety of purposes, e.g. when
+publishing a document you could automatically publish all the
+contained images.
+
+To enable this feature for a particular field, you need to  change the
+type of the field from ``TextField`` to ``ReftextField``::
+
+    from Products.kupu.plone.ReftextField import ReftextField
+
+then define your field as::
+
+        Reftextfield('bodyCopy',
+            required=1,
+            searchable=1,
+            relationship='bodyCopy',
+            widget=RichWidget
+            (description='Please paste or type your article here',
+                label='Body Copy',
+                parastyles=(
+                 ('div|pullQuote','Pull Quote'),
+                 ('div|Caption','Caption'),
+                 ('div|contactInformation','Contact Information'),
+                 ('div|notesToEditors','Notes to editors'),
+                ),
+            ),
+        ),
+
+the ``ReftextField`` type is identical to the existing ``TextField``
+except that it also extracts references from the HTML text whenever
+the field is saved. The relationship used to hold the references may
+be specified as shown, but if omitted it defaults to the field name.
+
+If the HTML contains an invalid reference, e.g. a link to an object
+that has since been deleted, ``ReftextField`` will completely ignore
+that link.
+
+Migrating from Epoz
+-------------------
+
+Epoz and Kupu will coexist: simply install both products. If you are
+running an old version of Epoz you should either upgrade to a more
+recent version, or ensure that the Kupu skin folders are searched
+before the Epoz ones. Then encourage all your users to select Kupu as
+their default editor from their user preferences.

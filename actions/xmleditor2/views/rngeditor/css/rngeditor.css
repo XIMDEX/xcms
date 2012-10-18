@@ -1,0 +1,96 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+
+.rngeditor_block {
+	// border: 1px solid #000000;
+	margin-left: 20px;
+	font-size: 12px;
+}
+
+.rngeditor_title {
+	// border: 1px solid #000000;
+	// background-color: #333333;
+	// color: #FFFFFF;
+	font-weight: bold;
+}
+
+.webfx-tree-container {
+	margin: 0px;
+	padding: 0px;
+	font: icon;
+	white-space: nowrap;
+}
+
+.webfx-tree-item {
+	padding: 0px;
+	margin: 0px;
+	font: icon;
+	color: black;
+	white-space: nowrap;
+}
+
+.webfx-tree-item a, .webfx-tree-item a:active, .webfx-tree-item a:hover {
+	margin-left: 3px;
+	padding: 1px 2px 1px 2px;
+}
+
+.webfx-tree-item a {
+	color: black;
+	text-decoration: none;
+}
+
+.webfx-tree-item a:hover {
+	color: black;
+	text-decoration: none;
+}
+
+.webfx-tree-item a:active {
+	background: highlight;
+	color: highlighttext;
+	text-decoration: none;
+}
+
+.webfx-tree-item img {
+	vertical-align: middle;
+	border: 0px;
+}
+
+.webfx-tree-icon {
+	width: 16px;
+	height: 16px;
+}
+.webfx-tree-item a.selected {
+	color: selectedtext;
+	background: selected;
+	font-weight: bold;
+}
+
+.webfx-tree-item a.selected-inactive {
+	color: windowtext;
+	background: buttonface;
+	font-weight: bold;
+}

@@ -1,0 +1,128 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+
+/*
+ *  This file defines styles for use inside the editor frame.
+ */
+
+.kupu-draggable-handler {
+	/*display: none;*/
+	height: 15px;
+	/*border: 1px solid #000;*/
+	background-color:  #C33;
+	color: #ededed;
+	font-weight: bold;
+	/*font-size: 11px;*/
+	position: absolute;
+	padding: 3px 9px 2px 9px;
+	font-size: .8em;
+	cursor: move;
+}
+
+.kupu-draggable-parent-handler {
+	/*background-color: blue !important;*/
+	background: #06C;
+}
+
+.kupu-float-toolbar {padding: 0px;}
+
+.kupu-ximlet-button {
+	width: 100px; /*80 + 60*/
+	height: 15px;
+	border: 1px solid #CCCCCC;
+	background-repeat: no-repeat;
+}
+
+.kupu-ximlet-box{
+	margin: 0px 0px !important;
+        float: none !important;
+	border: 3px #333 solid;
+}
+
+.kupu-ximlet-button span.kupu-text {
+	padding-left: 0px;
+	font-size: 14px;
+	font-family: Verdana;
+}
+
+.kupu-ximlet-content {
+	border: 1px solid black;
+}
+
+.kupu-ximlet-editable {
+	background-image: url(../../../../../actions/xmleditor2/gfx/ximlet_button_edit.gif);
+}
+
+.kupu-ximlet-noeditable {
+	background-image: url(../../../../../actions/xmleditor2/gfx/ximlet_button_noedit.gif);
+}
+
+.kupu-ximlet-section {
+	background-image: url(../../../../../actions/xmleditor2/gfx/ximlet_button_noedit.gif);
+}
+
+.kupu-ximlet-edit, .kupu-ximlet-toggle {
+	height: 12px;
+	padding-left: 10px;
+	cursor: pointer;
+}
+.kupu-ximlet-edit{
+	height: 16px;
+        width: 16px;
+	padding-left: 18px;
+	margin-left: 5px;
+	cursor: pointer;
+	background-image:url('../img/document_edit.png');
+}
+.kupu-ximlet-toggle-closed {
+	height: 16px;
+	width: 16px;
+	padding-left: 18px;
+	margin-left: 5px;
+	cursor: pointer;
+	background-image:url('../img/toggle_closed.png');
+}
+.kupu-ximlet-toggle-opened {
+	height: 16px;
+	width: 16px;
+	padding-left: 18px;
+	margin-left: 5px;
+	cursor: pointer;
+	background-image:url('../img/toggle_opened.png');
+}
+
+.kupu-ximlet-button span {
+	margin: 0px 0px !important;
+	float: none !important;
+}
+.kupu-ximlet-visible{
+	display:block;
+}
+.kupu-ximlet-hidden{
+	display:none;
+}
+

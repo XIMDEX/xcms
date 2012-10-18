@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="browser"
+    implementation="widgeteer"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+    <kupu:id>$Id: body.kupu 9779 2005-03-15 11:34:47Z duncan $</kupu:id>
+
+  <kupu:part name="buttons">
+    <span class="kupu-tb-buttongroup" id="kupu-bg-browser">
+      <button type="button" class="kupu-image" id="kupu-image-button" 
+                title="image: alt-m"
+                i18n:attributes="title" accesskey="m">&#160;</button>
+      <button type="button" class="kupu-inthyperlink" id="kupu-intlink-button" 
+                title="link: alt-a"
+                i18n:attributes="title" accesskey="a">&#160;</button>
+    </span>
+  </kupu:part>
+
+</kupu:feature>

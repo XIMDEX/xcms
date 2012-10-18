@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<kupu:wire
+    implementation="default"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+  <kupu:id>$Id: wire.kupu 12162 2005-05-10 15:53:10Z guido $</kupu:id>
+
+  <!--
+    This file defines the wiring of this implementation. Wiring means
+    defining what slots are filled with, in particular: which parts
+    the slots are filled with.
+
+    Like feature/part definitions, wirings can cascade over
+    implementations, too. That way, a succeding implementation does
+    not have to repeat all of the wiring below. It only has to
+    override the slots that concern it.
+  -->
+
+  <!-- Fill slots. Order inside fill-slot matters! -->
+
+  <kupu:fill-slot name="start">
+    <kupu:insert-part feature="html" part="html" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="html">
+    <kupu:insert-part feature="head" part="head" />
+    <kupu:insert-part feature="body" part="body" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="head">
+    <kupu:insert-part feature="head" part="meta" />
+    <kupu:insert-part feature="head" part="styles" />
+    <kupu:insert-part feature="drawers" part="styles" />
+    <kupu:insert-part feature="head" part="jsincludes" />
+    <kupu:insert-part feature="contextmenu" part="jsincludes" />
+    <kupu:insert-part feature="head" part="bootstrap-editor" />
+    <kupu:insert-part feature="saveonpart" part="jsincludes" />
+    <kupu:insert-part feature="sourceedit" part="jsincludes" />
+    <kupu:insert-part feature="spellchecker" part="jsincludes" />
+    <kupu:insert-part feature="drawers" part="jsincludes" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="body">
+    <kupu:insert-part feature="xmlconfig" part="xmlconfig" />
+    <kupu:insert-part feature="body" part="fulleditor" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="kupuconfig">
+    <kupu:insert-part feature="xmlconfig" part="defaultconfig" />
+    <kupu:insert-part feature="drawers" part="xmlconfig" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="fulleditor">
+    <kupu:insert-part feature="toolbar" part="toolbar" />
+    <kupu:insert-part feature="toolboxes" part="toolboxes" />
+    <kupu:insert-part feature="colorchooser" part="colorchooser" />
+    <kupu:insert-part feature="body" part="editorframe" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="toolbar">
+    <kupu:insert-part feature="toolbar" part="buttons" />
+    <kupu:insert-part feature="toolbar" part="liststyles" />
+    <kupu:insert-part feature="drawers" part="drawers" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="drawers">
+    <kupu:insert-part feature="drawers" part="librarydrawer" />
+    <kupu:insert-part feature="drawers" part="linkdrawer" />
+    <kupu:insert-part feature="drawers" part="tabledrawer" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="toolbar-buttons">
+    <kupu:insert-part feature="toolbar" part="logo" />
+    <kupu:insert-part feature="toolbar" part="zoom" />
+    <kupu:insert-part feature="toolbar" part="select-styles" />
+    <kupu:insert-part feature="save" part="buttons" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-basicmarkup" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-subsuper" />
+    <kupu:insert-part feature="colorchooser" part="buttons" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-justify" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-list" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-definitionlist" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-indent" />
+    <kupu:insert-part feature="drawers" part="buttons" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-remove" />
+    <kupu:insert-part feature="toolbar" part="buttongroup-undo" />
+    <kupu:insert-part feature="spellchecker" part="buttons" />
+    <kupu:insert-part feature="sourceedit" part="buttons" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="toolboxes">
+    <kupu:insert-part feature="toolboxes" part="properties" />
+    <kupu:insert-part feature="toolboxes" part="links" />
+    <kupu:insert-part feature="toolboxes" part="images" />
+    <kupu:insert-part feature="toolboxes" part="tables" />
+    <kupu:insert-part feature="toolboxes" part="cleanupexpressions" />
+    <kupu:insert-part feature="toolboxes" part="debug" />
+  </kupu:fill-slot>
+
+</kupu:wire>

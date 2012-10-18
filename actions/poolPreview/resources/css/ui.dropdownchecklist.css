@@ -1,0 +1,81 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+.ui-dropdownchecklist{
+	height: 20px;
+	border: 1px solid #ddd;
+	border-right: 0;
+	background: #fff url(../images/dropdown.png) no-repeat center right;
+	z-index: 999;
+}
+.ui-dropdownchecklist-hover, .ui-dropdownchecklist-active{
+	background-image: url(../images/dropdown_hover.png); 
+	border-color: #5794bf;
+	z-index: 999;
+}
+.ui-dropdownchecklist-action{
+	background-color: #fff;
+	border: 1px solid #999;
+}
+
+.ui-dropdownchecklist-text{
+	font-size: 14px;
+	height: 20px;
+	line-height: 20px;
+	margin-right: 17px; /* background dropdown.png image */
+	z-index: 999;
+}
+
+.ui-dropdownchecklist-dropcontainer{
+	background-color: #fff;
+	border: 1px solid #999;
+	z-index: 999;
+}
+
+.ui-dropdownchecklist-item{
+	
+}
+
+.ui-dropdownchecklist-item-hover{
+	background-color: #39f;
+}
+
+.ui-dropdownchecklist-item-hover .ui-dropdownchecklist-text{
+	color: #fff;
+}
+
+.ui-dropdownchecklist-group{
+	font-weight: bold;
+	font-style: italic;
+}
+
+.ui-dropdownchecklist-indent{
+	padding-left: 20px;
+}
+
+.ui-dropdownchecklist-wrapper{
+	margin-left: 5px;
+}

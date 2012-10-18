@@ -1,0 +1,193 @@
+<?xml version="1.0" ?>
+<kupu:wire
+    implementation="zope2"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    metal:define-macro="dummy">
+
+  <kupu:fill-slot name="head">
+    <metal:macro define-macro="head">
+      <kupu:insert-part feature="head" part="meta" />
+      <kupu:insert-part feature="head" part="styles" />
+      <kupu:insert-part feature="head" part="jsincludes" />
+      <metal:slot define-slot="saveonpart">
+        <kupu:insert-part feature="saveonpart" part="jsincludes" />
+      </metal:slot>
+      <metal:slot define-slot="sourceedit">
+        <kupu:insert-part feature="sourceedit" part="jsincludes" />
+      </metal:slot>
+      <metal:slot define-slot="contextmenu">
+        <kupu:insert-part feature="contextmenu" part="jsincludes" />
+      </metal:slot>
+      <metal:slot define-slot="drawers">
+        <kupu:insert-part feature="drawers" part="styles" />
+        <kupu:insert-part feature="drawers" part="jsincludes" />
+      </metal:slot>
+      <metal:slot define-slot="bootstrap-editor">
+        <kupu:insert-part feature="head" part="bootstrap-editor" />
+      </metal:slot>
+    </metal:macro>
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="body">
+    <metal:macro define-macro="xmlconfig">
+      <kupu:insert-part feature="xmlconfig" part="xmlconfig" />
+    </metal:macro>
+    <metal:macro define-macro="fulleditor">
+      <kupu:insert-part feature="body" part="fulleditor" />
+    </metal:macro>
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="kupuconfig">
+    <metal:slot define-slot="config_default">
+      <kupu:insert-part feature="xmlconfig" part="defaultconfig" />
+    </metal:slot>
+    <metal:slot define-slot="config_drawers">
+      <kupu:insert-part feature="xmlconfig" part="drawerconfig" />
+    </metal:slot>
+    <metal:slot define-slot="config_extra" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="fulleditor">
+    <metal:slot define-slot="toolbar">
+      <kupu:insert-part feature="toolbar" part="toolbar" />
+    </metal:slot>
+
+    <metal:slot define-slot="toolboxes">
+      <kupu:insert-part feature="toolboxes" part="toolboxes" />
+    </metal:slot>
+
+    <metal:slot define-slot="colorchooser">
+      <kupu:insert-part feature="colorchooser" part="colorchooser" />
+    </metal:slot>
+
+    <kupu:insert-part feature="body" part="editorframe" />
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="toolbar">
+    <kupu:insert-part feature="toolbar" part="buttons" />
+
+    <metal:slot define-slot="tb_select_liststyle">
+      <kupu:insert-part feature="toolbar" part="liststyles" />
+    </metal:slot>
+
+    <metal:slot define-slot="drawers">
+      <kupu:insert-part feature="drawers" part="drawers" />
+    </metal:slot>
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="drawers">
+    <metal:slot define-slot="librarydrawer">
+      <kupu:insert-part feature="drawers" part="librarydrawer" />
+    </metal:slot>
+
+    <metal:slot define-slot="linkdrawer">
+      <kupu:insert-part feature="drawers" part="linkdrawer" />
+    </metal:slot>
+
+    <metal:slot define-slot="tabledrawer">
+      <kupu:insert-part feature="drawers" part="tabledrawer" />
+    </metal:slot>
+    
+    <metal:slot define-slot="extradrawer" />
+    
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="toolbar-buttons">
+    <metal:slot define-slot="buttongroup_logo">
+      <kupu:insert-part feature="toolbar" part="logo" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_zoom">
+      <kupu:insert-part feature="toolbar" part="zoom" />
+    </metal:slot>
+
+    <metal:slot define-slot="tb_select_styles">
+      <kupu:insert-part feature="toolbar" part="select-styles" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_save">
+      <kupu:insert-part feature="save" part="buttons" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_basicmarkup">
+      <kupu:insert-part feature="toolbar" part="buttongroup-basicmarkup" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_subsuper">
+      <kupu:insert-part feature="toolbar" part="buttongroup-subsuper" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_color">
+      <kupu:insert-part feature="colorchooser" part="buttons" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_justify">
+      <kupu:insert-part feature="toolbar" part="buttongroup-justify" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_list">
+      <kupu:insert-part feature="toolbar" part="buttongroup-list" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_definitionlist">
+      <kupu:insert-part feature="toolbar" part="buttongroup-definitionlist" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_indent">
+      <kupu:insert-part feature="toolbar" part="buttongroup-indent" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_drawers">
+      <kupu:insert-part feature="drawers" part="buttons" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_remove">
+      <kupu:insert-part feature="toolbar" part="buttongroup-remove" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_undo">
+      <kupu:insert-part feature="toolbar" part="buttongroup-undo" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_source">
+      <kupu:insert-part feature="sourceedit" part="buttons" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_spellchecker">
+      <kupu:insert-part feature="spellchecker" part="buttons" />
+    </metal:slot>
+
+    <metal:slot define-slot="buttongroup_extra" />
+    
+  </kupu:fill-slot>
+
+  <kupu:fill-slot name="toolboxes">
+    <metal:slot define-slot="toolbox_properties">
+      <kupu:insert-part feature="toolboxes" part="properties" />
+    </metal:slot>
+
+    <metal:slot define-slot="toolbox_links">
+      <kupu:insert-part feature="toolboxes" part="links" />
+    </metal:slot>
+
+    <metal:slot define-slot="toolbox_images">
+      <kupu:insert-part feature="toolboxes" part="images" />
+    </metal:slot>
+
+    <metal:slot define-slot="toolbox_tables">
+      <kupu:insert-part feature="toolboxes" part="tables" />
+    </metal:slot>
+    
+    <metal:slot define-slot="toolbox_cleanup">
+      <kupu:insert-part feature="toolboxes" part="cleanupexpressions" />
+    </metal:slot>
+    
+    <metal:slot define-slot="toolbox_extra" />
+
+    <metal:slot define-slot="toolbox_debug">
+      <kupu:insert-part feature="toolboxes" part="debug" />
+    </metal:slot>
+  </kupu:fill-slot>
+
+</kupu:wire>

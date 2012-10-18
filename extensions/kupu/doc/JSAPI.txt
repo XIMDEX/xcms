@@ -1,0 +1,373 @@
+==================
+Kupu API reference
+==================
+
+Kupu can be customized in several ways: controls can be customized or
+hidden using CSS, elements can be modified using TAL (modifying the
+macro) and more advanced customization can be done by extending (or
+modifying, although this is usually not advised) the JavaScript,
+either in the macro or in seperate .js files. This document will give
+a short description of how to use and extend the Kupu JavaScripts and
+a reference of the public Kupu API.
+
+
+How to use Kupu
+===============
+
+The KupuEditor and KupuUI objects
+---------------------------------
+
+Generally the body tag of the document will contain a call to the
+initKupu function. This is the glue code of Kupu, here's where all the
+objects get instantiated and tied together to form the
+application. When doing large customizations, this function will
+usually be overwritten or extended. The default implementation takes 1
+argument (the id of the iframe it will control) and return a reference
+to the core object, KupuEditor.
+
+    kupu = initKupu("kupu-editorframe");
+
+The KupuEditor object (in this case called 'kupu') will be the object
+with which you can control the iframe, the UI and
+tools. Customizations should generally not involve extending the
+KupuEditor object, but rather by plugging in new tools. Usage is quite
+straightforward, for a reference of the public methods see below.
+
+The UI object holds event handlers for the toolbar buttons. This is a
+core Kupu object and should generally be left untouched. The event
+handlers, although the preferred method of attaching events is dynamic
+from inside the objects rather then from HTML, should be attached to
+the buttons from the template (this made the code a lot cleaner, it
+might change in future versions though). Therefore a reference to the
+UI object must be retrieved from the KupuEditor object using the
+getTool method:
+
+    kupuui = kupu.getTool('ui');
+
+Note that the reason why this method is called getTool is that the UI
+is essentially treated as a tool, an Kupu plugin (more about those 
+later). The string 'ui' is the id by which the object is registered 
+in initKupu. Usually the ui object and the button bindings can just 
+be copied from the kupu.html file (if you don't use ZPT macros in the 
+kupumacros.html file).
+
+Tools and extending Kupu
+------------------------
+
+Tools are extensions of Kupu. A tool can be seen as a plugin in the
+Kupu editor, providing additional functionality. Tools will usually be
+the objects that will be extended or overridden.
+
+A tool should usually subclass KupuTool and will usually override the
+'initialize' method (which will be called when the tool is registered to
+the KupuEditor object) and the updateState method (which will be
+called on click and certain keyup events on the iframe so that the
+state of the tool (e.g. add or edit mode) can be controlled. Events on
+elements should generally be bound to the methods from inside the
+tools.
+
+The initialize method will be called with a single argument, a
+reference to the editor object. The method should at least store that
+reference on this. Note that if you don't override the method, the
+KupuObject class provides a default implementation that does exactly
+that. The updateState method will be called with 2 arguments, the
+first is a reference to the current selected element and the second
+the event object.  If the tool doesn't want to react to state changes,
+it doesn't have to override the method: the superclass will provide a
+dummy implementation.
+
+Usually a tool will be created and registered inside initKupu,
+although it can also be done from an external document or the HTML. An
+object is registered to the KupuEditor object as such:
+
+    var myTool = new MyTool();
+    kupu.registerTool('my-tool', myTool);
+
+As shown above, the getTool method of the KupuEditor object can be
+used to retrieve a reference to the tool later on (so there's no need
+to store a reference in the global namespace or anything).
+
+For a nice, small example of a tool, see the PathTool in the
+kupubasetools.js file. 
+
+ToolBoxes and larger Tools
+--------------------------
+
+Most tools will both harbour functionality and stuff like event handlers 
+and references to HTML elements. To make sure the tool can be used in as
+much different situations as possible, it is advised to split it up in 2
+pieces, one for the logic and one for the UI-related methods and 
+attributes.
+The standard way for doing this is using a subclass of KupuTool for the
+tool and a subclass of KupuToolBox for the UI-part, and register the ToolBox
+to the Tool using the registerToolBox method. It is not mandatory to use
+this baseclass, not even to use registerToolBox, but it should be sufficient.
+
+For a more complex (and useful) example of a Tool combined with a ToolBox 
+see the LinkTool.
+
+Public API
+==========
+
+Helper functions (kupuhelpers.js)
+---------------------------------
+
+Methods on KupuObject (kupueditor.js)
+-------------------------------------
+
+    registerTool(id, tool) 
+        - register a tool
+
+    getTool(id)
+        - return a previously registered tool
+
+    registerFilter(filter)
+        - register a ContentFilter
+
+    updateState(event)
+        - trigger the updateState machinery
+
+    saveDocument()
+        - save the document
+
+    prepareForm(form[, fieldid)
+        - add a hidden field to form with the id fieldid (defaults
+            to 'kupu'), should be called before the form is subbmited
+            to make the Kupu content get sent to the server using POST.
+
+    execCommand(command[, param])
+        - perform an execCommand on the editor iframe
+
+    getSelectedNode()
+        - returns the currently selected node
+
+    getNearestParentOfType(node, type)
+        - returns the nearest parent of node (or node itself) of 
+            element type
+            
+    getDocument()
+        - returns the document object
+
+    getInnerDocument()
+        - returns the iframe.contentWindow.document
+
+    insertNodeAtSelection(node)
+        - insert a new node on the cursor location
+
+    logMessage(message, severity)
+        - log a message with the logger, message is the message to log and
+            severity is an integer that can be 0 (default) for debug messages,
+            1 for warnings and 2 for errors (different loggers can be plugged
+            into Kupu, but a severity of 2 will usually make the logger raise
+            an exception).
+
+    getBrowserName()
+        - return the name of the client browser, will return IE, Mozilla
+            or raise an exception if the client uses a non-supported one.
+
+    getXMLBody(transform)
+        - transform is a Sarissa node.
+          Returns the body tag (or body tags if more than one) as text.
+
+    getHTMLBody()
+        - returns the body node as text (including <body> tag). Will return all
+          body nodes if there are multiple bodies.
+
+    setHTMLBody(text)
+        - sets the contents of the body to the specified HTML text
+          (which should not include a body tag). If there are multiple
+          bodies they are all replaced.
+
+Methods on tools (kupubasetools.js)
+-----------------------------------
+
+    KupuTool - the baseclass for tools
+
+        initialize(editor)
+            - initialize the tool
+
+        updateState(selectedNode, event)
+            - update the state of the tool if required
+
+        registerToolBox(id, toolbox)
+            - register a ui object (ToolBox)
+
+    KupuToolBox - the baseclass for toolboxes (view elements of tools)
+
+        initialize(tool, editor)
+            - initialize the toolbox
+
+        updateState(selNode, event)
+            - update the state of the UI according to the iframe's state
+
+Tool implementations (depending on the complexity of the tool a tool either
+    exists of a single Tool class, or of a Tool and a ToolBox class, the 
+    ToolBox classes will only harbour event handlers and such so will
+    therefore not be documented):
+
+    KupuUI - the toolbar, only contains event handlers and generic button
+        handlers
+
+        basicButtonHandler(action)
+            - handle a basic action like Bold or Italic
+
+        saveButtonHandler()
+
+        saveAndExitButtonHandler()
+
+        cutButtonHandler()
+
+        copyButtonHandler()
+
+        pasteButtonHandler()
+            - basic button handlers for a specific action
+
+        setTextStyle(style)
+            - set the style of the current text block
+
+    ColorchooserTool - the color picker (part of the toolbar)
+
+        openFgColorChooser()
+            - open the colorchooser to pick a foreground color
+
+        openHlColorChooser()
+            - open the colorchooser to pick a background color
+
+        chooseColor()
+            - event handler for a click inside the colorchooser
+
+        show()
+            - show the colorchooser
+
+        hide()
+            - hide the colorchooser
+
+        createColorChooser(table)
+            - create the colorchooser and inside the table
+
+    PropertyTool - set the title and metadata of a document
+
+        updateProperties()
+            - set the properties on the document from the form data
+
+    LinkTool - add and edit hyperlinks
+
+        createLink(url, type, name, target, title)
+            - create a link around the current selection
+
+        deleteLink()
+            - delete the current link, if any
+
+    ImageTool - add and edit images
+
+        createImage(url, alttext, imgclass)
+            - create an image
+
+        setImageClass(imgclass)
+            - set the class of the selected image
+
+    TableTool - add and edit tables
+
+        addPlainTable() 
+            - add a table with default settings
+
+        createTable(rows, cols, makeHeader, tableclass)
+            - create a table
+
+        addTableRow()
+            - add a row underneath the current selected one
+
+        delTableRow()
+            - delete the current table row
+
+        addTableColumn()
+            - add a column to the right of the current one
+
+        delTableColumn()
+            - delete the current table column
+
+        setColumnAlign()
+            - set the alignment of the current column according to the form
+              data
+
+        setTableClass()
+            - set the table class according to the form data
+
+    ListTool - manage lists (part of the toolbar)
+
+        addUnorderedList()
+            - add an unordered list
+
+        addOrderedList()
+            - add an ordered list
+
+        setUnorderedListStyle()
+            - set the style of the nearest unordered list parent according to
+              the form data
+
+        setOrderedListStyle()
+            - set the style of the nearest ordered list parent according to
+              the form data
+
+    ShowPathTool - show the path to the current node in the status bar
+
+        no methods besides updateState()
+
+Additional helper functions, objects and methods:
+-------------------------------------------------
+
+    addEventHandler(element, event, method, context)
+        - bind <method> to <event> on <element>, using <context> as context
+            ('this' inside the method body).
+
+    removeEventHandler(element, event, method)
+        - remove binding of <method> for <event> from <element>
+
+    selectSelectItem(select, item)
+        - select item <item> from HTML optionlist <select>
+
+    loadDictFromXML(document, islandid)
+        - load configuration values from an XML chunk
+
+    Logger objects:
+
+        When the KupuEditor gets initialized, it expects a logging
+        object with one method (log(message, severity)) to be passed
+        along as an argument. Two loggers are defined: 1 called
+        DebugLogger that will alert all messages and 1 called
+        PlainLogger that should be instantiated with the ids of the
+        element in which debug messages will be shown and the maximum
+        number of messages as arguments, that will show all debug
+        messages and warnings to the debug window and will raise an
+        exception for all errors.
+
+    ContextFixer:
+        
+        A helper class to fix the contexts in methods when called in a
+        specific way (usually when used as an event handler). In some
+        cases the 'this' variable inside functions can change, this
+        class helps in resetting it to the object on which the method
+        is defined (and actually it can help in setting a different
+        context as well, although this will not generally be
+        advised). For more information see the source.
+
+    Timer:
+        
+        A herlper class to overcome a problem with
+        window.setTimeout(), this has the problems that it isn't
+        usable to call object methods without very nasty complications
+        and that it doesn't allow usage of variable references as
+        arguments (both because the argument that is executed is a
+        string that will be evalled in global context). For more
+        information see the source.
+
+    Array.prototype.contains(element):
+
+        - a helper method added to the prototype of Array that will
+          return true if element is in the array, false if it isn't.
+
+    String.prototype.strip(string):
+
+        - a helper method added to the prototype of String that strips
+          all outer whitespace. The original string is not affected; a
+          new instance of String is returned.

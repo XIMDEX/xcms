@@ -1,0 +1,414 @@
+% Copyright 2006 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Free Documentation License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+\section[Hierarchical Structures: Package, Environments, Scopes, and Styles]
+{Hierarchical Structures:\\
+  Package, Environments, Scopes, and Styles}
+
+The present section explains how your files should be structured when
+you use \tikzname. On the top level, you need to include the |tikz|
+package. In the main text, each graphic needs to be put in a
+|{tikzpicture}| environment. Inside these environments, you can use
+|{scope}| environments to create internal groups. Inside the scopes
+you use |\path| commands to actually draw something. On all levels
+(except for the package level), graphic options can be given that
+apply to everything within the environment.
+
+
+
+\subsection{Loading the Package and the Libraries}
+
+\begin{package}{tikz}
+  This package does not have any options.
+  
+  This will automatically load the \pgfname\ package and some other
+  stuff that \tikzname\ needs (like the |xkeyval| package).
+
+  \pgfname\ needs to know what \TeX\ driver you are intending to use. In
+  most cases \pgfname\ is clever enough to determine the correct driver
+  for you; this is true in particular if you \LaTeX. Currently, the only
+  situation where \pgfname\ cannot know the driver ``by itself'' is when
+  you use plain \TeX\ or Con\TeX t together with |dvipdfm|. In this case,
+  you have to write |\def\pgfsysdriver{pgfsys-dvipdfm.def}|
+  \emph{before} you input |tikz.tex|. 
+\end{package}
+
+
+\begin{command}{\usetikzlibrary\marg{list of libraries}}
+  Once \tikzname\ has been loaded, you can use this command to load
+  further libraries. The list of libraries should contain the names of
+  libraries separated by commas. Instead of curly braces, you can also
+  use square brackets, which is something Con\TeX t users will
+  like. If you try to load a library a second time, nothing will
+  happen. 
+
+  \example |\usetikzlibrary{arrows}|
+
+  The above command will load a whole bunch of extra arrow tip
+  definitions.
+
+  What this command does is to load the file
+  |pgflibrarytikz|\meta{library}|.code.tex| for each \meta{library} in
+  the \meta{list of libraries}. Thus, to write your own library file,
+  all you need to do is to place a file of the appropriate name
+  somewhere where \TeX\ can find it. \LaTeX, plain \TeX, and Con\TeX t
+  users can then use your library.
+\end{command}
+
+
+
+\subsection{Creating a Picture}
+
+\subsubsection{Creating a Picture Using an Environment}
+
+The ``outermost'' scope of \tikzname\ is the |{tikzpicture}| 
+environment. You may give drawing commands only inside this
+environment, giving them outside (as is possible in many other
+packages) will result in chaos.
+
+In \tikzname, the way graphics are rendered is strongly influenced by
+graphic options. For example, there is an option for setting the color used
+for drawing, another for setting the color used for filling, and also
+more obscure ones like the option  for setting the prefix used in the
+filenames of temporary files written while plotting functions using an
+external program. The graphic options are nearly always specified in a
+so-called key-value style. (The ``nearly always'' refers to the name
+of nodes, which can also be specified differently.) All graphic
+options are local to the |{tikzpicture}| to which they apply.
+
+\begin{environment}{{tikzpicture}\opt{\oarg{options}}}
+  All \tikzname\ commands should be given inside this
+  environment, except for the |\tikzstyle| command. Unlike other
+  packages, it is not possible to use, say, |\pgfpathmoveto| outside
+  this environment and doing so will result in chaos. For \tikzname,
+  commands like |\path| are only defined inside this environment, so
+  there is little chance that you will do something wrong here. 
+
+  When this environment is encountered, the \meta{options} are
+  parsed. All options given here will apply to the whole
+  picture. 
+
+  Next, the contents of the environment is processed and the graphic
+  commands therein are put into a box. Non-graphic text is suppressed
+  as well as possible, but non-\pgfname\ commands inside a
+  |{tikzpicture}| environment should not produce any ``output'' since
+  this may totally scramble the positioning system of the backend
+  drivers. The suppressing of normal text, by the way, is done by
+  temporarily switching the font to |\nullfont|. You can, however,
+  ``escape back'' to normal \TeX\ typesetting. This happens, for
+  example, when you specify a node.
+
+  At the end of the environment, \pgfname\ tries to make a good guess
+  at a good guess at the bounding box of the graphic and
+  then resizes the box such that the box has this size. To ``make its
+  guess,'' everytime \pgfname\ encounters a coordinate, it updates the
+  bound box's size such that it encompasses all these
+  coordinates. This will usually give a good 
+  approximation at the bounding box, but will not always be
+  accurate. First, the line thickness is not taken into
+  account. Second, controls points of a curve often lie far
+  ``outside'' the curve and make the bounding box too large. In this
+  case, you should use the |[use as bounding box]| option.
+
+  The following option influences the baseline of the resulting
+  picture:
+  \begin{itemize}
+    \itemoption{baseline}\opt{|=|\meta{dimension or coordinate}}
+    Normally, the lower end of the picture is put on the baseline of
+    the surrounding text. For example, when you give the code
+    |\tikz\draw(0,0)circle(.5ex);|, \pgfname\ will find out that the
+    lower end of the picture is at $-.5\mathrm{ex}$ and that the upper
+    end is at $.5\mathrm{ex}$. Then, the lower end will be put on the
+    baseline, resulting in the following: \tikz\draw(0,0)circle(.5ex);.
+
+    Using this option, you can specify that the picture should be
+    raised or lowered such that the height \meta{dimension} is on the
+    baseline. For example, |tikz[baseline=0pt]\draw(0,0)circle(.5ex);|
+    yields \tikz[baseline=0pt]\draw(0,0)circle(.5ex); since, now, the
+    baseline is on the height of the $x$-axis. If you omit the
+    \meta{dimensions}, |0pt| is assumed as default.
+
+    This options is often useful for ``inlined'' graphics as in
+\begin{codeexample}[]
+$A \mathbin{\tikz[baseline] \draw[->>] (0pt,.5ex) -- (3ex,.5ex);} B$
+\end{codeexample}
+
+    Instead of a \meta{dimension} you can also provide a coordinate in
+    parantheses. Then the effect is to put the baseline on the
+    $y$-coordinate that the give \meta{coordinate} has \emph{at the
+      end of the picture}. This means that, at the end of the picture,
+    the \meta{coordinate} is evaluated and then the baseline is set
+    to the $y$-coordinate of the resulting point. This makes it easy
+    to reference the $y$-coordinate of, say, the base line of nodes.
+\begin{codeexample}[]
+Hello
+\tikz[baseline=(X.base)]
+  \node [cross out,draw] (X) {world.};
+\end{codeexample}
+
+\begin{codeexample}[]
+Top align:
+\tikz[baseline=(current bounding box.north)]
+  \draw (0,0) rectangle (1cm,1ex);
+\end{codeexample}
+
+    \itemoption{execute at begin picture}|=|\meta{code}
+    This option can be used to install some code that will be executed
+    at the beginning of the picture. This option must be
+    given in the argument of the |{tikzpicture}| environment itself
+    since this option will not have an effect otherwise. After all,
+    the picture has already ``started'' later on.
+
+    This option is mainly used in styles like the |every picture|
+    style to execute certain code at the start  of a picture.
+
+    \itemoption{execute at end picture}|=|\meta{code}
+    This option installs some code that will be executed
+    at the end of the picture. Using this option multiple times will
+    cause the code to accumulate. This option must also be given in
+    the optional argument of the |{tikzpicture}| environment.
+
+\begin{codeexample}[]
+\begin{tikzpicture}[execute at end picture=%
+  {
+    \begin{pgfonlayer}{background}
+      \path[fill=yellow,rounded corners]
+        (current bounding box.south west) rectangle
+        (current bounding box.north east);
+    \end{pgfonlayer}
+  }]
+  \node at (0,0) {X};
+  \node at (2,1) {Y};
+\end{tikzpicture}
+\end{codeexample}
+  \end{itemize}
+  
+  All options ``end'' at the end of the picture. To set an option
+  ``globally'' you can use the following style:
+  \begin{itemize}
+    \itemstyle{every picture}
+    This style is installed at the beginning of each picture.
+\begin{codeexample}[code only]
+\tikzstyle{every picture}=[semithick]
+\end{codeexample}
+  \end{itemize}
+\end{environment}
+
+In other \TeX\ format, you should use instead the following commands:
+
+\begin{plainenvironment}{{tikzpicture}\opt{\oarg{options}}}
+  This is the plain \TeX\ version of the environment.
+\end{plainenvironment}
+
+\begin{contextenvironment}{{tikzpicture}\opt{\oarg{options}}}
+  This is the Con\TeX t version of the environment.
+\end{contextenvironment}
+
+
+\subsubsection{Creating a Picture Using a Command}
+
+The following two commands are used for ``small'' graphics.
+
+\begin{command}{\tikz\opt{\oarg{options}}\marg{commands}}
+  This command places the \meta{commands} inside a
+  |{tikzpicture}| environment and adds a semicolon at the end. This is
+  just a convenience.
+
+  The \meta{commands} may not contain a paragraph (an empty
+  line). This is a precaution to ensure that users really use this
+  command only for small graphics.
+
+  \example |\tikz{\draw (0,0) rectangle (2ex,1ex)}| yields
+  \tikz{\draw (0,0) rectangle (2ex,1ex);} 
+\end{command}
+
+
+\begin{command}{\tikz\opt{\oarg{options}}\meta{text}|;|}
+  If the \meta{text} does not start with an opening brace, the end of
+  the \meta{text} is the next semicolon that is encountered.
+
+  \example |\tikz \draw (0,0) rectangle (2ex,1ex);| yields
+  \tikz \draw (0,0) rectangle (2ex,1ex);
+\end{command}
+
+
+
+\subsubsection{Adding a Background}
+
+By default, pictures do not have any background, that is, they are
+``transparent'' on all parts on which you do not draw
+anything. You may instead wish to have a colored background behind
+your picture or a black frame around it or lines above and below it or
+some other kind of decoration.
+
+Since backgrounds are often not needed at all, the definition of
+styles for adding backgrounds has been put in the library package
+|pgflibrarytikzbackgrounds|. This package is documented in
+Section~\ref{section-tikz-backgrounds}. 
+
+
+\subsection{Using Scopes to Structure a Picture}
+
+Inside a |{tikzpicture}| environment you can create scopes
+using the |{scope}| environment. This environment is available only
+inside the |{tikzpicture}| environment, so once more, there is little
+chance of doing anything wrong.
+
+\begin{environment}{{scope}\opt{\oarg{options}}}
+  All \meta{options} are local to the \meta{environment
+  contents}. Furthermore, the clipping path is also local to the
+  environment, that is, any clipping done inside the environment
+  ``ends'' at its end.
+
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \begin{scope}[red]
+    \draw (0mm,0mm) -- (10mm,0mm);
+    \draw (0mm,1mm) -- (10mm,1mm);
+  \end{scope}
+  \draw (0mm,2mm) -- (10mm,2mm);
+  \begin{scope}[green]
+    \draw (0mm,3mm) -- (10mm,3mm);
+    \draw (0mm,4mm) -- (10mm,4mm);
+    \draw[blue] (0mm,5mm) -- (10mm,5mm);
+  \end{scope}
+\end{tikzpicture}
+\end{codeexample}
+  
+  The following style influences scopes:
+  \begin{itemize}
+    \itemstyle{every scope}
+    This style is installed at the beginning of every scope. I do not
+    know really know what this might be good for, but who knows?
+  \end{itemize}
+
+  The following options are useful for scopes:
+  \begin{itemize}
+    \itemoption{execute at begin scope}|=|\meta{code}
+    This option install some code that will be executed
+    at the beginning of the scope. This option must be
+    given in the argument of the |{scope}| environment.
+
+    The effect applies only to the current scope, not to subscopes.
+
+    \itemoption{execute at end scope}|=|\meta{code}
+    This option installs some code that will be executed
+    at the end of the  current scope. Using this option multiple times
+    will  cause the code to accumulate. This option must also be given
+    in the optional argument of the |{scope}| environment. 
+
+    Again, the effect applies only to the current scope, not to subscopes.
+  \end{itemize}
+\end{environment}
+
+\begin{plainenvironment}{{scope}\opt{\oarg{options}}}
+  Plain \TeX\ version of the environment.
+\end{plainenvironment}
+
+\begin{contextenvironment}{{scope}\opt{\oarg{options}}}
+  Con\TeX t version of the environment.
+\end{contextenvironment}
+
+
+
+\subsection{Using Scopes Inside Paths}
+
+The |\path| command, which is described in much more detail in later
+sections, also takes graphic options. These options are local to the
+path. Furthermore, it is possible to create local scopes within a
+path simply by using curly braces as in
+\begin{codeexample}[]
+\tikz \draw (0,0) -- (1,1)
+           {[rounded corners] -- (2,0) -- (3,1)}
+           -- (3,0) -- (2,1);
+\end{codeexample}
+
+Note that many options apply only to the path as a whole and cannot be
+scoped in this way. For example, it is not possible to scope the
+|color| of the path. See the explanations in the section on paths for
+more details.
+
+Finally, certain elements that you specify in the argument to the
+|\path| command also take local options. For example, a node
+specification takes options. In this case, the options apply only to
+the node, not to the surrounding path.
+
+
+
+\subsection{Using Styles to Manage How Pictures Look}
+
+There is a way of organizing sets of graphic options ``orthogonally''
+to the normal scoping mechanism. For example, you might wish all your
+``help lines'' to be drawn in a certain way like, say, gray and thin
+(do \emph{not} dash them, that distracts). For this, you can use
+\emph{styles}.
+
+A style is simply a set of graphic options that is predefined at some
+point. Once a style has been defined, it can be used anywhere using
+the |style| option:
+
+\begin{itemize}
+  \itemoption{style}|=|\meta{style name}
+  invokes all options that are currently set in the \meta{style
+    name}. An example of a style is the predefined |help lines| style,
+  which you should use for lines in the background like grid lines or
+  construction lines. You can easily define new styles and modify
+  existing ones.
+\begin{codeexample}[]
+\begin{tikzpicture}
+  \draw                   (0,0) grid +(2,2);
+  \draw[style=help lines] (2,0) grid +(2,2);
+\end{tikzpicture}
+\end{codeexample}
+\end{itemize}
+
+
+\begin{command}{\tikzstyle\meta{style name}\opt{|+|}|=[|\meta{options}|]|}
+  This command defines the style \meta{style name}. Whenever it is
+  used using the |style=|\meta{style name} command, the \meta{options}
+  will be invoked. It is permissible that a style invokes another
+  style using the |style=| command inside the \meta{options}, which
+  allows you to build hierarchies of styles. Naturally, you should
+  \emph{not} create cyclic dependencies.
+
+  If the style already has a predefined meaning, it will
+  unceremoniously be redefined without a warning.
+\begin{codeexample}[]
+\tikzstyle{help lines}=[blue!50,very thin]
+\begin{tikzpicture}
+  \draw                   (0,0) grid +(2,2);
+  \draw[style=help lines] (2,0) grid +(2,2);
+\end{tikzpicture}
+\end{codeexample}
+
+  If the optional |+| is given, the options are \emph{added} to the
+  existing definition:
+\begin{codeexample}[]
+\tikzstyle{help lines}+=[dashed]% aaarghhh!!!
+\begin{tikzpicture}
+  \draw                   (0,0) grid +(2,2);
+  \draw[style=help lines] (2,0) grid +(2,2);
+\end{tikzpicture}
+\end{codeexample}
+\end{command}
+
+It is also possible to set a style using an option:
+\begin{itemize}
+  \itemoption{set style}|={|\marg{style name}\opt{|+|}|=[|\meta{options}|]}|
+  This option has the same effect as saying |\tikzstyle| before the
+  argument of the option. 
+\begin{codeexample}[]
+\begin{tikzpicture}[set style={{help lines}+=[dashed]}]
+  \draw                   (0,0) grid +(2,2);
+  \draw[style=help lines] (2,0) grid +(2,2);
+\end{tikzpicture}
+\end{codeexample}
+\end{itemize}
+
+

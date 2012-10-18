@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!-- $Id: publication_image_library.xml.jx 8771 2005-01-31 19:05:00Z gregor $ -->
+
+<collection 
+  xmlns:jx="http://apache.org/cocoon/templates/jx/1.0"
+  >
+  
+  <uri>FIXME URI</uri>
+  <icon></icon>
+  <title>Publication Image Library</title>
+  <description>Image resources of all documents in a publication.</description>
+  <items>
+    <jx:forEach var="info" items="${imageInfos}" begin="0" end="${imageInfos.size()}" step="1">
+      <resource id="${info.url}">
+        <title>${info.name}</title>
+        <uri>${info.url}</uri>
+        <description>${info.title}</description>
+        <preview>${info.url}</preview>
+        <size><jx:formatNumber value="${info.length}" maxFractionDigits="0"/></size>
+        <icon>${info.iconUrl}</icon>
+      </resource>
+    </jx:forEach>    
+  </items>
+</collection>

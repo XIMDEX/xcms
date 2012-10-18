@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>WebDAV library test</title>
+    <script type="text/javascript" src="i18n.js"></script>
+    <script type="text/javascript">
+    // <![CDATA[
+
+      function runTests() {
+        window.i18n_message_catalog.initialize(document, 'i18n');
+        // should alert 'bar'
+        alert(_('foo'));
+        // should alert 'This is a short line.'
+        alert(_('someline', {'type': 'short'}));
+        // should alert 'baz'
+        alert(_('baz'));
+        // now translate the HTML, do it after the alerts so the effect is
+        // more visible
+        var translator = new HTMLTranslator();
+        translator.translate(document);
+      };
+
+    // ]]>
+    </script>
+  </head>
+  <body onload="runTests();">
+    <div title="translate this title" 
+            i18n:attributes="title" 
+            i18n:translate="">
+      translate this text
+    </div>
+    <xml style="display: none" id="i18n">
+      <catalog>
+        <message>
+          <msgid>
+            foo
+          </msgid>
+          <msgstr>
+            bar
+          </msgstr>
+        </message>
+        <message>
+          <msgid>
+            someline
+          </msgid>
+          <msgstr>
+            This is a ${type} line.
+          </msgstr>
+        </message>
+        <message>
+          <msgid>
+            translate this text
+          </msgid>
+          <msgstr>
+            translated text
+          </msgstr>
+        </message>
+        <message>
+          <msgid>
+            translate this title
+          </msgid>
+          <msgstr>
+            translated title
+          </msgstr>
+        </message>
+      </catalog>
+    </xml>
+  </body>
+</html>

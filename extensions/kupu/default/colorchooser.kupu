@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="colorchooser"
+    implementation="default"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="kupu"
+    >
+  <kupu:id>$Id: colorchooser.kupu 9520 2005-02-26 16:30:23Z duncan $</kupu:id>
+
+  <kupu:part name="colorchooser">
+    <table id="kupu-colorchooser" cellpadding="0" cellspacing="0"
+           style="position: fixed; border-style: solid; border-color: black; border-width: 1px;">
+    </table>
+  </kupu:part>
+
+  <kupu:part name="buttons">
+    <span class="kupu-tb-buttongroup">
+      <!-- Note: the event handlers are attached to these buttons dynamically, like for tools -->
+      <button type="button" class="kupu-forecolor" id="kupu-forecolor-button" 
+              title="text color: alt-f" i18n:attributes="title" 
+              accesskey="f">&#160;</button>
+      <button type="button" class="kupu-hilitecolor" id="kupu-hilitecolor-button"
+              title="background color: alt-h" i18n:attributes="title"
+              accesskey="h">&#160;</button>
+    </span>
+  </kupu:part>
+
+  <!-- We will have the button tool configuration here, too, once we
+       do tool definitions in XML config. -->
+
+</kupu:feature>

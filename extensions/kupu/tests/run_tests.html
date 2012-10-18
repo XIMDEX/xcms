@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>Unit tests for Kupu</title>
+<!-- The following comment makes IE run this html page as though it
+were loaded from the internet. Without it it runs it as though the
+file was on the local machine, and (as of XP SP2) files loaded from
+the local machine aren't allowed to run scripts.-->
+<!-- saved from url=(0013)about:internet -->
+
+<!-- crucial dependencies -->
+<script type="text/javascript" src="../../ecmaunit/ecmaunit.js"> </script>
+<script type="text/javascript" src="../common/sarissa.js"> </script>
+
+<!-- all tools depend on kupuloggers for debug logging -->
+<script type="text/javascript" src="../common/kupuloggers.js"> </script>
+
+<!-- code to be tested and corresponding test cases -->
+<script type="text/javascript" src="../common/kupueditor.js"> </script>
+<script type="text/javascript" src="test_kupueditor.js"> </script>
+
+<script type="text/javascript" src="../common/kupuhelpers.js"> </script>
+<script type="text/javascript" src="test_kupuhelpers.js"> </script>
+
+<script type="text/javascript" src="../common/kupunoi18n.js"> </script>
+
+<script type="text/javascript" src="../common/kupucontentfilters.js"> </script>
+<script type="text/javascript" src="test_xhtml.js"> </script>
+
+<script type="text/javascript" src="../common/kupubasetools.js"> </script>
+<script type="text/javascript" src="test_kupubasetools.js"> </script>
+
+<script type="text/javascript" src="../plone/kupu_plone_layer/kupuploneeditor.js"> </script>
+<script type="text/javascript" src="../plone/kupu_plone_layer/kupuploneui.js"> </script>
+<script type="text/javascript" src="test_plone.js"> </script>
+
+<script type="text/javascript" src="../common/kupubeforeunload.js"> </script>
+<script type="text/javascript" src="test_beforeunload.js"> </script>
+
+<script type="text/javascript" src="test_kupuinit.js"> </script>
+
+<script type="text/javascript">
+//<![CDATA[
+
+    function runTests() {
+        // global set up
+        // This provides a global sandbox, the only known way to get
+        // execCommand tests working in Mozilla. Don't touch the body node!
+        // Even if you re-add it you'll break other tests!
+
+        var iframe = getFromSelector('iframe');
+        iframe.style.display = 'block';
+        // IE seems to re-initialize the iframe on designMode change,
+        // destroying the blank document. But only Mozilla needs that mode.
+        if (_SARISSA_IS_MOZ) {
+            iframe.contentWindow.document.designMode = 'on';
+        };
+
+        var body = getFromSelector('body');
+        var testsuite = new TestSuite(new HTMLReporter(body, true));
+        testsuite.registerTest(KupuHelpersTestCase);
+        testsuite.registerTest(KupuEditorTestCase);
+        testsuite.registerTest(KupuSelectionTestCase);
+        testsuite.registerTest(KupuXhtmlTestCase);
+        testsuite.registerTest(KupuPloneTestCase);
+        testsuite.registerTest(KupuBeforeUnloadTestCase);
+        testsuite.registerTest(InitKupuCheckersTestCase);
+        testsuite.registerTest(KupuUITestCase);
+        testsuite.registerTest(ImageToolTestCase);
+        testsuite.runSuite();
+
+        // global tear down
+
+        iframe.contentWindow.document.designMode = 'off';
+        iframe.style.display = 'none';
+    };
+
+//]]>
+</script>
+</head>
+
+<body onload="runTests()" id="body">
+<!-- some test data for the loadDictFromXML function -->
+<div style="visibility: hidden">
+<xml id="xmlisland">
+    <dict>
+        <foo>bar</foo>
+        <sna>fu</sna>
+        <some_int>1</some_int>
+        <nested>
+            <foo>bar</foo>
+        </nested>
+        <list>0</list>
+        <list>1</list>
+    </dict>
+</xml>
+</div>
+<select id="kupu-tb-styles" style="display:none">
+<option value="p">Normal</option>
+<option value="h2|Heading">Heading</option>
+<option value="h3|Subheading">Subheading</option>
+<option value="pre">Formatted</option>
+<option value="div|Caption">Caption</option>
+</select>
+<iframe style="display: none" id="iframe" ></iframe>
+<div style="display:none" id="testdiv" ></div>
+</body>
+</html>

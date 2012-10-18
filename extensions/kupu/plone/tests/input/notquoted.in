@@ -1,0 +1,3 @@
+<div>IE doesn't always quote attributes</div>
+<img class="image-left captioned" height=144 alt="picture alt text" src="resolveuid/104ede98d4c7c8eaeaa3b984f7395979" width=120/>
+<img class=captioned height=144 alt="picture alt text" src="resolveuid/104ede98d4c7c8eaeaa3b984f7395979" width=120/>

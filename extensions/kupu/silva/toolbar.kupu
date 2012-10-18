@@ -1,0 +1,29 @@
+<kupu:feature
+    name="toolbar"
+    implementation="silva"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    >
+
+  <kupu:part name="select-styles">
+    <select id="kupu-tb-styles"
+            onchange="kupuui.setTextStyle(this.options[this.selectedIndex].value)">
+      <optgroup label="paragraph">
+        <option value="P|normal">plain</option>
+        <option value="P|lead">lead</option>
+        <option value="P|annotation">annotation</option>
+      </optgroup>
+      <optgroup label="heading">
+        <option value="H2">title</option>
+        <option value="H3">heading</option>
+        <option value="H4">sub</option>
+        <option value="H5">subsub</option>
+        <option value="H6">paragraph</option>
+        <option value="H6|sub">subparagraph</option>
+      </optgroup>
+      <option value="PRE">preformatted</option>
+    </select>
+  </kupu:part>
+
+</kupu:feature>

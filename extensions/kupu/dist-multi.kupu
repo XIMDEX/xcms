@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<kupu:dist
+  xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  >
+
+  <!-- Include implementations -->
+  <xi:include href="include.kupu" />
+
+  <!-- Define the default slot to start with -->
+  <kupu:expand>
+    <kupu:define-slot name="start" />
+  </kupu:expand>
+
+  <!-- Define an implementation order -->
+  <kupu:implementation-order>
+    <kupu:implementation name="multi" />
+    <kupu:implementation name="form" />
+    <kupu:implementation name="default" />
+  </kupu:implementation-order>
+
+  <!-- Save on part makes little sense in a form context -->
+  <kupu:disable-feature name="saveonpart" />
+
+  <!-- contextmenu should be made to appear in all iframes -->
+  <kupu:disable-feature name="contextmenu" />
+
+</kupu:dist>

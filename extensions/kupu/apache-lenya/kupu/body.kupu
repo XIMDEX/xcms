@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<kupu:feature
+    name="body"
+    implementation="apache-lenya"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:kupu="http://kupu.oscom.org/namespaces/dist"
+    >
+
+  <kupu:part name="body">
+    <body 
+      onload="kupu = startKupu(); new KupuLenyaDist().init();">
+      <h1/>
+      <kupu:define-slot name="body" />
+    </body>
+  </kupu:part>
+
+</kupu:feature>
