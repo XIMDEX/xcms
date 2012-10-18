@@ -1,0 +1,147 @@
+
+					Ximdex - CHANGELOG
+				------------------------------------------------
+
+
+Version 3.3
+-----------------
+-> 9th-10-2012 Ximdex Development Team <dev@ximdex.org>
+  * General:
+    * New languages added on Ximdex interface: german and brazilian.
+    * Full compatibility with browsers based on webkit. Also with Opera and Firefox > 4.0.
+    * Syntax highlighting when editting on text mode.
+    * Demo projects visually improved.
+    * Including database port on installer. By default is mysql's 3306.
+    * Improved HTML5 based uploader.
+    * New ximLINK manager and searcher.
+    * Friendy URLs on all the interface.
+    * Introducing keyboard shortcuts for the most used actions.
+    * Improved and extended translations in all languages.
+    * New action to add empty files on specific folders.
+    * New module ximTOUR: take a look of the main Ximdex features at log-in.
+  * Xedit:
+    * Single click for expand toolboxes.
+    * New Information Toolbox.
+    * Spellchecker tool improved.
+  * Solved bugs:
+    * Up and Down buttons on Xedit.
+    * Allow uploading images with blank spaces.
+    * Writing on log table on database by configuration.
+
+
+Version 3.2.1
+-----------------
+-> 27th-10-2011 Ximdex Development Team <dev@ximdex.org>
+  * Xedit:
+    * 'Internal_link' element added to our demo templates.
+    * Image tree node selector performance improved.
+    * Ximlink manager: Ximlink searches also allowed by url and description.
+    * New ximclude selector added.
+    * New table manager added.
+    * Publication button available if Wix module installed.
+  * Firefox 7.0 compatibility. Partial Firefox 8.0 compatibility.
+  * 'English' is now available as document language, given by default.
+  * New icons added to node tree contextual menu.
+  * Automatic installation using configuration file added.
+  * 'Close all tabs' functionality added when tab list is long.
+  * 'Loading' image added in search panel.
+  * Welcome tab with Ximdex quick guide added for ximDEMO users.
+  * XimdexId added to notifications.  
+  * Deleting some useless (deprecated) files.
+  * MySQL engine type new specification for ximNEWS module.
+  * MySQL and Apache server check added to installer.
+  * Solved bugs:
+    * Xedit:
+      * Scrolling Xedit contextual menu if option list is long.
+      * Loop break avoided when xml parsing dependencies receive an empty idnode.
+      * Way of getting the previous sibling value when an element is added by pushing enter key.
+    * General:
+      * Resizing workplace when browser window is resized.
+      * Fixing some image retrievals.
+      * Selection from a long tab list for FF>5.
+      * Position for language selector 'cloud' with long usernames.
+      * Grid and List view scrolls.
+      * Multiple uploader file extension filters.
+      * Some php warning due to non-defined vars avoided.
+      
+      
+------------------------------------------------------------------
+
+Version 3.2
+------------------
+
+-> 04th-10-2011 Ximdex Development Team <dev@ximdex.org>
+ * New interface language: Now, English is available.
+ * New welcome splash.
+ * New RSS space, stay tuned to Ximdex news.
+ * Firefox 6.0 compatiblity. Partial Firefox 7.0 compatibility.
+ * New file uploader design.
+ * Solved bugs:
+   * Publication dependencies between images and ximdocs.
+   * Tags and links application in Xedit.
+   * Roles and workflow states associations through workflow manager.
+
+------------------------------------------------------------------
+
+Version 3.1
+------------------
+
+-> 04th-08-2011 Ximdex Development Team <dev@ximdex.org>
+
+ * New installer version:
+   * New permission management
+   * Increasing security around connection details
+   * Configurable default admin user
+   * Automatic installation for community modules (ximIO, ximSYNC, ximNEWS)
+   * Package requirement check
+   * Automatic insertion of Scheduler and Automatic in crontab.
+   * Option to keep previously existing data folder
+   * Performance improvements
+ * Firefox 5.0 compatibility.
+ * XML Editor "Xedit" improvements.
+ * "XimTAGS" module becomes public: document enrichment and searches using tags.
+ * "XimNEWS 2.0" module becomes public, improving publication process.
+ * New advanced searcher, with last and stored searches, multiple filters and full funcionality in retrieved nodes.
+ * New multi file uploader, drag & drop supported using both uploader action and node tree.
+ * New action contextual menu on right click for nodes.
+ * New 'Move node' action dragging nodes in tree view.
+ * Language selector: multiple language interface is coming!
+ * Widget management improvements.
+ * Some new node icons.
+ * Document version and subversion management improvements.
+ * System snapshot management improvements.
+ * Document workflow management based on roles and associated states improvements.
+ * Deleting js libraries not used anymore.
+ * Warning to user when session expires.
+ * Solved bugs:
+   * Allowing deletion of projects and servers.
+   * Link report when url is not available anymore.
+   * Denying deletion of group 'General'.
+   * Copying recursively.
+   * Avoiding to have to create a user group to be able to publish in a new instance.
+
+------------------------------------------------------------------
+
+Version 3.0
+------------------
+-> 03rd-06-2011  Ximdex Development Team  <dev@ximdex.org>
+
+ * Publisher optimized version (faster and more robust).
+ * New user interface.
+ * Supported new transformation and view template schemas using XSLT and RNG. PTD (classic templates in Ximdex) can be automatically compiled to XSLT.
+ * New XML Editor, with spell check and external reference annotation support.
+ * New test projects included.
+ * New Editor, Publisher and Expert User roles given by default.
+ * New installed modules detector.
+ * New tree/grid/list view for document structure.
+ * New action tab collector.
+ * New link multi-description supported.
+ * Optimized node dependency system.
+
+------------------------------------------------------------------
+
+2010: Ximdex 3.0 is a fork of Ximdex 2.6 developed by Ximetrix network thoughts SL
+
+------------------------------------------------------------------
+
+.
