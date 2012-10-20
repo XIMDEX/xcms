@@ -111,7 +111,7 @@ class Appender_rollingfile extends Appender_file {
 	}
 	
 	function write( &$event ) {
-		parent::write( &$event );
+		parent::write( $event );
 		$this->rollOver();
 	}
 	
