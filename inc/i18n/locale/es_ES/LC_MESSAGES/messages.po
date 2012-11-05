@@ -222,7 +222,6 @@ msgstr "A&ntilde;adir %s"
 #: /actions/xmleditor/edit_forms-origen.php
 #: /actions/xmleditor/edit_forms.php
 #: /actions/ximdexclose/template/Smarty/index.tpl
-#: /install/ximdex_data/ximdex.sql table BrowserColumns
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createnews/template/Smarty/creation_form.tpl
 #: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
@@ -3596,7 +3595,6 @@ msgstr "Los siguientes nodos"
 
 #: /actions/workflow_forward/template/Smarty/show_results.tpl
 #: /actions/searchpanel/inc/filters_Ximdex.class.php
-#: /install/ximdex_data/ximdex.sql table BrowserColumns
 msgid "Path"
 msgstr "Ruta"
 
@@ -6765,7 +6763,6 @@ msgstr "A&ntilde;adir plantillas PVD"
 msgid "Add a set of PVD templates to the server"
 msgstr "A&ntilde;adir un conjunto de plantillas PVD al servidor"
 
-# table BrowserColumns ---------- (`Name`, `Description`) ------------
 msgid "Owner"
 msgstr "Titular"
 
