@@ -25,21 +25,12 @@
  ******************************************************************************/
 
 
-
-
-
-
-
-
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-#Extensiones
-#RAP. The location of the RAP classes should be specified. The name of the var RDFAPI_INCLUDE_DIR cannot be changed. It is defined by RAP. 
-define("RDFAPI_INCLUDE_DIR", XIMDEX_ROOT_PATH . "/extensions/rdfapi-php/api/");
+//Extensiones: The location of the RAP classes should be specified. The name of the var RDFAPI_INCLUDE_DIR cannot be changed. It is defined by RAP. 
+//define("RDFAPI_INCLUDE_DIR", XIMDEX_ROOT_PATH . "/extensions/rdfapi-php/api/");
 define ("DOMIT_INCLUDE_DIR",XIMDEX_ROOT_PATH . "/extensions/domit/");
 //include(RDFAPI_INCLUDE_DIR."RdfAPI.php");
 //include(RDFAPI_INCLUDE_DIR."vocabulary/RDF_C.php");
@@ -50,10 +41,9 @@ define ("DOMIT_INCLUDE_DIR",XIMDEX_ROOT_PATH . "/extensions/domit/");
 #(note: Think how to put this namespace out from here)
 //define("NAMESPACE", "http://www.ximdex.com/project/docedu#");
 include_once(XIMDEX_ROOT_PATH . "/inc/properties/systemProperties.php");
-#Domit
+//Domit
 include_once(DOMIT_INCLUDE_DIR . 'xml_domit_include.php');
 // ximdex space
-
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.inc");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/node.inc");
 
@@ -61,9 +51,9 @@ class SystemPropertiesManager{
 	var $node; //node ximdex from whom we are going to ask for properties
 	var $systemProperties;
 	//var $ontoSchema;//RDF schema where the different properties e are going to evaluate are kept 	
-    //var $tieneNombre;
-    //var $tieneDescripcion;
-    //var $tieneTipo;
+	    //var $tieneNombre;
+	    //var $tieneDescripcion;
+	    //var $tieneTipo;
 
 	/**
 	 * SystemProperties class construct

@@ -30,8 +30,8 @@
 require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/dbpedia/DBpedia.class.php');
 
 // Include RAP library.
-define('RDFAPI_INCLUDE_DIR', XIMDEX_ROOT_PATH . '/extensions/rdfapi-php/api/');
-require_once(RDFAPI_INCLUDE_DIR . 'RdfAPI.php');
+//define('RDFAPI_INCLUDE_DIR', XIMDEX_ROOT_PATH . '/extensions/rdfapi-php/api/');
+//require_once(RDFAPI_INCLUDE_DIR . 'RdfAPI.php');
 
 abstract class SPARQL_Provider {
 
