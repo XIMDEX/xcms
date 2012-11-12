@@ -524,7 +524,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		$langISOName = $lang->GetIsoName();
 		//TODO: Optimize words parsing from string
 		$content = ereg_replace("([A-Z])", ". \\1", $content);
-		$words = split("[ \.,\n\r\t\:]", $content);
+		$words = explode("[ \.,\n\r\t\:]", $content);
 
 		$spellCheck = array();
 

@@ -67,7 +67,7 @@ if (isset($_GET["nodeid"]))
 	$fileNode = new Node($nodeID);
 	$fileName = $fileNode->GetNodeName();
 	$fileContent = $fileNode->class->GetContent();
-	$fileContent = split("##########",$fileContent);
+	$fileContent = explode("##########",$fileContent);
 	if(!isset($_GET["container"]))
 		{
 		$fileContent = $fileContent[0];

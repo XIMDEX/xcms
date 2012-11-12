@@ -52,7 +52,7 @@ div.mini-spotlight input:hover {
 	background: #3ea8a9 ;/*url('../../../../xmd/images/header/search-icon-hover.png') no-repeat  10px center*/
 }
 div.mini-spotlight input:focus {
-	background: #fff url('../../../../xmd/images/header/search-icon-focus.png') no-repeat  10px center;
+	background: #fff /*url('../../../../xmd/images/header/search-icon-focus.png') no-repeat  10px center;*/
 	-moz-box-shadow: inset 1px 1px 5px #D1DFDF;
 	-webkit-box-shadow: inset 1px 1px 5px #D1DFDF;
 	box-shadow: inset 1px 1px 5px #D1DFDF;

@@ -163,7 +163,7 @@ class Action_poolPreview extends ActionAbstract {
 		$idNode = $this->request->getParam('idnode');
 		$idVersion = $this->request->getParam('idversion');
 		$idSubVersion = $this->request->getParam('idsubversion');
-		$labels = split(',', $this->request->getParam('labels'));
+		$labels = explode(',', $this->request->getParam('labels'));
 		$sms = array();
 		//this var has the version id from the version table
 		$versionid = null;

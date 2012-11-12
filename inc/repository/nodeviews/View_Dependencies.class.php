@@ -39,7 +39,7 @@ class View_Dependencies extends Abstract_View implements Interface_View {
 
 		/// Y se vuelve a construir
 		foreach($deps as $depID) {
-			$pair = split(",", $depID);
+			$pair = explode(",", $depID);
 			$depID = $pair[0];
 
 			if (array_key_exists(1, $pair)) { 
