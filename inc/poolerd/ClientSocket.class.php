@@ -77,7 +77,7 @@ class ClientSocket {
 
 		if (strlen($data) > 0) {
 
-			$data = split("\n\r", $data);
+			$data = explode("\n\r", $data);
 //			error_log(trim($data[1]), 3, '/tmp/xml.xml');
 			$response = Serializer::decode(SZR_XMLRPC, trim($data[1]));
 		}

@@ -759,17 +759,17 @@ class AbstractStructuredDocument extends FileNode  {
 
 		  $j = 0;
 
-		  for ($i = 2; $i < $length; $i++) {
+		  for ($i = 1; $i < $length; $i++) {
 
 			  $ancestor = new Node($tree[$i]);
 			  $alias = $node->GetAliasForLang($langID);
 
 			  switch ($i) {
-				  case 2:
+				  case 1:
 					  $s .= ' proyecto="'. $ancestor->get('Name').'"';
 					  continue;
 
-				  case 3:
+				  case 2:
 					  $s .= ' servidor="'. $ancestor->get('Name').'"';
 					  continue;
 

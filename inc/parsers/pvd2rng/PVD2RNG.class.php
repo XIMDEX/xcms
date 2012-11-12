@@ -82,7 +82,7 @@ class PVD2RNG {
 	    }
 
 		$content = $pvd->GetContent();
-		$content = split("##########", $content);
+		$content = explode("##########", $content);
 		$content = $content[0]; //str_replace("'", "\'", $content[0]);
 
 		unset($this->_dompvd);

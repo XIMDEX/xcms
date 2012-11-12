@@ -346,7 +346,7 @@ class ParsingDependences {
 				switch ($dep['type']) {
 
 					case 'link':
-						$pair = split(",",$dep['id']);
+						$pair = explode(",",$dep['id']);
 						$idDep = $pair[0];
 						$table = DepsManager::STRDOC_NODE;
 						$type = 'LINK';

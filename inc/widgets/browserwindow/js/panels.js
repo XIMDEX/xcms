@@ -74,29 +74,41 @@
 		},
 
 		addTab: function(c) {
+			/* Added if else flow, and id to the anchors of tabs in the form IdNode_actionCommand in order to not open a new tab
+                        for the same action*/
+                        var id = c.nodes ? c.nodes[0]+"_"+c.action.command : "";
+                        if(id != "" && $("#"+id).length) {
+                                var theTab = $("#"+id);
+                                var index = theTab.closest("li").index();
+                                this.tabs.tabs('select', index);
+                        }
+                        else {
+                                c.link(this.browser, this.tabs);
 
-			c.link(this.browser, this.tabs);
+                                this.tabs
+                                        .tabs('add', c.getUrl(), c.getLabel(), (c.tabId() || undefined))
+                                        .bind('tabsselect', function(event, ui) {
+                                                this.tabs.tabs('updateTabsNav', ui);
+                                                if (!this.saveActive) return;
+                                                // This event is fired more than once, this is not necessary...
+                                                if (this.lastSavedTab == ui.index) return;
+                                                this.lastSavedTab = ui.index;
+                                                X.session.set('%s.tab'.printf(this.name), ui.index);
+                                        }.bind(this));
 
-			this.tabs
-				.tabs('add', c.getUrl(), c.getLabel(), (c.tabId() || undefined))
-				.bind('tabsselect', function(event, ui) {
-					this.tabs.tabs('updateTabsNav', ui);
-					if (!this.saveActive) return;
-					// This event is fired more than once, this is not necessary...
-					if (this.lastSavedTab == ui.index) return;
-					this.lastSavedTab = ui.index;
-					X.session.set('%s.tab'.printf(this.name), ui.index);
-				}.bind(this));
+                                var tabId = (this.tabs.tabs('length') - 1) || 0;
+                                $('a[href=#'+c.getId()+']', this.tabs)
+                                        .addClass(c.getClass())
+                                                                        .attr('id', c.nodes ? c.nodes[0]+"_"+c.action.command : "")
 
-			var tabId = (this.tabs.tabs('length') - 1) || 0;
-			$('a[href=#'+c.getId()+']', this.tabs)
-				.addClass(c.getClass())
-				.closest('li')
-				.data('tabId', tabId);
-			c.tabId(tabId);
+                                        .closest('li')
+                                        .data('tabId', tabId)
+                                        c.tabId(tabId);
 
-			this.tabs.tabs('select', tabId);
-			this.tabs.tabs('adjustTabClasses');
+                                this.tabs.tabs('select', tabId);
+                                this.tabs.tabs('adjustTabClasses');
+                        }	
+
 		},
 
 		loadTabs: function() {
