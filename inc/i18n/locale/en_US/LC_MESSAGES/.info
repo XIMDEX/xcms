@@ -1,0 +1,3 @@
+The whole Ximdex interface is in english by default. Only the languages spanish, brazilian and german have translations files (messages.po, messages.pot and messages.mo).
+
+If you find any string that is not translated, please, warn us at help@ximdex.org. Thanks in advance!
