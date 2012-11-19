@@ -225,10 +225,10 @@ class NodeFrame extends NodeFrames_ORM {
 
 		if (is_null($down)) {
 			$condition = 'NodeId = %s AND VersionId = %s AND TimeUp <= %s AND TimeDown IS NULL';
-			$params = array($nodeId,$idVersion,$up);
+			$params = array('NodeId' => $nodeId, 'VersionId' => $idVersion, 'TimeUp' => $up);
 		} else {
 			$condition = 'NodeId = %s AND VersionId = %s AND TimeUp <= %s AND (TimeDown IS NULL OR TimeDown = %s)';
-			$params = array($nodeId,$idVersion,$up,$down);
+			$params = array('NodeId' => $nodeId, 'VersionId' => $idVersion, 'TimeUp' => $up, 'TimeDown' => $down);
 		}
 
 		$result = $this->find('IdNodeFrame', $condition, $params, MONO);
