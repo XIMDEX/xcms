@@ -73,9 +73,9 @@ function check_config_files() {
 function checkFolders () {
 	$msg = null;
 
-	$foldersToCheck = array(	array('FOLDER' => '/data/backup', 'MODULE' => 'ximIO'),
+	$foldersToCheck = array(	//array('FOLDER' => '/data/backup', 'MODULE' => 'ximIO'),
 								array('FOLDER' => '/data/cache', 'MODULE' => ''),
-								array('FOLDER' => '/data/cache/ximRAM', 'MODULE' => 'ximRAM'),
+								//array('FOLDER' => '/data/cache/ximRAM', 'MODULE' => 'ximRAM'),
 								array('FOLDER' => '/data/files', 'MODULE' => ''),
 								array('FOLDER' => '/data/nodes', 'MODULE' => ''),
 								array('FOLDER' => '/data/sync', 'MODULE' => ''),
@@ -83,7 +83,7 @@ function checkFolders () {
 								array('FOLDER' => '/data/tmp/uploaded_files', 'MODULE' => ''),
 								array('FOLDER' => '/data/tmp/js', 'MODULE' => ''),
 								array('FOLDER' => '/data/tmp/templates_c', 'MODULE' => ''),
-								array('FOLDER' => '/data/trash', 'MODULE' => 'ximTRASH'),
+								//array('FOLDER' => '/data/trash', 'MODULE' => 'ximTRASH'),
 								array('FOLDER' => '/logs', 'MODULE' => '')
 							);
 	reset($foldersToCheck);

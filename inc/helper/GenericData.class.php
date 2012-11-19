@@ -697,7 +697,7 @@ class GenericData extends Overloadable {
 			}
 		}
 
-		if (!empty($condition) && !is_null($params) && !empty($params[0])) {
+		if (!empty($condition) && !is_null($params) ) {
 			$value = sprintf('$condition = sprintf("%s", "%s");', $condition, implode('", "', $params));
 			eval($value);
 		}

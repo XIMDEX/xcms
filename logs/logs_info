@@ -1,0 +1,26 @@
+This file explain what information is writed on each log into this folder.
+
+Publication:
+------------
+
+sync.log
+
+publication.log
+
+
+Daemons:
+--------
+
+scheduler.log -> exit of the commands executed on every time the crontab is called. 
+
+automatic.log -> exit of the generation of bulletins and news from the ximNEWS module.
+
+
+Ximdex:
+-------
+
+xmd.log -> Ximdex general log. 
+
+
+
+
