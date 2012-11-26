@@ -34,19 +34,16 @@ ModulesManager::file('/inc/helper/String.class.php');
 
 
 class Action_edittext extends ActionAbstract {
-   // Main method: shows initial form
-    function index() {
+	// Main method: shows initial form
+    	function index() {
 
 		$this->addCss('/actions/edittext/resources/css/style.css');
 		$this->addJs('/extensions/codemirrror/lib/codemirror.js');
-
 		$this->addCss('/extensions/codemirrror/lib/codemirror.css');
 //		$this->addCSS('/extensions/codemirrror/css/docs.css');
 		$this->addCss('/extensions/codemirrror/theme/default.css');
 
-
-
-    	$idNode = $this->request->getParam('nodeid');
+	    	$idNode = $this->request->getParam('nodeid');
 
 		$strDoc = new StructuredDocument($idNode);
 		if($strDoc->GetSymLink()) {
@@ -63,6 +60,7 @@ class Action_edittext extends ActionAbstract {
 		$idNodeType = $node->get('IdNodeType');
 		$nodeType = new NodeType($idNodeType);
 		$nodeTypeName = $nodeType->get('Name');
+		
 		$isXimNewsLanguage = ($nodeTypeName == "XimNewsNewLanguage");
 
 		$fileName = $node->get('Name');
@@ -84,16 +82,15 @@ class Action_edittext extends ActionAbstract {
 		$content = $this->formatXml($content);
 		$content = htmlspecialchars($content);
 
-
 		$ruta = str_replace("/", "/ ",$node->GetPath());
 
 		$jsFiles = array(Config::getValue('UrlRoot') . '/xmd/js/ximdex_common.js');
 
-		if (ModulesManager::isEnabled('ximDEMOS')){
+		/*if (ModulesManager::isEnabled('ximDEMOS')){
 			$this->addJs( '/actions/edittext/javascript/tour.js');
                     if ($this->tourEnabled(XSession::get("userID")))
                     	$this->addJs( '/resources/js/start_tour.js', 'ximDEMOS');
-                }
+                }*/
 
 		$values = array('id_node' => $idNode,
 				'isXimNewsLanguage' => $isXimNewsLanguage,
@@ -107,15 +104,14 @@ class Action_edittext extends ActionAbstract {
 				'id_editor' => $idNode.uniqid()
 				);
 
-
 		$this->render($values, null, 'default-3.0.tpl');
-    }
+	}
 
 /*
 *	If nodeType is a PTD display documents affected by change
 */
 	function publishForm() {
-    	$idNode = $this->request->getParam('nodeid');
+    		$idNode = $this->request->getParam('nodeid');
 
 		$dataFactory = new DataFactory($idNode);
 		$lastVersion = $dataFactory->GetLastVersionId();
@@ -166,17 +162,17 @@ class Action_edittext extends ActionAbstract {
 		}
 
 		$arrayOpciones = array('ok' => _(' have been successfully published'),
-								'notok' => _(' have not been published, because of an error during process'),
-								'unchanged' => _(' have not been published because they are already published on its most recent version') );
+				'notok' => _(' have not been published, because of an error during process'),
+				'unchanged' => _(' have not been published because they are already published on its most recent version') );
 
 		$values = array('arrayOpciones' => $arrayOpciones,
-						'arrayResult' => $result
-						);
+				'arrayResult' => $result
+				);
 
 		$this->render($values, NULL, 'publicationResult.tpl');
 	}
 
-    function edittext() {
+	function edittext() {
 
 		$idNode = $this->request->getParam('nodeid');
 		$content = $this->request->getParam('editor');
@@ -209,7 +205,7 @@ class Action_edittext extends ActionAbstract {
 			}
 		}
 
-		if ($nodeTypeName == 'Template') {
+		if ($nodeTypeName == 'Template' || $nodeTypeName == 'XslTemplate') {
 			$this->redirectTo('publishForm');
 			return;
 		} else {

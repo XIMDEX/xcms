@@ -203,7 +203,7 @@ abstract class XmlEditor_Abstract {
 	public function getSchemaFile($idnode) {
 		$schemaData = $this->getSchemaData($idnode);
 		$content = $schemaData['content'];
-		$content = $this->enrichSchema($content);
+		//$content = $this->enrichSchema($content);
 
 //		$content = '<root><node>value</node></root>';
 

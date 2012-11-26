@@ -58,6 +58,8 @@ XimDocument = function(editorConfig) {
 	this._schemaValidatorIsActive = null;
 	this._editorConfig = editorConfig;
 	this.editor = null;
+	this._errors=[]; 
+	this.ELEMENT_NOT_FOUND_MESSAGE = _("Elements not found in Relax-ng schema: ");
 
 	/**
 	 * Function which returns the ximdex node ID.
@@ -151,6 +153,7 @@ XimDocument = function(editorConfig) {
 		this._nodeId = null;
 		this._lastUID = [];
 		this._rootNode = null;
+		this._errors = []; 
 
 		/*
 		var grammar = this._findGrammarElement(this._xmldoc);
@@ -171,8 +174,26 @@ XimDocument = function(editorConfig) {
 			nodeid = nodeid.split('.');
 			this._nodeId = nodeid[0];
 			this._rootNode = this._parseNode(docxap, null);
+
+			this._showErrors();
 		}
 	};
+
+	/** 
+ 	        * Method which alert the errors found after parse the document  
+ 	        * @private   
+ 		* Create at 2012-11-20  
+ 	**/ 
+ 	this._showErrors = function(){ 
+	        var result=""; 
+ 	        if (this._errors.length){ 
+ 		        result +=this.ELEMENT_NOT_FOUND_MESSAGE; 
+ 			for (var i = 0; i < this._errors.length; i++){ 
+	                        result +="<br/>- "+this._errors[i]; 
+ 	                } 
+ 	                this.editor.alert(result); 
+ 	        } 
+ 	};
 
 	/**
 	 * Function which finds the root node to start to parse from it.
@@ -205,6 +226,10 @@ XimDocument = function(editorConfig) {
 		var parentUID = parent ? parent['uid'] : null;
 		var ximElement = this.importXmlElement(node);
 		ximElement = this.appendChild(ximElement, parent);
+		if (!ximElement){ 
+ 	                this._errors.push(node.tagName); 
+	                return false; 
+                } 
 		ximElement.isRoot = parent ? false : true;
 
 		var it = new DOMNodeIterator(node, 1);
@@ -778,6 +803,7 @@ XimDocument = function(editorConfig) {
 			node.setAttribute('__ximlink_name__', element.ximLink.name);
 			node.setAttribute('__ximlink_url__', element.ximLink.url);
 			node.setAttribute('__ximlink_text__', element.ximLink.text);
+			node.setAttribute('__ximlink_folder__', element.ximLink.folder); 
 
 //			console.log(node);
 		}
