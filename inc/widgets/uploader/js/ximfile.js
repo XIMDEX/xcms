@@ -283,7 +283,7 @@
 			  if(xhr.sendAsBinary != null) {
 			  	// simulate a file MIME POST request.
   			    xhr.setRequestHeader("Content-Type","multipart/form-data; boundary="+boundary);
-  			    console.log("Calling with sendAsBinary");
+  			    //console.log("Calling with sendAsBinary");
 			  	xhr.sendAsBinary(body);
 			  }
 			  else { //Browsers that don't support sendAsBinary yet

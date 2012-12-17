@@ -4071,8 +4071,8 @@ msgstr "El modulo php5-enchant debe ser instalado para usar el corrector ortogr&
 msgid "EnricherKey configuration value has not been defined"
 msgstr "No se ha definido el valor de configuraci&oacute;n EnricherKey"
 
-msgid "ximRA module has not been enabled.<br/><br/> If you want to realize the noticeable improvements you will obtain installing ximRA, a demonstrative video is shown below and in the following %s<br/><br/>Or test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
-msgstr "No tiene habilitado el m&oacute;dulo ximRA.<br/><br/>Si quiere comprobar las mejoras notables que obtendr&iacute;a al instalar ximRA, le mostramos a continuaci&oacute;n un v&iacute;deo demostrativo en el siguiente enlace: %s<br/><br/>O pru&eacute;balo en <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
+msgid "ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>" 
+msgstr "No tiene habilitado el m&oacute;dulo ximRA.<br/><br/>Si quiere comprobar las mejoras notables que obtendr&iacute;a al instalar ximRA, le mostramos a continuaci&oacute;n un v&iacute;deo demostrativo (<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>)<br/><br/>Tambi&eacute;n puede pru&eacute;balo en <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>" 
 
 msgid "docxap cannot be found."
 msgstr "No se encuentra la docxap."

@@ -88,7 +88,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 				//ctrl+alt+i
 				if(event.ctrlKey && event.altKey && 73 == event.which && null != this.selected) {
 					var data = $(this.selected).data("data");
-					console.log(data);
+					//console.log(data);
 
 					var selected = data["nodeid"].value;
 					//console.log(selected, event, this, this.selected);

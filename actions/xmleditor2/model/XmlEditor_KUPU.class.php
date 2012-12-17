@@ -612,12 +612,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			}
 		}
 		else{
-			$videolink="<a href='".Config::getValue('UrlRoot')."/extensions/flvplayer/annotation1024no-sub.flv' target='_blank'>link</a>";	
-			$ximRAmsg=_("ximRA module has not been enabled.<br/><br/> If you want to realize the noticeable improvements you will obtain installing ximRA, a demonstrative video is shown below and in the following %s<br/><br/>Or test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>");
+			$videolink="<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>";      
+                        $ximRAmsg=_("ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>");
 			$videomsg=sprintf($ximRAmsg,$videolink);
-			$urlvideo = "<center><embed type='application/x-shockwave-flash' width='360' height='240' src='http://flv-player.net/medias/player_flv_maxi.swf' flashvars='flv=".Config::getValue('UrlRoot')."/extensions/flvplayer/annotation1024no-sub.flv' title='Ximdex Enrichment'></embed></center>";
+			$urlvideo = "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>";
 			XMD_Log::error(_("ximRA module has not been installed. It is included in the advanced package WIX."));
-            $resp = '{"status": "'.$videomsg.'","videourl":"'.$urlvideo.'"}';
+            		$resp = '{"status": "'.$videomsg.'","videourl":"'.$urlvideo.'"}';
 		}
 
 		return $resp;
