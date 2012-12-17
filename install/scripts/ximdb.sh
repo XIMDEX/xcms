@@ -357,7 +357,7 @@ function checkUser
 	sql_user "show tables;"
 	if [ "$ERROR_DB" = 'ERROR 1045' ]
 	then
-		echo "Conection error. "
+		echo "Connection error. "
 		checkUserError
 	else
 	next_step

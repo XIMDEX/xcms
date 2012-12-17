@@ -13,7 +13,7 @@ Feel free to contact us at help@ximdex.org for further assistance.
 
 Installation Requirements and dependencies:
 ------------------------------------------
-	-  PHP (>= 5.1).
+	-  PHP (>= 5.2.5).
 	-  PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin(recommended).
 	-  To allow spelling check using Xedit (our XML editor): php5-enchant module.
 	-  Other packages: wget.
