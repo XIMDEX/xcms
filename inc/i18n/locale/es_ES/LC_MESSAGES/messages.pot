@@ -4008,7 +4008,7 @@ msgstr ""
 msgid "EnricherKey configuration value has not been defined"
 msgstr ""
 
-msgid "ximRA module has not been enabled.<br/><br/> If you want to realize the noticeable improvements you will obtain installing ximRA, a demonstrative video is shown below and in the following %s<br/><br/>"
+msgid "ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>" 
 msgstr ""
 
 msgid "docxap cannot be found."
