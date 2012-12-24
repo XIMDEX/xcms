@@ -229,27 +229,6 @@ class Scheduler {
 
 			}
 
-			if (ModulesManager::isEnabled ( 'tolDOX' )) {
-				$serverFrame = new ServerFrame ( );
-				$finalStatus = array ();
-				foreach ( $serverFrame->finalStatusOk as $status ) {
-					$finalStatus [] = sprintf ( "'%s'", $status );
-				}
-				$nodeFramesOk = $serverFrame->find ( 'IdNodeFrame', 'State in (%s)', array (implode ( ', ', $finalStatus ) ), MONO, false );
-
-				if (! empty ( $nodeFramesOk )) {
-					foreach ( $nodeFramesOk as $idNodeFrame ) {
-						$nodeFrame = new NodeFrame ( $idNodeFrame );
-						$idNode = $nodeFrame->get ( 'NodeId' );
-						$node = new Node ( $idNode );
-						if ($node->get ( 'IdNode' )) {
-							XMD_Log::info ( _('The already published document is going to be eliminated ') . $node->get ( 'Name' ) );
-							$node->delete ();
-						}
-					}
-				}
-			}
-
 			if ($global_execution) {
 				if ($voidCycles > MAX_NUM_CICLOS_VACIOS_SCHEDULER) {
 					XMD_Log::info(sprintf(_("Exceding max. cycles (%d > %d). Exit scheduler"),$voidCycles, MAX_NUM_CICLOS_VACIOS_SCHEDULER) );

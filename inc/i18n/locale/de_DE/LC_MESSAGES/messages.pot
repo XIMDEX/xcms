@@ -3115,8 +3115,6 @@ msgstr ""
 msgid "Please, select another destination."
 msgstr ""
 
-
-#: /actions/tol_wizard/Action_tol_wizard.class.php
 msgid "Any document to edit has been specified"
 msgstr ""
 
@@ -3153,11 +3151,9 @@ msgstr ""
 msgid "Image folders have not been found on server:"
 msgstr ""
 
-#: /actions/tol_wizard/template/Smarty
 msgid "Edit document"
 msgstr ""
 
-#: /actions/tol_wizard/template/Smarty
 msgid "Send"
 msgstr ""
 

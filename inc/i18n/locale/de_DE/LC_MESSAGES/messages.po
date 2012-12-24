@@ -3113,8 +3113,6 @@ msgstr "Dieser Ximlet ist schon mit diesem Ziel verbunden"
 msgid "Please, select another destination."
 msgstr "Bitte w&auml;hlen Sie anderes Ziel."
 
-
-#: /actions/tol_wizard/Action_tol_wizard.class.php
 msgid "Any document to edit has been specified"
 msgstr "Kein Dokument zum &Auml;ndern wurde spezifiziert"
 
@@ -3151,11 +3149,9 @@ msgstr "Es wurde versucht einen nicht existierenden Knoten zu laden:"
 msgid "Image folders have not been found on server:"
 msgstr "Bildordner wurden auf dem Server nicht gefunden:"
 
-#: /actions/tol_wizard/template/Smarty
 msgid "Edit document"
 msgstr "Dokument &auml;ndern"
 
-#: /actions/tol_wizard/template/Smarty
 msgid "Send"
 msgstr "Senden"
 

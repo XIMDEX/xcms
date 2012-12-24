@@ -342,7 +342,7 @@ function checkUser
 		then
 				  	#Changed to @'%'. Previously, it was localhost but this didn't make sense if the server is an external server and not localhost
 					sql "GRANT ALL PRIVILEGES  ON $DATABASE.* TO '$USER_DB'@'%' IDENTIFIED BY '$PASSWD_DB'; FLUSH privileges; "
-					println "Database user does not exists. Creating it... "
+					println "Database user does not exist. Creating it... "
 		else
 			checkUserError
 			return 0
@@ -403,7 +403,7 @@ function setDB
 		else
 			if [ -z "$OVERWRITE_DATABASE" ];
 			then
-				io.question "Database already exists. Do you want to overwrite? "
+				io.question "Database already exists. Do you want to overwrite it? "
 				OVERWRITE_DATABASE=$(io.getOption)
 			fi
 
