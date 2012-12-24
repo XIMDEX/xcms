@@ -3176,8 +3176,6 @@ msgstr "Este ximlet ya est&acute; asociado a ese destino"
 msgid "Please, select another destination."
 msgstr "Por favor, seleccione otro destion."
 
-
-#: /actions/tol_wizard/Action_tol_wizard.class.php
 msgid "Any document to edit has been specified"
 msgstr "No se ha especificado ning&uacute;n documento a editar"
 
@@ -3214,11 +3212,9 @@ msgstr "Se ha intentado obtener un nodo que no existe:"
 msgid "Image folders have not been found on server:"
 msgstr "No se han encontrado carpetas de imagenes bajo el servidor:"
 
-#: /actions/tol_wizard/template/Smarty
 msgid "Edit document"
 msgstr "Editar documento"
 
-#: /actions/tol_wizard/template/Smarty
 msgid "Send"
 msgstr "Enviar"
 

@@ -278,11 +278,16 @@ class Connection_Ftp implements I_Connector {
 	 */
 	public function rename($renameFrom, $renameTo) {
 		try {
-			return @ftp_rename($this->handler, $renameFrom, $renameTo);
-		} catch (Exception $e) {
-			XMD_Log::error($e->getMessage());
-		}
-		return false;
+			$renameFrom=str_replace('//','/',$renameFrom); 
+                        $renameTo=str_replace('//','/',$renameTo); 
+                        if($this->isFile($renameTo)){ 
+                                @ftp_delete($this->handler, $renameTo); 
+                        } 
+                        return @ftp_rename($this->handler, $renameFrom, $renameTo); 
+                } catch (Exception $e) { 
+			XMD_Log::error($e->getMessage()); 
+ 	        } 
+	        return false; 
 	}
 	
 	/**
@@ -381,9 +386,11 @@ class Connection_Ftp implements I_Connector {
 		}
 		if (empty($folder)) $folder = '/';
 		if ($this->cd($folder)) {
+			$folder=str_replace('//','/',$folder); 
+                        $file=str_replace('//','/',$file); 
 			if ($this->pwd() == $folder || $this->pwd() . '/' == $folder) {
 				$fileList = @ftp_nlist($this->handler, $folder);
-				$isFile = (in_array($file, $fileList));
+				$isFile = in_array($folder.$file, $fileList);
 			}
 
 		}
