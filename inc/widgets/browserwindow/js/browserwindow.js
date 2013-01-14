@@ -86,6 +86,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 		hbox: null,
 		panels: null,
 		eh: null,
+		cachedActions: new Object(), 
 
 		_init: function() {
 
@@ -162,7 +163,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 		},
 
 		getActions: function(params) {
-
+			var that = this; 
 			params = $.extend({
 				nodes: [],
 				cb: function() {}
@@ -174,22 +175,39 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 					ids.push(params.nodes[i].nodeid.value);
 				} catch(e) {}
 			}
+			
+			var cachedKey = ids.sort().join("-"); 
 
 			// NOTE: Wrapping the callback function and the variables
 			// will not produce collisions with others asynchronous calls.
 			var success = (function(params, fn) {
 				return function(data) {
+					//Cache the result for this node (or nodes) using cachedKey and data 
+                                        that.cachedActions[cachedKey] = data; 
 					if (Object.isFunction(fn)) {
 						fn($.extend({}, params, {actions: data}));
 					}
 				}
 			})($.extend({ids: ids}, params, {cb: null}), params.cb);
 
-			$.get(
-				'?action=browser3&method=cmenu'.printf(X.restUrl),
-				{'nodes[]': ids},
-				success
-			);
+			//If actions were already requested, use them. 
+                        if(that.cachedActions.hasOwnProperty(cachedKey)) { 
+                                // setTimeout is neccesary in order to prevent the modal dialog with actions dissapears 
+                                // after it appears 
+                                setTimeout(function() { 
+	                                if (Object.isFunction(params.cb)) { 
+        	                                params.cb.call(this, $.extend({}, params, {actions: that.cachedActions[cachedKey]}));  
+                                        } 
+	                        },100); 
+	                } 
+	                //Otherwise make the request 
+	               else { 
+	                        $.get( 
+	                                 '?action=browser3&method=cmenu'.printf(X.restUrl), 
+	                                        {'nodes[]': ids}, 
+	                                        success 
+	                                ); 
+	                        } 
 		},
 
 		registerTriggers: function() {
