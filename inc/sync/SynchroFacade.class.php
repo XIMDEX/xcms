@@ -71,25 +71,17 @@
 					XMD_Log::error(_("No target frame available")." FACADE - $idTargetNode - $idTargetChannel - $idServer");
 					return NULL;
 				}
-				
+			
 				// Calculating physical origin and destiny servers
-
-				$serverFrame = new ServerFrame($frameID);
-				$idNodeFrame = $serverFrame->get('IdNodeFrame');
-
-				$frameTargetServers = $targetFrame->getServerListOnFrame($idNodeFrame);
+				$physicalTargetServers = $targetFrame->getCompleteServerList($idTargetNode, $idTargetChannel);
 				
-				if (count($frameTargetServers) == 0) {
+                            	if (count($physicalTargetServers) == 0) {
 					XMD_Log::error(_("No physical target server available"));
 					return NULL;
 				}
 
 				// Gets only enabled servers
 
-				$serverNode = new Node($server->get('IdNode'));
-				$enabledServers = $serverNode->class->GetEnabledPhysicalServerList();
-
-				$physicalTargetServers = array_intersect($frameTargetServers, $enabledServers);
 				if (in_array($idServer, $physicalTargetServers)) {
 					return $idServer;
 				}
