@@ -80,12 +80,12 @@ class Action_unlinknewscolector extends ActionAbstract {
 
 		$idAction = $this->request->getParam("actionid");
 		$idNode = $this->request->getParam('nodeid');
-		$nodesList = $this->request->getParam('nodeslst');
+		$nodesList = $this->request->getParam('nodeslist');
 		$downDate = $this->request->getParam('enddate');
 
 		$node = new Node($idNode);
 
-		if(!empty($nodeList) ) {
+		if(!empty($nodesList) ) {
 			foreach ($nodesList as $id) {
 
 				if ($node->nodeType->get('Name') == 'XimNewsColector') {
