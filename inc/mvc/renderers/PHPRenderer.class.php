@@ -57,7 +57,14 @@ class PHPRenderer extends AbstractRenderer {
 		$php_code = '';
 
 		foreach ($parameters as $varName => $data) {
-			$php_code .= "\$$varName = $data;";
+			if(!is_numeric($data)){ 
+	                        $pos1=strpos($data,'"'); 
+ 	                        $pos2=strpos($data,"'"); 
+ 	                        if(($pos1===false) && ($pos2===false)){ 
+ 		                        $data="'".$data."'"; 
+ 		                } 
+ 	                } 
+ 	                $php_code .= "\$$varName = $data;"; 
 		}
 		
 		ob_start();

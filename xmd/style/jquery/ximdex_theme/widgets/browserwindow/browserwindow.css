@@ -172,7 +172,7 @@ div.search-button-label {
 .xim-actions-menu button span{
 	background: url('../../../../../images/action/icons-actions.png') no-repeat 5px 4px;
 	display: block;
-	text-indent: -99999999px;
+	text-indent: -9999999px;
 	height: 33px;
 }
 
@@ -289,7 +289,7 @@ div.search-button-label {
 
 .xim-actions-menu-list span.list-icon {
 	background: url('../../../../../images/action/icons-actions-mini.png') no-repeat 4px 7px;
-	text-indent: -99999999px;
+	text-indent: -9999999px;
 	height: 15px;
 	float: left;
 	clear: left;
