@@ -119,4 +119,7 @@ X.actionLoaded(function(event, fn, params) {
 			return node;
 		})
 		.listview('setModel', results.data);
+
+		$divResults = jQuery("<div/>").addClass("number_results").html("<span>"+_("Number of results")+": "+results.records+"</span>"); 
+		fn('.xim-listview-results').prepend($divResults);
 });

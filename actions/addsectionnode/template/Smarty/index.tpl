@@ -73,7 +73,7 @@
 				<p>There are no languages associated to this project</p>
 			{/if}
 	</fieldset>
-
+{*
 	{if $availableThemesCount > 0}
 		<fieldset>
 			<legend><span>{t}Themes{/t}</span></legend>
@@ -85,7 +85,7 @@
 				</select></p>
 		</fieldset>
 	{/if}
-
+*}
 	<fieldset class="buttons-form">
 		{button label="Reset" class='form_reset' type="reset"}
 		{button label="Create section" class='validate' }<!--message="Would you like to add this section?"-->

@@ -29,6 +29,8 @@
 
 	<fieldset>
 		<legend><span>{t}Delete news from colector{/t}</span></legend>
+		<p>{t}A single calendar will be shown for each selected news{/t}.</p> 
+		<p>{t}Pick up a date and time to unlink each news from the colector. If you want to dissasociate them now, just set the date and time with a pair of minutes in the future{/t}.</p> 
 
 		<input type="hidden" name="nodeid" value="{$id_node}" />
 
@@ -43,7 +45,7 @@
 
 			{foreach from=$nodeslist key=i item=node}
 				<li>
-				<input name="nodeslst[{$i}]" class="validable nodes check_group_nodes nodelst" id="chknew{$i}" type="checkbox" value="{$node.id}">
+				<input name="nodeslist[{$i}]" class="validable nodes check_group_nodes nodelst" id="chknew{$i}" type="checkbox" value="{$node.id}">
 				<label>{$node.name}</label>
 				<div class="xim-calendar-container">
 
@@ -89,13 +91,13 @@
 
 	{if $nodetype eq 'XimNewsColector'}
 		<fieldset>
-		<legend><span>Associated news</span></legend>
-		<p>{t}The colector has not associated news{/t}</p>
+		<legend><span>{t}Associated news{/t}</span></legend>
+		<p>{t}The colector has not associated news{/t}.</p>
 		</fieldset>
 	{else}
 		<fieldset>
-		<legend><span>Associated colector</span></legend>
-		<p>{t}The news is not associated to any colector{/t}</p>
+		<legend><span>{t}Associated colector{/t}</span></legend>
+		<p>{t}The news is not associated to any colector{/t}.</p>
 		</fieldset>
 	{/if}
 
