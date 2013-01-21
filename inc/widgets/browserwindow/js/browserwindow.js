@@ -183,7 +183,9 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			var success = (function(params, fn) {
 				return function(data) {
 					//Cache the result for this node (or nodes) using cachedKey and data 
-                                        that.cachedActions[cachedKey] = data; 
+					if(cachedKey != "") { 
+                                        	that.cachedActions[cachedKey] = data; 
+					}
 					if (Object.isFunction(fn)) {
 						fn($.extend({}, params, {actions: data}));
 					}
@@ -191,12 +193,12 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			})($.extend({ids: ids}, params, {cb: null}), params.cb);
 
 			//If actions were already requested, use them. 
-                        if(that.cachedActions.hasOwnProperty(cachedKey)) { 
+                        if(cachedKey != "" && that.cachedActions.hasOwnProperty(cachedKey)) { 
                                 // setTimeout is neccesary in order to prevent the modal dialog with actions dissapears 
                                 // after it appears 
                                 setTimeout(function() { 
 	                                if (Object.isFunction(params.cb)) { 
-        	                                params.cb.call(this, $.extend({}, params, {actions: that.cachedActions[cachedKey]}));  
+						params.cb($.extend({ids: ids}, params, {cb:null, actions: that.cachedActions[cachedKey]}));
                                         } 
 	                        },100); 
 	                } 

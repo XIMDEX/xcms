@@ -74,11 +74,11 @@
 		},
 
 		addTab: function(c) {
-			/* Added if else flow, and id to the anchors of tabs in the form IdNode_actionCommand in order to not open a new tab
-                        for the same action*/
-                        var id = c.nodes ? c.nodes[0]+"_"+c.action.command : "";
-                        if(id != "" && $("#"+id).length) {
-                                var theTab = $("#"+id);
+			/* Added if else flow, and id to the anchors of tabs in the form IdNode_actionCommand in order to not open a new tab for the same action*/
+			var theTabId = c.nodes ? c.nodes.join("-")+"_"+c.action.command : "";
+			var theNodes = c.nodes ? c.nodes.join("-") : "";
+			if(theNodes != "" && theTabId != "" && $("#"+theTabId).length) {
+				var theTab = $("#"+theTabId);
                                 var index = theTab.closest("li").index();
                                 this.tabs.tabs('select', index);
                         }
@@ -99,7 +99,7 @@
                                 var tabId = (this.tabs.tabs('length') - 1) || 0;
                                 $('a[href=#'+c.getId()+']', this.tabs)
                                         .addClass(c.getClass())
-                                                                        .attr('id', c.nodes ? c.nodes[0]+"_"+c.action.command : "")
+                                                                        .attr('id', theTabId)
 
                                         .closest('li')
                                         .data('tabId', tabId)
