@@ -221,14 +221,14 @@ RngDocument = function() {
 
 		var name = node.getAttribute('name').toLowerCase().replace(":", "_");
 
-		//if (!this._schemaModel[name]) {
+		if (!this._schemaModel[name]) {
 
 			//NOTE: It is controled if the element already exists to not being added to the father childNodes array more than once.
 			//NOTE: With this correction, the "Named Patterns" would not be reused between different elements.
 			//TODO: Locating the moment in which an element <ref/> nested to an element <define/> is called several times.
 			//TODO: Fixing the previous point, this problem will be solved.
 			this._schemaModel[name] = new RngElement(name, isOptional);
-		//}
+		}
 
 		if (parent != null) {
 			this._schemaModel[name].parentNode = parent;

@@ -59,34 +59,34 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$('#anottationtoolbox-section-header-link', this.element).addClass('button-pressed');
 
-			/*this.populateLinkSection(annotationDoc.zemanta.markup.links);
+			this.populateLinkSection(annotationDoc.zemanta.markup.links);
 			this.populateImageSection(annotationDoc.zemanta.images);
-			this.populateArticleSection(annotationDoc.zemanta.articles);*/
-			this.populateLinkSection(annotationDoc.markup.links);
+			this.populateArticleSection(annotationDoc.zemanta.articles);
+/*			this.populateLinkSection(annotationDoc.markup.links);
 			this.populateImageSection(annotationDoc.images);
-			this.populateArticleSection(annotationDoc.articles);
+			this.populateArticleSection(annotationDoc.articles);*/
 
 			this.populatePeopleSection(annotationDoc.iks.people);
 			this.populatePlacesSection(annotationDoc.iks.places);
-			this.populateOrganisationsSection(annotationDoc.iks.organisations);
+			this.populateOrganisationsSection(annotationDoc.iks.orgs);
 
 			$('#anottationtoolbox-section-link, #anottationtoolbox-section-image, #anottationtoolbox-section-article, #anottationtoolbox-section-people, #anottationtoolbox-section-places, #anottationtoolbox-section-organisations').slideUp('fast');
 
-			//if (annotationDoc.zemanta.markup.links.length > 0) {
-			if (annotationDoc.markup.links.length > 0) {
+			if (annotationDoc.zemanta.markup.links.length > 0) {
+			//if (annotationDoc.markup.links.length > 0) {
 				$('#anottationtoolbox-section-link').slideDown('fast');
-			//} else if (annotationDoc.zemanta.images.length > 0) {
-			} else if (annotationDoc.images.length > 0) {
+			} else if (annotationDoc.zemanta.images.length > 0) {
+			//} else if (annotationDoc.images.length > 0) {
 				$('#anottationtoolbox-section-image').slideDown('fast');
-			//} else if (annotationDoc.zemanta.articles.length > 0)
-			} else if (annotationDoc.articles.length > 0)
+			} else if (annotationDoc.zemanta.articles.length > 0)
+			//} else if (annotationDoc.articles.length > 0)
 				$('#anottationtoolbox-section-article').slideDown('fast');
 
 			if(annotationDoc.iks.people.length > 0){
 				$('#anottationtoolbox-section-people').slideDown('fast');
 			} else if (annotationDoc.iks.places.length > 0){
 				$('#anottationtoolbox-section-places').slideDown('fast');
-			} else if (annotationDoc.iks.organisations.length > 0){
+			} else if (annotationDoc.iks.orgs.length > 0){
 				$('#anottationtoolbox-section-organisations').slideDown('fast');
 			}
 
@@ -101,6 +101,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$(div).attr('id', 'anottationtoolbox-link-container');
 		$('#anottationtoolbox-link-template', this.element).hide();
 
+		var countLinks=0;
 		var length = info.length;
 		for(var k = 0; k < length; k ++) {
 			var divHeader = $('#anottationtoolbox-linkheader-template', div).clone(true);
@@ -134,7 +135,16 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			}
 
 			$(divHeader, anchor).show();
+			countLinks++;
 		}
+		
+		if(countLinks==0){
+                        $('#anottationtoolbox-section-header-link').click(function (event) {
+                                var NoRefs = document.createTextNode("References not found.");
+                                $('#anottationtoolbox-section-link').empty();
+                                $('#anottationtoolbox-section-link').append(NoRefs);
+                        }.bind(this));
+                }
 
 		$('#anottationtoolbox-linkheader-template', div).remove();
 		$('#anottationtoolbox-linkitem-template', div).remove();
@@ -167,6 +177,15 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$(sliderContainerImageDiv).append($(img));
 			countImages ++;
 		}
+
+		if(countImages==0){
+                        $('#anottationtoolbox-section-header-image').click(function (event) {
+                                var NoRefs = document.createTextNode("References not found.");
+                                $('#anottationtoolbox-section-image').empty();
+                                $('#anottationtoolbox-section-image').append(NoRefs);
+                        }.bind(this));
+                }		
+
 		var prevImageButton = $('#prevButton-image', this.element);
 		var nextImageButton = $('#nextButton-image', this.element);
 		$(prevImageButton).click(function (event) {this.slideSwitch('backward');}.bind(this));
@@ -181,6 +200,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		var articleContainerDiv = $('#articleContainer-article');
 
 		var targetLength = info.length;
+		var countArticles=0;
 		for(var l = 0; l < targetLength; l ++) {
 			var articleDiv = $('#anottationtoolbox-articleitem-template', this.element).clone(true);
 			$(articleDiv).attr('id', '');
@@ -201,7 +221,16 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$(linkAdd).click(function (event) {this.addArticleToDocument(event);}.bind(this));
 			$(articleContainerDiv).append($(articleDiv));
+			countArticles++;
 		}
+
+		if(countArticles==0){
+                        $('#anottationtoolbox-section-header-article').click(function (event) {
+                                var NoRefs = document.createTextNode("References not found.");
+                                $('#anottationtoolbox-section-article').empty();
+                                $('#anottationtoolbox-section-article').append(NoRefs);
+                        }.bind(this));
+                }
 
 		$('#anottationtoolbox-articleitem-template', this.element).remove();
 		$('#anottationtoolbox-section-article').show();
@@ -210,18 +239,20 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 	populatePeopleSection: function(info) {
 		var peopleContainerDiv = $('#peopleContainer');
 
-		for(var k in info) {
+		var length = info.length;
+                var countPeople = 0;
+                for(var k = 0; k < length; k ++) {
 			var articleDiv = $('#anottationtoolbox-personitem-template', this.element).clone(true);
 			$(articleDiv).attr('id', '');
-			var articleDivText = document.createTextNode(k);
+			var articleDivText = document.createTextNode(info[k]['selected-text']);
 
 			var link = $('#anottationtoolbox-personitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', info[k]);
+			$(link).attr('href', info[k]['selected-text']);
 			$(link).attr('id', 'anottationtoolbox-personitem_' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-personitem-template_template', this.element).clone(true);
 			$(linkAdd).attr('id', 'anottationtoolbox-personitem_' + k);
-			$(linkAdd).attr('anchorname', k);
+			$(linkAdd).attr('anchorname', info[k]['selected-text']);
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
@@ -232,7 +263,16 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$(linkAdd).click(function (event) {this.addTag(event, 'people');}.bind(this));
 			$(peopleContainerDiv).append($(articleDiv));
+			countPeople++;
 		}
+
+		if(countPeople==0){
+                        $('#anottationtoolbox-section-header-people').click(function (event) {
+                                var NoRefs = document.createTextNode("References not found.");
+                                $('#anottationtoolbox-section-people').empty();
+                                $('#anottationtoolbox-section-people').append(NoRefs);
+                        }.bind(this));
+                }
 
 		$('#anottationtoolbox-personitem-template', this.element).remove();
 		$('#anottationtoolbox-section-people').show();
@@ -241,18 +281,20 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 	populatePlacesSection: function(info) {
 		var placesContainerDiv = $('#placesContainer');
 
-		for(var k in info) {
+		var length = info.length;
+                var countPlaces = 0;
+                for(var k = 0; k < length; k ++) {
 			var articleDiv = $('#anottationtoolbox-placeitem-template', this.element).clone(true);
 			$(articleDiv).attr('id', '');
-			var articleDivText = document.createTextNode(k);
+			var articleDivText = document.createTextNode(info[k]['selected-text']);
 
 			var link = $('#anottationtoolbox-placeitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', info[k][0]);
+			$(link).attr('href', info[k]['selected-text']);
 			$(link).attr('id', 'anottationtoolbox-placeitem' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-placeitem-template_template', this.element).clone(true);
 			$(linkAdd).attr('id', 'anottationtoolbox-placeitem' + k);
-			$(linkAdd).attr('anchorname', k);
+			$(linkAdd).attr('anchorname', info[k]['selected-text']);
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
@@ -263,7 +305,16 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$(linkAdd).click(function (event) {this.addTag(event,'places');}.bind(this));
 			$(placesContainerDiv).append($(articleDiv));
+			countPlaces++;
 		}
+
+		if(countPlaces==0){
+                        $('#anottationtoolbox-section-header-places').click(function (event) {
+                                var NoRefs = document.createTextNode("References not found.");
+                                $('#anottationtoolbox-section-places').empty();
+                                $('#anottationtoolbox-section-places').append(NoRefs);
+                        }.bind(this));
+                }
 
 		$('#anottationtoolbox-placeitem-template', this.element).remove();
 		$('#anottationtoolbox-section-places').show();
@@ -272,18 +323,20 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 	populateOrganisationsSection: function(info) {
 		var organisationsContainerDiv = $('#organisationsContainer');
 
-		for(var k in info) {
+		var length = info.length;
+                var countOrgs = 0;
+                for(var k = 0; k < length; k ++) {
 			var articleDiv = $('#anottationtoolbox-organisationitem-template', this.element).clone(true);
 			$(articleDiv).attr('id', '');
-			var articleDivText = document.createTextNode(k);
+			var articleDivText = document.createTextNode(info[k]['selected-text']);
 
 			var link = $('#anottationtoolbox-organisationitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', info[k][0]);
+			$(link).attr('href', info[k]['selected-text']);
 			$(link).attr('id', 'anottationtoolbox-organisationitem' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-organisationitem-template_template', this.element).clone(true);
 			$(linkAdd).attr('id', 'anottationtoolbox-organisationitem' + k);
-			$(linkAdd).attr('anchorname', k);
+			$(linkAdd).attr('anchorname', info[k]['selected-text']);
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
@@ -294,7 +347,16 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$(linkAdd).click(function (event) {this.addTag(event,'organisations');}.bind(this));
 			$(organisationsContainerDiv).append($(articleDiv));
+			countOrgs++;
 		}
+
+		if(countOrgs==0){
+                        $('#anottationtoolbox-section-header-organisations').click(function (event) {
+                                var NoRefs = document.createTextNode("References not found.");
+                                $('#anottationtoolbox-section-organisations').empty();
+                                $('#anottationtoolbox-section-organisations').append(NoRefs);
+                        }.bind(this));
+                }
 
 		$('#anottationtoolbox-organisationitem-template', this.element).remove();
 		$('#anottationtoolbox-section-organisations').show();
@@ -330,17 +392,19 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		//temporal measure
 		$('.xim-tagsinput-container').tagsinput('createTag',{text: word, typeTag: type, url: link, description:''});
 		$('.xim-tagsinput-container').show();
+
 		// Locating all words in document
 		var elementsToParse = this.editor.getRngDocument().getAllowedParents(rngElementName);
 
 		elementsToParse.each(function(index, elementToParse) {
 			this.editor.setActionDescription(_('Applied `annotation tag`'));
-						$(elementToParse + ":contains('" + word + "')", this.editor._xmlDom).each(function(index,elem) {
+			$(elementToParse + ":contains('" + word + "')", this.editor._xmlDom).each(function(index,elem) {
 
 				var rngElement = this.editor.getRngDocument().getElement(rngElementName);
 				var parentElement = this.editor._ximdoc.getElement($(elem).attr('uid'));
 
 				selNode = $('[uid=' + $(elem).attr('uid') + ']', this.editor.getInnerDocument());
+
 				$($(selNode).contents().get().reverse()).each(function(index, el) {
 					if(el.nodeType == 3 && el.nodeValue.indexOf(word) >= 0) {
 						var size = $(selNode).contents().length;

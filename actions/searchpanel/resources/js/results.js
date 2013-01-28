@@ -120,6 +120,17 @@ X.actionLoaded(function(event, fn, params) {
 		})
 		.listview('setModel', results.data);
 
-		$divResults = jQuery("<div/>").addClass("number_results").html("<span>"+_("Number of results")+": "+results.records+"</span>"); 
+		var searchedTerm = results.query.filters[0].content;
+
+                $divResults = jQuery("<div/>").addClass("results_info"); 
+		var $divSearch = jQuery("<div/>").html(_("Search criteria")); 
+                var $searchTermList = jQuery("<ul/>").appendTo($divSearch); 
+                jQuery("<li/>").html(_("Name")+": "+searchedTerm).appendTo($searchTermList); 
+                if(!isNaN(parseInt(searchedTerm))) 
+                        jQuery("<li/>").html(_("Node")+": "+searchedTerm).appendTo($searchTermList); 
+                 
+                $divSearch.appendTo($divResults); 
+                jQuery("<div/>").html(_("Number of results")+": "+results.records).appendTo($divResults); 
+
 		fn('.xim-listview-results').prepend($divResults);
 });

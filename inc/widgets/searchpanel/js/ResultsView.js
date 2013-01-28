@@ -72,7 +72,7 @@
 				$div.remove(); 
  		 
 			// Put the number of results if there is at least one record 
-			if(source.records && source.records > 0) { 
+			if(source.records && source.records > 0  && window.drawertool == null) { 
 				$div = $("<div class='number_results'/>").html(_("Number of results")+": "); 
         			$span = $("<span/>").html(source.records); 
         			$div.append($span); 

@@ -78,7 +78,10 @@ function XimdocAnnotationTool() {
 						var options = {selNode: this.editor.getSelectedNode(), caller: this};
 						this.editor.beforeUpdateContent(options);
 						this._annotationDoc = json;
+
+						//This method shows all the references marked on the text.
 						//this.showAnnotation();
+
 						this.editor.afterUpdateContent(options);
 						loadingImage.hideLoadingImage();
 					} else {
@@ -108,10 +111,10 @@ function XimdocAnnotationTool() {
 		var bodyText = $('body', doc).html();
 		var searchedTerms = "";
 
-		var searchLength = this._annotationDoc.markup.links.length;
+		var searchLength = this._annotationDoc.zemanta.markup.links.length;
 		if (searchLength == 0) return;
 		for (var k = 0; k < searchLength; k ++) {
-			searchedTerm = this._annotationDoc.markup.links[k].anchor;
+			searchedTerm = this._annotationDoc.zemanta.markup.links[k].anchor;
 			searchedTerm = searchedTerm.replace("(", "\\\(");
 			searchedTerm = searchedTerm.replace(")", "\\\)");
 			searchedTerm = searchedTerm.replace("-", "\\\-");

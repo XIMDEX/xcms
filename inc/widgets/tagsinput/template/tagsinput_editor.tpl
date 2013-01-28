@@ -37,12 +37,12 @@
     <ul class="xim-tagsinput-list" style="clear:both;">
        {foreach name=list item=tag key=i from=$tags}
    		<li class="xim-tagsinput-tag">	
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][text]" value="{$tag.name}" />
+				<input type="hidden" name="tags[{$smarty.foreach.list.index}][text]" value="{$tag.name|utf8_decode}" />
 				<input type="hidden" name="tags[{$smarty.foreach.list.index}][type]" value="{$tag.type|default:'generic'}" />
 				<input type="hidden" name="tags[{$smarty.foreach.list.index}][url]"  value="{$tag.link|default:'#'}" />
 				<input type="hidden" name="tags[{$smarty.foreach.list.index}][description]" value="{$tag.description}" />	
 				<span>
-				{$tag.name}
+				{$tag.name|utf8_decode}
 				</span>
 				{* <a class="xim-tagsinput-tag-properties" href="#"> &infin; </a> *}
 
