@@ -60,7 +60,7 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 				$idLanguage = $language['IdLanguage'];
 				$languageData[$id] = $this->_hasLang($idNode, $idLanguage);
 				$languageData[$id]['idLanguage'] = $idLanguage;
-				$languageData[$id]['alias'] = $node->GetAliasForLang($idLanguage);
+				$languageData[$id]['alias'] = utf8_decode($node->GetAliasForLang($idLanguage));
 				$languageData[$id]['name'] = $language['Name'];
 				$id ++;
 			}
@@ -177,9 +177,9 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 
 						if (isset($aliases[$idLanguage])) {
 							$data['CHILDRENS'][] = array(
-													'NODETYPENAME' => 'NODENAMETRANSLATION',
-													'IDLANG' => $idLanguage,
-													'DESCRIPTION' => $aliases[$idLanguage]);
+								'NODETYPENAME' => 'NODENAMETRANSLATION',
+								'IDLANG' => $idLanguage,
+								'DESCRIPTION' => utf8_encode($aliases[$idLanguage]));
 						}
 
 						$baseIO = new baseIO();

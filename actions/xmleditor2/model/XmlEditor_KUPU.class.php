@@ -431,8 +431,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$response['content'] = '<?xml version="1.0" encoding="UTF-8"?>
 				<parsererror xmlns="http://www.mozilla.org/newlayout/xml/parsererror.xml">
 				  Error while saving
-				  <sourcetext>'.$msg.'</sourcetext>
-				</parsererror>';
+				  <sourcetext>'.$msg.'</sourcetext></parsererror>';
 
 		} else {
 
@@ -600,15 +599,17 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 				$json1 = json_decode($resp1,true);
 				$json2 = json_decode($resp2,true);
 
-				if($json1['status']!="ok" /*&& $json2['status']!="ok"*/){
+				if($json1['status']!="ok" && $json2['status']!="ok"){
 					$status = "bad";
 				}
 
+				//We must delete de HTTP header that comes with the response 
 				$pos=strpos($resp1,"status");
-				if ($pos!== FALSE)
+				if ($pos!== FALSE){
 		 	                $resp1=substr($resp1,$pos-2,strlen($resp1));
-				//$resp='{"status": "'.$status.'","zemanta":'.$resp1.', "iks":'.$resp2.'}';
-				$resp=$resp1;
+				}
+				
+				$resp='{"status": "'.$status.'","zemanta":'.$resp1.', "iks":'.$resp2.'}';
 			}
 		}
 		else{

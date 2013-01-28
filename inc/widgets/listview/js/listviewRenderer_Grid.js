@@ -29,10 +29,10 @@ X.listview.ListviewRenderer_Grid = Object.xo_create(X.listview.ListviewRenderer,
 	
 	createView: function(model, listeners) {
 
-		$('.t_fixed_header_main_wrapper').remove();
+		$('.t_fixed_header_main_wrapper', this.widget.element).remove();
 		var widget = this.widget;
 		var container = $('<table></table>').addClass('xim-listview-table');//.addClass('resizable').attr('id','xim-listview-table');
-		container.attr('id','xim-listview-table');
+		//container.attr('id','xim-listview-table');
 		/*var colgroups = $('<colgroup></colgroup>');
 		for (var i=0; i<this.widget.options.colModel.length; i++) {
 			colgroups.append('<col/>');
