@@ -24,7 +24,7 @@
  *}
 
 {* Shows form to users who have general permit of cascade deletion *}
-<form method="post" name="formulario" id='formulario' action='{$action_url}' onsubmit="valida()">
+<form method="post" name="formulario" id='formulario' action='{$action_url}'>
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<fieldset>
 		<legend><span>{t}Would you like to delete{/t} {$nameNode}?</span></legend>

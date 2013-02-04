@@ -102,9 +102,9 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6040,5023,'Delete folder','deletenode','delete_folder_common.png','Delete selected folder',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6041,5025,'Delete folder','deletenode','delete_folder_css.png','Delete selected folder',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6042,5027,'Delete','deletenode','delete.png','Delete a node',80,NULL,1,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6043,5019,'Add new XML document','createxmlcontainer','add_xml.png','Create a new structured document in several languages',10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6043,5019,'Add new document','createxmlcontainer','add_xml.png','Create a new structured document in several languages',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6108,5011,'Delete group','deletenode','delete_group.png','Delete select group',80,NULL,1,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6044,5018,'Add new XML document','createxmlcontainer','add_xml.png','Create a new document structured in several languages',10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6044,5018,'Add new document','createxmlcontainer','add_xml.png','Create a new document structured in several languages',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6045,5031,'Add new language','addlangxmlcontainer','add_language_xml.png','Add a document with a different language',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6046,5079,'Manage workflow','modifystates','manage_states.png','Add a new status to the workflow',40,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6047,5030,'Add new language','createlanguage','add_language.png','Add a new language',10,NULL,0,'');
@@ -227,7 +227,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6202,5014,'Associate ximlet with server','addximlet','asociate_ximlet_server.png','Associate a ximlet with a server',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6204,5015,'Publish section','publicatesection','publicate_section.png','Publish a section massively',10,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6205,5015,'Expire section','expiresection','expire_section.png','Expire a section',10,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6227,5076,'Edit with text mode','edittext','edit_html_txt_file.png','Edit content of text document',11,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6227,5076,'Edit in text mode','edittext','edit_html_txt_file.png','Edit content of text document',11,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6228,5076,'Download file','filedownload','download_html_file.png','Download selected file',20,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6229,5076,'Edit HTML','htmleditor','edit_html_file.png','Edita el documento html',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6230,5076,'Change name','renamenode','change_name_html_file.png','Change name of selected file',70,NULL,0,'');
@@ -406,7 +406,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8113,5022,'Download all files','filedownload_multiple','download_html_file.png','Download all files',20,NULL,0,'',1);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8114,5023,'Download all files','filedownload_multiple','download_html_file.png','Download all files',20,NULL,0,'',1);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8115, 5053, 'Add PVD templates', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of PVD templates to the server', 10, NULL, 0, 'type=pvd', 0);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8116, 5309, 'Edit with Xedit', 'xmleditor2', 'edit_file_xml.png', 'Edit content of XML document with Xedit', -1, NULL, 0, 'mode=ximdoc', 0);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8116, 5309, 'Edit in Xedit', 'xmleditor2', 'edit_file_xml.png', 'Edit content of XML document with Xedit', -1, NULL, 0, 'mode=ximdoc', 0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8117,5077,'Change name','renamenode','modify_template_ptd.png','Change template name',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8118,5077,'Download template','filedownload','download_template_ptd.png','Download a template',20,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8119,5077,'Version manager','manageversions','manage_versions.png','Manage repository of versions',77,NULL,0,'');
@@ -1346,7 +1346,7 @@ INSERT INTO `Nodes` VALUES (6132,5028,5008,'Move to next state',NULL,NULL,NULL,N
 INSERT INTO `Nodes` VALUES (6133,5028,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6134,5032,5008,'Delete document',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6135,5032,5008,'Symbolic link',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6136,5032,5008,'Edit with text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6136,5032,5008,'Edit in text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6137,5054,5008,'Add new ximlet folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6138,5054,5008,'Add new ximlet',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6139,5055,5008,'Add new ximlet folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1367,7 +1367,7 @@ INSERT INTO `Nodes` VALUES (6153,5056,5008,'Change ximlet name',NULL,0,NULL,0,0,
 INSERT INTO `Nodes` VALUES (6154,5057,5008,'Edit ximlet',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6155,5057,5008,'Delete document',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6156,5057,5008,'Symbolic link',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6157,5057,5008,'Edit with text mode',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6157,5057,5008,'Edit in text mode',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6168,5040,5008,'Replace image',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6170,5014,5008,'Move node',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6171,5015,5008,'Move node',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1394,7 +1394,7 @@ INSERT INTO `Nodes` VALUES (6317,5307,5008,'Version repository',NULL,NULL,NULL,N
 INSERT INTO `Nodes` VALUES (6318,5307,5008,'Generate',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6319,5307,5008,'Delete document',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6320,5307,5008,'Symbolic link',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6321,5307,5008,'Edit with text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6321,5307,5008,'Edit in text mode',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6322,5307,5008,'Version manager',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6323,5308,5008,'Download image',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6324,5308,5008,'Image preview',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);

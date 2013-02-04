@@ -40,6 +40,7 @@
 			 onclick="$('#publicar').attr('value', '1');"
 			  }<!--message="{t}Are you sure you want to save and publish the document?{/t}"-->
 	{/if}
+		{button label="Clear" class="reset"}
 		{button label="Save" class="validate"}<!--message="{t}Are you sure you want to save the changes?{/t}"-->
 	</fieldset>
 

@@ -37,6 +37,7 @@
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/tabledrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/toolboxes.tpl"}
+		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/tagnavbar.tpl"} 
         	<div class="kupu-editorframe">
 			<div class="iwrapper"><!--Added for autoscrolling-->
 				<div class="scrollup autoscroll"><span>{t}Scroll up{/t}</span></div>

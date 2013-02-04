@@ -24,14 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
-
-
-
-
-
 class Action_filepreview extends ActionAbstract {
    // Main method: shows initial form
     function index () {
@@ -58,6 +50,53 @@ class Action_filepreview extends ActionAbstract {
 		$values = array('id_node' => $idNode,
 						'path' => Config::getValue('UrlRoot') . '/data/files/' . $hash);
 		$this->render($values, null, 'default-3.0.tpl');
+    }
+
+	/**
+     * <p>Show all images contained in a node</p>
+     * 
+     */
+    function showAll() {
+
+        $idNode = $this->request->getParam('nodeid');
+
+        $node = new Node($idNode);
+        if(!($node->get('IdNode'))> 0 || $node->get('IdNodeType') != 5016) {
+            $message = _("Forbidden access");
+            $this->render(array("msg" => $message), null, 'default-3.0.tpl');
+            return;
+        }
+
+        /* Gets all child nodes of type image (nodetype 5040) of this node */
+        $nodes = $node->GetChildren(5040);
+        $imageNodes = array();
+        $imagePath = Config::getValue('UrlRoot').Config::getValue('FileRoot');
+        if(count($nodes) > 0) {
+            foreach($nodes as $idNode) {
+                $n = new Node($idNode);
+                if(!($n->get('IdNode') > 0))
+                    continue;
+
+                $dataFactory = new DataFactory($idNode);
+                $selectedVersion = $dataFactory->GetLastVersionId();
+
+                $version = new Version($selectedVersion);
+                $hash = $version->get('File');
+                array_push($imageNodes,array('name' => $n->GetNodeName(), 'src' => $imagePath.'/'.$hash));
+            }
+
+            $this->addCss('/actions/filepreview/resources/css/showAll.css');
+            $this->addJs('/actions/filepreview/resources/js/showAll.js');
+            $this->addJs('/actions/filepreview/resources/js/bxgallery.js');
+
+            $values = array('imageNodes' => $imageNodes);
+            $this->render($values, null, 'default-3.0.tpl');
+
+        }
+	else {
+            $message = _("No images found in this folder");
+            $this->render(array("msg" => $message), null, 'default-3.0.tpl');
+        }
     }
 }
 ?>

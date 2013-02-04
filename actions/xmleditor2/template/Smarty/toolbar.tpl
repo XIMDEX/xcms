@@ -36,12 +36,10 @@
 		
 		<!-- Document views -->
 		<span class="kupu-tb-buttongroup">		
-			{if !$rngEditorMode}
 				<button type="button" class="kupu-treeview" id="kupu-treeview-button" xim:title="{t}Tree{/t}" i18n:attributes="title" accesskey="s">
 					&#xA0;
 					<span class="triangle"></span><span class="tooltip">{t}Tree view{/t}</span>
 				</button>
-			{/if}
 			<button type="button" class="kupu-designview" id="kupu-designview-button" xim:title="{t}Design{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Design view{/t}</span>
