@@ -76,7 +76,7 @@ class Action_edittext extends ActionAbstract {
 
 		$this->addJs("/extensions/codemirrror/mode/$ext/$ext.js");
 		$this->addJs("/extensions/codemirrror/mode/$ext/$ext.js"); //this double is necessary
-		$this->addJs('/actions/edittext/javascript/init.js');
+		$this->addJs('/actions/edittext/resources/js/init.js');
 
 		$content = $node->GetContent();
 		$content = $this->formatXml($content);
@@ -85,12 +85,6 @@ class Action_edittext extends ActionAbstract {
 		$ruta = str_replace("/", "/ ",$node->GetPath());
 
 		$jsFiles = array(Config::getValue('UrlRoot') . '/xmd/js/ximdex_common.js');
-
-		/*if (ModulesManager::isEnabled('ximDEMOS')){
-			$this->addJs( '/actions/edittext/javascript/tour.js');
-                    if ($this->tourEnabled(XSession::get("userID")))
-                    	$this->addJs( '/resources/js/start_tour.js', 'ximDEMOS');
-                }*/
 
 		$values = array('id_node' => $idNode,
 				'isXimNewsLanguage' => $isXimNewsLanguage,
@@ -176,6 +170,9 @@ class Action_edittext extends ActionAbstract {
 
 		$idNode = $this->request->getParam('nodeid');
 		$content = $this->request->getParam('editor');
+
+		//If content is empty, put a blank space in order to save a file with empty content
+		$content = empty($content) ? " " : $content;
 
 		$node = new Node($idNode);
 		if ((!$node->get('IdNode') > 0)) {

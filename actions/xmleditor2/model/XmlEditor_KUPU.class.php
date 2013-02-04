@@ -196,6 +196,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/tools/ToolbarTool.js',
 			$actionURL . '/js/tools/ImagesTool.js',
 			$actionURL . '/js/tools/RMXimdexTool.js',
+			$actionURL . '/js/tools/NavBarTool.js',
 
 				/* ####### DRAWERS ########## */
 
@@ -219,6 +220,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/toolboxes/AnnotationToolBox.class.js',
 			$actionURL . '/js/toolboxes/AnnotationRdfaToolBox.class.js',
 			$actionURL . '/js/toolboxes/RNGElementsToolBox.class.js',
+			$actionURL . '/js/toolboxes/NavBarToolBox.class.js',
 //			$actionURL . '/js/editor/ToolbarToolBox.class.js',
 
 				/* ##### buttons #### */

@@ -64,6 +64,9 @@ msgstr "Por favor, compruebe la configuraci&oacute;n de la base de datos en su /
 msgid "New file"
 msgstr "Archivo nuevo"
 
+msgid "Add empty file"
+msgstr "A&ntilde;adir nuevo archivo"
+
 msgid "Create a new empty file"
 msgstr "Crea un nuevo archivo vac&iacute;o"
 
@@ -1647,6 +1650,10 @@ msgstr "Guardar y publicar"
 #: /actions/edittext/template/Smarty/publishForm.tlp
 msgid "Modification of this PTD has affected to %1 documents. Would you like to republish them?"
 msgstr "La modificaci&oacute;n de esta PTD ha afectado a %1 documentos. &iquest;Desea republicarlos?"
+
+#: /actions/edittext/javascript/init.js
+msgid "You are going to clear the current content. It won't be removed until you save the data. Are you sure?"
+msgstr "Vas a borrar el contenido actual. No ser&aacute; eliminado hasta que guardes el documento. &iquest;Est&aacute;s seguro?"
 
 #: /actions/edittext/javascript/tour.js
 msgid "This action allows to edit in a text window the document code.<br/>"
@@ -5829,8 +5836,8 @@ msgstr "Borrar la carpeta seleccionada"
 msgid "Delete a node"
 msgstr "Borrar el nodo"
 
-msgid "Add new XML document"
-msgstr "A&ntilde;adir nuevo documento XML"
+msgid "Add new document"
+msgstr "A&ntilde;adir nuevo documento"
 
 msgid "Create a new structured document in several languages"
 msgstr "Crear un nuevo documento estructurado en varios idiomas"
@@ -7694,10 +7701,15 @@ msgstr "La categor&iacute;a se ha actualizado correctamente"
 
 #: /modules/ximNEWS/actions/unlinknewscolector/template/Smarty/index.tpl
 #: also table ximNEWS.Nodes
+msgid "A single calendar will be shown for each selected news"
+msgstr "Se mostrar&aacute; un calendario por cada noticia seleccionada"
+
+msgid "Pick up a date and time to unlink each news from the colector. If you want to dissasociate them now, just set the date and time with a pair of minutes in the future"
+msgstr "Elige una fecha y hora para desasociar cada noticia del colector. Si las quieres desasociar ahora, simplemente establece la fecha y la hora a un par de minutos en el futuro"
+
 msgid "Delete news from colector"
 msgstr "Eliminar noticia del colector"
 
-#: /modules/ximNEWS/actions/unlinknewscolector/template/Smarty/index.tpl
 msgid "News associated to colector"
 msgstr "Noticias asociadas al colector"
 

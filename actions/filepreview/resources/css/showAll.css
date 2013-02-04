@@ -1,0 +1,16 @@
+#image_container { 
+    display: none;
+    padding: 25px;
+}
+#image_container li {
+    text-align: center;
+}
+#image_container .caption {
+    text-align: justify;
+}
+.thumbs li {
+    padding: 20px;
+    border: 1px dotted #BBBBBB;
+    border-width: 0 0 1px 0;
+}
+
