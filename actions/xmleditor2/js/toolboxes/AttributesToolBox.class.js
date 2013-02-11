@@ -38,6 +38,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 		AttributesToolBox._super(this, 'initialize', tool, editor);
 
 		this.setTitle(_('Attributes'));
+		this.currentInput = null; 
 		this.imgObserver = null;
 		this.imgDim = {w: -1, h: -1};
 	},
@@ -340,7 +341,10 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 			.attr('type', 'button')
 			.html(_('Search'));
 
+		var that = this;
 		$button.click(function(){
+			//Updating current input at open the imageSelector 
+			that.currentInput = $inputUrl; 
 			$sp.searchpanel("option","masterFilter",searchOptions);
 			$sp.searchpanel("open");
 
@@ -405,7 +409,8 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 		$(that2.imageSelector).unbind('nodesSelected');
 		var image = params.selection.length > 0 ? params.selection[0] : false;
 		if (!image) return;
-		inputUrl2.val(image.nodeid.value);
+		if (!that2.currentInput) return;
+		that2.currentInput.val(image.nodeid.value);
 	},
 
 	_save_attribute_ximlink: function(event, $inputUrl, $inputText, $inputName) {
