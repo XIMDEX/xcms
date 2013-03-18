@@ -37,8 +37,12 @@ class BuildParser {
 
 	public function __construct($file, $path = null) {
 		$this->filePath = ( null === $path )?  dirname($file) : $path;
-		$this->doc = DOMDocument::load($file);
-		if (! $this->doc instanceof DOMDocument) {
+		$this->doc = new DOMDocument();
+		$result = false;
+
+		if(file_exists($file) )
+			$result = $this->doc->load($file);
+		if (!$result) {
 			throw new Exception(_('Error parsing XML document'));
 			return;
 		}

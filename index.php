@@ -38,9 +38,11 @@ if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
 
 include_once(XIMDEX_ROOT_PATH."/inc/modules/ModulesManager.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
+
 ModulesManager::file('/inc/utils.inc');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
+ModulesManager::file( '/conf/extensions.conf.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/log/XMD_log.class.php'); // Main Logger

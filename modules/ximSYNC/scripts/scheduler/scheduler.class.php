@@ -46,7 +46,7 @@ $synchro_pid = null;
 
 class Scheduler {
 
-	public function start($global_execution = true) {
+	public static function start($global_execution = true) {
 
 		global $synchro_pid;
 		$synchro_pid = posix_getpid ();
@@ -95,6 +95,8 @@ class Scheduler {
 				die ( $msg );
 			}
 
+
+
 			$batchManager->setBatchsActiveOrEnded ( $testTime );
 
 			$activeAndEnabledServers = $serverError->getServersForPumping ();
@@ -140,7 +142,7 @@ class Scheduler {
 
 				// Some processable Bacths found...
 
-				$startStamp = mktime ();
+				$startStamp = time ();
 				$syncStatObj->create ( null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "[CACTI]SCHEDULER-INFO", 8, "[Id: $startStamp]"._("STARTING BATCH PROCESSING") );
 
 				while ( $batchProcess ) {

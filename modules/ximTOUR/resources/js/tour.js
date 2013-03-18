@@ -420,10 +420,10 @@
 		    $('#tourcontrols',this.scope).css("margin-top", (($(window).height() - $('#tourcontrols',this.scope).outerHeight()) / 2) + $(window).scrollTop() + "px");
 		    $('#tourcontrols',this.scope).css("left", (($(window).width() - $('#tourcontrols',this.scope).outerWidth()) / 2) + $(window).scrollLeft() + "px");
 		    $('#tourcontrols',this.scope).draggable();
-		    $('#tourcontrols span#prevstep',this.scope).draggable("disable");
-		    $('#tourcontrols span#nextstep',this.scope).draggable("disable");
-		    $('#tourcontrols a#restarttour',this.scope).draggable("disable");
-		    $('#tourcontrols a#endtour',this.scope).draggable("disable");
+		    $('#tourcontrols span#prevstep',this.scope).draggable();
+		    $('#tourcontrols span#nextstep',this.scope).draggable();
+		    $('#tourcontrols a#restarttour',this.scope).draggable();
+		    $('#tourcontrols a#endtour',this.scope).draggable();
 
 		}.bind(this)
 		);

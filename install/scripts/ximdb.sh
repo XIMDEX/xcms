@@ -340,8 +340,9 @@ function checkUser
 
 		if [ "$CREATE_USER" = "1" ]
 		then
-				  	#Changed to @'%'. Previously, it was localhost but this didn't make sense if the server is an external server and not localhost
-					sql "GRANT ALL PRIVILEGES  ON $DATABASE.* TO '$USER_DB'@'%' IDENTIFIED BY '$PASSWD_DB'; FLUSH privileges; "
+				  	#Changed to @'%'. Previously, it was localhost but this didn't make sense if the server is an external server and not localhost. It's necessary twice time(localhost and all ). See #2583
+					sql "GRANT ALL PRIVILEGES  ON $DATABASE.* TO '$USER_DB'@'localhost' IDENTIFIED BY '$PASSWD_DB'; FLUSH privileges; " 
+					sql "GRANT ALL PRIVILEGES  ON $DATABASE.* TO '$USER_DB'@'%' IDENTIFIED BY '$PASSWD_DB'; FLUSH privileges; " 
 					println "Database user does not exist. Creating it... "
 		else
 			checkUserError
@@ -350,7 +351,8 @@ function checkUser
   else
      	println "Database user already exists."
   	#privilege to user
-  	#Changed to @'%'. Previously, it was localhost but this didn't make sense if the server is an external server and not localhost
+  	#Changed to @'%'. Previously, it was localhost but this didn't make sense if the server is an external server and not localhost.  It's neccesary twice time ( localhost y all ). See #2583 
+      	sql "GRANT ALL PRIVILEGES  ON $DATABASE.* TO '$USER_DB'@'localhost' IDENTIFIED BY '$PASSWD_DB' WITH GRANT OPTION;"
       	sql "GRANT ALL PRIVILEGES  ON $DATABASE.* TO '$USER_DB'@'%' IDENTIFIED BY '$PASSWD_DB' WITH GRANT OPTION;"
    fi
 

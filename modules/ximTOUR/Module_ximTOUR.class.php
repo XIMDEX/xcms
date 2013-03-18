@@ -56,7 +56,7 @@ class Module_ximTOUR extends Module {
 	}
         
         function uninstall(){
-            
+		   		$this->removeStateFile();
         }
 }
 

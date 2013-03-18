@@ -127,5 +127,5 @@ ul.browser-modules-view-list{
 }
 
 .ui-tabs-panel fieldset  ul li, .ui-tabs-panel ul.browser-modules-view-list li {
-	cursor:default;
+	cursor: pointer;
 }
