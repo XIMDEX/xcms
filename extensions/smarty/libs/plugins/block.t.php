@@ -70,8 +70,11 @@ function smarty_gettext_strarg($str)
  *   - plural - The plural version of the text (2nd parameter of ngettext())
  *   - count - The item count for plural mode (3rd parameter of ngettext())
  */
-function smarty_block_t($params, $text, &$smarty)
+function smarty_block_t($params, $text, &$smarty, &$repeat)
 {
+ 
+	//unique when close block
+	if($repeat) return ;
 
 	$text = stripslashes($text);
 
