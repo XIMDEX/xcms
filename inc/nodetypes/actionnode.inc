@@ -58,7 +58,7 @@ class ActionNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID, $command, $icon, $description) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $command = null, $icon = null, $description = null) {
 
 		$action = new Action();
 		$action->CreateNewAction($this->parent->get('IdNode'), $parentID, $name, $command, $icon, $description, $stateID);
@@ -81,7 +81,7 @@ class ActionNode extends Root {
 	*  @return unknown
 	*/
 
-	function RenameNode($name) {
+	function RenameNode($name = null) {
 
 	 	$action = new Action($this->nodeID);
 		$action->SetName($name);

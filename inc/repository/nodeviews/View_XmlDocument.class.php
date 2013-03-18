@@ -107,8 +107,10 @@ class View_XmlDocument extends Abstract_View implements Interface_View {
 	}
 
 	private function delDocxap($content) {
-		$doc = DOMDocument::loadXML($content);
-		if (!($doc instanceof DOMDocument)) return false;
+
+		$doc = new DOMDocument();
+		$result = $doc->loadXML($content);
+		if(!$result) return false;
 
 		$docxap = $doc->getElementsByTagName('docxap');
 		$docxap = $docxap->item(0);

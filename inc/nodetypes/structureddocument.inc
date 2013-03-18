@@ -56,7 +56,7 @@ class AbstractStructuredDocument extends FileNode  {
 
 
 	/// Crea un nuevo nodo y carga su ID en la clase
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID, $templateID, $IdLanguage, $aliasName = '', $channelList) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null, $aliasName = '', $channelList = null) {
 
 		$loginID = XSession::get("userID");
 
@@ -99,7 +99,7 @@ class AbstractStructuredDocument extends FileNode  {
 
 
 	/// Nombre para el archivo en produccion.
-	function GetPublishedNodeName($channel) {
+	function GetPublishedNodeName($channel = null) {
 
 		$channel = new Channel($channel);
 		$fileName = $this->parent->GetNodeName() . "-id".$channel->GetName() . "." . $channel->GetExtension();
@@ -288,7 +288,7 @@ class AbstractStructuredDocument extends FileNode  {
 		$parentID = $this->parent->GetParent();
 		$parent = new Node($parentID);
 
-		/// Renderizamos hacia arriba toda la jerarquía
+		/// Renderizamos hacia arriba toda la jerarqu\EDa
 		if(!$parent->IsRenderized()) {
 			$parent->RenderizeNode();
 		}
@@ -307,7 +307,7 @@ class AbstractStructuredDocument extends FileNode  {
 	}
 
 	/**
-	 * Cabecera docxap, hay que tener cuidado al añadir parámetros, ya que estos deben ser enviados a solr y por lo tanto
+	 * Cabecera docxap, hay que tener cuidado al a\F1adir par\E1metros, ya que estos deben ser enviados a solr y por lo tanto
 	 * los que no deben ir a solr deben ser debidamente excluidos
 	 *
 	 * @param int $channel
@@ -416,7 +416,7 @@ class AbstractStructuredDocument extends FileNode  {
 		XMD_Log::info('StrDoc dependencies deleted');
 	}
 
-	function RenameNode($name) {
+	function RenameNode($name = null) {
 
 		$doc = new StructuredDocument($this->nodeID);
 		$doc->SetName($name);

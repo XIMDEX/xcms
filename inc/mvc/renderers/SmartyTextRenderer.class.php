@@ -36,19 +36,23 @@ class SmartyTextRenderer {
 	 static function render($_text, $_parameters = NULL) {
 	
 		$smarty = new Smarty();
-		$smarty->template_dir = SMARTY_TMP_PATH . '/templates';
-		$smarty->compile_dir = SMARTY_TMP_PATH . '/templates_c';
-		$smarty->cache_dir = SMARTY_TMP_PATH . '/cache';
-		$smarty->config_dir = SMARTY_TMP_PATH . '/configs';
+		$smarty->setTemplateDir(SMARTY_TMP_PATH . '/templates');
+		$smarty->setCompileDir(SMARTY_TMP_PATH . '/templates_c');
+		$smarty->setCacheDir(SMARTY_TMP_PATH . '/cache');
+		$smarty->setConfigDir(SMARTY_TMP_PATH . '/configs');
 		
 	
-		$smarty->register_resource('text', array(
+	/*	$smarty->register->resource('text', array(this,
 			 'smarty_resource_text_get_template',
 			 'smarty_resource_text_get_timestamp',
 			 'smarty_resource_text_get_secure',
 			 'smarty_resource_text_get_trusted')
-		);
+		); */
 		
+		//default num_nodes: "1"
+		$smarty->assign("num_nodes", 1);
+		//default theme: "ximdex_theme"
+		$smarty->assign("theme", "ximdex_theme");
 		
 		if(!empty($_parameters) ) {
 			foreach ($_parameters as $key => $value) {
@@ -56,7 +60,7 @@ class SmartyTextRenderer {
 			}
 		}
 		
-		return $smarty->fetch("text:".$_text);
+		return $smarty->fetch("string:".$_text);
 	}
 
 }

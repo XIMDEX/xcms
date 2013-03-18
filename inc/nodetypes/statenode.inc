@@ -43,7 +43,7 @@ require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
 
 class StateNode extends Root {
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $description='', $idTransition=null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description='', $idTransition=null) {
 		$currentTransition = new PipeTransition($idTransition);
 		if (!$currentTransition->get('id') > 0) {
 			$this->messages->add(_('No se ha podido encontrar la transacción, consulte con su administrador'), MSG_TYPE_ERROR);

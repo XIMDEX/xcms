@@ -139,7 +139,7 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 		} else {
 		  if(!empty($filename) ) {
 			 $result = file_put_contents($filename, $data, $flags, $context);
-		  }else {
+		  }else{
 			 $result = false;
 		  }
 		}

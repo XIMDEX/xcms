@@ -79,6 +79,12 @@ class ActionAbstract extends IController {
 	public $renderer;
 
 	/**
+	 * Action command
+	 * @var String
+	 */
+	public $actionCommand;
+
+	/**
 	 * Construct
 	 * @param $_render
 	 * @return unknown_type

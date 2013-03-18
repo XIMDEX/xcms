@@ -32,7 +32,7 @@ ModulesManager::file('/inc/xml/XSLT.class.php');
 
 
 class templatenode extends FileNode {
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null) {
 
 		// Checks if ptd is compatible with XSLT
 
@@ -306,19 +306,19 @@ class templatenode extends FileNode {
 
 			$nodeList = $xpath->query('//html:*[dext:applytemplates|dext:var_body]');
 
-			if (!($nodeList->length > 0)) {
+			if ($nodeList && !($nodeList->length > 0)) {
 
 				// uid attribute in all html tags with a parent of dext namespace
 
 				$nodeList = $xpath->query('//html:*[parent::dext:*]');
 
-				if (!($nodeList->length > 0)) {
+				if ($nodeList && !($nodeList->length > 0)) {
 
 					// Template with a unique html uid attribute must be in this tag
 
 					$nodeList = $xpath->query('//*[starts-with(name(.), "html")]');
 
-					if (!($nodeList->length == 1)) {
+					if ($nodeList && !($nodeList->length == 1)) {
 
 						// Template with a unique %%%_BODY_%%%, uid attribute must be in a span tag
 
@@ -326,7 +326,7 @@ class templatenode extends FileNode {
 
 						// root_node + dext:var_body = 2 (total nodes)
 
-						if ($nodeList->length == 2) {
+						if ($nodeList &&  $nodeList->length == 2) {
 
 							$spanNode = $doc->createElement("html:span");
 							$spanNode->setAttribute('uid', '{@uid}');

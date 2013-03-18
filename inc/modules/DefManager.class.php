@@ -145,7 +145,7 @@ class DefManager {
 	}
 
 	function writeToConfig() {
-		
+
 		if ( is_writable($this->configFilename) ) {
 			
 			$file_hnd = fopen($this->configFilename, "w");

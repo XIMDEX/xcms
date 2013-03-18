@@ -242,7 +242,7 @@ class Root extends xObject {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null) {
 		$this->UpdatePath();
 		return;
 	}
@@ -291,7 +291,7 @@ class Root extends xObject {
 	*  @return unknown
 	*/
 
-	function RenameNode($name) {
+	function RenameNode($name = null) {
 		$this->UpdatePath();
 		return;
 	}

@@ -30,9 +30,13 @@
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
+if (!defined('CLI_MODE'))
+	define('CLI_MODE', 0);
+
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/modules.const');
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesConfig.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
+ModulesManager::file( '/conf/extensions.conf.php');
 ModulesManager::file(MODULES_INSTALL_PARAMS);
 
 /**
@@ -40,12 +44,45 @@ ModulesManager::file(MODULES_INSTALL_PARAMS);
  */
 class ModulesManager {
 
-	const ERROR = 'ERROR';
-	const WARNING = 'WARNING';
-	const SUCCESS = 'SUCCESS';
+	public $modules;
+	public $caller;
+	private static $core_modules = array("ximIO", "ximSYNC");
+	public static $msg = null;
 
-	var $modules;
-	var $caller;
+	/**
+		Core modules are specials: 
+		They are installed always and they never can be uninstalled or disabled
+	*/
+	public function getCoreModules() { return self::$core_modules; }
+
+	/**
+		Get install params for GUI 
+	*/
+	public function getInstallParams($name) {
+
+		$module = ModulesManager::instanceModule($name);
+
+		if ( is_null($module) ) {
+			return array();
+		}
+
+		return $module->getInstallParams();
+	}
+
+	function writeStates() {
+		$config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS);
+		
+		$modMan=new ModulesManager();
+		$modules=$modMan->getModules();
+		$str="<?php\n\n";
+		foreach($modules as $mod){
+			$str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";
+		}
+		$str.="\n?>";
+		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS,$str);
+
+	}
+
 
 	function ModulesManager($caller = NULL) {
 
@@ -106,9 +143,12 @@ class ModulesManager {
 		return false;
 	}
 
-	function existModule($name) {
-
-
+	function moduleExists($name) {
+		$path = ModulesManager::path($name);
+		if(!empty($path) ) {
+			return true;
+		}
+		return false;
 	}
 
    	static function  path($name) {
@@ -122,47 +162,51 @@ class ModulesManager {
 
 	function installModule($name) {
 		if($metaParent = self::hasMetaParent($name)) {
-			printf(" [*] ERROR: Can't install module %s directly. Try installing Meta-module %s instead\n", $name, $metaParent[$name]);
+			self::$msg = sprintf("Can't install module %s directly. Try installing Meta-module %s instead", $name, $metaParent[$name]);
+
 			return false;
 		}
 
 		if (ModulesManager::isEnabled($name)) {
-			echo "checkModule: MODULE_STATE_ENABLED, try to reinstall \n";
+			self::$msg = "checkModule: MODULE_STATE_ENABLED, try to reinstall ";
 			return MODULE_STATE_INSTALLED;
 		}
-		$module = $this->instanceModule($name);
+		$module = ModulesManager::instanceModule($name);
 
 		if ( is_null($module) ) {
 			print(" * ERROR: Can't install module $name\n");
 			return false;
 		}
 
-		$module->install();
+		return $module->install();
 	}
 
 	function uninstallModule($name) {
 		if($metaParent = self::hasMetaParent($name)) {
-			printf(" [*] ERROR: Can't uninstall module %s directly. Try uninstalling Meta-module %s instead\n", $name, $metaParent[$name]);
+			self::$msg = sprintf("Can't uninstall module %s directly. Try uninstalling Meta-module %s instead", $name, $metaParent[$name]);
+
+
 			return false;
 		}
 
-		$module = $this->instanceModule($name);
+		$module = ModulesManager::instanceModule($name);
 
-		if ( is_null($module) ) {
-			print(" * ERROR: Can't uninstall module $name\n");
+		if ( is_null($module) || $module->isCoreModule()  ) {
+			self::$msg =  "Can't uninstall module $name";
+		
 			return false;
 		}
 
-		$module->uninstall();
+		return $module->uninstall();
 	}
 
 	function checkModule($name) {
 
 
-		$module = $this->instanceModule($name);
+		$module = ModulesManager::instanceModule($name);
 
 		if ( is_null($module) ) {
-			print(" * ERROR: Module instance down\n");
+			self::$msg = "Module instance down";
 			return MODULE_STATE_ERROR;
 		}
 
@@ -198,14 +242,14 @@ class ModulesManager {
      */
 	function enableModule($name) {
 		if($metaParent = self::hasMetaParent($name)) {
-			printf(" [*] ERROR: Can't enable module %s directly. Try enabling Meta-module %s instead\n", $name, $metaParent[$name]);
+			self::$msg = sprintf("Can't enable module %s directly. Try enabling Meta-module %s instead", $name, $metaParent[$name]);
 			return false;
 		}
 
-		$module = $this->instanceModule($name);
+		$module = ModulesManager::instanceModule($name);
 
 		if ( is_null($module) ) {
-			print(" * ERROR: instance module down\n");
+			self::$msg = " * ERROR: instance module down";
 			return false;
 		}
 
@@ -221,15 +265,16 @@ class ModulesManager {
      */
 	function disableModule($name) {
 		if($metaParent = self::hasMetaParent($name)) {
-			printf(" [*] ERROR: Can't disable module %s directly. Try disabling Meta-module %s instead\n", $name, $metaParent[$name]);
+			self::$msg = sprintf("Can't disable module %s directly. Try disabling Meta-module %s instead", $name, $metaParent[$name]);
 			return false;
 		}
-		$module = $this->instanceModule($name);
+		$module = ModulesManager::instanceModule($name);
 
-		if ( is_null($module) ) {
-			print(" * ERROR: instance module down\n");
+		if ( is_null($module) || $module->isCoreModule()  ) {
+			self::$msg = "instance module down";
 			return false;
 		}
+
 
 		$modConfig = new ModulesConfig();
 		$modConfig->disableModule($module->getModuleName());
@@ -248,7 +293,7 @@ class ModulesManager {
 
 		// If no name provided exit.
 		if (is_null($name)) {
-			print(" * ERROR: Module name not provided.\n");
+			self::$msg = "Module name not provided.";
 			return NULL;
 		}
 
@@ -261,14 +306,14 @@ class ModulesManager {
 		if (file_exists($moduleClassPath)) {
 			include_once($moduleClassPath);
 		} else {
-			print(" * ERROR: Module definition file not found [$moduleClassPath].\n");
+			self::$msg =  "Module definition file not found [$moduleClassPath].";
 			return NULL;
 		}
 
 		$module = new $moduleClassName;
 
 		if ( is_null($module) ) {
-			print(" * ERROR: Module not instantiated [$moduleClassName].\n");
+			self::$msg = " Module not instantiated [$moduleClassName].";
 			return NULL;
 		}
 
@@ -297,28 +342,6 @@ class ModulesManager {
 		}
 		return $modules;
 	}
-
-	function log($priority, $string) {
-
-		if ($this instanceof Modules) {
-			XMD_Log::warning("Using ModulesManager::log in a class that is not an instance of Module.");
-			return false;
-		}
-
-		$module_name = $this->name;
-
-		switch ($priority) {
-			case self::SUCCESS:
-				//echo(" - [$module_name] (SUCCESS): $string\n");
-            XMD_Log::info(" - [$module_name] (SUCCESS): $string");
-				break;
-			case self::ERROR:
-			default:
-				echo(" * [$module_name] (ERROR): $string\n");
-				XMD_Log::error($string);
-		}
-	}
-
 
 
 	public static function component($_file, $_component = 'XIMDEX') {

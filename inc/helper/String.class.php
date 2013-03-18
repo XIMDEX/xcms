@@ -44,7 +44,7 @@ class String {
 	 * @param $texto
 	 * @return unknown_type
 	 */
-	function convertirTexto($texto) {
+	public static function convertirTexto($texto) {
 	
 		//$texto = str_replace('\"','',$texto);
 		$texto = str_replace(" ","_",$texto);
@@ -68,7 +68,7 @@ class String {
 	 * @param $string
 	 * @return unknown_type
 	 */
-	function stripslashes($string) {
+	public static function stripslashes($string) {
 
 		if (get_magic_quotes_gpc())
 			return stripslashes($string);

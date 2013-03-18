@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 7831 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -35,7 +35,7 @@ class WidgetDependencies {
 	private function __construct() {
 	}
 
-	protected function loadDependencies() {
+	protected static function loadDependencies() {
 		if (self::$deps === null) {
 			self::$deps = include(Config::getValue('AppRoot') . '/conf/wdeps.inc');
 		}

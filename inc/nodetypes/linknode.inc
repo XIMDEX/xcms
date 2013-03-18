@@ -71,7 +71,7 @@ class LinkNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID, $url, $description = null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $url = null, $description = null) {
 
 		$link = new Link();
 		$link->set('IdLink', $this->nodeID);

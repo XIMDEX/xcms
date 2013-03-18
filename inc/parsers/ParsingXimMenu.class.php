@@ -47,10 +47,12 @@ class ParsingXimMenu {
 		if (is_object($menu) && $menu instanceof DOMDocument) {
 			$this->_menu = $menu;
 		} else if (is_string($menu)) {
+			$this->_menu = new DOMDocument();
+			
 			if (file_exists($menu)) {
-				$this->_menu = DOMDocument::load($menu);
+				$doc->load($menu);
 			} else {
-				$this->_menu = DOMDocument::loadXML($menu);
+				$doc->loadXML($menu);
 			}
 		}
 		$this->_menu->formatOutput = true;

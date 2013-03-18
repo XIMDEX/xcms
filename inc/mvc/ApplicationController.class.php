@@ -130,7 +130,7 @@ class ApplicationController extends IController {
 				$actionStats = new ActionsStats();
 				$idStat = $actionStats->create(NULL, $nodeId,$userId, $action, 1);
 			}
-			$stats = array("action" =>$action, "nodeid" =>  $nodeId, "idStat" => $idStat);
+			$stats = array("action" =>$action, "nodeid" =>  $nodeId, "idStat" => 0);
 		}
 		return $stats;
 	}
@@ -144,7 +144,7 @@ class ApplicationController extends IController {
 		$nodeId = (int) $this->request->getParam("nodeid");
 		$userId = XSession::get("userID");
 
-		if ($actionStats == 1 && !is_null($action) && "index" == $method) {
+		if ($actionStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
 			$stats_time = $this->timer->mark('End action');
 
 			if(ModulesManager::isEnabled('ximDEMOS')) {

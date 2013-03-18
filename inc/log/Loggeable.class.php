@@ -95,7 +95,7 @@ class Loggeable {
 	 * @param $loggerName
 	 * @return unknown_type
 	 */
-	public function error($msg, $loggerName) {
+	public static function error($msg, $loggerName) {
 		$logger = Loggeable::_getLogger($loggerName);
 		if( !is_null($logger) ) $logger->error( $msg );
 	}

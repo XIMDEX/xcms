@@ -114,8 +114,10 @@ class Language extends Languages_ORM
 			// Inherits the system properties
 			$langs = array();
 			$systemLanguages = $this->find('IdLanguage', 'Enabled = 1', null);
-			foreach ($systemLanguages as $lang) {
-				$langs[] = $lang['IdLanguage'];
+			if(!empty($systemLanguages) ) {
+				foreach ($systemLanguages as $lang) {
+					$langs[] = $lang['IdLanguage'];
+				}
 			}
 		}
 

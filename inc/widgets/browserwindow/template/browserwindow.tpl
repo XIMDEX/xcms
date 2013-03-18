@@ -27,7 +27,7 @@
 	
 	<listview include="yes" />
 	<treeview include="yes" />
-	<contextmenu include="yes" />
+	<contextmenu  initialize="mainmenu" selector="logo" trigger="left" />
 			
 	<!--<div class="browser-window-toolbar"></div>-->
 	<div class="browser-window-content">

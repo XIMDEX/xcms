@@ -46,8 +46,6 @@
 
 		_init: function() {
 
-//			console.info(this);
-
 			this.tabsContainer = $(this.element).parent();
 			this.tabsNav = $('<div></div>').addClass(classes.TAB_NAV);
 			this.tabsContainer.prepend(this.tabsNav);
@@ -78,7 +76,7 @@
 
 			// The hbox element is passed from the TabbedPanel object
 			$(this.options.hbox)
-				.bind('dragstart', function() {$(this.lis).removeClass(classes.TAB_HIDDEN);}.bind(this))
+				.bind('dragstart', function() {$(this.tabs).removeClass(classes.TAB_HIDDEN);}.bind(this))
 				.bind('dragstop', this.refreshTabs.bind(this));
 
 
@@ -88,7 +86,7 @@
 		 * Returns the selected tab.
 		 */
 		selected: function() {
-			var selected = $('.ui-tabs-selected', this.list);
+			var selected = $('.ui-tabs-selected', this.tablist);
 			selected = selected.length == 0 ? null : selected;
 			return selected;
 		},
@@ -97,7 +95,7 @@
 		 * Returns TRUE if the tab with the specified ID is selected.
 		 */
 		isSelected: function(tabId) {
-			var item = this.lis[tabId] || null;
+			var item = this.tabs[tabId] || null;
 			if (item === null) return false;
 			var ret = $(item).hasClass('ui-tabs-selected');
 			return ret;
@@ -107,13 +105,13 @@
 		 * Adds the TAB_FIRST and TAB_LAST classes.
 		 */
 		adjustTabClasses: function() {
-			$(this.lis).removeClass(classes.TAB_FIRST).removeClass(classes.TAB_LAST);
-			$('li:first', this.list).addClass(classes.TAB_FIRST);
-			var last = $('li:last', this.list);
+			$(this.tabs).removeClass(classes.TAB_FIRST).removeClass(classes.TAB_LAST);
+			$('li:first', this.tablist).addClass(classes.TAB_FIRST);
+			var last = $('li:last', this.tablist);
 			if (!last.hasClass(classes.TAB_LAST)) {
 				last.addClass(classes.TAB_LAST);
 			}
-			$(this.list).closest('div').addClass('tabs-container');
+			$(this.tablist).closest('div').addClass('tabs-container');
 		},
 
 		/**
@@ -121,13 +119,13 @@
 		 */
 		dummyTab: function() {
 
-			var c = this.lis.length;
+			var c = this.tabs.length;
 			if (c > 0) {
-				$(this.list).next('div.dummy-tab').remove();
+				$(this.tablist).next('div.dummy-tab').remove();
 			} else {
-				var dummy = $(this.list).next('div.dummy-tab');
+				var dummy = $(this.tablist).next('div.dummy-tab');
 				if (dummy.length == 0) {
-					this.list.after($('<div></div>').addClass('dummy-tab browser-action-view-content ui-tabs-panel ui-widget-content ui-corner-bottom'));
+					this.tablist.after($('<div></div>').addClass('dummy-tab browser-action-view-content ui-tabs-panel ui-widget-content ui-corner-bottom'));
 				}
 			}
 		},
@@ -136,7 +134,7 @@
 		 * Returns the title of a tab
 		 */
 		getTabTitle: function(tabId) {
-			var item = this.lis[tabId] || null;
+			var item = this.tabs[tabId] || null;
 			if (item === null) return false;
 			var title = $('a span', item).html();
 			return title;
@@ -158,7 +156,7 @@
 		 */
 		getTabPos: function(item) {
 			var cPos = this.getItemPos(this.tabsContainer);
-			var uPos = this.getItemPos(this.list);
+			var uPos = this.getItemPos(this.tablist);
 			uPos.left = cPos.left - Math.abs(uPos.left);
 			uPos.right = uPos.left + uPos.w;
 			var iPos = this.getItemPos(item);
@@ -201,7 +199,7 @@
 			var cPos = this.getItemPos(this.tabsContainer);
 
 			$('.'+classes.TAB_LIST_SEL, this.tabsNav).addClass(classes.TAB_HIDDEN);
-			$(this.lis).each(function(index, item) {
+			$(this.tabs).each(function(index, item) {
 
 				var pos = this.getTabPos(item);
 
@@ -223,8 +221,8 @@
 		 * using an animation and selects it.
 		 */
 		_scrollToTab: function(tabId) {
-
-			var item = this.lis[tabId] || null;
+	
+			var item = this.tabs[tabId] || null;
 			if (item === null) return false;
 
 //			if (!$(item).hasClass(classes.TAB_HIDDEN)) {
@@ -248,9 +246,9 @@
 			if (pos.right > cPos.right) offset = '-=' + Math.abs(pos.right - cPos.right + nWidth);
 
 			// Show all tabs first for a smoothness effect
-			$(this.lis).removeClass(classes.TAB_HIDDEN);
+			$(this.tabs).removeClass(classes.TAB_HIDDEN);
 
-			$(this.list).animate({left: offset}, 400, function() {
+			$(this.tablist).animate({left: offset}, 400, function() {
 				this.select(tabId);
 				this._hideOutsideTabs();
 				this._updateTabsNav();
@@ -268,7 +266,7 @@
 			var ul = $('.'+classes.TAB_LIST, this.tabsNav).unbind().empty();
 			var last_index = 1;
 
-			$(this.lis).each(function(index, item) {
+			$(this.tabs).each(function(index, item) {
 
 				var sel = this.isSelected(index);
 
@@ -316,7 +314,7 @@
 		},
 
 		getTabsList: function() {
-				return this.lis;
+				return this.tabs;
 		},
 
 		updateTabsNav: function(ui) {
@@ -325,7 +323,9 @@
 			if ($ul.length == 0) return;
 
 			$('li', $ul).removeClass(classes.TAB_LIST_SITEM);
+
 			$('li.%s-%s'.printf(classes.TAB_LIST_ITEM, ui.index), $ul).addClass(classes.TAB_LIST_SITEM);
+
 		},
 
 		getter: ['selected', 'isSelected', 'updateTabsNav', 'getTabsList']

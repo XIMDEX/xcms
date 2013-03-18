@@ -88,7 +88,7 @@ class Response {
 				foreach ($values as $value) {
 					header($key . ":" . $value);
 				}
-			} else {
+			} else if(!empty($key) && !empty($values) )  {
 				header($key . ": " . $values);
 			}
 		}

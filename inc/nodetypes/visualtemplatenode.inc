@@ -46,7 +46,7 @@ class VisualTemplateNode extends FileNode {
 
 	const RNG_SUFFIX = 'rng-';
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath, $templateType) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null, $templateType = null) {
 
 		$content = FsUtils::file_get_contents($sourcePath);
 

@@ -91,10 +91,13 @@ class App {
 			return $app->registry->get($key);
 		}
 		if (isset($app->objects[$key])) {
-			$factory = new Factory($app->objects[$key]['LOCATION'],
-						$app->objects[$key]['OBJECT']);
-			$app->registry->set($key, $factory->instantiate());
-			return $app->registry->get($key);
+			$factory = new Factory($app->objects[$key]['LOCATION'], $app->objects[$key]['OBJECT']);
+			$instance =  $factory->instantiate();
+
+			if($key && $instance) {
+				$app->registry->set($key, $instance);
+				return $app->registry->get($key);
+			}
 		}
 		error_log("Error al intentar cargar el objeto". $key);
 		return NULL;

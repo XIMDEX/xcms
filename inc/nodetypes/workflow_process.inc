@@ -43,7 +43,7 @@ require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
 
 class workflow_process extends Root {
 
-	function CreateNode($name, $parentID, $nodeTypeID) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null) {
 		$pipeline = new Pipeline();
 		$pipeline->set('Pipeline', $name);
 		$pipeline->set('IdNode', $this->parent->get('IdNode'));
@@ -69,7 +69,7 @@ class workflow_process extends Root {
 		return $pipeline->delete();
 	}
 
-	function RenameNode($name) {
+	function RenameNode($name = null) {
 		$pipeline = new Pipeline();
 		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
 		if (!$result) {

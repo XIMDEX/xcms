@@ -96,6 +96,7 @@ class Messages {
 	 * @return unknown_type
 	 */
 	function displayRaw ($type = NULL, $postClean = false) {
+		if(!defined("CLI_MODE") || !CLI_MODE) return ;
 		reset($this->messages);
 		while(list(, $message) = each($this->messages)) {
 			if ($type !== NULL) {

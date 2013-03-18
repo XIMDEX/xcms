@@ -67,7 +67,7 @@ class XmlContainerNode extends FolderNode
 	}
 
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $templateID, $aliasLangList, $channelList, $master,$dataChildren=null)
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $aliasLangList = null, $channelList = null, $master = null,$dataChildren=null)
 	{
 		/**
 		 * En master viene el idlanguage, entonces en el bucle que recorre los idiomas, cuando se llega al idioma que
@@ -163,7 +163,9 @@ class XmlContainerNode extends FolderNode
                 }
 
 
-	function RenameNode($name) {
+	function RenameNode($name = null) {
+		if(!$name) return false;
+
  		$listaDocs = $this->parent->GetChildren();
 
 		if (sizeof($listaDocs) > 0) {

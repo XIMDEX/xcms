@@ -204,6 +204,7 @@ class Pipeline extends Pipelines_ORM {
 	 * @see inc/helper/GenericData#update()
 	 */
 	function update() {
+		$pipelineChanged = false;
 		$pipeNodeType = new PipeNodeTypes();
 		if ($this->idNodeType > 0) {
 			$result = $pipeNodeType->find('id, IdNodeType', 'IdPipeline = %s', array($this->get('id')));

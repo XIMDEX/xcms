@@ -61,11 +61,11 @@
 					}			
 					var filters = this.createSearchFilter(container);
 
-					$('.xim-search-filters .xim-filter-add').live('click', function(event) {
+					$(document).on('click','.xim-search-filters .xim-filter-add', function(event) {
 						this.createSearchFilter(container);
 					}.bind(this));
 		
-					$('.xim-search-filters .xim-filter-remove').live('click', function(event) {
+					$(document).on('click','.xim-search-filters .xim-filter-remove', function(event) {
 						if ($('.xim-search-filter').length == 1) {
 							return;
 						}
