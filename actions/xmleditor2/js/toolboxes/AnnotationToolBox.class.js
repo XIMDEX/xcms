@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8285 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -73,13 +73,13 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$('#anottationtoolbox-section-link, #anottationtoolbox-section-image, #anottationtoolbox-section-article, #anottationtoolbox-section-people, #anottationtoolbox-section-places, #anottationtoolbox-section-organisations').slideUp('fast');
 
 			if (annotationDoc.zemanta.markup.links.length > 0) {
-			//if (annotationDoc.markup.links.length > 0) {
+//			if (annotationDoc.markup.links.length > 0) {
 				$('#anottationtoolbox-section-link').slideDown('fast');
 			} else if (annotationDoc.zemanta.images.length > 0) {
-			//} else if (annotationDoc.images.length > 0) {
+//			} else if (annotationDoc.images.length > 0) {
 				$('#anottationtoolbox-section-image').slideDown('fast');
 			} else if (annotationDoc.zemanta.articles.length > 0)
-			//} else if (annotationDoc.articles.length > 0)
+//			} else if (annotationDoc.articles.length > 0)
 				$('#anottationtoolbox-section-article').slideDown('fast');
 
 			if(annotationDoc.iks.people.length > 0){
@@ -100,7 +100,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$(div).appendTo('#anottationtoolbox-section-link');
 		$(div).attr('id', 'anottationtoolbox-link-container');
 		$('#anottationtoolbox-link-template', this.element).hide();
-
+		
 		var countLinks=0;
 		var length = info.length;
 		for(var k = 0; k < length; k ++) {
@@ -137,7 +137,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$(divHeader, anchor).show();
 			countLinks++;
 		}
-		
+
 		if(countLinks==0){
                         $('#anottationtoolbox-section-header-link').click(function (event) {
                                 var NoRefs = document.createTextNode("References not found.");
@@ -184,7 +184,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
                                 $('#anottationtoolbox-section-image').empty();
                                 $('#anottationtoolbox-section-image').append(NoRefs);
                         }.bind(this));
-                }		
+                }
 
 		var prevImageButton = $('#prevButton-image', this.element);
 		var nextImageButton = $('#nextButton-image', this.element);
@@ -267,12 +267,12 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		}
 
 		if(countPeople==0){
-                        $('#anottationtoolbox-section-header-people').click(function (event) {
-                                var NoRefs = document.createTextNode("References not found.");
-                                $('#anottationtoolbox-section-people').empty();
-                                $('#anottationtoolbox-section-people').append(NoRefs);
-                        }.bind(this));
-                }
+			$('#anottationtoolbox-section-header-people').click(function (event) {
+				var NoRefs = document.createTextNode("References not found.");
+				$('#anottationtoolbox-section-people').empty();
+				$('#anottationtoolbox-section-people').append(NoRefs);
+			}.bind(this));
+		}
 
 		$('#anottationtoolbox-personitem-template', this.element).remove();
 		$('#anottationtoolbox-section-people').show();
@@ -309,12 +309,12 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		}
 
 		if(countPlaces==0){
-                        $('#anottationtoolbox-section-header-places').click(function (event) {
-                                var NoRefs = document.createTextNode("References not found.");
-                                $('#anottationtoolbox-section-places').empty();
-                                $('#anottationtoolbox-section-places').append(NoRefs);
-                        }.bind(this));
-                }
+			$('#anottationtoolbox-section-header-places').click(function (event) {
+				var NoRefs = document.createTextNode("References not found.");
+				$('#anottationtoolbox-section-places').empty();
+				$('#anottationtoolbox-section-places').append(NoRefs);
+			}.bind(this));
+		}
 
 		$('#anottationtoolbox-placeitem-template', this.element).remove();
 		$('#anottationtoolbox-section-places').show();
@@ -322,7 +322,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 	populateOrganisationsSection: function(info) {
 		var organisationsContainerDiv = $('#organisationsContainer');
-
+		
 		var length = info.length;
                 var countOrgs = 0;
                 for(var k = 0; k < length; k ++) {
@@ -351,12 +351,12 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		}
 
 		if(countOrgs==0){
-                        $('#anottationtoolbox-section-header-organisations').click(function (event) {
-                                var NoRefs = document.createTextNode("References not found.");
-                                $('#anottationtoolbox-section-organisations').empty();
-                                $('#anottationtoolbox-section-organisations').append(NoRefs);
-                        }.bind(this));
-                }
+			$('#anottationtoolbox-section-header-organisations').click(function (event) {
+				var NoRefs = document.createTextNode("References not found.");
+				$('#anottationtoolbox-section-organisations').empty();
+				$('#anottationtoolbox-section-organisations').append(NoRefs);
+			}.bind(this));
+		}
 
 		$('#anottationtoolbox-organisationitem-template', this.element).remove();
 		$('#anottationtoolbox-section-organisations').show();
@@ -403,7 +403,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				var rngElement = this.editor.getRngDocument().getElement(rngElementName);
 				var parentElement = this.editor._ximdoc.getElement($(elem).attr('uid'));
 
-				selNode = $('[uid=' + $(elem).attr('uid') + ']', this.editor.getInnerDocument());
+				selNode = $('[uid="' + $(elem).attr('uid') + '"]', this.editor.getInnerDocument());
 
 				$($(selNode).contents().get().reverse()).each(function(index, el) {
 					if(el.nodeType == 3 && el.nodeValue.indexOf(word) >= 0) {
@@ -512,7 +512,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				newElement.value = word;*/
 				var parentElement = this.editor._ximdoc.getElement($(elem).attr('uid'));
 
-				selNode = $('[uid=' + $(elem).attr('uid') + ']', this.editor.getInnerDocument());
+				selNode = $('[uid="' + $(elem).attr('uid') + '"]', this.editor.getInnerDocument());
 				$($(selNode).contents().get().reverse()).each(function(index, el) {
 					if(el.nodeType == 3 && el.nodeValue.indexOf(word) >= 0) {
 						var size = $(selNode).contents().length;

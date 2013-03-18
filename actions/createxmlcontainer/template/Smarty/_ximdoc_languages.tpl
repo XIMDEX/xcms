@@ -26,12 +26,9 @@
 {* Accepts
 	$languages[Idlanguage]
 	$languages[Name]
-	$languages[is_selected]
-	$languages[is_master]
 
 	$channels[IdChannel]
 	$channels[Description]
-	$channels[is_selected]
 *}
 
 <fieldset>
@@ -42,8 +39,7 @@
 				<li>
 
 					<label class="aligned">{$language.Name|gettext}</label>
-					<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'{if ($language.is_selected)}
-						checked="checked"{/if}/>
+					<input name='languages[]' type='checkbox' value='{$language.IdLanguage}' />
 					<input type='text' name='aliases[{$language.IdLanguage}]' class='cajag'/>
 				</li>
 			{/foreach}
@@ -52,8 +48,7 @@
 				<select class="cajaxg" name='master'>
 					<option value="">&laquo;{t}None{/t}&raquo;</option>
 					{foreach from=$languages item=language}
-						<option {if ($language.is_master)} selected="selected"{/if} value="{$language.IdLanguage}">
-							{$language.Name|gettext}</option>
+						<option  value="{$language.IdLanguage}">{$language.Name|gettext}</option>
 					{/foreach}
 				</select>
 			</li>
@@ -68,8 +63,7 @@
 	{if count($channels) > 0}
 		<ol>
 			{foreach from=$channels item=channel}
-				<li><input name='channels[]' type='checkbox' value='{$channel.IdChannel}'{if ($channel.is_selected)}
-					checked="checked"{/if}/>
+				<li><input name='channels[]' type='checkbox' value='{$channel.IdChannel}' />
 				<label>{$channel.Description|gettext}</label>
 				</li>
 			{/foreach}

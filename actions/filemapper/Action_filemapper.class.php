@@ -43,8 +43,8 @@ class Action_filemapper extends ActionAbstract {
 			$this->response->set('Cache-Control', 
 				array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
 			$this->response->set('Pragma', 'no-cache');
-			$this->response->set('ETag', "md5($idNode.$gmDate)");
-			$this->response->set('Content-Length', "strlen(strval($fileContent)");
+			$this->response->set('ETag', md5($idNode.$gmDate));
+			$this->response->set('Content-Length', strlen(strval($fileContent)));
 			$this->response->set('Content-transfer-encoding', 'binary');
 			$this->response->set('Content-type', 'octet/stream');
 			$this->response->set('Content-Disposition', "attachment; filename=".$fileName);

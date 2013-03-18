@@ -47,10 +47,12 @@ class Action_manageproperties extends ActionAbstract {
 		$inherit = array();
 		foreach ($properties as $name=>$prop) {
 			$checked = false;
-			foreach ($prop as $value) {
-				if ($value['Checked'] == 1) {
-					$checked = true;
-					break;
+			if(!empty($prop) ) {
+				foreach ($prop as $value) {
+					if ($value['Checked'] == 1) {
+						$checked = true;
+						break;
+					}
 				}
 			}
 			if ($checked) {
@@ -230,7 +232,8 @@ class Action_manageproperties extends ActionAbstract {
 						}
 						break;
 					case 'Transformer':
-						$transformer = is_array($value['values']) ? $value['values'][0] : $value['values'];
+						if(empty($value['values']) ) $value['values'] = null;
+						$transformer = (is_array($value['values']) ) ? $value['values'][0] : $value['values'];
 						$message[] = sprintf(_('%s will be used as document transformer.'), $transformer);
 						break;
 				}

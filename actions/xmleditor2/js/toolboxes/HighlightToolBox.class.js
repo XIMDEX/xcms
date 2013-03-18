@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8311 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -63,7 +63,7 @@ function HighlightToolBox() {
 		var selectedNodes = [];
 		if (element) {
 			parent = this.editor.getParentWithUID(element);
-			selectedNodes = $('[uid='+element.getAttribute('uid')+']', this.editor.getBody());
+			selectedNodes = $('[uid="'+element.getAttribute('uid')+'"]', this.editor.getBody());
 		}
 
 		/*if (!selectedNodes.contains(element)) {

@@ -173,6 +173,7 @@ class Action_deletenode extends ActionAbstract {
 				}
 			}
 
+			$values["depList"] = $depList;
 			$values["pendingTasks"] = count($pendingTasks);
 			$values["isPublished"] = $isPublished;
 		}
@@ -186,7 +187,7 @@ class Action_deletenode extends ActionAbstract {
 	function delete_node() {
 
 		$idNode	= $this->request->getParam("nodeid");
-
+		$depList = array();
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
 		if(ModulesManager::isEnabled("ximDEMOS") &&  XSession::get('user_demo')) {
@@ -221,7 +222,7 @@ class Action_deletenode extends ActionAbstract {
 
 		if ($canDeleteOnCascade) {
 
-			$depList = array();
+
 			if ($node->nodeType->get('Name') != 'Channel') {
 				$depList = $node->GetDependencies();
 			}
@@ -327,7 +328,8 @@ class Action_deletenode extends ActionAbstract {
 
 		$values = array(
 			'messages' => $this->messages->messages,
-			'action_with_no_return' => true
+			'action_with_no_return' => true,
+			'depList' => $depList
 		);
 
 		$this->render($values, NULL, 'messages.tpl');

@@ -36,7 +36,7 @@ function NavBarToolBox (){
         this.initialize = function(tool, editor) {
                 //Get navbar element
 		this._element = $(".kupu-tb-navbar");
-
+		this.editor = editor;
         };
         
         this.beforeUpdateContent = function(options) {
@@ -71,6 +71,7 @@ function NavBarToolBox (){
 		this._buildPath(ximElement);
                 //Start in 1 to avoid docxap element
 		for (var i = 1; i < this.nav.length;i++){
+
 			var newTag = $("<span>").text(this.nav[i].tagName).attr("id","tag_"+this.nav[i].uid);
 
 			if (i == this.nav.length -1){
@@ -79,16 +80,31 @@ function NavBarToolBox (){
 				newTag.addClass("selector-tag");
 			}
 	
-			this._element.append(newTag);
-			
+			var that = this;
+                        newTag.bind('contextmenu', function(e) {
+                                        e.preventDefault();
+                                        /* Force click to update the clicked node before showing the context menu */
+                                        var id = $(this).attr("id");
+                                        uid = id.replace("tag_","");
+                                        var elements = $('[uid="'+uid+'"]', that.editor.getBody());
+                                        if (elements[0]){
+                                         	       $(elements[0]).click();
+					}
+                                        var innerDocument = that.editor.getInnerDocument();
+                                        var clonedEvent = innerDocument.createEvent('MouseEvents');
+                                        clonedEvent.initMouseEvent(e.type, false, false, window, e.detail, e.screenX, e.screenY, e.clientX, 0, e.ctrlKey, e.altKey, e.shiftKey, e.metaKey, e.button, e.relatedTarget);
+                                        innerDocument.dispatchEvent(clonedEvent);
+                                });
+                        this._element.append(newTag);
+
                         //Creating button for newTag
-                        var button = new NavBarButton("tag_"+this.nav[i].uid, this);		
+                        var button = new NavBarButton("tag_"+this.nav[i].uid, this);
 
-			button.initialize(this.editor);
-			this.buttons.push(button);
+                        button.initialize(this.editor);
+                        this.buttons.push(button);
 
-			
-		}
+
+                }
 	};
 
         /*
@@ -115,8 +131,8 @@ var NavBarButton = Object.xo_create(XimdocButton, {
 	
 	commandfunc: function(event) {
 		var newUid = event.buttonid.substring(4);
-		var elements = $("[uid="+newUid+"]", this.editor.getBody());
+		var elements = $('[uid="'+newUid+'"]', this.editor.getBody());
 		if (elements[0])
-			elements[0].click();
+			$(elements[0]).click();
     }
 });

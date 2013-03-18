@@ -94,12 +94,14 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/console.js');
 		$this->addJs('/inc/js/sess.js');
 		$this->addJs('/inc/js/eventHandler.js');
-		$this->addJs('/extensions/jquery/jquery-1.4.2.min.js');
-		$this->addJs('/extensions/jquery/jquery-ui-1.8.2.custom.min.js');
-		$this->addJs('/extensions/jquery/plugins/jquery-validate/jquery.validate.js');
-		$this->addJs('/extensions/jquery/plugins/jquery-validate/localization/messages_'.$user_locale["Lang"].'.js');
-		$this->addJs('/extensions/jquery/plugins/jquery.json/jquery.json-2.2.min.js');
-		$this->addJs('/extensions/jquery/plugins/jquery.labelwidth/jquery.labelwidth.js');
+		$this->addJs(Extensions::JQUERY);
+                $this->addJs(Extensions::JQUERY_UI);
+                $this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
+                $this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
+                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/jquery.validate.js');
+                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/localization/messages_'.$user_locale["Lang"].'.js');
+                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js');
+                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.labelwidth/jquery.labelwidth.js');
 		$this->addActionJs('controller.js');
 
 

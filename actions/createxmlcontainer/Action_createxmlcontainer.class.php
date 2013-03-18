@@ -108,6 +108,9 @@ class Action_createxmlcontainer extends ActionAbstract {
     	$idNode = $this->request->getParam('nodeid');
     	$node = new Node($idNode);
     	$idNode = $node->get('IdNode');
+		$formChannels = array();
+
+
     	if (!($idNode > 0)) {
     		$this->messages->add(_('An error ocurred estimating parent node,')
     			._(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
@@ -176,8 +179,10 @@ class Action_createxmlcontainer extends ActionAbstract {
 	    	}
 
 	    	$channels = $this->request->getParam('channels');
-			foreach ($channels as $idChannel) {
-				$formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
+			if(!empty($channels) ) {
+				foreach ($channels as $idChannel) {
+					$formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
+				}
 			}
 
 			// structureddocument inserts content document
@@ -232,8 +237,10 @@ class Action_createxmlcontainer extends ActionAbstract {
 			)
 		);
 
-		foreach ($formChannels as $channel) {
-			$data['CHILDRENS'][] = $channel;
+		if(!empty($formChannels ) ) {
+			foreach ($formChannels as $channel) {
+				$data['CHILDRENS'][] = $channel;
+			}
 		}
 
 		if (isset($aliases[$idLanguage])) {

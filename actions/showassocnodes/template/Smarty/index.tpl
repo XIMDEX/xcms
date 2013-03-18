@@ -34,7 +34,7 @@
 	<ol>
 		{foreach from=$sections item=section}
 		<li>
-			<input type="checkbox" name="sections[]" value="{$section.idsection}" />
+			<input type="checkbox" name="sections[]" value="{$section.idsection}" class="sections_lists" />
 			<label>{$section.path}</label>
 		</li>
 		{/foreach}

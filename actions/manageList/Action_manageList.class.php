@@ -41,7 +41,7 @@ class Action_manageList extends ActionAbstract {
 		$list = $this->getObjectInstance($type);
 		$all = $list->find('id, Name, Description');
 		
-		$this->addJs('/extensions/jquery/plugins/jquery.blockUI.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.blockUI.js');
 		$this->addJs('/actions/manageList/resources/js/common.js');
 		$this->addCss('/actions/manageList/resources/css/common.css');
 		$values = array('list' => $all, 'type' => $type);

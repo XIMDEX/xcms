@@ -10,7 +10,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Coustard' rel='stylesheet' type='text/css'>
 
 	<link href="{$_URL_ROOT}/xmd/style/login/login.css" rel="stylesheet" type="text/css">
-	<script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery/jquery-1.4.2.min.js"></script>	
+	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>	
 	{foreach from=$js_files item=js_file}
 	<script type="text/javascript" src="{$js_file}"></script>
 	{/foreach}

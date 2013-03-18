@@ -39,17 +39,22 @@ X.actionLoaded(function(event, fn, params) {
 		};
 	}
 
+	function getChannelList(rowItem) {
+		return fn(rowItem).closest('tr.version-info').find('select')
+	}	
+
 
 	fn('a.prevdoc-button').click(function(e) {
 
-		// preview_tab(this, {$id_node},{$version},{$subVersionList.SubVersion},'{$node_type_name}', '{$_URL_ROOT}');
+		var v = getRowVersion(this);
 
 		var nodetypename = $nodetypename.val();
 
 		if (nodetypename != 'TextFile' && nodetypename != 'ImageFile' && nodetypename != 'BinaryFile') {
 
 		    // If it is NOT a text file, a image or a binary, we take the channel
-			var channel = fn(fn('#channellist').attr('options')[fn('#channellist').attr('selectedIndex')]).attr('value');
+			var channellist = getChannelList(this);
+			var channel = $("option:selected",channellist).val();
 		} else {
 			channel = 1;
 		}
@@ -58,7 +63,7 @@ X.actionLoaded(function(event, fn, params) {
 			? 'filepreview'
 			: 'prevdoc';
 
-		var v = getRowVersion(this);
+
 		var action = $.extend({}, params.action, {
 			command: command,
 			name: _('Preview'),

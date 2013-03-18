@@ -36,18 +36,7 @@
 				
 				{foreach from=$versionList key=version item=versionInfo}
 				
-				<!--<tr>
-					<td>{t}Version{/t}</td>
-					<td>{t}Date{/t}</td>
-					<td>{t}User{/t}</td>
-					<td>&nbsp;</td>
-					<td>
-						{if $isStructuredDocument}{t}canal{/t}{/if}
-					</td>
-					
-					<td colspan="3"></td>
-					
-				</tr>-->
+
 				{foreach from=$versionInfo item=subVersionList}
 				
 				<tr class="version-info">
@@ -61,14 +50,10 @@
 					<td>{$subVersionList.Name}</td>
 					<td>{$subVersionList.Comment}</td>
 					<td>
-						<!--<a href="#" class="prevdoc-button" onclick="preview_tab(this, {$id_node},{$version},{$subVersionList.SubVersion},'{$node_type_name}', '{$_URL_ROOT}');">-->
-						<!--<a href="#" class="prevdoc-button">
-							<img src="{$_URL_ROOT}/xmd/images/botones/previsualizar.gif" alt="[preview]" border="0" />
-						</a>-->
 						{button label="Preview" class="prevdoc-button"}
 					</td>
 					<td>
-						<select id="channellist" name="channellist" class="normal" style="width: 75px;	vertical-align: middle;">
+						<select class="channellist" class="channellist" name="channellist" class="normal" style="width: 75px;	vertical-align: middle;">
 						{foreach from=$channels key=id_channel item=channel}
 							<option value="{$id_channel}">{$channel}</option>
 						{/foreach}
@@ -76,18 +61,10 @@
 					</td>
 					<td>
 					{if $subVersionList.isLastVersion == 'false'}
-						<!--<a href="#" onclick="VersionRecover(this, {$id_node},{$version},{$subVersionList.SubVersion}, '{$_URL_ROOT}', {$actionid}); return false">-->
-						<!--<a href="#" class="recover-button">
-							<img src="{$_URL_ROOT}/xmd/images/botones/recuperar.gif" alt="[recovery version]" border="0" />
-						</a>-->
 						{button label="Recover" class="validate recover-button" message="Are you sure you want to recover this version?"}
 					{/if}
 					</td>
 					<td>
-						<!--<a href="#" onclick="deleteVersion(this, {$id_node},{$version},{$subVersionList.SubVersion}, '{$_URL_ROOT}', {$actionid});" >-->
-						<!--<a href="#" class="delete-button">
-							<img src="{$_URL_ROOT}/xmd/images/botones/borrar.gif" alt="[borrar version]" border="0" />
-						</a>-->
 						{button label="Delete" class="validate delete-button" message="Are you sure you want to delete this version?"}
 					</td>
 				</tr>

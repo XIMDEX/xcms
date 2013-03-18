@@ -119,7 +119,10 @@ class Action_prevdoc extends ActionAbstract
 		$idServerNode = $node->getServer();
 		$documentType = $structuredDocument->getDocumentType();
 		$idLanguage = $structuredDocument->getLanguage();
-		$docXapHeader = $node->class->_getDocXapHeader($idChannel, $idLanguage, $documentType);
+		$docXapHeader = null;
+		if(method_exists($node->class, "_getDocXapHeader" ) ) {
+			$docXapHeader = $node->class->_getDocXapHeader($idChannel, $idLanguage, $documentType);
+		}
 		$nodeName = $node->get('Name');
 		$depth = $node->GetPublishedDepth();
 
@@ -199,7 +202,9 @@ class Action_prevdoc extends ActionAbstract
 
 		/*$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . String::stripslashes($xmldoc);*/
 		$xmldoc = String::stripslashes($xmldoc);
-		$doc = DOMDocument::loadXML($xmldoc);
+
+		$doc = new DOMDocument();
+		$doc->loadXML($xmldoc);
 		$doc->encoding = 'UTF-8';
 		$docxap = $doc->getElementsByTagName('docxap');
 		if(!$docxap) return $xmldoc;

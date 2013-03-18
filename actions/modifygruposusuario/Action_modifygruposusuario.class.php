@@ -57,7 +57,7 @@ class Action_modifygruposusuario extends ActionAbstract {
 	 	if (is_array($userGroups)) {
 		 	$index = 0;
 			foreach ($userGroups as $value) {
-				if ($value['IdGroup'] != $group->GetGeneralGroup()) {
+				if (!is_array($value) ||  !array_key_exists('IdGroup', $value) || $value['IdGroup'] != $group->GetGeneralGroup()) {
 					$userGroupsWithRole[$index]['IdGroup'] = $value;
 					$tmpGroup = new Group($value);
 					$userGroupsWithRole[$index]['Name'] = $tmpGroup->get('Name');

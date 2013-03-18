@@ -40,7 +40,8 @@ X.actionLoaded(function(event, fn, params)  {
 
 	var lang = locale.split("_")[0];
 
-	$( "#"+id_editor).ckeditor({
+		
+		CKEDITOR.replace( id_editor,{
 
 		toolbar:
 		[

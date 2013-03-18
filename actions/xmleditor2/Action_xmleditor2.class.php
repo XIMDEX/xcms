@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8378 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -57,11 +57,12 @@ class Action_xmleditor2 extends ActionAbstract {
 
 		$action = $queryManager->getPage() . $queryManager->buildWith(array(
 			'method' => 'load',
+			'on_resize_functions' => '',
+			'time_id' => microtime(true),  //timestamp for javascripts
 			'user_locale' => $user_locale,
 			'action' => 'xmleditor2',
 			'nodeid' => $idnode
 		));
-
 		$this->render(array('action' => $action), NULL, 'iframe.tpl');
 	}
 
@@ -73,11 +74,15 @@ class Action_xmleditor2 extends ActionAbstract {
 
 		$xslIncludesOnServer = Config::getValue("XslIncludesOnServer");
 		$values = $this->_editor->openEditor($idnode, $view);
+		$values['on_resize_functions'] = '';
 		$values['xinversion'] = Config::getValue("VersionName");
 		$template = 'loadEditor_' . $this->_editor->getEditorName();
 		//Adding Config params for xsl:includes
 		$values["xslIncludesOnServer"] = $xslIncludesOnServer;
+	
 
+		$values["user_connect"] = null;
+		$values['time_id'] = 0;
 		if(ModulesManager::isEnabled('ximADM') ) {
 			$userID = (int) XSession::get('userID');
 
@@ -85,6 +90,7 @@ class Action_xmleditor2 extends ActionAbstract {
 			$values['time_id'] = $time_id;
 			$values["user_connect"] = $this->addJs('/utils/user_connect.js.php?id='.$time_id.'&lang='.XSession::get('locale'), 'ximADM');
 		}
+
 
 
 		$this->render($values, $template, 'xmleditor2.tpl');

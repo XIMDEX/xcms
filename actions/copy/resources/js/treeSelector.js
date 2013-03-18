@@ -71,7 +71,7 @@ function hndCopy_treeSelector(options) {
 		ds: new DataSource({
 			method: 'get',
 			type: 'xml',
-			url:  window.url_root + '/actions/xmleditor/treeselectordata.php'
+			url:  window.url_root + '/inc/widgets/treeview/helpers/treeselectordata.php'
 		}),
 		colModel: tcm,
 		queryParams: function(params, options) {

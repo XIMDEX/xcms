@@ -224,7 +224,7 @@ class HTML2XML {
 					XMD_Log::info('uid (' . $tagCounter . ') '._('exists. Editing content...'));
 					$newChild = $this->_uidMap[$tagCounter];
 					if($textContent = $this->getTextContent($child)) {
-						$this->setTextContent(&$newChild, $textContent);
+						$this->setTextContent($newChild, $textContent);
 					}
 					$lastUid = $tagCounter;
 
@@ -255,7 +255,7 @@ class HTML2XML {
 						// Creating, adding text content and appending new node to xml document
 						$newChild = $this->_domXml->createElement($type);
 						if($textContent = $this->getTextContent($child)) {
-							$this->setTextContent(&$newChild, $textContent);
+							$this->setTextContent($newChild, $textContent);
 						}
 
 						// Assigning new uid to actual node

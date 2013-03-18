@@ -37,8 +37,8 @@
 		%=css_widgets%
 
 		<!-- constant js includes -->
-		<script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery/jquery-1.3.2.min.js"></script>
-		<script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery/jquery-ui-1.8.2.custom.min.js"></script>
+		<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
+		<script type="text/javascript" src="{EXTENSIONS::Jquery_ui()}"></script>
 		<script type="text/javascript" src="{$_URL_ROOT}/inc/js/helpers.js"></script>
 		<!--script type="text/javascript" src="{$_URL_ROOT}/inc/js/console.js"></script-->
         <script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery-validate/jquery.validate.js"></script>

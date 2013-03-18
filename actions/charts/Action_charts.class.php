@@ -42,8 +42,8 @@ class Action_charts extends ActionAbstract {
 		$values = array(
 			'url_root' => $url_root,
 			'js_files' => array(
-				$url_root . '/extensions/jquery/plugins/jquery.flot/jquery.js',
-				$url_root . '/extensions/jquery/plugins/jquery.flot/jquery.flot.js',
+				Extensions::JQUERY_PATH . '/plugins/jquery.flot/jquery.js',
+				Extensions::JQUERY_PATH . '/plugins/jquery.flot/jquery.flot.js',
 				$url_root . '/actions/charts/js/charts.js'
 			),
 			'css_files' => array(
@@ -147,8 +147,8 @@ class Action_charts extends ActionAbstract {
 		$values = array(
 			'url_root' => $url_root,
 			'js_files' => array(
-				$url_root . '/extensions/jquery/plugins/jquery.flot/jquery.js',
-				$url_root . '/extensions/jquery/plugins/jquery.flot/jquery.flot.js',
+				Extensions::JQUERY_PATH . '/plugins/jquery.flot/jquery.js',
+				Extensions::JQUERY_PATH . '/plugins/jquery.flot/jquery.flot.js',
 				$url_root . '/actions/charts/js/dynamicCharts.js'
 			),
 			'css_files' => array(

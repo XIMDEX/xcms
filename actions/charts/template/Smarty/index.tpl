@@ -30,7 +30,7 @@
 
     <title>{t}Ximdex Profiler{/t}</title>
 
-    <!--[if IE]><script language="javascript" type="text/javascript" src="{$url_root}/extensions/jquery/plugins/jquery.flot/excanvas.pack.js"></script><![endif]-->
+    <!--[if IE]><script language="javascript" type="text/javascript" src="{EXTENSIONS::Jquery_path()}/plugins/jquery.flot/excanvas.pack.js"></script><![endif]-->
 	{foreach from=$js_files item=js_file}
 	<script type="text/javascript" src="{$js_file}"></script>
 	{/foreach}
