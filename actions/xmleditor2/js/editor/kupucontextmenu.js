@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8118 $
+ *  @version $Revision: 8528 $
  */
 
 
@@ -34,7 +34,7 @@
  *
  *****************************************************************************/
 
-// $Id: kupucontextmenu.js 8118 2012-01-12 12:23:17Z mjcanga $
+// $Id: kupucontextmenu.js 8528 2013-03-06 09:56:03Z aperez $
 
 
 //----------------------------------------------------------------------------
@@ -170,7 +170,7 @@ function ContextMenu() {
                 element.element = div;
                 addEventHandler(div, "mousedown", element.action, element.context);
                 // On Firefox there is a problem with this event, it hides the menu on the same click that initialy showed it
-                if (_SARISSA_IS_IE) addEventHandler(div, "mouseup", this.hideContextMenu, this);
+                addEventHandler(div, "mouseup", this.hideContextMenu, this);
             } else {
                 var hr = doc.createElement('hr');
                 menu.appendChild(hr);

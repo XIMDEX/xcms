@@ -2013,3 +2013,86 @@ div.buttons{
 	border: 1px dashed #f26560;
 	padding: 0 2px;
 }
+
+
+/* Breadcrumbs on Xedit */
+
+.kupu-tb-navbar{
+	background: #5ab2a6;
+        color: #bfe1dc;
+        height: 28px;
+        border-bottom: 1px solid #5ab2a6;
+        -webkit-box-shadow: inset 0 -1px  0 rgba(255,255,255,.2), 0 2px 1px rgba(80,80,80,.4);
+        -moz-box-shadow: inset 0 -1px  0 rgba(255,255,255,.2), 0 2px 1px rgba(80,80,80,.4);
+        box-shadow: inset 0 -1px  0 rgba(255,255,255,.2), 0 2px 1px rgba(80,80,80,.4);
+        width: 78%;
+        position: relative;
+        z-index: 2;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        position: absolute;
+
+}
+
+.kupu-tb-navbar span{
+        line-height: 2.35em;
+        padding: 0 8px ;
+        cursor: pointer;
+        display: block;
+        float: left;
+        position: relative;
+        margin-left: 13px;
+}
+
+
+.kupu-tb-navbar span:after{
+        content: '';
+        border: 5px solid transparent;
+        border-left-color: #0a6c70;
+        display: inline-block;
+        position: absolute;
+        right: -16px;
+        top: 50%;
+        margin-top: -4px;
+}
+
+.kupu-tb-navbar span:last-child:after{
+        border: none;
+}
+
+.kupu-tb-navbar span:hover{
+   color: #fff;
+}
+
+.kupu-tb-navbar .current-tag{
+        overflow: hidden;
+        animation:fadein .3s; /*W3C and Opera*/
+        -moz-animation:fadein .3s; /*Firefox*/
+        -webkit-animation:fadein .3s; /*Safari and Chrome*/
+        position: relative;
+        -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+   -moz-animation-fill-mode:forwards; /*FF 5+*/
+   -o-animation-fill-mode:forwards; /*Not implemented yet*/
+   -ms-animation-fill-mode:forwards; /*IE 10+*/
+   animation-fill-mode:forwards; /*when the spec is finished*/
+   font-weight: bold;
+   color: #c1e9e4;
+}
+@keyframes fadein /*W3C and Opera*/
+{
+        from {text-indent:-40%;}
+        to {text-indent:0;}
+}
+
+@-moz-keyframes fadein /*Firefox*/
+{
+        from {text-indent:-40%;}
+        to {text-indent:0;}
+}
+
+@-webkit-keyframes fadein /*Safari and Chrome*/
+{
+        from {text-indent:-40%;}
+        to {text-indent:0;}
+}

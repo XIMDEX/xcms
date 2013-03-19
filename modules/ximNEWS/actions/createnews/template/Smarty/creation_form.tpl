@@ -87,8 +87,7 @@
 			</li>
 			<li>
 				<label class="aligned">{t}Associated image{/t}</label>
-				<input class="imagesuggest" type="text"/>
-				<input type="hidden" name="a_enlaceid_noticia_imagen_asociada"/>
+				<input class="input_file" type="file" name="a_enlaceid_noticia_imagen_asociada" />
 			</li>
 		</ol>
 

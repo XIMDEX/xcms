@@ -411,6 +411,11 @@ class  ximNEWS_Adapter {
 			$insertedImages[] = $image;
 		}
 
+		//Make the first image as principal image of the news
+                if (count($insertedImages))
+                        $insertedImages[0][is_property]=true;
+
+
 		return $insertedImages;
 	}
 
