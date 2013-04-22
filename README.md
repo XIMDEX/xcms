@@ -7,7 +7,9 @@ Description
   and services simultaneously in different technologies (PHP, J2EE, .NET, XML/XSLT, etc.). Using 
   a _decoupled publishing_ paradigm it creates and maintain rich static websites.
   
-  More info would be available at http://ximdex.org
+  Ximdex development is sponsored by Open Ximdex Evolution S.L..
+  
+  More info will be available at http://ximdex.org
 
 
 Features
@@ -18,7 +20,7 @@ Features
   - visual content editor
   - Strong neutrality and flexibility allowing to use any application server or language for the deployment 
     of portals and web applications like .NET, PHP, ASP, J2EE, XML/XSLT, flash, XHTML, HTML5, ...
-  - Multiple languages, multiple publication channels (TDT, Web, Mobiles, ...) and multiple application servers.
+  - Multiple languages, multiple channels (web, mobile, DVB-T...) and multiple application servers.
   - _decoupled publishing_ static generated content
 
 
