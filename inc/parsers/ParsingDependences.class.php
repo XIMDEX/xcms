@@ -252,7 +252,7 @@ class ParsingDependences {
 /*
 	Gets all document dependencies and updates database
 */
-	function getAll($idNode, $content, $idVersion) {
+	public static function getAll($idNode, $content, $idVersion) {
 
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
@@ -513,7 +513,7 @@ class ParsingDependences {
 	 * @return array
 	 */
 
-	function getSectionXimlets($sectionId, $idLanguage) {
+	public static function getSectionXimlets($sectionId, $idLanguage) {
 
 		$depMngr = new DepsManager();
 		$ximletContainers = $depMngr->getBySource(DepsManager::SECTION_XIMLET, $sectionId);

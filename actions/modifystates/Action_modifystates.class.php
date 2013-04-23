@@ -139,9 +139,10 @@ class Action_modifystates extends ActionAbstract {
     		$pipeStatus->set('Name', $name);
     		$pipeStatus->set('Description', $descriptions[$key]);
     		$pipeStatus->update();
-    		$node = new Node($pipeStatus->get('IdNode'));
-    		$node->set('Name', $name);
-    		$node->update();
+			//There aren't nodes for pipestatus
+    		//$node = new Node($idNode);
+    		//$node->set('Name', $name);
+    		//$node->update();
     	}
 
 		$workflow = new WorkFlow(NULL, NULL, $idNode);

@@ -112,7 +112,7 @@ class ServerNode extends FolderNode
 		return $server->find('IdServer', $where, array($this->nodeID), MONO);
 	}
 
-	function getServersForPumping() {
+	public static function getServersForPumping() {
 
 		$dbObj = new DB();
 		$sql = "SELECT IdServer FROM Servers WHERE Enabled = 1 AND ActiveForPumping = 1";
@@ -129,7 +129,7 @@ class ServerNode extends FolderNode
 	}
 
 
-	function CreateNode()
+	function CreateNode($name = NULL, $parentID = NULL, $nodeTypeID = NULL)
 	{
         $this->updatePath();
 	}

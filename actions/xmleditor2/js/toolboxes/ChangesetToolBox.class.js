@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8310 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -108,7 +108,7 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 			// When user press enter key, the selected element breaks into two pieces and the
 			// editor is refreshed to correct that "break".
 			// In this case, this._element reference is outdated and the content will be lost.
-			this._element = $('[uid='+this._element.getAttribute('uid')+']', this.editor.getInnerDocument())[0];
+			this._element = $('[uid="'+this._element.getAttribute('uid')+'"]', this.editor.getInnerDocument())[0];
 		}
 
 		// XML structure changes

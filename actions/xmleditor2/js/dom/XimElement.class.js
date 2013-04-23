@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8300 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -373,7 +373,7 @@ XimElement = function(rngElement, importChildElements, ancestors) {
 				var val2 = value[i+1] || '';
 				value.splice(i, 2, val1 + val2);
 
-				var element = $('[uid='+this.uid+']', kupu.getBody())[0];
+				var element = $('[uid="'+this.uid+'"]', kupu.getBody())[0];
 				var parent = element.parentNode;
 				var previous = element.previousSibling;
 				var next = element.nextSibling;
@@ -394,7 +394,7 @@ XimElement = function(rngElement, importChildElements, ancestors) {
                                 }
                                 //Tree view FIX
                                 else{
-                                        element = $('[uid='+this.uid+']', kupu.getBody())[0].parentNode;
+                                        element = $('[uid="'+this.uid+'"]', kupu.getBody())[0].parentNode;
                                         parent = element.parentNode;
                                         previous = element.previousSibling;
                                         next = element.nextSibling;

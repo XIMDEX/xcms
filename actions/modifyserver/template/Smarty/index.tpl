@@ -23,12 +23,12 @@
  *  @version $Revision$
  *}
 
-<form method="post" id='mdfsv_form' name="formulario" action='{$action_url}' onsubmit="validate()">
+<form method="post" id='mdfsv_form' name="formulario" action='{$action_url}'>
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<input type="hidden" name="actionid" value="{$id_action}">
 	<input type="hidden" id="nodeURL" name="nodeURL" value="{$nodeURL}">
 	<input type="hidden" id="num_servers" name="num_servers" value="{$num_servers}">
-	<input type="hidden" name="id" value="{if (!$server.Id)}{$id_server}{else}none{/if}">
+	<input type="hidden" name="id" value="{if (!$server.id)}{$id_server}{else}none{/if}">
 
 	<fieldset class="mdfsv_errors">
 		<legend><span>{t}Error messages{/t}</span></legend>

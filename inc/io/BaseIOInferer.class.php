@@ -129,7 +129,7 @@ class BaseIOInferer {
 					. " INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType"
 					. " WHERE nac.IdNodeType = %s", $parent_type);
 		$db = new DB();
-		error_log("DEBUG $query");
+		//error_log("DEBUG $query");
 		$db->Query($query);
 		$results = array();
 		if (is_file($path)) {

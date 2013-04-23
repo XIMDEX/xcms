@@ -71,7 +71,7 @@
 		<hbox include="yes" />
 
 		<div id="header">
-           <h1><img src="{$_URL_ROOT}/xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}" title="{t}Semantic content management with Ximdex{/t}"/></h1>
+           <h1><img src="{$_URL_ROOT}/xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}" title="{t}Semantic content management with Ximdex{/t}" id="logo" /></h1>
             <div class="session-info">
 	           <!-- <img class="login-img" src="{$_URL_ROOT}/xmd/images/user_48.png" border="0" alt="Login" title="Login"/>-->
 	            <div class="language"><span class="current">{$user_locale.Lang}</span>

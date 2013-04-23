@@ -74,7 +74,7 @@ div.ui-tabs ul.ui-tabs-nav li.ui-state-default, .xim-tabs-nav{
 	border: none;
 }
 
-div.ui-tabs ul.ui-tabs-nav li.ui-tabs-selected {
+div.ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
 	-moz-box-shadow: 0 -6px 5px #555;
 	-webkit-box-shadow: 0 -6px 5px #555;
 	box-shadow: 0 -6px 5px #555;
@@ -88,7 +88,7 @@ ui-tabs .ui-tabs-nav li:hover{
 	margin-top: -1px;	
 }
 
-.ui-tabs .ui-tabs-nav li.ui-tabs-selected a/*, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a */{
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a/*, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a */{
 	cursor:default;	
 }
 
@@ -132,13 +132,13 @@ ui-tabs .ui-tabs-nav li:hover{
 	height: 22px;
 	width: 250%;
 }
-.hbox-panel-container-0 .ui-tabs-nav>li.ui-tabs-selected>a:hover span{	
+.hbox-panel-container-0 .ui-tabs-nav>li.ui-tabs-active>a:hover span{	
 	margin-top: 41px;
 }
 a.browser-projects-view {
 	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px 4px;
 }
-a.browser-projects-view:hover, li.ui-tabs-selected a.browser-projects-view, a.browser-projects-view:hover span {
+a.browser-projects-view:hover, li.ui-tabs-active a.browser-projects-view, a.browser-projects-view:hover span {
 	background-position: -45px	4px;
 	left: 20px;
 }
@@ -147,7 +147,7 @@ a.browser-ccenter-view {
 	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -26px;
 }
 
-a.browser-ccenter-view:hover, li.ui-tabs-selected  a.browser-ccenter-view, a.browser-ccenter-view:hover span {
+a.browser-ccenter-view:hover, li.ui-tabs-active  a.browser-ccenter-view, a.browser-ccenter-view:hover span {
 	background-position: -45px -26px;	
 	left: -41px;
 	/*top: 8px;*/
@@ -157,7 +157,7 @@ a.browser-reports-view {
 	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -57px;
 }
 
-a.browser-reports-view:hover, li.ui-tabs-selected a.browser-reports-view, a.browser-reports-view:hover span{
+a.browser-reports-view:hover, li.ui-tabs-active a.browser-reports-view, a.browser-reports-view:hover span{
 	background-position: -45px -57px;	
 }
 
@@ -165,7 +165,7 @@ a.browser-sets-view {
 	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -119px;
 }
 
-a.browser-sets-view:hover, li.ui-tabs-selected a.browser-sets-view{
+a.browser-sets-view:hover, li.ui-tabs-active a.browser-sets-view{
 	background-position: -45px -119px;
 }
 
@@ -173,7 +173,7 @@ a.browser-modules-view {
 	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -88px;
 }
 
-a.browser-modules-view:hover, li.ui-tabs-selected a.browser-modules-view, a.browser-modules-view:hover span{
+a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browser-modules-view:hover span{
 	background-position: -45px -88px;	
 	left: -102px;
 }

@@ -72,7 +72,7 @@ class Action_modifyusuariosgrupo extends ActionAbstract {
 						'users' => $users,
 						'idnode' => $idNode,
 						'roles' => $roles,
-						'user_info' => $userRoleInfo,
+						'user_infos' => $userRoleInfo,
 						'nodeid' => $idNode,
 						'action_add' => $query->getPage() . $query->buildWith(array('method' => 'addgroupuser')),
 						'action_edit_delete' => $query->getPage() . $query->build() );
@@ -121,7 +121,6 @@ class Action_modifyusuariosgrupo extends ActionAbstract {
     	if (is_array($users)) {
     		foreach ($users as $key => $idUser) {
     			$group->DeleteUser($idUser);
-    			unset($relations[$key]);
     			unset($userRoles[$key]);
     		}
     	}

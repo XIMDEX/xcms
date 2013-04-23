@@ -59,8 +59,7 @@ class NodeFrameManager {
 		$nodeFrame = new NodeFrame();
 
 		if (is_null($nodeFrameId)) {
-			$nodeFrame->NodeFrameToLog(null, $nodeFrameId, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-				__LINE__, "ERROR", 8, _("ERROR empty IdNodeFrame")." - checkActivity");
+			$nodeFrame->NodeFrameToLog(null, $nodeFrameId, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "ERROR", 8, _("ERROR empty IdNodeFrame")." - checkActivity");
 			return false;
 		}
 
@@ -70,7 +69,7 @@ class NodeFrameManager {
 		if ($batchType == "Up") {
 
 			if (is_null($testTime)) {
-				$now = mktime();
+				$now = time();
 			} else {
 				$now = $testTime;
 			}

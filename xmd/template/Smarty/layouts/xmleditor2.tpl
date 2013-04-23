@@ -34,9 +34,7 @@
 	{foreach from=$base_tags item=base}
 	<base href="{$base}"/>
 	{/foreach}
-	{foreach name=id from=$meta_tags item=content}
-	<meta name="{$id}" content="{$content}"/>
-	{/foreach}
+
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
 	<link rel="icon" href="../../../favicon.ico" type="image/x-icon" />

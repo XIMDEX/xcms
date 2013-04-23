@@ -717,7 +717,7 @@ class BatchManager {
 		// Batchs to start
 		if (!$testTime) {
 
-			$now = mktime();
+			$now = time();
 		} else {
 
 			$now = $testTime;

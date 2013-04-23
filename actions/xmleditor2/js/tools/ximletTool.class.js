@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8313 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -153,12 +153,12 @@ function ximletTool() {
 		$(ximlet).fadeTo('fast', 0.6);
 
 		$(ximlet).next().contents().filter(function() {return this.nodeType == Node.TEXT_NODE;}).remove();
-		$(ximlet).next().filter('[uid=' + $(ximlet).attr('uid') + ']').children().fadeTo('fast', 0.5);
-		//$(ximlet).next().filter('[uid=' + $(ximlet).attr('uid') + ']').children().css('background-color', 'orange');
+		$(ximlet).next().filter('[uid="' + $(ximlet).attr('uid') + '"]').children().fadeTo('fast', 0.5);
+		//$(ximlet).next().filter('[uid="' + $(ximlet).attr('uid') + '"]').children().css('background-color', 'orange');
 		try {
-			$(ximlet).next().filter('[uid=' + $(ximlet).attr('uid') + ']').children().css('border', '1px dotted black');
-			//$(ximlet).css('top', $($(ximlet).next().filter('[uid=' + $(ximlet).attr('uid') + ']').children()[0]).position().top);
-			$(ximlet).css('left', $($(ximlet).next().filter('[uid=' + $(ximlet).attr('uid') + ']').children()[0]).position().left);
+			$(ximlet).next().filter('[uid="' + $(ximlet).attr('uid') + '"]').children().css('border', '1px dotted black');
+			//$(ximlet).css('top', $($(ximlet).next().filter('[uid="' + $(ximlet).attr('uid') + ']'").children()[0]).position().top);
+			$(ximlet).css('left', $($(ximlet).next().filter('[uid="' + $(ximlet).attr('uid') + '"]').children()[0]).position().left);
 		} catch(e) {
 			//console.warn(e); //Something is going wrong when getting in for second time
 		}

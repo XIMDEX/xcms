@@ -250,7 +250,7 @@ class dependencies extends Dependencies_ORM{
 	 * @param int $docId
 	 * @return array
 	 */
-	function getXslDependencies($content, $docId) {
+	public static function getXslDependencies($content, $docId) {
 
 		$node = new Node($docId);
 

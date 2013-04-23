@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8387 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -277,7 +277,7 @@ function DraggablesToolBox() {
 		// Don't drop under the same element
 		if (droppableUID == draggableUID) return;
 
-		if ($('[uid=%s] [uid=%s]'.printf(draggableUID, droppableUID), this._body).length > 0) {
+		if ($('[uid="%s"] [uid="%s"]'.printf(draggableUID, droppableUID), this._body).length > 0) {
 			// Parent dropped on a child, we don't want evil circular references
 			return;
 		}
@@ -336,7 +336,7 @@ function DraggablesToolBox() {
 		var blinkCount = numOfBlinks * 2;
 		var duration = blinkCount * blinkDuration;
 
-		$('[uid=' + elementUid + ']', this._body).each(
+		$('[uid="' + elementUid + '"]', this._body).each(
 			function(index, elem) {
 				var oldBG = $(elem).css('background-color');
 				console.log(oldBG);

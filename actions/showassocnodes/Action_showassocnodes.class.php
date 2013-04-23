@@ -82,7 +82,7 @@ class Action_showassocnodes extends ActionAbstract {
 		$sections2 = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $idContainer);
 		$sections2 = !is_array($sections2) ? array() : $sections2;
 		$sections3 = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $idNode);
-		$sections4 = !is_array($sections3) ? array() : $sections3;
+		$sections3 = !is_array($sections3) ? array() : $sections3;
 
 		$sections = array_merge($sections1, $sections2, $sections3);
 

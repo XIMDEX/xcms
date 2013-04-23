@@ -151,10 +151,11 @@ abstract class Widget_Abstract {
 	}
 
 	protected function createJsParams($widgetId, $params) {
-		$base = "xparams[wv][$widgetId]";
+		$base = "xparams[wv][{$widgetId}]";
 		$ret = array();
 		foreach ($params as $key=>$value) {
-			$ret[] = $base . "[$key]=$value";
+			if(!is_array($value) )
+				$ret[] = $base . "[{$key}]={$value}";
 		}
 		return $ret;
 	}

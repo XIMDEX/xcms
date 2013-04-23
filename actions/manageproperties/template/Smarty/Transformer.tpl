@@ -24,7 +24,7 @@
  *}
 
 
-{assign var="transformers" value=`$properties.Transformer`}
+{assign var="transformers" value=$properties.Transformer}
 
 <fieldset>
 

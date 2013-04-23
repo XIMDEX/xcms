@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8410 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -117,13 +117,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 
         	$jsFiles = array(
 //			'http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js',
-			'/actions/xmleditor2/js/extensions/jquery/js/jquery-1.3.2.min.js',
+			//'/actions/xmleditor2/js/extensions/jquery/js/jquery-1.3.2.min.js',
+			Extensions::JQUERY,
 //			'/actions/xmleditor2/js/extensions/jquery/js/jquery-1.3.2.js',
-			'/actions/xmleditor2/js/extensions/jquery/js/jquery-ui-1.7.custom.min.js',
+//			'/actions/xmleditor2/js/extensions/jquery/js/jquery-ui-1.7.custom.min.js',
 //			'/actions/xmleditor2/js/extensions/jquery/js/jquery-ui-1.7.js',
-			'/actions/xmleditor2/js/extensions/jquery/js/fix.jquery.getters.js',
-			'/actions/xmleditor2/js/extensions/jquery/js/fix.jquery.parsejson.js',
-			'/extensions/jquery/plugins/jquery.json/jquery.json-2.2.min.js',
+			Extensions::JQUERY_UI,
+			Extensions::JQUERY_PATH.'/js/fix.jquery.getters.js',
+			Extensions::JQUERY_PATH.'/js/fix.jquery.parsejson.js',
+			Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js',
 			'/inc/js/helpers.js',
 			'/inc/js/sess.js',
 			'/inc/js/collection.js',
@@ -196,7 +198,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/tools/ToolbarTool.js',
 			$actionURL . '/js/tools/ImagesTool.js',
 			$actionURL . '/js/tools/RMXimdexTool.js',
-			$actionURL . '/js/tools/NavBarTool.js',
+                        $actionURL . '/js/tools/NavBarTool.js',
 
 				/* ####### DRAWERS ########## */
 
@@ -220,7 +222,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/toolboxes/AnnotationToolBox.class.js',
 			$actionURL . '/js/toolboxes/AnnotationRdfaToolBox.class.js',
 			$actionURL . '/js/toolboxes/RNGElementsToolBox.class.js',
-			$actionURL . '/js/toolboxes/NavBarToolBox.class.js',
+                        $actionURL . '/js/toolboxes/NavBarToolBox.class.js',
 //			$actionURL . '/js/editor/ToolbarToolBox.class.js',
 
 				/* ##### buttons #### */
@@ -313,8 +315,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		$xmlOrigenContent = $node->class->GetRenderizedContent();
 
 		// Loading XML & HTML content into respective DOM Documents
-		$docXmlOrigen = DOMDocument::loadXML($xmlOrigenContent);
-		$docHtml = DOMDocument::loadHTML(String::stripslashes($htmldoc));
+		$docXmlOrigen = new DOMDocument();
+		$docXmlOrigen->loadXML($xmlOrigenContent);
+		$docHtml = new DOMDocument();
+		$docHtml->loadHTML(String::stripslashes($htmldoc));
 
 		// Transforming HTML into XML
 		$htmlTransformer = new HTML2XML();
@@ -604,23 +608,23 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 				if($json1['status']!="ok" && $json2['status']!="ok"){
 					$status = "bad";
 				}
-
-				//We must delete de HTTP header that comes with the response 
+				
+				//We must delete de HTTP header that comes with the response
 				$pos=strpos($resp1,"status");
 				if ($pos!== FALSE){
 		 	                $resp1=substr($resp1,$pos-2,strlen($resp1));
 				}
-				
+
 				$resp='{"status": "'.$status.'","zemanta":'.$resp1.', "iks":'.$resp2.'}';
 			}
 		}
 		else{
-			$videolink="<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>";      
-                        $ximRAmsg=_("ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>");
+			$videolink="<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>";	
+			$ximRAmsg=_("ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>");
 			$videomsg=sprintf($ximRAmsg,$videolink);
 			$urlvideo = "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>";
 			XMD_Log::error(_("ximRA module has not been installed. It is included in the advanced package WIX."));
-            		$resp = '{"status": "'.$videomsg.'","videourl":"'.$urlvideo.'"}';
+		        $resp = '{"status": "'.$videomsg.'","videourl":"'.$urlvideo.'"}';
 		}
 
 		return $resp;

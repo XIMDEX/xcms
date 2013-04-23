@@ -24,7 +24,7 @@
  *}
 
 
-{assign var="schemas" value=`$properties.Schema`}
+{assign var="schemas" value=$properties.Schema}
 
 <fieldset>
 
@@ -46,7 +46,7 @@
 	<div class="xright-block">
 		<input type="radio" name="inherited_schemas" class="schemas_overwritten"
 			value="overwrite" {if $Schema_inherited == 'overwrite'}checked{/if} />
-		<label>Overwrite inherited templates</label>
+		<label>{t}Overwrite inherited templates{/t}</label>
 		<ol>
 			{foreach from=$schemas item=schema}
 			<li>

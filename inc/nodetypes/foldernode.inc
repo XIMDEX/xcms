@@ -137,7 +137,7 @@ class FolderNode extends Root {
 	*  @param int nodeTypeID
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID){
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null){
 		$this->updatePath();
 	}
 

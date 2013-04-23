@@ -36,6 +36,7 @@ class Action_movenode extends ActionAbstract {
       	$idNode		= (int) $this->request->getParam("nodeid");
       	$actionID	= (int) $this->request->getParam("actionid");
 		$params = $this->request->getParam("params");
+		
 
 		$node = new Node($idNode);
 		$idNodeType = $node->get('IdNodeType');
@@ -55,6 +56,7 @@ class Action_movenode extends ActionAbstract {
 				$childList = array_merge($childList, $childNode->TraverseTree());
 			}
 
+			$pendingTasks = array();
 			foreach($childList as $nodeID) {
 				$pendingTasks =  array_merge($pendingTasks, $sync->getPendingTasksByNode($nodeID));
 				$numPendingTasks = count($pendingTasks);
@@ -76,7 +78,7 @@ class Action_movenode extends ActionAbstract {
 					'nameNodeType' => $node->nodeType->get('Name'),
 					'allowed_nodeTypes' => implode(',', $allowedNodeTypes),
 					'filtertype' => $node->nodeType->get('Name'),
-					'target_file' => $targetFile,
+					'target_file' => null,
 					'node_path' => $node->GetPath(),
 					'isPublished' => $isPublished,
 					"go_method" => "move_node"

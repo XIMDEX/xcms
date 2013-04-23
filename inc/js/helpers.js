@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8111 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -708,7 +708,7 @@
 	X.widgetsVars = {
 		widgets: null,
 		parseValue: function(value) {
-			var ret = null;
+			var ret = undefined;
 			try {
 				if (['true', 'false', 'null', 'undefined', ''].contains(value)) {
 					ret = eval(value);
@@ -762,6 +762,10 @@
 			var w = X.widgetsVars.getWidget(widget);
 			var ret = (w && w[param] !== undefined) ? w[param] : null;
 			return ret;
+		},
+
+		getValues: function(widget) {
+			return X.widgetsVars[widget] || {};
 		},
 		setValue: function(widget, param, value) {
 			var w = X.widgetsVars.getWidget(widget);

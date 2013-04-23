@@ -62,6 +62,14 @@ class Mail extends PHPMailer {
 		}
 	}
 
+
+	function setFrom($email, $name = "") {
+		$this->From = $email;
+		$this->FromName = $name;
+		$this->Sender = $this->From;
+	}
+
+
 	function error_handler($msg) {
 		// write to logging system.
 		echo "Mail ERROR: $msg\n";

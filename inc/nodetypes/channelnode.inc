@@ -27,12 +27,6 @@
 
 
 
-
-
-
-
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
@@ -73,8 +67,7 @@ class ChannelNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $channelName, $extension, $format, $description,
-		$filter = "", $renderMode = NULL) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null, $format = null, $description = null, $filter = "", $renderMode = NULL) {
 
   		$channel = new Channel();
   		$channel->CreateNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
@@ -116,7 +109,7 @@ class ChannelNode extends Root {
     	return $deps;
 	}
 
-	function RenameNode($name) {
+	function RenameNode($name = null) {
 		parent::RenameNode($name);
 	}
 }

@@ -67,7 +67,7 @@ class GroupNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null)	{
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null)	{
 
 		$grupo = new Group($this->parent->get('IdNode'));
 		$grupo -> CreateNewGroup($name, $this->parent->get('IdNode'));
@@ -102,7 +102,7 @@ class GroupNode extends Root {
 	*  @return unknown
 	*/
 
-	function RenameNode($name) 	{
+	function RenameNode($name = null) 	{
 
 		$grupo = new Group($this->parent->get('IdNode'));
 		$grupo->SetGroupName($name);

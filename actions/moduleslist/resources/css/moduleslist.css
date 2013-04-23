@@ -1,0 +1,7 @@
+p.states {
+	padding-left: 30px;
+}
+
+p.states.loading {
+	background: transparent url('../../../browser3/resources/images/loading.gif') 5px 30px no-repeat;
+}

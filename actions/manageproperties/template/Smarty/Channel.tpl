@@ -24,7 +24,7 @@
  *}
 
 
-{assign var="channels" value=`$properties.Channel`}
+{assign var="channels" value=$properties.Channel}
 
 <fieldset>
 
@@ -54,6 +54,7 @@
 
 		<div class="left-block">
 			<ol>
+				{if ($channels)}
 				{foreach from=$channels item=channel}
 				<li>
 					<input
@@ -71,11 +72,13 @@
 					{$channel.Name}
 				</li>
 				{/foreach}
+				{/if}
 			</ol>
 		</div>
 
 		<div class="right-block">
 			<ol>
+				{if ($channels)}
 				{foreach from=$channels item=channel}
 				<li>
 					<div class="novisible recursive channels_recursive_{$channel.IdChannel}">
@@ -98,6 +101,7 @@
 					</div>
 				</li>
 				{/foreach}
+				{/if}
 			</ol>
 		</div>
 

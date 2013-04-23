@@ -62,9 +62,9 @@ function smarty_function_button($params, &$smarty) {
 
 		$sUrl .= sprintf(
 			'<div class="index" style="display: none">%s/xmd/loadaction.php?method=index&action=%s&nodeid=%s</div>',
-			$smarty->_tpl_vars['_URL_ROOT'],
-			$smarty->_tpl_vars['action'],
-			$smarty->_tpl_vars['nodeid']
+			$smarty->getTemplateVars('_URL_ROOT'),
+			$smarty->getTemplateVars('action'),
+			$smarty->getTemplateVars('nodeid')
 		);
 		$sButton = "$sUrl\n$sButton";
 	}

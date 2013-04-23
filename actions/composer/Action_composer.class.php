@@ -68,64 +68,8 @@ class Action_composer extends ActionAbstract {
 		XSession::set('activeTheme', $theme);
 	}
 
-	public function treecontainer() {
-		XSession::check();
-
-		$values = array('composer_index' => self::COMPOSER_INDEX, "debug" => XSession::checkUserID());
-
-		$this->render($values, "treecontainer", "only_template.tpl");
-	}
-
-	public function content() {
-		XSession::check();
-
-		$ximid = Config::GetValue("ximid");
-		$versionname = Config::GetValue("VersionName");
-
-		$values = array('composer_index' => self::COMPOSER_INDEX, 'ximid' => $ximid, "versionname" => $versionname);
-
-		$this->render($values, "content", "only_template.tpl");
-	}
 
 
-	public function tree() {
-		XSession::check();
-
-		$rootNode = new Node();
-		$rootID = $rootNode->GetRoot();
-		$rootNode->SetID($rootID);
-
-		$values = array('composer_index' => self::COMPOSER_INDEX, 'nodeName' => $rootNode->GetNodeName(), 'nodeid' => $rootNode->GetID(), 'nodeicon' => $rootNode->nodeType->GetIcon());
-
-		$this->render($values, "tree", "only_template.tpl");
-	}
-
-	public function toolbardata() {
-		include_once (XIMDEX_ROOT_PATH . "/inc/utils.inc");
-
-		XSession::check();
-
-		$this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-		$this->response->set('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
-		$this->response->set('Cache-Control',
-			array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
-		$this->response->set('Pragma', 'no-cache');
-
-		$this->response->set('Content-type', 'text/xml');
-		$this->response->sendHeaders();
-		echo "<?xml version=\"1.0\" encoding=\"$this->displayEncoding\"?>";
-
-		$nodeID = $this->request->getParam('nodeid');
-		$selectedNode = new Node($nodeID);
-		$parentNodeID = $selectedNode->GetParent();
-		$parentNode = new Node($parentNodeID);
-
-		echo '<selection nodeid="' . $nodeID . '">';
-		if (!$selectedNode->numErr && $nodeID > 0) {
-			$this->_printXmlToolbar($nodeID);
-		}
-		echo '</selection>';
-	}
 
 	public function readTreedata($idNode, $children=false, $desde=null, $hasta=null, $nelementos=null, $find=null) {
 		XSession::check();
@@ -367,6 +311,10 @@ class Action_composer extends ActionAbstract {
 
 		//A bad way to solve the problem, warning, achtung
 		$jsFile = $this->request->getParam('js_file') ? $this->request->getParam('js_file') : $this->request->getParam('amp;js_file');
+
+		if(empty($jsFile) )
+			$jsFile = "widgetsVars";		
+
 		$jsFile = sprintf('/xmd/template/Smarty/helper/%s.tpl', $jsFile);
 
 		// The class AssociativeArray does not return an array, then it obtains _GET value
@@ -482,35 +430,6 @@ class Action_composer extends ActionAbstract {
 		print $ximmenu;
 	}
 
-	public function panel_content() {
-		XSession::check();
-
-		$userID = XSession::get('userID');
-
-		$user = new User();
-		$user->SetID($userID);
-		$panel = 'panel_' . $this->request->getParam('name');
-		$nummsg = null;
-
-		if ($panel == 'panel_autoalert') {
-			// user Num msgs
-			$dbObj = new DB();
-			$sql = "select count(*) from Messages where IdOwner ='" . $user->GetID() . "' and IsRead = '0' and Folder = '1'";
-			$dbObj->Query($sql);
-			$nummsg = $dbObj->GetValue("count(*)");
-		}
-
-		$values = array(
-			'composer_index' => self::COMPOSER_INDEX,
-			'user_name' => $user->GetRealName(),
-			'ip_address' => isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-								? $_SERVER['HTTP_X_FORWARDED_FOR']
-								: $_SERVER['REMOTE_ADDR'],
-			'nummsg' => $nummsg
-		);
-
-		$this->render($values, $panel, 'only_template.tpl');
-	}
 
 
 	function modules() {

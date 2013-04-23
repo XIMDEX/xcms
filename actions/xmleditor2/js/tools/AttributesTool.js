@@ -76,7 +76,7 @@ var AttributesTool = Object.xo_create(XimdocTool, {
 		for (var itemUID in this.specialElements) {
 
 			var ximElement = this.specialElements[itemUID];
-			var domElement = $('[uid=%s]'.printf(itemUID), xmldoc).get(0);
+			var domElement = $('[uid="%s"]'.printf(itemUID), xmldoc).get(0);
 
 			if (Object.isEmpty(domElement)) {
 				continue;
@@ -265,7 +265,7 @@ var AttributesTool = Object.xo_create(XimdocTool, {
 		this.selNode.value = [ximLinkInfo.text];
 
 		if (this.selNode.tagName != 'image') {
-			$('[uid=%s]'.printf(this.selNode.uid), this.editor.getBody()).html(ximLinkInfo.text);
+			$('[uid="%s"]'.printf(this.selNode.uid), this.editor.getBody()).html(ximLinkInfo.text);
 		}
 	}
 

@@ -92,8 +92,9 @@ class PVD2RNG {
 			return false;
 		}
 		
-		$this->_dompvd = DOMDocument::loadXML($content);
-		if (!$this->_dompvd) {
+		$this->_dompvd = new DOMDocument();
+		$result = $doc->loadXML($content);
+		if (!$result) {
 			return false;
 		}
 		$this->_pvdxpath = new DOMXPath($this->_dompvd);

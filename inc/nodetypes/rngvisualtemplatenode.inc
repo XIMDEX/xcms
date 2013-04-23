@@ -62,7 +62,7 @@ class rngvisualtemplatenode extends FileNode {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null) {
 
 		$content = FsUtils::file_get_contents($sourcePath);
 

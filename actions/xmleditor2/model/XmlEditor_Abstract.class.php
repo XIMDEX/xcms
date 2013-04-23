@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8278 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -250,8 +250,10 @@ abstract class XmlEditor_Abstract {
 		$xmlOrigenContent = $node->class->GetRenderizedContent();
 
 		// Loading XML & HTML content into respective DOM Documents
-		$docXmlOrigen = DOMDocument::loadXML($xmlOrigenContent);
-		$docHtml = DOMDocument::loadHTML(String::stripslashes($htmldoc));
+		$docXmlOrigen = new DOMDocument();
+		$docXmlOrigen->loadXML($xmlOrigenContent);
+		$docHtml = new DOMDocument();
+		$docHtml = $docHtml->loadHTML(String::stripslashes($htmldoc));
 
 		// Transforming HTML into XML
 		$htmlTransformer = new HTML2XML();
@@ -275,7 +277,8 @@ abstract class XmlEditor_Abstract {
 	protected function _normalizeXmlDocument($idNode, $xmldoc, $deleteDocxap = true) {
 
 		$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . String::stripslashes($xmldoc);
-		$doc = DOMDocument::loadXML($xmldoc);
+		$doc = new DOMDocument();
+		$doc->loadXML($xmldoc);
 		$docxap = $doc->firstChild;
 
 		$this->_resolveXimlinks($idNode, $doc);

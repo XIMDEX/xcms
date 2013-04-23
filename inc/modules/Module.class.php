@@ -37,14 +37,44 @@ ModulesManager::file("/inc/helper/Messages.class.php");
  */
 class Module {
 
-	var $name;
-	var $path;
-	var $actions;
-	var $sql_constructor;
-	var $sql_constructor_file;
-	var $sql_destructor;
-	var $sql_destructor_file;
-	var $messages;
+	public $name;
+	public $path;
+	public $actions;
+	public $sql_constructor;
+	public $sql_constructor_file;
+	public $sql_destructor;
+	public $sql_destructor_file;
+	public $messages;
+
+
+
+	const ERROR = 'ERROR';
+	const WARNING = 'WARNING';
+	const SUCCESS = 'SUCCESS';
+
+	/**
+		Installed modules has a state file in XIMDEX_ROOT_PATH/data
+		Uninstalled modules hasn't
+	*/
+	protected function getStateFile() { return  XIMDEX_ROOT_PATH."/data/.{$this->getModuleName()}"; }
+	protected function checkStateFile() { return file_exists($this->getStateFile() ); }
+	protected function addStateFile() {
+		if(!$this->checkStateFile() ) {
+			file_put_contents($this->getStateFile(), "",  FILE_APPEND );
+		}
+	}
+	protected function removeStateFile() {
+		if($this->checkStateFile() ) {
+			unlink($this->getStateFile());
+		}
+	}
+
+	/**
+		return if module is core ( true ) or not ( false )
+	*/
+	function isCoreModule() {
+		return in_array($this->getModuleName(), ModulesManager::getCoreModules() );
+	}
 
 	/**
 	 *  @public
@@ -242,6 +272,7 @@ class Module {
 			if (!empty($this->sql_constructor)) {
 				$this->injectSQLFile($this->sql_constructor_file);
 				//$this->messages->add(_("-- SQL constructor loaded"), MSG_TYPE_NOTICE);
+				//Añadimos aqui 
 			   XMD_Log::info(_("-- SQL constructor loaded"));
 			} else {
 				$this->messages->add(_("* ERROR: SQL constructor not loaded"), MSG_TYPE_ERROR);
@@ -252,6 +283,8 @@ class Module {
 			if (!$this->postInstall()) {
 				echo "Ha fallado el proceso de post instalación, puede que el módulo no funcione correctamente\n";
 				$ret = false;
+			}else {
+				$this->addStateFile();
 			}
 		}
 		// Muestra los mensajes
@@ -299,8 +332,9 @@ class Module {
 	function uninstall() {
 
         // SQL Remove
-        if (!empty($this->sql_destructor)) {
+        if (!empty($this->sql_destructor) && !$this->isCoreModule() ) {
             $this->injectSQLFile($this->sql_destructor_file);
+			$this->removeStateFile();
 			$this->messages->add(_("-- SQL destructor loaded"), MSG_TYPE_NOTICE);
         } else {
 			$this->messages->add(_("* ERROR: SQL destructor not loaded"), MSG_TYPE_ERROR);
@@ -318,106 +352,65 @@ class Module {
 	 *  Enable module.
      *  @public
 	 */
-	function enable() {
-
-	}
+	function enable() { }
 
 
 	/**
 	 *  Disable module.
      *  @public
 	 */
-	function disable() {
-
-	}
+	function disable() {	}
 
     /**
      *  @public
      */
     function state() {
-
         // SQL loaded?
 		$db = new DB();
 
 		$module_name = $this->getModuleName();
 
-		$db->Query("SELECT DISTINCT Command FROM Actions WHERE Module = '$module_name'");
-
-		if (!$db->numErr) {
-			while (!$db->EOF) {
-				$data = $db->GetValue("Command");
-				$this->messages->add("data = $data", MSG_TYPE_NOTICE);
-				$db->Next();
-			}
+		if ($this->checkStateFile() ) {
+				return MODULE_STATE_INSTALLED;
 		} else {
-			$this->messages->add(sprintf(_("* ERROR [: SQL query %s"), $db->numErr), MSG_TYPE_ERROR);
-			return MODULE_STATE_ERROR;
+			return MODULE_STATE_UNINSTALLED;
 		}
 
-
-        // Esta en el fichero de configuracion ? continue : ERROR
-
-        // Estan las acciones en la tabla Actions ? continue : ERROR
-        $this->getActions();
-
-        //print_r($this->actions);
-
-        return MODULE_STATE_UNINSTALLED;
     }
+
+
+	function log($priority, $string) {
+
+		if ($this instanceof Modules) {
+			XMD_Log::warning("Using $this->log in a class that is not an instance of Module.");
+			return false;
+		}
+
+		$module_name = $this->name;
+
+		switch ($priority) {
+			case self::SUCCESS:
+				//echo(" - [$module_name] (SUCCESS): $string\n");
+            XMD_Log::info(" - [$module_name] (SUCCESS): $string");
+				break;
+			case self::ERROR:
+			default:
+				echo(" * [$module_name] (ERROR): $string\n");
+				XMD_Log::error($string);
+		}
+	}
+
 
     /**
      * @protected
      */
-    function checkState() {
-
-    }
-
-// Actions -
-
-    /**
-     *  @private
-     */
-	function loadActions() {
-
-		$actions_dir = $this->getModulePath() . "/actions/";
-
-		if (!is_dir($actions_dir)) {
-			return false;
-		}
-
-		if ($dir_hnd = opendir($actions_dir)) {
-
-			while(false !== ($item = readdir($dir_hnd))) {
-				if (is_dir($actions_dir . $item) &&
-				    $item != "." && $item != ".." && $item != ".svn") {
-					$this->actions[] = $item;
-				}
-			}
-
-			closedir($dir_hnd);
-		}
-
-		return true;
-	}
-
-    /**
-     *  @protected
-     */
-	function getActions() {
-
-		if ($this->actions === NULL) {
-			$this->loadActions();
-		}
-
-		return $this->actions;
-	}
+    function checkState() { return $this->state();  }
 
 	/**
-	 * Future ! :]
+	 * return array with install params
+	 *
 	 */
-	function registerAction() {
-
-	}
+	function getInstallParams() { return array(); }
 
 }
 ?>

@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 7858 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -33,8 +33,11 @@
 
 	B.ModulesView = Object.xo_create(B.AbstractView, {
 
+		container_modules: null,
+
 		_init: function(options) {
 
+			X.widgetsVars.setWidgetType(this, "modulestab");
 
 			B.ModulesView._construct(this, options);
 			this.id = 'browser-modules-view-' + (++idCount);
@@ -45,15 +48,53 @@
 				.addClass('browser-modules-view-content')
 				.attr({id: this.id});
 				this.setViewTitle(_("Modules"));
+
+			this.container_modules = $('<div></div>').addClass('browser-modules-view-list-container').appendTo(this.content);
+
 			this.loadModulesList();
 		},
 
 		loadModulesList: function() {
 
-			var container = $('<div></div>').addClass('browser-modules-view-list-container').appendTo(this.content);
-			var url = '%s?action=%s&method=%s'.printf(X.restUrl, 'moduleslist', 'index');
-			container.load(url);
-		}
+
+			var url = '%s?action=%s&method=%s'.printf(X.restUrl, 'moduleslist', 'readModules');
+
+			//Get all modules
+			$.ajax({
+				type: "GET",
+				url: url,
+				success:  function(data) {
+					this.container_modules.html(data);
+					this.assignTabs();
+				}.bind(this)
+			});
+
+
+		},
+
+		assignTabs: function() {
+			$("li", this.container_modules).each(function(i, module) {
+				$(module).click(function() {
+						this.openTab(module, $(module).text() );
+				}.bind(this) );
+			}.bind(this) ); 
+		},
+
+		openTab: function(link, module) {
+				var lbl_module = _("Module");
+
+				 parent.$('#bw1').browserwindow('openAction', {
+				   label: lbl_module+" "+module,
+					name: lbl_module+" "+module,
+					command: 'moduleslist',
+					params: 'method=opentab&modsel='+module,
+					nodes: 10000,
+					url: X.restUrl + '?action=moduleslist&nodes[]=10000&nodeid=10000&modsel='+module,
+					bulk: '10000'
+				},10000);
+		},
+
+		getter: ['loadModulesList']
 	});
 
 })(com.ximdex);

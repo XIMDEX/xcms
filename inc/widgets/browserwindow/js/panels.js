@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8370 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -53,7 +53,7 @@
 			this.tabs.tabs({
 				spinner: 'Retrieving data...',
 				select: function(event, ui) {
-					$('.destroy-on-click').unbind().remove();
+					$('.destroy-on-click').off().remove();
 					$('.hide-on-click').hide();
 				},
 				hbox: $('.browser-hbox')
@@ -62,7 +62,7 @@
 			if (this.closeable) {
 				var tabTemplate = '<li><div class="ui-tab-close"></div><a href="#{href}"><span>#{label}</span></a></li>';
 				this.tabs.tabs('option', 'tabTemplate', tabTemplate);
-				$('.ui-tabs ul.ui-tabs-nav li .ui-tab-close').live('click', function(event) {
+				$(document).on('click','.ui-tabs ul.ui-tabs-nav li .ui-tab-close',  function(event) {
 					event.stopPropagation();
 					var tabId = $(event.target).closest('li').data('tabId');
 					this.closeTab(tabId);
@@ -74,41 +74,42 @@
 		},
 
 		addTab: function(c) {
-			/* Added if else flow, and id to the anchors of tabs in the form IdNode_actionCommand in order to not open a new tab for the same action*/
+			/* Added if else flow, and id to the anchors of tabs in the form IdNode_actionCommand in order to not open a new tab
+			for the same action*/
 			var theTabId = c.nodes ? c.nodes.join("-")+"_"+c.action.command : "";
 			var theNodes = c.nodes ? c.nodes.join("-") : "";
 			if(theNodes != "" && theTabId != "" && $("#"+theTabId).length) {
 				var theTab = $("#"+theTabId);
-                                var index = theTab.closest("li").index();
-                                this.tabs.tabs('select', index);
-                        }
-                        else {
-                                c.link(this.browser, this.tabs);
+				var index = theTab.closest("li").index();
+				this.tabs.tabs('select', index);
+			}
+			else {
+				c.link(this.browser, this.tabs);
 
-                                this.tabs
-                                        .tabs('add', c.getUrl(), c.getLabel(), (c.tabId() || undefined))
-                                        .bind('tabsselect', function(event, ui) {
-                                                this.tabs.tabs('updateTabsNav', ui);
-                                                if (!this.saveActive) return;
-                                                // This event is fired more than once, this is not necessary...
-                                                if (this.lastSavedTab == ui.index) return;
-                                                this.lastSavedTab = ui.index;
-                                                X.session.set('%s.tab'.printf(this.name), ui.index);
-                                        }.bind(this));
+				this.tabs
+					.tabs('add', c.getUrl(), c.getLabel(), (c.tabId() || undefined))
+					.bind('tabsselect', function(event, ui) {
 
-                                var tabId = (this.tabs.tabs('length') - 1) || 0;
-                                $('a[href=#'+c.getId()+']', this.tabs)
-                                        .addClass(c.getClass())
-                                                                        .attr('id', theTabId)
+						this.tabs.tabs('updateTabsNav', ui);
+						if (!this.saveActive) return;
+						// This event is fired more than once, this is not necessary...
+						if (this.lastSavedTab == ui.index) return;
+						this.lastSavedTab = ui.index;
+						X.session.set('%s.tab'.printf(this.name), ui.index);
+					}.bind(this));
 
-                                        .closest('li')
-                                        .data('tabId', tabId)
-                                        c.tabId(tabId);
+				var tabId = (this.tabs.tabs('length') - 1) || 0;
+				$('a[href=#'+c.getId()+']', this.tabs)
+					.addClass(c.getClass())
+									.attr('id', theTabId)
 
-                                this.tabs.tabs('select', tabId);
-                                this.tabs.tabs('adjustTabClasses');
-                        }	
+					.closest('li')
+					.data('tabId', tabId)
+					c.tabId(tabId);
 
+				this.tabs.tabs('select', tabId);
+				this.tabs.tabs('adjustTabClasses');
+			}
 		},
 
 		loadTabs: function() {
@@ -122,6 +123,7 @@
 		},
 
 		activeTab: function(index) {
+
 			if (index === undefined) {
 				return this.tabs.tabs('select');
 			}
@@ -193,7 +195,9 @@
 
 		onTabRight: function(event, params) {
 
+
 			var tab = $(this.tabs).tabs('selected');
+
 			if (tab === null) return;
 			var tabId = tab.data('tabId');
 			event.stopPropagation();
@@ -277,8 +281,8 @@
                                                 params: '',
                                                 bulk: '0'
                                         }, 10000);
-			
-			
+
+
 
 //			if (load_welcome ) {
 //

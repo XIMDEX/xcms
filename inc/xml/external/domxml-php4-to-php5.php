@@ -448,7 +448,11 @@ class php4DOMXPath
 
 if (extension_loaded('xsl'))
 {//See also: http://alexandre.alapetite.net/doc-alex/xslt-php4-php5/
- function domxml_xslt_stylesheet($xslstring) {return new php4DomXsltStylesheet(DOMDocument::loadXML($xslstring));}
+ function domxml_xslt_stylesheet($xslstring) {
+	$doc = new DOMDocument();
+	$doc->loadXML($xslstring)
+	return new php4DomXsltStylesheet($doc);
+ }
  function domxml_xslt_stylesheet_doc($dom_document) {return new php4DomXsltStylesheet($dom_document);}
  function domxml_xslt_stylesheet_file($xslfile) {return new php4DomXsltStylesheet(DOMDocument::load($xslfile));}
  class php4DomXsltStylesheet

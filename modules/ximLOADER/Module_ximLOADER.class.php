@@ -47,12 +47,43 @@ class Module_ximLOADER extends Module {
 		parent::Module('ximLOADER', dirname(__FILE__));
 	}
 
-	function loadActions() {
-
+	function getProjects() {
+		return  FsUtils::readFolder(dirname(__FILE__) . '/projects', false);
 	}
 
+
 	function preInstall($idProject=null) {
-		$projects = FsUtils::readFolder(dirname(__FILE__) . '/projects', false);
+		if(defined("CLI_MODE") && CLI_MODE) {
+			return $this->preInstallCli($idProject);
+		}else {
+			return $this->preInstallGUI($idProject);
+		}
+	}
+
+	function preInstallGUI($idProject=null) {
+		$projects = $this->getProjects();
+
+		//Default, project 2
+		$reader = 2;	
+		if(!empty($idProject) )
+			$reader = $idProject -1;
+		else 	if(defined("XIMLOADER_DEFAULT") )
+			$reader = ((int) XIMLOADER_DEFAULT - 1);
+	
+		$project = isset($projects[$reader]) ? $projects[$reader] : null;
+
+		$this->projectName = $project;
+
+		$buildFile = sprintf('%s/projects/%s/build.xml', dirname(__FILE__), $this->projectName);
+
+		$b = new BuildParser($buildFile);
+		$this->project = $b->getProject();
+
+		return true;
+	}
+
+	function preInstallCli($idProject=null) {
+		$projects = $this->getProjects();
 		$sp = '';
 		foreach ($projects as $i=>$p) {
 			$sp .= sprintf("\t%s. %s\n", ($i+1), $p);
@@ -68,11 +99,15 @@ class Module_ximLOADER extends Module {
 			$reader = (int) XIMLOADER_DEFAULT;
 		}
 
+		if (empty($reader)) {
+			return false;
+		}
+
 		$reader = intval($reader) - 1;
 		$project = isset($projects[$reader]) ? $projects[$reader] : null;
 
 		if (empty($project)) {
-			ModulesManager::log(ModulesManager::ERROR, 'The selected project doesn\'t exists.');
+			$this->log(Module::ERROR, 'The selected project doesn\'t exists.');
 		}
 
 		$this->projectName = $project;
@@ -95,10 +130,11 @@ class Module_ximLOADER extends Module {
 		}
 
 		if ($this->insertProject() === false) {
-			ModulesManager::log(ModulesManager::ERROR, 'Error while inserting project');
+			$this->log(Module::ERROR, 'Error while inserting project');
 			return false;
 		}
 
+		
 		return true;
 	}
 
@@ -112,7 +148,7 @@ class Module_ximLOADER extends Module {
 			return false;
 		}
 		$channelId = $channels[0];
-		ModulesManager::log(ModulesManager::SUCCESS, "Using channel with ID " . $channelId);
+		$this->log(Module::SUCCESS, "Using channel with ID " . $channelId);
 		return $channelId;
 	}
 
@@ -123,7 +159,7 @@ class Module_ximLOADER extends Module {
 			return false;
 		}
 		$langId = $langs[0];
-		ModulesManager::log(ModulesManager::SUCCESS, "Using language with ID " . $langId);
+		$this->log(Module::SUCCESS, "Using language with ID " . $langId);
 		return $langId;
 	}
 
@@ -174,7 +210,7 @@ class Module_ximLOADER extends Module {
 			$ret = $io->delete($data);
 
 			if ($ret != 1) {
-				ModulesManager::log(ModulesManager::ERROR, "Can't delete project $projectName ($ret)");
+				$this->log(Module::ERROR, "Can't delete project $projectName ($ret)");
 				return false;
 			}
 		}
@@ -184,10 +220,14 @@ class Module_ximLOADER extends Module {
 
 	function insertProject() {
 
-		if (!$this->deleteProject($this->projectName)) {
-			ModulesManager::log(ModulesManager::WARNING, $this->projectName . " already exists, aborting installation");
-			return false;
+		if(defined("CLI_MODE") && CLI_MODE) {
+			$insert = $this->insertProjectCLI();
+		}else {
+			$insert =  $this->insertProjectGUI();
 		}
+
+		if(!$insert) return false;
+
 
 		$nodeType = new NodeType();
 		$nodeType->SetByName($this->project->nodetypename);
@@ -222,7 +262,7 @@ class Module_ximLOADER extends Module {
 		$project->setProperty('channel', $this->project->channel);
 		$project->setProperty('language', $this->project->lang);
 
-		ModulesManager::log(ModulesManager::SUCCESS, "Project creation O.K.");
+		$this->log(Module::SUCCESS, "Project creation O.K.");
 
 
 		// TODO: ximlink
@@ -253,6 +293,34 @@ class Module_ximLOADER extends Module {
 
 
 		return $projectId;
+	}
+
+	function insertProjectGUI() {
+		$i = 1;
+		$projectid = 0;
+		//Find unique name
+		$projectName = $this->projectName;
+		$project_choose = "";
+		do {
+			$i++;
+
+			$projects = new Node(10000);
+			$projectid = $projects->GetChildByName($projectName );
+			$project_choose  = $projectName;
+			$projectName  = $this->projectName.$i;
+
+		}while (!empty($projectid));
+		$this->projectName = $project_choose;
+
+		return true;
+	}
+
+	function insertProjectCLI() {
+		if (!$this->deleteProject($this->projectName)) {
+			$this->log(Module::WARNING, $this->projectName . " already exists, aborting installation");
+			return false;
+		}
+		return true;
 	}
 
 	function insertServer($server) {
@@ -286,7 +354,7 @@ class Module_ximLOADER extends Module {
 		);
 
 		$nodeServer->class->AddChannel($physicalServerId, $this->project->channel);
-		ModulesManager::log(ModulesManager::SUCCESS, "Server creation O.K.");
+		$this->log(Module::SUCCESS, "Server creation O.K.");
 
 
 		// common
@@ -335,7 +403,7 @@ class Module_ximLOADER extends Module {
 		$xFolderId = $project->GetChildByName($xFolderName);
 
 		if (empty($xFolderId)) {
-			ModulesManager::log(ModulesManager::ERROR, $xFolderName .' folder not found');
+			$this->log(Module::ERROR, $xFolderName .' folder not found');
 			return false;
 		}
 
@@ -366,7 +434,7 @@ class Module_ximLOADER extends Module {
 			$containerId = $io->build($data);
 
 			if (!($containerId > 0)) {
-				ModulesManager::log(ModulesManager::ERROR, "ximdoc container ".$file->name." couldn't be created ($containerId)");
+				$this->log(Module::ERROR, "ximdoc container ".$file->name." couldn't be created ($containerId)");
 				continue;
 			}
 
@@ -386,10 +454,10 @@ class Module_ximLOADER extends Module {
 			$docId = $io->build($data);
 			if ($docId > 0) {
 				$ret[$file->filename] = $docId;
-				ModulesManager::log(ModulesManager::SUCCESS, "Importing " . $file->name);
+				$this->log(Module::SUCCESS, "Importing " . $file->name);
 			} else {
 //				debug::log($project, $file, $data);
-				ModulesManager::log(ModulesManager::ERROR, "ximdoc document ".$file->name." couldn't be created ($docId)");
+				$this->log(Module::ERROR, "ximdoc document ".$file->name." couldn't be created ($docId)");
 			}
 		}
 
@@ -406,7 +474,7 @@ class Module_ximLOADER extends Module {
 		$xFolderId = $project->GetChildByName($xFolderName);
 
 		if (empty($xFolderId)) {
-			ModulesManager::log(ModulesManager::ERROR, $xFolderName .' folder not found');
+			$this->log(Module::ERROR, $xFolderName .' folder not found');
 			return false;
 		}
 
@@ -436,10 +504,10 @@ class Module_ximLOADER extends Module {
 			$id = $io->build($data);
 			if ($id > 0) {
 				$ret[$file->filename] = $id;
-				ModulesManager::log(ModulesManager::SUCCESS, "Importing " . $file->basename);
+				$this->log(Module::SUCCESS, "Importing " . $file->basename);
 			} else {
-				ModulesManager::log(ModulesManager::ERROR, "Error ($id) importing " . $file->basename);
-				ModulesManager::log(ModulesManager::ERROR, print_r($io->messages->messages, true));
+				$this->log(Module::ERROR, "Error ($id) importing " . $file->basename);
+				$this->log(Module::ERROR, print_r($io->messages->messages, true));
 			}
 		}
 
@@ -456,7 +524,7 @@ class Module_ximLOADER extends Module {
 
 		$nodePtds = new Node($ptdFolderId);
 		if (empty($ptdFolderId)) {
-			ModulesManager::log(ModulesManager::ERROR, 'Ptd folder not found');
+			$this->log(Module::ERROR, 'Ptd folder not found');
 			return false;
 		}
 
@@ -490,16 +558,16 @@ class Module_ximLOADER extends Module {
 			$children = $nodePtds->GetChildByName($file->basename);
 			$ch = new Node($children);
 			if (!($ch->get('IdNode') > 0)) {
-				ModulesManager::log(ModulesManager::ERROR, "Updated xsl not O.K. Cannot find the file ".$file->basename);
+				$this->log(Module::ERROR, "Updated xsl not O.K. Cannot find the file ".$file->basename);
 				continue;
 			}
 
 			$result = $ch->setContent($content);
 
 			if (!$result) {
-				ModulesManager::log(ModulesManager::SUCCESS, "Updated xsl O.K. ".$file->basename);
+				$this->log(Module::SUCCESS, "Updated xsl O.K. ".$file->basename);
 			} else {
-				ModulesManager::log(ModulesManager::ERROR, "Updated xsl not O.K. ".$file->basename);
+				$this->log(Module::ERROR, "Updated xsl not O.K. ".$file->basename);
 			}
 		}
 	}
@@ -509,6 +577,19 @@ class Module_ximLOADER extends Module {
 
 	}
 
+	/**
+	 * return array with install params
+	 *
+	 */
+	function getInstallParams() { 
+
+		return array(
+			"projects" => array(
+									"label" => "Choose a project",
+									"list" => $this->getProjects() 
+							)
+		); 
+	}
 }
 
 ?>

@@ -72,8 +72,7 @@ class NodeTypeNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $icon, $isRenderizable, $hasFSEntity,
-		$canAttachGroups, $isContentNode, $description, $class) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null) {
 
 		$nodeType = new NodeType();
   		$nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,

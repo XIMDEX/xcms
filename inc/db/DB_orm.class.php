@@ -248,7 +248,7 @@ class DB {
 	 * @param $value
 	 * @return unknown_type
 	 */
-	function sqlEscapeString($value) {
+	public static function sqlEscapeString($value) {
 		if (is_null($value)) {
 			return 'NULL';
 		}

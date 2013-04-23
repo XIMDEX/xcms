@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8352 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -184,10 +184,10 @@ X.FormsManager = Object.xo_create({
 			file: 0
 		}, options);
 
+
 		// Ensure the form and iframe IDs are unique
 		var formId = $(this.options.form).attr('id');
 		if (Object.isEmpty(formId)) {
-
 			formId = 'form_' + X.getUID();
 			$(this.options.form).attr('id', formId);
 		}

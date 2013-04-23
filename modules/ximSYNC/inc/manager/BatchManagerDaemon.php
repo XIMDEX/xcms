@@ -86,7 +86,7 @@ function createBatchsForBlock($nodesToPublish) {
 		$physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true, $otfMode);
 	}
 	if (count($physicalServers) == 0) {
-		Publication_Log::error(_('Fisical server does not exist for nodeId:')." ". $idNode ." "._('returning empty arrays.'));
+		Publication_Log::error(_('Fisical server does not exist for nodeId:')." ". $idNodeGenerator ." "._('returning empty arrays.'));
 		return null;
 	}
 

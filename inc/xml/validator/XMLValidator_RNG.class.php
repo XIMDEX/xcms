@@ -47,9 +47,11 @@ class XMLValidator_RNG {
 		// Clear errors...
 		$this->_errors = array();
 
-		$domdoc = DOMDocument::loadXML($xmldoc);
+		$domdoc = new DOMDocument();
+	
+		$result = $domdoc->loadXML($xmldoc);
 
-		if (!is_object($domdoc) || strtoupper(get_class($domdoc)) != 'DOMDOCUMENT') {
+		if (!$result || strtoupper(get_class($domdoc)) != 'DOMDOCUMENT') {
 			$this->_errors[] = "Se esta intentando validar un XML mal formado.";
 			return false;
 		}

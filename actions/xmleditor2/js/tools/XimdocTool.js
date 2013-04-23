@@ -44,6 +44,26 @@ function XimdocTool() {
 		}
 	};
 
+	/**
+	 * <p>Function that is called before creating an element.</p>
+	 * <p>Each subclass of XimdocTool can override this behaviour
+	 * 	  when it calls the inherited createElement method</p>
+	 *
+	 */
+	this.beforeCreateElement = function() {
+		loadingImage.showLoadingImage();
+	};
+	
+	/**
+	 * <p>Function that is called after creating an element.</p>
+	 * <p>Each subclass of XimdocTool can override this behaviour
+	 * 	  when it calls the inherited createElement method</p>
+	 *
+	 */
+	this.afterCreateElement = function(options) {
+		loadingImage.hideLoadingImage();    		
+	};
+
     	// Deactivates all ximdex buttons
     	this.disableAllButtons = function() {
 		var model = this.editor.getRngDocument().getModel();
@@ -76,6 +96,7 @@ function XimdocTool() {
 	 * parent and brother are instances of XimElement
 	 */
     	this.createElement = function(nodeType, parent, brother, oSel) {
+		this.beforeCreateElement();
 
     	/**
 
@@ -134,6 +155,7 @@ function XimdocTool() {
 		this.setActionDescription(_('Create ')+" "+tagName);
 		this.editor._setSelectionData( ximElement );
     		this.editor.updateEditor({caller: this, target: ximElement});
+		this.afterCreateElement();
     		return ximElement;
     	};
 

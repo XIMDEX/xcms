@@ -64,7 +64,7 @@ class Action_copy extends ActionAbstract {
 				$this->renderMessages();
 			} else {
 				$targetFile = sprintf(Config::getValue("UrlRoot").
-							'/actions/xmleditor/treeselector.php?nodetype=%s&filtertype=%s&targetid=%s',
+							'/inc/widgets/treeview/helpers/treeselector.php?nodetype=%s&filtertype=%s&targetid=%s',
 							urlencode($node->nodeType->get('IdNodeType')),
 							urlencode($node->nodeType->Get('Name')),
 							urlencode($node->get('IdNode')));

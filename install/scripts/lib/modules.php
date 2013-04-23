@@ -26,9 +26,11 @@
  */
 
 
-
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
+
+if (!defined('CLI_MODE'))
+	define('CLI_MODE', 1);
 
 include(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 ModulesManager::file("/inc/modules/modules.const");
@@ -38,6 +40,11 @@ function module_list() {
 	$modMngr = new ModulesManager();
 
 	$modules = $modMngr->getModules();
+
+	if(ModulesManager::$msg != null) {
+		echo " * ERROR: ".ModulesManager::$msg."\n";
+		ModulesManager::$msg = null;
+	}
 
 	//print(" -----------------------------\n");
 	print(" + Listing Available Modules +\n");
@@ -54,9 +61,21 @@ function module_install($module_name) {
 
 	$state = $modMngr->checkModule($module_name);
 
+	if(ModulesManager::$msg != null) {
+		echo " * ERROR: ".ModulesManager::$msg."\n";
+		ModulesManager::$msg = null;
+	}
+
 	if (  $state == MODULE_STATE_UNINSTALLED ) {
-		$modMngr->installModule($module_name);
-		print("\nModule $module_name installed.\n");
+		$result = $modMngr->installModule($module_name);
+
+		if(ModulesManager::$msg != null) {
+			echo " * ERROR: ".ModulesManager::$msg."\n";
+			ModulesManager::$msg = null;
+		}
+
+		if($result)
+			print("\nModule $module_name installed.\n");
 	} else {
 		print("\n* ERROR: Module $module_name was not installed.\n");
 	}
@@ -68,6 +87,12 @@ function module_uninstall($module_name) {
 	$modMngr = new ModulesManager();
 
 	$modMngr->uninstallModule($module_name);
+
+	if(ModulesManager::$msg != null) {
+		echo " * ERROR: ".ModulesManager::$msg."\n";
+		ModulesManager::$msg = null;
+	}
+
 	 print("\nModule $module_name uninstalled.\n");
 }
 
@@ -76,6 +101,11 @@ function module_enable($module_name) {
 	$modMngr = new ModulesManager();
 
 	$modMngr->enableModule($module_name);
+
+	if(ModulesManager::$msg != null) {
+		echo " * ERROR: ".ModulesManager::$msg."\n";
+		ModulesManager::$msg = null;
+	}
 }
 
 function module_disable($module_name) {
@@ -83,6 +113,11 @@ function module_disable($module_name) {
 	$modMngr = new ModulesManager();
 
 	$modMngr->disableModule($module_name);
+
+	if(ModulesManager::$msg != null) {
+		echo " * ERROR: ".ModulesManager::$msg."\n";
+		ModulesManager::$msg = null;
+	}
 }
 
 

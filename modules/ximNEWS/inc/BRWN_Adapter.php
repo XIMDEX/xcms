@@ -210,7 +210,7 @@ function browser_links2($nodeID)
 	$result .= '<tr><td class="filaoscuranegrita">';
 	$style = 'style="width:420;height:220px;visibility:show"';
 	$size = 'WIDTH=302 HEIGHT=308';
-	$src = 'SRC="' . XIMDEX_ROOT_PATH . '/actions/xmleditor/treeselector.php?contenttype=ximNEWS_links&targetid=$nodeID' . '"';
+	$src = 'SRC="' . XIMDEX_ROOT_PATH . '/inc/widgets/treeview/helpers/treeselector.php?contenttype=ximNEWS_links&targetid=$nodeID' . '"';
 	$result .= '<IFRAME application="yes" ID="appletdiv" NAME="treeFrame" ' . $size . $style . $src . ' ></IFRAME>';
         $result .= '</td></tr>';
         $result .= '<tr><td class="filaoscuranegrita">';

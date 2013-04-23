@@ -229,6 +229,9 @@ RngDocument = function() {
 			//TODO: Fixing the previous point, this problem will be solved.
 			this._schemaModel[name] = new RngElement(name, isOptional);
 		}
+		/*else{
+			this._schemaModel[name].isOptional == this._schemaModel[name].isOptional && isOptional; 
+		}*/ 
 
 		if (parent != null) {
 			this._schemaModel[name].parentNode = parent;

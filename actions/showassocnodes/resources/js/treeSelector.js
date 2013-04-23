@@ -140,7 +140,7 @@ X.actionLoaded(function(event, fn, params) {
 
 	if (!Object.isEmpty(fn('.deleterel-button').get(0))) {
 		fn('.deleterel-button').get(0).beforeSubmit.add(function(event, button) {
-			var sections = fn('input[name=sections\[\]]:checked');
+			var sections = fn('input.sections_lists:checked');
 			if (sections.length == 0) {
 				console.warn(_('Select a container'));
 				return true;

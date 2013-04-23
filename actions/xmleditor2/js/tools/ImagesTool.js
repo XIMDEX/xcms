@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8170 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -59,17 +59,29 @@ var ImagesTool = Object.xo_create(XimdocTool, {
 //	},
 	
 	updateImageSize: function(image) {
+		if($(image).length <1) return ;
 		
+		var width = 0, height = 0;
+		if($(image).attr('width')   )
+			width = $(image).width();
+
+		if($(image).attr('height') )
+			height = $(image).height();
+		
+
 		var dim = {
-			'w': parseInt($(image).width()),
-			'h': parseInt($(image).height())
+			'w': parseInt(width),
+			'h': parseInt(height)
 		};
 		
+
 		if (isNaN(dim.w) || isNaN(dim.h)) return;
 		
 		var ximElement = this.editor.getXimDocument().getElement(image.getAttribute('uid'));
-		ximElement.attributes.width = dim.w;
-		ximElement.attributes.height = dim.h;
+		if(ximElement) {
+			ximElement.attributes.width = dim.w;
+			ximElement.attributes.height = dim.h;
+		}
 	},
 	
 	updateImagesSize: function(doc) {

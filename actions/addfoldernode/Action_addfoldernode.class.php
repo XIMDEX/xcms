@@ -84,6 +84,8 @@ class Action_addfoldernode extends ActionAbstract {
 	function addNode() {
 		$nodeID = $this->request->getParam("nodeid");
 		$name = $this->request->getParam("name");
+		$channels = $this->request->getParam('channels_listed');
+                $languages = $this->request->getParam('langs_listed');
 
 		$nodeType = $this->GetTypeOfNewNode($nodeID);
 		$nodeTypeName = $nodeType["name"];
@@ -97,8 +99,11 @@ class Action_addfoldernode extends ActionAbstract {
 		// Adding channel and language properties (if project)
 		if ($idFolder > 0 && $nodeTypeName == 'Project') {
 			$node = new Node($idFolder);
-			$node->setProperty('channel', array_keys($this->request->getParam('channels_listed')));
-			$node->setProperty('language', array_keys($this->request->getParam('langs_listed')));
+			if(!empty($channels) && is_array($channels) )
+				$node->setProperty('channel', array_keys($channels)));
+
+			if(!empty($languages) && is_array($languages) )
+				$node->setProperty('language', array_keys($languages)));
 		}
 
 		if ($idFolder > 0) {

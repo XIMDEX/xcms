@@ -48,7 +48,9 @@ class xsltnode extends FileNode {
 		$this->messages = new Messages();
 		$this->xsltOldName = $this->parent->get("Name");		
 	}
-	function CreateNode($xsltName, $parentID, $nodeTypeID, $stateID, $ptdSourcePath = NULL) {
+
+
+	function CreateNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL) {
 
 	//	if (is_null($ptdSourcePath))  return;
 		if ($ptdSourcePath != null){
@@ -271,7 +273,8 @@ class xsltnode extends FileNode {
 	}
 
 
-	function RenameNode($newName){
+	function RenameNode($newName = NULL){
+		if(null == $newName) return false;
 
 		$nodeTypeId = $this->parent->get("IdNodeType");
 		$projectId = $this->parent->GetProject();
@@ -347,8 +350,10 @@ class xsltnode extends FileNode {
 			XMD_Log::info('Se ha creado/editado un documento con contenido vacio');
 			return $content;
 		}
-		$xsldom = DOMDocument::loadXML($content);
-		if (!$xsldom) {
+
+		$xsldom = new DOMDocument();
+		$result = $xsldom->loadXML($content);
+		if (!$result) {
 			XMD_Log::info('Se ha creado/editado un documento cuyo contenido no es xml valido');
 			return $content;
 		}

@@ -132,6 +132,8 @@ class Widget {
 
 					$tag = $match[0];
 					$widget_name = $match[1];
+					
+					if("img" == $widget_name) continue;
 
 					$widget =& self::getWidget($widget_name);
 

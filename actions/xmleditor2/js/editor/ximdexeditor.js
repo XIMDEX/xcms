@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8396 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -217,7 +217,8 @@ function XimdocEditor(options) {
 		var xslIncludesOnServer = $('.kupu-fulleditor .kupu-ximparams #kupu-xslIncludesOnServer').html().trim();
 
 		// ximdex initialize stuff
-		this._baseURL = url_root + '/xmd/loadaction.php?actionid=' + this.actionId + '&nodeid=' + this.nodeId;
+		//this._baseURL = url_root + '/xmd/loadaction.php?actionid=' + this.actionId + '&nodeid=' + this.nodeId;
+		this._baseURL = url_root + '/xmd/loadaction.php?action=xmleditor2&nodeid=' + this.nodeId;
 		this._baseActionURL = url_root + '/actions/xmleditor2/';
 		this._loadActionURL = url_root + '/xmd/loadaction.php?nodeid=' + this.nodeId;
 		var xmlI18N = url_root + '/extensions/kupu/i18n/kupu-'+locale+'.pox';
@@ -378,11 +379,12 @@ function XimdocEditor(options) {
 	};
 
 	this._parseConfig = function(confNode) {
-
+		console.log(confNode);
 		// Config XML already parsed
 		if (confNode.nodeType != 9) return confNode;
 
 	    var root = confNode.getElementsByTagName('kupuconfig');
+		console.log(root);
 	    root = root[0] || null;
 	    if (!root) {
 	        this.log.log(_('No element found in the configuration'));
@@ -463,7 +465,7 @@ function XimdocEditor(options) {
 		}
 
 		// Throwing a warning message if any element has no UID attribute
-		$('[uid={@uid}]', xsltResult).each(
+		$('[uid="{@uid}"]', xsltResult).each(
 			function(index, elem) {
 				elem.attributes.removeNamedItem('uid');
 				var msg = 'Element <' + elem.tagName + '/> has no UID attribute!';
@@ -507,7 +509,7 @@ function XimdocEditor(options) {
 		$('img[uid]', htmlDoc).each(
 			function(i, e) {
 				var uid = e.getAttribute('uid');
-				var elem = $('[uid='+uid+']', xslResult)[0];
+				var elem = $('[uid="'+uid+'"]', xslResult)[0];
 				// IE sets default width and height of an image to 1px,
 				// the only way to get the real default size is to remove both attributes.
 				if (e.getAttribute('width') != elem.getAttribute('width')) {
@@ -674,12 +676,18 @@ function XimdocEditor(options) {
 		}
 	};
 
+
 	this.alert = function (msg) {
 		var dialog = $('<div id="kupu-jdialog">' + window.i18n_message_catalog.acents ( msg)  + '</div>',
 			$('.kupu-editorframe'));
 		$('.kupu-editorframe').append(dialog);
 
-		$("#kupu-jdialog").dialog("destroy");
+		var check = $("#kupu-jdialog").data("dialog");
+
+		if(check) {
+			$("#kupu-jdialog").dialog("destroy");
+		}
+
 
 		$("#kupu-jdialog").dialog({
 			modal: true,
@@ -701,7 +709,13 @@ function XimdocEditor(options) {
                         $('.kupu-editorframe'));
                 $('.kupu-editorframe').append(dialog);
 
-                $("#kupu-jdialog").dialog("destroy");
+
+			var check = $("#kupu-jdialog").data("dialog");
+
+			if(check) {
+				$("#kupu-jdialog").dialog("destroy");
+			}
+
 
                 $("#kupu-jdialog").dialog({
                         modal: true,
@@ -721,7 +735,14 @@ function XimdocEditor(options) {
 			$('.kupu-editorframe'));
 		$('.kupu-editorframe').append(dialog);
 
-		$("#kupu-jdialog").dialog("destroy");
+
+		var check = $("#kupu-jdialog").data("dialog");
+
+		if(check) {
+			$("#kupu-jdialog").dialog("destroy");
+		}
+
+
 
 		$("#kupu-jdialog").dialog({
 			resizable: false,
@@ -898,7 +919,7 @@ function XimdocEditor(options) {
 
 		// If user presses the enter key we create a new element of the same type
 		if (event && event.type == 'keyup' && event.keyCode == 13) {
-			var elems = $('[uid='+this.selNode.getAttribute('uid')+']', this.getInnerDocument());
+			var elems = $('[uid="'+this.selNode.getAttribute('uid')+'"]', this.getInnerDocument());
 			var ximElement = elems[elems.length-1].ximElement;
 			if (ximElement) {
 				var newElement = new XimElement(ximElement.schemaNode, false);
@@ -981,7 +1002,7 @@ function XimdocEditor(options) {
 		this.selNode = target || this.getSelection().parentElement();
 
 		if(this.selNode.uid)
-			this.selNode = $('[uid=' + this.selNode.uid + ']', this.getInnerDocument())[0];
+			this.selNode = $('[uid="' + this.selNode.uid + '"]', this.getInnerDocument())[0];
 
 		// If function getAttribute does not exist, nothing to set.
 		if(this.selNode && !this.selNode['getAttribute']) {

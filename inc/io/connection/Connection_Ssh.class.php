@@ -30,7 +30,8 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-require_once (XIMDEX_ROOT_PATH . '/extensions/phpseclib0.1.5/Net/SFTP.php');
+require_once (XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
+require_once (XIMDEX_ROOT_PATH.Extensions::PHPSECLIB . '/Net/SFTP.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/Connection_Local.class.php');
 
@@ -42,6 +43,8 @@ class Connection_Ssh implements I_Connector {
 	private $password;
 	
 	private $netSFTP = NULL;
+
+
 	/**
 	 * Connect to server
 	 *
@@ -51,6 +54,8 @@ class Connection_Ssh implements I_Connector {
 	 * @return boolean
 	 */
 	public function connect($host = NULL, $port = NULL) {
+	
+
 		if (empty($port)) {
 			$port = 22;
 		}
@@ -64,6 +69,9 @@ class Connection_Ssh implements I_Connector {
 			return false;
 		}
 		$this->netSFTP = new Net_SFTP($host, $port);
+
+
+
 		return true;
 	}
 	

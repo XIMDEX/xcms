@@ -139,8 +139,6 @@ fi
 
 if [ "$DEFAULT_MODULES" = '1' ];
 then
-  bash $XIMDEX_PATH/install/module.sh install ximIO
-  bash $XIMDEX_PATH/install/module.sh install ximSYNC
   bash $XIMDEX_PATH/install/module.sh install ximNEWS
   bash $XIMDEX_PATH/install/module.sh install ximTAGS
   bash $XIMDEX_PATH/install/module.sh install ximTOUR
@@ -167,5 +165,6 @@ then
    fi
 fi
 
-
+#perms to states files
+$(chmod 660 $XIMDEX_PATH/data/.[xw]* 2>/dev/null)
 exit 0

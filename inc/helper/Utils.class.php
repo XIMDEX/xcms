@@ -33,7 +33,7 @@ class Utils {
 	 * 
 	 * @return unknown_type
 	 */
-	function generateUniqueID() {
+	public static function generateUniqueID() {
 
 		return md5(uniqid(rand(),1));
 	}

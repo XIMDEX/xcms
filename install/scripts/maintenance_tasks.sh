@@ -85,10 +85,16 @@ $(chmod 775 $SCRIPT_PATH/getAvaliableModules.php)
 
 if [ -f $XIMDEX_PATH/conf/install-modules.conf ];
 then
+	$(chmod 775 $XIMDEX_PATH/conf/install-modules.conf)
 	echo "Success"
 else
 	echo "Fail"
 	exit 1
 fi
 
-
+echo -n "Installing core modules... "
+#delete all states files
+$(rm -f $XIMDEX_PATH/data/.* 2>/dev/null)
+#install cores modules
+bash $XIMDEX_PATH/install/module.sh install ximIO
+bash $XIMDEX_PATH/install/module.sh install ximSYNC

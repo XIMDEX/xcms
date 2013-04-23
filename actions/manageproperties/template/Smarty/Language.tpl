@@ -24,7 +24,7 @@
  *}
 
 
-{assign var="languages" value=`$properties.Language`}
+{assign var="languages" value=$properties.Language}
 
 <fieldset>
 

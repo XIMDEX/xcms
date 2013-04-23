@@ -556,14 +556,16 @@ class ImportXml {
 
 		// vars used to simplify the code
 		if (isset($this->tree[$this->depth]) && is_array($this->tree[$this->depth])) {
-			$index = end(array_keys($this->tree[$this->depth])) + 1;
+			$array = array_keys($this->tree[$this->depth]);
+			$index = end($array) + 1;
 		} else {
 			$index = 0;
 		}
 		$this->tree[$this->depth][$index] = $localElement;
 		
+		$array = array_keys($this->tree[$this->depth-1]);
 		$parentElement = & $this->tree[$this->depth - 1][is_array($this->tree[$this->depth - 1])
-							? end(array_keys($this->tree[$this->depth - 1]))
+							? end($array)
 							: 0];
 
 		if (in_array($name, $this->tagsForAdvancedWritting)) {
@@ -630,7 +632,13 @@ class ImportXml {
 		if (!$this->_processIsParsing) {
 			return ;
 		}
-		$localIndex = is_array($this->tree[$this->depth]) ? end(array_keys($this->tree[$this->depth])) : 0;
+
+		if( is_array($this->tree[$this->depth]) ) {
+			$array = array_keys($this->tree[$this->depth]);
+			$localIndex = end($array);
+		}else {
+			$localIndex = 0;
+		} 
 		// If the tag belongs to a category of the ones which write in the element start, we finish the execution
 		if ((in_array($name, $this->tagsForAdvancedWritting))) {
 			unset ($this->tree[$this->depth][$localIndex]);
@@ -650,13 +658,26 @@ class ImportXml {
 		}
 
 		// Isolating the current element and its father, which are the two last ones in its corresponding levels
-		$localIndex = is_array($this->tree[$this->depth]) ? end(array_keys($this->tree[$this->depth])) : 0;
+		if(is_array($this->tree[$this->depth]) ) {
+			$array = array_keys($this->tree[$this->depth]);
+			$localIndex = end($array);
+		}else {
+			$localIndex = 0;
+		}
+
+
+
 		$localElement = & $this->tree[$this->depth][$localIndex];
 		// Father element of the current one (just to simplify the rest of the function, it is not necessary).
 
-		$parentElement = & $this->tree[$this->depth - 1][is_array($this->tree[$this->depth - 1])
-							? end(array_keys($this->tree[$this->depth - 1]))
+		if($this->depth > 0 ) {
+			$array = array_keys($this->tree[$this->depth - 1]);
+			$parentElement = & $this->tree[$this->depth - 1][is_array($this->tree[$this->depth - 1])
+							? end($array)
 							: 0];
+		}else {
+			$parentElement = 0;
+		}
 
 		if (!empty($this->bufferedData)) {
 			$localElement['DESCRIPTION'] = $this->bufferedData;

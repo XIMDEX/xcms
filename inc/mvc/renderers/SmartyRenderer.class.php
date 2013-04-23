@@ -25,10 +25,12 @@
  */
 
 
-
+ModulesManager::file( '/conf/extensions.conf.php');
 include_once (XIMDEX_ROOT_PATH . '/inc/mvc/renderers/AbstractRenderer.class.php');
-include_once (XIMDEX_ROOT_PATH . '/extensions/smarty/libs/Smarty.class.php');
+require_once (XIMDEX_ROOT_PATH . Extensions::SMARTY);
 include_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
+
+
 /**
  *
  * @brief Renderer for the compiling PHP template engine Smarty
@@ -56,15 +58,22 @@ class SmartyRenderer extends AbstractRenderer {
 		parent::render($view);
 
 		$smarty = new Smarty();
-		$smarty->template_dir = SMARTY_TMP_PATH . '/templates';
-		$smarty->compile_dir = SMARTY_TMP_PATH . '/templates_c';
-		$smarty->cache_dir = SMARTY_TMP_PATH . '/cache';
-		$smarty->config_dir = SMARTY_TMP_PATH . '/configs';
+		$smarty->setTemplateDir(SMARTY_TMP_PATH . '/templates');
+		$smarty->setCompileDir(SMARTY_TMP_PATH . '/templates_c');
+		$smarty->setCacheDir(SMARTY_TMP_PATH . '/cache');
+		$smarty->setConfigDir(SMARTY_TMP_PATH . '/configs');
 
 		//Remove whitespaces
 //  		$smarty->autoload_filters = array('output' => array('trimwhitespace'));
 
-
+		//Initialize NDOE_PATH
+		$smarty->assign("_NODE_PATH", "");
+		//default num_nodes: "1"
+		$smarty->assign("num_nodes", 1);
+		//default theme: "ximdex_theme"
+		$smarty->assign("theme", "ximdex_theme");
+		//Assign extensions class 
+		$smarty->registerClass("EXTENSIONS", "Extensions");
 
 		//Encode the template about the config value
 		$smarty->autoload_filters = array('pre' => array('encodingTemplate'));
@@ -100,11 +109,15 @@ class SmartyRenderer extends AbstractRenderer {
 		//pasamos los parámetros a smarty
 		$_parameters = $this->getParameters();
 
+		//we initialize params used in some actions
+		if(!array_key_exists("history_value", $_parameters) ) { $_parameters["history_value"] = 1; }
+		if(!array_key_exists("goback", $_parameters) ) { $_parameters["goback"] = false; }
+
 		foreach ($_parameters as $key => $value) {
 			$smarty->assign($key, $value);
 		}
 
-		$messages = $smarty->get_template_vars('messages');
+		$messages = $smarty->getTemplateVars('messages');
 		$smarty->assign('messages_count', count($messages));
 
 	}

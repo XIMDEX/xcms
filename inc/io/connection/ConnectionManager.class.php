@@ -45,12 +45,19 @@ class ConnectionManager {
 	
 	static function getConnection($type) {
 		$baseFullPath = XIMDEX_ROOT_PATH . self::$basePath;
-		if (!is_file($baseFullPath . self::$baseName . self::normalizeName($type) . '.class.php')) {
-			$fileRoutes = parse_ini_file($baseFullPath . 'connection_routes.ini');
+		$className = self::$baseName . self::normalizeName($type);
+		$connectionclass = $baseFullPath.$className.'.class.php';
+		$connection_routes = $baseFullPath . 'connection_routes.ini';
+
+
+		if (!is_file( $connectionclass )) {
+
+			$fileRoutes = parse_ini_file($connection_routes);
+
 			if (array_key_exists(strtolower($type), $fileRoutes)) {
 				$tmpType = $type;
 				$type = $fileRoutes[$type];
-				if (!is_file($baseFullPath . self::$baseName . self::normalizeName($type) . '.class.php')) {
+				if (!is_file($connectionclass)) {
 					XMD_Log::fatal("Connection $type neither $tmpType not implemented yet");
 				}
 			} else {
@@ -59,7 +66,8 @@ class ConnectionManager {
 			}
 		}
 		
-		$factory = new Factory($baseFullPath, self::$baseName);
+		$factory = new Factory($baseFullPath,self::$baseName);
+
 		return $factory->instantiate(self::normalizeName($type));
 	}
 	

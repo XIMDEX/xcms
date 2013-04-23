@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8093 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -88,7 +88,7 @@ var FloatingToolBox = Object.xo_create(new XimdocToolBox(), {
 			$('#tree_selector' + input_id).toggle();
 		else {
 			var ds = new DataSource({
-				url: url_root + '/actions/xmleditor/treeselectordata.php',
+				url: url_root + '/inc/widgets/treeview/helpers/treeselectordata.php',
 			});
 			var tm = new TreeModel({colModel: {
 				selector: 'tree tree',
@@ -174,7 +174,14 @@ var FloatingToolBox = Object.xo_create(new XimdocToolBox(), {
 		var container = $(this.element).closest('div.kupu-toolbox-container');
 		$('div.kupu-toolbox-buttonbar', container).unbind().remove();
 
-		$(this.element).dialog("destroy");
+
+		var check = $(this.element).data("dialog");
+
+		if(check) {
+			$(this.element).dialog("destroy");
+		}
+
+
 		$(this.element).appendTo('body');
 		$(this.element).dialog({
 			autoOpen: false,

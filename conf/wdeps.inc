@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8077 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -92,7 +92,11 @@ return array(
 	),
 	'contextmenu' => array(
 		'deps' => array(),
-		'js' => array('contextmenu.js')
+		'js' => array(
+				'contextmenu.js', 
+				'jquery.contextMenu.js', 
+				'jquery.ui.position.js'
+		)
 	),
 	'hbox' => array(
 		'deps' => array(),

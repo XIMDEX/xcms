@@ -66,7 +66,7 @@ class Factory {
 		if (!class_exists($class)) {
 			if (file_exists($class_path) && is_readable($class_path)) {
 				require_once($class_path);
-			} else {
+			}else {
 				$this->_setError("Factory::instantiate(): El fichero $class_path no existe o no puede ser leido");
 				XMD_Log::error("Factory::instantiate(): El fichero $class_path no existe o no puede ser leido");
 				return NULL;

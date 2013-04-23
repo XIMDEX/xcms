@@ -67,7 +67,7 @@ class RoleNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $icon=null, $description=null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon=null, $description=null) {
 
   		$role = new Role();
   		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));

@@ -68,10 +68,12 @@ class LanguageProperty extends InheritableProperty {
 			}
 		}
 
-		foreach ($availableLanguages as &$language) {
-
-			unset($language[0], $language[1]);
-			$language['Checked'] = in_array($language['IdLanguage'], $nodeLanguages) ? true : false;
+		$availableLanguages = null;
+		if(!empty($availableLanguages) ) {
+			foreach ($availableLanguages as &$language) {
+				unset($language[0], $language[1]);
+				$language['Checked'] = in_array($language['IdLanguage'], $nodeLanguages) ? true : false;
+			}
 		}
 
 		return $availableLanguages;

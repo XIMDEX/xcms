@@ -1329,7 +1329,7 @@ class	Node extends Nodes_ORM{
 					// Retrieving all children from stored backup, identified by $backupID
 					$parentNode = new Node($this->get('IdParent'));
 					$newPath = $absPath . $parentNode->GetChildrenPath() . '/' . $this->GetNodeName();
-					rename($folderPath, $newPath);
+					@rename($folderPath, $newPath);
 //					$this->TraverseTree(2);
 // A language document cannot be moved
 

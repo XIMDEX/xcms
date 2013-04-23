@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 7740 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -28,102 +28,96 @@
 
 	$.widget('ui.contextmenu', {
 
-		items: null,
+ 	    id: null,
 
+		/** Widget Initialize from composer->includeDinamicjs */
 		_init: function() {
-			var widget = this;
-			var $this = this.element;
-			$this.hide();
-			this.items = [];
-			$this.addClass('xim-contextmenu-container');
-//			$(document)
-//				.click(function() {
-//					widget.hide();
-//				})
-//				.bind('contextmenu', function() {
-//					widget.show();
-//					return false;
-//				});
-			$(document)
-				.click(this._onDocumentClick.bind(this))
-				.bind('contextmenu', this._onDocumentContextMenu.bind(this));
-		},
-		_onDocumentClick: function() {
-			this.hide();
-		},
-		_onDocumentContextMenu: function() {
-			this.show();
-			return false;
-		},
-		show: function(options) {
-			var $this = this.element;
-			options = $.extend({
-				event: null,
-				model: []
-			}, options);
-			if (options.model) this.setModel(options.model);
-			if (options.event) {
-				var left = options.event.pageX;
-				var top = options.event.pageY;
-				$this.css({
-					top: top + 'px',
-					left: left + 'px'
-				});
+			//Save widget id
+  			this.id = $(this.element).attr('id');
+			//Retrieve widget options 
+			this._initOptions();
+
+			//Initialize menu entries
+			var items = null
+			//is there a html5 menu?
+			if (null == this.options.items) {
+				//import items from html5 menu
+				items = $.contextMenu.fromMenu($(this.options.from) );
+			}else {
+				//items
+				eval("items='"+this.options.items+"'");
 			}
-			$this.show();
+
+			//if selector isn't class(.myclass), it's a id(#miclass): miclass -> #miclass
+			if(this.options.selector && "." != this.options.selector.charAt(0) ) {
+					this.options.selector = "#"+this.options.selector;
+			}	
+
+			//add items
+			this.options.items = items;
+
+
+			//Run jquery contextmenu plugin 
+			$.contextMenu(this.options); 
+
+			//Add hand to launcher/selector
+			$(this.options.selector).css('cursor','pointer');
+			
 		},
-		hide: function() {
-			var $this = this.element;
-			//$this.hide();
-			$this.contextmenu('destroy')
-				.unbind()
-//				.unbind('click', this._onDocumentClick)
-//				.unbind('contextmenu', this._onDocumentContextMenu)
-				.remove();
+
+		//Initialize widget options 
+		_initOptions: function() {
+			this.options.from = "#"+this.id;
+			if(!this.options.callback) 
+				this.options.callback = function(key, opt) { this.openAction(key, opt); }.bind(this);
+
+			//Widget default options
+			var options =  X.widgetsVars.getValues(this.id);
+
+			//Mix Javascript options and Widget default options
+		    $.extend(this.options, options);
+
 		},
-		setModel: function(model) {
 
-			var widget = this;
-			var $this = this.element;
-			if (!model) model = [];
+		//Default Callback
+		openAction: function(key, opt) {			
+			//nodeid for action
+			var nodeid = opt.choosed.node.dataset.nodeid || 10000;	
+			//command action. Eg: uploader, welcome, ...
+			var action = opt.choosed.node.dataset.action;
+			//Action method
+			var method = opt.choosed.node.dataset.method || "index";
+			//¿?
+			var bulk =  opt.choosed.node.dataset.bulk || '0';	
 
-			// Important! unbind()
-			$this.unbind().empty();
+			//Open action through browserwindow
+			$('#bw1').browserwindow('openAction', {
+				label: opt.choosed.name,
+				name:  opt.choosed.name,
+				command: action,
+				params: 'method='+method+'&nodeid='+nodeid+"&"+opt.choosed.node.dataset.params,
+				nodes: nodeid,
+				url: X.restUrl + '?action='+action+'&nodes[]='+nodeid+'&nodeid='+nodeid,
+				bulk: bulk
+			},nodeid);
 
-			for (var i=0; i<model.length; i++) {
-
-				var data = model[i];
-				$this.append(
-					$('<div></div>')
-						.click(function (event) {
-							$(this).trigger('menuItemClick', [{ui: widget, element: $(this), data: $(this).data('data')}]);
-						})
-						.data('data', data)
-						.addClass('xim-contextmenu-item ui-widget ui-corner-all ui-widget-content main')
-						.append($('<img></img>').attr('src', this.options.img_base + '/' + data.icon.value))
-						.append($('<span></span>').html(data.name.value))
-				);
-//console.log($this);
-				$('div, img, span', $this)
-					.mouseenter(function (event) {
-						$(event.target).closest('div').addClass('hover ui-state-hover');
-					})
-					.mouseout(function (event) {
-						$(event.target).closest('div').removeClass('hover ui-state-hover');
-					});
-			}
 		},
+
 		getOptions: function() {
 			return this.options;
 		},
 		
 		options: {
-			url_base: '',
-			img_base: '',
-			loading_icon: '/actions/browser3/resources/images/loading.gif',
-			colModel: null
+			selector: undefined,
+			trigger: 'right',
+			callback: undefined,
+			from: undefined,
+			items: undefined,
+			build: undefined,
+			from: undefined
 		},
-		
+
+
 		getter: ['getOptions']
 	});
 

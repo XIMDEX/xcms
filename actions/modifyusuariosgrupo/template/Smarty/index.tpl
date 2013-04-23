@@ -53,12 +53,12 @@
 					</fieldset>
 				</form>
 			{/if}
-			{if count($user_info) > 0}
+			{if count($user_infos) > 0}
 				<form method="post" id="muged_form" action="{$action_edit_delete}">
 					<fieldset>
 				                 <legend><span>{t}Change roles{/t}</span></legend>
 						<ol>
-							{foreach from=$user_info key=id_rel item=user_info}
+							{foreach from=$user_infos key=id_rel item=user_info}
 			        				<li>
 										{if ($idnode != "101")} {* if not group general *}
 											<input name="users[]" type="checkbox" value="{$user_info.IdUser}">

@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8089 $
+ *  @version $Revision: 8529 $
  */
 
 
@@ -86,7 +86,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 		hbox: null,
 		panels: null,
 		eh: null,
-		cachedActions: new Object(), 
+		cachedActions: new Object(),
 
 		_init: function() {
 
@@ -144,6 +144,10 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 				this.panels[constructor] = c;
 			}
 
+			
+			//contextmenu in logo
+			$('.xim-contextmenu-container',  this.element).contextmenu();
+
 			this.registerTriggers();
 			this.registerEvents();
 			this.registerGlobalAjaxEvents();
@@ -163,7 +167,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 		},
 
 		getActions: function(params) {
-			var that = this; 
+			var that = this;
 			params = $.extend({
 				nodes: [],
 				cb: function() {}
@@ -175,16 +179,16 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 					ids.push(params.nodes[i].nodeid.value);
 				} catch(e) {}
 			}
-			
-			var cachedKey = ids.sort().join("-"); 
 
+			var cachedKey = ids.sort().join("-");
+			
 			// NOTE: Wrapping the callback function and the variables
 			// will not produce collisions with others asynchronous calls.
 			var success = (function(params, fn) {
 				return function(data) {
-					//Cache the result for this node (or nodes) using cachedKey and data 
-					if(cachedKey != "") { 
-                                        	that.cachedActions[cachedKey] = data; 
+					//Cache the result for this node (or nodes) using cachedKey and data
+					if(cachedKey != "") {
+						that.cachedActions[cachedKey] = data;
 					}
 					if (Object.isFunction(fn)) {
 						fn($.extend({}, params, {actions: data}));
@@ -192,24 +196,26 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 				}
 			})($.extend({ids: ids}, params, {cb: null}), params.cb);
 
-			//If actions were already requested, use them. 
-                        if(cachedKey != "" && that.cachedActions.hasOwnProperty(cachedKey)) { 
-                                // setTimeout is neccesary in order to prevent the modal dialog with actions dissapears 
-                                // after it appears 
-                                setTimeout(function() { 
-	                                if (Object.isFunction(params.cb)) { 
-						params.cb($.extend({ids: ids}, params, {cb:null, actions: that.cachedActions[cachedKey]}));
-                                        } 
-	                        },100); 
-	                } 
-	                //Otherwise make the request 
-	               else { 
-	                        $.get( 
-	                                 '?action=browser3&method=cmenu'.printf(X.restUrl), 
-	                                        {'nodes[]': ids}, 
-	                                        success 
-	                                ); 
-	                        } 
+			//If actions were already requested, use them.
+			//If actions were already requested, use them.
+			if(cachedKey != "" && that.cachedActions.hasOwnProperty(cachedKey)) {
+				// setTimeout is neccesary in order to prevent the modal dialog with actions dissapears
+				// after it appears
+				
+				setTimeout(function() {
+						if (Object.isFunction(params.cb)) {
+							params.cb($.extend({ids: ids}, params, {cb:null, actions: that.cachedActions[cachedKey]})); 
+						}
+					  },100);
+			}
+			//Otherwise make the request
+			else {
+				$.get(
+					'?action=browser3&method=cmenu'.printf(X.restUrl),
+					{'nodes[]': ids},
+					success
+				);
+			}
 		},
 
 		registerTriggers: function() {

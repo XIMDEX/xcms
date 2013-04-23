@@ -42,7 +42,7 @@ require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
 
 class UserNode extends Root {
 
-	function CreateNode($login, $parentID, $nodeTypeID, $stateID = null, $realName, $pass, $email,$locale, $generalRole) {
+	function CreateNode($login = null, $parentID = null, $nodeTypeID = null, $stateID = null, $realName = null, $pass = null, $email = null,$locale = null, $generalRole = null) {
 
 		$user = new User();
 		$idUser = $user->SetByLogin($login);

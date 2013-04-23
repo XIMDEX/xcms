@@ -30,8 +30,37 @@ require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 
 class Widget_contextmenu extends Widget_Abstract {
 
+	public function process($params) {
 
+		//Is a predefined menu ?
+		if(array_key_exists("initialize", $params) ) {
+			$method = $params["initialize"];
+			//method for predefined menu 
+			if(method_exists($this, $method) ) {
+				$this->$method($params);
+			}else {
+				//General template
+				$this->setTemplate($params["initialize"] );
+			}
+		}
 
+		$this->addCss("jquery.contextMenu.css");	
+
+		return parent::process($params);
+	}
+
+	//Code for main predefined menu
+	public function mainmenu(& $params) {
+		$this->setTemplate($params["initialize"] );
+
+		//Modify your user
+		$params["userid"] = XSession::get('userID');
+	
+		//Change your language
+		$locale = new XimLocale();
+		$params["user_locale"] = $locale->GetLocaleByCode(XSession::get('locale'));
+		$params["locales"]  = $locale->GetEnabledLocales();
+	}
 }
 
 ?>

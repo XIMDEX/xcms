@@ -182,6 +182,8 @@ class Action_createnews extends ActionAbstract {
 			$_FILES['a_enlaceid_noticia_archivo_asociado'] : NULL;
 		$videos = !empty($_FILES['a_enlaceid_noticia_video_asociado']['name']) ?
 			$_FILES['a_enlaceid_noticia_video_asociado'] : NULL;
+		$images[] = !empty($_FILES['a_enlaceid_noticia_imagen_asociada']['name']) ? 
+			$_FILES['a_enlaceid_noticia_imagen_asociada'] : NULL;
 
 		$master = ($this->request->getParam('master') != 'none') ? $this->request->getParam('master') : NULL;
 		$adapter = new ximNEWS_Adapter();

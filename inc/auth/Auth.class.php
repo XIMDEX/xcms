@@ -44,7 +44,7 @@ class Auth {
 	 * @param $nodeId
 	 * @return unknown_type
 	 */
-	function _checkExistence($userId, $nodeId) {
+	public static function _checkExistence($userId, $nodeId) {
 
 		return true;
 	}
@@ -54,7 +54,7 @@ class Auth {
 	 * @param $params
 	 * @return unknown_type
 	 */
-	function _parseParams($params) {
+	public static function _parseParams($params) {
 
 		$formedParams = array();
 
@@ -106,7 +106,7 @@ class Auth {
 	 * @param $nodeId
 	 * @return unknown_type
 	 */
-	function _access($userId, $nodeId) {
+	public static function _access($userId, $nodeId) {
 
 		// TODO: define as global constans nodeid=10000 && nodeid=2
 		if ($nodeId == 1 || $nodeId == 10000 || $nodeId == 2 || $userId == 301) {
@@ -139,7 +139,7 @@ class Auth {
 	 * @param $params
 	 * @return unknown_type
 	 */
-	function canRead($userId, $params) {
+	public static function canRead($userId, $params) {
 
 		$wfParams = Auth::_parseParams($params);
 
@@ -174,7 +174,7 @@ class Auth {
 	 * @param array $params array asociativo que debe contener las claves node_id o node_type
 	 * @return bool (true, si puede escribir, false en caso contrario)
 	 */
-	function canWrite($userId, $params) {
+	public static function canWrite($userId, $params) {
 
 		$wfParams = Auth::_parseParams($params);
 		$idPipeline = NULL;
@@ -249,7 +249,7 @@ class Auth {
 	 * @param $params
 	 * @return unknown_type
 	 */
-	function canDelete($userId, $params) {
+	public static function canDelete($userId, $params) {
 
 		// TODO: extend relation table with delete actions/nodetypes mapping.
 
@@ -274,7 +274,7 @@ class Auth {
 	 * @param $params
 	 * @return unknown_type
 	 */	
-	function canModify($userId, $params) {
+	public static function canModify($userId, $params) {
 
 		// TODO: extend relation table with modify actions/nodetypes mapping.
 
@@ -300,7 +300,7 @@ class Auth {
 	 * @param $mode
 	 * @return unknown_type
 	 */
-	function _checkContext($idUser, $idNodeType, $mode) {
+	public static function _checkContext($idUser, $idNodeType, $mode) {
 		$nodeTypeMode = new NodetypeMode();
 		$idAction = $nodeTypeMode->getActionForOperation($idNodeType, $mode);
 		if (!($idAction > 0)) {
@@ -338,7 +338,7 @@ class Auth {
 	 * @param $permission
 	 * @return unknown_type
 	 */
-	function hasPermission($userId, $permission) {
+	public static function hasPermission($userId, $permission) {
 		$user = new User($userId);
 		return (boolean)$user->hasPermission($permission);
 	}

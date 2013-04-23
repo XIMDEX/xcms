@@ -29,7 +29,7 @@
 <legend><span>{t}Tag this node{/t}</span></legend>
 <frameset>
 <div class="tagslist">
-<tagsinput initialize="true"/>
+<tagsinput initialize="true" />
 </div>
 {if ($nube_tags)}
 <div class="tagcloud">

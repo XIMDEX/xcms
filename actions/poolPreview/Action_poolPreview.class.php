@@ -275,15 +275,15 @@ class Action_poolPreview extends ActionAbstract {
 	private function insertJsFiles(){
 		
 		//jquery core
-		$this->addJs('/extensions/jquery/jquery-1.3.2.min.js');
-		$this->addJs('/extensions/jquery/jquery-ui-1.8.2.custom.min.js');
+		$this->addJs(Extensions::JQUERY);
+		$this->addJs(Extensions::JQUERY_UI);
 		
 		//jquery plugins
-		$this->addJs('/extensions/jquery/plugins/panel/ui.panel.js');
-		$this->addJs('/extensions/jquery/plugins/jquery.blockUI.js');
-    	$this->addJs('/extensions/jquery/plugins/slidebox/slidebox.js');
-    	$this->addJs('/extensions/jquery/plugins/ui.dropdownchecklist.js');
-    	$this->addJs('/extensions/jquery/plugins/thickbox/thickbox.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/panel/ui.panel.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.blockUI.js');
+    	$this->addJs(Extensions::JQUERY_PATH.'/plugins/slidebox/slidebox.js');
+    	$this->addJs(Extensions::JQUERY_PATH.'/plugins/ui.dropdownchecklist.js');
+    	$this->addJs(Extensions::JQUERY_PATH.'/plugins/thickbox/thickbox.js');
 
     	$this->addJs('/actions/poolPreview/resources/js/poolPreview.js');
     	$this->addJs('/xmd/js/helper/query_manager.js');

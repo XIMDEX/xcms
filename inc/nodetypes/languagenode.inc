@@ -58,7 +58,7 @@ class LanguageNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $isoname, $description, $enabled) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null) {
 
 		$language = new Language();
 		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
@@ -96,7 +96,7 @@ class LanguageNode extends Root {
 	*  @return unknown
 	*/
 
-	function RenameNode($name) {
+	function RenameNode($name = null) {
 
 		$lang = new Language($this->parent->get('IdNode'));
 		$lang->SetName($name);

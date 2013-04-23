@@ -80,8 +80,8 @@ class PumperManager {
 			switch($pumperState) {
 				case 'Started':
 					// Checking if pumper is alive
-					$now = mktime();
-					if ($now - $pumperCheckTime - $pumperStartTime > MAX_CHECK_TIME_FOR_PUMPER) {
+					$now = time();
+					if ($now - $pumperCheckTime > MAX_CHECK_TIME_FOR_PUMPER) {
 						$pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
 							__LINE__, "INFO", 8, _("No checking time for Pumper")." $pumperId", true);
 						// Restart pumper
