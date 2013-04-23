@@ -379,12 +379,12 @@ function XimdocEditor(options) {
 	};
 
 	this._parseConfig = function(confNode) {
-		console.log(confNode);
+		//console.log(confNode);
 		// Config XML already parsed
 		if (confNode.nodeType != 9) return confNode;
 
 	    var root = confNode.getElementsByTagName('kupuconfig');
-		console.log(root);
+		//console.log(root);
 	    root = root[0] || null;
 	    if (!root) {
 	        this.log.log(_('No element found in the configuration'));
