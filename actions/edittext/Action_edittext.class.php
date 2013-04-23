@@ -72,6 +72,14 @@ class Action_edittext extends ActionAbstract {
 			}
 		}else {
 			$ext = "xml";
+		} 
+
+                if ($ext == "php" ){ 
+	                        $this->addJs("/extensions/codemirrror/mode/xml/xml.js"); 
+	                        $this->addJs("/extensions/codemirrror/mode/css/css.js"); 
+	                        $this->addJs("/extensions/codemirrror/mode/javascript/javascript.js"); 
+	                        $this->addJs("/extensions/codemirrror/mode/clike/clike.js");
+
 		}
 
 		$this->addJs("/extensions/codemirrror/mode/$ext/$ext.js");
@@ -206,7 +214,7 @@ class Action_edittext extends ActionAbstract {
 			$this->redirectTo('publishForm');
 			return;
 		} else {
-			$this->redirectTo('index');
+			//$this->redirectTo('index');
 			return;
 		}
 
