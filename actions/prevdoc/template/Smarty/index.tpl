@@ -29,6 +29,8 @@
 	<title>{t}Preview{/t}</title>
 
 	<link href="{$_URL_ROOT}/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery/jquery-1.8.3.min.js">
+        </script>
 
 {literal}
 <script>
@@ -41,6 +43,15 @@ function change_title() {
 		//it isnt a ximdoc
 	}
 }
+</script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+        $("iframe").onload("load",function(){
+                $("a",window.frames[0].document).attr("target","_parent");
+        });
+});
+
 </script>
 {/literal}
 </head>
