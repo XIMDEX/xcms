@@ -335,7 +335,7 @@ class GenericData extends Overloadable {
 			$this->_convertToSql($this->$field, $descriptors));
 		}
 		$sets = implode(', ', $arraySets);
-		$query = sprintf("UPDATE  {$this->_table} SET $sets WHERE {$this->_idField} = %d",
+		$query = sprintf('UPDATE %s SET %s WHERE %s = %d',$this->_table,$sets,$this->_idField,
 		$this->{$this->_idField});
 		if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
 			$this->_logQuery($query);
