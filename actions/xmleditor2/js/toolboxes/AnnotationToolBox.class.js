@@ -273,6 +273,9 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				$('#anottationtoolbox-section-people').append(NoRefs);
 			}.bind(this));
 		}
+		else{
+			$('#anottationtoolbox-section-header-people span').append('<span class="hits">'+countPeople+'</span>'); 
+		}
 
 		$('#anottationtoolbox-personitem-template', this.element).remove();
 		$('#anottationtoolbox-section-people').show();
@@ -315,6 +318,9 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				$('#anottationtoolbox-section-places').append(NoRefs);
 			}.bind(this));
 		}
+		else{
+			$('#anottationtoolbox-section-header-places span').append('<span class="hits">'+countPlaces+'</span>'); 
+		}
 
 		$('#anottationtoolbox-placeitem-template', this.element).remove();
 		$('#anottationtoolbox-section-places').show();
@@ -356,6 +362,9 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				$('#anottationtoolbox-section-organisations').empty();
 				$('#anottationtoolbox-section-organisations').append(NoRefs);
 			}.bind(this));
+		}
+		else{
+			$('#anottationtoolbox-section-header-organisations span').append('<span class="hits">'+countOrgs+'</span>'); 
 		}
 
 		$('#anottationtoolbox-organisationitem-template', this.element).remove();
