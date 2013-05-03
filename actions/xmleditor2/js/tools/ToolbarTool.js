@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8170 $
+ *  @version $Revision: 8538 $
  */
 
 
@@ -73,15 +73,12 @@ var ToolbarTool = Object.xo_create(XimdocTool, {
 		
 		var buttonClass = null;
 		try {
-			
 			buttonClass = eval(className);
 			if (!Object.isFunction(buttonClass)) return;
-			
 		} catch(e) {
 			return;
 		}
 		
-//		this.getTool('asdf');
 		var button = new buttonClass(buttonId, this);
 		
 		if ($('#toolbar #'+button.buttonid).length == 0) return;
