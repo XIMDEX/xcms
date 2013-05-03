@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision: 8535 $
  */
 
 
@@ -323,7 +323,7 @@ var FloatingToolBox = Object.xo_create(new XimdocToolBox(), {
         	containment: $('.kupu-editorframe'),
 			helper: 'clone',
         	appendTo: 'body',
-        	iframeFix: true,
+        	iframeFix: false,
         	start: function(event, ui) {
 
         		var helper = $(ui.helper[0])
