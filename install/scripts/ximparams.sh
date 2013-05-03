@@ -107,7 +107,7 @@ function setHost
 	  fi
 	fi
 
-  test=$(wget --spider $XIMDEX_PARAMS_HOST/README 2>/dev/null)
+  test=$(wget --spider $XIMDEX_PARAMS_HOST/README.md 2>/dev/null)
 
    if [ $? = 0 ] &&  [ -n "$XIMDEX_PARAMS_HOST" ]
 	then

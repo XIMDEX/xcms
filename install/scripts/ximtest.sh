@@ -104,7 +104,18 @@ else
   exit 1
 fi
 
+# php-xsl installed?
 
+echo -n " - PHP XSL installed: "
+xsltest=$(php -r "if (class_exists('XSLTProcessor')) { echo '1'; }")
+if [ -n "$xsltest" ];
+then
+  echo "OK"
+else
+  echo "Fail"
+  exit 1
+fi
+    
 
 # #################### MYSQL  #######################
 echo -n "MySQL version (older than 5.0):"
