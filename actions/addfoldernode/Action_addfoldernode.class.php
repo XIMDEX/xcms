@@ -100,10 +100,10 @@ class Action_addfoldernode extends ActionAbstract {
 		if ($idFolder > 0 && $nodeTypeName == 'Project') {
 			$node = new Node($idFolder);
 			if(!empty($channels) && is_array($channels) )
-				$node->setProperty('channel', array_keys($channels)));
+				$node->setProperty('channel', array_keys($channels));
 
 			if(!empty($languages) && is_array($languages) )
-				$node->setProperty('language', array_keys($languages)));
+				$node->setProperty('language', array_keys($languages));
 		}
 
 		if ($idFolder > 0) {
