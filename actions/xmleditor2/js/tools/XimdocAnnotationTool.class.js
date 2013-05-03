@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8411 $
+ *  @version $Revision: 8535 $
  */
 
 
@@ -61,8 +61,17 @@ function XimdocAnnotationTool() {
 
     this._setAnnotationDoc = function (XimdocAnnotationTool) {
 
+		//Update content before send the info to stanbol and zemanta
+		this.editor.updateEditorContent();
 		// Calling AnnotationHandler
-		var content = encodeURIComponent(this.editor._ximdoc._xmldoc.documentElement.textContent);
+		//var content = encodeURIComponent(this.editor._ximdoc._xmldoc.documentElement.textContent);
+		var content= this.editor._ximdoc.saveXML({
+                        asString: true,
+                        hideXimlets: false,
+                        resolveXimlinks: false,
+                        onCreateNode: null
+		});
+		content= encodeURIComponent(content);
 		var lang = "es";
 		var encodedContent = "&nodeid=" + this.editor.nodeId +
 							 "&content=" + content +

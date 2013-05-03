@@ -20,11 +20,8 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision: 8538 $
  */
-
-
-
 
 
 var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
@@ -56,15 +53,15 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 	        $('#kupu-toolbox-undo').unbind().remove();
 	        $(this.element).attr('id', 'kupu-toolbox-undolog');
 
-	        var undobutton = new KupuButton('kupu-undo-button', function() {
-				this.undo();
-		    }.bind(this));
-		    editor.registerTool('undobutton', undobutton);
+		var undobutton = new KupuButton('kupu-undo-button', function() {
+			this.undo();
+		}.bind(this));
+		editor.registerTool('undobutton', undobutton);
 
-		    var redobutton = new KupuButton('kupu-redo-button', function() {
-				this.redo();
-		    }.bind(this));
-		    editor.registerTool('redobutton', redobutton);
+		var redobutton = new KupuButton('kupu-redo-button', function() {
+			this.redo();
+		}.bind(this));
+		editor.registerTool('redobutton', redobutton);
 
 	        this.editor.logMessage(_('UndoToolBox tool initialized'));
 	},
@@ -72,7 +69,6 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 	updateState: function(options) {
 
 		// Content changes
-
 		if (this._isRestoring) return;
 
 		var saveState = false;
@@ -112,7 +108,6 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 		}
 
 		// XML structure changes
-
 		if (this._isRestoring) return;
 
 		var saveState = false;
@@ -151,7 +146,6 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 		// Linear, multiuser undo
 		// It doesn't manage branches, when a new state is saved
 		// it removes all states after the "pointer" position.
-
 		var xml = this.editor.getXimDocument().saveXML({
 			asString: true,
 			hideXimlets: false
@@ -161,7 +155,7 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 			this.stack = [];
 		}
 
-		var previousXML = this.stack[this.p - 1];
+		var previousXML = this.stack[this.p];
 
 		if (this.p == (this.stack.length - 1)) {
 			if (xml != previousXML) this.stack.push(xml);
@@ -182,6 +176,19 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 		}
 
 		this.p = this.stack.length - 1;
+		if(this.p==0){
+			$("#kupu-undo-button").addClass("disabled");
+		}
+		else{
+			$("#kupu-undo-button").removeClass("disabled");
+		}
+
+		if(this.p == this.stack.length-1){
+			$("#kupu-redo-button").addClass("disabled");
+		}
+		else{
+			$("#kupu-redo-button").removeClass("disabled");
+		}
 		this.log(label);
 
 		// Updating the pointer to the change stack
@@ -215,23 +222,34 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 		loadingImage.hideLoadingImage();
 	},
 
-    undo: function() {
-    	if (this.p <= 0) {
-    		this.p = 0;
-    		return;
-    	}
+    	undo: function() {
+    		if (this.p <= 0) {
+    			this.p = 0;
+			$("#kupu-undo-button").addClass("disabled");
+    			return;
+    		}
 		var state = this.stack[--this.p];
+    		if (this.p <= 0) {
+			$("#kupu-undo-button").addClass("disabled");
+		}
+		$("#kupu-redo-button").removeClass("disabled");
 		this.restoreChangeset(state);
-    },
+    	},
 
-    redo: function() {
-    	if (this.p >= this.stack.length - 1) {
-    		this.p = this.stack.length - 1;
-    		return;
-    	}
+    	redo: function() {
+    		if (this.p >= this.stack.length - 1) {
+    			this.p = this.stack.length - 1;
+			$("#kupu-redo-button").addClass("disabled");
+    			return;
+    		}
 		var state = this.stack[++this.p];
+    		if (this.p >= this.stack.length - 1) {
+			$("#kupu-redo-button").addClass("disabled");
+		}
+    			this.p = this.stack.length - 1;
+		$("#kupu-undo-button").removeClass("disabled");
 		this.restoreChangeset(state);
-    },
+    	},
 
 	log: function(label) {
 		/* log a message */

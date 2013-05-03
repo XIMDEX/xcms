@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8093 $
+ *  @version $Revision: 8537 $
  */
 
 var XimdexLogger = Object.xo_create(FloatingToolBox, {
@@ -34,10 +34,10 @@ var XimdexLogger = Object.xo_create(FloatingToolBox, {
 		this.active = true;	// TODO: parametrize kupu_config.xml
 		this.activateButton = null;
 
-        $('#kupu-toolbox-debug').unbind().remove();
-        $(this.element).attr('id', 'kupu-toolbox-debuglog');
+        	$('#kupu-toolbox-debug').unbind().remove();
+        	$(this.element).attr('id', 'kupu-toolbox-debuglog');
 
-        this.initialize(options.tool, options.editor);
+        	this.initialize(options.tool, options.editor);
 	},
 
 	initialize: function(tool, editor) {
@@ -59,11 +59,8 @@ var XimdexLogger = Object.xo_create(FloatingToolBox, {
 
 	setActive: function(active) {
 
-		if (this.activateButton === null) {
-	        this.activateButton = $(this.element)
-	    		.closest('.ui-dialog')
-	    		.find('button')
-	    		.filter(function() {
+		if (!this.activateButton) {
+			this.activateButton = $(this.element).parent().find('button').filter(function() {
 	    			var text = $(this).html();
 	    			return text == 'Desactivar' || text == 'Activar';
 	    		})
@@ -78,7 +75,6 @@ var XimdexLogger = Object.xo_create(FloatingToolBox, {
 	updateButtonHandler: function(event) {
 		$(this.element).empty();
 	},
-
 
 	log: function(message, severity) {
 

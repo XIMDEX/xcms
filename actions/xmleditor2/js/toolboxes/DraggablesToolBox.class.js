@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision: 8535 $
  */
 
 
@@ -167,8 +167,10 @@ function DraggablesToolBox() {
 //		var selector = '.ui-draggable:not(.ui-dialog), .ui-droppable:not(.ui-dialog)';
 		var selector = '.xedit-rngelement';
 		$(selector, this._body).each(function(index, elem) {
-			$(elem).draggable('destroy');
-			$(elem).droppable('destroy');
+			if ($(elem).data("draggable"))
+				$(elem).draggable('destroy');
+			if ($(elem).data("droppable"))
+				$(elem).droppable('destroy');
 		});
 	};
 

@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision: 8535 $
  */
 
 
@@ -28,6 +28,7 @@
 
 var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
+	currentSelection:false,
 	initialize: function(tool, editor) {
 
 		AnnotationsToolBox._super(this, 'initialize', tool, editor);
@@ -39,6 +40,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 		$('.anottationtoolbox-section-header', this.element).click(function(event) {
 
+			this.currentSelection = "#"+event.currentTarget.id;
 			$('.anottationtoolbox-section-header', this.element).removeClass('button-pressed');
 			$('.anottationtoolbox-section', this.element).hide();
 			$(event.currentTarget)
@@ -57,10 +59,15 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$('.anottationtoolbox-section-header', this.element).removeClass('button-pressed');
 		if(annotationDoc !== null) {
 
-			$('#anottationtoolbox-section-header-link', this.element).addClass('button-pressed');
+			if (this.currentSelection){
+				$(this.currentSelection, this.element).addClass('button-pressed');
+			}
+			else{
+				$('#anottationtoolbox-section-header-image', this.element).addClass('button-pressed');
+			}
 
-			this.populateLinkSection(annotationDoc.zemanta.markup.links);
 			this.populateImageSection(annotationDoc.zemanta.images);
+			this.populateLinkSection(annotationDoc.zemanta.markup.links);
 			this.populateArticleSection(annotationDoc.zemanta.articles);
 /*			this.populateLinkSection(annotationDoc.markup.links);
 			this.populateImageSection(annotationDoc.images);
@@ -72,22 +79,28 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$('#anottationtoolbox-section-link, #anottationtoolbox-section-image, #anottationtoolbox-section-article, #anottationtoolbox-section-people, #anottationtoolbox-section-places, #anottationtoolbox-section-organisations').slideUp('fast');
 
-			if (annotationDoc.zemanta.markup.links.length > 0) {
-//			if (annotationDoc.markup.links.length > 0) {
-				$('#anottationtoolbox-section-link').slideDown('fast');
-			} else if (annotationDoc.zemanta.images.length > 0) {
-//			} else if (annotationDoc.images.length > 0) {
+			if(this.currentSelection){		
+				$(this.currentSelection.replace("-header","")).slideDown('fast');
+				$(this.currentSelection,this.element).addClass("button-pressed");
+			}else if (annotationDoc.zemanta.images.length > 0) {
+				$('#anottationtoolbox-section-header-image').addClass("button-pressed");
 				$('#anottationtoolbox-section-image').slideDown('fast');
-			} else if (annotationDoc.zemanta.articles.length > 0)
-//			} else if (annotationDoc.articles.length > 0)
+			} else if (annotationDoc.zemanta.links.length > 0) {
+				$('#anottationtoolbox-section-link').slideDown('fast');
+				$('#anottationtoolbox-section-header-link').addClass("button-pressed");
+			} else if (annotationDoc.zemanta.articles.length > 0){
 				$('#anottationtoolbox-section-article').slideDown('fast');
-
-			if(annotationDoc.iks.people.length > 0){
+				$('#anottationtoolbox-section-header-article').addClass("button-pressed");
+			}
+			else if(annotationDoc.iks.people.length > 0){
 				$('#anottationtoolbox-section-people').slideDown('fast');
+				$('#anottationtoolbox-section-header.people').addClass("button-pressed");
 			} else if (annotationDoc.iks.places.length > 0){
 				$('#anottationtoolbox-section-places').slideDown('fast');
+				$('#anottationtoolbox-section-header-places').addClass("button-pressed");
 			} else if (annotationDoc.iks.orgs.length > 0){
 				$('#anottationtoolbox-section-organisations').slideDown('fast');
+				$('#anottationtoolbox-section-header-organisations').addClass("button-pressed");
 			}
 
 
@@ -97,6 +110,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 	populateLinkSection: function(info) {
 		var div = $('#anottationtoolbox-link-template', this.element).clone(true);
+		$(".removable", div).remove();
 		$(div).appendTo('#anottationtoolbox-section-link');
 		$(div).attr('id', 'anottationtoolbox-link-container');
 		$('#anottationtoolbox-link-template', this.element).hide();
@@ -105,6 +119,8 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		var length = info.length;
 		for(var k = 0; k < length; k ++) {
 			var divHeader = $('#anottationtoolbox-linkheader-template', div).clone(true);
+			divHeader.show();			
+			divHeader.addClass("removable");
 			$(divHeader).attr('id', '');
 			$(divHeader).click(function(event) {this.toggleItem(event);}.bind(this));
 			$(divHeader).html(info[k].anchor);
@@ -145,20 +161,26 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
                                 $('#anottationtoolbox-section-link').append(NoRefs);
                         }.bind(this));
                 }
+		$('#anottationtoolbox-section-header-link span.hits').remove();
+                $('#anottationtoolbox-section-header-link span').append('<span class="hits">'+countLinks+'</span>');
 
-		$('#anottationtoolbox-linkheader-template', div).remove();
-		$('#anottationtoolbox-linkitem-template', div).remove();
-		$('#anottationtoolbox-section-link', this.element).show();
+		$('#anottationtoolbox-linkheader-template', div).hide();
+		$('#anottationtoolbox-linkitem-template', div).hide();
+		//$('#anottationtoolbox-section-link', this.element).show();
 	},
 
 	populateImageSection: function(info) {
 		var infoContainerImageDiv = $('#infoContainer-image', this.element);
 		var sliderContainerImageDiv = $('#sliderContainer-image', this.element);
+		$(".removable", infoContainerImageDiv).remove();
+		$(".removable", sliderContainerImageDiv).remove();
 
 		var length = info.length;
 		var countImages = 0;
 		for(var k = 0; k < length; k ++) {
 			var infoImageDiv = $('#infoImage-template', this.element).clone(true);
+			infoImageDiv.show();
+			infoImageDiv.addClass("removable");
 			$(infoImageDiv).attr('id', 'infoImageDiv' + k);
 			var descriptionText = document.createTextNode(info[k].description);
 			var licenseText = document.createTextNode(info[k].license);
@@ -185,24 +207,29 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
                                 $('#anottationtoolbox-section-image').append(NoRefs);
                         }.bind(this));
                 }
+		$('#anottationtoolbox-section-header-image span.hits').remove();
+                $('#anottationtoolbox-section-header-image span').append('<span class="hits">'+countImages+'</span>');
 
 		var prevImageButton = $('#prevButton-image', this.element);
 		var nextImageButton = $('#nextButton-image', this.element);
 		$(prevImageButton).click(function (event) {this.slideSwitch('backward');}.bind(this));
 		$(nextImageButton).click(function (event) {this.slideSwitch('forward');}.bind(this));
 
-		$('#infoImage-template', this.element).remove();
-		$('#anottationtoolbox-imageitem-template', this.element).remove();
+		$('#infoImage-template', this.element).hide();
+		$('#anottationtoolbox-imageitem-template', this.element).hide();
 		$('#anottationtoolbox-section-image', this.element).show();
 	},
 
 	populateArticleSection: function(info) {
 		var articleContainerDiv = $('#articleContainer-article');
+		$(".removable", articleContainerDiv).remove();
 
 		var targetLength = info.length;
 		var countArticles=0;
 		for(var l = 0; l < targetLength; l ++) {
 			var articleDiv = $('#anottationtoolbox-articleitem-template', this.element).clone(true);
+			articleDiv.show();
+			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
 			var articleDivText = document.createTextNode(info[l].title);
 
@@ -231,18 +258,24 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
                                 $('#anottationtoolbox-section-article').append(NoRefs);
                         }.bind(this));
                 }
+		$('#anottationtoolbox-section-header-article span.hits').remove();
+                $('#anottationtoolbox-section-header-article span').append('<span class="hits">'+countArticles+'</span>');
 
-		$('#anottationtoolbox-articleitem-template', this.element).remove();
+		$('#anottationtoolbox-articleitem-template', this.element).hide();
 		$('#anottationtoolbox-section-article').show();
 	},
 
 	populatePeopleSection: function(info) {
 		var peopleContainerDiv = $('#peopleContainer');
-
+		$(".removable", peopleContainerDiv).remove();
+		
+		
 		var length = info.length;
                 var countPeople = 0;
                 for(var k = 0; k < length; k ++) {
 			var articleDiv = $('#anottationtoolbox-personitem-template', this.element).clone(true);
+			articleDiv.show();
+			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
 			var articleDivText = document.createTextNode(info[k]['selected-text']);
 
@@ -273,21 +306,23 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				$('#anottationtoolbox-section-people').append(NoRefs);
 			}.bind(this));
 		}
-		else{
-			$('#anottationtoolbox-section-header-people span').append('<span class="hits">'+countPeople+'</span>'); 
-		}
-
-		$('#anottationtoolbox-personitem-template', this.element).remove();
+		$('#anottationtoolbox-section-header-people span.hits').remove();
+		$('#anottationtoolbox-section-header-people span').append('<span class="hits">'+countPeople+'</span>');
+	
+		$('#anottationtoolbox-personitem-template', this.element).hide();
 		$('#anottationtoolbox-section-people').show();
 	},
 
 	populatePlacesSection: function(info) {
 		var placesContainerDiv = $('#placesContainer');
+		$(".removable", placesContainerDiv).remove();
 
 		var length = info.length;
                 var countPlaces = 0;
                 for(var k = 0; k < length; k ++) {
 			var articleDiv = $('#anottationtoolbox-placeitem-template', this.element).clone(true);
+			articleDiv.show();
+			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
 			var articleDivText = document.createTextNode(info[k]['selected-text']);
 
@@ -318,21 +353,23 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				$('#anottationtoolbox-section-places').append(NoRefs);
 			}.bind(this));
 		}
-		else{
-			$('#anottationtoolbox-section-header-places span').append('<span class="hits">'+countPlaces+'</span>'); 
-		}
+		$('#anottationtoolbox-section-header-places span.hits').remove();
+		$('#anottationtoolbox-section-header-places span').append('<span class="hits">'+countPlaces+'</span>');
 
-		$('#anottationtoolbox-placeitem-template', this.element).remove();
+		$('#anottationtoolbox-placeitem-template', this.element).hide();
 		$('#anottationtoolbox-section-places').show();
 	},
 
 	populateOrganisationsSection: function(info) {
 		var organisationsContainerDiv = $('#organisationsContainer');
+		$(".removable", organisationsContainerDiv).remove();
 		
 		var length = info.length;
                 var countOrgs = 0;
                 for(var k = 0; k < length; k ++) {
 			var articleDiv = $('#anottationtoolbox-organisationitem-template', this.element).clone(true);
+			articleDiv.show();
+			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
 			var articleDivText = document.createTextNode(info[k]['selected-text']);
 
@@ -363,11 +400,10 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				$('#anottationtoolbox-section-organisations').append(NoRefs);
 			}.bind(this));
 		}
-		else{
-			$('#anottationtoolbox-section-header-organisations span').append('<span class="hits">'+countOrgs+'</span>'); 
-		}
+		$('#anottationtoolbox-section-header-organisations span.hits').remove();
+		$('#anottationtoolbox-section-header-organisations span').append('<span class="hits">'+countOrgs+'</span>');
 
-		$('#anottationtoolbox-organisationitem-template', this.element).remove();
+		$('#anottationtoolbox-organisationitem-template', this.element).hide();
 		$('#anottationtoolbox-section-organisations').show();
 	},
 

@@ -111,7 +111,7 @@ ui-tabs .ui-tabs-nav li:hover{
 
 .hbox-panel-container-0 .ui-tabs-nav>li>a{
 	width: 38px;
-	text-indent: -99999999px;
+	text-indent: -9999999px;
 	height: 17px;
 	font-size: .9em;
 	font-weight: bold;
@@ -342,7 +342,7 @@ div.browser-view-title  {
 	-webkit-box-shadow: 0 -2px 3px #999999;
 	box-shadow: 0 -2px 3px #999999;
 	background:	url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat -8px -152px;
-	text-indent: -99999999px;
+	text-indent: -9999999px;
 	position: absolute;
 	right: 4px;
 }
