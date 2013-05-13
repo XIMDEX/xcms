@@ -1,0 +1,21 @@
+Options -Indexes
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.css$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.xsl$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.svg$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.eot$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.ttf$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.woff$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.ico$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.js$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.png$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.pdf$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.gif$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.flv$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.jpg$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.xml$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.html$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\js\.php$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.php$
+RewriteRule (.*) index.php

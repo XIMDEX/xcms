@@ -316,13 +316,13 @@ class Synchronizer {
 				$conf = new Config();
 				$targetPath = $conf->GetValue("AppRoot") . $conf->GetValue("SyncRoot");
 
-				$sql = "SELECT * FROM Synchronizer WHERE IdSync=".$frameID;
+				$sql = "SELECT IdNode,DateUp,DateDown FROM Synchronizer WHERE IdSync=".$frameID;
 				$this->dbObj->Query($sql);
 				$nodeID = $this->dbObj->GetValue("IdNode");
 				$dateUp = $this->dbObj->GetValue("DateUp");
 				$dateDown = $this->dbObj->GetValue("DateDown");
 
-				$sql = "SELECT * FROM Synchronizer WHERE IdNode=".$nodeID." AND DateUp=".$dateUp." AND DateDown=".$dateDown;
+				$sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=".$nodeID." AND DateUp=".$dateUp." AND DateDown=".$dateDown;
 				$this->dbObj->Query($sql);
 
 				$list = array();
@@ -532,7 +532,7 @@ class Synchronizer {
 
 	function GetAssociatedFrames($bulletinID) {
 
-		$sql="SELECT * FROM XimNewsFrameBulletin WHERE BulletinID=$bulletinID";
+		$sql="SELECT IdSync FROM XimNewsFrameBulletin WHERE BulletinID=$bulletinID";
 		$this->dbObj->Query($sql);
 
 		$list = array();
@@ -756,9 +756,9 @@ class Synchronizer {
 		if(!is_null($this->nodeID)) { 
 
 			if($dateDown) {
-				$sql = "SELECT * FROM Synchronizer WHERE IdNode=".$this->nodeID." AND ((DateDown BETWEEN ".($dateUp+1)." AND ".($dateDown-1).") OR (DateUp BETWEEN ".($dateUp+1)." AND ".($dateDown-1)." OR (DateUp<".$dateUp." AND DateDown IS NULL)))";
+				$sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=".$this->nodeID." AND ((DateDown BETWEEN ".($dateUp+1)." AND ".($dateDown-1).") OR (DateUp BETWEEN ".($dateUp+1)." AND ".($dateDown-1)." OR (DateUp<".$dateUp." AND DateDown IS NULL)))";
 			} else {
-				$sql = "SELECT * FROM Synchronizer WHERE IdNode=".$this->nodeID." AND (DateDown>".($dateUp+1)." OR DateDown IS NULL)";
+				$sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=".$this->nodeID." AND (DateDown>".($dateUp+1)." OR DateDown IS NULL)";
 			}
 
 			$this->dbObj->Query($sql);
@@ -787,7 +787,7 @@ class Synchronizer {
 		if(!is_null($this->nodeID)) { 
 
 			$timeline=time();
-			$sql = "SELECT * FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <> 'OUTDATED' AND State <> 'OUT' AND (DateDown>$timeline OR DateDown IS NULL ) ORDER BY DateUp";
+			$sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <> 'OUTDATED' AND State <> 'OUT' AND (DateDown>$timeline OR DateDown IS NULL ) ORDER BY DateUp";
 
 
 			$this->dbObj->Query($sql);
@@ -1018,9 +1018,9 @@ class Synchronizer {
 		if(!is_null($this->nodeID))
 		{
 			if($dateDown) {
-				$this->dbObj->Query("SELECT * FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <> 'OUTDATED' AND State <> 'OUT' AND ((DateDown BETWEEN ".($dateUp+1)." AND ".($dateDown-1).") OR (DateUp BETWEEN ".($dateUp+1)." AND ".($dateDown-1)." OR (DateUp<".$dateUp." AND DateDown IS NULL)) OR (DateUp<".$dateUp." AND DateDown>".$dateUp."))");
+				$this->dbObj->Query("SELECT IdSync FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <> 'OUTDATED' AND State <> 'OUT' AND ((DateDown BETWEEN ".($dateUp+1)." AND ".($dateDown-1).") OR (DateUp BETWEEN ".($dateUp+1)." AND ".($dateDown-1)." OR (DateUp<".$dateUp." AND DateDown IS NULL)) OR (DateUp<".$dateUp." AND DateDown>".$dateUp."))");
 			} else {
-				$this->dbObj->Query("SELECT * FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <> 'OUTDATED' AND State <> 'OUT' AND (DateDown>".($dateUp+1)." OR DateDown IS NULL)");
+				$this->dbObj->Query("SELECT IdSync FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <> 'OUTDATED' AND State <> 'OUT' AND (DateDown>".($dateUp+1)." OR DateDown IS NULL)");
 			}
 			return $this->dbObj->numRows;
 		} else {
@@ -1037,10 +1037,10 @@ class Synchronizer {
 		{
 			if($dateDown) {
 
-				$this->dbObj->Query("SELECT * FROM Synchronizer WHERE IdNode=".$this->nodeID."  AND State <>'OUTDATED' AND State <> 'OUT' AND ((DateUp=".$dateUp." AND DateDown=".$dateDown.") OR (DateDown BETWEEN ".($dateUp+1)." AND ".($dateDown-1).") OR (DateUp BETWEEN ".($dateUp+1)." AND ".($dateDown-1)." OR (DateUp<".$dateUp." AND DateDown IS NULL)) OR (DateUp<".$dateUp." AND DateDown>".$dateUp.")) ORDER BY DateUp");
+				$this->dbObj->Query("SELECT IdSync FROM Synchronizer WHERE IdNode=".$this->nodeID."  AND State <>'OUTDATED' AND State <> 'OUT' AND ((DateUp=".$dateUp." AND DateDown=".$dateDown.") OR (DateDown BETWEEN ".($dateUp+1)." AND ".($dateDown-1).") OR (DateUp BETWEEN ".($dateUp+1)." AND ".($dateDown-1)." OR (DateUp<".$dateUp." AND DateDown IS NULL)) OR (DateUp<".$dateUp." AND DateDown>".$dateUp.")) ORDER BY DateUp");
 			} else {
 
-				$this->dbObj->Query("SELECT * FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <>'OUTDATED' AND State <> 'OUT' AND (DateDown>".($dateUp+1)." OR DateDown IS NULL) ORDER BY DateUp");
+				$this->dbObj->Query("SELECT IdSync FROM Synchronizer WHERE IdNode=".$this->nodeID." AND State <>'OUTDATED' AND State <> 'OUT' AND (DateDown>".($dateUp+1)." OR DateDown IS NULL) ORDER BY DateUp");
 			}
 			$i=0;
 			while (!$this->dbObj->EOF) {
@@ -1192,7 +1192,7 @@ class Synchronizer {
 		$dateDown = $this->GetDateDownOnFrame($frameID);
 		$nodeID	 = $this->GetNodeIdOnFrame($frameID);
 
-		$sql = "SELECT * FROM Synchronizer WHERE IdNode=".$nodeID." AND DateUp=".$dateUp;
+		$sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=".$nodeID." AND DateUp=".$dateUp;
 		$this->dbObj->Query($sql);
 
 		$list = array();
@@ -1597,7 +1597,7 @@ class Synchronizer {
 
 	function CreateTmpFile($frameID) {
 
-		$sql = "SELECT * FROM Synchronizer WHERE IdSync=".$frameID;
+		$sql = "SELECT IdServer,IdChannel,IdNode FROM Synchronizer WHERE IdSync=".$frameID;
 		$this->dbObj->Query($sql);
 		
 		$serverID = $this->dbObj->GetValue("IdServer");
@@ -1606,7 +1606,7 @@ class Synchronizer {
 		$nodeID = $this->dbObj->GetValue("IdNode");
 
 		$dataFactory = new DataFactory($nodeID);
-        $idVersion = $dataFactory->GetPublishedIdVersion();
+        	$idVersion = $dataFactory->GetPublishedIdVersion();
 
 		$data['CHANNEL'] = $channel;
 		$data['SERVER'] = $serverID;
@@ -1888,7 +1888,7 @@ class Synchronizer {
 
 					// Searching and moving to history synchronizerDependencies
 
-					$sql = "SELECT * FROM SynchronizerDependencies WHERE IdSync = $idSync";
+					$sql = "SELECT IdSync FROM SynchronizerDependencies WHERE IdSync = $idSync";
 					$dbObjDeps->Query($sql);
 
 					if ($dbObjDeps->numRows > 0) {

@@ -120,7 +120,7 @@ class dependencies extends Dependencies_ORM{
 		//Get all the nodes which are dependant of the current one
 
 		$dbObj = new DB();
-		$sql=sprintf("SELECT * from Dependencies WHERE IdNodoDependent= %d", $nodeID);
+		$sql=sprintf("SELECT IdNodeMaster from Dependencies WHERE IdNodoDependent= %d", $nodeID);
 		$dbObj->Query($sql);
 
 		if ($dbObj->numRows==0) {
@@ -230,7 +230,7 @@ class dependencies extends Dependencies_ORM{
 		//Gets all the dependencies (ancestor) of this node
 
 		$dbObj = new DB();
-		$sql=sprintf("SELECT * from Dependencies WHERE IdNodeMaster = %d AND IdNodeDependent = %d and DepType = %s and version = %d",
+		$sql=sprintf("SELECT IdDep from Dependencies WHERE IdNodeMaster = %d AND IdNodeDependent = %d and DepType = %s and version = %d",
 		$nodoMaestro, $nodoDependiente, $dbObj->sqlEscapeString($tipo), $version);
 
 		$dbObj->Query($sql);

@@ -63,7 +63,7 @@ if ($delete != 'ONLY_FILES') {
 	echo _("Checking package in database...")."\n";
 	
 	$dbObj = new DB();
-	$query = sprintf("SELECT * FROM XimIOExportations where timeStamp = %s", $dbObj->sqlEscapeString($file));
+	$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations where timeStamp = %s", $dbObj->sqlEscapeString($file));
 	$dbObj->Query($query);
 	if (!($dbObj->numRows > 0)) {
 		$messages->add(_('Importation information not found in database'), MSG_TYPE_WARNING);

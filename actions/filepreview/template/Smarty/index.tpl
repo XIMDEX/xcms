@@ -23,8 +23,6 @@
  *  @version $Revision$
  *}
 
-{if $extension == 'tif'}
-		<embed src="{$path}" type="image/tiff" toolbar="bottom" height="400" width="400">
-{else}
-		<img src="{$path}" alt="preview">
-{/if}
+<div class="center">
+<img src="{$path}" alt="preview"/>
+</div>

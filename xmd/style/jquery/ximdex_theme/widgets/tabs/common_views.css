@@ -24,7 +24,7 @@
  */
 
 
-.ui-tabs-panel ul li div, .ui-tabs-panel ul li.xim-listview-node, .xim-listview-item{
+.browser-view ul li div, .ui-tabs-panel ul li.xim-listview-node, .xim-listview-item{
 	border-bottom: 1px dashed #ccc;
 	/*padding:5px 5px 6px 2px;*/
 	
