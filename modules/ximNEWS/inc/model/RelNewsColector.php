@@ -90,12 +90,12 @@ class RelNewsColector extends RelNewsColector_ORM  {
 
 	function getAllColectorsFromNew($idNews) {
 		$dbObj = new DB();
-		$query = sprintf("SELECT * FROM RelNewsColector WHERE IdNew = %s ORDER BY IdColector ASC",
+		$query = sprintf("SELECT IdColector,State,FechaIn,FechaOut,Version,Subversion FROM RelNewsColector WHERE IdNew = %s ORDER BY IdColector ASC",
 				$dbObj->sqlEscapeString($idNews));
 		$dbObj->Query($query);
 		$result = array();
 
-	    while (!$dbObj->EOF) {
+	    	while (!$dbObj->EOF) {
 			$result[] = array( 'IdColector' => $dbObj->GetValue('IdColector'), 
 					'State' => $dbObj->GetValue('State'),
 					'FechaIn' => $dbObj->GetValue('FechaIn'),
@@ -103,7 +103,7 @@ class RelNewsColector extends RelNewsColector_ORM  {
 					'Version' => $dbObj->GetValue('Version'),
 					'Subversion' => $dbObj->GetValue('SubVersion'));
 			$dbObj->Next();		
-	    }
+	    	}
 	
 		return $result;
 	}
@@ -196,18 +196,17 @@ class RelNewsColector extends RelNewsColector_ORM  {
 
 	function getAddedNews($idColector){
 		$dbObj = new DB();
-	    $query = sprintf("SELECT * FROM RelNewsColector WHERE IdColector = %s",
-	    		$dbObj->sqlEscapeString($idColector));
-	    $dbObj->Query($query);
+		$query = sprintf("SELECT IdNew,State,FechaIn,FechaOut,Version,Subversion FROM RelNewsColector WHERE IdColector = %s",$dbObj->sqlEscapeString($idColector));
+	    	$dbObj->Query($query);
 	    
-	    $result = array();
+	    	$result = array();
 
 		if (!($dbObj->numRows > 0)) {			
 			XMD_Log::info("Colector $idColector void");
 			return NULL;
 		}
 
-	    while (!$dbObj->EOF) {
+	    	while (!$dbObj->EOF) {
 			$result[] = array( 'IdNew' => $dbObj->GetValue('IdNew'), 
 					'State' => $dbObj->GetValue('State'),
 					'FechaIn' => $dbObj->GetValue('FechaIn'),
@@ -215,9 +214,9 @@ class RelNewsColector extends RelNewsColector_ORM  {
 					'Version' => $dbObj->GetValue('Version'),
 					'Subversion' => $dbObj->GetValue('SubVersion'));
 			$dbObj->Next();		
-	    }
+	    	}
 	
-	    return $result;
+	    	return $result;
 	}
 	
 	/**
@@ -228,24 +227,23 @@ class RelNewsColector extends RelNewsColector_ORM  {
 
 	function getNewsFromColector($idColector){
 		$dbObj = new DB();
-	    $query = sprintf("SELECT * FROM RelNewsColector WHERE IdColector = %s",
-	    		$dbObj->sqlEscapeString($idColector));
-	    XMD_Log::info($query);
-	    $dbObj->Query($query);
+		$query = sprintf("SELECT IdNew FROM RelNewsColector WHERE IdColector = %s",$dbObj->sqlEscapeString($idColector));
+	    	XMD_Log::info($query);
+	    	$dbObj->Query($query);
 	    
-	    $result = array();
+	    	$result = array();
 
 		if (!($dbObj->numRows > 0)) {			
 			XMD_Log::info(sprintf(_("Colector %s void"), $idColector));
 			return NULL;
 		}
 
-	    while (!$dbObj->EOF) {
+	    	while (!$dbObj->EOF) {
 			$result[] = $dbObj->GetValue('IdNew');
 			$dbObj->Next();		
-	    }
+	    	}
 	
-	    return $result;
+	    	return $result;
 	}
 	
 	/**

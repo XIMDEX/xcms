@@ -77,8 +77,7 @@ class XimNewsAreas extends XimNewsAreas_ORM {
 		}
 		
 		$dbConn = new DB();
-		$query = sprintf("SELECT * FROM XimNewsAreas WHERE Name = %s", 
-				$dbConn->sqlEscapeString($name));
+		$query = sprintf("SELECT IdArea FROM XimNewsAreas WHERE Name = %s", $dbConn->sqlEscapeString($name));
 		$dbConn->Query($query);
 		if ($dbConn->numRows > 0) {
 			$this->messages->add(sprintf(_('A category with name %s already exists'), $name), MSG_TYPE_ERROR);
@@ -102,7 +101,7 @@ class XimNewsAreas extends XimNewsAreas_ORM {
 
 	function GetAllAreas() {
 		$dbConn = new DB();
-		$query = "SELECT * FROM XimNewsAreas ORDER BY Name, Description ASC";
+		$query = "SELECT IdArea,Name,Description FROM XimNewsAreas ORDER BY Name, Description ASC";
 		
 		$dbConn->Query($query);
 		if(!($dbConn->numRows > 0)) {

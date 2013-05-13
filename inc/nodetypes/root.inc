@@ -316,7 +316,7 @@ class Root extends xObject {
 
 	function getAll() {
 
-		$query = sprintf("SELECT * FROM Nodes WHERE IdNodeType = %d", $this->parent->get('IdNodeType'));
+		$query = sprintf("SELECT IdNode,Name FROM Nodes WHERE IdNodeType = %d", $this->parent->get('IdNodeType'));
 		$this->dbObj->query($query);
 		$return = NULL;
 		while(!$this->dbObj->EOF) {

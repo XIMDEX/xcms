@@ -317,25 +317,21 @@ class ServerFrame extends ServerFrames_ORM {
 			$channel = new Channel($channelId);
 
 			if (!$isOTF || (!$isServerOTF && $isHybrid)) {
-				$content = $pipeMng->getCacheFromProcessAsContent($idVersion, 'StrDocFromDexTToFinal',
-						$data);
+				$content = $pipeMng->getCacheFromProcessAsContent($idVersion, 'StrDocFromDexTToFinal',$data);
 
 				$nodoTypeContent = $nodo->nodeType->get('Name');
 
 				//only encoding the content if the node is not one of this 3.
-
-
 				if (!(($nodoTypeContent == 'XimNewsImageFile') || ($nodoTypeContent == 'ImageFile') ||
 						 ($nodoTypeContent == 'BinaryFile'))) {
 
-							//Looking for idEncode for this server
-							$db = new DB();
-					$sql = "SELECT * FROM Servers WHERE IdServer=" . $server;
+					//Looking for idEncode for this server
+					$db = new DB();
+					$sql = "SELECT idEncode FROM Servers WHERE IdServer=" . $server;
 					$db->Query($sql);
 					$encodingServer = $db->GetValue("idEncode");
 
-					XMD_Log::info(
-							"Codificando contenido a " . $encodingServer . 'con server=' . $server);
+					XMD_Log::info("Codificando contenido a " . $encodingServer . 'con server=' . $server);
 					$content = XmlBase::recodeSrc($content, $encodingServer);
 				}
 
@@ -641,6 +637,37 @@ class ServerFrame extends ServerFrames_ORM {
 
 		return ($dbObj->EOF) ? NULL : $dbObj->GetValue("IdSync");
 	}
+
+
+
+	 /*
+        Return complete server list, not only the server the last server
+        */
+
+        function getCompleteServerList($nodeId, $channelID=null){
+
+                $extraCondition = "";
+                if ($channelID != null){
+                        $extraCondition = " AND cf.channelid=$channelID";
+                }
+                $sql = " SELECT distinct IdServer From ServerFrames sf 
+inner join ChannelFrames cf on sf.idChannelFrame=cf.idChannelFrame
+where cf.nodeid=$nodeId ";
+
+                $sql .= $extraCondition;
+
+                $dbObj = new DB();
+                $dbObj->Query($sql);
+                $list = array();
+                while (!$dbObj->EOF) {
+                        $list[] = $dbObj->GetValue("IdServer");
+                        $dbObj->Next();
+                }
+
+                return $list;
+        }
+
+
 
 	/**
 	*  Gets the fields RemotePath and FileName from ServerFrames which matching the values of Server, NodeFrame and Channel.

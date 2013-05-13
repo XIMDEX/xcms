@@ -60,7 +60,7 @@ class RelNewsArea extends RelNewsArea_ORM {
 			$whereString = implode(' AND ', $wheres);
 		}
 		
-		$query = sprintf("SELECT * FROM RelNewsArea WHERE %s", $whereString);
+		$query = sprintf("SELECT IdRel FROM RelNewsArea WHERE %s", $whereString);
 		$dbConn->Query($query);
 		
 		return ($dbConn->numRows > 0) ? true : false;

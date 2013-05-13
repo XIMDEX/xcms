@@ -479,7 +479,7 @@ class ServerNode extends FolderNode
 
 	function GetAllAvailableProtocols()
 	{
-		$sql = "SELECT * FROM Protocols";
+		$sql = "SELECT IdProtocol FROM Protocols";
 		$this->dbObj->Query($sql);
 
 		$list = array();

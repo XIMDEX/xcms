@@ -293,7 +293,7 @@ class Action_console_wrapper extends ActionAbstract {
 	public function file_import() {
 
         $db = new DB();
-        $query = "SELECT * FROM XimIOExportations";
+        $query = "SELECT timeStamp FROM XimIOExportations";
         $db->query($query);
         $exportations = array();
         while (!$db->EOF) {

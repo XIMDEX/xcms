@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8282 $
+ *  @version $Revision: 8545 $
  */
 
 
@@ -58,7 +58,7 @@ XimDocument = function(editorConfig) {
 	this._schemaValidatorIsActive = null;
 	this._editorConfig = editorConfig;
 	this.editor = null;
-	this._errors=[]; 
+	this._errors=[];
 	this.ELEMENT_NOT_FOUND_MESSAGE = _("Elements not found in Relax-ng schema: ");
 
 	/**
@@ -153,7 +153,7 @@ XimDocument = function(editorConfig) {
 		this._nodeId = null;
 		this._lastUID = [];
 		this._rootNode = null;
-		this._errors = []; 
+		this._errors = [];
 
 		/*
 		var grammar = this._findGrammarElement(this._xmldoc);
@@ -174,26 +174,27 @@ XimDocument = function(editorConfig) {
 			nodeid = nodeid.split('.');
 			this._nodeId = nodeid[0];
 			this._rootNode = this._parseNode(docxap, null);
-
 			this._showErrors();
+
 		}
 	};
 
-	/** 
- 	        * Method which alert the errors found after parse the document  
- 	        * @private   
- 		* Create at 2012-11-20  
- 	**/ 
- 	this._showErrors = function(){ 
-	        var result=""; 
- 	        if (this._errors.length){ 
- 		        result +=this.ELEMENT_NOT_FOUND_MESSAGE; 
- 			for (var i = 0; i < this._errors.length; i++){ 
-	                        result +="<br/>- "+this._errors[i]; 
- 	                } 
- 	                this.editor.alert(result); 
- 	        } 
- 	};
+	
+	/**
+ 	 * Method which alert the errors found after parse the document 
+	 * @private  
+	 * Create at 2012-11-20 
+	 **/
+	this._showErrors = function(){
+		var result="";
+		if (this._errors.length){
+			result +=this.ELEMENT_NOT_FOUND_MESSAGE;
+			for (var i = 0; i < this._errors.length; i++){
+				result +="<br/>- "+this._errors[i];
+			}
+			this.editor.alert(result);
+		}
+	}
 
 	/**
 	 * Function which finds the root node to start to parse from it.
@@ -226,10 +227,10 @@ XimDocument = function(editorConfig) {
 		var parentUID = parent ? parent['uid'] : null;
 		var ximElement = this.importXmlElement(node);
 		ximElement = this.appendChild(ximElement, parent);
-		if (!ximElement){ 
- 	                this._errors.push(node.tagName); 
-	                return false; 
-                } 
+		if (!ximElement){
+			this._errors.push(node.tagName);
+			return false;
+		}
 		ximElement.isRoot = parent ? false : true;
 
 		var it = new DOMNodeIterator(node, 1);
@@ -312,13 +313,16 @@ XimDocument = function(editorConfig) {
 		var value = [];
 		var isFirstNode=true;
 		var findApplyElement = false;
+		var previousChild = false;
 		while (it.hasNext()) {
                         var child = it.next();
+			//nodetype==1 => is a tag
                         if (child.nodeType==1 && isFirstNode && child.getAttribute("uid")){
                                 findApplyElement = true;
                         }
 
-                        if (child.nodeType == 3) {
+			//nodetype==3 => is text
+                        if (child.nodeType == 3 || (previousChild.nodeType && previousChild.nodeType == 1)) {
                                 if (findApplyElement){
                                         value.push("");
                                         findApplyElement = false;
@@ -340,6 +344,8 @@ XimDocument = function(editorConfig) {
                         if (child.nodeType == 1 && editable.toLowerCase() != 'no') {
                                 value = value.concat(this._getNodeArrayValue(child));
                         }
+
+			previousChild = child;
                 }
 		// Correcting bug with apply elements when they are at the start of the string
 		/*if (domnode.childNodes[0] && domnode.childNodes[0].nodeType != 3) {
@@ -803,7 +809,7 @@ XimDocument = function(editorConfig) {
 			node.setAttribute('__ximlink_name__', element.ximLink.name);
 			node.setAttribute('__ximlink_url__', element.ximLink.url);
 			node.setAttribute('__ximlink_text__', element.ximLink.text);
-			node.setAttribute('__ximlink_folder__', element.ximLink.folder); 
+			node.setAttribute('__ximlink_folder__', element.ximLink.folder);
 
 //			console.log(node);
 		}

@@ -26,29 +26,20 @@
 
 var NavBarTool = Object.xo_create(XimdocTool,{
 
-	
-
 	initialize: function(editor){
-		
 	},
 	
 	updateState: function(options){
-		
 	},
 
 	beforeUpdateContent: function(options) {
-		
 	},
 
 	afterUpdateContent: function(options) {
-
 	},
 
 	beforeTransform: function(xmldoc, xsldoc) {
-
-		
 	},
-	
 
 	saveAttributes: function(values) {
 	}
