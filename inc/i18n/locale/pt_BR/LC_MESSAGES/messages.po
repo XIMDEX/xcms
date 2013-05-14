@@ -23,7 +23,7 @@
 
 msgid ""
 msgstr ""
-"Project-Id-Version: Ximdex 3.3\n"
+"Project-Id-Version: Ximdex 3.4\n"
 "Report-Msgid-Bugs-To: dev@ximdex.org"
 "POT-Creation-Date: 2011-09-29 09:18+0100\n"
 "PO-Revision-Date: 2011-09-29 09:18+0100\n"
@@ -3176,14 +3176,14 @@ msgid "Faster, easier, more powerful"
 msgstr "Mais r&aacute;pido, mais f&aacute;cil, mais potente"
 
 #: /actions/welcome/template/Smarty/index.tpl
-msgid "Welcome to new Ximdex 3.3!"
-msgstr "Bem-vindo ao novo Ximdex 3.3!"
+msgid "Welcome to new Ximdex 3.4!"
+msgstr "Bem-vindo ao novo Ximdex 3.4!"
 
 msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
 msgstr "Com a nova vers&atilde;o do gestor de conte&uacute;dos Ximdex voc&ecirc; desfrutar&aacute; um produto muito mais potente, f&aacute;cil e r&aacute;pido que as suas vers&otilde;es anteriores. Voc&ecirc; poder&aacute; gerenciar teus documentos de uma maneira f&aacute;cil e eficaz."
 
-msgid "Start to use new Ximdex 3.3 and discover its advantages."
-msgstr "Comece a usar o novo Ximdex 3.3 e descubra as vantagens que ele oferece."
+msgid "Start to use new Ximdex 3.4 and discover its advantages."
+msgstr "Comece a usar o novo Ximdex 3.4 e descubra as vantagens que ele oferece."
 
 msgid "Faster"
 msgstr "Mais r&aacute;pido"

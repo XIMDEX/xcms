@@ -23,7 +23,7 @@
 
 msgid ""
 msgstr ""
-"Project-Id-Version: Ximdex 3.3\n"
+"Project-Id-Version: Ximdex 3.4\n"
 "Report-Msgid-Bugs-To: dev@ximdex.org"
 "POT-Creation-Date: 2011-09-29 09:18+0100\n"
 "PO-Revision-Date: 2011-09-29 09:18+0100\n"
@@ -65,7 +65,7 @@ msgid "New file"
 msgstr "Archivo nuevo"
 
 msgid "Add empty file"
-msgstr "A&ntilde;adir nuevo archivo"
+msgstr "A&ntilde;adir archivo nuevo"
 
 msgid "Create a new empty file"
 msgstr "Crea un nuevo archivo vac&iacute;o"
@@ -105,6 +105,10 @@ msgstr "Acci&oacute;n"
 #: /actions/xmleditor2/js/rng/RngDocument.class.js
 msgid "Method"
 msgstr "M&eacute;todo"
+
+#: /actions/filepreview/resources/js/showAll.js
+msgid "Dimensions"
+msgstr "Dimensiones"
 
 #: /actions/actionsstats/template/Smarty/index.tpl
 msgid "Percent"
@@ -1642,6 +1646,9 @@ msgstr "Se han intentado llamar al m&eacute;todo inexistente para este nodo: $no
 
 msgid "Editing file"
 msgstr "Editando archivo"
+
+msgid "Clear"
+msgstr "Borrar todo"
 
 #: /actions/edittext/template/Smarty/index.tlp
 msgid "Save and publish"
@@ -3246,14 +3253,14 @@ msgid "Faster, easier, more powerful"
 msgstr "M&aacute;s r&aacute;pido, m&aacute;s sencillo, m&aacute;s potente"
 
 #: /actions/welcome/template/Smarty/index.tpl
-msgid "Welcome to new Ximdex 3.3!"
-msgstr "&iexcl;Bienvenido al nuevo Ximdex 3.3!"
+msgid "Welcome to new Ximdex 3.4!"
+msgstr "&iexcl;Bienvenido al nuevo Ximdex 3.4!"
 
 msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
 msgstr "Con la nueva versi&oacute;n del gestor de contenidos Ximdex disfrutar&aacute;s de un producto mucho m&aacute;s potente, r&aacute;pido y sencillo que en versiones anteriores. Podr&aacute;s gestionar tus documentos de forma sencilla y usable."
 
-msgid "Start to use new Ximdex 3.3 and discover its advantages."
-msgstr "Comienza a usar el nuevo Ximdex 3.3 y descubre las ventajas que ofrece."
+msgid "Start to use new Ximdex 3.4 and discover its advantages."
+msgstr "Comienza a usar el nuevo Ximdex 3.4 y descubre las ventajas que ofrece."
 
 msgid "Faster"
 msgstr "M&aacute;s r&aacute;pido"

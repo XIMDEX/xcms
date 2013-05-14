@@ -74,8 +74,7 @@
 		},
 
 		addTab: function(c) {
-			/* Added if else flow, and id to the anchors of tabs in the form IdNode_actionCommand in order to not open a new tab
-			for the same action*/
+			/* Added if else flow, and id to the anchors of tabs in the form IdNode_actionCommand in order to not open a new tab for the same action*/
 			var theTabId = c.nodes ? c.nodes.join("-")+"_"+c.action.command : "";
 			var theNodes = c.nodes ? c.nodes.join("-") : "";
 			if(theNodes != "" && theTabId != "" && $("#"+theTabId).length) {
@@ -275,48 +274,12 @@
 
 			$("#ximdex-splash .progress").width("50%");
 			this.openAction({
-                                                label: _("Welcome to new Ximdex 3.3!"),
-                                                name:  _("Welcome to new Ximdex 3.3!"),
+                                                label: _("Welcome to new Ximdex 3.4!"),
+                                                name:  _("Welcome to new Ximdex 3.4!"),
                                                 command: 'welcome',
                                                 params: '',
                                                 bulk: '0'
                                         }, 10000);
-
-
-
-//			if (load_welcome ) {
-//
-//				$.getJSON(
-//                                X.restUrl + '?method=getDefaultNode&ajax=json',
-//                                function(data) {
-//					var node_list = data["nodes"];
-//
-//					this.openAction({
-//                                                label: _("Welcome to new Ximdex 3.2!"),
-//                                                name:  _("Welcome to new Ximdex 3.2!"),
-//                                                command: 'welcome',
-//                                                params: '',
-//                                                bulk: '0'
-//                                        }, 10000);
-//
-//					if (node_list && node_list.length && node_list[0]["IdNode"]){
-//						this.openAction({
-//                	                        	label: _("Edit XML document"),
-//	                                	        name: _("Edit XML document"),
-//        	                	                command:'xmleditor2',
-//                	                        	params:'',
-//	                        	                bulk:'0'
-//	                                	},data["nodes"][0]["IdNode"]);
-//					}
-//
-//
-//                                }.bind(this)
-//
-//                            );
-//
-//
-//
-//			}
 		},
 
 		onTabDummyAction: function(event, params) {

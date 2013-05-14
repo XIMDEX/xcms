@@ -323,7 +323,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6369, 5042, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6370, 5043, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6372, 5047, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6373, 5051, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6374, 5053, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6375, 5054, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6376, 5055, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
@@ -511,7 +510,7 @@ INSERT INTO `Config` VALUES (19,'MaxSubVersionsAllowed','4');
 INSERT INTO `Config` VALUES (21,'PurgeVersionsOnNewVersion','0');
 INSERT INTO `Config` VALUES (22,'MaxVersionsAllowed','3');
 INSERT INTO `Config` VALUES (23,'ximid','-');
-INSERT INTO `Config` VALUES (24,'VersionName','Ximdex 3.3');
+INSERT INTO `Config` VALUES (24,'VersionName','Ximdex 3.4');
 INSERT INTO `Config` VALUES (25,'UTFLevel','0');
 INSERT INTO `Config` VALUES (26,'EmptyHrefCode','/404.html');
 INSERT INTO `Config` VALUES (27, 'defaultPVD', NULL);
@@ -1197,8 +1196,6 @@ INSERT INTO `Nodes` VALUES (5047,6,5007,'TemplateImages',NULL,NULL,NULL,NULL,NUL
 INSERT INTO `Nodes` VALUES (5048,6,5007,'LinkFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5049,6,5007,'Link',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5050,6,5007,'LinkManager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (5051,6,5007,'XmlNewsFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (5052,6,5007,'XmlNews',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5053,6,5007,'TemplateViewFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5054,6,5007,'XimletRootFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5055,6,5007,'XimletFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -1418,7 +1415,6 @@ INSERT INTO `Nodes` VALUES (6368,5027,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DE
 INSERT INTO `Nodes` VALUES (6369,5042,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6370,5043,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6372,5047,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6373,5051,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6374,5053,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6375,5054,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6376,5055,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -3221,8 +3217,6 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (47, 5047, 'httpd/unix-directory', '', 
 INSERT INTO `RelNodeTypeMimeType` VALUES (48, 5048, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (49, 5049, 'text/plain', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (50, 5050, 'httpd/unix-directory', '', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (51, 5051, 'httpd/unix-directory', '', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (52, 5052, 'text/plain', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (53, 5053, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (54, 5054, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (55, 5055, 'httpd/unix-directory', '', '');
