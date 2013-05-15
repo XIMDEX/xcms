@@ -132,7 +132,8 @@ ui-tabs .ui-tabs-nav li:hover{
 	height: 22px;
 	width: 250%;
 }
-.hbox-panel-container-0 .ui-tabs-nav>li.ui-tabs-active>a:hover span{	
+.hbox-panel-container-0 .ui-tabs-nav>li.ui-tabs-selected>a:hover span{	
+/*.hbox-panel-container-0 .ui-tabs-nav>li.ui-tabs-active>a:hover span{	*/
 	margin-top: 41px;
 }
 a.browser-projects-view {
@@ -383,4 +384,15 @@ li.xim-tabs-list-item-selected {
 li.xim-tabs-list-item-selected:hover{
 	background:	#eee url('../../../../../images/tree/treeview-icons.png') no-repeat -2px -485px;
 	color: #333;
+}
+
+.ui-tabs .ui-tabs-nav li a.unsave{ 
+        +padding: 0.5em 13em 0.5em 1em; 
+        position: relative; 
+ 
+} 
+ 
+.ui-tabs .ui-tabs-nav li a.unsave:after{ 
+        content: '*'; 
+        padding-left: 3px; 
 }

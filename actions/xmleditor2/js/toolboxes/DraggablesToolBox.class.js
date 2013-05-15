@@ -20,12 +20,8 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8535 $
+ *  @version $Revision: 8541 $
  */
-
-
-
-
 
 
 /**
@@ -41,11 +37,11 @@ function DraggablesToolBox() {
 	this.lastDragParent =  { uid: null, time: null};
 
 	this.initialize = function(tool, editor) {
-    	this.tool = tool;
-        this.editor = editor;
-        this._body = editor.getBody();
+    		this.tool = tool;
+        	this.editor = editor;
+        	this._body = editor.getBody();
 		this.afterUpdateContent(null);
-        this.editor.logMessage(_('DraggablesToolBox tool initialized'));
+        	this.editor.logMessage(_('DraggablesToolBox tool initialized'));
 	};
 
 	this._elementIsallowed = function(element) {
@@ -61,7 +57,7 @@ function DraggablesToolBox() {
 	 * Doing the highlight on the selected element
 	 */
 	this.updateState = function(options) {
-		if (!options.selNode || (options.event && !['click', 'keyup'].contains(options.event.type)))
+		if (!options.selNode || (options.event && !['click', 'keyup','mouseenter'].contains(options.event.type)))
 			return;
 		this.onMouseOver(options);
 		this.onMouseOver({selNode: this.editor.getParentWithUID(options.selNode)}, true);
@@ -74,13 +70,12 @@ function DraggablesToolBox() {
 
 		var description = options.selNode.ximElement.schemaNode.description;
 		var uid = options.selNode.getAttribute('uid');
-		var pos = $(options.selNode).offset("body.xedit-rngelement");
-		var top = pos.top;
+		var pos = $(options.selNode).offset();
+		var top = pos.top - $(handler).height();
 		$(handler).text(description);
 		var left = pos.left - $(handler).width();
 		top = (top >= 0) ? top : 0;
 		left = (left >= 0) ? left : 0;
-
 
 		if(uid != this.lastDrag.uid && uid != this.lastDragParent.uid) {
 			if(is_parent) {
@@ -118,7 +113,7 @@ function DraggablesToolBox() {
 			this.lastDrag.uid = uid;
 			this.lastDrag.time = setTimeout(function() {
 				this.hide();
-			}.bind(handler), 3*1000 /* 3 secons */ );
+			}.bind(handler), 3*1000 /* 3 seconds */ );
 		}
 
 

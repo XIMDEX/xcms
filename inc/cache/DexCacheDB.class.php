@@ -80,7 +80,7 @@ class DexCacheDB {
 	function read($key, $value) {
 
 		$db = new DB();
-		$sql = "SELECT * FROM DexCache WHERE $key=$value";
+		$sql = "SELECT id,idNode,idSync,idVersion FROM DexCache WHERE $key=$value";
 
 		$db->Query($sql);
 

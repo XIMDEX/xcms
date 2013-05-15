@@ -20,10 +20,8 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8170 $
+ *  @version $Revision: 8541 $
  */
-
-
 
 
 function HoverTool() {
@@ -32,58 +30,61 @@ function HoverTool() {
 	this._body = null;
 	this._dispatchEvents = false;
 
-    this.initialize = function(editor) {
-        this.editor = editor;
-        this.toolboxes = {};
-        this._body = editor.getBody();
+    	this.initialize = function(editor) {
+        	this.editor = editor;
+        	this.toolboxes = {};
+        	this._body = editor.getBody();
 		this.afterUpdateContent(null);
-    };
+	};
 
-    this.beforeUpdateContent = function(options) {
-    	this._dispatchEvents = false;
+    	this.beforeUpdateContent = function(options) {
+    		this._dispatchEvents = false;
 		this.editor.elements.unbind('hover');
 		for (id in this.toolboxes) {
 			if (this.toolboxes[id]['beforeUpdateContent']) this.toolboxes[id].beforeUpdateContent(options);
 		};
-    };
+    	};
 
-    this.afterUpdateContent = function(options) {
+    	this.afterUpdateContent = function(options) {
 
-    	// Important!
-    	this._body = this.editor.getBody();
+    		// Important!
+    		this._body = this.editor.getBody();
 
-    	this.editor.elements = $('[uid]', this._body);
-        this.editor.elements.each(function(index, elem) {
-        	$(elem).hover(
-	        	function(e) {
-		        	var target = e.currentTarget || e.target;
+    		this.editor.elements = $('[uid]', this._body);
+        	this.editor.elements.each(function(index, elem) {
+        		$(elem).hover(
+	        		function(e) {
+		        		var target = e.currentTarget || e.target;
 					this.updateState({caller: this, selNode: target, event: e});
-	        	}.bind(this),
-	        	function(e) {
-		        	var target = e.currentTarget || e.target;
+	        		}.bind(this),
+	        		function(e) {
+		        		var target = e.currentTarget || e.target;
 					this.updateState({caller: this, selNode: target, event: e});
-	        	}.bind(this)
+	        		}.bind(this)
 			);
-	    }.bind(this));
+	    	}.bind(this));
+		
 		for (id in this.toolboxes) {
 			if (this.toolboxes[id]['afterUpdateContent']) this.toolboxes[id].afterUpdateContent(options);
 		};
 		this._dispatchEvents = true;
-    };
+    	};
 
-    this.updateState = function(options) {
+    	this.updateState = function(options) {
 
-    	// NOTE: jQuery uses 'mouseenter' and 'mouseleave' ... ???
+    		// NOTE: jQuery uses 'mouseenter' and 'mouseleave' ... ???
 		if (!this._dispatchEvents || !options.selNode)
 			return;
 		if(options.event && 
-			!['mouseover', 'mouseenter', 'mouseout', 'mouseleave', 'click', 'keyup'].contains(options.event.type))
+			//!['mouseover', 'mouseenter', 'mouseout', 'mouseleave', 'click', 'keyup'].contains(options.event.type))
+			!['mouseover', 'mouseout', 'click', 'keyup'].contains(options.event.type))
 			return;
 
 		// NOTE: event will be the jQuery event object at this point.
 		// Registered object can obtain the original event object using event.originalEvent
-		for (id in this.toolboxes) {
-			var toolbox = this.toolboxes[id];
+		var ids=["draggabletoolbox","highlighttoolbox"];
+		for (var i=0;i<ids.length;i++) {
+			var toolbox = this.toolboxes[ids[i]];
 			try {
 				if (toolbox['updateState']) {
 					toolbox.updateState(options);
@@ -92,7 +93,7 @@ function HoverTool() {
 				this.editor.logMessage(_('Exception while processing updateState on ${id}: ${msg}', {'id': id, 'msg': e.message}), 2);
 			}
 		};
-    };
+    	};
 };
 
 HoverTool.prototype = new XimdocTool();

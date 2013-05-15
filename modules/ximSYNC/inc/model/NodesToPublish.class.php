@@ -88,7 +88,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
-		$sql_nodes ="select * from NodesToPublish where DateUp = ".$dateUp." and State = 1";
+		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId from NodesToPublish where DateUp = ".$dateUp." and State = 1";
 		$db->Query($sql_nodes);
 
 		$force = true;

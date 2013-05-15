@@ -322,7 +322,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 	}
 
 	private function getLastVersion($idNode){
-		$sql = "select * from Versions where IdNode = $idNode order by Version desc limit 1;";
+		$sql = "select IdVersion from Versions where IdNode = $idNode order by Version desc limit 1;";
 
 		$dbObj = new DB();
 		$dbObj->Query($sql);

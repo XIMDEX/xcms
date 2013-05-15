@@ -615,7 +615,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$ximNewsColector->set('State', 'generated');
 		$ximNewsColector->update();
 
-		$query = "SELECT * FROM RelBulletinXimlet WHERE source in (" . implode(', ', $bulletinsGenerated) . ")";
+		$query = "SELECT source,target FROM RelBulletinXimlet WHERE source in (" . implode(', ', $bulletinsGenerated) . ")";
 		$db = new DB();
 		$db->query($query);
 		$idBul = $db->getValue('source');
@@ -625,7 +625,6 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$idXimlet = $db->getValue("target");
 		$ximletNode = new Node($idXimlet);
 		$ximletNode->SetContent($content);
-
 
 		return $bulletinsGenerated;
 	}

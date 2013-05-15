@@ -199,7 +199,7 @@ class Action_modifyserver extends ActionAbstract {
 			}else {
 
 				$dbObj = new DB();
-				$sql = "SELECT * FROM Protocols WHERE IdProtocol='".$protocol."'";
+				$sql = "SELECT IdProtocol FROM Protocols WHERE IdProtocol='".$protocol."'";
 				$dbObj->Query($sql);
 				if($dbObj->numRows) {
 
@@ -320,7 +320,7 @@ class Action_modifyserver extends ActionAbstract {
 
 	private function _getEncodes() {
 		$dbObj = new DB();
-		$sql = "SELECT * FROM Encodes";
+		$sql = "SELECT IdEncode,Description FROM Encodes";
 		$dbObj->Query($sql);
 		$_protocols = array();
 		while(!$dbObj->EOF) {
@@ -336,7 +336,7 @@ class Action_modifyserver extends ActionAbstract {
 
 	private function _getProtocols() {
 		$dbObj = new DB();
-		$sql = "SELECT * FROM Protocols";
+		$sql = "SELECT IdProtocol,Description FROM Protocols";
 		$dbObj->Query($sql);
 		$_protocols = array();
 		while(!$dbObj->EOF) {

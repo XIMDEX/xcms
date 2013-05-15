@@ -164,6 +164,16 @@ function XimdocTool() {
 		var selNode = this.editor.selNode;
 		var selection = this.editor.getSelection();
 
+
+		if (!selNode){
+         	       var arraySelNode = this.editor.ximElement.getHtmlElements();
+                	for(var i=0; i< arraySelNode.length;i++){
+                        	if (arraySelNode[i].className.indexOf("-selected") > -1){
+                                	selNode = arraySelNode[i];
+	                        }
+        	        }
+        	}	
+
 		// temporal asignement
 		var startPos = selection.startOffset();
 		var endPos = startPos + selection.getContentLength();
