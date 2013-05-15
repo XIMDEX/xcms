@@ -132,7 +132,7 @@ function setPath
 	  fi
 	fi
 
-	if [ -n "$XIMDEX_PARAMS_PATH " ] && [ -d "$XIMDEX_PARAMS_PATH" ] && [ -f "$XIMDEX_PARAMS_PATH/README" ]
+	if [ -n "$XIMDEX_PARAMS_PATH " ] && [ -d "$XIMDEX_PARAMS_PATH" ] && [ -f "$XIMDEX_PARAMS_PATH/README.md" ]
 	then
 		assign "XIMDEX_PATH"  $XIMDEX_PARAMS_PATH
 		sql "UPDATE Config SET ConfigValue='$XIMDEX_PARAMS_PATH' WHERE ConfigKEY='AppRoot';";
