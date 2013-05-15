@@ -195,7 +195,7 @@ apache_cmd=$(which $web_server)
 running=$(ps aux|grep $apache_cmd|grep -v grep)
 if [ $? -ne 0 ] || [ -z "$running" ];
 then
-   echo " Fail (start you apache server, please)"
+   echo " Fail! You should start your Apache server in order to continue with the installation process."
 	exit 1;
 else
 	echo " OK "

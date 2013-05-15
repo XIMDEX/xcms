@@ -81,7 +81,6 @@
                         if ($li.hasClass('viewing'))
                             // Don't do anything whether the image is being displayed
                         return;
-                            //console.log($(this));
                         /* Get the last element in the "row" that is not of "opened" class.
                          (row is virtual because all elements are displayed in a floating way,
                          allowing responsive design).
@@ -151,7 +150,7 @@
 
                         // If there is a .opened element for this "row", reuse it
                         if ($next.length === 1 && $next.hasClass("opened")) {
-                            $next.html($newElement.html());
+                            $next.empty().append($newElement);
                             $newElement = $next;
                         }
 
