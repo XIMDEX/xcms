@@ -264,25 +264,17 @@ class Module_ximLOADER extends Module {
 
 		$this->log(Module::SUCCESS, "Project creation O.K.");
 
-
 		// TODO: ximlink
 		$links = $this->project->getXimlink();
 		$this->templates = $this->insertFiles($this->project->projectid, 'ximlink', $links);
-
-		// PVDs
-		$pvds = $this->project->getPVD('PVD');
-		$this->templates = $this->insertFiles($this->project->projectid, 'ximpvd', $pvds);
 
 		// RNGs
 		$pvds = $this->project->getPVD('RNG');
 		$this->templates = $this->insertFiles($this->project->projectid, 'ximpvd', $pvds);
 
-		// PTDs
-		$ptds = $this->project->getPTD('PTD');
-		$ret = $this->insertFiles($this->project->projectid, 'ximptd', $ptds);
-
 		// Update XSL
 		$xsls = $this->project->getPTD('XSL');
+		$this->insertFiles($this->project->projectid, 'ximptd', $xsls); 
 		$ret = $this->updateXsl($this->project->projectid, $xsls);
 
 		// Servers
@@ -290,7 +282,6 @@ class Module_ximLOADER extends Module {
 		foreach ($servers as $server) {
 			$this->insertServer($server);
 		}
-
 
 		return $projectId;
 	}
@@ -377,12 +368,9 @@ class Module_ximLOADER extends Module {
 		$img = $server->getImages();
 		$ret = $this->insertFiles($server->serverid, 'images', $img);
 
-		// PTDs
-		$ptds = $server->getPTD('PTD');
-		$ret = $this->insertFiles($server->serverid, 'ximptd', $ptds);
-
 		// Update XSL
 		$xsls = $server->getPTD('XSL');
+		$ret = $this->insertFiles($server->serverid, 'ximptd', $xsls); 
 		$ret = $this->updateXsl($server->serverid, $xsls);
 
 		// ximdoc
