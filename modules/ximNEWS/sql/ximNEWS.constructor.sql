@@ -24,10 +24,10 @@
 # */
 
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES
-(5300, 'XimNewsSection', 'sectionnode', 'folder_ximnews.png', 'XimNEWS section', 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 'ximNEWS'),
-(5301, 'XimNewsBulletins', 'foldernode', 'folder_bulletins.png', 'XimNEWS bulletin folder', 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 'ximNEWS'),
-(5304, 'XimNewsNews', 'foldernode', 'folder_news.png', 'XimNEWS news folder', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 'ximNEWS'),
-(5306, 'XimNewsImages', 'foldernode', 'folder_images.png', 'XimNEWS image root folder', 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 'ximNEWS'),
+(5300, 'XimNewsSection', 'sectionnode', 'folder_ximnews.png', 'XimNEWS section', 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, NULL),
+(5301, 'XimNewsBulletins', 'foldernode', 'folder_bulletins.png', 'XimNEWS bulletin folder', 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, NULL),
+(5304, 'XimNewsNews', 'foldernode', 'folder_news.png', 'XimNEWS news folder', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, NULL),
+(5306, 'XimNewsImages', 'foldernode', 'folder_images.png', 'XimNEWS image root folder', 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, NULL),
 (5303, 'XimNewsBulletin', 'xmlcontainernode', 'contenedordoc.png', 'XimNEWS bulletin', 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 'ximNEWS'),
 (5305, 'XimNewsNew', 'xmlcontainernode', 'contenedordoc.png', 'XimNEWS news', 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 'ximNEWS'),
 (5308, 'XimNewsBulletinLanguage', 'ximnewsbulletinnodetype', 'doc.png', 'XimNEWS bulletin in a concrete language', 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 'ximNEWS'),
@@ -38,7 +38,7 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 (5311, 'XimNewsBulletinXimlet', 'xmlcontainernode', 'contenedordoc.png', 'Bulletin as ximlet container in ximNEWS', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 'ximNEWS'),
 (5313, 'XimNewsBulletinLanguageXimletContainer', 'xmlcontainernode', 'contenedordoc.png', 'Index bulletin container', 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 'ximNEWS'),
 (5312, 'XimNewsBulletinLanguageXimlet', 'xmldocumentnode', 'doc.png', 'Bulletin as ximlet in ximNEWS', 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 'ximNEWS'),
-(5320, 'XimNewsDateSection', 'foldernode', 'folder_section_news.png', 'XimNEWS resource forlder', 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 'ximNEWS');
+(5320, 'XimNewsDateSection', 'foldernode', 'folder_section_news.png', 'XimNEWS resource forlder', 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, NULL);
 
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6700,5300,'Delete ximNEWS section','deletenode','delete_section_ximnews.png','Delete a whole ximNEWS section',90,'',1);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6701,5300,'Change name','renamenode','change_name_section_ximnews.png','Change a ximNEWS section name',91,'',0);
