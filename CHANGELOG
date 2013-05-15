@@ -1,6 +1,49 @@
 
-					Ximdex - CHANGELOG
+				Ximdex (Free & Semantic CMS for XML) - CHANGELOG	
 				------------------------------------------------
+
+Version 3.4
+-----------------
+-> 15th-05-2013 Ximdex Development Team <dev@ximdex.org>
+  * General:
+    * Smarty libraries updated (v.3.1.12).
+    * Changes in order to support PHP 5.4.
+    * jQuery (v.1.8.2) and jQuery UI (v.1.9.1) libraries updated.
+    * Core's deprecated parts deleted.
+    * Removing unused tables on data model.
+    * Improvements on ximLINKs creation an modification forms.
+    * Caching actions. An unique request to the server when combined action, user and node is the same.
+    * Removing uids on renderized HTML pages.
+    * Avoiding MySQL queries with asterisks on them. We now specify all the fields to return.
+
+  * Xedit:
+    * Group all the error messages in an unique pop-up.
+    * Understand external Stanbol responses and incorporate them into documents. 
+    * New breadcrumbs bar at the top of Xedit. Allowing to perform actions from there.
+
+  * Modules:
+    * Improvements on ximSYNC module: pumpers and servers info retrieval.
+    * First steps to manage modules through Ximdex interface.
+    * ximSYNC and ximIO are now part of the Ximdex's core as components.
+    * Allowing unlink news from a collector (news aggregator).
+    * Adding support to the first image on news in the creation form.
+
+  * Installer:
+    * SQL installer updated.
+
+  * Solved Bugs:
+    * Undo&Redo buttons on Xedit.
+    * Disable button on Log Toolbos in Xedit.
+    * Fix indexes on docxap generation.
+    * Minor errors on FTP connection class.
+    * Resolving iframe nesting in preview action.
+
+  * Interface:
+    * New gallery viewer for images folder.
+    * New context menu widget.
+    * Open only an unique tab per action.
+    * Added number of search results on both spotlight search and advanced search.
+    * CodeMirror (edit text action): allowing clear whole files, visual mark for unsaved changes and fixing PHP files edition.
 
 
 Version 3.3
