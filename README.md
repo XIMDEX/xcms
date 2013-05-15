@@ -9,12 +9,17 @@ Description
   
   Ximdex development is sponsored by Open Ximdex Evolution S.L..
   
+<<<<<<< HEAD
   More info will be available at http://www.ximdex.org
+=======
+  More info will be available at http://ximdex.org
+>>>>>>> ximdex/master
 
 
 Features
 --------
 
+<<<<<<< HEAD
   - Visual editor for XML transformations and integrations.
   - Visual role/User/Workflow edition.
   - visual content editor.
@@ -22,11 +27,23 @@ Features
     of portals and web applications like .NET, PHP, ASP, J2EE, XML/XSLT, flash, XHTML, HTML5, ...
   - Multiple languages, multiple channels (web, mobile, DVB-T...) and multiple application servers.
   - _decoupled publishing_ static generated content.
+=======
+  - Visual editor for XML transformations and integrations
+  - Visual role/User/Workflow edition
+  - visual content editor
+  - Strong neutrality and flexibility allowing to use any application server or language for the deployment 
+    of portals and web applications like .NET, PHP, ASP, J2EE, XML/XSLT, flash, XHTML, HTML5, ...
+  - Multiple languages, multiple channels (web, mobile, DVB-T...) and multiple application servers.
+  - _decoupled publishing_ static generated content
+>>>>>>> ximdex/master
 
 
 Future plans
 ------------
+<<<<<<< HEAD
 
+=======
+>>>>>>> ximdex/master
   To consolidate the OSS release of Ximdex.
 
 Get Involved
@@ -36,7 +53,10 @@ Get Involved
 
 Licensing
 ------------
+<<<<<<< HEAD
 
+=======
+>>>>>>> ximdex/master
 Ximdex has been released under the GNU Affero GPL.v3 license.
 
 See LICENSE or check http://www.gnu.org/licenses/agpl.html for details.
@@ -44,8 +64,12 @@ See LICENSE or check http://www.gnu.org/licenses/agpl.html for details.
  
 Installation
 ------------
+<<<<<<< HEAD
 
 See INSTALLATION file for detailed instructions.
+=======
+See INSTALLATION for detailed instructions.
+>>>>>>> ximdex/master
 
 
 Ximdex Core Requirements 
