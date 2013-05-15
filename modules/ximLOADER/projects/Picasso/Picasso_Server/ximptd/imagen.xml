@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<imagen>
-	<img src="%%%url%%%" height="%%%alto_imagen%%%" width="%%%ancho_imagen%%%" alt="%%%texto%%%" title="%%%texto%%%" class="%%%clase%%%" align="%%%align%%%" usemap="#%%%usemap%%%"/>
-</imagen>
