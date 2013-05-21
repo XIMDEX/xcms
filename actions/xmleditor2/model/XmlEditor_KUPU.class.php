@@ -24,14 +24,11 @@
  *  @version $Revision: 8529 $
  */
 
-
-
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PreviewInServer.class.php');
 ModulesManager::file('/inc/nodetypes/xsltnode.inc');
 ModulesManager::file('/inc/http/Curl.class.php');
-//ModulesManager::file('/inc/rest/REST_Provider.class.php');
 ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'ximRA');
 ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'ximRA');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
@@ -116,12 +113,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 	        $kupuURL = '/extensions/kupu';
 
         	$jsFiles = array(
-//			'http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js',
-			//'/actions/xmleditor2/js/extensions/jquery/js/jquery-1.3.2.min.js',
 			Extensions::JQUERY,
-//			'/actions/xmleditor2/js/extensions/jquery/js/jquery-1.3.2.js',
-//			'/actions/xmleditor2/js/extensions/jquery/js/jquery-ui-1.7.custom.min.js',
-//			'/actions/xmleditor2/js/extensions/jquery/js/jquery-ui-1.7.js',
 			Extensions::JQUERY_UI,
 			Extensions::JQUERY_PATH.'/js/fix.jquery.getters.js',
 			Extensions::JQUERY_PATH.'/js/fix.jquery.parsejson.js',
@@ -155,6 +147,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 	        	$actionURL . '/js/helpers/autoscrolling.js',
         		$actionURL . '/js/helpers/EditorHandlers_Adapter.js',
         		$actionURL . '/js/helpers/DOMNodeIterator.class.js',
+//future                $actionURL . '/js/helpers/colorpicker.js', 
 	        	$actionURL . '/js/helpers/DOMAttrIterator.class.js',
 
 				/* ####### DOM ########## */
@@ -249,9 +242,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/views/common/css/kupustyles.css',
 			$actionURL . '/views/common/css/toolboxes.css',
 			$actionURL . '/views/common/css/treeview.css',
+//future                $actionURL . '/views/common/css/colorpicker.css', 
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
-        	$kupuURL . '/common/kupudrawerstyles.css'
+        		$kupuURL . '/common/kupudrawerstyles.css'
         	);
 
 	        $baseTags = array(
@@ -334,7 +328,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		return $xmldoc;
 	}
 
-    public function validateSchema($idnode, $xmldoc) {
+	public function validateSchema($idnode, $xmldoc) {
 		$schema = $this->getSchemaFile($idnode);
 
 		$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . trim($xmldoc);
@@ -347,66 +341,66 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 						);
 
 		return $response;
-    }
-
-    protected function enrichSchema($schema) {
-    	return XmlEditor_Enricher::enrichSchema($schema);
-    }
-
-    public function verifyTmpFile($idNode) {
-    	$response = array('method' => 'verifyTmpFile');
-    	if(!$idUser = XSession::get('userID')) {
-    		$response['result'] = false;
-    		return $response;
-    	}
-    	$tmpFilePath = Config::getValue('AppRoot') . Config::getValue('TempRoot') . "/xedit_" . $idUser . "_"  . $idNode;
-
-    	if(!file_exists($tmpFilePath) || !$response['tmp_mod_date'] = filectime($tmpFilePath)) {
-    		$response['result'] = false;
-    		return $response;
     	}
 
-    	$dataFactory = new DataFactory($idNode);
-    	$lastVersion = $dataFactory->GetLastVersionId();
-    	if(	is_null($response['doc_mod_date'] = $dataFactory->GetDate($lastVersion)) ||
-    		$response['doc_mod_date'] >= $response['tmp_mod_date']) {
-    		$response['result'] = false;
-    		return $response;
+    	protected function enrichSchema($schema) {
+    		return XmlEditor_Enricher::enrichSchema($schema);
     	}
 
-    	$response['result'] = true;
-    	return $response;
-    }
+    	public function verifyTmpFile($idNode) {
+    		$response = array('method' => 'verifyTmpFile');
+    		if(!$idUser = XSession::get('userID')) {
+    			$response['result'] = false;
+    			return $response;
+    		}
+    		$tmpFilePath = Config::getValue('AppRoot') . Config::getValue('TempRoot') . "/xedit_" . $idUser . "_"  . $idNode;
 
-    public function removeTmpFile($idNode) {
-    	$response = array('method' => 'removeTmpFile');
-    	if(!$idUser = XSession::get('userID')) {
-    		$response['result'] = false;
-    		return $response;
-    	}
-    	$tmpFilePath = Config::getValue('AppRoot') . Config::getValue('TempRoot') . "/xedit_" . $idUser . "_"  . $idNode;
+    		if(!file_exists($tmpFilePath) || !$response['tmp_mod_date'] = filectime($tmpFilePath)) {
+    			$response['result'] = false;
+    			return $response;
+    		}
+	
+    		$dataFactory = new DataFactory($idNode);
+    		$lastVersion = $dataFactory->GetLastVersionId();
+    		if(is_null($response['doc_mod_date'] = $dataFactory->GetDate($lastVersion)) ||
+    			$response['doc_mod_date'] >= $response['tmp_mod_date']) {
+    			$response['result'] = false;
+    			return $response;
+    		}
 
-    	if(file_exists($tmpFilePath) && !FsUtils::delete($tmpFilePath)) {
-    		$response['result'] = false;
-    	} else {
     		$response['result'] = true;
-    	}
-
-    	return $response;
-    }
-
-    public function recoverTmpFile($idNode) {
-    	$response = array('method' => 'recoverTmpFile');
-    	if(!$idUser = XSession::get('userID')) {
-    		$response['result'] = false;
     		return $response;
     	}
-    	$tmpFilePath = Config::getValue('AppRoot') . Config::getValue('TempRoot') . "/xedit_" . $idUser . "_"  . $idNode;
 
-    	if (!$this->setNode($idNode)) {
+    	public function removeTmpFile($idNode) {
+    		$response = array('method' => 'removeTmpFile');
+    		if(!$idUser = XSession::get('userID')) {
+    			$response['result'] = false;
+    			return $response;
+    		}
+    		$tmpFilePath = Config::getValue('AppRoot') . Config::getValue('TempRoot') . "/xedit_" . $idUser . "_"  . $idNode;
+
+    		if(file_exists($tmpFilePath) && !FsUtils::delete($tmpFilePath)) {
+    			$response['result'] = false;
+    		} else {
+    			$response['result'] = true;
+    		}
+	
+    		return $response;
+    	}
+
+    	public function recoverTmpFile($idNode) {
+    		$response = array('method' => 'recoverTmpFile');
+    		if(!$idUser = XSession::get('userID')) {
+    			$response['result'] = false;
+    			return $response;
+    		}
+    		$tmpFilePath = Config::getValue('AppRoot') . Config::getValue('TempRoot') . "/xedit_" . $idUser . "_"  . $idNode;
+
+    		if (!$this->setNode($idNode)) {
 			XMD_Log::error(_("A non-existing node cannot be saved: ") . $idNode);
 			$response['result'] = false;
-    	} else {
+    		} else {
 			if(!$content = FsUtils::file_get_contents($tmpFilePath)) {
 				$response['result'] = false;
 			} else {
@@ -414,10 +408,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 				$this->node->RenderizeNode();
 				$response['result'] = true;
 			}
-    	}
+    		}
 
-    	return $response;
-    }
+    		return $response;
+    	}
 
 	public function saveXmlFile($idNode, $content, $autoSave = false) {
 
@@ -426,7 +420,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		$response['headers'] = array();
 		$response['content'] = '';
 
-    	if (!$this->setNode($idNode)) {
+    		if (!$this->setNode($idNode)) {
 			$msg = _("Document cannot be saved.");
 
 			XMD_Log::error(_("A non-existing node cannot be saved: ") . $idNode);
@@ -460,7 +454,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$response['saved'] = true;
 			$response['headers'][] = 'HTTP/1.1 204 No Content';
 
-    	}
+    		}
 
 		$response['headers'][] = 'Content-type: text/xml';
 		return $response;
@@ -525,12 +519,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		$node = new Node($idNode);
 		if(!$langId = $node->class->getLanguage())
 			return false;
+
 		$lang = new Language($langId);
 		$langISOName = $lang->GetIsoName();
-		//TODO: Optimize words parsing from string
-		$content = ereg_replace("([A-Z])", ". \\1", $content);
-		$words = explode("[ \.,\n\r\t\:]", $content);
 
+		//TODO: Optimize words parsing from string
+		$words = preg_split("/[\s,]*\\\"([^\\\"]+)\\\"[\s,]*|" . "[\s,]*'([^']+)'[\s,]*|" . "[\s,]+/", $content, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 		$spellCheck = array();
 
 		//New abstraction with php5-enchant module.
