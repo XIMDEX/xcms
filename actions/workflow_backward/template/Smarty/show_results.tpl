@@ -23,20 +23,21 @@
  *  @version $Revision$
  *}
 
-<form method="post" name="workflow_backward" action="{$action_url}">
-        <fieldset class="">
-                <legend><span>{t}Previous state{/t}</span></legend>
-                <ol>   
-                        <li>   
-                                <p>{t}Do you want to move this file{/t} {t}from the state{/t} <strong>{$currentStateName}</strong> {t}to the state{/t} <strong>{$prevStateName}</strong>?</p>
-                        </li>
-                </ol>
-        </fieldset>
+{if (count($messages)) }
+<fieldset>
+	<legend><span>{t}Messages{/t}</span></legend>
+	<ol>
+	{foreach name=messages from=$messages key=message_id item=message}
+		<li>{$message.message}</li>
+	{/foreach}
+	</table>
+</fieldset>
+{/if}
 
-        <fieldset class="buttons-form">
-                {button class="close-button" label="Cancel"}
-                {button class="validate accept-button" label="Accept"}
-        </fieldset>
-
-</form>
-
+<fieldset class="buttons-form">
+{if ($goback) }
+	{button class="goback-button" label="Go back"}
+{else}
+	{button class="close-button" label="Close"}
+{/if}
+</fieldset>
