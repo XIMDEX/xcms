@@ -188,7 +188,7 @@ class PipeProcess extends PipeProcess_ORM {
 	 */
 	function getLastStatus() {
 		$transition = $this->transitions->last();
-		return $transition->get('IdTransitionTo');	
+		return $transition->get('IdStatusTo');	
 	}
 	
 	/**

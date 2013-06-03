@@ -89,7 +89,12 @@ class Action_modifystates extends ActionAbstract {
 		$allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublicable = 1', array());
 
 		foreach ($allNodeTypes as $nodeTypeInfo) {
-			$nodeTypeValues[$nodeTypeInfo['IdNodeType']] = $nodeTypeInfo['Name'];
+			if($nodeTypeInfo['IdNodeType']==5032 ||
+				$nodeTypeInfo['IdNodeType']==5039 ||
+				$nodeTypeInfo['IdNodeType']==5040 || 
+				$nodeTypeInfo['IdNodeType']==5041){
+					$nodeTypeValues[$nodeTypeInfo['IdNodeType']] = $nodeTypeInfo['Name'];
+			}
 		}
 
 		$checkUrl = Config::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='

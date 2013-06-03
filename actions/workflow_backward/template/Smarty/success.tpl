@@ -24,9 +24,17 @@
  *}
 
 <fieldset>
-	<legend><span>{t}Get previous state{/t} </span></legend>
-	<ol class="numbered">
-		<li><span>{t}The publication cycle of the selected document is currently linked to the document {t}&#34;<span class="destacada"><strong>{$nombre_esclavo}</strong></span>&#34;</span></li>
-		<li><span>{t}In order to get the previous state you should select the linked file.{/t}</span></li>
-	</ol>
+        <legend><span>{t}Messages{/t}</span></legend>
+        <ol>
+                <li>{t}The document has been moved to the previous state.{/t}</li>
+        </ol>
 </fieldset>
+
+<fieldset class="buttons-form">
+{if ($goback) }
+        {button class="goback-button" label="Go back"}
+{else} 
+        {button class="close-button" label="Close"}
+{/if}
+</fieldset>
+
