@@ -13,14 +13,15 @@ Feel free to contact us at help@ximdex.org for further assistance.
 
 Installation Requirements and dependencies:
 ------------------------------------------
+	-  Access to Console or terminal, Telnet o SSH for the installation.
+	-  A MySQL user with write permissions on Ximdex database schema.
+	-  MySQL Server (>= 5.1).
 	-  PHP (>= 5.2.5).
 	-  PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin(recommended).
 	-  To allow spelling check using Xedit (our XML editor): php5-enchant module.
-	-  Other packages: wget,telnet.
+	-  Other packages: wget.
 	-  Apache 2 web server.
 	-  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
-	-  MySQL Server (>= 5.1).
-	-  A MySQL user with write permissions on Ximdex database schema.
 	-  Permissions on file system: Write permission for the application user on 'data' and 'logs' folders. Also, write permission on publication destiny.
 	-  For the client side: Firefox web browser (>=3.6) with Javascript y cookies enabled. Also, 'Spanish' selected as browser default language.
 	-  An internet connection (if you want to use the based on external reference annotations or remote publication).
@@ -28,7 +29,7 @@ Installation Requirements and dependencies:
 	-  Virtual Box (if you want to run Ximdex from the '.ova' virtual machine).
 	-  Sendmail (if you want to use notification by mail as it's defined by default). Otherwise, configure your 'conf/mail.conf'
 
-See http://www.ximdex.org/documentacion/requisitos_es.html for further information and http://www.ximdex.org/descargas.html for additional flavours of Ximdex and old versions.
+See http://www.ximdex.org/documentacion/requirements_en.html for further information and http://www.ximdex.org/descargas.html for additional flavours of Ximdex and old versions.
 
 
 
