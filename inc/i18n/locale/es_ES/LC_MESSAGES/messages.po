@@ -1650,7 +1650,7 @@ msgstr "Editando archivo"
 msgid "Clear"
 msgstr "Borrar todo"
 
-#: /actions/edittext/template/Smarty/index.tlp
+#: /actions/edittext/template/Smarty/index.tpl
 msgid "Save and publish"
 msgstr "Guardar y publicar"
 
@@ -3329,26 +3329,25 @@ msgstr "Notificaci&oacute;n de vuelta atr&aacute;s de estado."
 #: /actions/workflow_backward/Action_workflow_backward.class.php
 #: /actions/workflow_forward/Action_workflow_forward.class.php
 #: /actions/workflow_forward/baseIO.php
-msgid "Ximdex document new state:"
-msgstr "Nuevo estado para el documento Ximdex:"
+msgid "Ximdex CMS: new state for document:"
+msgstr "Ximdex CMS: Nuevo estado para el documento:"
 
 msgid "The user"
 msgstr "El usuario"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
-msgid "has changed the state of the document"
-msgstr "ha cambiado el estado del documento"
+msgid "has changed the state of"
+msgstr "ha cambiado el estado de"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
 #: /actions/workflow_forward/Action_workflow_forward.class.php
-msgid "Full path"
-msgstr "Ruta completa"
+msgid "Full Ximdex path"
+msgstr "Ruta completa en Ximdex"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
-#: /actions/workflow_fordward/Action_workflow_forward.class.php
 #: /actions/workflow_fordward/Action_workflow_forward.class.php
 msgid "Initial state"
 msgstr "Estado inicial"
@@ -3364,6 +3363,11 @@ msgstr "Estado final"
 msgid "Comment"
 msgstr "Comentario"
 
+msgid "The document has been moved to the next state."
+msgstr "El documento ha sido movido al siguiente estado."
+
+msgid "The document has been moved to the previous state."
+msgstr "El documento ha sido movido al estado anterior."
 #: /actions/workflow_backwads/template/Smarty/forms/cambiar_estado.tpl
 msgid "Process result"
 msgstr "Resultado de la operaci&oacute;n"
@@ -3496,6 +3500,9 @@ msgstr "No tiene asignado un rol con privilegios para modificar el estado de wor
 msgid "You do not belong to any group with publication privileges"
 msgstr "No perteneces a un grupo con permisos de publicacion"
 
+msgid "Do you want to move this file"
+msgstr "&iquest;Quieres mover este archivo"
+
 #: /actions/workflow_forward/Action_workflow_forward.class.php
 #: /actions/workflow_forward/baseIO.php
 msgid "State successfully changed"
@@ -3513,7 +3520,6 @@ msgstr "No se ha especificado ning&uacute;n mensaje."
 msgid "State forward notification."
 msgstr "Notificaci&oacute;n de avance de estado."
 
-#: /actions/workflow_backwads/template/Smarty/forms/cambiar_estado.tpl
 #: /actions/workflow_forwards/Action_workflow_forward.class.php
 msgid "Message successfully sent to %s"
 msgstr "Mensaje enviado con &eacute;xito a %s"
@@ -4727,11 +4733,10 @@ msgstr "&iquest;Est&aacute; seguro de que quiere realizar los cambios?"
 
 # ------ end of actions ------
 
-
 # ################################################ CONF ############################################
 #: /conf/notifications.conf
-msgid "The document %doc is going to be sent to publication queue"
-msgstr "Se va a proceder al env&iacute;o a publicaci&oacute;n del documento %doc"
+msgid "The document %doc is going to be moved to the state %state."
+msgstr "Se va a mover al estado %state el documento %doc."
 
 
 # ################################################ INC ############################################

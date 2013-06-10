@@ -28,7 +28,8 @@
 	<input type="hidden" name="nodeid" value="{$id_node}" />
 	<input type="hidden" name="default_message" value="{$defaultMessage}">
 	<input type="hidden" name="groupid" value="" />
-	<input type="hidden" name="stateid" value="" />
+	<input type="hidden" name="state" value="{$state}" />
+	<input type="hidden" name="stateid" value="{$stateid}" />
 
 	<fieldset class="publish_date">
 		<legend><span>{t}Publication period{/t}</span></legend>
@@ -107,6 +108,7 @@
 					{/if}
 				{/if}
 				</li>
+				<li>{t}Next state{/t}: <strong>{$state}</strong></li> 
 			</ol>
 
 	</fieldset>
@@ -148,7 +150,7 @@
 			</li>
 			<li class="conditioned {if $required != 1}hidden{/if}">
 				<label for="texttosend" class="aligned">{t}Comments{/t}:</label>
-				<textarea class="validable not_empty comments" name="texttosend" id="texttosend" rows="4" cols="65" wrap="soft" tabindex="7">{$default_message}</textarea>
+				<textarea class="validable not_empty comments" name="texttosend" id="texttosend" rows="4" cols="65" wrap="soft" tabindex="7">{$defaultMessage}</textarea>
 			</li>
 		</ol>
 	
