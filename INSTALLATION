@@ -16,7 +16,7 @@ Installation Requirements and dependencies:
 	-  PHP (>= 5.2.5).
 	-  PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin(recommended).
 	-  To allow spelling check using Xedit (our XML editor): php5-enchant module.
-	-  Other packages: wget.
+	-  Other packages: wget,telnet.
 	-  Apache 2 web server.
 	-  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
 	-  MySQL Server (>= 5.1).
