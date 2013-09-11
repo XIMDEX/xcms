@@ -135,7 +135,7 @@ function setPort
 		fi
 	fi
 	
-	echo -n "Checking connection to server $SERVER_DB and port $PORT_DB (wait a few seconds, please): "
+	echo -n "Checking connection to server $SERVER_DB and port $PORT_DB. Please wait a few seconds... "
 	connection=`telnet $SERVER_DB $PORT_DB 2>&1 | grep 'Connected to'`
 	if [ -n "$connection" ]
 	then

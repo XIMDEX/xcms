@@ -160,8 +160,10 @@ class Loader_Project extends Loader_AbstractNode {
 		$query = sprintf("//section[@nodetypename='SERVER']");
 		$items = $this->xpath->query($query, $this->node);
 		$ret = array();
-		foreach ($items as $item) {
-			$ret[] = new Loader_Server($item, $this->xpath, $this->getPath());
+		if ($items) {
+			foreach ($items as $item) {
+				$ret[] = new Loader_Server($item, $this->xpath, $this->getPath());
+			}
 		}
 		return $ret;
 	}
@@ -170,8 +172,10 @@ class Loader_Project extends Loader_AbstractNode {
 		$path = $this->getPath() . '/ximlink';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			$ret[] = new Loader_XimFile('LINK', "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				$ret[] = new Loader_XimFile('LINK', "$path/$file");
+			}
 		}
 		return $ret;
 	}
@@ -185,9 +189,11 @@ class Loader_Project extends Loader_AbstractNode {
 		$path = $this->getPath() . '/ximptd';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			if (preg_match(sprintf('/\.%s$/', $extension), $file)) {
-				$ret[] = new Loader_XimFile($nodetypename, "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				if (preg_match(sprintf('/\.%s$/', $extension), $file)) {
+					$ret[] = new Loader_XimFile($nodetypename, "$path/$file");
+				}
 			}
 		}
 		return $ret;
@@ -203,14 +209,16 @@ class Loader_Project extends Loader_AbstractNode {
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
 
-		foreach ($files as $file) {
-			$isRng = preg_match('/^rng-/', $file);
-			if (preg_match(sprintf('/\.%s$/', $extension), $file)) {
-				$insert = $type == 'RNG'
-					? $isRng
-					: !$isRng;
-				if ($insert) {
-					$ret[] = new Loader_XimFile($nodetypename, "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				$isRng = preg_match('/^rng-/', $file);
+				if (preg_match(sprintf('/\.%s$/', $extension), $file)) {
+					$insert = $type == 'RNG'
+						? $isRng
+						: !$isRng;
+					if ($insert) {
+						$ret[] = new Loader_XimFile($nodetypename, "$path/$file");
+					}
 				}
 			}
 		}
@@ -228,8 +236,10 @@ class Loader_Section extends Loader_AbstractNode {
 		$query = sprintf("//section[@nodetypename='SECTION']");
 		$items = $this->xpath->query($query, $this->node);
 		$ret = array();
-		foreach ($items as $item) {
-			$ret[] = new Loader_Server($item, $this->xpath, $this->getPath());
+		if ($items) {
+			foreach ($items as $item) {
+				$ret[] = new Loader_Server($item, $this->xpath, $this->getPath());
+			}
 		}
 		return $ret;
 	}
@@ -238,8 +248,10 @@ class Loader_Section extends Loader_AbstractNode {
 		$query = sprintf('//ximdoccontainer/ximdoc');
 		$items = $this->xpath->query($query, $this->node);
 		$ret = array();
-		foreach ($items as $item) {
-			$ret[] = new Loader_XimDOC($item, $this->xpath, $this->getPath());
+		if ($items) {
+			foreach ($items as $item) {
+				$ret[] = new Loader_XimDOC($item, $this->xpath, $this->getPath());
+			}
 		}
 		return $ret;
 	}
@@ -248,8 +260,10 @@ class Loader_Section extends Loader_AbstractNode {
 		$path = $this->getPath() . '/common';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			$ret[] = new Loader_XimFile('COMMON', "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				$ret[] = new Loader_XimFile('COMMON', "$path/$file");
+			}
 		}
 		return $ret;
 	}
@@ -258,8 +272,10 @@ class Loader_Section extends Loader_AbstractNode {
 		$path = $this->getPath() . '/images';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			$ret[] = new Loader_XimFile('IMAGEFILE', "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				$ret[] = new Loader_XimFile('IMAGEFILE', "$path/$file");
+			}
 		}
 		return $ret;
 	}
@@ -268,8 +284,10 @@ class Loader_Section extends Loader_AbstractNode {
 		$path = $this->getPath() . '/ximclude';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			$ret[] = new Loader_XimFile('LINK', "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				$ret[] = new Loader_XimFile('LINK', "$path/$file");
+			}
 		}
 		return $ret;
 	}
@@ -278,8 +296,10 @@ class Loader_Section extends Loader_AbstractNode {
 		$path = $this->getPath() . '/ximlet';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			$ret[] = new Loader_XimFile('XIMLET', "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				$ret[] = new Loader_XimFile('XIMLET', "$path/$file");
+			}
 		}
 		return $ret;
 	}
@@ -293,9 +313,11 @@ class Loader_Section extends Loader_AbstractNode {
 		$path = $this->getPath() . '/ximptd';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			if (preg_match(sprintf('/\.%s$/', $extension), $file)) {
-				$ret[] = new Loader_XimFile($nodetypename, "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				if (preg_match(sprintf('/\.%s$/', $extension), $file)) {
+					$ret[] = new Loader_XimFile($nodetypename, "$path/$file");
+				}
 			}
 		}
 		return $ret;
@@ -324,8 +346,10 @@ class Loader_Server extends Loader_Section {
 		$query = sprintf('//ximdoccontainer/ximdoc');
 		$items = $this->xpath->query($query, $this->node);
 		$ret = array();
-		foreach ($items as $item) {
-			$ret[] = new Loader_XimDOC($item, $this->xpath, $this->getPath());
+		if ($items) {
+			foreach ($items as $item) {
+				$ret[] = new Loader_XimDOC($item, $this->xpath, $this->getPath());
+			}
 		}
 		return $ret;
 	}
@@ -334,8 +358,10 @@ class Loader_Server extends Loader_Section {
 		$path = $this->getPath() . '/css';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
-		foreach ($files as $file) {
-			$ret[] = new Loader_XimFile('CSSFILE', "$path/$file");
+		if ($files) {
+			foreach ($files as $file) {
+				$ret[] = new Loader_XimFile('CSSFILE', "$path/$file");
+			}
 		}
 		return $ret;
 	}
