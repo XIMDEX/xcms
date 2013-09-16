@@ -1,5 +1,5 @@
+<h2>{t}Information{/t}</h2>
 <fieldset class="information">
-	<legend><span>{t}Information{/t}</span></legend>
 	<ul>
 	<li><strong>{t}NodeId{/t}:</strong> {$info.nodeid}</li>
 	<li><strong>{t}Name{/t}:</strong> {$info.name}</li>

@@ -25,10 +25,9 @@
 
 
 {assign var="languages" value=$properties.Language}
-
+<h2>{t}Languages{/t}</h2>
 <fieldset>
 
-<legend><span>{t}Languages{/t}</span></legend>
 <div class="manageproperties">
 
 	<div class="xright-block">

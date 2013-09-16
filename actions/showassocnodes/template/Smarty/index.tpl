@@ -25,11 +25,11 @@
 
 
 {if count($sections) > 0 }
-
+<h2>{t}Delete selected associations{/t}</h2>
 <form method="post" id="delete_rel" action="{$action_delete}">
 <input type="hidden" name="ximletid" value="{$ximletid}">
 <fieldset>
-	<legend><span>{t}Delete selected associations{/t}</span></legend>
+	
 	<div class="sections-container">
 	<ol>
 		{foreach from=$sections item=section}
@@ -43,19 +43,18 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Remove" class="validate deleterel-button" }<!--message="Are you sure you want to remove this association?"-->
+	{button label="Remove" class="validate deleterel-button  btn main_action" }<!--message="Are you sure you want to remove this association?"-->
 </fieldset>
 </form>
 
 {/if}
-
+<h2>{t}Associate ximlet with section{/t}</h2>
 <form id="create_rel" action="{$action_create}" method="post">
 <input type="hidden" name="ximletid" value="{$ximletid}">
 <input name="treeroot" type="hidden" value="{$treeroot}" />
 <input name="searchednodetype" type="hidden" value="{$searchednodetype}" />
 <input type="hidden" name="targetid" value="" />
 <fieldset>
-	<legend><span>{t}Associate ximlet with section{/t}</span></legend>
 	<ol>
 		<li><p class="left"><label>Select node to associate</label></p>
 
@@ -79,6 +78,6 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Associate" class='validate createrel-button' }<!--message="Would you like to associate this section with this ximlet?"-->
+	{button label="Associate" class='validate createrel-button  btn main_action' }<!--message="Would you like to associate this section with this ximlet?"-->
 </fieldset>
 </form>

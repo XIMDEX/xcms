@@ -24,9 +24,10 @@
  *}
 
 {if (null != $files_nok.name)}
+<h2>{t}Not added files{/t}</h2>
 <fieldset>
 
-	 <legend><span>{t}Not added files{/t}</span></legend>
+
 	 <ul class="files_nok">
 		  {section name=i loop=$files_nok.name}
 		  <li><strong>{$files_nok.name[i]}:</strong> {$files_nok.msg[i]}</li>
@@ -37,8 +38,8 @@
 {/if}
 
 {if (null != $files_ok.name)}
+<h2>{t}Added files{/t}</h2>
 <fieldset>
-	 <legend><span>{t}Added files{/t}</span></legend>
 	 <ul class="files_ok">
 		{section name=i loop=$files_ok.name}
 		<li><strong>{$files_ok.name[i]}:</strong> {$files_ok.msg[i]}</li>

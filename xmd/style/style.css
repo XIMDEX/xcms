@@ -55,7 +55,7 @@ INPUT.button {
 	text-decoration : none;
 	text-align : center;
 	display : block;
-	font-size : xx-small;
+	+font-size : xx-small;
 	font-family : Verdana;
 	font-weight : bold;
 	width : 100%;
@@ -65,7 +65,7 @@ INPUT.button {
 BODY{
 	font-weight: normal;
 	font-family : Verdana;
-	font-size : xx-small;
+	+font-size : xx-small;
 	text-indent : 0px;
 	background-color: #ffffff;
 	margin-top : 0px;
@@ -106,14 +106,14 @@ A {
 TABLE, UL, TD, FONT  {
 	font-weight: normal;
 	font-family : Verdana;
-	font-size : xx-small;
+	+font-size : xx-small;
 	text-indent : 0px;
 }
 
 SELECT {
 	border : 1px solid Gray;
 	background : #F3F3F3;
-	font-size : xx-small;
+	+font-size : xx-small;
 	font-weight : bold;
 }
 
@@ -129,12 +129,12 @@ TEXTAREA {
 }
 
 TD {
-	font-size: 10px; 
+	+font-size: 10px; 
 	font-family: verdana
 }
 
 .actionname {
-	font-size : medium;
+	+font-size : medium;
 	font-family : Verdana;
 	font-weight : bold;
 	width : 100%;
@@ -172,7 +172,7 @@ TD {
 
 /*Property selecction form init.php*/
 .celdap{
-	font-size:10px;
+	+font-size:10px;
 	font-weight:bold;
 	color:#898989;
 }
@@ -180,7 +180,7 @@ TD {
 .celdaT{
 	background-color:#DDD2E3;
 	font-weight:bold;
-	font-size:10px;
+	+font-size:10px;
 	color:#898989;
 	border-top:1px solid #898989;
 	border-left:1px solid #898989;

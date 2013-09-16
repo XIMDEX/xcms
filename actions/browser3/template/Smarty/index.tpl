@@ -38,6 +38,8 @@
 			<link type="text/css" href="{$href}" rel="stylesheet" />
 		{/foreach}
 		<link href='http://fonts.googleapis.com/css?family=Coustard:400,900' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700|Ubuntu+Condensed|Francois+One|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+
 		<!-- css widgets -->
 		%=css_widgets%
 
@@ -74,11 +76,11 @@
            <h1><img src="{$_URL_ROOT}/xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}" title="{t}Semantic content management with Ximdex{/t}" id="logo" /></h1>
             <div class="session-info">
 	           <!-- <img class="login-img" src="{$_URL_ROOT}/xmd/images/user_48.png" border="0" alt="Login" title="Login"/>-->
-	            <div class="language"><span class="current">{$user_locale.Lang}</span>
+	            <div class="language"><span class="current-language icon">{$user_locale.Lang}</span>
 	            <div class="selector_language">
 	            	<ul>
 							{section name=i loop=$locales}
-							<li {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected" {/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})
+							<li {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected icon" {/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})
 							<input type="hidden" name="language" value="{$locales[i].Code}" />
 							</li>
 							{/section}

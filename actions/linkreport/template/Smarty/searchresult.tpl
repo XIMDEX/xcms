@@ -22,10 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
+<h2>{t}Search results{/t}</h2>
 <fieldset>
 
-	<legend><span>{t}Search results{/t}</span></legend>
 
 	<input type="hidden" name="stringsearch" value="{$stringsearch}" />
 
@@ -38,5 +37,5 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Go back" type="goback"}
+	{button label="Go back" type="goback" class="btn"}
 </fieldset>

@@ -44,7 +44,7 @@ class Action_newemptynode extends ActionAbstract {
 		foreach($allowedchildsId as $ch){
 			$nt = new NodeType($ch);
 			$name = $nt->GetName();
-			if($nt->GetIsPlainFile() && !(strcmp($name,'ImageFile')==0 || strcmp($name,'BinaryFile')==0)){
+			if($nt->GetIsPlainFile() && !(strcmp($name,'ImageFile')==0 || strcmp($name,'BinaryFile')==0 || strcmp($name,'VisualTemplate')==0 || strcmp($name,'Template')==0)){
 				$childs[]=array("idnodetype"=>$ch,"nodetypename"=>$name);
 			}
 		}

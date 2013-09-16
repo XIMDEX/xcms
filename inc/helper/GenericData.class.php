@@ -697,7 +697,7 @@ class GenericData extends Overloadable {
 			}
 		}
 
-		if (!empty($condition) && !is_null($params) ) {
+		if (!empty($condition) && !is_null($params)) {
 			$value = sprintf('$condition = sprintf("%s", "%s");', $condition, implode('", "', $params));
 			eval($value);
 		}
@@ -722,6 +722,15 @@ class GenericData extends Overloadable {
 			empty($condition) ? '1' : $condition
 		);
 		return $this->query($query, $returnType, $fields);
+	}
+
+	/**
+	* <p>Get all rows for the current table.</p>
+	* <p>This is a facade method and it just call find method without parameters.</p>
+	* @return unknown
+	*/
+	function findAll(){
+		return $this->find();
 	}
 
 	/**

@@ -338,7 +338,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 
     /**
-     * Función que actualiza el esquema de una noticia al de la pvd
+     * Función que actualiza el esquema de una noticia al del esquema 
      *
      * @return bool
      */
@@ -386,7 +386,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 		$domDefault = domxml_open_mem($xmlDefaultContent);
 		if (!$domDefault) {
-			XMD_Log::error("El contenido por defecto de la pvd $idTemplate no se ha podido cargar como xml");
+			XMD_Log::error("El contenido por defecto del esquema $idTemplate no se ha podido cargar como xml");
 			$error = true;
 		}
 
@@ -405,7 +405,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$rootContent = $domContent->document_element();
 
 		if ($rootDefault->tagname() != $rootContent->tagname()) {
-			$msg = "La pvd $idTemplate no coincide con este documento, no se puede adaptar";
+			$msg = "El esquema $idTemplate no coincide con este documento, no se puede adaptar";
 			XMD_Log::error($msg);
 			$this->messages->add($msg, MSG_TYPE_ERROR);
 			return false;

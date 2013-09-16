@@ -381,7 +381,7 @@ class templatenode extends FileNode {
 		}
 
 		$xslDir = Config::GetValue('UrlRoot') . Config::GetValue('NodeRoot') . '/' . $relativePath . '/' .
-			Config::getValue("GeneratorTemplateDir") . '/';
+			Config::getValue("TemplatesDirName") . '/';
 
 		return $xslDir;
 	}

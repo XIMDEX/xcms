@@ -22,63 +22,36 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+.xim-listview-table {
+  margin: 15px 20px;
+  border-collapse: collapse; }
 
+.xim-listview-table-container .xim-listview-table tr th {
+  background: url("../../../../../images/tree/fnd-th-gridview.png") repeat-x left center;
+  height: 35px;
+  color: #888888;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 2px 5px;
+  text-align: left;
+  font-size: .9em; }
 
-/*
-th.xim-listview-grid-view {
-}
+.xim-listview-item {
+  border-bottom: 1px solid #b3b3b3; }
 
-td.xim-listview-grid-view {
-	border-bottom: 1px dotted #ff674b;
-}
+.xim-listview-item td {
+  white-space: nowrap;
+  padding: 2px 5px;
+  cursor: pointer; }
 
-img.xim-listview-grid-icon {
-	width: 22px;
-	height: 22px;
-}
-*/
-
-
-.xim-listview-table{
-	/*padding-top: 20px;*/
-	
-	margin: 15px 20px;
-	border-collapse: collapse;
-	
-}
-
-.xim-listview-table-container .xim-listview-table tr th{
-	background: url('../../../../../images/tree/fnd-th-gridview.png') repeat-x left center;
-	height: 35px;
-	color: #898989;
-	font-weight: bold;
-	text-transform: uppercase;
-	padding: 2px 5px;
-	text-align: left;
-	font-size: .9em;
-}
-
-.xim-listview-item{
-	border-bottom: 1px solid #d3d3d3;	
-}
-
-.xim-listview-item td{
-	white-space: nowrap;
-	padding: 2px 5px;
-	cursor: pointer;
-	
-}
-
-.action_container .xim-listview-item td{
-	cursor: auto;
-}
+.action_container .xim-listview-item td {
+  cursor: auto; }
 
 .action_container .xim-listview-item:hover, .action_container .xim-listview-selected, .action_container tr.xim-listview-selected:hover {
-	background: none;
-	color: #6b6b6b;
-	border-bottom: 1px dashed #ccc;
-}
+  background: none;
+  color: #606060;
+  border-bottom: 1px dashed #cccccc; }
 
-div.xim-listview-table-container div.t_fixed_header div.body{
-	overflow: visible;
-}
+div.xim-listview-table-container div.t_fixed_header div.body {
+  overflow: visible; }

@@ -28,8 +28,10 @@ CREATE TABLE IF NOT EXISTS `XimTAGSTags` (
   `IdTag` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Total` mediumint(6) unsigned NOT NULL DEFAULT '1',
+  `IdNamespace` int(11) UNSIGNED NOT NULL,
   PRIMARY KEY (`IdTag`),
   UNIQUE KEY `Name` (`Name`),
+  KEY `IdNamespace` (`IdNamespace`),
   FULLTEXT KEY `Name_2` (`Name`)
 ) ENGINE=MyISAM  COMMENT='List Tags' AUTO_INCREMENT=1;
 

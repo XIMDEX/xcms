@@ -1,0 +1,305 @@
+
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+@import "../themes/ximdex_theme";
+
+.xim-calendar-datefield {
+	border: 1px solid $c_black;
+	text-align: center;
+	font-size: 11px;
+	width: 100px;
+}
+
+.xim-calendar-container .xim-calendar-alert {
+	display: block;
+	float: left;
+	clear: left;
+	margin: 5px 0 5px 0;
+	font-size: 14px;font-size: 1.4rem;
+}
+
+
+.xim-calendar-hourfield, .xim-calendar-minfield, .xim-calendar-secfield {
+	border: none;
+	text-align: center;
+	font-size: 11px;
+	width: 26px;
+	margin-right: 2px;
+}
+
+.xim-calendar-container{
+	float: left;
+	/*width: 100%;*/
+	margin-bottom: 15px;
+}
+
+input + label + .xim-calendar-container{
+
+	float: right;
+}
+
+.xim-calendar-container, .xim-calendar-datecontainer, .xim-calendar-timecontainer {
+	padding-top: 15px;
+	text-align: left;
+	padding: 3px 0px 3px 0px;
+}
+.xim-calendar-datecontainer, .xim-calendar-timecontainer {
+	padding: 13px 0px 13px 5px;
+	background: #e1e1e1;
+}
+
+.xim-calendar-datecontainer label {
+	width: 40px;
+	float: left;
+}
+
+.xim-calendar-timecontainer label {
+	width: 40px;
+	float: left;
+}
+
+.xim-calendar-button {
+	text-align: center;
+	font-size: 11px;
+	width: 100%;
+}
+
+.xim-calendar-layer-container {
+	float: left;
+	width: 200px;
+	@include radius(10px);
+	margin-right: 15px;
+}
+
+.xim-calendar-titlecontainer {
+	background: $c_grey-pp;
+	padding: 5px 10px;
+	color: $c_white;
+	text-align: center;
+	@include radius(10px 10px 0px 0px);
+	text-shadow: 1px 1px 0px $c_grey-p;
+}
+
+.xim-calendar-datepicker {
+	position: absolute;
+}
+
+
+.xim-calendar-datecontainer label, .xim-calendar-timecontainer label{
+	display: inline !important;
+	float: none !important;
+	background: url('../../../../../images/plugins/calendar/calendar-label-input.png') no-repeat left -22px;
+	padding: 3px 0 5px 20px;
+	margin-right: 0px;
+
+}
+
+
+fieldset .xim-calendar-datecontainer input.xim-calendar-datefield, fieldset .xim-calendar-timecontainer input.xim-calendar-hourfield{
+	border: none;
+	cursor: pointer;
+	float: none ;
+}
+
+.xim-calendar-datecontainer input, .xim-calendar-timecontainer input.xim-calendar-hourfield{
+	background: #fff url('../../../../../images/plugins/calendar/calendar-label-input.png') no-repeat -8px top;
+}
+
+.xim-calendar-timecontainer input.xim-calendar-hourfield{
+	padding-left: 9px;
+}
+
+fieldset label + input[type="text"] {
+	vertical-align: inherit;
+}
+
+
+.xim-calendar-buttoncontainer{
+	@include radius( 0 0 10px 10px);
+	background: $c_grey-ppp;
+	margin-top: 3px;
+
+}
+.xim-calendar-buttoncontainer:hover{
+	background: $c_grey-ppp;
+}
+
+.xim-calendar-buttoncontainer input.ui-state-default{
+	background: none;
+	border:none;
+	margin: 2px auto;
+	cursor: pointer;
+}
+
+.xim-calendar-buttoncontainer input.ui-state-default:hover{
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.ui-datepicker{
+	background: none;
+	border: none;
+	width: auto;
+}
+
+.ui-datepicker .ui-datepicker-header {
+	background: url('../../../../../images/calendar/datapicker-header.png') no-repeat -2px top;
+	border:none;
+	@include boxshadow(0);
+	padding: 1px;
+}
+
+.ui-datepicker .ui-datepicker-header a{
+	background: url('../../../../../images/calendar/datapicker-a.png') no-repeat left top;
+	border: none;
+	margin: 10px 0px 0px;
+	width: 16px;
+	height:	31px;
+	cursor: pointer;
+}
+
+.ui-datepicker .ui-datepicker-header a span{
+	background: url('../../../../../images/calendar/datapicker-month.png') no-repeat left top;
+	margin: 0px;
+	top: 7px;
+	left:0px;
+	width: 10px;
+}
+
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev{
+	background-position: right top;
+	padding-right: 12px;
+}
+
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-next{
+	right: 7px;
+	background-position: left top;
+	padding-left: 6px;
+}
+
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev:hover, .ui-datepicker .ui-datepicker-header a.ui-datepicker-next:hover{
+	top: 2px;
+
+}
+
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev:hover{
+	left: 2px;
+}
+
+
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev span{
+	background-position: left 3px;
+	left: 8px;
+}
+
+
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev span:hover{
+	background-position: -11px 3px;
+}
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-next span{
+	background-position: left bottom;
+	margin-left: 11px;
+}
+
+.ui-datepicker .ui-datepicker-header a.ui-datepicker-next span:hover{
+	background-position: -11px bottom;
+}
+.ui-datepicker .ui-datepicker-title{
+	margin: 15px 0px 5px;
+	text-transform: uppercase;
+	color: $c_white;
+	font-size: .8em;
+}
+
+.ui-datepicker .ui-datepicker-title select{
+	border:none;
+	background: url('../../../../../images/calendar/datapicker-header.png') no-repeat -2px bottom;
+	color: $c_white;
+	font-weight: bold;
+	width:55px;
+}
+
+.ui-datepicker .ui-datepicker-title option{
+	background: $c_grey-p;
+	border-bottom:1px dashed $c_white;
+	padding: 1px 5px;
+	outline: none;
+}
+
+.ui-datepicker .ui-datepicker-title option:hover{
+	background:$c_mainlight;
+}
+.ui-datepicker table{
+	font-size: inherit;
+	width: auto;
+	background: $c_white-l;
+	@include boxshadow(0 3px 5px $s_grey);
+	@include radius(0 0 5px 5px);
+	margin-left: 1px;
+	}
+
+.ui-datepicker table tr{
+	background: none;
+	border-bottom: 1px solid $c_grey-ppp;
+}
+.ui-datepicker table tr th{
+	font-size: .8em;
+	line-height: 2em;
+}
+.ui-datepicker table tr th, .ui-datepicker table tr td, .ui-datepicker table tr td a.ui-state-default{
+	padding: 0px;
+	background: none;
+	border: none;
+	margin: 0px;
+	text-align: center;
+	color: $c_grey-pp;
+}
+
+.ui-datepicker table tr td{
+	border: 1px solid $c_grey-ppp;
+
+}
+
+.ui-datepicker table tr td a.ui-state-default{
+	padding: 2px 9px;
+}
+
+.ui-datepicker table tr td a.ui-state-default:hover, .ui-datepicker table tr td a.ui-state-active{
+	background: $c_grey-ppp;
+	@include boxshadow(none);
+	@include radius(0);
+}
+
+.ui-datepicker table tr td a.ui-state-active, .ui-datepicker table tr td a.ui-state-active:hover{
+	background: $c_mainlight;
+	@include radius(0);
+	margin: 0px;
+	color: $c_white;
+	text-shadow: none;
+	line-height: inherit;
+	font-weight: bold;
+}

@@ -22,110 +22,79 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
 /*************** Common style for element which appears in viewer area **********************/
-
-/*.browser-projects-view-treecontainer,
-.browser-projects-view-listcontainer,
-.browser-ccenter-view-treecontainer,
-.browser-sets-view-list-container,
-.browser-reports-view-list-container,*/ 
+/* NO Extends because they are inserted at the beggining of each CSS file */
 .browser-projects-view-treecontainer,
 .browser-projects-view-listcontainer, .browser-ccenter-view-treecontainer, .browser-reports-view-list-container,
-.browser-modules-view-list-container{ /*Si se elimina el div de las acciones solo dos divs+*/
-	clear: both;
-	position: absolute;
-	width: 100%;
-	top: 65px;
-	bottom: 0px;
-	/*height: 100%;
-	position: relative;*/
-	/*top: 90px;
-	height: 100%;
-	width: 100%;
-	bottom: 0px;*/
-	/*overflow: auto;*/
-}
+.browser-modules-view-list-container {
+  /*Si se elimina el div de las acciones solo dos divs+*/
+  clear: both;
+  position: absolute;
+  width: 100%;
+  top: 65px;
+  bottom: 0px; }
 
-.browser-reports-view-list, .browser-modules-view-list{
-	padding-left: 10px;	
-	padding-right: 10px;
-}
+.browser-reports-view-list, .browser-modules-view-list {
+  padding-left: 10px;
+  padding-right: 10px; }
 
-/*li.browser-reports-view-item{
-	padding-left: 20px;
-}*/
+li.browser-modules-view-disabled {
+  background: url("../../../../../images/tree/treeview-icons.png") no-repeat -23px -274px;
+  cursor: default;
+  padding-left: 20px;
+  color: #b3b3b3; }
 
-li.browser-modules-view-disabled{
-	background: url('../../../../../images/tree/treeview-icons.png') no-repeat -23px -274px;
-	/*padding: 4px 5px 5px 20px;*/
-	cursor: default;
-	padding-left:  20px;
-	color: #AAA;
-}
-li.browser-modules-view-enabled{
-	background: url('../../../../../images/tree/treeview-icons.png') no-repeat -23px -291px;
-	padding-left:  20px;
-	/*	padding-left: 20px;
-	padding: 4px 5px 5px 20px;*/
-}
+li.browser-modules-view-enabled {
+  background: url("../../../../../images/tree/treeview-icons.png") no-repeat -23px -291px;
+  padding-left: 20px; }
 
-li.browser-reports-view-item a{
-	display: block;	
-	background: url('../../../../../images/tree/treeview-icons.png') no-repeat -20px -252px;
-	padding-left:  25px;
-}
+li.browser-reports-view-item a {
+  display: block;
+  background: url("../../../../../images/tree/treeview-icons.png") no-repeat -20px -252px;
+  padding-left: 25px; }
 
-li.browser-reports-view-item a:hover{
-	color: #FFF;
-	background: #b3cece url('../../../../../images/tree/treeview-icons.png') no-repeat -20px -252px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-}
+li.browser-reports-view-item a:hover {
+  color: white;
+  background: #e1e1e1 url("../../../../../images/tree/treeview-icons.png") no-repeat -20px -252px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px; }
 
-li.browser-reports-view-item a:active{
-	background: #43A1A2;
-}
+li.browser-reports-view-item a:active {
+  background: #7bcabf; }
 
-ul.browser-modules-view-list{
-	overflow:	auto;
-	height: 100%;
-	margin-left: 10px;
-	margin-bottom: 10px;
-}
+ul.browser-modules-view-list {
+  overflow: auto;
+  height: 100%;
+  margin-left: 10px;
+  margin-bottom: 10px; }
 
-.browser-modules-view-list-container{
-	padding-bottom: 13px;	
-}
+.browser-modules-view-list-container {
+  padding-bottom: 13px; }
 
 .ui-tabs-panel ul {
-	list-style: none;
-	
-}
+  list-style: none; }
 
-.ui-tabs-panel>div>div>ul{
-	padding-left: 17px;
-	padding-bottom: 15px;
-	padding-right:  10px;
-}
+.ui-tabs-panel > div > div > ul {
+  padding-left: 17px;
+  padding-bottom: 15px;
+  padding-right: 10px; }
 
-.ui-tabs-panel ul li {
-	white-space: nowrap;
-	line-height: 2em;
-	cursor: pointer;
-}
+.xim-treeview-node, .browser-modules-view-list li {
+  white-space: nowrap;
+  line-height: 1.8em;
+  cursor: pointer; }
 
-.xim-treeview-branch li div.xix{
-	padding-left: 16px;	
-}
+.xim-treeview-branch li div.xix {
+  padding-left: 16px; }
 
-.xim-treeview-branch li div.xix .xim-treeview-actions-dropdown{
-	left: 16px;	
-	top: 2px;
-}
+.xim-treeview-branch li div.xix .xim-treeview-actions-dropdown {
+  left: 16px;
+  top: 2px; }
 
-.ui-tabs-panel fieldset  ul li, .ui-tabs-panel ul.browser-modules-view-list li {
-	cursor: pointer;
-}
+.ui-tabs-panel fieldset ul li, .ui-tabs-panel ul.browser-modules-view-list li {
+  cursor: pointer; }
+
+.browser-modules-view-list li {
+  font-size: 14px;
+  font-size: 1.4rem; }

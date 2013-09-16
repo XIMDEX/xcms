@@ -12,19 +12,10 @@
 		overrideLocalPaths="0" enabled="1" previsual="0" description="Local" isServerOTF="false">
 
 		<ximdoccontainer>
-			<ximdoc name="picasso" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="{?}" />
+			<document name="picasso" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="{?}" />
 
-			<ximdoc name="sevilla" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="{?}" />
+			<document name="sevilla" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="{?}" />
 		</ximdoccontainer>
 
-		<!--
-		<section name="picasso_section" nodetypename="SECTION" DefaultSchema="5078" Transformer="xslt" channel="{?}" language="{?}">
-
-			<ximdoccontainer>
-				<ximdoc name="foobar" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="{?}" />
-			</ximdoccontainer>
-
-		</section>
-		-->
 	</section>
 </project>

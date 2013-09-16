@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+          	<start>
+          		<element name="docxap">
+          			<ref name="menu.class"/>			
+          			<xim:description>Config Page</xim:description>
+          		</element>
+          	</start>
+     		<define name="menu.class">
+     			<element name="menu">
+                                  <attribute name="background-color"/>
+                                  <attribute name="font-color"/>
+                                  <attribute name="font-color-hover"/>
+     				<oneOrMore>
+     					<interleave>
+     						<ref name="link-menu.class"/>
+     						<optional>
+     <ref name="vertical-divider.class"/>
+</optional>
+					</interleave>
+				</oneOrMore>
+				<xim:description>Menu</xim:description>
+			</element>
+		</define>
+
+		<define name="link-menu.class">
+			<element name="link-menu">
+                          	<attribute name="text"/>
+				<attribute name="href"/>
+				<attribute name="icon">
+					<choice>
+						<value type="string">none</value>					
+						<value type="string">calendar</value>					
+						<value type="string">comment</value>					
+						<value type="string">download</value>
+						<value type="string">envelope</value>
+						<value type="string">exclamation-sign</value>					
+						<value type="string">file</value>
+						<value type="string">filter</value>					
+						<value type="string">home</value>					
+						<value type="string">lock</value>
+						<value type="string">off</value>
+						<value type="string">ok</value>
+						<value type="string">qrcode</value>
+						<value type="string">refresh</value>
+						<value type="string">remove</value>
+						<value type="string">search</value>
+                                          	<value type="string">share</value>
+						<value type="string">shopping-cart</value>				
+						<value type="string">thumbs-down</value>						
+						<value type="string">thumbs-up</value>					
+						<value type="string">trash</value>					
+						<value type="string">user</value>
+					</choice>
+				</attribute>
+				<attribute name="icon-colour">
+					<choice>
+						<value type="string">white</value>
+						<value type="string">black</value>
+					</choice>
+				</attribute>
+				<text/>
+				<xim:description>Link</xim:description>
+                          	<xim:default_content>[Link]</xim:default_content>
+			</element>
+		</define>
+
+		<define name="vertical-divider.class">
+			<element name="vertical-divider">
+				<text/>
+				<xim:description>Vertical Divider</xim:description>
+			</element>
+		</define>
+</grammar>

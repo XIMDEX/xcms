@@ -22,30 +22,37 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
-
+	<form method="post" id="msr_action" action="{$action_url}">
+<div class="action_header">
+	<h2>{t}Delete templates{/t}</h2>
+	<fieldset class="buttons-form">
+		{button label="Select all" class="button-select-all btn"}
+		{button label="Select none" class="button-deselect-all btn "}
+		{button label="Delete" class="validate button-modify btn main_action"}
+	</fieldset>
+</div>
+<div class="action_content">
 {if ($templates)}
 
-	<form method="post" id="msr_action" action="{$action_url}">
 
-	<fieldset>
-		<legend><span>{t}Delete templates{/t}</span></legend>
-		<ol>
-			{section name=i loop=$templates}
-				<li><input type="checkbox" name="templates[]" value="{$templates[i].Id}" /> {$templates[i].Name}</li>
-			{/section}
-		</ol>
 
-	</fieldset>
-	<fieldset class="buttons-form">
-		{button label="Select all" class="button-select-all"}
-		{button label="Select none" class="button-deselect-all"}
-		{button label="Delete" class="validate button-modify"}
-	</fieldset>
-	</form>
+
+
+		<fieldset>
+			<ol>
+				{section name=i loop=$templates}
+					<li><input type="checkbox" name="templates[]" value="{$templates[i].Id}" /> {$templates[i].Name}</li>
+				{/section}
+			</ol>
+
+		</fieldset>
+
+
+
 {else}
-	<fieldset>
-	<legend><span>{t}Delete templates{/t}</span></legend>
-		<span>{t}Templates not found{/t}</span>
-	</fieldset>
-{/if}
+
+
+		<p>{t}Templates not found{/t}</p>
+
+{/if}</div>
+	</form>

@@ -27,7 +27,6 @@
 
 
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
-ModulesManager::file('/inc/Toldox.class.php', 'tolDOX');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 class Action_deletenode extends ActionAbstract {
@@ -187,7 +186,7 @@ class Action_deletenode extends ActionAbstract {
 	function delete_node() {
 
 		$idNode	= $this->request->getParam("nodeid");
-		$depList = array();
+	    $depList = array();
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
 		if(ModulesManager::isEnabled("ximDEMOS") &&  XSession::get('user_demo')) {

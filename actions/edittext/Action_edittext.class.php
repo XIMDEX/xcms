@@ -34,8 +34,8 @@ ModulesManager::file('/inc/helper/String.class.php');
 
 
 class Action_edittext extends ActionAbstract {
-	// Main method: shows initial form
-    	function index() {
+   	// Main method: shows initial form
+	function index() {
 
 		$this->addCss('/actions/edittext/resources/css/style.css');
 		$this->addJs('/extensions/codemirrror/lib/codemirror.js');
@@ -43,7 +43,7 @@ class Action_edittext extends ActionAbstract {
 //		$this->addCSS('/extensions/codemirrror/css/docs.css');
 		$this->addCss('/extensions/codemirrror/theme/default.css');
 
-	    	$idNode = $this->request->getParam('nodeid');
+    		$idNode = $this->request->getParam('nodeid');
 
 		$strDoc = new StructuredDocument($idNode);
 		if($strDoc->GetSymLink()) {
@@ -60,7 +60,7 @@ class Action_edittext extends ActionAbstract {
 		$idNodeType = $node->get('IdNodeType');
 		$nodeType = new NodeType($idNodeType);
 		$nodeTypeName = $nodeType->get('Name');
-		
+
 		$isXimNewsLanguage = ($nodeTypeName == "XimNewsNewLanguage");
 
 		$fileName = $node->get('Name');
@@ -72,13 +72,13 @@ class Action_edittext extends ActionAbstract {
 			}
 		}else {
 			$ext = "xml";
-		} 
+		}
 
-                if ($ext == "php" ){ 
-	                        $this->addJs("/extensions/codemirrror/mode/xml/xml.js"); 
-	                        $this->addJs("/extensions/codemirrror/mode/css/css.js"); 
-	                        $this->addJs("/extensions/codemirrror/mode/javascript/javascript.js"); 
-	                        $this->addJs("/extensions/codemirrror/mode/clike/clike.js");
+		if ($ext == "php" ){
+			$this->addJs("/extensions/codemirrror/mode/xml/xml.js");
+			$this->addJs("/extensions/codemirrror/mode/css/css.js");
+			$this->addJs("/extensions/codemirrror/mode/javascript/javascript.js");
+			$this->addJs("/extensions/codemirrror/mode/clike/clike.js");
 
 		}
 
@@ -107,10 +107,10 @@ class Action_edittext extends ActionAbstract {
 				);
 
 		$this->render($values, null, 'default-3.0.tpl');
-	}
+    	}
 
 /*
-*	If nodeType is a PTD display documents affected by change
+*	If nodeType is a template display documents affected by change
 */
 	function publishForm() {
     		$idNode = $this->request->getParam('nodeid');
@@ -204,21 +204,19 @@ class Action_edittext extends ActionAbstract {
 			}
 
 			if ($this->request->getParam('publicar') == 1) {
-			    $_GET['publicar'] = 1;
-			    $this->redirectTo('index', 'addtocolector');
-			    return;
+				$_GET['publicar'] = 1;
+			    	$this->redirectTo('index', 'addtocolector');
+			    	return;
 			}
 		}
 
-		if ($nodeTypeName == 'Template' || $nodeTypeName == 'XslTemplate') {
+		if ($nodeTypeName == 'Template' || $nodeTypeName == 'XslTemplate' ) {
 			$this->redirectTo('publishForm');
 			return;
 		} else {
-			//$this->redirectTo('index');
 			return;
 		}
-
-    }
+    	}
 
 	function formatXml($xml) {
 

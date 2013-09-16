@@ -23,5 +23,5 @@
  *  @version $Revision$
  *}
 
- <div class="kupu-tb-navbar" id="navbar">
+ <div class="kupu-tb-navbar empty" id="navbar">
  </div>

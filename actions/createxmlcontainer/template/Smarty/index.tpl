@@ -23,34 +23,38 @@
  *  @version $Revision$
  *}
 
+
 <form method="post" id="cdx_form" action="{$action_url}">
-
 	<input type="hidden" name="nodeid" value="{$idNode}"/>
-	<fieldset>
 
-    <legend><span>{t}Add new XML{/t}</span></legend>
-
-		<ol>
-			<li>
-				<label for="name" class="aligned">{t}File name{/t}</label>
-				<input type="text" name="name" id="docname" class="cajaxg validable not_empty"/>
-			</li>
-			<li>
-				<label for="id_template" class="aligned">{t}Document type{/t}</label>
-				<select name="id_template" id="templateid" class="cajaxg validable not_empty">
-					<option value="">&laquo;{t}Select template{/t}&raquo;</option>
-					{foreach from=$templates item=template}
-						<option value="{$template.idTemplate}">{$template.Name}</option>
-					{/foreach}
-				</select>
-			</li>
-		</ol>
+	<div class="action_header">
+		<h2>{t}Add new XML{/t}</h2>
+		<fieldset class="buttons-form">
+		{button label="Create" class='validate btn main_action' }<!--message="Do you wan to create the XML document?"-->
 	</fieldset>
+	</div>
 
-	{include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}
+	<div class="action_content"><fieldset>
 
-	<fieldset class="buttons-form">
-		{button label="Reset" class='form_reset' type='reset'}
-		{button label="Create" class='validate' }<!--message="Do you wan to create the XML document?"-->
-	</fieldset>
+
+			<ol>
+				<li>
+					<label for="name" class="aligned">{t}File name{/t}</label>
+					<input type="text" name="name" id="docname" class="cajaxg validable not_empty"/>
+				</li>
+				<li>
+					<label for="id_template" class="aligned">{t}Document type{/t}</label>
+					<select name="id_template" id="templateid" class="cajaxg validable not_empty">
+						<option value="">&laquo;{t}Select template{/t}&raquo;</option>
+						{foreach from=$templates item=template}
+							<option value="{$template.idTemplate}">{$template.Name}</option>
+						{/foreach}
+					</select>
+				</li>
+			</ol>
+		</fieldset>
+
+		{include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}</div>
+
+
 </form>

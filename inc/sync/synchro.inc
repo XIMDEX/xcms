@@ -26,13 +26,6 @@
 
 
 
-
-
-
-
-
-
-
 /**
  * XIMDEX_ROOT_PATH
  */
@@ -377,7 +370,7 @@ class Synchronizer {
 
 
 
-	function BorrarSolapas($nodeID,$up,$down,$markEnd=null) {
+	function DeleteFlaps($nodeID,$up,$down,$markEnd=null) {
 
 		$node = new Node($nodeID);
 
@@ -1943,7 +1936,7 @@ class Synchronizer {
 	/// FUNTIONS FOR SYNC FILES MANAGEMENT
 	/// *************************************************************************
 
-	function FicherosSync() {
+	function SyncFiles() {
 
 		$sql="SELECT IdSync FROM Synchronizer WHERE State='IN' OR State='DUE'";
 

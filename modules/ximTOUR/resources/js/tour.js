@@ -163,13 +163,36 @@
 	},
 
 	endTour: function(){
-	    this.step = 0;
-	    $('.tour_mark',this.scope).toggleClass('tour_mark');
-	    if(this.autoplay) clearTimeout(this.showtime);
-	    this.removeTooltip();
-	    this.hideControls();
-	    this.hideOverlay();
-	    $(".hbox").hbox("showPanel",0);
+	    	this.step = 0;
+		var disabledTour = $(".tourcontrols input:checked").length;
+	    	$('.tour_mark',this.scope).toggleClass('tour_mark');
+	    	if(this.autoplay) clearTimeout(this.showtime);
+	    	this.removeTooltip();
+	    	this.hideControls();
+	    	this.hideOverlay();
+	    	$(".hbox").hbox("showPanel",0);
+	    	if(disabledTour){
+			$.ajax({
+                		url: X.restUrl,
+				type: "GET",
+				data: {action:'browser3',method:'disableTour',numRep:0},
+		                dataType: "json",
+                		success: function(data){
+					var div = $("<div/>").text("The tour won't be displayed again.");
+					div.dialog({title:"Ximdex Notifications",
+						buttons: {
+							'OK': function() {
+							div.dialog('destroy');
+							div.remove();
+							}.bind(this)
+						}
+					});
+                		},
+		                error: function(data){
+					//alert("A fail was encountered.");
+                		}
+        		});
+	    	}
 	},
 
 	restartTour: function(){
@@ -406,6 +429,7 @@
 		    $tourcontrols += (!command) ? '<p class="tourtitle">'+ _('Hello')+ " " + this.uname + _(', first time here?') + '</p>' : '<p class="tourtitle">' + command + ' action tour</p>';
 		    $tourcontrols += '<p class="subtitle">'+firstTimeTextDescription+'</p>';
 		    $tourcontrols += '<span class="tour_button" id="activatetour">'+_('Start the tour')+'</span>';
+		    $tourcontrols += '<span class="not_show_again" id="not_show_again"><input class="not_show" type="checkbox" name="not_show" id="not_show_input"/><label for="not_show_input">'+_('Dont show this again.')+'</label></span>';
 		    if(!this.autoplay){
 			$tourcontrols += '<div class="tour_nav"><span class="tour_button hidden" id="prevstep">< '+_('Previous')+'</span>';
 			$tourcontrols += '<span class="tour_button hidden" id="nextstep">'+_('Next')+' ></span></div>';

@@ -180,9 +180,9 @@
 
 	<fieldset class="buttons-form">
 		{if $go_method == "createColector"}
-			{button label="Create" class="validate" }	
+			{button label="Create" class="validate btn main_action" }	
 		{else}
-			{button label="Edit" class="validate" }	
+			{button label="Edit" class="validate btn main_action" }	
 		{/if}
 	</fieldset>
 </form>

@@ -23,10 +23,8 @@
  *  @version $Revision$
  *}
 
+<h2>{t}Search results{/t}</h2>
 
-<fieldset>
-	<legend><span>{t}Search results{/t}</span></legend>
 
 	<listview class="xim-listview-results" useXVFS="no" />
 
-</fieldset>

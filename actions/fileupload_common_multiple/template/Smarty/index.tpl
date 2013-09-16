@@ -22,15 +22,19 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
 <form action="{$action_url}"  method="POST" name="f_m_u" enctype="multipart/form-data" >
+	<div class="action_header">
+		<h2>{$lbl_anadir}</h2>
+		<fieldset class="buttons-form">
+			{button label="Continue" class="validate btn main_action"}<!--message="Are you sure you want to continue?" -->
+		</fieldset>
+	</div>
+<div class="action_content">
 	<fieldset>
-	<legend><span>{$lbl_anadir}</span></legend>
-	
+
+
 	<uploader {if ($filter)}filter="{$filter}"{/if} />
-	
-</fieldset>
-<fieldset class="buttons-form">
-	{button label="Continue" class="validate"}<!--message="Are you sure you want to continue?" -->
-</fieldset>
+
+	</fieldset>
+</div>
 </form>

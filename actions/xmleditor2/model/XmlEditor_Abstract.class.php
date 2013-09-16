@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision$
  */
 
 
@@ -136,7 +136,7 @@ abstract class XmlEditor_Abstract {
 
 			unset($node);
 			$node = new Node($idparent);
-			$ptdFolder = $node->GetChildByName('ximptd');
+			$ptdFolder = $node->GetChildByName('templates');
 
 			if ($ptdFolder !== false) {
 				$ptdFolder = new Node($ptdFolder);

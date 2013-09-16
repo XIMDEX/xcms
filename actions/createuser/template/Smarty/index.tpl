@@ -25,52 +25,56 @@
 
 <form method="post" name="cu_form" id="cu_form" action="{$action_url}">
 	<input type="hidden" name="id_node" VALUE="{$id_node}">
-	<fieldset>
-		<legend><span>{t}Add user{/t}</span></legend>
-		<ol>
-			<li>
-				<label for="login" class="aligned">{t}User{/t}</label>
-				<input type="text" name="login" id="login" class="cajag validable not_empty">
-			</li>
-			<li>
-				<label for="name" class="aligned">{t}Name{/t}</label>
-				<input type="text" name="name" id="username" class="cajag validable not_empty">
-			</li>
-			<li>
-				<label for="pass" class="aligned">{t}Password{/t}</label>
-				<input type="password" name="pass" id="pass" class="cajag validable not_empty field_equals__confirmpass">
-			</li>
-			<li>
-				<label for="confirmpass" class="aligned">{t}Repeat password{/t}</label>
-				<input type="password" name="confirmpass" id="confirmpass" class="cajag validable not_empty">
-			</li>
-			<li>
-				<label for="email" class="aligned">{t}E-mail{/t}</label>
-				<input type="text" name="email" id="email" class="cajag validable not_empty is_email">
-			</li>
-			<li>
-				<label for="generalrole" class="aligned">{t}Role in general group{/t}</label>
-				<select name="generalrole" id="generalrole" class="classxg">
-				{foreach from=$roles item=role}
-					<option value="{$role.IdRole}">{$role.Name}</option>
-				{/foreach}
-				</select>
-			</li>
-			<li>
-				<label for="locale" class="aligned">{t}Language{/t}</label>
-				<select name="locale" id="locale" class="classxg">
-				{section name=i loop=$locales}
-					<option value="{$locales[i].Code}" {if ($locales[i].Code == $smarty.const.DEFAULT_LOCALE)} selected{/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})</option>
-				{/section}
-				</select>
-			</li>
-		</ol>
+	<div class="action_header">
+<h2>{t}Add user{/t}</h2>
+			<fieldset class="buttons-form">
+		{button label='Create user' class='validate btn main_action' }
 	</fieldset>
-	<fieldset class="buttons-form">
-		{button type="reset" label='Reset' class='form_reset'}
-		{button label='Create user' class='validate' }
-	</fieldset>
-	<fieldset>
-		<p>*{t}Users registered without their consent may violate the rules of your country{/t}</p>
-	</fieldset>
+	</div>
+	<div class="action_content">
+		<fieldset>
+			<ol>
+				<li>
+					<label for="login" class="aligned">{t}User{/t}</label>
+					<input type="text" name="login" id="login" class="cajag validable not_empty">
+				</li>
+				<li>
+					<label for="name" class="aligned">{t}Name{/t}</label>
+					<input type="text" name="name" id="username" class="cajag validable not_empty">
+				</li>
+				<li>
+					<label for="pass" class="aligned">{t}Password{/t}</label>
+					<input type="password" name="pass" id="pass" class="cajag validable not_empty field_equals__confirmpass">
+				</li>
+				<li>
+					<label for="confirmpass" class="aligned">{t}Repeat password{/t}</label>
+					<input type="password" name="confirmpass" id="confirmpass" class="cajag validable not_empty">
+				</li>
+				<li>
+					<label for="email" class="aligned">{t}E-mail{/t}</label>
+					<input type="text" name="email" id="email" class="cajag validable not_empty is_email">
+				</li>
+				<li>
+					<label for="generalrole" class="aligned">{t}Role in general group{/t}</label>
+					<select name="generalrole" id="generalrole" class="classxg">
+					{foreach from=$roles item=role}
+						<option value="{$role.IdRole}">{$role.Name}</option>
+					{/foreach}
+					</select>
+				</li>
+				<li>
+					<label for="locale" class="aligned">{t}Language{/t}</label>
+					<select name="locale" id="locale" class="classxg">
+					{section name=i loop=$locales}
+						<option value="{$locales[i].Code}" {if ($locales[i].Code == $smarty.const.DEFAULT_LOCALE)} selected{/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})</option>
+					{/section}
+					</select>
+				</li>
+			</ol>
+		</fieldset>
+
+		<fieldset>
+			<p>*{t}Users registered without their consent may violate the rules of your country{/t}</p>
+		</fieldset>
+	</div>
 </form>

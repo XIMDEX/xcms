@@ -49,24 +49,24 @@ class dependencies extends Dependencies_ORM{
 
 	/**
 	 *
-	 * @param $nodoMaestro
-	 * @param $nodoDependiente
-	 * @param $tipo
+	 * @param $master
+	 * @param $dependent
+	 * @param $type
 	 * @param $version
 	 * @return unknown_type
 	 */
-	function InsertaDependencia($nodoMaestro,$nodoDependiente,$tipo,$version = NULL) {
-		$this->set('IdNodeMaster', $nodoMaestro);
-		$this->set('IdNodeDependent', $nodoDependiente);
-		$this->set('DepType', $tipo);
+	function insertDependence($master, $dependent, $type, $version = NULL) {
+		$this->set('IdNodeMaster', $master);
+		$this->set('IdNodeDependent', $dependent);
+		$this->set('DepType', $type);
 		if(!empty($version) ) {
 			$this->set('version', $version);
 		}else {
-			$node = new Node($nodoMaestro);
+			$node = new Node($master);
 			$this->set('version', $node->getVersion() );
 		}
 
-		if (!$this->ExisteDependencia($nodoMaestro,$nodoDependiente,$tipo,$version)) {
+		if (!$this->existsDependence($master,$dependent,$type,$version)) {
 			return $this->add();
 		}
 		return false;
@@ -77,7 +77,7 @@ class dependencies extends Dependencies_ORM{
 	 * @param $nodeID
 	 * @return unknown_type
 	 */
-	function BorrarNodoDependiente($nodeID) {
+	function deleteDependentNode($nodeID) {
 		//Deletes all the dependencies (ancestor) of this node ("free")
 		$dbObj = new DB();
 		$sql= sprintf("DELETE FROM Dependencies WHERE IdNodeDependent= %d", $nodeID);
@@ -90,7 +90,7 @@ class dependencies extends Dependencies_ORM{
 	 * @param $version
 	 * @return unknown_type
 	 */
-	function BorrarDependenciasNodoDependiente($nodeID,$version) {
+	function DeleteDependenciesDependentNode($nodeID,$version) {
 		//Deletes all the dependencies (ancestor) of this node ("free")
 		//Last versions should be deleted
 		$dbObj = new DB();
@@ -104,9 +104,9 @@ class dependencies extends Dependencies_ORM{
 	 * @param $tipo
 	 * @return unknown_type
 	 */
-	function BorrarTipoDependenciasNodo($nodeID,$tipo) {
+	function DeleteTypeDependenciesNode($nodeID,$type) {
 		$dbObj = new DB();
-		$sql=sprintf("DELETE from Dependencies WHERE IdNodeDependent = %d and DepType= %s", $nodeID, $dbObj->sqlEscapeString($tipo));
+		$sql=sprintf("DELETE from Dependencies WHERE IdNodeDependent = %d and DepType= %s", $nodeID, $dbObj->sqlEscapeString($type));
 		$dbObj->Execute($sql);
 
 	}
@@ -116,7 +116,7 @@ class dependencies extends Dependencies_ORM{
 	 * @param $nodeID
 	 * @return unknown_type
 	 */
-	function SacaDependenciasNodoDependiente($nodeID) {
+	function GetDependenciesDependentNode($nodeID) {
 		//Get all the nodes which are dependant of the current one
 
 		$dbObj = new DB();
@@ -226,12 +226,12 @@ class dependencies extends Dependencies_ORM{
 	 * @param $version
 	 * @return unknown_type
 	 */
-	function ExisteDependencia($nodoMaestro,$nodoDependiente,$tipo,$version) {
+	function existsDependence($master,$dependent,$type,$version) {
 		//Gets all the dependencies (ancestor) of this node
 
 		$dbObj = new DB();
 		$sql=sprintf("SELECT IdDep from Dependencies WHERE IdNodeMaster = %d AND IdNodeDependent = %d and DepType = %s and version = %d",
-		$nodoMaestro, $nodoDependiente, $dbObj->sqlEscapeString($tipo), $version);
+		$master, $dependent, $dbObj->sqlEscapeString($type), $version);
 
 		$dbObj->Query($sql);
 
@@ -255,10 +255,10 @@ class dependencies extends Dependencies_ORM{
 		$node = new Node($docId);
 
 		$section = new Node($node->GetSection());
-		$ptdFolderSection = new Node($section->GetChildByName('ximptd'));
+		$ptdFolderSection = new Node($section->GetChildByName('templates'));
 
 		$project = new Node($node->GetProject());
-		$ptdFolderProject = new Node($project->GetChildByName('ximptd'));
+		$ptdFolderProject = new Node($project->GetChildByName('templates'));
 
 		$nodeType = new NodeType();
 		$nodeType->SetByName('XslTemplate');

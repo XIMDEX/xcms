@@ -24,31 +24,29 @@
  *}
 
 <form method="post" id="print_form" action="{$action_url}">
-	<fieldset>
-    		<legend><span>{t}Create a new file{/t}</span></legend>
-    		<input type="hidden" name="nodeid" value="{$nodeID}">
-    	<p>
-      		<label for="foldername" class="aligned">{t}Name{/t}</label>
-      		<input type="text" name="name" id="foldername" class="cajaxg validable not_empty">
-    	</p>
-  	<p> 
-        	<label class="aligned">{t}File type{/t}</label>
-                {if $countChilds > 1}
-                	<select name="nodetype" class="caja validable not_empty">
-                        {foreach from=$childs item=child}
-                        	<option value="{$child.idnodetype}">{$child.nodetypename}</option>
-                        {/foreach}
-                        </select>
-                {else} 
-			<select class="disabled">
-				<option value="{$child.idnodetype}">{$childs[0].nodetypename}</option>
-			</select>
-                        <input name="nodetype" type="hidden" value="{$childs[0].idnodetype}" />
-                {/if}
-	</p>
- 	</fieldset>
-  	<fieldset class="buttons-form">
-    		{button label="Reset" class='form_reset' type="reset"}
-    		{button label="Create" class='validate' }
-  	</fieldset>
+	<div class="action_header">
+    		<h2>{t}Create a new file{/t}</h2>
+    		<fieldset class="buttons-form">
+        		{button label="Create" class='validate btn main_action' }
+    		</fieldset>
+  	</div>
+	<div class="action_content">
+      		<fieldset>
+          		<input type="hidden" name="nodeid" value="{$nodeID}">
+        		<p><label for="foldername" class="aligned">{t}Name{/t}</label><input type="text" name="name" id="foldername" class="cajaxg validable not_empty"></p>
+			{if $countChilds > 1}
+      			<p><label class="aligned">{t}File type{/t}</label>
+                    			<select name="nodetype" class="caja validable not_empty">
+                          			{foreach from=$childs item=child}
+                            				<option value="{$child.idnodetype}">{$child.nodetypename}</option>
+                          			{/foreach}
+                          		</select>
+      			</p>
+                  	{else}
+                       		<input name="nodetype" type="hidden" value="{$childs[0].idnodetype}" />
+                  	{/if}
+			{t}<p>The <strong>file extension</strong> is not needed.</p>{/t}
+       		</fieldset>
+    	</div>
 </form>
+

@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8029 $
+ *  @version $Revision$
  */
 
 
@@ -93,6 +93,8 @@ function hndCopy_treeSelector(options) {
 		},
 		selector: 'tree tree'
 	};
+
+ console.log(tds);
 
 	$ts
 		.treeview({

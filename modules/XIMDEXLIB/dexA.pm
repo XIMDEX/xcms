@@ -13,7 +13,7 @@
 # * @copyright (C) Open Ximdex Evolution SL, {@link http://www.ximdex.org}
 # * @license Commercial (check ximdex version 2 for the open source software)
 # *
-# * $Id: dexA.pm 7826 2011-08-24 16:48:21Z aluque $
+# * $Id$
 # */
 
 

@@ -32,7 +32,7 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button class="validate" label="Send"}
+	{button class="validate  btn main_action" label="Send"}
 	{button type="reset" label="Reset"}
 	{button type="goback" label="Go back"}
 	{button type="close" label="Close"}

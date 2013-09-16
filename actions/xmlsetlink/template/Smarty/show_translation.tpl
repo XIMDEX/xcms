@@ -22,12 +22,11 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
+<h2>{t}Node{/t}&raquo;&nbsp;{$ruta}</h2>
 <form id="et_form" class="et_form" enctype="multipart/form-data" method="post" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<input type="hidden" id="publicar" name="publicar" value="0">
 	<fieldset>
-		<legend><span>{t}Node{/t}&raquo;&nbsp;{$ruta}</span></legend>
 		<ol>
 			<li>
 				<textarea class="editor" name="editor" id="editor" wrap="soft" rows=30 cols=100 tabindex="7">
@@ -41,7 +40,7 @@
 	<fieldset>
 		<ol>
 			<li>
-				{button label="Delete link" onclick="redirect();" class="validate"}
+				{button label="Delete link" onclick="redirect();" class="validate btn main_action"}
 			</li>
 		</ol>
 	</fieldset>	

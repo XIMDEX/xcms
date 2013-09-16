@@ -23,7 +23,7 @@ Installation Requirements and dependencies:
 	-  Apache 2 web server.
 	-  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
 	-  Permissions on file system: Write permission for the application user on 'data' and 'logs' folders. Also, write permission on publication destiny.
-	-  For the client side: Firefox web browser (>=3.6) with Javascript y cookies enabled. Also, 'Spanish' selected as browser default language.
+	-  For the client side: Firefox web browser (>=3.6) with Javascript y cookies enabled. Also, Google Chrome, Safari and Opera browsers are allowed too.
 	-  An internet connection (if you want to use the based on external reference annotations or remote publication).
 	-  A disk partition with enough free space for Ximdex. See 'conf/diskspace.conf' file for further information.
 	-  Virtual Box (if you want to run Ximdex from the '.ova' virtual machine).

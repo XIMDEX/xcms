@@ -30,8 +30,8 @@
 	{/foreach}
 
 	<fieldset class="buttons-form">
-		{button label="Reset" type="reset"}
-		{button label="Modify" class="validate" }<!--message="Are you sure you want to change default properties?"-->
+		{button label="Reset" type="reset" class="btn"}
+		{button label="Modify" class="validate btn main_action" }<!--message="Are you sure you want to change default properties?"-->
 	</fieldset>
 
 </form>

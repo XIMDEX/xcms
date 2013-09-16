@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8401 $
+ *  @version $Revision$
  */
 
 
@@ -95,13 +95,13 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/sess.js');
 		$this->addJs('/inc/js/eventHandler.js');
 		$this->addJs(Extensions::JQUERY);
-                $this->addJs(Extensions::JQUERY_UI);
-                $this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
-                $this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
-                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/jquery.validate.js');
-                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/localization/messages_'.$user_locale["Lang"].'.js');
-                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js');
-                $this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.labelwidth/jquery.labelwidth.js');
+		$this->addJs(Extensions::JQUERY_UI);
+		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/jquery.validate.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/localization/messages_'.$user_locale["Lang"].'.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.labelwidth/jquery.labelwidth.js');
 		$this->addActionJs('controller.js');
 
 
@@ -859,31 +859,12 @@ class Action_browser3 extends ActionAbstract {
 	 * Returns a contextual menu data, composed by actions and sets.
 	 */
 	public function cmenu() {
-		$tolDOX = ModulesManager::isEnabled('tolDOX');
-		$processActionName = !$tolDOX;
-
 		$nodes = $this->request->getParam('nodes');
-//		$paths = $nodes;
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$sets = $this->getSetsIntersection($nodes);
-		$actions = $this->getActions($nodes, $processActionName);
-
-//		$backend = XVFS::_getBackend($paths[0]);
+		$actions = $this->getActions($nodes);
 
 		// workaround
-//		if (strtolower(get_class($backend)) == strtolower('XVFS_Backend_tol')) {
-		if ($tolDOX) {
- 			$actions[] = array(
- 				'name' => _('Crear Toldoc'), 'command' => 'createdocument', 'icon' => 'create_server.png',
- 				'module' => 'tolDOX', 'params' => '', 'callback' => 'callAction', 'bulk' => '0'
- 			);
- 			$actions[] = array(
- 				'name' => _('Eliminar Toldoc'), 'command' => 'deletenode', 'icon' => 'create_server.png',
- 				'module' => '', 'params' => '', 'callback' => 'callAction', 'bulk' => '1'
- 			);
-		}
-		// workaround
-
 		$options = array_merge($sets, $actions);
 
 		foreach($options as $key => $value) {
@@ -994,7 +975,6 @@ class Action_browser3 extends ActionAbstract {
 				order by ft.depth';
 
 			$sqlNodeInfo = sprintf($sqlNodeInfo, $idNode);
-
 			XMD_Log::debug(sprintf('sqlNodeInfo - [%s]', $sqlNodeInfo));
 
 			$db->query($sqlNodeInfo);
@@ -1207,6 +1187,15 @@ class Action_browser3 extends ActionAbstract {
 
 	// ----- Nodes contextual menus -----
 
+	/**
+	* Disables the tour pop-up
+	*/
+	function disableTour(){
+		$numRep = $this->request->getParam('numRep');
+		Config::update('ximTourRep', $numRep);
+		$result["success"] = true;
+		$this->sendJSON($result);
+	}
 }
 
 ?>

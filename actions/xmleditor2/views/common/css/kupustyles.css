@@ -37,6 +37,18 @@
  *****************************************************************************/
 
 /* $Id: kupustyles.css 16467 2005-08-25 11:08:10Z guido $ */
+
+@font-face {
+        font-family: 'Ubuntu Condensed';
+        src:url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot');
+        src:url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot?#iefix') format('embedded-opentype'),
+                url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.woff') format('woff'),
+                url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.ttf') format('truetype'),
+                url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.svg#ubuntucondensed-regular-webfont') format('svg');
+        font-weight: normal;
+        font-style: normal;
+}
+
 html{
 	font-size: 62.5%;
 	}
@@ -57,7 +69,7 @@ button::-moz-focus-inner{
   padding: 0px;
 }
 */
-div.kupu-fulleditor .kupu-editorframe {
+.kupu-fulleditor .kupu-editorframe {
    float: left;
    width: 100%;
    border: none;
@@ -66,54 +78,14 @@ div.kupu-fulleditor .kupu-editorframe {
   bottom: 0px;
 }
 
-/*.kupu-editor body{
-	padding: 15px 0px;
-	}
 
-div.kupu-fulleditor-zoomed {
-   z-index: 100;
-   margin: 0; border: none;
-   position: fixed;
-   top: 0; left: 0;
-   background-color: white;
-}*/
 
-/** html div.kupu-fulleditor-zoomed {
-   position: absolute; /* IE * /
-}*/
-
-/*div.kupu-fulleditor-zoomed .kupu-editor-iframe {
-  border: none;
-  margin: 0;
-}*/
-
-/*div.kupu-smalleditor .kupu-editorframe {
-  /*margin-right: 0.2em;* /
-}
-
-div.kupu-toolbox {
-	margin: 0;
-}
-
-h3.kupu-toolbox-heading-closed {
- 	 cursor: default;*/
-
- 	/*-moz-border-radius-bottomleft: 5px;
- 	-moz-border-radius-bottomright: 5px;
- 	-webkit-border-radius-bottomleft: 5px;
- 	-webkit-border-radius-bottomright: 5px;
-}
-
-h3.kupu-toolbox-heading-opened {
-  cursor: default;
-}*/
-
-h3.kupu-toolbox-heading {
+.kupu-toolbox-heading {
 	font-weight: bold;
 	border-top: 1px solid #cccccc;
   	border-bottom: 1px solid #e6e6e6;
   	margin: 0px;
-  	font-size: .8em;
+  	font-size: .95em;
   	color: #777;
   	-moz-border-radius: 3px;
   	-webkit-border-radius: 3px;
@@ -121,9 +93,9 @@ h3.kupu-toolbox-heading {
 	cursor: pointer;
 	text-transform: uppercase;
 	text-shadow: 1px 1px 1px #fff;
-	padding: 2px 0 10px;
-	height:	27px;
+	padding:7px 0 10px;
 	background: url(../../../gfx/fnd-tab-dark.png);
+	font-family: 'Ubuntu Condensed';
 }
 .ui-floated-panel{
 	position: absolute;
@@ -177,6 +149,7 @@ div.kupu-smalleditor {
   	border-bottom: 1px solid #e1e1e1;
   	background: url("../../../../../xmd/images/browser/hbox/fnd-tab.png") repeat-x scroll left top #F5F5F5;
   	-moz-border-radius-topright: 12px;
+  	z-index: 5;
 }
 
 /*.kupu-tb-buttons {
@@ -260,11 +233,11 @@ div.kupu-smalleditor {
 }
 
 .kupu-toolbox-heading button {
-	height: 100%;
-   	width: 22px;
+	height: 25px;
+   	width: 25px;
    	padding: 0px;
-   	margin-right: 7px;
-   	margin-left: 1px;
+   	margin-right: 3px;
+   	margin-left: 10px;
    	/*display: none;*/
 }
 
@@ -640,10 +613,11 @@ button.kupu-logo {
 }*/
 
 iframe.kupu-editor-iframe {
-	height: 95%;
+	height: 100%;
 	max-height:;
   	width: 100%;
   	float: left;
+
 }
 
 /* Added for autoscrolling in xEDIT */
@@ -652,15 +626,22 @@ iframe.kupu-editor-iframe {
 	width:78%;
 	float:left;
 	position: relative;
+	margin-top: 0;
+	-webkit-transition: all .2s;
+	-moz-transition: all .2s;
+	-ms-transition: all .2s;
+	-o-transition: all .2s;
+	transition: all .2s;
 }
 
 .iwrapper-extended{ /* when the toolbox is hidden */
         height:100%;
         width:98.5% !important;
         float:left;
+        z-index: 3;
 }
 
-.autoscroll{ /* styles for the divs that do the scroll */
+/*.autoscroll{ /* styles for the divs that do the scroll * /
 	height:2.5%;
 	min-height: 16px;
 	width:100%;
@@ -671,8 +652,7 @@ iframe.kupu-editor-iframe {
 	font-weight:bold;
 	cursor: pointer;
 	background: rgba(157,157,157,.5) url(../../../gfx/bg-scroll-down.png) repeat-x left bottom;
-	/*position: absolute;
-	bottom: 0px;*/
+
 }
 
 .autoscroll:first-child{
@@ -714,6 +694,22 @@ iframe.kupu-editor-iframe {
 	margin-top: 18px;
 }*/
 
+
+.autoscroll{
+	opacity: 0;
+	position: absolute;
+	height: 2.5em;
+	width: 100%;
+	background: rgba(255,255,255,.8);
+
+}
+
+
+.scrolldown{
+	bottom: 0;
+}
+
+
 body.xedit-rngelement{
 	font-family:  Verdana, Sans-serif;
 	padding: 15px 15px 15px 0px;
@@ -729,30 +725,24 @@ textarea.kupu-editor-textarea {
   	display: none;
 }
 
-div.kupu-toolboxes-container {
+.kupu-toolboxes-container {
   	float: left;
   	width: 22%;
  	/* font-size: 0.7em;*/
   	height: 100%;
+  	position: relative;
+	z-index: 3;
 }
 
 div.kupu-toolboxes-container-collapsed {
   	width: 1.42% !important;
 }
 
-div.kupu-toolboxes-collapser {
- 	/* float: left;
-  	width: 4%;*/
+.kupu-toolboxes-collapser {
   	height: 2.5%;
   	cursor: pointer;
   	background: #afafaf url("../../../gfx/arrow-collapser.png") no-repeat right center;
   	border-left:	2px solid #ccc;
-  	/*-moz-border-radius-topleft: 5px;
-  	-moz-border-radius-bottomleft: 5px;
-  	-webkit-border-radius-topleft: 5px;
-  	-webkit-border-radius-bottomleft: 5px;
-  	border-right: 1px dotted #A6C9E2;*/
-
 }
 
 div.kupu-collapsed{
@@ -1486,7 +1476,7 @@ h3 .xedit-attributes-toolbox-button,
 h3 .xedit-attributes-toolbox-button-closed,
 h3 .xedit-attributes-toolbox-button:hover,
 h3 .xedit-attributes-toolbox-button-closed:hover {
-	background-position: -102px -227px;
+	background-position: -105px -229px;
 }
 
 /*New Info Toolbox*/
@@ -1525,7 +1515,7 @@ h3 .xedit-info-toolbox-button-closed:hover {
 
 .kupu-toolbox-heading-closed .xedit-annotations-toolbox-button,
 .kupu-toolbox-heading-closed .xedit-annotations-toolbox-button:hover {
-	background-position: -187px -232px;
+	background-position: -189px -232px;
 }
 
 /*.xedit-annotations-toolbox-button-closed {background-image: url("../../../gfx/annotations_button.png");}
@@ -1547,7 +1537,7 @@ h3 .kupu-toolbox-debuglog-button,
 h3 .kupu-toolbox-debuglog-button-closed,
 h3 .kupu-toolbox-debuglog-button:hover,
 h3 .kupu-toolbox-debuglog-button-closed:hover{
-	background-position:-164px -231px;
+	background-position:-167px -233px;
 }
 /*.kupu-toolbox-undolog-button {background-image: url("../../../gfx/history_button_closed.png");}
 .kupu-toolbox-undolog-button:hover {background-image: url("../../../gfx/history_button_closed_hover.png");}*/
@@ -1566,7 +1556,7 @@ h3 .kupu-toolbox-undolog-button,
 h3 .kupu-toolbox-undolog-button-closed,
 h3 .kupu-toolbox-undolog-button:hover,
 h3 .kupu-toolbox-undolog-button-closed:hover {
-	background-position: -142px -231px;
+	background-position: -144px -231px;
 }
 
 /*.xedit-rngelements-toolbox-button {background-image: url("../../../gfx/rngelements_button_closed.png");}
@@ -2041,6 +2031,10 @@ div.buttons{
 
 /* Breadcrumbs on Xedit */
 
+.kupu-tb-navbar.empty{
+
+}
+
 .kupu-tb-navbar{
 	background: #5ab2a6;
         color: #bfe1dc;
@@ -2049,14 +2043,31 @@ div.buttons{
         -webkit-box-shadow: inset 0 -1px  0 rgba(255,255,255,.2), 0 2px 1px rgba(80,80,80,.4);
         -moz-box-shadow: inset 0 -1px  0 rgba(255,255,255,.2), 0 2px 1px rgba(80,80,80,.4);
         box-shadow: inset 0 -1px  0 rgba(255,255,255,.2), 0 2px 1px rgba(80,80,80,.4);
-        width: 78%;
+        width: 100%;
         position: relative;
         z-index: 2;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         position: absolute;
+        padding-right: 22%;
+        overflow: hidden;
+        -webkit-transition: all .2s;
+        -moz-transition: all .2s;
+        -ms-transition: all .2s;
+        -o-transition: all .2s;
+        transition: all .2s;
+        margin-top: -28px;
+}
 
+
+.kupu-tb-navbar.not-empty{
+	margin-top: 0;
+}
+
+.kupu-tb-navbar.not-empty + .iwrapper{
+	height: calc(100% - 28px);
+	margin-top: 28px;
 }
 
 .kupu-tb-navbar span{

@@ -56,6 +56,6 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-        {button label="Add category" class="add_area"}
+        {button label="Add category" class="add_area btn main_action"}
 </fieldset>
 </form>

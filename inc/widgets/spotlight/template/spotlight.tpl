@@ -20,9 +20,9 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 7740 $
+ *  @version $Revision$
  *}
 
 <div id="%=id%" class="mini-spotlight %=class%">
-	<input type="text" class="" />
+	<input type="text" class="" placeholder="{t}Search{/t}&#8230;" />
 </div>

@@ -23,37 +23,30 @@
  *  @version $Revision$
  *}
 
-{if $languageCount neq 0}
-
-	<form method="post" name="print_form" id="print_form" action="{$action_url}">
-		<input type="hidden" name="nodeid" value="{$nodeID}"><br>
-		<fieldset>
-
-			<legend><span>{t}Available languages and translation{/t}</span></legend>
-			
-				{foreach from=$language_info key=id_language item=language}
-					<p>
-						<label class="aligned">{t}Translation from{/t} {$language.NAME}</label>
-						<input type="text" name="language[{$id_language}]" value="{$language.ALIAS}" class="cajaxg">
-					</p>
-				{/foreach}
-
-		</fieldset>
-
+<form method="post" name="print_form" id="print_form" action="{$action_url}">
+	<input type="hidden" name="nodeid" value="{$nodeID}">
+	<div class="action_header">
+		<h2>{t}Available languages and translation{/t}</h2>
 		<fieldset class="buttons-form">
-			<a href="{$_MESSAGES_PATH}" class="lbOn validate">
-
-				{button label="Reset" class='form_reset' type='reset'}
-				{button label="Modificar" class='validate' }<!--message="Would you like update this information?"-->
-			</a>
+			<a href="{$_MESSAGES_PATH}" class="lbOn validate">{button label="Modificar" class='validate btn main_action' }<!--message="Would you like update this information?"--></a>
 		</fieldset>
-	</form>
-
-{else}
+	</div>
+	<div class="action_content">
+	{if $languageCount neq 0}
 		<fieldset>
-
+			{foreach from=$language_info key=id_language item=language}
+				<p>
+					<label class="aligned">{t}Translation from{/t} {$language.NAME}</label>
+					<input type="text" name="language[{$id_language}]" value="{$language.ALIAS}" class="cajaxg">
+				</p>
+			{/foreach}
+		</fieldset>
+	{else}
+		<fieldset>
 			<legend><span>{t}Available languages{/t}</span></legend>
-	<p>{t}There are no languages associated to this project{/t}</p>
-	</fieldset>
-{/if}
-		
+			<p>{t}There are no languages associated to this project{/t}</p>
+		</fieldset>
+	{/if}
+	</div>
+</form>
+

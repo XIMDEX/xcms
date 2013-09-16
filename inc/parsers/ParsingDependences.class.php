@@ -327,7 +327,7 @@ class ParsingDependences {
 		$nodeDependencies->deleteBySource($idNode);
 
 		$dependencies = new dependencies();
-		$dependencies->BorrarDependenciasNodoDependiente($idNode, $version);
+		$dependencies->DeleteDependenciesDependentNode($idNode, $version);
 
 		$depsMngr = new DepsManager();
 		$depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $idNode);
@@ -428,7 +428,7 @@ class ParsingDependences {
 				// insert in Dependencies table
 
 					$dependencies = new dependencies();
-					$dependencies->InsertaDependencia($idDep, $idNode, $type, $version);
+					$dependencies->insertDependence($idDep, $idNode, $type, $version);
 
 					// insert in Rel table
 
@@ -460,7 +460,7 @@ class ParsingDependences {
 		$nodeDependencies = new NodeDependencies();
 		$nodeDependencies->deleteBySource($idNode);
 		$dependencies = new dependencies();
-		$dependencies->BorrarDependenciasNodoDependiente($idNode, $version);
+		$dependencies->DeleteDependenciesDependentNode($idNode, $version);
 		$depsMngr = new DepsManager();
 		$depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $idNode);
 
@@ -477,7 +477,7 @@ class ParsingDependences {
 					$path_image = str_replace("..",$server_path, $_image);
 					$idNodeDep = $this->_getIdNode($path_image);
 					if(!empty($idNodeDep) ) {
-						$dependencies->InsertaDependencia($idNode, $idNodeDep, $type,$version);
+						$dependencies->insertDependence($idNode, $idNodeDep, $type,$version);
 						$nodeDependencies->set($idNode, $idNodeDep, NULL);
 						$depsMngr->set(DepsManager::STRDOC_NODE, $idNode, $idNodeDep);
 					}

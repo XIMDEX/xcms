@@ -147,7 +147,7 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label='Reset' class='form_reset' type='reset'}
-		{button label='Create news' class='create_news validate'}
+		{button label='Reset' class='form_reset btn' type='reset'}
+		{button label='Create news' class='create_news validate btn main_action'}
 	</fieldset>
 </form>

@@ -26,34 +26,32 @@
 
 
 
-
-
-
-
-
-
 class Action_modifychannel extends ActionAbstract {
-   //Main method: shows initial form
-    function index () {
-    	$idNode = $this->request->getParam('nodeid');
-    	$node = new Node($idNode);
-    	if (!($node->get('IdNode') > 0)) {
-    		$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
-    		$this->render(array($this->messages), NULL, 'messages.tpl');
-    		die();
-    	}
+	//Main method: shows initial form
+    	function index () {
+    		$idNode = $this->request->getParam('nodeid');
+    		$node = new Node($idNode);
+    		
+		if (!($node->get('IdNode') > 0)) {
+    			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
+    			$this->render(array($this->messages), NULL, 'messages.tpl');
+    			die();
+    		}
 
-    	$renderCheck = array(
-    		'ximdex' => '',
-    		'client' => ''
-    	);
-    	$channel = new Channel($idNode);
-    	$renderCheck[$channel->get('RenderMode')] = 'checked';
-    	$values = array(
+    		$renderCheck = array(
+    			'ximdex' => '',
+    			'client' => ''
+    		);
+
+    		$channel = new Channel($idNode);
+    		$renderCheck[$channel->get('RenderMode')] = 'checked';
+		$ext=$channel->get('DefaultExtension')==NULL ? "(empty)": $channel->get('DefaultExtension');
+		$desc=$channel->get('Description')==NULL ? "(empty)": $channel->get('Description');
+    		$values = array(
     			'id_node' => $idNode,
     			'name' => $channel->get('Name'),
-    			'extension' => $channel->get('DefaultExtension'),
-    			'description' => $channel->get('Description'),
+    			'extension' => $ext,
+    			'description' => $desc,
     			'render_check' => $renderCheck,
     			'go_method' => 'modifychannel'
     	);

@@ -25,26 +25,30 @@
 
 
 		<form method="post" name="ml_form" id="ml_form" action="{$action_url}">
-		<fieldset>
+			<div class="action_header">
+				<h2>{t}Modificar Idioma{/t}</h2>
+				<fieldset class="buttons-form">
+					{button label="Modify" class="validate btn main_action" }<!--message="Would you like to modify this language?"-->
+				</fieldset>
+			</div>
+		<div class="action_content">
+			<fieldset>
 
-        <legend><span>{t}Modificar Idioma{/t}</span></legend>
-			<ol>
-           <li> <label class="aligned">{t}ISO name{/t}</label>
-					{$iso_name}
+				<ol>
+			           <li> <label class="aligned">{t}ISO name{/t}</label>
+						{$iso_name}
+					</li>
+				<li><label for="name" class="aligned">{t}Language name{/t}</label>
+						<input type="text" name='Name' id="name" value="{$name}" class='cajag validable not_empty'>
+					</li>
+				<li><label for="description" class="aligned">{t}Description{/t}</label>
+						<input type="text" name='Description' id="description" value="{$description}" class='cajag validable not_empty'>
 				</li>
-			<li><label for="name" class="aligned">{t}Language name{/t}</label>
-					<input type="text" name='Name' id="name" value="{$name}" class='cajag validable not_empty'>
-				</li>
-			<li><label for="description" class="aligned">{t}Description{/t}</label>
-					<input type="text" name='Description' id="description" value="{$description}" class='cajag validable not_empty'>
-			</li>
-			<li><label for="enabled" class="aligned">{t}Activated{/t}</label>
-					<input type="checkbox" name='Enabled' id="enabled" value='1'{if $enabled == 1} checked="checked"{/if}>
-				</li>
-			</ol>
-            </fieldset>
-            <fieldset class="buttons-form">
-					{button type="Reset" class="form_reset" label="Restaurar"}
-					{button label="Modify" class="validate" }<!--message="Would you like to modify this language?"-->
-			</fieldset>
+				<li><label for="enabled" class="aligned">{t}Activated{/t}</label>
+						<input type="checkbox" name='Enabled' id="enabled" value='1'{if $enabled == 1} checked="checked"{/if}>
+					</li>
+				</ol>
+			            </fieldset>
+		</div>
+
 		</form>

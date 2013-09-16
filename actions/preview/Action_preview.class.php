@@ -25,31 +25,23 @@
  */
 
 
-
-
-
-
-
-
-
-
-
 class Action_preview extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
-      	$idNode		= (int) $this->request->getParam("nodeid");
+	// Main method: shows initial form
+    	function index () {
+      		$idNode	= (int) $this->request->getParam("nodeid");
 		$params = $this->request->getParam("params");
-
 
 		$node = new Node($idNode);
 		$data = new DataFactory($idNode);
+
 		$version = $data->GetLastVersion();
 		$subVersion=$data->GetLastSubVersion($version);
+
 		setlocale (LC_TIME, "es_ES"); 
+
 		$date = strftime("%a, %d/%m/%G %R", $data->GetDate($version,$subVersion)); 
 		$user = new User($data->GetUserID($version,$subVersion)); 
 		$userName = $user->GetRealName();
-
 
 		if (($node->nodeType->GetName()!='TextFile') 
 			&& ($node->nodeType->GetName()!='ImageFile') 
@@ -84,33 +76,34 @@ class Action_preview extends ActionAbstract {
 			'user_name' => $userName,
 			'channels' => $_channels,
 			"nodeURL" => $queryManager->getPage() . $queryManager->build(),
-			"go_method" => "preview",
+			"go_method" => "preview"
 		);
 
 		$this->render($values, null, 'default-3.0.tpl');
-    }
+    	}
 
 	function preview() {
-      	$idNode		= (int) $this->request->getParam("nodeid");
+      		$idNode	= (int) $this->request->getParam("nodeid");
 		$params = $this->request->getParam("params");
 		
 		if (!is_null($this->request->getParam("version")) 
 			&& !is_null($this->request->getParam("subVersion")) 
 			&& is_null($this->request->getParam("delete"))) 	{ 
+	
 			// If it is a recovery of a version, first it recovers it and then shows the form
-			$version	= $this->request->getParam("version");
-			$subVersion	= $this->request->getParam("subVersion");
-			$data		= new DataFactory($idNode);
-			$data->RecoverVersion($version,$subVersion);
-			$this->messages->add(_("Se ha recuperado corréctamente el archivo"), MSG_TYPE_NOTICE);
+			$version = $this->request->getParam("version");
+			$subVersion = $this->request->getParam("subVersion");
+			$data = new DataFactory($idNode);
 
+			$data->RecoverVersion($version,$subVersion);
+			$this->messages->add(_("The file has been successfully recovered."), MSG_TYPE_NOTICE);
 		}
 		elseif (!is_null($this->request->getParam("delete"))) {
-			$version	= $this->request->getParam("version");
-			$subVersion	= $this->request->getParam("subVersion");
-			$data		= new DataFactory($idNode);
+			$version = $this->request->getParam("version");
+			$subVersion = $this->request->getParam("subVersion");
+			$data = new DataFactory($idNode);
 			$data->DeleteSubversion($version,$subVersion);
-			$this->messages->add(_("Se ha eliminado corréctamente el archivo"), MSG_TYPE_NOTICE);
+			$this->messages->add(_("The file has been successfully deleted."), MSG_TYPE_NOTICE);
 		}
 
 		$queryManager = new QueryManager();
@@ -123,5 +116,7 @@ class Action_preview extends ActionAbstract {
 
 		$this->render($values);
 	}
+
 }
+
 ?>

@@ -1,0 +1,132 @@
+
+@import "../../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+
+
+#body .advanced-btn{
+		display: block;
+		text-align: right;
+		color: $c_selected;
+		padding: 1em 0;
+	}
+
+.advanced-settings{
+	height: 0;
+	overflow: hidden;
+
+}
+
+/**************
+// GALLERY themes
+***************/
+.theme{
+	display: inline-block;
+	position: relative;
+	margin: 1em 3% 2.5em 0;
+	padding: 15px 10px;
+	border: 1px solid transparent;
+	vertical-align: top;
+	max-width: 47%;
+	min-width: 260px;
+	p{
+		padding: .4em 0;
+	}
+
+	&:hover{
+		background: $c_white;	@include boxshadow(0 1px 1px $s_black);
+		border: 1px solid $c_grey-ppp;
+		@include radius(3px);
+	}
+
+	&:hover .actions{
+		display: block;
+	}
+
+	&:hover .img_container::before{
+		content: '';
+		display: block;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: rgba(123, 202, 191, .5);
+	}
+}
+
+.title{
+	font-size: 19px;font-size: 1.9rem;
+	border-bottom: 1px solid $c_mainlight;
+	color: $c_grey;
+}
+
+.type{
+	color: $c_grey-p;
+
+}
+
+.img_container{
+	margin-bottom: 15px;
+	position: relative;
+	cursor: pointer;
+	img{
+		max-width: 100%
+	}
+
+}
+
+.actions{
+	position: absolute;
+	top: 50%;
+	left: 0;
+	display: none;
+	z-index: 2;
+	width: 100%;
+	a{
+		background: $c_white;
+		width: 50px;
+		height: 50px;
+		padding: 0;
+		text-align: center;
+		@include radius(50%);
+		overflow: hidden;
+		white-space: nowrap;
+		font-size: 0;
+		@include boxshadow(0 2px 0 $s_black);
+		@include transition (all, .2s);
+		margin: 0 7% 0 19%;
+		position: absolute;
+		left: 45%;
+		&:first-child{
+			left: 0;
+		}
+
+	&:hover{
+		@include boxshadow(none);
+		width: 56px;
+		height: 56px;
+		-webkit-transform: translate(-3px, -3px);
+		   -moz-transform: translate(-3px, -3px);
+		    -ms-transform: translate(-3px, -3px);
+		     -o-transform: translate(-3px, -3px);
+		        transform: translate(-3px, -3px);
+	}
+
+	&::before{
+		content: "\e002";
+		color: $c_main;
+		font-size: 28px; font-size: 2.8rem;
+		line-height: 50px;
+	}
+
+
+	&.custom::before{
+		font-size: 30px; font-size: 3rem;
+		content: "\e000";
+	}
+
+
+	&:hover::before{
+		font-size: 34px; font-size: 3.4rem;
+		line-height: 56px;
+	}
+
+	}
+}

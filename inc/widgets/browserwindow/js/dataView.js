@@ -13,7 +13,7 @@
  * @copyright (C) Open Ximdex Evolution SL, {@link http://www.ximdex.org}
  * @license Commercial (check ximdex version 2 for the open source software)
  *
- * $Id: dataView.js 8055 2011-11-14 14:02:12Z mjcanga $
+ * $Id$
  */
 
 

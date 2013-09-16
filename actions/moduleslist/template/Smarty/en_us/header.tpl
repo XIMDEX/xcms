@@ -26,7 +26,7 @@
 <div class="gral">
 	<div class="content_header">
 
-				<h2>Module {$module_name}</h2>
-				<h3>Description of {$module_name}</h3>
+				<h2>&lt; Module {$module_name} &gt;</h2>
+				<h3>Description of {$module_name} module.</h3>
 	</div>
 	<div class="content">

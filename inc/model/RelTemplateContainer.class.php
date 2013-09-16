@@ -77,7 +77,7 @@ class RelTemplateContainer extends RelTemplateContainer_ORM {
 				$doc = new StructuredDocument($child);
 				$version = $doc->GetLastVersion();
 				$dependencies = new dependencies();
-				$dependencies->InsertaDependencia($idTemplate,$child,'PVD',$version);
+				$dependencies->insertDependence($idTemplate,$child,'PVD',$version);
 			}
 		}
 		//*******************************************

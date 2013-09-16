@@ -23,12 +23,11 @@
  *  @version $Revision$
  *}
 
-
+<h2>{t}Modify group{/t}</h2>
 <form method="post" name="mg_form" id="mg_form" action="{$action_url}"  class='validate_ajax'>
   <input type=hidden name='id_node' value="{$id_node_parent}">
   <br>
   <fieldset>
-    <legend><span>{t}Modify group{/t}</span></legend>
     <ol>
       <li>
         <label for="name" class="aligned">{t}Group{/t}</label>
@@ -37,8 +36,8 @@
     </ol>
   </fieldset>
   <fieldset class="buttons-form">
-    {button label="Reset" class='form_reset' type="reset"}
-    {button label="Modify" class='validate' }
+    {button label="Reset" class='form_reset btn' type="reset"}
+    {button label="Modify" class='validate  btn main_action' }
     <!--message="Woul you like to modify this group?"-->
   </fieldset>
 </form>

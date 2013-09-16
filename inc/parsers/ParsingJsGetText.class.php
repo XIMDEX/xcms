@@ -89,7 +89,7 @@ class ParsingJsGetText {
 			$_js = str_replace("/", "_", $_js);
 			$_js = str_replace("\\", "_", $_js);
 			$_js = str_replace(".", "_", $_js);
-			$this->_file = String::convertirTexto($_js).".js";
+			$this->_file = String::convertText($_js).".js";
 		}
 	}
 

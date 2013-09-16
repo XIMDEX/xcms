@@ -46,7 +46,6 @@ class View_Xslt extends Abstract_View {
 
 
 		$content = $this->retrieveContent($pointer);
-
 		if(!$this->_setNode($idVersion))
 			return NULL;
 
@@ -60,7 +59,7 @@ class View_Xslt extends Abstract_View {
 			return NULL;
 
 
-		$ptdFolder = Config::getValue("GeneratorTemplateDir");
+		$ptdFolder = Config::getValue("TemplatesDirName");
 
 		$section = new Node($this->_idSection);
 		$sectionPath = $section->class->GetNodePath();
@@ -82,7 +81,7 @@ class View_Xslt extends Abstract_View {
 				return $content;
 			}
 
-			if (is_object($this->_node)) {
+/*			if (is_object($this->_node)) {
 
 				XMD_Log::info("obteniendo propiedad otf para id ".$this->_node->get('IdNode'));
 				$isOTF = $this->_node->getSimpleBooleanProperty('otf');
@@ -92,12 +91,12 @@ class View_Xslt extends Abstract_View {
 					return $content;
 				}
 			}
+*/
 		}
 
 		// XSLT Transformation
 
 		XMD_Log::info('Starting xslt transformation');
-
 		if (!file_exists($docxap)) {
 			$project = new Node($this->_idProject);
 			$nodeProjectPath = $project->class->GetNodePath();

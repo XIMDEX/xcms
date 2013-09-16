@@ -347,6 +347,29 @@ class ActionAbstract extends IController {
 		$this->addJs(urldecode($file));
 	}
 
+	/**
+	 * <p>Genera y añade el código Javascript necesario para
+	 * lanzar la siguiente acción tras la actual.</p>
+	 * <p>Ximdex será el encargado de obtener la acción siguiente a la actual
+	 * y ejecutarla sobre el nodo especificado.</p>
+	 *
+	 * @param $idnode El id del nodo sobre el que ejecutar la siguiente acción
+	 */
+	/*function nextAction($idnode) {
+		$queryManager = new QueryManager(false);
+		$fileNextAction = sprintf('%s%s',
+			'/xmd/loadaction.php',
+			$queryManager->buildWith(array(
+					'xparams[id_node]' => $idnode,
+					'xparams[action_name]' => str_replace("Action_", "", get_class($this)),
+					'js_file' => 'nextAction',
+					'method' => 'includeDinamicJs',
+					'void' => 'SpacesInIE7HerePlease'
+			))
+		);
+
+		$this->addJs(urldecode($fileNextAction));
+	}*/
 
 	/**
 	 *
@@ -490,14 +513,17 @@ class ActionAbstract extends IController {
 	 */
 
 	public function tourEnabled($userId, $action=null) {
-    	if(!ModulesManager::isEnabled('ximTOUR'))
-    		return false;
-	$actionsStats = new ActionsStats();
-	if (!$action)
-	    $action = $this->actionCommand;
-	$result = $actionsStats->getCountByUserAndAction($userId, $action);
+		if(!ModulesManager::isEnabled('ximTOUR'))
+    			return false;
 
-		return ($result === null || $result < 10) ? true : false;
-    }
+		$actionsStats = new ActionsStats();
+		$numReps = Config::getValue('ximTourRep');
+		if (!$action)
+	    		$action = $this->actionCommand;
+
+		$result = $actionsStats->getCountByUserAndAction($userId, $action);
+
+		return ($result === null || $result < $numReps) ? true : false;
+    	}
 }
 ?>

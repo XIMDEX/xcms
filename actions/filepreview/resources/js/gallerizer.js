@@ -135,16 +135,13 @@
                     $newElement.append($close);
 
                    // Close the opened image
-
                    $close.click(function(){
-                       $(".opened").slideUp(400, function() {
+                   	$(".opened").slideUp(400, function() {
                         $(".opened").remove();
                         $(".viewing", $that).removeClass("viewing");
 
                     });
                    });
-
-
 
                    var $next = $anchorPoint.next();
 

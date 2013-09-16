@@ -498,7 +498,7 @@ INSERT INTO `Nodes`  VALUES (7322,5300,5008,'Publish ximNEWS section',NULL,NULL,
 INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5306,'images',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5301,'bulletins',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5304,'news',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5026,'ximptd',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5026,'templates',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (NULL,5300,5022,'common',NULL,NULL);
 
 -- It is reserved for XimNEWS the NodeAllowedContents from 200 on --

@@ -259,12 +259,13 @@ function initKupuTools(kupu) {
     var button = getFromSelector('kupu-ximletdrawer-button');
 	KupuButtonDisable(button);
 
-	//Navbar Tools
-	var navbartagtool = new NavBarTool({});
+
+    //Navbar Tools
+    var navbartagtool = new NavBarTool({});
 	kupu.registerTool('navbartagtool',navbartagtool);
 
 	var navbartagtoolbox = new NavBarToolBox({});
-	navbartagtool.registerToolBox("navbartagtoolbox",navbartagtoolbox); 
+	navbartagtool.registerToolBox("navbartagtoolbox",navbartagtoolbox);    
 
     // making the prepareForm method get called on form submit
     // some bug in IE makes it crash on saving the form when a lib drawer was added to the page at some point, remove it on form submit

@@ -1,0 +1,128 @@
+
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+@import "../themes/ximdex_theme";
+
+div.xim-tagsinput-container {
+   padding: 10px 10px 0 10px;
+	overflow: auto;
+}
+
+.kupu-toolbox-tags-button{
+	background-position: -7px -161px;	
+}
+
+/** Tags list */
+div.xim-tagsinput-container ul.xim-tagsinput-list{
+   padding: 0;
+   margin: 0;
+   overflow: auto;
+}
+
+li.xim-tagsinput-newtag {
+   display: inline;
+   float: left;
+   list-style: none;
+   margin: 0 10px 10px 0;
+   padding: 0 2px 2px 0;
+   width: 23px;
+}
+
+ li.xim-tagsinput-tag {
+   border: 1px solid $c_lightmain;
+   @include radius(6px); 
+   background: $c_lightmain;
+   display: inline;
+   float: left;
+   width: auto;
+   list-style: none;
+   margin: 0 10px 10px 0;
+   padding: 0 3px 4px 5px;
+   
+}
+li.xim-tagsinput-tag:hover {
+   border-color: $c_darkmain;
+   background: $c_main;
+   color: $c_white;
+}
+
+
+div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label {
+   color: $c_black;
+   text-decoration: none;
+   font-size: 12px;
+}
+div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label:hover {
+   color: $c_black;
+}
+div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label a {
+   text-decoration: none;
+   font-weight: bold;
+   padding: 1px 6x 1px 4px;
+   color: $c_white;
+   position: relative;
+}
+/** Tags list suggest */
+div.xim-tagsinput-container div.xim-tagsinput-container-suggested, div.xim-tagsinput-container div.xim-tagsinput-container-related   {
+	display: none;
+	float: left;
+	clear: both;  
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li, div.xim-tagsinput-container ul.xim-tagsinput-list-related li  {
+
+   border: 1px solid $c_lightmain;  
+   @include radius(6px); 
+   display: inline;
+   float: left;
+   width: auto;
+   list-style: none;
+   margin: 0 10px 10px 7px;
+   padding: 0 3px 2px 23px;
+   background-color: $c_white-l;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-people, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-people {
+	background: $c_white-l url(imgs/people.png) no-repeat 3px 1px;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-places, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-places {
+	background: $c_white-l url(imgs/places.png) no-repeat 3px 1px;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-organisations, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-organisations {
+  	background: $c_grey-pp url(imgs/organisations.png) no-repeat 3px 1px;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li a:hover, div.xim-tagsinput-container ul.xim-tagsinput-list-related li a:hover {
+   color: $c_white;
+}
+
+div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li img, div.xim-tagsinput-container ul.xim-tagsinput-list-related li img {
+	margin: 8px 4px 2px 0px;
+	padding: 0;
+	width: 16px;
+	height: 16px;
+}

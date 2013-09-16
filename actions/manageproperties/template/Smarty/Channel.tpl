@@ -25,10 +25,9 @@
 
 
 {assign var="channels" value=$properties.Channel}
-
+<h2>{t}Channels{/t}</h2>
 <fieldset>
 
-<legend><span>{t}Channels{/t}</span></legend>
 <div class="manageproperties">
 
 	<div class="xright-block">
@@ -93,7 +92,7 @@
 					<div class="{if ($channel.Checked != 1)}novisible{/if} apply">
 						<button
 							type="button"
-							class="channels_apply channels_apply_{$channel.IdChannel}"
+							class="channels_apply channels_apply_{$channel.IdChannel} btn"
 							name="Channel_apply"
 							value="{$channel.IdChannel}">
 						{t}Associate{/t}

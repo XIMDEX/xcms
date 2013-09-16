@@ -112,7 +112,7 @@ then
 		while [ $install_demo = "Y" ]
 		do
 			echo ""
-			io.question "Do you want to install other of our demo projects? "
+			io.question "Do you want to install another demo project? "
 			option=$(io.getOption)
 			if [ "$option" = '1' ]
 			then

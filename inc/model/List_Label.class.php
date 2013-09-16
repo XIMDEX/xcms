@@ -33,5 +33,5 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/List_Label_ORM.class.php';
 
 class List_Label extends List_Label_ORM {
-	
+
 }

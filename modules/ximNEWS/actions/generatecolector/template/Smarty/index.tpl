@@ -48,7 +48,7 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Generate colector" class="validate"}
+		{button label="Generate colector" class="validate btn main_action"}
 	</fieldset>
 </form>
 

@@ -4,10 +4,49 @@ X.actionLoaded(function(event, fn, params) {
 
 		var tagslist = fn('.xim-tagsinput-container');
 		fn(tagslist).tagsinput();
+		var url = X.baseUrl+"?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent";
+		var limitResult = 5;
+		$.ajax({
+			url:url,
+			data:{
+					nodeid: params.nodes[0]
+   				 },
+			dataType:"json",
+			success:function(data){
 
-	 //  var iksdata = '{"status":"ok","organisations":{"Article":[],"U . S . State Department":[],"Al - Jazeera":[],"BBC":["http:\/\/dbpedia.org\/resource\/BBC"],"Army":[]},"places":{"Tahrir Square":[],"Cairo":["http:\/\/dbpedia.org\/resource\/Cairo"],"Egypt":["http:\/\/dbpedia.org\/resource\/Egypt"],"U . S":[]}, "people":{"Hosni Mubarak":[]}}';
-	 //  var iksdata  = $.parseJSON(iksdata);
-	//  fn(tagslist).tagsinput('addTagslist', iksdata );
+				var parsedData  = $.parseJSON(data);
+				if (parsedData){
+					var isSemantic = 0;
+					tags = [];
+					for (var i in parsedData){
+					
+						switch(i){
+							case "content":
+								isSemantic = 0;
+								break;
+							case "semantic":
+								isSemantic = 1;
+								break;
+						}
+						if (i != "status"){
+						var typeElement = parsedData[i];
+							for (var j in typeElement){
+								var tag = typeElement[j];
+								var count = 0;
+								for (var nameTag in tag){
+									tags.push({isSemantic:0,text:nameTag,type:tag.type});
+									count++;
+									if (count >= limitResult)
+										break;
+								}
+							}
+						}
+					}
+
+					fn(tagslist).tagsinput('addTagslist', tags );
+				}
+			}
+		});
 
 		fn('.nube_tags').children("li").children("span").click(function (event) {
 

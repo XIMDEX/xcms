@@ -23,11 +23,11 @@
  *  @version $Revision$
  *}
 
+<h2>{t}Next state{/t}</h2>
 <form method="post" name="workflow_forward" action="{$action_url}">
 	<input type="hidden" name="default_message" value="{$defaultMessage}">
 
 	<fieldset class="">
-		<legend><span>{t}Next state{/t}</span></legend>
 		<ol>
 			<li>
 				<span>{t}Do you want to move this file{/t} {t}from the state{/t} <strong>{$currentStateName}</strong> {t}to the state{/t}: </span>
@@ -42,9 +42,8 @@
 			</li>
 		</ol>
 	</fieldset>
-
+        <h2>{t}Notifications{/t}</h2>
 	<fieldset class="notifications">
-                <legend><span>{t}Notifications{/t}</span></legend>
                 <ol>
                         <li>
                                 <label for="sendNotifications" class="aligned">{t}Send notifications{/t}</label>
@@ -87,8 +86,8 @@
         </fieldset>
 
 	<fieldset class="buttons-form">
-		{button class="close-button" label="Cancel"}
-		{button class="validate accept-button" label="Accept"}
+		{button class="close-button btn" label="Cancel"}
+		{button class="validate accept-button btn main_action" label="Accept"}
 	</fieldset>
 
 </form>

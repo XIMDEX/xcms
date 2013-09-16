@@ -26,43 +26,109 @@
 
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
+ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 class Action_setmetadata extends ActionAbstract {
 
-    function index() {
+  function index() {
    	$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
-	$this->addJs('/actions/setmetadata/resources/js/setmetadata.js','ximTAGS');
-	$this->addCss('/actions/setmetadata/resources/css/setmetadata.css','ximTAGS');
+   	$this->addCss('/inc/widgets/select/css/ximdex.select.css');
+   	$this->addJs('/inc/widgets/select/js/ximdex.select.js');
+		$this->addJs('/actions/setmetadata/resources/js/setmetadata.js','ximTAGS');
+		$this->addCss('/actions/setmetadata/resources/css/setmetadata.css','ximTAGS');
 
- 	$idNode	= (int) $this->request->getParam("nodeid");
-	$actionID = (int) $this->request->getParam("actionid");
-	$params = $this->request->getParam("params");
-	$tags = new Tag();
+	 	$idNode	= (int) $this->request->getParam("nodeid");
+		$actionID = (int) $this->request->getParam("actionid");
+		$params = $this->request->getParam("params");
+		$tags = new Tag();
+		$max=$tags->getMaxValue();
+	
 
- 	$values = array(
- 		'nube_tags' => $tags->getTags(),
-		'id_node' => $idNode,
-		'go_method' => 'save_metadata',
-		'nodeUrl' => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
-	);
-
-	$this->render($values, 'index', 'default-3.0.tpl');
-    }
-
-    function save_metadata() {
-     	$idNode	= (int) $this->request->getParam("nodeid");
-
-		if(array_key_exists("tags", $_POST) ) {
-			$tags = new RelTagsNodes();
-     		$previous_tags = $tags->getTags($idNode);
-		  	$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
-		 }
-		$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
-		$values = array(
-			'messages' => $this->messages->messages,
+	 	$values = array(
+	 		'nube_tags' => $tags->getTags(),
+			'max_value' => $max[0][0],
+			'id_node' => $idNode,
+			'go_method' => 'save_metadata',
+			'nodeUrl' => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
 		);
 
-		$this->render($values);
-   }
+		$this->render($values, 'index', 'default-3.0.tpl');
+  }
+
+	/**
+	*<p>Get xOWL related terms from content. It's just for structuredDocument </p>
+	*/
+	public function getRelatedTagsFromContent(){
+
+		$idNode	= (int) $this->request->getParam("nodeid");
+		$result = array();
+		$node = new Node($idNode);
+		$result = array();
+		if ($node->nodeType->get('IsStructuredDocument')){
+			$content = $node->GetContent();
+			$result = $this->getRelatedTags($content);
+		}
+
+		$this->sendJson($result);
+	}
+
+	/**
+	*<p>Get a json string with related terms from $content param</p>
+	*@param $content string with text to search terms.
+	*@return false if error, a json string otherwise.
+	*/
+	private function getRelatedTags($content){
+				
+		$ontologyService = new OntologyService();
+		return $ontologyService->suggest($content);
+	}
+
+  /**
+	*<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
+	*<p>The syntax for the json returned is: </p>
+	*<code>   {"nemo1":{
+	*				type:"type1",
+	*				isSemantic:"isSemantic"
+	*			 },
+	*		     ...
+	*	}
+	*</code>
+  */
+  function loadAllNamespaces(){
+
+  	$result = array();
+  	//Load from Xowl Service
+  	$namespacesArray = OntologyService::getAllNamespaces();
+  	//For every namespace build an array. This will be a json object
+  	foreach ($namespacesArray as $namespace) {
+  			$nemo = $namespace->get("nemo");
+  			$array = array(
+  						"type"=>$namespace->get("type"),
+  						"isSemantic"=>$namespace->get("isSemantic")
+					);
+
+  			$result[$nemo] = $array;
+  	}
+
+  	//Sending json from result array
+	$this->sendJSON($result);
+
+  }
+
+  function save_metadata() {
+   	$idNode	= (int) $this->request->getParam("nodeid");
+
+	if(array_key_exists("tags", $_POST) ) {
+		$tags = new RelTagsNodes();
+   		$previous_tags = $tags->getTags($idNode);
+	  	$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
+	 }
+	$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
+	$values = array(
+		'messages' => $this->messages->messages,
+	);
+
+	$this->render($values);
+ }
 }
 

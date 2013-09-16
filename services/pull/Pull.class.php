@@ -172,7 +172,7 @@ class Pull {
 		$serverId = $portal->get('IdPortal');
 
 		$serverNode = new Node($serverId);
-		$folderId = $serverNode->GetChildByName('ximdoc');
+		$folderId = $serverNode->GetChildByName('documents');
 
 		if (!($folderId > 0)) return NULL;
 		

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	{URL_ROOT}			Ximdex base URL.
+	{XIMDEX_ROOT_PATH}	Ximdex base installation path.
+	{?}					Wildcard, use it with channels and languages for example.
+-->
+<project name="{?}" nodetypename="PROJECT" Transformer="xslt" channel="{?}" language="{?}">
+	<section
+		name="Local_server" nodetypename="SERVER"
+		protocol="LOCAL" login="" password="" host="localhost" port="0"
+		url="{URL_ROOT}/data/previos/" initialDirectory="{XIMDEX_ROOT_PATH}/data/previos/"
+		overrideLocalPaths="0" enabled="1" previsual="0" description="Local" isServerOTF="false">
+
+		<ximdoccontainer>
+			<document name="index" nodetypename="XMLDOCUMENT" templatename="rng-bootstrap-based" channel="{?}" language="{?}" />
+		</ximdoccontainer>
+		<!--<ximletcontainer>
+			<ximlet name="menu" nodetypename="XIMLET" templatename="rng-ximlet-bootstrap-menu"
+				channel="{?}"/>
+		</ximletcontainer>-->
+		<ximletcontainer>
+			<ximlet name="config" nodetypename="XIMLET" templatename="rng-configuracion" channel="{?}" language="{?}"/>
+			<ximlet name="menu" nodetypename="XIMLET" templatename="rng-ximlet-bootstrap-menu" channel="{?}" language="{?}"/>
+			<ximlet name="footer" nodetypename="XIMLET" templatename="rng-bootstrap-footer" channel="{?}" language="{?}"/>
+		</ximletcontainer>
+
+	</section>
+</project>

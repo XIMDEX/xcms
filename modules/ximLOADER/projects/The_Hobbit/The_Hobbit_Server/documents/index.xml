@@ -1,0 +1,97 @@
+<top_block>
+	<navigation_block>
+		<link file="#" id="selected">Home</link>
+		<link file="#" id="">the journey</link>
+		<link file="#" id="">characters</link>
+		<link file="#" id="">gallery</link>
+		<link file="#" id="">history</link>
+	</navigation_block>
+	<pattern_block />
+	<header_block>
+		<title>The Hobbit</title>
+		<paragraph>Adventures of Bilbo Baggins</paragraph>
+	</header_block>
+	<pattern_block />
+</top_block>
+<content_block>
+	<spacer_block />
+	<item_block>
+		<item_title>An unexpected Party</item_title>
+		<item_metadata>Chapter One</item_metadata>
+		<item_body>
+			<subtitle>Hobbits are introduced</subtitle>
+			<paragraph>
+				Bilbo Baggins invites Gandalf to tea. The next day
+				Gandalf arrives and with him comes thirteen Dwarves.
+				After eating they discuss the recovery of the treasure
+				that the dragon Smaug took from Erebor, and Bilbo is
+				hired as their burglar.
+			</paragraph>
+			<extimage class="left"
+				url="http://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Bag_End.jpg/300px-Bag_End.jpg"
+				width="" height="" alt_text="" />
+		</item_body>
+	</item_block>
+	<item_block>
+		<item_title>Roast Mutton</item_title>
+		<item_metadata>Chapter Two</item_metadata>
+		<item_body>
+			<subtitle>Bilbo and Gandalf meet the dwarves</subtitle>
+			<paragraph>
+				The next day Bilbo and Gandalf meet the Dwarves at The
+				Green Dragon Inn, from there they set off on their
+				adventure, Gandalf disappears and they lose some of
+				their supplies in a river, then they see a light in the
+				trees and send Bilbo to investigate. Bilbo discovers
+				three Trolls, and is captured when he attempts to pick
+				one of the trolls pockets, when the Dwarves come up the
+				trolls are distracted and capture them while Bilbo runs
+				and hides. Gandalf tricks the trolls by throwing his
+				voice and they fight until dawn, when they are turned to
+				stone. Gandalf, Bilbo, and the Dwarves then find the
+				cave of the three trolls, within they find swords and
+				provisions, before they continue on their journey.
+			</paragraph>
+			<extimage class="left"
+				url="http://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Thorin_in_blue_mountains.jpg/300px-Thorin_in_blue_mountains.jpg"
+				width="" height="" alt_text="" />
+		</item_body>
+	</item_block>
+	<item_block>
+		<item_title>A Short Rest</item_title>
+		<item_metadata>Chapter Three</item_metadata>
+		<item_body>
+			<subtitle>
+				Gandalf, Bilbo, and the Dwarves headed for Rivendell
+			</subtitle>
+			<paragraph>
+				Gandalf, Bilbo, and the Dwarves headed for Rivendell,
+				when they arrived there they stayed for at least
+				fourteen days. During which time they were refreshed and
+				their provisions restocked, and on the last day of their
+				stay Elrond had a look at the swords they had collected
+				from the troll cave, he told Gandalf that his sword was
+				named Glamdring, and Thorin that his was named Orcrist.
+				He also looked at their map, and discovered Moon-letters
+				written upon it. The next day they set off on their way
+				to the Misty Mountains.
+			</paragraph>
+			<extimage class=""
+				url="http://upload.wikimedia.org/wikipedia/en/thumb/6/69/Elrond11.jpg/300px-Elrond11.jpg"
+				width="" height="" alt_text="" />
+		</item_body>
+		<spacer_block />
+		<item_body identificador="annotator"></item_body>
+	</item_block>
+	<divider_block />
+</content_block>
+<footer_block>
+	copyright 2006
+	<link file="" id="">Website.com</link>
+	. Valid
+	<link file="" id="">CSS</link>
+	&amp;
+	<link file="" id="">XHTML</link>
+	. Template design by
+	<link file="" id="">Arcsin</link>
+</footer_block>

@@ -80,6 +80,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 
 		$language = new Language();
 		$languages = $language->getLanguagesForNode($idNode);
+
 		// if no templates or no channels show to user a new template with info.
 
 		$reloadTree = false;
@@ -109,7 +110,7 @@ class Action_createxmlcontainer extends ActionAbstract {
     	$node = new Node($idNode);
     	$idNode = $node->get('IdNode');
 		$formChannels = array();
-
+	
 
     	if (!($idNode > 0)) {
     		$this->messages->add(_('An error ocurred estimating parent node,')

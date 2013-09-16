@@ -23,25 +23,27 @@
  *  @version $Revision$
  *}
 
-
 		<form method="post" name="cr_form" id="cr_form" action="{$action_url}">
 		<input type="hidden" name="id_node" value="{$id_node}">
-		<fieldset>
-        
-        <legend><span>{t}Add role{/t}</span></legend>
-						<ol>
-                        <li><label for="name" class="aligned">{t}Name{/t}</label>
-								<input type="text" name="name" id="rolename" class="cajaxg validable not_empty">
-							</li>
-                            
-						<li><label for="description" class="aligned">{t}Description{/t}</label>
-								<input type="text" name="description" id="description" class="cajaxg validable not_empty">
-							</li>
-					</ol>
-                    </fieldset>
-                    <fieldset class="buttons-form">
-								{button label="Reset" class='form_reset' type="reset"}
-								{button label="Create" class='validate'}<!-- message="do you want to create the role?"-->
-							
-                            </fieldset>
+		<div class="action_header">
+			<h2>{t}Add role{/t}</h2>
+			<fieldset class="buttons-form">
+								{button label="Create" class='validate btn main_action'}<!-- message="do you want to create the role?"-->
+            </fieldset>
+		</div>
+		<div class="action_content">
+			<fieldset>
+
+							<ol>
+			                        <li><label for="name" class="aligned">{t}Name{/t}</label>
+									<input type="text" name="name" id="rolename" class="cajaxg validable not_empty">
+								</li>
+
+							<li><label for="description" class="aligned">{t}Description{/t}</label>
+									<input type="text" name="description" id="description" class="cajaxg validable not_empty">
+								</li>
+						</ol>
+			                    </fieldset>
+		</div>
+
                             </form>

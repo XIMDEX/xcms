@@ -25,12 +25,11 @@
  */
 
 
-
-
 require_once(XIMDEX_ROOT_PATH. '/inc/modules/ModulesManager.class.php');
 ModulesManager::file('/inc/db/db.inc');
+
 /**
- *
+ * This class handles all the information stored into the Config table on the data model
  */
 class Config {
 
@@ -43,8 +42,7 @@ class Config {
 	 * @return none
 	 */
 	function Config() {
-    
-		$this->configData = array();
+    		$this->configData = array();
 	}
     
 	/**
@@ -64,7 +62,6 @@ class Config {
 	function & getConfigData() {
 	}
    
-
 	public static function exists($key) {
 
 		$conf =& Config::getInstance();
@@ -85,7 +82,6 @@ class Config {
 		$conf =& Config::getInstance();
 
 		if (! isset($conf->configData[$key])) {
-			//print("not_set $key\n");
 
 			// Load config from database.
 			$dbObj = new DB();
@@ -96,11 +92,7 @@ class Config {
 				$conf->setValue($key, $dbObj->GetValue('ConfigValue'));
 			} else {
 				$backtrace = debug_backtrace();
-				error_log(sprintf('Intentando obtener un valor de config que no existe [inc/persistence/Config.class.php] script: %s file: %s line: %s valor: %s', 
-							$_SERVER['SCRIPT_FILENAME'],
-							$backtrace[0]['file'],
-							$backtrace[0]['line'],
-							$key));
+				error_log(sprintf('Trying to access to a value that does not exist [inc/persistence/Config.class.php] script: %s file: %s line: %s value: %s', $_SERVER['SCRIPT_FILENAME'],$backtrace[0]['file'],$backtrace[0]['line'],$key));
 			}
 		}
 		return isset($conf->configData[$key]) ? $conf->configData[$key] : NULL;
@@ -110,13 +102,10 @@ class Config {
 	 *
 	 */
 	function setValue($key, $value) {
-		//print("setValue($key, $value)\n");
-        
 		$this->configData[$key] = $value;
 	}
    
    	function update($key, $value) {
-
 		if (!self::exists($key)) {
 			$dbObj = new DB();
 			$result = $dbObj->Execute("INSERT INTO Config VALUES (NULL, '$key', '$value')");

@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8113 $
+ *  @version $Revision$
  */
 
 
@@ -39,7 +39,6 @@ class GenericDatasource extends AbstractDatasource {
 
 	const DS_COMPOSER = 'Composer';
 	const DS_XVFS = 'XVFS';
-	const DS_TOLDOX = 'tolDOX';
 	const DS_TAGS = 'tags';
 
 	static protected $confFile = null;
@@ -80,7 +79,6 @@ class GenericDatasource extends AbstractDatasource {
 				$backEndString = strtolower(get_class($backEnd));
 
 				$backEndtoConst = array(
-						'xvfs_backend_tol' => self::DS_TOLDOX,
 						'xvfs_backend_xnodes' => self::DS_XVFS,
 						'xvfs_backend_tags' => self::DS_TAGS
 						);

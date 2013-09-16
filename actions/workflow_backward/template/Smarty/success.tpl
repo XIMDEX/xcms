@@ -22,13 +22,11 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+<h2>{t}Messages{/t}</h2>
 
-<fieldset>
-        <legend><span>{t}Messages{/t}</span></legend>
-        <ol>
                 <li>{t}The document has been moved to the previous state.{/t}</li>
         </ol>
-</fieldset>
+
 
 <fieldset class="buttons-form">
 {if ($goback) }

@@ -22,64 +22,54 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+.language-tabs div.tabs-container {
+  overflow: hidden; }
 
+.languages-news .xim-tabs-list-selector {
+  background: url("../../../../../../xmd/images/action/fnd-legend-span.png") repeat-x scroll left bottom transparent;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  margin-top: 4px;
+  height: 24px;
+  width: 24px;
+  right: 6px; }
 
-.language-tabs div.tabs-container{
-	overflow:hidden;
-}
+.languages-news .xim-tabs-list-selector:before {
+  display: block;
+  width: 24px;
+  height: 24px;
+  /*background: red;*/
+  content: '...';
+  color: #fff;
+  text-shadow: 0px -1px 0px #006b6c;
+  text-indent: 0px;
+  padding: 2px 5px; }
 
-.languages-news .xim-tabs-list-selector{
-	background: url("../../../../../../xmd/images/action/fnd-legend-span.png") repeat-x scroll left bottom transparent;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	margin-top: 4px;
-	height: 24px;
-	width: 24px;
-	right: 6px;
-}
+.languages-news .xim-tabs-list-selector:hover {
+  background: url("../../../../../../xmd/images/action/fnd-lang-span-default.png") repeat-x scroll left bottom transparent; }
 
-.languages-news .xim-tabs-list-selector:before{
-	display: block;
-	width: 24px;
-	height: 24px;
-	/*background: red;*/
-	content: '...';
-	color: #fff;
-	text-shadow: 0px -1px 0px #006b6c;
-	text-indent: 0px;
-	padding: 2px 5px;
-}
+.languages-news .xim-tabs-list:before {
+  content: ' ';
+  background: url("../../../../../../xmd/images/action/fnd-legend.png") no-repeat scroll left bottom transparent;
+  display: block;
+  width: 22px;
+  height: 8px;
+  top: 26px;
+  right: 6px;
+  position: absolute; }
 
-.languages-news .xim-tabs-list-selector:hover{
-	background: url("../../../../../../xmd/images/action/fnd-lang-span-default.png") repeat-x scroll left bottom transparent;
-}
-	
-.languages-news .xim-tabs-list:before{
-	content:' ';
-	background: url("../../../../../../xmd/images/action/fnd-legend.png") no-repeat scroll left bottom transparent;
-	display: block;
-	width: 22px;
-	height: 8px;
-	top: 26px;
-	right: 6px;
-	position: absolute;
-}
-
-.langs ul.xim-tabs-list li{
-	line-height: 1.2em;
-}
+.langs ul.xim-tabs-list li {
+  line-height: 1.2em; }
 
 .languages-news {
-/*	height:300px; */
-	width:750px;
-	position:relative;
-}
+  /*	height:300px; */
+  width: 750px;
+  position: relative; }
 
-.language-tabs ol{
-         padding-bottom: 35px;
-}
-
+.language-tabs ol {
+  padding-bottom: 35px; }

@@ -1,0 +1,1167 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+@import "../themes/ximdex_theme";
+
+
+/*++++++++++++++++++++++  General styles for action panel elements +++++++++++++++++++*/
+
+.ui-widget-content{
+	color: $c_grey-l;
+}
+
+h2, h3, h4, h5, h6 {
+	color: $c_grey;
+	text-transform:uppercase;
+	font-size: 1em;
+	font-weight: normal;
+}
+
+h2, h3{
+	font-family: $t_title;
+}
+
+h2{
+	font-size: 18px;font-size: 1.8rem;
+	color: $c_grey;
+	text-transform: none;
+
+}
+
+
+/**************
+// ACTION HEADER
+***************/
+
+.action_header{
+	background: $c_white;
+	@include boxshadow(inset 0 -1px 0 $s_black);
+	padding: 1em 4%;
+	border-bottom: 1px solid $c_white;
+	@include radius(0 12px 0 0);
+	min-height: 3em;
+}
+
+.action_header h2{
+	float: left
+}
+
+
+.action_content{
+	min-width: 350px;
+	height: 100%;
+	height: calc(100% - 3.2em);
+	overflow-y: auto;
+	overflow-x: hidden;
+	padding: 2em 15%;
+	max-width: 100%;
+	position: relative;
+}
+
+.full{
+	padding: 1em 4%;
+	overflow-x: auto;
+}
+
+
+h2.nodo_path{
+	font: 1em/2.8 $t_title;
+	color: $c_grey;
+	text-transform: none;
+	display: inline-block;
+	font-size: 1.2em;font-size: 1.2rem;
+	padding: 12px 5px 11px 15px;
+}
+
+
+
+
+
+.nodo_path strong{
+	font-weight: normal;
+}
+
+
+.action_container h3{
+	text-transform: none;
+	position: relative;
+	padding: 1.5em 25px .8em;
+	font-size: 1.4rem;
+}
+
+.action_container h3:before{
+	content: '';
+	display: block;
+	position: absolute;
+	border: 6px solid transparent;
+	border-top-color: $c_mainlight;
+	left: 6px;
+	top: 2em;
+}
+
+
+.action_container .editable{
+	border: none;
+	font-family: $t_title;
+	background: none;
+	padding: 0;
+	color: $c_grey-l;
+}
+
+
+.action_container .editable:focus, .action_container .editable:hover{
+	@include boxshadow(none);
+	border: 0;
+		color: $c_grey;
+}
+
+
+.action_container .editable:hover::-webkit-input-placeholder, .action_container .editable:hover:-moz-placeholder, .action_container .editable::-webkit-input-placeholder, .action_container .editable:-moz-placeholder{
+   color:  $c_grey;
+}
+
+
+ol{
+	list-style: none;
+	clear: both;
+}
+
+
+a {
+	text-decoration: none;
+	color: $c_main;
+}
+a:hover {
+	color: $c_mainlight;
+}
+input, select {
+	border: 1px solid $c_grey-ppp;
+	padding: 6px 8px;
+	color: $c_grey;
+	margin: 0 5px 0 0;
+	@include radius(3px);
+	&[type="text"]{
+	width: 80%;
+	}
+}
+input:hover {
+	@include boxshadow( 0 0 4px $s_white);
+
+}
+input:focus {
+	@include boxshadow(1px 1px 5px $s_grey);
+	color: $c_grey;
+}
+
+input[type="text"]{
+	display: block;
+}
+.disabled{
+	opacity: .35;
+}
+
+
+fieldset{
+	border: none;
+	position: relative;
+}
+
+
+.msg-error {
+}
+.msg-warning {
+}
+li.msg-info {
+	line-height: 1.7em;
+	padding: 5px;
+}
+li.msg-info span.ui-icon-info {
+	background: url('../../../../../images/action/icon-msg.png') no-repeat left -5px;
+	margin-top: 0;
+	padding: 0 15px 5px 0;
+}
+li.ui-state-primary span.ui-icon-info {
+	display: none;
+}
+
+/*+++++++++++++++++++++++ Action styles +++++++++++++++++++++++*/
+.container {
+	overflow: hidden;
+	height: 100%;
+}
+.action_container {
+	height: 100%;
+	position: relative;
+}
+
+/*.action_container > *{
+	width: 60%;
+	min-width: 350px;
+	margin: 0 auto;
+}
+
+.action_container > .full{
+	width: 88%;
+}*/
+fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
+	background: none;
+	text-align: right;
+	margin: 0;
+}
+
+
+.action_container .btn{
+	@include btn;
+	@include radius(2px);
+	padding: 7px 14px 5px;
+	margin: 0 0 0 10px;
+	cursor: pointer;
+	font-size: 1.1rem;
+}
+
+
+.action_container .btn:hover, .action_container .btn:focus{
+	@include btn-hover;
+}
+
+
+.action_container .main_action{
+	@include btn-main;
+}
+
+
+.action_container .main_action:hover, .action_container .main_action:focus{
+	@include btn-main-hover;
+}
+
+
+
+.action_container .btn:active, .action_container .main_action:active{
+	@include boxshadow(inset 0 2px 4px $s_black);
+	border-width: 1px;
+}
+
+
+.ui-dialog .ui-dialog-buttonpane button span {
+	padding: 1px;
+}
+.action_container fieldset ol {
+	list-style: none;
+	margin: 0 5px 0 20px;
+	clear: both;
+	float:	left;
+	width: 99%;
+}
+
+.action_container fieldset .right-block ol {
+	margin: 0 5px 0 5px;
+}
+.action_container fieldset p/*, .action_container fieldset>div*/ {
+	margin: 10px 0 30px;
+}
+
+.action_container .advanced_controls p{
+	margin: 8px 18px;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+
+.text_right{
+	text-align: right;
+}
+.inline-block{
+	display: inline-block;
+}
+.extrainfo {
+    padding-top: 130px;
+}
+ .container .action_desc {
+	background: url('../../../../../images/action/action_desc.png') no-repeat left top;
+	position: absolute;
+	right: 20px;
+	top: 7px;
+	height: 25px;
+	width: 25px;
+	cursor: pointer;
+	text-transform: none;
+}
+ .container .action_desc span {
+	display: none;
+}
+ .container .action_desc:hover span {
+	display: block;
+	z-index: 2;
+	background: $c_grey-ppp url('../../../../../images/action/fnd-description.png') repeat-x left bottom;
+	@include radius(10px);
+	border: 1px solid #FCFCFC;
+	width: 300px;
+	position: absolute;
+	top: 25px;
+	right: 7px;
+	padding: 15px;
+	@include boxshadow(0 0 5px $s_grey);
+}
+.action_container form fieldset>ol.numbered {
+	list-style: decimal;
+	list-style-position: inside;
+	margin: 0 0 15px 10px;
+	float: left;
+}
+.action_container form fieldset>ol.numbered>li {
+	background: url('../../../../../images/action/fieldset-list.png') no-repeat left 3px;
+	color: $c_white;
+	padding: 1px 10px;
+	margin-bottom: 2px;
+}
+.action_container form fieldset ol>li, .action_container form fieldset>ol.numbered li ol li {
+	float: left;
+	clear: left;
+	line-height:1.9em;
+	width: 100%;
+	margin: 3px 0;
+}
+.action_container form fieldset.buttons-form ol li {
+	float:none;
+	clear: none;
+}
+.action_container form fieldset>ol.numbered li span {
+	color: $c_grey-ll;
+	font-weight: normal;
+	padding-top: 3px;
+	display: inline-table;
+}
+.action_container form fieldset>ol.numbered p {
+	padding: 7px 35px;
+	clear: left;
+}
+.action_container form fieldset p.delete {
+	background: url('../../../../../images/action/delete-nodes.png') no-repeat left center;
+	padding: 7px 35px;
+	margin: 20px 0 15px 10px;
+	text-transform: uppercase;
+	clear: left;
+}
+.action_container form fieldset>ol.numbered ul {
+	margin-left: 28px;
+	list-style: none;
+}
+.action_container form fieldset>ol.numbered li ol {
+	color: #333;
+	margin-top: 8px;
+}
+.action_container form fieldset>ol.numbered ul li.no-node {
+	background: url('../../../../../images/action/delete-nonode.png') no-repeat left center;
+	padding: 3px 0 4px 35px;
+}
+.action_container form fieldset ul {
+	margin-left: 25px;
+	margin-bottom: 15px;
+}
+
+.action_container form fieldset .xim-treeview-container ul,
+.action_container form fieldset ul.xim-treeview-branch li ul li ul li {
+	margin-left: 5px;
+}
+
+.action_container form fieldset .xim-treeview-container .xim-treeview-branch-container > .xim-treeview-branch > .xim-treeview-node > .xim-treeview-branch{
+	padding-left: 3px;
+
+}
+.action_container form fieldset ul div.deletenodes {
+	margin-bottom: 15px;
+	margin-left: 25px;
+}
+.action_container form fieldset ul div.deletenodes li {
+	color: $c_warning;
+}
+.xim-treeview-selector {
+	/*width: 38%;*/
+	display: inline-table;
+	background: $c_white;
+	@include radius(15px);
+	padding: 25px 15px;
+	margin-bottom: 15px;
+	}
+.xim-treeview-selector .xim-treeview-branch-container {
+	position: static;
+}
+.right-block {
+	display:inline-table;
+}
+.action_container fieldset>div.right-block {
+	margin: 0;
+}
+.right-block p {
+	line-height: 1.7em;
+	margin-left: 5px;
+}
+
+label {
+	display: block;
+	color: $c_grey;
+	font-family: $t_text;
+	padding: 1em 0 .5em;
+	font-size: 1.8rem;
+}
+
+input[type="checkbox"] + label, input[type="radio"] + label{
+	display: inline;
+	padding-right: 8%;
+}
+
+label + p{
+	margin-top: 0;
+}
+
+/*label {
+	display: inline-block;
+	color:#696969;
+	font-family: 'Ubuntu Condensed';
+	padding: 1em 0 .5em;
+	font-size: 1.8rem;
+	font-weight: bold;
+}
+
+label.aligned{
+
+}
+label.aligned-left{
+	display: inline;
+	background: url('../../../../../images/action/img-label.png') no-repeat right 2px;
+	padding-right: 23px;
+	padding-bottom: 5px;
+	text-align: right;
+}
+
+input + .aligned{
+	margin-left: 2%;
+}*/
+
+/*fieldset input[type="checkbox"] + label {
+	vertical-align: middle;
+}
+fieldset input[type="radio"] {
+	margin-top: 4px;
+}
+fieldset input[type="radio"] + label {
+	vertical-align: top;
+}
+fieldset label + input[type="text"], fieldset label + input[type="password"], fieldset label + input[type="textbox"], fieldset label + select {
+	vertical-align: middle;
+	float: left;
+	margin-top: 1px;
+	margin-left: 4px;
+}
+fieldset input[type="checkbox"] {
+	vertical-align: middle;
+}*/
+/*input.error, select.error, input.error + label.error + label, input.error + label.error + input{
+	float: left;
+}
+
+input.error + label.error + label{
+	margin-left: 5px;
+}
+
+input[type="checkbox"].error, select.error{
+	margin-top: 3px;
+}
+
+input[type="checkbox"].error + label.error{
+	float:right;
+}
+
+label.error {
+	margin: 0 15px;
+	padding: 4px 15px;
+	color: #fff;
+	float: none;
+	display: inline-block;
+	clear: none;
+	background: #CF5A5A;
+	position: relative;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+label.error:before {
+	content: '';
+	width: 0;
+	height: 0;
+	position: absolute;
+	left: -14px;
+	border: 7px solid transparent;
+	border-right-color: #CF5A5A;
+	top: 7px;
+}*/
+
+fieldset table th {
+	color: $c_grey;
+	font-weight: normal;
+	text-transform: uppercase;
+	padding: 5px 15px;
+}
+.action_container form {
+	height: 100%;
+	max-width:100%;
+}
+
+.action_container .inline-form{
+	height: auto;
+}
+.action_container form textarea.normal {
+	width: 100%;
+	border:none;
+	border-bottom: 1px solid $c_grey-ppp;
+	padding-top: 5px;
+}
+.action_container form textarea.normal+.buttons-form {
+	margin-bottom: 0;
+	margin-top: 10px;
+}
+.browser-action-view-content iframe.action_iframe {
+	border: none;
+}
+
+
+.ui-widget-content fieldset .ui-state-highlight, .ui-widget-content fieldset  .ui-state-error {
+	background: none;
+	border: none;
+	line-height: 2.1em;
+	color: $c_grey;
+	margin-bottom: 5px;
+}
+
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-notice,
+.ui-widget-content fieldset .ui-state-error .ui-icon-alert,
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-info{
+	background: url('../../../../../images/action/icon-msg.png') no-repeat left top;
+	margin-top: 0;
+	padding-bottom: 8px;
+	padding-left: 15px;
+}
+
+.ui-widget-content fieldset .ui-state-error .ui-icon-alert{
+	background-position: -33px top;
+}
+
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-info{
+	background-position: -66px top;
+}
+
+#publishing_message{
+	position: absolute;
+	opacity: .94;
+	background: $c_grey;
+	top: 35%;
+	left: 40%;
+	@include radius(15px);
+	@include boxshadow(0 0 5px $s_grey);
+	padding: 20px 40px 18px;
+
+}
+
+#publishing_message img{
+	margin: 8px 0 5px 0;
+}
+
+#publishing_message p{
+	color: $c_grey-ppp;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px $c_grey-l;
+	text-align:center;
+	padding: 3px 5px;
+	font-weight: bold;
+}
+
+
+.inline{
+	display: inline !important;
+}
+.nofloat{
+	float: none !important;
+}
+
+.container .action_tour {
+	background: url('../../../../../images/action/action_desc.png') no-repeat left bottom;
+	position: absolute;
+	right: 50px;
+	top: 7px;
+	height: 25px;
+	width: 25px;
+	cursor: pointer;
+	text-transform: none;
+	display: none;
+}
+
+.extra_info{
+	position: absolute;
+	right: 5.5%;
+	width: auto;
+}
+
+
+.controls{
+	display: inline-block;
+}
+
+.controls a{
+	display: block;
+	text-indent: -9999999px;
+	width: 35px;
+	height: 25px;
+	border: 1px solid $c_grey-pp;
+	@include radius(2px);
+	background:$c_grey-ppp url('../../../../../images/browser/conf_icon.png') no-repeat 5px center;
+	position: relative;
+	@include boxshadow(inset 0 0 1px $c_white);
+	top: -7px;
+}
+
+.controls a:before{
+	content: '';
+	width: 0;
+	height: 0;
+	border: 3px solid transparent;
+	border-top-color: $c_grey;
+	float: right;
+	margin: 11px 5px 0 0;
+}
+
+.controls a:after{
+	content: '';
+	position: absolute;
+	bottom: -10px;
+	width: 36px;
+	height: 10px;
+	display: block;
+}
+
+.tooltips, .test_connection span{
+	position: absolute;
+	background: $c_grey;
+	right: 0;
+	width: 140px;
+	padding: 15px;
+	margin-top: 2px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	@include boxshadow( 0 1px 3px $s_black);
+	color: $c_white;
+	text-align: center;
+	display: none;
+}
+
+.tooltips:before, .test_connection span:before{
+	content: '';
+	position: absolute;
+	border: 6px solid transparent;
+	border-bottom-color: $c_grey;
+	right: 15px;
+	top: -12px;
+}
+.controls:hover .tooltips, .test_connection:hover span{
+	display: block;
+}
+.tooltip_info{
+	background: $c_mainlight;
+	font-family: $t_title;
+	@include boxshadow( 0 1px 0 $s_grey);
+	padding: 8px 15px 5px;
+	position: absolute;
+	margin-left: 15px;
+	width: 20%;
+	visibility: hidden;
+	@include radius(2px);
+	color: $c_white;
+	position: absolute;
+	z-index: 5;
+}
+
+input:focus + .tooltip_info{
+	visibility: visible;
+}
+
+.tooltip_info:before{
+	content: '';
+	float: left;
+	width: 0;
+	height: 0;
+	border: 8px solid transparent;
+	border-right-color: $c_mainlight;
+	margin-left: -29px;
+	-webkit-filter: drop-shadow(-1px 1px 0 $s_grey);
+		-moz-filter: drop-shadow(-1px 1px 0 $s_grey);
+		-ms-filter: drop-shadow(-1px 1px 0 $s_grey);
+		-o-filter: drop-shadow(-1px 1px 0 $s_grey);
+		filter: drop-shadow(-1px 1px 0 $s_grey);
+}
+
+.related{
+	margin: 8px 0 3px 526px;
+}
+
+.data{
+	margin: 30px;
+}
+
+.actions{
+	margin: -25px 20px 0 0;
+	position: relative;
+	z-index: 5;
+}
+
+.actions a, .actions label{
+	font-family: $t_title;
+	padding: 0 5px 0 30px;
+	color: $c_grey-ll;
+}
+
+
+.actions label:hover{
+	color: $c_mainlight;
+	cursor: pointer;
+}
+
+.advanced_controls{
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.advanced_controls a{
+	font-family: $t_title;
+	color: $c_mainlight;
+	float: right;
+	font-style: 1.1em;
+	padding-left: 20px;
+}
+
+.advanced_options:before{
+	content: '+';
+	float: left;
+	line-height: .65;
+	padding: 2px 2px 0;
+	margin: -1px  5px 0 0;
+	@include radius(2px);
+	border: 1px solid;
+}
+
+.advanced_controls div{
+	clear: both;
+	background: #fff;
+	border: 10px solid rgba(133,133,133,.39);
+	padding: 15px 30px;
+	@include radius(2px);
+	margin-top: 25px;
+	@include boxshadow(0 3px 10px rgba(0,0,0,.3));
+	z-index: 5;
+	display: none;
+}
+
+
+.advanced_controls div:before{
+	content: '';
+	width: 0;
+	height: 0;
+	border: 8px solid transparent;
+	border-bottom-color: rgba(133,133,133,.39);
+	display: block;
+	position: absolute;
+	right: 48px;
+	top: 9px;
+}
+
+
+.advanced_controls input{
+	padding: 4px 5px;
+	text-align: right;
+}
+
+
+
+.advanced_controls:hover  a+ div{
+	display: block;
+}
+
+li.toggable:not(.editing) h3{
+	position: relative;
+}
+
+li.toggable:not(.editing) h3 li.toggable:not(.editing) h3:hover{
+	background-color: $c_grey-ppp;
+}
+
+li.toggable:not(.editing) h3 .animated_arrow{
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	z-index: 2;
+	background: url('../../../../../images/browser/arrow_animated.png') no-repeat center -11px;
+	top: 6px;
+	left: 6px;
+	animation: animated_arrow_back .2s steps(4);
+	-moz-animation: animated_arrow_back .2s steps(4); /* Firefox */
+	-webkit-animation: animated_arrow_back .2s steps(4); /* Safari and Chrome */
+	-o-animation: animated_arrow_back .2s steps(4); /* Opera */
+	-webkit-animation-fill-mode: forwards;
+	-o-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+
+}
+
+li.toggable:not(.editing) h3:hover .animated_arrow{
+	animation: animated_arrow .2s steps(4);
+	-moz-animation: animated_arrow .2s steps(4); /* Firefox */
+	-webkit-animation: animated_arrow .2s steps(4); /* Safari and Chrome */
+	-o-animation: animated_arrow .2s steps(4); /* Opera */
+	-webkit-animation-fill-mode: forwards;
+	-o-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+
+@keyframes animated_arrow{
+	0%{ background-position: center -11px;}
+	100%{ background-position: center -151px;}
+}
+
+@keyframes animated_arrow{
+0%{ background-position: center -11px;}
+	100%{ background-position: center -151px;}
+}
+
+@-moz-keyframes animated_arrow/* Firefox */
+{
+0%{ background-position: center -11px;}
+	100%{ background-position: center -151px;}
+}
+
+@-webkit-keyframes animated_arrow/* Safari and Chrome */
+{
+0%{ background-position: center -11px;}
+	100%{ background-position: center -151px;}
+}
+
+@-o-keyframes animated_arrow/* Opera */
+{
+0%{ background-position: center -11px;}
+	100%{ background-position: center -151px;}
+}
+
+
+@keyframes animated_arrow_back{
+	0%{ background-position: center -151px;}
+	100%{ background-position: center -11px;}
+}
+
+@keyframes animated_arrow_back{
+0%{ background-position: center -151px;}
+	100%{ background-position: center -11px;}
+}
+
+@-moz-keyframes animated_arrow_back/* Firefox */
+{
+0%{ background-position: center -151px;}
+	100%{ background-position: center -11px;}
+}
+
+@-webkit-keyframes animated_arrow_back/* Safari and Chrome */
+{
+0%{ background-position: center -151px;}
+	100%{ background-position: center -11px;}
+}
+
+@-o-keyframes animated_arrow_back/* Opera */
+{
+0%{ background-position: center -151px;}
+	100%{ background-position: center -11px;}
+}
+
+/*li.toggable:not(.editing) h3{
+	background-image: url('../../../../../images/browser/arrow_animated.png');
+	background-repeat: no-repeat;
+	background-position: -6px -5px;
+}
+
+/*li.toggable:not(.editing) h3:hover{
+animation:arrow 1.5s;
+-moz-animation:arrow 1.5s;
+-webkit-animation:arrow 1.5s;
+-o-animation:arrow 1.5s;
+}
+*/
+
+@keyframes arrow
+{
+0%   {background-position: -6px -5px;}
+25%  {background-position: -6px -43px;}
+50%  {background-position: -6px -84px;}
+75%  {background-position: -6px -129px;}
+100%  {background-position: -6px -176px;}
+
+}
+
+@-moz-keyframes arrow /* Firefox */
+{
+0%   {background-position: -6px -5px;}
+25%  {background-position: -6px -43px;}
+50%  {background-position: -6px -84px;}
+75%  {background-position: -6px -129px;}
+100%  {background-position: -6px -176px;}
+}
+
+@-webkit-keyframes arrow /* Safari and Chrome */
+{
+0%   {background-position: -6px -5px;}
+25%  {background-position: -6px -43px;}
+50%  {background-position: -6px -84px;}
+75%  {background-position: -6px -129px;}
+100%  {background-position: -6px -176px;}
+}
+
+@-o-keyframes arrow /* Opera */
+{
+0%   {background-position: -6px -5px;}
+25%  {background-position: -6px -43px;}
+50%  {background-position: -6px -84px;}
+75%  {background-position: -6px -129px;}
+100%  {background-position: -6px -176px;}
+}
+
+
+/*:before, li.toggable:not(.editing):after, li.toggable:not(.editing) h3:before{
+	content: '';
+	width: 7px;
+	height: 7px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background: rgba(70,70,70,.7);
+	position: absolute;
+	top: 12px;
+	left: 8px;
+	-webkit-transition: all .7;
+	-moz-transition: all .7;
+	-ms-transition: all .7;
+	-o-transition: all .7;
+	transition: all .7;
+}
+
+
+
+li.toggable:not(.editing):after{
+	left: 14px;
+}
+
+li.toggable h3:not(.editing):before{
+	left: 11px;
+	top: 16px;
+}*/
+
+
+
+.editing h3, .actions a, .actions .switch{
+	background-image: url('../../../../../images/browser/actions_icons.png');
+	background-repeat: no-repeat;
+	background-position: -8px -45px;
+}
+
+.actions .switch{
+	background-position: -11px -101px;
+	position: relative;
+
+}
+
+.actions a:nth-child(2){
+	background-position: -4px -13px;
+}
+
+.actions a:nth-child(3){
+	background-position: -8px -147px;
+}
+
+.controller{
+	width: 9px;
+	height: 9px;
+	display: block;
+	position: absolute;
+	background: $c_grey;
+	@include radius(5px);
+	border: 1px solid $c_white;
+	@include boxshadow(0 1px 0 $s_black);
+	top: 2px;
+	transition: all .4s;
+	-moz-transition: all .4s; /* Firefox 4 */
+	-webkit-transition: all .4s; /* Safari and Chrome */
+	-o-transition: all .4s; /* Opera */
+}
+
+
+.switch input:checked +.controller{
+	left: 12px;
+	background:$c_mainlight;
+}
+
+.switch input:checked ~ label{
+	color: $c_mainlight;
+	position: relative;
+	z-index: 2;
+}
+
+
+.switch .hidden{
+	display: none;
+}
+
+.switch{
+	display: inline-block;
+}
+
+.test_connection{
+	background-image: url('../../../../../images/browser/test_connection.png'),  -webkit-gradient(linear, 0 0, 0 100%, from(#cacaca), to(#bdbdbd));
+	background-image:  url('../../../../../images/browser/test_connection.png'), -webkit-linear-gradient(#cacaca, #bdbdbd);
+	background-image:  url('../../../../../images/browser/test_connection.png'), -moz-linear-gradient(#cacaca, #bdbdbd);
+	background-image:  url('../../../../../images/browser/test_connection.png'), -o-linear-gradient(#cacaca, #bdbdbd);
+	background-image:  url('../../../../../images/browser/test_connection.png'), linear-gradient(#cacaca, #bdbdbd);
+	background-repeat: no-repeat;
+	background-position: center 0;
+	position: absolute;
+	border: 1px solid $c_grey-p;
+	width: 30px;
+	height: 28px;
+	@include radius(2px);
+	@include boxshadow(inset 0 0 2px $s_white);
+	cursor: pointer;
+	margin-left: 1.5%;
+}
+/*.test_connection span{
+	position: absolute;
+	min-width: 150px;
+	bottom: -31px;
+	left: -65px;
+	background: #474747;
+	color: #fff;
+	padding: 4px 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	display: none;
+}*/
+
+.test_connection span{
+	left: 40px;
+	top: -10px;
+}
+
+.test_connection span:before{
+	border-color: transparent $c_grey transparent transparent;
+	left: -12px;
+	top: 50%;
+	margin-top: -5px;
+	right: auto;
+}
+
+
+.test_connection:hover{
+	background-image: url('../../../../../images/browser/test_connection.png'),  -webkit-gradient(linear, 0 0, 0 100%, from(#bebebe), to(#acacac));
+	background-image:  url('../../../../../images/browser/test_connection.png'), -webkit-linear-gradient(#bebebe, #acacac);
+	background-image:  url('../../../../../images/browser/test_connection.png'), -moz-linear-gradient(#bebebe, #acacac);
+	background-image:  url('../../../../../images/browser/test_connection.png'), -o-linear-gradient(#bebebe, #acacac);
+	background-image:  url('../../../../../images/browser/test_connection.png'), linear-gradient(#bebebe, #acacac);
+	@include boxshadow(0 1px 2px $s_grey);
+}
+
+.col1_2{
+	display: inline-block;
+	width: 40%;
+	margin-right: 4%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.box{
+	background: $c_grey-ppp;
+	border: 1px solid $c_bg-disabled;
+	@include radius(4px);
+	padding: 8px 6px 5px;
+}
+
+.col1_2 label{
+	display: inline-block;
+	width: 80%;
+}
+
+/**************
+// ELEMNTS
+***************/
+
+.row-item{
+	background:#fff;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin: .5em 0;
+	padding: 1em 2%;
+	position: relative;
+}
+
+.ui-helper-hidden{
+	display: none !important;
+}
+
+
+.browser-window .icon-button{ /* first class used to fight against jQuery ui classes!! */
+	display: inline-block;
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	border: none;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	width: 1.75em;
+	height: 1.75em;
+	margin: 0 .7em;
+}
+
+
+.browser-window .icon-button::before{
+	text-indent: 0;
+	position: absolute;
+	display: block;
+	text-align: center;
+	width: 1.75em;
+	line-height: 1.75em;
+}

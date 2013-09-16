@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+                      	<start>
+                      		<element name="docxap">
+                      			<ref name="config.class"/>
+                      			<xim:description>Config Page</xim:description>
+                      		</element>
+                      	</start>
+                          <define name="config.class">
+                      		<element name="config">
+                      			<attribute name="background-color" xim:type="color"/>
+                           	<attribute name="background-image" xim:type="imageSelector"/>
+                               <attribute name="background-position">
+                               	<choice>
+                                      	<value type="string">none</value>
+                                       	<value type="string">left top</value>
+                                               <value type="string">left center</value>
+                                               <value type="string">left bottom</value>
+                                               <value type="string">center top</value>
+                                               <value type="string">center center</value>
+                                               <value type="string">center bottom</value>
+                                               <value type="string">right top</value>
+                                               <value type="string">right center</value>
+                                               <value type="string">right bottom</value>
+                                       </choice>
+                               </attribute>
+                              <attribute name="background-repeat">
+                              	<choice>
+                                	<value type="string">no-repeat</value>
+                                        <value type="string">repeat</value>
+                                        <value type="string">repeat-x</value>
+                                        <value type="string">repeat-y</value>
+                                </choice>
+                              </attribute>
+                      			<attribute name="secundary-color"/>
+                      			<attribute name="font-color"/>
+                      			<ref name="config-header.class"/>
+                       			<ref name="config-container.class"/>
+                       			 <ref name="config-footer.class"/>
+                      			<xim:description>Configuración</xim:description>
+                      		</element>
+                      	</define>
+                      	<define name="config-header.class">
+                      		<element name="config-header">
+                                       <attribute name="image" xim:type="imageSelector"/>
+
+                      			<attribute name="image-side">
+                      				<choice>
+                      					<value type="string">left</value>
+                      					<value type="string">right</value>
+                      				</choice>
+                      			</attribute>
+                                  	<attribute name="border">
+                      				<choice>
+                      					<value type="string">None</value>
+                      					<value type="string">All</value>
+                                                  <value type="string">Top/Bottom</value>
+                                                  <value type="string">Left/Right</value>
+                      				</choice>
+                      			</attribute>
+                                 <attribute name="border-color" />
+                      			<ref name="config-header-title.class"/>
+                      			<ref name="config-header-subtitle.class"/>
+                      			<ref name="config-breadcrumb.class"/>
+                                  <xim:description>Header</xim:description>
+                      		</element>
+                      	</define>
+                      	<define name="config-breadcrumb.class">
+                      		<element name="config-breadcrumb">
+                      			<attribute name="background-color"/>
+                      			<attribute name="font-color"/>
+                      			<attribute name="current-font-color"/>
+                      			<xim:description>Breadcrumb</xim:description>
+                      		</element>
+                      	</define>
+                      	<define name="config-header-title.class">
+                      		<element name="config-header-title">
+                                 <attribute name="font-color" />
+                                       <attribute name="font-size" />
+                                        <attribute name="align">
+                      				<choice>
+                     				<value type="string">left</value>
+                                                  <value type="string">center</value>
+                                                 <value type="string">right</value>
+                     				</choice>
+                     			</attribute>
+                     			<text/>
+                     			<xim:description>Title</xim:description>
+                     			<xim:default_content>Your title!</xim:default_content>
+                     		</element>
+                     	</define>
+                     	<define name="config-header-subtitle.class">
+                     		<element name="config-header-subtitle">
+                                <attribute name="font-color" />
+                                      <attribute name="font-size" />
+                                       <attribute name="align">
+                     				<choice>
+                   					<value type="string">left</value>
+                                                 <value type="string">center</value>
+                                                 <value type="string">right</value>
+                     				</choice>
+                     			</attribute>
+                     			<text/>
+                     			<xim:description>Subtitle</xim:description>
+                     			<xim:default_content>Write something about this website</xim:default_content>
+                     		</element>
+                     	</define>
+
+                     	<define name="config-container.class">
+                     		<element name="config-container">
+                     		    <attribute name="left_column" >
+                     				<choice>
+                     					<value type="string">No</value>
+                                            		<value type="string">Yes</value>
+                     				</choice>
+                                 </attribute>
+                                 <attribute name="right_column" >
+                     				<choice>
+                     					<value type="string">No</value>
+                                            		<value type="string">Yes</value>
+                     				</choice>
+                                 </attribute>
+                                 <attribute name="background-color"/>
+                           	<attribute name="background-image" xim:type="imageSelector"/>
+                               <attribute name="background-position">
+                               	<choice>
+                                      	<value type="string">none</value>
+                                       	<value type="string">left top</value>
+                                               <value type="string">left center</value>
+                                               <value type="string">left bottom</value>
+                                               <value type="string">center top</value>
+                                               <value type="string">center center</value>
+                                               <value type="string">center bottom</value>
+                                               <value type="string">right top</value>
+                                               <value type="string">right center</value>
+                                               <value type="string">right bottom</value>
+                                       </choice>
+                               </attribute>
+                              <attribute name="background-repeat">
+                              	<choice>
+                                              <value type="string">no-repeat</value>
+                                              <value type="string">repeat</value>
+                                              <value type="string">repeat-x</value>
+                                              <value type="string">repeat-y</value>
+
+                                      </choice>
+                              </attribute>
+                                 <ref name="config-left-column.class"/>
+                                 <ref name="config-main-column.class"/>
+                                 <ref name="config-right-column.class"/>
+                     			<text/>
+                     			<xim:description>Container</xim:description>
+                     			<xim:default_content>[Container]</xim:default_content>
+                     		</element>
+                     	</define>
+
+                             <define name="config-left-column.class">
+                     			<element name="config-left-column">
+                     				<text/>
+                     				<xim:description>Left Column</xim:description>
+                     				<xim:default_content>[Left Column]</xim:default_content>
+                     			</element>
+                             </define>
+
+                             <define name="config-main-column.class">
+                     			<element name="config-main-column">
+                     				<ref name="config-title-element.class" />
+                     				<ref name="config-subtitle-element.class" />
+   	              				<ref name="config-link-element.class" />
+                     				<text/>
+                     				<xim:description>Main Column</xim:description>
+                     				<xim:default_content>[Main Column]</xim:default_content>
+                     			</element>
+                             </define>
+
+                             <define name="config-link-element.class">
+                     			<element name="config-link-element">
+                     				<attribute name="font-color" />
+                     				<attribute name="font-color-hover" />
+                     				<attribute name="border-bottom">
+                     					<choice>
+                     						<value type="string">none</value>
+                     						<value type="string">solid</value>
+                     						<value type="string">dotted</value>
+                     						<value type="string">dashed</value>
+                     					</choice>
+                     				</attribute>
+                     				<text/>
+                     				<xim:description>Link-format</xim:description>
+                     				<xim:default_content>sample link</xim:default_content>
+                     			</element>
+                             </define>
+
+                             <define name="config-title-element.class">
+                     			<element name="config-title-element">
+                     				<attribute name="font-color" />
+                     				<attribute name="font-size" />
+                     				<attribute name="border-bottom">
+                     					<choice>
+                     						<value type="string">none</value>
+                     						<value type="string">solid</value>
+                     						<value type="string">dotted</value>
+                     						<value type="string">dashed</value>
+                     					</choice>
+                     				</attribute>
+                     				<attribute name="border-size">
+                     					<choice>
+                     						<value type="string">0px</value>
+                     						<value type="string">1px</value>
+                     						<value type="string">2px</value>
+                     						<value type="string">3px</value>
+                     					</choice>
+                     				</attribute>
+                     				<text/>
+                     				<xim:description>Title-format</xim:description>
+                     				<xim:default_content>Define the title format</xim:default_content>
+                     			</element>
+                             </define>
+
+                           <define name="config-subtitle-element.class">
+                     			<element name="config-subtitle-element">
+                     				<attribute name="font-color" />
+                     				<attribute name="font-size" />
+                     				<attribute name="border-bottom">
+                     					<choice>
+                     						<value type="string">none</value>
+                     						<value type="string">solid</value>
+                     						<value type="string">dotted</value>
+                     						<value type="string">dashed</value>
+                     					</choice>
+                     				</attribute>
+                                           <attribute name="border-size">
+                     					<choice>
+                     						<value type="string">0px</value>
+                     						<value type="string">1px</value>
+                     						<value type="string">2px</value>
+                     						<value type="string">3px</value>
+                     					</choice>
+                     				</attribute>
+                     				<text/>
+                     				<xim:description>Subtitle-format</xim:description>
+                     				<xim:default_content>Edit your own subtitle</xim:default_content>
+                     			</element>
+                             </define>
+
+                             <define name="config-right-column.class">
+                     			<element name="config-right-column">
+                     				<text/>
+                     				<xim:description>Right Column</xim:description>
+                     				<xim:default_content>[Right Column]</xim:default_content>
+                     			</element>
+                             </define>
+
+                     		<define name="config-footer.class">
+                     			<element name="config-footer">
+                     				<attribute name="background-color"/>
+                     				<attribute name="font-color"/>
+                     				<xim:description>Footer</xim:description>
+                     				<xim:default_content>[Footer]</xim:default_content>
+                     			</element>
+                     		</define>
+</grammar>

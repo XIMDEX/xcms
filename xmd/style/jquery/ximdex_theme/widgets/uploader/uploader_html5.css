@@ -109,6 +109,7 @@ div.xim-uploader-container div.xim-loader-header {
 	/*width: 705px;
 	overflow: hidden;*/
 	padding: 0 18px;	
+	font-size: 14px;font-size: 1.4rem;
 
 }
 
@@ -125,7 +126,7 @@ div.xim-loader-header span{
 	margin-top: 6px;
 	text-transform: uppercase;
 	color: #8f8f8f;
-	font-size: .9em;
+	+font-size: .9em;
 	border-right: 2px dotted #EAEAEA;
 
 }
@@ -150,7 +151,7 @@ div.xim-uploader-container span.xim-loader-size, div.xim-uploader-container span
 
 div.xim-uploader-container span.xim-loader-options {
 	width: 20%;
-	font-size: 10px;
+	+font-size: 10px;
 }
 
 div.xim-uploader-container div.xim-loader-progress {
@@ -161,7 +162,7 @@ div.xim-uploader-container div.xim-loader-progress {
 	width: 96.4% !important;
 	text-align: center;
 	color: #fff;
-	font-size: .9em;
+	+font-size: .9em;
 	margin-right: 1%;
 	padding-right: 2%;
 	border:none;
@@ -216,7 +217,7 @@ div.xim-uploader-container ul.xim-loader-list-actions li a{
 	background: #9bcbcc;
 	background: -webkit-gradient(linear,0 0, 0 100%, from (#cbe4e5), to(#94c8c8));
 	background: -moz-linear-gradient(to top, #cbe4e5, #94c8c8);
-	font-size: .9em;
+	+font-size: .9em;
 	letter-spacing: 0;
 	color: #467879;
 	text-shadow: 0 1px 0 #d6eaea;

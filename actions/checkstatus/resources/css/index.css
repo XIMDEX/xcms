@@ -1,0 +1,117 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+fieldset table tr{
+        border-bottom: none;
+        background: none;
+        width: 95%;
+        margin: 0 auto;
+        padding: .4em 0;
+        display: block;
+}
+fieldset table tr.header td{
+        display: inline-block;
+        vertical-align: top;
+        padding: .7em 0 .4em !important ;
+
+}
+fieldset table tr.version-info{
+        border-top: 1px solid #fff;
+
+}
+fieldset table tr.version-info td{
+        display: inline-block;
+        vertical-align: top;
+        padding-top: 15px !important;
+        padding: 1em 0 !important;
+}
+fieldset table tr.version-info td:nth-child(1), fieldset table tr.header td:nth-child(1){
+        width: 64%;
+        -ms-word-break: break-all;
+        word-break: break-all;
+}
+fieldset table tr.version-info td:nth-child(2), fieldset table tr.header td:nth-child(2){
+        width: 24%;
+        text-align: center;
+}
+fieldset table tr.version-info td:nth-child(3), fieldset table tr.header td:nth-child(3){
+        width: 10%;
+        text-align: center;
+}
+fieldset table tr.header{
+        text-transform: uppercase;
+        border-bottom: 1px solid #fff;
+        font-weight: bold;
+
+}
+fieldset table tr.header + tr{
+        border-top: 1px solid #d9d9d9;
+}
+fieldset table tr.header + tr.version-info td{
+        border-top: none;
+}
+fieldset table.versions tr td:first-child{
+        background: none;
+        font-size: 1em;
+        line-height: 1.5;
+}
+fieldset table.versions tr.state-info{
+        float: left;
+        width: 100%;
+        margin: .3em 0;
+        cursor: pointer;
+}
+fieldset table.versions tr.state-info td{
+        background: #d9d9d9 !important;
+        -webkit-border-radius: .5em;
+        -moz-border-radius: .5em;
+        border-radius: .5em;
+        padding: 1em 2em;
+        width: auto;
+        display: block;
+        -webkit-transition: all .3s;
+        -moz-transition: all .3s;
+        -ms-transition: all .3s;
+        -o-transition: all .3s;
+        transition: all .3s;
+}
+fieldset table.versions tr.state-info td::before {
+        content: '';
+        display: inline-block;
+        border: 6px solid transparent;
+        border-left-color: #43A1A2;
+        vertical-align: middle;
+        margin-right: 10px;
+        margin-top: -5px;
+}
+fieldset table.versions tr.state-info.open td::before {
+        border-left-color: transparent;
+        border-top-color: #43A1A2;
+        margin-top: 0;
+
+}
+fieldset table.versions tr.state-info:hover td{
+        background: #c9c9c9 !important;
+}

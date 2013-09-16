@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+	<start>
+		<element name="xsparrow-theme">
+			<attribute name="version"/>
+			<ref name="theme-properties.class"/>
+			<ref name="main.class"/>
+		</element>
+	</start>
+
+	<!--Theme properties-->
+
+	<define name="theme-properties.class">
+		<element name="theme-properties">
+			<interleave>
+				<ref name="theme-shortname.class"/>
+				<ref name="theme-title.class"/>
+				<ref name="theme-description.class"/>
+				<optional>
+					<ref name="theme-style.class" />
+				</optional>
+			</interleave>
+		</element>
+	</define>
+
+	<define name="theme-shortname.class">
+		<element name="theme-shortname">
+			<text/>
+		</element>
+	</define>
+
+	<define name="theme-title.class">
+		<element name="theme-title">
+			<text/>
+		</element>
+	</define>
+
+	<define name="theme-description.class">
+		<element name="theme-description">
+			<text/>
+		</element>
+	</define>
+
+	<define name="theme-style.class">
+		<element name="theme-style">
+			<text/>
+		</element>
+	</define>
+
+	<!--End of Theme properties-->
+
+	<define name="main.class">
+		<element name="main">
+			<attribute name="background-color" xim:type="color"/>
+			<attribute name="background-image" xim:type="imageSelector"/>
+			<attribute name="background-position">
+				<choice>
+					<value type="string">none</value>
+					<value type="string">left top</value>
+					<value type="string">left center</value>
+					<value type="string">left bottom</value>
+					<value type="string">center top</value>
+					<value type="string">center center</value>
+					<value type="string">center bottom</value>
+					<value type="string">right top</value>
+					<value type="string">right center</value>
+					<value type="string">right bottom</value>
+				</choice>
+			</attribute>
+			<attribute name="background-repeat">
+				<choice>
+					<value type="string">no-repeat</value>
+					<value type="string">repeat</value>
+					<value type="string">repeat-x</value>
+					<value type="string">repeat-y</value>
+				</choice>
+			</attribute>
+			<attribute name="font-color" xim:type="color"/>
+			<ref name="header.class"/>
+			<ref name="container.class"/>
+			<ref name="footer.class"/>
+			<xim:description>Configuration</xim:description>
+		</element>
+	</define>
+
+	<define name="header.class">
+		<element name="header">
+			<attribute name="font-color" xim:type="color"/>
+			<attribute name="font-size"/>
+			<attribute name="image" xim:type="imageSelector"/>
+
+			<attribute name="image-side">
+				<choice>
+					<value type="string">left</value>
+					<value type="string">right</value>
+				</choice>
+			</attribute>
+			<attribute name="border">
+				<choice>
+					<value type="string">None</value>
+					<value type="string">All</value>
+					<value type="string">Top/Bottom</value>
+					<value type="string">Left/Right</value>
+				</choice>
+			</attribute>
+			<attribute name="border-color" />
+			<interleave>
+				<ref name="layout.class"/>
+				<ref name="header-title.class"/>
+				<ref name="header-subtitle.class"/>
+				<ref name="breadcrumb.class"/>
+			</interleave>
+			<xim:description>Header</xim:description>
+		</element>
+	</define>
+	<define name="breadcrumb.class">
+		<element name="breadcrumb">
+			<attribute name="background-color"/>
+			<attribute name="font-color"/>
+			<attribute name="current-font-color"/>
+			<xim:description>Breadcrumb</xim:description>
+		</element>
+	</define>
+	<define name="header-title.class">
+		<element name="header-title">
+			<attribute name="font-color" />
+			<attribute name="font-size" />
+			<attribute name="align">
+				<choice>
+					<value type="string">left</value>
+					<value type="string">center</value>
+					<value type="string">right</value>
+				</choice>
+			</attribute>
+			<text/>
+			<xim:description>Title</xim:description>
+			<xim:default_content>Your title!</xim:default_content>
+		</element>
+	</define>
+	<define name="header-subtitle.class">
+		<element name="header-subtitle">
+			<attribute name="font-color" />
+			<attribute name="font-size" />
+			<attribute name="align">
+				<choice>
+					<value type="string">left</value>
+					<value type="string">center</value>
+					<value type="string">right</value>
+				</choice>
+			</attribute>
+			<text/>
+			<xim:description>Subtitle</xim:description>
+			<xim:default_content>Write something about this website</xim:default_content>
+		</element>
+	</define>
+
+	<define name="container.class">
+		<element name="container">
+			<attribute name="left_column" >
+				<choice>
+					<value type="string">No</value>
+					<value type="string">Yes</value>
+				</choice>
+			</attribute>
+			<attribute name="right_column" >
+				<choice>
+					<value type="string">No</value>
+					<value type="string">Yes</value>
+				</choice>
+			</attribute>
+			<attribute name="background-color"/>
+			<attribute name="background-image" xim:type="imageSelector"/>
+			<attribute name="background-position">
+				<choice>
+					<value type="string">none</value>
+					<value type="string">left top</value>
+					<value type="string">left center</value>
+					<value type="string">left bottom</value>
+					<value type="string">center top</value>
+					<value type="string">center center</value>
+					<value type="string">center bottom</value>
+					<value type="string">right top</value>
+					<value type="string">right center</value>
+					<value type="string">right bottom</value>
+				</choice>
+			</attribute>
+			<attribute name="background-repeat">
+				<choice>
+					<value type="string">no-repeat</value>
+					<value type="string">repeat</value>
+					<value type="string">repeat-x</value>
+					<value type="string">repeat-y</value>
+
+				</choice>
+			</attribute>
+			<ref name="layout.class"/>
+			<ref name="left-column.class"/>
+			<ref name="main-column.class"/>
+			<ref name="right-column.class"/>
+			<text/>
+			<xim:description>Container</xim:description>
+			<xim:default_content>[Container]</xim:default_content>
+		</element>
+	</define>
+
+	<define name="left-column.class">
+		<element name="left-column">
+			<text/>
+			<xim:description>Left Column</xim:description>
+			<xim:default_content>[Left Column]</xim:default_content>
+		</element>
+	</define>
+
+	<define name="main-column.class">
+		<element name="main-column">
+			<ref name="title-element.class" />
+			<ref name="subtitle-element.class" />
+			<ref name="link-element.class" />
+			<text/>
+			<xim:description>Main Column</xim:description>
+			<xim:default_content>[Main Column]</xim:default_content>
+		</element>
+	</define>
+
+	<define name="link-element.class">
+		<element name="link-element">
+			<attribute name="font-color" />
+			<attribute name="font-color-hover" />
+			<attribute name="border-bottom">
+				<choice>
+					<value type="string">none</value>
+					<value type="string">solid</value>
+					<value type="string">dotted</value>
+					<value type="string">dashed</value>
+				</choice>
+			</attribute>
+			<text/>
+			<xim:description>Link-format</xim:description>
+			<xim:default_content>sample link</xim:default_content>
+		</element>
+	</define>
+
+	<define name="title-element.class">
+		<element name="title-element">
+			<attribute name="font-color" />
+			<attribute name="font-size" />
+			<attribute name="border-bottom">
+				<choice>
+					<value type="string">none</value>
+					<value type="string">solid</value>
+					<value type="string">dotted</value>
+					<value type="string">dashed</value>
+				</choice>
+			</attribute>
+			<attribute name="border-size">
+				<choice>
+					<value type="string">0px</value>
+					<value type="string">1px</value>
+					<value type="string">2px</value>
+					<value type="string">3px</value>
+				</choice>
+			</attribute>
+			<text/>
+			<xim:description>Title-format</xim:description>
+			<xim:default_content>Define the title format</xim:default_content>
+		</element>
+	</define>
+
+	<define name="subtitle-element.class">
+		<element name="subtitle-element">
+			<attribute name="font-color" />
+			<attribute name="font-size" />
+			<attribute name="border-bottom">
+				<choice>
+					<value type="string">none</value>
+					<value type="string">solid</value>
+					<value type="string">dotted</value>
+					<value type="string">dashed</value>
+				</choice>
+			</attribute>
+			<attribute name="border-size">
+				<choice>
+					<value type="string">0px</value>
+					<value type="string">1px</value>
+					<value type="string">2px</value>
+					<value type="string">3px</value>
+				</choice>
+			</attribute>
+			<text/>
+			<xim:description>Subtitle-format</xim:description>
+			<xim:default_content>Edit your own subtitle</xim:default_content>
+		</element>
+	</define>
+
+	<define name="right-column.class">
+		<element name="right-column">
+			<text/>
+			<xim:description>Right Column</xim:description>
+			<xim:default_content>[Right Column]</xim:default_content>
+		</element>
+	</define>
+
+	<define name="footer.class">
+		<element name="footer">
+			<attribute name="background-color"/>
+			<attribute name="font-color"/>
+			<interleave>
+				<ref name="layout.class"/>
+			</interleave>
+			<text/>
+			<xim:description>Footer</xim:description>
+			<xim:default_content>[Footer]</xim:default_content>
+		</element>
+	</define>
+
+	<define name="layout.class">
+		<element name="layout">
+			<attribute name="left-column-size">
+				<choice>
+					<value type="string">0</value>
+					<value type="string">1</value>
+					<value type="string">2</value>
+					<value type="string">3</value>
+					<value type="string">4</value>
+					<value type="string">5</value>
+					<value type="string">6</value>
+					<value type="string">7</value>
+					<value type="string">8</value>
+					<value type="string">9</value>
+					<value type="string">10</value>
+					<value type="string">11</value>
+					<value type="string">12</value>
+				</choice>
+			</attribute>
+
+			<attribute name="main-column-size">
+				<choice>
+					<value type="string">12</value>
+					<value type="string">11</value>
+					<value type="string">10</value>
+					<value type="string">9</value>
+					<value type="string">8</value>
+					<value type="string">7</value>
+					<value type="string">6</value>
+					<value type="string">5</value>
+					<value type="string">4</value>
+					<value type="string">3</value>
+					<value type="string">2</value>
+					<value type="string">1</value>
+					<value type="string">0</value>
+				</choice>
+			</attribute>
+			<attribute name="right-column-size">
+				<choice>
+					<value type="string">0</value>
+					<value type="string">1</value>
+					<value type="string">2</value>
+					<value type="string">3</value>
+					<value type="string">4</value>
+					<value type="string">5</value>
+					<value type="string">6</value>
+					<value type="string">7</value>
+					<value type="string">8</value>
+					<value type="string">9</value>
+					<value type="string">10</value>
+					<value type="string">11</value>
+					<value type="string">12</value>
+				</choice>
+			</attribute>
+
+		</element>
+	</define>
+
+</grammar>

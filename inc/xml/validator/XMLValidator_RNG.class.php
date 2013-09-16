@@ -25,7 +25,6 @@
  */
 
 
-
 class XMLValidator_RNG {
 
 	protected $_errors = null;
@@ -36,13 +35,10 @@ class XMLValidator_RNG {
 
 	public function validate($schema, $xmldoc) {
 
-		// ----- ¡¡¡ ÑAPA !!! -----
-		// Se suprime la validacion de atributos de docxap, ya que estos no son definidos en las PVD
+		// Se suprime la validacion de atributos de docxap, ya que estos no son definidos en los esquemas
 		// no siempre existiran los mismos en distintos XML.
 		$xmldoc = preg_replace('/<docxap\s(.[^>]*)>/', '<docxap xmlns:xim="http://www.ximdex.com/">', $xmldoc);
 //		debug::log($xmldoc);
-		// ----- ¡¡¡ ÑAPA !!! -----
-
 
 		// Clear errors...
 		$this->_errors = array();

@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision$
  */
 
 var that2;
@@ -368,6 +368,18 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 
 		$(this.element).append(d);
 
+	},
+	_createInputFor_ximdocSelector: function(label, inputUrl) {
+
+		var searchOptions = [{
+					comparation: 'equal',
+                                        content: '5032',
+                                        field: 'nodetype',
+                                        from: '',
+                                        to: ''                          
+                                    }];
+
+		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
 	},
 	_createInputFor_imageSelector: function(label, inputUrl) {
 

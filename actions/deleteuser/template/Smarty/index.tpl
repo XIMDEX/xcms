@@ -23,10 +23,11 @@
  *  @version $Revision$
  *}
 
+<h2>{t}Delete user{/t}</h2>
+
 <!--{include file="$_APP_ROOT/xmd/template/Smarty/helper/messages.tpl"}-->
 <form method="post" name="el_form" action="{$action_url}">
 	<fieldset>
-		<legend><span>{t}Delete user{/t}</span></legend>
 		<input type=hidden name='id_node' value="{$id_node}">
 		<p>{t}The user <b>{$login}</b> ({$email}) is going to be deleted.{/t}</p>
 		<p>{t}This action cannot be undone.{/t}</p>
@@ -46,6 +47,6 @@
 		</ol>-->
 	</fieldset>
 	<fieldset class="buttons-form">
-		{button class="validate" label="Delete" message="Are you sure you want to delete this user?"}
+		{button class="validate btn main_action" label="Delete" message="Are you sure you want to delete this user?"}
 	</fieldset>
 </form>

@@ -23,6 +23,8 @@
  *  @version $Revision$
  *}
 
+
+
 <form method="post" name="cln_form" id="cln_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}" >
 	<input type="hidden" name="name" value="{$name}" >
@@ -30,10 +32,16 @@
 	<input type="hidden" name="description" value="{$description}" >
 	<input type="hidden" name="validated" value="1" >
 
+<div class="action_header">
+	<h2>{t}Create link{/t}</h2>
+	<fieldset class="buttons-form">
+		{button label="Continue" class='validate  btn main_action' }<!--message=" Do you want to create the link anyway?"-->
+	</fieldset>
+</div>
+<div class="action_content">
 	<fieldset>
-    
-    	<legend><span>{t}Create link{/t}</span></legend>
-    		<p>{t}Found links which point at same url:{/t} ({$url})</p>
+
+	    		<p>{t}Found links which point at same url:{/t} ({$url})</p>
 		<ul class="list">
 		{foreach from=$links item=link}
 			<li><strong>{t}Name{/t}</strong>: {$link.name}</li>
@@ -42,9 +50,6 @@
 		</ul>
 
 	</fieldset>
+</div>
 
-	<fieldset class="buttons-form">
-		{button label="Cancel" class="close-button"}
-		{button label="Continue" class='validate' }<!--message=" Do you want to create the link anyway?"-->
-	</fieldset>
 </form>

@@ -35,7 +35,7 @@
 	background:#fff; 
 	margin:0; 
 	font-family:Verdana, Arial, Helvetica; 
-	font-size:14px
+	+font-size:14px
 }
 #dialog-header {
 	display:block; 
@@ -43,7 +43,7 @@
 	width:411px; 
 	padding:3px 6px 7px; 
 	height:14px; 
-	font-size:14px; 
+	+font-size:14px; 
 	font-weight:bold
 }
 #dialog-title {
@@ -62,7 +62,7 @@
 	min-height:190px; 
 	color:#666666; 
 	font-size:12px; 
-	font-weight: bold; 
+	+font-weight: bold; 
 	padding: 6px; 
 }
 #dialog-mask {

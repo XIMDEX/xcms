@@ -24,16 +24,6 @@
  *                                                                            	 *
  *********************************************************************************/
 
-
-
-
-
-
-
-
-
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
@@ -518,7 +508,9 @@ class	Node extends Nodes_ORM{
 	    if(empty($path)){
 		$name= $this->get("Path");
 	    }
-	    
+	
+	    $result = array();   
+	 
 	    $this->ClearError();
 	    if(!empty($name) && !empty($path)){
 		$dbObj = new DB();
@@ -1168,7 +1160,7 @@ class	Node extends Nodes_ORM{
 			$this->get('IdNode'), $this->get('IdNode')));
 
 		$dependencies=New Dependencies();
-		$dependencies->BorrarNodoDependiente($this->get('IdNode'));
+		$dependencies->deleteDependentNode($this->get('IdNode'));
 
 
 		XMD_Log::info("Node ".$this->nodeID." deleted.");
@@ -2993,7 +2985,7 @@ class	Node extends Nodes_ORM{
 	 * @param $type
 	 * @return unknown_type
 	 */
-	function getTemplates($type = NULL) {
+	function getSchemas($type = NULL) {
 
 		$idProject = $this->GetProject();
 
@@ -3008,46 +3000,45 @@ class	Node extends Nodes_ORM{
 			return NULL;
 		}
 
-		$folder = new Node($project->GetChildByName(Config::GetValue("VisualTemplateDir")));
+		$folder = new Node($project->GetChildByName(Config::GetValue("SchemasDirName")));
 		if (!($folder->get('IdNode') > 0)) {
 			XMD_Log::debug('Pvd folder could not be obtained');
 			return NULL;
 		}
 
-		$templates = $this->getProperty('DefaultSchema');
+		$schemas = $this->getProperty('DefaultSchema');
 
-		if (empty($templates)) {
-			$templates = '5045,5078';
+		if (empty($schemas)) {
+			$schemas = '5045,5078';
 		} else {
-			$templates = implode(',', $templates);
+			$schemas = implode(',', $schemas);
 		}
 
-
-		$templates = $folder->find('IdNode', 'IdParent = %s AND IdNodeType in (%s) ORDER BY Name',
-			array($folder->get('IdNode'), $templates),
+		$schemas = $folder->find('IdNode', 'IdParent = %s AND IdNodeType in (%s) ORDER BY Name',
+			array($folder->get('IdNode'), $schemas),
 			MONO, false);
 		if (!empty($type)) {
-			foreach ($templates as $key => $idTemplate) {
-				$template = new Node($idTemplate);
-				$templateType = $template->getProperty('TemplateType');
+			foreach ($schemas as $key => $idSchema) {
+				$schema = new Node($idSchema);
+				$schemaType = $schema->getProperty('TemplateType');
 
-				if (is_array($templateType) && count($templateType) == 1) {
-					$templateType = $templateType[0];
+				if (is_array($schemaType) && count($schemaType) == 1) {
+					$schemaType = $schemaType[0];
 				}
 
-				if ($templateType != $type) {
-					unset($templates[$key]);
+				if ($schemaType != $type) {
+					unset($schemas[$key]);
 				}
 			}
 		}
 
-		if (!is_array($templates)) {
-			XMD_Log::debug(sprintf('The specified folder (%s) is not containing pvds',
+		if (!is_array($schemas)) {
+			XMD_Log::debug(sprintf('The specified folder (%s) is not containing schemas',
 			$folder->get('IdNode')));
 			return NULL;
 		}
 
-		return $templates;
+		return $schemas;
 	}
 
   /**

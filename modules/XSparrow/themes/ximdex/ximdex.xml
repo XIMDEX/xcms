@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<xsparrow-theme version="1.0" >
+
+  <theme-properties>
+    <theme-shortname>ximdex</theme-shortname>
+    <theme-title>Ximdex theme</theme-title>
+    <theme-description>Portal completo con varios niveles de navegación</theme-description>
+    <theme-style>bootstrap</theme-style>
+  </theme-properties>
+
+
+  <main font-color="#6f6e48" background-color="#334411" background-image="" background-position="left top" background-repeat="no-repeat">
+
+    <header image="" font-color="" image-side="left" font-size="48px" border="Top/Bottom" border-color="#b3b282">
+      <layout left-column-size="0" main-column-size="0" right-column-size="0"></layout>
+      <header-title font-color="#a48b59" font-size="" align="left">
+        Your title2!
+      </header-title>
+      <header-subtitle font-color="#561111" font-size="1.5em" align="left">
+        Write something about this website
+      </header-subtitle>
+      <breadcrumb background-color="" font-color="" current-font-color=""/>
+    </header>
+    <container left_column="No" right_column="No" background-color="" background-image="" background-position="right top" background-repeat="no-repeat">
+
+      <layout left-column-size="0" main-column-size="0" right-column-size="0"></layout>
+      <left-column>[Left Column]</left-column>
+      <main-column>
+        <title-element font-color="#c7b58e" font-size="" border-bottom="none" border-size="0px">
+          Define the title format
+        </title-element>
+        <subtitle-element font-color="" font-size="" border-bottom="none" border-size="1px">
+          Edit your own subtitle
+        </subtitle-element>
+        <link-element font-color="#f03836" font-color-hover="#59afae" border-bottom="dotted">
+          sample link
+        </link-element>[Main Column]
+      </main-column>
+      <right-column>[Right Column]</right-column>
+    </container>
+    <footer background-color="" font-color="">
+      <layout left-column-size="0" main-column-size="0" right-column-size="0"></layout>[Footer]
+    </footer>
+  </main>
+</xsparrow-theme>

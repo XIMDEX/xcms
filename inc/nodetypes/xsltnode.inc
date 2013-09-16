@@ -51,7 +51,8 @@ class xsltnode extends FileNode {
 
 
 	function CreateNode($xsltName = null, $parentID = null, $nodeTypeID = null, $stateID = null, $ptdSourcePath = NULL) {
-
+		
+		$xslSourcePath=NULL;
 	//	if (is_null($ptdSourcePath))  return;
 		if ($ptdSourcePath != null){
 
@@ -79,7 +80,7 @@ class xsltnode extends FileNode {
 		$ximPtdNode = new Node($parentID);
 
 		$project = new Node($node->GetProject());
-		$idXimptdProject = $project->GetChildByName('ximptd');
+		$idXimptdProject = $project->GetChildByName('templates');
 
 		$ptdProject = new Node($idXimptdProject);
 		$idDocxapProject = $ptdProject->GetChildByName('docxap.xsl');
@@ -129,11 +130,11 @@ class xsltnode extends FileNode {
 			$idProject = $node->GetProject();
 			$project = new Node($idProject);
 
-			$ptdFolder = Config::getValue("GeneratorTemplateDir");
+			$ptdFolder = Config::getValue("TemplatesDirName");
 
 			if ($ximptd->get('IdParent') == $projectId) {
 
-				// Making include in project ximptd (modify includes from project and its sections)
+				// Making include in project (modify includes from project and its sections)
 
 				$includeString = "<xsl:include href=\"$fileName\"/>\n";
 
@@ -211,7 +212,7 @@ class xsltnode extends FileNode {
 	function writeIncludeFile($templateName, $sectionId, $nodeTypeID, $stateID, $includeString) {
 
 		$section = new Node($sectionId);
-		$ximPtdId = $section->GetChildByName('ximptd');
+		$ximPtdId = $section->GetChildByName('templates');
 
 		$parent = new Node($ximPtdId);
 		$includeId = $parent->GetChildByName('templates_include.xsl');
@@ -272,7 +273,6 @@ class xsltnode extends FileNode {
 		}
 	}
 
-
 	function RenameNode($newName = NULL){
 		if(null == $newName) return false;
 
@@ -280,14 +280,26 @@ class xsltnode extends FileNode {
 		$projectId = $this->parent->GetProject();
 		$parentId = $this->parent->get("IdParent");
 
+		$oldName=explode(".",$this->xsltOldName);
+		$newName=explode(".",$newName);
 		if ($this->xsltOldName){
 			$templateName = $this->xsltOldName;
-			$this->removeIncludeFile($templateName, $sectionId, $nodeTypeId);
+			$this->removeIncludeFile($templateName, $parentId, $nodeTypeId);
 			$this->removeIncludeFile($templateName, $projectId, $nodeTypeId);
 		}
-
-		$this->setIncludeContent($newName, $parentId, $nodeTypeId, null);
+		//open the file and make the replacement inside
+		$tpl= new Node($this->nodeID);
+		$rpl1='name="'.$oldName[0];
+		$rpl2='name="'.$newName[0];
+		$new_content=str_replace($rpl1,$rpl2,$tpl->GetContent());
+		$rpl1='match="'.$oldName[0];
+		$rpl2='match="'.$newName[0];
+		$new_content=str_replace($rpl1,$rpl2,$new_content);
+		$tpl->SetContent($new_content);
+	
+		$this->setIncludeContent($newName[0].".".$newName[1], $parentId, $nodeTypeId, null);
 	}
+
 	function deleteNode() {
 
 		// Deletes dependencies in rel tables
@@ -316,7 +328,7 @@ class xsltnode extends FileNode {
 	
 	
 		$section = new Node($sectionId);	
-		$ximPtdId = $section->GetChildByName('ximptd');
+		$ximPtdId = $section->GetChildByName('templates');
 
 		$parent = new Node($ximPtdId);
 		$includeId = $parent->GetChildByName('templates_include.xsl');

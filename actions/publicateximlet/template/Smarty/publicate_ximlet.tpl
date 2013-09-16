@@ -22,12 +22,11 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+<h2>{t}Publication result{/t}</h2>
 
-<fieldset>
-    <legend><span>{t}Publication result{/t}</span></legend>
     	{if ($result)}
 		<p>{t}Your documents have entered successfully in publication process{/t}</p>
 	{else}
 		<p>No documents to publish have been found.</p>
 	{/if}
-</fieldset>
+

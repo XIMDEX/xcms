@@ -43,7 +43,7 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Reset" class='form_reset' type="reset"}
-		{button label="Edit category" class="validate" }<!--message="Do you want to edit the category?"-->
+		{button label="Reset" class='form_reset btn' type="reset"}
+		{button label="Edit category" class="validate btn main_action" }<!--message="Do you want to edit the category?"-->
 	</fieldset>
 </form>

@@ -32,7 +32,7 @@
 	{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/messages.tpl"}
 	</fieldset>
 	<fieldset class="buttons-form">
-		{button label="Go back" class="focus" onclick="$(this).closest('.ui-tabs').tabs('backToIndex', this);"}
-		{button label="Confirm"  class="validate"}			<!--message="Are you sure you want to replace this file?"-->
+		{button label="Go back" class="focus btn" onclick="$(this).closest('.ui-tabs').tabs('backToIndex', this);"}
+		{button label="Confirm"  class="validate  btn main_action"}			<!--message="Are you sure you want to replace this file?"-->
 	</fieldset>
 </form>

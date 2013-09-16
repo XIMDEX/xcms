@@ -44,7 +44,7 @@ class String {
 	 * @param $texto
 	 * @return unknown_type
 	 */
-	public static function convertirTexto($texto) {
+	public static function convertText($texto) {
 	
 		//$texto = str_replace('\"','',$texto);
 		$texto = str_replace(" ","_",$texto);

@@ -1,0 +1,197 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+@import "../themes/ximdex_theme";
+
+.xim-treeview-branch-container{
+	overflow: auto;
+	position: absolute;
+	top: 25px;
+	bottom: 0px;
+	width: 100%;
+}
+
+.xim-search-panel .xim-treeview-branch-container{
+	position: static;
+
+}
+
+.xim-treeview-container .xim-treeview-btnreload{
+	background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
+	border: none;
+	padding: 3px 2px 3px 25px;
+	margin: 0px 10px 0px 20px;
+	text-transform: uppercase;
+	color: $c_grey;
+	white-space: nowrap;
+	cursor: 	pointer;
+	font-size: 13px;font-size: 1.3rem;
+}
+
+.xim-treeview-container .xim-treeview-btnreload:hover{
+	color: $c_main;
+}
+ul.xim-treeview-branch li ul li ul li{
+	margin-left: 15px;
+}
+
+.isLeaf div .ui-no-icon + .xim-treeview-icon {
+	margin-left: 0px;
+}
+
+ul.xim-treeview-branch li ul li ul li.isLeaf{
+	margin-left: 20px;
+}
+ul.xim-treeview-branch li ul li ul li.isLeaf div{
+	padding-left:  5px;
+	padding-bottom:  1px;
+	}
+
+
+
+.xim-treeview-branch-container>.xim-treeview-branch>.xim-treeview-node>.xim-treeview-branch{
+	padding-left: 10px;
+}
+.xim-treeview-label{
+	display: block;
+}
+
+ul.xim-treeview-branch li div:hover,
+.xim-listview-item:hover,
+.xim-treeview-label:hover,
+li.xim-listview-node:hover{
+  	background: $c_mainlight;
+  	@include radius(3px);
+	color: $c_white;
+}
+.xim-treeview-node .xim-treeview-selected:hover{
+	padding: 0px;
+}
+.xim-treeview-container-selected{
+	border-bottom: 1px dashed $c_grey-pp;
+}
+ul.xim-treeview-branch li div.xim-treeview-container-selected,
+tr.xim-listview-selected,
+tr.xim-listview-selected:hover,
+.xim-treeview-selected,
+.xim-treeview-selected:hover,
+li.xim-listview-selected,
+li.xim-listview-selected:hover {
+	background: $c_selected;
+	@include radius(3px);
+	color: $c-white;
+	border: transparent;
+	padding-right: 8px;
+}
+
+.xim-treeview-selected{
+		display: inline-block;
+}
+ul.xim-treeview-loading {
+	list-style: none;
+	margin: 5px auto;
+	width: 50px;
+}
+
+.ui-no-icon+.xim-treeview-icon{
+	margin-left: 16px;
+}
+
+.xim-listview-browser{
+	margin-bottom: 7px;
+	color: $c_grey-pp;
+	margin-left: 15px;
+}
+
+.xim-listview-browser a.alpha{
+	background: url('../../../../../images/viewers/breadcrumb-alpha.png') no-repeat right center;
+	padding: 5px 18px 5px 10px;
+	position: relative;
+	margin-left: 0px;
+	min-width: 87px;
+
+}
+.xim-listview-browser a.omega{
+	margin-left: 0px;
+	background: $c_grey-ppp;
+	@include radius(4px);
+	padding: 3px 5px 3px 7px;
+	position: relative;
+}
+
+
+
+.xim-listview-browser a.xim-listview-link + span.path-separator + a.omega{
+	background: $c_grey-ppp;
+	@include radius(0 4px 4px 0);
+	padding: 3px 10px 3px 13px;
+	margin-left: -7px;
+	position: relative;
+	white-space: nowrap;
+	z-index: 0 !important;
+}
+
+.xim-listview-browser a.omega:hover, .xim-listview-browser a.xim-listview-link + span.path-separator + a.omega:hover{
+	background: $c_mainlight;
+}
+.xim-listview-browser a {
+	background: url('../../../../../images/viewers/breadcrumb.png') no-repeat right center;
+	padding: 3px 17px 3px 13px;
+	color: $c_grey-pp;
+	font-weight: bold;
+	position: relative;
+	margin-left: -8px;
+	line-height: 2.5em;
+}
+
+.xim-listview-browser a.alpha:hover{
+	background: url('../../../../../images/viewers/breadcrumb-alpha-over.png') no-repeat left center;
+	color: $c_white;
+}
+
+.xim-listview-browser a:hover{
+	background: url('../../../../../images/viewers/breadcrumb-over.png') no-repeat right center;
+	color: $c_white;
+}
+.xim-listview-browser .path-separator{
+	display: none;
+}
+
+.xim-listview-browser span{
+	background:$c_background;
+	@include radius(4px);
+	padding: 3px 5px;
+}
+
+a + span.path-separator + span{
+	background:$c_background;
+	@include radius(0 4px 4px 0);
+	padding: 3px 5px 3px 7px;
+	margin-left: -7px;
+	position: relative;
+}
+
+
+
+

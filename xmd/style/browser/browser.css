@@ -248,7 +248,7 @@
 	width: 400px;
 	height: 80px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: xx-small;
+	+font-size: xx-small;
 }
 
 #sin_resultados{
@@ -261,7 +261,7 @@
 	height: 70px;
 	padding:5px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: xx-small;
+	+font-size: xx-small;
 	visibility:visible;
 	background:#dddddd;
 	z-index:4;
@@ -444,7 +444,7 @@
 /*FECHAS*/
 .Bbotong{
  	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 10px;
+	+font-size: 10px;
 	color : #FFFFFF;
 	background-color: #999999;
 	font-weight: normal;
@@ -455,7 +455,7 @@
 
 .buscadoravanzado{
 	font-family : Geneva, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	+font-size: 11px;
 	color : #4b4b4b;
 	font-weight: normal;
 	text-align: left;
@@ -463,20 +463,20 @@
 
 .ayudagris{
 	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size : 9px;
+	+font-size : 9px;
 	color: #969595;
 	margin-left:60px;
 	margin-top:5px;
 }
 
 .fecha{
-	font-size:9px;
+	+font-size:9px;
 	font-family:Verdana,Helvetica;
 }  
 
 .Basterisco{
 	color:#ff8000;
-	font-size:14px;
+	+font-size:14px;
 }
 
 .Bfilaboton{
@@ -489,13 +489,13 @@
 
 .filaprop{
 	background-color:#EEEEEE;
-	font-size:10px;
+	+font-size:10px;
 }
 
 .filafinal{
 	background-color:#B8429B;
 	color:#ffffff;
-	font-size:10px;
+	+font-size:10px;
 }
 
 .celda_checkP{
@@ -512,21 +512,21 @@
 }
 
 .celda_prop{
-	font-size:10px;
+	+font-size:10px;
 	font-weight:bold;
 	color:#5B5050;
 	text-indent:2px;
 }
 
 .celda_cjto{
-	font-size:10px;
+	+font-size:10px;
 	font-weight:bold;
 	color:#AB1683;
 	text-indent:2px;
 }
 
 .celda_p{
-	font-size:10px;
+	+font-size:10px;
 	font-weight:bold;
 	color:#ffffff;
 	text-indent:4px;
@@ -535,7 +535,7 @@
 }
 
 .celda_p2{
-	font-size:10px;
+	+font-size:10px;
 	font-weight:bold;
 	color:#ffffff;
 	text-indent:4px;
@@ -545,7 +545,7 @@
 }
 
 .celda_valor{
-	font-size:10px;
+	+font-size:10px;
 	font-weight:bold;
 	color:#ffffff;
 	width:85%;
@@ -554,7 +554,7 @@
 }
 
 .celda_resul{
-	font-size:10px;
+	+font-size:10px;
 	font-weight:bold;
 	color:#898989;
 }

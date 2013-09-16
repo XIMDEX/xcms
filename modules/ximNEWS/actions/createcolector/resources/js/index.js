@@ -51,7 +51,7 @@ $('.lockpagination').click(function() {
 $('.unlockpagination').click(function() {
 
 	$('li.numnotbulletin').show();
-	$('input#newsperbull').attr('disabled', '');
+	$('input#newsperbull').removeAttr('disabled');
 });
 
 $('.newsperpage').keypress(function(e) {

@@ -71,9 +71,10 @@
 					XMD_Log::error(_("No target frame available")." FACADE - $idTargetNode - $idTargetChannel - $idServer");
 					return NULL;
 				}
-			
+				
 				// Calculating physical origin and destiny servers
 				$physicalTargetServers = $targetFrame->getCompleteServerList($idTargetNode, $idTargetChannel);
+
 				
                             	if (count($physicalTargetServers) == 0) {
 					XMD_Log::error(_("No physical target server available"));

@@ -23,11 +23,11 @@
  *  @version $Revision$
  *}
 
-<p>{t numDocs=$numDocs}Modification of this PTD has affected to %1 documents. Would you like to republish them?{/t}</p>
+<p>{t numDocs=$numDocs}Modification of this template has affected to %1 documents. Would you like to republish them?{/t}</p>
 
 <form id="pb_form" enctype="multipart/form-data" method="post" action="{$action_url}">
 	<input type="hidden" name="docsList" value="{$docsList}">
 	<fieldset class="buttons-form">
-		{button label="Publish" class='validate'}
+		{button label="Publish" class='validate btn main_action'}
 	</fieldset>
 </form>

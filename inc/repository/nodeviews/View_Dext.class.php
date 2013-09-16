@@ -63,12 +63,12 @@ class View_Dext extends Abstract_View implements Interface_View {
 		$project = new Node($this->_idProject);
 		$nodeProjectPath = $project->class->GetNodePath();
 
-		$ptdFolder = Config::getValue("GeneratorTemplateDir");
+		$tplFolder = Config::getValue("TemplatesDirName");
 		$generatorCommand = Config::getValue("AppRoot").Config::getValue("GeneratorCommand");
 
 		$command = $generatorCommand .
-				" --template='".$sectionPath."/".$ptdFolder."'" .
-				" --common='".$nodeProjectPath."/".$ptdFolder."'" .
+				" --template='".$sectionPath."/".$tplFolder."'" .
+				" --common='".$nodeProjectPath."/".$tplFolder."'" .
 				" --depth=".($this->_depth - 2) .
 				" --errorout";
 
@@ -132,12 +132,12 @@ class View_Dext extends Abstract_View implements Interface_View {
 		}
 
 
-		// Extract last line (which has PTD dependences info)
+		// Extract last line (which has template dependences info)
 
 		$lines = explode("\n", $output);
 		$lastLine = array_pop($lines);
 		$output = implode($lines, "\n");
-		// Insert document-ptd dependences
+		// Insert document-xsl templates dependencies
 
 		if($this->_node) {
 			$deps = explode('-->', $lastLine);

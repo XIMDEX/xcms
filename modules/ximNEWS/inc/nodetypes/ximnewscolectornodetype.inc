@@ -421,7 +421,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		// todo: move this to method isgenerable
 		$templateNode = new Node($templateID);
 		if (!($templateNode->get('IdNode') > 0)) {
-			XMD_Log::error('Colector pvd is deleted');
+			XMD_Log::error('Colector schema is deleted');
 			return false;
 		}
 
@@ -431,7 +431,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$order = $ximNewsColector->get('OrderNewsInBulletins');
 		$newsPerBulletin = $ximNewsColector->get('NewsPerBulletin');
 
-		// Updating xslFile if pvd version has changed
+		// Updating xslFile if schema version has changed
 
 		$df = new DataFactory($templateID);
 		$ver = $df->GetLastVersion();
@@ -443,7 +443,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$newXslFile = $this->buildXslBulletin($templateID);
 
 			if(!$newXslFile) {
-				XMD_Log::info("Actualizando xsl de la pvd $templateID");
+				XMD_Log::info("Actualizando xsl del esquema  $templateID");
 				$this->messages->add('No se ha podido actualizar la plantilla xsl', MSG_TYPE_ERROR);
 				return false;
 			}
@@ -451,14 +451,14 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$ximNewsColector = new XimNewsColector();
 
 			if(!$ximNewsColector->updateByIdTemplate($templateID, $newXslFile, $templateIdVersion)){
-				XMD_Log::info("Persistiendo xsl de pvd $templateID");
+				XMD_Log::info("Persistiendo xsl del esquema  $templateID");
 				return false;
 			}
 
 			$xslFile = $ximNewsColector->get('XslFile');
 			$cache = new XimNewsCache();
 			if(!$cache->GenerateAllCaches($templateID,$xslFile)){
-				XMD_Log::info("Generado las caches de la pvd $templateID");
+				XMD_Log::info("Generado las caches del esquema $templateID");
 			}
 		}
 
@@ -618,13 +618,15 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$query = "SELECT source,target FROM RelBulletinXimlet WHERE source in (" . implode(', ', $bulletinsGenerated) . ")";
 		$db = new DB();
 		$db->query($query);
-		$idBul = $db->getValue('source');
-		$bulletinDoc = new StructuredDocument($idBul);
-		$content = $bulletinDoc->GetContent();
-		// Updates ximlet content
-		$idXimlet = $db->getValue("target");
-		$ximletNode = new Node($idXimlet);
-		$ximletNode->SetContent($content);
+		while(!$db->EOF){
+			$idBul = $db->getValue('source');
+			bulletinDoc = new StructuredDocument($idBul);
+			content = $bulletinDoc->GetContent();
+			/ Updates ximlet content
+			idXimlet = $db->getValue("target");
+			ximletNode = new Node($idXimlet);
+			ximletNode->SetContent($content);
+		}
 
 		return $bulletinsGenerated;
 	}
@@ -837,7 +839,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 	private function buildXslBulletin($templateID){
 
 		if (is_null($templateID)) {
-			XMD_Log::error('Pvd not found');
+			XMD_Log::error('Schema not found');
 			return NULL;
 		}
 
@@ -877,7 +879,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$bulletinXsl = $xsltHandler->process();
 
 		if (!$bulletinXsl) {
-			XMD_Log::error("Generating bulletin xsl template for pvd $templateID");
+			XMD_Log::error("Generating bulletin xsl template for schema $templateID");
 			return NULL;
 		}
 

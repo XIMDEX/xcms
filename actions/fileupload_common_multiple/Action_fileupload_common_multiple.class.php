@@ -72,11 +72,11 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				$filter = ".*jpeg,.*jpg,.*gif,.*png,.*ico";
 			break;
 			case 'TemplateViewFolder':
-				$lbl_anadir = _(' Add PVD templates ');
+				$lbl_anadir = _(' Add schemas ');
 				$filter = ".*xml";
 			break;
 			case 'TemplatesFolder':
-				$lbl_anadir = _(' Add PTD templates ');
+				$lbl_anadir = _(' Add templates ');
 				$filter = ".*xml,.*xsl";
 			break;
 			case 'ImportFolder':

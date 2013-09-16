@@ -1,5 +1,5 @@
 {if (!$db_connection)}
-	{t}Pleaese, check database configuration in your /conf/install_params.conf.php{/t}
+	{t}Please, check your database configuration in the /conf/install_params.conf.php file.{/t}
 {else}
 	{t}ERROR: Ximdex is not configured. Please run installer.{/t}
 {/if}

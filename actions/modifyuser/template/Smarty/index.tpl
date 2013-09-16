@@ -24,41 +24,45 @@
  *}
 
 <form method="post" id="mu_action" action="{$action_url}">
-	<fieldset>
-		<legend><span>{t}Modify user{/t}</span></legend>
-		<ol>
-			<li>
-				{t}Usuario{/t}
-				{$login}
-			</li>
-			<li>
-				<label for="name" class="aligned">{t}First and last names{/t}</label>
-				<input type="text" name="name" id="name" value="{$name}" class='cajaxg validable not_empty'>
-			</li>
-			<li>
-				<label for="email" class="aligned">{t}Email{/t}</label>
-				<input type="text" name="email" id="email" value="{$email}" class='cajaxg validable not_empty is_email'>
-			</li>
-			<li>
-				<label for="password_" class="aligned">{t}Modify password{/t}</label>
-				<input type="password" name='password_' id="password_" class='caja validable field_equals__password_repeated'>
-			</li>
-			<li>
-				<label for="password_repeated" class="aligned">{t}Repeat password{/t}</label>
-				<input type="password" name='password_repeated' id="password_repeated" class='caja'>
-			</li>
-			<li>
-				<label for="locale" class="aligned">{t}Language{/t}</label>
-				<select name="locale" id="locale" class="classxg">
-				{section name=i loop=$locales}
-					<option value="{$locales[i].Code}" {if ($locales[i].Code == $user_locale || ( $user_locale == null && $locales[i].Code == $smarty.const.DEFAULT_LOCALE))} selected{/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})</option>
-				{/section}
-				</select>
-			</li>
-		</ol>
+	<div class="action_header">
+		<h2>{t}Modify user{/t}</h2>
+			<fieldset class="buttons-form">
+		{button label="Modify user" class='validate btn main_action' }
 	</fieldset>
-	<fieldset class="buttons-form">
-		{button type="reset" label='Reset'}
-		{button label="Modify user" class='validate' }
-	</fieldset>
+	</div>
+	<div class="action_content">
+		<fieldset>
+			<ol>
+				<li>
+					{t}Usuario{/t}
+					{$login}
+				</li>
+				<li>
+					<label for="name" class="aligned">{t}First and last names{/t}</label>
+					<input type="text" name="name" id="name" value="{$name}" class='cajaxg validable not_empty'>
+				</li>
+				<li>
+					<label for="email" class="aligned">{t}Email{/t}</label>
+					<input type="text" name="email" id="email" value="{$email}" class='cajaxg validable not_empty is_email'>
+				</li>
+				<li>
+					<label for="password_" class="aligned">{t}Modify password{/t}</label>
+					<input type="password" name='password_' id="password_" class='caja validable field_equals__password_repeated'>
+				</li>
+				<li>
+					<label for="password_repeated" class="aligned">{t}Repeat password{/t}</label>
+					<input type="password" name='password_repeated' id="password_repeated" class='caja'>
+				</li>
+				<li>
+					<label for="locale" class="aligned">{t}Language{/t}</label>
+					<select name="locale" id="locale" class="classxg">
+					{section name=i loop=$locales}
+						<option value="{$locales[i].Code}" {if ($locales[i].Code == $user_locale || ( $user_locale == null && $locales[i].Code == $smarty.const.DEFAULT_LOCALE))} selected{/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})</option>
+					{/section}
+					</select>
+				</li>
+			</ol>
+		</fieldset>
+	</div>
+
 </form>

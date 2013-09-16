@@ -22,8 +22,5 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
-<fieldset><legend><span>{t}Expire section{/t}</span></legend>
-
+<h2>{t}Expire section{/t}</h2>
 <p>{t section_name=$section_name}Section %1 has been successfully expired{/t}</p>
-</fieldset>

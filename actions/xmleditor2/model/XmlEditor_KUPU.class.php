@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision$
  */
 
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
@@ -29,8 +29,8 @@ ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PreviewInServer.class.php');
 ModulesManager::file('/inc/nodetypes/xsltnode.inc');
 ModulesManager::file('/inc/http/Curl.class.php');
-ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'ximRA');
-ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'ximRA');
+ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
+ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xedit.class.php');
@@ -39,6 +39,7 @@ ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/model/Versions.inc');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
 ModulesManager::file('/inc/parsers/ParsingJsGetText.class.php');
+ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 
 class XmlEditor_KUPU extends XmlEditor_Abstract {
@@ -124,6 +125,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			'/inc/js/dialogs.js',
 			'/inc/js/ximtimer.js',
 			'/inc/js/console.js',
+			'/inc/widgets/select/js/ximdex.select.js',
 			$kupuURL . '/common/sarissa.js',
         		$kupuURL . '/common/sarissa_ieemu_xpath.js',
 	       	 	$kupuURL . '/common/kupuhelpers.js',
@@ -147,7 +149,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 	        	$actionURL . '/js/helpers/autoscrolling.js',
         		$actionURL . '/js/helpers/EditorHandlers_Adapter.js',
         		$actionURL . '/js/helpers/DOMNodeIterator.class.js',
-//future                $actionURL . '/js/helpers/colorpicker.js', 
+//future        	$actionURL . '/js/helpers/colorpicker.js',
 	        	$actionURL . '/js/helpers/DOMAttrIterator.class.js',
 
 				/* ####### DOM ########## */
@@ -173,7 +175,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
   			$actionURL . '/js/toolboxes/XimdocToolBox.class.js',
         		$actionURL . '/js/tools/XimdocContextMenuTool.class.js',
 
-				/*###Especial ToolBox###*/	
+				/*###Especial ToolBox###*/
 			$actionURL . '/js/toolboxes/FloatToolbarToolBox.class.js',
 
 				/* ####### TOOLS ########## */
@@ -242,8 +244,9 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/views/common/css/kupustyles.css',
 			$actionURL . '/views/common/css/toolboxes.css',
 			$actionURL . '/views/common/css/treeview.css',
-//future                $actionURL . '/views/common/css/colorpicker.css', 
+//future		$actionURL . '/views/common/css/colorpicker.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
+			Config::getValue('UrlRoot') .'/inc/widgets/select/js/ximdex.select.js',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
         		$kupuURL . '/common/kupudrawerstyles.css'
         	);
@@ -328,6 +331,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		return $xmldoc;
 	}
 
+
 	public function validateSchema($idnode, $xmldoc) {
 		$schema = $this->getSchemaFile($idnode);
 
@@ -336,9 +340,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		$rngvalidator = new XMLValidator_RNG();
 		$valid = $rngvalidator->validate(XmlBase::recodeSrc($schema, XML::UTF8), $xmldoc);
 		$valid=true;
-		$response = array('valid' => $valid,
-						'errors' => $rngvalidator->getErrors()
-						);
+		$response = array('valid' => $valid,'errors' => $rngvalidator->getErrors());
 
 		return $response;
     	}
@@ -359,12 +361,13 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
     			$response['result'] = false;
     			return $response;
     		}
-	
+
     		$dataFactory = new DataFactory($idNode);
     		$lastVersion = $dataFactory->GetLastVersionId();
     		if(is_null($response['doc_mod_date'] = $dataFactory->GetDate($lastVersion)) ||
     			$response['doc_mod_date'] >= $response['tmp_mod_date']) {
-    			$response['result'] = false;
+    			
+			$response['result'] = false;
     			return $response;
     		}
 
@@ -385,7 +388,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
     		} else {
     			$response['result'] = true;
     		}
-	
+
     		return $response;
     	}
 
@@ -420,7 +423,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		$response['headers'] = array();
 		$response['content'] = '';
 
-    		if (!$this->setNode($idNode)) {
+    	if (!$this->setNode($idNode)) {
 			$msg = _("Document cannot be saved.");
 
 			XMD_Log::error(_("A non-existing node cannot be saved: ") . $idNode);
@@ -454,7 +457,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$response['saved'] = true;
 			$response['headers'][] = 'HTTP/1.1 204 No Content';
 
-    		}
+    	}
 
 		$response['headers'][] = 'Content-type: text/xml';
 		return $response;
@@ -584,40 +587,22 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 	}
 
 	public function getAnnotationFile($idNode, $content) {
-		if(ModulesManager::isEnabled('ximRA')){
+		if(ModulesManager::isEnabled('Xowl')){
 			if(Config::getValue('EnricherKey') === NULL || Config::getValue('EnricherKey') == '') {
 				XMD_Log::error(_("EnricherKey configuration value has not been defined"));
 				$resp = '{"status": "no  EnricherKey defined"}';
 			} else {
-				$enricher = new Enricher();
-				$tagSuggester = new TagSuggester();
-				$resp1 = XmlBase::recodeSrc($enricher->suggest($content, Config::getValue('EnricherKey'),'json'), XML::UTF8);
-				$resp2 = XmlBase::recodeSrc($tagSuggester->suggest($content), XML::UTF8);
-
-				//Build json response from zemanta and iks
-				$status = "ok";
-				$json1 = json_decode($resp1,true);
-				$json2 = json_decode($resp2,true);
-
-				if($json1['status']!="ok" && $json2['status']!="ok"){
-					$status = "bad";
-				}
+				$ontologyService = new OntologyService();
+				$resp = $ontologyService->suggest($content);
 				
-				//We must delete de HTTP header that comes with the response
-				$pos=strpos($resp1,"status");
-				if ($pos!== FALSE){
-		 	                $resp1=substr($resp1,$pos-2,strlen($resp1));
-				}
-
-				$resp='{"status": "'.$status.'","zemanta":'.$resp1.', "iks":'.$resp2.'}';
 			}
 		}
 		else{
-			$videolink="<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>";	
-			$ximRAmsg=_("ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>");
+			$videolink="<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>";
+			$ximRAmsg=_("Xowl module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with Xowl, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>");
 			$videomsg=sprintf($ximRAmsg,$videolink);
 			$urlvideo = "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>";
-			XMD_Log::error(_("ximRA module has not been installed. It is included in the advanced package WIX."));
+			XMD_Log::error(_("Xowl module has not been installed. It is included in the advanced package WIX."));
 		        $resp = '{"status": "'.$videomsg.'","videourl":"'.$urlvideo.'"}';
 		}
 

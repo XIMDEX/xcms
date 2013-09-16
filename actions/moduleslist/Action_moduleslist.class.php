@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision$
  */
 
 
@@ -29,6 +29,8 @@
 ModulesManager::file('/inc/serializer/Serializer.class.php');
 
 class Action_moduleslist extends ActionAbstract {
+
+	public static  $new_modules= array("Xowl","XSparrow","Xlyre");
 
 	public function index() {
 
@@ -47,7 +49,7 @@ class Action_moduleslist extends ActionAbstract {
 				
 		foreach ($paths as $module) {
 			$moduleName=$module["name"];
-			if(strpos($moduleName,'xim')!==false){
+			if(strpos($moduleName,'xim')!==false || in_array($moduleName,self::$new_modules)){
 				$isEnabled = $this->isEnabled($moduleName);
 				$coreModule = in_array($moduleName, ModulesManager::getCoreModules() );
 				$modules[] = array(
@@ -81,7 +83,6 @@ class Action_moduleslist extends ActionAbstract {
 		$lang = strtolower(XSession::get("locale"));
 		$base = XIMDEX_ROOT_PATH."/actions/moduleslist/template/Smarty";
 
-
 		$module_name = $this->request->getParam('modsel');
 		$module_exists = ModulesManager::moduleExists($module_name);
 		if(!$module_exists) { return $this->moduleNotFound(); }
@@ -96,14 +97,10 @@ class Action_moduleslist extends ActionAbstract {
 			"module_actived"   => $module_actived,
 			"module_installed" => $module_installed, 
 			"core_module"	   => $core_module, 
-			"lang" 			   => $lang
+			"lang" 		   => $lang
 		);
 
-
-
 		$file = "{$module_name}.tpl";
-
-
 
 		if ( file_exists("{$base}/{$lang}/{$file}" ) )  {
 			 $this->render($values, "{$lang}/{$file}", 'default-3.0.tpl');
@@ -113,7 +110,6 @@ class Action_moduleslist extends ActionAbstract {
 			return $this->moduleNotFound();
 		}
 	}
-
 
 
 	public function changeState() {
@@ -154,7 +150,6 @@ class Action_moduleslist extends ActionAbstract {
 				$this->messages->add( _("Module not changed"), MSG_TYPE_ERROR);
 			}
 		}
-
 
 		echo json_encode(array('messages' => $this->messages->messages));
 		die();

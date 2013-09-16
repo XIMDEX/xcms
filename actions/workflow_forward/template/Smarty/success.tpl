@@ -22,19 +22,18 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+<h2>{t}Messages{/t}</h2>
 
-<fieldset>
-        <legend><span>{t}Messages{/t}</span></legend>
         <ol>
                 <li>{t}The document has been moved to the next state.{/t}</li>
         </ol>
-</fieldset>
+
 
 <fieldset class="buttons-form">
 {if ($goback) }
-        {button class="goback-button" label="Go back"}
+        {button class="goback-button btn main_action" label="Go back"}
 {else} 
-        {button class="close-button" label="Close"}
+        {button class="close-button btn main_action" label="Close"}
 {/if}
 </fieldset>
 

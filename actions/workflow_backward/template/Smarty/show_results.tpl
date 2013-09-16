@@ -24,20 +24,20 @@
  *}
 
 {if (count($messages)) }
-<fieldset>
-	<legend><span>{t}Messages{/t}</span></legend>
+<h2>{t}Messages{/t}</h2>
+
 	<ol>
 	{foreach name=messages from=$messages key=message_id item=message}
 		<li>{$message.message}</li>
 	{/foreach}
 	</table>
-</fieldset>
+
 {/if}
 
 <fieldset class="buttons-form">
 {if ($goback) }
-	{button class="goback-button" label="Go back"}
+	{button class="goback-button  btn main_action" label="Go back"}
 {else}
-	{button class="close-button" label="Close"}
+	{button class="close-button btn" label="Close"}
 {/if}
 </fieldset>

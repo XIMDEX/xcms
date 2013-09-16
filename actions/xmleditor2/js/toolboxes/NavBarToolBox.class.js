@@ -28,29 +28,28 @@
  *Toolbox for use the element navigation bar.
  **/
 function NavBarToolBox (){
-    
+
 	this._element; //Dom navbar element
         this._body = null; //String, html document after xslt transformation
 	this.buttons; //Array, with buttos for each element in tree way as far as selector node
-        
+
         this.initialize = function(tool, editor) {
                 //Get navbar element
 		this._element = $(".kupu-tb-navbar");
 		this.editor = editor;
         };
-        
+
         this.beforeUpdateContent = function(options) {
-		
+
 	};
 
 	/**
 	 * Updates the events handlers after update the editor content
 	 */
 	this.afterUpdateContent = function(options) {
-            
         };
 
-	
+
         /*
          *After every change in doc
          **/
@@ -58,7 +57,7 @@ function NavBarToolBox (){
                 //Initializing editor attribute just once.
 		if (!this.editor)
                     this.editor=options.caller;
-                
+
                 //Get current selector element.
 		var ximElement = this.editor.ximElement;
 
@@ -66,7 +65,7 @@ function NavBarToolBox (){
 		this._element.empty();
 		this.nav = []
 		this.buttons = [];
-                
+
                 //Appending all ancestor of ximElement in this.nav property
 		this._buildPath(ximElement);
                 //Start in 1 to avoid docxap element
@@ -77,9 +76,10 @@ function NavBarToolBox (){
 			if (i == this.nav.length -1){
 				newTag.addClass("current-tag");
 			}else{
-				newTag.addClass("selector-tag");
+				newTag.addClass("selector-tagggg");
+
 			}
-	
+
 			var that = this;
                         newTag.bind('contextmenu', function(e) {
                                         e.preventDefault();
@@ -112,14 +112,17 @@ function NavBarToolBox (){
          *Recursive method.
          **/
 	this._buildPath = function(ximElement){
-		
+             $(".kupu-tb-navbar").removeClass('not-empty');
+            $(".kupu-tb-navbar").addClass('empty');
 		if (ximElement.parentNode){
 			this._buildPath(ximElement.parentNode);
-		}		
+           $(".kupu-tb-navbar").removeClass('empty');
+            $(".kupu-tb-navbar").addClass('not-empty');
+		}
 		this.nav.push(ximElement);
 	};
-	
-    
+
+
 }
 NavBarToolBox.prototype = new XimdocToolBox();
 
@@ -128,7 +131,7 @@ var NavBarButton = Object.xo_create(XimdocButton, {
 	_init: function(buttonid, tool) {
 		NavBarButton._construct(this, buttonid, this.commandfunc, tool);
 	},
-	
+
 	commandfunc: function(event) {
 		var newUid = event.buttonid.substring(4);
 		var elements = $('[uid="'+newUid+'"]', this.editor.getBody());

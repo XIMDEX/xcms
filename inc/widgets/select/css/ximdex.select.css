@@ -1,0 +1,108 @@
+
+.button, .no-collapsable .option {
+  min-width: 1.6em;
+  height: 1.7em;
+  position: relative;
+  line-height: .7;
+  text-align: center;
+  margin: 0 .1em;
+  width: 1.94em;
+}
+
+.button:hover, .no-collapsable .option:hover {
+  background: #7bcabf;
+}
+
+.button:hover .option {
+  color: #fff;
+}
+
+.options, .fonts, .range-bg {
+  background: #212121;
+  max-height: 0;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+  overflow: hidden;
+  color: #606060;
+  position: relative;
+  z-index: 10;
+}
+
+.button:hover .options, .button:hover .fonts, .button:hover .range-bg {
+  max-height: 800px;
+}
+
+
+.selection, .option {
+  width: 100%;
+  height: inherit;
+}
+
+.collapsable .options {
+  z-index: 666;
+}
+
+.option {
+  height: 1.7em;
+  padding: .25em 0;
+  position: relative;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+  .option:hover {
+    background: #7bcabf;
+}
+
+.custom_options .icon::before, .custom_options .icon::after {
+  font-size: 1.8em;
+  color: #606060;
+}
+
+.custom_options .icon::after {
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: #7bcabf;
+}
+
+.custom_options .option::after {
+	padding-top: .13em;
+}
+
+.custom_options .selection::after {
+	color: #7bcabf;
+}
+
+.custom_options .icon:hover::after, .custom_options .icon:hover .selection::after, .text-align .option:hover::before {
+	color: white;
+}
+
+.no-collapsable .options {
+	max-height: none;
+	background: none;
+}
+
+.no-collapsable .option {
+	display: inline-block;
+	width: 1.94em;
+	margin: 0 .2em;
+	padding: 0;
+}
+
+.icon[class*="layout"]:last-child {
+	margin-right: .1em;
+}
+
+.no-collapsable .option::before {
+	font-size: 3.2rem;
+	line-height: .9;
+}
+.no-collapsable .option::before:hover::before {
+	color: #606060;
+}
+
+

@@ -25,10 +25,9 @@
 
 
 {assign var="schemas" value=$properties.Schema}
-
+<h2>{t}Allowed types of templates{/t}</h2>
 <fieldset>
 
-<legend><span>{t}Allowed types of templates{/t}</span></legend>
 <div>
 	<div class="xright-block">
 		<input type="radio" name="inherited_schemas" class="schemas_inherited"

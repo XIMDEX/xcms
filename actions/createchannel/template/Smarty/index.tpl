@@ -23,23 +23,26 @@
  *  @version $Revision$
  *}
 
-
 <form method="post" action="{$action_url}" id="channel_form" class='form_active validate_ajax'>
 	<input type="hidden" name="id_node" value="{$id_node}">
-	<fieldset>
-        	<legend><span>{t}Add channel{/t}</span></legend>
-		<ol>
-                	<li><label for="name" class="aligned">{t}Name{/t}</label> &nbsp;<input type="text" name='name' id="channelname" class='cajag validable not_empty'></li>
-			<li><label for="extension" class="aligned">{t}File extension{/t}</label>&nbsp;<input type="text" name='extension' id="extension" class='cajag validable not_empty'></li>
-			<li><label for="description" class="aligned">{t}Description{/t}</label>&nbsp;<input type='text' name='description' id="description" class='cajag validable not_empty'></li>
-                        <li><label for="rendermode" class="aligned">{t}Rendering in{/t}</label>&nbsp;
-			<input type='radio' id="rendermode" name="rendermode" checked value='ximdex'>{t}Ximdex{/t}&nbsp;
-			<input type='radio' id="rendermode" name="rendermode" value='client'>{t}Client{/t}</li>
-              	</ol>
-		<div class="extrainfo">{t}Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If your website it's going to be dynamic, then select the <i>Client</i> rederized mode{/t}.</div>
-	</fieldset>
-	<fieldset class="buttons-form">
-		{button label="Reset" class='form_reset' type='reset'}
-		{button label="Create channel" class='validate' }<!--message=Would you like to add a channel?"-->
-	</fieldset>
+	<div class="action_header">
+		<h2>{t}Add channel{/t}</h2>
+		<fieldset class="buttons-form">
+			{button label="Create channel" class='validate btn main_action' }<!--message=Would you like to add a channel?"-->
+		</fieldset>
+	</div>
+	<div class="action_content">
+		<fieldset>
+			<ol>
+		                	<li><label for="name" class="aligned">{t}Name{/t}</label> &nbsp;<input type="text" name='name' id="channelname" class='cajag validable not_empty'></li>
+				<li><label for="extension" class="aligned">{t}File extension{/t}</label>&nbsp;<input type="text" name='extension' id="extension" class='cajag validable not_empty'></li>
+				<li><label for="description" class="aligned">{t}Description{/t}</label>&nbsp;<input type='text' name='description' id="description" class='cajag validable not_empty'></li>
+		                        <li><label for="rendermode" class="aligned">{t}Rendering in{/t}</label>&nbsp;
+				<input type='radio' id="rendermode" name="rendermode" checked value='ximdex'>{t}Ximdex{/t}&nbsp;
+				<input type='radio' id="rendermode" name="rendermode" value='client'>{t}Client{/t}</li>
+		              	</ol>
+			<div class="extrainfo">{t}Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If your website it's going to be dynamic, then select the <i>Client</i> rederized mode{/t}.</div>
+		</fieldset>
+	</div>
+
 </form>

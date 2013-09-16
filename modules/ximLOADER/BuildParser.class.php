@@ -186,7 +186,7 @@ class Loader_Project extends Loader_AbstractNode {
 		$nodetypename = $type == 'PTD' ? 'TEMPLATE' : 'XSLTEMPLATE';
 
 
-		$path = $this->getPath() . '/ximptd';
+		$path = $this->getPath() . '/templates';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
 		if ($files) {
@@ -205,7 +205,7 @@ class Loader_Project extends Loader_AbstractNode {
 		$extension = 'xml';
 		$nodetypename = $type == 'RNG' ? 'RNGVISUALTEMPLATE' : 'VISUALTEMPLATE';
 
-		$path = $this->getPath() . '/ximpvd';
+		$path = $this->getPath() . '/schemas';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
 
@@ -245,7 +245,7 @@ class Loader_Section extends Loader_AbstractNode {
 	}
 
 	public function getXimdocs() {
-		$query = sprintf('//ximdoccontainer/ximdoc');
+		$query = sprintf('//ximdoccontainer/document');
 		$items = $this->xpath->query($query, $this->node);
 		$ret = array();
 		if ($items) {
@@ -310,7 +310,7 @@ class Loader_Section extends Loader_AbstractNode {
 		$nodetypename = $type == 'PTD' ? 'TEMPLATE' : 'XSLTEMPLATE';
 
 
-		$path = $this->getPath() . '/ximptd';
+		$path = $this->getPath() . '/templates';
 		$files = FsUtils::readFolder($path, false);
 		$ret = array();
 		if ($files) {
@@ -343,7 +343,7 @@ class Loader_Server extends Loader_Section {
 	}
 
 	public function getXimdocs() {
-		$query = sprintf('//ximdoccontainer/ximdoc');
+		$query = sprintf('//ximdoccontainer/document');
 		$items = $this->xpath->query($query, $this->node);
 		$ret = array();
 		if ($items) {
@@ -374,7 +374,7 @@ class Loader_XimDOC extends Loader_AbstractNode {
 	}
 
 	public function getPath() {
-		return $this->basepath . '/ximdoc/' . $this->name . '.xml';
+		return $this->basepath . '/documents/' . $this->name . '.xml';
 	}
 
 	public function getContent() {

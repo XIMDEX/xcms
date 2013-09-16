@@ -44,12 +44,12 @@ td.boxes
 	background-color:	buttonface;
 	height:		18px;
 	font-family:	arial;
-	font-size:	10px;
+	+font-size:	10px;
 	}
 
 DIV.clock {
 	background:	transparent;
-	font-size:	10px;
+	+font-size:	10px;
 	text-align:	center;
 	vertical-align:	middle;
 	cursor:		pointer;
@@ -72,7 +72,7 @@ IMG.clockicon {
 }
 
 #usuario {
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma;
 
@@ -81,7 +81,7 @@ IMG.clockicon {
 #user_name {
 	width: 225; 
 	height: 14px; 
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma; 
 	vertical-align: middle; 
@@ -93,7 +93,7 @@ IMG.clockicon {
 }
 
 #ip {
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma;
 }
@@ -101,7 +101,7 @@ IMG.clockicon {
 #ip_address {
 	width: 90; 
 	height: 14px; 
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma; 
 	vertical-align: middle; 

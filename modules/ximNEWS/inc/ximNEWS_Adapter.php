@@ -1046,7 +1046,7 @@ class  ximNEWS_Adapter {
 	function getBulletinHeader($headerData, $idTemplate) {
 
 		if (is_null($idTemplate)) {
-			XMD_Log::error('Pvd not found');
+			XMD_Log::error('Schema not found');
 			return NULL;
 		}
 
@@ -1182,7 +1182,7 @@ class  ximNEWS_Adapter {
 		$parent = new Node($idParent);
 		$idSection = $parent->GetSection();
 
-		// Gets pvd version
+		// Gets schema version
 
 		$dataFactory = new DataFactory($idTemplate);
 		$ver = $dataFactory->GetLastVersion();

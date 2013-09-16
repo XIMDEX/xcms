@@ -61,11 +61,7 @@ class Action_searchpanel extends ActionAbstract {
 
 		$filters = $this->request->getParam('filters');
 		if (empty($filters)) {
-			if (ModulesManager::isEnabled('tolDOX')) {
-				$filters = 'Toldox';
-			} else {
-				$filters = 'Ximdex';
-			}
+			$filters = 'Ximdex';
 		}
 
 		$filters = ucfirst(strtolower($filters));
@@ -87,11 +83,7 @@ class Action_searchpanel extends ActionAbstract {
 	 */
 	public function datastores() {
 
-		if (ModulesManager::isEnabled('tolDOX')) {
-			$datastore = 'tirant';
-		} else {
-			$datastore = $this->request->getParam('datastore');
-		}
+		$datastore = $this->request->getParam('datastore');
 
 		if ($datastore === null) $datastore = 'ximdex';
 

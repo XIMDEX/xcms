@@ -27,7 +27,7 @@
 body{
 	background-color: #F5F5F5;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: x-small;
+	+font-size: x-small;
 	margin: 1px;
 }
 td{
@@ -35,7 +35,7 @@ td{
 }
 .etiqueta{
 	font-weight: bold;
-	font-size: 115%;
+	+font-size: 115%;
 }
 .cabecera{
 	background-color: #AFAFAF;
@@ -44,7 +44,7 @@ td{
 }
 .npropiedad{
 	font-weight: bold;
-	font-size: 110%;	
+	+font-size: 110%;	
 }
 .vpropiedad{
 	color: #505050;
@@ -58,7 +58,7 @@ td{
 	width: 190px;
 	height: 80px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: xx-small;
+	+font-size: xx-small;
 }
 .caja{
 	border: thin;
@@ -68,7 +68,7 @@ td{
 	color: #535353;
 	width: 150px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: xx-small;
+	+font-size: xx-small;
 }
 .contenidoe{
 	border: thin;
@@ -79,7 +79,7 @@ td{
 	width: 190px;
 	height: 80px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: xx-small;
+	+font-size: xx-small;
 	background-color: White;
 }
 .cajae{
@@ -90,7 +90,7 @@ td{
 	color: #535353;
 	width: 122px;
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: xx-small;
+	+font-size: xx-small;
 	background-color: White;
 }
 .tabla{
@@ -118,7 +118,7 @@ td{
 	border-width : 1px;
 	background-color : #006699;
 	font-family : verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size : 10px;
+	+font-size : 10px;
 	color: #FAFAFA;
 	font-weight : bold;
 	vertical-align : middle;

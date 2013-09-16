@@ -12,17 +12,8 @@
 		overrideLocalPaths="0" enabled="1" previsual="0" description="Local" isServerOTF="false">
 
 		<ximdoccontainer>
-			<ximdoc name="index" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="{?}" />
+			<document name="index" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="{?}" />
 		</ximdoccontainer>
 		
-		<!--
-		<section name="the_hobbit_section" nodetypename="SECTION" DefaultSchema="5078" Transformer="xslt" channel="{?}" language="{?}">
-		
-			<ximdoccontainer>
-				<ximdoc name="foobar" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="{?}" />
-			</ximdoccontainer>
-		
-		</section>
-		-->
 	</section>
 </project>

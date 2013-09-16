@@ -22,15 +22,17 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
-<fieldset>
-<legend><span>Descargar archivos</span></legend>
-<p>
-{t}La descarga del archivo comenzará inmediatamente. En caso de no hacerlo, pulse: {/t}
-<a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
-</p>
-</fieldset>
-
-<fieldset class="buttons-form">
-	{button label="Descargar" class="button-download"}
-</fieldset>
+<div class="action_header">
+	<h2>{t}Descargar archivos{/t}</h2>
+	<fieldset class="buttons-form">
+		{button label="Descargar" class="button-download  btn main_action"}
+	</fieldset>
+</div>
+<div class="action_content">
+	<fieldset>
+	<p>
+	{t}La descarga del archivo comenzará inmediatamente. En caso de no hacerlo, pulse: {/t}
+	<a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
+	</p>
+	</fieldset>
+</div>

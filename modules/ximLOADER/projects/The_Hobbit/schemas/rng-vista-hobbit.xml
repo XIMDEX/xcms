@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+	<start>
+		<element name="docxap">
+			<ref name="def_top_block" />
+			<ref name="def_content_block" />
+			<ref name="def_footer_block" />
+			<xim:description>Document</xim:description>
+		</element>
+	</start>
+
+	<define name="def_top_block">
+		<element name="top_block">
+			<attribute name="uid" />
+			<ref name="def_navigation_block" />
+			<ref name="def_pattern_block" />
+			<ref name="def_header_block" />
+			<ref name="def_pattern_block" />
+			<xim:description>Top Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_navigation_block">
+		<element name="navigation_block">
+			<attribute name="uid" />
+			<zeroOrMore>
+				<choice>
+					<text />
+					<ref name="def_link" />
+					<ref name="def_internal_link" />
+					<ref name="def_extlink" />
+				</choice>
+			</zeroOrMore>
+			<xim:description>Navigation Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_link">
+		<element name="link">
+			<optional>
+				<attribute name="file" />
+			</optional>
+			<optional>
+				<attribute name="id" />
+			</optional>
+			<optional>
+				<attribute name="a_enlaceid_url" xim:type="ximlink" />
+			</optional>
+			<attribute name="uid" />
+			<xim:default_content>[Link]</xim:default_content>
+			<text />
+			<xim:type>apply|annotation_link</xim:type>
+			<xim:description>Link</xim:description>
+		</element>
+	</define>
+
+
+
+	<define name="def_internal_link">
+		<element name="internal_link">
+			<optional>
+				<attribute name="file" />
+			</optional>
+			<optional>
+				<attribute name="id" />
+			</optional>
+			<optional>
+				<attribute name="a_enlaceid_url" xim:type="imageSelector"  />
+			</optional>
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[Internal Link]</xim:default_content>
+			<text />
+			<xim:type>apply|annotation_link</xim:type>
+			<xim:description>Internal Link</xim:description>
+		</element>
+	</define>
+
+	<define name="def_extlink">
+		<element name="extlink">
+			<optional>
+				<attribute name="file" />
+			</optional>
+			<optional>
+				<attribute name="id" />
+			</optional>
+			<optional>
+				<attribute name="href" />
+			</optional>
+			<attribute name="uid" />
+			<xim:default_content>[Link externo]</xim:default_content>
+			<text />
+			<xim:type>apply</xim:type>
+			<xim:description>Link externo</xim:description>
+		</element>
+	</define>
+
+	<define name="def_pattern_block">
+		<element name="pattern_block">
+			<attribute name="uid" />
+			<xim:description>Pattern Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_header_block">
+		<element name="header_block">
+			<attribute name="uid" />
+			<ref name="def_title" />
+			<ref name="def_paragraph" />
+			<xim:description>Header Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_title">
+		<element name="title">
+			<attribute name="uid" />
+			<xim:default_content>[Title]</xim:default_content>
+			<text />
+			<xim:description>Title</xim:description>
+		</element>
+	</define>
+
+	<define name="def_paragraph">
+		<element name="paragraph">
+			<attribute name="uid" />
+			<zeroOrMore>
+				<choice>
+					<text />
+					<ref name="def_link" />
+					<ref name="def_internal_link" />
+					<ref name="def_extlink" />
+				</choice>
+			</zeroOrMore>
+			<xim:default_content>[Paragraph]</xim:default_content>
+			<xim:description>Paragraph</xim:description>
+		</element>
+	</define>
+
+	<define name="def_content_block">
+		<element name="content_block">
+			<attribute name="uid" />
+			<ref name="def_spacer_block" />
+			<zeroOrMore>
+				<ref name="def_item_block" />
+				<ref name="def_divider_block" />
+			</zeroOrMore>
+			<ref name="def_list" />
+			<xim:description>Content Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_spacer_block">
+		<element name="spacer_block">
+			<attribute name="uid" />
+			<xim:description>Spacer Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_divider_block">
+		<element name="divider_block">
+			<attribute name="uid" />
+			<xim:description>Divider Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_item_block">
+		<element name="item_block">
+			<attribute name="uid" />
+			<ref name="def_item_title" />
+			<ref name="def_item_metadata" />
+			<ref name="def_item_body" />
+			<xim:description>Item Block</xim:description>
+		</element>
+	</define>
+
+	<define name="def_item_title">
+		<element name="item_title">
+			<attribute name="uid" />
+			<xim:default_content>[Item Title]</xim:default_content>
+			<text />
+			<xim:description>Item Title</xim:description>
+		</element>
+	</define>
+
+	<define name="def_item_metadata">
+		<element name="item_metadata">
+			<attribute name="uid" />
+			<xim:default_content>[Item Metadata]</xim:default_content>
+			<text />
+			<xim:description>Item Metadata</xim:description>
+		</element>
+	</define>
+
+	<define name="def_item_body">
+		<element name="item_body">
+			<attribute name="uid" />
+			<zeroOrMore>
+				<choice>
+					<ref name="def_title" />
+					<ref name="def_subtitle" />
+					<ref name="def_paragraph" />
+					<ref name="def_ximlinkimage" />
+					<ref name="def_treeselectorimage" />
+					<ref name="def_extimage" />
+					<ref name="def_list" />
+					<ref name="def_blockquote" />
+				</choice>
+			</zeroOrMore>
+			<xim:type>annotation_related_info_container</xim:type>
+			<xim:description>Item Body</xim:description>
+		</element>
+	</define>
+
+	<define name="def_subtitle">
+		<element name="subtitle">
+			<attribute name="uid" />
+			<xim:default_content>[Subtitle]</xim:default_content>
+			<text />
+			<xim:description>Subtitle</xim:description>
+		</element>
+	</define>
+
+	<define name="def_ximlinkimage">
+		<element name="ximlinkimage">
+			<attribute name="class" />
+			<attribute name="url" xim:type="ximlink" />
+			<attribute name="width" />
+			<attribute name="height" />
+			<attribute name="alt_text" />
+			<attribute name="uid" />
+			<xim:description>Imagen desde ximLink</xim:description>
+		</element>
+	</define>
+
+	<define name="def_treeselectorimage">
+		<element name="treeselectorimage">
+			<attribute name="class" />
+			<attribute name="url" xim:type="imageSelector" />
+			<attribute name="width" />
+			<attribute name="height" />
+			<attribute name="alt_text" />
+			<attribute name="uid" />
+			<xim:type>annotation_image</xim:type>
+			<xim:description>Imagen desde selector</xim:description>
+		</element>
+	</define>
+
+	<define name="def_extimage">
+		<element name="extimage">
+			<attribute name="class" />
+			<attribute name="url" />
+			<attribute name="width" />
+			<attribute name="height" />
+			<attribute name="alt" />
+			<attribute name="uid" />
+			<xim:description>Imagen externa</xim:description>
+		</element>
+	</define>
+
+	<define name="def_list">
+		<element name="list">
+			<attribute name="uid" />
+			<zeroOrMore>
+				<ref name="def_list_item" />
+			</zeroOrMore>
+			<xim:type>annotation_related_info</xim:type>
+			<xim:description>List</xim:description>
+		</element>
+	</define>
+
+	<define name="def_list_item">
+		<element name="list_item">
+			<attribute name="uid" />
+			<xim:default_content>[List Item]</xim:default_content>
+			<text />
+			<xim:type>annotation_related_info_element</xim:type>
+			<xim:description>List Item</xim:description>
+		</element>
+	</define>
+
+	<define name="def_blockquote">
+		<element name="blockquote">
+			<attribute name="uid" />
+			<zeroOrMore>
+				<ref name="def_paragraph" />
+			</zeroOrMore>
+			<xim:description>Blockquote</xim:description>
+		</element>
+	</define>
+
+	<define name="def_footer_block">
+		<element name="footer_block">
+			<attribute name="uid" />
+			<zeroOrMore>
+				<choice>
+					<ref name="def_link" />
+					<ref name="def_internal_link" />
+					<ref name="def_extlink" />
+					<text />
+				</choice>
+			</zeroOrMore>
+			<xim:default_content>[Footer Block]</xim:default_content>
+			<xim:description>Footer Block</xim:description>
+		</element>
+	</define>
+
+</grammar>

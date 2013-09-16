@@ -23,55 +23,58 @@
  *  @version $Revision$
  *}
 
+
 <form method="post" name="alx_form" id="alx_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$idNode}" class="ecajag">
 	<input type="hidden" name="templateid" value="{$idTemplate}" class="ecajag">
 
-  
+  <div class="action_header">
+	<h2>{t}Languages{/t}, {t}Channels{/t} </h2>
+  	<fieldset class="buttons-form">
+		{button label="Modify" class='validate btn main_action' }<!--message="Would you like to save changes?"-->
+	</fieldset>
+  </div>
 
-	<fieldset>
-		<legend><span>{t}Languages{/t}</span></legend>	
-  <p>{t}Used template{/t}:  <span class="infor_form">{$templateName}</span></p>
-			{if $numlanguages neq 0}
-				<ol>
-					{foreach from=$languages item=language}
-						<li><label for="lang_{$language.idLanguage}" class="aligned">{$language.name}</label>
-							
-							{if ($language.idChildren > 0)} 
-							<input type="checkbox" name="languages[]"
-								id="lang_{$language.idLanguage}" value="{$language.idLanguage}" checked="checked" />
-							{else}
-							<input type="checkbox"
-								name="languages[]" id="lang_{$language.idLanguage}" value="{$language.idLanguage}" />
-							{/if}
-							<input type="text" name="aliases[{$language.idLanguage}]" value="{$language.alias}" class="cajag">
-						</li>
-					{/foreach}
-				</ol>
-			{else}
-				<p>{t}There are no languages associated to this project{/t}</p>
-			{/if}
-	</fieldset>
+	<div class="action_content">
+		<fieldset>
+		  <p>{t}Used template{/t}:  <span class="infor_form">{$templateName}</span></p>
+				{if $numlanguages neq 0}
+					<ol>
+						{foreach from=$languages item=language}
+							<li><label for="lang_{$language.idLanguage}" class="aligned">{$language.name}</label>
 
-	<fieldset>
-		<legend><span>{t}Channels{/t} </span></legend>
-			{if $numchannels neq 0}
-				<ol>
-					{foreach from=$channels item=channel}
-						<li>
-							<input type="checkbox" name="channels[]" value="{$channel.IdChannel}" 
-								{if ($channel.selected)}checked="checked"{/if}>
-							<label>{$channel.Description}</label>
-						</li>
-					{/foreach}
-				</ol>
-			{else}
-				<p>{t}There are no channels associated to this project{/t}</p>
-			{/if}
-	</fieldset>
-							
-	<fieldset class="buttons-form">
-		{button label="Reset" class='form_reset' type='reset'}
-		{button label="Modify" class='validate' }<!--message="Would you like to save changes?"-->
-	</fieldset>
+								{if ($language.idChildren > 0)}
+								<input type="checkbox" name="languages[]"
+									id="lang_{$language.idLanguage}" value="{$language.idLanguage}" checked="checked" />
+								{else}
+								<input type="checkbox"
+									name="languages[]" id="lang_{$language.idLanguage}" value="{$language.idLanguage}" />
+								{/if}
+								<input type="text" name="aliases[{$language.idLanguage}]" value="{$language.alias}" class="cajag">
+							</li>
+						{/foreach}
+					</ol>
+				{else}
+					<p>{t}There are no languages associated to this project{/t}</p>
+				{/if}
+		</fieldset>
+
+		<fieldset>
+				{if $numchannels neq 0}
+					<ol>
+						{foreach from=$channels item=channel}
+							<li>
+								<input type="checkbox" name="channels[]" value="{$channel.IdChannel}"
+									{if ($channel.selected)}checked="checked"{/if}>
+								<label>{$channel.Description}</label>
+							</li>
+						{/foreach}
+					</ol>
+				{else}
+					<p>{t}There are no channels associated to this project{/t}</p>
+				{/if}
+		</fieldset>
+	</div>
+
+
 </form>

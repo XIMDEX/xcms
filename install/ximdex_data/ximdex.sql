@@ -111,17 +111,15 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6051,5039,'Download file','filedownload','download_file_txt_bin.png','Download a file to a local hard disk',20,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6052,5040,'Image preview','filepreview','view_image.png','Preview an image',15,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6064,5031,'Change name of XML document','renamenode','change_name_xml.png','Change the document name and all its idiomatic versions',70,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6063,5031,'Delete XML container','deletenode','delete_xml.png','Delete XML document in all its languages',80,NULL,1,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6063,5031,'Delete document','deletenode','delete_xml.png','Delete XML document in all its languages',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6065,5032,'Edit XML document','xmleditor2','edit_file_xml.png','Edit content of XML document',1,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6103,5028,'Change name','renamenode','change_name_file_css.png','Change file name on import folder',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6104,5028,'Download file','filedownload','download_file_css.png','Download a file to a local hard disk',20,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6067,5008,'Delete action','deletenode','delete.png','Delete the action',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6074,5015,'Associated groups','modifygroupsnode','groups_section.png','Manage associations of groups with this node',50,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6079,5053,'Add new editor template','fileupload','add_template_editor.png','Add a new view template and its default view',10,NULL,0,'type=pvd');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6080,5045,'Delete template','deletenode','delete_template_view.png','Delete selected file',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6081,5010,'Modify associated workflow status','modifystatesrole','modify_state_workflow-rol.png','Modify associated status with this role',60,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6082,5036,'Modify associated roles','modifyrolesstate','manage_states-rol.png','Modify associated roles with this status',60,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6068,5053,'Add new template image','fileupload','add_template_image.png','Add a imagen for ED templates',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6083,5041,'Change name','renamenode','change_name_file_txt_bin.png','Change name of selected file',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6084,5041,'Delete file','deletenode','delete_file_txt_bin.png','Delete selected file',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6085,5040,'Change image name','renamenode','change_name_image.png','Change file name',70,NULL,0,'');
@@ -136,8 +134,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6095,5033,'Channel properties','modifychannel','properties_channel.png','Modify channel properties',25,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6096,5011,'Group properties','modifygroup','properties_group.png','Modify group properties',25,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6097,5034,'Modify language','modifylanguage','modify_language.png','Modify data of a language',60,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6098,5032,'Move to next state','workflow_forward','change_next_state.png','Move to the next state',72,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6099,5032,'Move to previous state','workflow_backward','change_last_state.png','Move to the previous state',70,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6098,5032,'Publish','workflow_forward','change_next_state.png','Move to the next state',72,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6099,5032,'Move to previous state','workflow_backward','change_last_state.png','Move to the previous state',-10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6100,5032,'Version repository','versionmanager','repository_versions.png','Version repository',0,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6101,5011,'Change users','modifyusuariosgrupo','modify_users.png','Modify list of users that integrate this group',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6107,5033,'Delete channel','deletenode','delete_channel.png','Delete a channel if it has not associated documents',80,NULL,1,'');
@@ -160,14 +158,14 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6120,5049,'Delete link','deletenode','delete_link.png','Delete selected link',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6124,5018,'Modify view template','changetemplateview','xix.png','Modify template for all documents of the directory',0,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6125,5014,'Modify sync data','modifyserver','modify_sinc_data.png','Modify connection data with the production environment',60,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6126,5039,'Move to next state','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6127,5039,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',70,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6128,5041,'Move to next state','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6129,5041,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',70,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6130,5040,'Move to next state','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6131,5040,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',70,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6132,5028,'Move to next state','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6133,5028,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',70,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6126,5039,'Publish','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6127,5039,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',-10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6128,5041,'Publish','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6129,5041,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',-10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6130,5040,'Publish','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6131,5040,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',-10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6132,5028,'Publish','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6133,5028,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',-10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6134,5032,'Delete document','deletenode','delete_file_xml.png','Delete selected XML document',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6135,5032,'Symbolic link','xmlsetlink','file_xml_symbolic.png','Modify document which borrows the content',30,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6136,5032,'Edit in text mode','edittext','edit_file_xml_txt.png','Edit content of structured document at a low-level',3,NULL,0,'');
@@ -213,7 +211,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6191,5039,'Replace file','updatefile','replace_txt.png','Replace a file',90,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6343,5016,'Add images','fileupload_common_multiple','upload_image.png','Add an image set to the server',10,NULL,0,'type=image');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6344,5017,'Add images','fileupload_common_multiple','upload_image.png','Add an image set to the server',10,NULL,0,'type=image');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6345,5026,'Add PTD templates','fileupload_common_multiple','add_template_ptd.png','Add a set of PTD templates to the server',10,NULL,0,'type=ptd');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6345,5026,'Add templates','fileupload_common_multiple','add_template_ptd.png','Add a set of templates to the server',10,NULL,0,'type=ptd');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6346,5022,'Add files','fileupload_common_multiple','add_file_common.png','Add a set of files to the server',10,NULL,0,'type=common');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6347,5023,'Add files','fileupload_common_multiple','add_file_common.png','Add a set of files to the server',10,NULL,0,'type=common');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6348,5024,'Add style sheets','fileupload_common_multiple','add_file_css.png','Add a set of style sheets to the server',10,NULL,0,'type=css');
@@ -234,7 +232,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6236,5020,'Add HTML files','fileupload_common_multiple','add_nodes_ht.png','Add multiple HTML files',10,NULL,0,'type=html');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6500,5012,'Export','serializeNodeXML','xix.png','Export all projects',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6501,5013,'Export','serializeNodeXML','xix.png','Export a complete project',-91,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6502,5050,'Export','serializeNodeXML','xix.png','Export a ximlink',-91,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6502,5050,'Export','serializeNodeXML','xix.png','Export a link',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6503,5048,'Export','serializeNodeXML','xix.png','Export a link folder',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6504,5022,'Export','serializeNodeXML','xix.png','Export a complete common folder',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6505,5023,'Export','serializeNodeXML','xix.png','Export a common subfolder',-91,'ximIO',0,'');
@@ -244,19 +242,19 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6509,5017,'Export','serializeNodeXML','xix.png','Export a image subfolder',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6510,5020,'Export','serializeNodeXML','xix.png','Export a complete ximclude folder',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6511,5021,'Export','serializeNodeXML','xix.png','Export a ximclude subfolder',-91,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6512,5018,'Export','serializeNodeXML','xix.png','Export a complete ximdoc folder',-91,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6513,5031,'Export','serializeNodeXML','xix.png','Export a XML container',-91,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6512,5018,'Export','serializeNodeXML','xix.png','Export a complete documents folder',-91,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6513,5031,'Export','serializeNodeXML','xix.png','Export a XML document',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6514,5054,'Export','serializeNodeXML','xix.png','Export a complete ximlet folder',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6515,5055,'Export','serializeNodeXML','xix.png','Export a ximlet subfolder',-91,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6516,5056,'Export','serializeNodeXML','xix.png','Export a ximlet container',-91,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6516,5056,'Export','serializeNodeXML','xix.png','Export a ximlet document',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6517,5014,'Export','serializeNodeXML','xix.png','Export a complete server',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6518,5015,'Export','serializeNodeXML','xix.png','Export a complete section',-91,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6519,5053,'Export','serializeNodeXML','xix.png','Export a complete ximpvd',-91,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6520,5026,'Export','serializeNodeXML','xix.png','Export a complete ximptd',-91,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6519,5053,'Export','serializeNodeXML','xix.png','Export a complete schema',-91,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6520,5026,'Export','serializeNodeXML','xix.png','Export a complete template',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6521,5027,'Export','serializeNodeXML','xix.png','Export a template subfolder',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6550,5012,'Import','deserializeNodeXML','xix.png','Import all projects',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6551,5013,'Import','deserializeNodeXML','xix.png','Import a complete project',-92,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6552,5050,'Import','deserializeNodeXML','xix.png','Import a ximlink',-92,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6552,5050,'Import','deserializeNodeXML','xix.png','Import a link',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6553,5048,'Import','deserializeNodeXML','xix.png','Import a link folder',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6554,5022,'Import','deserializeNodeXML','xix.png','Import a complete common folder',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6555,5023,'Import','deserializeNodeXML','xix.png','Import a common subfolder',-92,'ximIO',0,'');
@@ -266,18 +264,18 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6559,5017,'Import','deserializeNodeXML','xix.png','Import a image subfolder',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6560,5020,'Import','deserializeNodeXML','xix.png','Import a complete ximclude folder',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6561,5021,'Import','deserializeNodeXML','xix.png','Import a ximclude subfolder',-92,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6562,5018,'Import','deserializeNodeXML','xix.png','Import a complete ximdoc folder',-92,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6563,5031,'Import','deserializeNodeXML','xix.png','Import a XML container',-92,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6562,5018,'Import','deserializeNodeXML','xix.png','Import a complete documents folder',-92,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6563,5031,'Import','deserializeNodeXML','xix.png','Import a XML document',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6564,5054,'Import','deserializeNodeXML','xix.png','Import a complete ximlet folder',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6565,5055,'Import','deserializeNodeXML','xix.png','Import a ximlet subfolder',-92,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6566,5056,'Import','deserializeNodeXML','xix.png','Import a ximlet container',-92,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6566,5056,'Import','deserializeNodeXML','xix.png','Import a ximlet document',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6567,5014,'Import','deserializeNodeXML','xix.png','Import a complete server',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6568,5015,'Import','deserializeNodeXML','xix.png','Import a complete section',-92,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6569,5053,'Import','deserializeNodeXML','xix.png','Import a complete ximpvd',-92,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6570,5026,'Import','deserializeNodeXML','xix.png','Import a complete ximptd',-92,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6569,5053,'Import','deserializeNodeXML','xix.png','Import a complete schema',-92,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6570,5026,'Import','deserializeNodeXML','xix.png','Import a complete template',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6571,5027,'Import','deserializeNodeXML','xix.png','Import a template subfolder',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6600,5013,'Copy','copy','Copy_proyecto.png','Copy a complete project',93,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6601,5050,'Copy','copyNode','copiar_documento.png','Copy a ximlink',-93,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6601,5050,'Copy','copyNode','copiar_documento.png','Copy a link',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6602,5048,'Copy','copyNode','copiar_seccion.png','Copy a link folder',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6603,5022,'Copy','copyNode','copiar_seccion.png','Copy a complete common folder',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6604,5023,'Copy','copyNode','copiar_carpeta_common.png','Copy a common subfolder',-93,'ximIO',0,'');
@@ -287,17 +285,17 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6608,5017,'Copy','copyNode','copiar_carpeta_images.png','Copy a image subfolder',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6609,5020,'Copy','copyNode','copiar_carpeta_ximclude.png','Copy a complete ximclude folder',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6610,5021,'Copy','copyNode','copiar_carpeta_ximclude.png','Copy a ximclude subfolder ',-93,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6611,5018,'Copy','copyNode','copiar_carpeta_ximdoc.png','Copy a complete ximdoc folder',-93,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6612,5031,'Copy','copyNode','copiar_carpeta_ximdoc.png','Copy a XML container',-93,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6611,5018,'Copy','copyNode','copiar_carpeta_ximdoc.png','Copy a complete documents folder',-93,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6612,5031,'Copy','copyNode','copiar_carpeta_ximdoc.png','Copy a XML document',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6613,5054,'Copy','copyNode','copiar_carpeta_ximlet.png','Copy a complete ximlet folder',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6614,5055,'Copy','copyNode','copiar_carpeta_ximlet.png','Copy a ximlet subfolder',-93,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6615,5056,'Copy','copyNode','copiar_carpeta_ximlet.png','Copy a ximlet container',-93,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6615,5056,'Copy','copyNode','copiar_carpeta_ximlet.png','Copy a ximlet document',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6616,5049,'Copy','copyNode','copiar_documento.png','Copy a link',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6617,5057,'Copy','copyNode','copiar_documento.png','Copy a ximlet',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6619,5014,'Copy','copyNode','copiar_servidor.png','Copy a complete server',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6620,5015,'Copy','copyNode','copiar_seccion.png','Copy a complete section',-93,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6621,5053,'Copy','copyNode','copiar_seccion.png','Copy a complete ximpvd',-93,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6622,5026,'Copy','copyNode','copiar_carpeta_ximptd.png','Copy a complete ximptd',-93,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6621,5053,'Copy','copyNode','copiar_seccion.png','Copy a complete schema',-93,'ximIO',0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6622,5026,'Copy','copyNode','copiar_carpeta_ximptd.png','Copy a complete template',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6623,5027,'Copy','copyNode','copiar_seccion.png','Copy a template subfolder',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6624,5044,'Copy','copyNode','copiar_seccion.png','Copy a template',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6625,5045,'Copy','copyNode','copiar_seccion.png','Copy a view template',-93,'ximIO',0,'');
@@ -306,65 +304,35 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6627,5040,'Copy','copyNode','copiar_documento.png','Copy a image file',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6628,5041,'Copy','copyNode','copiar_documento.png','Copy a binary file',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7016, 5057, 'Publish ximlet', 'publicateximlet', 'xix.png', 'Publish documents associated with a ximlet', 30, NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6352, 5018, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6353, 5304, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6354, 5022, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6355, 5023, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6356, 5050, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6357, 5048, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6360, 5016, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6361, 5017, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6363, 5020, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6364, 5021, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6365, 5024, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6366, 5025, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6367, 5026, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6368, 5027, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6369, 5042, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6370, 5043, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6372, 5047, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6374, 5053, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6375, 5054, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6376, 5055, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6377, 5300, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6378, 5301, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6379, 5302, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6380, 5306, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6381, 5310, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6382, 5320, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6383, 5015, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6384, 5014, 'Ximsearch', 'browser', 'browser.png', 'Ximsearch', -2, NULL, 0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6385, 5032, 'Preview', 'preview', 'xix.png', 'Preview of the document', 100, NULL, 0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7200, 5040, 'Copy', 'copy', 'copiar_documento.png', 'Copy a image to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7201, 5017, 'Copy', 'copy', 'copiar_carpeta_images.png', 'Copy a image subfolder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7202, 5016, 'Copy', 'copy', 'copiar_carpeta_images.png', 'Copy a image folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7203, 5014, 'Copy', 'copy', 'copiar_servidor.png', 'Copy a server to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7204, 5018, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a ximdoc folder to another destination', '30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7204, 5018, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a documents folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7205, 5020, 'Copy', 'copy', 'copiar_carpeta_ximclude.png', 'Copy a ximclude folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7206, 5021, 'Copy', 'copy', 'copiar_carpeta_ximclude.png', 'Copy a ximclude subfolder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7207, 5022, 'Copy', 'copy', 'copiar_carpeta_common.png', 'Copy a common folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7208, 5023, 'Copy', 'copy', 'copiar_carpeta_common.png', 'Copia a common subfolder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7209, 5024, 'Copy', 'copy', 'copiar_seccion.png', 'Copy a CSS folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7210, 5025, 'Copy', 'copy', 'copiar_seccion.png', 'Copy a CSS subfolder to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7211, 5026, 'Copy', 'copy', 'copiar_carpeta_ximptd.png', 'Copy a ximptd folde to another destination', '-30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7211, 5026, 'Copy', 'copy', 'copiar_carpeta_ximptd.png', 'Copy a templates folder to another destination', '-30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7212, 5028, 'Copy', 'copy', 'copiar_documento.png', 'Copy a CSS document to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7213, 5031, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a document container to another destination', '30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7213, 5031, 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7215', '5039', 'Copy', 'copy', 'copiar_documento.png', 'Copy a text document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7216', '5041', 'Copy', 'copy', 'copiar_documento.png', 'Copy a binary document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7217', '5048', 'Copy', 'copy', 'copiar_carpeta_ximlink.png', 'Copy a link subfolder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7218', '5049', 'Copy', 'copy', 'copiar_documento.png', 'Copy a link to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7219', '5050', 'Copy', 'copy', 'copiar_carpeta_ximlink.png', 'Copy a ximlink folder to another destination', '30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7219', '5050', 'Copy', 'copy', 'copiar_carpeta_ximlink.png', 'Copy a links folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7220', '5054', 'Copy', 'copy', 'copiar_carpeta_ximlet.png', 'Copy a ximlet folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7221', '5055', 'Copy', 'copy', 'copiar_carpeta_ximlet.png', 'Copy a ximlet subfolder to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7222', '5056', 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a container of ximlet documents to another destination', '30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7222', '5056', 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a ximlet document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7223', '5057', 'Copy', 'copy', 'copiar_carpeta_ximlet.png', 'Copy a ximlet document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7224', '5076', 'Copy', 'copy', 'copiar_documento.png', 'Copy a HTML document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7225', '5015', 'Copy', 'copy', 'copiar_seccion.png', 'Copy a section to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7226', '5053', 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a ximpvd folder to another destination', '-30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7227', '5045', 'Copy', 'copy', 'copiar_documento.png', 'Copy a PVD template to another destination', '30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7226', '5053', 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a schemas folder to another destination', '-30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7227', '5045', 'Copy', 'copy', 'copiar_documento.png', 'Copy a schema to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7236, 5057, 'Manage associations', 'showassocnodes', 'xix.png', 'Manage node associations with ximlet', 1, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7237, 5015, 'Associate schema with a section', 'relsectionschema', 'xix.png', 'Associate view templates with a section', 11, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7238, 5013, 'Associate schema with a project', 'relsectionschema', 'xix.png', 'Associate view templates with a project',11, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7239, '0', 'Action report', 'actionsstats', 'xix.png', 'Show action report', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7301, 5035, 'Add workflow', 'addworkflow', 'xix.png', 'Add a new workflow', -1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7304, 5321, 'Edit RNG', 'edittext', 'edit_template_view.png', 'Edit RNG schema', 1, NULL, 0, NULL);
@@ -373,7 +341,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7307, 5013, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify properties of a project', 10, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7308, 5014, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify properties of a server', 10, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7309, 5015, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify properties of a section', 10, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7310, 5018, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify properties of a ximdoc folder', 10, NULL, 0, NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7310, 5018, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify properties of a document folder', 10, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7311, 5031, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify properties', 10, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7312, 5032, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify properties of a document', 10, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7317, 5082, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify global properties', -10, NULL, 0, NULL);
@@ -397,7 +365,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8112,5053,'Download all templates','filedownload_multiple','download_template_view.png','Download all templates',20,NULL,0,'',1);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8113,5022,'Download all files','filedownload_multiple','download_html_file.png','Download all files',20,NULL,0,'',1);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8114,5023,'Download all files','filedownload_multiple','download_html_file.png','Download all files',20,NULL,0,'',1);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8115, 5053, 'Add PVD templates', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of PVD templates to the server', 10, NULL, 0, 'type=pvd', 0);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8115, 5053, 'Add schemas', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of schemas to the server', 10, NULL, 0, 'type=pvd', 0);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8116, 5014, 'Status Report', 'checkstatus', 'manage_versions.png', 'Status Report to inform the user', 27,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8117,5077,'Change name','renamenode','modify_template_ptd.png','Change template name',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8118,5077,'Download template','filedownload','download_template_ptd.png','Download a template',20,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8119,5077,'Version manager','manageversions','manage_versions.png','Manage repository of versions',77,NULL,0,'');
@@ -406,10 +375,10 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8122,5022,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8123,5023,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8124,5024,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8125,5025,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8126,5026,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8127,5053,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8124,5024,'Add empty stylesheet','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8125,5025,'Add empty stylesheet','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8126,5026,'Add empty XSL template','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8127,5053,'Add empty RNG schema','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8128,5020,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8129,5021,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 
@@ -487,30 +456,30 @@ CREATE TABLE `Config` (
 
 /*!40000 ALTER TABLE `Config` DISABLE KEYS */;
 LOCK TABLES `Config` WRITE;
-INSERT INTO `Config` VALUES (20,'PreviewInServer','0');
-INSERT INTO `Config` VALUES (9,'GeneratorCommand','/modules/dexT/dexTdin_xmd25.pl');
+INSERT INTO `Config` VALUES (1,'AppRoot','');
 INSERT INTO `Config` VALUES (2,'NodeRoot','/data/nodes');
 INSERT INTO `Config` VALUES (3,'TempRoot','/data/tmp');
-INSERT INTO `Config` VALUES (7,'GeneralGroup','101');
-INSERT INTO `Config` VALUES (6,'UrlRoot','');
+INSERT INTO `Config` VALUES (4,'SyncRoot','/data/sync');
 INSERT INTO `Config` VALUES (5,'FileRoot','/data/files');
+INSERT INTO `Config` VALUES (6,'UrlRoot','');
+INSERT INTO `Config` VALUES (7,'GeneralGroup','101');
 INSERT INTO `Config` VALUES (8,'ProjectsNode','10000');
-INSERT INTO `Config` VALUES (11,'DoctypeTag','<!DOCTYPE docxap [\n<!ENTITY Ntilde \"_MAPGENcode_Ntilde_\">\n<!ENTITY ntilde \"_MAPGENcode_ntilde_\">\n<!ENTITY aacute \"_MAPGENcode_aacute_\">\n<!ENTITY eacute \"_MAPGENcode_eacute_\">\n<!ENTITY iacute \"_MAPGENcode_iacute_\">\n<!ENTITY oacute \"_MAPGENcode_oacute_\">\n<!ENTITY uacute \"_MAPGENcode_uacute_\">\n<!ENTITY Aacute \"_MAPGENcode_Aacute_\">\n<!ENTITY Eacute \"_MAPGENcode_Eacute_\">\n<!ENTITY Iacute \"_MAPGENcode_Iacute_\">\n <!ENTITY Oacute \"_MAPGENcode_Oacute_\">\n<!ENTITY Uacute \"_MAPGENcode_Uacute_\">\n<!ENTITY agrave \"_MAPGENcode_agrave_\">\n <!ENTITY egrave \"_MAPGENcode_egrave_\">\n<!ENTITY igrave \"_MAPGENcode_igrave_\">\n <!ENTITY ograve \"_MAPGENcode_ograve_\">\n<!ENTITY ugrave \"_MAPGENcode_ugrave_\">\n<!ENTITY Agrave \"_MAPGENcode_Agrave_\">\n<!ENTITY Egrave \"_MAPGENcode_Egrave_\">\n<!ENTITY Igrave \"_MAPGENcode_Igrave_\">\n<!ENTITY Ograve \"_MAPGENcode_Ograve_\">\n<!ENTITY Ugrave \"_MAPGENcode_Ugrave_\">\n<!ENTITY auml   \"_MAPGENcode_auml_\">\n<!ENTITY euml   \"_MAPGENcode_euml_\">\n<!ENTITY iuml   \"_MAPGENcode_iuml_\">\n<!ENTITY ouml   \"_MAPGENcode_ouml_\">\n<!ENTITY uuml   \"_MAPGENcode_uuml_\">\n<!ENTITY Auml   \"_MAPGENcode_Auml_\">\n<!ENTITY Euml   \"_MAPGENcode_Euml_\">\n<!ENTITY Iuml   \"_MAPGENcode_Iuml_\">\n<!ENTITY Ouml   \"_MAPGENcode_Ouml_\">\n<!ENTITY Uuml   \"_MAPGENcode_Uuml_\">\n<!ENTITY Ccedil \"_MAPGENcode_Ccedil_\">\n<!ENTITY ccedil \"_MAPGENcode_ccedil_\">\n<!ENTITY ordf   \"_MAPGENcode_ordf_\">\n<!ENTITY ordm   \"_MAPGENcode_ordm_\">\n<!ENTITY iquest \"_MAPGENcode_iquest_\">\n<!ENTITY iexcl  \"_MAPGENcode_iexcl_\">\n<!ENTITY nbsp   \"_MAPGENcode_nbsp_\">\n<!ENTITY middot \"_MAPGENcode_middot_\">\n<!ENTITY acute  \"_MAPGENcode_acute_\">\n<!ENTITY copy  \"_MAPGENcode_copy_\">\n]>\n');
+INSERT INTO `Config` VALUES (9,'GeneratorCommand','/modules/dexT/dexTdin_xmd25.pl');
 INSERT INTO `Config` VALUES (10,'EncodingTag','<?xml version=\"1.0\" encoding=\"UTF-8\"?>');
-INSERT INTO `Config` VALUES (1,'AppRoot','');
+INSERT INTO `Config` VALUES (11,'DoctypeTag','<!DOCTYPE docxap [\n<!ENTITY Ntilde \"_MAPGENcode_Ntilde_\">\n<!ENTITY ntilde \"_MAPGENcode_ntilde_\">\n<!ENTITY aacute \"_MAPGENcode_aacute_\">\n<!ENTITY eacute \"_MAPGENcode_eacute_\">\n<!ENTITY iacute \"_MAPGENcode_iacute_\">\n<!ENTITY oacute \"_MAPGENcode_oacute_\">\n<!ENTITY uacute \"_MAPGENcode_uacute_\">\n<!ENTITY Aacute \"_MAPGENcode_Aacute_\">\n<!ENTITY Eacute \"_MAPGENcode_Eacute_\">\n<!ENTITY Iacute \"_MAPGENcode_Iacute_\">\n <!ENTITY Oacute \"_MAPGENcode_Oacute_\">\n<!ENTITY Uacute \"_MAPGENcode_Uacute_\">\n<!ENTITY agrave \"_MAPGENcode_agrave_\">\n <!ENTITY egrave \"_MAPGENcode_egrave_\">\n<!ENTITY igrave \"_MAPGENcode_igrave_\">\n <!ENTITY ograve \"_MAPGENcode_ograve_\">\n<!ENTITY ugrave \"_MAPGENcode_ugrave_\">\n<!ENTITY Agrave \"_MAPGENcode_Agrave_\">\n<!ENTITY Egrave \"_MAPGENcode_Egrave_\">\n<!ENTITY Igrave \"_MAPGENcode_Igrave_\">\n<!ENTITY Ograve \"_MAPGENcode_Ograve_\">\n<!ENTITY Ugrave \"_MAPGENcode_Ugrave_\">\n<!ENTITY auml   \"_MAPGENcode_auml_\">\n<!ENTITY euml   \"_MAPGENcode_euml_\">\n<!ENTITY iuml   \"_MAPGENcode_iuml_\">\n<!ENTITY ouml   \"_MAPGENcode_ouml_\">\n<!ENTITY uuml   \"_MAPGENcode_uuml_\">\n<!ENTITY Auml   \"_MAPGENcode_Auml_\">\n<!ENTITY Euml   \"_MAPGENcode_Euml_\">\n<!ENTITY Iuml   \"_MAPGENcode_Iuml_\">\n<!ENTITY Ouml   \"_MAPGENcode_Ouml_\">\n<!ENTITY Uuml   \"_MAPGENcode_Uuml_\">\n<!ENTITY Ccedil \"_MAPGENcode_Ccedil_\">\n<!ENTITY ccedil \"_MAPGENcode_ccedil_\">\n<!ENTITY ordf   \"_MAPGENcode_ordf_\">\n<!ENTITY ordm   \"_MAPGENcode_ordm_\">\n<!ENTITY iquest \"_MAPGENcode_iquest_\">\n<!ENTITY iexcl  \"_MAPGENcode_iexcl_\">\n<!ENTITY nbsp   \"_MAPGENcode_nbsp_\">\n<!ENTITY middot \"_MAPGENcode_middot_\">\n<!ENTITY acute  \"_MAPGENcode_acute_\">\n<!ENTITY copy  \"_MAPGENcode_copy_\">\n]>\n');
 INSERT INTO `Config` VALUES (12,'DefaultLanguage','es');
 INSERT INTO `Config` VALUES (13,'BlockExpireTime','120');
 INSERT INTO `Config` VALUES (14,'MaximunGapSizeTolerance','180');
 INSERT INTO `Config` VALUES (15,'SynchronizerCommand','/modules/synchronizer/ximCRON.pl');
-INSERT INTO `Config` VALUES (4,'SyncRoot','/data/sync');
-INSERT INTO `Config` VALUES (16,'VisualTemplateDir','ximpvd');
-INSERT INTO `Config` VALUES (17,'GeneratorTemplateDir','ximptd');
+INSERT INTO `Config` VALUES (16,'SchemasDirName','schemas');
+INSERT INTO `Config` VALUES (17,'TemplatesDirName','templates');
 INSERT INTO `Config` VALUES (18,'PurgeSubversionsOnNewVersion','1');
 INSERT INTO `Config` VALUES (19,'MaxSubVersionsAllowed','4');
+INSERT INTO `Config` VALUES (20,'PreviewInServer','0');
 INSERT INTO `Config` VALUES (21,'PurgeVersionsOnNewVersion','0');
 INSERT INTO `Config` VALUES (22,'MaxVersionsAllowed','3');
 INSERT INTO `Config` VALUES (23,'ximid','-');
-INSERT INTO `Config` VALUES (24,'VersionName','Ximdex 3.4');
+INSERT INTO `Config` VALUES (24,'VersionName','Ximdex 3.5');
 INSERT INTO `Config` VALUES (25,'UTFLevel','0');
 INSERT INTO `Config` VALUES (26,'EmptyHrefCode','/404.html');
 INSERT INTO `Config` VALUES (27, 'defaultPVD', NULL);
@@ -523,17 +492,20 @@ INSERT INTO `Config` VALUES (33, 'displayEncoding', 'ISO-8859-1');
 INSERT INTO `Config` VALUES (34, 'dbEncoding', 'ISO-8859-1');
 INSERT INTO `Config` VALUES (35, 'dataEncoding', 'UTF-8');
 INSERT INTO `Config` VALUES (36, 'workingEncoding', 'UTF-8');
-INSERT INTO `Config` VALUES (NULL, 'ActionsStats', 0);
-INSERT INTO `Config` VALUES (NULL, 'IdDefaultWorkflow', 403);
-INSERT INTO `Config` VALUES (NULL, 'DefaultInitialStatus', 'Edición');
-INSERT INTO `Config` VALUES (NULL, 'DefaultFinalStatus', 'Publicación');
-INSERT INTO `Config` VALUES (NULL, 'PullMode', 0);
-INSERT INTO `Config` VALUES (NULL, 'EnricherKey', '');
-INSERT INTO `Config` VALUES (NULL, 'AddVersionUsesPool', '0');
-INSERT INTO `Config` VALUES (NULL, 'StructuralDeps', 'css,asset,script');
-INSERT INTO `Config` VALUES (NULL, 'xplorer', '1');
-INSERT INTO `Config` VALUES (NULL, 'SyncStats', '0');
-INSERT INTO `Config` VALUES (NULL, 'XslIncludesOnServer', '0');
+INSERT INTO `Config` VALUES (37, 'ActionsStats', 0);
+INSERT INTO `Config` VALUES (38, 'IdDefaultWorkflow', 403);
+INSERT INTO `Config` VALUES (39, 'DefaultInitialStatus', 'Edición');
+INSERT INTO `Config` VALUES (40, 'DefaultFinalStatus', 'Publicación');
+INSERT INTO `Config` VALUES (41, 'PullMode', 0);
+INSERT INTO `Config` VALUES (42, 'EnricherKey', '');
+INSERT INTO `Config` VALUES (43, 'AddVersionUsesPool', '0');
+INSERT INTO `Config` VALUES (44, 'StructuralDeps', 'css,asset,script');
+INSERT INTO `Config` VALUES (45, 'xplorer', '1');
+INSERT INTO `Config` VALUES (46, 'SyncStats', '0');
+INSERT INTO `Config` VALUES (47, 'XslIncludesOnServer', '0');
+INSERT INTO `Config` VALUES (48, 'TokenTTL','30');
+INSERT INTO `Config` VALUES (49, 'ApiIV','');
+INSERT INTO `Config` VALUES (50, 'ApiKey','');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Config` ENABLE KEYS */;
 
@@ -760,18 +732,24 @@ CREATE TABLE `Messages` (
 ) ENGINE=MYISAM COMMENT='Table of messages. One table for all users and folders. ';
 
 --
--- Dumping data for table `Messages`
---
-
-
-/*!40000 ALTER TABLE `Messages` DISABLE KEYS */;
-LOCK TABLES `Messages` WRITE;
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `Messages` ENABLE KEYS */;
-
---
 -- Table structure for table `NodeAllowedContents`
 --
+
+DROP TABLE IF EXISTS `Namespaces`;
+CREATE TABLE `Namespaces` (
+	`idNamespace` int(12) unsigned NOT NULL auto_increment,
+	`service` varchar(255) NOT NULL,
+	`type` varchar(255) NOT NULL,
+	`nemo` varchar(255) NOT NULL,
+	`uri` varchar(255) NOT NULL,
+	`recursive` int(8) NOT NULL default '0',
+	`category` varchar(255) NOT NULL,
+	`isSemantic` tinyint(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`idNamespace`)
+) ENGINE=MYISAM COMMENT='Namespaces for semantic tagging.';
+
+INSERT INTO Namespaces VALUES (1,'Ximdex','Custom','custom','http://<ximdex_local_url>/',0,'generic',0);
+
 
 DROP TABLE IF EXISTS `NodeAllowedContents`;
 CREATE TABLE `NodeAllowedContents` (
@@ -899,19 +877,19 @@ CREATE TABLE `NodeDefaultContents` (
 /*!40000 ALTER TABLE `NodeDefaultContents` DISABLE KEYS */;
 LOCK TABLES `NodeDefaultContents` WRITE;
 INSERT INTO `NodeDefaultContents` VALUES (1,5015,5016,'images',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (3,5015,5018,'ximdoc',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (4,5015,5026,'ximptd',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (3,5015,5018,'documents',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (4,5015,5026,'templates',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (5,5015,5022,'common',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (6,5015,5020,'ximclude',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (7,5014,5024,'css',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (8,5014,5016,'images',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (10,5014,5018,'ximdoc',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (11,5014,5026,'ximptd',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (10,5014,5018,'documents',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (11,5014,5026,'templates',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (12,5014,5022,'common',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (13,5014,5020,'ximclude',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (14,5013,5026,'ximptd',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (16,5013,5050,'ximlink',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (17,5013,5053,'ximpvd',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (14,5013,5026,'templates',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (16,5013,5050,'links',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (17,5013,5053,'schemas',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (18,5014,5054,'ximlet',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (19,5015,5054,'ximlet',NULL,NULL);
 UNLOCK TABLES;
@@ -1266,18 +1244,16 @@ INSERT INTO `Nodes` VALUES (6049,5041,5008,'Download file',NULL,NULL,NULL,NULL,N
 INSERT INTO `Nodes` VALUES (6050,5040,5008,'Download image',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6051,5039,5008,'Download file',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6052,5040,5008,'Image preview',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6063,5031,5008,'Delete XML container',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6063,5031,5008,'Delete document',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6064,5031,5008,'Change XML',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6065,5032,5008,'Edit XML',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6067,5008,5008,'Delete action',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6068,5053,5008,'Add template image',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6069,5050,5008,'Add category',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6070,5048,5008,'Add category',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6071,5050,5008,'Add external link',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6072,5048,5008,'Add external link',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6073,5049,5008,'Edit properties',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6074,5015,5008,'Asocciated groups',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6079,5053,5008,'Add editor template',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6080,5045,5008,'Delete template',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6081,5010,5008,'Modify associated status of workflow',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6082,5036,5008,'Modify associated roles',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -1391,41 +1367,13 @@ INSERT INTO `Nodes` VALUES (6331,5308,5008,'Move node',NULL,0,NULL,0,0,NULL,NULL
 INSERT INTO `Nodes` VALUES (6342,5037,5008,'Move to previous state',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6343,5016,5008,'Add images',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6344,5017,5008,'Add images',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6345,5026,5008,'Add PTD template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6345,5026,5008,'Add template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6346,5022,5008,'Add files',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6347,5023,5008,'Add files',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6348,5024,5008,'Add style sheets',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6349,5025,5008,'Add style Sheets',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6350,5020,5008,'Add text files',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6351,5021,5008,'Add text files',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6352,5018,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6353,5304,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6354,5022,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6355,5023,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6356,5050,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6357,5048,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6360,5016,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6361,5017,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6363,5020,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6364,5021,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6365,5024,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6366,5025,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6367,5026,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6368,5027,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6369,5042,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6370,5043,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6372,5047,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6374,5053,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6375,5054,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6376,5055,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6377,5300,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6378,5301,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6379,5302,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6380,5306,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6381,5310,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6382,5320,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6383,5015,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6384,5014,5008,'Ximsearch',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6385,5032,5008,'Preview',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (10000,1,5012,'Projects',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (10001,9,5033, 'Html.html', NULL, 0, NULL, NULL, NULL, 'Html', NULL, '/Ximdex/Centro de Control/Gestor de Canales');
@@ -1453,7 +1401,7 @@ INSERT INTO `Nodes` VALUES (58,60,5061,'nombre_documento',NULL,0,NULL,0,0,NULL,N
 INSERT INTO `Nodes` VALUES (60,11,5060,'System properties',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6500,5012,5008,'Export all projects',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6501,5013,5008,'Export a complete project',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6502,5050,5008,'Export a ximlink',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6502,5050,5008,'Export a link',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6503,5048,5008,'Export a link folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6504,5022,5008,'Export a complete common folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6505,5023,5008,'Export a common subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1463,19 +1411,19 @@ INSERT INTO `Nodes` VALUES (6508,5016,5008,'Export a complete image folder',NULL
 INSERT INTO `Nodes` VALUES (6509,5017,5008,'Export a image subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6510,5020,5008,'Export a complete ximclude folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6511,5021,5008,'Export a ximclude subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6512,5018,5008,'Export a complete ximdoc folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6513,5031,5008,'Export a XML container',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6512,5018,5008,'Export a complete documents folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6513,5031,5008,'Export a XML document',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6514,5054,5008,'Export a complete ximlet folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6515,5055,5008,'Export a ximlet subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6516,5056,5008,'Export a ximlet container',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6516,5056,5008,'Export a ximlet document',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6517,5014,5008,'Export a complete server',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6518,5015,5008,'Export a complete section',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6519,5053,5008,'Export a complete ximpvd',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6520,5026,5008,'Export a complete ximptd',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6519,5053,5008,'Export a complete schema',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6520,5026,5008,'Export a complete template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6521,5027,5008,'Export a template subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6550,5012,5008,'Import all projects',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6551,5013,5008,'Import a complete project',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6552,5050,5008,'Import a ximlink',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6552,5050,5008,'Import a link',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6553,5048,5008,'Import a complete link folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6554,5022,5008,'Import a complete common folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6555,5023,5008,'Import a common subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1485,18 +1433,18 @@ INSERT INTO `Nodes` VALUES (6558,5016,5008,'Import a complete image folder',NULL
 INSERT INTO `Nodes` VALUES (6559,5017,5008,'Import a image subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6560,5020,5008,'Import a complete ximclude folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6561,5021,5008,'Import a ximclude subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6562,5018,5008,'Import a complete ximdoc folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6563,5031,5008,'Import a XML container',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6562,5018,5008,'Import a complete documents folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6563,5031,5008,'Import a XML document',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6564,5054,5008,'Import a complete ximlet folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6565,5055,5008,'Import a ximlet subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6566,5056,5008,'Import a ximlet container',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6566,5056,5008,'Import a ximlet document',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6567,5014,5008,'Import a complete server',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6568,5015,5008,'Import a complete section',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6569,5053,5008,'Import a complete ximpvd',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6570,5026,5008,'Import a complete ximptd',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6569,5053,5008,'Import a complete schema',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6570,5026,5008,'Import a complete template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6571,5027,5008,'Import a template subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6600,5013,5008,'Copy a complete project',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6601,5050,5008,'Copy a ximlink',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6601,5050,5008,'Copy a link',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6602,5048,5008,'Copy a link folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6603,5022,5008,'Copy a complete common folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6604,5023,5008,'Copy a common subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1506,17 +1454,17 @@ INSERT INTO `Nodes` VALUES (6607,5016,5008,'Copy a complete image folder',NULL,0
 INSERT INTO `Nodes` VALUES (6608,5017,5008,'Copy a image subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6609,5020,5008,'Copy a complete ximclude folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6610,5021,5008,'Copy a ximclude subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6611,5018,5008,'Copy a complete ximdoc folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6612,5031,5008,'Copy a XML container',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6611,5018,5008,'Copy a complete documents folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6612,5031,5008,'Copy a XML document',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6613,5054,5008,'Copy a complete ximlet folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6614,5055,5008,'Copy a ximlet subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6615,5056,5008,'Copy a ximlet container',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6615,5056,5008,'Copy a ximlet document',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6616,5049,5008,'Copy a link',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6617,5057,5008,'Copy a ximlet',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6619,5014,5008,'Copy a complete server',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6620,5015,5008,'Copy a complete section',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6621,5053,5008,'Copy a complete ximpvd',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6622,5026,5008,'Copy a complete ximptd',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6621,5053,5008,'Copy a complete schema',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6622,5026,5008,'Copy a complete template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6623,5027,5008,'Copy template subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6624,5044,5008,'Copy a template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6625,5045,5008,'Copy a view template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1531,8 +1479,6 @@ INSERT INTO `Nodes` VALUES (7233,5013,5008,'Associate languages with projects',0
 INSERT INTO `Nodes` VALUES (7234,5033,5008,'Associate projects with channel',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (7235,5013,5008,'Associate channels with project',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (7236,5057,5008,'Manage associations',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (7237,5015,5008,'Associate schema with section',0,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (7238,5013,5008,'Associate schema with project',0,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (8117,5077,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (8118,5044,5008,'Download template',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (8119,5077,5008,'Version manager',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1706,11 +1652,10 @@ LOCK TABLES `RelRolesActions` WRITE;
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6138,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6137,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8115,0,1,3);
+ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8116,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8112,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7226,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6374,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6068,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6079,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7218,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6182,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6120,0,1,3);
@@ -1944,8 +1889,6 @@ LOCK TABLES `RelRolesActions` WRITE;
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6015,7,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7309,8,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7309,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7237,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7237,7,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7225,8,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7225,7,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6383,8,1,3);
@@ -2008,7 +1951,6 @@ LOCK TABLES `RelRolesActions` WRITE;
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6065,7,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6011,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7307,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7238,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6600,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6122,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6034,0,1,3);
@@ -2187,7 +2129,6 @@ LOCK TABLES `RelRolesActions` WRITE;
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6034,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6122,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6600,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7238,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7307,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6011,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6065,7,1,3);
@@ -2250,8 +2191,6 @@ LOCK TABLES `RelRolesActions` WRITE;
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6383,8,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7225,7,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7225,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7237,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7237,8,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7309,7,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7309,8,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6015,7,1,3);
@@ -2476,8 +2415,6 @@ LOCK TABLES `RelRolesActions` WRITE;
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6120,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6182,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7218,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6079,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6068,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6374,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7226,0,1,3);
  INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8112,0,1,3);
@@ -3128,7 +3065,6 @@ INSERT INTO `NodeConstructors` (`IdNodeConstructor`, `IdNodeType`, `IdAction`) V
 (4, 5014, 6012),
 (5, 5048, 6070),
 (6, 5049, 6072),
-(7, 5045, 6079),
 (8, 5024, 6012),
 (9, 5016, 6012),
 (10, 5018, 6012),
@@ -3330,7 +3266,6 @@ CREATE TABLE `SectionTypes` (
 
 INSERT INTO `SectionTypes` ( `idSectionType` , `sectionType` , `idNodeType`  , `module` ) VALUES ('1', 'Normal', 5015, NULL);
 INSERT INTO `SectionTypes` ( `idSectionType` , `sectionType` , `idNodeType`  , `module` ) VALUES ('2', 'ximNEWS', 5300, 'ximNEWS');
-INSERT INTO `SectionTypes` ( `idSectionType` , `sectionType` , `idNodeType`  , `module` ) VALUES ('3', 'ximPDF', 8000, 'ximPDF');
 
 
 
@@ -3717,7 +3652,6 @@ INSERT INTO `NodetypeModes` (`id`, `IdNodeType`, `Mode`, `IdAction`) VALUES
 (162, 5044, 'R', NULL),
 (163, 5044, 'U', NULL),
 (164, 5044, 'D', NULL),
-(165, 5045, 'C', 6079),
 (166, 5045, 'R', NULL),
 (167, 5045, 'U', 6116),
 (168, 5045, 'D', 6080),
@@ -4116,4 +4050,25 @@ CREATE TABLE `SearchFilters` (
   PRIMARY KEY  (`Id`),
   UNIQUE KEY `U_FILTER` (`Name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- For Tags and Namespaces
+--
+DROP TABLE IF EXISTS `Namespaces`;
+CREATE TABLE `Namespaces` (
+  `idNamespace` int(12) unsigned NOT NULL AUTO_INCREMENT,
+  `service` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `nemo` varchar(255) NOT NULL,
+  `uri` varchar(255) NOT NULL,
+  `recursive` int(8) NOT NULL DEFAULT '0',
+  `category` varchar(255) NOT NULL,
+  `isSemantic` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idNamespace`),
+  UNIQUE KEY `Nemo` (`nemo`),
+  UNIQUE KEY `Type` (`type`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+INSERT INTO Namespaces (service, type, nemo, uri, recursive, category,isSemantic)
+VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",0);
 

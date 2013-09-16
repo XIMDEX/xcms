@@ -24,10 +24,10 @@
  *}
 
 {if ($all_roles)}
+<h2>{t}Associate roles{/t}</h2>
 <form method="post" name="add_form" id="cu_form" action="{$action_add}">
 	<input type="hidden" name="id_node" VALUE="{$id_node}">
 	<fieldset>
-		<legend><span>{t}Associate roles{/t}</span></legend>
 		<ol>
 			<li>
 				<label for="id_role" class="aligned">{t}Existing roles{/t}</label>
@@ -39,15 +39,15 @@
 			</li>
 		 </ol>
 	</fieldset>
-	<fieldset class="buttons-form">{button label="Associate role" title="Associate role" class="validate"}</fieldset>
+	<fieldset class="buttons-form">{button label="Associate role" title="Associate role" class="validate btn main_action"}</fieldset>
 </form>
 {/if}
 
 {if ($applied_roles)}
+<h2>{t}Dissociate roles{/t}</h2>
 <form method="post" name="delete_form" id="cu_form" action="{$action_delete}">
 	<input type="hidden" name="id_node" VALUE="{$id_node}">
 	<fieldset>
-		<legend><span>{t}Dissociate roles{/t}</span></legend>
 		<ol>
 			<li>
 				<label for="delete_role" class="aligned">{t}Existing roles{/t}</label>
@@ -61,6 +61,6 @@
 			</li>
 		 </ol>
 	</fieldset>
-<fieldset class="buttons-form">{button label="Dissociate role" title="Dissociate role" class="validate"}</fieldset>
+<fieldset class="buttons-form">{button label="Dissociate role" title="Dissociate role" class="validate  btn main_action"}</fieldset>
 </form>
 {/if}

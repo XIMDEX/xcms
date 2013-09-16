@@ -29,8 +29,8 @@
 
 	<fieldset>
 		<legend><span>{t}Delete news from colector{/t}</span></legend>
-		<p>{t}A single calendar will be shown for each selected news{/t}.</p> 
-		<p>{t}Pick up a date and time to unlink each news from the colector. If you want to dissasociate them now, just set the date and time with a pair of minutes in the future{/t}.</p> 
+		<p>{t}A single calendar will be shown for each selected news{/t}.</p>
+                <p>{t}Pick up a date and time to unlink each news from the colector. If you want to dissasociate them now, just set the date and time with a pair of minutes in the future{/t}.</p>
 
 		<input type="hidden" name="nodeid" value="{$id_node}" />
 
@@ -82,7 +82,7 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Accept" class="validate"}
+		{button label="Accept" class="validate btn main_action"}
 	</fieldset>
 
 	</form>

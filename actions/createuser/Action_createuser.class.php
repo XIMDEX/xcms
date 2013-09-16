@@ -86,11 +86,6 @@ class Action_createuser extends ActionAbstract {
 
 		$usuario = new Node();
 
-		if (ModulesManager::isEnabled('tolDOX')) {
-			if (!preg_match('/^[A-Z]{3}$/', $login)) {
-				$usuario->messages->add(_('Username should be formed by 3 uppercase letters'), MSG_TYPE_ERROR);
-			}
-		}
 		if (strcmp($pass, $confirmPass)) {
 			$usuario->messages->add(_('Inserted passwords do not match, the user could not be created'), MSG_TYPE_ERROR);
 		}

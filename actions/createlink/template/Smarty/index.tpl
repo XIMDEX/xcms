@@ -25,26 +25,35 @@
 
 <form method="post" name="cln_form" id="cln_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}" >
-	<fieldset>
-    <legend><span>{t}Create link{/t}</span></legend>
-		<ol>
-			<li>
-				<label for="name" class="aligned"><span>{t}Name{/t}</span></label>
-				<input type="text" name="name" id="name" class="cajaxg validable not_empty"/>
-			</li>
-			<li>
-				<label for="url" class="aligned"><span>{t}URL{/t}</span></label>
-				<input type="text" name="url" id="url" class="cajaxg validable not_empty is_url">
-			</li>
-			<li>
-				<label for="description" class="aligned"><span>{t}Description{/t}</span></label>
-				<input type="text" name="description" id="description" class="cajaxg validable not_empty">
-			</li>
-		</ol>
+	<div class="action_header">
+		<h2>{t}Create link{/t}</h2>
+		<fieldset class="buttons-form">
+		{button label="Create" class='validate btn main_action'} <!--message="Would you like to create a new link?"-->
 	</fieldset>
-    
-	<fieldset class="buttons-form">
-		{button label="Reset" class='form_reset'  type="reset"}
-		{button label="Create" class='validate'} <!--message="Would you like to create a new link?"-->
-	</fieldset>
+	</div>
+	<div class="action_content">
+		<fieldset>
+			<ol>
+				<li>
+					<label for="name" class="aligned"><span>{t}Name{/t}</span></label>
+					<input type="text" name="name" id="name" class="cajaxg validable not_empty"/>
+				</li>
+				<li>
+					<label for="url" class="aligned"><span>{t}URL{/t}</span></label>
+					<input type="text" name="url" id="url" class="cajaxg validable not_empty is_url">
+				</li>
+				<li>
+		                                <label class="aligned"><span>{t}Prefixes{/t}</span></label>
+		                                <input type="checkbox" name="urlprefix" id="urlprefix" class="">
+		                                <label for="prefix" class=""><span>{t}Add{/t} <i>http://</i></span></label>
+		                                <input type="checkbox" name="mailprefix" id="mailprefix" class="">
+		                                <label for="mailprefix" class=""><span>{t}Add{/t} <i>mailto:</i></span></label>
+		                        </li>
+				<li>
+					<label for="description" class="aligned"><span>{t}Description{/t}</span></label>
+					<input type="text" name="description" id="description" class="cajaxg validable not_empty">
+				</li>
+			</ol>
+		</fieldset>
+	</div>
 </form>

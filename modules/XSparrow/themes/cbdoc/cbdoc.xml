@@ -1,0 +1,16 @@
+<config name="cbdoc" title="Cbdoc theme" description="Single page with scroll" main-color="" secundary-color="" font-color="#6f6e48" background-color="#334411" background-image="" background-position="left top" background-repeat="no-repeat">CONFIG
+<config-header image="" font-color="" image-side="left" font-size="48px" border="Top/Bottom" border-color="#b3b282">
+  <config-header-title font-color="#a48b59" font-size="" align="left">Your title2!</config-header-title>
+  <config-header-subtitle font-color="#561111" font-size="1.5em" align="left">Write something about this website</config-header-subtitle>
+  <config-breadcrumb background-color="" font-color="" current-font-color=""/>
+</config-header>
+<config-container left_column="No" right_column="No" background-color="" background-image="" background-position="right top" background-repeat="no-repeat">
+  <config-left-column>[Left Column]</config-left-column>
+  <config-main-column>
+    <config-title-element font-color="#c7b58e" font-size="" border-bottom="none" border-size="0px">Define the title format</config-title-element>
+    <config-subtitle-element font-color="" font-size="" border-bottom="none">Edit your own subtitle</config-subtitle-element>
+    <config-link-element font-color="#f03836" font-color-hover="#59afae" border-bottom="dotted">sample link</config-link-element>[Main Column]</config-main-column>
+    <config-right-column>[Right Column]</config-right-column>
+  </config-container>
+  <config-footer background-color="" font-color="">[Footer]</config-footer>
+</config>

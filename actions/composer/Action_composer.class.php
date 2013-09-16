@@ -313,7 +313,7 @@ class Action_composer extends ActionAbstract {
 		$jsFile = $this->request->getParam('js_file') ? $this->request->getParam('js_file') : $this->request->getParam('amp;js_file');
 
 		if(empty($jsFile) )
-			$jsFile = "widgetsVars";		
+			$jsFile = "widgetsVars";
 
 		$jsFile = sprintf('/xmd/template/Smarty/helper/%s.tpl', $jsFile);
 

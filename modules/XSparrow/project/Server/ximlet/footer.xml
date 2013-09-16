@@ -1,0 +1,7 @@
+<footer>
+ <paragraph>Your project Footer. Write whatever you want here.</paragraph>
+ <footer-link-list>
+  <footer-link href="">[Link]</footer-link>
+  <footer-link href="">[Link]</footer-link>
+</footer-link-list>
+</footer>

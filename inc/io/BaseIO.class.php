@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8390 $
+ *  @version $Revision$
  */
 
 
@@ -331,7 +331,7 @@ class BaseIO {
 								'RNGVISUALTEMPLATE'));
 				$data['TEMPLATE'] = isset($idsVisualTemplate[0]) ? $idsVisualTemplate[0] : $this->_getDefaultPVD();
 				if (empty($data['TEMPLATE'])) {
-					$this->messages->add(_('It is being tried to insert a xmlcontainer without its corresponding pvd'),
+					$this->messages->add(_('It is being tried to insert a xmlcontainer without its corresponding schema'),
 							MSG_TYPE_ERROR);
 					return ERROR_INCORRECT_DATA;
 				}

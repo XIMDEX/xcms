@@ -26,12 +26,42 @@
 
 X.actionLoaded(function(event, fn, params) {
 
-	$('input[name=Url]').blur(function(e) {
-		var url = $(this).val();
-		var r = new RegExp('^([^:]+)://');
-		if (!Object.isEmpty(url) && !r.test(url)) {
-			$(this).val('http://' + url.replace(/^:\/\//, ''));
-		}
-	});
+	selectPrefix =  function() {
+                var url = $("#url").val();
+                var r_mail = new RegExp('^mailto:');
+                var r_url = new RegExp('^([^:]+)://');
+                if(r_url.test(url)){
+                        $('input[name=urlprefix]').attr('checked', true);
+                }
 
+                if(r_mail.test(url)){
+                        $('input[name=mailprefix]').attr('checked', true);
+                }
+
+        }
+        selectPrefix();
+
+        $('input[name=urlprefix]').click(function(e) {
+                var url = $("#url").val();
+                var cb = $("#urlprefix").is(':checked');
+                var r = new RegExp('^([^:]+)://');
+                if (!Object.isEmpty(url) && !r.test(url) && cb) {
+                        $("#url").val('http://' + url.replace(/^:\/\//, ''));
+                }
+                if (!Object.isEmpty(url) && r.test(url) && !cb) {
+                        $("#url").val(url.replace('http://',''));
+                }
+        });
+
+        $('input[name=mailprefix]').click(function(e) {
+                var url = $("#url").val();
+                var cb = $("#mailprefix").is(':checked');
+                var r = new RegExp('^([^:]+):');
+                if (!Object.isEmpty(url) && !r.test(url) && cb) {
+                        $("#url").val('mailto:' + url.replace(/^:/, ''));
+                }
+                if (!Object.isEmpty(url) && r.test(url) && !cb) {
+                        $("#url").val(url.replace('mailto:',''));
+		}
+        });
 });

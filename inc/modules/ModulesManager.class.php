@@ -47,6 +47,7 @@ class ModulesManager {
 	public $modules;
 	public $caller;
 	private static $core_modules = array("ximIO", "ximSYNC");
+	private static $deprecated_modules = array("ximDAV", "ximTRASH","ximLOADERDEVEL","ximTHEMES","ximOTF","ximPAS","ximSIR","ximDEMOS","ximPORTA","ximTEST","ximTAINT");
 	public static $msg = null;
 
 	/**
@@ -54,6 +55,12 @@ class ModulesManager {
 		They are installed always and they never can be uninstalled or disabled
 	*/
 	public function getCoreModules() { return self::$core_modules; }
+
+	/**
+		Deprecated modules. 
+		They don't have to be shown on Ximdex CMS interface.
+	*/
+	public function getDeprecatedModules() { return self::$deprecated_modules; }
 
 	/**
 		Get install params for GUI 
@@ -96,12 +103,13 @@ class ModulesManager {
 		if($paths){
 			foreach ($paths as $moduleName) {
 				$modulePath = $constModule . $moduleName;
-				//if (is_dir($modulePath) && preg_match('/^xim+/', $moduleName, $matches)) {
-				if (is_dir($modulePath) && "pro" != $moduleName) {
-					$i = count($modules);
-					$modules[$i]["name"] = $moduleName;
-					$modules[$i]["path"] = $modulePath;
-					$modules[$i]["enable"] = (int) self::isEnabled($moduleName);
+				if (!in_array($moduleName, self::getDeprecatedModules())) {
+					if (is_dir($modulePath)) {
+						$i = count($modules);
+						$modules[$i]["name"] = $moduleName;
+						$modules[$i]["path"] = $modulePath;
+						$modules[$i]["enable"] = (int) self::isEnabled($moduleName);
+					}
 				}
 			}
 		}
@@ -113,7 +121,7 @@ class ModulesManager {
 			foreach ($paths as $moduleName) {
 				$modulePath = $constModule . $moduleName;
 				//if (is_dir($modulePath) && preg_match('/^xim+/', $moduleName, $matches)) {
-				if (is_dir($modulePath) && "pro" != $moduleName && file_exists($modulePath . "/conf.ini")) {
+				if (is_dir($modulePath) && file_exists($modulePath . "/conf.ini")) {
 					$conf = parse_ini_file($modulePath . "/conf.ini");
 					foreach($conf['module'] as $id => $childrenModName)
 						$metaParent[$childrenModName] = $moduleName;

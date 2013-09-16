@@ -22,12 +22,11 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
+<h2>{t}Edit properties{/t}</h2>
 <form method="post" name="modifyproperties" action="{$action_url}">
 
 	<fieldset class="">
 
-		<legend><span>{t}Edit properties{/t}</span></legend>
 
 		<input type="hidden" name="nodeId" value="{$nodeId}" />
 
@@ -68,8 +67,8 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Cancel" type="goback"}
-		{button label="Modify" class="validate" }
+		{button label="Cancel" type="goback" class="btn"}
+		{button label="Modify" class="validate  btn main_action" }
 	</fieldset>
 
 </form>

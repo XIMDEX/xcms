@@ -25,63 +25,50 @@
  */
 
 
-
-
-
-
-
-
 ModulesManager::file('/inc/pipeline/Pipeline.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 
 define('NODETYPE_WORKFLOW_STATE', 5036);
 
 class Action_modifystates extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
-    	$idNode = $this->request->getParam('nodeid');
-    	$pipeline = new Pipeline();
 
-    	$pipeline->loadByIdNode($idNode);
-    	// in this case there is just one process
+	// Main method: shows initial form
+    	function index () {
+    		$idNode = $this->request->getParam('nodeid');
+    		$pipeline = new Pipeline();
+	
+    		$pipeline->loadByIdNode($idNode);
+    		// in this case there is just one process
 
-    	$pipeProcess = $pipeline->processes->next();
+    		$pipeProcess = $pipeline->processes->next();
+    		$statusTransitions = array();
+    		$allStatusInfo = array();
+    		if (!empty($pipeProcess)) {
+	    		$pipeProcess->transitions->reset();
 
+	    		while ($transition = $pipeProcess->transitions->next()) {
 
-    	/**
-		 *  @var $transition PipeTransition
-    	 */
-    	$statusTransitions = array();
-    	$allStatusInfo = array();
-    	if (!empty($pipeProcess)) {
-	    	$pipeProcess->transitions->reset();
+	    			$currentStatus = new PipeStatus($transition->get('IdStatusFrom'));
+	    			$nextStatus = new PipeStatus($transition->get('IdStatusTo'));
 
-	    	while ($transition = $pipeProcess->transitions->next()) {
-
-	    		$currentStatus = new PipeStatus($transition->get('IdStatusFrom'));
-	    		$nextStatus = new PipeStatus($transition->get('IdStatusTo'));
-
-	    		$statusTransitions[$transition->get('id')] = sprintf('%s->%s',
-							$currentStatus->get('Name'), $nextStatus->get('Name'));
+	    			$statusTransitions[$transition->get('id')] = sprintf('%s->%s',
+						$currentStatus->get('Name'), $nextStatus->get('Name'));
 
 				$allStatusInfo[$currentStatus->get('id')] =
 						array('NAME' => $currentStatus->get('Name'),
-								'DESCRIPTION' => $currentStatus->get('Description'));
-	    	}
-
+							'DESCRIPTION' => $currentStatus->get('Description'));
+	    		}
 
 			$allStatusInfo[$nextStatus->get('id')] =
 					array('NAME' => $nextStatus->get('Name'),
 					'DESCRIPTION' => $nextStatus->get('Description'));
-    	}
+    		}
 
-        $query = App::get('QueryManager');
-        $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'create_state'));
-        $actionUpdate = $query->getPage() . $query->buildWith(array('method' => 'update_states'));
+        	$query = App::get('QueryManager');
+        	$actionCreate = $query->getPage() . $query->buildWith(array('method' => 'create_state'));
+        	$actionUpdate = $query->getPage() . $query->buildWith(array('method' => 'update_states'));
 
-
-		$this->addJs('/actions/modifystates/javascript/manager.js');
-
+		$this->addJs('/actions/modifystates/resources/js/manager.js');
 		$this->addCss('/xmd/style/forms/tabulators.css');
 		$this->addCss('/actions/modifystates/resources/css/default.css');
 
@@ -89,11 +76,11 @@ class Action_modifystates extends ActionAbstract {
 		$allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublicable = 1', array());
 
 		foreach ($allNodeTypes as $nodeTypeInfo) {
-			if($nodeTypeInfo['IdNodeType']==5032 ||
-				$nodeTypeInfo['IdNodeType']==5039 ||
-				$nodeTypeInfo['IdNodeType']==5040 || 
-				$nodeTypeInfo['IdNodeType']==5041){
-					$nodeTypeValues[$nodeTypeInfo['IdNodeType']] = $nodeTypeInfo['Name'];
+			if($nodeTypeInfo['IdNodeType']==5032 || 
+			   $nodeTypeInfo['IdNodeType']==5039 ||
+ 			   $nodeTypeInfo['IdNodeType']==5040 ||
+			   $nodeTypeInfo['IdNodeType']==5041){
+				$nodeTypeValues[$nodeTypeInfo['IdNodeType']] = $nodeTypeInfo['Name'];
 			}
 		}
 
@@ -114,44 +101,39 @@ class Action_modifystates extends ActionAbstract {
 						);
 
 		$this->render($values, null, 'default-3.0.tpl');
-    }
-
-    function create_state() {
-    	$name = $this->request->getParam('name');
-    	$description = $this->request->getParam('description');
-    	$idTransition = $this->request->getParam('transition');
-
-    	$pipeTransition = new PipeTransition($idTransition);
-    	$result = $pipeTransition->addStatus($name, $description);
-
-    	if ($result > 0) {
-    		$this->messages->add(_('State has been successfully added'), MSG_TYPE_NOTICE);
-	    	$this->redirectTo('index');
     	}
 
-    	$this->render($this->messages->messages, NULL, 'messages.tpl');
-    }
+    	function create_state() {
+    		$name = $this->request->getParam('name');
+    		$description = $this->request->getParam('description');
+    		$idTransition = $this->request->getParam('transition');
 
-    function update_states() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$names = $this->request->getParam('name');
-    	$descriptions = $this->request->getParam('description');
-    	$idNodeType = $this->request->getParam('id_nodetype');
-    	$isWorkFlowMaster = (bool) $this->request->getParam('is_workflow_master');
+    		$pipeTransition = new PipeTransition($idTransition);
+    		$result = $pipeTransition->addStatus($name, $description);
 
-    	foreach ($names as $key => $name) {
-    		$pipeStatus = new PipeStatus($key);
-    		$pipeStatus->set('Name', $name);
-    		$pipeStatus->set('Description', $descriptions[$key]);
-    		$pipeStatus->update();
-			//There aren't nodes for pipestatus
-    		//$node = new Node($idNode);
-    		//$node->set('Name', $name);
-    		//$node->update();
+    		if ($result > 0) {
+    			$this->messages->add(_('State has been successfully added'), MSG_TYPE_NOTICE);
+	    		$this->redirectTo('index');
+    		}
+
+    		$this->render($this->messages->messages, NULL, 'messages.tpl');
     	}
+
+    	function update_states() {
+    		$idNode = $this->request->getParam('nodeid');
+    		$names = $this->request->getParam('name');
+    		$descriptions = $this->request->getParam('description');
+    		$idNodeType = $this->request->getParam('id_nodetype');
+    		$isWorkFlowMaster = (bool) $this->request->getParam('is_workflow_master');
+
+    		foreach ($names as $key => $name) {
+    			$pipeStatus = new PipeStatus($key);
+    			$pipeStatus->set('Name', $name);
+    			$pipeStatus->set('Description', $descriptions[$key]);
+    			$pipeStatus->update();
+    		}
 
 		$workflow = new WorkFlow(NULL, NULL, $idNode);
-
 		$pipeProcess = $workflow->pipeProcess;
 
 		$transitionOrder = array_keys($names);
@@ -170,20 +152,19 @@ class Action_modifystates extends ActionAbstract {
 				$workflow->setWorkflowMaster();
 			}
 		}
-    	$this->redirectTo('index');
-    }
+    		$this->redirectTo('index');
+    	}
 
-    function checkNodeDependencies() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$idNodeType = $this->request->getParam('id_nodetype');
-    	$isWorkFlowMaster = (bool) $this->request->getParam('is_workflow_master');
-	$search=array();
-	$wfresult=array();
-	$result=array();
+    	function checkNodeDependencies() {
+    		$idNode = $this->request->getParam('nodeid');
+    		$idNodeType = $this->request->getParam('id_nodetype');
+    		$isWorkFlowMaster = (bool) $this->request->getParam('is_workflow_master');
+		$search=array();
+		$wfresult=array();
+		$result=array();
 
-    	$workflow = new WorkFlow(NULL, NULL, $idNode);
-    	// obtaining information
-    	$oldNodeType = $workflow->pipeline->get('IdNodeType');
+    		$workflow = new WorkFlow(NULL, NULL, $idNode);
+    		$oldNodeType = $workflow->pipeline->get('IdNodeType');
 		if ($oldNodeType > 0) {
 			$search[] = $oldNodeType;
 		}
@@ -192,7 +173,6 @@ class Action_modifystates extends ActionAbstract {
 			$search[] = $idNodeType;
 		}
 
-		//if (is_array($search)) {
 		if(count($search)>0) {
 			$node = new Node();
 			$result = $node->find('IdNode', 'IdNodeType IN (%s)', $search, MONO, false);

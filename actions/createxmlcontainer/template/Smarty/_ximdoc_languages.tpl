@@ -31,8 +31,8 @@
 	$channels[Description]
 *}
 
+<h2>{t}Languages{/t}</h2>
 <fieldset>
-	<legend><span>{t}Languages{/t}</span></legend>
 	{if count($languages) > 0}
 		<ol>
 			{foreach from=$languages item=language}
@@ -48,7 +48,7 @@
 				<select class="cajaxg" name='master'>
 					<option value="">&laquo;{t}None{/t}&raquo;</option>
 					{foreach from=$languages item=language}
-						<option  value="{$language.IdLanguage}">{$language.Name|gettext}</option>
+						<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
 					{/foreach}
 				</select>
 			</li>
@@ -57,9 +57,8 @@
 		<p>{t}There are no languages associated to this project{/t}</p>
 	{/if}
 </fieldset>
-
+<h2>{t}Channels{/t}</h2>
 <fieldset>
-	<legend><span>{t}Channels{/t} </span></legend>
 	{if count($channels) > 0}
 		<ol>
 			{foreach from=$channels item=channel}

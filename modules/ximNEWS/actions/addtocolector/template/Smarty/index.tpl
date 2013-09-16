@@ -126,8 +126,8 @@
 
 	<fieldset class="buttons-form">
 		{if $asoc_disabled}
-			{button label='Enable' class='enable_checks'}
+			{button label='Enable' class='enable_checks btn main_action'}
 		{/if}
-		{button label='Associate' class='asoc enable_checks validate'}
+		{button label='Associate' class='asoc enable_checks validate btn main_action'}
 	</fieldset>
 </form>

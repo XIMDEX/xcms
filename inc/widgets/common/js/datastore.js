@@ -8,13 +8,13 @@
  *
  * @author XIMDEX Team <dev@ximdex.org>
  *
- * @version $Revision: 7620 $
+ * @version $Revision$
  *
  *
  * @copyright (C) Open Ximdex Evolution SL, {@link http://www.ximdex.org}
  * @license Commercial (check ximdex version 2 for the open source software)
  *
- * $Id: datastore.js 7620 2011-06-09 11:55:08Z fjcarretero $
+ * $Id$
  */
 
 var DataStore = Object.xo_create({

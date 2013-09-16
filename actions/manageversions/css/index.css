@@ -22,16 +22,83 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
+/* NO Extends because they are inserted at the beggining of each CSS file */
 #previewer {
-	position: absolute;
-	top: 30px;
-	left: 85%;
-	font: 12px verdana,arial,helvetica;
-	color: #000000;
-	background: #000000;
-	padding: 10px;
-	border: none;
-	z-index: 5;
-}
+  position: absolute;
+  top: 30px;
+  left: 85%;
+  font: 12px verdana,arial,helvetica;
+  color: #000000;
+  background: #000000;
+  padding: 10px;
+  border: none;
+  z-index: 5; }
+
+.version-info {
+  padding: 0 18.8em 0 2%;
+  position: relative;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); }
+  .version-info::before {
+    display: block;
+    position: absolute;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    background: #b2e0d9;
+    margin-top: .5em;
+    margin-left: .4em; }
+
+.version {
+  padding: 0 2em 0 0;
+  position: relative; }
+  .version strong {
+    background: #b2e0d9;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    display: inline-block;
+    min-width: 3.5em;
+    text-align: center;
+    padding: .6em .2em; }
+
+.version-preview, .buttons, .version-name, .version-date {
+  display: inline-block; }
+
+.version-name, .version-date {
+  min-width: 40%;
+  padding: 1em; }
+
+.version-actions {
+  position: absolute;
+  right: 2%;
+  top: 1.5em;
+  margin-top: -.8em; }
+  .version-actions .channellist {
+    vertical-align: middle;
+    padding: 0; }
+  .version-actions .recover-button, .version-actions .delete-button, .version-actions .prevdoc-button {
+    background: #888888;
+    vertical-align: middle; }
+    .version-actions .recover-button:hover, .version-actions .delete-button:hover, .version-actions .prevdoc-button:hover {
+      background: #9fd9d1; }
+  .version-actions .delete-button {
+    background: #c56e50; }
+    .version-actions .delete-button:hover {
+      background: #d28e76; }
+  .version-actions .prevdoc-button {
+    background: #728ad7;
+    margin-right: 2.5em; }
+    .version-actions .prevdoc-button:hover {
+      background: #9aabe2; }
+  .version-actions .enabled-version {
+    background: #7bcabf;
+    cursor: default; }
+    .version-actions .enabled-version:hover {
+      background: #7bcabf; }
+  .version-actions .icon-button::before {
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3); }

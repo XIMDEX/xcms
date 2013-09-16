@@ -38,7 +38,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.
 
 /**
  * NOTE:
- * Vista usada desde webDAV (ximDEX_webDAV_Server.class.php) para incluir las XSLT en los ximdoc.
+ * Vista usada desde webDAV (ximDEX_webDAV_Server.class.php) para incluir las XSLT en los documentos.
  * Para poder usar esta vista en un pipeline sera necesario modificar el metodo transform() para
  * que reciba un idVersion en lugar de un idNode.
  */
@@ -139,13 +139,13 @@ class View_XmlDocument extends Abstract_View implements Interface_View {
 
 			unset($node);
 			$node = new Node($idparent);
-			$ptdFolder = $node->GetChildByName('ximptd');
+			$xslFolder = $node->GetChildByName('templates');
 
-			if ($ptdFolder !== false) {
+			if ($xslFolder !== false) {
 
-				$ptdFolder = new Node($ptdFolder);
-				$docxap = $ptdFolder->class->getNodePath() . '/docxap.xsl';
-				unset($ptdFolder);
+				$xslFolder = new Node($xslFolder);
+				$docxap = $xslFolder->class->getNodePath() . '/docxap.xsl';
+				unset($xslFolder);
 				if (!is_readable($docxap)) $docxap = null;
 			}
 		}

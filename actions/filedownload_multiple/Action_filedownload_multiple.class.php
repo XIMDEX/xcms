@@ -25,50 +25,51 @@
  */
 
 
-
 class Action_filedownload_multiple extends ActionAbstract {
 
-    public function index() {
-
-    	// TODO: Recursive process
+	public function index() {
+	
+    		// TODO: Recursive process
 
 		$nodes = $this->request->getParam('nodes');
 
 		$tmpFolder = FsUtils::getUniqueFolder(
 			Config::getValue('AppRoot') . Config::getValue('TempRoot'), '', 'export_'
 		);
-    	if (!FsUtils::mkdir($tmpFolder)) {
-    		$this->messages->add(_('A temporal directory to export could not be created'), MSG_TYPE_ERROR);
-    		$this->render(array($this->messages), NULL, 'messages.tpl');
-    		return;
-    	}
-
+    		
+		if (!FsUtils::mkdir($tmpFolder)) {
+    			$this->messages->add(_('A temporal directory to export could not be created'), MSG_TYPE_ERROR);
+    			$this->render(array($this->messages), NULL, 'messages.tpl');
+    			return;
+    		}
 		$children = array();
-		foreach ($nodes as $nodeid) {
+		
+		if(!empty($nodes)){
+			foreach ($nodes as $nodeid) {
+	
+				$node = new Node($nodeid);
+	    			if (!$node->get('IdNode')) {
+					continue;
+				}
 
-			$node = new Node($nodeid);
-	    	if (!$node->get('IdNode')) {
-				continue;
+				$children = $node->getChildren();
+				$folder = $tmpFolder . '/' . $node->get('Name');
+				$errors = $this->copyContents($folder, $children);
+	
+				if ($errors !== false) {
+					// TODO
+				}
 			}
 
-			$children = $node->getChildren();
-			$folder = $tmpFolder . '/' . $node->get('Name');
-			$errors = $this->copyContents($folder, $children);
-
-			if ($errors !== false) {
-				// TODO
-			}
+			$tarFile = $this->tarContents($tmpFolder);
+			$this->deleteContents($tmpFolder);
 		}
-
-		$tarFile = $this->tarContents($tmpFolder);
-		$this->deleteContents($tmpFolder);
 
 		if (!is_file($tarFile)) {
 			$this->messages->add(_('All selected documents could not be exported.'), MSG_TYPE_ERROR);
-    		$this->render(array($this->messages), NULL, 'messages.tpl');
-    		return;
+    			$this->render(array($this->messages->messages), NULL, 'messages.tpl');
+    			return;
 		}
-
 
 		$tarFile = preg_replace(sprintf('#^%s#', Config::getValue('AppRoot')), Config::getValue('UrlRoot'), $tarFile);
 
@@ -76,15 +77,15 @@ class Action_filedownload_multiple extends ActionAbstract {
 			'nodeName' => basename($tarFile),
 			'tarFile' => $tarFile
 		);
+error_log("4------");
 
 		$this->addJs('/actions/filedownload_multiple/resources/js/index.js');
-
 		$this->render($values, '', 'default-3.0.tpl');
-    }
+    	}
 
-    public function download() {
+    	public function download() {
 		// TODO
-    }
+    	}
 
     private function copyContents($folder, $nodes) {
 
@@ -95,10 +96,11 @@ class Action_filedownload_multiple extends ActionAbstract {
 
     	$errors = array();
 
-    	foreach ($nodes as $nodeid) {
+	if(!empty($nodes)){
+    		foreach ($nodes as $nodeid) {
 
-	    	$node = new Node($nodeid);
-	    	if (!$node->get('IdNode')) {
+	    		$node = new Node($nodeid);
+	    		if (!$node->get('IdNode')) {
 				continue;
 			}
 
@@ -107,7 +109,8 @@ class Action_filedownload_multiple extends ActionAbstract {
 			if (!FsUtils::file_put_contents($filePath, $node->getContent())) {
 				$errors[] = $fileName;
 			}
-    	}
+    		}
+	}
 
     	if (count($errors) == 0) {
     		$errors = false;

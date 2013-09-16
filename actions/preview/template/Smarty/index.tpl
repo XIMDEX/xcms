@@ -22,43 +22,46 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+<div class="action_header">
+	<h2>{t}Document preview{/t}</h2>
+</div>
+<div class="action_content">
+	<fieldset>
+				<table align=center class="versions">
+				<!--	<tr>
+						<td>{t}Version{/t}</td>
+						<td>{t}Date{/t}</td>
+						<td>{t}User{/t}</td>
+						<td>{t}New window{/t}</td>
+						<td></td>
+						<td>{$titulo_canal}</td>
+						<td colspan="2"></td>
 
-<fieldset>
-<legend><span>{t}Document preview{/t}</span></legend>
-			<table align=center class="versions">
-			<!--	<tr>
-					<td>{t}Version{/t}</td>
-					<td>{t}Date{/t}</td>
-					<td>{t}User{/t}</td>
-					<td>{t}New window{/t}</td>
-					<td></td>
-					<td>{$titulo_canal}</td>
-					<td colspan="2"></td>
+					</tr>-->
 
-				</tr>-->
+					<tr class="prevdoc">
+						<td align="center" valign="middle"><strong>Version {$version}.{$subversion}</strong></td>
+						<td align="left" nowrap>{$date}</td>
+						<td align="left">{$user_name}</td>
+						<td align="left"><input type="checkbox" checked align="middle" onclick="if(this.checked) alert('{t}As long as this box is ticked, preview will be opened in new windows.{/t}');" name="tabview" id="tabview" class="prevdoc_check"></td>
+						{if ($nameNodeType != 'NodeHt')}
+							<td align="left"><a href="{$_URL_ROOT}/xmd/loadaction.php?action={if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodeType)}filepreview{else}prevdoc{/if}&nodeid={$id_node}{* &version={$version}&subversion={$subversion}*}{if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodetype || "TextFile" == $nameNodeType)}&channel=1{/if}" class="prevdoc-button ui-state-default ui-corner-all button submit-button"><span>Previo</span></a>
+							</td>
+						<input type="hidden" name="node_id" class="node_id" value="{$id_node}">
+						{/if}
 
-				<tr class="prevdoc">
-					<td align="center" valign="middle"><strong>Version {$version}.{$subversion}</strong></td>
-					<td align="left" nowrap>{$date}</td>
-					<td align="left">{$user_name}</td>
-					<td align="left"><input type="checkbox" checked align="middle" onclick="if(this.checked) alert('{t}As long as this box is ticked, preview will be opened in new windows.{/t}');" name="tabview" id="tabview" class="prevdoc_check"></td>
-					{if ($nameNodeType != 'NodeHt')}
-						<td align="left"><a href="{$_URL_ROOT}/xmd/loadaction.php?action={if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodeType)}filepreview{else}prevdoc{/if}&nodeid={$id_node}{* &version={$version}&subversion={$subversion}*}{if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodetype || "TextFile" == $nameNodeType)}&channel=1{/if}" class="prevdoc-button ui-state-default ui-corner-all button submit-button"><span>Previo</span></a>
+						<td align="left">
+						{*  If it is a document, it shows combo with channels *}
+						{if ($nameNodeType != 'TextFile' && $nameNodeType != 'ImageFile' && $nameNodeType !='BinaryFile'   && $nameNodeType != 'NodeHt')}
+							<select id="channellist" name="channellist" class="normal" style="width: 75px;	vertical-align: middle;">
+							 {foreach from=$channels item=_channel}
+								<option value='{$_channel.Id}'>{$_channel.Name}</option>
+							{/foreach}
+							</select>
+						{/if}
 						</td>
-					<input type="hidden" name="node_id" class="node_id" value="{$id_node}">
-					{/if}
-
-					<td align="left">
-					{*  If it is a document, it shows combo with channels *}
-					{if ($nameNodeType != 'TextFile' && $nameNodeType != 'ImageFile' && $nameNodeType !='BinaryFile'   && $nameNodeType != 'NodeHt')}
-						<select id="channellist" name="channellist" class="normal" style="width: 75px;	vertical-align: middle;">
-						 {foreach from=$channels item=_channel}
-							<option value='{$_channel.Id}'>{$_channel.Name}</option>
-						{/foreach}
-						</select>
-					{/if}
-					</td>
-				</tr>
-			</table>
-</fieldset>
+					</tr>
+				</table>
+	</fieldset>
+</div>
 

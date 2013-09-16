@@ -57,7 +57,7 @@
 			</fieldset>
 
 			<fieldset class="buttons-form">		
-				{button label="Asociar" class="validate"}
+				{button label="Asociar" class="validate btn main_action"}
 			</fieldset>
 		</form>
 	{/if}

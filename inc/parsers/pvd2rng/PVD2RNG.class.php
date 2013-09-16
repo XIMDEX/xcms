@@ -62,7 +62,7 @@ class PVD2RNG {
 	}
 
 	/**
-	 * Obtiene el contenido de una PVD a partir de su idNode.
+	 * Obtiene el contenido de un esquema a partir de su idNode.
 	 * Si se indica el parametro $node se obtendran sus hojas de estilos dependientes.
 	 * @param int idpvd
 	 * @param object node
@@ -77,7 +77,7 @@ class PVD2RNG {
 	    }
 
 	    if ($pvd->getNodeType() != 5045 /*'VisualTemplate'*/) {
-			XMD_Log::error('El nodo indicado para la transformacion no es una PVD: ' . $idpvd);
+			XMD_Log::error('El nodo indicado para la transformacion no es un esquema: ' . $idpvd);
 			return false;
 	    }
 
@@ -103,7 +103,7 @@ class PVD2RNG {
 	}
 
 	/**
-	 * Realiza la transformacion de la PVD en dos pasos, primero se obtiene una jerarquia
+	 * Realiza la transformacion del esquema en dos pasos, primero se obtiene una jerarquia
 	 * de elementos con sus correspondientes atributos, despues se forma el esquema RNG.
 	 * @return DOMDocument Retorna el documento RNG o false si ocurrio un error.
 	 */
@@ -123,7 +123,7 @@ class PVD2RNG {
 
 
 		if ($this->_dompvd === null) {
-			XMD_Log::error('Se debe indicar una PVD valida para transformarla.');
+			XMD_Log::error('Se debe indicar un esquema valido para transformarla.');
 			return false;
 		}
 
@@ -262,7 +262,7 @@ class PVD2RNG {
 			}
 		}
 
-		// Las PVD no contiene informacion sobre cardinalidad y orden con lo que
+		// Los esquemas pvd no contiene informacion sobre cardinalidad y orden con lo que
 		// la RNG resultante sera bastante permisiva.
 		if ($interleave->childNodes->length > 0) {
 			$zeroOrMore = $domrng->createElement('zeroOrMore');

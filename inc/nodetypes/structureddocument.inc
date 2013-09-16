@@ -50,6 +50,7 @@ require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
+ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 
 class AbstractStructuredDocument extends FileNode  {
@@ -307,8 +308,7 @@ class AbstractStructuredDocument extends FileNode  {
 	}
 
 	/**
-	 * Cabecera docxap, hay que tener cuidado al a\F1adir par\E1metros, ya que estos deben ser enviados a solr y por lo tanto
-	 * los que no deben ir a solr deben ser debidamente excluidos
+	 * builds the docxap header for a structured document
 	 *
 	 * @param int $channel
 	 * @param int $idLanguage
@@ -317,30 +317,38 @@ class AbstractStructuredDocument extends FileNode  {
 	 * @return string
 	 */
 	function _getDocXapHeader($channel, $idLanguage, $documentType) {
-		/// El nombre de la plantilla de vista
-		$template = new Node($documentType);
-		$templateName = $template->get('Name');
-		$visualTemplateTag = 'tipo_documento="'.$templateName .'"';
-		$layoutName = str_replace('.xml', '', $templateName);
+
+		$schema = new Node($documentType);
+		$schemaName = $schema->get('Name');
+		$schemaTag = 'tipo_documento="'.$schemaName .'"';
+		$layoutName = str_replace('.xml', '', $schemaName);
 		$layoutTag = 'layout ="'. $layoutName .'"';
 
+		//We include the associated semantic tags of the document into the docxap tag.
+		$ximdexTags='';
+
+		if(ModulesManager::isEnabled('ximTAGS')){
+			$rtn= new RelTagsNodes();
+			$nodeTags=$rtn->getTags($this->nodeID);
+			foreach($nodeTags as $tag){
+				$ximdexTags.=$tag['name'].",";
+			}
+			$ximdexTags=substr_replace($ximdexTags,"",-1);
+		}
+		$ximdexTags = 'ximdexTags = "'.utf8_encode($ximdexTags).'"';
+		
 		$docxap = '';
 
-		$docxap = sprintf("<docxap %s %s %s %s %s %s %s>", 
-			$layoutTag,
-			$this->_langXapAttrib($idLanguage),
-                        $visualTemplateTag,
-                        $this->ChannelsXapAttrib($channel),
-                        $this->_buildDocXapAttribs($idLanguage),
-                        $this->_getDocXapPropertiesAttrib(true),
-                        NULL
+		$docxap = sprintf("<docxap %s %s %s %s %s %s %s %s>", 
+					$layoutTag,
+					$this->_langXapAttrib($idLanguage),
+                        		$schemaTag,
+                        		$this->ChannelsXapAttrib($channel),
+                        		$this->_buildDocXapAttribs($idLanguage),
+                        		$this->_getDocXapPropertiesAttrib(true),
+                        		$ximdexTags,
+                        		NULL
                  );
-
-		if (ModulesManager::isEnabled('ximPAS')) {
-//			$rdfMacro = sprintf('@@@RMximdex.rdf(%s)@@@', $this->nodeID);
-			$rdfMacro = '<semantic/>';
-			$docxap .= $rdfMacro;
-		}
 
 		return $docxap;
 	}

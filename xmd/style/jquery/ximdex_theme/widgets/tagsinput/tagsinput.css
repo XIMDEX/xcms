@@ -84,7 +84,7 @@ div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label:hov
    color: #000;
 }
 div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label a {
-   font-size: 12px;
+   +font-size: 12px;
    text-decoration: none;
    font-weight: bold;
    padding: 1px 6x 1px 4px;

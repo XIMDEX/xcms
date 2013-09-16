@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8528 $
+ *  @version $Revision$
  */
 
 
@@ -34,7 +34,7 @@
  *
  *****************************************************************************/
 
-// $Id: kupucontextmenu.js 8528 2013-03-06 09:56:03Z aperez $
+// $Id$
 
 
 //----------------------------------------------------------------------------
@@ -345,9 +345,9 @@ function ContextMenu() {
 			 startPosition: startPos,
 			 endPosition: endPos,
 			 ranges: {
-				 textBefore: focusNode.nodeValue.substring(0, startPos),
-				 text: focusNode.nodeValue.substring(startPos, endPos),
-				 textAfter: focusNode.nodeValue.substring(endPos)
+				 textBefore: focusNode.nodeValue==null? "" : focusNode.nodeValue.substring(0, startPos),
+				 text: focusNode.nodeValue==null? "" : focusNode.nodeValue.substring(startPos, endPos),
+				 textAfter: focusNode.nodeValue==null? "" : focusNode.nodeValue.substring(endPos)
 			 }
 		 };
 

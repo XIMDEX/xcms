@@ -24,25 +24,28 @@
  *}
 
 <form id="et_form" enctype="multipart/form-data" method="post" action="{$action_url}">
- <fieldset class="editor" id="fieldset_{$id_editor}"><legend><span>{t}Editing file{/t} ({$ext}): {$node_name}</span></legend>
-
-	<input type="hidden" name="nodeid" value="{$id_node}">
-	<input type="hidden" id="publicar" name="publicar" value="0">
-	<input type="hidden" name="node_name" value="{$node_name}">
-	<input type="hidden" class="node_ext" name="node_ext" value="{$ext}">
-
-	<textarea class="normal editor_textarea" name="editor" class="text_editor"  id="editor_{$id_editor}">{$content}</textarea>
-</fieldset>
-
-	<fieldset class="buttons-form">
+	<div class="action_header">
+		<h2>{t}Editing file{/t} ({$ext}): {$node_name}</h2>
+		<fieldset class="buttons-form">
 	{if $isXimNewsLanguage == true}
 		{button label="Save and publish" class="validate"
 			 onclick="$('#publicar').attr('value', '1');"
 			  }<!--message="{t}Are you sure you want to save and publish the document?{/t}"-->
 	{/if}
-		{button label="Clear" class="reset"}
-		{button label="Save" class="validate"}<!--message="{t}Are you sure you want to save the changes?{/t}"-->
+		{button label="Save" class="validate btn main_action"}<!--message="{t}Are you sure you want to save the changes?{/t}"-->
 	</fieldset>
+	</div>
+ <div class="action_content full text-editor">
+ 	<fieldset class="editor" id="fieldset_{$id_editor}">
+
+ 		<input type="hidden" name="nodeid" value="{$id_node}">
+ 		<input type="hidden" id="publicar" name="publicar" value="0">
+ 		<input type="hidden" name="node_name" value="{$node_name}">
+ 		<input type="hidden" class="node_ext" name="node_ext" value="{$ext}">
+
+ 		<textarea class="normal editor_textarea" name="editor" class="text_editor"  id="editor_{$id_editor}">{$content}</textarea>
+ 	</fieldset>
+ </div>
 
 </form>
 

@@ -1142,7 +1142,7 @@ class ImportXml {
 		// Trying to insert the node at least, looking for a parentid and we insert it
 		$parentProject = new Node($idParentProject);
 		if ($parentProject->get('IdNode') > 0) {
-			$idximPvdNode = $parentProject->GetChildByName('ximpvd');
+			$idximPvdNode = $parentProject->GetChildByName('schemas');
 			$template['PARENTID'] = $idximPvdNode;
 			$baseIO = new BaseIO();
 

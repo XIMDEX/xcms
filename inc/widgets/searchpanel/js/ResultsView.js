@@ -67,27 +67,28 @@
 
 		setModel: function(source, model) {
 			this.wm('setModel', model);
-			var $div = $(".number_results", this.element), $span = null; 
-			if($div.length)  
-				$div.remove(); 
- 		 
-			// Put the number of results if there is at least one record 
-			if(source.records && source.records > 0  && window.drawertool == null) { 
-				$div = $("<div class='number_results'/>").html(_("Number of results")+": "); 
-        			$span = $("<span/>").html(source.records); 
-        			$div.append($span); 
-        			this.element.append($div); 
- 	 
-        			$('.xim-search-panel .searchpanel-paginator') 
- 	                                        .paginator('loadOptions', { 
- 		                                                pages: parseInt(source.pages), 
- 		                                                selected: parseInt(source.page) 
- 		                                        }) 
- 		                                        .bind('pageClick', function(event, params) { 
- 		                                                var page = params.page; 
- 		                                                $(this.element).trigger('pageChange', [{page: page}]); 
- 		                                        }.bind(this)); 
- 			} 
+			var $div = $(".number_results", this.element), $span = null;
+			if($div.length) 
+				$div.remove();
+
+			// Put the number of results if there is at least one record
+			if(source.records && source.records > 0 && window.drawertool == null) {
+				$div = $("<div class='number_results'/>").html(_("Number of results")+": ");
+				$span = $("<span/>").html(source.records);
+				$div.append($span);
+				this.element.append($div);
+
+				$('.xim-search-panel .searchpanel-paginator')
+					.paginator('loadOptions', {
+						pages: parseInt(source.pages),
+						selected: parseInt(source.page)
+					})
+					.bind('pageClick', function(event, params) {
+						var page = params.page;
+						$(this.element).trigger('pageChange', [{page: page}]);
+					}.bind(this));
+			}
+
 		},
 
 		getModel: function() {

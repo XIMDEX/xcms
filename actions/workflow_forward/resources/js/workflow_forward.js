@@ -30,7 +30,7 @@ X.actionLoaded(function(event, fn, params) {
 	
 	//Create calendars
 	var cals = fn ('.xim-calendar-layer-container');
-	f(cals.length>0){ 
+	if(cals.length>0){
 		var cal_from = $(cals[0]).calendar({format: 'dd-mm-yy'});
 		var cal_to = $(cals[1]).calendar({format: 'dd-mm-yy'});
 		$(params.context).data('cal_from', cal_from);
@@ -40,7 +40,7 @@ X.actionLoaded(function(event, fn, params) {
 			calto: cal_to
 		});
 	}
-	 
+
 	var $groupList = fn('fieldset.notifications select[name=groups]');
 	var $userList = fn('fieldset.notifications ol.user-list');
 	var $textarea = fn('fieldset.notifications textarea[name=texttosend]');

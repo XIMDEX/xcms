@@ -54,7 +54,7 @@
   padding: 0; margin: 0;
   white-space: pre;
   word-wrap: normal;
-  font-size: 1.3em;
+  font-size: 15px; font-size: 1.5rem;
 }
 .CodeMirror pre:focus {
 	background: red;

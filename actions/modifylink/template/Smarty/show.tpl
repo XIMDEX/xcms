@@ -23,6 +23,8 @@
  *  @version $Revision$
  *}
 
+<h2>{t}Enlaces encontrados que apuntan a la misma url{/t}</h2>
+
 <form method="post" name="cln_form" id="cln_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}" >
 	<input type="hidden" name="Name" value="{$name}" >
@@ -30,7 +32,6 @@
 	<input type="hidden" name="Description" value="{$description}" >
 	<input type="hidden" name="validated" value="1" >
 	<fieldset>
-		<legend><span>{t}Enlaces encontrados que apuntan a la misma url{/t}</span></legend>
 		{foreach from=$links item=link}
 		<ol>
 			<li>
@@ -43,8 +44,8 @@
 	<fieldset class="buttons-form">
 		<ol>
 			<li>
-				{button label="Cancel" class="close-button"}
-				{button label="Continue" class='validate' }<!--message="¿Desea crear el enlace de todas formas?"-->
+				{button label="Cancel" class="close-button btn"}
+				{button label="Continue" class='validate btn main_action' }<!--message="¿Desea crear el enlace de todas formas?"-->
 			</li>
 		</ol>
 	</fieldset>

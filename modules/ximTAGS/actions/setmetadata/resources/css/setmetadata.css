@@ -15,7 +15,7 @@ li.xim-tagsinput-tag, li.xim-tagsinput-tag:hover, .nube_tags li {
 	-o-border-radius: 3em;
 	border-radius: 3em;
 	color: #014041;
-	text-shadow: 1px 1px 0 rgba(255,255,255, .6); 
+	text-shadow: 1px 1px 0 rgba(255,255,255, .6);
 	padding: 0 0 1px 29px;
 	position: relative;
 	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255, .3);
@@ -43,6 +43,10 @@ li.xim-tagsinput-tag, li.xim-tagsinput-tag:hover, .nube_tags li {
 	cursor: pointer;
 	color: #fff;
 	text-shadow: 1px 1px 0 rgba(0,0,0,.3);
+}
+
+li select.ontology-type-select{
+	clear:left;
 }
 
 .amount{

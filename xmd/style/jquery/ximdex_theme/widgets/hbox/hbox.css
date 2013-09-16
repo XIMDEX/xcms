@@ -36,7 +36,6 @@ div.hbox {
 div.hbox-panel-container {
 	height: 100%;
 	float: left;
-	/*overflow: auto;*/
 	border: none;	
 }
 

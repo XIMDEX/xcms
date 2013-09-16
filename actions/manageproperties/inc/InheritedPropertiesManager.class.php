@@ -30,7 +30,7 @@ ModulesManager::file('/inc/patterns/Factory.class.php');
 
 class InheritedPropertiesManager {
 
-	static protected $properties = array('Channel', 'Language', 'Schema', 'Transformer');
+	static protected $properties = array('Channel', 'Language');
 
 	/**
 	 * Returns the property values

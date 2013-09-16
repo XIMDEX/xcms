@@ -64,8 +64,8 @@ class XimNewsCache extends XimNewsCache_ORM {
 		}
 
 		if (empty($IdTemplate)) {
-		    $this->messages->add(_('Bulletin pvd missing'), MSG_TYPE_ERROR);
-		    XMD_Log::info(_("Pvd missing"));
+		    $this->messages->add(_('Bulletin schema missing'), MSG_TYPE_ERROR);
+		    XMD_Log::info(_("Schema missing"));
 		    return false;
 		}
 
@@ -322,7 +322,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 	}
 
 	/**
-	*  Generates all caches of the documents created by a pvd template.
+	*  Generates all caches of the documents created by a schema.
 	*  @param int IdTemplate
 	*  @param string xslFile
 	*  @return bool
@@ -334,7 +334,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		$dbConn->Query($sql);
 
 		if ($dbConn->numRows == 0){
-		    XMD_Log::info(_("This pvd has not caches"));
+		    XMD_Log::info(_("This schema has not caches"));
 		    return false;
 		}
 
@@ -355,7 +355,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		    //Obtaining XML new file and replacing the previous one
 		    $xml = $this->FilterXml($cache['new'],$cache['version'],$xslFile);
 		    if(!$xml){
-			XMD_Log::info(_("Wrong XML in new {$cache['new']} version {$cache['version']} pvd $IdTemplate"));
+			XMD_Log::info(_("Wrong XML in new {$cache['new']} version {$cache['version']} schema $IdTemplate"));
 		    }
 
 		    $fileName = $cache['filename'];

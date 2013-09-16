@@ -23,19 +23,25 @@
  *  @version $Revision$
  *}
 
+
 		<form method="post" name="cg_form" id="cg_form" action="{$action_url}" class='validate_ajax'>
 		<input type="hidden" name="id_node" value="{$id_node}" class=ecajag>
-		<fieldset>
-        
-        <legend><span>{t}Add group{/t}</span></legend>
-			<ol>
-            <li>
-								<label for="name" class="aligned">{t}Name{/t}</label>
-								<input type="text" name="name" id="groupname" class="cajag validable not_empty"></li>
-							</ol>
-                            </fieldset>
-				<fieldset class="buttons-form">
-					{button label="Reset" class='form_reset' type='reset'}
-					{button label="Create group" class='validate' }<!--message="do you want to create the group?"-->
-				</fieldset>
+		<div class="action_header">
+			<h2>{t}Add group{/t}</h2>
+			<fieldset class="buttons-form">
+					{button label="Create group" class='validate btn main_action' }<!--message="do you want to create the group?"-->
+			</fieldset>
+		</div>
+		<div class="action_content">
+			<fieldset>
+
+			        <legend><span></span></legend>
+				<ol>
+			            <li>
+									<label for="name" class="aligned">{t}Name{/t}</label>
+									<input type="text" name="name" id="groupname" class="cajag validable not_empty"></li>
+								</ol>
+			                            </fieldset>
+		</div>
+
 		</form>

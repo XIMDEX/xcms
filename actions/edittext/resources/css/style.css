@@ -24,30 +24,30 @@
  */
 
 
-/*#et_form fieldset{
-		margin: 0px 20px 5px 0px;
-	}
-
-#et_form fieldset.editor{
-		margin: 0 11px 5px 0;
-		position: relative;
-		top: 45px;
-	/*	width: 94%; * /
-	}*/
+.text-editor{
+	background:#fff;
+	padding: 0;
+}
 
 #et_form fieldset.editor textarea{
 		/* height: 95%; */
 		background-color: #fff;
 
 	}
-/*fieldset.buttons-form{
-	position: relative;
-	float: left;
-	clear: left;
-	bottom: 5px;
-	width: 84%;
-}*/
+
+
 
 .CodeMirror {
-	border: 1px solid #eee;
+	border: none;
+
+}
+
+.CodeMirror, .CodeMirror-scroll{
+	width: 100% !important;
+	max-width: none !important;
+	max-height: none !important;
+}
+
+.CodeMirror-scroll{
+	overflow: hidden !important;
 }

@@ -233,7 +233,7 @@ text-decoration: none;
 select {
 	border : 1px solid Gray;
 	background : #F3F3F3;
-	font-size : xx-small;
+	+font-size : xx-small;
 	font-weight : bold;
 }
 
@@ -246,7 +246,7 @@ textarea {
 }
 
 td {
-	font-size: 10px;
+	+font-size: 10px;
 	font-family: verdana
 	}
 
@@ -258,20 +258,20 @@ td {
 
 h1 {
 	color: #b8429b;
-	font-size: 12px;
+	+font-size: 12px;
 	margin: 10px 10px 3px 5px;
 }
 
 h2 {
 	background-color: #eeeeee;
-	font-size: 10px;
+	+font-size: 10px;
 	font-weight: normal;
 	padding: 3px 3px 3px 6px;
 }
 
 h3 {
 	background-color: #eeeeee;
-	font-size: 9px;
+	+font-size: 9px;
 	font-weight: normal;
 	padding: 3px 3px 3px 6px;
 }

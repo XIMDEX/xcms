@@ -22,112 +22,67 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+.xim-treeview-branch-container {
+  overflow: auto;
+  position: absolute;
+  top: 25px;
+  bottom: 0px;
+  width: 100%; }
 
+.xim-search-panel .xim-treeview-branch-container {
+  position: static; }
 
-/*div.xim-treeview-container {
-	overflow: auto;
-}
-div.xim-treeview-branch-container{
-	/*overflow: auto;
-	margin-bottom: 10px;
-	height: 100%;
-}
-.browser-projects-view-treecontainer{
-	overflow: auto;	
-}*/
+.xim-treeview-container .xim-treeview-btnreload {
+  background: url("../../../../../images/tree/treeview-icons.png") no-repeat left top;
+  border: none;
+  padding: 3px 2px 3px 25px;
+  margin: 0px 10px 0px 20px;
+  text-transform: uppercase;
+  color: #606060;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 13px;
+  font-size: 1.3rem; }
 
-.xim-treeview-branch-container{/*.xim-treeview-container, *//*Antes estaba aplicado al inferior*/
-	/*overflow: auto;
-	position: absolute;
-	top: 15px;
-	bottom: 10px;
-	/*height:70%; /*De esta medida depende el scroll del árbol, si existen más elementos superiores debe bajar el porcentaje y al contrario
-	width: 100%;
-	position: absolute;
-	
-	top: 25px;
-	bottom: 0px;*/
-/*background:#6F6;*/
-overflow: auto;
-position: absolute;
-top: 25px;
-bottom: 0px;
-width: 100%;
-}
+.xim-treeview-container .xim-treeview-btnreload:hover {
+  color: #006b6c; }
 
-div.xim-search-panel .xim-treeview-branch-container{
-	position: static;
-}
-
-div.xim-treeview-container .xim-treeview-btnreload{
-	background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
-	border: none;
-	padding: 3px 2px 3px 25px;
-	margin: 0px 10px 0px 20px;
-	text-transform: uppercase;
-	font-size: .8em;
-	color: #6c6c6c;
-	white-space: nowrap;
-	cursor: 	pointer;
-	line-height: 1.5em;
-}
-
-div.xim-treeview-container .xim-treeview-btnreload:hover{
-	color: #006b6c;
-}
-
-
-ul.xim-treeview-branch li ul li ul li/*, ul.xim-listview*/{
-	margin-left: 15px;
-}
+ul.xim-treeview-branch li ul li ul li {
+  margin-left: 15px; }
 
 .isLeaf div .ui-no-icon + .xim-treeview-icon {
-	margin-left: 0px;
-}
+  margin-left: 0px; }
 
-ul.xim-treeview-branch li ul li ul li.isLeaf{
-	margin-left: 20px;	
-}
-ul.xim-treeview-branch li ul li ul li.isLeaf div{
-	padding-left:  5px;
-	padding-bottom:  1px;
-	height: 24px;
-	}
-	
+ul.xim-treeview-branch li ul li ul li.isLeaf {
+  margin-left: 20px; }
 
+ul.xim-treeview-branch li ul li ul li.isLeaf div {
+  padding-left: 5px;
+  padding-bottom: 1px; }
 
-li.xim-treeview-node .xim-treeview-actions-dropdown:hover,
-.xim-listview-node .xim-listview-actions-dropdown:hover {
-	/*background-position: -2px -255px;*/
-}
-.xim-treeview-branch-container>.xim-treeview-branch>.xim-treeview-node>.xim-treeview-branch{
-	padding-left: 10px;	
-}
+.xim-treeview-branch-container > .xim-treeview-branch > .xim-treeview-node > .xim-treeview-branch {
+  padding-left: 10px; }
 
-
-
-
-.xim-treeview-label{
-	/*height: 24px;*/	
-	display: block;
-}
+.xim-treeview-label {
+  display: block; }
 
 ul.xim-treeview-branch li div:hover,
 .xim-listview-item:hover,
 .xim-treeview-label:hover,
-li.xim-listview-node:hover{
-  	background: #8DC7C7;  /*url('../../../../../images/tree/fnd-td-gridview.png') repeat-x left center;#D1DFDF b3cece*/
-	-moz-border-radius: 3px;
-	color: #FFF;
-}
+li.xim-listview-node:hover {
+  background: #7bcabf;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  color: white; }
 
+.xim-treeview-node .xim-treeview-selected:hover {
+  padding: 0px; }
 
-.xim-treeview-node .xim-treeview-selected:hover{
-	padding: 0px;
-}
-.xim-treeview-container-selected{
-	border-bottom: 1px dashed #ccc;
-}
+.xim-treeview-container-selected {
+  border-bottom: 1px dashed #cccccc; }
+
 ul.xim-treeview-branch li div.xim-treeview-container-selected,
 tr.xim-listview-selected,
 tr.xim-listview-selected:hover,
@@ -135,125 +90,92 @@ tr.xim-listview-selected:hover,
 .xim-treeview-selected:hover,
 li.xim-listview-selected,
 li.xim-listview-selected:hover {
-	background: #43a1a2;
-	-moz-border-radius: 3px;
-	color: #f2f2f2;
-	border: transparent;
-	padding-right: 8px;
-}
+  background: #43a1a2;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  color: white;
+  border: transparent;
+  padding-right: 8px; }
 
-.xim-treeview-selected{
-		display: inline-block;
-}
+.xim-treeview-selected {
+  display: inline-block; }
+
 ul.xim-treeview-loading {
-	list-style: none;
-	margin: 5px auto;
-	width: 50px;
-}
+  list-style: none;
+  margin: 5px auto;
+  width: 50px; }
 
+.ui-no-icon + .xim-treeview-icon {
+  margin-left: 16px; }
 
+.xim-listview-browser {
+  margin-bottom: 7px;
+  color: #cccccc;
+  margin-left: 15px; }
 
+.xim-listview-browser a.alpha {
+  background: url("../../../../../images/viewers/breadcrumb-alpha.png") no-repeat right center;
+  padding: 5px 18px 5px 10px;
+  position: relative;
+  margin-left: 0px;
+  min-width: 87px; }
 
-.ui-no-icon+.xim-treeview-icon{
-	margin-left: 16px;
-}
+.xim-listview-browser a.omega {
+  margin-left: 0px;
+  background: #e1e1e1;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 3px 5px 3px 7px;
+  position: relative; }
 
-.xim-listview-browser{
-	font-size: .8em;
-	/*text-transform: uppercase;*/
-	margin-bottom: 7px;
-	color: #a0a0a0;
-	margin-left: 15px;
-}
+.xim-listview-browser a.xim-listview-link + span.path-separator + a.omega {
+  background: #e1e1e1;
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+  padding: 3px 10px 3px 13px;
+  margin-left: -7px;
+  position: relative;
+  white-space: nowrap;
+  z-index: 0 !important; }
 
-.xim-listview-browser a.alpha{
-	background: url('../../../../../images/viewers/breadcrumb-alpha.png') no-repeat right center;	
-	padding: 5px 18px 5px 10px;
-	position: relative;
-	margin-left: 0px;
-	min-width: 87px;
-	
-}
-.xim-listview-browser a.omega{
-	margin-left: 0px;	
-	background: #ebebeb;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-	padding: 3px 5px 3px 7px;
-	position: relative;
-}
+.xim-listview-browser a.omega:hover, .xim-listview-browser a.xim-listview-link + span.path-separator + a.omega:hover {
+  background: #7bcabf; }
 
-
-
-.xim-listview-browser a.xim-listview-link + span.path-separator + a.omega{
-	background: #e0e0e0;
-	-moz-border-radius-topright: 4px;
-	-moz-border-radius-bottomright: 4px;
-	-moz-border-radius-topleft: 0px;
-	-moz-border-radius-bottomleft: 0px;
-	-webkit-border-top-right-radius: 4px;
-	-webkit-border-bottom-right-radius: 4px;
-	-webkit-border-top-left-radius: 0px;
-	-webkit-border-bottom-left-radius: 0px;
-	padding: 3px 10px 3px 13px;
-	margin-left: -7px;
-	position: relative;
-	white-space: nowrap;
-	z-index: 0 !important;
-}
-
-.xim-listview-browser a.omega:hover, .xim-listview-browser a.xim-listview-link + span.path-separator + a.omega:hover{
-	background: #8dc7c7;	
-}
 .xim-listview-browser a {
-	background: url('../../../../../images/viewers/breadcrumb.png') no-repeat right center;
-	padding: 3px 17px 3px 13px;
-	color: #a0a0a0;
-	font-weight: bold;
-	position: relative;
-	margin-left: -8px;
-	line-height: 2.5em;
-}
+  background: url("../../../../../images/viewers/breadcrumb.png") no-repeat right center;
+  padding: 3px 17px 3px 13px;
+  color: #cccccc;
+  font-weight: bold;
+  position: relative;
+  margin-left: -8px;
+  line-height: 2.5em; }
 
-.xim-listview-browser a.alpha:hover{
-	background: url('../../../../../images/viewers/breadcrumb-alpha-over.png') no-repeat left center;	
-	color: #fff;
-}
+.xim-listview-browser a.alpha:hover {
+  background: url("../../../../../images/viewers/breadcrumb-alpha-over.png") no-repeat left center;
+  color: white; }
 
-.xim-listview-browser a:hover{
-	background: url('../../../../../images/viewers/breadcrumb-over.png') no-repeat right center;	
-	color: #fff;
-}
+.xim-listview-browser a:hover {
+  background: url("../../../../../images/viewers/breadcrumb-over.png") no-repeat right center;
+  color: white; }
 
+.xim-listview-browser .path-separator {
+  display: none; }
 
-.xim-listview-browser .path-separator{
-	display: none;	
-}
+.xim-listview-browser span {
+  background: #edeeee;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 3px 5px; }
 
-.xim-listview-browser span{
-	background: #ebebeb;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-	padding: 3px 5px;
-}
-
-a + span.path-separator + span{
-	background: #ebebeb;
-	-moz-border-radius-topright: 4px;
-	-moz-border-radius-bottomright: 4px;
-	-moz-border-radius-topleft: 0px;
-	-moz-border-radius-bottomleft: 0px;
-	-webkit-border-top-right-radius: 4px;
-	-webkit-border-bottom-right-radius: 4px;
-	-webkit-border-top-left-radius: 0px;
-	-webkit-border-bottom-left-radius: 0px;
-	padding: 3px 5px 3px 7px;
-	margin-left: -7px;
-	position: relative;
-}
-
-
-
-
+a + span.path-separator + span {
+  background: #edeeee;
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+  padding: 3px 5px 3px 7px;
+  margin-left: -7px;
+  position: relative; }

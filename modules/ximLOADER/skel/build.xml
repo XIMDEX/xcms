@@ -13,7 +13,7 @@
 
 		<!--
 		<ximdoccontainer>
-			<ximdoc name="page-01" nodetypename="XMLDOCUMENT" templatename="rng-page" channel="{?}" language="{?}" />
+			<document name="page-01" nodetypename="XMLDOCUMENT" templatename="rng-page" channel="{?}" language="{?}" />
 		</ximdoccontainer>
 		-->
 		
@@ -21,7 +21,7 @@
 		<section name="the_hobbit_section" nodetypename="SECTION" DefaultSchema="5078" Transformer="xslt" channel="{?}" language="{?}">
 		
 			<ximdoccontainer>
-				<ximdoc name="foobar" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="{?}" />
+				<document name="foobar" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="{?}" />
 			</ximdoccontainer>
 		
 		</section>

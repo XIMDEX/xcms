@@ -1,0 +1,71 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+@font-face {
+  font-family: 'ximdex_icons';
+  src: url("../../../../../fonts/ximdex_icons.eot");
+  src: url("../../../../../fonts/ximdex_icons.eot?#iefix") format("embedded-opentype"), url("../../../../../fonts/ximdex_icons.woff") format("woff"), url("../../../../../fonts/ximdex_icons.ttf") format("truetype"), url("../../../../../fonts/ximdex_icons.svg#ximdex_icons") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+.icon::before, .icon::after, .icon-button::before {
+  font-family: 'ximdex_icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  vertical-align: middle; }
+
+.tag::before {
+  content: "\e01e";
+  padding-right: .3em;
+  color: #3b8e8f; }
+
+.recover-button::before {
+  content: "\0079"; }
+
+.delete-button::before {
+  content: "\0063"; }
+
+.prevdoc-button::before {
+  content: "\0070"; }
+
+.mini-spotlight-advanced-no::before {
+  content: '\0073'; }
+
+.mini-spotlight-advanced::before {
+  content: '\e03a'; }
+
+.current-language::before {
+  content: '\0075'; }
+
+.current-language::after {
+  content: '\006c'; }
+
+.selected::before {
+  content: '\0079'; }

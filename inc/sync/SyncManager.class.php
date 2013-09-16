@@ -93,7 +93,7 @@ class SyncManager {
 		// Delete frame if necessary
 		if ( $deleteOld ) {
 			// DUE -> OUTDATED older frames.
-			$sync->BorrarSolapas($node_id, $up, $down, $markEnd);
+			$sync->DeleteFlaps($node_id, $up, $down, $markEnd);
 			// Frame adjusting.
 			// $sync->DeleteFramesFromNow($node_id,1,$up);
 		}

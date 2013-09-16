@@ -22,10 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
+<h2>{t}Expire section{/t}</h2>
 <form method="post" id="formulario" name="formulario" action="{$action_url}">
   <fieldset>
-    <legend><span>{t}Expire section{/t}</span></legend>
     <ol class="numbered">
       <li><span>{t}This action cannot be undone{/t}</span></li>
       <li><span>{t}Publication windows configured for these files will be cancelled.{/t}</span> </li>
@@ -44,6 +43,6 @@
     </ol>
   </fieldset>
   <fieldset class="buttons-form">
-    {button label="Accept" class='validate'}<!--message="You will expire this section. Would you like to continue?"-->
+    {button label="Accept" class='validate btn main_action'}<!--message="You will expire this section. Would you like to continue?"-->
   </fieldset>
 </form>

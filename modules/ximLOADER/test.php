@@ -66,7 +66,7 @@ foreach ($s->getImages() as $img) {
 	var_dump($img->basepath);
 }
 
-echo "\n\n--- ximdocs ---\n";
+echo "\n\n--- documents ---\n";
 $x = $s->getXimdocs();
 $x = $x[0];
 var_dump($x->name);
@@ -81,7 +81,7 @@ var_dump($s->name);
 var_dump($s->nodetypename);
 var_dump('PATH: ' . $s->getPath());
 
-echo "\n\n--- ximdocs ---\n";
+echo "\n\n--- documents ---\n";
 $x = $s->getXimdocs();
 $x = $x[0];
 var_dump($x->name);

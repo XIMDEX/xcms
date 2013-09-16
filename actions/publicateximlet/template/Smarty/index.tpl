@@ -24,11 +24,11 @@
  *}
 
 {if ($docs)}
+<h2>{t}Publish ximLet{/t}</h2>
 <form  method="post" name="formulario" id="formulario" action='{$action_url}'>
 	<input type="hidden" name="id_node" value="{$node_id}" />	
 
 	<fieldset>
-	    <legend><span>{t}Publish ximLet{/t}</span></legend>
 		<p>{t}{$actionDescription|htmlentities}{/t}</p>
 		<ul>
 			{foreach from=$docs key=index item=docData}
@@ -42,15 +42,15 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button class="validate start_publication" label="Accept" message="Would you like to continue with publication?"}
+		{button class="validate start_publication btn main_action" label="Accept" message="Would you like to continue with publication?"}
 	</fieldset>
 
 </form>
 {else}
-<fieldset>
-	<legend><span>Publish ximLet</span></legend>
+<h2>Publish ximLet</h2>
+
 	<p>No ximlet to publish has been found.</p>
-</fieldset>
+
 {/if}
 
 <!--<div id="publicando" style="display: none;">

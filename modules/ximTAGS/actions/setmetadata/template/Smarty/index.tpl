@@ -36,8 +36,8 @@
 <label class="aligned">{t}Suggested tags <br/>from another Ximdex nodes{/t} </label>
 <ul class="nube_tags">
 	{section name=i loop=$nube_tags}
-		{math assign=font equation="8 + 2*tamano" tamano=$nube_tags[i].Total}
-		<li style="font-size: {$font}px;"><span>{$nube_tags[i].Name}</span><span class="amount">{$nube_tags[i].Total}</span></li>
+		{math assign=font equation="16 + 10*(tamano/$max_value)" tamano=$nube_tags[i].Total}
+		<li style="font-size: {$font|replace:",":"."}px;"><span>{$nube_tags[i].Name}</span><span class="amount">{$nube_tags[i].Total}</span></li>
 	{/section}
 </ul>
 </div>
@@ -45,6 +45,6 @@
 </frameset>
 </fieldset>
 <fieldset class="buttons-form">
-	{button label='Guardar' class='asoc enable_checks validate'}
+	{button label='Guardar' class='asoc enable_checks validate btn main_action'}
 </fieldset>
 </form>

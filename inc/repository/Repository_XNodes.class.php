@@ -371,7 +371,7 @@ class Repository_XNodes extends Repository {
 
 
 	/**
-	 * Workaround!, Intenta obtener una PVD por defecto.
+	 * Workaround!, Intenta obtener un esquema por defecto.
 	 * TODO: Esta funcion es temporal, modificarla cuando se implementen las propiedades.
 	 */
 	function _getDefaultVisualTemplate() {
@@ -391,7 +391,7 @@ class Repository_XNodes extends Repository {
 			}
 		}
 
-		// Si despues de todo no se consigue una PVD se devuelve null
+		// Si despues de todo no se consigue un esquema se devuelve null
 		return $visualtemplate;
 	}
 
@@ -464,7 +464,7 @@ class Repository_XNodes extends Repository {
 		if ($entity->get('idTemplate') > 0) {
 			$visualtemplate = $entity->get('idTemplate');
 		} else {
-			// Obtiene la PVD por defecto
+			// Obtiene el esquema por defecto
 			$visualtemplate = $this->_getDefaultVisualTemplate();
 		}
 		if (empty($visualtemplate)) {

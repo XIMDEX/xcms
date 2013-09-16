@@ -25,28 +25,58 @@
 
 
 (function($) {
+
+	//loading OntologyType
+
+	(function(){
+		if (!X.ontologyType){
+			var url = X.baseUrl+"?mod=ximTAGS&action=setmetadata&method=loadAllNamespaces";
+			var result = false;
+			$.ajax({
+				url:url,
+				dataType: "json",
+				success: function(data){
+					X.ontologyType = data;
+					X.ontologyTypeLikeOptions="";
+					for (var i in X.ontologyType){
+						X.ontologyTypeLikeOptions += '<option value="'+i+'" data-isSemantic="'+
+						X.ontologyType[i].isSemantic+'">'+X.ontologyType[i].type+'</option>';
+					}
+
+				},
+				error: function(data){
+
+				}
+			});
+		}
+	})();
+
 	$.widget('ui.tagsinput', {
 		id: null,
 		tags: [],
 		tagsList: [],
 		newTag: null,
 		text: '',
-		
-	
-		_init: function() {
-			  this.id = $(this.element).attr('id');
-	  		  this.newTag = new X.writingtag({container: this.element}); 
-	  		  $(this.element).click(function() { $(this.newTag).focus(); }.bind(this));
-	  		  
-	  		  //load default values
-	  		  var _tags = $('.xim-tagsinput-tag', this.element);
 
-	  		  if(_tags.length > 0 ) {
-	  		  		for(var i=0; i<_tags.length;i++) {
-		  		  		 var indexTag = this.tags.length;
-	  		  			 this.tags[indexTag] = new X.tag({container:this.element, element: _tags[i]});
-	  		  		}
-	  		  }
+
+		_init: function() {
+
+			$selects = $('.xim-tagsinput-tag select', this.element);
+			$selects.html(X.ontologyTypeLikeOptions);
+			$selects.inputSelect();
+			this.id = $(this.element).attr('id');
+			this.newTag = new X.writingtag({container: this.element});
+			$(this.element).click(function() { $(this.newTag).focus(); }.bind(this));
+
+			//load default values
+			var _tags = $('.xim-tagsinput-tag', this.element);
+
+			if(_tags.length > 0 ) {
+				for(var i=0; i<_tags.length;i++) {
+					var indexTag = this.tags.length;
+					this.tags[indexTag] = new X.tag({container:this.element, element: _tags[i]});
+				}
+			}
 
 			$('#kupu-toolbox-tags-header').click(function() {
 				$('.xim-tagsinput-container').toggle();
@@ -54,37 +84,51 @@
 				$(this).toggleClass('kupu-toolbox-heading-opened');
 				return false;
 			});
-			
 		},
-	
+
+		getTags: function(){
+			return this.tags;
+		},
+
 		getLastTag: function() {
  			return  $('.xim-tagsinput-tag:last', this.element);
  		},
- 		
+
  		getLastTagList: function() {
  			return  $('.xim-tagsinput-taglist:last', this.element);
  		},
-	
+
 		getInputNewTag: function() {
 			return this.newTag.element;
 		},
-		
+
+		isUniqueText: function(text, numimage){
+			for (var i in this.tags){
+				if(this.tags[i].getText){
+					if (this.tags[i].getText().trim() == text.trim() &&
+						this.tags[i].numimage != numimage)
+						return false;
+				}
+			}
+			return true;
+		},
+
 		getDataUrl: function() {
 
 			var total = this.tags.length;
 			var url = '';
 			for(var i=0; i<total;i++) {
 			 	url += this.tags[i].getDataUrl();
-			
+
 			}
-			
+
 			if(total >= 1 ) {
 				return url;
 			}else {
 				return '';
 			}
 		},
-		
+
 		/** ********************************* Tag  ******************************************** */
 
 		save: function(baseURL, content, /* callback,*/ autoSave) {
@@ -101,20 +145,20 @@
 					/* if (callback.onError) callback.onError(req); */
 				}.bind(this)
 			});
-		
+
 		},
-		
+
 		createTag: function(tag) {
-			
+
 			if( '' != tag.text && -1 == this.indexTag(tag.text)  ) {
 				var indexTag = this.tags.length;
-	
+
 				 this.tags[indexTag] = new X.tag({container:this.element, text: tag.text,  typeTag: tag.typeTag, url: tag.url, description: tag.description});
-				// $(this.tags[indexTag].element).bind("removingtag", this.onRemovingTag.bind(this) ); 
+				// $(this.tags[indexTag].element).bind("removingtag", this.onRemovingTag.bind(this) );
         }
 
 		},
-		
+
 		onRemovingTag: function(text) {
 
 			var indexTag = this.indexTag(text)
@@ -125,56 +169,59 @@
 			return false;
 
 		},
-		
+
 		indexTag: function(_tag) {
 			var total = this.tags.length;
-			
+
 			for(var i=0; i<total; i++) {
 					if(_tag == this.tags[i].getText() ) {
 						return i;
 					}
 			}
-			
+
 			return -1;
-		
+
 		},
 
-		
+
 		/** *********************** Tag Suggested List && Tag Related List ************************** */
 		addTagslist:function(alltags, listname) {
 			var listname = listname || 'related';
-					
-			$.each(alltags, function(key, value) {
+
+			for (var i = 0; i < alltags.length;i++){
+				this.addTagList({text:alltags[i].text, url:"", typeTag:alltags[i].type}, listname );
+			}
+			/*$.each(alltags, function(key, value) {
 				if("status" != key) {
 					var type = key;
 					$.each(value, function(key, value) {
 						this.addTagList({text:key, url:value[0], typeTag:type}, listname );
-				
-					}.bind(this));		
+
+					}.bind(this));
 				}
-	
-			}.bind(this));
-		
-		
+
+			}.bind(this));*/
+
+
 			$('.xim-tagsinput-container-'+listname, this.element).show();
 
 		},
-		
-		
+
+
 		addTagList: function(tag, listname) {
 			var listname = listname || 'related';
-			
+
 			if( '' != tag.text && -1 == this.indexTag(tag.text) ) {
 				var list = $('.xim-tagsinput-list-'+listname, this.element);
 				var indexTag = this.tagsList.length;
-				
+
 				 new X.taglist({container:this.element, list: list, text: tag.text,  typeTag: tag.typeTag, url: tag.url, description: ''});
 
-			}	
+			}
 		},
-		
+
 		getter: ['prueba']
-		
+
 	});
 
 })(jQuery);

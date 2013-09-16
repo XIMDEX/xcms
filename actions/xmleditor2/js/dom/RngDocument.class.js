@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8300 $
+ *  @version $Revision$
  */
 
 
@@ -230,8 +230,8 @@ RngDocument = function() {
 			this._schemaModel[name] = new RngElement(name, isOptional);
 		}
 		/*else{
-			this._schemaModel[name].isOptional == this._schemaModel[name].isOptional && isOptional; 
-		}*/ 
+                        this._schemaModel[name].isOptional == this._schemaModel[name].isOptional && isOptional;
+                }*/
 
 		if (parent != null) {
 			this._schemaModel[name].parentNode = parent;

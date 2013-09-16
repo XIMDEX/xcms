@@ -23,7 +23,7 @@
 
 msgid ""
 msgstr ""
-"Project-Id-Version: Ximdex 3.4\n"
+"Project-Id-Version: Ximdex 3.5\n"
 "Report-Msgid-Bugs-To: dev@ximdex.org"
 "POT-Creation-Date: 2011-09-29 09:18+0100\n"
 "PO-Revision-Date: 2011-09-29 09:18+0100\n"
@@ -400,8 +400,8 @@ msgstr "Aktion wurde nicht erfolgreich durchgef&uuml;hrt"
 msgid "RNG %s could not be successfully inserted"
 msgstr "RNG %s wurde nicht erfolgreich eingef&uuml;gt"
 
-msgid "PTD %s could not be successfully inserted"
-msgstr "PTD %s wurde nicht erfolgreich eingef&uuml;gt"
+msgid "Template %s could not be successfully inserted"
+msgstr "Vorlage %s wurde nicht erfolgreich eingef&uuml;gt"
 
 msgid "--- Null ---"
 msgstr "--- Null ---"
@@ -1405,7 +1405,6 @@ msgid "Document type"
 msgstr "Dokumenttyp"
 
 #: /actions/createxmlcontainer/template/Smarty/index.tpl
-#: /actions/relsectionschema/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 msgid "Select template"
@@ -1608,8 +1607,8 @@ msgid "Editing file"
 msgstr "Datei wird bearbeitet"
 
 #: /actions/edittext/template/Smarty/publishForm.tlp
-msgid "Modification of this PTD has affected to %1 documents. Would you like to republish them?"
-msgstr "Die &Auml;nderung dieses PTDs hat %1 der Dokumente beeinflusst. M&ouml;chten Sie diese nochmal ver&ouml;ffentlichen?"
+msgid "Modification of this template has affected to %1 documents. Would you like to republish them?"
+msgstr "Die &Auml;nderung dieses Vorlagen hat %1 der Dokumente beeinflusst. M&ouml;chten Sie diese nochmal ver&ouml;ffentlichen?"
 
 #: /actions/edittext/javascript/tour.js 
 msgid "This action allows to edit in a text window the document code.<br/>"
@@ -1813,11 +1812,11 @@ msgstr " Stylesheet hinzuf&uuml;gen"
 msgid " Add images "
 msgstr " Bilder hinzuf&uuml;gen "
 
-msgid " Add PTD templates "
-msgstr " PTD Vorlagen hinzuf&uuml;gen "
+msgid " Add templates "
+msgstr " Vorlagen hinzuf&uuml;gen "
 
-msgid " Add PVD templates "
-msgstr " PVD Vorlagen hinzuf&uuml;gen "
+msgid " Add schemas "
+msgstr " Schemas hinzuf&uuml;gen "
 
 msgid " Add HTML files "
 msgstr " HTML Dateien hinzuf&uuml;gen "
@@ -3030,10 +3029,6 @@ msgstr "Ihre Dokumente wurden erfolgreich in der Ver&ouml;ffentlichungsprozess a
 msgid "No documents to publish have been found."
 msgstr "Keine zu ver&ouml;ffentlichenden Dokumente gefunden."
 
-#: /actions/relsectionschema/Action_relsectionschema.class.php
-msgid "Association has been successfully performed."
-msgstr "Zuordnung wurde erfolgreich durchgef&uuml;hrt."
-
 msgid "Error while associating."
 msgstr "Fehler bei Zuordnung."
 
@@ -3176,14 +3171,14 @@ msgid "Faster, easier, more powerful"
 msgstr "Schneller, einfacher, st&auml;rker"
 
 #: /actions/welcome/template/Smarty/index.tpl
-msgid "Welcome to new Ximdex 3.4!"
-msgstr "Wilkommen zum neuen Ximdex 3.4!"
+msgid "Welcome to new Ximdex 3.5!"
+msgstr "Wilkommen zum neuen Ximdex 3.5!"
 
 msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
 msgstr "Mit der neuen Version des Ximdex-Inhaltsmanagers werden Sie ein st&auml;rkeres, schnelleres und intuitiveres Produkt geniessen als bei den vorherigen Versionen. Sie k&ouml;nnen Ihre Dokumente auf einfache und n&uuml;tzliche Weise verwalten."
 
-msgid "Start to use new Ximdex 3.4 and discover its advantages."
-msgstr "Beginnen Sie mit der Nutzung des neuen Ximdex 3.4 und entdecken Sie seine Vorteile."
+msgid "Start to use new Ximdex 3.5 and discover its advantages."
+msgstr "Beginnen Sie mit der Nutzung des neuen Ximdex 3.5 und entdecken Sie seine Vorteile."
 
 msgid "Faster"
 msgstr "Schneller"
@@ -3232,7 +3227,7 @@ msgstr ""
 msgid "Easy"
 msgstr ""
 
-msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and ximRA rock!"
+msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and Xowl module rock!"
 msgstr ""
 
 msgid "Learn more"
@@ -4003,8 +3998,8 @@ msgstr "Das php5-enchant Modul muss installiert werden um den Rechtschreibpr&uum
 msgid "EnricherKey configuration value has not been defined"
 msgstr "EnricherKey Konfigurationswert wurde nicht definiert"
 
-msgid "ximRA module has not been enabled.<br/><br/> If you want to realize the noticeable improvements you will obtain installing ximRA, a demonstrative video is shown below and in the following %s<br/><br/>"
-msgstr "ximRA Modul wurde nicht aktiviert.<br/><br/> Wenn Sie die sichtbaren Verbesserungen &uuml;berpr&uuml;fen m&ouml;chten, die Sie durch die Installation von ximRA erhalten, zeigen wir Ihnen im Folgenden Link ein Demonstrationsvideo: %s<br/><br/>"
+msgid "Xowl module has not been enabled.<br/><br/> If you want to realize the noticeable improvements you will obtain installing Xowl, a demonstrative video is shown below and in the following %s<br/><br/>"
+msgstr "Xowl Modul wurde nicht aktiviert.<br/><br/> Wenn Sie die sichtbaren Verbesserungen &uuml;berpr&uuml;fen m&ouml;chten, die Sie durch die Installation von Xowl erhalten, zeigen wir Ihnen im Folgenden Link ein Demonstrationsvideo: %s<br/><br/>"
 
 msgid "docxap cannot be found."
 msgstr "docxap kann nicht gefunden werden."
@@ -5065,8 +5060,8 @@ msgstr "Url wurde nicht spezifiert"
 msgid "An error occurred inserting the document"
 msgstr "Fehler beim Einf&uuml;gen des Dokuments"
 
-msgid "It is being tried to insert a xmlcontainer without its corresponding pvd"
-msgstr "Versucht einen xmlcontainer ohne entsprechende pvd einzugeben"
+msgid "It is being tried to insert a XML document without its corresponding schema"
+msgstr "Versucht einen XML Dokument ohne entsprechende Schema einzugeben"
 
 msgid "It was not specified a template for the node "
 msgstr "Eine Vorlage f&uuml;r den Knoten wurde nicht spezifiziert "
@@ -5591,8 +5586,8 @@ msgstr "Neuen Benutzer hinzuf&uuml;gen"
 msgid "Create a new Ximdex user"
 msgstr "Neuen Ximdex-Benutzer erstellen"
 
-msgid "Add new PTD template"
-msgstr "Neue PTD Vorlage hinzuf&uuml;gen"
+msgid "Add new template"
+msgstr "Neue Vorlage hinzuf&uuml;gen"
 
 msgid "Change user data"
 msgstr "Benutzerdaten ver&auml;ndern"
@@ -5856,9 +5851,6 @@ msgstr "Neue Textdatei hinzuf&uuml;gen"
 msgid "Add a new text file to server"
 msgstr "Neue Textdatei zu Server hinzuf&uuml;gen"
 
-msgid "Delete XML container"
-msgstr "XML-Container l&ouml;schen"
-
 msgid "Edit XML document"
 msgstr "XML-Dokument bearbeiten"
 
@@ -5877,8 +5869,8 @@ msgstr "Aktion l&ouml;schen"
 msgid "Delete the action"
 msgstr "Diese Aktion l&ouml;schen"
 
-msgid "And new PTD template"
-msgstr "Neue PTD-Vorlage hinzuf&uuml;gen"
+msgid "And new template"
+msgstr "Neue Vorlage hinzuf&uuml;gen"
 
 msgid "Add a new transformation template to the directory"
 msgstr "Neue Transformationsvorlage zur Adressenliste hinzuf&uuml;gen"
@@ -6175,11 +6167,11 @@ msgstr "Bilder hinzuf&uuml;gen"
 msgid "Add an image set to the server"
 msgstr "Bildsatz zu Server hinzuf&uuml;gen"
 
-msgid "Add PTD templates"
-msgstr "PTD-Vorlagen hinzuf&uuml;gen"
+msgid "Add templates"
+msgstr "Vorlagen hinzuf&uuml;gen"
 
-msgid "Add a set of PTD templates to the server"
-msgstr "PTD-Vorlagensatz zu Server hinzuf&uuml;gen"
+msgid "Add a set of templates to the server"
+msgstr "Vorlagensatz zu Server hinzuf&uuml;gen"
 
 msgid "Add files"
 msgstr "Dateien hinzuf&uuml;gen"
@@ -6271,11 +6263,11 @@ msgstr "Kompletten Ximclude-Ordner exportieren"
 msgid "Export a ximclude subfolder"
 msgstr "Einen untergeordneten Ximclude-Ordner exportieren"
 
-msgid "Export a complete ximdoc folder"
-msgstr "Kompletten Ximdoc-Ordner exportieren"
+msgid "Export a complete documents folder"
+msgstr "Kompletten Dokumente-Ordner exportieren"
 
-msgid "Export a XML container"
-msgstr "XML-Beh&auml;lter exportieren"
+msgid "Export a XML document"
+msgstr "XML-Dokument exportieren"
 
 msgid "Export a complete ximlet folder"
 msgstr "Komlpetten Ximlet-Ordner exportieren"
@@ -6283,8 +6275,8 @@ msgstr "Komlpetten Ximlet-Ordner exportieren"
 msgid "Export a ximlet subfolder"
 msgstr "Einen untergeordneten Ximlet-Ordner exportieren"
 
-msgid "Export a ximlet container"
-msgstr "Einen Ximlet-Beh&auml;lter exportieren"
+msgid "Export a ximlet document"
+msgstr "Einen Ximlet-Dokument exportieren"
 
 msgid "Export a complete server"
 msgstr "Einen kompletten Ordner exportieren"
@@ -6292,11 +6284,11 @@ msgstr "Einen kompletten Ordner exportieren"
 msgid "Export a complete section"
 msgstr "Eine komplette Sektion exportieren"
 
-msgid "Export a complete ximpvd"
-msgstr "Ein komplettes ximpvd exportieren"
+msgid "Export a complete schema"
+msgstr "Ein komplettes Schema exportieren"
 
-msgid "Export a complete ximptd"
-msgstr "Ein komplettes ximptd exportieren"
+msgid "Export a complete template"
+msgstr "Ein komplettes Vorlage exportieren"
 
 msgid "Export a template subfolder"
 msgstr "Einen untergeordneten Vorlagenordner exportieren"
@@ -6337,11 +6329,11 @@ msgstr "Kompletten Ximclude-Ordner importieren"
 msgid "Import a ximclude subfolder"
 msgstr "Einen untergeordneten Ximclude-Ordner importieren"
 
-msgid "Import a complete ximdoc folder"
-msgstr "Kompletten Ximdoc-Ordner importieren"
+msgid "Import a complete documents folder"
+msgstr "Kompletten Dokumente-Ordner importieren"
 
-msgid "Import a XML container"
-msgstr "Einen XML-Beh&auml;lter importieren"
+msgid "Import a XML document"
+msgstr "Einen XML-Dokument importieren"
 
 msgid "Import a complete ximlet folder"
 msgstr "Kompletten Ximlet-Ordner importieren"
@@ -6349,8 +6341,8 @@ msgstr "Kompletten Ximlet-Ordner importieren"
 msgid "Import a ximlet subfolder"
 msgstr "Einen untergeordneten Ximlet-Ordner importieren"
 
-msgid "Import a ximlet container"
-msgstr "Einen Ximlet-Beh&auml;lter importieren"
+msgid "Import a ximlet document"
+msgstr "Einen Ximlet-Dokument importieren"
 
 msgid "Import a complete server"
 msgstr "Einen kompletten Server importieren"
@@ -6358,11 +6350,11 @@ msgstr "Einen kompletten Server importieren"
 msgid "Import a complete section"
 msgstr "Eine komplette Sektion importieren"
 
-msgid "Import a complete ximpvd"
-msgstr "Ein komplettes ximpvd importieren"
+msgid "Import a complete schema"
+msgstr "Ein komplettes Schema importieren"
 
-msgid "Import a complete ximptd"
-msgstr "Ein komplettes ximptd importieren"
+msgid "Import a complete template"
+msgstr "Ein komplettes Vorlage importieren"
 
 msgid "Import a template subfolder"
 msgstr "Einen untergeordneten Vorlagenordner importieren"
@@ -6400,11 +6392,11 @@ msgstr "Kompletten Ximclude-Ordner kopieren"
 msgid "Copy a ximclude subfolder"
 msgstr "Einen untergeordneten Ximclude-Ordner kopieren"
 
-msgid "Copy a complete ximdoc folder"
-msgstr "Kompletten Ximdoc-Ordner kopieren"
+msgid "Copy a complete documents folder"
+msgstr "Kompletten Dokumente-Ordner kopieren"
 
-msgid "Copy a XML container"
-msgstr "Einen XML-Container kopieren"
+msgid "Copy a XML document"
+msgstr "Einen XML-Dokument kopieren"
 
 msgid "Copy a complete ximlet folder"
 msgstr "Kompletten Ximlet-Ordner importieren"
@@ -6412,8 +6404,8 @@ msgstr "Kompletten Ximlet-Ordner importieren"
 msgid "Copy a ximlet subfolder"
 msgstr "Einen untergeordneten Ximlet-Ordner kopieren"
 
-msgid "Copy a ximlet container"
-msgstr "Einen Ximlet-Beh&auml;lter kopieren"
+msgid "Copy a ximlet document"
+msgstr "Einen Ximlet-Dokument kopieren"
 
 msgid "Copy a link"
 msgstr "Einen Link kopieren"
@@ -6430,11 +6422,11 @@ msgstr "Einen kompletten Server kopieren"
 msgid "Copy a complete section"
 msgstr "Eine komplette Sektion kopieren"
 
-msgid "Copy a complete ximpvd"
-msgstr "Eine komplette ximpvd kopieren"
+msgid "Copy a complete schema"
+msgstr "Eine komplette Schema kopieren"
 
-msgid "Copy a complete ximptd"
-msgstr "Eine komplette ximptd kopieren"
+msgid "Copy a complete template"
+msgstr "Eine komplette Vorlage kopieren"
 
 msgid "Copy a template subfolder"
 msgstr "Einen untergeordneten Vorlagenordner kopieren"
@@ -6475,8 +6467,8 @@ msgstr "Einen Bildordner in ein anderes Ziel kopieren"
 msgid "Copy a server to another destination"
 msgstr "Einen Server in ein anderes Ziel kopieren"
 
-msgid "Copy a ximdoc folder to another destination"
-msgstr "Einen Ximdoc-Ordner in ein anderes Ziel kopieren"
+msgid "Copy a documents folder to another destination"
+msgstr "Einen Dokumente-Ordner in ein anderes Ziel kopieren"
 
 msgid "Copy a ximclude folder to another destination"
 msgstr "Einen Ximclude-Ordner in ein anderes Ziel kopieren"
@@ -6496,14 +6488,14 @@ msgstr "Einen CSS-Ordner in ein anderes Ziel kopieren"
 msgid "Copy a CSS subfolder to another destination"
 msgstr "Einen untergeordneten CSS-Ordner in ein anderes Ziel kopieren"
 
-msgid "Copy a ximptd folder to another destination"
-msgstr "Einen Ximptd-Ordner in ein anderes Ziel kopieren"
+msgid "Copy a templates folder to another destination"
+msgstr "Einen Vorlagen-Ordner in ein anderes Ziel kopieren"
 
 msgid "Copy a CSS document to another destination"
 msgstr "Ein CSS-Dokument in ein anderes Ziel kopieren"
 
-msgid "Copy a document container to another destination"
-msgstr "Ein Container-Dokument in ein anderes Ziel kopieren"
+msgid "Copy a document to another destination"
+msgstr "Ein Dokument in ein anderes Ziel kopieren"
 
 msgid "Copy a XML document to another destination"
 msgstr "Ein XML-Dokument in ein anderes Ziel kopieren"
@@ -6541,14 +6533,11 @@ msgstr "Ein HTML-Dokument in ein anderes Ziel kopieren"
 msgid "Copy a section to another destination"
 msgstr "Eine Sektion in ein anderes Ziel kopieren"
 
-msgid "Copy a ximpvd folder to another destination"
-msgstr "Einen Ximpvd-Ordner in ein anderes Ziel kopieren"
+msgid "Copy a schemas folder to another destination"
+msgstr "Einen Schemas-Ordner in ein anderes Ziel kopieren"
 
-msgid "Copy a PVD template to another destination"
-msgstr "Eine PVD-Vorlage in ein anderes Ziel kopieren"
-
-msgid "Ximsearch"
-msgstr "Ximsearch"
+msgid "Copy a schema to another destination"
+msgstr "Eine Schema in ein anderes Ziel kopieren"
 
 msgid "Edit with Xedit"
 msgstr "Mit Xedit bearbeiten"
@@ -6619,8 +6608,8 @@ msgstr "Eigenschaften eines Servers &auml;ndern"
 msgid "Modify heritable properties of a section"
 msgstr "Eigenschaften einer Sektion &auml;ndern"
 
-msgid "Modify heritable properties of a ximdoc folder"
-msgstr "Eigenschaften eines Ximdoc-Ordners &auml;ndern"
+msgid "Modify heritable properties of a documents folder"
+msgstr "Eigenschaften eines Dokumente-Ordners &auml;ndern"
 
 msgid "Modify heritable properties of a document"
 msgstr "Eigenschaften eines Dokuments &auml;ndern"
@@ -6670,11 +6659,11 @@ msgstr "Alle Vorlagen herunterladen"
 msgid "Download all files"
 msgstr "Alle Dateien herunterladen"
 
-msgid "Add PVD templates"
-msgstr "PVD-Vorlagen hinzuf&uuml;gen"
+msgid "Add schemas"
+msgstr "Schemas hinzuf&uuml;gen"
 
-msgid "Add a set of PVD templates to the server"
-msgstr "PVD-Vorlagensatz zu Server hinzuf&uuml;gen"
+msgid "Add a set of schemas to the server"
+msgstr "Schemassatz zu Server hinzuf&uuml;gen"
 
 msgid "Owner"
 msgstr "Inhaber"
@@ -6841,8 +6830,8 @@ msgstr "Ansichtvorlagenordner"
 msgid "Root folder of ximlets in sections"
 msgstr "Ximlet-Stammordner in den Sektionen"
 
-msgid "Ximlet container"
-msgstr "Ximlet-Beh&auml;lter"
+msgid "Ximlet document"
+msgstr "Ximlet-Dokument"
 
 msgid "Property manager"
 msgstr "Eigenschaftenverwalter"
@@ -7550,8 +7539,8 @@ msgstr "Kategorie hinzuf&uuml;gen"
 msgid "Add external link"
 msgstr "Externer Link hinzuf&uuml;gen"
 
-msgid "Add PTD template"
-msgstr "PTD-Vorlage hinzuf&uuml;gen"
+msgid "Add template"
+msgstr "Vorlage hinzuf&uuml;gen"
 
 msgid "Add editor template"
 msgstr "Bearbeitungvorlage hinzuf&uuml;gen"
@@ -7711,11 +7700,11 @@ msgstr "Version der Nachricht fehlt"
 msgid "Version missing"
 msgstr "Version fehlt"
 
-msgid "Bulletin pvd missing"
-msgstr "Pvd-Newsletter fehlt"
+msgid "Bulletin schema missing"
+msgstr "Schema-Newsletter fehlt"
 
-msgid "Pvd missing"
-msgstr "Pvd fehlt"
+msgid "Schema missing"
+msgstr "Schema fehlt"
 
 msgid "Disk writing error"
 msgstr "Fehler beim Schreiben auf der Festplatte"
@@ -7738,11 +7727,11 @@ msgstr "Leere Datei"
 msgid "ERROR subtracting in counter "
 msgstr "FEHLER beim Subtrahieren im Z&auml;hler "
 
-msgid "Wrong XML in new %s version %s pvd %s"
-msgstr "Falsche XML in neuer %s Version %s pvd %s"
+msgid "Wrong XML in new %s version %s schema %s"
+msgstr "Falsche XML in neuer %s Version %s Schema %s"
 
-msgid "This pvd has not caches"
-msgstr "Diese pvd hat kein Cache"
+msgid "This schema has not caches"
+msgstr "Diese Schema hat kein Cache"
 
 msgid "Disk writing error (2)"
 msgstr "Fehler beim Schreiben auf der Festplatte (2)"
@@ -8749,8 +8738,8 @@ msgstr "Geben Sie an ob der erste Knoten erstellt werden soll oder nicht."
 msgid "Explanation:"
 msgstr "Erkl&auml;rung:"
 
-msgid "If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox"
-msgstr "Wenn wir einen ximdoc-Ordner kopieren, muss der Zielknoten ein ximdoc-Ordner sein und in diesem Fall m&uuml;ssen wir nicht angeben, dass der erste Knoten erstellt wurde. Wenn wir einen ximnews-Ordner kopieren, m&uuml;ssen wir als Beh&auml;lter einen Server oder eine Sektion ausw&auml;hlen und wir m&uuml;ssen die Sektion ximnews erstellen, wof&uuml;r wir in diesem Fall die checkbox markieren m&uuml;ssen"
+msgid "If we copy a documents folder, destination node should be a documents folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox"
+msgstr "Wenn wir einen Dokumente-Ordner kopieren, muss der Zielknoten ein Dokumente-Ordner sein und in diesem Fall m&uuml;ssen wir nicht angeben, dass der erste Knoten erstellt wurde. Wenn wir einen ximnews-Ordner kopieren, m&uuml;ssen wir als Beh&auml;lter einen Server oder eine Sektion ausw&auml;hlen und wir m&uuml;ssen die Sektion ximnews erstellen, wof&uuml;r wir in diesem Fall die checkbox markieren m&uuml;ssen"
 
 msgid "Tick if source and destination ximdex are same"
 msgstr "Markieren wenn Ausgangs- und Zielximdex gleich sind"
@@ -9101,8 +9090,8 @@ msgstr "Kein g&uuml;ltiger Benutzer vorhanden f&uuml;r die Importierung"
 msgid "Error inserting the node"
 msgstr "Fehler beim Einf&uuml;gen des Knotens"
 
-msgid "No pvd could be successfully estimated for the node "
-msgstr "Es konnte kein pvd f&uuml;r den Knoten korrekt gesch&auml;tzt werden "
+msgid "No schema could be successfully estimated for the node "
+msgstr "Es konnte kein Schema f&uuml;r den Knoten korrekt gesch&auml;tzt werden "
 
 msgid "An inconsistency was found in database, there are several UUID in NodeProperties table with same value"
 msgstr "Es wurde eine Unbest&auml;ndigkeit in der Datenbank gefunden, in der Tabelle NodeProperties gibt es mehrere gleiche UUIDs"

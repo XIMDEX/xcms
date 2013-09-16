@@ -132,7 +132,7 @@ class FileNode extends Root {
 		$data = new DataFactory($this->nodeID);
 
 		/// @todo: move this piece to Template nodetype
-		// Not neccesary up version here for PTD nodetypes (makes previously for insert correct idversion in xml wrapper)
+		// Not neccesary up version here for template nodetypes (makes previously for insert correct idversion in xml wrapper)
 
 		if ($this->parent->nodeType->get('Name') == 'Template') {
 			$lastVersionID = $data->GetLastVersionId();

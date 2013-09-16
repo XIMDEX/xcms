@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  	<start>
+  		<element name="docxap">
+  			<ref name="footer.class"/>
+  			<xim:description>Docxap</xim:description>
+  		</element>
+  	</start>
+  	<define name="footer.class">
+  		<element name="footer">
+  			<zeroOrMore>
+  				<interleave>
+  					<optional>
+  <ref name="footer-link-list.class"/>
+</optional>
+					<optional>
+<ref name="paragraph.class"/>
+</optional>
+				</interleave>
+			</zeroOrMore>
+			<xim:description>Footer</xim:description>
+		</element>
+	</define>
+	<define name="footer-link-list.class">
+		<element name="footer-link-list">
+			<oneOrMore>
+				<ref name="footer-link.class"/>
+			</oneOrMore>
+			<xim:description>Link list</xim:description>
+		</element>
+	</define>
+	<define name="footer-link.class">
+		<element name="footer-link">
+			<attribute name="href" xim:type="documentSelector"/>
+			<oneOrMore>
+				<ref name="footer-link.class"/>
+			</oneOrMore>
+			<text/>
+			<xim:default_content>[Link]</xim:default_content>
+			<xim:description>Link</xim:description>
+		</element>
+	</define>
+	<define name="paragraph.class">
+			<element name="paragraph">
+				<zeroOrMore>
+					<interleave>
+						<optional>
+							<ref name="bold.class"/>
+						</optional>
+						<optional>
+							<ref name="italic.class"/>
+						</optional>
+						<optional>
+							<ref name="link.class"/>
+						</optional>
+					</interleave>
+				</zeroOrMore>
+				<text/>
+				<xim:description>Paragraph</xim:description>
+				<xim:default_content>[Paragraph]</xim:default_content>
+			</element>
+		</define>
+		<define name="bold.class">
+			<element name="bold">
+				<text/>
+				<xim:description>Bold</xim:description>
+				<xim:type>apply</xim:type>
+			</element>
+		</define>
+		<define name="italic.class">
+			<element name="italic">
+				<text/>
+				<xim:description>Italic</xim:description>
+				<xim:type>apply</xim:type>
+			</element>
+		</define>
+		<define name="link.class">
+			<element name="link">
+				<attribute name="href"/>
+				<attribute name="target">
+					<choice>
+						<value type="string">_blank</value>
+						<value type="string">_self</value>
+					</choice>
+				</attribute>
+				<text/>
+				<xim:description>Link</xim:description>
+				<xim:default_content>[Link]</xim:default_content>
+				<xim:type>apply</xim:type>
+			</element>
+		</define>
+</grammar>

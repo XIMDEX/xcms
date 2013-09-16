@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8529 $
+ *  @version $Revision$
  */
 
 
@@ -274,8 +274,8 @@
 
 			$("#ximdex-splash .progress").width("50%");
 			this.openAction({
-                                                label: _("Welcome to new Ximdex 3.4!"),
-                                                name:  _("Welcome to new Ximdex 3.4!"),
+                                                label: _("Welcome to the brand new Ximdex 3.5!"),
+                                                name:  _("Welcome to the brand new Ximdex 3.5!"),
                                                 command: 'welcome',
                                                 params: '',
                                                 bulk: '0'

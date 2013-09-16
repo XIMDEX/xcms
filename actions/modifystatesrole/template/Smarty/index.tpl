@@ -24,42 +24,48 @@
  *}
 
 
-
 <form method="post" id="msr_action" action="{$action_add}">
-		<fieldset>
-		<legend><span>{t}Add status to role{/t}</span></legend><!--Modify status which are associated with the role-->
-<ol>
-<li>
-	<label for="id_state" class="aligned">{t}Status{/t}</label>
-	<select name="id_state" id="id_state" class="validable not_empty">
-		<option value="">{t}Select a status{/t}</option>
-	{foreach from=$all_states key=id_state item=state_name}
-		<option value="{$id_state}">{$state_name|gettext}</option>
-	{/foreach}
-	</select>
-	</li></ol>
+	<div class="action_header">
+		<h2>{t}Add status to role{/t}</h2>
+					<fieldset class="buttons-form">
+	{button label="Add status" class="validate btn main_action" }
 			</fieldset>
-			<fieldset class="buttons-form">
-	{button label="Reset" class="form_reset" type="reset"}
-	{button label="Add status" class="validate" message="Would you like add this status to the role?"}
-			</fieldset>
+	</div>
+		<div class="action_content">
+			<fieldset>
+			<ol>
+			<li>
+				<label for="id_state" class="aligned">{t}Status{/t}</label>
+				<select name="id_state" id="id_state" class="validable not_empty">
+			<option value="">{t}Select a status{/t}</option>
+				{foreach from=$all_states key=id_state item=state_name}
+			<option value="{$id_state}">{$state_name|gettext}</option>
+				{/foreach}
+				</select>
+				</li></ol>
+				</fieldset>
+		</div>
+
 </form>
-
 <form method="post" id="msrd_action" action="{$action_delete}">
-		<fieldset>
-<legend><span>{t}Delete-Status{/t}</span> </legend>
-<ol>
-	{foreach from=$role_states key=id_state item=state_name}
-	<li>
-			<input type="checkbox" name="states[]" value="{$id_state}">
-
-			{$state_name|gettext}
-		</li>
-	{/foreach}
-			</ol>
-			</fieldset>
-	<fieldset class="buttons-form">
-			{button label="Delete status" class="validate" message="Would you like to delete this status of the role?"}
+	<div class="action_header">
+<h2>{t}Delete-Status{/t}</h2>
+			<fieldset class="buttons-form">
+			{button label="Delete status" class="validate btn main_action" message="Would you like to delete this status of the role?"}
 
 		</fieldset>
+	</div>
+<div class="action_content"><fieldset>
+	<ol>
+		{foreach from=$role_states key=id_state item=state_name}
+		<li>
+		<input type="checkbox" name="states[]" value="{$id_state}">
+
+		{$state_name|gettext}
+	</li>
+		{/foreach}
+		</ol>
+		</fieldset>
+		</div>
+
 </form>

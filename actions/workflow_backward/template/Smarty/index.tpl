@@ -22,10 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
+<h2>{t}Previous state{/t}</h2>
 <form method="post" name="workflow_backward" action="{$action_url}">
         <fieldset class="">
-                <legend><span>{t}Previous state{/t}</span></legend>
                 <ol>   
                         <li>   
                                 <p>{t}Do you want to move this file{/t} {t}from the state{/t} <strong>{$currentStateName}</strong> {t}to the state{/t} <strong>{$prevStateName}</strong>?</p>
@@ -34,8 +33,8 @@
         </fieldset>
 
         <fieldset class="buttons-form">
-                {button class="close-button" label="Cancel"}
-                {button class="validate accept-button" label="Accept"}
+                {button class="close-button btn" label="Cancel"}
+                {button class="validate accept-button btn main_action" label="Accept"}
         </fieldset>
 
 </form>

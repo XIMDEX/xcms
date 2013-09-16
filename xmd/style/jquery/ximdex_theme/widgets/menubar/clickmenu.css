@@ -45,8 +45,6 @@ div.cmDiv
 {
 	margin: 0;
 	padding: 2px;
-/*	border: 1px solid black;*/
-/*	background-color: #eee;*/
 	min-width: 100px; /* ie doesnt know this :/ */
 	//float: left;/*ie again*/
 	//width: 100%;/*and again*/
@@ -56,7 +54,6 @@ div.cmDiv
 	display: none;
 	min-width: 106px; /* firefox produces animation-flickering when the box is bigger than this :/ */
 	//height: 20px; /* for ie */
-/*	border: 1px solid #448dae;*/ 
 	font-weight: normal; 
 	outline: none; 
 	
@@ -84,9 +81,7 @@ div.cmDiv
 {
 	float: left;
 	padding: 0 10px;
-/*	background-color: #eee;*/
 	height: 20px; /* for ie */
-/*	border: 1px solid #448dae;*/ 
 	font-weight: normal; 
 	outline: none; 
 }
@@ -95,7 +90,6 @@ div.cmDiv
 	z-index: 2;
 	min-width: 78px;
 	height: 20px; /* for ie */
-/*	border: 1px solid #448dae;*/ 
 	font-weight: normal; 
 	outline: none; 
 }
@@ -103,7 +97,6 @@ div.cmDiv
 {
 	z-index: 1 !important; /* the hover z-index has to be below the normal one the hovering items may be drawn over a submenu */
 	
-/*	background-color: #aaa;*/
 }
 .clickMenu img.liArrow
 {
@@ -122,33 +115,7 @@ html>body div.outerbox
 {
 	padding: 0 5px 5px 0;
 }
-html>body div.shadowbox1
-{
-/*	position: absolute;
-	right: 0;
-	bottom: 5px;
-	width: 5px;
-	height: 100%;
-	background: url(myshadow.png) no-repeat right top;*/
-}
-html>body div.shadowbox2
-{
-/*	position: absolute;
-	bottom: 0;
-	right: 5px;
-	height: 5px;
-	width: 100%;
-	background: url(myshadow.png) left bottom;*/
-}
-html>body div.shadowbox3
-{
-/*	position: absolute;
-	bottom: 0;
-	right: 0;
-	height: 5px;
-	width: 5px;
-	background: url(myshadow.png) no-repeat right bottom;*/
-}
+
 html>body .innerbox
 {
 	margin: 0;

@@ -1,0 +1,450 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+@import "../themes/ximdex_theme";
+
+/**************
+// GENERIC STYLES
+***************/
+
+.ui-tabs, .ui-tabs-nav{
+	background: none;
+	padding: 0px;
+	border:none;
+}
+
+
+.ui-tabs {
+	height: 100%;
+	position: relative;
+}
+
+.ui-tabs .ui-tabs-nav {
+	width: auto;
+	width: 10000000px;
+	position: relative;
+	display: block;
+	padding: 0px;
+
+}
+
+.ui-tabs .ui-tabs-panel {
+	background: $c_background;
+	@include radius(0 12px 0 0);
+	padding: 0px;
+	position: absolute;
+	top: 35px;
+	bottom: 0px;
+	/*overflow: hidden;*/
+	width: 100%;
+	font-size: 16px;
+	font-size: 1.6rem;
+
+}
+
+#body {
+	.ui-tabs-nav li{
+	background: $c_background;
+	border: none;
+	border-top: 3px solid transparent;
+	margin-top: 0;
+	color: #ccc;
+	font-size: 15px;font-size: 1.5rem;
+	line-height: .8;
+	margin-right: .13em;
+	padding-bottom: 5px;
+	@include boxshadow(0 -1px 3px rgba(0,0,0,.15) inset);
+
+
+	&.ui-tabs-active{
+		border-top: 3px solid $c_mainlight;
+		margin-top: -1px;
+		background: $c_background;
+		@include boxshadow(none);
+		a{
+		outline: 0;
+		}
+	}
+
+	&[aria-labelledby="ui-id-6"], &[aria-labelledby="10000_welcome"] {
+	background: $c_background !important;
+	}
+}
+.hbox-panel-container-1 .ui-tabs-nav .ui-tabs-active{
+		background: $c_white;
+	}
+}
+
+
+
+.ui-tabs .ui-tabs-nav .ui-tabs-active {
+	@include boxshadow(0 -6px 5px #555);
+	margin-top: 0px;
+	border: none;
+	border-top: 3px solid $c_mainlight;
+}
+
+ui-tabs .ui-tabs-nav li:hover{
+	margin-top: -1px;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a/*, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a */{
+	cursor:default;
+}
+
+.xim-hidden-tab {
+	visibility: hidden;
+}
+
+.ui-tab-close {
+	width: 16px;
+	height: 16px;
+	background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -3px -119px;
+	float: left;
+	margin: 6px 0px 5px 7px;
+	cursor: pointer;
+}
+
+.ui-tab-close:hover{
+	 background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -3px -141px;
+ }
+
+.hbox-panel-container-0 {
+
+	li {
+
+		a{
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	text-indent: 150%;
+	width: 62px;
+	height: 27px;
+	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat -45px 4px;
+	}
+	 &:not(.ui-tabs-active) a{
+		background-position: 15px 4px;
+		&:hover{
+		background-position:-45px 4px;
+		}
+	}
+	&.ui-tabs-active .browser-ccenter-view{
+			background-position: -45px -26px;
+	}
+	&:not(.ui-tabs-active) .browser-ccenter-view{
+		background-position: 15px -26px;
+		&:hover{
+			background-position: -45px -26px;
+		}
+	}
+	&.ui-tabs-active .browser-modules-view {
+			background-position: -45px -88px;
+	}
+	&:not(.ui-tabs-active) .browser-modules-view {
+		background-position: 15px -88px;
+		&:hover{
+			background-position: -45px -88px;
+		}
+	}
+
+	}
+}
+/*.hbox-panel-container-0 .ui-tabs-nav>li>a{
+	width: 38px;
+	text-indent: -9999999px;
+	height: 14px;
+	font-weight: bold;
+	letter-spacing: 0;
+	text-shadow: 1px 1px 1px #fff;
+	text-transform: uppercase;
+	font-size: 14px;font-size: 1.4rem;
+}
+.hbox-panel-container-0 .ui-tabs-nav>li>a:hover {
+	text-indent: 0px;
+}
+.hbox-panel-container-0 .ui-tabs-nav>li>a:hover span{
+	position: absolute;
+	margin-top: 43px;
+	background: url("../../../../../images/browser/hbox/fnd-tab.png") repeat-x scroll left center #F5F5F5;
+	color: #888;
+	z-index: 20;
+	height: 17px;
+	width: 250%;
+	font-size: 14px;font-size: 1.4rem;
+}
+.hbox-panel-container-0 .ui-tabs-nav>li.ui-tabs-selected>a:hover span{
+/*.hbox-panel-container-0 .ui-tabs-nav>li.ui-tabs-active>a:hover span{
+	margin-top: 65px;
+}
+a.browser-projects-view {
+	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px 4px;
+}
+a.browser-projects-view:hover, li.ui-tabs-active a.browser-projects-view, a.browser-projects-view:hover span {
+	background-position: -45px	4px;
+	left: 20px;
+	margin-top: -2px;
+}
+
+a.browser-ccenter-view {
+	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -26px;
+}
+
+a.browser-ccenter-view:hover, li.ui-tabs-active  a.browser-ccenter-view, a.browser-ccenter-view:hover span {
+	background-position: -45px -26px;
+	left: -48px;
+	margin-top: -2px;
+	/*top: 8px;
+}
+
+a.browser-reports-view {
+	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -57px;
+}
+
+a.browser-reports-view:hover, li.ui-tabs-active a.browser-reports-view, a.browser-reports-view:hover span{
+	background-position: -45px -57px;
+}
+
+a.browser-sets-view {
+	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -119px;
+}
+
+a.browser-sets-view:hover, li.ui-tabs-active a.browser-sets-view{
+	background-position: -45px -119px;
+}
+
+a.browser-modules-view {
+	background: url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat 15px -88px;
+}
+
+a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browser-modules-view:hover span{
+	background-position: -45px -88px;
+	left: -110px;
+	margin-top: -2px;
+}*/
+
+.browser-view-title  {
+	border-bottom:1px solid $c_grey-ppp;
+	color: $c_grey-p;
+	font-size: 14px;font-size: 1.4rem;
+	font-weight:bold;
+	padding:17px 5px 13px 20px;
+	letter-spacing: 0;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px $c_white;
+}
+.view-group{
+	margin-right: 20px;
+
+}
+.browser-projects-view-menubar{
+	right: 0px;
+	padding-top: 2px;
+	position: absolute;
+	top: 0px;
+	background: url("../../../../../images/browser/hbox/fnd-tab.png") repeat-x scroll left top $c_background;
+	@include radius(0 20px 0 0);
+}
+
+.view-group button{
+	float: none;
+	border: none;
+	margin: 7px 0px;
+	background:	url('../../../../../images/browser/hbox/views-icons.png') no-repeat left top;
+	width: 25px;
+	height: 25px;
+}
+
+.button-container{
+	float: left;
+	position: relative;
+}
+.xim-actions-menu .button-container-list:first-child{
+	border-top: none;
+}
+
+/*.xim-actions-menu .button-container-list:first-child{
+	margin-top: 10px;
+}*/
+
+.xim-actions-menu .button-container-list{
+	width: auto;
+	border-top: 1px dotted $c_grey-pp;
+	margin: 0 12px;
+	cursor: pointer;
+}
+
+.xim-actions-menu .button-container-list span{
+	white-space: nowrap;
+	display: block;
+	padding: 6px 12px;
+	text-shadow: 1px 1px 0 $c_grey-pp;
+	line-height: 2.2em;
+	font-size: 13px;font-size: 1.3rem;
+}
+
+.xim-actions-menu .button-container-list span:hover{
+	text-shadow: 1px 1px 0 $c_main;
+	cursor: pointer;
+}
+
+.button-container-list{
+	/*float: left;
+	position: relative;
+	width:148px;
+	min-height: 15px;
+	border-bottom: 1px dashed;
+	padding: 5px;
+	cursor: pointer;*/
+}
+.button-container-list:hover{
+	background-color: $c_mainlight;
+	color: $c_white;
+}
+.view-group button[value="Tree"]{
+	background-position: left top;
+}
+
+.view-group button[value="Tree"]:hover, .view-group button[value="Tree"]:active{
+	background-position: -43px top;
+}
+
+.view-group button[value="Grid"]{
+	background-position: left -62px;
+}
+
+.view-group button[value="Grid"]:hover, .view-group button[value="Grid"]:active{
+	background-position: -43px -62px;
+}
+
+.view-group button[value="List"]{
+	background-position: left -31px;
+}
+
+.view-group button[value="List"]:hover, .view-group button[value="List"]:active{
+
+	background-position: -43px -31px;
+}
+
+.view-group button span{
+	display:none;
+}
+
+.view-group button:hover span{
+	position: absolute;
+	top: 32px;
+	right: -10px;
+	background: #9F0;
+	z-index: 100;
+	display: block;
+	color: $c_white;
+	text-shadow: 1px 1px 0px $c_grey-l;
+	background:	url('../../../../../images/browser/hbox/fnd-vistas.png') no-repeat left top;
+	width: 70px;
+	height: 34px;
+	padding-top: 11px;
+	font-size: 14px;font-size: 1.4rem;
+}
+
+
+.xim-tabs-nav {
+	position: absolute;
+	right: 4px;
+	/*background-color: #FFF;*/
+	z-index: 200;
+	background:none;
+	padding: 0px;
+}
+
+.xim-tabs-list {
+	display: none;
+	background: $c_background;
+	margin-top: 34px;
+	@include boxshadow(0px 1px 2px $s_black);
+	list-style: none;
+	padding: 0px 0px;
+	color: $c_grey-p;
+	@include radius(3px);
+	border: 1px solid $c_grey-pp;
+}
+
+.xim-tabs-list-selector {
+	margin-top: 13px;
+	height: 2.25em;
+	width: 20px;
+	@include radius(5px 5px 0 0);
+	@include boxshadow(0 -1px 3px $s_black);
+	background:	url('../../../../../images/browser/hbox/tabs-icons.png') no-repeat -8px -152px;
+	text-indent: -9999999px;
+	position: absolute;
+	right: 4px;
+}
+
+.xim-tabs-list-selector:hover {
+	background-position: -68px -152px;
+	cursor: pointer;
+
+}
+.xim-tabs-list-item:first-child{
+	border-top: none;
+}
+.xim-tabs-list-item {
+ 	padding: 5px 15px 5px 17px;
+	border-top: 1px dashed $c_grey-pp;
+	cursor: pointer;
+	font-size: 14px;font-size: 1.4rem;
+}
+.xim-tabs-list-item:hover{
+	background: $c_grey-ppp;
+	color: $c_grey-ll;
+}
+
+.xim-tabs-list-item-hidden {
+	font-weight: bold;
+	color: $c_disabled;
+	background: $c_bg-disabled;
+}
+.xim-tabs-list-item-hidden:hover{
+	color: $c_grey-p;
+}
+
+li.xim-tabs-list-item-selected {
+	background:	url('../../../../../images/tree/treeview-icons.png') no-repeat -2px -485px;
+}
+
+li.xim-tabs-list-item-selected:hover{
+	background:	#eee url('../../../../../images/tree/treeview-icons.png') no-repeat -2px -485px;
+	color: #333;
+}
+
+.ui-tabs .ui-tabs-nav li a.unsave{
+        position: relative;
+
+}
+
+.ui-tabs .ui-tabs-nav li a.unsave:after{
+        content: '*';
+        padding-left: 3px;
+}

@@ -44,6 +44,7 @@ class LanguageProperty extends InheritableProperty {
 
 		$language = new Language();
 
+		$availableLanguages = null;
 		// The Project node shows all the system languages
 		$availableLanguages = $language->find('IdLanguage, Name', 'Enabled = 1', NULL);
 
@@ -68,14 +69,12 @@ class LanguageProperty extends InheritableProperty {
 			}
 		}
 
-		$availableLanguages = null;
 		if(!empty($availableLanguages) ) {
 			foreach ($availableLanguages as &$language) {
 				unset($language[0], $language[1]);
 				$language['Checked'] = in_array($language['IdLanguage'], $nodeLanguages) ? true : false;
 			}
 		}
-
 		return $availableLanguages;
 	}
 

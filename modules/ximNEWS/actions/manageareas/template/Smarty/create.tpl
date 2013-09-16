@@ -42,7 +42,7 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Reset" class='form_reset' type="reset"}
-		{button label="Create category" class="validate"}<!-- message="Do you want to delete the category?"-->
+		{button label="Reset" class='form_reset btn' type="reset"}
+		{button label="Create category" class="validate btn main_action"}<!-- message="Do you want to delete the category?"-->
 	</fieldset>
 </form>

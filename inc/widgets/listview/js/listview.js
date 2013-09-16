@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8000 $
+ *  @version $Revision$
  */
 
 window.com.ximdex = Object.extend(window.com.ximdex, {
@@ -361,7 +361,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			listContainer.append(widget.list);
 			
 			//Make the results table resizable
-			$('.xim-listview-table', this.element).fixheadertable({ 
+			$('.xim-listview-table', this.element).fixheadertable({
 	             colratio    : [24, 55, 116, 80, 150, 70, 50, 80], 
 	             //height      : 200, 
 	             width       : 625, 

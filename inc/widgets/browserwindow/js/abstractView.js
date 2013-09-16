@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8055 $
+ *  @version $Revision$
  */
 
 
@@ -111,7 +111,6 @@
 
 			$(b)
 				.append($('<span>Icono</span>'))
-				.append($('<span class="triangle"></span>'))
 				.append($('<span class="tooltip"></span>').html(options.text));
 
 			if (!Object.isEmpty(options.icon)) {
@@ -140,15 +139,16 @@
 
 
 			var ndiv = $('<div/>').addClass('button-container-list');
+			var ndiv = $('<div/>').addClass('button-container-list icon').addClass(options.value).html(options.text);
+			ndiv.data('data',options.data).click(options.click);
 
-			if (!Object.isEmpty(options.icon)) {
+			/*if (!Object.isEmpty(options.icon)) {
 
 				var icon = options.icon.substr(0, options.icon.length-4);
 				ndiv.append($('<span/>').addClass(options.value).addClass('list-icon').html("Icono"));
 			}
 
-			ndiv.append($('<span/>').addClass('button-text').html(options.text));
-			ndiv.data('data',options.data).click(options.click);
+			ndiv.append($('<span/>').addClass('button-text icon').addClass(options.value).html(options.text));*/
 
 			if (options.container !== null) {
 				ndiv.appendTo(options.container);

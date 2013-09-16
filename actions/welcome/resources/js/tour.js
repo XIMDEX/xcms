@@ -263,7 +263,7 @@ function start_tour(command) {
     arrayText.push(textDescription);
     textDescription = _('Find resources and semantic links related to this document.');
     arrayText.push(textDescription);    
-    textDescription = _('With ximRA module you will get automagically links (to images, maps, videos) and semantic tags (annotations, references).');
+    textDescription = _('With Xowl module you will get automagically links (to images, maps, videos) and semantic tags (annotations, references).');
     arrayText.push(textDescription);    
     textDescription = _("Now it's time to change your document.");
     arrayText.push(textDescription);    

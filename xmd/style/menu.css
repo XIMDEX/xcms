@@ -55,7 +55,7 @@ note:
 /* level 0 inner */
 .m0l0iout {
 	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
-	font-size: 11px;
+	+font-size: 11px;
 	text-decoration: none;
 	margin: 0px 0 0 0px;
 	color: #000000;
@@ -65,7 +65,7 @@ note:
 }
 .m0l0iover {
 	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
-	font-size: 11px;
+	+font-size: 11px;
 	text-decoration: none;
 	margin: 0px 0 0 0px;
 	color: #000000;
@@ -90,13 +90,13 @@ note:
 /* level 1 inner */
 .m0l1iout {
 	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
-	font-size: 11px;
+	+font-size: 11px;
 	margin: 1px 0 0 1px;
 	color: #000000;
 }
 .m0l1iover {
 	font-family: sans-serif, Tahoma, Verdana, Geneva, Arial, Helvetica;
-	font-size: 11px;
+	+font-size: 11px;
 	margin: 1px 0 0 1px;
 	color: #000000;
 }
@@ -132,7 +132,7 @@ note:
 #selectnode {
 	width: 100%; 
 	height: 17px; 
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma; 
 	vertical-align: top; 
@@ -147,7 +147,7 @@ note:
 #selectaction {
 	width: 215; 
 	height: 17px; 
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma; 
 	vertical-align: top; 
@@ -166,13 +166,13 @@ note:
 }
 
 #seleccion {
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma;
 }
 
 #coolbar_accion {
-	font-size: 9px; 
+	+font-size: 9px; 
 	font-weight: bold; 
 	font-family: tahoma;
 }

@@ -20,15 +20,21 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8535 $
+ *  @version $Revision$
  */
 
 
 
-
+/**
+*<p>Toolbox to manage tags about the current node</p>
+*/
 var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 	currentSelection:false,
+
+	/**
+	* <p>Init method</p>
+	*/
 	initialize: function(tool, editor) {
 
 		AnnotationsToolBox._super(this, 'initialize', tool, editor);
@@ -38,6 +44,11 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$(this.element).append(children);
 		$('#kupu-toolbox-annotationbox').unbind().remove();
 
+
+		/**
+		*<p>Click method on every tag category</p>
+		*<p>This action will toggle the panel with the results for every category.</p>
+		*/
 		$('.anottationtoolbox-section-header', this.element).click(function(event) {
 
 			this.currentSelection = "#"+event.currentTarget.id;
@@ -49,13 +60,19 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				.slideToggle('fast');
 
 		}.bind(this));
-
-        $('.anottationtoolbox-section', this.element).hide();
-
-        this.editor.logMessage(_('AnnotationToolBox tool initialized'));
+		//End of click event
+	
+    $('.anottationtoolbox-section', this.element).hide();
+    this.editor.logMessage(_('AnnotationToolBox tool initialized'));
 	},
 
+
+	/**
+	*<p>Update the annotation info.</p>	
+	*<p>This method is called from XimdocAnnotationTool.class.js</p>
+	*/
 	refreshInfo: function(annotationDoc) {
+		//update class for selection
 		$('.anottationtoolbox-section-header', this.element).removeClass('button-pressed');
 		if(annotationDoc !== null) {
 
@@ -66,49 +83,57 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 				$('#anottationtoolbox-section-header-image', this.element).addClass('button-pressed');
 			}
 
-			this.populateImageSection(annotationDoc.zemanta.images);
-			this.populateLinkSection(annotationDoc.zemanta.markup.links);
-			this.populateArticleSection(annotationDoc.zemanta.articles);
-/*			this.populateLinkSection(annotationDoc.markup.links);
-			this.populateImageSection(annotationDoc.images);
-			this.populateArticleSection(annotationDoc.articles);*/
 
-			this.populatePeopleSection(annotationDoc.iks.people);
-			this.populatePlacesSection(annotationDoc.iks.places);
-			this.populateOrganisationsSection(annotationDoc.iks.orgs);
+			//Load each category with its results
+			this.populateImageSection(annotationDoc.content.images);
+			this.populateLinkSection(annotationDoc.content.links);
+			this.populateArticleSection(annotationDoc.content.articles);
+
+			this.populatePeopleSection(annotationDoc.semantic.people);
+			this.populatePlacesSection(annotationDoc.semantic.places);
+			this.populateOrganisationsSection(annotationDoc.semantic.orgs);
 
 			$('#anottationtoolbox-section-link, #anottationtoolbox-section-image, #anottationtoolbox-section-article, #anottationtoolbox-section-people, #anottationtoolbox-section-places, #anottationtoolbox-section-organisations').slideUp('fast');
 
+			//restart styles for every category
 			if(this.currentSelection){		
 				$(this.currentSelection.replace("-header","")).slideDown('fast');
 				$(this.currentSelection,this.element).addClass("button-pressed");
-			}else if (annotationDoc.zemanta.images.length > 0) {
+			}else if (annotationDoc.content.images.length > 0) {
 				$('#anottationtoolbox-section-header-image').addClass("button-pressed");
 				$('#anottationtoolbox-section-image').slideDown('fast');
-			} else if (annotationDoc.zemanta.links.length > 0) {
+			} else if (annotationDoc.content.links.length > 0) {
 				$('#anottationtoolbox-section-link').slideDown('fast');
 				$('#anottationtoolbox-section-header-link').addClass("button-pressed");
-			} else if (annotationDoc.zemanta.articles.length > 0){
+			} else if (annotationDoc.content.articles.length > 0){
 				$('#anottationtoolbox-section-article').slideDown('fast');
 				$('#anottationtoolbox-section-header-article').addClass("button-pressed");
 			}
-			else if(annotationDoc.iks.people.length > 0){
+			else if(annotationDoc.semantic.people.length > 0){
 				$('#anottationtoolbox-section-people').slideDown('fast');
 				$('#anottationtoolbox-section-header.people').addClass("button-pressed");
-			} else if (annotationDoc.iks.places.length > 0){
+			} else if (annotationDoc.semantic.places.length > 0){
 				$('#anottationtoolbox-section-places').slideDown('fast');
 				$('#anottationtoolbox-section-header-places').addClass("button-pressed");
-			} else if (annotationDoc.iks.orgs.length > 0){
+			} else if (annotationDoc.semantic.orgs.length > 0){
 				$('#anottationtoolbox-section-organisations').slideDown('fast');
 				$('#anottationtoolbox-section-header-organisations').addClass("button-pressed");
 			}
 
 
-			//$('.xim-tagsinput-container').tagsinput('addTagslist', annotationDoc.iks );
+			//$('.xim-tagsinput-container').tagsinput('addTagslist', annotationDoc["semantic"] );
 		}
 	},
 
+
+	/**
+	* <p>Load link category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "Link anchor": {confidence:[0-1], type:"zLink", isSemantic:0, others:{...}}
+	*/
 	populateLinkSection: function(info) {
+
+
 		var div = $('#anottationtoolbox-link-template', this.element).clone(true);
 		$(".removable", div).remove();
 		$(div).appendTo('#anottationtoolbox-section-link');
@@ -117,13 +142,16 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		
 		var countLinks=0;
 		var length = info.length;
-		for(var k = 0; k < length; k ++) {
+		var k = 0;
+
+		//For every link. i is the name for the link.
+		for(var i in info) {
 			var divHeader = $('#anottationtoolbox-linkheader-template', div).clone(true);
 			divHeader.show();			
 			divHeader.addClass("removable");
 			$(divHeader).attr('id', '');
 			$(divHeader).click(function(event) {this.toggleItem(event);}.bind(this));
-			$(divHeader).html(info[k].anchor);
+			$(divHeader).html(i);
 			$(divHeader).appendTo(div);
 
 			var anchor = $('#anottationtoolbox-linkitem-template', div).clone(true);
@@ -131,20 +159,20 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$(anchor).appendTo(div);
 			$(anchor).empty();
 
-			targetLength = info[k].target.length;
+			targetLength = info[i].others.target.length;
 			for(var l = 0; l < targetLength; l ++) {
-				var typeText = document.createTextNode(info[k].target[l].type + ' ');
+				var typeText = document.createTextNode(info[i].others.target[l].type + ' ');
 				$(anchor).append(typeText);
 
 				var linkgo = $('#anottationtoolbox-linkitem-template_template_visit', div).clone(true);
-				$(linkgo).attr('href', info[k].target[l].url);
+				$(linkgo).attr('href', info[i].others.target[l].url);
 				$(linkgo).attr('id', 'anottationtoolbox-linkitem' + k + '_' + l + '_visit');
 				$(anchor).append($(linkgo));
 
 				var linkadd = $('#anottationtoolbox-linkitem-template_template', div).clone(true);
 				$(linkadd).click(function(event) {this.addLinkToDocument(event);}.bind(this));
 				$(linkadd).attr('id', 'anottationtoolbox-linkitem' + k + '_' + l);
-				$(linkadd).attr('anchorname', info[k].anchor);
+				$(linkadd).attr('anchorname', info[i].others.anchor);
 				$(anchor).append($(linkadd));
 
 				$(anchor).append('<br/>');
@@ -152,8 +180,10 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$(divHeader, anchor).show();
 			countLinks++;
+			k++;
 		}
 
+		//Update the number of results		
 		if(countLinks==0){
                         $('#anottationtoolbox-section-header-link').click(function (event) {
                                 var NoRefs = document.createTextNode("References not found.");
@@ -164,11 +194,17 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$('#anottationtoolbox-section-header-link span.hits').remove();
                 $('#anottationtoolbox-section-header-link span').append('<span class="hits">'+countLinks+'</span>');
 
+
+		//Hide the header elements
 		$('#anottationtoolbox-linkheader-template', div).hide();
 		$('#anottationtoolbox-linkitem-template', div).hide();
-		//$('#anottationtoolbox-section-link', this.element).show();
 	},
 
+/**
+	* <p>Load image category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "Image anchor": {confidence:[0-1], type:"zImage", isSemantic:0, others:{...}}
+	*/
 	populateImageSection: function(info) {
 		var infoContainerImageDiv = $('#infoContainer-image', this.element);
 		var sliderContainerImageDiv = $('#sliderContainer-image', this.element);
@@ -177,19 +213,21 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 		var length = info.length;
 		var countImages = 0;
-		for(var k = 0; k < length; k ++) {
+		var k = 0;
+		//For each image, where i is the image name
+		for (var i in info){		
 			var infoImageDiv = $('#infoImage-template', this.element).clone(true);
 			infoImageDiv.show();
 			infoImageDiv.addClass("removable");
 			$(infoImageDiv).attr('id', 'infoImageDiv' + k);
-			var descriptionText = document.createTextNode(info[k].description);
-			var licenseText = document.createTextNode(info[k].license);
+			var descriptionText = document.createTextNode(i);
+			var licenseText = document.createTextNode(info[i].others.license);
 			$('#description-image', infoImageDiv).empty().append(descriptionText);
 			$('#license-image', infoImageDiv).empty().append(licenseText);
 			$(infoContainerImageDiv).append($(infoImageDiv));
 
 			var img = $('#anottationtoolbox-imageitem-template', this.element).clone(true);
-			$(img).attr('src', info[k].url_m);
+			$(img).attr('src', info[i].others.url_m);
 			$(img).attr('id', 'anottationtoolbox-imageitem' + k);
 			if(countImages > 0) {
 				$(img).hide();
@@ -198,8 +236,10 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$(img).click(function (event) {this.addImageToDocument(event);}.bind(this));
 			$(sliderContainerImageDiv).append($(img));
 			countImages ++;
+			k++;
 		}
 
+		//Update the number of results
 		if(countImages==0){
                         $('#anottationtoolbox-section-header-image').click(function (event) {
                                 var NoRefs = document.createTextNode("References not found.");
@@ -210,36 +250,46 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$('#anottationtoolbox-section-header-image span.hits').remove();
                 $('#anottationtoolbox-section-header-image span').append('<span class="hits">'+countImages+'</span>');
 
+
+		//Set image navigation tools.
 		var prevImageButton = $('#prevButton-image', this.element);
 		var nextImageButton = $('#nextButton-image', this.element);
 		$(prevImageButton).click(function (event) {this.slideSwitch('backward');}.bind(this));
 		$(nextImageButton).click(function (event) {this.slideSwitch('forward');}.bind(this));
 
+
+		//Hide the headers
 		$('#infoImage-template', this.element).hide();
 		$('#anottationtoolbox-imageitem-template', this.element).hide();
 		$('#anottationtoolbox-section-image', this.element).show();
 	},
 
+	/**
+	* <p>Load article category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "Article anchor": {confidence:[0-1], type:"zLink", isSemantic:0, others:{...}}
+	*/
 	populateArticleSection: function(info) {
 		var articleContainerDiv = $('#articleContainer-article');
 		$(".removable", articleContainerDiv).remove();
 
 		var targetLength = info.length;
 		var countArticles=0;
-		for(var l = 0; l < targetLength; l ++) {
+		var k = 0;
+		for(var i in info){
 			var articleDiv = $('#anottationtoolbox-articleitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
-			var articleDivText = document.createTextNode(info[l].title);
+			var articleDivText = document.createTextNode(i);
 
 			var link = $('#anottationtoolbox-articleitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', info[l].url);
-			$(link).attr('id', 'anottationtoolbox-articleitem' + l + '_visit');
+			$(link).attr('href', info[i].others.url);
+			$(link).attr('id', 'anottationtoolbox-articleitem' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-articleitem-template_template', this.element).clone(true);
-			$(linkAdd).attr('id', 'anottationtoolbox-articleitem' + l);
-			$(linkAdd).attr('anchorname', info[l].title);
+			$(linkAdd).attr('id', 'anottationtoolbox-articleitem' + k);
+			$(linkAdd).attr('anchorname', i);
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
@@ -248,6 +298,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			$(linkAdd).click(function (event) {this.addArticleToDocument(event);}.bind(this));
 			$(articleContainerDiv).append($(articleDiv));
+			k++;
 			countArticles++;
 		}
 
@@ -265,31 +316,37 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$('#anottationtoolbox-section-article').show();
 	},
 
+	/**
+	* <p>Load people category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "People anchor": {confidence:confidence, type:"dPerson", isSemantic:1, others:{...}}
+	*/
 	populatePeopleSection: function(info) {
 		var peopleContainerDiv = $('#peopleContainer');
 		$(".removable", peopleContainerDiv).remove();
 		
 		
 		var length = info.length;
-                var countPeople = 0;
-                for(var k = 0; k < length; k ++) {
+    var countPeople = 0;
+		var k = 0;
+		for (var i in info){
 			var articleDiv = $('#anottationtoolbox-personitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
-			var articleDivText = document.createTextNode(info[k]['selected-text']);
+			var articleDivText = document.createTextNode(i);
 
 			var link = $('#anottationtoolbox-personitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', info[k]['selected-text']);
+			$(link).attr('href', i);
 			$(link).attr('id', 'anottationtoolbox-personitem_' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-personitem-template_template', this.element).clone(true);
 			$(linkAdd).attr('id', 'anottationtoolbox-personitem_' + k);
-			$(linkAdd).attr('anchorname', info[k]['selected-text']);
+			$(linkAdd).attr('anchorname', i);
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
-			if(info[k].length>0){
+			if(info[i].length>0){
 				container.append($(link));
 			}
 			container.append($(linkAdd));
@@ -297,6 +354,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$(linkAdd).click(function (event) {this.addTag(event, 'people');}.bind(this));
 			$(peopleContainerDiv).append($(articleDiv));
 			countPeople++;
+			k++;
 		}
 
 		if(countPeople==0){
@@ -313,30 +371,36 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$('#anottationtoolbox-section-people').show();
 	},
 
+	/**
+	* <p>Load link category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "Place anchor": {confidence:confidence, type:"dPlace", isSemantic:1, others:{...}}
+	*/
 	populatePlacesSection: function(info) {
 		var placesContainerDiv = $('#placesContainer');
 		$(".removable", placesContainerDiv).remove();
 
 		var length = info.length;
-                var countPlaces = 0;
-                for(var k = 0; k < length; k ++) {
+    var countPlaces = 0;
+		var k = 0;
+    for(var i in info) {
 			var articleDiv = $('#anottationtoolbox-placeitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
-			var articleDivText = document.createTextNode(info[k]['selected-text']);
+			var articleDivText = document.createTextNode(i);
 
 			var link = $('#anottationtoolbox-placeitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', info[k]['selected-text']);
+			$(link).attr('href', i);
 			$(link).attr('id', 'anottationtoolbox-placeitem' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-placeitem-template_template', this.element).clone(true);
 			$(linkAdd).attr('id', 'anottationtoolbox-placeitem' + k);
-			$(linkAdd).attr('anchorname', info[k]['selected-text']);
+			$(linkAdd).attr('anchorname', i);
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
-			if(info[k].length>0){
+			if(info[i].length>0){
 				container.append($(link));
 			}
 			container.append($(linkAdd));
@@ -344,6 +408,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$(linkAdd).click(function (event) {this.addTag(event,'places');}.bind(this));
 			$(placesContainerDiv).append($(articleDiv));
 			countPlaces++;
+			k++;
 		}
 
 		if(countPlaces==0){
@@ -360,30 +425,36 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		$('#anottationtoolbox-section-places').show();
 	},
 
+	/**
+	* <p>Load organisation category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "Organizacion anchor": {confidence:confidence, type:"dOrganization", isSemantic:1, others:{...}}
+	*/	
 	populateOrganisationsSection: function(info) {
 		var organisationsContainerDiv = $('#organisationsContainer');
 		$(".removable", organisationsContainerDiv).remove();
 		
 		var length = info.length;
-                var countOrgs = 0;
-                for(var k = 0; k < length; k ++) {
+    var countOrgs = 0;
+		var k = 0;
+		for (var i in info){
 			var articleDiv = $('#anottationtoolbox-organisationitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
 			$(articleDiv).attr('id', '');
-			var articleDivText = document.createTextNode(info[k]['selected-text']);
+			var articleDivText = document.createTextNode(i);
 
 			var link = $('#anottationtoolbox-organisationitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', info[k]['selected-text']);
+			$(link).attr('href', i);
 			$(link).attr('id', 'anottationtoolbox-organisationitem' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-organisationitem-template_template', this.element).clone(true);
 			$(linkAdd).attr('id', 'anottationtoolbox-organisationitem' + k);
-			$(linkAdd).attr('anchorname', info[k]['selected-text']);
+			$(linkAdd).attr('anchorname', i);
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
-			if(info[k].length>0){
+			if(info[i].length>0){
 				container.append($(link));
 			}
 			container.append($(linkAdd));
@@ -391,6 +462,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			$(linkAdd).click(function (event) {this.addTag(event,'organisations');}.bind(this));
 			$(organisationsContainerDiv).append($(articleDiv));
 			countOrgs++;
+			k++;
 		}
 
 		if(countOrgs==0){

@@ -30,7 +30,7 @@
 
 	<link href="{$_URL_ROOT}/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
 	<script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery/jquery-1.8.3.min.js">
-        </script>
+	</script>
 
 {literal}
 <script>
@@ -40,16 +40,16 @@ function change_title() {
 		//firefox >= 6 is deprecated document.frames & document.all
 		document.title =  iframe.contentWindow.document.title;
 	}catch(e){
-		//it isnt a ximdoc
+		//it isnt a document
 	}
 }
 </script>
 
 <script type="text/javascript">
 $(document).ready(function() {
-        $("iframe").onload("load",function(){
-                $("a",window.frames[0].document).attr("target","_parent");
-        });
+	$("iframe").onload("load",function(){
+		$("a",window.frames[0].document).attr("target","_parent");
+	});
 });
 
 </script>

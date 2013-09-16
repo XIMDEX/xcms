@@ -66,7 +66,6 @@ X.actionLoaded(function(event, fn, params) {
 		colModel: colModel
 	};
 
-
 	fn('.xim-listview-results')
 		.listview(conf)
 		.bind('actionsDropdown', function(event, params) {
@@ -119,18 +118,18 @@ X.actionLoaded(function(event, fn, params) {
 			return node;
 		})
 		.listview('setModel', results.data);
-
+		
 		var searchedTerm = results.query.filters[0].content;
-
-                $divResults = jQuery("<div/>").addClass("results_info"); 
-		var $divSearch = jQuery("<div/>").html(_("Search criteria")); 
-                var $searchTermList = jQuery("<ul/>").appendTo($divSearch); 
-                jQuery("<li/>").html(_("Name")+": "+searchedTerm).appendTo($searchTermList); 
-                if(!isNaN(parseInt(searchedTerm))) 
-                        jQuery("<li/>").html(_("Node")+": "+searchedTerm).appendTo($searchTermList); 
-                 
-                $divSearch.appendTo($divResults); 
-                jQuery("<div/>").html(_("Number of results")+": "+results.records).appendTo($divResults); 
-
+		
+		$divResults = jQuery("<div/>").addClass("results_info");
+		var $divSearch = jQuery("<div/>").html(_("Search criteria"));
+		var $searchTermList = jQuery("<ul/>").appendTo($divSearch);
+		jQuery("<li/>").html(_("Name")+": "+searchedTerm).appendTo($searchTermList);
+		if(!isNaN(parseInt(searchedTerm)))
+			jQuery("<li/>").html(_("Node")+": "+searchedTerm).appendTo($searchTermList);
+		
+		$divSearch.appendTo($divResults);
+		jQuery("<div/>").html(_("Number of results")+": "+results.records).appendTo($divResults);
+			
 		fn('.xim-listview-results').prepend($divResults);
 });

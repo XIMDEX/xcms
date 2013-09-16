@@ -90,6 +90,6 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Create" class="validate"}
+		{button label="Create" class="validate btn main_action"}
 	</fieldset>
 </form>

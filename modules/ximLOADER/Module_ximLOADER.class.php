@@ -270,11 +270,11 @@ class Module_ximLOADER extends Module {
 
 		// RNGs
 		$pvds = $this->project->getPVD('RNG');
-		$this->templates = $this->insertFiles($this->project->projectid, 'ximpvd', $pvds);
+		$this->templates = $this->insertFiles($this->project->projectid, 'schemas', $pvds);
 
 		// Update XSL
 		$xsls = $this->project->getPTD('XSL');
-		$this->insertFiles($this->project->projectid, 'ximptd', $xsls); 
+		$this->insertFiles($this->project->projectid, 'templates', $xsls);
 		$ret = $this->updateXsl($this->project->projectid, $xsls);
 
 		// Servers
@@ -370,10 +370,10 @@ class Module_ximLOADER extends Module {
 
 		// Update XSL
 		$xsls = $server->getPTD('XSL');
-		$ret = $this->insertFiles($server->serverid, 'ximptd', $xsls); 
+		$ret = $this->insertFiles($server->serverid, 'templates', $xsls);
 		$ret = $this->updateXsl($server->serverid, $xsls);
 
-		// ximdoc
+		// documents
 		$docs = $server->getXimdocs();
 		$ret = $this->insertDocs($server->serverid, $docs);
 
@@ -382,7 +382,7 @@ class Module_ximLOADER extends Module {
 
 	function insertDocs($parentId, $files) {
 
-		$xFolderName = 'ximdoc';
+		$xFolderName = 'documents';
 		$nodeTypeName = 'XMLDOCUMENT';
 		$ret = array();
 		if (count($files) == 0) return $ret;
@@ -422,7 +422,7 @@ class Module_ximLOADER extends Module {
 			$containerId = $io->build($data);
 
 			if (!($containerId > 0)) {
-				$this->log(Module::ERROR, "ximdoc container ".$file->name." couldn't be created ($containerId)");
+				$this->log(Module::ERROR, "document ".$file->name." couldn't be created ($containerId)");
 				continue;
 			}
 
@@ -445,7 +445,7 @@ class Module_ximLOADER extends Module {
 				$this->log(Module::SUCCESS, "Importing " . $file->name);
 			} else {
 //				debug::log($project, $file, $data);
-				$this->log(Module::ERROR, "ximdoc document ".$file->name." couldn't be created ($docId)");
+				$this->log(Module::ERROR, "XML document ".$file->name." couldn't be created ($docId)");
 			}
 		}
 
@@ -508,7 +508,7 @@ class Module_ximLOADER extends Module {
 		if (count($files) == 0) return false;
 
 		$project = new Node($parentId);
-		$ptdFolderId = $project->GetChildByName('ximptd');
+		$ptdFolderId = $project->GetChildByName('templates');
 
 		$nodePtds = new Node($ptdFolderId);
 		if (empty($ptdFolderId)) {

@@ -41,9 +41,10 @@
 }
 .tour_tooltip p, .tour_tooltip ul{
 	padding:10px 15px 10px 20px;
-	font-size:1.3em;
+	+font-size:1.3em;
 	text-shadow:none;
 	line-height: 1.4em;
+	font-size: 1.2rem;
 }
 .tooltip_arrow{
 	position:absolute;
@@ -51,7 +52,7 @@
 	background-repeat:no-repeat;*/
 	height: 0;
 	width: 0;
-	
+
 }
 .tooltip_arrow_T,
 .tooltip_arrow_TL,
@@ -122,7 +123,7 @@
 	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
 }
 .tour_mark{
-	z-index: 99999 !important;	
+	z-index: 99999 !important;
 }
 
 /*@keyframes tour{
@@ -146,12 +147,11 @@
 	width:270px;
 	background: url(../../../../xmd/images/action/bg_strike.png) rgba(0,0,0,.8);
 	color:#fff;
-	font-size:1.3em;
+	+font-size:1.3em;
 	padding:10px;
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
 	border-radius:5px;
-	font-weight:bold;
 	z-index:999999;
 	text-shadow: 1px 1px 0 #000;
 	border: 1px solid #464646;
@@ -163,23 +163,24 @@
 	-moz-animation: tour 1s;
 	-webkit-animation: tour 1s;
 	animation: tour 1s;
-	
+
 }
 .tourcontrols p:first-child{
 	color: #75c4c2;
-	font: normal 1.35em Coustard, sans-serif;
+	font: normal 1.8rem Coustard, sans-serif;
 	text-shadow: 1px 1px 0 rgba(0,0,0,.6);
 }
 
 
 .tourcontrols a{
-	font-size:11px;
+	+font-size:11px;
 	color:#f0f0f0;
 	cursor:pointer;
 	font-weight:normal;
 	margin:10px 8px 10px 0;
 	background:  url(../../../../xmd/images/action/controls_tour.png) no-repeat left top;
 	padding-left: 15px;
+	font-size: 1.3rem;
 }
 
 .controls{
@@ -217,10 +218,11 @@
 }
 .tourcontrols p{
 	padding:10px;
+	font-size: 1.7rem;
 }
 
 .step{
-	font-size: .85em;
+	+font-size: .85em;
 }
 .tour_button{
 	white-space: nowrap;
@@ -239,7 +241,7 @@
 	-webkit-box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4), 0 1px 3px #333;
 	box-shadow: inset 0px 0px 0px 1px rgba(20, 127, 128, 0.4), 0 1px 3px #333;
 	color: #fff;
-	font-size: .8em;
+	+font-size: .8em;
 	font-weight: bold;
 	letter-spacing: 1px;
 	line-height: 1;
@@ -248,7 +250,8 @@
 	text-shadow: 0px -1px 1px rgba(0, 0, 0, .8);
 	letter-spacing: 0;
 	text-transform: uppercase;
-	
+	font-size: 1.2rem;
+
 }
 .tour_button:hover {
 	background: #cb0500;
@@ -280,4 +283,20 @@
 .disabled{
 	opacity: .5;
 	cursor: default;
+}
+
+.not_show_again{
+	display: block;
+	clear: left;
+	padding: 6px 7px;
+}
+
+.not_show{
+	vertical-align: middle;
+}
+
+.not_show_again label{
+	font-size: 1.4em;
+	color: #fff;
+	vertical-align: middle;
 }

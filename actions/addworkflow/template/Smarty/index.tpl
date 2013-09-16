@@ -23,11 +23,10 @@
  *  @version $Revision$
  *}
 
-
+<h2>{t}Add workflow{/t}</h2>
 <input type="hidden" name="nodeid" value="{$id_node}"><br>
 <form method="post" name="addworkflow" id="addworkflow" action="{$action_url}">
 	<fieldset>
-		<legend><span>{t}Add workflow{/t}</span></legend>
 		<ol>
 			<li>
 				<label for="workflow" class="aligned"> {t}Name of the new workflow{/t}</label>
@@ -37,7 +36,7 @@
 	</fieldset>
 	<fieldset class="buttons-form">
 		<a href="{$_MESSAGES_PATH}" class="lbOn validate">
-			{button label="Add" class='validate'}<!-- message="Would you like to add a new workflow?"-->
+			{button label="Add" class='validate btn main_action'}<!-- message="Would you like to add a new workflow?"-->
 		</a>
 	</fieldset>
 </form>

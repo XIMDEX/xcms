@@ -40,8 +40,8 @@
 
 
 	 var id_editor = fn(".editor_textarea").attr("id");
-	 var max_height = ( action_dimension.height - 275 )+"px";
-	 var max_width = ( action_dimension.width - 100 )+"px";
+	 //var max_height = ( action_dimension.height - 275 )+"px";
+	 //var max_width = ( action_dimension.width - 100 )+"px";
 	 var node_ext = fn(".node_ext").val();
 	 var dependencies = [];
 

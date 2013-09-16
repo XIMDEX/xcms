@@ -1,5 +1,5 @@
 # Makefile for ximCRON.c
-# $Id: Makefile 267 2006-04-12 17:25:36Z aleiva $
+# $Id$
 
 CFLAGS=-O -Wall
 

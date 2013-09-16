@@ -25,10 +25,9 @@
 
 
 {assign var="transformers" value=$properties.Transformer}
-
+<h2>{t}Document transformer{/t}</h2>
 <fieldset>
 
-<legend><span>{t}Document transformer{/t}</span></legend>
 <div>
 	<label class="aligned">Available transformers</label>
 	<div class="right-block">

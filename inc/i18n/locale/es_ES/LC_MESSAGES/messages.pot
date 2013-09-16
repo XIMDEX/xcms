@@ -23,7 +23,7 @@
 
 msgid ""
 msgstr ""
-"Project-Id-Version: ximDEX 3.2\n"
+"Project-Id-Version: Ximdex 3.5\n"
 "Report-Msgid-Bugs-To: dev@ximdex.org"
 "POT-Creation-Date: 2011-09-29 09:18+0100\n"
 "PO-Revision-Date: 2011-09-29 09:18+0100\n"
@@ -400,7 +400,7 @@ msgstr ""
 msgid "RNG %s could not be successfully inserted"
 msgstr ""
 
-msgid "PTD %s could not be successfully inserted"
+msgid "Template %s could not be successfully inserted"
 msgstr ""
 
 msgid "--- Null ---"
@@ -1406,7 +1406,6 @@ msgid "Document type"
 msgstr ""
 
 #: /actions/createxmlcontainer/template/Smarty/index.tpl
-#: /actions/relsectionschema/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 msgid "Select template"
@@ -1609,7 +1608,7 @@ msgid "Editing file"
 msgstr ""
 
 #: /actions/edittext/template/Smarty/publishForm.tlp
-msgid "Modification of this PTD has affected to %1 documents. Would you like to republish them?"
+msgid "Modification of this template has affected to %1 documents. Would you like to republish them?"
 msgstr ""
 
 #: /actions/edittext/javascript/tour.js
@@ -1814,10 +1813,10 @@ msgstr ""
 msgid " Add images "
 msgstr ""
 
-msgid " Add PTD templates "
+msgid " Add templates "
 msgstr ""
 
-msgid " Add PVD templates "
+msgid " Add schemas "
 msgstr ""
 
 msgid " Add HTML files "
@@ -3032,10 +3031,6 @@ msgstr ""
 msgid "No documents to publish have been found."
 msgstr ""
 
-#: /actions/relsectionschema/Action_relsectionschema.class.php
-msgid "Association has been successfully performed."
-msgstr ""
-
 msgid "Error while associating."
 msgstr ""
 
@@ -3178,13 +3173,13 @@ msgid "Faster, easier, more powerful"
 msgstr ""
 
 #: /actions/welcome/template/Smarty/index.tpl
-msgid "Welcome to new Ximdex 3.2!"
+msgid "Welcome to new Ximdex 3.5!"
 msgstr ""
 
 msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
 msgstr ""
 
-msgid "Start to use new Ximdex 3.2 and discover its advantages."
+msgid "Start to use new Ximdex 3.5 and discover its advantages."
 msgstr ""
 
 msgid "Faster"
@@ -3234,7 +3229,7 @@ msgstr ""
 msgid "Easy"
 msgstr ""
 
-msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and ximRA rock!"
+msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and Xowl module rock!"
 msgstr ""
 
 msgid "Learn more"
@@ -4004,7 +3999,7 @@ msgstr ""
 msgid "EnricherKey configuration value has not been defined"
 msgstr ""
 
-msgid "ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>" 
+msgid "Xowl module has not been enabled.<br/><br/> If you want to realize the noticeable improvements you will obtain installing Xowl, a demonstrative video is shown below and in the following %s<br/><br/>"
 msgstr ""
 
 msgid "docxap cannot be found."
@@ -5065,7 +5060,7 @@ msgstr ""
 msgid "An error occurred inserting the document"
 msgstr ""
 
-msgid "It is being tried to insert a xmlcontainer without its corresponding pvd"
+msgid "It is being tried to insert a xmlcontainer without its corresponding schema"
 msgstr ""
 
 msgid "It was not specified a template for the node "
@@ -5593,7 +5588,7 @@ msgstr ""
 msgid "Create a new Ximdex user"
 msgstr ""
 
-msgid "Add new PTD template"
+msgid "Add new template"
 msgstr ""
 
 msgid "Change user data"
@@ -5879,7 +5874,7 @@ msgstr ""
 msgid "Delete the action"
 msgstr ""
 
-msgid "And new PTD template"
+msgid "And new template"
 msgstr ""
 
 msgid "Add a new transformation template to the directory"
@@ -6177,10 +6172,10 @@ msgstr ""
 msgid "Add an image set to the server"
 msgstr ""
 
-msgid "Add PTD templates"
+msgid "Add templates"
 msgstr ""
 
-msgid "Add a set of PTD templates to the server"
+msgid "Add a set of templates to the server"
 msgstr ""
 
 msgid "Add files"
@@ -6273,7 +6268,7 @@ msgstr ""
 msgid "Export a ximclude subfolder"
 msgstr ""
 
-msgid "Export a complete ximdoc folder"
+msgid "Export a complete documents folder"
 msgstr ""
 
 msgid "Export a XML container"
@@ -6294,10 +6289,10 @@ msgstr ""
 msgid "Export a complete section"
 msgstr ""
 
-msgid "Export a complete ximpvd"
+msgid "Export a complete schema"
 msgstr ""
 
-msgid "Export a complete ximptd"
+msgid "Export a complete template"
 msgstr ""
 
 msgid "Export a template subfolder"
@@ -6339,7 +6334,7 @@ msgstr ""
 msgid "Import a ximclude subfolder"
 msgstr ""
 
-msgid "Import a complete ximdoc folder"
+msgid "Import a complete documents folder"
 msgstr ""
 
 msgid "Import a XML container"
@@ -6360,10 +6355,10 @@ msgstr ""
 msgid "Import a complete section"
 msgstr ""
 
-msgid "Import a complete ximpvd"
+msgid "Import a complete schema"
 msgstr ""
 
-msgid "Import a complete ximptd"
+msgid "Import a complete template"
 msgstr ""
 
 msgid "Import a template subfolder"
@@ -6402,7 +6397,7 @@ msgstr ""
 msgid "Copy a ximclude subfolder"
 msgstr ""
 
-msgid "Copy a complete ximdoc folder"
+msgid "Copy a complete documents folder"
 msgstr ""
 
 msgid "Copy a XML container"
@@ -6432,10 +6427,10 @@ msgstr ""
 msgid "Copy a complete section"
 msgstr ""
 
-msgid "Copy a complete ximpvd"
+msgid "Copy a complete schema"
 msgstr ""
 
-msgid "Copy a complete ximptd"
+msgid "Copy a complete template"
 msgstr ""
 
 msgid "Copy a template subfolder"
@@ -6477,7 +6472,7 @@ msgstr ""
 msgid "Copy a server to another destination"
 msgstr ""
 
-msgid "Copy a ximdoc folder to another destination"
+msgid "Copy a documents folder to another destination"
 msgstr ""
 
 msgid "Copy a ximclude folder to another destination"
@@ -6498,7 +6493,7 @@ msgstr ""
 msgid "Copy a CSS subfolder to another destination"
 msgstr ""
 
-msgid "Copy a ximptd folder to another destination"
+msgid "Copy a templates folder to another destination"
 msgstr ""
 
 msgid "Copy a CSS document to another destination"
@@ -6543,13 +6538,10 @@ msgstr ""
 msgid "Copy a section to another destination"
 msgstr ""
 
-msgid "Copy a ximpvd folder to another destination"
+msgid "Copy a schemas folder to another destination"
 msgstr ""
 
-msgid "Copy a PVD template to another destination"
-msgstr ""
-
-msgid "Ximsearch"
+msgid "Copy a schema to another destination"
 msgstr ""
 
 msgid "Edit with Xedit"
@@ -6621,7 +6613,7 @@ msgstr ""
 msgid "Modify heritable properties of a section"
 msgstr ""
 
-msgid "Modify heritable properties of a ximdoc folder"
+msgid "Modify heritable properties of a documents folder"
 msgstr ""
 
 msgid "Modify heritable properties of a document"
@@ -6672,10 +6664,10 @@ msgstr ""
 msgid "Download all files"
 msgstr ""
 
-msgid "Add PVD templates"
+msgid "Add schemas"
 msgstr ""
 
-msgid "Add a set of PVD templates to the server"
+msgid "Add a set of schemas to the server"
 msgstr ""
 
 msgid "Owner"
@@ -7552,7 +7544,7 @@ msgstr ""
 msgid "Add external link"
 msgstr ""
 
-msgid "Add PTD template"
+msgid "Add template"
 msgstr ""
 
 msgid "Add editor template"
@@ -7714,10 +7706,10 @@ msgstr ""
 msgid "Version missing"
 msgstr ""
 
-msgid "Bulletin pvd missing"
+msgid "Bulletin schema missing"
 msgstr ""
 
-msgid "Pvd missing"
+msgid "Schema missing"
 msgstr ""
 
 msgid "Disk writing error"
@@ -7741,10 +7733,10 @@ msgstr ""
 msgid "ERROR subtracting in counter "
 msgstr ""
 
-msgid "Wrong XML in new %s version %s pvd %s"
+msgid "Wrong XML in new %s version %s schema %s"
 msgstr ""
 
-msgid "This pvd has not caches"
+msgid "This schema has not caches"
 msgstr ""
 
 msgid "Disk writing error (2)"
@@ -8752,7 +8744,7 @@ msgstr ""
 msgid "Explanation:"
 msgstr ""
 
-msgid "If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox"
+msgid "If we copy a documents folder, destination node should be a documents folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox"
 msgstr ""
 
 msgid "Tick if source and destination ximdex are same"
@@ -9104,7 +9096,7 @@ msgstr ""
 msgid "Error inserting the node"
 msgstr ""
 
-msgid "No pvd could be successfully estimated for the node "
+msgid "No schema could be successfully estimated for the node "
 msgstr ""
 
 msgid "An inconsistency was found in database, there are several UUID in NodeProperties table with same value"

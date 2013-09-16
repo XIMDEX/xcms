@@ -163,7 +163,7 @@ class Action_addsectionnode extends ActionAbstract {
 		$arrRNG = FsUtils::readFolder($rngPath, false);
 		if (!is_array($arrRNG)) $arrRNG = array();
 		$project = new Node($section->getProject());
-		$rngFolder = new Node($project->GetChildByName(Config::GetValue('VisualTemplateDir')));
+		$rngFolder = new Node($project->GetChildByName(Config::GetValue('SchemasDirName')));
 		
 		$arrIdRNG = array();
 		
@@ -196,7 +196,7 @@ class Action_addsectionnode extends ActionAbstract {
 				
 		$arrPTD = FsUtils::readFolder($ptdPath, false);
 		if (!is_array($arrPTD)) $arrPTD = array();
-		$ptdFolder = new Node($section->GetChildByName(Config::GetValue('GeneratorTemplateDir')));
+		$ptdFolder = new Node($section->GetChildByName(Config::GetValue('TemplatesDirName')));
 				
 		foreach ($arrPTD as $ptd) {
 
@@ -216,7 +216,7 @@ class Action_addsectionnode extends ActionAbstract {
 			}
 			
 			if (!($idPTD > 0)) {
-//				$messages[] = sprintf(_('PTD %s could not be successfully inserted'), $ptd);
+//				$messages[] = sprintf(_('Template %s could not be successfully inserted'), $ptd);
 			}
 		}
 		

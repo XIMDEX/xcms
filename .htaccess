@@ -1,6 +1,8 @@
 Options -Indexes
 
 RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} api/(.*)
+RewriteRule (.*) api/index.php
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.css$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.xsl$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.svg$

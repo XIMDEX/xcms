@@ -47,7 +47,7 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Reset" class='form_reset' type="reset"}
-		{button label="Create" class="validate"}
+		{button label="Reset" class='form_reset btn' type="reset"}
+		{button label="Create" class="validate btn main_action"}
 	</fieldset>
 </form>

@@ -1,0 +1,357 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+@import "../themes/ximdex_theme";
+
+*{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.window-toolbar-button {
+	border: none;
+	float: left;
+	height: 22px;
+	width: 25px;
+	margin: 8px 0px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	cursor: pointer;
+}
+
+.view-action {
+	color: transparent;
+}
+
+.xim-actions-menu-list{
+	z-index: 100;
+	font-size: 14px;font-size: 1.4rem;
+}
+
+.list-icon-browser{
+	display:none;
+}
+
+a.window-toolbar-link {
+	float: left;
+	margin: 11px 10px 0px;
+	color: $c_main;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a.window-toolbar-link:hover {
+	color: $c_complementary;
+  	border-bottom: 1px dotted $c_complementarylight;
+}
+
+div.setbuttons-container {
+	color: $c_main;
+}
+
+div.set-button {
+	padding: 3px 0px 3px 22px;
+	background: url('../../../../../images/panel/sets.png') no-repeat left center;
+	margin-bottom: 2px;
+	margin-left: 15px;
+	cursor: pointer;
+
+}
+
+div.set-button:hover {
+	text-decoration:underline;
+}
+
+div.set-button-drophover {
+	background-color: #cacaca;
+}
+div.filterbuttons-container{
+	color: $c_main;
+}
+
+div.filter-button {
+	padding: 3px 0px 3px 22px;
+	background: url('../../../../../images/panel/saved-searchs.png') no-repeat left center;
+	margin-bottom: 2px;
+	margin-left: 15px;
+	cursor: pointer;
+}
+div.searchesbuttons-container{
+		color:$c_main;
+}
+div.search-button {
+	cursor: pointer;
+}
+
+div.search-button-icon {
+	cursor: pointer;
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	background-image: url(../../../../../actions/browser3/resources/images/bookmark-new.png);
+}
+
+div.search-button-label {
+	padding: 3px 0px 3px 22px;
+	background: url('../../../../../images/panel/searchs.png') no-repeat left center;
+	margin-bottom: 2px;
+	margin-left: 15px;
+	cursor: pointer;
+
+}
+
+.css_to_include, .js_to_include {
+	display: none;
+}
+
+
+.action-group {
+	display: none;
+}
+
+.action-group button:first-child {
+	margin-left: 15px;
+}
+
+.destroy-on-click{
+	background: $c_white-l;
+	border: 1px solid $c_grey-ppp;
+	@include radius(5px);
+	@include boxshadow(1px 1px 2px $s_grey)
+
+}
+.xim-actions-menu button{
+	background: url('../../../../../images/action/sep-btn-actions.png') no-repeat left center;
+	width: 43px;
+	height: 37px;
+	margin: 0px;
+}
+
+/*.xim-actions-menu button:first-child{
+	background: none;
+}
+*/
+.xim-actions-menu button:hover{
+	background: url('../../../../../images/action/sep-btn-actions-over.png') no-repeat left center;
+}
+
+.xim-actions-menu button.icon-browser{
+	display:none;
+}
+.xim-actions-menu button span{
+	background: url('../../../../../images/action/icons-actions.png') no-repeat 5px 4px;
+	display: block;
+	text-indent: -9999999px;
+	height: 33px;
+}
+
+.xim-actions-menu button .tooltip{
+	text-indent: 0px;
+	display: none;
+	position: absolute;
+	z-index: 80px;
+	color: $c_white;
+	text-shadow: 1px 1px 0px $c_grey-l;
+	white-space: nowrap;
+	padding: 0 15px 1px 15px;
+	@include radius(15px);
+	height: 22px;
+	line-height: 1.7em;
+	top: 47px;
+	left: -3px;
+	background: $c_grey-p;
+}
+
+
+
+.xim-actions-menu button:hover .tooltip{
+	display: block;
+
+}
+
+.xim-actions-menu button .tooltip::before{
+	content: '';
+	display: block;
+	position: absolute;
+	border: 7px solid transparent;
+	border-bottom-color: $c_grey-p;
+	top: -14px;
+}
+
+
+
+.xim-actions-menu button span.addfoldernode, .xim-actions-menu button.createcolector span,, .xim-actions-menu button.createcolector span{
+	background: url('../../../../../images/action/icons-actions.png') no-repeat 7px 4px;
+}
+/*.xim-actions-menu button:after{
+	content: url('../../../../../images/action/sep-btn-actions.png');
+	float:right;
+}*/
+
+.xim-actions-menu button.copy span{
+	background-position: -275px 4px;
+}
+
+.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span{
+	background-position: -313px 4px;
+}
+
+.xim-actions-menu button.modifygroupsnode span, .xim-actions-menu button.renamenode span, .xim-actions-menu button.relsectionschema span, .xim-actions-menu button.modifylink span, .xim-actions-menu button.addximlet span, .xim-actions-menu button.manageareas span, .xim-actions-menu button.manageproperties span, .xim-actions-menu button.modifygroup span, .xim-actions-menu button.modifystatesrole span, .xim-actions-menu button.modifyrole span, .xim-actions-menu button.modifygruposusuario span, .xim-actions-menu button.modifyuser span, .xim-actions-menu button.modifystates span, .xim-actions-menu button.addtoarea span, .xim-actions-menu button.addtocolector span, .xim-actions-menu button.modifyserver span, .xim-actions-menu button.modifychannel span, .xim-actions-menu button.modifyusuariosgrupo span, .xim-actions-menu button.modifylanguage span, .xim-actions-menu button.modifynodetype span, .xim-actions-menu button.icon-edit_cat span, .xim-actions-menu button.showassocnodes span{
+	background-position: -24px 4px;
+}
+
+.xim-actions-menu button.browser span, .xim-actions-menu button.linkreport span{
+	background-position: -236px 4px;
+}
+
+.xim-actions-menu button.edittext span{
+	background-position: -54px 4px;
+}
+
+.xim-actions-menu button.filedownload span, .xim-actions-menu button.filedownload_multiple span{
+	background-position: -89px 4px;
+}
+
+.xim-actions-menu button.workflow_backward span{
+	background-position: -162px 4px;
+}
+.xim-actions-menu button.workflow_forward span, .xim-actions-menu button.publicatesection span, .xim-actions-menu button.publicateximlet span, .xim-actions-menu button.generatecolector span{
+	background-position: -126px 6px;
+}
+
+.xim-actions-menu button.fileupload span, .xim-actions-menu button.fileupload_common_multiple span, .xim-actions-menu button.updatefile span{
+	background-position: -347px 4px;
+}
+
+.xim-actions-menu button.movenode span{
+	background-position: -383px 4px;
+}
+
+.xim-actions-menu button.manageversions span{
+	background-position: -418px 4px;
+}
+
+.xim-actions-menu button.filepreview span, .xim-actions-menu button.preview span, .xim-actions-menu button.browserimages span{
+	background-position: -200px 4px;
+}
+
+.xim-actions-menu button.xmleditor span, .xim-actions-menu button.xmleditor2 span, .xim-actions-menu button.htmleditor span{
+	background-position: -451px 4px;
+}
+
+.xim-actions-menu button.xmlsetlink span{
+	background-position: -492px 4px;
+}
+
+.xim-actions-menu button.viewaddednews span{
+	background-position: -533px 4px;
+}
+
+.xim-actions-menu button.setmetadata span{
+	background-position: -567px 4px;
+}
+
+
+.xim-actions-menu button.managebatchs span{
+	background-position: -601px 4px;
+}
+
+/** ****************************** LIST MENU ***************************************** */
+
+.xim-actions-menu-list {
+	padding: .5em 0;
+	font-size: 14px;font-size: 1.4rem;
+	@include boxshadow(0 1px 2px  rgba(0,0,0,.3));
+	@include radius(4px);
+	.icon{
+		padding: .7em 0;
+		&::before{
+			content: '';
+			display: block;
+			float: left;
+			clear: left;
+			height: 20px;
+			background:  url('../../../../../images/action/icons-actions-mini.png') no-repeat 0 0;
+			width: 20px;
+			margin-right: 10px;
+			margin-top: -0.19em;
+		}
+	}
+		.copy::before{
+			background-position: -227px -1px;
+		}
+		.deletenode::before, .deletetemplates::before, .deleteuser::before, .unlinknewscolector::before, .unlinknews::before, .deleterelnewsarea::before{
+			background-position: -253px 0px;
+		}
+		.modifygroupsnode::before, .renamenode::before, .relsectionschema::before, .modifylink::before, .addximlet::before, .manageareas::before, .manageproperties::before, .modifygroup::before, .modifystatesrole::before, .modifyrole::before, .modifygruposusuario::before, .modifyuser::before, .modifystates::before, .addtoarea::before, .addtocolector::before, .modifyserver::before, .modifychannel::before, .modifyusuariosgrupo::before, .modifylanguage::before, .modifynodetype::before, .edit_cat::before, .showassocnodes::before, .manageproperties::before, .relsectionschema::before, .renamenode::before{
+				background-position: -26px 1px;
+		}
+		.browser::before, .linkreport::before{
+			background-position: -196px 0px;
+		}
+		.edittext::before{
+			background-position: -53px 0px;
+		}
+		.filedownload::before, .filedownload_multiple::before{
+			background-position: -83px -1px;
+		}
+		.workflow_backward::before{
+			background-position: -141px 1px;
+		}
+		.workflow_forward::before, .publicatesection::before, .publicateximlet::before, .generatecolector::before{
+			background-position: -112px -1px;
+		}
+
+		.fileupload::before, .fileupload_common_multiple::before, .updatefile::before{
+			background-position: -281px -1px;
+		}
+		.movenode::before{
+			background-position: -311px -1px;
+		}
+		.manageversions::before{
+			background-position: -342px -1px;
+		}
+		.filepreview::before, .preview::before, .browserimages::before{
+			background-position: -170px -1px;
+		}
+		.xmleditor::before, .xmleditor2::before, .htmleditor::before{
+			background-position: -373px -1px;
+		}
+		.xmlsetlink::before{
+			background-position: -402px -1px;
+		}
+		.viewaddednews::before{
+			background-position: -425px 7px;
+		}
+		.setmetadata::before{
+			background-position: -459px 1px;
+		}
+		.managebatchs::before{
+			background-position: -487px 8px;
+		}
+}

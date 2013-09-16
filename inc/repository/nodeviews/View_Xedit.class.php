@@ -199,16 +199,16 @@ class View_Xedit extends Abstract_View implements Interface_View {
 			return RNG_EDITION_DOCXAP_PATH;
 		}
 		
-		$ptdFolder = Config::getValue("GeneratorTemplateDir");
+		$tplFolder = Config::getValue("TemplatesDirName");
 		$section = new Node($this->node->GetSection());
 		$sectionPath = $section->class->GetNodePath();
-		$docxap = $sectionPath . '/' . $ptdFolder . '/docxap.xsl';
+		$docxap = $sectionPath . '/' . $tplFolder . '/docxap.xsl';
 		if(is_readable($docxap))
 			return str_replace(Config::getValue('AppRoot'), Config::getValue('UrlRoot'),  $docxap);
 
 		$project = new Node($this->node->GetProject());
 		$nodeProjectPath = $project->class->GetNodePath();
-		$docxap = $nodeProjectPath . '/' . $ptdFolder . '/docxap.xsl';
+		$docxap = $nodeProjectPath . '/' . $tplFolder . '/docxap.xsl';
 		
 		if(is_readable($docxap))
 			return str_replace(Config::getValue('AppRoot'), Config::getValue('UrlRoot'),  $docxap);

@@ -45,7 +45,7 @@
 		</fieldset>
 
 		<fieldset class="buttons-form">
-			{button label="Delete" class="validate"}
+			{button label="Delete" class="validate btn main_action"}
 		</fieldset>
 	</form>
 {/if}

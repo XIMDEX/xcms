@@ -1,0 +1,4 @@
+<menu background-color="#000" font-color="#fff" font-color-hover="#6c893a">
+ <link-menu text="Home" href="" icon="home" icon-colour="white"> Home</link-menu>
+ <link-menu text="Contact" href="" icon="user" icon-colour="white"> Contact</link-menu>
+</menu>

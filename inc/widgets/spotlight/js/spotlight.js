@@ -20,7 +20,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8173 $
+ *  @version $Revision$
  */
 
 (function(X) {
@@ -55,14 +55,14 @@
 
 			$(this.element).append(
 				$('<div/>')
-					.addClass('mini-spotlight-advanced-no')
+					.addClass('mini-spotlight-advanced-no icon')
 					.html('Search')
 			);
 
 			if (this.options.showAdvanced) {
 				$(this.element).append(
 					$('<div/>')
-					.addClass('mini-spotlight-advanced')
+					.addClass('mini-spotlight-advanced icon')
 					.html('Advanced')
 				);
 			}
@@ -101,6 +101,7 @@
 		},
 
 		search: function(text) {
+			var text=text.trim();
 			if (this.options.datastore.options.ds.running) return;
 
 			if (!this.searchedTerms.contains(text)) {

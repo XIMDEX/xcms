@@ -26,16 +26,18 @@
 <form enctype="multipart/form-data" method="post" id="up_form" name="up_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<input type="hidden" name="type" value="{$type}">
-
-	<fieldset>
-    <legend><span>{t}Upload file{/t}</span></legend>
-		<p>
-				<label for="upload" class="aligned">{t}File{/t}</label>
-				<input type="file" name="upload" id="upload" size="30" class="cajaxg validable not_empty">
-			</p>
-	</fieldset>
-
-	<fieldset class="buttons-form">
-		{button label="Upload file" class="validate" }<!--message="Are you sure you want to upload this file?"-->
-	</fieldset>
+	<div class="action_header">
+	    <h2>{t}Upload file{/t}</h2>
+		<fieldset class="buttons-form">
+			{button label="Upload file" class="validate  btn main_action" }<!--message="Are you sure you want to upload this file?"-->
+		</fieldset>
+	</div>
+<div class="action_content">
+		<fieldset>
+			<p>
+					<label for="upload" class="aligned">{t}File{/t}</label>
+					<input type="file" name="upload" id="upload" size="30" class="cajaxg validable not_empty">
+				</p>
+		</fieldset>
+	</div>
 </form>

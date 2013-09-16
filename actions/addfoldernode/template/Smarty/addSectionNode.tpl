@@ -23,10 +23,9 @@
  *  @version $Revision$
  *}
 
-
+<h2>{t}Add{/t}</h2>
 <fieldset>
-	<legend><span>{t}Add{/t}</span></legend>
-	<input type="hidden" name="nodeid" value="{$nodeID}"><br>
+	<input type="hidden" name="nodeid" value="{$nodeID}">
 	<ol>
 		<li>
 			{if $ret eq 'true'}
@@ -39,7 +38,7 @@
 			{if $ret eq 'true'}
 				&nbsp;
 			{elseif $ret eq 'false'}
-				{button label="Go back" class='form_reset' onclick='history.back();'}
+				{button label="Go back" class='form_reset btn main_action' onclick='history.back();'}
 			{/if}
 		</li>
 	</ol>

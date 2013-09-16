@@ -24,8 +24,8 @@
  *}
 
 {if (count($result)) }
+<h2>{t}Publication result{/t}</h2>
 <fieldset>
-	<legend><span>{t}Publication result{/t}</span></legend>
 	<table class='tabla'>
 	{foreach name=options from=$result key=option item=node_info}
 		{if (count($node_info)) }
@@ -67,20 +67,20 @@
 {/if}
 
 {if (count($messages)) }
-<fieldset>
-	<legend><span>{t}Messages{/t}</span></legend>
+<h2>{t}Messages{/t}</h2>
+
 	<ol>
 	{foreach name=messages from=$messages key=message_id item=message}
 		<li>{$message.message}</li>
 	{/foreach}
 	</table>
-</fieldset>
+
 {/if}
 
 <fieldset class="buttons-form">
 {if ($goback) }
-	{button class="goback-button" label="Go back"}
+	{button class="goback-button  btn main_action" label="Go back"}
 {else}
-	{button class="close-button" label="Close"}
+	{button class="close-button  btn main_action" label="Close"}
 {/if}
 </fieldset>

@@ -20,14 +20,13 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8361 $
+ *  @version $Revision$
  */
 
 //com.ximdex.widgets.include('browserwindow');
 
 //com.ximdex.widgets.ready(function() {
 $(document).ready(function() {
-
 	var selectors = {
 		browserWindow: '#bw1',
 		spotlight: '.mini-spotlight',
