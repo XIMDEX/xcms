@@ -145,7 +145,7 @@ var FloatingToolBox = Object.xo_create(new XimdocToolBox(), {
 
 			var container = $('<div class="kupu-toolbox-container"></div>');
 			$(this.element).appendTo(container);
-			$(container).appendTo('.kupu-toolboxes-container-container');
+			$(container).insertAfter('.kupu-toolboxes-container-container .kupu-toolbox-container:first'); 	
 
 			$(this.element).addClass('ui-dialog-content ui-dialog-widget ui-widget-content');
 

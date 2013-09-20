@@ -21,7 +21,6 @@ function initKupuTools(kupu) {
     var removeelementbutton = new XimdocRemoveElementButton('kupu-remove-button');
 	kupu.registerTool('removebutton', removeelementbutton);
 
-
 //    var proptool = new PropertyTool('kupu-properties-title', 'kupu-properties-description');
 //    kupu.registerTool('proptool', proptool);
 
@@ -59,37 +58,6 @@ function initKupuTools(kupu) {
 	var ximdocspellcheckertool = new XimdocSpellCheckerTool();
 	kupu.registerTool('ximdocspellcheckertool', ximdocspellcheckertool);
 
-// Annotation tool
-	var ximdocannotationtool = new XimdocAnnotationTool();
-	kupu.registerTool('ximdocannotationtool', ximdocannotationtool);
-
-    var annotationstoolbox = new AnnotationsToolBox({
-		toolboxId: 'xedit-annotations-toolbox',
-		ctrlButtonId: 'xedit-annotations-toolbox-button',
-		buttonActiveClass: 'xedit-annotations-toolbox-button',
-		buttonInactiveClass: 'xedit-annotations-toolbox-button-closed',
-		visible: new Boolean(kupu.config.toolboxes.annotations)
-	});
-    ximdocannotationtool.registerToolBox('annotationstoolbox', annotationstoolbox);
-
-	// Rdfa Annotations
-//	var ximdocannotationrdfatool = new XimdocAnnotationRdfaTool();
-//	kupu.registerTool('ximdocannotationrdfatool', ximdocannotationrdfatool);
-//
-//    var annotationsrdfatoolbox = new AnnotationsRdfaToolBox({
-//        toolboxId: 'xedit-annotationsrdfa-toolbox',
-//        ctrlButtonId: 'xedit-annotationsrdfa-toolbox-button',
-//        buttonActiveClass: 'xedit-annotationsrdfa-toolbox-button',
-//        buttonInactiveClass: 'xedit-annotationsrdfa-toolbox-button-closed',
-//        visible: new Boolean(kupu.config.toolboxes.annotations)
-//    });
-//
-//    ximdocannotationrdfatool.registerToolBox('annotationsrdfatoolbox', annotationsrdfatoolbox);
-
-    // TODO: Create button in the template
-//    var annotationRdfa = new KupuButton('kupu-annotationrdfa-button', function() {ximdocannotationrdfatool.doAnnotate();});
-//    kupu.registerTool('annotationRdfa', annotationRdfa);
-
 	var ximdocpreviewtool = new XimdocPreviewTool();
 	kupu.registerTool('ximdocpreviewtool', ximdocpreviewtool);
 
@@ -99,53 +67,31 @@ function initKupuTools(kupu) {
 	var listmanagertool = new ListManagerTool();
 	kupu.registerTool('listmanagertool', listmanagertool);
 
-	var infotoolbox = new InfoToolBox({
-		toolboxId: 'xedit-info-toolbox',
-		ctrlButtonId: 'xedit-info-toolbox-button',
-		buttonActiveClass: 'xedit-info-toolbox-button',
-		buttonInactiveClass: 'xedit-info-toolbox-button-closed',
-		visible: new Boolean(kupu.config.toolboxes.info)
-	});
-	ximdoctool.registerToolBox('infotoolbox', infotoolbox);
-
-
-	var changesettoolbox = new ChangesetToolBox({
-		toolboxId: 'xedit-changeset-toolbox',
-		ctrlButtonId: 'kupu-toolbox-undolog-button',
-		buttonActiveClass: 'kupu-toolbox-undolog-button',
-		buttonInactiveClass: 'kupu-toolbox-undolog-button-closed',
-		maxlength: kupu.config.history_max_changes,
-		visible: new Boolean(kupu.config.toolboxes.history)
-	});
-	ximdoctool.registerToolBox('changesettoolbox', changesettoolbox);
-
-//    var toolbarbuttonstoolbox = new ToolbarButtonsToolBox('kupu-tb-buttongroup');
-//    ximdoctool.registerToolBox('toolbarbuttonstoolbox', toolbarbuttonstoolbox);
-
 	var attributestool = new AttributesTool();
 	kupu.registerTool('attributestool', attributestool);
-
-	var attributestoolbox = new AttributesToolBox({
-		toolboxId: 'xedit-attributes-toolbox',
-		ctrlButtonId: 'xedit-attributes-toolbox-button',
-		buttonActiveClass: 'xedit-attributes-toolbox-button',
-		buttonInactiveClass: 'xedit-attributes-toolbox-button-closed',
-		visible: new Boolean(kupu.config.toolboxes.attributes)
-	});
-	attributestool.registerToolBox('attributestoolbox', attributestoolbox);
-
-	var rngelementstoolbox = new RNGElementsToolBox({
-		toolboxId: 'xedit-rngelements-toolbox',
-		ctrlButtonId: 'xedit-rngelements-toolbox-button',
-		buttonActiveClass: 'xedit-rngelements-toolbox-button',
-		buttonInactiveClass: 'xedit-rngelements-toolbox-button-closed',
-		visible: new Boolean(kupu.config.toolboxes.rngelements)
-	});
-	ximdoctool.registerToolBox('rngelementstoolbox', rngelementstoolbox);
 
 	var toolcontainertoolbox = new ToolContainerToolBox({});
 	ximdoctool.registerToolBox('toolcontainertoolbox', toolcontainertoolbox);
 
+
+	/********* TOOLBOX FOR THE RIGHT PANEL ************/
+
+	/**Tools and toolbox declaration**/
+
+	// Annotation tool
+	var ximdocannotationtool = new XimdocAnnotationTool();
+	kupu.registerTool('ximdocannotationtool', ximdocannotationtool);
+
+	// Annotation toolbox
+    var annotationstoolbox = new AnnotationsToolBox({
+		toolboxId: 'xedit-annotations-toolbox',
+		ctrlButtonId: 'xedit-annotations-toolbox-button',
+		buttonActiveClass: 'xedit-annotations-toolbox-button',
+		buttonInactiveClass: 'xedit-annotations-toolbox-button-closed',
+		visible: new Boolean(kupu.config.toolboxes.annotations)
+	});
+    
+    //Channel Toolbox 
     if(!kupu.isRngEditionMode()) {
 		var channelstoolbox = new ChannelsToolBox({
 			toolboxId: 'xedit-channels-toolbox',
@@ -154,31 +100,73 @@ function initKupuTools(kupu) {
 			buttonInactiveClass: 'xedit-channels-toolbox-button-closed',
 			visible: new Boolean(kupu.config.toolboxes.channels)
 		});
-		ximdoctool.registerToolBox('channelstoolbox', channelstoolbox);
+		
 	}
 
+	//Availables elements for the selected element toolbox
+	var rngelementstoolbox = new RNGElementsToolBox({
+		toolboxId: 'xedit-rngelements-toolbox',
+		ctrlButtonId: 'xedit-rngelements-toolbox-button',
+		buttonActiveClass: 'xedit-rngelements-toolbox-button',
+		buttonInactiveClass: 'xedit-rngelements-toolbox-button-closed',
+		visible: new Boolean(kupu.config.toolboxes.rngelements)
+	});
 
+	//Selected element attributes toolbox
+	var attributestoolbox = new AttributesToolBox({
+		toolboxId: 'xedit-attributes-toolbox',
+		ctrlButtonId: 'xedit-attributes-toolbox-button',
+		buttonActiveClass: 'xedit-attributes-toolbox-button',
+		buttonInactiveClass: 'xedit-attributes-toolbox-button-closed',
+		visible: new Boolean(kupu.config.toolboxes.attributes)
+	});
 
+	//Changeset in the current doc
+	var changesettoolbox = new ChangesetToolBox({	
+		toolboxId: 'xedit-changeset-toolbox',
+		ctrlButtonId: 'kupu-toolbox-undolog-button',
+		buttonActiveClass: 'kupu-toolbox-undolog-button',
+		buttonInactiveClass: 'kupu-toolbox-undolog-button-closed',
+		maxlength: kupu.config.history_max_changes,
+		visible: new Boolean(kupu.config.toolboxes.history)
+	});
+	
+	//Current document's info toolbox
+	var infotoolbox = new InfoToolBox({
+		toolboxId: 'xedit-info-toolbox',
+		ctrlButtonId: 'xedit-info-toolbox-button',
+		buttonActiveClass: 'xedit-info-toolbox-button',
+		buttonInactiveClass: 'xedit-info-toolbox-button-closed',
+		visible: new Boolean(kupu.config.toolboxes.info)
+	});
+	/**END OF Tools and toolbox declaration**/
 
-//    var floattoolbartoolbox = new FloatToolbarToolBox();
-//    hovertool.registerToolBox('floattoolbartoolbox', floattoolbartoolbox);
+	/**TOOLBOX REGISTER. In the reverse order*/
 
-//    var toolbartoolbox = new ToolbarToolBox({
-//		toolboxId: 'xedit-toolbar-toolbox',
-//		ctrlButtonId: 'xedit-toolbar-toolbox-button',
-//		buttonActiveClass: 'xedit-toolbar-toolbox-button',
-//		buttonInactiveClass: 'xedit-toolbar-toolbox-button-closed',
-//		visible: new Boolean(kupu.config.toolboxes.toolbar)
-//    });
-//    hovertool.registerToolBox('toolbartoolbox', toolbartoolbox);
+	/**
+		1. Tag (fixed, in Smarty)
+		2. Annotation Tool Box
+		3. Availables Element.
+		4. Attributes for the current element
+		5. Info
+		6. Channels
+		7. Change set
+		8. Log.
+	*/
+	ximdoctool.registerToolBox('changesettoolbox', changesettoolbox);	
+	ximdoctool.registerToolBox('channelstoolbox', channelstoolbox);
+	ximdoctool.registerToolBox('infotoolbox', infotoolbox);
+	attributestool.registerToolBox('attributestoolbox', attributestoolbox);
+	ximdoctool.registerToolBox('rngelementstoolbox', rngelementstoolbox);
+	ximdocannotationtool.registerToolBox('annotationstoolbox', annotationstoolbox);
+	
+	/**END OF TOOLBOX REGISTER.**/
 
     var highlighttoolbox = new HighlightToolBox();
     hovertool.registerToolBox('highlighttoolbox', highlighttoolbox);
 
     var draggabletoolbox = new DraggablesToolBox();
     hovertool.registerToolBox('draggabletoolbox', draggabletoolbox);
-
-
 
     // Drawers...
 
@@ -323,9 +311,6 @@ function initKupuTools(kupu) {
 	}catch(e) {
 		//ximTAGS module needed
 	}
-
-
-
 
     return kupu;
 };
