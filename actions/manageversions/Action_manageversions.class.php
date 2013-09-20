@@ -26,20 +26,15 @@
 
 
 
-
-
-
-
-
 ModulesManager::file('/inc/db/db.inc');
 
 class Action_manageversions extends ActionAbstract {
-   //Main method: shows initial form
-    function index () {
-    	$idNode = $this->request->getParam('nodeid');
-    	$node = new Node($idNode);
-    	if (!$node->get('IdNode') > 0) {
-    		$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
+	//Main method: shows initial form
+    	function index () {
+    		$idNode = $this->request->getParam('nodeid');
+    		$node = new Node($idNode);
+    		if (!$node->get('IdNode') > 0) {
+    			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
 			$values = array('messages' => $node->messages->messages);
 			$this->render($values, NULL, 'messages.tpl');
 			return false;
@@ -89,26 +84,25 @@ class Action_manageversions extends ActionAbstract {
 
 		$versionList[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
 
-		$this->addJs('/actions/manageversions/javascript/index.js');
-		$this->addCss('/actions/manageversions/css/index.css');
+		$this->addJs('/actions/manageversions/resources/js/index.js');
+		$this->addCss('/actions/manageversions/resources/css/index.css');
 
 		$values = array('versionList' => $versionList,
-						'isStructuredDocument' => $isStructuredDocument,
-						'id_node' => $idNode,
-						'node_type_name' => $node->nodeType->get('Name'),
-						'channels' => $channels,
-						'actionid' => $this->request->getParam('actionid')
-						);
-
+				'isStructuredDocument' => $isStructuredDocument,
+				'id_node' => $idNode,
+				'node_type_name' => $node->nodeType->get('Name'),
+				'channels' => $channels,
+				'actionid' => $this->request->getParam('actionid')
+				);
 		$this->render($values, null, 'default-3.0.tpl');
-    }
+    	}
 
-    function recover() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$version = $this->request->getParam('version');
+    	function recover() {
+    		$idNode = $this->request->getParam('nodeid');
+    		$version = $this->request->getParam('version');
 		$subVersion	= $this->request->getParam('subversion');
 
-    	if (!is_null($version) && !is_null($subVersion)) {
+    		if (!is_null($version) && !is_null($subVersion)) {
 			//If it is a recovery of a version, first we recover it and then we show the form
 			$data = new DataFactory($idNode);
 			$ret = $data->RecoverVersion($version, $subVersion);
@@ -124,14 +118,15 @@ class Action_manageversions extends ActionAbstract {
 			}
 		}
 
-    	$this->redirectTo('index');
-    }
+    		$this->redirectTo('index');
+    	}
 
-    function delete() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$version = $this->request->getParam('version');
+    	function delete() {
+    		$idNode = $this->request->getParam('nodeid');
+    		$version = $this->request->getParam('version');
 		$subVersion	= $this->request->getParam('subversion');
-    	if (!is_null($version) && !is_null($subVersion)) {
+    		
+		if (!is_null($version) && !is_null($subVersion)) {
 			$data = new DataFactory($idNode);
 			$ret = $data->DeleteSubversion($version,$subVersion);
 			if ($ret === false) {
@@ -145,7 +140,8 @@ class Action_manageversions extends ActionAbstract {
 				return;
 			}
 		}
-    	$this->redirectTo('index');
-    }
+    		$this->redirectTo('index');
+    	}
 }
+
 ?>

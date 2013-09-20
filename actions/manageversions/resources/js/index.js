@@ -34,13 +34,13 @@ X.actionLoaded(function(event, fn, params) {
 
 	function getRowVersion(rowItem) {
 		return {
-			version: fn(rowItem).closest('tr.version-info').find('input[name=row-version]').val(),
-			subversion: fn(rowItem).closest('tr.version-info').find('input[name=row-subversion]').val()
+			version: fn(rowItem).closest('div.version-info').find('input[name=row-version]').val(),
+			subversion: fn(rowItem).closest('div.version-info').find('input[name=row-subversion]').val()
 		};
 	}
 
 	function getChannelList(rowItem) {
-		return fn(rowItem).closest('tr.version-info').find('select')
+		return fn(rowItem).closest('div.version-info').find('select')
 	}	
 
 
@@ -59,9 +59,7 @@ X.actionLoaded(function(event, fn, params) {
 			channel = 1;
 		}
 
-		var command = (nodetypename=='ImageFile' || nodetypename=='BinaryFile')
-			? 'filepreview'
-			: 'prevdoc';
+		var command = (nodetypename=='ImageFile' || nodetypename=='BinaryFile')	? 'filepreview'	: 'prevdoc';
 
 
 		var action = $.extend({}, params.action, {
@@ -88,11 +86,11 @@ X.actionLoaded(function(event, fn, params) {
 		form.action += '&method=recover';
 	};
 
-	fn('.recover-button').each(function(index, button) {
+	fn('.disabled-version').each(function(index, button) {
 		button.beforeSubmit.add(cbRecover);
 	});
 
-	// Recover button management
+	// Delete button management
 	var cbDelete = function(event, button) {
 		var v = getRowVersion(button);
 		$version.val(v.version);
@@ -100,7 +98,7 @@ X.actionLoaded(function(event, fn, params) {
 		form.action += '&method=delete';
 	};
 
-	fn('.delete-button').each(function(index, button) {
+	fn('.delete-btn').each(function(index, button) {
 		button.beforeSubmit.add(cbDelete);
 	});
 

@@ -23,14 +23,27 @@
  *  @version $Revision$
  *}
 
-
 {assign var="channels" value=$properties.Channel}
-<h2>{t}Channels{/t}</h2>
 <fieldset>
+	<div class="manageproperties">
+		<h3 class="icon icon-channel">{t}Channels{/t}</h3>
+		<div class="row-item">
 
-<div class="manageproperties">
-
-	<div class="xright-block">
+		<div class="hidden">
+			<input type="radio" name="inherited_channels" class="channels_overwritten" value="overwrite" checked />
+			<label>{t}Overwrite inherited channels{/t}</label>
+		</div>
+	{if ($channels)}
+		{foreach from=$channels item=channel}
+		<span class="slide-element">
+			<input type="checkbox" class="channels input-slide" name="Channel[]" value="{$channel.IdChannel}" checked id="{$channel.Name}"/>
+			<label for="{$channel.Name}" class="label-slide">{$channel.Name}</label>
+		</span>
+		{/foreach}
+	{/if}
+	</div>
+ 	
+<!--<div class="xright-block">
 		<input type="radio" name="inherited_channels" class="channels_inherited"
 			value="inherited" {if $Channel_inherited == 'inherited'}checked{/if} />
 		<label>{t}Use inherited channels{/t}</label>
@@ -41,9 +54,9 @@
 			{/foreach}
 			</li>
 		</ol>
-	</div>
+	</div>-->
 
-	<div class="xright-block">
+	<!--<div class="xright-block">
 
 		<div>
 			<input type="radio" name="inherited_channels" class="channels_overwritten"
@@ -56,7 +69,7 @@
 				{if ($channels)}
 				{foreach from=$channels item=channel}
 				<li>
-					<input
+				<label for=""><input
 						type="checkbox"
 						class="channels"
 						name="Channel[]"
@@ -68,7 +81,7 @@
 							disabled
 						{/if}
 						/>
-					{$channel.Name}
+					{$channel.Name}</label>
 				</li>
 				{/foreach}
 				{/if}
@@ -104,7 +117,7 @@
 			</ol>
 		</div>
 
-	</div>
+	</div>-->
 </div>
 
 </fieldset>

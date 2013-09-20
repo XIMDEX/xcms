@@ -450,7 +450,7 @@ if (extension_loaded('xsl'))
 {//See also: http://alexandre.alapetite.net/doc-alex/xslt-php4-php5/
  function domxml_xslt_stylesheet($xslstring) {
 	$doc = new DOMDocument();
-	$doc->loadXML($xslstring)
+	$doc->loadXML($xslstring);
 	return new php4DomXsltStylesheet($doc);
  }
  function domxml_xslt_stylesheet_doc($dom_document) {return new php4DomXsltStylesheet($dom_document);}

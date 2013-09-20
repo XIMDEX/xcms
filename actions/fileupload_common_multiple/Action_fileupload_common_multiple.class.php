@@ -93,7 +93,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				break;
 		};
 
-		$this->addJs('/actions/fileupload_common_multiple/resources/javascript/loader.js');
+		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
 		$this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css');
 
 		$arrValores = array (
@@ -208,7 +208,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
   		} else {
 			return false;
     		}
-		$this->addJs('/actions/fileupload_common_multiple/javascript/loader.js');
+		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
 
 		$arrValores = array (
 			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",

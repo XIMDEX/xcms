@@ -25,12 +25,40 @@
 
 
 {assign var="languages" value=$properties.Language}
-<h2>{t}Languages{/t}</h2>
+
 <fieldset>
 
 <div class="manageproperties">
 
-	<div class="xright-block">
+	<h3 class="icon icon-language">{t}Languages{/t}</h3>
+	<div class="row-item">
+<div class="hidden">
+			<input type="radio" name="inherited_languages" class="languages_overwritten"
+				value="overwrite" checked />
+			<label>{t}Overwrite inherited languages{/t}</label>
+		</div>
+
+
+
+				{foreach from=$languages item=language}
+				<span class="slide-element">
+					<input
+						type="checkbox"
+						class="languages input-slide"
+						name="Language[]"
+						id="{$language.Name}"
+						value="{$language.IdLanguage}"
+					checked
+						/>
+					<label for="{$language.Name}" class="label-slide">{$language.Name}</label>
+				</span>
+				{/foreach}
+
+
+
+	</div>
+
+	<!--<div class="xright-block">
 		<input type="radio" name="inherited_languages" class="languages_inherited"
 			value="inherited" {if $Language_inherited == 'inherited'}checked{/if} />
 		<label>{t}Use inherited languages{/t}</label>
@@ -73,7 +101,7 @@
 			</ol>
 		</div>
 
-<!--
+
 		<div class="right-block">
 			<ol>
 				{foreach from=$languages item=language}

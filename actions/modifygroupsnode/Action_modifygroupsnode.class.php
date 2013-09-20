@@ -25,25 +25,16 @@
  */
 
 
-
-
-
-
-
-
-
-
 class Action_modifygroupsnode extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
-    	$idNode = $this->request->getParam('nodeid');
-    	$node = new Node($idNode);
-    	if (!($node->get('IdNode') > 0)) {
-    		$this->messages->add(_('Node could not be found'), 
-    			MSG_TYPE_ERROR);
-    		$this->render(array($this->messages), NULL, 'messages.tpl');
-    		die();
-    	}
+	// Main method: shows initial form
+    	function index () {
+    		$idNode = $this->request->getParam('nodeid');
+    		$node = new Node($idNode);
+    		if (!($node->get('IdNode') > 0)) {
+    			$this->messages->add(_('Node could not be found'),MSG_TYPE_ERROR);
+    			$this->render(array($this->messages), NULL, 'messages.tpl');
+    			die();
+    		}
         
 		$group = new Group();
 		$allGroups = $group->GetAllGroups();
@@ -75,24 +66,24 @@ class Action_modifygroupsnode extends ActionAbstract {
 			}
 		}
 
-		$this->addJs('/actions/modifygroupsnode/javascript/helper.js');
-    	$values = array(
-    		'id_node' => $idNode,
-    		'node_name' => $node->get('Name'),
-    		'new_groups' => $newGroups,
-    		'all_groups' => $allGroups,
-    		'roles' => $roles,
+		$this->addJs('/actions/modifygroupsnode/resources/js/helper.js');
+    		$values = array(
+    			'id_node' => $idNode,
+    			'node_name' => $node->get('Name'),
+    			'new_groups' => $newGroups,
+    			'all_groups' => $allGroups,
+    			'roles' => $roles,
 			'go_method' =>  'modifygroup'
-    	);
+    		);
 
-    	$this->render($values, null, 'default-3.0.tpl');
-    }
+    		$this->render($values, null, 'default-3.0.tpl');
+    	}
     
-    function addgroupnode() {
-    	$idNode = $this->request->getParam('id_node');
-    	$idGroup = $this->request->getParam('id_group');
-    	$idRole = $this->request->getParam('id_role');
-    	$isRecursive = $this->request->getParam('is_recursive');
+    	function addgroupnode() {
+    		$idNode = $this->request->getParam('id_node');
+    		$idGroup = $this->request->getParam('id_group');
+    		$idRole = $this->request->getParam('id_role');
+    		$isRecursive = $this->request->getParam('is_recursive');
 
 		$node = new Node($idNode);
 		$node->AddGroupWithRole($idGroup, $idRole);
@@ -181,6 +172,5 @@ class Action_modifygroupsnode extends ActionAbstract {
 		}
 		$this->redirectTo('index');
 	}
-	
 }
 ?>

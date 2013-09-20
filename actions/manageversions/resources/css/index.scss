@@ -1,0 +1,133 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+
+#previewer {
+	position: absolute;
+	top: 30px;
+	left: 85%;
+	font: 12px verdana,arial,helvetica;
+	color: #000000;
+	background: #000000;
+	padding: 10px;
+	border: none;
+	z-index: 5;
+}
+
+.version-info{
+	padding: 0 18.8em 0 2%;
+	position: relative;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	-moz-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+	box-shadow: 0 1px 1px rgba(0,0,0,.05);
+
+	&::before{
+		display: block;
+		position: absolute;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		width: 2em;
+		height: 2em;
+		background:lighten($c_mainlight, 15%);
+		margin-top: .5em;
+		margin-left: .4em;
+	}
+}
+
+.version{
+	padding: 0 2em 0 0;
+	position: relative;
+	strong{
+		background:lighten($c_mainlight, 15%);
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		display: inline-block;
+		min-width: 3.5em;
+		text-align: center;
+		padding: .6em .2em;
+	}
+
+}
+
+.version-preview, .buttons, .version-name, .version-date{
+	display: inline-block;
+}
+
+.version-name, .version-date{
+	min-width: 40%;
+	padding: 1em;
+}
+
+// .row-item-actions{
+// 	position: absolute;
+// 	right: 2%;
+// 	top: 1.5em;
+// 	margin-top: -.8em;
+
+// 		.channellist{
+// 			vertical-align: middle;
+// 			padding: 0;
+// 		}
+// 		.recover-button, .delete-button, .prevdoc-button {
+// 			background:$c_grey-p;
+// 			vertical-align: middle;
+// 			&:hover{
+// 				background:lighten($c_mainlight, 10%);
+// 			}
+// 		}
+
+// 		.delete-button{
+// 			background:$c_delete;
+// 			&:hover{
+// 				background:lighten($c_delete, 10%);
+// 			}
+// 		}
+
+// 		.prevdoc-button{
+// 			background:$c_bluelight;
+// 			margin-right: 2.5em;
+// 			&:hover{
+// 				background:lighten($c_bluelight, 10%);
+// 			}
+// 		}
+
+// 		.enabled-version{
+// 			background:$c_mainlight;
+// 			cursor: default;
+// 			&:hover{
+// 				background:$c_mainlight;
+// 			}
+// 		}
+// 		.btn-unlabel-rounded::before{
+// 	color: #fff;
+// 	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+// 	}
+
+// }
+

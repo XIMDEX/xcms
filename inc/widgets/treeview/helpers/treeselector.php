@@ -130,7 +130,7 @@ var numMaxFiles_origen = busca_numMaxFiles();
 					urlencode($targetNodeID),
 					urlencode($filterType),
 					urlencode($nodeType)
-	);%
+	);
 ?>
 var tree = new WebFXLoadTree("<?php echo $rootNode->GetNodeName()?>", "<?php echo $targetPath; ?>", "javascript: parent.setInfo('<?php echo $rootNode->GetPath()?>','<?php echo $rootNode->GetID()?>')", "classic", "../../xmd/images/icons/<?php echo urlencode($rootNode->nodeType->GetIcon()); ?>","../../xmd/images/icons/<?php echo $rootNode->nodeType->GetIcon()?>");
 

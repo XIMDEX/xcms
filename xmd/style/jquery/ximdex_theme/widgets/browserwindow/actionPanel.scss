@@ -24,7 +24,7 @@
  */
 
 
-@import "../themes/ximdex_theme";
+ @import "../themes/ximdex_theme";
 
 
 /*++++++++++++++++++++++  General styles for action panel elements +++++++++++++++++++*/
@@ -76,7 +76,7 @@ h2{
 	height: calc(100% - 3.2em);
 	overflow-y: auto;
 	overflow-x: hidden;
-	padding: 2em 15%;
+	padding: 2em 4%;
 	max-width: 100%;
 	position: relative;
 }
@@ -112,17 +112,6 @@ h2.nodo_path{
 	font-size: 1.4rem;
 }
 
-.action_container h3:before{
-	content: '';
-	display: block;
-	position: absolute;
-	border: 6px solid transparent;
-	border-top-color: $c_mainlight;
-	left: 6px;
-	top: 2em;
-}
-
-
 .action_container .editable{
 	border: none;
 	font-family: $t_title;
@@ -135,12 +124,12 @@ h2.nodo_path{
 .action_container .editable:focus, .action_container .editable:hover{
 	@include boxshadow(none);
 	border: 0;
-		color: $c_grey;
+	color: $c_grey;
 }
 
 
 .action_container .editable:hover::-webkit-input-placeholder, .action_container .editable:hover:-moz-placeholder, .action_container .editable::-webkit-input-placeholder, .action_container .editable:-moz-placeholder{
-   color:  $c_grey;
+	color:  $c_grey;
 }
 
 
@@ -164,7 +153,7 @@ input, select {
 	margin: 0 5px 0 0;
 	@include radius(3px);
 	&[type="text"]{
-	width: 80%;
+		width: 80%;
 	}
 }
 input:hover {
@@ -233,36 +222,6 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 }
 
 
-.action_container .btn{
-	@include btn;
-	@include radius(2px);
-	padding: 7px 14px 5px;
-	margin: 0 0 0 10px;
-	cursor: pointer;
-	font-size: 1.1rem;
-}
-
-
-.action_container .btn:hover, .action_container .btn:focus{
-	@include btn-hover;
-}
-
-
-.action_container .main_action{
-	@include btn-main;
-}
-
-
-.action_container .main_action:hover, .action_container .main_action:focus{
-	@include btn-main-hover;
-}
-
-
-
-.action_container .btn:active, .action_container .main_action:active{
-	@include boxshadow(inset 0 2px 4px $s_black);
-	border-width: 1px;
-}
 
 
 .ui-dialog .ui-dialog-buttonpane button span {
@@ -300,9 +259,9 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 	display: inline-block;
 }
 .extrainfo {
-    padding-top: 130px;
+	padding-top: 130px;
 }
- .container .action_desc {
+.container .action_desc {
 	background: url('../../../../../images/action/action_desc.png') no-repeat left top;
 	position: absolute;
 	right: 20px;
@@ -312,10 +271,10 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 	cursor: pointer;
 	text-transform: none;
 }
- .container .action_desc span {
+.container .action_desc span {
 	display: none;
 }
- .container .action_desc:hover span {
+.container .action_desc:hover span {
 	display: block;
 	z-index: 2;
 	background: $c_grey-ppp url('../../../../../images/action/fnd-description.png') repeat-x left bottom;
@@ -408,7 +367,7 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 	@include radius(15px);
 	padding: 25px 15px;
 	margin-bottom: 15px;
-	}
+}
 .xim-treeview-selector .xim-treeview-branch-container {
 	position: static;
 }
@@ -424,7 +383,7 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 }
 
 label {
-	display: block;
+	/*display: block;*/ /* avoiding jump in heritable properties*/
 	color: $c_grey;
 	font-family: $t_text;
 	padding: 1em 0 .5em;
@@ -435,6 +394,117 @@ input[type="checkbox"] + label, input[type="radio"] + label{
 	display: inline;
 	padding-right: 8%;
 }
+
+
+/**************
+// SLIDE CHECKBOX INPUT
+***************/
+
+.slide-element{
+	width: 30%;
+	display: inline-block;
+}
+
+.input-slide{
+	visibility: hidden;
+}
+
+.label-slide{
+	position: relative;
+	padding-left: 3.5em;
+	cursor: pointer;
+}
+
+.input-slide + .label-slide::before, .input-slide + .label-slide::after{
+	content: '';
+	position: absolute;
+	width: 4.1em;
+	height: 2.1em;
+	line-height: 2.1;
+	left: 0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-transition: all .2s;
+	-moz-transition: all .2s;
+	-ms-transition: all .2s;
+	-o-transition: all .2s;
+	transition: all .2s;
+	font-size: .65em;
+	-webkit-box-shadow: inset 0 2px  0 rgba(27,27,27,.5);
+	-moz-box-shadow: inset 0 2px  0 rgba(27,27,27,.5);
+	box-shadow: inset 0 2px  0 rgba(27,27,27,.5);
+	color: #fff;
+	background:$c_grey;
+	margin-top: -.6em;
+	top: 50%;
+}
+
+.input-slide + .label-slide::before{
+	content: 'ON \a0  \a0 \a0 OFF';
+	padding-left: .5em;
+}
+
+.input-slide + .label-slide::after{
+	width: 1.6em;
+	height: 1.6em;
+	background: #fff;
+	-webkit-box-shadow: 0 1px  0 rgba(27,27,27,.5);
+	-moz-box-shadow: 0 1px  0 rgba(27,27,27,.5);
+	box-shadow: 0 1px  0 rgba(27,27,27,.5);
+	left: .3em;
+	margin-top: -.31em;
+}
+
+.input-slide:checked{} /* 4 animate pseudo elements */
+
+.input-slide:checked + .label-slide::before{
+	background:$c_mainlight;
+}
+
+.input-slide:checked + .label-slide::after{
+	left: 2.62em;
+}
+
+
+/**************
+// MESSAGES
+***************/
+
+
+.message{
+	padding: 1em 4% 1em 4.5em;
+	background:$c_grey-ppp;
+	position: relative;
+	border-bottom: 1px solid #fff;
+
+	&::before{
+		content: '';
+		position: absolute;
+		width: 2.3em;
+		height: 100%;
+		background: $c_grey-l;
+		left: 0;
+		top: 0;
+		font: normal 1.5em bold 'Coustard';
+		line-height: 2;
+	}
+}
+
+
+
+.warning-message{
+	background:#f1e9cd;
+
+	&::before{
+		background:#d8b642;
+		content: '< ! >';
+		color:$c_background;
+		text-align: center;
+		line-height: 2;
+	}
+}
+
 
 label + p{
 	margin-top: 0;
@@ -720,10 +790,10 @@ input:focus + .tooltip_info{
 	border-right-color: $c_mainlight;
 	margin-left: -29px;
 	-webkit-filter: drop-shadow(-1px 1px 0 $s_grey);
-		-moz-filter: drop-shadow(-1px 1px 0 $s_grey);
-		-ms-filter: drop-shadow(-1px 1px 0 $s_grey);
-		-o-filter: drop-shadow(-1px 1px 0 $s_grey);
-		filter: drop-shadow(-1px 1px 0 $s_grey);
+	-moz-filter: drop-shadow(-1px 1px 0 $s_grey);
+	-ms-filter: drop-shadow(-1px 1px 0 $s_grey);
+	-o-filter: drop-shadow(-1px 1px 0 $s_grey);
+	filter: drop-shadow(-1px 1px 0 $s_grey);
 }
 
 .related{
@@ -857,25 +927,25 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
 }
 
 @keyframes animated_arrow{
-0%{ background-position: center -11px;}
+	0%{ background-position: center -11px;}
 	100%{ background-position: center -151px;}
 }
 
 @-moz-keyframes animated_arrow/* Firefox */
 {
-0%{ background-position: center -11px;}
+	0%{ background-position: center -11px;}
 	100%{ background-position: center -151px;}
 }
 
 @-webkit-keyframes animated_arrow/* Safari and Chrome */
 {
-0%{ background-position: center -11px;}
+	0%{ background-position: center -11px;}
 	100%{ background-position: center -151px;}
 }
 
 @-o-keyframes animated_arrow/* Opera */
 {
-0%{ background-position: center -11px;}
+	0%{ background-position: center -11px;}
 	100%{ background-position: center -151px;}
 }
 
@@ -886,25 +956,25 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
 }
 
 @keyframes animated_arrow_back{
-0%{ background-position: center -151px;}
+	0%{ background-position: center -151px;}
 	100%{ background-position: center -11px;}
 }
 
 @-moz-keyframes animated_arrow_back/* Firefox */
 {
-0%{ background-position: center -151px;}
+	0%{ background-position: center -151px;}
 	100%{ background-position: center -11px;}
 }
 
 @-webkit-keyframes animated_arrow_back/* Safari and Chrome */
 {
-0%{ background-position: center -151px;}
+	0%{ background-position: center -151px;}
 	100%{ background-position: center -11px;}
 }
 
 @-o-keyframes animated_arrow_back/* Opera */
 {
-0%{ background-position: center -151px;}
+	0%{ background-position: center -151px;}
 	100%{ background-position: center -11px;}
 }
 
@@ -924,39 +994,39 @@ animation:arrow 1.5s;
 
 @keyframes arrow
 {
-0%   {background-position: -6px -5px;}
-25%  {background-position: -6px -43px;}
-50%  {background-position: -6px -84px;}
-75%  {background-position: -6px -129px;}
-100%  {background-position: -6px -176px;}
+	0%   {background-position: -6px -5px;}
+	25%  {background-position: -6px -43px;}
+	50%  {background-position: -6px -84px;}
+	75%  {background-position: -6px -129px;}
+	100%  {background-position: -6px -176px;}
 
 }
 
 @-moz-keyframes arrow /* Firefox */
 {
-0%   {background-position: -6px -5px;}
-25%  {background-position: -6px -43px;}
-50%  {background-position: -6px -84px;}
-75%  {background-position: -6px -129px;}
-100%  {background-position: -6px -176px;}
+	0%   {background-position: -6px -5px;}
+	25%  {background-position: -6px -43px;}
+	50%  {background-position: -6px -84px;}
+	75%  {background-position: -6px -129px;}
+	100%  {background-position: -6px -176px;}
 }
 
 @-webkit-keyframes arrow /* Safari and Chrome */
 {
-0%   {background-position: -6px -5px;}
-25%  {background-position: -6px -43px;}
-50%  {background-position: -6px -84px;}
-75%  {background-position: -6px -129px;}
-100%  {background-position: -6px -176px;}
+	0%   {background-position: -6px -5px;}
+	25%  {background-position: -6px -43px;}
+	50%  {background-position: -6px -84px;}
+	75%  {background-position: -6px -129px;}
+	100%  {background-position: -6px -176px;}
 }
 
 @-o-keyframes arrow /* Opera */
 {
-0%   {background-position: -6px -5px;}
-25%  {background-position: -6px -43px;}
-50%  {background-position: -6px -84px;}
-75%  {background-position: -6px -129px;}
-100%  {background-position: -6px -176px;}
+	0%   {background-position: -6px -5px;}
+	25%  {background-position: -6px -43px;}
+	50%  {background-position: -6px -84px;}
+	75%  {background-position: -6px -129px;}
+	100%  {background-position: -6px -176px;}
 }
 
 
@@ -1123,6 +1193,25 @@ li.toggable h3:not(.editing):before{
 	width: 80%;
 }
 
+
+
+/**************
+// LAYOUT
+***************/
+
+.col1-2{
+	width: 48%;
+}
+
+.col1-3{
+	width: 30%;
+}
+
+.col2-3{
+	width: 60%;
+}
+
+
 /**************
 // ELEMNTS
 ***************/
@@ -1137,31 +1226,170 @@ li.toggable h3:not(.editing):before{
 	position: relative;
 }
 
+.row-item {
+	.col1-2, .col1-3{
+	display: inline-block;
+	vertical-align: middle;
+	}
+
+}
+
+.row-item-actions{
+	position: absolute;
+	right: 2%;
+	top: 1.5em;
+	margin-top: -.8em;
+	width: auto;
+}
+
+.actions-outside{
+	right: -4em;
+}
+
+
+.select-clean{
+	padding: 0;
+	border: none;
+	outline:none; /* remove focus ring from Webkit */
+	 -webkit-appearance:none; /* remove the strong OSX influence from Webkit */
+}
+
+.label-select{
+	position: relative;
+	&::after{
+		content: '\e037';
+		position: absolute;
+		right: 6%;
+		top: .3em;
+		pointer-events:none;
+		-webkit-transform: rotate(90deg);
+		   -moz-transform: rotate(90deg);
+		    -ms-transform: rotate(90deg);
+		     -o-transform: rotate(90deg);
+		        transform: rotate(90deg);
+	}
+}
+
+
 .ui-helper-hidden{
 	display: none !important;
 }
 
 
-.browser-window .icon-button{ /* first class used to fight against jQuery ui classes!! */
-	display: inline-block;
-	text-indent: 100%;
-	white-space: nowrap;
-	overflow: hidden;
-	border: none;
-	-webkit-border-radius: 50%;
-	-moz-border-radius: 50%;
-	border-radius: 50%;
-	width: 1.75em;
-	height: 1.75em;
-	margin: 0 .7em;
+.block{
+	display: block;
+	width: 100%;
 }
 
+/**************
+// BUTTONS
+***************/
 
-.browser-window .icon-button::before{
-	text-indent: 0;
-	position: absolute;
-	display: block;
-	text-align: center;
-	width: 1.75em;
-	line-height: 1.75em;
+/* first class used to fight against jQuery ui classes!! */
+
+.browser-window{
+
+	.btn{
+		@include btn;
+		@include radius(2px);
+		padding: 7px 14px 5px;
+		margin: 0 0 0 10px;
+		cursor: pointer;
+		font-size: 1.1rem;
+	}
+
+
+	.btn:hover, .btn:focus{
+		@include btn-hover;
+	}
+
+
+	.main_action{
+		@include btn-main;
+	}
+
+
+	.main_action:hover, .action_container .main_action:focus{
+		@include btn-main-hover;
+	}
+
+
+
+	.btn:active, .action_container .main_action:active{
+		@include boxshadow(inset 0 2px 4px $s_black);
+		border-width: 1px;
+	}
+
+	.btn-unlabel-rounded{
+		display: inline-block;
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		border: none;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		width: 2.8rem;
+		height: 2.8rem;
+		margin: 0 .7em;
+		padding: 0;
+		background:$c_grey-p;
+		vertical-align: middle;
+		font-size: 1.6rem;
+		&:hover{
+			background:lighten($c_mainlight, 10%);
+		}
+
+	}
+
+
+	.btn-unlabel-rounded::before{
+		text-indent: 0;
+		position: absolute;
+		display: block;
+		text-align: center;
+		width: 1.75em;
+		line-height: 1.75em;
+		color: #fff;
+		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	}
+
+	.btn-unlabel-rounded::before{
+
+	}
+
+
+	.delete-btn{
+		background:$c_delete;
+		&:hover{
+			background:lighten($c_delete, 10%);
+		}
+	}
+
+	.prevdoc-btn{
+		background:$c_bluelight;
+		margin-right: 2.5em;
+		&:hover{
+			background:lighten($c_bluelight, 10%);
+		}
+	}
+
+	.add-btn{
+		background:$c_mainlight;
+		&:hover{
+			background:lighten($c_mainlight, 10%);
+		}
+
+	}
+
+	.enabled-version{
+		background:$c_mainlight;
+		cursor: default;
+		&:hover{
+			background:$c_mainlight;
+		}
+	}
+
+
+
 }

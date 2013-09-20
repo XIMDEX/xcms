@@ -106,11 +106,11 @@ class XimNewsColectorNodeType extends FolderNode  {
 		    $node = new Node($this->nodeID);
 		    $node->delete();
 
-			return false;
-
 		    if(!$node->numErr){
 				XMD_Log::info("Colectores error al insertar colector se ha eliminado el nodo ".$this->nodeID."");
 		    }
+			return false;
+
 		}
 
         $this->updatePath();
@@ -620,12 +620,12 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$db->query($query);
 		while(!$db->EOF){
 			$idBul = $db->getValue('source');
-			bulletinDoc = new StructuredDocument($idBul);
-			content = $bulletinDoc->GetContent();
-			/ Updates ximlet content
-			idXimlet = $db->getValue("target");
-			ximletNode = new Node($idXimlet);
-			ximletNode->SetContent($content);
+			$bulletinDoc = new StructuredDocument($idBul);
+			$content = $bulletinDoc->GetContent();
+			// Updates ximlet content
+			$idXimlet = $db->getValue("target");
+			$ximletNode = new Node($idXimlet);
+			$ximletNode->SetContent($content);
 		}
 
 		return $bulletinsGenerated;

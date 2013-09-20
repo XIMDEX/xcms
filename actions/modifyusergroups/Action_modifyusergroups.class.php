@@ -25,7 +25,7 @@
  */
 
 class Action_modifyusergroups extends ActionAbstract {
-
+	
 	// Main method: shows initial form
     	function index () {
 		$idNode = $this->request->getParam('nodeid');
@@ -66,14 +66,14 @@ class Action_modifyusergroups extends ActionAbstract {
     		}		
 
     		$this->addJs('/actions/modifyusergroups/resources/js/helper.js');
-	
-		$values = array('id_node' => $idNode,
-			'user_name' => $user->get('Name'),
-			'general_role' => $generalRole,
-			'all_roles' => $roles,
-			'filtered_groups' => $filteredGroups,
-			'user_groups_with_role' => $userGroupsWithRole);
 
+		$values = array('id_node' => $idNode,
+				'user_name' => $user->get('Name'),
+				'general_role' => $generalRole,
+				'all_roles' => $roles,
+				'filtered_groups' => $filteredGroups,
+				'user_groups_with_role' => $userGroupsWithRole);
+		
 		$this->render($values, null, 'default-3.0.tpl');
     	}
     
@@ -82,44 +82,44 @@ class Action_modifyusergroups extends ActionAbstract {
 		$newgroup = $this->request->getParam("newgroup");
 		$idUser = $this->request->getParam('nodeid');
 
-		$grupo = new Group($newgroup);		//Create group object with appropriate ID
-		$grupo->AddUserWithRole($idUser, $newrole);
+		$group = new Group($newgroup);		//Create group object with appropriate ID
+		$group->AddUserWithRole($idUser, $newrole);
 		$this->redirectTo('index');
     	}
     
     	function updategroupuser() {
-      		$idusuario = $this->request->getParam('nodeid');
+      		$iduser = $this->request->getParam('nodeid');
 		$idGroups = $this->request->getParam("idGroups");
 		$idRoleOld = $this->request->getParam("idRoleOld");
 		$idRole = $this->request->getParam("idRole");
 		$globalRole = $this->request->getParam("globalRole");
 		$oldglobalRole = $this->request->getParam("oldglobalRole");
 		
-		$grupo = new Group();
+		$group = new Group();
 		if($idGroups) {
 			foreach ($idGroups as $idx => $gID) {
 				if($idRole[$idx] != $idRoleOld[$idx]) {
-					$grupo->SetID($gID);
-					$grupo->ChangeUserRole($idusuario,$idRole[$idx]);
+					$group->SetID($gID);
+					$group->ChangeUserRole($iduser,$idRole[$idx]);
 				}
 			}
 		}
 		
 		if ($globalRole != $oldglobalRole) {
-			$grupo->SetID($grupo->GetGeneralGroup());
-			$grupo->ChangeUserRole($idusuario,$globalRole);
+			$group->SetID($group->GetGeneralGroup());
+			$group->ChangeUserRole($iduser,$globalRole);
 		}
 		$this->redirectTo('index');
     	}
     
     	function deletegroupuser() {
 		$checked = $this->request->getParam("checked");
-      		$idusuario = $this->request->getParam('nodeid');
+      		$iduser = $this->request->getParam('nodeid');
 		
 		foreach ($checked as $cked) {
 			if($cked) {
-				$grupo = new Group($cked);
-				$grupo->DeleteUser($idusuario);
+				$group = new Group($cked);
+				$group->DeleteUser($iduser);
 			}
 		}
 		$this->redirectTo('index');

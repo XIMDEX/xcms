@@ -2358,6 +2358,12 @@ msgstr "Recuperar"
 msgid "Available versions"
 msgstr "Versiones disponibles"
 
+msgid "Are you sure you want to recover this version?"
+msgstr "&iquest;Est&aacute; seguro de querer recuperar esta versi&oacute;n y convertirla en la &uacute;ltima?"
+
+msgid "Are you sure you want to delete this version?"
+msgstr "&iquest;Est&aacute; seguro de querer borrar esta versi&oacute;n?"
+
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/addtocolector/template/Smarty/index.tpl
@@ -6108,11 +6114,11 @@ msgid "Edit"
 msgstr "Editar"
 
 # ++ table Nodes
-msgid "Modify properties of external link"
+msgid "Modify link properties"
 msgstr "Modificar las propiedades del enlace externo"
 
 msgid "Modify properties"
-msgstr "Modificar las propiedades del enlace externo"
+msgstr "Modificar propiedades"
 
 msgid "Delete role"
 msgstr "Borrar rol"
@@ -7148,8 +7154,11 @@ msgstr "Administrador de ximdex"
 
 # ######## ximTAGS ########
 #: /modules/ximTAGS/sql/ximTAGS_constructor.sql
-msgid "Define metadata"
-msgstr "Definir metadatos"
+msgid "Semantic Tags"
+msgstr "Etiquetas sem&aacute;nticas"
+
+msgid "Managing semantic tags related to the current node."
+msgstr "Gestionar las etiquetas sem&aacute;nticas asociadas al nodo actual."
 
 #: /modules/ximTAGS/actions/setmetadata/template/Smarty/index.tpl
 msgid "Enter the definition labels"
