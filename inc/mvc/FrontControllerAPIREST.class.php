@@ -29,31 +29,30 @@ require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
 require_once(XIMDEX_ROOT_PATH . '/api/utils/Crypto.class.php');
 require_once(XIMDEX_ROOT_PATH . '/services/TokenService.class.php');
 require_once(XIMDEX_ROOT_PATH . '/services/NodeService.class.php');
-require_once(XIMDEX_ROOT_PATH . '/api/classes/AbstractAPIAction.class.php');
 
 /**
  *
- * @brief FrontController for the http api interface
+ * @brief FrontController for the http api rest interface
  *
- * FrontController for the http api interface, provide specific methods to read
- * the parameters from http and launches the ApplicationController to compose
- * the http interface
+ * FrontController for the http api rest interface, provide specific methods to read
+ * the parameters from http and execute the specific action
  *
  */
-class FrontControllerAPIREST extends FrontController {
+class FrontControllerAPIREST extends FrontController
+{
     const XIM_API_TOKEN_PARAM = "ximtoken";
     const XIM_API_DEFAULT_METHOD = "index";
     const XIM_API_KEY_CONFIG_PARAM = "ApiKey";
     const XIM_API_IV_CONFIG_PARAM = "ApiIV";
-    
+
     private $apiActionsFolder;
-    
+
     /**
      * <p>Stores the current action being executed</p>
      * @var string 
      */
     private $action;
-    
+
     /**
      * <p>Stores the current id of the entity being requested</p>
      * @var string
@@ -63,7 +62,8 @@ class FrontControllerAPIREST extends FrontController {
     /**
      * <p>Default constructor</p>
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->apiActionsFolder = realpath(XIMDEX_ROOT_PATH . '/api-rest/actions/');
         $this->response->set('Content-Type', 'application/json');
@@ -74,7 +74,8 @@ class FrontControllerAPIREST extends FrontController {
     /**
      * <p>Dispatches the current request to be executed by the requested action</p>
      */
-    function dispatch() {
+    function dispatch()
+    {
         // Comprueba si la URL de acceso coincide con UrlRoot
         if (!$this->_checkURI()) {
             $this->sendErrorResponse('400', 'Bad URL requested');
@@ -94,48 +95,48 @@ class FrontControllerAPIREST extends FrontController {
                 $this->sendErrorResponse('400', 'Token missing for this action');
 
             $tokenService = new TokenService();
-            
+
             $ximtoken = $tokenService->decryptToken($encryptedXimtoken, Config::getValue(self::XIM_API_KEY_CONFIG_PARAM), Config::getValue(self::XIM_API_IV_CONFIG_PARAM));
 
             if ($ximtoken == null) {
                 $this->sendErrorResponse('400', 'The token does not have a valid format');
             }
 
-            /*
-            if (!($ximtoken['validTo'] > time())) {
-                $this->sendErrorResponse('400', 'The token has expired');
-            }*/
-            
             if ($tokenService->hasExpired($ximtoken)) {
                 $this->sendErrorResponse('400', 'The token has expired');
             }
-            
+
             $this->request->setParam('XimUser', $ximtoken['user']);
+            XSession::set('userID', $this->request->get('XimUser'));
         }
 
-	if(!empty($this->id)){
-		$this->request->setParam('id', $this->id);
-	}
-
-	$method=strtolower($_SERVER["REQUEST_METHOD"]);
+        $method = strtolower($_SERVER["REQUEST_METHOD"]);
 
         if (method_exists($actionObject, $method) & is_callable(array($actionObject, $method))) {
             /* Sets the ResponseBuilder object to the specified Action and initializes it with the Response instance
              * to be used. This instance is the same as the one provided as parameter to the requested method of the action
              */
             //$actionObject->setResponseBuilder(new ResponseBuilder($this->response));
-
-		if($method == 'post' || $method == 'put' ){
-			$content=file_get_contents('php://input');
-error_log(print_r($content,true));
-			$content=json_decode($content,true);
-			if($content===null){
-				$this->sendErrorResponse('400', "Bad data for this action");
-				exit;
-			}
-error_log(print_r($content,true));
-			$this->request->setParam('body',$content);
-		}
+            if ($method == 'post' || $method == 'put') {
+                $content = file_get_contents('php://input');
+                $content = json_decode($content, true);
+                
+                
+                if ($content === null) {
+                    $this->sendErrorResponse('400', "Bad data for this action");
+                    exit;
+                }
+                $this->request->setParam('body', $content);
+                $this->request->setParameters($content);
+                
+            }
+            
+            /*
+             * Sets the id get from URL in order to have higher preference than the passed as part of content body (only for POST and PUT)
+             */
+            if (!empty($this->id)) {
+                $this->request->setParam('id', $this->id);
+            }
 
             call_user_func(array($actionObject, $method), $this->request, $this->response);
 
@@ -152,7 +153,8 @@ error_log(print_r($content,true));
     /**
      * <p>Sends an error response with the specified status code and message</p>
      */
-    private function sendErrorResponse($status_code, $message) {
+    private function sendErrorResponse($status_code, $message)
+    {
         $this->response->header_status($status_code);
         $respContent = array("error" => 1, "message" => $message);
         $this->response->setContent($respContent);
@@ -163,7 +165,8 @@ error_log(print_r($content,true));
     /**
      * <p>Checks whether the requested action exists and whether it needs security to be executed</p>
      */
-    private function checkAction() {
+    private function checkAction()
+    {
         $requestUri = $_SERVER['REQUEST_URI'];
         $requestUri = str_replace('?' . $_SERVER['QUERY_STRING'], "", $requestUri);
         if (!preg_match('/.*\/api-rest\/(.*?)\/?$/', $requestUri, $matches))
@@ -172,7 +175,7 @@ error_log(print_r($content,true));
         $am = $matches[1];
         $pieces = explode(DIRECTORY_SEPARATOR, $am);
 
-        switch(count($pieces)) {
+        switch (count($pieces)) {
             case 1:
                 $this->action = $pieces[0];
                 $this->id = '';
@@ -181,7 +184,7 @@ error_log(print_r($content,true));
                 $this->action = $pieces[0];
                 $this->id = $pieces[1];
         }
-        
+
         if (!file_exists($this->apiActionsFolder . '/' . $this->action)) {
             return false;
         }
@@ -193,7 +196,8 @@ error_log(print_r($content,true));
      * Comprueba si la URL de acceso coincide con UrlRoot
      * @return unknown_type
      */
-    function _checkURI() {
+    function _checkURI()
+    {
         $host_request = $_SERVER["HTTP_HOST"];
         $uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
         $ximdex = parse_url(Config::getValue('UrlRoot'));
@@ -209,7 +213,8 @@ error_log(print_r($content,true));
     /**
      * <p>Sets the request parameters in the current request</p>
      */
-    function setToRequest() {
+    function setToRequest()
+    {
         $this->request->setParameters($_FILES);
         $this->request->setParameters($_GET);
         $this->request->setParameters($_POST);

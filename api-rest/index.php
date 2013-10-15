@@ -51,6 +51,7 @@ ModulesManager::file('/inc/mvc/mvc.php'); // MVC
 ModulesManager::file('/inc/mvc/FrontControllerAPIREST.class.php');
 ModulesManager::file('/api/interfaces/NoSecuredAction.iface.php');
 ModulesManager::file('/api/interfaces/SecuredAction.iface.php');
+ModulesManager::file('/api-rest/interfaces/APIRestAction.iface.php'); 
 ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER'); // Profiler
 
 function echo_gt_or_not($msg) {

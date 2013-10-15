@@ -96,6 +96,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/eventHandler.js');
 		$this->addJs(Extensions::JQUERY);
 		$this->addJs(Extensions::JQUERY_UI);
+		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js'); 
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/jquery.validate.js');

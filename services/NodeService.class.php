@@ -24,8 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-include_once(XIMDEX_ROOT_PATH."/inc/modules/ModulesManager.class.php");
+include_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file("/inc/model/node.inc");
 ModulesManager::file("/inc/model/user.inc");
 
@@ -33,15 +32,18 @@ ModulesManager::file("/inc/model/user.inc");
  * <p>Service responsible of deal with nodes</p>
  *
  */
-class NodeService {
-    
+class NodeService
+{
+    private static $PROJECTS_ROOT_NODE_ID = 10000;
+
     /**
      * <p>Default constructor</p>
      */
-    public function __construct() {
+    public function __construct()
+    {
         
     }
-    
+
     /**
      * <p>Checks if the given user has the permission over the node</p>
      * @param int $userId the user name
@@ -50,7 +52,8 @@ class NodeService {
      * 
      * @return a boolean indicating if the user has permission over the node
      */
-    public function hasPermissionOnNode($username, $nodeid, $permission = "View all nodes") {
+    public function hasPermissionOnNode($username, $nodeid, $permission = "View all nodes")
+    {
         $user = new User();
         $user->setByLogin($username);
         $user_id = $user->GetID();
@@ -61,16 +64,104 @@ class NodeService {
         if ($nodeid == null) {
             return false;
         }
-        
+
         $node = new Node($nodeid);
-        
+
         if ($node->GetID() == null) {
             return false;
         }
 
         $hasPermissionOnNode = $user->HasPermissionOnNode($nodeid, $permission);
-        
+
         return $hasPermissionOnNode;
+    }
+
+    /**
+     * <p>Checks if the given node id exists</p>
+     * @param int $nodeId The node id to be checked
+     */
+    public function existsNode($nodeId)
+    {
+        $id = (int) $nodeId;
+        $node = new Node($id);
+
+        return $node->get("IdNode") != null;
+    }
+
+    /**
+     * <p>Gets the node with the given node id or null if the node does not exist</p>
+     * 
+     * @param int $nodeId The node id to be get
+     * @return Node The requested node or null if the node does not exist
+     */
+    public function getNode($nodeId)
+    {
+        return $this->existsNode($nodeId) ? new Node($nodeId) : null;
+    }
+
+    /**
+     * <p>Gets the node info</p>
+     * <p>It will return the following properties of the node:
+     *  <ul>
+     *      <li>nodeid</li>
+     *      <li>nodeType</li>
+     *      <li>name</li>
+     *      <li>version (for nodes having version or 0 otherwise)</li>
+     *      <li>creationDate (timestamp)</li>
+     *      <li>modificationDate (timestamp)</li>
+     *      <li>path</li>
+     *      <li>parent</li>
+     *      <li>children</li>
+     *  </ul>
+     * </p>
+     *
+     * @param string $nodeid the node id to get the information
+     * @return array containing the node information
+     */
+    public function getNodeInfo($nodeid)
+    {
+        $node = $this->getNode($nodeid);
+
+        if ($node == null)
+            return array();
+        else
+            return array(
+                'nodeid' => $node->GetID(),
+                'nodeType' => $node->GetNodeType(),
+                'name' => $node->GetNodeName(),
+                'version' => $node->GetLastVersion() ? $node->GetLastVersion() : 0,
+                'creationDate' => $node->get('CreationDate'),
+                'modificationDate' => $node->get('ModificationDate'),
+                'path' => $node->GetPath(),
+                'parent' => $node->GetParent(),
+                'children' => $node->GetChildren(),
+            );
+    }
+    
+    /**
+     * <p>Returns the Ximdex root node (projects)</p>
+     * 
+     * @return Node The root node called projects
+     */
+    public function getRootNode() {
+        return $this->getNode(self::$PROJECTS_ROOT_NODE_ID);
+    }
+
+    /**
+     * <p>Deletes the given node</p>
+     * 
+     * @param mixed $node The node id or the Node to be deleted
+     * 
+     * @return boolean indicates whether the node has been deleted successfully or not
+     */
+    public function deleteNode($node) {
+        $nid = $node instanceof Node ? $node->GetID() : $node;
+        
+        $n = new Node($nid);
+        $res = $n->DeleteNode(true);
+        
+        return $res > 0;
+        
     }
 }
 

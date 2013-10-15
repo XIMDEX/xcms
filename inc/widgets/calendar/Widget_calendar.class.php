@@ -32,42 +32,54 @@ class Widget_calendar extends Widget_Abstract {
 
 
 
+	/**
+	*<p>Default method for widget params</p>
+	*<p></p>
+	*@param $params: Current params in Smarty
+	*@return array with js_files, css_files and attributes
+	*/
 	public function process($params) {
+
+		//Format for responsed value
 		if(!array_key_exists("format", $params)) {
 				$params['format'] = 'd-m-Y H:i:s';
 		}
 
+		//Format for displayed value 
 		if(!array_key_exists("format_display", $params)) {
-			$params["format_display"] = _('mm-dd-yy');
+			$params["format_display"] = _('mm-dd-yy H:i');
 		}
 
+		$formatDisplayPieces = explode(' ', $params['format_display']);
+		$dateFormatDisplay = $formatDisplayPieces[0];
+		$params["date_format_display"] = $dateFormatDisplay;
+
+		//
 		$format = str_replace("dd", "d", $params["format_display"]);
 		$format = str_replace("mm", "m", $format);
 		$format = str_replace("yy", "Y", $format);
 
+		//Exploding in date and time
 		$formatPieces = explode(' ', $params['format']);
 		$dateFormat = $formatPieces[0];
 		$timeFormat = $formatPieces[1];
 
-		$timePieces = explode(':', $timeFormat);
-		$hourFormat = $timePieces[0];
-		$minFormat = $timePieces[1];
-		$secFormat = $timePieces[2];
-
-		if(!array_key_exists("type", $params) || is_null($params['type']) ||  $params['type'] != 'to' ) {
+		//By default, from calendar. 
+		if (!array_key_exists("type", $params) || is_null($params['type']) || $params['type'] != 'to' ) {
 			$params['type'] = 'from';
 			$params['widget_label'] = _('Validity start');
 		}else {
 			$params['widget_label'] = _('Validity end');
 		}
 
+		//if from type, the default value is the param timestamp or now time.
 		if('from' == $params['type']) {
 			 $params['timestamp_value'] = (!array_key_exists('timestamp', $params) || is_null($params['timestamp']) )? time() : (int) $params['timestamp'];
-			 $params['timestamp_name'] = 'fechainicio';
+			 $params['timestamp_name'] = 'publishDate';
 			 $params['label_button'] = _('Now');
 		}else {
 			 $params['timestamp_value'] = (!array_key_exists("timestamp", $params) || is_null($params['timestamp']) )? '' : (int) $params['timestamp'];
-			 $params['timestamp_name'] = 'fechafin';
+			 $params['timestamp_name'] = 'unpublishDate';
 			 $params['label_button'] = _('Undetermined');
 		}
 
@@ -77,17 +89,22 @@ class Widget_calendar extends Widget_Abstract {
 		  $params['timestamp_name'] = $params['cname'];
 		}
 
+		//Set the server time.
 		$params['timestamp_current'] = date($dateFormat);
 		if( $params['timestamp_value']) {
 			$params['datevalue'] = date($format, $params['timestamp_value']);
+			/*
 			$params['hourvalue'] = date($hourFormat, $params['timestamp_value']);
 			$params['minvalue'] =  date($minFormat, $params['timestamp_value']);
 			$params['secvalue'] =  date($secFormat, $params['timestamp_value']);
+			*/
 		}else {
-			$params['datevalue'] = '00-00-0000';
+			$params['datevalue'] = '00-00-0000 00:00:00';
+			/*
 			$params['hourvalue'] = '00';
 			$params['minvalue'] =  '00';
 			$params['secvalue'] =  '00';
+			*/
 		}
 
 

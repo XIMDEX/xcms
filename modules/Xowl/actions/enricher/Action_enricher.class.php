@@ -1,4 +1,5 @@
-{**
+<?php
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,28 +22,21 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
+ */
 
-<html>
-<head>
 
-	<title>{t}Preview{/t}</title>
-	<link href="{$_URL_ROOT}/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
 
-{literal}
-<script type="text/javascript">
-$(document).ready(function() {
-	$("iframe").onload("load",function(){
-		$("a",window.frames[0].document).attr("target","_parent");
-	});
-});
+/*
+ModulesManager::file('/inc/serializer/Serializer.class.php');
+ModulesManager::file('/inc/helper/String.class.php');
+ModulesManager::file('/inc/mvc/Request.class.php');
+ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
+*/
 
-</script>
-{/literal}
-</head>
-<body>
-	<fieldset class="prevdoc-container">
-		<iframe class="prevdoc-document" id="prevdoc-document" name="prevdoc-document"  src="{$prevUrl}"/>
-	</fieldset>
-</body>
-</html>
+class Action_enricher extends ActionAbstract {
+
+        public function index() {
+
+	}
+}
+?>

@@ -146,7 +146,7 @@ class FrontControllerAPI extends FrontController {
     private function checkAction() {
         $requestUri = $_SERVER['REQUEST_URI'];
         $requestUri = str_replace('?' . $_SERVER['QUERY_STRING'], "", $requestUri);
-        if (!preg_match('/.*\/api\/(.*?)\/?$/', $requestUri, $matches))
+	if (!preg_match('/.*\/api(?:\-\w+?)?\/(.*?)\/?$/', $requestUri, $matches)) 
         // The reg.exp doesn't match or an error ocurred
             return false;
         $am = $matches[1];

@@ -1,5 +1,7 @@
-{**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+<?php
+
+/**
+ *  \details &copy; 2013  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -21,28 +23,34 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
+ */
 
-<html>
-<head>
+/**
+ * <p>API Rest Action Interface</p>
+ * <p>Interface to be implemented by the specific API Rest custom actions</p>
+ * <p>Provides the CRUD operations for an entity</p>
+ */
+interface APIRestAction
+{
+     /**
+     * <p>Create method</p>
+     */
+    public function post($request, $response);
+    
+    /**
+     * <p>Read method</p>
+     */
+    public function get($request, $response);
+    
+    /**
+     * <p>Update method</p>
+     */
+    public function put($request, $response);
+    
+    /**
+     * <p>Delete method</p>
+     */
+    public function delete($request, $response);
+}
 
-	<title>{t}Preview{/t}</title>
-	<link href="{$_URL_ROOT}/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
-
-{literal}
-<script type="text/javascript">
-$(document).ready(function() {
-	$("iframe").onload("load",function(){
-		$("a",window.frames[0].document).attr("target","_parent");
-	});
-});
-
-</script>
-{/literal}
-</head>
-<body>
-	<fieldset class="prevdoc-container">
-		<iframe class="prevdoc-document" id="prevdoc-document" name="prevdoc-document"  src="{$prevUrl}"/>
-	</fieldset>
-</body>
-</html>
+?>

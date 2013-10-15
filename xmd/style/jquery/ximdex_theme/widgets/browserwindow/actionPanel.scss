@@ -48,7 +48,68 @@ h2{
 	font-size: 18px;font-size: 1.8rem;
 	color: $c_grey;
 	text-transform: none;
+}
 
+ol{
+	list-style: none;
+	clear: both;
+}
+
+
+a {
+	text-decoration: none;
+	color: $c_main;
+}
+a:hover {
+	color: $c_mainlight;
+}
+input, select {
+	border: 1px solid $c_grey-ppp;
+	padding: 6px 8px;
+	color: $c_grey;
+	margin: 0 5px 0 0;
+	@include radius(3px);
+	&[type="text"]{
+		width: 80%;
+	}
+}
+input:hover {
+	@include boxshadow( 0 0 4px $s_white);
+
+}
+input:focus {
+	@include boxshadow(1px 1px 5px $s_grey);
+	color: $c_grey;
+}
+
+input[type="text"]{
+	display: block;
+}
+.disabled{
+	opacity: .35;
+}
+
+
+fieldset{
+	border: none;
+	position: relative;
+}
+
+.col1-2, .col1-3, .col2-3{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.col1-2{
+	width: 50%;
+}
+
+.col1-3{
+	width: 33%;
+}
+
+.col2-3{
+	width: 66%;
 }
 
 
@@ -133,50 +194,7 @@ h2.nodo_path{
 }
 
 
-ol{
-	list-style: none;
-	clear: both;
-}
 
-
-a {
-	text-decoration: none;
-	color: $c_main;
-}
-a:hover {
-	color: $c_mainlight;
-}
-input, select {
-	border: 1px solid $c_grey-ppp;
-	padding: 6px 8px;
-	color: $c_grey;
-	margin: 0 5px 0 0;
-	@include radius(3px);
-	&[type="text"]{
-		width: 80%;
-	}
-}
-input:hover {
-	@include boxshadow( 0 0 4px $s_white);
-
-}
-input:focus {
-	@include boxshadow(1px 1px 5px $s_grey);
-	color: $c_grey;
-}
-
-input[type="text"]{
-	display: block;
-}
-.disabled{
-	opacity: .35;
-}
-
-
-fieldset{
-	border: none;
-	position: relative;
-}
 
 
 .msg-error {
@@ -1203,13 +1221,7 @@ li.toggable h3:not(.editing):before{
 	width: 48%;
 }
 
-.col1-3{
-	width: 30%;
-}
 
-.col2-3{
-	width: 60%;
-}
 
 
 /**************
@@ -1281,6 +1293,11 @@ li.toggable h3:not(.editing):before{
 	width: 100%;
 }
 
+.title-box{
+	font-family: $t_title;
+	font-size: 1.3rem;
+}
+
 /**************
 // BUTTONS
 ***************/
@@ -1338,6 +1355,37 @@ li.toggable h3:not(.editing):before{
 		font-size: 1.6rem;
 		&:hover{
 			background:lighten($c_mainlight, 10%);
+		}
+
+		span{
+			position: absolute;	
+			display: none;
+			text-indent: 0;
+			margin-top: 2.5em;
+			z-index: 2;
+			background: $c_grey;
+			background: rgba(27,27,27,.6);
+			padding: .3em .5em;
+			-webkit-border-radius: 2px;
+			-moz-border-radius: 2px;
+			border-radius: 2px;
+			color: #fff;
+			text-transform: uppercase;
+			font-size: .85em;
+			line-height: 1em;
+			text-shadow: 1px 1px 1px rgba(27,27,27,.2);
+
+			&::before{
+				content: "";
+				position: absolute;
+				border: 6px solid transparent;
+				border-bottom-color: rgba(27,27,27,.6);
+				top: -12px;
+			}
+		}
+
+		&:hover span{
+			display: block;
 		}
 
 	}

@@ -1,4 +1,5 @@
-{**
+<?php
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,28 +22,52 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
+ */
 
-<html>
-<head>
 
-	<title>{t}Preview{/t}</title>
-	<link href="{$_URL_ROOT}/actions/prevdoc/resources/css/prevdoc.css" type="text/css" rel="stylesheet">
 
-{literal}
-<script type="text/javascript">
-$(document).ready(function() {
-	$("iframe").onload("load",function(){
-		$("a",window.frames[0].document).attr("target","_parent");
-	});
-});
 
-</script>
-{/literal}
-</head>
-<body>
-	<fieldset class="prevdoc-container">
-		<iframe class="prevdoc-document" id="prevdoc-document" name="prevdoc-document"  src="{$prevUrl}"/>
-	</fieldset>
-</body>
-</html>
+ModulesManager::file('/inc/rest/REST_Provider.class.php');
+
+
+class Enricher extends REST_Provider {
+
+	const ENCODING = "UTF-8";
+	const URL_STRING = "http://api.zemanta.com/services/rest/0.0/";
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	public function suggest($text, $key, $format = 'xml') {
+
+		return $this->query('zemanta.suggest', $key, $text, $format);
+	}
+
+	private function query($method, $key, $text, $format) {
+
+		$args = array(
+			'method' => $method,
+			'api_key' => $key,
+			'text' => $text,
+			'format' => $format );
+		$data = "";
+		foreach($args as $key=>$value) {
+			$data .= ($data != "")?"&":"";
+			$data .= urlencode($key)."=".urlencode($value);
+		}
+
+		$response = $this->http_provider->post(self::URL_STRING, $data);
+
+		if ($response['http_code'] != Curl::HTTP_OK) {
+			return NULL;
+		}
+
+		// TODO: Check valid response
+
+		return $response['data'];
+	}
+
+}
+
+?>

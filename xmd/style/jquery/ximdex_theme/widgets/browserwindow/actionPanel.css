@@ -42,6 +42,62 @@ h2 {
   color: #606060;
   text-transform: none; }
 
+ol {
+  list-style: none;
+  clear: both; }
+
+a {
+  text-decoration: none;
+  color: #006b6c; }
+
+a:hover {
+  color: #7bcabf; }
+
+input, select {
+  border: 1px solid #e1e1e1;
+  padding: 6px 8px;
+  color: #606060;
+  margin: 0 5px 0 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px; }
+  input[type="text"], select[type="text"] {
+    width: 80%; }
+
+input:hover {
+  -webkit-box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  -moz-box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2); }
+
+input:focus {
+  -webkit-box-shadow: 1px 1px 5px rgba(157, 157, 157, 0.2);
+  -moz-box-shadow: 1px 1px 5px rgba(157, 157, 157, 0.2);
+  box-shadow: 1px 1px 5px rgba(157, 157, 157, 0.2);
+  color: #606060; }
+
+input[type="text"] {
+  display: block; }
+
+.disabled {
+  opacity: .35; }
+
+fieldset {
+  border: none;
+  position: relative; }
+
+.col1-2, .col1-3, .col2-3 {
+  display: inline-block;
+  vertical-align: top; }
+
+.col1-2 {
+  width: 50%; }
+
+.col1-3 {
+  width: 33%; }
+
+.col2-3 {
+  width: 66%; }
+
 .action_header {
   background: white;
   -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
@@ -105,49 +161,6 @@ h2.nodo_path {
 
 .action_container .editable:hover::-webkit-input-placeholder, .action_container .editable:hover:-moz-placeholder, .action_container .editable::-webkit-input-placeholder, .action_container .editable:-moz-placeholder {
   color: #606060; }
-
-ol {
-  list-style: none;
-  clear: both; }
-
-a {
-  text-decoration: none;
-  color: #006b6c; }
-
-a:hover {
-  color: #7bcabf; }
-
-input, select {
-  border: 1px solid #e1e1e1;
-  padding: 6px 8px;
-  color: #606060;
-  margin: 0 5px 0 0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px; }
-  input[type="text"], select[type="text"] {
-    width: 80%; }
-
-input:hover {
-  -webkit-box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
-  -moz-box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2); }
-
-input:focus {
-  -webkit-box-shadow: 1px 1px 5px rgba(157, 157, 157, 0.2);
-  -moz-box-shadow: 1px 1px 5px rgba(157, 157, 157, 0.2);
-  box-shadow: 1px 1px 5px rgba(157, 157, 157, 0.2);
-  color: #606060; }
-
-input[type="text"] {
-  display: block; }
-
-.disabled {
-  opacity: .35; }
-
-fieldset {
-  border: none;
-  position: relative; }
 
 li.msg-info {
   line-height: 1.7em;
@@ -1132,12 +1145,6 @@ li.toggable h3:not(.editing):before{
 .col1-2 {
   width: 48%; }
 
-.col1-3 {
-  width: 30%; }
-
-.col2-3 {
-  width: 60%; }
-
 .row-item {
   background: #fff;
   -webkit-border-radius: 3px;
@@ -1189,6 +1196,10 @@ li.toggable h3:not(.editing):before{
 .block {
   display: block;
   width: 100%; }
+
+.title-box {
+  font-family: "Coustard";
+  font-size: 1.3rem; }
 
 /* first class used to fight against jQuery ui classes!! */
 .browser-window .btn {
@@ -1260,6 +1271,31 @@ li.toggable h3:not(.editing):before{
   font-size: 1.6rem; }
   .browser-window .btn-unlabel-rounded:hover {
     background: #9fd9d1; }
+  .browser-window .btn-unlabel-rounded span {
+    position: absolute;
+    display: none;
+    text-indent: 0;
+    margin-top: 2.5em;
+    z-index: 2;
+    background: #606060;
+    background: rgba(27, 27, 27, 0.6);
+    padding: .3em .5em;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: .85em;
+    line-height: 1em;
+    text-shadow: 1px 1px 1px rgba(27, 27, 27, 0.2); }
+    .browser-window .btn-unlabel-rounded span::before {
+      content: "";
+      position: absolute;
+      border: 6px solid transparent;
+      border-bottom-color: rgba(27, 27, 27, 0.6);
+      top: -12px; }
+  .browser-window .btn-unlabel-rounded:hover span {
+    display: block; }
 .browser-window .btn-unlabel-rounded::before {
   text-indent: 0;
   position: absolute;

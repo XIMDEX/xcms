@@ -23,56 +23,17 @@
  *  @version $Revision$
  *}
 
-<div id="%=id%" class="xim-calendar-layer-container xim-calendar-%=type% hidden">
-	<div class="cabeceratabla xim-calendar-titlecontainer">
-	%=widget_label%
-	</div>
-	<div class="xim-calendar-datecontainer">
-		<label for="xim-calendar-datefield">fecha</label>
-		<input
-			type="text"
-			class="xim-calendar-datefield"
-			value="%=datevalue%"
-			maxlength="14"
-			name="%=date_field_name%_%=type%"
-			readonly
-		/>
-		<div class="xim-calendar-datepicker"></div>
-	</div>
-	<div class="xim-calendar-timecontainer">
-		<label for="xim-calendar-hourfield">hora</label>
-		<input
-			type="text"
-			class="xim-calendar-hourfield"
-			value="%=hourvalue%"
-			maxlength="2"
-			name="%=hour_field_name%_%=type%"
-		/>
+<div id="%=id%" class="xim-calendar-layer-container xim-calendar-%=type%">
+		
+	{**quickButton could be never*}
+	{if '%=quickButton%' eq 'never'}
+		<input type="text" class="xim-calendar datetimepicker datetimepicker-%=type%" value="%=datevalue%" name="%=cname%" disabled="disabled" data-date-format="%=date_format_display%" />
+		<input type="checkbox" value="00/00/0000 00:00:00" id="neverUnpublish" checked="checked" />
+		<label for="neverUnpublish">%=quickButton%</label>
+	{else}	
+		<input type="text" class="xim-calendar datetimepicker datetimepicker-%=type%" value="%=datevalue%" name="%=cname%" data-date-format="%=date_format_display%" />
+	{/if}	
+		<input type="hidden" name="%=cname%TimeStamp" />
 
-		<input
-			type="text"
-			class="xim-calendar-minfield"
-			value="%=minvalue%"
-			maxlength="2"
-			name="%=min_field_name%_%=type%"
-		/>
-
-		<input
-			type="text"
-			class="xim-calendar-secfield"
-			value="%=secvalue%"
-			maxlength="2"
-			name="%=sec_field_name%_%=type%"
-		/>
-	</div>
-	<div class="xim-calendar-buttoncontainer">
-		<input
-			type="button"
-			class="xim-calendar-button ui-state-default"
-			value=" %=label_button% "
-		/>
-		<input type="hidden" name="%=timestamp_name%" value="%=timestamp_value%" class="xim-calendar-date-%=type%" />
-	</div>
-
-	<input type="hidden" value="%=timestamp_current%" class="xim-calendar-timestamp-current" />
 </div>
+
