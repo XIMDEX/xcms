@@ -27,6 +27,11 @@
 .text-editor{
 	background:#fff;
 	padding: 0;
+	position: relative;
+}
+
+.text-editor .editor{
+	position: static;
 }
 
 #et_form fieldset.editor textarea{
@@ -35,11 +40,8 @@
 
 	}
 
-
-
 .CodeMirror {
 	border: none;
-
 }
 
 .CodeMirror, .CodeMirror-scroll{
@@ -48,6 +50,22 @@
 	max-height: none !important;
 }
 
+
+.CodeMirror::before{
+	background: #dfdfdf;
+	border: 1px solid #eee;
+	content: "";
+	position: absolute;
+	height: 100%;
+	width: 2em;
+
+}
+
 .CodeMirror-scroll{
 	overflow: hidden !important;
+}
+
+.CodeMirror-gutter{
+	background: #dfdfdf !important;
+	border-right: none !important;
 }

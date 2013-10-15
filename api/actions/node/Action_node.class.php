@@ -626,4 +626,26 @@ class Action_node extends AbstractAPIAction implements SecuredAction {
         	}
 	}
 
+	/**
+	*
+     	* @param $request the current request
+     	* @param $response the response
+     	*/
+	public function delete($request, $response){
+		if (!$this->checkParameters($request, $response)) {
+                        return;
+                }
+		$idnode = $request->getParam('nodeid');
+		$node = new Node($idnode);
+                $result = $node->delete();
+
+		if (!$result) {
+            		$this->responseBuilder->ok()->content("This node couldn't be deleted.")->build();
+        	} else {
+            		$this->responseBuilder->ok()->content('Node ' . $idnode . " successfully deleted.");
+        	}
+
+
+	}
+
 }

@@ -24,11 +24,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Ximdex 3.5\n"
-"Report-Msgid-Bugs-To: dev@ximdex.org"
-"POT-Creation-Date: 2011-09-29 09:18+0100\n"
-"PO-Revision-Date: 2011-09-29 09:18+0100\n"
-"Last-Translator: Laura Ortiz <lortiz@ximdex.com>\n"
-"Language-Team: Ximdex Team <dev@ximdex.net>\n"
+"Report-Msgid-Bugs-To: dev@ximdex.com"
+"POT-Creation-Date: 2013-09-29 09:18+0100\n"
+"PO-Revision-Date: 2013-09-29 09:18+0100\n"
+"Last-Translator: Ximdex Development Team <dev@ximdex.com>\n"
+"Language-Team: Ximdex Team <dev@ximdex.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -150,8 +150,43 @@ msgstr "La creaci&oacute;n de %s se ha realizado correctamente"
 msgid "The operation has failed: %s"
 msgstr "La operaci&oacute;n ha fallado: %s"
 
+#: /install/ximdex_data/ximdex.sql table Actions
+msgid "Configure section"
+msgstr "Configurar secci&oacute;n"
+
+#: /actions/managefolders/Action_managefolders.class.php
+msgid "This section has been successfully configured."
+msgstr "Esta secci&oacute;n ha sido correctamente configurada."
+
+msgid "Are you sure you want to proceed?"
+msgstr "&iquest;Est&aacute; seguro de querer continuar?"
+
+msgid "Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that folder."
+msgstr "&iexcl;Atenci&oacute;n! Si desmarca alguna carpeta, Ximdex CMS borrar&aacute; todos los archivos que contiene."
+
+msgid "Subfolders management"
+msgstr "Gesti&oacute;n de subcarpetas"
+
+msgid "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc."
+msgstr "Use esta carpeta si necesita almacenar scripts JS o archivos de texto como PDF's o MS Office documentos,etc."
+
+msgid "This is the main repository for all your XML contents. It's the most important folder in a section."
+msgstr "Este es el principal repositorio para todos sus contenidos XML. Es la carpeta m&aacute;s importante en una secci&oacute;n."
+
+msgid "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)"
+msgstr "En esta carpeta se almacenan todas las im&aacute;genes que el proyecto o secci&oacute;n necesita en los formatos gif, jpg, png, tiff, etc."
+
+msgid "Create here your own XSL Templates to redefine some particular appareance in your XML documents."
+msgstr "En esta carpeta se pueden crear nuevas plantillas XSL para personalizar aspectos propios de esta secci&oacute;n en los documentos XML."
+
+msgid "Into this folder you could store several HTML snippets that you can add directly into your XML documents"
+msgstr "En esta carpeta se pueden almacenar trozos de c&oacute;digo HTML que se incrustan directamente en los documentos XML."
+
+msgid "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents."
+msgstr "En esta carpeta se pueden crear trozos de c&oacute;digo XML que se pueden incluir en los documentos XML. Los usos t&iacute;picos son men&uacute;s, cabeceras, pies de p&aacute;gina, etc. "
+
 #: /actions/addfoldernode/Action_addfoldernode.class.php
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Nodes
 #: /inc/io/BaseIO.class.php
 msgid "Project"
 msgstr "Proyecto"
@@ -733,7 +768,7 @@ msgstr "&iquest;Est&aacute; seguro que quiere cerrar todas las pesta&ntilde;as d
 msgid "Module information"
 msgstr "Informaci&oacute;n de m&oacute;dulos"
 
-msgid "Node information"
+msgid "Node info"
 msgstr "Informaci&oacute;n de nodo"
 
 msgid "Idnode was not found"
@@ -1337,8 +1372,33 @@ msgstr "Enlaces encontrados que apuntan a la misma url:"
 
 #: /actions/createlink/template/Smarty/show.tpl
 #: /actions/fileupload_common_multiple/template/Smarty/index.tpl
-msgid "Continue"
-msgstr "Continuar"
+msgid "Upload files"
+msgstr "Subir archivos"
+
+msgid "Add XML documents"
+msgstr "A&ntilde;adir documentos XML"
+
+msgid " Add XML files "
+msgstr " A&ntilde;adir archivos XML "
+
+msgid "Select schema"
+msgstr "Seleccionar esquema"
+
+msgid "Select language"
+msgstr "Seleccionar idioma"
+
+msgid "Files added for upload: "
+msgstr "Archivos a&ntilde;adidos para subir: "
+
+msgid "There aren't any selected files for upload."
+msgstr "No hay archivos seleccionados para subir."
+
+msgid "Upload url not found."
+msgstr "URL de subida no encontrada."
+
+msgid "You should select a schema and a language before uploading."
+msgstr "Debe elegir un esquema y un idioma antes de comenzar con la subida."
+
 
 #: /actions/createrole/Action_createrole.class.php
 msgid "Role has been successfully added"
@@ -1853,9 +1913,17 @@ msgstr "Plantilla de bolet&iacute;n de ximNEWS"
 msgid "NodeType"
 msgstr "Tipo de nodo"
 
-msgid "Transformer"
-msgstr "Motor de transformaci&oacute;n"
+msgid "Information about"
+msgstr "Informaci&oacute;n sobre"
 
+msgid "General info"
+msgstr "Informaci&oacute;n general"
+
+msgid "Properties info"
+msgstr "Informaci&oacute;n de propiedades"
+
+msgid "Workflow info"
+msgstr "Informaci&oacute;n de publicaci&oacute;n"
 
 #: /actions/fileupload_common_multiple/Action_fileupload_common_multiple.class.php
 msgid "It is necessary to be an active user to upload files"
@@ -2269,14 +2337,8 @@ msgstr "Se han asignado %s idiomas correctamente."
 msgid "A total of %S idiomatic versions have been recursively created."
 msgstr "Un total de %s versiones idiom&aacute;ticas han sido creadas recursivamente."
 
-msgid "Template values will be inherited."
-msgstr "Los valores de las plantillas ser&aacute;n heredados."
-
 msgid "%s Templates have been successfully assigned."
 msgstr "Se han asignado %s plantillas correctamente."
-
-msgid "%s will be used as document transformer."
-msgstr "Se usar&aacute; %s como transformador de documentos."
 
 #: /actions/manageproperties/inc/ChannelProperty.class.php
 msgid "StructuredDocument cannot be instantiate with ID "
@@ -2285,6 +2347,9 @@ msgstr "No es posible instanciar el StructuredDocument con ID "
 #: /actions/manageproperties/inc/InheritedPropertyManager.class.php
 msgid "Inheritable property cannot be instantiate"
 msgstr "No es posible instanciar la propiedad heredable"
+
+msgid "These properties are inheritable. Every single change will be propagated into all the child nodes."
+msgstr "Estas propiedades son heredables. Cada cambio ser&aacute; propagado en los hijos del nodo actual."
 
 #: /actions/manageproperties/resources/js/confirm.js
 #: /actions/managebatchs/forms.php
@@ -2320,6 +2385,9 @@ msgstr "Asociar canal recursivamente a todos los documentos."
 msgid "Edit properties"
 msgstr "Modificar propiedades"
 
+msgid "Manage properties"
+msgstr "Modificar propiedades"
+
 #: /actions/manageproperties/template/Smarty/confirm.tpl
 msgid "Changes will not be undone."
 msgstr "No ser&aacute; posible deshacer los cambios."
@@ -2334,23 +2402,6 @@ msgstr "Sobreescribir los idiomas heredados"
 msgid "Create idiomatic version recursively"
 msgstr "Crear versi&oacute;n idiom&aacute;tica recursivamente."
 
-#: /actions/manageproperties/template/Smarty/Schema.tpl
-msgid "Allowed types of templates"
-msgstr "Tipos de plantillas permitidas"
-
-msgid "Use inherited templates"
-msgstr "Usar las plantillas heredadas"
-
-msgid "Overwrite inherited templates"
-msgstr "Sobreescribir las plantillas heredadas"
-
-#: /actions/manageproperties/template/Smarty/Transformer.tpl
-msgid "Document transformer"
-msgstr "Transformador de documentos"
-
-msgid "Available transformers"
-msgstr "Transformadores disponibles"
-
 #: /actions/manageversions/template/Smarty/index.tpl
 msgid "Recover"
 msgstr "Recuperar"
@@ -2363,6 +2414,9 @@ msgstr "&iquest;Est&aacute; seguro de querer recuperar esta versi&oacute;n y con
 
 msgid "Are you sure you want to delete this version?"
 msgstr "&iquest;Est&aacute; seguro de querer borrar esta versi&oacute;n?"
+
+msgid "Are you sure you want to delete this version?. This version is the latest published content."
+msgstr "&iquest;Est&aacute; seguro de querer borrar esta versi&oacute;n?. Esta versi&oacute;n es el contenido publicado m&aacute;s reciente."
 
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
@@ -9087,9 +9141,6 @@ msgstr "Errores:"
 
 msgid "Warnings:"
 msgstr "Advertencias:"
-
-msgid "Information:"
-msgstr "Informaci&oacute;n:"
 
 msgid "Errors and Warnings occurred, do you want to continue with the process? (Y/n)"
 msgstr "Se han producido Errores y/o Advertencias, quiere continuar con el proceso? (S/n)"
