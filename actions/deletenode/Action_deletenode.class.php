@@ -133,15 +133,16 @@ class Action_deletenode extends ActionAbstract {
 			'texto' => $texto,
 			"go_method" => "delete_node",
 		);
-
+		$depListTmp=array();
 		if (sizeof($depList) > 0) {
-
 			foreach($depList as $idDep) {
 				$depNode = new Node($idDep);
-				$values["depList"][] = $depNode->GetPath();
+			//	$values["depList"][$idDep]["name"] = $depNode->GetNodeName();
+				$depListTmp[$idDep]["name"] = $depNode->GetNodeName();
+			//	$values["depList"][$idDep]["path"] = $depNode->GetPath();
+				$depListTmp[$idDep]["path"] = $depNode->GetPath();
 			}
 		}
-
 		if ($formType == 'no_permisos') {
 
 			$values['titulo'] = $node->nodeType->get('Name') != "XmlContainer" ?  _("List of pending documents")
@@ -171,13 +172,11 @@ class Action_deletenode extends ActionAbstract {
 					}
 				}
 			}
-
-			$values["depList"] = $depList;
+			$values["depList"] = $depListTmp;
 			$values["pendingTasks"] = count($pendingTasks);
 			$values["isPublished"] = $isPublished;
 		}
 
-	//	$this->addJs('/actions/composer/resources/js/widgets_controllers/default.js');
 		$this->addJs('/actions/deletenode/resources/js/deletenode.js');
 
 		$this->render($values, null, 'default-3.0.tpl');
@@ -186,7 +185,7 @@ class Action_deletenode extends ActionAbstract {
 	function delete_node() {
 
 		$idNode	= $this->request->getParam("nodeid");
-	    $depList = array();
+	    	$depList = array();
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
 		if(ModulesManager::isEnabled("ximDEMOS") &&  XSession::get('user_demo')) {

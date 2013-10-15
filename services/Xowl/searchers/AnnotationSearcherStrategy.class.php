@@ -30,15 +30,15 @@ ModulesManager::file('/services/Xowl/searchers/AbstractSearcherStrategy.class.ph
 class AnnotationSearcherStrategy extends AbstractSearcherStrategy{
 
 	
-		const ENCODING = "UTF-8";
-		const URL_STRING = "";
-		//Default response format
-		const RESPONSE_FORMAT = "application/json";
-		private static $IS_SEMANTIC = 1;
-		
-		public function __construct(){
-			parent::__construct();
-		}
+	const ENCODING = "UTF-8";
+	const URL_STRING = "";
+	//Default response format
+	const RESPONSE_FORMAT = "application/json";
+	private static $IS_SEMANTIC = 1;
+	
+	public function __construct(){
+		parent::__construct();
+	}
 
 	/**
 	 * <p>Query the server with the default response format (application/json)</p>
@@ -131,8 +131,8 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy{
 								$ximdexType = self::$XIMDEX_TYPE_DORGANISATION;
 								break;
 						}
-						$selectedText = $value['enhancer:selected-text']['@value'];
-						if ($selectedText){
+						if (isset($value['enhancer:selected-text'])){
+                                                        $selectedText = $value['enhancer:selected-text']['@value'];
 							$confidence  = $value['enhancer:confidence']?$value['enhancer:confidence']:0;
 							$result[$dcType][$selectedText]["confidence"][]=$confidence;
 							$result[$dcType][$selectedText]["type"] = $ximdexType;
@@ -156,11 +156,13 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy{
 			if (is_array($dcType)){
 				foreach($dcType as $key2 => $resource){
 					$acum = 0;
+					$cont = 0;
 					foreach($resource["confidence"] as $confidence){					
 						$acum += $confidence;
+						$cont++;
 					}
 					//unset($result[$key][$key2]["confidence"]);
-					$result[$key][$key2]["confidence"] = $acum;
+					$result[$key][$key2]["confidence"] = number_format(($acum/$cont)*100, 2, ',', '');
 				}
 			}
 		}

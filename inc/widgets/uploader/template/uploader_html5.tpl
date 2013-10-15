@@ -23,23 +23,23 @@
  *  @version $Revision$
  *}
 
- <div class="xim-uploader-container" id="{$id}">
-
-
-  <div class="xim-loader-list-container">
-  	  <div class="xim-loader-header">
+<div class="xim-uploader-container" id="{$id}" data-is-structured="%=is_structured%">
+	<div class="xim-loader-list-container">
+  		<div class="xim-loader-header">
   	  		<span class="xim-loader-name">{t}Name{/t}:</span>
   	  		<span class="xim-loader-size">{t}Size{/t}:</span>
   	  		<span class="xim-loader-progress">{t}Progress{/t}:</span>
   	  		<span class="xim-loader-options">{t}Options{/t}:</span>
-  	  </div>
-	  <ul class="xim-loader-list">
-
-	  </ul>
-  </div>
-  <ul class="xim-loader-list-actions">
- <li><a href="#" class="xim-uploader-selected">{t}Add{/t}</a> 
-    <a href="#" class="xim-uploader-link">{t}Add{/t}<input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"></a> 
- </li>
-   <li><a href="#" class="xim-uploader-delete">{t}Remove{/t}</a></li>
+  	  	</div>
+	  	<ul class="xim-loader-list"></ul>
+  	</div>
+  	<ul class="xim-loader-list-actions">
+ 		<li>
+			<a href="#" class="xim-uploader-selected">{t}Add{/t}</a> 
+    			<a href="#" class="xim-uploader-link">{t}Add{/t}<input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"></a>
+ 		</li>
+   		<li>
+			<a href="#" class="xim-uploader-delete">{t}Remove{/t}</a>
+		</li>
+	</ul>
  </div>

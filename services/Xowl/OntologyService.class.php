@@ -96,8 +96,8 @@ class OntologyService {
 
 		//It should be loaded from DB.
 		$this->providers["semantic"]="AnnotationSearcherStrategy";
-		$this->providers["content"]="ContentEnricherSearcherStrategy";
-		$this->providers["ximdex"]="XimdexSearcherStrategy";
+		//$this->providers["content"]="ContentEnricherSearcherStrategy";
+		//$this->providers["ximdex"]="XimdexSearcherStrategy";
 	}
 }
 

@@ -29,57 +29,57 @@
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<div class="action_header">
 		<h2>{t}Would you like to delete{/t} {$nameNode}?</h2>
-
-	<fieldset class="buttons-form">
-		{button class="delete_button  btn main_action" label="Delete"}
-	</fieldset>
-	</div>
-	<div class="action_content">
-		<fieldset>
-				 <ol class="numbered">
-		             	<li><span>{t}This action cannot be undone{/t}.</span></li>
-		               <li><span>{t}If a long time is elapsed before action is executed, list of dependencies and children of node may change{/t}.</span></li>
-					<li><span>{t}Deleting this node all its children will be deleted too{/t}.</span></li>
-					{if ($isPublished || $pendingTasks)}
-						<li><span>{t}This action does not carry on expiration of nodes{/t}. </span></li>
-					{/if}
-					</ol>
-					{if ($depList)}
-					<p class="delete">{t}The following nodes will be deleted on cascade{/t}:</p>
-						<div class="deletenodes">
-							<ul>
-							{foreach from=$depList item=dep}
-								<li nowrap><span>{$dep}</span></li>
-							{foreachelse}
-								<li><span>{t}No dependencies were found{/t}</span></li>
-							{/foreach}
-							</ul>
-						</div>
-						<span><input type="checkbox" name="unpublishnode" id="asegurado" />
-						<span>{t}Tick to delete all dependencies{/t}</span></span>
-				{else}&nbsp;
-				<div class="deletenodes">
-					<ul>
-						<li nowrap class="no-node"><span>{t}This node has not dependecies at the moment{/t}.</span></li>
-					</ul>
-					<input type="hidden" name="unpublishnode" id="asegurado" value="1"/>
-				</div>
-				{/if}
-		</ol>
-				{if ($pendingTasks)}
-				<p>¡{t}This node or its children have pending task to publish, if you continue these tasks will be interrupted{/t}!</p>
-				{/if}
-
-				{* Checking if node is published *}
-				{if ($isPublished)}
-					<p>¡{t}This node, or one or more of its children, are published{/t}!.{t}If you do not want to keep your nodes published{/t}:
-					<ul>
-					<li nowrap>- {t}Edit publication life of your nodes previously deletion.{/t}</li>
-					<li>- {t}Or if you prefer, delete your nodes by hand later in the publication zone{/t}.</li>
-					</ul>
-				{/if}
-			</p>
+		<fieldset class="buttons-form">
+			{button class="delete_button  btn main_action" label="Delete"}
 		</fieldset>
 	</div>
+	
+	<div class="action_content">
+		<fieldset>
+			<ol class="numbered">
+		        	<li><span>{t}This action cannot be undone{/t}.</span></li>
+		               	<li><span>{t}If a long time is elapsed before action is executed, list of dependencies and children of node may change{/t}.</span></li>
+				<li><span>{t}Deleting this node all its children will be deleted too{/t}.</span></li>
+			{if ($isPublished || $pendingTasks)}
+				<li><span>{t}This action does not carry on expiration of nodes{/t}. </span></li>
+			{/if}
+			</ol>
+			{if ($depList)}
+			<p class="delete">{t}The following nodes will be deleted on cascade{/t}:</p>
+			<div class="deletenodes">
+				<ul>
+				{foreach from=$depList key=id item=dep}
+					<li nowrap><span>{$dep.name|gettext} ({$id})</span></li>
+				{foreachelse}
+					<li><span>{t}No dependencies were found{/t}</span></li>
+				{/foreach}
+				</ul>
+			</div>
+			
+			<span><input type="checkbox" name="unpublishnode" id="asegurado" />
+			<span>{t}Tick to delete all dependencies{/t}</span></span>
 
+			{else}
+			<div class="deletenodes">
+				<ul>
+					<li nowrap class="no-node"><span>{t}This node has not dependecies at the moment{/t}.</span></li>
+				</ul>
+				<input type="hidden" name="unpublishnode" id="asegurado" value="1"/>
+			</div>
+			{/if}
+			{if ($pendingTasks)}
+			<p>{t}This node or its children have pending task to publish, if you continue these tasks will be interrupted{/t}!</p>
+			{/if}
+
+			{* Checking if node is published *}
+			{if ($isPublished)}
+				<p>{t}This node, or one or more of its children, are published{/t}!.{t}If you do not want to keep your nodes published{/t}:
+				<ul>
+					<li nowrap>- {t}Edit publication life of your nodes previously deletion.{/t}</li>
+					<li>- {t}Or if you prefer, delete your nodes by hand later in the publication zone{/t}.</li>
+				</ul>
+			{/if}
+				</p>
+		</fieldset>
+	</div>
 </form>
