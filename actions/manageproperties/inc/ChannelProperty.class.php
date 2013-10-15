@@ -53,6 +53,7 @@ class ChannelProperty extends InheritableProperty {
 			$parentId = $this->node->getParent();
 			$parent = new Node($parentId);
 			$inheritedChannels = $parent->getProperty($this->getPropertyName(), true);
+			
 
 			if (empty($inheritedChannels)) {
 
@@ -69,12 +70,16 @@ class ChannelProperty extends InheritableProperty {
 			}
 		}
 
+
 		foreach ($availableChannels as &$channel) {
 
-			unset($channel[0], $channel[1]);
-			$channel['Checked'] = in_array($channel['IdChannel'], $nodeChannels) ? true : false;
+			unset($channel[0], $channel[1]);			
+			//If is availableChannel and nodeChannels is empty, we use the availableChannels
+			if (count($nodeChannels))
+				$channel['Checked'] = in_array($channel['IdChannel'], $nodeChannels) ? true : false;
+			else
+				$channel['Checked'] = 1;
 		}
-
 		return $availableChannels;
 	}
 

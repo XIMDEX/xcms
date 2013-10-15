@@ -27,109 +27,29 @@
 {assign var="languages" value=$properties.Language}
 
 <fieldset>
-
-<div class="manageproperties">
-
-	<h3 class="icon icon-language">{t}Languages{/t}</h3>
-	<div class="row-item">
-<div class="hidden">
-			<input type="radio" name="inherited_languages" class="languages_overwritten"
-				value="overwrite" checked />
-			<label>{t}Overwrite inherited languages{/t}</label>
-		</div>
-
-
-
-				{foreach from=$languages item=language}
+	<div class="manageproperties">
+		<h3 class="icon icon-language">{t}Languages{/t}</h3>
+		<div class="row-item">
+			<div class="hidden">
+				<input type="radio" name="inherited_languages" class="languages_overwritten"
+					value="overwrite" checked />
+				<label>{t}Overwrite inherited languages{/t}</label>
+			</div>
+			{foreach from=$languages item=language}
 				<span class="slide-element">
 					<input
 						type="checkbox"
 						class="languages input-slide"
 						name="Language[]"
-						id="{$language.Name}"
+						id="{$language.Name}"						
 						value="{$language.IdLanguage}"
-					checked
+						{if $language.Checked == 1}
+							checked="checked"
+						{/if}						
 						/>
 					<label for="{$language.Name}" class="label-slide">{$language.Name}</label>
 				</span>
-				{/foreach}
-
-
-
-	</div>
-
-	<!--<div class="xright-block">
-		<input type="radio" name="inherited_languages" class="languages_inherited"
-			value="inherited" {if $Language_inherited == 'inherited'}checked{/if} />
-		<label>{t}Use inherited languages{/t}</label>
-		<ol>
-			<li>
-			{foreach from=$languages item=language}
-				{$language.Name},
 			{/foreach}
-			</li>
-		</ol>
+		</div>
 	</div>
-
-	<div class="xright-block">
-
-		<div>
-			<input type="radio" name="inherited_languages" class="languages_overwritten"
-				value="overwrite" {if $Language_inherited == 'overwrite'}checked{/if} />
-			<label>{t}Overwrite inherited languages{/t}</label>
-		</div>
-
-		<div class="left-block">
-			<ol>
-				{foreach from=$languages item=language}
-				<li>
-					<input
-						type="checkbox"
-						class="languages"
-						name="Language[]"
-						value="{$language.IdLanguage}"
-						{if ($language.Checked == 1)}
-							checked="{$language.Checked}"
-						{/if}
-						{if $Language_inherited == 'inherited'}
-							disabled
-						{/if}
-						/>
-					{$language.Name}
-				</li>
-				{/foreach}
-			</ol>
-		</div>
-
-
-		<div class="right-block">
-			<ol>
-				{foreach from=$languages item=language}
-				<li>
-					<div class="novisible recursive languages_recursive_{$language.IdLanguage}">
-						<input
-							type="checkbox"
-							class="languages_recursive"
-							name="Language_recursive[]"
-							value="{$language.IdLanguage}"
-							/>
-						{t}Create idiomatic version recursively{/t}
-					</div>
-					<div class="{if ($language.Checked != 1)}novisible{/if} apply">
-						<button
-							type="button"
-							class="languages_apply"
-							name="Language_apply"
-							value="{$language.IdLanguage}">
-						{t}Crear idioma{/t}
-						</button>
-					</div>
-				</li>
-				{/foreach}
-			</ol>
-		</div>
--->
-	</div>
-</div>
-
 </fieldset>

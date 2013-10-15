@@ -24,9 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
 ModulesManager::file('/inc/model/orm/NodeFrames_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
@@ -34,7 +31,6 @@ ModulesManager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
 ModulesManager::file('/inc/persistence/datafactory.inc');
 ModulesManager::file('/inc/model/RelStrDocChannels.class.php');
-
 
 /**
 *	@brief Handles operations with NodeFrames.
@@ -45,7 +41,7 @@ ModulesManager::file('/inc/model/RelStrDocChannels.class.php');
 
 class NodeFrame extends NodeFrames_ORM {
 
-    var $syncStatObj;
+	var $syncStatObj;
 
 	/**
 	*  Adds a row to NodeFrames table.
@@ -57,7 +53,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*  @return int|null
 	*/
 
-    function create($nodeId, $name, $version, $up, $down = NULL) {
+    	function create($nodeId, $name, $version, $up, $down = NULL) {
 		$this->set('NodeId',$nodeId);
 		$this->set('VersionId',$version);
 		$this->set('TimeUp',$up);
@@ -68,7 +64,6 @@ class NodeFrame extends NodeFrames_ORM {
 		$this->set('IsProcessDown',0);
 		$this->set('Name',$name);
 
-
 		parent::add();
 		$idNodeFrame = $this->get('IdNodeFrame');
 
@@ -76,17 +71,16 @@ class NodeFrame extends NodeFrames_ORM {
 			return $idNodeFrame;
 		}
 
-		XMD_Log::info("ERROR Creando el nodeFrame");
+		XMD_Log::info("ERROR: Creating nodeframe");
 		return NULL;
-    }
+    	}
 
 	/**
-    *	Gets all ServerFrames associated to a NodeFrame.
+    	*	Gets all ServerFrames associated to a NodeFrame.
 	*	@param int idNdFr
 	*	@return array
 	*/
-
-    function getFrames($idNdFr) {
+    	function getFrames($idNdFr) {
 		$dbObj = new DB();
 		$dbObj->Query("SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr");
 
@@ -97,7 +91,7 @@ class NodeFrame extends NodeFrames_ORM {
 		}
 
 		return $frames;
-    }
+    	}
 
 	/**
 	*  Gets the time intervals without NodeFrames for a given Node.
@@ -105,15 +99,14 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@return array
 	*/
 
-    function getGaps($nodeId) {
+    	function getGaps($nodeId) {
 		$dbObj = new DB();
 		$arrayDates = array();
 		$gaps = array();
 		$now = time();
-		$infinito = mktime(0,0,0,12,12,2033);
+		$infinite = mktime(0,0,0,12,12,2099);
 		$j=0;
-		$sql = "SELECT TimeUp, TimeDown FROM NodeFrames WHERE NodeId = $nodeId AND (TimeDown > $now OR TimeDown IS NULL)
-				ORDER BY TimeUp ASC";
+		$sql = "SELECT TimeUp, TimeDown FROM NodeFrames WHERE NodeId = $nodeId AND (TimeDown > $now OR TimeDown IS NULL) ORDER BY TimeUp ASC";
 
 		$dbObj->Query($sql);
 
@@ -122,11 +115,8 @@ class NodeFrame extends NodeFrames_ORM {
 			$timeDown = $dbObj->GetValue("TimeDown");
 			$arrayDates[$j]['up'] = $timeUp;
 
-			if (!$timeDown) {
-			$arrayDates[$j]['down'] = $infinito;
-			} else {
-			$arrayDates[$j]['down'] = $timeDown;
-			}
+			if (!$timeDown) {$arrayDates[$j]['down'] = $infinite;}
+			else {$arrayDates[$j]['down'] = $timeDown;}
 
 			$j++;
 			$dbObj->Next();
@@ -134,12 +124,11 @@ class NodeFrame extends NodeFrames_ORM {
 
 		if ($dbObj->numRows == 0) {
 			$gaps[$j]['start'] = $now;
-			$gaps[$j]['end'] = $infinito;
+			$gaps[$j]['end'] = $infinite;
 			return $gaps;
 		}
 
-		//El infinito
-		$arrayDates[$j]['up'] = $infinito;
+		$arrayDates[$j]['up'] = $infinite;
 		$arrayDates[$j]['down'] = 0;
 
 		$j = 0;
@@ -155,17 +144,17 @@ class NodeFrame extends NodeFrames_ORM {
 			$tmp = $arrayDates[$i]['up'] - $arrayDates[$i-1]['down'];
 
 			if ($tmp > 0) {
-			$gaps[$j]['start'] = $arrayDates[$i-1]['down'];
-			$gaps[$j]['end'] = $arrayDates[$i]['up'];
-			$j++;
+				$gaps[$j]['start'] = $arrayDates[$i-1]['down'];
+				$gaps[$j]['end'] = $arrayDates[$i]['up'];
+				$j++;
 			}
 		}
 
 		return $gaps;
-    }
+    	}
 
 	/**
-    *	Gets the NodeFrame active.
+    	*	Gets the NodeFrame active.
 	*	@param int nodeId
 	*	@param int nodeFrId
 	*	@param int up
@@ -173,8 +162,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@param int testTime
 	*	@return array / NULL
 	*/
-
-    function getActiveNodeFrame($nodeId,$nodeFrId,$up,$down=null,$testTime = NULL) {
+    	function getActiveNodeFrame($nodeId,$nodeFrId,$up,$down=null,$testTime = NULL) {
 		$dbObj = new DB();
 
 		if (!$testTime) {
@@ -182,10 +170,6 @@ class NodeFrame extends NodeFrames_ORM {
 		} else {
 			$now = $testTime;
 		}
-
-		//Si la función es llamada desde el formulario de publicación
-		/*$sql0 = "TimeUp, TimeDown, VersionId";
-		$sql1 = " ORDER BY Active = 1 DESC, Active = 0 DESC, IdNodeFrame DESC LIMIT 1";*/
 
 		if (!$down) {
 			$sql = "SELECT IdNodeFrame, TimeDown, VersionId FROM NodeFrames WHERE ((TimeDown IS NOT NULL
@@ -209,17 +193,17 @@ class NodeFrame extends NodeFrames_ORM {
 		$timeDown = $dbObj->GetValue("TimeDown");
 
 		return array($idNodeFr,$version,$timeDown);
-    }
+    	}
 
 	/**
-    *	Checks whether exists a NodeFrame after a given time.
+    	*	Checks whether exists a NodeFrame after a given time.
 	*	@param int nodeId
 	*	@param int up
 	*	@param int down
 	*	@return boolean
 	*/
 
-    function existsNodeFrame($nodeId, $up, $down = NULL) {
+    	function existsNodeFrame($nodeId, $up, $down = NULL) {
 		$dataFactory = new DataFactory($nodeId);
 		$idVersion = $dataFactory->GetLastVersionId();
 
@@ -237,8 +221,6 @@ class NodeFrame extends NodeFrames_ORM {
 			return false;
 		}
 
-		// extensión de la validación de si existe un node frame
-		// Comprueba para un structureddocument dado si todos sus canales han sido publicados
 		$node = new Node($nodeId);
 		if ($node->nodeType->get('IsStructuredDocument') > 0) {
 			$channelList = array();
@@ -263,15 +245,14 @@ class NodeFrame extends NodeFrames_ORM {
 			}
 		}
 		return true;
-    }
+    	}
 
 	/**
 	*  Gets the field IdNodeFrame from NodeFrames table which matching the value of nodeId.
 	*  @param int nodeId
 	*  @return int|null
 	*/
-
-    function getNodeFrameByNode($nodeId) {
+    	function getNodeFrameByNode($nodeId) {
 		$dataFactory = new DataFactory($nodeId);
 		$idVersion = $dataFactory->GetLastVersionId();
 
@@ -283,22 +264,20 @@ class NodeFrame extends NodeFrames_ORM {
 			return null;
 		}
 		return $result[0];
-    }
+    	}
 
 	/**
-    *	Checks whether the NodeFrame has been renamed.
+    	*	Checks whether the NodeFrame has been renamed.
 	*	@param int nodeId
 	*	@return boolean
 	*/
 
 	function isRenamed($nodeId) {
-
 		$condition = 'NodeId = %s ORDER BY IdNodeFrame DESC LIMIT 1';
 		$params = array('NodeId' => $nodeId);
 		$result = parent::find('IdNodeFrame, Name', $condition, $params, MULTI);
 
 		if (is_null($result)) {
-			// En este caso es la primera publicación y me interesa considerarlo 'renamed' para forzar la publicación de ancestros
 			return true;
 		}
 
@@ -329,7 +308,6 @@ class NodeFrame extends NodeFrames_ORM {
 	*  @param int idNodeFrame
 	*  @return unknown
 	*/
-
 	function cancelServerFrames($idNodeFrame) {
 		$condition = 'IdNodeFrame = %s';
 		$params = array('IdNodeFrame' => $idNodeFrame);
@@ -353,7 +331,6 @@ class NodeFrame extends NodeFrames_ORM {
 	*  @param int nodeId
 	*  @return int|null
 	*/
-
 	function getPublishedVersion($nodeId) {
 		$condition = 'NodeId = %s AND Active = 1';
 		$params = array('NodeId' => $nodeId);
@@ -368,7 +345,6 @@ class NodeFrame extends NodeFrames_ORM {
 	*  @param int nodeId
 	*  @return int|null
 	*/
-
 	function getPublishedId($nodeId) {
 		$condition = 'NodeId = %s AND Active = 1';
 		$params = array('NodeId' => $nodeId);
@@ -384,7 +360,6 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@param int idNodeFrame
 	*	@return int|null
  	*/
-
  	function getPrevious($idNode, $idNodeFrame) {
 		$condition = 'NodeId = %s AND IdNodeFrame < %s ORDER BY IdNodeFrame DESC';
 		$params = array($idNode, $idNodeFrame);
@@ -411,17 +386,17 @@ class NodeFrame extends NodeFrames_ORM {
 	*  @param int doInsertSql
 	*/
 
-    function NodeFrameToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
+    	function NodeFrameToLog($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
 					 $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false) {
 
-    	if(!isset($this->syncStatObj)) {
+    		if(!isset($this->syncStatObj)) {
+    			$this->syncStatObj = new SynchronizerStat();
+    		}
 
-    		$this->syncStatObj = new SynchronizerStat();
-    	}
-
-    	$this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
+    		$this->syncStatObj->create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
 					 $class, $method, $file, $line, $type, $level, $comment, $doInsertSql);
 
-    }
+    	}
 }
+
 ?>

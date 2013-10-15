@@ -49,9 +49,9 @@ X.actionLoaded(function(event, fn, params) {
 				var notempty = false;
 				fields.each(function(item, field) {
 					var checked = fn(field).attr('checked');
-					notempty = notempty | checked;
+					notempty = notempty || checked;
 				});
-				if (notempty == 0) {
+				if (!notempty) {
 					var message = _('A value should be selected for <b>%s</b> property.<br />').printf(_properties[property]);
 					message += _('Otherwise inherited values will be used.')
 					messages.push(message);

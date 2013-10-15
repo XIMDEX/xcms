@@ -70,9 +70,13 @@ class LanguageProperty extends InheritableProperty {
 		}
 
 		if(!empty($availableLanguages) ) {
-			foreach ($availableLanguages as &$language) {
+			foreach ($availableLanguages as &$language) {				
 				unset($language[0], $language[1]);
-				$language['Checked'] = in_array($language['IdLanguage'], $nodeLanguages) ? true : false;
+				//If is availableLanguages and nodeLanguages is empty, we use the availableLanguages				
+				if (count($nodeLanguages))
+					$language['Checked'] = in_array($language['IdLanguage'], $nodeLanguages) ? true : false;
+				else
+					$language['Checked'] = 1;
 			}
 		}
 		return $availableLanguages;

@@ -28,13 +28,27 @@
 
 ModulesManager::file('/inc/patterns/Factory.class.php');
 
+/**
+ * Manager class for Inherited properties
+ */
 class InheritedPropertiesManager {
 
+	/**
+	 * list of properties to manage
+	 * @var array
+	 */
 	static protected $properties = array('Channel', 'Language');
 
 	/**
 	 * Returns the property values
+	 * 
 	 * @param integer $nodeId
+	 *
+	 * @return array Associative array $ret["property_name"] = array_values
+	 *
+	 * @uses ChannelProperty::getValues to get the specific values.
+	 * @uses LanguageProperty::getValues to get the specific values. 
+	 * 
 	 */
 	static public function getValues($nodeId) {
 
@@ -44,6 +58,7 @@ class InheritedPropertiesManager {
 		foreach (self::$properties as $prop) {
 
 			$p = $factory->instantiate($prop . 'Property', $nodeId);
+
 			if (!is_object($p)) {
 				XMD_Log::error(_("Inheritable property cannot be instantiate: ") . $prop);
 				continue;
@@ -57,8 +72,15 @@ class InheritedPropertiesManager {
 
 	/**
 	 * Sets the property values
+	 * 
 	 * @param integer $nodeId
 	 * @param mixed $properties The values
+	 *
+	 * @uses ChannelProperty::setValues to set the specific values.
+	 * @uses LanguageProperty::setValues to set the specific values. 
+	 *
+	 * @return array Associative array $ret["property_name"] = array_values
+	 * 
 	 */
 	static public function setValues($nodeId, $properties) {
 
@@ -85,8 +107,13 @@ class InheritedPropertiesManager {
 
 	/**
 	 * Returns the affected nodes when deleting a property value
+	 * 
 	 * @param integer $nodeId
 	 * @param mixed $properties Values to be deleted
+	 *
+	 * @uses ChannelProperty::getAffectedNodes 
+	 * @uses LanguageProperty::getAffectedNodes
+	 * 
 	 */
 	static public function getAffectedNodes($nodeId, $properties) {
 

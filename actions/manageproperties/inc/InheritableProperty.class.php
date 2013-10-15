@@ -25,14 +25,40 @@
  */
 
 
-
+/**
+ * Abstract inheritable property class. 
+ */
 abstract class InheritableProperty {
 
+	/**
+	 * nodeid for current node
+	 * @var integer
+	 */
 	protected $nodeId = null;
+
+	/**
+	 * Node object
+	 * @var Object
+	 */
 	protected $node = null;
+
+	/**
+	 * NodeTypeId for current node
+	 * @var integer
+	 */
 	protected $nodeTypeId = null;
+
+	/**
+	 * NodeType object
+	 * @var Object
+	 */
 	protected $nodeType = null;
 
+	/**
+	 * Construct method. Load the properties of the class.
+	 * 
+	 * @param int $nodeid Node identificator
+	 */
 	public function __construct($nodeId) {
 		$this->nodeId = $nodeId;
 		$this->node = new Node($nodeId);
@@ -55,18 +81,21 @@ abstract class InheritableProperty {
 
 	/**
 	 * Sets the property values
+	 * 
 	 * @param mixed $values
 	 */
 	abstract public function setValues($values);
 
 	/**
 	 * Applies the property values recursively
+	 * 
 	 * @param mixed $values
 	 */
 	abstract public function applyPropertyRecursively($values);
 
 	/**
 	 * Returns the affected nodes when deleting a property value
+	 * 
 	 * @param mixed $values Values to be deleted
 	 */
 	abstract public function getAffectedNodes($values);
@@ -97,6 +126,7 @@ abstract class InheritableProperty {
 
 	/**
 	 * Returns the property values
+	 * 
 	 * @param boolean $inherited
 	 */
 	protected function getProperty($inherited=true) {
@@ -115,6 +145,7 @@ abstract class InheritableProperty {
 
 	/**
 	 * Deletes the property values
+	 * 
 	 * @param mixed $values
 	 */
 	protected function deleteProperty($values) {
@@ -126,6 +157,7 @@ abstract class InheritableProperty {
 
 	/**
 	 * Delete the properties of children nodes
+	 * 
 	 * @param mixed $values
 	 */
 	protected function deleteChildrenProperties($values) {

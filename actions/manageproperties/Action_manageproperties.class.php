@@ -30,11 +30,28 @@ ModulesManager::file('/inc/model/language.inc');
 ModulesManager::file('/inc/model/channel.inc');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
-
+/**
+ * Manage properties action. 
+ *
+ * Set the channels and language availables for the descendant nodes.
+ */
 class Action_manageproperties extends ActionAbstract {
 
+	/**
+	 * Main function
+	 *
+	 * Load the manage properties form.
+	 *
+	 * Request params:
+	 * 
+	 * * nodeid
+	 *
+	 * @uses InheritedProperties::getValues Get array with inherited properties from ancestor nodes
+	 * 
+	 */
 	public function index() {
 
+		//Load css and js resources for action form.
 		$this->addCss('/actions/manageproperties/resources/css/styles.css');
 		$this->addJs('/actions/manageproperties/resources/js/dialog.js');
 		$this->addJs('/actions/manageproperties/resources/js/index.js');
@@ -42,9 +59,11 @@ class Action_manageproperties extends ActionAbstract {
 		$nodeId = $this->request->getParam('nodeid');
 		$nodeId = $nodeId < 10000 ? 10000 : $nodeId;
 
+		//Get Values for all the dependencies
 		$properties = InheritedPropertiesManager::getValues($nodeId);
-
+		
 		$inherit = array();
+		//Update the checked properties in the array.
 		foreach ($properties as $name=>$prop) {
 			$checked = false;
 			if(!empty($prop) ) {
@@ -61,7 +80,6 @@ class Action_manageproperties extends ActionAbstract {
 				$inherit[sprintf('%s_inherited', $name)] = 'inherited';
 			}
 		}
-
 		$values = array(
 			'properties' => $properties,
 			'go_method' => 'save_changes'
@@ -71,8 +89,28 @@ class Action_manageproperties extends ActionAbstract {
 		$this->render($values, '', 'default-3.0.tpl');
 	}
 
+	/**
+	 * Save the results from the form
+	 *
+	 * @uses  InheritedPropertiesManager::getAffectedNodes
+	 * @uses InheritedPropertiesManager::setValues
+	 *
+	 * Request params:
+	 * * nodeid
+	 * * confirmed
+	 * * inherited_channels
+	 * * Channel_recursive
+	 * * Channel
+	 * * inherited_languages
+	 * * Language
+	 * * inherited_schemas
+	 * * Schema
+	 * * Transformer
+	 */
 	public function save_changes() {
 
+
+		//Get the form properties
 		$nodeId = $this->request->getParam('nodeid');
 		$nodeId = $nodeId < 10000 ? 10000 : $nodeId;
 		$confirmed = $this->request->getParam('confirmed');
@@ -94,7 +132,6 @@ class Action_manageproperties extends ActionAbstract {
 
 		$transformer = $this->request->getParam('Transformer');
 		$transformer = empty($transformer) ? array() : $transformer;
-
 
 		$properties = array(
 			'Channel' => $channels,
@@ -251,6 +288,7 @@ class Action_manageproperties extends ActionAbstract {
 		);
 		$this->render($values);
 	}
+
 
 	public function applyPropertyRecursively() {
 
