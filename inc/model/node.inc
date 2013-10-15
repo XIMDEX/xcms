@@ -928,10 +928,14 @@ class	Node extends Nodes_ORM{
 	 * @param $stateID
 	 * @return unknown_type
 	 */
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID=null){
+	function CreateNode($name, $parentID, $nodeTypeID, $stateID=null,$subfolders=array()){
 	 	$this->set('IdParent', (int)$parentID);
 		$this->set('IdNodeType', (int)$nodeTypeID);
 		$this->set('Name', $name);
+
+		/*if(is_null($subfolders)){
+			$subfolders=array();
+		}*/
 
 		$nodeType = new NodeType($nodeTypeID);
 		if ($nodeType->get('IsPublicable')) {
@@ -994,10 +998,9 @@ class	Node extends Nodes_ORM{
 
 		$this->SetID($this->get('IdNode'));
 		// Updating fastTraverse before the setcontent, because in the node cache this information is needed
-	    $this->UpdateFastTraverse();
+	    	$this->UpdateFastTraverse();
 
 		/// All the args from this function call are passed to this nodetype create method.
-
 		if (is_object($this->class)) {
 			$argv = func_get_args();
 			call_user_func_array (array (&$this->class, 'CreateNode'), $argv);
@@ -1010,47 +1013,54 @@ class	Node extends Nodes_ORM{
 			}
 		}
 
-	    $group = new Group();
-	    $this->AddGroupWithRole($group->GetGeneralGroup());
+	    	$group = new Group();
+	    	$this->AddGroupWithRole($group->GetGeneralGroup());
 
-	    // if the create node type is Section (section inside a server)
-	    // it is checked if the user who created it belongs to some group
-	    // to include the relation between nodes and groups
-	    $nodeTypeName = $this->nodeType->get('Name');
-	    if ($nodeTypeName == 'Section') {
-	    	$id_usuario = XSession::get('userID');
-	    	$user = new User($id_usuario);
-	    	$grupos = $user->GetGroupList();
-	    	// The first element of the list $grupos is always the general group
-	    	// this insertion is not considered as it the relation by default
-	    	if (is_array($grupos)) {
-	    		reset($grupos);
-	    		while(list(, $grupo) = each($grupos)) {
-	    			$this->AddGroupWithRole($grupo, $user->GetRoleOnGroup($grupo));
+	    	// if the create node type is Section (section inside a server)
+	    	// it is checked if the user who created it belongs to some group
+	    	// to include the relation between nodes and groups
+	    	$nodeTypeName = $this->nodeType->get('Name');
+	    	if ($nodeTypeName == 'Section') {
+	    		$id_usuario = XSession::get('userID');
+	    		$user = new User($id_usuario);
+	    		$grupos = $user->GetGroupList();
+	    		// The first element of the list $grupos is always the general group
+	    		// this insertion is not considered as it the relation by default
+	    		if (is_array($grupos)) {
+	    			reset($grupos);
+	    			while(list(, $grupo) = each($grupos)) {
+	    				$this->AddGroupWithRole($grupo, $user->GetRoleOnGroup($grupo));
+	    			}
 	    		}
 	    	}
-	    }
 
-	    /// Updating the hierarchy index for this node.
-	    $this->RenderizeNode();
+	    	/// Updating the hierarchy index for this node.
+	    	$this->RenderizeNode();
 
-	    XMD_Log::debug("Model::Node::CreateNode: Creating node id(".$this->nodeID."), name(".$name."), parent(".$parentID.").");
-	    /// Once created, its content by default is added...
+	    	XMD_Log::debug("Model::Node::CreateNode: Creating node id(".$this->nodeID."), name(".$name."), parent(".$parentID.").");
 
-	    $dbObj = new DB();
-	    $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d",
-	    			$this->get('IdNodeType'));
+	    	/// Once created, its content by default is added.
+	    	$dbObj = new DB();
+		if(!empty($subfolders) && is_array($subfolders)){
+			$subfolders_str=implode(",",$subfolders);
+			$query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d AND NodeType in (%s)",$this->get('IdNodeType'),$subfolders_str);
+		}
+		else{
+			$query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d",$this->get('IdNodeType'));
+		}
 		$dbObj->Query($query);
 
-	    while(!$dbObj->EOF) {
+	    	while(!$dbObj->EOF) {
 			$childNode = new Node();
 			XMD_Log::debug("Model::Node::CreateNode: Creating child name(".$this->get('Name')."), type(".$this->get('IdNodeType').").");
 			$childNode->CreateNode($dbObj->GetValue('Name'), $this->get('IdNode'), $dbObj->GetValue('NodeType'), $dbObj->GetVAlue('State'));
 			$dbObj->Next();
 		}
+
 		$node = new Node($this->get('IdNode'));
 		return $node->get('IdNode');
 	}
+
 
 	function delete() {
 		return $this->DeleteNode(true);
@@ -1066,7 +1076,7 @@ class	Node extends Nodes_ORM{
 			$this->messages->add(_('Node deletion was denied'), MSG_TYPE_WARNING);
 			return false;
 		}
-
+/*
 		if (ModulesManager::isEnabled('ximTRASH')) {
 			$this->messages->add(_('Moving file to trash'), MSG_TYPE_NOTICE);
 			$trash = new Trash();
@@ -1099,7 +1109,7 @@ class	Node extends Nodes_ORM{
 		} else {
 			XMD_Log::warning(_('Trash is deactivated'));
 		}
-
+*/
 		$this->ClearError();
 		if(!($this->get('IdNode') > 0)) {
 			$this->SetError(1);
@@ -1121,7 +1131,7 @@ class	Node extends Nodes_ORM{
 			}
 		}
 
-		/// Deleting form frile system
+		// Deleting from file system
 		if($this->nodeType->get('HasFSEntity')) {
 			$config = new Config();
 			$absPath = $config->GetValue("AppRoot") . $config->GetValue("NodeRoot");
@@ -1137,11 +1147,10 @@ class	Node extends Nodes_ORM{
 		}
 
 		// Deleting properties it may has
-
 		$nodeProperty = new NodeProperty();
 		$nodeProperty->deleteByNode($this->get('IdNode'));
 
-		// frist invoking the particular Delete...
+		// first invoking the particular Delete...
 		$this->class->DeleteNode();
 
 		// and the the general one
@@ -1161,7 +1170,6 @@ class	Node extends Nodes_ORM{
 
 		$dependencies=New Dependencies();
 		$dependencies->deleteDependentNode($this->get('IdNode'));
-
 
 		XMD_Log::info("Node ".$this->nodeID." deleted.");
 		$this->nodeID	= null;
@@ -2628,9 +2636,8 @@ class	Node extends Nodes_ORM{
 		}
 
 		if (!in_array($idNodeType, $nodeAllowedContents)) {
-			XMD_Log::info("The nodetype $idNodeType is not allowed in the parent (idnode =" .$parent . ") - (idnodetype =" . $parentNode->get('IdNodeType')
-				. ") which allowed nodetypes are" . print_r($nodeAllowedContents, true));
-			$this->messages->add(_('This node type is not allowed in this positionn'), MSG_TYPE_ERROR);
+			XMD_Log::info("The nodetype $idNodeType is not allowed in the parent (idnode =" .$parent . ") - (idnodetype =" . $parentNode->get('IdNodeType').") which allowed nodetypes are" . print_r($nodeAllowedContents, true));
+			$this->messages->add(_('This node type is not allowed in this position'), MSG_TYPE_ERROR);
 			return false;
 		}
 

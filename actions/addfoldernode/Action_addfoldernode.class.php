@@ -29,56 +29,54 @@
 
 class Action_addfoldernode extends ActionAbstract {
 	// Main Method: shows the initial form
-    function index() {
+    	function index() {
 		$nodeID = $this->request->getParam("nodeid");
 
-        $nodeType = $this->GetTypeOfNewNode ($nodeID);
-        $friendlyName = (!empty($nodeType["friendlyName"]))?  $nodeType["friendlyName"] : $nodeType["name"];
+        	$nodeType = $this->GetTypeOfNewNode ($nodeID);
+        	$friendlyName = (!empty($nodeType["friendlyName"]))?  $nodeType["friendlyName"] : $nodeType["name"];
+	
+        	$go_method = ($nodeType["name"] == "Section") ? "addSectionNode" : "addNode";
 
-        $go_method = ($nodeType["name"] == "Section") ? "addSectionNode" : "addNode";
+		$this->request->setParam("go_method", $go_method);
+		$this->request->setParam("friendlyName", $friendlyName);
 
-	$this->request->setParam("go_method", $go_method);
-	$this->request->setParam("friendlyName", $friendlyName);
-
-	$values = array(
+		$values = array(
 			'go_method' => 'addNode',
 			'nodeID' => $nodeID
 			);
 
-	$template = 'index';
+		$template = 'index';
 
-	// If project
+		if($nodeType['name'] == 'Project'){
 
-	if ($nodeType['name'] == 'Project') {
-
-		$chann = new Channel();
-		$channs = $chann->find();
-
-		if (!is_null($channs)) {
-			foreach ($channs as $channData) {
-				$channels[] = array('id' => $channData['IdChannel'], 'name' => $channData['Name']);
+			$chann = new Channel();
+			$channs = $chann->find();
+	
+			if (!is_null($channs)) {
+				foreach ($channs as $channData) {
+					$channels[] = array('id' => $channData['IdChannel'], 'name' => $channData['Name']);
+				}
+			} else {
+				$channels = NULL;
 			}
-		} else {
-			$channels = NULL;
-		}
 
-		$lang = new Language();
-		$langs = $lang->find();
+			$lang = new Language();
+			$langs = $lang->find();
 
-		if (!is_null($langs)) {
-			foreach ($langs as $langData) {
-				$languages[] = array('id' => $langData['IdLanguage'], 'name' => $langData['Name']);
+			if (!is_null($langs)) {
+				foreach ($langs as $langData) {
+					$languages[] = array('id' => $langData['IdLanguage'], 'name' => $langData['Name']);
+				}
+			} else {
+				$languages = NULL;
 			}
-		} else {
-			$languages = NULL;
-		}
 
-		$values['langs'] = $languages;
-		$values['channels'] = $channels;
-		$template = 'addProject';
-	}
-	$this->render($values, $template, 'default-3.0.tpl');
-    }
+			$values['langs'] = $languages;
+			$values['channels'] = $channels;
+			$template = 'addProject';
+		}
+		$this->render($values, $template, 'default-3.0.tpl');
+    	}
 
 	// Fuction AddNode adds the folder node in fuction of the kind "add"
 	function addNode() {
@@ -122,8 +120,8 @@ class Action_addfoldernode extends ActionAbstract {
 		$nodeID = $this->request->getParam("nodeid");
 		$name = $this->request->getParam("name");
 
-        $langidlst =  $this->request->getParam("langidlst");
-	    $namelst =   $this->request->getParam("namelst");
+        	$langidlst =  $this->request->getParam("langidlst");
+	    	$namelst =   $this->request->getParam("namelst");
 		$aliasLangArray = array_combine($langidlst, $namelst);
 
 		$nodeType = $this->GetTypeOfNewNode($nodeID);
@@ -137,22 +135,22 @@ class Action_addfoldernode extends ActionAbstract {
 		$idFolder = $folder->CreateNode($name, $nodeID, $nodeType->GetID(), null);
 //		$ret = $folder->numErr;
 
-	    if ($idFolder > 0) {
-	    	foreach ($aliasLangArray as $langID => $longName) {
-	        	$folder->SetAliasForLang($langID, $longName);
-	            if ($folder->numErr)
-	            	break;
-	        }
-	    }
+	    	if ($idFolder > 0) {
+	    		foreach ($aliasLangArray as $langID => $longName) {
+	        		$folder->SetAliasForLang($langID, $longName);
+	            		if ($folder->numErr)
+	            			break;
+	        	}
+	    	}
 
 //		$ret = ($ret) ? "false" : "true";
 		$this->reloadNode($nodeID);
 
 		$arrValores = array ("nodeId" => $nodeID,
-							"friendlyName" => $friendlyName,
-							"ret" => $idFolder > 0 ? 'true' : 'false',
-							"name" => $name,
-							"msgError" => $folder->msgErr);
+		  		"friendlyName" => $friendlyName,
+				"ret" => $idFolder > 0 ? 'true' : 'false',
+				"name" => $name,
+				"msgError" => $folder->msgErr);
 		$this->render($arrValores);
 	}
 

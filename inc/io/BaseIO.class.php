@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ *  @version $Revision: 8703 $
  */
 
 
@@ -87,7 +87,7 @@ class BaseIO {
 		}
 
 		if (empty($data['NODETYPENAME'])) {
-			XMD_Log::error('Nodetype vacio en baseIO');
+			XMD_Log::error(_('Empty nodetype in baseIO'));
 			$this->messages->add(_('Empty nodetype'), MSG_TYPE_ERROR);
 			return ERROR_INCORRECT_DATA;
 		}
@@ -126,7 +126,6 @@ class BaseIO {
 					MSG_TYPE_ERROR);
 			return ERROR_NO_PERMISSIONS;
 		}
-
 		if (!empty($data['PARENTID']) && !empty($data['NODETYPENAME'])) {
 			$node = new Node();
 			$nodeType = new NodeType();
@@ -138,7 +137,7 @@ class BaseIO {
 			}
 		}
 
-		// Comprobacion generica
+		//general check
 		if (!array_key_exists('PARENTID', $data)) {
 			XMD_Log::error(_('Parentid was not specified'));
 			$this->messages->add(_('Node parent was not specified'), MSG_TYPE_ERROR);
@@ -206,22 +205,15 @@ class BaseIO {
 
 			//section nodes
 			case 'SECTIONNODE':
-						/*				if(!($this->_searchNodeInChildrens($data['CHILDRENS'], 'RELGROUPSNODES', MODE_NODETYPE))) {
-						 return ERROR_INCORRECT_DATA;
-						 }*/
-
-						$idNode = $this->_checkForceNew($data);
+				$idNode = $this->_checkForceNew($data);
 				if ($idNode > 0) {
 					return $idNode;
 				}
 
 				$nodeType = new NodeType();
 				$nodeType->SetByName($nodeTypeName);
-
 				$section = new Node();
-				$idNode = $section->CreateNode($data['NAME'], $data['PARENTID'],
-						$nodeType->GetID(), NULL);
-
+				$idNode = $section->CreateNode($data['NAME'], $data['PARENTID'],$nodeType->GetID(), NULL,$data['SUBFOLDERS']);
 				if ($idNode > 0) {
 					$node = new Node($idNode);
 					reset($data['CHILDRENS']);
@@ -234,7 +226,6 @@ class BaseIO {
 								break;
 							case 'NODENAMETRANSLATION' :
 								$idLanguage = isset($attrs['IDLANG']) && $attrs['IDLANG'] > 0 ? (int) $attrs['IDLANG'] : NULL;
-								// utf8_decode por que viene del xml de ximio
 								$description = isset(
 										$attrs['DESCRIPTION']) && !empty(
 										$attrs['DESCRIPTION']) ? utf8_decode(
@@ -469,7 +460,7 @@ class BaseIO {
 							$idNode = $xmlDocument->get('IdNode');
 							break;
 
-						case 'TOLDOCUMENTNODE' :
+				/*		case 'TOLDOCUMENTNODE' :
 
 							$alias = isset($data['ALIASNAME']) ? $data['ALIASNAME'] : '';
 							$content = isset($data['CONTENT']) ? $data['CONTENT'] : '';
@@ -490,8 +481,8 @@ class BaseIO {
 							}
 
 							return ($result > 0) ? $result : ERROR_INCORRECT_DATA;
-
-						default : // XMLDOCUMENT NORMAL
+				*/
+						default : //XMLDOCUMENT
 							$nodeType = new NodeType();
 							$nodeType->SetByName($data['NODETYPENAME']);
 
@@ -585,7 +576,6 @@ class BaseIO {
 				return ERROR_INCORRECT_DATA;
 			}
 		}
-
 		$nodeTypeClass = $data['CLASS'];
 		if (array_key_exists($nodeTypeClass, $metaTypesArray)) {
 			$metaType = $metaTypesArray[$nodeTypeClass];
@@ -1352,7 +1342,6 @@ class BaseIO {
 
 	/**
 	 * Check if the VisualTemplate is a RNGVisualTemplate
-	 * Enter description here ...
 	 * @param unknown_type $data
 	 */
 	function _checkVisualTemplate($data) {
@@ -1377,4 +1366,5 @@ class BaseIO {
 		return $data;
 	}
 }
+
 ?>

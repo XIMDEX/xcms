@@ -24,66 +24,69 @@
  *  @version $Revision$
  */
 
-
-
+ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
 ModulesManager::file('/inc/model/SectionType.class.php');
 ModulesManager::file('/inc/model/language.inc');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
 class Action_addsectionnode extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
+
+	
+    	function index () {
 		$nodeID = $this->request->getParam("nodeid");
-		
+		$action = $this->request->getParam("action");
+		$type_sec = $this->request->getParam("type_sec");
+
+		$nt=5015;	
+		if(empty($type_sec)){
+			$type_sec=1;
+		}
+
 		$sectionType = new SectionType();
 		$sectionTypes = $sectionType->find(ALL);
 		reset($sectionTypes);
 		while(list(, $sectionTypeInfo) = each($sectionTypes)) {
 			if (empty($sectionTypeInfo['module']) || ModulesManager::isEnabled($sectionTypeInfo['module'])) {
 				$sectionTypeOptions[] = array('id' => $sectionTypeInfo['idSectionType'], 'name' => $sectionTypeInfo['sectionType']);
+				if($type_sec==$sectionTypeInfo['idSectionType']){
+					$nt=$sectionTypeInfo['idNodeType'];
+				}
 			}
 		}
 		$sectionTypeCount = count($sectionTypeOptions);
 
 		// Getting languages
-
 		$languageOptions = $this->_getLanguages($nodeID);
 		$languageCount = sizeof($languageOptions);
 
-		//Get if otf is up
-		if (ModulesManager::isEnabled('ximOTF')){
-			$otfAvailable=true;
-		}else{
-			$otfAvailable=false;
-		}
-		
-		$availableThemes = $this->_getAvailableThemes();
-		$availableThemesCount = count($availableThemes);
-		
-        $values = array('nodeID' => $nodeID,
-						'sectionTypeOptions' => $sectionTypeOptions,
-						'sectionTypeCount' => $sectionTypeCount,
-						'languageOptions' => $languageOptions,
-						'languageCount' => $languageCount,
-						'otfAvailable' => $otfAvailable,
-						'go_method' => 'addsectionnode',
-						'availableThemes' => $availableThemes,
-						'availableThemesCount' => $availableThemesCount);
+		$subfolders=$this->_getAvailableSubfolders($nt);
 
+		//add a js for validation and hidden or display elements about the protocol selected
+                $this->addJs('/actions/addsectionnode/resources/js/index.js');
+
+        	$values = array('nodeID' => $nodeID,
+				'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?action='.$action.'&nodeid='.$nodeID,
+				'sectionTypeOptions' => $sectionTypeOptions,
+				'sectionTypeCount' => $sectionTypeCount,
+				'selectedsectionType' => $type_sec,
+				'languageOptions' => $languageOptions,
+				'languageCount' => $languageCount,
+				'subfolders' => $subfolders,
+				'go_method' => 'addsectionnode',
+				);
 		$this->render($values, null, 'default-3.0.tpl');
-    }
+    	}
     
-    function addsectionnode() {
+    	function addsectionnode() {
+
 	   	$nodeID = $this->request->getParam('nodeid');
 		$name = $this->request->getParam('name');
 		$nodeType = $this->request->getParam('nodetype');
 		$langidlst = $this->request->getParam('langidlst');
 		$namelst = $this->request->getParam('namelst');
+		$folderlst = $this->request->getParam('folderlst');
 		$type = $this->request->getParam('nodetype');
-		$sectionOTF = $this->request->getParam('sectionOTF');
-		$selectedTheme = $this->request->getParam('selectedTheme');
-		
-		
+				
 		$aliasLangArray = array();
 		if($langidlst) {
 			foreach ($langidlst as $key) {
@@ -102,19 +105,18 @@ class Action_addsectionnode extends ActionAbstract {
 		$nodeType = new NodeType($idNodeType);
 		$nodeTypeName = $nodeType->get('Name');
 
-	    $data = array(
+	    	$data = array(
 	            'NODETYPENAME' => $nodeTypeName,
 	            'NAME' => $name,
+	            'SUBFOLDERS' => $folderlst,
 	            'PARENTID' => $nodeID,
 	            'FORCENEW' => true
 	            );
-	            
-	    $baseio = new baseIO();
-	    $id = $baseio->build($data);
 
-		$themeMessages = array();
-		
-	    if ($id > 0) {
+	    	$baseio = new baseIO();
+	    	$id = $baseio->build($data);
+
+	    	if ($id > 0) {
 	    
 			$section = new Node($id);
 			
@@ -123,21 +125,14 @@ class Action_addsectionnode extends ActionAbstract {
 	        		$section->SetAliasForLang($langID, $longName);
 				}
 			}
-
-			$themeMessages = $this->_setSectionTheme($section, $selectedTheme);
 			$this->reloadNode($nodeID);
-	    }
+	    	}
 	    
 		if (!($id > 0)) {
 			$this->messages->mergeMessages($baseio->messages);
 			$this->messages->add(_('Operation could not be successfully completed'), MSG_TYPE_ERROR);
 		}else{
 			$this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
-			//set the OTF property
-			if ($sectionOTF){
-				$node = new Node($id);
-				$node->setProperty('otf', "true");
-			}
 		}
 		
 		$values = array(
@@ -146,9 +141,10 @@ class Action_addsectionnode extends ActionAbstract {
 		);
 		
 		$this->render($values, NULL, 'messages.tpl');
-    }
+    	}
     
-    private function _setSectionTheme(&$section, $theme) {
+/*
+    	private function _setSectionTheme(&$section, $theme) {
 
 		$messages = array();
 		
@@ -220,13 +216,13 @@ class Action_addsectionnode extends ActionAbstract {
 			}
 		}
 		
-		$section->setProperty('theme', array($theme));
-		$section->setProperty('theme_visualtemplates', $arrIdRNG);
+//		$section->setProperty('theme', array($theme));
+//		$section->setProperty('theme_visualtemplates', $arrIdRNG);
 		
 //		return $messages;
 		return $baseio->messages->messages;
-    }
-
+    	}
+*/
 
 	private function _getLanguages($nodeID) {
  		$properties = InheritedPropertiesManager::getValues($nodeID);
@@ -234,17 +230,34 @@ class Action_addsectionnode extends ActionAbstract {
  		return $properties["Language"];
 	}
 
-	private function _getAvailableThemes() {
-			
-		$themes = FsUtils::readFolder(XIMDEX_ROOT_PATH .ModulesManager::path('ximTHEMES'). '/themes', false);
-		
-		if ($themes === null) $themes = array();
-		$values = array_merge(array(_('--- Ninguno ---')), $themes);
-		$keys = array_merge(array('0'), $themes);
-		$themes = array_combine($keys, $values);
-		
-		return $themes;
+	private function _getAvailableSubfolders($nodetype_sec){
+		$subfolders=array();
+		$res=array();
+		$ndc = new NodeDefaultContents();
+		$subfolders=$ndc->getDefaultChilds($nodetype_sec);
+		foreach($subfolders as $subfolder){
+			$nt=$subfolder["NodeType"];
+			$res[$nt][0]=$subfolder["Name"];	
+			$res[$nt][1]=$this->_getDescription($nt);	
+		}
+		asort($res);	
+		return $res;
 	}
 
+	private function _getDescription($nodetype){
+		switch($nodetype){
+			case "5018": return "This is the main repository for all your XML contents. It's the most important folder in a section.";
+			case "5016": return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
+			case "5020": return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
+			case "5022": return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
+			case "5026": return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
+			case "5054": return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
+			case "5301": return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
+			case "5304": return "Into this folder you could create XML based news in several languages. This is a required folder.";
+			case "5306": return "All the images used in your defined news are stored here.";
+			default: "...";
+		}
+	}
 }
+
 ?>
