@@ -48,7 +48,7 @@
 
  				this.element = options._element;
  				this.container = options._container;
-            this.fname = options.file.name.replace(/ /g, "_");
+			        this.fname = options.file.name.replace(/ /g, "_");
 				this.fsize = options.file.size;
  				this.ftype = options.file.type;
 				this.urlcheckname = options.urlcheckname;
@@ -56,76 +56,70 @@
 				
 				this.index = ++numfiles;
 
- 		      //add element html to list
-		      var list = $('.xim-loader-list', this.container);
+ 		      		//add element html to list
+		      		var list = $('.xim-loader-list', this.container);
 				list.append(this._html(this.index) );
 				this.element = $('li:last', list);
 				$(this.element).data("ximfile", this);
+				$("span#numfiles").empty().html(_("Files added for upload: ")+numfiles);
 
 
  				//add element file to list
- 			if(window.FileReader) {	
-		      var reader_data = new FileReader();
-		    	reader_data.onload = (function(ximfile) {
-		        return function(e) {
-      		    //ximfile(is object ximfile) | this(object FileReader)
-      		    ximfile.data = e.target.result;
-					//console.log("this:", this, "file:", ximfile, "data:", ximfile.data);
-		        };
-		      })(this);
-  		    	reader_data.readAsBinaryString(options.file);
+ 				if(window.FileReader) {	
+		      			var reader_data = new FileReader();
+		    			reader_data.onload = (function(ximfile) {
+		        						return function(e) {
+						//ximfile(is object ximfile) | this(object FileReader)
+							      		    ximfile.data = e.target.result;
+		        						};
+		      						})(this);
+  		    			reader_data.readAsBinaryString(options.file);
 
-		   	var reader_url = new FileReader();
-	   	   reader_url.onload = (function(ximfile) {
-	   	   	return function(e) {
-	   	   		ximfile.url = e.target.result;
-	   	  			//console.log("this:", this, "file:", ximfile, "url:", ximfile.url, "type:",ximfile.ftype );
-						ximfile.setImage();
-	   	   	};
-	   	   })(this);
+		   			var reader_url = new FileReader();
+	   	   			reader_url.onload = (function(ximfile) {
+	   	   				return function(e) {
+	   	   					ximfile.url = e.target.result;
+//	  console.log("this:", this, "file:", ximfile, "url:", ximfile.url, "type:",ximfile.ftype );
+							ximfile.setImage();
+	   	   				};
+	   	   			})(this);
 
-			   reader_url.readAsDataURL(options.file);
-			}
-			else{
-				this.data = options.file;
-			}
+			   		reader_url.readAsDataURL(options.file);
+				}
+				else{
+					this.data = options.file;
+				}	
 				this.checkname();
 			
-			//Safari Preview test
-			if(!window.FileReader) {
-			 if(this.ftype.indexOf("image") != -1) { //Only make preview if file is an image
-				var url = this.urlgetpreview;
-				var  xmlhttprequest = new XMLHttpRequest();
-				
-				url += "&up=true";
+				//Safari Preview test
+				if(!window.FileReader) {
+					if(this.ftype.indexOf("image") != -1) { //Only make preview if file is an image
+						var url = this.urlgetpreview;
+						var  xmlhttprequest = new XMLHttpRequest();
+						url += "&up=true";
+						xmlhttprequest.open("POST", url, true);
+						xmlhttprequest.onreadystatechange = function() {
+					 	if (xmlhttprequest.readyState == 4) {
+							if ((xmlhttprequest.status >= 200 && xmlhttprequest.status <= 200) || xmlhttprequest.status == 304) {
+						  		if (xmlhttprequest.responseText != "") {
+							  		var result = $.parseJSON(xmlhttprequest.responseText);
+ 			         		  			if(result.status == "ok") {
+ 			         		  				this.url = result.data;
+ 			         		  				this.setImage();
+ 			         		  			}
+						  		}
+							}
+					 	}
+				  		}.bind(this);
 
-				xmlhttprequest.open("POST", url, true);
-				xmlhttprequest.onreadystatechange = function() {
-					 if (xmlhttprequest.readyState == 4) {
-						if ((xmlhttprequest.status >= 200 && xmlhttprequest.status <= 200) || xmlhttprequest.status == 304) {
-						  if (xmlhttprequest.responseText != "") {
-
-							  var result = $.parseJSON(xmlhttprequest.responseText);
- 			         		  if(result.status == "ok") {
- 			         		  	this.url = result.data;
- 			         		  	this.setImage();
- 			         		  }
-						  }
-						}
-					 }
-				  }.bind(this);
-
-
-				xmlhttprequest.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
-			  	xmlhttprequest.setRequestHeader('XIM-SIZE', this.getSize());
-			  	xmlhttprequest.setRequestHeader('XIM-TYPE', this.getType());
-			  	xmlhttprequest.send(this.getData());
-
-				}
-			 }
-			//End preview
- 			},
-
+						xmlhttprequest.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
+			  			xmlhttprequest.setRequestHeader('XIM-SIZE', this.getSize());
+			  			xmlhttprequest.setRequestHeader('XIM-TYPE', this.getType());
+			  			xmlhttprequest.send(this.getData());
+					}
+			 	}
+				//End preview
+ 			},//End _init function
 
 			checkname: function() {
 				$('span.xim-loader-options', this.element).html('');
@@ -158,7 +152,7 @@
 			  }.bind(this)});
 			},
 
-		   setName:  function(name) {
+			setName:  function(name) {
 				this.fname = name;
 
 				var html = ''
@@ -194,6 +188,8 @@
 
  			remove: function() {
  				this.element.remove();
+				numfiles--;
+				$("span#numfiles").empty().html(_("Files added for upload: ")+numfiles);
  				delete this;
  			},
 
@@ -215,119 +211,118 @@
 		 	  	 }
  			},
 
- 			upload: function(url) {
-				 var boundary = "ximdex";
-				 var dashes = "--";
-				 var crlf='\r\n'
-				 var  xhr = new XMLHttpRequest();
+ 			upload: function(url, extraParams) {
+				var boundary = "ximdex";
+				var dashes = "--";
+				var crlf='\r\n';
+				var xhr = new XMLHttpRequest();
+				var strExtraParams = decodeURIComponent($.param(extraParams));
 
-				  url += xhr.sendAsBinary != null ? "&option="+this.option : "&option="+this.option+"&up=true";
+				url += xhr.sendAsBinary != null ? "&option="+this.option : "&option="+this.option+"&up=true";
+				if(strExtraParams!=""){
+					url += "&"+strExtraParams;
+				}
 
-				  xhr.open("POST", url, true);
+				xhr.open("POST", url, true);
 				  
-				  //xhr.setRequestHeader("Content-Length", this.getSize());
+				//xhr.setRequestHeader("Content-Length", this.getSize());
 
-				  xhr.upload.addEventListener("progress", function(e) {
-			       if (e.lengthComputable) {
-	        			  var currentState = Math.round((e.loaded * 100) / e.total);
-	         		  $('div.xim-loader-progress', this.element).addClass("upload");
-	         		  $('div.xim-loader-progress', this.element).width(currentState+"%");
-	         		  $('div.xim-loader-progress', this.element).html(currentState+"%");
-        		    }
-		        }.bind(this), false);
+				xhr.upload.addEventListener("progress", function(e) {
+				if (e.lengthComputable) {
+	        				var currentState = Math.round((e.loaded * 100) / e.total);
+	         		  		$('div.xim-loader-progress', this.element).addClass("upload");
+	         		  		$('div.xim-loader-progress', this.element).width(currentState+"%");
+	         		  		$('div.xim-loader-progress', this.element).html(currentState+"%");
+        		    		}
+		        	}.bind(this), false);
 
-
-				  xhr.onreadystatechange = function() {
+				xhr.onreadystatechange = function() {
 					 if (xhr.readyState == 4) {
 						if ((xhr.status >= 200 && xhr.status <= 200) || xhr.status == 304) {
-						  if (xhr.responseText != "") {
-
-								 var result = $.parseJSON(xhr.responseText);
- 			         		  $('div.xim-loader-progress', this.element).width("100%");
-								  this.result = result.status;
-								  this.msg = result.msg;
-								 if("ok" == this.result) {
-	 		  	         		  $('div.xim-loader-progress', this.element).addClass("upload");
-	    		         		  $('div.xim-loader-progress', this.element).html(_("completed"));
-								 }else {
-					 		  	     $('div.xim-loader-progress', this.element).addClass("error");
- 					 		  	     $('div.xim-loader-progress', this.element).attr("title", this.msg );
-	    		         		  $('div.xim-loader-progress', this.element).html("error");
-								 }
-
-								 $(this.element).append(this._html_uploaded());
-
-								 $(this.element).trigger("fileUploaded", [{file: this, result: result}] );
-
-								 //alert(result["msg"]);
-						  	//Deleting the previous element from download list (if it exists)
-							// If not more elements left apart the one just uploaded,
-							// it is deleted and an event of uploaded files is sent to send the form
-						  	// Then, per each file uploading an event (por example, to send the next) could be sent.
-							// Now, there is not order and they are sent in a synchronized way, one after one.
-						  }
+							if (xhr.responseText != "") {
+								var result = $.parseJSON(xhr.responseText);
+ 			         		  		$('div.xim-loader-progress', this.element).width("100%");
+								this.result = result.status;
+								this.msg = result.msg;
+								if("ok" == this.result) {
+	 		  	         				$('div.xim-loader-progress', this.element).addClass("upload");
+	    		         		  			$('div.xim-loader-progress', this.element).html(_("completed"));
+								}else {
+					 				$('div.xim-loader-progress', this.element).addClass("error");
+ 					 		  		$('div.xim-loader-progress', this.element).attr("title", this.msg );
+									$('div.xim-loader-progress', this.element).html("error");
+								}
+								$(this.element).append(this._html_uploaded());
+								$(this.element).trigger("fileUploaded", [{file: this, result: result}] );
+						  	}
 						}
 					 }
-				  }.bind(this);
+				}.bind(this);
+		 	  
+				var body = dashes+boundary+crlf;
+			  	body += "Content-Disposition: form-data; ";
+			  	body += " name='ximfile'; filename=\"" + unescape(encodeURIComponent(this.getName())) + "\""+crlf;
+			  	body +=  "Content-Type: application/octet-stream"+crlf+crlf;
+			  	body += this.getData()+crlf;
+			  	body += dashes+boundary+dashes;
 
-
-
-		 	  var body = dashes+boundary+crlf;
-			  body += "Content-Disposition: form-data; ";
-			  body += " name='ximfile'; filename=\"" + unescape(encodeURIComponent(this.getName())) + "\""+crlf;
-			  body +=  "Content-Type: application/octet-stream"+crlf+crlf;
-			  body += this.getData()+crlf;
-			  body += dashes+boundary+dashes;
-
-			  //Firefox
-			  if(xhr.sendAsBinary != null) {
-			  	// simulate a file MIME POST request.
-  			    xhr.setRequestHeader("Content-Type","multipart/form-data; boundary="+boundary);
-  			    //console.log("Calling with sendAsBinary");
-			  	xhr.sendAsBinary(body);
-			  }
-			  else { //Browsers that don't support sendAsBinary yet
-			  	xhr.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
-			  	xhr.setRequestHeader('XIM-SIZE', this.getSize());
-			  	xhr.setRequestHeader('XIM-TYPE', this.getType());
-			  	xhr.send(this.getData());
-			  }
-
-			  return true;
-
+			  	//Firefox
+			  	if(xhr.sendAsBinary != null) {
+			  		// simulate a file MIME POST request.
+  			    		xhr.setRequestHeader("Content-Type","multipart/form-data; boundary="+boundary);
+  			    		//console.log("Calling with sendAsBinary");
+			  		xhr.sendAsBinary(body);
+			  	}
+			  	else { //Browsers that don't support sendAsBinary yet
+			  		xhr.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
+			  		xhr.setRequestHeader('XIM-SIZE', this.getSize());
+			  		xhr.setRequestHeader('XIM-TYPE', this.getType());
+			  		xhr.send(this.getData());
+			  	}
+				return true;
  			},
 
  			_html: function() {
-	 	     var html = '<li class="xim-loader-file">';
-	 	     html += '<input type="checkbox" />';
-	 	     html += '<span class="xim-loader-name">';
-	 	      if( this.ftype.indexOf("image") != -1 )  {
-		 	     	html += '<img src="#" />';
-		 	  }
-		 	  html += this.fname+'</span>';
-	 	     html += '<span class="xim-loader-size">'+this._size()+'</span>';
-		     html += '<span class="xim-loader-progress"><div class="xim-loader-progress"></div></span>';
-  	 	     html += '<span  class="xim-loader-options"></span>';
-	 	     html += '</li>';
-
-	 	     return html;
+	 	     		var html = '<li class="xim-loader-file">';
+	 	     		html += '<input type="checkbox" />';
+	 	     		html += '<span class="xim-loader-name">';
+	 	      		if( this.ftype.indexOf("image") != -1 )  {
+		 	     		html += '<img src="#" />';
+		 	  	}
+		 	  	html += this.fname+'</span>';
+	 	     		html += '<span class="xim-loader-size">'+this._size()+'</span>';
+		     		html += '<span class="xim-loader-progress"><div class="xim-loader-progress"></div></span>';
+  	 	     		html += '<span  class="xim-loader-options"></span>';
+	 	     		html += '</li>';
+				
+				return html;
 			},
 
 			_html_options: function() {
-				  var html = '<select name="ximfile[options][]">';
-				  html += '<option value="1">'+_("Overwrite")+'</option>';
-				  html += '<option value="2">'+_("Rename")+'</option>';
-				  html += '</select>';
-
-				  return html;
-			},
-
-			_html_uploaded: function() {
-				var html = '<input type="hidden" name="ximfile['+this.result+'][msg][]" value="'+this.msg+'" />';
-				html += '<input type="hidden" name="ximfile['+this.result+'][name][]" value="'+this.fname+'" />';
+				var html = '<select name="ximfile[options][]">';
+				html += '<option value="1">'+_("Overwrite")+'</option>';
+				html += '<option value="2">'+_("Rename")+'</option>';
+				html += '</select>';
 
 				return html;
 			},
 
- 	});
+			_rng_options: function() {
+                                var html = '<select name="ximfile[options][]">';
+				for(var i in this.rngs){
+                                	html += '<option value="'+i+'">'+this.rngs[i]+'</option>';
+				}
+                                html += '</select>';
+
+				return html;
+                        },
+
+			_html_uploaded: function() {
+				var html ='<input type="hidden" name="ximfile['+this.result+'][msg][]" value="'+this.msg+'"/>';
+				html +='<input type="hidden" name="ximfile['+this.result+'][name][]" value="'+this.fname+'"/>';
+
+				return html;
+			},
+
+ 		}); //End ximfile xo_create
  })(X);

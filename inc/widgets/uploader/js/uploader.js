@@ -37,8 +37,15 @@
 		 nodeid: 0,
 		 urlcheckname: null,
  		 urlgetpreview: null,
+		 extraParams:{},
+		 paramNames:[],
 
- 		_init: function() {
+ 		_init: function(options) {
+
+			if (options && options.extraParams){
+				this.extraParams = $.extend({},this.extraParams,options.extraParams);
+			}
+
  			this.container = $(this.element).closest("div");
   			this.id = $(this.container).attr('id');
 			this.nodeid = X.widgetsVars.getValue(this.id, "nodeid");
@@ -46,39 +53,42 @@
 			X.widgetsVars.setValue(this.id, "uploader", this);
 			this._seturlcheckname();
 			this._seturlgetpreview();
+			var that = this;
+			$("#"+this.id).siblings("ol").find(".extra-param").each(function(element, index){
+ 				that.paramNames.push($(this).attr("name"));
+			})
 
  			$(this.element).change(function(event) {
 	 			var files = event.target.files
 	 			this.addFiles(files);
-	 	  }.bind(this));
+	 	  	}.bind(this));
 
 	 	 	$( this.container).bind('dragover', function(event) {
-	 	 			$('.xim-loader-list-container', this.container).addClass('drop');
-	 	 		  event.originalEvent.stopPropagation();
-			     event.originalEvent.preventDefault();
-
+	 	 		$('.xim-loader-list-container', this.container).addClass('drop');
+	 	 		event.originalEvent.stopPropagation();
+			     	event.originalEvent.preventDefault();
 	 	 	}.bind(this));
 
 	 	 	$( this.container).bind('dragenter', function(event) {
-	 	 			$('.xim-loader-list-container', this.container).removeClass('drop');
- 	 	 		  event.originalEvent.stopPropagation();
-			     event.originalEvent.preventDefault();
+	 			$('.xim-loader-list-container', this.container).removeClass('drop');
+ 	 	 		event.originalEvent.stopPropagation();
+			     	event.originalEvent.preventDefault();
 	 	 	}.bind(this));
 
 	 		$( this.container).bind('dragleave', function(event) {
-	 	 			$('.xim-loader-list-container', this.container).removeClass('drop');
- 	 	 		  event.originalEvent.stopPropagation();
-			     event.originalEvent.preventDefault();
+	 	 		$('.xim-loader-list-container', this.container).removeClass('drop');
+ 	 	 		event.originalEvent.stopPropagation();
+			     	event.originalEvent.preventDefault();
 	 	 	}.bind(this));
 
 	 	 	$('.xim-loader-list-container', this.container).bind('drop', function(event) {
-  	 	 		  event.originalEvent.stopPropagation();
-			     event.originalEvent.preventDefault();
+  	 	 		event.originalEvent.stopPropagation();
+			     	event.originalEvent.preventDefault();
 
- 	 			  $('.xim-loader-list-container', this.container).removeClass('drop');
+ 	 			$('.xim-loader-list-container', this.container).removeClass('drop');
 
-				   var files = event.originalEvent.dataTransfer.files;
-				   this.addFiles(files);
+				var files = event.originalEvent.dataTransfer.files;
+				this.addFiles(files);
 	 	 		//alert("drop");
 	 	 	}.bind(this) );
 
@@ -97,13 +107,11 @@
 
  			//console.log("link", $('.xim-uploader-selected', this.container) );
  			$('.xim-uploader-selected', this.container).click(function(event) {
- 					event.preventDefault();
- 					$(this.element).click();
+ 				event.preventDefault();
+ 				$(this.element).click();
  			}.bind(this));
 
-
 			X.widgetsVars.triggerLoaded(this.id, this);
-
  		},
 
  		addFiles: function(files) {
@@ -113,67 +121,66 @@
  			}
 
 			var num_files = files.length;
-	 			for(var i=0, f; f=  files[i]; i++) {
-					if(-1 == this.indexFile(files[i]) && this.checkType(files[i].type) && files[i].size > 0 ) {
-						var index = this.files.length
-	 					this.files[index] = new X.ximfile({file: files[i], _container:this.container, _element: null,urlcheckname: this.urlcheckname, urlgetpreview: this.urlgetpreview});
-						this.numfiles++;
+ 			for(var i=0, f; f=  files[i]; i++) {
+				if(-1 == this.indexFile(files[i]) && this.checkType(files[i].type) && files[i].size > 0 ) {
+					var index = this.files.length
+ 					this.files[index] = new X.ximfile({file: files[i], _container:this.container, _element: null,urlcheckname: this.urlcheckname, urlgetpreview: this.urlgetpreview});
+					this.numfiles++;
 
-							$(this.files[index].element).bind('fileUploaded', function(event, options) {
-				 				this.numfiles--;
-				 				if(0 == this.numfiles) {
-				 					$(this.element).trigger('filesUploaded', [{uploader:this, files:this.files}] );
-				 				}
-				 			}.bind(this));
-	 				}else {
-						alert("'"+files[i].name+"' "+_("selected already or invalid for the destination") );
-	 				}
+					$(this.files[index].element).bind('fileUploaded', function(event, options) {
+	 					this.numfiles--;
+	 					if(0 == this.numfiles) {
+	 						$(this.element).trigger('filesUploaded', [{uploader:this, files:this.files}] );
+	 					}
+				 	}.bind(this));
+	 			}else {
+					alert("'"+files[i].name+"' "+_("selected already or invalid for the destination") );
 	 			}
+	 		}
 
 		 	this._showDelete();
 			$(this.element).val('');
  		},
 
  		_showDelete: function() {
-	 			if(this.files.length > 0 ) {
-	 				//display remove file
-	 				$('.xim-uploader-delete', this.container).show();
+	 		if(this.files.length > 0 ) {
+	 			//display remove file
+	 			$('.xim-uploader-delete', this.container).show();
 
-	 				$('.xim-uploader-delete', this.container).click(function(event) {
-	 					event.preventDefault();
-	 					var files = $('input:checked', this.container)
-	 					var max = files.length;
-	 					for(var i= 0; i<max;i++) {
-	 							var file  = $(files[i]).closest('li').data('ximfile');
-								var index = this.indexFile({name: file.getName(), size: file.getSize()} );
-								file.remove();
-								this.files.splice(index, 1);
-								if(0 == this.files.length ) {
-									$(event.target).hide();
-								}
-							 	//file.remove();
-	 					}
-
-	 				}.bind(this) );
-	 			}
+	 			$('.xim-uploader-delete', this.container).click(function(event) {
+	 				event.preventDefault();
+	 				var files = $('input:checked', this.container)
+	 				var max = files.length;
+	 				for(var i= 0; i<max;i++) {
+	 					var file  = $(files[i]).closest('li').data('ximfile');
+						var index = this.indexFile({name: file.getName(), size: file.getSize()} );
+						file.remove();
+						this.files.splice(index, 1);
+						if(0 == this.files.length ) {
+							$(event.target).hide();
+						}
+						//file.remove();
+	 				}
+	 			}.bind(this) );
+	 		}
  		},
 
 		_seturlcheckname: function() {
-				var url = X.restUrl;
-				url += "?nodes[0]="+this.nodeid+"&nodeid="+this.nodeid;
-				url += "&action=fileupload_common_multiple";
-				url += "&noCacheVar="+X.getUID();
-				url += "&method=checkname";
-				this.urlcheckname = url;
-			},
+			var url = X.restUrl;
+			url += "?nodes[0]="+this.nodeid+"&nodeid="+this.nodeid;
+			url += "&action=fileupload_common_multiple";
+			url += "&noCacheVar="+X.getUID();
+			url += "&method=checkname";
+			this.urlcheckname = url;
+		},
 
 		_seturlgetpreview: function() {
-				var url = X.restUrl;
-				url += "?nodes[0]="+this.nodeid+"&nodeid="+this.nodeid;
-				url += "&action=fileupload_common_multiple";
-				url += "&noCacheVar="+X.getUID();
-				url += "&method=getpreview";
-				this.urlgetpreview = url;
+			var url = X.restUrl;
+			url += "?nodes[0]="+this.nodeid+"&nodeid="+this.nodeid;
+			url += "&action=fileupload_common_multiple";
+			url += "&noCacheVar="+X.getUID();
+			url += "&method=getpreview";
+			this.urlgetpreview = url;
 		},
 
  		checkType: function(ftype) {
@@ -193,13 +200,10 @@
 					}
 				}
 			}
-
  			return false;
-
  		},
 
-
- 		//Check if file exists already in component
+ 		//Checking if file already exists in the uploader
  		indexFile: function(file) {
 		   var name = file.name.toLowerCase();
  			var max = this.files.length;
@@ -213,33 +217,43 @@
  			return -1;
  		},
 
+		setExtraParam: function(name, value){
+			this.extraParams[name]=value;
+		},
 
  		upload: function(url) {
  			if (null == url) {
-				alert(_("Upload url not found"));
+				alert(_("Upload url not found."));
  				return false;
  			}
 
- 			if( this.files == null ) {
-				alert(_("No selected file could be found"));
+ 			if(!this.files || !this.files.length) {
+				alert(_("There aren't any selected files for upload."));
  				return false;
  			}
 
-			 this.uploading = true;
+			if($("#"+this.id).attr("data-is-structured")){
+			     for (var i = 0; i< this.paramNames.length; i++){
+					var paramName = this.paramNames[i];
+					if (!this.extraParams[paramName]){
+						alert(_("You should select a schema and a language before uploading."));
+		 				return false;					
+					}
+				}
 
-			//buttons hidden
+			}
+
+			this.uploading = true;
+
+			//hidding buttons
 	 		$('.xim-uploader-delete', this.container).hide();
  			$(this.input).hide();
 
-
  			var total = this.files.length;
  			for ( var i = 0; i<total; i++ ) {
- 				this.files[i].upload(url);
+ 				this.files[i].upload(url, this.extraParams);
 			}
-
-
 			return true;
  		}
-
- });
+ 	});
  })(jQuery);

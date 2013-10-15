@@ -85,7 +85,7 @@ class xsltnode extends FileNode {
 		$ptdProject = new Node($idXimptdProject);
 		$idDocxapProject = $ptdProject->GetChildByName('docxap.xsl');
 
-		if ($xsltName != 'docxap.xsl'	&& $ximPtdNode->get('IdParent') != $node->GetProject()
+		if ( $xsltName != 'docxap.xsl'	&& $ximPtdNode->get('IdParent') != $node->GetProject()
 			&& !($ximPtdNode->GetChildByName('docxap.xsl') > 0) && ($idDocxapProject > 0)) {
 
 			// get and copy project docxap
@@ -121,7 +121,6 @@ class xsltnode extends FileNode {
 	 */
 	function setIncludeContent($fileName, $parentId, $nodeTypeId, $stateID) {
 
-
 		if ($fileName!="templates_include.xsl"){
 			$node = new Node($this->nodeID);
 			$projectId = $node->GetProject();
@@ -137,61 +136,14 @@ class xsltnode extends FileNode {
 				// Making include in project (modify includes from project and its sections)
 
 				$includeString = "<xsl:include href=\"$fileName\"/>\n";
-
 				$this->writeIncludeFile($fileName, $projectId, $nodeTypeId, $stateID, $includeString);
-
-				// Getting sections and servers from project
-
-				$sectionsList = array();
-				$serversList = array();
-
-				$auxType = new NodeType();
-				$auxType->SetByName("Server");
-				$serverTypeId = $auxType->get('IdNodeType');
-
-				$auxType = new NodeType();
-				$auxType->SetByName("Section");
-				$sectionTypeId = $auxType->get('IdNodeType');
-
-				if (ModulesManager::isEnabled('ximNEWS')) {
-					$auxType = new NodeType();
-					$auxType->SetByName("XimNewsSection");
-					$newsSectionTypeId = $auxType->get('IdNodeType');
-				}
-
-				$serversList = $project->GetChildren($serverTypeId);
-
-				if (is_array($serversList)) {
-					foreach ($serversList as $serverId) {
-						$serverNode = new Node($serverId);
-						$sectionsList = array_merge($sectionsList, (array) $serverId,
-						(array) $serverNode->GetChildren($sectionTypeId));
-
-						if (ModulesManager::isEnabled('ximNEWS')) {
-							$sectionsList = array_merge($sectionsList, (array) $serverNode->GetChildren($newsSectionTypeId));
-						}
-					}
-				}
-
-				if (!is_null($sectionsList)) {
-					foreach ($sectionsList as $sectionId) {
-						$section = new Node($sectionId);
-						$sectionPath = $section->class->GetNodePath();
-
-						$this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID, $includeString);
-					}
-				}
 
 			} else {
 
 				// Making include only in section ximptd
-
 				$sectionId = $node->GetSection();
-
 				$section = new Node($sectionId);
-
 				$includeString = "<xsl:include href=\"$fileName\"/>\n";
-
 				$this->writeIncludeFile($fileName, $sectionId, $nodeTypeId, $stateID, $includeString);
 			}
 

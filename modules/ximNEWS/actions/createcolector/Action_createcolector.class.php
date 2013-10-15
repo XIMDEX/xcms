@@ -332,7 +332,7 @@ class Action_createcolector extends ActionAbstract {
 	private function getColectorRelatedData ($idNode) {
 
 		$node = new Node($idNode);
-		$templates = $node->getTemplates('bulletin_template');
+		$templates = $node->getSchemas('bulletin_template');
 
 		foreach($templates as $templateId){
 			$template = new Node($templateId);

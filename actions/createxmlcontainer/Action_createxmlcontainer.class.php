@@ -62,7 +62,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 			}
 		}
 
-		$templates = $templates === null ? $node->getTemplates() : $templates;
+		$templates = $templates === null ? $node->getSchemas() : $templates;
 
 		$templateArray = array();
 		if (!is_null($templates)) {

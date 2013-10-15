@@ -22,19 +22,43 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+
 <form action="{$action_url}"  method="POST" name="f_m_u" enctype="multipart/form-data" >
 	<div class="action_header">
 		<h2>{$lbl_anadir}</h2>
 		<fieldset class="buttons-form">
-			{button label="Continue" class="validate btn main_action"}<!--message="Are you sure you want to continue?" -->
+			{button label="Upload files" class="validate btn main_action"}
+			<!--message="Are you sure you want to continue?" -->
 		</fieldset>
 	</div>
-<div class="action_content">
-	<fieldset>
 
-
-	<uploader {if ($filter)}filter="{$filter}"{/if} />
-
-	</fieldset>
-</div>
+	<div class="action_content">
+		<fieldset>
+			<uploader {if ($filter)}filter="{$filter}"{/if} is_structured="{$is_structured}"/>
+			<span id="numfiles"></span>
+	{* for the XML massive upload *} 
+	{if $type_node == "XmlContainer"}
+			<ol>
+				<li>
+					<label for="id_schema" class="aligned">{t}Schema{/t}:</label>
+					<select name="id_schema" id="schemaid" class="cajaxg validable not_empty extra-param">
+						<option value="">&laquo;{t}Select schema{/t}&raquo;</option>
+					{foreach from=$schemas item=schema}
+						<option value="{$schema.idSchema}">{$schema.Name}</option>
+					{/foreach}
+					</select>
+				</li>
+				<li>
+					<label for="id_language" class="aligned">{t}Language{/t}:</label>
+					<select name="id_language" id="id_language" class="cajaxg validable not_empty extra-param">
+						<option value="">&laquo;{t}Select language{/t}&raquo;</option>
+					{foreach from=$languages item=language}
+						<option value="{$language.IdLanguage}">{$language.Name|gettext}</option>		
+					{/foreach}	
+					</select>
+				</li>
+			</ol>	
+	{/if}
+		</fieldset>
+	</div>
 </form>

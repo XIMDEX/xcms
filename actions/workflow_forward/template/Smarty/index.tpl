@@ -62,7 +62,7 @@
 						sec_field_name="sec"
 						format="d-m-Y H:i:s"
 						type="from"
-						cname="fechainicio"
+						cname="dateUp"
 					/>
 
 
@@ -73,7 +73,8 @@
 						sec_field_name="sec"
 						format="d-m-Y H:i:s"
 						type="to"
-						cname="fechafin"
+						cname="dateDown"
+						quickButton="never"
 					/>
 					</div>
 					</li>
@@ -86,7 +87,7 @@
 					<li>
 					{if $show_rep_option}
 						{if $synchronizer_to_use == "default"}
-						<input type="checkbox" name="republicar" id="republicar" /> <label for="republicar">{t}¿Desea republicar los documentos enlazados a este?{/t}</label>
+						<input type="checkbox" name="republish" id="republish" /> <label for="republish">{t}¿Desea republicar los documentos enlazados a este?{/t}</label>
 						{elseif $synchronizer_to_use == "ximSYNC"}
 
 							{if $nodetypename eq 'XmlDocument' && $ximpublish_tools_enabled}

@@ -32,16 +32,15 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 	// Main method: shows initial form
 	function index () {
-
+		
+		$is_structured=false;
      		$idNode = (int) $this->request->getParam("nodeid");
 	     	$actionID = (int) $this->request->getParam("actionid");
 		$type = $this->request->getParam('type');
-
 		$userid = XSession::get('userID');
 		$dir_tmp = XIMDEX_ROOT_PATH.Config::getValue('TempRoot');
 
 		/** ********* Find out folder nodetype **** */
-
 		$baseIoInferer = new BaseIOInferer();
 		$type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
 		$type_node = $type_folder["NODETYPENAME"];
@@ -66,7 +65,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		switch($type_node)  {
 			case 'CssFolder':
 				$lbl_anadir = _(' Add style sheets');
-				$filter = ".*css"; break;
+				$filter = ".*css";
+			 break;
 			case 'ImagesFolder':
 				$lbl_anadir = _(' Add images ');
 				$filter = ".*jpeg,.*jpg,.*gif,.*png,.*ico";
@@ -83,6 +83,11 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				$lbl_anadir = _(' Add HTML files ');
 				$filter = ".*ht,.*htm,.*html,.*xhtml,.*plain,.*txt"; 
 			break;
+			case 'XmlContainer':
+				$lbl_anadir = _(' Add XML files ');
+				$is_structured=true;
+				$filter = ".*xml";	
+			break;
 			/*case 'CommonFolder':
 				$lbl_anadir = _(' Add common files ');
 				$filter = ".*ht,.*htm,.*html,.*xhtml,.*plain,.*txt,.*zip"; 
@@ -96,7 +101,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
 		$this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css');
 
-		$arrValores = array (
+		$values = array (
 			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			"lbl_anadir" => $lbl_anadir,
 			'messages' => $this->messages->messages,
@@ -105,27 +110,49 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			'actionid' => $this->request->getParam('actionid'),
 			'type' => $type,
 			'filter' => $filter,
+			'type_node'=>$type_node,
+			'is_structured' => $is_structured
 		);
+		
+		if ($type_node=="XmlContainer"){
+			$node = new Node($idNode);
+			// Gets default schema for XML through propInheritance
+			$schemas = null;
+			$section = $node->getSection();
+		
+			if ($section > 0) {
+		
+				$section = new Node($section);
+				$hasTheme = (bool) count($section->getProperty('theme'));
+				
+				if ($hasTheme) {
+					$schemas = $section->getProperty('theme_visualtemplates');
+				}
+			}
+	
+			$schemas = $schemas === null ? $node->getSchemas() : $schemas;
 
-		$this->render($arrValores, 'index', 'default-3.0.tpl');
-    	}
+			$schemaArray = array();
+			if (!is_null($schemas)) {
+				foreach ($schemas as $idSchema) {
+					$schemaNode = new Node($idSchema);
+					$schemaArray[] = array('idSchema' => $idSchema, 'Name' => $schemaNode->get('Name'));
+				}
+			}
 
+			$language = new Language();
+			$languages = $language->getLanguagesForNode($idNode);	
 
-	function uploadFileBak() {
-		$idNode = (int) $this->request->getParam("nodeid");
+			// Getting channels
+			//$channel = new Channel();
+			//$channels = $channel->getChannelsForNode($idNode);
 
-		$file = $_FILES["ximfile"];
+			$values["schemas"]=$schemaArray;
+			//$values["channels"]=$channels;
+			$values["languages"]=$languages;
+		}
 
-  		$idNode = $this->request->getParam('nodeid');
-  		$type = $this->request->getParam('type');
-     		$option = $this->request->getParam('option');
-
-    		if(null == $file || 0 == $file["size"]) {
-    			$retval  = $this->_setRest(_("Error inesperado en la subida de archivo ").$file["name"]);
-    		} else {
-    			$retval = $this->_createNode($file, $idNode, $type, $option);
-    		}
-		die(json_encode($retval));
+		$this->render($values, 'index', 'default-3.0.tpl');
     	}
 
 	function uploadFile() {
@@ -136,11 +163,13 @@ class Action_fileupload_common_multiple extends ActionAbstract {
       		$up = $this->request->getParam("up");
       		$base64 = $this->request->getParam("base64");
 	  	$retval = "";
-	  	if(count($_FILES)>0) { //Browser supporting sendAsBinary()
+
+		//Browser supporting sendAsBinary()
+	  	if(count($_FILES)>0) { 
 			$file = $_FILES["ximfile"];
 
 		    	if(null == $file || 0 == $file["size"]) {
-    				$retval  = $this->_setRest(_("Error inesperado en la subida de archivo ").$file["name"]);
+    				$retval  = $this->_setRest(_("Unexpected error while uploading file ").$file["name"]);
     			} else {
     				$retval = $this->_createNode($file, $idNode, $type, $option);
     			}
@@ -160,7 +189,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 	   	 		$tmp_folder = XIMDEX_ROOT_PATH."/data/tmp/uploaded_files/";
 	   	 		$tmp_name = $tmp_folder.$headers['XIM-FILENAME'].".".mt_rand();
 	   	 		if(file_put_contents($tmp_name,$content)==false) {
-	   	 			$retval  = $this->_setRest(_("Error inesperado en la subida de archivo ").$headers["XIM-FILENAME"]);
+	   	 			$retval  = $this->_setRest(_("Unexpected error while uploading file ").$headers["XIM-FILENAME"]);
 	   	 		}
 	   	 	
 	   	 		$file = array('name' => $headers['XIM-FILENAME'],
@@ -174,7 +203,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 	   	    		unlink($tmp_name);
 	   	 	}
 	   	 	else {
-	   			$retval  = $this->_setRest(_("Error inesperado en la subida de archivo ").$headers["XIM-FILENAME"]);
+	   			$retval  = $this->_setRest(_("Unexpected error while uploading file ").$headers["XIM-FILENAME"]);
 	   	 	}
 	   	}
 	    	die(json_encode($retval));
@@ -204,13 +233,13 @@ class Action_fileupload_common_multiple extends ActionAbstract {
     		$node = new Node($idNode);
   		$idNode = $node->GetChildByName($file);
   		if ($idNode > 0) {
-  			 return true; //Exists
+  			 return true;
   		} else {
 			return false;
     		}
 		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
 
-		$arrValores = array (
+		$values = array (
 			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			"lbl_anadir" => $lbl_anadir,
 			'messages' => $this->messages->messages,
@@ -221,7 +250,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			'filter' => $filter,
 		);
 
-		$this->render($arrValores, 'index', 'default-3.0.tpl');
+		$this->render($values, 'index', 'default-3.0.tpl');
     	}
 
 	private function _setRest($msg, $status="nok") {
@@ -234,7 +263,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 	//Creating a node according to name and file path
 	private function _createNode($file, $idNode,  $type, $option) {
-
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
 		if (empty($type)) {
@@ -249,7 +277,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
      			return  $this->_setRest(_(" File is not of expected type " ) );
 		} else {
 			$node = new Node($idNode);
-
 			if(!$node) {
 		     		return  $this->_setRest(_(" Destination node has not been found "));
 			}
@@ -271,17 +298,67 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 					return  $this->_setRest(_('A file already exists with same name.') );
 				}
 			} else if ($node->nodeType->get('IsFolder')) {
-				$data = array(
-					'NODETYPENAME' => $nodeTypeName,
-					'NAME' => $file["name"],
-					'PARENTID' => $idNode,
-					'CHILDRENS' => array (
-						array ('NODETYPENAME' => 'PATH', 'SRC' => $file["tmp_name"] )
-					)
-				);
+				//To upload xml content
+				if ($node->nodeType->get("Name")=="XmlRootFolder"){	
+					$newNodeName = str_replace(".xml","",$file["name"]);
+					$idSchema = $this->request->getParam("id_schema");
+					$idSchema = $idSchema[0];
+					$idLanguage = $this->request->getParam("id_language");
+					$idLanguage = $idLanguage[0];
+					$data = array(
+				          		'NODETYPENAME' => "XmlContainer",
+				            		'NAME' => $newNodeName,
+					        	'PARENTID' => $idNode,
+					        	'CHILDRENS' => array(
+				                		array(
+					                    	'NODETYPENAME' => 'VISUALTEMPLATE',
+					                    	'ID' => $idSchema
+					                	)
+				            		)
+				            	);
+					$baseIO = new baseIO();
+					$result = $baseIO->build($data);
+					$documentNodeType = new NodeType();
+				        $documentNodeType->SetByName("XMLDOCUMENT");
 
-				$baseIO = new baseIO();
-				$result = $baseIO->build($data);
+					$data = array(
+				                'NODETYPENAME' => $documentNodeType->get("Name"),
+				                'NAME' => $newNodeName,
+				                'NODETYPE' => $documentNodeType->get('IdNodeType'),
+				                'PARENTID' => $result,
+				                'CHILDRENS' => array(
+				                    array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema),
+				                    array('NODETYPENAME' => 'LANGUAGE', 'ID' => $idLanguage),
+                				)
+				       );
+					
+					$allChannels = Channel::GetAllChannels();
+					if(!empty($allChannels ) ) {
+						foreach ($allChannels as $channel) {
+							$data['CHILDRENS'][] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $channel);;
+						}			
+					}
+
+			            $docId = $baseIO->build($data);
+			            if ($docId>0){
+					    $newDocumentNode = new Node($docId);
+					    $content = file_get_contents($file["tmp_name"]);
+					    $newDocumentNode->SetContent($content);
+				    }
+					
+				}else{
+					$data = array(
+						'NODETYPENAME' => $nodeTypeName,
+						'NAME' => $file["name"],
+						'PARENTID' => $idNode,
+						'CHILDRENS' => array (
+							array ('NODETYPENAME' => 'PATH', 'SRC' => $file["tmp_name"] )
+						)
+					);	
+					$baseIO = new baseIO();
+					$result = $baseIO->build($data);
+				}
+				
 			}
 
 
@@ -306,21 +383,21 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		if(array_key_exists("ximfile", $_POST) ){
 			 $idNode = (int) $this->request->getParam("nodeid");
-			 $arrValores = array();
+			 $values = array();
 			 if(array_key_exists("ok", $_POST["ximfile"] ) ) {
-				  $arrValores["files_ok"] = $_POST["ximfile"]["ok"];
+				  $values["files_ok"] = $_POST["ximfile"]["ok"];
 			 }else {
-				  $arrValores["files_ok"] = array();
+				  $values["files_ok"] = array();
 			 }
 
 			 if(array_key_exists("nok", $_POST["ximfile"] ) ) {
-				  $arrValores["files_nok"] = $_POST["ximfile"]["nok"];
+				  $values["files_nok"] = $_POST["ximfile"]["nok"];
 			 }else {
-				  $arrValores["files_nok"] = array();
+				  $values["files_nok"] = array();
 			 }
 
 			 $this->reloadNode($idNode);
-			 $this->render($arrValores, 'result', 'default-3.0.tpl');
+			 $this->render($values, 'result', 'default-3.0.tpl');
 		}else {
 			$this->messages->add(_("No files have been found"), MSG_TYPE_ERROR);
 		  	$this->render(array('messages' => $this->messages->messages));

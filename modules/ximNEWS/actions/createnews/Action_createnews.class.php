@@ -57,7 +57,7 @@ class Action_createnews extends ActionAbstract {
 		$channel = new Channel();
 		$channels_list = $channel->getChannelsForNode($idNode);
 
-		$templateslst = $node->getTemplates('news_template');
+		$templateslst = $node->getSchemas('news_template');
 
 		if (!is_null($templateslst)) {
 			foreach ($templateslst as $templateId) {
