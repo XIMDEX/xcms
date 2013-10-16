@@ -1,7 +1,5 @@
-<?php
-
 /**
- *  \details &copy; 2013  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
  *
@@ -25,33 +23,6 @@
  *  @version $Revision$
  */
 
-/**
- * <p>API Rest Action Interface</p>
- * <p>Interface to be implemented by the specific API Rest custom actions</p>
- * <p>Provides the CRUD operations for an entity</p>
- */
-interface APIRestAction
-{
-	const USER_PARAM = 'XimUser';
-     /**
-     * <p>Create method</p>
-     */
-    public function post($request, $response);
-    
-    /**
-     * <p>Read method</p>
-     */
-    public function get($request, $response);
-    
-    /**
-     * <p>Update method</p>
-     */
-    public function put($request, $response);
-    
-    /**
-     * <p>Delete method</p>
-     */
-    public function delete($request, $response);
-}
+  @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
 
-?>
+  .asdfasd

@@ -29,6 +29,7 @@ require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
 require_once(XIMDEX_ROOT_PATH . '/api/utils/Crypto.class.php');
 require_once(XIMDEX_ROOT_PATH . '/services/TokenService.class.php');
 require_once(XIMDEX_ROOT_PATH . '/services/NodeService.class.php');
+require_once(XIMDEX_ROOT_PATH . '/services/NodetypeService.class.php'); 
 
 /**
  *

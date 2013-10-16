@@ -139,6 +139,20 @@ class NodeService
     }
     
     /**
+     * <p>Checks if the given node (object or id) is of the specified node type</p>
+     * 
+     * @param mixed $node The <code>Node</code> object or the node id to be checked
+     * @param string $nodetypeId The Node Type
+     * 
+     * @return boolean indicating if the node is of the specified node type or not
+     */
+    public function isOfNodeType($node, $nodetypeId) {
+      $n = is_object($node) && $node instanceof Node ? $node : new Node($node);
+      
+      return $n->GetNodeType() == $nodetypeId;
+    }
+    
+    /**
      * <p>Returns the Ximdex root node (projects)</p>
      * 
      * @return Node The root node called projects
