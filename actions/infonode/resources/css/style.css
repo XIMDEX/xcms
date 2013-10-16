@@ -1,0 +1,140 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+.info-node h3 {
+  position: relative;
+  display: inline-block;
+  background: #edeeee;
+  padding: 1.5em 15px 1.5em 30px; }
+  .info-node h3::before {
+    content: "";
+    border: 6px solid transparent;
+    border-top-color: #cccccc;
+    position: absolute;
+    left: .3em;
+    top: 1.8em; }
+.info-node strong {
+  display: block;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  color: #464646;
+  padding-bottom: .4em;
+  text-shadow: none; }
+.info-node .col1-2 {
+  width: 47%;
+  min-width: 190px;
+  margin-right: 2%;
+  overflow: hidden; }
+.info-node > div {
+  position: relative; }
+  .info-node > div::before {
+    content: "";
+    position: absolute;
+    border-top: 3px solid #cccccc;
+    left: 0;
+    top: 1.6em;
+    width: 100%; }
+  .info-node > div:nth-of-type(3)::before {
+    width: 97%; }
+.info-node .box-col1-1, .info-node .box-col2-1, .info-node .box-col4-1, .info-node .box-col6-1 {
+  width: 48%;
+  background: #7bcabf;
+  position: relative;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
+.info-node .general-info .box-col2-1:nth-of-type(2), .info-node .box-col1-1, .info-node .box-col6-1 {
+  position: absolute;
+  right: 0;
+  top: calc(2.3em + 1.97rem); }
+.info-node .box-col4-1 {
+  width: 100%;
+  margin-bottom: 4%;
+  background: #9fd9d1; }
+.info-node .properties-info .box-col4-1 {
+  background: #bfbfbf; }
+  .info-node .properties-info .box-col4-1:nth-of-type(2) {
+    background: #cccccc; }
+.info-node .workflow-info .box-col2-1 {
+  width: 22.5%;
+  background: #cccccc; }
+  .info-node .workflow-info .box-col2-1:nth-of-type(1) {
+    margin-bottom: 2%;
+    background: #9fd9d1; }
+.info-node .workflow-info .box-col6-1 {
+  width: 72.5%;
+  right: 3%;
+  background: #d9d9d9; }
+  .info-node .workflow-info .box-col6-1 .box-content {
+    color: #464646; }
+.info-node .box-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: .8em;
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2); }
+.info-node .box-col1-1::before, .info-node .box-col2-1::before, .info-node .box-col4-1::before, .info-node .box-col6-1::before {
+  content: "";
+  display: block;
+  padding-top: 100%; }
+.info-node .box-col2-1::before {
+  padding-top: 57%; }
+.info-node .properties-info .box-col4-1::before {
+  padding-top: 27.3%; }
+.info-node .box-col6-1::before {
+  padding-top: 32.7%; }
+.info-node .box-col4-1::before, .info-node .properties-info .box-col4-1:nth-of-type(2)::before {
+  padding-top: 38%; }
+.info-node .workflow-info .box-col2-1::before {
+  padding-top: 48%; }
+.info-node li.col1-2 {
+  padding: 1.5em;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px; }
+.info-node .box-col2-1:nth-of-type(1) {
+  margin-bottom: 3.8%; }
+.info-node .path, .info-node .user {
+  display: block;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  -ms-word-break: break-word;
+  word-break: break-word;
+  padding-top: .5em; }
+.info-node .nodetype {
+  font-size: 2rem; }
+.info-node .date {
+  font-size: 2.5rem; }
+.info-node .state {
+  font-size: 2.2rem;
+  display: block;
+  line-height: 1; }

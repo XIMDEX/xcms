@@ -92,11 +92,13 @@ class OntologyService {
 	/**
 	* Load all providers and update the provider property
 	*/	
-	private function loadProviders(){
+	private function loadProviders($tags=false){
 
 		//It should be loaded from DB.
 		$this->providers["semantic"]="AnnotationSearcherStrategy";
-		//$this->providers["content"]="ContentEnricherSearcherStrategy";
+		if(!$tags){
+			$this->providers["content"]="ContentEnricherSearcherStrategy";
+		}
 		//$this->providers["ximdex"]="XimdexSearcherStrategy";
 	}
 }

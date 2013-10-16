@@ -1,0 +1,201 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+
+
+.info-node {
+
+	h3{
+		position: relative;
+		display: inline-block;
+		background: $c_background;
+		padding: 1.5em 15px 1.5em 30px;
+		&::before{
+			content: "";
+			border: 6px solid transparent;
+			border-top-color: $c_grey-pp;
+			position: absolute;
+			left: .3em;
+			top: 1.8em;
+			
+		}
+	}
+
+	strong{
+	display: block;
+	text-transform: uppercase;
+	font-size: 1.8rem;
+	color: $c_grey-l;
+	padding-bottom: .4em;
+	text-shadow: none;
+	}
+
+	
+	.col1-2{
+	width: 47%;
+	min-width: 190px;
+	margin-right: 2%;
+	overflow: hidden;
+	}
+
+	
+	>div{
+	position: relative;
+	&::before{
+		content: "";
+		position: absolute;
+		border-top: 3px solid $c_grey-pp;
+		left: 0;
+		top: 1.6em;
+		width: 100%;
+		
+	}
+
+	&:nth-of-type(3)::before{
+		width: 97%;
+	}
+	}
+
+	.box-col1-1, .box-col2-1, .box-col4-1, .box-col6-1{
+		width: 48%;
+		background: $c_mainlight;
+		position: relative;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.3);
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.3);
+		box-shadow: 0 1px 2px rgba(0,0,0,.3);
+	}
+	
+	.general-info .box-col2-1:nth-of-type(2), .box-col1-1, .box-col6-1{
+		position: absolute;
+		right: 0;
+		top: calc(2.3em + 1.97rem);
+
+	}
+
+	.box-col4-1{
+		width: 100%;
+		margin-bottom: 4%;
+		background: lighten($c_mainlight, 10%);
+	}
+
+	.properties-info .box-col4-1{
+		background: darken($c_grey-pp, 5%);
+		&:nth-of-type(2){
+			background: $c_grey-pp;
+		}
+	}
+
+	.workflow-info .box-col2-1{
+		width: 22.5%;
+		background:  $c_grey-pp;
+		&:nth-of-type(1){
+			margin-bottom: 2%;
+			background:lighten($c_mainlight, 10%);
+		}
+	}
+	.workflow-info .box-col6-1{
+		width: 72.5%;
+		right: 3%;
+		background:  lighten($c_grey-pp, 5%);
+		.box-content{
+		color: $c_grey-l;
+		}
+	}
+
+	.box-content{
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: .8em;
+		font-size: 3rem;
+		color: #fff;
+		text-shadow: 1px 1px 0 rgba(0,0,0,.2);
+	}
+	.box-col1-1::before, .box-col2-1::before, .box-col4-1::before, .box-col6-1::before{
+		content: "";
+		display: block;
+		padding-top: 100%;
+	}
+
+	.box-col2-1::before{
+		padding-top: 57%;
+	}
+	.properties-info .box-col4-1::before{
+		padding-top: 27.3%;
+	}
+
+	.box-col6-1::before{
+		padding-top: 32.7%;
+	}
+	.box-col4-1::before, .properties-info .box-col4-1:nth-of-type(2)::before{
+		padding-top: 38%;
+	}
+
+	.workflow-info .box-col2-1::before{
+		padding-top: 48%;
+	}
+
+
+	
+	li.col1-2{
+		padding: 1.5em;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+	}
+	.box-col2-1:nth-of-type(1){
+		margin-bottom: 3.8%;
+	}
+
+	.path, .user{
+		display: block;
+		font-size: 1.8rem;
+		line-height: 1.2;	
+		-ms-word-break: break-word;
+		word-break: break-word;
+		padding-top: .5em;
+	}
+
+	.nodetype{
+		font-size: 2rem;
+	}
+
+	.date{
+		font-size: 2.5rem;
+	}
+
+	.state{
+		font-size: 2.2rem;
+		display: block;
+		line-height: 1;
+	}
+
+}
