@@ -24,31 +24,38 @@
  */
 
 
-X.actionLoaded(function(event, fn, params) {
+  @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
 
-	var form = params.actionView.getForm('as_form');
-	var fm = form.getFormMgr();
+  .uploader{
+  	fieldset, .xim-uploader-container{
+  		height: 100%;
+  	}
+  }
 
-	fn('select#type_sec').change(function() {
-
-                var urler = fn('#nodeURL').val() + '&type_sec=' + fn('#type_sec option:selected').val();
-                fn('#as_form').attr('action', urler);
-
-                fm.sendForm();
-        });
-
-	if(fn('#type_sec option:selected').text()=="ximNEWS"){{
-		$("div.folder-name").removeClass("folder-normal").addClass("folder-news"); 
-	}else{
-		$("div.folder-name").removeClass("folder-news").addClass("folder-normal");
+.xml-uploader{
+	.xim-uploader-container{
+		height: calc(100% - 8em);
 	}
+}
+  .xml-properties{
+  	margin-bottom: 1em;
 
-	fn(".subfolder > label.icon").click( 
-                function(){ 
-                        var readonly = $(this).prev().attr("readonly"); 
-                        if(readonly && readonly.toLowerCase()!=='false') { 
-                                return false; 
-                        } 
-                }); 
+  		>:first-child{
+  			border-right: 5px solid $c_background;
+  		}
+  	.col1-2{
+  			width: 49.7%;
+  			margin-bottom: .5em;
+  	}
+  	select{
+  		background: #fff;
+  		border: 1px solid lighten($c_greymain, 18%);
+  		width: 100%;
+		padding: .5em;
+		&:hover{
+			background: $c_mainlight;
+			cursor: pointer;	
+		}
+  	}
+  }
 
-});

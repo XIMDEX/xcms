@@ -39,6 +39,7 @@ class Action_managefolders extends ActionAbstract {
 	* 
  	*/ 
     	function index () {
+		$this->addCss('/actions/addsectionnode/resources/css/style.css'); 
 		$selectedFolders=array();
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);

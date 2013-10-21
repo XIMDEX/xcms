@@ -26,11 +26,17 @@
 
 X.actionLoaded(function(event, fn, params) {
 
-	$("input.aligned").change(
+	$(".subfolder > label.icon").click(
     		function(){
-        		if (!$(this).is(":checked")){
+    			var readonly = $(this).prev().attr("readonly");
+        		if ($(this).prev().is(":checked")){
+                    $("div#warning").removeClass("hidden-message");
        				$("div#warning").empty().append($("<p></p>").append(_("Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that folder.")));//.addClass("waning-message message");
         		}
+
+    			if(readonly && readonly.toLowerCase()!=='false') {
+				return false;
+    			}
     		});
 
 });

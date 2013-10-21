@@ -22,6 +22,21 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/**************
+// COLORS
+***************/
+/**************
+// SHADOWS
+***************/
+/**************
+// TYPO
+***************/
+/**************
+// INCLUDES
+***************/
+/**************
+// EXTENDS
+***************/
 /* NO Extends because they are inserted at the beggining of each CSS file */
 /*++++++++++++++++++++++  General styles for action panel elements +++++++++++++++++++*/
 .ui-widget-content {
@@ -61,8 +76,6 @@ input, select {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px; }
-  input[type="text"], select[type="text"] {
-    width: 80%; }
 
 input:hover {
   -webkit-box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
@@ -142,7 +155,7 @@ h2.nodo_path {
 .action_container h3 {
   text-transform: none;
   position: relative;
-  padding: 1.5em 25px .8em;
+  padding: 1.5em 0 .8em;
   font-size: 1.4rem; }
 
 .action_container .editable {
@@ -427,7 +440,11 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   padding: 1em 4% 1em 4.5em;
   background: #e1e1e1;
   position: relative;
-  border-bottom: 1px solid #fff; }
+  border-bottom: 1px solid #fff;
+  -webkit-animation: all .2s;
+  -moz-animation: all .2s;
+  -o-animation: all .2s;
+  animation: all .2s; }
   .message::before {
     content: '';
     position: absolute;
@@ -439,6 +456,10 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     font: normal 1.5em bold 'Coustard';
     line-height: 2; }
 
+.hidden-message {
+  height: 0;
+  padding: 0; }
+
 .warning-message {
   background: #f1e9cd; }
   .warning-message::before {
@@ -447,6 +468,15 @@ input[type="checkbox"] + label, input[type="radio"] + label {
     color: #edeeee;
     text-align: center;
     line-height: 2; }
+
+.delete-message {
+  background: #f9e0e1; }
+  .delete-message::before {
+    content: '< ! >';
+    background: #d93e42;
+    text-align: center;
+    line-height: 2;
+    color: #f9e0e1; }
 
 label + p {
   margin-top: 0; }

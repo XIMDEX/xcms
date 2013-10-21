@@ -34,25 +34,22 @@
 			{button label="Save changes" class='validate btn main_action' message="Are you sure you want to proceed?"}
 		</fieldset>
 	</div>
+<div id="warning" class="message delete-message hidden-message"></div>
+	<div class="action_content section-properties">
+		<div class="folder-name folder-normal icon disabled">
+			<h3> {$sectionName} <span class="folder-type">{t}{$sectionType}{/t}</span></h3>
+		</div>
 
-	<div class="action_content">
-		<fieldset>
-			<ol>
-				<li>
-					<label for="name" class="aligned">{t}Name{/t}: {$sectionName}</label>
-				</li>
-				<li>
-					<label for="type" class="aligned">{t}Type{/t}: {$sectionType}</label>
-				</li>
-
-			<p>{t}Subfolders management{/t}</p>
-			{foreach from=$subfolders key=nt item=foldername}
-                               <strong>{$foldername[0]}</strong><input class="aligned" name="folderlst[]" type="checkbox" value="{$nt}" {if $foldername[2]=='selected' } checked{/if} {if $nt eq 5301 || $nt eq 5304} readonly {/if}/><span>{t}{$foldername[1]}{/t}</span><br/>
-                        {/foreach}
-			</ol>
-			<div id="warning" class=""></div>
-		</fieldset>
+		<div class="subfolders-available"><h3>{t}Subfolders availables{/t}</h3>
+		{foreach from=$subfolders key=nt item=foldername}
+			<div class="subfolder box-col1-1">
+                              	<input class="hidden-focus" id="{$nt}_{$nodeID}" name="folderlst[]" type="checkbox" value="{$nt}" {if $foldername[2]=='selected' } checked{/if} {if $nt eq 5301 || $nt eq 5304} readonly {/if}/>
+				<label class="icon" for="{$nt}_{$nodeID}"><strong class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
+                              	<span class="info">{t}{$foldername[1]}{/t}</span>
+			</div>
+                {/foreach}
+			
+		</div>
+		
 	</div>
-
-
 </form>

@@ -69,9 +69,7 @@ input, select {
 	color: $c_grey;
 	margin: 0 5px 0 0;
 	@include radius(3px);
-	&[type="text"]{
-		width: 80%;
-	}
+	 
 }
 input:hover {
 	@include boxshadow( 0 0 4px $s_white);
@@ -169,7 +167,7 @@ h2.nodo_path{
 .action_container h3{
 	text-transform: none;
 	position: relative;
-	padding: 1.5em 25px .8em;
+	padding: 1.5em 0 .8em;
 	font-size: 1.4rem;
 }
 
@@ -495,6 +493,10 @@ input[type="checkbox"] + label, input[type="radio"] + label{
 	background:$c_grey-ppp;
 	position: relative;
 	border-bottom: 1px solid #fff;
+	-webkit-animation:all .2s;
+	-moz-animation:all .2s;
+	-o-animation:all .2s;
+	animation:all .2s;
 
 	&::before{
 		content: '';
@@ -510,6 +512,11 @@ input[type="checkbox"] + label, input[type="radio"] + label{
 }
 
 
+.hidden-message{
+		height: 0;
+		padding: 0;
+}
+
 
 .warning-message{
 	background:#f1e9cd;
@@ -524,6 +531,16 @@ input[type="checkbox"] + label, input[type="radio"] + label{
 }
 
 
+.delete-message{
+	background: lighten(#d93e42, 38%);
+	&::before{
+		content: '< ! >';
+		background: #d93e42;
+		text-align: center;
+		line-height: 2;
+		color: lighten(#d93e42, 38%);
+	}
+}
 label + p{
 	margin-top: 0;
 }

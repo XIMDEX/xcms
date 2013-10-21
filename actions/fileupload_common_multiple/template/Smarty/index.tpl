@@ -32,33 +32,32 @@
 		</fieldset>
 	</div>
 
-	<div class="action_content">
+	<div class="action_content uploader {if $type_node == "XmlContainer"}xml-uploader{/if}">
 		<fieldset>
-			<uploader {if ($filter)}filter="{$filter}"{/if} is_structured="{$is_structured}"/>
-			<span id="numfiles"></span>
 	{* for the XML massive upload *} 
 	{if $type_node == "XmlContainer"}
-			<ol>
-				<li>
-					<label for="id_schema" class="aligned">{t}Schema{/t}:</label>
+			<div class="xml-properties">
+			<h3>{t}Please, select the schema to follow and the languages for your documents before uploading them.{/t}</h3>	
+			<div class="col1-2">
+				
 					<select name="id_schema" id="schemaid" class="cajaxg validable not_empty extra-param">
 						<option value="">&laquo;{t}Select schema{/t}&raquo;</option>
 					{foreach from=$schemas item=schema}
 						<option value="{$schema.idSchema}">{$schema.Name}</option>
 					{/foreach}
 					</select>
-				</li>
-				<li>
-					<label for="id_language" class="aligned">{t}Language{/t}:</label>
+				</div>
+				<div class="col1-2">
 					<select name="id_language" id="id_language" class="cajaxg validable not_empty extra-param">
 						<option value="">&laquo;{t}Select language{/t}&raquo;</option>
 					{foreach from=$languages item=language}
 						<option value="{$language.IdLanguage}">{$language.Name|gettext}</option>		
 					{/foreach}	
 					</select>
-				</li>
-			</ol>	
+				</div>
+	</div>
 	{/if}
+			<uploader {if ($filter)}filter="{$filter}"{/if} is_structured="{$is_structured}"/>
 		</fieldset>
 	</div>
 </form>

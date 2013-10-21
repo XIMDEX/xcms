@@ -164,8 +164,8 @@ msgstr "&iquest;Est&aacute; seguro de querer continuar?"
 msgid "Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that folder."
 msgstr "&iexcl;Atenci&oacute;n! Si desmarca alguna carpeta, Ximdex CMS borrar&aacute; todos los archivos que contiene."
 
-msgid "Subfolders management"
-msgstr "Gesti&oacute;n de subcarpetas"
+msgid "Subfolders availables"
+msgstr "Subcarpetas disponibles"
 
 msgid "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc."
 msgstr "Use esta carpeta si necesita almacenar scripts JS o archivos de texto como PDF's o MS Office documentos,etc."
@@ -184,6 +184,18 @@ msgstr "En esta carpeta se pueden almacenar trozos de c&oacute;digo HTML que se 
 
 msgid "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents."
 msgstr "En esta carpeta se pueden crear trozos de c&oacute;digo XML que se pueden incluir en los documentos XML. Los usos t&iacute;picos son men&uacute;s, cabeceras, pies de p&aacute;gina, etc. "
+
+msgid "XimNewsSection"
+msgstr "Secci&oacute;n de Noticias"
+
+msgid "All the images used in your defined news are stored here."
+msgstr "Todas las im&aacute;genes que aparecen en las noticias son almacenadas aqu&iacute;."
+
+msgid "Into this folder you could create XML based news in several languages. This is a required folder."
+msgstr "Dentro de esta carpeta se podr&aacute;n crear noticias en formato XML en varios idiomas. Es una carpeta obligatoria."
+
+msgid "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder."
+msgstr "El m&oacute;dulo de gesti&oacute;n de noticias ximNEWS gestiona y organiza todas las noticias creadas en boletines de noticias. Esta carpeta es la que los almacena y es obligatoria."
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 #: /install/ximdex_data/ximdex.sql table Nodes
@@ -481,6 +493,15 @@ msgstr "A&ntilde;adir secci&oacute;n"
 #: /actions/addsectionnode/template/Smarty/index.tpl
 msgid "Section type"
 msgstr "Tipo de secci&oacute;n"
+
+msgid "Languages availables"
+msgstr "Idiomas disponibles"
+
+msgid "Name of your section"
+msgstr "Nombre de tu secci&oacute;n"
+
+msgid "Alternative name for paths &amp; breadcrumbs"
+msgstr "Nombre alternativo para migas de pan y rutas"
 
 #: /actions/addsectionnode/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
@@ -1146,14 +1167,14 @@ msgid "Renders"
 msgstr "Renders"
 
 #: /actions/composer/template/Smarty/menu_items.tpl
-# install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
-# install/ximdex_data/ximdex.sql table Languages (`Name`)
-# install/ximdex_data/ximdex.sql table Nodes
+#: install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
+#: install/ximdex_data/ximdex.sql table Languages (`Name`)
+#: install/ximdex_data/ximdex.sql table Nodes
 msgid "Spanish"
 msgstr "Espa&ntilde;ol"
 
 #: /actions/composer/template/Smarty/menu_items.tpl
-# install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
+#: install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
 msgid "English"
 msgstr "Ingl&eacute;s"
 

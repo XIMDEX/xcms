@@ -25,21 +25,26 @@
 
 <div class="xim-uploader-container" id="{$id}" data-is-structured="%=is_structured%">
 	<div class="xim-loader-list-container">
-  		<div class="xim-loader-header">
+  	<!--	<div class="xim-loader-header">
   	  		<span class="xim-loader-name">{t}Name{/t}:</span>
   	  		<span class="xim-loader-size">{t}Size{/t}:</span>
   	  		<span class="xim-loader-progress">{t}Progress{/t}:</span>
   	  		<span class="xim-loader-options">{t}Options{/t}:</span>
-  	  	</div>
+  	  	</div>-->
+          <div class="guide">
+            <span class="icon document">Documents</span>
+            <span class="icon image">Images</span>
+            <span class="icon video">Videos</span>
+           <p> {t}Drag your files here or add them using the button 'Add' below.{/t}</p></div>
 	  	<ul class="xim-loader-list"></ul>
+
   	</div>
-  	<ul class="xim-loader-list-actions">
- 		<li>
-			<a href="#" class="xim-uploader-selected">{t}Add{/t}</a> 
-    			<a href="#" class="xim-uploader-link">{t}Add{/t}<input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"></a>
- 		</li>
-   		<li>
-			<a href="#" class="xim-uploader-delete">{t}Remove{/t}</a>
-		</li>
-	</ul>
+          <ul class="xim-loader-list-actions">
+  
+	<a href="#" class="xim-uploader-selected btn-labeled icon btn">{t}Add{/t}</a>
+	<a href="#" class="xim-uploader-link">{t}Add{/t}<input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"></a>
+    
+      <a href="#" class="xim-uploader-delete btn-labeled icon btn">{t}Remove{/t}</a>
+    <span id="numfiles"></span>
+  </ul>
  </div>

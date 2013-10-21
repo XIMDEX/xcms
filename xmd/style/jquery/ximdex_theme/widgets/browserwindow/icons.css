@@ -22,6 +22,21 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/**************
+// COLORS
+***************/
+/**************
+// SHADOWS
+***************/
+/**************
+// TYPO
+***************/
+/**************
+// INCLUDES
+***************/
+/**************
+// EXTENDS
+***************/
 /* NO Extends because they are inserted at the beggining of each CSS file */
 @font-face {
   font-family: 'ximdex_icons';
@@ -46,10 +61,14 @@
   padding-right: .3em;
   color: #3b8e8f; }
 
-.recover-btn::before {
+.recover-btn::before, :checked + label strong::after, .languages-section label::before, .progress.complete::before,
+.theme-selection .select::before {
   content: "\0079"; }
 
-.delete-btn::before, .xim-tagsinput-tag-remove::before {
+.theme-selection .custom::before {
+  content: "\0045"; }
+
+.delete-btn::before, .xim-tagsinput-tag-remove::before, .xim-uploader-delete::before {
   content: "\0063"; }
 
 .prevdoc-btn::before {
@@ -70,7 +89,7 @@
 .selected::before {
   content: '\0079'; }
 
-.add-btn::before {
+.add-btn::before, .xim-uploader-selected::before {
   content: '\e038'; }
 
 .xim-tagsinput-taglist::before, .type-custom::before {
@@ -85,11 +104,89 @@
 .xim-tagsinput-type-dOrganisation::before, .type-dOrganisation::before {
   content: "\0027"; }
 
-.type-zImage::before {
+.type-zImage::before, .uploader .image::before {
   content: "\0025"; }
 
 .type-zLink::before {
   content: "\002a"; }
 
-.type-zArticle::before {
+.type-zArticle::before, .uploader .document::before {
   content: "\002b"; }
+
+.uploader .video::before {
+  content: "\002c"; }
+
+.folder-name::before, .subfolder label::after {
+  content: "\e024"; }
+
+.custom_options .opened::before, .custom_options .closed::before {
+  content: "\e037"; }
+
+/*****
+  xsparrow
+*****/
+.layout-1col::before {
+  content: '\e01d'; }
+
+.layout-2col::before {
+  content: '\e01c'; }
+
+.layout-3col::before {
+  content: '\e01b'; }
+
+.custom_options .img-uploader::before {
+  content: "\0069"; }
+
+.bg-position .icon::before {
+  content: "\e036"; }
+
+.bg-position-lt::after {
+  content: "\e033"; }
+
+.bg-position-rt::after {
+  content: "\e031"; }
+
+.bg-position-lb::after {
+  content: '\e034'; }
+
+.bg-position-rb::after {
+  content: '\e032'; }
+
+.bg-position-cc::after {
+  content: '\e035'; }
+
+.bg-repeat .icon::before {
+  content: '\e030'; }
+
+.bg-repeat-repeat-x::after {
+  content: '\e02e'; }
+
+.bg-repeat-repeat-y::after {
+  content: '\e02d'; }
+
+.bg-repeat-no-repeat::after {
+  content: '\e02f'; }
+
+.bg-repeat-repeat::after {
+  content: '\e030'; }
+
+.font-color::before {
+  content: "\e022"; }
+
+.text-align-left::before {
+  content: '\e011'; }
+
+.text-align-right::before {
+  content: '\e010'; }
+
+.text-align-center::before {
+  content: '\e014'; }
+
+.text-align-justify::before {
+  content: '\e012'; }
+
+.font-size::before {
+  content: '\e020'; }
+
+.font-selector::before {
+  content: '\e021'; }

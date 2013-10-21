@@ -22,5 +22,40 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/**************
+// COLORS
+***************/
+/**************
+// SHADOWS
+***************/
+/**************
+// TYPO
+***************/
+/**************
+// INCLUDES
+***************/
+/**************
+// EXTENDS
+***************/
+/* NO Extends because they are inserted at the beggining of each CSS file */
+.uploader fieldset, .uploader .xim-uploader-container {
+  height: 100%; }
 
+.xml-uploader .xim-uploader-container {
+  height: calc(100% - 8em); }
 
+.xml-properties {
+  margin-bottom: 1em; }
+  .xml-properties > :first-child {
+    border-right: 5px solid #edeeee; }
+  .xml-properties .col1-2 {
+    width: 49.7%;
+    margin-bottom: .5em; }
+  .xml-properties select {
+    background: #fff;
+    border: 1px solid #dee0e4;
+    width: 100%;
+    padding: .5em; }
+    .xml-properties select:hover {
+      background: #7bcabf;
+      cursor: pointer; }

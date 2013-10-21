@@ -33,6 +33,7 @@ class Action_addsectionnode extends ActionAbstract {
 
 	
     	function index () {
+		$this->addCss('/actions/addsectionnode/resources/css/style.css'); 
 		$nodeID = $this->request->getParam("nodeid");
 		$action = $this->request->getParam("action");
 		$type_sec = $this->request->getParam("type_sec");

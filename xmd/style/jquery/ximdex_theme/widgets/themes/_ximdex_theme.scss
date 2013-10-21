@@ -1,133 +1,193 @@
-/**************
-// COLORS
-***************/
-	$c_background:  #edeeee;
-	$c_selected: #43A1A2;
-	$c_main: rgb(0, 107, 108);
-	$c_mainlight: rgb(123, 202, 191);
-	$c_maininset: #3b8e8f;
-	$c_maindark: #2c4b4b;
-	$c_complementary: #cd4e36;
-	$c_complementarylight: #e8563b;
-	$c_white-l: #f5f5f5;
-	$c_white: #fff;
-	$c_black: #000;
-	$c_grey-ll: #212121;
-	$c_grey-l: #464646;
-	$c_grey: #606060;
-	$c_grey-p: #888;
-	$c_grey-pp: #ccc;
-	$c_grey-ppp: #e1e1e1;
-	$c_warning: #CC3333;
-	$c_delete: #c56e50;
-	$c_bluelight: #728ad7;
-
-	$c_bg-disabled: #ececec;
-	$c_disabled: #b3b3b3;
-
-	$c_btn-grey1:#6e6e6e;
-	$c_btn-grey2:#7b7b7b;
-	$c_shadow: #515151;
-
-	$c_btnh-grey1: #4b4b4b;
-	$c_btnh-grey2: #707070;
-	$c_btnh-border: #676767;
-
-	$c_btnmain1: #72c4b9;
-	$c_btnmain2: #7ccac0;
-	$c_btnmain-border:  #74c6bb;
-	$c_btnmain-tx-shadow: #60b6aa;
-
-	$c_btnmainh1: #52ada0;
-	$c_btnmainh2: #77c6bb;
-	$c_btnmainh-border:#66bbaf;
-
-/**************
-// SHADOWS
-***************/
-
-	$s_black: rgba(0,0,0,.2);
-	$s_grey: rgba(157,157,157,.2);
-	$s_white: rgba(255,255,255, .2);
+	/**************
+	// COLORS
+	***************/
+		$c_background:  #edeeee;
+		$c_selected: #43A1A2;
+		$c_main: rgb(0, 107, 108);
+		$c_mainlight: rgb(123, 202, 191);
+		$c_maininset: #3b8e8f;
+		$c_maindark: #2c4b4b;
+		$c_complementary: #cd4e36;
+		$c_complementarylight: #e8563b;
+		$c_white-l: #f5f5f5;
+		$c_white: #fff;
+		$c_black: #000;
+		$c_grey-ll: #212121;
+		$c_grey-l: #464646;
+		$c_grey: #606060;
+		$c_grey-p: #888;
+		$c_grey-pp: #ccc;
+		$c_grey-ppp: #e1e1e1;
+		$c_warning: #CC3333;
+		$c_delete: #c56e50;
+		$c_bluelight: #728ad7;
+		$c_greymain: #ACAFBB;
 
 
+		$c_bg-disabled: #ececec;
+		$c_disabled: #b3b3b3;
 
-/**************
-// TYPO
-***************/
+		$c_btn-grey1:#6e6e6e;
+		$c_btn-grey2:#7b7b7b;
+		$c_shadow: #515151;
 
-	$t_title: 'Coustard';
-	$t_text: 'Ubuntu Condensed';
+		$c_btnh-grey1: #4b4b4b;
+		$c_btnh-grey2: #707070;
+		$c_btnh-border: #676767;
 
-/**************
-// INCLUDES
-***************/
-	@mixin radius($rad){
-		-webkit-border-radius: $rad;
-		-moz-border-radius: $rad;
-		border-radius: $rad;
+		$c_btnmain1: #72c4b9;
+		$c_btnmain2: #7ccac0;
+		$c_btnmain-border:  #74c6bb;
+		$c_btnmain-tx-shadow: #60b6aa;
+
+		$c_btnmainh1: #52ada0;
+		$c_btnmainh2: #77c6bb;
+		$c_btnmainh-border:#66bbaf;
+
+	/**************
+	// SHADOWS
+	***************/
+
+		$s_black: rgba(0,0,0,.2);
+		$s_grey: rgba(157,157,157,.2);
+		$s_white: rgba(255,255,255, .2);
+
+
+
+	/**************
+	// TYPO
+	***************/
+
+		$t_title: 'Coustard';
+		$t_text: 'Ubuntu Condensed';
+
+	/**************
+	// INCLUDES
+	***************/
+		@mixin radius($rad){
+			-webkit-border-radius: $rad;
+			-moz-border-radius: $rad;
+			border-radius: $rad;
+		}
+
+
+
+		@mixin boxshadow($values) {
+	  -webkit-box-shadow: $values;
+	  -moz-box-shadow: $values;
+	  box-shadow: $values;
 	}
 
 
+		@mixin icon-sprite($url, $repeat, $pos){
+			background: $url $repeat $pos;
+		}
 
-	@mixin boxshadow($values) {
-  -webkit-box-shadow: $values;
-  -moz-box-shadow: $values;
-  box-shadow: $values;
+		@mixin btn(){
+			background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btn-grey1), to($c_btn-grey2));
+		background-image: -webkit-linear-gradient($c_btn-grey1, $c_btn-grey2);
+		background-image: -moz-linear-gradient($c_btn-grey1, $c_btn-grey2);
+		background-image: -o-linear-gradient($c_btn-grey1, $c_btn-grey2);
+		background-image: linear-gradient($c_btn-grey1, $c_btn-grey2);
+		border-color: $c_btn-grey1;
+		text-shadow: 0 -1px 0 $c_shadow, 0 1px 0 $s_black;
+		font-family: $t_title;
+		text-transform: uppercase;
+		color: $c_white;
+		}
+		@mixin btn-hover(){
+			background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btnh-grey1), to($c_btnh-grey2));
+			background-image: -webkit-linear-gradient($c_btnh-grey1, $c_btnh-grey2);
+			background-image: -moz-linear-gradient($c_btnh-grey1, $c_btnh-grey2);
+			background-image: -o-linear-gradient($c_btnh-grey1, $c_btnh-grey2);
+			background-image: linear-gradient($c_btnh-grey1, $c_btnh-grey2);
+			border-color: $c_btnh-border;
+
+			@include boxshadow(1px 1px 2px $s_grey);
+		}
+
+		@mixin btn-main(){
+			background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btnmain1), to($c_btnmain2));
+			background-image: -webkit-linear-gradient($c_btnmain1, $c_btnmain2);
+			background-image: -moz-linear-gradient($c_btnmain1, $c_btnmain2);
+			background-image: -o-linear-gradient($c_btnmain1, $c_btnmain2);
+			background-image: linear-gradient($c_btnmain1, $c_btnmain2);
+			border-color: $c_btnmain-border;
+			text-shadow: 0 -1px 0 $c_btnmain-tx-shadow, 0 1px 0 $s_white;
+		}
+
+		@mixin btn-main-hover(){
+			background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btnmainh1), to($c_btnmainh2));
+		background-image: -webkit-linear-gradient($c_btnmainh1, $c_btnmainh2);
+		background-image: -moz-linear-gradient($c_btnmainh1, $c_btnmainh2);
+		background-image: -o-linear-gradient($c_btnmainh1, $c_btnmainh2);
+		background-image: linear-gradient($c_btnmainh1, $c_btnmainh2);
+		border-color: $c_btnmainh-border;
+		-moz-box-shadow: 1px 1px 2px $s_grey;
+		-webkit-box-shadow: 1px 1px 2px $s_grey;
+		-box-shadow: 1px 1px 2px $s_grey;
+		}
+
+	@mixin placeholder {
+    &::-webkit-input-placeholder {
+        @content;
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+        @content;
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+        @content;
+    }
+
+    &:-ms-input-placeholder {
+        @content;
+    }
 }
 
+@mixin loading-loader{
+	 content: "";
+    width: 0;
+    height: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 1em solid #2fb7a4;
+    border-left-color: #7bcabf;
+    border-top-color: #7bcabf;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -1em;
+    margin-left: -1em;
+    -webkit-animation: spin 0.75s infinite ease-in-out;
+    -moz-animation: spin 0.75s infinite ease-in-out;
+    -ms-animation: spin 0.75s infinite ease-in-out;
+    -o-animation: spin 0.75s infinite ease-in-out;
+    animation: spin 0.75s infinite ease-in-out;
+}
 
-	@mixin icon-sprite($url, $repeat, $pos){
-		background: $url $repeat $pos;
-	}
+@mixin loading-animation{
+	@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(359deg); } }
 
-	@mixin btn(){
-		background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btn-grey1), to($c_btn-grey2));
-	background-image: -webkit-linear-gradient($c_btn-grey1, $c_btn-grey2);
-	background-image: -moz-linear-gradient($c_btn-grey1, $c_btn-grey2);
-	background-image: -o-linear-gradient($c_btn-grey1, $c_btn-grey2);
-	background-image: linear-gradient($c_btn-grey1, $c_btn-grey2);
-	border-color: $c_btn-grey1;
-	text-shadow: 0 -1px 0 $c_shadow, 0 1px 0 $s_black;
-	font-family: $t_title;
-	text-transform: uppercase;
-	color: $c_white;
-	}
-	@mixin btn-hover(){
-		background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btnh-grey1), to($c_btnh-grey2));
-		background-image: -webkit-linear-gradient($c_btnh-grey1, $c_btnh-grey2);
-		background-image: -moz-linear-gradient($c_btnh-grey1, $c_btnh-grey2);
-		background-image: -o-linear-gradient($c_btnh-grey1, $c_btnh-grey2);
-		background-image: linear-gradient($c_btnh-grey1, $c_btnh-grey2);
-		border-color: $c_btnh-border;
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(359deg); } }
 
-		@include boxshadow(1px 1px 2px $s_grey);
-	}
+@-o-keyframes spin {
+  100% {
+    -moz-transform: rotate(359deg); } }
 
-	@mixin btn-main(){
-		background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btnmain1), to($c_btnmain2));
-		background-image: -webkit-linear-gradient($c_btnmain1, $c_btnmain2);
-		background-image: -moz-linear-gradient($c_btnmain1, $c_btnmain2);
-		background-image: -o-linear-gradient($c_btnmain1, $c_btnmain2);
-		background-image: linear-gradient($c_btnmain1, $c_btnmain2);
-		border-color: $c_btnmain-border;
-		text-shadow: 0 -1px 0 $c_btnmain-tx-shadow, 0 1px 0 $s_white;
-	}
+@keyframes spin {
+  100% {
+    transform: rotate(359deg); } }
+}
 
-	@mixin btn-main-hover(){
-		background-image: -webkit-gradient(linear, 0 0, 0 100%, from($c_btnmainh1), to($c_btnmainh2));
-	background-image: -webkit-linear-gradient($c_btnmainh1, $c_btnmainh2);
-	background-image: -moz-linear-gradient($c_btnmainh1, $c_btnmainh2);
-	background-image: -o-linear-gradient($c_btnmainh1, $c_btnmainh2);
-	background-image: linear-gradient($c_btnmainh1, $c_btnmainh2);
-	border-color: $c_btnmainh-border;
-	-moz-box-shadow: 1px 1px 2px $s_grey;
-	-webkit-box-shadow: 1px 1px 2px $s_grey;
-	-box-shadow: 1px 1px 2px $s_grey;
-	}
+	/**************
+	// EXTENDS
+	***************/
 
-/**************
-// EXTENDS
-***************/
-
-/* NO Extends because they are inserted at the beggining of each CSS file */
+	/* NO Extends because they are inserted at the beggining of each CSS file */

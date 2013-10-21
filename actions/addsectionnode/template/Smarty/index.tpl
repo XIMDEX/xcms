@@ -37,8 +37,8 @@
 		<div class="action_content section-properties">
 			
 			
-			<div class="folder-name">
-				<input type="text" name="name" id="name" maxlength="100" class="cajaxg validable not_empty" placeholder="{t}Name of your section{/t}">
+			<div class="folder-name folder-normal icon">
+				<input type="text" name="name" id="name" maxlength="100" class="cajaxg validable not_empty full-size" placeholder="{t}Name of your section{/t}">
 				{if $sectionTypeCount > 1}
 				<select id="type_sec" name="nodetype" class="caja validable not_empty folder-type">
 					{foreach from=$sectionTypeOptions item=sectionTypeOption}
@@ -55,13 +55,16 @@
 			
 
 			<div class="languages-available col1-3 right">{if $languageCount neq 0}
-				
+				<h3>{t}Languages availables{/t}</h3>	
 				{foreach from=$languageOptions item=languageOption}
 				
-				<input name="langidlst[]" type='checkbox' value="{$languageOption.IdLanguage}">
-				<label>{$languageOption.Name|gettext}</label>
-				<input type="text" name="namelst[{$languageOption.IdLanguage}]" class="cajaxg">
-				
+					<div class="languages-section"> 
+ 		                        	<input name="langidlst[]" type='checkbox' value="{$languageOption.IdLanguage}" class="hidden-focus" id="{$languageOption.IdLanguage}"> 
+ 		                                <label for="{$languageOption.IdLanguage}" class="icon"> 
+ 		                                {$languageOption.Name|gettext}</label> 
+ 		                                <input type="text" name="namelst[{$languageOption.IdLanguage}]" class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrubms{/t}"> 
+ 		                      	</div>			
+	
 				{/foreach}
 				
 				{else}
@@ -72,7 +75,10 @@
 					{foreach from=$subfolders key=nt item=foldername}
 
 					<div class="subfolder box-col1-1">
-						<strong>{$foldername[0]}</strong><input name="folderlst[]" type="checkbox" value="{$nt}" {if $nt eq 5018 || $nt eq 5016 || $nt eq 5022 || $nt eq 5301 || $nt eq 5304} checked{/if} {if $nt eq 5301 || $nt eq 5304} readonly {/if}/><span>{$foldername[1]}</span>
+						<input name="folderlst[]" type="checkbox" value="{$nt}" {if $nt eq 5018 || $nt eq 5016 || $nt eq 5022 || $nt eq 5301 || $nt eq 5304} checked{/if} {if $nt eq 5301 || $nt eq 5304} readonly {/if} class="hidden-focus" id="{$nt}"/> 
+                                                <label class="icon" for="{$nt}"><strong class="icon {$foldername[0]}">{$foldername[0]}</strong> 
+                                                </label> 
+                                                <span class="info">{t}{$foldername[1]}{/t}</span>
 					</div>
 
 

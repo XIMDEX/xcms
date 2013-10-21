@@ -54,7 +54,7 @@
 			this._seturlcheckname();
 			this._seturlgetpreview();
 			var that = this;
-			$("#"+this.id).siblings("ol").find(".extra-param").each(function(element, index){
+			$("#"+this.id).siblings("div").find(".extra-param").each(function(element, index){
  				that.paramNames.push($(this).attr("name"));
 			})
 
@@ -115,6 +115,7 @@
  		},
 
  		addFiles: function(files) {
+ 			$('.xim-loader-list-actions').addClass('align-left');
  			if(this.uploading) {
 				alert(_("Process of uploading files currently running. Please wait."));
  				return false;
@@ -126,6 +127,7 @@
 					var index = this.files.length
  					this.files[index] = new X.ximfile({file: files[i], _container:this.container, _element: null,urlcheckname: this.urlcheckname, urlgetpreview: this.urlgetpreview});
 					this.numfiles++;
+	 	     $('.guide').hide();
 
 					$(this.files[index].element).bind('fileUploaded', function(event, options) {
 	 					this.numfiles--;
@@ -145,7 +147,7 @@
  		_showDelete: function() {
 	 		if(this.files.length > 0 ) {
 	 			//display remove file
-	 			$('.xim-uploader-delete', this.container).show();
+	 			$('.xim-uploader-delete', this.container).css('display', 'inline-block');
 
 	 			$('.xim-uploader-delete', this.container).click(function(event) {
 	 				event.preventDefault();
@@ -158,6 +160,8 @@
 						this.files.splice(index, 1);
 						if(0 == this.files.length ) {
 							$(event.target).hide();
+							$('.guide').show();
+ 							$('.xim-loader-list-actions').removeClass('align-left');
 						}
 						//file.remove();
 	 				}

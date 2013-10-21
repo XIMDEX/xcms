@@ -61,7 +61,8 @@
 				list.append(this._html(this.index) );
 				this.element = $('li:last', list);
 				$(this.element).data("ximfile", this);
-				$("span#numfiles").empty().html(_("Files added for upload: ")+numfiles);
+				$("span#numfiles").show();
+				$("span#numfiles").empty().html(_("Files added for upload")+("<span class='files'>")+numfiles+("</span>"));
 
 
  				//add element file to list
@@ -157,10 +158,10 @@
 
 				var html = ''
 				if( this.ftype.indexOf("image") != -1 )  {
-					 html += '<img src="#"  />';
+					 html += '<input type="checkbox"><img class="img-preview" src="#"  />';
 				}
 				html += this.fname;
-				$('span.xim-loader-name', this.element).html(html);
+				$('label.xim-loader-name', this.element).html(html);
 
 				if( this.ftype.indexOf("image") != -1 )  {
 					this.setImage();
@@ -189,7 +190,11 @@
  			remove: function() {
  				this.element.remove();
 				numfiles--;
-				$("span#numfiles").empty().html(_("Files added for upload: ")+numfiles);
+				$("span#numfiles").empty().html(_("Files added for upload")+("<span class='files'>")+numfiles+("</span>"));
+				if(numfiles==0){
+					$("span#numfiles").hide();
+				}
+				$('.xim-loader-list-actions').addClass('align-left');
  				delete this;
  			},
 
@@ -222,7 +227,6 @@
 				if(strExtraParams!=""){
 					url += "&"+strExtraParams;
 				}
-
 				xhr.open("POST", url, true);
 				  
 				//xhr.setRequestHeader("Content-Length", this.getSize());
@@ -230,9 +234,9 @@
 				xhr.upload.addEventListener("progress", function(e) {
 				if (e.lengthComputable) {
 	        				var currentState = Math.round((e.loaded * 100) / e.total);
-	         		  		$('div.xim-loader-progress', this.element).addClass("upload");
-	         		  		$('div.xim-loader-progress', this.element).width(currentState+"%");
-	         		  		$('div.xim-loader-progress', this.element).html(currentState+"%");
+	         		  		$('div.progress', this.element).addClass("upload");
+	         		  		$('div.progress', this.element).width(currentState+"%");
+	         		  		$('div.progress', this.element).html(currentState+"%");
         		    		}
 		        	}.bind(this), false);
 
@@ -241,16 +245,16 @@
 						if ((xhr.status >= 200 && xhr.status <= 200) || xhr.status == 304) {
 							if (xhr.responseText != "") {
 								var result = $.parseJSON(xhr.responseText);
- 			         		  		$('div.xim-loader-progress', this.element).width("100%");
+ 			         		  		$('div.progress', this.element).width("100%");
 								this.result = result.status;
 								this.msg = result.msg;
 								if("ok" == this.result) {
-	 		  	         				$('div.xim-loader-progress', this.element).addClass("upload");
-	    		         		  			$('div.xim-loader-progress', this.element).html(_("completed"));
+	 		  	         				$('div.progress', this.element).addClass("complete");
+	    		         		  			$('div.progress', this.element).html(_("Completed"));
 								}else {
-					 				$('div.xim-loader-progress', this.element).addClass("error");
- 					 		  		$('div.xim-loader-progress', this.element).attr("title", this.msg );
-									$('div.xim-loader-progress', this.element).html("error");
+					 				$('div.progress', this.element).addClass("error");
+ 					 		  		$('div.progress', this.element).attr("title", this.msg );
+									$('div.progress', this.element).html("error");
 								}
 								$(this.element).append(this._html_uploaded());
 								$(this.element).trigger("fileUploaded", [{file: this, result: result}] );
@@ -284,17 +288,18 @@
 
  			_html: function() {
 	 	     		var html = '<li class="xim-loader-file">';
+	 	     		html += '<label class="xim-loader-name">';
 	 	     		html += '<input type="checkbox" />';
-	 	     		html += '<span class="xim-loader-name">';
 	 	      		if( this.ftype.indexOf("image") != -1 )  {
-		 	     		html += '<img src="#" />';
+		 	     		html += '<img src="#" class="img-preview"/>';
 		 	  	}
-		 	  	html += this.fname+'</span>';
+		 	  	html += this.fname+'</label>';
 	 	     		html += '<span class="xim-loader-size">'+this._size()+'</span>';
-		     		html += '<span class="xim-loader-progress"><div class="xim-loader-progress"></div></span>';
   	 	     		html += '<span  class="xim-loader-options"></span>';
+		     		html += '<span class="xim-loader-progress"><div class="progress icon">Waiting</div></span>';
 	 	     		html += '</li>';
-				
+
+	 	     		$('.overlay').show();
 				return html;
 			},
 
