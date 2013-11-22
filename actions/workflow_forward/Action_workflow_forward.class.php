@@ -34,14 +34,15 @@ ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('inc/pipeline/PipeTransition.class.php');
 ModulesManager::file('/inc/Toldox.class.php', 'tolDOX');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+ModulesManager::file('/inc/helper/ServerConfig.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');
-
 /**
 * Move a node to next state. 
 * 
 * If the node is not a structured document the next state will be publication.
 */
 class Action_workflow_forward extends ActionAbstract {
+
 
 	/**
 	* Default method. Generate the next action form.
@@ -117,7 +118,6 @@ class Action_workflow_forward extends ActionAbstract {
 		$workflowNext = new WorkFlow($idNode, $nextState);
 		$nextStateName=$workflowNext->GetName();
 		$AllStates=$workflow->GetAllStates();
-
 		$find=false;
 		foreach($AllStates as $state){
 			//If this state is after currentState, append the next state
@@ -157,13 +157,14 @@ class Action_workflow_forward extends ActionAbstract {
 		if($node->nodeType->GetID()==5032){
 			if ($workflowNext->IsFinalState()) {
 				$values['go_method'] = 'publicateNode';
+				$values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
 				$values = array_merge($values, $this->publicationGaps($idNode));
 				$this->render($values, NULL,'default-3.0.tpl');
 			}
 			else{
 				$defaultMessage=$this->buildMessage($conf["defaultMessage"],'siguiente',$node->get('Name'));
 				//Set default Message
-                $values['defaultMessage']= $defaultMessage;
+		                $values['defaultMessage']= $defaultMessage;
 				$values2 = array(
 					'go_method' => 'publicateForm',
 					'allowedstates' => $AllowedStates,
@@ -181,6 +182,7 @@ class Action_workflow_forward extends ActionAbstract {
 			$workflowPub = new WorkFlow($idNode, $workflow->GetFinalState());
 			$pubStateName=$workflowPub->GetName();
                        
+			$values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
 			$values['go_method']= 'publicateNode';
 			$values['state']= $pubStateName;
 			$defaultMessage=$this->buildMessage($conf["defaultMessage"],$pubStateName,$node->get('Name'));
@@ -203,7 +205,13 @@ class Action_workflow_forward extends ActionAbstract {
 		return $mesg;
 	}
 
+	private function hasDisabledFunctions(){
+
+                $serverConfig = new ServerConfig();
+                return $serverConfig->hasDisabledFunctions();
+        }
 	
+
 	/**
 	* Load the form to forward to a later state
 	* 
@@ -258,7 +266,8 @@ class Action_workflow_forward extends ActionAbstract {
                     'go_method' => 'publicateNode',
                     'state' => $workflow->GetName(),
                     'required' => $conf['required'] === true ? 1 : 0,
-                    'defaultMessage' => $defaultMessage
+                    'defaultMessage' => $defaultMessage,
+	  	    'hasDisabledFunctions' => $this->hasDisabledFunctions()
             );
        		$this->render($values, 'index.tpl','default-3.0.tpl');	
 		}else{ //if the next state is not the final, we show a success message
@@ -392,7 +401,7 @@ class Action_workflow_forward extends ActionAbstract {
 			'structural_publication' => $user->HasPermission('structural_publication') ? '1' : '0',
 			'advanced_publication' => $user->HasPermission('advanced_publication') ? '1' : '0',
 			'nodetypename' => $nodeTypeName,
-		//	'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
+			'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
 			'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
 			'show_rep_option' => $showRepOption
 		);

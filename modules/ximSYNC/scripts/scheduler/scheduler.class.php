@@ -36,6 +36,7 @@
  ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
  ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
  ModulesManager::file('/inc/sync/Mutex.class.php');
+ ModulesManager::file('/inc/helper/ServerConfig.class.php');
  ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 if (! ModulesManager::isEnabled ( 'XIMSYNC' )) {
@@ -55,6 +56,7 @@ class Scheduler {
 
 		$testTime = NULL;
 
+
 		if (isset ( $argv [1] )) {
 			$testTime = $argv [1];
 		}
@@ -65,6 +67,13 @@ class Scheduler {
 		$serverFrameManager = new ServerFrameManager ( );
 		$batchManager = new BatchManager ( );
 		$serverError = new ServerErrorManager ( );
+
+		$ximdexServerConfig = new ServerConfig();
+                //Checking pcntl_fork function is not disabled
+                if ($ximdexServerConfig->hasDisabledFunctions()){
+
+                        echo (_("Closing scheduler. Disabled pcntl_fork and pcntl_waitpid functions are required. Please, check php.ini file.")."\r\n");
+                }
 
 		$syncStatObj->create ( null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Starting Scheduler")." $synchro_pid" );
 

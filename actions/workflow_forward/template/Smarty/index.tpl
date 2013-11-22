@@ -36,6 +36,11 @@
 	</fieldset>
 </div>
 	<div class="action_content">
+		{if $hasDisabledFunctions}
+                        <div class="disable-functions-alert">
+                                pcntl_fork and pcntl_waitpid required functions are disabled. This can cause a slow and unstable publishing. Please, check the php.ini configuration file or contact with your system administrator.
+                        </div>
+                {/if}
 		<fieldset class="publish_date">
 				<ol>
 					<li>
