@@ -131,7 +131,6 @@ class Action_setmetadata extends ActionAbstract {
 
 	public function getLocalOntology(){
 	
-		error_log("Petición a getLocalOntology");	
 		$ontologyName = $this->request->getParam("ontologyName");
 		$format = $this->request->getParam("format");
 		if (!$format)
@@ -139,7 +138,6 @@ class Action_setmetadata extends ActionAbstract {
 		
 		$ontologyPath = Config::GetValue("AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
 		$content = "";
-		error_log("DEBUG $ontologyPath");
 		if (file_exists($ontologyPath)){
 			
 			$content = FsUtils::file_get_contents($ontologyPath);

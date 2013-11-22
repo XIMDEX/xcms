@@ -68,7 +68,7 @@
 .theme-selection .custom::before {
   content: "\0045"; }
 
-.delete-btn::before, .xim-tagsinput-tag-remove::before, .xim-uploader-delete::before {
+.delete-btn::before, .xim-tagsinput-tag-remove::before, .xim-uploader-delete::before, .ontology-close::before, .close::before {
   content: "\0063"; }
 
 .prevdoc-btn::before {
@@ -190,3 +190,12 @@
 
 .font-selector::before {
   content: '\e021'; }
+
+/*****
+  XIMTAGS
+*****/
+.tree::before {
+  content: "\e600"; }
+
+.text::before {
+  content: "\e601"; }

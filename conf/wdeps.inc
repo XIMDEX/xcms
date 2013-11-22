@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ *  @version $Revision: 8736 $
  */
 
 
@@ -130,6 +130,14 @@ return array(
 	'paginator' => array(
 		'deps' => array(),
 		'js' => array('paginator.js')
+	),
+	'ontologyBrowser' => array(
+		'deps' => array(),
+		'js' => array(
+			'd3.layout.js',
+			'underscore-min.js',
+			'ontologywidget.js'
+		)
 	),
 	'qpsearch' => array(
 		'deps' => array(),

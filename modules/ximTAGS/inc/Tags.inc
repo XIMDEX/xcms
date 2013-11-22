@@ -99,16 +99,24 @@ class Tag extends Tags_ORM {
 	/**
 		save one tag $_tag
 	*/
-	function save($_tag = null,$idNamespace = null) {
+	function save($_tag = null,$nemo = null) {
 		//get Data tag
-      $tag = $this->getTag($_tag);
+		if (is_int($nemo)){    
+ 	                $idNamespace = $nemo; 
+ 	        }else if (is_string($nemo)){ //Supposing nemo 
+ 	                $namespace = new Namespaces(); 
+ 	                $idNamespace = $namespace->getByNemo($nemo); 
+ 		}else{  
+ 	        	$idNamespace = false;  
+ 	        }
+      		$tag = $this->getTag($_tag);
 
   		//Check if tag exists
 		if(empty($tag ) ) { //if tag dont exists
 			 $tag = new Tag();
 		    $tag->set('Name', $_tag);
-		    $tag->set('idNamespace', $idNamespace);
-  		    $tag->set('Total', '1'); //Al menos está la referencia del que está añadiendo ahora el tag
+		    $tag->set('IdNamespace', $idNamespace);
+  		    $tag->set('Total', '1'); //At least, one tag 
 		    return $tag->add();
 		}else { //if tags exists then +1 a the total
 		   $sql = sprintf("UPDATE XimTAGSTags SET Total=Total+1, idNamespace=%d WHERE IdTag=%d",$tag['IdTag'], $idNamespace );

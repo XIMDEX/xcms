@@ -37,7 +37,7 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 	    $this->ClearError();
 		 $dbObj = new DB();
 
-		$sql = sprintf("SELECT Tag,Name, Type, Link, Description, IdTagDescription FROM XimTAGSTags tag, RelTagsNodes rel, RelTagsDescriptions relD WHERE tag.IdTag = relD.Tag AND relD.IdTagDescription = rel.TagDesc AND Node = '%s'", $_id_node);
+		$sql = sprintf("SELECT Tag,Name, n.nemo as Type, Link, Description, IdTagDescription FROM XimTAGSTags tag inner join Namespaces n on n.idnamespace=tag.idnamespace , RelTagsNodes rel, RelTagsDescriptions relD WHERE tag.IdTag = relD.Tag AND relD.IdTagDescription = rel.TagDesc AND Node = '%s'", $_id_node); 
 
 		 $dbObj->Query($sql);
 		 $out = array();
@@ -89,6 +89,18 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 	*/
 	function saveAll($_tags = null, $_id_node = 0, $_previous_tags=null) {
 		//save tags
+		//Tags to remove 
+                if(!empty($_previous_tags) ) { 
+                        foreach($_previous_tags as $_tag) { 
+                                if(!empty($_tag) && !empty($_id_node) ) { 
+                                      //remove rel betweeen tag and node 
+                                       $this->removeRel($_tag["iddesc"], $_id_node); 
+                                        //remove tag 
+                                        $tag = new Tag($_tag["idtag"]); 
+                                        $tag->remove(); 
+                                } 
+                        } 
+                } 
 		$alltags = '';
 
 		if(!empty($_tags) ) {
@@ -127,20 +139,6 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 			 }
 		}
 
-
-
-		//Tags to remove
-		if(!empty($_previous_tags) ) {
-			foreach($_previous_tags as $_tag) {
-				if(!empty($_tag) && !empty($_id_node) ) {
-					//remove rel betweeen tag and node
-					$this->removeRel($_tag["iddesc"], $_id_node);
-					//remove tag
-					$tag = new Tag($_tag["idtag"]);
-					$tag->remove();
-				}
-			}
-		}
 
 		//save in exif if nodetype is image
 		$node = new Node($_id_node);

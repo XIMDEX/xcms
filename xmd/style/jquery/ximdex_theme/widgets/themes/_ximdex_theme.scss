@@ -22,6 +22,7 @@
 		$c_delete: #c56e50;
 		$c_bluelight: #728ad7;
 		$c_greymain: #ACAFBB;
+		$c_dark-grey: #4C4C4C;
 
 
 		$c_bg-disabled: #ececec;
@@ -43,6 +44,16 @@
 		$c_btnmainh1: #52ada0;
 		$c_btnmainh2: #77c6bb;
 		$c_btnmainh-border:#66bbaf;
+
+		$c_tag_custom: #2FB7A4;
+		$c_tag_dorganization: #43C35B;
+		$c_tag_dperson: #D1AC2A;
+		$c_tag_dplace: #22B8C1;
+		$c_tag_zLink: #D34579;
+		$c_tag_zImage: #AF2B82;
+		$c_tag_zArticle: #4271DD;
+
+
 
 	/**************
 	// SHADOWS
@@ -168,23 +179,29 @@
     animation: spin 0.75s infinite ease-in-out;
 }
 
-@mixin loading-animation{
-	@-webkit-keyframes spin {
-  100% {
-    -webkit-transform: rotate(359deg); } }
+	@mixin loading-animation{
+		@-webkit-keyframes spin {
+	  100% {
+	    -webkit-transform: rotate(359deg); } }
 
-@-moz-keyframes spin {
-  100% {
-    -moz-transform: rotate(359deg); } }
+	@-moz-keyframes spin {
+	  100% {
+	    -moz-transform: rotate(359deg); } }
 
-@-o-keyframes spin {
-  100% {
-    -moz-transform: rotate(359deg); } }
+	@-o-keyframes spin {
+	  100% {
+	    -moz-transform: rotate(359deg); } }
 
-@keyframes spin {
-  100% {
-    transform: rotate(359deg); } }
-}
+	@keyframes spin {
+	  100% {
+	    transform: rotate(359deg); } }
+	}
+
+	@mixin hide-text{
+		text-indent: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+		}
 
 	/**************
 	// EXTENDS

@@ -35,7 +35,7 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Namespaces_ORM.class.php';
 class Namespaces extends Namespaces_ORM {
 
 	/**
-	* <p>Get an array with an Namespace object for every namespace row</p>
+	* Get an array with an Namespace object for every namespace row
 	* @return Array<Namespaces> with all namespaces in Namespaces table.
 	*/
 	public function getAll(){
@@ -48,4 +48,31 @@ class Namespaces extends Namespaces_ORM {
 		}
 		return $result;
 	}
+
+	public function getByUri($uri){
+		$result = array();
+
+		$namespaces = $this->find("idNamespace", "uri='$uri'");
+		if ($namespaces !== null){
+			foreach ($namespaces as $nspace) {
+				$result[] = new Namespaces($nspace["idNamespace"]);
+			}
+		}
+		return $result;
+	}
+
+	public function getByNemo($nemo){
+		$result = array();
+
+		$namespaces = $this->find("idNamespace", "nemo='$nemo'");
+		if ($namespaces !== null){
+			foreach ($namespaces as $nspace) {
+				$result[] = $nspace["idNamespace"];
+			}
+		}
+		$result = count($result)? $result[0]: false;
+		return $result;
+	}
+
+
 }

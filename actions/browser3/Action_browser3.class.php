@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ *  @version $Revision: 8735 $
  */
 
 
@@ -96,13 +96,16 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/eventHandler.js');
 		$this->addJs(Extensions::JQUERY);
 		$this->addJs(Extensions::JQUERY_UI);
-		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js'); 
+		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/jquery.validate.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/localization/messages_'.$user_locale["Lang"].'.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.labelwidth/jquery.labelwidth.js');
+
+		$this->addJs('/extensions/d3js/d3.v3.min.js');
+
 		$this->addActionJs('controller.js');
 
 

@@ -34,7 +34,8 @@ class Tags_ORM extends GenericData   {
 	var $_metaData = array(
 				'IdTag' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
 				'Name' => array('type' => "varchar(100)", 'not_null' => 'true'),
-				'Total' => array('type' => "mediumint(8)", 'not_null' => 'true')
+				'Total' => array('type' => "mediumint(8)", 'not_null' => 'true'),
+				'IdNamespace' => array('type' => "int(11)", 'not_null' => 'true') 
 				);
 	var $_uniqueConstraints = array(
 				'Name' => array('Name'),
@@ -43,6 +44,7 @@ class Tags_ORM extends GenericData   {
 	var $_indexes = array('IdTag');
 	var $IdTag;
 	var $Name;
+	var $IdNamespace; 
 	var $Total;
 }
 ?>

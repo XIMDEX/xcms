@@ -48,7 +48,7 @@ class RelTagsDescriptions extends RelTagsDescriptions_ORM {
 	function save($_name, $_type, $_link, $_description) {
 			 
  		 $tag = new Tag();
-		 $_tag = $tag->save($_name);	
+		 $_tag = $tag->save($_name, $_type);	
 	
 		 $rel = $this->getId($_name, $_type, $_link, $_description);
 		 
