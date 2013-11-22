@@ -30,31 +30,31 @@
 	<div class="action_header">
 		<h2>{t}Add new XML{/t}</h2>
 		<fieldset class="buttons-form">
-		{button label="Create" class='validate btn main_action' }<!--message="Do you wan to create the XML document?"-->
-	</fieldset>
+			{button label="Create" class='validate btn main_action' }<!--message="Do you wan to create the XML document?"-->
+		</fieldset>
 	</div>
 
-	<div class="action_content"><fieldset>
-
-
-			<ol>
-				<li>
-					<label for="name" class="aligned">{t}File name{/t}</label>
-					<input type="text" name="name" id="docname" class="cajaxg validable not_empty"/>
-				</li>
-				<li>
-					<label for="id_template" class="aligned">{t}Document type{/t}</label>
-					<select name="id_template" id="templateid" class="cajaxg validable not_empty">
-						<option value="">&laquo;{t}Select template{/t}&raquo;</option>
-						{foreach from=$templates item=template}
-							<option value="{$template.idTemplate}">{$template.Name}</option>
-						{/foreach}
-					</select>
-				</li>
-			</ol>
-		</fieldset>
-
-		{include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}</div>
-
-
+	<div class="action_content">
+	<fieldset>
+		<ol>
+			<li>
+				<label for="name" class="aligned">{t}File name{/t}</label>
+				<input type="text" name="name" id="docname" class="cajaxg validable not_empty"/>
+			</li>
+			<li>
+				<label for="id_schema" class="aligned">{t}Document type{/t}</label>
+				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty">
+					<option value="">&laquo;{t}Select Schema{/t}&raquo;</option>
+					{foreach from=$schemes item=schema}
+						<option value="{$schema.idSchema}">{$schema.Name}</option>
+					{/foreach}
+				</select>
+				{if $schemes|@count==0}
+					<p>No metadata schemes found. Maybe you need to set the type of your RNG schema.<br/>Perform the 'Properties of RNG template' action on your schema in order to change its type.</p>
+				{/if}
+			</li>
+		</ol>
+	</fieldset>
+	{include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}
+	</div>
 </form>

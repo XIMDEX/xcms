@@ -51,7 +51,7 @@
 
 .icon-nodetype{
 	background-position: -2px -22px;
-}	
+}
 .icon-folder_links{
 	background-position: -22px -21px;
 }
@@ -90,12 +90,19 @@
 	background-position: -22px -102px;
 }
 
+.icon-folder_xml_meta{
+	background-position: -2px -634px;
+}
+.icon-metacontainer{
+	background-position: -22px -634px;
+}
+
 .icon-folder_ximlet{
 		background-position: -2px -123px;
 }
 
 /*.icon-controlcenter{
-	
+
 }*/
 
 .icon-channel{
@@ -110,7 +117,7 @@
 }
 
 .icon-folder_system_properties{
-	
+
 }
 
 
@@ -137,7 +144,7 @@
 	background-position: -2px -208px;
 }
 .icon-modulesconfig{
-	background-position: -2px -208px;	
+	background-position: -2px -208px;
 }
 .icon-folder_a-z{
 	background-position: -22px -209px;
@@ -147,7 +154,7 @@
 	background-position: -1px -314px;
 }
 
-.icon-xml_document, .icon-doc, .icon-text_file, .icon-nodeht_file, .icon-binary_file{
+.icon-xml_document, .icon-doc, .icon-text_file, .icon-nodeht_file, .icon-binary_file, .icon-metadata{
 	background-position: -22px -315px;
 }
 
@@ -171,14 +178,14 @@
 }
 
 .icon-folder{
-	background-position: -2px -379px;	
+	background-position: -2px -379px;
 }
 
 .icon-folder_news{
-	background-position: -2px -400px;	
+	background-position: -2px -400px;
 }
 .icon-folder_ximnews{
-	background-position:-22px -400px;	
+	background-position:-22px -400px;
 }
 
 .icon-folder_bulletins{
@@ -196,8 +203,8 @@
 div.folder_xml + ul.xim-treeview-branch li div img.icon-contenedordoc{
 	background-position: -2px -358px;
 	}
-	
-	
+
+
 .folder_bulletins + .xim-treeview-branch .icon-contenedordoc{
 	background-position: -22px -421px;
 }
@@ -222,7 +229,7 @@ div.folder_xml + ul.xim-treeview-branch li div img.icon-contenedordoc{
 
 li.xim-treeview-node .xim-treeview-actions-dropdown, li.xim-listview-node .xim-listview-actions-dropdown{
 	/*float: right;*/
-	position: absolute; 
+	position: absolute;
 	top: 2px;
 	left: 16px;
 	background: url("../../../../../images/tree/treeview-icons.png") no-repeat scroll -22px -228px transparent;
@@ -237,7 +244,7 @@ li.xim-listview-node .xim-listview-actions-dropdown{
 }
 
 tr.xim-listview-item .xim-listview-actions-dropdown{
-		position: absolute; 
+		position: absolute;
 	/*top: 0px;*/
 	left: 27px;
 	background: url("../../../../../images/tree/treeview-icons.png") no-repeat scroll -23px -228px transparent;

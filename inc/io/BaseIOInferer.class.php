@@ -129,7 +129,6 @@ class BaseIOInferer {
 					. " INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType"
 					. " WHERE nac.IdNodeType = %s", $parent_type);
 		$db = new DB();
-		//error_log("DEBUG $query");
 		$db->Query($query);
 		$results = array();
 		if (is_file($path)) {
@@ -159,7 +158,7 @@ class BaseIOInferer {
 		} else {
 			while (!$db->EOF) {
 				$results[] = array('NODETYPENAME' => $db->getValue('Name'),
-								'FILTER' => $db->GetValue('filter'));
+							'FILTER' => $db->GetValue('filter'));
 				$db->Next();
 			}
 		}
@@ -189,7 +188,6 @@ class BaseIOInferer {
 		$parent = new Node($idParentNode);
 		$nodeTypeName = $parent->nodeType->GetName();
 
-
 		switch ($nodeTypeName) {
 
 			case 'Projects':
@@ -212,6 +210,11 @@ class BaseIOInferer {
 				$friendlyName = _('Section');
 				break;
 
+			case 'MetaDataSection':
+                                $newNodeTypeName ='MetaDataContainer';
+                                $friendlyName = _('MetaDataContainer');
+                                break;
+
 			case 'ImagesRootFolder':
 				$newNodeTypeName ='ImagesFolder';
 				$friendlyName = _('Image folder');
@@ -223,13 +226,11 @@ class BaseIOInferer {
 				break;
 
 			case 'XmlRootFolder':
-//				$newNodeTypeName ='XmlFolder';
 				$newNodeTypeName ='XmlContainer';
 				$friendlyName = _('XML folder');
 				break;
 
 			case 'XmlFolder':
-//				$newNodeTypeName ='XmlFolder';
 				$newNodeTypeName ='XmlContainer';
 				$friendlyName = _('XML folder');
 				break;
@@ -290,13 +291,11 @@ class BaseIOInferer {
 				break;
 
 			case 'XimletRootFolder':
-//				$newNodeTypeName ='XimletFolder';
 				$newNodeTypeName ='XimletContainer';
 				$friendlyName = _('Ximlet folder');
 				break;
 
 			case 'XimletFolder':
-//				$newNodeTypeName ='XimletFolder';
 				$newNodeTypeName ='XimletContainer';
 				$friendlyName = _('Ximlet folder');
 				break;
@@ -322,7 +321,6 @@ class BaseIOInferer {
 				break;
 
 			default:
-				// Log to user.
 				return null;
 		}
 

@@ -3027,7 +3027,7 @@ class	Node extends Nodes_ORM{
 		if (!empty($type)) {
 			foreach ($schemas as $key => $idSchema) {
 				$schema = new Node($idSchema);
-				$schemaType = $schema->getProperty('TemplateType');
+				$schemaType = $schema->getProperty('SchemaType');
 
 				if (is_array($schemaType) && count($schemaType) == 1) {
 					$schemaType = $schemaType[0];

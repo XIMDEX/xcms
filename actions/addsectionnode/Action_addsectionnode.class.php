@@ -30,10 +30,10 @@ ModulesManager::file('/inc/model/language.inc');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
 class Action_addsectionnode extends ActionAbstract {
-
 	
     	function index () {
-		$this->addCss('/actions/addsectionnode/resources/css/style.css'); 
+		$this->addCss('/actions/addsectionnode/resources/css/style.css');
+
 		$nodeID = $this->request->getParam("nodeid");
 		$action = $this->request->getParam("action");
 		$type_sec = $this->request->getParam("type_sec");
@@ -118,9 +118,7 @@ class Action_addsectionnode extends ActionAbstract {
 	    	$id = $baseio->build($data);
 
 	    	if ($id > 0) {
-	    
 			$section = new Node($id);
-			
 			if($aliasLangArray) {
 				foreach ($aliasLangArray as $langID => $longName) {
 	        		$section->SetAliasForLang($langID, $longName);
@@ -144,87 +142,6 @@ class Action_addsectionnode extends ActionAbstract {
 		$this->render($values, NULL, 'messages.tpl');
     	}
     
-/*
-    	private function _setSectionTheme(&$section, $theme) {
-
-		$messages = array();
-		
-		if ($theme == '0') {
-			return $messages;
-		}
-				
-		$rngPath = sprintf('%s'.ModulesManager::path('ximTHEMES').'/themes/%s/rng', XIMDEX_ROOT_PATH, $theme);
-		$ptdPath = sprintf('%s'.ModulesManager::path('ximTHEMES').'s/%s/ptd', XIMDEX_ROOT_PATH, $theme);
-		$baseio = new baseIO();
-		
-		$arrRNG = FsUtils::readFolder($rngPath, false);
-		if (!is_array($arrRNG)) $arrRNG = array();
-		$project = new Node($section->getProject());
-		$rngFolder = new Node($project->GetChildByName(Config::GetValue('SchemasDirName')));
-		
-		$arrIdRNG = array();
-		
-		foreach ($arrRNG as $rng) {
-			if (preg_match('/.ini/', $rng) > 0) {
-				continue;
-			}
-
-			$idRNG = $rngFolder->GetChildByName($rng);
-			if ($idRNG === false) {
-
-				$data = array(
-					'NODETYPENAME' => 'RNGVISUALTEMPLATE',
-					'NAME' => $rng,
-					'PARENTID' => $rngFolder->get('IdNode'),
-					'CHILDRENS' => array(
-						array ('NODETYPENAME' => 'PATH', 'SRC' => sprintf('%s/%s', $rngPath, $rng))
-					)
-			    );
-			    
-				$idRNG = $baseio->build($data);
-	        }
-			
-			if (!($idRNG > 0)) {
-//				$messages[] = sprintf(_('RNG %s could not be successfully inserted'), $rng);
-			} else {
-				$arrIdRNG[] = $idRNG;
-			}
-		}
-				
-		$arrPTD = FsUtils::readFolder($ptdPath, false);
-		if (!is_array($arrPTD)) $arrPTD = array();
-		$ptdFolder = new Node($section->GetChildByName(Config::GetValue('TemplatesDirName')));
-				
-		foreach ($arrPTD as $ptd) {
-
-			$idPTD = $ptdFolder->GetChildByName($ptd);
-			if ($idPTD === false) {
-
-				$data = array(
-					'NODETYPENAME' => 'TEMPLATE',
-					'NAME' => $ptd,
-					'PARENTID' => $ptdFolder->get('IdNode'),
-					'CHILDRENS' => array(
-						array ('NODETYPENAME' => 'PATH', 'SRC' => sprintf('%s/%s', $ptdPath, $ptd))
-					)
-			    );
-					    
-				$idPTD = $baseio->build($data);		
-			}
-			
-			if (!($idPTD > 0)) {
-//				$messages[] = sprintf(_('Template %s could not be successfully inserted'), $ptd);
-			}
-		}
-		
-//		$section->setProperty('theme', array($theme));
-//		$section->setProperty('theme_visualtemplates', $arrIdRNG);
-		
-//		return $messages;
-		return $baseio->messages->messages;
-    	}
-*/
-
 	private function _getLanguages($nodeID) {
  		$properties = InheritedPropertiesManager::getValues($nodeID);
  		
@@ -236,10 +153,12 @@ class Action_addsectionnode extends ActionAbstract {
 		$res=array();
 		$ndc = new NodeDefaultContents();
 		$subfolders=$ndc->getDefaultChilds($nodetype_sec);
-		foreach($subfolders as $subfolder){
-			$nt=$subfolder["NodeType"];
-			$res[$nt][0]=$subfolder["Name"];	
-			$res[$nt][1]=$this->_getDescription($nt);	
+		if(count($subfolders)>0){
+			foreach($subfolders as $subfolder){
+				$nt=$subfolder["NodeType"];
+				$res[$nt][0]=$subfolder["Name"];	
+				$res[$nt][1]=$this->_getDescription($nt);	
+			}
 		}
 		asort($res);	
 		return $res;
@@ -256,6 +175,7 @@ class Action_addsectionnode extends ActionAbstract {
 			case "5301": return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
 			case "5304": return "Into this folder you could create XML based news in several languages. This is a required folder.";
 			case "5306": return "All the images used in your defined news are stored here.";
+			case "5083": return "Create metadata structured documents to describe other resources stored in Ximdex CMS.";
 			default: "...";
 		}
 	}

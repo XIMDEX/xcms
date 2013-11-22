@@ -39,7 +39,7 @@ class Action_managefolders extends ActionAbstract {
 	* 
  	*/ 
     	function index () {
-		$this->addCss('/actions/addsectionnode/resources/css/style.css'); 
+		$this->addCss('/actions/addsectionnode/resources/css/style.css');
 		$selectedFolders=array();
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);
@@ -198,6 +198,7 @@ class Action_managefolders extends ActionAbstract {
 			case "5301": return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
 			case "5304": return "Into this folder you could create XML based news in several languages. This is a required folder.";
 			case "5306": return "All the images used in your defined news are stored here.";
+			case "5083": return "Create metadata structured documents to describe other resources stored in Ximdex CMS.";
 			default: "...";
 		}
 	}
