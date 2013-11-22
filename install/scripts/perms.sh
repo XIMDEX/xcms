@@ -218,7 +218,7 @@ fi
 
 if [ -z $GROUP_APACHE]
 then
- GROUP_APACHE="`ps -eo '%G %a'|grep apache|grep -v grep|grep -v root|grep -v USER|awk 'NR<=1 {print $1; }'|cut -d '' -f 1,1 `"
+ GROUP_APACHE="`ps -eo '%G %a'|grep apache2|grep -v grep|grep -v root|grep -v USER|awk 'NR<=1 {print $1; }'|cut -d '' -f 1,1 `"
  if [ $INTERACTIVE = 1 ]
  then
   echo -n "Apache Group: [$GROUP_APACHE]: "
