@@ -142,10 +142,10 @@ class FileNode extends Root {
 			$data->SetContent($content, NULL, NULL, $commitNode);
 		}
 
-		if (($this->parent->nodeType->get('Name') == 'VisualTemplate')
+		/*if (($this->parent->nodeType->get('Name') == 'VisualTemplate')
 			&& ModulesManager::isEnabled('ximRAM')) {
 			CacheWriter::writeCache($this->nodeID, $content);
-		}
+		}*/
 
 		if ($this->parent->nodeType->get('Name') == 'CssFile')  {
 			$dependencies = new ParsingDependences();

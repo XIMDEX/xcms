@@ -28,6 +28,7 @@
 ModulesManager::file('/inc/model/Namespaces.class.php');
 ModulesManager::file('/services/Xowl/searchers/AnnotationSearcherStrategy.class.php');
 ModulesManager::file('/services/Xowl/searchers/ContentEnricherSearcherStrategy.class.php');
+ModulesManager::file('/services/Xowl/searchers/ExternalVocabularySearcherStrategy.class.php');
 ModulesManager::file('/services/Xowl/searchers/XimdexSearcherStrategy.class.php');
 
 
@@ -35,14 +36,22 @@ class OntologyService {
 
 	private $key = false;
 	private $providers = array(); 
+	private static $allProviders = array(
+						"semantic" => "AnnotationSearcherStrategy",
+						"content" => "ContentEnricherSearcherStrategy",
+						"external" => "ExternalVocabularySearcherStrategy"
+									);
+
 	
 	/**
-	*<p>Class constructor. Check if Xowl module is enabled and if exists EnricherKey;</p>
+	*Class constructor. Check if Xowl module is enabled and if exists EnricherKey;
+	*It can receive a variable number of params with the name of the providers to load.
 	*/
 	public function __construct(){
 
 		//Loading all defined providers
-		$this->loadProviders();
+		
+		$this->loadProviders(func_get_args());
 	
 		if(ModulesManager::isEnabled('Xowl')){		
 			$key = Config::getValue('EnricherKey');
@@ -65,8 +74,8 @@ class OntologyService {
 	}
 
 	/**
-	*<p>Suggest related terms and resources from a text</p>
-	*<p> If key exists return semantic and suggested terms.</p>
+	*Suggest related terms and resources from a text
+	*If key exists return semantic and suggested terms.
 	*@param $text: string to search related words.
 	*@return string in json format.
 	*/
@@ -74,12 +83,27 @@ class OntologyService {
 
 		if ($this->key){
 			$result = array();
-			foreach ($this->providers as $type => $providerName){
-				if (class_exists($providerName)){
-					$provider = new $providerName;
-					$result[$type] = $provider->suggest($text)->getData();
+			//For an specific provider 
+			if ($provider){
+				//It could be the type name or the class name
+				if (array_key_exists($provider,$this->providers)){
+					if (class_exists($provider)){
+						$result[$type] = $provider->suggest($text)->getData();
+					}
 				}
-			}			
+
+				else{
+
+				}	
+			
+			}else { //For all providers
+				foreach ($this->providers as $type => $providerName){
+					if (class_exists($providerName)){
+						$provider = new $providerName;
+						$result[$type] = $provider->suggest($text)->getData();
+					}
+				}
+			}
 			$result["status"] = "ok";
 			return json_encode($result);
 		}
@@ -91,15 +115,25 @@ class OntologyService {
 
 	/**
 	* Load all providers and update the provider property
+	* It can receive an array of strings with the name of the providers to load.
+	* Load all providers is there aren't params or if the array is empty.
 	*/	
-	private function loadProviders($tags=false){
+	private function loadProviders($providers=null){
 
-		//It should be loaded from DB.
-		$this->providers["semantic"]="AnnotationSearcherStrategy";
-		if(!$tags){
-			$this->providers["content"]="ContentEnricherSearcherStrategy";
-		}
-		//$this->providers["ximdex"]="XimdexSearcherStrategy";
+		//It should be loaded from DB.		
+		if ($providers && count($providers)){
+			foreach ($providers as $provider) {
+				error_log($provider);
+				if ($provider){
+					if (array_key_exists($provider, self::$allProviders)){
+						$this->providers[$provider] = self::$allProviders[$provider];
+					}			
+				}		
+			}
+		}else{
+			$this->providers = self::$allProviders;	
+		}		
+		return $this;
 	}
 }
 

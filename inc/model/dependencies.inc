@@ -1,33 +1,28 @@
 <?php
-
-/*********************************************************************************
- *  Ximdex a Semantic Content Management System (CMS)    			    	 *
- *  Copyright (C) 2011  Open Ximdex Evolution SL <dev@ximdex.org>	    	 *
- *                                                                            					    	 *
- *  This program is free software: you can redistribute it and/or modify        	 *
- *  it under the terms of the GNU Affero General Public License as published  *
- *  by the Free Software Foundation, either version 3 of the License, or      	 *
- *  (at your option) any later version.                                       			 *
- *                                                                            						 *
- *  This program is distributed in the hope that it will be useful,           		 *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the *
- *  GNU Affero General Public License for more details.                       		 *
- *                                                                            						 *
- * See the Affero GNU General Public License for more details.                	 *
- * You should have received a copy of the Affero GNU General Public License  *
- * version 3 along with Ximdex (see LICENSE).                                 		 *
- * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       		 *
- *                                                                            						 *
- * @version $Revision: $                                                      				 *
- *                                                                            						 *
- *                                                                            						 *
- *********************************************************************************/
-
-
-
-
-
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
 
 
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
@@ -81,6 +76,18 @@ class dependencies extends Dependencies_ORM{
 		//Deletes all the dependencies (ancestor) of this node ("free")
 		$dbObj = new DB();
 		$sql= sprintf("DELETE FROM Dependencies WHERE IdNodeDependent= %d", $nodeID);
+		$dbObj->Execute($sql);
+	}
+
+	/**
+	 *
+	 * @param $nodeID
+	 * @return unknown_type
+	 */
+	function deleteMasterNodeandType($nodeID,$type) {
+		//Deletes all the dependencies (ancestor) of this node ("free")
+		$dbObj = new DB();
+		$sql= sprintf('DELETE FROM Dependencies WHERE IdNodeMaster=%s AND DepType="%s"',$nodeID,$type);
 		$dbObj->Execute($sql);
 	}
 
@@ -230,8 +237,7 @@ class dependencies extends Dependencies_ORM{
 		//Gets all the dependencies (ancestor) of this node
 
 		$dbObj = new DB();
-		$sql=sprintf("SELECT IdDep from Dependencies WHERE IdNodeMaster = %d AND IdNodeDependent = %d and DepType = %s and version = %d",
-		$master, $dependent, $dbObj->sqlEscapeString($type), $version);
+		$sql=sprintf("SELECT IdDep from Dependencies WHERE IdNodeMaster = %d AND IdNodeDependent = %d and DepType = %s and version = %d",$master, $dependent, $dbObj->sqlEscapeString($type), $version);
 
 		$dbObj->Query($sql);
 
@@ -255,47 +261,41 @@ class dependencies extends Dependencies_ORM{
 		$node = new Node($docId);
 
 		$section = new Node($node->GetSection());
-		$ptdFolderSection = new Node($section->GetChildByName('templates'));
+		$sectionTemplates = new Node($section->GetChildByName('templates'));
 
 		$project = new Node($node->GetProject());
-		$ptdFolderProject = new Node($project->GetChildByName('templates'));
+		$projectTemplates = new Node($project->GetChildByName('templates'));
 
 		$nodeType = new NodeType();
 		$nodeType->SetByName('XslTemplate');
 		$nodeTypeXsl = $nodeType->get('IdNodeType');
 
 		// Gets document tags
-
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 
 		$domDoc->loadXML(XmlBase::recodeSrc("<docxap>$content</docxap>", XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
-
 		$nodeList = $xpath->query('//*');
 
 		// Searchs xslt nodes
-
 		$xslDependencies = array();
-
+		$parsedTags = array(); 
 		foreach ($nodeList as $element) {
-
 			$tagName = $element->nodeName;
-
-			$xsltId = $ptdFolderSection->GetChildByName($tagName . '.xsl');
-
-			// If not found in section it searchs in project
-
-			if (!($xsltId > 0)) {
-				$xsltId = $ptdFolderProject->GetChildByName($tagName . '.xsl');
-			}
-
-			if ($xsltId > 0) {
-				$xslDependencies[] = $xsltId;
+			if(!in_array($tagName,$parsedTags)){
+				$xsltId = $sectionTemplates->GetChildByName($tagName . '.xsl');
+				// If not found in section it searchs in project
+				if (!($xsltId > 0)) {
+					$xsltId = $projectTemplates->GetChildByName($tagName . '.xsl');
+				}
+				if ($xsltId > 0) {
+					$xslDependencies[] = $xsltId;
+				}
+				$parsedTags[]=$tagName;
 			}
 		}
-
 		return $xslDependencies;
 	}
 

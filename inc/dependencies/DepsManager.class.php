@@ -89,7 +89,6 @@ class DepsManager {
 		if (!is_object($object)) {
 			XMD_Log::error(sprintf("Can't instantiate a %s model", $tableName));
 		}
-
 		return $object;
 	}
 	/**
@@ -100,16 +99,23 @@ class DepsManager {
 	 * @return true / false
 	 */
 	function set($rel, $idSource, $idTarget) {
-
+		$res=array();
 		$object = $this->getModel($rel);
 		if (!is_object($object)) return false;
 
-		$object->set('target', $idTarget);
-		$object->set('source', $idSource);
+		$res=$object->find(ALL,'source = %s and target = %s',array($idSource,$idTarget));
 
-		if (!$object->add()) {
-			XMD_Log::error('Inserting dependency');
-			return false;
+		if(empty($res)){
+			$object->set('target', $idTarget);
+			$object->set('source', $idSource);
+
+			if (!$object->add()) {
+				XMD_Log::error('Inserting dependency');
+				return false;
+			}
+		}
+		else{
+			
 		}
 
 		return true;

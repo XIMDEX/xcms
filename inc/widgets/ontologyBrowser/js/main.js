@@ -1,4 +1,3 @@
-<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,39 +23,7 @@
  *  @version $Revision$
  */
 
+(function($){
 
+})(jQuery);
 
-require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
-ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
-
-class Widget_tagsinput extends Widget_Abstract {
-
-	public function __construct() {
-		if(! ModulesManager::isEnabled("ximTAGS") ) {
-			$this->setEnable(false);
-		}
-
-		parent::__construct();
-	}
-
-	public function process($params) {
-
-
-		if("true" == $params["initialize"]) {
-			$relTags = new RelTagsNodes();
-			$params["tags"] = $relTags->getTags($params["_enviroment"]["id_node"]);
-		}
-
-		$node = new Node($params["_enviroment"]["id_node"]);
-		$params["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
-
-		if(array_key_exists("editor", $params ) ) {
-			$this->setTemplate("tagsinput_editor");
-		}
-
-		return parent::process($params);
-	}
-
-}
-
-?>

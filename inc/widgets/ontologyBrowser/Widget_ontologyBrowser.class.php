@@ -29,29 +29,14 @@
 require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
-class Widget_tagsinput extends Widget_Abstract {
-
-	public function __construct() {
-		if(! ModulesManager::isEnabled("ximTAGS") ) {
-			$this->setEnable(false);
-		}
-
-		parent::__construct();
-	}
+class Widget_ontologyBrowser extends Widget_Abstract {
 
 	public function process($params) {
 
-
-		if("true" == $params["initialize"]) {
-			$relTags = new RelTagsNodes();
-			$params["tags"] = $relTags->getTags($params["_enviroment"]["id_node"]);
-		}
-
-		$node = new Node($params["_enviroment"]["id_node"]);
-		$params["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
+        $this->addCss("inc/widgets/ontologyBrowser/css/ontologyBrowser.css");
 
 		if(array_key_exists("editor", $params ) ) {
-			$this->setTemplate("tagsinput_editor");
+			$this->setTemplate("ontologyBrowser_editor");
 		}
 
 		return parent::process($params);
