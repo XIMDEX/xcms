@@ -26,14 +26,14 @@
 
 
 class Action_renamenode extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
-    	$idNode = $this->request->getParam('nodeid');
-    	$node = new Node($idNode);
+	// Main method: shows initial form
+    	function index () {
+    		$idNode = $this->request->getParam('nodeid');
+    		$node = new Node($idNode);
 
-    	$isSection = $node->nodeType->get('IsSection');
-    	$allLanguages = NULL;
-    	if ($isSection) {
+    		$isSection = $node->nodeType->get('IsSection');
+    		$allLanguages = NULL;
+    		if ($isSection) {
 			$language = new Language();
 			$allLanguages = $language->find('IdLanguage, Name');
 			if (!empty($allLanguages)) {
@@ -41,22 +41,23 @@ class Action_renamenode extends ActionAbstract {
 					$allLanguages[$key]['alias'] = $node->GetAliasForLang($languageInfo['IdLanguage']);
 				}
 			}
-    	}
+    		}
 
 		$isProject =  $node->nodeType->get('Name') == 'Project' ? 1 : 0;
 
 		$pipelineInfo = array();
 		$idPipeline = NULL;
 
-		if ($node->nodeType->get('IsFolder') ||
-			$node->nodeType->get('IsSection') ||
-			$node->nodeType->get('IsVirtualFolder')) {
+		if ($node->nodeType->get('IsFolder') ||	
+		    $node->nodeType->get('IsSection') || 
+		    $node->nodeType->get('IsVirtualFolder')) {
 
 			// master pipeline
 			$IdNodeForWorkflowMaster = Config::getValue('IdDefaultWorkflow');
 			$pipelineMaster = new Pipeline();
 			$pipelineMaster->loadByIdNode($IdNodeForWorkflowMaster);
 			$diffPipelines = array($pipelineMaster->get('id'));
+		
 			// pipelines associated with nodetypes
 			$pipeNodeTypes = new PipeNodeTypes();
 			$pipeNodeTypesList = $pipeNodeTypes->find('IdPipeline', '', NULL, MONO);
@@ -81,14 +82,15 @@ class Action_renamenode extends ActionAbstract {
 			}
 		}
 
-		$moduleXimNews = (in_array($node->nodeType->get('IdNodeType'), array(5045,5078))) &&
-			 (ModulesManager::isEnabled('ximNEWS'));
+		$nt = $node->nodeType->get('IdNodeType');
 
-		$templateType = '';
+		$moduleXimNews = ($nt==5078) && (ModulesManager::isEnabled('ximNEWS'));
+
+		$schemaType = '';
 		if ($moduleXimNews) {
-			$templateType = $node->getProperty('TemplateType');
-			if (is_array($templateType) && count($templateType) == 1) {
-				$templateType = $templateType[0];
+			$schemaType = $node->getProperty('SchemaType');
+			if (is_array($schemaType) && count($schemaType) == 1) {
+				$schemaType = $schemaType[0];
 			}
 		}
 
@@ -96,104 +98,103 @@ class Action_renamenode extends ActionAbstract {
 			. $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
 			. '&id_pipeline=IDPIPELINE&method=checkNodeDependencies';
 
-		$this->addJs('/actions/renamenode/js/renamenode.js');
-    	$values = array('name' => $node->get('Name'),
-    					'is_section' => $isSection,
-    					'is_project' => $isProject,
-    					'all_languages' => $allLanguages,
-    					'module_ximnews' => $moduleXimNews,
-    					'template_type' => $templateType,
-    					'go_method' => 'update',
-    					'valid_pipelines' => $pipelineInfo,
-    					'selected_pipeline' => $idPipeline,
-    					'check_url' => $checkUrl,
-    					'id_node' => $idNode
+		$this->addJs('/actions/renamenode/resources/js/renamenode.js');
+    		$values = array('name' => $node->get('Name'),
+				'is_section' => $isSection,
+    				'is_project' => $isProject,
+    				'all_languages' => $allLanguages,
+    				'module_ximnews' => $moduleXimNews,
+    				'schema_type' => $schemaType,
+    				'go_method' => 'update',
+    				'valid_pipelines' => $pipelineInfo,
+    				'selected_pipeline' => $idPipeline,
+    				'check_url' => $checkUrl,
+    				'id_node' => $idNode,
+    				'id_nodetype' => $nt
+    		);
+    		$this->render($values, NULL, 'default-3.0.tpl');
+    	}
 
-    	);
+    
+	function update() {
+    		$idNode = $this->request->getParam('id_node');
+    		$name = $this->request->getParam('name');
 
-    	$this->render($values, NULL, 'default-3.0.tpl');
-    }
+    		$languages = $this->request->getParam('language');
 
-    function update() {
-    	$idNode = $this->request->getParam('id_node');
-    	$name = $this->request->getParam('name');
-
-    	$languages = $this->request->getParam('language');
-
-    	$node = new Node($idNode);
-    	if (!$node->get('IdNode') > 0) {
-    		$this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_NOTICE);
-    	} else {
-			$result = $node->RenameNode($name);
-    		$node->deleteProperty('TemplateType');
-
-    		$templateType = $this->request->getParam('template_type');
-    		if (!empty($templateType) && $templateType != 'generic_template') {
-    			$node->setProperty('TemplateType', $templateType);
-    		}
-    		$node->update();
-    		if ($result) {
-    			$this->messages->add(_('Node name has been successfully updated'), MSG_TYPE_NOTICE);
+    		$node = new Node($idNode);
+    		if (!$node->get('IdNode') > 0) {
+    			$this->messages->add(_('Node could not be successfully loaded'), MSG_TYPE_NOTICE);
     		} else {
-    			$this->messages->add(_('Node name could not be updated'), MSG_TYPE_ERROR);
-    		}
+			$result = $node->RenameNode($name);
+    			$node->deleteProperty('SchemaType');
 
-    		if ($node->nodeType->get('IsSection')) {
-    			foreach ($languages as $idLanguage => $alias) {
-    				if ($node->SetAliasForLang($idLanguage, $alias)) {
-    					$language = new Language($idLanguage);
-    					$this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name')), MSG_TYPE_NOTICE);
+    			$schemaType = $this->request->getParam('schema_type');
+    			if (!empty($schemaType) && $schemaType != 'generic_schema') {
+    				$node->setProperty('SchemaType', $schemaType);
+    			}
+    			$node->update();
+    			if ($result) {
+    				$this->messages->add(_('Node name has been successfully updated'), MSG_TYPE_NOTICE);
+    			} else {
+    				$this->messages->add(_('Node name could not be updated'), MSG_TYPE_ERROR);
+    			}
+
+    			if ($node->nodeType->get('IsSection')) {
+    				foreach ($languages as $idLanguage => $alias) {
+    					if ($node->SetAliasForLang($idLanguage, $alias)) {
+    						$language = new Language($idLanguage);
+    						$this->messages->add(sprintf(_('Alias for language %s has been successfully updated'), $language->get('Name')), MSG_TYPE_NOTICE);
+    					}
     				}
     			}
+
     		}
 
-    	}
+    		$oldIdPipeline = $node->getProperty('Pipeline');
+    		$newIdPipeline = $this->request->getParam('id_pipeline');
+    		if (!($newIdPipeline > 0)) {
+    			$newIdPipeline = NULL;
+    		}
 
-    	$oldIdPipeline = $node->getProperty('Pipeline');
-    	$newIdPipeline = $this->request->getParam('id_pipeline');
-    	if (!($newIdPipeline > 0)) {
-    		$newIdPipeline = NULL;
-    	}
+    		if (count($oldIdPipeline > 0)) {
+    			$oldIdPipeline = $oldIdPipeline[0];
+    		}
 
-    	if (count($oldIdPipeline > 0)) {
-    		$oldIdPipeline = $oldIdPipeline[0];
-    	}
-
-    	if ($oldIdPipeline != $newIdPipeline) {
-    		$node->updateToNewPipeline($newIdPipeline);
-    		$node->setProperty('Pipeline', $newIdPipeline);
-    	}
+    		if ($oldIdPipeline != $newIdPipeline) {
+    			$node->updateToNewPipeline($newIdPipeline);
+    			$node->setProperty('Pipeline', $newIdPipeline);
+    		}
 
    		$this->messages->mergeMessages($node->messages);
-
 		$this->reloadNode($node->get('IdParent') );
 
-    	$values = array('messages' => $this->messages->messages);
-    	$this->render($values, NULL, 'messages.tpl');
-    }
-
-    function checkNodeDependencies() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$idPipeline = $this->request->getParam('id_pipeline');
-
-    	$node = new Node($idNode);
-    	$oldIdPipeline = $node->getProperty('Pipeline');
-    	if (is_array($oldIdPipeline)) {
-    		$oldIdPipeline = $oldIdPipeline[0];
+    		$values = array('messages' => $this->messages->messages);
+    		$this->render($values, NULL, 'messages.tpl');
     	}
 
-//		$this->messages->add(_('Nodes which will change their workflow status'), MSG_TYPE_NOTICE);
 
-    	if ($idPipeline != $oldIdPipeline) {
+   	function checkNodeDependencies() {
+    		$idNode = $this->request->getParam('nodeid');
+    		$idPipeline = $this->request->getParam('id_pipeline');
+
+    		$node = new Node($idNode);
+    		$oldIdPipeline = $node->getProperty('Pipeline');
+    		if (is_array($oldIdPipeline)) {
+    			$oldIdPipeline = $oldIdPipeline[0];
+    		}
+
+    		if ($idPipeline != $oldIdPipeline) {
 			$db = new Db();
 			$query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %s", $idNode);
 			$db->Query($query);
 
-			if($db->numRows==0 || $db->numRows==1)
+			if($db->numRows==0 || $db->numRows==1){
 				$this->messages->add(_('Any node will change its workflow status'), MSG_TYPE_NOTICE);
-			else
+			}
+			else{
 				$this->messages->add(_('Nodes which are going to change their workflow status:'), MSG_TYPE_NOTICE);
-
+			}
 			
 			while(!$db->EOF) {
 				$idNode = $db->GetValue('IdChild');
@@ -203,9 +204,10 @@ class Action_renamenode extends ActionAbstract {
 				}
 				$db->Next();
 			}
-    	}
+    		}
 
 		$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-    }
+    	}
+
 }
 ?>
