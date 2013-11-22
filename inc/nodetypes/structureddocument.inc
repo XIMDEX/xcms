@@ -324,6 +324,14 @@ class AbstractStructuredDocument extends FileNode  {
 		$layoutName = str_replace('.xml', '', $schemaName);
 		$layoutTag = 'layout ="'. $layoutName .'"';
 
+		//$node = new Node($this->parent->get('IdNode'));
+		$node = new Node($this->nodeID);
+		$nt=$node->nodeType->get('IdNodeType');
+		$metadata='';
+		if($nt==5032){
+			$metadata = 'metadata_id=""';
+		}
+
 		//We include the associated semantic tags of the document into the docxap tag.
 		$ximdexTags='';
 
@@ -339,7 +347,7 @@ class AbstractStructuredDocument extends FileNode  {
 		
 		$docxap = '';
 
-		$docxap = sprintf("<docxap %s %s %s %s %s %s %s %s>", 
+		$docxap = sprintf("<docxap %s %s %s %s %s %s %s %s %s>", 
 					$layoutTag,
 					$this->_langXapAttrib($idLanguage),
                         		$schemaTag,
@@ -347,6 +355,7 @@ class AbstractStructuredDocument extends FileNode  {
                         		$this->_buildDocXapAttribs($idLanguage),
                         		$this->_getDocXapPropertiesAttrib(true),
                         		$ximdexTags,
+					$metadata,
                         		NULL
                  );
 
@@ -369,23 +378,17 @@ class AbstractStructuredDocument extends FileNode  {
 			return $docXapHeader;
 		}
 
-//		$rdfMacro = '';
-//		if (ModulesManager::isEnabled('ximPAS')) {
-//			$rdfMacro = sprintf('@@@RMximdex.rdf(%s)@@@', $this->nodeID);
-//		}
-
 		$doctypeTag = Config::getValue("DoctypeTag");
 		$encodingTag = Config::getValue("EncodingTag");
-		/// El contenido que hay en la bd si no nos pasaron ninguno como parametro
+
 		if (is_null($content)) {
 			$content = $strDoc->GetContent();
 		}
 		return ($encodingTag . "\n" . $doctypeTag . "\n\n" .
-						$docXapHeader .
-//						$rdfMacro .
-						$this->InsertLinkedximletS($idLanguage) . "\n" .
-						$content . "\n" .
-						"</docxap>\n") ;
+			$docXapHeader .
+			$this->InsertLinkedximletS($idLanguage) . "\n" .
+			$content . "\n" .
+			"</docxap>\n") ;
 
 	}
 

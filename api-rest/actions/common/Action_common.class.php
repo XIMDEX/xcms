@@ -1,44 +1,39 @@
 <?php
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/xml/validator/XMLValidator_RNG.class.php');
 
-class Action_document implements APIRestAction, SecuredAction
-{
-    const SEPARATOR = ",";
+class Action_common implements APIRestAction, SecuredAction{
+    	const SEPARATOR = ",";
 
-    /**
-     * <p>Read document information</p>
-     * @param type $request
-     * @param type $response
-     */
-    public function get($request, $response)
-    {
-        $id = $request->getParam('id');
-        $username = $request->getParam(self::USER_PARAM);
+    	/**
+     	* <p>Read file information</p>
+     	* @param type $request
+     	* @param type $response
+     	*/
+    	public function get($request, $response){
+        	$id = $request->getParam('id');
+        	$username = $request->getParam(self::USER_PARAM);
 
-        if (!empty($id)) {
-            $nodeService = new NodeService();
-            if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)) {
-                $nodeInfo = $nodeService->getNodeInfo($id);
-                $node = new Node($id);
-                $nodeInfo['content'] = $node->GetContent();
-                unset($nodeInfo['nodeType']);
-                unset($nodeInfo['children']);
-                $response->header_status(200);
-                $response->setContent(array("error" => 0, "data" => $nodeInfo));
-            } else {
-                $response->setContent(array("error" => 1, "msg" => "The requested project with id " . $id . " does not exist or you don't have permission to manage it"));
-                $response->header_status(404);
-            }
-        } else {
-            /* get all documents for the user */
-            /* TODO: How to do it, query DB directly or do it through NodeService */
-        }
-    }
+        	if (!empty($id)) {
+            		$nodeService = new NodeService();
+            		if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::BINARY_FILE)) {
+                		$nodeInfo = $nodeService->getNodeInfo($id);
+                		unset($nodeInfo['nodeType']);
+                		unset($nodeInfo['children']);
+                		$response->header_status(200);
+                		$response->setContent(array("error" => 0, "data" => $nodeInfo));
+            		}else{
+                		$response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist or you don't have permission to manage it"));
+                		$response->header_status(404);
+            		}
+        	} else {
+            		/* get all files for the user */
+            		/* TODO: How to do it, query DB directly or do it through NodeService */
+        	}
+    	}
 
     /**
-     * <p>Create project</p>
+     * <p>Create new file</p>
      * @param type $request
      * @param type $response
      * 
@@ -47,38 +42,34 @@ class Action_document implements APIRestAction, SecuredAction
      * 
      * languages: optional, default all configured languages
      * channels: optional, default all configured channels
-     * id_schema:
-
      * 
      * 
      */
-    public function post($request, $response)
-    {
-        $id = $request->getParam('parentid');
-        $name = $request->getParam('name');
-        $schema = $request->getParam('id_schema');
-        $nodeService = new NodeService();
+	public function post($request, $response){
+        	$id = $request->getParam('parentid');
+        	$name = $request->getParam('name');
+        	$nodeService = new NodeService();
 
-        if (empty($name)) {
-            $this->createErrorResponse($response, "The name for the document is missing");
-            return;
-        }
+        	if (empty($name)) {
+            		$this->createErrorResponse($response, "The name for the file is missing");
+            		return;
+        	}
 
-        if (empty($id) || $nodeService->getNode($id)== null) {
-            $this->createErrorResponse($response, "The parent id parameter where to create the new document is missing or it does not exist");
-            return;
-        }
+        	if (empty($id) || $nodeService->getNode($id)== null) {
+            		$this->createErrorResponse($response, "The parent id parameter where to create the new file is missing or it does not exist");
+            		return;
+        	}
 
-        if (empty($id)) {
-            $this->createErrorResponse($response, "The id of the schema to be used for the new document is missing");
-            return;
-        }
+        	if (empty($id)) {
+            		$this->createErrorResponse($response, "The id of the schema to be used for the new file is missing");
+            		return;
+        	}
 
-        $this->createXmlContainer($request, $response);
-    }
+        	$this->createiNode($request, $response);
+    	}
 
     /**
-     * <p>Update project information</p>
+     * <p>Update file information</p>
      * 
      * content:
      * validate:
@@ -98,12 +89,12 @@ class Action_document implements APIRestAction, SecuredAction
         $nodeService = new NodeService();
 
         if (empty($id)) {
-            $this->createErrorResponse($response, "The id of the document is missing");
+            $this->createErrorResponse($response, "The id of the file is missing");
             return;
         }
         
         if (!$nodeService->existsNode($id) || !$nodeService->hasPermissionOnNode($username, $id) || !$nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)) {
-            $this->createErrorResponse($response, "The id for the document is missing or you don't have permission to manage it");
+            $this->createErrorResponse($response, "The id for the file is missing or you don't have permission to manage it");
             return;
         }
 
@@ -118,7 +109,7 @@ class Action_document implements APIRestAction, SecuredAction
         $content = $b64decoded === false ? urldecode(stripslashes($content)) : urldecode($b64decoded);
 
         if ($content == NULL || $content == false) {
-            $data[] = "The content of the document has not been updated because is empty, missing or not readable";
+            $data[] = "The content of the file has not been updated because is empty, missing or not readable";
         } else {
 
             /* Check whether the supplied node Id references to an XML document */
@@ -152,7 +143,7 @@ class Action_document implements APIRestAction, SecuredAction
             }
 
             $node->SetContent($content);
-            $data[] = "The content of the document has been updated successfully";
+            $data[] = "The content of the document has been successfully updated.";
 
             $response->setContent(array('error' => 0, 'data' => implode('\n', $data)));
             $response->header_status(200);
@@ -160,43 +151,41 @@ class Action_document implements APIRestAction, SecuredAction
     }
 
     /**
-     * <p>Delete project information</p>
+     * <p>Delete file information</p>
      * @param type $request
      * @param type $response 
      */
-    public function delete($request, $response)
-    {
-        $id = $request->getParam('id');
-        $username = $request->getParam(self::USER_PARAM);
-        $nodeService = new NodeService();
+	public function delete($request, $response){
+        	$id = $request->getParam('id');
+        	$username = $request->getParam(self::USER_PARAM);
+        	$nodeService = new NodeService();
 
-        if (!empty($id)) {
-            if (!$nodeService->existsNode($id)) {
-                $response->setContent(array("error" => 1, "msg" => "The requested document with id " . $id . " does not exist and it can not be deleted"));
-                $response->header_status(404);
-                return;
-            }
+        	if (!empty($id)) {
+            		if (!$nodeService->existsNode($id)) {
+                		$response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist and it can not be deleted"));
+                		$response->header_status(404);
+                		return;
+            		}
 
-            if ($nodeService->hasPermissionOnNode($username, $id) && ($nodeService->isOfNodeType($id, NodetypeService::XML_CONTAINER || $nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)))) {
-                $typeString = $nodeService->isOfNodeType($id, NodetypeService::XML_CONTAINER) ? "document container" : "document";
-                $removed = $nodeService->deleteNode($id);
+            		if ($nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::BINARY_FILE)) {
+                		$removed = $nodeService->deleteNode($id);
                 
-                if ($removed) {
-                    $response->header_status(200);
-                    $response->setContent(array("error" => 0, "data" => "The ". $typeString ." has been deleted successfully"));
-                } else {
-                    $response->setContent(array("error" => 1, "msg" => "The requested ". $typeString. " with id " . $id . " does not exist and it can not be deleted"));
-                    $response->header_status(404);
-                }
-            } else {
-                $response->header_status(400);
-                $response->setContent(array("error" => 1, "msg" => "You don't have permission to delete the document"));
-            }
-        } else {
-            /* delete all documents (all XML Containers) for the user */
-            /* TODO: How to do it, query DB directly or do it through NodeService */
-        }
-    }
+                		if ($removed) {
+                    			$response->header_status(200);
+                    			$response->setContent(array("error" => 0, "data" => "The file has been successfully deleted."));
+                		}else{
+                    			$response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist and it can not be deleted"));
+                    			$response->header_status(404);
+                		}
+            		}else{
+                		$response->header_status(400);
+                		$response->setContent(array("error" => 1, "msg" => "You don't have permission to delete this file."));
+            		}
+        	} else {
+            	/* delete all documents (all XML Containers) for the user */
+            	/* TODO: How to do it, query DB directly or do it through NodeService */
+        	}
+    	}
 
     /**
      * <p>Creates a new XML Container</p>

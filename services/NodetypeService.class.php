@@ -81,11 +81,6 @@ class NodetypeService
     const PROPERTY = 5059;
     const PROJECT_PROP_FOLDER = 5060;
     const SYSTEM_PROPERTY = 5061;
-    const PROJECT_DIC_FOLDER = 5063;
-    const DICTIONARY = 5064;
-    const DIC_VALUE = 5065;
-    const DIC_FOLDER = 5066;
-    const XIM_PORTA = 5067;
     const PROP_SET = 5068;
     const NODE_HT = 5076;
     const XSL_TEMPLATE = 5077;

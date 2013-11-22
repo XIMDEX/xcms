@@ -25,15 +25,6 @@
  ******************************************************************************/
 
 
-
-
-
-
-
-
-
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
@@ -56,9 +47,9 @@ class VisualTemplateNode extends FileNode {
 
 		// first we set the template_type property
 
-		$storableTypes = array('news_template', 'bulletin_template');
+		$storableTypes = array('news_schema', 'bulletin_schema');
 		if (in_array($templateType, $storableTypes)) {
-			$this->parent->setProperty('TemplateType', $templateType);
+			$this->parent->setProperty('SchemaType', $templateType);
 		}
 		// Adds rng node
 
@@ -81,7 +72,7 @@ class VisualTemplateNode extends FileNode {
 			$rng = new Node($idRng);
 			$rng->SetContent($content);
 			if (in_array($templateType, $storableTypes)) {
-				$rng->setProperty('TemplateType', $templateType);
+				$rng->setProperty('SchemaType', $templateType);
 			}
 		} else {
 			FsUtils::file_put_contents($rngSourcePath, $content);
@@ -99,7 +90,7 @@ class VisualTemplateNode extends FileNode {
 			$result = $baseIO->build($data);
 			if ($result > 0) {
 				$node = new Node($result);
-				$node->setProperty('TemplateType', $templateType);
+				$node->setProperty('SchemaType', $templateType);
 			}
 		}
 
