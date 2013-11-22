@@ -1,4 +1,36 @@
+.options, .fonts, .range-bg {
+  background: #212121;
+  max-height: 0;
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+  overflow: hidden;
+  color: #606060;
+  position: relative;
+  z-index: 10;
+}
 
+.button:hover .options, .button:hover .fonts, .button:hover .range-bg {
+  max-height: 800px;
+}
+
+
+.option {
+  padding: .5em 1em;
+  position: relative;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  color: #fff;
+}
+  .option:hover {
+    background: #7bcabf;
+}
+
+
+/*
 .button, .no-collapsable .option {
   min-width: 1.6em;
   height: 1.7em;
@@ -106,3 +138,4 @@
 }
 
 
+*/

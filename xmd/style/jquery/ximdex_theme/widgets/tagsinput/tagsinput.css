@@ -1,4 +1,3 @@
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,119 +22,361 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/**************
+// COLORS
+***************/
+/**************
+// SHADOWS
+***************/
+/**************
+// TYPO
+***************/
+/**************
+// INCLUDES
+***************/
+/**************
+// EXTENDS
+***************/
+/* NO Extends because they are inserted at the beggining of each CSS file */
+.suggested > div:not(:first-child) {
+  margin-top: 2em; }
 
+.xim-tagsinput-container-list {
+  padding: 1em 0 3em; }
 
-div.xim-tagsinput-container {
-   /*border: 1px solid #d3d3d3;
-   width: 500px;*/
-   padding: 10px 10px 0 10px;
-   /*margin: 0 auto;
-   margin-top: 10px;*/
-	overflow: auto;
-}
+.xim-tagsinput-container .xim-tagsinput-input {
+  display: inline-block;
+  vertical-align: middle; }
 
-.kupu-toolbox-tags-button{
-	background-position: -7px -161px;	
-}
+.title-box, .xim-tagsinput-container.col2-3 .title-box {
+  color: #fff;
+  border-bottom: 1px solid #c7c7c7;
+  padding: 1em 1em .8em;
+  background: #4c4c4c; }
 
-/** Tags list */
-div.xim-tagsinput-container ul.xim-tagsinput-list{
-   padding: 0;
-   margin: 0;
-   overflow: auto;
-}
+.xim-tagsinput-container.col2-3 .title-box {
+  width: 90%;
+  background: #888888;
+  border-top: 4px solid #7bcabf;
+  margin-bottom: 2em; }
 
-li.xim-tagsinput-newtag {
-   display: inline;
-   float: left;
-   list-style: none;
-   margin: 0 10px 10px 0;
-   padding: 0 2px 2px 0;
-   width: 23px;
-}
+.xim-tagsinput-taglist, .xim-tagsinput-tag, .ontology-browser-container a {
+  background: #fff;
+  color: #4c4c4c;
+  border-bottom: 1px solid #e1e1e1;
+  padding: .5em .5em .5em 3em;
+  position: relative; }
+  .xim-tagsinput-taglist::before, .xim-tagsinput-tag::before, .ontology-browser-container a::before {
+    position: absolute;
+    height: 100%;
+    width: 2em;
+    background: #2fb7a4;
+    border-top-color: rgba(255, 255, 255, 0.3);
+    left: 0;
+    top: 0;
+    text-align: center;
+    color: #edeeee;
+    line-height: 2; }
+  .xim-tagsinput-taglist:hover, .xim-tagsinput-tag:hover, .ontology-browser-container a:hover {
+    background: #f2f2f2; }
+    .xim-tagsinput-taglist:hover::before, .xim-tagsinput-taglist:hover::after, .xim-tagsinput-tag:hover::before, .xim-tagsinput-tag:hover::after, .ontology-browser-container a:hover::before, .ontology-browser-container a:hover::after {
+      opacity: .75; }
 
- li.xim-tagsinput-tag {
-   border: 1px solid #56B0B1;
-   -moz-border-radius: 6px;
-   -webkit-border-radius: 6px;
-   border-radius: 6px;
-   background: #8DC7C7;
-   display: inline;
-   float: left;
-   width: auto;
-   list-style: none;
-   margin: 0 10px 10px 0;
-   padding: 0 3px 4px 5px;
-   
-}
-li.xim-tagsinput-tag:hover {
-   border-color: #0099cc;
-   background: #43A1A2;
-   color: #fff;
-}
+.xim-tagsinput-taglist {
+  cursor: pointer; }
+  .xim-tagsinput-taglist:hover {
+    background: #d9d9d9; }
 
+.xim-tagsinput-tag {
+  max-width: 40%;
+  min-width: 7em;
+  display: inline-block;
+  vertical-align: top;
+  margin: .5em 3% .5em 0;
+  padding-right: 1em;
+  border: 1px solid #dedede;
+  -webkit-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  padding: 0; }
+  .xim-tagsinput-tag .amount {
+    position: absolute;
+    top: .5em;
+    right: .8em; }
+  .xim-tagsinput-tag::before {
+    content: none; }
+  .xim-tagsinput-tag:hover .xim-tagsinput-tag-remove {
+    width: 1.2em;
+    right: -1em; }
 
-div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label {
-   color: #000;
-   text-decoration: none;
-   font-size: 12px;
-}
-div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label:hover {
-   color: #000;
-}
-div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label a {
-   +font-size: 12px;
-   text-decoration: none;
-   font-weight: bold;
-   padding: 1px 6x 1px 4px;
-   background: #0099cc;
-   color: #ffffff;
-   position: relative;
-}
-div.xim-tagsinput-container ul.xim-tagsinput-list li.xim-tagsinput-tag label a:hover {
-   background: #ff0000;
-}
+.type-selector {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 2em; }
+  .type-selector .options {
+    position: absolute; }
 
-/** Tags list suggest */
-div.xim-tagsinput-container div.xim-tagsinput-container-suggested, div.xim-tagsinput-container div.xim-tagsinput-container-related   {
-	display: none;
-	float: left;
-	clear: both;
-}
+.selection {
+  width: inherit;
+  height: inherit;
+  background: #2fb7a4;
+  cursor: pointer; }
+  .selection::before {
+    color: #edeeee;
+    display: block;
+    text-align: center;
+    line-height: 2.05;
+    height: 100%; }
 
-div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li, div.xim-tagsinput-container ul.xim-tagsinput-list-related li  {
-   border: 1px solid #56B0B1;
-   -moz-border-radius: 6px;
-   -webkit-border-radius: 6px;
-   border-radius: 6px;
-   display: inline;
-   float: left;
-   width: auto;
-   list-style: none;
-   margin: 0 10px 10px 7px;
-   padding: 0 3px 2px 23px;
-   background-color: #BBD4F1;
-}
+.options {
+  /* Getting importance to css to overwrite widget styles*/ }
+  .options .option {
+    padding: .5em 1em .5em 2.8em;
+    cursor: pointer; }
+    .options .option::before {
+      position: absolute;
+      height: 100%;
+      width: 2em;
+      left: 0;
+      top: 0;
+      display: block;
+      line-height: 2;
+      text-align: center; }
+    .options .option:hover {
+      background: rgba(255, 255, 255, 0.2); }
+    .options .option:hover::before {
+      opacity: .8; }
 
-div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-people, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-people {
-	background: #BBD4F1 url(imgs/people.png) no-repeat 3px 1px;
-}
+.xim-tagsinput-text {
+  display: inline-block;
+  text-overflow: ellipsis;
+  height: .9em;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  height: 1.9em;
+  padding: .5em 2em .5em 3em; }
+  .xim-tagsinput-text:hover::after, .xim-tagsinput-text:hover::before {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: all .2s  ease-out .5s;
+    -moz-transition: all .2s ease-out .5s;
+    -ms-transition: all .2s ease-out .5s;
+    -o-transition: all .2s ease-out .5s;
+    transition: all .2s ease-out .5s; }
+  .xim-tagsinput-text::before {
+    content: "";
+    border: 6px solid rgba(0, 0, 0, 0);
+    border-bottom-color: #4c4c4c;
+    position: absolute;
+    top: calc(2.5em - 12px);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    -ms-transition: all .2s ease-out;
+    -o-transition: all .2s ease-out;
+    transition: all .2s ease-out; }
+  .xim-tagsinput-text::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    background: #4c4c4c;
+    color: #fff;
+    top: 2.5em;
+    left: 2.2em;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    white-space: normal;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    -ms-transition: all .2s ease-out;
+    -o-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+    opacity: 0;
+    visibility: hidden;
+    padding: .5em .8em;
+    z-index: 2; }
 
-div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-places, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-places {
-	background: #add8e6 url(imgs/places.png) no-repeat 3px 1px;
-}
+.xim-tagsinput-tag-remove {
+  position: absolute;
+  text-indent: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  width: .2em;
+  height: 100%;
+  top: 0;
+  right: 0;
+  background: #dedede;
+  /*background: $c_complementarylight;*/
+  -webkit-transition: all .2s;
+  -moz-transition: all .2s;
+  -ms-transition: all .2s;
+  -o-transition: all .2s;
+  transition: all .2s;
+  /*opacity: 0;*/
+  -webkit-box-shadow: inset 1px 0 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 1px 0 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 1px 0 1px rgba(0, 0, 0, 0.2); }
+  .xim-tagsinput-tag-remove::before {
+    text-indent: 0;
+    display: block;
+    text-align: center;
+    color: #888888;
+    font-size: .8em;
+    line-height: 2.6; }
+  .xim-tagsinput-tag-remove:hover, .xim-tagsinput-tag-remove:hover::before {
+    background: #e8563b;
+    color: #fff; }
 
-div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li.xim-tagsinput-type-organisations, div.xim-tagsinput-container ul.xim-tagsinput-list-related li.xim-tagsinput-type-organisations {
-  	background: #bfbfbf url(imgs/organisations.png) no-repeat 3px 1px;
-}
+.type-custom .amount, .custom .amount, .options .type-custom .amount {
+  background: none;
+  color: #2fb7a4; }
+.type-custom ~ .amount, .custom ~ .amount, .options .type-custom ~ .amount {
+  background: none;
+  color: #2fb7a4; }
+.type-custom ~ .amount, .custom ~ .amount, .options .type-custom ~ .amount {
+  background: none;
+  color: #2fb7a4; }
+.type-custom::before, .custom::before, .options .type-custom::before {
+  position: absolute;
+  width: 1.5em;
+  height: 1.5em;
+  margin-top: .25em;
+  margin-left: .25em;
+  background: #fff;
+  color: #2fb7a4;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  line-height: 1.63;
+  z-index: 2; }
+.type-custom::after, .custom::after, .options .type-custom::after {
+  z-index: 1;
+  background: #2fb7a4;
+  position: absolute;
+  width: 2em;
+  height: 100%;
+  content: "";
+  left: 0;
+  top: 0; }
 
-div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li a:hover, div.xim-tagsinput-container ul.xim-tagsinput-list-related li a:hover {
-   color: #fff;
-}
+.type-custom::before {
+  z-index: 0; }
+.type-custom::after {
+  z-index: -1; }
 
-div.xim-tagsinput-container ul.xim-tagsinput-list-suggested li img, div.xim-tagsinput-container ul.xim-tagsinput-list-related li img {
-	margin: 8px 4px 2px 0px;
-	padding: 0;
-	width: 16px;
-	height: 16px;
-}
+.xim-tagsinput-type-dOrganisation .amount, .type-dOrganisation .amount {
+  background: none;
+  color: #43c35b; }
+.xim-tagsinput-type-dOrganisation::before, .type-dOrganisation::before {
+  background: #43c35b; }
+
+.xim-tagsinput-type-dPerson .amount, .type-dPerson .amount {
+  background: none;
+  color: #d1ac2a; }
+.xim-tagsinput-type-dPerson::before, .type-dPerson::before {
+  background: #d1ac2a; }
+
+.xim-tagsinput-type-dPlace .amount, .type-dPlace .amount {
+  background: none;
+  color: #22b8c1; }
+.xim-tagsinput-type-dPlace::before, .type-dPlace::before {
+  background: #22b8c1; }
+
+.type-zLink .amount {
+  background: none;
+  color: #d34579; }
+.type-zLink::before {
+  background: #d34579; }
+
+.type-zImage .amount {
+  background: none;
+  color: #af2b82; }
+.type-zImage::before {
+  background: #af2b82; }
+
+.type-zArticle .amount {
+  background: none;
+  color: #4271dd; }
+.type-zArticle::before {
+  background: #4271dd; }
+
+.custom .amount {
+  color: #2fb7a4; }
+
+.xim-tagsinput-list-related, .nube_tags {
+  background: #fff;
+  min-height: 8em;
+  position: relative;
+  max-height: 12em;
+  overflow: auto; }
+
+.nube_tags {
+  min-height: 0; }
+
+.loading::before {
+  content: "";
+  width: 0;
+  height: 0;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: 1em solid #2fb7a4;
+  border-left-color: #7bcabf;
+  border-top-color: #7bcabf;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -1em;
+  margin-left: -1em;
+  -webkit-animation: spin 0.75s infinite ease-in-out;
+  -moz-animation: spin 0.75s infinite ease-in-out;
+  -ms-animation: spin 0.75s infinite ease-in-out;
+  -o-animation: spin 0.75s infinite ease-in-out;
+  animation: spin 0.75s infinite ease-in-out; }
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(359deg); } }
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(359deg); } }
+
+@-o-keyframes spin {
+  100% {
+    -moz-transform: rotate(359deg); } }
+
+@keyframes spin {
+  100% {
+    transform: rotate(359deg); } }
+
+.tag-type {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  height: 2em;
+  cursor: pointer; }
+
+.xim-tagsinput-newtag .add-btn {
+  background: #57bbad;
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
+  margin-left: .4em;
+  position: relative; }
+  .xim-tagsinput-newtag .add-btn::before {
+    font-size: 1.4em;
+    line-height: 1.5 !important;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    top: 0; }

@@ -1,5 +1,5 @@
 
-li.xim-tagsinput-newtag{
+/*li.xim-tagsinput-newtag{
 	float: none;
 	display: block;
 	padding-bottom: 10px;
@@ -112,10 +112,6 @@ li.xim-tagsinput-tag:hover .xim-tagsinput-tag-remove{
 	background: #111;
 }
 
-form.setmetadata-tags_form {
-	margin: 40px 0px 0px 30px;
-}
-
 .xim-tagsinput-container p + ul.xim-tagsinput-list{
 	padding: 22px 10px 22px 80px;
 }
@@ -137,3 +133,4 @@ form.setmetadata-tags_form ul.nube_tags {
 	-moz-box-shadow: 0px 1px 0 rgba(0, 0, 0, 0.05) inset;
 }
 
+*/

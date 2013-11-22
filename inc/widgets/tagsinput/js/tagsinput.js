@@ -26,30 +26,6 @@
 
 (function($) {
 
-	//loading OntologyType
-
-	(function(){
-		if (!X.ontologyType){
-			var url = X.baseUrl+"?mod=ximTAGS&action=setmetadata&method=loadAllNamespaces";
-			var result = false;
-			$.ajax({
-				url:url,
-				dataType: "json",
-				success: function(data){
-					X.ontologyType = data;
-					X.ontologyTypeLikeOptions="";
-					for (var i in X.ontologyType){
-						X.ontologyTypeLikeOptions += '<option value="'+i+'" data-isSemantic="'+
-						X.ontologyType[i].isSemantic+'">'+X.ontologyType[i].type+'</option>';
-					}
-
-				},
-				error: function(data){
-
-				}
-			});
-		}
-	})();
 
 	$.widget('ui.tagsinput', {
 		id: null,
@@ -59,13 +35,41 @@
 		text: '',
 
 
+
 		_init: function() {
+
+			var url = X.baseUrl+"/?mod=ximTAGS&action=setmetadata&method=loadAllNamespaces";
+			var result = false;
+			var that = this;
+			$.ajax({
+				url:url,
+				dataType: "json",
+				success: function(data){
+					X.ontologyType = data;
+					X.ontologyTypeLikeOptions="";
+					for (var i in X.ontologyType){
+						window.X.ontologyTypeLikeOptions += '<option value="'+i+'" data-isSemantic="'+
+						window.X.ontologyType[i].isSemantic+'">'+X.ontologyType[i].type+'</option>';
+					}
+					that._initAfterOntologyLoad();
+				},
+				error: function(data){
+
+				}
+			});			
+			
+		},
+
+		_initAfterOntologyLoad: function(){
+			var $newTagSelect = $(".xim-tagsinput-newtag select");
+			$newTagSelect.html(X.ontologyTypeLikeOptions);
+			$newTagSelect.inputSelect();
 
 			$selects = $('.xim-tagsinput-tag select', this.element);
 			$selects.html(X.ontologyTypeLikeOptions);
 			$selects.inputSelect();
 			this.id = $(this.element).attr('id');
-			this.newTag = new X.writingtag({container: this.element});
+			//this.newTag = new X.writingtag({container: this.element});
 			$(this.element).click(function() { $(this.newTag).focus(); }.bind(this));
 
 			//load default values
@@ -84,6 +88,59 @@
 				$(this).toggleClass('kupu-toolbox-heading-opened');
 				return false;
 			});
+			var that = this;
+			
+			$("input.xim-tagsinput-input", $(this.element)).on("keyup", function(){
+				
+				var text = $(this).val();
+				var url = X.baseUrl+"/?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromText&vocabulary=external&text="+text;
+				var result = false;
+				$that = $(this);
+				$spanResults = $that.next("span.results");
+				if ($divResults.length === 0){
+					$divResults = $("<span/>").addClass("results");
+					$that.after($divResults);
+				}
+				var $thatTagSelect = $newTagSelect;
+				if (text.length>2){
+					$.ajax({
+						url:url,
+						dataType: "json",
+						success: function(data){
+							$that.next("span.results").empty();
+							data = $.parseJSON(data);
+							var results = data.external;						
+							for (var i in results){
+								if (results.hasOwnProperty(i)){
+									var $div = $("<div/>").text(i);
+									$div.on("click", function(){
+										$that.val(i);
+										$that.next("span.results").empty();
+										$thatTagSelect.inputSelect("select", results[i]["type"].toLowerCase());
+									});
+									$spanResults.append($div);	
+								}
+								
+							}
+							
+						},
+						error: function(data){
+
+						}
+					});	
+				}
+				
+				return false;
+			});
+			
+			$("button", $(this.element)).on("click", function(){
+					var tagText = $(".xim-tagsinput-input",$(that.element)).val();
+					$(".xim-tagsinput-input",$(that.element)).val("");						
+					var typeTag = $newTagSelect.data().ximdexInputSelect.selectedValue;
+					typeTag = typeTag ? typeTag:"custom";
+					that.createTag({text: tagText, typeTag: typeTag, url: '#', description:''});
+					return false;
+			});
 		},
 
 		getTags: function(){
@@ -95,7 +152,7 @@
  		},
 
  		getLastTagList: function() {
- 			return  $('.xim-tagsinput-taglist:last', this.element);
+ 			return  $('.xim-tagsinput-list-related li:last', this.element);
  		},
 
 		getInputNewTag: function() {
@@ -151,9 +208,8 @@
 		createTag: function(tag) {
 
 			if( '' != tag.text && -1 == this.indexTag(tag.text)  ) {
-				var indexTag = this.tags.length;
-
-				 this.tags[indexTag] = new X.tag({container:this.element, text: tag.text,  typeTag: tag.typeTag, url: tag.url, description: tag.description});
+				var indexTag = this.tags.length;				
+				 this.tags[indexTag] = new X.tag({container:this.element, text: tag.text,  typeTag: tag.typeTag, url: tag.url, description: tag.description, conf: tag.conf, typeFixed:tag.typeFixed});
 				// $(this.tags[indexTag].element).bind("removingtag", this.onRemovingTag.bind(this) );
         }
 
@@ -189,7 +245,7 @@
 			var listname = listname || 'related';
 
 			for (var i = 0; i < alltags.length;i++){
-				this.addTagList({text:alltags[i].text, url:"", typeTag:alltags[i].type}, listname );
+				this.addTagList({text:alltags[i].text, url:"", typeTag:alltags[i].type, conf:alltags[i].conf}, listname );
 			}
 			/*$.each(alltags, function(key, value) {
 				if("status" != key) {
@@ -204,7 +260,7 @@
 
 
 			$('.xim-tagsinput-container-'+listname, this.element).show();
-
+			$('.xim-tagsinput-list-related').removeClass('loading');
 		},
 
 
@@ -215,12 +271,12 @@
 				var list = $('.xim-tagsinput-list-'+listname, this.element);
 				var indexTag = this.tagsList.length;
 
-				 new X.taglist({container:this.element, list: list, text: tag.text,  typeTag: tag.typeTag, url: tag.url, description: ''});
+				 new X.taglist({container:this.element, list: list, text: tag.text,  typeTag: tag.typeTag, url: tag.url, description: '', conf: tag.conf});
 
 			}
 		},
 
-		getter: ['prueba']
+//		getter: ['prueba']
 
 	});
 

@@ -52,12 +52,10 @@
 			 	this._parseTag();
 			 }
 
- 			$("span",this.element).keydown(this._editCurrentTag.bind(this));
-			$("span", this.element).focusout(this._editCurrentTag.bind(this)); 
-
  			$selects = $('select', this.element);
 			$selects.html(X.ontologyTypeLikeOptions);
 			$selects.inputSelect();
+			$selects.inputSelect("select",this.typeTag);
 
 			$(this.element).click(function(event){
 				$select = $("select", this.element);
@@ -85,16 +83,31 @@
 
  		_html: function() {
 
-	      return '<li class="xim-tagsinput-tag">'+
-	      			'<select class="hidden vertical collapsable"></select>'+
-	      			'<input type="hidden" name="tags['+this.numimage+'][text]" value="'+this.text+'" />'+
-	      			'<input type="hidden" name="tags['+this.numimage+'][type]" value="'+this.typeTag+'" />'+
-  	      			'<input type="hidden" name="tags['+this.numimage+'][url]" value="'+this.url+'" />'+
-  	      			'<input type="hidden" name="tags['+this.numimage+'][description]" value="'+this.description+'" />'+
-	               '<span class="xim-tagsinput-text" contentEditable="true">'+this.text+'</span>&nbsp;'+
-     	          //  '<a href="#"  class="xim-tagsinput-tag-properties"> &infin; </strong></a>'+
-   	            '<a href="#"  class="xim-tagsinput-tag-remove"> &times; </strong></a>'+
-   	         '</li>';
+		  if (this.typeFixed){
+                        return '<li style="display:none" class="xim-tagsinput-tag xim-tagsinput-type-'+this.typeTag+'" hidden>'+
+                                                '<div class="type-selector">'+
+                                '<div name="type" class="selection icon type-'+this.typeTag+'" data-value="'+this.typeTag+'"></div></div>'+
+                                '<input type="hidden" name="tags['+this.numimage+'][text]" value="'+this.text+'" />'+
+                                '<input type="hidden" name="tags['+this.numimage+'][type]" value="'+this.typeTag+'" />'+
+                                '<input type="hidden" name="tags['+this.numimage+'][url]" value="'+this.url+'" />'+
+                                '<input type="hidden" name="tags['+this.numimage+'][description]" value="'+this.description+'" />'+
+                                '<span class="xim-tagsinput-text" data-tooltip="'+this.text+'">'+this.text+'</span>'+
+                                '<a href="#"  class="xim-tagsinput-tag-remove icon"> &times; </strong></a>'+
+                        '</li>';
+
+                  }else{
+                        return '<li style="display:none" class="xim-tagsinput-tag xim-tagsinput-type-'+this.typeTag+'" hidden>'+
+                                '<select name="type" class="hidden ximdexInput icon button type-selector vertical collapsable"></select>'+
+                                '<input type="hidden" name="tags['+this.numimage+'][text]" value="'+this.text+'" />'+
+                                '<input type="hidden" name="tags['+this.numimage+'][type]" value="'+this.typeTag+'" />'+
+                                '<input type="hidden" name="tags['+this.numimage+'][url]" value="'+this.url+'" />'+
+                                '<input type="hidden" name="tags['+this.numimage+'][description]" value="'+this.description+'" />'+
+                                '<span class="xim-tagsinput-text" data-tooltip="'+this.text+'">'+this.text+'</span>'+
+                                '<a href="#"  class="xim-tagsinput-tag-remove icon"> &times; </strong></a>'+
+                        '</li>';
+                  }		
+
+
 		},
 
 		getDataUrl: function() {
@@ -112,6 +125,7 @@
  				this.url = options.url || '#';
  				this.description = options.description || '';
  				this.namespace = options.namespace || 'custom';
+				this.typeFixed = options.typeFixed;
  				this.createTag();
 
  			}catch(e) {
@@ -133,7 +147,16 @@
         		event.preventDefault();
 //$(this.element).trigger('removingtag', [{tag: this.element, text:this.text}] );
 				this.container.tagsinput('onRemovingTag', this.text);
+				var $ul = $(this.element).parent();
+                                var numChildren = $ul.children("li").length;
 				this.remove();
+
+				if (numChildren == 1){
+                                        $ul.append($("<p/>").text("There aren't any tags defined yet."));                                     
+                                }
+
+
+
 			}.bind(this) );
 
 		   $(this.element).trigger("creatingtag", [{tag: this.element, text:this.text}] );
@@ -142,7 +165,12 @@
 
  		createTag: function() {
 
-			$(this._html()).insertBefore($('.xim-tagsinput-newtag', this.container));
+			var $li = $(this._html());
+                        $('.xim-tagsinput-list').append($li);
+                        $('.xim-tagsinput-list').children("p").remove();
+                        $li.slideDown(200, function(){
+                                $(this).css( {"overflow": "visible"});
+                        });
 
 			this.element =  $('.xim-tagsinput-tag:last', this.element);
 
@@ -161,7 +189,13 @@
 				event.preventDefault();
 				// $(this.element).trigger('removingtag', [{tag: this.element, text:this.text}] );
 				this.container.tagsinput('onRemovingTag', this.text);
-           		this.remove();
+				var $ul = this.element.parent();
+                                var numChildren = $ul.children("li").length;
+           			this.remove();
+				
+				if (numChildren == 1){
+                                        $ul.append($("<p/>").text("There aren't any tags defined yet."));                                     
+                                }
    			}.bind(this) );
 
 		   $(this.element).trigger("creatingtag", [{tag: this.element, text:this.text}] );

@@ -4,8 +4,11 @@ X.actionLoaded(function(event, fn, params) {
 
 		var tagslist = fn('.xim-tagsinput-container');
 		fn(tagslist).tagsinput();
-		var url = X.baseUrl+"?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent";
-		var limitResult = 5;
+		if (fn(".xim-tagsinput-list-related").length){
+
+
+		var url = X.baseUrl+"/?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent";
+		var limitResult = 50;
 		$.ajax({
 			url:url,
 			data:{
@@ -31,31 +34,45 @@ X.actionLoaded(function(event, fn, params) {
 						if (i != "status"){
 						var typeElement = parsedData[i];
 							for (var j in typeElement){
-								var tag = typeElement[j];
-								var count = 0;
-								for (var nameTag in tag){
-									tags.push({isSemantic:0,text:nameTag,type:tag.type});
-									count++;
-									if (count >= limitResult)
-										break;
-								}
+								var Xtags = typeElement[j];
+                                                        	for (var tag in Xtags){
+                                                                	var count = 0;
+                                                                	tags.push({isSemantic:Xtags[tag].isSemantic,text:tag,type:Xtags[tag].type,conf:Xtags[tag].confidence});
+                                                                	count++;
+                                                                	if (count >= limitResult)
+                                                                        	break;
+                                                        	}
 							}
 						}
 					}
-
 					fn(tagslist).tagsinput('addTagslist', tags );
 				}
 			}
 		});
+		}
 
-		fn('.nube_tags').children("li").children("span").click(function (event) {
+		fn('.tagcloud').find("li.xim-tagsinput-taglist").click(function (event) {
 
 			var element = event.target;
 			var text = $(event.target).text();
-
+			$(this).slideUp(1000);
 			fn(tagslist).tagsinput('createTag', {text: text, typeTag: 'generics', url: '#', description:''});
 
+
 		});
+		fn(".ontology-browser-container").ontologywidget(
+			{
+			onSelect: function(el) {
+				this.attachedElement.tagsinput("createTag",
+					{text: el.name, typeTag: "custom", url: '#', description:''}
+				);
+			},
+			offSelect: function(name) {
+				this.attachedElement.tagsinput("onRemovingTag", name);
+			},
+			attachedElement: fn(".xim-tagsinput-container")
+			}
+		);
 	}catch(e) {
 		alert(_("Module ximTAGS needed"));
 	}

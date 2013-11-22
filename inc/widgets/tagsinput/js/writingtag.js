@@ -31,7 +31,6 @@
 
 		inputNewTag: null,
 		text: '',
-		inputWidth: 16,
 		key: 0,
 		element: null,
 		container: null,
@@ -42,7 +41,6 @@
 			 this.element = $('.xim-tagsinput-newtag', this.container);
 			 this.inputNewTag = $(':input', this.element);		  
   			 this.inputNewTag.focus().val("");
-		    this.inputNewTag.attr("style", "width:"+this.inputWidth+"px");		 
   	
   			 this.inputNewTag.keydown(function(event) {
 					//set text written
@@ -81,9 +79,7 @@
 			        event.preventDefault(); 
 		     // user still typing a tag
   				}else if(this._keyALFHA() || this._keyNUM() || this._keySPACE() || this._keySEPARATORTYPE() ) {
-				     this.inputWidth = this.inputWidth + 7;
-				     this.inputNewTag.attr("style", "width:"+this.inputWidth+"px");
-				     this.element.attr("style", "width:"+this.inputWidth+"px");
+				   
   				}else {
 			        event.preventDefault(); 
   				}
@@ -103,9 +99,6 @@
 		
 		
 		reset: function() {
-			this.inputWidth = 16;
-		   this.inputNewTag.attr("style", "width:"+this.inputWidth+"px");
-		   this.element.attr("style", "width:23px")
 		   this.inputNewTag.val("");
 		},
 
@@ -123,7 +116,6 @@
 		
 		_moveBACK: function() {
 				this.inputWidth -= 7
-				this.inputNewTag.attr("style", "width:"+this.inputWidth+"px");
 		},
 		//delete prev tag
 		_moveDEL: function() {
@@ -138,7 +130,6 @@
 		_moveSUPR: function() {
 			//this.removeTag(this.element.next() );
 			this.inputWidth -= 7
-			this.inputNewTag.attr("style", "width:"+this.inputWidth+"px");
 		},
 		
 	

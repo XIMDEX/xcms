@@ -14,6 +14,7 @@ $(function() {
       // the constructor function
       _create: function() {
 
+	this.selectedValue = null;
         this.options.collapsable = this.element.hasClass("collapsable")? true : false;
         this.options.direction = this.element.hasClass("horizontal")? "horizontal" : "vertical";
 
@@ -149,11 +150,21 @@ $(function() {
 
       //Show changes in form input
       select: function(e){
-        $option = $(e.currentTarget);
-        var pos = $option.attr("data-option");
-        this._changeOptionSelected(pos);
-        this._trigger("change",e,{value:$option.val()});
-        e.stopPropagation();
+        var type = typeof e;
+        if (type == "string"){
+            var $divSelected = this.xInput.parent().find("div[title='"+e+"']");
+            $option = $divSelected.length? $divSelected: false;
+        }else if (type == "object"){
+            $option = $(e.currentTarget);
+        }
+
+        if ($option){
+          var pos = $option.attr("data-option");
+          this._changeOptionSelected(pos);
+          this._trigger("change",e,{value:$option.val()});
+        }
+
+        return false;
       },
 
      /* _hover: function(e, ui) {
@@ -175,6 +186,7 @@ $(function() {
           this.xInput.removeClass(this.xInput.attr("name")+"-"+this.xInput.attr("data-value"));
           this.xInput.addClass(this.xInput.attr("name")+"-"+this.xOptionElements[index].value);
           this.xInput.attr("data-value",this.xOptionElements[index].value);
+	  this.selectedValue = this.xOptionElements[index].value;
 
 
           if (!this.options.collapsable){

@@ -30,10 +30,10 @@ ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 class Action_setmetadata extends ActionAbstract {
 
-  function index() {
-   	$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
-   	$this->addCss('/inc/widgets/select/css/ximdex.select.css');
-   	$this->addJs('/inc/widgets/select/js/ximdex.select.js');
+	function index() {
+   		$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
+   		$this->addCss('/inc/widgets/select/css/ximdex.select.css');
+   		$this->addJs('/inc/widgets/select/js/ximdex.select.js');
 		$this->addJs('/actions/setmetadata/resources/js/setmetadata.js','ximTAGS');
 		$this->addCss('/actions/setmetadata/resources/css/setmetadata.css','ximTAGS');
 
@@ -41,9 +41,7 @@ class Action_setmetadata extends ActionAbstract {
 		$actionID = (int) $this->request->getParam("actionid");
 		$params = $this->request->getParam("params");
 		$tags = new Tag();
-		$max=$tags->getMaxValue();
-	
-
+		$max=$tags->getMaxValue();		
 	 	$values = array(
 	 		'nube_tags' => $tags->getTags(),
 			'max_value' => $max[0][0],
@@ -53,10 +51,10 @@ class Action_setmetadata extends ActionAbstract {
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');
-  }
+  	}
 
 	/**
-	*<p>Get xOWL related terms from content. It's just for structuredDocument </p>
+	*<p>Get Xowl related terms from content. It's just for structuredDocument </p>
 	*/
 	public function getRelatedTagsFromContent(){
 
@@ -68,7 +66,6 @@ class Action_setmetadata extends ActionAbstract {
 			$content = $node->GetContent();
 			$result = $this->getRelatedTags($content);
 		}
-
 		$this->sendJson($result);
 	}
 
@@ -79,56 +76,79 @@ class Action_setmetadata extends ActionAbstract {
 	*/
 	private function getRelatedTags($content){
 				
-		$ontologyService = new OntologyService();
+		$ontologyService = new OntologyService("semantic");
 		return $ontologyService->suggest($content);
 	}
 
-  /**
+  	
+	/**
 	*<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
 	*<p>The syntax for the json returned is: </p>
 	*<code>   {"nemo1":{
-	*				type:"type1",
-	*				isSemantic:"isSemantic"
-	*			 },
-	*		     ...
+	*			type:"type1",
+	*			isSemantic:"isSemantic"
+	*		 },
+	*	     ...
 	*	}
 	*</code>
-  */
-  function loadAllNamespaces(){
+  	*/
+  	function loadAllNamespaces(){
 
-  	$result = array();
-  	//Load from Xowl Service
-  	$namespacesArray = OntologyService::getAllNamespaces();
-  	//For every namespace build an array. This will be a json object
-  	foreach ($namespacesArray as $namespace) {
+  		$result = array();
+  		//Load from Xowl Service
+  		$namespacesArray = OntologyService::getAllNamespaces();
+  		//For every namespace build an array. This will be a json object
+  		foreach ($namespacesArray as $namespace) {
   			$nemo = $namespace->get("nemo");
   			$array = array(
-  						"type"=>$namespace->get("type"),
-  						"isSemantic"=>$namespace->get("isSemantic")
-					);
+  					"type"=>$namespace->get("type"),
+  					"isSemantic"=>$namespace->get("isSemantic")
+				);
 
   			$result[$nemo] = $array;
+  		}
+
+  		//Sending json from result array
+		$this->sendJSON($result);
   	}
 
-  	//Sending json from result array
-	$this->sendJSON($result);
+  	function save_metadata() {
+   		$idNode	= (int) $this->request->getParam("nodeid");
 
-  }
+		if(array_key_exists("tags", $_POST) ) {
+			$tags = new RelTagsNodes();
+   			$previous_tags = $tags->getTags($idNode);
+	  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
+	 	}
+	
+		$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
+		$values = array(
+			'messages' => $this->messages->messages,
+		);
 
-  function save_metadata() {
-   	$idNode	= (int) $this->request->getParam("nodeid");
+		$this->render($values);
+ 	}
 
-	if(array_key_exists("tags", $_POST) ) {
-		$tags = new RelTagsNodes();
-   		$previous_tags = $tags->getTags($idNode);
-	  	$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
-	 }
-	$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
-	$values = array(
-		'messages' => $this->messages->messages,
-	);
-
-	$this->render($values);
- }
+	public function getLocalOntology(){
+	
+		error_log("Petición a getLocalOntology");	
+		$ontologyName = $this->request->getParam("ontologyName");
+		$format = $this->request->getParam("format");
+		if (!$format)
+			$format = "json";
+		
+		$ontologyPath = Config::GetValue("AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
+		$content = "";
+		error_log("DEBUG $ontologyPath");
+		if (file_exists($ontologyPath)){
+			
+			$content = FsUtils::file_get_contents($ontologyPath);
+		}
+	
+		header('Content-type: application/json');
+		print ($content);
+		exit();
+	}
 }
 
+?>
