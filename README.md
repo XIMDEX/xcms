@@ -1,22 +1,30 @@
-///////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////// Ximdex 3.4 - README ///////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////
+////////////////////////////// Ximdex 3.4 - README /////////////////////////////
+
+Ximdex is a semantic Content Management System (CMS) that allows the generation of content and services in different technologies (PHP, J2EE, .NET, XML/XSLT, etc.).
 
 Note: See 'INSTALLATION' file for installation instructions.
 
 * Description
   -----------
-  Ximdex is a semantic Content Management System (CMS) that allows the generation of contents 
-  and services simultaneously in different technologies (PHP, J2EE, .NET, XML/XSLT, etc.). More info at www.ximdex.org.
 
+
+  In fact, it is a powerful and versatile Content Management Framework (CMF) to help you manage information in form of data, content or services to be published in the cloud as web portals, structured semantic repositories or open datasets. 
+
+  With Ximdex CMS you can mix structured and non-structured content and data, represent apps and services, capture metadata, automatically generate suggestions for your content (as images, new links or references, ...)
+
+  Ximdex is modular, based on standards (XML, XSLT, RDF, ...) and it adds a semantic layer to any managed element (doc, app, picture, metadata, video, etc.) that makes it easy to adapt information to any exploitation format (html5, rdf, j2ee, php, json, RoR, xml/xslt, …)
 
 * Features
   --------
-  - Visual Edition of XML Transformation of XML Integrates with the cloud.
-  - Visual Role/User/Workflow edition.
-  - Its exclusive neutrality and flexibility allows to use any application server or language for the deployment 
-    of portals and web applications like .NET, PHP, ASP, J2EE, XML/XSLT, flash, XHTML, HTML5, ...
-  - Multiple languages, multiple channels (TDT, Web, Mobiles, ...) and multiple application servers.
+
+  - Flexible, Secure, Scalable
+  - Neutral: content independence, format agnostic, free structure, open access, ...
+  - Information adaptable, structurizable and semantizable
+  - Multichannel in the cloud
+  - Visual Edition of XML + automatic transformation of XML 
+  - Visual Role/User/Workflow edition in an object-action UI
+  - Its neutrality and flexibility allows to use any application server or language for the deployment of portals and web applications: .NET, PHP, ASP, J2EE, XML/XSLT, flash, XHTML, HTML5, ...
+  - Multiple languages, multiple channels (Digital TV, Web, smartphones and tablets, ...) and multiple application servers
 
 
 * Future plans
@@ -26,27 +34,24 @@ Note: See 'INSTALLATION' file for installation instructions.
 
 * Get Involved
   ------------
-  If you are interested on the power of Semantic Web for CMS this is a good starting point!. See www.ximdex.org for more
-  information.
+  If you are interested on the power of Semantic Web for CMS this is a good starting point!. See www.ximdex.org for more information.
 
 
 * Availability
   ------------
-  Ximdex can be downloaded at http://www.ximdex.org.
+  Ximdex can be downloaded from http://www.ximdex.org.
   See 'LICENSE' file or http://www.gnu.org/licenses/agpl.html for details.
 
  
 * Installation
   ------------
-  See 'INSTALLATION' file for detailed instructions.
+  See 'INSTALLATION' for detailed instructions.
 
 
 * Ximdex Core Requirements 
   ------------------------
   -  A Unix based system with PHP(>= 5.1, and some extra modules), Apache 2 webserver and MySQL(>= 5.1) database.
   -  In the client side: Firefox (>= 5.0) with Javascript y cookies enabled. 
-  -  An internet connection if you want to use the based on external reference annotations or remote publication. 
+  -  An internet connection if you want to use automatic semantic recommendations (as annotations) or remote publication in the cloud. 
 
-  Check www.ximdex.org to see all the requirements.
-
-  More info at www.ximdex.org.
+  Check www.ximdex.org for additional requirements and info.
