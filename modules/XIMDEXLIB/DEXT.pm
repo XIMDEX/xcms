@@ -1,14 +1,3 @@
- 
- 
-# # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-#
-# # Framework: ximDEX v2.5
-# #
-# # Module: dexT,  version: 2.51
-# # Author: Juan A. Prieto, Josh Carter
-# # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-#
-
 # DEXT module
 #
 # (C) 2002 Juan A. Prieto, juanpri@ximdex.com

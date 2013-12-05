@@ -25,13 +25,6 @@
 # */
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# Framework: ximDEX v2.5
-#
-# Module: dexT dynamic
-# Author: Juan A. Prieto
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
 BEGIN {
         my $script = $0; $script =~ s[/+][/]g;
         my @path = split ("/", $script); pop @path;

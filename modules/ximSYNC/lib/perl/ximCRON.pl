@@ -24,20 +24,6 @@
 # *  @version $Revision$
 # */
 
- 
- 
-
-# # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # Framework: ximDEX v2.5
-# #
-# # Module: ximCRON,  version: 3.01
-# # Author: Juan A. Prieto
-# #
-# # Last modification --> 04/10/2004 by JAP (void relative path)
-# # Last modification --> 21/07/2005 by JLF (330: Linked=0)
-# # Last modification --> 28/11/2005 by JAP (task number control)
-# # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
 # codigos de error: 0=OK, 200:problema en acceso a servidor, 10: problema de configuración, 255: die por problema de invocación
 
 BEGIN {

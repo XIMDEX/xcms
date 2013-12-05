@@ -25,13 +25,8 @@
 # */
 
  
- 
-
 # # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # Framework: ximDEX v2.5
-# #
 # # Module: dexpumper,  version: 3.01
-# # Author: Juan A. Prieto
 # # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 
 # Code errors: 

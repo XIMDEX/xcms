@@ -24,20 +24,6 @@
 # *  @version $Revision$
 # */
 
-# # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-# # Framework: ximDEX v3
-# #
-# # Module: dexpumper,  version: 3.01
-# # Author: Juan A. Prieto
-# #
-# # Last modification --> 04/10/2004 by JAP (void relative path)
-# # Last modification --> 21/07/2005 by JLF (330: Linked=0)
-# # Last modification --> 28/11/2005 by JAP (task number control)
-# # Last modification --> 16/04/2007 by JAP (daemon mode)
-# # Last modification --> 24/04/2007 by JAP (daemon mode)
-# # Last modification --> 23/09/2011 by Aluque (translating)
-# # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-
 # codigos de error: 
 # 0:	OK 
 # 200:	Server access problem
