@@ -98,7 +98,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 			'reload_tree' => $reloadTree
 		);
 
-		$this->render($values, null, 'default-3.0.tpl');
+		$this->render($values, 'index', 'default-3.0.tpl');
 
     	}
 

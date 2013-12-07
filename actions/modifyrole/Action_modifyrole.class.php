@@ -24,28 +24,28 @@
  *  @version $Revision$
  */
 
-
-
-
-
-
-
-
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 
 class Action_modifyrole extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
+   
+	/** 
+	* Main method. Shows initial form.
+	*/
+	public function index () {
 
-    	$idNode = $this->request->getParam('nodeid');
-    	$role = new Role($idNode);
+	    	$idNode = $this->request->getParam('nodeid');
+    		$role = new Role($idNode);
 
+		//Getting permisions for current role.
 		$permission = new Permission();
 		$allPermissionData = $permission->find();
 		foreach ($allPermissionData as $key => $permissionData) {
 			$allPermissionData[$key]['HasPermission'] = $role->HasPermission($permissionData['IdPermission']);
 		}
 
+		//Gets all the states for the default workflow.
+		//The selected pipeline to show the states will be the default workflow.
+		//Usually it is the Workflow master.
 		$selectedPipeline = $this->request->getParam('id_pipeline');
 		if (!($selectedPipeline > 0)) {
 			$selectedPipeline = Config::getValue('IdDefaultWorkflow');
@@ -55,26 +55,58 @@ class Action_modifyrole extends ActionAbstract {
 		}
 
 		$workflow = new WorkFlow(NULL, NULL, $selectedPipeline);
-        $pipeProcess = $workflow->pipeProcess;
-        $allIdNodeStates = $pipeProcess->getAllStatus();
+       		$pipeProcess = $workflow->pipeProcess;
+		$allIdNodeStates = $pipeProcess->getAllStatus();
 
-        $allStates = array();
-        foreach ($allIdNodeStates as $idPipeStatus) {
-        	$pipeStatus = new PipeStatus($idPipeStatus);
-        	$allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
-        }
+	        $allStates = array();
+        	foreach ($allIdNodeStates as $idPipeStatus) {
+        		$pipeStatus = new PipeStatus($idPipeStatus);
+	        	$allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
+        	}
 
-		$nodeType = new NodeType();
+		$action = new Actions();
+		$allActions = $action->find("IdAction, Command, IdNodeType, Module, Name");
+		$permisionsToEdit = array();
+		foreach ($allActions as $key => $actionInfo){
+
+			$idAction = $actionInfo["IdAction"];
+			$idNodeType = $actionInfo["IdNodeType"];
+			$command = $actionInfo["Command"];
+			$nodeType = new NodeType($idNodeType);
+			if (!empty($actionInfo["Module"] && !ModulesManager::isEnabled($actionInfo["Module"])))
+				continue;
+			if (!$nodeType->get("Module") && !ModulesManager::isEnabled($nodeType->get("Module"))){
+				unset($allActions[$key]);
+				continue;
+			}
+			$hasAction = array();
+			if ($nodeType->get("IsPublicable")>0){
+				foreach ($allStates as $stateInfo){
+					$idState = $stateInfo['IdState'];
+					$hasAction[$idAction] = $role->HasAction($idAction, $stateInfo['IdState'], $selectedPipeline);
+					$permisionsToEdit[$command][$idState][$idNodeType] = $hasAction;
+				}				
+			}else{
+				$hasAction[$idAction] = $role->HasAction($idAction, NULL, $selectedPipeline);
+				$permisionsToEdit[$command]["none"][$idNodeType] = $hasAction;
+			}
+			
+
+		}
+		/*$nodeType = new NodeType();
 		$allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublicable, Module');
 		reset($allNodeTypes);
-		while (list($key, $nodeTypeInfo) = each($allNodeTypes)) {
+		foreach ($allNodeTypes as $key => $nodeTypeInfo){
+
+			//Skipping permissions for actions in disabled modules.
 			if (!empty($nodeTypeInfo['Module']) &&
 				!ModulesManager::isEnabled($nodeTypeInfo['Module'])) {
 				unset($allNodeTypes[$key]);
 				continue;
 			}
+
 			$action = new Action();
-			$allNodeTypes[$key]['actions'] = $action->find('IdAction, Name, Module',
+			$allNodeTypes[$key]['actions'] = $action->find('IdAction, Name, Module, Command',
 				'IdNodeType = %s', array($nodeTypeInfo['IdNodeType']));
 			if (is_array($allNodeTypes[$key]['actions'])) {
 				foreach ($allNodeTypes[$key]['actions'] as $actionKey => $actionInfo) {
@@ -101,43 +133,29 @@ class Action_modifyrole extends ActionAbstract {
 							[$actionKey]
 							['state'] = $role->HasAction($actionInfo['IdAction'], NULL, $selectedPipeline);
 					}
+
 				}
 			}
 		}
-
-		// Obtaining workflows
-
-		// IMPORTANT: See #2095
-
-//		$pipeline = new Pipeline();
-//		$result = $pipeline->find('id, Pipeline', 'IdNode > 0', array());
-//		foreach ($result as $pipelineInfo) {
-//			$pipelines[$pipelineInfo['id']] = $pipelineInfo['Pipeline'];
-//		}
-
-		// IMPORTANT: See #2095
-
+		*/
 		$sql = 'select id, Pipeline from Pipelines where IdNode > 0 order by id asc limit 1';
 		$db = new DB();
 		$db->query($sql);
 
 		$pipelines = array($db->getValue('id') => $db->getValue('Pipeline'));
 
-		// IMPORTANT: See #2095
-
-
 		$this->addJs('/actions/modifyrole/js/modifyrole.js');
 
 		$values = array('name' => $role->get('Name'),
 						'description' => $role->get('Description'),
 						'permissions' => $allPermissionData,
-						'nodetypes' => $allNodeTypes,
+						'actions' => $permisionsToEdit,
 						'workflow_states' => $allStates,
 						'pipelines' => $pipelines,
 						'selected_pipeline' => $selectedPipeline,
 						'go_method' => 'modifyrole'
 		);
-
+		error_log(print_r($allNodeTypes, true));
 		$this->render($values, null, 'default-3.0.tpl');
     }
 

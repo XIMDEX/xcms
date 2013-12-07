@@ -204,8 +204,7 @@ button::-moz-focus-inner {
   top: 40px;
   bottom: 0px;
   width: 100%;
-  margin: 0px;
-  letter-spacing: .05em; }
+  margin: 0px; }
 
 #body .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
   font-family: 'Ubuntu Condensed'; }

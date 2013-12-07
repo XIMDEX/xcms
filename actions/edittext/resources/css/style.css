@@ -32,6 +32,8 @@
 
 .text-editor .editor{
 	position: static;
+	padding: 0;
+	margin: 0;
 }
 
 #et_form fieldset.editor textarea{
@@ -68,4 +70,11 @@
 .CodeMirror-gutter{
 	background: #dfdfdf !important;
 	border-right: none !important;
+}
+
+.CodeMirror-preParent{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
 }

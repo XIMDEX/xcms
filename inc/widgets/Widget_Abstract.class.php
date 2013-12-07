@@ -212,7 +212,7 @@ abstract class Widget_Abstract {
 
 		/** ********************** ADD CSS DEFAULT ************* */
 	   if(empty($this->_css)  && !is_array($this->_css)  ) {
-	   	$this->_css = FsUtils::readFolder($this->_widget_style_dir . '/', false);
+	   	$this->_css = FsUtils::getFolderFilesByExtension($this->_widget_style_dir."/", array("css"), false);
 	   }
 	  	if (!is_array($this->_css)) { $this->_css = array(); }
 

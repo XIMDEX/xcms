@@ -35,12 +35,11 @@
 			</fieldset>
 	</div>
 	<div class="action_content">
-		<fieldset>
-			<ol>
-				<li>
-					<label for="name" class="aligned">{t}Name{/t}</label>
-					<input type="text" name="name" id="name" value="{$name}" class="cajaxg validable not_empty">
-				</li>
+			
+					<div class="input icon icon-positioned project">
+						<input type="text" name="name" id="name" value="{$name}" class="cajaxg validable not_empty full-size">
+					</div>
+			
 			{if $id_nodetype==5078}
 				<li><input type="radio" name="schema_type" value="generic_schema"{if $schema_type == 'generic_schema' || $schema_type == ''} checked="checked"{/if}>{t}Generic schema{/t}</li>
 				<li><input type="radio" name="schema_type" value="metadata_schema"{if $schema_type == 'metadata_schema'} checked="checked"{/if}>{t}Metadata schema{/t}</li>
@@ -49,7 +48,7 @@
 				<li><input type="radio" name="schema_type" value="bulletin_schema"{if $schema_type == 'bulletin_schema'} checked="checked"{/if}>{t}XimNEWS newsletter schema{/t}</li>
 				{/if}
 			{/if}
-				<li>
+			
 					{if !empty($valid_pipelines)}
 					<label for="id_pipeline" class="aligned">{t}Associated workflow{/t}</label>
 					<select name="id_pipeline" id="id_pipeline" class="cajag" disabled>
@@ -59,20 +58,20 @@
 					{/foreach}
 					</select>
 					{/if}
-				</li>
-			</ol>
-		</fieldset>
+
 	{if $is_section}
-	    	<h2>{t}Language{/t}</h2>
-		<fieldset>
-			<ol>
+	   <div class="col1-3">
+	    	<h3>{t}Language{/t}</h3>
+
 			{foreach from=$all_languages item=language_info}
-				<li><label class="aligned">{$language_info.Name}</label>
-					<input type='text' name="language[{$language_info.IdLanguage}]" value="{$language_info.alias}" class='cajaxg'>
-				</li>
+				<div class="languages-section">
+<input type="checkbox"
+									name="languages[]" id="lang_{$language_info.Name}" value="{$language.idLanguage}" class= "hidden-focus" />
+					<label for="lang_{$language_info.Name}" class="icon checkbox-label">{$language_info.Name}</label>
+					<input type='text' name="language[{$language_info.IdLanguage}]" value="{$language_info.alias}" class="alternative-name" placeholder="Nombre alternativo para migas de pan y rutas">
+				</div>
 			{/foreach}
-			</ol>
-		</fieldset>
+		</div>
 	{/if}
 	</div>
 </form>

@@ -23,21 +23,24 @@
  *  @version $Revision$
  *}
 
-<h2>{t}Modify group{/t}</h2>
+
 <form method="post" name="mg_form" id="mg_form" action="{$action_url}"  class='validate_ajax'>
-  <input type=hidden name='id_node' value="{$id_node_parent}">
-  <br>
-  <fieldset>
-    <ol>
-      <li>
-        <label for="name" class="aligned">{t}Group{/t}</label>
-        <input type="text" name="name" id="name" value="{$name}" class="cajag validable not_empty">
-      </li>
-    </ol>
-  </fieldset>
+<div class="action_header">
+  <h2>{t}Modify group{/t}</h2>
+
   <fieldset class="buttons-form">
-    {button label="Reset" class='form_reset btn' type="reset"}
     {button label="Modify" class='validate  btn main_action' }
     <!--message="Woul you like to modify this group?"-->
-  </fieldset>
+  </fieldset></div>
+
+  <div class="action_content">
+    <input type=hidden name='id_node' value="{$id_node_parent}">
+    <br>
+    
+          <div class="input icon group">
+            <input type="text" name="name" id="name" value="{$name}" class="cajag validable not_empty">
+          </div>
+  </div>
+
+
 </form>

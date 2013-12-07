@@ -108,6 +108,7 @@
 			theme: "default",
 			lineNumbers: true,
 			matchBrackets: true,
+			lineWrapping: true,
 			tabMode: "classic",
 			onCursorActivity: function(ins){
 				editor.setLineClass(hlLine, null);

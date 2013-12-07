@@ -39,19 +39,51 @@ ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
 class View_FilterMacros extends Abstract_View implements Interface_View {
 	
-	private $_node = NULL;
-	private $_server = NULL;
-	private $_serverNode = NULL;
-	private $_projectNode = NULL;
-	private $_idChannel;
-	private $_isPreviewServer = false;
-	private $_depth = NULL;
-	private $_idSection = NULL;
-	private $_nodeName = "";
-	
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
+	protected $_node = NULL;
+	protected $_server = NULL;
+	protected $_serverNode = NULL;
+	protected $_projectNode = NULL;
+	protected $_idChannel;
+	protected $_isPreviewServer = false;
+	protected $_depth = NULL;
+	protected $_idSection = NULL;
+	protected $_nodeName = "";
+	const MACRO_SERVERNAME = "/@@@RMximdex\.servername\(\)@@@/";
+	const MACRO_PROJECTNAME = "/@@@RMximdex\.projectname\(\)@@@/";
+	const MACRO_NODENAME = "/@@@RMximdex\.nodename\(\)@@@/";
+	const MACRO_SECTIONPATH = "/@@@RMximdex\.sectionpath\(([0-9]+)\)@@@/";
+	const MACRO_DOTDOT = "/@@@RMximdex\.dotdot\(([^\)]*)\)@@@/";
+	const MACRO_PATHTO = "/@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@/";
+	const MACRO_PATHTOABS = "/@@@RMximdex\.pathtoabs\(([,-_#%=\.\w\s]+)\)@@@/";
+	const MACRO_RDF = "/@@@RMximdex\.rdf\(([^\)]+)\)@@@/";
+	const MACRO_RDFA = "/@@@RMximdex\.rdfa\(([^\)]+)\)@@@/";
+
+
+	/**
+	 * Main method. Get a pointer content file and return a new transformed content file. This probably cames from Transformer (View_XSLT), so will be the renderized content.
+	 * @param  int $idVersion Node version
+	 * @param  string $pointer   file name with the content to transform
+	 * @param  array $args      Params about the current node
+	 * @return string file name with the transformed content.
+	 */
+	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL){
 		
-		$content = $this->retrieveContent($pointer);
+		//Check the conditions
+		if (!$this->initializeParams($args,$idVersion))
+			return NULL;
+
+		$content = $this->transformFromPointer($pointer);
+		//Return the pointer to the transformed content.
+		return $this->storeTmpContent($content);
+	}
+
+	/**
+	 * Initialize params from transformation args 
+	 * @param array $args Arguments for transformation
+	 * @param int $idVersion 
+	 * @return boolean True if everything is allright.
+	 */
+	protected function initializeParams($args, $idVersion){
 		if (!$this->_setNode($idVersion))
 			return NULL;
 		
@@ -72,254 +104,22 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		
 		if (!$this->_setNodeName($args))
 			return NULL;
-			
-		// This transformation can be exploded into more macros, so must be first
-		if (ModulesManager::isEnabled('ximTHEMES')) {
-			$content = preg_replace_callback("/@@@RMximdex\.breadcrumbs\(\)@@@/", 
-					array($this, 'deployBreadCrumbs'), $content);
-			
-			$content = preg_replace_callback("/@@@RMximdex\.ximMenu\(\)@@@/", 
-					array($this, 'deployMenu'), $content);
-		}
-		
-		$serverName = $this->_serverNode->get('Name');
-		$content = preg_replace("/@@@RMximdex\.servername\(\)@@@/", $serverName, $content);
-		
-		if (preg_match("/@@@RMximdex\.projectname\(\)@@@/", $content)) {
-			$project = new Node($this->_projectNode);
-			$projectName = $project->get('Name');
-			$content = preg_replace("/@@@RMximdex\.projectname\(\)@@@/", $projectName, $content);
-		}
-		
-		$content = preg_replace("/@@@RMximdex\.nodename\(\)@@@/", $this->_nodeName, $content);
-		
-		$content = preg_replace_callback("/@@@RMximdex\.sectionpath\(([0-9]+)\)@@@/", 
-				array($this, 'getSectionPath'), $content);
-		
-		$content = preg_replace_callback("/@@@RMximdex\.dotdot\(([^\)]*)\)@@@/", 
-				array($this, 'getdotdotpath'), $content);
-		
-		// TODO: Join these 2 regex
-		$content = preg_replace_callback("/@@@RMximdex\.pathto\(([0-9]+),([0-9]*)\)@@@/", 
-				array($this, 'getLinkPath'), $content);
-		
-		$content = preg_replace_callback("/@@@RMximdex\.pathto\(([0-9]+)\)@@@/", 
-				array($this, 'getLinkPath'), $content);
-		
-		$content = preg_replace_callback("/@@@RMximdex\.rdf\(([^\)]+)\)@@@/", 
-				array($this, 'getRDFByNodeId'), $content);
-		
-		$content = preg_replace_callback("/@@@RMximdex\.rdfa\(([^\)]+)\)@@@/", 
-				array($this, 'getRDFaByNodeId'), $content);
-		
-		$content = preg_replace_callback("/(<.*?)(uid=\".*?\")(.*?\/?>)/", array($this, 'removeUIDs'), $content);
-		
-		return $this->storeTmpContent($content);
+
+		return true;
 	}
 	
-	private function deployBreadCrumbs($matches) {
-		
-		$lastInsertedBreadCrumb = $this->_node->get('IdNode');
-		
-		$result = $this->_node->query(
-				sprintf(
-						"select n.IdNode from FastTraverse ft" . " INNER JOIN Nodes n ON ft.IdNode = n.IdNode" .
-								 " INNER JOIN NodeTypes nt ON nt.IdNodeType = n.IdNodeType" .
-								 " WHERE ft.IdChild = %d AND nt.IsFolder = '1'", 
-								$this->_node->get('IdNode')), MONO);
-		
-		$breadCrumbString = $this->_formBreadCrumbString($this->_node->get('Name'));
-		if (is_array($result)) {
-			foreach ($result as $parentNode) {
-				
-				$node = new Node($parentNode);
-				$index = $node->class->getIndex();
-				
-				$idSection = $node->getSection();
-				$section = new Node($idSection);
-				if ($index > 0 && $index != $lastInsertedBreadCrumb) {
-					if ($section->get('IdNodeType') != 5015) {
-						$name = 'Home';
-					} else {
-						$name = $section->get('Name');
-					}
-					$breadCrumbString = $this->_formBreadCrumbString($name, $index) . $breadCrumbString;
-					$lastInsertedBreadCrumb = $index;
-				}
-			}
-		}
-		return $breadCrumbString;
-	}
-	
-	private function deployMenu() {
-		
-		$idNode = $this->_node->get('IdNode');
-		
-		$node = new Node();
-		$result = $node->query(
-				sprintf(
-						"SELECT distinct IdChild" . " FROM FastTraverse ft" . " INNER JOIN NodeProperties np" .
-								 " ON ft.IdChild = np.IdNode AND Property = 'is_section_index'" .
-								 " ORDER BY ft.Depth DESC", $idNode), MONO);
-		
-		$paths = array();
-		
-		$recursiveArrays = array();
-		foreach ($result as $idNode) {
-			$node = new Node($idNode);
-			$paths[] = array('path' => $node->getPublishedPath($node->getServer()), 
-					'id_node' => $idNode);
-		}
-		
-		// bucle para generar pathparts
-		foreach ($paths as $pathInfo) {
-			$idNode = $pathInfo['id_node'];
-			$path = $pathInfo['path'];
-			
-			if ($path == '/') {
-				continue;
-			}
-			
-			$pathParts = explode('/', $path);
-			array_shift($pathParts);
-			
-			if (!is_array($pathParts)) {
-				continue;
-			}
-			
-			assert(is_array($pathParts));
-			assert(!in_array('', $pathParts));
-			
-			$reversedParts[] = array('path' => array_reverse($pathParts), 'id_node' => $idNode);
-		
-		}
-		
-		foreach ($reversedParts as $pathPart) {
-			$recursiveArrays[] = $this->_iterativeToRecursiveArray($pathPart);
-		}
-		
-		foreach ($recursiveArrays as $value) {
-			assert(count($value) == 1);
-		}
-		
-		$result = array();
-		foreach ($recursiveArrays as $recursiveArray) {
-			$result = array_merge_recursive($recursiveArray, $result);
-		}
-		
-		return sprintf("<menu>%s</menu>", $this->_renderMenu($result));
-	}
-	
-	private function _renderMenu($elements) {
-		$menu = '<cuerpo>';
-		assert(count($elements) == 1);
-		
-		// Bucle para coger el elemento actual
-		foreach ($elements as $levelName => $value) {
-			if (is_string($value)) {
-				$menu .= sprintf('<opcion a_enlace_id="%s">%s</opcion>', $value, $levelName);
-			}
-			if (is_array($value)) {
-				foreach ($value as $key => $kk) {
-					if (is_string($kk)) {
-						$menu .= sprintf('<opcion a_enlace_id="%s">%s</opcion>', $kk, 
-								$levelName);
-					}
-				}
-			}
-		}
-		
-		//Bucle para coger el array de elementos anidados
-		foreach ($elements as $key => $value) {
-			if (is_array($value)) {
-				foreach ($value as $menuElement) {
-					if (is_array($menuElement)) {
-						$menu .= $this->_renderMenu($menuElement);
-					}
-				}
-			}
-		}
-		
-		$menu .= '</cuerpo>';
-		return $menu;
-	}
-	
-	private function _iterativeToRecursiveArray($pathPart) {
-		$idNode = $pathPart['id_node'];
-		$path = $pathPart['path'];
-		
-		$tmpArray = NULL;
-		
-		foreach ($path as $pathPart) {
-			if (is_null($tmpArray)) {
-				$tmpArray[$pathPart] = $idNode;
-			} else {
-				if (empty($pathPart)) {
-					continue;
-				} else {
-					$tmpArray[$pathPart][] = $tmpArray;
-				}
-			}
-		}
-		
-		$maxKey = 0;
-		$maxDepth = 0;
-		if (count($tmpArray) > 1) {
-			foreach ($tmpArray as $key => $value) {
-				$depth = $this->_getBranchDepth($value);
-				if ($depth > $maxDepth) {
-					$maxKey = $key;
-					$maxDepth = $depth;
-				}
-			
-			}
-		}
-		
-		foreach ($tmpArray as $key => $value) {
-			if ($key != $maxKey) {
-				unset($tmpArray[$key]);
-			}
-		}
-		
-		return $tmpArray;
-	}
-	
-	private function _getBranchDepth($array) {
-		$levels = 0;
-		if (!is_array($array)) {
-			return $levels;
-		}
-		
-		while (is_array($array)) {
-			$keys = array_keys($array);
-			
-			assert(count($keys) == 1);
-			$levels ++;
-			
-			$array = $array[$keys[0]];
-		}
-		return $levels;
-	}
-	
-	private function _formBreadCrumbString($string, $idNode = NULL) {
-		if (!empty($idNode)) {
-			$link = sprintf(
-					'<breadcrumb_link to="@@@RMximdex.pathto(%d)@@@">%s</breadcrumb_link>', 
-					$idNode, XmlBase::recodeSrc($string, Config::getValue('displayEncoding')));
-		}
-		return sprintf("<breadcrumb>%s</breadcrumb>", 
-				XmlBase::recodeSrc(isset($link) ? $link : $string, 
-						Config::getValue('displayEncoding')));
-	
-	}
-	
-	private function _setNode($idVersion = NULL) {
+	/**
+	 * Load the node param from an idVersion.
+	 * @param int $idVersion Version id
+	 * @return boolean True if exists node for selected version or the current node.
+	 */
+	protected function _setNode($idVersion = NULL) {
 		
 		if (!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
 				XMD_Log::error(
-						'VIEW FILTERMACROS: Se ha cargado una versión incorrecta (' . $idVersion .
+						'VIEW FILTERMACROS: Se ha cargado una versiÃ³n incorrecta (' . $idVersion .
 								 ')');
 				return NULL;
 			}
@@ -327,7 +127,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 			$this->_node = new Node($version->get('IdNode'));
 			if (!($this->_node->get('IdNode') > 0)) {
 				XMD_Log::error(
-						'VIEW FILTERMACROS: El nodo que se está intentando convertir no existe: ' .
+						'VIEW FILTERMACROS: El nodo que se estÃ¡ intentando convertir no existe: ' .
 								 $version->get('IdNode'));
 				return NULL;
 			}
@@ -336,7 +136,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return true;
 	}
 	
-	private function _setIdChannel($args = array()) {
+	/**
+	 * Load channel param from args array.
+	 * @param array $args [description]
+	 * @return boolean true if exists channel.
+	 */
+	protected function _setIdChannel($args = array()) {
 		
 		if (array_key_exists('CHANNEL', $args)) {
 			$this->_idChannel = $args['CHANNEL'];
@@ -353,7 +158,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return true;
 	}
 	
-	private function _setServer($args = array()) {
+	/**
+	 * Load server param from args array.
+	 * @param array $args [description]
+	 * @return boolean true if exists the server in args.
+	 */
+	protected function _setServer($args = array()) {
 		
 		if (array_key_exists('SERVER', $args)) {
 			$this->_server = new Server($args['SERVER']);
@@ -368,12 +178,18 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return true;
 	}
 	
-	private function _setServerNode($args = array()) {
+
+	/**
+	 * Load the server node for the current node
+	 * @param array $args Transformation args.
+	 * @return  boolean True if exists the server node.
+	 */
+	protected function _setServerNode($args = array()) {
 		
 		if ($this->_node) {
 			$this->_serverNode = new Node($this->_node->getServer());
 		} elseif (array_key_exists('SERVERNODE', $args)) {
-			$this->_serverNode = $args['SERVERNODE'];
+			$this->_serverNode = new Node($args['SERVERNODE']);
 		}
 		
 		// Check Params:
@@ -387,12 +203,17 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return true;
 	}
 	
-	private function _setProjectNode($args = array()) {
+	/**
+	 * Load the project node for the current transformed node.
+	 * @param array $args Transformation args.
+	 * @return  boolean true if exists the project node.
+	 */
+	protected function _setProjectNode($args = array()) {
 		
 		if ($this->_node) {
 			$this->_projectNode = $this->_node->getProject();
-		} elseif (array_key_exists('PROJECTNODE', $args)) {
-			$this->_projectNode = $args['PROJECTNODE'];
+		} elseif (array_key_exists('PROJECT', $args)) {
+			$this->_projectNode = $args['PROJECT'];
 		}
 		
 		// Check Params:
@@ -406,7 +227,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return true;
 	}
 	
-	private function _setDepth($args = array()) {
+	/**
+	 * Load the depth for the current node.
+	 * @param array $args Transformation args.
+	 * @return boolean true if exits depth form the current node.
+	 */
+	protected function _setDepth($args = array()) {
 		
 		if ($this->_node) {
 			$this->_depth = $this->_node->GetPublishedDepth();
@@ -425,7 +251,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return true;
 	}
 	
-	private function _setNodeName($args = array()) {
+	/**
+	 * Load the nodename from the selected node.
+	 * @param array $args Transformation args.
+	 * @return  boolean true if exists name for the current node.
+	 */
+	protected function _setNodeName($args = array()) {
 		
 		if ($this->_node) {
 			$this->_nodeName = $this->_node->get('Name');
@@ -442,6 +273,63 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		
 		return true;
 	}
+
+
+	protected function transformFromPointer($pointer){
+		//Get the content.
+		$content = $this->retrieveContent($pointer);
+	
+		/**
+		 * Available macros: 
+		 * * servername
+		 * * projectname
+		 * * nodename
+		 * * sectionpath
+		 * * dotdot
+		 * * pathto
+		 * * rdf
+		 * * rdfa
+		 */
+
+		$serverName = $this->_serverNode->get('Name');
+		$content = preg_replace(self::MACRO_SERVERNAME, $serverName, $content);
+		
+		if (preg_match(self::MACRO_PROJECTNAME, $content)) {
+			$project = new Node($this->_projectNode);
+			$projectName = $project->get('Name');
+			$content = preg_replace(self::MACRO_PROJECTNAME, $projectName, $content);
+		}
+		
+		$content = preg_replace(self::MACRO_NODENAME, $this->_nodeName, $content);
+		
+		$content = preg_replace_callback(self::MACRO_SECTIONPATH, 
+											array($this, 'getSectionPath'), 
+											$content);
+		
+		$content = preg_replace_callback(self::MACRO_DOTDOT, 
+				array($this, 'getdotdotpath'), $content);
+
+		//Pathto
+		$content = preg_replace_callback(self::MACRO_PATHTO, 
+				array($this, 'getLinkPath'), $content);
+
+		//Pathtoabs
+		$content = preg_replace_callback(self::MACRO_PATHTOABS, 
+				array($this, 'getLinkPathAbs'), $content);
+		
+		
+		$content = preg_replace_callback(self::MACRO_RDF, 
+				array($this, 'getRDFByNodeId'), $content);
+		
+		$content = preg_replace_callback(self::MACRO_RDFA, 
+				array($this, 'getRDFaByNodeId'), $content);
+		
+
+		//Once macros are resolver, remove uid attribute from tags.
+		$content = preg_replace_callback("/(<.*?)(uid=\".*?\")(.*?\/?>)/", array($this, 'removeUIDs'), $content);
+
+		return $content;
+	}
 	
 	/**
 	 * <p>Remove the uid attributes generated by the editor</p>
@@ -453,15 +341,36 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return str_replace(" >",">", $matches[1].$matches[3]);
 	}
 	
-	private function getSectionPath($matches) {
-		
-		$target = $matches[1];
-		$node = new Node($target);
+
+	/**
+	 * Get the section node of the $idNode
+	 * @param  int $idNode descendant of the searched Section.
+	 * @return Node The section node.
+	 */
+	protected function getSectionNode($idNode){		
+		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
-			return Config::getValue('EmptyHrefCode');
+			return false;
 		}
+		// Target Channel
+		
 		$idSection = $node->GetSection();
 		$section = new Node($idSection);
+		return $section;
+	}
+
+	/**
+	 * Get section path for a selected idnode and channel in matches.
+	 * @param  array $matches An idnode and an optional idchannel
+	 * @return string Link url.
+	 */
+	private function getSectionPath($matches) {
+		$target = $matches[1];
+        $node = new Node($target);
+		$section = $this->getSectionNode($target);
+		if (!$section){
+			return Config::getValue('EmptyHrefCode');
+		}
 		if ($this->_isPreviewServer) {
 			return Config::getValue('UrlRoot') . Config::getValue('NodeRoot') . '/' . $section->GetPublishedPath(
 					NULL, true);
@@ -487,11 +396,11 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 			return Config::getValue("EmptyHrefCode");
 		}
 		
-		/// Si es un un previo (absoluto a ximdex/nodes)
+		//If preview, we return the path to data/nodes
 		if ($this->_isPreviewServer) {
 			return Config::GetValue("UrlRoot") . Config::GetValue("NodeRoot") . "/" . $targetPath;
 		} else {
-			// Si es sincronizacion a produccion, puede ser relativo o absoluto.
+			//Getting relative or absolute path.
 			if ($this->_server->get('OverrideLocalPaths')) {
 				return $this->_server->get('Url') . "/" . $targetPath;
 			}
@@ -501,11 +410,26 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		}
 	}
 	
-	private function getLinkPath($matches) {
-		$targetID = $matches[1];
-		// Nodo de Destino del Enlace
-		$targetNode = new Node($targetID);
+	private function getLinkPath($matches, $forceAbsolute = false) {
+
+		$absolute = $relative = false;
+		//Get parentesis content
+		$pathToParams = $matches[1];
+		$res = $this->infererNodeAndChannel($pathToParams);
 		
+		if (!$res || !is_array($res) || !count($res)){
+			return '';
+		}else{
+			$idNode = $res["idNode"];
+			$idTargetChannel = (count($res)== 3 && isset($res["channel"])) ? $res["channel"] : NULL;
+		}
+		$targetNode = new Node($idNode);
+
+		if (isset($res["pathMethod"])){
+			$absolute = isset($res["pathMethod"]["absolute"]) && $res["pathMethod"]["absolute"];
+			$relative = isset($res["pathMethod"]["relative"]) && $res["pathMethod"]["relative"];
+		}
+
 		if (!$targetNode->get('IdNode')) {
 			return '';
 		}
@@ -516,9 +440,6 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		
 		$isStructuredDocument = $targetNode->nodeType->GetIsStructuredDocument();
 		
-		// Canal de destino
-		$idTargetChannel = isset($matches[2]) ? $matches[2] : NULL;
-		
 		$targetChannelNode = new Channel($idTargetChannel);
 		
 		if ($isStructuredDocument) {
@@ -526,9 +447,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 					'IdChannel') : $this->_idChannel;
 		}
 		
-        //      $idTargetChannel = isset($idTargetChannel) ? $idTargetChannel :  $this->_idChannel; 
-
-		// Si es un enlace externo
+       // When external link, return the url.
 		if ($targetNode->nodeType->get('Name') == 'Link') {
 			return $targetNode->class->GetUrl();
 		}
@@ -546,8 +465,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 			
 			return Config::getValue('UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
 					'IdNode') . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->_serverNode->get(
-					'IdNode');
-		
+					'IdNode');		
 		}
 		
 		$sync = new SynchroFacade();
@@ -560,23 +478,42 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 			return Config::getValue('EmptyHrefCode');
 		}
 		
-		if (!$this->_server->get('OverrideLocalPaths') && ($idTargetServer == $this->_server->get(
+		if (!$forceAbsolute && !$absolute && !$relative){
+			if (!$this->_server->get('OverrideLocalPaths') && ($idTargetServer == $this->_server->get(
 				'IdServer'))) {
-			$dotdot = str_repeat('../', $this->_depth - 2);
-			
-			//Eliminamos la barra final
-			$dotdot = preg_replace('/\/$/', '', $dotdot);
-			$dotdot = './' . $dotdot;
-			$urlDotDot = $dotdot . $targetNode->GetPublishedPath($idTargetChannel, true);
-			$urlDotDot = str_replace("//", "/", $urlDotDot);
-			return $urlDotDot;
-		
+				return $this->getRelativePath($targetNode, $idTargetChannel);			
+			}else{
+				return $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+			}
 		}
-		
+		else if ($forceAbsolute || $absolute){
+			return $this->getAbsolutePath($targetNode, $targetServer, $idTargetChannel);
+		}else{ //Must be relative.
+			return $this->getRelativePath($targetNode, $idTargetChannel);			
+		}
+	}
+
+	private function getLinkPathAbs($matches){
+		return $this->getLinkPath($matches, true);
+	}
+
+	private function getRelativePath($targetNode, $idTargetChannel){
+
+		$dotdot = str_repeat('../', $this->_depth - 2);				
+		//Removing last dash.
+		$dotdot = preg_replace('/\/$/', '', $dotdot);
+		$dotdot = './' . $dotdot;
+		$urlDotDot = $dotdot . $targetNode->GetPublishedPath($idTargetChannel, true);
+		$urlDotDot = str_replace("//", "/", $urlDotDot);
+		return $urlDotDot;
+	}
+
+	private function getAbsolutePath($targetNode, $targetServer, $idTargetChannel){
+
 		return $targetServer->get('Url') . $targetNode->GetPublishedPath($idTargetChannel, true);
 	}
 	
-	private function getRDFByNodeId($params, $rdfa = false) {
+	protected function getRDFByNodeId($params, $rdfa = false) {
 		
 		if (!ModulesManager::isEnabled('ximPAS')) {
 			return '';
@@ -593,8 +530,340 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return "\n$rdf\n";
 	}
 	
-	private function getRDFaByNodeId($params) {
+	protected function getRDFaByNodeId($params) {
 		return $this->getRDFByNodeId($params, true);
+	}
+
+	/*********************************************************/
+	/****************LinkPath auxiliar methods****************/
+	/*********************************************************/
+
+	/**
+	 * Get Idnode and channel from the params of the pathto method
+	 * @return string PathTo Params
+	 */
+	public function infererNodeAndChannel($pathToParams){
+
+		$result = null;
+		$nodeName = "";
+		$language = false;
+		$channel = false;
+		$nodetype = false;
+		$ancestorIds = array();
+		$ancestorNodeNames = array();
+		$pathMethod = false;
+		$uniqueElements = array("language","channel", "nodetype", "pathmethod");
+		$idNode = false;
+
+		$params = explode(",", $pathToParams);
+
+		//Error if there aren't any params
+		if (!is_array($params) || count($params) == 0){
+			return false;
+		}
+
+		//Checking the first params. It could be number, or .number or string
+		$firstParam = trim(urldecode($params[0]));
+		$nodeValue = $this->getNodeValue($firstParam);
+		
+		if (is_numeric($nodeValue)){
+			$idNode = $nodeValue;
+		}else{
+			$nodeName = $nodeValue;
+		}
+		
+		for ($i = 1, $length = count($params); $i < $length; $i++){
+			$param = trim(urldecode($params[$i]));
+			$paramType = $this->infererParamType($param);
+			if (!in_array($paramType, $uniqueElements ) || !$$paramType){
+
+				$method = "get{$paramType}Value";
+				if (method_exists($this, $method)){
+					$paramValue = $this->$method($param);
+				}
+				if ($paramValue){
+					switch (strtolower($paramType)) {
+						case 'language':					
+						case 'channel':
+						case 'nodetype':							
+							//Double $ is ok. We build dinamically the varname.
+							$$paramType=$paramValue;
+							break;
+						case 'pathmethod':
+							$pathMethod = $paramValue;
+							break;
+						case 'node':						
+							$ancestorIds[] = $paramValue;
+							break;
+						case 'nodename':
+						default:
+							$ancestorNodeNames[] = $paramValue;
+							break;
+					}	
+				}				
+			}					
+		}
+
+		//At the end, idnode is required
+		if (!$idNode){
+			$idNode = $this->infererIdNode($nodeName, $ancestorIds, $ancestorNodeNames, $language, $nodetype);
+		}
+		$channel = $this->infererIdChannel($channel);
+
+
+		$result["pathMethod"] = !$pathMethod? array("relative" => false, "							absolute" => false): $pathMethod;
+		$result["idNode"] = $idNode;		
+		$result["channel"] = $channel? $channel : null;
+
+		return $result;
+	}
+
+	/**
+	 * Get the param type from the pathto param.
+	 * This method is useful for every param but the first one.
+	 * @param  string $param A param in pathto call method.
+	 * @return string param Type. It can be: channel, node, language, nodetype or pathMethod.
+	 */
+	private function infererParamType($param){
+
+		$result = null;
+
+		/**
+		 * Params format:
+		 * * integer (32568) => channel
+		 * * .integer (.32568) => node
+		 * * @something(@php, @32568) => channel
+		 * * #something(#es, #32568) => language
+		 * * $something($image, $32568) => nodetype
+		 * * lang=something => language
+		 * * nodetype=something => nodetype
+		 * * absolute=something => pathMethod
+		 * * relative=something => pathMethod
+		 * * id=something => node
+		 * * name=something => node 
+		 * * path=something => node
+		 * * true | false => pathMethod
+		 * * !(integer | true | false) => node
+		 */
+
+		$firstCharacter = substr($param,0,1);
+		if (is_numeric($param) && $firstCharacter != "."){
+			return "channel";
+		}
+
+		
+		$paramValue = substr($param,1);
+
+		switch ($firstCharacter) {
+			case '.':
+				if (is_numeric($paramValue)){
+					return "node";
+				}	
+				break;
+			case '@':
+				return "channel";
+				break;
+			case '#':
+				return "language";
+				break;
+			case '$':
+				return "nodetype";
+				break;
+			default:
+				$arrayParam = explode("=", $param); 
+				if (is_array($arrayParam) && count($arrayParam) == 2){
+					switch (trim($arrayParam[0])) {
+						case 'channel':
+							return "channel";
+						case 'lang':
+							return "language";
+						case 'nodetype':
+							return "nodetype";
+						case 'absolute':
+						case 'relative':
+							return "pathMethod";
+						case 'id':	
+							return "node";
+						case 'name':				
+						case 'path':
+						default:
+							return "nodeName";
+					}
+				}else{
+					if ($param == "true" || $param == "false"){
+						return "pathMethod";
+					}
+					else return "nodeName";
+				}
+				break;
+		}
+
+		return $result;
+		
+	}
+
+	private function getLanguageValue($param){
+		return $this->getPathToParamValue($param, array("lang"), "#");
+	}
+
+	private function getChannelValue($param){
+		$result = is_numeric($param)? $param: $this->getPathToParamValue($param, array("channel"), "@");
+		return $result;
+	}
+
+	private function getNodetypeValue($param){
+		return $this->getPathToParamValue($param, array("nodetype"), "$");
+	}
+
+	private function getPathMethodValue($param){
+		
+		if ($param == "true"){
+			return array("absolute"=>true,"relative"=>false);
+		}else if ($param == "false"){
+			return array("absolute"=>false,"relative"=>true);
+		}else{
+			$arrayParam = explode("=",$param);
+			if (count($arrayParam) == 2){
+				if (($arrayParam[0]=="absolute" && $arrayParam[1]="true") ||
+					($arrayParam[0]=="relative" && $arrayParam[1]="false")){
+					
+					return array("absolute"=>true, "relative"=>false);
+				
+				}else if (($arrayParam[0]=="absolute" && $arrayParam[1]="false") ||
+					  	 ($arrayParam[0]=="relative" && $arrayParam[1]="true")){
+				
+					return array("absolute"=>false, "relative"=>true);
+				
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get the id for a node param.
+	 * @param  string $param Can be an integer too. It has the node value
+	 * @return string Or integer. With node value.
+	 */
+	private function getNodeValue($param){
+
+		return (is_numeric($param)) && (strpos($param, ".") === FALSE)? $param: $this->getPathToParamValue($param, array("id"), ".");		
+	}
+
+	/**
+	 * Get a name or path from a nodename param.
+	 * @param  string $param Nodename or path for the selected node.
+	 * @return string        Or integer. With node value.
+	 */
+	private function getNodeNameValue($param){
+		return $this->getPathToParamValue($param,array("node","path"));
+	}
+
+	/**
+	 * Get the value for a param. This param can be in different formats.
+	 * @param  string $param     Has the param value in different formats.
+	 * @param  array $paramNames Possible identificators for the param type.
+	 * @param  string $symbol    Prefix for the param.
+	 * @return string            The param value.
+	 */
+	private function getPathToParamValue($param, $paramNames, $symbol = null){
+
+		$result = $param;
+		$symbolPosition = FALSE;
+		
+		if ($symbol)
+			$symbolPosition = strpos($param, $symbol);
+
+		if ($symbolPosition === 0){
+			$result = substr($param, 1);
+		}else if ($symbolPosition === FALSE){ //Supposing id=int
+			$arrayParam = explode("=", $param);
+			if (is_array($arrayParam) && count($arrayParam) == 2){
+				if (in_array(trim($arrayParam[0]), $paramNames)){
+					$result = trim($arrayParam[1]);
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Get a channel id from a channel array. Only gets the first correct one. 
+	 * @param  string $channels Channels found in pathto function
+	 * @return int           idChannel or false
+	 */
+	private function infererIdChannel($foundedChannel){
+
+		if (!$foundedChannel)
+			return false;
+		$channel = new Channel();
+		$idChannels = $channel->find("IdChannel", "IdChannel=%s or Name=%s", array($foundedChannel, $foundedChannel), MONO);
+		if ($idChannels && is_array($idChannels) && count($idChannels))
+			return $idChannels[0];
+
+		return false;		
+	}
+
+	private function infererIdNode($nodeName, $ancestorIds, $ancestorNodeNames, $language, $nodetype){
+
+		$nodeNames = array("'$nodeName'");
+		$languageCondition = $nodeNameCondition = $nodetypeCondition = " 1 ";
+		
+		if ($language){
+			$langNode = new Language();
+			$arrayLanguages = $langNode->find("IdLanguage, IsoName", "idlanguage = %s or name = %s or isoname = %s", array($language, $language,$language) );
+
+			if (is_array($arrayLanguages) && count($arrayLanguages)){
+				$isoName = $arrayLanguages[0]["IsoName"];
+				$idLanguage = $arrayLanguages[0]["IdLanguage"];
+				$nodeNames[] = "'{$nodeName}-id{$isoName}'";
+				$languageCondition = sprintf(" l.idlanguage=%s",$idLanguage);
+			}
+		}
+		
+		if ($nodetype){
+			$nodetypeCondition = sprintf("ispublicable and (nt.idnodetype='%s' or n.class='%snode')", $nodetype, $nodetype);	
+		}
+		
+		$nodePathCondition = " 1 ";
+		foreach ($ancestorNodeNames as $node) {
+			
+			$nodePathCondition .= " AND n.path like '%{$node}%' ";
+		}
+
+		$fastTraverseCondition = " 1 ";
+		foreach ($ancestorIds as $idnode) {
+			$fastTraverseCondition.=sprintf(" AND exists (select idnode from FastTraverse ft where ft.idchild=n.idnode and ft.idnode = %s) ", $idnode);
+		}
+
+		$nodeNameCondition = sprintf(" n.name in (%s) ", implode(", ", $nodeNames));
+		
+		
+		$sql = "select distinct n.idnode as IdNode 
+				from Nodes n 
+				left join StructuredDocuments sd on sd.iddoc=n.idnode 
+				inner join NodeTypes nt on nt.idnodetype=n.idnodetype 
+				left join Languages l on sd.idlanguage=l.idlanguage 
+				where 
+					({$nodeNameCondition}) AND
+					({$languageCondition}) AND
+					({$nodetypeCondition})AND					
+					{$nodePathCondition} AND
+					{$fastTraverseCondition}";
+		$dbObj = new DB();
+		$dbObj->query($sql);
+		if ($dbObj->numErr != 0)
+		{			
+			return false;
+		}
+		if (!$dbObj->EOF)
+		{
+			return $dbObj->GetValue("IdNode");
+		}
+
+		return false;
 	}
 
 }

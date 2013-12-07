@@ -34,10 +34,10 @@
 			{button label="Save changes" class='validate btn main_action' message="Are you sure you want to proceed?"}
 		</fieldset>
 	</div>
-<div id="warning" class="message delete-message hidden-message"></div>
+<div id="warning" class="message delete-message hidden-message icon"></div>
 	<div class="action_content section-properties">
-		<div class="folder-name folder-normal icon disabled">
-			<h3> {$sectionName} <span class="folder-type">{t}{$sectionType}{/t}</span></h3>
+		<div class="">
+			<h3 class="folder-name folder-normal icon disabled"> {$sectionName} <span class="folder-type">{t}{$sectionType}{/t}</span></h3>
 		</div>
 
 		<div class="subfolders-available"><h3>{t}Subfolders availables{/t}</h3>

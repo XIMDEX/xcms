@@ -307,7 +307,7 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 
 		return true;
 	}
-		/**
+	/**
 	 *
 	 * @param $path
 	 * @param $callback
@@ -462,6 +462,42 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 		 		XMD_Log::error(sprintf('An error occurred while trying to copy from %s to %s', $sourceFile, $destFile));
 		}
 		return $result;
+	}
+
+	/**
+	 * Get the files in the folder (and descendant) with an extension.
+	 * @param $path string Folder to read
+	 * @param $extensions string Extension to file
+	 * @param $recursive boolean Indicate if has to recursive read of path folder
+	 * @return array Found files.
+	 */
+	static public function getFolderFilesByExtension($path, $extensions=array(), $recursive = true) {
+
+		if (!is_dir($path)) {
+			return null;
+		}
+
+		$excluded = array('.', '..', '.svn');
+		$files = scandir($path);
+		$files = array_values(array_diff($files, $excluded));
+		
+		foreach ($files as $key => $file) {
+			$dotPos = strrpos($file, ".");
+			$fileExtension = substr($file, $dotPos+1);
+		
+			if (!in_array($fileExtension, $extensions)){
+				unset($files[$key]);
+			}
+
+			if ($recursive){
+				$dir = $path . '/' . $file;
+				if (is_dir($dir)) {
+					$aux = self::readFolder($dir, $recursive, $excluded);
+					$files = array_merge($files, $aux);
+				}
+			}
+		}		
+		return array_values($files);
 	}
 
 }

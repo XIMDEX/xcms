@@ -30,23 +30,21 @@
         		{button label="Create" class='validate btn main_action' }
     		</fieldset>
   	</div>
-	<div class="action_content">
-      		<fieldset>
+    <div class="warning-message message">{t}<p>The <strong>file extension</strong> is not needed.</p>{/t}</div>
+  <div class="action_content">
           		<input type="hidden" name="nodeid" value="{$nodeID}">
-        		<p><label for="foldername" class="aligned">{t}Name{/t}</label><input type="text" name="name" id="foldername" class="cajaxg validable not_empty"></p>
+        		<p class="icon document input-select icon-positioned"><input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}File name{/t}">
 			{if $countChilds > 1}
-      			<p><label class="aligned">{t}File type{/t}</label>
                     			<select name="nodetype" class="caja validable not_empty">
                           			{foreach from=$childs item=child}
                             				<option value="{$child.idnodetype}">{$child.nodetypename}</option>
                           			{/foreach}
                           		</select>
-      			</p>
+      			
                   	{else}
                        		<input name="nodetype" type="hidden" value="{$childs[0].idnodetype}" />
                   	{/if}
-			{t}<p>The <strong>file extension</strong> is not needed.</p>{/t}
-       		</fieldset>
+			</p>
     	</div>
 </form>
 

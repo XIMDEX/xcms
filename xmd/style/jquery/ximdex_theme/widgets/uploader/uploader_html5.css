@@ -22,21 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/**************
-// COLORS
-***************/
-/**************
-// SHADOWS
-***************/
-/**************
-// TYPO
-***************/
-/**************
-// INCLUDES
-***************/
-/**************
-// EXTENDS
-***************/
 /* NO Extends because they are inserted at the beggining of each CSS file */
 .xim-loader-list-container {
   min-height: 250px;
@@ -222,7 +207,8 @@
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  padding: .1em .3em; }
+  padding: .1em .3em;
+  margin-left: .5em; }
 
 @-webkit-keyframes spin {
   100% {

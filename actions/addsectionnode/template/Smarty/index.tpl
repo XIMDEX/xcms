@@ -37,7 +37,7 @@
 		<div class="action_content section-properties">
 			
 			
-			<div class="folder-name folder-normal icon">
+			<div class="folder-name folder-normal icon input-select">
 				<input type="text" name="name" id="name" maxlength="100" class="cajaxg validable not_empty full-size" placeholder="{t}Name of your section{/t}">
 				{if $sectionTypeCount > 1}
 				<select id="type_sec" name="nodetype" class="caja validable not_empty folder-type">
@@ -56,7 +56,7 @@
 			
 				<div class="languages-section">
                                         <input name="langidlst[]" type='checkbox' value="{$languageOption.IdLanguage}" class="hidden-focus" id="{$languageOption.IdLanguage}">
-                                        <label for="{$languageOption.IdLanguage}" class="icon">
+                                        <label for="{$languageOption.IdLanguage}" class="icon checkbox-label">
                                         {$languageOption.Name|gettext}</label>
                                         <input type="text" name="namelst[{$languageOption.IdLanguage}]" class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}">
                                 </div>	

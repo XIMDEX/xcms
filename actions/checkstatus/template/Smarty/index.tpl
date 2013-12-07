@@ -22,37 +22,41 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-<fieldset>
-	<legend><span>{t}Status Report{/t}</span></legend>
+
+ <div class="action_header">
+			<h2>{t}Status Report{/t}</h2>
+			
+</div>
+
+		<div class="action_content versions">
+
+
 	<p>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</p>
-	
-	<table class="versions">
+
 		
 	{foreach from=$files key=state item=statenode}
 				
-		<tr class="state-info">
-			<td colspan="3">
-				<strong>{t}Documents in{/t} {$statesFull[{$state}].stateName}</strong> ({$statesFull[{$state}].count}
-			{if $statesFull[{$state}].count > 1}
+		<div class="state-info row-item">
+			
+				<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>  <div class="docs-amount right">{$statesFull[{$state}].count}</div>
+			<!--{if $statesFull[{$state}].count > 1}
 				{t}documents found{/t}) 
 			{else}
 				{t}document found{/t})
-			{/if}	
-			</td>
-		</tr>
-		<tr class="header">
-			<td>{t}File{/t}</td>
-			<td>{t}Version{/t}</td>
-			<td>{t}Date{/t}</td>
-		</tr>
-		{foreach from=$statenode item=file}		
-			<tr class="version-info">
-				<td>{$file.Path}/<strong>{$file.Name}</strong></td>
-				<td>{$file.Version}.{$file.SubVersion}</td>
-				<td>{$file.Date} hrs.</td>
-			</tr>
-		{/foreach}
-	{/foreach}
+			{/if}	-->
+			
+		
+		
+		<div class="documents-info">
+			{foreach from=$statenode item=file}		
+				<div class="version-info">
+					<span class="file-path">{$file.Path}/<strong>{$file.Name}</strong></span>
+					<span class="file-date">{$file.Date} hrs.</span>
+					<span class="file-version">{$file.Version}.{$file.SubVersion}</span>
+				</div>
+			{/foreach}
+			</div>
+				{/foreach}
+</div>
 
-	</table>
-</fieldset>
+</div>

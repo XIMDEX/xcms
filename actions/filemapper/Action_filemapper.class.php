@@ -25,33 +25,49 @@
  */
 
 
-
+ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
 
 class Action_filemapper extends ActionAbstract {
    // Main method: shows initial form
     function index () {
 		if ($this->request->getParam('nodeid')) {
 			$idNode = $this->request->getParam("nodeid");
-			$fileNode = new Node($idNode);
-			$fileName = $fileNode->get('Name');
-			$fileContent = $fileNode->GetContent();
-			$gmDate =  gmdate("D, d M Y H:i:s");
-
-			/// Expiration headers
-			$this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-			$this->response->set('Last-Modified', $gmDate . " GMT");
-			$this->response->set('Cache-Control', 
-				array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
-			$this->response->set('Pragma', 'no-cache');
-			$this->response->set('ETag', md5($idNode.$gmDate));
-			$this->response->set('Content-Length', strlen(strval($fileContent)));
-			$this->response->set('Content-transfer-encoding', 'binary');
-			$this->response->set('Content-type', 'octet/stream');
-			$this->response->set('Content-Disposition', "attachment; filename=".$fileName);
-			$this->response->sendHeaders();
-			/// Content headers
-			echo $fileContent;
+			
 		}
+    }
+
+    public function nodeFromExpresion(){
+    	if ($this->request->getParam('expresion')) {
+    		$expresion = $this->request->getParam("expresion");
+    		$filterMacro = new View_FilterMacros();
+    		$res = $filterMacro->infererNodeAndChannel($expresion);
+    		if ($res && is_array($res) && isset($res["idNode"])){
+				$idNode = $res["idNode"];			
+				$this->echoNode($idNode);		
+			}
+		}
+    }
+
+    private function echoNode($idNode){
+    	$fileNode = new Node($idNode);
+		$fileName = $fileNode->get('Name');
+		$fileContent = $fileNode->GetContent();
+		$gmDate =  gmdate("D, d M Y H:i:s");
+
+		/// Expiration headers
+		$this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
+		$this->response->set('Last-Modified', $gmDate . " GMT");
+		$this->response->set('Cache-Control', 
+			array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+		$this->response->set('Pragma', 'no-cache');
+		$this->response->set('ETag', md5($idNode.$gmDate));
+		$this->response->set('Content-Length', strlen(strval($fileContent)));
+		$this->response->set('Content-transfer-encoding', 'binary');
+		$this->response->set('Content-type', 'octet/stream');
+		$this->response->set('Content-Disposition', "attachment; filename=".$fileName);
+		$this->response->sendHeaders();
+		/// Content headers
+		echo $fileContent;
     }
 }
 ?>

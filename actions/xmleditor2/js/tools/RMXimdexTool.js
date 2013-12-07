@@ -59,7 +59,7 @@ var RMXimdexTool = Object.xo_create(XimdocTool, {
 		$("img[src*='@@@RMximdex.pathto']", $('body', xslResult)[0]).each(function(index, elem) {
 			var targetid = unescape($(elem).attr('src'));
 			targetid = targetid.replace(/@@@RMximdex.pathto\((.*)\)@@@/ig, "$1");
-			var path = '%s?nodeid=%s&action=filemapper'.printf(X.restUrl, targetid);
+			var path = '%s?expresion=%s&action=filemapper&method=nodeFromExpresion'.printf(X.restUrl, targetid);
 			$(elem).attr('src', path);
 		});
 	}

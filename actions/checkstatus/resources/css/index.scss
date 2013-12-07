@@ -1,0 +1,108 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+
+.versions{
+        p{
+                margin: 0 2% 2em;
+        }
+         .version-info{
+        padding:.5em 4em;
+        counter-increment: documents-list;
+        border-bottom: 1px solid $c_background;
+        position: relative;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        &::before{
+                content: counter(documents-list);
+                position: absolute;
+                background:lighten($c_maindark, 65%);
+                @include radius(3px);
+                min-width: 1.5em;
+                height: 1.5em;
+                text-align: center;
+                line-height: 1.5em;
+                top: .3em;
+                left: 1em;
+                padding: 0 .1em;
+        }
+        &:last-child{
+                border-bottom: none;
+        }
+ }
+}
+
+
+ .docs-amount{
+        @extend %box-number;
+        margin-top: -.6em;
+ }
+
+ .documents-info{
+        width: calc(100% + 4%);
+        background:#fff;
+        margin: 1em 0 -1em -2%;
+        @include radius(0 0 3px 3px);
+        counter-reset: documents-list;
+        cursor: default;
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+
+         .state-info &{
+        -webkit-transition: all .5s;
+        -moz-transition: all .5s;
+        -ms-transition: all .5s;
+        -o-transition: all .5s;
+        transition: all .5s;
+        
+         }
+
+         .opened &{
+                opacity: 1;
+                height: auto;
+                padding: 1em 0 1.5em;
+         }
+ }
+
+
+
+ .file-date{
+        display: block;
+        color: darken($c_mainlight, 20%);
+        font-size: 1.5rem;
+        line-height: 1.6;
+ }
+
+ .file-version{
+        color: darken($c_mainlight, 20%);
+        margin-top: -1.9em;
+        position: absolute;
+        right: 2%;
+        top: 2.5em;
+ }

@@ -125,6 +125,9 @@ class Action_deletenode extends ActionAbstract {
 			}
 		}
 
+		$this->addCss('/actions/deletenode/resources/css/style.css');
+
+
 		$values = array(
 			'id_node' => $idNode,
 			'params' => $params,

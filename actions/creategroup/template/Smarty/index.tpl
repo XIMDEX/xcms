@@ -33,15 +33,9 @@
 			</fieldset>
 		</div>
 		<div class="action_content">
-			<fieldset>
-
-			        <legend><span></span></legend>
-				<ol>
-			            <li>
-									<label for="name" class="aligned">{t}Name{/t}</label>
-									<input type="text" name="name" id="groupname" class="cajag validable not_empty"></li>
-								</ol>
-			                            </fieldset>
-		</div>
+		
+								<div class="input icon group">
+												<input type="text" name="name" id="groupname" class="cajag validable not_empty" placeholder="{t}Group's name{/t}">
+										</div>		</div>
 
 		</form>

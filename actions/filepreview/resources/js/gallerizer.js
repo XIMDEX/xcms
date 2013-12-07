@@ -130,7 +130,7 @@
 
                     $newElement.append($divInfoContainer);
 
-                    var $close = $('<span/>').addClass('close icon-font').text('Close');
+                    var $close = $('<span/>').addClass('close icon').text('Close');
 
                     $newElement.append($close);
 
@@ -194,8 +194,8 @@
                             });
 
                             if (options.full_image_link) {
-                                var $divFullLink = $("<div/>").addClass('full_view icon-font');
-                                var $span = $("<span/>").html(options.full_image_link_label).bind('click', function() {
+                                var $divFullLink = $("<div/>").addClass('full_view icon');
+                                var $span = $("<span/>").addClass('icon').html(options.full_image_link_label).bind('click', function() {
                                     options.full_image_link_callback.call($("img", $divImage), $("img", $divImage));
                                 });
                                 $divFullLink.append($span);

@@ -22,96 +22,79 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+.docs-amount {
+  background: #b2e0d9;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  display: inline-block;
+  min-width: 3.5em;
+  text-align: center;
+  padding: .6em .2em; }
 
-fieldset table tr{
-        border-bottom: none;
-        background: none;
-        width: 95%;
-        margin: 0 auto;
-        padding: .4em 0;
-        display: block;
-}
-fieldset table tr.header td{
-        display: inline-block;
-        vertical-align: top;
-        padding: .7em 0 .4em !important ;
+.versions p {
+  margin: 0 2% 2em; }
+.versions .version-info {
+  padding: .5em 4em;
+  counter-increment: documents-list;
+  border-bottom: 1px solid #edeeee;
+  position: relative;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis; }
+  .versions .version-info::before {
+    content: counter(documents-list);
+    position: absolute;
+    background: #dae9e9;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    min-width: 1.5em;
+    height: 1.5em;
+    text-align: center;
+    line-height: 1.5em;
+    top: .3em;
+    left: 1em;
+    padding: 0 .1em; }
+  .versions .version-info:last-child {
+    border-bottom: none; }
 
-}
-fieldset table tr.version-info{
-        border-top: 1px solid #fff;
+.docs-amount {
+  margin-top: -.6em; }
 
-}
-fieldset table tr.version-info td{
-        display: inline-block;
-        vertical-align: top;
-        padding-top: 15px !important;
-        padding: 1em 0 !important;
-}
-fieldset table tr.version-info td:nth-child(1), fieldset table tr.header td:nth-child(1){
-        width: 64%;
-        -ms-word-break: break-all;
-        word-break: break-all;
-}
-fieldset table tr.version-info td:nth-child(2), fieldset table tr.header td:nth-child(2){
-        width: 24%;
-        text-align: center;
-}
-fieldset table tr.version-info td:nth-child(3), fieldset table tr.header td:nth-child(3){
-        width: 10%;
-        text-align: center;
-}
-fieldset table tr.header{
-        text-transform: uppercase;
-        border-bottom: 1px solid #fff;
-        font-weight: bold;
+.documents-info {
+  width: calc(100% + 4%);
+  background: #fff;
+  margin: 1em 0 -1em -2%;
+  -webkit-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
+  counter-reset: documents-list;
+  cursor: default;
+  opacity: 0;
+  height: 0;
+  overflow: hidden; }
+  .state-info .documents-info {
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s; }
+  .opened .documents-info {
+    opacity: 1;
+    height: auto;
+    padding: 1em 0 1.5em; }
 
-}
-fieldset table tr.header + tr{
-        border-top: 1px solid #d9d9d9;
-}
-fieldset table tr.header + tr.version-info td{
-        border-top: none;
-}
-fieldset table.versions tr td:first-child{
-        background: none;
-        font-size: 1em;
-        line-height: 1.5;
-}
-fieldset table.versions tr.state-info{
-        float: left;
-        width: 100%;
-        margin: .3em 0;
-        cursor: pointer;
-}
-fieldset table.versions tr.state-info td{
-        background: #d9d9d9 !important;
-        -webkit-border-radius: .5em;
-        -moz-border-radius: .5em;
-        border-radius: .5em;
-        padding: 1em 2em;
-        width: auto;
-        display: block;
-        -webkit-transition: all .3s;
-        -moz-transition: all .3s;
-        -ms-transition: all .3s;
-        -o-transition: all .3s;
-        transition: all .3s;
-}
-fieldset table.versions tr.state-info td::before {
-        content: '';
-        display: inline-block;
-        border: 6px solid transparent;
-        border-left-color: #43A1A2;
-        vertical-align: middle;
-        margin-right: 10px;
-        margin-top: -5px;
-}
-fieldset table.versions tr.state-info.open td::before {
-        border-left-color: transparent;
-        border-top-color: #43A1A2;
-        margin-top: 0;
+.file-date {
+  display: block;
+  color: #409f92;
+  font-size: 1.5rem;
+  line-height: 1.6; }
 
-}
-fieldset table.versions tr.state-info:hover td{
-        background: #c9c9c9 !important;
-}
+.file-version {
+  color: #409f92;
+  margin-top: -1.9em;
+  position: absolute;
+  right: 2%;
+  top: 2.5em; }

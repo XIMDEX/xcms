@@ -175,6 +175,8 @@
 					changeYear: true,
 					changeMonth: true
 				});
+			// Add this CSS to hide datepicker element (padding and border) from Body when it is created
+                       	$(elements).data().datepicker.dpDiv.css("display","none");
 		},
 		
 		onFieldTypeChange: function(event, filterContainer) {

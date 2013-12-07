@@ -35,24 +35,37 @@ ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_FilterMacrosPreview extends Abstract_View implements Interface_View {
+class View_FilterMacrosPreview extends View_FilterMacros implements Interface_View {
 
-	private $_node = NULL;
-	private $_server = NULL;
-	private $_serverNode = NULL;
-	private $_projectNode = NULL;
-	private $_idChannel;
-	private $_isPreviewServer = false;
-	private $_depth = NULL;
-	private $_idSection = NULL;
-	private $_nodeName = "";
 	private $_nodeTypeName = NULL;
-
 	private $mode = NULL;
 
+	/**
+	 * Main method. Get a pointer content file and return a new transformed content file. This probably cames from Transformer (View_XSLT), so will be the renderized content.
+	 * @param  int $idVersion Node version
+	 * @param  string $pointer   file name with the content to transform
+	 * @param  array $args      Params about the current node
+	 * @return string file name with the transformed content.
+	 */
 	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 
-		$content = $this->retrieveContent($pointer);
+		//Check the conditions
+		if (!$this->initializeParams($args,$idVersion))
+			return NULL;
+
+		$content = $this->transformFromPointer($pointer);
+		//Return the pointer to the transformed content.
+		return $this->storeTmpContent($content);
+	}
+
+	/**
+	 * Initialize params from transformation args 
+	 * @param array $args Arguments for transformation
+	 * @param int $idVersion 
+	 * @return boolean True if everything is allright.
+	 */
+	protected function initializeParams($args, $idVersion){
+
 		$this->mode = (isset($args['MODE']) && $args['MODE'] == 'dinamic') ? 'dinamic' : 'static';
 
 		if(!$this->_setNode($idVersion,$args))
@@ -79,108 +92,32 @@ class View_FilterMacrosPreview extends Abstract_View implements Interface_View {
 		if(!$this->_setNodeName($args))
 			return NULL;
 
-		$serverName = $this->_serverNode->get('Name');
-		$content = preg_replace("/@@@RMximdex\.servername\(\)@@@/", $serverName, $content);
-
-		if (preg_match("/@@@RMximdex\.projectname\(\)@@@/", $content)) {
-			$project = new Node($this->_ProjectNode);
-			$projectName = $project->get('Name');
-			$content = preg_replace("/@@@RMximdex\.projectname\(\)@@@/", $projectName, $content);
-		}
-
-		$content = preg_replace("/@@@RMximdex\.nodename\(\)@@@/", $this->_nodeName, $content);
-
-		$content = preg_replace_callback("/@@@RMximdex\.sectionpath\(([0-9]+)\)@@@/",
-			array($this, 'getSectionPath'), $content);
-
-		$content = preg_replace_callback("/@@@RMximdex\.dotdot\(([^\)]*)\)@@@/",
-			array($this, 'getdotdotpath'), $content);
-
-		// Posiblemente estas dos expresiones regulares se puedan convertir en una.
-		$content = preg_replace_callback("/@@@RMximdex\.pathto\(([0-9]+),([0-9]*)\)@@@/",
-			array($this, 'getLinkPath'), $content);
-
-		$content = preg_replace_callback("/@@@RMximdex\.pathto\(([0-9]+)\)@@@/",
-			array($this, 'getLinkPath'), $content);
-
-		$content = preg_replace_callback("/@@@RMximdex\.rdf\(([^\)]+)\)@@@/",
-			array($this, 'getRDFByNodeId'), $content);
-
-		$content = preg_replace_callback("/@@@RMximdex\.rdfa\(([^\)]+)\)@@@/",
-			array($this, 'getRDFaByNodeId'), $content);
-
-		return $this->storeTmpContent($content);
+		return true;
 	}
 
-	private function _setNode ($idVersion = NULL,$args = NULL) {
+	/**
+	 * Load the node param from an idVersion.
+	 * @param int $idVersion Version id
+	 * @return boolean True if exists node for selected version or the current node.
+	 */
+	protected function _setNode ($idVersion = NULL,$args = NULL) {
 
-		if(!is_null($idVersion)) {
-			$version = new Version($idVersion);
-			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW FILTERMACROSPREVIEW: Se ha cargado una versión incorrecta (' . $idVersion . ')');
-				return NULL;
-			}
-
-			$this->_node = new Node($version->get('IdNode'));
-			if (!($this->_node->get('IdNode') > 0)) {
-				XMD_Log::error('VIEW FILTERMACROSPREVIEW: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
-				return NULL;
-			}
-		}else{
+		if (is_null($idVersion)){
 			if (array_key_exists('NODETYPENAME', $args)) {
 				$this->_nodeTypeName = $args['NODETYPENAME'];
 			}
+		}else{
+			return parent::_setNode($idVersion);
 		}
-
 		return true;
 	}
 
-	private function _setIdChannel ($args = array()) {
 
-		if (array_key_exists('CHANNEL', $args)) {
-			$this->_idChannel = $args['CHANNEL'];
-		}
-
-		// Check Params:
-		if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado el canal del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
-			return NULL;
-		}
-
-		return true;
-	}
-
-	private function _setServer ($args = array()) {
-
-		if (array_key_exists('SERVER', $args)) {
-			$this->_server = new Server($args['SERVER']);
-			if (!($this->_server->get('IdServer') > 0)) {
-				XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado el servidor en el que se quiere renderizar el nodo');
-				return NULL;
-			}
-			$this->_isPreviewServer = $this->_server->get('Previsual');
-		}
-
-		return true;
-	}
-
-	private function _setServerNode ($args = array()) {
-
-		if($this->_node) {
-			$this->_serverNode = new Node($this->_node->getServer());
-		} elseif (array_key_exists('SERVERNODE', $args)) {
-			$this->_serverNode = new Node($args['SERVERNODE']);
-		}
-
-		// Check Params:
-		if (!($this->_serverNode) || !is_object($this->_serverNode)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado el servidor del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
-			return NULL;
-		}
-
-		return true;
-	}
-
+	/**
+	 * Load the section id from the args array.
+	 * @param array $args Transformation args.
+	 * @return boolean True if exits the section.
+	 */
 	private function _setIdSection ($args = array()) {
 		if (array_key_exists('SECTION', $args)) {
 			$this->_idSection = $args['SECTION'];
@@ -195,68 +132,14 @@ class View_FilterMacrosPreview extends Abstract_View implements Interface_View {
 		return true;
 	}
 
-	private function _setProjectNode ($args = array()) {
-
-		if($this->_node) {
-			$this->_projectNode = $this->_node->getProject();
-		} elseif (array_key_exists('PROJECT', $args)) {
-			$this->_projectNode = $args['PROJECT'];
-		}
-
-		// Check Params:
-		if (!isset($this->_projectNode) || !($this->_projectNode > 0)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado el proyecto del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
-			return NULL;
-		}
-
-		return true;
-	}
-
-	private function _setDepth ($args = array()) {
-
-		if($this->_node) {
-			$this->_depth = $this->_node->GetPublishedDepth();
-		} elseif (array_key_exists('DEPTH', $args)) {
-			$this->_depth = $args['DEPTH'];
-		}
-
-		// Check Param:
-		if (!isset($this->_depth) || !($this->_depth > 0)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado la profundidad del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
-			return NULL;
-		}
-
-		return true;
-	}
-
-	private function _setNodeName ($args = array()) {
-
-		if($this->_node) {
-			$this->_nodeName = $this->_node->get('Name');
-		} elseif (array_key_exists('NODENAME', $args)) {
-			$this->_nodeName = $args['NODENAME'];
-		}
-
-		// Check Param:
-		if (!isset($this->_nodeName) || $this->_nodeName == "") {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado el nombre del nodo que quiere renderizar');
-			return NULL;
-		}
-
-		return true;
-	}
-
 	private function getSectionPath($matches) {
 
-		$target = $matches[1];
-		$node = new Node($target);
-		if (!($node->get('IdNode') > 0)) {
+		//Getting section from parent function.
+		$section = $this->getSectionNode($matches[1]);
+		if (!$section){
 			return Config::getValue('EmptyHrefCode');
 		}
-		// Target Channel
 		$idTargetChannel = isset($matches[2]) ? $matches[2] : NULL;
-		$idSection = $node->GetSection();
-		$section = new Node($idSection);
 		$dotdot = str_repeat('../', $this->_depth - 2);
 		return $dotdot . $section->GetPublishedPath($idTargetChannel, true);
 	}
@@ -286,10 +169,19 @@ class View_FilterMacrosPreview extends Abstract_View implements Interface_View {
 
 	private function getLinkPath($matches) {
 		
-		$targetID = $matches[1];
+		//Get parentesis content
+		$pathToParams = $matches[1];
 		// Link target-node
-		$targetNode = new Node($targetID);
+		$res = $this->infererNodeAndChannel($pathToParams);
+		if (!$res || !is_array($res) || !count($res)){
+			return '';
+		}else{
+			$idNode = $res["idNode"];
+			$idTargetChannel = (count($res)== 3 && isset($res["channel"])) ? $res["channel"] : NULL;
 
+		}
+		
+		$targetNode = new Node($idNode);
 		if (!$targetNode->get('IdNode')) {
 			return '';
 		}
@@ -300,8 +192,6 @@ class View_FilterMacrosPreview extends Abstract_View implements Interface_View {
 
 		$isStructuredDocument = $targetNode->nodeType->GetIsStructuredDocument();
 
-		// Target Channel
-		$idTargetChannel = isset($matches[2]) ? $matches[2] : $this->_idChannel;
 		$targetChannelNode = new Channel($idTargetChannel);
 
 		// External Link
@@ -312,36 +202,18 @@ class View_FilterMacrosPreview extends Abstract_View implements Interface_View {
 		if ($isStructuredDocument) {
 			if ($this->mode == 'dinamic') {
 				error_log('returning js');
-//				error_log('javascript:onclick(loadDivsPreview(' . $targetID . '))');
-				return "javascript:parent.loadDivsPreview(" . $targetID . ")";
+				return "javascript:parent.loadDivsPreview(" . $idNode . ")";
 			} else {
 				$query = App::get('QueryManager');
-	    		return $query->getPage() . $query->buildWith(array('nodeid' => $targetID, 'idchannel' => $idTargetChannel));
+	    		return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
 			}
 		} else {
 			return $targetNode->class->GetNodeURL();
 		}
 	}
 
-	private function getRDFByNodeId($params, $rdfa=false) {
-
-		if (!ModulesManager::isEnabled('ximPAS')) {
-			return '';
-		}
-
-		$nodeId = $params[1];
-		$node = new Node($nodeId);
-		if (!$node->get('IdNode')) {
-			return '';
-		}
-
-		$pas = new PAS_Conector();
-		$rdf = $rdfa === false ? $pas->getRDFByNodeId($nodeId) : $pas->getRDFaByNodeId($nodeId);
-		return "\n$rdf\n";
-	}
-
-	private function getRDFaByNodeId($params) {
-		return $this->getRDFByNodeId($params, true);
+	private function getLinkPathAbs($matches){
+		return $this->getLinkPath($matches);
 	}
 }
 ?>

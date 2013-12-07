@@ -37,43 +37,53 @@
 
 	<div class="action_content">
 		<fieldset>
-		  <p>{t}Used template{/t}:  <span class="infor_form">{$templateName}</span></p>
-				{if $numlanguages neq 0}
-					<ol>
+		  <div class="info-node">
+		  	<h3 class="info-title icon">{t}Used template{/t}</h3>  <span class="infor_form">{$templateName}</span>
+		  </div>
+		  	<div class="col2-3">		
+				<h3>{t}Canales disponibles{/t}</h3>
+		  		{if $numchannels neq 0}
+		  									
+		  			{foreach from=$channels item=channel}
+		  			<div class="channel-section">
+		  				<input type="checkbox" name="channels[]" value="{$channel.IdChannel}"
+		  				{if ($channel.selected)} checked="checked" {/if} class="hidden-focus">
+		  				<label class="icon disabled checkbox-label" for="{$channel.IdChannel}">{$channel.Description}</label>
+		  			</div>
+		  			{/foreach}
+		  			{else}
+		  				<p>{t}There are no channels associated to this project{/t}</p>
+		  			{/if}
+		  	</div>	
+		  	{if $numlanguages neq 0}
+			<div class="col1-3">
+				<h3>{t}Idiomas disponibles{/t}</h3>
 						{foreach from=$languages item=language}
-							<li><label for="lang_{$language.idLanguage}" class="aligned">{$language.name}</label>
+				<div class="languages-section">
 
 								{if ($language.idChildren > 0)}
 								<input type="checkbox" name="languages[]"
-									id="lang_{$language.idLanguage}" value="{$language.idLanguage}" checked="checked" />
+									id="lang_{$language.idLanguage}" value="{$language.idLanguage}" checked="checked" class="hidden-focus" />
+
 								{else}
 								<input type="checkbox"
-									name="languages[]" id="lang_{$language.idLanguage}" value="{$language.idLanguage}" />
+									name="languages[]" id="lang_{$language.idLanguage}" value="{$language.idLanguage}" class= "hidden-focus"/>
 								{/if}
-								<input type="text" name="aliases[{$language.idLanguage}]" value="{$language.alias}" class="cajag">
-							</li>
+							<label for="lang_{$language.idLanguage}" class="icon checkbox-label">{$language.name}</label>
+
+								<input type="text" name="aliases[{$language.idLanguage}]" class="alternative-name" value="{$language.alias}" class="cajag" placeholder="Nombre alternativo para migas de pan y rutas">
+				</div>
 						{/foreach}
-					</ol>
+					
 				{else}
 					<p>{t}There are no languages associated to this project{/t}</p>
 				{/if}
+			</div>
 		</fieldset>
 
-		<fieldset>
-				{if $numchannels neq 0}
-					<ol>
-						{foreach from=$channels item=channel}
-							<li>
-								<input type="checkbox" name="channels[]" value="{$channel.IdChannel}"
-									{if ($channel.selected)}checked="checked"{/if}>
-								<label>{$channel.Description}</label>
-							</li>
-						{/foreach}
-					</ol>
-				{else}
-					<p>{t}There are no channels associated to this project{/t}</p>
-				{/if}
-		</fieldset>
+		
+
+	
 	</div>
 
 

@@ -56,7 +56,9 @@
   color: $c_maininset;
 }
 
-.recover-btn::before, :checked + label strong::after, .languages-section label::before, .progress.complete::before,
+
+// :checked + label strong::after, se elimina de la lista porque es demasiado genérico y afecta a secciones como  Publicar sección
+.recover-btn::before,  .checkbox-label::before, .progress.complete::before,
 .theme-selection .select::before {
   content: "\0079";
 }
@@ -124,11 +126,28 @@
   content: "\002a" ;  
 
 }
-.type-zArticle::before, .uploader .document::before{
+.type-zArticle::before, .uploader .document::before, .document::before{
 
   content: "\002b" ;  
 
 }
+
+.project::before{
+  content: "\e604";
+}
+.icon{
+  &.server::before{
+  content: "\e015";
+  }
+  &.link::before{
+    content: "\2a";
+    font-size: 1.2em;
+    top: .46em;
+    left: .6em;
+  }
+}
+
+
 .uploader .video::before{
 
   content: "\002c" ;  
@@ -222,6 +241,11 @@
 
 .font-selector::before {
   content: '\e021';
+}
+
+.delete-message::after{
+  content: "\e605";
+  
 }
 
 /*****

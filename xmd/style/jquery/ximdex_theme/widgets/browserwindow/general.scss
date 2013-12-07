@@ -1,4 +1,4 @@
-{**
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,25 +21,21 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
+ */
 
 
-{if count($messages) > 0}
-	{foreach from=$messages item=message}
-		{if ($message.type == "0")}
-			{assign var="class" value="ui-state-error ui-corner-all msg-error"}
-			{assign var="icon" value="ui-icon ui-icon-alert"}
-		{elseif ($message.type == "1")}
-			{assign var="class" value="ui-state-highlight ui-corner-all msg-warning"}
-			{assign var="icon" value="ui-icon ui-icon-notice"}
-		{else}
-			{assign var="class" value="ui-state-primary ui-corner-all msg-info"}
-			{assign var="icon" value="ui-icon ui-icon-info"}
-		{/if}
-		<p class="{$class}">
-			{$message.message}
-		</p>
-	{/foreach}
-{else}
-	<p>{t}No messages found{/t}</p>
-{/if}
+ @import "../themes/ximdex_theme";
+ @import "../themes/extends";
+
+
+	/**************
+	// languages-selector
+	***************/
+
+.languages-selector {
+	label{
+		@extend %button;
+	}
+}
+
+

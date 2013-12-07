@@ -31,43 +31,48 @@
 	$channels[Description]
 *}
 
-<h2>{t}Languages{/t}</h2>
-<fieldset>
-	{if count($languages) > 0}
-		<ol>
-			{foreach from=$languages item=language}
-				<li>
+	<div class="languages-available col1-3 right"><h3>{t}Languages{/t}</h3>
+		
+		{if count($languages) > 0}
+			
+				{foreach from=$languages item=language}
+					
+					<div class="languages-section">
+		
+						<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}' class="hidden-focus"/>
+						<label  for="{$language.IdLanguage}" class="icon checkbox-label">{$language.Name|gettext}</label>
+						<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}"/>
+					</div>
+					
+				{/foreach}
+				
+				
+					<select class="cajaxg" name='master' id="master">
+						<option value="">{t}Select master language{/t}</option>
+						{foreach from=$languages item=language}
+							<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
+						{/foreach}
+					</select>
+				
+		{else}
+			<p>{t}There are no languages associated to this project{/t}</p>
+		{/if}
+	</div>
 
-					<label class="aligned">{$language.Name|gettext}</label>
-					<input name='languages[]' type='checkbox' value='{$language.IdLanguage}' />
-					<input type='text' name='aliases[{$language.IdLanguage}]' class='cajag'/>
-				</li>
-			{/foreach}
-			<li>
-				<label class="aligned">{t}Select master language{/t}</label>
-				<select class="cajaxg" name='master'>
-					<option value="">&laquo;{t}None{/t}&raquo;</option>
-					{foreach from=$languages item=language}
-						<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
-					{/foreach}
-				</select>
-			</li>
-		</ol>
-	{else}
-		<p>{t}There are no languages associated to this project{/t}</p>
-	{/if}
-</fieldset>
-<h2>{t}Channels{/t}</h2>
-<fieldset>
+<div class="col2-3">	
+
+<h3>{t}Channels{/t}</h3>
+
 	{if count($channels) > 0}
-		<ol>
 			{foreach from=$channels item=channel}
-				<li><input name='channels[]' type='checkbox' value='{$channel.IdChannel}' />
-				<label>{$channel.Description|gettext}</label>
-				</li>
+				<div class="channel-section">
+					<input name='channels[]' type='checkbox' value='{$channel.IdChannel}' class="hidden-focus" id="{$channel.IdChannel}"/>
+					<label  class="icon checkbox-label"  for="{$channel.IdChannel}">{$channel.Description|gettext}</label>
+				</div>
 			{/foreach}
-		</ol>
+		
 	{else}
 		<p>{t}There are no channels associated to this project{/t}</p>
 	{/if}
-</fieldset>
+
+</div>

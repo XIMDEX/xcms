@@ -48,6 +48,7 @@
    line-height: 120px !important;
    text-align: center;
    position: relative;
+   cursor: pointer;
 }
 
 .thumbs li:not(.opened):hover{
@@ -236,13 +237,14 @@ margin-bottom: 6px;
 }
 
 .full_view span:before{
-  content: "\21";
+  content: "\0073";
   display: block;
   position: absolute;
   text-indent: 0;
   font-size: 1.4rem;
-  margin-left: 3px;
+  margin-left: .6em;
   color: #7d7d7d;
+  line-height: 2.2;
 }
 
 .full_view span:hover{
@@ -278,6 +280,8 @@ margin-bottom: 6px;
   display: block;
   text-indent: 0;
   font-size: 1rem;
+  height: 100%;
+  padding-top: .2em;
 }
 
 

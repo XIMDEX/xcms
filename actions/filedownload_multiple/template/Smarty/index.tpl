@@ -31,7 +31,7 @@
 <div class="action_content">
 	<fieldset>
 	<p>
-	{t}La descarga del archivo comenzará inmediatamente. En caso de no hacerlo, pulse: {/t}
+	{t}La descarga del archivo comenzará inmediatamente. En caso de no hacerlo, pulse {/t}
 	<a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
 	</p>
 	</fieldset>

@@ -25,10 +25,14 @@
 
 
 X.actionLoaded(function(event, fn, params) {
-	fn('.state-info').nextUntil('tr.state-info').addClass("hidden");
+	fn('.state-info .documents-info').addClass("hide-toggle");
 
         fn('.state-info').click(function() {
-                $(this).nextUntil('tr.state-info').toggleClass("hidden");
-                $(this).toggleClass("open");
+                $(this).toggleClass("opened");
+                $(this).children(".documents-info").toggleClass("hide-toggle");
+
+        });
+        fn('.state-info .documents-info').click(function(e){
+			e.stopPropagation();
         });
 });

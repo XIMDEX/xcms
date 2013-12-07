@@ -1,6 +1,6 @@
-	/**************
+	//**************
 	// COLORS
-	***************/
+	//***************/
 		$c_background:  #edeeee;
 		$c_selected: #43A1A2;
 		$c_main: rgb(0, 107, 108);
@@ -55,9 +55,9 @@
 
 
 
-	/**************
+	//**************
 	// SHADOWS
-	***************/
+	//***************/
 
 		$s_black: rgba(0,0,0,.2);
 		$s_grey: rgba(157,157,157,.2);
@@ -65,16 +65,16 @@
 
 
 
-	/**************
+	//**************
 	// TYPO
-	***************/
+	//***************/
 
 		$t_title: 'Coustard';
 		$t_text: 'Ubuntu Condensed';
 
-	/**************
+	//**************
 	// INCLUDES
-	***************/
+	//***************/
 		@mixin radius($rad){
 			-webkit-border-radius: $rad;
 			-moz-border-radius: $rad;
@@ -203,8 +203,8 @@
 		white-space: nowrap;
 		}
 
-	/**************
+	//**************
 	// EXTENDS
-	***************/
+	//***************/
 
 	/* NO Extends because they are inserted at the beggining of each CSS file */

@@ -26,78 +26,11 @@
   @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
 
 
-  .folder-name{
-  	position: relative;
-  	margin: 2em 0;
-  	.full-size{
-  		padding: .5em 32% .5em 2.5em;  		
-  		@include placeholder{
-  			font-style: italic;
-  		}
-  	}
-
-   &.disabled{
-        opacity: 1 !important;
-        background: #fff;
-        h3, .folder-type{
-          padding: .9em 2.8em .8em;
-        }
-        .folder-type{
-          border-left: 2px solid $c_background;
-          background: lighten(#ACAFBB, 20%);
-          color: darken(#ACAFBB, 25%);
-          font-size: 1.3rem;
-          padding: 1.1em 1.8em .8em;
-          cursor: auto;
-          
-        }
-      }
-
-  	&.folder-normal::before, &.folder-news::before{
-  		position: absolute;
-  		left: .8em;
-  		top: 0;
-  		line-height: 2.4em;
-  		color: $c_mainlight;
-  	}
-    &.folder-news::before{
-      color: #D93E42;
-    }
-    &.disabled::before{
-      color: $c_grey;
-    }
-  }
+ 
 
   .full-size{
   	width: 100%;
   }
-
-  .folder-type{
-  	position: absolute;
-  	right: 0;
-  	top: 0;
-  	margin: 0;
-  	border: none;
-    min-width: 30%;
-    background: #ACAFBB;
-    height: 100%;
-    color: #fff;
-    -webkit-border-radius: 0 2px 2px 0;
-    -moz-border-radius: 0 2px 2px 0;
-    border-radius: 0 2px 2px 0;
-    cursor: pointer;
-    &:hover{
-      background: darken(#ACAFBB, 5%);
-    }
-    &.disabled{
-      padding: .65em 1em;
-      cursor: auto;
-      &:hover{
-        background: inherit;
-      }
-    }
-  }
-
   .subfolder{
   	background: #fff;
   	width: 8em;
@@ -105,7 +38,7 @@
   	display: inline-block;
   	vertical-align: top;
   	position: relative;
-  	margin: .5em 1em .5em 0;
+  	margin: 0 1em 1em 0;
 
 	label{
 		display: block !important;
@@ -277,97 +210,4 @@
 
   }
 
- .languages-section{
-      margin: 1.5em 25px .8em;
-        label{
-        width: 100%;
-        background: #fff;
-        border: 1px solid #dedede;
-        display: block !important;
-        padding: .7em 1em;
-        text-transform: uppercase;
-        font-size: .9em;
-        font-weight: bold;  
-        -webkit-border-radius: 2px;
-        -moz-border-radius: 2px;
-        border-radius: 2px;
-        position: relative;
-        z-index: 2;
-        cursor: pointer;
-        border-color: #fff;
-        background: lighten(#ACAFBB, 15%);
-
-        &:hover{
-        background: lighten(#ACAFBB, 10%);
-        }
-
-        &::before{
-          position: relative;
-          z-index: 2;
-          padding-right: .8em;
-          color: rgba(255,255,255,.7);
-          
-        }
-
-         &:after{
-          content: "";
-          position: absolute;
-          background:  rgba(255,255,255,.7);
-          width: 1em;
-          height: 1em;
-          left: .83em;
-          border: 1px solid rgba(55,55,55,.1);
-          -webkit-border-radius: 2px;
-          -moz-border-radius: 2px;
-          border-radius: 2px;
-         }
-       
-        }
-
-      :checked + label{
-        border-color: #fff;
-        background: lighten($c_mainlight, 10%);
-        -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.2);
-        -moz-box-shadow: inset 0 0 3px rgba(0,0,0,.2);
-        box-shadow: inset 0 0 3px rgba(0,0,0,.2);
-        &::before{
-          color: $c_grey-l;
-        }
-        &::after{
-          border-color: white;
-        }
-      }
-
-      .alternative-name{
-        margin-top: -2.5em;
-        opacity: 0;
-        width: 100%;
-        border:1px solid #ccc;
-        -webkit-transition: all .5s;
-        -moz-transition: all .5s;
-        -ms-transition: all .5s;
-        -o-transition: all .5s;
-        transition: all .5s;
-        @include placeholder{
-          font-style: italic;
-        }
-        visibility: hidden;
-      }
-
-      :checked ~ .alternative-name{
-        margin-top: .5em;
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-
-.hidden-focus{
-    opacity: 0;
-    position: absolute;
-    z-index: 0;
-    &:focus + label{
-    -webkit-box-shadow: 0 0 3px 1px rgba(229,175,82,.9);
-    -moz-box-shadow: 0 0 3px 1px rgba(229,175,82,.9);
-    box-shadow: 0 0 3px 1px rgba(229,175,82,.9);
-    }
-  }
+ 

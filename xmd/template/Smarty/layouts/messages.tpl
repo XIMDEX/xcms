@@ -25,35 +25,32 @@
 
 {include file="`$_APP_ROOT`/xmd/template/Smarty/helper/li_for_js.tpl"}
 <div class="container">
-
-	{if $view_head}
-		<!-- <h2>{$_ACTION_NAME|gettext}</h2>-->
-		{if $num_nodes > 1}
-			<h2 class="nodo_path"><strong>{t}Executing the action on the nodes{/t}: </strong>
-			{foreach from=$nodes item=node}
-				{$node.name},
-			{/foreach}
-			</h2>
-		{else}
-			<h2 class="nodo_path"><strong>{t}Node{/t}: </strong>{$_NODE_PATH}</h2>
+<div class="action_header">
+		{if $view_head}
+			<!-- <h2>{$_ACTION_NAME|gettext}</h2>-->
+			{if $num_nodes > 1}
+				<h2>
+				{foreach from=$nodes item=node}
+					{$node.name},
+				{/foreach}
+				</h2>
+			{else}
+				<h2>{$_NODE_PATH}</h2>
+			{/if}
 		{/if}
-	{/if}
-
-	<h3 class="action_desc"><span><strong>{t}Description{/t}: </strong>{$_ACTION_DESCRIPTION|gettext}</span></h3>
-	<div class="action_container ui-widget">
-
-	<fieldset>
-		<legend><span>{t}Messages{/t}</span></legend>
-		{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/messages.tpl"}
-	</fieldset>
-
-	<fieldset class="buttons-form">
+			<fieldset class="buttons-form">
 	{if ($goback) }
 		{button type="goback" history="$history_value" label="Go back"}
 	{else}
-		{button type="close" label="Close"}
+		{button type="close" label="Close" class="btn main_action"}
 	{/if}
 	</fieldset>
+	</div>
+	<div class="action_container ui-widget">
+<div class="message">
+			{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/messages.tpl"}
+	
+	</div>
 
 	</div>
 </div>

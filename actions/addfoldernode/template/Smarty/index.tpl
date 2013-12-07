@@ -33,11 +33,10 @@
 		</fieldset>
 	</div>
 <div class="action_content">
-	<fieldset>
-		<p>
-				<label for="foldername" class="aligned">{t}Name{/t}</label>
-				<input type="text" name="name" id="foldername" class="cajaxg validable not_empty">
+
+		<p class="icon icon-positioned server input">
+				<input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}Server name{/t}">
 		</p>
-	</fieldset>
+
 </div>
 </form>

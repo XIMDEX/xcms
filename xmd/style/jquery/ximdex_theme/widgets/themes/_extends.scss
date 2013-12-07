@@ -1,0 +1,53 @@
+	%button{
+		width: 100%;
+        background: #fff;
+        border: 1px solid #dedede;
+        display: block !important;
+        padding: .7em 1em;
+        text-transform: uppercase;
+        font-size: .9em;
+        font-weight: bold;  
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        position: relative;
+        z-index: 2;
+        cursor: pointer;
+        border-color: #fff;
+        background: lighten(#ACAFBB, 15%);
+	}
+
+	%checkbox-box{
+
+	}
+
+        %box-number{
+                background: #b2e0d9;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            display: inline-block;
+            min-width: 3.5em;
+            text-align: center;
+            padding: .6em .2em;
+        }
+
+    %icon-positioned{
+        position: absolute;
+        font-size: 2.44rem; 
+        top: .25em;
+        left: .4em;
+        color: lighten($c_grey, 20%);
+    }
+
+    %row-item{
+        background:#fff;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin: .5em 0;
+        padding: 1rem 2%;
+        position: relative;
+        cursor: pointer;
+        @include boxshadow(0 1px 1px rgba(0,0,0,.2));
+    }
