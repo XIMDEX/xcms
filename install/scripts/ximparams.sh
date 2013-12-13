@@ -114,8 +114,8 @@ function setHost
 		sql "UPDATE Config SET ConfigValue='$XIMDEX_PARAMS_HOST' WHERE ConfigKEY='UrlRoot';"
 		next_step
 	else
-	   echo "Ximdex host not found. "
-	   question="Do you want to retry? [(y)es/n(o)/(c)ancel installation]: "
+	   echo "Ximdex host couldn't be verified. Maybe it doesn't exist or has authentication. "
+	   question="Do you want to rewrite? (y)es/(n)o/(c)ancel installation]: "
             echo -n "$question"
             read option
             while [ "$option" != 'Y' ] && [ "$option" != 'y' ] && [ "$option" != 'n' ] && [ "$option" != 'N' ] && [ "$option" != 'c' ] &&     [ "$option" != 'C' ]
