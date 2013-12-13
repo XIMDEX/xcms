@@ -241,7 +241,13 @@ do
 		3)
 		#launch ximparams
 		$(chmod +x $SCRIPT_PATH/scripts/ximparams.sh)
-		( $SCRIPT_PATH/scripts/ximparams.sh -i -n );;
+		( $SCRIPT_PATH/scripts/ximparams.sh -i -n )
+		result="$?"
+		if [ "$result" != 0 ];
+		then
+		  exit $result
+		fi
+		;;
 
 		4)
 		#maintenance_tasks

@@ -101,21 +101,40 @@ function setHost
 	  XIMDEX_PARAMS_HOST="http://localhost/$HOST";
 	  if [ $INTERACTIVE = 1 ]
 	 then
-	  echo -n "Ximdex Host [$XIMDEX_PARAMS_HOST]: "
+	  echo -n "Ximdex Host Url [$XIMDEX_PARAMS_HOST]: "
 	  read option
 	  XIMDEX_PARAMS_HOST=${option:-$XIMDEX_PARAMS_HOST}
 	  fi
 	fi
 
   test=$(wget --spider $XIMDEX_PARAMS_HOST/README.md 2>/dev/null)
-
+   
    if [ $? = 0 ] &&  [ -n "$XIMDEX_PARAMS_HOST" ]
 	then
 		sql "UPDATE Config SET ConfigValue='$XIMDEX_PARAMS_HOST' WHERE ConfigKEY='UrlRoot';"
 		next_step
 	else
 	   echo "Ximdex host not found. "
-	  XIMDEX_PARAMS_HOST=''
+	   question="Do you want to retry? [(y)es/n(o)/(c)ancel installation]: "
+            echo -n "$question"
+            read option
+            while [ "$option" != 'Y' ] && [ "$option" != 'y' ] && [ "$option" != 'n' ] && [ "$option" != 'N' ] && [ "$option" != 'c' ] &&     [ "$option" != 'C' ]
+                 do
+                   echo -n "$question"
+                   read option
+                 done
+ 
+            if [ "$option" == 'n' ] || [ "$option" == 'N' ]
+                 then
+                 sql "UPDATE Config SET ConfigValue='$XIMDEX_PARAMS_HOST' WHERE ConfigKEY='UrlRoot';"
+                 next_step
+            elif [ "$option" == 'C' ] || [ "$option" == 'c' ]
+		then
+		exit 1; 
+	    else	
+	  	XIMDEX_PARAMS_HOST=''
+            fi
+
 	fi
 }
 
@@ -295,7 +314,7 @@ function setXimdexUuid
 
   echo -n "Getting Ximdex identifier... "
   HOSTNAME=$(hostname)
-  HOSTNAME=${HOSTNAME:-locahlost}
+  HOSTNAME=${HOSTNAME:-localhost}
   XIMDEX_UUID=$(wget -T 3 -q -O - http://xid.ximdex.net/stats/getximid.php?host=$HOSTNAME);
 
   if [ $? != 0 ] ||  [ -z "$XIMDEX_UUID" ]
