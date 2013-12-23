@@ -37,14 +37,17 @@ X.actionLoaded(function(event, fn, params) {
 	clearErrors();
 	show_local_fields();
 
-	fn('#protocol').change(show_local_fields);
+	fn('#protocol input[type="radio"]').click(show_local_fields);
 
-	fn('select#serverid').change(function() {
 
-		var urler = fn('#nodeURL').val() + '&serverid=' + fn('#serverid option:selected').val();
+
+	//On click, reload the action with the selected server ir. this will return the action with the input's value
+	fn('div#serverid .row_item_selectable').click(function() {
+		var urler = fn('#nodeURL').val() + '&serverid=' + fn(this).attr("value");
 		fn('#mdfsv_form').attr('action', urler);
-
 		fm.sendForm();
+
+		return false;
 	});
 
 
@@ -60,7 +63,13 @@ X.actionLoaded(function(event, fn, params) {
 		}
 	});
 
-
+	//On click, reload the action without server id, so the inputs will be empty.
+	fn("div.create-server").click(function(e){
+		var urler = fn("#nodeURL").val();
+		fn("#mdfsv_form").attr("action", urler);
+		fm.sendForm();
+		return false;
+	});
 	fn('a#create_server').get(0).beforeSubmit.add(function(event) {
 
 		clearErrors();
@@ -143,12 +152,13 @@ X.actionLoaded(function(event, fn, params) {
 
 	function show_local_fields() {
 
-		if (fn('#protocol').val() == 'LOCAL') {
+		if (fn(this).attr("value") == 'LOCAL') {
 
 			var url = fn("input[name=url]");
 
 			if( null == url.val() || "" == url.val() ) {
 				url.val(url_root+"/data/previos");
+
 			}
 
 			fn('#labelUrl').text('URL');
@@ -157,14 +167,9 @@ X.actionLoaded(function(event, fn, params) {
 			if( null == directory.val() || "" == directory.val() ) {
 				directory.val(ximdex_root+"/data/previos/");
 			}
-
 			fn('#labelDirectorio').text(_('Directory'));
 			fn('#labeldirRemota').text(_('Address'));
-			fn('.password').hide();
-			fn('.password2').hide();
-			fn('.port').hide();
-			fn('.login').hide();
-			fn('.host').hide();
+			fn('.not_local').hide();
 
 		} else {
 

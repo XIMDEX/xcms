@@ -438,6 +438,7 @@ position: absolute;
 	position: relative;
 	padding-left: 3.5em;
 	cursor: pointer;
+	white-space: nowrap;
 }
 
 .input-slide + .label-slide::before, .input-slide + .label-slide::after{
@@ -1171,6 +1172,11 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
 	@include boxshadow(0 1px 1px rgba(0,0,0,.2));
 }
 
+.row_item_selectable{
+	@extend .row-item;
+	cursor: pointer;
+}
+
 .row-item {
 	.col1-2, .col1-3{
 	display: inline-block;
@@ -1564,7 +1570,7 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
         }
       }
 
-  	&.folder-normal::before, &.folder-news::before{
+  	&.folder-name::before{
   		position: absolute;
   		left: .8em;
   		top: 0;

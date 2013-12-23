@@ -32,54 +32,59 @@ ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.c
 class Action_addsectionnode extends ActionAbstract {
 	
     	function index () {
-		$this->addCss('/actions/addsectionnode/resources/css/style.css');
-
-		$nodeID = $this->request->getParam("nodeid");
-		$action = $this->request->getParam("action");
-		$type_sec = $this->request->getParam("type_sec");
-
-		$nt=5015;	
-		if(empty($type_sec)){
-			$type_sec=1;
-		}
-
-		$sectionType = new SectionType();
-		$sectionTypes = $sectionType->find(ALL);
-		reset($sectionTypes);
-		while(list(, $sectionTypeInfo) = each($sectionTypes)) {
-			if (empty($sectionTypeInfo['module']) || ModulesManager::isEnabled($sectionTypeInfo['module'])) {
-				$sectionTypeOptions[] = array('id' => $sectionTypeInfo['idSectionType'], 'name' => $sectionTypeInfo['sectionType']);
-				if($type_sec==$sectionTypeInfo['idSectionType']){
-					$nt=$sectionTypeInfo['idNodeType'];
-				}
-			}
-		}
-		$sectionTypeCount = count($sectionTypeOptions);
-
-		// Getting languages
-		$languageOptions = $this->_getLanguages($nodeID);
-		$languageCount = sizeof($languageOptions);
-
-		$subfolders=$this->_getAvailableSubfolders($nt);
-
-		//add a js for validation and hidden or display elements about the protocol selected
-                $this->addJs('/actions/addsectionnode/resources/js/index.js');
-
-        	$values = array('nodeID' => $nodeID,
-				'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?action='.$action.'&nodeid='.$nodeID,
-				'sectionTypeOptions' => $sectionTypeOptions,
-				'sectionTypeCount' => $sectionTypeCount,
-				'selectedsectionType' => $type_sec,
-				'languageOptions' => $languageOptions,
-				'languageCount' => $languageCount,
-				'subfolders' => $subfolders,
-				'go_method' => 'addsectionnode',
-				);
-		$this->render($values, null, 'default-3.0.tpl');
+		$this->loadResources();
+		$this->render($this->loadValues(), null, 'default-3.0.tpl');
     	}
     
-    	function addsectionnode() {
+	protected function loadValues(){
+		$nodeID = $this->request->getParam("nodeid");
+                $action = $this->request->getParam("action");
+                $type_sec = $this->request->getParam("type_sec");
 
+		$nt=5015;       
+                if(empty($type_sec)){
+                        $type_sec=1;
+                }
+
+                $sectionType = new SectionType();
+                $sectionTypes = $sectionType->find(ALL);
+                reset($sectionTypes);
+                while(list(, $sectionTypeInfo) = each($sectionTypes)) {
+                        if (empty($sectionTypeInfo['module']) || ModulesManager::isEnabled($sectionTypeInfo['module'])) {
+                                $sectionTypeOptions[] = array('id' => $sectionTypeInfo['idSectionType'], 'name' => $sectionTypeInfo['sectionType']);
+                                if($type_sec==$sectionTypeInfo['idSectionType']){
+                                        $nt=$sectionTypeInfo['idNodeType'];
+                                }
+                        }
+                }
+                $sectionTypeCount = count($sectionTypeOptions);
+
+                // Getting languages
+                $languageOptions = $this->_getLanguages($nodeID);
+                $languageCount = sizeof($languageOptions);
+
+                $subfolders=$this->_getAvailableSubfolders($nt);
+
+                $values = array('nodeID' => $nodeID,
+                                'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?action='.$action.'&nodeid='.$nodeID,
+                                'sectionTypeOptions' => $sectionTypeOptions,
+                                'sectionTypeCount' => $sectionTypeCount,
+                                'selectedsectionType' => $type_sec,
+                                'languageOptions' => $languageOptions,
+                                'languageCount' => $languageCount,
+                                'subfolders' => $subfolders,
+                                'go_method' => 'addsectionnode',
+                                );
+
+		return $values;
+	}
+
+	protected function loadResources(){
+                $this->addJs('/actions/addsectionnode/resources/js/index.js');
+		$this->addCss('/actions/addsectionnode/resources/css/style.css');
+	}
+
+    	function addsectionnode() {
 	   	$nodeID = $this->request->getParam('nodeid');
 		$name = $this->request->getParam('name');
 		$nodeType = $this->request->getParam('nodetype');
@@ -164,7 +169,7 @@ class Action_addsectionnode extends ActionAbstract {
 		return $res;
 	}
 
-	private function _getDescription($nodetype){
+	protected function _getDescription($nodetype){
 		switch($nodetype){
 			case "5018": return "This is the main repository for all your XML contents. It's the most important folder in a section.";
 			case "5016": return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";

@@ -387,7 +387,8 @@ input[type="checkbox"] + label, input[type="radio"] + label {
 .label-slide {
   position: relative;
   padding-left: 3.5em;
-  cursor: pointer; }
+  cursor: pointer;
+  white-space: nowrap; }
 
 .input-slide + .label-slide::before, .input-slide + .label-slide::after {
   content: '';
@@ -1075,7 +1076,7 @@ li.toggable:not(.editing) h3:hover .animated_arrow {
 .col1-2 {
   width: 48%; }
 
-.row-item {
+.row-item, .row_item_selectable {
   background: #fff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -1088,7 +1089,10 @@ li.toggable:not(.editing) h3:hover .animated_arrow {
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
 
-.row-item .col1-2, .row-item .col1-3 {
+.row_item_selectable {
+  cursor: pointer; }
+
+.row-item .col1-2, .row_item_selectable .col1-2, .row-item .col1-3, .row_item_selectable .col1-3 {
   display: inline-block;
   vertical-align: middle; }
 
@@ -1409,7 +1413,7 @@ select {
       font-size: 1.3rem;
       padding: 1.1em 1.8em .8em;
       cursor: auto; }
-  .input-select.folder-normal::before, .input-select.folder-news::before {
+  .input-select.folder-name::before {
     position: absolute;
     left: .8em;
     top: 0;

@@ -53,7 +53,7 @@
 			<div id="serverid" class='server-name col1-3'>
 				<div class="create-server btn main_action">{t}Create new server{/t}</div>
 				{foreach from=$servers item=_server}
-				<div id="server{$_server.Id}" class="row-item {if ($_server.Id eq $server.id)}selected{/if}" value="{$_server.Id}" >{$_server.Description}
+				<div id="server{$_server.Id}" class="row_item_selectable {if ($_server.Id eq $server.id)}selected{/if}" value="{$_server.Id}" >{$_server.Description}
 				</div>
 				{/foreach}
 			</div>

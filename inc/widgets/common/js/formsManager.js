@@ -35,8 +35,6 @@ X.FormsManager = Object.xo_create({
 
 	_init: function(options) {
 
-//		console.info('FormsManager: ', this);
-
 		this.options = Object.extend({
 			actionView: null,
 			iframeId: '',
@@ -194,7 +192,7 @@ X.FormsManager = Object.xo_create({
 		this.options.iframeId = 'form_sender_' + formId;
 
 		// Validate the form
-		if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') === null) {
+		if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {
 			$(this.options.form).validate({rules: this._getConstraints(this.options.form)});
 		}
 

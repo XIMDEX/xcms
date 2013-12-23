@@ -23,37 +23,48 @@
  *  @version $Revision$
  */
 
+
 X.actionLoaded(function(event, fn, params) {
+
 	var form = params.actionView.getForm('as_form');
 	var fm = form.getFormMgr();
 	var submit = fn('.validate').get(0);
-	
+
 	fn('select#type_sec').change(function() {
-                var urler = fn('#nodeURL').val() + '&type_sec=' + fn('#type_sec option:selected').val();
+		var type= fn('#type_sec option:selected').val();
+               	var urler = fn('#nodeURL').val() + '&type_sec=' + type;
+		if(type==4){
+			urler=fn('#nodeURL').val().replace("addsectionnode","createcatalog") + '&type_sec=' + type + '&mod=xlyre';
+		}
+
                 fn('#as_form').attr('action', urler);
+
                 fm.sendForm();
+		
         });
 
 	if(fn('#type_sec option:selected').text()=="ximNEWS"){
-		$("div.folder-name").removeClass("folder-normal").addClass("folder-news"); 
+		$("div.folder-name").removeClass("folder-normal").addClass("folder-news");
 	}
 	else{
 		$("div.folder-name").removeClass("folder-news").addClass("folder-normal");
 	}
 
-	fn(".subfolder > label.icon").click(function(){ 
-                        var readonly = $(this).prev().attr("readonly"); 
-                        if(readonly && readonly.toLowerCase()!=='false') { 
-                                return false; 
-                        } 
-   	}); 
+	fn(".subfolder > label.icon").click(function(){
+			var readonly = $(this).prev().attr("readonly");
+			if(readonly && readonly.toLowerCase()!=='false') {
+                                return false;
+                        }
+		});
+	
 
 	submit.beforeSubmit.add(function(event, button) {
-		if(!fn("form#as_form input[name='folderlst[]']").is(":checked")){
-			alert("You cannot create an empty section. Please, click at least one of the allowed subfolders.");
-                  	event.preventDefault();
-                 	event.stopPropagation();
-                 	return true;
-		}
-      	});
+    		if(!fn("form#as_form input[name='folderlst[]']").is(":checked")){
+      			alert("You cannot create an empty section. Please, click at least one of the allowed subfolders.");
+                    	event.preventDefault();
+                   	event.stopPropagation();
+                   	return true;
+   		}
+        });
+
 });

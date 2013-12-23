@@ -109,16 +109,14 @@ class BaseIO {
 
 		$nodeTypeClass = strtoupper($data['CLASS']);
 		$nodeTypeName = strtoupper($data['NODETYPENAME']);
+		$metaType = ""; 
 		if (array_key_exists($nodeTypeClass, $metaTypesArray)) {
 			$metaType = $metaTypesArray[$nodeTypeClass];
 		}
 
 		// upper all the indexes in data.
 		$aux = array();
-		foreach ($data as $idx => $item) {
-			$aux[strtoupper($idx)] = $item;
-		}
-		$data = $aux;
+		$data = $this->dataToUpper($data);
 
 		if (!($this->_checkPermissions($nodeTypeName, $userid, WRITE) || $this->_checkName($data))) {
 			XMD_Log::error(_('Node could not be inserted due to lack of permits'));
@@ -148,7 +146,10 @@ class BaseIO {
 			$this->messages->add(_('Node name was not specified'), MSG_TYPE_ERROR);
 			return ERROR_INCORRECT_DATA;
 		}
+		return $this->createNode($data, $metaType, $nodeTypeClass, $nodeTypeName);
+	}
 
+	protected function createNode($data, $metaType, $nodeTypeClass, $nodeTypeName){
 		switch ($metaType) {
 			/* folder nodes */
 			case 'FOLDERNODE' :
@@ -581,13 +582,8 @@ class BaseIO {
 			$metaType = $metaTypesArray[$nodeTypeClass];
 		}
 
-		// upper all the indexes in data.
-		$aux = array();
-		foreach ($data as $idx => $item) {
-			$aux[strtoupper($idx)] = $item;
-		}
-		$data = $aux;
-
+		// upper all the indexes in data and the nodetypename.
+		$data = $this->dataToUpper($data); 
 		$nodeTypeName = strtoupper($data['NODETYPENAME']);
 
 		if (!($this->_checkPermissions($nodeTypeName, $userid, UPDATE) || $this->_checkName($data))) {
@@ -1365,6 +1361,20 @@ class BaseIO {
 
 		return $data;
 	}
+
+	/** 
+         * Set to upper case all the keys in $data array. 
+         * @param  array $data Array with key to upper. 
+         * @return array       The same array with all the keys in uppercase. 
+         */ 
+        protected function dataToUpper($data){ 
+	 
+                $aux = array(); 
+                foreach ($data as $idx => $item) { 
+                        $aux[strtoupper($idx)] = $item; 
+                } 
+                return $aux; 
+        } 
 }
 
 ?>

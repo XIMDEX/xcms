@@ -42,6 +42,8 @@ class Action_createxmlcontainer extends ActionAbstract {
 		$nt = $node->GetNodeType();
 		$idNode = $node->get('IdNode');
 
+		$this->addJs("/actions/createxmlcontainer/resources/js/validate.js"); 
+
 		if (empty($idNode)) {
 			// Why die ? show error to user.
 			die(_("Error with parameters"));
@@ -98,7 +100,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 			'reload_tree' => $reloadTree
 		);
 
-		$this->render($values, 'index', 'default-3.0.tpl');
+		$this->render($values, null, 'default-3.0.tpl');
 
     	}
 
@@ -113,7 +115,7 @@ class Action_createxmlcontainer extends ActionAbstract {
     			$this->messages->add(_('An error ocurred estimating parent node,')
     			._(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
     			$values = array('name' => 'Desconocido','messages' => $this->messages->messages);
-    			$this->render($values, null, 'default-3.0.tpl');
+    			$this->render($values, null, 'messages.tpl');
     			return false;
     		}
 
@@ -154,7 +156,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 				'nodeName' => $name,
 				'messages' => $this->messages->messages,
         		);
-        		$this->render($values, null, 'default-3.0.tpl');
+        		$this->render($values, null, 'messages.tpl');
         		return false;
         	} else {
         		$this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);

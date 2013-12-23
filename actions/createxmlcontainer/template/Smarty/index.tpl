@@ -37,7 +37,7 @@
 	<div class="action_content icon">
 	<fieldset>
 		<div class="input-select icon document">
-				<input type="text" name="name" id="docname" class="cajaxg validable not_empty full-size" placeholder="{t}Name of your ximlet{/t}"/>
+				<input type="text" name="name" id="docname" class="cajaxg validable not_empty full-size" placeholder="{t}Name of your document{/t}"/>
 			
 			
 				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty document-type">
@@ -46,10 +46,10 @@
 						<option value="{$schema.idSchema}">{$schema.Name}</option>
 					{/foreach}
 				</select>
+			</div>
 				{if $schemes|@count==0}
 					<p>No metadata schemes found. Maybe you need to set the type of your RNG schema.<br/>Perform the 'Properties of RNG template' action on your schema in order to change its type.</p>
 				{/if}
-			</div>
 	
 	{include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}
 	</fieldset>

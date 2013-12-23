@@ -59,7 +59,7 @@
 
 // :checked + label strong::after, se elimina de la lista porque es demasiado genérico y afecta a secciones como  Publicar sección
 .recover-btn::before,  .checkbox-label::before, .progress.complete::before,
-.theme-selection .select::before {
+.theme-selection .select::before, .subfolder :checked + label strong::after  {
   content: "\0079";
 }
 
@@ -258,4 +258,21 @@
 
 .text::before{
   content: "\e601";
+}
+
+
+  /**************
+  // Add Sections
+  ***************/
+
+  .datasets{
+   .subfolder label::after{
+    content: "\e606";
+    
+   }
+
+   .add::after{
+      content: '\e038';
+    
+   }
 }

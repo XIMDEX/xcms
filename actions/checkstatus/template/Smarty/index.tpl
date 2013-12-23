@@ -36,7 +36,7 @@
 		
 	{foreach from=$files key=state item=statenode}
 				
-		<div class="state-info row-item">
+		<div class="state-info row-item_selectable">
 			
 				<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>  <div class="docs-amount right">{$statesFull[{$state}].count}</div>
 			<!--{if $statesFull[{$state}].count > 1}

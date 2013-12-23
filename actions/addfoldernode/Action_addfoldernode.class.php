@@ -25,8 +25,6 @@
  */
 
 
-
-
 class Action_addfoldernode extends ActionAbstract {
 	// Main Method: shows the initial form
     	function index() {
@@ -78,7 +76,6 @@ class Action_addfoldernode extends ActionAbstract {
 		$this->render($values, $template, 'default-3.0.tpl');
     	}
 
-	// Fuction AddNode adds the folder node in fuction of the kind "add"
 	function addNode() {
 		$nodeID = $this->request->getParam("nodeid");
 		$name = $this->request->getParam("name");
@@ -116,7 +113,6 @@ class Action_addfoldernode extends ActionAbstract {
 	}
 
 	function addSectionNode () {
-
 		$nodeID = $this->request->getParam("nodeid");
 		$name = $this->request->getParam("name");
 
@@ -133,7 +129,6 @@ class Action_addfoldernode extends ActionAbstract {
 
 		$folder = new Node();
 		$idFolder = $folder->CreateNode($name, $nodeID, $nodeType->GetID(), null);
-//		$ret = $folder->numErr;
 
 	    	if ($idFolder > 0) {
 	    		foreach ($aliasLangArray as $langID => $longName) {
@@ -143,7 +138,6 @@ class Action_addfoldernode extends ActionAbstract {
 	        	}
 	    	}
 
-//		$ret = ($ret) ? "false" : "true";
 		$this->reloadNode($nodeID);
 
 		$arrValores = array ("nodeId" => $nodeID,
@@ -154,10 +148,8 @@ class Action_addfoldernode extends ActionAbstract {
 		$this->render($arrValores);
 	}
 
-	// Identifying node type to allocate its propierties
 	function GetTypeOfNewNode($nodeID) {
-
-		// can it be made a query which ask what a foldernode can contain?
+//TODO: change this switch sentence for a query to the NodeAllowedContents table to check what subfolders can contain.
 		$node = new Node($nodeID);
 		if (!$node->get('IdNode') > 0) {
 			return null;
@@ -268,6 +260,10 @@ class Action_addfoldernode extends ActionAbstract {
 			case "XimNewsSection":
 				$newNodeTypeName ="XimNewsNews";
 				$friendlyName =  "XimNEWS new folder";
+			break;
+			case "OpenDataSection":
+				$newNodeTypeName ="OpenDataDataset";
+				$friendlyName =  "Dataset";
 			break;
 
 			default:

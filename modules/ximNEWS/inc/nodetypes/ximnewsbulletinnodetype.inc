@@ -423,12 +423,12 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 						XMD_log::error("Error in batch down creation for bulletin $idBulletin");
 					}
 
-					$colectorID = $this->get('IdColector');
-					$colector = new newscolector($colectorID);
+					$bul = new XimNewsBulletin($this->nodeID);
+                                        $colectorID = $bul->get('IdColector');
 
 					if ($this->isBulletinForXimlet($colectorID)) {
 						XMD_log::info("The bulletin is from a ximlet which re-publish documents");
-						$ximNewsBulletin = new XimNewsBulletin($this->get('IdBulletin'));
+						$ximNewsBulletin = new XimNewsBulletin($this->nodeID);
 						$ximletID = $ximNewsBulletin->getBulletinXimlet();
 
 						$ximletNode = new Node($ximletID);
