@@ -151,7 +151,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6119,5048,'Delete folder','deletenode','delete_link_folder.png','Delete selected folder',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6120,5049,'Delete link','deletenode','delete_link.png','Delete selected link',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6124,5018,'Modify view template','changetemplateview','xix.png','Modify template for all documents of the directory',0,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6125,5014,'Modify sync data','modifyserver','modify_sinc_data.png','Modify connection data with the production environment',60,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6125,5014,'Manage servers','modifyserver','modify_sinc_data.png','Modify connection data with the production environment',60,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6126,5039,'Publish','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6127,5039,'Move to previous state','workflow_backward','change_last_state.png','Move a text document to the previous state',-10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6128,5041,'Publish','workflow_forward','change_next_state.png','Move a text document to the next state',72,NULL,0,'');
@@ -446,7 +446,6 @@ CREATE TABLE `Config` (
 --
 -- Dumping data for table `Config`
 --
-
 
 /*!40000 ALTER TABLE `Config` DISABLE KEYS */;
 LOCK TABLES `Config` WRITE;
@@ -1281,7 +1280,7 @@ INSERT INTO `Nodes` VALUES (6121,5036,5008,'Delete',NULL,NULL,NULL,NULL,NULL,NUL
 INSERT INTO `Nodes` VALUES (6122,5013,5008,'Associated groups',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6123,5014,5008,'Associated groups',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6124,5018,5008,'Modify view template',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6125,5014,5008,'Modify sync data',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6125,5014,5008,'Manage servers',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6126,5039,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6127,5039,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6128,5041,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);

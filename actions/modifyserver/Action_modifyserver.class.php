@@ -128,33 +128,27 @@ class Action_modifyserver extends ActionAbstract {
 	}
 
 	function modify_server() {
-
-
-
-
 		$idNode		= (int) $this->request->getParam("nodeid");
 		$actionID	= (int) $this->request->getParam("actionid");
-		$params = $this->request->getParam("params");
-
-		$nodeID			= $this->request->getParam('nodeid');
-		$serverID		= $this->request->getParam('serverid');
-		$protocol		= $this->request->getParam('protocol');
-		$host			= $this->request->getParam('host');
-		$port			= $this->request->getParam('port');
-		$initialDir		= $this->request->getParam('initialdirectory');
-		$url			= $this->request->getParam('url');
-		$login			= $this->request->getParam('login');
-		$password		= $this->request->getParam('password');
-		$password2		= $this->request->getParam('password2');
+		$params 	= $this->request->getParam("params");
+		$nodeID		= $this->request->getParam('nodeid');
+		$serverID	= $this->request->getParam('serverid');
+		$protocol	= $this->request->getParam('protocol');
+		$host		= $this->request->getParam('host');
+		$port		= $this->request->getParam('port');
+		$initialDir	= $this->request->getParam('initialdirectory');
+		$url		= $this->request->getParam('url');
+		$login		= $this->request->getParam('login');
+		$password	= $this->request->getParam('password');
 		$description	= $this->request->getParam('description');
-		$enabled		= $this->request->getParam('enabled');
-		$preview		= $this->request->getParam('preview');
-		$override		= $this->request->getParam('overridelocalpaths');
-		$actionID		= $this->request->getParam('actionid');
-		$channels		= $this->request->getParam('channels');
-		$states			= $this->request->getParam('states');
-		$languages		= $this->request->getParam('languages');
-		$encode			= $this->request->getParam('encode');
+		$enabled	= $this->request->getParam('enabled');
+		$preview	= $this->request->getParam('preview');
+		$override	= $this->request->getParam('overridelocalpaths');
+		$actionID	= $this->request->getParam('actionid');
+		$channels	= $this->request->getParam('channels');
+		$states		= $this->request->getParam('states');
+		$languages	= $this->request->getParam('languages');
+		$encode		= $this->request->getParam('encode');
 		$isServerOTF 	= $this->request->getParam('serverOTF');
 
 		//validate the fields about protocol
@@ -178,7 +172,7 @@ class Action_modifyserver extends ActionAbstract {
 
 
 
-		if ($this->_validate($protocol,$host,$port,$initialDir,$url,$login,$password,$password2,$description)){
+		if ($this->_validate($protocol,$host,$port,$initialDir,$url,$login,$password,$description)){
 
 			$node = new Node($nodeID);
 
@@ -271,7 +265,7 @@ class Action_modifyserver extends ActionAbstract {
 	 * Function for validation the fields
 	 *
 	 */
-	private function _validate($protocol,$host,$port,$initialDir,$url,$login,$password,$password2,$description){
+	private function _validate($protocol,$host,$port,$initialDir,$url,$login,$password,$description){
 		$validation = true;
 
 		if ($protocol == 'LOCAL'){
@@ -284,8 +278,8 @@ class Action_modifyserver extends ActionAbstract {
 				$validation=false;
 			}
 		}else if (($protocol == 'FTP') || ($protocol == 'SSH')){
-			if ((!$password) || (!$password2) || ($password!=$password2)){
-				$this->messages->add(_("Passwords do not match"), MSG_TYPE_ERROR);
+			if ((!$password)){
+				$this->messages->add(_("A password is required"), MSG_TYPE_ERROR);
 				$validation=false;
 			}
 			if ((!$initialDir) || ($initialDir=='')){

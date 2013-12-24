@@ -23,63 +23,65 @@
  *  @version $Revision$
  *}
 
-
-{if count($ximlet_list) > 0 }
+{if count($linked_ximlets) > 0 }
 <form method="post" id="delete_rel" class="delete_rel" action="{$action_delete}">
-	<div class="action_header">
-		<h2>{t}Associated ximlets{/t}</h2>
-		<fieldset class="buttons-form">
-			{button label="Disassociate" class='validate button-delete' }<!--message="Are you sure you want to disassociate it?"-->
-		</fieldset>
-	</div>
-<div class="action_content">
 
-	<fieldset>
-		<ol>
-			<input type="hidden" name="id_node" value="{$id_node}" />
-			{foreach from=$ximlet_list item=ximlet_info}
-			<li>
-				<input type="checkbox" name="idximlet[]" value="{$ximlet_info.idximlet}" />
-				<label for="idximlet"><strong>{$ximlet_info.path}</strong></label>
+<fieldset>
+	<p>{t}The associated ximlets will appear in every single XML document of this section{/t}.</p>
+</fieldset>
 
-			</li>
-			{/foreach}
-		</ol>
-	</fieldset>
-</div>
+<fieldset>
+	<legend><span>{t}Ximlets already associated{/t}</span></legend>
+	<ol>
+		<input type="hidden" name="id_node" value="{$id_node}" />
+		{foreach from=$linked_ximlets item=ximlet_info}
+		<li>
+			<label for="idximlet_{$ximlet_info.idximlet}">
+			<input type="checkbox" id="idximlet_{$ximlet_info.idximlet}" name="idximlet[]" value="{$ximlet_info.idximlet}" />
+			<strong>{$ximlet_info.path}</strong></label>
 
+		</li>
+		{/foreach}
+	</ol>
+</fieldset>
+<fieldset>
+	<input type="checkbox" name="recursive" id="recursive" /> {t}Disassociate recursively{/t}.
+	<p>{t}If the current section/server has subfolders, the disassociation will be deleted for them too{/t}.</p>
+</fieldset>
+
+<fieldset class="buttons-form">
+	{button label="Disassociate" class='validate button-delete' }<!--message="Are you sure you want to disassociate it?"-->
+</fieldset>
 
 </form>
 {/if}
 
-
+{if count($linkable_ximlets) > 0 }
 <form id="create_rel" class="create_rel" action="{$action_create}" method="post">
-	<div class="action_header">
-<h2>{t}Associate ximlet with section{/t} "{$name}"</h2>
-			<fieldset class="buttons-form">
-	{button label="Associate" class='validate button-assoc btn main_action' }<!--message="Would you like to associate this section with the ximlet?"-->
+
+<fieldset>
+	<legend><span>{t}Available Ximlets{/t}</span> </legend>
+	<ol>
+		<input type="hidden" id="id_node" name="id_node" value="{$id_node}" />
+		{foreach from=$linkable_ximlets item=ximlet}
+                <li>
+			<label for="idximletavailable_{$ximlet.idximlet}">
+                        <input type="checkbox" name="idximlet[]" id="idximletavailable_{$ximlet.idximlet}" value="{$ximlet.idximlet}" />
+                        <strong>{$ximlet.path}</strong></label>
+                </li>
+                {/foreach}
+	</ol>
 </fieldset>
-	</div>
+<fieldset>
+	<input type="checkbox" name="recursive" id="recursive" /> {t}Associate recursively{/t}.
+	<p>{t}If the current section/server has subfolders, the association will be created for them too{/t}.</p>
+</fieldset>
 
-<div class="action_content">
-	<fieldset>
-		<ol>
-			<li>
-				<label for="pathfield" class="aligned">{t}Ximlet to associate with:{/t}</label><treeview class="xim-treeview-selector"
-					paginatorShow="yes" />
-			</li>
-			<li>
-
-					<input type="hidden" id="id_node" name="id_node" value="{$id_node}" />
-					<input type="hidden" id="contenttype" value="5056" />
-					<input type="hidden" id="targetfield" name="targetfield" value="" />
-					<!-- <input type="text" readonly name="pathfield" id="pathfield" value="" class="validable not_empty" /> -->
-					<input value="1" type="checkbox" name="recursive" id="recursive" /> {t}Associate recursively {/t}
-			</li>
-		</ol>
-	</fieldset>
-</div>
-
-
+<fieldset class="buttons-form">
+	{button label="Associate" class='validate button-assoc' }<!--message="Would you like to associate this section with the ximlet?"-->
+</fieldset>
 
 </form>
+	{else}
+		<p>{t}There aren't any ximlets to associate{/t}.</p>
+	{/if}

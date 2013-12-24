@@ -86,10 +86,9 @@ X.actionLoaded(function(event, fn, params) {
 		} else if ((protocolSelected == 'FTP') || (protocolSelected == 'SSH')) {
 
 			var pw1 = fn('#password').val();
-			var pw2 = fn('#password2').val();
 
-			if (empty(pw1) || empty(pw2) || pw1 != pw2) {
-				addError(_('Passwords do not match'));
+			if (empty(pw1)) {
+				addError(_('A password ir required.'));
 			} else if (empty(fn('#initialdirectory').val())) {
 				addError(_('It is necessary to specify a remote directory.'));
 			} else if (empty(fn('#url').val())) {
@@ -177,7 +176,6 @@ X.actionLoaded(function(event, fn, params) {
 			fn('#labelDirectorio').text(_('Remote directory'));
 			fn('#labeldirRemota').text(_('Remote address'));
 			fn('.password').show();
-			fn('.password2').show();
 			fn('.port').show();
 			fn('.login').show();
 			fn('.host').show();

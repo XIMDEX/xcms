@@ -23,12 +23,12 @@
 
 msgid ""
 msgstr ""
-"Project-Id-Version: Ximdex 3.5\n"
-"Report-Msgid-Bugs-To: dev@ximdex.com"
-"POT-Creation-Date: 2013-09-29 09:18+0100\n"
-"PO-Revision-Date: 2013-09-29 09:18+0100\n"
-"Last-Translator: Ximdex Development Team <dev@ximdex.com>\n"
-"Language-Team: Ximdex Team <dev@ximdex.com>\n"
+"Project-Id-Version: Ximdex 3.4\n"
+"Report-Msgid-Bugs-To: dev@ximdex.org"
+"POT-Creation-Date: 2011-09-29 09:18+0100\n"
+"PO-Revision-Date: 2011-09-29 09:18+0100\n"
+"Last-Translator: Laura Ortiz <lortiz@ximdex.com>\n"
+"Language-Team: Ximdex Team <dev@ximdex.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -48,7 +48,7 @@ msgstr "Accede a %s"
 msgid "Without space in hard disk. Available only %sMB when it's need %sMB"
 msgstr "Sin espacio en disco duro. Disponible s&oacute;lo %sMB cuando es necesario %sMB"
 
-# ################################################ ACTIONS ############################################
+#: ---------- ACTIONS ----------
 #: /actions/deletetemplates/templates/Smarty/result.tpl
 msgid "Removed templates"
 msgstr "Plantillas eliminadas"
@@ -67,15 +67,6 @@ msgstr "Archivo nuevo"
 msgid "Add empty file"
 msgstr "A&ntilde;adir archivo nuevo"
 
-msgid "Add empty stylesheet"
-msgstr "A&ntilde;adir nueva hoja de estilos"
-
-msgid "Add empty XSL template"
-msgstr "A&ntilde;adir nueva plantilla XSL"
-
-msgid "Add empty RNG schema"
-msgstr "A&ntilde;adir nuevo esquema RNG"
-
 msgid "Create a new empty file"
 msgstr "Crea un nuevo archivo vac&iacute;o"
 
@@ -85,9 +76,6 @@ msgstr "Crear un nuevo archivo"
 
 msgid "File type"
 msgstr "Tipo de Archivo"
-
-msgid "<p>The <strong>file extension</strong> is not needed.</p>"
-msgstr "<p>La <strong>extensi&oacute;n del archivo</strong> no es necesaria.</p>"
 
 #: /actions/actionsstats/template/Smarty/index.tpl
 msgid "Filter by user:"
@@ -121,6 +109,7 @@ msgstr "M&eacute;todo"
 #: /actions/filepreview/resources/js/showAll.js
 msgid "Dimensions"
 msgstr "Dimensiones"
+
 #: /actions/actionsstats/template/Smarty/index.tpl
 msgid "Percent"
 msgstr "Porcentaje"
@@ -150,53 +139,6 @@ msgstr "La creaci&oacute;n de %s se ha realizado correctamente"
 msgid "The operation has failed: %s"
 msgstr "La operaci&oacute;n ha fallado: %s"
 
-#: /install/ximdex_data/ximdex.sql table Actions
-msgid "Configure section"
-msgstr "Configurar secci&oacute;n"
-
-#: /actions/managefolders/Action_managefolders.class.php
-msgid "This section has been successfully configured."
-msgstr "Esta secci&oacute;n ha sido correctamente configurada."
-
-msgid "Are you sure you want to proceed?"
-msgstr "&iquest;Est&aacute; seguro de querer continuar?"
-
-msgid "Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that folder."
-msgstr "&iexcl;Atenci&oacute;n! Si desmarca alguna carpeta, Ximdex CMS borrar&aacute; todos los archivos que contiene."
-
-msgid "Subfolders availables"
-msgstr "Subcarpetas disponibles"
-
-msgid "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc."
-msgstr "Use esta carpeta si necesita almacenar scripts JS o archivos de texto como PDF's o MS Office documentos,etc."
-
-msgid "This is the main repository for all your XML contents. It's the most important folder in a section."
-msgstr "Este es el principal repositorio para todos sus contenidos XML. Es la carpeta m&aacute;s importante en una secci&oacute;n."
-
-msgid "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)"
-msgstr "En esta carpeta se almacenan todas las im&aacute;genes que el proyecto o secci&oacute;n necesita en los formatos gif, jpg, png, tiff, etc."
-
-msgid "Create here your own XSL Templates to redefine some particular appareance in your XML documents."
-msgstr "En esta carpeta se pueden crear nuevas plantillas XSL para personalizar aspectos propios de esta secci&oacute;n en los documentos XML."
-
-msgid "Into this folder you could store several HTML snippets that you can add directly into your XML documents"
-msgstr "En esta carpeta se pueden almacenar trozos de c&oacute;digo HTML que se incrustan directamente en los documentos XML."
-
-msgid "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents."
-msgstr "En esta carpeta se pueden crear trozos de c&oacute;digo XML que se pueden incluir en los documentos XML. Los usos t&iacute;picos son men&uacute;s, cabeceras, pies de p&aacute;gina, etc. "
-
-msgid "XimNewsSection"
-msgstr "Secci&oacute;n de Noticias"
-
-msgid "All the images used in your defined news are stored here."
-msgstr "Todas las im&aacute;genes que aparecen en las noticias son almacenadas aqu&iacute;."
-
-msgid "Into this folder you could create XML based news in several languages. This is a required folder."
-msgstr "Dentro de esta carpeta se podr&aacute;n crear noticias en formato XML en varios idiomas. Es una carpeta obligatoria."
-
-msgid "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder."
-msgstr "El m&oacute;dulo de gesti&oacute;n de noticias ximNEWS gestiona y organiza todas las noticias creadas en boletines de noticias. Esta carpeta es la que los almacena y es obligatoria."
-
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 #: /install/ximdex_data/ximdex.sql table Nodes
 #: /inc/io/BaseIO.class.php
@@ -212,7 +154,7 @@ msgstr "Crear Proyecto"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 #: /actions/workflow_forward/template/Smarty/show_results.tpl
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Nodes
 #: /inc/io/BaseIOInferer.class.php
 msgid "Server"
 msgstr "Servidor"
@@ -223,7 +165,7 @@ msgid "Section"
 msgstr "Secci&oacute;n"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
-# install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
+#: /install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
 msgid "Image folder"
 msgstr "Carpeta de im&aacute;genes"
 
@@ -235,13 +177,13 @@ msgid "XimCLUDE folder"
 msgstr "Carpeta ximCLUDE"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
-# install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
+#: /install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
 msgid "Common folder"
 msgstr "Carpeta common"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php:7
 #: /actions/addfoldernode/Action_addfoldernode.class.php:3
-# install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
+#: /install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
 msgid "CSS folder"
 msgstr "Carpeta CSS"
 
@@ -253,7 +195,7 @@ msgid "Link folder"
 msgstr "Categor&iacute;a de enlace"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
-# install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
+#: /install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
 msgid "Ximlets folder"
 msgstr "Carpeta de ximlets"
 
@@ -479,29 +421,20 @@ msgstr "La operaci&oacute;n no se ha podido completar correctamente"
 msgid "RNG %s could not be successfully inserted"
 msgstr "La RNG %s no se pudo insertar correctamente."
 
-msgid "Template %s could not be successfully inserted"
-msgstr "La plantilla %s no se pudo insertar correctamente."
+msgid "PTD %s could not be successfully inserted"
+msgstr "La PTD %s no se pudo insertar correctamente."
 
 msgid "--- Null ---"
 msgstr "--- Ninguno ---"
 
 #: /actions/addsectionnode/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Add section"
 msgstr "A&ntilde;adir secci&oacute;n"
 
 #: /actions/addsectionnode/template/Smarty/index.tpl
 msgid "Section type"
 msgstr "Tipo de secci&oacute;n"
-
-msgid "Languages availables"
-msgstr "Idiomas disponibles"
-
-msgid "Name of your section"
-msgstr "Nombre de tu secci&oacute;n"
-
-msgid "Alternative name for paths &amp; breadcrumbs"
-msgstr "Nombre alternativo para migas de pan y rutas"
 
 #: /actions/addsectionnode/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
@@ -576,25 +509,43 @@ msgid "has not been disassociated with ximlet"
 msgstr "no se ha desasociado del ximlet"
 
 #: /actions/addximlet/template/Smarty/index.tpl
-msgid "Associated ximlets"
-msgstr "Ximlets asociados"
-
 msgid "Disassociate"
 msgstr "Desasociar"
+
+msgid "The associated ximlets will appear in every single XML document of this section"
+msgstr "Los Ximlets asociados aparecer&aacute;n en cada uno de los documentos XML de esta secci&oacute;n"
 
 #: /actions/addximlet/template/Smarty/index.tpl
 #: /actions/showassocnodes/template/Smarty/index.tpl
 msgid "Associate ximlet with section"
 msgstr "Asociar Ximlet a la secci&oacute;n"
 
+msgid "Ximlets already associated"
+msgstr "Ximlets ya asociados"
+
 #: /actions/addximlet/template/Smarty/index.tpl
 msgid "Ximlet to associate with:"
 msgstr "Ximlet a asociar:"
 
+msgid "If the current section/server has subfolders, the association will be created for them too"
+msgstr "Si la secci&oacute;n/servidor tienen subsecciones, la asociaci&oacute;n se crear&aacute; tambi&eacute;n para ellas"
+
+msgid "If the current section/server has subfolders, the association will be deleted for them too"
+msgstr "Si la secci&oacute;n/servidor tienen subsecciones, la asociaci&oacute;n ser&aacute; borrada tambi&eacute;n para ellas"
+
 #: /actions/addximlet/template/Smarty/index.tpl
 #: /actions/showassocnodes/template/Smarty/index.tpl
-msgid "Associate recursively "
-msgstr "Asociar recursivamente "
+msgid "Associate recursively"
+msgstr "Asociar recursivamente"
+
+msgid "Disassociate recursively"
+msgstr "Desasociar recursivamente"
+
+msgid "Available Ximlets"
+msgstr "Ximlets disponibles"
+
+msgid "There aren't any ximlets to associate"
+msgstr "No hay Ximlets a asociar"
 
 #: /actions/addximlet/template/Smarty/index.tpl
 #: /actions/manageproperties/template/Smarty/Channel.tpl
@@ -789,7 +740,7 @@ msgstr "&iquest;Est&aacute; seguro que quiere cerrar todas las pesta&ntilde;as d
 msgid "Module information"
 msgstr "Informaci&oacute;n de m&oacute;dulos"
 
-msgid "Node info"
+msgid "Node information"
 msgstr "Informaci&oacute;n de nodo"
 
 msgid "Idnode was not found"
@@ -1167,14 +1118,14 @@ msgid "Renders"
 msgstr "Renders"
 
 #: /actions/composer/template/Smarty/menu_items.tpl
-#: install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
-#: install/ximdex_data/ximdex.sql table Languages (`Name`)
-#: install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
+#: /install/ximdex_data/ximdex.sql table Languages (`Name`)
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Spanish"
 msgstr "Espa&ntilde;ol"
 
 #: /actions/composer/template/Smarty/menu_items.tpl
-#: install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
+#: /install/ximdex_data/ximdex.sql table IsoCodes (`Name`)
 msgid "English"
 msgstr "Ingl&eacute;s"
 
@@ -1268,7 +1219,7 @@ msgid "Channel has been succesfully inserted"
 msgstr "Se ha insertado el canal correctamente"
 
 #: /actions/createchannel/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Add channel"
 msgstr "A&ntilde;adir canal"
 
@@ -1331,7 +1282,7 @@ msgstr "Se ha insertado el grupo correctamente"
 #: /actions/creategroup/template/Smarty/index.tpl
 #: /actions/modifygroupsnode/template/Smarty/index.tpl
 #: /actions/modifygrupousuario/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Add group"
 msgstr "A&ntilde;adir grupo"
 
@@ -1393,33 +1344,8 @@ msgstr "Enlaces encontrados que apuntan a la misma url:"
 
 #: /actions/createlink/template/Smarty/show.tpl
 #: /actions/fileupload_common_multiple/template/Smarty/index.tpl
-msgid "Upload files"
-msgstr "Subir archivos"
-
-msgid "Add XML documents"
-msgstr "A&ntilde;adir documentos XML"
-
-msgid " Add XML files "
-msgstr " A&ntilde;adir archivos XML "
-
-msgid "Select schema"
-msgstr "Seleccionar esquema"
-
-msgid "Select language"
-msgstr "Seleccionar idioma"
-
-msgid "Files added for upload: "
-msgstr "Archivos a&ntilde;adidos para subir: "
-
-msgid "There aren't any selected files for upload."
-msgstr "No hay archivos seleccionados para subir."
-
-msgid "Upload url not found."
-msgstr "URL de subida no encontrada."
-
-msgid "You should select a schema and a language before uploading."
-msgstr "Debe elegir un esquema y un idioma antes de comenzar con la subida."
-
+msgid "Continue"
+msgstr "Continuar"
 
 #: /actions/createrole/Action_createrole.class.php
 msgid "Role has been successfully added"
@@ -1427,7 +1353,7 @@ msgstr "El rol se ha a&ntilde;adido correctamente"
 
 #: /actions/createrole/template/Smarty/index.tpl
 #: /actions/modifyrolestate/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Add role"
 msgstr "A&ntilde;adir rol"
 
@@ -1442,7 +1368,7 @@ msgid "User has been successfully inserted"
 msgstr "Se ha insertado el usuario correctamente"
 
 #: /actions/createuser/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Nodes (`Name`)
+#: /install/ximdex_data/ximdex.sql table Nodes (`Name`)
 msgid "Add user"
 msgstr "A&ntilde;adir usuario"
 
@@ -1465,7 +1391,6 @@ msgid "Password"
 msgstr "Contrase&ntilde;a"
 
 #: /actions/createuser/template/Smarty/index.tpl
-#: /actions/modifyserver/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl
 #: xmd/chkpass.php
 msgid "Repeat password"
@@ -1513,7 +1438,7 @@ msgid "Insertion of document %s with language %s has failed"
 msgstr "Ha fallado la inserci&oacute;n del documento %s en el idioma %s"
 
 #: /actions/createxmlcontainer/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Actions
+#: /install/ximdex_data/ximdex.sql table Actions
 msgid "Add new XML"
 msgstr "A&ntilde;adir nuevo XML"
 
@@ -1529,6 +1454,16 @@ msgstr "Tipo de documento"
 #: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 msgid "Select template"
 msgstr "Seleccione plantilla"
+
+#: /actions/relsectionschema/template/Smarty/index.tpl
+msgid "Select schema"
+msgstr "Seleccionar esquema"
+
+msgid "Associate schema to project"
+msgstr "Asociar esquema al proyecto"
+
+msgid "Associate schema to section"
+msgstr "Asociar esquema a la secci&oacute;n"
 
 msgid "Schema"
 msgstr "Esquema"
@@ -1575,7 +1510,6 @@ msgstr "Nodo no existe. Actualice el XimSearch."
 #: actions/modifyserver/Action_modifyserver.class.php
 msgid "Changes in Demo role are not allowed"
 msgstr "No se permiten cambios en el rol Demo"
-
 
 #: /actions/deletenode/Action_deletenode.class.php
 #: /actions/deletenode/baseIO.php
@@ -1687,8 +1621,8 @@ msgid "User has been successfully deleted"
 msgstr "Se ha eliminado el usuario correctamente"
 
 #: /actions/deleteuser/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Actions
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Actions
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Delete user"
 msgstr "Borrar Usuario"
 
@@ -1730,15 +1664,19 @@ msgid "Editing file"
 msgstr "Editando archivo"
 
 msgid "Clear"
-msgstr "Borrar todo" 
+msgstr "Borrar todo"
 
-#: /actions/edittext/template/Smarty/index.tpl
+#: /actions/edittext/template/Smarty/index.tlp
 msgid "Save and publish"
 msgstr "Guardar y publicar"
 
 #: /actions/edittext/template/Smarty/publishForm.tlp
-msgid "Modification of this template has affected to %1 documents. Would you like to republish them?"
-msgstr "La modificaci&oacute;n de esta plantilla ha afectado a %1 documentos. &iquest;Desea republicarlos?"
+msgid "Modification of this PTD has affected to %1 documents. Would you like to republish them?"
+msgstr "La modificaci&oacute;n de esta PTD ha afectado a %1 documentos. &iquest;Desea republicarlos?"
+
+#: /actions/edittext/javascript/init.js
+msgid "You are going to clear the current content. It won't be removed until you save the data. Are you sure?"
+msgstr "Vas a borrar el contenido actual. No ser&aacute; eliminado hasta que guardes el documento. &iquest;Est&aacute;s seguro?"
 
 #: /actions/edittext/javascript/tour.js
 msgid "This action allows to edit in a text window the document code.<br/>"
@@ -1794,14 +1732,14 @@ msgstr " Para salir pulse Control+C."
 
 #: /actions/expiresection/templates/Smarty/index.tpl
 #: /actions/expiresection/templates/Smarty/results.tpl
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Expire section"
 msgstr "Caducar secci&oacute;n"
 
 #: /actions/expiresection/templates/Smarty/index.tpl
 #: /actions/publicatesection/template/Smarty/index.tpl
-msgid "Scheduled publications for these files will be cancelled."
-msgstr "Se cancelar&aacute;n las publicaciones configuradas para estos archivos."
+msgid "Publication windows configured for these files will be cancelled."
+msgstr "Se cancelar&aacute;n las ventanas de publicaci&oacute;n configuradas para dichos archivos."
 
 #: /actions/expiresection/templates/Smarty/index.tpl
 msgid "You have selected to expire the contents of section: "
@@ -1821,8 +1759,8 @@ msgid "Section <strong>%1</strong> has been successfully expired"
 msgstr "La secci&oacute;n <strong>%1</strong> ha sido caducada correctamente"
 
 #: /actions/filedownload/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Actions
-# install/ximdex_data/ximdex.sql table Nodes
+#: /install/ximdex_data/ximdex.sql table Actions
+#: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Download file"
 msgstr "Descargar archivo"
 
@@ -1934,17 +1872,9 @@ msgstr "Plantilla de bolet&iacute;n de ximNEWS"
 msgid "NodeType"
 msgstr "Tipo de nodo"
 
-msgid "Information about"
-msgstr "Informaci&oacute;n sobre"
+msgid "Transformer"
+msgstr "Motor de transformaci&oacute;n"
 
-msgid "General info"
-msgstr "Informaci&oacute;n general"
-
-msgid "Properties info"
-msgstr "Informaci&oacute;n de propiedades"
-
-msgid "Workflow info"
-msgstr "Informaci&oacute;n de publicaci&oacute;n"
 
 #: /actions/fileupload_common_multiple/Action_fileupload_common_multiple.class.php
 msgid "It is necessary to be an active user to upload files"
@@ -1962,11 +1892,11 @@ msgstr " A&ntilde;adir hojas de estilo"
 msgid " Add images "
 msgstr " A&ntilde;adir im&aacute;genes "
 
-msgid " Add templates "
-msgstr " A&ntilde;adir plantillas "
+msgid " Add PTD templates "
+msgstr " A&ntilde;adir plantillas PTD "
 
-msgid " Add schemas "
-msgstr " A&ntilde;adir esquemas "
+msgid " Add PVD templates "
+msgstr " A&ntilde;adir plantillas PVD "
 
 msgid " Add HTML files "
 msgstr " A&ntilde;adir archivos HTML "
@@ -2019,7 +1949,7 @@ msgid "Document has been successfully updated"
 msgstr "El documento se ha actualizado correctamente"
 
 #: /actions/htmleditor/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Actions
+#: /install/ximdex_data/ximdex.sql table Actions
 msgid "Edit html"
 msgstr "Editar html"
 
@@ -2358,8 +2288,14 @@ msgstr "Se han asignado %s idiomas correctamente."
 msgid "A total of %S idiomatic versions have been recursively created."
 msgstr "Un total de %s versiones idiom&aacute;ticas han sido creadas recursivamente."
 
+msgid "Template values will be inherited."
+msgstr "Los valores de las plantillas ser&aacute;n heredados."
+
 msgid "%s Templates have been successfully assigned."
 msgstr "Se han asignado %s plantillas correctamente."
+
+msgid "%s will be used as document transformer."
+msgstr "Se usar&aacute; %s como transformador de documentos."
 
 #: /actions/manageproperties/inc/ChannelProperty.class.php
 msgid "StructuredDocument cannot be instantiate with ID "
@@ -2368,9 +2304,6 @@ msgstr "No es posible instanciar el StructuredDocument con ID "
 #: /actions/manageproperties/inc/InheritedPropertyManager.class.php
 msgid "Inheritable property cannot be instantiate"
 msgstr "No es posible instanciar la propiedad heredable"
-
-msgid "These properties are inheritable. Every single change will be propagated into all the child nodes."
-msgstr "Estas propiedades son heredables. Cada cambio ser&aacute; propagado en los hijos del nodo actual."
 
 #: /actions/manageproperties/resources/js/confirm.js
 #: /actions/managebatchs/forms.php
@@ -2406,9 +2339,6 @@ msgstr "Asociar canal recursivamente a todos los documentos."
 msgid "Edit properties"
 msgstr "Modificar propiedades"
 
-msgid "Manage properties"
-msgstr "Modificar propiedades"
-
 #: /actions/manageproperties/template/Smarty/confirm.tpl
 msgid "Changes will not be undone."
 msgstr "No ser&aacute; posible deshacer los cambios."
@@ -2423,21 +2353,29 @@ msgstr "Sobreescribir los idiomas heredados"
 msgid "Create idiomatic version recursively"
 msgstr "Crear versi&oacute;n idiom&aacute;tica recursivamente."
 
+#: /actions/manageproperties/template/Smarty/Schema.tpl
+msgid "Allowed types of templates"
+msgstr "Tipos de plantillas permitidas"
+
+msgid "Use inherited templates"
+msgstr "Usar las plantillas heredadas"
+
+msgid "Overwrite inherited templates"
+msgstr "Sobreescribir las plantillas heredadas"
+
+#: /actions/manageproperties/template/Smarty/Transformer.tpl
+msgid "Document transformer"
+msgstr "Transformador de documentos"
+
+msgid "Available transformers"
+msgstr "Transformadores disponibles"
+
 #: /actions/manageversions/template/Smarty/index.tpl
 msgid "Recover"
 msgstr "Recuperar"
 
 msgid "Available versions"
 msgstr "Versiones disponibles"
-
-msgid "Are you sure you want to recover this version?"
-msgstr "&iquest;Est&aacute; seguro de querer recuperar esta versi&oacute;n y convertirla en la &uacute;ltima?"
-
-msgid "Are you sure you want to delete this version?"
-msgstr "&iquest;Est&aacute; seguro de querer borrar esta versi&oacute;n?"
-
-msgid "Are you sure you want to delete this version?. This version is the latest published content."
-msgstr "&iquest;Est&aacute; seguro de querer borrar esta versi&oacute;n?. Esta versi&oacute;n es el contenido publicado m&aacute;s reciente."
 
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
@@ -2674,6 +2612,18 @@ msgid "Role"
 msgstr "Rol"
 
 #: /actions/modifyserver/Action_modifyserver.class.php
+msgid "New server name"
+msgstr "Nuevo nombre del servidor"
+
+msgid "Connection"
+msgstr "Conexi&oacute;n"
+
+msgid "URL or IP"
+msgstr "URL o IP"
+
+msgid "Port"
+msgstr "Puerto"
+
 msgid "Server successfully removed"
 msgstr "Servidor borrado correctamente"
 
@@ -2698,13 +2648,6 @@ msgstr "Es requerido un directorio local"
 msgid "A local url is required"
 msgstr "Es requerido una url local"
 
-#: /actions/modifyserver/Action_modifyserver.class.php
-#: /actions/modifyserver/resources/js/validate.js
-#: xmd/chkpass.php
-msgid "Passwords do not match"
-msgstr "Las password no coinciden"
-
-#: /actions/modifyserver/Action_modifyserver.class.php
 msgid "A remote directory is required"
 msgstr "Es requerido un directorio remoto"
 
@@ -2783,16 +2726,13 @@ msgstr "Propiedades del servidor"
 msgid "Protocol"
 msgstr "Protocolo"
 
-# /actions/modifyserver/resources/js/validate.js
+#: /actions/modifyserver/resources/js/validate.js
 #: /actions/modifyserver/template/Smarty/index.tpl
 msgid "Remote URL"
 msgstr "URL remota"
 
 msgid "Remote address"
-msgstr "Direc. remota"
-
-msgid "Remote port"
-msgstr "Puerto remoto"
+msgstr "Direcci&oacute;n remota"
 
 msgid "Remote directory"
 msgstr "Directorio remoto"
@@ -2823,8 +2763,8 @@ msgid "Encoding"
 msgstr "Codificaci&oacute;n"
 
 #: /actions/modifyserver/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Actions
-# install/ximdex_data/ximdex.sql table Nodes
+#: install/ximdex_data/ximdex.sql table Actions
+#: install/ximdex_data/ximdex.sql table Nodes
 msgid "Delete server"
 msgstr "Eliminar servidor"
 
@@ -3109,14 +3049,14 @@ msgid "Aborting publication, it is just allowed to publish over sections and ser
 msgstr "Abortando la publicaci&oacute;n, s&oacute;lo se permite la publicaci&oacute;n sobre secciones y servidores"
 
 #: /actions/publicatesection/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Actions
-# install/ximdex_data/ximdex.sql table Nodes
+#: install/ximdex_data/ximdex.sql table Actions
+#: install/ximdex_data/ximdex.sql table Nodes
 msgid "Publish section"
 msgstr "Publicar secci&oacute;n"
 
 #: /actions/publicatesection/template/Smarty/index.tpl
-msgid "You have selected to publish contents of "
-msgstr "Ha seleccionado publicar los contenidos de"
+msgid "You have selected the contents of"
+msgstr "Ha seleccionado los contenidos de"
 
 msgid "to be published"
 msgstr "para ser publicados"
@@ -3184,6 +3124,10 @@ msgstr "Sus documentos han entrado correctamente en el proceso de publicaci&oacu
 
 msgid "No documents to publish have been found."
 msgstr "No se han encontrado documentos para publicar."
+
+#: /actions/relsectionschema/Action_relsectionschema.class.php
+msgid "Association has been successfully performed."
+msgstr "La asociacion se ha realizado con &eacute;xito."
 
 msgid "Error while associating."
 msgstr "Error al asociar."
@@ -3327,14 +3271,14 @@ msgid "Faster, easier, more powerful"
 msgstr "M&aacute;s r&aacute;pido, m&aacute;s sencillo, m&aacute;s potente"
 
 #: /actions/welcome/template/Smarty/index.tpl
-msgid "Welcome to the brand new Ximdex 3.5!"
-msgstr "&iexcl;Bienvenido al nuevo Ximdex 3.5!"
+msgid "Welcome to new Ximdex 3.4!"
+msgstr "&iexcl;Bienvenido al nuevo Ximdex 3.4!"
 
 msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
 msgstr "Con la nueva versi&oacute;n del gestor de contenidos Ximdex disfrutar&aacute;s de un producto mucho m&aacute;s potente, r&aacute;pido y sencillo que en versiones anteriores. Podr&aacute;s gestionar tus documentos de forma sencilla y usable."
 
-msgid "Start to use new Ximdex 3.5 and discover its advantages."
-msgstr "Comienza a usar el nuevo Ximdex 3.5 y descubre las ventajas que ofrece."
+msgid "Start to use new Ximdex 3.4 and discover its advantages."
+msgstr "Comienza a usar el nuevo Ximdex 3.4 y descubre las ventajas que ofrece."
 
 msgid "Faster"
 msgstr "M&aacute;s r&aacute;pido"
@@ -3383,8 +3327,8 @@ msgstr "Nueva gesti&oacute;n de dependencias y proyectos y usuarios predefinidos
 msgid "Easy"
 msgstr "F&aacute;cil"
 
-msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and Xowl module rock!"
-msgstr "Edici&oacute;n f&aacute;cil de XML con el editor WYSIWYG y etiquetado sem&aacute;ntico simple. &iexcl;Xedit y el m&oacute;dulo Xowl son lo m&aacute;s!."
+msgid "Easy XML edition with the WYSIWYG editor and easy semantic document tagging. Xedit and ximRA rock!"
+msgstr "Edici&oacute;n f&aacute;cil de XML con el editor WYSIWYG y etiquetado sem&aacute;ntico simple. &iexcl;Xedit y el m&oacute;dulo ximRA son lo m&aacute;s!."
 
 msgid "Learn more"
 msgstr "Saber m&aacute;s"
@@ -3403,25 +3347,26 @@ msgstr "Notificaci&oacute;n de vuelta atr&aacute;s de estado."
 #: /actions/workflow_backward/Action_workflow_backward.class.php
 #: /actions/workflow_forward/Action_workflow_forward.class.php
 #: /actions/workflow_forward/baseIO.php
-msgid "Ximdex CMS: new state for document:"
-msgstr "Ximdex CMS: Nuevo estado para el documento:"
+msgid "Ximdex document new state:"
+msgstr "Nuevo estado para el documento Ximdex:"
 
 msgid "The user"
 msgstr "El usuario"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
-msgid "has changed the state of"
-msgstr "ha cambiado el estado de"
+msgid "has changed the state of the document"
+msgstr "ha cambiado el estado del documento"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
 #: /actions/workflow_forward/Action_workflow_forward.class.php
-msgid "Full Ximdex path"
-msgstr "Ruta completa en Ximdex"
+msgid "Full path"
+msgstr "Ruta completa"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
+#: /actions/workflow_fordward/Action_workflow_forward.class.php
 #: /actions/workflow_fordward/Action_workflow_forward.class.php
 msgid "Initial state"
 msgstr "Estado inicial"
@@ -3436,12 +3381,6 @@ msgstr "Estado final"
 #: /actions/workflow_forward/Action_workflow_forward.class.php
 msgid "Comment"
 msgstr "Comentario"
-
-msgid "The document has been moved to the next state."
-msgstr "El documento ha sido movido al siguiente estado."
-
-msgid "The document has been moved to the previous state."
-msgstr "El documento ha sido movido al estado anterior."
 
 #: /actions/workflow_backwads/template/Smarty/forms/cambiar_estado.tpl
 msgid "Process result"
@@ -3575,9 +3514,6 @@ msgstr "No tiene asignado un rol con privilegios para modificar el estado de wor
 msgid "You do not belong to any group with publication privileges"
 msgstr "No perteneces a un grupo con permisos de publicacion"
 
-msgid "Do you want to move this file"
-msgstr "&iquest;Quieres mover este archivo"
-
 #: /actions/workflow_forward/Action_workflow_forward.class.php
 #: /actions/workflow_forward/baseIO.php
 msgid "State successfully changed"
@@ -3595,6 +3531,7 @@ msgstr "No se ha especificado ning&uacute;n mensaje."
 msgid "State forward notification."
 msgstr "Notificaci&oacute;n de avance de estado."
 
+#: /actions/workflow_backwads/template/Smarty/forms/cambiar_estado.tpl
 #: /actions/workflow_forwards/Action_workflow_forward.class.php
 msgid "Message successfully sent to %s"
 msgstr "Mensaje enviado con &eacute;xito a %s"
@@ -3690,8 +3627,8 @@ msgid "Path"
 msgstr "Ruta"
 
 #: /actions/workflow_forward/template/Smarty/show_results.tpl
-# install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
-# install/ximdex_data/ximdex.sql table Nodes
+#: install/ximdex_data/ximdex.sql table nodeTypes (`Description`)
+#: install/ximdex_data/ximdex.sql table Nodes
 msgid "Channel"
 msgstr "Canal"
 
@@ -4162,8 +4099,8 @@ msgstr "El modulo php5-enchant debe ser instalado para usar el corrector ortogr&
 msgid "EnricherKey configuration value has not been defined"
 msgstr "No se ha definido el valor de configuraci&oacute;n EnricherKey"
 
-msgid "Xowl module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with Xowl, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
-msgstr "No tiene habilitado el m&oacute;dulo Xowl.<br/><br/>Si quiere comprobar las mejoras notables que obtendr&iacute;a al instalar Xowl, le mostramos a continuaci&oacute;n un v&iacute;deo demostrativo (<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>)<br/><br/>Tambi&eacute;n puede pru&eacute;balo en <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>"
+msgid "ximRA module has not been installed.<br/><br/> If you want to realize the noticeable improvements that you will obtain with ximRA, a demonstrative video is shown below (%s)<br/><br/>Also, you can test it at <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>" 
+msgstr "No tiene habilitado el m&oacute;dulo ximRA.<br/><br/>Si quiere comprobar las mejoras notables que obtendr&iacute;a al instalar ximRA, le mostramos a continuaci&oacute;n un v&iacute;deo demostrativo (<a href='http://www.youtube.com/watch?v=xnhUzYKqJPw' target='_blank'>link</a>)<br/><br/>Tambi&eacute;n puede pru&eacute;balo en <a target='_blank' href='http://demo.ximdex.com'>demo.ximdex.com</a><br/><br/>" 
 
 msgid "docxap cannot be found."
 msgstr "No se encuentra la docxap."
@@ -4310,7 +4247,7 @@ msgstr "Cortar"
 #: /actions/addfoldernode/template/Smarty/toolbar.tpl
 #: /actions/copy/template/Smarty/_form.tpl
 #: /actions/copy/template/Smarty/index.tpl
-# install/ximdex_data/ximdex.sql table Actions
+#: install/ximdex_data/ximdex.sql table Actions
 msgid "Copy"
 msgstr "Copiar"
 
@@ -4770,7 +4707,7 @@ msgid "Keep original content?"
 msgstr "&iquest;Mantener contenido original?"
 
 #: /actions/xmlsetlink/template/Smarty/show_translation.tpl
-# install/ximdex_data/ximdex.sql table Nodes
+#: install/ximdex_data/ximdex.sql table Nodes
 msgid "Delete link"
 msgstr "Borrar enlace"
 
@@ -4806,14 +4743,16 @@ msgstr "Guardar cambios"
 msgid "Are you sure you want to performe the changes?"
 msgstr "&iquest;Est&aacute; seguro de que quiere realizar los cambios?"
 
-# ------ end of actions ------
+#: ------ end of actions ------
 
-# ################################################ CONF ############################################
+
+#: ---------- /conf ---------
 #: /conf/notifications.conf
-msgid "The document %doc is going to be moved to the state %state."
-msgstr "Se va a mover al estado %state el documento %doc."
+msgid "The document %doc is going to be sent to publication queue"
+msgstr "Se va a proceder al env&iacute;o a publicaci&oacute;n del documento %doc"
 
-# ################################################ INC ############################################
+
+#: ---------- /inc ----------
 #: /inc/mvc/ApplicationController.class.php
 msgid "Error: accessing to the action %s on the node %s"
 msgstr "Error: accediendo a la accion %s sobre el nodo %s"
@@ -5228,8 +5167,8 @@ msgstr "No se ha establecido la url"
 msgid "An error occurred inserting the document"
 msgstr "Ha ocurrido un error al insertar el documento"
 
-msgid "It is being tried to insert a XML document without its corresponding schema"
-msgstr "Se est&aacute; intentando insertar un documento XML sin su correspondiente esquema"
+msgid "It is being tried to insert a xmlcontainer without its corresponding pvd"
+msgstr "Se est&aacute; intentando insertar un xmlcontainer sin su correspondiente pvd"
 
 msgid "It was not specified a template for the node "
 msgstr "No se ha especificado el template para el nodo "
@@ -5393,11 +5332,7 @@ msgstr "Actualizando version en cache"
 msgid "node %s version %s"
 msgstr "nodo %s versi&oacute;n %s"
 
-
-
-
-
-# ################################################ XMD ############################################
+#: ---------- /xmd ----------
 
 #: xmd/chkpass.php
 msgid "Are you sure you want to modify this password?"
@@ -5523,14 +5458,14 @@ msgstr "Ejecutando acci&oacute;n sobre los nodos"
 msgid "No messages found"
 msgstr "No se han encontrado mensajes"
 
-# ################################################ WIDGETS ############################################
+#: ---------- Widgets ----------
 
-# -------- widget tabs --------
+#: -------- widget tabs --------
 #: /inc/widgets/jquery/tabs/js/tabs.js
 msgid "Close all tabs"
 msgstr "Cerrar todas las pesta&ntilde;as"
 
-# -------- widget uploader --------
+#: -------- widget uploader --------
 #: /inc/widgets/jquery/uploader/template/uploader_html5.tpl
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
@@ -5575,7 +5510,7 @@ msgstr "Introduzca el nuevo nombre para este archivo:"
 msgid "completed"
 msgstr "completado"
 
-# -------- widget calendar --------
+#: -------- widget calendar --------
 #: /inc/widgets/uploader/js/ximfile.js
 msgid "The periods are established in the server's time zone"
 msgstr "Las vigencias vienen establecidas en el uso horario del servidor"
@@ -5743,12 +5678,11 @@ msgstr "Serializer :: No fue posible instanciar la clase {%s}."
 msgid "Elements per page"
 msgstr "Elementos por p&aacute;gina"
 
+#: ---------- SQL Constructor -----------
 
+#: ---------- install/ximdex_data/ximdex.sql ---------------------
 
-# ################################################ CONSTRUCTOR ############################################
-#-------------------install/ximdex_data/ximdex.sql---------------------
-
-#  table Actions ---------(`Name`, `Description`) -------------
+#: table Actions (`Name`, `Description`)
 msgid "Add new action"
 msgstr "A&ntilde;adir nueva acci&oacute;n"
 
@@ -5761,8 +5695,8 @@ msgstr "A&ntilde;adir nuevo usuario"
 msgid "Create a new Ximdex user"
 msgstr "Crear un nuevo usuario de Ximdex"
 
-msgid "Add new template"
-msgstr "A&ntilde;adir una nueva plantilla"
+msgid "Add new PTD template"
+msgstr "A&ntilde;adir una nueva plantilla PTD"
 
 msgid "Change user data"
 msgstr "Cambiar los datos del usuario"
@@ -5773,7 +5707,7 @@ msgstr "Borrar usuario"
 msgid "Remove an user from system"
 msgstr "Borrar un usuario del sistema"
 
-# ++ table Nodes
+#: table Nodes
 msgid "Manage groups"
 msgstr "Gestionar grupos"
 
@@ -5835,7 +5769,7 @@ msgstr "A&ntilde;adir nueva carpeta de im&aacute;genes"
 msgid "Create a new image folder"
 msgstr "Crear una nueva carpeta im&aacute;genes"
 
-# ++ table Nodes (core)
+#: table Nodes (core)
 msgid "Section properties"
 msgstr "Propiedades de secci&oacute;n"
 
@@ -5915,7 +5849,7 @@ msgstr "Borrar secci&oacute;n"
 msgid "Delete folder"
 msgstr "Borrar carpeta"
 
-# ++ table Nodes (core)
+#: table Nodes (core)
 msgid "Delete selected folder"
 msgstr "Borrar la carpeta seleccionada"
 
@@ -5969,7 +5903,7 @@ msgstr "Descargar el archivo seleccionado"
 msgid "Download image"
 msgstr "Descargar imagen"
 
-# ++ table Nodes (core)
+#: table Nodes (core)
 msgid "Download an image to a local hard disk"
 msgstr "Descarga una imagen en el disco duro local"
 
@@ -5983,7 +5917,7 @@ msgstr "Previsualizar imagen"
 msgid "Preview an image"
 msgstr "Previsualizar una imagen"
 
-# ++ table Nodes (core)
+#: table Nodes (core)
 msgid "Add new style sheet"
 msgstr "A&ntilde;adir nueva hoja de estilos"
 
@@ -6026,6 +5960,9 @@ msgstr "A&ntilde;adir nuevo archivo de texto"
 msgid "Add a new text file to server"
 msgstr "A&ntilde;ade un archivo de texto nuevo al servidor"
 
+msgid "Delete XML container"
+msgstr "Borrar contedor XML"
+
 msgid "Edit XML document"
 msgstr "Editar documento XML"
 
@@ -6044,8 +5981,8 @@ msgstr "Borrar acci&oacute;n"
 msgid "Delete the action"
 msgstr "Borrar la accion"
 
-msgid "And new template"
-msgstr "A&ntilde;adir nueva plantilla"
+msgid "And new PTD template"
+msgstr "A&ntilde;adir nueva plantilla PTD"
 
 msgid "Add a new transformation template to the directory"
 msgstr "A&ntilde;ade una plantilla de transformaci&oacute;n al directorio"
@@ -6093,7 +6030,7 @@ msgstr "Cambiar el nombre del archivo seleccionado"
 msgid "Change image name"
 msgstr "Cambiar nombre de la imagen"
 
-# ++ table Nodes (core)
+#: table Nodes (core)
 msgid "Change file name"
 msgstr "Cambiar el nombre del archivo"
 
@@ -6101,7 +6038,7 @@ msgstr "Cambiar el nombre del archivo"
 msgid "Delete image"
 msgstr "Borrar imagen"
 
-# ++ table Nodes (core)
+#: table Nodes (core)
 msgid "Delete an image"
 msgstr "Borrar la imagen"
 
@@ -6184,16 +6121,16 @@ msgid "Delete a language from the system"
 msgstr "Borrar un idioma del sistema"
 
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-# ++ table Nodes
+#: table Nodes
 msgid "Edit"
 msgstr "Editar"
 
-# ++ table Nodes
-msgid "Modify link properties"
+#: table Nodes
+msgid "Modify properties of external link"
 msgstr "Modificar las propiedades del enlace externo"
 
 msgid "Modify properties"
-msgstr "Modificar propiedades"
+msgstr "Modificar las propiedades del enlace externo"
 
 msgid "Delete role"
 msgstr "Borrar rol"
@@ -6231,8 +6168,8 @@ msgstr "Modificar plantilla de vista"
 msgid "Modify template for all documents of the directory"
 msgstr "Modifica la plantilla de vista para todos los documentos del directorio"
 
-msgid "Modify sync data"
-msgstr "Modificar datos de sincronizaci&oacute;n"
+msgid "Manage servers"
+msgstr "Gestionar servidores"
 
 msgid "Modify connection data with the production environment"
 msgstr "Modificar los datos de conexi&oacute;n con el entorno de producci&oacute;n"
@@ -6335,24 +6272,24 @@ msgstr "Sustituir archivo"
 msgid "Replace a file"
 msgstr "Reemplazar un archivo"
 
-# ++ table Nodes
+#: table Nodes
 #: /modules/ximNEWS/actions/createLote/resources/js/index.js
 
 #: also table ximNEWS.Nodes
 msgid "Add images"
 msgstr "A&ntilde;adir im&aacute;genes"
 
-# ++ table Nodes
+#: table Nodes
 #: /modules/ximNEWS/actions/createLote/resources/js/index.js
 
 msgid "Add an image set to the server"
 msgstr "A&ntilde;adir un conjunto de im&aacute;genes al servidor"
 
-msgid "Add templates"
-msgstr "A&ntilde;adir plantillas"
+msgid "Add PTD templates"
+msgstr "A&ntilde;adir plantillas PTD"
 
-msgid "Add a set of templates to the server"
-msgstr "A&ntilde;adir un conjunto de plantillas al servidor"
+msgid "Add a set of PTD templates to the server"
+msgstr "A&ntilde;adir un conjunto de plantillas PTD al servidor"
 
 msgid "Add files"
 msgstr "A&ntilde;adir archivos"
@@ -6444,11 +6381,11 @@ msgstr "Exportar la carpeta ximclude completa"
 msgid "Export a ximclude subfolder"
 msgstr "Exportar una subcarpeta de ximclude"
 
-msgid "Export a complete documents folder"
-msgstr "Exportar la carpeta de documentos completa"
+msgid "Export a complete ximdoc folder"
+msgstr "Exportar la carpeta ximdoc completa"
 
-msgid "Export a XML document"
-msgstr "Exportar un documento XML"
+msgid "Export a XML container"
+msgstr "Exportar un contenedor XML"
 
 msgid "Export a complete ximlet folder"
 msgstr "Exportar la carpeta ximlet completa"
@@ -6456,7 +6393,7 @@ msgstr "Exportar la carpeta ximlet completa"
 msgid "Export a ximlet subfolder"
 msgstr "Exportar una subcarpeta de ximlet"
 
-msgid "Export a ximlet document"
+msgid "Export a ximlet container"
 msgstr "Exportar un contenedor de ximlet"
 
 msgid "Export a complete server"
@@ -6465,11 +6402,11 @@ msgstr "Exportar un sevidor completo"
 msgid "Export a complete section"
 msgstr "Exportar una secci&oacute;n completa"
 
-msgid "Export a complete schema"
-msgstr "Exportar un esquema completo"
+msgid "Export a complete ximpvd"
+msgstr "Exportar una ximpvd completa"
 
-msgid "Export a complete template"
-msgstr "Exportar una plantilla completa"
+msgid "Export a complete ximptd"
+msgstr "Exportar una ximptd completa"
 
 msgid "Export a template subfolder"
 msgstr "Exportar una subcarpeta de plantillas"
@@ -6510,11 +6447,11 @@ msgstr "Importar la carpeta ximclude completa"
 msgid "Import a ximclude subfolder"
 msgstr "Importar una subcarpeta de ximclude"
 
-msgid "Import a complete documents folder"
-msgstr "Importar la carpeta de documentos completa"
+msgid "Import a complete ximdoc folder"
+msgstr "Importar la carpeta ximdoc completa"
 
-msgid "Import a XML document"
-msgstr "Importar un documento XML"
+msgid "Import a XML container"
+msgstr "Importar un contenedor XML"
 
 msgid "Import a complete ximlet folder"
 msgstr "Importar la carpeta ximlet completa"
@@ -6522,8 +6459,8 @@ msgstr "Importar la carpeta ximlet completa"
 msgid "Import a ximlet subfolder"
 msgstr "Importar una subcarpeta de ximlet"
 
-msgid "Import a ximlet document"
-msgstr "Importar un documento ximlet"
+msgid "Import a ximlet container"
+msgstr "Importar un contenedor de ximlet"
 
 msgid "Import a complete server"
 msgstr "Importar un servidor completo"
@@ -6531,11 +6468,11 @@ msgstr "Importar un servidor completo"
 msgid "Import a complete section"
 msgstr "Importar una secci&oacute;n completa"
 
-msgid "Import a complete schema"
-msgstr "Importar un esquema completo"
+msgid "Import a complete ximpvd"
+msgstr "Importar una ximpvd completa"
 
-msgid "Import a complete template"
-msgstr "Importar una plantilla completa"
+msgid "Import a complete ximptd"
+msgstr "Importar una ximptd completa"
 
 msgid "Import a template subfolder"
 msgstr "Importar una subcarpeta de plantillas"
@@ -6573,11 +6510,11 @@ msgstr "Copiar la carpeta ximclude completa"
 msgid "Copy a ximclude subfolder"
 msgstr "Copiar una subcarpeta de ximclude"
 
-msgid "Copy a complete documents folder"
-msgstr "Copiar la carpeta de documentos completa"
+msgid "Copy a complete ximdoc folder"
+msgstr "Copiar la carpeta ximdoc completa"
 
-msgid "Copy a XML document"
-msgstr "Copiar un documento XML"
+msgid "Copy a XML container"
+msgstr "Copiar un contenedor XML"
 
 msgid "Copy a complete ximlet folder"
 msgstr "Copiar la carpeta ximlet completa"
@@ -6585,8 +6522,8 @@ msgstr "Copiar la carpeta ximlet completa"
 msgid "Copy a ximlet subfolder"
 msgstr "Copiar una subcarpeta de ximlet"
 
-msgid "Copy a ximlet document"
-msgstr "Copiar un documento ximlet"
+msgid "Copy a ximlet container"
+msgstr "Copiar un contenedor de ximlet"
 
 msgid "Copy a link"
 msgstr "Copiar un enlace"
@@ -6603,11 +6540,11 @@ msgstr "Copiar un servidor completo"
 msgid "Copy a complete section"
 msgstr "Copiar una secci&oacute;n completa"
 
-msgid "Copy a complete schema"
-msgstr "Copiar un esquema completo"
+msgid "Copy a complete ximpvd"
+msgstr "Copiar una ximpvd completa"
 
-msgid "Copy a complete template"
-msgstr "Copiar una plantilla completa"
+msgid "Copy a complete ximptd"
+msgstr "Copiar una ximptd completa"
 
 msgid "Copy a template subfolder"
 msgstr "Copiar una subcarpeta de plantillas"
@@ -6648,8 +6585,8 @@ msgstr "Copiar una carpeta de im&aacute;genes a otro destino"
 msgid "Copy a server to another destination"
 msgstr "Copiar un servidor a otro destino"
 
-msgid "Copy a documents folder to another destination"
-msgstr "Copiar una carpeta de documentos a otro destino"
+msgid "Copy a ximdoc folder to another destination"
+msgstr "Copiar una carpeta ximdoc a otro destino"
 
 msgid "Copy a ximclude folder to another destination"
 msgstr "Copiar una carpeta ximclude a otro destino"
@@ -6669,14 +6606,14 @@ msgstr "Copiar una carpeta CSS a otro destino"
 msgid "Copy a CSS subfolder to another destination"
 msgstr "Copiar una subcarpeta CSS a otro destino"
 
-msgid "Copy a templates folder to another destination"
-msgstr "Copiar una carpeta de plantillas a otro destino"
+msgid "Copy a ximptd folder to another destination"
+msgstr "Copiar una carpeta ximptd a otro destino"
 
 msgid "Copy a CSS document to another destination"
 msgstr "Copiar un documento CSS a otro destino"
 
-msgid "Copy a document to another destination"
-msgstr "Copiar un documento a otro destino"
+msgid "Copy a document container to another destination"
+msgstr "Copiar un contenedor de documentos a otro destino"
 
 msgid "Copy a XML document to another destination"
 msgstr "Copiar un documento XML a otro destino"
@@ -6714,11 +6651,14 @@ msgstr "Copiar un documento HTML a otro destino"
 msgid "Copy a section to another destination"
 msgstr "Copiar una secci&oacute;n a otro destino"
 
-msgid "Copy a schemas folder to another destination"
-msgstr "Copiar una carpeta de esquemas a otro destino"
+msgid "Copy a ximpvd folder to another destination"
+msgstr "Copiar una carpeta ximpvd a otro destino"
 
-msgid "Copy a schema to another destination"
-msgstr "Copiar un esquema a otro destino"
+msgid "Copy a PVD template to another destination"
+msgstr "Copiar una plantilla PVD a otro destino"
+
+msgid "Ximsearch"
+msgstr "Ximsearch"
 
 msgid "Edit with Xedit"
 msgstr "Editar con Xedit"
@@ -6789,8 +6729,8 @@ msgstr "Modificar las propiedades heredables de un servidor"
 msgid "Modify heritable properties of a section"
 msgstr "Modificar las propiedades heredables de una secci&oacute;n"
 
-msgid "Modify heritable properties of a documents folder"
-msgstr "Modificar las propiedades heredables de la carpeta de documentos"
+msgid "Modify heritable properties of a ximdoc folder"
+msgstr "Modificar las propiedades heredables de la carpeta ximdoc"
 
 msgid "Modify heritable properties of a document"
 msgstr "Modificar las propiedades heredables de un documento"
@@ -6840,20 +6780,20 @@ msgstr "Descargar todas las plantillas"
 msgid "Download all files"
 msgstr "Descargar todos los archivos"
 
-msgid "Add schemas"
-msgstr "A&ntilde;adir esquemas"
+msgid "Add PVD templates"
+msgstr "A&ntilde;adir plantillas PVD"
 
-msgid "Add a set of schemas to the server"
-msgstr "A&ntilde;adir un conjunto de esquemas al servidor"
+msgid "Add a set of PVD templates to the server"
+msgstr "A&ntilde;adir un conjunto de plantillas PVD al servidor"
 
 msgid "Owner"
 msgstr "Titular"
 
-# table Channels -------------- (`Name`, `Description`) --------------
+#: table Channels (`Name`, `Description`)
 msgid "Html channel"
 msgstr "Canal html"
 
-# table IsoCodes ----------------  (`Name`) -------------------
+#: table IsoCodes (`Name`)
 msgid "French"
 msgstr "Franc&eacute;s"
 
@@ -6872,7 +6812,7 @@ msgstr "Catal&aacute;n"
 msgid "Euskera"
 msgstr "Euskera"
 
-# table Nodetypes ------------- (`Description`) --------------
+#: table Nodetypes (`Description`)
 msgid "Root node of Ximdex"
 msgstr "Nodo ra&iacute;z de Ximdex"
 
@@ -7062,11 +7002,11 @@ msgstr "Contenedor de configuraci&oacute;n de m&oacute;dulos"
 msgid "Container of a module settings"
 msgstr "Contenedor de configuraci&oacute;n de un m&oacute;dulo"
 
-#++ table Nodes (`Name`)
+#: table Nodes (`Name`)
 msgid "Heritable properties"
 msgstr "Propiedades heredables"
 
-# table Nodes -------------  (`Name`) --------------
+#: table Nodes (`Name`)
 msgid "General"
 msgstr "General"
 
@@ -7076,21 +7016,21 @@ msgstr "Centro de control"
 msgid "Configuration manager"
 msgstr "Gestor de configuraciones"
 
-# table Permissions
+#: table Permissions
 msgid "Administrator"
 msgstr "Administrador"
 
-# table Permissions
+#: table Permissions
 msgid "Editor"
 msgstr "Editor"
 
-# table Permissions
+#: table Permissions
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
 msgid "Publisher"
 msgstr "Publicador"
 
-# table Permissions
+#: table Permissions
 msgid "Expert"
 msgstr "Experto"
 
@@ -7131,7 +7071,7 @@ msgstr "A&ntilde;adir hoja de estilos"
 msgid "Add image"
 msgstr "A&ntilde;adir imagen"
 
-# table Permissions
+#: table Permissions
 msgid "Add file"
 msgstr "A&ntilde;adir archivo"
 
@@ -7147,8 +7087,7 @@ msgstr "Editar XML"
 msgid "Add template image"
 msgstr "A&ntilde;adir imagen de plantilla"
 
-#: table Permissions -------------  (`Name`, `Description`) --------------
-
+#: table Permissions(`Name`, `Description`)
 msgid "View all the nodes"
 msgstr "Ver todos los nodos"
 
@@ -7176,7 +7115,7 @@ msgstr "Publicaci&oacute;n avanzada"
 msgid "Publication from editor"
 msgstr "Publicaci&oacute;n desde el editor"
 
-# table Protocols -------------  (`Description`) --------------
+#: table Protocols(`Description`)
 
 msgid "Secure transfer protocol"
 msgstr "Protocolo seguro de transferencia"
@@ -7187,7 +7126,7 @@ msgstr "Sincronizaci&oacute;n local"
 msgid "FTP synchronization"
 msgstr "Sincronizaci&oacute;n por FTP"
 
-# table Roles -------------  (`Description`) --------------
+#: table Roles(`Description`)
 
 msgid "Main administrator"
 msgstr "Administrador principal"
@@ -7201,7 +7140,7 @@ msgstr "Usuario publicador"
 msgid "Expert user"
 msgstr "Usuario experto"
 
-# table States -------------  (`Name`, `Description`) --------------
+#: table States (`Name`, `Description`)
 
 msgid "Edition"
 msgstr "Edici&oacute;n"
@@ -7218,22 +7157,17 @@ msgstr "El documento est&aacute; en fase de desarrollo"
 msgid "Document is waiting for being published"
 msgstr "El documento est&aacute; a la espera de ser publicado"
 
-# table Users -------------  (`Description`) --------------
+#: table Users (`Description`)
 
 msgid "Ximdex Administrator"
 msgstr "Administrador de ximdex"
 
+#: ---------- /modules ----------
 
-
-# ################################################ MODULES ############################################
-
-# ######## ximTAGS ########
+#: ---------- ximTAGS ----------
 #: /modules/ximTAGS/sql/ximTAGS_constructor.sql
-msgid "Semantic Tags"
-msgstr "Etiquetas sem&aacute;nticas"
-
-msgid "Managing semantic tags related to the current node."
-msgstr "Gestionar las etiquetas sem&aacute;nticas asociadas al nodo actual."
+msgid "Define metadata"
+msgstr "Definir metadatos"
 
 #: /modules/ximTAGS/actions/setmetadata/template/Smarty/index.tpl
 msgid "Enter the definition labels"
@@ -7257,7 +7191,7 @@ msgstr "Es necesario instalar el m&oacute;dulo ximTAGS."
 msgid "The metadata has been properly associated."
 msgstr "Los metadatos han sido debidamente asociados."
 
-# ######## ximNEWS ########
+#: ---------- ximNEWS ----------
 #: /modules/ximNEWS/actions/addtoarea/template/Smarty/index.tpl
 msgid "The news can be associated to the following categories"
 msgstr "La noticia puede asociarse a las siguientes categor&iacute;as"
@@ -7739,8 +7673,8 @@ msgstr "A&ntilde;adir categor&iacute;a"
 msgid "Add external link"
 msgstr "A&ntilde;adir enlace externo"
 
-msgid "Add template"
-msgstr "A&ntilde;adir plantilla"
+msgid "Add PTD template"
+msgstr "A&ntilde;adir plantilla PTD"
 
 msgid "Add editor template"
 msgstr "A&ntilde;adir plantilla de editor"
@@ -7905,11 +7839,11 @@ msgstr "Falta la versi&oacute;n de la noticia"
 msgid "Version missing"
 msgstr "Falta la versi&oacute;n"
 
-msgid "Bulletin schema missing"
-msgstr "Falta el esquema de boletines"
+msgid "Bulletin pvd missing"
+msgstr "Falta la pvd de boletines"
 
-msgid "Schema missing"
-msgstr "Falta el esquema"
+msgid "Pvd missing"
+msgstr "Falta la pvd"
 
 msgid "Disk writing error"
 msgstr "Error de escritura en disco"
@@ -7932,11 +7866,11 @@ msgstr "Fichero vac&iacute;o"
 msgid "ERROR subtracting in counter "
 msgstr "ERROR restando en contador "
 
-msgid "Wrong XML in new %s version %s schema %s"
-msgstr "XML incorrecto en noticia %s verion %s esquema %s"
+msgid "Wrong XML in new %s version %s pvd %s"
+msgstr "XML incorrecto en noticia %s verion %s pvd %s"
 
-msgid "This schema has not caches"
-msgstr "Ese esquema no tiene caches"
+msgid "This pvd has not caches"
+msgstr "Esa pvd no tiene caches"
 
 msgid "Disk writing error (2)"
 msgstr "Error de escritura en disco (2)"
@@ -8040,11 +7974,8 @@ msgstr "Borrando secci&oacute;n "
 msgid "All the ximNEWS sections and nodes have been deleted"
 msgstr "Todas las secciones y nodos de ximNEWS han sido eliminados"
 
-
-	# ######## ximNEWS constructor ########
 #: /modules/ximNEWS/sql/ximNEWSconstructor.sql
-
-# table NodeTypes -------------  (`Description`) --------------
+#: table NodeTypes(`Description`)
 msgid "XimNEWS section"
 msgstr "Secci&oacute;n de ximNEWS"
 
@@ -8090,9 +8021,9 @@ msgstr "Bolet&iacute;n como ximlet en ximNEWS"
 msgid "XimNEWS resource forlder"
 msgstr "Carpeta de recursos ximNEWS"
 
-#  table Actions ---------(`Name`, `Description`) -------------
+#:  table Actions(`Name`, `Description`)
 
-#  table Actions
+#:  table Actions
 #: also table Nodes
 msgid "Delete ximNEWS section"
 msgstr "Borrar secci&oacute;n ximNEWS"
@@ -8156,11 +8087,11 @@ msgstr "Borrar noticia"
 msgid "Delete a news in ximNEWS"
 msgstr "Borrar una noticia en ximNEWS"
 
-#  also table ximNEWS.Actions
+#:  also table ximNEWS.Actions
 msgid "Add image batch"
 msgstr "A&ntilde;adir lote de im&aacute;genes"
 
-#  also table ximNEWS.Actions
+#:  also table ximNEWS.Actions
 msgid "Image viewer"
 msgstr "Visor de im&aacute;genes"
 
@@ -8330,8 +8261,7 @@ msgstr "Copiar ximNEWS"
 msgid "The news %s could not be inserted into the colector"
 msgstr "La noticia %s no ha podido insertarse en el colector"
 
-
-# ######## ximSYNC ########
+#: ---------- ximSYNC ----------
 
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlist.tpl
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
@@ -8909,14 +8839,12 @@ msgstr "Fall&oacute; la conexi&oacute;n"
 msgid "Processing "
 msgstr "Procesando "
 
-
-# ######## ximLOADER ########
+#: ---------- ximLOADER ----------- 
 #: /modules/ximLOADER/BuildParser.class.php
 msgid "Error parsing XML document"
 msgstr "Error parseando el documento XML"
 
-
-# ######## ximIO ########
+#: ---------- ximIO ----------
 #: /modules/ximIO/actions/console_wrapper/template/Smarty/export.tpl
 msgid "Introduce the first node identifier:"
 msgstr "Introduzca el identificador del primer nodo:"
@@ -8943,8 +8871,8 @@ msgstr "Indique si el primer nodo ha de ser generado o no."
 msgid "Explanation:"
 msgstr "Explicaci&oacute;n:"
 
-msgid "If we copy a documents folder, destination node should be a documents folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox"
-msgstr "Si copiamos una carpeta de documentos, el nodo destino debe ser otra carpeta de documentos, y en ese caso no debemos indicar que el primera nodo sea generado. Si copiamos una carpeta ximnews, debemos elegir como contenedor un servidor o una secci&oacute;n, y necesitaremos crear la secci&oacute;n ximnews, por lo que en este caso debemos marcar el checkbox"
+msgid "If we copy a ximdoc folder, destination node should be a ximdoc folder, and in this case we should not indicate than first node was generated. If we copy a ximnews folder, we should choose as container a server or section, and we will need create the ximnews section, therefore in this case we should tick the checkbox"
+msgstr "Si copiamos una carpeta ximdoc, el nodo destino debe ser una carpeta ximdoc, y en ese caso no debemos indicar que el primera nodo sea generado. Si copiamos una carpeta ximnews, debemos elegir como contenedor un servidor o una secci&oacute;n, y necesitaremos crear la secci&oacute;n ximnews, por lo que en este caso debemos marcar el checkbox"
 
 msgid "Tick if source and destination ximdex are same"
 msgstr "Marcar el ximdex de origen y destino son el mismo"
@@ -9163,6 +9091,9 @@ msgstr "Errores:"
 msgid "Warnings:"
 msgstr "Advertencias:"
 
+msgid "Information:"
+msgstr "Informaci&oacute;n:"
+
 msgid "Errors and Warnings occurred, do you want to continue with the process? (Y/n)"
 msgstr "Se han producido Errores y/o Advertencias, quiere continuar con el proceso? (S/n)"
 
@@ -9292,18 +9223,14 @@ msgstr "No hay ning&uacute;n usuario v&aacute;lido para hacer la importaci&oacut
 msgid "Error inserting the node"
 msgstr "Error en la inserci&oacute;n del nodo"
 
-msgid "No schema could be successfully estimated for the node "
-msgstr "No se ha podido estimar correctamente ning&uacute;n esquema para el nodo "
+msgid "No pvd could be successfully estimated for the node "
+msgstr "No se ha podido estimar correctamente ninguna pvd para el nodo "
 
 msgid "An inconsistency was found in database, there are several UUID in NodeProperties table with same value"
 msgstr "Se ha encontrado una inconsistencia en la base de datos, hay varios UUID iguales en la tabla NodeProperties"
 
+#: ----------- modules_PRO ----------
 
-
-# ######## modules_PRO ########
-# --------------------------------------------------------------
-
-# ######## ximNEWSwizard ########
 msgid "XimNEWSwizard module is not enabled"
 msgstr "El m&oacute;dulo ximNEWSwizard no est&aacute; habilitado"
 
@@ -9322,7 +9249,7 @@ msgstr "La noticia se ha modificado satisfactoriamente"
 msgid "News could NOT be successfully modified"
 msgstr "La noticia NO se ha modificado satisfactoriamente"
 
-# ######## ximDEMOS ########
+#: --------- ximDEMOS ----------
 #: xmd/js/user_connect.js
 msgid "Your user session has been closed or changed to another user. Please proceed to log in again"
 msgstr "Su sesi\\xf3n de usuario ha sido cerrada o cambiada a otro usuario. Por favor, para poder continuar vuelva a iniciar sesi\\xf3n"
@@ -9406,52 +9333,3 @@ msgstr "para aprender m&aacute;s sobre Ximdex y su potencia en la gesti&oacute;n
 
 msgid "Privacy Policy"
 msgstr "Pol&iacute;tica de privacidad"
-
-#: ximPUBLISHtools messages
-
-msgid "There isn't any pending documents to publish."
-msgstr "No hay documentos pendientes de publicaci&oacute;n."
-
-msgid "By"
-msgstr "Por"
-
-msgid "Text to search"
-msgstr "Texto a buscar"
-
-msgid "From"
-msgstr "Desde"
-
-msgid "To"
-msgstr "Hasta"
-
-msgid "Any user"
-msgstr "Cualquier usuario"
-
-msgid "More..."
-msgstr "M&aacute;s..."
-
-msgid "Publication Comment:"
-msgstr "Comentario de publicaci&oacute;n:"
-
-msgid "No publications were found with those search terms."
-msgstr "No se han encontrado publicaciones con esos t&eacute;rminos de b&uacute;squeda."
-
-#Xsparrow module
-msgid "Create a new wizard project"
-msgstr "Crear nuevo proyecto tutelado"
-
-#new checkstatus action
-msgid "Documents in"
-msgstr "Documentos en"
-
-msgid "documents found"
-msgstr "documentos encontrados"
-
-msgid "document found"
-msgstr "documento encontrado"
-
-msgid "Status Report"
-msgstr "Informe de Estado"
-
-msgid "Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version."
-msgstr "Abajo se listan todos los documentos relevantes de tu proyecto, agrupados por estado. S&oacute;lo se muestran los archivos que se han modificado con respecto a su &uacute;ltima versi&oacute;n publicada."

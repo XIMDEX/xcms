@@ -26,61 +26,78 @@
 
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+ModulesManager::file('/inc/model/RelSectionXimlet.class.php');
 
 /**
-  @brief This class implements the action of add a ximlet in a Node
- *
- * Defines three methods: createrel(), deleterel(), readtree()
- *
+ * @brief This class implements the action of add a ximlet in a Node
+ * Defines three methods: createrel(), deleterel()
  * @ingroup ximNEWS
  */
 
 class Action_addximlet extends ActionAbstract {
 
-	// Main method: shows initial form
+    	// Main method: shows initial form
     	function index() {
         	$idNode = $this->request->getParam('nodeid');
         	$node = new Node($idNode);
 
         	$depsMngr = new DepsManager();
         	$ximlets = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $idNode);
-        	$relXimlets = array();
 
-        	if (is_array($ximlets) && count($ximlets) > 0) {
-            		foreach ($ximlets as $idXimlet) {
-                		$ximletNode = new Node($idXimlet);
-                		if (!($ximletNode->get('IdNode') > 0)) {
-                    			XMD_Log::warning(_("Ximlet with identity ") . $idXimlet . _("has been deleted"));
-                    			continue;
-                		}
-                		$relXimlets[$idXimlet]['path'] = str_replace('/', ' / ', $ximletNode->GetPath());
-                		$relXimlets[$idXimlet]['idximlet'] = $idXimlet;
-            		}
-        	}
+		$rsx = new RelSectionXimlet();
+		$all_ximlets=$rsx->getAllXimlets();
 
+		if(count($ximlets)>0){
+			$linkable_ximlets=array_diff($all_ximlets,$ximlets);
+		}
+		else{
+			$linkable_ximlets=$all_ximlets;
+		}
+
+		$linked_ximlets=$this->getXimletInfo($ximlets);
+		$linkable_ximlets=$this->getXimletInfo($linkable_ximlets);
+	
         	$query = App::get('QueryManager');
         	$actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
         	$actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
 
-        	$this->addJs('/actions/addximlet/resources/js/addximlet.js');
-
-        	$values = array('ximlet_list' => $relXimlets,
-            			'id_node' => $idNode,
-            			'action_delete' => $actionDelete,
-            			'action_create' => $actionCreate,
-            			'name' => $node->get('Name')
+        	$values = array('linked_ximlets' => $linked_ximlets,
+            		'id_node' => $idNode,
+	    		'linkable_ximlets' => $linkable_ximlets,
+            		'action_delete' => $actionDelete,
+            		'action_create' => $actionCreate,
+            		'name' => $node->get('Name')
         	);
 
-        	$this->render($values, null, 'default-3.0.tpl');
+        	$this->render($values, 'index', 'default-3.0.tpl');
     	}
+
+	private function getXimletInfo($a){
+		$result = array();
+
+        	if (is_array($a) && count($a) > 0) {
+            		foreach ($a as $idXimlet) {
+                		$ximletNode = new Node($idXimlet);
+                		if (!($ximletNode->get('IdNode') > 0)) {
+                    			XMD_Log::warning(_("Ximlet with id ") . $idXimlet . _(" has been deleted."));
+                    			continue;                	
+				}	   
+                		
+				$result[$idXimlet]['path'] = str_replace('/Ximdex/Projects/', "", $ximletNode->getPath());
+				$result[$idXimlet]['path'] = str_replace('/', ' / ', $result[$idXimlet]['path']);
+                		$result[$idXimlet]['idximlet'] = $idXimlet;
+            		}   
+        	}   
+		return $result;
+	}
 
     	function createrel() {
         	$idNode = $this->request->getParam('id_node');
-        	$idXimletContainer = $this->request->getParam('targetfield');
+        	$idXimletContainers = $this->request->getParam('idximlet');
         	$recursive = $this->request->getParam('recursive');
         	$sections[] = $idNode;
 
-		if(!$idXimletContainer) {
+		if(!$idXimletContainers || !count($idXimletContainers)) {
             		$this->messages->add(_('No ximlet has been found to be associated.'), MSG_TYPE_NOTICE);
             		$values = array(
                        		'messages' => $this->messages->messages,
@@ -88,25 +105,9 @@ class Action_addximlet extends ActionAbstract {
             		);
             		$this->render($values);
             		return;
-		}	
-	
-		$this->createRelXimletSection($idNode, $idXimletContainer, $recursive);
+		}
 
-        	$values = array(
-            		'id_node' => $idNode,
-            		'nodeid' => $idNode,
-            		'goback' => true,
-            		'messages' => $this->messages->messages
-        	);
-
-        	$this->render($values);
-    	}
-
-    	public function createRelXimletSection($idNode, $idXimletContainer, $recursive){
-
-        	$sections[] = $idNode;
-
-        	if ($recursive == 1) {
+        	if($recursive == 'on') {
             		$node = new Node($idNode);
             		$children = $node->getChildren($node->get('IdNodeType'));
 
@@ -114,66 +115,65 @@ class Action_addximlet extends ActionAbstract {
                 		$sections = array_merge($sections, $children);
             		}
         	}
+	
+		foreach ($idXimletContainers as $idXimletContainer){
+	        	$ximletContainer = new Node($idXimletContainer);
+			$ximletName = $ximletContainer->get('Name');
+	        	$ximlets = $ximletContainer->GetChildren();
 
-        	$ximletContainer = new Node($idXimletContainer);
-        	$ximletName = $ximletContainer->get('Name');
-        	$ximlets = $ximletContainer->GetChildren();
+        		foreach ($sections as $sectionId) {
+	            		$deps = new DepsManager();
+        	    		$result = $deps->set(DepsManager::SECTION_XIMLET, $sectionId, $idXimletContainer);
+		    		$section = new Node($sectionId);
+		    		$sectionName = $section->get('Name');
 
-        	foreach ($sections as $sectionId) {
+	            		if ($result) {
+					$this->messages->add(_("Section ") . $sectionName . _(" has been succesfully associated to the ximlet ").$ximletName,MSG_TYPE_NOTICE);
+	            		} else {
+					$this->messages->add(_("Section ") . $sectionName . _(" has not been associated to the ximlet ") . $ximletName,MSG_TYPE_NOTICE);
+            			}	
 
-            		$deps = new DepsManager();
-            		$result = $deps->set(DepsManager::SECTION_XIMLET, $sectionId, $idXimletContainer);
-            		$section = new Node($sectionId);
-            		$sectionName = $section->get('Name');
+	            		// Inserts ximlets dependencies for all section's xml documents
+        	    		$sectionNode = new Node($sectionId);
+	            		$strDocs = $sectionNode->class->getXmlDocuments();
 
-            		if ($result) {
-        			$this->messages->add(_("Section ") . $sectionName ." ". _("has been associated to ximlet ").$ximletName,MSG_TYPE_NOTICE);
-            		} else {
-        			$this->messages->add(_("Section ") . $sectionName ." ". _("has not been associated to ximlet ") . $ximletName,MSG_TYPE_NOTICE);
-            		}
+        	    		if(sizeof($strDocs) > 0) {
+                			foreach ($strDocs as $docId) {
+	                    			$document = new Node($docId);
+			    			$docName = $document->get('Name');
+                	    			$docLanguage = $document->class->getLanguage();
 
-            		// Inserts ximlets dependencies for all section's strdDoc
+	                    			foreach($ximlets as $ximletId) {
+        	                			$ximlet = new StructuredDocument($ximletId);
+							$ximletNode = new Node($ximletId);
+							$ximletName = $ximletNode->get('Name');
 
-            		$sectionNode = new Node($sectionId);
-            		$strDocs = $sectionNode->class->getXmlDocuments();
+	                        			if($ximlet->get('IdLanguage') == $docLanguage) {
+        	                    				$deps = new DepsManager();
+                	            				$result = $deps->set(DepsManager::STRDOC_XIMLET, $docId, $ximletId);
+                        	    				if($result) {
+									$this->messages->add(_("Doc " ) . $docName . _(" has been associated to the ximlet ") . $ximletName,MSG_TYPE_NOTICE);
+        	                    				}else{
+									$this->messages->add(_("Doc ") . $docName . _(" has not been associated to the ximlet ") . $ximletName,MSG_TYPE_NOTICE);
+                        	    				}		
+	                        			}
+        	            			}
+               				}
+	            		}
+        		}
 
-            		if (sizeof($strDocs) > 0) {
-                		foreach ($strDocs as $docId) {
-                    			$document = new Node($docId);
-                    			$docName = $document->get('Name');
-                    			$docLanguage = $document->class->getLanguage();
-
-                    			foreach ($ximlets as $ximletId) {
-
-                        			$ximlet = new StructuredDocument($ximletId);
-                        			$ximletNode = new Node($ximletId);
-                        			$ximletName = $ximletNode->get('Name');
-
-                        			if ($ximlet->get('IdLanguage') == $docLanguage) {
-                            				$deps = new DepsManager();
-
-                            				$result = $deps->set(DepsManager::STRDOC_XIMLET, $docId, $ximletId);
-                            				if ($result) {
-                                				$this->messages->add(_("Doc " ) . $docName . _("has been associated to ximlet ") . $ximletName,MSG_TYPE_NOTICE);
-                            				} else {
-                                				$this->messages->add(_("Doc ") . $docName . _("has not been associated to ximlet ") . $ximletName,MSG_TYPE_NOTICE);
-                            				}
-                        			}
-                    			}//end foreach
-                		}//end foreach
-            		}
-        	}//end foreach
-
+		}
+        	$this->index();
     	}
 
-
     	function deleterel() {
-
         	$ximletContainers = $this->request->getParam('idximlet');
         	$sectionId = $this->request->getParam('id_node');
 		$section = new Node($sectionId);
 		$sectionName = $section->get('Name');
-
+		$sections=array();
+		$sections[]=$sectionId;
+		$recursive = $this->request->getParam('recursive');
 
 		if(!$ximletContainers) {
             		$this->messages->add(_('No ximlet has been found to be disassociated.'), MSG_TYPE_NOTICE);
@@ -184,49 +184,58 @@ class Action_addximlet extends ActionAbstract {
             		$this->render($values);
             		return;
 		}
+		
+		if($recursive == 'on') {
+                        $node = new Node($sectionId);
+                        $children = $node->getChildren($node->get('IdNodeType'));
 
+                        if (sizeof($children) > 0) {
+                                $sections = array_merge($sections, $children);
+                        }   
+                }
+error_log(print_r($sections,true));
         	// Deletes section-ximlet dependency
-        	foreach ($ximletContainers as $ximletContainerId) {
-
+        	foreach($ximletContainers as $ximletContainerId) {
 	    		$ximletNode = new Node($ximletContainerId);
 	    		$ximletName = $ximletNode->get('Name');
 
-            		$depsMngr = new DepsManager();
+			foreach ($sections as $sectionId) {
+	            		$depsMngr = new DepsManager();
+        	    		$result = $depsMngr->delete(DepsManager::SECTION_XIMLET, $sectionId, $ximletContainerId);
+           		 	if($result) {
+					$this->messages->add(_("Section ") . $sectionName . _(" has been disassociated with the ximlet ") . $ximletName,MSG_TYPE_NOTICE);
+            			}else {
+					$this->messages->add(_("Section ") . $sectionName . _(" has not been disassociated with the ximlet ") . $ximletName,MSG_TYPE_NOTICE);
+            			}
 
-            		$result = $depsMngr->delete(DepsManager::SECTION_XIMLET, $sectionId, $ximletContainerId);
-            		if ($result) {
-				$this->messages->add(_("Section ") . $sectionName ." ". _("has been disassociated with ximlet ") . $ximletName,MSG_TYPE_NOTICE);
-            		} else {
-				$this->messages->add(_("Section ") . $sectionName ." ". _("has not been disassociated with ximlet ") . $ximletName,MSG_TYPE_NOTICE);
-            		}
+            			$sectionNode = new Node($sectionId);
+            			$strDocs = $sectionNode->class->getXmlDocuments();
 
-            		$sectionNode = new Node($sectionId);
-            		$strDocs = $sectionNode->class->getXmlDocuments();
+            			$ximletContainer = new Node($ximletContainerId);
+            			$ximlets = $ximletContainer->GetChildren();
 
-            		$ximletContainer = new Node($ximletContainerId);
-            		$ximlets = $ximletContainer->GetChildren();
-
-            		if (sizeof($strDocs) > 0) {
-                		foreach ($strDocs as $docId) {
-                    			$document = new Node($docId);
-		    			$docName = $document->get('Name');
-                    			$docLanguage = $document->class->getLanguage();
-                    			foreach ($ximlets as $ximletId) {
-                        			$ximlet = new StructuredDocument($ximletId);
-						$ximletNode = new Node($ximletContainerId);
-						$ximletName = $ximletNode->get('Name');
-
-                        			if ($ximlet->get('IdLanguage') == $docLanguage) {
-                            				$result = $depsMngr->delete(DepsManager::STRDOC_XIMLET, $docId, $ximletId);
-                            				if ($result) {
-								$this->messages->add(_("Doc ") . $docName . _("has been disassociated") . $ximletName,MSG_TYPE_NOTICE);
-                            				} else {
-								$this->messages->add(_("Doc ") . $docName . _("has not been disassociated with ximlet ") . $ximletName,MSG_TYPE_NOTICE);
-                            				}
-                        			}
-                    			}
-                		}
-            		}
+            			if (sizeof($strDocs) > 0) {
+                			foreach($strDocs as $docId) {
+                    				$document = new Node($docId);
+		    				$docName = $document->get('Name');
+                    				$docLanguage = $document->class->getLanguage();
+                    		
+						foreach($ximlets as $ximletId) {
+                        				$ximlet = new StructuredDocument($ximletId);
+							$ximletNode = new Node($ximletContainerId);
+							$ximletName = $ximletNode->get('Name');
+                        				if($ximlet->get('IdLanguage') == $docLanguage) {
+                            					$result = $depsMngr->delete(DepsManager::STRDOC_XIMLET, $docId, $ximletId);
+                            					if ($result) {
+									$this->messages->add(_("Doc ") . $docName . _(" has been disassociated with the ximlet ") . $ximletName,MSG_TYPE_NOTICE);
+                            					}else {
+									$this->messages->add(_("Doc ") . $docName . _(" has not been disassociated with the ximlet ") . $ximletName,MSG_TYPE_NOTICE);
+                            					}
+                        				}
+                    				}
+                			}
+            			}
+			}
         	}
 
         	$values = array(
@@ -235,27 +244,8 @@ class Action_addximlet extends ActionAbstract {
             		'messages' => $this->messages->messages
         	);
 
-        	$this->render($values);
+        	$this->index();
     	}
 
-    	/**
-     	* Filtering the tree data, we need just to show the allowed project.
-     	*/
-    	public function readtree() {
-        	$ret = GenericDatasource::read($this->request);
-        	$node = new Node($this->request->getParam('nodeforximlet'));
-        	//removing every node in collection which aren't in same project as nodeforximlet
-        	$aux = array();
-        	foreach ($ret["collection"] as $childNode) {
-            		$node_object = new Node($childNode["nodeid"]);
-            		$id_parent_node = $node_object->GetParent();
-            		if (!($id_parent_node == "10000" && !$node->IsOnNode($node_object->GetID()))) {
-				$aux[] = $childNode;
-            		}
-        	}
-        	$ret["collection"] = $aux;
-        	$this->sendJSON($ret);
-    	}
 }
-
 ?>

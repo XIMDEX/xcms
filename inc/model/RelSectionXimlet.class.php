@@ -37,6 +37,10 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelSectionXimlet_ORM.class.php';
 
 class RelSectionXimlet extends RelSectionXimlet_ORM {
-
+	public function getAllXimlets(){
+                $node = new Node();
+                $result = $node->find('IdNode','IdNodeType = 5056', array(), MONO);
+                return $result;
+        }
 }
 ?>
