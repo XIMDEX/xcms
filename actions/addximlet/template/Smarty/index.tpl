@@ -36,8 +36,8 @@
 		<input type="hidden" name="id_node" value="{$id_node}" />
 		{foreach from=$linked_ximlets item=ximlet_info}
 		<li>
-			<label for="idximlet_{$ximlet_info.idximlet}">
-			<input type="checkbox" id="idximlet_{$ximlet_info.idximlet}" name="idximlet[]" value="{$ximlet_info.idximlet}" />
+			<label for="{$id_node}_idximlet_{$ximlet_info.idximlet}">
+			<input type="checkbox" id="{$id_node}_idximlet_{$ximlet_info.idximlet}" name="idximlet[]" value="{$ximlet_info.idximlet}" />
 			<strong>{$ximlet_info.path}</strong></label>
 
 		</li>
@@ -45,7 +45,7 @@
 	</ol>
 </fieldset>
 <fieldset>
-	<input type="checkbox" name="recursive" id="recursive" /> {t}Disassociate recursively{/t}.
+	<input type="checkbox" name="recursive" id="{$id_node}_recursive_delete" /> <label for="{$id_node}_recursive_delete"> {t}Disassociate recursively{/t}.</label>
 	<p>{t}If the current section/server has subfolders, the disassociation will be deleted for them too{/t}.</p>
 </fieldset>
 
@@ -65,15 +65,15 @@
 		<input type="hidden" id="id_node" name="id_node" value="{$id_node}" />
 		{foreach from=$linkable_ximlets item=ximlet}
                 <li>
-			<label for="idximletavailable_{$ximlet.idximlet}">
-                        <input type="checkbox" name="idximlet[]" id="idximletavailable_{$ximlet.idximlet}" value="{$ximlet.idximlet}" />
+			<label for="{$id_node}_idximletavailable_{$ximlet.idximlet}">
+                        <input type="checkbox" name="idximlet[]" id="{$id_node}_idximletavailable_{$ximlet.idximlet}" value="{$ximlet.idximlet}" />
                         <strong>{$ximlet.path}</strong></label>
                 </li>
                 {/foreach}
 	</ol>
 </fieldset>
 <fieldset>
-	<input type="checkbox" name="recursive" id="recursive" /> {t}Associate recursively{/t}.
+	<input type="checkbox" name="recursive" id="{$id_node}_recursive_add" /><label for="{$id_node}_recursive_add"> {t}Associate recursively{/t}.</label>
 	<p>{t}If the current section/server has subfolders, the association will be created for them too{/t}.</p>
 </fieldset>
 

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0"
+	xmlns:xhtml="http://www.w3.org/1999/xhtml" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+	<start>
+		<element name="docxap">
+			<ref name="def_sys_info" />
+			<ref name="def_custom_info" />
+			<xim:description>Image Metadata</xim:description>
+		</element>
+	</start>
+
+          
+	<define name="def_sys_info">
+		<element name="sys_info">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<ref name="def_nodeid"/>
+                  	<ref name="def_name"/>
+			<ref name="def_parentid"/>
+                  	<ref name="def_nodetype"/>
+			<ref name="def_path"/>
+			<ref name="def_version"/>
+			<xim:description>System Information</xim:description>
+		</element>
+	</define>
+
+	<define name="def_custom_info">
+		<element name="custom_info">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+                        <ref name="def_author" />
+                        <ref name="def_description" />
+                        <ref name="def_size" />
+			<xim:description>Custom Information</xim:description>
+		</element>
+	</define>
+
+          <!-- System Info -->
+          
+        <define name="def_nodeid">
+		<element name="nodeid">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[NodeId]</xim:default_content>
+			<text />
+			<xim:description>NodeId</xim:description>
+		</element>
+	</define>
+          
+        <define name="def_parentid">
+		<element name="parentid">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[parentId]</xim:default_content>
+			<text />
+			<xim:description>ParentId</xim:description>
+		</element>
+	</define>
+          
+        <define name="def_name">
+		<element name="name">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[Name]</xim:default_content>
+			<text />
+			<xim:description>Name</xim:description>
+		</element>
+	</define>
+        
+        <define name="def_nodetype">
+		<element name="nodetype">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[NodeType]</xim:default_content>
+			<text />
+			<xim:description>NodeType</xim:description>
+		</element>
+	</define>
+          
+        <define name="def_path">
+		<element name="path">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[Node Path]</xim:default_content>
+			<text />
+			<xim:description>Node Path</xim:description>
+		</element>
+	</define>
+          
+	<define name="def_version">
+		<element name="version">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[Node Version]</xim:default_content>
+			<text />
+			<xim:description>Node Version</xim:description>
+		</element>
+	</define>
+
+
+        <!-- Custom Info -->
+          
+   	<define name="def_author">
+		<element name="author">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[Author]</xim:default_content>
+			<text />
+			<xim:description>Author</xim:description>
+		</element>
+	</define>
+          
+        <define name="def_description">
+		<element name="description">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[Description]</xim:default_content>
+			<text />
+			<xim:description>Description</xim:description>
+		</element>
+	</define>
+        
+        <define name="def_size">
+		<element name="size">
+			<optional>
+				<attribute name="uid" />
+			</optional>
+			<xim:default_content>[Size]</xim:default_content>
+			<text />
+			<xim:description>Size</xim:description>
+		</element>
+	</define>
+          
+</grammar>

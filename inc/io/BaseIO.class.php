@@ -21,7 +21,7 @@
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision: 8703 $
+ *  @version $Revision: 8778 $
  */
 
 
@@ -109,13 +109,12 @@ class BaseIO {
 
 		$nodeTypeClass = strtoupper($data['CLASS']);
 		$nodeTypeName = strtoupper($data['NODETYPENAME']);
-		$metaType = ""; 
+		$metaType = "";
 		if (array_key_exists($nodeTypeClass, $metaTypesArray)) {
 			$metaType = $metaTypesArray[$nodeTypeClass];
 		}
 
-		// upper all the indexes in data.
-		$aux = array();
+		// upper all the indexes in data.		
 		$data = $this->dataToUpper($data);
 
 		if (!($this->_checkPermissions($nodeTypeName, $userid, WRITE) || $this->_checkName($data))) {
@@ -148,6 +147,7 @@ class BaseIO {
 		}
 		return $this->createNode($data, $metaType, $nodeTypeClass, $nodeTypeName);
 	}
+
 
 	protected function createNode($data, $metaType, $nodeTypeClass, $nodeTypeName){
 		switch ($metaType) {
@@ -542,6 +542,16 @@ class BaseIO {
 				}
 				return ($result > 0) ? $result : ERROR_INCORRECT_DATA;
 
+			case 'IMAGENODE':
+				$node = new Node();
+                                $result = $node->CreateNode($data['NAME'], $data['PARENTID'], 5040);
+                                if (!($result > 0)) {
+                                        reset($node->messages->messages);
+                                        while (list (, $message) = each($node->messages->messages)) {
+                                                XMD_Log::error($message['message']);
+                                        }
+                                }
+                                return ($result > 0) ? $result : ERROR_INCORRECT_DATA;	
 			default :
 				// TODO: trigger error.
 				$this->messages->add(_('An error occurred trying to insert the node'),
@@ -582,8 +592,8 @@ class BaseIO {
 			$metaType = $metaTypesArray[$nodeTypeClass];
 		}
 
-		// upper all the indexes in data and the nodetypename.
-		$data = $this->dataToUpper($data); 
+		// upper all the indexes in data and the nodetypename.		
+		$data = $this->dataToUpper($data);
 		$nodeTypeName = strtoupper($data['NODETYPENAME']);
 
 		if (!($this->_checkPermissions($nodeTypeName, $userid, UPDATE) || $this->_checkName($data))) {
@@ -1362,19 +1372,20 @@ class BaseIO {
 		return $data;
 	}
 
-	/** 
-         * Set to upper case all the keys in $data array. 
-         * @param  array $data Array with key to upper. 
-         * @return array       The same array with all the keys in uppercase. 
-         */ 
-        protected function dataToUpper($data){ 
-	 
-                $aux = array(); 
-                foreach ($data as $idx => $item) { 
-                        $aux[strtoupper($idx)] = $item; 
-                } 
-                return $aux; 
-        } 
+
+	/**
+	 * Set to upper case all the keys in $data array.
+	 * @param  array $data Array with key to upper.
+	 * @return array       The same array with all the keys in uppercase.
+	 */
+	protected function dataToUpper($data){
+
+		$aux = array();
+		foreach ($data as $idx => $item) {
+			$aux[strtoupper($idx)] = $item;
+		}
+		return $aux;
+	}
 }
 
 ?>
