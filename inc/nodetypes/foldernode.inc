@@ -1,28 +1,28 @@
 <?php
-
-/******************************************************************************
- *  Ximdex a Semantic Content Management System (CMS)    							*
- *  Copyright (C) 2011  Open Ximdex Evolution SL <dev@ximdex.org>	      *
- *                                                                            *
- *  This program is free software: you can redistribute it and/or modify      *
- *  it under the terms of the GNU Affero General Public License as published  *
- *  by the Free Software Foundation, either version 3 of the License, or      *
- *  (at your option) any later version.                                       *
- *                                                                            *
- *  This program is distributed in the hope that it will be useful,           *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
- *  GNU Affero General Public License for more details.                       *
- *                                                                            *
- * See the Affero GNU General Public License for more details.                *
- * You should have received a copy of the Affero GNU General Public License   *
- * version 3 along with Ximdex (see LICENSE).                                 *
- * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       *
- *                                                                            *
- * @version $Revision: $                                                      *  
- *                                                                            *
- *                                                                            *
- ******************************************************************************/
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -122,13 +122,15 @@ class FolderNode extends Root {
 
 
 	/**
-	*  Does nothing.
 	*  @param string name
 	*  @param int parentID
 	*  @param int nodeTypeID
 	*/
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null){
+		if($nodeTypeID==5053){
+			$this->_createDefaultRNGs();
+		}
 		$this->updatePath();
 	}
 
@@ -137,7 +139,6 @@ class FolderNode extends Root {
 	*/
 
 	function DeleteNode(){
-
 	}
 
 	/**
@@ -146,11 +147,9 @@ class FolderNode extends Root {
 	*/
 
 	function CloneNode($target){
-
 	}
 
 	function UpdatePath() {
-
 		$node = new Node($this->nodeID);
 		$path = pathinfo($node->GetPath());
 		$db = new DB();
@@ -173,10 +172,7 @@ class FolderNode extends Root {
 	*  @return array
 	*/
 	function GetDependencies() {
-		$query = sprintf("SELECT DISTINCT IdNode"
-					. " FROM Nodes"
-					. " WHERE IdParent = %d",
-					$this->nodeID);
+		$query = sprintf("SELECT DISTINCT IdNode FROM Nodes WHERE IdParent = %d",$this->nodeID);
 
 		$this->dbObj->Query($query);
 		$deps = array();
@@ -205,11 +201,10 @@ class FolderNode extends Root {
 	*  @param bool recurrence
 	*/
 
-    function ToXml($depth, & $files, $recurrence) {
+    	function ToXml($depth, & $files, $recurrence) {
 
 		$query = sprintf("SELECT IdGroup, IdRole FROM RelGroupsNodes WHERE IdNode = %d", $this->nodeID);
 		$this->dbObj->Query($query);
-//		if (!$this->dbObj->numRows > 0) return '';
 
 		$indexTabs = str_repeat("\t", $depth + 1);
 		$xml = '';
@@ -222,25 +217,20 @@ class FolderNode extends Root {
 			$this->dbObj->Next();
 		}
 
-		$query = sprintf("SELECT IdLanguage, Name"
-					. " FROM NodeNameTranslations"
-					. " WHERE IdNode = %d",
-					$this->nodeID);
+		$query = sprintf("SELECT IdLanguage, Name FROM NodeNameTranslations WHERE IdNode = %d",$this->nodeID);
 
 		$this->dbObj->Query($query);
 		while (!$this->dbObj->EOF) {
 			$idLanguage = $this->dbObj->GetValue('IdLanguage');
 			$name = $this->dbObj->GetValue('Name');
-			$xml .= sprintf("%s<NodeNameTranslation IdLang=\"%d\">\n",
-					$indexTabs, $idLanguage);
-			$xml .= sprintf("%s\t<![CDATA[%s]]>\n",
-					$indexTabs, utf8_encode($name));
+			$xml .= sprintf("%s<NodeNameTranslation IdLang=\"%d\">\n",$indexTabs, $idLanguage);
+			$xml .= sprintf("%s\t<![CDATA[%s]]>\n",	$indexTabs, utf8_encode($name));
 			$xml .= sprintf("%s</NodeNameTranslation>\n", $indexTabs);
 			$this->dbObj->Next();
 		}
 
 		return $xml;
-    }
+    	}
 
 	/**
 	 *  Updates the XSLT templates which contains dinamic calls.
@@ -263,14 +253,10 @@ class FolderNode extends Root {
 				'TEMPLATE' => preg_replace('/(%%%[\w\d\_\-]+%%%)/', '([\w\d\_\-]+)', $dinamicTemplatePattern),
 				'VALUES' => $matches[1]);
 		}
-
 		$dinamicCallerStructure = array();
-		//obtiene todos los nodos de tipo xslt de la sección a la que corresponde la carpeta
 
 		// For controlling the file creation
-
 		$createFile = true;
-
 		$childrens = $section->GetChildren(5077);
 
 		foreach ($childrens as $idChildren) {
@@ -327,7 +313,6 @@ class FolderNode extends Root {
 		$xslChoose .= "		</xsl:choose>\r\n	</xsl:template>\r\n</xsl:stylesheet>";
 
 		// Updates template_choose content (or creates the node)
-
 		if (!$createFile) {
 			$chooseNode = new Node($chooseNodeId);
 			$chooseNode->SetContent($xslChoose);
@@ -370,6 +355,41 @@ class FolderNode extends Root {
 
 
 	function CanDenyDeletion(){
+	}
+
+
+	private function _createDefaultRNGs(){
+		$defaultRNGs_folder="/inc/metadata/schemes/";
+		$idparent= $this->parent->GetID(); 
+
+		if ($handle = opendir(XIMDEX_ROOT_PATH.$defaultRNGs_folder)) {
+			$entry = readdir($handle);
+			while (false !== $entry){
+				$data=array();
+				if(!($entry=='.' || $entry=='..')) {
+					$data = array(
+                                                'NODETYPENAME' => "RNGVISUALTEMPLATE",
+                                                'NAME' => $entry,
+                                                'PARENTID' => $idparent,
+                                                'CHILDRENS' => array (
+                                                        array ('NODETYPENAME' => 'PATH', 'SRC' => '' )
+                                                )   
+                                        );    
+                                        $baseIO = new baseIO();
+                                        $rngId = $baseIO->build($data);
+					if(!$rngId>0){
+						error_log("Fail! Default metadata RNG ".$entry." was not created!");
+					}
+					else{
+						$newRngNode = new Node($rngId);
+                                             	$rngContent = file_get_contents(XIMDEX_ROOT_PATH.$defaultRNGs_folder.$entry,FILE_USE_INCLUDE_PATH);
+                                        	$newRngNode->SetContent($rngContent);
+					}
+				}
+				$entry = readdir($handle);
+    			}
+    			closedir($handle);
+		}
 	}
 }
 

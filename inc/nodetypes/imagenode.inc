@@ -122,7 +122,9 @@ class ImageNode extends FileNode{
 	private function addRelation($name){
 		$rnm = new RelNodeMetadata();
 		$idimage_metadata = $this->getMetadataContainer($name);
-		$res = $rnm->add($this->nodeID,$idimage_metadata);
+		$rnm->set('source', $this->nodeID);
+                $rnm->set('target', $idimage_metadata);
+		$res = $rnm->add();
 		if($res<0){
 			error_log("Relation not added.");
 		}
@@ -228,7 +230,7 @@ class ImageNode extends FileNode{
         	$values = array(
 				'idNode' => $idNode,
 				'nodeName' => $name,
-				'messages' => $this->messages->messages,
+				'messages' => $this->messages->messages
         	);
 		$result["error"] = $values;
         	return $result;
@@ -293,7 +295,7 @@ class ImageNode extends FileNode{
 			'NODETYPENAME' => $nodeTypeName,
 			'NAME' => $name,
 			'PARENTID' => $idContainer,
-			'ALIASNAME' => $aliases[$idLanguage],
+			'ALIASNAME' => (isset($aliases[$idLanguage]))?$aliases[$idLanguage]:'',
 			'CHILDRENS' => array (
 				array ("NODETYPENAME" => "VISUALTEMPLATE", "ID" => $idTemplate),
 				array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
@@ -306,9 +308,9 @@ class ImageNode extends FileNode{
 
 		if (isset($aliases[$idLanguage])) {
 			$data['CHILDRENS'][] = array(
-									'NODETYPENAME' => 'NODENAMETRANSLATION',
-									'IDLANG' => $idLanguage,
-									'DESCRIPTION' => $aliases[$idLanguage]);
+					'NODETYPENAME' => 'NODENAMETRANSLATION',
+					'IDLANG' => $idLanguage,
+					'DESCRIPTION' => $aliases[$idLanguage]);
 		}
 
 		$baseIO = new baseIO();

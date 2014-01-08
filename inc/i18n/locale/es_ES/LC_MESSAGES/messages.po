@@ -206,6 +206,9 @@ msgstr "El m&oacute;dulo de gesti&oacute;n de noticias ximNEWS gestiona y organi
 msgid "Project"
 msgstr "Proyecto"
 
+msgid "Project name"
+msgstr "Nombre del Proyecto"
+
 #: /actions/addfoldernode/template/Smarty/addProject.tpl
 msgid "Add Project"
 msgstr "A&ntilde;adir Proyecto"
@@ -1557,9 +1560,6 @@ msgid "Select template"
 msgstr "Seleccione plantilla"
 
 #: /actions/relsectionschema/template/Smarty/index.tpl
-msgid "Select schema"
-msgstr "Seleccionar esquema"
-
 msgid "Associate schema to project"
 msgstr "Asociar esquema al proyecto"
 

@@ -475,7 +475,7 @@ INSERT INTO `Config` VALUES (23,'ximid','-');
 INSERT INTO `Config` VALUES (24,'VersionName','Ximdex 3.5');
 INSERT INTO `Config` VALUES (25,'UTFLevel','0');
 INSERT INTO `Config` VALUES (26,'EmptyHrefCode','/404.html');
-INSERT INTO `Config` VALUES (27, 'defaultPVD', NULL);
+INSERT INTO `Config` VALUES (27, 'defaultRNG', NULL);
 INSERT INTO `Config` VALUES (28, 'defaultChannel', NULL);
 INSERT INTO `Config` VALUES (29, 'dexCache', NULL);
 INSERT INTO `Config` VALUES (30, 'PublishOnDisabledServers', NULL);

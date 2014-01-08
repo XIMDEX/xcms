@@ -22,32 +22,32 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
- <form method="post" id="print_form" action="{$action_url}">
-<div class="action_header">
-  <h2>{t friendlyName=$friendlyName}Add %1{/t}</h2>
-    <fieldset class="buttons-form">
-    {button label="Create `$friendlyName`" class='validate btn main_action' }
-  </fieldset>
-</div>
-  <div class="action_content">
-    <p class="icon icon-positioned project input">
-        <input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}Project name{/t}">
-    </p>
 
+<form method="post" id="print_form" action="{$action_url}">
+	<div class="action_header">
+  		<h2>{t friendlyName=$friendlyName}Add %1{/t}</h2>
+    		<fieldset class="buttons-form">
+    			{button label="Create `$friendlyName`" class='validate btn main_action' }
+  		</fieldset>
+	</div>
 
+  	<div class="action_content">
+    		<p class="icon icon-positioned project input">
+        		<input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}Project name{/t}"/>
+    		</p>
 
-        <div class="col1-2"><h3>{t}Available channels {/t}</h3>
-               <p>   <!--<label for="canales">{t}Canal{/t}</label>-->
+        	<div class="col1-2">
+			<h3>{t}Available channels{/t}</h3>
+               		<p>
                {foreach from=$channels key=index item=channelData }
-            <span>
-              <input type="checkbox" class="validable canales check_group__canales hidden-focus"
-                      name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" />
-             <label for="p_{$channelData.id}" class="checkbox-label icon" >{$channelData.name}</label>
-            <!--  <img class="xim-treeview-icon icon-channel"/> The path has been deleted and the icon just is show by CSS, src="{$_URL_ROOT}/xmd/images/icons/channel.png" --></span>
-            {foreachelse}</p>
-            <p class="message_warning">{t}There are no channels created in the system{/t}</p>
-            {/foreach}</div>
-
-  </div>
-
+            			<span>
+              				<input type="checkbox" class="validable canales check_group__canales hidden-focus" name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" />
+             				<label for="p_{$channelData.id}" class="checkbox-label icon" >{$channelData.name}</label>
+            			</span>
+            	{foreachelse}
+			</p>
+            		<p class="message_warning">{t}There are no channels created in the system{/t}</p>
+            	{/foreach}
+		</div>
+  	</div>
 </form>

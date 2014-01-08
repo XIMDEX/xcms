@@ -109,6 +109,7 @@ class BaseIO {
 
 		$nodeTypeClass = strtoupper($data['CLASS']);
 		$nodeTypeName = strtoupper($data['NODETYPENAME']);
+
 		$metaType = "";
 		if (array_key_exists($nodeTypeClass, $metaTypesArray)) {
 			$metaType = $metaTypesArray[$nodeTypeClass];
@@ -161,7 +162,7 @@ class BaseIO {
 				if (empty($data['IDTEMPLATE'])) {
 					$idsVisualTemplate = $this->_getIdFromChildrenType($data['CHILDRENS'],
 							'VISUALTEMPLATE');
-					$data['IDTEMPLATE'] = isset($idsVisualTemplate[0]) ? $idsVisualTemplate[0] : $this->_getDefaultPVD();
+					$data['IDTEMPLATE'] = isset($idsVisualTemplate[0]) ? $idsVisualTemplate[0] : $this->_getDefaultRNG();
 				}
 				switch ($nodeTypeClass) {
 					case 'XIMNEWSCOLECTORNODETYPE' :
@@ -321,10 +322,9 @@ class BaseIO {
 								'VISUALTEMPLATE'),
 						(array) $this->_getIdFromChildrenType($data['CHILDRENS'],
 								'RNGVISUALTEMPLATE'));
-				$data['TEMPLATE'] = isset($idsVisualTemplate[0]) ? $idsVisualTemplate[0] : $this->_getDefaultPVD();
+				$data['TEMPLATE'] = isset($idsVisualTemplate[0]) ? $idsVisualTemplate[0] : $this->_getDefaultRNG();
 				if (empty($data['TEMPLATE'])) {
-					$this->messages->add(_('It is being tried to insert a xmlcontainer without its corresponding schema'),
-							MSG_TYPE_ERROR);
+					$this->messages->add(_('It is being tried to insert a xmlcontainer without its corresponding schema'),MSG_TYPE_ERROR);
 					return ERROR_INCORRECT_DATA;
 				}
 				$idNode = $this->_checkForceNew($data);
@@ -554,8 +554,7 @@ class BaseIO {
                                 return ($result > 0) ? $result : ERROR_INCORRECT_DATA;	
 			default :
 				// TODO: trigger error.
-				$this->messages->add(_('An error occurred trying to insert the node'),
-						MSG_TYPE_ERROR);
+				$this->messages->add(_('An error occurred trying to insert the node'),MSG_TYPE_ERROR);
 				XMD_Log::fatal(sprintf(_("The class %s does not exist in BaseIO"),$nodeTypeName));
 				return ERROR_INCORRECT_DATA;
 		}
@@ -1214,11 +1213,11 @@ class BaseIO {
 	 *
 	 * @return unknown_type
 	 */
-	function _getDefaultPVD() {
-		$defaultPVD = Config::getValue('defaultPVD');
-		$node = new Node($defaultPVD);
+	function _getDefaultRNG() {
+		$defaultRNG = Config::getValue('defaultRNG');
+		$node = new Node($defaultRNG);
 		if ($node->get('IdNode') > 0) {
-			return ($node->nodeType->GetName() == 'VisualTemplate') ? $defaultPVD : NULL;
+			return ($node->nodeType->GetName() == 'VisualTemplate') ? $defaultRNG : NULL;
 		}
 		return NULL;
 	}
@@ -1260,11 +1259,11 @@ class BaseIO {
 				(array) $this->_getIdFromChildrenType($childrens, 'VISUALTEMPLATE'),
 				(array) $this->_getIdFromChildrenType($childrens, 'RNGVISUALTEMPLATE'));
 		if (count($idsVisualTemplate) != 1) {
-			$defaultPVD = $this->_getDefaultPVD();
-			if (empty($defaultPVD)) {
+			$defaultRNG = $this->_getDefaultRNG();
+			if (empty($defaultRNG)) {
 				return NULL;
 			}
-			return $defaultPVD;
+			return $defaultRNG;
 		} else {
 			return $idsVisualTemplate[0];
 		}
