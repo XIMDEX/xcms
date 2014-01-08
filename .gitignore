@@ -1,0 +1,11 @@
+## Files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+data/
+logs/
+install/install.log
+conf/install-modules.conf
+conf/install-params.conf.php
