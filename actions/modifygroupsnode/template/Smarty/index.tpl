@@ -59,7 +59,7 @@
 
         		{if ($new_groups)}
         		<fieldset class="buttons-form">
-        			{button label="Add group" onclick="call_submit('addgroupnode');" class="validate btn main_action" }<!--message="Are you sure you want to perform this association?"-->
+        			{button label="Add group" onclick="call_submit('addgroupnode');" class="validate btn main_action" }{*message="Are you sure you want to perform this association?"*}
         		</fieldset>
         		{/if}
         					<h2>{t}Delete group of a section{/t}</h2>

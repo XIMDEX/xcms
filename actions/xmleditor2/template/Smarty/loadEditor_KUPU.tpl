@@ -39,7 +39,7 @@
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/toolboxes.tpl"}
         	<div class="kupu-editorframe">
                 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/tagnavbar.tpl"}
-			<div class="iwrapper"><!--Added for autoscrolling-->
+			<div class="iwrapper">{*Added for autoscrolling*}
 				<div class="scrollup autoscroll"><span>{t}Scroll up{/t}</span></div>
 				<iframe id="kupu-editor" class="kupu-editor-iframe" frameborder="0" src="{$_URL_ROOT}/actions/xmleditor2/index.html" scrolling="auto">
 				</iframe>

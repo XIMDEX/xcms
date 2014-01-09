@@ -29,7 +29,7 @@
 					<div class="action_header">
 						<h2>{t}Users who belong to the group{/t}:" <i>{$name}</i> "</h2>
 						<fieldset class="buttons-form">
-							{button id="add_user" label="Add new" class="validate btn main_action" }<!--message="Would you like to add user with role to the group?"-->
+							{button id="add_user" label="Add new" class="validate btn main_action" }{*message="Would you like to add user with role to the group?"*}
 						</fieldset>
 					</div>
 					<div class="action_content">

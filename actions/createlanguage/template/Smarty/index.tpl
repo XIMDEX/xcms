@@ -28,7 +28,7 @@
 <div class="action_header">
 	<h2>{t}Add language{/t}</h2>
 	<fieldset class="buttons-form">
-			{button label="Create" class='validate  btn main_action'}<!--message="Do you want to create the language?"-->
+			{button label="Create" class='validate  btn main_action'}{*message="Do you want to create the language?"*}
 
 	</fieldset>
 </div>

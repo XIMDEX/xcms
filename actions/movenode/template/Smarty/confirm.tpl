@@ -29,8 +29,8 @@
 	<div class="action_header">
 		<h2>{t}Move node{/t} {$nodeName}</h2>
 		<fieldset class="buttons-form">
-			<!--{button label="Reset" onclick='cln_form.reset(); return false;' type="reset"}-->
-			{button label="Move node" class="validate btn main_action" }<!--message="Are you sure you want to move this node to selected destination?"-->
+			{*{button label="Reset" onclick='cln_form.reset(); return false;' type="reset"}*}
+			{button label="Move node" class="validate btn main_action" }{*message="Are you sure you want to move this node to selected destination?"*}
 		</fieldset>
 	</div>
 	<div class="action_content">

@@ -37,11 +37,6 @@
 		<div class="right-block">
 			<treeview class="xim-treeview-selector"	paginatorShow="yes" /></div>
 		</li>
-		<!--<li>
-			<input type="text" readonly name="pathfield" id="pathfield" value="" >
-			<input type="hidden" name="targetfield" id="targetfield" /> 
-			<input type="hidden" name="contenttype" id="contenttype" value="{$nodetypeid}" /> 
-		</li>-->
 		<li>
 			<input type="checkbox" name="recursive" id="recursive" checked="checked" /><label for="recursive"> <span>{t}Recursive process{/t}</span></label>
 		</li>
@@ -49,8 +44,6 @@
 	</ol>	
     </fieldset>
    <fieldset class="buttons-form">
-   
-			{button class="validate" label="{t}Copy{/t}" }<!--message="Are you sure you want to copy the node to selected destination?"-->
-		
-        </fieldset>
+	{button class="validate" label="{t}Copy{/t}" }{*message="Are you sure you want to copy the node to selected destination?"*}
+   </fieldset>
 </form>

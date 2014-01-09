@@ -26,7 +26,7 @@
 <div class="kupu-tb" id="toolbar">
 	<span id="kupu-tb-buttons" class="kupu-tb-buttons">
 	
-		<!-- File oprations -->
+		{* File operations *}
 		<span class="kupu-tb-buttongroup">
 			<button type="button" class="kupu-save" id="kupu-save-button" xim:title="{t}Save{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;
@@ -34,7 +34,7 @@
 			</button>
 		</span>
 		
-		<!-- Document views -->
+		{* Document views *}
 		<span class="kupu-tb-buttongroup">		
 				<button type="button" class="kupu-treeview" id="kupu-treeview-button" xim:title="{t}Tree{/t}" i18n:attributes="title" accesskey="s">
 					&#xA0;
@@ -50,7 +50,7 @@
 			</button>
 		</span>
 		
-		<!-- Edition oprations -->
+		{* Edition operations *}
 		<span class="kupu-tb-buttongroup">
 		
 			<button type="button" class="kupu-cut" id="kupu-cut-button" xim:title="{t}Cut{/t}" i18n:attributes="title" accesskey="z">
@@ -98,7 +98,7 @@
 			</button>
 		</span>
 		
-		<!-- Services -->
+		{* Services *}
 		<span class="kupu-tb-buttongroup">
 			<button type="button" class="kupu-spellchecker" id="kupu-spellchecker-button" xim:title="{t}Spell Check{/t}" i18n:attributes="title">
 				&#xA0;
@@ -106,7 +106,7 @@
 			</button>
 		</span>
 		
-		<!-- Publication -->
+		{* Publication *}
 		<span class="kupu-tb-buttongroup">
 			<button type="button" class="kupu-publicate" id="kupu-publicate-button" xim:title="{t}Publicate{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;

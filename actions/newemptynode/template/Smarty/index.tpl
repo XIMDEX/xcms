@@ -28,7 +28,7 @@
 	<div class="action_header">
 		<h2>{t}Available languages and translation{/t}</h2>
 		<fieldset class="buttons-form">
-			<a href="{$_MESSAGES_PATH}" class="lbOn validate">{button label="Modificar" class='validate btn main_action' }<!--message="Would you like update this information?"--></a>
+			<a href="{$_MESSAGES_PATH}" class="lbOn validate">{button label="Modificar" class='validate btn main_action' }{*message="Would you like update this information?"*}</a>
 		</fieldset>
 	</div>
 	<div class="action_content">

@@ -24,17 +24,14 @@
  *}
 
 <div class="action_header">
-		<h2>{t}Add status{/t}</h2>
-			<fieldset class="buttons-form">
-	{button class="validate btn main_action" label="Add status" }<!--message="Would you like to add a new state to workflow?"-->
+	<h2>{t}Add status{/t}</h2>
+	<fieldset class="buttons-form">
+		{button class="validate btn main_action" label="Add status" }{*message="Would you like to add a new state to workflow?"*}
 	</fieldset>
-	</div>
+</div>
 
 <div class="action_content">
-
-<form method="post" id="msc_form" action="{$action_create}" class="inline-form">
-
-
+	<form method="post" id="msc_form" action="{$action_create}" class="inline-form">
 		<fieldset>
 				<ol>
 					<li>
@@ -70,7 +67,7 @@
 		<fieldset class="buttons-form">
 		<input type="hidden" name="idNode" value="{$idNode}">
 		<input type="hidden" name="url_to_nodelist" value="{$url_to_nodelist}">
-		{button label="Save changes" class="validate btn main_action" }<!--message="Would you like to update workflow status?"-->
+		{button label="Save changes" class="validate btn main_action" }{*message="Would you like to update workflow status?"*}
 		{button label="Check dependencies" class="open_report btn" }
 	</fieldset>
 
@@ -88,7 +85,8 @@
 				</li>
 				<li>
 					<input type="checkbox" name="is_workflow_master" id="is_workflow_master"{if $is_workflow_master == true} checked="checked" disabled="disabled"{/if} />
-					<!--<label for="is_workflow_master">-->{t}This workflow will behave as default item{/t}
+					{* <label for="is_workflow_master"> *}
+					{t}This workflow will behave as default item{/t}
 				</li>
 				<li>
 					<strong>{t}Existing status{/t}</strong>

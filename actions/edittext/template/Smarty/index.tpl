@@ -30,9 +30,9 @@
 	{if $isXimNewsLanguage == true}
 		{button label="Save and publish" class="validate"
 			 onclick="$('#publicar').attr('value', '1');"
-			  }<!--message="{t}Are you sure you want to save and publish the document?{/t}"-->
+			  }{*message="{t}Are you sure you want to save and publish the document?{/t}"*}
 	{/if}
-		{button label="Save" class="validate btn main_action"}<!--message="{t}Are you sure you want to save the changes?{/t}"-->
+		{button label="Save" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
 	</fieldset>
 	</div>
  <div class="action_content full text-editor">

@@ -23,14 +23,13 @@
  *  @version $Revision$
  *}
 
-
 <form method="post" name="mg_form" id="mg_form" action="{$action_url}"  class='validate_ajax'>
 <div class="action_header">
   <h2>{t}Modify group{/t}</h2>
 
   <fieldset class="buttons-form">
     {button label="Modify" class='validate  btn main_action' }
-    <!--message="Woul you like to modify this group?"-->
+    {* message="Woul you like to modify this group?"*}
   </fieldset></div>
 
   <div class="action_content">

@@ -23,32 +23,28 @@
  *  @version $Revision$
  *}
 
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 	<head>
 		<title> {$versionname} </title>
-		<!-- constant css includes -->
+		{* constant css includes *}
 		<link type="text/css" href="{$_URL_ROOT}/xmd/style/main_extended.css" rel="stylesheet" />
 
 		<link id="main_css" type="text/css" href="{$_URL_ROOT}/xmd/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css" rel="stylesheet" />
 
-		<!-- css widgets -->
+		{* css widgets *}
 		%=css_widgets%
 
-		<!-- constant js includes -->
-		<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
-		<script type="text/javascript" src="{EXTENSIONS::Jquery_ui()}"></script>
-		<script type="text/javascript" src="{$_URL_ROOT}/inc/js/helpers.js"></script>
-		<!--script type="text/javascript" src="{$_URL_ROOT}/inc/js/console.js"></script-->
+		{* constant js includes *}
+	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>
+	<script type="text/javascript" src="{EXTENSIONS::Jquery_ui()}"></script>
+	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/helpers.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery-validate/jquery.validate.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/extensions/jquery-validate/localization/messages_{$user_locale.Lang}.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/actions/composer/resources/js/widgets_controllers/default.js"></script>
         <script type="text/javascript" src="{$_URL_ROOT}/xmd/js/helper/query_manager.js"></script>
-        <!--<script type="text/javascript" src="{$_URL_ROOT}/extensions/ckeditor/ckeditor.js"></script>
-        <script type="text/javascript" src="{$_URL_ROOT}/extensions/ckeditor/_source/core/ajax.js"></script>-->
-<script type="text/javascript" src="{$_URL_ROOT}/inc/js/collection.class.js"></script>
-		<!-- js widgets -->
+	<script type="text/javascript" src="{$_URL_ROOT}/inc/js/collection.class.js"></script>
+		{* js widgets *}
 		%=js_widgets%
 	</head>
 

@@ -26,7 +26,7 @@
 	<div class="action_header">
 		<h2>{t}Modify external link{/t}</h2>
 		<fieldset class="buttons-form">
-		{button label="Modify" class='validate  btn main_action' }<!--message="Would you like to modify this link?"-->
+		{button label="Modify" class='validate  btn main_action' }{*message="Would you like to modify this link?"*}
 	</fieldset>
 	</div>
 	<div class="action_content">

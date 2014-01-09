@@ -28,7 +28,7 @@
 	<div class="action_header">
 		<h2>{t}Add channel{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Create channel" class='validate btn main_action' }<!--message=Would you like to add a channel?"-->
+			{button label="Create channel" class='validate btn main_action' }{*message=Would you like to add a channel?"*}
 		</fieldset>
 	</div>
 	<div class="action_content">

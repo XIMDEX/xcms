@@ -29,7 +29,7 @@
 	<div class="action_header">
 		<h2>{t}Select master document{/t}</h2>
 		<fieldset class="buttons-form">
-				{button class="validate btn main_action" onclick="" label="Save changes" }<!--message="Are you sure you want to performe the changes?"-->
+				{button class="validate btn main_action" onclick="" label="Save changes" }{*message="Are you sure you want to performe the changes?"*}
 		</fieldset>
 	</div>
 	<div class="action_content">
@@ -58,8 +58,7 @@
 					<div class="translation_box hidden">
 						<input type="checkbox" name="delete_method" value="unlink" class="delete_method">
 						{t}Do you want to copy the master document content when a link would be deleted?{/t} <br/>
-						<!--<input type="radio" name="delete_method" value="show_translation" class="delete_method">
-						{t}Do you want to suggest Google Translate traduction?{/t}-->
+						{*<input type="radio" name="delete_method" value="show_translation" class="delete_method">{t}Do you want to suggest Google Translate traduction?{/t}*}
 					</div>
 				</li>
 			{/if}

@@ -201,7 +201,7 @@
 
 		</div>
 	</div>
-<!--  rdfa annotations -->
+{* rdfa annotations *}
 	<div class="kupu-toolbox" id="kupu-toolbox-annotationrdfabox">
 		<h1 class="kupu-toolbox-heading" i18n:translate="">
 			{t}Rdfa annotations{/t}
@@ -220,9 +220,9 @@
 			</div>
 		</div>
 	</div>
-<!-- end of rdfa annotations -->
+{* end of rdfa annotations *}
 
-	<!--  rdfa annotations -->
+{* rdfa annotations *}
 	<div class="kupu-toolbox" id="kupu-toolbox-annotationrdfabox">
 		<h1 class="kupu-toolbox-heading" i18n:translate="">
 			{t}Rdfa annotations{/t}
@@ -241,7 +241,7 @@
 			</div>
 		</div>
 	</div>
-	<!-- end of rdfa annotations -->
+{* end of rdfa annotations *}
 
 	<div class="kupu-toolbox" id="kupu-toolbox-attributes">
 		<h1 class="kupu-toolbox-heading" i18n:translate="">
@@ -249,7 +249,7 @@
 		</h1>
 		<div>
 			<div id="kupu-toolbox-attributes-elements">
-				<!--Control dinamic generation-->
+				{*Control dinamic generation*}
 			</div>
 			<div class="kupu-toolbox-buttons">
 				<button type="button" id="kupu-attribute-button"

@@ -23,20 +23,16 @@
  *  @version $Revision$
  *}
 
-
-
 <form method="post" id="print_form" action="{$action_url}">
-<div class="action_header">
+	<div class="action_header">
 		<h2>{t}Add{/t} {$friendlyName|gettext}</h2>
 		<fieldset class="buttons-form">
-			{button label="Create" class='validate btn main_action'  }<!--message="¿Would you like add a new $friendlyName?" ////// `$friendlyName`-->
+			{button label="Create" class='validate btn main_action'  }{*message="¿Would you like add a new $friendlyName?" ////// `$friendlyName`*}
 		</fieldset>
 	</div>
-<div class="action_content">
-
+	<div class="action_content">
 		<p class="icon icon-positioned server input">
-				<input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}Server name{/t}">
+			<input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}Server name{/t}">
 		</p>
-
-</div>
+	</div>
 </form>

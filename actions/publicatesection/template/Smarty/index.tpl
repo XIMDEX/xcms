@@ -28,7 +28,7 @@
 <div class="action_header">
 <h2>{t}Publish section{/t}</h2>
 	<fieldset class="buttons-form">
-		{button label="Accept" class="validate btn main_action" }<!--message="You are going to publish $node_name. Would you like to continue?"-->
+		{button label="Accept" class="validate btn main_action" }{*message="You are going to publish $node_name. Would you like to continue?"*}
 	</fieldset>
 </div>
 <div class="message warning-message">
@@ -36,16 +36,15 @@
 	<div class="action_content">
 		<fieldset>
 		    	
-		       <p>{t}You have selected to publish contents of {/t} <strong>{$node_name}</strong>. {t}Would you like to publish the contained subsections?{/t}</p><!-- <p>   {t}Would you like to publish just {if $folderName == 'sección'} this {else} this {/if} {$folderName} or contained subsections in {if $folderName == 'sección'} also, ella{else} él{/if}?{/t}</p> -->
-
+		       <p>{t}You have selected to publish contents of {/t} <strong>{$node_name}</strong>. {t}Would you like to publish the contained subsections?{/t}</p>
 		
-						<label label="nonrecursive"  class="col1-2"><input type="radio" name="rec" value="" checked id="nonrecursive">
+			<label label="nonrecursive"  class="col1-2"><input type="radio" name="rec" value="" checked id="nonrecursive">
 				{t}Publish just{/t} <strong>{$node_name}</strong>.</label>
 			
-				<label for="recursive" class="col1-2">	<input type="radio" name="rec" value="rec" id="recursive">
+			<label for="recursive" class="col1-2">	<input type="radio" name="rec" value="rec" id="recursive">
 					{t}Publish{/t} <strong>{$node_name}</strong> {t}and its subsections{/t}.</label>
 			
-				{if $synchronizer_to_use eq 'ximSYNC' && $ximpublish_tools_enabled}
+			{if $synchronizer_to_use eq 'ximSYNC' && $ximpublish_tools_enabled}
 					
 					<label>{t}Node types to publish{/t}:</label>
 					<select name="types" id="types">

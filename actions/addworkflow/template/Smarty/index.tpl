@@ -36,7 +36,7 @@
 	</fieldset>
 	<fieldset class="buttons-form">
 		<a href="{$_MESSAGES_PATH}" class="lbOn validate">
-			{button label="Add" class='validate btn main_action'}<!-- message="Would you like to add a new workflow?"-->
+			{button label="Add" class='validate btn main_action'}{*message="Would you like to add a new workflow?"*}
 		</a>
 	</fieldset>
 </form>

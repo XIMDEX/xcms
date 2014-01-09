@@ -29,7 +29,7 @@
 <body>
 
 
-	<!-- IMPORTANT -->
+	{* IMPORTANT *}
 	<xim:meta name="X-XIMDEX" content="401 Unauthorized"></xim:meta>
 
 	<div id="contenedor">
@@ -49,7 +49,7 @@
 		<p>
 			<input type="submit" name="login" id="login" value="{t}Sign in{/t}" />
 			<span>{t}Recommended browsers{/t}:<br/> Firefox &gt; 4, Chrome, Opera and Safari.</span>
-			<!--<a href="http://lab04.ximdex.net/ximdexDEMO/xmd/loadaction.php?action=forgot">Forgot your password?</a>-->
+			{* <a href="http://lab04.ximdex.net/ximdexDEMO/xmd/loadaction.php?action=forgot">Forgot your password?</a> *}
 		</p>
 
 	</form>
@@ -58,8 +58,8 @@
  
 	<div id="mas_info" class="triangle">
 		<h2 class="comunidad">{t}Join our community{/t}</h2>
-		<!--<p>Join our <a href="#">community</a>,
-		consult your doubts, contribute with your suggestions. </p>-->
+		{* <p>Join our <a href="#">community</a>,
+		consult your doubts, contribute with your suggestions. </p>*}
 
 		<p>{t}Visit{/t} <a href="http://www.ximdex.org">{t}our website{/t}</a> {t}to learn more about the advantages of managing your projects with{/t} <strong>Ximdex</strong>.</p>
 

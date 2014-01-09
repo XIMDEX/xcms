@@ -28,7 +28,7 @@
 		<h2>{$lbl_anadir}</h2>
 		<fieldset class="buttons-form">
 			{button label="Upload files" class="validate btn main_action"}
-			<!--message="Are you sure you want to continue?" -->
+			{*message="Are you sure you want to continue?"*}
 		</fieldset>
 	</div>
 

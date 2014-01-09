@@ -24,21 +24,17 @@
 *}
 
 <form method="post" name="as_form" id="as_form" action="{$action_url}">
-	<input type="hidden" name="nodeid" VALUE="{$nodeID}">
-	<input type="hidden" id="nodeURL" name="nodeURL" value="{$nodeURL}">
+	<input type="hidden" name="nodeid" VALUE="{$nodeID}"/>
+	<input type="hidden" id="nodeURL" name="nodeURL" value="{$nodeURL}"/>
 	<div class="action_header">
 		<h2>{t}Add section{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Create section" class='validate btn main_action' }<!--message="Would you like to add this section?"-->
+			{button label="Create section" class='validate btn main_action' }{*message="Would you like to add this section?"*}
 		</fieldset>
 	</div>
-
 	<div class="action_content section-properties">
-
 		{include file="`$_APP_ROOT`/actions/addsectionnode/template/Smarty/sectiontype.tpl"}
-
 		{include file="`$_APP_ROOT`/actions/addsectionnode/template/Smarty/languages.tpl"}
-
 		{include file="`$_APP_ROOT`/actions/addsectionnode/template/Smarty/normal.tpl"}
 	</div>
 </form>

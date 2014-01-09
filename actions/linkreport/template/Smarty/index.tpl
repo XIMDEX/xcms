@@ -28,7 +28,7 @@
 	<div class="action_header">
 		<h2>{t}Select search criteria{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Search" class="validate btn main_action" }<!--message="A search will be performed with selected parameters. Would you like to continue?"-->
+			{button label="Search" class="validate btn main_action" }{*message="A search will be performed with selected parameters. Would you like to continue?"*}
 		</fieldset>
 	</div>
 		<div class="action_content">

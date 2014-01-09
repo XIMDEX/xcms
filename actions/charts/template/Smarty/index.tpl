@@ -23,7 +23,6 @@
  *  @version $Revision$
  *}
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -48,14 +47,6 @@
 Graphs: <select id="dropDownGraphs"></select>
 &nbsp;<button id="refresh">{t}Refresh{/t}</button>
 <input id="chkShowGrid" type="checkbox" /><label id="chkShowGrid_label" for="chkShowGrid">{t}Show Grid{/t}</label>
-<!--
-<Function: <select id="dropFunctions"></select>
-Class: <select id="dropClasses"></select>
-
-<input id="chkShowAvarage" type="checkbox">Show Avarage</input>
-<input id="txtTests" type="text" value="*" />
-</div>
--->
 
 <h3 id="testInfo" class="label"></h3>
 <h4 id="methodInfo" class="label"></h4>

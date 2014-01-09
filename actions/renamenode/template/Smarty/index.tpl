@@ -31,7 +31,7 @@
 			{if $id_nodetype!=5078}
 				{button label="Check dependencies" class="open_report btn"}
 			{/if}
-				{button label="Modify" class='validate btn main_action' }<!--message="Are you sure you want to change the name?"-->
+				{button label="Modify" class='validate btn main_action' }{*message="Are you sure you want to change the name?"*}
 			</fieldset>
 	</div>
 	<div class="action_content">

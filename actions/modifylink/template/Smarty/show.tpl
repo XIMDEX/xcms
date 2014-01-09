@@ -45,7 +45,7 @@
 		<ol>
 			<li>
 				{button label="Cancel" class="close-button btn"}
-				{button label="Continue" class='validate btn main_action' }<!--message="¿Desea crear el enlace de todas formas?"-->
+				{button label="Continue" class='validate btn main_action' }{*message="¿Desea crear el enlace de todas formas?"*}
 			</li>
 		</ol>
 	</fieldset>

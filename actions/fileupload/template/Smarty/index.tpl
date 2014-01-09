@@ -29,15 +29,15 @@
 	<div class="action_header">
 	    <h2>{t}Upload file{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Upload file" class="validate  btn main_action" }<!--message="Are you sure you want to upload this file?"-->
+			{button label="Upload file" class="validate  btn main_action" }{*message="Are you sure you want to upload this file?"*}
 		</fieldset>
 	</div>
 <div class="action_content">
 		<fieldset>
 			<p>
-					<label for="upload" class="aligned">{t}File{/t}</label>
-					<input type="file" name="upload" id="upload" size="30" class="cajaxg validable not_empty">
-				</p>
+				<label for="upload" class="aligned">{t}File{/t}</label>
+				<input type="file" name="upload" id="upload" size="30" class="cajaxg validable not_empty">
+			</p>
 		</fieldset>
 	</div>
 </form>

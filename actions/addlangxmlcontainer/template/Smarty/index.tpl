@@ -31,7 +31,7 @@
   <div class="action_header">
 	<h2>{t}Languages{/t}, {t}Channels{/t} </h2>
   	<fieldset class="buttons-form">
-		{button label="Modify" class='validate btn main_action' }<!--message="Would you like to save changes?"-->
+		{button label="Modify" class='validate btn main_action' }{*message="Would you like to save changes?"*}
 	</fieldset>
   </div>
 

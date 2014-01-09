@@ -23,13 +23,11 @@
  *  @version $Revision$
  *}
 
-
-
 <form name="copy" id="copy" method="post" action="{$action_url}">
 	<div class="action_header">
 		<h2>{t}Copy element{/t}</h2>
 		<fieldset class="buttons-form">
-			{button class="validate btn main_action" label="Copy" }<!--message="Are you sure you want to copy this node to selected destination?"-->
+			{button class="validate btn main_action" label="Copy" }{*message="Are you sure you want to copy this node to selected destination?"*}
         </fieldset>
 	</div>
 <div class="action_content">
@@ -46,22 +44,12 @@
 				<treeview class="xim-treeview-selector"	paginatorShow="yes" handler="hndCopy_treeSelector" /></div>
 			</li>
 			<li class="ui-state-highlight ui-corner-all msg-warning">
-				<!--<input type="text" readonly name="pathfield" id="pathfield" value="" >-->
-
-				<!--For now it allows ximIO to renames automatically copies with same level.
-				    To Allow the user to insert directly the name will be a improvement.-->
-				<!--<div class="changename hidden">
-					<p>In selected destination already exists a node with the same name. Please, insert a new name:</p>
-					<label for="id_node"><span>{t}New name{/t}</span></label>
-					<input type="text" name="newname" />
-				</div>-->
 				<div class="warning hidden">
 					<span class="ui-icon ui-icon-notice"></span><p>{t}The copy operation is not allowed on selected destination.{/t}</p>
 					<span class="ui-icon ui-icon-info"></span><p> &nbsp;{t}Please, select another destination to copy.{/t}</p>
 				</div>
 			</li>
 			<li>
-				<!--<br/><br/><input type="checkbox" name="recursive" id="recursive" checked="checked" /><label for="recursive"> {t}Recursive process{/t}</label>-->
 				<br/><br/><input type="checkbox" name="recursive" id="recursive" checked="checked" /><label for="recursive"> {t}Execute this action for all files and subfolders{/t}.</label>
 			</li>
 

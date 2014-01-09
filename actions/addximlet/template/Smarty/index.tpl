@@ -50,7 +50,7 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Disassociate" class='validate button-delete' }<!--message="Are you sure you want to disassociate it?"-->
+	{button label="Disassociate" class='validate button-delete' }{*message="Are you sure you want to disassociate it?"*}
 </fieldset>
 
 </form>
@@ -78,7 +78,7 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Associate" class='validate button-assoc' }<!--message="Would you like to associate this section with the ximlet?"-->
+	{button label="Associate" class='validate button-assoc' }{*message="Would you like to associate this section with the ximlet?"*}
 </fieldset>
 
 </form>

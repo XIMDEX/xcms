@@ -23,14 +23,13 @@
  *  @version $Revision$
  *}
 
-
 <form method="post" id="cdx_form" action="{$action_url}">
 	<input type="hidden" name="nodeid" value="{$idNode}"/>
 
 	<div class="action_header">
 		<h2>{t}Add new XML{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Create" class='validate btn main_action' }<!--message="Do you wan to create the XML document?"-->
+			{button label="Create" class='validate btn main_action' }{*message="Do you wan to create the XML document?"*}
 		</fieldset>
 	</div>
 
@@ -38,7 +37,6 @@
 	<fieldset>
 		<div class="input-select icon document">
 				<input type="text" name="name" id="docname" class="cajaxg validable not_empty full-size" placeholder="{t}Name of your document{/t}"/>
-			
 			
 				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty document-type">
 					<option value="">{t}Select Schema{/t}</option>

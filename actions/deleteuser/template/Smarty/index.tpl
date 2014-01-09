@@ -24,27 +24,10 @@
  *}
 
 <h2>{t}Delete user{/t}</h2>
-
-<!--{include file="$_APP_ROOT/xmd/template/Smarty/helper/messages.tpl"}-->
 <form method="post" name="el_form" action="{$action_url}">
 	<fieldset>
 		<input type=hidden name='id_node' value="{$id_node}">
 		<p>{t}The user <b>{$login}</b> ({$email}) is going to be deleted.{/t}</p>
-		<p>{t}This action cannot be undone.{/t}</p>
-		<!--<ol>
-			<li>
-				<label for="login" class="aligned">{t}User{/t}</label>
-				<input type="text" name="login" id="login" readonly value="{$login}" class="cajag">
-			</li>
-			<li>
-				<label for="realname" class="aligned">{t}First and last names{/t}</label>
-				<input type="text" name="realname" id="realname" readonly value="{$realname}" class="cajag">
-			</li>
-			<li>
-				<label for="email" class="aligned">{t}E-mail{/t}</label>
-				<input type="text" name="email" id="email" readonly value="{$email}" class="cajag">
-			</li>
-		</ol>-->
 	</fieldset>
 	<fieldset class="buttons-form">
 		{button class="validate btn main_action" label="Delete" message="Are you sure you want to delete this user?"}

@@ -35,9 +35,9 @@
 			<input type="hidden" name="borrar"/>
 			{if (0 != $id_server)}
 				{button id="delete_server" label="Delete server" class="btn"}
-				{button id="create_server" label="Update" class="validate btn main_action"}<!--message="Would you like to create this server?"-->
+				{button id="create_server" label="Update" class="validate btn main_action"}{*message="Would you like to create this server?"*}
 			{else}
-				{button id="create_server" label="Save" class="validate btn main_action"}<!--message="Would you like to create this server?"-->
+				{button id="create_server" label="Save" class="validate btn main_action"}{*message="Would you like to create this server?"*}
 			{/if}
 		</fieldset>
 	</div>

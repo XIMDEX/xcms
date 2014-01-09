@@ -24,28 +24,14 @@
  *}
 
  <div class="action_header">
-			<h2>{t}Status Report{/t}</h2>
-			
+	<h2>{t}Status Report{/t}</h2>
 </div>
-
-		<div class="action_content versions">
-
-
+<div class="action_content versions">
 	<p>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</p>
-
 		
 	{foreach from=$files key=state item=statenode}
-				
 		<div class="state-info row-item_selectable">
-			
-				<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>  <div class="docs-amount right">{$statesFull[{$state}].count}</div>
-			<!--{if $statesFull[{$state}].count > 1}
-				{t}documents found{/t}) 
-			{else}
-				{t}document found{/t})
-			{/if}	-->
-			
-		
+			<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>  <div class="docs-amount right">{$statesFull[{$state}].count}</div>
 		
 		<div class="documents-info">
 			{foreach from=$statenode item=file}		
@@ -55,8 +41,7 @@
 					<span class="file-version">{$file.Version}.{$file.SubVersion}</span>
 				</div>
 			{/foreach}
-			</div>
-				{/foreach}
+		</div>
+	{/foreach}
 </div>
-
 </div>

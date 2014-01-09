@@ -30,7 +30,7 @@
 			</p>
 	</fieldset>
 	<fieldset class="buttons-form">
-		{button label="Save" class="validate btn main_action" }<!--message="Are you sure you want to modify this file?"-->
+		{button label="Save" class="validate btn main_action" }{*message="Are you sure you want to modify this file?"*}
 	</fieldset>
 
 </form>

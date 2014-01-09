@@ -43,7 +43,7 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Remove" class="validate deleterel-button  btn main_action" }<!--message="Are you sure you want to remove this association?"-->
+	{button label="Remove" class="validate deleterel-button  btn main_action" }{*message="Are you sure you want to remove this association?"*}
 </fieldset>
 </form>
 
@@ -78,6 +78,6 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Associate" class='validate createrel-button  btn main_action' }<!--message="Would you like to associate this section with this ximlet?"-->
+	{button label="Associate" class='validate createrel-button  btn main_action' }{*message="Would you like to associate this section with this ximlet?"*}
 </fieldset>
 </form>

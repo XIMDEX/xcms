@@ -41,6 +41,6 @@
 	</fieldset>
 
 	<fieldset class="buttons-form">
-		{button label="Associate" class='validate' }<!--message="Are you sure you want to perform this association?"-->
+		{button label="Associate" class='validate' }{*message="Are you sure you want to perform this association?"*}
 	</fieldset>
 </form>

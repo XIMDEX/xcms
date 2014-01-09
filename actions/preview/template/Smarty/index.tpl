@@ -27,23 +27,12 @@
 </div>
 <div class="action_content">
 	<fieldset>
-				<table align=center class="versions">
-				<!--	<tr>
-						<td>{t}Version{/t}</td>
-						<td>{t}Date{/t}</td>
-						<td>{t}User{/t}</td>
-						<td>{t}New window{/t}</td>
-						<td></td>
-						<td>{$titulo_canal}</td>
-						<td colspan="2"></td>
-
-					</tr>-->
-
-					<tr class="prevdoc">
-						<td align="center" valign="middle"><strong>Version {$version}.{$subversion}</strong></td>
-						<td align="left" nowrap>{$date}</td>
-						<td align="left">{$user_name}</td>
-						<td align="left"><input type="checkbox" checked align="middle" onclick="if(this.checked) alert('{t}As long as this box is ticked, preview will be opened in new windows.{/t}');" name="tabview" id="tabview" class="prevdoc_check"></td>
+		<table align=center class="versions">
+			<tr class="prevdoc">
+				<td align="center" valign="middle"><strong>Version {$version}.{$subversion}</strong></td>
+				<td align="left" nowrap>{$date}</td>
+				<td align="left">{$user_name}</td>
+				<td align="left"><input type="checkbox" checked align="middle" onclick="if(this.checked) alert('{t}As long as this box is ticked, preview will be opened in new windows.{/t}');" name="tabview" id="tabview" class="prevdoc_check"></td>
 						{if ($nameNodeType != 'NodeHt')}
 							<td align="left"><a href="{$_URL_ROOT}/xmd/loadaction.php?action={if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodeType)}filepreview{else}prevdoc{/if}&nodeid={$id_node}{* &version={$version}&subversion={$subversion}*}{if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodetype || "TextFile" == $nameNodeType)}&channel=1{/if}" class="prevdoc-button ui-state-default ui-corner-all button submit-button"><span>Previo</span></a>
 							</td>

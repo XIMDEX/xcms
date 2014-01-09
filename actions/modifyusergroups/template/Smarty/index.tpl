@@ -43,11 +43,11 @@
 			 		<span class="col1-2 icon icon-group label-select">
 			 			<select name='newgroup' class='select-clean block'>
 			 				{foreach from=$filtered_groups item=group_info}
-			 										<option value="{$group_info.IdGroup}">
-			 											{$group_info.Name}
-			 										</option>
-			 									{/foreach}
-			 									</select>
+							<option value="{$group_info.IdGroup}">
+								{$group_info.Name}
+							</option>
+							{/foreach}
+						</select>
 			 		</span>
 
 					<span class="col1-2 icon icon-rol label-select">
@@ -60,7 +60,7 @@
 						</select>
 					</span>
 					<div class="buttons-form row-item-actions actions-outside col1-3">
-			{button label="Add group" title="Add group" class="validate icon add-btn  btn-unlabel-rounded btn"}<!--message="You are adding a new subscription. Would you like to continue?"-->
+			{button label="Add group" title="Add group" class="validate icon add-btn  btn-unlabel-rounded btn"}{*message="You are adding a new subscription. Would you like to continue?"*}
 		</div>
 			</div>
 
