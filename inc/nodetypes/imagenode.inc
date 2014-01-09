@@ -111,8 +111,14 @@ class ImageNode extends FileNode{
 		if ($idContent){
 			$nodeContainer = new Node($idContent);
 			$nodeContainer->DeleteNode();
-		}		
-
+		}
+		$rnm = new RelNodeMetadata();
+		$id=$rnm->find("id","target=%s",array($idContent),MONO);		
+		$rnm->set('id', $id[0]);
+                $res = $rnm->delete();
+                if($res<0){
+                        error_log("Relation not deleted.");
+                }
 	}	
 
 	/**
