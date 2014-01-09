@@ -27,61 +27,6 @@ DROP TABLE `XimTAGSTags`;
 DROP TABLE `RelTagsNodes`;
 DROP TABLE `RelTagsDescriptions`;
 
--- -- Nodetype: 5001 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5001";
-DELETE FROM `Actions` WHERE `IdAction` = "6900";
-DELETE FROM `Nodes` WHERE `IdNode` = "6900";
-
--- -- Nodetype: 5002 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5002";
-DELETE FROM `Actions` WHERE `IdAction` = "6901";
-DELETE FROM `Nodes` WHERE `IdNode` = "6901";
-
--- -- Nodetype: 5003 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5003";
-DELETE FROM `Actions` WHERE `IdAction` = "6902";
-DELETE FROM `Nodes` WHERE `IdNode` = "6902";
-
--- -- Nodetype: 5004 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5004";
-DELETE FROM `Actions` WHERE `IdAction` = "6903";
-DELETE FROM `Nodes` WHERE `IdNode` = "6903";
-
--- -- Nodetype: 5005 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5005";
-DELETE FROM `Actions` WHERE `IdAction` = "6904";
-DELETE FROM `Nodes` WHERE `IdNode` = "6904";
-
--- -- Nodetype: 5006 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5006";
-DELETE FROM `Actions` WHERE `IdAction` = "6905";
-DELETE FROM `Nodes` WHERE `IdNode` = "6905";
-
--- -- Nodetype: 5007 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5007";
-DELETE FROM `Actions` WHERE `IdAction` = "6906";
-DELETE FROM `Nodes` WHERE `IdNode` = "6906";
-
--- -- Nodetype: 5008 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5008";
-DELETE FROM `Actions` WHERE `IdAction` = "6907";
-DELETE FROM `Nodes` WHERE `IdNode` = "6907";
-
--- -- Nodetype: 5009 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5009";
-DELETE FROM `Actions` WHERE `IdAction` = "6908";
-DELETE FROM `Nodes` WHERE `IdNode` = "6908";
-
--- -- Nodetype: 5010 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5010";
-DELETE FROM `Actions` WHERE `IdAction` = "6909";
-DELETE FROM `Nodes` WHERE `IdNode` = "6909";
-
--- -- Nodetype: 5011 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5011";
-DELETE FROM `Actions` WHERE `IdAction` = "6910";
-DELETE FROM `Nodes` WHERE `IdNode` = "6910";
-
 -- -- Nodetype: 5012 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5012";
 DELETE FROM `Actions` WHERE `IdAction` = "6911";
@@ -157,16 +102,6 @@ DELETE FROM `RelRolesActions` WHERE `IdAction` = "5028";
 DELETE FROM `Actions` WHERE `IdAction` = "6925";
 DELETE FROM `Nodes` WHERE `IdNode` = "6925";
 
--- -- Nodetype: 5029 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5029";
-DELETE FROM `Actions` WHERE `IdAction` = "6926";
-DELETE FROM `Nodes` WHERE `IdNode` = "6926";
-
--- -- Nodetype: 5030 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5030";
-DELETE FROM `Actions` WHERE `IdAction` = "6927";
-DELETE FROM `Nodes` WHERE `IdNode` = "6927";
-
 -- -- Nodetype: 5031 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5031";
 DELETE FROM `Actions` WHERE `IdAction` = "6928";
@@ -177,35 +112,10 @@ DELETE FROM `RelRolesActions` WHERE `IdAction` = "5032";
 DELETE FROM `Actions` WHERE `IdAction` = "6929";
 DELETE FROM `Nodes` WHERE `IdNode` = "6929";
 
--- -- Nodetype: 5033 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5033";
-DELETE FROM `Actions` WHERE `IdAction` = "6930";
-DELETE FROM `Nodes` WHERE `IdNode` = "6930";
-
--- -- Nodetype: 5034 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5034";
-DELETE FROM `Actions` WHERE `IdAction` = "6931";
-DELETE FROM `Nodes` WHERE `IdNode` = "6931";
-
--- -- Nodetype: 5035 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5035";
-DELETE FROM `Actions` WHERE `IdAction` = "6932";
-DELETE FROM `Nodes` WHERE `IdNode` = "6932";
-
 -- -- Nodetype: 5036 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5036";
 DELETE FROM `Actions` WHERE `IdAction` = "6933";
 DELETE FROM `Nodes` WHERE `IdNode` = "6933";
-
--- -- Nodetype: 5037 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5037";
-DELETE FROM `Actions` WHERE `IdAction` = "6934";
-DELETE FROM `Nodes` WHERE `IdNode` = "6934";
-
--- -- Nodetype: 5038 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5038";
-DELETE FROM `Actions` WHERE `IdAction` = "6935";
-DELETE FROM `Nodes` WHERE `IdNode` = "6935";
 
 -- -- Nodetype: 5039 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5039";
@@ -277,20 +187,10 @@ DELETE FROM `RelRolesActions` WHERE `IdAction` = "5057";
 DELETE FROM `Actions` WHERE `IdAction` = "6949";
 DELETE FROM `Nodes` WHERE `IdNode` = "6949";
 
--- -- Nodetype: 5058 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5058";
-DELETE FROM `Actions` WHERE `IdAction` = "6950";
-DELETE FROM `Nodes` WHERE `IdNode` = "6950";
-
 -- -- Nodetype: 5059 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5059";
 DELETE FROM `Actions` WHERE `IdAction` = "6951";
 DELETE FROM `Nodes` WHERE `IdNode` = "6951";
-
--- -- Nodetype: 5060 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5060";
-DELETE FROM `Actions` WHERE `IdAction` = "6952";
-DELETE FROM `Nodes` WHERE `IdNode` = "6952";
 
 -- -- Nodetype: 5061 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5061";
@@ -342,25 +242,10 @@ DELETE FROM `RelRolesActions` WHERE `IdAction` = "5078";
 DELETE FROM `Actions` WHERE `IdAction` = "6962";
 DELETE FROM `Nodes` WHERE `IdNode` = "6962";
 
--- -- Nodetype: 5079 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5079";
-DELETE FROM `Actions` WHERE `IdAction` = "6963";
-DELETE FROM `Nodes` WHERE `IdNode` = "6963";
-
--- -- Nodetype: 5080 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5080";
-DELETE FROM `Actions` WHERE `IdAction` = "6964";
-DELETE FROM `Nodes` WHERE `IdNode` = "6964";
-
 -- -- Nodetype: 5081 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5081";
 DELETE FROM `Actions` WHERE `IdAction` = "6965";
 DELETE FROM `Nodes` WHERE `IdNode` = "6965";
-
--- -- Nodetype: 5082 ----
-DELETE FROM `RelRolesActions` WHERE `IdAction` = "5082";
-DELETE FROM `Actions` WHERE `IdAction` = "6966";
-DELETE FROM `Nodes` WHERE `IdNode` = "6966";
 
 -- -- Nodetype: 5300 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5300";

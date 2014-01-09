@@ -199,9 +199,6 @@ class Action_browser3 extends ActionAbstract {
 	 * Returns a JSON document with all children of the specified node id
 	 */
 	public function read() {
-
-
-
 		$idNode = $this->request->getParam('nodeid');
 		$items = $this->request->getParam('items');
 		$path = XIMDEX_ROOT_PATH .ModulesManager::path('tolDOX').'/resources/cache/';
@@ -867,7 +864,6 @@ class Action_browser3 extends ActionAbstract {
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$sets = $this->getSetsIntersection($nodes);
 		$actions = $this->getActions($nodes);
-
 		// workaround
 		$options = array_merge($sets, $actions);
 
@@ -916,45 +912,7 @@ class Action_browser3 extends ActionAbstract {
 		// Find groups for the node list:
 		// 1) User groups
 		// 2) Node groups
-		//		If NodeType::CanAttachGroups == 0 find parent groups until CanAttachGroup == 1
-
-
-		// This way is better for a reduced group of IdNodes
-
-//		$db2 = new DB();
-//		$sqlNodeInfo = 'select n.idNode, n.idParent, n.idNodeType, IFNULL(n.idState, 0) as idState, nt.canAttachGroups
-//			from Nodes n join NodeTypes nt using(idNodeType)
-//			where n.idnode in (%s)';
-//
-//		$db->query(sprintf($sqlNodeInfo, implode(',', $nodes)));
-//		while (!$db->EOF) {
-
-//			$arrNodeTypes[] = $db->getValue('idNodeType');
-//			$arrStates[] = $db->getValue('idState');
-//			$db->next();
-//
-//			$canAttachGroups = $db->getValue('canAttachGroups');
-//			$idNode = $db->getValue('idNode');
-//			$idParent = $db->getValue('idParent');
-//			$nodeHasGroups = true;
-//
-//			while ($canAttachGroups == 0 && $nodeHasGroups) {
-//				$db2->query(sprintf($sqlNodeInfo, $idParent));
-//				if (!$db2->EOF) {
-//					$idNode = $db2->getValue('idNode');
-//					$idParent = $db2->getValue('idParent');
-//					$canAttachGroups = $db2->getValue('canAttachGroups');
-//					$db2->next();
-//				} else {
-//					$nodeHasGroups = false;
-//				}
-//			}
-
-//			if ($nodeHasGroups) $arrNodes2[] = $idNode;
-//		}
-
-		// This way is better for a large group of IdNodes
-
+		// If NodeType::CanAttachGroups == 0 find parent groups until CanAttachGroup == 1
 
 		XMD_Log::debug(sprintf(_('Debugging actions intersection with nodes - [%s]'), implode(', ', $nodes)));
 
@@ -1050,7 +1008,6 @@ class Action_browser3 extends ActionAbstract {
 		$strNodeTypes = implode(',', $arrNodeTypes);
 
 		// This query finds the commands intersection (1)
-
 		$sqlCommandIntersection = "select count(1) as c, Command,
 			ifnull(Params, '') as aliasParams,
 			ifnull(Module, '') as aliasModule
@@ -1077,16 +1034,8 @@ class Action_browser3 extends ActionAbstract {
 		// (1, 2, 4, 5)
 
 		$actions = array();
-		$sqlRolesActions = "select idNodeType, Command, Name, Icon,
-				ifnull(Params, '') as aliasParams,
-				ifnull(Module, '') as aliasModule,
-				%s,
-				IsBulk
-			from Actions a inner join RelRolesActions ra using(idAction)
-			where idNodeType in (%s)
-				and a.Command in ('%s')
-				and Sort > 0 ";
-		if (!empty($roles)) {
+		$sqlRolesActions = "select idNodeType, Command, Name, Icon, ifnull(Params, '') as aliasParams, ifnull(Module, '') as aliasModule,%s, IsBulk from Actions a inner join RelRolesActions ra using(idAction) where idNodeType in (%s) and a.Command in ('%s') and Sort > 0 ";
+		if (!empty($roles) && ($idUser!=$nodes[0])) {
 			$sqlRolesActions .=  sprintf(" and idRol in (%s) " , implode(',', $roles));
 		}
 
@@ -1113,21 +1062,15 @@ class Action_browser3 extends ActionAbstract {
 		$db->query($sqlRolesActions);
 
 		while (!$db->EOF) {
-
-//			if ($action->getSort() && !$this->actionIsExcluded($db->getValue('IdAction'), $idNode)) {
-
-				$actions[] = array(
-//					'actionid' => $db->getValue('IdAction'),
-					'name' => _($db->getValue('Name')),
-					'command' => $db->getValue('Command'),
-					'icon' => $db->getValue('Icon'),
-					'module' => $db->getValue('aliasModule'),
-					'params' => $db->getValue('aliasParams'),
-					'callback' => 'callAction',
-					'bulk' => $db->getValue('IsBulk')
-//					'desc' => $db->getValue('Description'),
-				);
-//			}
+			$actions[] = array(
+				'name' => _($db->getValue('Name')),
+				'command' => $db->getValue('Command'),
+				'icon' => $db->getValue('Icon'),
+				'module' => $db->getValue('aliasModule'),
+				'params' => $db->getValue('aliasParams'),
+				'callback' => 'callAction',
+				'bulk' => $db->getValue('IsBulk')
+			);
 			$db->next();
 		}
 
@@ -1186,7 +1129,6 @@ class Action_browser3 extends ActionAbstract {
 		}
 
 		return $data;
-//		$this->sendJSON($data);
 	}
 
 	// ----- Nodes contextual menus -----
