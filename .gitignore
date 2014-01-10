@@ -11,3 +11,4 @@ conf/install-modules.conf
 conf/install-params.conf.php
 modules/dexT/xslt/dext_main.xsl
 inc/model/orm/Servers_ORM.class.php.bck0
+modules/xlyre
