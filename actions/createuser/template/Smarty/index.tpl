@@ -38,11 +38,11 @@
 				</p>
 				<p class="col1_2 col_left">
 					<label for="pass" class="label_title" for="pass">{t}Password{/t}</label>
-					<input type="password" name="pass" id="pass" class="full_size validable not_empty field_equals__confirmpass" placeholder="{t}Password{/t}"  tabindex="2">
+					<input type="password" name="pass" id="pass" class="full_size validable not_empty js_val_min__6" placeholder="{t}Password{/t}"  tabindex="2">
 				</p>
 				<p class="col1_2 col_right">
 					<label for="confirmpass" class="label_title" for="confirmpass" >{t}Repeat password{/t}</label>
-					<input type="password" name="confirmpass" id="confirmpass" class="full_size validable not_empty" placeholder="{t}Confirm password{/t}"  tabindex="3">
+					<input type="password" name="confirmpass" id="confirmpass" class="full_size validable not_empty field_equals__pass" placeholder="{t}Confirm password{/t}"  tabindex="3">
 				</p>
 				<p>
 					<label for="login" class="label_title" for="login">{t}Surname and name	{/t}</label>
