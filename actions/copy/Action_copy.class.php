@@ -37,6 +37,7 @@ class Action_copy extends ActionAbstract {
 
     function index () {
 		$this->addJs('/actions/copy/resources/js/treeSelector.js');
+		$this->addCss('/actions/copy/resources/css/style.css');
 
 		$ximIOExportations = new XimIOExportations_ORM();
 		$result = $ximIOExportations->find('idXimIOExportation');

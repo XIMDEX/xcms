@@ -23,13 +23,19 @@
  *  @version $Revision$
  *}
 
+
+
 <form name="copy" id="copy" method="post" action="{$action_url}">
 	<div class="action_header">
 		<h2>{t}Copy element{/t}</h2>
 		<fieldset class="buttons-form">
-			{button class="validate btn main_action" label="Copy" }{*message="Are you sure you want to copy this node to selected destination?"*}
+			{button class="validate btn main_action" label="Copy" tabindex="3"}<!--message="Are you sure you want to copy this node to selected destination?"-->
         </fieldset>
 	</div>
+<div class="warning hidden warning-message message">
+					<p class="ui-icon-notice">{t}The copy operation is not allowed on selected destination.{/t} 
+			{t}Please, select another destination to copy.{/t}</p>
+				</div>	
 <div class="action_content">
 	<fieldset>
 	<input type="hidden" id="nodeid" name="nodeid" value="{$id_node}">
@@ -37,24 +43,17 @@
 	<input type="hidden" name="filtertype" value="{$filtertype}">
 	<input type="hidden" name="targetid" id="targetid">
 	<input type="hidden" id="editor">
-		<ol>
-			<li>
-				<label for="id_node" class="aligned-left"><span>{t}Choose destination{/t}</span></label>
-			<div class="right-block">
+				
+		
+				<label for="id_node" class="label_title">{t}Choose destination{/t}</label>
+				
+		
+			<div class="copy_treeview full_size" tabindex="1">
 				<treeview class="xim-treeview-selector"	paginatorShow="yes" handler="hndCopy_treeSelector" /></div>
-			</li>
-			<li class="ui-state-highlight ui-corner-all msg-warning">
-				<div class="warning hidden">
-					<span class="ui-icon ui-icon-notice"></span><p>{t}The copy operation is not allowed on selected destination.{/t}</p>
-					<span class="ui-icon ui-icon-info"></span><p> &nbsp;{t}Please, select another destination to copy.{/t}</p>
-				</div>
-			</li>
-			<li>
-				<br/><br/><input type="checkbox" name="recursive" id="recursive" checked="checked" /><label for="recursive"> {t}Execute this action for all files and subfolders{/t}.</label>
-			</li>
+			<span class="recursive_control"><input type="checkbox" name="recursive" id="recursive" checked="checked" tabindex="2" /><label for="recursive"> {t}Execute this action for all files and subfolders{/t}.</label></span>
 
-		</ol>
-	    </fieldset>
+
+
 </div>
 
 </form>
