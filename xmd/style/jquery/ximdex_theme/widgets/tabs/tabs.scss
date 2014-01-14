@@ -264,7 +264,7 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
 	padding-top: 2px;
 	position: absolute;
 	top: 0px;
-	background: url("../../../../../images/browser/hbox/fnd-tab.png") repeat-x scroll left top $c_background;
+	background: $c_background;
 	@include radius(0 20px 0 0);
 }
 
@@ -441,10 +441,18 @@ li.xim-tabs-list-item-selected:hover{
 
 .ui-tabs .ui-tabs-nav li a.unsave{
         position: relative;
+        padding-right: 2em;
 
 }
 
 .ui-tabs .ui-tabs-nav li a.unsave:after{
         content: '*';
-        padding-left: 3px;
+        color: $c_complementarylight;
+        font-size: 3.5rem;
+        position: absolute;
+        width: .8em;
+        height: .8em;
+        font-style: normal;
+        text-align: center;
+        margin-top: -.1em;
 }

@@ -80,11 +80,11 @@ input:hover, select:hover {
 	@include boxshadow( 0 0 4px $s_grey);
 
 }
-input:focus, select:focus {
-	@include boxshadow(1px 1px 5px rgba(177,177,177,.8));
+input:focus, select:focus, .checkbox-label:focus, .hidden-focus:focus + label {
+	@include boxshadow(0 0  5px 1px darken($c_mainlight, 5%));
 	color: $c_grey;
 	outline: none;
-	border: 1px solid $c_grey-pp;
+	border: 1px solid darken($c_mainlight, 5%);
 }
 
 input[type="text"]{
@@ -163,6 +163,7 @@ fieldset{
 	}
 	p{
 		font-size: 1.8rem;
+		position: relative;
 		// padding: 0 0 1em; // delete for combo input + select
 	}
 }
@@ -503,25 +504,28 @@ input.error, input.error:focus{
 	-webkit-box-shadow: 0 0 2px 1px #f72f42;
 	-moz-box-shadow: 0 0 2px 1px #f72f42;	
 	box-shadow: 0 0 2px 1px #f72f42;	
+	border: 1px solid #f72f42;
 	outline: none;
 }
 
-label.error{
+span.error{
 	background:#f72f42;
 	color: #fff;
-	position: relative;
-	margin-left: 1em;
+	position: absolute;
+	z-index: 10;
+	bottom: 2.1em;
+	left: 0;
 	-webkit-border-radius: 2px;
 	-moz-border-radius: 2px;
 	border-radius: 2px;
 	padding: .3em .5em;
 	&::before{
 		content: "";
-		border: .5em solid rgba(0,0,0,0);
-		border-right-color: #f72f42;
+		border: .5em solid rgba(255,255,255,0);
+		border-top-color: #f72f42;
 		position: absolute;
-		left: -1em;
-		top: 50%;
+		left: .5em;
+		bottom: -1.5em;
 		-webkit-transform: translateY(-50%);
 		-moz-transform: translateY(-50%);
 		-ms-transform: translateY(-50%);
@@ -1018,6 +1022,11 @@ input:focus + .tooltip_info{
 
 	.main_action:hover, .action_container .main_action:focus{
 		@include btn-main-hover;
+		
+	}
+	.action_container .main_action:focus{
+		@include boxshadow(0 0  6px 3px darken($c_mainlight, 5%));
+		outline: none;
 	}
 
 
@@ -1230,11 +1239,6 @@ input:focus + .tooltip_info{
 		    opacity: 0;
 		    position: absolute;
 		    z-index: 0;
-		    &:focus + label{
-		    -webkit-box-shadow: 0 0 3px 1px rgba(229,175,82,.9);
-		    -moz-box-shadow: 0 0 3px 1px rgba(229,175,82,.9);
-		    box-shadow: 0 0 3px 1px rgba(229,175,82,.9);
-		}
   }
 
 

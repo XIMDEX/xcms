@@ -225,7 +225,7 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
   padding-top: 2px;
   position: absolute;
   top: 0px;
-  background: url("../../../../../images/browser/hbox/fnd-tab.png") repeat-x scroll left top #e3e7e9;
+  background: #e3e7e9;
   -webkit-border-radius: 0 20px 0 0;
   -moz-border-radius: 0 20px 0 0;
   border-radius: 0 20px 0 0; }
@@ -389,8 +389,16 @@ li.xim-tabs-list-item-selected:hover {
   color: #333; }
 
 .ui-tabs .ui-tabs-nav li a.unsave {
-  position: relative; }
+  position: relative;
+  padding-right: 2em; }
 
 .ui-tabs .ui-tabs-nav li a.unsave:after {
   content: '*';
-  padding-left: 3px; }
+  color: #e8563b;
+  font-size: 3.5rem;
+  position: absolute;
+  width: .8em;
+  height: .8em;
+  font-style: normal;
+  text-align: center;
+  margin-top: -.1em; }
