@@ -9519,3 +9519,26 @@ msgstr "Informe de Estado"
 msgid "Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version."
 
 msgstr "Abajo se listan todos los documentos relevantes de tu proyecto, agrupados por estado. S&oacute;lo se muestran los archivos que se han modificado con respecto a su &uacute;ltima versi&oacute;n publicada."
+
+#xlyre module
+msgid "Create a new Open Data Catalog"
+msgstr "Crear un nuevo cat&aacute;logo Open Data"
+
+msgid "Create your datasets"
+msgstr "Crea tus datasets"
+
+msgid "Create Catalog"
+msgstr "Crear cat&aacute;logo"
+
+msgid "OpenData Section"
+msgstr "Secci&oacute;n OpenData"
+
+msgid "New Dataset"
+msgstr "Nuevo Dataset"
+
+msgid "Name of your catalog"
+msgstr "Nombre de tu cat&aacute;logo"
+
+msgid "A dataset should be for a single data in several formats"
+msgstr "Un dataset deber&iacute;a emplearse para un mismo dato en diferentes formatos"
+

@@ -30,6 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 include_once XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php";
 require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+require_once (XIMDEX_ROOT_PATH . "/services/NodetypeService.class.php");
 include_once (XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 
 /**
@@ -128,7 +129,7 @@ class FolderNode extends Root {
 	*/
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null){
-		if($nodeTypeID==5053){
+		if($nodeTypeID==TEMPLATE_VIEW_FOLDER){
 			$this->_createDefaultRNGs();
 		}
 		$this->updatePath();
