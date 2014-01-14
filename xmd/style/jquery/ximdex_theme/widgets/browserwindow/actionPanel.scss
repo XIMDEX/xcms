@@ -64,25 +64,34 @@ a {
 a:hover {
 	color: $c_mainlight;
 }
+
+p{
+	margin-bottom: 1.2em;
+}
 input, select {
-	border: 1px solid $c_grey-ppp;
+	border: 1px solid $c_grey-pp;
 	padding: .5em .7em;
 	color: $c_grey;
 	margin: 0 5px 0 0;
 	@include radius(3px);
-	 
+	 background:#fff;
 }
-input:hover {
-	@include boxshadow( 0 0 4px $s_white);
+input:hover, select:hover {
+	@include boxshadow( 0 0 4px $s_grey);
 
 }
-input:focus {
-	@include boxshadow(1px 1px 5px $s_grey);
+input:focus, select:focus {
+	@include boxshadow(1px 1px 5px rgba(177,177,177,.8));
 	color: $c_grey;
+	outline: none;
+	border: 1px solid $c_grey-pp;
 }
 
 input[type="text"]{
 	//display: block;
+	@include placeholder{
+	  	font-style: italic;
+	  }	
 }
 .disabled{
 	opacity: .55;
@@ -110,6 +119,11 @@ fieldset{
 
 .col2-3{
 	width: 66%;
+}
+
+.full_size{
+	width: 100%;
+	display: block;
 }
 
 
@@ -241,9 +255,7 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 	width: 99%;
 }
 
-.action_container fieldset .right-block ol {
-	margin: 0 5px 0 5px;
-}
+
 .action_container fieldset p {
 	margin: 10px 0 30px;
 }
@@ -366,27 +378,6 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 .action_container form fieldset ul div.deletenodes li {
 	color: $c_warning;
 }
-.xim-treeview-selector {
-	/*width: 38%;*/
-	display: inline-table;
-	background: $c_white;
-	@include radius(15px);
-	padding: 25px 15px;
-	margin-bottom: 15px;
-}
-.xim-treeview-selector .xim-treeview-branch-container {
-	position: static;
-}
-.right-block {
-	display:inline-table;
-}
-.action_container fieldset>div.right-block {
-	margin: 0;
-}
-.right-block p {
-	line-height: 1.7em;
-	margin-left: 5px;
-}
 
 label {
 	/*display: block;*/ /* avoiding jump in heritable properties*/
@@ -394,6 +385,16 @@ label {
 	font-family: $t_text;
 	/*padding: 1em 0 .5em;*/
 	font-size: 1.8rem;
+}
+
+
+.label_title{
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 1.4rem;
+	padding-left: .7em;
+	padding-bottom: .5em;
+	display: block;
 }
 
 input[type="checkbox"] + label, input[type="radio"] + label{
@@ -557,6 +558,7 @@ label.error{
 
 	p{
 		padding: .4em 0;
+		margin-bottom:  0;
 	}
 }
 
@@ -853,306 +855,21 @@ input:focus + .tooltip_info{
 	cursor: pointer;
 }
 
-.advanced_controls{
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-
-.advanced_controls a{
-	font-family: $t_title;
-	color: $c_mainlight;
-	float: right;
-	font-style: 1.1em;
-	padding-left: 20px;
-}
-
-.advanced_options:before{
-	content: '+';
-	float: left;
-	line-height: .65;
-	padding: 2px 2px 0;
-	margin: -1px  5px 0 0;
-	@include radius(2px);
-	border: 1px solid;
-}
-
-.advanced_controls div{
-	clear: both;
-	background: #fff;
-	border: 10px solid rgba(133,133,133,.39);
-	padding: 15px 30px;
-	@include radius(2px);
-	margin-top: 25px;
-	@include boxshadow(0 3px 10px rgba(0,0,0,.3));
-	z-index: 5;
-	display: none;
-}
-
-
-.advanced_controls div:before{
-	content: '';
-	width: 0;
-	height: 0;
-	border: 8px solid transparent;
-	border-bottom-color: rgba(133,133,133,.39);
-	display: block;
-	position: absolute;
-	right: 48px;
-	top: 9px;
-}
-
-
-.advanced_controls input{
-	padding: 4px 5px;
-	text-align: right;
-}
-
-
-
-.advanced_controls:hover  a+ div{
-	display: block;
-}
-
-li.toggable:not(.editing) h3{
-	position: relative;
-}
-
-li.toggable:not(.editing) h3 li.toggable:not(.editing) h3:hover{
-	background-color: $c_grey-ppp;
-}
-
-li.toggable:not(.editing) h3 .animated_arrow{
-	width: 20px;
-	height: 20px;
-	position: absolute;
-	z-index: 2;
-	background: url('../../../../../images/browser/arrow_animated.png') no-repeat center -11px;
-	top: 6px;
-	left: 6px;
-	animation: animated_arrow_back .2s steps(4);
-	-moz-animation: animated_arrow_back .2s steps(4); /* Firefox */
-	-webkit-animation: animated_arrow_back .2s steps(4); /* Safari and Chrome */
-	-o-animation: animated_arrow_back .2s steps(4); /* Opera */
-	-webkit-animation-fill-mode: forwards;
-	-o-animation-fill-mode: forwards;
-	-moz-animation-fill-mode: forwards;
-	animation-fill-mode: forwards;
-
-}
-
-li.toggable:not(.editing) h3:hover .animated_arrow{
-	animation: animated_arrow .2s steps(4);
-	-moz-animation: animated_arrow .2s steps(4); /* Firefox */
-	-webkit-animation: animated_arrow .2s steps(4); /* Safari and Chrome */
-	-o-animation: animated_arrow .2s steps(4); /* Opera */
-	-webkit-animation-fill-mode: forwards;
-	-o-animation-fill-mode: forwards;
-	-moz-animation-fill-mode: forwards;
-	animation-fill-mode: forwards;
-}
-
-@keyframes animated_arrow{
-	0%{ background-position: center -11px;}
-	100%{ background-position: center -151px;}
-}
-
-@keyframes animated_arrow{
-	0%{ background-position: center -11px;}
-	100%{ background-position: center -151px;}
-}
-
-@-moz-keyframes animated_arrow/* Firefox */
-{
-	0%{ background-position: center -11px;}
-	100%{ background-position: center -151px;}
-}
-
-@-webkit-keyframes animated_arrow/* Safari and Chrome */
-{
-	0%{ background-position: center -11px;}
-	100%{ background-position: center -151px;}
-}
-
-@-o-keyframes animated_arrow/* Opera */
-{
-	0%{ background-position: center -11px;}
-	100%{ background-position: center -151px;}
-}
-
-
-@keyframes animated_arrow_back{
-	0%{ background-position: center -151px;}
-	100%{ background-position: center -11px;}
-}
-
-@keyframes animated_arrow_back{
-	0%{ background-position: center -151px;}
-	100%{ background-position: center -11px;}
-}
-
-@-moz-keyframes animated_arrow_back/* Firefox */
-{
-	0%{ background-position: center -151px;}
-	100%{ background-position: center -11px;}
-}
-
-@-webkit-keyframes animated_arrow_back/* Safari and Chrome */
-{
-	0%{ background-position: center -151px;}
-	100%{ background-position: center -11px;}
-}
-
-@-o-keyframes animated_arrow_back/* Opera */
-{
-	0%{ background-position: center -151px;}
-	100%{ background-position: center -11px;}
-}
-
-@keyframes arrow
-{
-	0%   {background-position: -6px -5px;}
-	25%  {background-position: -6px -43px;}
-	50%  {background-position: -6px -84px;}
-	75%  {background-position: -6px -129px;}
-	100%  {background-position: -6px -176px;}
-
-}
-
-@-moz-keyframes arrow /* Firefox */
-{
-	0%   {background-position: -6px -5px;}
-	25%  {background-position: -6px -43px;}
-	50%  {background-position: -6px -84px;}
-	75%  {background-position: -6px -129px;}
-	100%  {background-position: -6px -176px;}
-}
-
-@-webkit-keyframes arrow /* Safari and Chrome */
-{
-	0%   {background-position: -6px -5px;}
-	25%  {background-position: -6px -43px;}
-	50%  {background-position: -6px -84px;}
-	75%  {background-position: -6px -129px;}
-	100%  {background-position: -6px -176px;}
-}
-
-@-o-keyframes arrow /* Opera */
-{
-	0%   {background-position: -6px -5px;}
-	25%  {background-position: -6px -43px;}
-	50%  {background-position: -6px -84px;}
-	75%  {background-position: -6px -129px;}
-	100%  {background-position: -6px -176px;}
-}
-
-
-
-.editing h3, .actions a, .actions .switch{
-	background-image: url('../../../../../images/browser/actions_icons.png');
-	background-repeat: no-repeat;
-	background-position: -8px -45px;
-}
-
-.actions .switch{
-	background-position: -11px -101px;
-	position: relative;
-
-}
-
-.actions a:nth-child(2){
-	background-position: -4px -13px;
-}
-
-.actions a:nth-child(3){
-	background-position: -8px -147px;
-}
-
-.controller{
-	width: 9px;
-	height: 9px;
-	display: block;
-	position: absolute;
-	background: $c_grey;
-	@include radius(5px);
-	border: 1px solid $c_white;
-	@include boxshadow(0 1px 0 $s_black);
-	top: 2px;
-	transition: all .4s;
-	-moz-transition: all .4s; /* Firefox 4 */
-	-webkit-transition: all .4s; /* Safari and Chrome */
-	-o-transition: all .4s; /* Opera */
-}
-
-
-.switch input:checked +.controller{
-	left: 12px;
-	background:$c_mainlight;
-}
-
-.switch input:checked ~ label{
-	color: $c_mainlight;
-	position: relative;
-	z-index: 2;
-}
-
-
-.switch .hidden{
-	display: none;
-}
-
-.switch{
-	display: inline-block;
-}
-
-.test_connection{
-	background-image: url('../../../../../images/browser/test_connection.png'),  -webkit-gradient(linear, 0 0, 0 100%, from(#cacaca), to(#bdbdbd));
-	background-image:  url('../../../../../images/browser/test_connection.png'), -webkit-linear-gradient(#cacaca, #bdbdbd);
-	background-image:  url('../../../../../images/browser/test_connection.png'), -moz-linear-gradient(#cacaca, #bdbdbd);
-	background-image:  url('../../../../../images/browser/test_connection.png'), -o-linear-gradient(#cacaca, #bdbdbd);
-	background-image:  url('../../../../../images/browser/test_connection.png'), linear-gradient(#cacaca, #bdbdbd);
-	background-repeat: no-repeat;
-	background-position: center 0;
-	position: absolute;
-	border: 1px solid $c_grey-p;
-	width: 30px;
-	height: 28px;
-	@include radius(2px);
-	@include boxshadow(inset 0 0 2px $s_white);
-	cursor: pointer;
-	margin-left: 1.5%;
-}
-
-.test_connection span{
-	left: 40px;
-	top: -10px;
-}
-
-.test_connection span:before{
-	border-color: transparent $c_grey transparent transparent;
-	left: -12px;
-	top: 50%;
-	margin-top: -5px;
-	right: auto;
-}
-
-
-.test_connection:hover{
-	background-image: url('../../../../../images/browser/test_connection.png'),  -webkit-gradient(linear, 0 0, 0 100%, from(#bebebe), to(#acacac));
-	background-image:  url('../../../../../images/browser/test_connection.png'), -webkit-linear-gradient(#bebebe, #acacac);
-	background-image:  url('../../../../../images/browser/test_connection.png'), -moz-linear-gradient(#bebebe, #acacac);
-	background-image:  url('../../../../../images/browser/test_connection.png'), -o-linear-gradient(#bebebe, #acacac);
-	background-image:  url('../../../../../images/browser/test_connection.png'), linear-gradient(#bebebe, #acacac);
-	@include boxshadow(0 1px 2px $s_grey);
-}
-
 .col1_2{
 	display: inline-block;
-	width: 40%;
-	margin-right: 4%;
+	width: calc(50% - 1em);
+	//margin-right: 4%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+	vertical-align: top;
+}
+
+.col_left{
+	margin-right: .9em;
+}
+.col_right{
+	margin-left: .9em;
 }
 
 .box{
@@ -1170,7 +887,7 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
 
 
 	/**************
-	// GENERIC
+	* GENERIC
 	***************/
 
 .hide-toggle{
@@ -1527,20 +1244,11 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
 	// generic
 	***************/
 
-	 select{
-	  	margin: 0;
-	  	border: none;
-	    background: #ACAFBB;
-	    -webkit-border-radius: 0 2px 2px 0;
-	    -moz-border-radius: 0 2px 2px 0;
-	    border-radius: 0 2px 2px 0;
-	    cursor: pointer;
-		    &:hover{
-		      background: darken(#ACAFBB, 5%);
-		    }
+	/* select{
+	  	
 		}
 
-
+*/
 
 	.full-size{
 		width: 100%;
@@ -1579,10 +1287,19 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
   		margin: 2em 0;
 	  	input{
 	  		width: 100%;
-	  		padding: .5em 34% .5em 2.5em;  		
-	  		@include placeholder{
-	  			font-style: italic;
+	  		padding: .5em 34% .5em 2.5em;  
 	  		}
+		select{
+			margin: 0;
+			border: none;
+			background: #ACAFBB;
+			webkit-border-radius: 0 2px 2px 0;
+			moz-border-radius: 0 2px 2px 0;
+			border-radius: 0 2px 2px 0;
+			cursor: pointer;
+			&:hover{
+				background: darken(#ACAFBB, 5%);
+			}	  		
   		}
 
   	&.document::before{
@@ -1760,3 +1477,5 @@ li.toggable:not(.editing) h3:hover .animated_arrow{
 			border-radius: 3px;
 		}
 	}
+
+

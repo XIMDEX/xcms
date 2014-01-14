@@ -35,9 +35,15 @@
     %icon-positioned{
         position: absolute;
         font-size: 2.44rem; 
-        top: .25em;
+        top: 50%;
         left: .4em;
         color: lighten($c_grey, 20%);
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+        
     }
 
     %row-item{

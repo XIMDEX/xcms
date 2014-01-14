@@ -40,7 +40,7 @@
   padding: 0px; }
 
 .ui-tabs .ui-tabs-panel {
-  background: #edeeee;
+  background: #e3e7e9;
   -webkit-border-radius: 0 12px 0 0;
   -moz-border-radius: 0 12px 0 0;
   border-radius: 0 12px 0 0;
@@ -54,7 +54,7 @@
   font-size: 1.6rem; }
 
 #body .ui-tabs-nav li {
-  background: #edeeee;
+  background: #e3e7e9;
   border: none;
   border-top: 3px solid transparent;
   margin-top: 0;
@@ -70,14 +70,14 @@
   #body .ui-tabs-nav li.ui-tabs-active {
     border-top: 3px solid #7bcabf;
     margin-top: -1px;
-    background: #edeeee;
+    background: #e3e7e9;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none; }
     #body .ui-tabs-nav li.ui-tabs-active a {
       outline: 0; }
   #body .ui-tabs-nav li[aria-labelledby="ui-id-6"], #body .ui-tabs-nav li[aria-labelledby="10000_welcome"] {
-    background: #edeeee !important; }
+    background: #e3e7e9 !important; }
 #body .hbox-panel-container-1 .ui-tabs-nav .ui-tabs-active {
   background: white; }
 
@@ -225,7 +225,7 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
   padding-top: 2px;
   position: absolute;
   top: 0px;
-  background: url("../../../../../images/browser/hbox/fnd-tab.png") repeat-x scroll left top #edeeee;
+  background: url("../../../../../images/browser/hbox/fnd-tab.png") repeat-x scroll left top #e3e7e9;
   -webkit-border-radius: 0 20px 0 0;
   -moz-border-radius: 0 20px 0 0;
   border-radius: 0 20px 0 0; }
@@ -327,7 +327,7 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
 
 .xim-tabs-list {
   display: none;
-  background: #edeeee;
+  background: #e3e7e9;
   margin-top: 34px;
   -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);

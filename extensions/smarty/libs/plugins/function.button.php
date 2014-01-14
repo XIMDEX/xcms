@@ -4,6 +4,7 @@ function smarty_function_button($params, &$smarty) {
 
 	$label = trim(isset($params['label']) ? $params['label'] : '');
 	$class = trim(isset($params['class']) ? $params['class'] : '');
+	$tabindex = trim(isset($params['tabindex']) ? $params['tabindex'] : '');
 	$onclick = trim(isset($params['onclick']) ? $params['onclick'] : '');
 	$id = trim(isset($params['id'] ) ? $params['id'] : '');
 	$message = trim(isset($params['message']) ? $params['message'] : '');
@@ -29,7 +30,7 @@ function smarty_function_button($params, &$smarty) {
 	$class = explode(' ', trim($class . ' ui-state-default ui-corner-all button'));
 	$class[] = "$type-button";
 
-	$sButton = '<a href="#" id="%s" onclick="this.blur(); %s" class="%s"><span>%s</span></a>';
+	$sButton = '<a href="#" id="%s" onclick="this.blur(); %s" class="%s" tabindex="%s"><span>%s</span></a>';
 
 	// If it is not a submit button we don't want the validate class (see formManager)
 	if ($type != 'submit') {
@@ -38,7 +39,7 @@ function smarty_function_button($params, &$smarty) {
 
 	// Reset button renders an input[type=reset] field
 	if ($type == 'reset') {
-		$sButton = '<input id="%s" onclick="this.blur(); %s" type="reset" class="reset-button %s" value="%s" />';
+		$sButton = '<input id="%s" onclick="this.blur(); %s" type="reset" class="reset-button %s" tabindex="%s" value="%s" />';
 	}
 
 	// IMPORTANT: Shouldn't relay on the parameter "label" just because the used language.
@@ -69,7 +70,7 @@ function smarty_function_button($params, &$smarty) {
 		$sButton = "$sUrl\n$sButton";
 	}
 
-	$button = sprintf($sButton, $id, $onclick, implode(' ', $class), _($label));
+	$button = sprintf($sButton, $id, $onclick, implode(' ', $class),$tabindex, _($label));
 	echo $button;
 
 	if (!empty($message)) {

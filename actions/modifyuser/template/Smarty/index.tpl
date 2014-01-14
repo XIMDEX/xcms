@@ -27,42 +27,46 @@
 	<div class="action_header">
 		<h2>{t}Modify user{/t}</h2>
 			<fieldset class="buttons-form">
-		{button label="Modify user" class='validate btn main_action' }
+		{button label="Modify user" class='validate btn main_action' tabindex="7" }
 	</fieldset>
 	</div>
 	<div class="action_content">
-		<fieldset>
-			<ol>
-				<li>
+				<h3>
 					{t}Usuario{/t}
 					{$login}
-				</li>
-				<li>
-					<label for="name" class="aligned">{t}First and last names{/t}</label>
-					<input type="text" name="name" id="name" value="{$name}" class='cajaxg validable not_empty'>
-				</li>
-				<li>
-					<label for="email" class="aligned">{t}Email{/t}</label>
-					<input type="text" name="email" id="email" value="{$email}" class='cajaxg validable not_empty is_email'>
-				</li>
-				<li>
-					<label for="password_" class="aligned">{t}Modify password{/t}</label>
-					<input type="password" name='password_' id="password_" class='caja validable field_equals__password_repeated'>
-				</li>
-				<li>
-					<label for="password_repeated" class="aligned">{t}Repeat password{/t}</label>
-					<input type="password" name='password_repeated' id="password_repeated" class='caja'>
-				</li>
-				<li>
-					<label for="locale" class="aligned">{t}Language{/t}</label>
-					<select name="locale" id="locale" class="classxg">
+				</h3>
+				<p>
+					<label for="name" class="label_title">{t}First and last names{/t}</label>
+					<input type="text" name="name" id="name" value="{$name}" class='full_size validable not_empty' placeholder="{t}First and last names{/t}"  tabindex="1">
+				</p>
+				<p>
+					<label for="email" class="label_title">{t}Email{/t}</label>
+					<input type="text" name="email" id="email" value="{$email}" class='full_size validable not_empty is_email' placeholder="{t}Email{/t}"  tabindex="2">
+				</p>
+				<p class="col1_2 col_left">
+					<label for="password_" class="label_title">{t}Modify password{/t}</label>
+					<input type="password" name='password_' id="password_" class='full_size caja validable field_equals__password_repeated' placeholder="{t}Modify password{/t}"  tabindex="3">
+				</p>
+				<p class="col1_2 col_right">
+					<label for="password_repeated" class="label_title">{t}Repeat password{/t}</label>
+					<input type="password" name='password_repeated' id="password_repeated" class='full_size' placeholder="{t}Repeat password{/t}"  tabindex="4">
+				</p>
+				<p class="col1_2 col_left" >
+					<label for="generalrole" class="label_title" for="generalrole">{t}Role in general group{/t}</label>
+					<select name="generalrole" id="generalrole" class="full_size"  tabindex="5">
+					{foreach from=$roles item=role}
+						<option value="{$role.IdRole}">{$role.Name}</option>
+					{/foreach}
+					</select>
+				</p>				
+				<p class="col1_2 col_right">
+					<label for="locale" class="label_title">{t}Language{/t}</label>
+					<select name="locale" id="locale" class="full_size"  tabindex="6">
 					{section name=i loop=$locales}
 						<option value="{$locales[i].Code}" {if ($locales[i].Code == $user_locale || ( $user_locale == null && $locales[i].Code == $smarty.const.DEFAULT_LOCALE))} selected{/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})</option>
 					{/section}
 					</select>
-				</li>
-			</ol>
-		</fieldset>
+				</p>
 	</div>
 
 </form>
