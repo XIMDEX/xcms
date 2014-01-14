@@ -341,11 +341,7 @@ X.FormsManager = Object.xo_create({
 							constraints["remote"] = {
 								url: actionUrl,
                       			type: "post",                      			
-                      		};
-                      		constraints.messages = {
-                      			remote:""
-                      		};
-                      		constraints["messages"]["remote"] = _("A node with this name already exists for current parent node.");                      		
+                      		};                   		
 							
 							break;
 
