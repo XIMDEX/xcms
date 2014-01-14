@@ -101,6 +101,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/jquery.validate.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/localization/messages_'.$user_locale["Lang"].'.js');
+		$this->addJs('/inc/js/validation/ximdex.form.validation.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.labelwidth/jquery.labelwidth.js');
 
@@ -1129,6 +1130,22 @@ class Action_browser3 extends ActionAbstract {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Check if exists a node with a specific name like child of the selected one.
+	 * 
+	 * @return boolean True if not exists this name under the current node.
+	 */
+	public function isUniqueName(){
+
+		$idnode = $this->request->getParam("nodeid");
+		$name = $this->request->getParam("name");
+		$result = "false";
+		$node = new Node($idnode);
+		$names = $node->find("Name","idparent=%s",array($idnode),MONO);
+		$result = in_array($name, $names)? "false": "true";
+		die($result);
 	}
 
 	// ----- Nodes contextual menus -----

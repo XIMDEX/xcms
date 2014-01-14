@@ -41,8 +41,9 @@ X.FormsManager = Object.xo_create({
 			actionContainer: null,
 			form: null,
 			searches: [
-				'(not_empty)', '(is_url)', '(is_email)',
-				'(field_equals)__([^\\s]+)', '(check_group)__([^\\s]+)'
+				'(not_empty)', '(is_url)', '(is_email)', '(js_val_min)__([^\d]+)',
+				'(field_equals)__([^\\s]+)', '(check_group)__([^\\s]+)', '(js_val_alphanumeric)',
+				'(js_val_unique_name)'
 			]
 		}, options);
 
@@ -192,8 +193,16 @@ X.FormsManager = Object.xo_create({
 		this.options.iframeId = 'form_sender_' + formId;
 
 		// Validate the form
-		if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {
-			$(this.options.form).validate({rules: this._getConstraints(this.options.form)});
+		if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {			
+			$(this.options.form).validate(
+				{
+					rules: this._getConstraints(this.options.form),
+					messages: this._getMessages(this.options.form),
+					errorElement: "span",
+					errorPlacement: function(error, element) {
+                   		element.before(error);
+               		}
+				});
 		}
 
 		// Submit button
@@ -271,7 +280,6 @@ X.FormsManager = Object.xo_create({
 					name: this.options.iframeId
 				})
 				.addClass('form_sender ui-helper-hidden');
-//			$(form).after(iframe);
 			$(iframe).appendTo('body');
 		}
 
@@ -321,6 +329,25 @@ X.FormsManager = Object.xo_create({
 						case 'field_equals':
 							constraints.equalTo = '#' + result[2];
 							break;
+						case 'js_val_min':
+							constraints.minlength = result[2];
+							break;
+						case 'js_val_alphanumeric':
+							constraints.alphanumeric = true;
+							break;
+						case 'js_val_unique_name':
+							var idnode = $(validable).attr("data-idnode");
+							var actionUrl = X.restUrl+"?action=browser3&method=isUniqueName&nodeid="+idnode+"&name="+$(validable).val();
+							constraints["remote"] = {
+								url: actionUrl,
+                      			type: "post",                      			
+                      		};
+                      		constraints.messages = {
+                      			remote:""
+                      		};
+                      		constraints["messages"]["remote"] = _("A node with this name already exists for current parent node.");                      		
+							
+							break;
 
 						case 'check_group':
 							var allclass = $(validable).attr('class');
@@ -338,6 +365,38 @@ X.FormsManager = Object.xo_create({
 
 			var name = $(validable).attr('name');
 			elements[name] = constraints;
+		}.bind(this));
+
+		return elements;
+	},
+
+	_getMessages: function(form) {
+		var elements = {};
+
+		$('.validable', form).each(function(id, validable) {
+
+			var elementClass = $(validable).attr('class');
+			var messages = {};
+
+			for (var i=0, l=this.options.searches.length; i<l; i++) {
+				var search = this.options.searches[i];
+				var result = elementClass.match(search);
+
+				if (result !== null) {
+
+					switch (result[1]) {
+						case 'js_val_unique_name':
+							var idnode = $(validable).attr("data-idnode");
+							var actionUrl = X.restUrl+"?action=browser3&method=getChildrenNames&nodeid="+idnode+"&name="+$(validable).val();
+							messages["remote"] = _("A node with this name already exists for current parent node.");
+							
+							break;
+					}
+				}
+			}
+
+			var name = $(validable).attr('name');
+			elements[name] = messages;
 		}.bind(this));
 
 		return elements;
