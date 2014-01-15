@@ -125,10 +125,10 @@
 			},
 			onChange: function(cm) {
 				fn(".editor").addClass("unsave");
-				var href= params.actionView.id;
-				$("a[href='#"+href+"']").addClass("unsave");
-				$("a[href='#"+href+"']").css("font-style","italic");
-					cm.save();
+				var href= params.actionView.id;				
+				$tabLink = $("a[href='#"+href+"']");
+				$tabLink.addClass("unsave").parent().addClass("unsave");
+				cm.save();
 				}
 		});
 
