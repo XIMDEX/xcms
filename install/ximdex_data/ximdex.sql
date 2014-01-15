@@ -83,7 +83,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6021,5023,'Add common folder','addfoldernode','add_folder_common.png','Create a new common folder',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6022,5024,'Add CSS folder','addfoldernode','add_folder_css.png','Create a new CSS folder',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6023,5025,'Add CSS folder','addfoldernode','add_folder_css.png','Create a new CSS folder',10,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6024,5027,'Add template folder','addfoldernode','foldergray.png','Create a new template folder',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6025,5015,'Change section name','renamenode','change_name_section.png','Change a section name',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6026,5013,'Change project name','renamenode','change_name_proyect.png','Change a project name',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6027,5014,'Change server name','renamenode','change_name_server.png','Change a server name',70,NULL,0,'');
@@ -91,7 +90,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6030,5021,'Change name','renamenode','change_name_folder_import.png','Change name of selected folder',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6031,5023,'Change name','renamenode','change_name_folder_common.png','Change name of selected folder',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6032,5025,'Change name','renamenode','change_name_folder_css.png','Change folder name',70,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6033,5027,'Change name','renamenode','xix.png','Change node name',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6034,5013,'Delete project','deletenode','delete_proyect.png','Delete a project',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6035,5014,'Delete server','deletenode','delete_server.png','Delete a server',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6036,5015,'Delete section','deletenode','delete_section.png','Delete a section',80,NULL,1,'');
@@ -99,7 +97,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6039,5021,'Delete folder','deletenode','delete_folder_import.png','Delete selected folder',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6040,5023,'Delete folder','deletenode','delete_folder_common.png','Delete selected folder',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6041,5025,'Delete folder','deletenode','delete_folder_css.png','Delete selected folder',80,NULL,1,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6042,5027,'Delete','deletenode','delete.png','Delete a node',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6043,5018,'Add XML documents','fileupload_common_multiple','add_xml.png','Create new XML documents in several languages',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6108,5011,'Delete group','deletenode','delete_group.png','Delete select group',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6044,5018,'Add new document','createxmlcontainer','add_xml.png','Create a new document structured in several languages',10,NULL,0,'');
@@ -249,7 +246,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6518,5015,'Export','serializeNodeXML','xix.png','Export a complete section',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6519,5053,'Export','serializeNodeXML','xix.png','Export a complete schema',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6520,5026,'Export','serializeNodeXML','xix.png','Export a complete template',-91,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6521,5027,'Export','serializeNodeXML','xix.png','Export a template subfolder',-91,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6550,5012,'Import','deserializeNodeXML','xix.png','Import all projects',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6551,5013,'Import','deserializeNodeXML','xix.png','Import a complete project',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6552,5050,'Import','deserializeNodeXML','xix.png','Import a link',-92,'ximIO',0,'');
@@ -271,7 +267,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6568,5015,'Import','deserializeNodeXML','xix.png','Import a complete section',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6569,5053,'Import','deserializeNodeXML','xix.png','Import a complete schema',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6570,5026,'Import','deserializeNodeXML','xix.png','Import a complete template',-92,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6571,5027,'Import','deserializeNodeXML','xix.png','Import a template subfolder',-92,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6600,5013,'Copy','copy','Copy_proyecto.png','Copy a complete project',93,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6601,5050,'Copy','copyNode','copiar_documento.png','Copy a link',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6602,5048,'Copy','copyNode','copiar_seccion.png','Copy a link folder',-93,'ximIO',0,'');
@@ -294,7 +289,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6620,5015,'Copy','copyNode','copiar_seccion.png','Copy a complete section',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6621,5053,'Copy','copyNode','copiar_seccion.png','Copy a complete schema',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6622,5026,'Copy','copyNode','copiar_carpeta_ximptd.png','Copy a complete template',-93,'ximIO',0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6623,5027,'Copy','copyNode','copiar_seccion.png','Copy a template subfolder',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6629,5028,'Copy','copyNode','copiar_documento.png','Copy a style sheet',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6626,5039,'Copy','copyNode','copiar_documento.png','Copy a text file',-93,'ximIO',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6627,5040,'Copy','copyNode','copiar_documento.png','Copy a image file',-93,'ximIO',0,'');
@@ -1146,7 +1140,6 @@ INSERT INTO `Nodes` VALUES (5023,6,5007,'CommonFolder',NULL,NULL,NULL,NULL,NULL,
 INSERT INTO `Nodes` VALUES (5024,6,5007,'CssRootFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5025,6,5007,'CssFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5026,6,5007,'TemplatesRootFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (5027,6,5007,'TemplatesFolder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5028,6,5007,'CssFile',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5029,6,5007,'ChannelManager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (5030,6,5007,'LanguageManager',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -1211,7 +1204,6 @@ INSERT INTO `Nodes` VALUES (6020,5022,5008,'Add common folder',NULL,NULL,NULL,NU
 INSERT INTO `Nodes` VALUES (6021,5023,5008,'Add common folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6022,5024,5008,'Add CSS folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6023,5025,5008,'Add CSS folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6024,5027,5008,'Add template folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6025,5015,5008,'Change section name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6026,5013,5008,'Change project name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6027,5014,5008,'Change server name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -1219,7 +1211,6 @@ INSERT INTO `Nodes` VALUES (6028,5017,5008,'Change name',NULL,NULL,NULL,NULL,NUL
 INSERT INTO `Nodes` VALUES (6030,5021,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6031,5023,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6032,5025,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6033,5027,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6034,5013,5008,'Delete proyect',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6035,5014,5008,'Delete server',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6036,5015,5008,'Delete section',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -1227,7 +1218,6 @@ INSERT INTO `Nodes` VALUES (6037,5017,5008,'Delete folder',NULL,NULL,NULL,NULL,N
 INSERT INTO `Nodes` VALUES (6039,5021,5008,'Delete folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6040,5023,5008,'Delete folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6041,5025,5008,'Delete folder',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6042,5027,5008,'Delete',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6043,5018,5008,'Add XML Documents',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6044,5018,5008,'Add new XML',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6045,5031,5008,'Add language',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -1403,7 +1393,6 @@ INSERT INTO `Nodes` VALUES (6517,5014,5008,'Export a complete server',NULL,0,NUL
 INSERT INTO `Nodes` VALUES (6518,5015,5008,'Export a complete section',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6519,5053,5008,'Export a complete schema',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6520,5026,5008,'Export a complete template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6521,5027,5008,'Export a template subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6550,5012,5008,'Import all projects',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6551,5013,5008,'Import a complete project',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6552,5050,5008,'Import a link',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1425,7 +1414,6 @@ INSERT INTO `Nodes` VALUES (6567,5014,5008,'Import a complete server',NULL,0,NUL
 INSERT INTO `Nodes` VALUES (6568,5015,5008,'Import a complete section',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6569,5053,5008,'Import a complete schema',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6570,5026,5008,'Import a complete template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6571,5027,5008,'Import a template subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6600,5013,5008,'Copy a complete project',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6601,5050,5008,'Copy a link',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6602,5048,5008,'Copy a link folder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
@@ -1448,7 +1436,6 @@ INSERT INTO `Nodes` VALUES (6619,5014,5008,'Copy a complete server',NULL,0,NULL,
 INSERT INTO `Nodes` VALUES (6620,5015,5008,'Copy a complete section',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6621,5053,5008,'Copy a complete schema',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6622,5026,5008,'Copy a complete template',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6623,5027,5008,'Copy template subfolder',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6626,5039,5008,'Copy a text file',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6627,5040,5008,'Copy a binary file',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6628,5041,5008,'Copy a binary file',NULL,0,NULL,0,0,NULL,NULL,DEFAULT);
