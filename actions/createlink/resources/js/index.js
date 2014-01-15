@@ -28,25 +28,24 @@ X.actionLoaded(function(event, fn, params) {
     var submit = fn('.validate').get(0);
 
     fn('select#link_type').change(function() {
+		var $inputUrl = fn("input#url");
         var linkType= fn('#link_type option:selected').val();
+		
         if(linkType=="url"){
             fn("label[for='url']").html("Web URL");
-            fn("input#url").addClass("is_url");
-            fn("input#url").removeClass("is_email");
+            $inputUrl.addClass("is_url");
+            $inputUrl.removeClass("is_email");
+			$inputUrl.val($inputUrl.val().replace(/^mailto:/,''));
+			if (!/^https?:\/\//.test($inputUrl.val()))
+				$inputUrl.val("http://"+$inputUrl.val());
         }   
         else{
             fn("label[for='url']").html("E-mail address");
             fn("input#url").addClass("is_email");
             fn("input#url").removeClass("is_url");
-        }
-    });
-
-    submit.beforeSubmit.add(function(event, button) {
-        if(fn("form#cln_form #link_type").val()==""){
-            alert(_("Please, select one type of link"));
-            event.preventDefault();
-            event.stopPropagation();
-            return true;
+			$inputUrl.val($inputUrl.val().replace(/^https?:\/\//,''));
+			if (!/^mailto:/.test($inputUrl.val()))
+				$inputUrl.val("mailto:"+$inputUrl.val());
         }
     });
 });
