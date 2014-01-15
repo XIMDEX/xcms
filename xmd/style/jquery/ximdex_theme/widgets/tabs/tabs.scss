@@ -77,7 +77,12 @@
 	margin-right: .13em;
 	padding-bottom: 5px;
 	@include boxshadow(0 -1px 3px rgba(0,0,0,.15) inset);
-
+	-webkit-transition: all .3s;
+	-moz-transition: all .3s;
+	-ms-transition: all .3s;
+	-o-transition: all .3s;
+	transition: all .3s;
+	
 
 	&.ui-tabs-active{
 		border-top: 3px solid $c_mainlight;
@@ -88,6 +93,12 @@
 		outline: 0;
 		}
 	}
+
+	&.unsave{
+		border-top: 3px solid $c_complementarylight;
+		
+	}
+
 
 	&[aria-labelledby="ui-id-6"], &[aria-labelledby="10000_welcome"] {
 	background: $c_background !important;
