@@ -33,6 +33,7 @@ ModulesManager::file('/inc/model/NodeSets.class.php');
 ModulesManager::file('/inc/model/SearchFilters.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/model/ActionsStats.class.php');
+ModulesManager::file('/inc/validation/FormValidation.class.php');
 
 
 class Action_browser3 extends ActionAbstract {
@@ -101,7 +102,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/jquery.validate.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-validate/localization/messages_'.$user_locale["Lang"].'.js');
-		$this->addJs('/inc/js/validation/ximdex.form.validation.js');
+		$this->addJs('/inc/validation/js/ximdex.form.validation.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.labelwidth/jquery.labelwidth.js');
 
@@ -1133,23 +1134,15 @@ class Action_browser3 extends ActionAbstract {
 	}
 
 	/**
-	 * Check if exists a node with a specific name like child of the selected one.
-	 * 
-	 * @return boolean True if not exists this name under the current node.
+	 * Launch a validation from the params values.
 	 */
-	public function isUniqueName(){
-
-		$idnode = $this->request->getParam("nodeid");
-		$inputName = $this->request->getParam("inputName");
-        $name=$this->request->getParam($inputName);
-		$result = "false";
-		$node = new Node($idnode);
-		$names = $node->find("Name","idparent=%s",array($idnode),MONO);
-        if(!$names){$names=array();}
-		$result = in_array($name, $names)? "false": "true";
-		die($result);
+	public function validation(){
+            $method = $this->request->getParam('validationMethod');
+            if(method_exists("FormValidation", $method)){
+                FormValidation::$method($this->request->getRequests());
+            }
+            die("false");
 	}
-
 	// ----- Nodes contextual menus -----
 
 	/**

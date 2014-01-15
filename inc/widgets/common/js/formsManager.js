@@ -43,7 +43,7 @@ X.FormsManager = Object.xo_create({
 			searches: [
 				'(not_empty)', '(is_url)', '(is_email)', '(js_val_min)__([^\d]+)',
 				'(field_equals)__([^\\s]+)', '(check_group)__([^\\s]+)', '(js_val_alphanumeric)',
-				'(js_val_unique_name)'
+				'(js_val_unique_name)', '(js_val_unique_url)'
 			]
 		}, options);
 
@@ -167,7 +167,7 @@ X.FormsManager = Object.xo_create({
 	},
 
 	/**
-	 * Genera un iframe, envía el contenido sobre el iframe y por último carga el contenido en un tab.* button: the DOMElement that will act as a submit button when clicked.
+	 * Genera un iframe, envï¿½a el contenido sobre el iframe y por ï¿½ltimo carga el contenido en un tab.* button: the DOMElement that will act as a submit button when clicked.
 	 *
 	 * button: The clicked button.
 	 * confirm: When TRUE a confirmation message will be shown.
@@ -338,8 +338,25 @@ X.FormsManager = Object.xo_create({
 						case 'js_val_unique_name':
 							var idnode = $(validable).attr("data-idnode");
 							constraints["remote"] = {
-							    url: X.restUrl+"?action=browser3&method=isUniqueName&nodeid="+idnode,
-                                data: {inputName:$(validable).attr("name")},
+							    url: X.restUrl+"?action=browser3",
+                                data: {
+									inputName:$(validable).attr("name"),
+									nodeid: idnode,
+									method:"validation",
+									validationMethod:"isUniqueName"
+								},
+                      			type: "post",                      			
+                      		};                   		
+							
+							break;
+						case 'js_val_unique_url':
+							constraints["remote"] = {
+							    url: X.restUrl+"?action=browser3",
+                                data: {
+									inputName:$(validable).attr("name"),
+									method:"validation",
+									validationMethod:"isUniqueUrl"
+								},
                       			type: "post",                      			
                       		};                   		
 							
@@ -382,10 +399,10 @@ X.FormsManager = Object.xo_create({
 
 					switch (result[1]) {
 						case 'js_val_unique_name':
-							var idnode = $(validable).attr("data-idnode");
-							var actionUrl = X.restUrl+"?action=browser3&method=getChildrenNames&nodeid="+idnode+"&name="+$(validable).val();
 							messages["remote"] = _("A node with this name already exists for current parent node.");
-							
+							break;
+						case 'js_val_unique_url':
+							messages["remote"] = _("A link with this url already exists.");							
 							break;
 					}
 				}
