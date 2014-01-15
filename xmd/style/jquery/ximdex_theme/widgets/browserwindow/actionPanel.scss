@@ -80,7 +80,7 @@ input:hover, select:hover {
 	@include boxshadow( 0 0 4px $s_grey);
 
 }
-input:focus, select:focus, .checkbox-label:focus, .hidden-focus:focus + label {
+input:focus, select:focus, .checkbox-label:focus, .hidden-focus:focus + label, .hidden-focus:checked:focus + label {
 	@include boxshadow(0 0  5px 1px darken($c_mainlight, 5%));
 	color: $c_grey;
 	outline: none;
@@ -119,6 +119,9 @@ fieldset{
 
 .col2-3{
 	width: 66%;
+	&.left{
+		margin-right: 1%;
+	}
 }
 
 .full_size{
@@ -126,6 +129,19 @@ fieldset{
 	display: block;
 }
 
+
+.alternative_select{
+	margin: 0;
+	border: none;
+	background: #ACAFBB;
+	webkit-border-radius: 0 2px 2px 0;
+	moz-border-radius: 0 2px 2px 0;
+	border-radius: 0 2px 2px 0;
+	cursor: pointer;
+	&:hover{
+		background: darken(#ACAFBB, 5%);
+	}	  		
+}
 
 /**************
 // ACTION HEADER
@@ -244,6 +260,12 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 	background: none;
 	text-align: right;
 	margin: 0;
+}
+
+.positioned_btn{
+	position: absolute;
+	top: .8em;
+	right: 2.5em;
 }
 .ui-dialog .ui-dialog-buttonpane button span {
 	padding: 1px;
@@ -396,6 +418,25 @@ label {
 	padding-left: .7em;
 	padding-bottom: .5em;
 	display: block;
+}
+
+.label_title_up{
+	@extend .label_title;
+	position: absolute;
+	z-index: -1;
+	-webkit-transition: all .3s ease-in;
+	-moz-transition: all .3s ease-in;
+	-ms-transition: all .3s ease-in;
+	-o-transition: all .3s ease-in;
+	transition: all .3s ease-in;
+	margin-top: -1em;
+	opacity: 0;
+
+	input:focus + &{
+		margin-top: -4.2em;
+		z-index: 2;
+		opacity: 1;
+	}
 }
 
 input[type="checkbox"] + label, input[type="radio"] + label{
@@ -551,7 +592,7 @@ span.error{
 	&::before{
 		content: '';
 		position: absolute;
-		width: 2.3em;
+		width: 5.3rem;
 		height: 100%;
 		background: $c_grey-l;
 		left: 0;
@@ -927,9 +968,41 @@ input:focus + .tooltip_info{
 	@include boxshadow(0 1px 1px rgba(0,0,0,.2));
 }
 
-.row_item_selectable{
+.row-item_selectable{
 	@extend .row-item;
 	cursor: pointer;
+	position: relative;
+	padding-left: 2.5em;
+	&::before{
+		content: "";
+		border: .4em solid rgba(255,255,255,0);
+		border-top-color: $c_grey;
+		top: 1.3em;
+		left:1em;
+		position: absolute;
+		-webkit-transition: all .3s;
+		-moz-transition: all .3s;
+		-ms-transition: all .3s;
+		-o-transition: all .3s;
+		transition: all .3s;
+
+		-webkit-transform-origin: center .2em;
+		-moz-transform-origin: center .2em;
+		-ms-transform-origin: center .2em;
+		-o-transform-origin: center .2em;
+		transform-origin: center .2em;
+		
+		}
+	&.opened::before{
+		-webkit-transform: rotate(-90deg);
+		-moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		-o-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+		
+		
+	}
+
 }
 
 .row-item {
@@ -1134,6 +1207,9 @@ input:focus + .tooltip_info{
 		cursor: default;
 		&:hover{
 			background:$c_mainlight;
+			span{
+				display: none;
+			}
 		}
 	}
 
@@ -1288,7 +1364,7 @@ input:focus + .tooltip_info{
 
 	.input-select{
   		position: relative;
-  		margin: 2em 0;
+  		margin: 1em 0;
 	  	input{
 	  		width: 100%;
 	  		padding: .5em 34% .5em 2.5em;  

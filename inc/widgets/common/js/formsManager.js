@@ -200,8 +200,12 @@ X.FormsManager = Object.xo_create({
 					messages: this._getMessages(this.options.form),
 					errorElement: "span",
 					errorPlacement: function(error, element) {
-                   		element.before(error);
-               		}
+						if (element[0].tagName.toLowerCase() == "select"){
+							$div = $("<div/>").addClass("select");
+							element.wrap($div);
+						}
+                   				element.before(error);
+               				}
 				});
 		}
 

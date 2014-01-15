@@ -83,7 +83,7 @@ input:hover, select:hover {
   -moz-box-shadow: 0 0 4px rgba(157, 157, 157, 0.2);
   box-shadow: 0 0 4px rgba(157, 157, 157, 0.2); }
 
-input:focus, select:focus, .checkbox-label:focus, .hidden-focus:focus + label {
+input:focus, select:focus, .checkbox-label:focus, .hidden-focus:focus + label, .hidden-focus:checked:focus + label {
   -webkit-box-shadow: 0 0 5px 1px #69c3b6;
   -moz-box-shadow: 0 0 5px 1px #69c3b6;
   box-shadow: 0 0 5px 1px #69c3b6;
@@ -122,10 +122,23 @@ fieldset {
 
 .col2-3 {
   width: 66%; }
+  .col2-3.left {
+    margin-right: 1%; }
 
 .full_size {
   width: 100%;
   display: block; }
+
+.alternative_select {
+  margin: 0;
+  border: none;
+  background: #ACAFBB;
+  webkit-border-radius: 0 2px 2px 0;
+  moz-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  cursor: pointer; }
+  .alternative_select:hover {
+    background: #9ea1b0; }
 
 .action_header {
   background: white;
@@ -216,6 +229,11 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
   background: none;
   text-align: right;
   margin: 0; }
+
+.positioned_btn {
+  position: absolute;
+  top: .8em;
+  right: 2.5em; }
 
 .ui-dialog .ui-dialog-buttonpane button span {
   padding: 1px; }
@@ -356,13 +374,28 @@ label {
   /*padding: 1em 0 .5em;*/
   font-size: 1.8rem; }
 
-.label_title {
+.label_title, .label_title_up {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 1.4rem;
   padding-left: .7em;
   padding-bottom: .5em;
   display: block; }
+
+.label_title_up {
+  position: absolute;
+  z-index: -1;
+  -webkit-transition: all .3s ease-in;
+  -moz-transition: all .3s ease-in;
+  -ms-transition: all .3s ease-in;
+  -o-transition: all .3s ease-in;
+  transition: all .3s ease-in;
+  margin-top: -1em;
+  opacity: 0; }
+  input:focus + .label_title_up {
+    margin-top: -4.2em;
+    z-index: 2;
+    opacity: 1; }
 
 input[type="checkbox"] + label, input[type="radio"] + label {
   display: inline;
@@ -484,7 +517,7 @@ span.error {
   .message::before, .ui-state-error::before, .ui-widget-content .ui-state-error::before, .ui-widget-header .ui-state-error::before {
     content: '';
     position: absolute;
-    width: 2.3em;
+    width: 5.3rem;
     height: 100%;
     background: #464646;
     left: 0;
@@ -796,7 +829,7 @@ input:focus + .tooltip_info {
 .col1-2 {
   width: 48%; }
 
-.row-item, .row_item_selectable {
+.row-item, .row-item_selectable {
   background: #fff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -809,10 +842,35 @@ input:focus + .tooltip_info {
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
 
-.row_item_selectable {
-  cursor: pointer; }
+.row-item_selectable {
+  cursor: pointer;
+  position: relative;
+  padding-left: 2.5em; }
+  .row-item_selectable::before {
+    content: "";
+    border: 0.4em solid rgba(255, 255, 255, 0);
+    border-top-color: #606060;
+    top: 1.3em;
+    left: 1em;
+    position: absolute;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+    -webkit-transform-origin: center .2em;
+    -moz-transform-origin: center .2em;
+    -ms-transform-origin: center .2em;
+    -o-transform-origin: center .2em;
+    transform-origin: center .2em; }
+  .row-item_selectable.opened::before {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg); }
 
-.row-item .col1-2, .row_item_selectable .col1-2, .row-item .col1-3, .row_item_selectable .col1-3 {
+.row-item .col1-2, .row-item_selectable .col1-2, .row-item .col1-3, .row-item_selectable .col1-3 {
   display: inline-block;
   vertical-align: middle; }
 
@@ -986,6 +1044,8 @@ input:focus + .tooltip_info {
   cursor: default; }
   .browser-window .enabled-version:hover {
     background: #7bcabf; }
+    .browser-window .enabled-version:hover span {
+      display: none; }
 
 .action_content .checkbox-label {
   width: 100%;
@@ -1103,7 +1163,7 @@ input:focus + .tooltip_info {
 
 .input-select {
   position: relative;
-  margin: 2em 0; }
+  margin: 1em 0; }
   .input-select input {
     width: 100%;
     padding: .5em 34% .5em 2.5em; }
