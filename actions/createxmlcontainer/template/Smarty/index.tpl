@@ -28,16 +28,14 @@
 
 	<div class="action_header">
 		<h2>{t}Add new XML{/t}</h2>
-		<fieldset class="buttons-form">
-			{button label="Create" class='validate btn main_action' }{*message="Do you wan to create the XML document?"*}
-		</fieldset>
+		
 	</div>
 
 	<div class="action_content icon">
 	<fieldset>
 		<div class="input-select icon document">
-				<input type="text" name="name" id="docname" class="cajaxg validable not_empty full-size" placeholder="{t}Name of your document{/t}"/>
-			
+				<input type="text" name="name" id="docname" class="validable not_empty full-size" placeholder="{t}Name of your document{/t}"/>
+			<!--	<label for="docname" class="label_title_up">{t}Name of your document{/t}</label>-->
 				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty document-type">
 					<option value="">{t}Select Schema{/t}</option>
 					{foreach from=$schemes item=schema}
@@ -51,5 +49,9 @@
 	
 	{include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}
 	</fieldset>
+
 	</div>
+	<fieldset class="buttons-form positioned_btn">
+			{button label="Create" class='validate btn main_action' }{*message="Do you wan to create the XML document?"*}
+		</fieldset>	
 </form>

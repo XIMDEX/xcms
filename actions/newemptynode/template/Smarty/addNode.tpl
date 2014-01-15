@@ -26,9 +26,7 @@
 <form method="post" id="print_form" action="{$action_url}">
 	<div class="action_header">
     		<h2>{t}Create a new file{/t}</h2>
-    		<fieldset class="buttons-form">
-        		{button label="Create" class='validate btn main_action' }
-    		</fieldset>
+    		
   	</div>
     <div class="warning-message message">{t}<p>The <strong>file extension</strong> is not needed.</p>{/t}</div>
   <div class="action_content">
@@ -46,5 +44,8 @@
                   	{/if}
 			</div>
     	</div>
+<fieldset class="buttons-form positioned_btn">
+            {button label="Create" class='validate btn main_action' }
+        </fieldset>      
 </form>
 

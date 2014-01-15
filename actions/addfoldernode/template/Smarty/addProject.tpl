@@ -26,9 +26,6 @@
 <form method="post" id="print_form" action="{$action_url}">
 	<div class="action_header">
   		<h2>{t friendlyName=$friendlyName}Add %1{/t}</h2>
-    		<fieldset class="buttons-form">
-    			{button label="Create `$friendlyName`" class='validate btn main_action' }
-  		</fieldset>
 	</div>
 
   	<div class="action_content">
@@ -50,4 +47,7 @@
             	{/foreach}
 		</div>
   	</div>
+      <fieldset class="buttons-form positioned_btn">
+          {button label="Create `$friendlyName`" class='validate btn main_action' }
+      </fieldset>    
 </form>

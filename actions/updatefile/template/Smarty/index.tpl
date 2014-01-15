@@ -23,15 +23,19 @@
  *  @version $Revision$
  *}
 
-<h2>{t}Upload file{/t}</h2>
 <form enctype="multipart/form-data" method="post" name="up_form" id="up_form" action="{$action_url}">
+		<div class="action_header">
+<h2>{t}Upload file{/t}</h2>
+</div>
+<div class="action_content">
+
 	<input type="hidden" name="nodeid" value="{$id_node}"/>
 	<fieldset>
 		<p>
 			<label for="upload" class="aligned">{t}File{/t}</label>
 			<input type="file" name="upload" id="upload" class="cajaxg validable not_empty"/>
 		</p>
-</fieldset>
-<fieldset class="buttons-form">
+</fieldset></div>
+<fieldset class="buttons-form positioned_btn">
 		{button label="Upload file" class="validate btn main_action"}{*message="Are you sure you want to upload this file?"*}
 </fieldset>
