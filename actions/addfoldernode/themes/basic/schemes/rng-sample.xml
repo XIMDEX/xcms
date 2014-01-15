@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0">
+     	<start>
+     		<element name ="docxap">
+     			<ref name="page.class"/>
+     		</element>
+     	</start>
+     	<define name="page.class">
+     		<element name="page">
+     				<ref name="header.class"/>
+				<ref name="content.class"/>
+				<ref name="footer.class"/>
+		</element>
+     	</define>
+	
+	<define name="header.class">
+     		<element name="header">
+     			<ref name="title.class"/>
+     			<ref name="logo.class"/>
+		</element> 
+     	</define>
+	
+	<define name="footer.class">
+     		<element name="footer">
+     			<optional>
+     				<ref name="tags.class"/>
+     			</optional>
+     		</element> 
+     	</define>
+	
+     	<define name="content.class">
+     		<element name="content">
+     			<ref name="menu.class"/>
+     			<ref name="main.class"/>
+     		</element> 
+     	</define>
+	
+     	<define name="title.class">
+     		<element name="title">
+     			<text/>
+     			<xim:default_content>[title]</xim:default_content>
+     		</element>
+     	</define>
+	
+	<define name="logo.class">
+     		<element name="logo">
+     			<text/>
+     			<xim:default_content>[logo]</xim:default_content>
+     		</element>
+     	</define>
+	
+     	<define name="main.class">
+     		<element name="main">
+     			<text/>
+     			<xim:default_content>[main content]</xim:default_content>
+     		</element>
+     	</define>
+	
+	<define name="menu.class">
+     		<element name="menu">
+     			<text/>
+     			<xim:default_content>[menu]</xim:default_content>
+     		</element>
+     	</define>
+	
+   	<define name="tags.class">
+     		<element name="tags">
+     			<zeroOrMore>
+     				<ref name="tag.class"/>
+     			</zeroOrMore>
+     		</element>
+     	</define> 
+     	
+	<define name="tag.class">
+     		<element name="tag">
+     			<text/>
+     		</element>
+     	</define>
+</grammar>

@@ -27,9 +27,7 @@
 	<input type="hidden" name="nodeid" value="{$nodeID}">
 	<div class="action_header">
 		<h2>{t}Available languages and translation{/t}</h2>
-		<fieldset class="buttons-form">
-			<a href="{$_MESSAGES_PATH}" class="lbOn validate">{button label="Modificar" class='validate btn main_action' }{*message="Would you like update this information?"*}</a>
-		</fieldset>
+		
 	</div>
 	<div class="action_content">
 	{if $languageCount neq 0}
@@ -48,5 +46,8 @@
 		</fieldset>
 	{/if}
 	</div>
+<fieldset class="buttons-form positioned_btn">
+			<a href="{$_MESSAGES_PATH}" class="lbOn validate">{button label="Modificar" class='validate btn main_action' }{*message="Would you like update this information?"*}</a>
+		</fieldset>	
 </form>
 

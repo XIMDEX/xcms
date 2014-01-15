@@ -27,6 +27,9 @@
 	<h2>{t}Status Report{/t}</h2>
 </div>
 <div class="action_content versions">
+
+	{if {count($files)}}
+	
 	<p>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</p>
 		
 	{foreach from=$files key=state item=statenode}
@@ -43,5 +46,8 @@
 			{/foreach}
 		</div>
 	{/foreach}
+	{else}
+		<p>{t}All documents are in the final state.{/t}</p>
+	{/if}
 </div>
 </div>

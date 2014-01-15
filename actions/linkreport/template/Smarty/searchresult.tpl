@@ -22,7 +22,11 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+	<div class="action_header">
 <h2>{t}Search results{/t}</h2>
+</div>
+		<div class="action_content">
+
 <fieldset>
 
 
@@ -36,6 +40,9 @@
 
 </fieldset>
 
-<fieldset class="buttons-form">
+
+</div>
+
+<fieldset class="buttons-form positioned_btn">
 	{button label="Go back" type="goback" class="btn"}
 </fieldset>

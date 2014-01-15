@@ -32,6 +32,7 @@
 		var href= params.actionView.id;
 		$tabLink = $("a[href='#"+href+"']");
 		$tabLink.removeClass("unsave").parent().removeClass("unsave");
+		$tabLink.removeClass("unsave").parent().removeClass("unsave");
  	});
 
 	var id_editor = fn(".editor_textarea").attr("id");

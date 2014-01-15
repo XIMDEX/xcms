@@ -172,7 +172,8 @@
   margin: 0 !important;
   width: 100%;
   text-align: center;
-  position: relative; }
+  position: relative;
+  min-height: 2.9em; }
   .xim-loader-list-actions .xim-uploader-selected, .xim-loader-list-actions .xim-uploader-delete {
     background: #828699;
     color: #fff;

@@ -24,7 +24,11 @@
  *}
 
 {if (null != $files_nok.name)}
+<div class="action_header">
 <h2>{t}Not added files{/t}</h2>
+	
+	</div>
+	<div class="action_content">
 <fieldset>
 
 
@@ -35,10 +39,16 @@
 	 </ul>
 	 
 </fieldset>
+</div>
 {/if}
 
 {if (null != $files_ok.name)}
+<div class="action_header">
 <h2>{t}Added files{/t}</h2>
+	
+	</div>
+	<div class="action_content">
+
 <fieldset>
 	 <ul class="files_ok">
 		{section name=i loop=$files_ok.name}
@@ -46,4 +56,5 @@
 		{/section}
 	 </ul>
 </fieldset>
+</div>
 {/if}

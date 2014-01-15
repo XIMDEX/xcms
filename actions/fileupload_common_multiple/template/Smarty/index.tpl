@@ -26,10 +26,7 @@
 <form action="{$action_url}"  method="POST" name="f_m_u" enctype="multipart/form-data" >
 	<div class="action_header">
 		<h2>{$lbl_anadir}</h2>
-		<fieldset class="buttons-form">
-			{button label="Upload files" class="validate btn main_action"}
-			{*message="Are you sure you want to continue?"*}
-		</fieldset>
+		
 	</div>
 
 	<div class="action_content uploader {if $type_node == "XmlContainer"}xml-uploader{/if}">
@@ -60,4 +57,8 @@
 			<uploader {if ($filter)}filter="{$filter}"{/if} is_structured="{$is_structured}"/>
 		</fieldset>
 	</div>
+<fieldset class="buttons-form positioned_btn">
+			{button label="Upload files" class="validate btn main_action"}
+			{*message="Are you sure you want to continue?"*}
+		</fieldset>	
 </form>

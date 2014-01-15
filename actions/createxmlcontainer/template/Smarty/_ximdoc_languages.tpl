@@ -31,35 +31,9 @@
 	$channels[Description]
 *}
 
-	<div class="languages-available col1-3 right"><h3>{t}Languages{/t}</h3>
-		
-		{if count($languages) > 0}
-			
-				{foreach from=$languages item=language}
-					
-					<div class="languages-section">
-		
-						<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}' class="hidden-focus"/>
-						<label  for="{$language.IdLanguage}" class="icon checkbox-label">{$language.Name|gettext}</label>
-						<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}"/>
-					</div>
-					
-				{/foreach}
-				
-				
-					<select class="cajaxg" name='master' id="master">
-						<option value="">{t}Select master language{/t}</option>
-						{foreach from=$languages item=language}
-							<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
-						{/foreach}
-					</select>
-				
-		{else}
-			<p>{t}There are no languages associated to this project{/t}</p>
-		{/if}
-	</div>
+	
 
-<div class="col2-3">	
+<div class="col2-3 left">	
 
 <h3>{t}Channels{/t}</h3>
 
@@ -76,3 +50,31 @@
 	{/if}
 
 </div>
+
+<div class="languages-available col1-3"><h3>{t}Languages{/t}</h3>
+		
+		{if count($languages) > 0}
+			
+				{foreach from=$languages item=language}
+					
+					<div class="languages-section">
+		
+						<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}' class="hidden-focus"/>
+						<label  for="{$language.IdLanguage}" class="icon checkbox-label">{$language.Name|gettext}</label>
+						<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}"/>
+					</div>
+					
+				{/foreach}
+				
+				
+					<select class="alternative_select" name='master' id="master">
+						<option value="">{t}Select master language{/t}</option>
+						{foreach from=$languages item=language}
+							<option  value='{$language.IdLanguage}'>{$language.Name|gettext}</option>
+						{/foreach}
+					</select>
+				
+		{else}
+			<p>{t}There are no languages associated to this project{/t}</p>
+		{/if}
+	</div>
