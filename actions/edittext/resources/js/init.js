@@ -30,8 +30,8 @@
 	fn(".validate").click(function(){
 		fn(".editor").removeClass("unsave");
 		var href= params.actionView.id;
-		$("a[href='#"+href+"']").removeClass("unsave");
-		$("a[href='#"+href+"']").css("font-style","normal");
+		$tabLink = $("a[href='#"+href+"']");
+		$tabLink.removeClass("unsave").parent().removeClass("unsave");
  	});
 
 	var id_editor = fn(".editor_textarea").attr("id");
