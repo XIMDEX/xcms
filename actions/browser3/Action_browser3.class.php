@@ -1140,10 +1140,12 @@ class Action_browser3 extends ActionAbstract {
 	public function isUniqueName(){
 
 		$idnode = $this->request->getParam("nodeid");
-		$name = $this->request->getParam("name");
+		$inputName = $this->request->getParam("inputName");
+        $name=$this->request->getParam($inputName);
 		$result = "false";
 		$node = new Node($idnode);
 		$names = $node->find("Name","idparent=%s",array($idnode),MONO);
+        if(!$names){$names=array();}
 		$result = in_array($name, $names)? "false": "true";
 		die($result);
 	}

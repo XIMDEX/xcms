@@ -337,9 +337,9 @@ X.FormsManager = Object.xo_create({
 							break;
 						case 'js_val_unique_name':
 							var idnode = $(validable).attr("data-idnode");
-							var actionUrl = X.restUrl+"?action=browser3&method=isUniqueName&nodeid="+idnode+"&name="+$(validable).val();
 							constraints["remote"] = {
-								url: actionUrl,
+							    url: X.restUrl+"?action=browser3&method=isUniqueName&nodeid="+idnode,
+                                data: {inputName:$(validable).attr("name")},
                       			type: "post",                      			
                       		};                   		
 							

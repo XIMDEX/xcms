@@ -23,12 +23,9 @@
  *  @version $Revision$
  */
 
-
 (function() {
-
-	//All the none defaults validations.
+	//All the customized validations
 	$.validator.addMethod("alphanumeric", function(value, element, params){
 		return this.optional(element) || /^\w+$/.test(value);
-	}, _("Invalid value. Specting alphanumeric value without whitespaces."));
-
+	}, _("Invalid string. Expecting an alphanumeric value without whitespaces."));
 })();

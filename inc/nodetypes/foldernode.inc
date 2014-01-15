@@ -129,7 +129,7 @@ class FolderNode extends Root {
 	*/
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null){
-		if($nodeTypeID==TEMPLATE_VIEW_FOLDER){
+		if($nodeTypeID==5053){
 			$this->_createDefaultRNGs();
 		}
 		$this->updatePath();

@@ -33,8 +33,8 @@
 	</div>
 	<div class="action_content">
 				<p>
-					<label  class="label_title" for="username">{t}Username{/t}</label>
-					<input type="text" name="name" id="username" class="full_size validable not_empty" placeholder="Ximdex username"  tabindex="1">
+					<label  class="label_title" for="login">{t}Username{/t}</label>
+					<input type="text" name="login" id="login" class="full_size validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="Username in Ximdex CMS" tabindex="1" data-idnode="{$id_node}">
 				</p>
 				<p class="col1_2 col_left">
 					<label for="pass" class="label_title" for="pass">{t}Password{/t}</label>
@@ -42,11 +42,11 @@
 				</p>
 				<p class="col1_2 col_right">
 					<label for="confirmpass" class="label_title" for="confirmpass" >{t}Repeat password{/t}</label>
-					<input type="password" name="confirmpass" id="confirmpass" class="full_size validable not_empty field_equals__pass" placeholder="{t}Confirm password{/t}"  tabindex="3">
+					<input type="password" name="confirmpass" id="confirmpass" class="full_size validable not_empty field_equals__pass" placeholder="{t}Password{/t}"  tabindex="3">
 				</p>
 				<p>
-					<label for="login" class="label_title" for="login">{t}Surname and name	{/t}</label>
-					<input type="text" name="login" id="login" class="full_size validable not_empty" placeholder="{t}Surname and name{/t}"  tabindex="4">
+					<label for="login" class="label_title" for="username">{t}Name and surname{/t}</label>
+					<input type="text" name="name" id="username" class="full_size validable not_empty" placeholder="{t}Name and surname{/t}"  tabindex="4">
 				</p>
 				<p>
 					<label for="email" class="label_title" for="email">{t}E-mail{/t}</label>
