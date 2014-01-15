@@ -187,6 +187,7 @@
 	width: 100%;
 	text-align: center;
 	position: relative;
+	min-height: 2.9em;
 	.xim-uploader-selected, .xim-uploader-delete{
 		background: darken($c_greymain, 15%);
 		color: #fff;
