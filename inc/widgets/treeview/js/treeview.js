@@ -373,7 +373,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 			if (data.isdir.value == 1) {
 				$('div:first > span.ui-icon', parent)
-					.addClass('ui-icon ' + this.options.collapsed_icon);
+					.addClass('ui-icon ' +this.options.toggle_class+ ' ' + this.options.collapsed_icon);
 			} else {
 				node.addClass("isLeaf");
 			}
@@ -464,7 +464,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			} else {
 				var parent = $(this).parents('.xim-treeview-node:first');
 				lblIcon
-					.addClass('ui-icon ' + this.options.collapsed_icon)
+					.addClass('ui-icon  ' + this.options.collapsed_icon + ' ' + this.options.toggle_class)
 					.click(function(event) {
 						event.stopPropagation();
 						var parent = $(this).parents('.xim-treeview-node:first');
@@ -844,6 +844,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			colModel: null,
 			behavior: null,
 			no_icon: 'ui-no-icon',
+			toggle_class: 'xim-actions-toggle-node',
 			collapsed_icon: 'ui-icon-triangle-1-e',
 			expanded_icon: 'ui-icon-triangle-1-se',
 			loading_icon: '/actions/browser3/resources/images/loading.gif',
