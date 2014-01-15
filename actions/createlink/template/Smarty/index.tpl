@@ -30,41 +30,23 @@
 		<fieldset class="buttons-form">
 			{button label="Create" class='validate btn main_action'} {*message="Would you like to create a new link?"*}
 		</fieldset>
-		</div>
-		<div class="action_content">
-
-			<p class="input-select icon icon-positioned link">
-				<input type="text" name="name" id="name" class="cajaxg validable not_empty" placeholder="{t}Name{/t}"/>
-				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty document-type">
-					<option value="">{t}Select link type{/t}</option>
-					{foreach from=$schemes item=schema}
-						<option value="{$schema.idSchema}">{$schema.Name}</option>
-					{/foreach}
-				</select>
-
-				{*	<span><input type="checkbox" name="urlprefix" id="urlprefix" class="hidden-focus" checked>
-				 <label for="urlprefix" class="checkbox-label icon"><span>Web</span></label>
-				</span>
-			<span><input type="checkbox" name="mailprefix" id="mailprefix" class="hidden-focus">
-				<label for="mailprefix" class="checkbox-label icon"><span>E-mail</span></label>
-			</span> *}
-			</p>
-
-				<div class="input">
-					<h3>
-						<label for="url">{t}URL{/t}</label>
-					</h3>
-					<input type="text" name="url" id="url" class="cajaxg validable not_empty is_url">
-				</div>
-			
-
-			<div class="input">
-				<h3>
-					<label for="description" class="aligned"><span>{t}Description{/t}</span></label>
-				</h3>
-				<input type="text" name="description" id="description" class="cajaxg validable not_empty">
-			</div>
-
-
 	</div>
+	<div class="action_content">
+		<p class="input-select icon icon-positioned link">
+			<input type="text" name="name" id="name" class="cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" data-idnode="{$id_node}" placeholder="{t}Link name{/t}"/>
+			<select name="link_type" id="link_type" class="cajaxg document-type">
+				<option value="" selected>{t}Select link type{/t}</option>
+				<option value="url">URL (http://)</option>
+				<option value="email">E-mail (mailto:)</option>
+			</select>
+        </p>
+		<div class="input">
+			<label for="url" class="label_title">{t}URL{/t}</label>
+			<input type="text" name="url" id="url" class="cajaxg validable not_empty">
+		</div>
+	    <div class="input">
+			<label for="description" class="label_title"><span>{t}Description{/t}</span></label>
+		    <input type="text" name="description" id="description" class="cajaxg validable not_empty">
+	    </div>
+    </div>
 </form>

@@ -23,31 +23,31 @@
  *  @version $Revision$
  */
 
-
 X.actionLoaded(function(event, fn, params) {
 
-	$('input[name=urlprefix]').click(function(e) {
-                var url = $("#url").val();
-                var cb = $("#urlprefix").is(':checked');
-                var r = new RegExp('^([^:]+)://');
-                if (!Object.isEmpty(url) && !r.test(url) && cb) {
-                        $("#url").val('http://' + url.replace(/^:\/\//, ''));
-                }
-                if (!Object.isEmpty(url) && r.test(url) && !cb) {
-                        $("#url").val(url.replace('http://',''));
-                }
-        });
+    var submit = fn('.validate').get(0);
 
-        $('input[name=mailprefix]').click(function(e) {
-                var url = $("#url").val();
-                var cb = $("#mailprefix").is(':checked');
-                var r = new RegExp('^([^:]+):');
-                if (!Object.isEmpty(url) && !r.test(url) && cb) {
-                        $("#url").val('mailto:' + url.replace(/^:/, ''));
-                }
-                if (!Object.isEmpty(url) && r.test(url) && !cb) {
-                        $("#url").val(url.replace('mailto:',''));
-                }
-        });
+    fn('select#link_type').change(function() {
+        var linkType= fn('#link_type option:selected').val();
+        if(linkType=="url"){
+            fn("label[for='url']").html("Web URL");
+            fn("input#url").addClass("is_url");
+            fn("input#url").removeClass("is_email");
+        }   
+        else{
+            fn("label[for='url']").html("E-mail address");
+            fn("input#url").addClass("is_email");
+            fn("input#url").removeClass("is_url");
+        }
+    });
 
+    submit.beforeSubmit.add(function(event, button) {
+        if(fn("form#cln_form #link_type").val()==""){
+            alert(_("Please, select one type of link"));
+            event.preventDefault();
+            event.stopPropagation();
+            return true;
+        }
+    });
 });
+
