@@ -36,8 +36,8 @@
 
         <div class="col1-2">
             <h3>{t}Available channels{/t}</h3>
-                <p>
                {foreach from=$channels key=index item=channelData }
+                <p>
                     <span>
                         <input type="checkbox" class="validable canales check_group__canales hidden-focus" name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" value="{$channelData.id}" />
                         <label for="p_{$channelData.id}" class="checkbox-label icon" >{$channelData.name}</label>

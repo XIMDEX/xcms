@@ -145,8 +145,8 @@ msgstr "Tiempos de ejecuci&oacute;n promedio de cada acci&oacute;n"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 #: /actions/addsectionnode/Action_addsectionnode.class.php
-msgid "%s has been successfully created"
-msgstr "La creaci&oacute;n de %s se ha realizado correctamente"
+msgid " has been successfully created"
+msgstr " se ha creado correctamente"
 
 #: /actions/addfoldernode/Action_addfoldernode.class.php
 msgid "The operation has failed: %s"
@@ -1458,14 +1458,11 @@ msgstr "A&ntilde;adir documentos XML"
 msgid " Add XML files "
 msgstr " A&ntilde;adir archivos XML "
 
-msgid "Select schema"
-msgstr "Seleccionar esquema"
-
 msgid "Select language"
 msgstr "Seleccionar idioma"
 
-msgid "Files added for upload: "
-msgstr "Archivos a&ntilde;adidos para subir: "
+msgid "Files added for upload"
+msgstr "Archivos a&ntilde;adidos para subir"
 
 msgid "There aren't any selected files for upload."
 msgstr "No hay archivos seleccionados para subir."
@@ -1478,6 +1475,12 @@ msgstr "Debe elegir un esquema y un idioma antes de comenzar con la subida."
 
 msgid "Continue"
 msgstr "Continuar"
+
+msgid "Completed"
+msgstr "Completado"
+
+msgid "Drag your files here or add them using the 'Add' button below"
+msgstr "Arrastra aqu&iacute; tus ficheros o a&ntilde;&aacute;delos usando el bot&oacute;n 'A&ntilde;adir' de abajo"
 
 #: /actions/createrole/Action_createrole.class.php
 msgid "Role has been successfully added"
@@ -1557,17 +1560,11 @@ msgstr "Ha ocurrido un error al estimar el nodo padre,"
 msgid " operation will be aborted, contact with your administrator"
 msgstr " se abortar&aacute; la operaci&oacute;n, contacte con su administrador"
 
-msgid "A nodetype could not be estimated to create the container folder,"
-msgstr "No se ha podido estimar un nodetype para crear la carpeta contenedora,"
-
-msgid "An error occurred creating the container node"
-msgstr "Se ha producido un error al crear el nodo contenedor"
-
-msgid "Container %s has been successfully created"
-msgstr "El contenedor %s se ha creado correctamente"
-
 msgid "A nodetype could not be estimated to create the document,"
 msgstr "No se ha podido estimar un nodetype para crear el documento,"
+
+msgid "An error occurred creating the document"
+msgstr "Se ha producido un error al crear el documento"
 
 msgid "Language %s insertion has been aborted because it was not found"
 msgstr "Se ha abortado la inserci&oacute;n del idioma %s porque no se ha encontrado en el sistema"
@@ -1577,6 +1574,9 @@ msgstr "Se ha insertado correctamente el documento %s"
 
 msgid "Insertion of document %s with language %s has failed"
 msgstr "Ha fallado la inserci&oacute;n del documento %s en el idioma %s"
+
+msgid "No schemes found. Maybe you need to create/upload/set properly the type of a RNG schema"
+msgstr "No se han encontrado esquemas. Quiz&aacute;s necesites crear/subir/establecer el tipo de un esquema RNG"
 
 #: /actions/createxmlcontainer/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Actions
@@ -1610,6 +1610,12 @@ msgstr "Esquema"
 #: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 msgid "Select master language"
 msgstr "Seleccione idioma maestro"
+
+msgid "Select schema"
+msgstr "Selecciona un esquema"
+
+msgid "Name of your document"
+msgstr "Nombre de tu documento"
 
 #: /actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl
 #: /actions/modifygroupsnode/template/Smarty/index.tpl
@@ -4280,7 +4286,6 @@ msgstr "No se encuentra la docxap."
 msgid "Document cannot be saved."
 msgstr "No se ha podido guardar el documento."
 
-
 #: /actions/xmleditor2/model/XmlEditor_Enricher.class.php
 msgid "Error while loading the xml enricher"
 msgstr "Error al cargar el enriquecedor xml"
@@ -5700,7 +5705,7 @@ msgid "HTML editor"
 msgstr "Editor HTML"
 
 msgid "Document"
-msgstr "Documento"
+msgstr "El documento"
 
 msgid "Associate projects with language"
 msgstr "Asociar proyectos a idioma"

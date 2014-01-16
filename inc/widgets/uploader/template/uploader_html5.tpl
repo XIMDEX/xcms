@@ -35,7 +35,7 @@
             <span class="icon document">Documents</span>
             <span class="icon image">Images</span>
             <span class="icon video">Videos</span>
-           <p> {t}Drag your files here or add them using the button 'Add' below.{/t}</p></div>
+           <p> {t}Drag your files here or add them using the 'Add' button below{/t}.</p></div>
 	  	<ul class="xim-loader-list"></ul>
 
   	</div>
