@@ -26,9 +26,9 @@
  <div class="action_header">
 	<h2>{t}Status Report{/t}</h2>
 </div>
-<div class="action_content versions">
 
 	{if {count($files)}}
+<div class="action_content versions">
 	
 	<p>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</p>
 		
@@ -45,9 +45,17 @@
 				</div>
 			{/foreach}
 		</div>
+</div>
+	</div>
 	{/foreach}
 	{else}
+	
+	<div class="info-message message">
 		<p>{t}All documents are in the final state.{/t}</p>
+	</div>
+
+	<div class="action_content">
+	</div>
 	{/if}
-</div>
-</div>
+
+

@@ -44,6 +44,8 @@ class Action_linkreport extends ActionAbstract {
 		);
 
 		$this->render($values, NULL, 'default-3.0.tpl');
+		$this->addCss('/actions/linkreport/resources/css/linkreport.css');
+
     }
 
 	function searchresult() {
@@ -53,6 +55,7 @@ class Action_linkreport extends ActionAbstract {
 
 		$node = new Node($idNode);
 
+		$this->addCss('/actions/linkreport/resources/css/linkreport.css');
 		$this->addJs('/actions/linkreport/resources/js/listHandler.js');
 
 		$values = array(

@@ -162,6 +162,16 @@
   content: "\e037";
 }
 
+.result_description::before{
+  content: "\e026";
+  font-size: 1.4em;
+  top: -.25em;
+  left: .25em;
+} 
+
+.not_checked::before{
+  content: "\e609";
+}
 
 /*****
   xsparrow

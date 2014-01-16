@@ -32,11 +32,31 @@
 
 	<input type="hidden" name="stringsearch" value="{$stringsearch}" />
 
-	<listview handler="myhandler" class="xim-listview-results" useXVFS="no"
+		<div class="result_info row-item">
+			<span class="result_name">
+				name
+			</span>
+			<span class="result_url">
+				http://dribbble.com/shots/475183-Flight-search-results
+			</span>
+			<div class="row-item-actions">			
+			<div class="description_btn">
+				<span class="result_description  icon btn-unlabel-rounded">
+					<span class="tooltip">
+						<p>Description</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae, ad, atque, nam a sit fugit officiis officia possimus enim voluptates consectetur veritatis deserunt magni beatae quam quae hic iure voluptatibus.</p>
+					</span>
+				</span>
+			</div>
+			<a href="" class="icon btn-unlabel-rounded not_checked "><span>Not checked</span></a>
+			</div>
+		</div>
+
+	{*<listview handler="myhandler" class="xim-listview-results" useXVFS="no"
 		showBrowser="false" nodeid="{$id_node}" actionid="{$id_action}"
 		rec="{$rec}" all="{$all}" field="{$field}" criteria="{$criteria}" />
 
-	<paginator class="links-paginator" />
+	<paginator class="links-paginator" />*}
 
 </fieldset>
 

@@ -1,0 +1,104 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+
+
+
+
+.result_name, .result_url{
+	display: block;
+}
+
+.result_url{
+	color: $c_mainlight;
+	margin-top: .5em;
+	font-weight: bold;
+}
+
+.description_btn{
+	display: inline-block;
+}
+
+.result_info{
+	padding-right: 6em;
+	.row-item-actions{
+		top: 50%;
+		margin-top: 0;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		transform: translateY(-50%);
+
+		a{
+			span{
+			margin-top: 3em;
+			right: 0;
+				&::before{
+					right: 1.5em;
+				}
+			}
+		}
+		
+		.tooltip{
+			right: 3.5em;
+			white-space: normal;
+			width: 300%;
+			margin-top: 3em;
+			text-transform: none;
+			padding: 1em;
+			&::before{
+				right: 1.7em;
+			}
+
+			p{
+				font-size: 1.5rem;
+				line-height: 1.4;
+
+				&:first-child{
+					border-bottom: 1px solid rgba(255,255,255,.5);
+					padding-bottom: 0.5em;
+					margin-bottom: .8em;
+					font-size: 1.6rem;
+				}
+			}
+		}
+	}
+}
+
+.btn-unlabel-rounded.result_description{
+	background:#42dada;
+	&:hover{
+		background:#42dada;
+	}
+}.btn-unlabel-rounded.not_checked{
+	background:#e2bf46;
+	&:hover{
+		background:#e2bf46;
+	}
+}
+
