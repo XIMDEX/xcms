@@ -296,7 +296,7 @@
 		 	  	html += this.fname+'</label>';
 	 	     		html += '<span class="xim-loader-size">'+this._size()+'</span>';
   	 	     		html += '<span  class="xim-loader-options"></span>';
-		     		html += '<span class="xim-loader-progress"><div class="progress icon">Waiting</div></span>';
+		     		html += '<span class="xim-loader-progress"><div class="progress icon">'+_("Waiting")+'</div></span>';
 	 	     		html += '</li>';
 
 	 	     		$('.overlay').show();

@@ -24,8 +24,6 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/Links.inc');
-
 class Action_createlink extends ActionAbstract {
     // Main method: shows initial form
     function index() {
@@ -40,16 +38,6 @@ class Action_createlink extends ActionAbstract {
 	    $idParent = $this->request->getParam('id_node');
 	    $url = $this->request->getParam('url');
 	    $description = $this->request->getParam('description');
-	    $validated = $this->request->getParam('validated');
-    	
-		$link = new Link();
-    	if (!$validated) {
-	    	$links = $link->search(array('conditions' => array('Url' => $url)));
-	    	if (is_array($links)) {
-	    		$this->_show($links);
-	    		return;
-	    	}
-    	}
     	
 		$data = array('NODETYPENAME' => 'LINK',
 				'NAME' => $name,
@@ -76,26 +64,6 @@ class Action_createlink extends ActionAbstract {
 		
 		$values = array('messages' => $bio->messages->messages);
 		$this->render($values, NULL, 'messages.tpl');	
-    }
-    
-   	function _show($links){
-   		$name = $this->request->getParam('name');
-   		$idParent = $this->request->getParam('id_node');
-   		$url = $this->request->getParam('url');
-    	$description = $this->request->getParam('description');
-    	
-   		$link = new Link();
-   		$links = $link->query(sprintf("Select Node.name, Node.description, Link.Url FROM Nodes Node INNER JOIN Links Link on Node.IdNode = Link.IdLink AND Link.Url = '%s'", $url));
-    	
-   		$this->render(array(
-                        'id_node' => $idParent,
-    					'name' => $name,
-	   				    'description' => htmlspecialchars($description, ENT_QUOTES),
-	   				    'url' => $url,
-    					'links' => $links,
-    					'go_method' => 'createlink'
-    				),  
-                    'show', 'default-3.0.tpl');
     }
 }
 ?>
