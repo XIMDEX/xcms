@@ -44,7 +44,7 @@
                     </span>
                 </p>
                 {foreachelse}
-                <p class="message_warning">{t}There are no channels created in the system{/t}</p>
+                <p class="message_warning">{t}There are no channels created in the system{/t}.</p>
                 {/foreach}
         </div>
   
