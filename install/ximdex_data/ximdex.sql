@@ -124,8 +124,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6086,5040,'Delete image','deletenode','delete_image.png','Delete an image',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6087,5039,'Change name','renamenode','change_name_file_txt_bin.png','Change file name on import folder',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6088,5039,'Delete','deletenode','delete_file_txt_bin.png','Delete file of import folder',80,NULL,1,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6069,5050,'Add new link subfolder','addfoldernode','add_links_category.png','Create a new link subfolder',10,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6070,5048,'Add new link subfolder','addfoldernode','add_links_category.png','Create a new link subfolder',10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6069,5050,'Add new link subfolder','addfoldernode','add_links_category.png','Create a new link subfolder',15,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6070,5048,'Add new link subfolder','addfoldernode','add_links_category.png','Create a new link subfolder',15,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6071,5050,'Add new external link','createlink','add_external_link.png','Create a new external link',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6072,5048,'Add new external link','createlink','add_external_link.png','Create a new external link',10,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6094,5039,'Edit file','edittext','edit_file_txt.png','Edit content of text document',1,NULL,0,'');
@@ -144,8 +144,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6073,5049,'Modify link properties','modifylink','modify_link.png','Modify properties of external link',60,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6109,5010,'Delete role','deletenode','delete_role.png','Delete a selected role if it is not in use',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6121,5036,'Delete','deletenode','delete_state.png','Delete a state if it is not an initial or final one and it is not in use',80,NULL,1,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6118,5048,'Change name','renamenode','modify_link_folder.png','Change name of selected folder',70,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6119,5048,'Delete folder','deletenode','delete_link_folder.png','Delete selected folder',80,NULL,1,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6118,5048,'Change name','renamenode','modify_link_folder.png','Change name of selected folder',23,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6119,5048,'Delete folder','deletenode','delete_link_folder.png','Delete selected folder',25,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6120,5049,'Delete link','deletenode','delete_link.png','Delete selected link',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6124,5018,'Modify view template','changetemplateview','xix.png','Modify template for all documents of the directory',0,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6125,5014,'Manage servers','modifyserver','modify_sinc_data.png','Modify connection data with the production environment',60,NULL,0,'');
@@ -320,7 +320,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7223', '5057', 'Copy', 'copy', 'copiar_carpeta_ximlet.png', 'Copy a ximlet document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7224', '5076', 'Copy', 'copy', 'copiar_documento.png', 'Copy a HTML document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7225', '5015', 'Copy', 'copy', 'copiar_seccion.png', 'Copy a section to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7226', '5053', 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a schemas folder to another destination', '-30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7226', '5053', 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a schemes folder to another destination', '-30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7236, 5057, 'Manage associations', 'showassocnodes', 'xix.png', 'Manage node associations with ximlet', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7239, '0', 'Action report', 'actionsstats', 'xix.png', 'Show action report', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7301, 5035, 'Add workflow', 'addworkflow', 'xix.png', 'Add a new workflow', -1, NULL, 0, NULL);
@@ -338,8 +338,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7319, 5078, 'Edit RNG template', 'edittext', 'edit_template_view.png', 'Edit a RNG template', 2, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7320, 0, 'Charts', 'charts', 'xix.png', 'Graphic representation', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7321, 5078, 'Properties of RNG template', 'renamenode', 'modify_template_view', 'Modify properties of RNG', '20', NULL , '0', NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7229, 5048, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '10', NULL,0,NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7231, 5050, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '10', NULL,0,NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7229, 5048, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7231, 5050, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8101, 5016, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 10, NULL, 1, '');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8102, 5017, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 10, NULL, 1, '');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8103, 5024, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 10, NULL, 1, '');
@@ -354,7 +354,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8112,5053,'Download all templates','filedownload_multiple','download_template_view.png','Download all templates',20,NULL,0,'',1);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8113,5022,'Download all files','filedownload_multiple','download_html_file.png','Download all files',20,NULL,0,'',1);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8114,5023,'Download all files','filedownload_multiple','download_html_file.png','Download all files',20,NULL,0,'',1);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8115, 5053, 'Add schemas', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of schemas to the server', 10, NULL, 0, 'type=pvd', 0);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8115, 5053, 'Add schemes', 'fileupload_common_multiple', 'add_template_pvd.png', 'Add a set of schemes to the server', 10, NULL, 0, 'type=pvd', 0);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES (8116, 5014, 'Status Report', 'checkstatus', 'manage_versions.png', 'Status Report to inform the user', 27,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8117,5077,'Change name','renamenode','modify_template_ptd.png','Change template name',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8118,5077,'Download template','filedownload','download_template_ptd.png','Download a template',20,NULL,0,'');
@@ -367,7 +367,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8124,5024,'Add empty stylesheet','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8125,5025,'Add empty stylesheet','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8126,5026,'Add empty XSL template','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8127,5053,'Add empty RNG schema','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8127,5053,'Add empty RNG schema','newemptynode','add_file_common.png','Create a new empty file',15,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8128,5020,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8129,5021,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',95,NULL,0,'',0);
 
@@ -458,7 +458,7 @@ INSERT INTO `Config` VALUES (12,'DefaultLanguage','es');
 INSERT INTO `Config` VALUES (13,'BlockExpireTime','120');
 INSERT INTO `Config` VALUES (14,'MaximunGapSizeTolerance','180');
 INSERT INTO `Config` VALUES (15,'SynchronizerCommand','/modules/synchronizer/ximCRON.pl');
-INSERT INTO `Config` VALUES (16,'SchemasDirName','schemas');
+INSERT INTO `Config` VALUES (16,'SchemasDirName','schemes');
 INSERT INTO `Config` VALUES (17,'TemplatesDirName','templates');
 INSERT INTO `Config` VALUES (18,'PurgeSubversionsOnNewVersion','1');
 INSERT INTO `Config` VALUES (19,'MaxSubVersionsAllowed','4');
@@ -877,7 +877,7 @@ INSERT INTO `NodeDefaultContents` VALUES (12,5014,5022,'common',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (13,5014,5020,'ximclude',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (14,5013,5026,'templates',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (16,5013,5050,'links',NULL,NULL);
-INSERT INTO `NodeDefaultContents` VALUES (17,5013,5053,'schemas',NULL,NULL);
+INSERT INTO `NodeDefaultContents` VALUES (17,5013,5053,'schemes',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (18,5014,5054,'ximlet',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (19,5015,5054,'ximlet',NULL,NULL);
 INSERT INTO `NodeDefaultContents` VALUES (20,5014,5083,'metadata',NULL,NULL);

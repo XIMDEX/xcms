@@ -46,7 +46,7 @@
 </fieldset>
 <fieldset>
 	<input type="checkbox" name="recursive" id="{$id_node}_recursive_delete" /> <label for="{$id_node}_recursive_delete"> {t}Disassociate recursively{/t}.</label>
-	<p>{t}If the current section/server has subfolders, the disassociation will be deleted for them too{/t}.</p>
+	<p>{t}If the current section/server has subfolders, the association will be deleted for them too{/t}.</p>
 </fieldset>
 
 <fieldset class="buttons-form">

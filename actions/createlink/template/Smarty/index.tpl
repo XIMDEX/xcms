@@ -44,7 +44,7 @@
 		</div>
 	    <div class="input">
 			<label for="description" class="label_title"><span>{t}Description{/t}</span></label>
-		    <input type="text" name="description" id="description" class="cajaxg validable not_empty">
+		    <input type="text" name="description" id="description" class="cajaxg">
 	    </div>
     </div>
 <fieldset class="buttons-form positioned_btn">

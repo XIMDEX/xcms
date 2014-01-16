@@ -25,26 +25,28 @@
 
 <form method="post" id="print_form" action="{$action_url}">
 	<div class="action_header">
-    		<h2>{t}Create a new file{/t}</h2>
-    		
+   		<h2>{t}Create a new file{/t}</h2>
   	</div>
-    <div class="warning-message message">{t}<p>The <strong>file extension</strong> is not needed.</p>{/t}</div>
-  <div class="action_content">
-          		<input type="hidden" name="nodeid" value="{$nodeID}">
-        		<div class="icon document input-select icon-positioned"><input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}File name{/t}">
-			{if $countChilds > 1}
-                    			<select name="nodetype" class="caja validable not_empty">
-                          			{foreach from=$childs item=child}
-                            				<option value="{$child.idnodetype}">{$child.nodetypename}</option>
-                          			{/foreach}
-                          		</select>
-      			
-                  	{else}
-                       		<input name="nodetype" type="hidden" value="{$childs[0].idnodetype}" />
-                  	{/if}
+
+    <div class="warning-message message">
+        {t}<p>The <strong>file extension</strong> is not needed.</p>{/t}</div>
+        <div class="action_content">
+            <input type="hidden" name="nodeid" value="{$nodeID}">
+        	    <div class="icon document input-select icon-positioned">
+                    <input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}File name{/t}">
+			    {if $countChilds > 1}
+                    <select name="nodetype" class="caja validable not_empty">
+                    {foreach from=$childs item=child}
+                        <option value="{$child.idnodetype}">{$child.nodetypename}</option>
+                    {/foreach}
+                    </select>
+      			{else}
+                	<input name="nodetype" type="hidden" value="{$childs[0].idnodetype}" />
+                {/if}
 			</div>
     	</div>
-<fieldset class="buttons-form positioned_btn">
+        
+        <fieldset class="buttons-form positioned_btn">
             {button label="Create" class='validate btn main_action' }
         </fieldset>      
 </form>

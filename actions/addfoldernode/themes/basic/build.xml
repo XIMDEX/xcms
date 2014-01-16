@@ -4,7 +4,7 @@
 	{XIMDEX_ROOT_PATH}	Ximdex base installation path.
 	{?}					Wildcard, use it with channels and languages for example.
 -->
-<project title="Basic template" description="A simple template to start.">
+<project title="Basic theme" description="A simple theme to start.">
 	<section
 		name="Local_server" nodetypename="SERVER"
 		protocol="LOCAL" login="" password="" host="localhost" port="0"

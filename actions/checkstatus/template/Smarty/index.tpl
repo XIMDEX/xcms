@@ -34,9 +34,10 @@
 		
 	{foreach from=$files key=state item=statenode}
 		<div class="state-info row-item_selectable">
-			<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>  <div class="docs-amount right">{$statesFull[{$state}].count}</div>
+			<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>
+            <div class="docs-amount right">{$statesFull[{$state}].count}</div>
 		
-		<div class="documents-info">
+		    <div class="documents-info">
 			{foreach from=$statenode item=file}		
 				<div class="version-info">
 					<span class="file-path">{$file.Path}/<strong>{$file.Name}</strong></span>
@@ -44,18 +45,16 @@
 					<span class="file-version">{$file.Version}.{$file.SubVersion}</span>
 				</div>
 			{/foreach}
-		</div>
+
+		    </div>
+        </div>
 </div>
-	</div>
 	{/foreach}
 	{else}
-	
-	<div class="info-message message">
-		<p>{t}All documents are in the final state.{/t}</p>
-	</div>
+        <div class="info-message message">
+		    <p>{t}There aren't any published or edited files yet{/t}.</p>
+        </div>
 
-	<div class="action_content">
-	</div>
+        <div class="action_content">
+        </div>
 	{/if}
-
-

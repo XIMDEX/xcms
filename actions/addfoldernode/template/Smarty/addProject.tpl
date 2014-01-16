@@ -24,53 +24,53 @@
  *}
 
 <form method="post" id="print_form" action="{$action_url}">
-  <input name="theme" type="hidden">
-<div class="action_header">
-  <h2>{t friendlyName=$friendlyName}Add %1{/t}</h2>
-</div>
+    <input name="theme" type="hidden">
+        <div class="action_header">
+            <h2>{t friendlyName=$friendlyName}Add %1{/t}</h2>
+        </div>
 
-  <div class="action_content">
-    <p class="icon icon-positioned project input">
-        <input type="text" name="name" id="foldername" class="cajaxg validable not_empty js_val_alphanumeric js_val_unique_name full-size" placeholder="{t}Project name{/t}" data-idnode="{$nodeID}"/>
-    </p>
+        <div class="action_content">
+            <p class="icon icon-positioned project input">
+                <input type="text" name="name" id="foldername" class="cajaxg validable not_empty js_val_alphanumeric js_val_unique_name full-size" placeholder="{t}Project name{/t}" data-idnode="{$nodeID}"/>
+        </p>
 
         <div class="col1-2">
-<h3>{t}Available channels{/t}</h3>
-                <p>
+            <h3>{t}Available channels{/t}</h3>
                {foreach from=$channels key=index item=channelData }
-            <span>
-              <input type="checkbox" class="validable canales check_group__canales hidden-focus" name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" value="{$channelData.id}" />
-              <label for="p_{$channelData.id}" class="checkbox-label icon" >{$channelData.name}</label>
-            </span>
-            {foreachelse}
-</p>
-            <p class="message_warning">{t}There are no channels created in the system{/t}</p>
-            {/foreach}
-    </div>
+                <p>
+                    <span>
+                        <input type="checkbox" class="validable canales check_group__canales hidden-focus" name="channels_listed[{$channelData.id}]" id="p_{$channelData.id}" value="{$channelData.id}" />
+                        <label for="p_{$channelData.id}" class="checkbox-label icon" >{$channelData.name}</label>
+                    </span>
+                </p>
+                {foreachelse}
+                <p class="message_warning">{t}There are no channels created in the system{/t}.</p>
+                {/foreach}
+        </div>
   
-    <div class="col1-1">
-              <label for="theme">{t}Theme{/t}</label>
+        <div class="col1-1">
+            <label for="theme">{t}Avaliable themes{/t}</label>
                 <ul class="themes">
-                  {foreach from=$themes key=index item=theme}
-                  <li class="theme">
-                    <div class="img_container">
-                      <img src="actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png" alt="{$theme.title}">
-                      <div class="actions"><a href="" class="icon select" data-theme="{$theme.name}">Select</a>
+                {foreach from=$themes key=index item=theme}
+                    <li class="theme">
+                        <div class="img_container">
+                            <img src="actions/addfoldernode/themes/{$theme.name}/{$theme.name}.png" alt="{$theme.title}" />
+                            <div class="actions">
+                                <a href="" class="icon select" data-theme="{$theme.name}">Select</a>
                       {if $theme.configurable}
-                      <a data-theme="{$theme.name}" href="" class="icon custom">Custom</a>
+                                <a data-theme="{$theme.name}" href="" class="icon custom">Custom</a>
                       {/if}
-                      </div>
-                    </div>
-                    <p class="title">{$theme.title}</p>         
-                      <p class="type">{$theme.description}</p>
-                    
-                  </li>
-                  {/foreach}
+                            </div>
+                        </div>
+                        <p class="title">{$theme.title}</p>         
+                        <p class="type">{$theme.description}</p>
+                    </li>
+                {/foreach}
                 </ul>
-                </div>
-  </div>
+        </div>
+    </div>
     <fieldset class="buttons-form positioned_btn">
-    {button label="Create `$friendlyName`" class='validate btn main_action' }
-  </fieldset>
+        {button label="Create `$friendlyName`" class='validate btn main_action' }
+    </fieldset>
 </form>
 

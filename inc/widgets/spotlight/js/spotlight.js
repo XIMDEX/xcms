@@ -52,6 +52,17 @@
 					cb(filtered);
 				}.bind(this)
 			});
+			
+			$ul = $(this.input).data().autocomplete.menu.element; 
+			var $spotlightInput = $(this.input);
+			if ($.isFunction($().live)){
+				$("li a",$ul).live("click", 
+				function(){
+					$spotlightInput.val($(this).text()); 
+					$ul.hide();
+				});
+			}
+			
 
 			$(this.element).append(
 				$('<div/>')

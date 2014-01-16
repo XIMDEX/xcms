@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,15 +26,15 @@
  */
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-        define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
+    define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 }
 require_once XIMDEX_ROOT_PATH . '/inc/model/NodeAllowedContent.class.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php';
 
 class Action_newemptynode extends ActionAbstract {
 
-	// Main Method: it shows the initial form
-    	function index() {
+    // Main Method: it shows the initial form
+    function index() {
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);
 		$nodetype = $node->nodeType->GetID();		
@@ -49,7 +50,6 @@ class Action_newemptynode extends ActionAbstract {
 			}
 		}
 		$countChilds=count($childs);		
-
 		$this->request->setParam("go_method", "addNode");
 
 		$values = array ("childs" => $childs,
@@ -57,9 +57,9 @@ class Action_newemptynode extends ActionAbstract {
 				"nodeID" => $nodeID,"name" => $node->get('Name'));
 
 		$this->render($values, 'addNode', 'default-3.0.tpl');
-    	}	
+    }	
 
-	// Function addNode adds a new empty node to the tree
+	// Adds a new empty node to Ximdex
 	function addNode() {
 		$parentId = $this->request->getParam("nodeid");
 		$nodetype = $this->request->getParam("nodetype");
@@ -76,15 +76,15 @@ class Action_newemptynode extends ActionAbstract {
 		}
 		// creating new node and refreshing the tree
 		$file = new Node();
-                $idfile = $file->CreateNode($name_ext, $parentId, $nodetype, null);
+        $idfile = $file->CreateNode($name_ext, $parentId, $nodetype, null);
 
-                if ($idfile > 0) {
-			$content=$this->getContent($nodetype,$name);
+        if ($idfile > 0) {
+			$content=$this->getDefaultContent($nodetype,$name);
 			$file->SetContent($content);
-                        $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
-                        $this->reloadNode($parentId);
+                $this->messages->add(sprintf('%s '._('has been successfully created'), $name), MSG_TYPE_NOTICE);
+                    $this->reloadNode($parentId);
                 } else {
-                        $this->messages->add(sprintf(_('The operation has failed: %s'), $file->msgErr), MSG_TYPE_ERROR);
+                    $this->messages->add(sprintf(_('The operation has failed: %s'), $file->msgErr), MSG_TYPE_ERROR);
                 }
 		$values = array('messages' => $this->messages->messages);
 		
@@ -92,7 +92,7 @@ class Action_newemptynode extends ActionAbstract {
 	}
 	
 	//return each content depending on the nodetype passed
-	function getContent($nt,$name){
+	function getDefaultContent($nt,$name){
 		switch($nt){
 			case 5039: 
 			$content="<<< DELETE \nTHIS\n CONTENT >>>";
@@ -110,21 +110,11 @@ class Action_newemptynode extends ActionAbstract {
 			$content="<?xml version='1.0' encoding='UTF-8' ?>\n<grammar xmlns='http://relaxng.org/ns/structure/1.0' xmlns:xim='http://ximdex.com/schema/1.0'>\n<!-- Create your own grammar here -->\n<!-- Need help? Visit: http://relaxng.org/tutorial-20011203.html -->\n</grammar>";
 			break;
 
-			case 5044: 
-			$content="<?xml version='1.0' encoding='UTF-8'?>\n<".$name."><!-- Create here your own template -->\n</".$name.">";
-			break;
-
-			case 5045: 
-			$content="<?xml version='1.0' encoding='UTF-8'?>\n<editviews xmlns:edx='msnbc-edx-edit-view'>\n<!-- Create here your views -->\n</editviews>\n##########";
-			break;
-			
 			case 5076: 
 			$content="<html>\n<head>\n</head>\n<body>\n</body>\n</html>";
 			break;
- 
 		}
 		return $content;
 	}
-
 }
 ?>

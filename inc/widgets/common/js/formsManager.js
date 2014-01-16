@@ -23,11 +23,9 @@
  *  @version $Revision$
  */
 
-
 /**
  * Control the forms submission logic.
  */
-
 
 X.FormsManager = Object.xo_create({
 
@@ -148,7 +146,6 @@ X.FormsManager = Object.xo_create({
 			}, options));
 		});
 
-		//console.log(button);
 		this.buttons.push(button);
 		return button;
 	},
@@ -167,9 +164,7 @@ X.FormsManager = Object.xo_create({
 	},
 
 	/**
-	 * Genera un iframe, env�a el contenido sobre el iframe y por �ltimo carga el contenido en un tab.* button: the DOMElement that will act as a submit button when clicked.
-	 *
-	 * button: The clicked button.
+	 * button: the DOMElement that will act as a submit button when clicked.
 	 * confirm: When TRUE a confirmation message will be shown.
 	 * message: The confirmation message. When NULL the value attribute of the button will be used.
 	 * file: ???
@@ -255,7 +250,7 @@ X.FormsManager = Object.xo_create({
 			$(form).attr('action', $(form).attr('action') + '&files=' + files);
 		}
 
-		// jQuery Bug: $(elem).attr('target') devuelve un nodo con name=target o id=target, no el atributo target de $(elem)
+		// jQuery Bug: $(elem).attr('target') returns a node with name=target o id=target, not the target attribute of $(elem)
 		$(form).attr('target', this.options.iframeId);
 		$(iframe).load(this._reloadFrame.bind(this, iframe));
 
@@ -420,12 +415,11 @@ X.FormsManager = Object.xo_create({
 	},
 
 	/**
-	 * Carga el contenido de un panel tras un envio de formulario
+	 * Loads the content of a panel after sending the form
 	 * @return NULL
 	 */
 	_reloadFrame: function(event, iframe) {
 
-		//fix for FF4.0
 		if( null != iframe.target ) {
 		  var iframe = iframe.target;
 		}
