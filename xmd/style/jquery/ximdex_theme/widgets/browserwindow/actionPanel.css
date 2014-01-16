@@ -864,11 +864,11 @@ input:focus + .tooltip_info {
     -o-transform-origin: center .2em;
     transform-origin: center .2em; }
   .row-item_selectable.opened::before {
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    transform: rotate(-90deg); }
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    transform: rotate(-180deg); }
 
 .row-item .col1-2, .row-item_selectable .col1-2, .row-item .col1-3, .row-item_selectable .col1-3 {
   display: inline-block;
