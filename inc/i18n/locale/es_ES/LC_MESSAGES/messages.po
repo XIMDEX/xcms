@@ -209,6 +209,15 @@ msgstr "Proyecto"
 msgid "Project name"
 msgstr "Nombre del Proyecto"
 
+msgid "Avaliable themes"
+msgstr "Temas disponibles"
+
+msgid "Basic theme"
+msgstr "Tema b&aacute;sico"
+
+msgid "A simple theme to start."
+msgstr "Un tema simple para empezar."
+
 #: /actions/addfoldernode/template/Smarty/addProject.tpl
 msgid "Add Project"
 msgstr "A&ntilde;adir Proyecto"
@@ -983,6 +992,16 @@ msgstr "Error \"%1%\" no contiene nodos"
 msgid "Loading..."
 msgstr "Cargando..."
 
+#: /inc/widgets/js/common/formsManager.js
+msgid "A node with this name already exists for current parent node."
+msgstr "Un nodo con el mismo nombre ya existe en esta carpeta."
+
+msgid "Invalid string. Expecting an alphanumeric value without whitespaces."
+msgstr "Cadena inv&aacute;lida. Se espera una cadena alfanum&eacute;rica sin espacios."
+
+msgid "A link with this url already exists."
+msgstr "Ya existe un enlace con esta misma URL."
+
 #: /actions/composer/resources/js/xloadtree.js
 msgid "Error \"%1%\" does not contain elements"
 msgstr "Error \"%1%\" no contiene elementos"
@@ -1311,6 +1330,9 @@ msgstr "Extensi&oacute;n de archivo"
 msgid "Users registered without their consent may violate the rules of your country"
 msgstr "Dar de alta usuarios sin su consentimiento puede infringir la normativa vigente de su pa&iacute;s"
 
+msgid "Interface language"
+msgstr "Idioma de la interfaz"
+
 
 #: /actions/createchannel/template/Smarty/index.tpl
 #: /actions/createlanguage/template/Smarty/index.tpl
@@ -1403,10 +1425,16 @@ msgstr "Activado"
 msgid "Link has been successfully added"
 msgstr "El enlace se ha a&ntilde;adido correctamente"
 
+msgid "Link name"
+msgstr "Nombre del enlace"
+
+msgid "Select link type"
+msgstr "Selecciona el tipo de enlace"
+
 #: /actions/createlink/template/Smarty/index.tpl
 #: /actions/createlink/template/Smarty/show.tpl
 msgid "Create link"
-msgstr "Crear link"
+msgstr "Crear enlace"
 
 #: /actions/createlink/template/Smarty/index.tpl
 #: /actions/linkreport/template/Smarty/index.tpl
@@ -1487,6 +1515,15 @@ msgstr "A&ntilde;adir usuario"
 #: /modules/ximSYNC/actions/managebatchs/forms.php
 msgid "User"
 msgstr "Usuario"
+
+msgid "Username"
+msgstr "Nombre de usuario"
+
+msgid "Username in Ximdex CMS"
+msgstr "Nombre de usuario en Ximdex CMS"
+
+msgid "Name and surname"
+msgstr "Nombre y apellidos"
 
 #: /actions/createuser/template/Smarty/index.tpl
 #: /actions/modifyserver/template/Smarty/index.tpl
@@ -3397,7 +3434,7 @@ msgid "Faster, easier, more powerful"
 msgstr "M&aacute;s r&aacute;pido, m&aacute;s sencillo, m&aacute;s potente"
 
 #: /actions/welcome/template/Smarty/index.tpl
-msgid "Welcome to new Ximdex 3.5!"
+msgid "Welcome to the brand new Ximdex 3.5!"
 msgstr "&iexcl;Bienvenido al nuevo Ximdex 3.5!"
 
 msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
@@ -6194,17 +6231,17 @@ msgstr "Traducir nombre"
 msgid "Change translations of name"
 msgstr "Cambiar las traducciones del nombre"
 
-msgid "Add new link category"
-msgstr "A&ntilde;adir nueva categor&iacute;a de enlaces"
+msgid "Add new link subfolder"
+msgstr "A&ntilde;adir nueva carpeta de enlaces"
 
-msgid "Create a new link category"
-msgstr "Crear una nueva categor&iacute;a de enlaces"
+msgid "Create a new link subfolder"
+msgstr "Crear una nueva carpeta de enlaces"
 
 msgid "Add new external link"
 msgstr "A&ntilde;adir nuevo enlace externo"
 
-msgid "Create a new external link to Ximdex"
-msgstr "Crear un nuevo enlace externo a Ximdex"
+msgid "Create a new external link"
+msgstr "Crear un nuevo enlace externo"
 
 msgid "Edit file"
 msgstr "Editar archivo"
@@ -7303,8 +7340,8 @@ msgstr "Administrador de ximdex"
 
 #: ---------- ximTAGS ----------
 #: /modules/ximTAGS/sql/ximTAGS_constructor.sql
-msgid "Define metadata"
-msgstr "Definir metadatos"
+msgid "Semantic Tags"
+msgstr "Etiquetas sem&aacutenticas"
 
 #: /modules/ximTAGS/actions/setmetadata/template/Smarty/index.tpl
 msgid "Enter the definition labels"
@@ -9519,6 +9556,9 @@ msgstr "Informe de Estado"
 msgid "Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version."
 
 msgstr "Abajo se listan todos los documentos relevantes de tu proyecto, agrupados por estado. S&oacute;lo se muestran los archivos que se han modificado con respecto a su &uacute;ltima versi&oacute;n publicada."
+
+msgid "There aren't any published or edited files yet"
+msgstr "No hay documentos publicados ni editados a&uacute;n"
 
 #xlyre module
 msgid "Create a new Open Data Catalog"

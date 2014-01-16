@@ -4,7 +4,7 @@
 	{XIMDEX_ROOT_PATH}	Ximdex base installation path.
 	{?}					Wildcard, use it with channels and languages for example.
 -->
-<project name="Picasso" title="Picasso" description="Picasso Template" nodetypename="PROJECT" Transformer="xslt" channel="{?}" language="{?}">
+<project name="Picasso" title="Picasso theme" description="Picasso based theme" nodetypename="PROJECT" Transformer="xslt" channel="{?}" language="{?}">
 	<section
 		name="Picasso_Server" nodetypename="SERVER"
 		protocol="LOCAL" login="" password="" host="localhost" port="0"

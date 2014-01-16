@@ -64,7 +64,7 @@ class Action_modifyrole extends ActionAbstract {
 	        	$allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
         	}
 
-		$action = new Actions();
+		$action = new Node();
 		$allActions = $action->find("IdAction, Command, IdNodeType, Module, Name");
 		$permisionsToEdit = array();
 		foreach ($allActions as $key => $actionInfo){
@@ -73,7 +73,7 @@ class Action_modifyrole extends ActionAbstract {
 			$idNodeType = $actionInfo["IdNodeType"];
 			$command = $actionInfo["Command"];
 			$nodeType = new NodeType($idNodeType);
-			if (!empty($actionInfo["Module"] && !ModulesManager::isEnabled($actionInfo["Module"])))
+			if (!empty($actionInfo["Module"]) && !ModulesManager::isEnabled($actionInfo["Module"]))
 				continue;
 			if (!$nodeType->get("Module") && !ModulesManager::isEnabled($nodeType->get("Module"))){
 				unset($allActions[$key]);
