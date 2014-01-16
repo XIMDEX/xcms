@@ -1,0 +1,226 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+/*#############################################################
+Name: Picasso & cubism
+Date: 2012-03-22
+Description: Picasso template
+Author: Ximdex Team
+URL: http://www.ximdex.com
+Feel free to use and modify but please provide credits.
+#############################################################*/
+/* standard elements */
+* {
+	margin: 0;
+	padding: 0;
+}
+a {color: #36C;}
+a:hover {color: #06F;}
+body {
+  	font: 62.5% Arial, Helvetica, sans-serif;
+  	border-top: 10px solid #dd2626;
+	color: #444;
+	margin: 0;
+  	line-height: 1.8em;
+  	background: url(../images/bright_squares.png);
+}
+p,blockquote,ul {margin-bottom: 1.2em;}
+h1 {font: normal 1.6em serif;}
+h2 {
+	font: bold 2.3em Allura,serif;
+	margin: 25px 0 1px;
+  	text-shadow: 1px 1px 0 #fff;
+  	/*background: url(../images/bg_first-letters.png) no-repeat -15px -15px;*/}
+ul {margin-left: 1.8em;}
+blockquote {
+	color: #555;
+	font: normal 1.4em serif;
+	padding-left: 22px;
+}
+blockquote p {padding: 6px;}
+/* misc */
+.clearer {clear: both;}
+.left {float: left;}
+.right {float: right;}
+img.left {margin: 0 18px 10px 0;}
+img.right {margin: 0 0 10px 18px;}
+.divider {
+	height: 20px;
+	margin: 24px 0;
+}
+.enriched{
+       color:#006B6C;
+       font-weight:bold;
+       text-decoration:none;
+}
+/* structure */
+.container {
+	margin: 0 auto;
+	width: 810px;
+}
+.gfx {
+	display: none;
+}
+.top {
+  	background: #fcfcfc url(../images/header.png) no-repeat 5px top;
+	overflow: hidden;
+  	-moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    	-webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    	-ms-box-shadow0 3px 5px rgba(0, 0, 0, 0.2);
+    	-o-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+.header {
+	height: 210px;
+  	float: left;
+  	padding-left: 38px;
+}
+.header h1 {
+ 	 font: normal 8.2em 'Mr De Haviland', serif;
+	padding: 100px 15px 0;
+  	color: #505050;
+  	line-height: .7em;
+}
+
+.header p {
+	font: 1.8em 'Oswald', sans-serif;
+    	color: #e93434;
+  	text-transform: uppercase;
+  	text-align: center;
+}
+.pattern {
+	clear: both;
+	height: 12px;
+}
+/* navigation */
+.navigation {font: 1.8em Oswald,sans-serif;
+    margin: 137px 33px 0; float: right;}
+.navigation a {
+	color: #505050;
+	line-height: 50px;
+	margin: 0 16px;
+	text-decoration: none;
+  	text-transform: capitalize;
+}
+.navigation a:hover,.navigation #selected {
+	color: #E93434;
+}
+/* content */
+.content {
+	clear: both;
+	font-size: 1.2em;
+	padding: 45px 38px 12px;
+  	background: #ededed;
+    	-moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), inset 0 1px 0 #fff;
+    	-webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), inset 0 1px 0 #fff;
+    	-ms-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), inset 0 1px 0 #fff;
+    	-o-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), inset 0 1px 0 #fff;
+    	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2), inset 0 1px 0 #fff;
+  border-top: 1px solid #e8e8e8;
+}
+.content .spacer {
+	height: 42px;
+}
+/* content item */
+.item {clear: both;}
+.item img {/*border: 1px dashed #8A6;*/
+  background: url(../images/bg_image.png) no-repeat center center;
+  background-size: 100% 100%;
+  background-origin: border-box;
+  padding: 15px;
+}
+.item .title {
+	color: #445044;
+	font: normal 2em Oswald, sans-serif;
+  	background: url(../images/bg_title.png) repeat left 15px;
+        padding: 13px 16px;
+
+}
+.item .title span {
+  display: inline-block;
+  line-height: 2em;
+  text-shadow: 1px 1px 0 #FFF;
+}
+.item .title span:first-letter {
+	display: block;
+	float: left;
+	font-size: 2.4em;
+}
+
+.item .metadata {
+	color: #DD2626;
+	font-size: 0.8em;
+	float: left;
+	padding: 0 6px;
+  	text-transform: uppercase;
+ 	 margin: -25px 0 0 28px;
+  	text-shadow: 1px 1px 0 #fff;
+}
+.item .body {
+	clear: both;
+  margin: 30px 10px;
+}
+/* footer */
+.footer {
+	color: #ddd;
+	font-size: 1.1em;
+	line-height: 41px;
+	margin: 0 auto;
+	text-align: center;
+  	padding: 40px 0 15px;
+  	clear: both;
+  	position: absolute;
+  width: 100%;
+  left: 0;
+  margin-top: -30px;
+  background: #949494;
+  background: rgba(0,0,0,.585);
+  z-index: -1;
+  border-top: 1px solid #777;
+  -moz-box-shadow: inset 0 1px 0 #888;
+  -webkit-box-shadow: inset 0 1px 0 #888;
+  -ms-box-shadow: inset 0 1px 0 #888;
+  -o-box-shadow: inset 0 1px 0 #888;
+  box-shadow: inset 0 1px 0 #888;
+  text-shadow: 1px 1px 0 #3e3e3e;
+}
+.footer a {
+	color: #666;
+	text-decoration: none;
+}
+.footer a:hover {
+	color: #333;
+	text-decoration: underline;
+}
+.tags{
+padding: 0 38px;
+}
+
+.tags ul{
+  list-style: square;
+}
+
+.tags a{
+  color: #DD2626;
+}
