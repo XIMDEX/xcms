@@ -38,12 +38,13 @@
   padding-right: 6em; }
   .result_info .row-item-actions {
     top: 50%;
-    margin-top: 0;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%); }
+    margin-top: -.8em;
+    -webkit-transform: none;
+    -moz-transform: none;
+    -ms-transform: none;
+    -o-transform: none;
+    transform: none;
+    z-index: auto; }
     .result_info .row-item-actions a span {
       margin-top: 3em;
       right: 0; }
