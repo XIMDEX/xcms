@@ -58,7 +58,7 @@
 
 
 // :checked + label strong::after, se elimina de la lista porque es demasiado genérico y afecta a secciones como  Publicar sección
-.recover-btn::before,  .checkbox-label::before, .progress.complete::before,
+.recover-btn::before,  .checkbox-label:not(.reduced_label)::before, .progress.complete::before,
 .theme-selection .select::before, .subfolder :checked + label strong::after  {
   content: "\0079";
 }
@@ -277,7 +277,6 @@
   .datasets{
    .subfolder label::after{
     content: "\e606";
-    
    }
 
    .add::after{
@@ -285,3 +284,8 @@
     
    }
 }
+
+.dataset::after{
+    content:  "\e606";
+    
+   }

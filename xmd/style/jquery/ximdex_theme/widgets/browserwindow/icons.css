@@ -46,7 +46,7 @@
   padding-right: .3em;
   color: #3b8e8f; }
 
-.recover-btn::before, .checkbox-label::before, .progress.complete::before,
+.recover-btn::before, .checkbox-label:not(.reduced_label)::before, .progress.complete::before,
 .theme-selection .select::before, .subfolder :checked + label strong::after {
   content: "\0079"; }
 
@@ -214,3 +214,6 @@
   content: "\e606"; }
 .datasets .add::after {
   content: '\e038'; }
+
+.dataset::after {
+  content: "\e606"; }
