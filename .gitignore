@@ -9,6 +9,7 @@ logs/
 install/install.log
 conf/install-modules.conf
 conf/install-params.conf.php
+conf/install-params.conf_bk_*.php
 modules/dexT/xslt/dext_main.xsl
-inc/model/orm/Servers_ORM.class.php.bck0
+inc/model/orm/*.bck*
 modules/xlyre
