@@ -194,13 +194,11 @@ X.FormsManager = Object.xo_create({
 					rules: this._getConstraints(this.options.form),
 					messages: this._getMessages(this.options.form),
 					errorElement: "span",
-					errorPlacement: function(error, element) {
-						if (element[0].tagName.toLowerCase() == "select"){
-							$div = $("<div/>").addClass("select");
-							element.wrap($div);
-						}
-                   				element.before(error);
-               				}
+					errorPlacement: function(error, element) {						
+						$span = $("<span/>").addClass("error_block");
+						element.wrap($span);
+						element.before(error);
+					}
 				});
 		}
 
