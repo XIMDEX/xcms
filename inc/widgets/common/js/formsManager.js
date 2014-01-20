@@ -198,7 +198,7 @@ X.FormsManager = Object.xo_create({
 						
 						$span = $("<span/>").addClass("error_block");
 						if (element[0].tagName.toLowerCase()=="select" && element.parent().hasClass("input-select"))
-							$span.addClass("select-block");
+							$span.addClass("select_block");
 						element.wrap($span);
 						element.before(error);
 					}
