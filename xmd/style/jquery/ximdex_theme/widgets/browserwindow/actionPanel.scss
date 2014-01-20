@@ -545,6 +545,27 @@ input.error, input.error:focus{
 	outline: none;
 }
 
+.error_block{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 100%;
+	&.select_block{
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: auto;
+		min-width: 33%;
+		right: 0;
+		.error{
+
+		}
+		select{
+			width: 100%;
+		}
+	}
+}
+
 span.error{
 	background:#f72f42;
 	color: #fff;
