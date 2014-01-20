@@ -30,8 +30,6 @@
 
 		_init: function(options) {
 
-//			console.info('PanelSeparator: ', this);
-
 			this.options = Object.extend({
 				parent: null,
 				top: '0px',
@@ -203,27 +201,36 @@
 			return actualPos;
 		},
 
-		dimension: function(dim, animate) {
-
+		dimension: function(dim, animate, saveWidth) {
 			var actualDim = {
-				width: $(this.container).width(),
+				width: this.options.renderWidth,
 				height: $(this.container).height()
 			};
 
 			animate = Object.isBoolean(animate) ? animate : false;
+
 			dim = dim || null;
 			if (Object.isObject(dim)) {
-
-				$(this.container).data('lastDimension', Object.clone(actualDim));
-
+				if (saveWidth) {
+					this.options.expandedWidth = Object.clone(actualDim);
+				}
+					
 				var sepBorder = 0;
 				if (this.sep !== null) {
 					sepBorder = this.sep.dimension().width;
 				}
 				if (dim.width) {
-					$(this.container).width(parseInt(dim.width));
-					$(this.panel).width(parseInt(dim.width) - sepBorder);
+					if (animate) {
+						$(this.container).stop();
+						$(this.panel).stop();
+						$(this.container).animate({'width': parseInt(dim.width)}, 300, 'easeInOutQuad');
+						$(this.panel).animate({'width': parseInt(dim.width) - sepBorder}, 300, 'easeInOutQuad');
+					} else {
+						$(this.container).width(parseInt(dim.width));
+						$(this.panel).width(parseInt(dim.width) - sepBorder);
+					}
 					actualDim.width = dim.width;
+					this.options.renderWidth = dim.width;
 				}
 				/*if (dim.height) $(this.container).height(parseInt(dim.height));
 				$(this.container).css({
@@ -237,12 +244,7 @@
 				this.render();
 				return this;
 			}
-
 			return actualDim;
-		},
-
-		lastDimension: function() {
-			return $(this.container).data('lastDimension');
 		},
 
 		render: function() {
@@ -297,21 +299,46 @@
 				});
 
 				if (p.separator()) {
-
-					// NOTE: Wrap the index value
+					p.autoHide = true;
+					//NOTE: Wrap the index value
 					var f = (function(idx) {
 						return function() {
 							var index = idx;
-							this.togglePanel(index);
+							if (!p.autoHide) {
+								this.hidePanel(index);
+								p.autoHide = true;
+							} else {
+								p.autoHide = false;
+							}
 						}.bind(this);
 					}.bind(this))(i);
 
-					$(p.separator().element()).dblclick(f);
+					$(p.separator().element()).click(f);
 
 					if (i == 0) {
 						// default size
 						p.dimension({width: 315});
 					}
+					var showCallback = (function(idx) {
+						return function() {
+							if (p.autoHide && this.isHidden(idx)) {
+								var index = idx;
+								this.showPanel(index);
+							}
+						}.bind(this);
+					}.bind(this))(i);
+
+					var hideCallback = (function(idx) {
+						return function(event) {
+							if (p.autoHide && !this.isHidden(idx) && $('.xim-actions-menu').length == 0 && event.clientX > 6) {
+								var index = idx;
+								this.hidePanel(index);
+							}
+						}.bind(this);
+					}.bind(this))(i);
+
+					$(p.separator().element()).mouseover(showCallback);
+					p.container.mouseleave(hideCallback);
 				}
 
 				auxPanels.push(i);
@@ -364,10 +391,8 @@
 
 			this.panels.each(function(index, item) {
 				action_dimension = null;
-
 				var dim = item.dimension();
 				var width = parseInt(dim.width);
-
 				if (totalWidth + width > hboxDim.width) {
 					width = hboxDim.width - totalWidth;
 					item.dimension({width: width}, animate);
@@ -400,7 +425,6 @@
 		},
 
 		onDrag: function(event, element, position) {
-
 			var index = $(element.className.split(' ')).map(function(index, item) {
 				var ret = parseInt(item.replace(/^hbox-panel-separator-/i, ''));
 				return isNaN(ret) ? null : ret;
@@ -438,26 +462,28 @@
 		showPanel: function(panelIndex) {
 			var p = this.getPanel(panelIndex);
 			if (p === null) return;
-			p.dimension(p.lastDimension());
+			p.dimension(p.options.expandedWidth, true);
 			this.render(true);
 			$(p.element()).removeClass('hbox-panel-hidden');
-			this.onDragStop({}, p.separator().element(), {left: p.dimension().width});
+			p.hidden = false;
+			//this.onDragStop({}, p.separator().element(), {left: p.dimension().width});
 		},
 
 		hidePanel: function(panelIndex) {
 			var p = this.getPanel(panelIndex);
 			if (p === null) return;
 			var dim = p.separator().dimension();
-			p.dimension({width: dim.width});
+			p.dimension({width: dim.width}, true, true);
 			this.render(true);
 			$(p.element()).addClass('hbox-panel-hidden');
-			this.onDragStop({}, p.separator().element(), {left: p.dimension().width});
+			p.hidden = true;
+			//this.onDragStop({}, p.separator().element(), {left: p.dimension().width});
 		},
 
 		isHidden: function(panelIndex) {
 			var p = this.getPanel(panelIndex);
 			if (p === null) return null;
-			return $(p.element()).hasClass('hbox-panel-hidden');
+			return p.hidden;
 		},
 
 		options: {
