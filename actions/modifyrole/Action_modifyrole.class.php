@@ -33,8 +33,8 @@ class Action_modifyrole extends ActionAbstract {
 	*/
 	public function index () {
 
-	    	$idNode = $this->request->getParam('nodeid');
-    		$role = new Role($idNode);
+    	$idNode = $this->request->getParam('nodeid');
+   		$role = new Role($idNode);
 
 		//Getting permisions for current role.
 		$permission = new Permission();
@@ -55,14 +55,14 @@ class Action_modifyrole extends ActionAbstract {
 		}
 
 		$workflow = new WorkFlow(NULL, NULL, $selectedPipeline);
-       		$pipeProcess = $workflow->pipeProcess;
+   		$pipeProcess = $workflow->pipeProcess;
 		$allIdNodeStates = $pipeProcess->getAllStatus();
 
-	        $allStates = array();
-        	foreach ($allIdNodeStates as $idPipeStatus) {
-        		$pipeStatus = new PipeStatus($idPipeStatus);
-	        	$allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
-        	}
+        $allStates = array();
+       	foreach ($allIdNodeStates as $idPipeStatus) {
+       		$pipeStatus = new PipeStatus($idPipeStatus);
+        	$allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
+       	}
 
 		$action = new Node();
 		$allActions = $action->find("IdAction, Command, IdNodeType, Module, Name");
@@ -93,7 +93,7 @@ class Action_modifyrole extends ActionAbstract {
 			
 
 		}
-		/*$nodeType = new NodeType();
+		$nodeType = new NodeType();
 		$allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublicable, Module');
 		reset($allNodeTypes);
 		foreach ($allNodeTypes as $key => $nodeTypeInfo){
@@ -119,25 +119,17 @@ class Action_modifyrole extends ActionAbstract {
 
 					if ($nodeTypeInfo['IsPublicable'] > 0) {
 						foreach ($allStates as $stateInfo) {
-							$allNodeTypes[$key]
-								['actions']
-								[$actionKey]
-								['states']
-								[$stateInfo['IdState']] = $role->HasAction(
-									$actionInfo['IdAction'], $stateInfo['IdState'], $selectedPipeline
-									);
+							$allNodeTypes[$key]['actions'][$actionKey]['states'][$stateInfo['IdState']] = $role->HasAction(
+									                            $actionInfo['IdAction'], $stateInfo['IdState'], $selectedPipeline
+									                            );
 						}
 					} else {
-						$allNodeTypes[$key]
-							['actions']
-							[$actionKey]
-							['state'] = $role->HasAction($actionInfo['IdAction'], NULL, $selectedPipeline);
+						$allNodeTypes[$key]['actions'][$actionKey]['state'] = $role->HasAction($actionInfo['IdAction'], NULL, $selectedPipeline);
 					}
 
 				}
 			}
 		}
-		*/
 		$sql = 'select id, Pipeline from Pipelines where IdNode > 0 order by id asc limit 1';
 		$db = new DB();
 		$db->query($sql);
@@ -150,6 +142,7 @@ class Action_modifyrole extends ActionAbstract {
 						'description' => $role->get('Description'),
 						'permissions' => $allPermissionData,
 						'actions' => $permisionsToEdit,
+                        'nodetypes' => $allNodeTypes,
 						'workflow_states' => $allStates,
 						'pipelines' => $pipelines,
 						'selected_pipeline' => $selectedPipeline,
@@ -160,7 +153,6 @@ class Action_modifyrole extends ActionAbstract {
     }
 
 	function modifyrole() {
-
 		$idNode = $this->request->getParam('nodeid');
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then no modify is allowed
@@ -181,11 +173,9 @@ class Action_modifyrole extends ActionAbstract {
 		}
 
 		$idPipeline = $this->request->getParam('id_pipeline');
-
 		$role = new Role($idNode);
 		$role->set('Description', $this->request->getParam('description'));
 		$role->update();
-
 		$role->DeleteAllPermissions();
 		$role->deleteAllRolesActions($idPipeline);
 
@@ -205,8 +195,6 @@ class Action_modifyrole extends ActionAbstract {
 			}
 		}
 		$this->messages->add(_('Changes have been successfully performed.'), MSG_TYPE_NOTICE);
-
-
 
 		$values = array(
 			'goback' => true,

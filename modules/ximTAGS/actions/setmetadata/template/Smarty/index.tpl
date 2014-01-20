@@ -33,9 +33,7 @@
 	</div>
 
 	<div class="action_content">
-	
 		<tagsinput initialize="true" />
-		
 		
 	{if ($nube_tags)}
 		<div class="tagcloud">
@@ -44,19 +42,16 @@
 			<ul class="nube_tags">
 		{section name=i loop=$nube_tags}
 			{math assign=font equation="16 + 10*(tamano/$max_value)" tamano=$nube_tags[i].Total}
-				<li class="xim-tagsinput-taglist icon custom"><span>{$nube_tags[i].Name}</span><span class="amount right">{$nube_tags[i].Total}</span></li>
+				<li class="xim-tagsinput-taglist icon custom">
+                    <span>{$nube_tags[i].Name}</span>
+                    <span class="amount right">{$nube_tags[i].Total}</span>
+                </li>
 		{/section}
 			</ul>
 		</div>
 	{/if}
 		<ontologyBrowser />
-
 	</div>
-
-
-
-</div>
-
-</div>
-
+{*</div>
+</div>*}
 </form>
