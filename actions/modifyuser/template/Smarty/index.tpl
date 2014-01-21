@@ -32,8 +32,7 @@
 	</div>
 	<div class="action_content">
 				<h3>
-					{t}Usuario{/t}
-					{$login}
+					{t}User{/t}: {$login}
 				</h3>
 				<p>
 					<label for="name" class="label_title">{t}First and last names{/t}</label>
@@ -55,7 +54,7 @@
 					<label for="generalrole" class="label_title" for="generalrole">{t}Role in general group{/t}</label>
 					<select name="generalrole" id="generalrole" class="full_size"  tabindex="5">
 					{foreach from=$roles item=role}
-						<option value="{$role.IdRole}">{$role.Name}</option>
+						<option value="{$role.IdRole}" {if ($role.IdRole == $general_role)} selected{/if} >{$role.Name}</option>
 					{/foreach}
 					</select>
 				</p>				
