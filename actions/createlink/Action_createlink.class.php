@@ -38,7 +38,11 @@ class Action_createlink extends ActionAbstract {
 	    $idParent = $this->request->getParam('id_node');
 	    $url = $this->request->getParam('url');
 	    $description = $this->request->getParam('description');
-    	
+
+        if(empty($description)){
+            $description = "[...Empty description...]";    
+        }
+
 		$data = array('NODETYPENAME' => 'LINK',
 				'NAME' => $name,
 				'PARENTID' => $idParent,

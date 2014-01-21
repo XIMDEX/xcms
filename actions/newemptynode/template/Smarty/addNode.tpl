@@ -37,7 +37,11 @@
 			    {if $countChilds > 1}
                     <select name="nodetype" class="caja validable not_empty">
                     {foreach from=$childs item=child}
-                        <option value="{$child.idnodetype}">{$child.nodetypename}</option>
+                        {if $child.nodetypename=='NodeHt'}
+                            <option value="{$child.idnodetype}">{t}HTML File{/t}</option>
+                        {else}
+                            <option value="{$child.idnodetype}">{t}{$child.nodetypename}{/t}</option>
+                        {/if}
                     {/foreach}
                     </select>
       			{else}

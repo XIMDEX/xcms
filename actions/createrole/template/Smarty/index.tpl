@@ -28,20 +28,18 @@
 	<div class="action_header">
 		<h2>{t}Add role{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Create" class='validate btn main_action'}{*message="do you want to create the role?*}
-            	</fieldset>
+			{button label="Create" class='validate btn main_action' tabindex="3"}{*message="do you want to create the role?*}
+       	</fieldset>
 	</div>
 	
 	<div class="action_content">
-		<fieldset>
-			<ol>
-	                        <li><label for="name" class="aligned">{t}Name{/t}</label>
-					<input type="text" name="name" id="rolename" class="cajaxg validable not_empty">
-				</li>
-				<li><label for="description" class="aligned">{t}Description{/t}</label>
-					<input type="text" name="description" id="description" class="cajaxg validable not_empty">
-				</li>
-			</ol>
-		</fieldset>
+        <p>                    
+	        <label for="name" class="label_title">{t}Name{/t}</label>
+			<input type="text" name="name" id="rolename" class="cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}New role name{/t}" data-idnode="{$id_node}" tabindex="1"/>
+        </p>
+        <p>
+		    <label for="description" class="label_title">{t}Description{/t}</label>
+			<input type="text" name="description" id="description" class="cajaxg validable not_empty" placeholder="{t}New role description{/t}" tabindex="2" />
+        </p>
 	</div>
 </form>
