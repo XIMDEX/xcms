@@ -70,12 +70,14 @@ button::-moz-focus-inner{
 }
 */
 .kupu-fulleditor .kupu-editorframe {
-   float: left;
-   width: 100%;
-   border: none;
-   top: 40px;
-    position: absolute;
-  bottom: 0px;
+	float: left;
+	width: 100%;
+	border: none;
+	top: 40px;
+	position: absolute;
+	bottom: 0px;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 
@@ -624,7 +626,8 @@ iframe.kupu-editor-iframe {
 .iwrapper{
 	height:100%;
 	width:78%;
-	float:left;
+	display: inline-block;
+	vertical-align: top;
 	position: relative;
 	margin-top: 0;
 	-webkit-transition: all .2s;
@@ -636,8 +639,7 @@ iframe.kupu-editor-iframe {
 
 .iwrapper-extended{ /* when the toolbox is hidden */
         height:100%;
-        width:98.5% !important;
-        float:left;
+        width:98% !important;
         z-index: 3;
 }
 
@@ -726,33 +728,53 @@ textarea.kupu-editor-textarea {
 }
 
 .kupu-toolboxes-container {
-  	float: left;
+  	display: inline-block;
+  	vertical-align: top;
+  	margin-left: -4px;
   	width: 22%;
  	/* font-size: 0.7em;*/
   	height: 100%;
   	position: relative;
 	z-index: 3;
+	-webkit-transition: all .2s;
+	-moz-transition: all .2s;
+	-ms-transition: all .2s;
+	-o-transition: all .2s;
+	transition: all .2s;
 }
 
-div.kupu-toolboxes-container-collapsed {
+/*div.kupu-toolboxes-container-collapsed {
   	width: 1.42% !important;
-}
+  	right: -20%;
+}*/
+
 
 .kupu-toolboxes-collapser {
   	height: 2.5%;
   	cursor: pointer;
   	background: #afafaf url("../../../gfx/arrow-collapser.png") no-repeat right center;
   	border-left:	2px solid #ccc;
+  	float: none;
+  	-webkit-transition: all .2s;
+	-moz-transition: all .2s;
+	-ms-transition: all .2s;
+	-o-transition: all .2s;
+	transition: all .2s;
 }
 
 div.kupu-collapsed{
 	height: 100%;
 	width: 100%;
-	 background: #afafaf url("../../../gfx/arrow-collapser-collapsed.png") no-repeat right top;
+	background: #afafaf url("../../../gfx/arrow-collapser-collapsed.png") no-repeat right top;
+}
+.kupu-toolboxes-collapser.kupu-collapsed {
+	width: 9%;
+	float: left;
 }
 
+
 div.kupu-toolboxes-container-container {
- 	/* float: left;*/
+ 	float: left;
   	width: 100%;
   	/*font-size: 0.9em;*/
   	height: 97%;
@@ -763,6 +785,10 @@ div.kupu-toolboxes-container-container {
  	padding-bottom: 2px;*/
   	background: #f1f1f1;
   	border-left:	1px solid #ccc;
+}
+.kupu-toolboxes-container-collapsed .kupu-toolboxes-container-container {
+	width: 91%;
+	float: left;	
 }
 
 div.kupu-toolboxes-container-container div h3:first-child{
