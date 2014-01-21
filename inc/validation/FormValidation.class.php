@@ -54,9 +54,11 @@ class FormValidation {
     public static function isUniqueUrl($params){
         
         $inputName = $params["inputName"];
+        $idnode = $params["nodeid"];
+
         $url = $params[$inputName];
         $link = new Link();
-        $names = $link->find("IdLink", "url=%s", array($url), MONO);        
+        $names = $link->find("IdLink", "url=%s AND (IdLink <> %s)", array($url,$idnode), MONO);        
         die(!$names?"true":"false");
         
     }
