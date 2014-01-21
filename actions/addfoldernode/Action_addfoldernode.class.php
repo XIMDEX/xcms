@@ -205,7 +205,7 @@ class Action_addfoldernode extends ActionAbstract {
         $templates = $projectTemplate->getTemplates();
         
         foreach($schemas as $schema){
-            $this->schemas = $this->insertFiles($projectId, "schemas", array($schema));
+            $this->schemas = $this->insertFiles($projectId, Config::getValue("SchemasDirName"), array($schema));
         }
 
         foreach($templates as $template){
