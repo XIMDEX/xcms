@@ -140,7 +140,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6102,5034,'Delete','deletenode','delete_language.png','Delete a language from the system',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6105,5028,'Edit','edittext','edit_file_css.png','Edit content of text document',1,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6106,5028,'Delete','deletenode','delete_file_css.png','Delete file of import folder',80,NULL,1,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6073,5049,'Modify link properties','modifylink','modify_link.png','Modify properties of external link',60,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6073,5049,'Modify external link','modifylink','modify_link.png','Modify properties of external link',60,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6109,5010,'Delete role','deletenode','delete_role.png','Delete a selected role if it is not in use',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6121,5036,'Delete','deletenode','delete_state.png','Delete a state if it is not an initial or final one and it is not in use',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6118,5048,'Change name','renamenode','modify_link_folder.png','Change name of selected folder',23,NULL,0,'');
@@ -433,7 +433,7 @@ CREATE TABLE `Config` (
   UNIQUE KEY `IdConfig` (`IdConfig`,`ConfigKey`),
   UNIQUE KEY `ConfigKey` (`ConfigKey`),
   KEY `IdConfig_2` (`IdConfig`)
-) ENGINE=MYISAM COMMENT='Table with configuration parameters of Ximdex';
+) ENGINE=MYISAM COMMENT='Table with configuration parameters of Ximdex CMS';
 
 --
 -- Dumping data for table `Config`
@@ -491,6 +491,7 @@ INSERT INTO `Config` VALUES (47, 'XslIncludesOnServer', '0');
 INSERT INTO `Config` VALUES (48, 'TokenTTL','30');
 INSERT INTO `Config` VALUES (49, 'ApiIV','');
 INSERT INTO `Config` VALUES (50, 'ApiKey','');
+INSERT INTO `Config` VALUES (51, 'DevEnv','1');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Config` ENABLE KEYS */;
 
