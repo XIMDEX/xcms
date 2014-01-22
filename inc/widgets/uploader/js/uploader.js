@@ -255,7 +255,8 @@
 
  			var total = this.files.length;
  			for ( var i = 0; i<total; i++ ) {
- 				this.files[i].upload(url, this.extraParams);
+				if (this.files[i].loaded)
+					this.files[i].upload(url, this.extraParams);
 			}
 			return true;
  		}
