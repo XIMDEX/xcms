@@ -33,8 +33,8 @@ class Widget_calendar extends Widget_Abstract {
 
 
 	/**
-	*<p>Default method for widget params</p>
-	*<p></p>
+	*Default method for widget params
+        * 	
 	*@param $params: Current params in Smarty
 	*@return array with js_files, css_files and attributes
 	*/
@@ -42,18 +42,26 @@ class Widget_calendar extends Widget_Abstract {
 
 		//Format for responsed value
 		if(!array_key_exists("format", $params)) {
-				$params['format'] = 'd-m-Y H:i:s';
+				$params['format'] = _('m-d-Y H:i:s');
 		}
 
 		//Format for displayed value 
 		if(!array_key_exists("format_display", $params)) {
 			$params["format_display"] = _('mm-dd-yy H:i');
 		}
-
-		$formatDisplayPieces = explode(' ', $params['format_display']);
-		$dateFormatDisplay = $formatDisplayPieces[0];
+                
+                $formatDisplayPieces = explode(' ', $params['format_display']);
+                $dateFormatDisplay = $formatDisplayPieces[0];
 		$params["date_format_display"] = $dateFormatDisplay;
+                $params["server_timestamp"] = time()*1000;
+                
 
+                if ($params["type"] == "interval"){
+                    $this->buildIntervalParams($params);
+                }		
+
+                    
+                
 		//
 		$format = str_replace("dd", "d", $params["format_display"]);
 		$format = str_replace("mm", "m", $format);
@@ -66,7 +74,7 @@ class Widget_calendar extends Widget_Abstract {
 
 		//By default, from calendar. 
 		if (!array_key_exists("type", $params) || is_null($params['type']) || $params['type'] != 'to' ) {
-			$params['type'] = 'from';
+			//$params['type'] = 'from';
 			$params['widget_label'] = _('Validity start');
 		}else {
 			$params['widget_label'] = _('Validity end');
@@ -112,6 +120,19 @@ class Widget_calendar extends Widget_Abstract {
 
 		return parent::process($params);
 	}
+        
+        /**
+         * Build parameters for interval calendar
+         * @param array $params reference to params array.
+         */
+        private function buildIntervalParams(& $params){
+            $params["first_date_text"] = $params["first_now_text"] = _("Now");
+            $arrayDateFormat = explode(" ", $params["format"]);
+            $params["first_time_text"] = date($arrayDateFormat[0], time());
+            $params["last_date_text"] = $params["last_now_text"] = _("No caducate");
+            $params["last_time_text"] = "--/--/----";
+            
+        }
 
 
 	function date_system() {
