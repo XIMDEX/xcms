@@ -112,7 +112,7 @@
 	margin: 0;
 
 	a{	
-		@extend %hide-text;
+		@extend %hide-text; 
 		height: 100%;
 
 		&::before, &::after{

@@ -24,13 +24,7 @@
  */
 .themes .actions a {
   display: block;
-  text-indent: 100%;
-  white-space: nowrap;
-  overflow: hidden; }
-
-.themes .actions a {
-  display: block;
-  text-indent: 100%;
+  text-indent: 110%;
   white-space: nowrap;
   overflow: hidden; }
 
