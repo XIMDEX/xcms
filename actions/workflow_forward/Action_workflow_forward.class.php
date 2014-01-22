@@ -158,7 +158,7 @@ class Action_workflow_forward extends ActionAbstract {
 			if ($workflowNext->IsFinalState()) {
 				$values['go_method'] = 'publicateNode';
 				$values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
-				$values = array_merge($values, $this->publicationGaps($idNode));
+				$values = array_merge($values, $this->buildExtraValues($idNode));
 				$this->render($values, NULL,'default-3.0.tpl');
 			}
 			else{
@@ -187,7 +187,7 @@ class Action_workflow_forward extends ActionAbstract {
 			$values['state']= $pubStateName;
 			$defaultMessage=$this->buildMessage($conf["defaultMessage"],$pubStateName,$node->get('Name'));
 			$values['defaultMessage']= $defaultMessage;
-            		$values = array_merge($values, $this->publicationGaps($idNode));
+            		$values = array_merge($values, $this->buildExtraValues($idNode));
             		$this->render($values, NULL,'default-3.0.tpl');
 		}
 	}
@@ -371,18 +371,33 @@ class Action_workflow_forward extends ActionAbstract {
 	 * @param int $idNode
 	 * @return array With info about the available gaps
 	 */
-	private function publicationGaps($idNode) {
-
-		setlocale(LC_TIME, "es_ES");
-
-		$idUser = XSession::get('userID');
-		$user = new User($idUser);
-
-		$node = new Node($idNode);
-		$nodeTypeName = $node->nodeType->GetName();
-		$showRepOption = ($nodeTypeName == "XimNewsBulletinLanguage") ? false : true;
+	private function getPublicationIntervals($idNode) {
+            
+                $nodesToPublish = new NodesToPublish();
+		$intervals = $nodesToPublish->getIntervals($idNode);
+		return $this->formatInterval($intervals);
+	}
+        
+        /**
+	 * Obtains the publication gaps
+	 *
+	 * @param int $idNode
+	 * @return array With info about the available gaps
+	 */
+	private function getPublicationGaps($idNode) {
 
 		$gaps = SynchroFacade::getGaps($idNode);
+                return $this->formatInterval($gaps);
+	}
+        
+        /**
+	 * Format the date intevals array.
+	 *
+	 * @param int $idNode
+	 * @return array With info about the available gaps
+	 */
+	private function formatInterval($gaps) {
+
 		$gapInfo = array();
 
 		if (count($gaps) > 0) {
@@ -393,6 +408,27 @@ class Action_workflow_forward extends ActionAbstract {
 				);
 			}
 		}
+
+		return $gapInfo;
+	}
+        
+        
+        /**
+         * Build params for the value array.
+         * @param int $idNode the current Node
+         * @return array.
+         */
+        private function buildExtraValues($idNode){
+                setlocale(LC_TIME, "es_ES");
+
+		$idUser = XSession::get('userID');
+		$user = new User($idUser);
+
+		$node = new Node($idNode);
+		$nodeTypeName = $node->nodeType->GetName();
+		$showRepOption = ($nodeTypeName == "XimNewsBulletinLanguage") ? false : true;
+
+		$gapInfo = $this->getPublicationIntervals($idNode);
 
 		return array(
 			'gap_info' => $gapInfo,
@@ -405,7 +441,7 @@ class Action_workflow_forward extends ActionAbstract {
 			'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
 			'show_rep_option' => $showRepOption
 		);
-	}
+        }
 
 	/**
 	 * Sends notifications and sets node state
@@ -554,11 +590,12 @@ class Action_workflow_forward extends ActionAbstract {
 		$idNode = $this->request->getParam('nodeid');
 		//$idNode = $this->path2id($idNode);
 
-		$dateUp = $this->request->getParam('dateUp');
-		$dateDown = $this->request->getParam('dateDown');
+                //The publication times are in milliseconds.
+		$dateUp = $this->request->getParam('dateUp_timestamp');
+		$dateDown = $this->request->getParam('dateDown_timestamp');
 
-		$up = (!is_null($dateUp) && $dateUp != "") ? $dateUp : mktime();
-		$down = (!is_null($dateDown) && $dateDown != "") ? $dateDown : null;
+		$up = (!is_null($dateUp) && $dateUp != "") ? $dateUp/1000 : mktime();
+		$down = (!is_null($dateDown) && $dateDown != "") ? $dateDown/1000 : null;
 
 		$markEnd = $this->request->getParam('markend') ? true : false;
 		$republish = $this->request->getParam('republish') ? true : false;

@@ -37,10 +37,10 @@
 </div>
 	<div class="action_content">
 		{if $hasDisabledFunctions}
-                        <div class="disable-functions-alert">
-                                pcntl_fork and pcntl_waitpid required functions are disabled. This can cause a slow and unstable publishing. Please, check the php.ini configuration file or contact with your system administrator.
-                        </div>
-                {/if}
+			<div class="disable-functions-alert">
+					pcntl_fork and pcntl_waitpid required functions are disabled. This can cause a slow and unstable publishing. Please, check the php.ini configuration file or contact with your system administrator.
+			</div>
+		{/if}
 		<fieldset class="publish_date">
 				<ol>
 					<li>
@@ -65,21 +65,15 @@
 						hour_field_name="hour"
 						min_field_name="min"
 						sec_field_name="sec"
-						format="d-m-Y H:i:s"
-						type="from"
+						format="d-m-Y H:i:s"						
 						cname="dateUp"
-					/>
-
-
-					<calendar
-						date_field_name="date"
-						hour_field_name="hour"
-						min_field_name="min"
-						sec_field_name="sec"
-						format="d-m-Y H:i:s"
-						type="to"
-						cname="dateDown"
-						quickButton="never"
+						type="interval"
+						first_date_label="from"
+						last_date_label="to"
+						first_date_function=""
+						last_date_function=""
+						first_date_name="dateUp"
+						last_date_name="dateDown"						
 					/>
 					</div>
 					</li>
@@ -92,7 +86,7 @@
 					<li>
 					{if $show_rep_option}
 						{if $synchronizer_to_use == "default"}
-						<input type="checkbox" name="republish" id="republish" /> <label for="republish">{t}¿Desea republicar los documentos enlazados a este?{/t}</label>
+						<input type="checkbox" name="republish" id="republish" /> <label for="republish">{t}ï¿½Desea republicar los documentos enlazados a este?{/t}</label>
 						{elseif $synchronizer_to_use == "ximSYNC"}
 
 							{if $nodetypename eq 'XmlDocument' && $ximpublish_tools_enabled}
@@ -164,6 +158,11 @@
 			</ol>
 
 		</fieldset>
+				
+				<div>
+					<div>publicaciones programadas</div>
+					<div></div>
+				</div>
 	</div>
 
 

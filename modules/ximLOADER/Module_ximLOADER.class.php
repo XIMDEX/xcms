@@ -270,7 +270,7 @@ class Module_ximLOADER extends Module {
 
 		// RNGs
 		$pvds = $this->project->getPVD('RNG');
-		$this->templates = $this->insertFiles($this->project->projectid, 'schemas', $pvds);
+		$this->templates = $this->insertFiles($this->project->projectid, Config::getValue("SchemasDirName"), $pvds);
 
 		// Update XSL
 		$xsls = $this->project->getPTD('XSL');
