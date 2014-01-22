@@ -1,3 +1,4 @@
+	
 	//**************
 	// COLORS
 	//***************/
@@ -207,4 +208,10 @@
 	// EXTENDS
 	//***************/
 
-	/* NO Extends because they are inserted at the beggining of each CSS file */
+
+	%hide-text{
+        	display: block;
+        	text-indent: 100%;
+        	white-space: nowrap;
+        	overflow: hidden;
+        }	

@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .input-select.document::before, .icon-positioned::before {
   position: absolute;
   font-size: 2.44rem;

@@ -59,12 +59,12 @@
 
 
 // :checked + label strong::after, se elimina de la lista porque es demasiado genérico y afecta a secciones como  Publicar sección
-.recover-btn::before,  .checkbox-label:not(.reduced_label)::before, .progress.complete::before,
-.theme-selection .select::before, .subfolder :checked + label strong::after  {
+.recover-btn::before,  .checkbox-label:not(.reduced_label)::before, .progress.complete::before, 
+.themes  .select::before, .subfolder :checked + label strong::after  {
   content: "\0079";
 }
 
-.theme-selection .custom::before{
+.themes .custom::before{
   content: "\0045";
   
 }
@@ -93,9 +93,6 @@
   content: '\006c';
 }
 
-.selected::before{
-    content: '\0079';
-}
 
 .add-btn::before, .xim-uploader-selected::before{
   content: '\e038';

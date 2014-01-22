@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 @font-face {
   font-family: 'ximdex_icons';
   src: url("../../../../../fonts/ximdex_icons.eot");
@@ -48,10 +47,10 @@
   color: #3b8e8f; }
 
 .recover-btn::before, .checkbox-label:not(.reduced_label)::before, .progress.complete::before,
-.theme-selection .select::before, .subfolder :checked + label strong::after {
+.themes .select::before, .subfolder :checked + label strong::after {
   content: "\0079"; }
 
-.theme-selection .custom::before {
+.themes .custom::before {
   content: "\0045"; }
 
 .delete-btn::before, .xim-tagsinput-tag-remove::before, .xim-uploader-delete::before, .ontology-close::before, .close::before {
@@ -71,9 +70,6 @@
 
 .current-language::after {
   content: '\006c'; }
-
-.selected::before {
-  content: '\0079'; }
 
 .add-btn::before, .xim-uploader-selected::before {
   content: '\e038'; }

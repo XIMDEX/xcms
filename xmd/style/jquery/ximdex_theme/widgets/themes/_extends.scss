@@ -57,3 +57,11 @@
         cursor: pointer;
         @include boxshadow(0 1px 1px rgba(0,0,0,.2));
     }
+
+
+  %hide-text{
+            display: block;
+            text-indent: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
