@@ -29,7 +29,7 @@
 	</div>
 	<div class="action_content">
 		<p class="icon icon-positioned server input">
-			<input type="text" name="name" id="foldername" class="cajaxg validable not_empty full-size" placeholder="{t}Server name{/t}">
+			<input type="text" name="name" id="foldername" class="cajaxg validable js_val_alphanumeric not_empty full-size" placeholder="{t}Server name{/t}">
 		</p>
 	</div>
 	<fieldset class="buttons-form positioned_btn">
