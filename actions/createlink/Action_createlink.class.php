@@ -58,7 +58,7 @@ class Action_createlink extends ActionAbstract {
 		
 		if ($result > 0) {
 			$link = new Link($result);
-			$link->set('ErrorString','NOT CHECKED');
+			$link->set('ErrorString','not_checked');
 			$link->set('CheckTime',time());
 			$linkResult = $link->update();
 			$bio->messages->add(_('Link has been successfully added'), MSG_TYPE_NOTICE);

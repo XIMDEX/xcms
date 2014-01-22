@@ -42,13 +42,15 @@
 					    <span class="tooltip">
 						    <p>{t}Description{/t}</p>
 						    <p>{$link.desc}</p>
-						    <p>{t}Last check{/t}</p>
-						    <p>{$link.lastcheck|date_format:'%d/%m/%Y - %H:%M'}h.</p>
 					    </span>
 				    </span>
 			    </div>
                 {if $link.type eq "web"}
-			        <a href="" class="icon btn-unlabel-rounded js_check checked_{$link.status}"><span>{t}{$link.status}{/t}</span></a>
+			        <a href="" class="icon btn-unlabel-rounded js_check checked_{$link.status}">
+                        <span>{t}{$link.status}{/t}</span>
+				        <p>{t}Last check{/t}</p>
+				        <p>{$link.lastcheck|date_format:'%d/%m/%Y - %H:%M'}h.</p>
+                    </a>
                 {else}
 			    <a href="#" class="icon btn-unlabel-rounded"><span>{t}Uncheckable{/t}</span></a>
                 {/if}
