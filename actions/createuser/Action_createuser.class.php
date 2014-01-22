@@ -25,20 +25,18 @@
  */
 
 ModulesManager::file('/conf/install-params.conf.php');
-
 ModulesManager::file('/inc/model/locale.inc');
 
 class Action_createuser extends ActionAbstract {
-
-   // Main method: shows main init form
+    // Main method: shows main init form
     function index() {
 		$idNode = $this->request->getParam('nodeid');
 
         $role = new Role();
         $roles = $role->find('IdRole, Name');
 
-			$locale = new XimLocale();
-			$locales = $locale->GetEnabledLocales();
+		$locale = new XimLocale();
+		$locales = $locale->GetEnabledLocales();
 
 		$values = array(
 			'id_node' => $idNode,

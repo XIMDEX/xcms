@@ -350,9 +350,11 @@ X.FormsManager = Object.xo_create({
 							
 							break;
 						case 'js_val_unique_url':
+							var idnode = $(validable).attr("data-idnode");
 							constraints["remote"] = {
 							    url: X.restUrl+"?action=browser3",
                                 data: {
+                                    nodeid: idnode,
 									inputName:$(validable).attr("name"),
 									method:"validation",
 									validationMethod:"isUniqueUrl"
@@ -367,10 +369,7 @@ X.FormsManager = Object.xo_create({
 							var regex = new RegExp('check_group__([^\\s]+)');
 							var matchs = regex.exec(allclass);
 							var group = matchs[0];
-							if(elements[group] != group) {
-								elements[group] = group;
-								constraints.checks = matchs[0];
-							}
+							constraints.checks = matchs[0];
 							break;
 					}
 				}
