@@ -198,7 +198,7 @@ class Action_linkreport extends ActionAbstract {
         $link->set('CheckTime',time());
         $link->update();
                                                                                                  
-        echo json_encode(array('state' => $st));
+        echo json_encode(array('state' => $st, 'date' =>date('d/m/Y H:i',time())));
         die();
     }
 }

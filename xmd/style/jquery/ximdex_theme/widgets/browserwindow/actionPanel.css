@@ -1015,7 +1015,7 @@ input:focus + .tooltip_info {
     margin-top: 2.5em;
     z-index: 2;
     background: #606060;
-    background: rgba(27, 27, 27, 0.6);
+    background: rgba(27, 27, 27, 0.8);
     padding: .3em .5em;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -1029,7 +1029,7 @@ input:focus + .tooltip_info {
       content: "";
       position: absolute;
       border: 6px solid transparent;
-      border-bottom-color: rgba(27, 27, 27, 0.6);
+      border-bottom-color: rgba(27, 27, 27, 0.8);
       top: -12px; }
   .browser-window .btn-unlabel-rounded:hover span {
     display: block; }

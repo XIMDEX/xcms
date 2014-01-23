@@ -56,9 +56,12 @@
 		z-index: auto;
 
 		a{
-			span{
+			.status_tooltip{
 			margin-top: 3em;
 			right: 0;
+			text-align: center;
+			text-transform: none;
+			z-index: 3;
 				&::before{
 					right: 1.5em;
 				}
@@ -72,6 +75,7 @@
 			margin-top: 3em;
 			text-transform: none;
 			padding: 1em;
+			z-index: 3;
 			&::before{
 				right: 1.7em;
 			}
@@ -86,6 +90,9 @@
 					margin-bottom: .8em;
 					font-size: 1.6rem;
 				}
+				&:last-child{
+					margin-bottom: 0;
+				}
 			}
 		}
 	}
@@ -94,12 +101,64 @@
 .btn-unlabel-rounded.result_description{
 	background:#42dada;
 	&:hover{
-		background:#42dada;
-	}
-}.btn-unlabel-rounded.not_checked{
-	background:#e2bf46;
-	&:hover{
-		background:#e2bf46;
+		background:#42dada; 
 	}
 }
 
+.btn-unlabel-rounded.checked_NOT{
+	background:#e2bf46;
+	p.status {
+		color: #e2bf46;
+	}	
+	&:hover{
+		background:darken(#e2bf46, 3%);
+	}
+}
+.btn-unlabel-rounded.checked_ok{
+	background:#5ad479;
+	p.status {
+		color: #5ad479;
+	}
+	&:hover{
+		background:darken(#5ad479, 3%);
+	}
+}
+
+.btn-unlabel-rounded.checked_fail{
+	background:#f03c3c;
+	p.status {
+		color: #f03c3c;
+	}
+	&:hover{
+		background:darken(#f03c3c, 3%);
+	}
+}
+
+
+.btn-unlabel-rounded.checking_status{
+	&::before{
+		@include loading-loader;
+		border-width: .85em;
+		right: .8em;
+		margin-top: -.8em;
+		left: auto;
+	}
+	background:#fff;
+}
+
+
+
+p.status{
+	text-transform: uppercase;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	padding-bottom: .5em;
+	border-bottom: 1px solid rgba(255,255,255,.3);
+}
+.status_tooltip {
+	.date_check{
+		font-size: 1.2em;
+	}
+}
+
+		@include loading-animation;
