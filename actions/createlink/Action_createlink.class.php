@@ -40,7 +40,7 @@ class Action_createlink extends ActionAbstract {
 	    $description = $this->request->getParam('description');
 
         if(empty($description)){
-            $description = "[...Empty description...]";    
+            $description = " ";    
         }
 
 		$data = array('NODETYPENAME' => 'LINK',
