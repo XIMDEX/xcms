@@ -41,5 +41,12 @@ class NodeAllowedContent extends NodeAllowedContents_ORM {
 		$result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype,$idnodetype), MONO);
 		return $result;
 	}
+        
+        
+        function getAllowedParents($idNodetype){
+        
+            $result = $this->find("IdNodeType", "NodeType=%s", array($idNodetype), MONO);
+            return $result? array_values(array_unique($result)):array();
+        }
 }
 ?>
