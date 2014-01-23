@@ -46,10 +46,15 @@
 				    </span>
 			    </div>
                 {if $link.type eq "web"}
-			        <a href="" class="icon btn-unlabel-rounded js_check checked_{$link.status}">
-                        <span>{t}{$link.status}{/t}</span>
-				        <p>{t}Last check{/t}</p>
-				        <p>{$link.lastcheck|date_format:'%d/%m/%Y - %H:%M'}h.</p>
+			 <a href="" class="icon btn-unlabel-rounded js_check checked_{$link.status}">
+                        <span class="status_tooltip">
+                        	<p class="status">{t}{$link.status}{/t}</p>
+                        	{if $link.status eq "NOT CHECKED"}
+					<p class="date_check">{t}Created{/t} {$link.lastcheck|date_format:'%d/%m/%Y - %H:%M'}h.</p>
+				{else}
+					<p class="date_check">{t}Last check{/t} {$link.lastcheck|date_format:'%d/%m/%Y - %H:%M'}h.</p>
+				{/if}
+                   	</span>
                     </a>
                 {else}
 			    <a href="#" class="icon btn-unlabel-rounded"><span>{t}Uncheckable{/t}</span></a>
