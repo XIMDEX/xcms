@@ -78,11 +78,11 @@
   .btn-unlabel-rounded.result_description:hover {
     background: #42dada; }
 
-.btn-unlabel-rounded.checked_NOT {
+.btn-unlabel-rounded.checked_not_checked {
   background: #e2bf46; }
-  .btn-unlabel-rounded.checked_NOT p.status {
+  .btn-unlabel-rounded.checked_not_checked p.status {
     color: #e2bf46; }
-  .btn-unlabel-rounded.checked_NOT:hover {
+  .btn-unlabel-rounded.checked_not_checked:hover {
     background: #e0ba39; }
 
 .btn-unlabel-rounded.checked_ok {
