@@ -27,6 +27,7 @@ X.actionLoaded(function(event, fn, params) {
             var url = $(this).closest(".result_info").find(".result_url").text();
             var nodeid = $(this).closest(".result_info").find(".result_url").attr("data-idnode");
             var divResult = $(this).closest(".result_info");
+            $(this).addClass("checking_status");
             checkLink(url,nodeid,divResult);
             return false;
          });
@@ -43,18 +44,18 @@ X.actionLoaded(function(event, fn, params) {
             timeout: 25000,
             data: {linkurl:linkurl,nodeid:nodeid},
             success: function(data,status,event) {
+                $(div).find("a.js_check").removeClass("checking_status");
                 if(data.state=="ok"){
                     $(div).find("a.js_check").removeClass("checked_not_checked");
                     $(div).find("a.js_check").removeClass("checked_fail");
                     $(div).find("a.js_check").addClass("checked_ok");
-                    $(div).find("a.js_check span").text("ok");
                 }
                 else{
                     $(div).find("a.js_check").removeClass("checked_not_checked");
                     $(div).find("a.js_check").removeClass("checked_ok");
                     $(div).find("a.js_check").addClass("checked_fail");
-                    $(div).find("a.js_check span").text("fail");
                 }
+                $(div).find("a.js_check span").html("<p class='status'>"+data.state+"</p><p class='date_check'>"+_("Last check")+" " +data.date+"</p>");
             },
             error: function(hxr,status,error) {
                 alert("An unexpected error has been detected. Please, contact your admin");
