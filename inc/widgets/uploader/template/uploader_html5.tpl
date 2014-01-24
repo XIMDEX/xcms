@@ -25,12 +25,6 @@
 
 <div class="xim-uploader-container" id="{$id}" data-is-structured="%=is_structured%">
 	<div class="xim-loader-list-container">
-  	<!--	<div class="xim-loader-header">
-  	  		<span class="xim-loader-name">{t}Name{/t}:</span>
-  	  		<span class="xim-loader-size">{t}Size{/t}:</span>
-  	  		<span class="xim-loader-progress">{t}Progress{/t}:</span>
-  	  		<span class="xim-loader-options">{t}Options{/t}:</span>
-  	  	</div>-->
           <div class="guide">
             <span class="icon document">Documents</span>
             <span class="icon image">Images</span>
