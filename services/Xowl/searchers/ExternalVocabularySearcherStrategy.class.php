@@ -30,6 +30,7 @@ ModulesManager::file('/services/Xowl/searchers/AbstractSearcherStrategy.class.ph
 class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
 
 	private $core="art";
+        const LMF_URL_KEY ="LMF_url";
 
 	public function __construct(){
 		parent::__construct();
@@ -46,8 +47,9 @@ class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
 		
 		//$data = urlencode($text);
 		$query = "q=(".urlencode("nombre:{$text}* OR aka:{$text}* OR titulo:{$text}*").")";
-		$uri = Config::getValue("LMF_url").$this->core."/select?wt=json&$query";
-		error_log($uri);		
+                if (!Config::getValue(self::LMF_URL_KEY))
+                    return $this;
+		$uri = Config::getValue(self::LMF_URL_KEY).$this->core."/select?wt=json&$query";
 		$response = $this->restProvider->getHttp_provider()->get($uri, $headers);
 
 		if ($response['http_code'] != Curl::HTTP_OK) {
@@ -105,7 +107,6 @@ class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
 				}
 			}
 		}
-		error_log(print_r($result,true));
 		return $result;
 	}
 
