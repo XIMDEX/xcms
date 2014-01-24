@@ -2043,11 +2043,11 @@ msgstr " A&ntilde;adir hojas de estilo"
 msgid " Add images "
 msgstr " A&ntilde;adir im&aacute;genes "
 
-msgid " Add templates "
-msgstr " A&ntilde;adir plantillas "
+msgid "Add templates"
+msgstr "A&ntilde;adir plantillas"
 
-msgid " Add schemes "
-msgstr " A&ntilde;adir esquemas "
+msgid "Add schemes"
+msgstr "A&ntilde;adir esquemas"
 
 msgid " Add HTML files "
 msgstr " A&ntilde;adir archivos HTML "
@@ -2151,9 +2151,27 @@ msgstr "El nodo no se ha podido importar"
 msgid "Select search criteria"
 msgstr "Seleccione un criterio de b&uacute;squeda"
 
-#: /actions/linkreport/resources/js/listHandler.js
-msgid "No links found with your current search criteria"
-msgstr "No se han encontrado enlaces con los criterios de b&uacute;squeda actuales"
+msgid "Find your links and check if they are currently alive by clicking on the icon on the right"
+msgstr "Encuentra tus enlaces y comprueba si est&aacute;n activos actualmente pulsando en el icono de la derecha"
+
+#: /actions/linkreport/template/Smarty/searchresult.tpl
+msgid "There aren't any links matching with the current search. Please, try again with another search string"
+msgstr "No se han encontrado enlaces con los criterios de b&uacute;squeda actuales. Por favor, prueba con otra b&uacute;squeda"
+
+msgid "Uncheckable"
+msgstr "No comprobable"
+
+msgid "Last check"
+msgstr "&Uacute;ltima comprobaci&oacute;n"
+
+msgid "External links found"
+msgstr "Enlaces externos encontrados"
+
+msgid "fail"
+msgstr "fallo"
+
+msgid "success"
+msgstr "correcto"
 
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
