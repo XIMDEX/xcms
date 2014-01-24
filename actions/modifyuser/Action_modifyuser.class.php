@@ -24,27 +24,34 @@
  *  @version $Revision$
  */
 
-
+ModulesManager::file('/inc/model/orm/RelUsersGroups_ORM.class.php');
 ModulesManager::file('/inc/model/locale.inc');
 
-
 class Action_modifyuser extends ActionAbstract {
-   // Main method: it shows init form
+    // Main method: it shows init form
     function index () {
-		$idNode = $this->request->getParam('nodeid');
+	    $idNode = $this->request->getParam('nodeid');
 		$user = new User($idNode);
 
 		$locale = new XimLocale();
 		$locales = $locale->GetEnabledLocales();
 
+        $allRole = new Role();
+        $roles = $allRole->find('IdRole,Name');
+
+        $role = new RelUsersGroups_ORM();
+        $roleGeneral = $role->find('IdRole','IdUser=%s',array($idNode),MONO);
 		$values = array(
 			'go_method' => 'modifyuser',
 			'login' => $user->get('Login'),
 			'name' => $user->get('Name'),
 			'email' => $user->get('Email'),
+			'general_role' => $roleGeneral[0],
+			'roles' => $roles,
 			'user_locale' => $user->get('Locale'),
 			'locales' => $locales,
-			'messages' => $this->messages->messages);
+			'messages' => $this->messages->messages
+            );
 
 		$this->render($values, null, 'default-3.0.tpl');
     }
@@ -55,16 +62,18 @@ class Action_modifyuser extends ActionAbstract {
     	$email = trim($this->request->getParam('email'));
     	$password = trim($this->request->getParam('password_'));
     	$locale = trim($this->request->getParam('locale'));
-
+        $general_role = $this->request->getParam('generalrole');
 
 		$node = new Node($idNode);
-	 //if user is not asked,  the node doesnt change
-    //	$node->set('Name', $name);
-    //	$node->update();
-	$idUser = XSession::get('userID');
-	if(ModulesManager::isEnabled('ximDEMOS') && $idUser != $idNode && $idUser != 301){
-	    $this->render($values, NULL, 'messages.tpl');
-	}
+	    $idUser = XSession::get('userID');
+	    if(ModulesManager::isEnabled('ximDEMOS') && $idUser != $idNode && $idUser != 301){
+	        $this->render($values, NULL, 'messages.tpl');
+	    }
+
+        $group = new Group();
+        $group->SetID($group->GetGeneralGroup());
+        $group->ChangeUserRole($idNode,$general_role);
+
     	$user = new User($idNode);
     	$user->set('Name', $name);
     	$user->set('Email', $email);
@@ -78,14 +87,9 @@ class Action_modifyuser extends ActionAbstract {
     	}
 
     	$this->messages->mergeMessages($user->messages);
-
-
 		$this->reloadNode( $node->get('IdParent') );
-
 		$values = array('messages' => $this->messages->messages );
-
 		$this->render($values, NULL, 'messages.tpl');
-
     }
 }
 ?>

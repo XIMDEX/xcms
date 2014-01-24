@@ -195,30 +195,31 @@ class Action_addfoldernode extends ActionAbstract {
 		$this->render($arrValores);
 	}
 
-	private function createProjectNodes($projectId){
+	private function createProjectNodes($projectId) {
 
-		$theme = $this->request->getParam("theme");
-		$projectTemplate= new ProjectTemplate($theme);
-    
-        $servers = $projectTemplate->getServers();
-        $schemas = $projectTemplate->getSchemes();
-        $templates = $projectTemplate->getTemplates();
-        
-        foreach($schemas as $schema){
-            $this->schemas = $this->insertFiles($projectId, "schemas", array($schema));
+        $theme = $this->request->getParam("theme");
+        if ($theme) {
+            $projectTemplate = new ProjectTemplate($theme);
+
+            $servers = $projectTemplate->getServers();
+            $schemas = $projectTemplate->getSchemes();
+            $templates = $projectTemplate->getTemplates();
+
+            foreach ($schemas as $schema) {
+                $this->schemas = $this->insertFiles($projectId, Config::getValue("SchemasDirName"), array($schema));
+            }
+
+            foreach ($templates as $template) {
+                $this->insertFiles($projectId, "templates", array($template));
+            }
+
+            foreach ($servers as $server) {
+                $this->insertServer($projectId, $server);
+            }
         }
+    }
 
-        foreach($templates as $template){
-            $this->insertFiles($projectId, "templates", array($template));
-        }
-
-        foreach ($servers as $server) {
-            $this->insertServer($projectId, $server);
-        }
-        
-	}
-
-	 /**
+    /**
      * Create a Server Node and all the descendant: xmldocument, ximlet, images, css and common 
      *
      * @param int $projectId Ximdex id for node project

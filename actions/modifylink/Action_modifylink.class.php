@@ -24,13 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
-
-
-
-
 ModulesManager::file('/inc/model/Links.inc');
 
 class Action_modifylink extends ActionAbstract {
@@ -47,7 +40,7 @@ class Action_modifylink extends ActionAbstract {
 			return false;
 		}
 		
-		$this->addJs('/actions/modifylink/resources/js/index.js');
+		$this->addJs('/actions/createlink/resources/js/index.js');
 		
 		$values = array(
 					'name' => $node->get('Name'),

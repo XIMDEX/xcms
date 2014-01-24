@@ -57,3 +57,27 @@
         cursor: pointer;
         @include boxshadow(0 1px 1px rgba(0,0,0,.2));
     }
+
+
+  %hide-text{
+            display: block;
+            text-indent: 110%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        %col1_3{
+            display: inline-block;
+            vertical-align: top;
+            width: calc(33% - 1em);
+        }
+        %col2_3{
+            display: inline-block;
+            vertical-align: top;
+            width: calc(66% - 1em);
+        }
+        %col1_2{
+            display: inline-block;
+            vertical-align: top;
+            width: calc(50% - 1em);
+        }

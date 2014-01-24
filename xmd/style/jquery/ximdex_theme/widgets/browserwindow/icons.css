@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 @font-face {
   font-family: 'ximdex_icons';
   src: url("../../../../../fonts/ximdex_icons.eot");
@@ -30,7 +29,10 @@
   font-weight: normal;
   font-style: normal; }
 
-.icon::before, .icon::after, .icon-button::before {
+.icon::before,
+.icon::after,
+.icon-button::before,
+.ui-widget-header .ui-icon::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
   font-style: normal;
@@ -39,21 +41,30 @@
   text-transform: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  vertical-align: middle; }
+  vertical-align: middle;
+  z-index: 2; }
 
 .tag::before {
   content: "\e01e";
   padding-right: .3em;
   color: #3b8e8f; }
 
-.recover-btn::before, .checkbox-label::before, .progress.complete::before,
-.theme-selection .select::before, .subfolder :checked + label strong::after {
+.recover-btn::before,
+.checkbox-label:not(.reduced_label)::before,
+.progress.complete::before,
+.themes .select::before,
+.subfolder :checked + label strong::after,
+.checked_ok::before {
   content: "\0079"; }
 
-.theme-selection .custom::before {
+.themes .custom::before {
   content: "\0045"; }
 
-.delete-btn::before, .xim-tagsinput-tag-remove::before, .xim-uploader-delete::before, .ontology-close::before, .close::before {
+.delete-btn::before,
+.xim-tagsinput-tag-remove::before,
+.xim-uploader-delete::before,
+.ontology-close::before,
+.close::before, .checked_fail::before {
   content: "\0063"; }
 
 .prevdoc-btn::before {
@@ -70,9 +81,6 @@
 
 .current-language::after {
   content: '\006c'; }
-
-.selected::before {
-  content: '\0079'; }
 
 .add-btn::before, .xim-uploader-selected::before {
   content: '\e038'; }
@@ -114,7 +122,7 @@
 .folder-name::before, .subfolder label::after {
   content: "\e024"; }
 
-.custom_options .opened::before, .custom_options .closed::before {
+.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before {
   content: "\e037"; }
 
 .result_description::before {
@@ -123,8 +131,17 @@
   top: -.25em;
   left: .25em; }
 
-.not_checked::before {
+.checked_not_checked::before {
   content: "\e609"; }
+
+.checking_status::before {
+  content: "\e02a"; }
+
+.icon_calendar::after {
+  content: "\0044"; }
+
+.clock::before {
+  content: "\e60c"; }
 
 /*****
   xsparrow
@@ -214,3 +231,6 @@
   content: "\e606"; }
 .datasets .add::after {
   content: '\e038'; }
+
+.dataset::after {
+  content: "\e606"; }

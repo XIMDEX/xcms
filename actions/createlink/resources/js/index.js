@@ -26,9 +26,26 @@
 X.actionLoaded(function(event, fn, params) {
 
     var submit = fn('.validate').get(0);
+	var $inputUrl = fn("input#url");
+    var prefix = $inputUrl.val().split(":");
+
+    fn('select#link_type option').each(function(){
+                                        if(prefix[0]=="http" && $(this).val()=="url"){
+                                            fn("label[for='url']").html("Web URL");                                       
+                                            $(this).attr("selected",true);                                        
+                                            $inputUrl.addClass("is_url");
+                                            $inputUrl.removeClass("is_email");
+                                        }   
+                                        else if (prefix[0]=="mailto" && $(this).val()=="email"){
+                                            fn("label[for='url']").html("E-mail address");
+                                            $(this).attr("selected",true);                                        
+                                            fn("input#url").addClass("is_email");
+                                            fn("input#url").removeClass("is_url");
+                                        }
+    });
+
 
     fn('select#link_type').change(function() {
-		var $inputUrl = fn("input#url");
         var linkType= fn('#link_type option:selected').val();
 		
         if(linkType=="url"){

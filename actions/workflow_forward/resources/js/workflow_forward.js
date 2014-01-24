@@ -29,17 +29,7 @@ X.actionLoaded(function(event, fn, params) {
 //	console.info(params);
 	
 	//Create calendars
-	var cals = fn ('.xim-calendar-layer-container');
-	if(cals.length>0){
-		var cal_from = $(cals[0]).calendar({format: 'dd-mm-yy'});
-		var cal_to = $(cals[1]).calendar({format: 'dd-mm-yy'});
-		$(params.context).data('cal_from', cal_from);
-		$(params.context).data('cal_to', cal_to);
-		var validitycalendar = new X.ValidityCalendar({
-			calfrom: cal_from,
-			calto: cal_to
-		});
-	}
+	var cals = fn ('.xim-calendar-layer-container');	
 
 	var $groupList = fn('fieldset.notifications select[name=groups]');
 	var $userList = fn('fieldset.notifications ol.user-list');

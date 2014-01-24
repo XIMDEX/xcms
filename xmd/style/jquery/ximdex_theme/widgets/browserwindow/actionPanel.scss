@@ -68,7 +68,7 @@ a:hover {
 p{
 	margin-bottom: 1.2em;
 }
-input, select {
+input, select, textarea {
 	border: 1px solid $c_grey-pp;
 	padding: .5em .7em;
 	color: $c_grey;
@@ -80,7 +80,7 @@ input:hover, select:hover {
 	@include boxshadow( 0 0 4px $s_grey);
 
 }
-input:focus, select:focus, .checkbox-label:focus, .hidden-focus:focus + label, .hidden-focus:checked:focus + label {
+input:focus, select:focus, textarea:focus, .checkbox-label:not(.reduced_label):focus, .hidden-focus:focus + label, .hidden-focus:checked:focus + label {
 	@include boxshadow(0 0  5px 1px darken($c_mainlight, 5%));
 	color: $c_grey;
 	outline: none;
@@ -543,6 +543,27 @@ input.error, input.error:focus{
 	box-shadow: 0 0 2px 1px #f72f42;	
 	border: 1px solid #f72f42;
 	outline: none;
+}
+
+.error_block{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 100%;
+	&.select_block{
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: auto;
+		min-width: 33%;
+		right: 0;
+		.error{
+
+		}
+		select{
+			width: 100%;
+		}
+	}
 }
 
 span.error{
@@ -1137,7 +1158,7 @@ input:focus + .tooltip_info{
 			margin-top: 2.5em;
 			z-index: 2;
 			background: $c_grey;
-			background: rgba(27,27,27,.6);
+			background: rgba(27,27,27,.8);
 			padding: .3em .5em;
 			-webkit-border-radius: 2px;
 			-moz-border-radius: 2px;
@@ -1152,7 +1173,7 @@ input:focus + .tooltip_info{
 				content: "";
 				position: absolute;
 				border: 6px solid transparent;
-				border-bottom-color: rgba(27,27,27,.6);
+				border-bottom-color: rgba(27,27,27,.8);
 				top: -12px;
 			}
 		}
@@ -1218,7 +1239,7 @@ input:focus + .tooltip_info{
 
 }
  .action_content{
-        .checkbox-label{
+      .checkbox-label:not(.reduced_label){
         width: 100%;
         background: #fff;
         border: 1px solid #dedede;
@@ -1268,7 +1289,7 @@ input:focus + .tooltip_info{
        
         }
 
-      :checked + .checkbox-label{
+      :checked + .checkbox-label:not(.reduced_label){
         border-color: #fff;
         background: lighten($c_mainlight, 10%);
         -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.2);
@@ -1361,6 +1382,25 @@ input:focus + .tooltip_info{
 		}
 
 
+	}
+
+	.input.icon{
+
+		input{
+			padding-left: 2.5em;
+		}
+
+		&::after{
+			position: absolute;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			left: .8em;
+			
+		}
 	}
 
 	.input-select{

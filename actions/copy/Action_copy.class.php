@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,105 +24,127 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-
-
 ModulesManager::file('/inc/utils.inc');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/model/orm/XimIOExportations_ORM.class.php');
 ModulesManager::file('/inc/model/orm/NodeAllowedContents_ORM.class.php');
 ModulesManager::file('/actions/copy/baseIO.php');
+ModulesManager::file('/inc/search/QueryProcessor.class.php');
 
 class Action_copy extends ActionAbstract {
 
-    function index () {
-		$this->addJs('/actions/copy/resources/js/treeSelector.js');
-		$this->addCss('/actions/copy/resources/css/style.css');
+    /**
+     * Main method
+     */
+    function index() {
+        
+        $node = new Node($this->request->getParam('nodeid'));
 
-		$ximIOExportations = new XimIOExportations_ORM();
-		$result = $ximIOExportations->find('idXimIOExportation');
-		$father = $this->request->getParam('changeName');
-
-		//Checking for ximIO module
-   		 if (!ModulesManager::isEnabled('ximIO')) {
-			$this->messages->add(_('The ximIO module should be activated to allow copy of nodes.'), MSG_TYPE_ERROR);
-			$this->render(array('messages' => $this->messages->messages));
-			$this->renderMessages();
-			//return;
-		}
-
-/*		if (count($result) > 0) {
-			$this->messages->add(_('No se puede ejecutar la acción puesto que hay paquetes ximIO pendientes, si necesita ejecutar la acción consulte con su administrador'), MSG_TYPE_ERROR);
-			$values = array('messages' => $this->messages->messages);
-			$this->renderMessages();
-		} else {
-*/
-			$node = new Node($this->request->getParam('nodeid'));
-
-			if (!($node->get('IdNode') > 0)) {
-				$this->messages->add(_('Error with parameters'), MSG_TYPE_ERROR);
-				$values = array('messages' => $this->messages->messages);
-				$this->renderMessages();
-			} else {
-				$targetFile = sprintf(Config::getValue("UrlRoot").
-							'/inc/widgets/treeview/helpers/treeselector.php?nodetype=%s&filtertype=%s&targetid=%s',
-							urlencode($node->nodeType->get('IdNodeType')),
-							urlencode($node->nodeType->Get('Name')),
-							urlencode($node->get('IdNode')));
-
-				$values = array(
-					'id_node' => $node->get('IdNode'),
-					'nodetypeid' => $node->nodeType->get('IdNodeType'),
-					'filtertype' => $node->nodeType->get('Name'),
-					'target_file' => $targetFile,
-					'node_path' => $node->GetPath(),
-					'go_method' => 'copyNodes'
-				);
-
-				$this->render($values, NULL, 'default-3.0.tpl');
-			}
-		//}
+        if (!($node->get('IdNode') > 0)) {
+            $this->messages->add(_('Error with parameters'), MSG_TYPE_ERROR);
+            $values = array('messages' => $this->messages->messages);
+            $this->renderMessages();
+        } else {
+           
+            $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
+            $values = array(
+                'id_node' => $node->get('IdNode'),
+                'nodetypeid' => $node->nodeType->get('IdNodeType'),
+                'filtertype' => $node->nodeType->get('Name'),
+                'targetNodes' => $targetNodes,
+                'node_path' => $node->GetPath(),
+                'go_method' => 'copyNodes'
+            );
+            
+            $this->addJs('/actions/copy/resources/js/treeSelector.js');
+            $this->addCss('/actions/copy/resources/css/style.css');
+            $this->render($values, NULL, 'default-3.0.tpl');
+        }
+        //}
     }
 
     function copyNodes() {
 //Extracts info of actual node which the action is executed
-		$nodeID	= $this->request->getParam("nodeid");
-		$node= new Node($nodeID);
-		$destIdNode = $this->request->getParam('targetid');
-		$target=new Node($destIdNode);
+        $nodeID = $this->request->getParam("nodeid");
+        $node = new Node($nodeID);
+        $destIdNode = $this->request->getParam('targetid');
+        $target = new Node($destIdNode);
 
-		$nodename=$node->Get('Name');
-		$idnode=$node->Get('IdNode');
-		$idnodetype=$node->nodeType->get('IdNodeType');
+        $nodename = $node->Get('Name');
+        $idnode = $node->Get('IdNode');
+        $idnodetype = $node->nodeType->get('IdNodeType');
 
-		$nodeID	= $this->request->getParam("nodeid");
-		$destIdNode = $this->request->getParam('targetid');
+        $nodeID = $this->request->getParam("nodeid");
+        $destIdNode = $this->request->getParam('targetid');
 
-		$recursive = $this->request->getParam('recursive');
-		$recursive = $recursive == 'on' ? true : false;
+        $recursive = $this->request->getParam('recursive');
+        $recursive = $recursive == 'on' ? true : false;
 
-		if ($nodeID == $destIdNode) {
-			$this->messages->add(_('Source node cannot be the same as destination node'), MSG_TYPE_ERROR);
-			$this->render(array('messages' => $this->messages->messages));
-			return;
-		}
+        if ($nodeID == $destIdNode) {
+            $this->messages->add(_('Source node cannot be the same as destination node'), MSG_TYPE_ERROR);
+            $this->render(array('messages' => $this->messages->messages));
+            return;
+        }
 
-		$this->messages = copyNode($nodeID, $destIdNode, $recursive);
-		$this->reloadNode($destIdNode);
+        $this->messages = copyNode($nodeID, $destIdNode, $recursive);
+        $this->reloadNode($destIdNode);
 
-		$values = array('messages' => $this->messages->messages);
-		$this->render($values, 'index');
-	}
+        $values = array('messages' => $this->messages->messages);
+        $this->render($values, 'index');
+    }
+    
+    /**
+     * Get an array with the available target info
+     * @param int $idNode of the node to move.
+     * @param int $idNodeType of the node to move.
+     * @return array With path and idnode for every target folder
+     */
+    protected function getTargetNodes($idNode, $idNodeType){
+        
+        $nodeAllowedContent = new NodeAllowedContent();
+        $arrayNodeTypesAllowed = $nodeAllowedContent->getAllowedParents($idNodeType);
+        
+        $node = new Node($idNode);        
+        $arrayIdnodes = $node->find("IdNode", "idnodetype in (%s) and idnode <> %s",array(implode(",", $arrayNodeTypesAllowed), $node->GetParent()),MONO);        
+        $idTargetNodes = array();
+        foreach ($arrayIdnodes as $idCandidateNode) {            
+            if ($this->checkTargetConditions($idNode, $idCandidateNode))
+                $idTargetNodes[] = $idCandidateNode;
+        }
+        $targetNodes = array();
+        foreach ($idTargetNodes as $idTargetNode) {
+            $targetNode =  new Node($idTargetNode);                
+            $arrayAux["path"] = str_replace("/Ximdex/Projects/","", $targetNode->GetPath());
+            $arrayAux["idnode"] = $targetNode->GetID();
+            $targetNodes[] = $arrayAux;
+        }
+        return $targetNodes;
+    }
+    
+    /**
+     * Check if the propousal node can be target for the current one.
+     * Must be in the same project
+     * @param int $idCurrentNode
+     * @param int $idCandidateNode
+     * @result boolean True if everything is ok.
+     */
+    protected function checkTargetConditions($idCurrentNode, $idCandidateNode){
+        
+        $node = new Node($idCurrentNode);
+        $candidateNode = new Node($idCandidateNode);
+        return $node->getProject() == $candidateNode->getProject();
+    }
 
-	function checkNodeName(){
+    function checkNodeName() {
 
-		$actionNodeId=$this->request->getParam("nodeid"); //node to copy
-		$destNodeId = $this->request->getParam('targetid');//destination node
-		$actionNode= new Node($actionNodeId);
-		$data = $actionNode->checkTarget($destNodeId);
+        $actionNodeId = $this->request->getParam("nodeid"); //node to copy
+        $destNodeId = $this->request->getParam('targetid'); //destination node
+        $actionNode = new Node($actionNodeId);
+        $data = $actionNode->checkTarget($destNodeId);
 
-		$this->sendJSON($data);
-	}
+        $this->sendJSON($data);
+    }
+
 }
+
 ?>

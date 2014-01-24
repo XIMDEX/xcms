@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .input-select.document::before, .icon-positioned::before {
   position: absolute;
   font-size: 2.44rem;
@@ -68,7 +67,7 @@ a:hover {
 p {
   margin-bottom: 1.2em; }
 
-input, select {
+input, select, textarea {
   border: 1px solid #cccccc;
   padding: .5em .7em;
   color: #606060;
@@ -83,7 +82,7 @@ input:hover, select:hover {
   -moz-box-shadow: 0 0 4px rgba(157, 157, 157, 0.2);
   box-shadow: 0 0 4px rgba(157, 157, 157, 0.2); }
 
-input:focus, select:focus, .checkbox-label:focus, .hidden-focus:focus + label, .hidden-focus:checked:focus + label {
+input:focus, select:focus, textarea:focus, .checkbox-label:not(.reduced_label):focus, .hidden-focus:focus + label, .hidden-focus:checked:focus + label {
   -webkit-box-shadow: 0 0 5px 1px #69c3b6;
   -moz-box-shadow: 0 0 5px 1px #69c3b6;
   box-shadow: 0 0 5px 1px #69c3b6;
@@ -476,6 +475,21 @@ input.error, input.error:focus {
   box-shadow: 0 0 2px 1px #f72f42;
   border: 1px solid #f72f42;
   outline: none; }
+
+.error_block {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  width: 100%; }
+  .error_block.select_block {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: auto;
+    min-width: 33%;
+    right: 0; }
+    .error_block.select_block select {
+      width: 100%; }
 
 span.error {
   background: #f72f42;
@@ -1001,7 +1015,7 @@ input:focus + .tooltip_info {
     margin-top: 2.5em;
     z-index: 2;
     background: #606060;
-    background: rgba(27, 27, 27, 0.6);
+    background: rgba(27, 27, 27, 0.8);
     padding: .3em .5em;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -1015,7 +1029,7 @@ input:focus + .tooltip_info {
       content: "";
       position: absolute;
       border: 6px solid transparent;
-      border-bottom-color: rgba(27, 27, 27, 0.6);
+      border-bottom-color: rgba(27, 27, 27, 0.8);
       top: -12px; }
   .browser-window .btn-unlabel-rounded:hover span {
     display: block; }
@@ -1049,7 +1063,7 @@ input:focus + .tooltip_info {
     .browser-window .enabled-version:hover span {
       display: none; }
 
-.action_content .checkbox-label {
+.action_content .checkbox-label:not(.reduced_label) {
   width: 100%;
   background: #fff;
   border: 1px solid #dedede;
@@ -1067,16 +1081,16 @@ input:focus + .tooltip_info {
   border-color: #fff;
   background: #d6d8dd;
   margin-bottom: 1em; }
-  .action_content .checkbox-label:hover {
+  .action_content .checkbox-label:not(.reduced_label):hover {
     background: #c8cad2; }
-  .action_content .checkbox-label.disabled:hover {
+  .action_content .checkbox-label:not(.reduced_label).disabled:hover {
     background: #d6d8dd; }
-  .action_content .checkbox-label::before {
+  .action_content .checkbox-label:not(.reduced_label)::before {
     position: relative;
     z-index: 2;
     padding-right: .8em;
     color: rgba(255, 255, 255, 0.7); }
-  .action_content .checkbox-label:after {
+  .action_content .checkbox-label:not(.reduced_label):after {
     content: "";
     position: absolute;
     background: rgba(255, 255, 255, 0.7);
@@ -1087,15 +1101,15 @@ input:focus + .tooltip_info {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px; }
-.action_content :checked + .checkbox-label {
+.action_content :checked + .checkbox-label:not(.reduced_label) {
   border-color: #fff;
   background: #9fd9d1;
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2); }
-  .action_content :checked + .checkbox-label::before {
+  .action_content :checked + .checkbox-label:not(.reduced_label)::before {
     color: #464646; }
-  .action_content :checked + .checkbox-label::after {
+  .action_content :checked + .checkbox-label:not(.reduced_label)::after {
     border-color: white; }
 .action_content .alternative-name {
   margin-top: -2.5em;
@@ -1162,6 +1176,18 @@ input:focus + .tooltip_info {
       box-shadow: 0 0 3px rgba(157, 157, 157, 0.5); }
   .input label {
     display: block; }
+
+.input.icon input {
+  padding-left: 2.5em; }
+.input.icon::after {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  left: .8em; }
 
 .input-select {
   position: relative;

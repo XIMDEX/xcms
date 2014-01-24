@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,8 +25,6 @@
  *  @version $Revision$
  */
 
-
-
 ModulesManager::file('/inc/model/Links.inc');
 
 class Action_linkreport extends ActionAbstract {
@@ -33,30 +32,11 @@ class Action_linkreport extends ActionAbstract {
 	const ITEMS_PER_PAGE = '20';
 
 	function index () {
-
      	$idNode = $this->request->getParam("nodeid");
 		$actionID = $this->request->getParam("actionid");
-
-		$values = array(
-			'id_node' => $idNode,
-			'actionID' => $actionID,
-			'go_method' => 'searchresult'
-		);
-
-		$this->render($values, NULL, 'default-3.0.tpl');
-		$this->addCss('/actions/linkreport/resources/css/linkreport.css');
-
-    }
-
-	function searchresult() {
-
-		$idNode = $this->request->getParam("nodeid");
-		$actionID = $this->request->getParam("actionid");
-
 		$node = new Node($idNode);
 
 		$this->addCss('/actions/linkreport/resources/css/linkreport.css');
-		$this->addJs('/actions/linkreport/resources/js/listHandler.js');
 
 		$values = array(
 			'id_node' => $idNode,
@@ -65,41 +45,29 @@ class Action_linkreport extends ActionAbstract {
 			'field' => $this->request->getParam("field"),
 			'criteria' => $this->request->getParam("criteria"),
 			'stringsearch' => $this->request->getParam("stringsearch"),
-			'all' => ($this->request->getParam('all') != 'on' ? NULL : 1),
-			'rec' => ($this->request->getParam('rec') != 'on' ? NULL : 1)
+			'rec' => ($this->request->getParam('rec') != 'on' ? NULL : 1),
+			'go_method' => 'get_links'
 		);
-
 		$this->render($values, NULL, 'default-3.0.tpl');
 	}
 
 	function get_links() {
-
-		$timeout=200;//microseconds
      	$idNode = $this->request->getParam("nodeid");
-		$actionID = $this->request->getParam("actionid");
 		$field = $this->request->getParam("field");
 		$criteria = $this->request->getParam("criteria");
 		$stringsearch = $this->request->getParam("stringsearch");
-		$all = $this->request->getParam('all');
 		$rec = $this->request->getParam('rec');
-		$page = $this->request->getParam('page');
-		$items = $this->request->getParam('items');
 
 		$criteria = $criteria == 'undefined' ? NULL : $criteria;
 		$field = $field == 'undefined' ? NULL : $field;
-//		$stringsearch = $stringsearch == 'undefined' ? NULL : $stringsearch;
-		$items = (!isset($items) || $items == 'undefined')  ? self::ITEMS_PER_PAGE : $items;
-		$page = (!isset($page) || $page == 'undefined')  ? 1 : $page;
 
 		$userID = XSession::get("userID");
 		$node = new Node($idNode);
 
 		// get link folders
-
 		$folderList = empty($rec) ? array($idNode) : self::folderNodes($idNode);
 
 		// get links
-
 		$ximLinks = array();
 
 		$nodeType = new NodeType();
@@ -109,119 +77,145 @@ class Action_linkreport extends ActionAbstract {
 		$nodesTableCondition = 'IdNodeType = %s';
 
 		if (!empty($stringsearch)) {
-
-			$linksTableCondition = " AND $field";
-
 			switch ($criteria) {
 				case "contains":
-					$linksTableCondition .= " like '%%$stringsearch%%'";
+					$linksTableCondition = " like '%%$stringsearch%%'";
 					break;
 				case "nocontains":
-					$linksTableCondition .= " not like '%%$stringsearch%%'";
+					$linksTableCondition = " not like '%%$stringsearch%%'";
 					break;
 				case "equal":
-					$linksTableCondition .= " = '$stringsearch'";
+					$linksTableCondition = " = '$stringsearch'";
 					break;
 				case "nonequal":
-					$linksTableCondition .= " != '$stringsearch'";
+					$linksTableCondition = " != '$stringsearch'";
 					break;
 				case "startswith":
-					$linksTableCondition .= " like '$stringsearch%%'";
+					$linksTableCondition = " like '$stringsearch%%'";
 					break;
 				case "endswith":
-					$linksTableCondition .= " like '%%$stringsearch'";
+					$linksTableCondition = " like '%%$stringsearch'";
 					break;
 				default:
-					$linksTableCondition .= " = '$stringsearch'";
+					$linksTableCondition = " = '$stringsearch'";
 					break;
 			}
+            if($field!='all'){
+                $linksCond = " AND $field".$linksTableCondition;
+            }
+            else{
+                $linksCond = " AND (Name $linksTableCondition OR Description $linksTableCondition)";
+            }
 
-			$nodesTableCondition .= $field != 'Url' ? $linksTableCondition : '';
+			$nodesTableCondition .= $field != 'Url' ? $linksCond : '';
 		}
 
 		$links = array();
 		foreach ($folderList as $idFolder) {
+			$findInNodes = $node->find('IdNode', $nodesTableCondition . ' AND IdParent = %s', array($idNodeType, $idFolder), MONO);
 
-			$finds = $node->find('IdNode', $nodesTableCondition . ' AND IdParent = %s', array($idNodeType, $idFolder), MONO);
-
+			$link = new Link();
 			if ($field == 'Url') {
-				$link = new Link();
-				$finds = $link->find('IdLink', 'IdLink in (' . implode(',', $finds) . ') '. $linksTableCondition, NULL, MONO);
+				$finds = $link->find('IdLink', 'IdLink in (' . implode(',', $findInNodes) . ') '. $linksCond, NULL, MONO);
 			}
+            elseif($field == 'all'){
+				$finds = $link->find('IdLink', 'Url '. $linksTableCondition, NULL, MONO);
+            }
 
+			if (!empty($findInNodes) && sizeof($findInNodes) > 0) {
+                if($field=='Url'){
+			        $links = $finds;
+                }
+                else{
+                    $links = array_merge($links, $findInNodes);
+                }
+			}
 			if (!empty($finds) && sizeof($finds) > 0) {
 				$links = array_merge($links, $finds);
 			}
 		}
+        $links = array_unique($links);
+		$this->addJs('/actions/linkreport/resources/js/index.js');
 
-		$data = array('results' => array());
 		$records = sizeof($links);
-
 		if ($records > 0) {
+			foreach ($links as $idLink) {
+				$link = new Link($idLink);
+				$state =  $link -> get('ErrorString');
+                $type = "email";
+                preg_match('/^http(s)?:\/\//',$link->get('Url'), $res);
+                if(count($res)>0){
+                    $type = "web";
+                }
 
-			$pages = array_chunk($links, $items);
+				$user = new User($userID);
+				$arr_roles = $user->GetRolesOnNode($idNode);
+				$n_roles = count($arr_roles);
+				$r = 0;
+				$has = false;
 
-			foreach ($pages as $chunk) {
-
-				foreach ($chunk as $idLink) {
-
-					$link = new Link($idLink);
-					$found =  $link -> get('ErrorString');
-
-					$user = new User($userID);
-					$arr_roles = $user->GetRolesOnNode($idNode);
-					$n_roles = count($arr_roles);
-					$r = 0;
-					$has = false;
-
-					while (($r<$n_roles) && !$has) {
-						$role = new Role($arr_roles[$r]);
-						$has = $role->HasAction(6073);
-						$r++;
-					}
-
-					$linkNode = new Node($idLink);
-
-					$ximLinks[] = array('nodeid' => array('value' => $idLink), 'name' => $linkNode->get('Name'),
-						'has' => $has, 'desc' => $linkNode->get('Description'),
-						'url' => $link->get('Url'), 'found' => $found);
+				while (($r<$n_roles) && !$has) {
+					$role = new Role($arr_roles[$r]);
+					$has = $role->HasAction(6073);
+					$r++;
 				}
 
-				if(!empty($ximLinks) ) {
-					$data['results'][$page] = $ximLinks;
-					$page++;
-				}
-				$ximLinks = array();
-			}
+				$linkNode = new Node($idLink);
+
+				$ximLinks[] = array('nodeid' => $idLink, 'name' => $linkNode->get('Name'),
+						'modifiable' => $has, 'desc' => $linkNode->get('Description'),
+						'url' => $link->get('Url'), 'status' => $state, 'type' => $type, 'lastcheck' => $link->get('CheckTime'));
+			}//end foreach $pages
 		}
-
-		$data['records'] = $records;
-		$data['items'] = $items;
-		$data['pages'] = isset($pages) ? sizeof($pages) : 1;
-		$this->sendJSON($data);
+        $values = array(
+                    'links' => $ximLinks,
+                    'totalLinks' => count($ximLinks),
+                   );
+		$this->render($values, 'searchresult','default-3.0.tpl');
 	}
 
+    //for recursive search
 	private function folderNodes($idNode) {
-
 		$node = new Node($idNode);
 		$childList = $node->GetChildren();
-
 		$nodeList = array($idNode);
 
 		if (count($childList) > 0) {
 			foreach($childList as $idChild) {
-
 				$childNode = new Node($idChild);
-
 				if ($childNode->nodeType->get('Name') == "LinkFolder") {
-
 					$nodeList = array_merge($nodeList, self::folderNodes($idChild));
 				}
 			}
 		}
-
 		return $nodeList;
 	}
+
+    function checkLink(){
+        $linkUrl = $this->request->getParam('linkurl');
+        $nodeid = $this->request->getParam('nodeid');
+      
+        $linkSearcher = new Link();
+        $res = $linkSearcher->find('IdLink','Url=%s AND IdLink=%s',array($linkUrl,$nodeid),MONO);
+
+        $link = new Link($res[0]);
+
+        $headers=get_headers($linkUrl,1);
+        if($headers[0]!=""){
+            $pos1 = strpos($headers[0], '200');
+            $pos2 = strpos($headers[0], '301');
+            $pos3 = strpos($headers[0], '302');
+            if(($pos1!==false)||($pos2!==false)||($pos3!==false)){$st="ok";}   
+         }   
+         else{$st="fail";}
+
+        $link->set('ErrorString',$st);
+        $link->set('CheckTime',time());
+        $link->update();
+                                                                                                 
+        echo json_encode(array('state' => $st, 'date' =>date('d/m/Y H:i',time())));
+        die();
+    }
 }
 ?>
 

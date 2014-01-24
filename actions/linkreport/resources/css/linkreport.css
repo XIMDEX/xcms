@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .result_name, .result_url {
   display: block; }
 
@@ -45,10 +44,13 @@
     -o-transform: none;
     transform: none;
     z-index: auto; }
-    .result_info .row-item-actions a span {
+    .result_info .row-item-actions a .status_tooltip {
       margin-top: 3em;
-      right: 0; }
-      .result_info .row-item-actions a span::before {
+      right: 0;
+      text-align: center;
+      text-transform: none;
+      z-index: 3; }
+      .result_info .row-item-actions a .status_tooltip::before {
         right: 1.5em; }
     .result_info .row-item-actions .tooltip {
       right: 3.5em;
@@ -56,7 +58,8 @@
       width: 300%;
       margin-top: 3em;
       text-transform: none;
-      padding: 1em; }
+      padding: 1em;
+      z-index: 3; }
       .result_info .row-item-actions .tooltip::before {
         right: 1.7em; }
       .result_info .row-item-actions .tooltip p {
@@ -67,13 +70,84 @@
           padding-bottom: 0.5em;
           margin-bottom: .8em;
           font-size: 1.6rem; }
+        .result_info .row-item-actions .tooltip p:last-child {
+          margin-bottom: 0; }
 
 .btn-unlabel-rounded.result_description {
   background: #42dada; }
   .btn-unlabel-rounded.result_description:hover {
     background: #42dada; }
 
-.btn-unlabel-rounded.not_checked {
+.btn-unlabel-rounded.checked_not_checked {
   background: #e2bf46; }
-  .btn-unlabel-rounded.not_checked:hover {
-    background: #e2bf46; }
+  .btn-unlabel-rounded.checked_not_checked p.status {
+    color: #e2bf46; }
+  .btn-unlabel-rounded.checked_not_checked:hover {
+    background: #e0ba39; }
+
+.btn-unlabel-rounded.checked_ok {
+  background: #5ad479; }
+  .btn-unlabel-rounded.checked_ok p.status {
+    color: #5ad479; }
+  .btn-unlabel-rounded.checked_ok:hover {
+    background: #4ed16f; }
+
+.btn-unlabel-rounded.checked_fail {
+  background: #f03c3c; }
+  .btn-unlabel-rounded.checked_fail p.status {
+    color: #f03c3c; }
+  .btn-unlabel-rounded.checked_fail:hover {
+    background: #ef2e2e; }
+
+.btn-unlabel-rounded.checking_status {
+  background: #fff; }
+  .btn-unlabel-rounded.checking_status::before {
+    content: "";
+    width: 0;
+    height: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 1em solid #2fb7a4;
+    border-left-color: #7bcabf;
+    border-top-color: #7bcabf;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -1em;
+    margin-left: -1em;
+    -webkit-animation: spin 0.75s infinite ease-in-out;
+    -moz-animation: spin 0.75s infinite ease-in-out;
+    -ms-animation: spin 0.75s infinite ease-in-out;
+    -o-animation: spin 0.75s infinite ease-in-out;
+    animation: spin 0.75s infinite ease-in-out;
+    border-width: .85em;
+    right: .8em;
+    margin-top: -.8em;
+    left: auto; }
+
+p.status {
+  text-transform: uppercase;
+  margin-top: .5em;
+  margin-bottom: .5em;
+  padding-bottom: .5em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+
+.status_tooltip .date_check {
+  font-size: 1.2em; }
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(359deg); } }
+
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(359deg); } }
+
+@-o-keyframes spin {
+  100% {
+    -moz-transform: rotate(359deg); } }
+
+@keyframes spin {
+  100% {
+    transform: rotate(359deg); } }
