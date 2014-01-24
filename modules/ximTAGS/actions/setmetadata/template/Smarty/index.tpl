@@ -23,7 +23,6 @@
  *  @version $Revision$
  *}
 
-
 <form method="POST" name="tags_form" class="setmetadata-tags_form" action="{$action_url}">
 	<div class="action_header">
 		<h2>{t}Tag this node{/t}</h2>
@@ -37,7 +36,7 @@
 		
 	{if ($nube_tags)}
 		<div class="tagcloud">
-			<div class="title-box">{t}Suggested tags from Ximdex{/t} </div>
+			<div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
 			
 			<ul class="nube_tags">
 		{section name=i loop=$nube_tags}

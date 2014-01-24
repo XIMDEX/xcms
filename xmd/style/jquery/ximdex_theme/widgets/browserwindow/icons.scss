@@ -37,7 +37,10 @@
         font-style: normal;
 }
 
-.icon::before, .icon::after, .icon-button::before{
+.icon::before, 
+.icon::after, 
+.icon-button::before, 
+.ui-widget-header .ui-icon::before{
        font-family: 'ximdex_icons' !important;
        speak: none;
        font-style: normal;
@@ -59,17 +62,25 @@
 
 
 // :checked + label strong::after, se elimina de la lista porque es demasiado genérico y afecta a secciones como  Publicar sección
-.recover-btn::before,  .checkbox-label:not(.reduced_label)::before, .progress.complete::before,
-.theme-selection .select::before, .subfolder :checked + label strong::after  {
+.recover-btn::before,  
+.checkbox-label:not(.reduced_label)::before, 
+.progress.complete::before, 
+.themes  .select::before, 
+.subfolder :checked + label strong::after, 
+.checked_ok::before  {
   content: "\0079";
 }
 
-.theme-selection .custom::before{
+.themes .custom::before{
   content: "\0045";
   
 }
 
-.delete-btn::before, .xim-tagsinput-tag-remove::before, .xim-uploader-delete::before, .ontology-close::before, .close::before{
+.delete-btn::before, 
+.xim-tagsinput-tag-remove::before,
+.xim-uploader-delete::before, 
+.ontology-close::before, 
+.close::before, .checked_fail::before{
   content: "\0063";
 }
 
@@ -93,9 +104,6 @@
   content: '\006c';
 }
 
-.selected::before{
-    content: '\0079';
-}
 
 .add-btn::before, .xim-uploader-selected::before{
   content: '\e038';
@@ -159,7 +167,7 @@
   
 }
 
-.custom_options .opened::before, .custom_options .closed::before{
+.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before{
   content: "\e037";
 }
 
@@ -170,8 +178,22 @@
   left: .25em;
 } 
 
-.not_checked::before{
+.checked_not_checked::before{
   content: "\e609";
+}
+
+.checking_status::before{
+  content: "\e02a";
+}
+
+.icon_calendar::after{
+  content: "\0044";
+  
+}
+
+.clock::before{
+  content: "\e60c";
+  
 }
 
 /*****

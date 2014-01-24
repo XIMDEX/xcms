@@ -26,6 +26,7 @@
 
  (function(X) {
  	var numfiles = 0;
+	var imageMimeTypes=["image/png","image/gif","image/jpeg"];
 
  	X.ximfile = Object.xo_create({
 
@@ -43,6 +44,7 @@
 			msg: '',
 			urlcheckname: null,
 			urlgetpreview: null,
+			loaded:false,
 
  			_init: function(options) {
 
@@ -66,26 +68,31 @@
 
 
  				//add element file to list
- 				if(window.FileReader) {	
-		      			var reader_data = new FileReader();
-		    			reader_data.onload = (function(ximfile) {
+ 				if(window.FileReader) {
+						if (options.file && options.file.type && $.inArray(options.file.type, imageMimeTypes )==-1){
+		      			X.reader_data = new FileReader();						
+		    			X.reader_data.onload = (function(ximfile) {
 		        						return function(e) {
 						//ximfile(is object ximfile) | this(object FileReader)
 							      		    ximfile.data = e.target.result;
+											ximfile.loaded=true;
+											$('div.progress', this.element).text(_("Ready"));
 		        						};
 		      						})(this);
-  		    			reader_data.readAsBinaryString(options.file);
+  		    			X.reader_data.readAsBinaryString(options.file);
+					}else{
+						var reader_url = new FileReader();
+						reader_url.onload = (function(ximfile) {
+							return function(e) {
+								ximfile.url = e.target.result;
+								ximfile.setImage();
+								ximfile.loaded=true;
+								$('div.progress', this.element).text(_("Ready"));
+							};
+						})(this);
 
-		   			var reader_url = new FileReader();
-	   	   			reader_url.onload = (function(ximfile) {
-	   	   				return function(e) {
-	   	   					ximfile.url = e.target.result;
-//	  console.log("this:", this, "file:", ximfile, "url:", ximfile.url, "type:",ximfile.ftype );
-							ximfile.setImage();
-	   	   				};
-	   	   			})(this);
-
-			   		reader_url.readAsDataURL(options.file);
+						reader_url.readAsDataURL(options.file);
+					}
 				}
 				else{
 					this.data = options.file;
@@ -293,10 +300,11 @@
 	 	      		if( this.ftype.indexOf("image") != -1 )  {
 		 	     		html += '<img src="#" class="img-preview"/>';
 		 	  	}
+				var progressText = this.loaded? _("Ready"):_("Waiting");
 		 	  	html += this.fname+'</label>';
 	 	     		html += '<span class="xim-loader-size">'+this._size()+'</span>';
   	 	     		html += '<span  class="xim-loader-options"></span>';
-		     		html += '<span class="xim-loader-progress"><div class="progress icon">'+_("Waiting")+'</div></span>';
+		     		html += '<span class="xim-loader-progress"><div class="progress icon">'+progressText+'</div></span>';
 	 	     		html += '</li>';
 
 	 	     		$('.overlay').show();

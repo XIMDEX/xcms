@@ -23,17 +23,46 @@
  *  @version $Revision$
  *}
 
-<div id="%=id%" class="xim-calendar-layer-container xim-calendar-%=type%">
-		
-	{**quickButton could be never*}
-	{if '%=quickButton%' eq 'never'}
-		<input type="text" class="xim-calendar datetimepicker datetimepicker-%=type%" value="%=datevalue%" name="%=cname%" disabled="disabled" data-date-format="%=date_format_display%" />
-		<input type="checkbox" value="00/00/0000 00:00:00" id="neverUnpublish" checked="checked" />
-		<label for="neverUnpublish">%=quickButton%</label>
-	{else}	
-		<input type="text" class="xim-calendar datetimepicker datetimepicker-%=type%" value="%=datevalue%" name="%=cname%" data-date-format="%=date_format_display%" />
-	{/if}	
-		<input type="hidden" name="%=cname%TimeStamp" />
+<div id="%=id%" class="xim-calendar-layer-container xim-calendar-%=type%">	
+	{if '%=type%' eq 'interval'}
 
+		<span class="js_date_container calendar_item">
+			<span class="date_interval">%=first_date_label%</span>
+			<span class="js_date_content calendar_date row-item icon icon_calendar">
+				<span class="js_date_text day_date">%=first_date_text%</span>
+				<span class="js_time_text time_date">%=first_time_text%</span>
+			</span>
+			<input type="hidden" name="%=first_date_name%_timestamp" class="" value="%=server_timestamp%" />
+			<input 
+				type="input" 
+				name="%=first_date_name%" 
+				data-date-format="%=date_format_display%"
+				data-timestamp-input="%=first_date_name%_timestamp" 
+				data-goto-text ="%=first_now_text%"
+				data-type="%=type%"
+				data-default-date="%=server_timestamp%"
+				class="js_datetimepicker_from date_picker datetimepicker"
+				/>
+		</span>
+
+		<span class="js_date_container calendar_item">
+			<span class="date_interval calendar_date">%=last_date_label%</span>
+			<span class="js_date_content row-item icon icon_calendar">
+				<span class="js_date_text day_date">%=last_date_text%</span>
+				<span class="js_time_text time_date">%=last_time_text%</span>
+			</span>
+			<input type="hidden" name="%=last_date_name%_timestamp" class="" value="0"/>
+			<input type="input" 
+				   name="%=last_date_name%" 
+				   data-date-format="%=date_format_display%" 
+				   data-timestamp-input="%=last_date_name%_timestamp"
+				   data-goto-text ="%=last_now_text%"
+				   data-type="%=type%"
+				   data-default-date="0"
+				   class="datetimepicker js_datetimepicker_to date_picker datetimepicker" 
+				   />
+		</span>
+	
+	{/if}
 </div>
 

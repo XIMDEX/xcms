@@ -90,6 +90,12 @@ msgstr "Tipo de Archivo"
 msgid "<p>The <strong>file extension</strong> is not needed.</p>"
 msgstr "<p>La <strong>extensi&oacute;n del archivo</strong> no es necesaria.</p>"
 
+msgid "HTML File"
+msgstr "Archivo HTML"
+
+msgid "TextFile"
+msgstr "Archivo de texto plano"
+
 #: /actions/actionsstats/template/Smarty/index.tpl
 msgid "Filter by user:"
 msgstr "Filtrar por usuario:"
@@ -396,7 +402,6 @@ msgid "Go back"
 msgstr "Volver"
 
 #: /actions/addfoldernode/template/Smarty/index.tpl
-#: /actions/changetemplateview/Action_changetemplateview.class.php
 #: /actions/createlanguage/template/Smarty/index.tpl
 #: /actions/createlink/template/Smarty/index.tpl
 #: /actions/createrole/template/Smarty/index.tpl
@@ -729,24 +734,6 @@ msgstr "... vista Tabla..."
 msgid "... or List view..."
 msgstr "... o vista Lista..."
 
-
-#: /actions/changetemplateview/Action_changetemplateview.class.php
-msgid "Change template view"
-msgstr "Cambiar plantilla de vista"
-
-msgid "Are you sure you want to create a new node?"
-msgstr "&iquest;Est&aacute; seguro de que desea crear un nuevo nodo?"
-
-msgid "There are no templates to select"
-msgstr "No hay plantillas que selecionar"
-
-msgid "View templates have been successfully updated"
-msgstr "Las plantillas de vista han sido actualizadas correctamente"
-
-msgid "Template to change was not found"
-msgstr "No se ha encontrado plantilla que cambiar"
-
-#: /actions/changetemplateview/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createnews/template/Smarty/index.tpl
 
@@ -1470,8 +1457,11 @@ msgstr "No hay archivos seleccionados para subir."
 msgid "Upload url not found."
 msgstr "URL de subida no encontrada."
 
+msgid "Please, select the schema to follow and a language for your documents before uploading them"
+msgstr "Por favor, selecciona un esquema a seguir y un idioma antes de realizar la subida"
+
 msgid "You should select a schema and a language before uploading."
-msgstr "Debe elegir un esquema y un idioma antes de comenzar con la subida."
+msgstr "Debes seleccionar un esquema y un idioma antes de realizar la subida de ficheros."
 
 msgid "Continue"
 msgstr "Continuar"
@@ -1487,6 +1477,13 @@ msgid "Role has been successfully added"
 msgstr "El rol se ha a&ntilde;adido correctamente"
 
 #: /actions/createrole/template/Smarty/index.tpl
+
+msgid "New role name"
+msgstr "Nuevo nombre de rol"
+
+msgid "New role description"
+msgstr "Descripci&oacute;n del nuevo rol"
+
 #: /actions/modifyrolestate/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Add role"
@@ -1631,7 +1628,7 @@ msgstr "Por restricciones del sistema, no se pueden eliminar los siguientes nodo
 msgid "Selected document or folder is not empty. It also have dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
 msgstr "El documento o carpeta seleccionada no est&aacute; vac&iacute;o. Adem&aacute;s, tiene dependencias externas con otros documentos del sistema y no podr&aacute; eliminarse con su rol. Por favor, deshaga las dependencias o utilice un usuario con los permisos adecuados."
 
-msgid "Your role cannot delete the selected container because of it has idiomatic versions depending on it."
+msgid "Your role cannot delete the selected container because of it has language versions depending on it."
 msgstr "Su rol no puede borrar el contenedor seleccionado debido a que tiene versiones idiom&aacute;ticas que dependen de &eacute;l."
 
 msgid "Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
@@ -1643,7 +1640,7 @@ msgstr "El archivo seleccionado tiene dependencias con otros documentos del sist
 msgid "List of pending documents"
 msgstr "Relaci&oacute;n de documentos dependientes"
 
-msgid "To be able to delete this node, you should first delete the following idiomatic versions"
+msgid "To be able to delete this node, you should first delete the following language versions"
 msgstr "Para poder borrar este nodo, debe borrar primero las siguientes versiones idiom&aacute;ticas"
 
 msgid "Node does not exist. Update XimSearch."
@@ -2046,11 +2043,11 @@ msgstr " A&ntilde;adir hojas de estilo"
 msgid " Add images "
 msgstr " A&ntilde;adir im&aacute;genes "
 
-msgid " Add templates "
-msgstr " A&ntilde;adir plantillas "
+msgid "Add templates"
+msgstr "A&ntilde;adir plantillas"
 
-msgid " Add schemes "
-msgstr " A&ntilde;adir esquemas "
+msgid "Add schemes"
+msgstr "A&ntilde;adir esquemas"
 
 msgid " Add HTML files "
 msgstr " A&ntilde;adir archivos HTML "
@@ -2154,9 +2151,27 @@ msgstr "El nodo no se ha podido importar"
 msgid "Select search criteria"
 msgstr "Seleccione un criterio de b&uacute;squeda"
 
-#: /actions/linkreport/resources/js/listHandler.js
-msgid "No found broken links with your search criteria"
-msgstr "No se han encontrado enlaces rotos con sus criterios de b&uacute;squeda"
+msgid "Find your links and check if they are currently alive by clicking on the icon on the right"
+msgstr "Encuentra tus enlaces y comprueba si est&aacute;n activos actualmente pulsando en el icono de la derecha"
+
+#: /actions/linkreport/template/Smarty/searchresult.tpl
+msgid "There aren't any links matching with the current search. Please, try again with another search string"
+msgstr "No se han encontrado enlaces con los criterios de b&uacute;squeda actuales. Por favor, prueba con otra b&uacute;squeda"
+
+msgid "Uncheckable"
+msgstr "No comprobable"
+
+msgid "Last check"
+msgstr "&Uacute;ltima comprobaci&oacute;n"
+
+msgid "External links found"
+msgstr "Enlaces externos encontrados"
+
+msgid "fail"
+msgstr "fallo"
+
+msgid "success"
+msgstr "correcto"
 
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
@@ -2181,11 +2196,11 @@ msgid "ends with"
 msgstr "termina por"
 
 #: /actions/linkreport/template/Smarty/index.tpl
-msgid "Search links in subcategories"
-msgstr "Buscar enlaces en las subcategor&iacute;as"
+msgid "Search in subfolders"
+msgstr "Buscar en subcarpetas"
 
-msgid "Show also correct links"
-msgstr "Mostrar tambi&eacute;n los enlaces correctos"
+msgid "All fields"
+msgstr "Todos los campos"
 
 #: /actions/linkreport/template/Smarty/searchresult.tpl
 #: /actions/searchpanel/template/smarty/results.tpl
@@ -2415,7 +2430,7 @@ msgstr "Confirmar y actualizar"
 msgid "A total of %s channels are going to be disassociated from %s nodes."
 msgstr "Un total de %s canales se van a desasociar de %s nodos."
 
-msgid "A total of %s idiomatic versions are going to be deleted."
+msgid "A total of %s language versions are going to be deleted."
 msgstr "Un total de %s versiones idiom&aacute;ticas se eliminar&aacute;n."
 
 msgid "A total of %s channels have been disassociated from %s nodes."
@@ -2430,7 +2445,7 @@ msgstr "Se han asignado %s canales correctamente."
 msgid "A total of %s channels have been recursively associated with %s documents."
 msgstr "Un total de %s canales se han asociado recursivamente a %s documentos."
 
-msgid "A total of %s idiomatic versions have been deleted."
+msgid "A total of %s language versions have been deleted."
 msgstr "Un total de %s versiones idiom&aacute;ticas se han eliminado."
 
 msgid "Language values will be inherited."
@@ -2439,7 +2454,7 @@ msgstr "Los valores de los idiomas ser&aacute;n heredados."
 msgid "%s Languages have been successfully assigned."
 msgstr "Se han asignado %s idiomas correctamente."
 
-msgid "A total of %S idiomatic versions have been recursively created."
+msgid "A total of %S language versions have been recursively created."
 msgstr "Un total de %s versiones idiom&aacute;ticas han sido creadas recursivamente."
 
 msgid "Template values will be inherited."
@@ -2477,7 +2492,7 @@ msgstr "En caso contrario se usaran los valores heredados."
 msgid "Channel %s has been associated with %s documents."
 msgstr "Se ha asociado %s canal a %s documentos."
 
-msgid "%s idiomatic versions have been created."
+msgid "%s language versions have been created."
 msgstr "Se han creado %s versiones idiom&aacute;ticas."
 
 #: /actions/manageproperties/template/Smarty/Channel.tpl
@@ -2510,7 +2525,7 @@ msgstr "Usar los idiomas heredados"
 msgid "Overwrite inherited languages"
 msgstr "Sobreescribir los idiomas heredados"
 
-msgid "Create idiomatic version recursively"
+msgid "Create language version recursively"
 msgstr "Crear versi&oacute;n idiom&aacute;tica recursivamente."
 
 #: /actions/manageproperties/template/Smarty/Schema.tpl
@@ -6124,7 +6139,7 @@ msgstr "A&ntilde;adir un fichero HTML"
 msgid "Change name of XML document"
 msgstr "Cambiar nombre del documento XML"
 
-msgid "Change the document name and all its idiomatic versions"
+msgid "Change the document name and all its language versions"
 msgstr "Cambiar el nombre del documento y todas sus versiones idiom&aacute;ticas"
 
 msgid "Add new file"
@@ -6309,7 +6324,7 @@ msgid "Modify properties of external link"
 msgstr "Modificar las propiedades del enlace externo"
 
 msgid "Modify properties"
-msgstr "Modificar las propiedades del enlace externo"
+msgstr "Modificar propiedades"
 
 msgid "Delete role"
 msgstr "Borrar rol"
@@ -7355,12 +7370,18 @@ msgstr "Escriba las etiquetas de definici&oacute;n"
 msgid "Tag this node"
 msgstr "Etiqueta este nodo"
 
-msgid "Suggested tags <br/>from another Ximdex nodes"
-msgstr "Etiquetas sugeridas <br/> de otros nodos en Ximdex"
+msgid "Suggested tags from Ximdex CMS"
+msgstr "Etiquetas sugeridas por Ximdex CMS"
 
 #: /inc/widgets/tagsinput/template/tagsinput.tpl
 msgid "Insert here your tags"
 msgstr "Inserta aqu&iacute; tus etiquetas"
+
+msgid "Document tags"
+msgstr "Etiquetas del documento"
+
+msgid "Create new tags here"
+msgstr "Crea aqu&iacute; nuevas etiquetas"
 
 #: /modules/ximTAGS/actions/setmetadata/resources/js/setmetadata.js
 msgid "Need module ximTAGS"
@@ -7369,6 +7390,13 @@ msgstr "Es necesario instalar el m&oacute;dulo ximTAGS."
 #: /modules/ximTAGS/actions/setmetadata/Action_setmetadata.class.php
 msgid "The metadata has been properly associated."
 msgstr "Los metadatos han sido debidamente asociados."
+
+#: /inc/widgets/ontologyBrowser/template/ontologyBrowser.tpl
+msgid "Ontology Browser"
+msgstr "Navegador ontol&oacute;gico"
+
+msgid "Text view"
+msgstr "Modo texto"
 
 #: ---------- ximNEWS ----------
 #: /modules/ximNEWS/actions/addtoarea/template/Smarty/index.tpl
@@ -7602,7 +7630,7 @@ msgstr "horas"
 msgid "news"
 msgstr "noticias"
 
-msgid "In order to defuse idiomatic versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
+msgid "In order to defuse language versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
 msgstr "Para desestimar versiones idiom&aacute;ticas de documentos previamente publicados, desactive el idioma correspondiente y caduque los documentos implicados (boletines y noticias)"
 
 msgid "In order to defuse publication channels of document previously published, defuse the corresponding channel and unpublish the implicated documents (bulletins and news)"

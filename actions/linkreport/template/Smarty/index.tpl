@@ -27,13 +27,14 @@
 	<input type="hidden" name="nodeid" value="{$id_node}">
 	<div class="action_header">
 		<h2>{t}Select search criteria{/t}</h2>
-	
 	</div>
 		<div class="action_content">
 			<fieldset>
+                <p>{t}Find your links and check if they are currently alive by clicking on the icon on the right{/t}.</p>
 				<ol>
 					<li>
 						<select name='field' class="xim-filter-field validable">
+							<option value="all">{t}All fields{/t}</option>
 							<option value="Name">{t}Name{/t}</option>
 							<option value="Description">{t}Description{/t}</option>
 							<option value="Url">{t}URL{/t}</option>
@@ -48,21 +49,16 @@
 							<option value="endswith">{t}ends with{/t}</option>
 						</select>
 
-						<input type="text" name="stringsearch" class="xim-filter-content validable long" />
+						<input type="text" name="stringsearch" class="xim-filter-content validable not_empty long" />
 					</li>
 					<li>
-						<input type="checkbox" name="rec" class="validable" id="rec"/> <label for="rec">{t}Search links in subcategories{/t}</label>
-
-					</li>
-					<li>
-						<input type="checkbox" name="all" class="validable" id="all"/> <label for="all">{t}Show also correct links{/t}</label>
+						<input type="checkbox" name="rec" class="validable" id="rec"/>
+                        <label for="rec">{t}Search in subfolders{/t}</label>
 					</li>
 				</ol>
 			</fieldset>
-		</div><!--
-
-	-->
-	<fieldset class="buttons-form positioned_btn">
+		</div>
+	    <fieldset class="buttons-form positioned_btn">
 			{button label="Search" class="validate btn main_action" }{*message="A search will be performed with selected parameters. Would you like to continue?"*}
 		</fieldset>
 </form>

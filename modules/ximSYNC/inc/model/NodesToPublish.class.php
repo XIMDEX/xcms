@@ -129,4 +129,25 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$sql = sprintf("Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s", $strNodes, $dateUp);
 		$db->Query($sql);
 	}
+        
+        
+        public function getIntervals($idNode){
+            $dbObj = new DB();
+            $arrayDates = array();
+            $gaps = array();
+            $now = time();
+            $infinite = mktime(0,0,0,12,12,2099);
+            $j=0;
+            $results = $this->find("DateUp, DateDown", "IdNode=%s AND (DateUp > %s or DateDown > %s) order by dateup", array($idNode, $now, $now));
+            foreach ($results as $row) {
+                $timeUp = $row["DateUp"];
+                $timeDown = $row["DateDown"];                
+                $arrayDates[$j]['start'] = $timeUp;                
+                $arrayDates[$j]['end'] = $timeDown? $timeDown: null;
+                
+                $j++;
+            }
+            
+            return $arrayDates;
+        }
 }

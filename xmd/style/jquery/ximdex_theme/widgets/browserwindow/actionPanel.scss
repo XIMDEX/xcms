@@ -1158,7 +1158,7 @@ input:focus + .tooltip_info{
 			margin-top: 2.5em;
 			z-index: 2;
 			background: $c_grey;
-			background: rgba(27,27,27,.6);
+			background: rgba(27,27,27,.8);
 			padding: .3em .5em;
 			-webkit-border-radius: 2px;
 			-moz-border-radius: 2px;
@@ -1173,7 +1173,7 @@ input:focus + .tooltip_info{
 				content: "";
 				position: absolute;
 				border: 6px solid transparent;
-				border-bottom-color: rgba(27,27,27,.6);
+				border-bottom-color: rgba(27,27,27,.8);
 				top: -12px;
 			}
 		}
