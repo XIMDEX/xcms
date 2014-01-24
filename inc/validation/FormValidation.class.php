@@ -54,13 +54,34 @@ class FormValidation {
     public static function isUniqueUrl($params){
         
         $inputName = $params["inputName"];
-        $idnode = $params["nodeid"];
+        $idNode = $params["nodeid"];
 
-        $url = $params[$inputName];
+        $url = trim($params[$inputName]);
         $link = new Link();
-        $names = $link->find("IdLink", "url=%s AND (IdLink <> %s)", array($url,$idnode), MONO);        
-        die(!$names?"true":"false");
+        $links = $link->find("IdLink", "url=%s AND (IdLink <> %s)", array($url,$idNode), MONO);
+        if (!$links)
+            die (true);
+        else
+        die(!self::inSameProject($idNode, $links)?"true":"false");
         
+    }
+    
+    /**
+     * 
+     * @param type $idNode
+     * @param type $links
+     * @return boolean True if some link is in the same project than idnode.
+     */
+    private static function inSameProject($idNode, $links){
+        
+        $node = new Node($idNode);
+        $idProject = $node->getProject();
+        foreach ($links as $idLink) {
+            $linkNode = new Node($idLink);
+            if ($linkNode->getProject() == $idProject)
+                return true;
+        }
+        return false;        
     }
 }
 ?>
