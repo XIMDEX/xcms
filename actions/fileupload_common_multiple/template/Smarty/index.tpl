@@ -34,7 +34,7 @@
 	{* for the XML massive upload *} 
 	{if $type_node == "XmlContainer"}
 			<div class="xml-properties">
-			<h3>{t}Please, select the schema to follow and the languages for your documents before uploading them.{/t}</h3>	
+			<h3>{t}Please, select the schema to follow and a language for your documents before uploading them{/t}.</h3>	
 			<div class="col1-2">
 				
 					<select name="id_schema" id="schemaid" class="cajaxg validable not_empty extra-param">

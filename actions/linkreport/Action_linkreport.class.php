@@ -77,52 +77,67 @@ class Action_linkreport extends ActionAbstract {
 		$nodesTableCondition = 'IdNodeType = %s';
 
 		if (!empty($stringsearch)) {
-			$linksTableCondition = " AND $field";
 			switch ($criteria) {
 				case "contains":
-					$linksTableCondition .= " like '%%$stringsearch%%'";
+					$linksTableCondition = " like '%%$stringsearch%%'";
 					break;
 				case "nocontains":
-					$linksTableCondition .= " not like '%%$stringsearch%%'";
+					$linksTableCondition = " not like '%%$stringsearch%%'";
 					break;
 				case "equal":
-					$linksTableCondition .= " = '$stringsearch'";
+					$linksTableCondition = " = '$stringsearch'";
 					break;
 				case "nonequal":
-					$linksTableCondition .= " != '$stringsearch'";
+					$linksTableCondition = " != '$stringsearch'";
 					break;
 				case "startswith":
-					$linksTableCondition .= " like '$stringsearch%%'";
+					$linksTableCondition = " like '$stringsearch%%'";
 					break;
 				case "endswith":
-					$linksTableCondition .= " like '%%$stringsearch'";
+					$linksTableCondition = " like '%%$stringsearch'";
 					break;
 				default:
-					$linksTableCondition .= " = '$stringsearch'";
+					$linksTableCondition = " = '$stringsearch'";
 					break;
 			}
+            if($field!='all'){
+                $linksCond = " AND $field".$linksTableCondition;
+            }
+            else{
+                $linksCond = " AND (Name $linksTableCondition OR Description $linksTableCondition)";
+            }
 
-			$nodesTableCondition .= $field != 'Url' ? $linksTableCondition : '';
+			$nodesTableCondition .= $field != 'Url' ? $linksCond : '';
 		}
 
 		$links = array();
 		foreach ($folderList as $idFolder) {
+			$findInNodes = $node->find('IdNode', $nodesTableCondition . ' AND IdParent = %s', array($idNodeType, $idFolder), MONO);
 
-			$finds = $node->find('IdNode', $nodesTableCondition . ' AND IdParent = %s', array($idNodeType, $idFolder), MONO);
-
+			$link = new Link();
 			if ($field == 'Url') {
-				$link = new Link();
-				$finds = $link->find('IdLink', 'IdLink in (' . implode(',', $finds) . ') '. $linksTableCondition, NULL, MONO);
+				$finds = $link->find('IdLink', 'IdLink in (' . implode(',', $findInNodes) . ') '. $linksCond, NULL, MONO);
 			}
+            elseif($field == 'all'){
+				$finds = $link->find('IdLink', 'Url '. $linksTableCondition, NULL, MONO);
+            }
 
+			if (!empty($findInNodes) && sizeof($findInNodes) > 0) {
+                if($field=='Url'){
+			        $links = $finds;
+                }
+                else{
+                    $links = array_merge($links, $findInNodes);
+                }
+			}
 			if (!empty($finds) && sizeof($finds) > 0) {
 				$links = array_merge($links, $finds);
 			}
 		}
+        $links = array_unique($links);
 		$this->addJs('/actions/linkreport/resources/js/index.js');
 
 		$records = sizeof($links);
-
 		if ($records > 0) {
 			foreach ($links as $idLink) {
 				$link = new Link($idLink);

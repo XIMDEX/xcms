@@ -22,20 +22,21 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
+
 <div class="ontology-browser-container col1-3">
 <div class="title-box">{t}Ontology Browser{/t}</div>
-<a class="tree icon" href="#"><span>Tree view</span></a>
-<a class="text icon" href="#"><span>Text view</span></a>
+<a class="tree icon" href="#"><span>{t}Tree view{/t}</span></a>
+<a class="text icon" href="#"><span>{t}Text view{/t}</span></a>
 
 <div class="ontology-browser hidden">
-    <div class="treeViewer hidden"><h3>Tree view ontology browser</h3></div>
-    <div class="textViewer hidden"><h3>Text view ontology browser</h3></div>
+    <div class="treeViewer hidden"><h3>{t}Tree view ontology browser{/t}</h3></div>
+    <div class="textViewer hidden"><h3>{t}Text view ontology browser{/t}</h3></div>
     <div class="infobox">
       <h1></h1>
       <p></p>
       <button class="btn main_action"></button>
-      <a class="close  btn-unlabel-rounded icon" href"#">close</a>
+      <a class="close  btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
     </div>
-     <a class="ontology-close btn-unlabel-rounded icon" href"#">close</a>
+     <a class="ontology-close btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
 </div>
 </div>

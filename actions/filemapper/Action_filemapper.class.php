@@ -32,6 +32,7 @@ class Action_filemapper extends ActionAbstract {
     function index () {
 		if ($this->request->getParam('nodeid')) {
 			$idNode = $this->request->getParam("nodeid");
+                        $this->echoNode($idNode);
 			
 		}
     }
