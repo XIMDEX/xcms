@@ -191,6 +191,11 @@
   
 }
 
+.clock::before{
+  content: "\e60c";
+  
+}
+
 /*****
   xsparrow
 *****/

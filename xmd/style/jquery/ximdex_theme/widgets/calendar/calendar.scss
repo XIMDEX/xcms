@@ -25,281 +25,270 @@
  */
 
 @import "../themes/ximdex_theme";
+@import "../themes/extends";
 
-.xim-calendar-datefield {
-	border: 1px solid $c_black;
-	text-align: center;
-	font-size: 11px;
-	width: 100px;
-}
 
-.xim-calendar-container .xim-calendar-alert {
-	display: block;
-	float: left;
-	clear: left;
-	margin: 5px 0 5px 0;
-	font-size: 14px;font-size: 1.4rem;
+.xim-calendar-interval{
+	.calendar_item:first-child{
+		margin-right: 7em;
+	}
 }
 
 
-.xim-calendar-hourfield, .xim-calendar-minfield, .xim-calendar-secfield {
-	border: none;
-	text-align: center;
-	font-size: 11px;
-	width: 26px;
-	margin-right: 2px;
+
+.calendar_item{
+	margin-bottom: 1em;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	width: 20rem;
+	&:first-child::before{
+		content: "";
+		width: 100%;
+		position: absolute;
+		right: -95%;
+		height: 2px;
+		background:$c_grey-p;	
+		top: 3.85em;	
+	}	
+
+	.row-item{
+		padding: 1em 1em .5em;
+		display: block;
+		cursor: pointer;
+		margin: 0;
+		position: relative;
+		-webkit-transition: all .1s;
+		-moz-transition: all .1s;
+		-ms-transition: all .1s;
+		-o-transition: all .1s;
+		transition: all .1s;
+
+
+
+		&::before, &::after{
+			position: absolute;
+			right: 1.2em;
+			top: 1.15em;
+			font-size: 1.2em;
+			left: auto;
+		}
+		&::before{
+			content: "";
+			width: 1.5em;
+			height: 1.5em;
+			background:$c_mainlight;
+			-webkit-border-radius: 50%;
+			-moz-border-radius: 50%;
+			border-radius: 50%;
+			right: .95em;
+			top: .9em;
+		}
+	}
 }
 
-.xim-calendar-container{
-	float: left;
-	/*width: 100%;*/
-	margin-bottom: 15px;
+.date_interval{
+		display: block;
+		color: $c_mainlight;
+		text-transform: uppercase;
+		padding-left: 1em;
+		font-weight: bold;
 }
 
-input + label + .xim-calendar-container{
-
-	float: right;
-}
-
-.xim-calendar-container, .xim-calendar-datecontainer, .xim-calendar-timecontainer {
-	padding-top: 15px;
-	text-align: left;
-	padding: 3px 0px 3px 0px;
-}
-.xim-calendar-datecontainer, .xim-calendar-timecontainer {
-	padding: 13px 0px 13px 5px;
-	background: #e1e1e1;
-}
-
-.xim-calendar-datecontainer label {
-	width: 40px;
-	float: left;
-}
-
-.xim-calendar-timecontainer label {
-	width: 40px;
-	float: left;
-}
-
-.xim-calendar-button {
-	text-align: center;
-	font-size: 11px;
-	width: 100%;
-}
-
-.xim-calendar-layer-container {
-	float: left;
-	width: 200px;
-	@include radius(10px);
-	margin-right: 15px;
-}
-
-.xim-calendar-titlecontainer {
-	background: $c_grey-pp;
-	padding: 5px 10px;
-	color: $c_white;
-	text-align: center;
-	@include radius(10px 10px 0px 0px);
-	text-shadow: 1px 1px 0px $c_grey-p;
-}
-
-.xim-calendar-datepicker {
+.date_picker{
+	opacity: 0;
 	position: absolute;
+	top: 3.5em;
+	z-index: -1;
+}
+
+.day_date{
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.time_date{
+	display: block;
+	line-height: 1.4;
+	padding-bottom: .2em;
 }
 
 
-.xim-calendar-datecontainer label, .xim-calendar-timecontainer label{
-	display: inline !important;
-	float: none !important;
-	background: url('../../../../../images/plugins/calendar/calendar-label-input.png') no-repeat left -22px;
-	padding: 3px 0 5px 20px;
-	margin-right: 0px;
-
-}
-
-
-fieldset .xim-calendar-datecontainer input.xim-calendar-datefield, fieldset .xim-calendar-timecontainer input.xim-calendar-hourfield{
-	border: none;
-	cursor: pointer;
-	float: none ;
-}
-
-.xim-calendar-datecontainer input, .xim-calendar-timecontainer input.xim-calendar-hourfield{
-	background: #fff url('../../../../../images/plugins/calendar/calendar-label-input.png') no-repeat -8px top;
-}
-
-.xim-calendar-timecontainer input.xim-calendar-hourfield{
-	padding-left: 9px;
-}
-
-fieldset label + input[type="text"] {
-	vertical-align: inherit;
-}
-
-
-.xim-calendar-buttoncontainer{
-	@include radius( 0 0 10px 10px);
-	background: $c_grey-ppp;
-	margin-top: 3px;
-
-}
-.xim-calendar-buttoncontainer:hover{
-	background: $c_grey-ppp;
-}
-
-.xim-calendar-buttoncontainer input.ui-state-default{
-	background: none;
-	border:none;
-	margin: 2px auto;
-	cursor: pointer;
-}
-
-.xim-calendar-buttoncontainer input.ui-state-default:hover{
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-}
+	/**************
+	// DATAPICKER
+	***************/
 
 .ui-datepicker{
+	border: none;
+	background:$c_dark-grey;
+	width: 20rem;
+	-webkit-border-radius: 0 0 2px 2px;
+	-moz-border-radius: 0 0 2px 2px;
+	border-radius: 0 0 2px 2px;
+	border: none;
+	padding: 0;
+	line-height: 1;
+	z-index: 2 !important;
+	
+	.ui-state-default, .ui-widget-content .ui-state-default{
+	border: none;
 	background: none;
-	border: none;
-	width: auto;
-}
-
-.ui-datepicker .ui-datepicker-header {
-	background: url('../../../../../images/calendar/datapicker-header.png') no-repeat -2px top;
-	border:none;
-	@include boxshadow(0);
-	padding: 1px;
-}
-
-.ui-datepicker .ui-datepicker-header a{
-	background: url('../../../../../images/calendar/datapicker-a.png') no-repeat left top;
-	border: none;
-	margin: 10px 0px 0px;
-	width: 16px;
-	height:	31px;
-	cursor: pointer;
-}
-
-.ui-datepicker .ui-datepicker-header a span{
-	background: url('../../../../../images/calendar/datapicker-month.png') no-repeat left top;
-	margin: 0px;
-	top: 7px;
-	left:0px;
-	width: 10px;
-}
-
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev{
-	background-position: right top;
-	padding-right: 12px;
-}
-
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-next{
-	right: 7px;
-	background-position: left top;
-	padding-left: 6px;
-}
-
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev:hover, .ui-datepicker .ui-datepicker-header a.ui-datepicker-next:hover{
-	top: 2px;
-
-}
-
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev:hover{
-	left: 2px;
-}
-
-
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev span{
-	background-position: left 3px;
-	left: 8px;
-}
-
-
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-prev span:hover{
-	background-position: -11px 3px;
-}
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-next span{
-	background-position: left bottom;
-	margin-left: 11px;
-}
-
-.ui-datepicker .ui-datepicker-header a.ui-datepicker-next span:hover{
-	background-position: -11px bottom;
-}
-.ui-datepicker .ui-datepicker-title{
-	margin: 15px 0px 5px;
-	text-transform: uppercase;
-	color: $c_white;
-	font-size: .8em;
-}
-
-.ui-datepicker .ui-datepicker-title select{
-	border:none;
-	background: url('../../../../../images/calendar/datapicker-header.png') no-repeat -2px bottom;
-	color: $c_white;
-	font-weight: bold;
-	width:55px;
-}
-
-.ui-datepicker .ui-datepicker-title option{
-	background: $c_grey-p;
-	border-bottom:1px dashed $c_white;
-	padding: 1px 5px;
-	outline: none;
-}
-
-.ui-datepicker .ui-datepicker-title option:hover{
-	background:$c_mainlight;
-}
-.ui-datepicker table{
-	font-size: inherit;
-	width: auto;
-	background: $c_white-l;
-	@include boxshadow(0 3px 5px $s_grey);
-	@include radius(0 0 5px 5px);
-	margin-left: 1px;
+	color: #fff;
+	padding: .5em;
+	font-size: 1.1em;
+		&:hover{
+			border: none;
+			background:rgba(255,255,255,.2);
+		}
 	}
 
-.ui-datepicker table tr{
-	background: none;
-	border-bottom: 1px solid $c_grey-ppp;
+
+	.ui-state-disabled  .ui-state-default{
+		text-decoration: line-through;
+		&:hover{
+			background:none;
+		}
+	}
+
+	.ui-datepicker-current-day .ui-state-active{
+		background:darken($c_dark-grey, 3%);
+		color: $c_mainlight;
+		font-weight: bold;
+		line-height: 1;
+		&:hover{
+			background:darken($c_dark-grey, 3%);
+		}
+	}
+
+	.ui-state-active{
+		background:$c_mainlight;
+	}
+
+	.ui-datepicker-buttonpane{
+		overflow: hidden;
+		width: 200%;
+		background:$c_dark-grey;
+		position: relative;
+		z-index: 2;
+	}
+
 }
-.ui-datepicker table tr th{
-	font-size: .8em;
-	line-height: 2em;
-}
-.ui-datepicker table tr th, .ui-datepicker table tr td, .ui-datepicker table tr td a.ui-state-default{
-	padding: 0px;
+
+.ui-widget-header, .ui-datepicker table th  {
 	background: none;
-	border: none;
-	margin: 0px;
+	color: #fff;
+	text-transform: uppercase;
+	border-bottom: 1px solid lighten($c_dark-grey, 10%);
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.ui-datepicker .ui-datepicker-header{
+	padding: .5em 0;
+}
+
+.ui-widget-header .ui-icon{
+	background:none;
+	&::before{
+		position: absolute;
+		text-indent: 0;
+		color: #fff;
+		display: block;
+		font-size: 1.3em;
+	}
+}
+
+.ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next{
+	top: .5em;
+}
+
+.ui-datepicker-prev .ui-icon::before{
+		-webkit-transform: rotate(-180deg);
+		-moz-transform: rotate(-180deg);
+		-ms-transform: rotate(-180deg);
+		-o-transform: rotate(-180deg);
+		transform: rotate(-180deg);
+	}
+
+
+
+
+
+.ui-timepicker-div{
+	color: #fff;
+	padding-bottom: 1em;
+	position: absolute;
+	top: 0;
+	right: -100%;
+	background:$c_dark-grey;
+	width: 100%;
+	height: 100%;
+	border-left: 1px solid $c_background;
+
+	dt, dd{
+		font-size: 1em;
+		text-transform: uppercase;
+	}
+}
+
+
+
+.ui_tpicker_time_label, .ui-datepicker .ui-datepicker-header{
+	background:$c_mainlight;
+	border-top: 1px solid darken($c_mainlight, 4%);
+	border-bottom: 1px solid darken($c_dark-grey, 4%);
+}
+
+
+
+.ui_tpicker_time_label, .ui_tpicker_time{
 	text-align: center;
-	color: $c_grey-pp;
-}
-
-.ui-datepicker table tr td{
-	border: 1px solid $c_grey-ppp;
-
-}
-
-.ui-datepicker table tr td a.ui-state-default{
-	padding: 2px 9px;
-}
-
-.ui-datepicker table tr td a.ui-state-default:hover, .ui-datepicker table tr td a.ui-state-active{
-	background: $c_grey-ppp;
-	@include boxshadow(none);
-	@include radius(0);
-}
-
-.ui-datepicker table tr td a.ui-state-active, .ui-datepicker table tr td a.ui-state-active:hover{
-	background: $c_mainlight;
-	@include radius(0);
-	margin: 0px;
-	color: $c_white;
-	text-shadow: none;
-	line-height: inherit;
+	text-transform: uppercase;
+	padding: .85em;
 	font-weight: bold;
 }
+
+
+
+.ui_tpicker_time{
+	font-size: 1.5em !important;
+	border-bottom: 1px solid lighten($c_dark-grey, 10%);
+	margin-bottom: .3em;
+	font-weight: normal;
+}
+
+.ui_tpicker_hour_label, 
+.ui_tpicker_hour, 
+.ui_tpicker_minute_label, 
+.ui_tpicker_minute{
+	padding: .3em 2em;
+}
+
+.ui_tpicker_hour_label, .ui_tpicker_minute_label{
+	padding-top: 1.5em;
+}
+
+.ui-slider-horizontal{
+	border: none;
+	background:lighten($c_dark-grey, 15%);
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	height: .4em;
+}
+
+
+.ui-widget-content .ui-slider-handle{
+	background:$c_mainlight !important;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	font-size: .9em !important;
+	height: 1em;
+	width: 1em;
+	&:hover{
+		background:lighten($c_mainlight, 5%);
+	}
+}
+

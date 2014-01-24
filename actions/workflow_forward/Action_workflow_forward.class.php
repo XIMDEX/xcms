@@ -429,7 +429,6 @@ class Action_workflow_forward extends ActionAbstract {
 		$showRepOption = ($nodeTypeName == "XimNewsBulletinLanguage") ? false : true;
 
 		$gapInfo = $this->getPublicationIntervals($idNode);
-
 		return array(
 			'gap_info' => $gapInfo,
 			'has_unlimited_life_time' => SynchroFacade::HasUnlimitedLifeTime($idNode),

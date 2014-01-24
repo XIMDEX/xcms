@@ -26,11 +26,11 @@
 <div id="%=id%" class="xim-calendar-layer-container xim-calendar-%=type%">	
 	{if '%=type%' eq 'interval'}
 
-		<span class="js_date_container">
-			<span class="">%=first_date_label%</span>
-			<span class="js_date_content">
-				<span class="js_date_text">%=first_date_text%</span>
-				<span class="js_time_text">%=first_time_text%</span>
+		<span class="js_date_container calendar_item">
+			<span class="date_interval">%=first_date_label%</span>
+			<span class="js_date_content calendar_date row-item icon icon_calendar">
+				<span class="js_date_text day_date">%=first_date_text%</span>
+				<span class="js_time_text time_date">%=first_time_text%</span>
 			</span>
 			<input type="hidden" name="%=first_date_name%_timestamp" class="" value="%=server_timestamp%" />
 			<input 
@@ -41,15 +41,15 @@
 				data-goto-text ="%=first_now_text%"
 				data-type="%=type%"
 				data-default-date="%=server_timestamp%"
-				class="datetimepicker js_datetimepicker_from"
+				class="js_datetimepicker_from date_picker datetimepicker"
 				/>
 		</span>
 
-		<span class="js_date_container">
-			<span class="">%=last_date_label%</span>
-			<span class="js_date_content">
-				<span class="js_date_text">%=last_date_text%</span>
-				<span class="js_time_text">%=last_time_text%</span>
+		<span class="js_date_container calendar_item">
+			<span class="date_interval calendar_date">%=last_date_label%</span>
+			<span class="js_date_content row-item icon icon_calendar">
+				<span class="js_date_text day_date">%=last_date_text%</span>
+				<span class="js_time_text time_date">%=last_time_text%</span>
 			</span>
 			<input type="hidden" name="%=last_date_name%_timestamp" class="" value="0"/>
 			<input type="input" 
@@ -59,7 +59,7 @@
 				   data-goto-text ="%=last_now_text%"
 				   data-type="%=type%"
 				   data-default-date="0"
-				   class="datetimepicker js_datetimepicker_to" 
+				   class="datetimepicker js_datetimepicker_to date_picker datetimepicker" 
 				   />
 		</span>
 	
