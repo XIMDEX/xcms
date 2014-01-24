@@ -22,38 +22,91 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.programed_publication {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(33% - 1em); }
 
+.xim_calendar_container {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(66% - 1em); }
 
-#div_deeplevel {
-	display: none;
-}
+.start_publication, .end_publication {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(50% - 1em); }
 
-div.user-list-container {
-	overflow: auto;
-	/*width: 300px;
-	
-	-moz-border-radius: 15px;
-	background: #fff;*/
-	max-height: 100px;
-}
+.date_interval {
+  margin-top: .5em;
+  padding-bottom: .5em; }
 
-.action_container form fieldset div.user-list-container ol{
-	margin-left: 0px;	
-}
+/**************
+// PROGRAM PUBLICATIONS
+***************/
+.programed_publication {
+  color: #666666;
+  padding: 0;
+  font-size: .9em;
+  float: right;
+  counter-reset: publications; }
+  .programed_publication h2 {
+    font-family: "Ubuntu Condensed";
+    border-bottom: 1px solid #d8d8d8;
+    text-transform: uppercase;
+    padding: .8em .5em .6em;
+    font-weight: bold;
+    font-size: 1.5rem; }
 
-.action_container form fieldset div.user-list-container ol li{
-	padding-left: 0px;
-}
+.publication {
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 1em 1em 1em 3.5em;
+  border-bottom: 1px solid #d8d8d8;
+  counter-increment: publications;
+  position: relative; }
+  .publication::before {
+    content: counter(publications);
+    position: absolute;
+    height: 100%;
+    width: 1.8em;
+    text-align: center;
+    line-height: 2.1;
+    background: #acafbb;
+    left: 0;
+    top: 0;
+    color: #fff;
+    font-size: 1.4em; }
+  .publication:last-child {
+    border-bottom: none; }
 
-div.user-list-container input{
-	margin: 0px 7px 0px 0px;	
-}
+.start_publication .publication_date, .end_publication .publication_date {
+  display: block;
+  font-weight: bold;
+  color: #4c4c4c;
+  padding: .5em 0 .2em;
+  font-size: 1.08em; }
+.start_publication .publication_time, .end_publication .publication_time {
+  font-weight: normal; }
 
-fieldset.notifications li.hidden {
-	display: none;
-}
+.end_publication {
+  padding-left: 1.5em; }
 
-.comments{
-	border: 1px solid #ccc;
-	padding: 5px;
-}
+.xim_calendar_container {
+  float: left; }
+
+.clock::before {
+  font-size: 1.4em;
+  padding-right: .5em;
+  line-height: .9; }
+
+.notifications {
+  margin-top: 3em; }
+
+.not_programed {
+  padding: .2em 1em .5em 2.1em;
+  font-size: 1.2em;
+  line-height: 1.3; }
+
+.comments {
+  width: 100%; }

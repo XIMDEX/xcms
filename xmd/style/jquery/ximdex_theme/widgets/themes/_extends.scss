@@ -65,3 +65,19 @@
             white-space: nowrap;
             overflow: hidden;
         }
+
+        %col1_3{
+            display: inline-block;
+            vertical-align: top;
+            width: calc(33% - 1em);
+        }
+        %col2_3{
+            display: inline-block;
+            vertical-align: top;
+            width: calc(66% - 1em);
+        }
+        %col1_2{
+            display: inline-block;
+            vertical-align: top;
+            width: calc(50% - 1em);
+        }

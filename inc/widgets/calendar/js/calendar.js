@@ -47,11 +47,56 @@
 			calendarOptions.inputSibling=$(this).parent().siblings(".js_date_container").children("input[data-type='"+inputTypes.interval+"']");
 		}
 			
-		calendarOptions.changeSelectedDate = function(selectedDate, object){
-
+		//If is a from calendar, set the min date in "to-calendar" (if exists)
+		if ($(this).hasClass("js_datetimepicker_from")){
+		
+			//Defining OnClose event
+			calendarOptions.onClose = function( selectedDate, object ) {
+				$(object.input).parent().addClass("js-calendar-hidden").removeClass("js-calendar-showed");
+			};
+			
+		//If is a to calendar, set the min date in "from-calendar" (if exists)
+		}else if ($(this).hasClass("js_datetimepicker_to")){
+			
+			//Defining onSelect event
+			calendarOptions.onClose = function(selectedDate, object){
+				$(object.input).parent().addClass("js-calendar-hidden").removeClass("js-calendar-showed");				
+			};
+			calendarOptions.onSelect = function(selectedDate, object){
+				object.settings.noDateSelected = false;
+			}
+			
+		}
+		$.extend($.datepicker,  {
+			_gotoToday: function(id){				
+				var target = $(id);
+				var inst = this._getInst(target[0]);
+				var currentText = inst.settings.currentText;
+				$dp = inst.dpDiv;
+				if (currentText == _("Now")){					
+					this._base_gotoToday(id);
+					var now = new Date(parseInt(inst.settings.defaultDate));
+					var tp_inst = this._get(inst, 'timepicker');
+					if (tp_inst && tp_inst.timezone_select) {
+						tp_inst.timezone_select.val(-now.getTimezoneOffset());
+					}					
+					
+					this._setTime(inst, now);					
+					$('.ui-datepicker-today', $dp).click();
+				}else{
+					inst.settings.noDateSelected = true;
+					$(inst.input).trigger("change");
+				}
+			},
+		});
+		
+		$(this).datetimepicker(calendarOptions);
+		$(this).change(function(){
+			
+			var object = $.datepicker._getInst(this);
+			var selectedDate = $(this).val();
 			//Get dateTimePiker html element
 			if (object.settings.noDateSelected){
-				object.settings.noDateSelected = false;
 				object.settings.timestampInput.val(object.settings.defaultDate);				
 				$(object.input).parent().find(".js_date_text").text($(object.input).attr("data-goto-text"));
 				$(object.input).parent().find(".js_time_text").text("--/--/----");
@@ -65,122 +110,10 @@
 				$(object.input).parent().find(".js_date_text").text(dateText);
 				$(object.input).parent().find(".js_time_text").text(timeText);
 			}
-			
-			$(object.input).datepicker("hide");
-		};
 		
-		//If is a from calendar, set the min date in "to-calendar" (if exists)
-		if ($(this).hasClass("js_datetimepicker_from")){
-		
-			//Defining OnClose event
-			calendarOptions.onClose = function( selectedDate, object ) {
-				$(object.input).parent().addClass("js-calendar-hidden").removeClass("js-calendar-showed");
-				object.settings.changeSelectedDate(selectedDate, object);
-			};
-			
-			calendarOptions.onSelect = function( selectedDate, object ) {
-				$(object.input).datepicker("hide");
-			};
-				//Get Date object from selected Date
-				
-//				var dateTimePickerTo = $( ".js_datetimepicker_to", $(this).parent.parent)[0]								
-//
-//				//Set mindate only if the datepickerto is not disable, 
-//				if (!$(dateTimePickerTo).is("disabled")){
-//					var dateTimeToCalendar = $.datepicker.parseDateTime(calendarOptions.dateFormat,calendarOptions.timeFormat, $(".datetimepicker-to", $(this).parent.parent).val());
-//					if (dateTime >= dateTimeToCalendar){
-//						var newDateTimeToCalendar = new Date(dateTime.getTime()+1000);
-//						$(dateTimePickerTo).datepicker("setDate", newDateTimeToCalendar);	
-//					}
-//				}
-//
-//				//Update the timestamp for the input hide
-//				$(this).next("input[type='hidden']").val(dateTime.getTime());
-			
-//			calendarOptions.onClose = 
-//				//Get Date object from selected Date
-//				var dateTime = $.datepicker.parseDateTime(calendarOptions.dateFormat,calendarOptions.timeFormat, selectedDate);
-//				//Get dateTimePiker html element
-//				
-//				var dateTimePickerTo = $( ".datetimepicker-to", $(this).parent.parent)[0]								
-//
-//				//Set mindate only if the datepickerto is not disable, 
-//				if (!$(dateTimePickerTo).is("disabled")){
-//					var dateTimeToCalendar = $.datepicker.parseDateTime(calendarOptions.dateFormat,calendarOptions.timeFormat, $(".datetimepicker-to", $(this).parent.parent).val());
-//					if (dateTime >= dateTimeToCalendar){
-//						var newDateTimeToCalendar = new Date(dateTime.getTime()+1000);
-//						$(dateTimePickerTo).datepicker("setDate", newDateTimeToCalendar);	
-//					}
-//				}
-//
-//				//Update the timestamp for the input hide
-//				$(this).next("input[type='hidden']").val(dateTime.getTime());
-//			};
-		
-		//If is a to calendar, set the min date in "from-calendar" (if exists)
-		}else if ($(this).hasClass("js_datetimepicker_to")){
-			
-			//Defining onSelect event
-			calendarOptions.onClose = function(selectedDate, object){
-				object.settings.changeSelectedDate(selectedDate, object);
-				$(object.input).parent().addClass("js-calendar-hidden").removeClass("js-calendar-showed");				
-			};
-			
-			calendarOptions.onSelect = function(selectedDate, object){
-				$(object.input).datepicker("hide");
-			};
-			
-			
-				//Date Time for To calendar
-//				var dateTimeToCalendar = $.datepicker.parseDateTime(calendarOptions.dateFormat,calendarOptions.timeFormat, dateTime);
-//				var dateTimeFromCalendar = $.datepicker.parseDateTime(calendarOptions.dateFormat,calendarOptions.timeFormat, $(".datetimepicker-from").val());
-//				if (dateTimeFromCalendar >= dateTimeToCalendar){
-//					var newDateTimeToCalendar = new Date(dateTimeFromCalendar.getTime()+1000);
-//					$(this).datepicker("setDate", newDateTimeToCalendar);
-//				}
-								
-			
-
-			//Defining beforeShow event
-			calendarOptions.beforeShow = function(input){
-
-				//Date Time for To calendar
-//				var dateTime = $(input).val();
-//				var dateTimeFromCalendar = $.datepicker.parseDateTime(calendarOptions.dateFormat,calendarOptions.timeFormat, $(".datetimepicker-from").val());
-//				var newDateTimeToCalendar = new Date(dateTimeFromCalendar.getTime()+1000);
-//				if (dateTime.indexOf("00 00")>-1){
-//					$(this).datepicker("setDate", newDateTimeToCalendar);
-//				}else{
-//					var dateTimeToCalendar = $.datepicker.parseDateTime(calendarOptions.dateFormat,calendarOptions.timeFormat, dateTime);				
-//					if (dateTimeFromCalendar >= dateTimeToCalendar){
-//						$(this).datepicker("setDate", newDateTimeToCalendar);							
-//					}	
-//				}
-				
-			}
-		}
-		$.extend($.datepicker,  {
-			_gotoToday: function(id){				
-				var target = $(id);
-				var inst = this._getInst(target[0]);
-				var currentText = inst.settings.currentText;
-				if (currentText == _("Now")){					
-					$dp = inst.dpDiv;
-					this._base_gotoToday(id);
-					var now = new Date(parseInt(inst.settings.defaultDate));
-					var tp_inst = this._get(inst, 'timepicker');
-					if (tp_inst && tp_inst.timezone_select) {
-						tp_inst.timezone_select.val(-now.getTimezoneOffset());
-					}					
-					
-					this._setTime(inst, now);					
-				}else{
-					inst.settings.noDateSelected = true;
-				}
-				$('.ui-datepicker-today', $dp).click();
-			}
+			return false;
 		});
-		$(this).datetimepicker(calendarOptions);
+		
 		$(this).closest(".js_date_container").click(function(){			
 			if (!$(this).hasClass("js-calendar-showed")){
 				$(".datetimepicker", $(this)).datetimepicker("show");				

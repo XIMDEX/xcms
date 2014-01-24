@@ -140,6 +140,9 @@
 .icon_calendar::after {
   content: "\0044"; }
 
+.clock::before {
+  content: "\e60c"; }
+
 /*****
   xsparrow
 *****/

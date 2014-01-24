@@ -22,9 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-.xim-calendar-datefield {
+/*.xim-calendar-datefield {
 	border: 1px solid black;
 	text-align: center;
 	font-size: 11px;
@@ -76,4 +74,4 @@
 
 .xim-calendar-datepicker {
 	position: absolute;
-}
+}*/
