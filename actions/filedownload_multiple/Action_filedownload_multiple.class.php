@@ -77,7 +77,6 @@ class Action_filedownload_multiple extends ActionAbstract {
 			'nodeName' => basename($tarFile),
 			'tarFile' => $tarFile
 		);
-error_log("4------");
 
 		$this->addJs('/actions/filedownload_multiple/resources/js/index.js');
 		$this->render($values, '', 'default-3.0.tpl');

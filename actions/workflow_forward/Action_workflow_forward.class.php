@@ -372,8 +372,7 @@ class Action_workflow_forward extends ActionAbstract {
 	 * @return array With info about the available gaps
 	 */
 	private function getPublicationIntervals($idNode) {
-            
-                $nodesToPublish = new NodesToPublish();
+        $nodesToPublish = new NodesToPublish();
 		$intervals = $nodesToPublish->getIntervals($idNode);
 		return $this->formatInterval($intervals);
 	}
@@ -385,9 +384,8 @@ class Action_workflow_forward extends ActionAbstract {
 	 * @return array With info about the available gaps
 	 */
 	private function getPublicationGaps($idNode) {
-
 		$gaps = SynchroFacade::getGaps($idNode);
-                return $this->formatInterval($gaps);
+        return $this->formatInterval($gaps);
 	}
         
         /**
@@ -418,8 +416,8 @@ class Action_workflow_forward extends ActionAbstract {
          * @param int $idNode the current Node
          * @return array.
          */
-        private function buildExtraValues($idNode){
-                setlocale(LC_TIME, "es_ES");
+    private function buildExtraValues($idNode){
+        setlocale(LC_TIME, "es_ES");
 
 		$idUser = XSession::get('userID');
 		$user = new User($idUser);
@@ -440,7 +438,7 @@ class Action_workflow_forward extends ActionAbstract {
 			'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
 			'show_rep_option' => $showRepOption
 		);
-        }
+    }
 
 	/**
 	 * Sends notifications and sets node state
