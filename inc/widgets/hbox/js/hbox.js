@@ -299,6 +299,9 @@
 				});
 
 				if (p.separator()) {
+					var $button = $("<button class='hbox-panel-tie hide'></button>");
+					p.container.addClass("hbox-panel-hideable");
+					p.container.append($button);
 					p.autoHide = true;
 					//NOTE: Wrap the index value
 					var f = (function(idx) {
@@ -313,7 +316,11 @@
 						}.bind(this);
 					}.bind(this))(i);
 
-					$(p.separator().element()).click(f);
+					$button.click(function(){
+						$(this).toggleClass("hide");
+						$(this).toggleClass("tie");
+						f();
+					});
 
 					if (i == 0) {
 						// default size

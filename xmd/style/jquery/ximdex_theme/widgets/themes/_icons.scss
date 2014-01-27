@@ -1,0 +1,27 @@
+
+/*******
+	ICON GENERIC STYLES
+*******/
+
+%icon::before {
+	font-family: 'ximdex_icons' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	vertical-align: middle;
+} 
+
+/*******
+	ICONS
+*******/
+%left-arrow {
+	content: "\e03a";  
+}
+
+%pin {
+	content: "\e60f"; 
+}
