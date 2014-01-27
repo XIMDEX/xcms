@@ -566,6 +566,11 @@ input.error, input.error:focus{
 	}
 }
 
+.xim-filter-comparation + .error_block{
+		display: inline-block;
+		width: auto; // ÑAPA
+	}
+
 span.error{
 	background:#f72f42;
 	color: #fff;

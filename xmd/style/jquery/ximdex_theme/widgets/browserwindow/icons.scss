@@ -71,9 +71,9 @@
   content: "\0079";
 }
 
-.themes .custom::before{
-  content: "\0045";
-  
+.themes .custom::before, 
+.distribution_title::before{
+  content: "\0045";  
 }
 
 .delete-btn::before, 
@@ -167,7 +167,7 @@
   
 }
 
-.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before{
+.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before, .title_language.toggle::before, .download_link::before, .name_uploader::after{
   content: "\e037";
 }
 
@@ -193,7 +193,6 @@
 
 .clock::before{
   content: "\e60c";
-  
 }
 
 /*****
