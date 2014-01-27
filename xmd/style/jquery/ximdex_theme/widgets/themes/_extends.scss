@@ -16,6 +16,15 @@
         border-color: #fff;
         background: lighten(#ACAFBB, 15%);
 	}
+    %icon-button {
+        cursor: pointer;
+        background: none;
+        border: none;
+        &:active, &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
 
 	%checkbox-box{
 

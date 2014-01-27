@@ -22,76 +22,65 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-button.hbox-panel-tie {
-  cursor: pointer;
-  background: none;
-  border: none; }
-  button.hbox-panel-tie:active, button.hbox-panel-tie:focus {
-    outline: none;
-    box-shadow: none; }
 
-/*******
-	ICON GENERIC STYLES
-*******/
-button.hbox-panel-tie::before {
-  font-family: 'ximdex_icons' !important;
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  vertical-align: middle; }
-
-/*******
-	ICONS
-*******/
-button.hbox-panel-tie.hide {
-  content: "\e03a"; }
-
-button.hbox-panel-tie.tie {
-  content: "\e60f"; }
+@import "../themes/_ximdex_theme";
+@import "../themes/_extends";
+@import "../themes/_icons";
 
 div.hbox {
-  height: 98.7%;
-  overflow: hidden;
-  clear: both;
-  margin: 3px 7px 3px 7px; }
+	height: 98.7%;
+	overflow: hidden;
+	clear: both;
+	margin: 3px 7px 3px 7px;
+	
+}
 
 div.hbox-panel-container {
-  height: 100%;
-  float: left;
-  border: none; }
-
+	height: 100%;
+	float: left;
+	border: none;	
+}
 div.hbox-panel-container.hbox-panel-hideable {
-  position: relative; }
-
+	position: relative;
+}
 div.hbox-panel {
-  height: 100%;
-  float: left;
-  overflow: hidden;
-  position: relative; }
+	height: 100%;
+	float: left;
+	overflow: hidden;
+	position: relative;
+}
 
 div.hbox-panel-sep {
-  width: 10px;
-  height: 100%;
-  float: right;
-  overflow: hidden;
-  background: url("../../../../../images/browser/hbox/hbox-sep.png") no-repeat center center; }
+	width: 10px;
+	height: 100%;
+	float: right;
+	overflow: hidden;
+	background: url('../../../../../images/browser/hbox/hbox-sep.png') no-repeat center center;
+}
 
 div.hbox-panel-sep:hover {
-  cursor: w-resize; }
-
-button.hbox-panel-tie {
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: white;
-  font-size: 2em; }
+	cursor: w-resize;
+}
+button.hbox-panel-tie{
+	@extend %icon;
+	@extend %icon-button;
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: white;
+	font-size: 2em;
+	&.hide {
+		@extend %left-arrow;
+	}
+	&.tie {
+		@extend %pin;
+	}
+}
 
 button.hbox-panel-tie:hover {
-  color: #7bcabf; }
+	color: $c_mainlight;
+}
 
 div.hbox-panel-hidden button.hbox-panel-tie {
-  display: none; }
+	display: none;
+}
