@@ -47,10 +47,10 @@ button.hbox-panel-tie::before {
 /*******
 	ICONS
 *******/
-button.hbox-panel-tie.hide {
+button.hbox-panel-tie.hide::before {
   content: "\e03a"; }
 
-button.hbox-panel-tie.tie {
+button.hbox-panel-tie.tie::before {
   content: "\e60f"; }
 
 div.hbox {

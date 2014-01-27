@@ -18,10 +18,10 @@
 /*******
 	ICONS
 *******/
-%left-arrow {
+%left-arrow::before {
 	content: "\e03a";  
 }
 
-%pin {
+%pin::before {
 	content: "\e60f"; 
 }
