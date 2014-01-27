@@ -638,6 +638,7 @@ textarea.kupu-editor-textarea {
     text-transform: none;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     vertical-align: middle;
     content: "\e037";
     position: absolute;
