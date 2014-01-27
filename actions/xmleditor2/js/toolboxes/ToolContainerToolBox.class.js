@@ -62,6 +62,7 @@ var ToolContainerToolBox = Object.xo_create(new XimdocToolBox(), {
 			} else {
 				hide();
 			}
+			$container.toggleClass("autohidden");
 			autohide = !autohide;	
 		});
 		$container.mouseenter(function(){
