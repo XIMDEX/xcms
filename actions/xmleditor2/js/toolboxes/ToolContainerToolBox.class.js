@@ -30,11 +30,25 @@ var ToolContainerToolBox = Object.xo_create(new XimdocToolBox(), {
 
 	_init: function(options) {
 
-		this.container = $('.kupu-toolboxes-container')[0];
-		this.collapser = $('.kupu-toolboxes-collapser')[0];
-		this.element = $('.kupu-toolboxes-container-container')[0];
+		var $container = $('.kupu-toolboxes-container');
+		var $collapser = $('.kupu-toolboxes-collapser');
+		var $element = $('.kupu-toolboxes-container-container');
+		var $canvas = $('.iwrapper');
 		
-		$(this.element).droppable({
+		var autohide = false;
+		
+		var hide = function () {
+			$collapser.addClass('kupu-collapsed');
+			$container.addClass('kupu-toolboxes-container-collapsed');
+			$canvas.addClass('iwrapper-extended');	
+		}
+		var show = function () {
+			$collapser.removeClass('kupu-collapsed');
+			$container.removeClass('kupu-toolboxes-container-collapsed');
+			$canvas.removeClass('iwrapper-extended');	
+		}
+
+		$element.droppable({
 			accept: 'div',
 			tolerance: 'pointer',
 			drop: function(ev, ui) {
@@ -42,13 +56,23 @@ var ToolContainerToolBox = Object.xo_create(new XimdocToolBox(), {
 			}.bind(this)
 		})/*.sortable()*/;
 		
-		$(this.collapser).click(function() {
-			$(this.element).toggle();
-			$(this.collapser).toggleClass('kupu-collapsed');
-			$(this.container).toggleClass('kupu-toolboxes-container-collapsed');
-			//$('.kupu-editor-iframe').toggleClass('kupu-editor-iframe-extended');
-			$('.iwrapper').toggleClass('iwrapper-extended');
-		}.bind(this));
+		$collapser.click(function(){
+			if (autohide) {
+				show();
+			} else {
+				hide();
+			}
+			$container.toggleClass("autohidden");
+			autohide = !autohide;	
+		});
+		$container.mouseenter(function(){
+			if (autohide)
+				show();
+		});
+		$container.mouseleave(function(){
+			if (autohide) 
+				hide();
+		});
 	},
 	
 	_onDrop: function ($item) {
