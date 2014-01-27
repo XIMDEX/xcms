@@ -2655,10 +2655,10 @@ msgid "There are not"
 msgstr "No hay"
 
 msgid "Are you sure you want to delete selected subscriptions?"
-msgstr "¿Estás seguro?"
+msgstr "&iquest;Est&aacute;s seguro?"
 
 msgid "Are you sure you want to update selected subscriptions?"
-msgstr "¿Estás seguro?"
+msgstr "&iquest;Est&aacute;s seguro?"
 
 
 #: /modules/ximNEWS/actions/createLote/template/Smarty/index.tpl
@@ -3684,6 +3684,15 @@ msgstr "Usuarios"
 msgid "Comments"
 msgstr "Comentarios"
 
+msgid "No caducate"
+msgstr "Sin caducidad"
+
+msgid "Scheduled publications"
+msgstr "Publicaciones programadas"
+
+msgid "<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled. This could cause a slow and unstable publi    shing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator"
+msgstr "Las funciones requeridas <i>pcntl_fork</i> and <i>pcntl_waitpid</i> est&aacute;n ambas deshabilitadas. Esto podr&iacute;a ocasionar una publicaci&oacute;n lenta e inestable. Por favor, revisa el fichero de configuraci&oacute;n <i>php.ini</i> o contacta con tu administrador"
+
 #: /actions/workflow_backwads/template/Smarty/forms/mostrar_user.tpl
 msgid "Next state"
 msgstr "Estado siguiente"
@@ -3794,20 +3803,26 @@ msgstr "Sin determinar"
 msgid "At this moment, there is not any available window."
 msgstr "Actualmente, no hay ninguna ventana disponible."
 
-msgid "Warning: The last publication window has not defined any end-date."
-msgstr "Aviso: La &uacute;ltima ventana de publicaci&oacute;n no tiene definida ninguna fecha de finalizaci&oacute;n."
+msgid "Warning: The last publication window has not defined any end-date"
+msgstr "Aviso: La &uacute;ltima ventana de publicaci&oacute;n no tiene definida ninguna fecha de finalizaci&oacute;n"
 
 msgid "Do you want to set the begin-date of the new window as the end-date of the previous window?"
-msgstr "&iquest;Desea marcar la fecha de inicio de la nueva ventana como la fecha de fin de la ventana anterior?"
+msgstr "&iquest;Deseas marcar la fecha de inicio del nuevo periodo de publicaci&oacute;n como la fecha de fin de la publicaci&oacute;n anterior?"
 
-msgid "Publish all the levels"
+msgid "Publish all levels"
 msgstr "Publicar todos los niveles"
 
-msgid "Publish until a certain depth level:"
-msgstr "Publicar hasta un determinado nivel de profundidad:"
+msgid "Publish until a certain depth level"
+msgstr "Publicar hasta un determinado nivel de profundidad"
 
-msgid "Publish just the document (without structure: css, images, scripts)"
-msgstr "Publicar &uacute;nicamente el documento (sin la estructura: css, im&aacute;genes, scripts)"
+msgid "Publish just the document (without its structure: css, images, scripts)"
+msgstr "Publicar &uacute;nicamente el documento (sin su estructura: css, im&aacute;genes, scripts)"
+
+msgid "Do you want to publish its related documents?"
+msgstr "&iquest;Quieres publicar sus documentos relacionados?"
+
+msgid "You don't have scheduled publications yet"
+msgstr "No tienes publicaciones programadas todav&iacute;a"
 
 #: /actions/workflow_forward/template/Smarty/show_results.tpl
 #: xmd/templates/Smarty/publicationResults.tpl
@@ -5687,7 +5702,7 @@ msgid "Rename"
 msgstr "Renombrar"
 
 msgid "selected already or invalid for the destination"
-msgstr "ya selecionado o no es válido para el destino"
+msgstr "ya selecionado o no es v&aacute;lido para el destino"
 
 msgid "Upload url not found"
 msgstr "Url de subida no encontrada"
@@ -9554,8 +9569,17 @@ msgstr "Texto a buscar"
 msgid "From"
 msgstr "Desde"
 
+msgid "from"
+msgstr "desde"
+
 msgid "To"
 msgstr "Hasta"
+
+msgid "to"
+msgstr "hasta"
+
+msgid "Done"
+msgstr "Aceptar"
 
 msgid "Any user"
 msgstr "Cualquier usuario"

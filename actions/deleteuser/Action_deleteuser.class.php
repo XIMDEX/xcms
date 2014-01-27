@@ -73,12 +73,12 @@ class Action_deleteuser extends ActionAbstract {
 
 						$idProject = $node->GetChildByName("Picasso_".$group->GetNodeName());
 						if ($idProject){
-				    		error_log("[ximDEMOS] Se va a eliminar el proyecto con Id {$idProject}");
+				    		error_log("[ximDEMOS] The project with Id {$idProject} is going to be deleted.");
 				    			$nodeToDelete = new Node($idProject);
 				    			$nodeToDelete->DeleteNode();				
 						}
 			    
-						error_log("[ximDEMOS] Se va a borrar el grupo con Id $idGroup");
+						error_log("[ximDEMOS] The group with Id $idGroup is going to be deleted.");
 						$group->delete();
 			    		}
 				}	
@@ -91,7 +91,6 @@ class Action_deleteuser extends ActionAbstract {
 				$dbObj = new DB();
 	                        $query = sprintf("DELETE FROM UnverifiedUsers where email='%s'",$userNode->get('Email'));
 	                        $dbObj->Execute($query);
-				error_log("[ximDEMOS] Se ha eliminado el usuario en UnverifiedUsers");
 			}
 /************************ ximDEMOS *******************/
 			if($result) {

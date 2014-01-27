@@ -87,7 +87,7 @@ class OntologyService {
 			if ($provider){
 				//It could be the type name or the class name
 				if (array_key_exists($provider,$this->providers)){
-					if (class_exists($provider)){
+					if (class_exists($provider)){                                            
 						$result[$type] = $provider->suggest($text)->getData();
 					}
 				}
@@ -100,7 +100,7 @@ class OntologyService {
 				foreach ($this->providers as $type => $providerName){
 					if (class_exists($providerName)){
 						$provider = new $providerName;
-						$result[$type] = $provider->suggest($text)->getData();
+						$result[$type] = $provider->suggest($text)->getData();                                                
 					}
 				}
 			}
@@ -123,7 +123,6 @@ class OntologyService {
 		//It should be loaded from DB.		
 		if ($providers && count($providers)){
 			foreach ($providers as $provider) {
-				error_log($provider);
 				if ($provider){
 					if (array_key_exists($provider, self::$allProviders)){
 						$this->providers[$provider] = self::$allProviders[$provider];

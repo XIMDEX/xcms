@@ -104,8 +104,9 @@ class Action_copy extends ActionAbstract {
         $nodeAllowedContent = new NodeAllowedContent();
         $arrayNodeTypesAllowed = $nodeAllowedContent->getAllowedParents($idNodeType);
         
-        $node = new Node($idNode);        
-        $arrayIdnodes = $node->find("IdNode", "idnodetype in (%s) and idnode <> %s",array(implode(",", $arrayNodeTypesAllowed), $node->GetParent()),MONO);        
+        $node = new Node($idNode);
+        $arrayIdnodes = $node->find("IdNode", "idnodetype in (".implode(",", $arrayNodeTypesAllowed).") and idnode <> %s order by path",array( $node->GetParent()),MONO);        
+      
         $idTargetNodes = array();
         foreach ($arrayIdnodes as $idCandidateNode) {            
             if ($this->checkTargetConditions($idNode, $idCandidateNode))
