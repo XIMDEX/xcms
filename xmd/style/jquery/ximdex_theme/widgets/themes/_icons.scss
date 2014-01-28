@@ -26,3 +26,10 @@
 %pin::before {
 	content: "\e60f"; 
 }
+
+%download::before {
+	content: "\e610";
+}
+%upload::before {
+	content: "\e611";
+}

@@ -16,6 +16,20 @@
         border-color: #fff;
         background: lighten(#ACAFBB, 15%);
 	}
+
+    %tiny-square-button {
+        @extend %button;
+        width: 1.48em;
+        height: 1.48em;
+        line-height: 1;
+        padding: 0;
+        text-align: center;
+        &:active, &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
     %icon-button {
         cursor: pointer;
         background: none;
