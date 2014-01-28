@@ -4,6 +4,8 @@
 *.DS_Store
 *.swp
 *.out
+.sass-cache
+node_modules
 data/
 logs/
 install/install.log
