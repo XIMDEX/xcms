@@ -15,13 +15,13 @@ module.exports = function(grunt) {
 			dist: {
 				files: [{
 					expand: true,
-					files: ['xmd/style/**/*.scss', 'actions/**/css/*.scss', 'inc/widgets/**/css/*.scss', 'modules/**/css/*.scss'],
+					files: ['xmd/style/**/*.scss', 'actions/**/css/*.scss', 'inc/widgets/**/css/*.scss', 'modules/**/css/*.scss', '!**/_*.scss'],
 					ext: '.css'
 				}]
 			},
 			dev: {
 				files: {}
-			}
+			},
 		}
 	});
 	grunt.registerTask('default', [
@@ -29,9 +29,10 @@ module.exports = function(grunt) {
   	]);
   	grunt.event.on('watch', function(action, filepath, target) {
 		var filedest = filepath.slice(0, filepath.lastIndexOf("."));
-		filedest += '.css'
+		filedest += '.css';
 		var files = {};
 		files[filedest] = filepath;
 		grunt.config.set('sass.dev.files', files);
+		console.log(grunt.config.get('sass.dev.files'));
 	});
 };
