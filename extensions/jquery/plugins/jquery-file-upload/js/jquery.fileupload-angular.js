@@ -60,6 +60,9 @@
                         file.$response = function () {
                             return data.response();
                         };
+                        file.$formData = function (formData) {
+                            data.formData = formData
+                        };
                     });
                     file.$submit = function () {
                         if (!file.error) {
