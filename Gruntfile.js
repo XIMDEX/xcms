@@ -4,35 +4,35 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		watch: {
 			sass: {
-				files: ['xmd/style/**/*.scss', 'actions/**/css/*.scss', 'inc/widgets/**/css/*.scss', 'modules/**/css/*.scss'],
-				tasks: ['sass']
+				files: ['xmd/style/**/*.scss', 'actions/**/css/*.scss', 'inc/widgets/**/css/*.scss', 'modules/**/css/*.scss', '!**/_*.scss'],
+				tasks: ['sass:dev'],
+				options: {
+      				spawn: false
+    			}
 			}
 		},
 		sass: {
 			dist: {
 				files: [{
 					expand: true,
-					src: ['xmd/style/**/*.scss', 'actions/**/css/*.scss', 'inc/widgets/**/css/*.scss', 'modules/**/css/*.scss'],
+					files: ['xmd/style/**/*.scss', 'actions/**/css/*.scss', 'inc/widgets/**/css/*.scss', 'modules/**/css/*.scss', '!**/_*.scss'],
 					ext: '.css'
 				}]
-			}
+			},
+			dev: {
+				files: {}
+			},
 		}
-  //     	autoprefixer: {
-		// 	options: {
-		// 		browsers: ['last 1 version']
-		// 	},
-		// 	dist: {
-		// 		files: [{
-		// 			expand: true,
-		// 			cwd: '.tmp/styles/',
-		// 			src: '{,*/}*.css',
-		// 			dest: '.tmp/styles/'
-		// 		}]
-		// 	}
-		// }
 	});
 	grunt.registerTask('default', [
-    	// 'autoprefixer',
     	'watch'
   	]);
+  	grunt.event.on('watch', function(action, filepath, target) {
+		var filedest = filepath.slice(0, filepath.lastIndexOf("."));
+		filedest += '.css';
+		var files = {};
+		files[filedest] = filepath;
+		grunt.config.set('sass.dev.files', files);
+		console.log(grunt.config.get('sass.dev.files'));
+	});
 };

@@ -44,16 +44,16 @@
 
 	}
 
-        %box-number{
-                background: #b2e0d9;
-            -webkit-border-radius: 2px;
-            -moz-border-radius: 2px;
-            border-radius: 2px;
-            display: inline-block;
-            min-width: 3.5em;
-            text-align: center;
-            padding: .6em .2em;
-        }
+    %box-number{
+            background: #b2e0d9;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        display: inline-block;
+        min-width: 3.5em;
+        text-align: center;
+        padding: .6em .2em;
+    }
 
     %icon-positioned{
         position: absolute;
