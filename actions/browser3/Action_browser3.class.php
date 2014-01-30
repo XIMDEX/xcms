@@ -106,10 +106,13 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/validation/js/ximdex.form.validation.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery.labelwidth/jquery.labelwidth.js');
-
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-process.js');
+		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
 		$this->addJs('/extensions/d3js/d3.v3.min.js');
-
 		$this->addActionJs('controller.js');
+		$this->addJs('/extensions/ladda/js/spin.js');
+		$this->addJs('/extensions/ladda/js/ladda.js');
 
 
 		/* *********************************** SPLASH ************************************** */
