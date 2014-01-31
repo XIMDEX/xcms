@@ -44,12 +44,19 @@
 	width: 20rem;
 	&:first-child::before{
 		content: "";
-		width: 100%;
-		position: absolute;
-		right: -95%;
-		height: 2px;
+		width: 2px;
 		background:$c_grey-p;	
-		top: 3.85em;	
+		height: 100%;
+		position: absolute;
+		right: 16%;
+		top: 52%;
+
+		.hbox-panel[style*="width: 875"] &, .hbox-panel[style*="width: 876"] &, .hbox-panel[style*="width: 877"] &, .hbox-panel[style*="width: 878"] &, .hbox-panel[style*="width: 879"] &, .hbox-panel[style*="width: 88"] &, .hbox-panel[style*="width: 89"] &, .hbox-panel[style*="width: 9"] &, .hbox-panel[style*="width: 10"] &, .hbox-panel[style*="width: 11"] &, .hbox-panel[style*="width: 12"] & , .hbox-panel[style*="width: 13"] & {
+			width: 100%;
+			right: -95%;
+			height: 2px;
+			top: 3.85em;
+		}
 	}	
 
 	.row-item{

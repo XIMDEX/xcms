@@ -33,12 +33,17 @@
   width: 20rem; }
   .calendar_item:first-child::before {
     content: "";
-    width: 100%;
-    position: absolute;
-    right: -95%;
-    height: 2px;
+    width: 2px;
     background: #888888;
-    top: 3.85em; }
+    height: 100%;
+    position: absolute;
+    right: 16%;
+    top: 52%; }
+    .hbox-panel[style*="width: 875"] .calendar_item:first-child::before, .hbox-panel[style*="width: 876"] .calendar_item:first-child::before, .hbox-panel[style*="width: 877"] .calendar_item:first-child::before, .hbox-panel[style*="width: 878"] .calendar_item:first-child::before, .hbox-panel[style*="width: 879"] .calendar_item:first-child::before, .hbox-panel[style*="width: 88"] .calendar_item:first-child::before, .hbox-panel[style*="width: 89"] .calendar_item:first-child::before, .hbox-panel[style*="width: 9"] .calendar_item:first-child::before, .hbox-panel[style*="width: 10"] .calendar_item:first-child::before, .hbox-panel[style*="width: 11"] .calendar_item:first-child::before, .hbox-panel[style*="width: 12"] .calendar_item:first-child::before, .hbox-panel[style*="width: 13"] .calendar_item:first-child::before {
+      width: 100%;
+      right: -95%;
+      height: 2px;
+      top: 3.85em; }
   .calendar_item .row-item {
     padding: 1em 1em .5em;
     display: block;

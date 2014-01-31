@@ -1,5 +1,5 @@
-	
-	//**************
+
+		//**************
 	// COLORS
 	//***************/
 		$c_background:  #e3e7e9;
@@ -204,9 +204,15 @@
 		white-space: nowrap;
 		}
 
+
+@mixin animate($property:all, $time: .3s, $easing: ease-in){
+	-webkit-transition: $property $time $easing ;
+	-moz-transition: $property $time $easing ;
+	-ms-transition: $property $time $easing ;
+	-o-transition: $property $time $easing ;
+	transition: $property $time $easing ;
+	
+}
 	//**************
 	// EXTENDS
 	//***************/
-
-
-	

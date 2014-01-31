@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -151,7 +150,8 @@ div.search-button-label {
 .xim-actions-menu button .tooltip {
   text-indent: 0px;
   display: none;
-    z-index: 80px;
+  position: absolute;
+  z-index: 80px;
   color: white;
   text-shadow: 1px 1px 0px #464646;
   white-space: nowrap;
@@ -163,14 +163,10 @@ div.search-button-label {
   line-height: 1.7em;
   top: 47px;
   left: -3px;
-  background: #888888;
-  position: absolute;
-
-}
+  background: #888888; }
 
 .xim-actions-menu button:hover .tooltip {
-  display: block;
- }
+  display: block; }
 
 .xim-actions-menu button .tooltip::before {
   content: '';
@@ -187,13 +183,16 @@ div.search-button-label {
 	content: url('../../../../../images/action/sep-btn-actions.png');
 	float:right;
 }*/
+.xim-actions-menu button.checkstatus span {
+  background-position: -601px 4px; }
+
 .xim-actions-menu button.copy span {
   background-position: -275px 4px; }
 
-.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span {
+.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span, .xim-actions-menu button.deletedataset span, .xim-actions-menu button.deletecatalog span {
   background-position: -313px 4px; }
 
-.xim-actions-menu button.modifygroupsnode span, .xim-actions-menu button.renamenode span, .xim-actions-menu button.relsectionschema span, .xim-actions-menu button.modifylink span, .xim-actions-menu button.addximlet span, .xim-actions-menu button.manageareas span, .xim-actions-menu button.manageproperties span, .xim-actions-menu button.modifygroup span, .xim-actions-menu button.modifystatesrole span, .xim-actions-menu button.modifyrole span, .xim-actions-menu button.modifygruposusuario span, .xim-actions-menu button.modifyuser span, .xim-actions-menu button.modifystates span, .xim-actions-menu button.addtoarea span, .xim-actions-menu button.addtocolector span, .xim-actions-menu button.modifyserver span, .xim-actions-menu button.modifychannel span, .xim-actions-menu button.modifyusuariosgrupo span, .xim-actions-menu button.modifylanguage span, .xim-actions-menu button.modifynodetype span, .xim-actions-menu button.icon-edit_cat span, .xim-actions-menu button.showassocnodes span {
+.xim-actions-menu button.modifygroupsnode span, .xim-actions-menu button.renamenode span, .xim-actions-menu button.relsectionschema span, .xim-actions-menu button.modifylink span, .xim-actions-menu button.addximlet span, .xim-actions-menu button.manageareas span, .xim-actions-menu button.manageproperties span, .xim-actions-menu button.modifygroup span, .xim-actions-menu button.modifystatesrole span, .xim-actions-menu button.modifyrole span, .xim-actions-menu button.modifygruposusuario span, .xim-actions-menu button.modifyuser span, .xim-actions-menu button.modifystates span, .xim-actions-menu button.addtoarea span, .xim-actions-menu button.addtocolector span, .xim-actions-menu button.modifyserver span, .xim-actions-menu button.modifychannel span, .xim-actions-menu button.modifyusuariosgrupo span, .xim-actions-menu button.modifylanguage span, .xim-actions-menu button.modifynodetype span, .xim-actions-menu button.icon-edit_cat span, .xim-actions-menu button.showassocnodes span, .xim-actions-menu button.managedataset span {
   background-position: -24px 4px; }
 
 .xim-actions-menu button.browser span, .xim-actions-menu button.linkreport span {
@@ -263,13 +262,13 @@ div.search-button-label {
       margin-top: -0.19em; }
   .xim-actions-menu-list .copy::before {
     background-position: -227px -1px; }
-  .xim-actions-menu-list .deletenode::before, .xim-actions-menu-list .deletetemplates::before, .xim-actions-menu-list .deleteuser::before, .xim-actions-menu-list .unlinknewscolector::before, .xim-actions-menu-list .unlinknews::before, .xim-actions-menu-list .deleterelnewsarea::before {
+  .xim-actions-menu-list .deletenode::before, .xim-actions-menu-list .deletetemplates::before, .xim-actions-menu-list .deleteuser::before, .xim-actions-menu-list .unlinknewscolector::before, .xim-actions-menu-list .unlinknews::before, .xim-actions-menu-list .deleterelnewsarea::before, .xim-actions-menu-list .deletecatalog::before, .xim-actions-menu-list .deletedataset::before {
     background-position: -253px 0px; }
   .xim-actions-menu-list .modifygroupsnode::before, .xim-actions-menu-list .renamenode::before, .xim-actions-menu-list .relsectionschema::before, .xim-actions-menu-list .modifylink::before, .xim-actions-menu-list .addximlet::before, .xim-actions-menu-list .manageareas::before, .xim-actions-menu-list .manageproperties::before, .xim-actions-menu-list .modifygroup::before, .xim-actions-menu-list .modifystatesrole::before, .xim-actions-menu-list .modifyrole::before, .xim-actions-menu-list .modifygruposusuario::before, .xim-actions-menu-list .modifyuser::before, .xim-actions-menu-list .modifystates::before, .xim-actions-menu-list .addtoarea::before, .xim-actions-menu-list .addtocolector::before, .xim-actions-menu-list .modifyserver::before, .xim-actions-menu-list .modifychannel::before, .xim-actions-menu-list .modifyusuariosgrupo::before, .xim-actions-menu-list .modifylanguage::before, .xim-actions-menu-list .modifynodetype::before, .xim-actions-menu-list .edit_cat::before, .xim-actions-menu-list .showassocnodes::before, .xim-actions-menu-list .manageproperties::before, .xim-actions-menu-list .relsectionschema::before, .xim-actions-menu-list .renamenode::before {
     background-position: -26px 1px; }
   .xim-actions-menu-list .browser::before, .xim-actions-menu-list .linkreport::before {
     background-position: -196px 0px; }
-  .xim-actions-menu-list .edittext::before {
+  .xim-actions-menu-list .edittext::before, .xim-actions-menu-list .managedataset::before {
     background-position: -53px 0px; }
   .xim-actions-menu-list .filedownload::before, .xim-actions-menu-list .filedownload_multiple::before {
     background-position: -83px -1px; }
@@ -295,3 +294,5 @@ div.search-button-label {
     background-position: -459px 1px; }
   .xim-actions-menu-list .managebatchs::before {
     background-position: -487px 8px; }
+  .xim-actions-menu-list .checkstatus::before {
+    background-position: -490px 0; }

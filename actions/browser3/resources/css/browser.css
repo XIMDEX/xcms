@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -265,7 +264,7 @@ button::-moz-focus-inner {
 
 .current-language::after {
   position: absolute;
-  z-index: -1;
+  z-index: -1 !important;
   font-size: 1.6em;
   top: .1em;
   right: -.15em; }

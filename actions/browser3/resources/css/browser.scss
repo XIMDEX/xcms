@@ -314,7 +314,7 @@ button::-moz-focus-inner{
 }
 .current-language::after{
 	position: absolute;
-	z-index: -1;
+	z-index: -1 !important;
 	font-size: 1.6em;
 	top: .1em;
 	right: -.15em;

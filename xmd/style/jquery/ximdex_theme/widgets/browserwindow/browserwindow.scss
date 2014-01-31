@@ -213,15 +213,21 @@ div.search-button-label {
 	float:right;
 }*/
 
+
+
+.xim-actions-menu button.checkstatus span{
+	background-position: -601px 4px;
+}
+
 .xim-actions-menu button.copy span{
 	background-position: -275px 4px;
 }
 
-.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span{
+.xim-actions-menu button.deletenode span, .xim-actions-menu button.deleteuser span, .xim-actions-menu button.unlinknewscolector span, .xim-actions-menu button.unlinknews span, .xim-actions-menu button.deleterelnewsarea span, .xim-actions-menu button.deletedataset span, .xim-actions-menu button.deletecatalog span{
 	background-position: -313px 4px;
 }
 
-.xim-actions-menu button.modifygroupsnode span, .xim-actions-menu button.renamenode span, .xim-actions-menu button.relsectionschema span, .xim-actions-menu button.modifylink span, .xim-actions-menu button.addximlet span, .xim-actions-menu button.manageareas span, .xim-actions-menu button.manageproperties span, .xim-actions-menu button.modifygroup span, .xim-actions-menu button.modifystatesrole span, .xim-actions-menu button.modifyrole span, .xim-actions-menu button.modifygruposusuario span, .xim-actions-menu button.modifyuser span, .xim-actions-menu button.modifystates span, .xim-actions-menu button.addtoarea span, .xim-actions-menu button.addtocolector span, .xim-actions-menu button.modifyserver span, .xim-actions-menu button.modifychannel span, .xim-actions-menu button.modifyusuariosgrupo span, .xim-actions-menu button.modifylanguage span, .xim-actions-menu button.modifynodetype span, .xim-actions-menu button.icon-edit_cat span, .xim-actions-menu button.showassocnodes span{
+.xim-actions-menu button.modifygroupsnode span, .xim-actions-menu button.renamenode span, .xim-actions-menu button.relsectionschema span, .xim-actions-menu button.modifylink span, .xim-actions-menu button.addximlet span, .xim-actions-menu button.manageareas span, .xim-actions-menu button.manageproperties span, .xim-actions-menu button.modifygroup span, .xim-actions-menu button.modifystatesrole span, .xim-actions-menu button.modifyrole span, .xim-actions-menu button.modifygruposusuario span, .xim-actions-menu button.modifyuser span, .xim-actions-menu button.modifystates span, .xim-actions-menu button.addtoarea span, .xim-actions-menu button.addtocolector span, .xim-actions-menu button.modifyserver span, .xim-actions-menu button.modifychannel span, .xim-actions-menu button.modifyusuariosgrupo span, .xim-actions-menu button.modifylanguage span, .xim-actions-menu button.modifynodetype span, .xim-actions-menu button.icon-edit_cat span, .xim-actions-menu button.showassocnodes span, .xim-actions-menu button.managedataset span{
 	background-position: -24px 4px;
 }
 
@@ -305,7 +311,7 @@ div.search-button-label {
 		.copy::before{
 			background-position: -227px -1px;
 		}
-		.deletenode::before, .deletetemplates::before, .deleteuser::before, .unlinknewscolector::before, .unlinknews::before, .deleterelnewsarea::before{
+		.deletenode::before, .deletetemplates::before, .deleteuser::before, .unlinknewscolector::before, .unlinknews::before, .deleterelnewsarea::before, .deletecatalog::before, .deletedataset::before{
 			background-position: -253px 0px;
 		}
 		.modifygroupsnode::before, .renamenode::before, .relsectionschema::before, .modifylink::before, .addximlet::before, .manageareas::before, .manageproperties::before, .modifygroup::before, .modifystatesrole::before, .modifyrole::before, .modifygruposusuario::before, .modifyuser::before, .modifystates::before, .addtoarea::before, .addtocolector::before, .modifyserver::before, .modifychannel::before, .modifyusuariosgrupo::before, .modifylanguage::before, .modifynodetype::before, .edit_cat::before, .showassocnodes::before, .manageproperties::before, .relsectionschema::before, .renamenode::before{
@@ -314,7 +320,7 @@ div.search-button-label {
 		.browser::before, .linkreport::before{
 			background-position: -196px 0px;
 		}
-		.edittext::before{
+		.edittext::before, .managedataset::before{
 			background-position: -53px 0px;
 		}
 		.filedownload::before, .filedownload_multiple::before{
@@ -354,4 +360,8 @@ div.search-button-label {
 		.managebatchs::before{
 			background-position: -487px 8px;
 		}
+		.checkstatus::before{
+			background-position: -490px 0;
+		}
 }
+

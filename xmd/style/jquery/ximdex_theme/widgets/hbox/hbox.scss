@@ -41,6 +41,7 @@ div.hbox-panel-container {
 }
 div.hbox-panel-container.hbox-panel-hideable {
 	position: relative;
+	overflow: visible !important;
 }
 div.hbox-panel {
 	height: 100%;
@@ -64,22 +65,35 @@ button.hbox-panel-tie{
 	@extend %icon;
 	@extend %icon-button;
 	position: absolute;
-	top: 0;
-	right: 0;
+	z-index: 2;
+	top: 2.1em;
+	right: -.6em;
 	color: white;
+	background:$c_mainlight;
 	font-size: 2em;
+	width: 1.1em;
+	padding: 0;
+	@include animate;
+	
+	&:hover{
+		background:darken($c_mainlight, 15%);
+	}
+
 	&.hide {
 		@extend %left-arrow;
+		&::before{
+			line-height: 1.2;
+		}
 	}
 	&.tie {
 		@extend %pin;
+		&::before{
+			line-height: 1.2;
+		}		
 	}
 }
 
-button.hbox-panel-tie:hover {
-	color: $c_mainlight;
-}
 
 div.hbox-panel-hidden button.hbox-panel-tie {
-	display: none;
+	//display: none;
 }

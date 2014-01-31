@@ -30,9 +30,6 @@ button.hbox-panel-tie {
     outline: none;
     box-shadow: none; }
 
-/*******
-	ICON GENERIC STYLES
-*******/
 button.hbox-panel-tie::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
@@ -45,9 +42,6 @@ button.hbox-panel-tie::before {
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
-/*******
-	ICONS
-*******/
 button.hbox-panel-tie.hide::before {
   content: "\e03a"; }
 
@@ -66,7 +60,8 @@ div.hbox-panel-container {
   border: none; }
 
 div.hbox-panel-container.hbox-panel-hideable {
-  position: relative; }
+  position: relative;
+  overflow: visible !important; }
 
 div.hbox-panel {
   height: 100%;
@@ -86,13 +81,22 @@ div.hbox-panel-sep:hover {
 
 button.hbox-panel-tie {
   position: absolute;
-  top: 0;
-  right: 0;
+  z-index: 2;
+  top: 2.1em;
+  right: -.6em;
   color: white;
-  font-size: 2em; }
-
-button.hbox-panel-tie:hover {
-  color: #7bcabf; }
-
-div.hbox-panel-hidden button.hbox-panel-tie {
-  display: none; }
+  background: #7bcabf;
+  font-size: 2em;
+  width: 1.1em;
+  padding: 0;
+  -webkit-transition: all 0.3s ease-in;
+  -moz-transition: all 0.3s ease-in;
+  -ms-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in; }
+  button.hbox-panel-tie:hover {
+    background: #47b1a3; }
+  button.hbox-panel-tie.hide::before {
+    line-height: 1.2; }
+  button.hbox-panel-tie.tie::before {
+    line-height: 1.2; }
