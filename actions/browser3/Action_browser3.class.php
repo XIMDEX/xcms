@@ -78,6 +78,7 @@ class Action_browser3 extends ActionAbstract {
 		);
 
 		$this->addCss('/xmd/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
+		$this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
 		$this->addActionCss('browser.css');
 		if(ModulesManager::isEnabled('ximTOUR'))
 			$this->addCss('/modules/ximTOUR/resources/css/tour.css');
@@ -111,8 +112,8 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
 		$this->addJs('/extensions/d3js/d3.v3.min.js');
 		$this->addActionJs('controller.js');
-		$this->addJs('/extensions/ladda/js/spin.js');
-		$this->addJs('/extensions/ladda/js/ladda.js');
+		$this->addJs('/extensions/ladda/dist/spin.min.js');
+		$this->addJs('/extensions/ladda/dist/ladda.min.js');
 
 
 		/* *********************************** SPLASH ************************************** */
