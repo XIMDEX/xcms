@@ -32,7 +32,7 @@
 	</div>
 	<div class="action_content section-properties">
         <div class="folder-name folder-normal icon input-select">
-            <input type="text" name="name" id="name" maxlength="100" class="cajaxg validable full-size js_val_unique_name js_val_alphanumeric not_empty" placeholder="{t}Name of your section{/t}" data-idnode="{$nodeID}" />
+            <input type="text" name="name" id="name" maxlength="100" class="cajaxg full-size js_val_unique_name js_val_alphanumeric" placeholder="{t}Name of your section{/t}" data-idnode="{$nodeID}" />
             {if $sectionTypeCount > 1}
                 <select id="type_sec" name="nodetype" class="caja validable not_empty folder-type">
                 {foreach from=$sectionTypeOptions item=sectionTypeOption}
