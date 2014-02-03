@@ -343,7 +343,7 @@
 							}
 						}.bind(this);
 					}.bind(this))(i);
-
+					$button.mouseover(showCallback);
 					$(p.separator().element()).mouseover(showCallback);
 					p.container.mouseleave(hideCallback);
 				}
