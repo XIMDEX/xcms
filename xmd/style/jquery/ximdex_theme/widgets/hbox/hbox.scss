@@ -67,9 +67,9 @@ button.hbox-panel-tie{
 	position: absolute;
 	z-index: 2;
 	top: 2.1em;
-	right: -.6em;
+	right: .5em;
 	color: white;
-	background:$c_mainlight;
+	background:lighten(#006b6c, 5%);
 	font-size: 2em;
 	width: 1.1em;
 	padding: 0;

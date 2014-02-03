@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .ui-tabs, .ui-tabs-nav {
   background: none;
   padding: 0px;
@@ -228,7 +227,7 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
   margin-right: 20px; }
 
 .browser-projects-view-menubar {
-  right: 0px;
+  right: .5em;
   padding-top: 2px;
   position: absolute;
   top: 0px;
