@@ -24,8 +24,8 @@
 *}
 
 <form method="post" name="as_form" id="as_form" action="{$action_url}">
-	<input type="hidden" name="nodeid" value="{$nodeID}"/>
-	<input type="hidden" id="nodeURL" name="nodeURL" value="{$nodeURL}"/>
+<input type="hidden" name="nodeid" value="{$nodeID}"/>
+<input type="hidden" id="nodeURL" name="nodeURL" value="{$nodeURL}"/>
 	<div class="action_header">
 		<h2>{t}Add section{/t}</h2>
 		
