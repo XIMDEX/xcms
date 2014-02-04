@@ -29,10 +29,10 @@
 	</div>
 	<div class="action_content">
 		<p class="icon icon-positioned server input">
-			<input type="text" name="name" id="foldername" class="cajaxg validable js_val_alphanumeric not_empty full-size" placeholder="{t}Server name{/t}">
+			<input type="text" name="name" id="foldername" class="cajaxg validable js_val_alphanumeric not_empty full-size {$friendlyName|replace:" ":"_"}_icon" placeholder="{t}{$friendlyName} name{/t}">
 		</p>
 	</div>
 	<fieldset class="buttons-form positioned_btn">
-			{button label="Create" class='validate btn main_action'  }{*message="¿Would you like add a new $friendlyName?" ////// `$friendlyName`*}
-		</fieldset>	
+	    {button label="Create" class='validate btn main_action'}
+	</fieldset>	
 </form>
