@@ -118,7 +118,6 @@
 		},
 
 		close: function() {
-			console.log("Action close method");
 			$(this.container).tabs('remove', this.tabId());
 		},
 
@@ -235,7 +234,6 @@
 			});
 			//Creates a new angular scope and compile the DOM
 			var _this = this;
-			console.log("ASSETS COMPLETE THIS", X.browser);
 			var $injector = angular.injector(['ng', 'ximdex']);
 			$injector.invoke(function($rootScope, $compile) {
 			    var scope = $rootScope.$new();
