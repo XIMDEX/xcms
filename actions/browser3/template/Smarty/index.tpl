@@ -44,7 +44,7 @@
 		%=css_widgets%
 
 		<!-- constant js includes -->
-      <script type="text/javascript" src="{$_URL_ROOT}/extensions//ckeditor/ckeditor.js"></script>
+      	<script type="text/javascript" src="{$_URL_ROOT}/extensions//ckeditor/ckeditor.js"></script>
 		<script type="text/javascript" src="{$_URL_ROOT}/xmd/js/vars_js.php?id={$time_id}"></script>
 
 		{foreach from=$js_files key=id item=src}
@@ -54,8 +54,8 @@
 		<!-- js widgets -->
 		%=js_widgets%
 	</head>
-	<body>
-
+	<body ng-app="ximdex"  ng-controller="XMainCtrl">
+		<div id="angular-event-relay"></div>
 		<div id="ximdex-splash">
 
 			<div class="loading"><p>{t}Loading...{/t}</p><span class="progress">&nbsp;</span></div>
@@ -93,7 +93,7 @@
 			<spotlight id="mini-spotlight" />
 		</div>
 		<div id="body">
-
+			<h1>[[test]]</h1>
 			<browserwindow id="bw1" />
 
 		</div>

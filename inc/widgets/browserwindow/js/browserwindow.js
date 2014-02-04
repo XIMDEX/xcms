@@ -164,6 +164,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 		openAction: function(action, nodes) {
 			var panel = this.panels['RightPanel'];
 			if (Object.isFunction(panel.openAction)) panel.openAction(action, nodes);
+			// $('#angular-event-relay').trigger('openAction', {action: action, nodes: nodes});
 		},
 
 		getActions: function(params) {
