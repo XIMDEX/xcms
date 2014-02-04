@@ -23,27 +23,14 @@
  *  @version $Revision$
  */
 
-angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.module', 'ximdex.vendor']);
-//Third party modules
-angular.module('ximdex.vendor', ['blueimp.fileupload']);
-angular.module('ximdex.module', ['ximdex.module.xlyre']);
-//Common modules
-angular.module('ximdex.common', ['ximdex.common.service', 'ximdex.common.directive', 'ximdex.common.filter']);
-angular.module('ximdex.main', ['ximdex.main.controller']);
-
-angular.module('ximdex.common.directive', ['ximdex.common.directive.validator']);
-angular.module('ximdex.common.directive.validator', []);
-
-angular.module('ximdex.common.service', []);
-angular.module('ximdex.common.filter', []);
-
-angular.module('ximdex.main.controller', []);
-
-angular.module('ximdex.module.xlyre', []);
-
-//Configure interpolation symbols to work in smarty templates
-angular.module('ximdex')
-    .config(function($interpolateProvider) {
-        $interpolateProvider.startSymbol('[[');
-        $interpolateProvider.endSymbol(']]');
+//Format 
+angular.module('ximdex.common.filter')
+    .filter('xBytes', function(){
+        return function(bytes){
+            if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
+                return ''
+            units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+            number = Math.floor(Math.log(bytes) / Math.log(1024));
+            return (bytes / Math.pow(1024, Math.floor(number))).toFixed(2) +' '+ units[number];
+        }
 });

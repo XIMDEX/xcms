@@ -99,6 +99,8 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY);
 		$this->addJs(Extensions::JQUERY_UI);
 		$this->addJs('/extensions/angular/angular.min.js');
+		$this->addJs('/extensions/ladda/dist/spin.min.js');
+		$this->addJs('/extensions/ladda/dist/ladda.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
@@ -111,14 +113,16 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-process.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
 		$this->addJs('/extensions/d3js/d3.v3.min.js');
-		$this->addActionJs('app.js');
-		$this->addActionJs('XMainCtrl.js');
-		$this->addActionJs('XBackend.js');
-		$this->addActionJs('XEventRelay.js');
-		$this->addActionJs('XTabs.js');
+		$this->addJs('/inc/js/angular/app.js');
+		$this->addJs('/inc/js/angular/services/xBackend.js');
+		$this->addJs('/inc/js/angular/services/xTree.js');
+		$this->addJs('/inc/js/angular/services/xUrlHelper.js');
+		$this->addJs('/inc/js/angular/services/xEventRelay.js');
+		$this->addJs('/inc/js/angular/directives/ximButton.js');
+		$this->addJs('/inc/js/angular/filters/xFilters.js');
+		$this->addActionJs('xMainCtrl.js');
 		$this->addActionJs('controller.js');
-		$this->addJs('/extensions/ladda/dist/spin.min.js');
-		$this->addJs('/extensions/ladda/dist/ladda.min.js');
+		
 
 
 		/* *********************************** SPLASH ************************************** */
