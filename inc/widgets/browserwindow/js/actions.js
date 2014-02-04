@@ -118,6 +118,7 @@
 		},
 
 		close: function() {
+			console.log("Action close method");
 			$(this.container).tabs('remove', this.tabId());
 		},
 
@@ -231,6 +232,17 @@
 				action: this.action,
 				nodes: this.nodes,
 				tabId: this.tabId()
+			});
+			//Creates a new angular scope and compile the DOM
+			var _this = this;
+			console.log("ASSETS COMPLETE THIS", X.browser);
+			var $injector = angular.injector(['ng', 'ximdex']);
+			$injector.invoke(function($rootScope, $compile) {
+			    var scope = $rootScope.$new();
+			    X.browser.panels.RightPanel.tabScopes = X.browser.panels.RightPanel.tabScopes || {};
+			    X.browser.panels.RightPanel.tabScopes[_this.tabId()] = scope;
+			    $compile(_this.content[0])(scope);
+			    scope.$digest();
 			});
 		}
 

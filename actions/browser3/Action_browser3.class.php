@@ -111,6 +111,11 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-process.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
 		$this->addJs('/extensions/d3js/d3.v3.min.js');
+		$this->addActionJs('app.js');
+		$this->addActionJs('XMainCtrl.js');
+		$this->addActionJs('XBackend.js');
+		$this->addActionJs('XEventRelay.js');
+		$this->addActionJs('XTabs.js');
 		$this->addActionJs('controller.js');
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');

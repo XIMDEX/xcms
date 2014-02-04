@@ -136,6 +136,12 @@
 		closeTab: function(tabId) {
 			if (!this.closeable) return;
 			this.tabs.tabs('remove', tabId);
+			
+			//Destroy tab angular scope
+			if 	(X.browser.panels.RightPanel.tabScopes && X.browser.panels.RightPanel.tabScopes[tabId]) {
+				X.browser.panels.RightPanel.tabScopes[tabId].$destroy();
+				delete X.browser.panels.RightPanel.tabScopes[tabId];
+			}
 			// Reorder the ids
 			$('ul.ui-tabs-nav li', this.tabs).each(function(index, item) {
 				$(item).data('tabId', index);
