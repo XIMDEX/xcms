@@ -50,7 +50,7 @@
 
  				this.element = options._element;
  				this.container = options._container;
-			        this.fname = options.file.name.replace(/ /g, "_");
+			    this.fname = options.file.name.replace(/ /g, "_");
 				this.fsize = options.file.size;
  				this.ftype = options.file.type;
 				this.urlcheckname = options.urlcheckname;
@@ -84,7 +84,7 @@
 						var reader_url = new FileReader();
 						reader_url.onload = (function(ximfile) {
 							return function(e) {
-								ximfile.url = e.target.result;
+								ximfile.url = ximfile.data = e.target.result;
 								ximfile.setImage();
 								ximfile.loaded=true;
 								$('div.progress', this.element).text(_("Ready"));

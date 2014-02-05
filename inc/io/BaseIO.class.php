@@ -461,28 +461,6 @@ class BaseIO {
 							$idNode = $xmlDocument->get('IdNode');
 							break;
 
-				/*		case 'TOLDOCUMENTNODE' :
-
-							$alias = isset($data['ALIASNAME']) ? $data['ALIASNAME'] : '';
-							$content = isset($data['CONTENT']) ? $data['CONTENT'] : '';
-
-							$node = new Node();
-
-							$result = $node->CreateNode($data['NAME'], $data['PARENTID'],
-									$nodeType->get('IdNodeType'), $data['STATE'],
-									$data['TEMPLATE'], $data['LANG'], $alias,
-									$data['CHANNELS'], $content);
-
-							if (!($result > 0)) {
-								foreach ($node->messages->messages as $message) {
-									$this->messages->add($message['message'],
-											$message['type']);
-									XMD_Log::error($message);
-								}
-							}
-
-							return ($result > 0) ? $result : ERROR_INCORRECT_DATA;
-				*/
 						default : //XMLDOCUMENT
 							$nodeType = new NodeType();
 							$nodeType->SetByName($data['NODETYPENAME']);
@@ -543,15 +521,23 @@ class BaseIO {
 				return ($result > 0) ? $result : ERROR_INCORRECT_DATA;
 
 			case 'IMAGENODE':
+                $paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');
+                if (count($paths) != 1) { 
+                    $this->messages->add(_('A file for node creation could not be obtained'),MSG_TYPE_WARNING);
+                    return ERROR_INCORRECT_DATA;
+                }    
+                $data['PATH'] = $paths[0];
+                unset($data['CHILDRENS']);
+
 				$node = new Node();
-                                $result = $node->CreateNode($data['NAME'], $data['PARENTID'], 5040);
-                                if (!($result > 0)) {
-                                        reset($node->messages->messages);
-                                        while (list (, $message) = each($node->messages->messages)) {
-                                                XMD_Log::error($message['message']);
-                                        }
-                                }
-                                return ($result > 0) ? $result : ERROR_INCORRECT_DATA;	
+                $result = $node->CreateNode($data['NAME'], $data['PARENTID'], 5040,null,$data['PATH']);
+                if (!($result > 0)) {
+                    reset($node->messages->messages);
+                    while (list (, $message) = each($node->messages->messages)) {
+                        XMD_Log::error($message['message']);
+                    }
+                }
+                return ($result > 0) ? $result : ERROR_INCORRECT_DATA;	
 			default :
 				// TODO: trigger error.
 				$this->messages->add(_('An error occurred trying to insert the node'),MSG_TYPE_ERROR);
