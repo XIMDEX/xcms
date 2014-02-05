@@ -24,10 +24,10 @@
  */
 
 angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximdex.module', 'ximdex.vendor']);
-//Third party modules
+
 angular.module('ximdex.vendor', ['blueimp.fileupload']);
 angular.module('ximdex.module', ['ximdex.module.xlyre']);
-//Common modules
+
 angular.module('ximdex.common', ['ximdex.common.service', 'ximdex.common.directive', 'ximdex.common.filter']);
 angular.module('ximdex.main', ['ximdex.main.controller']);
 angular.module('ximdex.widget', []);
@@ -48,3 +48,28 @@ angular.module('ximdex')
         $interpolateProvider.startSymbol('[[');
         $interpolateProvider.endSymbol(']]');
 });
+
+//Hacks to deal with actual mixed enviroment
+
+(function(X) {
+
+	X.angularTools = {
+		//Initialize compile on a view and manage scope destruction
+		initView: function (view, id){
+			var $injector = angular.injector(['ng', 'ximdex']);
+			$injector.invoke(function($rootScope, $compile) {
+			    var destroy = function(event, viewId){
+			        if (id == viewId) {
+			            scope.$destroy();
+			            $(document).off("closeTab.angular", destroy);
+			        }
+			    };
+			    var scope = $rootScope.$new();
+			    $compile(view[0])(scope);
+			    scope.$digest();
+			    $(document).on("closeTab.angular", destroy);
+			});
+		}
+	};
+
+})(com.ximdex);

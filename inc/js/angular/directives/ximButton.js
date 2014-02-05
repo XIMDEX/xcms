@@ -39,7 +39,6 @@ angular.module('ximdex.common.directive')
             link: function postLink(scope, element, attrs) {
                 var loader = $window.Ladda.create(element[0]);
                 scope.$watch('state', function(newState, oldState){
-                    console.log("stating", newState);
                     switch (newState) {
                         case 'submitting':
                         case 'pending':
@@ -51,7 +50,6 @@ angular.module('ximdex.common.directive')
                     }
                 });
                 scope.$watch('progress', function(newValue, oldValue){
-                    console.log("progress", newValue);
                     if (oldValue != newValue)
                         loader.setProgress(newValue)
                 });
