@@ -70,12 +70,12 @@ class FileNode extends Root {
 		$data = new DataFactory($this->nodeID);
 		$content = $data->GetContent();
 
-		/// Si existia lo borramos
-		if(file_exists($file))
+		// If exists, it would be deleted
+		if(file_exists($file)){
 			FsUtils::delete($file);
+        }
 
-
-		/// Y lo volvemos a crear
+		// and created again
 		FsUtils::file_put_contents($file, $content);
 	}
 
@@ -87,7 +87,6 @@ class FileNode extends Root {
 	*/
 
 	function getRenderizedContent($channel = NULL, $content = NULL) {
-
 		return $this->GetContent();
 	}
 
@@ -102,13 +101,10 @@ class FileNode extends Root {
 	*/
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null) {
-
 		$content = FsUtils::file_get_contents($sourcePath);
 		$data = new DataFactory($this->parent->get('IdNode'));
 		$ret = $data->SetContent($content);
-
 		$this->updatePath();
-
 		return $ret;
 	}
 
