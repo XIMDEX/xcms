@@ -93,9 +93,7 @@
 			<spotlight id="mini-spotlight" />
 		</div>
 		<div id="body">
-			<h1>[[test]]</h1>
 			<browserwindow id="bw1" />
-
 		</div>
 
 	</body>
