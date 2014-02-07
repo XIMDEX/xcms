@@ -118,6 +118,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/services/xTree.js');
 		$this->addJs('/inc/js/angular/services/xUrlHelper.js');
 		$this->addJs('/inc/js/angular/services/xEventRelay.js');
+		$this->addJs('/inc/js/angular/services/xDialog.js');
 		$this->addJs('/inc/js/angular/directives/ximButton.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addActionJs('xMainCtrl.js');
