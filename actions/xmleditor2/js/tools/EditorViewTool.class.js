@@ -49,8 +49,8 @@ function EditorViewTool() {
 		editor.registerTool('treeview', this.treeButton);
         this.designButton = new KupuButton('kupu-designview-button', this._getSetViewWrapper(this.VIEW_DESIGN));
 		editor.registerTool('designview', this.designButton);
-        this.remoteButton = new KupuButton('kupu-remoteview-button', this._getSetViewWrapper(this.VIEW_REMOTE));
-		editor.registerTool('remoteview', this.remoteButton);
+        //this.remoteButton = new KupuButton('kupu-remoteview-button', this._getSetViewWrapper(this.VIEW_REMOTE));
+		//editor.registerTool('remoteview', this.remoteButton);
 
 		this.activateButtons();
     };
@@ -68,7 +68,7 @@ function EditorViewTool() {
 
 		$(this.treeButton.button).removeClass('kupu-treeview-pressed').addClass('kupu-treeview');
 		$(this.designButton.button).removeClass('kupu-designview-pressed').addClass('kupu-designview');
-		$(this.remoteButton.button).removeClass('kupu-remoteview-pressed').addClass('kupu-remoteview');
+		//$(this.remoteButton.button).removeClass('kupu-remoteview-pressed').addClass('kupu-remoteview');
 
 		switch (view) {
 			case this.VIEW_TREE:
@@ -78,7 +78,7 @@ function EditorViewTool() {
 				$(this.designButton.button).addClass('kupu-designview-pressed').removeClass('kupu-designview');
 				break;
 			case this.VIEW_REMOTE:
-				$(this.remoteButton.button).addClass('kupu-remoteview-pressed').removeClass('kupu-remoteview');
+				//$(this.remoteButton.button).addClass('kupu-remoteview-pressed').removeClass('kupu-remoteview');
 				break;
 		}
 
@@ -98,7 +98,7 @@ function EditorViewTool() {
     	var views = this.editor.options.availableViews;
         if (!views.contains(this.VIEW_TREE)) this.treeButton.disable();
 		if (!views.contains(this.VIEW_DESIGN)) this.designButton.disable();
-		if (!views.contains(this.VIEW_REMOTE)) this.remoteButton.disable();
+		//if (!views.contains(this.VIEW_REMOTE)) this.remoteButton.disable();
     };
 };
 
