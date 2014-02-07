@@ -392,10 +392,10 @@
 
         .directive('fileUpload', function () {
             return {
-                controller: 'FileUploadController',
-                scope: true
+                controller: 'FileUploadController'
             };
         })
+
 
         .directive('fileUploadProgress', function () {
             return {
