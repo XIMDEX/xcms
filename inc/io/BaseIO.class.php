@@ -632,6 +632,35 @@ class BaseIO {
 				}
 				return $node->get('IdNode');
 
+            case 'IMAGENODE' :
+                if (isset($data['CHILDRENS'])) {
+                    if ($this->_searchNodeInChildrens($data['CHILDRENS'], 'PATH', MODE_NODETYPE)) {
+                        $paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');
+                        if (count($paths) != 1) { 
+                            return ERROR_INCORRECT_DATA;
+                        }    
+                        $data['PATH'] = $paths[0];
+                        if (is_file($data['PATH'])) {
+                            $node->setContent(FsUtils::file_get_contents($data['PATH']));
+                        }    
+                        unset($data['CHILDRENS']);
+                    }    
+                }    
+
+                if (!empty($data['NAME'])) {
+                    $node->set('Name', $data['NAME']);
+                    $result = $node->update();
+                    if ($result > 0) { 
+                        return $result;
+                    }    
+                }    
+
+                if (!empty($data['STATE'])) {
+                    $node->class->promoteToWorkFlowState($data['STATE']);
+                }    
+
+                return $data['ID'];
+
 			/* file nodes */
 			case 'FILENODE' :
 				if (isset($data['CHILDRENS'])) {
@@ -661,10 +690,6 @@ class BaseIO {
 				}
 
 				return $data['ID'];
-
-			// Unreachable code
-			//				return ERROR_INCORRECT_DATA;
-
 
 			// link nodes
 			case 'LINKNODE' :
