@@ -203,7 +203,7 @@ fi
 #End moved
 
 USER_APACHE=$SCRIPT_USER
-GROUP_APACHE="`ps -eo 'group args'|grep 'httpd\|apache' |grep -v grep|grep -v root|grep -v USER|awk 'NR<=1 {print $1; }'|cut -d ' ' -f 1,1 `"
+GROUP_APACHE="`ps -eo 'group args'|grep 'httpd\|apache' |grep 'start\|bin'|grep -v grep|grep -v root|grep -v USER|awk 'NR<=1 {print $1; }'|cut -d ' ' -f 1,1 `"
 GROUP_APACHE=${GROUP_APACHE:-$USER_APACHE}
 $(chown -R ${USER_APACHE}:${GROUP_APACHE} ${XIMDEX_PATH} 2>/dev/null) #setting user & group to ximdex /dev/null to avoid problems with .svn from other machines
 $(chmod -R u+x $SCRIPT_PATH/*sh)
@@ -269,7 +269,7 @@ do
 
 		6)
 		#waiting for settings perms
-		echo -n "Setting perms... "
+		echo -n "Setting permissions as ${USER_APACHE}:${GROUP_APACHE} in directory ${XIMDEX_PATH}... "
 		$(chown -R ${USER_APACHE}:${GROUP_APACHE} ${XIMDEX_PATH})
 		$(chmod -R 2770 ${XIMDEX_PATH}/data)
 		$(chmod -R 2770 ${XIMDEX_PATH}/logs)
