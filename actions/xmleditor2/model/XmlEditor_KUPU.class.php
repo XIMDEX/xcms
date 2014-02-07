@@ -231,7 +231,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 
 			$actionURL . '/js/widgets/lib/treeview/datasource.js',
 			$actionURL . '/js/widgets/lib/treeview/treeview.js'
+
 	        );
+
+
+
+        $jsFiles=array($actionURL.'/js/editor/built.js');
 
 		$i18n = new ParsingJsGetText();
 		$jsFiles = $i18n->getTextArrayOfJs($jsFiles);

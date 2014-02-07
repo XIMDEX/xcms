@@ -120,10 +120,8 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/services/xEventRelay.js');
 		$this->addJs('/inc/js/angular/directives/ximButton.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
-		$this->addActionJs('xMainCtrl.js');
+		$this->addActionJs('XMainCtrl.js');
 		$this->addActionJs('controller.js');
-		
-
 
 		/* *********************************** SPLASH ************************************** */
 		define("REMOTE_WELCOME", STATS_SERVER."/stats/getsplash.php");
@@ -150,7 +148,6 @@ class Action_browser3 extends ActionAbstract {
                         $values["splash_file"] = null;
 		}
 		/* ************************************************************************************** */
-
 
 		$this->render($values, 'index', 'only_template.tpl');
 	}

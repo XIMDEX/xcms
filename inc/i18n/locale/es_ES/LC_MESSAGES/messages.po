@@ -2058,6 +2058,9 @@ msgstr " A&ntilde;adir archivos"
 msgid "An unexpected error occurred while uploading file"
 msgstr "Error inesperado en la subida del archivo"
 
+msgid "Unexpected error while uploading file. Maybe your web server is not configured properly."
+msgstr "Error inesperado en la subida del archivo. Quiz&aacute;s tu servidor web no est&aacute; correctamente configurado."
+
 msgid " File is not of expected type "
 msgstr " El archivo no es del tipo esperado "
 
@@ -4165,6 +4168,12 @@ msgstr "Bajar elemento"
 
 msgid "Delete selected element"
 msgstr "Borrar elemento seleccionado"
+
+msgid "Copy selected element"
+msgstr "Copiar elemento seleccionado"
+
+msgid "Cut selected element"
+msgstr "Cortar elemento seleccionado"
 
 msgid "Validate schema"
 msgstr "Validar esquema"

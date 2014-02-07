@@ -115,7 +115,7 @@ function setHost
 		next_step
 	else
 	   echo "Ximdex host couldn't be verified. Maybe it doesn't exist or has authentication. "
-	   question="Do you want to rewrite the Ximdex Host Url again? (y)es / (n)o / (c)ancel installation]: "
+	   question="Do you want to type the Ximdex Host Url again? (y)es / (n)o / (c)ancel installation]: "
             echo -n "$question"
             read option
             while [ "$option" != 'Y' ] && [ "$option" != 'y' ] && [ "$option" != 'n' ] && [ "$option" != 'N' ] && [ "$option" != 'c' ] &&     [ "$option" != 'C' ]
