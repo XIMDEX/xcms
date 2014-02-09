@@ -28,10 +28,11 @@
 
 	<h3 i18n:translate="">{t}Link manager{/t}</h3>
 
-	<div class="kupu-panels">
+	<div class="kupu-panels js_search_link_panel">
 		<div class="search">
 			<label for="ximlink-search" i18n:translate="">{t}Search{/t}</label>
 			<input id="ximlink-search" class="kupu-toolbox-st ximlink-search long" type="text" />
+			<a href="#" class="js_add_link">{t}or add a new link{/t}</a>
 		</div>
 		<div id="ximlink-list">
 				<label for="ximlink-list" i18n:translate="">{t}Links{/t}</label>
@@ -48,5 +49,32 @@
 		<button class="kupu-dialog-button save-button" type="button" i18n:translate="">{t}Accept{/t}</button>
 	
 		<button class="kupu-dialog-button close-button" type="button" i18n:translate="">{t}Cancel{/t}</button>
+	</div>
+<!--Hasta aquí busca enlaces-->
+<!--Desde aquí, los crea-->
+	<div class="kupu-panels js_add_link_panel" style="display:none">
+		<div class="search">
+			<label for="link_name" i18n:translate="">{t}Name{/t}</label>
+			<input name="link_name" class="kupu-toolbox-st ximlink-search long" type="text" />
+		</div>
+		<div class="search">
+			<label for="link_url" i18n:translate="">{t}Url{/t}</label>
+			<input name="link_url" class="kupu-toolbox-st ximlink-search long" type="text" />
+		</div>
+		<div class="search">
+			<label for="link_description" i18n:translate="">{t}Descripción{/t}</label>
+			<input name="link_description" class="kupu-toolbox-st ximlink-search long" type="text" />
+		</div>
+		<div class="search" style="position:relative; height:300px;">
+			<label for="link_idparent" i18n:translate="">{t}Folder{/t}</label>
+			<treeview class="xim-treeview-selector"	/>
+			<input name="link_id_parent" type="hidden" />
+		</div>		
+	</div>
+
+	<div class="buttons" style="display:none">
+		<button class="kupu-dialog-button create-button" type="button" i18n:translate="">{t}Create{/t}</button>
+	
+		<button class="kupu-dialog-button cancel-button" type="button" i18n:translate="">{t}Cancel{/t}</button>
 	</div>
 </div>

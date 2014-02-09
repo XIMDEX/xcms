@@ -187,87 +187,55 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 		var ximElement = this.tool.selNode;
 
 		var $inputUrl = $(inputUrl)
-			.addClass('kupu-attribute-value')
-			.val(ximElement.ximLink.url);
+			.addClass('kupu-attribute-value');
 
 		var inputUrlId = $inputUrl.attr('id');
 
-		var $inputText = document.createElement('input');
-		$inputText.setAttribute('type', 'text');
-		$inputText = $($inputText)
-			.attr('id', inputUrlId + '-text')
-			.addClass('wide kupu-attribute-ximlink-value')
-			.val(ximElement.ximLink.text);
-
-		var $inputName = document.createElement('input');
-		$inputName.setAttribute('type', 'text');
-		$inputName = $($inputName)
-			.attr('id', inputUrlId + '-name')
-			.addClass('wide kupu-attribute-ximlink-value')
-			.val(ximElement.ximLink.name);
-
 		var that = this;
-		$inputName.change(function(event){that._save_attribute_ximlink(event, $inputUrl,$inputText, $inputName)});
-		$inputText.change(function(event){that._save_attribute_ximlink(event, $inputUrl,$inputText, $inputName)});
-		$inputUrl.change(function(event){that._save_attribute_ximlink(event, $inputUrl,$inputText, $inputName)});
+		$inputUrl.change(function(event){that._save_attribute_ximlink(event, $inputUrl)});
 
 		var $label = $('<div></div>').addClass('kupu-toolbox-label').html('%s:'.printf(label));
 		var $fieldLabel = $('<label></label>');
 		var $wrap = $('<div></div>').addClass('kupu-toolbox-attribute-value');
 		var $button = $('<button></button>')
-			.addClass('ximlink-search')
+			.addClass('imageSelector-search')
 			.attr('type', 'button')
 			.html(_('Search'))
-			.click(function(event){ that._openXimlinkSelector(event, $inputUrl, $inputText, $inputName)});
-
-		var $labelName = $fieldLabel.clone().attr('for', $inputName.attr('id')).html(_('Name:'));
-		var $labelUrl = $fieldLabel.clone().attr('for', $inputUrl.attr('id')).html('Url:');
-		var $labelText = $fieldLabel.clone().attr('for', $inputText.attr('id')).html(_('Text:'));
+			.click(function(event){ that._openXimlinkSelector(event, $inputUrl)});
 
 
 		var d = $('<div></div>')
 			.addClass('xedit-element-attribute')
 			.append($label)
-			.append($labelName)
-			.append($inputName.wrap($wrap.clone()))
-			.append($labelUrl)
-			.append($inputUrl.wrap($wrap.clone()));
-
-		if (ximElement.tagName != 'image') {
-			d.append($labelText).append($inputText.wrap($wrap.clone()));
-		} else {
-			$labelText.remove();
-			$inputText.unbind().remove()
-		}
-
-		d.append($button);
+			.append(
+				$wrap.append($inputUrl).append($button)
+			);
 
 		$(this.element).append(d);
 	},
 
-	_openXimlinkSelector: function(event, $inputUrl, $inputText, $inputName) {
+	_openXimlinkSelector: function(event, $inputUrl) {
 		var drawerId = 'ximlinkdrawer';
 
-		if($inputText) {
-			var term = $inputText.val();
-		}else {
-			var term = "";
-		}
+		var mainTerm = $(this.tool.selNode._htmlElements).filter(":visible").text();
+		var term = $inputUrl.val()? $inputUrl.val() : "";
 
 		var dt = this.editor.getTool('ximdocdrawertool');
 		if (dt.isOpen(drawerId)) return;
 
 		var $button = $('button.ximlink-search', this.element).unbind('click');
-
+		dt.drawers[drawerId].setInput($inputUrl);
 		$.getJSON(
 			X.restUrl + '?action=xmleditor2&method=getAvailableXimlinks&term='+term,
 			{docid: this.editor.nodeId},
 			function(data, textStatus) {
 
 				dt.drawers[drawerId].setData(data);
-				dt.drawers[drawerId].setMainTerm(term);
+				dt.drawers[drawerId].setMainTerm(mainTerm);
+				dt.drawers[drawerId].setTerm(term);
+				dt.drawers[drawerId].setXimElement(this.tool.selNode);
 				dt.openDrawer(drawerId);
-				$button.click(this._openXimlinkSelector.bind(this, $inputUrl, $inputText, $inputName));
+				$button.click(this._openXimlinkSelector.bind(this, $inputUrl));
 
 			}.bind(this)
 		);
@@ -426,13 +394,8 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 			that2.currentInput.val(image.nodeid.value);
 	},
 
-	_save_attribute_ximlink: function(event, $inputUrl, $inputText, $inputName) {
-
-		this.tool.selNode.ximLink.name = $inputName.val();
-		this.tool.selNode.ximLink.url = $inputUrl.val();
-		this.tool.selNode.ximLink.text = $inputText.val();
+	_save_attribute_ximlink: function(event, $inputUrl) {
 		this.updateButtonHandler();
 	}
 
 });
-
