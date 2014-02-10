@@ -212,6 +212,8 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 			);
 
 		$(this.element).append(d);
+		if ($inputUrl.val() == "")
+			$button.click();
 	},
 
 	_openXimlinkSelector: function(event, $inputUrl) {
@@ -260,28 +262,27 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 			if (Object.isEmpty(this.imageSelector)){
 				this.imageSelector = $("<div></div>").appendTo(this.element);
 				this.imageSelector.searchpanel({
-                                        url_base: X.baseUrl,
-                                        use_cache: false,
-                                        queryHandler: "SQLTREE",
-                                        masterFilter: [{
-                                                comparation: 'equal',
-                                                content: '5040',
-                                                field: 'nodetype',
-                                                from: '',
-                                                to: ''
-                                        }, {
-                                                comparation: 'equal',
-                                                content: this.editor.nodeId,
-                                                field: 'nodeid',
-                                                from: '',
-                                                to: ''
-                                        }
-                                        ],
-                                        showFilters: false,
-                                        view: 'treeview',
-                                        showSelectButton: true
-                                });
-
+	                url_base: X.baseUrl,
+	                use_cache: false,
+	                queryHandler: "SQLTREE",
+	                masterFilter: [{
+	                        comparation: 'equal',
+	                        content: '5040',
+	                        field: 'nodetype',
+	                        from: '',
+	                        to: ''
+	                }, {
+	                        comparation: 'equal',
+	                        content: this.editor.nodeId,
+	                        field: 'nodeid',
+	                        from: '',
+	                        to: ''
+	                }
+	                ],
+	                showFilters: false,
+	                view: 'treeview',
+	                showSelectButton: true
+	        	});
 			}
 
 			that2 = this;
