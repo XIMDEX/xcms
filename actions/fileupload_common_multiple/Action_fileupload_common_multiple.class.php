@@ -203,7 +203,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 	   	    		unlink($tmp_name);
 	   	 	}
 	   	 	else {
-	   			$retval  = $this->_setRest(_("Unexpected error while uploading file ").$headers["XIM-FILENAME"]);
+	   			$retval  = $this->_setRest(_("Unexpected error while uploading file. Maybe your web server is not configured properly."));
 	   	 	}
 	   	}
 	    	die(json_encode($retval));

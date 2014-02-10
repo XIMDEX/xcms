@@ -331,6 +331,39 @@ class Action_xmleditor2 extends ActionAbstract {
 		$this->sendJSON($data);
 	}
 
+    public function getAll(){
+        $idnode = $this->request->getParam('nodeid');
+        $view = $this->request->getParam('view');
+        $content = $this->request->getParam('content');
+        $this->getEditor($idnode);
+        // Get XML File
+        $contentXML = $this->_editor->getXmlFile($idnode, $view, $content);
+        $res = array();
+        $res['xmlFile'] = $contentXML;
+        // Get Schema File
+        $contentRNG = $this->_editor->getSchemaFile($idnode);
+        $res['schemaFile'] = $contentRNG;
+        // Get XSL File
+        $view = $this->request->getParam('view');
+        $includesOnServer = $this->request->getParam("includesInServer");
+        $this->getEditor($idnode);
+        $contentXSL = $this->_editor->getXslFile($idnode, $view, $includesOnServer);
+        $res['xslFile'] = $contentXSL;
+        // No Renderizable Elements
+        $contentNoRender = $this->_editor->getNoRenderizableElements($idnode);
+        $res['noRenderizableElements'] = $contentNoRender;
+        // Get Config
+        $contentConfig = $this->_editor->getConfig($idnode);
+        $res['config'] = $contentConfig;
+        // Print JSON
+        $content = Serializer::encode(SZR_JSON, $res);
+
+        header('Content-type: application/json');
+
+        print $content;
+        exit();
+    }
+
 }
 
 ?>
