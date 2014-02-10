@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .docs-amount {
   background: #b2e0d9;
   -webkit-border-radius: 2px;
