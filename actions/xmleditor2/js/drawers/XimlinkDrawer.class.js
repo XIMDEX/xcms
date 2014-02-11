@@ -95,13 +95,16 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 			$('div.js_add_link_panel', this.element).next("div.buttons").show(); ;
 			$('div.js_search_link_panel', this.element).hide() ; 
 			$('div.js_search_link_panel', this.element).next("div.buttons").hide() ; 
+			$('.new_link').hide();
 			return false;}.bind(this)
 		);
 
 		$('button.cancel-button', this.element).click(function(){
+
     		$('div.js_add_link_panel', this.element).hide(); ;
     		$('div.js_add_link_panel', this.element).next("div.buttons").hide(); ;
 			$('div.js_search_link_panel', this.element).show() ; 
+			$('.new_link').show();
 			$('div.js_search_link_panel', this.element).next("div.buttons").show() ; 
 			return false;
 		}.bind(this));

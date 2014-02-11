@@ -9,12 +9,7 @@
  * designs, but give credit where credit is due.
  *
  *****************************************************************************/
-
 /* $Id: kupudrawerstyles.css 21177 2005-12-15 14:39:58Z duncan $ */
-
-
-
-
 .kupu-drawer {
   position: absolute;
   display: none;
@@ -27,119 +22,133 @@
   z-index: 2;
   color: black;
   left: 12%;
-  top: 20%;
-}
+  top: 20%; }
 
-div.kupu-tabledrawer{
-	border: 1px solid #D2D2D2;
-	border-radius: 12px;
-	-moz-border-radius: 12px;
-	-webkit-border-radius: 12px;
-	padding: 0;
-}
+div.kupu-tabledrawer {
+  border: 1px solid #D2D2D2;
+  border-radius: 12px;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+  padding: 0; }
 
-.kupu-tabledrawer h1{
-	padding: 9px 3px 9px 43px;
-	border-bottom:  1px solid #DEDEDE;
-	color: #7e7e7e;
-	font-size: 1.2em;
-	position: relative;
-}
+.kupu-tabledrawer h1 {
+  padding: 9px 3px 9px 43px;
+  border-bottom: 1px solid #DEDEDE;
+  color: #7e7e7e;
+  font-size: 1.2em;
+  position: relative; }
 
-.kupu-tabledrawer h1:before{
-	content: ' ';
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	background: url(../../../actions/xmleditor2/gfx/icon-editor.png) no-repeat -42px -360px;
-	left: 17px;
-}
+.kupu-tabledrawer h1:before {
+  content: ' ';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: url(../../../actions/xmleditor2/gfx/icon-editor.png) no-repeat -42px -360px;
+  left: 17px; }
 
-.kupu-drawer h3{
-	text-transform: none;
-	font-weight: bold;
-	padding:0 0 11px 15px;
-	border-bottom: 1px solid #E6E6E6;
-}
+.kupu-drawer h3 {
+  text-transform: none;
+  font-weight: bold;
+  padding: 0 0 11px 15px;
+  border-bottom: 1px solid #E6E6E6; }
 
 .kupu-tabledrawer {
   width: 408px;
-  left: 320px;
-}
+  left: 320px; }
+
 .kupu-tabledrawer .kupu-panels,
 .kupu-tabledrawer .kupu-panels table,
 .kupu-tabledrawer div.kupu-dialogbuttons {
-  width: auto;
-}
+  width: auto; }
 
 .kupu-tabledrawer .kupu-panels
-
 .kupu-drawer h1 {
-   height: auto; width: auto;
-}
+  height: auto;
+  width: auto; }
 
 input#kupu-searchbox-input {
   width: 8em;
   margin-bottom: 6px;
   margin-top: 12px;
-  padding: 2px;
-}
+  padding: 2px; }
 
 div.kupu-linkdrawer-addlink td {
-  border: 0;
-}
+  border: 0; }
+
 input.kupu-linkdrawer-input {
-   width: 500px;
-}
+  width: 500px; }
+
 iframe.kupu-linkdrawer-preview {
-   width: 100%;
-}
+  width: 100%; }
 
 div#kupu-librarydrawer h1, div.kupu-drawer h1 {
-  margin-top: 12px;
-}
+  margin-top: 12px; }
 
-div.kupu-tabledrawer h1{
-	margin-top: 4px;
-}
+div.kupu-tabledrawer h1 {
+  margin-top: 4px; }
 
 div.kupu-dialogbuttons {
   text-align: right;
   margin-top: 20px;
   margin-bottom: 0px;
-  width: 640px; /* Mozilla bug */
-}
+  width: 640px;
+  /* Mozilla bug */ }
 
-div.kupu-drawer button {
-  margin-right: 0.3em;
-  margin-bottom: 15px;
-   background: url("../../../xmd/images/action/fnd-buttons-form.png") repeat-x scroll left center transparent;
-    border: 1px solid #E1E1E1;
-    border-radius: 6px 6px 6px 6px;
-    box-shadow: 0 2px 0 #FFFFFF inset;
-    color: #222222;
-    cursor: pointer;
-    float: none;
-    letter-spacing: 0;
-    margin-right: 8px;
-    padding: 5px 9px;
-    text-shadow: 1px 1px 0 #FFFFFF;
-    font-size: 1em;
-}
+.kupu-drawer .btn {
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6e6e6e), to(#7b7b7b));
+  background-image: -webkit-linear-gradient(#6e6e6e, #7b7b7b);
+  background-image: -moz-linear-gradient(#6e6e6e, #7b7b7b);
+  background-image: -o-linear-gradient(#6e6e6e, #7b7b7b);
+  background-image: linear-gradient(#6e6e6e, #7b7b7b);
+  border-color: #6e6e6e;
+  text-shadow: 0 -1px 0 #515151, 0 1px 0 rgba(0, 0, 0, 0.2);
+  font-family: "Coustard";
+  text-transform: uppercase;
+  color: white;
+  border: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 7px 14px 5px;
+  font-family: "Ubuntu Condensed"; }
+  .kupu-drawer .btn:hover {
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4b4b4b), to(#707070));
+    background-image: -webkit-linear-gradient(#4b4b4b, #707070);
+    background-image: -moz-linear-gradient(#4b4b4b, #707070);
+    background-image: -o-linear-gradient(#4b4b4b, #707070);
+    background-image: linear-gradient(#4b4b4b, #707070);
+    border-color: #676767;
+    -webkit-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
+    -moz-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
+    box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2); }
 
-div.kupu-panels {
- /* width: 100%;
-  background-color: ButtonFace;*/
-  clear:both;
-  padding: 0 15px 15px;
-}
+.kupu-drawer .main_action {
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#72c4b9), to(#7ccac0));
+  background-image: -webkit-linear-gradient(#72c4b9, #7ccac0);
+  background-image: -moz-linear-gradient(#72c4b9, #7ccac0);
+  background-image: -o-linear-gradient(#72c4b9, #7ccac0);
+  background-image: linear-gradient(#72c4b9, #7ccac0);
+  border-color: #74c6bb;
+  text-shadow: 0 -1px 0 #60b6aa, 0 1px 0 rgba(255, 255, 255, 0.2); }
+  .kupu-drawer .main_action:hover {
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#52ada0), to(#77c6bb));
+    background-image: -webkit-linear-gradient(#52ada0, #77c6bb);
+    background-image: -moz-linear-gradient(#52ada0, #77c6bb);
+    background-image: -o-linear-gradient(#52ada0, #77c6bb);
+    background-image: linear-gradient(#52ada0, #77c6bb);
+    border-color: #66bbaf;
+    -moz-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
+    -webkit-box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2);
+    -box-shadow: 1px 1px 2px rgba(157, 157, 157, 0.2); }
 
-div.kupu-panels .search {
-	border-bottom: 1px dotted #cdcdcd;
-	padding-bottom: 10px;
-}
+.kupu-panels {
+  /* width: 100%;
+   background-color: ButtonFace;*/
+  clear: both;
+  padding: 0 15px 15px; }
 
-div.kupu-panels .search label{
+/*div.kupu-panels .search label{
 	text-transform: uppercase;
 	background: url(../../../actions/xmleditor2/gfx/arrow-darkgrey.png) no-repeat right center;
 	padding: 0 15px 0 10px;
@@ -182,61 +191,50 @@ div.kupu-panels .search label{
 
 
 div.kupu-panels td {
-/*  font-size: 12px;*/
   background-color: white;
   vertical-align: top;
   width: 50%;
 }
-
+*/
 div.kupu-panels td.kupu-preview-button {
-  vertical-align: bottom;
-}
+  vertical-align: bottom; }
 
 div.kupu-panels table {
- width: 100%;
- margin: 0; 
- padding: 0; 
- border: 0;
-}
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0; }
 
 td.panel {
-  height: 260px;
-}
+  height: 260px; }
 
 td#kupu-librariespanel {
   overflow: auto;
-  width: 105px;
-}
+  width: 105px; }
 
 div#kupu-librariesitems {
   width: 105px;
   white-space: pre;
-  height: 100%;
-}
+  height: 100%; }
 
 td#kupu-resourcespanel {
   overflow: auto;
-  width: 185px;
-}
+  width: 185px; }
 
 div#kupu-resourceitems {
   white-space: pre;
   width: 200px;
-  height: 100%;
-}
+  height: 100%; }
 
 div#kupu-properties {
-  height: 100%;
-}
+  height: 100%; }
 
 div#kupu-librariesitems, div#kupu-resourceitems, div#kupu-properties {
-  padding: 6px;
-}
+  padding: 6px; }
 
 .overflow {
   overflow: auto;
-  height: 100%;
-}
+  height: 100%; }
 
 div.response, div.collection {
   background-repeat: no-repeat;
@@ -244,84 +242,70 @@ div.response, div.collection {
   height: 15px;
   margin-top: 0.1em;
   overflow: hidden;
-  padding-top: 4px;
-}
+  padding-top: 4px; }
 
 div.kupu-libsource, div.kupu-libsource-selected,
 div.kupu-resource, div.kupu-collection, div.kupu-upload {
   cursor: pointer;
   margin-bottom: 2px;
   vertical-align: text-bottom;
-  white-space: pre;
-}
+  white-space: pre; }
+
 div.kupu-upload {
-   text-align: right; font-style: italic;
-}
+  text-align: right;
+  font-style: italic; }
 
 /*div.kupu-libsource-selected {
   background-repeat: no-repeat;
 }*/
-
 /*div.kupu-libsource-selected span,
  div.kupu-libsource span{
   margin-top: 3px;
   display: inline;
 }*/
-
 div.kupu-libsource-selected span {
-  background-color: ButtonFace;  
-}
+  background-color: ButtonFace; }
 
 #kupu-tabledrawer-edittable {
-  display: none;
-}
+  display: none; }
 
 img.library-icon-collection, img.library-icon-resource {
   margin-right: 5px;
   height: 16px;
-  width: 16px;
-}
+  width: 16px; }
 
 span.drawer-item-title {
   padding-left: 2px;
   padding-right: 2px;
-  padding-top: 2px;
-}
+  padding-top: 2px; }
 
 span.drawer-item-title.selected-item {
-  background-color:#C0C0C0;
-}
+  background-color: #C0C0C0; }
 
 /* Local image upload form */
-
 #kupu-upload-file, #kupu-upload-title {
   margin-top: 0.1em;
   margin-bottom: 0.5em;
   width: 95%;
-  clear:both;
-}
+  clear: both; }
 
 #kupu-upload-instructions {
   margin-top: 0.5em;
   margin-bottom: 1em;
-  clear:both;
-  line-height: normal;
-}
+  clear: both;
+  line-height: normal; }
 
 th.kupu-toolbox-label {
-   text-align:left;
-   width: 5%;
-   white-space: nowrap;
-   text-transform: uppercase;
-   color: #757575;
-   font-size: .88em;
-   padding: 0 0 0 35px;
-}
+  text-align: left;
+  width: 5%;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: #757575;
+  font-size: .88em;
+  padding: 0 0 0 35px; }
 
 tr:nth-child(1) th.kupu-toolbox-label {
-	background:  url(../../../actions/xmleditor2/gfx/rows-cols.png) no-repeat left 1px;	
-}
+  background: url(../../../actions/xmleditor2/gfx/rows-cols.png) no-repeat left 1px; }
 
 tr:nth-child(2) th.kupu-toolbox-label {
-	background:  url(../../../actions/xmleditor2/gfx/rows-cols.png) no-repeat left -21px;	
-}
+  background: url(../../../actions/xmleditor2/gfx/rows-cols.png) no-repeat left -21px; }
