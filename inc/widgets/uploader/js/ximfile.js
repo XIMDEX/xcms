@@ -288,7 +288,7 @@
 			  		xhr.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
 			  		xhr.setRequestHeader('XIM-SIZE', this.getSize());
 			  		xhr.setRequestHeader('XIM-TYPE', this.getType());
-			  		xhr.send(this.getData());
+			  		xhr.send(this.getData().match(/,(.*)$/)[1]);
 			  	}
 				return true;
  			},
