@@ -57,6 +57,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 				minWidth: 630,
 				minHeight: 280,
 				modal: false,
+				dialogClass:"dialog_advanced_search",
 				resizable: true,
 				closeOnEscape: true/*,
 				buttons: {
