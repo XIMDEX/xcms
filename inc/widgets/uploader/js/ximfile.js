@@ -26,7 +26,6 @@
 
  (function(X) {
  	var numfiles = 0;
-	var imageMimeTypes=["image/png","image/gif","image/jpeg"];
 
  	X.ximfile = Object.xo_create({
 
@@ -55,7 +54,7 @@
  				this.ftype = options.file.type;
 				this.urlcheckname = options.urlcheckname;
 				this.urlgetpreview = options.urlgetpreview;
-				
+				this.isImage = (this.ftype.indexOf("image")==-1) ? false : true;
 				this.index = ++numfiles;
 
  		      		//add element html to list
@@ -69,18 +68,7 @@
 
  				//add element file to list
  				if(window.FileReader) {
-						if (options.file && options.file.type && $.inArray(options.file.type, imageMimeTypes )==-1){
-		      			X.reader_data = new FileReader();						
-		    			X.reader_data.onload = (function(ximfile) {
-		        						return function(e) {
-						//ximfile(is object ximfile) | this(object FileReader)
-							      		    ximfile.data = e.target.result;
-											ximfile.loaded=true;
-											$('div.progress', this.element).text(_("Ready"));
-		        						};
-		      						})(this);
-  		    			X.reader_data.readAsBinaryString(options.file);
-					}else{
+					if (this.isImage){
 						var reader_url = new FileReader();
 						reader_url.onload = (function(ximfile) {
 							return function(e) {
@@ -92,7 +80,19 @@
 						})(this);
 
 						reader_url.readAsDataURL(options.file);
-					}
+					} else {
+		      			X.reader_data = new FileReader();						
+		    			X.reader_data.onload = (function(ximfile) {
+		        						return function(e) {
+						//ximfile(is object ximfile) | this(object FileReader)
+							      		    ximfile.data = e.target.result;
+											ximfile.loaded=true;
+											$('div.progress', this.element).text(_("Ready"));
+		        						};
+		      						})(this);
+  		    			X.reader_data.readAsBinaryString(options.file);
+  		    		}
+					
 				}
 				else{
 					this.data = options.file;
@@ -101,7 +101,7 @@
 			
 				//Safari Preview test
 				if(!window.FileReader) {
-					if(this.ftype.indexOf("image") != -1) { //Only make preview if file is an image
+					if(this.isImage) { //Only make preview if file is an image
 						var url = this.urlgetpreview;
 						var  xmlhttprequest = new XMLHttpRequest();
 						url += "&up=true";
@@ -192,7 +192,7 @@
  			getSize:  function() { return this.fsize; },
  			getType:  function() { return this.ftype; },
  			getIndex: function() { return this.index; },
- 			getData:  function() { return this.data;  },
+ 			getData:  function() {return this.isImage ? this.data.match(/,(.*)$/)[1]: this.data;},
 
  			remove: function() {
  				this.element.remove();
@@ -234,6 +234,8 @@
 				if(strExtraParams!=""){
 					url += "&"+strExtraParams;
 				}
+				url = this.isImage ? url+="&base64=true" : url;
+
 				xhr.open("POST", url, true);
 				  
 				//xhr.setRequestHeader("Content-Length", this.getSize());
@@ -288,7 +290,7 @@
 			  		xhr.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
 			  		xhr.setRequestHeader('XIM-SIZE', this.getSize());
 			  		xhr.setRequestHeader('XIM-TYPE', this.getType());
-			  		xhr.send(this.getData().match(/,(.*)$/)[1]);
+			  		xhr.send(this.getData());
 			  	}
 				return true;
  			},
