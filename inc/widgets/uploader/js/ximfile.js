@@ -57,6 +57,8 @@
 				this.isImage = (this.ftype.indexOf("image")==-1) ? false : true;
 				this.index = ++numfiles;
 
+				this.xhr = new XMLHttpRequest();
+
  		      		//add element html to list
 		      		var list = $('.xim-loader-list', this.container);
 				list.append(this._html(this.index) );
@@ -72,27 +74,30 @@
 						var reader_url = new FileReader();
 						reader_url.onload = (function(ximfile) {
 							return function(e) {
-								ximfile.url = ximfile.data = e.target.result;
+								if (!ximfile.xhr.sendAsBinary) {
+									ximfile.url = ximfile.data = e.target.result;
+									ximfile.loaded=true;
+									$('div.progress', this.element).text(_("Ready"));
+								} else {
+									ximfile.url = e.target.result;	
+								}
 								ximfile.setImage();
-								ximfile.loaded=true;
-								$('div.progress', this.element).text(_("Ready"));
-							};
+							}
 						})(this);
 
 						reader_url.readAsDataURL(options.file);
-					} else {
-		      			X.reader_data = new FileReader();						
-		    			X.reader_data.onload = (function(ximfile) {
-		        						return function(e) {
-						//ximfile(is object ximfile) | this(object FileReader)
-							      		    ximfile.data = e.target.result;
-											ximfile.loaded=true;
-											$('div.progress', this.element).text(_("Ready"));
-		        						};
-		      						})(this);
-  		    			X.reader_data.readAsBinaryString(options.file);
-  		    		}
-					
+					}
+	      			var reader_data = new FileReader();						
+	    			reader_data.onload = (function(ximfile) {
+						return function(e) {
+			      		    if (!ximfile.isImage || ximfile.xhr.sendAsBinary)
+			      		    	ximfile.data = e.target.result;
+								ximfile.loaded=true;
+								$('div.progress', this.element).text(_("Ready"));
+						}
+					})(this);
+		    		reader_data.readAsBinaryString(options.file);
+		    		
 				}
 				else{
 					this.data = options.file;
@@ -111,10 +116,10 @@
 							if ((xmlhttprequest.status >= 200 && xmlhttprequest.status <= 200) || xmlhttprequest.status == 304) {
 						  		if (xmlhttprequest.responseText != "") {
 							  		var result = $.parseJSON(xmlhttprequest.responseText);
- 			         		  			if(result.status == "ok") {
- 			         		  				this.url = result.data;
- 			         		  				this.setImage();
- 			         		  			}
+		         		  			if(result.status == "ok") {
+		         		  				this.url = result.data;
+		         		  				this.setImage();
+		         		  			}
 						  		}
 							}
 					 	}
@@ -192,7 +197,7 @@
  			getSize:  function() { return this.fsize; },
  			getType:  function() { return this.ftype; },
  			getIndex: function() { return this.index; },
- 			getData:  function() {return this.isImage ? this.data.match(/,(.*)$/)[1]: this.data;},
+ 			getData:  function() {return (this.isImage && !this.sendAsBinary) ? this.data.match(/,(.*)$/)[1]: this.data;},
 
  			remove: function() {
  				this.element.remove();
@@ -227,20 +232,20 @@
 				var boundary = "ximdex";
 				var dashes = "--";
 				var crlf='\r\n';
-				var xhr = new XMLHttpRequest();
+				
 				var strExtraParams = decodeURIComponent($.param(extraParams));
 
-				url += xhr.sendAsBinary != null ? "&option="+this.option : "&option="+this.option+"&up=true";
+				url += this.xhr.sendAsBinary != null ? "&option="+this.option : "&option="+this.option+"&up=true";
 				if(strExtraParams!=""){
 					url += "&"+strExtraParams;
 				}
 				url = this.isImage ? url+="&base64=true" : url;
 
-				xhr.open("POST", url, true);
+				this.xhr.open("POST", url, true);
 				  
-				//xhr.setRequestHeader("Content-Length", this.getSize());
+				//this.xhr.setRequestHeader("Content-Length", this.getSize());
 
-				xhr.upload.addEventListener("progress", function(e) {
+				this.xhr.upload.addEventListener("progress", function(e) {
 				if (e.lengthComputable) {
 	        				var currentState = Math.round((e.loaded * 100) / e.total);
 	         		  		$('div.progress', this.element).addClass("upload");
@@ -249,11 +254,11 @@
         		    		}
 		        	}.bind(this), false);
 
-				xhr.onreadystatechange = function() {
-					 if (xhr.readyState == 4) {
-						if ((xhr.status >= 200 && xhr.status <= 200) || xhr.status == 304) {
-							if (xhr.responseText != "") {
-								var result = $.parseJSON(xhr.responseText);
+				this.xhr.onreadystatechange = function() {
+					 if (this.xhr.readyState == 4) {
+						if ((this.xhr.status >= 200 && this.xhr.status <= 200) || this.xhr.status == 304) {
+							if (this.xhr.responseText != "") {
+								var result = $.parseJSON(this.xhr.responseText);
  			         		  		$('div.progress', this.element).width("100%");
 								this.result = result.status;
 								this.msg = result.msg;
@@ -272,25 +277,27 @@
 					 }
 				}.bind(this);
 		 	  
-				var body = dashes+boundary+crlf;
-			  	body += "Content-Disposition: form-data; ";
-			  	body += " name='ximfile'; filename=\"" + unescape(encodeURIComponent(this.getName())) + "\""+crlf;
-			  	body +=  "Content-Type: application/octet-stream"+crlf+crlf;
-			  	body += this.getData()+crlf;
-			  	body += dashes+boundary+dashes;
+				
 
 			  	//Firefox
-			  	if(xhr.sendAsBinary != null) {
+			  	if(this.xhr.sendAsBinary != null) {
+		  			this.sendAsBinary = true
+		  			var body = dashes+boundary+crlf;
+		  		  	body += "Content-Disposition: form-data; ";
+		  		  	body += " name='ximfile'; filename=\"" + unescape(encodeURIComponent(this.getName())) + "\""+crlf;
+		  		  	body +=  "Content-Type: application/octet-stream"+crlf+crlf;
+		  		  	body += this.getData()+crlf;
+		  		  	body += dashes+boundary+dashes;
 			  		// simulate a file MIME POST request.
-  			    		xhr.setRequestHeader("Content-Type","multipart/form-data; boundary="+boundary);
+  			    		this.xhr.setRequestHeader("Content-Type","multipart/form-data; boundary="+boundary);
   			    		//console.log("Calling with sendAsBinary");
-			  		xhr.sendAsBinary(body);
+			  		this.xhr.sendAsBinary(body);
 			  	}
 			  	else { //Browsers that don't support sendAsBinary yet
-			  		xhr.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
-			  		xhr.setRequestHeader('XIM-SIZE', this.getSize());
-			  		xhr.setRequestHeader('XIM-TYPE', this.getType());
-			  		xhr.send(this.getData());
+			  		this.xhr.setRequestHeader('XIM-FILENAME', unescape(encodeURIComponent(this.getName())));
+			  		this.xhr.setRequestHeader('XIM-SIZE', this.getSize());
+			  		this.xhr.setRequestHeader('XIM-TYPE', this.getType());
+			  		this.xhr.send(this.getData());
 			  	}
 				return true;
  			},
