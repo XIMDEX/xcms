@@ -236,7 +236,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 
 
 
-        $jsFiles=array($actionURL.'/js/editor/built.js');
+       // $jsFiles=array($actionURL.'/js/editor/built.js');
 
 		$i18n = new ParsingJsGetText();
 		$jsFiles = $i18n->getTextArrayOfJs($jsFiles);
@@ -249,11 +249,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/views/common/css/kupustyles.css',
 			$actionURL . '/views/common/css/toolboxes.css',
 			$actionURL . '/views/common/css/treeview.css',
+        		$kupuURL . '/common/kupudrawerstyles.css',
+			$actionURL . '/views/common/css/xlinks.css',
 //future		$actionURL . '/views/common/css/colorpicker.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
 			Config::getValue('UrlRoot') .'/inc/widgets/select/js/ximdex.select.js',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
-        		$kupuURL . '/common/kupudrawerstyles.css'
         	);
 
 	        $baseTags = array(

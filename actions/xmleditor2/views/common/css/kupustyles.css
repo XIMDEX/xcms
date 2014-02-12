@@ -41,6 +41,20 @@
   font-weight: normal;
   font-style: normal; }
 
+@font-face {
+  font-family: 'coustardbold';
+  src: url("../../../../../xmd/fonts/coustard-black-webfont.eot");
+  src: url("../../../../../xmd/fonts/coustard-black-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/coustard-black-webfont.woff") format("woff"), url("../../../../../xmd/fonts/coustard-black-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/coustard-black-webfont.svg#coustardbold") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'coustardregular';
+  src: url("../../../../../xmd/fonts/coustard-regular-webfont.eot");
+  src: url("../../../../../xmd/fonts/coustard-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/coustard-regular-webfont.woff") format("woff"), url("../../../../../xmd/fonts/coustard-regular-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/coustard-regular-webfont.svg#coustardregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
 html {
   font-size: 62.5%; }
 
@@ -1684,32 +1698,12 @@ span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
 .search .long {
   width: 81%; }
 
-#ximlink-list label, label[for="descriptions-list"] {
-  display: block;
-  background: #eaeaea url(../../../gfx/links_manager.png) no-repeat 6px -3px;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-  border-radius: 10px;
-  font-weight: bold;
-  color: #696969;
-  padding: 0 15px 0 37px;
-  margin: 10px 5px; }
-
 .descriptions-list-options {
   width: 94%;
   margin: 0 auto; }
 
 .descriptions-list-options label {
   display: block; }
-
-.ximlink-list {
-  width: 94%;
-  display: block;
-  margin: 0 auto;
-  border: none;
-  border-left: 2px dotted #bebebe; }
 
 div.buttons {
   text-align: right; }

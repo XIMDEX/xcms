@@ -75,6 +75,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 	},
 
     createContent: function() {
+		$("body",window.parent.document).append($("<div/>").addClass("overlay js_overlay"));
 		$('div.descriptions-list-options', this.element).empty();
 		this._addDescription(this.term_main, 1);
 
@@ -95,13 +96,16 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 			$('div.js_add_link_panel', this.element).next("div.buttons").show(); ;
 			$('div.js_search_link_panel', this.element).hide() ; 
 			$('div.js_search_link_panel', this.element).next("div.buttons").hide() ; 
+			$('.new_link').hide();
 			return false;}.bind(this)
 		);
 
 		$('button.cancel-button', this.element).click(function(){
+
     		$('div.js_add_link_panel', this.element).hide(); ;
     		$('div.js_add_link_panel', this.element).next("div.buttons").hide(); ;
 			$('div.js_search_link_panel', this.element).show() ; 
+			$('.new_link').show();
 			$('div.js_search_link_panel', this.element).next("div.buttons").show() ; 
 			return false;
 		}.bind(this));
@@ -194,7 +198,8 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 		});
 
 	tds = $ts.treeview('getDatastore');
-	tds.clear();
+	if (tds)
+		tds.clear();
 
 	$.getJSON(
 			X.restUrl + '?action=xmleditor2&method=getLinkFolder',
@@ -400,6 +405,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     	$("div.xim-treeview-selector",this.element).treeview("destroy");
     	$("div.xim-treeview-selector",this.element).empty();
     	dt.closeDrawer();
+	$("body div.js_overlay",window.parent.document).remove();
     }
 
 });
