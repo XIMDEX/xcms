@@ -22,289 +22,495 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
-body div.ui-resizable {
-  border: 1px solid #e1e1e1;
-  background: whitesmoke url("../../../../../images/search/fnd-search.png") repeat-x left top;
-  -webkit-border-radius: 12px;
-  -moz-border-radius: 12px;
-  border-radius: 12px;
-  -webkit-box-shadow: 0 2px 6px rgba(157, 157, 157, 0.2);
-  -moz-box-shadow: 0 2px 6px rgba(157, 157, 157, 0.2);
-  box-shadow: 0 2px 6px rgba(157, 157, 157, 0.2);
-  height: 100%;
-  padding: 0px; }
-
-.ui-dialog .advanced-search {
-  padding: 0; }
-
-.xim-search-dialog label {
-  float: none;
-  display: inline; }
-
-.xim-search-dialog input + label {
-  vertical-align: top; }
-
-.ui-dialog-titlebar {
-  background: none;
+.dialog_advanced_search .save_search button, .dialog_advanced_search .xim-filter-add, .dialog_advanced_search .xim-filter-remove, .dialog_advanced_search .search_button {
   border: none;
-  border-bottom: 1px solid #e1e1e1;
-  margin-bottom: 0px; }
-
-.ui-dialog-titlebar #ui-dialog-title-1, .ui-widget-header .ui-dialog-title {
-  background: url("../../../../../images/search/icon-search.png") no-repeat left -2px;
-  padding: 4px 3px 2px 30px;
-  font-size: 1.1em;
-  color: #888888; }
-
-.ui-widget-header .ui-dialog-title {
   background: none;
-  padding: 4px 3px 2px 12px; }
+  cursor: pointer;
+  font-size: 1.4rem; }
 
-.ui-dialog .ui-dialog-content {
-  overflow: auto;
-  height: auto;
-  min-height: none !important; }
+.dialog_advanced_search .search_options {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(33% - 1em); }
 
-.xim-search-dialog {
-  height: 100%;
-  padding: 0px; }
+.dialog_advanced_search .results {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(66% - 1em); }
+
+.dialog_advanced_search .xim-filter-field, .dialog_advanced_search .xim-filter-active-comparation {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(50% - 1em); }
+
+.dialog_advanced_search {
+  border: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  padding: 0;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4); }
+  .dialog_advanced_search .ui-widget-header {
+    border: none;
+    background: none;
+    position: absolute;
+    width: 100%; }
+    .dialog_advanced_search .ui-widget-header > span {
+      display: none; }
+    .dialog_advanced_search .ui-widget-header .ui-dialog .ui-dialog-titlebar-close {
+      margin-top: 0; }
+  .dialog_advanced_search .advanced-search {
+    padding: 0; }
+  .dialog_advanced_search .xim-search-dialog {
+    height: 100%; }
+  .dialog_advanced_search .search_options {
+    background: #404444;
+    height: 100%;
+    padding: 1em 1.5em;
+    overflow: auto; }
+    .dialog_advanced_search .search_options h2, .dialog_advanced_search .search_options h3 {
+      color: rgba(255, 255, 255, 0.8);
+      font-family: "Ubuntu Condensed";
+      text-transform: uppercase;
+      padding: .5em 0;
+      border-bottom: 1px solid;
+      font-size: 1.5rem;
+      margin-bottom: 1em;
+      font-weight: bold; }
+    .dialog_advanced_search .search_options select, .dialog_advanced_search .search_options input {
+      background: rgba(255, 255, 255, 0.18);
+      -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+      -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+      border: none;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: .5em;
+      font-size: 1.4rem; }
+    .dialog_advanced_search .search_options option {
+      color: #000; }
+  .dialog_advanced_search .save_search {
+    float: right;
+    margin-top: .5em; }
+    .dialog_advanced_search .save_search button, .dialog_advanced_search .save_search .search_button {
+      color: #7bcabf; }
+  .dialog_advanced_search .xim-filter-field, .dialog_advanced_search .xim-filter-active-comparation {
+    margin: 0;
+    width: calc(50% - .5rem); }
+  .dialog_advanced_search .xim-filter-field {
+    margin-right: 1rem; }
+  .dialog_advanced_search .xim-filter-content {
+    width: calc(100% - 4.5em);
+    background: rgba(255, 255, 255, 0.6) !important;
+    color: #404444 !important; }
+  .dialog_advanced_search .xim-filter-add, .dialog_advanced_search .xim-filter-remove {
+    font-size: 3rem;
+    color: #7bcabf;
+    line-height: .4; }
+  .dialog_advanced_search .buttonset:not(.save_search) {
+    margin-bottom: 3em; }
+  .dialog_advanced_search .search_button {
+    background: #7bcabf;
+    width: 100%;
+    padding: .5em;
+    text-transform: uppercase;
+    color: #404444; }
+  .dialog_advanced_search .xim-search-options {
+    display: none;
+    margin: .5em;
+    color: #fff; }
+    .dialog_advanced_search .xim-search-options .label {
+      display: block;
+      padding-bottom: .5em; }
+    .dialog_advanced_search .xim-search-options label {
+      color: #fff;
+      font-size: 1.4rem; }
+    .dialog_advanced_search .xim-search-options.visible {
+      display: block; }
+  .dialog_advanced_search .results {
+    padding: 2em 1.5em;
+    position: relative; }
+    .dialog_advanced_search .results .xim-listview-table, .dialog_advanced_search .results tr, .dialog_advanced_search .results tbody {
+      overflow: hidden;
+      display: block; }
+    .dialog_advanced_search .results .t_fixed_header, .dialog_advanced_search .results .headtable {
+      background: none;
+      border: none;
+      margin-top: 2em; }
+      .dialog_advanced_search .results .t_fixed_header .head, .dialog_advanced_search .results .headtable .head {
+        width: 100% !important; }
+      .dialog_advanced_search .results .t_fixed_header .xim-listview-item, .dialog_advanced_search .results .headtable .xim-listview-item {
+        border: none; }
+        .dialog_advanced_search .results .t_fixed_header .xim-listview-item th, .dialog_advanced_search .results .headtable .xim-listview-item th {
+          width: auto !important;
+          text-transform: uppercase; }
+    .dialog_advanced_search .results .xim-listview-table {
+      padding: .5em 0;
+      margin: 0;
+      width: 100% !important; }
+      .dialog_advanced_search .results .xim-listview-table tr {
+        position: relative;
+        border-style: solid;
+        padding: .5em 11em .5em 0; }
+        .dialog_advanced_search .results .xim-listview-table tr .xim-listview-actions-dropdown {
+          left: 5px; }
+      .dialog_advanced_search .results .xim-listview-table td {
+        font-size: 1.2em;
+        float: left; }
+        .dialog_advanced_search .results .xim-listview-table td:first-child {
+          position: absolute;
+          right: 0;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -moz-transform: translateY(-50%);
+          -ms-transform: translateY(-50%);
+          -o-transform: translateY(-50%);
+          transform: translateY(-50%); }
+        .dialog_advanced_search .results .xim-listview-table td:nth-child(4) {
+          color: #606060; }
+          .dialog_advanced_search .results .xim-listview-table td:nth-child(4)::before {
+            content: "["; }
+          .dialog_advanced_search .results .xim-listview-table td:nth-child(4)::after {
+            content: "]"; }
+        .dialog_advanced_search .results .xim-listview-table td:nth-child(5) {
+          clear: left;
+          margin-left: 3.5em;
+          text-overflow: ellipsis;
+          width: 90%;
+          display: block;
+          overflow: hidden; }
+        .dialog_advanced_search .results .xim-listview-table td:nth-child(6) {
+          margin-top: -2.5em;
+          float: right;
+          margin-right: -5.5em; }
+        .dialog_advanced_search .results .xim-listview-table td:nth-child(7) {
+          position: absolute;
+          left: 0;
+          top: 1.7em;
+          color: #69c3b6; }
+        .dialog_advanced_search .results .xim-listview-table td:last-child {
+          margin-right: -5.5em;
+          margin-top: -1.3em;
+          float: right; }
+    .dialog_advanced_search .results .ui-widget-content {
+      border: none;
+      background: none; }
+    .dialog_advanced_search .results .xim-listview-label {
+      font-weight: bold; }
 
 .xim-search-panel {
-  float: left; }
+  color: #fff;
+  line-height: 1.5; }
 
-.xim-search-panel-left {
-  width: 24%;
-  height: 100%;
-  border-right: 1px solid #e1e1e1;
-  background: #e1e1e1;
-  -webkit-box-shadow: inset -2px 0 white;
-  -moz-box-shadow: inset -2px 0 white;
-  box-shadow: inset -2px 0 white;
-  -webkit-border-radius: 0 0 0 12px;
-  -moz-border-radius: 0 0 0 12px;
-  border-radius: 0 0 0 12px; }
+.saved-searches-items, .last-searches-items {
+  padding-bottom: 1.5em; }
+  .saved-searches-items li, .last-searches-items li {
+    cursor: pointer;
+    font-size: 1.2em; }
+    .saved-searches-items li:hover, .last-searches-items li:hover {
+      color: #7bcabf; }
 
-.xim-search-panel-left h3 {
-  white-space: nowrap;
-  font-weight: bold; }
+/*
 
-.xim-search-panel-left h3, .xim-search-options span {
-  color: #888888;
-  font-size: 0.975em;
-  text-transform: uppercase;
-  text-shadow: 1px 1px 0 white, 2px 2px 1px rgba(157, 157, 157, 0.2); }
+.ui-dialog .advanced-search{
+	padding: 0;
+}
+.xim-search-dialog label{
+	float: none;
+	display: inline;
+}
+.xim-search-dialog input + label{
+	vertical-align: top;
+}
+.ui-dialog-titlebar{
+	background:none;
+	border: none;
+	border-bottom: 1px solid $c_grey-ppp;
+	margin-bottom: 0px;
+}
+
+.ui-dialog-titlebar #ui-dialog-title-1, .ui-widget-header .ui-dialog-title{
+	background: url('../../../../../images/search/icon-search.png') no-repeat left -2px;
+	padding: 4px 3px 2px 30px;
+	font-size: 1.1em;
+	color: $c_grey-p;
+}
+
+.ui-widget-header .ui-dialog-title{
+	background:none;
+	padding: 4px 3px 2px 12px;
+}
+
+.ui-dialog .ui-dialog-content{
+	overflow: auto;
+	height: auto;
+	min-height: none !important;
+}
+
+.xim-search-dialog {
+	height: 100%;
+	padding: 0px;
+}
+.xim-search-panel {
+	float: left;
+}
+
+.xim-search-panel-left{
+	width: 24%;
+	height: 100%;
+	border-right: 1px solid $c_grey-ppp;
+	background: $c_grey-ppp;
+	@include boxshadow(inset -2px 0 $c_white);
+	@include radius(0 0 0 12px);
+}
+.xim-search-panel-left h3{
+	white-space: nowrap;
+	font-weight: bold;
+}
+.xim-search-panel-left h3, .xim-search-options span{
+	color: $c_grey-p;
+	font-size:0.975em;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 0 $c_white, 2px 2px 1px $s_grey;
+}
 
 .xim-search-panel-left .saved-searches,
 .xim-search-panel-left .last-searches {
-  height: 50%;
-  overflow: auto; }
-
+	height: 50%;
+	overflow: auto;
+}
 .xim-search-panel-left .saved-searches {
-  height: 47%; }
+	height: 47%;
+}
 
 .xim-search-panel-left .saved-searches .saved-searches-item-container,
 .xim-search-panel-left .last-searches .last-searches-item-container {
-  overflow: auto; }
+	overflow: auto;
+}
 
-.saved-searches div, .last-searches div {
-  padding: 10 20px; }
+ .saved-searches div, .last-searches div{
+	padding: 10 20px;
+}
+.xim-search-panel-left h3{
+	padding: 15px 22px 5px;
+}
 
-.xim-search-panel-left h3 {
-  padding: 15px 22px 5px; }
+.saved-searches div ul, .last-searches div ul{
+	padding: 0 4px 0 18px;
+}
+.last-searches h3{
+	border-top: 1px solid $c_grey-ppp;
+	@include boxshadow(inset 0 1px 0 $s_white);
+}
+.xim-search-panel-right{
+	width: 75.8%;
+	height: 100%;
+}
+.xim-search-panel-right.expanded{
+	width: 100%;
+	height: 92%;
+}
 
-.saved-searches div ul, .last-searches div ul {
-  padding: 0 4px 0 18px; }
 
-.last-searches h3 {
-  border-top: 1px solid #e1e1e1;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+.filters{
+	max-height: 35%;
+	overflow: auto;
+	background: url(../../../../../images/search/bg-filters.png) repeat;
+	@include boxshadow(inset 0 -2px 0 $c_white);
+}
 
-.xim-search-panel-right {
-  width: 75.8%;
-  height: 100%; }
+.filters + .results{
+	height: 65%;
+	overflow: auto;
+	@include boxshadow(inset 0 2px 1px $s_grey);
+}
 
-.xim-search-panel-right.expanded {
-  width: 100%;
-  height: 92%; }
+.filters[style] + .results{
+	height: 100%;
+	@include boxshadow(none);
+}
 
-.filters {
-  max-height: 35%;
-  overflow: auto;
-  background: url(../../../../../images/search/bg-filters.png) repeat;
-  -webkit-box-shadow: inset 0 -2px 0 white;
-  -moz-box-shadow: inset 0 -2px 0 white;
-  box-shadow: inset 0 -2px 0 white; }
+.xim-search-filters{
+	margin-bottom: 15px;
+	max-height: 50%;
+	overflow: auto;
+}
 
-.filters + .results {
-  height: 65%;
-  overflow: auto;
-  -webkit-box-shadow: inset 0 2px 1px rgba(157, 157, 157, 0.2);
-  -moz-box-shadow: inset 0 2px 1px rgba(157, 157, 157, 0.2);
-  box-shadow: inset 0 2px 1px rgba(157, 157, 157, 0.2); }
-
-.filters[style] + .results {
-  height: 100%;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none; }
-
-.xim-search-filters {
-  margin-bottom: 15px;
-  max-height: 50%;
-  overflow: auto; }
-
-.results-view {
-  padding: 20 20 10px; }
+.results-view{
+	padding: 20 20 10px;
+}
 
 .xim-listview-loading {
-  background-repeat: no-repeat;
-  margin: 15px auto;
-  width: 16px;
-  height: 16px;
-  z-index: 2000; }
+	background-repeat: no-repeat;
+	margin:15px auto;
+	width: 16px;
+	height: 16px;
+	z-index: 2000;
+}
 
-.ui-widget-content div.ui-resizable-se {
-  background: url("../../../../../images/browser/hbox/views-icons.png") no-repeat -2px -166px;
-  width: 18px;
-  height: 18px; }
+.ui-widget-content div.ui-resizable-se{
+	background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -2px -166px;
+	width: 18px;
+	height: 18px;
+}
 
-.xim-search-options, .xim-search-filters {
-  display: block;
-  overflow: auto;
-  padding: 0 25px; }
 
-.xim-search-options {
-  padding: 25px; }
+.xim-search-options, .xim-search-filters{
+	display: block;
+	overflow: auto;
+	padding: 0 25px;
+}
+.xim-search-options{
+	padding: 25px;
 
-.filters select, .filters input, .results select {
-  border: 1px solid #e1e1e1;
-  margin-right: 5px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  padding: 2px; }
+}
 
-.filters input {
-  padding: 3px; }
+.filters select, .filters input, .results select{
+	border: 1px solid $c_grey-ppp;
+	margin-right: 5px;
+	@include radius(3px);
+	padding: 2px;
+}
+.filters input{
+	padding: 3px;
+}
+.xim-search-filter{
+	padding: 5px 10px;
+	margin-left: 20px;
+}
 
-.xim-search-filter {
-  padding: 5px 10px;
-  margin-left: 20px; }
 
-.xim-search-dialog button {
-  border: none;
-  cursor: pointer;
-  background: url("../../../../../images/action/fnd-buttons-form.png") repeat-x scroll left center transparent;
-  border: 1px solid #e1e1e1;
-  color: #888888;
-  text-shadow: 0 1px 0 white;
-  padding: 3px 5px;
-  font-size: .9em; }
+.xim-search-dialog button{
+	border: none;
+	cursor: pointer;
+	background: url("../../../../../images/action/fnd-buttons-form.png") repeat-x scroll left center transparent;
+	border: 1px solid $c_grey-ppp;
+	color: $c-grey-p;
+	text-shadow: 0 1px 0 $c_white;
+	padding: 3px 5px;
+	font-size: .9em;
+}
 
-.xim-search-filter button {
-  width: 24px;
-  height: 21px; }
 
-.xim-search-dialog button:hover {
-  color: #212121;
-  background: url("../../../../../images/action/fnd-buttons-form-hover.png") repeat-x scroll left center rgba(255, 255, 255, 0.2); }
+.xim-search-filter button{
+	width: 24px;
+	height: 21px;
+}
 
-.xim-search-dialog button.xim-filter-add, .xim-listview-selectionhandler button:first-child {
-  -webkit-border-radius: 5px 0 0 5px;
-  -moz-border-radius: 5px 0 0 5px;
-  border-radius: 5px 0 0 5px;
-  border-right: 1px solid #e1e1e1; }
+.xim-search-dialog button:hover{
+	color: $c_grey-ll;
+	background: url("../../../../../images/action/fnd-buttons-form-hover.png") repeat-x scroll left center $s_white;
+}
 
-.xim-search-filter button:last-child, .xim-listview-selectionhandler button:last-child {
-  border-left: 1px solid #e1e1e1;
-  -webkit-border-radius: 0 5px 5px 0;
-  -moz-border-radius: 0 5px 5px 0;
-  border-radius: 0 5px 5px 0; }
 
-.saved-searches-items li, .last-searches-items li {
-  cursor: pointer; }
+.xim-search-dialog button.xim-filter-add, .xim-listview-selectionhandler button:first-child{
+	@include radius(5px 0 0 5px);
+	border-right: 1px solid $c_grey-ppp;
+}
 
-.saved-searches-items li:hover, .last-searches-items li:hover {
-  background: #cccccc; }
 
-.xim-search-panel .buttonset {
-  padding: 10 15px 0px; }
+.xim-search-filter button:last-child, .xim-listview-selectionhandler button:last-child{
+	border-left: 1px solid $c_grey-ppp;
+	@include radius(0 5px 5px 0);
+}
 
-.filters .buttonset {
-  padding-bottom: 15px; }
+.saved-searches-items li, .last-searches-items li{
+	cursor: pointer;
+}
+.saved-searches-items li:hover, .last-searches-items li:hover{
+	background: $c_grey-pp;
+}
 
-.results .buttonset {
-  position: absolute;
-  bottom: 15px;
-  right: 0px; }
+.xim-search-panel .buttonset{
+	padding: 10 15px 0px;
+}
+.filters .buttonset{
+	padding-bottom: 15px;
+}
 
-/*.results .xim-paginator-container + .buttonset{
-	position: static;
-	margin-top: -40px;
-}*/
-.xim-listview-table-container {
-  margin-bottom: 15px;
-  margin-top: 15px; }
+.results .buttonset{
+	position: absolute;
+	bottom: 15px;
+	right: 0px;
+}
 
-.results .xim-listview-table-container {
-  overflow: visible !important;
-  clear: both; }
+.xim-listview-table-container{
+	margin-bottom: 15px;
+	margin-top: 15px;
+}
 
-tr.xim-listview-item td:first-child {
-  display: block;
-  position: relative;
-  float: left; }
+.results .xim-listview-table-container{
+	overflow: visible !important;
+	clear: both;
+}
 
-div.xim-search-panel tr.xim-listview-item .xim-listview-actions-dropdown {
-  left: 7px;
-  margin-top: -1px; }
+tr.xim-listview-item td:first-child{
+	display: block;
+	position: relative;
+	float: left;
+}
 
-.xim-itemsSelector {
-  float: right;
-  padding-right: 20px; }
+div.xim-search-panel tr.xim-listview-item .xim-listview-actions-dropdown{
+	left: 7px;
+	margin-top: -1px;
+}
 
-.xim-itemsSelector span {
-  margin-right: 8px; }
+.xim-itemsSelector{
+	float: right;
+	padding-right: 20px;
+}
 
-.xim-paginator-container {
-  padding: 10px;
-  margin-right: 25px;
-  margin-top: 10px; }
+.xim-itemsSelector span{
+	margin-right: 8px;
+}
+.xim-paginator-container{
+	padding: 10px;
+	margin-right: 25px;
+	margin-top: 10px;
+}
+.xim-paginator-container> div.xim-paginator-item{
+	display: inline;
+	background: none;
+	font-weight: bold;
+	cursor: pointer;
+	border: 1px solid $c_grey-pp;
+	padding: 4px;
+	margin: 3px;
+}
 
-.xim-paginator-container > div.xim-paginator-item {
-  display: inline;
-  background: none;
-  font-weight: bold;
-  cursor: pointer;
-  border: 1px solid #cccccc;
-  padding: 4px;
-  margin: 3px; }
+.xim-paginator-container> div.xim-paginator-item:hover{
+	background: $c_mainlight;
+	color: $c_white;
+	border: $c_mainlight 1px solid;
+}
 
-.xim-paginator-container > div.xim-paginator-item:hover {
-  background: #7bcabf;
-  color: white;
-  border: #7bcabf 1px solid; }
+.xim-paginator-container> div.xim-paginator-selected-item{
+	background: $c_grey-ppp;
+	border:  $c_grey-ppp 1px solid;
+	color: $c_grey-p;
+}
 
-.xim-paginator-container > div.xim-paginator-selected-item {
-  background: #e1e1e1;
-  border: #e1e1e1 1px solid;
-  color: #888888; }
+.ui-dialog .ui-widget-content{
+	border: 0px;
+	border-top: 1px solid $c_grey-ppp;
+	}
 
-.ui-dialog .ui-widget-content {
-  border: 0px;
-  border-top: 1px solid #e1e1e1; }
+.ui-widget-header{
+	border: 0px;
+	}
 
-.ui-widget-header {
-  border: 0px; }
+.results .ui-icon-info{
+	background: url(../../../../../images/action/icon-msg.png) no-repeat -1px -31px;
+	width: 23px;
+	margin: 1px 0 0 9px;
+	height: 25px;
+}
 
-.results .ui-icon-info {
-  background: url(../../../../../images/action/icon-msg.png) no-repeat -1px -31px;
-  width: 23px;
-  margin: 1px 0 0 9px;
-  height: 25px; }
-
-.results .ui-icon-info + p {
-  margin: 30 0; }
+.results .ui-icon-info + p{
+	margin: 30 0;
+}
+*/
