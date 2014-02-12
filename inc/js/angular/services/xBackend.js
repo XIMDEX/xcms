@@ -74,7 +74,6 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
                                 break;
                         }
                     }
-                    console.log("Refreshing timer:", interval);
                     timer = $timeout(refresh, interval);
                 }
                 var refresh = function() {
