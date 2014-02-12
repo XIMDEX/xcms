@@ -104,6 +104,15 @@ class Action_checkstatus extends ActionAbstract {
 		$this->render($values, null, 'default-3.0.tpl');
 	}
 
+	function getPublicationQueue () {
+		$frames = new ServerFrame();
+		$values = array();
+		$etag = null;
+		$etag = $this->request->getParam('etag');
+		$values['publications'] = $frames->getPublicationQueue();
+		$this->sendJSON_cached($values, $etag);
+	}
+
     /*function recover() {
     	$idNode = $this->request->getParam('nodeid');
     	$version = $this->request->getParam('version');

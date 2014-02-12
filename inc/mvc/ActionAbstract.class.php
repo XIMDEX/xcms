@@ -460,6 +460,34 @@ class ActionAbstract extends IController {
 		die();
     }
 
+	public function sendJSON_cached($data, $etag=null) {
+    	xdebug_break();
+    	if ($etag) {
+			$data = Serializer::encode(SZR_JSON, $data);
+			$hash = md5($data);
+			if ($hash == $etag) {
+				header('HTTP/1.1 304 Not Modified');
+				header('Content-Length: 0');
+				die();
+			} else {
+				header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
+				$data = rtrim($data, "}");
+				$data = $data.', "etag": "'.$hash.'"}';
+				echo $data;
+				die();	
+			}
+			
+		} else {
+	    	header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
+			$data = Serializer::encode(SZR_JSON, $data);
+			$hash = md5($data);
+			$data = rtrim($data, "}");
+			$data = $data.', "etag": "'.$hash.'"}';
+			echo $data;
+			die();	
+		}	
+    }
+
 	/**
 	 * Remplace files con [LANG] to i18n file
 	 * Example:

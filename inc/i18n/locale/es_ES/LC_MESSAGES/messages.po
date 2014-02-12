@@ -9610,6 +9610,12 @@ msgstr "Crear nuevo proyecto tutelado"
 msgid "Documents in"
 msgstr "Documentos en"
 
+msgid "Published documents"
+msgstr "Dcoumentos publicados"
+
+msgid "Documents in publication queue"
+msgstr "Documentos en cola de publicación"
+
 msgid "documents found"
 msgstr "documentos encontrados"
 
