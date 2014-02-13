@@ -90,11 +90,6 @@ class Action_modifyserver extends ActionAbstract {
 		$channels = $this->_getChannels($idNode, $serverID);
 		$numChannels = sizeof($channels);
 
-		// Getting languages
-
-		$languages = $this->_getLanguages($idNode, $serverID);
-		$numLanguages = sizeof($languages);
-
 		//add a js for validation and hidden or display elements about the protocol selected
 		$this->addJs('/actions/modifyserver/resources/js/validate.js');
 /*		if (ModulesManager::isEnabled('ximDEMOS'))
@@ -117,13 +112,9 @@ class Action_modifyserver extends ActionAbstract {
 			'encodes' => $this->_getEncodes(),
 			'channels' => $channels,
 			'numchannels' => $numChannels,
-			'languages' => $languages,
-			'numlanguages' => $numLanguages,
 			'otfAvailable' => $otfAvailable,
-		//'states' => $this->_getStates($idNode, $serverID),
 			'id_server' => (int) $serverID,
 		);
-
 		$this->render($values, NULL, 'default-3.0.tpl');
 	}
 
@@ -140,14 +131,12 @@ class Action_modifyserver extends ActionAbstract {
 		$url		= $this->request->getParam('url');
 		$login		= $this->request->getParam('login');
 		$password	= $this->request->getParam('password');
-		$description	= $this->request->getParam('description');
+		$description= $this->request->getParam('description');
 		$enabled	= $this->request->getParam('enabled');
 		$preview	= $this->request->getParam('preview');
 		$override	= $this->request->getParam('overridelocalpaths');
-		$actionID	= $this->request->getParam('actionid');
 		$channels	= $this->request->getParam('channels');
 		$states		= $this->request->getParam('states');
-		$languages	= $this->request->getParam('languages');
 		$encode		= $this->request->getParam('encode');
 		$isServerOTF 	= $this->request->getParam('serverOTF');
 
@@ -168,9 +157,6 @@ class Action_modifyserver extends ActionAbstract {
 					return ;
 			}
 		}
-
-
-
 
 		if ($this->_validate($protocol,$host,$port,$initialDir,$url,$login,$password,$description)){
 
@@ -219,12 +205,12 @@ class Action_modifyserver extends ActionAbstract {
 					}else{
 						$serverID = $node->class->AddPhysicalServer($protocol, $login, $password, $host, $port, $url, $initialDir, !!$override, !!$enabled, !!$preview, $description, $isServerOTF);
 						if($serverID) {
+                            $node->class->SetEncode($serverID,$encode);
 							$this->messages->add(_("Server successfully created"), MSG_TYPE_NOTICE);
 						}else {
 							$this->messages->add(_("Error while creating server"), MSG_TYPE_ERROR);
 						}
 					}
-
 
 					$node->class->DeleteAllChannels($serverID);
 					if($channels) {
@@ -240,10 +226,6 @@ class Action_modifyserver extends ActionAbstract {
 						}
 					}
 
-					// Setting languages
-
-					$node->setProperty('language', $languages);
-
 				}else {
 					$this->messages->add(_("Not allowed protocol"), MSG_TYPE_ERROR);
 				}
@@ -257,7 +239,6 @@ class Action_modifyserver extends ActionAbstract {
 			'params' => $params,
 			'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 		);
-
 		$this->render($values);
 	}
 

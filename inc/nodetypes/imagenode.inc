@@ -70,7 +70,7 @@ class ImageNode extends FileNode{
 			$image_schema=new Node();
 			$idSchema =  $image_schema->find("Idnode","Name=%s",array(self::IMAGE_METADATA_SCHEMA),MONO);
                         $languages = $this->getLanguages();
-                        $channels = $this->getChannels();
+                        $channels = $this->getMetadataChannels();
                         //We use the action like a service layer
                         $this->createXmlContainer($idm,$name,$idSchema[0],$aliases,$languages,$channels);
                         $this->addRelation($name);
@@ -169,7 +169,7 @@ class ImageNode extends FileNode{
 
 	}
 
-	public function getChannels(){
+	public function getMetadataChannels(){
 		$result = array();
 		$channel = new Channel();
 		$channels = $channel->GetAllChannels();

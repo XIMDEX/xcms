@@ -23,7 +23,6 @@
  *  @version $Revision$
  */
 
-
 X.actionLoaded(function(event, fn, params) {
 
 	var form = params.actionView.getForm('mdfsv_form');
@@ -33,33 +32,29 @@ X.actionLoaded(function(event, fn, params) {
 	// Creates an alias for convenience
 	var empty = Object.isEmpty;
 
-
 	clearErrors();
-	show_local_fields();
+    fn('#protocol input[type="radio"]').each(
+        function(){
+            if(fn(this).attr("checked")){
+	            show_local_fields();
+            }
+        });
 
 	fn('#protocol input[type="radio"]').click(show_local_fields);
 
-
-
-	//On click, reload the action with the selected server ir. this will return the action with the input's value
+	//On click, reload the action with the selected server id. This will return the action with the input's value
 	fn('div#serverid .row_item_selectable').click(function() {
 		var urler = fn('#nodeURL').val() + '&serverid=' + fn(this).attr("value");
 		fn('#mdfsv_form').attr('action', urler);
 		fm.sendForm();
-
 		return false;
 	});
 
-
 	fn('a#delete_server').click(function(event) {
-
 		if (fn('#serverid').val() != "none"){
-
 			fn('input[name=borrar]').val(1);
-			confirmar(event, _('Are you sure you want to remove this server?'), form, fm);
-
+			confirm_dialog(event, _('Are you sure you want to remove this server?'), form, fm);
 			return true;
-
 		}
 	});
 
@@ -72,21 +67,18 @@ X.actionLoaded(function(event, fn, params) {
 	});
 	fn('a#create_server').get(0).beforeSubmit.add(function(event) {
 
-		clearErrors();
-		var protocolSelected = fn('#protocol').val();
+	clearErrors();
+	var protocolSelected = fn('#protocol').val();
 
-		if (protocolSelected == 'LOCAL') {
+	if (protocolSelected == 'LOCAL') {
+		if (empty(fn('#url').val())) {
+			addError(_('It is necessary to specify a local url for this server.'));
+		} else if (empty(fn('#initialdirectory').val())) {
+			addError(_('It is necessary to specify a local directory.'));
+		}
 
-			if (empty(fn('#url').val())) {
-				addError(_('It is necessary to specify a local url for this server.'));
-			} else if (empty(fn('#initialdirectory').val())) {
-				addError(_('It is necessary to specify a local directory.'));
-			}
-
-		} else if ((protocolSelected == 'FTP') || (protocolSelected == 'SSH')) {
-
+	} else if ((protocolSelected == 'FTP') || (protocolSelected == 'SSH')) {
 			var pw1 = fn('#password').val();
-
 			if (empty(pw1)) {
 				addError(_('A password ir required.'));
 			} else if (empty(fn('#initialdirectory').val())) {
@@ -116,12 +108,12 @@ X.actionLoaded(function(event, fn, params) {
 			msg = _('Server is not enabled. Documents will not be published on this server.') + msg;
 		}
 
-		confirmar(event, msg, form, fm);
+		confirm_dialog(event, msg, form, fm);
 
 		return true;
 	});
 
-	function confirmar(event, msg, form, fm) {
+	function confirm_dialog(event, msg, form, fm) {
 
 		var div_dialog = $("<div/>").attr('id', 'dialog').appendTo(form);
 
@@ -148,18 +140,14 @@ X.actionLoaded(function(event, fn, params) {
 		});
 	}
 
-
 	function show_local_fields() {
 
 		if (fn(this).attr("value") == 'LOCAL') {
-
 			var url = fn("input[name=url]");
 
 			if( null == url.val() || "" == url.val() ) {
 				url.val(url_root+"/data/previos");
-
 			}
-
 			fn('#labelUrl').text('URL');
 
 			var directory = fn("input[name=initialdirectory]");
@@ -169,9 +157,7 @@ X.actionLoaded(function(event, fn, params) {
 			fn('#labelDirectorio').text(_('Directory'));
 			fn('#labeldirRemota').text(_('Address'));
 			fn('.not_local').hide();
-
 		} else {
-
 			fn('#labelUrl').text(_('Remote URL'));
 			fn('#labelDirectorio').text(_('Remote directory'));
 			fn('#labeldirRemota').text(_('Remote address'));
