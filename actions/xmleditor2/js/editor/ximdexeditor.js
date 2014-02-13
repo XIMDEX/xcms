@@ -222,42 +222,67 @@ function XimdocEditor(options) {
 		this._baseActionURL = url_root + '/actions/xmleditor2/';
 		this._loadActionURL = url_root + '/xmd/loadaction.php?nodeid=' + this.nodeId;
 		var xmlI18N = url_root + '/extensions/kupu/i18n/kupu-'+locale+'.pox';
-		var xmlUrl = this._baseURL + '&ajax=json&method=getXmlFile';
 		var verifyTmpUrl = this._baseURL + '&ajax=json&method=verifyTmpFile';
-		var rngUrl = this._baseURL + '&ajax=json&method=getSchemaFile';
+        var checkEditionStatusUrl = this._baseURL + '&method=checkEditionStatus';
+        var removeNodeEditionUrl = this._baseURL + '&method=removeNodeEdition';
 		var includesInServer="";
+
 		//Avoid includes tag in xsl when by configuration or when browser is in safari or chrome
 		if (xslIncludesOnServer == 1 || IS_SAFARI || IS_CHROME)
 		    includesInServer = "&includesInServer=1";
-		var xslUrl = this._baseURL + '&ajax=json&method=getXslFile'+ includesInServer +'&view=' + this.getView();
-		var editorConf = this._baseURL + '&ajax=json&method=getConfig';
-		var noRenderizableElementsUrl = this._baseURL + '&ajax=json&method=getNoRenderizableElements';
+
+        var allUrl = this._baseURL + '&ajax=json&method=getAll'+ includesInServer +'&view=' + this.getView();
 
 		// i18n request
-		this.fileRequest('_i18n', xmlI18N, callback);
+		//this.fileRequest('_i18n', xmlI18N, callback);
 
 		// Verify Tmp file request
 		this.fileRequest('_hasTmp', verifyTmpUrl, callback);
 
-		// XML request
+        this.checkEditionStatus(checkEditionStatusUrl);
+        this.fileRequestAll(allUrl, callback);
 
-		this.fileRequest('_xmlDom', xmlUrl, callback);
-
-		// RNG request
-
-
-		this.fileRequest('_rngDom', rngUrl, callback);
-
-		// XSLT request
-		this.fileRequest('_xslDom', xslUrl, callback);
-
-		// No renderizable Elements file request
-		this.fileRequest('_noRenderizableElements', noRenderizableElementsUrl, callback);
-
-		// Editor config file request
-		this.fileRequest('config', editorConf, callback);				
-                
+        //Remove the Node Edition for this node and user when the editor is shut down
+        this.registerShutdownCallback(removeNodeEditionUrl);
 	};
+
+    this.checkEditionStatus = function(url) {
+        new AjaxRequest(url, {
+            method: 'GET',
+            onComplete: function(req, json) {
+                //Document being edited, show warning
+                if(json.edition) {
+                    var data = json.data;
+                    var msg = '';
+                    var title = _("Edition Status");
+                    if(data.length > 1) {
+                        msg = "There are other "+data.length+" users editing this document. Take care because your version may not be the final one";
+                    }
+                    else {
+                        var info = data.pop();
+                        var date = new Date(info.startTime*1000);
+                        msg = "The user '"+info.user+"' is editing the file since "+date.toLocaleString()+". Take care because your version may not be the final one";
+                    }
+
+                    var dialog = new X.dialogs.MessageDialog({message: msg, title: title});
+                    dialog.open();
+                }
+
+            }.bind(this),
+            onError: function(req) {
+                console.error(req);
+            }.bind(this)
+        });
+    };
+
+    this.registerShutdownCallback = function(url) {
+        var shutdownFunction = function() {
+            jQuery.ajax({url:url, async:false});
+        };
+
+        this.document.getWindow().parent.onunload = shutdownFunction;
+    };
+
 
     	this.getActionDescription = function() {
     		return this._actionDescription || '';
@@ -303,6 +328,47 @@ function XimdocEditor(options) {
 		});
 	}
 
+    this.fileRequestAll = function(url, callback, updateEditor, hideLoadingImage, method, content) {
+        var method = (method) ? method : 'GET';
+        var content = (content) ? content : null;
+
+        new AjaxRequest(url, {
+            method: method,
+            content: content,
+            onComplete: function(req, json) {
+
+                if (json['error']) {
+                    callback(null, json.error);
+                    return;
+                }
+
+                if (json["result"] !== false){
+                    var data = json.data || req.responseText;
+
+                    if(json.method && json.method == 'verifyTmpFile') {
+                        this[propertyName] = json.result;
+                    }
+                    else if (url.indexOf("loadaction") == -1){
+                        //this[propertyName] = this.createDomDocument(data,0,true);
+                    }
+                    else {
+                        this['_xmlDom'] = this.createDomDocument(json.xmlFile);
+                        this['_rngDom'] = this.createDomDocument(json.schemaFile);
+                        this['_xslDom'] = this.createDomDocument(json.xslFile);
+                        this['_noRenderizableElements'] = this.createDomDocument(json.noRenderizableElements);
+                        this['config'] = this.createDomDocument(json.config);
+                    }
+
+                    this._afterInitialize(callback);
+                }
+            }.bind(this),
+            onError: function(req) {
+                //console.error(req);
+                loadingImage.hideLoadingImage();
+            }.bind(this)
+        });
+    }
+
 	/**
 	 * Called from XimdocEditor.process()
 	 */
@@ -311,11 +377,11 @@ function XimdocEditor(options) {
 		if (
 			this._rngDom === null || this._xmlDom === null ||
 			this._xslDom === null || this.config === null ||
-			this._i18n === null || this._noRenderizableElements === null
+			this._noRenderizableElements === null
 			) return;
 
 
-		window.i18n_message_catalog.initialize(this._i18n);
+		//window.i18n_message_catalog.initialize(this._i18n);
 
 		this.config = this._parseConfig(this.config);
 
