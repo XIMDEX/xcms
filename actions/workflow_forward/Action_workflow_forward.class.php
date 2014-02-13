@@ -604,6 +604,10 @@ class Action_workflow_forward extends ActionAbstract {
 		$notificableUsers = $this->request->getParam('users');
 		$idState = $this->request->getParam('stateid');
 		$texttosend = $this->request->getParam('texttosend');
+		$this->sendToPublish($idNode, $up, $down, $markEnd, $republish, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend);
+	}
+	
+	protected function sendToPublish($idNode, $up, $down, $markEnd, $republish, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend){	
 		$this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
 		//If send notifications
