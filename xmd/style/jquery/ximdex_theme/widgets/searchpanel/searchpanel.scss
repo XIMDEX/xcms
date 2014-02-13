@@ -24,7 +24,269 @@
  */
 
 @import "../themes/ximdex_theme";
+@import "../themes/extends";
+@import "../themes/icons";
 
+.dialog_advanced_search{
+	border: none;
+	@include radius(2px);
+	padding: 0;
+	@include boxshadow(0 1px 1px rgba(0,0,0,.4));
+
+
+	.ui-widget-header{
+		border: none;
+		background: none;
+		position: absolute;
+		width: 100%;
+		> span{
+			display: none;
+		}
+
+		.ui-dialog .ui-dialog-titlebar-close{
+			margin-top: 0;
+		}
+	}
+
+	.advanced-search{
+		padding: 0;
+	}
+	.xim-search-dialog{
+		height: 100%;
+	}
+
+
+
+	.search_options{
+		background:darken(#4c5151, 5%);
+		@extend %col1_3;
+		height: 100%;
+		padding: 1em 1.5em;
+		overflow: auto;
+
+		h2, h3{
+			color: rgba(255,255,255,.8);
+			font-family: $t_text;
+			text-transform: uppercase;
+			padding: .5em 0;
+			border-bottom: 1px solid;
+			font-size: 1.5rem;
+			margin-bottom: 1em;
+			font-weight: bold;
+		}
+
+		select, input{
+			background:rgba(255,255,255,.18);
+			@include boxshadow(0 1px 1px rgba(0,0,0,.3));
+			border: none;
+			@include radius(2px);
+			color: rgba(255,255,255,.8);
+			margin-bottom: .5em;
+			font-size: 1.4rem;
+		}
+
+		option{
+			color: #000;
+		}
+	}
+
+	.save_search{
+		float: right;
+		margin-top: .5em;
+		button{
+			@extend %reset-button;
+			color: $c_mainlight;	
+		}
+	}
+
+	.xim-filter-field, .xim-filter-active-comparation{
+		@extend %col1_2;
+		margin: 0;
+		width: calc(50% - .5rem);
+
+	}
+
+	.xim-filter-field{
+		margin-right: 1rem;
+	}
+
+	.xim-filter-content{
+		width: calc(100% - 4.5em);
+		background:rgba(255,255,255,.6) !important;
+		color: darken(#4c5151, 5%) !important;
+	}
+
+	.xim-filter-add, .xim-filter-remove{
+		@extend %reset-button;
+		font-size: 3rem;
+		color: $c_mainlight;
+		line-height: .4;
+	}
+
+	.buttonset:not(.save_search){
+		margin-bottom: 3em;
+	}
+
+	.search_button{
+		@extend %reset-button;
+		@extend button;
+		background:$c_mainlight;
+		width: 100%;
+		padding: .5em;
+		text-transform: uppercase;
+		color: darken(#4c5151, 5%);
+	}
+
+	.xim-search-options{
+		display: none;
+		margin: .5em;
+		color: #fff;
+
+		.label{
+			display: block;
+			padding-bottom: .5em;
+		}
+
+		label{
+			color: #fff;
+			font-size: 1.4rem;
+		}
+		&.visible{
+			display: block;
+		}
+	}
+
+
+	.results{
+		@extend %col2_3;
+		padding: 2em 1.5em;
+		position: relative;
+		.xim-listview-table, tr, tbody{
+			overflow: hidden;
+			display: block;
+		}
+		
+		.t_fixed_header, .headtable{
+			background: none;
+			border: none;
+			margin-top: 2em;
+			.head{
+				width: 100% !important;
+			}
+
+			.xim-listview-item{
+				border: none;
+				th{
+					width: auto !important;
+					text-transform: uppercase;
+				}
+			}
+		}
+
+		.xim-listview-table {
+			padding: .5em 0;
+			margin: 0;
+			width: 100% !important;
+
+			tr{
+				position: relative;
+				border-style: solid;
+				padding: .5em 11em .5em 0;
+
+				.xim-listview-actions-dropdown {
+					left: 5px;
+				}
+			}
+			td{
+				font-size: 1.2em;
+				float: left;
+				
+				&:first-child{
+					position: absolute;
+					right: 0;
+					top: 50%;
+					-webkit-transform: translateY(-50%);
+					-moz-transform: translateY(-50%);
+					-ms-transform: translateY(-50%);
+					-o-transform: translateY(-50%);
+					transform: translateY(-50%);
+					
+				}
+
+				&:nth-child(4){
+					color: $c_grey;
+					&::before{
+						content: "[";
+					}
+					&::after{
+						content: "]";
+						
+					}
+				}
+
+				&:nth-child(5){
+					clear: left;
+					margin-left: 3.5em;
+					text-overflow: ellipsis;
+					width: 90%;
+					display: block;
+					overflow: hidden;
+				}
+
+				&:nth-child(6){
+					margin-top: -2.5em;
+					float: right;
+					margin-right: -5.5em;
+				}
+
+				&:nth-child(7){
+					position: absolute;
+					left:0;
+					top: 1.7em;
+					color: darken($c_mainlight, 5%);
+				}
+				&:last-child{
+					margin-right: -5.5em;
+					margin-top: -1.3em;
+					float: right;
+				}
+			}
+
+
+		}
+
+
+
+	.ui-widget-content{
+		border: none;
+		background: none;
+	}
+
+
+		.xim-listview-label{
+			font-weight: bold;
+		}
+	}
+
+}
+
+.xim-search-panel{
+	color: #fff;
+	line-height: 1.5;
+}
+
+.saved-searches-items, .last-searches-items{
+	padding-bottom: 1.5em;
+	li{
+		cursor: pointer;
+		font-size: 1.2em;
+		&:hover{
+			color: $c_mainlight;
+		}
+	}
+}
+
+/*
 
 .ui-dialog .advanced-search{
 	padding: 0;
@@ -248,10 +510,6 @@
 	right: 0px;
 }
 
-/*.results .xim-paginator-container + .buttonset{
-	position: static;
-	margin-top: -40px;
-}*/
 .xim-listview-table-container{
 	margin-bottom: 15px;
 	margin-top: 15px;
@@ -327,3 +585,4 @@ div.xim-search-panel tr.xim-listview-item .xim-listview-actions-dropdown{
 .results .ui-icon-info + p{
 	margin: 30 0;
 }
+*/

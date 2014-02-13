@@ -45,6 +45,8 @@ angular.module('ximdex.common.directive')
                             loader.start();
                             break;
                         case 'resolved':
+                        case 'success':
+                        case 'error':
                             loader.stop();
                             break;
                     }

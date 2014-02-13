@@ -65,7 +65,11 @@
         }
         &:active {
             background-image: linear-gradient(#7ccac0, #72c4b9);
-        }    
+        }
+        &:disabled, &.disabled {
+            background: lighten(#72c4b9, 10%)!important;
+            cursor: default!important;   
+        }       
     }
     %button-main-action-alt {
         @extend %button-default;

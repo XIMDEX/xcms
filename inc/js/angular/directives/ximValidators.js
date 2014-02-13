@@ -22,13 +22,22 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-.xim-treeview-selector {
-  background: white;
-  padding: 25px 15px;
-  margin-bottom: 15px; }
-
-.xim-treeview-selector .xim-treeview-branch-container {
-  position: static; }
-
-.root {
-  display: none; }
+angular.module('ximdex.common.directive.validator')
+	.directive('ximAlphanumeric', function(){
+		return {
+			require: 'ngModel',
+			link: function(scope, element, attrs, ctrl){
+				pattern = /^\w+$/;
+				ctrl.$parsers.unshift(function(viewValue){
+					console.log("Validating", viewValue);
+					if (pattern.test(viewValue)){
+						ctrl.$setValidity('alphanumeric', true);
+						return viewValue
+					} else {
+						ctrl.$setValidity('alphanumeric', false);
+						return undefined
+					}
+				});
+			}
+		}
+	});
