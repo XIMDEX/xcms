@@ -30,13 +30,14 @@ ModulesManager::file('/inc/nodetypes/statenode.inc');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 
 class Action_checkstatus extends ActionAbstract {
+
 	//Main method: shows initial form
-    	function index () {
-    		$idNode = $this->request->getParam('nodeid');
-    		$node = new Node($idNode);
+    function index () {
+    	$idNode = $this->request->getParam('nodeid');
+    	$node = new Node($idNode);
     		
 		if (!$node->get('IdNode') > 0) {
-    			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
+    		$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
 			$values = array('messages' => $node->messages->messages);
 			$this->render($values, NULL, 'messages.tpl');
 			return false;
@@ -79,25 +80,12 @@ class Action_checkstatus extends ActionAbstract {
 					);			
 		}
 
-		//ksort($data, SORT_NUMERIC);
-		//$keys = array_keys($data);
-		//$lastVersion = end($keys);
-
-		//ksort($data[$lastVersion], SORT_NUMERIC);
-		//$keys = array_keys($data[$lastVersion]);
-		//$lastSubversion = end($keys);
-
-		//$data[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
-
 		$this->addJs('/actions/checkstatus/resources/js/index.js');
 		$this->addCss('/actions/checkstatus/resources/css/index.css');
 
 		$values = array('files' => $data,
 				'statesFull'=> $statesFull,
-	//			'isStructuredDocument' => $isStructuredDocument,
 				'id_node' => $idNode,
-	//			'node_type_name' => $node->nodeType->get('Name'),
-	//			'channels' => $channels,
 				'actionid' => $this->request->getParam('actionid')
 				);
 
@@ -109,53 +97,10 @@ class Action_checkstatus extends ActionAbstract {
 		$values = array();
 		$etag = null;
 		$etag = $this->request->getParam('etag');
-		$values['publications'] = $frames->getPublicationQueue();
+		$nodeid = $this->request->getParam('nodeid');
+		$values['publications'] = $frames->getPublicationQueue($nodeid);
 		$this->sendJSON_cached($values, $etag);
 	}
 
-    /*function recover() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$version = $this->request->getParam('version');
-		$subVersion	= $this->request->getParam('subversion');
-
-    	if (!is_null($version) && !is_null($subVersion)) {
-			//If it is a recovery of a version, first we recover it and then we show the form
-			$data = new DataFactory($idNode);
-			$ret = $data->RecoverVersion($version, $subVersion);
-			if ($ret === false) {
-				$this->render(array(
-					'messages' => array(array(
-						'type' => $data->numErr,
-						'message' => $data->msgErr
-					)),
-					'goback' => true
-				));
-				return;
-			}
-		}
-
-    	$this->redirectTo('index');
-    }*/
-
-    /*function delete() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$version = $this->request->getParam('version');
-		$subVersion	= $this->request->getParam('subversion');
-    	if (!is_null($version) && !is_null($subVersion)) {
-			$data = new DataFactory($idNode);
-			$ret = $data->DeleteSubversion($version,$subVersion);
-			if ($ret === false) {
-				$this->render(array(
-					'messages' => array(array(
-						'type' => $data->numErr,
-						'message' => $data->msgErr
-					)),
-					'goback' => true
-				));
-				return;
-			}
-		}
-    	$this->redirectTo('index');
-    }*/
 }
 ?>

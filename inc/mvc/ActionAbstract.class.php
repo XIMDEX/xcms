@@ -461,7 +461,6 @@ class ActionAbstract extends IController {
     }
 
 	public function sendJSON_cached($data, $etag=null) {
-    	xdebug_break();
     	if ($etag) {
 			$data = Serializer::encode(SZR_JSON, $data);
 			$hash = md5($data);

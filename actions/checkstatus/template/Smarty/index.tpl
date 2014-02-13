@@ -28,7 +28,7 @@
 </div>
 
 {if {count($files)}}
-	<div class="action_content versions" ng-controller="XPublishStatus" ng-cloak>
+	<div class="action_content versions" ng-controller="XPublishStatus" ng-cloak xim-nodeid={$id_node}>
 
 		<p>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</p>
 			

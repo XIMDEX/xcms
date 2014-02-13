@@ -825,9 +825,9 @@ where cf.nodeid=$nodeId ";
 		return $this->query($query);
 	}
 
-	function getPublicationQueue() {
+	function getPublicationQueue($idServer) {
 		$dbObj = new DB();
-		$sql = "SELECT n.idnode, n.path, n.name, dateup, state, filesize,concat(v.`Version`,'.',v.`SubVersion`) FROM ServerFrames sf INNER JOIN NodeFrames nf using (idnodeframe) INNER JOIN Nodes n ON n.idnode=nf.nodeid INNER JOIN  Versions v ON v.Idnode=n.idnode ORDER BY sf.Idsync DESC LIMIT 40";
+		$sql = "SELECT n.idnode, n.path, n.name, dateup, state, filesize,concat(v.`Version`,'.',v.`SubVersion`) FROM ServerFrames sf INNER JOIN NodeFrames nf using (idnodeframe) INNER JOIN Nodes n ON n.idnode=nf.nodeid INNER JOIN  Versions v ON v.Idnode=n.idnode INNER JOIN Servers s ON sf.IdServer=s.IdServer AND s.IdNode=$idServer ORDER BY sf.Idsync DESC LIMIT 20";
 		$dbObj->Query($sql);
 		if ($dbObj->numRows > 0) {
 			$publications = array();

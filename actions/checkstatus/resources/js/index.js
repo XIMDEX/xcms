@@ -32,8 +32,7 @@
 	            	unpublished: _('Documents in publication queue')
             	}[key]
             }
-            console.log("La virgen");
-            $scope.backend = xBackend.subscribe({action:'checkstatus', method:'getPublicationQueue'}, function(data){
+            $scope.backend = xBackend.subscribe({id: $attrs.ximNodeid, action:'checkstatus', method:'getPublicationQueue'}, function(data){
             	if (data && data.publications) {
             		$scope.publications.published = []
             		$scope.publications.unpublished = []
