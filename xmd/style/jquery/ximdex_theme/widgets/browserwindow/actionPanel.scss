@@ -537,7 +537,7 @@ li.ui-state-primary span.ui-icon-info {
 	display: none;
 }
 
-input.error, input.error:focus{
+input.error, input.error:focus, .ng-dirty input.ng-invalid, .ng-dirty input.ng-invalid:focus{
 	-webkit-box-shadow: 0 0 2px 1px #f72f42;
 	-moz-box-shadow: 0 0 2px 1px #f72f42;	
 	box-shadow: 0 0 2px 1px #f72f42;	

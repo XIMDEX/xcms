@@ -44,9 +44,24 @@ angular.module('ximdex.module.xlyre', []);
 
 //Configure interpolation symbols to work in smarty templates
 angular.module('ximdex')
-    .config(function($interpolateProvider) {
+    .config(function($interpolateProvider, $controllerProvider, $compileProvider) {
         $interpolateProvider.startSymbol('[[');
         $interpolateProvider.endSymbol(']]');
+        
+        angular.module('ximdex').controllerProvider = $controllerProvider;
+        angular.module('ximdex').compileProvider = $compileProvider;
+
+        var registeredItems = [];
+        angular.module('ximdex').registerItem = function(item) {
+        	registeredItems.push(item);
+        }
+        angular.module('ximdex').notRegistred = function(item) {
+        	if (registeredItems.indexOf(item) >= 0) {
+        		return false
+        	} else {
+        		return true
+        	}
+        }
 });
 
 //Hacks to deal with actual mixed enviroment
@@ -56,14 +71,16 @@ angular.module('ximdex')
 	X.angularTools = {
 		//Initialize compile on a view and manage scope destruction
 		initView: function (view, id){
-			var $injector = angular.injector(['ng', 'ximdex']);
-			$injector.invoke(function($rootScope, $compile) {
+			var $injector = angular.element(document).injector();
+			$injector.invoke(function($compile, $rootScope) {
 			    var destroy = function(event, viewId){
 			        if (id == viewId) {
 			            scope.$destroy();
 			            $(document).off("closeTab.angular", destroy);
 			        }
 			    };
+			    
+			    //var scope = rootScope.$new();
 			    var scope = $rootScope.$new();
 			    $compile(view[0])(scope);
 			    scope.$digest();
