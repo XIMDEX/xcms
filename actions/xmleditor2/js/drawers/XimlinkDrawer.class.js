@@ -75,6 +75,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 	},
 
     createContent: function() {
+		$("body",window.parent.document).append($("<div/>").addClass("overlay js_overlay"));
 		$('div.descriptions-list-options', this.element).empty();
 		this._addDescription(this.term_main, 1);
 
@@ -197,7 +198,8 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 		});
 
 	tds = $ts.treeview('getDatastore');
-	tds.clear();
+	if (tds)
+		tds.clear();
 
 	$.getJSON(
 			X.restUrl + '?action=xmleditor2&method=getLinkFolder',
@@ -403,6 +405,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     	$("div.xim-treeview-selector",this.element).treeview("destroy");
     	$("div.xim-treeview-selector",this.element).empty();
     	dt.closeDrawer();
+	$("body div.js_overlay",window.parent.document).remove();
     }
 
 });
