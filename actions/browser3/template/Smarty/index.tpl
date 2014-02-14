@@ -24,7 +24,7 @@
  *}
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html ng-app="ximdex">
 	<head>
 
 		<title>{$xinversion}</title>
@@ -54,7 +54,7 @@
 		<!-- js widgets -->
 		%=js_widgets%
 	</head>
-	<body ng-app="ximdex"  ng-controller="XMainCtrl">
+	<body ng-controller="XMainCtrl">
 		<div id="angular-event-relay"></div>
 		<div id="ximdex-splash">
 

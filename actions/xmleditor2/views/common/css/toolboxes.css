@@ -89,7 +89,7 @@
 }*/
 
 .ui-dialog .ui-resizable-se{
-	background:url("../../../../../xmd/images/browser/hbox/views-icons.png") no-repeat scroll -2px -166px transparent;
+	background:url("../../../../../xmd/images/browser/hbox/views-icons.png") no-repeat scroll -2px -166px transparent !important;
 	height:18px;
 	width:18px;
 	}
