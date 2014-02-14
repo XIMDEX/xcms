@@ -1,4 +1,4 @@
-{**
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,18 +21,23 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
-
-<form method="post" id="print_form" action="{$action_url}">
-	<div class="action_header">
-		<h2>{t}Add{/t} {$friendlyName|gettext}</h2>
-	</div>
-	<div class="action_content">
-		<p class="icon icon-positioned server input">
-			<input type="text" name="name" id="foldername" class="cajaxg validable js_val_alphanumeric not_empty full-size {$friendlyName|replace:" ":"_"}_icon" placeholder="{t}{$friendlyName} name{/t}">
-		</p>
-	</div>
-	<fieldset class="buttons-form positioned_btn">
-	    {button label="Create" class='validate btn main_action'}
-	</fieldset>	
-</form>
+ */
+angular.module('ximdex.common.directive.validator')
+	.directive('ximAlphanumeric', function(){
+		return {
+			require: 'ngModel',
+			link: function(scope, element, attrs, ctrl){
+				pattern = /^\w+$/;
+				ctrl.$parsers.unshift(function(viewValue){
+					console.log("Validating", viewValue);
+					if (pattern.test(viewValue)){
+						ctrl.$setValidity('alphanumeric', true);
+						return viewValue
+					} else {
+						ctrl.$setValidity('alphanumeric', false);
+						return undefined
+					}
+				});
+			}
+		}
+	});

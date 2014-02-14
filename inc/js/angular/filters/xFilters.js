@@ -1,4 +1,4 @@
-{**
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,18 +21,20 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
+ */
 
-<form method="post" id="print_form" action="{$action_url}">
-	<div class="action_header">
-		<h2>{t}Add{/t} {$friendlyName|gettext}</h2>
-	</div>
-	<div class="action_content">
-		<p class="icon icon-positioned server input">
-			<input type="text" name="name" id="foldername" class="cajaxg validable js_val_alphanumeric not_empty full-size {$friendlyName|replace:" ":"_"}_icon" placeholder="{t}{$friendlyName} name{/t}">
-		</p>
-	</div>
-	<fieldset class="buttons-form positioned_btn">
-	    {button label="Create" class='validate btn main_action'}
-	</fieldset>	
-</form>
+//Format 
+angular.module('ximdex.common.filter')
+    .filter('xBytes', function(){
+        return function(bytes){
+            if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
+                return ''
+            if (parseFloat(bytes) == 0)
+            	return '0 bytes'
+            var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
+            var number = Math.floor(Math.log(bytes) / Math.log(1024));
+            var size = (bytes / Math.pow(1024, Math.floor(number))).toFixed(2);
+            var unit =  units[number];
+            return size+' '+unit;
+        }
+});

@@ -32,6 +32,14 @@
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Save{/t}</span>
 			</button>
+			<button type="button" class="kupu-prevdoc" id="kupu-prevdoc-button" i18n:attributes="title" xim:title="{t}Preview{/t}" accesskey="x">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Preview{/t}</span>
+			</button>
+			<button type="button" class="kupu-publicate" id="kupu-publicate-button" xim:title="{t}Publicate{/t}" i18n:attributes="title" accesskey="s">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Publish{/t}</span>
+			</button>
 		</span>
 		
 		{* Document views *}
@@ -44,28 +52,42 @@
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Design view{/t}</span>
 			</button>
-			<button type="button" class="kupu-remoteview" id="kupu-remoteview-button" xim:title="{t}Remote{/t}" i18n:attributes="title" accesskey="s">
+{*			<button type="button" class="kupu-remoteview" id="kupu-remoteview-button" xim:title="{t}Remote{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Remote view{/t}</span>
-			</button>
+			</button>*}
 		</span>
 		
-		{* Edition operations *}
+		{* Edit operations *}
 		<span class="kupu-tb-buttongroup">
 		
 			<button type="button" class="kupu-cut" id="kupu-cut-button" xim:title="{t}Cut{/t}" i18n:attributes="title" accesskey="z">
 				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Cut{/t}</span>
+				<span class="triangle"></span><span class="tooltip">{t}Cut selected element{/t}</span>
 			</button>
 			<button type="button" class="kupu-copy" id="kupu-copy-button" xim:title="{t}Copy{/t}" i18n:attributes="title" accesskey="z">
 				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Copy{/t}</span>
+				<span class="triangle"></span><span class="tooltip">{t}Copy selected element{/t}</span>
 			</button>
 			<button type="button" class="kupu-paste" id="kupu-paste-button" xim:title="{t}Paste{/t}" i18n:attributes="title" accesskey="z">
 				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Paste{/t}</span>
+				<span class="triangle"></span><span class="tooltip">{t}Paste element{/t}</span>
 			</button>
 		
+			<button type="button" class="kupu-remove" id="kupu-remove-button" xim:title="{t}Delete selected element{/t}" i18n:attributes="title" accesskey="z">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Delete selected element{/t}</span>
+			</button>
+			<button type="button" class="kupu-scrollup" id="kupu-scrollup-button" xim:title="{t}Scroll up{/t}" i18n:attributes="title" accesskey="z">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Put element up{/t}</span>
+			</button>
+			<button type="button" class="kupu-scrolldown" id="kupu-scrolldown-button" xim:title="{t}Scroll down{/t}" i18n:attributes="title" accesskey="z">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Put element down{/t}</span>
+			</button>
+        </span>
+		<span class="kupu-tb-buttongroup">
 			<button type="button" class="kupu-undo" id="kupu-undo-button" xim:title="{t}Undo{/t}: alt-z" i18n:attributes="title" accesskey="z">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Undo{/t}</span>
@@ -75,23 +97,7 @@
 				<span class="triangle"></span><span class="tooltip">{t}Redo{/t}</span>
 			</button>
 			
-			<button type="button" class="kupu-scrollup" id="kupu-scrollup-button" xim:title="{t}Scroll up{/t}" i18n:attributes="title" accesskey="z">
-				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Put element up{/t}</span>
-			</button>
-			<button type="button" class="kupu-scrolldown" id="kupu-scrolldown-button" xim:title="{t}Scroll down{/t}" i18n:attributes="title" accesskey="z">
-				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Put element down{/t}</span>
-			</button>
 			
-			<button type="button" class="kupu-remove" id="kupu-remove-button" xim:title="{t}Delete selected element{/t}" i18n:attributes="title" accesskey="z">
-				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Delete selected element{/t}</span>
-			</button>
-			<button type="button" class="kupu-schemavalidator" id="kupu-schemavalidator-button" xim:title="{t}Validate schema{/t}" i18n:attributes="title">
-				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Validate schema{/t}</span>
-			</button>
 			<button type="button" class="kupu-ximletdrawer" id="kupu-ximletdrawer-button" xim:title="{t}Ximlet manager{/t}" i18n:attributes="title">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Ximlet manager{/t}</span>
@@ -100,6 +106,10 @@
 		
 		{* Services *}
 		<span class="kupu-tb-buttongroup">
+			<button type="button" class="kupu-schemavalidator" id="kupu-schemavalidator-button" xim:title="{t}Validate schema{/t}" i18n:attributes="title">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Validate schema{/t}</span>
+			</button>
 			<button type="button" class="kupu-spellchecker" id="kupu-spellchecker-button" xim:title="{t}Spell Check{/t}" i18n:attributes="title">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Spell checker{/t}</span>
@@ -108,14 +118,6 @@
 		
 		{* Publication *}
 		<span class="kupu-tb-buttongroup">
-			<button type="button" class="kupu-publicate" id="kupu-publicate-button" xim:title="{t}Publicate{/t}" i18n:attributes="title" accesskey="s">
-				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Publish{/t}</span>
-			</button>
-			<button type="button" class="kupu-prevdoc" id="kupu-prevdoc-button" i18n:attributes="title" xim:title="{t}Preview{/t}" accesskey="x">
-				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Preview{/t}</span>
-			</button>
 		</span>
 		
 		<span class="kupu-tb-buttongroup" id="kupu-newwindow">

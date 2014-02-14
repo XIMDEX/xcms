@@ -233,7 +233,6 @@
 				tabId: this.tabId()
 			});
 		}
-
 	});
 
 })(com.ximdex);

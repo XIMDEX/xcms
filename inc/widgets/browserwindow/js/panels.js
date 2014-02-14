@@ -136,6 +136,8 @@
 		closeTab: function(tabId) {
 			if (!this.closeable) return;
 			this.tabs.tabs('remove', tabId);
+			
+			$(document).trigger('closeTab.angular', tabId);
 			// Reorder the ids
 			$('ul.ui-tabs-nav li', this.tabs).each(function(index, item) {
 				$(item).data('tabId', index);

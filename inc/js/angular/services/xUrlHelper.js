@@ -1,4 +1,4 @@
-{**
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,18 +21,25 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
-
-<form method="post" id="print_form" action="{$action_url}">
-	<div class="action_header">
-		<h2>{t}Add{/t} {$friendlyName|gettext}</h2>
-	</div>
-	<div class="action_content">
-		<p class="icon icon-positioned server input">
-			<input type="text" name="name" id="foldername" class="cajaxg validable js_val_alphanumeric not_empty full-size {$friendlyName|replace:" ":"_"}_icon" placeholder="{t}{$friendlyName} name{/t}">
-		</p>
-	</div>
-	<fieldset class="buttons-form positioned_btn">
-	    {button label="Create" class='validate btn main_action'}
-	</fieldset>	
-</form>
+ */
+angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
+    .factory('xUrlHelper', ['$window', function($window) {
+        return {
+            baseUrl: function() {
+                return $window.X.restUrl;
+            },
+            getAction: function(params){
+                var timestamp = new Date().getTime();
+                var actionUrl = this.baseUrl()+'?noCacheVar='+timestamp+'&action='+params.action+'&method='+params.method;
+                if (params.id) {
+                    actionUrl+='&nodeid='+params.id+'&nodes[]='+params.id;
+                } else if (params.IDParent) {
+                    actionUrl+='&nodeid='+params.IDParent+'&nodes[]='+params.IDParent;
+                }
+                if (params.module){
+                    actionUrl+='&mod='+params.module;
+                }
+                return actionUrl;
+            }
+        }
+    }]);

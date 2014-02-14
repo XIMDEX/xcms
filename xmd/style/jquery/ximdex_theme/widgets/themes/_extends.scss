@@ -25,7 +25,7 @@
     }
 
     %button-default {
-        @extend %animation-button-background;
+        @extend %animation-button;
         background: #fff;
         border: 1px solid #dedede;
         display: inline-block;
@@ -55,6 +55,21 @@
             background: lighten(#ACAFBB, 5%)!important;
             cursor: default!important;   
         }    
+    }
+    %button-main-action {
+        @extend %button-default;
+        color: white!important;
+        background-image: linear-gradient(#72c4b9, #7ccac0);
+        &:focus, &:hover {
+            background-image: linear-gradient(darken(#72c4b9, 10%), darken(#7ccac0, 10%));        
+        }
+        &:active {
+            background-image: linear-gradient(#7ccac0, #72c4b9);
+        }
+        &:disabled, &.disabled {
+            background: lighten(#72c4b9, 10%)!important;
+            cursor: default!important;   
+        }       
     }
     %button-main-action-alt {
         @extend %button-default;
@@ -156,10 +171,10 @@
         }
 
 //Transitions
-%animation-button-background {
-    -webkit-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) background;
-    -moz-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) background;
-    -ms-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) background;
-    -o-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) background;
-    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) background;
+%animation-button{
+    -webkit-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+    -moz-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+    -ms-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+    -o-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
 }

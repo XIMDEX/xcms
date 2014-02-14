@@ -78,7 +78,7 @@
 			<div class="content_server"><div name='protocol' id='protocol'>
 				<label>{t}Connection{/t}</label>
 				{foreach from=$protocols item=_protocol}
-				<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' {if ($server.protocol == $_protocol.Id)} selected {/if}/>
+				<input type="radio" name="protocol" id="{$_protocol.Id}" value='{$_protocol.Id}' {if ($server.protocol eq $_protocol.Id)}checked{/if} />
 				<label for="{$_protocol.Id}">{$_protocol.Id|gettext}</label>
 				{/foreach}
 			</div>
@@ -122,7 +122,7 @@
 				<div class="encoding">
 					<label>{t}Encoding{/t}</label>
 					{foreach from=$encodes item=_encode}
-					<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode == $_encode.Id)} selected {/if} id="{$_encode.Id}"/>
+					<input type="radio" name="encode" value='{$_encode.Id}' {if ($server.encode eq $_encode.Id)}checked{/if} id="{$_encode.Id}"/>
 					<label for="{$_encode.Id}">{$_encode.Id}</label>
 					{/foreach}
 				</div>
