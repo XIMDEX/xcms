@@ -22,24 +22,22 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
-    .factory('xUrlHelper', ['$window', function($window) {
-        return {
-            baseUrl: function() {
-                return $window.X.restUrl;
-            },
-            getAction: function(params){
-                var timestamp = new Date().getTime();
-                var actionUrl = this.baseUrl()+'?noCacheVar='+timestamp+'&action='+params.action+'&method='+params.method;
-                if (params.id) {
-                    actionUrl+='&nodeid='+params.id+'&nodes[]='+params.id;
-                } else if (params.IDParent) {
-                    actionUrl+='&nodeid='+params.IDParent+'&nodes[]='+params.IDParent;
-                }
-                if (params.module){
-                    actionUrl+='&mod='+params.module;
-                }
-                return actionUrl;
-            }
-        }
-    }]);
+angular.module('ximdex.common.directive.validator')
+	.directive('ximAlphanumeric', function(){
+		return {
+			require: 'ngModel',
+			link: function(scope, element, attrs, ctrl){
+				pattern = /^\w+$/;
+				ctrl.$parsers.unshift(function(viewValue){
+					console.log("Validating", viewValue);
+					if (pattern.test(viewValue)){
+						ctrl.$setValidity('alphanumeric', true);
+						return viewValue
+					} else {
+						ctrl.$setValidity('alphanumeric', false);
+						return undefined
+					}
+				});
+			}
+		}
+	});
