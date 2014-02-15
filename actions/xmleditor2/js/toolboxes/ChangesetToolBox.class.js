@@ -72,7 +72,9 @@ var ChangesetToolBox = Object.xo_create(FloatingToolBox, {
 		if (this._isRestoring) return;
 
 		var saveState = false;
-
+		if (options.setCurrentElement)
+			this._element = options.selNode;
+		
 		if (this._element != options.selNode) {
 			if (this._content != $(this._element).text()) {
 				var ximdoc = this.editor.getXimDocument();
