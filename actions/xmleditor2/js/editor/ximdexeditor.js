@@ -920,7 +920,7 @@ function XimdocEditor(options) {
 		if (event && event.keyCode && (event.keyCode==8 || event.keyCode==46)){
 			if (event.type == "keyup")
 				this.setDesignMode(true);
-			else if($(this.selNode).text()=="")
+			else if(this.getSelection().getRange().startOffset == 0)
 				this.setDesignMode(false);
 			return;
 		}	
