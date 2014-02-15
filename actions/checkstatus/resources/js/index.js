@@ -22,9 +22,42 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+ if (angular.module('ximdex').notRegistred('XPublishStatus')){
+    angular.module('ximdex')
+        .controllerProvider.register('XPublishStatus', ['$scope', '$attrs', 'xBackend', '$timeout', '$http', 'xUrlHelper', function($scope, $attrs, xBackend, $timeout, $http, xUrlHelper){
+            $scope.publications = {}
+            $scope.titles = function(key){
+            	return {
+	            	published: _('Published documents'),
+	            	unpublished: _('Documents in publication queue')
+            	}[key]
+            }
+            $scope.backend = xBackend.subscribe({id: $attrs.ximNodeid, action:'checkstatus', method:'getPublicationQueue'}, function(data){
+            	if (data && data.publications) {
+            		$scope.publications.published = []
+            		$scope.publications.unpublished = []
+            		angular.element.each(data.publications, function(key, pub){
+            			if (pub.state == 'In') {
+            				$scope.publications.published.push(pub);
+            			} else {
+            				$scope.publications.unpublished.push(pub);
+            			}
+            		});
+            	}
+            });
+            $scope.$on('$destroy', function(){
+            	if ($scope.backend) {
+            		$scope.backend.unsubscribe();
+            	}
+            });
+        }]);
+    angular.module('ximdex').registerItem('XPublishStatus');
+}
 
 
 X.actionLoaded(function(event, fn, params) {
+	X.angularTools.initView(params.context, params.tabId);
+
 	fn('.state-info .documents-info').addClass("hide-toggle");
 
         fn('.state-info').click(function() {
