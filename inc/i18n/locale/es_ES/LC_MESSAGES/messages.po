@@ -2151,6 +2151,9 @@ msgid "Node could not be imported"
 msgstr "El nodo no se ha podido importar"
 
 #: /actions/linkreport/template/Smarty/index.tpl
+msgid "Use the asterisk '*' to obtain all the links of the current folder"
+msgstr "Usa el asterisco '*' para obtener todos los links de la carpeta actual"
+
 msgid "Select search criteria"
 msgstr "Seleccione un criterio de b&uacute;squeda"
 
