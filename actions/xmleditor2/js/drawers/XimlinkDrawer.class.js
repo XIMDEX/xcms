@@ -396,6 +396,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 		$('div.js_add_link_panel', this.element).next("div.buttons").hide(); ;
 		$('div.js_search_link_panel', this.element).show() ; 
 		$('div.js_search_link_panel', this.element).next("div.buttons").show() ;
+		$('a.js_add_link', this.element).show() ;
 		$("input", this.element).val("");
     	$('select.ximlink-list', this.element).unbind().empty();
     	$('input.ximlink-search', this.element).unbind();

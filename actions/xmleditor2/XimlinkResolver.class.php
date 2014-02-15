@@ -91,7 +91,7 @@ class ximlinkResolver {
                         from FastTraverse f inner join Nodes n on f.idchild = n.idnode
                                 inner join Links l on n.idnode = l.idlink
                         where f.idnode = $idprj and
-                                n.idnodetype = 5049  order by CreationDate desc limit 0,50 ";
+                                n.idnodetype = 5049  order by n.Name asc limit 0,50 ";
 
 		}
 
