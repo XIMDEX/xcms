@@ -137,11 +137,7 @@ function ContextMenu() {
 					var menu_height = $(this.contextmenu).height();
 					var max_posX = menu_left +  menu_width + 15 /* scrollbar */;
 					var max_posY = menu_top +  menu_height;
-
-					if(  left > max_posX || left < menu_left || top < menu_top || top >  max_posY ||  event.type != "mousedown" ) //it is not scroll
-                window.document.getElementsByTagName('body')[0].removeChild(this.contextmenu);
-					else
-						return null;
+                    window.document.getElementsByTagName('body')[0].removeChild(this.contextmenu);
             } catch (e) {
                 // after some commands, the contextmenu will be removed by
                 // the browser, ignore those cases
