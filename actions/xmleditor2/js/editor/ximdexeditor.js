@@ -899,9 +899,11 @@ function XimdocEditor(options) {
     };
 
     this.updateState = function(event) {
+    	
         /* let each tool changes state if required */
         // first seeing if the event is interesting enough to trigger the whole updateState machinery
 
+        var setCurrentElementForChangesetToolBox = false;
         if(event && event.type == 'mouseup') {
         	this.fireMouseupEvent(event);
         	return;
@@ -915,10 +917,32 @@ function XimdocEditor(options) {
 			}
 		}
 
+		if (event && event.keyCode && (event.keyCode==8 || event.keyCode==46)){
+			if (event.type == "keyup")
+				this.setDesignMode(true);
+			else if(this.getSelection().getRange().startOffset == 0)
+				this.setDesignMode(false);
+			return;
+		}	
+		if (event && event.type == 'keydown' && event.keyCode == 13) {
+			return "";
+		}
 		// If user presses the enter key we create a new element of the same type
 		if (event && event.type == 'keyup' && event.keyCode == 13) {
+			//If the next one hasn't attribute uid, we add a new one.
+			
+			var $tempSelectedNode = $('[uid="'+this.selNode.getAttribute('uid')+'"]', this.getInnerDocument());
+			var newNodeUID = $tempSelectedNode.next().attr("uid");			
+			if (!newNodeUID){
+				$tempSelectedNode.next().addClass("xedit-rngelement").attr("uid", $(this.selNode).attr("uid"));
+				$tempSelectedNode.next()[0].ximElement = this.selNode.ximElement;
+				$tempSelectedNode.next()[0].ximElement._htmlElements = [$tempSelectedNode.next()[0]];
+				this.selNode = $tempSelectedNode.next()[0];
+			}			
 			var elems = $('[uid="'+this.selNode.getAttribute('uid')+'"]', this.getInnerDocument());
+			
 			var ximElement = elems[elems.length-1].ximElement;
+			console.debug(ximElement);
 			if (ximElement) {
 				var newElement = new XimElement(ximElement.schemaNode, false);
 				var htmlNodeAdded = this.getSelection().selection.anchorNode;
@@ -933,13 +957,23 @@ function XimdocEditor(options) {
 											&& htmlNodeSplited.textContent != '')
 											? htmlNodeSplited.textContent
 											: ximElement.value;
-						this.getXimDocument().insertAfter(newElement, ximElement.parentNode, ximElement);
+						var justCreated = this.getXimDocument().insertAfter(newElement, ximElement.parentNode, ximElement);
+
+						var uid = $(this.selNode).attr("uid");
+						$(this.selNode).siblings("[uid='"+uid+"']").removeClass("rng-element-selected");
+						$(this.selNode).attr("uid", justCreated.uid);
+						this.selNode.ximElement = justCreated;
+						this.selNode.isEditable = true;
+						if (!this.selNode.ximElement._htmlElements)
+							this.selNode.ximElement._htmlElements = [this.selNode];
+
 						this.setActionDescription(_('Splited element'));
-						this.selNode = newElement;
-						this.updateEditor({caller: this, updateContent: false, selNode: newElement});
+						setCurrentElementForChangesetToolBox = true;
+
+
+						//this.updateEditor({caller: this, updateContent: false, selNode: newElement});
 					}
-				}
-				return;
+				}				
 			}
 		}
 
@@ -950,9 +984,13 @@ function XimdocEditor(options) {
         this._setSelectionData(target);
 		if (!this.selNode) return;
 
+		var optionsForUpdateState = {caller: this, selNode: this.selNode, event: event};
+    	if (setCurrentElementForChangesetToolBox)
+    		optionsForUpdateState.setCurrentElement = true;
         for (var id in this.tools) {
             try {
-                if (this.tools[id]['updateState']) this.tools[id].updateState({caller: this, selNode: this.selNode, event: event});
+
+                if (this.tools[id]['updateState']) this.tools[id].updateState(optionsForUpdateState);
             } catch (e) {
                 if (e == UpdateStateCancelBubble) {
                     this.updateState(event);
@@ -1171,7 +1209,17 @@ function XimdocEditor(options) {
 		);
     };
 
+     this.setDesignMode = function(designMode){
+
+    	if (designMode)
+    		this.getInnerDocument().designMode = "On";
+    	else
+    		this.getInnerDocument().designMode = "Off";
+    };
+
     this.setEditableContent = function(node) {
+    	this.getInnerDocument().designMode = "On";
+    	return true;
 
 		// TODO: Restore selected element before setting "no editable content"?
 		// NOTE: Firefox3 will suport contentEditable attribute: http://starkravingfinkle.org/blog/2007/07/firefox-3-contenteditable/
