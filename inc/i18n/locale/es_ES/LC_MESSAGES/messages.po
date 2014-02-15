@@ -3693,8 +3693,11 @@ msgstr "Sin caducidad"
 msgid "Scheduled publications"
 msgstr "Publicaciones programadas"
 
-msgid "<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled. This could cause a slow and unstable publi    shing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator"
-msgstr "Las funciones requeridas <i>pcntl_fork</i> and <i>pcntl_waitpid</i> est&aacute;n ambas deshabilitadas. Esto podr&iacute;a ocasionar una publicaci&oacute;n lenta e inestable. Por favor, revisa el fichero de configuraci&oacute;n <i>php.ini</i> o contacta con tu administrador"
+msgid "<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled"
+msgstr "Las funciones requeridas <i>pcntl_fork</i> and <i>pcntl_waitpid</i> est&aacute;n ambas deshabilitadas" 
+
+msgid "This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator"
+msgstr "Esto podr&iacute;a ocasionar una publicaci&oacute;n lenta e inestable. Por favor, revisa el fichero de configuraci&oacute;n <i>php.ini</i> o contacta con tu administrador"
 
 #: /actions/workflow_backwads/template/Smarty/forms/mostrar_user.tpl
 msgid "Next state"
@@ -9610,20 +9613,35 @@ msgstr "Crear nuevo proyecto tutelado"
 msgid "Documents in"
 msgstr "Documentos en"
 
+msgid "Published documents"
+msgstr "Documentos publicados"
+
+msgid "Modified documents"
+msgstr "Documentos modificados"
+
+msgid "Documents in publication queue"
+msgstr "Documentos en cola de publicaci&oacute;n"
+
 msgid "documents found"
 msgstr "documentos encontrados"
 
 msgid "document found"
 msgstr "documento encontrado"
 
+msgid "Below are listed all the documents that have been sent to publish"
+msgstr "A continuaci&oacute;n mostramos los documentos que se han enviado a publicar"
+
 msgid "Status Report"
 msgstr "Informe de Estado"
+
+msgid "If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status report with <strong>XPublishTools</strong> module"
+msgstr "Si quieres tener una visi&oacute;n m&aacute;s detallada de la publicaci&oacute;n en Ximdex CMS, ampl&iacute;a la informaci&oacute;n mostrada por este informe de estado instalando el m&oacute;dulo <strong>XPublishTools</strong>"
 
 msgid "Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version."
 
 msgstr "Abajo se listan todos los documentos relevantes de tu proyecto, agrupados por estado. S&oacute;lo se muestran los archivos que se han modificado con respecto a su &uacute;ltima versi&oacute;n publicada."
 
-msgid "There aren't any published or edited files yet"
+msgid "There aren't any edited files yet"
 msgstr "No hay documentos publicados ni editados a&uacute;n"
 
 #xlyre module
