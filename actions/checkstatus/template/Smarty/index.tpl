@@ -26,11 +26,13 @@
 <div class="action_header">
 	<h2>{t}Status Report{/t}</h2>
 </div>
-
-{if {count($files)}}
 	<div class="action_content versions" ng-controller="XPublishStatus" ng-cloak xim-nodeid={$id_node}>
-
-		<p>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</p>
+	<p><strong>{t}Modified documents{/t}:</strong></p>
+{if {count($files) eq 0}}
+            <span>{t}There aren't any edited files yet{/t}.</span>
+<!--    <div class="action_content"></div>-->
+{else}
+		<span>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</span>
 			
 		{foreach from=$files key=state item=statenode}
 			<div class="state-info row-item_selectable">
@@ -49,6 +51,10 @@
 			    </div>
 	        </div>
 	    {/foreach}
+{/if}
+	<br/>
+	<p><strong>{t}Published documents{/t}:</strong></p>
+		<span>{t}Below are listed all the documents that have been sent to publish{/t}.</span>
 	    <div class="state-info row-item_selectable" 
 	    	ng-repeat="(key, pubSet) in publications" 
 	    	ng-show="pubSet.length" 
@@ -91,14 +97,6 @@
 				</div>
 		    </div>
         </div> -->
-       
+      <p>{t}If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status report with <strong>XPublishTools</strong> module{/t}.</p> 
 	</div>
 	
-{else}
-    <div class="info-message message">
-	    <p>{t}There aren't any published or edited files yet{/t}.</p>
-    </div>
-
-    <div class="action_content">
-    </div>
-{/if}

@@ -37,7 +37,7 @@
             		$scope.publications.published = []
             		$scope.publications.unpublished = []
             		angular.element.each(data.publications, function(key, pub){
-            			if (pub.state == 'In') {
+            			if (pub.state == 'In' || pub.state == 'Out') {
             				$scope.publications.published.push(pub);
             			} else {
             				$scope.publications.unpublished.push(pub);

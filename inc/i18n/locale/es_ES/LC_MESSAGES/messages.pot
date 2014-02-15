@@ -9213,7 +9213,7 @@ msgstr ""
 
 #: /actions/checkstatus/resources/js/index.js
 msgid "Published documents"
-msgstr "Dcoumentos publicados"
+msgstr ""
 
 msgid "Documents in publication queue"
-msgstr "Documentos en cola de publicación"
+msgstr ""
