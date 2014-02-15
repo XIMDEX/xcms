@@ -39,7 +39,7 @@
 {if $hasDisabledFunctions}
 	<div class="message warning-message">
 		<div class="disable-functions-alert">
-			{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled. This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
+			{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
 		</div>
 	</div>
 {/if}
