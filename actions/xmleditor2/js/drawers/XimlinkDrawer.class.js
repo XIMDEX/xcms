@@ -406,7 +406,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     	$("div.xim-treeview-selector",this.element).treeview("destroy");
     	$("div.xim-treeview-selector",this.element).empty();
     	dt.closeDrawer();
-	$("body div.js_overlay",window.parent.document).remove();
+	$("body div.js_overlay").remove();
     }
 
 });
