@@ -917,6 +917,15 @@ function XimdocEditor(options) {
 			}
 		}
 
+		if (IS_CHROME && event && event.keyCode && event.keyCode == 13) {
+			if (this.selNode){
+				var $br = $(this.selNode).find('br');
+				if ($br.parent() != $(this.selNode) && !$br.parent().attr("uid") )
+					$br.parent().remove();
+			}
+			return;	
+		}
+
 		if (event && event.keyCode && (event.keyCode==8 || event.keyCode==46)){
 			if (event.type == "keyup")
 				this.setDesignMode(true);

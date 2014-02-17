@@ -107,6 +107,7 @@
 			mode: node_ext,
 			htmlMode: true,
 			theme: "default",
+			tabSize: 4,
 			lineNumbers: true,
 			matchBrackets: true,
 			lineWrapping: true,
