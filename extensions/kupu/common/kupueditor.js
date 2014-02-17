@@ -156,8 +156,8 @@ function KupuEditor(document, config, logger) {
         // onbeforedeactivate event, which would be ideal here...
         this._saveSelection();
 
-        if (event.type == 'click' || event.type=='mouseup' ||
-                (event.type == 'keyup' &&
+         if (event.type == 'click' || event.type=='mouseup' ||
+                ((event.type == 'keyup' || event.type == 'keydown') &&
                     interesting_codes.contains(event.keyCode))) {
             // Filthy trick to make the updateState method get called *after*
             // the event has been resolved. This way the updateState methods can
@@ -509,6 +509,8 @@ function KupuEditor(document, config, logger) {
         // XXX should come back and change to passing in an element
         this._addEventHandler(this.getInnerDocument(), "click", this.updateStateHandler, this);
         this._addEventHandler(this.getInnerDocument(), "dblclick", this.updateStateHandler, this);
+        this._addEventHandler(this.getInnerDocument(), "keydown", this.updateStateHandler, this);
+        this._addEventHandler(this.getInnerDocument(), "keypress", this.updateStateHandler, this);
         this._addEventHandler(this.getInnerDocument(), "keyup", this.updateStateHandler, this);
         this._addEventHandler(this.getInnerDocument(), "keyup", function() {this.content_changed = true}, this);
         this._addEventHandler(this.getInnerDocument(), "mouseup", this.updateStateHandler, this);

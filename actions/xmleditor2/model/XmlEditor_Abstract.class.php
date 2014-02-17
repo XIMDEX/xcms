@@ -281,7 +281,6 @@ abstract class XmlEditor_Abstract {
 		$doc->loadXML($xmldoc);
 		$docxap = $doc->firstChild;
 
-		$this->_resolveXimlinks($idNode, $doc);
 		$this->_deleteUIDAttributes($docxap);
 
 		if ($deleteDocxap) {
@@ -316,73 +315,6 @@ abstract class XmlEditor_Abstract {
 		for ($i=0; $i<$count; $i++) {
 			$this->_deleteUIDAttributes($childrens->item($i));
 		}
-	}
-
-	private function _resolveXimlinks($idNode, &$doc) {
-
-//		debug::log($doc->saveXML());
-
-		$xpath = new DOMXPath($doc);
-		$xr = new XimlinkResolver();
-
-//		$attrQuery = sprintf("@*[namespace-uri()='%s']", PVD2RNG::XMLNS_XIM);
-//		$query = sprintf("//*[%s]", $attrQuery);
-
-		$query = '//*[@__ximlink_idnode__]';
-		$items = $xpath->query($query);
-
-		foreach ($items as $item) {
-
-			$ximlink_idnode = $item->getAttribute('__ximlink_idnode__');
-			$ximlink_idchannel = $item->getAttribute('__ximlink_idchannel__');
-			$ximlink_name = $item->getAttribute('__ximlink_name__');
-			$ximlink_url = $item->getAttribute('__ximlink_url__');
-			$ximlink_text = $item->getAttribute('__ximlink_text__');
-
-			$item->removeAttribute('__ximlink_idnode__');
-			$item->removeAttribute('__ximlink_idchannel__');
-			$item->removeAttribute('__ximlink_name__');
-			$item->removeAttribute('__ximlink_url__');
-			$item->removeAttribute('__ximlink_text__');
-
-			if ($ximlink_name == '') {
-				XMD_Log::error(_('A Ximlink cannot be created without name.'));
-				continue;
-			}
-
-			if ($ximlink_text == '') {
-				$ximlink_text = $ximlink_name;
-			}
-
-//			debug::log($ximlink_idnode, $ximlink_idchannel, $ximlink_name, $ximlink_url, $ximlink_text);
-
-			$ret = $xr->saveXimlink($idNode, $ximlink_idnode, $ximlink_idchannel, $ximlink_name, $ximlink_url, $ximlink_text);
-//			debug::log('ret', $ret);
-			if ($ret[0] < 1) {
-				$ret = array($ximlink_idnode, $ximlink_idchannel);
-			}
-			$ret = implode(',', $ret);
-
-			$attrName = $this->_resolveXimlinkAttribute($item);
-			if ($attrName !== false) {
-				$item->setAttribute($attrName, $ret);
-			}
-		}
-
-//		debug::log($doc->saveXML());
-	}
-
-	private function _resolveXimlinkAttribute($node) {
-
-		$validAttributes = array('a_enlaceid_url', 'url');
-		$l = count($validAttributes);
-		$attrName = false;
-		while (!$attrName && --$l >= 0) {
-			if ($node->hasAttribute($validAttributes[$l])) {
-				$attrName = $validAttributes[$l];
-			}
-		}
-		return $attrName;
 	}
 
 	/**

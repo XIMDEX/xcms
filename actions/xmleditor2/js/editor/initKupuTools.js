@@ -156,8 +156,8 @@ function initKupuTools(kupu) {
 	ximdoctool.registerToolBox('changesettoolbox', changesettoolbox);	
 	ximdoctool.registerToolBox('channelstoolbox', channelstoolbox);
 	ximdoctool.registerToolBox('infotoolbox', infotoolbox);
-	attributestool.registerToolBox('attributestoolbox', attributestoolbox);
 	ximdoctool.registerToolBox('rngelementstoolbox', rngelementstoolbox);
+	attributestool.registerToolBox('attributestoolbox', attributestoolbox);
 	ximdocannotationtool.registerToolBox('annotationstoolbox', annotationstoolbox);
 	
 	/**END OF TOOLBOX REGISTER.**/

@@ -130,13 +130,13 @@
 				$tabLink = $("a[href='#"+href+"']");
 				$tabLink.addClass("unsave").parent().addClass("unsave");
 				cm.save();
-				},
-			onKeyEvent: function(cm, event){
+				}
+/*			onKeyEvent: function(cm, event){
 				if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true;					
 					fn(".validate").click();
 					event.preventDefault();
 					return false;
-			}
+			}*/
 		});
 
 		$(".reset", params.context).bind("click", function(event) {

@@ -91,6 +91,12 @@
   font-size: 1.5rem;
   line-height: 1.6; }
 
+.file-size {
+  margin-left: 0.7em;
+  color: #b3b3b3; }
+  .file-size::before {
+    content: "- "; }
+
 .file-version {
   color: #409f92;
   margin-top: -1.9em;

@@ -29,6 +29,7 @@ ModulesManager::file('/inc/serializer/Serializer.class.php');
 ModulesManager::file('/inc/helper/String.class.php');
 ModulesManager::file('/inc/mvc/Request.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
+ModulesManager::file('/actions/createlink/Action_createlink.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/model/locale.inc');
 
@@ -363,6 +364,44 @@ class Action_xmleditor2 extends ActionAbstract {
         print $content;
         exit();
     }
+
+    	
+	public function saveXimLink(){
+
+		$result = array();
+		$url = urlencode($this->request->getParam("url"));
+		$idParent = $this->request->getParam("idParent");
+		$name = $this->request->getParam("name");
+		$description = $this->request->getParam("description");
+
+		//Check if name is available for the selected parent.
+		$nodeParent = new Node($idParent);
+		if ($nodeParent->getChildByName($name)){
+			$result["success"] = false;
+			$result["message"] = _("A link with that name already exists in the selected folder");
+		}
+
+		$actionCreateLink = new Action_createlink();
+		$idLink = $actionCreateLink->createNodeLink($name, $url, $description, $idParent);
+		if ($idLink){
+			$result["success"] = true;
+			$result["idLink"] = $idLink;	
+		}		
+		
+		$this->sendJSON($result);
+	}
+
+	public function getLinkFolder(){
+		$result = array();
+		$idNode = $this->request->getParam("nodeid");
+		$node = new Node($idNode);
+		$idProject = $node->getProject();
+		$project = new Node($idProject);
+		$children = $project->getChildren(5050);
+		$result["success"] = true;
+		$result["idLinkFolder"] = $children[0];
+		$this->sendJSON($result);
+	}
 
 }
 
