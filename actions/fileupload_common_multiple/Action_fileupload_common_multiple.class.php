@@ -261,8 +261,17 @@ class Action_fileupload_common_multiple extends ActionAbstract {
     		return $retval;
 	}
 
+    private function normalizeName($name){   
+        $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+        $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+        $decodedName = utf8_decode($name);
+        $decodedName = strtr($decodedName, utf8_decode($source), $target);
+        return utf8_encode($decodedName);
+    }
+
 	//Creating a node according to name and file path
 	private function _createNode($file, $idNode,  $type, $option) {
+        $normalizedName = $this->normalizeName($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
 		if (empty($type)) {
@@ -281,7 +290,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		     		return  $this->_setRest(_(" Destination node has not been found "));
 			}
 
-			$estimatedNode = $node->GetChildByName($file["name"]);
+			$estimatedNode = $node->GetChildByName($normalizedName);
 			if ($estimatedNode > 0) {
 				if (1 == $option) {
 					$data = array(
@@ -300,7 +309,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			} else if ($node->nodeType->get('IsFolder')) {
 				//To upload xml content
 				if ($node->nodeType->get("Name")=="XmlRootFolder"){	
-					$newNodeName = str_replace(".xml","",$file["name"]);
+					$newNodeName = str_replace(".xml","",$normalizedName);
 					$idSchema = $this->request->getParam("id_schema");
 					$idSchema = $idSchema[0];
 					$idLanguage = $this->request->getParam("id_language");
@@ -349,7 +358,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				}else{
 					$data = array(
 						'NODETYPENAME' => $nodeTypeName,
-						'NAME' => $file["name"],
+						'NAME' => $normalizedName,
 						'PARENTID' => $idNode,
 						'CHILDRENS' => array (
 							array ('NODETYPENAME' => 'PATH', 'SRC' => $file["tmp_name"] )
@@ -408,9 +417,10 @@ class Action_fileupload_common_multiple extends ActionAbstract {
   	function checkname() {
 		$idNode = (int) $this->request->getParam("nodeid");
 	 	$name = $this->request->getParam("name");
+        $normalizedName = $this->normalizeName($name);
 
 		$node = new Node($idNode);
-		$estimatedNode = $node->GetChildByName($name);
+		$estimatedNode = $node->GetChildByName($normalizedName);
 
    		if($estimatedNode > 0 ) {
 			$retval = $this->_setRest( _('File already exists.') );
