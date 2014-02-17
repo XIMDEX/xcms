@@ -834,7 +834,7 @@ where cf.nodeid=$nodeId ";
 			while (!$dbObj->EOF) {
 				$publication = array();
 				$publication['name'] = $dbObj->GetValue("name");
-				$publication['path'] = $dbObj->GetValue("path");
+				$publication['path'] = str_replace("/Ximdex/Projects","",$dbObj->GetValue("path"));
 				$publication['filesize'] = $dbObj->GetValue("filesize");
 				$publication['date'] = $dbObj->GetValue("dateup");
 				$publication['id'] = $dbObj->GetValue("idnode");

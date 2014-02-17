@@ -240,7 +240,7 @@ function XimdocTool() {
 			childPos++;
 		}
 
-		if (selNode.childNodes[0] && selNode.childNodes[0].nodeType != 3 && selNode.childNodes[0].getAttribute("uid")) {
+		if (selNode && selNode.childNodes[0] && selNode.childNodes[0].nodeType != 3 && selNode.childNodes[0].getAttribute("uid")) {
 			// Corrects bug with apply elements when they are at the start of the string
 			childPos++;
 		}
