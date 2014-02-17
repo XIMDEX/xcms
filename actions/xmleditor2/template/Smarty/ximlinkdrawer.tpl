@@ -28,7 +28,7 @@
 
 	<div class="title_panel">
 		<h3 i18n:translate="">{t}Link manager{/t}</h3>
- 		<a href="#" class="js_add_link new_link">{t}Add a new link{/t}</a>
+ 		<a href="#" class="js_add_link new_link icon add">{t}Add a new link{/t}</a>
 
 	</div>
 

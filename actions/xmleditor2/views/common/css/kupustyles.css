@@ -1853,3 +1853,14 @@ div.buttons {
 
   to {
     text-indent: 0; } }
+
+/**************
+	// Overlay layer
+	***************/
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0; }

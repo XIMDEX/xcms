@@ -75,7 +75,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 	},
 
     createContent: function() {
-		$("body",window.parent.document).append($("<div/>").addClass("overlay js_overlay"));
+		$("body").append($("<div/>").addClass("overlay js_overlay"));
 		$('div.descriptions-list-options', this.element).empty();
 		this._addDescription(this.term_main, 1);
 

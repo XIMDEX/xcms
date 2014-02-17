@@ -28,6 +28,9 @@
 .descriptions.icon::before {
   content: "\2b"; }
 
+.new_link::before {
+  content: "\41"; }
+
 .ximlink_manager {
   background: none;
   z-index: 100;
@@ -104,6 +107,8 @@
   .new_link:hover {
     text-decoration: underline;
     color: #fff; }
+  .new_link::before {
+    padding-right: .4em; }
 
 .xlinks_list {
   border: none;

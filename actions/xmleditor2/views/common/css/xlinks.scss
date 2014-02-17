@@ -135,6 +135,11 @@
 			text-decoration: underline;
 			color: #fff;
 		}
+
+		&::before{
+			@extend %add;
+				padding-right: .4em;
+		}
 	}
 
 .xlinks_list{
