@@ -24,7 +24,7 @@
  */
 
 angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
-    .factory('xBackend', ['$http', '$rootScope', 'xUrlHelper', function($http, $rootScope, xUrlHelper) {
+    .factory('xBackend', ['$http', '$rootScope', '$timeout', 'xUrlHelper', function($http, $rootScope, $timeout, xUrlHelper) {
         return {
             sendFormData: function(formData, params, callback){
                 var actionUrl = xUrlHelper.getAction(params);
@@ -41,6 +41,66 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
                                 callback(data);
                     });
                 }  
+            }, 
+            subscribe: function(params, callback){
+                var url = xUrlHelper.getAction(params);
+                var timer = null;
+                var etag = null
+                var interval = 4000;
+                var pollStep = function (interval) {
+                    return Math.floor(interval/5);
+                }
+                var stopPolling = function(){
+                    if (timer) {
+                        $timeout.cancel(timer);
+                    }
+                }
+                var requestCallback = function(data, status){
+                    if (data && status == 200) {
+                        callback(data);
+                        if (data.etag) {
+                            etag = data.etag;
+                        }
+                    }
+                    if (etag) {
+                        switch (status) {
+                            case 200:
+                                if (interval - pollStep(interval) >= 1000)
+                                    interval -= pollStep(interval);
+                                break;
+                            case 304:
+                                if (interval + pollStep(interval) <= 8000)
+                                    interval += pollStep(interval);
+                                break;
+                        }
+                    }
+                    timer = $timeout(refresh, interval);
+                }
+                var refresh = function() {
+                   
+                    if (etag)    
+                        var etagUrl = url+'&etag='+etag
+                    $http({
+                        method  : 'GET',
+                        url     : etagUrl || url
+                    }).success(function(data, status){         
+                        requestCallback(data, status);
+                    }).error(function(data, status){         
+                        requestCallback(data, status);
+                    });
+                }
+                
+                if (url)
+                    refresh();
+                return {
+                    refresh: function(){
+                        stopPolling();
+                        refresh();
+                    },
+                    unsubscribe: function() {
+                        stopPolling(); 
+                    }
+                }   
             }
         }
     }]);

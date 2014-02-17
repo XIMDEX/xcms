@@ -90,14 +90,20 @@
          }
  }
 
-
-
  .file-date{
-        display: block;
-        color: darken($c_mainlight, 20%);
-        font-size: 1.5rem;
-        line-height: 1.6;
+    display: block;
+    color: darken($c_mainlight, 20%);
+    font-size: 1.5rem;
+    line-height: 1.6;
  }
+.file-size {
+    margin-left: 0.7em;
+    color: lighten(black, 70%);
+    &::before {
+        content: "- ";
+    }
+}
+
 
  .file-version{
         color: darken($c_mainlight, 20%);

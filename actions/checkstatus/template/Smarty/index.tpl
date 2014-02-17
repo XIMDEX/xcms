@@ -23,38 +23,80 @@
  *  @version $Revision$
  *}
 
- <div class="action_header">
+<div class="action_header">
 	<h2>{t}Status Report{/t}</h2>
 </div>
+	<div class="action_content versions" ng-controller="XPublishStatus" ng-cloak xim-nodeid={$id_node}>
+	<p><strong>{t}Modified documents{/t}:</strong></p>
+{if {count($files) eq 0}}
+            <span>{t}There aren't any edited files yet{/t}.</span>
+<!--    <div class="action_content"></div>-->
+{else}
+		<span>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</span>
+			
+		{foreach from=$files key=state item=statenode}
+			<div class="state-info row-item_selectable">
+				<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>
+	            <div class="docs-amount right">{$statesFull[{$state}].count}</div>
+			
+			    <div class="documents-info">
+				{foreach from=$statenode item=file}		
+					<div class="version-info">
+						<span class="file-path">{$file.Path}/<strong>{$file.Name}</strong></span>
+						<span class="file-date">{$file.Date} hrs.</span>
+						<span class="file-version">{$file.Version}.{$file.SubVersion}</span>
+					</div>
+				{/foreach}
 
-	{if {count($files)}}
-<div class="action_content versions">
-	
-	<p>{t}Below are listed all the relevant documents in your system, grouped by state. Only are shown the files that are modified in comparation with its last published version.{/t}</p>
+			    </div>
+	        </div>
+	    {/foreach}
+{/if}
+	<br/>
+	<p><strong>{t}Published documents{/t}:</strong></p>
+		<span>{t}Below are listed all the documents that have been sent to publish{/t}.</span>
+	    <div class="state-info row-item_selectable" 
+	    	ng-repeat="(key, pubSet) in publications" 
+	    	ng-show="pubSet.length" 
+	    	ng-class="{literal}{opened: opened}{/literal}"
+	    	ng-click="opened = !opened">
+			<span class="state">[[titles(key)]]</span>
+            <div class="docs-amount right">[[pubSet.length]]</div>
 		
-	{foreach from=$files key=state item=statenode}
-		<div class="state-info row-item_selectable">
-			<span class="state">{t}Documents in{/t} {$statesFull[{$state}].stateName}</span>
-            <div class="docs-amount right">{$statesFull[{$state}].count}</div>
-		
-		    <div class="documents-info">
-			{foreach from=$statenode item=file}		
-				<div class="version-info">
-					<span class="file-path">{$file.Path}/<strong>{$file.Name}</strong></span>
-					<span class="file-date">{$file.Date} hrs.</span>
-					<span class="file-version">{$file.Version}.{$file.SubVersion}</span>
+		    <div class="documents-info" 
+		    	ng-class="{literal}{'hide-toggle': !opened}{/literal}"
+		    	ng-click="event.stopPropagation();">	
+				<div class="version-info" ng-repeat="pub in pubSet">
+					<span class="file-path">[[pub.path]]/[[pub.name]]</span><span class="file-size">[[pub.filesize | xBytes]]</span>
+					<span class="file-date">[[pub.date+'000' | date:'dd/MM/yyyy HH:MM']] hrs.</span>
+					<span class="file-version">[[pub.version]]</span>
 				</div>
-			{/foreach}
-
 		    </div>
         </div>
-</div>
-	{/foreach}
-	{else}
-        <div class="info-message message">
-		    <p>{t}There aren't any published or edited files yet{/t}.</p>
+	    <!-- <div class="state-info row-item_selectable" ng-show="publications.published.length">
+			<span class="state">{t}Published documents{/t}</span>
+            <div class="docs-amount right">[[publications.published.length]]</div>
+		
+		    <div class="documents-info">	
+				<div class="version-info" ng-repeat="pub in publications.published">
+					<span class="file-path">[[pub.path]]/[[pub.name]]</span><span class="file-size">[[pub.filesize | xBytes]]</span>
+					<span class="file-date">[[pub.date+'000' | date:'dd/MM/yyyy HH:MM']] hrs.</span>
+					<span class="file-version">[[pub.version]]</span>
+				</div>
+		    </div>
         </div>
-
-        <div class="action_content">
-        </div>
-	{/if}
+        <div class="state-info row-item_selectable" ng-show="publications.unpublished.length">
+			<span class="state">{t}Documents in publication queue{/t}</span>
+            <div class="docs-amount right">[[publications.unpublished.length]]</div>
+		
+		    <div class="documents-info">	
+				<div class="version-info" ng-repeat="pub in publications.unpublished">
+					<span class="file-path">[[pub.path]]/[[pub.name]]</span><span class="file-size">[[pub.filesize | xBytes]]</sp
+					<span class="file-date">[[pub.date+'000' | date:'dd/MM/yyyy HH:MM']] hrs.</span>
+					<span class="file-version">[[pub.version]]</span>
+				</div>
+		    </div>
+        </div> -->
+      <p>{t}If you want to have a deeper look into the Ximdex CMS publication process, upgrade this status report with <strong>XPublishTools</strong> module{/t}.</p> 
+	</div>
+	

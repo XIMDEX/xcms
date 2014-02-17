@@ -29,7 +29,8 @@ ModulesManager::file('/inc/model/Links.inc');
 
 class Action_linkreport extends ActionAbstract {
 
-	const ITEMS_PER_PAGE = '20';
+	//TODO: pagination results
+	//const ITEMS_PER_PAGE = '21';
 
 	function index () {
      	$idNode = $this->request->getParam("nodeid");
@@ -52,7 +53,7 @@ class Action_linkreport extends ActionAbstract {
 	}
 
 	function get_links() {
-     	$idNode = $this->request->getParam("nodeid");
+     		$idNode = $this->request->getParam("nodeid");
 		$field = $this->request->getParam("field");
 		$criteria = $this->request->getParam("criteria");
 		$stringsearch = $this->request->getParam("stringsearch");
@@ -77,7 +78,8 @@ class Action_linkreport extends ActionAbstract {
 		$nodesTableCondition = 'IdNodeType = %s';
 
 		if (!empty($stringsearch)) {
-			switch ($criteria) {
+			if ($stringsearch!="*") {
+				switch ($criteria) {
 				case "contains":
 					$linksTableCondition = " like '%%$stringsearch%%'";
 					break;
@@ -99,14 +101,19 @@ class Action_linkreport extends ActionAbstract {
 				default:
 					$linksTableCondition = " = '$stringsearch'";
 					break;
+				}
+				if($field!='all'){
+                			$linksCond = " AND $field".$linksTableCondition;
+            			}   
+            			else{
+                			$linksCond = " AND (Name $linksTableCondition OR Description $linksTableCondition)";
+           	 		}
 			}
-            if($field!='all'){
-                $linksCond = " AND $field".$linksTableCondition;
-            }
-            else{
-                $linksCond = " AND (Name $linksTableCondition OR Description $linksTableCondition)";
-            }
-
+			else{
+				//we want all the links available
+				$linksTableCondition="";
+				$linksCond="";
+			}
 			$nodesTableCondition .= $field != 'Url' ? $linksCond : '';
 		}
 

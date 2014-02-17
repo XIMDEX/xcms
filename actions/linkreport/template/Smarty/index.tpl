@@ -55,6 +55,9 @@
 						<input type="checkbox" name="rec" class="validable" id="rec"/>
                         <label for="rec">{t}Search in subfolders{/t}</label>
 					</li>
+					<li>
+						<span>{t}Use the asterisk '*' to obtain all the links of the current folder{/t}.</span>
+					</li>
 				</ol>
 			</fieldset>
 		</div>
