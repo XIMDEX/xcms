@@ -23,8 +23,11 @@
  *  @version $Revision$
  *}
 
-<h2>{t}Search results{/t}</h2>
+<div class="action_header">
+	<h2>{t}Search results{/t}</h2>
+</div>
 
 
-	<listview class="xim-listview-results" useXVFS="no" />
-
+<div class="action_content">
+	<listview class="xim-listview-results simple_search" useXVFS="no" />
+</div>
