@@ -34,13 +34,17 @@
 	@include boxshadow(0 1px 1px rgba(0,0,0,.4));
 
 
-	.ui-widget-header{
+	>.ui-widget-header{
 		border: none;
 		background: none;
 		position: absolute;
 		width: 100%;
 		> span{
 			display: none;
+		}
+
+		>a{
+			margin: 0;
 		}
 
 		.ui-dialog .ui-dialog-titlebar-close{
@@ -175,7 +179,7 @@
 			}
 
 			.xim-listview-item{
-				border: none;
+				border-bottom: 1px solid darken($c_background, 10%);
 				th{
 					width: auto !important;
 					text-transform: uppercase;
@@ -191,7 +195,7 @@
 			tr{
 				position: relative;
 				border-style: solid;
-				padding: .5em 11em .5em 0;
+				padding: .5em 0;
 
 				.xim-listview-actions-dropdown {
 					left: 5px;
@@ -202,14 +206,14 @@
 				float: left;
 				
 				&:first-child{
-					position: absolute;
+					/*position: absolute;
 					right: 0;
 					top: 50%;
 					-webkit-transform: translateY(-50%);
 					-moz-transform: translateY(-50%);
 					-ms-transform: translateY(-50%);
 					-o-transform: translateY(-50%);
-					transform: translateY(-50%);
+					transform: translateY(-50%);*/
 					
 				}
 
@@ -226,30 +230,44 @@
 
 				&:nth-child(5){
 					clear: left;
-					margin-left: 3.5em;
+					margin-left: 5.5em;
 					text-overflow: ellipsis;
 					width: 90%;
 					display: block;
 					overflow: hidden;
+					padding-right:9.5em;
+					margin-top: -.55em;
 				}
 
 				&:nth-child(6){
 					margin-top: -2.5em;
 					float: right;
-					margin-right: -5.5em;
+					margin-right: 1.5em;
 				}
 
 				&:nth-child(7){
 					position: absolute;
-					left:0;
+					left:3.4em;
 					top: 1.7em;
 					color: darken($c_mainlight, 5%);
+					font-weight: bold;
 				}
 				&:last-child{
-					margin-right: -5.5em;
+					margin-right: 1.5em;
 					margin-top: -1.3em;
 					float: right;
 				}
+			}
+
+			.xim-listview-icon{
+				height: 1.5em;
+				margin: 0;
+			}
+
+			.xim-listview-actions-dropdown{
+				margin-top: 0;
+				//background-position: -19px -228px;		
+				width: 23px;		
 			}
 
 
@@ -268,6 +286,53 @@
 		}
 	}
 
+	.xim-listview-item:not(.xim-listview-selected):hover{
+		//background: none;
+		border: none;
+		border-bottom: 1px solid $c_background;
+	}
+
+	thead{
+		.xim-listview-item{
+			padding: .5em .5em .5em 5.5em;
+			position: relative;
+		}
+
+		th{
+			float: left;
+		}
+
+		th:nth-child(3){
+			padding-left: .8em;
+		}
+		th:nth-child(4){
+			padding-left: 1em;
+			&::before{
+				content: "[";
+			}
+			&::after{
+				content: "]";
+			}
+		}	
+
+		th:nth-child(5){
+			padding-left: 1.8em;
+			clear: both;
+		}
+		th:nth-child(7){
+			position: absolute;
+			left: 2em;
+			top: 1.5em;
+		}
+		th:nth-child(6), th:nth-child(8){
+			float: right;
+			margin-right: 1.8em;
+		}
+		th:nth-child(6){
+			margin-top: -1em;
+		}
+	}
+
 }
 
 .xim-search-panel{
@@ -283,6 +348,66 @@
 		&:hover{
 			color: $c_mainlight;
 		}
+	}
+}
+
+
+.xim-listview-table-container{
+	>div{
+		width: 100% !important;
+	}
+	.ui-widget-header{
+		background: none;
+		border: none;
+	}
+
+	.ui-resize-ghost{
+		display: none;
+	}
+}
+
+
+.xim-itemsSelector, .xim-listview-selectionhandler {
+	@extend %col1_2;
+}
+
+.xim-itemsSelector-legend{
+	padding-right: .8em;
+}
+
+.xim-listview-selectionhandler {
+	text-align: right;
+
+	button{
+		@extend %reset-button;
+		background:lighten(#4c5151, 10%);
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		color: #fff;
+		text-transform: uppercase;
+		padding: .5em 1em;
+		font-size: .88em;
+		margin-left: .5em;
+	}
+}
+
+.xim-listview-table-container{
+	padding-top: 2.5em;
+}
+
+.number_results{
+	position: absolute;
+	top: 5em;
+	font-size: 1.3em;
+
+	span{
+		background:$c_mainlight;
+		-webkit-border-radius: 1px;
+		-moz-border-radius: 1px;
+		border-radius: 1px;
+		padding: .1em .4em;
+		font-weight: bold;
 	}
 }
 
