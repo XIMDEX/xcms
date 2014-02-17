@@ -26,26 +26,31 @@
 <div id="kupu-ximlinkdrawer" class="kupu-drawer kupu-ximlinkdrawer-window xedit-toolbox  ximlink_manager">
 
 
-	<h3 i18n:translate="">{t}Link manager{/t}</h3>
+	<div class="title_panel">
+		<h3 i18n:translate="">{t}Link manager{/t}</h3>
+ 		<a href="#" class="js_add_link new_link icon add">{t}Add a new link{/t}</a>
+
+	</div>
 
 	<div class="kupu-panels js_search_link_panel search_panel">
 		
-	<div class="col1_2">
-				<div class="search">
+	
+				<div class="search_links">
 				<label for="ximlink-search" i18n:translate="" class="title">{t}Search existing links{/t}</label>
 				<input id="ximlink-search" class="kupu-toolbox-st ximlink-search xlinks_input" type="text" />
+				
+
 			</div>
 			<div id="ximlink-list">
-					<!--<label for="ximlink-list" i18n:translate="">{t}Links{/t}</label>-->
+					<label for="ximlink-list" i18n:translate="" class="title icon links">{t}Links{/t}</label>
 					<select  class="ximlink-list xlinks_list" multiple="true"></select>
 			</div>
 
-		</div>
-<div class="col1_2">
-				<label for="descriptions-list" i18n:translate="" class="title">{t}Link text {/t}<!--{t}Available descriptions for the selected link{/t}--></label>
+
+				<label for="descriptions-list" i18n:translate="" class="title icon descriptions">{t}Available descriptions for the selected link{/t}</label>
 				<div class="descriptions-list-options description_list">
 				</div>
-		</div>		
+	
 			</div>
 
 	<div class="buttons">
@@ -54,9 +59,7 @@
 		<button class="kupu-dialog-button close-button btn" type="button" i18n:translate="">{t}Cancel{/t}</button>
 	</div>
 
-	<div class="new_link">
-	Don't you find your link?	<a href="#" class="js_add_link"> {t}Add a new one!{/t}</a>
-	</div>
+
 <!--Hasta aquí busca enlaces-->
 <!--Desde aquí, los crea-->
 	<div class="kupu-panels js_add_link_panel add_panel" style="display:none">

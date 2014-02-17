@@ -110,11 +110,11 @@
 			<div class="results-view" />
 			<paginator class="searchpanel-paginator" />
 
-			<div class="buttonset">
+			<!--<div class="buttonset">
 				<button class="createSetButton"  value="createSet" disabled>{t}Create set{/t}</button>
-				<!--<button value="addToSet">{t}Add to set{/t}</button>
-			-->
-			<button class="selectionButton" value="selectNodes">{t}Select nodes{/t}</button>
+				<button value="addToSet">{t}Add to set{/t}</button>
+			
+			<button class="selectionButton" value="selectNodes">{t}Select nodes{/t}</button>-->
 		</div>	
 
 </div>

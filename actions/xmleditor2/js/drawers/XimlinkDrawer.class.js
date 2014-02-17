@@ -75,7 +75,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 	},
 
     createContent: function() {
-		$("body",window.parent.document).append($("<div/>").addClass("overlay js_overlay"));
+		$("body").append($("<div/>").addClass("overlay js_overlay"));
 		$('div.descriptions-list-options', this.element).empty();
 		this._addDescription(this.term_main, 1);
 
@@ -396,6 +396,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 		$('div.js_add_link_panel', this.element).next("div.buttons").hide(); ;
 		$('div.js_search_link_panel', this.element).show() ; 
 		$('div.js_search_link_panel', this.element).next("div.buttons").show() ;
+		$('a.js_add_link', this.element).show() ;
 		$("input", this.element).val("");
     	$('select.ximlink-list', this.element).unbind().empty();
     	$('input.ximlink-search', this.element).unbind();
@@ -405,7 +406,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     	$("div.xim-treeview-selector",this.element).treeview("destroy");
     	$("div.xim-treeview-selector",this.element).empty();
     	dt.closeDrawer();
-	$("body div.js_overlay",window.parent.document).remove();
+	$("body div.js_overlay").remove();
     }
 
 });

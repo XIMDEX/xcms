@@ -39,3 +39,16 @@
 %cancel::before {
 	content: "\63";
 }
+
+%link::before{
+	content: "\2a";
+}
+
+%document::before{
+	content: "\2b";
+}
+
+%add::before{
+	content: "\41";
+	
+}

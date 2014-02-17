@@ -37,6 +37,10 @@
   	background: #fff;
   	border: none;
   	padding: 0;
+	
+	.title_panel{
+			position: relative;
+	}  	
   	h3{
   		background:$c_grey-l;
   		font-family: $t_title-kupu;
@@ -58,8 +62,14 @@
   	input[type="text"]{
   		border: none;
   		background:$c_background;
-  		width: 96%;
+  		width: 100%; 
   		margin-bottom: 1em;
+  	}
+
+  	.search_links{
+  		padding-bottom: .2em;
+  		border-bottom: 1px solid $c_grey-ppp;
+  		margin-bottom: 1.5em;
   	}
 
 	.search_panel{
@@ -70,38 +80,76 @@
 		font-weight: bold;
 		font-size: 1.25em ;
 		padding-bottom: .3em;
+		display: block;
 	}  		
 
 
 	.buttons{
 		padding: 1em 1em 2em;
-		text-align: left;
 	}
+
+
+  }
+
+  .links.icon,   .descriptions.icon{
+  	background:$c_background;
+  	padding-top: .3em;
+  	-webkit-border-radius: 5%;
+  	-moz-border-radius: 5%;
+  	border-radius: 5%;
+  	@extend %link;
+  	&::before{
+  		margin: 0 .5em;
+	  	-webkit-border-radius: 50%;
+	  	-moz-border-radius: 50%;
+	  	border-radius: 50%;
+	  	background: darken($c_grey-ppp, 5%);
+	  	padding: .3em;
+	  	border: 1px solid #fff;
+	  	position: relative;
+	  	top: -.15em;
+	  }
+  }
+
+  .descriptions.icon{
+	  	@extend %document;
   }
 
   .description_link{
   	margin: 0;
   }
 
-.new_link{
-	padding: 1.2em 2em;
-	border-top: 1px solid $c_grey-pp;
-	background:#ddd;
-	@include boxshadow(inset 0 1px 0 rgba(255,255,255,.5));
-	a{
+	.new_link{
 		font-weight: bold;
+		position: absolute;
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		transform: translateY(-50%);
+		
+		right: 1em;
+		color: $c_mainlight;
 		&:hover{
 			text-decoration: underline;
-			color: $c_main;
+			color: #fff;
+		}
+
+		&::before{
+			@extend %add;
+				padding-right: .4em;
 		}
 	}
-}
 
 .xlinks_list{
 	border: none;
 	margin: 1em 0;
 	width: 96%;
 	padding: 0;
+	font-size: 1.5em;
+	font-family: $t_text;
+	padding-left: 1em;
 }
 
 
