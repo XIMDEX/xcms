@@ -26,10 +26,8 @@
  */
 ModulesManager::file('/inc/utils.inc');
 ModulesManager::file('/inc/persistence/XSession.class.php');
-ModulesManager::file('/inc/model/orm/XimIOExportations_ORM.class.php');
 ModulesManager::file('/inc/model/orm/NodeAllowedContents_ORM.class.php');
 ModulesManager::file('/actions/copy/baseIO.php');
-ModulesManager::file('/inc/search/QueryProcessor.class.php');
 
 class Action_copy extends ActionAbstract {
 
@@ -56,15 +54,13 @@ class Action_copy extends ActionAbstract {
                 'go_method' => 'copyNodes'
             );
             
-            $this->addJs('/actions/copy/resources/js/treeSelector.js');
             $this->addCss('/actions/copy/resources/css/style.css');
             $this->render($values, NULL, 'default-3.0.tpl');
         }
-        //}
     }
 
     function copyNodes() {
-//Extracts info of actual node which the action is executed
+        //Extracts info of actual node which the action is executed
         $nodeID = $this->request->getParam("nodeid");
         $node = new Node($nodeID);
         $destIdNode = $this->request->getParam('targetid');
@@ -130,22 +126,18 @@ class Action_copy extends ActionAbstract {
      * @result boolean True if everything is ok.
      */
     protected function checkTargetConditions($idCurrentNode, $idCandidateNode){
-        
         $node = new Node($idCurrentNode);
         $candidateNode = new Node($idCandidateNode);
         return $node->getProject() == $candidateNode->getProject();
     }
 
     function checkNodeName() {
-
         $actionNodeId = $this->request->getParam("nodeid"); //node to copy
         $destNodeId = $this->request->getParam('targetid'); //destination node
         $actionNode = new Node($actionNodeId);
         $data = $actionNode->checkTarget($destNodeId);
-
         $this->sendJSON($data);
     }
-
 }
 
 ?>
