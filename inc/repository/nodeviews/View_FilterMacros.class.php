@@ -499,7 +499,13 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 
 	private function getRelativePath($targetNode, $idTargetChannel){
 
-		$dotdot = str_repeat('../', $this->_depth - 2);				
+		$deep = 2;
+		if (Config::exists("PublishPathFormat") && 
+			$this->_node->class && 
+			method_exists($this->_node->class, "getPathToDeep")){
+			$deep = $this->_node->class->getPathToDeep();
+		}
+		$dotdot = str_repeat('../', $this->_depth - $deep);				
 		//Removing last dash.
 		$dotdot = preg_replace('/\/$/', '', $dotdot);
 		$dotdot = './' . $dotdot;
