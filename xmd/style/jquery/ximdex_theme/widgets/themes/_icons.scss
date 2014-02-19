@@ -50,5 +50,12 @@
 
 %add::before{
 	content: "\41";
-	
+}
+
+%folder::before{
+	content: "\e023";
+}
+
+%tic::before, %tic::after{
+	content: "\79";
 }

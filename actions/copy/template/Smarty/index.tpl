@@ -47,20 +47,21 @@
 
 			{if {count($targetNodes)}}
 				<label for="id_node" class="label_title">{t}Choose a destination{/t}:</label>
-				<span class="recursive_control">
-					<input type="checkbox" name="recursive" id="recursive" checked="checked" tabindex="2" />
-					<label for="recursive"> {t}Execute this action for all files and subfolders{/t}.</label>
-				</span>
-				<div class="copy_treeview full_size" tabindex="1">
+			
+				<div class="copy_options" tabindex="1">
 					{foreach from=$targetNodes key=index item=targetNode}
 						<div>
-							<label for="{$id_node}_{$targetNode.idnode}">
-								<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
-								{$targetNode.path}
-							</label>
+							<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
+							<label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
+								
+							
 						</div>					
 					{/foreach}
 				</div>
+			<span class="recursive_control">
+					<input type="checkbox" name="recursive" id="recursive" checked="checked" tabindex="2" />
+					<label for="recursive"> {t}Execute this action for all files and subfolders{/t}.</label>
+				</span>				
 			{else}
 				<div class="info-message message">
 					<div>{t}There aren't any available destination{/t}.</div>
