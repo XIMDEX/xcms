@@ -363,7 +363,7 @@ class FolderNode extends Root {
 		$defaultRNGs_folder="/inc/metadata/schemes/";
 		$idparent= $this->parent->GetID(); 
 
-		$this->bubuildDefaultRngFromPath($idparent, $defaultRNGs_folder);
+		$this->buildDefaultRngFromPath($idparent, $defaultRNGs_folder);
 	}
 
 
