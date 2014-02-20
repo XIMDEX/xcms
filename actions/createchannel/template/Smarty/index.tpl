@@ -32,17 +32,23 @@
 		</fieldset>
 	</div>
 	<div class="action_content">
-		<fieldset>
-			<ol>
-		                	<li><label for="name" class="aligned">{t}Name{/t}</label> &nbsp;<input type="text" name='name' id="channelname" class='cajag validable not_empty'></li>
-				<li><label for="extension" class="aligned">{t}File extension{/t}</label>&nbsp;<input type="text" name='extension' id="extension" class='cajag validable not_empty'></li>
-				<li><label for="description" class="aligned">{t}Description{/t}</label>&nbsp;<input type='text' name='description' id="description" class='cajag validable not_empty'></li>
-		                        <li><label for="rendermode" class="aligned">{t}Rendering in{/t}</label>&nbsp;
-				<input type='radio' id="rendermode" name="rendermode" checked value='ximdex'>{t}Ximdex{/t}&nbsp;
-				<input type='radio' id="rendermode" name="rendermode" value='client'>{t}Client{/t}</li>
-		              	</ol>
-			<div class="extrainfo">{t}Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If your website it's going to be dynamic, then select the <i>Client</i> rederized mode{/t}.</div>
-		</fieldset>
+        <p>
+            <label for="name" class="label_title">{t}Name{/t}</label>
+            <input type="text" name="name" id="channelname" class="full_size cajag validable not_empty"/>
+		</p>		
+        <p>        
+            <label for="extension" class="label_title">{t}File extension{/t}</label>
+            <input type="text" name="extension" id="extension" class="cajag validable not_empty full_size"/>
+        </p>
+        <p>
+		    <label for="description" class="label_title">{t}Description{/t}</label>
+            <input type="text" name="description" id="description" class="full_size cajag validable not_empty"/>
+        </p>
+		<p>    
+            <label for="rendermode" class="label_title">{t}Rendering in{/t}</label>
+            <input type='radio' id="rendermode" name="rendermode" checked value='ximdex'>{t}Ximdex{/t}
+			<input type='radio' id="rendermode" name="rendermode" value='client'>{t}Client{/t}
+        </p>
+		<div class="extrainfo">{t}Ximdex renderizes documents at the <i>Ximdex</i> local server by default. If your website it's going to be dynamic, then select the <i>Client</i> rederized mode{/t}.</div>
 	</div>
-
 </form>

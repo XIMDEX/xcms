@@ -25,14 +25,8 @@
  */
 
 
-
-
-
-
-
-
 class Action_modifylanguage extends ActionAbstract {
-   // Main method: shows initial form
+    // Main method: shows initial form
     function index() {
     	$idNode = $this->request->getParam('nodeid');
 
