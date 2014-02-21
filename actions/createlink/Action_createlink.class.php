@@ -39,7 +39,15 @@ class Action_createlink extends ActionAbstract {
 	    $url = $this->request->getParam('url');
 	    $description = $this->request->getParam('description');
 
-        if(empty($description)){
+        $messages = $this->createNodeLink($name, $url, $description, $idParent);
+		$this->reloadNode($idParent);
+		
+		$values["messages"] = $this->messages->messages;//_('Link has been successfully added');
+		$this->render($values, NULL, 'messages.tpl');	
+    }
+
+    public function createNodeLink($name, $url, $description, $idParent){
+    	if(empty($description)){
             $description = " ";    
         }
 
@@ -61,13 +69,9 @@ class Action_createlink extends ActionAbstract {
 			$link->set('ErrorString','not_checked');
 			$link->set('CheckTime',time());
 			$linkResult = $link->update();
-			$bio->messages->add(_('Link has been successfully added'), MSG_TYPE_NOTICE);
-		}
-		
-		$this->reloadNode($idParent);
-		
-		$values = array('messages' => $bio->messages->messages);
-		$this->render($values, NULL, 'messages.tpl');	
+			$this->messages->add(_('Link has been successfully added'), MSG_TYPE_NOTICE);
+		}		
+		return $result;
     }
 }
 ?>

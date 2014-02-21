@@ -48,15 +48,17 @@ var AttributesTool = Object.xo_create(XimdocTool, {
 		if (this.selNode) {
 			this._parse_ximElement(this.selNode);
 		}
-
-		if (!options.selNode || !options.selNode.getAttribute('uid') || (options.event && options.event.type != 'click')) return;
-
-		var ximElement = options.selNode.ximElement;
+		var ximElement = options.selNode.ximElement;	
 
 		var attributes = this._parse_ximElement(ximElement);
-
 		this.selNode = ximElement;
+		
 		this.attributes = attributes;
+		
+		if (!options.selNode || !options.selNode.getAttribute('uid') || (options.event && options.event.type != 'click')) {
+		
+			return;
+		}
 
 		AttributesTool._super(this, 'updateState', options);
 	},
@@ -194,79 +196,6 @@ var AttributesTool = Object.xo_create(XimdocTool, {
 		}
 
 		return attributes;
-	},
-
-	_parse_attribute_ximlink: function(attrName, attribute, ximElement) {
-
-		if (ximElement.ximLink) {
-			if (ximElement.tagName != 'image') {
-				ximElement.ximLink.text = ximElement.getValueString();
-			} else {
-//				console.info(ximElement);
-			}
-			return attribute;
-		}
-
-		var value = attribute.value.split(',');
-		var nodeid = value[0].trim();
-		var channel = (value[1] || '').trim();
-
-		ximElement.ximLink = {
-			attrName: attrName,
-			nodeid: nodeid,
-			channel: channel,
-			name: '',
-			url: '',
-			text: ximElement.getValueString(),
-			descriptions: []
-		};
-
-		$.getJSON(
-			X.restUrl + '?action=xmleditor2&method=resolveXimlinkUrl',
-			{nodeid: nodeid, channel: channel},
-			function(data, textStatus) {
-
-				if (data.error) {
-
-					this.editor.logMessage(data.error);
-
-					var url = ximElement.ximLink.nodeid.length > 0
-						? ximElement.ximLink.nodeid
-						: ximElement.attributes[ximElement.ximLink.attrName];
-
-					ximElement.ximLink.name = 'NewLink_' + ximElement.uid;
-					ximElement.ximLink.text = ximElement.ximLink.name;
-					ximElement.ximLink.url = url;
-					ximElement.ximLink.nodeid = '';
-//					console.log(data.error, ximElement);
-
-				} else {
-
-					ximElement.ximLink.url = data.url;
-					ximElement.ximLink.name = data.name;
-					ximElement.ximLink.descriptions = data.text;
-
-					attribute.value = ximElement.ximLink.url;
-					ximElement.attributes[attrName] = ximElement.ximLink.url;
-
-//					console.log('AttributesTool::parse_ximlink', ximElement, attribute);
-				}
-			}.bind(this)
-		);
-
-		return attribute;
-	},
-
-	_save_attribute_ximlink: function() {
-
-		var ximLinkInfo = this.selNode.ximLink;
-
-		this.selNode.attributes[ximLinkInfo.attrName] = ximLinkInfo.url;
-		this.selNode.value = [ximLinkInfo.text];
-
-		if (this.selNode.tagName != 'image') {
-			$('[uid="%s"]'.printf(this.selNode.uid), this.editor.getBody()).html(ximLinkInfo.text);
-		}
 	}
 
 });

@@ -25,38 +25,17 @@
 
 <div id="%=id%" class="xim-search-dialog %=class%">
 
-	<div class="xim-search-panel xim-search-panel-left">
-		<div class="saved-searches">
-			<h3>{t}Saved searches{/t}</h3>
-			<div class="saved-searches-item-container">
-				<ul class="saved-searches-items"></ul>
-			</div>
-		</div>
-		<div class="last-searches">
-			<h3>{t}Last searches{/t}</h3>
-			<div class="last-searches-item-container">
-				<ul class="last-searches-items"></ul>
-			</div>
-		</div>
-	</div>
-
-	<div class="xim-search-panel xim-search-panel-right">
+	<div class="xim-search-panel search_options">
+			<div class="buttonset save_search">
+					<button value="save" class="">{t}Save{/t}</button>
+			</div>		<h2>{t}Advanced search{/t}</h2>
 
 		<div class="filters">
-			<div class="xim-search-options">
-				<span style="float: left;">{t}Must be satisfied{/t}:&nbsp;&nbsp;</span>
-			<!--<fieldset>-->
-				<input id="sopt-and" type="radio" name="sopt" value="and" checked />
-				<label for="sopt-and">{t}All rules{/t}</label>
-				<input id="sopt-or" type="radio" name="sopt" value="or" />
-				<label for="sopt-or">{t}Any rules{/t}</label>
-			<!--</fieldset>-->
-		</div>
-		<div id="search-filters" class="xim-search-filters">
 
-			<div class="xim-search-filter">
+			<div id="search-filters" class="xim-search-filters">
 
-				<select class="xim-filter-field">
+				<div class="xim-search-filter">
+					<select class="xim-filter-field">
 						<option value="name">{t}Name{/t}</option>
 						<option value="content">{t}content{/t}</option>
 						<option value="nodetype">Nodetype</option>
@@ -92,29 +71,52 @@
 					<button class="xim-filter-remove">-</button>
 				</div>
 			</div>
+			<div class="xim-search-options">
+				<span class="label">{t}Must be satisfied{/t}:</span>
+				<!--<fieldset>
+				-->
+				<input id="sopt-and" type="radio" name="sopt" value="and" checked />
+				<label for="sopt-and">{t}All rules{/t}</label>
+				<input id="sopt-or" type="radio" name="sopt" value="or" />
+				<label for="sopt-or">{t}Any rules{/t}</label>
+				<!--</fieldset>--></div>
 
 			<div class="buttonset">
-				<button value="search">{t}Search{/t}</button>
-				<button value="reset">{t}Reset{/t}</button>
-				<button value="save">{t}Save{/t}</button>
+				<button value="search" class="search_button">{t}Search{/t}</button>
 			</div>
 
+			<div class="xim-search-panel">
+				<div class="saved-searches">
+					<h3>{t}Saved searches{/t}</h3>
+					<div class="saved-searches-item-container">
+						<ul class="saved-searches-items"></ul>
+					</div>
+				</div>
+				<div class="last-searches">
+					<h3>{t}Last searches{/t}</h3>
+					<div class="last-searches-item-container">
+						<ul class="last-searches-items"></ul>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<div class="results">
-		<div id="loading" class="loading-icon"></div>
+		
+
+	</div>
+<div class="results">
+			<div id="loading" class="loading-icon"></div>
 
 			<div class="results-view" />
 			<paginator class="searchpanel-paginator" />
 
-			<div class="buttonset">
+			<!--<div class="buttonset">
 				<button class="createSetButton"  value="createSet" disabled>{t}Create set{/t}</button>
-				<!--<button value="addToSet">{t}Add to set{/t}</button>-->
-				<button class="selectionButton" value="selectNodes">{t}Select nodes{/t}</button>
-			</div>
+				<button value="addToSet">{t}Add to set{/t}</button>
+			
+			<button class="selectionButton" value="selectNodes">{t}Select nodes{/t}</button>-->
+		</div>	
 
-		</div>
-
-	</div>
+</div>
 
 </div>

@@ -1,0 +1,183 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+
+  @import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+  @import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+  @import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
+
+  .ximlink_manager{
+  	background: none;
+  	z-index: 100;
+  	-webkit-border-radius: 2px;
+  	-moz-border-radius: 2px;
+  	border-radius: 2px;
+  	background: #fff;
+  	border: none;
+  	padding: 0;
+	
+	.title_panel{
+			position: relative;
+	}  	
+  	h3{
+  		background:$c_grey-l;
+  		font-family: $t_title-kupu;
+  		color: #fff;
+  		margin: 0;
+  		text-transform: uppercase;
+  		font-weight: normal;
+  		padding-top: 1em;
+  	}
+
+
+  	.col1_2:first-child{
+		border-right: 1px solid #ccc;
+  	}
+  	.col1_2:last-child{
+		padding-left: 1em;
+  	}
+
+  	input[type="text"]{
+  		border: none;
+  		background:$c_background;
+  		width: 100%; 
+  		margin-bottom: 1em;
+  	}
+
+  	.search_links{
+  		padding-bottom: .2em;
+  		border-bottom: 1px solid $c_grey-ppp;
+  		margin-bottom: 1.5em;
+  	}
+
+	.search_panel{
+	  	padding: 1em 1.5em;
+	}  	
+
+	.title{
+		font-weight: bold;
+		font-size: 1.25em ;
+		padding-bottom: .3em;
+		display: block;
+	}  		
+
+
+	.buttons{
+		padding: 1em 1em 2em;
+	}
+
+
+  }
+
+  .links.icon,   .descriptions.icon{
+  	background:$c_background;
+  	padding-top: .3em;
+  	-webkit-border-radius: 5%;
+  	-moz-border-radius: 5%;
+  	border-radius: 5%;
+  	@extend %link;
+  	&::before{
+  		margin: 0 .5em;
+	  	-webkit-border-radius: 50%;
+	  	-moz-border-radius: 50%;
+	  	border-radius: 50%;
+	  	background: darken($c_grey-ppp, 5%);
+	  	padding: .3em;
+	  	border: 1px solid #fff;
+	  	position: relative;
+	  	top: -.15em;
+	  }
+  }
+
+  .descriptions.icon{
+	  	@extend %document;
+  }
+
+  .description_link{
+  	margin: 0;
+  }
+
+	.new_link{
+		font-weight: bold;
+		position: absolute;
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		transform: translateY(-50%);
+		
+		right: 1em;
+		color: $c_mainlight;
+		&:hover{
+			text-decoration: underline;
+			color: #fff;
+		}
+
+		&::before{
+			@extend %add;
+				padding-right: .4em;
+		}
+	}
+
+.xlinks_list{
+	border: none;
+	margin: 1em 0;
+	width: 96%;
+	padding: 0;
+	font-size: 1.5em;
+	font-family: $t_text;
+	padding-left: 1em;
+}
+
+
+.add_panel{
+	padding-top: 1em;
+	label{
+		display: block;
+		font-weight: bold;
+		padding-bottom: .5em;
+	}
+
+	.xim-treeview-btnreload{
+		display: none;
+	}
+
+	.xim-treeview-branch-container{
+		position: static;
+	}
+
+	ul{
+		margin: 0;
+	}
+
+	.xim-treeview-icon{
+		height: 16px;
+		margin-top: 3px;
+	}
+	input[type="text"]{
+		width: 100%;
+	}
+}

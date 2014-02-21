@@ -22,7 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .docs-amount {
   background: #b2e0d9;
   -webkit-border-radius: 2px;
@@ -91,6 +90,12 @@
   color: #409f92;
   font-size: 1.5rem;
   line-height: 1.6; }
+
+.file-size {
+  margin-left: 0.7em;
+  color: #b3b3b3; }
+  .file-size::before {
+    content: "- "; }
 
 .file-version {
   color: #409f92;

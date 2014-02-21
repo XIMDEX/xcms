@@ -61,6 +61,9 @@ class ximlinkResolver {
 		return $data;
 	}
 
+	/**
+	*Get the available ximlinks from a term or idnode
+	*/
 	public function getAvailableximlinks($docid, $term) {
 
 		$node = new Node($docid);
@@ -79,7 +82,8 @@ class ximlinkResolver {
 				n.idnodetype = 5049 and
 				(n.Name like '%{$term}%' or
 				n.Description like '%{$term}%' or
-				l.Url like '%{$term}%')
+				l.Url like '%{$term}%' or
+				n.idnode = '{$term}')
 				 order by n.Name asc limit 0,50 ";
 		}
 		else{
@@ -87,7 +91,7 @@ class ximlinkResolver {
                         from FastTraverse f inner join Nodes n on f.idchild = n.idnode
                                 inner join Links l on n.idnode = l.idlink
                         where f.idnode = $idprj and
-                                n.idnodetype = 5049  order by CreationDate desc limit 0,50 ";
+                                n.idnodetype = 5049  order by n.Name asc limit 0,50 ";
 
 		}
 

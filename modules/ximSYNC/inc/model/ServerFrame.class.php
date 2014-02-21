@@ -824,5 +824,28 @@ where cf.nodeid=$nodeId ";
 				 "s.State = 'Due2Out' OR (s.State = 'Pumped' AND b.State = 'Closing')) " . "AND s.PumperId = $idPumper LIMIT 1";
 		return $this->query($query);
 	}
+
+	function getPublicationQueue($idServer) {
+		$dbObj = new DB();
+		$sql = "SELECT n.idnode, n.path,v.version, n.name, dateup, state, filesize,concat(v.`Version`,'.',v.`SubVersion`) FROM ServerFrames sf INNER JOIN NodeFrames nf using (idnodeframe) INNER JOIN Nodes n ON n.idnode=nf.nodeid INNER JOIN  Versions v ON v.Idnode=n.idnode INNER JOIN Servers s ON sf.IdServer=s.IdServer AND s.IdNode=$idServer where subversion=0  and state not in ('Removed','Replaced','Canceled') and Not exists (select idversion from Versions v2 where v2.idversion<> v.idversion and v.idnode=v2.idnode and v2.version>v.version) order by sf.idsync  DESC LIMIT 20";
+		$dbObj->Query($sql);
+		if ($dbObj->numRows > 0) {
+			$publications = array();
+			while (!$dbObj->EOF) {
+				$publication = array();
+				$publication['name'] = $dbObj->GetValue("name");
+				$publication['path'] = str_replace("/Ximdex/Projects","",$dbObj->GetValue("path"));
+				$publication['filesize'] = $dbObj->GetValue("filesize");
+				$publication['date'] = $dbObj->GetValue("dateup");
+				$publication['id'] = $dbObj->GetValue("idnode");
+				$publication['state'] = $dbObj->GetValue("state");
+				$publication['version'] = $dbObj->GetValue("concat(v.`Version`,'.',v.`SubVersion`)");
+				array_push($publications, $publication);
+				$dbObj->Next();
+			}
+			return $publications;
+		}
+		return NULL;
+	}
 }
 ?>

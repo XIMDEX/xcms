@@ -23,36 +23,3 @@
  *  @version $Revision$
  */
 
-
-.action_container .xim-listview-results .xim-listview-table-container table{
-	margin: 0px;	
-	/*border-collapse: separate;*/
-}
-
-.xim-listview-results .xim-listview-table-container table tr{
-	border-bottom: 1px dashed #ccc;
-	background: none;
-}
-.xim-listview-results .xim-listview-table-container table tr.xim-listview-selected{
-	background: #43a1a2;
-	-moz-border-radius: 3px;
-	color: #f2f2f2;
-	border: transparent;
-	padding-right: 8px;
-}
-.xim-listview-results .xim-listview-table-container table tr:hover{
-	background: #43a1a2;
-	color: #f2f2f2;
-	border-bottom: 1px dashed #ccc;
-}
-.xim-listview-results .xim-listview-table-container table tr td.xim-listview-grid-icon{
-	position: relative;
-	display: block;
-
-}
-.xim-listview-results .xim-listview-table-container table tr td.xim-listview-grid-icon .xim-listview-actions-dropdown {
-	background-position: -2px -506px;
-	left: 7px;	
-	cursor:  pointer;
-	top: -1px;
-}

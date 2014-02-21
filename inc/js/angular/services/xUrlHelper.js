@@ -36,7 +36,16 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
                 } else if (params.IDParent) {
                     actionUrl+='&nodeid='+params.IDParent+'&nodes[]='+params.IDParent;
                 }
+                if (params.module){
+                    actionUrl+='&mod='+params.module;
+                }
                 return actionUrl;
+            },
+            parametrize: function(url, params) {
+                angular.element.each(params, function(key, value){
+                    url+= '&'+key+'='+value;
+                });
+                return url;
             }
         }
     }]);

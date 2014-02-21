@@ -41,7 +41,7 @@
 
 		_init: function(options) {
 
-			this.view = options.view || 'grid';
+			this.view = options.view || 'list';
 			this.element = $(this.resultsSelector, options.container).unbind().empty();
 			this.as = options.as;
 

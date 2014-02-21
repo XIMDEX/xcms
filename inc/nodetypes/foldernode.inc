@@ -363,7 +363,12 @@ class FolderNode extends Root {
 		$defaultRNGs_folder="/inc/metadata/schemes/";
 		$idparent= $this->parent->GetID(); 
 
-		if ($handle = opendir(XIMDEX_ROOT_PATH.$defaultRNGs_folder)) {
+		$this->buildDefaultRngFromPath($idparent, $defaultRNGs_folder);
+	}
+
+
+	protected function buildDefaultRngFromPath($idParent, $path){
+		if ($handle = opendir(XIMDEX_ROOT_PATH.$path)) {
 			$entry = readdir($handle);
 			while (false !== $entry){
 				$data=array();
@@ -371,7 +376,7 @@ class FolderNode extends Root {
 					$data = array(
                                                 'NODETYPENAME' => "RNGVISUALTEMPLATE",
                                                 'NAME' => $entry,
-                                                'PARENTID' => $idparent,
+                                                'PARENTID' => $idParent,
                                                 'CHILDRENS' => array (
                                                         array ('NODETYPENAME' => 'PATH', 'SRC' => '' )
                                                 )   
@@ -383,7 +388,7 @@ class FolderNode extends Root {
 					}
 					else{
 						$newRngNode = new Node($rngId);
-                                             	$rngContent = file_get_contents(XIMDEX_ROOT_PATH.$defaultRNGs_folder.$entry,FILE_USE_INCLUDE_PATH);
+                                             	$rngContent = file_get_contents(XIMDEX_ROOT_PATH.$path.$entry,FILE_USE_INCLUDE_PATH);
                                         	$newRngNode->SetContent($rngContent);
 					}
 				}

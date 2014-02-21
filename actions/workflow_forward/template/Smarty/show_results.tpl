@@ -22,7 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
+ 	<div class="action_header">
+		<h2>{t}Publication result{/t}</h2>
+		
 {if (count($result)) }
 <h2>{t}Publication result{/t}</h2>
 <fieldset>
@@ -66,21 +68,15 @@
 </fieldset>
 {/if}
 
-{if (count($messages)) }
-<h2>{t}Messages{/t}</h2>
-
-	<ol>
-	{foreach name=messages from=$messages key=message_id item=message}
-		<li>{$message.message}</li>
-	{/foreach}
-	</table>
-
-{/if}
-
 <fieldset class="buttons-form">
-{if ($goback) }
-	{button class="goback-button  btn main_action" label="Go back"}
-{else}
-	{button class="close-button  btn main_action" label="Close"}
-{/if}
-</fieldset>
+			{button class="close-button btn main_action" label="Close"}<!--message="Are you sure you want to copy this node to selected destination?"-->
+        </fieldset>
+	</div>
+	{if (count($messages)) }
+	<div class="message">
+	{foreach name=messages from=$messages key=message_id item=message}
+		<p class="ui-icon-notice">{$message.message}</p>
+	{/foreach}
+	</div>
+	{/if}
+	</div>	

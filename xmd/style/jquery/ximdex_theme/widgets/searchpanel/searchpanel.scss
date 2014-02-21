@@ -24,306 +24,486 @@
  */
 
 @import "../themes/ximdex_theme";
+@import "../themes/extends";
+@import "../themes/icons";
 
+.dialog_advanced_search .ui-dialog-content{
+		padding: 0 !important;
+	}
 
-.ui-dialog .advanced-search{
+.dialog_advanced_search{
+	border: none;
+	@include radius(2px);
 	padding: 0;
-}
-.xim-search-dialog label{
-	float: none;
-	display: inline;
-}
-.xim-search-dialog input + label{
-	vertical-align: top;
-}
-.ui-dialog-titlebar{
-	background:none;
-	border: none;
-	border-bottom: 1px solid $c_grey-ppp;
-	margin-bottom: 0px;
-}
-
-.ui-dialog-titlebar #ui-dialog-title-1, .ui-widget-header .ui-dialog-title{
-	background: url('../../../../../images/search/icon-search.png') no-repeat left -2px;
-	padding: 4px 3px 2px 30px;
-	font-size: 1.1em;
-	color: $c_grey-p;
-}
-
-.ui-widget-header .ui-dialog-title{
-	background:none;
-	padding: 4px 3px 2px 12px;
-}
-
-.ui-dialog .ui-dialog-content{
-	overflow: auto;
-	height: auto;
-	min-height: none !important;
-}
-
-.xim-search-dialog {
-	height: 100%;
-	padding: 0px;
-}
-.xim-search-panel {
-	float: left;
-}
-
-.xim-search-panel-left{
-	width: 24%;
-	height: 100%;
-	border-right: 1px solid $c_grey-ppp;
-	background: $c_grey-ppp;
-	@include boxshadow(inset -2px 0 $c_white);
-	@include radius(0 0 0 12px);
-}
-.xim-search-panel-left h3{
-	white-space: nowrap;
-	font-weight: bold;
-}
-.xim-search-panel-left h3, .xim-search-options span{
-	color: $c_grey-p;
-	font-size:0.975em;
-	text-transform: uppercase;
-	text-shadow: 1px 1px 0 $c_white, 2px 2px 1px $s_grey;
-}
-
-.xim-search-panel-left .saved-searches,
-.xim-search-panel-left .last-searches {
-	height: 50%;
-	overflow: auto;
-}
-.xim-search-panel-left .saved-searches {
-	height: 47%;
-}
-
-.xim-search-panel-left .saved-searches .saved-searches-item-container,
-.xim-search-panel-left .last-searches .last-searches-item-container {
-	overflow: auto;
-}
-
- .saved-searches div, .last-searches div{
-	padding: 10 20px;
-}
-.xim-search-panel-left h3{
-	padding: 15px 22px 5px;
-}
-
-.saved-searches div ul, .last-searches div ul{
-	padding: 0 4px 0 18px;
-}
-.last-searches h3{
-	border-top: 1px solid $c_grey-ppp;
-	@include boxshadow(inset 0 1px 0 $s_white);
-}
-.xim-search-panel-right{
-	width: 75.8%;
-	height: 100%;
-}
-.xim-search-panel-right.expanded{
-	width: 100%;
-	height: 92%;
-}
+	@include boxshadow(0 1px 1px rgba(0,0,0,.4));
 
 
-.filters{
-	max-height: 35%;
-	overflow: auto;
-	background: url(../../../../../images/search/bg-filters.png) repeat;
-	@include boxshadow(inset 0 -2px 0 $c_white);
+
+	.xim-treeview-branch-container{
+		position: static;
+		.xim-treeview-icon{
+			height: 18px;
+			margin-top: 2px;
+		}
+	}
+
+	>.ui-widget-header{
+		border: none;
+		background: none;
+		position: absolute;
+		width: 100%;
+		> span{
+			display: none;
+		}
+
+		>a{
+			margin: 0;
+		}
+
+		.ui-dialog .ui-dialog-titlebar-close{
+			margin-top: 0;
+		}
+	}
+
+	.advanced-search{
+		padding: 0;
+	}
+	.xim-search-dialog{
+		height: 100%;
+	}
+
+
+
+	.search_options{
+		background:darken(#4c5151, 5%);
+		@extend %col1_3;
+		height: 100%;
+		padding: 1em 1.5em;
+		overflow: auto;
+
+		h2, h3{
+			color: rgba(255,255,255,.8);
+			font-family: $t_text;
+			text-transform: uppercase;
+			padding: .5em 0;
+			border-bottom: 1px solid;
+			font-size: 1.5rem;
+			margin-bottom: 1em;
+			font-weight: bold;
+		}
+
+		select, input{
+			background:rgba(255,255,255,.18);
+			@include boxshadow(0 1px 1px rgba(0,0,0,.3));
+			border: none;
+			@include radius(2px);
+			color: rgba(255,255,255,.8);
+			margin-bottom: .5em;
+			font-size: 1.4rem;
+		}
+
+		option{
+			color: #000;
+		}
+	}
+
+	.save_search{
+		float: right;
+		margin-top: .5em;
+		button{
+			@extend %reset-button;
+			color: $c_mainlight;	
+		}
+	}
+
+	.xim-filter-field, .xim-filter-active-comparation{
+		@extend %col1_2;
+		margin: 0;
+		width: calc(50% - .5rem);
+
+	}
+
+	.xim-filter-field{
+		margin-right: 1rem;
+	}
+
+	.xim-filter-content{
+		width: calc(100% - 4.5em);
+		background:rgba(255,255,255,.6) !important;
+		color: darken(#4c5151, 5%) !important;
+	}
+
+	.xim-filter-add, .xim-filter-remove{
+		@extend %reset-button;
+		font-size: 3rem;
+		color: $c_mainlight;
+		line-height: .4;
+	}
+
+	.buttonset:not(.save_search){
+		margin-bottom: 3em;
+	}
+
+	.search_button{
+		@extend %reset-button;
+		@extend button;
+		background:$c_mainlight;
+		width: 100%;
+		padding: .5em;
+		text-transform: uppercase;
+		color: darken(#4c5151, 5%);
+	}
+
+	.xim-search-options{
+		display: none;
+		margin: .5em;
+		color: #fff;
+
+		.label{
+			display: block;
+			padding-bottom: .5em;
+		}
+
+		label{
+			color: #fff;
+			font-size: 1.4rem;
+		}
+		&.visible{
+			display: block;
+		}
+	}
+
+	.results,.simple_search{
+		@extend %col2_3;
+		padding: 2em 1.5em;
+		position: relative;
+		.xim-listview-table, tr, tbody{
+			overflow: hidden;
+			display: block;
+		}
+		
+		.t_fixed_header, .headtable{
+			background: none;
+			border: none;
+			margin-top: 2em;
+			.head{
+				width: 100% !important;
+			}
+
+			.xim-listview-item{
+				border-bottom: 1px solid darken($c_background, 10%);
+				th{
+					width: auto !important;
+					text-transform: uppercase;
+				}
+			}
+		}
+
+		.xim-listview-table {
+			padding: .5em 0;
+			margin: 0;
+			width: 100% !important;
+
+			tr{
+				position: relative;
+				border-style: solid;
+				padding: .5em 0;
+
+				.xim-listview-actions-dropdown {
+					left: 5px;
+				}
+			}
+			td{
+				font-size: 1.2em;
+				float: left;
+				
+				&:first-child{
+					/*position: absolute;
+					right: 0;
+					top: 50%;
+					-webkit-transform: translateY(-50%);
+					-moz-transform: translateY(-50%);
+					-ms-transform: translateY(-50%);
+					-o-transform: translateY(-50%);
+					transform: translateY(-50%);*/
+					
+				}
+
+				&:nth-child(4){
+					color: $c_grey;
+					&::before{
+						content: "[";
+					}
+					&::after{
+						content: "]";
+						
+					}
+				}
+
+				&:nth-child(5){
+					clear: left;
+					margin-left: 5.5em;
+					text-overflow: ellipsis;
+					width: 90%;
+					display: block;
+					overflow: hidden;
+					padding-right:9.5em;
+					margin-top: -.55em;
+				}
+
+				&:nth-child(6){
+					margin-top: -2.5em;
+					float: right;
+					margin-right: 1.5em;
+				}
+
+				&:nth-child(7){
+					position: absolute;
+					left:3.4em;
+					top: 1.7em;
+					color: darken($c_mainlight, 5%);
+					font-weight: bold;
+				}
+				&:last-child{
+					margin-right: 1.5em;
+					margin-top: -1.3em;
+					float: right;
+				}
+			}
+
+			.xim-listview-icon{
+				height: 1.5em;
+				margin: 0;
+			}
+
+			.xim-listview-actions-dropdown{
+				margin-top: 0;
+				//background-position: -19px -228px;		
+				width: 23px;		
+			}
+
+
+		}
+
+
+
+	.ui-widget-content{
+		border: none;
+		background: none;
+	}
+
+
+		.xim-listview-label{
+			font-weight: bold;
+		}
+	}
+
+	.xim-listview-item:not(.xim-listview-selected):hover{
+		//background: none;
+		border: none;
+		border-bottom: 1px solid $c_background;
+	}
+
+	thead{
+		.xim-listview-item{
+			padding: .5em .5em .5em 5.5em;
+			position: relative;
+		}
+
+		th{
+			float: left;
+		}
+
+		th:nth-child(3){
+			padding-left: .8em;
+		}
+		th:nth-child(4){
+			padding-left: 1em;
+			&::before{
+				content: "[";
+			}
+			&::after{
+				content: "]";
+			}
+		}	
+
+		th:nth-child(5){
+			padding-left: 1.8em;
+			clear: both;
+		}
+		th:nth-child(7){
+			position: absolute;
+			left: 2em;
+			top: 1.5em;
+		}
+		th:nth-child(6), th:nth-child(8){
+			float: right;
+			margin-right: 1.8em;
+		}
+		th:nth-child(6){
+			margin-top: -1em;
+		}
+	}
+
 }
 
-.filters + .results{
-	height: 65%;
-	overflow: auto;
-	@include boxshadow(inset 0 2px 1px $s_grey);
+.xim-search-panel{
+	color: #fff;
+	line-height: 1.5;
 }
 
-.filters[style] + .results{
-	height: 100%;
-	@include boxshadow(none);
-}
-
-.xim-search-filters{
-	margin-bottom: 15px;
-	max-height: 50%;
-	overflow: auto;
-}
-
-.results-view{
-	padding: 20 20 10px;
-}
-
-.xim-listview-loading {
-	background-repeat: no-repeat;
-	margin:15px auto;
-	width: 16px;
-	height: 16px;
-	z-index: 2000;
-}
-
-.ui-widget-content div.ui-resizable-se{
-	background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -2px -166px;
-	width: 18px;
-	height: 18px;
+.saved-searches-items, .last-searches-items{
+	padding-bottom: 1.5em;
+	li{
+		cursor: pointer;
+		font-size: 1.2em;
+		&:hover{
+			color: $c_mainlight;
+		}
+	}
 }
 
 
-.xim-search-options, .xim-search-filters{
-	display: block;
-	overflow: auto;
-	padding: 0 25px;
-}
-.xim-search-options{
-	padding: 25px;
-
-}
-
-.filters select, .filters input, .results select{
-	border: 1px solid $c_grey-ppp;
-	margin-right: 5px;
-	@include radius(3px);
-	padding: 2px;
-}
-.filters input{
-	padding: 3px;
-}
-.xim-search-filter{
-	padding: 5px 10px;
-	margin-left: 20px;
-}
-
-
-.xim-search-dialog button{
-	border: none;
-	cursor: pointer;
-	background: url("../../../../../images/action/fnd-buttons-form.png") repeat-x scroll left center transparent;
-	border: 1px solid $c_grey-ppp;
-	color: $c-grey-p;
-	text-shadow: 0 1px 0 $c_white;
-	padding: 3px 5px;
-	font-size: .9em;
-}
-
-
-.xim-search-filter button{
-	width: 24px;
-	height: 21px;
-}
-
-.xim-search-dialog button:hover{
-	color: $c_grey-ll;
-	background: url("../../../../../images/action/fnd-buttons-form-hover.png") repeat-x scroll left center $s_white;
-}
-
-
-.xim-search-dialog button.xim-filter-add, .xim-listview-selectionhandler button:first-child{
-	@include radius(5px 0 0 5px);
-	border-right: 1px solid $c_grey-ppp;
-}
-
-
-.xim-search-filter button:last-child, .xim-listview-selectionhandler button:last-child{
-	border-left: 1px solid $c_grey-ppp;
-	@include radius(0 5px 5px 0);
-}
-
-.saved-searches-items li, .last-searches-items li{
-	cursor: pointer;
-}
-.saved-searches-items li:hover, .last-searches-items li:hover{
-	background: $c_grey-pp;
-}
-
-.xim-search-panel .buttonset{
-	padding: 10 15px 0px;
-}
-.filters .buttonset{
-	padding-bottom: 15px;
-}
-
-.results .buttonset{
-	position: absolute;
-	bottom: 15px;
-	right: 0px;
-}
-
-/*.results .xim-paginator-container + .buttonset{
-	position: static;
-	margin-top: -40px;
-}*/
 .xim-listview-table-container{
-	margin-bottom: 15px;
-	margin-top: 15px;
-}
-
-.results .xim-listview-table-container{
-	overflow: visible !important;
-	clear: both;
-}
-
-tr.xim-listview-item td:first-child{
-	display: block;
-	position: relative;
-	float: left;
-}
-
-div.xim-search-panel tr.xim-listview-item .xim-listview-actions-dropdown{
-	left: 7px;
-	margin-top: -1px;
-}
-
-.xim-itemsSelector{
-	float: right;
-	padding-right: 20px;
-}
-
-.xim-itemsSelector span{
-	margin-right: 8px;
-}
-.xim-paginator-container{
-	padding: 10px;
-	margin-right: 25px;
-	margin-top: 10px;
-}
-.xim-paginator-container> div.xim-paginator-item{
-	display: inline;
-	background: none;
-	font-weight: bold;
-	cursor: pointer;
-	border: 1px solid $c_grey-pp;
-	padding: 4px;
-	margin: 3px;
-}
-
-.xim-paginator-container> div.xim-paginator-item:hover{
-	background: $c_mainlight;
-	color: $c_white;
-	border: $c_mainlight 1px solid;
-}
-
-.xim-paginator-container> div.xim-paginator-selected-item{
-	background: $c_grey-ppp;
-	border:  $c_grey-ppp 1px solid;
-	color: $c_grey-p;
-}
-
-.ui-dialog .ui-widget-content{
-	border: 0px;
-	border-top: 1px solid $c_grey-ppp;
+	>div{
+		width: 100% !important;
+	}
+	.ui-widget-header{
+		background: none;
+		border: none;
 	}
 
-.ui-widget-header{
-	border: 0px;
+	.ui-resize-ghost{
+		display: none;
 	}
-
-.results .ui-icon-info{
-	background: url(../../../../../images/action/icon-msg.png) no-repeat -1px -31px;
-	width: 23px;
-	margin: 1px 0 0 9px;
-	height: 25px;
 }
 
-.results .ui-icon-info + p{
-	margin: 30 0;
+
+.xim-itemsSelector, .xim-listview-selectionhandler {
+	@extend %col1_2;
+}
+
+.xim-itemsSelector-legend{
+	padding-right: .8em;
+}
+
+.xim-listview-selectionhandler {
+	text-align: right;
+
+	button{
+		@extend %reset-button;
+		background:lighten(#4c5151, 10%);
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		color: #fff;
+		text-transform: uppercase;
+		padding: .5em 1em;
+		font-size: .88em;
+		margin-left: .5em;
+	}
+}
+
+.xim-listview-table-container{
+	padding-top: 2.5em;
+}
+
+.number_results{
+	position: absolute;
+	top: 5em;
+	font-size: 1.3em;
+	height: 100%;
+	overflow: auto;
+
+	span{
+		background:$c_mainlight;
+		-webkit-border-radius: 1px;
+		-moz-border-radius: 1px;
+		border-radius: 1px;
+		padding: .1em .4em;
+		font-weight: bold;
+	}
+}
+
+.simple_search{
+
+	.xim-listview-table-container{
+		padding-top: 1em;
+	}
+
+	.ui-state-default, .ui-widget-content{
+		border: none;
+		background: none;
+	}
+
+	.headtable{
+			display: none;
+		}	
+
+	.xim-listview-table{
+		width: 100% !important;
+		display: block;
+		margin: 0;
+		tbody, tr{
+			display: block;
+		}
+
+
+
+		tr{
+			background:#fff;
+			@extend %row-item;
+			overflow: hidden;
+		}
+
+		td{
+			float: left;
+		}
+
+		.xim-listview-label{
+			font-weight: bold;
+		}
+
+		.xim-listview-label + td{
+			&::before{
+				content: "[";
+			}
+
+			&::after{
+				content: "]";
+			}
+		}
+
+		td:nth-child(5){
+			clear: both;
+			margin-left: 5em;
+			margin-top: -.5em;
+		}
+
+		td:nth-child(6){
+			margin-top: -1.9em;
+		}
+
+		td:nth-child(6), td:nth-child(8){
+			float: right;
+		}
+
+		td:nth-child(7){
+			position: absolute;
+			left: 4.3em;
+			top: 2em;
+			color: $c_mainlight;
+			font-weight: bold;
+		}		
+		
+		 td:nth-child(8){
+			margin-top: -.5em;
+		}
+	}
+
+	.xim-listview-actions-dropdown{
+		width: 22px;
+	}
+
+
 }

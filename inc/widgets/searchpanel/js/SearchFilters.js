@@ -63,11 +63,14 @@
 
 					$(document).on('click','.xim-search-filters .xim-filter-add', function(event) {
 						this.createSearchFilter(container);
+						$('.xim-search-options').addClass('visible');
 					}.bind(this));
 		
 					$(document).on('click','.xim-search-filters .xim-filter-remove', function(event) {
 						if ($('.xim-search-filter').length == 1) {
 							return;
+						}else if($('.xim-search-filter').length == 2){
+							$('.xim-search-options').removeClass('visible');
 						}
 						var filter = $(event.target).parent('.xim-search-filter');
 						filter.unbind().remove();

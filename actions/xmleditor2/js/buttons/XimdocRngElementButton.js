@@ -45,7 +45,7 @@ var XimdocRngElementButton = Object.xo_create(XimdocButton, {
         	containment: $('.kupu-editorframe'),
 			helper: 'clone',
         	appendTo: 'body',
-        	iframeFix: true,
+        	iframeFix: false,
         	start: function(event, ui) {
 
         		var helper = $(ui.helper[0])
