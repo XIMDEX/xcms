@@ -33,12 +33,12 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
     				title: 'Ximdex Notifications',
     				modal: true,
     				buttons: {
-    					_('Accept'): function() {
+    					acept: function() {
     						result(true)
     						$dialog.dialog('destroy');
     						$dialog.remove();
     					}.bind(this),
-    					_('Cancel'): function() {
+    					cancel: function() {
     						result(false)
     						$dialog.dialog('destroy');
     						$dialog.remove();

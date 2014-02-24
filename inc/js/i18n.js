@@ -23,26 +23,22 @@
  *  @version $Revision$
  */
 
-//Format 
-angular.module('ximdex.common.filter')
-    .filter('xBytes', function(){
-        return function(bytes){
-            if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
-                return ''
-            if (parseFloat(bytes) == 0)
-            	return '0 bytes'
-            var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-            var number = Math.floor(Math.log(bytes) / Math.log(1024));
-            var size = (bytes / Math.pow(1024, Math.floor(number))).toFixed(2);
-            var unit =  units[number];
-            return size+' '+unit;
-        }
-});
 
-//Translate
-angular.module('ximdex.common.filter')
-    .filter('xI18n', ['xTranslate', function(xTranslate){
-        return function(string){
-            return xTranslate(string);
-        }
-}]);
+(function(X) {
+	X.i18nStrings = [];
+	var loadLang = function(lang) {
+		//Async loading localized strings json file
+		$.getJSON(X.baseUrl+'/inc/i18n/locale/'+lang+'/LC_MESSAGES/messages.json', function(data){
+			if (data) {
+				X.i18nStrings = data;
+			} else {
+				console.log("Error loading internationalization data");
+			}
+		});
+	}
+	//loadLang(window.locale);
+})(com.ximdex);
+
+var _ = t = translate = function(input) {	
+	return X.i18nStrings[input] || input;
+};
