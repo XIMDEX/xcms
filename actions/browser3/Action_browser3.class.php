@@ -91,14 +91,14 @@ class Action_browser3 extends ActionAbstract {
 		}
 	
 		$this->addJs('/inc/js/helpers.js');		
-		$this->addJs('/inc/js/collection.js');
-		$this->addJs('/inc/js/i18n.js');
+		$this->addJs('/inc/js/collection.js');	
 		$this->addJs('/inc/js/dialogs.js');
 		$this->addJs('/inc/js/console.js');
 		$this->addJs('/inc/js/sess.js');
 		$this->addJs('/inc/js/eventHandler.js');
 		$this->addJs(Extensions::JQUERY);
 		$this->addJs(Extensions::JQUERY_UI);
+		$this->addJs('/inc/js/i18n.js');
 		$this->addJs('/extensions/angular/angular.min.js');
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');

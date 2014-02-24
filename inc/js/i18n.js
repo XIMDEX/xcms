@@ -25,43 +25,20 @@
 
 
 (function(X) {
-
-	X.i18nStrings = {
-		'es': {
-			'actions': {
-				'checkstatus': {
-					'publications': {
-						'published':{
-							'title': 'Documentos publicados'
-						},
-						'unpublished':{
-							'title': 'Documentos en cola de publicación'
-						}
-					}
-				}
-			},
-			'test propouse string': 'cadena de testeo',
-		},
-		'en': {
-			'actions': {
-				'checkstatus': {
-					'publications': {
-						'published':{
-							'title': 'Published documents'
-						},
-						'unpublished':{
-							'title': 'Documents in publication queue'
-						}
-					}
-				}
-			},
-			'test propouse string': 'cadena de testeo',
-		}	
-	};
+	X.i18nStrings = [];
+	var loadLang = function(lang) {
+		$.getJSON(X.baseUrl+'/inc/i18n/locale/'+lang+'/LC_MESSAGES/messages.json', function(data){
+			if (data) {
+				X.i18nStrings = data;
+			} else {
+				console.log("Error loading internationalization data");
+			}
+		});
+	}
+	loadLang(window.locale);
 
 })(com.ximdex);
 
-var _  = function(input) {	
-	console.log("ammigo");
-	return X.i18nStrings[window.document.documentElement.lang]? X.i18nStrings[window.document.documentElement.lang][input] || input : input
+var t = translate = function(input) {	
+	return X.i18nStrings[input] || input;
 };

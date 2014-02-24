@@ -25,9 +25,42 @@
 
 angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
     .factory('xTranslate', ['$window', function($window) {
+        var strings = {
+        	'es': {
+        		'actions': {
+        			'checkstatus': {
+        				'publications': {
+        					'published':{
+        						'title': 'Documentos publicados'
+        					},
+        					'unpublished':{
+        						'title': 'Documentos en cola de publicación'
+        					}
+        				}
+        			}
+        		},
+        		'test propouse string': 'cadena de testeo',
+        	},
+        	'en': {
+        		'actions': {
+        			'checkstatus': {
+        				'publications': {
+        					'published':{
+        						'title': 'Published documents'
+        					},
+        					'unpublished':{
+        						'title': 'Documents in publication queue'
+        					}
+        				}
+        			}
+        		},
+        		'test propouse string': 'cadena de testeo',
+        	}	
+        };
+
         return function(input){
         	path = input.split('.');
-			dictionary = $window.X.i18nStrings[$window.document.documentElement.lang] || $window.X.i18nStrings['en'];
+			dictionary = strings[$window.document.documentElement.lang] || strings['en'];
 			try {
 				for (var i = 0, len = path.length; i < len; i++) {
 					node = path[i];
