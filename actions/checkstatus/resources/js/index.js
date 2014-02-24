@@ -24,14 +24,11 @@
  */
  if (angular.module('ximdex').notRegistred('XPublishStatus')){
     angular.module('ximdex')
-        .controllerProvider.register('XPublishStatus', ['$scope', '$attrs', 'xBackend', '$timeout', '$http', 'xUrlHelper', function($scope, $attrs, xBackend, $timeout, $http, xUrlHelper){
-            $scope.publications = {}
-            $scope.titles = function(key){
-            	return {
-	            	published: _('Published documents'),
-	            	unpublished: _('Documents in publication queue')
-            	}[key]
-            }
+        .controllerProvider.register('XPublishStatus', ['$scope', '$attrs', 'xBackend', '$timeout', '$http', 'xUrlHelper', 'xTranslate', function($scope, $attrs, xBackend, $timeout, $http, xUrlHelper, xTranslate){
+            $scope.publications = {};
+            $scope.publications.published = ['hola'];
+            $scope.publications.unpublished = ['adios'];
+            $scope.translate = xTranslate;
             $scope.backend = xBackend.subscribe({id: $attrs.ximNodeid, action:'checkstatus', method:'getPublicationQueue'}, function(data){
             	if (data && data.publications) {
             		$scope.publications.published = []

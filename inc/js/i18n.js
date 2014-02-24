@@ -23,26 +23,45 @@
  *  @version $Revision$
  */
 
-//Format 
-angular.module('ximdex.common.filter')
-    .filter('xBytes', function(){
-        return function(bytes){
-            if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
-                return ''
-            if (parseFloat(bytes) == 0)
-            	return '0 bytes'
-            var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-            var number = Math.floor(Math.log(bytes) / Math.log(1024));
-            var size = (bytes / Math.pow(1024, Math.floor(number))).toFixed(2);
-            var unit =  units[number];
-            return size+' '+unit;
-        }
-});
 
-//Translate
-angular.module('ximdex.common.filter')
-    .filter('xI18n', ['xTranslate', function(xTranslate){
-        return function(string){
-            return xTranslate(string);
-        }
-}]);
+(function(X) {
+
+	X.i18nStrings = {
+		'es': {
+			'actions': {
+				'checkstatus': {
+					'publications': {
+						'published':{
+							'title': 'Documentos publicados'
+						},
+						'unpublished':{
+							'title': 'Documentos en cola de publicación'
+						}
+					}
+				}
+			},
+			'test propouse string': 'cadena de testeo',
+		},
+		'en': {
+			'actions': {
+				'checkstatus': {
+					'publications': {
+						'published':{
+							'title': 'Published documents'
+						},
+						'unpublished':{
+							'title': 'Documents in publication queue'
+						}
+					}
+				}
+			},
+			'test propouse string': 'cadena de testeo',
+		}	
+	};
+
+})(com.ximdex);
+
+var _  = function(input) {	
+	console.log("ammigo");
+	return X.i18nStrings[window.document.documentElement.lang]? X.i18nStrings[window.document.documentElement.lang][input] || input : input
+};
