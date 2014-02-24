@@ -50,7 +50,7 @@
 		{foreach from=$js_files key=id item=src}
 			<script type="text/javascript" src="{$src}"></script>
 		{/foreach}
-
+		<script type="text/javascript" src="{$_URL_ROOT}/inc/i18n/locale/{$user_locale.Code}/LC_MESSAGES/strings.js" charset="UTF-8"></script>
 		<!-- js widgets -->
 		%=js_widgets%
 	</head>
