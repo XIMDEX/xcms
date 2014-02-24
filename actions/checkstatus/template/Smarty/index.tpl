@@ -60,7 +60,7 @@
 	    	ng-show="pubSet.length" 
 	    	ng-class="{literal}{opened: opened}{/literal}"
 	    	ng-click="opened = !opened">
-			<span class="state">[[titles(key)]]</span>
+			<span class="state">[['actions.checkstatus.publications.'+key+'.title' | xI18n]]</span>
             <div class="docs-amount right">[[pubSet.length]]</div>
 		
 		    <div class="documents-info" 
