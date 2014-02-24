@@ -130,10 +130,10 @@ X.actionLoaded(function(event, fn, params) {
 		div_dialog.html(msg);
 		div_dialog.dialog({
 			buttons: {
-				_("Accept"): function() {
+				accept: function() {
 					dialogCallback(true);
 				},
-				_("Cancel"): function() {
+				cancel: function() {
 					dialogCallback(false);
 				}
 			}

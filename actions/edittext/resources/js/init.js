@@ -149,14 +149,14 @@
 				title: '',
 				modal: true,
 				buttons: {
-					_('Accept'): function() {
+					accept: function() {
 						editor.setValue('');
 						editor.save();
 						$(dialog).dialog('destroy');
 						$(dialog).remove();
 						return false;
 					}.bind(this),
-					_('Cancel'): function() {
+					cancel: function() {
 						$(dialog).dialog('destroy');
 						$(dialog).remove();
 						return false;

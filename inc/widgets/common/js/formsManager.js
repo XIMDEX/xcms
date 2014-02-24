@@ -222,12 +222,12 @@ X.FormsManager = Object.xo_create({
 				title: 'Ximdex Notifications',
 				modal: true,
 				buttons: {
-					_('Accept'): function() {
+					accept: function() {
 						this._doSubmit(this.options.form, options.files);
 						$(dialog).dialog('destroy');
 						$(dialog).remove();
 					}.bind(this),
-					_('Cancel'): function() {
+					cancel: function() {
 						this._cancelSubmit(this.options.form);
 						$(dialog).dialog('destroy');
 						$(dialog).remove();
