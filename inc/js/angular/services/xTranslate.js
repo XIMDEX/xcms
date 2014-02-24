@@ -24,44 +24,18 @@
  */
 
 angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
-    .factory('xTranslate', ['$window', function($window) {
-        var strings = {
-        	'es': {
-        		'actions': {
-        			'checkstatus': {
-        				'publications': {
-        					'published':{
-        						'title': 'Documentos publicados'
-        					},
-        					'unpublished':{
-        						'title': 'Documentos en cola de publicación'
-        					}
-        				}
-        			}
-        		},
-        		'test propouse string': 'cadena de testeo',
-        	},
-        	'en': {
-        		'actions': {
-        			'checkstatus': {
-        				'publications': {
-        					'published':{
-        						'title': 'Published documents'
-        					},
-        					'unpublished':{
-        						'title': 'Documents in publication queue'
-        					}
-        				}
-        			}
-        		},
-        		'test propouse string': 'cadena de testeo',
-        	}	
-        };
-
+    .factory('xTranslate', ['$window', '$http', function($window, $http) {
         return function(input){
         	path = input.split('.');
-			dictionary = strings[$window.document.documentElement.lang] || strings['en'];
-			try {
+			dictionary = $window.X.i18nStrings;
+			var humanize = function() {
+                var str = path[path.length - 1];
+                str = str.charAt(0).toUpperCase() + str.slice(1);
+                str = str.replace("_", " ");
+                return str || input;
+            };
+            
+            try {
 				for (var i = 0, len = path.length; i < len; i++) {
 					node = path[i];
 					dictionary = dictionary[node];
@@ -69,10 +43,10 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
 				if (typeof dictionary === "string") {
 					return dictionary;
 				} else {
-					return input;
+					return humanize();
 				}
 			} catch (error) {
-				return input;
+				return humanize();
 			}
-		        }
+		}
     }]);

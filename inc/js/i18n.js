@@ -22,23 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-(function(X) {
-	X.i18nStrings = [];
-	var loadLang = function(lang) {
-		//Async loading localized strings json file
-		$.getJSON(X.baseUrl+'/inc/i18n/locale/'+lang+'/LC_MESSAGES/messages.json', function(data){
-			if (data) {
-				X.i18nStrings = data;
-			} else {
-				console.log("Error loading internationalization data");
-			}
-		});
-	}
-	//loadLang(window.locale);
-})(com.ximdex);
-
+ 
 var _ = t = translate = function(input) {	
 	return X.i18nStrings[input] || input;
 };
