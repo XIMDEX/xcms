@@ -331,13 +331,10 @@ class DataFactory
 		XMD_Log::info("GetContent for Node:".$this->nodeID.", Version: ".$versionID.".".$subVersion.", File: .".$uniqueName. ", Chars: ".strlen($content));
 
 		$nodo = new Node($this->nodeID);
-    	$nodoTypeContent = $nodo->nodeType->get('Name');
+		$isPlainFile = $nodo->nodeType->get('IsPlainFile');    	
 
 		//only encoding the content if the node is not one of this 3.
-		if (!(($nodoTypeContent == 'XimNewsImageFile') ||
-		    ($nodoTypeContent == 'ImageFile') ||
-		    ($nodoTypeContent == 'BinaryFile'))){
-
+		if (!$isPlainFile){
 		    	//look for the working encoding from Config
 				$workingEncoding = Config::getValue('workingEncoding');
 				$content = XmlBase::recodeSrc($content, $workingEncoding);
@@ -399,14 +396,11 @@ class DataFactory
 	function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL) {
 
 		$nodo = new Node($this->nodeID);
-    	$nodoTypeContent = $nodo->nodeType->get('Name');
-
+    	$isPlainFile = $nodo->nodeType->get('IsPlainFile');
+    	
     	//only encoding the content if the node is not one of this 3.
-		if (!(($nodoTypeContent == 'XimNewsImageFile') ||
-		    ($nodoTypeContent == 'ImageFile') ||
-		    ($nodoTypeContent == 'BinaryFile'))){
-
-		    	//look for the working encoding from Config
+		if (!$isPlainFile){
+				//look for the working encoding from Config
 				$dataEncoding = Config::getValue('dataEncoding');
 				$content = XmlBase::recodeSrc($content, $dataEncoding);
 		    }

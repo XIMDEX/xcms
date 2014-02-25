@@ -225,8 +225,13 @@ class ParsingDependences {
 		return $xmlPvd;
     	}
 
-	/*
-		Gets all document dependencies and updates database
+	/**
+	*	Gets all document dependencies and updates database
+	*	The spected dependencies are from:
+	*	Server, Section, Documents, Channels, Xslts, ximlets, links.
+	*	@param int $idNode 
+	*	@param string $content
+	*	@param int $idVersion
 	*/
 	public static function getAll($idNode, $content, $idVersion) {
 
@@ -240,6 +245,7 @@ class ParsingDependences {
 			XMD_Log::info('This node is not a structured document');
 			return false;
 		}
+
 
 		$idServer = $node->getServer();
 		$idSection = $node->GetSection();
@@ -286,12 +292,12 @@ class ParsingDependences {
 				array('CHANNEL' => $idChannel, 'TRANSFORMER' => $transformer[0]));
 
 			// post-transformation dependencies
-			$pathTos = array_unique(array_merge($pathTos, self::getPathTo($postContent)));
-			$dotDots = array_unique(array_merge($dotDots, self::getDotDot($postContent, $idServer)));
+			$pathTos = array_merge($pathTos, self::getPathTo($postContent));
+			$dotDots = array_merge($dotDots, self::getDotDot($postContent, $idServer));
 		}
 
 		// group dependencies css, asset and script in metadependencie 'structure'
-		$structures = array_unique(array_merge($dotDots, $pathTos, $assets));
+		$structures = array_merge($dotDots, $pathTos, $assets);
 
 		$structuralDeps = explode(',', Config::GetValue('StructuralDeps'));
 
