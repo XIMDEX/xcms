@@ -1,4 +1,12 @@
 X.i18nStrings = {
+	"ui": {
+		"dialog": {
+			"confirmation": {
+				"accept": "Accept",
+				"cancel": "Cancel"
+			}	
+		}
+	},
 	"actions": {
 		"checkstatus": {
 			"publications": {
