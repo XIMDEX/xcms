@@ -62,7 +62,7 @@ function onDelete(event, fn, form, fm) {
 		div_dialog.dialog({
 			buttons: {
 				//_("Accept"): function() {
-				_("Accept"): function() {
+				accept: function() {
 					$(div_dialog).dialog("destroy");
 				}
 			}

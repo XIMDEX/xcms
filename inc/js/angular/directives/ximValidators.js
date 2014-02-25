@@ -29,7 +29,6 @@ angular.module('ximdex.common.directive.validator')
 			link: function(scope, element, attrs, ctrl){
 				pattern = /^\w+$/;
 				ctrl.$parsers.unshift(function(viewValue){
-					console.log("Validating", viewValue);
 					if (pattern.test(viewValue)){
 						ctrl.$setValidity('alphanumeric', true);
 						return viewValue

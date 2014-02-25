@@ -24,26 +24,28 @@
  */
 
 angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
-    .factory('xDialog', ['$window', function($window) {
+    .factory('xDialog', ['$window', 'xTranslate', function($window, xTranslate) {
         return {
             openConfirmation: function(result, message){
                 //TODO: Write a native dialog without jquery dependencies and support for templates directives etc
-                var $dialog = $window.jQuery('<div class="form_send_dialog"><div/>').html(message || _('Are you sure'));
+                var $dialog = $window.jQuery('<div class="form_send_dialog"><div/>').html(message || 'Are you sure');
+                
+                var buttons  = {};
+                buttons[xTranslate('ui.dialog.confirmation.accept')] = function() {
+                    result(true)
+                    $dialog.dialog('destroy');
+                    $dialog.remove();
+                }.bind(this);
+                buttons[xTranslate('ui.dialog.confirmation.cancel')] = function() {
+                    result(false)
+                    $dialog.dialog('destroy');
+                    $dialog.remove();
+                }.bind(this);
+
                 $dialog.dialog({
     				title: 'Ximdex Notifications',
     				modal: true,
-    				buttons: {
-    					_('Accept'): function() {
-    						result(true)
-    						$dialog.dialog('destroy');
-    						$dialog.remove();
-    					}.bind(this),
-    					_('Cancel'): function() {
-    						result(false)
-    						$dialog.dialog('destroy');
-    						$dialog.remove();
-    					}.bind(this)
-    				}
+    				buttons: buttons
     			});
     			return {
     				close: function(){

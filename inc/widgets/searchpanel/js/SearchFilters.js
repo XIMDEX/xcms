@@ -89,7 +89,8 @@
 		hideMasterFilter: function(masterFilter) {
 			$('.xim-search-filters .xim-filter-field option').show();
 			$.each(masterFilter, function(index, filter) {
-				$('.xim-search-filters .xim-filter-field option[value="%s"]'.printf(filter.field)).hide();
+				if (filter && filter.field)
+					$('.xim-search-filters .xim-filter-field option[value="%s"]'.printf(filter.field)).hide();
 			});
 		},
 		
