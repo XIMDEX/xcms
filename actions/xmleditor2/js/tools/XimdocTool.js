@@ -230,15 +230,21 @@ function XimdocTool() {
 
 		//Iterating for every node. We are interesting in text (nodetype=3)
 		//and nodes with uid attribute
+
 		var it = new DOMNodeIterator(selNode);
 		var child = null;
 		var childPos = -1;
-		while (it.hasNext() && child !== startNode) {
+		var fullText = $(selNode).text();
+		var childrenTextPos = new Array();
+		while (it.hasNext()) {
 			child = it.next();
-			if (child.nodeType == 3 || child.getAttribute("uid"))
-			    childPos++;
+			if (child.getAttribute && child.getAttribute("uid")){
+				var childText = $(child).text();
+				childrenTextPos.push(fullText.indexOf(childText));
+			}
 			childPos++;
 		}
+
 
 		if (selNode && selNode.childNodes[0] && selNode.childNodes[0].nodeType != 3 && selNode.childNodes[0].getAttribute("uid")) {
 			// Corrects bug with apply elements when they are at the start of the string
@@ -251,6 +257,18 @@ function XimdocTool() {
 			endPos = startPos;
 			startPos = oldEndPos;
 		}
+
+		var foundTarget = false;
+		for (var i = 0; i < childrenTextPos.length; i++){
+			
+			if (childrenTextPos[i]>selection.endOffset()){
+				childPos = i;
+				foundTarget = true;
+				break;
+			}
+		}
+		if (!foundTarget)
+			childPos = childrenTextPos.length;
 
 		var oSel = {
 			focusNode: focusNode,
@@ -271,7 +289,7 @@ function XimdocTool() {
     	this.wrapTextElement = function(ximElement, parent, selection) {
 
 		if(null != contextmenu_selection ) {
-			var selection = contextmenu_selection;
+			//var selection = contextmenu_selection;
 			contextmenu_selection = null;
 		}
 		var selNode = this.editor.getSelectedNode() || contextmenu_selNode;

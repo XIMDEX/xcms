@@ -338,6 +338,12 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 		$(this.element).append(d);
 
 	},
+
+	 _createInputFor_allSelector : function(label, inputUrl){
+                var searchOptions = [{}];
+                this._createInputFor_genericSelector(label, inputUrl, searchOptions);
+        },
+
 	_createInputFor_ximdocSelector: function(label, inputUrl) {
 
 		var searchOptions = [{
