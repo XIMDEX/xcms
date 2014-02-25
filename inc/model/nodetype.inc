@@ -29,6 +29,7 @@
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/NodeTypes_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeAllowedContent.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMetadata.class.php');
 
 define('NODETYPE_SECTION', 5015);
 
@@ -824,6 +825,26 @@ class NodeType extends NodeTypes_ORM{
 	    unset($dbObj);
 	}
 	return $returnObject;
+    }
+
+    /**
+     * Check if the nodetype allow metadata.
+     * @return boolean
+     */
+    public function isEnabledMetadata() {
+
+    	return RelNodeTypeMetadata::buildByIdNodeType($this->get('IdNodeType')))? true: false;
+    }
+
+    /**
+     * Check if the nodetype must have metadata.
+     * @return boolean
+     */
+    public function isMetadataForced(){
+
+    	$relNodeTypeMetadata =  RelNodeTypeMetadata::buildByIdNodeType($this->get('IdNodeType')))? true: false;	
+
+		return $relNodeTypeMetadata? $relNodeTypeMetadata->get("forced") :false;
     }
  }
 
