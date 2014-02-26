@@ -23,26 +23,30 @@
  *  @version $Revision$
  */
 
-//Format 
-angular.module('ximdex.common.filter')
-    .filter('xBytes', function(){
-        return function(bytes){
-            if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
-                return ''
-            if (parseFloat(bytes) == 0)
-            	return '0 bytes'
-            var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-            var number = Math.floor(Math.log(bytes) / Math.log(1024));
-            var size = (bytes / Math.pow(1024, Math.floor(number))).toFixed(2);
-            var unit =  units[number];
-            return size+' '+unit;
-        }
-});
-
-//Translate
-angular.module('ximdex.common.filter')
-    .filter('xI18n', ['xTranslate', function(xTranslate){
-        return function(string){
-            return xTranslate(string);
-        }
-}]);
+angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
+    .factory('xTranslate', ['$window', '$http', function($window, $http) {
+        return function(input){
+        	path = input.split('.');
+			dictionary = $window.X.i18nStrings;
+			var humanize = function() {
+                var str = path[path.length - 1];
+                str = str.charAt(0).toUpperCase() + str.slice(1);
+                str = str.replace("_", " ");
+                return str || input;
+            };
+            
+            try {
+				for (var i = 0, len = path.length; i < len; i++) {
+					node = path[i];
+					dictionary = dictionary[node];
+				}
+				if (typeof dictionary === "string") {
+					return dictionary;
+				} else {
+					return humanize();
+				}
+			} catch (error) {
+				return humanize();
+			}
+		}
+    }]);
