@@ -1,3 +1,4 @@
+<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,26 +24,31 @@
  *  @version $Revision$
  */
 
-//Format 
-angular.module('ximdex.common.filter')
-    .filter('xBytes', function(){
-        return function(bytes){
-            if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
-                return ''
-            if (parseFloat(bytes) == 0)
-            	return '0 bytes'
-            var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-            var number = Math.floor(Math.log(bytes) / Math.log(1024));
-            var size = (bytes / Math.pow(1024, Math.floor(number))).toFixed(2);
-            var unit =  units[number];
-            return size+' '+unit;
-        }
-});
 
-//Translate
-angular.module('ximdex.common.filter')
-    .filter('xI18n', ['xTranslate', function(xTranslate){
-        return function(string){
-            return xTranslate(string);
-        }
-}]);
+
+
+/**
+ * XIMDEX_ROOT_PATH
+ */
+if (!defined('XIMDEX_ROOT_PATH'))
+	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+
+include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+
+class RelNodeTypeMetadata_ORM extends GenericData   {
+	var $_idField = 'idRel';
+	var $_table = 'RelNodeTypeMetadata';
+	var $_metaData = array(
+				'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true','primary_key' => true),
+				'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+				'forced' => array('type' => "tinyint(1)", 'not_null' => 'true')
+				);
+	var $_uniqueConstraints = array(
+				'idNodeType' => array('idNodeType')
+				);
+	
+	var $idRel;
+	var $forced = 0;
+	var $idNodeType = 0;
+}
+?>

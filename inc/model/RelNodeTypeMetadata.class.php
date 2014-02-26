@@ -1,3 +1,4 @@
+<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,26 +24,28 @@
  *  @version $Revision$
  */
 
-//Format 
-angular.module('ximdex.common.filter')
-    .filter('xBytes', function(){
-        return function(bytes){
-            if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
-                return ''
-            if (parseFloat(bytes) == 0)
-            	return '0 bytes'
-            var units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-            var number = Math.floor(Math.log(bytes) / Math.log(1024));
-            var size = (bytes / Math.pow(1024, Math.floor(number))).toFixed(2);
-            var unit =  units[number];
-            return size+' '+unit;
-        }
-});
 
-//Translate
-angular.module('ximdex.common.filter')
-    .filter('xI18n', ['xTranslate', function(xTranslate){
-        return function(string){
-            return xTranslate(string);
-        }
-}]);
+
+
+ 
+
+
+if (!defined('XIMDEX_ROOT_PATH')) {
+	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
+}
+require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeTypeMetadata_ORM.class.php';
+
+class RelNodeTypeMetadata extends RelNodeTypeMetadata_ORM {
+
+
+	public static function buildByIdNodeType($idNodeType){
+		$arrayResult = $this->find("idRel", "idNodeType=%s",array($idNodeType),MONO);
+		if ($arrayResult && is_array($arrayResult) && count($arrayResult)){
+			$relNodeTypeMetadata = new RelNodeTypeMetadata($arrayResult[0]);
+			return $relNodeTypeMetadata;
+		}
+		return false;
+	}
+	
+}
+?>

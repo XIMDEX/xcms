@@ -5547,6 +5547,9 @@ msgstr " Selecionar data "
 msgid "'m-d-Y H:i:s'"
 msgstr "'d-m-e H:i:s'"
 
+msgid "'m-d-Y'"
+msgstr "'d-m-e'"
+
 #: /inc/widgets/jquery/calendar/js/ValidityCalendar.js
 msgid "The validity end date must be at least one minute after validity end start"
 msgstr "A data final do prazo deve ser ao menos um minuto depois da data de in&iacute;cio"

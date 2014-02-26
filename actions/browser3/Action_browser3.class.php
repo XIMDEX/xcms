@@ -89,15 +89,16 @@ class Action_browser3 extends ActionAbstract {
 
 			$this->addJs('/utils/user_connect.js.php?id='.$time_id.'&lang='.$user_locale["Lang"], 'ximADM');
 		}
-
+	
 		$this->addJs('/inc/js/helpers.js');		
-		$this->addJs('/inc/js/collection.js');
+		$this->addJs('/inc/js/collection.js');	
 		$this->addJs('/inc/js/dialogs.js');
 		$this->addJs('/inc/js/console.js');
 		$this->addJs('/inc/js/sess.js');
 		$this->addJs('/inc/js/eventHandler.js');
 		$this->addJs(Extensions::JQUERY);
 		$this->addJs(Extensions::JQUERY_UI);
+		$this->addJs('/inc/js/i18n.js');
 		$this->addJs('/extensions/angular/angular.min.js');
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');
@@ -114,6 +115,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
 		$this->addJs('/extensions/d3js/d3.v3.min.js');
 		$this->addJs('/inc/js/angular/app.js');
+		$this->addJs('/inc/js/angular/services/xTranslate.js');
 		$this->addJs('/inc/js/angular/services/xBackend.js');
 		$this->addJs('/inc/js/angular/services/xTree.js');
 		$this->addJs('/inc/js/angular/services/xUrlHelper.js');

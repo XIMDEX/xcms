@@ -3102,6 +3102,7 @@ class	Node extends Nodes_ORM{
 		//$data=array('NodoCopia Id'=>$actionNodeId,'NodoCopia Tipo'=>$actionNodeType,'NodoDest Id'=>$destNodeId,'NodoDest Tipo'=>$destNodeType,'changeName'=>$changeName,'existing'=>$existing,'amount'=>$amount,'insert'=>$insert,'sentencia'=>$sql2);
 		return array('NodoDest Id'=>$destNodeId,'NodoDest Tipo'=>$destNodeType,'changeName'=>$changeName,'insert'=>$insert);
   }
+   
 }
 
 ?>

@@ -3182,6 +3182,21 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (148, 5077, 'application/xml', ';xsl;',
 INSERT INTO `RelNodeTypeMimeType` VALUES (149, 5077, 'text/html', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (151, 5078, 'text/xml', ';xml;', 'pvd');
 
+DROP TABLE IF EXISTS `RelNodeTypeMetadata`;
+CREATE TABLE `RelNodetypeMetadata` (
+  `idRel` int(11) NOT NULL auto_increment,
+  `idNodeType` varchar(255) NOT NULL,
+  `force` tinyint(1) unsigned NOT NULL default 0,
+  PRIMARY KEY  (`idRel`),
+  UNIQUE KEY `idNodeType` (`idNodeType`)
+);
+
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5032,0);
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5039,0);
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5040,0);
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5041,0);
+
+
 DROP TABLE IF EXISTS `SectionTypes`;
 CREATE TABLE `SectionTypes` (
   `idSectionType` int(11) NOT NULL auto_increment,
