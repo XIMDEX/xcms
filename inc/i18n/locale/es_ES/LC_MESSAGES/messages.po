@@ -1277,8 +1277,8 @@ msgstr "Aqu&iacute; debe ir el nombre de la acci&oacute;n"
 
 #: /actions/copy/template/Smarty/_form.tpl
 #: /actions/copy/template/Smarty/index.tpl
-msgid "Choose destination"
-msgstr "Elija el destino"
+msgid "Choose a destination"
+msgstr "Elija un destino"
 
 msgid "Recursive process"
 msgstr "Proceso recursivo"
@@ -1290,11 +1290,14 @@ msgstr "Ejecutar esta acci&oacute;n para todos los archivos y subcarpetas"
 msgid "Copy element"
 msgstr "Copiar elemento"
 
-msgid "The copy operation is not allowed on selected destination."
-msgstr "No se permite la operaci&oacute;n de copiado en el destino seleccionado."
+msgid "This operation is not allowed on the selected destination"
+msgstr "No se permite esta operaci&oacute;n de copiado en el destino seleccionado"
 
-msgid "Please, select another destination to copy."
-msgstr "Por favor, seleccione otro destino para la copia."
+msgid "Please, select another destination"
+msgstr "Por favor, seleccione otro destino"
+
+msgid "There aren't any available destination"
+msgstr "No hay ning&uacte;n destino disponible"
 
 #: /actions/actions/createchannel/Action_createchannel.class.php
 msgid "Channel has been succesfully inserted"
@@ -1396,8 +1399,8 @@ msgstr "A&ntilde;adir idioma"
 
 #: /actions/createlanguage/template/Smarty/index.tpl
 #: /actions/modifylanguage/template/Smarty/index.tpl
-msgid "ISO name"
-msgstr "Nombre ISO"
+msgid "ISO code"
+msgstr "C&oacute;digo ISO"
 
 #: /actions/createlanguage/template/Smarty/index.tpl
 msgid "Select an ISO code"
@@ -9654,6 +9657,9 @@ msgstr "Crear un nuevo cat&aacute;logo Open Data"
 msgid "Create your datasets"
 msgstr "Crea tus datasets"
 
+msgid "Create New Dataset"
+msgstr "Crear nuevo Dataset"
+
 msgid "Create Catalog"
 msgstr "Crear cat&aacute;logo"
 
@@ -9669,3 +9675,74 @@ msgstr "Nombre de tu cat&aacute;logo"
 msgid "A dataset should be for a single data in several formats"
 msgstr "Un dataset deber&iacute;a emplearse para un mismo dato en diferentes formatos"
 
+msgid "Publish Catalog"
+msgstr "Publicar cat&aacute;logo"
+
+msgid "Delete Catalog"
+msgstr "Borrar cat&aacute;logo"
+
+msgid "Edit Dataset"
+msgstr "Editar Dataset"
+
+msgid "Publish Dataset"
+msgstr "Publicar dataset"
+
+msgid "Delete Dataset"
+msgstr "Borrar Dataset"
+
+msgid "Update Dataset"
+msgstr "Actualizar Dataset"
+
+msgid "Distributions"
+msgstr "Distribuciones"
+
+msgid "Add distribution"
+msgstr "A&ntilde;adir distribuci&oacute;n"
+
+msgid "Publicated by"
+msgstr "Publicado por"
+
+msgid "Modification date"
+msgstr "Fecha de Modificaci&oacute;n"
+
+msgid "More Info Url"
+msgstr "Url para m&aacute;s informaci&oacute;n"
+
+msgid "There are no channels associated to this catalog"
+msgstr "No hay canales asociados a este cat&aacute;logo"
+
+msgid "There are no languages associated to this catalog"
+msgstr "No hay lenguajes asociados a este cat&aacute;logo"
+
+msgid "Dataset info"
+msgstr "Informaci&oacute;n del Dataset"
+
+msgid "Spatial"
+msgstr "&Aacute;mbito"
+
+msgid "Spatials"
+msgstr "&Aacute;mbitos"
+
+msgid "Periodicity (in months)"
+msgstr "Periodicidad (en meses)"
+
+msgid "Configure Xlyre"
+msgstr "Configurar Xlyre"
+
+msgid "Xlyre Settings"
+msgstr "Opciones del m&oacute;dulo Xlyre"
+
+msgid "Periodicities (in months)"
+msgstr "Periodicidades (en meses)"
+
+msgid "Licenses can be managed using Ximdex links"
+msgstr "Las licencias asociadas pueden ser manejadas en la carpeta links de Ximdex CMS"
+
+msgid "Please, enter comma separated values in all fields"
+msgstr "Por favor, introduzca valores separados por comas en todos los campos"
+
+msgid "All the fields have been successfully saved."
+msgstr "Todos los campos se han guardado correctamente."
+
+msgid "Distribution title"
+msgstr "T&iacute;tulo de la distribuci&oacute;n"
