@@ -398,7 +398,7 @@ INSERT INTO `NoActionsInNode` (`IdNode` ,`IdAction`)VALUES ('201', '6109');
 
 DROP TABLE IF EXISTS `Channels`;
 CREATE TABLE `Channels` (
-	`IdChannel` int(12) unsigned NOT NULL auto_increment,
+	`IdChannel` int(12) unsigned NOT NULL,
 	`Name` varchar(255) NOT NULL default '0',
 	`Description` varchar(255) default '0',
 	`DefaultExtension` varchar(255) default NULL,
