@@ -39,7 +39,7 @@ class RelNodeTypeMetadata_ORM extends GenericData   {
 	var $_idField = 'idRel';
 	var $_table = 'RelNodeTypeMetadata';
 	var $_metaData = array(
-				'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true''primary_key' => true),
+				'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true','primary_key' => true),
 				'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
 				'forced' => array('type' => "tinyint(1)", 'not_null' => 'true')
 				);

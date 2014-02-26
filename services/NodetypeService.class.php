@@ -93,7 +93,7 @@ class NodetypeService
 
 
     public $nodeType;
-}
+
 
     public function __construct($idNodeType)
     {
@@ -107,7 +107,7 @@ class NodetypeService
      */
     public function isEnabledMetadata() {
 
-        return RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')))? true: false;
+        return RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType'))? true: false;
     }
 
     /**
@@ -116,9 +116,9 @@ class NodetypeService
      */
     public function isMetadataForced(){
 
-        $relNodeTypeMetadata =  RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')))? true: false; 
+        $relNodeTypeMetadata =  RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType'))? true: false; 
 
         return $relNodeTypeMetadata? $relNodeTypeMetadata->get("forced") :false;
     }
-
+}
 ?>
