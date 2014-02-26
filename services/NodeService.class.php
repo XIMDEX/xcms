@@ -27,6 +27,7 @@
 include_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file("/inc/model/node.inc");
 ModulesManager::file("/inc/model/user.inc");
+ModulesManager::file("/services/NodetypeService.class.php");
 
 /**
  * <p>Service responsible of deal with nodes</p>
@@ -35,13 +36,14 @@ ModulesManager::file("/inc/model/user.inc");
 class NodeService
 {
     private static $PROJECTS_ROOT_NODE_ID = 10000;
-
+    public $node = null;
     /**
      * <p>Default constructor</p>
      */
-    public function __construct()
+    public function __construct($idNode = null)
     {
-        
+        if ($idNode)
+            $this->node = new Node($idNode);
     }
 
     /**
@@ -94,9 +96,12 @@ class NodeService
      * @param int $nodeId The node id to be get
      * @return Node The requested node or null if the node does not exist
      */
-    public function getNode($nodeId)
+    public function getNode($idNode=null)
     {
-        return $this->existsNode($nodeId) ? new Node($nodeId) : null;
+        if ($idNode)
+            return $this->existsNode($idNode) ? new Node($idNode) : null;
+        else
+            return $this->node;
     }
 
     /**
@@ -176,6 +181,26 @@ class NodeService
         
         return $res > 0;
         
+    }
+
+    /**
+     * Check if the nodetype allow metadata.
+     * @return boolean
+     */
+    public function isEnabledMetadata() {
+
+        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));        
+        return $nodeTypeService->isEnabledMetadata();
+    }
+
+    /**
+     * Check if the nodetype must have metadata.
+     * @return boolean
+     */
+    public function isMetadataForced(){
+
+        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
+        return $nodeTypeService->isMetadataForced();
     }
 }
 

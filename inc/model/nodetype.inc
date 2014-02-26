@@ -826,26 +826,6 @@ class NodeType extends NodeTypes_ORM{
 	}
 	return $returnObject;
     }
-
-    /**
-     * Check if the nodetype allow metadata.
-     * @return boolean
-     */
-    public function isEnabledMetadata() {
-
-    	return RelNodeTypeMetadata::buildByIdNodeType($this->get('IdNodeType')))? true: false;
-    }
-
-    /**
-     * Check if the nodetype must have metadata.
-     * @return boolean
-     */
-    public function isMetadataForced(){
-
-    	$relNodeTypeMetadata =  RelNodeTypeMetadata::buildByIdNodeType($this->get('IdNodeType')))? true: false;	
-
-		return $relNodeTypeMetadata? $relNodeTypeMetadata->get("forced") :false;
-    }
  }
 
 ?>

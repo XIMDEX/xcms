@@ -26,6 +26,7 @@
  */
 include_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file("/inc/model/nodetype.inc");
+require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMetadata.class.php');
 
 class NodetypeService
 {
@@ -89,6 +90,35 @@ class NodetypeService
     const MODULES_FOLDER = 5080;
     const MODULE_INFO_CONTAINER = 5081;
     const INHERITABLE_PROPERTIES = 5082;
+
+
+    public $nodeType;
 }
+
+    public function __construct($idNodeType)
+    {
+        if ($idNodeType)
+            $this->nodeType = new Node($idNodeType);
+    }
+
+    /**
+     * Check if the nodetype allow metadata.
+     * @return boolean
+     */
+    public function isEnabledMetadata() {
+
+        return RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')))? true: false;
+    }
+
+    /**
+     * Check if the nodetype must have metadata.
+     * @return boolean
+     */
+    public function isMetadataForced(){
+
+        $relNodeTypeMetadata =  RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')))? true: false; 
+
+        return $relNodeTypeMetadata? $relNodeTypeMetadata->get("forced") :false;
+    }
 
 ?>
