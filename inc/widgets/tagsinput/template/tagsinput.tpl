@@ -52,7 +52,7 @@
 			</li>
 	 		{/foreach}
 		{else}
-			<p>There aren't any tags defined yet.</p>
+			<p>{t}There aren't any tags defined yet{/t}.</p>
 		{/if}
     		</ul>
     	</div>

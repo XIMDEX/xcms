@@ -16,12 +16,18 @@ X.actionLoaded(function(event, fn, params) {
    				 },
 			dataType:"json",
 			success:function(data){
-
-				var parsedData  = $.parseJSON(data);
-				if (parsedData){
-					var isSemantic = 0;
-					tags = [];
-					for (var i in parsedData){
+                if(!data){
+                    var msgNotFound=_("Related tags not found.<br/> Is the ontology service up?");
+                    var link= fn("<a/>").html("See how to enable it.").attr("href","https://github.com/XIMDEX/ximdex/wiki/Faqs#wiki-how-can-i-activate-the-ontology-service-on-my-ximdex-cms-local-instance").attr("target","_blank");
+                    fn(".xim-tagsinput-list-related").removeClass("loading");
+                    fn(".xim-tagsinput-list-related").html('<p class="">'+msgNotFound+'</p>').append(link);
+                }
+                else{
+    				var parsedData  = $.parseJSON(data);
+	    			if (parsedData){
+		    			var isSemantic = 0;
+			    		tags = [];
+				    	for (var i in parsedData){
 					
 						switch(i){
 							case "content":
@@ -47,6 +53,7 @@ X.actionLoaded(function(event, fn, params) {
 					}
 					fn(tagslist).tagsinput('addTagslist', tags );
 				}
+                }
 			}
 		});
 		}
