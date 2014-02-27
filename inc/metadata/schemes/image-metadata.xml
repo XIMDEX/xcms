@@ -21,7 +21,8 @@
 			<ref name="def_parentid"/>
                   	<ref name="def_nodetype"/>
 			<ref name="def_path"/>
-			<ref name="def_version"/>
+			<ref name="def_version"/>			
+            <ref name="def_size" />
 			<xim:description>System Information</xim:description>
 		</element>
 	</define>
@@ -31,9 +32,8 @@
 			<optional>
 				<attribute name="uid" />
 			</optional>
-                        <ref name="def_author" />
-                        <ref name="def_description" />
-                        <ref name="def_size" />
+            <ref name="def_author" />
+            <ref name="def_description" />
 			<xim:description>Custom Information</xim:description>
 		</element>
 	</define>
@@ -114,24 +114,44 @@
 			<optional>
 				<attribute name="uid" />
 			</optional>
+			<attribute name="input">
+				<choice>
+					<value type="string">text</value>
+				</choice>
+			</attribute>
+			<attribute name="ontology-name">
+				<choice>
+					<value type="string">Schema</value>
+				</choice>
+			</attribute>
+			<attribute name="ontology-format">
+				<choice>
+					<value type="string">json</value>
+				</choice>
+			</attribute>
 			<xim:default_content>[Author]</xim:default_content>
 			<text />
 			<xim:description>Author</xim:description>
 		</element>
 	</define>
           
-        <define name="def_description">
+    <define name="def_description">
 		<element name="description">
 			<optional>
 				<attribute name="uid" />
 			</optional>
+			<attribute name="input">
+				<choice>
+					<value type="string">textarea</value>
+				</choice>
+			</attribute>						
 			<xim:default_content>[Description]</xim:default_content>
 			<text />
 			<xim:description>Description</xim:description>
 		</element>
 	</define>
         
-        <define name="def_size">
+    <define name="def_size">
 		<element name="size">
 			<optional>
 				<attribute name="uid" />
