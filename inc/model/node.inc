@@ -393,7 +393,7 @@ class	Node extends Nodes_ORM{
 		if($this->get('IdNode') > 0) {
 			$childrenList = array();
 		    $sql = "select N.IdNode, N.Name as name,NT.System FROM Nodes as N inner join NodeTypes as NT on N.IdNodeType = NT.IdNodeType";
-		    $sql .= " WHERE IdParent =". $this->get('IdNode');
+		    $sql .= " WHERE NOT(NT.IsHidden) AND IdParent =". $this->get('IdNode');
 
 		    if ($idtype) {
       			$sql .= " AND IdNodeType = $idtype";
