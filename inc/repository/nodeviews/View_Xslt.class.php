@@ -112,6 +112,7 @@ class View_Xslt extends Abstract_View {
 		foreach ($params as $param => $value) {
 		    $xsltHandler->setParameter(array($param => $value));
 		}
+		XMD_log::error($content);
 		$content = $xsltHandler->process();
 		if (empty($content)) {
 		    XMD_Log::error("Error in XSLT process for $docxap ");
@@ -125,8 +126,9 @@ class View_Xslt extends Abstract_View {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 
-		if ($channel->get("DefaultExtension")=="xml" ){
+		if ($channel->get("DefaultExtension")=="xml" || $channel->get("DefaultExtension")=="rdf" ){
        			if (!$domDoc->loadXML($content, LIBXML_NOERROR)) {
+       				XMD_log::error($content);
 				XMD_log::error('XML invalid');
 				return NULL;
 			}
@@ -147,7 +149,7 @@ class View_Xslt extends Abstract_View {
 			$counter++;
 		}
 
-		if ($channel->get("DefaultExtension")=="xml")
+		if ($channel->get("DefaultExtension")=="xml" || $channel->get("DefaultExtension")=="rdf")
                        $content = $domDoc->saveXML();
         	else
                        $content = $domDoc->saveHTML();
