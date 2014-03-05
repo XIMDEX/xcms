@@ -41,7 +41,6 @@
  		selectWrap:false, //html to wrap the select input
 
 		_init: function(options) {
-
 			this.numimage = numTags;
 			numTags++;
 			 this.element = options.element || null;
@@ -152,8 +151,8 @@
 				this.remove();
 
 				if (numChildren == 1){
-                                        $ul.append($("<p/>").text("There aren't any tags defined yet."));                                     
-                                }
+                    $ul.append($("<p/>").text("There aren't any tags defined yet."));                                     
+            	}
 
 
 
@@ -166,14 +165,13 @@
  		createTag: function() {
 
 			var $li = $(this._html());
-                        $('.xim-tagsinput-list').append($li);
-                        $('.xim-tagsinput-list').children("p").remove();
+                        this.container.find('.xim-tagsinput-list').append($li);
+                        this.container.find('.xim-tagsinput-list').children("p").remove();
                         $li.slideDown(200, function(){
                                 $(this).css( {"overflow": "visible"});
                         });
 
-			this.element =  $('.xim-tagsinput-tag:last', this.element);
-
+			this.element =  this.container.find('.xim-tagsinput-tag:last', this.element);
 
 			/*
 	 		no funciona en editor:
@@ -185,7 +183,7 @@
 
 
 			 //Add remove tag event
-			$('a.xim-tagsinput-tag-remove', this.element).click(function(event) {
+			this.element.find('.xim-tagsinput-tag-remove').click(function(event) {
 				event.preventDefault();
 				// $(this.element).trigger('removingtag', [{tag: this.element, text:this.text}] );
 				this.container.tagsinput('onRemovingTag', this.text);
