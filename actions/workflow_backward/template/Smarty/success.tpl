@@ -22,17 +22,21 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-<h2>{t}Messages{/t}</h2>
 
-                <li>{t}The document has been moved to the previous state.{/t}</li>
-        </ol>
+<div class="action_header">
+    <h2>{t}Previous state{/t}</h2>
+    <fieldset class="buttons-form">
+        {if ($goback) }
+			{button class="goback-button  btn main_action" label="Go back"}
+		{else}
+			{button class="close-button btn" label="Close"}
+		{/if}
+    </fieldset>
+</div>
+<div class="message">	
+	<ol>	
+		<li>{t}The document has been moved to the previous state.{/t}</li>	
+	</ol>
+</div>
 
-
-<fieldset class="buttons-form">
-{if ($goback) }
-        {button class="goback-button" label="Go back"}
-{else} 
-        {button class="close-button" label="Close"}
-{/if}
-</fieldset>
 
