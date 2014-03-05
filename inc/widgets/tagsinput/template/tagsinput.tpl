@@ -1,4 +1,4 @@
-{**
+	{**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -39,10 +39,10 @@
        			{foreach name=list item=tag key=i from=$tags}
    			<li class="xim-tagsinput-tag">
    				<select class="hidden vertical collapsable ximdexInput icon button type-selector" name="type"></select>
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][text]" value="{$tag.name|utf8_decode}" />
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][type]" value="{$tag.type|default:'generic'}" />
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][url]"  value="{$tag.link|default:'#'}" />
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][description]" value="{$tag.description}" />
+				<input type="hidden" id="text" name="tags[{$smarty.foreach.list.index}][text]" value="{$tag.name|utf8_decode}" />
+				<input type="hidden" id="type" name="tags[{$smarty.foreach.list.index}][type]" value="{$tag.type|default:'generic'}" />
+				<input type="hidden" id="url" name="tags[{$smarty.foreach.list.index}][url]" value="{$tag.link|default:'#'}" />
+				<input type="hidden" id="description" name="tags[{$smarty.foreach.list.index}][description]" value="{$tag.description}" />
 				<span class="xim-tagsinput-text" data-tooltip="{$tag.name|utf8_decode}">
 				{$tag.name|utf8_decode}
 				</span>

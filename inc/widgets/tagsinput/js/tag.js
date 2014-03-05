@@ -147,7 +147,8 @@
 //$(this.element).trigger('removingtag', [{tag: this.element, text:this.text}] );
 				this.container.tagsinput('onRemovingTag', this.text);
 				var $ul = $(this.element).parent();
-                                var numChildren = $ul.children("li").length;
+                var numChildren = $ul.children("li").length;
+				this.container.trigger("removingtag", [{tag: this.element, text:this.text}] );
 				this.remove();
 
 				if (numChildren == 1){
@@ -188,12 +189,12 @@
 				// $(this.element).trigger('removingtag', [{tag: this.element, text:this.text}] );
 				this.container.tagsinput('onRemovingTag', this.text);
 				var $ul = this.element.parent();
-                                var numChildren = $ul.children("li").length;
-           			this.remove();
-				
+                var numChildren = $ul.children("li").length;
+           		this.remove();
+				this.container.trigger("removingtag", [{tag: this.element, text:this.text}] );
 				if (numChildren == 1){
-                                        $ul.append($("<p/>").text("There aren't any tags defined yet."));                                     
-                                }
+                    $ul.append($("<p/>").text("There aren't any tags defined yet."));                                     
+                }
    			}.bind(this) );
 
 		   $(this.element).trigger("creatingtag", [{tag: this.element, text:this.text}] );
