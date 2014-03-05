@@ -115,10 +115,13 @@ class Action_setmetadata extends ActionAbstract {
   	function save_metadata() {
    		$idNode	= (int) $this->request->getParam("nodeid");
 
+   		$tags = new RelTagsNodes();
+   		$previous_tags = $tags->getTags($idNode);
 		if(array_key_exists("tags", $_POST) ) {
-			$tags = new RelTagsNodes();
-   			$previous_tags = $tags->getTags($idNode);
+			
 	  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
+	 	} else if(array_key_exists("type", $_POST)) {
+	 		$tags->saveAll(array(), $idNode, $previous_tags);
 	 	}
 	
 		$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
