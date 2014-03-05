@@ -486,7 +486,7 @@ class Action_workflow_forward extends ActionAbstract {
 	 *
 	 * @return boolean true if the notification is sended.
 	 */
-	private function sendNotifications($idNode, $idState, $userList, $texttosend) {
+	protected function sendNotifications($idNode, $idState, $userList, $texttosend) {
 
 		$send = true;
 
@@ -503,8 +503,6 @@ class Action_workflow_forward extends ActionAbstract {
 		if (!$send) {
 			return false;
 		}
-
-		$idUser = XSession::get("userID");
 
 		$node = new Node($idNode);
 		$idActualState = $node->get('IdState');
@@ -544,24 +542,8 @@ class Action_workflow_forward extends ActionAbstract {
 			. _("Comment").":"."\n"
 			. $texttosend."\n"
 			. "\n";
-
-		foreach($userList as $id) {
-			$user = new User($id);
-
-			$userEmail = $user->get('Email');
-			$userName = $user->get('Name');
-
-			$mail = new Mail();
-			$mail->addAddress($userEmail, $userName);
-			$mail->Subject = $subject;
-			$mail->Body = $content;
-			if ($mail->Send()) {
-				$this->messages->add(sprintf(_("Message successfully sent to %s"), $userEmail), MSG_TYPE_NOTICE);
-			} else {
-				$this->messages->add(sprintf(_("Error sending message to the mail address %s"), $userEmail), MSG_TYPE_WARNING);
-			}
-		}
-
+		parent::sendNotifications($subject, $content, $userList);
+			
 		return true;
 	}
 
