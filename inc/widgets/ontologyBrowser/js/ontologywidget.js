@@ -173,19 +173,22 @@
 		},
 		
 		loadValues: function() {
+            var that = this;
             d3.json(this.options.jsonURL+"&ontologyName="+this.options.inputJson, function(json) {
                 childrens = json.types["Thing"].subtypes;
                 _.each(childrens, function(key) {
                     if (key == defaultValue) {
-                        $('.selectbox-tree select', this.element).append("<option selected>" + key + "</option>");
-                        $('.selectbox-text select', this.element).append("<option selected>" + key + "</option>");
+                        $('.selectbox-tree select', that.element).append("<option selected>" + key + "</option>");
+                        $('.selectbox-text select', that.element).append("<option selected>" + key + "</option>");
                     }
                     else {
-                        $('.selectbox-tree select', this.element).append("<option>" + key + "</option>");
-                        $('.selectbox-text select', this.element).append("<option>" + key + "</option>");
+                        $('.selectbox-tree select', that.element).append("<option>" + key + "</option>");
+                        $('.selectbox-text select', that.element).append("<option>" + key + "</option>");
                     }
                 });
             });
+            // Returns empty array (no selected tags at the beggining of the action)
+            // TODO: It needs to be changed for updating selected tags previously
             return [];
 		},
 		showTree: function(){
@@ -216,9 +219,14 @@
 		      root.x0 = h / 2;
 		      root.y0 = 0;
 
-              $(".selectbox-tree select").change(function() {
-                root = that._getElementByParent(json, $(".selectbox-tree select", this.element).find(":selected").text());
-                root.children.forEach(toggleAll);
+              $(".selectbox-tree select", that.element).change(function() {
+                console.log("Se activa el cambio en el selectbox-tree");
+                console.log(this.element);
+                console.log(that.element);
+                root = that._getElementByParent(json, $(".selectbox-tree select", that.element).find(":selected").text());
+                if (!_.isUndefined(root.children)) {
+                    root.children.forEach(toggleAll);
+                }
                 update(root, that);
               });
 
@@ -229,7 +237,9 @@
 			}
 		      }
 
-		      root.children.forEach(toggleAll);
+              if (!_.isUndefined(root.children)) {
+                root.children.forEach(toggleAll);
+              }
 		      update(root, that);
 		    });
 
@@ -400,9 +410,11 @@ if ($(".textViewer g", this.element).length == 0) {
     root.x0 = 0;
     root.y0 = 0;
 
-    $(".selectbox-text select").change(function() {
+    $(".selectbox-text select", this.element).change(function() {
         root = that._getElementByParent(json, $(".selectbox-text select", this.element).find(":selected").text());
-        root.children.forEach(toggleAll);
+        if (!_.isUndefined(root.children)) {
+            root.children.forEach(toggleAll);
+        }
         update(root, that);
     });
 
@@ -413,8 +425,9 @@ if ($(".textViewer g", this.element).length == 0) {
       }
     }
 
-    root.children.forEach(toggleAll);
-
+    if (!_.isUndefined(root.children)) {
+        root.children.forEach(toggleAll);
+    }
     update(root, that);
   });
 
