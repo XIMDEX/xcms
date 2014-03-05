@@ -29,8 +29,18 @@
 <a class="text icon" href="#"><span>{t}Text view{/t}</span></a>
 
 <div class="ontology-browser hidden">
-    <div class="treeViewer hidden"><h3>{t}Tree view ontology browser{/t}</h3></div>
-    <div class="textViewer hidden"><h3>{t}Text view ontology browser{/t}</h3></div>
+    <div class="treeViewer hidden">
+        <h3>{t}Tree view ontology browser{/t}</h3>
+        <div class="selectbox-tree">
+            <select></select>
+        </div>
+    </div>
+    <div class="textViewer hidden">
+        <h3>{t}Text view ontology browser{/t}</h3>
+        <div class="selectbox-text">
+            <select></select>
+        </div>
+    </div>
     <div class="infobox">
       <h1></h1>
       <p></p>

@@ -53,6 +53,7 @@ class NodeTypes_ORM extends GenericData   {
 				'IsPlainFile' => array('type' => "int(1)", 'not_null' => 'false'),
 				'IsStructuredDocument' => array('type' => "int(1)", 'not_null' => 'false'),
 				'IsPublicable' => array('type' => "int(1)", 'not_null' => 'false'),
+				'IsHidden' => array('type' => "int(1)", 'not_null' => 'false'),
 				'CanDenyDeletion' => array('type' => "int(1)", 'not_null' => 'false'),
 				'System' => array('type' => "int(1)", 'not_null' => 'false'),
 				'Module' => array('type' => "varchar(255)", 'not_null' => 'false'),
@@ -77,6 +78,7 @@ class NodeTypes_ORM extends GenericData   {
 	var $IsPlainFile;
 	var $IsStructuredDocument;
 	var $IsPublicable;
+	var $IsHidden;
 	var $CanDenyDeletion;
 	var $System;
 	var $Module;

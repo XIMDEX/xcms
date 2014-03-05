@@ -130,22 +130,20 @@ class Action_setmetadata extends ActionAbstract {
  	}
 
 	public function getLocalOntology(){
-	
-		$ontologyName = $this->request->getParam("ontologyName");
-		$format = $this->request->getParam("format");
-		if (!$format)
-			$format = "json";
+	   $ontologyName = $this->request->getParam("ontologyName");
+	   $format = $this->request->getParam("inputFormat");
+	   if (!$format)
+	       $format = "json";
 		
-		$ontologyPath = Config::GetValue("AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
-		$content = "";
-		if (file_exists($ontologyPath)){
-			
+       $ontologyPath = Config::GetValue("AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
+	   $content = "";
+	   if (file_exists($ontologyPath)){
 			$content = FsUtils::file_get_contents($ontologyPath);
-		}
+	   }
 	
-		header('Content-type: application/json');
-		print ($content);
-		exit();
+	   header('Content-type: application/json');
+	   print ($content);
+	   exit();
 	}
 }
 
