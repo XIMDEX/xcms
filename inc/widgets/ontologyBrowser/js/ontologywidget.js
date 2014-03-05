@@ -218,7 +218,9 @@
 
               $(".selectbox-tree select").change(function() {
                 root = that._getElementByParent(json, $(".selectbox-tree select", this.element).find(":selected").text());
-                root.children.forEach(toggleAll);
+                if (!_.isUndefined(root.children)) {
+                    root.children.forEach(toggleAll);
+                }
                 update(root, that);
               });
 
@@ -229,7 +231,9 @@
 			}
 		      }
 
-		      root.children.forEach(toggleAll);
+              if (!_.isUndefined(root.children)) {
+                root.children.forEach(toggleAll);
+              }
 		      update(root, that);
 		    });
 
@@ -402,7 +406,9 @@ if ($(".textViewer g", this.element).length == 0) {
 
     $(".selectbox-text select").change(function() {
         root = that._getElementByParent(json, $(".selectbox-text select", this.element).find(":selected").text());
-        root.children.forEach(toggleAll);
+        if (!_.isUndefined(root.children)) {
+            root.children.forEach(toggleAll);
+        }
         update(root, that);
     });
 
@@ -413,8 +419,9 @@ if ($(".textViewer g", this.element).length == 0) {
       }
     }
 
-    root.children.forEach(toggleAll);
-
+    if (!_.isUndefined(root.children)) {
+        root.children.forEach(toggleAll);
+    }
     update(root, that);
   });
 
