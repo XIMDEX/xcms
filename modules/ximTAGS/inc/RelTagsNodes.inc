@@ -65,7 +65,7 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 
 
 	/**
-		get rel between tag and node
+	 *	get rel between tag and node
 	*/
 	function getRel($_idNode, $_tag = -1) {
 		$idtag='';
@@ -85,7 +85,7 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 	}
 
 	/**
-		save $_tags in bbdd
+	 *	save $_tags in bbdd
 	*/
 	function saveAll($_tags = null, $_id_node = 0, $_previous_tags=null) {
 		//save tags
@@ -151,7 +151,7 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 
 
 	/**
-		create rel between tag and node
+	 *	create rel between tag and node
 	*/
 	function createRel($_id_tag, $_id_node) {
 
@@ -164,7 +164,7 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 
 
 	/**
-		Remove rel between tag and node
+	 *	Remove rel between tag and node
 	*/
 	function removeRel($_id_tag, $_id_node) {
 			$sql = sprintf("DELETE FROM RelTagsNodes WHERE TagDesc='%d' AND Node='%d'",$_id_tag, $_id_node );
