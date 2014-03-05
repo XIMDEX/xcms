@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<div class="xim-tagsinput-container" id="{$id}">
+<div class="xim-tagsinput-container js-tagsinput" id="{$id}">
 	<div class="xim-tagsinput-container-list">
 		<div class="xim-tagsinput-newtag  col2-3">
 			<input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..."/>

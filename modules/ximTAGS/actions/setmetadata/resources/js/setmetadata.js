@@ -1,9 +1,8 @@
 X.actionLoaded(function(event, fn, params) {
-
 	try {
 
-		var tagslist = fn('.xim-tagsinput-container');
-		fn(tagslist).tagsinput();
+		var $tagslist = fn('.js-tagsinput');
+		$tagslist.tagsinput();
 		if (fn(".xim-tagsinput-list-related").length){
 
 
@@ -38,20 +37,20 @@ X.actionLoaded(function(event, fn, params) {
 								break;
 						}
 						if (i != "status"){
-						var typeElement = parsedData[i];
+							var typeElement = parsedData[i];
 							for (var j in typeElement){
 								var Xtags = typeElement[j];
-                                                        	for (var tag in Xtags){
-                                                                	var count = 0;
-                                                                	tags.push({isSemantic:Xtags[tag].isSemantic,text:tag,type:Xtags[tag].type,conf:Xtags[tag].confidence});
-                                                                	count++;
-                                                                	if (count >= limitResult)
-                                                                        	break;
-                                                        	}
+	                        	for (var tag in Xtags){
+	                                	var count = 0;
+	                                	tags.push({isSemantic:Xtags[tag].isSemantic,text:tag,type:Xtags[tag].type,conf:Xtags[tag].confidence});
+	                                	count++;
+	                                	if (count >= limitResult)
+	                                        	break;
+	                        	}
 							}
 						}
 					}
-					fn(tagslist).tagsinput('addTagslist', tags );
+					$tagslist.tagsinput('addTagslist', tags );
 				}
                 }
 			}
@@ -63,7 +62,7 @@ X.actionLoaded(function(event, fn, params) {
 			var element = event.target;
 			var text = $(event.target).text();
 			$(this).slideUp(1000);
-			fn(tagslist).tagsinput('createTag', {text: text, typeTag: 'generics', url: '#', description:''});
+			$tagslist.tagsinput('createTag', {text: text, typeTag: 'generics', url: '#', description:''});
 
 
 		});
