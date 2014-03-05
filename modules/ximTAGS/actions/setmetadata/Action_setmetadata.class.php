@@ -118,9 +118,8 @@ class Action_setmetadata extends ActionAbstract {
    		$tags = new RelTagsNodes();
    		$previous_tags = $tags->getTags($idNode);
 		if(array_key_exists("tags", $_POST) ) {
-			
 	  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
-	 	} else if(array_key_exists("type", $_POST)) {
+	 	} else {
 	 		$tags->saveAll(array(), $idNode, $previous_tags);
 	 	}
 	
