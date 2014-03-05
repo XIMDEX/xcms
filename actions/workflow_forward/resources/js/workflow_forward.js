@@ -61,8 +61,7 @@ X.actionLoaded(function(event, fn, params) {
 		var val = $groupList.val().split('|');
 		var groupid = val[0];
 		var stateid = val[1];
-		fn('input[name=groupid]').val(groupid);
-		fn('input[name=stateid]').val(stateid);
+		fn('input[name=groupid]').val(groupid);		
 		request({
 			cb: notificableUsers,
 			data: {method: 'notificableUsers', groupid: groupid, stateid: stateid}
@@ -120,19 +119,6 @@ X.actionLoaded(function(event, fn, params) {
 			$textarea.val($defaultMsg.val());
 		}
 	}).blur();
-	
-	$gapList.change(function() {
-	   var cal_from = 	$(params.context).data('cal_from');
-	   var cal_to =  $(params.context).data('cal_to');
-		var val = $(this).val();
-		if (Object.isEmpty(val)) return;
-		val = val.split('-');
-		var from = val[0] || null;
-		var to = val[1] || null;
-
-		cal_from.calendar('setNewDate',from);
-		cal_to.calendar('setNewDate',to);
-	});
 	
 	$notifications.change(function() {
 		if (fn(this).attr('checked')) {
