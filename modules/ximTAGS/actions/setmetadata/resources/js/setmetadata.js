@@ -94,7 +94,7 @@ X.actionLoaded(function(event, fn, params) {
 			{
 			onSelect: function(el) {
 				this.attachedElement.tagsinput("createTag",
-					{text: el.name, typeTag: "custom", url: '#', description:''}
+					{text: el.name, typeTag: "generics", url: '#', description:''}
 				);
 			},
 			offSelect: function(name) {
