@@ -231,12 +231,12 @@ class xsltnode extends FileNode {
 		$nodeTypeId = $this->parent->get("IdNodeType");
 		$projectId = $this->parent->GetProject();
 		$parentId = $this->parent->get("IdParent");
-
+		$sectionId = $this->parent->getSection();
 		$oldName=explode(".",$this->xsltOldName);
 		$newName=explode(".",$newName);
 		if ($this->xsltOldName){
 			$templateName = $this->xsltOldName;
-			$this->removeIncludeFile($templateName, $parentId, $nodeTypeId);
+			$this->removeIncludeFile($templateName, $sectionId, $nodeTypeId);
 			$this->removeIncludeFile($templateName, $projectId, $nodeTypeId);
 		}
 		//open the file and make the replacement inside
@@ -284,7 +284,7 @@ class xsltnode extends FileNode {
 
 		$parent = new Node($ximPtdId);
 		$includeId = $parent->GetChildByName('templates_include.xsl');
-
+		
 		
 		if ($includeId > 0) {
 

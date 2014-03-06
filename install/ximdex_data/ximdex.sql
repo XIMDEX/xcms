@@ -975,6 +975,7 @@ CREATE TABLE `NodeTypes` (
   `IsPlainFile` int(1) unsigned default NULL,
   `IsStructuredDocument` int(1) unsigned default NULL,
   `IsPublicable` int(1) unsigned default NULL,
+  `IsHidden` int(1) unsigned default 0,
   `CanDenyDeletion` int(1) unsigned default NULL,
   `isGenerator` TINYINT( 1 ) NULL,
   `IsEnriching` TINYINT( 1 ) NULL,
@@ -1056,7 +1057,7 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5080,'ModulesFolder','foldernode','modulesconfig.png','Container of module settings',0,0,0,0,1,0,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5081,'ModuleInfoContainer','foldernode','modulesconfig.png','Container of a module settings',0,0,0,0,1,0,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5082, 'InheritableProperties', 'foldernode', 'modulesconfig.png', 'Heritable properties', 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5083,'MetaDataSection','foldernode','folder_xml_meta.png','Metadata Section',1,1,0,0,1,0,0,0,1,NULL,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`, `IsHidden`) VALUES (5083,'MetaDataSection','foldernode','folder_xml_meta.png','Metadata Section',1,1,0,0,1,0,0,0,1,NULL,1,NULL,1);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5084,'MetaDataContainer','Xmlcontainernode','metacontainer.png','Metadata Document',1,0,0,0,1,1,0,0,0,NULL,0,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5085,'MetaDataDoc','xmldocumentnode','doc.png','Metadata Language Document',1,1,0,0,0,0,0,1,1,NULL,0,NULL);;
 
@@ -3182,6 +3183,21 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (148, 5077, 'application/xml', ';xsl;',
 INSERT INTO `RelNodeTypeMimeType` VALUES (149, 5077, 'text/html', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (151, 5078, 'text/xml', ';xml;', 'pvd');
 
+DROP TABLE IF EXISTS `RelNodeTypeMetadata`;
+CREATE TABLE `RelNodeTypeMetadata` (
+  `idRel` int(11) NOT NULL auto_increment,
+  `idNodeType` varchar(255) NOT NULL,
+  `force` tinyint(1) unsigned NOT NULL default 0,
+  PRIMARY KEY  (`idRel`),
+  UNIQUE KEY `idNodeType` (`idNodeType`)
+);
+
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5032,0);
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5039,0);
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5040,0);
+INSERT INTO `RelNodeTypeMetadata` VALUES (NULL,5041,0);
+
+
 DROP TABLE IF EXISTS `SectionTypes`;
 CREATE TABLE `SectionTypes` (
   `idSectionType` int(11) NOT NULL auto_increment,
@@ -3991,9 +4007,9 @@ VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",
 -- Table structure for table RelNodeMetadata
 DROP TABLE IF EXISTS `RelNodeMetadata`;
 CREATE TABLE RelNodeMetadata (
-        id int(12) unsigned NOT NULL auto_increment,
-        source int(12) unsigned NOT NULL default '0',
-        target int(12) unsigned NOT NULL default '0',
-        PRIMARY KEY (id),
-        UNIQUE KEY `rel` (`source`,`target`)
+        idRel int(12) unsigned NOT NULL auto_increment,
+        idNodeVersion int(12) unsigned NOT NULL default '0',
+        idMetadataVersion int(12) unsigned NOT NULL default '0',
+        PRIMARY KEY (idRel),
+        UNIQUE KEY `rel` (`idNodeVersion`,`idMetadataVersion`)
 ) ENGINE=MYISAM;

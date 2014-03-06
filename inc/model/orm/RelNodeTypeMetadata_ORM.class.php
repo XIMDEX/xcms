@@ -1,4 +1,5 @@
-{**
+<?php
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,36 +22,33 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
+ */
 
-<form method="POST" name="tags_form" class="setmetadata-tags_form" action="{$action_url}">
-	<div class="action_header">
-		<h2>{t}Tag this node{/t}</h2>
-		<fieldset class="buttons-form">
-			{button label='Guardar' class='asoc enable_checks validate btn main_action'}
-		</fieldset>
-	</div>
 
-	<div class="action_content">
-		<tagsinput initialize="true" />
-		
-	{if ($nube_tags)}
-		<div class="tagcloud">
-			<div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
-			
-			<ul class="nube_tags">
-		{section name=i loop=$nube_tags}
-			{math assign=font equation="16 + 10*(tamano/$max_value)" tamano=$nube_tags[i].Total}
-				<li class="xim-tagsinput-taglist icon custom">
-                    <span class="tag-text">{$nube_tags[i].Name}</span>
-                    <span class="amount right">{$nube_tags[i].Total}</span>
-                </li>
-		{/section}
-			</ul>
-		</div>
-	{/if}
-		<ontologyBrowser />
-	</div>
-{*</div>
-</div>*}
-</form>
+
+
+/**
+ * XIMDEX_ROOT_PATH
+ */
+if (!defined('XIMDEX_ROOT_PATH'))
+	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+
+include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+
+class RelNodeTypeMetadata_ORM extends GenericData   {
+	var $_idField = 'idRel';
+	var $_table = 'RelNodeTypeMetadata';
+	var $_metaData = array(
+				'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true','primary_key' => true),
+				'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+				'forced' => array('type' => "tinyint(1)", 'not_null' => 'true')
+				);
+	var $_uniqueConstraints = array(
+				'idNodeType' => array('idNodeType')
+				);
+	
+	var $idRel;
+	var $forced = 0;
+	var $idNodeType = 0;
+}
+?>

@@ -394,7 +394,6 @@ class DataFactory
 	*
 	*/
 	function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL) {
-
 		$nodo = new Node($this->nodeID);
     	$isPlainFile = $nodo->nodeType->get('IsPlainFile');
     	
