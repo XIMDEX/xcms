@@ -129,6 +129,7 @@ class FolderNode extends Root {
 	*/
 
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null){
+        //By default, when a schemes folder is created, we insert the default RNGs for metadata
 		if($nodeTypeID==5053){
 			$this->_createDefaultRNGs();
 		}
@@ -358,14 +359,12 @@ class FolderNode extends Root {
 	function CanDenyDeletion(){
 	}
 
-
 	private function _createDefaultRNGs(){
 		$defaultRNGs_folder="/inc/metadata/schemes/";
 		$idparent= $this->parent->GetID(); 
 
 		$this->buildDefaultRngFromPath($idparent, $defaultRNGs_folder);
 	}
-
 
 	protected function buildDefaultRngFromPath($idParent, $path){
 		if ($handle = opendir(XIMDEX_ROOT_PATH.$path)) {
@@ -374,27 +373,41 @@ class FolderNode extends Root {
 				$data=array();
 				if(!($entry=='.' || $entry=='..')) {
 					$data = array(
-                                                'NODETYPENAME' => "RNGVISUALTEMPLATE",
-                                                'NAME' => $entry,
-                                                'PARENTID' => $idParent,
-                                                'CHILDRENS' => array (
-                                                        array ('NODETYPENAME' => 'PATH', 'SRC' => '' )
+                        'NODETYPENAME' => "RNGVISUALTEMPLATE",
+                        'NAME' => $entry,
+                        'PARENTID' => $idParent,
+                        'CHILDRENS' => array (
+                            array ('NODETYPENAME' => 'PATH', 'SRC' => '' )
                                                 )   
-                                        );    
-                                        $baseIO = new baseIO();
-                                        $rngId = $baseIO->build($data);
+                    );    
+                    $baseIO = new baseIO();
+                    $rngId = $baseIO->build($data);
+
 					if(!$rngId>0){
 						error_log("Fail! Default metadata RNG ".$entry." was not created!");
 					}
 					else{
 						$newRngNode = new Node($rngId);
-                                             	$rngContent = file_get_contents(XIMDEX_ROOT_PATH.$path.$entry,FILE_USE_INCLUDE_PATH);
-                                        	$newRngNode->SetContent($rngContent);
+                       	$rngContent = file_get_contents(XIMDEX_ROOT_PATH.$path.$entry,FILE_USE_INCLUDE_PATH);
+                       	$newRngNode->SetContent($rngContent);
+
+                        //setting the type of schema
+                        $sql="INSERT INTO NodeProperties VALUES (NULL,$rngId,'SchemaType','metadata_schema')";
+                        $dbObj = new DB();
+                        if(!$dbObj->Execute($sql)){
+                            error_log("Fail! Default metadata RNG ".$entry." couldn't be modified!");
+                        }
+                        //forbidding rng deletion
+                        $sql="INSERT INTO NoActionsInNode VALUES ($rngId,7318)";
+                        $dbObj = new DB();
+                        if(!$dbObj->Execute($sql)){
+                            error_log("Fail! Default metadata RNG ".$entry." could be deleted!");
+                        }
 					}
 				}
-				$entry = readdir($handle);
-    			}
-    			closedir($handle);
+			    $entry = readdir($handle);
+    		}
+    		closedir($handle);
 		}
 	}
 }
