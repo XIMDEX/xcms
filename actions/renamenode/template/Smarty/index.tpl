@@ -36,9 +36,14 @@
 	</div>
 	<div class="action_content">
 			
+                    {if $schema_type == 'metadata_schema'}
+                        <h3>{t}Schema Name:{/t} {$name}</h3> 
+						<input type="hidden" name="name" id="name" value="{$name}" />
+                    {else}
 					<div class="input icon icon-positioned project">
-						<input type="text" name="name" id="name" value="{$name}" class="cajaxg validable not_empty full-size">
+						<input type="text" name="name" id="name" value="{$name}" class="cajaxg validable not_empty full-size" />
 					</div>
+                    {/if}
 			
 			{if $id_nodetype==5078}
 				<li><input type="radio" name="schema_type" value="generic_schema"{if $schema_type == 'generic_schema' || $schema_type == ''} checked="checked"{/if}>{t}Generic schema{/t}</li>
