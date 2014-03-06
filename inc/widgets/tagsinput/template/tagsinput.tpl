@@ -46,8 +46,6 @@
 				<span class="xim-tagsinput-text" data-tooltip="{$tag.name|utf8_decode}">
 				{$tag.name|utf8_decode}
 				</span>
-				<span class="amount">1</span>
-				{* <a class="xim-tagsinput-tag-properties" href="#"> &infin; </a> *}
 				<a class="xim-tagsinput-tag-remove icon" href="#"> &times; </a>
 			</li>
 	 		{/foreach}

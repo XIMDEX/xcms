@@ -121,7 +121,7 @@ class Action_setmetadata extends ActionAbstract {
 	  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
 	 	}
 	
-		$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
+		$this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
 		$values = array(
 			'messages' => $this->messages->messages,
 		);
