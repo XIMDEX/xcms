@@ -322,4 +322,5 @@ DELETE FROM `RelRolesActions` WHERE `IdAction` = "5320";
 DELETE FROM `Actions` WHERE `IdAction` = "6981";
 DELETE FROM `Nodes` WHERE `IdNode` = "6981";
 
+DELETE FROM `Namespaces` WHERE service='Ximdex' AND type='OntologyBrowser';
 

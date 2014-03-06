@@ -115,13 +115,15 @@ class Action_setmetadata extends ActionAbstract {
   	function save_metadata() {
    		$idNode	= (int) $this->request->getParam("nodeid");
 
+   		$tags = new RelTagsNodes();
+   		$previous_tags = $tags->getTags($idNode);
 		if(array_key_exists("tags", $_POST) ) {
-			$tags = new RelTagsNodes();
-   			$previous_tags = $tags->getTags($idNode);
 	  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
+	 	} else {
+	 		$tags->saveAll(array(), $idNode, $previous_tags);
 	 	}
 	
-		$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
+		$this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
 		$values = array(
 			'messages' => $this->messages->messages,
 		);
@@ -130,22 +132,20 @@ class Action_setmetadata extends ActionAbstract {
  	}
 
 	public function getLocalOntology(){
-	
-		$ontologyName = $this->request->getParam("ontologyName");
-		$format = $this->request->getParam("format");
-		if (!$format)
-			$format = "json";
+	   $ontologyName = $this->request->getParam("ontologyName");
+	   $format = $this->request->getParam("inputFormat");
+	   if (!$format)
+	       $format = "json";
 		
-		$ontologyPath = Config::GetValue("AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
-		$content = "";
-		if (file_exists($ontologyPath)){
-			
+       $ontologyPath = Config::GetValue("AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
+	   $content = "";
+	   if (file_exists($ontologyPath)){
 			$content = FsUtils::file_get_contents($ontologyPath);
-		}
+	   }
 	
-		header('Content-type: application/json');
-		print ($content);
-		exit();
+	   header('Content-type: application/json');
+	   print ($content);
+	   exit();
 	}
 }
 

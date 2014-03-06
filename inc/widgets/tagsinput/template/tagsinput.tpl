@@ -1,4 +1,4 @@
-{**
+	{**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<div class="xim-tagsinput-container" id="{$id}">
+<div class="xim-tagsinput-container js-tagsinput" id="{$id}">
 	<div class="xim-tagsinput-container-list">
 		<div class="xim-tagsinput-newtag  col2-3">
 			<input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..."/>
@@ -39,20 +39,18 @@
        			{foreach name=list item=tag key=i from=$tags}
    			<li class="xim-tagsinput-tag">
    				<select class="hidden vertical collapsable ximdexInput icon button type-selector" name="type"></select>
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][text]" value="{$tag.name|utf8_decode}" />
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][type]" value="{$tag.type|default:'generic'}" />
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][url]"  value="{$tag.link|default:'#'}" />
-				<input type="hidden" name="tags[{$smarty.foreach.list.index}][description]" value="{$tag.description}" />
+				<input type="hidden" id="text" name="tags[{$smarty.foreach.list.index}][text]" value="{$tag.name|utf8_decode}" />
+				<input type="hidden" id="type" name="tags[{$smarty.foreach.list.index}][type]" value="{$tag.type|default:'generic'}" />
+				<input type="hidden" id="url" name="tags[{$smarty.foreach.list.index}][url]" value="{$tag.link|default:'#'}" />
+				<input type="hidden" id="description" name="tags[{$smarty.foreach.list.index}][description]" value="{$tag.description}" />
 				<span class="xim-tagsinput-text" data-tooltip="{$tag.name|utf8_decode}">
 				{$tag.name|utf8_decode}
 				</span>
-				<span class="amount">1</span>
-				{* <a class="xim-tagsinput-tag-properties" href="#"> &infin; </a> *}
 				<a class="xim-tagsinput-tag-remove icon" href="#"> &times; </a>
 			</li>
 	 		{/foreach}
 		{else}
-			<p>There aren't any tags defined yet.</p>
+			<p>{t}There aren't any tags defined yet{/t}.</p>
 		{/if}
     		</ul>
     	</div>

@@ -55,22 +55,21 @@
  		
  		_html: function() {
 			return '<li class="xim-tagsinput-taglist icon xim-tagsinput-type-'+this.typeTag+'">'+
-                                '<span>'+this.text+'</span>&nbsp;'+
+                                '<span class="tag-text">'+this.text+'</span>&nbsp;'+
                                 '<span class="amount right">'+this.conf+'%</span>'+
                                 '</li>';
 		},
  		
  		
  		createTag: function() {			
- 			 this.list.append(this._html());
- 			 this.element = this.container.tagsinput('getLastTagList');
- 			 this.element.one('click', function() {
- 			 	this.container.tagsinput('createTag',{text: this.text, typeTag: this.typeTag, url: this.url, description:this.description, typeFixed:true});
-				var that = this;
-                                this.element.slideUp(300,function(){
-                                        $(that).remove();
-                                })
- 			 }.bind(this) );
+ 			this.list.append(this._html());
+ 			this.element = this.container.tagsinput('getLastTagList');
+ 			this.element.one('click', function() {
+ 			this.container.tagsinput('createTag', {text: this.text, typeTag: this.typeTag, url: this.url, description:this.description, typeFixed:true});
+			var that = this;
+            this.element.slideUp(300,function(){
+                //$(that).remove();
+            })}.bind(this));
  		},
  		
  		remove: function() {

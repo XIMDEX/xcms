@@ -52,6 +52,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 	const MACRO_PROJECTNAME = "/@@@RMximdex\.projectname\(\)@@@/";
 	const MACRO_NODENAME = "/@@@RMximdex\.nodename\(\)@@@/";
 	const MACRO_SECTIONPATH = "/@@@RMximdex\.sectionpath\(([0-9]+)\)@@@/";
+	const MACRO_SECTIONPATHABS = "/@@@RMximdex\.sectionpathabs\(([0-9]+)\)@@@/";
 	const MACRO_DOTDOT = "/@@@RMximdex\.dotdot\(([^\)]*)\)@@@/";
 	const MACRO_PATHTO = "/@@@RMximdex\.pathto\(([,-_#%=\.\w\s]+)\)@@@/";
 	const MACRO_PATHTOABS = "/@@@RMximdex\.pathtoabs\(([,-_#%=\.\w\s]+)\)@@@/";
@@ -305,6 +306,10 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		$content = preg_replace_callback(self::MACRO_SECTIONPATH, 
 											array($this, 'getSectionPath'), 
 											$content);
+
+		$content = preg_replace_callback(self::MACRO_SECTIONPATHABS, 
+											array($this, 'getSectionPathAbs'), 
+											$content);
 		
 		$content = preg_replace_callback(self::MACRO_DOTDOT, 
 				array($this, 'getdotdotpath'), $content);
@@ -359,12 +364,16 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		return $section;
 	}
 
+	private function getSectionPathAbs($matches) {
+		return $this->getSectionPath($matches,true);
+	}
+
 	/**
 	 * Get section path for a selected idnode and channel in matches.
 	 * @param  array $matches An idnode and an optional idchannel
 	 * @return string Link url.
 	 */
-	private function getSectionPath($matches) {
+	private function getSectionPath($matches, $abs=false) {
 		$target = $matches[1];
         $node = new Node($target);
 		$section = $this->getSectionNode($target);
@@ -376,14 +385,16 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 					NULL, true);
 		}
 		
-		$idTargetServer = $node->getServer();
-		
-		if (!$this->_server->get('OverrideLocalPaths') && ($idTargetServer == $this->_serverNode->get(
+		$sync = new SynchroFacade();
+		$idTargetChannel = null;
+		$idTargetServer = $sync->getServer($target, $idTargetChannel,
+				$this->_server->get('IdServer'));
+		$targetServer = new Server($idTargetServer);
+		if (!$abs && !$this->_server->get('OverrideLocalPaths') && ($idTargetServer == $this->_serverNode->get(
 				'IdNode'))) {
 			$dotdot = str_repeat('../', $this->_depth - 2);
 			return $dotdot . $section->GetPublishedPath($idTargetChannel, true);
 		}
-		
 		return $targetServer->get('Url') . $section->GetPublishedPath($idTargetChannel, true);
 	
 	}
@@ -479,7 +490,6 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		$sync = new SynchroFacade();
 		$idTargetServer = $sync->getServer($targetNode->get('IdNode'), $idTargetChannel, 
 				$this->_server->get('IdServer'));
-		
 		$targetServer = new server($idTargetServer);
 		$idTargetServer = $targetServer->get('IdServer');
 		if (!($idTargetServer > 0)) {

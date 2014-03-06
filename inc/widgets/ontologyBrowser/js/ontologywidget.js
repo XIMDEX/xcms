@@ -26,6 +26,7 @@
 
 (function($) {
 
+    var defaultValue = "CreativeWork";
 
 	$.widget('ui.ontologywidget', {
 	
@@ -33,9 +34,9 @@
 			messageAdd: "Add?",
 			messageDelete: "Delete?",
 			jsonURL: X.restUrl+"?mod=ximTAGS&action=setmetadata&method=getLocalOntology",
-			rootElement: "CreativeWork",
+			rootElement: defaultValue,
 			inputFormat: "json",
-			inputJson: "CreativeWork.json",
+			inputJson: "SchemaOrg.json",
             onSelect: function(){ },
             offSelect: function(){ },
             element: null
@@ -49,12 +50,11 @@
 			this.$footer = $(".infobox", this.element);
 			this._on($(".tree", this.element),{click:"_selectTree"});			
 			this._on($(".text", this.element),{click:"_selectText"});
-			this._on($("button", this.$footer),{click:"_selectFooter"});
+			this._on($(".main_action", this.$footer),{click:"_selectFooter"});
 			this._on($("a.close", this.$footer), {click: "_hideFooter"});
 			this._on($("a.ontology-close", this.element), {click: function(){
 				$("a.ontology-close", this.element).parent().addClass('hidden');
 			}});
-			
 		},
 		_selectTree: function(){
 			
@@ -89,13 +89,13 @@
 				    rectNode.attr("class", "added");
 				    this.selected.push($('h1', that.$footer).text());
                     this.options.onSelect({'name': $('h1', that.$footer).text()});
-				    $('button', that.$footer).text(this.options.messageDelete);
+				    $('.main_action', that.$footer).text(this.options.messageDelete);
 			  }else {
 				textNode.attr("class", "nodetext");
 				rectNode.attr("class", that._isChild);
 				this.selected.splice(this.selected.indexOf($('h1', that.$footer).text()), 1);
                 this.options.offSelect($('h1', that.$footer).text());
-				$('button', that.$footer).text(this.options.messageAdd);
+				$('.main_action', that.$footer).text(this.options.messageAdd);
 			}
 
 		},
@@ -105,30 +105,29 @@
 		},
 
 		_getElementByParent: function(data, base){
-
   			if (!_.isUndefined(base)) {
   			var that = this;
 			var el = new Object();
 		      el.name = base;
 		      if (!_.isUndefined(data.types[base])) {
-			  el.specific_properties = data.types[base].specific_properties;
-			  childrens = data.types[base].subtypes;
-			  if (childrens.length > 0) {
-			      var children_array = [];
-			      _.each(childrens, function(key, val) {
-				  children_array.push(that._getElementByParent(data, key));
-			      });
-			      el.children = children_array;
-			      return el;
-			  }
-			  else {
-			      el.size = Math.floor((Math.random()*1000)+1);
-			      return el;
-			  }
+			     el.specific_properties = data.types[base].specific_properties;
+			     childrens = data.types[base].subtypes;
+			     if (childrens.length > 0) {
+			         var children_array = [];
+			         _.each(childrens, function(key, val) {
+				        children_array.push(that._getElementByParent(data, key));
+			         });
+			         el.children = children_array;
+			         return el;
+			     }
+			     else {
+			         el.size = Math.floor((Math.random()*1000)+1);
+			         return el;
+			     }
 		      }
 		      else {
-			  console.log("Error accessing to property " + base)
-			  return null;
+			     console.log("Error accessing to property " + base)
+			     return null;
 		      }
 		  }
 		  else {
@@ -166,15 +165,31 @@
 			 _.each(e.specific_properties, function(val) { return sp += '<li>' + val + '</li>' });
 			$('p', this.$footer).html('<ul>' + sp + '</ul>');
 			if (this.selected.indexOf(e.name) != -1) {
-				$('button', this.$footer).text(this.options.messageDelete);
+				$('.main_action', this.$footer).text(this.options.messageDelete);
 			}
 			else {
-				$('button', this.$footer).text(this.options.messageAdd);
+				$('.main_action', this.$footer).text(this.options.messageAdd);
 			}
 		},
 		
 		loadValues: function() {
-			  return [];
+            var that = this;
+            d3.json(this.options.jsonURL+"&ontologyName="+this.options.inputJson, function(json) {
+                childrens = json.types["Thing"].subtypes;
+                _.each(childrens, function(key) {
+                    if (key == defaultValue) {
+                        $('.selectbox-tree select', that.element).append("<option selected>" + key + "</option>");
+                        $('.selectbox-text select', that.element).append("<option selected>" + key + "</option>");
+                    }
+                    else {
+                        $('.selectbox-tree select', that.element).append("<option>" + key + "</option>");
+                        $('.selectbox-text select', that.element).append("<option>" + key + "</option>");
+                    }
+                });
+            });
+            // Returns empty array (no selected tags at the beggining of the action)
+            // TODO: It needs to be changed for updating selected tags previously
+            return [];
 		},
 		showTree: function(){
 			var that = this;
@@ -204,6 +219,17 @@
 		      root.x0 = h / 2;
 		      root.y0 = 0;
 
+              $(".selectbox-tree select", that.element).change(function() {
+                console.log("Se activa el cambio en el selectbox-tree");
+                console.log(this.element);
+                console.log(that.element);
+                root = that._getElementByParent(json, $(".selectbox-tree select", that.element).find(":selected").text());
+                if (!_.isUndefined(root.children)) {
+                    root.children.forEach(toggleAll);
+                }
+                update(root, that);
+              });
+
 		      function toggleAll(d) {
 			if (d.children) {
 			  d.children.forEach(toggleAll);
@@ -211,7 +237,9 @@
 			}
 		      }
 
-		      root.children.forEach(toggleAll);
+              if (!_.isUndefined(root.children)) {
+                root.children.forEach(toggleAll);
+              }
 		      update(root, that);
 		    });
 
@@ -382,6 +410,14 @@ if ($(".textViewer g", this.element).length == 0) {
     root.x0 = 0;
     root.y0 = 0;
 
+    $(".selectbox-text select", this.element).change(function() {
+        root = that._getElementByParent(json, $(".selectbox-text select", this.element).find(":selected").text());
+        if (!_.isUndefined(root.children)) {
+            root.children.forEach(toggleAll);
+        }
+        update(root, that);
+    });
+
     function toggleAll(d) {
       if (d.children) {
         d.children.forEach(toggleAll);
@@ -389,8 +425,9 @@ if ($(".textViewer g", this.element).length == 0) {
       }
     }
 
-    root.children.forEach(toggleAll);
-
+    if (!_.isUndefined(root.children)) {
+        root.children.forEach(toggleAll);
+    }
     update(root, that);
   });
 

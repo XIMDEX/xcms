@@ -393,7 +393,7 @@ class	Node extends Nodes_ORM{
 		if($this->get('IdNode') > 0) {
 			$childrenList = array();
 		    $sql = "select N.IdNode, N.Name as name,NT.System FROM Nodes as N inner join NodeTypes as NT on N.IdNodeType = NT.IdNodeType";
-		    $sql .= " WHERE IdParent =". $this->get('IdNode');
+		    $sql .= " WHERE NOT(NT.IsHidden) AND IdParent =". $this->get('IdNode');
 
 		    if ($idtype) {
       			$sql .= " AND IdNodeType = $idtype";
@@ -1076,40 +1076,7 @@ class	Node extends Nodes_ORM{
 			$this->messages->add(_('Node deletion was denied'), MSG_TYPE_WARNING);
 			return false;
 		}
-/*
-		if (ModulesManager::isEnabled('ximTRASH')) {
-			$this->messages->add(_('Moving file to trash'), MSG_TYPE_NOTICE);
-			$trash = new Trash();
-			// TODO Obtain the trash where sending it
-			$idProject = $this->GetProject();
-			if ($idProject > 0) {
-				$node = new Node($idProject);
-				$idTrash = $node->GetChildByName('Papelera');
-			}
 
-			$trash->set('id_trash', $idTrash);
-
-			$trash->set('id_node', $this->get('IdNode'));
-			$trash->set('id_old_parent', $this->get('IdParent'));
-			$trash->set('id_node', $this->get('IdNode'));
-			$trash->set('id_node_type', $this->get('IdNodeType'));
-			$trash->set('name', $this->get('Name'));
-
-			if (!$trash->add()) {
-				$this->messages->add(sprintf(_('The node %s could not be moved to trash'), $this->get('IdNode')), MSG_TYPE_ERROR);
-				reset($trash->messages->messages);
-				while (list(, $message) = each($trash->messages->messages)) {
-					$this->messages->add($message['message'], $message['type']);
-				}
-			}
-			reset($this->messages->messages);
-			while(list(, $message) = each($this->messages->messages)) {
-				XMD_Log::warning($message['message']);
-			}
-		} else {
-			XMD_Log::warning(_('Trash is deactivated'));
-		}
-*/
 		$this->ClearError();
 		if(!($this->get('IdNode') > 0)) {
 			$this->SetError(1);
@@ -1119,7 +1086,6 @@ class	Node extends Nodes_ORM{
 		$IdChildrens = $this->GetChildren();
 
 		if (!is_null($IdChildrens)) {
-
 			reset($IdChildrens);
 			while (list(, $IdChildren) = each($IdChildrens)) {
 				$childrenNode = new Node($IdChildren);
@@ -1160,6 +1126,8 @@ class	Node extends Nodes_ORM{
 		$dbObj = new DB();
 		$dbObj->Execute(sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %d", $this->get('IdNode')));
 		$dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
+        //deleting potential entries on table NoActionsInNode
+		$dbObj->Execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
 
 		$nodeDependencies = new NodeDependencies();
 		$nodeDependencies->deleteBySource($this->get('IdNode'));

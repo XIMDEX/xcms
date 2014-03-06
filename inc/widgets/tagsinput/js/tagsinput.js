@@ -97,9 +97,9 @@
 				var result = false;
 				$that = $(this);
 				$spanResults = $that.next("span.results");
-				if ($divResults.length === 0){
-					$divResults = $("<span/>").addClass("results");
-					$that.after($divResults);
+				if ($spanResults.length === 0){
+					$spanResults = $("<span/>").addClass("results");
+					$that.after($spanResults);
 				}
 				var $thatTagSelect = $newTagSelect;
 				if (text.length>2){
