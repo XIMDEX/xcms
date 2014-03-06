@@ -50,7 +50,7 @@
 			this.$footer = $(".infobox", this.element);
 			this._on($(".tree", this.element),{click:"_selectTree"});			
 			this._on($(".text", this.element),{click:"_selectText"});
-			this._on($("button", this.$footer),{click:"_selectFooter"});
+			this._on($(".main_action", this.$footer),{click:"_selectFooter"});
 			this._on($("a.close", this.$footer), {click: "_hideFooter"});
 			this._on($("a.ontology-close", this.element), {click: function(){
 				$("a.ontology-close", this.element).parent().addClass('hidden');
@@ -89,13 +89,13 @@
 				    rectNode.attr("class", "added");
 				    this.selected.push($('h1', that.$footer).text());
                     this.options.onSelect({'name': $('h1', that.$footer).text()});
-				    $('button', that.$footer).text(this.options.messageDelete);
+				    $('.main_action', that.$footer).text(this.options.messageDelete);
 			  }else {
 				textNode.attr("class", "nodetext");
 				rectNode.attr("class", that._isChild);
 				this.selected.splice(this.selected.indexOf($('h1', that.$footer).text()), 1);
                 this.options.offSelect($('h1', that.$footer).text());
-				$('button', that.$footer).text(this.options.messageAdd);
+				$('.main_action', that.$footer).text(this.options.messageAdd);
 			}
 
 		},
@@ -165,10 +165,10 @@
 			 _.each(e.specific_properties, function(val) { return sp += '<li>' + val + '</li>' });
 			$('p', this.$footer).html('<ul>' + sp + '</ul>');
 			if (this.selected.indexOf(e.name) != -1) {
-				$('button', this.$footer).text(this.options.messageDelete);
+				$('.main_action', this.$footer).text(this.options.messageDelete);
 			}
 			else {
-				$('button', this.$footer).text(this.options.messageAdd);
+				$('.main_action', this.$footer).text(this.options.messageAdd);
 			}
 		},
 		

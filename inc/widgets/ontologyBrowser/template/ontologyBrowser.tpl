@@ -44,7 +44,7 @@
     <div class="infobox">
       <h1></h1>
       <p></p>
-      <button class="btn main_action"></button>
+      <a class="btn main_action"></a>
       <a class="close  btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
     </div>
      <a class="ontology-close btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
