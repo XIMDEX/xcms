@@ -30,7 +30,7 @@
 			<select class="hidden vertical collapsable ximdexInput icon button type-selector tag-type btn-rounded icon" name="type"></select>
 			<button class="btn-unlabel-rounded icon add-btn">{t}Add{/t}</button>
 		</div>
-    	</div>
+    </div>
 
 	<div class="xim-tagsinput-container col2-3">
 		<div class="title-box">{t}Document tags{/t}</div>
@@ -55,7 +55,7 @@
 			<p>{t}There aren't any tags defined yet{/t}.</p>
 		{/if}
     		</ul>
-    	</div>
+    </div>
 
 	<div class="suggested col1-3">
 		{if $isStructuredDocument}

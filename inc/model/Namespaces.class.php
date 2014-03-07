@@ -46,6 +46,7 @@ class Namespaces extends Namespaces_ORM {
 				$result[] = new Namespaces($nspace["idNamespace"]);
 			}
 		}
+		error_log(print_r($result, true));
 		return $result;
 	}
 

@@ -42,13 +42,23 @@ class Action_setmetadata extends ActionAbstract {
 		$params = $this->request->getParam("params");
 		$tags = new Tag();
 		$max=$tags->getMaxValue();		
+
 	 	$values = array(
 	 		'nube_tags' => $tags->getTags(),
+	 		'cloud_tags' => json_encode($tags->getTags()),
 			'max_value' => $max[0][0],
 			'id_node' => $idNode,
 			'go_method' => 'save_metadata',
-			'nodeUrl' => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+			'nodeUrl' => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
+			'namespaces' => json_encode($this->getAllNamespaces())
 		);
+
+	 	//Get the actual tags of the document
+	 	$relTags = new RelTagsNodes();
+	 	$values["tags"] = json_encode($relTags->getTags($idNode));
+
+	 	$node = new Node($idNode);
+	 	$values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
 
 		$this->render($values, 'index', 'default-3.0.tpl');
   	}
@@ -80,6 +90,23 @@ class Action_setmetadata extends ActionAbstract {
 		return $ontologyService->suggest($content);
 	}
 
+	private function getAllNamespaces(){
+  		$result = array();
+  		//Load from Xowl Service
+  		$namespacesArray = OntologyService::getAllNamespaces();
+  		//For every namespace build an array. This will be a json object
+  		foreach ($namespacesArray as $namespace) {
+  			$array = array(
+  					"id"=>$namespace->get("idNamespace"),
+  					"type"=>$namespace->get("type"),
+  					"isSemantic"=>$namespace->get("isSemantic"),
+  					"nemo"=>$namespace->get("nemo")
+				);
+
+  			$result[] = $array;
+  		}
+  		return $result;		
+	}
   	
 	/**
 	*<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
@@ -93,23 +120,8 @@ class Action_setmetadata extends ActionAbstract {
 	*</code>
   	*/
   	function loadAllNamespaces(){
-
-  		$result = array();
-  		//Load from Xowl Service
-  		$namespacesArray = OntologyService::getAllNamespaces();
-  		//For every namespace build an array. This will be a json object
-  		foreach ($namespacesArray as $namespace) {
-  			$nemo = $namespace->get("nemo");
-  			$array = array(
-  					"type"=>$namespace->get("type"),
-  					"isSemantic"=>$namespace->get("isSemantic")
-				);
-
-  			$result[$nemo] = $array;
-  		}
-
   		//Sending json from result array
-		$this->sendJSON($result);
+		$this->sendJSON($this->getAllNamespaces());
   	}
 
   	function save_metadata() {
