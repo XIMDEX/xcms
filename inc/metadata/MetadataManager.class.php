@@ -28,7 +28,11 @@
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
  }
 
-//ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
+ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
+ModulesManager::file('/inc/io/BaseIOInferer.class.php');
+ModulesManager::file('/inc/model/language.inc');
+ModulesManager::file('/inc/model/channel.inc');
+ModulesManager::file('/inc/model/node.inc');
 
 /***
     Class for Metadata Manegement
@@ -39,14 +43,48 @@ class MetadataManager{
     const COMMON_METADATA_SCHEMA = "common-metadata.xml";
     const DOCUMENT_METADATA_SCHEMA = "document-metadata.xml";
 
+    private $node;
+    private $array_metadata;
+
+
+        // constructor method //
+
+    public function __construct($source_idnode){
+            $this->node= new Node($source_idnode);
+            $this->array_metadata=array();
+    }
+
+        // getters & setters methods //
+
+/** 
+ * Returns the source node id.
+ * @param null
+ * @return int
+*/
+    public function getSourceNode(){
+        return $this->node;    
+    }
+
 /** 
  * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
  * @param int $source_idnode
  * @return ...
 */
-    public function getLastMetadataVersion($source_idnode){
+    public function getMetadataNodes(){
+        return $this->array_metadata;    
+    }
+
+/** 
+ * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
+ * @param int $source_idnode
+ * @return ...
+*/
+    public function getLastMetadataVersion(){
         //TODO
     }
+
+
+        // generator methods //
 
 /** 
  * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
@@ -55,7 +93,7 @@ class MetadataManager{
  * @param string $value
  * @return ...
 */
-    public function updateMetadata($source_idnode,$field,$value){
+    public function updateMetadata($field,$value){
         //TODO    
     }
     
@@ -64,10 +102,9 @@ class MetadataManager{
  * @param int $source_idnode
  * @return null
 */
-    public function generateMetadata($source_idnode){
+    public function generateMetadata(){
         //create the specific name with the format: NODEID-metadata
-        $name = $this->metadataFileName($source_idnode);
-
+        $name = $this->metadataFileName();
         //check if the metadata node already exists in metadata hidden folder
         $idContent = $this->getMetadataDocument($name);
 
@@ -76,8 +113,9 @@ class MetadataManager{
             $idm = $this->getMetadataSectionId();
             $aliases = array();
             $schema=new Node();
+            //TODO: select the appropiate RNG.
             $idSchema =  $schema->find("Idnode","Name=%s",array(self::IMAGE_METADATA_SCHEMA),MONO);
-            $languages = $this->getMetadataLanguages($source_idnode);
+            $languages = $this->getMetadataLanguages();
             $channels = $this->getMetadataChannels();
             //We use the action like a service layer
             $this->createXmlContainer($idm,$name,$idSchema[0],$aliases,$languages,$channels);
@@ -94,7 +132,8 @@ class MetadataManager{
  * @param int $source_idnode
  * @return string
 */
-    private function metadataFileName($idnode){
+    private function metadataFileName(){
+        $idnode = $this->node->GetID();
         return $idnode."-metadata";
     }
 
@@ -118,9 +157,8 @@ class MetadataManager{
  * @param int $source_idnode
  * @return int 
 */
-    private function getMetadataSectionId($source_idnode){
-        $node = new Node($source_idnode);
-        $idServer = $node->parent->getServer();
+    private function getMetadataSectionId(){
+        $idServer = $this->node->getServer();
         $nodeServer = new Node($idServer);
         $idSection = $nodeServer->GetChildByName("metadata");
         return $idSection;
@@ -131,11 +169,10 @@ class MetadataManager{
  * @param int $source_idnode
  * @return array
 */
-    public function getMetadataLanguages($source_idnode){
+    public function getMetadataLanguages(){
         $result = array();
-        $node = new Node($source_idnode);
         $l = new Language();
-        $arrayLanguagesObject = $l->getLanguagesForNode($node->parent->getServer());
+        $arrayLanguagesObject = $l->getLanguagesForNode($this->node->getServer());
         foreach($arrayLanguagesObject as $languageObject){
             $result[] = $languageObject["IdLanguage"];
         }
@@ -165,9 +202,14 @@ class MetadataManager{
     }
 
 /** 
- * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $source_idnode
- * @return ...
+ * Most important method. Creates the structured documents.
+ * @param int $idNode
+ * @param string $name
+ * @param int $idSchema
+ * @param array $aliases
+ * @param array $languages
+ * @param array $channels
+ * @return int
 */
     private function createXmlContainer($idNode,$name,$idschema,&$aliases,&$languages,&$channels, $master=null){
 
@@ -175,10 +217,8 @@ class MetadataManager{
         $node = new Node($idNode);
         $idNode = $node->get('IdNode');
         if (!($idNode > 0)) {
-            $this->messages->add(_('An error ocurred estimating parent node,')
-            ._(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
-            $values = array('name' => 'Desconocido',
-            'messages' => $this->messages->messages);
+            error_log("An error ocurred estimating parent node, operation will be aborted, contact with your administrator");
+            $values = array('name' => 'Unknown');
             $result["error"] = $values;
             return $result;
         }
@@ -189,8 +229,7 @@ class MetadataManager{
         $nodeType = new NodeType();
         $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
         if (!($nodeType->get('IdNodeType') > 0)) {
-            $this->messages->add(_('A nodetype could not be estimated to create the container folder,')
-            . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
+            error_log("A nodetype could not be estimated to create the container folder, operation will be aborted, contact with your administrator");
         }
         $data = array(
             'NODETYPENAME' => $nodeType->get('Name'),
@@ -205,28 +244,24 @@ class MetadataManager{
         $idContainer = $result = $baseIO->build($data);
 
         if (!($result > 0)) {
-            $this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
-            foreach ($baseIO->messages->messages as $message) {
-                $this->messages->messages[] = $message;
-            }
+            error_log("An error ocurred creating the container node");
             $values = array(
             'idNode' => $idNode,
-            'nodeName' => $name,
-            'messages' => $this->messages->messages
+            'nodeName' => $name
             );
             $result["error"] = $values;
             return $result;
         } else {
-            $this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
+            error_log("Container $name has been successfully created");
         }
+
         if ($result && is_array($languages)) {
             $baseIoInferer = new BaseIOInferer();
             $inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
             $nodeType = new NodeType();
             $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
             if (!($nodeType->get('IdNodeType') > 0)) {
-                $this->messages->add(_('A nodetype could not be estimated to create the document,')
-                . _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
+                error_log("A nodetype could not be estimated to create the document, operation will be aborted, contact with your administrator");
                 // aborts language insertation 
                 $languages = array();
             }
@@ -273,7 +308,7 @@ class MetadataManager{
     function _insertLanguage($idLanguage, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels, $aliases) {
         $language = new Language($idLanguage);
         if (!($language->get('IdLanguage') >  0)) {
-            $this->messages->add(sprintf(_("Language %s insertion has been aborted because it was not found"),  $idLanguage), MSG_TYPE_WARNING);
+            error_log("Language $idLanguage insertion has been aborted because it was not found");
             return NULL;
         }
         $data = array(
@@ -302,20 +337,40 @@ class MetadataManager{
         $result = $baseIO->build($data);
         if ($result > 0) {
             $insertedNode = new Node($result);
-            $this->messages->add(sprintf(_('Document %s has been successfully inserted'), $insertedNode->get('Name')), MSG_TYPE_NOTICE);
+            error_log("Document ".$insertedNode->get('Name')." has been successfully inserted");
         } else {
-            $this->messages->add(sprintf(_('Insertion of document %s with language %s has failed'),
-            $name, $language->get('Name')), MSG_TYPE_ERROR);
-            foreach ($baseIO->messages->messages as $message) {
-                $this->messages->messages[] = $message;
-            }
+            error_log("Insertion of document $name with language ".$language->get('Name')." has failed");
         }
         return $result;
 
     }
 
+    private function addRelation($name){
+        $rnm = new RelNodeMetadata();
+        $idm = $this->getMetadataDocument($name);
+        $rnm->set('source', $this->node->GetID());
+        $rnm->set('target', $idm);
+        $res = $rnm->add();
+        if($res<0){
+            error_log("Relation not added.");
+        }
+    }
 
-
+    public function deleteMetadata(){
+        $name = $this->metadataFileName();
+        $idContent = $this->getMetadataDocument($name);
+        if ($idContent){
+            $nodeContainer = new Node($idContent);
+            $nodeContainer->DeleteNode();
+       }
+       $rnm = new RelNodeMetadata();
+       $id=$rnm->find("id","target=%s",array($idContent),MONO);
+       $rnm->set('id', $id[0]);
+       $res = $rnm->delete();
+       if($res<0){
+            error_log("Relation not deleted.");
+       } 
+    }
 
 }
 ?>
