@@ -425,5 +425,45 @@ class Group extends Groups_ORM
 
 		return $result;
 	}
+
+	public static function getSelectableGroupsInfo($idNode){
+
+		$groupStateInfo = array();
+		$group = new Group();
+		$groupList=$group->find('IdGroup', NULL, NULL, MONO);
+		
+		$node = new Node($idNode);
+		$groupState = array();
+		if (is_array($groupList) && !empty($groupList)) {
+			foreach ($groupList as $idGroup) {
+				$group = new Group($idGroup);
+				$users = $group->GetUserList();
+				if (is_array($users) && !empty($users)) {
+					foreach ($users as $idUser) {
+						$nextState = $node->GetNextAllowedState($idUser, $idGroup);
+						if ($nextState > 0) {
+							$groupState[$idGroup] = $nextState;
+						}
+					}
+				}
+			}
+		}
+		
+		foreach ($groupState as $idGroup => $idState) {
+			$group = new Node($idGroup);
+			$workflow = new WorkFlow($idNode, $idState);
+			$idS = $workflow->pipeStatus->get('id');
+			$idG = $group->get('Name');
+			$sN = $workflow->pipeStatus->get('Name');
+
+			$groupStateInfo[] = array(
+				'IdGroup' => $group->get('IdNode'),
+				'groupName' => $idG,
+				'IdState' => $idS,
+				'stateName' => $sN
+			);
+		}
+		return $groupStateInfo;
+	}
 }
 ?>

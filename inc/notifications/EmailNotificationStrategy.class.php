@@ -1,4 +1,5 @@
-{**
+<?php
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,22 +22,42 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
+ */
 
-<div class="action_header">
-    <h2>{t}Previous state{/t}</h2>
-    <fieldset class="buttons-form">
-        {if ($goback) }
-			{button class="goback-button  btn main_action" label="Go back"}
-		{else}
-			{button class="close-button btn" label="Close"}
-		{/if}
-    </fieldset>
-</div>
-<div class="message">	
-	<ol>	
-		<li>{t}The document has been moved to the previous state.{/t}</li>	
-	</ol>
-</div>
+ModulesManager::file('/inc/mail/Mail.class.php');
+class EmailNotificationStrategy{
 
+	/**
+	 * Send a notification.
+	 * @param  string $subject   
+	 * @param  string $content   
+	 * @param  string $from      
+	 * @param  array $to id       
+	 * @param  array $extraData More required data in the message. 
+	 * Maybe a attachment or whatever
+	 * @return [type]            [description]
+	 */
+	public function sendNotification($subject, $content,$from, $to, $extraData){
 
+		$result = array();
+		foreach($to as $toUser) {
+			
+			$user = new User($toUser);
+			$userEmail = $user->get('Email');
+			$userName = $user->get('Name');	
+			$mail = new Mail();
+			$mail->addAddress($userEmail, $userName);
+			$mail->Subject = $subject;
+			$mail->Body = $content;
+			if ($mail->Send()) {
+				$result[$toUser] = true;				
+			} else {
+				$result[$toUser] = false;				
+			}
+		}
+
+		return $result;
+	}
+}
+
+?>

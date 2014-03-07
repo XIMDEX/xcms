@@ -67,7 +67,7 @@ class XSession {
 	public static function start($name = DEFAULT_SESSION, $id = null) {
 		XSession::name($name);
 		session_cache_limiter('none');
-		session_set_cookie_params(36000);
+		session_set_cookie_params(36000,$_SERVER["REQUEST_URI"]);		
 		session_cache_expire(60);
 
 		@session_start();
