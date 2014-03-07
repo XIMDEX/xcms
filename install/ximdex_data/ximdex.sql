@@ -4018,8 +4018,22 @@ VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",
 DROP TABLE IF EXISTS `RelNodeMetadata`;
 CREATE TABLE RelNodeMetadata (
         idRel int(12) unsigned NOT NULL auto_increment,
-        idNodeVersion int(12) unsigned NOT NULL default '0',
-        idMetadataVersion int(12) unsigned NOT NULL default '0',
+        idNode int(12) unsigned NOT NULL default '0',
+        idMetadata int(12) unsigned NOT NULL default '0',
         PRIMARY KEY (idRel),
+        UNIQUE KEY `rel` (`idNode`,`idMetadata`)
+) ENGINE=MYISAM;
+
+--
+-- Table structure for table RelNodeVersionMetadataVersion
+--
+DROP TABLE IF EXISTS `RelNodeVersionMetadataVersion`;
+CREATE TABLE RelNodeVersionMetadataVersion (
+        id int(12) unsigned NOT NULL auto_increment,
+        idrnm int(12) unsigned NOT NULL,
+        idNodeVersion int(12) unsigned NOT NULL default '0', 
+        idMetadataVersion int(12) unsigned NOT NULL default '0', 
+        PRIMARY KEY (id),
         UNIQUE KEY `rel` (`idNodeVersion`,`idMetadataVersion`)
 ) ENGINE=MYISAM;
+

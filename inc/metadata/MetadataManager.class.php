@@ -348,8 +348,8 @@ class MetadataManager{
     private function addRelation($name){
         $rnm = new RelNodeMetadata();
         $idm = $this->getMetadataDocument($name);
-        $rnm->set('source', $this->node->GetID());
-        $rnm->set('target', $idm);
+        $rnm->set('IdNode', $this->node->GetID());
+        $rnm->set('IdMetadata', $idm);
         $res = $rnm->add();
         if($res<0){
             error_log("Relation not added.");
@@ -364,8 +364,8 @@ class MetadataManager{
             $nodeContainer->DeleteNode();
        }
        $rnm = new RelNodeMetadata();
-       $id=$rnm->find("id","target=%s",array($idContent),MONO);
-       $rnm->set('id', $id[0]);
+       $id=$rnm->find("idRel","IdMetadata=%s",array($idContent),MONO);
+       $rnm->set('idRel', $id[0]);
        $res = $rnm->delete();
        if($res<0){
             error_log("Relation not deleted.");
