@@ -35,16 +35,16 @@ class RelNodeVersionMetadataVersion_ORM extends GenericData   {
 	var $_metaData = array(
 				'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
 				'idrnm' => array('type' => "int(12)", 'not_null' => 'true'),
-				'NodeVersion' => array('type' => "int(12)", 'not_null' => 'true'),
-				'MetadataVersion' => array('type' => "int(12)", 'not_null' => 'true')
+				'idNodeVersion' => array('type' => "int(12)", 'not_null' => 'true'),
+				'idMetadataVersion' => array('type' => "int(12)", 'not_null' => 'true')
 				);
 	var $_uniqueConstraints = array(
-				'rel' => array('NodeVersion', 'MetadataVersion')
+				'rel' => array('idNodeVersion', 'idMetadataVersion')
 				);
 	var $_indexes = array('id');
 	var $id;
 	var $idrnm = 0;
-	var $NodeVersion = 0;
-	var $MetadataVersion = 0;
+	var $idNodeVersion = 0;
+	var $idMetadataVersion = 0;
 }
 ?>

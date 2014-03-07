@@ -29,6 +29,7 @@
  }
 
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
+ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/model/language.inc');
 ModulesManager::file('/inc/model/channel.inc');
@@ -348,11 +349,38 @@ class MetadataManager{
     private function addRelation($name){
         $rnm = new RelNodeMetadata();
         $idm = $this->getMetadataDocument($name);
+        //TODO: foreach language version, one entry
         $rnm->set('IdNode', $this->node->GetID());
         $rnm->set('IdMetadata', $idm);
         $res = $rnm->add();
         if($res<0){
-            error_log("Relation not added.");
+            error_log("Relation betwween nodes not added.");
+        }
+        //TODO: move this logic to the RelNodeMetadata class
+        else{
+            //getting the source node's last version id
+            $dtf = New DataFactory($this->node->GetID());
+            $idNodeVersion = $dtf->GetLastVersionId();
+
+            //getting all the language children
+            $idmNode = new Node($idm);
+            $metadocs = $idmNode->GetChildren();
+            foreach($metadocs as $idMetadataLanguage){
+
+                //getting the last version of each child.
+                $dtf = New DataFactory($idMetadataLanguage);
+                $idMetadataVersion = $dtf->GetLastVersionId();
+
+                //adding the info
+                $rnvmv = new RelNodeVersionMetadataVersion();
+                $rnvmv->set('idrnm',$res);
+                $rnvmv->set('idNodeVersion',$idNodeVersion);
+                $rnvmv->set('idMetadataVersion',$idMetadataVersion);
+                $res2 = $rnvmv->add();
+                if($res<0){
+                    error_log("Relation between versions not added.");
+                }
+            }
         }
     }
 
@@ -362,14 +390,25 @@ class MetadataManager{
         if ($idContent){
             $nodeContainer = new Node($idContent);
             $nodeContainer->DeleteNode();
-       }
-       $rnm = new RelNodeMetadata();
-       $id=$rnm->find("idRel","IdMetadata=%s",array($idContent),MONO);
-       $rnm->set('idRel', $id[0]);
-       $res = $rnm->delete();
-       if($res<0){
-            error_log("Relation not deleted.");
-       } 
+        }
+        $rnm = new RelNodeMetadata();
+        $id=$rnm->find("idRel","IdMetadata=%s",array($idContent),MONO);
+        $rnm->set('idRel', $id[0]);
+        $res = $rnm->delete();
+        if($res<0){
+            error_log("Relation between nodes not deleted.");
+        }
+        else{
+            $rnvmv = new RelNodeVersionMetadataVersion();
+            $ids=$rnvmv->find("id","idrnm=%s",array($id[0]),MONO);
+            foreach($ids as $id){
+                $rnvmv->set('id', $id);
+                $res2 = $rnvmv->delete();
+                if($res2<0){
+                    error_log("Relation between versions not deleted.");
+                }
+            }
+        }
     }
 
 }
