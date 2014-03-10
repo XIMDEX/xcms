@@ -129,18 +129,24 @@ class Action_setmetadata extends ActionAbstract {
 
    		$tags = new RelTagsNodes();
    		$previous_tags = $tags->getTags($idNode);
-		if(array_key_exists("tags", $_POST) ) {
-	  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
-	 	} else {
-	 		$tags->saveAll(array(), $idNode, $previous_tags);
-	 	}
+		// if(array_key_exists("tags", $_POST) ) {
+	 //  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
+	 // 	} else {
+	 // 		$tags->saveAll(array(), $idNode, $previous_tags);
+	 // 	}
 	
+   		$request_content = file_get_contents("php://input");
+		$data = json_decode($request_content);
+   		if (array_key_exists('tags', $data)){
+   			$tags->saveAll($data->tags, $idNode, $previous_tags);
+   		}
+
 		$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
 		$values = array(
 			'messages' => $this->messages->messages,
 		);
 
-		$this->render($values);
+		$this->sendJSON($data->tags);
  	}
 
 	public function getLocalOntology(){

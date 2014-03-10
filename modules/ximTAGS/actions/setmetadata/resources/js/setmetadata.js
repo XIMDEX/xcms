@@ -3,47 +3,72 @@
         .controllerProvider.register('XTagsCtrl', ['$scope', '$attrs', 'xBackend', 'xTranslate', '$window', '$http', 'xUrlHelper', function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper){
         	$scope.documentTags = [];
         	$scope.cloudTags = [];
-            $scope.namespaces = [];
+            $scope.namespaces = {};
         	$scope.nodeId = $attrs.ximNodeId;
-        	if ($attrs.ximDocumentTags)
+            $scope.submitLabel = xTranslate('common.save');
+            $scope.newTag = {IdNamespace: '1'};
+        	
+            if ($attrs.ximDocumentTags)
                 $scope.documentTags = angular.fromJson($attrs.ximDocumentTags);
+            
             if ($attrs.ximCloudTags)
                 $scope.cloudTags = angular.fromJson($attrs.ximCloudTags);
+            
             if ($attrs.ximNamespaces)
-                $scope.namespaces = angular.fromJson($attrs.ximNamespaces);
+                var namespaces = angular.fromJson($attrs.ximNamespaces);
+                for (i = 0, len = namespaces.length; i < len; i++){
+                    $scope.namespaces[namespaces[i].id] = namespaces[i];
+                }
 
             $scope.addTag = function(tag){
             	if (tag.isSemantic) {
-                    for (i = 0, len = $scope.namespaces.length; i < len; i++){
-                        if ($scope.namespaces[i].nemo === tag.type) {
-                            tag.type_id = $scope.namespaces[i].id;
+                    for (key in $scope.namespaces){
+                        if ($scope.namespaces[key].nemo === tag.type) {
+                            tag.IdNamespace = $scope.namespaces[key].id;
+                            break;
                         }
                     }
                 }
                 tag.selected = true;
             	$scope.documentTags.push(tag);
             }
+
             $scope.removeTag = function(index) {
             	$scope.documentTags[index].selected = false;
             	$scope.documentTags.splice(index, 1);
             }
+
             $scope.addNewTag = function() {
             	$scope.addTag(angular.copy($scope.newTag));
-            	$scope.newTag = null;
+            	$scope.newTag = {IdNamespace: '1'};
             }
 
             $scope.addOntology = function(ontology){
-            	$scope.addTag({
-            		Name: ontology.name, 
-            		ontology: true
-            	});
+                $scope.addTag({
+                    Name: ontology.name, 
+                    structured: true,
+                    IdNamespace: '2'
+                });
             }
+
             $scope.removeOntology = function(ontology) {
             	for (var i=0; i < $scope.documentTags.lentgh; i++) {
             		if ($scope.documentTags[i].Name === ontology.name) {
             			$scope.removeTag(i);	
-            		}	break;
+                        break; 
+                    }
+                    
             	}
+            }
+            $scope.saveTags = function(tags) {
+                console.log($attrs.action, tags);
+                $http.post($attrs.action, {tags:tags})
+                    .success(function(data){
+                        console.log("success", data);
+                    })
+                    .error(function(data){
+                        console.log("error", data);
+                    });
             }
    
         }]);
@@ -102,7 +127,6 @@
             				scope.$apply(function(){
             					scope.onSelect({ontology:el});
             				});
-
             			},
             			offSelect: function(name) {
             				scope.$apply(function(){
