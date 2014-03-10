@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/metadata/MetadataManager.class.php ');
+ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 
 
@@ -53,7 +53,7 @@ class Action_managemetadata extends ActionAbstract {
 		$this->addJs('/actions/managemetadata/resources/js/index.js');
 
 		$nodeId = $this->request->getParam('nodeid');
-		// $mm = new MetadataManager();
+		$mm = new MetadataManager($nodeId);
 
 		$node = new Node($nodeId);
 		$info = $node->loadData();
@@ -64,10 +64,11 @@ class Action_managemetadata extends ActionAbstract {
 
 		$values["elements"] = array();
 		// Do switch for selecting correct RNG (images, xmldoc, common)
+		
 		$nodesearch = new Node();
-		$idRelaxNGNode = $nodesearch->find('IdNode', "Name = %s AND IdNodeType = %s", array("image-metadata.xml", NodetypeService::RNG_VISUAL_TEMPLATE), MONO);
+		$idRelaxNGNode = $mm->getMetadataSchema();
 		if ($idRelaxNGNode) {
-			$relaxNGnode = new Node($idRelaxNGNode[0]);
+			$relaxNGnode = new Node($idRelaxNGNode);
 			$content = $relaxNGnode->class->buildDefaultContent();
 			$domDoc = new DOMDocument();
 			// The content has not root element in RNG (added one by default)
@@ -100,6 +101,10 @@ class Action_managemetadata extends ActionAbstract {
 		$this->render($values, '', 'default-3.0.tpl');
 	}
 
+
+
+
+
 	/**
 	 * Save the results from the form
 	 */
@@ -108,6 +113,7 @@ class Action_managemetadata extends ActionAbstract {
 		# Add some code here
 		
 	}
+
 
 
 }
