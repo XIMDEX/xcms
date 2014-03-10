@@ -100,7 +100,9 @@ class Action_setmetadata extends ActionAbstract {
   					"id"=>$namespace->get("idNamespace"),
   					"type"=>$namespace->get("type"),
   					"isSemantic"=>$namespace->get("isSemantic"),
-  					"nemo"=>$namespace->get("nemo")
+  					"nemo"=>$namespace->get("nemo"),
+  					"category"=>$namespace->get("category"),
+  					"uri"=>$namespace->get("uri")
 				);
 
   			$result[] = $array;
@@ -129,19 +131,14 @@ class Action_setmetadata extends ActionAbstract {
 
    		$tags = new RelTagsNodes();
    		$previous_tags = $tags->getTags($idNode);
-		// if(array_key_exists("tags", $_POST) ) {
-	 //  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
-	 // 	} else {
-	 // 		$tags->saveAll(array(), $idNode, $previous_tags);
-	 // 	}
-	
+
+
    		$request_content = file_get_contents("php://input");
 		$data = json_decode($request_content);
    		if (array_key_exists('tags', $data)){
    			$tags->saveAll($data->tags, $idNode, $previous_tags);
    		}
-
-		$this->messages->add(_("The metadata has been properly associated."), MSG_TYPE_NOTICE);
+		$this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
 		$values = array(
 			'messages' => $this->messages->messages,
 		);

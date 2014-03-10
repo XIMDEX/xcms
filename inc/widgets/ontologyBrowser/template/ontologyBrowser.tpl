@@ -27,7 +27,6 @@
   <div class="title-box">{t}Ontology Browser{/t}</div>
   <a class="tree icon" href="#"><span>{t}Tree view{/t}</span></a>
   <a class="text icon" href="#"><span>{t}Text view{/t}</span></a>
-
   <div class="ontology-browser hidden">
       <div class="treeViewer hidden">
           <h3>{t}Tree view ontology browser{/t}</h3>
@@ -44,7 +43,7 @@
       <div class="infobox">
         <h1></h1>
         <p></p>
-        <button type="button"></button>
+        <a class="btn main_action"></a>
         <a class="close  btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
       </div>
        <a class="ontology-close btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
