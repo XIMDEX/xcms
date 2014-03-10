@@ -71,6 +71,36 @@ class MetadataManager{
  * @param int $source_idnode
  * @return ...
 */
+    public function getMetadataSchema(){
+        $node = new Node($this->node->GetID());
+        $projectNode = new Node($node->getProject());
+        $schemesFolder = $projectNode->getChildren(NodetypeService::TEMPLATE_VIEW_FOLDER);
+
+        $nt = $this->node->nodeType->GetID(); 
+        switch($nt){
+            case NodetypeService::IMAGE_FILE:
+                $name=MetadataManager::IMAGE_METADATA_SCHEMA;
+                break;
+            case NodetypeService::BINARY_FILE:
+                $name=MetadataManager::COMMON_METADATA_SCHEMA;
+                break;
+            case NodetypeService::XML_DOCUMENT:
+                $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
+                break;
+            default:
+                error_log("Type not found: setting the schema to document-metadata.xml");
+                $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
+        }
+        $schema = new Node();
+        $res = $schema->find("Idnode","Name=%s AND IdParent=%s",array($name,$schemesFolder[0]),MONO);
+        return $res[0];
+    }
+
+/** 
+ * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
+ * @param int $source_idnode
+ * @return ...
+*/
     public function getMetadataNodes(){
         return $this->array_metadata;    
     }
@@ -99,18 +129,6 @@ class MetadataManager{
     }
     
 
-    public function getMetadataSchema(){
-        $node = new Node($this->node->GetID());
-        $projectNode = new Node($node->getProject());
-        $schemesFolder = $projectNode->getChildren(NodetypeService::TEMPLATE_VIEW_FOLDER);
-
-        $nt = $this->node->nodeType->GetID(); 
-        //TODO: switch
-        $name = "image-metadata.xml";
-        $schema = new Node();
-        $res = $schema->find("Idnode","Name=%s AND IdParent=%s",array($name,$schemesFolder[0]),MONO);
-        return $res[0];
-    }
 /** 
  * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
  * @param int $source_idnode
