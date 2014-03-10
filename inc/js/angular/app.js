@@ -45,8 +45,7 @@ angular.module('ximdex.module.xlyre', []);
 //Configure interpolation symbols to work in smarty templates
 angular.module('ximdex')
     .config(function($interpolateProvider, $controllerProvider, $compileProvider) {
-        $interpolateProvider.startSymbol('[[');
-        $interpolateProvider.endSymbol(']]');
+        $interpolateProvider.startSymbol('#/').endSymbol('/#');
         
         angular.module('ximdex').controllerProvider = $controllerProvider;
         angular.module('ximdex').compileProvider = $compileProvider;

@@ -34,7 +34,7 @@ angular.module('ximdex.common.directive')
             },
             restrict: 'A',
             template: '<button type="button" class="button ladda-button" data-style="slide-up" data-size="xs" ng-disabled="disabled">'+
-                    '<span class="ladda-label">[[label]]</span>'+
+                    '<span class="ladda-label">#/label/#</span>'+
                 '</button>',
             link: function postLink(scope, element, attrs) {
                 var loader = $window.Ladda.create(element[0]);
