@@ -42,8 +42,6 @@ class Action_createxmlcontainer extends ActionAbstract {
 		$nt = $node->GetNodeType();
 		$idNode = $node->get('IdNode');
 
-		$this->addJs("/actions/createxmlcontainer/resources/js/validate.js"); 
-
 		if (empty($idNode)) {
 			// Why die ? show error to user.
 			die(_("Error with parameters"));

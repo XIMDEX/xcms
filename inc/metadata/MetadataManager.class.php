@@ -98,12 +98,25 @@ class MetadataManager{
         //TODO    
     }
     
+
+    public function getMetadataSchema(){
+        $node = new Node($this->node->GetID());
+        $projectNode = new Node($node->getProject());
+        $schemesFolder = $projectNode->getChildren(NodetypeService::TEMPLATE_VIEW_FOLDER);
+
+        $nt = $this->node->nodeType->GetID(); 
+        //TODO: switch
+        $name = "image-metadata.xml";
+        $schema = new Node();
+        $res = $schema->find("Idnode","Name=%s AND IdParent=%s",array($name,$schemesFolder[0]),MONO);
+        return $res[0];
+    }
 /** 
  * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
  * @param int $source_idnode
  * @return null
 */
-    public function generateMetadata(){
+    public function generateMetadata($lang = null){
         //create the specific name with the format: NODEID-metadata
         $name = $this->metadataFileName();
         //check if the metadata node already exists in metadata hidden folder
@@ -113,13 +126,17 @@ class MetadataManager{
         if (empty($idContent)){
             $idm = $this->getMetadataSectionId();
             $aliases = array();
-            $schema=new Node();
-            //TODO: select the appropiate RNG.
-            $idSchema =  $schema->find("Idnode","Name=%s",array(self::IMAGE_METADATA_SCHEMA),MONO);
-            $languages = $this->getMetadataLanguages();
+            $idSchema = $this->getMetadataSchema();
+
+            if(!$lang){
+                $languages = $this->getMetadataLanguages();
+            }
+            else{
+                $languages = $lang;
+            }
             $channels = $this->getMetadataChannels();
             //We use the action like a service layer
-            $this->createXmlContainer($idm,$name,$idSchema[0],$aliases,$languages,$channels);
+            $this->createXmlContainer($idm,$name,$idSchema,$aliases,$languages,$channels);
             $this->addRelation($name);
         }
         else{

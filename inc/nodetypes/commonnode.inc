@@ -32,24 +32,24 @@ require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.inc");
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 /***
-	Class for NodeType Image
+	Class for NodeType common 
 */
-class ImageNode extends FileNode{
+class CommonNode extends FileNode{
 
 	/**
-	 * Build a new image node file.
-	 * Use parent CreateNode method and generate a new metadata document for the new image node created.	
-         * @return boolean true.
-         */
+	 * Build a new common node file.
+	 * Use parent CreateNode method and generate a new metadata document for the new common node created.	
+     * @return boolean true.
+     */
 	function CreateNode($name, $parentID, $nodeTypeID, $stateID=7, $sourcePath=""){
 		parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
         $mm = new MetadataManager($this->nodeID);
-        $mm->generateMetadata();
+        $mm->generateMetadata(); 
 	}	
 
 	/**
-	 * Delete image node and the metadata asociated.
-	*/
+	 * Delete the common file node and its metadata asociated.
+ 	 */
 	function DeleteNode (){
 		parent::DeleteNode();
         $mm = new MetadataManager($this->nodeID);
