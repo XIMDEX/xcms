@@ -23,21 +23,26 @@
  *  @version $Revision$
  *}
 
-{if (count($messages)) }
-<h2>{t}Messages{/t}</h2>
-
+<div class="action_header">
+    <h2>{t}Previous state{/t}</h2>
+    <fieldset class="buttons-form">
+        {if ($goback) }
+			{button class="goback-button  btn main_action" label="Go back"}
+		{else}
+			{button class="close-button btn" label="Close"}
+		{/if}
+    </fieldset>
+</div>
+<div class="message">
+	{if (count($messages)) }
 	<ol>
 	{foreach name=messages from=$messages key=message_id item=message}
 		<li>{$message.message}</li>
 	{/foreach}
-	</table>
-
+	</ol>
 {/if}
+</div>
 
-<fieldset class="buttons-form">
-{if ($goback) }
-	{button class="goback-button  btn main_action" label="Go back"}
-{else}
-	{button class="close-button btn" label="Close"}
-{/if}
-</fieldset>
+
+
+

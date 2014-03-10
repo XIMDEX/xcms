@@ -76,11 +76,6 @@ class Action_workflow_forward extends ActionAbstract {
 		$idUser = XSession::get('userID');
 		$user = new User($idUser);
 
-		//Getting list of groups where user is added: to show it in select input
-		$group = new Group();
-		$groupList=$group->find('IdGroup', NULL, NULL, MONO);
-		$groupState=$this->_getStateForGroups($idNode, $groupList);
-
 		//Getting user roles on current node
 		$userRoles=$user->GetRolesOnNode($idNode); 
 		
@@ -146,7 +141,7 @@ class Action_workflow_forward extends ActionAbstract {
 		$conf = ModulesManager::file('/conf/notifications.conf');
 		$defaultMessage=$this->buildMessage($conf["defaultMessage"],$workflow->GetName(),$node->get('Name'));
 		$values = array(
-				'group_state_info' => $this->selectableGroups($idNode, $groupState),
+				'group_state_info' => Group::getSelectableGroupsInfo($idNode),
 				'state' => $nextStateName,
 				'stateid' => $nextState,
 				'required' => $conf['required'] === true ? 1 : 0,
@@ -237,12 +232,8 @@ class Action_workflow_forward extends ActionAbstract {
 
 		$sendNotifications = $this->request->getParam('sendNotifications');
 		$notificableUsers = $this->request->getParam('users');
-		$idState = $this->request->getParam('stateid');
+		$idState = $this->request->getParam('nextstate');
 		$texttosend = $this->request->getParam('texttosend');
-
-		$group = new Group();
-		$groupList=$group->find('IdGroup', NULL, NULL, MONO);
-		$groupState=$this->_getStateForGroups($idNode, $groupList);
 
 		//If must send notifications
 		if ((boolean)$sendNotifications) {
@@ -260,14 +251,16 @@ class Action_workflow_forward extends ActionAbstract {
 		//If the next state is final state, it must be publication, so we move to publicateForm
 		if($workflow->IsFinalState()){
         	$this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
-			$defaultMessage=$this->buildMessage($conf["defaultMessage"], $nextState,$node->GetName());
+			$defaultMessage=$this->buildMessage($conf["defaultMessage"], $workflow->pipeStatus->get("Name"),$node->GetNodeName());
+
 			$values = array(
-                    'group_state_info' => $this->selectableGroups($idNode, $groupState),
-                    'go_method' => 'publicateNode',
-                    'state' => $workflow->GetName(),
-                    'required' => $conf['required'] === true ? 1 : 0,
-                    'defaultMessage' => $defaultMessage,
-	  	    'hasDisabledFunctions' => $this->hasDisabledFunctions()
+            'group_state_info' => Group::getSelectableGroupsInfo($idNode),
+            'go_method' => 'publicateNode',
+            'state' => $workflow->GetName(),
+            'required' => $conf['required'] === true ? 1 : 0,
+            'defaultMessage' => $defaultMessage,
+	  	    'hasDisabledFunctions' => $this->hasDisabledFunctions(),
+	  	    'stateid' => $idState
             );
        		$this->render($values, 'index.tpl','default-3.0.tpl');	
 		}else{ //if the next state is not the final, we show a success message
@@ -280,35 +273,6 @@ class Action_workflow_forward extends ActionAbstract {
        		$this->render($values, 'success.tpl','default-3.0.tpl');	
 		}
 	}
-
-	/**
-	 * Obtains the groups to be selected
-	 * 
-	 * Called from index
-	 *
-	 * @param int $idNode
-	 * @param array $groupState Associative array. idgroup => idstate
-	 *
-	 * @return array Array of associative array. Contains idgroup, groupname, idstate and statename
-	 */
-	 private function selectableGroups($idNode, $groupState) {
-	 	$groupStateInfo = array();
-		foreach ($groupState as $idGroup => $idState) {
-			$group = new Node($idGroup);
-			$workflow = new WorkFlow($idNode, $idState);
-			$idS = $workflow->pipeStatus->get('id');
-			$idG = $group->get('Name');
-			$sN = $workflow->pipeStatus->get('Name');
-
-			$groupStateInfo[] = array(
-				'IdGroup' => $group->get('IdNode'),
-				'groupName' => $idG,
-				'IdState' => $idS,
-				'stateName' => $sN
-			);
-		}
-		return $groupStateInfo;
-	 }
 
 	/**
 	 * Print a JSON object with users of the selected group.
@@ -486,7 +450,7 @@ class Action_workflow_forward extends ActionAbstract {
 	 *
 	 * @return boolean true if the notification is sended.
 	 */
-	private function sendNotifications($idNode, $idState, $userList, $texttosend) {
+	protected function sendNotifications($idNode, $idState, $userList, $texttosend) {
 
 		$send = true;
 
@@ -508,9 +472,9 @@ class Action_workflow_forward extends ActionAbstract {
 
 		$node = new Node($idNode);
 		$idActualState = $node->get('IdState');
-		$actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
+		$actualWorkflowStatus = new WorkFlow($idNode, $idActualState);		
 		$nextWorkflowStatus = new WorkFlow($idNode, $idState);
-
+		
 		if (count($userList) > 0) {
 			$userNameList = array();
 			foreach($userList as $id) {
@@ -544,24 +508,8 @@ class Action_workflow_forward extends ActionAbstract {
 			. _("Comment").":"."\n"
 			. $texttosend."\n"
 			. "\n";
-
-		foreach($userList as $id) {
-			$user = new User($id);
-
-			$userEmail = $user->get('Email');
-			$userName = $user->get('Name');
-
-			$mail = new Mail();
-			$mail->addAddress($userEmail, $userName);
-			$mail->Subject = $subject;
-			$mail->Body = $content;
-			if ($mail->Send()) {
-				$this->messages->add(sprintf(_("Message successfully sent to %s"), $userEmail), MSG_TYPE_NOTICE);
-			} else {
-				$this->messages->add(sprintf(_("Error sending message to the mail address %s"), $userEmail), MSG_TYPE_WARNING);
-			}
-		}
-
+		parent::sendNotifications($subject, $content, $userList);
+			
 		return true;
 	}
 
@@ -705,27 +653,6 @@ class Action_workflow_forward extends ActionAbstract {
 		}
 	}
 
-
-	private function _getStateForGroups($idNode, $groupList) {
-		$node = new Node($idNode);
-		$groupState = array();
-		if (is_array($groupList) && !empty($groupList)) {
-			foreach ($groupList as $idGroup) {
-				$group = new Group($idGroup);
-				$users = $group->GetUserList();
-				if (is_array($users) && !empty($users)) {
-					foreach ($users as $idUser) {
-						$nextState = $node->GetNextAllowedState($idUser, $idGroup);
-						if ($nextState > 0) {
-							$groupState[$idGroup] = $nextState;
-						}
-					}
-				}
-			}
-		}
-		return $groupState;
-
-	}
 
 	/**
 	* Validate if a node can be forwarded

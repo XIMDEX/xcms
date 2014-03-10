@@ -37,6 +37,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/notifications/AbstractNotificationStrategy.class.php');
 
 
 /**
@@ -551,6 +552,28 @@ class ActionAbstract extends IController {
 		$result = $actionsStats->getCountByUserAndAction($userId, $action);
 
 		return ($result === null || $result < $numReps) ? true : false;
-    	}
+	}
+
+	protected function sendNotifications($subject, $content, $to){
+		$from = XSession::get("userID");
+		$result = array();
+		$emailNotification = new EmailNotificationStrategy();
+		$result = $emailNotification->sendNotification($subject, $content,$from, $to);
+		$messagesNotification = new XimdexNotificationStrategy();
+		$messagesNotification->sendNotification($subject, $content,$from, $to);
+
+		foreach ($result as $idUser => $resultByUser) {
+			$user = new User($idUser);
+			$userEmail = $user->get('Email');
+			if ($resultByUser){
+				$this->messages->add(sprintf(_("Message successfully sent to %s"), $userEmail), MSG_TYPE_NOTICE);
+			}else{
+				$this->messages->add(sprintf(_("Error sending message to the mail address %s"), $userEmail), MSG_TYPE_WARNING);
+			}
+		}	
+
+		return $result;
+	}
+
 }
 ?>
