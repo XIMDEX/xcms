@@ -23,9 +23,20 @@
  *  @version $Revision$
  */
 
-X.actionLoaded(function(event, fn, params) {
-	
-  // Add some code here
-  alert("JS loaded");
+if (angular.module('ximdex').notRegistred('MetadataCtrl')) {
+    angular.module('ximdex')
+        .controllerProvider.register('MetadataCtrl', ['$scope', '$attrs', 'xBackend', 'xTranslate', '$timeout', function($scope, $attrs, xBackend, xTranslate, $timeout){
+            
+            $scope.t = xTranslate;
+            $scope.languages = angular.fromJson($attrs.ximLanguages);
+            $scope.defaultLanguage = $attrs.ximDefaultlanguage;
+            $scope.method = $attrs.ximMethod;
 
+        }]);
+    angular.module('ximdex').registerItem('MetadataCtrl');
+}
+
+//Start angular compile and binding
+X.actionLoaded(function(event, fn, params) {
+    X.angularTools.initView(params.context, params.tabId);    
 });

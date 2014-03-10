@@ -26,6 +26,10 @@
 
 
 
+ModulesManager::file('/inc/metadata/MetadataManager.class.php ');
+
+
+
 /**
  * Manage metadata action. 
  *
@@ -45,14 +49,53 @@ class Action_managemetadata extends ActionAbstract {
 	public function index() {
 
 		//Load css and js resources for action form.
-		$this->addJs('/actions/manageproperties/resources/js/index.js');
+		$this->addCss('/actions/managemetadata/resources/css/style.css');
+		$this->addJs('/actions/managemetadata/resources/js/index.js');
 
 		$nodeId = $this->request->getParam('nodeid');
+		// $mm = new MetadataManager();
+
+		$node = new Node($nodeId);
+		$info = $node->loadData();
+		$values["nodename"] = $info["name"];
+		$values["nodeversion"] = $info["version"].".".$info["subversion"];
+		$values["nodepath"] = $info["path"];
+		$values["typename"] = $info["typename"];
+
+		$values["elements"] = array();
+		// Do switch for selecting correct RNG (images, xmldoc, common)
+		$nodesearch = new Node();
+		$idRelaxNGNode = $nodesearch->find('IdNode', "Name = %s AND IdNodeType = %s", array("image-metadata.xml", NodetypeService::RNG_VISUAL_TEMPLATE), MONO);
+		if ($idRelaxNGNode) {
+			$relaxNGnode = new Node($idRelaxNGNode[0]);
+			$content = $relaxNGnode->class->buildDefaultContent();
+			$domDoc = new DOMDocument();
+			// The content has not root element in RNG (added one by default)
+	        if ($domDoc->loadXML("<root>".$content."</root>")) {
+	        	$xpathObj = new DOMXPath($domDoc);
+            	$elements = $xpathObj->query("//custom_info/*");
+            	if ($elements->length > 0) {
+            		foreach ($elements as $value) {
+            			$values["elements"][] = array(
+            				'name' => $value->tagName,
+            				'type' => $value->getAttribute("input")
+            			);
+            		}
+	        	}
+			}
+		}
+
+		// Getting languages
+        $language = new Language();
+        $languages = $language->getLanguagesForNode($nodeId);
+        if ($languages) {
+        	$values['default_language'] = $languages[0]['IdLanguage'];
+			$values['languages'] = $languages;
+        	$values['json_languages'] = json_encode($languages);
+        }
 		
-		$values = array(
-			'nodeid' => $nodeId,
-			'go_method' => 'update_metadata'
-		);
+		$values['nodeid'] = $nodeId;
+		$values['go_method'] = 'update_metadata';
 
 		$this->render($values, '', 'default-3.0.tpl');
 	}

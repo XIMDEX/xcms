@@ -23,17 +23,92 @@
  *  @version $Revision$
  *}
 
-<form method="post" name="modifymetadata" action="{$action_url}">
+<form method="post" name="modifymetadata" action="{$action_url}"
+	ng-controller="MetadataCtrl"
+    ng-cloak
+    xim-languages='{$json_languages}'
+    xim-defaultlanguage='{$default_language}'
+    xim-method="{$go_method}"
+    xim-action="{$action}"
+    novalidate>
 	<div class="action_header">
 		<h2>{t}Manage metadata{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Update" class="validate btn main_action" }
+			{button label="Save" class="validate btn main_action" }
 		</fieldset>
 	</div>
 
-	<div class="action_content">
+	<div class="action_content metadata_action">
 
-		<h3>NodeID: {$nodeid}</h3>
+		<div class="col2-3 left metadata_data">
+
+            <select name="" id="" class="language_selector js_language_selector"
+            	ng-model="defaultLanguage">
+                <option 
+                    ng-repeat="l in languages" 
+                    ng-disabled="!l.Name"
+                    ng-selected="defaultLanguage == l.IdLanguage" 
+                    value="[[l.IdLanguage]]">
+                    [[l.Name]]
+                </option>
+            </select>
+
+            <div class="empty_state">
+                <span class="title icon language">{t}No language selected{/t}</span>
+                <span>{t}Select at less one above{/t}</span>
+            </div>
+           
+            <div class="js_form_sections">
+                {foreach from=$languages item=l}
+                    <div class="js_form_section" id="language_selector_{$l.IdLanguage}" 
+                        ng-show="defaultLanguage == {$l.IdLanguage}">
+                        <p>
+                        {foreach from=$elements item=e}
+                            <label for="languages_metadata[{$l.IdLanguage}][{$e.name}]" class="label_title">{t}{$e.name|upper}{/t}</label>
+                            {if $e.type == 'text'}
+                                <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size"
+                                    ng-model="metadata.languages_metadata.{$l.IdLanguage}.{$e.name}"
+                                    ng-init="metadata.languages_metadata.{$l.IdLanguage}.author = '{$languages_metadata[$l.IdLanguage].author}'">
+                            {elseif $e.type == 'textarea'}
+                                <textarea name="languages_metadata[{$l.IdLanguage}][{$e.name}]" id="" cols="30" rows="9" class="full_size"
+                                    ng-model="metadata.languages_metadata.{$l.IdLanguage}.{$e.name}"
+                                    ng-init="metadata.languages_metadata.{$l.IdLanguage}.{$e.name} = '{$languages_metadata[$l.IdLanguage].$e.name}'">
+                                    </textarea>
+                            {else}
+                                <br/>
+                            {/if}
+                        {/foreach}
+                        <p>
+                    </div>
+                {/foreach}
+            </div>
+         </div>
+            
+            
+
+        <div class="col1-3 right metadata_info">
+            <h4>{t}System metadata info{/t}</h4>
+
+            <br>
+            <img src="http://placehold.it/200x125/c2d43b/464646/&text={$typename}" alt="Thumbnail image">
+
+            <div class="name_info"
+                ng-init="dataset.issued = '{$issued}'">
+                <h3>{t}Name [NodeID]{/t}</h3>
+                <p>{$nodename} [{$nodeid}]</p>
+            </div>
+            <div class="version_info"
+                ng-init="dataset.modified = '{$modified}'">
+                <h3>{t}Version{/t}</h3>
+                <p>{$nodeversion}</p>
+            </div>
+            <div class="path_info">
+                <h3>{t}Path{/t}</h3>
+                <p data-path="{$nodepath}">{$nodepath}</p>
+            </div>
+        </div>
+                
+    </div>
 		
 	</div>
 

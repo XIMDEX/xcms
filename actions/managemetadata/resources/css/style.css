@@ -1,0 +1,175 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam
+<dev@ximdex.com>
+    *  @version $Revision$
+ */
+.hidden-focus:checked + .reduced_label::before {
+  content: "\79"; }
+
+.text_label {
+  position: absolute;
+  bottom: .5em;
+  width: 90%;
+  margin-left: 5%;
+  border: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.4rem !important;
+  color: #464646; }
+
+.input-select.folder-data::before {
+  color: #c2d43b; }
+
+textarea {
+  max-width: 100%; }
+
+.metadata_action .language_selector:not(.ng-hide) + .empty_state {
+  display: none; }
+.metadata_action .empty_state {
+  padding: 9em 1.5em 7em 3.5em; }
+  .metadata_action .empty_state span {
+    text-align: center;
+    display: block;
+    color: #4f5d65; }
+  .metadata_action .empty_state .title {
+    text-transform: uppercase;
+    position: relative;
+    padding: .5em; }
+    .metadata_action .empty_state .title::before, .metadata_action .empty_state .title::after {
+      position: absolute;
+      color: #cfd6d9;
+      font-size: 3.4em;
+      top: -1.3em;
+      left: 20%;
+      text-shadow: 5px 0 0 #e3e7e9;
+      z-index: 2; }
+    .metadata_action .empty_state .title::after {
+      color: #c6cfd3;
+      -moz-transform: scaleX(-1);
+      -o-transform: scaleX(-1);
+      -webkit-transform: scaleX(-1);
+      transform: scaleX(-1);
+      filter: FlipH;
+      -ms-filter: "FlipH";
+      font-size: 4.5em;
+      top: -1.2em;
+      left: 40%;
+      z-index: 1; }
+.metadata_action .language_selector {
+  position: absolute;
+  right: 37%;
+  border: none;
+  background: none;
+  padding: 0;
+  z-index: 2; }
+.metadata_action .headline {
+  position: relative;
+  padding: 1.5em 1em; }
+  .metadata_action .headline span {
+    background: #e3e7e9;
+    position: relative;
+    z-index: 2;
+    padding: 0 1em;
+    text-transform: uppercase;
+    font-family: "Ubuntu Condensed";
+    font-weight: bold; }
+  .metadata_action .headline::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-top: 1px solid #cccccc;
+    top: 50%;
+    left: 0; }
+
+.metadata_data {
+  width: 63%; }
+
+.metadata::after {
+  color: #c2d43b; }
+
+.metadata_info {
+  background: #464646;
+  padding: 1em 1.5em 2em 1.5em;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  color: #fff; }
+  .metadata_info h3, .metadata_info h3 label {
+    text-transform: uppercase;
+    font-family: "Ubuntu Condensed";
+    font-size: 1.3rem;
+    color: #fff;
+    padding-bottom: .5em; }
+  .metadata_info h4 {
+    color: #fff;
+    padding-bottom: .5em;
+    border-bottom: 3px solid #c2d43b; }
+  .metadata_info input:focus, .metadata_info .hidden-focus:focus + label, .metadata_info .hidden-focus:checked:focus + label {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    color: #303030; }
+  .metadata_info p {
+    margin-bottom: 0; }
+  .metadata_info .alternative_select {
+    display: none; }
+  .metadata_info .languages-section {
+    display: inline-block; }
+  .metadata_info .alternative-name {
+    display: none; }
+
+.reduced_label {
+  color: #fff !important;
+  /*font-size: 1.9rem;*/
+  line-height: 1.4;
+  padding-left: 1em; }
+  .reduced_label:hover {
+    color: #c2d43b; }
+
+.hidden-focus:checked + .reduced_label {
+  color: #fff;
+  padding-left: 0; }
+  .hidden-focus:checked + .reduced_label::before {
+    color: #c2d43b; }
+
+.editable_data, .non_editable_data {
+  width: 46%; }
+
+.editable_data {
+  margin-right: 7%;
+  position: relative; }
+  .editable_data::after {
+    content: "";
+    height: 80%;
+    top: 10%;
+    width: 0;
+    border-right: 1px solid #ccc;
+    position: absolute;
+    right: -8.5%; }
+
+.path_info p {
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden; }
