@@ -28,30 +28,58 @@ angular.module('ximdex.common.directive')
             require: 'ng-model',
             scope:{
                 options: '=ximOptions',
-                styleProp: '=ximStyleProp',
-                labelProp: '=ximLabelProp'
+                selProp: '@ximSelProp',
+                styleProp: '@ximStyleProp',
+                labelProp: '@ximLabelProp'
             },
-            template:'<div>'+
-                '<div>ICON</div>'+
-                '<ul>'+
-                    '<li ng-repeat="option in options" ng-click="selectOption(option)" ng-class="type-"></li>'+
-                '</ul>'+
-            '</div>',
+            templateUrl: 'inc/js/angular/templates/ximSelect.html',
             restrict: 'E',
             replace: true,
             link: function (scope, element, attrs, ctrl) {
                 
+                var getOption = function(key, value) {
+                    if( Object.prototype.toString.call(scope.options) === '[object Array]' ) {
+                        for (i = 0, len = scope.options.length; i < len; i++){
+                            if (scope.options[i][key] === value) {
+                                return scope.options[i];
+                            }
+                        }
+                    } else {
+                        for (option in scope.options){
+                            console.log(scope.options[option][key], ':::', value);
+                            if (scope.options[option][key] == value) {
+                                
+                                return scope.options[option];
+                            }
+                        }   
+                    } 
+                }
+
+                var setSelected = function(key, value, call) {
+                    console.log("setSelected", key, value, call);
+                    if (key) {
+                        scope.selectedOption = getOption(key, value);
+                    } else {
+                        scope.selectedOption = value;   
+                    }
+                }
+
                 scope.selectOption =  function(option) {
-                    ctrl.$setViewValue(option);
+                    if (scope.selProp) {
+                        ctrl.$setViewValue(option[scope.selProp]);
+                    } else {
+                        ctrl.$setViewValue(option);   
+                    }
                     scope.selectedOption = option;
                 };
                  
                 // model -> view
                 ctrl.$render = function() {
-                    scope.selectedOption = ctrl.$viewValue;
+                    setSelected(scope.selProp, ctrl.$viewValue);
+
                 };
-                // // load init value from DOM
-                // ctrl.$setViewValue(elm.html());
+                // load init select value
+                setSelected(scope.selProp, ctrl.$viewValue, true);
             }
         }
     }]);
