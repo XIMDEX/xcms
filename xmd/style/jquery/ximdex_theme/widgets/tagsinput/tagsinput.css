@@ -22,22 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/**************
-// COLORS
-***************/
-/**************
-// SHADOWS
-***************/
-/**************
-// TYPO
-***************/
-/**************
-// INCLUDES
-***************/
-/**************
-// EXTENDS
-***************/
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .suggested > div:not(:first-child) {
   margin-top: 2em; }
 
@@ -75,7 +59,7 @@
     left: 0;
     top: 0;
     text-align: center;
-    color: #edeeee;
+    color: #e3e7e9;
     line-height: 2; }
   .xim-tagsinput-taglist:hover, .xim-tagsinput-tag:hover, .ontology-browser-container a:hover {
     background: #f2f2f2; }
@@ -127,7 +111,7 @@
   background: #2fb7a4;
   cursor: pointer; }
   .selection::before {
-    color: #edeeee;
+    color: #e3e7e9;
     display: block;
     text-align: center;
     line-height: 2.05;
