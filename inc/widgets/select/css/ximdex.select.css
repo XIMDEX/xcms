@@ -12,7 +12,7 @@
   z-index: 10;
 }
 
-.button:hover .options, .button:hover .fonts, .button:hover .range-bg {
+.button:hover:not(.disabled) .options, .button:hover:not(.disabled) .fonts, .button:hover:not(.disabled) .range-bg {
   max-height: 800px;
 }
 

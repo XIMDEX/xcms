@@ -105,7 +105,7 @@ class OntologyService {
 				}
 			}
 			$result["status"] = "ok";
-			return json_encode($result);
+			return $result;
 		}
 
 		return $false;

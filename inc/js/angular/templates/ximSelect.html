@@ -1,0 +1,10 @@
+<div class="vertical collapsable ximdexInput icon button type-selector" ng-class="{disabled: disabled}">
+    <div class="selection icon type-#/selectedOption[styleProp || 'icon']/#"></div>
+    <ul class="options">
+        <li ng-repeat="option in options" 
+        	ng-click="selectOption(option)" 
+        	class="type-#/option[styleProp || 'icon']/# option icon"
+        	ng-class="{selected: selectedOption == option || selectedOption == option[selProp]}">
+        	#/option[labelProp || "label"]/#</li>
+    </ul>
+</div>

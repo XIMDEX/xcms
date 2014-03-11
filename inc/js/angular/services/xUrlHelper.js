@@ -25,12 +25,15 @@
 angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
     .factory('xUrlHelper', ['$window', function($window) {
         return {
-            baseUrl: function() {
+            restUrl: function() {
                 return $window.X.restUrl;
+            },
+            baseUrl: function() {
+                return $window.X.baseUrl;
             },
             getAction: function(params){
                 var timestamp = new Date().getTime();
-                var actionUrl = this.baseUrl()+'?noCacheVar='+timestamp+'&action='+params.action+'&method='+params.method;
+                var actionUrl = this.restUrl()+'?noCacheVar='+timestamp+'&action='+params.action+'&method='+params.method;
                 if (params.id) {
                     actionUrl+='&nodeid='+params.id+'&nodes[]='+params.id;
                 } else if (params.IDParent) {

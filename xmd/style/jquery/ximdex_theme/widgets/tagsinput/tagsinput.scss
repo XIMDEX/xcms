@@ -23,7 +23,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-@import "../themes/ximdex_theme"; 
+@import "../themes/ximdex_theme";
 
 .suggested > div:not(:first-child){
   margin-top: 2em;
@@ -171,10 +171,10 @@
          line-height: 2;
          text-align: center;
          }
-         &:hover{
+         &:hover ,&.selected{
           background:rgba(255,255,255,.2);
          }
-         &:hover::before{
+         &:hover::before ,&.selected::before{
           opacity: .8;
          }
    }
@@ -452,6 +452,8 @@
   vertical-align: middle;
   height: 2em;
   cursor: pointer;
+  margin-right: -4px;
+  margin-top: -4px;
 }
 
 .xim-tagsinput-newtag .add-btn{

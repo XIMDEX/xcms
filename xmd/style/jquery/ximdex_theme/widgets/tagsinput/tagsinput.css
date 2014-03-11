@@ -131,9 +131,9 @@
       display: block;
       line-height: 2;
       text-align: center; }
-    .options .option:hover {
+    .options .option:hover, .options .option.selected {
       background: rgba(255, 255, 255, 0.2); }
-    .options .option:hover::before {
+    .options .option:hover::before, .options .option.selected::before {
       opacity: .8; }
 
 .xim-tagsinput-text {
@@ -347,7 +347,9 @@
   display: inline-block;
   vertical-align: middle;
   height: 2em;
-  cursor: pointer; }
+  cursor: pointer;
+  margin-right: -4px;
+  margin-top: -4px; }
 
 .xim-tagsinput-newtag .add-btn {
   background: #57bbad;

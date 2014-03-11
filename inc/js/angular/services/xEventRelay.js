@@ -29,4 +29,5 @@ angular.module('ximdex.common.service')
     		$rootScope.$broadcast(event.type, data);
     	}
     	$relay.on('openAction', repeatEvent);
+    	
 	}]);

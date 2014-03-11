@@ -1,0 +1,9 @@
+<div class="tagcloud xim-tagsinput-container-related">
+	<div class="title-box">#/'Suggested tags from Ximdex CMS' | xI18n/#</div>
+	<ul class="xim-tagsinput-list-related" ng-class="{loading: !disconnected && !tags.length}">
+		<li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/tag.type/#" ng-repeat="tag in tags track by $index" ng-click="selectTag(tag)" ng-hide="tag.selected">
+            <span class="tag-text">#/tag.Name/#</span>
+            <span class="amount right">#/tag.confidence/#%</span>
+        </li>
+	</ul>
+</div>

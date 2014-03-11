@@ -38,7 +38,7 @@ class Tags_ORM extends GenericData   {
 				'IdNamespace' => array('type' => "int(11)", 'not_null' => 'true') 
 				);
 	var $_uniqueConstraints = array(
-				'Name' => array('Name'),
+				'Name' => array('Name', 'IdNamespace'),
 				'IdTag' => array('IdTag')
 				);
 	var $_indexes = array('IdTag');
