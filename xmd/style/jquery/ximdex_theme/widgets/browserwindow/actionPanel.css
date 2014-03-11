@@ -22,6 +22,45 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.browser-window button.button_main_action {
+  background: #fff;
+  border: 1px solid #dedede;
+  display: inline-block;
+  padding: .7em 1em;
+  text-transform: uppercase;
+  font-size: .9em;
+  font-weight: bold;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  position: relative;
+  z-index: 2;
+  cursor: pointer !important;
+  border-color: #fff;
+  background: #d6d8dd; }
+  .browser-window button.button_main_action input {
+    cursor: pointer; }
+  .browser-window button.button_main_action:focus, .browser-window button.button_main_action:active, .browser-window button.active.button_main_action, .browser-window button.button_main_action:hover {
+    outline: none; }
+  .browser-window button.button_main_action:focus, .browser-window button.button_main_action:hover {
+    background: #babdc6; }
+  .browser-window button.button_main_action:active, .browser-window button.active.button_main_action {
+    box-shadow: inset 0 0 1px #464955; }
+  .browser-window button.button_main_action:disabled, .browser-window button.disabled.button_main_action {
+    background: #babdc6 !important;
+    cursor: default !important; }
+
+.browser-window button.button_main_action {
+  color: white !important;
+  background-image: linear-gradient(#72c4b9, #7ccac0); }
+  .browser-window button.button_main_action:focus, .browser-window button.button_main_action:hover {
+    background-image: linear-gradient(#4eb5a7, #58bbaf); }
+  .browser-window button.button_main_action:active {
+    background-image: linear-gradient(#7ccac0, #72c4b9); }
+  .browser-window button.button_main_action:disabled, .browser-window button.disabled.button_main_action {
+    background: #96d3cb !important;
+    cursor: default !important; }
+
 .input-select.document::before, .icon-positioned::before {
   position: absolute;
   font-size: 2.44rem;
@@ -33,6 +72,13 @@
   -ms-transform: translateY(-50%);
   -o-transform: translateY(-50%);
   transform: translateY(-50%); }
+
+.browser-window button.button_main_action {
+  -webkit-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+  -moz-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+  -ms-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+  -o-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all; }
 
 /*++++++++++++++++++++++  General styles for action panel elements +++++++++++++++++++*/
 .ui-widget-content {
@@ -994,6 +1040,11 @@ input:focus + .tooltip_info {
   -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
   border-width: 1px; }
+.browser-window button.button_main_action {
+  font-size: 1.1rem;
+  padding: 7px 14px;
+  font-family: "Coustard";
+  text-transform: uppercase; }
 .browser-window .btn-unlabel-rounded {
   display: inline-block;
   text-indent: 100%;

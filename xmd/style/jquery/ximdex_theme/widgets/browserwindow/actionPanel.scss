@@ -1135,6 +1135,13 @@ input:focus + .tooltip_info{
 		@include boxshadow(inset 0 2px 4px $s_black);
 		border-width: 1px;
 	}
+	button.button_main_action {
+		@extend %button-main-action;
+		font-size: 1.1rem;
+		padding: 7px 14px;
+		font-family: "Coustard";
+		text-transform: uppercase;
+	}
 
 	.btn-unlabel-rounded{
 		display: inline-block;
