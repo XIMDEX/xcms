@@ -27,6 +27,7 @@
 
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
+ModulesManager::file('/inc/parsers/ParsingRng.class.php');
 
 
 
@@ -63,27 +64,12 @@ class Action_managemetadata extends ActionAbstract {
 		$values["typename"] = $info["typename"];
 
 		$values["elements"] = array();
-		// Do switch for selecting correct RNG (images, xmldoc, common)
 		
 		$nodesearch = new Node();
 		$idRelaxNGNode = $mm->getMetadataSchema();
 		if ($idRelaxNGNode) {
-			$relaxNGnode = new Node($idRelaxNGNode);
-			$content = $relaxNGnode->class->buildDefaultContent();
-			$domDoc = new DOMDocument();
-			// The content has not root element in RNG (added one by default)
-	        if ($domDoc->loadXML("<root>".$content."</root>")) {
-	        	$xpathObj = new DOMXPath($domDoc);
-            	$elements = $xpathObj->query("//custom_info/*");
-            	if ($elements->length > 0) {
-            		foreach ($elements as $value) {
-            			$values["elements"][] = array(
-            				'name' => $value->tagName,
-            				'type' => $value->getAttribute("input")
-            			);
-            		}
-	        	}
-			}
+			$rngParser = new ParsingRng();
+			$values['elements'] = $rngParser->buildFormElements($idRelaxNGNode, 'custom_info');
 		}
 
 		// Getting languages
