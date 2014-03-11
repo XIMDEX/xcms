@@ -53,7 +53,16 @@ class MetadataManager{
 
     public function __construct($source_idnode){
             $this->node= new Node($source_idnode);
-            $this->array_metadata=array();
+            // Retrieve metadata nodes associated with $source_idnode
+            $rnm = new RelNodeMetadata();
+            $metadata_container = $rnm->find('idMetadata', "idNode = %s", array($source_idnode), MONO);
+            if ($metadata_container) {
+                $node = new Node($metadata_container[0]);
+                $this->array_metadata = $node->GetChildren();
+            }
+            else {
+                $this->array_metadata = array();
+            }
     }
 
         // getters & setters methods //

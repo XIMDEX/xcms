@@ -90,7 +90,7 @@ class ParsingRng {
         	if ($elements->length > 0) {
         		foreach ($elements as $value) {
         			$form_elements[] = array(
-        				'name' => $value->tagName,
+        				'name' => $value->nodeName,
         				'type' => $value->getAttribute("input")
         			);
         		}
