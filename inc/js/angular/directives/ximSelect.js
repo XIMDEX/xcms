@@ -30,7 +30,8 @@ angular.module('ximdex.common.directive')
                 options: '=ximOptions',
                 selProp: '@ximSelProp',
                 styleProp: '@ximStyleProp',
-                labelProp: '@ximLabelProp'
+                labelProp: '@ximLabelProp',
+                disabled: '=ximDisabled'
             },
             templateUrl: 'inc/js/angular/templates/ximSelect.html',
             restrict: 'E',
@@ -46,9 +47,7 @@ angular.module('ximdex.common.directive')
                         }
                     } else {
                         for (option in scope.options){
-                            console.log(scope.options[option][key], ':::', value);
                             if (scope.options[option][key] == value) {
-                                
                                 return scope.options[option];
                             }
                         }   
@@ -56,7 +55,6 @@ angular.module('ximdex.common.directive')
                 }
 
                 var setSelected = function(key, value, call) {
-                    console.log("setSelected", key, value, call);
                     if (key) {
                         scope.selectedOption = getOption(key, value);
                     } else {
@@ -76,7 +74,6 @@ angular.module('ximdex.common.directive')
                 // model -> view
                 ctrl.$render = function() {
                     setSelected(scope.selProp, ctrl.$viewValue);
-
                 };
                 // load init select value
                 setSelected(scope.selProp, ctrl.$viewValue, true);
