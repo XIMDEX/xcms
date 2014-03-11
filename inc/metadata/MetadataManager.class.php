@@ -28,6 +28,7 @@
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
  }
 
+ModulesManager::file('/inc/log/XMD_log.class.php');
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
@@ -58,18 +59,18 @@ class MetadataManager{
         // getters & setters methods //
 
 /** 
- * Returns the source node id.
+ * Returns the source node object.
  * @param null
- * @return int
+ * @return Object
 */
     public function getSourceNode(){
         return $this->node;    
     }
 
 /** 
- * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $source_idnode
- * @return ...
+ * Returns the schema Id for the current node.
+ * @param null
+ * @return int
 */
     public function getMetadataSchema(){
         $node = new Node($this->node->GetID());
@@ -84,11 +85,14 @@ class MetadataManager{
             case NodetypeService::BINARY_FILE:
                 $name=MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
+            case NodetypeService::TEXT_FILE:
+                $name=MetadataManager::COMMON_METADATA_SCHEMA;
+                break;
             case NodetypeService::XML_DOCUMENT:
                 $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
                 break;
             default:
-                error_log("Type not found: setting the schema to document-metadata.xml");
+                XMD_Log::warn("Type not found: setting the schema to document-metadata.xml");
                 $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
         }
         $schema = new Node();
@@ -150,16 +154,17 @@ class MetadataManager{
                 $languages = $this->getMetadataLanguages();
             }
             else{
-                $languages = $lang;
+                $languages = array($lang);
             }
             $channels = $this->getMetadataChannels();
             //We use the action like a service layer
+            //error_log(print_r($languages,true));
             $this->createXmlContainer($idm,$name,$idSchema,$aliases,$languages,$channels);
             $this->addRelation($name);
         }
         else{
             //$this->updateMetadata(); ¿?
-            error_log("The metadata file $name already exists!");
+            XMD_Log::warn("The metadata file $name already exists!");
         }
     }
 
@@ -248,12 +253,11 @@ class MetadataManager{
  * @return int
 */
     private function createXmlContainer($idNode,$name,$idschema,&$aliases,&$languages,&$channels, $master=null){
-
         $result = true;
         $node = new Node($idNode);
         $idNode = $node->get('IdNode');
         if (!($idNode > 0)) {
-            error_log("An error ocurred estimating parent node, operation will be aborted, contact with your administrator");
+            XMD_Log::error("An error ocurred estimating parent node, operation will be aborted, contact with your administrator");
             $values = array('name' => 'Unknown');
             $result["error"] = $values;
             return $result;
@@ -265,7 +269,7 @@ class MetadataManager{
         $nodeType = new NodeType();
         $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
         if (!($nodeType->get('IdNodeType') > 0)) {
-            error_log("A nodetype could not be estimated to create the container folder, operation will be aborted, contact with your administrator");
+            XMD_Log::error("A nodetype could not be estimated to create the container folder, operation will be aborted, contact with your administrator");
         }
         $data = array(
             'NODETYPENAME' => $nodeType->get('Name'),
@@ -280,7 +284,7 @@ class MetadataManager{
         $idContainer = $result = $baseIO->build($data);
 
         if (!($result > 0)) {
-            error_log("An error ocurred creating the container node");
+            XMD_Log::error("An error ocurred creating the container node");
             $values = array(
             'idNode' => $idNode,
             'nodeName' => $name
@@ -288,7 +292,7 @@ class MetadataManager{
             $result["error"] = $values;
             return $result;
         } else {
-            error_log("Container $name has been successfully created");
+            XMD_Log::info("Container $name has been successfully created");
         }
 
         if ($result && is_array($languages)) {
@@ -297,7 +301,7 @@ class MetadataManager{
             $nodeType = new NodeType();
             $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
             if (!($nodeType->get('IdNodeType') > 0)) {
-                error_log("A nodetype could not be estimated to create the document, operation will be aborted, contact with your administrator");
+                XMD_Log::error("A nodetype could not be estimated to create the document, operation will be aborted, contact with your administrator");
                 // aborts language insertation 
                 $languages = array();
             }
@@ -338,13 +342,18 @@ class MetadataManager{
 
 /** 
  * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $source_idnode
- * @return ...
+ * @param int $idLanguage
+ * @param string $name
+ * @param int $idContainer
+ * @param int $idTemplate
+ * @param array $formChannels
+ * @param array $aliases
+ * @return int
 */
     function _insertLanguage($idLanguage, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels, $aliases) {
         $language = new Language($idLanguage);
         if (!($language->get('IdLanguage') >  0)) {
-            error_log("Language $idLanguage insertion has been aborted because it was not found");
+            XMD_Log::error("Language $idLanguage insertion has been aborted because it was not found");
             return NULL;
         }
         $data = array(
@@ -373,9 +382,9 @@ class MetadataManager{
         $result = $baseIO->build($data);
         if ($result > 0) {
             $insertedNode = new Node($result);
-            error_log("Document ".$insertedNode->get('Name')." has been successfully inserted");
+            XMD_Log::info("Document ".$insertedNode->get('Name')." has been successfully inserted");
         } else {
-            error_log("Insertion of document $name with language ".$language->get('Name')." has failed");
+            XMD_Log::error("Insertion of document $name with language ".$language->get('Name')." has failed");
         }
         return $result;
 
@@ -389,7 +398,7 @@ class MetadataManager{
         $rnm->set('IdMetadata', $idm);
         $res = $rnm->add();
         if($res<0){
-            error_log("Relation betwween nodes not added.");
+            XMD_Log::error("Relation betwween nodes not added.");
         }
         //TODO: move this logic to the RelNodeMetadata class
         else{
@@ -413,7 +422,7 @@ class MetadataManager{
                 $rnvmv->set('idMetadataVersion',$idMetadataVersion);
                 $res2 = $rnvmv->add();
                 if($res<0){
-                    error_log("Relation between versions not added.");
+                    XMD_Log::error("Relation between versions not added.");
                 }
             }
         }
@@ -431,7 +440,7 @@ class MetadataManager{
         $rnm->set('idRel', $id[0]);
         $res = $rnm->delete();
         if($res<0){
-            error_log("Relation between nodes not deleted.");
+            XMD_Log::error("Relation between nodes not deleted.");
         }
         else{
             $rnvmv = new RelNodeVersionMetadataVersion();
@@ -440,7 +449,7 @@ class MetadataManager{
                 $rnvmv->set('id', $id);
                 $res2 = $rnvmv->delete();
                 if($res2<0){
-                    error_log("Relation between versions not deleted.");
+                    XMD_Log::error("Relation between versions not deleted.");
                 }
             }
         }
