@@ -80,7 +80,8 @@
                 replace: true,
                 scope: {
                     nodeId: '=ximNodeId',
-                    selectCallback: '&ximOnSelect'
+                    selectCallback: '&ximOnSelect',
+                    filter: '&ximTagsFilter'
                 },
                 restrict: 'E',
                 templateUrl : 'modules/ximTAGS/actions/setmetadata/template/Angular/xtagsSuggested.html',
@@ -122,8 +123,13 @@
                 },
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-            	    $window.jQuery(element).ontologywidget({
-            			onSelect: function(el) {
+                    selected = [];
+                    for (var i = 0, len = scope.selectedItems.length; i < len; i++) {
+                        selected.push(scope.selectedItems[i].Name);
+                    }
+                    $window.jQuery(element).ontologywidget({
+            			selected: selected,
+                        onSelect: function(el) {
             				scope.$apply(function(){
             					scope.onSelect({ontology:el});
             				});

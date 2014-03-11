@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<div class="ontology-browser-container col1-3" xim-ontology-browser xim-on-select="addOntology(ontology)" xim-on-un-select="removeOntology(ontology)">
+<div class="ontology-browser-container col1-3" xim-ontology-browser xim-on-select="addOntology(ontology)" xim-on-un-select="removeOntology(ontology)" xim-selected-list="documentTags">
   <div class="title-box">{t}Ontology Browser{/t}</div>
   <a class="tree icon" href="#"><span>{t}Tree view{/t}</span></a>
   <a class="text icon" href="#"><span>{t}Text view{/t}</span></a>
