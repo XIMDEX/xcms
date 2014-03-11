@@ -30,7 +30,6 @@ class Tag extends Tags_ORM {
 
 	public function __construct($_tag = null) {
 		parent::__construct();
-
 		if(null != $_tag) {
 			$tag = $this->getTag($_tag);
 			if(!empty($tag) ) {
@@ -43,7 +42,6 @@ class Tag extends Tags_ORM {
 		}
 	}
 
-
 	function getTags() {
 		     return  parent::find(ALL);
 	}
@@ -52,20 +50,20 @@ class Tag extends Tags_ORM {
 		get the max value between all Ximdex tags
 	*/
 	function getMaxValue(){
-                return parent::find('max(Total)');
-        }
+        return parent::find('max(Total)');
+    }
 
 	/**
 		get info about $_tag
 	*/
-	public function getTag($_tag = null) {
+	public function getTag($_tag = null, $namespace = null) {
 
 		if(null == $_tag && is_numeric($this->get("IdTag")) ) {
 			return array("IdTag" => $this->get("IdTag"), "Name" => $this->get("Name"),"Total" => $this->get("Total") );
 		}else if(is_numeric($_tag) ) {
 			return $this->_getTagById($_tag);
-		}else if(null != $_tag)  {
-			return $this->_getTagByName($_tag);
+		}else if(null != $_tag and null != $namespace)  {
+			return $this->_getTagByNameNamespace($_tag, $namespace);
 		}else {
 			return null;
 		}
@@ -86,8 +84,8 @@ class Tag extends Tags_ORM {
 	/**
 		get info about $_tag
 	*/
-	private function _getTagByName($_tagName) {
-       $tag = parent::find(ALL, "Name = '$_tagName'");
+	private function _getTagByNameNamespace($_tagName, $namespace) {
+       $tag = parent::find(ALL, "Name = '".$_tagName."' AND IdNamespace = '".$namespace."'");
        if(!empty($tag)) {
        	return $tag[0];
        }else {
@@ -99,28 +97,27 @@ class Tag extends Tags_ORM {
 	/**
 		save one tag $_tag
 	*/
-	function save($_tag = null,$nemo = null) {
-		//get Data tag
-		if (is_int($nemo)){    
- 	                $idNamespace = $nemo; 
- 	        }else if (is_string($nemo)){ //Supposing nemo 
- 	                $namespace = new Namespaces(); 
- 	                $idNamespace = $namespace->getByNemo($nemo); 
- 		}else{  
- 	        	$idNamespace = false;  
- 	        }
-      		$tag = $this->getTag($_tag);
-
+	function save($_tag = null, $namespace = null) {
+		//get Data tag  
+		
+		$idNamespace = (int)$namespace; 
+      	$tag = $this->getTag($_tag, $namespace);
+      	
   		//Check if tag exists
-		if(empty($tag ) ) { //if tag dont exists
-			 $tag = new Tag();
+		if(empty($tag)) { //if tag dont exists
+			$tag = new Tag();
 		    $tag->set('Name', $_tag);
 		    $tag->set('IdNamespace', $idNamespace);
   		    $tag->set('Total', '1'); //At least, one tag 
 		    return $tag->add();
 		}else { //if tags exists then +1 a the total
-		   $sql = sprintf("UPDATE XimTAGSTags SET Total=Total+1, idNamespace=%d WHERE IdTag=%d",$tag['IdTag'], $idNamespace );
-	  		return $this->execute($sql);
+		   $sql = sprintf("UPDATE XimTAGSTags SET Total=Total+1 WHERE IdTag=%d", $tag['IdTag']);
+	  		$result = $this->execute($sql);
+	  		if ($result) {
+	  			return $tag['IdTag'];
+	  		} else {
+	  			return false;
+	  		}
 		}
 	}
 

@@ -43,9 +43,20 @@ class Action_setmetadata extends ActionAbstract {
 		$tags = new Tag();
 		$max=$tags->getMaxValue();		
 
+		$cloud_tags = array();
+		$cTags = $tags->getTags();
+		
+		foreach ($cTags as $tag) {
+  			$array = array(
+  					"IdTag"=>(int)$tag["IdTag"],
+  					"Name"=>utf8_encode($tag["Name"]),
+  					"IdNamespace"=>(int)$tag["IdNamespace"]
+			);
+  			$cloud_tags[] = $array;
+  		}
+
 	 	$values = array(
-	 		'nube_tags' => $tags->getTags(),
-	 		'cloud_tags' => json_encode($tags->getTags()),
+	 		'cloud_tags' => json_encode($cloud_tags),
 			'max_value' => $max[0][0],
 			'id_node' => $idNode,
 			'go_method' => 'save_metadata',
@@ -56,7 +67,7 @@ class Action_setmetadata extends ActionAbstract {
 	 	//Get the actual tags of the document
 	 	$relTags = new RelTagsNodes();
 	 	$values["tags"] = json_encode($relTags->getTags($idNode));
-
+	 	//error_log(print_r($relTags->getTags($idNode)));
 	 	$node = new Node($idNode);
 	 	$values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
 
@@ -143,7 +154,7 @@ class Action_setmetadata extends ActionAbstract {
 			'messages' => $this->messages->messages,
 		);
 
-		$this->sendJSON($data->tags);
+		$this->sendJSON($values);
  	}
 
 	public function getLocalOntology(){

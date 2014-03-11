@@ -32,10 +32,12 @@ class RelTagsDescriptions extends RelTagsDescriptions_ORM {
 	function getId($_tag, $_type, $_link) {
 	
 		$tag = new Tag();
-		$tag = $tag->getTag($_tag);
+		$tag = $tag->getTag($_tag, $_type);
 		if(null ==  $tag) return null;
 	
-		$rel = parent::find(ALL, "Tag = '".$tag["IdTag"]."' AND Type = '".strtoupper($_type)."'  AND Link = '".strtoupper($_link)."' ");
+		$rel = parent::find(ALL, "Tag = '".$tag["IdTag"]."'");
+
+		
 
        if(!empty($rel)) {
        	return $rel[0];
@@ -51,16 +53,16 @@ class RelTagsDescriptions extends RelTagsDescriptions_ORM {
 		 $_tag = $tag->save($_name, $_type);	
 	
 		 $rel = $this->getId($_name, $_type, $_link, $_description);
-		 
-		 if(!empty($id) ) {
+
+		 if(!empty($rel) ) {
 		 	return $rel["IdTagDescription"];
 		 }else {
-			 $rel = new RelTagsDescriptions();
-			 $rel->set('Type', strtoupper($_type));
-			 $rel->set('Tag', strtoupper($_tag));
-			 $rel->set('Link', $_link);
-			 $rel->set('Description', $_description);
-
+			$rel = new RelTagsDescriptions();
+			$rel->set('Type', strtoupper($_type));
+			$rel->set('Tag', strtoupper($_tag));
+			$rel->set('Link', $_link);
+			$rel->set('Description', $_description);
+			 
 			$id =  $rel->add();
 	 	    return $id;
 		}

@@ -33,28 +33,26 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 		Get Node Tags
 	*/
 	function getTags($_id_node) {
-
 	    $this->ClearError();
 		 $dbObj = new DB();
 
-		$sql = sprintf("SELECT Tag,Name, n.nemo as Type, Link, Description, IdTagDescription FROM XimTAGSTags tag inner join Namespaces n on n.idnamespace=tag.idnamespace , RelTagsNodes rel, RelTagsDescriptions relD WHERE tag.IdTag = relD.Tag AND relD.IdTagDescription = rel.TagDesc AND Node = '%s'", $_id_node); 
+		$sql = sprintf("SELECT Tag, Name, n.idNamespace as Type, Link, Description, IdTagDescription FROM XimTAGSTags tag inner join Namespaces n on n.idNamespace=tag.idNamespace , RelTagsNodes rel, RelTagsDescriptions relD WHERE tag.IdTag = relD.Tag AND relD.IdTagDescription = rel.TagDesc AND Node = '%s'", $_id_node); 
 
-		 $dbObj->Query($sql);
-		 $out = array();
+		$dbObj->Query($sql);
+		$out = array();
 
 		if(!$dbObj->numErr) {
 			while(!$dbObj->EOF) {
-				$i = $dbObj->GetValue("IdTagDescription");
-				$out[$i]["name"] = $dbObj->GetValue("Name");
-				$out[$i]["type"] = $dbObj->GetValue("Type");
-				$out[$i]["link"] = $dbObj->GetValue("Link");
-				$out[$i]["description"] = $dbObj->GetValue("Description");
-				$out[$i]["iddesc"] = $dbObj->GetValue("IdTagDescription");
-				$out[$i]["idtag"] = $dbObj->GetValue("Tag");
+				$out[] = array(
+					"Name" => $dbObj->GetValue("Name"),
+					"IdNamespace" => $dbObj->GetValue("Type"),
+					"link" => $dbObj->GetValue("Link"),
+					"description" => $dbObj->GetValue("Description"),
+					"iddesc" => $dbObj->GetValue("IdTagDescription"),
+					"idtag" => $dbObj->GetValue("Tag")
+				);
 				$dbObj->Next();
 			}
-
-
 			return $out;
 		} else {
 			$this->SetError(5);
@@ -77,11 +75,11 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 		}
 
 	    $rel = $this->find(ALL, "Node = '{$_idNode}' $idtag");
-       if(!empty($rel)) {
-       	return $rel;
-       }else {
-       	return null;
-       }
+       	if(!empty($rel)) {
+       		return $rel;
+       	}else {
+       		return null;
+       	}
 	}
 
 	/**
@@ -90,51 +88,41 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 	function saveAll($_tags = null, $_id_node = 0, $_previous_tags=null) {
 		//save tags
 		//Tags to remove 
-                if(!empty($_previous_tags) ) { 
-                        foreach($_previous_tags as $_tag) { 
-                                if(!empty($_tag) && !empty($_id_node) ) { 
-                                      //remove rel betweeen tag and node 
-                                       $this->removeRel($_tag["iddesc"], $_id_node); 
-                                        //remove tag 
-                                        $tag = new Tag($_tag["idtag"]); 
-                                        $tag->remove(); 
-                                } 
-                        } 
+        if(!empty($_previous_tags) ) { 
+            foreach($_previous_tags as $_tag) { 
+                if(!empty($_tag) && !empty($_id_node) ) { 
+					//remove rel betweeen tag and node 
+					$this->removeRel($_tag["iddesc"], $_id_node); 
+					//remove tag 
+					$tag = new Tag($_tag["idtag"]); 
+					$tag->remove(); 
                 } 
+            } 
+        } 
 		$alltags = '';
 
 		if(!empty($_tags) ) {
 			 $i= 0;
 			 foreach($_tags as $_tag) {
 			 	$rel = new RelTagsDescriptions();
-			 	$relinfo = $rel->getId($_tag["text"], $_tag["type"], $_tag["url"]);
+			 	$relinfo = $rel->getId($_tag->Name, $_tag->IdNamespace, '#');
 				$id = $relinfo["IdTagDescription"];
-
 			 	//if not rel exits between description and tag, try create it
 			 	if(empty($id) ) {
 					//save tag
-			 		$id = $rel->save($_tag["text"], $_tag["type"], $_tag["url"], $_tag["description"], $_tag["idNamespace"]);
-			 	}
-
-
-				//if already rel exits between description and node, try create tags and rel
-			 	if( !empty($_previous_tags) && isset($_previous_tags[$id]) ){//Quitamos el tags de lats_tags
-			 		unset($_previous_tags[$id]);
-			 	}else {
-				 	$this->createRel($id, $_id_node);
-
-				 	//add +1 in tag
-				 	if($relinfo["IdTagDescription"]) {
-					 	$tag = new Tag($_tag["text"]);
-						$tag->save();
-					}
+			 		$id = $rel->save($_tag->Name, $_tag->IdNamespace, '#', '');
+			 	} else {
+					//if already rel exits between description and node, try create tags and rel
+			 		if(!empty($_previous_tags) && isset($_previous_tags[$id])){
+			 			//Quitamos el tags de lats_tags
+			 			unset($_previous_tags[$id]);
+				 	}			
 				}
-
+				$this->createRel($id, $_id_node);
 			 	if($i != 0) $alltags .= ",";
 
 			 	//add tag to alltags
-			 	$alltags .= $_tag["text"];
-
+			 	$alltags .= $_tag->Name;
 			 	$i++;
 			 }
 		}
