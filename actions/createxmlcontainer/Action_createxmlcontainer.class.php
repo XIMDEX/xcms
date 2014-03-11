@@ -67,8 +67,12 @@ class Action_createxmlcontainer extends ActionAbstract {
 		$schemaArray = array();
 		if (!is_null($schemes)) {
 			foreach ($schemes as $idSchema) {
-				$sch = new Node($idSchema);
-				$schemaArray[] = array('idSchema' => $idSchema, 'Name' => $sch->get('Name'));
+                $np = new NodeProperty();
+                $res = $np->find('IdNodeProperty','IdNode = %s AND Property = %s AND Value = %s', array($idSchema,'SchemaType','metadata_schema'));
+                if(!$res){
+				    $sch = new Node($idSchema);
+				    $schemaArray[] = array('idSchema' => $idSchema, 'Name' => $sch->get('Name'));
+                }
 			}
 		}
 
@@ -86,10 +90,8 @@ class Action_createxmlcontainer extends ActionAbstract {
 			$reloadTree = true;
 		}
 
-//		$this->reloadNode($idNode);
 		$values = array(
 			'idNode' => $idNode,
-			//'nodetype' => $nt,
 			'nodeName' => htmlentities($node->get('Name')),
 			'schemes' => $schemaArray,
 			'channels' => $channels,
@@ -97,25 +99,23 @@ class Action_createxmlcontainer extends ActionAbstract {
 			'go_method' => 'createxmlcontainer',
 			'reload_tree' => $reloadTree
 		);
-
 		$this->render($values, null, 'default-3.0.tpl');
+    }
 
-    	}
+    function createxmlcontainer() {
 
-    	function createxmlcontainer() {
-
-    		$idNode = $this->request->getParam('nodeid');
-    		$node = new Node($idNode);
-    		$idNode = $node->get('IdNode');
+    	$idNode = $this->request->getParam('nodeid');
+    	$node = new Node($idNode);
+    	$idNode = $node->get('IdNode');
 		$formChannels = array();
 	
-    		if (!($idNode > 0)) {
-    			$this->messages->add(_('An error ocurred estimating parent node,')
+    	if (!($idNode > 0)) {
+    		$this->messages->add(_('An error ocurred estimating parent node,')
     			._(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
-    			$values = array('name' => 'Desconocido','messages' => $this->messages->messages);
-    			$this->render($values, null, 'messages.tpl');
-    			return false;
-    		}
+    		$values = array('name' => 'Desconocido','messages' => $this->messages->messages);
+    		$this->render($values, null, 'messages.tpl');
+    		return false;
+    	}
 
     		$aliases = $this->request->getParam('aliases');
     		$name = $this->request->getParam('name');
@@ -142,7 +142,6 @@ class Action_createxmlcontainer extends ActionAbstract {
         	$baseIO = new baseIO();
         	$idContainer = $result = $baseIO->build($data);
 
-//		$this->reloadNode($idNode);
 
         	if (!($result > 0)) {
         		$this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
@@ -170,7 +169,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 	    		if (!($nodeType->get('IdNodeType') > 0)) {
 	    			$this->messages->add(_('A nodetype could not be estimated to create the document,')
 	    			. _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
-	    			// aborts language insertation 
+	    			// aborts language insertion 
 	    			$languages = array();
 	    		}
 
@@ -205,9 +204,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 				$slaveNode->update();
 			}
 		}
-
 		$this->reloadNode($idNode);
-
 
 		$values = array(
 			'messages' => $this->messages->messages,
