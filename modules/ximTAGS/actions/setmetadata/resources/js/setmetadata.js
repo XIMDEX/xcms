@@ -1,6 +1,6 @@
  if (angular.module('ximdex').notRegistred('XTagsCtrl')){
     angular.module('ximdex')
-        .controllerProvider.register('XTagsCtrl', ['$scope', '$attrs', 'xBackend', 'xTranslate', '$window', '$http', 'xUrlHelper', function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper){
+        .controllerProvider.register('XTagsCtrl', ['$scope', '$attrs', 'xBackend', 'xTranslate', '$window', '$http', 'xUrlHelper', '$timeout', function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, $timeout){
         	$scope.documentTags = [];
         	$scope.cloudTags = [];
             $scope.namespaces = {};
@@ -8,33 +8,67 @@
             $scope.submitLabel = xTranslate('common.save');
             $scope.newTag = {IdNamespace: '1'};
         	
+            $scope.tagExistInArray = function(tag, array) {
+                for (var i = 0, len = array.length; i < len; i++){
+                    if (tag.Name == array[i].Name && tag.IdNamespace == array[i].IdNamespace) {
+                        return array[i];
+                    }
+                }
+                return false;
+            }
+
+            $scope.hideSelected = function(selectedItems, array) {
+                for (var i = 0, len = array.length; i < len; i++){
+                    var docTag = $scope.tagExistInArray(array[i], selectedItems);
+                    if (docTag) {
+                        array[i] = docTag;
+                        array[i].selected = true;
+                    }
+                }   
+            }
+
+            $scope.selectedCount = function(array) {
+                var count = 0;
+                for (var i = 0, len = array.length; i < len; i++)
+                    if (array[i].selected)
+                        count++;
+                return count;    
+            }
+
             if ($attrs.ximDocumentTags)
                 $scope.documentTags = angular.fromJson($attrs.ximDocumentTags);
             
-            if ($attrs.ximCloudTags)
+            if ($attrs.ximCloudTags) {
                 $scope.cloudTags = angular.fromJson($attrs.ximCloudTags);
+                $scope.hideSelected($scope.documentTags, $scope.cloudTags);
+            }
             
-            if ($attrs.ximNamespaces)
+            if ($attrs.ximNamespaces) {
                 var namespaces = angular.fromJson($attrs.ximNamespaces);
-                for (i = 0, len = namespaces.length; i < len; i++){
+                for (var i = 0, len = namespaces.length; i < len; i++){
                     $scope.namespaces[namespaces[i].id] = namespaces[i];
                 }
+            }
 
             $scope.addTag = function(tag){
-            	if (tag.isSemantic) {
-                    for (key in $scope.namespaces){
-                        if ($scope.namespaces[key].nemo === tag.type) {
-                            tag.IdNamespace = $scope.namespaces[key].id;
-                            break;
+                if (!$scope.tagExistInArray(tag, $scope.documentTags)) {	
+                    if (tag.isSemantic) {
+                        for (var key in $scope.namespaces){
+                            if ($scope.namespaces[key].nemo === tag.type) {
+                                tag.IdNamespace = $scope.namespaces[key].id;
+                                break;
+                            }
                         }
                     }
+                    $scope.dirty = true;
+                    tag.selected = true;
+                	$scope.documentTags.push(tag);
                 }
-                tag.selected = true;
-            	$scope.documentTags.push(tag);
             }
 
             $scope.removeTag = function(index) {
-            	$scope.documentTags[index].selected = false;
+            	$scope.dirty = true;
+                $scope.documentTags[index].selected = false;
             	$scope.documentTags.splice(index, 1);
             }
 
@@ -52,22 +86,33 @@
             }
 
             $scope.removeOntology = function(ontology) {
-            	for (var i=0; i < $scope.documentTags.lentgh; i++) {
-            		if ($scope.documentTags[i].Name === ontology.name) {
+                for (var i = 0, len = $scope.documentTags.length; i < len; i++){
+                    if ($scope.documentTags[i].Name === ontology.name) {
             			$scope.removeTag(i);	
                         break; 
                     }
                     
             	}
             }
+
             $scope.saveTags = function(tags) {
-                console.log($attrs.action, tags);
+                
+                $scope.submitState = 'submitting'
                 $http.post($attrs.action, {tags:tags})
                     .success(function(data){
-                        console.log("success", data);
+                        $scope.submitState = 'success'
+                        $scope.dirty = false;
+                        $scope.submitMessages = data.messages;
+                        $timeout(function(){
+                            $scope.submitMessages = null;
+                        }, 4000);
                     })
                     .error(function(data){
-                        console.log("error", data);
+                        $scope.submitState = 'error'
+                        $scope.submitMessages = data.messages;
+                        $timeout(function(){
+                            $scope.submitMessages = null;
+                        }, 4000);
                     });
             }
    

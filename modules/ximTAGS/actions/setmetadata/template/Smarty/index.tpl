@@ -30,18 +30,23 @@
 	xim-namespaces='{$namespaces}'
 	xim-node-id="{$id_node}" 
 	ng-cloak>
-	<div class="action_header">
+	<div class="action_header" ng-hide="submitMessages.length">
 		<h2>{t}Tag this node{/t}</h2>
 		<fieldset class="buttons-form">
-			<button class=""
+			<button class="button_main_action"
 				xim-button
-				ximState="submitState"
-				ximLabel="submitLabel"
-				ng-click="saveTags(documentTags)">
+				xim-state="submitState"
+				xim-label="submitLabel"
+				ng-click="saveTags(documentTags)"
+				xim-disabled="!dirty">
 			</button>
 		</fieldset>
 	</div>
-
+	<div class="message" ng-show="submitMessages.length">
+	    <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
+	        #/message.message/#
+	    </p>
+	</div>
 	<div class="action_content">
 		<div class="xim-tagsinput-container-list">
 			<div class="xim-tagsinput-newtag  col2-3">
@@ -53,8 +58,8 @@
 					xim-sel-prop="id"
 					ng-init="newTag.IdNamespace = namespaces['1'].id">
 				</xim-select>
-				<input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name"/>
-				<button type="button" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()">{t}Add{/t}</button>
+				<input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}"/>
+				<button type="button" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)">{t}Add{/t}</button>
 			</div>
 	    </div>
 		<div class="xim-tagsinput-container col2-3">
@@ -66,7 +71,8 @@
 						xim-options="namespaces"
 						xim-label-prop="type"
 						xim-style-prop="nemo"
-						xim-sel-prop="id">
+						xim-sel-prop="id"
+						xim-disabled="tag.isSemantic">
 					</xim-select>
 					<span class="xim-tagsinput-text" data-tooltip="#/tag.Name/#">
 					#/tag.Name/#
@@ -81,7 +87,7 @@
 		
 		<div class="suggested col1-3">
 			<xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId"></xtags-suggested>
-			<div class="tagcloud xim-tagsinput-container-related" ng-show="cloudTags.length">
+			<div class="tagcloud xim-tagsinput-container-related" ng-show="cloudTags.length && cloudTags.length != selectedCount(cloudTags)">
 				<div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
 				<ul class="nube_tags">
 					<li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in cloudTags" ng-click="addTag(tag)" ng-hide="tag.selected">
