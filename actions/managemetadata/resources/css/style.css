@@ -26,9 +26,6 @@
 .hidden-focus:checked + .reduced_label::before {
   content: "\79"; }
 
-.metadata_action .empty_state .title::before, .metadata_action .empty_state .title::after {
-  content: "\6c"; }
-
 .text_label {
   position: absolute;
   bottom: .5em;
@@ -246,7 +243,7 @@ textarea {
       left: -1.6em;
       padding: .2em .2em .2em 1.9em;
       z-index: 2;
-      bottom: .3em;
+      top: 0;
       -webkit-box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5);
       -moz-box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5);
       box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5); }

@@ -67,14 +67,9 @@
                          <p>
                             <label for="languages_metadata[{$l.IdLanguage}][{$e.name}]" class="label_title">{t}{$e.name|upper}{/t}</label>
                             {if $e.type == 'text'}
-                                <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size"
-                                    ng-model="metadata.languages_metadata.{$l.IdLanguage}.{$e.name}"
-                                    ng-init="metadata.languages_metadata.{$l.IdLanguage}.author = '{$languages_metadata[$l.IdLanguage].author}'">
+                                <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size" value="{$languages_metadata[$l.IdLanguage][$e.name]}">
                             {elseif $e.type == 'textarea'}
-                                <textarea name="languages_metadata[{$l.IdLanguage}][{$e.name}]" id="" cols="30" rows="9" class="full_size"
-                                    ng-model="metadata.languages_metadata.{$l.IdLanguage}.{$e.name}"
-                                    ng-init="metadata.languages_metadata.{$l.IdLanguage}.{$e.name} = '{$languages_metadata[$l.IdLanguage].$e.name}'">
-                                    </textarea>
+                                <textarea name="languages_metadata[{$l.IdLanguage}][{$e.name}]" id="" cols="30" rows="9" class="full_size">{$languages_metadata[$l.IdLanguage][$e.name]}</textarea>
                             {else}
                                 <br/>
                             {/if}
