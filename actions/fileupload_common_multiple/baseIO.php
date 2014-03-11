@@ -24,12 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
- 
-
-
 function baseIO_uploadFile($fileName,$typeName,$nodeID,$filePath){
 	$nodeType = new NodeType();
 	$nodeType->SetByName($typeName);
