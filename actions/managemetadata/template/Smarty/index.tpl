@@ -62,8 +62,9 @@
                 {foreach from=$languages item=l}
                     <div class="js_form_section" id="language_selector_{$l.IdLanguage}" 
                         ng-show="defaultLanguage == {$l.IdLanguage}">
-                        <p>
+                       
                         {foreach from=$elements item=e}
+                         <p>
                             <label for="languages_metadata[{$l.IdLanguage}][{$e.name}]" class="label_title">{t}{$e.name|upper}{/t}</label>
                             {if $e.type == 'text'}
                                 <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size"
@@ -77,8 +78,9 @@
                             {else}
                                 <br/>
                             {/if}
+                              </p>
                         {/foreach}
-                        <p>
+                      
                     </div>
                 {/foreach}
             </div>
@@ -90,21 +92,23 @@
             <h4>{t}System metadata info{/t}</h4>
 
             <br>
-            <img src="http://placehold.it/200x125/c2d43b/464646/&text={$typename}" alt="Thumbnail image">
+            <img src="http://placehold.it/200x125/7bcabf/464646/&text={$typename}" alt="Thumbnail image" class="thumbnail_item">
 
             <div class="name_info"
                 ng-init="dataset.issued = '{$issued}'">
                 <h3>{t}Name [NodeID]{/t}</h3>
-                <p>{$nodename} [{$nodeid}]</p>
+                <p>{$nodename} <span class="nodeid">[{$nodeid}]</span></p>
             </div>
             <div class="version_info"
                 ng-init="dataset.modified = '{$modified}'">
                 <h3>{t}Version{/t}</h3>
                 <p>{$nodeversion}</p>
             </div>
-            <div class="path_info">
+            <div class="path_info" data-path="{$nodepath}" >
                 <h3>{t}Path{/t}</h3>
-                <p data-path="{$nodepath}">{$nodepath}</p>
+                <div class="path_mask">
+                <p data-path="{$nodepath}" class="path_uri">{$nodepath}</p>
+                </div>
             </div>
         </div>
                 

@@ -26,6 +26,9 @@
 .hidden-focus:checked + .reduced_label::before {
   content: "\79"; }
 
+.metadata_action .empty_state .title::before, .metadata_action .empty_state .title::after {
+  content: "\6c"; }
+
 .text_label {
   position: absolute;
   bottom: .5em;
@@ -110,21 +113,28 @@ textarea {
 
 .metadata_info {
   background: #464646;
-  padding: 1em 1.5em 2em 1.5em;
+  padding: 1em 1.5em;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   color: #fff; }
+  .metadata_info > div {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: .5em; }
+    .metadata_info > div:first-of-type {
+      border-top: none;
+      margin-top: 1em; }
   .metadata_info h3, .metadata_info h3 label {
     text-transform: uppercase;
     font-family: "Ubuntu Condensed";
     font-size: 1.3rem;
     color: #fff;
-    padding-bottom: .5em; }
+    padding-bottom: .1em;
+    padding-top: 1em; }
   .metadata_info h4 {
     color: #fff;
     padding-bottom: .5em;
-    border-bottom: 3px solid #c2d43b; }
+    border-bottom: 3px solid #7bcabf; }
   .metadata_info input:focus, .metadata_info .hidden-focus:focus + label, .metadata_info .hidden-focus:checked:focus + label {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -169,7 +179,78 @@ textarea {
     position: absolute;
     right: -8.5%; }
 
-.path_info p {
-  width: 100%;
-  text-overflow: ellipsis;
+.thumbnail_item {
+  display: block;
+  margin: auto;
+  max-width: 100%; }
+
+.nodeid {
+  color: #7bcabf; }
+
+/**************
+// Ellipsis Path
+***************/
+.path_info {
+  position: relative;
   overflow: hidden; }
+  .path_info:hover {
+    overflow: visible; }
+  .path_info::before {
+    content: attr(data-path);
+    position: absolute;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2;
+    bottom: -2em;
+    right: -.8em;
+    padding: .3em .8em;
+    -ms-word-wrap: break-word;
+    word-wrap: break-word;
+    white-space: nowrap;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    opacity: 0;
+    overflow: hidden;
+    -webkit-transition: all .3s .35s;
+    -moz-transition: all .3s .35s;
+    -ms-transition: all .3s .35s;
+    -o-transition: all .3s .35s;
+    transition: all .3s .35s;
+    -webkit-box-shadow: 0 2px 1px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 2px 1px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.5); }
+  .path_info::after {
+    content: "";
+    border: .5em solid transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    bottom: -.1em;
+    right: 1.6em;
+    opacity: 0;
+    -webkit-transition: all .3s .35s;
+    -moz-transition: all .3s .35s;
+    -ms-transition: all .3s .35s;
+    -o-transition: all .3s .35s;
+    transition: all .3s .35s; }
+  .path_info:hover::before, .path_info:hover::after {
+    opacity: 1; }
+  .path_info .path_mask {
+    overflow: hidden;
+    position: relative;
+    height: 2em; }
+    .path_info .path_mask::before {
+      content: "...";
+      position: absolute;
+      background: #464646;
+      left: -1.6em;
+      padding: .2em .2em .2em 1.9em;
+      z-index: 2;
+      bottom: .3em;
+      -webkit-box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5);
+      -moz-box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5);
+      box-shadow: 2px 0 2px rgba(70, 70, 70, 0.5); }
+  .path_info .path_uri {
+    position: absolute;
+    right: 0;
+    white-space: nowrap; }
