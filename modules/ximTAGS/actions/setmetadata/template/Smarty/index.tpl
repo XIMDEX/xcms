@@ -74,11 +74,10 @@
 						xim-sel-prop="id"
 						xim-disabled="tag.isSemantic">
 					</xim-select>
-					<span class="xim-tagsinput-text" data-tooltip="#/tag.Name/#">
+					<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
 					#/tag.Name/#
 					</span>
-<!-- 					<span class="amount">#/tag.Total/#</span> -->
-					{* <a class="xim-tagsinput-tag-properties" href="#"> &infin; </a> *}
+ 					<a ng-href="#/namespaces[tag.IdNamespace].uri/#">#/namespaces[tag.IdNamespace].type/#</a>
 					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
 				</li>
 				<p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
