@@ -327,7 +327,6 @@ class AbstractStructuredDocument extends FileNode  {
 		if(ModulesManager::isEnabled('ximTAGS')){
 			$rtn= new RelTagsNodes();
 			$nodeTags=$rtn->getTags($this->nodeID);
-            error_log(print_r($nodeTags,true));
 			if(!empty($nodeTags)){
 				foreach($nodeTags as $tag){
                     $ns = new Namespaces();
