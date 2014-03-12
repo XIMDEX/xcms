@@ -143,7 +143,6 @@ class BaseIO {
 
 
 	protected function createNode($data, $metaType, $nodeTypeClass, $nodeTypeName){
-        error_log("Creamos nodo del tipo: $metaType");
 		switch ($metaType) {
 			/* folder nodes */
 			case 'FOLDERNODE' :

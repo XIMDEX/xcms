@@ -82,14 +82,6 @@ class AbstractStructuredDocument extends FileNode  {
 		if ($nodeContainer->HasError())
 			$this->parent->SetError(5);
 
-        //Metadata generation
-        $node = new Node($this->nodeID);
-        if(strcmp($node->get("IdNodeType"),NodetypeService::XML_DOCUMENT)==0){
-            $mm = new MetadataManager($this->nodeID);
-            //only create a structured metadata doc in the same language
-            $mm->generateMetadata($IdLanguage);
-        }
-
 		$this->updatePath();
 	}
 

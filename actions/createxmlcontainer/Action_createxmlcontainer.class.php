@@ -24,13 +24,11 @@
  *  @version $Revision$
  */
 
-
-
+ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/model/language.inc');
 ModulesManager::file('/inc/model/channel.inc');
-
 
 class Action_createxmlcontainer extends ActionAbstract {
 
@@ -142,7 +140,6 @@ class Action_createxmlcontainer extends ActionAbstract {
         	$baseIO = new baseIO();
         	$idContainer = $result = $baseIO->build($data);
 
-
         	if (!($result > 0)) {
         		$this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
         		foreach ($baseIO->messages->messages as $message) {
@@ -194,11 +191,13 @@ class Action_createxmlcontainer extends ActionAbstract {
 					}
 				}
 			}
+
+            $mm = new MetadataManager($idContainer);
+            $mm->generateMetadata($languages);
 			
 			foreach ($setSymLinks as $idNodeToLink) {
 				$structuredDocument = new StructuredDocument($idNodeToLink);
 				$structuredDocument->SetSymLink($idNodeMaster);
-
 				$slaveNode = new Node($idNodeToLink);
 				$slaveNode->set('SharedWorkflow', $idNodeMaster);
 				$slaveNode->update();

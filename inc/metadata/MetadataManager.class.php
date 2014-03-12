@@ -49,20 +49,20 @@ class MetadataManager{
     private $array_metadata;
 
 
-        // constructor method //
+    // constructor method //
 
     public function __construct($source_idnode){
-            $this->node= new Node($source_idnode);
-            // Retrieve metadata nodes associated with $source_idnode
-            $rnm = new RelNodeMetadata();
-            $metadata_container = $rnm->find('idMetadata', "idNode = %s", array($source_idnode), MONO);
-            if ($metadata_container) {
-                $node = new Node($metadata_container[0]);
-                $this->array_metadata = $node->GetChildren();
-            }
-            else {
-                $this->array_metadata = array();
-            }
+        $this->node= new Node($source_idnode);
+        // Retrieve metadata nodes associated with $source_idnode
+        $rnm = new RelNodeMetadata();
+        $metadata_container = $rnm->find('idMetadata', "idNode = %s", array($source_idnode), MONO);
+        if ($metadata_container) {
+            $node = new Node($metadata_container[0]);
+            $this->array_metadata = $node->GetChildren();
+        }
+        else {
+            $this->array_metadata = array();
+        }
     }
 
         // getters & setters methods //
@@ -97,11 +97,11 @@ class MetadataManager{
             case NodetypeService::TEXT_FILE:
                 $name=MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
-            case NodetypeService::XML_DOCUMENT:
+            case NodetypeService::XML_CONTAINER:
                 $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
                 break;
             default:
-                XMD_Log::warn("Type not found: setting the schema to document-metadata.xml");
+                XMD_Log::warning("Type not found: setting the schema to document-metadata.xml");
                 $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
         }
         $schema = new Node();
@@ -110,9 +110,9 @@ class MetadataManager{
     }
 
 /** 
- * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $source_idnode
- * @return ...
+ * Returns the array with all the metadata files for a given idnode.
+ * @param null 
+ * @return array 
 */
     public function getMetadataNodes(){
         return $this->array_metadata;    
@@ -163,7 +163,8 @@ class MetadataManager{
                 $languages = $this->getMetadataLanguages();
             }
             else{
-                $languages = array($lang);
+                //$languages = array($lang);
+                $languages = $lang;
             }
             $channels = $this->getMetadataChannels();
             //We use the action like a service layer
@@ -173,7 +174,7 @@ class MetadataManager{
         }
         else{
             //$this->updateMetadata(); ¿?
-            XMD_Log::warn("The metadata file $name already exists!");
+            XMD_Log::warning("The metadata file $name already exists!");
         }
     }
 
@@ -315,7 +316,6 @@ class MetadataManager{
                 $languages = array();
             }
 
-
             foreach ($channels as $idChannel) {
                 $formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
             }
@@ -339,13 +339,11 @@ class MetadataManager{
             foreach ($setSymLinks as $idNodeToLink) {
                 $structuredDocument = new StructuredDocument($idNodeToLink);
                 $structuredDocument->SetSymLink($idNodeMaster);
-
                 $slaveNode = new Node($idNodeToLink);
                 $slaveNode->set('SharedWorkflow', $idNodeMaster);
                 $slaveNode->update();
             }
         }
-
         return true;
     }
 
@@ -407,31 +405,72 @@ class MetadataManager{
         $rnm->set('IdMetadata', $idm);
         $res = $rnm->add();
         if($res<0){
-            XMD_Log::error("Relation betwween nodes not added.");
+            XMD_Log::error("Relation between nodes not added.");
         }
         //TODO: move this logic to the RelNodeMetadata class
+        //For structured documents, the association between versions have to be more accurate.
         else{
-            //getting the source node's last version id
-            $dtf = New DataFactory($this->node->GetID());
-            $idNodeVersion = $dtf->GetLastVersionId();
-
-            //getting all the language children
+            $sourceNode = new Node($this->node->GetID());
             $idmNode = new Node($idm);
-            $metadocs = $idmNode->GetChildren();
-            foreach($metadocs as $idMetadataLanguage){
+            $pairs=array();
 
-                //getting the last version of each child.
-                $dtf = New DataFactory($idMetadataLanguage);
-                $idMetadataVersion = $dtf->GetLastVersionId();
+            if($sourceNode->nodeType->GetID()==NodetypeService::XML_CONTAINER){
+                $children = $sourceNode->GetChildren();
+                //insert the structured documents ids
+                foreach($children as $child){
+                    $sd = new StructuredDocument($child);
+                    $l = $sd->GetLanguage();
+                    $pairs[$l]["nv"]=$child;        
+                }
+                //insert the metadata files ids
+                $metadocs = $idmNode->GetChildren();
+                foreach($metadocs as $idMetadataLanguage){
+                    $sd = new StructuredDocument($idMetadataLanguage);
+                    $l = $sd->GetLanguage();
+                    $pairs[$l]["mv"]=$idMetadataLanguage;        
+                }
+                //adding relations between versions
+                foreach($pairs as $lang => $nodes){
+                    // version for the node
+                    $dtf = New DataFactory($nodes["nv"]);
+                    $idNodeVersion = $dtf->GetLastVersionId();
+                    // version for the metadata 
+                    $dtf = New DataFactory($nodes["mv"]);
+                    $idMetadataVersion = $dtf->GetLastVersionId();
 
-                //adding the info
-                $rnvmv = new RelNodeVersionMetadataVersion();
-                $rnvmv->set('idrnm',$res);
-                $rnvmv->set('idNodeVersion',$idNodeVersion);
-                $rnvmv->set('idMetadataVersion',$idMetadataVersion);
-                $res2 = $rnvmv->add();
-                if($res<0){
-                    XMD_Log::error("Relation between versions not added.");
+                    //adding the info
+                    $rnvmv = new RelNodeVersionMetadataVersion();
+                    $rnvmv->set('idrnm',$res);
+                    $rnvmv->set('idNodeVersion',$idNodeVersion);
+                    $rnvmv->set('idMetadataVersion',$idMetadataVersion);
+                    $res2 = $rnvmv->add();
+                    if($res<0){
+                        XMD_Log::error("Relation between versions of nodes [".$nodes['nv']." - ".$nodes['mv']."] not added.");
+                    }
+                }
+            }
+            else{
+                //getting the source node's last version id
+                $dtf = New DataFactory($this->node->GetID());
+                $idNodeVersion = $dtf->GetLastVersionId();
+
+                //getting all the language children
+                $metadocs = $idmNode->GetChildren();
+                foreach($metadocs as $idMetadataLanguage){
+
+                    //getting the last version of each child.
+                    $dtf = New DataFactory($idMetadataLanguage);
+                    $idMetadataVersion = $dtf->GetLastVersionId();
+
+                    //adding the info
+                    $rnvmv = new RelNodeVersionMetadataVersion();
+                    $rnvmv->set('idrnm',$res);
+                    $rnvmv->set('idNodeVersion',$idNodeVersion);
+                    $rnvmv->set('idMetadataVersion',$idMetadataVersion);
+                    $res2 = $rnvmv->add();
+                    if($res<0){
+                        XMD_Log::error("Relation between versions not added.");
+                    }
                 }
             }
         }
