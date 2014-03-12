@@ -35,6 +35,15 @@
                 return count;    
             }
 
+            $scope.getNamespaceId = function(nemo) {
+                for (namespace in $scope.namespaces) {
+                    if (nemo == $scope.namespaces[namespace].nemo) {
+                        return namespace;
+                    }
+                }
+                return false;
+            }
+
             if ($attrs.ximDocumentTags)
                 $scope.documentTags = angular.fromJson($attrs.ximDocumentTags);
             
@@ -74,14 +83,14 @@
 
             $scope.addNewTag = function() {
             	$scope.addTag(angular.copy($scope.newTag));
-            	$scope.newTag = {IdNamespace: '1'};
+            	$scope.newTag = {IdNamespace: $scope.getNamespaceId('custom')};
             }
 
             $scope.addOntology = function(ontology){
                 $scope.addTag({
                     Name: ontology.name, 
                     structured: true,
-                    IdNamespace: '2'
+                    IdNamespace: $scope.getNamespaceId('structured')
                 });
             }
 
