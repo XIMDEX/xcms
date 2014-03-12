@@ -6,8 +6,7 @@
             $scope.namespaces = {};
         	$scope.nodeId = $attrs.ximNodeId;
             $scope.submitLabel = xTranslate('common.save');
-            $scope.newTag = {IdNamespace: '1'};
-        	
+            
             $scope.tagExistInArray = function(tag, array) {
                 for (var i = 0, len = array.length; i < len; i++){
                     if (tag.Name == array[i].Name && tag.IdNamespace == array[i].IdNamespace) {
@@ -43,6 +42,8 @@
                 }
                 return false;
             }
+
+            $scope.newTag = {IdNamespace: $scope.getNamespaceId('custom')};
 
             if ($attrs.ximDocumentTags)
                 $scope.documentTags = angular.fromJson($attrs.ximDocumentTags);
