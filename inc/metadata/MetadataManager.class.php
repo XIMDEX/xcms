@@ -493,11 +493,13 @@ class MetadataManager{
         else{
             $rnvmv = new RelNodeVersionMetadataVersion();
             $ids=$rnvmv->find("id","idrnm=%s",array($id[0]),MONO);
-            foreach($ids as $id){
-                $rnvmv->set('id', $id);
-                $res2 = $rnvmv->delete();
-                if($res2<0){
-                    XMD_Log::error("Relation between versions not deleted.");
+            if(count($ids)>0){
+                foreach($ids as $id){
+                    $rnvmv->set('id', $id);
+                    $res2 = $rnvmv->delete();
+                    if($res2<0){
+                        XMD_Log::error("Relation between versions not deleted.");
+                    }
                 }
             }
         }
