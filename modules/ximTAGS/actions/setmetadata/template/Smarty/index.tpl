@@ -85,7 +85,9 @@
 	    </div>
 		
 		<div class="suggested col1-3">
-			<xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId"></xtags-suggested>
+			{if $isStructuredDocument}
+				<xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId"></xtags-suggested>
+			{/if}
 			<div class="tagcloud xim-tagsinput-container-related" ng-show="cloudTags.length && cloudTags.length != selectedCount(cloudTags)">
 				<div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
 				<ul class="nube_tags">
