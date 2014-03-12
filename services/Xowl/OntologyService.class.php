@@ -107,9 +107,7 @@ class OntologyService {
 			$result["status"] = "ok";
 			return $result;
 		}
-
-		return $false;
-	
+		return false;
 	}
 
 
