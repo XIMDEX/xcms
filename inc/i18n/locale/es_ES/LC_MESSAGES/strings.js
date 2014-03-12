@@ -38,5 +38,14 @@ X.i18nStrings = {
 				}
 			}
 		}
-	}
+	},
+    "xtags":{
+            "actions":{
+                    "setmetadata":{
+                            "semantic":{
+                                "title": "Etiquetas semánticas"
+                                   }
+                        }
+                }
+        }
 }

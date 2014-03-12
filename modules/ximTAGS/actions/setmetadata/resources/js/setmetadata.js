@@ -141,7 +141,7 @@
                 templateUrl : 'modules/ximTAGS/actions/setmetadata/template/Angular/xtagsSuggested.html',
                 controller: ['$scope', '$element', '$attrs', '$http', 'xUrlHelper', function($scope, $element, $attrs, $http, xUrlHelper){   
                 	
-                	var url = xUrlHelper.baseUrl()+'?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent';
+                	var url = xUrlHelper.baseUrl()+'/?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent';
                 	
                 	//Fetch suggested tags from backend
                     $http.get(url+'&nodeid='+$scope.nodeId).success(function(data){
