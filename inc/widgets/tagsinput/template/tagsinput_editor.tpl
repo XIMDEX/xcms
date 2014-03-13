@@ -36,17 +36,10 @@
 			Tags
 	</h3>
 
-	<div class="xim-tagsinput-container" id="{$id}"  style="display:none">
-	    <div class="xim-tagsinput-container-list">
+	<div class="xim-tagsinput-container editor_tags" id="{$id}"  style="display:none">
+	    <div class="xim-tagsinput-container-list ">
 		    <ul class="xim-tagsinput-list" style="clear:both;">
-				<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in documentTags">
-					<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
-					#/tag.Name/#
-					</span>
-						<a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link">#/namespaces[tag.IdNamespace].type/#</a>
-					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
-				</li>
-		        <li class="xim-tagsinput-newtag">
+  			<li class="xim-tagsinput-newtag">
 		        	<xim-select class="tag-type btn-rounded"
 						ng-model="newTag.IdNamespace"
 						xim-options="namespaces"
@@ -55,9 +48,19 @@
 						xim-sel-prop="id"
 						ng-init="newTag.IdNamespace = namespaces['1'].id">
 					</xim-select>
-					<input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-keyup="keyPress($event)"/>
+					<input type="text" class="xim-tagsinput-input editor_input_tags" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-keyup="keyPress($event)"/>
 					<button type="button" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)">{t}Add{/t}</button>
-		     	</li>
+		     	</li>		    	
+				<div class="tags_container">
+					<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in documentTags">
+						<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
+						#/tag.Name/#
+						</span>
+							<a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link">#/namespaces[tag.IdNamespace].type/#</a>
+						<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
+					</li>
+				</div>
+		      
 		    </ul>
 		</div>
 	</div>

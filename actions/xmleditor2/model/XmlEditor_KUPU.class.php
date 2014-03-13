@@ -268,8 +268,9 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/views/common/css/xlinks.css',
 //future		$actionURL . '/views/common/css/colorpicker.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
-			Config::getValue('UrlRoot') .'/inc/widgets/select/js/ximdex.select.js',
+			Config::getValue('UrlRoot') .'/inc/widgets/select/css/ximdex.select.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
+			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         	);
 
 	        $baseTags = array(

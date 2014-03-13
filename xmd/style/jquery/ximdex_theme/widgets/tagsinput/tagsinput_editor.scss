@@ -1,0 +1,151 @@
+
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+@import "../themes/ximdex_theme";
+@import "../themes/icons";
+@import "../themes/extends";
+
+
+.editor_tags{
+  .xim-tagsinput-container-list{
+  padding: 0;
+    
+  }
+
+  .tag-type{
+    font-size: 1.2em;
+    margin-left: -3px;
+    margin-top: 0;
+    vertical-align: top;
+    height: 2.12em;
+  }
+
+    
+  .xim-tagsinput-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .editor_input_tags{
+    font-size: 1.2em;
+    width: calc(100% - 2em + 8px);
+    margin: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    padding: .5em 2.5em .5em .7em;
+  }
+
+  .xim-tagsinput-tag{
+    display: block;
+    margin: .5em;
+    max-width: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+
+    .xim-tagsinput-newtag{
+      position: relative;
+      margin: .5em;
+    }
+
+    /**************
+    // Type Selector
+    ***************/
+
+    .options{
+      list-style: none;
+      padding: 0;
+    }
+
+      /**************
+      // Add button
+      ***************/
+
+      .add-btn{
+        position: absolute !important;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        text-indent: 170%;
+        border: none;
+        right: .5em;
+        margin-top: .5em;
+        font-size: .9em;
+        overflow: hidden;
+
+        &::before{
+          text-indent: 0;
+          color: #fff;
+        }
+      }
+
+        /**************
+        // Tags container
+        ***************/
+
+        .tags_container{
+          max-height: 15em;
+          overflow: auto;
+          margin-bottom: .1em;
+        }
+
+        .xim-tagsinput-text {
+          &::after,   &::before{
+            display: none; 
+          }
+        }
+
+        .type-structured::before{
+          max-width: 1.57em;
+        }
+
+        .xim-tagsinput-tag-remove{
+          background: none;
+          width: 2em;
+          height: 100%;
+          right: 0;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+          box-shadow: none;
+         
+
+         &::before{
+          height: 100%;
+          top: .8em;
+         } 
+        }
+
+        .xim-tagsinput-tag:hover{
+          .xim-tagsinput-tag-remove{
+            right: 0;
+            width: 1.8em;
+          }
+        }
+
+}
