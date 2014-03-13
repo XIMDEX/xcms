@@ -351,7 +351,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			}
 			container.append($(linkAdd));
 
-			$(linkAdd).click(function (event) {this.addTag(event, 'people');}.bind(this));
+			$(linkAdd).click(function (event) {this.addTag(event, 'people', 'dPerson');}.bind(this));
 			$(peopleContainerDiv).append($(articleDiv));
 			countPeople++;
 			k++;
@@ -405,7 +405,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			}
 			container.append($(linkAdd));
 
-			$(linkAdd).click(function (event) {this.addTag(event,'places');}.bind(this));
+			$(linkAdd).click(function (event) {this.addTag(event,'places', 'dPlace');}.bind(this));
 			$(placesContainerDiv).append($(articleDiv));
 			countPlaces++;
 			k++;
@@ -459,7 +459,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			}
 			container.append($(linkAdd));
 
-			$(linkAdd).click(function (event) {this.addTag(event,'organisations');}.bind(this));
+			$(linkAdd).click(function (event) {this.addTag(event,'organisations', 'dOrganisation');}.bind(this));
 			$(organisationsContainerDiv).append($(articleDiv));
 			countOrgs++;
 			k++;
@@ -493,7 +493,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 	 * @param type
 	 *
 	 */
-	addTag: function(clickEvent, type) {
+	addTag: function(clickEvent, type, nemo) {
 		var rngElementNames = this.editor.getRngDocument().getRngElementNameByType('annotation_tag');
 
 		if(rngElementNames.length == 0) {
@@ -507,7 +507,8 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		var link = $('.anottationtoolbox-linkgo', parent).attr('href');
 
 		//temporal measure
-		$('.xim-tagsinput-container').tagsinput('createTag',{text: word, typeTag: type, url: link, description:''});
+		//$('.xim-tagsinput-container').tagsinput('createTag',{text: word, typeTag: type, url: link, description:''});
+		$(document).trigger('addTag', {Name: word, type: nemo, isSemantic: true});
 		$('.xim-tagsinput-container').show();
 
 		// Locating all words in document
