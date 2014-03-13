@@ -106,9 +106,14 @@ angular.module('ximdex.module.xtags')
         }
 
         $scope.saveTags = function(tags) {
-            
             $scope.submitState = 'submitting'
-            $http.post($attrs.action, {tags:tags})
+            var url = xUrlHelper.getAction({
+                id: $scope.nodeId,
+                module: 'ximTAGS',
+                action: 'setmetadata',
+                method: 'save_metadata'
+            });
+            $http.post(url, {tags:tags})
                 .success(function(data){
                     $scope.submitState = 'success'
                     $scope.dirty = false;
@@ -131,5 +136,18 @@ angular.module('ximdex.module.xtags')
             if (event.keyCode == 13)
                 $scope.addNewTag();
         }
+
+        //Hacks to deal with mixed enviroment
+        //Semantics tags added from the xeditor
+        $window.jQuery(document).on('addTag', function(event, tag){
+            $scope.$apply(function(){
+                $scope.addTag(tag);
+            });
+        });
+        $window.jQuery(document).on('saveTags', function(){
+            $scope.$apply(function(){
+                $scope.saveTags($scope.documentTags);
+            }); 
+        });
 
     }]);
