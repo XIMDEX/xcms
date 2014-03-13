@@ -24,6 +24,7 @@
  */
 angular.module('ximdex.common.directive')
     .directive('ximSelect', ['$window', function ($window) {
+        var base_url = $window.X.baseUrl;
         return {
             require: 'ng-model',
             scope:{
@@ -33,7 +34,7 @@ angular.module('ximdex.common.directive')
                 labelProp: '@ximLabelProp',
                 disabled: '=ximDisabled'
             },
-            templateUrl: 'inc/js/angular/templates/ximSelect.html',
+            templateUrl: base_url+'/inc/js/angular/templates/ximSelect.html',
             restrict: 'E',
             replace: true,
             link: function (scope, element, attrs, ctrl) {

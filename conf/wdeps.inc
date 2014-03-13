@@ -136,7 +136,8 @@ return array(
 		'js' => array(
 			'd3.layout.js',
 			'underscore-min.js',
-			'ontologywidget.js'
+			'ontologywidget.js',
+			'ximOntologyBrowser.js'
 		)
 	),
 	'qpsearch' => array(
