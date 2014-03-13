@@ -3135,7 +3135,7 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (36, 5036, 'text/xml', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (37, 5037, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (38, 5038, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (39, 5039, 'text/plain', '', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (40, 5040, 'image/jpeg | image/png | image/gif | image/x-icon', ';jpeg;jpg;gif;png;ico;', 'image');
+INSERT INTO `RelNodeTypeMimeType` VALUES (40, 5040, 'image/jpeg | image/png | image/gif |image/x-icon',';jpeg;jpg;gif;png;ico;','image');
 INSERT INTO `RelNodeTypeMimeType` VALUES (41, 5041, 'query/file', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (42, 5042, 'text/html', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (43, 5043, 'httpd/unix-directory', '', '');
@@ -3185,6 +3185,9 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (138, 5028, 'text/plain', ';css;', 'css
 INSERT INTO `RelNodeTypeMimeType` VALUES (139, 5032, 'text/plain', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (140, 5055, 'text/plain', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (141, 5041, 'application/pdf', ';pdf;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (142, 5041, 'application/vnd.oasis.opendocument.text', ';odt;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (143, 5041, 'application/vnd.oasis.opendocument.spreadsheet', ';ods;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (144, 5041, 'application/vnd.oasis.opendocument.presentation', ';odp;', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (147, 5077, 'text/plain', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (148, 5077, 'application/xml', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (149, 5077, 'text/html', ';xsl;', 'ptd');
