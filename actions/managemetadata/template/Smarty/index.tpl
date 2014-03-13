@@ -89,13 +89,11 @@
             <br>
             <img src="http://placehold.it/200x125/7bcabf/464646/&text={$typename}" alt="Thumbnail image" class="thumbnail_item">
 
-            <div class="name_info"
-                ng-init="dataset.issued = '{$issued}'">
+            <div class="name_info">
                 <h3>{t}Name [NodeID]{/t}</h3>
                 <p>{$nodename} <span class="nodeid">[{$nodeid}]</span></p>
             </div>
-            <div class="version_info"
-                ng-init="dataset.modified = '{$modified}'">
+            <div class="version_info">
                 <h3>{t}Version{/t}</h3>
                 <p>{$nodeversion}</p>
             </div>
