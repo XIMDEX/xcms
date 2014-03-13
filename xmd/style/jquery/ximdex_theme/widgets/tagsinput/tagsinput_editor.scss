@@ -121,6 +121,10 @@
           }
         }
 
+        .xim-tagsinput-tag::before{
+          line-height: 2em;
+        }
+
         .type-structured::before{
           max-width: 1.57em;
         }
@@ -137,7 +141,7 @@
 
          &::before{
           height: 100%;
-          top: .8em;
+          top: 0;
          } 
         }
 
@@ -146,6 +150,20 @@
             right: 0;
             width: 1.8em;
           }
+        }
+
+        .xim-tagsinput-type-structured::before, .type-structured::before{
+          line-height: 1.8 !important;
+        }
+
+        .xim-tagsinput-type-custom{
+          &::before{
+            line-height: 1.8;
+          }
+        }
+
+        .type-custom::before{
+          line-height: 1.85;
         }
 
 }

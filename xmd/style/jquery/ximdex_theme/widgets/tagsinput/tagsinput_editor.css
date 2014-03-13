@@ -85,6 +85,8 @@
     margin-bottom: .1em; }
   .editor_tags .xim-tagsinput-text::after, .editor_tags .xim-tagsinput-text::before {
     display: none; }
+  .editor_tags .xim-tagsinput-tag::before {
+    line-height: 2em; }
   .editor_tags .type-structured::before {
     max-width: 1.57em; }
   .editor_tags .xim-tagsinput-tag-remove {
@@ -97,7 +99,13 @@
     box-shadow: none; }
     .editor_tags .xim-tagsinput-tag-remove::before {
       height: 100%;
-      top: .8em; }
+      top: 0; }
   .editor_tags .xim-tagsinput-tag:hover .xim-tagsinput-tag-remove {
     right: 0;
     width: 1.8em; }
+  .editor_tags .xim-tagsinput-type-structured::before, .editor_tags .type-structured::before {
+    line-height: 1.8 !important; }
+  .editor_tags .xim-tagsinput-type-custom::before {
+    line-height: 1.8; }
+  .editor_tags .type-custom::before {
+    line-height: 1.85; }
