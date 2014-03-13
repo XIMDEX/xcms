@@ -155,7 +155,12 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 	 *	Remove rel between tag and node
 	*/
 	function removeRel($_id_tag, $_id_node) {
-			$sql = sprintf("DELETE FROM RelTagsNodes WHERE TagDesc='%d' AND Node='%d'",$_id_tag, $_id_node );
-	  		$this->execute($sql);
+	    $sql = sprintf("DELETE FROM RelTagsNodes WHERE TagDesc='%d' AND Node='%d'",$_id_tag, $_id_node );
+	  	$this->execute($sql);
 	}
+
+    public function deleteTags($idnode){
+	    $sql = sprintf("DELETE FROM RelTagsNodes WHERE Node='%d'",$idnode);
+	  	$this->execute($sql);
+    }
 }
