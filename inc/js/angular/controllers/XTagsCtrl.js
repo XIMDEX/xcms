@@ -61,7 +61,7 @@ angular.module('ximdex.module.xtags')
         }
 
         $scope.addTag = function(tag){
-            if (!$scope.tagExistInArray(tag, $scope.documentTags)) {	
+            if (!$scope.tagExistInArray(tag, $scope.documentTags) && tag.Name) {	
                 if (tag.isSemantic) {
                     for (var key in $scope.namespaces){
                         if ($scope.namespaces[key].nemo === tag.type) {
