@@ -392,9 +392,9 @@
     left: 0;
     top: 0; }
 
-.xim-tagsinput-list-related .empty_state {
+.xim-tagsinput-container-related .empty_state {
   text-align: center;
   padding-top: 1em; }
-  .xim-tagsinput-list-related .empty_state a {
+  .xim-tagsinput-container-related .empty_state a {
     margin-top: 1em;
     display: inline-block; }

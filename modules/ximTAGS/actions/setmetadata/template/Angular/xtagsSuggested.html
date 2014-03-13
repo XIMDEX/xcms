@@ -1,10 +1,12 @@
 <div class="tagcloud xim-tagsinput-container-related">
 	<div class="title-box">#/ 'xtags.setmetadata.semantic.title' | xI18n/#</div>
-	<ul class="xim-tagsinput-list-related" ng-class="{loading: !disconnected && !tags.length}" ng-hide="disconnected">
+	<ul class="xim-tagsinput-list-related" ng-class="{loading: loading}" >
 		<li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/tag.type/#" ng-repeat="tag in tags track by $index" ng-click="selectTag(tag)" ng-hide="tag.selected">
             <span class="tag-text">#/tag.Name/#</span>
             <span class="amount right">#/tag.confidence/#%</span>
         </li>
+        <p class="empty_state" ng-show="disconnected">#/'xtags.setmetadata.semantic.not_found_msg' | xI18n /#</br><a class="btn" href="https://github.com/XIMDEX/ximdex/wiki/Faqs#wiki-how-can-i-activate-the-ontology-service-on-my-ximdex-cms-local-instance" target="_blank">#/ 'xtags.setmetadata.semantic.not_found_link' | xI18n /#</a></p>
+        <p class="empty_state" ng-show="!loading && !disconnected && !tags.length">#/'xtags.setmetadata.semantic.empty_msg' | xI18n /#</p>
 	</ul>
-	<p class="empty_state" ng-show="disconnected">#/'xtags.setmetadata.semantic.not_found_msg' | xI18n /#</br><a class="btn" href="https://github.com/XIMDEX/ximdex/wiki/Faqs#wiki-how-can-i-activate-the-ontology-service-on-my-ximdex-cms-local-instance" target="_blank">#/ 'xtags.setmetadata.semantic.not_found_link' | xI18n /#</a></p>
+	
 </div>
