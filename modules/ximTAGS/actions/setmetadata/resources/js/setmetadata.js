@@ -6,8 +6,8 @@
             $scope.namespaces = {};
         	$scope.nodeId = $attrs.ximNodeId;
             $scope.submitLabel = xTranslate('common.save');
-            $scope.newTag = {IdNamespace: '1'};
-        	
+            
+            
             $scope.tagExistInArray = function(tag, array) {
                 for (var i = 0, len = array.length; i < len; i++){
                     if (tag.Name == array[i].Name && tag.IdNamespace == array[i].IdNamespace) {
@@ -35,6 +35,18 @@
                 return count;    
             }
 
+            $scope.getNamespaceId = function(nemo) {
+                for (namespace in $scope.namespaces) {
+                    if (nemo == $scope.namespaces[namespace].nemo) {
+                        return namespace;
+                    }
+                }
+                return false;
+            }
+
+            $scope.newTag = {IdNamespace: $scope.getNamespaceId('custom')};
+
+            //Takes inital tags data form json attributes rendered by smarty
             if ($attrs.ximDocumentTags)
                 $scope.documentTags = angular.fromJson($attrs.ximDocumentTags);
             
@@ -74,14 +86,14 @@
 
             $scope.addNewTag = function() {
             	$scope.addTag(angular.copy($scope.newTag));
-            	$scope.newTag = {IdNamespace: '1'};
+            	$scope.newTag = {IdNamespace: $scope.getNamespaceId('custom')};
             }
 
             $scope.addOntology = function(ontology){
                 $scope.addTag({
                     Name: ontology.name, 
                     structured: true,
-                    IdNamespace: '2'
+                    IdNamespace: $scope.getNamespaceId('structured')
                 });
             }
 
@@ -115,6 +127,11 @@
                         }, 4000);
                     });
             }
+
+            $scope.keyPress = function (event) {
+                if (event.keyCode == 13)
+                    $scope.addNewTag();
+            }
    
         }]);
     angular.module('ximdex').registerItem('XTagsCtrl');
@@ -132,7 +149,7 @@
                 templateUrl : 'modules/ximTAGS/actions/setmetadata/template/Angular/xtagsSuggested.html',
                 controller: ['$scope', '$element', '$attrs', '$http', 'xUrlHelper', function($scope, $element, $attrs, $http, xUrlHelper){   
                 	
-                	var url = xUrlHelper.baseUrl()+'?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent';
+                	var url = xUrlHelper.baseUrl()+'/?mod=ximTAGS&action=setmetadata&method=getRelatedTagsFromContent';
                 	
                 	//Fetch suggested tags from backend
                     $http.get(url+'&nodeid='+$scope.nodeId).success(function(data){
@@ -169,10 +186,11 @@
                 restrict: 'A',
                 link: function (scope, element, attrs) {
                     selected = [];
-                    for (var i = 0, len = scope.selectedItems.length; i < len; i++) {
+                    for (i = 0, len = scope.selectedItems.length; i < len; i++) {
                         selected.push(scope.selectedItems[i].Name);
                     }
-                    $window.jQuery(element).ontologywidget({
+                    $element = $window.jQuery(element);
+                    $element.ontologywidget({
             			selected: selected,
                         onSelect: function(el) {
             				scope.$apply(function(){
@@ -184,7 +202,25 @@
             					scope.onUnSelect({ontology:{name:name}});
             				});
             			}
-            		});    
+            		});
+
+                    //Watch for removed structured items
+                    scope.$watch('selectedItems', function(newVal, oldVal){
+                        for (i = 0, len = oldVal.length; i < len; i++) {
+                            var tag = oldVal[i];
+                            if (tag.structured){
+                                var deleted = true;
+                                for (_i = 0, _len = newVal.length; _i < _len; _i++) {
+                                    if (tag.Name == newVal[_i].Name) {
+                                        deleted = false;
+                                    }                              
+                                }
+                                if (deleted) {
+                                    $element.ontologywidget('unselectNode', tag.Name);
+                                }
+                            }
+                        }
+                    }, true);    
 	            }
             }
         }]);

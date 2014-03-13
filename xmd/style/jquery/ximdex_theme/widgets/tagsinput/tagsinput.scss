@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 @import "../themes/ximdex_theme";
+@import "../themes/icons";
+@import "../themes/extends";
 
 .suggested > div:not(:first-child){
   margin-top: 2em;
@@ -53,7 +55,6 @@
    border-top: 4px solid $c_mainlight;
    margin-bottom: 2em;
 }
-
 .xim-tagsinput-taglist, .xim-tagsinput-tag, .ontology-browser-container a {
    background: #fff;
    color: $c_dark_grey;
@@ -82,6 +83,12 @@
    }
 }
 
+.xim-tagsinput-tag{
+  &::before{
+    line-height: 3em;
+  }
+}
+
 .xim-tagsinput-taglist{
   cursor: pointer;
 
@@ -97,26 +104,23 @@
    display: inline-block;
    vertical-align: top;
    margin: .5em 3% .5em 0;
-   padding-right: 1em;
+   padding: .5em 1em .5em 2.5em;
    border: 1px solid #dedede;
    @include boxshadow(0 0px 1px rgba(0,0,0,.1));
    -webkit-box-sizing: content-box;
    -moz-box-sizing: content-box;
    box-sizing: content-box;
-   padding: 0;
    .amount{
       position: absolute;
       top: .5em;
       right: .8em;
    }
-   &::before{
-      content: none;
-      
-   }
-
+   
    &:hover .xim-tagsinput-tag-remove{
       width: 1.2em;
-      right: -1em;
+      right: -1.25em;
+      background: $c_complementarylight;
+      color: #fff;      
    }
 
   &:hover{
@@ -159,7 +163,7 @@
 
 .options{ /* Getting importance to css to overwrite widget styles*/
    .option{
-      padding: .5em 1em .5em 2.8em;
+      padding: .6em 1em .6em 2.8em;
       cursor: pointer;
       &::before{
          position: absolute;
@@ -168,7 +172,7 @@
          left: 0;
          top: 0;
          display: block;
-         line-height: 2;
+         line-height: 2.3;
          text-align: center;
          }
          &:hover ,&.selected{
@@ -181,17 +185,8 @@
 }
 
 .type-zImage{}
-
-.xim-tagsinput-text{
-  display: inline-block;
-  text-overflow: ellipsis;
-  height: .9em;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-  height: 1.9em;
-  padding: .5em 2em .5em 3em;
-  &:hover::after, &:hover::before{
+.xim-tagsinput-tag{
+ &:hover .xim-tagsinput-text::after, &:hover .xim-tagsinput-text::before{
     opacity: 1;
     visibility: visible;
      -webkit-transition: all .2s  ease-out .5s;
@@ -199,14 +194,22 @@
     -ms-transition: all .2s ease-out .5s;
     -o-transition: all .2s ease-out .5s;
     transition: all .2s ease-out .5s;
-  }
+  }  
+}
+
+
+.xim-tagsinput-text{
+  display: block;
+   text-overflow: ellipsis;
+ overflow: hidden;
+  white-space: nowrap;   
 
   &::before{
     content: "";
     border: 6px solid rgba(0,0,0,0);
     border-bottom-color: $c_dark_grey;
     position: absolute;
-    top: calc(2.5em - 12px);
+    top: calc(3em - 12px);
     opacity: 0;
     visibility: hidden;
     -webkit-transition: all .2s ease-out;
@@ -222,7 +225,7 @@
     position: absolute;
     background:$c_dark_grey;
     color: #fff;
-    top: 2.5em;
+    top: 3em;
     left: 2.2em;
     border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -237,7 +240,18 @@
     opacity: 0;
     visibility: hidden;
     padding: .5em .8em;
-    z-index: 2;
+    z-index: 3;
+  }
+}
+
+.xim-tagsinput-tag .ontology_link{
+  font-size: .9em;
+  color: lighten($c_dark_grey, 15%);
+  display: block;
+  margin-top: .1em;
+
+  &:hover{
+    text-decoration: underline;
   }
 }
 
@@ -245,9 +259,9 @@
    position: absolute;
    @include hide-text;
    width: .2em;
-   height: 100%;
+   height: 2em;
    top: 0;
-   right: 0;
+   right: -.3em;
    background: #dedede;
    /*background: $c_complementarylight;*/
    -webkit-transition: all .2s;
@@ -274,7 +288,7 @@
 }
 
 
-.type-custom, .custom, .options .type-custom{
+.type-custom, .custom, .options .type-custom, .xim-tagsinput-type-custom{
    .amount{
       background: none;
       color: $c_tag_custom;
@@ -292,8 +306,14 @@
    &::before{
       position: absolute;
       width: 1.5em;
-      height: 1.5em;
-      margin-top: .25em;
+      height: 1.5em; 
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+      
       margin-left: .25em;
       background:#fff;
       color:$c_tag_custom;
@@ -317,12 +337,12 @@
    }
 }
 
-.type-custom{
+.type-custom, .xim-tagsinput-type-custom{
   &::before{
-    z-index: 0;
+    z-index: 2;
   }
   &::after{
-    z-index: -1;
+    z-index: 0;
   }
 }
 .xim-tagsinput-type-dOrganisation, .type-dOrganisation{
@@ -356,8 +376,8 @@
       background: $c_tag_dplace;
    }
 }
-.type-zLink{
-    .amount{
+.xim-tagsinput-type-zLink, .type-zLink{
+    .amount{  
       background: none;
       color: $c_tag_zLink;
    }
@@ -366,7 +386,7 @@
    }
 }
 
-.type-zImage{
+.xim-tagsinput-type-zImage, .type-zImage{
     .amount{
       background: none;
       color: $c_tag_zImage;
@@ -377,7 +397,7 @@
 }
 
 
-.type-zArticle{
+.xim-tagsinput-type-zArticle, .type-zArticle{
     .amount{
       background: none;
       color: $c_tag_zArticle;
@@ -386,6 +406,24 @@
       background: $c_tag_zArticle;
    }
 }
+
+.xim-tagsinput-type-structured, .type-structured{
+
+  @extend %rdf; 
+
+  &::before{
+    background:$c_tag_ontology;
+    font-size: 1.3em;
+    line-height: 2.35 !important;
+    max-width: 1.5em;
+  }
+}
+
+ .type-structured, .xim-tagsinput-taglist.xim-tagsinput-type-structured{
+    &::before{
+      line-height: 1.67 !important;
+    }
+  }
 
 
 
@@ -450,10 +488,12 @@
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  height: 2em;
+  height: 2.22em;
   cursor: pointer;
-  margin-right: -4px;
-  margin-top: -4px;
+  margin-right: -6px;
+  margin-top: -6px;
+  border: 1px solid #ccc;
+
 }
 
 .xim-tagsinput-newtag .add-btn{
@@ -474,3 +514,14 @@
   }
 }
 
+.xim-tagsinput-list-related{
+  .empty_state{
+    text-align: center;
+    padding-top: 1em;
+
+    a{
+      margin-top: 1em;
+      display: inline-block;
+    }
+  }
+}

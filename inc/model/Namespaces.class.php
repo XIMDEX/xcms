@@ -73,6 +73,10 @@ class Namespaces extends Namespaces_ORM {
 		$result = count($result)? $result[0]: false;
 		return $result;
 	}
+    public function getNemo($idNamespace){
+        $res = $this->find("nemo", "idNamespace = %s",array($idNamespace),MONO);
+        return $res[0]; 
+    }
 
 
 }

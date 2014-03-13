@@ -46,14 +46,16 @@ class Action_setmetadata extends ActionAbstract {
 		$cloud_tags = array();
 		$cTags = $tags->getTags();
 		
-		foreach ($cTags as $tag) {
-  			$array = array(
+        if(count($cTags)>0){
+		    foreach ($cTags as $tag) {
+  			    $array = array(
   					"IdTag"=>(int)$tag["IdTag"],
   					"Name"=>utf8_encode($tag["Name"]),
   					"IdNamespace"=>(int)$tag["IdNamespace"]
-			);
-  			$cloud_tags[] = $array;
-  		}
+			    );
+  			    $cloud_tags[] = $array;
+  		    }
+        }
 
 	 	$values = array(
 	 		'cloud_tags' => json_encode($cloud_tags),

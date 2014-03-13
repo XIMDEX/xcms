@@ -38,5 +38,14 @@ X.i18nStrings = {
 				}
 			}
 		}
+	},
+    "xtags":{
+        "setmetadata":{
+            "semantic":{
+                "title": "Etiquetas semánticas",
+                "not_found_msg": "No se encuentran etiquetas relacionadas. ¿Está activo el servicio de ontologías?",
+                "not_found_link": "Mira como activarlo aqui."
+            }
+        }
 	}
 }

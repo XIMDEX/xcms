@@ -60,16 +60,19 @@
         @extend %button-default;
         color: white!important;
         background-image: linear-gradient(#72c4b9, #7ccac0);
+        text-shadow: 0 -1px 0 rgba(0,0,0,.15),0 1px 0 rgba(255,255,255,.2);
         &:focus, &:hover {
             background-image: linear-gradient(darken(#72c4b9, 10%), darken(#7ccac0, 10%));        
         }
         &:active {
             background-image: linear-gradient(#7ccac0, #72c4b9);
         }
-        &:disabled, &.disabled {
-            background: lighten(#72c4b9, 10%)!important;
+        &:disabled, &.disabled{
+            background: $c_greymain!important;
             cursor: default!important;   
         }       
+
+
     }
     %button-main-action-alt {
         @extend %button-default;
