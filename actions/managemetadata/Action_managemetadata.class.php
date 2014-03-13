@@ -28,6 +28,7 @@
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/parsers/ParsingRng.class.php');
+ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
 
 
 
@@ -54,7 +55,6 @@ class Action_managemetadata extends ActionAbstract {
 		$this->addJs('/actions/managemetadata/resources/js/index.js');
 
 		$nodeId = $this->request->getParam('nodeid');
-		$mm = new MetadataManager($nodeId);
 
 		$node = new Node($nodeId);
 		$info = $node->loadData();
@@ -62,6 +62,52 @@ class Action_managemetadata extends ActionAbstract {
 		$values["nodeversion"] = $info["version"].".".$info["subversion"];
 		$values["nodepath"] = $info["path"];
 		$values["typename"] = $info["typename"];
+
+		// Getting languages
+		if ($info["typename"] == "XmlDocument") {
+			$structuredDodument = new StructuredDocument($nodeId);
+			$idLanguage = $structuredDodument->get('IdLanguage');
+			$l = new Language($idLanguage);
+			$lngs[] = array(
+				'IdLanguage' => $idLanguage,
+				'Name' => $l->get('Name'),
+				'Checked' => 1
+			);
+		}
+		else {
+			$lp = new LanguageProperty($nodeId);
+			$lngs = $lp->getValues();
+		}
+		
+		if ($lngs) {
+			$values['default_language'] = $lngs[0]['IdLanguage'];
+			$values['languages'] = $lngs;
+        	$values['json_languages'] = json_encode($lngs);
+		}
+
+        $values['languages_metadata'] = array();
+		$mm = new MetadataManager($nodeId);
+		$metadata_nodes = $mm->getMetadataNodes();
+
+		foreach ($metadata_nodes as $metadata_node_id) {
+			$structuredDodument = new StructuredDocument($metadata_node_id);
+			$idLanguage = $structuredDodument->get('IdLanguage');
+			$metadata_node = new Node($metadata_node_id);
+			$content = $metadata_node->getContent();
+			$domDoc = new DOMDocument();
+	        if ($domDoc->loadXML("<root>".$content."</root>")) {
+	        	$xpathObj = new DOMXPath($domDoc);
+	        	$custom_info = $xpathObj->query("//custom_info/*");
+	        	if ($custom_info->length > 0) {
+	        		foreach ($custom_info as $value) {
+	        			$values['languages_metadata'][$idLanguage][$value->nodeName] = $value->nodeValue;
+	        			// foreach ($lngs as $language) {
+	        			// 	$values['languages_metadata'][$language['IdLanguage']][$value->nodeName] = $value->nodeValue;
+	        			// }
+	        		}
+	        	}
+			}
+		}
 
 		$values["elements"] = array();
 		
@@ -71,18 +117,9 @@ class Action_managemetadata extends ActionAbstract {
 			$rngParser = new ParsingRng();
 			$values['elements'] = $rngParser->buildFormElements($idRelaxNGNode, 'custom_info');
 		}
-
-		// Getting languages
-        $language = new Language();
-        $languages = $language->getLanguagesForNode($nodeId);
-        if ($languages) {
-        	$values['default_language'] = $languages[0]['IdLanguage'];
-			$values['languages'] = $languages;
-        	$values['json_languages'] = json_encode($languages);
-        }
 		
 		$values['nodeid'] = $nodeId;
-		$values['go_method'] = 'update_metadata';
+		$values['go_method'] = 'save_metadata';
 
 		$this->render($values, '', 'default-3.0.tpl');
 	}
@@ -95,8 +132,59 @@ class Action_managemetadata extends ActionAbstract {
 	 * Save the results from the form
 	 */
 	public function save_metadata() {
+		$errors = array();
+        $messages = "";
 
-		# Add some code here
+        // Retrieve POST values
+        $nodeId = $this->request->getParam('nodeid');
+        $languages_metadata = $this->request->getParam('languages_metadata');
+
+        // Retrieve custom fields array (for one language - the rest of the languages are the same fields)
+        $custom_fields = array();
+        if ($languages_metadata) {
+        	foreach ($languages_metadata[key($languages_metadata)] as $fieldname => $fieldvalue) {
+        		$custom_fields[] = $fieldname;
+        	}
+        }
+
+        error_log("****************************************");
+
+        // Retrieve Metadata XMLs
+        $mm = new MetadataManager($nodeId);
+		$metadata_nodes = $mm->getMetadataNodes();
+		foreach ($metadata_nodes as $metadata_node_id) {
+			$metadata_node = new StructuredDocument($metadata_node_id);
+			$idLanguage = $metadata_node->get('IdLanguage');
+			$content = $metadata_node->getContent();
+			$domDoc = new DOMDocument();
+	        if ($domDoc->loadXML("<root>".$content."</root>")) {
+	        	foreach ($custom_fields as $custom_field) {
+	        		$custom_element = $domDoc->getElementsByTagName($custom_field)->item(0);
+
+	        		error_log(mb_detect_encoding(utf8_encode($languages_metadata[$idLanguage][$custom_field])));
+
+	        		$custom_element->nodeValue = $languages_metadata[$idLanguage][$custom_field];
+	        		// echo $custom_element->textContent . " must be replaced by " . $languages_metadata[$idLanguage][$custom_field] . "\n";
+	        	}
+	        	$metadata_node_update = new Node($metadata_node_id);
+	        	$string_xml = $domDoc->saveXML();
+	        	$string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
+	        	$string_xml = str_replace('<root>', '', $string_xml);
+	        	$string_xml = str_replace('</root>', '', $string_xml);
+	        	$metadata_node_update->setContent($string_xml);
+			}
+		}
+
+		error_log("****************************************");
+
+        $values = array(
+                'metadata' => array(
+                ),
+                'messages' => $messages,
+                'errors' => $errors
+        );
+
+        $this->sendJSON($values);
 		
 	}
 
