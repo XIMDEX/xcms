@@ -44,7 +44,8 @@ X.i18nStrings = {
             "semantic":{
                 "title": "Semantic tags",
                 "not_found_msg": "Related tags not found. Is the ontology service up?",
-                "not_found_link": "See how to enable it."
+                "not_found_link": "See how to enable it.",
+                "empty_msg": "No related tags found with the current content."
             }
         }
 	}
