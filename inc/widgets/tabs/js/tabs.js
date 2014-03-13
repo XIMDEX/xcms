@@ -58,7 +58,7 @@
 						// Assigns the 'hide-on-click' class after the transition
 						// because of the listener that will hide it when click
 						// event occurs.
-						$(this).next('ul.'+classes.TAB_LIST).addClass('hide-on-click');
+						$(this).next('ul.'+classes.TAB_LIST);
 					}.bind(this));
 				})
 				.bind("contextmenu", function(e) {
@@ -287,6 +287,7 @@
 
 					if (!sel) {
 						// There's no need for a 'hide' algorithm because of the 'hide-on-click' class.
+						$(event.currentTarget).parent().hide();
 						this._scrollToTab(index);
 					}
 				}.bind(this));
@@ -303,6 +304,7 @@
 			.addClass("tabswidget-close-all")
 			.appendTo(ul)
 			.click(function(event) {
+					$(event.currentTarget).parent().hide();
 					this.closingtab = true;
 					for(var i=last_index-2; i>=0;i--) {
 						$(this.element).tabs("remove", i);
