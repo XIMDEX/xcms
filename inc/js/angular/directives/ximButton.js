@@ -33,7 +33,7 @@ angular.module('ximdex.common.directive')
                 progress: '=ximProgress'
             },
             restrict: 'A',
-            template: '<button type="button" class="button ladda-button" data-style="slide-up" data-size="xs" ng-disabled="disabled">'+
+            template: '<button type="button" class="button ladda-button" data-style="slide-up" data-size="xs" ng-disabled="flagDisabled">'+
                     '<span class="ladda-label">#/label/#</span>'+
                 '</button>',
             link: function postLink(scope, element, attrs) {
@@ -54,6 +54,10 @@ angular.module('ximdex.common.directive')
                 scope.$watch('progress', function(newValue, oldValue){
                     if (oldValue != newValue)
                         loader.setProgress(newValue)
+                });
+                //Not really needed just a hack to fix angular not properly binding disabled property (Angular)
+                scope.$watch('disabled', function(newValue, oldValue){
+                    scope.flagDisabled = !scope.flagDisabled;
                 });
             }
         }
