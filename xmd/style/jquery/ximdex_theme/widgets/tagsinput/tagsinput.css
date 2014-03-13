@@ -22,6 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.xim-tagsinput-type-structured::before, .type-structured::before {
+  content: "\e610"; }
+
 .suggested > div:not(:first-child) {
   margin-top: 2em; }
 
@@ -66,6 +69,9 @@
     .xim-tagsinput-taglist:hover::before, .xim-tagsinput-taglist:hover::after, .xim-tagsinput-tag:hover::before, .xim-tagsinput-tag:hover::after, .ontology-browser-container a:hover::before, .ontology-browser-container a:hover::after {
       opacity: .75; }
 
+.xim-tagsinput-tag::before {
+  line-height: 3em; }
+
 .xim-tagsinput-taglist {
   cursor: pointer; }
   .xim-tagsinput-taglist:hover {
@@ -77,24 +83,23 @@
   display: inline-block;
   vertical-align: top;
   margin: .5em 3% .5em 0;
-  padding-right: 1em;
+  padding: .5em 1em .5em 2.5em;
   border: 1px solid #dedede;
   -webkit-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 0px 1px rgba(0, 0, 0, 0.1);
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
-  box-sizing: content-box;
-  padding: 0; }
+  box-sizing: content-box; }
   .xim-tagsinput-tag .amount {
     position: absolute;
     top: .5em;
     right: .8em; }
-  .xim-tagsinput-tag::before {
-    content: none; }
   .xim-tagsinput-tag:hover .xim-tagsinput-tag-remove {
     width: 1.2em;
-    right: -1em; }
+    right: -1.25em;
+    background: #e8563b;
+    color: #fff; }
 
 .type-selector {
   position: absolute;
@@ -120,7 +125,7 @@
 .options {
   /* Getting importance to css to overwrite widget styles*/ }
   .options .option {
-    padding: .5em 1em .5em 2.8em;
+    padding: .6em 1em .6em 2.8em;
     cursor: pointer; }
     .options .option::before {
       position: absolute;
@@ -129,36 +134,33 @@
       left: 0;
       top: 0;
       display: block;
-      line-height: 2;
+      line-height: 2.3;
       text-align: center; }
     .options .option:hover, .options .option.selected {
       background: rgba(255, 255, 255, 0.2); }
     .options .option:hover::before, .options .option.selected::before {
       opacity: .8; }
 
+.xim-tagsinput-tag:hover .xim-tagsinput-text::after, .xim-tagsinput-tag:hover .xim-tagsinput-text::before {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: all .2s  ease-out .5s;
+  -moz-transition: all .2s ease-out .5s;
+  -ms-transition: all .2s ease-out .5s;
+  -o-transition: all .2s ease-out .5s;
+  transition: all .2s ease-out .5s; }
+
 .xim-tagsinput-text {
-  display: inline-block;
+  display: block;
   text-overflow: ellipsis;
-  height: .9em;
   overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-  height: 1.9em;
-  padding: .5em 2em .5em 3em; }
-  .xim-tagsinput-text:hover::after, .xim-tagsinput-text:hover::before {
-    opacity: 1;
-    visibility: visible;
-    -webkit-transition: all .2s  ease-out .5s;
-    -moz-transition: all .2s ease-out .5s;
-    -ms-transition: all .2s ease-out .5s;
-    -o-transition: all .2s ease-out .5s;
-    transition: all .2s ease-out .5s; }
+  white-space: nowrap; }
   .xim-tagsinput-text::before {
     content: "";
     border: 6px solid rgba(0, 0, 0, 0);
     border-bottom-color: #4c4c4c;
     position: absolute;
-    top: calc(2.5em - 12px);
+    top: calc(3em - 12px);
     opacity: 0;
     visibility: hidden;
     -webkit-transition: all .2s ease-out;
@@ -171,7 +173,7 @@
     position: absolute;
     background: #4c4c4c;
     color: #fff;
-    top: 2.5em;
+    top: 3em;
     left: 2.2em;
     border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -186,7 +188,15 @@
     opacity: 0;
     visibility: hidden;
     padding: .5em .8em;
-    z-index: 2; }
+    z-index: 3; }
+
+.xim-tagsinput-tag .ontology_link {
+  font-size: .9em;
+  color: #727272;
+  display: block;
+  margin-top: .1em; }
+  .xim-tagsinput-tag .ontology_link:hover {
+    text-decoration: underline; }
 
 .xim-tagsinput-tag-remove {
   position: absolute;
@@ -194,9 +204,9 @@
   overflow: hidden;
   white-space: nowrap;
   width: .2em;
-  height: 100%;
+  height: 2em;
   top: 0;
-  right: 0;
+  right: -.3em;
   background: #dedede;
   /*background: $c_complementarylight;*/
   -webkit-transition: all .2s;
@@ -219,20 +229,25 @@
     background: #e8563b;
     color: #fff; }
 
-.type-custom .amount, .custom .amount, .options .type-custom .amount {
+.type-custom .amount, .custom .amount, .options .type-custom .amount, .xim-tagsinput-type-custom .amount {
   background: none;
   color: #2fb7a4; }
-.type-custom ~ .amount, .custom ~ .amount, .options .type-custom ~ .amount {
+.type-custom ~ .amount, .custom ~ .amount, .options .type-custom ~ .amount, .xim-tagsinput-type-custom ~ .amount {
   background: none;
   color: #2fb7a4; }
-.type-custom ~ .amount, .custom ~ .amount, .options .type-custom ~ .amount {
+.type-custom ~ .amount, .custom ~ .amount, .options .type-custom ~ .amount, .xim-tagsinput-type-custom ~ .amount {
   background: none;
   color: #2fb7a4; }
-.type-custom::before, .custom::before, .options .type-custom::before {
+.type-custom::before, .custom::before, .options .type-custom::before, .xim-tagsinput-type-custom::before {
   position: absolute;
   width: 1.5em;
   height: 1.5em;
-  margin-top: .25em;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
   margin-left: .25em;
   background: #fff;
   color: #2fb7a4;
@@ -241,7 +256,7 @@
   border-radius: 50%;
   line-height: 1.63;
   z-index: 2; }
-.type-custom::after, .custom::after, .options .type-custom::after {
+.type-custom::after, .custom::after, .options .type-custom::after, .xim-tagsinput-type-custom::after {
   z-index: 1;
   background: #2fb7a4;
   position: absolute;
@@ -251,10 +266,10 @@
   left: 0;
   top: 0; }
 
-.type-custom::before {
+.type-custom::before, .xim-tagsinput-type-custom::before {
+  z-index: 2; }
+.type-custom::after, .xim-tagsinput-type-custom::after {
   z-index: 0; }
-.type-custom::after {
-  z-index: -1; }
 
 .xim-tagsinput-type-dOrganisation .amount, .type-dOrganisation .amount {
   background: none;
@@ -274,23 +289,32 @@
 .xim-tagsinput-type-dPlace::before, .type-dPlace::before {
   background: #22b8c1; }
 
-.type-zLink .amount {
+.xim-tagsinput-type-zLink .amount, .type-zLink .amount {
   background: none;
   color: #d34579; }
-.type-zLink::before {
+.xim-tagsinput-type-zLink::before, .type-zLink::before {
   background: #d34579; }
 
-.type-zImage .amount {
+.xim-tagsinput-type-zImage .amount, .type-zImage .amount {
   background: none;
   color: #af2b82; }
-.type-zImage::before {
+.xim-tagsinput-type-zImage::before, .type-zImage::before {
   background: #af2b82; }
 
-.type-zArticle .amount {
+.xim-tagsinput-type-zArticle .amount, .type-zArticle .amount {
   background: none;
   color: #4271dd; }
-.type-zArticle::before {
+.xim-tagsinput-type-zArticle::before, .type-zArticle::before {
   background: #4271dd; }
+
+.xim-tagsinput-type-structured::before, .type-structured::before {
+  background: #e32e3f;
+  font-size: 1.3em;
+  line-height: 2.35 !important;
+  max-width: 1.5em; }
+
+.type-structured::before, .xim-tagsinput-taglist.xim-tagsinput-type-structured::before {
+  line-height: 1.67 !important; }
 
 .custom .amount {
   color: #2fb7a4; }
@@ -346,10 +370,11 @@
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  height: 2em;
+  height: 2.22em;
   cursor: pointer;
-  margin-right: -4px;
-  margin-top: -4px; }
+  margin-right: -6px;
+  margin-top: -6px;
+  border: 1px solid #ccc; }
 
 .xim-tagsinput-newtag .add-btn {
   background: #57bbad;

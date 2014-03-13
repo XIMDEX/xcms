@@ -87,7 +87,7 @@
 .add-btn::before, .xim-uploader-selected::before {
   content: '\e038'; }
 
-.xim-tagsinput-taglist::before, .type-custom::before {
+.xim-tagsinput-taglist::before, .type-custom::before, .xim-tagsinput-type-custom::before {
   content: "\0054"; }
 
 .xim-tagsinput-type-dPerson::before, .type-dPerson::before {
@@ -99,13 +99,13 @@
 .xim-tagsinput-type-dOrganisation::before, .type-dOrganisation::before {
   content: "\0027"; }
 
-.type-zImage::before, .uploader .image::before {
+.xim-tagsinput-type-zImage::before, .type-zImage::before, .uploader .image::before {
   content: "\0025"; }
 
-.type-zLink::before {
+.xim-tagsinput-type-zLink::before, .type-zLink::before {
   content: "\002a"; }
 
-.type-zArticle::before, .uploader .document::before, .document::before {
+.type-zArticle::before, .xim-tagsinput-type-zArticle::before, .uploader .document::before, .document::before {
   content: "\002b"; }
 
 .project::before {
@@ -124,7 +124,7 @@
 .folder-name::before, .subfolder label::after {
   content: "\e024"; }
 
-.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before, .title_language.toggle::before{
+.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before, .title_language.toggle::before, .download_link::before, .name_uploader::after {
   content: "\e037"; }
 
 .result_description::before {

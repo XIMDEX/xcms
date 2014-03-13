@@ -52,13 +52,14 @@
 
 .browser-window button.button_main_action {
   color: white !important;
-  background-image: linear-gradient(#72c4b9, #7ccac0); }
+  background-image: linear-gradient(#72c4b9, #7ccac0);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15), 0 1px 0 rgba(255, 255, 255, 0.2); }
   .browser-window button.button_main_action:focus, .browser-window button.button_main_action:hover {
     background-image: linear-gradient(#4eb5a7, #58bbaf); }
   .browser-window button.button_main_action:active {
     background-image: linear-gradient(#7ccac0, #72c4b9); }
   .browser-window button.button_main_action:disabled, .browser-window button.disabled.button_main_action {
-    background: #96d3cb !important;
+    background: #acafbb !important;
     cursor: default !important; }
 
 .input-select.document::before, .icon-positioned::before {
@@ -279,6 +280,8 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
   position: absolute;
   top: .8em;
   right: 2.5em; }
+  .positioned_btn button {
+    margin-top: -.4em; }
 
 .ui-dialog .ui-dialog-buttonpane button span {
   padding: 1px; }
@@ -1042,6 +1045,7 @@ input:focus + .tooltip_info {
   border-width: 1px; }
 .browser-window button.button_main_action {
   font-size: 1.1rem;
+  font-weight: normal;
   padding: 7px 14px;
   font-family: "Coustard";
   text-transform: uppercase; }

@@ -32,15 +32,6 @@
 	ng-cloak>
 	<div class="action_header" ng-hide="submitMessages.length">
 		<h2>{t}Tag this node{/t}</h2>
-		<fieldset class="buttons-form">
-			<button class="button_main_action"
-				xim-button
-				xim-state="submitState"
-				xim-label="submitLabel"
-				ng-click="saveTags(documentTags)"
-				xim-disabled="!dirty">
-			</button>
-		</fieldset>
 	</div>
 	<div class="message" ng-show="submitMessages.length">
 	    <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
@@ -65,19 +56,11 @@
 		<div class="xim-tagsinput-container col2-3">
 			<div class="title-box">{t}Document tags{/t}</div>
 	   		<ul class="xim-tagsinput-list">
-	   			<li class="xim-tagsinput-tag type" ng-repeat="tag in documentTags">
-	   				<xim-select
-						ng-model="tag.IdNamespace"
-						xim-options="namespaces"
-						xim-label-prop="type"
-						xim-style-prop="nemo"
-						xim-sel-prop="id"
-						xim-disabled="tag.isSemantic">
-					</xim-select>
-					<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
+	   			<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in documentTags">
+	   				<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
 					#/tag.Name/#
 					</span>
- 					<a ng-href="#/namespaces[tag.IdNamespace].uri/#">#/namespaces[tag.IdNamespace].type/#</a>
+ 					<a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link">#/namespaces[tag.IdNamespace].type/#</a>
 					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
 				</li>
 				<p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
@@ -100,4 +83,13 @@
 			<ontologyBrowser />
 		</div>
 	</div>
+	<fieldset class="buttons-form positioned_btn">
+			<button class="button_main_action"
+				xim-button
+				xim-state="submitState"
+				xim-label="submitLabel"
+				ng-click="saveTags(documentTags)"
+				xim-disabled="!dirty">
+			</button>
+		</fieldset>	
 </form>
