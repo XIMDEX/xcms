@@ -192,6 +192,9 @@
             // TODO: It needs to be changed for updating selected tags previously
             return [];
 		},
+		unselectNode: function(node) {
+			console.log("Un selecting node", node);
+		},
 		showTree: function(){
 			var that = this;
   			var m = [20, 120, 20, 120],
