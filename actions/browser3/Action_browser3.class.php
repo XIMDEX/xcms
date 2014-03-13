@@ -124,7 +124,9 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/directives/ximButton.js');
 		$this->addJs('/inc/js/angular/directives/ximSelect.js');
 		$this->addJs('/inc/js/angular/directives/ximValidators.js');
+		$this->addJs('/inc/js/angular/directives/xtagsSuggested.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
+		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
 		$this->addActionJs('XMainCtrl.js');
 		$this->addActionJs('controller.js');
 

@@ -55,9 +55,10 @@ com.ximdex.ximdex.editors.SaveHandler = function(baseURL, content, callback, aut
 	});
 	
 	//Tags saving
-	try{
-		$('.xim-tagsinput-container').tagsinput('save' ,baseURL, content, null, null);
-	}catch(e){}
+	// try{
+	// 	$('.xim-tagsinput-container').tagsinput('save' ,baseURL, content, null, null);
+	// }catch(e){}
+	$(document).trigger('saveTags');
 }
 
 com.ximdex.ximdex.editors.PublicateHandler = function(baseURL, content, callback) {
