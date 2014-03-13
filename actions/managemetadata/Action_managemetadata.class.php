@@ -26,6 +26,7 @@
 
 
 
+ModulesManager::file('/inc/model/Versions.inc');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/parsers/ParsingRng.class.php');
 ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
@@ -63,21 +64,21 @@ class Action_managemetadata extends ActionAbstract {
 		$values["nodepath"] = $info["path"];
 		$values["typename"] = $info["typename"];
 
-		// Getting languages
-		if ($info["typename"] == "XmlDocument") {
-			$structuredDodument = new StructuredDocument($nodeId);
-			$idLanguage = $structuredDodument->get('IdLanguage');
-			$l = new Language($idLanguage);
-			$lngs[] = array(
-				'IdLanguage' => $idLanguage,
-				'Name' => $l->get('Name'),
-				'Checked' => 1
-			);
+		// Getting image to show
+		if ($values["typename"] == "ImageFile") {
+			// http://lab12.ximdex.net/ximdexxlyre/data/files/ef06540adb2ac1a87f241aa1b59aad57
+			$v = new Version();
+			$hashfile = $v->find("File", "IdNode = %s ORDER BY IdVersion DESC LIMIT 1", array($nodeId), MONO);
+			$values['imagesrc'] = Config::getValue("UrlRoot")."/data/files/".$hashfile[0];
 		}
 		else {
-			$lp = new LanguageProperty($nodeId);
-			$lngs = $lp->getValues();
+			$values['imagesrc'] = 'http://placehold.it/200x125/7bcabf/464646/&text='.$values['typename'];
 		}
+
+		// Getting languages
+		$lp = new LanguageProperty($nodeId);
+		$lngs = $lp->getValues();
+		
 		
 		if ($lngs) {
 			$values['default_language'] = $lngs[0]['IdLanguage'];
@@ -137,6 +138,7 @@ class Action_managemetadata extends ActionAbstract {
 
         // Retrieve POST values
         $nodeId = $this->request->getParam('nodeid');
+        $node = new Node($nodeId);
         $languages_metadata = $this->request->getParam('languages_metadata');
 
         // Retrieve custom fields array (for one language - the rest of the languages are the same fields)
@@ -146,8 +148,6 @@ class Action_managemetadata extends ActionAbstract {
         		$custom_fields[] = $fieldname;
         	}
         }
-
-        error_log("****************************************");
 
         // Retrieve Metadata XMLs
         $mm = new MetadataManager($nodeId);
@@ -160,11 +160,7 @@ class Action_managemetadata extends ActionAbstract {
 	        if ($domDoc->loadXML("<root>".$content."</root>")) {
 	        	foreach ($custom_fields as $custom_field) {
 	        		$custom_element = $domDoc->getElementsByTagName($custom_field)->item(0);
-
-	        		error_log(mb_detect_encoding(utf8_encode($languages_metadata[$idLanguage][$custom_field])));
-
 	        		$custom_element->nodeValue = $languages_metadata[$idLanguage][$custom_field];
-	        		// echo $custom_element->textContent . " must be replaced by " . $languages_metadata[$idLanguage][$custom_field] . "\n";
 	        	}
 	        	$metadata_node_update = new Node($metadata_node_id);
 	        	$string_xml = $domDoc->saveXML();
@@ -172,10 +168,12 @@ class Action_managemetadata extends ActionAbstract {
 	        	$string_xml = str_replace('<root>', '', $string_xml);
 	        	$string_xml = str_replace('</root>', '', $string_xml);
 	        	$metadata_node_update->setContent($string_xml);
+	        	$messages = sprintf(_('All metadata %s has been successfully saved'), $node->Get('Name'));
+			}
+			else {
+				$errors[] = _('Operation could not be successfully completed');
 			}
 		}
-
-		error_log("****************************************");
 
         $values = array(
                 'metadata' => array(

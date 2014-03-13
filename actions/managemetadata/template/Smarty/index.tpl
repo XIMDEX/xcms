@@ -23,21 +23,32 @@
  *  @version $Revision$
  *}
 
-<form method="post" name="modifymetadata" action="{$action_url}"
+<form method="post" name="managemetadata" id="managemetadata_form" action="{$action_url}"
 	ng-controller="MetadataCtrl"
+    ng-init="nodeId = '{$nodeid}';"
     ng-cloak
     xim-languages='{$json_languages}'
     xim-defaultlanguage='{$default_language}'
     xim-method="{$go_method}"
     xim-action="{$action}"
     novalidate>
-	<div class="action_header">
+	<div class="action_header" ng-hide="submitMessages.length">
 		<h2>{t}Manage metadata{/t}</h2>
 		<fieldset class="buttons-form">
-			{button label="Save" class="validate btn main_action" }
+            <button class="btn main_action" 
+                ng-click="submitForm(managemetadata)"
+                xim-button
+                xim-label="submitLabel"
+                xim-state="submitStatus">
+                {t}Save{/t}
+            </button>
 		</fieldset>
 	</div>
-
+    <div class="message" ng-show="submitMessages.length">
+        <p class="ui-state-primary ui-corner-all msg-info">
+            [[submitMessages]]
+        </p>
+    </div>
 	<div class="action_content metadata_action">
 
 		<div class="col2-3 left metadata_data">
@@ -67,9 +78,14 @@
                          <p>
                             <label for="languages_metadata[{$l.IdLanguage}][{$e.name}]" class="label_title">{t}{$e.name|upper}{/t}</label>
                             {if $e.type == 'text'}
-                                <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size" value="{$languages_metadata[$l.IdLanguage][$e.name]}">
+                                <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size" 
+                                    ng-model="languages_metadata.{$l.IdLanguage}.{$e.name}" 
+                                    ng-init="languages_metadata.{$l.IdLanguage}.{$e.name} = '{$languages_metadata[{$l.IdLanguage}][{$e.name}]}'">
                             {elseif $e.type == 'textarea'}
-                                <textarea name="languages_metadata[{$l.IdLanguage}][{$e.name}]" id="" cols="30" rows="9" class="full_size">{$languages_metadata[$l.IdLanguage][$e.name]}</textarea>
+                                <textarea name="languages_metadata[{$l.IdLanguage}][{$e.name}]" id="" cols="30" rows="9" class="full_size"
+                                    ng-model="languages_metadata.{$l.IdLanguage}.{$e.name}" 
+                                    ng-init="languages_metadata.{$l.IdLanguage}.{$e.name} = '{$languages_metadata[{$l.IdLanguage}][{$e.name}]}'">
+                                </textarea>
                             {else}
                                 <br/>
                             {/if}
@@ -87,7 +103,7 @@
             <h4>{t}System metadata info{/t}</h4>
 
             <br>
-            <img src="http://placehold.it/200x125/7bcabf/464646/&text={$typename}" alt="Thumbnail image" class="thumbnail_item">
+            <img src="{$imagesrc}" alt="Thumbnail image" class="thumbnail_item">
 
             <div class="name_info">
                 <h3>{t}Name [NodeID]{/t}</h3>

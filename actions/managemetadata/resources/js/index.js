@@ -31,6 +31,27 @@ if (angular.module('ximdex').notRegistred('MetadataCtrl')) {
             $scope.languages = angular.fromJson($attrs.ximLanguages);
             $scope.defaultLanguage = $attrs.ximDefaultlanguage;
             $scope.method = $attrs.ximMethod;
+            // Pass this string to i18n files
+            $scope.submitLabel = "Save";
+
+            $scope.submitForm = function(form){
+                if (form.$valid) {
+                    var formData = {'languages_metadata': angular.copy($scope.languages_metadata)};
+                    $scope.submitStatus = 'submitting';
+                    xBackend.sendFormData(formData, {action: $attrs.ximAction, method: $scope.method, id: $scope.nodeId}, function(data){
+                        if (data && data.metadata) {
+                            form.$setPristine();
+                        }
+                        if (data && data.messages) {
+                            $scope.submitStatus = 'success';
+                            $scope.submitMessages = data.messages;
+                            $timeout(function(){
+                                $scope.submitMessages = null;
+                            }, 4000);
+                        }
+                    });
+                }
+            }
 
         }]);
     angular.module('ximdex').registerItem('MetadataCtrl');
