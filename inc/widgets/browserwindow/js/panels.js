@@ -79,8 +79,26 @@
 			var theNodes = c.nodes ? c.nodes.join("-") : "";
 			if(theNodes != "" && theTabId != "" && $("#"+theTabId).length) {
 				var theTab = $("#"+theTabId);
-				var index = theTab.closest("li").index();
+				theTab.parent().css("border-top-color","#E8563B");
+				var index = theTab.closest("li").index();				
 				this.tabs.tabs('select', index);
+   			    var contInterval = 0;
+	            var blinkInterval = setInterval(function(){
+	            	
+	            var color = contInterval%2 ? "#E8563B" : "#7BCABF";
+	            theTab.parent().animate({"border-top-color": color}, 200, 
+	           	function(){	           		
+	           		if (color == "#7BCABF")
+	            		theTab.parent().css("border-top-color", "");
+	            });
+	             contInterval++;
+	             if (contInterval>=5){
+	                    clearInterval(blinkInterval);
+	                    theTab.parent().css("border-top-color", "");
+	             }
+                }, 400);
+
+
 			}
 			else {
 				c.link(this.browser, this.tabs);
