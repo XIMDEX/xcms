@@ -125,6 +125,11 @@
                         }, 4000);
                     });
             }
+
+            $scope.keyPress = function (event) {
+                if (event.keyCode == 13)
+                    $scope.addNewTag();
+            }
    
         }]);
     angular.module('ximdex').registerItem('XTagsCtrl');
