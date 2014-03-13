@@ -480,8 +480,8 @@ msgid "Languages"
 msgstr "Idiomas"
 
 #: /actions/addlangxmlcontainer/template/Smarty/index.tpl
-msgid "Used template"
-msgstr "Plantilla empleada"
+msgid "Used schema"
+msgstr "Esquema empleado"
 
 #: /actions/addlangxmlcontainer/template/Smarty/index.tpl
 #: /actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl
