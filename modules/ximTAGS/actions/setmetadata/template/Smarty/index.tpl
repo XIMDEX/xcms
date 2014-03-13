@@ -60,7 +60,7 @@
 	   				<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
 					#/tag.Name/#
 					</span>
- 					<a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link">#/namespaces[tag.IdNamespace].type/#</a>
+ 					<a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link" target="_blank">#/namespaces[tag.IdNamespace].type/#</a>
 					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
 				</li>
 				<p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
