@@ -69,6 +69,25 @@
     .xim-tagsinput-taglist:hover::before, .xim-tagsinput-taglist:hover::after, .xim-tagsinput-tag:hover::before, .xim-tagsinput-tag:hover::after, .ontology-browser-container a:hover::before, .ontology-browser-container a:hover::after {
       opacity: .75; }
 
+.xim-tagsinput-taglist {
+  -webkit-transition: all ease-out .2s;
+  -moz-transition: all ease-out .2s;
+  -ms-transition: all ease-out .2s;
+  -o-transition: all ease-out .2s;
+  transition: all ease-out .2s;
+  opacity: 1;
+  max-height: 100px; }
+
+.xim-tagsinput-taglist.ng-hide-add,
+.xim-tagsinput-taglist.ng-hide-remove {
+  display: block !important; }
+
+.xim-tagsinput-taglist.ng-hide {
+  /*  padding-top: 0;
+    padding-bottom: 0;*/
+  max-height: 0px;
+  opacity: 0.5; }
+
 .xim-tagsinput-tag::before {
   line-height: 3em; }
 
