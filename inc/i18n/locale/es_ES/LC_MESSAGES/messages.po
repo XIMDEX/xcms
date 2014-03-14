@@ -480,8 +480,8 @@ msgid "Languages"
 msgstr "Idiomas"
 
 #: /actions/addlangxmlcontainer/template/Smarty/index.tpl
-msgid "Used template"
-msgstr "Plantilla empleada"
+msgid "Used schema"
+msgstr "Esquema empleado"
 
 #: /actions/addlangxmlcontainer/template/Smarty/index.tpl
 #: /actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl
@@ -7405,6 +7405,9 @@ msgstr "Escriba las etiquetas de definici&oacute;n"
 
 msgid "Tag this node"
 msgstr "Etiqueta este nodo"
+
+msgid "There aren't any tags defined yet"
+msgstr "A&uacute;n no hay etiquetas definidas"
 
 msgid "Suggested tags from Ximdex CMS"
 msgstr "Etiquetas sugeridas por Ximdex CMS"

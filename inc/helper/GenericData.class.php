@@ -246,6 +246,7 @@ class GenericData extends Overloadable {
 		}
 		$fields = implode(', ', $arrayFields);
 		$values = implode(', ', $arrayValues);
+		
 		$query = "INSERT INTO {$this->_table}"
 		. "($fields) VALUES ($values)";
 		if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_EXECUTE)) {
@@ -721,6 +722,7 @@ class GenericData extends Overloadable {
 			$this->_table,
 			empty($condition) ? '1' : $condition
 		);
+		
 		return $this->query($query, $returnType, $fields);
 	}
 

@@ -40,8 +40,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 include_once (XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/workflow/Workflow.class.php');
-
-ModulesManager::file('/inc/model/Trash.class.php', 'ximTRASH');
+ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 define('DETAIL_LEVEL_LOW', 0);
 define('DETAIL_LEVEL_MEDIUM', 1);
@@ -1076,40 +1075,7 @@ class	Node extends Nodes_ORM{
 			$this->messages->add(_('Node deletion was denied'), MSG_TYPE_WARNING);
 			return false;
 		}
-/*
-		if (ModulesManager::isEnabled('ximTRASH')) {
-			$this->messages->add(_('Moving file to trash'), MSG_TYPE_NOTICE);
-			$trash = new Trash();
-			// TODO Obtain the trash where sending it
-			$idProject = $this->GetProject();
-			if ($idProject > 0) {
-				$node = new Node($idProject);
-				$idTrash = $node->GetChildByName('Papelera');
-			}
 
-			$trash->set('id_trash', $idTrash);
-
-			$trash->set('id_node', $this->get('IdNode'));
-			$trash->set('id_old_parent', $this->get('IdParent'));
-			$trash->set('id_node', $this->get('IdNode'));
-			$trash->set('id_node_type', $this->get('IdNodeType'));
-			$trash->set('name', $this->get('Name'));
-
-			if (!$trash->add()) {
-				$this->messages->add(sprintf(_('The node %s could not be moved to trash'), $this->get('IdNode')), MSG_TYPE_ERROR);
-				reset($trash->messages->messages);
-				while (list(, $message) = each($trash->messages->messages)) {
-					$this->messages->add($message['message'], $message['type']);
-				}
-			}
-			reset($this->messages->messages);
-			while(list(, $message) = each($this->messages->messages)) {
-				XMD_Log::warning($message['message']);
-			}
-		} else {
-			XMD_Log::warning(_('Trash is deactivated'));
-		}
-*/
 		$this->ClearError();
 		if(!($this->get('IdNode') > 0)) {
 			$this->SetError(1);
@@ -1171,9 +1137,13 @@ class	Node extends Nodes_ORM{
 		$dependencies=New Dependencies();
 		$dependencies->deleteDependentNode($this->get('IdNode'));
 
+        $rtn = new RelTagsNodes();
+        $rtn->deleteTags($this->nodeID);
+
 		XMD_Log::info("Node ".$this->nodeID." deleted.");
 		$this->nodeID	= null;
 		$this->class	= null;
+
 		return parent::delete();
 	}
 

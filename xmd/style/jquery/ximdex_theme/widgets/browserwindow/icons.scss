@@ -110,7 +110,7 @@
   content: '\e038';
 }
 
-.xim-tagsinput-taglist::before, .type-custom::before{
+.xim-tagsinput-taglist::before, .type-custom::before, .xim-tagsinput-type-custom::before{
   content: "\0054";
   
 }
@@ -127,16 +127,16 @@
   content: "\0027" ;  
 }
 
-.type-zImage::before, .uploader .image::before{
+.xim-tagsinput-type-zImage::before, .type-zImage::before, .uploader .image::before{
   content: "\0025" ;  
 }
 
-.type-zLink::before{
+.xim-tagsinput-type-zLink::before,.type-zLink::before{
 
   content: "\002a" ;  
 
 }
-.type-zArticle::before, .uploader .document::before, .document::before{
+.type-zArticle::before, .xim-tagsinput-type-zArticle::before, .uploader .document::before, .document::before{
 
   content: "\002b" ;  
 

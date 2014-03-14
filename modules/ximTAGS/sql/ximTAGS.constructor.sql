@@ -30,10 +30,10 @@ CREATE TABLE IF NOT EXISTS `XimTAGSTags` (
   `Total` mediumint(6) unsigned NOT NULL DEFAULT '1',
   `IdNamespace` int(11) UNSIGNED NOT NULL,
   PRIMARY KEY (`IdTag`),
-  UNIQUE KEY `Name` (`Name`),
+  UNIQUE KEY `Name` (`Name`, `IdNamespace`),
   KEY `IdNamespace` (`IdNamespace`),
   FULLTEXT KEY `Name_2` (`Name`)
-) ENGINE=MyISAM  COMMENT='List Tags' AUTO_INCREMENT=1;
+) ENGINE=MyISAM  CHARSET='utf8' COMMENT='List Tags' AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `RelTagsNodes` (
   `Node` int(10) unsigned NOT NULL DEFAULT '0',
@@ -547,3 +547,7 @@ INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdConte
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 202, 6981, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 203, 6981, 0, 1, 3);
 INSERT INTO `RelRolesActions` (`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES(NULL, 204, 6981, 0, 1, 3);
+
+-- -- table Namespaces -- --
+INSERT INTO `Namespaces` VALUES (NULL,'Ximdex','OntologyBrowser','structured','ontologies/json/SchemaOrg.json',0,'generic',1);
+

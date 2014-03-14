@@ -1,4 +1,3 @@
-<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,27 +23,27 @@
  *  @version $Revision$
  */
 
+angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximdex.module']);
+
+angular.module('ximdex.module', ['ximdex.module.xtags']);
+
+angular.module('ximdex.common', ['ximdex.common.service', 'ximdex.common.directive', 'ximdex.common.filter']);
+angular.module('ximdex.main', ['ximdex.main.controller']);
+angular.module('ximdex.widget', []);
+
+angular.module('ximdex.common.directive', ['ximdex.common.directive.validator']);
+angular.module('ximdex.common.directive.validator', []);
+
+angular.module('ximdex.common.service', []);
+angular.module('ximdex.common.filter', []);
+
+angular.module('ximdex.main.controller', []);
+angular.module('ximdex.module.xtags', []);
 
 
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class Tags_ORM extends GenericData   {
-	var $_idField = 'IdTag';
-	var $_table = 'XimTAGSTags';
-	var $_metaData = array(
-				'IdTag' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'Name' => array('type' => "varchar(100)", 'not_null' => 'true'),
-				'Total' => array('type' => "mediumint(8)", 'not_null' => 'true'),
-				'IdNamespace' => array('type' => "int(11)", 'not_null' => 'true') 
-				);
-	var $_uniqueConstraints = array(
-				'Name' => array('Name', 'IdNamespace'),
-				'IdTag' => array('IdTag')
-				);
-	var $_indexes = array('IdTag');
-	var $IdTag;
-	var $Name;
-	var $IdNamespace; 
-	var $Total;
-}
-?>
+//Configure interpolation symbols to work in smarty templates
+angular.module('ximdex')
+    .config(function($interpolateProvider, $controllerProvider, $compileProvider) {
+        $interpolateProvider.startSymbol('#/').endSymbol('/#');
+        
+});

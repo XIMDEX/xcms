@@ -23,34 +23,73 @@
  *  @version $Revision$
  *}
 
-<form method="POST" name="tags_form" class="setmetadata-tags_form" action="{$action_url}">
-	<div class="action_header">
+<form method="POST" name="tags_form" class="setmetadata-tags_form" action="{$action_url}" 
+	ng-controller="XTagsCtrl" 
+	xim-document-tags='{$tags}'
+	xim-cloud-tags='{$cloud_tags}'
+	xim-namespaces='{$namespaces}'
+	xim-node-id="{$id_node}" 
+	ng-cloak>
+	<div class="action_header" ng-hide="submitMessages.length">
 		<h2>{t}Tag this node{/t}</h2>
-		<fieldset class="buttons-form">
-			{button label='Guardar' class='asoc enable_checks validate btn main_action'}
-		</fieldset>
 	</div>
-
+	<div class="message" ng-show="submitMessages.length">
+	    <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
+	        #/message.message/#
+	    </p>
+	</div>
 	<div class="action_content">
-		<tagsinput initialize="true" />
+		<div class="xim-tagsinput-container-list">
+			<div class="xim-tagsinput-newtag  col2-3">
+				<xim-select class="tag-type btn-rounded"
+					ng-model="newTag.IdNamespace"
+					xim-options="namespaces"
+					xim-label-prop="type"
+					xim-style-prop="nemo"
+					xim-sel-prop="id"
+					ng-init="newTag.IdNamespace = namespaces['1'].id">
+				</xim-select>
+				<input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-keyup="keyPress($event)"/>
+				<button type="submit" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)">{t}Add{/t}</button>
+			</div>
+	    </div>
+		<div class="xim-tagsinput-container col2-3">
+			<div class="title-box">{t}Document tags{/t}</div>
+	   		<ul class="xim-tagsinput-list">
+	   			<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in documentTags">
+	   				<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
+					#/tag.Name/#
+					</span>
+ 					<a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link" target="_blank">#/namespaces[tag.IdNamespace].type/#</a>
+					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
+				</li>
+				<p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
+	    	</ul>
+	    </div>
 		
-	{if ($nube_tags)}
-		<div class="tagcloud">
-			<div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
-			
-			<ul class="nube_tags">
-		{section name=i loop=$nube_tags}
-			{math assign=font equation="16 + 10*(tamano/$max_value)" tamano=$nube_tags[i].Total}
-				<li class="xim-tagsinput-taglist icon custom">
-                    <span>{$nube_tags[i].Name}</span>
-                    <span class="amount right">{$nube_tags[i].Total}</span>
-                </li>
-		{/section}
-			</ul>
+		<div class="suggested col1-3">
+			{if $isStructuredDocument}
+				<xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId"></xtags-suggested>
+			{/if}
+			<div class="tagcloud xim-tagsinput-container-related" ng-if="cloudTags.length && cloudTags.length != selectedCount(cloudTags)">
+				<div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
+				<ul class="nube_tags">
+					<li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in cloudTags" ng-click="addTag(tag)" ng-hide="tag.selected">
+	                    <span class="tag-text">#/tag.Name/#</span>
+<!-- 	                    <span class="amount right">#/tag.Total/#</span> -->
+	                </li>
+				</ul>
+			</div>
+			<ontologyBrowser />
 		</div>
-	{/if}
-		<ontologyBrowser />
 	</div>
-{*</div>
-</div>*}
+	<fieldset class="buttons-form positioned_btn">
+			<button class="button_main_action"
+				xim-button
+				xim-state="submitState"
+				xim-label="submitLabel"
+				ng-click="saveTags(documentTags)"
+				xim-disabled="!dirty">
+			</button>
+		</fieldset>	
 </form>
