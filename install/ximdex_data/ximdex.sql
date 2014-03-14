@@ -4009,7 +4009,7 @@ CREATE TABLE `Namespaces` (
   PRIMARY KEY (`idNamespace`),
   UNIQUE KEY `Nemo` (`nemo`),
   UNIQUE KEY `Type` (`type`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO Namespaces (service, type, nemo, uri, recursive, category,isSemantic)
 VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",0);

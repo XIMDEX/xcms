@@ -46,7 +46,8 @@
 		_init: function(opt){
 			this.options = $.extend(this.defaults, this.options);
             this.options.element = this.element;
-			this.selected = this.loadValues();
+			this.loadValues();
+			this.selected = this.options.selected;
 			this.$footer = $(".infobox", this.element);
 			this._on($(".tree", this.element),{click:"_selectTree"});			
 			this._on($(".text", this.element),{click:"_selectText"});
@@ -190,6 +191,9 @@
             // Returns empty array (no selected tags at the beggining of the action)
             // TODO: It needs to be changed for updating selected tags previously
             return [];
+		},
+		unselectNode: function(node) {
+			console.log("Un selecting node", node);
 		},
 		showTree: function(){
 			var that = this;

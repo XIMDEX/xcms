@@ -42,13 +42,36 @@ class Action_setmetadata extends ActionAbstract {
 		$params = $this->request->getParam("params");
 		$tags = new Tag();
 		$max=$tags->getMaxValue();		
+
+		$cloud_tags = array();
+		$cTags = $tags->getTags();
+		
+        if(count($cTags)>0){
+		    foreach ($cTags as $tag) {
+  			    $array = array(
+  					"IdTag"=>(int)$tag["IdTag"],
+  					"Name"=>utf8_encode($tag["Name"]),
+  					"IdNamespace"=>(int)$tag["IdNamespace"]
+			    );
+  			    $cloud_tags[] = $array;
+  		    }
+        }
+
 	 	$values = array(
-	 		'nube_tags' => $tags->getTags(),
+	 		'cloud_tags' => json_encode($cloud_tags),
 			'max_value' => $max[0][0],
 			'id_node' => $idNode,
 			'go_method' => 'save_metadata',
-			'nodeUrl' => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+			'nodeUrl' => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
+			'namespaces' => json_encode($this->getAllNamespaces())
 		);
+
+	 	//Get the actual tags of the document
+	 	$relTags = new RelTagsNodes();
+	 	$values["tags"] = json_encode($relTags->getTags($idNode));
+	 	//error_log(print_r($relTags->getTags($idNode)));
+	 	$node = new Node($idNode);
+	 	$values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
 
 		$this->render($values, 'index', 'default-3.0.tpl');
   	}
@@ -80,6 +103,25 @@ class Action_setmetadata extends ActionAbstract {
 		return $ontologyService->suggest($content);
 	}
 
+	private function getAllNamespaces(){
+  		$result = array();
+  		//Load from Xowl Service
+  		$namespacesArray = OntologyService::getAllNamespaces();
+  		//For every namespace build an array. This will be a json object
+  		foreach ($namespacesArray as $namespace) {
+  			$array = array(
+  					"id"=>$namespace->get("idNamespace"),
+  					"type"=>$namespace->get("type"),
+  					"isSemantic"=>$namespace->get("isSemantic"),
+  					"nemo"=>$namespace->get("nemo"),
+  					"category"=>$namespace->get("category"),
+  					"uri"=>$namespace->get("uri")
+				);
+
+  			$result[] = $array;
+  		}
+  		return $result;		
+	}
   	
 	/**
 	*<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
@@ -93,23 +135,8 @@ class Action_setmetadata extends ActionAbstract {
 	*</code>
   	*/
   	function loadAllNamespaces(){
-
-  		$result = array();
-  		//Load from Xowl Service
-  		$namespacesArray = OntologyService::getAllNamespaces();
-  		//For every namespace build an array. This will be a json object
-  		foreach ($namespacesArray as $namespace) {
-  			$nemo = $namespace->get("nemo");
-  			$array = array(
-  					"type"=>$namespace->get("type"),
-  					"isSemantic"=>$namespace->get("isSemantic")
-				);
-
-  			$result[$nemo] = $array;
-  		}
-
   		//Sending json from result array
-		$this->sendJSON($result);
+		$this->sendJSON($this->getAllNamespaces());
   	}
 
   	function save_metadata() {
@@ -117,18 +144,19 @@ class Action_setmetadata extends ActionAbstract {
 
    		$tags = new RelTagsNodes();
    		$previous_tags = $tags->getTags($idNode);
-		if(array_key_exists("tags", $_POST) ) {
-	  		$tags->saveAll($_POST['tags'], $idNode, $previous_tags);
-	 	} else {
-	 		$tags->saveAll(array(), $idNode, $previous_tags);
-	 	}
-	
+
+
+   		$request_content = file_get_contents("php://input");
+		$data = json_decode($request_content);
+   		if (array_key_exists('tags', $data)){
+   			$tags->saveAll($data->tags, $idNode, $previous_tags);
+   		}
 		$this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
 		$values = array(
 			'messages' => $this->messages->messages,
 		);
 
-		$this->render($values);
+		$this->sendJSON($values);
  	}
 
 	public function getLocalOntology(){

@@ -27,6 +27,7 @@
 
 
 require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
+ModulesManager::file('/services/Xowl/OntologyService.class.php');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 class Widget_tagsinput extends Widget_Abstract {
@@ -44,7 +45,7 @@ class Widget_tagsinput extends Widget_Abstract {
 
 		if("true" == $params["initialize"]) {
 			$relTags = new RelTagsNodes();
-			$params["tags"] = $relTags->getTags($params["_enviroment"]["id_node"]);
+			$params["tags"] = json_encode($relTags->getTags($params["_enviroment"]["id_node"]));
 		}
 
 		$node = new Node($params["_enviroment"]["id_node"]);
@@ -54,7 +55,30 @@ class Widget_tagsinput extends Widget_Abstract {
 			$this->setTemplate("tagsinput_editor");
 		}
 
+		$params['namespaces'] = json_encode($this->getAllNamespaces());
+
+
 		return parent::process($params);
+	}
+
+	private function getAllNamespaces(){
+  		$result = array();
+  		//Load from Xowl Service
+  		$namespacesArray = OntologyService::getAllNamespaces();
+  		//For every namespace build an array. This will be a json object
+  		foreach ($namespacesArray as $namespace) {
+  			$array = array(
+  					"id"=>$namespace->get("idNamespace"),
+  					"type"=>$namespace->get("type"),
+  					"isSemantic"=>$namespace->get("isSemantic"),
+  					"nemo"=>$namespace->get("nemo"),
+  					"category"=>$namespace->get("category"),
+  					"uri"=>$namespace->get("uri")
+				);
+
+  			$result[] = $array;
+  		}
+  		return $result;		
 	}
 
 }

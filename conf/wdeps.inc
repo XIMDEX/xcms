@@ -77,11 +77,7 @@ return array(
 	),
 	'tagsinput' => array(
 		'deps' => array(),
-		'js' => array('tagsinput.js',
-			      'writingtag.js',
-			      'taglist.js',
-			      'tag.js'
-		)
+		'js' => array()
 	),
 
 	'uploader' => array(
@@ -136,7 +132,8 @@ return array(
 		'js' => array(
 			'd3.layout.js',
 			'underscore-min.js',
-			'ontologywidget.js'
+			'ontologywidget.js',
+			'ximOntologyBrowser.js'
 		)
 	),
 	'qpsearch' => array(

@@ -40,8 +40,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 include_once (XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/workflow/Workflow.class.php');
-
-ModulesManager::file('/inc/model/Trash.class.php', 'ximTRASH');
+ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 define('DETAIL_LEVEL_LOW', 0);
 define('DETAIL_LEVEL_MEDIUM', 1);
@@ -1139,9 +1138,13 @@ class	Node extends Nodes_ORM{
 		$dependencies=New Dependencies();
 		$dependencies->deleteDependentNode($this->get('IdNode'));
 
+        $rtn = new RelTagsNodes();
+        $rtn->deleteTags($this->nodeID);
+
 		XMD_Log::info("Node ".$this->nodeID." deleted.");
 		$this->nodeID	= null;
 		$this->class	= null;
+
 		return parent::delete();
 	}
 
