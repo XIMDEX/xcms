@@ -23,30 +23,29 @@
  *  @version $Revision$
  *}
 
-<div class="ontology-browser-container col1-3">
-<div class="title-box">{t}Ontology Browser{/t}</div>
-<a class="tree icon" href="#"><span>{t}Tree view{/t}</span></a>
-<a class="text icon" href="#"><span>{t}Text view{/t}</span></a>
-
-<div class="ontology-browser hidden">
-    <div class="treeViewer hidden">
-        <h3>{t}Tree view ontology browser{/t}</h3>
-        <div class="selectbox-tree">
-            <select></select>
-        </div>
-    </div>
-    <div class="textViewer hidden">
-        <h3>{t}Text view ontology browser{/t}</h3>
-        <div class="selectbox-text">
-            <select></select>
-        </div>
-    </div>
-    <div class="infobox">
-      <h1></h1>
-      <p></p>
-      <a class="btn main_action"></a>
-      <a class="close  btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
-    </div>
-     <a class="ontology-close btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
-</div>
+<div class="ontology-browser-container col1-3" xim-ontology-browser xim-on-select="addOntology(ontology)" xim-on-un-select="removeOntology(ontology)" xim-selected-list="documentTags">
+  <div class="title-box">{t}Ontology Browser{/t}</div>
+  <a class="tree icon" href="#"><span>{t}Tree view{/t}</span></a>
+  <a class="text icon" href="#"><span>{t}Text view{/t}</span></a>
+  <div class="ontology-browser hidden">
+      <div class="treeViewer hidden">
+          <h3>{t}Tree view ontology browser{/t}</h3>
+          <div class="selectbox-tree">
+              <select></select>
+          </div>
+      </div>
+      <div class="textViewer hidden">
+          <h3>{t}Text view ontology browser{/t}</h3>
+          <div class="selectbox-text">
+              <select></select>
+          </div>
+      </div>
+      <div class="infobox">
+        <h1></h1>
+        <p></p>
+        <a class="btn main_action"></a>
+        <a class="close  btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
+      </div>
+       <a class="ontology-close btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
+  </div>
 </div>

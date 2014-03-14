@@ -279,7 +279,7 @@ class Action_xmleditor2 extends ActionAbstract {
 		$content = Request::post('content');
 		$this->getEditor($idnode);
 		$content = $this->_editor->getAnnotationFile($idnode, $content);
-		$this->printContent($content, false);
+		$this->sendJSON($content);
 	}
 
 	/**

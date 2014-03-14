@@ -319,20 +319,22 @@ class AbstractStructuredDocument extends FileNode  {
 			$metadata = 'metadata_id=""';
 		}
 
-		//We include the associated semantic tags of the document into the docxap tag.
-		$ximdexTags='';
+		//include the associated semantic tags of the document into the docxap tag.
+		$xtags='';
 
 		if(ModulesManager::isEnabled('ximTAGS')){
 			$rtn= new RelTagsNodes();
 			$nodeTags=$rtn->getTags($this->nodeID);
 			if(!empty($nodeTags)){
 				foreach($nodeTags as $tag){
-					$ximdexTags.=$tag['name'].",";
+                    $ns = new Namespaces();
+                    $idns = $ns->getNemo($tag['IdNamespace']);
+					$xtags.=$tag['Name'].":".$idns.",";
 				}
 			}
-			$ximdexTags=substr_replace($ximdexTags,"",-1);
+			$xtags=substr_replace($xtags,"",-1);
 		}
-		$ximdexTags = 'ximdexTags = "'.utf8_encode($ximdexTags).'"';
+		$xtags = 'xtags = "'.utf8_encode($xtags).'"';
 		
 		$docxap = '';
 
@@ -343,8 +345,8 @@ class AbstractStructuredDocument extends FileNode  {
                         		$this->ChannelsXapAttrib($channel),
                         		$this->_buildDocXapAttribs($idLanguage),
                         		$this->_getDocXapPropertiesAttrib(true),
-                        		$ximdexTags,
-					$metadata,
+                        		$xtags,
+					            $metadata,
                         		NULL
                  );
 

@@ -126,6 +126,21 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			'/inc/js/ximtimer.js',
 			'/inc/js/console.js',
 			'/inc/widgets/select/js/ximdex.select.js',
+			'/inc/js/i18n.js',
+			'/extensions/angular/angular.min.js',
+			$actionURL . '/js/angular/app.js',
+			//'/inc/js/angular/app.js',
+			'/inc/js/angular/services/xTranslate.js',
+			'/inc/js/angular/services/xBackend.js',
+			'/inc/js/angular/services/xUrlHelper.js',
+			'/inc/js/angular/directives/ximButton.js',
+			'/inc/js/angular/directives/ximSelect.js',
+			'/inc/js/angular/directives/ximValidators.js',
+			'/inc/js/angular/filters/xFilters.js',
+			'/inc/js/angular/directives/ximButton.js',
+			'/inc/js/angular/directives/xtagsSuggested.js',
+			'/inc/js/angular/controllers/XTagsCtrl.js',
+
 			$kupuURL . '/common/sarissa.js',
         		$kupuURL . '/common/sarissa_ieemu_xpath.js',
 	       	 	$kupuURL . '/common/kupuhelpers.js',
@@ -253,8 +268,9 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/views/common/css/xlinks.css',
 //future		$actionURL . '/views/common/css/colorpicker.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
-			Config::getValue('UrlRoot') .'/inc/widgets/select/js/ximdex.select.js',
+			Config::getValue('UrlRoot') .'/inc/widgets/select/css/ximdex.select.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
+			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         	);
 
 	        $baseTags = array(

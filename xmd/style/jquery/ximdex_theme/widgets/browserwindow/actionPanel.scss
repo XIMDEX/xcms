@@ -266,6 +266,9 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 	position: absolute;
 	top: .8em;
 	right: 2.5em;
+	button{
+		margin-top: -.4em;
+	}
 }
 .ui-dialog .ui-dialog-buttonpane button span {
 	padding: 1px;
@@ -1134,6 +1137,14 @@ input:focus + .tooltip_info{
 	.btn:active, .action_container .main_action:active{
 		@include boxshadow(inset 0 2px 4px $s_black);
 		border-width: 1px;
+	}
+	button.button_main_action {
+		@extend %button-main-action;
+		font-size: 1.1rem;
+		font-weight: normal;
+		padding: 7px 14px;
+		font-family: "Coustard";
+		text-transform: uppercase;
 	}
 
 	.btn-unlabel-rounded{
