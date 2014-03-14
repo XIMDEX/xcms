@@ -35,7 +35,7 @@
 	<div class="action_header" ng-hide="submitMessages.length">
 		<h2>{t}Manage metadata{/t}</h2>
 		<fieldset class="buttons-form">
-            <button class="btn main_action" 
+            <button class="btn main_action button_main_action button" 
                 ng-click="submitForm(managemetadata)"
                 xim-button
                 xim-label="submitLabel"
