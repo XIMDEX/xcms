@@ -77,11 +77,7 @@ return array(
 	),
 	'tagsinput' => array(
 		'deps' => array(),
-		'js' => array('tagsinput.js',
-			      'writingtag.js',
-			      'taglist.js',
-			      'tag.js'
-		)
+		'js' => array()
 	),
 
 	'uploader' => array(

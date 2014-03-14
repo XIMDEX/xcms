@@ -29,7 +29,8 @@
 	xim-namespaces='{$namespaces}'
 	xim-node-id='{$_enviroment["id_node"]}'>
 	<h3 id="kupu-toolbox-tags-header" style="-moz-user-select: none"
-		class="kupu-toolbox-heading kupu-toolbox-heading-closed ui-draggable">
+		class="kupu-toolbox-heading kupu-toolbox-heading-closed ui-draggable"
+		ng-click="show = !show">
 		<button i18n:attributes="title" title="Show/hide tags"
 			id="kupu-toolbox-tags-button"
 			class="kupu-floatingtoolbox-button kupu-toolbox-tags-button"
@@ -37,7 +38,7 @@
 			Tags
 	</h3>
 
-	<div class="xim-tagsinput-container editor_tags" id="{$id}"  style="display:none">
+	<div class="xim-tagsinput-container editor_tags" id="{$id}"  ng-show="show">
 	    <div class="xim-tagsinput-container-list ">
 		    <ul class="xim-tagsinput-list" style="clear:both;">
   			<li class="xim-tagsinput-newtag">
@@ -58,7 +59,7 @@
 						#/tag.Name/#
 						</span>
 							<!-- <a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link" target="_blank">#/namespaces[tag.IdNamespace].type/#</a> -->
-						<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
+						<i class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </i>
 					</li>
 				</div>
 		      
