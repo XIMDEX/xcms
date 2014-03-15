@@ -51,7 +51,7 @@ PASSWD_DB=${PASSWD_DB:-""}
 SERVER_DB=${SERVER_DB:-""}
 DATABASE=${DATABASE:-""}
 PORT_DB=${PORT_DB:-""}
-
+myerrordb="SS"
 
 #perms to conf
 $(chmod u+w $XIMDEX_PATH/conf)
@@ -66,6 +66,8 @@ function println()
  #else
    #echo -e "$1" >>  $LOG
  fi
+# DEBUG into LOG FILE
+ echo -e "$1" >>  $LOG
 }
 
 
@@ -85,7 +87,7 @@ function assign
   value=${2//\//\\\/}
  INSTALL_PARAMS_TEMP=$INSTALL_PARAMS\.$RANDOM 
 
- $(sudo sed "s/##${element}##/${value}/g" $INSTALL_PARAMS > $INSTALL_PARAMS_TEMP)
+ $(sed "s/##${element}##/${value}/g" $INSTALL_PARAMS > $INSTALL_PARAMS_TEMP)
  $(mv $INSTALL_PARAMS_TEMP $INSTALL_PARAMS)
   println "sed s/##${element}##/${value}/g   $INSTALL_PARAMS"
 }
@@ -105,19 +107,45 @@ function getDBParams
 	USER_ADMIN=$DBUSER
 	PASSWD_ADMIN=$DBPASSWD
 	PORT_DB=$DBPORT
-	#echo "HOST: $DBHOST | PORT: $DBPORT | DBUSER: $DBUSER | DBPASSWD: $DBPASSWD | DBNAME: $DBNAME "
+	println "DB PARAMS READ --> HOST: $DBHOST | PORT: $DBPORT | DBUSER: $DBUSER | DBPASSWD: $DBPASSWD | DBNAME: $DBNAME "
 }
+
 
 function sql
 {
-
   sql=$1;
-  mysql_query=`(mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB -e "$sql") 2>&1`
-  #println "Conection:  -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB  "
+  mysql_query=`(mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB -P $PORT_DB -e "$sql") 2>&1`
+  println "Conection:  -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB  "
   QUERY_DB=$mysql_query
-  ERROR_DB=$(echo "$QUERY_DB"|cut -d ' ' -f 2,1);
-  println ""
+  ERROR_DB=""
+  if [[ $QUERY_DB =~  ^ERROR ]]; then
+    ERROR_DB=$(echo "$QUERY_DB"|cut -d ' ' -f 2,1);
+  fi
+	
+  println "Connectiong to mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB -P $PORT_DB" 
+  #println "Running query: $sql)" 
+  #println "QUERY: $QUERY_DB"
+  println "SQL: $sql | ERROR: $ERROR_DB"
   #println "SQL: $sql | RESULT: $QUERY_DB | ERROR: $ERROR_DB "
+}
+
+function checkDBconn {
+  sql="status;"
+  mysql_query=`(mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB -P $PORT_DB -e "$sql") 2>&1`
+  QUERY_DB=$mysql_query
+  #println "SQL: $sql | RESULT: $QUERY_DB | ERROR: $ERROR_DB "
+  if [[ $QUERY_DB =~  ^ERROR ]]; then
+    	ERROR_DB=$(echo "$QUERY_DB"|cut -d ' ' -f 2,1);
+        echo "Database returned error code $ERROR_DB"
+  	echo "$QUERY_DB"
+        echo ""
+        echo "CAN NOT ACCESS THE DATABASE. ENDING!"
+        
+        exit 1
+  else
+        echo "Database connection stablished!"  
+  fi
+
 }
 
 function sql_user

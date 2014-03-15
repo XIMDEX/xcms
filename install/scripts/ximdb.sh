@@ -1,4 +1,4 @@
-#!/bin/bash
+	#!/bin/bash
 #/**
 # *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
 # *
@@ -30,7 +30,6 @@ SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
 DO_BACKUP=1
 
 . $SCRIPT_PATH/lib/functions.sh
-
 
 
 function checkInstallParams
@@ -79,7 +78,7 @@ function usage
   echo -e "    -r <admin user>      Mysql Admin user"
   echo -e "    -w <password>        Mysql Admin user password"
   echo -e "    -h <host>            Mysql server host"
-  echo -e "	   -k <port>			Mysql server port"
+  echo -e "    -k <port>            Mysql server port"
   echo -e "    -d <database>        Mysql database"
   echo -e "    -s <sql>             sql sentence"
   echo -e "    -n	            Not backup of install-params"
@@ -93,13 +92,15 @@ function usage
 function setServer
 {
 
-
 	if [ -z $SERVER_DB ]
 	then
-	  SERVER_DB='localhost';
+	  myhost=$(hostname -f)
+	  SERVER_DB=${SERVER_DB:-localhost}
+	  echo "Your host is $myhost but MYSQL could only be listening at localhost..."
+
 	  if [ $INTERACTIVE = 1 ]
 	 then
-	  echo -n "Database server [$SERVER_DB]: "
+	  echo -n "Please enter database server hostname [$SERVER_DB]: "
 	  read option
 	  SERVER_DB=${option:-$SERVER_DB}
 	  fi
@@ -111,7 +112,7 @@ function setServer
 	server_db_t=${server_db_t/%\/*}
 	$(ping -q -c 1 ${server_db_t} >/dev/null 2>/dev/null)
 	result=$?
-	if [ $result == 0 ]
+	if [ $result -eq 0 ]
 	then
 		SERVER_DB=${server_db_t:-SERVER_DB}
 		assign "DB_HOST" $SERVER_DB
@@ -135,7 +136,7 @@ function setPort
 		fi
 	fi
 	
-	echo -n "Checking connection to server $SERVER_DB and port $PORT_DB. Please wait a few seconds... "
+	echo -n "Checking connection to server $SERVER_DB and port $PORT_DB. Please wait ... "
 	connection=`telnet $SERVER_DB $PORT_DB 2>&1 | grep 'Connected to'`
 	if [ -n "$connection" ]
 	then
@@ -143,9 +144,12 @@ function setPort
 		echo "OK"
 		next_step
 	else
-		echo "Couldn't connect to the specified port. "
+		echo "Couldn't connect to the specified port. Trying installation without port... "
+		SERVER_DB=''
 		PORT_DB=''
+		prev_step
 	fi
+
 }
 
 
@@ -157,7 +161,7 @@ function setAdminUser
 	  USER_ADMIN='root';
 	  if [ $INTERACTIVE = 1 ]
 		 then
-	  echo -n "Admin database user [$USER_ADMIN]: "
+	  echo -n "Please, enter database Admin username [$USER_ADMIN]: "
 	  read option
 	  USER_ADMIN=${option:-$USER_ADMIN}
 	  fi
@@ -182,21 +186,22 @@ function setAdminPass
 	  if [ $INTERACTIVE = 1 ]
 	    then
 	    stty -echo
-		  echo -n "Admin database password: "
+		  echo -n "Database admin password: "
  	 	 read option
 	  	  echo ""
 		  PASSWD_ADMIN=${option:-''}
-		  echo -n "Admin database password (repeat): "
-		  read option
- 	 	  echo ""
-		  PASSWD_ADMIN2=${option:-''}
+#		  echo -n "Database admin password (repeat): "
+#		  read option
+# 	 	  echo ""
+#		  PASSWD_ADMIN2=${option:-''}
+		PASSWD_ADMIN2="$PASSWD_ADMIN"
 		  stty echo
 	  fi
 	else
 		PASSWD_ADMIN2="$PASSWD_ADMIN"
 	fi
 
-	if [ -n "$PASSWD_ADMIN" ] && [ -n "$PASSWD_ADMIN2" ] && [ "$PASSWD_ADMIN" = "$PASSWD_ADMIN2" ]
+	if [ "$PASSWD_ADMIN" = "$PASSWD_ADMIN2" ]
 	then
 		checkConnection
 
@@ -204,10 +209,12 @@ function setAdminPass
 		  then
 			  	println "$mysql_query"
 			  	echo "Connection failed! Connection data errors. ";
+				echo ""
 				STEP=0
 				USER_ADMIN=''
 				PASSWD_ADMIN=''
 				SERVER_DB=''
+				PORT_DB=''
 				if [ "$AUTOMATIC_INSTALL" = 1 ]
 				then
 					echo "Please, check config file: $CONFIG_FILE. ";
@@ -218,6 +225,7 @@ function setAdminPass
 					STEP="99"
 				fi
 			else
+					echo "Database admin access granted!"
 			 		next_step
 		  fi
 
@@ -235,7 +243,7 @@ function setUser
           USER_DB=${DATABASE:0:15}
 	  if [ $INTERACTIVE = "1" ]
 	 then
-		  echo -n "Database user [$USER_DB]: "
+		  echo -n "Database username for Ximdex instance [$USER_DB]: "
 		  read option
 		  USER_DB=${option:-$USER_DB}
 	  fi
@@ -277,11 +285,11 @@ function setUserPass
 	  if [ $INTERACTIVE = 1 ]
 	    then
      	  stty -echo
-		  echo -n "User database password: "
+		  echo -n "Password for this database user: "
  	 	  read option
  	 	  echo ""
 		  PASSWD_DB=${option:-''}
-		  echo -n "User database password (repeat): "
+		  echo -n "Password for the database user (repeat): "
 		  read option
  	 	  echo ""
 		  PASSWD_DB2=${option:-''}
@@ -296,7 +304,7 @@ function setUserPass
 		assign "DB_PASSWD" $PASSWD_DB
 		next_step
 	else
-	    echo "User database password not found."
+	    echo "User database password is not valid."
 	    PASSWD_DB=''
 	fi
 }
@@ -380,7 +388,7 @@ function setDB
 	  DATABASE=$(echo $XIMDEX_PATH|sed -e "s/.*\///g"|sed -e "s/\///g")
 	  if [ $INTERACTIVE = 1 ]
 		 then
-	  echo -n "Database name [$DATABASE]: "
+	  echo -n "Database name for your Ximdex instance [$DATABASE]: "
 	  read option
 	  DATABASE=${option:-$DATABASE}
 	  fi
@@ -444,13 +452,20 @@ function setDB
 
 function loadDATA
 {
- if [ $ADD_DATA  = 1  ]
- then
-  datain=$(mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql)
-  println "Importing ximdex data....mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql"
- fi
+ echo "Creating database $DATABASE as user $USER_DB at $SERVER_DB:$PORT_DB"
+ if [ $ADD_DATA  = 1  ]; then
+	datain=$(mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql)
 
-   next_step
+	if [ $? -ne 0 ]; then 
+		echo "Can not create Database ($DATABASE)! " ;
+  		println "Cannot import ximdex data to ....mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql"
+	else
+		echo "Created DB & Removed module states for future install"
+		$(rm -f $XIMDEX_PATH/data/.* 2>/dev/null)
+  		println "Importing ximdex data....mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql"
+	fi
+ fi
+ next_step
 }
 
 
@@ -505,11 +520,7 @@ shift $(($OPTIND - 1))
 
 ################# SET PARAMS #################################
 echo ""
-echo ""
-echo "**************************"
-echo "* Ximdex database config *"
-echo "**************************"
-echo ""
+echo "*** Ximdex database config *"
 echo ""
 
 #- ask server
@@ -528,7 +539,7 @@ do
 	8) checkUser;;  #check if user exists
 	9) loadDATA;;
 	10)
-		echo "Configuring Ximdex database... Success"
+		echo "Database for your Ximdex instance is operative!"
 		exit 0;;
 	*)
 		exit 1;;
