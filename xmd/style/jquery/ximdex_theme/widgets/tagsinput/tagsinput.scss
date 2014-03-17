@@ -82,6 +82,30 @@
       }
    }
 }
+//Animations
+.xim-tagsinput-taglist {
+  -webkit-transition: all ease-out .2s;
+  -moz-transition: all ease-out .2s;
+  -ms-transition: all ease-out .2s;
+  -o-transition: all ease-out .2s;
+  transition: all ease-out .2s;
+  opacity:1;
+  max-height: 100px;
+}
+.xim-tagsinput-taglist.ng-hide-add,
+.xim-tagsinput-taglist.ng-hide-remove {
+  display:block!important;
+  // -ms-transform:translate(-50px,0); /* IE 9 */
+  // -webkit-transform:translate(-50px,0); /* Chrome, Safari, Opera */
+  // transform:translate(-50px,0); /* Standard syntax */
+}
+ 
+.xim-tagsinput-taglist.ng-hide {
+/*  padding-top: 0;
+  padding-bottom: 0;*/
+  max-height: 0px;
+  opacity:0.5;
+}
 
 .xim-tagsinput-tag{
   &::before{
