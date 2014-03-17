@@ -51,7 +51,6 @@ PASSWD_DB=${PASSWD_DB:-""}
 SERVER_DB=${SERVER_DB:-""}
 DATABASE=${DATABASE:-""}
 PORT_DB=${PORT_DB:-""}
-myerrordb="SS"
 
 #perms to conf
 $(chmod u+w $XIMDEX_PATH/conf)

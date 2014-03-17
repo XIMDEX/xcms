@@ -187,7 +187,7 @@ function setPath
 function setAdminUser
 {
 
-	# Ximdex admin user by default is imdex
+	# Ximdex admin user by default is ximdex
 	XIMDEX_USER='ximdex';
 
 #	if [ -z "$XIMDEX_USER" ]
