@@ -2981,6 +2981,8 @@ CREATE TABLE `Users` (
   `Name` varchar(255) NOT NULL default '0',
   `Email` varchar(255) NOT NULL default '',
   `Locale` varchar(5) DEFAULT NULL COMMENT 'User Locale',
+  `LastLogin` int(14) unsigned default '0',
+  `NumAccess` int(12) unsigned default '0',
   PRIMARY KEY  (`IdUser`),
   UNIQUE KEY `login` (`Login`)
 ) ENGINE=MYISAM COMMENT='Tabla de Usuarios del sistema';
@@ -2993,7 +2995,7 @@ CREATE TABLE `Users` (
 
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
 LOCK TABLES `Users` WRITE;
-INSERT INTO `Users` VALUES (301,'ximdex','$1$qSGCbgO1$yqxywUuVs1w5pd7capSQV.','Administrador de ximdex','notify@ximdex.org', NULL);
+INSERT INTO `Users` VALUES (301,'ximdex','$1$qSGCbgO1$yqxywUuVs1w5pd7capSQV.','Administrador de ximdex','notify@ximdex.org', NULL,0,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 
