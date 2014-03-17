@@ -9,6 +9,7 @@
 
 # INITIAL VARS
 REPO_HOME="https://github.com/juanpri/ximdex/archive/"
+REPO_BRANCH="develop"
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
 
@@ -581,6 +582,10 @@ CheckFinalDirectory
 echo "Setting temporary owners to ${USER_UNIX}:${GROUP_UNIX}"
 chown -R ${USER_UNIX}:${GROUP_UNIX} ./${REPO_NAME}
 
+echo "Setting permissions to writable directories"
+$(chmod -R 2770 ${REPO_NAME}/data)
+$(chmod -R 2770 ${REPO_NAME}/logs)
+
 # Launch installations
 mystatus=$( GetInstallStatus )
 if [ -d $SCRIPT_PATH ]; then
@@ -600,7 +605,4 @@ exit 0
 Step_Maintenance
 Step_ProjectsAndCrontab
 
-# ADD PERMS?
-#                $(chmod -R 2770 ${XIMDEX_PATH}/data)
-#                $(chmod -R 2770 ${XIMDEX_PATH}/logs)
 
