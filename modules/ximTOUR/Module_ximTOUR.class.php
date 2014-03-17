@@ -24,8 +24,6 @@
  *  @version $Revision$
  */
 
-
-
 ModulesManager::file('/inc/modules/Module.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/cli/CliParser.class.php');
@@ -39,13 +37,12 @@ ModuleSManager::file(MODULE_XIMLOADER_PATH.'/Module_ximLOADER.class.php');
 
 class Module_ximTOUR extends Module {
     
-    	function Module_ximTOUR() {
+   	function Module_ximTOUR() {
 		// Call Module constructor.
-            parent::Module('ximTOUR', dirname(__FILE__));
-
+        parent::Module('ximTOUR', dirname(__FILE__));
 	}
 
-        //Function which installs the module
+    //Function which installs the module
 	function install() {
 		$projects = new Node(10000);
         $projectid = $projects->GetChildByName("Picasso");
@@ -54,15 +51,16 @@ class Module_ximTOUR extends Module {
 	            $moduleLoader = new Module_ximLOADER();
 	            $moduleLoader->install(2);
 	            echo "\n\n";
-	            $this->loadConstructorSQL("ximTOUR.constructor.sql");
-	            parent::install();
         }
-		
+	    $this->loadConstructorSQL("ximTOUR.constructor.sql");
+	    parent::install();
 	}
         
-        function uninstall(){
-		   		$this->removeStateFile();
-        }
+    function uninstall(){
+	    $this->removeStateFile();
+        $this->loadDestructorSQL("ximTOUR.destructor.sql");
+        parent::uninstall();
+    }
 }
 
 ?>
