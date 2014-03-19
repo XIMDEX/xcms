@@ -318,12 +318,14 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 
 		$canPublicate = $this->canPublicate($idNode);
 		$publication_allowed = $canPublicate ?  '1' : '0';
+		$checkSpelling = in_array("enchant", apache_get_modules())? "1": "0"; 
 
 		$xmlFile = $this->_base_url . '&method=getXmlFile';
 		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . '/actions/xmleditor2/conf/kupu_config.xml');
 		$content = preg_replace('/{\$xmlFile}/', htmlentities($xmlFile), $content);
 		$content = preg_replace('/{\$expert_mode_allowed}/', $expert_mode_allowed, $content);
 		$content = preg_replace('/{\$publication_allowed}/', $publication_allowed, $content);
+		$content = preg_replace('/{\$checkspelling}/', $checkSpelling, $content);
 		return $content;
 	}
 
