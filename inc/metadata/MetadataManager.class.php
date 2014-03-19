@@ -149,7 +149,7 @@ class MetadataManager{
 */
     public function generateMetadata($lang = null){
         //create the specific name with the format: NODEID-metadata
-        $name = $this->metadataFileName();
+        $name = $this->buildMetadataFileName();
         //check if the metadata node already exists in metadata hidden folder
         $idContent = $this->getMetadataDocument($name);
 
@@ -168,7 +168,6 @@ class MetadataManager{
             }
             $channels = $this->getMetadataChannels();
             //We use the action like a service layer
-            //error_log(print_r($languages,true));
             $this->createXmlContainer($idm,$name,$idSchema,$aliases,$languages,$channels);
             $this->addRelation($name);
         }
@@ -183,7 +182,7 @@ class MetadataManager{
  * @param int $source_idnode
  * @return string
 */
-    private function metadataFileName(){
+    private function buildMetadataFileName(){
         $idnode = $this->node->GetID();
         return $idnode."-metadata";
     }
@@ -281,6 +280,13 @@ class MetadataManager{
         if (!($nodeType->get('IdNodeType') > 0)) {
             XMD_Log::error("A nodetype could not be estimated to create the container folder, operation will be aborted, contact with your administrator");
         }
+
+        //Just the selected checks will be created.
+        $selectedAlias = array();
+        foreach ($languages as $idLang) {
+            $selectedAlias[$idLang] = "";
+        }
+
         $data = array(
             'NODETYPENAME' => $nodeType->get('Name'),
             'NAME' => $name,
@@ -288,8 +294,13 @@ class MetadataManager{
             'FORCENEW' => true,
             'CHILDRENS' => array(
                 array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idschema)
-            )
+            ),
+            "CHANNELS" => $channels,
+            "LANGUAGES" => $languages,
+            "ALIASES" => $selectedAlias,
+            "MASTER" => $master
         );
+        
         $baseIO = new baseIO();
         $idContainer = $result = $baseIO->build($data);
 
@@ -302,99 +313,10 @@ class MetadataManager{
             $result["error"] = $values;
             return $result;
         } else {
-            XMD_Log::info("Container $name has been successfully created");
+            XMD_Log::info("Container $name has been successfully created");            
         }
-
-        if ($result && is_array($languages)) {
-            $baseIoInferer = new BaseIOInferer();
-            $inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
-            $nodeType = new NodeType();
-            $nodeType->SetByName($inferedNodeType['NODETYPENAME']);
-            if (!($nodeType->get('IdNodeType') > 0)) {
-                XMD_Log::error("A nodetype could not be estimated to create the document, operation will be aborted, contact with your administrator");
-                // aborts language insertation 
-                $languages = array();
-            }
-
-            foreach ($channels as $idChannel) {
-                $formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
-            }
-
-            // structureddocument inserts content document
-            $setSymLinks = array();
-
-            foreach ($languages as $idLanguage) {
-                $result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idschema,
-                $formChannels, $aliases);
-
-                if ($master > 0) {
-                    if ($master != $idLanguage) {
-                        $setSymLinks[] = $result;
-                    } else {
-                        $idNodeMaster = $result;
-                    }
-                }
-            }
-
-            foreach ($setSymLinks as $idNodeToLink) {
-                $structuredDocument = new StructuredDocument($idNodeToLink);
-                $structuredDocument->SetSymLink($idNodeMaster);
-                $slaveNode = new Node($idNodeToLink);
-                $slaveNode->set('SharedWorkflow', $idNodeMaster);
-                $slaveNode->update();
-            }
-        }
+        
         return true;
-    }
-
-/** 
- * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $idLanguage
- * @param string $name
- * @param int $idContainer
- * @param int $idTemplate
- * @param array $formChannels
- * @param array $aliases
- * @return int
-*/
-    function _insertLanguage($idLanguage, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels, $aliases) {
-        $language = new Language($idLanguage);
-        if (!($language->get('IdLanguage') >  0)) {
-            XMD_Log::error("Language $idLanguage insertion has been aborted because it was not found");
-            return NULL;
-        }
-        $data = array(
-        'NODETYPENAME' => $nodeTypeName,
-        'NAME' => $name,
-        'PARENTID' => $idContainer,
-        'ALIASNAME' => (isset($aliases[$idLanguage]))?$aliases[$idLanguage]:'',
-        'CHILDRENS' => array (
-        array ("NODETYPENAME" => "VISUALTEMPLATE", "ID" => $idTemplate),
-        array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
-        )
-        );
-
-        foreach ($formChannels as $channel) {
-            $data['CHILDRENS'][] = $channel;
-        }
-
-        if (isset($aliases[$idLanguage])) {
-            $data['CHILDRENS'][] = array(
-            'NODETYPENAME' => 'NODENAMETRANSLATION',
-            'IDLANG' => $idLanguage,
-            'DESCRIPTION' => $aliases[$idLanguage]);
-        }
-
-        $baseIO = new baseIO();
-        $result = $baseIO->build($data);
-        if ($result > 0) {
-            $insertedNode = new Node($result);
-            XMD_Log::info("Document ".$insertedNode->get('Name')." has been successfully inserted");
-        } else {
-            XMD_Log::error("Insertion of document $name with language ".$language->get('Name')." has failed");
-        }
-        return $result;
-
     }
 
     private function addRelation($name){
@@ -477,7 +399,7 @@ class MetadataManager{
     }
 
     public function deleteMetadata(){
-        $name = $this->metadataFileName();
+        $name = $this->buildMetadataFileName();
         $idContent = $this->getMetadataDocument($name);
         if ($idContent){
             $nodeContainer = new Node($idContent);

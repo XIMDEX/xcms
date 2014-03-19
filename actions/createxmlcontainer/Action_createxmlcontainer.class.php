@@ -100,10 +100,20 @@ class Action_createxmlcontainer extends ActionAbstract {
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
+    /**
+     * Method called from View. Create a new xml container. Get the params and check them.     
+     */
     function createxmlcontainer() {
 
-    	$idNode = $this->request->getParam('nodeid');
-    	$node = new Node($idNode);
+    	$idNode = $this->request->getParam('nodeid');    	
+		$aliases = $this->request->getParam('aliases');
+		$name = $this->request->getParam('name');
+		$idSchema = $this->request->getParam('id_schema');
+		$channels = $this->request->getParam('channels');
+		$languages = $this->request->getParam('languages');
+		$master = $this->request->getParam('master');
+
+		$node = new Node($idNode);
     	$idNode = $node->get('IdNode');
 		$formChannels = array();
 	
@@ -114,95 +124,25 @@ class Action_createxmlcontainer extends ActionAbstract {
     		$this->render($values, null, 'messages.tpl');
     		return false;
     	}
+    	
+    	$idContainer = $this->buildXmlContainer($idNode, $aliases, $name, $idSchema, $channels, $languages, $master);
 
-    		$aliases = $this->request->getParam('aliases');
-    		$name = $this->request->getParam('name');
-    		$idSchema = $this->request->getParam('id_schema');
-
-    		// Creating container
-    		$baseIoInferer = new BaseIOInferer();
-    		$inferedNodeType = $baseIoInferer->infereType('FOLDER', $idNode);
-    		$nodeType = new NodeType();
-    		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
-    		if (!($nodeType->get('IdNodeType') > 0)) {
-    			$this->messages->add(_('A nodetype could not be estimated to create the container folder,')
-    			. _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
+    	if (!($idContainer > 0)) {
+    		$this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
+    		foreach ($baseIO->messages->messages as $message) {
+    			$this->messages->messages[] = $message;
     		}
-        	$data = array(
-		        'NODETYPENAME' => $nodeType->get('Name'),
-		        'NAME' => $name,
-		        'PARENTID' => $idNode,
-		        'FORCENEW' => true,
-		        'CHILDRENS' => array(
-		        	array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema)
-		        )
-        	);
-        	$baseIO = new baseIO();
-        	$idContainer = $result = $baseIO->build($data);
+    		$values = array(
+			'idNode' => $idNode,
+			'nodeName' => $name,
+			'messages' => $this->messages->messages,
+    		);
+    		$this->render($values, null, 'messages.tpl');
+    		return false;
+    	} else {
+    		$this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
+    	}
 
-        	if (!($result > 0)) {
-        		$this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
-        		foreach ($baseIO->messages->messages as $message) {
-        			$this->messages->messages[] = $message;
-        		}
-        		$values = array(
-				'idNode' => $idNode,
-				'nodeName' => $name,
-				'messages' => $this->messages->messages,
-        		);
-        		$this->render($values, null, 'messages.tpl');
-        		return false;
-        	} else {
-        		$this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
-        	}
-        
-        	$languages = $this->request->getParam('languages');
-
-		if ($result && is_array($languages)) {
-	    		$baseIoInferer = new BaseIOInferer();
-	    		$inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
-	    		$nodeType = new NodeType();
-	    		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
-	    		if (!($nodeType->get('IdNodeType') > 0)) {
-	    			$this->messages->add(_('A nodetype could not be estimated to create the document,')
-	    			. _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
-	    			// aborts language insertion 
-	    			$languages = array();
-	    		}
-
-	    		$channels = $this->request->getParam('channels');
-			if(!empty($channels) ) {
-				foreach ($channels as $idChannel) {
-					$formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
-				}
-			}
-
-			// structureddocument inserts content document
-			$setSymLinks = array();
-			$master = $this->request->getParam('master');
-			foreach ($languages as $idLanguage) {
-				$result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema,$formChannels,$aliases);
-
-				if ($master > 0) {
-					if ($master != $idLanguage) {
-						$setSymLinks[] = $result;
-					} else {
-						$idNodeMaster = $result;
-					}
-				}
-			}
-
-            $mm = new MetadataManager($idContainer);
-            $mm->generateMetadata($languages);
-			
-			foreach ($setSymLinks as $idNodeToLink) {
-				$structuredDocument = new StructuredDocument($idNodeToLink);
-				$structuredDocument->SetSymLink($idNodeMaster);
-				$slaveNode = new Node($idNodeToLink);
-				$slaveNode->set('SharedWorkflow', $idNodeMaster);
-				$slaveNode->update();
-			}
-		}
 		$this->reloadNode($idNode);
 
 		$values = array(
@@ -210,51 +150,40 @@ class Action_createxmlcontainer extends ActionAbstract {
 		);
 		$this->render($values, NULL, 'messages.tpl');
     }
-	
-    function _insertLanguage($idLanguage, $nodeTypeName, $name, $idContainer, $idSchema, $formChannels, $aliases) {
-		$language = new Language($idLanguage);
-		if (!($language->get('IdLanguage') >  0)) {
-			$this->messages->add(sprintf(_("Language %s insertion has been aborted because it was not found"),  $idLanguage), MSG_TYPE_WARNING);
-			return NULL;
-		}
-		$data = array(
-			'NODETYPENAME' => $nodeTypeName,
-			'NAME' => $name,
-			'PARENTID' => $idContainer,
-			'ALIASNAME' => $aliases[$idLanguage],
-			"CHILDRENS" => array (
-				array ("NODETYPENAME" => "VISUALTEMPLATE", "ID" => $idSchema),
-				array ("NODETYPENAME" => "LANGUAGE", "ID" => $idLanguage)
-			)
-		);
 
-		if(!empty($formChannels ) ) {
-			foreach ($formChannels as $channel) {
-				$data['CHILDRENS'][] = $channel;
-			}
+    private function buildXmlContainer($idNode, $aliases, $name, $idSchema, $channels, $languages, $master){
+
+    	// Creating container
+		$baseIoInferer = new BaseIOInferer();
+		$inferedNodeType = $baseIoInferer->infereType('FOLDER', $idNode);
+		$nodeType = new NodeType();
+		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
+		if (!($nodeType->get('IdNodeType') > 0)) {
+			$this->messages->add(_('A nodetype could not be estimated to create the container folder,')
+			. _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
 		}
 
-		if (isset($aliases[$idLanguage])) {
-			$data['CHILDRENS'][] = array(
-									'NODETYPENAME' => 'NODENAMETRANSLATION',
-									'IDLANG' => $idLanguage,
-									'DESCRIPTION' => $aliases[$idLanguage]);
+		//Just the selected checks will be created.
+		$selectedAlias = array();
+		foreach ($languages as $idLang) {
+			$selectedAlias[$idLang] = $aliases[$idLang];
 		}
 
-		$baseIO = new baseIO();
-		$result = $baseIO->build($data);
-		if ($result > 0) {
-			$insertedNode = new Node($result);
-			$this->messages->add(sprintf(_('Document %s has been successfully inserted'), $insertedNode->get('Name')), MSG_TYPE_NOTICE);
-		} else {
-			$this->messages->add(sprintf(_('Insertion of document %s with language %s has failed'),
-				$name, $language->get('Name')), MSG_TYPE_ERROR);
-			foreach ($baseIO->messages->messages as $message) {
-				$this->messages->messages[] = $message;
-			}
-		}
-		return $result;
-    	
+    	$data = array(
+	        'NODETYPENAME' => $nodeType->get('Name'),
+	        'NAME' => $name,
+	        'PARENTID' => $idNode,
+	        'FORCENEW' => true,
+	        'CHILDRENS' => array(
+	        	array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema)
+	        ),
+	        "CHANNELS" => $channels,
+	        "LANGUAGES" => $languages,
+	        "ALIASES" => $selectedAlias,
+	        "MASTER" => $master
+    	);
+    	$baseIO = new baseIO();
+    	return $baseIO->build($data);
     }
 }
 ?>

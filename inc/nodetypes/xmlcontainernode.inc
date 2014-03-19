@@ -29,6 +29,7 @@ ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 ModulesManager::file('/inc/model/language.inc');
 ModulesManager::file('/inc/model/structureddocument.inc');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
+ModulesManager::file('/services/NodetypeService.class.php');
 
 class XmlContainerNode extends FolderNode{
 
@@ -36,82 +37,156 @@ class XmlContainerNode extends FolderNode{
         return null;
 	}
 
+	/**
+	 * Get the schema for the current document.
+	 * Old method. It stay here because backward compatibility.
+	 * @return int Schema Id.
+	 */
 	function getVisualTemplate(){
-		$query = sprintf("SELECT IdTemplate FROM RelTemplateContainer WHERE IdContainer = %d",$this->nodeID);
-	  	$this->dbObj->Query($query);
-		if (!($this->dbObj->numRows)) {
-			return false;
-		}
-		return $this->dbObj->GetValue('IdTemplate');
+		return $this->getIdSchema();
 	}
 
-    //TODO: check if this function is called in any moment. All the logic to create xml containers it's done in createxmlcontainer action
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $aliasLangList = null, $channelList = null, $master = null,$dataChildren=null){
-		$nodeMaster =  NULL;
+	/**
+	 * Get the schema for the current document.
+	 * @return int Schema Id.
+	 */
+	public function getIdSchema(){
+		$relTemplateContainer = new RelTemplateContainer();
+		$result = $relTemplateContainer->find("IdTemplate", "IdContainer = %s", array($this->nodeID), MONO);
+		if (!$result || !is_array($result) || !count($result))
+			return false;
+
+		return $result[0];
+
+	}
+
+    /**
+     * Build a new document and all its language versions.
+     * @param string $name          Node name.
+     * @param int $parentID      	Parent node id.
+     * @param int $nodeTypeID    	NodeType id.
+     * @param int $stateID       	state id.
+     * @param int $idSchema    Schema id.
+     * @param array $aliasLangList Array[idLang] = alias
+     * @param array $channelList   Channel ids array.
+     * @param int $nodeMaster    
+     * @param array $dataChildren  Required data.
+     */
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $idSchema = null, $aliasLangList = null, $channelList = null, $idNodeMaster = null,$dataChildren=null){
+
+		error_log("DEBUG Creando xml container $name");
+
+		$reltemplate = new RelTemplateContainer();
+        $reltemplate->createRel($idSchema,$this->nodeID);
+
 		if (is_array($aliasLangList)){
-		    foreach ($aliasLangList as $IdLanguage => $alias){
- 			    $xmldoc = new Node();
-			    $childrenNodeType = new NodeType();
-			    switch($this->nodeType->GetName()){
-    				case 'XimNewsBulletin':
-	    				$childrenNodeType->SetByName('XimNewsBulletinLanguage');
-		    			break;
-			    	case 'XimNewsNew':
-				    	$childrenNodeType->SetByName('XimNewsNewLanguage');
-					    break;
-    				case 'XmlContainer':
-	    				$childrenNodeType->SetByName('XmlDocument');
-		    			break;
-			    	case 'XimletContainer':
-				    	$childrenNodeType->SetByName('Ximlet');
-					    break;
-    				case 'XimPdfDocumentFolder':
-	    				$childrenNodeType->SetByName('XimPdfDocumentLang');
-		    			break;
-			    	default:
-				    	return;
-	            }
-
-			    if($childrenNodeType->HasError()){
-    			    $this->parent->SetError(1);
-				    return;
-				}
-
-			    $lang = new Language($IdLanguage);
-			    if($lang->HasError()){
-				    $this->parent->SetError(1);
-				    return;
-				}
-
-			    $nameDoc = $name."-id".$lang->GetIsoName();
-
-	 		    $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(),$stateID = null, $templateID, $IdLanguage, $alias, $channelList, $dataChildren);
-			    if(!$nodeMaster && $master && $master == $IdLanguage){
-				    $nodeMaster = $xmldoc->GetID();
-				}
-
-			    if($xmldoc->HasError()){
-			 	    $this->parent->SetError(1);
-				    return;
-				}
-			}// end foreach
-		}//end if
-
-		if($nodeMaster) {
-			$children = $this->parent->GetChildren();
-			foreach($children as $childID){
-				if($childID != $nodeMaster) {
-					$child = new Node($childID);
-					$child->SetWorkflowMaster($nodeMaster);
-					$strDoc = new StructuredDocument($childID);
-					$strDoc->SetSymLink($nodeMaster);
-				}
+		    foreach ($aliasLangList as $idLanguage => $alias){
+		    	$result = $this->addLanguageVersion($idLanguage, $alias, $channelList, $dataChildren);
 			}
+			error_log("DEBUG se creará metadata");
+			$this->buildMetadata($nodeTypeID, $aliasLangList);
 		}
-        $reltemplate = new RelTemplateContainer();
-        $reltemplate->createRel($templateID,$this->nodeID);
 
-        $this->updatePath();
+		if (!$result)
+			return false;
+
+		if($idNodeMaster) {
+			$this->setNodeMaster($idNodeMaster);
+		}        
+        
+	}
+
+	private function buildMetadata($idNodeType, $aliases){
+		
+		if (NodetypeService::METADATA_CONTAINER != $idNodeType){
+			$langs = array();
+			foreach ($aliases as $idLang => $alias) {
+				$langs[] = $idLang;
+			}
+			$mm = new MetadataManager($this->nodeID);
+        	$mm->generateMetadata($langs);
+		}
+	}
+
+
+	/**
+	 * Add a new language version for the current document
+	 * @param int $idLang
+	 * @param string $alias       Description name for the language version. Useful in breadcrum.
+	 * @param array $channelList Array within idchannels
+	 * @param array $data        Required data to create the language version.
+	 */
+	public function addLanguageVersion($idLang, $alias, $channelList, $data=null){
+		$xmldoc = new Node();
+	    $childrenNodeType = new NodeType();
+
+	    //TODO: Every container nodetype should implement a getLanguageVersionNodeType.	    
+	    //$childrenNodetype = $this->getLanguageVersionNodeType;
+	    //It would be better than this switch.
+	    switch($this->nodeType->GetName()){
+			case 'XimNewsBulletin':
+				$childrenNodeType->SetByName('XimNewsBulletinLanguage');
+    			break;
+	    	case 'XimNewsNew':
+		    	$childrenNodeType->SetByName('XimNewsNewLanguage');
+			    break;
+			case 'XmlContainer':
+				$childrenNodeType->SetByName('XmlDocument');
+    			break;
+	    	case 'XimletContainer':
+		    	$childrenNodeType->SetByName('Ximlet');
+			    break;
+			case 'XimPdfDocumentFolder':
+				$childrenNodeType->SetByName('XimPdfDocumentLang');
+    			break;
+			case 'MetaDataContainer':
+				$childrenNodeType->SetByName('MetaDataDoc');
+    			break;
+	    	default:
+		    	return;
+        }
+
+	    if($childrenNodeType->HasError()){
+		    $this->parent->SetError(1);
+		    return false;
+		}
+
+	    $lang = new Language($idLang);
+	    if($lang->HasError()){
+		    $this->parent->SetError(1);
+		    return false;
+		}
+
+		$idSchema = $this->getIdSchema();	
+
+	    $nameDoc = $this->parent->getNodeName()."-id".$lang->GetIsoName();
+	    $idDoc = $xmldoc->CreateNode($nameDoc, $this->nodeID, $childrenNodeType->GetID(),$stateID = null, $idSchema, $idLang, $alias, $channelList, $data);
+	    
+
+	    if($xmldoc->HasError()){
+	 	    $this->parent->SetError(1);
+		    return false;
+		}
+
+		return $idDoc;
+	}
+
+	/**
+	 * Set the current idNodeMaster
+	 * @param int $idNodeMaster
+	 */
+	public function setNodeMaster($idNodeMaster){
+		$children = $this->parent->GetChildren();		
+		foreach($children as $idChild){
+			$child = new Node($idChild);
+			$childLanguage = $child->class->GetLanguage();
+			if($childLanguage != $idNodeMaster) {
+				$child = new Node($idChild);
+				$child->SetWorkflowMaster($idNodeMaster);
+				$strDoc = new StructuredDocument($idChild);
+				$strDoc->SetSymLink($idNodeMaster);
+			}
+		}	
 	}
 
     function DeleteNode(){

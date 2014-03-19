@@ -367,7 +367,7 @@ class BaseIO {
 				// TODO left to be implemented $aliasLangArray, $channelLst, $master
 				$xmlcontainer = new Node();
 				$idNode = $xmlcontainer->CreateNode($data['NAME'], $data["PARENTID"],
-						$idNodetype, null, $data['TEMPLATE'], NULL, NULL, NULL);
+						$idNodetype, null, $data['TEMPLATE'], $data["ALIASES"], $data["CHANNELS"], $data["MASTER"]);
 
 				$this->_dumpMessages($xmlcontainer->messages);
 
