@@ -40,6 +40,7 @@ class Action_login extends ActionAbstract {
 		}else {
 			$this->showLogin();
 		}
+		$this->logSuccessAction();
     }
 
 	function showLogin($msg = NULL) {
@@ -128,6 +129,7 @@ class Action_login extends ActionAbstract {
 		if ($success) {
 
 			XSession::set('context', 'ximdex');
+			$this->logSuccessAction();
 
 			if (Request::get('backto')) {
 				header(sprintf('Location: %s', base64_decode(Request::get('backto'))));
@@ -138,6 +140,7 @@ class Action_login extends ActionAbstract {
 			die();
 
 		} else {
+			$this->logUnsuccessAction();
 			$this->showLogin('Username or password are incorrect. Please, try again.');
 		}
 	}
