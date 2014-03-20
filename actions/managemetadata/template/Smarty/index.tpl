@@ -39,14 +39,15 @@
                 ng-click="submitForm(managemetadata)"
                 xim-button
                 xim-label="submitLabel"
-                xim-state="submitStatus">
+                xim-state="submitStatus"
+                xim-disabled="managemetadata.$invalid || managemetadata.$pristine">
                 {t}Save{/t}
             </button>
 		</fieldset>
 	</div>
     <div class="message" ng-show="submitMessages.length">
         <p class="ui-state-primary ui-corner-all msg-info">
-            [[submitMessages]]
+            #/submitMessages/#
         </p>
     </div>
 	<div class="action_content metadata_action">
@@ -54,13 +55,14 @@
 		<div class="col2-3 left metadata_data">
 
             <select name="" id="" class="language_selector js_language_selector"
-            	ng-model="defaultLanguage">
+            	ng-model="defaultLanguage"
+                ng-change="update(nodeId, defaultLanguage)">
                 <option 
                     ng-repeat="l in languages" 
                     ng-disabled="!l.Name"
                     ng-selected="defaultLanguage == l.IdLanguage" 
-                    value="[[l.IdLanguage]]">
-                    [[l.Name]]
+                    value="#/l.IdLanguage/#">
+                    #/l.Name/#
                 </option>
             </select>
 
@@ -111,7 +113,10 @@
             </div>
             <div class="version_info">
                 <h3>{t}Version{/t}</h3>
-                <p>{$nodeversion}</p>
+                <p
+                    ng-init="nodeversion = '{$nodeversion}'">
+                    #/nodeversion/#
+                </p>
             </div>
             <div class="path_info" data-path="{$nodepath}" >
                 <h3>{t}Path{/t}</h3>

@@ -34,6 +34,15 @@ if (angular.module('ximdex').notRegistred('MetadataCtrl')) {
             // Pass this string to i18n files
             $scope.submitLabel = "Save";
 
+            $scope.update = function() {
+                var formData = {'nodeid': $scope.nodeId, 'langid': $scope.defaultLanguage};
+                    xBackend.sendFormData(formData, {action: $attrs.ximAction, method: 'getDocumentVersion', id: $scope.nodeId}, function(data){
+                        if (data) {
+                            $scope.nodeversion = data.version;
+                        }
+                    });
+            }
+
             $scope.submitForm = function(form){
                 if (form.$valid) {
                     var formData = {'languages_metadata': angular.copy($scope.languages_metadata)};

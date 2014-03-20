@@ -60,7 +60,6 @@ class Action_managemetadata extends ActionAbstract {
 		$node = new Node($nodeId);
 		$info = $node->loadData();
 		$values["nodename"] = $info["name"];
-		$values["nodeversion"] = $info["version"].".".$info["subversion"];
 		$values["nodepath"] = $info["path"];
 		$values["typename"] = $info["typename"];
 
@@ -84,6 +83,17 @@ class Action_managemetadata extends ActionAbstract {
 			$values['default_language'] = $lngs[0]['IdLanguage'];
 			$values['languages'] = $lngs;
         	$values['json_languages'] = json_encode($lngs);
+		}
+
+		//Get versions
+		if ($values["typename"] == "XmlContainer") {
+			$nodeid_child = $node->class->GetChildByLang($values['default_language']);
+			$node_child = new Node($nodeid_child);
+			$version_node_child = $node_child->GetLastVersion();
+			$values["nodeversion"] = $version_node_child["Version"].".".$version_node_child["SubVersion"];
+		}
+		else {
+			$values["nodeversion"] = $info["version"].".".$info["subversion"];
 		}
 
         $values['languages_metadata'] = array();
@@ -184,6 +194,29 @@ class Action_managemetadata extends ActionAbstract {
 
         $this->sendJSON($values);
 		
+	}
+
+
+	/*
+	 * Service for getting last version for a specific NodeID
+	 * This method must be called via HTTP request
+	*/
+	public function getDocumentVersion() {
+		$values = array();
+		$nodeid = $this->request->getParam('nodeid');
+		$langid = $this->request->getParam('langid');
+		$node = new Node($nodeid);
+		$info = $node->loadData();
+		if ($info['typename'] == "XmlContainer") {
+			$nodeid_child = $node->class->GetChildByLang($langid);
+			$node_child = new Node($nodeid_child);
+			$version_node_child = $node_child->GetLastVersion();
+			$values['version'] = $version_node_child["Version"].".".$version_node_child["SubVersion"];
+		}
+		else {
+			$values['version'] = $info["version"].".".$info["subversion"];
+		}
+		$this->sendJSON($values);
 	}
 
 
