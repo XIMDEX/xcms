@@ -125,6 +125,10 @@ XimDocument = function(editorConfig) {
 		return (this._editorConfig.publication_allowed == 0) ? false : true;
 	};
 
+	this.checkSpellingIsAllowed =function(){
+		return (this._editorConfig.checkspelling == 0) ? false : true;	
+	}
+
 	this.toggleSchemaValidator = function() {
 		if (!this.expertModeIsAllowed()) this._schemaValidatorIsActive = false;
 		this._schemaValidatorIsActive = !this._schemaValidatorIsActive;

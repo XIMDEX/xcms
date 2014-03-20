@@ -100,6 +100,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_UI);
 		$this->addJs('/inc/js/i18n.js');
 		$this->addJs('/extensions/angular/angular.min.js');
+		$this->addJs('/extensions/angular/angular-animate.min.js');
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js');

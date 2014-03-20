@@ -40,7 +40,7 @@ function start_tour(command) {
 	"position"	: "L"
     },//Explaining the help guide (2/2) */
     {
-	"name" 		: "div.session-info div.language span.current",
+	"name" 		: "div.session-info div.language span.current-language",
 	"position"	: "RT"
     },//language form
    /* {
@@ -144,7 +144,7 @@ function start_tour(command) {
     },//4
     {
 	"name" 		: "button.kupu-prevdoc",		
-	"position"	: "RT",
+	"position"	: "TL",
 	"scope"		: "editor"
     },//5
     {
