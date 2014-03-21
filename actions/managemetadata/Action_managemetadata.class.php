@@ -168,10 +168,27 @@ class Action_managemetadata extends ActionAbstract {
 			$content = $metadata_node->getContent();
 			$domDoc = new DOMDocument();
 	        if ($domDoc->loadXML("<root>".$content."</root>")) {
+
+	        	$custom_elements = $this->_getChildsFromDoc($domDoc, 'custom_info');
+
 	        	foreach ($custom_fields as $custom_field) {
 	        		$custom_element = $domDoc->getElementsByTagName($custom_field)->item(0);
-	        		$custom_element->nodeValue = $languages_metadata[$idLanguage][$custom_field];
+	        		if ($custom_element) {
+	        			$custom_element->nodeValue = $languages_metadata[$idLanguage][$custom_field];
+	        			$index_of_element = array_search($custom_element->tagName, $custom_elements);
+	        			if ($index_of_element >= 0) {
+	        				unset($custom_elements[$index_of_element]);
+	        			}
+	        		}
+	        		else {
+	        			$parent = $domDoc->getElementsByTagName('custom_info')->item(0);
+	        			$new_element = $domDoc->createElement($custom_field, $languages_metadata[$idLanguage][$custom_field]);
+	        			$parent->appendChild($new_element);
+	        		}
 	        	}
+
+	        	$this->_removeFromDoc($domDoc, 'custom_info', $custom_elements);
+
 	        	$metadata_node_update = new Node($metadata_node_id);
 	        	$string_xml = $domDoc->saveXML();
 	        	$string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
@@ -217,6 +234,34 @@ class Action_managemetadata extends ActionAbstract {
 			$values['version'] = $info["version"].".".$info["subversion"];
 		}
 		$this->sendJSON($values);
+	}
+
+
+	/*
+	 * Return an array of childs for a specific element in XML metadata document
+	*/
+	private function _getChildsFromDoc($doc, $element) {
+		$childs = array();
+    	$elems = $doc->getElementsByTagName($element)->item(0);
+    	$count = 0;
+    	foreach ($elems->childNodes as $value) {
+    		if (isset($value->tagName)) {
+    			$childs[] = $value->tagName;
+    		}
+    	}
+		return $childs;
+	}
+
+
+	/*
+	 * Remove elements from array in XML metadata document
+	*/
+	private function _removeFromDoc(&$doc, $parent, $array) {
+		$custom = $doc->getElementsByTagName($parent)->item(0);
+		foreach ($array as $value) {
+			$element = $doc->getElementsByTagName($value)->item(0);
+    		$custom->removeChild($element);
+		}
 	}
 
 
