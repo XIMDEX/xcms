@@ -25,7 +25,7 @@
 # */
 
 
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
 MODULES_PHP_SCRIPT=$SCRIPT_PATH"/scripts/lib/modules.php"
 PHP_CMD=`which php`
 ADD_MEMORY="-d memory_limit=-1"

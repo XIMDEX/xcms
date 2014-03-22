@@ -30,7 +30,8 @@ XIMDEX_USER=${XIMDEX_USER:-''}
 XIMDEX_PASSWD=${XIMDEX_PASSWD:-''}
 XIMDEX_LOCALE=${XIMDEX_LOCALE:-''}
 XIMDEX_STATS=${XIMDEX_STATS:-''}
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
+
 DO_BACKUP=1
 
 . $SCRIPT_PATH/lib/functions.sh

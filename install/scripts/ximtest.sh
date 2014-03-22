@@ -25,7 +25,7 @@
 # */
 
 
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
 
 . $SCRIPT_PATH/lib/functions.sh
 

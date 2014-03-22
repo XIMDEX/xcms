@@ -26,7 +26,8 @@
 
 
 
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
+
 DO_BACKUP=1
 
 . $SCRIPT_PATH/lib/functions.sh
