@@ -330,11 +330,11 @@ function PrintInstructions() {
 	echo "1.- Downloading Ximdex ($REPO_BRANCH branch) to directory '$REPO_NAME'"
 	echo "    located at $LOCALPATH"
 	echo ""
-	echo "2.- Execute configuration scripts to create Database, config parameters, etc."
+	echo "2.- Execute configuration scripts to create Database, set parameters, etc."
 	echo ""
-	echo "3.- Move Ximdex into your web server document root"
+	echo "3.- Move Ximdex into your web server document root and assign permissions." 
+	echo "This last step will require superuser privileges. A bash script will be generated to be run as root later if you prefer to control the execution."
 	echo ""
-	echo "This last step will require superuser privileges. A bash script for this step will be generated to be run as root in case you prefer to control the execution."
 }
 
 # STEP Download from Github
