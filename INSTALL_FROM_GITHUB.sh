@@ -367,7 +367,7 @@ function DieIfNotInstallable() {
 		echo -e "\nCan not enter $REPO_NAME directory!" 
 		exit 1 
 	elif [ -d install ] && [ -d data ] && [ -d inc ]; then
-		echo -e "It looks like a Ximdex"
+		echo -e "It looks like a Ximdex."
 	else
 		echo -e "It does not look like a Ximdex to be installed. Exiting!"
 		exit 1
