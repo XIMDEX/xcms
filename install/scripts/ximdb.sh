@@ -125,7 +125,7 @@ function setServer
 
 function setPortNonStrict 
 {
-                if [ $INTERACTIVE = 1 ]; then
+                if [ $AUTOMATIC_INSTALL != 1 ] && [ $INTERACTIVE = 1 ]; then
 			default_PORT_DB=3306
 			PORT_DB=0
                         echo -n "Database port (0 for no-port) [$default_PORT_DB]: "
