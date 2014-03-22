@@ -1,4 +1,4 @@
-	#!/bin/bash
+#!/bin/bash
 #/**
 # *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
 # *
@@ -98,11 +98,10 @@ function setServer
 	  SERVER_DB=${SERVER_DB:-localhost}
 	  echo "Your host is $myhost but MYSQL could only be listening at localhost..."
 
-	  if [ $INTERACTIVE = 1 ]
-	 then
-	  echo -n "Please enter database server hostname [$SERVER_DB]: "
-	  read option
-	  SERVER_DB=${option:-$SERVER_DB}
+	  if [ $INTERACTIVE = 1 ]; then
+		  echo -n "Please enter database server hostname [$SERVER_DB]: "
+		  read option
+		  SERVER_DB=${option:-$SERVER_DB}
 	  fi
 	fi
 
@@ -121,6 +120,23 @@ function setServer
 		echo "Server not found. "
 	        SERVER_DB=''
 	fi
+}
+
+function setPortNonStrict 
+{
+                if [ $INTERACTIVE = 1 ]; then
+			default_PORT_DB=3306
+			PORT_DB=0
+                        echo -n "Database port (0 for no-port) [$default_PORT_DB]: "
+                        read option
+			if [[ $option =~ ^[0-9]+$ ]]; then
+	                        PORT_DB=$option;
+			elif [ -z $option ]; then
+				PORT_DB=$default_PORT_DB
+			fi
+                fi
+                assign "DB_PORT" $PORT_DB
+		next_step
 }
 
 function setPort
@@ -208,7 +224,7 @@ function setAdminPass
 		  if [ "$ERROR_DB" = 'ERROR 1045' ]
 		  then
 			  	println "$mysql_query"
-			  	echo "Connection failed! Connection data errors. ";
+			  	echo "Connection to database server FAILED! Connection data errors. ";
 				echo ""
 				STEP=0
 				USER_ADMIN=''
@@ -378,7 +394,7 @@ function checkUser
 function checkConnection
 {
  sql "show tables;"
- println "Checking connection... "
+ println "Checking connection... $ERROR_DB"
 }
 
 function setDB
@@ -454,15 +470,19 @@ function loadDATA
 {
  echo "Creating database $DATABASE as user $USER_DB at $SERVER_DB:$PORT_DB"
  if [ $ADD_DATA  = 1  ]; then
-	datain=$(mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql)
+	port_string=""
+	if [ $PORT_DB -gt 0 ]; then
+		port_string="--port $PORT_DB "
+	fi
+	datain=$(mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB $port_string < $XIMDEX_PATH/install/ximdex_data/ximdex.sql)
 
 	if [ $? -ne 0 ]; then 
 		echo "Can not create Database ($DATABASE)! " ;
-  		println "Cannot import ximdex data to ....mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql"
+  		println "Cannot import ximdex data to ....mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB $port_string < $XIMDEX_PATH/install/ximdex_data/ximdex.sql"
 	else
 		echo "Created DB & Removed module states for future install"
 		$(rm -f $XIMDEX_PATH/data/.* 2>/dev/null)
-  		println "Importing ximdex data....mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB --port $PORT_DB < $XIMDEX_PATH/install/ximdex_data/ximdex.sql"
+  		println "Importing ximdex data....mysql $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB $port_string < $XIMDEX_PATH/install/ximdex_data/ximdex.sql"
 	fi
  fi
  next_step
@@ -530,7 +550,7 @@ do
 	case $STEP in
 	0) checkInstallParams;; #restore database_params
 	1) setServer;;  #ask server
-	2) setPort;;	#ask port
+	2) setPortNonStrict;;	#ask port without checks. Use setPort for strict
 	3) setAdminUser;; #admin user
 	4) setAdminPass;; #admin pass
 	5) setDB;; #database

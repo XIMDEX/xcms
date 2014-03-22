@@ -50,7 +50,7 @@ USER_DB=${USER_DB:-""}
 PASSWD_DB=${PASSWD_DB:-""}
 SERVER_DB=${SERVER_DB:-""}
 DATABASE=${DATABASE:-""}
-PORT_DB=${PORT_DB:-""}
+PORT_DB=${PORT_DB:-"0"}
 
 #perms to conf
 $(chmod u+w $XIMDEX_PATH/conf)
@@ -113,8 +113,13 @@ function getDBParams
 function sql
 {
   sql=$1;
-  mysql_query=`(mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB -P $PORT_DB -e "$sql") 2>&1`
-  println "Conection:  -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB  "
+  port_string=""
+  if [ $PORT_DB -gt 0 ]; then
+     port_string="--port $PORT_DB "
+  fi
+
+  mysql_query=`(mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB $port_string -e "$sql") 2>&1`
+  println "Conection:  -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB  $port_string"
   QUERY_DB=$mysql_query
   ERROR_DB=""
   if [[ $QUERY_DB =~  ^ERROR ]]; then
