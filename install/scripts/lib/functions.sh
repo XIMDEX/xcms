@@ -54,7 +54,7 @@ PORT_DB=${PORT_DB:-"0"}
 
 #perms to conf
 $(chmod u+w $XIMDEX_PATH/conf)
-$(chmod u+x $XIMDEX_PATH/install/install.sh)
+$(chmod u+x $XIMDEX_PATH/install/*.sh)
 
 
 function println()

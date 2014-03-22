@@ -108,7 +108,8 @@ function CreateScriptToSetPermsAndMove() {
     arr_command+=("whoami\n\n")
 
     arr_command+=("if [ -d $XIMDEX_TARGET_DIR ]; then\n")
-    arr_command+=("  echo \"TARGET DIRECTORY $XIMDEX_TARGET_DIR EXISTS.\nPLEASE REMOVE IT AND RUN THE SCRIPT AGAIN.\"\n")
+    arr_command+=("  echo \"TARGET DIRECTORY $XIMDEX_TARGET_DIR EXISTS!!!\"\n")
+    arr_command+=("  echo \"Please, remove it and run the script as root again.\"\n")
     arr_command+=("  exit 0\n")
     arr_command+=("fi\n\n\n")
 
@@ -122,7 +123,7 @@ function CreateScriptToSetPermsAndMove() {
     arr_command+=("$command\n")
 
     
-    echo "Creating script for setting ownership and permissions for $REPO_NAME ..."
+    echo -e "\nCreating script for setting ownership and permissions for $REPO_NAME ..."
 
     echo "#!/bin/bash" > $SCRIPT1
 
@@ -393,8 +394,8 @@ function GetInstallStatus() {
 # STEP Checking ximdex dependencies
 function Step_Dependencies() {
 	echo "STEP1: Checking required components as PHP, MySQL, etc."
-	$(chmod +x $SCRIPT_PATH/scripts/ximtest.sh)
-	( $SCRIPT_PATH/scripts/ximtest.sh  )
+	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh)
+	( $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh )
 	result="$?"
 	if [ "$result" != 0 ]; then
 		echo "Some dependencies for Ximdex are not on your system."
@@ -409,8 +410,8 @@ function Step_Dependencies() {
 # STEP Database creation
 function Step_CreateDB() {
 	echo "STEP2: Creating Database"
-	$(chmod +x $SCRIPT_PATH/scripts/ximdb.sh)
-	( $SCRIPT_PATH/scripts/ximdb.sh -i )
+	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_CreateDatabase.sh)
+	( $SCRIPT_PATH/scripts/ximdex_installer_CreateDatabase.sh -i )
 	result="$?"
 	if [ "$result" != 0 ]; then
 		echo "It seems that the Database has not been created"
@@ -426,8 +427,8 @@ function Step_CreateDB() {
 # STEP Setting Ximdex internal parameters
 function Step_Configurator() {
 	echo "STEP3: Setting Ximdex working parameters in config ($REPO_NAME/conf)"
-	$(chmod +x $SCRIPT_PATH/scripts/ximparams.sh)
-	( $SCRIPT_PATH/scripts/ximparams.sh -i -t -n -w -x "$XIMDEX_TARGET_DIR" )
+	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_Configurator.sh)
+	( $SCRIPT_PATH/scripts/ximdex_installer_Configurator.sh -i -t -n -w -x "$XIMDEX_TARGET_DIR" )
 	result="$?"
 	if [ "$result" != 0 ]; then
 		echo "Configuration have not ended correclty."
@@ -443,9 +444,9 @@ function Step_Configurator() {
 # STEP Setting Ximdex internal components
 function Step_Maintenance() {
 	echo "STEP4: Setting Ximdex components"
-	$(chmod +x $SCRIPT_PATH/scripts/maintenance_tasks.sh)
+	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_MaintenanceTasks.sh)
 	
-	( $SCRIPT_PATH/scripts/maintenance_tasks.sh -x "$XIMDEX_TARGET_DIR" )
+	( $SCRIPT_PATH/scripts/ximdex_installer_MaintenanceTasks.sh -x "$XIMDEX_TARGET_DIR" )
 	result="$?"
 	if [ "$result" != 0 ]; then
 		echo "Component paramerization have not ended correclty."
@@ -461,9 +462,9 @@ function Step_Maintenance() {
 # STEP Setting Ximdex projects
 function Step_ProjectsAndCrontab() {
 	echo "STEP5: Installing some projects and configuring crontab"
-	$(chmod +x $SCRIPT_PATH/scripts/ximinitialize.sh)
+	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_InitializeInstance.sh)
 	
-	( $SCRIPT_PATH/scripts/ximinitialize.sh -x "$XIMDEX_TARGET_DIR" -m 0 -i 0 -p 0 -c $SCRIPT2)
+	( $SCRIPT_PATH/scripts/ximdex_installer_InitializeInstance.sh -x "$XIMDEX_TARGET_DIR" -m 0 -i 0 -p 0 -c $SCRIPT2)
 	result="$?"
 	if [ "$result" != 0 ]; then
 		echo "Projects may have been not installed." 
@@ -595,7 +596,7 @@ DieIfNotInstallable
 
 if [ "$AUTOMATIC_INSTALL" = 1 ]; then
 	echo "Starting automatic install"
-	. $SCRIPT_PATH/scripts/ximfromfile.sh "$CONFIG_FILE"
+	. $SCRIPT_PATH/scripts/ximdex_installer_LoadAutomaticParams.sh "$CONFIG_FILE"
         result="$?"
         if [ "$result" != 0 ];
         then
