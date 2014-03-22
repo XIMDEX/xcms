@@ -27,11 +27,7 @@
 
 
 echo ""
-echo ""
-echo "***************************"
-echo "* Ximdex config from file *"
-echo "***************************"
-echo ""
+echo "*** Ximdex config from file *"
 echo ""
 
 
@@ -43,7 +39,7 @@ then
 fi;
 
 # #################### LOADING VARS #######################
-echo -n "Getting installation params from file $1:"
+echo  "Getting installation params from file $1:"
 
 #vars witch
 data=$(cat $1|sed -e "s/#.*$//g"|grep  "\$"|grep -v "^#")
@@ -58,8 +54,8 @@ do
 	if [ -n "$value" ];
 	then
 		#only declare -x doesnt work
+		echo "Read $variable --> $value"
 		eval $variable=$value
 		declare -x "$variable=$value"
 	fi
 done
-echo "  OK"

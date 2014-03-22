@@ -13,9 +13,14 @@ REPO_BRANCH="develop"
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
 
+# FOR AUTOMATIC INSTALLS
+export AUTOMATIC_INSTALL=0
+export CONFIG_FILE=""
+
 # OPTIONS
 INST_STEP=1
 DO_DOWNLOAD=1
+MOVEASROOT=0
  
 # Trap ctr-c to activate back "echo" in terminal
 trap ending SIGINT
@@ -31,9 +36,10 @@ function ending() {
 }
 
 function usage() {
-    echo "Usage: $0 -h [-n ximdex_instance_name] [-t web_server_root_path] [-b branch]"
+    echo "Usage: $0 [-h] [-d] [-a config_file] [-n ximdex_instance_name] [-t web_server_root_path] [-b branch]"
     echo "       Option -h for help"
     echo "       Option -d to skip download"
+    echo "       Option -a to automatically install Ximdex using parameters from File"
     echo "       Option -t to assign web server root (where ximdex will reside)" 
     echo "       Option -n to assign instance name (default: ximdex)"
     echo "       Option -b to assign branch to download (default: master)"
@@ -98,12 +104,12 @@ function CreateScriptToSetPermsAndMove() {
     XIMDEX_PATH="$REPO_NAME"
     declare -a arr_command=()
     
-    arr_command+=("echo 'RUNNING GENERATED SCRIPT AS '\n")
+    arr_command+=("echo -n 'RUNNING GENERATED SCRIPT AS '\n")
     arr_command+=("whoami\n\n")
 
     arr_command+=("if [ -d $XIMDEX_TARGET_DIR ]; then\n")
-    arr_command+=("  echo \"TARGET DIRECTORY $XIMDEX_TARGET_DIR EXIST. PLEASE REMOVE IT AND RUN THE SCRIPT AGAIN.\"\n")
-    arr_command+=("  exit 1\n")
+    arr_command+=("  echo \"TARGET DIRECTORY $XIMDEX_TARGET_DIR EXISTS.\nPLEASE REMOVE IT AND RUN THE SCRIPT AGAIN.\"\n")
+    arr_command+=("  exit 0\n")
     arr_command+=("fi\n\n\n")
 
     command="chown -R ${USER_APACHE}:${GROUP_APACHE} ./${REPO_NAME}"
@@ -150,8 +156,6 @@ function RunScriptAsRoot() {
 }
 
 function SetDocRootForXimdex() {
-	USER_UNIX=`whoami`
-	GROUP_UNIX=`id -gn`
 	
 	echo "Determining Apache user and group... "
 	GROUP_APACHE="`ps -eo 'group args'|grep 'httpd\|apache' |grep 'start\|bin'|grep -v grep|grep -v root|grep -v USER|awk 'NR<=1 {print $1; }'|cut -d ' ' -f 1,1 `"
@@ -479,7 +483,15 @@ function Step_ProjectsAndCrontab() {
 # STEP launch mv to final destination as root 
 function Step_LaunchAsRoot() {
 
-	myquestion "Do you want me to run the script $SCRIPT1 as root"
+	if [ $AUTOMATIC_INSTALL = 1 ]; then
+		if [ "$MOVEASROOT" = 1 ]; then
+			ANSWER='Y'
+		else
+			ANSWER='N'
+		fi
+	else
+		myquestion "Do you want me to run the script $SCRIPT1 as root"
+	fi
 	
 	if [ "$ANSWER" == 'Y' ]; then
 		RunScriptAsRoot
@@ -488,7 +500,7 @@ function Step_LaunchAsRoot() {
 	fi
 	
 	
-	echo -e "Thanks for installing Ximdex. Write to help@ximdex.org if you need help\n"
+	echo -e "Thanks for installing Ximdex. Write to help@ximdex.org if you need help.\n"
 	
 	if [ -e install ]; then 
 	echo "********************************************************************************"
@@ -510,9 +522,13 @@ echo "Welcome to Ximdex downloader & installer"
 echo "----------------------------------------"
 echo ""
 
-while getopts 'hdn:b:t:' OPTION;
+while getopts 'a:hdn:b:t:' OPTION;
 do
     case $OPTION in
+        a)
+	    AUTOMATIC_INSTALL=1
+	    CONFIG_FILE="$OPTARG"
+            ;;
         t)
 	    REPO_ROOT=$OPTARG
             ;;
@@ -547,9 +563,21 @@ if [ -z $REPO_BRANCH ] ; then
 	REPO_BRANCH="develop"
 fi
 
+
+if [ "$AUTOMATIC_INSTALL" = 1 ]; then
+	if [ -f "$CONFIG_FILE" ]; then
+		echo "AUTOMATIC mode starting..."
+	else
+		echo "Can not find $CONFIG_FILE for automatic installation. Exiting!"
+		exit 90
+	fi
+fi
+
 SCRIPT_PATH="./${REPO_NAME}/install"
 STATUSFILE="$SCRIPT_PATH/_STATUSFILE"
 LOCALPATH=$( pwd -P )
+USER_UNIX=`whoami`
+GROUP_UNIX=`id -gn`
 
 # printing instructions
 PrintInstructions
@@ -564,15 +592,34 @@ fi
 # Check if the directory is accesible and if it seems a ximdex
 DieIfNotInstallable
 
-# determine web server info (user, group, document root), path document root
-if [ -z $REPO_ROOT ] || [ ! -d "$REPO_ROOT" ] ; then
-	SetDocRootForXimdex
+
+if [ "$AUTOMATIC_INSTALL" = 1 ]; then
+	echo "Starting automatic install"
+	. $SCRIPT_PATH/scripts/ximfromfile.sh "$CONFIG_FILE"
+        result="$?"
+        if [ "$result" != 0 ];
+        then
+                exit $result
+        fi
+
+	# Determine params from setup
+	mycad=$( LimpiaSlashes "$XIMDEX_PARAMS_PATH")
+	DOCROOT=${mycad%/*}
 	REPO_ROOT=$DOCROOT
 fi
 
-echo "You have chosen [$DOCROOT] to install the Ximdex instance."
+if [ "$AUTOMATIC_INSTALL" = 0 ]; then
+	# determine web server info (user, group, document root), path document root
+	if [ -z $REPO_ROOT ] || [ ! -d "$REPO_ROOT" ] ; then
+		SetDocRootForXimdex
+		REPO_ROOT=$DOCROOT
+	fi
 
-DetermineApacheUserGroup
+	echo "You have chosen [$DOCROOT] to install the Ximdex instance."
+	DetermineApacheUserGroup
+else
+	echo "Directory [$DOCROOT] will store Ximdex instance $REPO_NAME."
+fi
 
 # Determine FINAL DIRECTORY where Ximdex will be as web application
 XIMDEX_TARGET_DIR=$( LimpiaSlashes "$DOCROOT/$REPO_NAME")
