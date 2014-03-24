@@ -1,4 +1,4 @@
-    %button{
+        %button{
         width: 100%;
         background: #fff;
         border: 1px solid #dedede;
@@ -172,6 +172,53 @@
             vertical-align: top;
             width: calc(50% - 1em);
         }
+
+
+        %tooltip{
+            background: rgba(35, 35, 35, 0.8);
+            color: #fff;
+            padding: .5em 1em;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            -webkit-transition: all .5s .3s;
+            -moz-transition: all .5s .3s;
+            -ms-transition: all .5s .3s;
+            -o-transition: all .5s .3s;
+            transition: all .5s .3s;
+            z-index: 5;
+        }
+
+
+// triangles mixin
+
+@mixin triangle($direction, $color, $size){
+        border: $size solid transparent;
+        position: absolute;
+        content: "";
+        
+
+    @if $direction == top{
+        border-bottom-color: $color;
+        margin-top: - $size*2;
+    }
+    @else if $direction == bottom{
+        border-top-color: $color;
+         margin-top: $size*2;
+    }
+
+    @else if $direction == left{
+        border-right-color: $color;
+    }
+
+    @else if $direction == right{
+        border-left-color: $color;
+    }
+}
 
 //Transitions
 %animation-button{

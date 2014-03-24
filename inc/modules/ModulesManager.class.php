@@ -176,7 +176,8 @@ class ModulesManager {
 		}
 
 		if (ModulesManager::isEnabled($name)) {
-			self::$msg = "checkModule: MODULE_STATE_ENABLED, try to reinstall ";
+			self::$msg = "checkModule: MODULE_STATE_ENABLED, module is enabled... try to reinstall ";
+			/* BUG? it returns true but as installation failed should return false*/
 			return MODULE_STATE_INSTALLED;
 		}
 		$module = ModulesManager::instanceModule($name);
@@ -344,7 +345,9 @@ class ModulesManager {
 
 		$modules = self::getModules();
 		foreach ($modules as $key => $module) {
-			if (!self::isEnabled($module)) {
+//                print("  - {$module['name']}\n");
+
+			if (!self::isEnabled($module['name'])) {
 				unset($modules[$key]);
 			}
 		}

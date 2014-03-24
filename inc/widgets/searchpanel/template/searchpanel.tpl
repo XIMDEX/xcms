@@ -107,6 +107,8 @@
 <div class="results">
 			<div id="loading" class="loading-icon"></div>
 
+			<h2>{t}Results for{/t} "término"</h2>
+
 			<div class="results-view" />
 			<paginator class="searchpanel-paginator" />
 
