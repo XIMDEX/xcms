@@ -52,35 +52,26 @@ class MetadataManager{
     // constructor method //
 
     public function __construct($source_idnode){
-        $this->node= new Node($source_idnode);
-        // Retrieve metadata nodes associated with $source_idnode
-        $rnm = new RelNodeMetadata();
-        $metadata_container = $rnm->find('idMetadata', "idNode = %s", array($source_idnode), MONO);
-        if ($metadata_container) {
-            $node = new Node($metadata_container[0]);
-            $this->array_metadata = $node->GetChildren();
-        }
-        else {
-            $this->array_metadata = array();
-        }
+        $this->node = new Node($source_idnode);
+        $this->updateMetadataNodes();
     }
 
         // getters & setters methods //
 
-/** 
- * Returns the source node object.
- * @param null
- * @return Object
-*/
+    /** 
+     * Returns the source node object.
+     * @param null
+     * @return Object
+    */
     public function getSourceNode(){
         return $this->node;    
     }
 
-/** 
- * Returns the schema Id for the current node.
- * @param null
- * @return int
-*/
+    /** 
+     * Returns the schema Id for the current node.
+     * @param null
+     * @return int
+    */
     public function getMetadataSchema(){
         $node = new Node($this->node->GetID());
         $projectNode = new Node($node->getProject());
@@ -109,44 +100,97 @@ class MetadataManager{
         return $res[0];
     }
 
-/** 
- * Returns the array with all the metadata files for a given idnode.
- * @param null 
- * @return array 
-*/
+    /** 
+     * Returns the array with all the metadata files for a given idnode.
+     * @param null 
+     * @return array 
+    */
     public function getMetadataNodes(){
         return $this->array_metadata;    
     }
 
-/** 
- * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $source_idnode
- * @return ...
-*/
+
+    public function updateMetadataNodes() {
+        $rnm = new RelNodeMetadata();
+        $metadata_container = $rnm->find('idMetadata', "idNode = %s", array($this->node->GetID()), MONO);
+        if ($metadata_container) {
+            $node = new Node($metadata_container[0]);
+            $this->array_metadata = $node->GetChildren();
+        }
+        else {
+            $this->array_metadata = array();
+        }
+    }
+
+
+    /** 
+     * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
+     * @param int $source_idnode
+     * @return ...
+    */
     public function getLastMetadataVersion(){
         //TODO
     }
 
 
-        // generator methods //
+    // GENERATOR METHODS //
 
-/** 
- * Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $source_idnode
- * @param string $field
- * @param string $value
- * @return ...
-*/
-    public function updateMetadata($field,$value){
-        //TODO    
+    /** 
+     * Update basic system info in metadata documents
+     * @return ...
+    */
+    public function updateSystemMetadata(){
+        $info = $this->node->loadData();
+        foreach ($this->array_metadata as $metadata_node_id) {
+            $metadata_node = new StructuredDocument($metadata_node_id);
+            $idLanguage = $metadata_node->get('IdLanguage');
+            $content = $metadata_node->getContent();
+            $domDoc = new DOMDocument();
+            if ($domDoc->loadXML("<root>".$content."</root>")) {
+
+                $nodeid = $domDoc->getElementsByTagName('nodeid')->item(0);
+                $nodeid->nodeValue = $info['nodeid'];
+                $name = $domDoc->getElementsByTagName('name')->item(0);
+                $name->nodeValue = $info['name'];
+                $parentid = $domDoc->getElementsByTagName('parentid')->item(0);
+                $parentid->nodeValue = $info['parent'];
+                $nodetype = $domDoc->getElementsByTagName('nodetype')->item(0);
+                $nodetype->nodeValue = $info['typename'];
+                $path = $domDoc->getElementsByTagName('path')->item(0);
+                $path->nodeValue = $info['path'];
+                if ($info['typename'] == "XmlContainer") {
+                    $nodeid_child = $this->node->class->GetChildByLang($idLanguage);
+                    $node_child = new Node($nodeid_child);
+                    $version_node_child = $node_child->GetLastVersion();
+                    $version_value = $version_node_child["Version"].".".$version_node_child["SubVersion"];
+                }
+                else {
+                    $version_value = $info["version"].".".$info["subversion"];
+                }
+                $version = $domDoc->getElementsByTagName('version')->item(0);
+                $version->nodeValue = $version_value;
+
+                $metadata_node_update = new Node($metadata_node_id);
+                $string_xml = $domDoc->saveXML();
+                $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
+                $string_xml = str_replace('<root>', '', $string_xml);
+                $string_xml = str_replace('</root>', '', $string_xml);
+                $metadata_node_update->setContent($string_xml);
+                $messages = sprintf(_('All metadata %s has been successfully saved'), $this->node->Get('Name'));
+            }
+            else {
+                $errors[] = _('The system cannot update system info in metadata documents');
+                $errors[] = _('Operation could not be successfully completed');
+            }
+        }
     }
     
 
-/** 
- * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
- * @param int $source_idnode
- * @return null
-*/
+    /** 
+     * Main public function. Returns the last version of the associated metadata file for a given idnode or NULL if not exists
+     * @param array $lang
+     * @return null
+    */
     public function generateMetadata($lang = null){
         //create the specific name with the format: NODEID-metadata
         $name = $this->buildMetadataFileName();
@@ -170,6 +214,7 @@ class MetadataManager{
             //We use the action like a service layer
             $this->createXmlContainer($idm,$name,$idSchema,$aliases,$languages,$channels);
             $this->addRelation($name);
+            $this->updateMetadataNodes();
         }
         else{
             //$this->updateMetadata(); ¿?
@@ -177,21 +222,21 @@ class MetadataManager{
         }
     }
 
-/** 
- * Returns the name for the metadata file.
- * @param int $source_idnode
- * @return string
-*/
+    /** 
+     * Returns the name for the metadata file.
+     * @param int $source_idnode
+     * @return string
+    */
     private function buildMetadataFileName(){
         $idnode = $this->node->GetID();
         return $idnode."-metadata";
     }
 
-/** 
- * Returns the id of a given metadata document name, if exists.
- * @param string $metafileName
- * @return int 
-*/
+    /** 
+     * Returns the id of a given metadata document name, if exists.
+     * @param string $metafileName
+     * @return int 
+    */
     private function getMetadataDocument($metafileName){
         //getting the metadata folder id
         $idMetadataFolder = $this->getMetadataSectionId();
@@ -202,11 +247,11 @@ class MetadataManager{
         return $id;
     }
 
-/** 
- * Returns the id for the metadata section that is unique for each project on Ximdex CMS.
- * @param int $source_idnode
- * @return int 
-*/
+    /** 
+     * Returns the id for the metadata section that is unique for each project on Ximdex CMS.
+     * @param int $source_idnode
+     * @return int 
+    */
     private function getMetadataSectionId(){
         $idServer = $this->node->getServer();
         $nodeServer = new Node($idServer);
@@ -214,11 +259,11 @@ class MetadataManager{
         return $idSection;
     }
 
-/** 
- * Returns an array of language identifiers.
- * @param int $source_idnode
- * @return array
-*/
+    /** 
+     * Returns an array of language identifiers.
+     * @param int $source_idnode
+     * @return array
+    */
     public function getMetadataLanguages(){
         $result = array();
         $l = new Language();
@@ -228,12 +273,13 @@ class MetadataManager{
         }
         return $result;
     }
-/** 
- * Returns all the channels defined on Ximdex CMS.
- * @param int $source_idnode
- * @return array
- * TODO: only return the associated channels.
-*/
+
+    /** 
+     * Returns all the channels defined on Ximdex CMS.
+     * @param int $source_idnode
+     * @return array
+     * TODO: only return the associated channels.
+    */
     public function getMetadataChannels(){
         $result = array();
         $channel = new Channel();
@@ -251,16 +297,16 @@ class MetadataManager{
         return $result;
     }
 
-/** 
- * Most important method. Creates the structured documents.
- * @param int $idNode
- * @param string $name
- * @param int $idSchema
- * @param array $aliases
- * @param array $languages
- * @param array $channels
- * @return int
-*/
+    /** 
+     * Most important method. Creates the structured documents.
+     * @param int $idNode
+     * @param string $name
+     * @param int $idSchema
+     * @param array $aliases
+     * @param array $languages
+     * @param array $channels
+     * @return int
+    */
     private function createXmlContainer($idNode,$name,$idschema,&$aliases,&$languages,&$channels, $master=null){
         $result = true;
         $node = new Node($idNode);

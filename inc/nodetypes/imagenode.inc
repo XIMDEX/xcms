@@ -45,6 +45,7 @@ class ImageNode extends FileNode{
 		parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
         $mm = new MetadataManager($this->nodeID);
         $mm->generateMetadata();
+        $mm->updateSystemMetadata();
 	}	
 
 	/**

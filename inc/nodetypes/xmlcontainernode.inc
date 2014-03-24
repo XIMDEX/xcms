@@ -105,6 +105,7 @@ class XmlContainerNode extends FolderNode{
 			}
 			$mm = new MetadataManager($this->nodeID);
         	$mm->generateMetadata($langs);
+        	$mm->updateSystemMetadata();
 		}
 	}
 

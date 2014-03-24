@@ -44,7 +44,8 @@ class CommonNode extends FileNode{
 	function CreateNode($name, $parentID, $nodeTypeID, $stateID=7, $sourcePath=""){
 		parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
         $mm = new MetadataManager($this->nodeID);
-        $mm->generateMetadata(); 
+        $mm->generateMetadata();
+        $mm->updateSystemMetadata();
 	}	
 
 	/**
