@@ -13,7 +13,7 @@ REPO_BRANCH="develop"
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
 
-# FOR AUTOMATIC INSTALLS
+# FOR AUTOMATIC INSTALLS
 export AUTOMATIC_INSTALL=0
 export CONFIG_FILE=""
 
@@ -644,7 +644,7 @@ else
     exit 1
 fi
 
-# Launch steps
+# Launch steps
 Step_Dependencies && SetInstallStatus "CHECKED"
 Step_CreateDB && SetInstallStatus "CREATED_DB"
 Step_Configurator && SetInstallStatus "CONFIGURED"
