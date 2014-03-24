@@ -207,7 +207,7 @@ X.listview.ListviewRenderer_Grid = Object.xo_create(X.listview.ListviewRenderer,
 				// Avoid to show a XVFS path as a nodeId
 				var text = (field.name == 'nodeid' && isNaN(field.value)) ? '&nbsp;' : field.value;
 				if(text!=null){
-					cell.html('<span>'+text+'</span>');
+					cell.html('<span>'+text+'</span>').attr('data-tooltip', text);
 				}
 				else{
 					cell.html('<span></span>');
