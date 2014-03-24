@@ -25,7 +25,7 @@
 # */
 
 
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
 MODULES_PHP_SCRIPT=$SCRIPT_PATH"/scripts/lib/modules.php"
 PHP_CMD=`which php`
 ADD_MEMORY="-d memory_limit=-1"
@@ -60,7 +60,7 @@ function install() {
  if [ $MODULE != "ximLOADER" ] && [ $MODULE != "ximLOADERDEVEL" ]
  then
 	$PHP_CMD $ADD_MEMORY $MODULES_PHP_SCRIPT install $MODULE
-   $PHP_CMD $ADD_MEMORY  $MODULES_PHP_SCRIPT enable $MODULE
+        $PHP_CMD $ADD_MEMORY  $MODULES_PHP_SCRIPT enable $MODULE
  else
 	$PHP_CMD $ADD_MEMORY $MODULES_PHP_SCRIPT install $MODULE $PROJECT_DEMO
  fi
@@ -89,7 +89,7 @@ function uninstall() {
    		install $1 $2
 		;;
    list)
-		   modules=(`$PHP_CMD $ADD_MEMORY $SCRIPT_PATH/scripts/getAvaliableModules.php -l`)
+		   modules=(`$PHP_CMD $ADD_MEMORY $SCRIPT_PATH/scripts/getAvailableModules.php -l`)
 		   for mod in ${modules[@]}
 		   do
 		   	echo "$mod"
