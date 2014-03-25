@@ -14,6 +14,8 @@ REPO_BRANCH="develop"
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
 
+TARGET_NAME=$REPO_NAME
+
 # FOR AUTOMATIC INSTALLATIONS
 export AUTOMATIC_INSTALL=0
 export CONFIG_FILE=""
@@ -114,11 +116,11 @@ function CreateScriptToSetPermsAndMove() {
     #command="chmod -R u+x ./$REPO_NAME/install/*sh ./$REPO_NAME/install/scripts/*.sh"
     #arr_command+=("$command\n")
 
-    command="mv ./${REPO_NAME} $DOCROOT"
+    command="mv ./${REPO_NAME} $XIMDEX_TARGET_DIR"
     arr_command+=("$command\n")
 
     
-    echo -e "\nCreating script for setting ownership and permissions for $REPO_NAME ..."
+    echo -e "\nCreating script for setting ownership and permissions for $TARGET_NAME ..."
 
     echo "#!/bin/bash" > $SCRIPT1
 
@@ -598,15 +600,21 @@ mystatus=$( GetInstallStatus )
 [ -z $mystatus ] && SetInstallStatus "DOWNLOADED" && mystatus=$( GetInstallStatus )
 
 
+echo ""
+echo "The installer can be run in automatic mode with -a option."
+echo "An example of a setup file can be located at install/templates/setup.conf"
+echo "Edit it and run this script with options: -i -a yoursetupfile"
+echo ""
+
 if [  $DO_INSTALL -eq 0 ]; then
-        echo -e "Configuration and Installation optionally skipped."
+        echo -e "Configuration steps optionally skipped. Exiting!"
 	exit 0
 fi
 
-if [ $mystatus = "DOWNLOADED" ]; then
+if [ "$mystatus" == "DOWNLOADED" ] || [ "$mystatus" == "CHECKED" ] ; then
     echo "Ximdex instance is suitable for installation. Starting configuration:"
 else
-    echo -e "\n$REPO_NAME has traces of a previous installation.\nPlease, start with a clean instance..."
+    echo -e "\n$REPO_NAME has traces of a previous installation ended at $mystatus step.\nPlease, start with a clean instance..."
     exit 1
 fi
 
@@ -623,6 +631,7 @@ if [ "$AUTOMATIC_INSTALL" = 1 ]; then
 	mycad=$( LimpiaSlashes "$XIMDEX_PARAMS_PATH")
 	DOCROOT=${mycad%/*}
 	REPO_ROOT=$DOCROOT
+	TARGET_NAME=${mycad##*/}
 fi
 
 if [ "$AUTOMATIC_INSTALL" = 0 ]; then
@@ -635,15 +644,15 @@ if [ "$AUTOMATIC_INSTALL" = 0 ]; then
 	echo "You have chosen [$DOCROOT] to install the Ximdex instance."
 	DetermineApacheUserGroup
 else
-	echo "Directory [$DOCROOT] will store Ximdex instance $REPO_NAME."
+	echo "Directory [$DOCROOT] will store Ximdex instance [$TARGET_NAME]."
 fi
 
 # Determine FINAL DIRECTORY where Ximdex will be as web application
-XIMDEX_TARGET_DIR=$( LimpiaSlashes "$DOCROOT/$REPO_NAME")
+XIMDEX_TARGET_DIR=$( LimpiaSlashes "$DOCROOT/$TARGET_NAME")
 CheckFinalDirectory
 
 # Set Permission/owners to local username to run configurator
-echo "Setting temporary owners to ${USER_UNIX}:${GROUP_UNIX}"
+echo "Setting temporary owners to ${USER_UNIX}:${GROUP_UNIX} for $REPO_NAME"
 chown -R ${USER_UNIX}:${GROUP_UNIX} ./${REPO_NAME}
 
 echo "Setting permissions to writable directories"
