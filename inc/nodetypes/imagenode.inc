@@ -55,7 +55,19 @@ class ImageNode extends FileNode{
 		parent::DeleteNode();
         $mm = new MetadataManager($this->nodeID);
         $mm->deleteMetadata();
-	}	
+	}
+
+    
+    function RenameNode($name) {
+        $mm = new MetadataManager($this->nodeID);
+        $mm->updateSystemMetadata();
+    }
+
+
+    function SetContent(){
+        $mm = new MetadataManager($this->nodeID);
+        $mm->updateSystemMetadata();
+    }
 
 }
 ?>

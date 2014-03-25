@@ -211,6 +211,8 @@ class XmlContainerNode extends FolderNode{
 			}
 		}
         $this->updatePath();
+        $mm = new MetadataManager($this->nodeID);
+        $mm->updateSystemMetadata();
 	}
 
 	function GetLanguages(){

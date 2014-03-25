@@ -190,6 +190,12 @@ class AbstractStructuredDocument extends FileNode  {
 		$strDoc = new StructuredDocument($this->nodeID);
 		$strDoc->SetContent($content, $commitNode);
 
+		//Update metadata
+		$node = new Node($this->nodeID);
+		$idLanguage = $strDoc->GetLanguage();
+		$mm = new MetadataManager($node->get('IdParent'));
+        $mm->updateSystemMetadataByLang($idLanguage);
+
 		// Set content for any workflow slaves
 
 		$wfSlaves = $this->parent->GetWorkflowSlaves();

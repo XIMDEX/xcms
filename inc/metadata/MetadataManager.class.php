@@ -137,7 +137,8 @@ class MetadataManager{
 
     /** 
      * Update basic system info in metadata documents
-     * @return ...
+     * @param null
+     * @return null
     */
     public function updateSystemMetadata(){
         $info = $this->node->loadData();
@@ -181,6 +182,47 @@ class MetadataManager{
             else {
                 $errors[] = _('The system cannot update system info in metadata documents');
                 $errors[] = _('Operation could not be successfully completed');
+            }
+        }
+    }
+
+
+    /** 
+     * Update basic system info in metadata document for a specific language
+     * @param int $selectedLanguage
+     * @return null
+    */
+    public function updateSystemMetadataByLang($selectedLanguage){
+        $info = $this->node->loadData();
+        foreach ($this->array_metadata as $metadata_node_id) {
+            $metadata_node = new StructuredDocument($metadata_node_id);
+            $idLanguage = $metadata_node->get('IdLanguage');
+            if ($selectedLanguage == $idLanguage) {
+                $content = $metadata_node->getContent();
+                $domDoc = new DOMDocument();
+                if ($domDoc->loadXML("<root>".$content."</root>")) {
+
+                    // This method only applies for XmlContainer (and its XML docs)
+                    if ($info['typename'] == "XmlContainer") {
+                        $nodeid_child = $this->node->class->GetChildByLang($selectedLanguage);
+                        $node_child = new Node($nodeid_child);
+                        $version_node_child = $node_child->GetLastVersion();
+                        $version = $domDoc->getElementsByTagName('version')->item(0);
+                        $version->nodeValue = $version_node_child["Version"].".".$version_node_child["SubVersion"];
+                    }
+
+                    $metadata_node_update = new Node($metadata_node_id);
+                    $string_xml = $domDoc->saveXML();
+                    $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
+                    $string_xml = str_replace('<root>', '', $string_xml);
+                    $string_xml = str_replace('</root>', '', $string_xml);
+                    $metadata_node_update->setContent($string_xml);
+                    $messages = sprintf(_('The metadata %s for %s has been successfully saved'), $this->node->Get('Name'), $selectedLanguage);
+                }
+                else {
+                    $errors[] = _('The system cannot update system info in metadata documents');
+                    $errors[] = _('Operation could not be successfully completed');
+                }
             }
         }
     }
