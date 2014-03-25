@@ -8,7 +8,7 @@
 
 
 # INITIAL VARS
-REPO_HOME="https://github.com/juanpri/ximdex/archive/"
+REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 REPO_BRANCH="develop"
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
