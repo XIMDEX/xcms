@@ -188,9 +188,9 @@ class ActionAbstract extends IController {
 
 		$message = $message? ". $message": "";
 		if ($success)
-			Action_log::info("OK ".$this->getDefaultLogMessage()." $message");
+			Action_log::info("FINISH OK ".$this->getDefaultLogMessage()." $message");
 		else
-			Action_log::error("FAIL ".$this->getDefaultLogMessage()." $message");
+			Action_log::error("FINISH FAIL ".$this->getDefaultLogMessage()." $message");
 
 		$this->endActionLogged=true;
 	}
