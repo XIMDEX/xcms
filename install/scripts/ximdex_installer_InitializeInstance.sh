@@ -25,7 +25,8 @@
 # */
 
 
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
+
 . $SCRIPT_PATH/lib/functions.sh
 
 REMOVE_DATANODES=${REMOVE_DATANODES:-''}
@@ -42,6 +43,7 @@ function usage
   echo -e "    -p 0-3	            Project demo(0=>none, 1=>AddressBook, 2=>Picasso, 3=>The Hobbit"
   echo -e "    -m 1|0	            Install default modules"
   echo -e "    -i 1|0					Install automatic & scheduler into crontab file"
+  echo -e "    -x <path>	Install Path"
   echo -e "\nExamples:"
   echo -e "   ./ximinitialize "
   echo -e "   ./ximinitialize -r 1 -p 2 -m 0"
@@ -49,7 +51,7 @@ function usage
 
 
 # ################################### GET PARAMS #################################
-while getopts 'r:p:m:i:' OPTION;
+while getopts 'r:p:m:i:x:c:' OPTION;
 do
   case $OPTION in
   	r) #remove data/nodes files
@@ -61,8 +63,14 @@ do
 	m) #install default modules
 		DEFAULT_MODULES=$OPTARG;;
 
+	c) #Generate crontab file
+		CRONTAB_FILE=$OPTARG;;
+
 	i) #install in crontab
 		IN_CRONTAB=$OPTARG;;
+
+	x) #install final path
+		XIMDEX_PARAMS_PATH=$OPTARG;;
 
 	*)	usage
 		exit 1;
@@ -70,13 +78,10 @@ do
 done
 
 echo ""
-echo ""
-echo "*********************"
 echo "* Ximdex initialize *"
-echo "*********************"
-echo ""
 echo ""
 
+echo "Using $XIMDEX_PATH as working directory"
 
 #install demo
 datanodes=$(ls $XIMDEX_PATH/data/nodes/)
@@ -101,11 +106,11 @@ fi
 echo ""
 if [ -z "$PROJECT_DEMO" ];
 then
-	io.question "Do you want to install one of our demo projects? (recommended) "
+	io.question "Do you want to install one of our demo projects? (Picasso recommended) "
 	option=$(io.getOption)
 	if [ "$option" = '1' ]
 	then
-		bash $XIMDEX_PATH/install/module.sh install ximLOADER
+		bash $XIMDEX_PATH/install/module.sh install ximLOADER 2> /dev/null
 
 
 		install_demo="Y"
@@ -133,36 +138,50 @@ if [ -z "$DEFAULT_MODULES" ];
 then
 	#install modules
 	echo ""
-	io.question "Do you want to install our recommended modules? (recommended) "
+	io.question "Install our recommended modules xnews, xtags and xtour? (recommended) "
 	DEFAULT_MODULES=$(io.getOption)
 fi
 
 if [ "$DEFAULT_MODULES" = '1' ];
 then
-  bash $XIMDEX_PATH/install/module.sh install ximNEWS
-  bash $XIMDEX_PATH/install/module.sh install ximTAGS
-  bash $XIMDEX_PATH/install/module.sh install ximTOUR
+    bash $XIMDEX_PATH/install/module.sh install ximNEWS
+    bash $XIMDEX_PATH/install/module.sh install ximTAGS
+    bash $XIMDEX_PATH/install/module.sh install ximTOUR
+fi
 
-  SCRIPT_USER=${SCRIPT_USER:-$USER}
-  instance_in_crontab=$(crontab -u $SCRIPT_USER -l|grep "$XIMDEX_PATH")
+if [ -z $XIMDEX_PARAMS_PATH ]; then
+    XIMDEX_PARAMS_PATH=$XIMDEX_PATH
+fi
 
-  if [ -z "$instance_in_crontab" ];
-  then
- 	  if [ -z "$IN_CRONTAB" ];
-	  then
-			io.question "Do you want to add Automatic and Scheduler to your crontab? (recommended) "
- 		   IN_CRONTAB=$(io.getOption)
-		fi
+SCRIPT_USER=${SCRIPT_USER:-$USER}
+instance_in_crontab=$(crontab -u $SCRIPT_USER -l|grep "$XIMDEX_PATH")
 
-	  if [ "$IN_CRONTAB" = '1' ]
-	  then
-		scheduler="* * * * * (php $XIMDEX_PATH/modules/ximSYNC/scripts/scheduler/scheduler.php) >> $XIMDEX_PATH/logs/scheduler.log 2>&1"
-		automatic="* * * * * (php $XIMDEX_PATH/modules/ximNEWS/actions/generatecolector/automatic.php) >> $XIMDEX_PATH/logs/automatic.log 2>&1"
+if [ -z "$instance_in_crontab" ]; then
+    if [ -z "$IN_CRONTAB" ]; then
+        echo "If you want to publish into remote servers in the cloud, ..."
+        echo "Ximdex decoupled publishing system has to be periodically launched ..."
+        io.question "Do you want to add Scheduler tasks to your user ($SCRIPT_USER) crontab? "
+        IN_CRONTAB=$(io.getOption)
+    fi
 
-		(crontab -u $SCRIPT_USER -l 2>/dev/null; echo -e "\n#**** Ximdex $XIMDEX_PATH ****\n$automatic \n$scheduler"; ) | crontab -u $SCRIPT_USER  -
+    scheduler="* * * * * (php $XIMDEX_PARAMS_PATH/modules/ximSYNC/scripts/scheduler/scheduler.php) >> $XIMDEX_PARAMS_PATH/logs/scheduler.log 2>&1"
+    automatic="* * * * * (php $XIMDEX_PARAMS_PATH/modules/ximNEWS/actions/generatecolector/automatic.php) >> $XIMDEX_PARAMS_PATH/logs/automatic.log 2>&1"
 
-	  fi
-   fi
+    if [ "$IN_CRONTAB" = '1' ]; then
+        echo "Adding scheduler y automatic scripts at $XIMDEX_PARAMS_PATH into crontab for $SCRIPT_USER user"
+        echo ""
+        (crontab -u $SCRIPT_USER -l 2>/dev/null; echo -e "\n#**** Ximdex $XIMDEX_PARAMS_PATH ****\n$automatic \n$scheduler"; ) | crontab -u $SCRIPT_USER  -
+    else 
+	if [ -z $CRONTAB_FILE ]; then
+	        echo "Please, add the following lines to your crontab:"
+       		echo -e "\n#**** Ximdex $XIMDEX_PARAMS_PATH ****\n$automatic \n$scheduler\n"	
+	else
+       		echo -e "\n#**** Ximdex $XIMDEX_PARAMS_PATH ****\n$automatic \n$scheduler\n" > $CRONTAB_FILE	
+	fi
+    fi
+else
+    echo "It seems the instance has already scripts declared in your crontab"
+    echo ""
 fi
 
 #perms to states files

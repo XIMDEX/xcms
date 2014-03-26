@@ -73,7 +73,7 @@
 
 			// Put the number of results if there is at least one record
 			if(source.records && source.records > 0 && window.drawertool == null) {
-				$div = $("<div class='number_results'/>").html(_("Number of results")+": ");
+				$div = $("<div class='number_results'/>").html(_("Results"));
 				$span = $("<span/>").html(source.records);
 				$div.append($span);
 				this.element.append($div);
@@ -127,7 +127,7 @@
 				.listview({
 					paginator: {
 						show: true,
-						legend: _('Elements per page'),
+						legend: _('Show'),
 						view: 'select',
 						items: [
 					        {value: 3, text: '3'},

@@ -25,17 +25,13 @@
 # */
 
 
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
 
 . $SCRIPT_PATH/lib/functions.sh
 
 
 echo ""
-echo ""
-echo "***************************"
-echo "* Ximdex dependency check *"
-echo "***************************"
-echo ""
+echo "*** Ximdex dependencies check"
 echo ""
 
 
@@ -105,16 +101,16 @@ else
 fi
 
 # disabled_functions
-echo -n "Checking disabled functions..."
+echo -n "Checking needed PHP functions: "
 PCNTLFORK_CMD="$XIMDEX_PATH/install/scripts/lib/check_disabled_functions.php"
 $(chmod 775 $PCNTLFORK_CMD)
 ret_fork=$(php $PCNTLFORK_CMD)
 if [ $ret_fork != "0" ]; then
     echo "Fail"
     echo "pcntl_fork and pcntl_waitpid functions are required!!!"
-    echo "Delete these function from the disable_functions directive in your php.ini configuration file."
+    echo "Delete these function from the disable_functions directive in your php.ini configuration file to activate them."
 else
-        echo "Success"
+        echo "OK"
 fi
 
 
@@ -155,3 +151,4 @@ else
 	echo " OK "
 fi
 
+echo ""

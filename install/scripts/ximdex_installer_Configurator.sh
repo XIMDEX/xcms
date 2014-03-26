@@ -30,9 +30,9 @@ XIMDEX_USER=${XIMDEX_USER:-''}
 XIMDEX_PASSWD=${XIMDEX_PASSWD:-''}
 XIMDEX_LOCALE=${XIMDEX_LOCALE:-''}
 XIMDEX_STATS=${XIMDEX_STATS:-''}
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
-DO_BACKUP=1
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
 
+DO_BACKUP=1
 
 . $SCRIPT_PATH/lib/functions.sh
 
@@ -79,6 +79,7 @@ function usage
   echo -e "    -v                   verbose mode"
   echo -e "    -i                   interactive mode"
   echo -e "    -h <host>            Ximdex host"
+  echo -e "    -w        	   Ximdex URL from DOCROOT and REPO_NAME vars"
   echo -e "    -x <path>       	   Ximdex path"
   echo -e "    -u <user>       	   Ximdex admin user"
   echo -e "    -p <password>        Ximdex admin password"
@@ -94,28 +95,41 @@ function usage
 function setHost
 {
 
-   HOST=$(echo $XIMDEX_PATH|sed -e "s/.*\///g"|sed -e "s/\///g")
+  HNAME=$(hostname -f)
+  HNAME=${HNAME:-localhost}
+  codetest=0
 
-	if [ -z "$XIMDEX_PARAMS_HOST" ]
-	then
-	  XIMDEX_PARAMS_HOST="http://localhost/$HOST";
-	  if [ $INTERACTIVE = 1 ]
-	 then
-	  echo -n "Ximdex Host Url [$XIMDEX_PARAMS_HOST]: "
-	  read option
-	  XIMDEX_PARAMS_HOST=${option:-$XIMDEX_PARAMS_HOST}
-	  fi
-	fi
+  HOST=$(echo $XIMDEX_PATH|sed -e "s/.*\///g"|sed -e "s/\///g")
 
-  test=$(wget --spider $XIMDEX_PARAMS_HOST/README.md 2>/dev/null)
-   
-   if [ $? = 0 ] &&  [ -n "$XIMDEX_PARAMS_HOST" ]
+  if [ -z "$XIMDEX_PARAMS_HOST" ]
+  then
+    XIMDEX_PARAMS_HOST="http://$HNAME/$HOST";
+    if [ $INTERACTIVE = 1 ]
+    then
+      echo ""
+      echo "We're going to set the URL where Ximdex will run"
+      echo "As moving Ximdex there is the last step, we can not verify it."
+      echo "Please, be sure the URL is the right one..."
+      echo -n "Ximdex Host Url [$XIMDEX_PARAMS_HOST]: "
+      read option
+      XIMDEX_PARAMS_HOST=${option:-$XIMDEX_PARAMS_HOST}
+      if [ $SKIP_URL_TEST ]; then
+        codetest="0"
+      else
+        $(wget --spider $XIMDEX_PARAMS_HOST/README.md 2>/dev/null)
+        codetest=$?
+      fi 
+    fi
+  fi
+
+
+   if [ $codetest = 0 ] &&  [ -n "$XIMDEX_PARAMS_HOST" ]
 	then
 		sql "UPDATE Config SET ConfigValue='$XIMDEX_PARAMS_HOST' WHERE ConfigKEY='UrlRoot';"
 		next_step
 	else
-	   echo "Ximdex host couldn't be verified. Maybe it doesn't exist or has authentication. "
-	   question="Do you want to type the Ximdex Host Url again? (y)es / (n)o / (c)ancel installation]: "
+	   echo "Can not access host [$XIMDEX_PARAMS_HOST]... (it does not exist yet or it has authentication) "
+	   question="Do you want to type the URL again? (y)es / (n)o / (c)ancel installation]: "
             echo -n "$question"
             read option
             while [ "$option" != 'Y' ] && [ "$option" != 'y' ] && [ "$option" != 'n' ] && [ "$option" != 'N' ] && [ "$option" != 'c' ] &&     [ "$option" != 'C' ]
@@ -140,6 +154,7 @@ function setHost
 
 function setPath
 {
+	
 	if [ -z "$XIMDEX_PARAMS_PATH" ]
 	then
 	  XIMDEX_PARAMS_PATH=$XIMDEX_PATH;
@@ -150,8 +165,15 @@ function setPath
 	  XIMDEX_PARAMS_PATH=${option:-$XIMDEX_PARAMS_PATH}
 	  fi
 	fi
+	#remove repeated slash from path
+#	while [[ $XIMDEX_PARAMS_PATH =~ "//" ]]; do
+#       	    XIMDEX_PARAMS_PATH=$(echo $XIMDEX_PARAMS_PATH | sed -e "s/\/\//\//g")
+#	done
 
-	if [ -n "$XIMDEX_PARAMS_PATH " ] && [ -d "$XIMDEX_PARAMS_PATH" ] && [ -f "$XIMDEX_PARAMS_PATH/README.md" ]
+	if [ $XIMDEX_PATH_STABLE ]; then
+		echo "Ximdex installation directory will be: $XIMDEX_PARAMS_PATH"
+	fi
+	if [ -n "$XIMDEX_PARAMS_PATH" ] 
 	then
 		assign "XIMDEX_PATH"  $XIMDEX_PARAMS_PATH
 		sql "UPDATE Config SET ConfigValue='$XIMDEX_PARAMS_PATH' WHERE ConfigKEY='AppRoot';";
@@ -166,21 +188,25 @@ function setPath
 function setAdminUser
 {
 
-	if [ -z "$XIMDEX_USER" ]
-	then
-	  XIMDEX_USER='ximdex';
-	  if [ $INTERACTIVE = 1 ]
-		 then
-	  echo -n "Ximdex admin user [$XIMDEX_USER]: "
-	  read option
-	  XIMDEX_USER=${option:-$XIMDEX_USER}
-	  fi
-	fi
+	# Ximdex admin user by default is ximdex
+	XIMDEX_USER='ximdex';
+
+#	if [ -z "$XIMDEX_USER" ]
+#	then
+#	  XIMDEX_USER='ximdex';
+#	  if [ $INTERACTIVE = 1 ]
+#		 then
+#	  echo -n "What will be admin username at Ximdex [$XIMDEX_USER]: "
+#	  read option
+#	  XIMDEX_USER=${option:-$XIMDEX_USER}
+#	  fi
+#	fi
 
 	if [ -n "$XIMDEX_USER" ]
 	then
 		sql "UPDATE Users SET Login='$XIMDEX_USER' where IdUser = '301'"
 		sql "UPDATE Nodes SET Name='$XIMDEX_USER' where IdNode = '301'"
+		echo "Ximdex Admin username will be: $XIMDEX_USER";
 		next_step
 	else
 	   echo "Ximdex admin user not found. "
@@ -199,7 +225,7 @@ function setAdminPass
 	  if [ $INTERACTIVE = 1 ]
 	    then
      	  stty -echo
-		  echo -n "Ximdex admin password: "
+		  echo -n "Ximdex admin username password: "
  	 	  read option
  	 	  echo ""
 		  XIMDEX_PASSWD=${option:-''}
@@ -218,7 +244,7 @@ function setAdminPass
 		sql "UPDATE Users SET Pass=MD5('$XIMDEX_PASSWD') where IdUser = '301'"
 		next_step
 	else
-  		 echo "Ximdex admin password not found. "
+  		 echo "Ximdex admin password not valid or missmatch. Please, repeat. "
 	    XIMDEX_PASSWD=''
 	fi
 }
@@ -233,9 +259,10 @@ function setLocale
 	  if [ $INTERACTIVE = 1 ]
 	 then
 
-		#Get available languages in ximdex
+          #Get available languages in ximdex
 	  declare -a arr_langs=( `ls  -m  $XIMDEX_PATH/inc/i18n/locale/|sed -e "s/,//g"` )
 
+	#echo "DEBUG LOCALE: ${#arr_langs[@]} ${arr_langs[*]}"
    	if [ -z  "${#arr_langs[@]}" ]; then
 			echo "Languages not found.";
 			exit 1;
@@ -254,14 +281,14 @@ function setLocale
 		done
 
 		if [ -z "$languages" ]; then
-				echo "Languages not found";
+				echo "Languages not found in DB";
 				exit 1;
 		fi
 
 
 		out=0
 		while [ $out != 1 ]; do
-				echo  "Select your Ximdex default language choosing betweeen:"
+				echo  "Please, select your Ximdex default language:"
 
 				i=1;
 				for option in $languages;
@@ -270,7 +297,7 @@ function setLocale
 					i=$(expr $i + 1)
 				done
 
-				echo -ne "\nXimdex default lenguage[1]: "
+				echo -ne "\nXimdex default language [2]: "
 				read option;
 
 				if [ -n "$option" ] && [ "$option" -ge 1 ] && [ "$option" -le ${#arr_langs[@]} ] ;
@@ -280,7 +307,7 @@ function setLocale
 					out=1
 				elif [ -z "$option" ]
 				then
-					XIMDEX_LOCALE=${arr_langs[0]:-$XIMDEX_LOCALE}
+					XIMDEX_LOCALE=${arr_langs[1]:-$XIMDEX_LOCALE}
 					out=1
 				else
 					echo -e "\nError: Language does not exist";
@@ -312,7 +339,7 @@ function setLocale
 function setXimdexUuid
 {
 
-  echo -n "Getting Ximdex identifier... "
+  echo -n "Getting Ximdex key... "
   HOSTNAME=$(hostname)
   HOSTNAME=${HOSTNAME:-localhost}
   XIMDEX_UUID=$(wget -T 3 -q -O - http://xid.ximdex.net/stats/getximid.php?host=$HOSTNAME);
@@ -337,13 +364,23 @@ function SetStatistics
 {
 	if [ -z "$XIMDEX_STATS" ];
 	then
-		io.question "Would you like to help us to improve sending information about Ximdex usage? (recommended) "
-		XIMDEX_STATS=$(io.getOption)
-	fi
+		option="-"
+		while [ "$option" != 'Y' ] && [ "$option" != 'y' ] && [ "$option" != 'n' ] && [ "$option" != 'N' ] && [ "$option" != '' ] 
+		do
+		        echo -n "Would you like to help us sending anonymous information about usage (Y/n)? "
+		        read option
+		done
+		
+		if [ "$option" == "n" ] || [ "$option" == "N" ]; then
+			XIMDEX_STATS="0"
+		else
+			XIMDEX_STATS="1"
+		fi
 
-	if [ "$XIMDEX_STATS" = '1' ]
-	then
-		sql "UPDATE Config SET ConfigValue='1' WHERE ConfigKEY='ActionsStats';";
+		if [ "$XIMDEX_STATS" = '1' ]
+		then
+			sql "UPDATE Config SET ConfigValue='1' WHERE ConfigKEY='ActionsStats';";
+		fi
 	fi
 
 	next_step
@@ -351,7 +388,7 @@ function SetStatistics
 
 
 # ################################### GET PARAMS #################################
-while getopts 'vih:x:u:p:nl:s:' OPTION;
+while getopts 'vtwih:x:u:p:nl:s:' OPTION;
 do
   case $OPTION in
   	v) #mode verbose ON
@@ -360,9 +397,14 @@ do
 	i) #mode interative ON
 		INTERACTIVE=1;;
 
+	t) # SKIP test for host... because the URL will be created near the end
+		SKIP_URL_TEST=1;;
+		
 	h) #ximdex host
 		XIMDEX_HOST=$OPTARG;;
 
+	w) # inherited ximdex path can not be modified
+		XIMDEX_PATH_STABLE=1;;
 	x) #ximdex path
 		 XIMDEX_PARAMS_PATH=$OPTARG;;
 
@@ -395,15 +437,11 @@ shift $(($OPTIND - 1))
 
 ################# SET PARAMS #################################
 echo ""
+echo "*** Ximdex config files "
 echo ""
-echo "***********************"
-echo "* Ximdex param config *"
-echo "***********************"
-echo ""
-echo ""
-
 
 getDBParams
+checkDBconn
 
 #- ask server
 STEP=0
@@ -416,7 +454,7 @@ do
 	3) setAdminUser;;
 	4) setAdminPass;;
 	5) setLocale;;
-   6) setXimdexUuid;;
+        6) setXimdexUuid;;
 	7) SetStatistics;;
  	8)
 		echo "Configuring Ximdex params... Success"
