@@ -71,7 +71,7 @@
 
 
 XIMDEX_INSTALL=1
-SCRIPT_PATH=$(cd ${0%/*} && pwd -P)
+SCRIPT_PATH=$(cd $(dirname $0) && pwd -P)
 XIMDEX_PATH=${SCRIPT_PATH/\/install/}
 SCRIPT_USER=`whoami`
 STEP=1
@@ -154,7 +154,7 @@ done
 #loading vars from config file
 if [ "$AUTOMATIC_INSTALL" = 1 ] && [ -f "$CONFIG_FILE" ];
 then
-	. $SCRIPT_PATH/scripts/ximfromfile.sh "$CONFIG_FILE"
+	. $SCRIPT_PATH/scripts/ximdex_installer_LoadAutomaticParams.sh "$CONFIG_FILE"
 	result="$?"
 	if [ "$result" != 0 ];
 	then
@@ -219,8 +219,8 @@ while [ $STEP != "END" ]
 do
 	case $STEP in
 		#lauch ximtest
-		1) $(chmod +x $SCRIPT_PATH/scripts/ximtest.sh)
-		( $SCRIPT_PATH/scripts/ximtest.sh  )
+		1) $(chmod +x $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh)
+		( $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh )
 		result="$?"
 		if [ "$result" != 0 ];
 		then
@@ -229,8 +229,8 @@ do
 		;;
 		2)
 		#lauch ximdb
-		$(chmod +x $SCRIPT_PATH/scripts/ximdb.sh)
-		( $SCRIPT_PATH/scripts/ximdb.sh -i )
+		$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_CreateDatabase.sh)
+		( $SCRIPT_PATH/scripts/ximdex_installer_CreateDatabase.sh -i )
 
 		result="$?"
 		if [ "$result" != 0 ];
@@ -240,8 +240,8 @@ do
 		;;
 		3)
 		#launch ximparams
-		$(chmod +x $SCRIPT_PATH/scripts/ximparams.sh)
-		( $SCRIPT_PATH/scripts/ximparams.sh -i -n )
+		$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_Configurator.sh)
+		( $SCRIPT_PATH/scripts/ximdex_installer_Configurator.sh -i -n )
 		result="$?"
 		if [ "$result" != 0 ];
 		then
@@ -251,8 +251,8 @@ do
 
 		4)
 		#maintenance_tasks
-		$(chmod +x $SCRIPT_PATH/scripts/maintenance_tasks.sh)
-		( $SCRIPT_PATH/scripts/maintenance_tasks.sh )
+		$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_MaintenanceTasks.sh)
+		( $SCRIPT_PATH/scripts/ximdex_installer_MaintenanceTasks.sh )
 		result="$?"
 		if [ "$result" != 0 ];
 		then
@@ -262,8 +262,8 @@ do
 
 		5)
 		  #launch ximinitialize
-		  $(chmod +x $SCRIPT_PATH/scripts/ximinitialize.sh)
-		  ( $SCRIPT_PATH/scripts/ximinitialize.sh )
+		  $(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_InitializeInstance.sh)
+		  ( $SCRIPT_PATH/scripts/ximdex_installer_InitializeInstance.sh )
 		;;
 
 
