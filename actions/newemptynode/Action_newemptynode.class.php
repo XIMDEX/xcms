@@ -86,7 +86,7 @@ class Action_newemptynode extends ActionAbstract {
                 } else {
                     $this->messages->add(sprintf(_('The operation has failed: %s'), $file->msgErr), MSG_TYPE_ERROR);
                 }
-		$values = array('messages' => $this->messages->messages, 'parentID' => $parentId);
+		$values = array('messages' => $this->messages->messages, 'parentID' => $parentId, 'nodeID' => $idfile);
 		
 		$this->sendJSON($values);
 	}
