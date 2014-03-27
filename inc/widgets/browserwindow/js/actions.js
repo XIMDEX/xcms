@@ -28,6 +28,11 @@
 
 	var B = X.browser;
 
+	X.ActionTypes = {
+		create: ['addfoldernode', 'addsectionnode', 'createlink', 'newemptynode'],
+		remove: ['deletenode']
+	};
+
 	var idCount = 0;
 
 	B.ActionView = Object.xo_create(B.AbstractView, {
@@ -39,7 +44,6 @@
 		history: null,
 
 		_init: function(options) {
-
 			B.ActionView._construct(this, options);
 
 			this.id = 'browser-action-view-' + (++idCount);
@@ -70,6 +74,38 @@
 			this.content.load(this.url, function(data, textStatus, xhr) {
 				this.processAction();
 			}.bind(this));
+		},
+
+		actionDoneCallback: function(result, form) {
+    		$form = $(form);
+    		var nodeId = result.nodeID || result.parentID || result.idNode;
+    		//Refresh node
+    		if (nodeId) $(this.container).trigger('nodemodified', nodeId);
+
+	        //Messaging
+	        //TODO: Create a messaging service/widget
+	        var $message = $('<div class="message" style="display: none;"></div>');
+    		var submitError = false;
+    		$.each(result.messages, function(key, message){
+    			if (message.type === 2) {
+    				$message.html($message.html()+'<p class="ui-state-primary ui-corner-all msg-info">'+message.message+'</p>');
+    			} else if (message.type === 0) {
+    				$message.html($message.html()+'<p class="ui-state-error ui-corner-all msg-error">'+message.message+'</p>');
+    			}
+    		});
+    		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
+
+    		if (X.ActionTypes.remove.indexOf(this.action.command) != -1) {
+				$form.after($message);
+    			$message.show();
+    			$form.hide();
+    			setTimeout(function(){this.close();}.bind(this), 4000);
+				
+			} else {
+				$form.find('.action_header').after($message);
+    			$message.slideDown();
+    			setTimeout(function(){$message.slideUp().remove;}, 4000);
+			}
 		},
 
 		getForm: function(name) {

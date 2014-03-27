@@ -105,11 +105,12 @@ X.FormsManager = Object.xo_create({
 	registerButton: function(button, options) {
 
 		button = $(button).get(0);
-
+		
 		options = $.extend({
 			confirm: true,
 			message: null,
-			file: 0
+			file: 0,
+			jsonResponse: true
 		}, options);
 
 		button = $.extend(button, {
@@ -175,9 +176,9 @@ X.FormsManager = Object.xo_create({
 			button: null,
 			confirm: true,
 			message: null,
-			file: 0
+			file: 0,
+			jsonResponse: false
 		}, options);
-
 
 		// Ensure the form and iframe IDs are unique
 		var formId = $(this.options.form).attr('id');
@@ -206,8 +207,8 @@ X.FormsManager = Object.xo_create({
 		}
 
 		// Submit button
-		var validateElement = options.button || $('.validate', this.options.form);
-		var message = options.message || $('~ .submit_message', validateElement).attr('value');
+		var submitButton = options.button || $('.validate', this.options.form);
+		var message = options.message || $('~ .submit_message', submitButton).attr('value');
 		var dialog = this._getDialog(this.options.form, message);
 		if (message == '' || message == undefined) {
 			options.confirm = false;
@@ -215,51 +216,75 @@ X.FormsManager = Object.xo_create({
 
 		// Send the form
 		if (!options.confirm) {
-			this._doSubmit(this.options.form, options.files);
+			this._doSubmit(this.options.form, options.files, submitButton, options.jsonResponse);
 		} else {
-
+			_this = this;
+			var dialogButtons = {};
+			dialogButtons[_('Cancel')] = function() {
+				_this._cancelSubmit(_this.options.form);
+				$(dialog).dialog('destroy');
+				$(dialog).remove();
+			};
+			dialogButtons[_('Accept')] = function() {
+				_this._doSubmit(_this.options.form, options.files, submitButton, options.jsonResponse);
+				$(dialog).dialog('destroy');
+				$(dialog).remove();
+			};
 			$(dialog).dialog({
 				title: 'Ximdex Notifications',
 				modal: true,
-				buttons: {
-					accept: function() {
-						this._doSubmit(this.options.form, options.files);
-						$(dialog).dialog('destroy');
-						$(dialog).remove();
-					}.bind(this),
-					cancel: function() {
-						this._cancelSubmit(this.options.form);
-						$(dialog).dialog('destroy');
-						$(dialog).remove();
-					}.bind(this)
-				}
+				buttons: dialogButtons
 			});
 		}
 
 		return false;
 	},
 
-	_doSubmit: function(form, files) {
+	_doSubmit: function(form, files, button, jsonResponse) {
 
 		// Obtains the iframe
 		var iframe = this._getIFrame(form);
-
+		$form = $(form);
 		// Form attributes
-		$(form).addClass('ready_to_send');
+		$form.addClass('ready_to_send');
 
 		if (!isNaN(files) && files > 0) {
-			$(form).attr('action', $(form).attr('action') + '&files=' + files);
+			$form.attr('action', $form.attr('action') + '&files=' + files);
 		}
 
 		// jQuery Bug: $(elem).attr('target') returns a node with name=target o id=target, not the target attribute of $(elem)
-		$(form).attr('target', this.options.iframeId);
+		$form.attr('target', this.options.iframeId);
 		$(iframe).load(this._reloadFrame.bind(this, iframe));
 
 		if (Object.isObject(this.options.actionView)) {
-			this.options.actionView.history.push($(form).attr('action'));
+			this.options.actionView.history.push($form.attr('action'));
 		}
-
-		$(form).submit();
+		
+		if (jsonResponse) {
+			if ($(form).valid()) {
+				var loader = Ladda.create(button).start();//Start button loading animation
+				var _this = this;
+				$.ajax({
+			        url: $form.attr('action'),
+			        type: 'post',
+			        dataType: 'json',
+			        contentType: "application/x-www-form-urlencoded",
+			        data: $form.serialize(),
+			        success: function(data) {	
+			        	loader.stop();//Stop loading animation
+			        	if (data && data.messages) {
+			        		_this.options.actionView.actionDoneCallback(data, form);
+			        	}
+			        },
+			        error: function(error) {
+			        	console.log("Error", error);
+			        	loader.stop();
+			        }
+			    });
+			}
+		} else {
+			form.submit();
+		}
 	},
 
 	_cancelSubmit: function(form) {
@@ -378,7 +403,6 @@ X.FormsManager = Object.xo_create({
 			var name = $(validable).attr('name');
 			elements[name] = constraints;
 		}.bind(this));
-
 		return elements;
 	},
 

@@ -158,7 +158,10 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 				}.bind(this));
 				btnReload.after(paginator);
 			}
-
+			// //Listen for nodemodified events
+			$(document).on('nodemodified', function(e, nodeId){
+				this.refresh(nodeId);
+			}.bind(this));
 
 		},
 
@@ -632,7 +635,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 		},
 		refresh: function(node, list) {
 			if (typeof(node) != 'object') node = this.getNodeById(node);
-			if (node == undefined) return;
+			if (node == undefined || !node.length) return;
 			var selected_node = $('.xim-treeview-selected', this.element).closest('li').attr('id');
 			this.loadFromSource(this.options.datastore, $(node).data('data'), node, false, selected_node, list);
 		},
