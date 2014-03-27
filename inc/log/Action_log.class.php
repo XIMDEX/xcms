@@ -27,7 +27,7 @@
 
 
 
-require_once( XIMDEX_ROOT_PATH . '/inc/log/Loggeable.class.php' );
+require_once( XIMDEX_ROOT_PATH . '/inc/log/Loggeable.class.php' ); 
 
 class Action_log {
 	
