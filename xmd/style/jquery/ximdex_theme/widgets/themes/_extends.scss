@@ -193,6 +193,23 @@
             z-index: 5;
         }
 
+        %flex{
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+        }
+
+        %box{
+            border: 1px solid $c_grey-pp;
+            background:#fff;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            margin-right: 1em;
+        }
+
 
 // triangles mixin
 

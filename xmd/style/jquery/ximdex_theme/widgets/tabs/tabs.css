@@ -82,8 +82,8 @@
       outline: 0; }
   #body .ui-tabs-nav li.unsave {
     border-top: 3px solid #e8563b; }
-  #body .ui-tabs-nav li[aria-labelledby="ui-id-6"], #body .ui-tabs-nav li[aria-labelledby="10000_welcome"] {
-    background: #e3e7e9 !important; }
+  #body .ui-tabs-nav li:first-child {
+    display: none; }
 #body .hbox-panel-container-1 .ui-tabs-nav .ui-tabs-active {
   background: white; }
 

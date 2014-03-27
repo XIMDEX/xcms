@@ -100,8 +100,8 @@
 	}
 
 
-	&[aria-labelledby="ui-id-6"], &[aria-labelledby="10000_welcome"] {
-	background: $c_background !important;
+	&:first-child{
+		display: none;
 	}
 }
 .hbox-panel-container-1 .ui-tabs-nav .ui-tabs-active{
