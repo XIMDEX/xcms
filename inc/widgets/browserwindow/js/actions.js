@@ -29,8 +29,17 @@
 	var B = X.browser;
 
 	X.ActionTypes = {
-		create: ['addfoldernode', 'addsectionnode', 'createlink', 'newemptynode'],
-		remove: ['deletenode']
+		create: [	'addfoldernode', 
+					'addsectionnode',
+					'createlink',
+					'newemptynode', 
+					'copy', 
+					'createrole', 
+					'createuser',
+					'createxmlcontainer'
+				],
+		remove: ['deletenode'],
+		reload: ['addximlet', 'linkreport']
 	};
 
 	var idCount = 0;

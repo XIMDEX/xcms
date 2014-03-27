@@ -260,7 +260,7 @@ X.FormsManager = Object.xo_create({
 			this.options.actionView.history.push($form.attr('action'));
 		}
 		
-		if (jsonResponse) {
+		if (jsonResponse && X.ActionTypes.reload.indexOf(this.options.actionView.action.command) == -1) {
 			if ($(form).valid()) {
 				var loader = Ladda.create(button).start();//Start button loading animation
 				var _this = this;
@@ -283,6 +283,7 @@ X.FormsManager = Object.xo_create({
 			    });
 			}
 		} else {
+			var loader = Ladda.create(button).start();//Start button loading animation
 			form.submit();
 		}
 	},
