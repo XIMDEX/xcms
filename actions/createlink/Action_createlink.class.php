@@ -40,10 +40,10 @@ class Action_createlink extends ActionAbstract {
 	    $description = $this->request->getParam('description');
 
         $messages = $this->createNodeLink($name, $url, $description, $idParent);
-		$this->reloadNode($idParent);
-		
+
 		$values["messages"] = $this->messages->messages;//_('Link has been successfully added');
-		$this->render($values, NULL, 'messages.tpl');	
+		$values["parentID"] = $idParent;
+		$this->sendJSON($values);	
     }
 
     public function createNodeLink($name, $url, $description, $idParent){

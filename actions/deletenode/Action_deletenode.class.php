@@ -201,7 +201,7 @@ class Action_deletenode extends ActionAbstract {
 					'action_with_no_return' => true,
 					'messages' => $this->messages->messages
 				);
-				$this->render($values);
+				$this->sendJSON($values);
 
 				return ;
 			}
@@ -325,15 +325,16 @@ class Action_deletenode extends ActionAbstract {
 			}
 		}
 
-		$this->reloadNode($parentID);
+		//$this->reloadNode($parentID);
 
 		$values = array(
 			'messages' => $this->messages->messages,
 			'action_with_no_return' => true,
-			'depList' => $depList
+			'depList' => $depList,
+			'parentID' => $parentID
 		);
 
-		$this->render($values, NULL, 'messages.tpl');
+		$this->sendJSON($values);
 	}
 
 }

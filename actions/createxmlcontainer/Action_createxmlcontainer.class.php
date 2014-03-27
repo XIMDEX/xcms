@@ -156,7 +156,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 				'nodeName' => $name,
 				'messages' => $this->messages->messages,
         		);
-        		$this->render($values, null, 'messages.tpl');
+        		$this->sendJSON($values);
         		return false;
         	} else {
         		$this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
@@ -208,13 +208,14 @@ class Action_createxmlcontainer extends ActionAbstract {
 			}
 		}
 
-		$this->reloadNode($idNode);
+		//$this->reloadNode($idNode);
 
 
 		$values = array(
 			'messages' => $this->messages->messages,
+			'parentID' => $idNode
 		);
-		$this->render($values, NULL, 'messages.tpl');
+		$this->sendJSON($values);
     }
 	
     function _insertLanguage($idLanguage, $nodeTypeName, $name, $idContainer, $idSchema, $formChannels, $aliases) {
