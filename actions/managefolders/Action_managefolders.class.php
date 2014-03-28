@@ -25,6 +25,7 @@
  */
 
 ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
+ModulesManager::file('/services/NodetypeService.class.php');
 
 class Action_managefolders extends ActionAbstract {
 
@@ -66,7 +67,7 @@ class Action_managefolders extends ActionAbstract {
 				'subfolders' => $subfolders,
 				'go_method' => 'configure_section',
 				);
-		$this->render($values, null, 'default-3.0.tpl');
+        $this->render($values, null, 'default-3.0.tpl');
     	}
     
 	/** 
@@ -81,74 +82,74 @@ class Action_managefolders extends ActionAbstract {
         * 
         */
     	function configure_section() {
-		$error=false;
-		$folderlst = $this->request->getParam('folderlst');
-	   	$nodeID = $this->request->getParam('nodeid');
-		$parent = new Node($nodeID);
-				
-		$existingChildren = $this->_getChildrenNodeTypes($nodeID);
-		$addfolders=false;
-		if(count($folderlst)>count($existingChildren)){
-			$addfolders=true;
-			//If the user wants to create all the containing folders.
-			if(empty($existingChildren)){
-				$existingChildren=$folderlst;
-			}else{
-				$folderlst=array_diff($folderlst,$existingChildren);
-			}
-		}
-		else{
-			//If the user wants to delete all the containing folders.
-			if(empty($folderlst)){
-				$folderlst=$existingChildren;
-			}else{
-				$folderlst=array_diff($existingChildren,$folderlst);		
-			}
-		}
-
-		//Only creating the new folders selected.
-		if($addfolders){
-			foreach($folderlst as $folderNt){
-				$folder = new Node();
-				$ndc = new NodeDefaultContents();
-				$name=$ndc->getDefaultName($folderNt);
-        	        	$idFolder = $folder->CreateNode($name, $nodeID, $folderNt, null);
-				if(!$idFolder){
-					$error=true;
-					break;
+			$error=false;
+			$folderlst = $this->request->getParam('folderlst');
+		   	$nodeID = $this->request->getParam('nodeid');
+			$parent = new Node($nodeID);
+					
+			$existingChildren = $this->_getChildrenNodeTypes($nodeID);
+			$addfolders=false;
+			if(count($folderlst)>count($existingChildren)){
+				$addfolders=true;
+				//If the user wants to create all the containing folders.
+				if(empty($existingChildren)){
+					$existingChildren=$folderlst;
+				}else{
+					$folderlst=array_diff($folderlst,$existingChildren);
 				}
 			}
-		}
-		else{
-			foreach($folderlst as $folderNt){
-                                $ndc = new NodeDefaultContents();
-                                $name=$ndc->getDefaultName($folderNt);
-
-				$nodeid = $parent->GetChildByName($name);
-				$deleteFolder = new Node($nodeid);
-
-				$res = $deleteFolder->DeleteNode();
-				if(!$res){
-					$error=true;
-					break;
+			else{
+				//If the user wants to delete all the containing folders.
+				if(empty($folderlst)){
+					$folderlst=$existingChildren;
+				}else{
+					$folderlst=array_diff($existingChildren,$folderlst);		
 				}
 			}
-		}
 
-		$this->reloadNode($nodeID);
+			//Only creating the new folders selected.
+			if($addfolders){
+				foreach($folderlst as $folderNt){
+					$folder = new Node();
+					$ndc = new NodeDefaultContents();
+					$name=$ndc->getDefaultName($folderNt);
+	        	        	$idFolder = $folder->CreateNode($name, $nodeID, $folderNt, null);
+					if(!$idFolder){
+						$error=true;
+						break;
+					}
+				}
+			}
+			else{
+				foreach($folderlst as $folderNt){
+	                                $ndc = new NodeDefaultContents();
+	                                $name=$ndc->getDefaultName($folderNt);
 
-		if ($error) {
-			$this->messages->add(_('This operation could not be successfully completed.'), MSG_TYPE_ERROR);
-		}else{
-			$this->messages->add(_('This section has been successfully configured.'), MSG_TYPE_NOTICE);
-		}
-		
-		$values = array(
-			'action_with_no_return' => !$error,
-			'messages' => $this->messages->messages
-		);
-		
-		$this->render($values, NULL, 'messages.tpl');
+					$nodeid = $parent->GetChildByName($name);
+					$deleteFolder = new Node($nodeid);
+
+					$res = $deleteFolder->DeleteNode();
+					if(!$res){
+						$error=true;
+						break;
+					}
+				}
+			}
+
+			$this->reloadNode($nodeID);
+
+			if ($error) {
+				$this->messages->add(_('This operation could not be successfully completed.'), MSG_TYPE_ERROR);
+			}else{
+				$this->messages->add(_('This section has been successfully configured.'), MSG_TYPE_NOTICE);
+			}
+			
+			$values = array(
+				'action_with_no_return' => !$error,
+				'messages' => $this->messages->messages
+			);
+			
+			$this->sendJSON($values);
     	}
     
 	/** 
@@ -189,12 +190,12 @@ class Action_managefolders extends ActionAbstract {
         */
 	private function _getDescription($nodetype){
 		switch($nodetype){
-			case "5018": return "This is the main repository for all your XML contents. It's the most important folder in a section.";
-			case "5016": return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
-			case "5020": return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
-			case "5022": return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
-			case "5026": return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
-			case "5054": return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
+			case NodetypeService::XML_ROOT_FOLDER: return "This is the main repository for all your XML contents. It's the most important folder in a section.";
+			case NodetypeService::IMAGES_ROOT_FOLDER: return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
+			case NodetypeService::IMPORT_ROOT_FOLDER: return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
+			case NodetypeService::COMMON_ROOT_FOLDER: return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
+			case NodetypeService::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
+			case NodetypeService::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
 			case "5301": return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
 			case "5304": return "Into this folder you could create XML based news in several languages. This is a required folder.";
 			case "5306": return "All the images used in your defined news are stored here.";
