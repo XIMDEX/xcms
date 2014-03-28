@@ -8,9 +8,16 @@
 
 
 # INITIAL VARS
-REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 REPO_NAME="ximdex"
-REPO_BRANCH="develop"
+REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
+
+REPO_BRANCH="3.5-beta3"
+#REPO_BRANCH="develop"
+
+# if branch is a TAG instead of a branch uncomment line below
+REPO_HOME="${REPO_HOME}v"
+
+
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
 
@@ -31,15 +38,22 @@ echo ""
 # Are we running directly on a ximdex instance to be installed?
 if [ -d install ] && [ -d data ] && [ -d inc ] && [ -f XIMDEX_INSTALL.sh ]; then
 	echo -e "Running '$my_script_name' from '$my_path'\nin the already downloaded instance '$my_directory'" 
-	echo -e "\nUse $my_script_name script alone in a clean directory to force download."
+	echo -e "Use $my_script_name script alone in a clean directory to force download."
 	echo ""
 	DO_DOWNLOAD=0
 	REPO_NAME=$my_directory
 	#echo "Assigning $REPO_NAME to Ximdex and running it from $my_path"
-	cd $my_path/.. 
+	cd $my_path/..
+        if [ "$?" != 0 ]; then
+		echo "Can not move to the parent directory. Exiting"	
+                exit 10
+        fi
+	#exec $my_path/$my_script_name -i -n $my_directory
 else 
 	DO_DOWNLOAD=1
 fi
+
+PARENT_DIR=$(pwd -P)
 
 # FOR AUTOMATIC INSTALLATIONS
 export AUTOMATIC_INSTALL=0
@@ -126,15 +140,14 @@ function CreateScriptToSetPermsAndMove() {
     arr_command+=("whoami\n\n")
 
     if [ $XIMDEX_TARGET_DIR != $my_path ] ; then
-        err_command+=("echo \"# Verify that target directory $DOCROOT is a directory\"\n") 
-        arr_command+=("echo \"# Verify that target directory $XIMDEX_TARGET_DIR does not exist\"\n") 
+        arr_command+=("# Verify that target directory $XIMDEX_TARGET_DIR does not exist\n\n") 
 	arr_command+=("if [ -d $XIMDEX_TARGET_DIR ]; then\n")
 	arr_command+=("  echo \"TARGET DIRECTORY $XIMDEX_TARGET_DIR EXISTS!!!\"\n")
 	arr_command+=("  echo \"Please, remove it and run the script as root again.\"\n")
 	arr_command+=("  exit 0\n")
 	arr_command+=("fi\n\n\n")
 
-	command="mv ./${REPO_NAME} $XIMDEX_TARGET_DIR"
+	command="cd $PARENT_DIR && cp -ra ${REPO_NAME} $XIMDEX_TARGET_DIR"
 	arr_command+=("$command\n")
     else
 	command="#MOVE IS NOT NEEDED BECAUSE IT IS INSTALLED FROM FINAL DIRECTORY"
@@ -143,6 +156,14 @@ function CreateScriptToSetPermsAndMove() {
 
     command="chown -R ${USER_APACHE}:${GROUP_APACHE} $XIMDEX_TARGET_DIR"
     arr_command+=("$command\n")
+
+    command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_MaintenanceTasks.sh -x $XIMDEX_TARGET_DIR\" ${USER_APACHE}"
+    arr_command+=("$command\n")
+
+    command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_InitializeInstance.sh -x $XIMDEX_TARGET_DIR -m 1 -i 0 -p 0\" ${USER_APACHE}"
+    arr_command+=("$command\n")
+
+    arr_command+=("exit 0\n")
 
 
     #command="chmod -R u+x ./$REPO_NAME/install/*sh ./$REPO_NAME/install/scripts/*.sh"
@@ -169,13 +190,20 @@ function CreateScriptToSetPermsAndMove() {
 }
 
 function RunScriptAsRoot() {
+    runasroot=0
     if [ $USER_UNIX != 'root' ]; then
         echo "Running through sudo. Enter your password when requested..."
-        sudo bash ./$my_script1 2> /dev/null
+        sudo bash ./$my_script1  2> /dev/null
         if [ $? -ne 0 ]; then 
             echo "Can not run via sudo. Trying as root direclty. Enter password for root when requested..."
             su -c "bash ./$my_script1 2> /dev/null"
+	else
+	    runasroot=1
         fi
+    fi
+
+    if [ $runasroot == "1" ]; then
+        echo "Launched!"
     fi
 }
 
@@ -351,15 +379,13 @@ function CheckFinalDirectory() {
 # Print instructions
 function PrintInstructions() {
 	echo "The main steps are:"
-	echo ""
 	echo "1.- Downloading Ximdex ($REPO_BRANCH branch) if you are in a clean directory."
 	echo "    (run only this step with option -d)"
 	echo "2.- Execute configuration scripts to create Database, set parameters, etc."
 	echo "    (run only this step with -i option)"
 	echo "3.- Move Ximdex into your web server document root and assign permissions." 
-	echo ""
-	echo "This last step may require superuser privileges."
-	echo "Script $SCRIPT1 will be generated to be run as root."
+	echo "    This last step may require superuser privileges."
+	echo "    Script $SCRIPT1 will be generated to be run as root."
 	echo ""
 }
 
@@ -367,8 +393,9 @@ function PrintInstructions() {
 function Step_Download() {
 	ZIP_FILE="$REPO_BRANCH.zip"
 	REPO_FILE="$REPO_HOME$ZIP_FILE"
+	#REPO_FILE="https://github.com/XIMDEX/ximdex/archive/f555dcf3f7d9360d124afd1372bef6c7591c37bc.zip"
 	echo "Downloading Ximdex ($REPO_BRANCH branch) to directory '$REPO_NAME'"
-	echo "located at $LOCALPATH..."
+	echo "located at $LOCALPATH from $REPO_FILE..."
 	echo ""
 	echo "Creating directory $REPO_NAME ... "
 	mkdir $REPO_NAME
@@ -386,7 +413,7 @@ function Step_Download() {
 	echo "done!"
 	
 	mv "ximdex-$REPO_BRANCH" $REPO_NAME
-	rm "$REPO_BRANCH.zip"
+	rm $ZIP_FILE
 }
 
 function DieIfNotInstallable() {
@@ -632,12 +659,12 @@ mystatus=$( GetInstallStatus )
 
 
 if [ $AUTOMATIC_INSTALL = 0 ]; then
-	echo -e "\nPRESS A KEY TO CONTINUE"
-	read
-	clear
 	echo -e "\nThe installer can be run in automatic mode with -a option."
 	echo "An example of a setup file can be located at install/templates/setup.conf"
 	echo "Edit it and run this script with the options: -i -a yoursetupfile"
+	echo -en "\nPRESS A KEY TO CONTINUE"
+	read
+	clear
 fi
 
 if [  $DO_INSTALL -eq 0 ]; then
@@ -648,9 +675,14 @@ fi
 if [ "$mystatus" == "DOWNLOADED" ] || [ "$mystatus" == "CHECKED" ] ; then
     echo -e "\nXimdex instance is suitable for installation. Starting configuration:"
 else
-    echo -e "\n$REPO_NAME has traces of a previous installation ended at $mystatus step.\nPlease, start with a clean instance..."
-    echo "Copy this script $my_script_name to a clean directory to download&install ..."
-    exit 1
+    echo -e "\n$REPO_NAME has traces of a previous installation ended at $mystatus step."
+    echo "Copy this script $my_script_name to a clean directory to download&install if you want to start with a new instance." 
+    echo ""
+    myquestion "Do you want to continue with the installation" "Y"
+    if [ "$ANSWER" == 'N' ]; then
+       echo "Aborting configuration for $REPO_NAME"
+        exit 1;
+    fi
 fi
 
 if [ "$AUTOMATIC_INSTALL" = 1 ]; then
