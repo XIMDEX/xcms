@@ -39,7 +39,7 @@
 					'createxmlcontainer'
 				],
 		remove: ['deletenode','movenode'],
-		reload: ['addximlet', 'linkreport', 'managefolders']
+		reload: ['addximlet', 'linkreport', 'workflow_forward']
 	};
 
 	var idCount = 0;
