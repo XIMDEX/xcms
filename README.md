@@ -2,10 +2,7 @@
 
 Ximdex is a semantic Content Management System (CMS) that allows the generation of content and services in different technologies (PHP, J2EE, .NET, XML/XSLT, etc.).
 
-
-To install Ximdex, you can download the shell script [INSTALL_XIMDEX.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean directory. This script will automatically download the last release, configure it and install Ximdex. 
-
-Note: See 'INSTALLATION' file for installation instructions of previous versions.
+To install our last BETA release, download the shell script [INSTALL_XIMDEX.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
 
 
 * Description
@@ -50,6 +47,7 @@ Note: See 'INSTALLATION' file for installation instructions of previous versions
 * Installation
   ------------
   See 'INSTALLATION' for detailed instructions.
+  To install last Ximdex release, download the shell script [INSTALL_XIMDEX.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
 
 
 * Ximdex Core Requirements 
