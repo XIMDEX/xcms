@@ -38,8 +38,8 @@
 					'createuser',
 					'createxmlcontainer'
 				],
-		remove: ['deletenode'],
-		reload: ['addximlet', 'linkreport']
+		remove: ['deletenode','movenode'],
+		reload: ['addximlet', 'linkreport', 'managefolders']
 	};
 
 	var idCount = 0;
