@@ -40,7 +40,7 @@
 			'createxmlcontainer'
 		],
 		remove: ['deletenode','movenode'],
-		reload: ['addximlet', 'linkreport', 'workflow_forward']
+		reload: ['addximlet', 'linkreport', 'workflow_forward',"modifyserver"]
 	};
 
 	var idCount = 0;

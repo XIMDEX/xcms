@@ -34,22 +34,28 @@
 	</div>
 	<div class="action_content">
 		<fieldset>
+			{if {count($targetNodes)}}
+					<div class="copy_options" tabindex="1">
+						{foreach from=$targetNodes key=index item=targetNode}
+							<div>
+								<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" {if $targetNode.idnode == $id_target}checked{/if}   />
+								<label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
+							</div>					
+						{/foreach}
+					</div>								
+				{else}
+					<div class="info-message message">
+						<div>{t}There aren't any available destination{/t}.</div>
+					</div>
+				{/if}
 
-				<p class="left"><label>{t}Select the master document{/t}</label></p>
-					<treeview class="xim-treeview-selector" paginatorShow="yes" />
-
-
-				<ol><li>
-					<label for="pathfield" class="aligned">{t}Link path{/t}</label>
-					<input type="text" readonly="readonly" id="pathfield" name="pathfield" value="{$target_node_path}"  class="cajaxg validable not_empty long" style="width:420" >
-					<input type="hidden" id="contenttype" name="contenttype" value="{$type}">
-					<input type="hidden" id="targetfield" name="targetfield" value="{$id_target}">
-				</li>
-				<li>
-					<input type="checkbox" name="sharewf" value="true" class="normal" {if $sharewf == 1}checked{/if} />
-					{t}Do you want to share the master document workflow?{/t}
-				</li>
-			{if $id_target > 0}
+			<span class="slide-element">
+				<input type="checkbox" id="{$id_node}_sharewf" name="sharewf" value="true" class="normal input-slide" {if $sharewf == 1}checked{/if} />
+				<label class="label-slide" for="{$id_node}_sharewf">{t}Do you want to share the master document workflow?{/t}</label>
+			</span>
+			
+			{if $id_target > 0}			
+			</ol>
 				<li>
 					<input type="checkbox" name="delete_link" value="true" class="normal" />
 					{t}Do you want to delete the document link?{/t}
@@ -61,12 +67,10 @@
 						{*<input type="radio" name="delete_method" value="show_translation" class="delete_method">{t}Do you want to suggest Google Translate traduction?{/t}*}
 					</div>
 				</li>
-			{/if}
 			</ol>
-				<tr class="link_info">
-					<td bgcolor="#FAFAFA" nowrap>
-					</td>
-				</tr>
+			{/if}
+			
+				
 		</fieldset>
 	</div>
 
