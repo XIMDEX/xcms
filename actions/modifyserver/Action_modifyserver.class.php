@@ -153,7 +153,7 @@ class Action_modifyserver extends ActionAbstract {
 						'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 					);
 
-					$this->render($values);
+					$this->sendJSON($values);
 					return ;
 			}
 		}
@@ -239,7 +239,7 @@ class Action_modifyserver extends ActionAbstract {
 			'params' => $params,
 			'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 		);
-		$this->render($values);
+		$this->sendJSON($values);
 	}
 
 	/**
