@@ -29,15 +29,16 @@
 	var B = X.browser;
 
 	X.ActionTypes = {
-		create: [	'addfoldernode', 
-					'addsectionnode',
-					'createlink',
-					'newemptynode', 
-					'copy', 
-					'createrole', 
-					'createuser',
-					'createxmlcontainer'
-				],
+		create: [	
+			'addfoldernode', 
+			'addsectionnode',
+			'createlink',
+			'newemptynode', 
+			'copy', 
+			'createrole', 
+			'createuser',
+			'createxmlcontainer'
+		],
 		remove: ['deletenode','movenode'],
 		reload: ['addximlet', 'linkreport', 'workflow_forward']
 	};
@@ -95,7 +96,7 @@
 	        //TODO: Create a messaging service/widget
 	        var $message = $('<div class="message" style="display: none;"></div>');
     		var submitError = false;
-    		var messages = []
+    		var messages = [];
     		$.each(result.messages, function(key, message){
     			messages.push(message.message);
     			if (message.type === 2) {
@@ -108,7 +109,7 @@
     		});
     		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
     		if (!submitError && this.action.command == 'newemptynode') {
-    			humane.log(messages);
+    			humane.log(messages, {addnCls: 'xim-notice'});
     			this.browser.browserwindow('openAction', {
 					bulk: 0,
 					callback: 'callAction',
@@ -118,12 +119,9 @@
 				this.close();
     		}
     		if (X.ActionTypes.remove.indexOf(this.action.command) != -1) {
-				// $form.after($message);
-    // 			$message.show();
-    // 			$form.hide();
-    // 			setTimeout(function(){this.close();}.bind(this), 4000);
+    			console.log("RESULT", result);
     			this.close();
-    			humane.log(messages);
+    			humane.log(messages, {addnCls: 'xim-notice'});
 				
 			} else {
 				$form.find('.action_header').after($message);
