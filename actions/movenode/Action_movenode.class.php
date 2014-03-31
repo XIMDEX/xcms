@@ -92,7 +92,7 @@ class Action_movenode extends Action_copy {
     }
 
 	function move_node() {
-      $idNode		= (int) $this->request->getParam("nodeid");
+      	$idNode = (int) $this->request->getParam("nodeid");
 
 		$targetParentID =  $this->request->getParam("targetid");
 		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
@@ -104,16 +104,17 @@ class Action_movenode extends Action_copy {
 		}else {
 		  $this->_move($idNode, $targetParentID,  $unpublishDoc);
 		}
-
 		$values = array(
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,
 			'params' => '',
-			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?action=movenode&nodeid={$idNode}",
-			'action_with_no_return' => true
+			'nodeURL' => Config::getValue('UrlRoot')."/xmd/loadaction.php?action=movenode&nodeid={$idNode}",
+			'action_with_no_return' => true, 
+			'parentID' => $targetParentID,
+			'oldParentID' => $node->GetParent()
 		);
 
-		$this->render($values);
+		$this->sendJSON($values);
 	}
 
 	function confirm_move(){

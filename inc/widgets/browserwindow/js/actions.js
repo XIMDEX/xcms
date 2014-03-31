@@ -90,7 +90,7 @@
     		var nodeId = result.parentID || result.nodeID || result.idNode;
     		//Refresh node
     		if (nodeId) $(this.container).trigger('nodemodified', nodeId);
-
+    		if (result.oldParentID) $(this.container).trigger('nodemodified', result.oldParentID);
 	        //Messaging
 	        //TODO: Create a messaging service/widget
 	        var $message = $('<div class="message" style="display: none;"></div>');
