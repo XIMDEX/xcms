@@ -146,7 +146,8 @@ class Action_managefolders extends ActionAbstract {
 			
 			$values = array(
 				'action_with_no_return' => !$error,
-				'messages' => $this->messages->messages
+				'messages' => $this->messages->messages,
+				'nodeID' => $nodeID
 			);
 			
 			$this->sendJSON($values);
