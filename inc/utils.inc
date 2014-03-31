@@ -59,6 +59,7 @@ ModulesManager::file("/inc/model/nodetype.inc");
 ModulesManager::file("/inc/model/action.inc");
 ModulesManager::file("/inc/model/structureddocument.inc");
 ModulesManager::file("/inc/log/XMD_log.class.php");
+ModulesManager::file("/inc/log/Action_log.class.php");
 ModulesManager::file("/inc/persistence/XSession.class.php");
 ModulesManager::file("/inc/mvc/Request.class.php");
 ?>

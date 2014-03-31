@@ -28,8 +28,9 @@
 
 
 ModulesManager::file('/actions/movenode/baseIO.php');
+ModulesManager::file('/actions/copy/Action_copy.class.php');
 
-class Action_movenode extends ActionAbstract {
+class Action_movenode extends Action_copy {
 
    // Main method: shows initial form
     function index () {
@@ -67,9 +68,11 @@ class Action_movenode extends ActionAbstract {
 				}
 			}
 		}
+                $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
 
 //		$this->addJs('/actions/movenode/resources/js/movenode.js');
-		$this->addJs('/actions/copy/resources/js/treeSelector.js');
+//		$this->addJs('/actions/copy/resources/js/treeSelector.js');
+		$this->addCss('/actions/copy/resources/css/style.css');
 
 				$values = array(
 					'id_node' => $node->get('IdNode'),
@@ -78,6 +81,7 @@ class Action_movenode extends ActionAbstract {
 					'nameNodeType' => $node->nodeType->get('Name'),
 					'allowed_nodeTypes' => implode(',', $allowedNodeTypes),
 					'filtertype' => $node->nodeType->get('Name'),
+                    'targetNodes' => $targetNodes,
 					'target_file' => null,
 					'node_path' => $node->GetPath(),
 					'isPublished' => $isPublished,
@@ -170,5 +174,24 @@ class Action_movenode extends ActionAbstract {
 		$targetParent->class->updatePath();
 
   }
+    /**
+     * Check if the propousal node can be target for the current one.
+     * Must be in the same project
+     * @param int $idCurrentNode
+     * @param int $idCandidateNode
+     * @result boolean True if everything is ok.
+     */
+    protected function checkTargetConditions($idCurrentNode, $idCandidateNode){
+        
+        $result = false;
+        $node = new Node($idCurrentNode);
+        $currentNodeName = $node->GetNodeName();
+        $candidateNode = new Node($idCandidateNode);        
+        
+        if ($node->getProject() != $candidateNode->getProject())
+            return false;
+        
+        return !$candidateNode->GetChildByName($currentNodeName);                
+    }
 }
 ?>

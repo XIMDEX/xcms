@@ -8,19 +8,56 @@
 
 
 # INITIAL VARS
-REPO_HOME="https://github.com/juanpri/ximdex/archive/"
-REPO_BRANCH="develop"
+REPO_NAME="ximdex"
+REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
+
+REPO_BRANCH="3.5-beta3"
+#REPO_BRANCH="develop"
+
+# if branch is a TAG instead of a branch uncomment line below
+REPO_HOME="${REPO_HOME}v"
+
+
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
+
+# OPTIONS
+DO_INSTALL=1
+DO_MOVEASROOT=0
+
+# Determining launch name
+my_script_name=$( basename $0 )
+my_path=$(cd $(dirname $0) && pwd -P)
+my_directory=$( basename $my_path )
+
+clear
+echo "Welcome to Ximdex downloader & installer"
+echo "----------------------------------------"
+echo ""
+
+# Are we running directly on a ximdex instance to be installed?
+if [ -d install ] && [ -d data ] && [ -d inc ] && [ -f XIMDEX_INSTALL.sh ]; then
+	echo -e "Running '$my_script_name' from '$my_path'\nin the already downloaded instance '$my_directory'" 
+	echo -e "Use $my_script_name script alone in a clean directory to force download."
+	echo ""
+	DO_DOWNLOAD=0
+	REPO_NAME=$my_directory
+	#echo "Assigning $REPO_NAME to Ximdex and running it from $my_path"
+	cd $my_path/..
+        if [ "$?" != 0 ]; then
+		echo "Can not move to the parent directory. Exiting"	
+                exit 10
+        fi
+	#exec $my_path/$my_script_name -i -n $my_directory
+else 
+	DO_DOWNLOAD=1
+fi
+
+PARENT_DIR=$(pwd -P)
 
 # FOR AUTOMATIC INSTALLATIONS
 export AUTOMATIC_INSTALL=0
 export CONFIG_FILE=""
-
-# OPTIONS
-INST_STEP=1
-DO_DOWNLOAD=1
-MOVEASROOT=0
  
 # Trap ctr-c to activate back "echo" in terminal
 trap ending SIGINT
@@ -36,22 +73,16 @@ function ending() {
 }
 
 function usage() {
-    echo "Usage: $0 [-h] [-d] [-a config_file] [-n ximdex_instance_name] [-t web_server_root_path] [-b branch]"
+    echo "Usage: $my_script_name [-h] [-d] [-i] [-a config_file] [-n ximdex_instance_name] [-t web_server_root_path] [-b branch]"
     echo "       Option -h for help"
-    echo "       Option -d to skip download"
-    echo "       Option -a to automatically install Ximdex using parameters from File"
-    echo "       Option -t to assign web server root (where ximdex will reside)" 
-    echo "       Option -n to assign instance name (default: ximdex)"
-    echo "       Option -b to assign branch to download (default: master)"
+    echo "       Option -d to only Download the instance"
+    echo "       Option -i to run the Installer steps for an already downloaded instance"
+    echo "       Option -a to Automatically install Ximdex using parameters from File"
+    echo "       Option -t to assign the web server root (where ximdex will reside)" 
+    echo "       Option -n to assign the instance Name (default: ximdex)"
+    echo "       Option -b to assign the Branch to download (default: master)"
 }
 
-function step_increase() {
-    INST_STEP=`expr $INST_STEP + 1`
-}
-
-function step_decrease() {
-    INST_STEP=`expr $INST_STEP - 1`
-}
 
 function LimpiaSlashes() {
 	local mycad=$1
@@ -102,57 +133,77 @@ function myquestion() {
 
 function CreateScriptToSetPermsAndMove() {
     XIMDEX_PATH="$REPO_NAME"
+    
     declare -a arr_command=()
     
     arr_command+=("echo -n 'RUNNING GENERATED SCRIPT AS '\n")
     arr_command+=("whoami\n\n")
 
-    arr_command+=("if [ -d $XIMDEX_TARGET_DIR ]; then\n")
-    arr_command+=("  echo \"TARGET DIRECTORY $XIMDEX_TARGET_DIR EXISTS!!!\"\n")
-    arr_command+=("  echo \"Please, remove it and run the script as root again.\"\n")
-    arr_command+=("  exit 0\n")
-    arr_command+=("fi\n\n\n")
+    if [ $XIMDEX_TARGET_DIR != $my_path ] ; then
+        arr_command+=("# Verify that target directory $XIMDEX_TARGET_DIR does not exist\n\n") 
+	arr_command+=("if [ -d $XIMDEX_TARGET_DIR ]; then\n")
+	arr_command+=("  echo \"TARGET DIRECTORY $XIMDEX_TARGET_DIR EXISTS!!!\"\n")
+	arr_command+=("  echo \"Please, remove it and run the script as root again.\"\n")
+	arr_command+=("  exit 0\n")
+	arr_command+=("fi\n\n\n")
 
-    command="chown -R ${USER_APACHE}:${GROUP_APACHE} ./${REPO_NAME}"
+	command="cd $PARENT_DIR && cp -ra ${REPO_NAME} $XIMDEX_TARGET_DIR"
+	arr_command+=("$command\n")
+    else
+	command="#MOVE IS NOT NEEDED BECAUSE IT IS INSTALLED FROM FINAL DIRECTORY"
+	arr_command+=("$command\n")
+    fi
+
+    command="chown -R ${USER_APACHE}:${GROUP_APACHE} $XIMDEX_TARGET_DIR"
     arr_command+=("$command\n")
+
+    command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_MaintenanceTasks.sh -x $XIMDEX_TARGET_DIR\" ${USER_APACHE}"
+    arr_command+=("$command\n")
+
+    command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_InitializeInstance.sh -x $XIMDEX_TARGET_DIR -m 1 -i 0 -p 0\" ${USER_APACHE}"
+    arr_command+=("$command\n")
+
+    arr_command+=("exit 0\n")
+
 
     #command="chmod -R u+x ./$REPO_NAME/install/*sh ./$REPO_NAME/install/scripts/*.sh"
     #arr_command+=("$command\n")
 
-    command="mv ./${REPO_NAME} $DOCROOT"
-    arr_command+=("$command\n")
+    echo -e "\nCreating script for setting ownership and permissions for $TARGET_NAME ..."
 
-    
-    echo -e "\nCreating script for setting ownership and permissions for $REPO_NAME ..."
+    my_script1="$SCRIPT_PATH/$SCRIPT1"
+    echo "#!/bin/bash" > $my_script1
 
-    echo "#!/bin/bash" > $SCRIPT1
+    echo "" >> $my_script1
+    echo "# BASH FILE AUTOMATICALLY GENERATED BY XIMDEX INSTALL TO BE RUN AS ROOT" >> $my_script1
+    echo "" >> $my_script1
+    echo -e " ${arr_command[*]}" >> $my_script1
 
-    echo "" >> $SCRIPT1
-    echo "# BASH FILE AUTOMATICALLY GENERATED BY XIMDEX INSTALL TO BE RUN AS ROOT" >> $SCRIPT1
-    echo "" >> $SCRIPT1
-    echo "# Verify that target directory $DOCROOT is a directory" >> $SCRIPT1
-    echo "# Verify that target directory $XIMDEX_TARGET_DIR does not exist" >> $SCRIPT1
-    echo "" >> $SCRIPT1
-    echo -e " ${arr_command[*]}" >> $SCRIPT1
-
-    if [ -e $SCRIPT1 ]; then
-        echo -e "Script $SCRIPT1 created.\n"
+    if [ -e $my_script1 ]; then
+        echo -e "Script $my_script1 created.\n"
     else
-        echo "Can not create $SCRIPT1 file. I need writting permission here:"
+        echo "Can not create $my_script1 file. I need writting permission here:"
         pwd -P
     fi
     
-    chmod +x $SCRIPT1
+    chmod +x $my_script1
 }
 
 function RunScriptAsRoot() {
+    runasroot=0
     if [ $USER_UNIX != 'root' ]; then
         echo "Running through sudo. Enter your password when requested..."
-        sudo bash ./$SCRIPT1 2> /dev/null
+        sudo bash ./$my_script1  2> /dev/null
         if [ $? -ne 0 ]; then 
             echo "Can not run via sudo. Trying as root direclty. Enter password for root when requested..."
-            su -c "bash ./$SCRIPT1 2> /dev/null"
+            su -c "bash ./$my_script1 2> /dev/null"
+	else
+	    runasroot=1
         fi
+    fi
+
+    if [ $runasroot == "1" ]; then
+        echo "Launched!"
     fi
 }
 
@@ -209,6 +260,7 @@ function SetDocRootForXimdex() {
 		done
 	
 	
+		echo ""
 		option=0
 		while [ -z $option ] || [ $option -lt "1" ] || [ $option -gt ${#arr_DOCROOTS[@]} ] ; do
 			echo -ne "Choose one [1-${#arr_DOCROOTS[@]}]: "
@@ -327,14 +379,13 @@ function CheckFinalDirectory() {
 # Print instructions
 function PrintInstructions() {
 	echo "The main steps are:"
-	echo ""
-	echo "1.- Downloading Ximdex ($REPO_BRANCH branch) to directory '$REPO_NAME'"
-	echo "    located at $LOCALPATH"
-	echo ""
+	echo "1.- Downloading Ximdex ($REPO_BRANCH branch) if you are in a clean directory."
+	echo "    (run only this step with option -d)"
 	echo "2.- Execute configuration scripts to create Database, set parameters, etc."
-	echo ""
+	echo "    (run only this step with -i option)"
 	echo "3.- Move Ximdex into your web server document root and assign permissions." 
-	echo "This last step will require superuser privileges. A bash script will be generated to be run as root later if you prefer to control the execution."
+	echo "    This last step may require superuser privileges."
+	echo "    Script $SCRIPT1 will be generated to be run as root."
 	echo ""
 }
 
@@ -342,10 +393,13 @@ function PrintInstructions() {
 function Step_Download() {
 	ZIP_FILE="$REPO_BRANCH.zip"
 	REPO_FILE="$REPO_HOME$ZIP_FILE"
+	#REPO_FILE="https://github.com/XIMDEX/ximdex/archive/f555dcf3f7d9360d124afd1372bef6c7591c37bc.zip"
+	echo "Downloading Ximdex ($REPO_BRANCH branch) to directory '$REPO_NAME'"
+	echo "located at $LOCALPATH from $REPO_FILE..."
+	echo ""
 	echo "Creating directory $REPO_NAME ... "
-	
 	mkdir $REPO_NAME
-	if [ $? -ne 0 ]; then echo -e "\nCan not create directory ($REPO_NAME)! Please, remove it or choose another name." ; exit 1; fi
+	if [ $? -ne 0 ]; then echo -e "\nCan not create directory ($REPO_NAME) for Ximdex!\nPlease, remove it or choose another name (-n option)." ; exit 1; fi
 	rmdir $REPO_NAME
 	echo "done!"
 	
@@ -359,7 +413,7 @@ function Step_Download() {
 	echo "done!"
 	
 	mv "ximdex-$REPO_BRANCH" $REPO_NAME
-	rm "$REPO_BRANCH.zip"
+	rm $ZIP_FILE
 }
 
 function DieIfNotInstallable() {
@@ -368,9 +422,9 @@ function DieIfNotInstallable() {
 		echo -e "\nCan not enter $REPO_NAME directory!" 
 		exit 1 
 	elif [ -d install ] && [ -d data ] && [ -d inc ]; then
-		echo -e "It looks like a Ximdex."
+		echo -e "'$REPO_NAME' looks a Ximdex instance."
 	else
-		echo -e "It does not look like a Ximdex to be installed. Exiting!"
+		echo -e "'$REPO_NAME' does not look a Ximdex instance. Exiting!"
 		exit 1
 	fi
 
@@ -485,7 +539,7 @@ function Step_ProjectsAndCrontab() {
 function Step_LaunchAsRoot() {
 
 	if [ $AUTOMATIC_INSTALL = 1 ]; then
-		if [ "$MOVEASROOT" = 1 ]; then
+		if [ "$DO_MOVEASROOT" = 1 ]; then
 			ANSWER='Y'
 		else
 			ANSWER='N'
@@ -518,12 +572,8 @@ function Step_LaunchAsRoot() {
 
 # SCRIPT START
 
-clear
-echo "Welcome to Ximdex downloader & installer"
-echo "----------------------------------------"
-echo ""
 
-while getopts 'a:hdn:b:t:' OPTION;
+while getopts 'a:hdin:b:t:' OPTION;
 do
     case $OPTION in
         a)
@@ -535,12 +585,16 @@ do
             ;;
         n)
 	    REPO_NAME=$OPTARG
+	    TARGET_NAME=$REPO_NAME
             ;;
 	b)
 	    REPO_BRANCH=$OPTARG
             ;;
-	d)
+	i)
 	    DO_DOWNLOAD=0
+            ;;
+	d)
+	    DO_INSTALL=0
             ;;
         h)
 	    usage
@@ -557,13 +611,14 @@ done
 
 # Default options
 if [ -z $REPO_NAME ] ; then
-	REPO_NAME="ximdexJAP"
+    echo "$REPO_NAME is not valid. Exiting!"
+    exit 1
 fi
 
 if [ -z $REPO_BRANCH ] ; then
-	REPO_BRANCH="develop"
+    echo "$REPO_BRANCH is not valid. Exiting!"
+    exit 1
 fi
-
 
 if [ "$AUTOMATIC_INSTALL" = 1 ]; then
 	if [ -f "$CONFIG_FILE" ]; then
@@ -574,6 +629,11 @@ if [ "$AUTOMATIC_INSTALL" = 1 ]; then
 	fi
 fi
 
+
+# Initialize vars
+if [ -z $TARGET_NAME ]; then
+	TARGET_NAME=$REPO_NAME
+fi
 SCRIPT_PATH="./${REPO_NAME}/install"
 STATUSFILE="$SCRIPT_PATH/_STATUSFILE"
 LOCALPATH=$( pwd -P )
@@ -587,12 +647,43 @@ PrintInstructions
 if [  $DO_DOWNLOAD -ne 0 ]; then
 	Step_Download
 else
-	echo -e "Downloading skipped"
+	echo -e "Downloading of Ximdex skipped."
 fi
 
 # Check if the directory is accesible and if it seems a ximdex
 DieIfNotInstallable
 
+# Set status to Downloaded
+mystatus=$( GetInstallStatus )
+[ -z $mystatus ] && SetInstallStatus "DOWNLOADED" && mystatus=$( GetInstallStatus )
+
+
+if [ $AUTOMATIC_INSTALL = 0 ]; then
+	echo -e "\nThe installer can be run in automatic mode with -a option."
+	echo "An example of a setup file can be located at install/templates/setup.conf"
+	echo "Edit it and run this script with the options: -i -a yoursetupfile"
+	echo -en "\nPRESS A KEY TO CONTINUE"
+	read
+	clear
+fi
+
+if [  $DO_INSTALL -eq 0 ]; then
+        echo -e "Configuration steps optionally skipped. Exiting!"
+	exit 0
+fi
+
+if [ "$mystatus" == "DOWNLOADED" ] || [ "$mystatus" == "CHECKED" ] ; then
+    echo -e "\nXimdex instance is suitable for installation. Starting configuration:"
+else
+    echo -e "\n$REPO_NAME has traces of a previous installation ended at $mystatus step."
+    echo "Copy this script $my_script_name to a clean directory to download&install if you want to start with a new instance." 
+    echo ""
+    myquestion "Do you want to continue with the installation" "Y"
+    if [ "$ANSWER" == 'N' ]; then
+       echo "Aborting configuration for $REPO_NAME"
+        exit 1;
+    fi
+fi
 
 if [ "$AUTOMATIC_INSTALL" = 1 ]; then
 	echo "Starting automatic install"
@@ -607,6 +698,7 @@ if [ "$AUTOMATIC_INSTALL" = 1 ]; then
 	mycad=$( LimpiaSlashes "$XIMDEX_PARAMS_PATH")
 	DOCROOT=${mycad%/*}
 	REPO_ROOT=$DOCROOT
+	TARGET_NAME=${mycad##*/}
 fi
 
 if [ "$AUTOMATIC_INSTALL" = 0 ]; then
@@ -616,33 +708,22 @@ if [ "$AUTOMATIC_INSTALL" = 0 ]; then
 		REPO_ROOT=$DOCROOT
 	fi
 
-	echo "You have chosen [$DOCROOT] to install the Ximdex instance."
 	DetermineApacheUserGroup
-else
-	echo "Directory [$DOCROOT] will store Ximdex instance $REPO_NAME."
 fi
+echo "Directory [$DOCROOT] will store Ximdex instance [$TARGET_NAME]."
 
 # Determine FINAL DIRECTORY where Ximdex will be as web application
-XIMDEX_TARGET_DIR=$( LimpiaSlashes "$DOCROOT/$REPO_NAME")
+XIMDEX_TARGET_DIR=$( LimpiaSlashes "$DOCROOT/$TARGET_NAME")
 CheckFinalDirectory
 
 # Set Permission/owners to local username to run configurator
-echo "Setting temporary owners to ${USER_UNIX}:${GROUP_UNIX}"
+echo "Setting temporary owners to ${USER_UNIX}:${GROUP_UNIX} for '$REPO_NAME'"
 chown -R ${USER_UNIX}:${GROUP_UNIX} ./${REPO_NAME}
 
-echo "Setting permissions to writable directories"
+echo "Setting permissions for writable directories"
+echo ""
 $(chmod -R 2770 ${REPO_NAME}/data)
 $(chmod -R 2770 ${REPO_NAME}/logs)
-
-# Launch installations
-mystatus=$( GetInstallStatus )
-if [ -d $SCRIPT_PATH ]; then
-    echo "Ximdex instance downloaded. Running configuration scripts..."
-    [ -z $mystatus ] && SetInstallStatus "DOWNLOADED"
-else
-    echo "$REPO_NAME does not look a Ximdex instance. Skipping installation"
-    exit 1
-fi
 
 # Launching steps
 Step_Dependencies && SetInstallStatus "CHECKED"

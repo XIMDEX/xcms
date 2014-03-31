@@ -37,13 +37,15 @@ class NodeService
 {
     private static $PROJECTS_ROOT_NODE_ID = 10000;
     public $node = null;
+    private $lazyMode = true;
     /**
      * <p>Default constructor</p>
      */
-    public function __construct($idNode = null)
+    public function __construct($idNode = null, $lazyMode = true)
     {
         if ($idNode)
             $this->node = new Node($idNode);
+        $this->lazyMode = $lazyMode;
     }
 
     /**
@@ -201,6 +203,50 @@ class NodeService
 
         $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
         return $nodeTypeService->isMetadataForced();
+    }
+
+    public function getSiblings(){        
+        $result = $this->node->find("IdNode","idparent=%s",array($this->node->get("IdParent")),MONO);
+        for($i = 0; count($result); $i++){
+            if ($result[$i] == $this->node->nodeID){
+                unset($result[$i]);
+                break;
+            }
+        }
+        
+        return $this->returnNode(array_values($result));
+    }
+
+    public function getParent(){    
+        $idParent = $this->node->get("IdParent");
+        return $this->returnNode($idParent);
+    }
+
+    public function setLazyMode($lazyMode){
+        $this->lazyMode = $lazyMode;
+    }
+
+    private function returnNode($valueToReturn){
+
+        if ($this->lazyMode)
+            return $valueToReturn;
+
+        $result = array();
+        //If $valueToReturn is array of Ids
+        if (is_array($valueToReturn)){            
+            foreach ($valueToReturn as $idNode) {
+                $tmpNode = new Node($idNode);
+                if ($tmpNode->get("IdNode"))
+                    $result[] = $tmpNode;
+            }            
+        }else if (is_int($valueToReturn)){ //If $valueToReturn is a node id.
+                    $result = new Node($valueToReturn);
+        }else if (is_object($valueToReturn) 
+            && strtolower(get_class($valueToReturn)) == "node" ){ //If $valueToReturn is a Node object
+            return $valueToReturn;
+        }
+
+        return $result;
     }
 }
 

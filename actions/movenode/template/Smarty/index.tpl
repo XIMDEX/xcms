@@ -36,20 +36,17 @@
 </div>
 <div class="action_content">
 <fieldset>
-	<ol>
-		<li>
-			<label for="id_node" class="aligned"><span>{t}Select new node destination{/t}</span></label>
-			<div class="right-block">
-				<treeview class="xim-treeview-selector"	paginatorShow="yes" handler="hndCopy_treeSelector" />
-			</div>
-		</li>
-		<li class="ui-state-highlight ui-corner-all msg-warning">
-			<div class="warning hidden">
-				<span class="ui-icon ui-icon-notice"></span><p>{t}Move operation is not allowed on selected destination.{/t}</p>
-				<span class="ui-icon ui-icon-info"></span><p> &nbsp;{t}Please, select a different destination to move the node.{/t}</p>
-			</div>
-		</li>
-	</ol>
+	<label for="id_node" class="aligned"><span>{t}Select new node destination{/t}</span></label>
+	<div class="copy_options">
+		{foreach from=$targetNodes key=index item=targetNode}
+				<div>
+							<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
+							<label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
+								
+							
+				</div>	
+		{/foreach}
+	</div>		
 </fieldset>
     	{if ($isPublished)}
 <fieldset>

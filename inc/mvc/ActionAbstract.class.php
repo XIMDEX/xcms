@@ -85,6 +85,8 @@ class ActionAbstract extends IController {
 	 */
 	public $actionCommand;
 
+	protected $endActionLogged=false;
+
 	/**
 	 * Construct
 	 * @param $_render
@@ -111,7 +113,7 @@ class ActionAbstract extends IController {
 		$node = new Node();
 		$nodeTypeId = $node->find('IdNodeType', 'IdNode = %s', array($nodeId), MONO);
 		$nodeTypeId = $nodeTypeId[0];
-
+		
 		$action = new Action();
 		$data = $action->find(
 			'Command, Name, Description',
@@ -120,6 +122,7 @@ class ActionAbstract extends IController {
 		);
 
 		$data = $data[0];
+		
 		//debug::log($data,$actionName, $module, $actionId, $nodeId);
 		return $data;
 	}
@@ -151,16 +154,55 @@ class ActionAbstract extends IController {
 		);
 
 		$this->actionCommand = $actionInfo['Command'];
-		$this->actionName = $actionInfo['Name'];
+		$this->actionName = $actionInfo['Name'];		
 		$this->actionDescription = $actionInfo['Description'];
+		$this->actionModule = $actionInfo['Module'];
+		$command = $this->actionCommand = $actionInfo['Command'];		
 
 		if(method_exists($this, $method)) {
+			$this->actionMethod = $method;
+			$this->logInitAction();
 			$this->$method();
 		} else {
 			XMD_Log::debug("MVC::ActionAbstract Metodo {$method} not found" );
 		}
 
 	}
+
+	private function getDefaultLogMessage(){
+		$user = XSession::get("userID")? "by ".XSession::get("userID"):"";
+		$moduleString = $this->actionModule? "in module {$this->actionModule}.": "";
+		return $moduleString.get_class($this)."->{$this->actionMethod} {$user}";
+
+	}
+
+	private function logInitAction(){
+
+		$this->endActionLogged = false;
+		Action_log::info("Init ".$this->getDefaultLogMessage());
+		Action_log::debug("Request: ".print_r($this->request, true));
+
+	}
+
+	protected function logEndAction($success=true, $message=null){
+
+		$message = $message? ". $message": "";
+		if ($success)
+			Action_log::info("FINISH OK ".$this->getDefaultLogMessage()." $message");
+		else
+			Action_log::error("FINISH FAIL ".$this->getDefaultLogMessage()." $message");
+
+		$this->endActionLogged=true;
+	}
+	
+	protected function logSuccessAction($message = null){
+		$this->logEndAction(true, $message);
+	}
+
+	protected function logUnsuccessAction($method, $message=null){
+		$this->logEndAction(false, $message);
+	}
+
 
 	/**
 	 * Renders the action
@@ -170,6 +212,9 @@ class ActionAbstract extends IController {
 	 * @param $layout
 	 */
 	function render($arrValores = NULL, $view = NULL, $layout = NULL, $return = FALSE) {
+
+		if (!$this->endActionLogged)
+			$this->logSuccessAction();
 
 		if (is_null($this->renderer)) {
 			$this->_setError("Renderizador no definido", "Actions");
@@ -455,6 +500,8 @@ class ActionAbstract extends IController {
 	 */
 
 	public function sendJSON($data) {
+		if (!$this->endActionLogged)
+			$this->logSuccessAction();
     	header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
 		$data = Serializer::encode(SZR_JSON, $data);
 		echo $data;
