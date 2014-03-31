@@ -113,7 +113,8 @@ class Action_movenode extends Action_copy {
 			'action_with_no_return' => true
 		);
 
-		$this->render($values);
+		$values["parentID"] = $targetParentID;
+		$this->sendJSON($values);
 	}
 
 	function confirm_move(){

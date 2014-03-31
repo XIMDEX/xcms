@@ -88,8 +88,8 @@ class Action_modifyuser extends ActionAbstract {
 
     	$this->messages->mergeMessages($user->messages);
 		$this->reloadNode( $node->get('IdParent') );
-		$values = array('messages' => $this->messages->messages );
-		$this->render($values, NULL, 'messages.tpl');
+		$values = array('messages' => $this->messages->messages, "parentID" => $idNode );
+		$this->sendJSON($values);
     }
 }
 ?>

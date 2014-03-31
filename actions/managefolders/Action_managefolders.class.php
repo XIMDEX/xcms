@@ -223,7 +223,9 @@ class Action_managefolders extends ActionAbstract {
 		if(!empty($children)){
 			foreach($children as $child){
 				$ch = new Node ($child);
-				$children_nt[]=$ch->GetNodeType();
+				$idNodeType = $ch->GetNodeType();
+				if (NodetypeService::SECTION != $idNodeType)
+					$children_nt[]=$idNodeType;
 			}
 		}
 		return $children_nt;

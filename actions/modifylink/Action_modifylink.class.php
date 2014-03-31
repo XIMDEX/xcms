@@ -99,9 +99,9 @@ class Action_modifylink extends ActionAbstract {
 		
 		$this->reloadNode($node->get('IdParent') );
 
-		$values = array('messages' => $this->messages->messages );
+		$values = array('messages' => $this->messages->messages, "parentID" =>$idNode );
     	
-		$this->render($values, NULL, 'messages.tpl');
+		$this->sendJSON($values);
     }
     
     function _show($links) {

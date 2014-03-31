@@ -98,8 +98,8 @@ class Action_createuser extends ActionAbstract {
 
 		if ($render) {
 			$this->reloadNode($idNode);
-			$values = array('messages' => $usuario->messages->messages );
-			$this->render($values, NULL, 'messages.tpl');
+			$values = array('messages' => $usuario->messages->messages, "parentID" => $result );
+			$this->sendJSON($values);
 		}
 
 		return $result;

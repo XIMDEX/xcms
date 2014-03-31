@@ -114,8 +114,9 @@ class Action_modifyserver extends ActionAbstract {
 			'numchannels' => $numChannels,
 			'otfAvailable' => $otfAvailable,
 			'id_server' => (int) $serverID,
+			'messages' => $this->messages->messages
 		);
-		$this->render($values, NULL, 'default-3.0.tpl');
+		$this->render($values, "index", 'default-3.0.tpl');
 	}
 
 	function modify_server() {
@@ -239,7 +240,8 @@ class Action_modifyserver extends ActionAbstract {
 			'params' => $params,
 			'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 		);
-		$this->sendJSON($values);
+		//$this->sendJSON($values);
+		$this->index();
 	}
 
 	/**
