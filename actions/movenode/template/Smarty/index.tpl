@@ -36,7 +36,7 @@
 </div>
 <div class="action_content">
 <fieldset>
-	<label for="id_node" class="aligned"><span>{t}Select new node destination{/t}</span></label>
+	<label for="id_node"><span>{t}Select new node destination{/t}</span></label>
 	<div class="copy_options">
 		{foreach from=$targetNodes key=index item=targetNode}
 				<div>
