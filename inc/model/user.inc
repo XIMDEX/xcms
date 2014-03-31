@@ -583,5 +583,17 @@ class User extends Users_ORM {
 	{
 		return ($this->numErr != null);
 	}
+
+	/**
+	 * 
+	 * @return [type] [description]
+	 */
+	public function afterLogin(){
+		$numAccess = $this->NumAccess;
+		$numAccess++;
+		$this->set('NumAccess', $numAccess);
+		$this->set('LastLogin', time());
+		$this->update();
+	}
 }
   ?>
