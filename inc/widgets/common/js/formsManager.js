@@ -262,7 +262,8 @@ X.FormsManager = Object.xo_create({
 		
 		if (jsonResponse && X.ActionTypes.reload.indexOf(this.options.actionView.action.command) == -1) {
 			if ($(form).valid()) {
-				var loader = Ladda.create(button).start();//Start button loading animation
+				button = button[0] || button;
+				if (button) var loader = Ladda.create(button).start();//Start button loading animation
 				var _this = this;
 				$.ajax({
 			        url: $form.attr('action'),
@@ -271,7 +272,7 @@ X.FormsManager = Object.xo_create({
 			        contentType: "application/x-www-form-urlencoded",
 			        data: $form.serialize(),
 			        success: function(data) {	
-			        	loader.stop();//Stop loading animation
+			        	if(loader) loader.stop();//Stop loading animation
 			        	if (data && data.messages) {
 			        		_this.options.actionView.actionDoneCallback(data, form);
 			        	}
@@ -283,7 +284,8 @@ X.FormsManager = Object.xo_create({
 			    });
 			}
 		} else {
-			var loader = Ladda.create(button).start();//Start button loading animation
+			button = button[0] || button;
+			if (button) var loader = Ladda.create(button).start();//Start button loading animation
 			form.submit();
 		}
 	},
