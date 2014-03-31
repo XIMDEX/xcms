@@ -912,6 +912,19 @@ UNLOCK TABLES;
 /*!40000 ALTER TABLE `NodeDependencies` ENABLE KEYS */;
 
 --
+-- Table structure for table `NodeEdition`
+--
+
+DROP TABLE IF EXISTS `NodeEdition`;
+CREATE TABLE `NodeEdition` (
+    `Id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `IdNode` int(11) unsigned NOT NULL,
+    `IdUser` int(11) unsigned NOT NULL,
+    `StartTime` int(11) unsigned DEFAULT NULL,
+     PRIMARY KEY (`Id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Table for XML edition information';
+
+--
 -- Table structure for table `NodeNameTranslations`
 --
 

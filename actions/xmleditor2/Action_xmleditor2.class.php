@@ -32,6 +32,7 @@ ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/NodeEdition.class.php');
 
 
 class Action_xmleditor2 extends ActionAbstract {
@@ -279,7 +280,7 @@ class Action_xmleditor2 extends ActionAbstract {
 		$content = Request::post('content');
 		$this->getEditor($idnode);
 		$content = $this->_editor->getAnnotationFile($idnode, $content);
-		$this->sendJSON($content);
+		$this->printContent($content, false);
 	}
 
 	/**
@@ -365,22 +366,66 @@ class Action_xmleditor2 extends ActionAbstract {
         exit();
     }
 
+/**
+* <p>Check whether the node is being edited by some user</p>
+* 
+* @return string json string containing editing information
+*/
+public function checkEditionStatus() {
+    $idnode = $this->request->getParam('nodeid');
+    $userID = (int) XSession::get('userID');
+    $nodeEdition = new NodeEdition();
+    $results = $nodeEdition->getByNode($idnode);
+    $edition = false;
+    $extraEdition = array();
+    if(count($results) > 0) {
+        $edition = true;
+        $userNames = array();
+        foreach($results as $result) {
+            if(!$userNames[$result["IdUser"]]) {
+                $user = new User($result["IdUser"]);
+                $userNames[$result["IdUser"]] = $user->GetRealName();
+            }
+            $extra = array('user' => $userNames[$result["IdUser"]],
+            'startTime' => $result["StartTime"]);
+            array_push($extraEdition, $extra);
+        }
+    }
+    // Creating the new edition for this user
+    $res = $nodeEdition->create($idnode, $userID);    
+    if(!$res) {
+        XMD_Log::error(_('Error creating a new Node Edition'));
+    }
+    $return = array('edition' => $edition,
+    'data' => $extraEdition);
+    echo json_encode($return);
+}
+/**
+* <p>Removes a node edition according to a given node and user</p>
+*/
+public function removeNodeEdition() {
+    $nodeid = $this->request->get('nodeid');
+    $userid = XSession::get('userID');
+    $nodeEdition = new NodeEdition();
+    $res = $nodeEdition->deleteByNodeAndUser($nodeid, $userid);
+    if(!$res) {
+        XMD_Log::error("Error deleting Node Edition for node ".$nodeid." and user ".$userid);
+    }
+}
+
     	
 	public function saveXimLink(){
-
 		$result = array();
 		$url = urlencode($this->request->getParam("url"));
 		$idParent = $this->request->getParam("idParent");
 		$name = $this->request->getParam("name");
 		$description = $this->request->getParam("description");
-
 		//Check if name is available for the selected parent.
 		$nodeParent = new Node($idParent);
 		if ($nodeParent->getChildByName($name)){
 			$result["success"] = false;
 			$result["message"] = _("A link with that name already exists in the selected folder");
 		}
-
 		$actionCreateLink = new Action_createlink();
 		$idLink = $actionCreateLink->createNodeLink($name, $url, $description, $idParent);
 		if ($idLink){
