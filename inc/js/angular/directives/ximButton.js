@@ -56,8 +56,9 @@ angular.module('ximdex.common.directive')
                         loader.setProgress(newValue)
                 });
                 //Not really needed just a hack to fix angular not properly binding disabled property (Angular)
+                scope.flagDisabled = false;
                 scope.$watch('disabled', function(newValue, oldValue){
-                    scope.flagDisabled = !scope.flagDisabled;
+                    scope.flagDisabled = newValue;
                 });
             }
         }

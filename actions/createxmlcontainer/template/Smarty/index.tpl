@@ -35,7 +35,6 @@
 	<fieldset>
 		<div class="input-select icon document">
 				<input type="text" name="name" id="docname" class="validable not_empty full-size" placeholder="{t}Name of your document{/t}"/>
-			<!--	<label for="docname" class="label_title_up">{t}Name of your document{/t}</label>-->
 				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty document-type">
 					<option value="">{t}Select Schema{/t}</option>
 					{foreach from=$schemes item=schema}
@@ -44,7 +43,8 @@
 				</select>
 			</div>
 				{if $schemes|@count==0}
-					<p>No metadata schemes found. Maybe you need to set the type of your RNG schema.<br/>Perform the 'Properties of RNG template' action on your schema in order to change its type.</p>
+					<p>{t}No schemes found{/t}.</p>
+                    <p>{t}Maybe you need to set properly the type of your RNG schemes (performing the <em>Modify properties</em> action on them) or create/upload a new one{/t}.</p>
 				{/if}
 	
 	{include file="`$_APP_ROOT`/actions/createxmlcontainer/template/Smarty/_ximdoc_languages.tpl"}

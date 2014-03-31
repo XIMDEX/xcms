@@ -44,6 +44,7 @@
 	<search_links_uri></search_links_uri>
 
 	<publication_allowed>{$publication_allowed}</publication_allowed>
+	<checkspelling>{$checkspelling}</checkspelling>
 	<expert_mode_allowed>{$expert_mode_allowed}</expert_mode_allowed>
 	<expert_mode_active>0</expert_mode_active>
 	<history_max_changes>15</history_max_changes>

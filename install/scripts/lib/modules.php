@@ -50,7 +50,11 @@ function module_list() {
 	print(" + Listing Available Modules +\n");
 	print(" -----------------------------\n");
 	foreach ($modules as $idx => $module) {
-		print("  - {$module['name']}\n");
+		print("  - {$module['name']} ");
+		if ($modMngr->isEnabled($module['name'])) {
+			print("(enabled)");
+		}
+		print("\n");
 	}
 	print("\n");
 }
@@ -60,26 +64,44 @@ function module_install($module_name) {
 	$modMngr = new ModulesManager();
 
 	$state = $modMngr->checkModule($module_name);
-
 	if(ModulesManager::$msg != null) {
 		echo " * ERROR: ".ModulesManager::$msg."\n";
 		ModulesManager::$msg = null;
 	}
 
-	if (  $state == MODULE_STATE_UNINSTALLED ) {
+	$myenabled = $modMngr->isEnabled($module_name);
+	if ("ximLOADER" == $module_name)  {
+		print("Invoking ximloader to load project\n");
+}
+	else {
+		print("Installing $module_name ... status --> Installed: $state Enabled: $myenabled\n");
+        }
+
+	if (  $state == MODULE_STATE_UNINSTALLED && !$myenabled ) {
 		$result = $modMngr->installModule($module_name);
 
 		if(ModulesManager::$msg != null) {
 			echo " * ERROR: ".ModulesManager::$msg."\n";
 			ModulesManager::$msg = null;
+		} else {
+			echo " * OK: $module_name \n";
 		}
+		
 
 		if($result)
-			print("\nModule $module_name installed.\n");
-	} else {
-		print("\n* ERROR: Module $module_name was not installed.\n");
-	}
+			print("\nModule $module_name sucesfully installed.\n");
+		else
+			print("\nModule $module_name reported a problem while installation.\n");
+			
 
+	} else {
+		print("* ERROR: Module $module_name was not reinstalled because:");
+		if ($state==MODULE_STATE_INSTALLED) 
+			print(" It was already installed!");
+		if ($myenabled)
+			print(" It was already enabled!");
+		}
+		print ("\n");
 }
 
 function module_uninstall($module_name) {
@@ -141,10 +163,11 @@ function main($argc, $argv) {
 
 	if ( $mode != "list" ) {
 		if ($argc < 3) {
-			die("* ERROR: Necesito el nombre del modulo.\n");
+			die("* ERROR: I need the module name.\n");
 		}
 	}
 
+	print("\n");
 	switch ($mode) {
 		case "list":
 				module_list();

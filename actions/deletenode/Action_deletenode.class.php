@@ -179,9 +179,7 @@ class Action_deletenode extends ActionAbstract {
 			$values["pendingTasks"] = count($pendingTasks);
 			$values["isPublished"] = $isPublished;
 		}
-
 		$this->addJs('/actions/deletenode/resources/js/deletenode.js');
-
 		$this->render($values, null, 'default-3.0.tpl');
 	}
 
@@ -223,7 +221,6 @@ class Action_deletenode extends ActionAbstract {
 
 		if ($canDeleteOnCascade) {
 
-
 			if ($node->nodeType->get('Name') != 'Channel') {
 				$depList = $node->GetDependencies();
 			}
@@ -247,21 +244,6 @@ class Action_deletenode extends ActionAbstract {
 					}
 				}
 			}
-
-		//	if (count($undeletableChildren) > 0) {
-
-				//If a node cannot be deleted
-
-
-		//		$texto= _("Por restricciones del sistema, no se pueden eliminar los siguientes nodos:");
-		//		foreach( $undeletableChildren as $_undelete) {
-		//			$node = new Node($_undelete);
-		//			$name = $node->GetNodeName();
-		//			$texto .= " $name($_undelete), ";
-		//		}
-
-		//		$this->messages->add($texto, MSG_TYPE_WARNING);
-		//	} else {
 
 				// Deleting recursively
 
@@ -295,7 +277,6 @@ class Action_deletenode extends ActionAbstract {
 								$depNode->msgErr . "<br><br>";
 						}
 					}
-			//	}
 
 				if (strlen($err)) {
 					$this->messages->add($err, MSG_TYPE_ERROR);

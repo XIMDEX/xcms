@@ -327,6 +327,9 @@ function continueStartKupu(kupu) {
    	if(!kupu.getXimDocument().publicationIsAllowed())
 	   	KupuButtonDisable(getFromSelector('kupu-publicate-button'));
 
+   	if(!kupu.getXimDocument().checkSpellingIsAllowed())
+	   	KupuButtonDisable(getFromSelector('kupu-spellchecker-button'));
+
 	kupu.getXimDocument().validateXML(function(valid, msg) {
     		if (!valid) kupu.alert(msg);
     });

@@ -1085,7 +1085,6 @@ class	Node extends Nodes_ORM{
 		$IdChildrens = $this->GetChildren();
 
 		if (!is_null($IdChildrens)) {
-
 			reset($IdChildrens);
 			while (list(, $IdChildren) = each($IdChildrens)) {
 				$childrenNode = new Node($IdChildren);
@@ -1126,6 +1125,8 @@ class	Node extends Nodes_ORM{
 		$dbObj = new DB();
 		$dbObj->Execute(sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %d", $this->get('IdNode')));
 		$dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
+        //deleting potential entries on table NoActionsInNode
+		$dbObj->Execute(sprintf("DELETE FROM NoActionsInNode WHERE IdNode = %d", $this->get('IdNode')));
 
 		$nodeDependencies = new NodeDependencies();
 		$nodeDependencies->deleteBySource($this->get('IdNode'));
@@ -2704,7 +2705,7 @@ class	Node extends Nodes_ORM{
 			return $nodeProperty->getProperty($this->get('IdNode'), $property);
 		}
 
-		XMD_Log::info(sprintf(_("Property %s not found"),$property));
+		XMD_Log::info(sprintf(_("Property %s not found for node %d"),$property,$this->get('IdNode')));
 
 		return NULL;
 	}

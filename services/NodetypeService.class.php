@@ -90,6 +90,10 @@ class NodetypeService
     const MODULES_FOLDER = 5080;
     const MODULE_INFO_CONTAINER = 5081;
     const INHERITABLE_PROPERTIES = 5082;
+    const METADATA_SECTION = 5083;
+    const METADATA_CONTAINER = 5084;
+    const METADATA_DOCUMENT = 5085;
+    
 
 
     public $nodeType;

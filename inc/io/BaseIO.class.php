@@ -24,11 +24,8 @@
  *  @version $Revision: 8778 $
  */
 
-
-
 define('MODE_NODETYPE', 0);
 define('MODE_NODEATTRIB', 1);
-
 
 ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
@@ -39,20 +36,15 @@ ModulesManager::file('/inc/model/State.class.php');
 ModulesManager::file('/inc/helper/Messages.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 
-
 // BaseIO API
 if (!defined('XIMDEX_BASEIO_PATH'))
 	define('XIMDEX_BASEIO_PATH', realpath(dirname(__FILE__)));
 
-// not in use
-//include_once(XIMDEX_BASEIO_PATH . "/types/BaseIO_News.class.php");
 ModulesManager::file('/inc/model/language.inc');
 ModulesManager::file('/inc/auth/Auth.class.php');
-ModulesManager::file('/actions/generatexmldocument/baseIO.php');
 
 class BaseIO {
 	/**
-	 *
 	 * @var unknown_type
 	 */
 	var $messages = NULL;
@@ -375,7 +367,7 @@ class BaseIO {
 				// TODO left to be implemented $aliasLangArray, $channelLst, $master
 				$xmlcontainer = new Node();
 				$idNode = $xmlcontainer->CreateNode($data['NAME'], $data["PARENTID"],
-						$idNodetype, null, $data['TEMPLATE'], NULL, NULL, NULL);
+						$idNodetype, null, $data['TEMPLATE'], $data["ALIASES"], $data["CHANNELS"], $data["MASTER"]);
 
 				$this->_dumpMessages($xmlcontainer->messages);
 
@@ -538,6 +530,36 @@ class BaseIO {
                     }
                 }
                 return ($result > 0) ? $result : ERROR_INCORRECT_DATA;	
+
+			case 'COMMONNODE' :
+				$paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');
+
+				if (count($paths) != 1) {
+					$this->messages->add(_('A file for node creation could not be obtained'),
+							MSG_TYPE_WARNING);
+					return ERROR_INCORRECT_DATA;
+				}
+				$data['PATH'] = $paths[0];
+				unset($data['CHILDRENS']);
+
+				$nodeType = new NodeType();
+				$nodeType->SetByName($data['NODETYPENAME']);
+				$idNodeType = $nodeType->GetID();
+
+				$node = new Node();
+				$idNode = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null,$data['PATH']);
+
+				if (!empty($data['STATE'])) {
+					$node->class->promoteToWorkFlowState($data['STATE']);
+				}
+
+				$this->_dumpMessages($node->messages);
+
+				if (!($idNode > 0)) {
+					return ERROR_INCORRECT_DATA;
+				}
+				return $idNode;
+
 			default :
 				// TODO: trigger error.
 				$this->messages->add(_('An error occurred trying to insert the node'),MSG_TYPE_ERROR);

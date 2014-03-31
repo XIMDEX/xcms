@@ -74,7 +74,7 @@ class Action_workflow_backward extends ActionAbstract {
         }
 
         $conf = ModulesManager::file('/conf/notifications.conf');
-        $defaultMessage=$this->buildMessage($conf["defaultMessage"], $prevStateName,$node->GetName());
+        $defaultMessage=$this->buildMessage($conf["defaultMessage"], $prevStateName,$node->GetNodeName());
 
 
 		$values = array(
