@@ -15,7 +15,7 @@ REPO_BRANCH="3.5-beta3"
 #REPO_BRANCH="develop"
 
 # if branch is a TAG instead of a branch uncomment line below
-REPO_HOME="${REPO_HOME}v"
+REPO_HOME="${REPO_HOME}"
 
 
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
