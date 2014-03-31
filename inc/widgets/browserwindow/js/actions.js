@@ -118,7 +118,7 @@
 				}, result.nodeID);
 				this.close();
     		}
-    		if (X.ActionTypes.remove.indexOf(this.action.command) != -1) {
+    		if (!submitError && X.ActionTypes.remove.indexOf(this.action.command) != -1) {
     			console.log("RESULT", result);
     			this.close();
     			humane.log(messages, {addnCls: 'xim-notice'});

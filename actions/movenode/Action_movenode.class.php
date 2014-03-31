@@ -68,8 +68,8 @@ class Action_movenode extends Action_copy {
 				}
 			}
 		}
-                $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
-
+        $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
+ 
 //		$this->addJs('/actions/movenode/resources/js/movenode.js');
 //		$this->addJs('/actions/copy/resources/js/treeSelector.js');
 		$this->addCss('/actions/copy/resources/css/style.css');
@@ -101,10 +101,10 @@ class Action_movenode extends Action_copy {
 		$checks = $node->checkTarget($targetParentID);
 		if(null == $checks || !$checks["insert"] ) {
 			$this->messages->add(_("Moving node to selected destination is not allowed"), MSG_TYPE_ERROR);
+			$values = array('messages' => $this->messages->messages);
 		}else {
 		  $this->_move($idNode, $targetParentID,  $unpublishDoc);
-		}
-		$values = array(
+		  $values = array(
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,
 			'params' => '',
@@ -112,7 +112,9 @@ class Action_movenode extends Action_copy {
 			'action_with_no_return' => true, 
 			'parentID' => $targetParentID,
 			'oldParentID' => $node->GetParent()
-		);
+		  );
+		}
+		
 
 		$this->sendJSON($values);
 	}
