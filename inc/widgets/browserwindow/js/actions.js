@@ -39,8 +39,19 @@
 			'createuser',
 			'createxmlcontainer'
 		],
-		remove: ['deletenode','movenode'],
-		reload: ['addximlet', 'linkreport', 'workflow_forward',"modifyserver"]
+		remove: [
+			'deletenode',
+			'movenode', 
+			'copy', 
+			'expiresection'
+		],
+		reload: [
+			'addximlet', 
+			'linkreport', 
+			'workflow_forward',
+			'modifyserver',
+			'modifygroupsnode'
+		]
 	};
 
 	var idCount = 0;
@@ -281,6 +292,7 @@
 		},
 
 		_onAssetsCompleted: function() {
+			console.log(this.action);
 			X.triggerActionLoaded({
 				actionView: this,
 				browser: this.browser,
