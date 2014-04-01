@@ -25,36 +25,39 @@
 
 
 <div class="welcome">
-	
-<div class="action_header">
-	<h2>{t}Welcome to Ximdex{/t} <em>Username</em>!</h2>
-</div>
+    <div class="action_header">
+	    <h2>{t}Welcome to Ximdex CMS{/t}, <em>{$user}</em>!</h2>
+    </div>
 	<div class="action_content">
-		<div class="main_content">
-			<div class="ximdex_projects">
-				<h2>{t}Projects{/t}</h2>
-				
-				<div class="project_item">
-					<img src="actions/welcome/resources/imgs/project_default.jpg" alt="" class="project_image">
-					<span class="project_name">Picasso</span>
-					<div class="project_actions">
-						<button class="config_button icon">Manage project</button>
-					</div>
-				</div>
-				<div class="project_item">
-					<img src="actions/welcome/resources/imgs/project_default.jpg"  alt="" class="project_image">
-					<span class="project_name">The hobbit theme</span>
-					<div class="project_actions">
-						<button class="config_button icon">Manage project</button>
-					</div>
-				</div>
-				<div class="empty_state project_empty">
-					{t}Seems you don't have any projects yet. Let's start now!{/t}
-				</div>
-					<button  class="new_item project_new">Create new project</button>			
-				</div>
-		
-			
+	    <div class="main_content">
+		    <div class="ximdex_projects">
+			    <h2>{t}Existing projects{/t}</h2>
+			    {if $projects_info|@count gt 0}	
+                    {foreach from=$projects_info key=index item=p }
+				    <div class="project_item">
+					    <img src="actions/welcome/resources/imgs/project_default.jpg" alt="" class="project_image">
+					    <span class="project_name">{$p.name}</span>
+				    	<div class="project_actions">
+						    <button class="config_button icon">Details</button>
+					    </div>
+                        {*TODO: get more info for a project*}
+                        {*<div class="details">
+                            <span class="tooltip">
+                            <p>Servers defined: 3</p>
+                            <p>XML Documents: 6</p>
+                            <p>External links: 19</p>
+                            </span>
+                        </div>*}
+				    </div>
+                    {/foreach}
+                {else}
+				    <div class="empty_state project_empty">
+					    {t}Seems you don't have any projects yet. Let's start now!{/t}
+    				</div>
+                {/if}
+				<button  class="new_item project_new">{t}Create a new project{/t}</button>			
+			</div>
+					
 			<div class="ximdex_documents">
 				<h2>{t}Documents{/t}</h2>
 				<div class="document_item"><span class="icon document">picasso-ides</span>

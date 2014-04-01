@@ -1,4 +1,3 @@
-<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,26 +23,10 @@
  *  @version $Revision$
  */
 
-
-ModulesManager::file("/services/ProjectService.class.php");
-
-class Action_welcome extends ActionAbstract {
-    // Main method: shows the initial form
-    function index () {
-		$values=array();
-		if ($this->tourEnabled(XSession::get("userID"), "welcome")){
-			$values[] = $this->addJs('/resources/js/start_tour.js','ximTOUR');
-        }
-		if (ModulesManager::isEnabled('ximTOUR')){
-			$values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
-			$values[] = $this->addJs('/resources/js/tour.js','ximTOUR');			
-		}
-		
-		$this->addJs('/actions/welcome/resources/js/index.js');
-		$this->addCss('/actions/welcome/resources/css/welcome.css');
-        $values["projects_info"]=ProjectService::getProjectsInfo();
-        $values["user"]=XSession::get("user_name");
-	    $this->render($values, "index.tpl", 'default-3.0.tpl');
-	}
-}
-?>
+X.actionLoaded(function(event, fn, params) {
+    $(".details").hide();
+    //TODO: get more info for a project
+    //$(".project_item").on("click","button.config_button",function(e){
+    //        $(e.delegateTarget).find(".details").toggle();
+    //    });
+});
