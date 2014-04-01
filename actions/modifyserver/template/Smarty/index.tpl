@@ -39,8 +39,17 @@
 			{else}
 				{button id="create_server" label="Save" class="validate btn main_action"}{*message="Would you like to create this server?"*}
 			{/if}
+			
 		</fieldset>
 	</div>
+
+	{if !empty($messages)}
+	<div class="message">
+		{foreach name=messages from=$messages key=message_id item=message}
+			<p>{$message.message}</p>
+		{/foreach}
+	</div>
+	{/if}
 
 	<div class="action_content">
 		<fieldset class="mdfsv_errors">

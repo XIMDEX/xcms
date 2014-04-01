@@ -46,18 +46,17 @@ function onCancel(event, actionView) {
 function onDelete(event, fn, form, fm) {
 
 	if (fn('#asegurado:checked').length == '1' || fn('input:hidden#asegurado').val() == '1') {
-
 		fm.sendForm({
-			button: this,
+			button: event.currentTarget,
 			confirm: true,
-			message: _('You are going to delete a node. Would you like to continue?')
+			message: _('You are going to delete a node. Would you like to continue?'),
+			jsonResponse: true
 		});
 
 	} else {
 
 		var div_dialog = $("<div/>").attr('id', 'dialog').appendTo(form);
 		var msg= _("The node cannot be deleted without deleting its dependencies.<br/><br/>If you want to delete this node your should delete its dependencies or tick the dependence deletion box");
-
 		div_dialog.html(msg);
 		div_dialog.dialog({
 			buttons: {

@@ -15,3 +15,4 @@ conf/install-params.conf_bk_*.php
 modules/dexT/xslt/dext_main.xsl
 inc/model/orm/*.bck*
 modules/xlyre
+koala-config.json

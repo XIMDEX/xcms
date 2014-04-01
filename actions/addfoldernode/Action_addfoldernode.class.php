@@ -150,13 +150,13 @@ class Action_addfoldernode extends ActionAbstract {
 
 		if ($idFolder > 0) {
 			$this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
-			$this->reloadNode($nodeID);
+			//$this->reloadNode($nodeID);
 		} else {
 			$this->messages->add(sprintf(_('The operation has failed: %s'), $folder->msgErr), MSG_TYPE_ERROR);
 		}
 
-		$arrValores = array ('messages' => $this->messages->messages);
-		$this->render($arrValores);
+		$arrValores = array ('messages' => $this->messages->messages, 'parentID' => $nodeID);
+		$this->sendJSON($arrValores);
 	}
 
 	function addSectionNode () {

@@ -50,7 +50,7 @@ X.actionLoaded(function(event, fn, params) {
 		return false;
 	});
 
-	fn('a#delete_server').click(function(event) {
+	fn('#delete_server').click(function(event) {
 		if (fn('#serverid').val() != "none"){
 			fn('input[name=borrar]').val(1);
 			confirm_dialog(event, _('Are you sure you want to remove this server?'), form, fm);
@@ -65,19 +65,19 @@ X.actionLoaded(function(event, fn, params) {
 		fm.sendForm();
 		return false;
 	});
-	fn('a#create_server').get(0).beforeSubmit.add(function(event) {
+	fn('#create_server').get(0).beforeSubmit.add(function(event) {
+		console.log("Firing beforesubmit", event);
+		clearErrors();
+		var protocolSelected = fn('#protocol').val();
 
-	clearErrors();
-	var protocolSelected = fn('#protocol').val();
+		if (protocolSelected == 'LOCAL') {
+			if (empty(fn('#url').val())) {
+				addError(_('It is necessary to specify a local url for this server.'));
+			} else if (empty(fn('#initialdirectory').val())) {
+				addError(_('It is necessary to specify a local directory.'));
+			}
 
-	if (protocolSelected == 'LOCAL') {
-		if (empty(fn('#url').val())) {
-			addError(_('It is necessary to specify a local url for this server.'));
-		} else if (empty(fn('#initialdirectory').val())) {
-			addError(_('It is necessary to specify a local directory.'));
-		}
-
-	} else if ((protocolSelected == 'FTP') || (protocolSelected == 'SSH')) {
+		} else if ((protocolSelected == 'FTP') || (protocolSelected == 'SSH')) {
 			var pw1 = fn('#password').val();
 			if (empty(pw1)) {
 				addError(_('A password ir required.'));
@@ -107,7 +107,6 @@ X.actionLoaded(function(event, fn, params) {
 		if (fn('#enabled').attr('checked') == false) {
 			msg = _('Server is not enabled. Documents will not be published on this server.') + msg;
 		}
-
 		confirm_dialog(event, msg, form, fm);
 
 		return true;
@@ -121,13 +120,17 @@ X.actionLoaded(function(event, fn, params) {
 			$(div_dialog).dialog("destroy");
 			if (send) {
 				fm.sendForm({
-					button: this,
-					confirm: false
+					button: event.currentTarget,
+					confirm: false,
+					jsonResponse: true
 				});
 			}
 		}.bind(this);
 
 		div_dialog.html(msg);
+		var dialogButtons = {};
+		dialogButtons[_('Accept')] = function(){dialogCallback(true);};
+		dialogButtons[_('Cancel')] = function(){dialogCallback(false);};
 		div_dialog.dialog({
 			buttons: {
 				accept: function() {

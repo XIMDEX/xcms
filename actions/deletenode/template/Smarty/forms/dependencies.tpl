@@ -33,10 +33,8 @@
 				{button class="delete_button  btn main_action" label="Delete"}
 			</fieldset>
 		</div>
-		<div class="message delete-message icon">
-			<p>{t}This action cannot be undone{/t}.</p>
-			<p>{t}If a long time is elapsed before action is executed, list of dependencies and children of node may change{/t}.</p>
-			<p>{t}Deleting this node all its children will be deleted too{/t}.</p>
+		<div class="message message-warning">
+			<p class="icon">{t}This action cannot be undone{/t}.</p>
 			{if ($isPublished || $pendingTasks)}
 			<p>{t}This action does not carry on expiration of nodes{/t}. </p>
 			{/if}
@@ -45,7 +43,7 @@
 
 
 			{if ($depList)}
-			<h3 class="delete">{t}The following nodes will be deleted on cascade{/t}</h3>
+			<h3 class="delete">{t}The following nodes will be deleted on cascade{/t}. {t}Deleting this node all its children will be deleted too{/t}.</h3>
 			<div class="deletenodes">
 				<ul>
 					{foreach from=$depList key=id item=dep}
@@ -78,5 +76,7 @@
 					</ul>
 					{/if}
 				</p>
+
+				<p class="tip">{t}If a long time is elapsed before action is executed, list of dependencies and children of node may change{/t}.</p>
 			</div>
 		</form>

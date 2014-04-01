@@ -25,6 +25,7 @@
 
 
  @import "../themes/ximdex_theme";
+ @import "../themes/icons"; 
  @import "../themes/extends";
 
 
@@ -173,9 +174,6 @@ fieldset{
 
 	.message + &{
 		padding-top: 1em;
-		>p{
-			padding-top: 1.5em;
-		}
 	}
 	p{
 		font-size: 1.8rem;
@@ -264,7 +262,7 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 
 .positioned_btn{
 	position: absolute;
-	top: .8em;
+	top: .5em;
 	right: 2.5em;
 	button{
 		margin-top: -.4em;
@@ -522,6 +520,199 @@ position: absolute;
 // MESSAGES
 ***************/
 
+.message{
+	padding: .6em 4% .6em 4.5em;
+	background:lighten(#4c4d57, 10%); 
+	position: relative;
+	border: none;
+	border-bottom: 1px solid #fff;
+	-webkit-animation:all .2s;
+	-moz-animation:all .2s;
+	-o-animation:all .2s;
+	animation:all .2s;
+  
+	box-shadow:  inset 0 -1px 2px rgba(0,0,0,.3), inset 0 1px 1px rgba(0,0,0,.15);
+
+	
+	p{
+		padding: .4em 0;
+		margin-bottom:  0;
+		text-align: center;
+		color: #e3e7e9;
+		position: relative;
+		@extend %icon;
+		text-shadow: 0 1px 0 rgba(0,0,0,.2);
+
+		&::before{
+			position: absolute;
+			-webkit-border-radius: 50%;
+			-moz-border-radius: 50%;
+			border-radius: 50%;
+			padding: .20em;
+			margin-left: -2em;
+			margin-top: -.2em;		
+			color: #4c4d57;
+
+		}
+	}
+}
+
+.message-success{
+	p{
+		@extend %tic;
+		&::before{
+			background:#c2d43b;
+			
+		}
+
+		&::after{
+			content: none;
+			
+		}		
+	}
+}
+
+.message-delete, .message-error{
+	p:first-child{
+		@extend %cancel;
+
+		&::before{
+			background:#ff4e17;
+		}
+	}
+}
+
+.message-warning{
+	p:first-child{
+		@extend %warning;
+
+		&::before{
+			background:#f1d656;
+		}
+	}
+}
+
+
+.error_block{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 100%;
+	&.select_block{
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: auto;
+		min-width: 33%;
+		right: 0;
+		.error{
+
+		}
+		select{
+			width: 100%;
+		}
+	}
+}
+
+.xim-filter-comparation + .error_block{
+		display: inline-block;
+		width: auto; // ÑAPA
+	}
+
+span.error{
+	background:#f72f42;
+	color: #fff;
+	position: absolute;
+	z-index: 10;
+	top:-1.5em;
+	left: 0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	padding: .3em .5em;
+	&::before{
+		content: "";
+		border: .5em solid rgba(255,255,255,0);
+		border-top-color: #f72f42;
+		position: absolute;
+		left: .7em;
+		bottom: -1.5em;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		transform: translateY(-50%);
+		
+	}
+}
+
+
+
+
+		/**************
+		// Humane/ximd-notice  message
+		***************/
+
+		.notification-success{
+			background:rgba(76,77,87,.8);
+			color: #e3e7e9;
+			font-weight: bold;
+			font-size: 1.4rem;
+			-webkit-border-radius: 3px;
+			-moz-border-radius: 3px;
+			border-radius: 3px;
+			box-shadow: 0 1px 1px rgba(0,0,0,.5);
+			padding: .57em .36em .36em;
+
+			li{
+			@extend %icon;
+			@extend %tic;
+
+			&::before{
+				color: #c2d43b;
+				padding-right: .4em;
+				font-size: 1.4em;
+			}
+
+			&::after{
+				content: none;
+				
+			}
+				
+			}
+
+
+		}
+/*
+.message, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
+	padding: .6em 4% .6em 4.5em;
+	background:$c_grey-ppp;
+	position: relative;
+	border: none;
+	border-bottom: 1px solid #fff;
+	-webkit-animation:all .2s;
+	-moz-animation:all .2s;
+	-o-animation:all .2s;
+	animation:all .2s;
+
+	&::before{
+		content: '';
+		position: absolute;
+		width: 5.3rem;
+		height: 100%;
+		background: $c_grey-l;
+		left: 0;
+		top: 0;
+		font: normal 1.5em bold 'Coustard';
+		line-height: 2;
+	}
+
+	p{
+		padding: .4em 0;
+		margin-bottom:  0;
+	}
+}
+
 
 .msg-error {
 }
@@ -603,34 +794,7 @@ span.error{
 
 
 
-.message, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
-	padding: .6em 4% .6em 4.5em;
-	background:$c_grey-ppp;
-	position: relative;
-	border: none;
-	border-bottom: 1px solid #fff;
-	-webkit-animation:all .2s;
-	-moz-animation:all .2s;
-	-o-animation:all .2s;
-	animation:all .2s;
 
-	&::before{
-		content: '';
-		position: absolute;
-		width: 5.3rem;
-		height: 100%;
-		background: $c_grey-l;
-		left: 0;
-		top: 0;
-		font: normal 1.5em bold 'Coustard';
-		line-height: 2;
-	}
-
-	p{
-		padding: .4em 0;
-		margin-bottom:  0;
-	}
-}
 
 
 .hidden-message{
@@ -692,6 +856,10 @@ span.error{
 	}
 
 }
+
+
+
+
 label + p{
 	margin-top: 0;
 }
@@ -774,7 +942,7 @@ fieldset table th {
 	padding: 3px 5px;
 	font-weight: bold;
 }
-
+*/
 
 .inline{
 	display: inline !important;
@@ -1305,7 +1473,7 @@ input:focus + .tooltip_info{
        
         }
 
-      :checked + .checkbox-label:not(.reduced_label){
+      :checked + .checkbox-label:not(.reduced_label), :checked ~ .checkbox-label:not(.reduced_label), .checkbox-label:not(.reduced_label)[checked]{
         border-color: #fff;
         background: lighten($c_mainlight, 10%);
         -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.2);
@@ -1593,6 +1761,20 @@ input:focus + .tooltip_info{
 }
 
 
+	/**************
+	// TIPS
+	***************/
+
+	.tip{
+		font-size: 1.6rem !important;
+		color: #666;
+
+		&::before{
+			content: "* ";
+			
+		}
+	}
+
 
 	/**************
 	// Fixing ui-datepicker problem
@@ -1615,4 +1797,8 @@ input:focus + .tooltip_info{
 		}
 	}
 
+//Animation styles
+.slide-item {
+	display: none;
+}
 

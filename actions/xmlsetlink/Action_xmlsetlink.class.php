@@ -27,6 +27,7 @@
 
 
 ModulesManager::file('/inc/model/RelPvds.class.php');
+ModulesManager::file('/services/NodeService.class.php');
 
 class Action_xmlsetlink extends ActionAbstract {
 
@@ -51,17 +52,19 @@ class Action_xmlsetlink extends ActionAbstract {
 		$targetNode = new Node($idTarget);
 		$targetNodePath = ($targetNode->get('IdNode') > 0) ? $targetNode->GetPath() : '';
 
+	    $targetNodes = $this->getTargetNodes($node->GetID());
 
 		$type = $node->get('IdNodeType');
 		$this->addJs('/actions/xmlsetlink/resources/js/xmlsetlink.js');
 		$this->addJs('/actions/xmlsetlink/resources/js/setinfo.js');
+		$this->addCss('/actions/copy/resources/css/style.css');
 
 		$values = array(
 			'id_node' => $idNode,
 			'id_target' => $idTarget,
 			'type' => $type,
+			'targetNodes' => $targetNodes,
 			'go_method' => 'setlink',
-			'target_node_path' => $targetNodePath,
 			'sharewf' => $sharewf
 		);
 
@@ -71,7 +74,7 @@ class Action_xmlsetlink extends ActionAbstract {
 	function setlink() {
 
 		$idNode = $this->request->getParam('nodeid');
-		$idTarget = $this->request->getParam('targetfield');
+		$idTarget = $this->request->getParam('targetid');
 
 		$structuredDocument = new StructuredDocument($idNode);
 		$idNodeTemplate = $structuredDocument->get('IdTemplate');
@@ -196,6 +199,25 @@ class Action_xmlsetlink extends ActionAbstract {
 		$googleTrans = new GoogleTranslate();
 		$translation = $googleTrans->translate($content, $langFrom, $langTo);
 		echo $translation;
+	}
+
+	/**
+	* @param int $idNode current Idnode
+	* @return array Siblings for the current Node
+	*/
+	private function getTargetNodes($idNode){
+		//Creating nodeservice in no-lazy mode
+		$nodeService = new NodeService($idNode,false);
+		$siblings = $nodeService->getSiblings();
+		$targetNodes = array();
+		foreach ($siblings as $sibling) {
+			$arrayAux = array();
+            $arrayAux["path"] = str_replace("/Ximdex/Projects/","", $sibling->GetPath());
+            $arrayAux["idnode"] = $sibling->GetID();
+            $targetNodes[] = $arrayAux;
+        }
+
+        return $targetNodes;
 	}
 
 }

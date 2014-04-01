@@ -28,6 +28,33 @@
 
 	var B = X.browser;
 
+	X.ActionTypes = {
+		create: [	
+			'addfoldernode', 
+			'addsectionnode',
+			'createlink',
+			'newemptynode', 
+			'copy', 
+			'createrole', 
+			'createuser',
+			'createxmlcontainer'
+		],
+		remove: [
+			'deletenode',
+			'movenode', 
+			'copy', 
+			'expiresection',
+			'publicatesection'
+		],
+		reload: [
+			'addximlet', 
+			'linkreport', 
+			'workflow_forward',
+			'modifyserver',
+			'modifygroupsnode'
+		]
+	};
+
 	var idCount = 0;
 
 	B.ActionView = Object.xo_create(B.AbstractView, {
@@ -39,7 +66,6 @@
 		history: null,
 
 		_init: function(options) {
-
 			B.ActionView._construct(this, options);
 
 			this.id = 'browser-action-view-' + (++idCount);
@@ -70,6 +96,45 @@
 			this.content.load(this.url, function(data, textStatus, xhr) {
 				this.processAction();
 			}.bind(this));
+		},
+
+		actionDoneCallback: function(result, form) {
+    		$form = $(form);
+    		
+	        //Messaging
+
+   		var submitError = false;
+    		var messages = [];
+    		$.each(result.messages, function(key, message){
+    			messages.push(message.message);
+
+    			if (message.type === 0) submitError = true;
+    		});
+    		var nodeId = result.parentID || result.nodeID || result.idNode;
+    		//Refresh node
+    		if (!submitError && nodeId) $(this.container).trigger('nodemodified', nodeId);
+    		if (!submitError && result.oldParentID) $(this.container).trigger('nodemodified', result.oldParentID);
+
+    		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
+    		if (!submitError && X.ActionTypes.remove.indexOf(this.action.command) != -1) {
+    			this.close();
+    			humane.log(messages, {addnCls: 'notification-success'});
+			} else {
+				this.actionNotify(messages, $form, submitError);
+			}
+		},
+
+		actionNotify: function(messages, $form, error) {
+			var $message = $('<div class="message" style="display: none;"></div>');
+			$message.addClass(error ? 'message-error':'message-success');
+			for (var i = messages.length - 1; i >= 0; i--) {
+				$message.html($message.html()+'<p class="icon">'+messages[i]+'</p>');
+			};
+			$form.find('.action_header').after($message);
+			$message.slideDown();
+			setTimeout(function(){$message.slideUp(400, function(){
+				$message.remove();
+			})}, 4000);	
 		},
 
 		getForm: function(name) {
@@ -223,6 +288,7 @@
 		},
 
 		_onAssetsCompleted: function() {
+			// console.log(this.action);
 			X.triggerActionLoaded({
 				actionView: this,
 				browser: this.browser,
