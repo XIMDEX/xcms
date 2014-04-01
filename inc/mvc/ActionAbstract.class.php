@@ -116,7 +116,7 @@ class ActionAbstract extends IController {
 		
 		$action = new Action();
 		$data = $action->find(
-			'Command, Name, Description',
+			'Command, Name, Description, Module',
 			'IdNodeType = %s and Command = %s and Module is %s',
 			array($nodeTypeId, $actionName, $module)
 		);
@@ -152,7 +152,6 @@ class ActionAbstract extends IController {
 			$request->getParam('actionid'),
 			$request->getParam('nodeid')
 		);
-
 		$this->actionCommand = $actionInfo['Command'];
 		$this->actionName = $actionInfo['Name'];		
 		$this->actionDescription = $actionInfo['Description'];
@@ -199,7 +198,7 @@ class ActionAbstract extends IController {
 		$this->logEndAction(true, $message);
 	}
 
-	protected function logUnsuccessAction($method, $message=null){
+	protected function logUnsuccessAction($message=null){
 		$this->logEndAction(false, $message);
 	}
 

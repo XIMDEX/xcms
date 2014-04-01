@@ -177,7 +177,7 @@ function start_tour(command) {
 		index++;
 	    }
 	    var button = $("li.xim-tagsinput-newtag input.xim-tagsinput-input:first",window.frames[frameCount-1].document);
-	    button.css("width","46px");
+	    button.css("width","106px");
 	    button.val("");
 	    var interval = setInterval(addValue, 200, text,button);
 	}
