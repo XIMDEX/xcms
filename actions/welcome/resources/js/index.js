@@ -29,4 +29,14 @@ X.actionLoaded(function(event, fn, params) {
     //$(".project_item").on("click","button.config_button",function(e){
     //        $(e.delegateTarget).find(".details").toggle();
     //    });
+    fn('.project_new').click(function() {
+                                $(params.browser).browserwindow('openAction', {
+                                        bulk: 0,
+                                        callback: 'callAction',
+                                        command: 'addfoldernode',
+                                        icon: null,
+                                        module: '', 
+                                        name: 'Create a New Project',
+                                        }, params.nodes);
+                        });
 });

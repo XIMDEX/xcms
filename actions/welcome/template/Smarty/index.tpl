@@ -75,37 +75,41 @@
 						<button class="edit icon">Edit document</button>
 					</div>
 				</div>
-				<div class="document_item"><span class="icon image">pablo-ruiz-picasso.jpg</span></div>
+				<div class="document_item"><span class="icon image">pablo-ruiz-picasso.jpg</span>
+					<div class="document_actions">
+						<button class="preview icon">{t}Preview image{/t}</button>
+					</div>
+                </div>
 				<div class="empty_state document_empty">
 					<ol>
-						<li class="step_document created_project icon">{t}Create a project from treeview or with the button above {/t}</li>
-						<li class="step_document">{t}Select "<em>Document folder</em>"" in the treeview on left panel{/t}</li>
-						<li class="step_document">{t}Use "<em>Add new document</em>" action and create your documents{/t}</li>
+						<li class="step_document created_project icon">{t}Create a new project from treeview or by clicking on the button above {/t}</li>
+						<li class="step_document">{t}Select the "<em>documents folder</em>" in the treeview on the left panel{/t}</li>
+						<li class="step_document">{t}Perform the "<em>Add new document</em>" action to create new documents{/t}</li>
 					</ol>
 				</div>
 			</div>
 			
 		</div>
 		<div class="sidebar">
-			<h3>{t}Learn how...{/t}</h3>
+			<h3>{t}Learn how to{/t}...</h3>
 			<ul>
 				<li>
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes">Create a new Project</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new Project{/t}</a>
 				</li>
 				<li>
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes">Create a new Server</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new Server & publish data{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes">Understanding Visual templates</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Ximdex-Basics" target="_blank">{t}Ximdex CMS, the basics{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes">Understanding transform templates</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}RNG schemes & XSL templates{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki/Ximdex-Basics">Ximdex, the basics</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}FAQs{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki">Installing modules in Ximdex</a>
+					<a href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
 				</li>
 			</ul>
 
