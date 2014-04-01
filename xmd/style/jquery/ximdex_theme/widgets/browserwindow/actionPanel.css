@@ -22,6 +22,27 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.message p::before, .notification-success li::before {
+  font-family: 'ximdex_icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle; }
+
+.message-delete p:first-child::before, .message-error p:first-child::before {
+  content: "\63"; }
+
+.message-success p::before, .notification-success li::before, .message-success p::after, .notification-success li::after {
+  content: "\79"; }
+
+.message-warning p:first-child::before {
+  content: "\e611"; }
+
 .browser-window button.button_main_action {
   background: #fff;
   border: 1px solid #dedede;
@@ -212,8 +233,6 @@ fieldset {
   position: relative; }
   .message + .action_content {
     padding-top: 1em; }
-    .message + .action_content > p {
-      padding-top: 1.5em; }
   .action_content p {
     font-size: 1.8rem;
     position: relative; }
@@ -278,7 +297,7 @@ fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
 
 .positioned_btn {
   position: absolute;
-  top: .8em;
+  top: .5em;
   right: 2.5em; }
   .positioned_btn button {
     margin-top: -.4em; }
@@ -506,24 +525,44 @@ input[type="checkbox"] + label, input[type="radio"] + label {
 .input-slide:checked + .label-slide::after {
   left: 2.62em; }
 
-li.msg-info {
-  line-height: 1.7em;
-  padding: 5px; }
+.message {
+  padding: .6em 4% .6em 4.5em;
+  background: #646572;
+  position: relative;
+  border: none;
+  border-bottom: 1px solid #fff;
+  -webkit-animation: all .2s;
+  -moz-animation: all .2s;
+  -o-animation: all .2s;
+  animation: all .2s;
+  box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(0, 0, 0, 0.15); }
+  .message p {
+    padding: .4em 0;
+    margin-bottom: 0;
+    text-align: center;
+    color: #e3e7e9;
+    position: relative;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2); }
+    .message p::before {
+      position: absolute;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      padding: .20em;
+      margin-left: -2em;
+      margin-top: -.2em;
+      color: #4c4d57; }
 
-li.msg-info span.ui-icon-info {
-  background: url("../../../../../images/action/icon-msg.png") no-repeat left -5px;
-  margin-top: 0;
-  padding: 0 15px 5px 0; }
+.message-success p::before {
+  background: #c2d43b; }
+.message-success p::after {
+  content: none; }
 
-li.ui-state-primary span.ui-icon-info {
-  display: none; }
+.message-delete p:first-child::before, .message-error p:first-child::before {
+  background: #ff4e17; }
 
-input.error, input.error:focus, .ng-dirty input.ng-invalid, .ng-dirty input.ng-invalid:focus {
-  -webkit-box-shadow: 0 0 2px 1px #f72f42;
-  -moz-box-shadow: 0 0 2px 1px #f72f42;
-  box-shadow: 0 0 2px 1px #f72f42;
-  border: 1px solid #f72f42;
-  outline: none; }
+.message-warning p:first-child::before {
+  background: #f1d656; }
 
 .error_block {
   position: relative;
@@ -549,7 +588,7 @@ span.error {
   color: #fff;
   position: absolute;
   z-index: 10;
-  bottom: 2.1em;
+  top: -1.5em;
   left: 0;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -560,7 +599,7 @@ span.error {
     border: 0.5em solid rgba(255, 255, 255, 0);
     border-top-color: #f72f42;
     position: absolute;
-    left: .5em;
+    left: .7em;
     bottom: -1.5em;
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -568,152 +607,25 @@ span.error {
     -o-transform: translateY(-50%);
     transform: translateY(-50%); }
 
-.message, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
-  padding: .6em 4% .6em 4.5em;
-  background: #e1e1e1;
-  position: relative;
-  border: none;
-  border-bottom: 1px solid #fff;
-  -webkit-animation: all .2s;
-  -moz-animation: all .2s;
-  -o-animation: all .2s;
-  animation: all .2s; }
-  .message::before, .ui-state-error::before, .ui-widget-content .ui-state-error::before, .ui-widget-header .ui-state-error::before {
-    content: '';
-    position: absolute;
-    width: 5.3rem;
-    height: 100%;
-    background: #464646;
-    left: 0;
-    top: 0;
-    font: normal 1.5em bold 'Coustard';
-    line-height: 2; }
-  .message p, .ui-state-error p, .ui-widget-content .ui-state-error p, .ui-widget-header .ui-state-error p {
-    padding: .4em 0;
-    margin-bottom: 0; }
-
-.hidden-message {
-  height: 0;
-  padding: 0;
-  visibility: hidden; }
-
-.warning-message, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
-  background: #fffaed; }
-  .warning-message::before, .ui-state-error::before, .ui-widget-content .ui-state-error::before, .ui-widget-header .ui-state-error::before {
-    background: #ffd04a;
-    content: '< ! >';
-    color: #e3e7e9;
-    text-align: center;
-    line-height: 2; }
-
-.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  position: absolute;
-  width: 100%;
-  height: 3em;
-  left: 0;
-  top: 0;
-  color: #4c4c4c;
-  padding-top: .95em; }
-
-.delete-message {
-  background: #fbeded; }
-  .delete-message::before {
-    background: #d93e42;
-    text-align: center;
-    line-height: 2 !important;
-    color: #f9e0e1; }
-  .delete-message::after {
-    position: absolute;
-    width: 1.5em;
-    height: 1.5em;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    background: #f9e0e1;
-    color: #d93e42;
-    line-height: 1.4 !important;
-    left: .6em;
-    top: .5em;
-    text-align: center;
-    font-size: 1.2em; }
-
-label + p {
-  margin-top: 0; }
-
-fieldset table th {
-  color: #606060;
-  font-weight: normal;
-  text-transform: uppercase;
-  padding: 5px 15px; }
-
-.action_container form {
-  height: 100%;
-  max-width: 100%; }
-
-.action_container .inline-form {
-  height: auto; }
-
-.action_container form textarea.normal {
-  width: 100%;
-  border: none;
-  border-bottom: 1px solid #e1e1e1;
-  padding-top: 5px; }
-
-.action_container form textarea.normal + .buttons-form {
-  margin-bottom: 0;
-  margin-top: 10px; }
-
-.browser-action-view-content iframe.action_iframe {
-  border: none; }
-
-.ui-widget-content fieldset .ui-state-highlight, .ui-widget-content fieldset .ui-state-error {
-  background: none;
-  border: none;
-  line-height: 2.1em;
-  color: #606060;
-  margin-bottom: 5px; }
-
-.ui-widget-content fieldset .ui-state-highlight .ui-icon-notice,
-.ui-widget-content fieldset .ui-state-error .ui-icon-alert,
-.ui-widget-content fieldset .ui-state-highlight .ui-icon-info {
-  background: url("../../../../../images/action/icon-msg.png") no-repeat left top;
-  margin-top: 0;
-  padding-bottom: 8px;
-  padding-left: 15px; }
-
-.ui-widget-content fieldset .ui-state-error .ui-icon-alert {
-  background-position: -33px top; }
-
-.ui-widget-content fieldset .ui-state-highlight .ui-icon-info {
-  background-position: -66px top; }
-
-#publishing_message {
-  position: absolute;
-  opacity: .94;
-  background: #606060;
-  top: 35%;
-  left: 40%;
-  -webkit-border-radius: 15px;
-  -moz-border-radius: 15px;
-  border-radius: 15px;
-  -webkit-box-shadow: 0 0 5px rgba(157, 157, 157, 0.2);
-  -moz-box-shadow: 0 0 5px rgba(157, 157, 157, 0.2);
-  box-shadow: 0 0 5px rgba(157, 157, 157, 0.2);
-  padding: 20px 40px 18px; }
-
-#publishing_message img {
-  margin: 8px 0 5px 0; }
-
-#publishing_message p {
-  color: #e1e1e1;
-  text-transform: uppercase;
-  text-shadow: 1px 1px 1px #464646;
-  text-align: center;
-  padding: 3px 5px;
-  font-weight: bold; }
+/**************
+// Humane/ximd-notice  message
+***************/
+.notification-success {
+  background: rgba(76, 77, 87, 0.8);
+  color: #e3e7e9;
+  font-weight: bold;
+  font-size: 1.4rem;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  padding: .57em .36em .36em; }
+  .notification-success li::before {
+    color: #c2d43b;
+    padding-right: .4em;
+    font-size: 1.4em; }
+  .notification-success li::after {
+    content: none; }
 
 .inline {
   display: inline !important; }
@@ -1160,15 +1072,15 @@ input:focus + .tooltip_info {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px; }
-.action_content :checked + .checkbox-label:not(.reduced_label) {
+.action_content :checked + .checkbox-label:not(.reduced_label), .action_content :checked ~ .checkbox-label:not(.reduced_label), .action_content .checkbox-label:not(.reduced_label)[checked] {
   border-color: #fff;
   background: #9fd9d1;
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2); }
-  .action_content :checked + .checkbox-label:not(.reduced_label)::before {
+  .action_content :checked + .checkbox-label:not(.reduced_label)::before, .action_content :checked ~ .checkbox-label:not(.reduced_label)::before, .action_content .checkbox-label:not(.reduced_label)[checked]::before {
     color: #464646; }
-  .action_content :checked + .checkbox-label:not(.reduced_label)::after {
+  .action_content :checked + .checkbox-label:not(.reduced_label)::after, .action_content :checked ~ .checkbox-label:not(.reduced_label)::after, .action_content .checkbox-label:not(.reduced_label)[checked]::after {
     border-color: white; }
 .action_content .alternative-name {
   margin-top: -2.5em;
@@ -1381,6 +1293,15 @@ input:focus + .tooltip_info {
     right: -1.2em; }
     div:hover > .xim-tagsinput-tag-remove::before, li:hover > .xim-tagsinput-tag-remove::before, *:hover > .xim-tagsinput-tag-remove::before {
       color: #fff; }
+
+/**************
+// TIPS
+***************/
+.tip {
+  font-size: 1.6rem !important;
+  color: #666; }
+  .tip::before {
+    content: "* "; }
 
 /**************
 // Fixing ui-datepicker problem

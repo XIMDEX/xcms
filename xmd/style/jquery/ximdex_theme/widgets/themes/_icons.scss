@@ -20,7 +20,7 @@
 //	ICONS
 *******/
 %left-arrow::before {
-	content: "\e03a";  
+	content: "\e037";  
 }
 
 %pin::before {
@@ -66,4 +66,8 @@
 
 %reload::before{
 	content: "\e016";
+}
+
+%warning::before{
+	content: "\e611";
 }

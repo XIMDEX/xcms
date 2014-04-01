@@ -452,7 +452,8 @@ dd{
 // CUSTOM BUTTONS 
 ***************/
 
-.button, .no-collapsable .option/*, .custom-colorpicker, .option, .selection*/{
+/*
+.button, .no-collapsable .option{
 	min-width: 1.6em;
 	height: 1.7em;
 	position: relative;
@@ -557,12 +558,12 @@ dd{
 }
 
 
-
+*/
 
 /**************
 // Components 
 ***************/
-
+/*
 	.colorpicker{
 		margin-top: 1em;
 		margin-left: -1em;
@@ -576,11 +577,11 @@ dd{
 		border-bottom-color: rgba(0,0,0,.2);
 		margin-left: 1.3em;
 	}
-
+*/
 	/**************
 	// Text options 
 	***************/
-	.text-align .icon::before{
+/*	.text-align .icon::before{
 		font-size: 1.8em;
 	}
 
@@ -668,12 +669,12 @@ dd{
 			}
 		}
 	}
-
+*/
 
 	/**************
 	// BG options 
 	***************/
-	.custom_options .img-uploader{
+/*	.custom_options .img-uploader{
 		overflow: hidden;
 
 
@@ -701,3 +702,4 @@ dd{
 	}
 	
 
+*/

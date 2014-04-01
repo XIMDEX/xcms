@@ -118,7 +118,7 @@
     		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
     		if (!submitError && X.ActionTypes.remove.indexOf(this.action.command) != -1) {
     			this.close();
-    			humane.log(messages, {addnCls: 'xim-notice'});
+    			humane.log(messages, {addnCls: 'notification-success'});
 			} else {
 				this.actionNotify(messages, $form, submitError);
 			}
@@ -128,7 +128,7 @@
 			var $message = $('<div class="message" style="display: none;"></div>');
 			$message.addClass(error ? 'message-error':'message-success');
 			for (var i = messages.length - 1; i >= 0; i--) {
-				$message.html($message.html()+'<p>'+messages[i]+'</p>');
+				$message.html($message.html()+'<p class="icon">'+messages[i]+'</p>');
 			};
 			$form.find('.action_header').after($message);
 			$message.slideDown();
