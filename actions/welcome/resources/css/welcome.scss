@@ -1,0 +1,339 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
+
+.welcome{
+	height: 100%;
+	.action_content{
+
+	padding: 2em 4%;
+	}
+}
+.action_content{	
+	h2{
+		font-size: 0.94em;
+		margin-bottom: 1.5em;
+	}
+}
+	 
+
+.main_content{
+	width: 66%;
+	display: inline-block;
+	
+}
+
+
+
+.ximdex_projects, .ximdex_documents{
+	padding-bottom: 2.5em;
+}
+
+.project_item{
+	@extend %box;
+	display: inline-block;
+	padding: 1em;
+	position: relative;
+	width: 10.5em;
+	min-height: 9.5em;
+	vertical-align: top;
+	margin-bottom: 1em;
+}
+
+.project_name{
+	display: block;
+	font-family: $t_title;
+	font-size: 0.75em;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+	padding-right: 2em;
+}
+
+.project_image{
+	padding-bottom: 1em;
+	width: 100%;
+}
+
+.config_button{
+	@extend %config;
+
+	&::before{
+		right: 0;
+		top: 0;
+		font-size: 1.31em;
+	}
+
+}
+
+.config_button, .document_actions .edit{
+	@extend %hide-text;
+	@extend %reset-button;
+	width: 1.3em;
+	height: 1.3em;
+	position: relative;
+	padding: 0;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+
+	&::before{
+		position: absolute;
+		color: $c_grey;
+		height: 100%;
+	}
+
+	&:hover::before{
+		background:$c-mainlight;
+		color: #fff;
+	}
+}
+
+.project_actions{
+	position: absolute;
+	right: .8em;
+	top: 7.27em;
+}
+
+.new_item{
+	@extend %reset-button;
+	@extend %button-default;
+	background:$c-mainlight;
+	font-size: 0.81em !important;
+	color: #fff;
+	text-shadow: 0 -1px 0 darken($c-mainlight, 15%), 0 1px 0 lighten($c-mainlight, 15%);
+	padding: .5em .8em .6em;
+	margin: 0;
+	display: block;
+
+	&:hover{
+		text-shadow: 0 -1px 0 darken($c-grey-p, 2%), 0 1px 0 lighten($c-grey-p, 15%);
+	}
+}
+
+
+	/**************
+	// Empty state
+	***************/
+
+	.project_empty{
+		background:url(../imgs/empty_states.png) no-repeat left top;
+		padding: 8em 0 0 .2em;
+		margin-bottom: 1em;
+		font-weight: bold;
+	}
+
+	.document_empty{
+		ol{
+			@extend %flex;
+			justify-content: space-between;
+		} 
+		li{
+			width: 26%;
+			text-align: center;
+			padding-top:7.8em;
+			background:url(../imgs/empty_states.png) no-repeat center 11px;
+			position: relative;
+			font-weight: bold;
+			line-height: 1.2;
+
+			&::before{
+				content: "1";
+				width: 1.5em;
+				height: 1.5em;
+				background:#9ee5c8;
+				position: absolute;
+				-webkit-border-radius: 50%;
+				-moz-border-radius: 50%;
+				border-radius: 50%;
+				top: 5.5em;
+				left: 50%;
+				-webkit-transform: translateX(-50%);
+				-moz-transform: translateX(-50%);
+				-ms-transform: translateX(-50%);
+				-o-transform: translateX(-50%);
+				transform: translateX(-50%);
+				z-index: 3;
+				line-height: 1.4;
+				
+			}
+
+			&.created_project{
+
+				&::before{
+				background: #31de97 ;
+				content: "\79";
+					
+				}
+				
+				&::after{
+					border-top: 2px solid #909191;
+
+				}
+			}
+
+			&:nth-child(2){
+				background:url(../imgs/empty_states.png) no-repeat center -137px;
+				
+				&::before{
+				content: "2";
+					
+				}
+				
+
+			}
+			&:nth-child(3){
+				background:url(../imgs/empty_states.png) no-repeat center -289px;
+
+				&::before{
+				content: "3";
+					
+				}
+
+
+				&::after{
+					border: none;
+				}
+
+			}
+
+			&::after{
+				content: "";
+				width: 135%;
+				position: absolute;
+				border-top: 2px dashed #909191;
+				top: 6.25em;
+				left: 55%;
+				z-index: 2;
+				
+			}
+
+
+		}
+	}
+
+		/**************
+		// Documents
+		***************/
+
+		.document_item{
+			@extend %box;
+			padding:  .8em;
+			display: inline-block;
+			width: calc(49% - 1em);
+			margin-bottom: 1em;
+			font-family: $t_title;
+			vertical-align: top;
+			font-size: 0.81em;
+			position: relative;
+
+			.document{
+				&::before{
+					font-size: 1.2em;
+					padding-right: .5em;
+				}
+			}
+
+			.edit{
+				@extend %pencil;	
+				width: 1.5em;
+				height: 1.5em;
+					&::before{
+						right: 0;
+						top: 0;
+						font-size: 1.1em;
+						line-height: 1.4;
+						padding-right: .2em;
+					}
+			}
+
+			.image{
+				@extend %image;
+				&::before{
+					padding-right: .5em;
+					font-size: 1.2em;
+				}
+			}
+		}
+
+		.document_actions{
+			position: absolute;
+			right: 1em;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);			
+		}
+
+
+	/**************
+	// SIDEBAR
+	***************/
+
+.sidebar{
+	width: 33%;
+	display: inline-block;
+	vertical-align: top;
+	width: calc(33.3% - 3em);
+	background:$c_grey-l;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	margin-left: 3em;
+	overflow: hidden;
+
+
+		h3{
+			padding: 1em;
+			color: $c-mainlight;
+			border-bottom: 3px solid;
+		}
+
+		li{
+			border-bottom: 1px solid $c_grey-pp;
+
+			&:last-child{
+				border-bottom: none;
+			}
+		}
+
+		a{
+			color: $c_grey-pp;
+			display: block;
+			padding: 1em;
+			
+			&:hover{
+				background:$c-mainlight;
+				color: $c_grey-l;
+			}
+
+		}
+	}
