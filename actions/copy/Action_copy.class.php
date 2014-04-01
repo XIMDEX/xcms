@@ -70,22 +70,18 @@ class Action_copy extends ActionAbstract {
         $idnode = $node->Get('IdNode');
         $idnodetype = $node->nodeType->get('IdNodeType');
 
-        $nodeID = $this->request->getParam("nodeid");
-        $destIdNode = $this->request->getParam('targetid');
-
         $recursive = $this->request->getParam('recursive');
         $recursive = $recursive == 'on' ? true : false;
 
         if ($nodeID == $destIdNode) {
             $this->messages->add(_('Source node cannot be the same as destination node'), MSG_TYPE_ERROR);
-            $this->render(array('messages' => $this->messages->messages));
+            $this->sendJSON(array('messages' => $this->messages->messages));
             return;
         }
 
         $this->messages = copyNode($nodeID, $destIdNode, $recursive);
-        $this->reloadNode($destIdNode);
 
-        $values = array('messages' => $this->messages->messages, "parentID"=>$nodeID);
+        $values = array('messages' => $this->messages->messages, "parentID"=> $destIdNode);
         $this->sendJSON($values);
     }
     

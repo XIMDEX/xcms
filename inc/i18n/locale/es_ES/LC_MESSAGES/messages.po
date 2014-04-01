@@ -1899,8 +1899,8 @@ msgid "Expire section and all subsections included in it"
 msgstr "Caducar la secci&oacute;n y todas las subsecciones incluidas en ella"
 
 #: /actions/expiresection/templates/Smarty/expire_section.tpl
-msgid "Section <strong>%1</strong> has been successfully expired"
-msgstr "La secci&oacute;n <strong>%1</strong> ha sido caducada correctamente"
+msgid "Section <strong>%s</strong> has been successfully expired"
+msgstr "La secci&oacute;n <strong>%s</strong> ha sido caducada correctamente"
 
 #: /actions/filedownload/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Actions

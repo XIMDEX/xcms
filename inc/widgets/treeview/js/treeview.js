@@ -538,54 +538,32 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			this.loadFromSource(this.options.datastore, data /*{nodeid: {value: nodeid}}*/);
 		},
 		loadFromSource: function(dstore, data, parent, expand, selected_node, list) {
+		    
+		    var _this = this;
 
-//			var object = this;
-//		    if(list instanceof Array) {
-//		    	if (dstore.options.ds.running){
-//		    		setTimeout(function(){
-//		    			object.loadFromSource(dstore, data, parent, expand, selected_node, list);
-//		    			clearTimeout();
-//		    		}, 250);
-//		    		return;
-//		    	}
-//		    }
+		    tryLoad();
 
-		    if (dstore.options.ds.running) {
-		    	return;
-		    }
-
-			if (!parent) parent = this.container;
-
-/*
-			// ???
-
-			if ($(parent).hasClass('xim-treeview-expanded')) {
-				var shifted_node;
-				if (list && list.length > 0) {
-			        shifted_node = list.shift();
-			        this.expand(shifted_node, list);
+			function tryLoad() {
+				if (dstore.options.ds.running) {
+					setTimeout(tryLoad, 50);
+				} else {
+					loadData();
 				}
-				return;
 			}
 
-			// ???
-*/
-
-			$('ul', parent).unbind().remove();
-			this._showLoading(parent);
-			dstore.load_data({
-					params: data,
-					options: this.options
-				},
-				function(store) {
-
-					this.setModel(store.get_model(), parent, expand, selected_node, list);
-//					console.log(list);
-//					if (list instanceof Array) {
-//			    		this.loadFromSource(dstore, data, parent, expand, selected_node, list);
-//			    	}
-				}.bind(this)
-			);
+			function loadData() {
+				if (!parent) parent = _this.container;
+				$('ul', parent).unbind().remove();
+				_this._showLoading(parent);
+				dstore.load_data({
+						params: data,
+						options: _this.options
+					},
+					function(store) {
+						_this.setModel(store.get_model(), parent, expand, selected_node, list);
+					}.bind(_this)
+				);	
+			} 
 		},
 		getModel: function() {
 			//return this.model;

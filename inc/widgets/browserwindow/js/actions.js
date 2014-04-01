@@ -29,17 +29,29 @@
 	var B = X.browser;
 
 	X.ActionTypes = {
-		create: [	'addfoldernode', 
-					'addsectionnode',
-					'createlink',
-					'newemptynode', 
-					'copy', 
-					'createrole', 
-					'createuser',
-					'createxmlcontainer'
-				],
-		remove: ['deletenode','movenode'],
-		reload: ['addximlet', 'linkreport', 'workflow_forward',"modifyserver"]
+		create: [	
+			'addfoldernode', 
+			'addsectionnode',
+			'createlink',
+			'newemptynode', 
+			'copy', 
+			'createrole', 
+			'createuser',
+			'createxmlcontainer'
+		],
+		remove: [
+			'deletenode',
+			'movenode', 
+			'copy', 
+			'expiresection'
+		],
+		reload: [
+			'addximlet', 
+			'linkreport', 
+			'workflow_forward',
+			'modifyserver',
+			'modifygroupsnode'
+		]
 	};
 
 	var idCount = 0;
@@ -90,12 +102,12 @@
     		var nodeId = result.parentID || result.nodeID || result.idNode;
     		//Refresh node
     		if (nodeId) $(this.container).trigger('nodemodified', nodeId);
-
+    		if (result.oldParentID) $(this.container).trigger('nodemodified', result.oldParentID);
 	        //Messaging
 	        //TODO: Create a messaging service/widget
 	        var $message = $('<div class="message message-success" style="display: none;"></div>');
     		var submitError = false;
-    		var messages = []
+    		var messages = [];
     		$.each(result.messages, function(key, message){
     			messages.push(message.message);
     			$message.html($message.html()+'<p class="ui-state-primary ui-corner-all msg-info">'+message.message+'</p>');
@@ -105,7 +117,7 @@
     		if (submitError) $message.removeClass('message-success').addClass('message-error');
     		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
     		if (!submitError && this.action.command == 'newemptynode') {
-    			humane.log(messages);
+    			humane.log(messages, {addnCls: 'xim-notice'});
     			this.browser.browserwindow('openAction', {
 					bulk: 0,
 					callback: 'callAction',
@@ -114,13 +126,10 @@
 				}, result.nodeID);
 				this.close();
     		}
-    		if (X.ActionTypes.remove.indexOf(this.action.command) != -1) {
-				// $form.after($message);
-    // 			$message.show();
-    // 			$form.hide();
-    // 			setTimeout(function(){this.close();}.bind(this), 4000);
+    		if (!submitError && X.ActionTypes.remove.indexOf(this.action.command) != -1) {
+    			console.log("RESULT", result);
     			this.close();
-    			humane.log(messages);
+    			humane.log(messages, {addnCls: 'xim-notice'});
 				
 			} else {
 				$form.find('.action_header').after($message);
@@ -280,6 +289,7 @@
 		},
 
 		_onAssetsCompleted: function() {
+			console.log(this.action);
 			X.triggerActionLoaded({
 				actionView: this,
 				browser: this.browser,

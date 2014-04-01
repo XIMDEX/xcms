@@ -213,7 +213,8 @@ class Action_createxmlcontainer extends ActionAbstract {
 
 		$values = array(
 			'messages' => $this->messages->messages,
-			'parentID' => $idContainer
+			'parentID' => $idNode,
+			'nodeID' => $idContainer
 		);
 		$this->sendJSON($values);
     }

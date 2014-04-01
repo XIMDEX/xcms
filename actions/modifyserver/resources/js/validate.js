@@ -128,6 +128,9 @@ X.actionLoaded(function(event, fn, params) {
 		}.bind(this);
 
 		div_dialog.html(msg);
+		var dialogButtons = {};
+		dialogButtons[_('Accept')] = function(){dialogCallback(true);};
+		dialogButtons[_('Cancel')] = function(){dialogCallback(false);};
 		div_dialog.dialog({
 			buttons: {
 				accept: function() {
