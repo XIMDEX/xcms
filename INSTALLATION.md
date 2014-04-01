@@ -22,7 +22,7 @@ Installation Requirements and dependencies:
 ------------------------------------------
 	
 *  Access to a Console or terminal with Telnet o SSH.
-	*  Some steps need root access (basically to install the Ximdex instance into the Document Root of your web server and adjust permissions). The installer will run as a non privileged user and will ask you to "sudo" a script that is generated during installation. You can also run it directly later to end the installation.
+	*  The installer will run as a non privileged user but final steps will need root access (basically to install the Ximdex instance into the Document Root of your web server and to set permissions). The installer will then ask you to "sudo" a script that is generated during installation. You can skip it and run it later to end the installation.
 *  Permissions on file system in the directory (under a document root for your web server) where Ximdex will reside. Enough free space in the filesystem. See 'conf/diskspace.conf' file for further information.
 *  Database: MySQL Server (>= 5.1) or MariaDB (>=5.5).
 	*  And a DB user with permissions to create the Ximdex Database.
