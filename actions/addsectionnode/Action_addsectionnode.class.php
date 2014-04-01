@@ -129,7 +129,7 @@ class Action_addsectionnode extends ActionAbstract {
 	        		$section->SetAliasForLang($langID, $longName);
 				}
 			}
-			$this->reloadNode($nodeID);
+			
 	    	}
 	    
 		if (!($id > 0)) {
@@ -141,10 +141,11 @@ class Action_addsectionnode extends ActionAbstract {
 		
 		$values = array(
 			'action_with_no_return' => $id > 0,
-			'messages' => $this->messages->messages
+			'messages' => $this->messages->messages,
+			'nodeID' => $nodeID
 		);
 		
-		$this->render($values, NULL, 'messages.tpl');
+		$this->sendJSON($values);
     	}
     
 	private function _getLanguages($nodeID) {

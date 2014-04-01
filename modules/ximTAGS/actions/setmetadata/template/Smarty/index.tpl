@@ -30,10 +30,10 @@
 	xim-namespaces='{$namespaces}'
 	xim-node-id="{$id_node}" 
 	ng-cloak>
-	<div class="action_header" ng-hide="submitMessages.length">
+	<div class="action_header">
 		<h2>{t}Tag this node{/t}</h2>
 	</div>
-	<div class="message" ng-show="submitMessages.length">
+	<div class="message slide-item" ng-show="submitMessages.length">
 	    <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
 	        #/message.message/#
 	    </p>
@@ -50,7 +50,7 @@
 					ng-init="newTag.IdNamespace = namespaces['1'].id">
 				</xim-select>
 				<input type="text" class="xim-tagsinput-input" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-keyup="keyPress($event)"/>
-				<button type="submit" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)">{t}Add{/t}</button>
+				<button type="button" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)">{t}Add{/t}</button>
 			</div>
 	    </div>
 		<div class="xim-tagsinput-container col2-3">

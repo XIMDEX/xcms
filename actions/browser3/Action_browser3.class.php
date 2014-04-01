@@ -79,6 +79,7 @@ class Action_browser3 extends ActionAbstract {
 
 		$this->addCss('/xmd/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
 		$this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
+		$this->addCss('/extensions/humane/flatty.css');
 		$this->addActionCss('browser.css');
 		if(ModulesManager::isEnabled('ximTOUR'))
 			$this->addCss('/modules/ximTOUR/resources/css/tour.css');
@@ -103,6 +104,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/extensions/angular/angular-animate.min.js');
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');
+		$this->addJs('/extensions/humane/humane.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');

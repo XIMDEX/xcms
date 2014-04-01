@@ -31,7 +31,7 @@
 		</fieldset>
 	</div>
 
-	<div class="warning-message message">
+	<div class="message-warning message">
 		<p>{t}These properties are inheritable. Every single change will be propagated into all the child nodes.{/t}</p>
 	</div>
 

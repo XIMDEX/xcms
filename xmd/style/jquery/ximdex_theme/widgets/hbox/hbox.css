@@ -43,7 +43,7 @@ button.hbox-panel-tie::before {
   vertical-align: middle; }
 
 button.hbox-panel-tie.hide::before {
-  content: "\e03a"; }
+  content: "\e037"; }
 
 button.hbox-panel-tie.tie::before {
   content: "\e60f"; }

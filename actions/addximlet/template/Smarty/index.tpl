@@ -23,26 +23,29 @@
  *  @version $Revision$
  *}
 
+<div class="action_header">
+{t}Associate a ximlet to the section{/t}
+</div>
 {if count($linked_ximlets) > 0 }
 <form method="post" id="delete_rel" class="delete_rel" action="{$action_delete}">
 
-<fieldset>
-	<p>{t}The associated ximlets will appear in every single XML document of this section{/t}.</p>
-</fieldset>
-
+<div class="action_content">
+	<p class="message">
+		{t}The associated ximlets will appear in every single XML document of this section{/t}.
+	</p>
 <fieldset>
 	<legend><span>{t}Ximlets already associated{/t}</span></legend>
-	<ol>
+	
 		<input type="hidden" name="id_node" value="{$id_node}" />
+		<div class="copy_options">
 		{foreach from=$linked_ximlets item=ximlet_info}
-		<li>
-			<label for="{$id_node}_idximlet_{$ximlet_info.idximlet}">
+		<div>
 			<input type="checkbox" id="{$id_node}_idximlet_{$ximlet_info.idximlet}" name="idximlet[]" value="{$ximlet_info.idximlet}" />
-			<strong>{$ximlet_info.path}</strong></label>
-
-		</li>
+			<label class="icon ximlet" for="{$id_node}_idximlet_{$ximlet_info.idximlet}">{$ximlet_info.path}</label>
+		</div>	
 		{/foreach}
-	</ol>
+		</div>
+	
 </fieldset>
 <fieldset>
 	<input type="checkbox" name="recursive" id="{$id_node}_recursive_delete" /> <label for="{$id_node}_recursive_delete"> {t}Disassociate recursively{/t}.</label>
@@ -61,16 +64,17 @@
 
 <fieldset>
 	<legend><span>{t}Available Ximlets{/t}</span> </legend>
-	<ol>
+	<div class="copy_options">
 		<input type="hidden" id="id_node" name="id_node" value="{$id_node}" />
 		{foreach from=$linkable_ximlets item=ximlet}
-                <li>
-			<label for="{$id_node}_idximletavailable_{$ximlet.idximlet}">
-                        <input type="checkbox" name="idximlet[]" id="{$id_node}_idximletavailable_{$ximlet.idximlet}" value="{$ximlet.idximlet}" />
-                        <strong>{$ximlet.path}</strong></label>
-                </li>
-                {/foreach}
-	</ol>
+    	<div>
+	
+            <input type="checkbox" name="idximlet[]" id="{$id_node}_idximletavailable_{$ximlet.idximlet}" value="{$ximlet.idximlet}" />
+    		<label class="icon ximlet" for="{$id_node}_idximletavailable_{$ximlet.idximlet}">{$ximlet.path}</label>    
+			</div>
+        {/foreach}
+
+	</div>
 </fieldset>
 <fieldset>
 	<input type="checkbox" name="recursive" id="{$id_node}_recursive_add" /><label for="{$id_node}_recursive_add"> {t}Associate recursively{/t}.</label>
@@ -80,7 +84,7 @@
 <fieldset class="buttons-form">
 	{button label="Associate" class='validate button-assoc' }{*message="Would you like to associate this section with the ximlet?"*}
 </fieldset>
-
+</div>
 </form>
 	{else}
 		<p>{t}There aren't any ximlets to associate{/t}.</p>

@@ -56,11 +56,11 @@ class Action_createrole extends ActionAbstract {
 			$rol->messages->add(_('Role has been successfully added'), MSG_TYPE_NOTICE);
 		}
 		
-		$this->reloadNode($idNode);
-
-		$values = array('messages' => $rol->messages->messages );
 		
-		$this->render($values, NULL, 'messages.tpl');
+
+		$values = array('messages' => $rol->messages->messages, "parentID" => $result );
+		
+		$this->sendJSON($values);
 		
     }
 }

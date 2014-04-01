@@ -132,23 +132,72 @@ class Action_createxmlcontainer extends ActionAbstract {
     		foreach ($baseIO->messages->messages as $message) {
     			$this->messages->messages[] = $message;
     		}
-    		$values = array(
-			'idNode' => $idNode,
-			'nodeName' => $name,
-			'messages' => $this->messages->messages,
-    		);
-    		$this->render($values, null, 'messages.tpl');
-    		return false;
-    	} else {
-    		$this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
-    	}
 
-		$this->reloadNode($idNode);
+        		$values = array(
+				'idNode' => $idNode,
+				'nodeName' => $name,
+				'messages' => $this->messages->messages,
+        		);
+        		$this->sendJSON($values);
+        		return false;
+        	} else {
+        		$this->messages->add(sprintf(_('Container %s has been successfully created'), $name), MSG_TYPE_NOTICE);
+        	}
+        
+        	$languages = $this->request->getParam('languages');
+
+		if ($result && is_array($languages)) {
+	    		$baseIoInferer = new BaseIOInferer();
+	    		$inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
+	    		$nodeType = new NodeType();
+	    		$nodeType->SetByName($inferedNodeType['NODETYPENAME']);
+	    		if (!($nodeType->get('IdNodeType') > 0)) {
+	    			$this->messages->add(_('A nodetype could not be estimated to create the document,')
+	    			. _(' operation will be aborted, contact with your administrator'), MSG_TYPE_ERROR);
+	    			// aborts language insertation 
+	    			$languages = array();
+	    		}
+
+	    		$channels = $this->request->getParam('channels');
+			if(!empty($channels) ) {
+				foreach ($channels as $idChannel) {
+					$formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
+				}
+			}
+
+			// structureddocument inserts content document
+			$setSymLinks = array();
+			$master = $this->request->getParam('master');
+			foreach ($languages as $idLanguage) {
+				$result = $this->_insertLanguage($idLanguage, $nodeType->get('Name'), $name, $idContainer, $idSchema,$formChannels,$aliases);
+
+				if ($master > 0) {
+					if ($master != $idLanguage) {
+						$setSymLinks[] = $result;
+					} else {
+						$idNodeMaster = $result;
+					}
+				}
+			}
+			
+			foreach ($setSymLinks as $idNodeToLink) {
+				$structuredDocument = new StructuredDocument($idNodeToLink);
+				$structuredDocument->SetSymLink($idNodeMaster);
+
+				$slaveNode = new Node($idNodeToLink);
+				$slaveNode->set('SharedWorkflow', $idNodeMaster);
+				$slaveNode->update();
+			}
+		}
+
+		//$this->reloadNode($idNode);
 
 		$values = array(
 			'messages' => $this->messages->messages,
+			'parentID' => $idNode,
+			'nodeID' => $idContainer
 		);
-		$this->render($values, NULL, 'messages.tpl');
+		$this->sendJSON($values);
     }
 
     private function buildXmlContainer($idNode, $aliases, $name, $idSchema, $channels, $languages, $master){

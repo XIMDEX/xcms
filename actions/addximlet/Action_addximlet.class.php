@@ -63,7 +63,7 @@ class Action_addximlet extends ActionAbstract {
             'action_create' => $actionCreate,
             'name' => $node->get('Name')
         );
-
+        $this->addCss('/actions/copy/resources/css/style.css');
         $this->render($values, 'index', 'default-3.0.tpl');
     }
 

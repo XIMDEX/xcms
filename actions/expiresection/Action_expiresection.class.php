@@ -47,9 +47,11 @@ class Action_expiresection extends ActionAbstract {
     	$nodeName = $node->get('Name');
 
     	$this->_DoPublicate($idNode, $isRecursive);
-
-    	$values = array('section_name'=> $nodeName);
-    	$this->render($values, '', 'default-3.0.tpl');
+    	$this->messages->add(sprintf(_("Section <strong>%s</strong> has been successfully expired"), $nodeName), MSG_TYPE_NOTICE);
+        $values = array(
+            'messages' => $this->messages->messages,
+        );
+    	$this->sendJSON($values);
 
 
     }

@@ -30,7 +30,7 @@ function smarty_function_button($params, &$smarty) {
 	$class = explode(' ', trim($class . ' ui-state-default ui-corner-all button'));
 	$class[] = "$type-button";
 
-	$sButton = '<a href="#" id="%s" onclick="this.blur(); %s" class="%s" tabindex="%s"><span>%s</span></a>';
+	$sButton = '<button type="button" id="%s" onclick="this.blur(); %s" class="%s ladda-button" data-style="slide-up" data-size="xs" tabindex="%s"><span class="ladda-label">%s</span></button>';
 
 	// If it is not a submit button we don't want the validate class (see formManager)
 	if ($type != 'submit') {
