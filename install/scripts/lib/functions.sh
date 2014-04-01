@@ -26,6 +26,7 @@
 
 
 VERBOSE=0
+DEBUG=${DEBUG:-0}
 INTERACTIVE=0
 AUTOMATIC=0
 SCRIPT_USER=`whoami`
@@ -66,7 +67,9 @@ function println()
    #echo -e "$1" >>  $LOG
  fi
 # DEBUG into LOG FILE
- echo -e "$1" >>  $LOG
+ if [ $DEBUG == 1 ]; then
+	 echo -e "$1" >>  $LOG
+  fi
 }
 
 
@@ -95,7 +98,7 @@ function getDBParams
 {
 	data=$(cat $INSTALL_PARAMS|grep  "\$DB")
 	data=${data//[\$\;\ \"]/}
-	println "Load database params"
+	println "DB Load database params"
 	for line in ${data}
 	do
 		declare -x "$line"
@@ -119,17 +122,17 @@ function sql
   fi
 
   mysql_query=`(mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB $port_string -e "$sql") 2>&1`
-  println "Conection:  -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB  $port_string"
+  println "SQL connection:  -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB  $port_string"
   QUERY_DB=$mysql_query
   ERROR_DB=""
   if [[ $QUERY_DB =~  ^ERROR ]]; then
     ERROR_DB=$(echo "$QUERY_DB"|cut -d ' ' -f 2,1);
   fi
 	
-  println "Connectiong to mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB -P $PORT_DB" 
+  println "SQL Connection: to mysql --skip-column-names  $DATABASE -u $USER_ADMIN -p$PASSWD_ADMIN -h $SERVER_DB -P $PORT_DB" 
   #println "Running query: $sql)" 
   #println "QUERY: $QUERY_DB"
-  println "SQL: $sql | ERROR: $ERROR_DB"
+  println "SQL query: $sql | ERROR: $ERROR_DB"
   #println "SQL: $sql | RESULT: $QUERY_DB | ERROR: $ERROR_DB "
 }
 

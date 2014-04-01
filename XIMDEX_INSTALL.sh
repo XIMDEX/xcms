@@ -8,6 +8,7 @@
 
 
 # INITIAL VARS
+export DEBUG=1
 REPO_NAME="myximdex"
 REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 
@@ -655,7 +656,8 @@ PrintInstructions
 
 # STEP_DOWNLOAD
 if [  $DO_DOWNLOAD -ne 0 ]; then
-	Step_Download
+	#Step_Download
+cp -ar ximdex_tag $REPO_NAME
 else
 	echo -e "Downloading of Ximdex skipped."
 fi

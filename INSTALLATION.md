@@ -7,7 +7,7 @@ Ximdex is distributed as TAR (or TGZ) files, debian or RPM packages, Virtual mac
 
 This file provides information for a Manual Installation and the assisted installation (via the XIMDEX_INSTALL.sh shell script) both as interactive or as automatic.
 
-Before starting the installation check if you comply with the requeriments and dependencies. Then select the process you want to follow:
+Before starting the installation check if you comply with the requeriments. Then select the process you want to follow and move to that section:
 
 * Manual: unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc.
 
@@ -21,24 +21,23 @@ Feel free to contact us at help@ximdex.org for further assistance.
 Installation Requirements and dependencies:
 ------------------------------------------
 	
-	-  Access to a Console or terminal with Telnet o SSH for the installation.
-	-  Some steps need root access (basically to install the Ximdex instance into the Document Root of your web server and adjust permissions). The installer will run as a non privileged user and will ask you to "sudo" a script that is generated during installation. You can also run it directly later to end the installation.
-	-  A MySQL user with write permissions on Ximdex database schema.
-	-  MySQL Server (>= 5.1) or MariaDB .
-	-  PHP (>= 5.2.5).
-	-  PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin(recommended).
-	-  To allow spelling check using Xedit (our wysiwyg XML editor): php5-enchant module.
-	-  Other packages: wget.
-	-  Apache2 web server.
-	-  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
-	-  Permissions on file system: where the instance will reside.
-	-  For the client side: Firefox web browser (>=3.6) with Javascript y cookies enabled. Google Chrome, Safari and Opera browsers can be used too.
-	-  An internet connection (if you want to use the automatic suggestion system based on ontologies and annotations provided by XOWL module or for dynamic remote publishing your content in the cloud).
-	-  A disk partition with enough free space for Ximdex. See 'conf/diskspace.conf' file for further information.
-	-  Postfix or Sendmail (if you want to use notification by mail as it's defined by default). Otherwise, configure your 'conf/mail.conf'
+	*  Access to a Console or terminal with Telnet o SSH for the installation.
+	*  Some steps need root access (basically to install the Ximdex instance into the Document Root of your web server and adjust permissions). The installer will run as a non privileged user and will ask you to "sudo" a script that is generated during installation. You can also run it directly later to end the installation.
+	*  A MySQL user with write permissions on Ximdex database schema.
+	*  MySQL Server (>= 5.1) or MariaDB .
+	*  PHP (>= 5.2.5).
+	*  PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin(recommended).
+	*  To allow spelling check using Xedit (our wysiwyg XML editor): php5-enchant module.
+	*  Other packages: wget.
+	*  Apache2 web server.
+	*  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
+	*  Permissions on file system: where the instance will reside.
+	*  For the client side: Firefox web browser (>=3.6) with Javascript y cookies enabled. Google Chrome, Safari and Opera browsers can be used too.
+	*  An internet connection (if you want to use the automatic suggestion system based on ontologies and annotations provided by XOWL module or for dynamic remote publishing your content in the cloud).
+	*  A disk partition with enough free space for Ximdex. See 'conf/diskspace.conf' file for further information.
+	*  Postfix or Sendmail (if you want to use notification by mail as it's defined by default). Otherwise, configure your 'conf/mail.conf'
 
 See http://www.ximdex.org/documentacion/requirements_en.html for further information and http://www.ximdex.org/descargas.html for additional flavours of Ximdex and old versions.
-
 
 
 SECTION A - PREPARATION: preparing the instance to be installed:
@@ -60,120 +59,6 @@ SECTION A - PREPARATION: preparing the instance to be installed:
 		  By default, your instance will be named as 'ximdex_VERSION'
 
 		2) Continue the installation in SECTION B - INSTALLATION 
-
-
-  Installing from a RPM package:
-  -----------------------------
-
-	If you downloaded a '.rpm' package:
-
-		1) We recommend to use the package manager 'yum' to perform the installation. You can execute it in your console as follow:
-
-			># yum install ximdex-VERSION.all.rpm
-
-		  If you prefer not to use 'yum', you can also execute in your console:
-
-			># rpm -ivh ximdex-VERSION.all.rpm 
-
-		By doing this, your Ximdex root folder will be placed by default on '/var/www/html/' and it will be named as 'ximdex_VERSION'
-
-		2) Continue the installation in SECTION B - INSTALLATION 
-
-
-  Installing an Oracle Virtual Machine (OVA file):
-  -----------------------------------------------
-
-	If you downloaded a '.ova' virtual machine:
-    
-		1) Install Virtual Box:
-
-			If you did not install Virtual Box:
-				- Download it from http://www.virtualbox.org/wiki/Downloads
-				- Install it (it will reboot the system) -> further information in http://www.virtualbox.org/manual/UserManual.html
-
-
-		2) Launch Virtual Box.
-
-
-		3) Import the virtual machine:
-
-			Choose one of the following method:
-
-			3.A) Automatic:
-
-				Browse your filesystem and double click the '.ova' file.
-
-			3.B) Manually:
-
-				In the menu, select 'File' ('Archivo') and 'Import appliance' ('Importar servicio virtualizado')
-     
-				Press 'Select' ('Seleccionar') button and explore your file system to choose the downloaded '.ova' file
-
-				Press 'Import' ('Importar') button to start to import the virtual machine.
-
-
-		4) Launch Ximdex virtual machine:
-
-			Once importation has finished, double click the virtual machine called 'Ximdex VERSION' on the left side, or select it and press the 'Start' ('Iniciar') button (on top).
-
-
-		5) Launch Ximdex instance:
-
-			Once virtual machine has been started, double click the direct access located in your desktop named 'Start Ximdex'. It will open your Ximdex instance in your browser.
-
-
-		6) You're done. Enjoy Ximdex!
-
-
-  Installing from a DEBIAN repository or package:
-  ----------------------------------------------
-
-	Debian users can use a debian package or our Debian Repository (highly recommended option for Debian Lenny users). Get your Ximdex instance from our Debian Repository as follow:
-
-  	- DEBIAN Lenny users (installing from our debian repository):
-    	  ------------------
-	
-		1) Add our repository to your source list open the file '/etc/apt/sources.list' as privileged user and add the line:
-
-			deb http://ximdex.org/repository/debian binary/
-
-		2) Update your repository list, typing in your console as privileged user:
-
-			># apt-get update
-
-		3) Install the package from our repository, typing in your console:
-
-			># apt-get install ximdex
-
-		4) Your Ximdex root folder will be placed by default on '/var/www/', as 'ximdex_VERSION'
-
-		5) Check that your Ximdex root folder has the right user and group assignments for your apache web server. 
-		   For example, if your chosen user is 'ximdex' and your Apache group is 'www-data', type in your console as root:
-
-			># chown -R ximdex:www-data /var/www/ximdex_VERSION
-
-		6) Installation has be automatically done by Debian. Visit the URL http://localhost/ximdex_VERSION to enjoy Ximdex!
-			
-			
-	- Other DEBIAN users (installing from a .deb package):
-	  ------------------
- 
-          If you downloaded a '.deb' package (This option is not recommended for Debian Lenny users, use instead our Debian Repository in the previous section)
-
-		1) We recommend to use the package manager 'gdebi' to perform the installation. You can execute it in your console as follow:
-
-			># gdebi ximdex-VERSION.all.deb
-
-		   Or, if you prefer not to use 'gdebi', you can also execute:
-
-			># dpkg -i ximdex-VERSION.all.deb 
-
-		2) By doing this, your Ximdex root folder will be placed by default on '/var/www/' and it will be named as 'ximdex_VERSION'
-    
-		3) Restarting MySQL and Apache services is recommended, specially if dependant packages were installed.
-
-		4) Continue the installation in SECTION B - INSTALLATION 
-
 
 
 
