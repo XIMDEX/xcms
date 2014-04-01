@@ -23,18 +23,17 @@ Installation Requirements and dependencies:
 	
 *  Access to a Console or terminal with Telnet o SSH.
 	*  Some steps need root access (basically to install the Ximdex instance into the Document Root of your web server and adjust permissions). The installer will run as a non privileged user and will ask you to "sudo" a script that is generated during installation. You can also run it directly later to end the installation.
-*  A MySQL user with write permissions on Ximdex database schema.
-*  MySQL Server (>= 5.1) or MariaDB .
-*  PHP (>= 5.2.5).
-*  PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin(recommended).
-*  To allow spelling check using Xedit (our wysiwyg XML editor): php5-enchant module.
-*  Other packages: wget.
+*  Permissions on file system in the directory (under a document root for your web server) where Ximdex will reside. Enough free space in the filesystem. See 'conf/diskspace.conf' file for further information.
+*  Database: MySQL Server (>= 5.1) or MariaDB (>=5.5).
+	*  And a DB user with permissions to create the Ximdex Database.
 *  Apache2 web server.
-*  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
-*  Permissions on file system: where the instance will reside.
-*  For the client side: Firefox web browser (>=3.6) with Javascript y cookies enabled. Google Chrome, Safari and Opera browsers can be used too.
+	*  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
+*  PHP (>= 5.2.5).
+	*  and PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin(recommended).
+	*  To allow spelling check using Xedit (our wysiwyg XML editor): php5-enchant module.
+*  Other packages: wget.
+*  For the client side (with javascript and cookies enabled): Firefox (>=3.6), Google Chrome, Safari or Opera, ...
 *  An internet connection (if you want to use the automatic suggestion system based on ontologies and annotations provided by XOWL module or for dynamic remote publishing your content in the cloud).
-*  A disk partition with enough free space for Ximdex. See 'conf/diskspace.conf' file for further information.
 *  Postfix or Sendmail (if you want to use notification by mail as it's defined by default). Otherwise, configure your 'conf/mail.conf'
 
 See http://www.ximdex.org/documentacion/requirements_en.html for further information and http://www.ximdex.org/descargas.html for additional flavours of Ximdex and old versions.
