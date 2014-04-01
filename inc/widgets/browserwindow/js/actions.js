@@ -93,19 +93,16 @@
 
 	        //Messaging
 	        //TODO: Create a messaging service/widget
-	        var $message = $('<div class="message" style="display: none;"></div>');
+	        var $message = $('<div class="message message-success" style="display: none;"></div>');
     		var submitError = false;
     		var messages = []
     		$.each(result.messages, function(key, message){
     			messages.push(message.message);
-    			if (message.type === 2) {
-    				$message.html($message.html()+'<p class="ui-state-primary ui-corner-all msg-info">'+message.message+'</p>');
-    			} else if (message.type === 0) {
-    				$message.html($message.html()+'<p class="ui-state-error ui-corner-all msg-error">'+message.message+'</p>');
-    				submitError = true;
-    			}
+    			$message.html($message.html()+'<p class="ui-state-primary ui-corner-all msg-info">'+message.message+'</p>');
+    			if (message.type === 0) submitError = true;
 
     		});
+    		if (submitError) $message.removeClass('message-success').addClass('message-error');
     		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
     		if (!submitError && this.action.command == 'newemptynode') {
     			humane.log(messages);
