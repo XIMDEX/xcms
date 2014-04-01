@@ -155,7 +155,7 @@ class ActionAbstract extends IController {
 		$this->actionCommand = $actionInfo['Command'];
 		$this->actionName = $actionInfo['Name'];		
 		$this->actionDescription = $actionInfo['Description'];
-		$this->actionModule = $actionInfo['Module'];
+		$this->actionModule = isset($actionInfo['Module'])? $actionInfo['Module']: null;
 		$command = $this->actionCommand = $actionInfo['Command'];		
 
 		if(method_exists($this, $method)) {

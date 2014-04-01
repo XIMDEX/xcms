@@ -71,8 +71,10 @@ class BuildParser {
 				return false;
 			}
 			XMD_Log::error(LOG_PREFIX." Build file doesn't found in this path: $buildFilePath. It will load Default project");
-		}else{			
-			$this->doc = DOMDocument::load($buildFilePath);
+		}else{
+			$domDocument = new DomDocument();			
+			$domDocument->load($buildFilePath);
+			$this->doc = $domDocument;
 			if (!$this->doc){
 				error_log("Error al cargar $buildFilePath");
 			}
