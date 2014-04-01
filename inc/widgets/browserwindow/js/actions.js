@@ -286,7 +286,7 @@
 		},
 
 		_onAssetsCompleted: function() {
-			console.log(this.action);
+			// console.log(this.action);
 			X.triggerActionLoaded({
 				actionView: this,
 				browser: this.browser,
