@@ -448,8 +448,8 @@ function GetInstallStatus() {
 # STEP Checking ximdex dependencies
 function Step_Dependencies() {
 	echo "STEP1: Checking required components as PHP, MySQL, etc."
-	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh)
-	( $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh )
+	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_CheckDependencies.sh)
+	( $SCRIPT_PATH/scripts/ximdex_installer_CheckDependencies.sh )
 	result="$?"
 	if [ "$result" != 0 ]; then
 		echo "Some dependencies for Ximdex are not on your system."
@@ -655,7 +655,8 @@ PrintInstructions
 
 # STEP_DOWNLOAD
 if [  $DO_DOWNLOAD -ne 0 ]; then
-	Step_Download
+	#Step_Download
+cp -ar ximdex_tag $REPO_NAME
 else
 	echo -e "Downloading of Ximdex skipped."
 fi
