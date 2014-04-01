@@ -64,6 +64,52 @@ angular.module('ximdex')
         }
 });
 
+//Animations
+angular.module('ximdex')
+	.animation('.slide-item', function() {
+		var runTheAnimation = function(element, done){
+			console.log('run The Animation');
+			done();
+		}
+		var runTheShowAnimation = function(element, done){
+			console.log('run TheShow Animation');
+			jQuery(element).hide().slideDown(400, done);
+		}
+		var runTheHideAnimation = function(element, done){
+			console.log('run TheHide Animation');
+			jQuery(element).slideUp(400, done);
+		}
+
+		return {
+		    
+		    // you can also capture these animation events
+		    addClass : function(element, className, done) {
+		      
+		    },
+		    //this is called BEFORE the class is removed
+	        beforeAddClass : function(element, className, done) {
+	          if(className == 'ng-hide') {
+		        runTheHideAnimation(element, done);
+		      }
+		      else {
+		        runTheAnimation(element, done);
+		      }
+
+		      return function onEnd(element, done) { };
+	        },
+		    removeClass : function(element, className, done) {
+		      if(className == 'ng-hide') {
+		        runTheShowAnimation(element, done);
+		      }
+		      else {
+		        runTheAnimation(element, done);
+		      }
+
+		      return function onEnd(element, done) { };
+		    }
+		  }
+});
+
 //Hacks to deal with actual mixed enviroment
 
 (function(X) {
