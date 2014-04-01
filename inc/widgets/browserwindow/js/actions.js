@@ -43,7 +43,8 @@
 			'deletenode',
 			'movenode', 
 			'copy', 
-			'expiresection'
+			'expiresection',
+			'publicatesection'
 		],
 		reload: [
 			'addximlet', 
@@ -99,43 +100,41 @@
 
 		actionDoneCallback: function(result, form) {
     		$form = $(form);
-    		var nodeId = result.parentID || result.nodeID || result.idNode;
-    		//Refresh node
-    		if (nodeId) $(this.container).trigger('nodemodified', nodeId);
-    		if (result.oldParentID) $(this.container).trigger('nodemodified', result.oldParentID);
+    		
 	        //Messaging
-	        //TODO: Create a messaging service/widget
-	        var $message = $('<div class="message message-success" style="display: none;"></div>');
-    		var submitError = false;
+
+   		var submitError = false;
     		var messages = [];
     		$.each(result.messages, function(key, message){
     			messages.push(message.message);
-    			$message.html($message.html()+'<p class="ui-state-primary ui-corner-all msg-info">'+message.message+'</p>');
-    			if (message.type === 0) submitError = true;
 
+    			if (message.type === 0) submitError = true;
     		});
-    		if (submitError) $message.removeClass('message-success').addClass('message-error');
+    		var nodeId = result.parentID || result.nodeID || result.idNode;
+    		//Refresh node
+    		if (!submitError && nodeId) $(this.container).trigger('nodemodified', nodeId);
+    		if (!submitError && result.oldParentID) $(this.container).trigger('nodemodified', result.oldParentID);
+
     		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
-    		if (!submitError && this.action.command == 'newemptynode') {
-    			humane.log(messages, {addnCls: 'xim-notice'});
-    			this.browser.browserwindow('openAction', {
-					bulk: 0,
-					callback: 'callAction',
-					command: 'edittext',
-					name: 'Que cosas'
-				}, result.nodeID);
-				this.close();
-    		}
     		if (!submitError && X.ActionTypes.remove.indexOf(this.action.command) != -1) {
-    			console.log("RESULT", result);
     			this.close();
     			humane.log(messages, {addnCls: 'xim-notice'});
-				
 			} else {
-				$form.find('.action_header').after($message);
-    			$message.slideDown();
-    			setTimeout(function(){$message.slideUp().remove;}, 4000);
+				this.actionNotify(messages, $form, submitError);
 			}
+		},
+
+		actionNotify: function(messages, $form, error) {
+			var $message = $('<div class="message" style="display: none;"></div>');
+			$message.addClass(error ? 'message-error':'message-success');
+			for (var i = messages.length - 1; i >= 0; i--) {
+				$message.html($message.html()+'<p>'+messages[i]+'</p>');
+			};
+			$form.find('.action_header').after($message);
+			$message.slideDown();
+			setTimeout(function(){$message.slideUp(400, function(){
+				$message.remove();
+			})}, 4000);	
 		},
 
 		getForm: function(name) {

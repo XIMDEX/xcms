@@ -33,7 +33,7 @@
 	<div class="action_header">
 		<h2>{t}Tag this node{/t}</h2>
 	</div>
-	<div class="message" ng-show="submitMessages.length">
+	<div class="message slide-item" ng-show="submitMessages.length">
 	    <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
 	        #/message.message/#
 	    </p>

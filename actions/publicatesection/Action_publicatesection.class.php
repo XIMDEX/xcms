@@ -101,7 +101,7 @@ class Action_publicatesection extends ActionAbstract {
 			'messages' => $this->messages->messages,
 		);
 
-		$this->render($values, NULL, 'messages.tpl');
+		$this->sendJSON($values);
 	}
 	
 	function publication_progress() {
