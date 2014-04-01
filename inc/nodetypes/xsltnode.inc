@@ -148,7 +148,7 @@ class xsltnode extends FileNode {
 			}
 
 		}else{
-			XMD_Log::error("eliminando inclusión propio template includes");
+			XMD_Log::info("templates_include.xsl wont be include in itself.");
 		}
 	}
 
