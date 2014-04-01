@@ -29,21 +29,22 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelNodeMetadata_ORM extends GenericData   {
-	var $_idField = 'idRel';
-	var $_table = 'RelNodeMetadata';
+class RelNodeVersionMetadataVersion_ORM extends GenericData   {
+	var $_idField = 'id';
+	var $_table = 'RelNodeVersionMetadataVersion';
 	var $_metaData = array(
-				'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdMetadata' => array('type' => "int(12)", 'not_null' => 'true')
+				'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+				'idrnm' => array('type' => "int(12)", 'not_null' => 'true'),
+				'idNodeVersion' => array('type' => "int(12)", 'not_null' => 'true'),
+				'idMetadataVersion' => array('type' => "int(12)", 'not_null' => 'true')
 				);
 	var $_uniqueConstraints = array(
-				'rel' => array('IdNode', 'IdMetadata')
+				'rel' => array('idNodeVersion', 'idMetadataVersion')
 				);
-	var $_indexes = array('idRel');
-	var $idRel;
-	var $IdNode = 0;
-	var $IdMetadata = 0;
+	var $_indexes = array('id');
+	var $id;
+	var $idrnm = 0;
+	var $idNodeVersion = 0;
+	var $idMetadataVersion = 0;
 }
 ?>
-

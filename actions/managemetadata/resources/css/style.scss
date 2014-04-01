@@ -1,0 +1,339 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam
+<dev@ximdex.com>
+    *  @version $Revision$
+ */
+
+
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/_ximdex_theme";
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/_extends";
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/_icons";
+
+
+.text_label{
+    position: absolute;
+    bottom: .5em;
+    width: 90%;
+    margin-left: 5%;
+    border: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.4rem !important;
+    color: $c_grey-l;
+}
+
+.input-select.folder-data::before{
+    color:#c2d43b;
+}
+
+textarea {
+    max-width: 100%;
+}
+
+/**************
+// metadata info
+***************/
+
+.metadata_action{
+
+    .language_selector:not(.ng-hide) + .empty_state{
+        display: none;
+    }
+
+    .empty_state{
+        padding: 9em 1.5em 7em 3.5em;
+        span{
+            text-align: center;
+            display: block;
+            color: darken($c_background, 55%);
+        }
+
+        .title{
+            text-transform: uppercase;
+            position: relative;
+            padding: .5em;
+            @extend %language;
+            &::before, &::after{
+                position: absolute;
+                color: darken($c_background, 7%);
+                font-size: 3.4em;
+                top: -1.3em;
+                left: 20%;
+                text-shadow:  5px 0 0 $c_background;
+                z-index: 2;
+            }
+
+             &::after{
+                color: darken($c_background, 10%);
+                -moz-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                -webkit-transform: scaleX(-1);
+                transform: scaleX(-1);
+                filter: FlipH;
+                -ms-filter: "FlipH";
+                font-size: 4.5em;
+                top: -1.2em;
+                left: 40%;
+                z-index: 1;
+             }
+        }
+
+
+    }
+
+    .language_selector{
+        position: absolute;
+        right: 37%;
+        border: none;
+        background: none;
+        padding: 0;
+        z-index: 2;
+    }
+
+    .headline{
+        position: relative;
+        padding: 1.5em 1em;
+        span{
+            background:$c_background;
+            position: relative;
+            z-index: 2;
+            padding: 0 1em;
+            text-transform: uppercase;
+            font-family: $t_text;
+            font-weight: bold;
+        }
+        &::before{
+            content: "";
+            position: absolute;
+            width: 100%;
+            border-top: 1px solid $c_grey-pp;
+            top: 50%;   
+            left: 0;
+        }
+    }
+}
+
+
+.metadata_data{
+    width: 63%;
+}
+
+.metadata{
+    &::after{
+        color: #c2d43b;
+    }
+}
+
+.metadata_info{
+    background:$c_grey-l;
+    padding: 1em 1.5em;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    color: #fff;
+
+   > div{
+        border-top: 1px solid rgba(255,255,255,.2);
+        padding-bottom: .5em;
+
+        &:first-of-type{
+            border-top: none;
+            margin-top: 1em;
+        }
+    }
+
+    h3, h3 label{
+        text-transform: uppercase;
+        font-family: $t_text;
+        font-size: 1.3rem;
+        color: #fff;
+        padding-bottom: .1em;
+        padding-top: 1em;
+    }
+
+    h4{
+        color: #fff;
+        padding-bottom: .5em;
+        border-bottom: 3px solid $c-mainlight;
+    }
+
+    input:focus,.hidden-focus:focus + label, .hidden-focus:checked:focus + label{
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        border: none;
+        color: #303030;
+    }
+    
+    p{
+        margin-bottom: 0;
+    }
+    .alternative_select{
+        display: none;
+    }
+
+    .languages-section{
+        display: inline-block;
+    }   
+
+    .alternative-name{
+        display: none;
+    }
+}
+
+    .reduced_label{
+        color: #fff !important;
+        /*font-size: 1.9rem;*/
+        line-height: 1.4;
+        padding-left: 1em;
+        &:hover{
+            color: #c2d43b;
+        }
+
+    }
+
+.hidden-focus:checked + .reduced_label{
+    color: #fff;
+    padding-left: 0;
+    &::before{
+        @extend %tic;
+        color: #c2d43b;
+    }
+}
+
+.editable_data, .non_editable_data{
+    width: 46%;
+}
+
+.editable_data{
+    margin-right: 7%;
+    position: relative;
+    &::after{
+        content: "";
+        height: 80%;
+        top: 10%;
+        width: 0;
+        border-right: 1px solid #ccc;
+        position: absolute;
+        right: -8.5%;
+        
+    }
+}
+
+.thumbnail_item{
+    display: block;
+    margin: auto;
+    max-width: 100%;
+}
+
+
+.nodeid{
+    color: $c-mainlight;
+}
+
+    /**************
+    // Ellipsis Path
+    ***************/
+
+.path_info {
+    position: relative;
+    overflow: hidden;
+
+    &:hover{
+        overflow: visible;
+    }
+
+           &::before{
+            content: attr(data-path);
+            position: absolute;
+            color: #fff;
+            background:rgba(0,0,0,.8);
+            z-index: 2;
+            bottom: -2em;
+            right: -.8em;
+            padding: .3em .8em;
+            -ms-word-wrap: break-word;
+            word-wrap: break-word;
+            white-space: nowrap;
+            -webkit-border-radius: 1px;
+            -moz-border-radius: 1px;
+            border-radius: 1px;
+            opacity: 0;
+            overflow: hidden;
+            -webkit-transition: all .3s .35s;
+            -moz-transition: all .3s .35s;
+            -ms-transition: all .3s .35s;
+            -o-transition: all .3s .35s;
+            transition: all .3s .35s;
+            -webkit-box-shadow: 0 2px 1px rgba(0,0,0,.5);
+            -moz-box-shadow: 0 2px 1px rgba(0,0,0,.5);
+            box-shadow: 0 2px 1px rgba(0,0,0,.5);
+        }
+
+        &::after{
+            content: "";
+            border: .5em solid transparent;
+            border-bottom-color: rgba(0,0,0,.8);    
+            position: absolute;
+            bottom: -.1em;
+            right: 1.6em; 
+            opacity: 0;
+            -webkit-transition: all .3s .35s;
+            -moz-transition: all .3s .35s;
+            -ms-transition: all .3s .35s;
+            -o-transition: all .3s .35s;
+            transition: all .3s .35s;            
+        }
+
+        &:hover::before, &:hover::after{
+            opacity: 1;                                  
+        }
+
+        .path_mask{
+           overflow: hidden;
+           position: relative;
+           height: 2em;
+
+         &::before{
+               content: "...";
+                position: absolute;
+                background: $c_grey-l;
+                left: -1.6em;
+                padding: .2em .2em .2em 1.9em;
+                z-index: 2;
+                top: 0;
+                -webkit-box-shadow: 2px 0 2px rgba(70,70,70,.5);
+                -moz-box-shadow: 2px 0 2px rgba(70,70,70,.5);
+                box-shadow: 2px 0 2px rgba(70,70,70,.5);
+                
+            }           
+       }     
+
+    .path_uri{
+            position: absolute;
+            right: 0;
+            white-space: nowrap;        
+    }
+}
+

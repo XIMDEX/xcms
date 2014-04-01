@@ -34,8 +34,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 	function index () {
 		
 		$is_structured=false;
-     		$idNode = (int) $this->request->getParam("nodeid");
-	     	$actionID = (int) $this->request->getParam("actionid");
+   		$idNode = (int) $this->request->getParam("nodeid");
+     	$actionID = (int) $this->request->getParam("actionid");
 		$type = $this->request->getParam('type');
 		$userid = XSession::get('userID');
 		$dir_tmp = XIMDEX_ROOT_PATH.Config::getValue('TempRoot');
@@ -44,7 +44,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$baseIoInferer = new BaseIOInferer();
 		$type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
 		$type_node = $type_folder["NODETYPENAME"];
-
 		/** ********* Checking permits **************************** */
 		$userid = XSession::get('userID');
 
@@ -143,37 +142,30 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			$language = new Language();
 			$languages = $language->getLanguagesForNode($idNode);	
 
-			// Getting channels
-			//$channel = new Channel();
-			//$channels = $channel->getChannelsForNode($idNode);
-
 			$values["schemas"]=$schemaArray;
-			//$values["channels"]=$channels;
 			$values["languages"]=$languages;
 		}
 
 		$this->render($values, 'index', 'default-3.0.tpl');
-    	}
+   	}
 
 	function uploadFile() {
-      		//$idNode = (int) $this->request->getParam("nodeid");
+   		//$idNode = (int) $this->request->getParam("nodeid");
 		$idNode = $this->request->getParam('nodeid');
   	  	$type = $this->request->getParam('type');
-      		$option = $this->request->getParam('option');
-      		$up = $this->request->getParam("up");
-      		$base64 = $this->request->getParam("base64");
+   		$option = $this->request->getParam('option');
+  	    $up = $this->request->getParam("up");
+   		$base64 = $this->request->getParam("base64");
 	  	$retval = "";
 
 		//Browser supporting sendAsBinary()
 	  	if(count($_FILES)>0) { 
 			$file = $_FILES["ximfile"];
-
-		    	if(null == $file || 0 == $file["size"]) {
-    				$retval  = $this->_setRest(_("Unexpected error while uploading file ").$file["name"]);
-    			} else {
-    				$retval = $this->_createNode($file, $idNode, $type, $option);
-    			}
-
+		   	if(null == $file || 0 == $file["size"]) {
+    			$retval  = $this->_setRest(_("Unexpected error while uploading file ").$file["name"]);
+    		} else {
+    			$retval = $this->_createNode($file, $idNode, $type, $option);
+    		}
 	   	}
 	   	else {
 	   		$headers = getallheaders();
@@ -193,21 +185,21 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 	   	 		}
 	   	 	
 	   	 		$file = array('name' => $headers['XIM-FILENAME'],
-	   	 				  'type' => $headers['XIM-TYPE'],
-	   	 				  'size' => $headers['XIM-SIZE'],
-	   	 				  'tmp_name' => $tmp_name,
-	   	 				  'error' => 0
-	   	 				  );
-	   	    		$retval = $this->_createNode($file, $idNode, $type, $option);
+	   	 			  'type' => $headers['XIM-TYPE'],
+	   	 			  'size' => $headers['XIM-SIZE'],
+	   	 			  'tmp_name' => $tmp_name,
+	   	 			  'error' => 0
+	   	 	    );
+	   	    	$retval = $this->_createNode($file, $idNode, $type, $option);
 				//Delete the tmp_file
-	   	    		unlink($tmp_name);
+	   	    	unlink($tmp_name);
 	   	 	}
 	   	 	else {
 	   			$retval  = $this->_setRest(_("Unexpected error while uploading file. Maybe your web server is not configured properly."));
 	   	 	}
 	   	}
-	    	die(json_encode($retval));
-    	}
+        die(json_encode($retval));
+   	}
 
 	public function getpreview() {
 		$up = $this->request->getParam("up");
@@ -279,7 +271,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		} else {
 			$nodeTypeName = $baseIoInferer->infereFileType($file, $type);
 		}
-
 		$result = 0;
 
 		if(!$nodeTypeName) {
@@ -386,7 +377,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		return $result;
 	}
-
 
 	function showUploadResult() {
 

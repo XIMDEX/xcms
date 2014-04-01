@@ -197,7 +197,7 @@ INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Desc
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6207, 5084, 'Delete metadata document', 'deletenode', 'delete_xml.png', 'Delete metadata document in all its languages', 80, NULL, 1, '', 0);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6208, 5084, 'Change name', 'renamenode', 'change_name_xml.png', 'Change the metadatas name and all its language versions', 70, NULL, 0, '', 0);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6209, 5085, 'Edit metadata in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit metadata content in text plain mode', 3, NULL, 0, '', 0);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6210, 5085, 'Edit metadata in XML', 'xmleditor2', 'edit_file_xml.png', 'Edit metadata content in Xedit', 1, NULL, 0, '', 0);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6210, 5085, 'Edit metadata in XML', 'xmleditor2', 'edit_file_xml.png', 'Edit metadata content in Xedit', -1, NULL, 0, '', 0);
 
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7011,5075,'Delete relation','deleteximrel','remove_SIR_relation.png','Delete a ximSir relation',-10,'ximSIR',0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6190,5041,'Replace file','updatefile','replace_file.png','Replace a file',90,NULL,0,'');
@@ -332,10 +332,10 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7311, 5031, 'Modify properties', 'manageproperties', 'xix.png', 'Modify properties', 75, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7312, 5032, 'Modify properties', 'manageproperties', 'xix.png', 'Modify properties of a document', 85, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7317, 5082, 'Modify properties', 'manageproperties', 'xix.png', 'Modify global properties', -10, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7318, 5078, 'Delete RNG template', 'deletenode', 'delete_template_view.png', 'Delete a RNG template', 1, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7319, 5078, 'Edit RNG template', 'edittext', 'edit_template_view.png', 'Edit a RNG template', 2, NULL, 0, NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7318, 5078, 'Delete RNG schema', 'deletenode', 'delete_template_view.png', 'Delete a RNG schema', 1, NULL, 0, NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7319, 5078, 'Edit RNG schema', 'edittext', 'edit_template_view.png', 'Edit a RNG schema', 2, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7320, 0, 'Charts', 'charts', 'xix.png', 'Graphic representation', 1, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7321, 5078, 'Properties of RNG template', 'renamenode', 'modify_template_view', 'Modify properties of RNG', '20', NULL , '0', NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7321, 5078, 'Modify properties', 'renamenode', 'modify_template_view', 'Modify properties of a RNG schema', '20', NULL , '0', NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7229, 5048, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7231, 5050, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8101, 5016, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 25, NULL, 1, '');
@@ -365,12 +365,16 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8124,5024,'Add empty stylesheet','newemptynode','add_file_common.png','Create a new empty file',9,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8125,5025,'Add empty stylesheet','newemptynode','add_file_common.png','Create a new empty file',9,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8126,5026,'Add empty XSL template','newemptynode','add_file_common.png','Create a new empty file',5,NULL,0,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8127,5053,'Add empty RNG schema','newemptynode','add_file_common.png','Create a new empty file',15,NULL,0,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8127,5053,'Add an empty RNG schema','newemptynode','add_file_common.png','Create a new empty file',15,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8128,5020,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',5,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8129,5021,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',5,NULL,0,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`) VALUES(8130, 5016, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll', 0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8131, 5017, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)  VALUES (8132, 5031, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 99, NULL, 0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)  VALUES (8133, 5040, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 99, NULL, 0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)  VALUES (8134, 5039, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 99, NULL, 0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)  VALUES (8135, 5041, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 99, NULL, 0);
 
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`) VALUES(8130, 5016, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll', 0);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (8131, 5017, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll',0);
 UNLOCK TABLES;
 
 
@@ -1028,9 +1032,9 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5036,'WorkflowState','statenode','workflow.png','Workflow status',0,0,0,0,0,0,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5037,'PermissionManager','root','permissions.png','Permits manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5038,'Permission','root','permission.png','Permit',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5039,'TextFile','filenode','text_file.png','Text file',1,1,0,0,0,0,1,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5039,'TextFile','commonnode','text_file.png','Text file',1,1,0,0,0,0,1,0,1,0,0,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5040,'ImageFile','imagenode','image.png','Image file',1,1,0,0,0,0,1,0,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5041,'BinaryFile','filenode','binary_file.png','Binary file',1,1,0,0,0,0,1,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5041,'BinaryFile','commonnode','binary_file.png','Binary file',1,1,0,0,0,0,1,0,1,0,0,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5043,'ErrorFolder','foldernode','foldergray.png','Output error folder',1,1,0,0,1,0,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5050,'LinkManager','foldernode','folder_links.png','Root of link manager',0,0,0,0,1,0,0,0,0,1,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5048,'LinkFolder','foldernode','folder_links.png','Category of link manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
@@ -1052,7 +1056,7 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5068,'PropSet','foldernode','foldergray.png','Folder of property set',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5076,'NodeHt','filenode','nodeht_file.png','Html node',1,1,0,0,0,0,1,0,0,0,0,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5077,'XslTemplate','xsltnode','xml_document.png','Template of XSLT transformation',1,1,0,0,0,0,1,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5078,'RngVisualTemplate','rngvisualtemplatenode','xml_document.png','Template of RNG edition of Ximdex',1,1,0,0,0,0,1,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5078,'RngVisualTemplate','rngvisualtemplatenode','xml_document.png','RNG schema for XML documents',1,1,0,0,0,0,1,0,0,0,0,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5079,'Workflow','workflow_process','workflow.png','Workflow for documents',0,0,0,0,0,0,0,0,0,0,1,'');
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5080,'ModulesFolder','foldernode','modulesconfig.png','Container of module settings',0,0,0,0,1,0,0,0,0,0,1,NULL);
 INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5081,'ModuleInfoContainer','foldernode','modulesconfig.png','Container of a module settings',0,0,0,0,1,0,0,0,0,0,1,NULL);
@@ -2478,7 +2482,10 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6210,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6210,8,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6210,7,1,3);
-
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8132,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8133,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8134,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8135,0,1,3);
 
 
 
@@ -2981,6 +2988,8 @@ CREATE TABLE `Users` (
   `Name` varchar(255) NOT NULL default '0',
   `Email` varchar(255) NOT NULL default '',
   `Locale` varchar(5) DEFAULT NULL COMMENT 'User Locale',
+  `LastLogin` int(14) unsigned default '0',
+  `NumAccess` int(12) unsigned default '0',
   PRIMARY KEY  (`IdUser`),
   UNIQUE KEY `login` (`Login`)
 ) ENGINE=MYISAM COMMENT='Tabla de Usuarios del sistema';
@@ -2993,7 +3002,7 @@ CREATE TABLE `Users` (
 
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
 LOCK TABLES `Users` WRITE;
-INSERT INTO `Users` VALUES (301,'ximdex','$1$qSGCbgO1$yqxywUuVs1w5pd7capSQV.','Administrador de ximdex','notify@ximdex.org', NULL);
+INSERT INTO `Users` VALUES (301,'ximdex','$1$qSGCbgO1$yqxywUuVs1w5pd7capSQV.','Administrador de ximdex','notify@ximdex.org', NULL,0,0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 
@@ -3128,7 +3137,7 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (36, 5036, 'text/xml', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (37, 5037, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (38, 5038, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (39, 5039, 'text/plain', '', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (40, 5040, 'image/jpeg | image/png | image/gif | image/x-icon', ';jpeg;jpg;gif;png;ico;', 'image');
+INSERT INTO `RelNodeTypeMimeType` VALUES (40, 5040, 'image/jpeg | image/png | image/gif |image/x-icon',';jpeg;jpg;gif;png;ico;','image');
 INSERT INTO `RelNodeTypeMimeType` VALUES (41, 5041, 'query/file', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (42, 5042, 'text/html', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (43, 5043, 'httpd/unix-directory', '', '');
@@ -3178,6 +3187,9 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (138, 5028, 'text/plain', ';css;', 'css
 INSERT INTO `RelNodeTypeMimeType` VALUES (139, 5032, 'text/plain', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (140, 5055, 'text/plain', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (141, 5041, 'application/pdf', ';pdf;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (142, 5041, 'application/vnd.oasis.opendocument.text', ';odt;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (143, 5041, 'application/vnd.oasis.opendocument.spreadsheet', ';ods;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (144, 5041, 'application/vnd.oasis.opendocument.presentation', ';odp;', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (147, 5077, 'text/plain', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (148, 5077, 'application/xml', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (149, 5077, 'text/html', ';xsl;', 'ptd');
@@ -4008,8 +4020,22 @@ VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",
 DROP TABLE IF EXISTS `RelNodeMetadata`;
 CREATE TABLE RelNodeMetadata (
         idRel int(12) unsigned NOT NULL auto_increment,
-        idNodeVersion int(12) unsigned NOT NULL default '0',
-        idMetadataVersion int(12) unsigned NOT NULL default '0',
+        idNode int(12) unsigned NOT NULL default '0',
+        idMetadata int(12) unsigned NOT NULL default '0',
         PRIMARY KEY (idRel),
+        UNIQUE KEY `rel` (`idNode`,`idMetadata`)
+) ENGINE=MYISAM;
+
+--
+-- Table structure for table RelNodeVersionMetadataVersion
+--
+DROP TABLE IF EXISTS `RelNodeVersionMetadataVersion`;
+CREATE TABLE RelNodeVersionMetadataVersion (
+        id int(12) unsigned NOT NULL auto_increment,
+        idrnm int(12) unsigned NOT NULL,
+        idNodeVersion int(12) unsigned NOT NULL default '0', 
+        idMetadataVersion int(12) unsigned NOT NULL default '0', 
+        PRIMARY KEY (id),
         UNIQUE KEY `rel` (`idNodeVersion`,`idMetadataVersion`)
 ) ENGINE=MYISAM;
+

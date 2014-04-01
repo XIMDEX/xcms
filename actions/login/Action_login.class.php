@@ -127,7 +127,9 @@ class Action_login extends ActionAbstract {
 		$success = $authenticator->login($user, $password);
 
 		if ($success) {
-
+			$userObject = new User();
+			$userObject->setByLogin($user);
+			$userObject->afterLogin();
 			XSession::set('context', 'ximdex');
 			$this->logSuccessAction();
 

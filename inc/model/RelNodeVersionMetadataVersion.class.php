@@ -24,26 +24,12 @@
  *  @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+if (!defined('XIMDEX_ROOT_PATH')) {
+	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
+}
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeVersionMetadataVersion_ORM.class.php';
 
-class RelNodeMetadata_ORM extends GenericData   {
-	var $_idField = 'idRel';
-	var $_table = 'RelNodeMetadata';
-	var $_metaData = array(
-				'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdMetadata' => array('type' => "int(12)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-				'rel' => array('IdNode', 'IdMetadata')
-				);
-	var $_indexes = array('idRel');
-	var $idRel;
-	var $IdNode = 0;
-	var $IdMetadata = 0;
+class RelNodeVersionMetadataVersion extends RelNodeVersionMetadataVersion_ORM {
 }
 ?>
-

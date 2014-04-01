@@ -406,7 +406,9 @@ class Module_ximLOADER extends Module {
 			$templateId = $this->templates[$file->templatename];
 			$file->channel = $file->channel == '{?}' ? $this->project->channel : $file->channel;
 			$file->language = $file->language == '{?}' ? $this->project->language : $file->language;
-
+			$channels[] = $file->channel;
+			$languages[] = $file->language;
+			$alias[$file->language] = "";
 			$data = array(
 				'NODETYPENAME' => 'XMLCONTAINER',
 				'NAME' => $file->name,
@@ -416,7 +418,10 @@ class Module_ximLOADER extends Module {
 						'NODETYPENAME' => 'VISUALTEMPLATE',
 						'ID' => $templateId
 					)
-				)
+				),
+				"ALIASES" => $alias,
+				"LANGUAGES" => $languages,
+				"CHANNELS" => $channels
 			);
 
 			$containerId = $io->build($data);
@@ -425,28 +430,10 @@ class Module_ximLOADER extends Module {
 				$this->log(Module::ERROR, "document ".$file->name." couldn't be created ($containerId)");
 				continue;
 			}
-
-			$data = array(
-				'NODETYPENAME' => 'XMLDOCUMENT',
-				'NAME' => $file->name,
-				'NODETYPE' => $idNodeType,
-				'PARENTID' => $containerId,
-				'CHILDRENS' => array(
-					array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $templateId),
-					array('NODETYPENAME' => 'CHANNEL', 'ID' => $file->channel),
-					array('NODETYPENAME' => 'LANGUAGE', 'ID' => $file->language),
-					array('NODETYPENAME' => 'PATH', 'SRC' => $file->getPath())
-				)
-			);
-
-			$docId = $io->build($data);
-			if ($docId > 0) {
-				$ret[$file->filename] = $docId;
-				$this->log(Module::SUCCESS, "Importing " . $file->name);
-			} else {
-//				debug::log($project, $file, $data);
-				$this->log(Module::ERROR, "XML document ".$file->name." couldn't be created ($docId)");
-			}
+			$time2 = $time1 - microtime(true);
+			
+			$ret[$file->filename] = $containerId;
+				
 		}
 
 		if (count($ret) == 0) $ret = false;

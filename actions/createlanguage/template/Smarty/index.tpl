@@ -34,27 +34,34 @@
 	</fieldset>
 </div>
 <div class="action_content">
-    <p>
+    <p class="col1_2 col_left">
         <label for="langname" class="label_title">{t}Name{/t}</label>
         <input type="text" name="langname" id="langname" class="full_size cajaxg validable not_empty" placeholder="{t}Name for the new language{/t}"/>
     </p>
+
+    <div class="col1_2 col_right">
+        <p class="col1_2 col_right">
+               <label for="isoname" class="label_title">{t}ISO name{/t}</label>
+               <select name="isoname" id="isoname" class="full_size cajag validable not_empty">
+                   <option value="">{t}Select an ISO code{/t}</option>
+                   {foreach from=$languages item=language}
+                       <option value="{$language.code}">{$language.name} ( {$language.code} )</option>
+                   {/foreach}
+               </select>
+           </p> 
+ <p class="col1_2 col_right ">
+        <span class="slide-element title_block">
+            <input class="input-slide" type="checkbox" name="enabled" id="enabled" value="1" checked="checked"/>
+                <label for="enabled" class="label-slide "><span class="label_title">{t}Activated{/t}</span></label></span>
+    </p>               
+    </div>
+
     <p>
         <label for="description" class="label_title">{t}Description{/t}</label>
         <input type="text" name="description" id="description" class="full_size cajaxg validable not_empty" placeholder="{t}Description for the new language{/t}"/>
     </p>
-    <p class="col1_2 col_left">
-        <label for="isoname" class="label_title">{t}ISO name{/t}</label>
-		<select name="isoname" id="isoname" class="full_size cajag validable not_empty">
-			<option value="">{t}Select an ISO code{/t}</option>
-			{foreach from=$languages item=language}
-				<option value="{$language.code}">{$language.name} ( {$language.code} )</option>
-			{/foreach}
-		</select>
-    </p>
-    <p class="col1_2 col_right">
-        <input class="hidden-focus" type="checkbox" name="enabled" id="enabled" value="1" checked="checked"/>
-	    <label for="enabled" class="icon checkbox-label">{t}Activated{/t}</label>
-    </p>				
+   
+   			
 </div>
 
 </form>

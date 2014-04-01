@@ -42,10 +42,11 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
+ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 class AbstractStructuredDocument extends FileNode  {
 
-	/// Crea un nuevo nodo y carga su ID en la clase
+	// Creates a new structured node
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null, $aliasName = '', $channelList = null) {
 
 		$loginID = XSession::get("userID");
@@ -54,8 +55,7 @@ class AbstractStructuredDocument extends FileNode  {
 
 		if ($templateNode->get('IdNode') > 0) {
 
-			// relaxng template
-
+			// relaxng schema 
 			$templateNodeType = new NodeType($templateNode->get('IdNodeType'));
 
 			if ($templateNodeType->get('Name') == 'RngVisualTemplate') {
@@ -73,11 +73,9 @@ class AbstractStructuredDocument extends FileNode  {
 		$doc = new StructuredDocument();
 		$doc->CreateNewStrDoc($this->nodeID, $name, $loginID, $IdLanguage, $templateID, $channelList, $content);
 
-		if ($doc->HasError())
+		if ($doc->HasError()){
 			$this->parent->SetError(5);
-
-		// Introducido por Jose Luis 10/03/2006
-		// Antes estaba introduciendo el alias en el doc y no en el contenedor al crear el nodo.
+        }
 
 		$nodeContainer=new Node($this->parent->GetParent());
 		$nodeContainer->SetAliasForLang($IdLanguage, $aliasName);
@@ -88,7 +86,7 @@ class AbstractStructuredDocument extends FileNode  {
 	}
 
 
-	/// Nombre para el archivo en produccion.
+	// Name for the file/resource on production servers 
 	function GetPublishedNodeName($channel = null) {
 
 		$channel = new Channel($channel);
@@ -192,6 +190,12 @@ class AbstractStructuredDocument extends FileNode  {
 
 		$strDoc = new StructuredDocument($this->nodeID);
 		$strDoc->SetContent($content, $commitNode);
+
+		//Update metadata
+		$node = new Node($this->nodeID);
+		$idLanguage = $strDoc->GetLanguage();
+		$mm = new MetadataManager($node->get('IdParent'));
+        $mm->updateSystemMetadataByLang($idLanguage);
 
 		// Set content for any workflow slaves
 

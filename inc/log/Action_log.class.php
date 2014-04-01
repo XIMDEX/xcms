@@ -25,10 +25,7 @@
  */
 
 
-
-
-require_once( XIMDEX_ROOT_PATH . '/inc/log/Loggeable.class.php' );
-
+require_once( XIMDEX_ROOT_PATH . '/inc/log/Loggeable.class.php' ); 
 class Action_log {
 	
 	const LOGGER_NAME="action_logger";

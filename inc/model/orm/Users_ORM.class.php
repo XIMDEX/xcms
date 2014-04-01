@@ -43,7 +43,9 @@ class Users_ORM extends GenericData   {
 				'Pass' => array('type' => "varchar(255)", 'not_null' => 'true'),
 				'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
 				'Email' => array('type' => "varchar(255)", 'not_null' => 'true'),
-				'Locale' => array('type' => "varchar(5)", 'not_null' => 'false')
+				'Locale' => array('type' => "varchar(5)", 'not_null' => 'false'),
+				'LastLogin' => array('type' => "int(14)", 'not_null' => 'false'),
+				'NumAccess' => array('type' => "int(12)", 'not_null' => 'false')
 				);
 	var $_uniqueConstraints = array(
 				'login' => array('Login')
@@ -55,5 +57,7 @@ class Users_ORM extends GenericData   {
 	var $Name = 0;
 	var $Email;
 	var $Locale;
+	var $LastLogin;
+	var $NumAccess;
 }
 ?>
