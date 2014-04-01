@@ -655,8 +655,7 @@ PrintInstructions
 
 # STEP_DOWNLOAD
 if [  $DO_DOWNLOAD -ne 0 ]; then
-	#Step_Download
-cp -ar ximdex_tag $REPO_NAME
+	Step_Download
 else
 	echo -e "Downloading of Ximdex skipped."
 fi
