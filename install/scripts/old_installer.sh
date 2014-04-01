@@ -219,8 +219,8 @@ while [ $STEP != "END" ]
 do
 	case $STEP in
 		#lauch ximtest
-		1) $(chmod +x $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh)
-		( $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh )
+		1) $(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_CheckDependencies.sh)
+		( $SCRIPT_PATH/scripts/ximdex_installer_CheckDependencies.sh )
 		result="$?"
 		if [ "$result" != 0 ];
 		then

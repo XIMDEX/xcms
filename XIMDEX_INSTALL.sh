@@ -8,15 +8,11 @@
 
 
 # INITIAL VARS
-REPO_NAME="ximdex"
+REPO_NAME="myximdex"
 REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 
 REPO_BRANCH="3.5-beta3"
 #REPO_BRANCH="develop"
-
-# if branch is a TAG instead of a branch uncomment line below
-REPO_HOME="${REPO_HOME}v"
-
 
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
@@ -31,8 +27,8 @@ my_path=$(cd $(dirname $0) && pwd -P)
 my_directory=$( basename $my_path )
 
 clear
-echo "Welcome to Ximdex downloader & installer"
-echo "----------------------------------------"
+echo "Welcome to Ximdex CMS downloader & installer"
+echo "--------------------------------------------"
 echo ""
 
 # Are we running directly on a ximdex instance to be installed?
@@ -378,7 +374,7 @@ function CheckFinalDirectory() {
 
 # Print instructions
 function PrintInstructions() {
-	echo "The main steps are:"
+	echo -e "\nThe main steps are:"
 	echo "1.- Downloading Ximdex ($REPO_BRANCH branch) if you are in a clean directory."
 	echo "    (run only this step with option -d)"
 	echo "2.- Execute configuration scripts to create Database, set parameters, etc."
@@ -391,6 +387,10 @@ function PrintInstructions() {
 
 # STEP Download from Github
 function Step_Download() {
+	if [ $REPO_BRANCH != "develop" ] && [ $REPO_BRANCH != "master" ]; then
+		# it is a TAG, add v to the name
+		REPO_HOME="${REPO_HOME}v"
+	fi
 	ZIP_FILE="$REPO_BRANCH.zip"
 	REPO_FILE="$REPO_HOME$ZIP_FILE"
 	#REPO_FILE="https://github.com/XIMDEX/ximdex/archive/f555dcf3f7d9360d124afd1372bef6c7591c37bc.zip"
@@ -448,8 +448,8 @@ function GetInstallStatus() {
 # STEP Checking ximdex dependencies
 function Step_Dependencies() {
 	echo "STEP1: Checking required components as PHP, MySQL, etc."
-	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh)
-	( $SCRIPT_PATH/scripts/ximdex_installers_CheckDependencies.sh )
+	$(chmod +x $SCRIPT_PATH/scripts/ximdex_installer_CheckDependencies.sh)
+	( $SCRIPT_PATH/scripts/ximdex_installer_CheckDependencies.sh )
 	result="$?"
 	if [ "$result" != 0 ]; then
 		echo "Some dependencies for Ximdex are not on your system."
@@ -608,8 +608,28 @@ do
     esac
 done
 
+if [ "$AUTOMATIC_INSTALL" = 1 ]; then
+	if [ -f "$CONFIG_FILE" ]; then
+		echo "AUTOMATIC mode starting..."
+	else
+		echo "Can not find $CONFIG_FILE for automatic installation. Exiting!"
+		exit 90
+	fi
+else
+	echo "The name for your Ximdex instance will be '$REPO_NAME'"
+	myquestion "Do you want to modify it" "N"
+	name=""
+	if [ "$ANSWER" == "Y" ]; then
+		echo -n "What is the Name for your Ximdex instance [$REPO_NAME]? "
+		read name
 
-# Default options
+	if [ -z $name ];then
+		name=$REPO_NAME
+	fi
+		REPO_NAME=$name
+	fi
+fi
+
 if [ -z $REPO_NAME ] ; then
     echo "$REPO_NAME is not valid. Exiting!"
     exit 1
@@ -619,16 +639,6 @@ if [ -z $REPO_BRANCH ] ; then
     echo "$REPO_BRANCH is not valid. Exiting!"
     exit 1
 fi
-
-if [ "$AUTOMATIC_INSTALL" = 1 ]; then
-	if [ -f "$CONFIG_FILE" ]; then
-		echo "AUTOMATIC mode starting..."
-	else
-		echo "Can not find $CONFIG_FILE for automatic installation. Exiting!"
-		exit 90
-	fi
-fi
-
 
 # Initialize vars
 if [ -z $TARGET_NAME ]; then
@@ -662,7 +672,7 @@ if [ $AUTOMATIC_INSTALL = 0 ]; then
 	echo -e "\nThe installer can be run in automatic mode with -a option."
 	echo "An example of a setup file can be located at install/templates/setup.conf"
 	echo "Edit it and run this script with the options: -i -a yoursetupfile"
-	echo -en "\nPRESS A KEY TO CONTINUE"
+	echo -en "\nPRESS ENTER TO CONTINUE"
 	read
 	clear
 fi
