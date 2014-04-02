@@ -3459,52 +3459,52 @@ msgstr "Compruebe que no existe ning&uacute;n archivo con el mismo nombre"
 msgid "Check that path and file name are corrects"
 msgstr "Compruebe que la ruta y el nombre del archivo son correctos"
 
-#: /actions/welcome/welcome.class.php
+#: /actions/welcome/Action_welcome.class.php
 msgid "Faster, easier, more powerful"
 msgstr "M&aacute;s r&aacute;pido, m&aacute;s sencillo, m&aacute;s potente"
 
 #: /actions/welcome/template/Smarty/index.tpl
-msgid "Welcome to the brand new Ximdex 3.5!"
-msgstr "&iexcl;Bienvenido al nuevo Ximdex 3.5!"
+msgid "Welcome to Ximdex CMS"
+msgstr "Bienvenido a Ximdex CMS"
 
-msgid "With the new version of Ximdex content manager you will enjoy a product more powerful, faster and easier than previous versions. You could manage your documents in a easy and usable way."
-msgstr "Con la nueva versi&oacute;n del gestor de contenidos Ximdex disfrutar&aacute;s de un producto mucho m&aacute;s potente, r&aacute;pido y sencillo que en versiones anteriores. Podr&aacute;s gestionar tus documentos de forma sencilla y usable."
+msgid "Existing projects"
+msgstr "Proyectos existentes"
 
-msgid "Start to use new Ximdex 3.5 and discover its advantages."
-msgstr "Comienza a usar el nuevo Ximdex 3.5 y descubre las ventajas que ofrece."
+msgid "Details"
+msgstr "Detalles"
 
-msgid "Faster"
-msgstr "M&aacute;s r&aacute;pido"
+msgid "Seems you don't have any projects yet. Let's start now!"
+msgstr "Parece que no tienes proyectos creados a&uacute;n. &iexcl;Empecemos ahora!"
 
-msgid "Thanks to ximPUBLISH 2.0 module you will be able to publish your contents in a much faster way and will be able to profit from publication reports of WIX. Furthermore you will be able to import documents to your projects just drawing nodes to node tree!"
-msgstr "Gracias al m&oacute;dulo ximPUBLISH 2.0 podr&aacute;s publicar tus contenidos de manera mucho m&aacute;s r&aacute;pida y beneficiarte de los informes de publicaci&oacute;n de WIX. Adem&aacute;s, &iexcl;importa documentos a tus proyectos arrastr&aacute;ndolos al &aacute;rbol de nodos!"
+msgid "Create a new project"
+msgstr "Crear un nuevo proyecto"
 
-msgid "More powerful"
-msgstr "M&aacute;s potente"
+msgid "Documents"
+msgstr "Documentos"
 
-msgid "Start to test Ximdex thanks to preinstalled projects and defined users by default. You will be able to test the power of new node dependency manager."
-msgstr "Comienza a probar Ximdex gracias a los proyectos preinstalados y a los usuarios definidos por defecto. Podr&aacute;s comprobar la potencia del nuevo gestor de dependencias de nodos."
+msgid "Create a new project from treeview or by clicking on the button above "
+msgstr "Crea un proyecto nuevo desde el &aacute;rbol o haciendo clic en el bot&oacute;n de arriba "
 
-msgid "Easier"
-msgstr "M&aacute;s sencillo"
+msgid "Select the '<em>documents folder</em>' in the treeview on the left panel"
+msgstr "Seleciona la carpeta '<em>documents</em>' en el &aacute;rbol en el panel de la izquierda"
 
-msgid "We have new interface! And we also have a great editor WYSIWYG that allows you to modify your XML visually and without complications. And enrich your contents just with few clicks!"
-msgstr "&iexcl;Tenemos nueva interfaz! Y adem&aacute;s contamos un con gran editor WYSIWYG que te permitir&aacute; modificar tus XML de manera visual y sin complicaciones. &iexcl;Y enriquece sem&aacute;nticamente tus contenidos con tan solo unos clics!"
+msgid "Perform the '<em>Add new document</em>' action to create new documents"
+msgstr "Ejecuta la acci&oacute;n '<em>A&ntilde;adir nuevo documento</em>' para crear nuevos documentos"
 
-msgid "Do you want to know more about Ximdex?"
-msgstr "&iquest;Quieres saber m&aacute;s sobre Ximdex?"
+msgid "Learn how to"
+msgstr "Aprende c&oacute;mo"
 
-msgid "You can find Guides, Videotutorials, FAQ's and other support material in"
-msgstr "Encuentra Gu&iacute;as, Videotutoriales, FAQ's y otro material de apoyo en"
+msgid "Create a new Server & publish data"
+msgstr "Crear nuevos servidores y publicar"
 
-msgid "Be aware of news or make suggestions on our channel of"
-msgstr "Estate al tanto de las novedades o haz tus sugerencias en nuestro canal de"
+msgid "Ximdex CMS, the basics"
+msgstr "Ximdex CMS, conceptos b&aacute;sicos"
 
-msgid "Join us on our channel of:"
-msgstr "&iexcl;&Uacute;nete a nosotros en nuestro canal de"
+msgid "RNG schemes & XSL templates"
+msgstr "Esquemas RNG y plantillas XSL"
 
-msgid "and ask us your questions with no qualms"
-msgstr "y &iexcl;preg&uacute;ntanos tus dudas sin reparo!"
+msgid "Contact us"
+msgstr "Cont&aacute;ctanos"
 
 #: /actions/browser3/template/Smarty/splash/index.tpl
 
