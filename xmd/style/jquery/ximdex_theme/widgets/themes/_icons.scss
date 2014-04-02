@@ -76,6 +76,15 @@
 %image::before{
 	content: "\49";
 }
+
 %warning::before{
 	content: "\e611";
+}
+
+%preview::before{
+	content: "\70";
+}
+
+%mail::before{
+	content: "\e60a";
 }
