@@ -63,7 +63,7 @@ trap ending SIGKILL
 # Subroutines (Look for SCRIPT START to go to the beginning)
 
 function ending() {
-    echo ""
+    echo -e "\nERROR: $1 ... Exiting!"
     echo "GOODBYE!"
     stty echo
     exit 1;
@@ -434,7 +434,7 @@ function DieIfNotInstallable() {
 
 function SetInstallStatus() {
 	if [ -n $1 ]; then
-		echo $1 > $STATUSFILE
+		echo $1 > $STATUSFILE || ending "CAN NOT WRITE TO $STATUSFILE"
 	fi
 }
 
@@ -656,8 +656,7 @@ PrintInstructions
 
 # STEP_DOWNLOAD
 if [  $DO_DOWNLOAD -ne 0 ]; then
-	#Step_Download
-cp -ar ximdex_tag $REPO_NAME
+	Step_Download
 else
 	echo -e "Downloading of Ximdex skipped."
 fi

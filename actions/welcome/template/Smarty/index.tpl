@@ -23,7 +23,6 @@
  *  @version $Revision$
  *}
 
-
 <div class="welcome">
     <div class="action_header">
 	    <h2>{t}Welcome to Ximdex CMS{/t}, <em>{$user}</em>!</h2>
@@ -59,27 +58,19 @@
 			</div>
 					
 			<div class="ximdex_documents">
-				<h2>{t}Documents{/t}</h2>
-				<div class="document_item"><span class="icon document">picasso-ides</span>
+				<h2>{t}Latest documents{/t}</h2>
+			    {if $docs|@count gt 0}	
+                    {foreach from=$docs key=index item=d }
+				<div class="document_item">
+                    <span class="icon document">{$d.name}</span>
+                    <span>({$d.Version}.{$d.Subversion})</span>
+                    <span class="hidden">{$d.path}</span>
 					<div class="document_actions">
 						<button class="edit icon">Edit document</button>
 					</div>
 				</div>
-				<div class="document_item"><span class="icon document">picasso-iden</span>
-					<div class="document_actions">
-						<button class="edit icon">Edit document</button>
-				</div>
-				</div>
-				<div class="document_item"><span class="icon document">the_hobbit-ides</span>
-					<div class="document_actions">
-						<button class="edit icon">Edit document</button>
-					</div>
-				</div>
-				<div class="document_item"><span class="icon image">pablo-ruiz-picasso.jpg</span>
-					<div class="document_actions">
-						<button class="preview icon">{t}Preview image{/t}</button>
-					</div>
-                </div>
+                    {/foreach}
+                {else}
 				<div class="empty_state document_empty">
 					<ol>
 		                <li class="step_document created_project icon">{t}Create a new project from treeview or by clicking on the button above {/t}</li>
@@ -87,6 +78,7 @@
 						<li class="step_document">{t}Perform the '<em>Add new document</em>' action to create new documents{/t}</li>
 					</ol>
 				</div>
+                {/if}
 			</div>
 			
 		</div>
