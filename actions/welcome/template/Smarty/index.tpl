@@ -65,10 +65,6 @@
                     <span class="icon document">{$d.name}</span>
                     <span class="document-version">({$d.Version}.{$d.Subversion})</span>
                     <span class="document-path" data-tooltip="{$d.path}">{$d.path}</span>
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 					<div class="document_actions">
 						<button class="edit icon">Edit document</button>
 					</div>
