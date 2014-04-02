@@ -22,7 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-.config_button, .document_actions .edit, .new_item {
+.config_button, .document_actions .edit, .document_actions .preview, .new_item {
   border: none;
   background: none;
   cursor: pointer;
@@ -56,7 +56,7 @@
     background: #babdc6 !important;
     cursor: default !important; }
 
-.config_button, .document_actions .edit {
+.config_button, .document_actions .edit, .document_actions .preview {
   display: block;
   text-indent: 110%;
   white-space: nowrap;
@@ -93,14 +93,19 @@
 .document_item .image::before {
   content: "\49"; }
 
+.document_item .preview::before {
+  content: "\70"; }
+
 .welcome {
   height: 100%; }
   .welcome .action_content {
     padding: 2em 4%; }
 
 .action_content h2 {
-  font-size: 0.94em;
-  margin-bottom: 1.5em; }
+  font-size: 1.06em;
+  margin-bottom: 1em;
+  padding-bottom: .5em;
+  border-bottom: 2px solid #c6cfd3; }
 
 .main_content {
   width: 66%;
@@ -137,7 +142,7 @@
   top: 0;
   font-size: 1.31em; }
 
-.config_button, .document_actions .edit {
+.config_button, .document_actions .edit, .document_actions .preview {
   width: 1.3em;
   height: 1.3em;
   position: relative;
@@ -145,13 +150,17 @@
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%; }
-  .config_button::before, .document_actions .edit::before {
+  .config_button::before, .document_actions .edit::before, .document_actions .preview::before {
     position: absolute;
     color: #606060;
-    height: 100%; }
-  .config_button:hover::before, .document_actions .edit:hover::before {
-    background: #7bcabf;
-    color: #fff; }
+    text-indent: 0;
+    height: 100%;
+    top: 0;
+    right: 0; }
+  .config_button:hover, .document_actions .edit:hover, .document_actions .preview:hover {
+    background: #7bcabf; }
+    .config_button:hover::before, .document_actions .edit:hover::before, .document_actions .preview:hover::before {
+      color: #fff; }
 
 .project_actions {
   position: absolute;
@@ -187,7 +196,8 @@
   background: url(../imgs/empty_states.png) no-repeat center 11px;
   position: relative;
   font-weight: bold;
-  line-height: 1.2; }
+  line-height: 1.2;
+  min-width: 9em; }
   .document_empty li::before {
     content: "1";
     width: 1.5em;
@@ -212,11 +222,11 @@
   .document_empty li.created_project::after {
     border-top: 2px solid #909191; }
   .document_empty li:nth-child(2) {
-    background: url(../imgs/empty_states.png) no-repeat center -137px; }
+    background: url(../imgs/empty_states.png) no-repeat center -237px; }
     .document_empty li:nth-child(2)::before {
       content: "2"; }
   .document_empty li:nth-child(3) {
-    background: url(../imgs/empty_states.png) no-repeat center -289px; }
+    background: url(../imgs/empty_states.png) no-repeat center -489px; }
     .document_empty li:nth-child(3)::before {
       content: "3"; }
     .document_empty li:nth-child(3)::after {
@@ -236,12 +246,17 @@
 .document_item {
   padding: .8em;
   display: inline-block;
-  width: calc(49% - 1em);
+  width: calc(50% - 1em);
   margin-bottom: 1em;
   font-family: "Coustard";
   vertical-align: top;
   font-size: 0.81em;
-  position: relative; }
+  position: relative;
+  margin-left: -2px; }
+  .document_item:nth-child(even) {
+    margin-right: 2em; }
+  .document_item:nth-child(odd) {
+    margin-right: 0; }
   .document_item .document::before {
     font-size: 1.2em;
     padding-right: .5em; }
@@ -257,16 +272,21 @@
   .document_item .image::before {
     padding-right: .5em;
     font-size: 1.2em; }
+  .document_item .preview::before {
+    font-size: 1.2em;
+    padding-right: .05em;
+    line-height: 1.2; }
 
 .document_actions {
   position: absolute;
   right: 1em;
   top: 50%;
-  -webkit-transform: translateY(-50%);
+  /*-webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   -o-transform: translateY(-50%);
-  transform: translateY(-50%); }
+  transform: translateY(-50%);	*/
+  margin-top: -.7em; }
 
 /**************
 // SIDEBAR
