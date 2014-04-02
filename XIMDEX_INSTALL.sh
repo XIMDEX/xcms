@@ -35,7 +35,7 @@ echo ""
 # Are we running directly on a ximdex instance to be installed?
 if [ -d install ] && [ -d data ] && [ -d inc ] && [ -f XIMDEX_INSTALL.sh ]; then
 	echo -e "Running '$my_script_name' from '$my_path'\nin the already downloaded instance '$my_directory'" 
-	echo -e "Use $my_script_name script alone in a clean directory to force download."
+	echo -e "Use $my_script_name script alone in a clean directory to force the download."
 	echo ""
 	DO_DOWNLOAD=0
 	REPO_NAME=$my_directory
@@ -736,6 +736,7 @@ echo "Setting permissions for writable directories"
 echo ""
 $(chmod -R 2770 ${REPO_NAME}/data)
 $(chmod -R 2770 ${REPO_NAME}/logs)
+$(chmod -R 2770 ${REPO_NAME}/install)
 
 # Launching steps
 Step_Dependencies && SetInstallStatus "CHECKED"
