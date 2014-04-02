@@ -48,9 +48,11 @@ angular.module('ximdex')
     .config(function($interpolateProvider, $controllerProvider, $compileProvider) {
         $interpolateProvider.startSymbol('#/').endSymbol('/#');
         
+        //Store providers in module for controller directive resgistration after bootstraping
         angular.module('ximdex').controllerProvider = $controllerProvider;
         angular.module('ximdex').compileProvider = $compileProvider;
 
+        //Keep track of registered controllers and directives
         var registeredItems = [];
         angular.module('ximdex').registerItem = function(item) {
         	registeredItems.push(item);
@@ -62,52 +64,6 @@ angular.module('ximdex')
         		return true
         	}
         }
-});
-
-//Animations
-angular.module('ximdex')
-	.animation('.slide-item', function() {
-		var runTheAnimation = function(element, done){
-			console.log('run The Animation');
-			done();
-		}
-		var runTheShowAnimation = function(element, done){
-			console.log('run TheShow Animation');
-			jQuery(element).hide().slideDown(400, done);
-		}
-		var runTheHideAnimation = function(element, done){
-			console.log('run TheHide Animation');
-			jQuery(element).slideUp(400, done);
-		}
-
-		return {
-		    
-		    // you can also capture these animation events
-		    addClass : function(element, className, done) {
-		      
-		    },
-		    //this is called BEFORE the class is removed
-	        beforeAddClass : function(element, className, done) {
-	          if(className == 'ng-hide') {
-		        runTheHideAnimation(element, done);
-		      }
-		      else {
-		        runTheAnimation(element, done);
-		      }
-
-		      return function onEnd(element, done) { };
-	        },
-		    removeClass : function(element, className, done) {
-		      if(className == 'ng-hide') {
-		        runTheShowAnimation(element, done);
-		      }
-		      else {
-		        runTheAnimation(element, done);
-		      }
-
-		      return function onEnd(element, done) { };
-		    }
-		  }
 });
 
 //Hacks to deal with actual mixed enviroment
@@ -125,8 +81,6 @@ angular.module('ximdex')
 			            $(document).off("closeTab.angular", destroy);
 			        }
 			    };
-			    
-			    //var scope = rootScope.$new();
 			    var scope = $rootScope.$new();
 			    $compile(view[0])(scope);
 			    scope.$digest();
