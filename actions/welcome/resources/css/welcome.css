@@ -62,6 +62,24 @@
   white-space: nowrap;
   overflow: hidden; }
 
+.document_item .document-path::before {
+  background: rgba(35, 35, 35, 0.8);
+  color: #fff;
+  padding: .5em 1em;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: all .5s .3s;
+  -moz-transition: all .5s .3s;
+  -ms-transition: all .5s .3s;
+  -o-transition: all .5s .3s;
+  transition: all .5s .3s;
+  z-index: 5; }
+
 .document_empty ol {
   display: -webkit-box;
   display: -moz-box;
@@ -276,6 +294,47 @@
     font-size: 1.2em;
     padding-right: .05em;
     line-height: 1.2; }
+  .document_item .document-version {
+    color: #7bcabf;
+    font-family: "Ubuntu Condensed";
+    font-weight: bold;
+    font-size: 1.08em; }
+  .document_item .document-path {
+    white-space: nowrap;
+    max-width: 80%;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: "Ubuntu Condensed";
+    margin: .1em 0 0 1.8em;
+    cursor: pointer; }
+    .document_item .document-path::before {
+      content: attr(data-tooltip);
+      margin-left: -1em;
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none; }
+    .document_item .document-path::after {
+      border: 0.4em solid transparent;
+      position: absolute;
+      content: "";
+      border-bottom-color: rgba(35, 35, 35, 0.8);
+      margin-top: -0.8em;
+      margin-top: 1em;
+      left: 3em;
+      opacity: 0; }
+    .document_item .document-path:hover::before, .document_item .document-path:hover::after {
+      opacity: 1;
+      -webkit-transition: all .5s .3s;
+      -moz-transition: all .5s .3s;
+      -ms-transition: all .5s .3s;
+      -o-transition: all .5s .3s;
+      transition: all .5s .3s; }
+    .document_item .document-path:hover::before {
+      height: auto;
+      bottom: -2em; }
 
 .document_actions {
   position: absolute;

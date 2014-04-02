@@ -213,7 +213,6 @@ fieldset {
   -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   padding: 1em 4%;
-  border-bottom: 1px solid white;
   -webkit-border-radius: 0 12px 0 0;
   -moz-border-radius: 0 12px 0 0;
   border-radius: 0 12px 0 0;
@@ -228,11 +227,13 @@ fieldset {
   height: calc(100% - 3.2em);
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 2em 4%;
+  padding: 1em 4% 2em;
   max-width: 100%;
-  position: relative; }
-  .message + .action_content {
-    padding-top: 1em; }
+  border-top: 1px solid white;
+  position: relative;
+  /*.message + &{
+  	padding-top: 1em;
+  }*/ }
   .action_content p {
     font-size: 1.8rem;
     position: relative; }
@@ -611,19 +612,22 @@ span.error {
 // Humane/ximd-notice  message
 ***************/
 .notification-success {
-  background: rgba(76, 77, 87, 0.8);
-  color: #e3e7e9;
+  background: #e3e7e9;
+  color: #606060;
   font-weight: bold;
-  font-size: 1.4rem;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  font-size: 1.3rem;
+  -webkit-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
   padding: .57em .36em .36em; }
   .notification-success li::before {
-    color: #c2d43b;
-    padding-right: .4em;
-    font-size: 1.4em; }
+    background: #c2d43b;
+    color: #555;
+    font-size: 1.4em;
+    border-radius: 50%;
+    margin-right: .4em;
+    padding: 0.08em .08em .08em 0.15em; }
   .notification-success li::after {
     content: none; }
 

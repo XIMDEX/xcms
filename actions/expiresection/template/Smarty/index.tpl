@@ -29,7 +29,7 @@
     {button label="Accept" class='validate btn main_action'}{*message="You will expire this section. Would you like to continue?"*}
   </fieldset>
   </div>
-  <div class="message warning-message">    <p>{t}Publication windows configured for these files will be cancelled.{/t}</p></div>
+  <div class="message message-warning">    <p>{t}Publication windows configured for these files will be cancelled.{/t}</p></div>
 <div class="action_content">
     <p> {t section_name=$section_name}You have selected to expire the contents of section: {/t}{$section_name} {t}Would you like to expire just this folder or all subsections included in it too?{/t}</p>
      <div class="col1-2">

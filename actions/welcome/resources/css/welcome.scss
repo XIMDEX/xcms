@@ -311,6 +311,61 @@
 				}
 
 			}
+			
+			.document-version{
+				color: $c-mainlight;
+				font-family: $t-text;
+				font-weight: bold;
+				font-size: 1.08em;
+			}
+
+			.document-path{
+				white-space: nowrap;
+				max-width: 80%;
+				display: block;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				font-family: $t-text;
+				margin: .1em 0 0 1.8em;
+				cursor: pointer;
+
+				&::before{
+					content: attr(data-tooltip);
+					@extend %tooltip;
+					margin-left: -1em;
+
+					-webkit-transition: none;
+					-moz-transition: none;
+					-ms-transition: none;
+					-o-transition: none;
+					transition: none;				
+				}
+
+				&::after{
+					@include triangle(top,  rgba(35, 35, 35, 0.8), .4em);
+					margin-top: 1em;
+					left: 3em;
+					opacity: 0;
+
+				}
+
+				&:hover::before, &:hover::after{
+					opacity: 1;
+					-webkit-transition: all .5s .3s;
+					-moz-transition: all .5s .3s;
+					-ms-transition: all .5s .3s;
+					-o-transition: all .5s .3s;
+					transition: all .5s .3s;
+				}
+
+				&:hover::before{
+					height: auto;
+					bottom: -2em;
+					
+				}
+
+
+			}
 		}
 
 		.document_actions{

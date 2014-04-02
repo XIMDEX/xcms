@@ -36,7 +36,7 @@
 				    <div class="project_item">
 					    <img src="actions/welcome/resources/imgs/project_default.jpg" alt="" class="project_image">
 					    <span class="project_name">{$p.name}</span>
-				    	<div class="project_actions">
+				    	<div class="project_actions hidden">
 						    <button class="config_button icon">{t}Details{/t}</button>
 					    </div>
                         {*TODO: get more info for a project*}
@@ -63,8 +63,12 @@
                     {foreach from=$docs key=index item=d }
 				<div class="document_item">
                     <span class="icon document">{$d.name}</span>
-                    <span>({$d.Version}.{$d.Subversion})</span>
-                    <span class="hidden">{$d.path}</span>
+                    <span class="document-version">({$d.Version}.{$d.Subversion})</span>
+                    <span class="document-path" data-tooltip="{$d.path}">{$d.path}</span>
+<<<<<<< Updated upstream
+
+=======
+>>>>>>> Stashed changes
 					<div class="document_actions">
 						<button class="edit icon">Edit document</button>
 					</div>

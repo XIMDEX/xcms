@@ -31,7 +31,7 @@
 		{button label="Accept" class="validate btn main_action" }{*message="You are going to publish $node_name. Would you like to continue?"*}
 	</fieldset>
 </div>
-<div class="message warning-message">
+<div class="message message-warning">
 		        <p>{t}Scheduled publications for these files will be cancelled.{/t}</p></div>
 	<div class="action_content">
 		<fieldset>

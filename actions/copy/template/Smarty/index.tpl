@@ -32,7 +32,7 @@
 			{button class="validate btn main_action" label="Copy" tabindex="3"}<!--message="Are you sure you want to copy this node to selected destination?"-->
         </fieldset>
 	</div>
-	<div class="warning hidden warning-message message">
+	<div class="warning hidden message-warning message">
 		<p class="ui-icon-notice">{t}This operation is not allowed on the selected destination{/t}. 
 			{t}Please, select another destination{/t}.</p>
 	</div>	
