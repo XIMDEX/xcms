@@ -38,11 +38,12 @@ class Action_welcome extends ActionAbstract {
 			$values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
 			$values[] = $this->addJs('/resources/js/tour.js','ximTOUR');			
 		}
-		
+		$user = new User(XSession::get("userID"));
 		$this->addJs('/actions/welcome/resources/js/index.js');
 		$this->addCss('/actions/welcome/resources/css/welcome.css');
         $values["projects_info"]=ProjectService::getProjectsInfo();
         $values["user"]=XSession::get("user_name");
+        $values["docs"]=$user->getLastestDocs();
 	    $this->render($values, "index.tpl", 'default-3.0.tpl');
 	}
 }

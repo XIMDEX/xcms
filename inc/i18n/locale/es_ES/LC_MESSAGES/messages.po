@@ -3479,8 +3479,8 @@ msgstr "Parece que no tienes proyectos creados a&uacute;n. &iexcl;Empecemos ahor
 msgid "Create a new project"
 msgstr "Crear un nuevo proyecto"
 
-msgid "Documents"
-msgstr "Documentos"
+msgid "Latest documents"
+msgstr "Documentos recientes"
 
 msgid "Create a new project from treeview or by clicking on the button above "
 msgstr "Crea un proyecto nuevo desde el &aacute;rbol o haciendo clic en el bot&oacute;n de arriba "

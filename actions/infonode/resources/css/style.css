@@ -22,11 +22,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .info-node h3 {
   position: relative;
   display: inline-block;
-  background: #edeeee;
+  background: #e3e7e9;
   padding: 1.5em 15px 1.5em 30px; }
   .info-node h3::before {
     content: "";
