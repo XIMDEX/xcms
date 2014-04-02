@@ -16,3 +16,5 @@ modules/dexT/xslt/dext_main.xsl
 inc/model/orm/*.bck*
 modules/xlyre
 koala-config.json
+install/1-MoveXimdexToDocRoot.sh
+install/_STATUSFILE

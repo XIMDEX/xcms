@@ -38,7 +38,7 @@
 					    <img src="actions/welcome/resources/imgs/project_default.jpg" alt="" class="project_image">
 					    <span class="project_name">{$p.name}</span>
 				    	<div class="project_actions">
-						    <button class="config_button icon">Details</button>
+						    <button class="config_button icon">{t}Details{/t}</button>
 					    </div>
                         {*TODO: get more info for a project*}
                         {*<div class="details">
@@ -82,9 +82,9 @@
                 </div>
 				<div class="empty_state document_empty">
 					<ol>
-						<li class="step_document created_project icon">{t}Create a new project from treeview or by clicking on the button above {/t}</li>
-						<li class="step_document">{t}Select the "<em>documents folder</em>" in the treeview on the left panel{/t}</li>
-						<li class="step_document">{t}Perform the "<em>Add new document</em>" action to create new documents{/t}</li>
+		                <li class="step_document created_project icon">{t}Create a new project from treeview or by clicking on the button above {/t}</li>
+						<li class="step_document">{t}Select the '<em>documents folder</em>' in the treeview on the left panel{/t}</li>
+						<li class="step_document">{t}Perform the '<em>Add new document</em>' action to create new documents{/t}</li>
 					</ol>
 				</div>
 			</div>
@@ -94,7 +94,7 @@
 			<h3>{t}Learn how to{/t}...</h3>
 			<ul>
 				<li>
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new Project{/t}</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new project{/t}</a>
 				</li>
 				<li>
 					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new Server & publish data{/t}</a>
