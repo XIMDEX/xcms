@@ -4,7 +4,7 @@ Ximdex CMS basically requires a Linux machine, a Database server as MySQL (or Ma
 
 The easiest way to install Ximdex is downloading the bash script `XIMDEX_INSTALL.sh` into a clean directory and run the script. Ximdex can also be found as TAR (or TGZ or zip) files, linux packages, virtual machines. The XIMDEX_INSTALL.sh script, additional flavours or old versions of Ximdex can be downloaded from http://www.ximdex.com
 
-Ximdex can be installed using the following methods:
+Install Ximdex using one of the following methods:
 
 - **Assisted**: the `XIMDEX_INSTALL.sh` script will ask you for the the name of the instance, name of the Ximdex database, usernames and passwords, installation pahts, etc. During the last step, the script will create a script called `1.-MoveXimdexToDocRoot.sh` that will run with root privileges (via sudo) or, if you want to control which commands are executed, will suggests you to run the commands from a root console.
 	- **Automatic**: the XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically. A commented template setup is at install/templates/setup.conf.
@@ -21,7 +21,7 @@ Ximdex can be installed using the following methods:
 *  Database: MySQL Server (>= 5.1) or MariaDB (>=5.5).
 	*  And a DB user with permissions to create the Ximdex Database.
 *  Apache2 web server.
-	*  Apache modules: libapache2-mod-php5, apache-mpm-worker(recommended).
+	*  Apache modules: libapache2-mod-php5, apache-mpm-worker (recommended).
 *  PHP (>= 5.2.5).
 	*  and PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin (recommended).
 	*  To allow spelling check using Xedit (our wysiwyg XML editor): php5-enchant module.
