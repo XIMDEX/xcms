@@ -35,34 +35,60 @@ See http://www.ximdex.org/documentacion/requirements_en.html for further informa
 
 ##Manual Installation Steps
 
-1. Move yourself to the directory where Ximdex will reside (i.e.: /var/www/)
-2. Untar the TGZ file
-  ```
-  tar zxvf ximdex.tgz .
-  ```
-2. Move it to your Web Server Document Root
-  ```
-  mv ximdexinstance /var/www/myximdex
-  ```
-2. Create the DB user
-  ```
-  GRANT ALL PRIVILEGES  ON myximdex.* TO 'myximdex'@'localhost' IDENTIFIED BY 'XIMDEX_DBPASS' WITH GRANT OPTION; 
-  GRANT ALL PRIVILEGES  ON myximdex.* TO 'myximdex'@'%' IDENTIFIED BY 'XIMDEX_DBPASS' WITH GRANT OPTION; 
+1. Download Ximdex package, tar file and expand it:
+	```
+  	tar zxvf ximdex.tgz .
+  	```
+You should end with a directory (i.e.: XimdexInstance) containing all the Ximdex files.
 
-  ```
+2. Move it to your Web Server Document Root with the name you want (i.e.: myximdex)
+
+	```
+	mv XimdexInstance /var/www/myximdex
+	```
+You may need superuser privileges to do that!
+
+So, 'myximdex' will be your Ximdex instance after installing it.
+
+2. Connect to the DB server using superuser credentials (i.e.: root)
+
+	```
+	i.e.: mysql -h localhost -u root -p
+	```
+Change localhost for the hostname of your DB server.
+
+3. Once connected, create the DB for Ximdex CMS:
+	```
+	create database ximdexDB;
+	```
+
+4. Create the DB user that Ximdex will use (i.e.: XIMDEX_DBUSER with XIMDEX_DBPASS)
+	```
+  	GRANT ALL PRIVILEGES  ON myximdex.* TO 'XIMDEX_DBUSER'@'localhost' IDENTIFIED BY 'XIMDEX_DBPASS' WITH GRANT OPTION; 
+  	GRANT ALL PRIVILEGES  ON myximdex.* TO 'XIMDEX_DBUSER'@'%' IDENTIFIED BY 'XIMDEX_DBPASS' WITH GRANT OPTION; 
+	```
+
 3. Import Ximdex DB to your DB server
-  ```
-  mysql ximdexDB -u root -pROOTPASSWD -h localhost --port 3306 /var/www/myximdex/install/ximdex_data/ximdex.sql
-  UPDATE Config SET ConfigValue='http://MYHOST/myximdex' WHERE ConfigKEY='UrlRoot';
-  UPDATE Config SET ConfigValue='/var/www/myximdex' WHERE ConfigKEY='AppRoot';
-  UPDATE Users SET Login='ximdex' where IdUser = '301' 
-  UPDATE Nodes SET Name='ximdex' where IdNode = '301'
-  UPDATE Users SET Pass=MD5('XIMDEX_ADMIN_PASS') where IdUser = '301' 
-  UPDATE Config SET ConfigValue='en_US' WHERE ConfigKEY='locale';
-  UPDATE Config SET ConfigValue='myximdex35' WHERE ConfigKEY='ximid'; 
-  ```
-4. Update the parameters file for Ximdex:
-5.
-6.
+  	```
+  	mysql ximdexDB -u root -p -h localhost /var/www/myximdex/install/ximdex_data/ximdex.sql
+	```
+
+4. Connect to the DB and set some parameters:
+	```
+	UPDATE Config SET ConfigValue='http://MYHOST/myximdex' WHERE ConfigKEY='UrlRoot';
+  
+	UPDATE Config SET ConfigValue='/var/www/myximdex' WHERE ConfigKEY='AppRoot';
+  
+  	UPDATE Users SET Login='ximdex' where IdUser = '301' 
+  
+	UPDATE Nodes SET Name='ximdex' where IdNode = '301'
+  
+  	UPDATE Users SET Pass=MD5('XIMDEX_ADMIN_PASS') where IdUser = '301' 
+  
+ 	UPDATE Config SET ConfigValue='en_US' WHERE ConfigKEY='locale';
+  
+  	UPDATE Config SET ConfigValue='myximdex35' WHERE ConfigKEY='ximid'; 
+	 ```
+4. Update the parameters file for Ximdex: conf/install-params.conf
 
 
