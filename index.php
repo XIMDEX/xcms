@@ -47,7 +47,7 @@ ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/log/XMD_log.class.php'); // Main Logger
 ModulesManager::file('/inc/mvc/mvc.php'); // MVC
-ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER'); // Profiler
+ModulesManager::file('/inc/install/InstallController.class.php'); 
 
 function echo_gt_or_not($msg) {
 	if (function_exists('_')) {
@@ -127,8 +127,9 @@ function goLoadAction() {
 }
 
 //Main thread
-if(!file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php')){
-	header(sprintf("Location: %s", "./xmd/uninstalled/index.html"));
+if(!InstallController::isInstalled()){
+	$installController = new InstallController();
+	$installController->dispatch();
 }
 else{
 	$locale = XSession::get('locale');

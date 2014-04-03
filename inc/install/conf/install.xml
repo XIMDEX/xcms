@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<install>
+	<steps file="install/_STATUSFILE">
+		<step state="checked" class-name="" >
+			Database installation
+		</step>
+		<step state="created_db" class-name="" >
+			Permissions
+		</step>
+		<step state="configured" class-name="XimdexModules" >
+			Ximdex Modules
+		</step>
+		<step state="modules-installed" class-name="GetStarted" >
+			Get started!
+		</step>	
+	</steps>
+</install>
+
+	
