@@ -497,6 +497,7 @@ INSERT INTO `Config` VALUES (49, 'ApiIV','');
 INSERT INTO `Config` VALUES (50, 'ApiKey','');
 INSERT INTO `Config` VALUES (51, 'DevEnv','1');
 INSERT INTO `Config` VALUES (52, 'PublishPathFormat','prefix'); /*Accept default, prefix and sufix*/
+INSERT INTO `Config` VALUES (53, 'ximTourRep','10'); 
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Config` ENABLE KEYS */;
 
