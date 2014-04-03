@@ -587,16 +587,16 @@ class ActionAbstract extends IController {
 	 */
 
 	public function tourEnabled($userId, $action=null) {
-		if(!ModulesManager::isEnabled('ximTOUR'))
+		if(!ModulesManager::isEnabled('ximTOUR')){
     			return false;
-
+        }
 		$actionsStats = new ActionsStats();
 		$numReps = Config::getValue('ximTourRep');
-		if (!$action)
+		if (!$action){
 	    		$action = $this->actionCommand;
-
-		$result = $actionsStats->getCountByUserAndAction($userId, $action);
-
+        }
+        $user = new User (XSession::get("userID"));
+		$result = $user->GetNumAccess();
 		return ($result === null || $result < $numReps) ? true : false;
 	}
 
