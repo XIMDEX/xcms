@@ -412,8 +412,7 @@
 					item.dimension({width: totalWidth}, animate);
 					action_dimension =  item.dimension();
 				}
-
-				$(window).trigger("action_resize", [{dimension: item.dimension(), panel: this}]);
+				$(document).trigger("action_resize", [{dimension: item.dimension(), panel: this}]);
 				$(item.element()).removeClass('hbox-panel-hidden');
 
 			}.bind(this));

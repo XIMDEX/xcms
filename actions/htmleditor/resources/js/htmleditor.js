@@ -69,7 +69,7 @@ X.actionLoaded(function(event, fn, params)  {
 
 
 
-	$(window).bind("action_resize", function(event, params) {
+	$(document).on("action_resize", function(event, params) {
 		var max_height = ( params.dimension.height - 450 )+"px";
 		var max_width = ( params.dimension.width - 120 )+"px";
 

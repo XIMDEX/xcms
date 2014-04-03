@@ -168,19 +168,20 @@
 
 		}); //end reset functionality.
 
-		$(".CodeMirror").css("max-height", max_height);
-		$(" .CodeMirror-scroll").css("max-height", max_height);
-		$(".CodeMirror").css("max-width", max_width);
-		$(" .CodeMirror-scroll").css("max-width", max_width);
+		// $(".CodeMirror").css("max-height", max_height);
+		// $(".CodeMirror-scroll").css("max-height", max_height);
+		// $(".CodeMirror").css("max-width", max_width);
+		// $(".CodeMirror-scroll").css("max-width", max_width);
 	
-		$(window).bind("action_resize", function(event, params) {
+		$(document).on("action_resize", function(event, params) {
+			console.log("Action resize");
 			var max_height = ( params.dimension.height - 275 )+"px";
 			var max_width = ( params.dimension.width - 100 )+"px";
-
+			console.log(max_height);
 			fn(".CodeMirror").css("max-height", max_height);
 			fn(".CodeMirror-scroll").css("max-height", max_height);
 			$(".CodeMirror").css("max-width", max_width);
-			$(" .CodeMirror-scroll").css("max-width", max_width);
+			$(".CodeMirror-scroll").css("max-width", max_width);
 	 	});
 	 	return editor;
 	}; //end getEditor
