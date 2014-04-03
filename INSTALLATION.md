@@ -8,9 +8,9 @@ This file provides information for an `Assisted Installation` (via the XIMDEX_IN
 
 Before starting the installation check if you comply with all the requeriments. Then select the process you want to follow and continue reading from that section:
 
-- [ ] Manual: a guideline to unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc. 
-- [x] Assisted: the XIMDEX_INSTALL.sh script will ask you for final target directory, name for the instance, name of the Ximdex database, usernames and passwords, etc. The script will create a script named 1.-MoveXimdexToDocRoot.sh that have to be run as root or executed by you as root step by step. This way, you control exactly what commands are run as superuser.
-- [ ] Automatic: the XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically.
+- **Manual**: a guideline to unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc. 
+- **Assisted**: the XIMDEX_INSTALL.sh script will ask you for final target directory, name for the instance, name of the Ximdex database, usernames and passwords, etc. The script will create a script named 1.-MoveXimdexToDocRoot.sh that have to be run as root or executed by you as root step by step. This way, you control exactly what commands are run as superuser.
+	- **Automatic**: the XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically.
 
 >We recommend the Assisted Installation through the Bash Script because it is fully interactive and less prone to errors.  
 
@@ -36,125 +36,41 @@ Please, contact us at help@ximdex.org for further assistance.
 See http://www.ximdex.org/documentacion/requirements_en.html for further information and http://www.ximdex.org/descargas.html for additional flavours of Ximdex and old versions.
 
 
-SECTION A - PREPARATION: preparing the instance to be installed:
----------------------------------------------------------------
-
-  In order to prepar your Ximdex instance before installation, please choose one method from this section:
+##Assisted Installation
 
 
-  Installing from a TGZ or TAR file (preferred method for uptodate versions):
-  ---------------------------------
+1. Make a directory where Ximdex will download, move there and **download the XIMDEX_INSTALL.sh** script:
+	```shell
+	mkdir tryximdex
+	cd tryximdex
+	wget wget --no-check-certificate https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh
+	```
 
-	If you downloaded a '.tgz' package:
-    
-   		1) Untar the package in your web server root folder (i.e: /var/www, /var/www/html, ...). We'll use '/var/www/'. Choose the right one for you:
-			>$ cp <current_path>/ximdex-VERSION_open_rREVISION.tgz /var/www/
-                        >$ cd /var/www/			
-			>$ tar zxvf /var/www/ximdex-VERSION_open_rREVISION.tgz 
-
-		  By default, your instance will be named as 'ximdex_VERSION'
-
-		2) Continue the installation in SECTION B - INSTALLATION 
-
-
-
-SECTION B - INSTALLATION to install and configure your Ximdex instance:
-----------------------------------------------------------------------
-
-  To start this section you should have a Ximdex instance installed in a directory under your web root. Debian Lenny users of our repository and OVA installations do not have to execute this step.
-
-
-  Please, follow these steps to install and configure your Ximdex instance...
-
-  1) Move to the location of Ximdex (<ximdex_home>).
-
-  2) Run the install script of Ximdex as a privileged user (it is important to run it from the <ximdex_home>): 
-
-		 >$ sudo bash ./install/install.sh
+2. **Prepare the answers** to the questions the installation script will ask you:
+	- If you want to modify the name for your Ximdex instance (i.e.: myximdex)
+	- Target `directory` to install Ximdex (i.e.: /var/www). 
+		- Your web server has to consider it a `DOCROOT` (document root for the web server with PHP capabilities). Please, be sure it is a suitable directory to run PHP code.
+		- Ximdex files will be finally stored there (i.e.: /var/www/myximdex)
+	- The `URL` where Ximdex will be accessed (i.e.: http://YOURHOST/myximdex)
+	- User Name and Group for your Apache Web Documents to set file owners.
+	- Access credentials to your Database Server (i.e.: MySQL) as its HOSTNAME and PORT, the user with privileged access to create the ximdex database and its password. The script will then create the Ximdex DB for you (i.e.: myximdex database).
+	- Some parameters for Ximdex:
+		* Username (i.e.: myximdex) to access the just created Ximdex database (please, do not use the privileged database user. The root user is only required to create the DB but not to daily run Ximdex CMS)
+		* Default Language for your Ximdex (English, German, Portuguese or Spanish)
+		* Password for the Ximdex user with CMS ADMIN privileges (by the way, it is named `ximdex`)
 
 
-  3) Follow the installation instructions and fill the requested data:
+3. **Run** the Installation script with:
+	```
+	bash XIMDEX_INSTALL.sh
+	```
 
-	3.1) Set the MySQL server url. By default, 'localhost'.
+4. The last step of the installation will create the File 1.MoveXimdexToDocroot that has to be run as ROOT. This script will copy your instance to its final directory (i.e.: /var/www/myximdex), set file owners (to the user running apache, i.e.: www-data) and set permissions:
+	4. The installer will ask you to run this script via `sudo` (with superuser privileges). You can find the generated script and read it at myximdex/install directory.
+	4. If you decline to run it via sudo you have to run the steps in the generated script as root directly to move your instance to the final directory and set adequate file owners and permissions.
 
-		>$ Database server [localhost]:
+5. To end the installation you will be asked to **visit the Ximdex URL** from your browser (http://YOURHOST/myximdex). This last step will test your installation, create templates for new projects, allow you to install additional modules and finally will clean the install directory.
 
-	3.2) Set the MySQL Admin user name. By default, 'root'.
-
-		>$ Admin database user [root]:
-
-	3.3) Set the MySQL Admin user password. Password should be typed twice.
-
-		>$ Admin database password:
-		>$ Admin database password (repeat):
-
-	3.4) Set the database name to load all the Ximdex data. By default, 'ximdex'. If provided database already exists, the system will ask if you want to overwrite it, use it, or provide a new one.
-
-		>$ Database name [ximdex]:
-
-	3.5) Set the database user. The database name provided in the last step will be taken as default value as database user.
-
-		>$ Database user [<XIMDEX_DB_NAME>]:
-
-	3.6) Set the database user password. Password should be typed twice. If the typed user is the Admin provided above, password will not be asked again.
-
-		>$ Database user password:
-		>$ Database user password (repeat):
-
-	3.7) Insert the url to access Ximdex with the browser. Like: 'http://my_domain/<XIMDEX_CURRENT_FOLDER>'. By default, 'http://localhost/<XIMDEX_DB_NAME>' 
-		
-		>$ Ximdex host [http://localhost/<XIMDEX_DB_NAME>]:
-
-		(it is important for Ximdex to work that you use this declared URL and do not change it to synonyms as IP numbers or other hostnames)
-
-	3.8) Insert the Ximdex local path. By default, '/var/www/<XIMDEX_DB_NAME>'.
-
-		>$ Ximdex path [/var/www/<XIMDEX_DB_NAME>]:
-
-	3.9) Set Ximdex Admin user name. By default, 'ximdex'.
-
-		>$ Ximdex admin user [ximdex]:
-
-	3.10) Set Ximdex Admin user password. Password should be typed twice.
-
-		>$ Ximdex admin password:
-		>$ Ximdex admin password (repeat):
-
-	3.11) Set your interface language by default. Ximdex will show you at this point a list of available language, and you should choose one. By default, 'Spanish (es-ES)'.
-		>$ Select your Ximdex default language choosing betweeen:
-		        1. English
-		        2. Spanish
-		        3. German
-		        4. Portuguese
-
-		Ximdex default lenguage[1]: 
-
-	3.12) Decide if you want to help us to improve (optional).
-		>$ Would you like to help us to improve sending information about Ximdex usage? (recommended)  [y/n]: 
-
-	3.13) Install test projects on Ximdex (optional). We provide three projects to allow you to start working with Ximdex right away!
-
-		>$ Do you want to install one of our demo project? [y/n]:
-		Available projects:
-			1. AddressBook
-			2. Picasso
-			3. The_Hobbit
-
-	3.14) Optionally, decide if you want to install a set of recommended basic modules (ximIO, ximSYNC, ximNEWS,ximTAGS), in order to ensure the full functionality of Ximdex
-
-		>$ Do you want to install our recommended modules? [y/n]:
-	
-	3.15) Optionally, publishing processes have to be added to your crontab (i.e.: to sync to remote servers and to generate news bulletins), 
-
-		>$ Do you want to add Automatic and Scheduler to your crontab? [y/n]:
- 
-4) In any moment after installation, you can install additional Ximdex modules. They are avaliable on '<XIMDEX_HOME>/modules/' folder:
-
-	>$ ./install/module.sh install <MODULE_NAME>
-
-
-5) Now, go to the browser and type the Url provided in step 3.7 (default: http://localhost/<XIMDEX_DB_NAME>)
-	
 
 That's all folks. Enjoy Ximdex!
 
