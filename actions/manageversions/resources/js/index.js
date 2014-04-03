@@ -44,7 +44,7 @@ X.actionLoaded(function(event, fn, params) {
 	}	
 
 
-	fn('a.prevdoc-btn').click(function(e) {
+	fn('button.prevdoc-btn').click(function(e) {
 
 		var v = getRowVersion(this);
 

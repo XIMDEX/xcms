@@ -548,12 +548,6 @@ class User extends Users_ORM {
         $docs=array();
         $v = new Version();
         $docs=$v->getLastestDocsByUser($this->GetID()); 
-        foreach($docs as $i => $doc){
-            $d = new Node($doc["IdNode"]);
-            $docs[$i]["name"]=$d->GetNodeName();
-            $docs[$i]["nodetype"]=$d->GetNodeType();
-            $docs[$i]["path"]=str_replace("/Ximdex/Projects","",$d->GetPath());
-        }
         return $docs;
     }
 }

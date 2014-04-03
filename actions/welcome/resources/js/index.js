@@ -39,4 +39,16 @@ X.actionLoaded(function(event, fn, params) {
                                         name: 'Create a New Project',
                                         }, params.nodes);
                         });
+    fn('.preview.icon').click(function() {
+                                        $(params.browser).browserwindow('openAction', {
+                                        bulk: 0,
+                                        callback: 'callAction',
+                                        command: 'filepreview',
+                                        icon: null,
+                                        module: '', 
+                                        name: 'Preview of an image',
+                                        //params: 'nodes[]=' + fn('#id_pipeline option:selected').val()
+                                        params: 'nodes[]=14181'
+                                        }, params.nodes);
+                        });
 });

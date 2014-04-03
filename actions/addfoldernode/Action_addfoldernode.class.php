@@ -423,7 +423,6 @@ class Action_addfoldernode extends ActionAbstract {
 				$data = $dataTmp;
 				$data["CHILDRENS"][]=array('NODETYPENAME' => 'LANGUAGE', 'ID' => $language);
 				$docId = $io->build($data);
-                error_log("DEBUG Creado $docId");
                 $ret[] = $docId;
 			}
             

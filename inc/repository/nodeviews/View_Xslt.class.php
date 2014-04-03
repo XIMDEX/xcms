@@ -112,11 +112,7 @@ class View_Xslt extends Abstract_View {
 		foreach ($params as $param => $value) {
 		    $xsltHandler->setParameter(array($param => $value));
 		}
-<<<<<<< HEAD
-		//XMD_log::error($content);
-=======
 		
->>>>>>> b71f9366fe119f483c44cd99078065b534ec673d
 		$content = $xsltHandler->process();
 		if (empty($content)) {
 		    XMD_Log::error("Error in XSLT process for $docxap ");
