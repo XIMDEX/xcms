@@ -32,7 +32,7 @@ class InstallController extends IController {
 
 
 	const INSTALL_CONF = "install.xml";	
-	const LAST_STATE = "INSTALL";
+	const LAST_STATE = "INSTALLED";
 	private $steps = array();
 	private $currentStep = null;
 	
@@ -105,7 +105,8 @@ class InstallController extends IController {
 		$currentStep = self::getCurrentStep();		
 		if (!$currentStep)
 			return false;
-		return $currentStep == "INSTALLED";
+
+		return $currentStep == strtolower(self::LAST_STATE);
 	}
 
 	private function setToRequest() {
