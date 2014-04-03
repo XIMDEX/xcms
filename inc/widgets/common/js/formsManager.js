@@ -278,7 +278,7 @@ X.FormsManager = Object.xo_create({
 			        	}
 			        },
 			        error: function(error) {
-			        	console.log("Error", error);
+			        	_this.options.actionView.actionNotify([_('Internal server error')], $form, true);
 			        	loader.stop();
 			        }
 			    });
