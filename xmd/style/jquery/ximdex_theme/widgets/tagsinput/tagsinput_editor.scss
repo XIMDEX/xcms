@@ -57,6 +57,7 @@
     -moz-border-radius: 0;
     border-radius: 0;
     padding: .5em 2.5em .5em .7em;
+    max-height: 2.29em;
   }
 
   .xim-tagsinput-tag{
@@ -92,16 +93,18 @@
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;
-        text-indent: 170%;
+        text-indent: 5em;
         border: none;
         right: .5em;
         margin-top: .5em;
         font-size: .9em;
         overflow: hidden;
+      @extend %add;
 
         &::before{
           text-indent: 0;
           color: #fff;
+          line-height: 1.55 !important;
         }
       }
 

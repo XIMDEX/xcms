@@ -154,6 +154,11 @@ fieldset{
 	padding: 1em 4%;
 	@include radius(0 12px 0 0);
 	min-height: 3em;
+
+	.buttons-form{
+		float: right;
+		margin-top: -.4em;
+	}
 }
 
 .action_header h2{
@@ -167,7 +172,7 @@ fieldset{
 	height: calc(100% - 3.2em);
 	overflow-y: auto;
 	overflow-x: hidden;
-	padding:1em 4% 2em;
+	padding:2em 4% 2em;
 	max-width: 100%;
 	border-top: 1px solid $c_white;
 	position: relative;
@@ -179,7 +184,11 @@ fieldset{
 		font-size: 1.8rem;
 		position: relative;
 		// padding: 0 0 1em; // delete for combo input + select
+
+
 	}
+
+		
 }
 
 .full{
@@ -462,6 +471,7 @@ position: absolute;
 	padding-left: 3.5em;
 	cursor: pointer;
 	white-space: nowrap;
+	padding-top: .5em; /* Propiedades heredables */
 }
 
 .input-slide + .label-slide::before, .input-slide + .label-slide::after{
@@ -1381,12 +1391,9 @@ input:focus + .tooltip_info{
 		line-height: 1.75em;
 		color: #fff;
 		text-shadow: 0 1px 1px rgba(0,0,0,.3);
+		top: 0; /* Because Manageversion action icon and cursor too */
+		cursor: pointer;
 	}
-
-	.btn-unlabel-rounded::before{
-
-	}
-
 
 	.delete-btn{
 		background:$c_delete;
@@ -1592,7 +1599,7 @@ input:focus + .tooltip_info{
 
 	.input-select{
   		position: relative;
-  		margin: 1em 0;
+  		margin: 0 0 1em 0; /* Deleting margin-top for general actions */
 	  	input{
 	  		width: 100%;
 	  		padding: .5em 34% .5em 2.5em;  
@@ -1729,37 +1736,6 @@ input:focus + .tooltip_info{
    	 	color: #fff;
    	}
    }
-   /*position: absolute;
-   @include hide-text;
-   width: .2em;
-   height: 2em;
-   top: 0;
-   right: 0;
-   background: #dedede;
-   -webkit-transition: all .2s;
-   -moz-transition: all .2s;
-   -ms-transition: all .2s;
-   -o-transition: all .2s;
-   transition: all .2s;
-   @include boxshadow(inset 1px 0 1px rgba(0,0,0,.2));
-   &::before{
-      text-indent: 0;
-      display: block;
-      text-align: center;
-      color: $c_grey-p;  
-      font-size: .8em;
-      line-height: 2.6;
-   }
-
-   &:hover, &:hover::before{
-      background: $c_complementarylight;
-      color: #fff;
-   }
-
-   div:hover > &, li:hover > & , *> &{
-   	width: 1.2em;
-   	right: -1em;
-   }*/
    
 }
 
@@ -1805,3 +1781,13 @@ input:focus + .tooltip_info{
 	display: none;
 }
 
+
+
+	/**************
+	// Forcing max-height for action container
+	***************/
+
+	.text-editor-form, form[name="tags_form"]{
+		height: 100%;
+		max-width: 100%;
+	}

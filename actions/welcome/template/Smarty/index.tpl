@@ -62,8 +62,10 @@
 			    {if $docs|@count gt 0}	
                     {foreach from=$docs key=index item=d }
 				<div class="document_item">
-                    <span class="icon document">{$d.name}</span>
-                    <span class="document-version">({$d.Version}.{$d.Subversion})</span>
+                    <span class="icon document">{$d.name} 
+                    	<span class="document-version">({$d.Version}.{$d.Subversion})</span>
+                    </span>
+                   
                     <span class="document-path" data-tooltip="{$d.path}">{$d.path}</span>
 					<div class="document_actions">
 						<button class="edit icon">Edit document</button>

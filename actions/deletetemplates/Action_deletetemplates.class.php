@@ -50,6 +50,7 @@ class Action_deletetemplates extends ActionAbstract {
 		);
 
 		$this->addJs('/actions/deletetemplates/js/delete_templates.js');
+		$this->addCSS('/actions/deletetemplates/css/style.css');
 
 
 		$this->render($values, 'index', 'default-3.0.tpl');
@@ -77,6 +78,7 @@ class Action_deletetemplates extends ActionAbstract {
 			'go_method' => 'delete'
 		);
 
+		$this->addCSS('/actions/deletetemplates/css/style.css');
 		$this->addJs('/actions/deletetemplates/js/delete_templates.js');
 
 		$this->reloadNode($idNode);

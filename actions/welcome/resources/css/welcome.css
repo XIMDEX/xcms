@@ -275,9 +275,15 @@
     margin-right: 2em; }
   .document_item:nth-child(odd) {
     margin-right: 0; }
-  .document_item .document::before {
-    font-size: 1.2em;
-    padding-right: .5em; }
+  .document_item .document {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%; }
+    .document_item .document::before {
+      font-size: 1.2em;
+      padding-right: .5em; }
   .document_item .edit {
     width: 1.5em;
     height: 1.5em; }
@@ -306,8 +312,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: "Ubuntu Condensed";
-    margin: .1em 0 0 1.8em;
-    cursor: pointer; }
+    margin: .1em 0 0 1.7em;
+    cursor: pointer;
+    font-size: 1.08em; }
     .document_item .document-path::before {
       content: attr(data-tooltip);
       margin-left: -1em;
