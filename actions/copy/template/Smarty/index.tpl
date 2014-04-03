@@ -28,14 +28,22 @@
 <form name="copy" id="copy" method="post" action="{$action_url}">
 	<div class="action_header">
 		<h2>{t}Copy element{/t}</h2>
+		{if {count($targetNodes)}}
 		<fieldset class="buttons-form">
 			{button class="validate btn main_action" label="Copy" tabindex="3"}<!--message="Are you sure you want to copy this node to selected destination?"-->
         </fieldset>
+        {/if}
 	</div>
 	<div class="warning hidden message-warning message">
 		<p class="ui-icon-notice">{t}This operation is not allowed on the selected destination{/t}. 
 			{t}Please, select another destination{/t}.</p>
 	</div>	
+
+			{if {!count($targetNodes)}}
+				<div class="message-warning message">
+					<p>{t}There aren't any available destination{/t}.</p> 
+				</div>
+			{/if}
 	<div class="action_content">
 		<fieldset>
 			<input type="hidden" id="nodeid" name="nodeid" value="{$id_node}">
@@ -60,10 +68,6 @@
 					<input type="checkbox" name="recursive" id="recursive" checked="checked" tabindex="2" />
 					<label for="recursive"> {t}Execute this action for all files and subfolders{/t}.</label>
 				</span>				
-			{else}
-				<div class="info-message message">
-					<div>{t}There aren't any available destination{/t}.</div>
-				</div>
 			{/if}
 	</div>
 </form>

@@ -61,14 +61,14 @@ X.FormsManager = Object.xo_create({
 	 */
 	_checkInputFields: function() {
 
-		var $fields = $('input[type=text]', this.options.form);
+		// var $fields = $('input[type=text]', this.options.form);
 
-		// Don't send a form when enter key pressed
-		$fields.keydown(function(event) {
-			if (event.keyCode == 13) {
-				return false;
-			}
-		});
+		// // // Don't send a form when enter key pressed
+		// // $fields.keydown(function(event) {
+		// // 	if (event.keyCode == 13) {
+		// // 		return false;
+		// // 	}
+		// // });
 	},
 
 	/**
@@ -123,31 +123,41 @@ X.FormsManager = Object.xo_create({
 			beforeSubmit: new X.Collection({unique: true})
 		});
 
-		$(button).click(function(event) {
-
-			// Call the callbacks, if one of them returns TRUE the form will not be submitted
-			var submit = true;
-			var i = 0, l = this.beforeSubmit.size();
-			while (submit && i<l) {
-				var cb = this.beforeSubmit.get(i);
-				if (Object.isFunction(cb)) {
-					var abort = cb(event, this);
-					submit = abort === true ? false : true;
+		$(button).click(trySubmit);
+		$(this.options.form).keydown(function(event){
+			if (event.target.nodeName !== 'TEXTAREA') {
+				if (event.keyCode == 13) {
+					return trySubmit(event);
+					// return false;
 				}
-				i++;
 			}
-
-			if (!submit) {
-				//console.log('[formsManager]: Aborting sendForm.');
-				return;
-			}
-
-			return this.getFormMgr().sendForm($.extend({
-				button: this
-			}, options));
 		});
-
 		this.buttons.push(button);
+		
+		function trySubmit(event) {
+			if (!this.blockSubmit) {	
+				// Call the callbacks, if one of them returns TRUE the form will not be submitted
+				var submit = true;
+				var i = 0, l = button.beforeSubmit.size();
+				while (submit && i<l) {
+					var cb = button.beforeSubmit.get(i);
+					if (Object.isFunction(cb)) {
+						var abort = cb(event, button);
+						submit = abort === true ? false : true;
+					}
+					i++;
+				}
+
+				if (!submit) return false;
+
+				button.getFormMgr().sendForm($.extend({
+					button: button
+				}, options));
+
+				return false;
+			}	
+		}
+
 		return button;
 	},
 
@@ -264,6 +274,7 @@ X.FormsManager = Object.xo_create({
 			if ($(form).valid()) {
 				button = button[0] || button;
 				if (button) var loader = Ladda.create(button).start();//Start button loading animation
+				this.blockSubmit = true;
 				var _this = this;
 				$.ajax({
 			        url: $form.attr('action'),
@@ -276,10 +287,12 @@ X.FormsManager = Object.xo_create({
 			        	if (data && data.messages) {
 			        		_this.options.actionView.actionDoneCallback(data, form);
 			        	}
+			        	this.blockSubmit = false;
 			        },
 			        error: function(error) {
-			        	console.log("Error", error);
+			        	_this.options.actionView.actionNotify([_('Internal server error')], $form, true);
 			        	loader.stop();
+			        	this.blockSubmit = false;
 			        }
 			    });
 			}

@@ -23,6 +23,8 @@
  *  @version $Revision$
  */
   @import "../themes/ximdex_theme";
+  @import "../themes/icons";
+  @import "../themes/extends";
 
 
 
@@ -213,7 +215,13 @@
 	}
 
 
+
+
 }
+
+.xim-uploader-selected{
+		@extend %add;
+	}
 
 	.align-left{
 		text-align: left;

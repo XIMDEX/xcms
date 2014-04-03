@@ -1,4 +1,4 @@
-{**
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,41 +21,15 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
-	<form method="post" id="msr_action" action="{$action_url}">
-<div class="action_header">
-	<h2>{t}Delete templates{/t}</h2>
-	<fieldset class="buttons-form">
-		{button label="Select all" class="button-select-all btn"}
-		{button label="Select none" class="button-deselect-all btn "}
-		{button label="Delete" class="validate button-modify btn main_action"}
-	</fieldset>
-</div>
-<div class="action_content">
-{if ($templates)}
-
-
-
-
-
-			<ol>
-				{section name=i loop=$templates}
-					<li class="box-item box_item-template">
-						<span>
-							<input type="checkbox" name="templates[]" value="{$templates[i].Id}" class="hidden-focus" id="{$templates[i].Id}"/> 
-							<label for="{$templates[i].Id}" class="checkbox-label icon">{$templates[i].Name}</label>
-						</span>
-					</li>
-				{/section}
-			</ol>
-
-
-
-
-{else}
-
-
-		<p>{t}Templates not found{/t}</p>
-
-{/if}</div>
-	</form>
+ */
+.box_item-template {
+  display: inline-block;
+  margin: 0 2em 0 -2px;
+  width: calc(33% - 1.3em); }
+  .box_item-template:nth-child(3n+3) {
+    margin-right: 0; }
+  .box_item-template label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%; }

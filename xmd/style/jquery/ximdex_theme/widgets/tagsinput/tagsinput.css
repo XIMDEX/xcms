@@ -22,6 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.xim-tagsinput-newtag .add-btn::before {
+  content: "\e039"; }
+
 .xim-tagsinput-type-structured::before, .type-structured::before {
   content: "\e610"; }
 
