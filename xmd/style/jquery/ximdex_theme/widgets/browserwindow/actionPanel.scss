@@ -152,7 +152,6 @@ fieldset{
 	background: $c_white;
 	@include boxshadow(inset 0 -1px 0 $s_black);
 	padding: 1em 4%;
-	border-bottom: 1px solid $c_white;
 	@include radius(0 12px 0 0);
 	min-height: 3em;
 }
@@ -168,13 +167,14 @@ fieldset{
 	height: calc(100% - 3.2em);
 	overflow-y: auto;
 	overflow-x: hidden;
-	padding: 2em 4%;
+	padding:1em 4% 2em;
 	max-width: 100%;
+	border-top: 1px solid $c_white;
 	position: relative;
 
-	.message + &{
+	/*.message + &{
 		padding-top: 1em;
-	}
+	}*/
 	p{
 		font-size: 1.8rem;
 		position: relative;
@@ -654,13 +654,13 @@ span.error{
 		***************/
 
 		.notification-success{
-			background:rgba(76,77,87,.8);
-			color: #e3e7e9;
+			background:rgba(227,231,233,1);
+			color: #606060;
 			font-weight: bold;
-			font-size: 1.4rem;
-			-webkit-border-radius: 3px;
-			-moz-border-radius: 3px;
-			border-radius: 3px;
+			font-size: 1.3rem;
+			-webkit-border-radius: 0 0 3px 3px;
+			-moz-border-radius: 0 0 3px 3px;
+			border-radius: 0 0 3px 3px;
 			box-shadow: 0 1px 1px rgba(0,0,0,.5);
 			padding: .57em .36em .36em;
 
@@ -669,9 +669,12 @@ span.error{
 			@extend %tic;
 
 			&::before{
-				color: #c2d43b;
-				padding-right: .4em;
+				background: #c2d43b;
+				color:#555;
 				font-size: 1.4em;
+				border-radius: 50%;
+				margin-right: .4em;
+				padding: 0.08em .08em .08em 0.15em;
 			}
 
 			&::after{
@@ -804,7 +807,7 @@ span.error{
 }
 
 
-.warning-message, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
+.message-warning, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
 	background:lighten(#ffd04a, 32%);
 
 	&::before{

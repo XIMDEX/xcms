@@ -11,7 +11,6 @@
  *   GPL v3 http://opensource.org/licenses/GPL-3.0
  *
  */
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .context-menu-list {
   margin: 0;
   padding: 0 10px 0 0;
@@ -24,11 +23,12 @@
   background: #e1e1e1;
   -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 120; }
 
 .context-menu-item {
   padding: 2px 2px 2px 24px;
-  background-color: #EEE;
+  background-color: #e1e1e1;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: -moz-none;
@@ -37,7 +37,7 @@
 
 .context-menu-separator {
   padding-bottom: 0;
-  border-bottom: 1px solid #DDD; }
+  border-bottom: 1px solid #cccccc; }
 
 .context-menu-item > label > input,
 .context-menu-item > label > textarea {
@@ -48,19 +48,19 @@
 
 .context-menu-item.hover {
   cursor: pointer;
-  background-color: #39F; }
+  background-color: #7bcabf; }
 
 .context-menu-item.disabled {
-  color: #666; }
+  color: #b3b3b3; }
 
 .context-menu-input.hover,
 .context-menu-item.disabled.hover {
   cursor: default;
-  background-color: #EEE; }
+  background-color: #ececec; }
 
 .context-menu-submenu:after {
   content: ">";
-  color: #666;
+  color: #606060;
   position: absolute;
   top: 0;
   right: 3px;
@@ -69,7 +69,7 @@
 /* icons
     #protip:
     In case you want to use sprites for icons (which I would suggest you do) have a look at
-    http://css-tricks.com/13224-pseudo-spriting/ to get an idea of how to implement 
+    http://css-tricks.com/13224-pseudo-spriting/ to get an idea of how to implement
     .context-menu-item.icon:before {}
  */
 .context-menu-item.icon {
@@ -94,12 +94,7 @@
 .context-menu-input > label > textarea,
 .context-menu-input > label > select {
   display: block;
-  width: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  box-sizing: border-box; }
+  width: 100%; }
 
 .context-menu-input > label > textarea {
   height: 100px; }

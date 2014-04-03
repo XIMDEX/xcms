@@ -112,9 +112,11 @@ class ProjectService{
         $res=array();
         $root=new Node(self::$ROOTNODEID);
         $projectIds=$root->GetChildren();
-        foreach($projectIds as $pid){
-            $res[]=new ProjectService($pid);
-        }
+	if(count($projectIds)>0){
+	    foreach($projectIds as $pid){
+                $res[]=new ProjectService($pid);
+            }
+	}
         return $res;
     }
 

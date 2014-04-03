@@ -23,7 +23,6 @@
  *  @version $Revision$
  *}
 
-
 <div class="welcome">
     <div class="action_header">
 	    <h2>{t}Welcome to Ximdex CMS{/t}, <em>{$user}</em>!</h2>
@@ -37,8 +36,8 @@
 				    <div class="project_item">
 					    <img src="actions/welcome/resources/imgs/project_default.jpg" alt="" class="project_image">
 					    <span class="project_name">{$p.name}</span>
-				    	<div class="project_actions">
-						    <button class="config_button icon">Details</button>
+				    	<div class="project_actions hidden">
+						    <button class="config_button icon">{t}Details{/t}</button>
 					    </div>
                         {*TODO: get more info for a project*}
                         {*<div class="details">
@@ -59,34 +58,27 @@
 			</div>
 					
 			<div class="ximdex_documents">
-				<h2>{t}Documents{/t}</h2>
-				<div class="document_item"><span class="icon document">picasso-ides</span>
+				<h2>{t}Latest documents{/t}</h2>
+			    {if $docs|@count gt 0}	
+                    {foreach from=$docs key=index item=d }
+				<div class="document_item">
+                    <span class="icon document">{$d.name}</span>
+                    <span class="document-version">({$d.Version}.{$d.Subversion})</span>
+                    <span class="document-path" data-tooltip="{$d.path}">{$d.path}</span>
 					<div class="document_actions">
 						<button class="edit icon">Edit document</button>
 					</div>
 				</div>
-				<div class="document_item"><span class="icon document">picasso-iden</span>
-					<div class="document_actions">
-						<button class="edit icon">Edit document</button>
-				</div>
-				</div>
-				<div class="document_item"><span class="icon document">the_hobbit-ides</span>
-					<div class="document_actions">
-						<button class="edit icon">Edit document</button>
-					</div>
-				</div>
-				<div class="document_item"><span class="icon image">pablo-ruiz-picasso.jpg</span>
-					<div class="document_actions">
-						<button class="preview icon">{t}Preview image{/t}</button>
-					</div>
-                </div>
+                    {/foreach}
+                {else}
 				<div class="empty_state document_empty">
 					<ol>
-						<li class="step_document created_project icon">{t}Create a new project from treeview or by clicking on the button above {/t}</li>
-						<li class="step_document">{t}Select the "<em>documents folder</em>" in the treeview on the left panel{/t}</li>
-						<li class="step_document">{t}Perform the "<em>Add new document</em>" action to create new documents{/t}</li>
+		                <li class="step_document created_project icon">{t}Create a new project from treeview or by clicking on the button above {/t}</li>
+						<li class="step_document">{t}Select the '<em>documents folder</em>' in the treeview on the left panel{/t}</li>
+						<li class="step_document">{t}Perform the '<em>Add new document</em>' action to create new documents{/t}</li>
 					</ol>
 				</div>
+                {/if}
 			</div>
 			
 		</div>
@@ -94,7 +86,7 @@
 			<h3>{t}Learn how to{/t}...</h3>
 			<ul>
 				<li>
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new Project{/t}</a>
+					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new project{/t}</a>
 				</li>
 				<li>
 					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new Server & publish data{/t}</a>

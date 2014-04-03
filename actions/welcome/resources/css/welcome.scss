@@ -36,8 +36,10 @@
 }
 .action_content{	
 	h2{
-		font-size: 0.94em;
-		margin-bottom: 1.5em;
+		font-size: 1.06em;
+		margin-bottom: 1em;
+		padding-bottom: .5em;
+		border-bottom: 2px solid darken($c-background, 10%);
 	}
 }
 	 
@@ -84,6 +86,7 @@
 .config_button{
 	@extend %config;
 
+
 	&::before{
 		right: 0;
 		top: 0;
@@ -92,7 +95,7 @@
 
 }
 
-.config_button, .document_actions .edit{
+.config_button, .document_actions .edit, .document_actions .preview{
 	@extend %hide-text;
 	@extend %reset-button;
 	width: 1.3em;
@@ -106,12 +109,19 @@
 	&::before{
 		position: absolute;
 		color: $c_grey;
+		text-indent: 0;
 		height: 100%;
+		top: 0;
+		right: 0;
 	}
 
-	&:hover::before{
+	&:hover{
 		background:$c-mainlight;
+
+		&::before{
 		color: #fff;
+			
+		}
 	}
 }
 
@@ -162,6 +172,7 @@
 			position: relative;
 			font-weight: bold;
 			line-height: 1.2;
+			min-width: 9em;
 
 			&::before{
 				content: "1";
@@ -199,7 +210,7 @@
 			}
 
 			&:nth-child(2){
-				background:url(../imgs/empty_states.png) no-repeat center -137px;
+				background:url(../imgs/empty_states.png) no-repeat center -237px;
 				
 				&::before{
 				content: "2";
@@ -209,7 +220,7 @@
 
 			}
 			&:nth-child(3){
-				background:url(../imgs/empty_states.png) no-repeat center -289px;
+				background:url(../imgs/empty_states.png) no-repeat center -489px; 
 
 				&::before{
 				content: "3";
@@ -246,12 +257,20 @@
 			@extend %box;
 			padding:  .8em;
 			display: inline-block;
-			width: calc(49% - 1em);
+			width: calc(50% - 1em);
 			margin-bottom: 1em;
 			font-family: $t_title;
 			vertical-align: top;
 			font-size: 0.81em;
 			position: relative;
+			margin-left: -2px;
+
+			&:nth-child(even){
+				margin-right: 2em;
+			}
+			&:nth-child(odd){
+				margin-right: 0;
+			}
 
 			.document{
 				&::before{
@@ -280,17 +299,85 @@
 					font-size: 1.2em;
 				}
 			}
+
+			.preview{
+				@extend %preview;
+
+				&::before{
+				font-size: 1.2em;
+				padding-right: .05em;
+				line-height: 1.2;
+					
+				}
+
+			}
+			
+			.document-version{
+				color: $c-mainlight;
+				font-family: $t-text;
+				font-weight: bold;
+				font-size: 1.08em;
+			}
+
+			.document-path{
+				white-space: nowrap;
+				max-width: 80%;
+				display: block;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				font-family: $t-text;
+				margin: .1em 0 0 1.8em;
+				cursor: pointer;
+
+				&::before{
+					content: attr(data-tooltip);
+					@extend %tooltip;
+					margin-left: -1em;
+
+					-webkit-transition: none;
+					-moz-transition: none;
+					-ms-transition: none;
+					-o-transition: none;
+					transition: none;				
+				}
+
+				&::after{
+					@include triangle(top,  rgba(35, 35, 35, 0.8), .4em);
+					margin-top: 1em;
+					left: 3em;
+					opacity: 0;
+
+				}
+
+				&:hover::before, &:hover::after{
+					opacity: 1;
+					-webkit-transition: all .5s .3s;
+					-moz-transition: all .5s .3s;
+					-ms-transition: all .5s .3s;
+					-o-transition: all .5s .3s;
+					transition: all .5s .3s;
+				}
+
+				&:hover::before{
+					height: auto;
+					bottom: -2em;
+					
+				}
+
+
+			}
 		}
 
 		.document_actions{
 			position: absolute;
 			right: 1em;
 			top: 50%;
-			-webkit-transform: translateY(-50%);
+			/*-webkit-transform: translateY(-50%);
 			-moz-transform: translateY(-50%);
 			-ms-transform: translateY(-50%);
 			-o-transform: translateY(-50%);
-			transform: translateY(-50%);			
+			transform: translateY(-50%);	*/
+			margin-top: -.7em;		
 		}
 
 
@@ -335,5 +422,9 @@
 				color: $c_grey-l;
 			}
 
+			
+
 		}
+
+
 	}

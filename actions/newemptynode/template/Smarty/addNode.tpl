@@ -28,7 +28,7 @@
    		<h2>{t}Create a new file{/t}</h2>
   	</div>
 
-    <div class="warning-message message">
+    <div class="message-warning message">
         {t}<p>The <strong>file extension</strong> is not needed.</p>{/t}</div>
         <div class="action_content">
             <input type="hidden" name="nodeid" value="{$nodeID}">
