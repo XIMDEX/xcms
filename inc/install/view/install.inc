@@ -85,7 +85,7 @@
         </div>
     </div><div class="content step-start">
     <form method="post" action=".">
-    <input type="hidden" name="method" value="<?php echo $view ?>">
+    <input type="hidden" name="method" value="<?php echo $goMethod ?>">
         <?php 
             include ($includeTemplateStep);
         ?>       

@@ -24,11 +24,9 @@
  *  @version $Revision$
  */
 ?>
-<form method="post" action=".">
-<input type="hidden" name="method" value="startXimdex">
+
 <h2>Installation done</h2>
 <p>You've installed succesfully Ximdex CMS! <br /> 
 Now you can start using your CMS and edit an publish your content.
 </p>
 <a href="" class="launch_ximdex" onclick="document.forms[0].submit(); return false;">Get started</a>
-</form>

@@ -54,6 +54,7 @@ class GenericInstallStep {
 		header('Content-type', "text/html; charset=utf-8");		
 		
 		$view = $view? $view : $this->request->getParam("method");
+		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
 		$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$this->currentState}/view/{$view}.inc";
 		include(XIMDEX_ROOT_PATH."/inc/install/view/install.inc");
 		die();

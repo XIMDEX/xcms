@@ -30,7 +30,9 @@ class GetStartedInstallStep extends GenericInstallStep {
 
 	public function index(){
 		
-		$this->render();
+		$values=array();
+		$values["go_method"]="startXimdex";
+		$this->render($values);
 	}
 
 	public function startXimdex(){
