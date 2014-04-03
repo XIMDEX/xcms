@@ -47,7 +47,7 @@
 	</fieldset>
 	</div>
 	<div class="action_container ui-widget">
-<div class="message">
+	<div class="message-wrapper">
 			{include file="`$_APP_ROOT`/xmd/template/Smarty/helper/messages.tpl"}
 	
 	</div>

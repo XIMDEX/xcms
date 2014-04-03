@@ -27,19 +27,19 @@
 {if count($messages) > 0}
 	{foreach from=$messages item=message}
 		{if ($message.type == "0")}
-			{assign var="class" value="ui-state-error ui-corner-all msg-error"}
+			{assign var="class" value="message message-error"}
 			{assign var="icon" value="ui-icon ui-icon-alert"}
 		{elseif ($message.type == "1")}
-			{assign var="class" value="ui-state-highlight ui-corner-all msg-warning"}
+			{assign var="class" value="message message-warning"}
 			{assign var="icon" value="ui-icon ui-icon-notice"}
 		{else}
-			{assign var="class" value="ui-state-primary ui-corner-all msg-info"}
+			{assign var="class" value="message message-info"}
 			{assign var="icon" value="ui-icon ui-icon-info"}
 		{/if}
-		<p class="{$class}">
-			{$message.message}
-		</p>
+		<div class="{$class}">
+			<p>{$message.message}</p>
+		</div>
 	{/foreach}
 {else}
-	<p>{t}No messages found{/t}</p>
+	<div>{t}No messages found{/t}</div>
 {/if}
