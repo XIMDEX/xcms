@@ -105,6 +105,11 @@ class User extends Users_ORM {
 		return $this->get("Locale");
 	}
 
+   	// Returns user's number of access
+	function GetNumAccess(){
+		return $this->get("NumAccess");
+	}
+
     /* *** setters *** */
 
   	// It allows to change an object idUser. It avoid to have to destroy and create again
