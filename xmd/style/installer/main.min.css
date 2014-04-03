@@ -29,26 +29,14 @@ button{background:0;border:0}
 .social{text-align:center;position:absolute;bottom:2.5em;width:100%}
 .content{height:100%;display:inline-block;width:75%;vertical-align:top;padding:4em 5em}
 .content p{padding-bottom:2em}
-.step-start{background:url(../imgs/ximdex_cms.png) no-repeat center bottom;-webkit-background-size:90%;background-size:90%;-webkit-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);-moz-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);box-shadow:inset 0 -3px 3px rgba(0,0,0,.3)}
+.step-start{background:url(../../images/installer/ximdex_cms.png) no-repeat center bottom;-webkit-background-size:90%;background-size:90%;-webkit-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);-moz-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);box-shadow:inset 0 -3px 3px rgba(0,0,0,.3)}
 h2{font-family:Coustard,serif;color:#1eca84;margin-bottom:1.9em}
 .launch_ximdex{background:#1eca84;color:#cbfbe7;text-transform:uppercase;padding:.6em 5em;font-weight:600;border:1px solid #15bb77;-webkit-box-shadow:inset 0 1px 2px rgba(255,255,255,.17);-moz-box-shadow:inset 0 1px 2px rgba(255,255,255,.17);box-shadow:inset 0 1px 2px rgba(255,255,255,.17);text-shadow:0 1px 0 rgba(0,0,0,.2);font-size:.88em}
 .launch_ximdex:hover{background:#50e5a8;border-color:#34e89f}
 .footer{position:absolute;bottom:0;background:#383943;width:100%;text-align:center;padding:.5em}
 .footer a{color:#e6e7f1}
 .footer a:hover{color:#1eca84}
-@media print{*{background:transparent!important;color:#000!important;box-shadow:none!important;text-shadow:none!important}
-a,a:visited{text-decoration:underline}
-a[href]:after{content:" (" attr(href) ")"}
-abbr[title]:after{content:" (" attr(title) ")"}
-.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}
-pre,blockquote{border:1px solid #999;page-break-inside:avoid}
-thead{display:table-header-group}
-tr,img{page-break-inside:avoid}
-img{max-width:100%!important}
-@page{margin:.5cm}
-p,h2,h3{orphans:3;widows:3}
-h2,h3{page-break-after:avoid}}
-@font-face{font-family:social_icons;src:url(../fonts/social_icons.eot);src:url(../fonts/social_icons.eot?#iefix) format("embedded-opentype"),url(../fonts/social_icons.ttf) format("truetype"),url(../fonts/social_icons.woff) format("woff"),url(../fonts/social_icons.svg#social_icons) format("svg");font-weight:400;font-style:normal}
+@font-face{font-family:social_icons;src:url(../../fonts/social_icons.eot);src:url(../../fonts/social_icons.eot?#iefix) format("embedded-opentype"),url(../../fonts/social_icons.ttf) format("truetype"),url(../../fonts/social_icons.woff) format("woff"),url(../../fonts/social_icons.svg#social_icons) format("svg");font-weight:400;font-style:normal}
 .twitter_btn::before{content:"\e600"}
 .facebook_btn::before{content:"\e601"}
 .google_btn::before{content:"\e602"}
