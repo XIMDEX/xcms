@@ -23,6 +23,10 @@
  *  @version $Revision$
  */
 
+.text-editor-form{
+	height: 100%;
+	max-width: 100%;
+}
 
 .text-editor{
 	background:#fff;

@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<form id="et_form" enctype="multipart/form-data" method="post" action="{$action_url}">
+<form id="et_form" class="text-editor-form" enctype="multipart/form-data" method="post" action="{$action_url}">
 	<div class="action_header">
 		<h2>{t}Editing file{/t} ({$ext}): {$node_name}</h2>
 		<fieldset class="buttons-form">
