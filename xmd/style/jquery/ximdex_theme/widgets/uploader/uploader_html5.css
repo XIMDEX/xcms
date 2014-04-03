@@ -22,6 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.xim-uploader-selected::before {
+  content: "\e039"; }
+
 .xim-loader-list-container {
   min-height: 250px;
   max-height: 91%;

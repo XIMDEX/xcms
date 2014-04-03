@@ -1297,7 +1297,7 @@ msgid "Please, select another destination"
 msgstr "Por favor, seleccione otro destino"
 
 msgid "There aren't any available destination"
-msgstr "No hay ning&uacte;n destino disponible"
+msgstr "No hay ning&uacute;n destino disponible"
 
 #: /actions/actions/createchannel/Action_createchannel.class.php
 msgid "Channel has been succesfully inserted"

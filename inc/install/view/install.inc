@@ -48,12 +48,13 @@
 <body>
 
     <div class="aside">
-        <h1><a href="http://www.ximdex.com">ximdex</a></h1>
+        <h1><a href="http://www.ximdex.com">ximdexl</a></h1>
         <ul class="installer">
         <?php        
             foreach ($this->steps as $index => $step) {
-                $extraStyle = ($index < $this->currentStep)? "installer_step-completed": "";
-                $extraStyle = ($index == $this->currentStep)? "installer_step-current" : "";
+                $extraStyle="";
+                $extraStyle = ($index < $this->currentStep)? "installer_step-completed": $extraStyle;
+                $extraStyle = ($index == $this->currentStep)? "installer_step-current" : $extraStyle;
                 ?>
                    <li class='installer_step <?php echo $extraStyle; ?>'>
                     <button class="installer_step-launcher icon">
@@ -82,11 +83,13 @@
         <div class="footer">
             <a href="http://www.ximdex.com">www.ximdex.com</a>
         </div>
-    </div>
-    <div class="content step-start">
+    </div><div class="content step-start">
+    <form method="post" action=".">
+    <input type="hidden" name="method" value="<?php echo $view ?>">
         <?php 
             include ($includeTemplateStep);
-        ?>      
+        ?>       
+    </form>
     </div>
 </body>
 </html>

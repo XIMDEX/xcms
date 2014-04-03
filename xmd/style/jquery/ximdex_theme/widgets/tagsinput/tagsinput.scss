@@ -527,6 +527,7 @@
   cursor: pointer;
   margin-left: .4em;
   position: relative;
+  @extend %add;
   &::before{
     font-size: 1.4em;
     line-height: 1.5 !important;

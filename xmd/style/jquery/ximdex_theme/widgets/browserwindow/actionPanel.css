@@ -217,6 +217,9 @@ fieldset {
   -moz-border-radius: 0 12px 0 0;
   border-radius: 0 12px 0 0;
   min-height: 3em; }
+  .action_header .buttons-form {
+    float: right;
+    margin-top: -.4em; }
 
 .action_header h2 {
   float: left; }
@@ -227,7 +230,7 @@ fieldset {
   height: calc(100% - 3.2em);
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 1em 4% 2em;
+  padding: 2em 4% 2em;
   max-width: 100%;
   border-top: 1px solid white;
   position: relative;
@@ -479,7 +482,9 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   position: relative;
   padding-left: 3.5em;
   cursor: pointer;
-  white-space: nowrap; }
+  white-space: nowrap;
+  padding-top: .5em;
+  /* Propiedades heredables */ }
 
 .input-slide + .label-slide::before, .input-slide + .label-slide::after {
   content: '';
@@ -1016,7 +1021,10 @@ input:focus + .tooltip_info {
   width: 1.75em;
   line-height: 1.75em;
   color: #fff;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3); }
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  top: 0;
+  /* Because Manageversion action icon and cursor too */
+  cursor: pointer; }
 .browser-window .delete-btn {
   background: #c56e50; }
   .browser-window .delete-btn:hover {
@@ -1166,7 +1174,8 @@ input:focus + .tooltip_info {
 
 .input-select {
   position: relative;
-  margin: 1em 0; }
+  margin: 0 0 1em 0;
+  /* Deleting margin-top for general actions */ }
   .input-select input {
     width: 100%;
     padding: .5em 34% .5em 2.5em; }
@@ -1247,38 +1256,7 @@ input:focus + .tooltip_info {
   -ms-transition: all .2s;
   -o-transition: all .2s;
   transition: all .2s;
-  z-index: 1;
-   /*position: absolute;
-   @include hide-text;
-   width: .2em;
-   height: 2em;
-   top: 0;
-   right: 0;
-   background: #dedede;
-   -webkit-transition: all .2s;
-   -moz-transition: all .2s;
-   -ms-transition: all .2s;
-   -o-transition: all .2s;
-   transition: all .2s;
-   @include boxshadow(inset 1px 0 1px rgba(0,0,0,.2));
-   &::before{
-      text-indent: 0;
-      display: block;
-      text-align: center;
-      color: $c_grey-p;  
-      font-size: .8em;
-      line-height: 2.6;
-   }
-
-   &:hover, &:hover::before{
-      background: $c_complementarylight;
-      color: #fff;
-   }
-
-   div:hover > &, li:hover > & , *> &{
-   	width: 1.2em;
-   	right: -1em;
-   }*/ }
+  z-index: 1; }
   .xim-tagsinput-tag-remove::before {
     position: absolute;
     color: #444;
@@ -1324,3 +1302,10 @@ input:focus + .tooltip_info {
 
 .slide-item {
   display: none; }
+
+/**************
+// Forcing max-height for action container
+***************/
+.text-editor-form, form[name="tags_form"] {
+  height: 100%;
+  max-width: 100%; }

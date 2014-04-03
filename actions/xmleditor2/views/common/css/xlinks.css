@@ -29,7 +29,7 @@
   content: "\2b"; }
 
 .new_link::before {
-  content: "\41"; }
+  content: "\e039"; }
 
 .ximlink_manager {
   background: none;
