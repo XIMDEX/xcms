@@ -1,26 +1,23 @@
-Semantic Web CMS Ximdex - INSTALLATION
---------------------------------------
+#Installing the Semantic Web CMS Ximdex
 
-Installing Ximdex CMS basically requires a Linux machine with MySQL or MariaDB, Apache Web Server with PHP.
+Installing Ximdex CMS basically requires a Linux machine with MySQL or MariaDB and Apache Web Server with PHP.
 
-Ximdex is distributed as TAR (or TGZ) files, debian or RPM packages, Virtual machines, etc., but the easiest way to install it is downloading the bash script XIMDEX_INSTALL.sh into a clean directory and running it.
+Ximdex is distributed as TAR (or TGZ) files, debian or RPM packages, zip files, Virtual machines, etc., but the easiest way to install it is downloading the bash script `XIMDEX_INSTALL.sh` into a clean directory in your UNIX system and running it.
 
-This file provides information for a Manual Installation and the assisted installation (via the XIMDEX_INSTALL.sh shell script) both as interactive or as automatic.
+This file provides information for an `Assisted Installation` (via the XIMDEX_INSTALL.sh shell script and both as interactive or fully automated) and for a Manual Installation where you create the database, set file permissions, edit files to parameterize the instance, etc. 
 
-Before starting the installation check if you comply with the requeriments. Then select the process you want to follow and move to that section:
+Before starting the installation check if you comply with all the requeriments. Then select the process you want to follow and continue reading from that section:
 
-* Manual: unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc.
+- [ ] Manual: a guideline to unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc. 
+- [x] Assisted: the XIMDEX_INSTALL.sh script will ask you for final target directory, name for the instance, name of the Ximdex database, usernames and passwords, etc. The script will create a script named 1.-MoveXimdexToDocRoot.sh that have to be run as root or executed by you as root step by step. This way, you control exactly what commands are run as superuser.
+- [ ] Automatic: the XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically.
 
-* Assisted: the XIMDEX_INSTALL.sh script will ask you for final target directory, name for the instance, name of the Ximdex database, usernames and passwords, etc. The script will create a script named 1.-MoveXimdexToDocRoot.sh that have to be run as root or executed by you as root step by step. This way, you control exactly what commands are run as superuser.
+>We recommend the Assisted Installation through the Bash Script because it is fully interactive and less prone to errors.  
 
-* Automatic: the XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically.
- 
-Feel free to contact us at help@ximdex.org for further assistance.
+Please, contact us at help@ximdex.org for further assistance.
 
+###Installation Requirements and dependencies:
 
-Installation Requirements and dependencies:
-------------------------------------------
-	
 *  Access to a Console or terminal with Telnet o SSH.
 	*  The installer will run as a non privileged user but final steps will need root access (basically to install the Ximdex instance into the Document Root of your web server and to set permissions). The installer will then ask you to "sudo" a script that is generated during installation. You can skip it and run it later to end the installation.
 *  Permissions on file system in the directory (under a document root for your web server) where Ximdex will reside. Enough free space in the filesystem. See 'conf/diskspace.conf' file for further information.
