@@ -558,4 +558,3 @@ class User extends Users_ORM {
     }
 }
 ?>
-
