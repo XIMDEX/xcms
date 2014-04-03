@@ -100,7 +100,7 @@
 	}
 
 
-	&:first-child{
+	&[aria-labelledby="ui-id-6"]{
 		display: none;
 	}
 }
