@@ -34,5 +34,5 @@
 	    </li>
 		
 	</ul>
-	<button class="launch_ximdex" ng-click="submitForm(installModulesForm)">Continue</button>
+	<button id="submitButton" class="launch_ximdex ladda-button" data-style="slide-up" data-size="xs" ><span class="ladda-label">Continue</span></button>
 </form>

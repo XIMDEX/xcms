@@ -36,6 +36,8 @@
     <link rel="shortcut icon" href="favicon.ico" >
     <link rel="stylesheet" href="xmd/style/installer/normalize.css">
     <link rel="stylesheet" href="xmd/style/installer/main.css">
+    <link rel="stylesheet" href="extensions/ladda/dist/ladda-themeless.min.css">
+    <link rel="stylesheet" href="extensions/humane/flatty.css">
 
     <link href='http://fonts.googleapis.com/css?family=Coustard|Open+Sans:400,700,800,300,600' rel='stylesheet' type='text/css' />
 
@@ -91,6 +93,10 @@
     </div>
     <script type="text/javascript" src="extensions/angular/angular.min.js" ></script>
     <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="extensions/ladda/dist/spin.min.js" ></script>
+    <script type="text/javascript" src="extensions/ladda/dist/ladda.min.js" ></script>
+    <script type="text/javascript" src="extensions/humane/humane.min.js" ></script>
     <?
         foreach($js_files as $js_file){
         ?>

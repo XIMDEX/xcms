@@ -45,8 +45,8 @@ ximdexInstallerApp.factory('installerService', function($http) {
    }
 });
 
-ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerService', "$q",
- function($scope, installerService, $q) {
+ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerService', "$q", "$window",
+ function($scope, installerService, $q, $window) {
 
  	$scope.modules = {};
 	installerService.sendAction("getModulesLikeJson").then(function(response) {
@@ -54,19 +54,23 @@ ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerS
     });
 
     $scope.processForm = function(){
+    	var loader = $window.Ladda.create(document.getElementById("submitButton"));
+    	loader.start();
     	var index = 0;
-    	$scope.installModule(0);
+    	$scope.installModule(0, loader);
 	};
 
-	$scope.installModule = function(index){
+	$scope.installModule = function(index, loader){
 		if ($scope.modules.length > index){
 			module = $scope.modules[index];
 			installerService.sendAction("installModule","module="+module.name).then(function(response) {
 		        $scope.modules[index]["processed"]=true;
 		        $scope.modules[index]["state"]=response.data.result;
 		        index++;
-		        $scope.installModule(index);
+		        $scope.installModule(index, loader);
 		    });
-		}
+		}else
+			loader.stop();
+
 	}
 }]);
