@@ -74,8 +74,6 @@ class XmlContainerNode extends FolderNode{
      */
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $idSchema = null, $aliasLangList = null, $channelList = null, $idNodeMaster = null,$dataChildren=null){
 
-		error_log("DEBUG Creando xml container $name");
-
 		$reltemplate = new RelTemplateContainer();
         $reltemplate->createRel($idSchema,$this->nodeID);
 
@@ -83,7 +81,6 @@ class XmlContainerNode extends FolderNode{
 		    foreach ($aliasLangList as $idLanguage => $alias){
 		    	$result = $this->addLanguageVersion($idLanguage, $alias, $channelList, $dataChildren);
 			}
-			error_log("DEBUG se creará metadata");
 			$this->buildMetadata($nodeTypeID, $aliasLangList);
 		}
 

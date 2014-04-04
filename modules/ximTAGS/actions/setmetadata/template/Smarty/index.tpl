@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<form method="POST" name="tags_form" class="setmetadata-tags_form" action="{$action_url}" 
+<form method="POST" name="tags_form" class="setmetadata-tags_form"
 	ng-controller="XTagsCtrl" 
 	xim-document-tags='{$tags}'
 	xim-cloud-tags='{$cloud_tags}'

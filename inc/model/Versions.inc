@@ -33,7 +33,20 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Versions_ORM.class.php';
 class Version extends Versions_ORM {
 	
     public function getLastestDocsByUser($idUser){
-        $res = $this->find("IdNode,Version,Subversion,Date","IdUser=%s Order by IdVersion desc LIMIT 10",array($idUser),MULTI);
+        $query="select n.IdNode,n.name,n.IdNodeType,n.path,Version,Subversion,Date from Versions v inner join Nodes n where IdUser=$idUser and n.Idnode=v.Idnode and n.name not like'%templates_include%' and n.idnodetype not in (5084,5083,5085) Order by IdVersion desc LIMIT 10";
+        $dbObj = new DB();
+        $dbObj->Query($query);
+        $i=0;
+        while(!$dbObj->EOF) {
+            $res[$i]["IdNode"] = $dbObj->GetValue("IdNode");
+            $res[$i]["IdNodeType"] = $dbObj->GetValue("IdNodeType");
+            $res[$i]["name"] = $dbObj->GetValue("name");
+            $res[$i]["Version"] = $dbObj->GetValue("Version");
+            $res[$i]["Subversion"] = $dbObj->GetValue("Subversion");
+            $res[$i]["path"] = str_replace("/Ximdex/Projects","",$dbObj->GetValue("path"));
+            $dbObj->Next();
+            $i++;
+        }        
         return $res;
     }
 }

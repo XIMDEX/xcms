@@ -58,7 +58,7 @@
 			</div>
 					
 			<div class="ximdex_documents">
-				<h2>{t}Latest documents{/t}</h2>
+				<h2>{t}Your latest documents{/t}</h2>
 			    {if $docs|@count gt 0}	
                     {foreach from=$docs key=index item=d }
 				<div class="document_item">
@@ -67,8 +67,15 @@
                     </span>
                    
                     <span class="document-path" data-tooltip="{$d.path}">{$d.path}</span>
+                    <span class="nodeid hidden">{$d.IdNode}</span>
 					<div class="document_actions">
-						<button class="edit icon">Edit document</button>
+                    {if $d.IdNodeType eq 5040}
+						<button class="preview icon">{t}Preview Image{/t}</button>
+                    {elseif $d.IdNodeType eq 5032}
+						<button class="edit icon xmltext">{t}Edit in XML mode{/t}</button>
+                    {elseif $d.IdNodeType eq 5028 || $d.IdNodeType eq 5077 || $d.IdNodeType eq 5078}
+						<button class="edit icon plaintext">{t}Edit in text mode{/t}</button>
+                    {/if}
 					</div>
 				</div>
                     {/foreach}
@@ -88,10 +95,10 @@
 			<h3>{t}Learn how to{/t}...</h3>
 			<ul>
 				<li>
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new project{/t}</a>
+					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-project-easy" target="_blank">{t}Create a new project{/t}</a>
 				</li>
 				<li>
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}Create a new Server & publish data{/t}</a>
+					<a href="https://github.com/XIMDEX/ximdex/wiki/Recipes#create-a-new-server-medium" target="_blank">{t}Create a new Server & publish data{/t}</a>
 				</li>
 				<li>					
 					<a href="https://github.com/ximdex/ximdex/wiki/Ximdex-Basics" target="_blank">{t}Ximdex CMS, the basics{/t}</a>
@@ -100,7 +107,7 @@
 					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}RNG schemes & XSL templates{/t}</a>
 				</li>
 				<li>					
-					<a href="https://github.com/ximdex/ximdex/wiki/Recipes" target="_blank">{t}FAQs{/t}</a>
+					<a href="https://github.com/XIMDEX/ximdex/wiki/Faqs" target="_blank">{t}FAQs{/t}</a>
 				</li>
 				<li>					
 					<a href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
