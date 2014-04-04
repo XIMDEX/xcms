@@ -67,13 +67,14 @@
                     </span>
                    
                     <span class="document-path" data-tooltip="{$d.path}">{$d.path}</span>
+                    <span class="nodeid hidden">{$d.IdNode}</span>
 					<div class="document_actions">
                     {if $d.IdNodeType eq 5040}
 						<button class="preview icon">{t}Preview Image{/t}</button>
                     {elseif $d.IdNodeType eq 5032}
-						<button class="edit icon">{t}Edit in XML mode{/t}</button>
+						<button class="edit icon xmltext">{t}Edit in XML mode{/t}</button>
                     {elseif $d.IdNodeType eq 5028 || $d.IdNodeType eq 5077 || $d.IdNodeType eq 5078}
-						<button class="edit icon">{t}Edit in text mode{/t}</button>
+						<button class="edit icon plaintext">{t}Edit in text mode{/t}</button>
                     {/if}
 					</div>
 				</div>

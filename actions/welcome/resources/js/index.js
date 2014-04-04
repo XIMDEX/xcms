@@ -39,7 +39,7 @@ X.actionLoaded(function(event, fn, params) {
                                         name: 'Create a New Project',
                                         }, params.nodes);
                         });
-    fn('.preview.icon').click(function() {
+    fn('.preview').click(function(e) {
                                         $(params.browser).browserwindow('openAction', {
                                         bulk: 0,
                                         callback: 'callAction',
@@ -47,8 +47,26 @@ X.actionLoaded(function(event, fn, params) {
                                         icon: null,
                                         module: '', 
                                         name: 'Preview of an image',
-                                        //params: 'nodes[]=' + fn('#id_pipeline option:selected').val()
-                                        params: 'nodes[]=14181'
-                                        }, params.nodes);
+                                        }, $(e.currentTarget).parent().parent().find(".nodeid").text());
+                        });
+    fn('.plaintext').click(function(e) {
+                                        $(params.browser).browserwindow('openAction', {
+                                        bulk: 0,
+                                        callback: 'callAction',
+                                        command: 'edittext',
+                                        icon: null,
+                                        module: '', 
+                                        name: 'Edit file in text mode',
+                                        }, $(e.currentTarget).parent().parent().find(".nodeid").text());
+                        });
+    fn('.xmltext').click(function(e) {
+                                        $(params.browser).browserwindow('openAction', {
+                                        bulk: 0,
+                                        callback: 'callAction',
+                                        command: 'xmleditor2',
+                                        icon: null,
+                                        module: '', 
+                                        name: 'Edit file with Xedit',
+                                        }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
 });
