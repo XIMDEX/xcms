@@ -150,9 +150,7 @@ angular.module('ximdex.module.xtags')
         }
 
         $scope.keyPress = function (event) {
-            event.preventDefault();
-            if (event.keyCode == 13)
-                $scope.addNewTag();
+            if (event.keyCode == 13) $scope.addNewTag();
         }
 
         //Hacks to deal with mixed enviroment
