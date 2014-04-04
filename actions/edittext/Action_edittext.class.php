@@ -24,14 +24,10 @@
  *  @version $Revision$
  */
 
-
-
-
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 ModulesManager::file('/inc/xml/XmlBase.class.php');
 ModulesManager::file('/inc/xml/XML.class.php');
 ModulesManager::file('/inc/helper/String.class.php');
-
 
 class Action_edittext extends ActionAbstract {
    	// Main method: shows initial form
@@ -43,7 +39,7 @@ class Action_edittext extends ActionAbstract {
 //		$this->addCSS('/extensions/codemirrror/css/docs.css');
 		$this->addCss('/extensions/codemirrror/theme/default.css');
 
-    		$idNode = $this->request->getParam('nodeid');
+   		$idNode = $this->request->getParam('nodeid');
 
 		$strDoc = new StructuredDocument($idNode);
 		if($strDoc->GetSymLink()) {
@@ -67,6 +63,7 @@ class Action_edittext extends ActionAbstract {
 		$infoFile = pathinfo($fileName);
 		if(array_key_exists("extension", $infoFile) ) {
 			$ext = $infoFile['extension'];
+            if($ext=="md"){$ext="markdown";}
 			if(!file_exists(XIMDEX_ROOT_PATH."/extensions/codemirrror/mode/$ext/$ext.js") ) {
 				$ext = "xml";
 			}
@@ -90,13 +87,13 @@ class Action_edittext extends ActionAbstract {
 		$content = $this->formatXml($content);
 		$content = htmlspecialchars($content);
 
-		$ruta = str_replace("/", "/ ",$node->GetPath());
+		$path = str_replace("/", "/ ",$node->GetPath());
 
 		$jsFiles = array(Config::getValue('UrlRoot') . '/xmd/js/ximdex_common.js');
 
 		$values = array('id_node' => $idNode,
 				'isXimNewsLanguage' => $isXimNewsLanguage,
-				'ruta' => $ruta,
+				//'ruta' => $path,
 				'ext' => $ext,
 				'content' => $content,
 				'go_method' => 'edittext',
@@ -106,14 +103,14 @@ class Action_edittext extends ActionAbstract {
 				'id_editor' => $idNode.uniqid()
 				);
 
-		$this->render($values, null, 'default-3.0.tpl');
+		    $this->render($values, null, 'default-3.0.tpl');
     	}
 
 /*
 *	If nodeType is a template display documents affected by change
 */
 	function publishForm() {
-    		$idNode = $this->request->getParam('nodeid');
+    	$idNode = $this->request->getParam('nodeid');
 
 		$dataFactory = new DataFactory($idNode);
 		$lastVersion = $dataFactory->GetLastVersionId();

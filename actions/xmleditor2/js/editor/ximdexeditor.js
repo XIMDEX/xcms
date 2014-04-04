@@ -237,7 +237,7 @@ function XimdocEditor(options) {
 		//this.fileRequest('_i18n', xmlI18N, callback);
 
 		// Verify Tmp file request
-		this.fileRequest('_hasTmp', verifyTmpUrl, callback);
+		//this.fileRequest('_hasTmp', verifyTmpUrl, callback);
 
         this.checkEditionStatus(checkEditionStatusUrl);
         this.fileRequestAll(allUrl, callback);
@@ -331,41 +331,31 @@ function XimdocEditor(options) {
     this.fileRequestAll = function(url, callback, updateEditor, hideLoadingImage, method, content) {
         var method = (method) ? method : 'GET';
         var content = (content) ? content : null;
+        var that=this;
 
-        new AjaxRequest(url, {
+        $.ajax(url, {
             method: method,
             content: content,
-            onComplete: function(req, json) {
+            success: function(data) {
 
-                if (json['error']) {
-                    callback(null, json.error);
-                    return;
-                }
-
-                if (json["result"] !== false){
-                    var data = json.data || req.responseText;
-
-                    if(json.method && json.method == 'verifyTmpFile') {
-                        this[propertyName] = json.result;
-                    }
-                    else if (url.indexOf("loadaction") == -1){
+                    if (url.indexOf("loadaction") == -1){
                         //this[propertyName] = this.createDomDocument(data,0,true);
                     }
                     else {
-                        this['_xmlDom'] = this.createDomDocument(json.xmlFile);
-                        this['_rngDom'] = this.createDomDocument(json.schemaFile);
-                        this['_xslDom'] = this.createDomDocument(json.xslFile);
-                        this['_noRenderizableElements'] = this.createDomDocument(json.noRenderizableElements);
-                        this['config'] = this.createDomDocument(json.config);
+                        that['_xmlDom'] = that.createDomDocument(data.xmlFile);
+                        that['_rngDom'] = that.createDomDocument(data.schemaFile);
+                        that['_xslDom'] = that.createDomDocument(data.xslFile);
+                        that['_noRenderizableElements'] = that.createDomDocument(data.noRenderizableElements);
+                        that['config'] = that.createDomDocument(data.config);
                     }
 
-                    this._afterInitialize(callback);
-                }
-            }.bind(this),
-            onError: function(req) {
-                //console.error(req);
+                    that._afterInitialize(callback);
+            },
+            error: function(data) {
+                //console.error(data);
+                alert(_("An error has ocurred. Please, try again later."));
                 loadingImage.hideLoadingImage();
-            }.bind(this)
+            }
         });
     }
 
@@ -451,7 +441,8 @@ function XimdocEditor(options) {
 	    var root = confNode.getElementsByTagName('kupuconfig');
 	    root = root[0] || null;
 	    if (!root) {
-	        this.log.log(_('No element found in the configuration'));
+	        //this.logMessage(_('No element found in the configuration'));
+	        //this.log.log(_('No element found in the configuration'));
 	        throw(_('No element found in the configuration'));
 	    };
 
