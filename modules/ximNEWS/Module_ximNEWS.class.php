@@ -53,7 +53,8 @@ class Module_ximNEWS extends Module {
 		$this->loadConstructorSQL("ximNEWS.constructor.sql");
 		
         // Install !      
-		$install_ret = parent::install();		
+		$install_ret = parent::install();
+		return $install_ret;
 		
 	}
 

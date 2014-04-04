@@ -25,11 +25,14 @@
  */
 ?>
 
-<form method="post" action=".">
+<form method="post" ng-controller="InstallModulesController" name="installModulesForm" ng-submit="processForm()"  >
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
-	<h2>Installation done</h2>
-	<p>You've installed succesfully Ximdex CMS! <br /> 
-		Now you can start using your CMS and edit an publish your content.
-	</p>
-	<a href="" class="launch_ximdex" onclick="document.forms[0].submit(); return false;">Get started</a>
+	<h2>Installing Ximdex Modules</h2>
+	<ul>
+		<li class="" ng-repeat="module in modules">
+	      {{module.name}} <span ng-show="module.processed">{{module.state}}</span>
+	    </li>
+		
+	</ul>
+	<button class="launch_ximdex" ng-click="submitForm(installModulesForm)">Continue</button>
 </form>

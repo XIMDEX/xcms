@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <install>
+	<modules>
+		<module default="1">ximTOUR</module>
+		<module default="1">ximTAGS</module>
+		<module default="1">ximNEWS</module>
+		<module default="1">xlyre</module>
+	</modules>
 	<steps file="install/_STATUSFILE">
 		<step state="checked" class-name="" >
 			Database installation

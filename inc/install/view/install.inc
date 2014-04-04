@@ -32,6 +32,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="shortcut icon" href="favicon.ico" >
     <link rel="stylesheet" href="xmd/style/installer/normalize.css">
     <link rel="stylesheet" href="xmd/style/installer/main.css">
@@ -45,7 +46,7 @@
     <![endif]-->
 
 </head>
-<body>
+<body ng-app="ximdexInstallerApp">
 
     <div class="aside">
         <h1><a href="http://www.ximdex.com">ximdexl</a></h1>
@@ -83,13 +84,19 @@
         <div class="footer">
             <a href="http://www.ximdex.com">www.ximdex.com</a>
         </div>
-    </div><div class="content step-start">
-    <form method="post" action=".">
-    <input type="hidden" name="method" value="<?php echo $goMethod ?>">
+    </div><div class="content step-<?php echo $this->currentState; ?>">
         <?php 
             include ($includeTemplateStep);
         ?>       
-    </form>
     </div>
+    <script type="text/javascript" src="extensions/angular/angular.min.js" ></script>
+    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
+    <?
+        foreach($js_files as $js_file){
+        ?>
+            <script type="text/javascript" src="<?php echo $js_file; ?>"></script>
+        <?php
+        }
+    ?>    
 </body>
 </html>

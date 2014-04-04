@@ -31,17 +31,12 @@ class GenericInstallStep {
 	protected $response;
 	protected $currentState;
 	protected $currentStep;
+	protected $installConfig;
+	protected $js_files;
 	const STATUSFILE = "/install/_STATUSFILE";
 
 	public function __construct(){
-
-		/** Obtaining the render to use */
-		$rendererClass = $this->_get_render();
-
-		$factory = new Factory(RENDERER_ROOT_PATH, '');
-		$this->renderer = $factory->instantiate($rendererClass.'Renderer');
-
-		$this->renderer->set("_BASE_TEMPLATE_PATH", sprintf('%s/xmd/template/%s/', XIMDEX_ROOT_PATH, $rendererClass)  );
+		$this->js_files = array();
 	}
 
 	public function index(){
@@ -51,23 +46,16 @@ class GenericInstallStep {
 
 	protected function render($values=array(), $view=null, $layout="installer.tpl"){
 		
-		header('Content-type', "text/html; charset=utf-8");		
-		
+		header('Content-type', "text/html; charset=utf-8");
+		foreach ($values as $name => $value) {
+			$$name = $value;			
+		}		
+		$js_files = $this->js_files;
 		$view = $view? $view : $this->request->getParam("method");
 		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
 		$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$this->currentState}/view/{$view}.inc";
 		include(XIMDEX_ROOT_PATH."/inc/install/view/install.inc");
 		die();
-	}
-
-	/**
-	 *
-	 * @param $rendererClass
-	 * @return unknown_type
-	 */
-	private function _get_render() {
-
-		return "Smarty";
 	}
 
 	/**
@@ -77,10 +65,8 @@ class GenericInstallStep {
 	 */
 
 	protected function sendJSON($data) {
-		if (!$this->endActionLogged)
-			$this->logSuccessAction();
-    	header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
-		$data = Serializer::encode(SZR_JSON, $data);
+		header(sprintf('Content-type: application/json; charset=utf-8'));
+		$data = json_encode($data);
 		echo $data;
 		die();
     }
@@ -108,7 +94,14 @@ class GenericInstallStep {
     	$this->response = $response;
     }
 
+    public function setInstallConfig($installConfig){
+		$this->installConfig = $installConfig;    	
+    }
+
+    protected function addJs($jsPath){
+    	$this->js_files[] = "inc/install/steps/{$this->currentState}/js/{$jsPath}";
+    }
+
 
 }
-
 ?>

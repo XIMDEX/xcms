@@ -35,6 +35,7 @@ class InstallController extends IController {
 	const LAST_STATE = "INSTALLED";
 	private $steps = array();
 	private $currentStep = null;
+	private $installConfig;
 	
 	public function __construct(){
 		parent::__construct();
@@ -50,6 +51,7 @@ class InstallController extends IController {
 		$this->request->setParam("method",$method);
 		$installStep->setRequest($this->request);
 		$installStep->setResponse($this->response);
+		$installStep->setInstallConfig($this->installConfig);
 
 			if (!$installStep){
 			
@@ -74,9 +76,9 @@ class InstallController extends IController {
 		if (!file_exists($installConfFile))
 			return false;
 
-		$domDocument = new DomDocument();
-		$domDocument->load($installConfFile);
-		$xpath = new DomXPath($domDocument);
+		$this->installConfig = new DomDocument();
+		$this->installConfig->load($installConfFile);
+		$xpath = new DomXPath($this->installConfig);
 		$query = "/install/steps/step";
 		$steps = $xpath->query($query);
 		$this->steps = array();
