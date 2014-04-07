@@ -32,8 +32,9 @@ window.X.actionLoaded(function(event, fn, params) {
 function start_tour(command) {
     var config_action = [
     {
-	"name" 		: "li.ui-state-active a.browser-action-view:parent:parent",
-	"position"	: "L"	
+	//"name" 		: "li.ui-state-active a.browser-action-view:parent:parent",
+	"name" 		: "div.welcome",
+	"position"	: "R"	
     }, //Explaining the help guide (1/1)
 /*    {
 	"name" 		: "li.ui-state-active a.browser-action-view:parent:parent",
@@ -226,14 +227,14 @@ function start_tour(command) {
 
     var textDescription =  "";
     var titleDescription =  "";
-    textDescription = _('Welcome to the Ximdex Help Guide.<br/>In a few steps you will discover the basic features of Ximdex.');
+    textDescription = _('Welcome to the Ximdex Help Guide.<br/>In a few steps you will discover the basic features of Ximdex CMS.');
     titleDescription = _("Ximdex Demo Tour.");
     arrayText.push(textDescription);
     arrayTitle.push(titleDescription);
     
 /*    textDescription = _('Now you are going to take a look at the main parts of the Ximdex layout.');
     arrayText.push(textDescription);*/
-    textDescription = _('In this bar you can choose your language for the Ximdex interface. Also you can use the search form and open the advanced search panel by clicking on the plus sign.');
+    textDescription = _('In this bar you can choose your language for the Ximdex CMS interface. Also you can use the search form and open the advanced search panel by clicking on the plus sign.');
     arrayText.push(textDescription);
    /* textDescription = _('This is the search bar. The plus sign opens the advanced search panel.');
     arrayText.push(textDescription);   */
@@ -241,7 +242,7 @@ function start_tour(command) {
     arrayText.push(textDescription);
     textDescription = _("Now we expand the node tree for you until we reach the picasso document.");
     arrayText.push(textDescription);    
-    textDescription = _("Use Xedit, the XML editor<br/> to edit your document in a WYSIWYG way.");
+    textDescription = _("Use Xedit, the XML editor,<br/> to edit your document in a WYSIWYG way.");
     arrayText.push(textDescription);
     textDescription = _('Double-click here to close the left panel.');
     arrayText.push(textDescription);
@@ -257,15 +258,15 @@ function start_tour(command) {
     arrayText.push(textDescription);
     textDescription = _('On the right you will find the extra tools.');
     arrayText.push(textDescription);    
-    textDescription = _('In Tags you can add tags to your document. This is useful to search the document in Ximdex.');
+    textDescription = _('In Tags you can add tags to your document. This is useful to search the document in Ximdex CMS.');
     arrayText.push(textDescription);
-    textDescription = _("Use this box to see and modify the attributes of the XML element in use.<br/><br/>Ximdex templates allow you to freely define the structure of your XML documents and to associate semantic to elements.");
+    textDescription = _("Use this box to see and modify the attributes of the XML element in use.<br/><br/>Ximdex CMS templates allow you to freely define the structure of your XML documents and to associate semantic to elements.");
     arrayText.push(textDescription);
     textDescription = _('Find resources and semantic links related to this document.');
     arrayText.push(textDescription);    
     textDescription = _('With Xowl module you will get automagically links (to images, maps, videos) and semantic tags (annotations, references).');
     arrayText.push(textDescription);    
-    textDescription = _("Now it's time to change your document.");
+    textDescription = _("Now it's time to change your document. Let's go!");
     arrayText.push(textDescription);    
 
 

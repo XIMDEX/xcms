@@ -358,16 +358,13 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 
 	public function validateSchema($idnode, $xmldoc) {
 		$schema = $this->getSchemaFile($idnode);
-
-		$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . trim($xmldoc);
-
-		$rngvalidator = new XMLValidator_RNG();
+		$xmldoc = "<?xml version='1.0' encoding='UTF-8'?>".trim($xmldoc);
+    	$rngvalidator = new XMLValidator_RNG();
 		$valid = $rngvalidator->validate(XmlBase::recodeSrc($schema, XML::UTF8), $xmldoc);
 		$valid=true;
 		$response = array('valid' => $valid,'errors' => $rngvalidator->getErrors());
-
-		return $response;
-    	}
+    	return $response;
+    }
 
     	protected function enrichSchema($schema) {
     		return XmlEditor_Enricher::enrichSchema($schema);

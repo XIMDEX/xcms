@@ -237,7 +237,7 @@ function XimdocEditor(options) {
 		//this.fileRequest('_i18n', xmlI18N, callback);
 
 		// Verify Tmp file request
-		//this.fileRequest('_hasTmp', verifyTmpUrl, callback);
+		this.fileRequest('_hasTmp', verifyTmpUrl, callback);
 
         this.checkEditionStatus(checkEditionStatusUrl);
         this.fileRequestAll(allUrl, callback);
@@ -295,36 +295,33 @@ function XimdocEditor(options) {
 	this.fileRequest = function(propertyName, url, callback, updateEditor, hideLoadingImage, method, content) {
 		var method = (method) ? method : 'GET';
 		var content = (content) ? content : null;
-		new AjaxRequest(url, {
+        var that=this;
+
+		$.ajax(url, {
 			method: method,
 			content: content,
-			onComplete: function(req, json) {
+			success: function(data) {
 
-				if (json['error']) {
-					callback(null, json.error);
-					return;
-				}
-
-				if (json["result"] !== false){
-					var data = json.data || req.responseText;
+				if (data["result"] !== false){
+					var data = data.data || req.responseText;
 					
-					if(json.method && json.method == 'verifyTmpFile') {
-						this[propertyName] = json.result;
+					if(this.method && this.method == 'verifyTmpFile') {
+						that[propertyName] = this.result;
 					}
 					else if (url.indexOf("loadaction") == -1){
-					    this[propertyName] = this.createDomDocument(data,0,true);
+					    that[propertyName] = that.createDomDocument(data,0,true);
 					}
 					else {
-						this[propertyName] = this.createDomDocument(data);
+						that[propertyName] = that.createDomDocument(data);
 					}
 	
-					this._afterInitialize(callback);
+					that._afterInitialize(callback);
 				}
-			}.bind(this),
-			onError: function(req) {
+			},
+			error: function(req) {
 				//console.error(req);
 				loadingImage.hideLoadingImage();
-			}.bind(this)
+			}
 		});
 	}
 
@@ -1358,15 +1355,10 @@ function XimdocEditor(options) {
 		});
 
 		var encodedContent = "&content=" + encodeURIComponent(content);
-
 		var xmlUrl = this._baseURL + '&ajax=json&method=getXmlFile';
 
 		// XML request
-		this.fileRequest(
-			'_xmlDom', xmlUrl,
-			this.updateEditor.bind(this),
-			null, null, 'POST', '&content=' + content
-		);
+		this.fileRequest('_xmlDom', xmlUrl,	this.updateEditor.bind(this),null, null, 'POST', '&content=' + content);
 	};
 
 };

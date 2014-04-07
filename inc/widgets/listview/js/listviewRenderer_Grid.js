@@ -174,7 +174,7 @@ X.listview.ListviewRenderer_Grid = Object.xo_create(X.listview.ListviewRenderer,
 		}
 		
 		if(model.length==0 && listeners.length>0){
-			var res = $('<div></div>').html('<span class="ui-icon ui-icon-info"></span><p style="padding-top: 5px;"> &nbsp;No hay coincidencias.</p>');
+			var res = $('<div></div>').html('<span class="ui-icon ui-icon-info"></span><p style="padding-top: 5px;"> &nbsp;There are any results.</p>');
 			return res;
 		}
 		else if(model.length==0 && listeners.length==0){
