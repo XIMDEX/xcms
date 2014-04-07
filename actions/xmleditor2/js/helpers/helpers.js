@@ -149,7 +149,7 @@
 
 					var json = null;
 					try {
-						json = eval('new function() {return '+req.responseText+';}');
+						json = JSON.parse(req.responseText);
 					} catch(e) {
 						json = {};
 					}
