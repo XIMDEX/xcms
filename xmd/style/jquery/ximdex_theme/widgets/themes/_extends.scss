@@ -237,6 +237,19 @@
     }
 }
 
+//Layout
+%center-vertical {
+    display: -webkit-flexbox;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    text-align: center;
+}
+
 //Transitions
 %animation-button{
     -webkit-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;

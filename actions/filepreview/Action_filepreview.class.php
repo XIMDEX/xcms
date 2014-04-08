@@ -33,7 +33,7 @@ class Action_filepreview extends ActionAbstract {
 		$this->response->set('Pragma', 'no-cache');
 		
     		$idNode = $this->request->getParam('nodeid');
-    	
+    	   
     		$version = $this->request->getParam('version');
     		$subVersion = $this->request->getParam('sub_version');
     	
@@ -46,10 +46,11 @@ class Action_filepreview extends ActionAbstract {
     		}
     	
     		$version = new Version($selectedVersion);
-    		$hash = $version->get('File');
-    	
+            $hash = $version->get('File');
+    	    $node = new Node($idNode);
 		$values = array('id_node' => $idNode,
-				'path' => Config::getValue('UrlRoot') . '/data/files/' . $hash);
+				'path' => Config::getValue('UrlRoot') . '/data/files/' . $hash,
+                'Name' => $node->get('Name'));
 		$this->render($values, null, 'default-3.0.tpl');
     	}
   
@@ -58,7 +59,7 @@ class Action_filepreview extends ActionAbstract {
      	* 
      	*/
     	function showAll() {
-	
+           
     		$idNode = $this->request->getParam('nodeid');
     	
         	$node = new Node($idNode);
@@ -67,7 +68,9 @@ class Action_filepreview extends ActionAbstract {
             		$this->render(array('mesg' => $message), null, 'default-3.0.tpl');
             		return;
         	}
-        
+            $parentID = $node->GetParent(); 
+            $parentNode = new Node($parentID);    
+           
         	/* Gets all child nodes of type image (nodetype 5040) of this node */
         	$nodes = $node->GetChildren(5040);
         	$imageNodes = array();
@@ -106,7 +109,7 @@ class Action_filepreview extends ActionAbstract {
             		$this->addJs('/actions/filepreview/resources/js/showAll.js');		
             		$this->addJs('/actions/filepreview/resources/js/gallerizer.js');
 
-            		$values = array('imageNodes' => $imageNodes);
+            		$values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'));
             		$this->render($values, null, 'default-3.0.tpl');
 
         	}

@@ -22,7 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
- 
+<div class="action_header">
+		<h2>{$serverName}</h2>
+</div>
 {if isset($mesg)}
      <div class=''>{$mesg}</div>
 {else}
