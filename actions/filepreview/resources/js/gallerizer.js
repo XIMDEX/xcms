@@ -42,6 +42,11 @@
                 //initializeGallery();
                 $that.find('img').each(function() {
                     var $this = $(this);
+                    var $container = $(this.parentNode); 
+                    aspectRatio = $container.outerWidth()/$container.outerHeight()
+                    if (this.width/this.height < aspectRatio) {
+                        $this.addClass('vertical');
+                    }
                     var src = $this.attr('src');
 
                     $this.attr('src', '');

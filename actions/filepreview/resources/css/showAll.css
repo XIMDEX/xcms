@@ -8,9 +8,20 @@
 }
 #image_container li {
     text-align: center;
+    position: relative;
 }
 #image_container .caption {
-    text-align: justify;
+    position: absolute;
+    bottom: 0;
+    line-height: 1.5;
+    text-align: center;
+    width: 100%;
+    background-color: rgba(0,0,0, 0.6);
+    color: rgb(206, 206, 206);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding: 0 0.3em;
+    z-index: 1;
 }
 .thumbs{
  +width: 95%;
@@ -31,7 +42,7 @@
 	display: block;
 	width: 95%;
 }
-.thumbs li:not(.opened) {
+.image_container li:not(.opened) {
     width: 160px;
    	height: 120px;
    	background: #f2f2f2;
@@ -49,6 +60,15 @@
    text-align: center;
    position: relative;
    cursor: pointer;
+/*   display: -webkit-flexbox;
+   display: -ms-flexbox;
+   display: -webkit-flex;
+   display: flex;
+   -webkit-flex-align: center;
+   -ms-flex-align: center;
+   -webkit-align-items: center;
+   align-items: center;
+   text-align: center;*/
 }
 
 .thumbs li:not(.opened):hover{
@@ -66,20 +86,26 @@
     background-image: radial-gradient(closest-corner circle at center center, rgba(255,255,255,.1) 0%, rgba(80,80,80,.3) 100%);
 }
 
-.thumbs li:after{
+.thumbs li:hover:after{
   content: '';
   position: absolute;
   width: 100%;
   height: inherit;
   left: 0;
+  top: 0;
     -webkit-box-shadow: inset 0 0 1px 4px rgba(255,255,255,.7);
     -moz-box-shadow: inset 0 0 1px 4px rgba(255,255,255,.7);
     box-shadow: inset 0 0 1px 4px rgba(255,255,255,.7);
+  z-index: 2;
 
 }
 
-.thumbs img{
-  vertical-align: middle;
+.thumbs li:not(.opened) img{
+  max-height: 100%;
+}
+.thumbs li:not(.opened) img.vertical{
+  max-width: 100%;
+  max-height: none;
 }
 
 
