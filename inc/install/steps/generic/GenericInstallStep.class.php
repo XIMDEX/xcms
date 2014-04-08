@@ -102,6 +102,20 @@ class GenericInstallStep {
     	$this->js_files[] = "inc/install/steps/{$this->currentState}/js/{$jsPath}";
     }
 
+    public function loadNextAction(){
+
+    	$this->currentStep++;    	
+    	$newState = "";
+    	if (count($this->steps)>$this->currentStep){
+    		$newState = $this->steps[$this->currentStep]["state"];
+
+    	}else{
+    	    		$newState =  InstallController::LAST_STATE;
+    	}
+    	FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
+
+    }
+
 
 }
 ?>

@@ -36,7 +36,7 @@ class GetStartedInstallStep extends GenericInstallStep {
 	}
 
 	public function startXimdex(){
-		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, InstallController::LAST_STATE);
+		$this->loadNextAction();		
 		header(sprintf("Location: %s", "index.php"));
 		die();
 	}

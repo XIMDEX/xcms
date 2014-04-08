@@ -54,23 +54,44 @@ ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerS
     });
 
     $scope.processForm = function(){
-    	var loader = $window.Ladda.create(document.getElementById("submitButton"));
-    	loader.start();
+    	$scope.loading = true;
     	var index = 0;
-    	$scope.installModule(0, loader);
+    	$scope.installModule(0);
 	};
 
-	$scope.installModule = function(index, loader){
+	$scope.installModule = function(index){
 		if ($scope.modules.length > index){
 			module = $scope.modules[index];
+			$scope.modules[index]["state"] = "installing";
 			installerService.sendAction("installModule","module="+module.name).then(function(response) {
 		        $scope.modules[index]["processed"]=true;
 		        $scope.modules[index]["state"]=response.data.result;
 		        index++;
-		        $scope.installModule(index, loader);
+		        $scope.installModule(index);
 		    });
-		}else
-			loader.stop();
-
+		}else{
+			$scope.loading = false;
+			installerService.sendAction("loadNextAction").then(function(response) {
+		        location.reload();
+		    });
+		}
 	}
+
+
+}]);
+
+
+ximdexInstallerApp.directive('uiLadda', [function () {
+    return {
+    	scope: {
+    		state: '=ximState'
+    	},
+        link: function postLink(scope, element, attrs) {
+        	var Ladda = window.Ladda, 
+        	ladda = Ladda.create(element[0]);            
+            scope.$watch('state', function(newVal, oldVal){
+               newVal && ladda.start() || ladda.stop();
+            });
+        }
+    };
 }]);

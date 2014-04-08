@@ -44,15 +44,6 @@ if (isset($argv[1]) &&  "-l" == $argv[1]) {
 	}
 //mode:normal
 }else {
-	$config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS);
-		
-	$modMan=new ModulesManager();
-	$modules=$modMan->getModules();
-	$str="<?php\n\n";
-	foreach($modules as $mod){
-		$str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";
-	}
-	$str.="\n?>";
-	FsUtils::file_put_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS,$str);
+	ModulesManager::buildModulesFile();	
 }
 ?>

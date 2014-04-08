@@ -40,6 +40,7 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 		$values = array(
 			"modules"=>$modules	
 		); */
+		ModulesManager::buildModulesFile();
 		$this->addJs("InstallModulesController.js");
 		$this->render();
 	}
@@ -89,7 +90,7 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 				# code...
 				break;				
 			case MODULE_STATE_ERROR:
-					$installState =  self::ERROR_INSTALL;
+				$installState =  self::ERROR_INSTALL;
 				break;
 			default:
 				# code...

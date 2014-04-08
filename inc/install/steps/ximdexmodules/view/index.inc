@@ -34,5 +34,7 @@
 	    </li>
 		
 	</ul>
-	<button id="submitButton" class="launch_ximdex ladda-button" data-style="slide-up" data-size="xs" ><span class="ladda-label">Continue</span></button>
+	<button ui-ladda="loading" class="ladda-button launch_ximdex" data-style="slide-up" id="submitButton" xim-state="loading">
+          <span class="ladda-label">Continue</span>
+      </button>
 </form>
