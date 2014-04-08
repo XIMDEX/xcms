@@ -109,7 +109,7 @@ class Action_filepreview extends ActionAbstract {
             		$this->addJs('/actions/filepreview/resources/js/showAll.js');		
             		$this->addJs('/actions/filepreview/resources/js/gallerizer.js');
 
-            		$values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'));
+            		$values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'), 'folderName' => $node->get('Name'));
             		$this->render($values, null, 'default-3.0.tpl');
 
         	}

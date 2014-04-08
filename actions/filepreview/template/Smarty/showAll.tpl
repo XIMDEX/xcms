@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-		<h2>{$serverName}</h2>
+		<h2>{$serverName} - {$folderName}</h2>
 </div>
 {if isset($mesg)}
      <div class=''>{$mesg}</div>
