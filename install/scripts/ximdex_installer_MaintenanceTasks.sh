@@ -60,21 +60,6 @@ else
 	echo " Success"
 fi
 
-#TODO Asegurar que no hay rutas reales
-
-echo -n "Updating node path info"
-UPDATE_NP="$SCRIPT_PATH/lib/update_np.php"
-$(chmod +x $UPDATE_NP)
-($PHP_CMD $ADD_MEMORY $UPDATE_NP  2>>$LOG)
-ret_np=$?
-
-if [ $ret_np != "0" ]; then
-	echo " Fail"
-	exit $ret_np
-else
-	echo " Success"
-fi
-
 echo -n "Creating initial XSLT template... "
 cd "$XIMDEX_PATH/install"
 PHING_CMD="$XIMDEX_PATH/extensions/phing/bin/phing.php"
@@ -88,21 +73,6 @@ else
 #        while [[ $XSLT_TARGET =~ "//" ]]; do
 #            XSLT_TARGET=$(echo $XSLT_TARGET | sed -e "s/\/\//\//g")
 #        done
-fi
-
-if [ -f "$PHING_BUILD.base" ]; then 
-	sed "s,##XIMDEX_TARGET##,$XSLT_TARGET," "$PHING_BUILD.base" > $PHING_BUILD
-fi
-
-$(chmod +x $PHING_CMD)
-($PHP_CMD $ADD_MEMORY $PHING_CMD "-f" $PHING_BUILD >>$LOG )
-ret_phing=$?
-
-if [ $ret_ft != "0" ]; then
-    echo "Fail"
-	 exit $ret_phing
-else
-        echo "Success"
 fi
 
 echo -n "Generating configuration for modules as conf/install-modules.conf... "

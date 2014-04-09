@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -25,23 +24,22 @@
  *  @version $Revision$
  */
 
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/WebMessagesStrategy.class.php');
 
+class InstallManager {
 
-/**
- *  Update Fast Traverse
- */
+	//CONSTANTS FOR INSTALL MODE
+	const WEB_MODE = "web";
+	const CONSOLE_MODE = "console";
+	
+	protected $mode = ""; //install mode.
+	protected $installMessages = null;
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-include_once(XIMDEX_ROOT_PATH . '/inc/install/FastTraverseManager.class.php');
-
-function main($argc, $argv) {
-
-	$ftManager = new FastTraverseManager();
-	$ftManager->buildFastTraverse();
+	protected function __construct($mode = self::CONSOLE_MODE){
+		$this->mode = $mode;
+		$messageClassName = $this->mode."MessagesStrategy";
+		$installMessages = new $messageClassName();
+	}
 }
-
-// Entry point.
-main($argc, $argv);
-
 ?>

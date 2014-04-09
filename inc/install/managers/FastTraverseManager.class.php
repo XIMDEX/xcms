@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -26,22 +25,40 @@
  */
 
 
+include_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+include_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 
-/**
- *  Update Fast Traverse
- */
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-include_once(XIMDEX_ROOT_PATH . '/inc/install/FastTraverseManager.class.php');
+class FastTraverseManager extends InstallManager{
 
-function main($argc, $argv) {
+	/**
+	 * Build FastTraverse and full path to every node in Ximdex	 
+	 */
+	public function buildFastTraverse(){
+		$this->deleteFastTraverse();
+		$node = new Node();
+		$results = $node->find("IdNode",'',array(), MONO);
+		$dbUpdate = new DB();
+		foreach ($nodes as $i => $idNode) {
+			$node = new Node($idNode);
+			$node->updateFastTraverse();
+			$path = pathinfo($node->GetPath());
+			$this->installMessages->printIteration($i);
+			$dbUpdate->execute(sprintf("update Nodes set Path = '%s' where idnode = %s", $path['dirname'], $idNode));
+			$db->next();
+		}
 
-	$ftManager = new FastTraverseManager();
-	$ftManager->buildFastTraverse();
+	}
+
+	/**
+	 * Empty fast traverse table in DB
+	 */
+	private function deleteFastTraverse(){
+		$sql = "DELETE FROM FastTraverse";
+		$db = new DB();
+		$db->Execute($sql);
+	}
 }
-
-// Entry point.
-main($argc, $argv);
 
 ?>

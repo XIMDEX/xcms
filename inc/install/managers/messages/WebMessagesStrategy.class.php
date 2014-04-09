@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -25,23 +24,12 @@
  *  @version $Revision$
  */
 
+class WebMessagesStrategy{
 
-
-/**
- *  Update Fast Traverse
- */
-
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-include_once(XIMDEX_ROOT_PATH . '/inc/install/FastTraverseManager.class.php');
-
-function main($argc, $argv) {
-
-	$ftManager = new FastTraverseManager();
-	$ftManager->buildFastTraverse();
+	/**
+	 * Send messages for console in iteration process
+	 * @param string index Step in process
+	 */
+	public function printIteration($i){}
 }
-
-// Entry point.
-main($argc, $argv);
-
 ?>
