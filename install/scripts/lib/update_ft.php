@@ -33,7 +33,7 @@
 
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-include_once(XIMDEX_ROOT_PATH . '/inc/install/FastTraverseManager.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/install/managers/FastTraverseManager.class.php');
 
 function main($argc, $argv) {
 

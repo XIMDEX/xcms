@@ -36,7 +36,7 @@ class InstallManager {
 	protected $mode = ""; //install mode.
 	protected $installMessages = null;
 
-	protected function __construct($mode = self::CONSOLE_MODE){
+	public function __construct($mode = self::CONSOLE_MODE){
 		$this->mode = $mode;
 		$messageClassName = $this->mode."MessagesStrategy";
 		$installMessages = new $messageClassName();
