@@ -63,7 +63,6 @@ class InstallController extends IController {
 
 	public function compose(){
 
-		$installArrayFromXml = $this->buildArrayFromInstallConf();		
 		return InstallStepFactory::getStep($this->steps, $this->currentStep);		
 	}
 
