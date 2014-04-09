@@ -62,7 +62,6 @@ class InstallStepFactory {
 		$stepObject = $factory->instantiate("InstallStep");
 
 		$stepObject->setSteps($steps);
-		$stepObject->setCurrentState($currentState);
 		$stepObject->setCurrentStep($posStep);
 		return $stepObject;
 

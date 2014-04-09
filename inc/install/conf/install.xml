@@ -2,10 +2,12 @@
 
 <install>
 	<modules>
-		<module default="1">ximTOUR</module>
-		<module default="1">ximTAGS</module>
-		<module default="1">ximNEWS</module>
-		<module default="1">xlyre</module>
+		<module default="1">ximIO</module>
+		<module default="1">ximSYNC</module>
+		<module>ximTOUR</module>
+		<module>ximTAGS</module>
+		<module>ximNEWS</module>
+		<module>xlyre</module>
 	</modules>
 	<steps file="install/_STATUSFILE">
 		<step state="checked" class-name="" >
@@ -22,5 +24,3 @@
 		</step>	
 	</steps>
 </install>
-
-	

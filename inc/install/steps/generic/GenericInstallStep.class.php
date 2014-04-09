@@ -29,14 +29,14 @@ class GenericInstallStep {
 	protected $renderer;
 	protected $request;
 	protected $response;
-	protected $currentState;
 	protected $currentStep;
-	protected $installConfig;
+	protected $installManager;
 	protected $js_files;
 	const STATUSFILE = "/install/_STATUSFILE";
 
 	public function __construct(){
 		$this->js_files = array();
+		$this->installManager = new installManager();
 	}
 
 	public function index(){
@@ -71,19 +71,10 @@ class GenericInstallStep {
 		die();
     }
 
-    public function setSteps($steps){
-
-    	$this->steps = $steps;
-    }
-
+    
     public function setCurrentState($currentState){
 
     	$this->currentState = $currentState;
-    }
-
-    public function setCurrentStep($currentStep){
-
-    	$this->currentStep = $currentStep;
     }
 
     public function setRequest($request){
@@ -94,11 +85,7 @@ class GenericInstallStep {
     	$this->response = $response;
     }
 
-    public function setInstallConfig($installConfig){
-		$this->installConfig = $installConfig;    	
-    }
-
-    protected function addJs($jsPath){
+   protected function addJs($jsPath){
     	$this->js_files[] = "inc/install/steps/{$this->currentState}/js/{$jsPath}";
     }
 

@@ -32,14 +32,98 @@ class InstallManager {
 	//CONSTANTS FOR INSTALL MODE
 	const WEB_MODE = "web";
 	const CONSOLE_MODE = "console";
+
+	const INSTALL_CONF_FILE = "install.xml";	
+	const LAST_STATE = "INSTALLED";
 	
 	protected $mode = ""; //install mode.
 	protected $installMessages = null;
+	protected $installConfig=null;
+	protected $currentStep;
 
 	public function __construct($mode = self::CONSOLE_MODE){
 		$this->mode = $mode;
 		$messageClassName = $this->mode."MessagesStrategy";
 		$installMessages = new $messageClassName();
+		$installConfFile = XIMDEX_ROOT_PATH."/inc/install/conf/".self::INSTALL_CONF_FILE;
+		
+		$this->installConfig = new DomDocument();
+		$this->installConfig->load($installConfFile);
+		$this->currentStep = $this->getCurrentStep();
 	}
+
+	public function getSteps(){
+		$xpath = new DomXPath($this->installConfig);
+		$query = "/install/steps/step";
+		$steps = $xpath->query($query);
+		$result = array();
+		foreach ($steps as $step) {
+			$auxStepArray=array(); 
+			foreach($step->attributes as $attribute){
+				$auxStepArray[$attribute->name] = $attribute->value;
+			}
+			$auxStepArray["description"] = $step->nodeValue;
+			$result[] = $auxStepArray;
+		}
+
+		return $result;
+	}
+
+	public function getCurrentStep(){
+		$statusFile = XIMDEX_ROOT_PATH."/install/_STATUSFILE";
+		if (!file_exists($statusFile))
+			return false;
+		return trim(strtolower(FsUtils::file_get_contents($statusFile)));
+	}
+
+	public function isInstalled(){
+		$currentStep = $this->getCurrentStep();		
+		if (!$currentStep)
+			return false;
+
+		return $currentStep == strtolower(self::LAST_STATE);
+	}
+
+	public function nextStep(){
+
+		$newState = "";
+		$steps = $this->getSteps();
+    	if (count($steps)>$this->currentStep){
+    		$newState = $this->steps[$this->currentStep]["state"];
+
+    	}else{
+    	    		$newState =  InstallController::LAST_STATE;
+    	}
+    	FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
+	}
+
+	public function getModulesByDefault($default=true){
+		$query = "/install/modules/module";
+		$query .= $default? "[@default='1']": "[not(@default) or @default='0']";
+		return $this->getModulesByQuery($query);
+	}
+
+	public function getModulesByQuery($query){
+		$result = array();
+		$xpath = new DomXPath($this->installConfig);
+		$modules = $xpath->query($query);
+
+		foreach ($modules as $module) {
+			$auxModuleArray=array(); 
+			foreach($module->attributes as $attribute){
+				$auxModuleArray[$attribute->name] = $attribute->value;
+			}
+			$auxModuleArray["name"] = $module->nodeValue;
+			$result[] = $auxModuleArray;
+
+		}		
+		return $result;
+	}
+
+	public function getAllModules(){
+		$query = "/install/modules/module";
+		return $this->getModulesByQuery($query);
+	}	
+	
 }
 ?>

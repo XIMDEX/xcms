@@ -25,30 +25,28 @@
  */
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/FastTraverseManager.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
 class XimdexModulesInstallStep extends GenericInstallStep {
 
-	const ALREADY_INSTALL = "Already installed";
-	const ERROR_INSTALL = "Error";
-	const UNINSTALLED = "Uninstalled";
-	const SUCCESS_INSTALL = "Installed!";
-	const DISABLED = "Disabled";
-
-	public function index(){
+	public function index(){		
 		
-		/*$modules = $this->getModules();
-		$values = array(
-			"modules"=>$modules	
-		); */
-		ModulesManager::buildModulesFile();
+		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
+		$imManager->buildModulesFile();
+		$ftManager = new FastTraverseManager (FastTraverseManager::WEB_MODE);		
+		$ftManager->buildFastTraverse();
+		$modules = $this->installManager->getModulesByDefault();
 		$this->addJs("InstallModulesController.js");
 		$this->render();
 	}
 
-	private function getModules(){
+	private function getModules($default=true){
 		$result = array();
 		$xpath = new DomXPath($this->installConfig);
 		$query = "/install/modules/module";
+		$query .= $default? "[@default='1']": "[not(@default) or @default='0']";
+
 		$modules = $xpath->query($query);
 
 		foreach ($modules as $module) {
@@ -64,39 +62,14 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 	}
 
 	public function getModulesLikeJson(){
-		$modules = $this->getModules();		
+		$modules = $this->installManager->getModulesByDefault(false);		
 		$this->sendJSON($modules);
 	}
 
 	public function installModule(){
-		$module_name = $this->request->getParam("module");
-		$installState = self::UNINSTALLED;
-		$modMngr = new ModulesManager();
-		$state = $modMngr->checkModule($module_name);
-
-		$myenabled = $modMngr->isEnabled($module_name);
 		
-		switch ($state) {
-			case MODULE_STATE_INSTALLED:
-				$installState = self::ALREADY_INSTALL;
-				# code...
-				break;
-			case MODULE_STATE_UNINSTALLED:
-				if (!$myenabled){
-					$result = $modMngr->installModule($module_name);
-					$installState =  $result ? self::SUCCESS_INSTALL: self::ERROR_INSTALL;
-
-				}
-				# code...
-				break;				
-			case MODULE_STATE_ERROR:
-				$installState =  self::ERROR_INSTALL;
-				break;
-			default:
-				# code...
-				break;
-		}
-
+		$moduleName = $this->request->getParam("module");
+		$installState = $this->installManager->installModule($moduleName)
 		$values=array("result"=>$installState);
 		$this->sendJSON($values);
 				

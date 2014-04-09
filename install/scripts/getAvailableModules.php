@@ -33,6 +33,7 @@ define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
 //mode: list
 if (isset($argv[1]) &&  "-l" == $argv[1]) {
@@ -44,6 +45,7 @@ if (isset($argv[1]) &&  "-l" == $argv[1]) {
 	}
 //mode:normal
 }else {
-	ModulesManager::buildModulesFile();	
+	$imManager = new InstallModulesManager();
+	$imManager->buildModulesFile();	
 }
 ?>

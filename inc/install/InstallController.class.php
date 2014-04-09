@@ -27,20 +27,20 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Response.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/mvc.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/InstallStepFactory.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 
 class InstallController extends IController {
 
 
-	const INSTALL_CONF = "install.xml";	
-	const LAST_STATE = "INSTALLED";
 	private $steps = array();
 	private $currentStep = null;
-	private $installConfig;
+	private $installManager = null;
 	
 	public function __construct(){
+		$this->installManager = new InstallManager(InstallManager::WEB_MODE);
 		parent::__construct();
-		$this->buildArrayFromInstallConf();
-		$this->currentStep = self::getCurrentStep();		
+		$this->steps = $this->installManager->getSteps();
+		$this->currentStep = $this->installManager->getCurrentStep();		
 	}
 
 	public function dispatch(){
@@ -51,9 +51,8 @@ class InstallController extends IController {
 		$this->request->setParam("method",$method);
 		$installStep->setRequest($this->request);
 		$installStep->setResponse($this->response);
-		$installStep->setInstallConfig($this->installConfig);
 
-			if (!$installStep){
+		if (!$installStep){
 			
 		}else{
 			if (method_exists($installStep, $method)){
@@ -68,47 +67,10 @@ class InstallController extends IController {
 		return InstallStepFactory::getStep($this->steps, $this->currentStep);		
 	}
 
-	/**
-	*
-	*/
-	private function buildArrayFromInstallConf(){
-		$installConfFile = XIMDEX_ROOT_PATH."/inc/install/conf/".self::INSTALL_CONF;
-		if (!file_exists($installConfFile))
-			return false;
-
-		$this->installConfig = new DomDocument();
-		$this->installConfig->load($installConfFile);
-		$xpath = new DomXPath($this->installConfig);
-		$query = "/install/steps/step";
-		$steps = $xpath->query($query);
-		$this->steps = array();
-		foreach ($steps as $step) {
-			$auxStepArray=array(); 
-			foreach($step->attributes as $attribute){
-				$auxStepArray[$attribute->name] = $attribute->value;
-			}
-			$auxStepArray["description"] = $step->nodeValue;
-			$this->steps[] = $auxStepArray;
-		}
-	}
-
-	private static function getCurrentStep(){
-		$statusFile = XIMDEX_ROOT_PATH."/install/_STATUSFILE";
-		if (!file_exists($statusFile))
-			return false;
-		return trim(strtolower(FsUtils::file_get_contents($statusFile)));
-	}
-
-	/**
-	* 
-	*/
 	public static function isInstalled(){
 
-		$currentStep = self::getCurrentStep();		
-		if (!$currentStep)
-			return false;
-
-		return $currentStep == strtolower(self::LAST_STATE);
+		$installManager = new InstallManager(InstallManager::WEB_MODE);
+		return $installManager->isInstalled();		
 	}
 
 	private function setToRequest() {
