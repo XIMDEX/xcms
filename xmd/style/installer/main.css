@@ -284,6 +284,94 @@ h2 {
       color: #1eca84; }
 
 /**************
+// MODULES page
+***************/
+li[class*="module"] {
+  position: relative;
+  padding-left: 8.5em;
+  margin-bottom: 3em; }
+  li[class*="module"] p {
+    padding-bottom: 0;
+    margin: 0; }
+  li[class*="module"]::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border: 3px solid #b0b3cf;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: .7em;
+    height: .7em;
+    left: 0;
+    background: #fff;
+    z-index: 2; }
+  li[class*="module"]::after {
+    content: "";
+    width: .2em;
+    height: calc(100% + 3em);
+    top: 50%;
+    position: absolute;
+    background: #4c4d57;
+    opacity: .4;
+    left: .45em; }
+  li[class*="module"]:last-child::after {
+    content: none; }
+  li[class*="module"] .title {
+    display: block;
+    font-family: "Coustard", serif;
+    color: #4c4d57; }
+    li[class*="module"] .title::before {
+      content: "";
+      position: absolute;
+      width: 3em;
+      height: .2em;
+      left: 1em;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+      background: #4c4d57;
+      opacity: .4; }
+    li[class*="module"] .title::after {
+      content: "";
+      position: absolute;
+      width: 4em;
+      height: 4em;
+      background: #d1d3e7 url(../../images/installer/modules.svg) no-repeat center 0.2em;
+      -webkit-background-size: 150%;
+      background-size: 150%;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      left: 3em;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%); }
+    li[class*="module"] .title.ximTOUR::after {
+      background-position: center -15em;
+      -webkit-background-size: 130%;
+      background-size: 130%; }
+    li[class*="module"] .title.ximNEWS::after {
+      background-position: center -10em;
+      -webkit-background-size: 130%;
+      background-size: 130%; }
+    li[class*="module"] .title.xlyre::after {
+      background-position: center -6.7em;
+      -webkit-background-size: 170%;
+      background-size: 170%; }
+
+/**************
 // ICONS
 ***************/
 @font-face {

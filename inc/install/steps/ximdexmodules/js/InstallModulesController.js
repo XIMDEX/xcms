@@ -72,7 +72,7 @@ ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerS
 		}else{
 			$scope.loading = false;
 			installerService.sendAction("loadNextAction").then(function(response) {
-		        location.reload();
+		      //  location.reload();
 		    });
 		}
 	}
