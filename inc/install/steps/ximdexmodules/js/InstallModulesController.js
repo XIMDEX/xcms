@@ -66,7 +66,6 @@ ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerS
 			installerService.sendAction("installModule","module="+module.name).then(function(response) {
 		        $scope.modules[index]["processed"]=true;
 		        $scope.modules[index]["state"]=response.data.result;
-                $scope.modules[index]["classState"]="module-"+response.data.result;
 		        index++;
 		        $scope.installModule(index);
 		    });

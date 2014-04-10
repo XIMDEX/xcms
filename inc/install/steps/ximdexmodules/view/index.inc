@@ -29,7 +29,7 @@
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Installing Ximdex Modules</h2>
 	<ul>
-		<li class="module-installed " ng-repeat="module in modules">
+		<li class="module-{{module.state}} " ng-repeat="module in modules">
 	      <p class="title  {{module.name}} "> {{module.name}} <span ng-show="module.processed">{{module.state}}</span>
 		
 	      </p> 
