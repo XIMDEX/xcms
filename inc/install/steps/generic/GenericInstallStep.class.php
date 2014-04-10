@@ -37,6 +37,7 @@ class GenericInstallStep {
 	public function __construct(){
 		$this->js_files = array();
 		$this->installManager = new installManager();
+		$this->steps = $this->installManager->getSteps();
 	}
 
 	public function index(){
@@ -53,7 +54,9 @@ class GenericInstallStep {
 		$js_files = $this->js_files;
 		$view = $view? $view : $this->request->getParam("method");
 		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
-		$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$this->currentState}/view/{$view}.inc";
+		
+		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
+		$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.inc";
 		include(XIMDEX_ROOT_PATH."/inc/install/view/install.inc");
 		die();
 	}
@@ -72,9 +75,9 @@ class GenericInstallStep {
     }
 
     
-    public function setCurrentState($currentState){
+    public function setCurrentStep($currentStep){
 
-    	$this->currentState = $currentState;
+    	$this->currentStep = $currentStep;
     }
 
     public function setRequest($request){
@@ -86,20 +89,13 @@ class GenericInstallStep {
     }
 
    protected function addJs($jsPath){
-    	$this->js_files[] = "inc/install/steps/{$this->currentState}/js/{$jsPath}";
+   		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
+    	$this->js_files[] = "inc/install/steps/{$folderName}/js/{$jsPath}";
     }
 
     public function loadNextAction(){
 
-    	$this->currentStep++;    	
-    	$newState = "";
-    	if (count($this->steps)>$this->currentStep){
-    		$newState = $this->steps[$this->currentStep]["state"];
-
-    	}else{
-    	    		$newState =  InstallController::LAST_STATE;
-    	}
-    	FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
+    	$this->installManager->nextStep();
 
     }
 

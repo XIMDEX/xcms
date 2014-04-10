@@ -41,26 +41,6 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 		$this->render();
 	}
 
-	private function getModules($default=true){
-		$result = array();
-		$xpath = new DomXPath($this->installConfig);
-		$query = "/install/modules/module";
-		$query .= $default? "[@default='1']": "[not(@default) or @default='0']";
-
-		$modules = $xpath->query($query);
-
-		foreach ($modules as $module) {
-			$auxModuleArray=array(); 
-			foreach($module->attributes as $attribute){
-				$auxModuleArray[$attribute->name] = $attribute->value;
-			}
-			$auxModuleArray["name"] = $module->nodeValue;
-			$result[] = $auxModuleArray;
-
-		}		
-		return $result;
-	}
-
 	public function getModulesLikeJson(){
 		$modules = $this->installManager->getModulesByDefault(false);		
 		$this->sendJSON($modules);
@@ -69,7 +49,8 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 	public function installModule(){
 		
 		$moduleName = $this->request->getParam("module");
-		$installState = $this->installManager->installModule($moduleName)
+		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
+		$installState = $imManager->installModule($moduleName);
 		$values=array("result"=>$installState);
 		$this->sendJSON($values);
 				

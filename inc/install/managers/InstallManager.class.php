@@ -39,17 +39,17 @@ class InstallManager {
 	protected $mode = ""; //install mode.
 	protected $installMessages = null;
 	protected $installConfig=null;
-	protected $currentStep;
+	public $currentState;
 
 	public function __construct($mode = self::CONSOLE_MODE){
 		$this->mode = $mode;
 		$messageClassName = $this->mode."MessagesStrategy";
-		$installMessages = new $messageClassName();
+		$this->installMessages = new $messageClassName();
 		$installConfFile = XIMDEX_ROOT_PATH."/inc/install/conf/".self::INSTALL_CONF_FILE;
 		
 		$this->installConfig = new DomDocument();
 		$this->installConfig->load($installConfFile);
-		$this->currentStep = $this->getCurrentStep();
+		$this->currentState = $this->getCurrentState();
 	}
 
 	public function getSteps(){
@@ -69,7 +69,7 @@ class InstallManager {
 		return $result;
 	}
 
-	public function getCurrentStep(){
+	public function getCurrentState(){
 		$statusFile = XIMDEX_ROOT_PATH."/install/_STATUSFILE";
 		if (!file_exists($statusFile))
 			return false;
@@ -77,11 +77,11 @@ class InstallManager {
 	}
 
 	public function isInstalled(){
-		$currentStep = $this->getCurrentStep();		
-		if (!$currentStep)
+		$currentState = $this->getCurrentState();		
+		if (!$currentState)
 			return false;
 
-		return $currentStep == strtolower(self::LAST_STATE);
+		return $currentState == strtolower(self::LAST_STATE);
 	}
 
 	public function nextStep(){
@@ -92,7 +92,7 @@ class InstallManager {
     		$newState = $this->steps[$this->currentStep]["state"];
 
     	}else{
-    	    		$newState =  InstallController::LAST_STATE;
+    		$newState =  InstallController::LAST_STATE;
     	}
     	FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
 	}

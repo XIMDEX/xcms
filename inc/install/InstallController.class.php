@@ -40,7 +40,7 @@ class InstallController extends IController {
 		$this->installManager = new InstallManager(InstallManager::WEB_MODE);
 		parent::__construct();
 		$this->steps = $this->installManager->getSteps();
-		$this->currentStep = $this->installManager->getCurrentStep();		
+		$this->currentState = $this->installManager->getCurrentState();		
 	}
 
 	public function dispatch(){
@@ -63,7 +63,7 @@ class InstallController extends IController {
 
 	public function compose(){
 
-		return InstallStepFactory::getStep($this->steps, $this->currentStep);		
+		return InstallStepFactory::getStep($this->steps, $this->currentState);		
 	}
 
 	public static function isInstalled(){

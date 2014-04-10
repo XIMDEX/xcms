@@ -60,8 +60,6 @@ class InstallStepFactory {
 		$stepPath = XIMDEX_ROOT_PATH.self::STEP_PATH."/".$currentState;
 		$factory = new Factory($stepPath, $className);
 		$stepObject = $factory->instantiate("InstallStep");
-
-		$stepObject->setSteps($steps);
 		$stepObject->setCurrentStep($posStep);
 		return $stepObject;
 
