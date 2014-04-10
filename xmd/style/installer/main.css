@@ -325,7 +325,7 @@ li[class*="module"] {
   li[class*="module"] .title {
     display: block;
     font-family: "Coustard", serif;
-    color: #4c4d57; }
+    color: #8a8b99; }
     li[class*="module"] .title::before {
       content: "";
       position: absolute;
@@ -370,6 +370,29 @@ li[class*="module"] {
       background-position: center -6.7em;
       -webkit-background-size: 170%;
       background-size: 170%; }
+
+.module-installed::before, .module-already::before {
+  background: #4c4d57 !important;
+  border-color: #4c4d57 !important; }
+.module-installed .title, .module-already .title {
+  color: #4c4d57 !important; }
+
+.module-installing::before {
+  border-color: #1eca84 !important; }
+
+.module-error::before {
+  border-color: #ec3719 !important; }
+.module-error .title {
+  color: #ec3719 !important; }
+
+.module-installed .ximTOUR::after, .module-already .ximTOUR::after {
+  background-color: #57e3aa !important; }
+.module-installed .ximTAGS::after, .module-already .ximTAGS::after {
+  background-color: #ff684f !important; }
+.module-installed .ximNEWS::after, .module-already .ximNEWS::after {
+  background-color: #10e2ea !important; }
+.module-installed .xlyre::after, .module-already .xlyre::after {
+  background-color: #e5dc1e !important; }
 
 /**************
 // ICONS

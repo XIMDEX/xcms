@@ -425,10 +425,12 @@ textarea {
             }
         }
 
+
+
         .title{
             display: block;
             font-family: $t-title;
-            color: $c-dark;
+            color: lighten($c-dark, 25%);
 
             &::before{
                 content: "";
@@ -486,6 +488,58 @@ textarea {
     }
 
 
+.module-installed, .module-already{
+    &::before{
+        background:$c-dark !important;
+        border-color:$c-dark !important;
+    } 
+
+    .title{
+        color: $c-dark !important;
+    }
+}
+
+.module-installing{
+    &::before{
+        border-color:$c-main !important;
+    } 
+}
+
+.module-error{
+    &::before{
+        border-color:#ec3719 !important;
+    } 
+
+    .title{
+        color: #ec3719 !important;
+    }
+}
+
+
+.module-installed, .module-already{
+    .ximTOUR{
+        &::after{
+            background-color:#57e3aa !important;
+        }
+    }
+    .ximTAGS{
+        &::after{
+            background-color:#ff684f !important;
+        }
+    }
+    .ximNEWS{
+        &::after{
+            background-color:#10e2ea !important;
+        }
+    }
+    .xlyre{
+        &::after{
+            background-color:#e5dc1e !important;
+        }
+    }
+
+ 
+}
     /**************
     // ICONS
     ***************/
