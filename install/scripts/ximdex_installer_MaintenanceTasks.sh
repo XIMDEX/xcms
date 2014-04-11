@@ -94,4 +94,4 @@ fi
 
 
 $(chmod +x $SCRIPT_PATH/lib/modules.php)
-($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/lib/modules.php -c  2>>$LOG)
+($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/lib/modules.php install -c  2>>$LOG)
