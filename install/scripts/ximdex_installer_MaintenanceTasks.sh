@@ -76,8 +76,8 @@ else
 fi
 
 echo -n "Generating configuration for modules as conf/install-modules.conf... "
-$(chmod +x $SCRIPT_PATH/lib/modules.php)
-($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/lib/modules.php install -c  2>>$LOG)
+$(chmod +x $SCRIPT_PATH/getAvailableModules.php)
+($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/getAvailableModules.php  2>>$LOG)
 
 if [ -f $XIMDEX_PATH/conf/install-modules.conf ];
 then
@@ -93,5 +93,5 @@ fi
 #$(rm -f $XIMDEX_PATH/data/.* 2>/dev/null)
 
 
-$(chmod +x $SCRIPT_PATH/installCoreModules.php)
-($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/installCoreModules.php  2>>$LOG)
+$(chmod +x $SCRIPT_PATH/lib/modules.php)
+($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/lib/modules.php -c  2>>$LOG)
