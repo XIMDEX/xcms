@@ -93,11 +93,12 @@ class InstallManager {
 		$newState = "";
 		$steps = $this->getSteps();
     	if (count($steps)>$this->currentStep){
-    		$newState = $this->steps[$this->currentStep]["state"];
+    		$newState = $steps[$this->currentStep]["state"];
 
     	}else{
     		$newState =  InstallController::LAST_STATE;
     	}
+    	error_log("DEBUG $nextStep");
     	FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
 	}
 

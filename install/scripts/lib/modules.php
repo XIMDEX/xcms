@@ -101,7 +101,7 @@ function module_install($argv){
 	//if must install, install the loaded modules
 	if ($mustInstall){
 		foreach ($modules as $module) {
-			echo "Installing module {$module['alias']}. {$module['description']}\n";		
+			echo "- Installing module {$module['alias']}: {$module['description']}\n";		
 			$state = $imManager->installModule($module["name"]);
 			$message = "";
 			switch ($state) {
@@ -109,10 +109,10 @@ function module_install($argv){
 					$message = "\nIt was already installed!";
 					break;
 				case InstallModulesManager::SUCCESS_INSTALL:
-					$message = "\nModule {$module["alias"]} sucesfully installed.\n";
+					$message = "\nSucesfully installed.\n";
 					break;
 				case InstallModulesManager::SUCCESS_INSTALL:
-					$message = "\nModule {$module["alias"]} reported a problem while installation.\n";
+					$message = "\nReported a problem while installation.\n";
 					break;
 			}
 
