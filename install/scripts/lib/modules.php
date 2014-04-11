@@ -31,6 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 if (!defined('CLI_MODE'))
 	define('CLI_MODE', 1);
+
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
@@ -77,16 +78,8 @@ function module_install($argv){
 	$mustInstall = true;
 	$modules = array();
 	//Load modules by command parameters
-	if (isset($argv[2]))
-		
-		switch ($arvg[2]) {
-			case '-l':
-				$modules = $imManager->getAllModules();
-				$mustInstall = false;
-				foreach($modules as $mod){
-					echo $mod["alias"]."\n";
-				}
-				break;
+	if (isset($argv[2])){
+		switch ($argv[2]) {
 			case "-a":
 				$modules = $imManager->getAllModules();
 				break;
@@ -96,19 +89,9 @@ function module_install($argv){
 			case "-r":
 				$modules = $imManager->getModulesByDefault(false);
 				break;
-			default 				
-				$modules = $imManager->getModulesByName($argv[2],false);
+			default:
+				$modules = $imManager->getModuleByName($argv[2],false);
 				break;			
-			case "install": //Compatibility with module.sh
-				if (isset($argv[2]))
-					$modules = $imManager->getModulesByName($argv[2],false);
-				break;
-			case "uninstall": 
-			case "-h":
-			case "--help":
-				module_usage();
-				break:
-			
 		}
 
 	}else { //Default usage, install core modules
@@ -130,10 +113,6 @@ function module_install($argv){
 					break;
 				case InstallModulesManager::SUCCESS_INSTALL:
 					$message = "Module {$module["alias"]} reported a problem while installation.\n";
-					break;
-
-				default:
-					# code...
 					break;
 			}
 
@@ -212,7 +191,7 @@ function main ($argc, $argv){
 
 		case "install":
 				//print(" + Installing ($module_name) ...\n");
-				module_install($module_name);
+				module_install($argv);
 				break;
 
 		case "uninstall":
@@ -229,7 +208,10 @@ function main ($argc, $argv){
 				//print(" + Disabling ($module_name) ...\n");
 				module_disable($module_name);
 				break;
-
+	    case "-h":
+		case "--help":
+				module_usage();
+				break;
 		default:
 				print(" * ERROR: Mode not recognized\n");
 				break;
