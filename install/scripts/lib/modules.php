@@ -106,13 +106,13 @@ function module_install($argv){
 			$message = "";
 			switch ($state) {
 				case InstallModulesManager::ALREADY_INSTALL:
-					$message = "It was already installed!";
+					$message = "\nIt was already installed!";
 					break;
 				case InstallModulesManager::SUCCESS_INSTALL:
-					$message = "Module {$module["alias"]} sucesfully installed.\n";
+					$message = "\nModule {$module["alias"]} sucesfully installed.\n";
 					break;
 				case InstallModulesManager::SUCCESS_INSTALL:
-					$message = "Module {$module["alias"]} reported a problem while installation.\n";
+					$message = "\nModule {$module["alias"]} reported a problem while installation.\n";
 					break;
 			}
 
