@@ -94,9 +94,8 @@ fi
 
 if [ "$DEFAULT_MODULES" = '1' ];
 then
-    bash $XIMDEX_PATH/install/module.sh install ximNEWS
-    bash $XIMDEX_PATH/install/module.sh install ximTAGS
-    bash $XIMDEX_PATH/install/module.sh install ximTOUR
+  #install recommended modules  
+  ($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/lib/modules.php install -r  2>>$LOG)  
 fi
 
 if [ -z $XIMDEX_PARAMS_PATH ]; then

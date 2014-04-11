@@ -97,6 +97,9 @@
     <script type="text/javascript" src="extensions/ladda/dist/spin.min.js" ></script>
     <script type="text/javascript" src="extensions/ladda/dist/ladda.min.js" ></script>
     <script type="text/javascript" src="extensions/humane/humane.min.js" ></script>
+    <script type="text/javascript" >
+        var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
+    </script>
     <?
         foreach($js_files as $js_file){
         ?>

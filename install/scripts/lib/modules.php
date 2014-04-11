@@ -31,26 +31,37 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 if (!defined('CLI_MODE'))
 	define('CLI_MODE', 1);
+require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
-include(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
-ModulesManager::file("/inc/modules/modules.const");
+/**
+ * Usage function
+ */
+function module_usage(){
+	echo "Usage: php modules.php install [-options | module_name] \n";
+	echo "       php modules.php [uninstall|enable|disable|list] \n";
+	echo "\nwhere options include:";
+	echo "    -a                   install all modules\n";
+	echo "    -c                   install only core modules (default option)\n";
+	echo "    -r 		           install only recomended modules\n";	
+	echo "    -h --help            show command help\n";
+	echo "\nExamples:\n";
+	echo "   php modules install ximIO\n";
+	echo "   php modules install -c\n";
+	echo "   php modules uninstall -c\n";
+}
 
 function module_list() {
 
-	$modMngr = new ModulesManager();
-
-	$modules = $modMngr->getModules();
-
-	if(ModulesManager::$msg != null) {
-		echo " * ERROR: ".ModulesManager::$msg."\n";
-		ModulesManager::$msg = null;
-	}
+	$imManager = new InstallModulesManager();
+	$modules = $imManager->getAllModules();	
 
 	//print(" -----------------------------\n");
 	print(" + Listing Available Modules +\n");
 	print(" -----------------------------\n");
 	foreach ($modules as $idx => $module) {
-		print("  - {$module['name']} ");
+		print("  - {$module['alias']}: {$module['description']} ");
 		if ($modMngr->isEnabled($module['name'])) {
 			print("(enabled)");
 		}
@@ -59,49 +70,77 @@ function module_list() {
 	print("\n");
 }
 
-function module_install($module_name) {
+function module_install($argv){
+//instance modules manager.
+	$imManager = new InstallModulesManager();
 
-	$modMngr = new ModulesManager();
+	$mustInstall = true;
+	$modules = array();
+	//Load modules by command parameters
+	if (isset($argv[2]))
+		
+		switch ($arvg[2]) {
+			case '-l':
+				$modules = $imManager->getAllModules();
+				$mustInstall = false;
+				foreach($modules as $mod){
+					echo $mod["alias"]."\n";
+				}
+				break;
+			case "-a":
+				$modules = $imManager->getAllModules();
+				break;
+			case "-c":
+				$modules = $imManager->getModulesByDefault();
+				break;
+			case "-r":
+				$modules = $imManager->getModulesByDefault(false);
+				break;
+			default 				
+				$modules = $imManager->getModulesByName($argv[2],false);
+				break;			
+			case "install": //Compatibility with module.sh
+				if (isset($argv[2]))
+					$modules = $imManager->getModulesByName($argv[2],false);
+				break;
+			case "uninstall": 
+			case "-h":
+			case "--help":
+				module_usage();
+				break:
+			
+		}
 
-	$state = $modMngr->checkModule($module_name);
-	if(ModulesManager::$msg != null) {
-		echo " * ERROR: ".ModulesManager::$msg."\n";
-		ModulesManager::$msg = null;
+	}else { //Default usage, install core modules
+		$modules = $imManager->getModulesByDefault();	
 	}
 
-	$myenabled = $modMngr->isEnabled($module_name);
-	if ("ximLOADER" == $module_name)  {
-		print("Invoking ximloader to load project\n");
-}
-	else {
-		print("Installing $module_name ... status --> Installed: $state Enabled: $myenabled\n");
-        }
+	//if must install, install the loaded modules
+	if ($mustInstall){
+		foreach ($modules as $module) {
+			echo "Installing module {$module['alias']}. {$module['description']}\n";		
+			$state = $imManager->installModule($module["name"]);
+			$message = "";
+			switch ($state) {
+				case InstallModulesManager::ALREADY_INSTALL:
+					$message = "It was already installed!";
+					break;
+				case InstallModulesManager::SUCCESS_INSTALL:
+					$message = "Module {$module["alias"]} sucesfully installed.\n";
+					break;
+				case InstallModulesManager::SUCCESS_INSTALL:
+					$message = "Module {$module["alias"]} reported a problem while installation.\n";
+					break;
 
-	if (  $state == MODULE_STATE_UNINSTALLED && !$myenabled ) {
-		$result = $modMngr->installModule($module_name);
+				default:
+					# code...
+					break;
+			}
 
-		if(ModulesManager::$msg != null) {
-			echo " * ERROR: ".ModulesManager::$msg."\n";
-			ModulesManager::$msg = null;
-		} else {
-			echo " * OK: $module_name \n";
-		}
-		
-
-		if($result)
-			print("\nModule $module_name sucesfully installed.\n");
-		else
-			print("\nModule $module_name reported a problem while installation.\n");
+			echo "$message\n";
 			
-
-	} else {
-		print("* ERROR: Module $module_name was not reinstalled because:");
-		if ($state==MODULE_STATE_INSTALLED) 
-			print(" It was already installed!");
-		if ($myenabled)
-			print(" It was already enabled!");
 		}
-		print ("\n");
+	}
 }
 
 function module_uninstall($module_name) {
@@ -142,9 +181,7 @@ function module_disable($module_name) {
 	}
 }
 
-
-function main($argc, $argv) {
-
+function main ($argc, $argv){
 	if ($argc < 2) {
 		print(" * ERROR: Bad syntax\n");
 	}
@@ -198,11 +235,7 @@ function main($argc, $argv) {
 				break;
 
 	}
-
 }
-
-
 // Entry point.
 main($argc, $argv);
-
 ?>

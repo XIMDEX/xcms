@@ -128,6 +128,12 @@ class InstallManager {
 		$query = "/install/modules/module";
 		return $this->getModulesByQuery($query);
 	}	
+
+	public function getModuleByName($name, $exclude_alias = true){
+		$extra_query = $exclude_alias? "": " or @alias='{$name}'";
+		$query = "/install/modules/module[@name='{$name}' $extra_query]";
+		return $this->getModulesByQuery($query);
+	}
 	
 }
 ?>

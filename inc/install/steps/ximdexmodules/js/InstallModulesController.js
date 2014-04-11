@@ -23,7 +23,6 @@
  *  @version $Revision$
  */
 
-var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
 ximdexInstallerApp.factory('installerService', function($http) {
 //   this.installPath = "/";	
    return {
