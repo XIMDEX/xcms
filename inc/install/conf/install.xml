@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <install>
+	<!--Modules list
+		For every module we must define
+			name: real module name
+			alias: short name
+			default: 1 if it's a core module
+			content: Module's descrition.
+	-->
 	<modules>
-		<module default="1">ximIO</module>
-		<module default="1">ximSYNC</module>
-		<module>ximTOUR</module>
-		<module>ximTAGS</module>
-		<module>ximNEWS</module>
-		<module>xlyre</module>
+		<module name="ximIO" alias="IO" default="1">for the Ximdex API.</module>
+		<module name="ximSYNC" alias="Xsync"  default="1">for dynamic publishing into the cloud.</module>
+		<module name="ximTOUR" alias="Xtour">Take a tour of Ximdex.</module>
+		<module name="ximTAGS" alias="Xtags">Add semantic tags to your documents and files.</module>
+		<module name="ximNEWS" alias="Xnews">Build newsletter and blogs.</module>
 	</modules>
+	<!--Steps-->
+	<!--For every module we must define
+			state: literal to put into STATUSFILE
+			class-name: Manager for the Step.
+				The class are under inc/install/steps and need
+				the suffix InstallStep.class.php.
+				The default class is GenericInstallStep.class.php
+				content: Description name
+	-->
 	<steps file="install/_STATUSFILE">
 		<step state="checked" class-name="" >
 			Database installation

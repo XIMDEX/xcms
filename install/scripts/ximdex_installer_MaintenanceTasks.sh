@@ -93,10 +93,5 @@ fi
 #$(rm -f $XIMDEX_PATH/data/.* 2>/dev/null)
 
 
-#install cores modules
-echo "Installing modules IO for the API..."
-echo ""
-bash $XIMDEX_PATH/install/module.sh install ximIO
-echo "Installing modules XSYNC for dynamic publishing into the cloud... "
-echo ""
-bash $XIMDEX_PATH/install/module.sh install ximSYNC
+$(chmod +x $SCRIPT_PATH/installCoreModules.php)
+($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/installCoreModules.php  2>>$LOG)

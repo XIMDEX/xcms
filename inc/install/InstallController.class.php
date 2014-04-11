@@ -29,13 +29,23 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/mvc.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/InstallStepFactory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 
+/**
+ * Controller for install steps.
+ * It's called only when the install process is not finished.
+ */
 class InstallController extends IController {
 
 
-	private $steps = array();
-	private $currentStep = null;
-	private $installManager = null;
+	/*Properties*/
+	private $steps = array(); //Defined steps in installl.xml
+	private $currentState = null; //Name of the current state.
+	private $installManager = null; //Install manager object
 	
+	/*Methods*/
+
+	/**
+	 * Constructor. Init the class properties. 
+	 */
 	public function __construct(){
 		$this->installManager = new InstallManager(InstallManager::WEB_MODE);
 		parent::__construct();
@@ -43,29 +53,42 @@ class InstallController extends IController {
 		$this->currentState = $this->installManager->getCurrentState();		
 	}
 
+	/**
+	 * Run the selected method for the current step.	 
+	 */
 	public function dispatch(){
 
-		$this->setToRequest();		
+		//Set request with $_FILES, $_POST and $_GET arrays
+		$this->setToRequest();
+		
+		//Instancing the step object, 
+		//setting step properties 
+		//and get the method to run		
+		
 		$installStep = $this->compose();
 		$method = (null !== $this->request->getParam('method'))? $this->request->getParam('method') : "index";
 		$this->request->setParam("method",$method);
 		$installStep->setRequest($this->request);
 		$installStep->setResponse($this->response);
 
-		if (!$installStep){
-			
-		}else{
-			if (method_exists($installStep, $method)){
-				$installStep->$method();
-			}
+		if ($installStep && method_exists($installStep, $method)){
+				$installStep->$method();			
 		}
 	}
 
+	/**
+	 * Instance an object for the current step
+	 * @return object Step Object
+	 */
 	public function compose(){
 
 		return InstallStepFactory::getStep($this->steps, $this->currentState);		
 	}
 
+	/**
+	 * Indicate if Ximdex is installed.
+	 * @return boolean True if installed, false otherwise
+	 */
 	public static function isInstalled(){
 
 		$installManager = new InstallManager(InstallManager::WEB_MODE);

@@ -30,19 +30,28 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
 
+/**
+ * Factory class to instance every step object.
+ */
 class InstallStepFactory {
 
 
-	const STEP_PATH = "/inc/install/steps";
+	/*Constant*/
+	const STEP_PATH = "/inc/install/steps"; //Where the step class are defined
+	
 	/**
-	 *
-	 * 
-	 * @return unknown_type
+	 * Build an instance for the current step.
+	 * The default step class is GenericInstallStep.
+	 * All the class name are like {$step}InstallStep
+	 * @param  array $steps        All the steps defined in install.xml
+	 * @param  string $currentState state for the current state
+	 * @return object               Step object
 	 */
 	public static function getStep ($steps, $currentState) {
 		
 		$currentStep = null;
 		$posStep = 0;
+		//Searching the current step
 		foreach ($steps as $step) {
 			if ($step["state"] == strtolower($currentState)){
 				$currentStep = $step;				
@@ -51,6 +60,7 @@ class InstallStepFactory {
 			$posStep++;
 		}
 		
+		//The default class is generic
 		$className = "Generic";		
 		
 		if ($currentStep && $currentStep["class-name"]){
@@ -58,14 +68,12 @@ class InstallStepFactory {
 		}
 		$currentState = strtolower($className);
 		$stepPath = XIMDEX_ROOT_PATH.self::STEP_PATH."/".$currentState;
+
+		//Build the object and set the index for the current step
 		$factory = new Factory($stepPath, $className);
 		$stepObject = $factory->instantiate("InstallStep");
 		$stepObject->setCurrentStep($posStep);
 		return $stepObject;
-
-
 	}
 }
-
-
 ?>

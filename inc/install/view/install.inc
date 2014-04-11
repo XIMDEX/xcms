@@ -86,7 +86,7 @@
         <div class="footer">
             <a href="http://www.ximdex.com">www.ximdex.com</a>
         </div>
-    </div><div class="content step-<?php echo $this->currentState; ?>">
+    </div><div class="content step-<?php echo $this->installManager->currentState; ?>">
         <?php 
             include ($includeTemplateStep);
         ?>       

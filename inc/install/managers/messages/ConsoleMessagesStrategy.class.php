@@ -35,5 +35,10 @@ class ConsoleMessagesStrategy{
 			echo ".";
 		}
 	}
+
+	public function println($text){
+		echo($text."\n");
+		
+	}
 }
 ?>

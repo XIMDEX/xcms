@@ -1,3 +1,4 @@
+#!/usr/bin/php -q
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -23,22 +24,33 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+
+
+/**
+ * Script to list or install default modules. 
+ * This modules are defined in inc/install/conf/install.xml
+ */
+if (!defined('XIMDEX_ROOT_PATH'))
+define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+
+require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
+
+//Get all default modules
+$imManager = new InstallModulesManager();
+$modules = $imManager->getModulesByDefault();
+
+//List them
+if (isset($argv[1]) &&  "-l" == $argv[1]) {
+	foreach($modules as $mod){
+		echo $mod["alias"]."\n";
+	}
+}else { //Installing every module
+	foreach ($modules as $module) {
+		echo "Installing module {$module['alias']}. {$module['description']}\n";		
+		$imManager->installModule($module["name"]);
+	}
+}
 ?>
-
-<form method="post" ng-controller="InstallModulesController" name="installModulesForm" ng-submit="processForm()"  >
-    <input type="hidden" name="method" value="<?php echo $goMethod ?>">
-	<h2>Installing Ximdex Modules</h2>
-	<ul>
-		<li class="module-{{module.state}} " ng-repeat="module in modules">
-	      <p class="title  {{module.name}} "> {{module.alias}} <span ng-show="module.processed">{{module.state}}</span>
-		
-	      </p> 
-	      <p class="desc">{{module.description}}</p>
-
-	    </li>
-		
-	</ul>
-	<button ui-ladda="loading" class="ladda-button launch_ximdex" data-style="slide-up" id="submitButton" xim-state="loading">
-          <span class="ladda-label">Continue</span>
-      </button>
-</form>

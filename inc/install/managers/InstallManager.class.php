@@ -32,6 +32,7 @@ class InstallManager {
 	//CONSTANTS FOR INSTALL MODE
 	const WEB_MODE = "web";
 	const CONSOLE_MODE = "console";
+	const STATUSFILE = "/install/_STATUSFILE";
 
 	const INSTALL_CONF_FILE = "install.xml";	
 	const LAST_STATE = "INSTALLED";
@@ -40,6 +41,7 @@ class InstallManager {
 	protected $installMessages = null;
 	protected $installConfig=null;
 	public $currentState;
+	public $currentStep;
 
 	public function __construct($mode = self::CONSOLE_MODE){
 		$this->mode = $mode;
@@ -49,7 +51,7 @@ class InstallManager {
 		
 		$this->installConfig = new DomDocument();
 		$this->installConfig->load($installConfFile);
-		$this->currentState = $this->getCurrentState();
+		$this->currentState = $this->getCurrentState();		
 	}
 
 	public function getSteps(){
@@ -57,12 +59,14 @@ class InstallManager {
 		$query = "/install/steps/step";
 		$steps = $xpath->query($query);
 		$result = array();
-		foreach ($steps as $step) {
+		foreach ($steps as $i => $step) {
 			$auxStepArray=array(); 
 			foreach($step->attributes as $attribute){
 				$auxStepArray[$attribute->name] = $attribute->value;
 			}
 			$auxStepArray["description"] = $step->nodeValue;
+			if ($auxStepArray["state"] == strtolower($this->currentState))
+				$this->currentStep = $i;
 			$result[] = $auxStepArray;
 		}
 
@@ -70,7 +74,7 @@ class InstallManager {
 	}
 
 	public function getCurrentState(){
-		$statusFile = XIMDEX_ROOT_PATH."/install/_STATUSFILE";
+		$statusFile = XIMDEX_ROOT_PATH.self::STATUSFILE;
 		if (!file_exists($statusFile))
 			return false;
 		return trim(strtolower(FsUtils::file_get_contents($statusFile)));
@@ -113,7 +117,7 @@ class InstallManager {
 			foreach($module->attributes as $attribute){
 				$auxModuleArray[$attribute->name] = $attribute->value;
 			}
-			$auxModuleArray["name"] = $module->nodeValue;
+			$auxModuleArray["description"] = $module->nodeValue;
 			$result[] = $auxModuleArray;
 
 		}		

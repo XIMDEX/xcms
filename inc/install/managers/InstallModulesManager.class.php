@@ -30,16 +30,16 @@ class InstallModulesManager extends InstallManager {
 	const ALREADY_INSTALL = "Already installed";
 	const ERROR_INSTALL = "Error";
 	const UNINSTALLED = "Uninstalled";
-	const SUCCESS_INSTALL = "Installed!";
+	const SUCCESS_INSTALL = "Installed";
 	const DISABLED = "Disabled";
 
 	public function installModule($name){
 
 		$installState = self::UNINSTALLED;
 		$modMngr = new ModulesManager();
-		$state = $modMngr->checkModule($module_name);
+		$state = $modMngr->checkModule($name);
 
-		$myenabled = $modMngr->isEnabled($module_name);
+		$myenabled = $modMngr->isEnabled($name);
 		
 		switch ($state) {
 			case MODULE_STATE_INSTALLED:
@@ -48,7 +48,7 @@ class InstallModulesManager extends InstallManager {
 				break;
 			case MODULE_STATE_UNINSTALLED:
 				if (!$myenabled){
-					$result = $modMngr->installModule($module_name);
+					$result = $modMngr->installModule($name);
 					$installState =  $result ? self::SUCCESS_INSTALL: self::ERROR_INSTALL;
 
 				}

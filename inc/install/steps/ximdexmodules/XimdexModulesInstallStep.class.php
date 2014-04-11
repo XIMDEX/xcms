@@ -28,8 +28,14 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.c
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/FastTraverseManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
+/**
+ * Step class to install the modules. It will install the no core modules
+ */
 class XimdexModulesInstallStep extends GenericInstallStep {
 
+	/**
+	 * Default step method. List all the modules	 
+	 */
 	public function index(){		
 		
 		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
@@ -41,11 +47,17 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 		$this->render();
 	}
 
+	/**
+	 * List all none default modules and send a json object
+	 */
 	public function getModulesLikeJson(){
 		$modules = $this->installManager->getModulesByDefault(false);		
 		$this->sendJSON($modules);
 	}
 
+	/**
+	 * Install a module specified in params.	 
+	 */
 	public function installModule(){
 		
 		$moduleName = $this->request->getParam("module");
