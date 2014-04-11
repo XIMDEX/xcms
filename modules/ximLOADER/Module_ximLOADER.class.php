@@ -402,7 +402,6 @@ class Module_ximLOADER extends Module {
 		$io = new BaseIO();
 
 		foreach ($files as $file) {
-			echo ".";
 			$templateId = $this->templates[$file->templatename];
 			$file->channel = $file->channel == '{?}' ? $this->project->channel : $file->channel;
 			$file->language = $file->language == '{?}' ? $this->project->language : $file->language;
@@ -457,7 +456,6 @@ class Module_ximLOADER extends Module {
 		$io = new BaseIO();
 
 		foreach ($files as $file) {
-			echo ".";
 			$nodeType = new NodeType();
 			$nodeType->SetByName($file->nodetypename);
 			$idNodeType = $nodeType->get('IdNodeType') > 0 ? $nodeType->get('IdNodeType') : NULL;
@@ -517,7 +515,6 @@ class Module_ximLOADER extends Module {
 		$serverUrl = $projectUrl . '/' . $servers[0]->name;
 
 		foreach ($files as $file) {
-			echo ".";
 			$content = $file->getContent();
 
 			if (preg_match('/\{URL_ROOT\}/', $content)) {
