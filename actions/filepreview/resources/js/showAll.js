@@ -1,5 +1,5 @@
 X.actionLoaded(function(event, fn, params) {
-   jQuery('.image_container').gallerizer({
+   fn('.image_container').gallerizer({
     loading_text: _('Loading images'),             // if set, text will display while images are loading
         loading_image: 'http://i302.photobucket.com/albums/nn92/wandoledzep/spinner.gif',
                                      // image to display while images are loading if no text is set

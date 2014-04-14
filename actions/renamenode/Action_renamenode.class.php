@@ -87,12 +87,12 @@ class Action_renamenode extends ActionAbstract {
 		$moduleXimNews = ($nt==5078) && (ModulesManager::isEnabled('ximNEWS'));
 
 		$schemaType = '';
-		if ($moduleXimNews) {
-			$schemaType = $node->getProperty('SchemaType');
-			if (is_array($schemaType) && count($schemaType) == 1) {
-				$schemaType = $schemaType[0];
-			}
+		
+		$schemaType = $node->getProperty('SchemaType');
+		if (is_array($schemaType) && count($schemaType) == 1) {
+			$schemaType = $schemaType[0];
 		}
+		
 
 		$checkUrl = Config::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
 			. $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')

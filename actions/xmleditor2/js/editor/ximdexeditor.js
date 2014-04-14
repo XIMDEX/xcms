@@ -295,77 +295,64 @@ function XimdocEditor(options) {
 	this.fileRequest = function(propertyName, url, callback, updateEditor, hideLoadingImage, method, content) {
 		var method = (method) ? method : 'GET';
 		var content = (content) ? content : null;
-		new AjaxRequest(url, {
+        var that=this;
+
+		$.ajax(url, {
 			method: method,
 			content: content,
-			onComplete: function(req, json) {
+			success: function(data) {
 
-				if (json['error']) {
-					callback(null, json.error);
-					return;
-				}
-
-				if (json["result"] !== false){
-					var data = json.data || req.responseText;
+				if (data["result"] !== false){
+					var data = data.data || req.responseText;
 					
-					if(json.method && json.method == 'verifyTmpFile') {
-						this[propertyName] = json.result;
+					if(this.method && this.method == 'verifyTmpFile') {
+						that[propertyName] = this.result;
 					}
 					else if (url.indexOf("loadaction") == -1){
-					    this[propertyName] = this.createDomDocument(data,0,true);
+					    that[propertyName] = that.createDomDocument(data,0,true);
 					}
 					else {
-						this[propertyName] = this.createDomDocument(data);
+						that[propertyName] = that.createDomDocument(data);
 					}
 	
-					this._afterInitialize(callback);
+					that._afterInitialize(callback);
 				}
-			}.bind(this),
-			onError: function(req) {
+			},
+			error: function(req) {
 				//console.error(req);
 				loadingImage.hideLoadingImage();
-			}.bind(this)
+			}
 		});
 	}
 
     this.fileRequestAll = function(url, callback, updateEditor, hideLoadingImage, method, content) {
         var method = (method) ? method : 'GET';
         var content = (content) ? content : null;
+        var that=this;
 
-        new AjaxRequest(url, {
+        $.ajax(url, {
             method: method,
             content: content,
-            onComplete: function(req, json) {
+            success: function(data) {
 
-                if (json['error']) {
-                    callback(null, json.error);
-                    return;
-                }
-
-                if (json["result"] !== false){
-                    var data = json.data || req.responseText;
-
-                    if(json.method && json.method == 'verifyTmpFile') {
-                        this[propertyName] = json.result;
-                    }
-                    else if (url.indexOf("loadaction") == -1){
+                    if (url.indexOf("loadaction") == -1){
                         //this[propertyName] = this.createDomDocument(data,0,true);
                     }
                     else {
-                        this['_xmlDom'] = this.createDomDocument(json.xmlFile);
-                        this['_rngDom'] = this.createDomDocument(json.schemaFile);
-                        this['_xslDom'] = this.createDomDocument(json.xslFile);
-                        this['_noRenderizableElements'] = this.createDomDocument(json.noRenderizableElements);
-                        this['config'] = this.createDomDocument(json.config);
+                        that['_xmlDom'] = that.createDomDocument(data.xmlFile);
+                        that['_rngDom'] = that.createDomDocument(data.schemaFile);
+                        that['_xslDom'] = that.createDomDocument(data.xslFile);
+                        that['_noRenderizableElements'] = that.createDomDocument(data.noRenderizableElements);
+                        that['config'] = that.createDomDocument(data.config);
                     }
 
-                    this._afterInitialize(callback);
-                }
-            }.bind(this),
-            onError: function(req) {
-                //console.error(req);
+                    that._afterInitialize(callback);
+            },
+            error: function(data) {
+                //console.error(data);
+                alert(_("An error has ocurred. Please, try again later."));
                 loadingImage.hideLoadingImage();
-            }.bind(this)
+            }
         });
     }
 
@@ -451,7 +438,8 @@ function XimdocEditor(options) {
 	    var root = confNode.getElementsByTagName('kupuconfig');
 	    root = root[0] || null;
 	    if (!root) {
-	        this.log.log(_('No element found in the configuration'));
+	        //this.logMessage(_('No element found in the configuration'));
+	        //this.log.log(_('No element found in the configuration'));
 	        throw(_('No element found in the configuration'));
 	    };
 
@@ -1367,15 +1355,10 @@ function XimdocEditor(options) {
 		});
 
 		var encodedContent = "&content=" + encodeURIComponent(content);
-
 		var xmlUrl = this._baseURL + '&ajax=json&method=getXmlFile';
 
 		// XML request
-		this.fileRequest(
-			'_xmlDom', xmlUrl,
-			this.updateEditor.bind(this),
-			null, null, 'POST', '&content=' + content
-		);
+		this.fileRequest('_xmlDom', xmlUrl,	this.updateEditor.bind(this),null, null, 'POST', '&content=' + content);
 	};
 
 };

@@ -741,7 +741,7 @@ XimDocument = function(editorConfig) {
 						}
 					}
 				}
-				if (typeof(callback) == 'function') callback(json.valid, msg);
+//				if (typeof(callback) == 'function') callback(json.valid, msg);
 			},
 			onError: function(req) {
 				if (typeof(callback) == 'function') callback(false, _("Document cannot be validated!"));

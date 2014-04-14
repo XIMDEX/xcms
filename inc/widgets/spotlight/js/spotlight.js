@@ -144,6 +144,7 @@
 
 			if (query === null) {
 				console.error('falta algun filtro');
+                alert("Empty search. Please, type something.");
 				return;
 			}
 

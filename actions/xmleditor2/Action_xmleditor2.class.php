@@ -280,7 +280,7 @@ class Action_xmleditor2 extends ActionAbstract {
 		$content = Request::post('content');
 		$this->getEditor($idnode);
 		$content = $this->_editor->getAnnotationFile($idnode, $content);
-		$this->printContent($content, false);
+		$this->printContent($content);
 	}
 
 	/**
@@ -359,10 +359,8 @@ class Action_xmleditor2 extends ActionAbstract {
         $res['config'] = $contentConfig;
         // Print JSON
         $content = Serializer::encode(SZR_JSON, $res);
-
         header('Content-type: application/json');
-
-        print $content;
+        echo $content;
         exit();
     }
 
@@ -396,8 +394,7 @@ public function checkEditionStatus() {
     if(!$res) {
         XMD_Log::error(_('Error creating a new Node Edition'));
     }
-    $return = array('edition' => $edition,
-    'data' => $extraEdition);
+    $return = array('edition' => $edition,'data' => $extraEdition);
     echo json_encode($return);
 }
 /**

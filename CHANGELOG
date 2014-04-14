@@ -1,6 +1,28 @@
-
 				Ximdex (Free & Semantic CMS for XML) - CHANGELOG	
 				------------------------------------------------
+
+Version 3.5
+-----------------
+-> 18th-04-2014 Ximdex Development Team <dev@ximdex.org>
+  * General:
+    * Left panel auto collapse.
+    * New messaging sytem powered by angular.js
+  
+  * Xedit:
+    * Single request for all the needed resources: RNG, XSL, XML, config, ...
+    * New tags interface for document tagging.
+    * Re-arranged buttons on the toolbar and priorizing toolboxes on the right panel.
+  
+  * Modules:
+  
+  * Installer:
+    * New installer script and first steps to move all the logic to a web installer.
+  
+  * Solved Bugs:
+  
+  * UI:
+    * New styling on all actions for improve usability.
+    * CSS3 with SASS.
 
 Version 3.4
 -----------------

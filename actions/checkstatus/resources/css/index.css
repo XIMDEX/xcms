@@ -33,7 +33,7 @@
   padding: .6em .2em; }
 
 .versions p {
-  margin: 0 2% 2em; }
+  margin: 0 0 .5em; }
 .versions .version-info {
   padding: .5em 4em;
   counter-increment: documents-list;

@@ -9,7 +9,6 @@ node_modules
 data/
 logs/
 install/install.log
-conf/install-modules.conf
 conf/install-params.conf.php
 conf/install-params.conf_bk_*.php
 modules/dexT/xslt/dext_main.xsl

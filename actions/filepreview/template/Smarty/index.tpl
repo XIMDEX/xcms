@@ -22,7 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
-<div class="center">
-<img src="{$path}" alt="preview"/>
+<div class="action_header">
+		<h2>{$Name}</h2>
+</div>
+<div class="action_content image-preview">	
+	<img src="{$path}" alt="preview"/>
 </div>

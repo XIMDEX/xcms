@@ -62,7 +62,7 @@
 						<option value="inrange">{t}in the range{/t}</option>
 					</select>
 
-					<input type="text" class="xim-filter-content" />
+					<input type="text" palceholder="{t}Search{/t}..." class="xim-filter-content" />
 					<select type="text" class="xim-filter-nodetype-content"></select>
 					<input type="text" class="xim-filter-date-content" />
 					<input type="text" class="xim-filter-date-to-content" />
@@ -107,7 +107,7 @@
 <div class="results">
 			<div id="loading" class="loading-icon"></div>
 
-			<h2>{t}Results for{/t} "término"</h2>
+			<h2>{t}Results{/t}</h2>
 
 			<div class="results-view" />
 			<paginator class="searchpanel-paginator" />
