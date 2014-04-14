@@ -52,7 +52,8 @@ class Module_ximTAGS extends Module {
 		$this->loadConstructorSQL("ximTAGS.constructor.sql");
 		
         // Install !      
-		$install_ret = parent::install();		
+		$install_ret = parent::install();	
+		return $install_ret;	
 	}
 	
 	

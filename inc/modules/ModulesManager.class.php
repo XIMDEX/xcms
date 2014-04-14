@@ -392,6 +392,6 @@ class ModulesManager {
 			//$from =  $trace[0]["file"]." in line ".$trace[0]["line"];
 			//echo "File not found: <em>$_file</em> of <strong>{$_module}</strong> module in $from <br>";
 		}
-	}
+	}	
 }
 ?>

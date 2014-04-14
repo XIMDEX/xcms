@@ -33,55 +33,13 @@
 
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-
-include_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
-include_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
-
-function updateFT($node_id) {
-
-	$n = new Node($node_id);
-	$n->updateFastTraverse();
-	//unset($n);
-	xObject::destroy($n);
-}
-
-function deleteTraverse() {
-
-	$sql = "DELETE FROM FastTraverse";
-	$db = new DB();
-
-	$db->Execute($sql);
-}
-
-function updateTraverse() {
-
-	$sql = "SELECT IdNode FROM Nodes";
-	$db = new DB();
-
-	$db->Query($sql);
-
-	$i = 0;
-	while (!$db->EOF) {
-		$i++;
-		if(!($i%10)) {
-			echo ".";
-		}
-
-		$node_id = $db->GetValue('IdNode');
-		updateFT($node_id);
-		$db->next();
-	}
-
-	//echo "Nodos procesados: $i\n";
-}
-
+include_once(XIMDEX_ROOT_PATH . '/inc/install/managers/FastTraverseManager.class.php');
 
 function main($argc, $argv) {
 
-	deleteTraverse();
-	updateTraverse();
+	$ftManager = new FastTraverseManager();
+	$ftManager->buildFastTraverse();
 }
-
 
 // Entry point.
 main($argc, $argv);

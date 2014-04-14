@@ -83,56 +83,6 @@ echo ""
 
 echo "Using $XIMDEX_PATH as working directory"
 
-#install demo
-datanodes=$(ls $XIMDEX_PATH/data/nodes/)
-
-if [ -n "$datanodes" ]
-then
-  if [ -z "$REMOVE_DATANODES" ];
-  then
-		io.question "Do you want to remove your data/nodes files? "
-		REMOVE_DATANODES=$(io.getOption)
-	fi
-
-  echo ""
-  if [ $REMOVE_DATANODES = "1" ]
-  then
-	 $(rm -rf $XIMDEX_PATH/data/nodes/*)
-  fi
-fi
-
-
-#install demo
-echo ""
-if [ -z "$PROJECT_DEMO" ];
-then
-	io.question "Do you want to install one of our demo projects? (Picasso recommended) "
-	option=$(io.getOption)
-	if [ "$option" = '1' ]
-	then
-		bash $XIMDEX_PATH/install/module.sh install ximLOADER 2> /dev/null
-
-
-		install_demo="Y"
-		while [ $install_demo = "Y" ]
-		do
-			echo ""
-			io.question "Do you want to install another demo project? "
-			option=$(io.getOption)
-			if [ "$option" = '1' ]
-			then
-				bash $XIMDEX_PATH/install/module.sh install ximLOADER
-			else
-				install_demo="N"
-			fi
-		done
-	fi
-else
-	if [ $PROJECT_DEMO -ge 1 ];
-	then
-		bash $XIMDEX_PATH/install/module.sh install ximLOADER
-	fi
-fi
 
 if [ -z "$DEFAULT_MODULES" ];
 then
@@ -144,14 +94,15 @@ fi
 
 if [ "$DEFAULT_MODULES" = '1' ];
 then
-    bash $XIMDEX_PATH/install/module.sh install ximNEWS
-    bash $XIMDEX_PATH/install/module.sh install ximTAGS
-    bash $XIMDEX_PATH/install/module.sh install ximTOUR
+  #install recommended modules  
+  ($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/lib/modules.php install -r  2>>$LOG)  
 fi
 
 if [ -z $XIMDEX_PARAMS_PATH ]; then
     XIMDEX_PARAMS_PATH=$XIMDEX_PATH
 fi
+
+echo "MODULES-INSTALLED" > $XIMDEX_PATH/install/_STATUSFILE
 
 SCRIPT_USER=${SCRIPT_USER:-$USER}
 instance_in_crontab=$(crontab -u $SCRIPT_USER -l|grep "$XIMDEX_PATH")

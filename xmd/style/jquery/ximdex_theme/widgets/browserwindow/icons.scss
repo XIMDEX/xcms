@@ -68,7 +68,7 @@
 .progress.complete::before, 
 .themes  .select::before, 
 .subfolder :checked + label strong::after, 
-.checked_ok::before  {
+.checked_ok::before {
   content: "\0079";
 }
 

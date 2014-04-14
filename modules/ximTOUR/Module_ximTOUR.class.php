@@ -47,13 +47,11 @@ class Module_ximTOUR extends Module {
 		$projects = new Node(10000);
         $projectid = $projects->GetChildByName("Picasso");
         if (!($projectid>0)) {
-	            echo "\nModule ximTOUR requires Picasso project. It will be installed...\n";
 	            $moduleLoader = new Module_ximLOADER();
 	            $moduleLoader->install(2);
-	            echo "\n\n";
-        }
+	    }
 	    $this->loadConstructorSQL("ximTOUR.constructor.sql");
-	    parent::install();
+	    return parent::install();
 	}
         
     function uninstall(){

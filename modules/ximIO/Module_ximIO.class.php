@@ -52,7 +52,8 @@ class Module_ximIO extends Module {
 		$this->loadConstructorSQL("ximIO.constructor.sql");
 		
         // Install !      
-		$install_ret = parent::install();		
+		$install_ret = parent::install();
+		return $install_ret;		
 		
 	}
 

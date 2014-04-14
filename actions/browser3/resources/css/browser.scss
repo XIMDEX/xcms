@@ -25,6 +25,8 @@
 
 
 @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
 
 
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -58,7 +60,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+	line-height: 1.3;
 }
 ol, ul {
 	list-style: none;

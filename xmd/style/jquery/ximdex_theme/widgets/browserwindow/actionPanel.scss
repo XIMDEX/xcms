@@ -1182,9 +1182,9 @@ input:focus + .tooltip_info{
 	&::before{
 		content: "";
 		border: .4em solid rgba(255,255,255,0);
-		border-top-color: $c_grey;
-		top: 1.3em;
-		left:1em;
+		border-left-color: $c_grey;
+		top: 1.1em;
+		left:1.3em;
 		position: absolute;
 		-webkit-transition: all .3s;
 		-moz-transition: all .3s;
@@ -1192,19 +1192,19 @@ input:focus + .tooltip_info{
 		-o-transition: all .3s;
 		transition: all .3s;
 
-		-webkit-transform-origin: center .2em;
-		-moz-transform-origin: center .2em;
-		-ms-transform-origin: center .2em;
-		-o-transform-origin: center .2em;
-		transform-origin: center .2em;
+		-webkit-transform-origin: .2em center;
+		-moz-transform-origin: .2em center;
+		-ms-transform-origin: .2em center;
+		-o-transform-origin: .2em center;
+		transform-origin: .2em center;
 		
 		}
 	&.opened::before{
-		-webkit-transform: rotate(-180deg);
-		-moz-transform: rotate(-180deg);
-		-ms-transform: rotate(-180deg);
-		-o-transform: rotate(-180deg);
-		transform: rotate(-180deg);
+		-webkit-transform: rotate(90deg);
+		-moz-transform: rotate(90deg);
+		-ms-transform: rotate(90deg);
+		-o-transform: rotate(90deg);
+		transform: rotate(90deg);
 		
 		
 	}
@@ -1332,7 +1332,8 @@ input:focus + .tooltip_info{
 		display: inline-block;
 		text-indent: 100%;
 		white-space: nowrap;
-		overflow: hidden;
+		overflow: visible; // because manage version buttons 
+		cursor: pointer;
 		border: none;
 		-webkit-border-radius: 50%;
 		-moz-border-radius: 50%;
@@ -1349,7 +1350,8 @@ input:focus + .tooltip_info{
 		}
 
 		span{
-			position: absolute;	
+			top: 0;
+			position: absolute !important;	
 			display: none;
 			text-indent: 0;
 			margin-top: 2.5em;
@@ -1433,7 +1435,7 @@ input:focus + .tooltip_info{
 
 }
  .action_content{
-      .checkbox-label:not(.reduced_label){
+      .checkbox-label:not(.reduced_label), .radio-label{
         width: 100%;
         background: #fff;
         border: 1px solid #dedede;
@@ -1462,7 +1464,7 @@ input:focus + .tooltip_info{
 
         &::before{
           position: relative;
-          z-index: 2;
+          z-index: 3; // because language selector and radio button selector
           padding-right: .8em;
           color: rgba(255,255,255,.7);
           
@@ -1483,7 +1485,7 @@ input:focus + .tooltip_info{
        
         }
 
-      :checked + .checkbox-label:not(.reduced_label), :checked ~ .checkbox-label:not(.reduced_label), .checkbox-label:not(.reduced_label)[checked]{
+      :checked + .checkbox-label:not(.reduced_label), :checked ~ .checkbox-label:not(.reduced_label), .checkbox-label:not(.reduced_label)[checked],  :checked + .radio-label, :checked ~ .radio-label, .radio-label[checked]{
         border-color: #fff;
         background: lighten($c_mainlight, 10%);
         -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.2);
@@ -1496,6 +1498,22 @@ input:focus + .tooltip_info{
           border-color: white;
         }
       }
+
+	.radio-label::after{
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+	}
+
+	.radio-label::before{
+		content: '\25CF';
+		top: -.25em;
+		opacity: 0;
+	}
+
+	  :checked  + .radio-label::before,  :checked ~ .radio-label::before{
+		opacity: 1;
+	}
 
       .alternative-name{
         margin-top: -2.5em;
