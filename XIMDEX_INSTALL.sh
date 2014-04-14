@@ -737,6 +737,9 @@ $(chmod -R 2770 ${REPO_NAME}/data)
 $(chmod -R 2770 ${REPO_NAME}/logs)
 $(chmod -R 2770 ${REPO_NAME}/install)
 
+# Set permission to config files
+$(chmod -R 770 ${REPO_NAME}/conf/install-modules.conf)
+
 # Launching steps
 Step_Dependencies && SetInstallStatus "CHECKED"
 Step_CreateDB && SetInstallStatus "CREATED_DB"
