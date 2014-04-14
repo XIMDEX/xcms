@@ -32,12 +32,14 @@ class GenericInstallStep {
 	protected $currentStep;
 	protected $installManager;
 	protected $js_files;
+	protected $exception;
 	const STATUSFILE = "/install/_STATUSFILE";
 
 	public function __construct(){
 		$this->js_files = array();
 		$this->installManager = new installManager();
 		$this->steps = $this->installManager->getSteps();
+		$this->checkInstall();
 	}
 
 	public function index(){
@@ -56,10 +58,32 @@ class GenericInstallStep {
 		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
 		
 		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
-		$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.inc";
+		if ($this->exception && is_array($this->exception) && count($this->exception)){
+			$exception = $this->exception;
+			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/generic/view/exception.inc";
+		}else
+			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.inc";
 		include(XIMDEX_ROOT_PATH."/inc/install/view/install.inc");
 		die();
 	}
+
+	/**
+	 * Checking install parameters	 
+	 */
+	private  function checkInstall(){
+		$filesToCheck = array(self::STATUSFILE,
+								"/data",
+								"/logs");
+		
+		foreach ($filesToCheck as $file) {
+			if (!file_exists(XIMDEX_ROOT_PATH.$file)){
+				$this->exception[] = "$file doesn't found.";
+			}else if (!is_writable(XIMDEX_ROOT_PATH.$file)){
+				$this->exception[] = "Ximdex need permissions to write on $file";
+			}
+		}
+	}
+
 
 	/**
 	 * Sends a JSON string
