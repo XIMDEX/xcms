@@ -48,8 +48,17 @@ ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerS
  function($scope, installerService, $q, $window) {
 
  	$scope.modules = {};
-	installerService.sendAction("getModulesLikeJson").then(function(response) {
+    $scope.loaded = false;
+    $scope.message = "";
+    $scope.error = false;
+
+    installerService.sendAction("getModulesLikeJson").then(function(response) {
+        if (response.data.error){
+            $scope.error = true;
+            $scope.message = response.data.message;
+        }
         $scope.modules = response.data;
+        $scope.loaded = true;
     });
 
     $scope.processForm = function(){
@@ -78,7 +87,6 @@ ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerS
 
 
 }]);
-
 
 ximdexInstallerApp.directive('uiLadda', [function () {
     return {
