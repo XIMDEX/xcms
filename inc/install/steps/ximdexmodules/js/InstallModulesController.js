@@ -44,8 +44,8 @@ ximdexInstallerApp.factory('installerService', function($http) {
    }
 });
 
-ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerService', "$q", "$window",
- function($scope, installerService, $q, $window) {
+ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope', 'installerService', "$q", "$window",
+ function($timeout, $scope, installerService, $q, $window) {
 
  	$scope.modules = {};
     $scope.loaded = false;
@@ -79,8 +79,9 @@ ximdexInstallerApp.controller('InstallModulesController', ['$scope', 'installerS
 		    });
 		}else{
 			$scope.loading = false;
-			installerService.sendAction("loadNextAction").then(function(response) {
-		    location.reload();
+            
+            installerService.sendAction("loadNextAction").then(function(response) {
+                $timeout(function(){location.reload();},1000);
 		    });
 		}
 	}
