@@ -50,7 +50,6 @@ class InstallModulesManager extends InstallManager {
 				if (!$myenabled){
 					$result = $modMngr->installModule($name);
 					$installState =  $result ? self::SUCCESS_INSTALL: self::ERROR_INSTALL;
-
 				}
 				break;				
 			case MODULE_STATE_ERROR:
@@ -64,16 +63,26 @@ class InstallModulesManager extends InstallManager {
 	}
 
 	public function buildModulesFile(){
-		$config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS);
+
+		$fileName = XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS;
+		if(!file_exists($fileName) || !is_writable($fileName))
+			return false;
+		$config = FsUtils::file_get_contents($fileName);
 		
 		$modMan=new ModulesManager();
 		$modules=$modMan->getModules();
 		$str="<?php\n\n";
+		$str .= "/**
+ * Paths and states constants for the Ximdex Modules, e.g.
+ * The path is relative to ximdex folder.
+ * define('MODULE_XIMSYNC_PATH','/modules/ximSYNC');
+ */\n\n";
 		foreach($modules as $mod){
 			$str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";
 		}
 		$str.="\n?>";
-		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS,$str);
+		$result = FsUtils::file_put_contents($fileName,$str);
+		return $result;
 	}
 
 	public function installDefaultModules(){
