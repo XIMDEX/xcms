@@ -59,6 +59,10 @@ class InstallModulesManager extends InstallManager {
 				break;
 		}
 
+		if (strtolower($name) != "ximloader"){
+			$modMngr->enableModule($name);
+		}
+
 		return $installState;
 	}
 

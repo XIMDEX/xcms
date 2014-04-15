@@ -1,4 +1,4 @@
-#!/bin/bash
+  #!/bin/bash
 #/**
 # *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
 # *
@@ -60,7 +60,7 @@ function install() {
  if [ $MODULE != "ximLOADER" ] && [ $MODULE != "ximLOADERDEVEL" ]
  then
 	$PHP_CMD $ADD_MEMORY $MODULES_PHP_SCRIPT install $MODULE
-        $PHP_CMD $ADD_MEMORY  $MODULES_PHP_SCRIPT enable $MODULE
+  $PHP_CMD $ADD_MEMORY  $MODULES_PHP_SCRIPT enable $MODULE
  else
 	$PHP_CMD $ADD_MEMORY $MODULES_PHP_SCRIPT install $MODULE $PROJECT_DEMO
  fi
