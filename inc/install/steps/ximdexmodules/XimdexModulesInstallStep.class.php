@@ -46,7 +46,7 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 			$imManager->installModule($module["name"]);
 		}
 		if (!$result)
-			$this->exception[]="Unavailable install modules. Do you have right permission on install/install-modules.conf?"
+			$this->exception[]="Unavailable install modules. Do you have right permission on install/install-modules.conf?";
 		$this->render();
 	}
 
