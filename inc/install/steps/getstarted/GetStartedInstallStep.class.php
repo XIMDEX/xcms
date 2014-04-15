@@ -28,6 +28,9 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.c
 
 class GetStartedInstallStep extends GenericInstallStep {
 
+	/**
+	 * Main function. Show the step	 
+	 */
 	public function index(){
 		
 		$values=array();
@@ -35,10 +38,24 @@ class GetStartedInstallStep extends GenericInstallStep {
 		$this->render($values);
 	}
 
+	/**
+	 * Change Permissions, Load next Action  and redirect to index.php
+	 * @return [type] [description]
+	 */
 	public function startXimdex(){
+
+		$this->changePermissions();
 		$this->loadNextAction();		
 		header(sprintf("Location: %s", "index.php"));
 		die();
+	}
+
+	/**
+	 * Change permissions to only reader mod.
+	 */
+	private function changePermissions(){
+		
+		chmod(XIMDEX_ROOT_PATH."/conf/install-params.conf",0644);		
 	}
 
 }

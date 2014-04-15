@@ -155,10 +155,10 @@ function CreateScriptToSetPermsAndMove() {
     arr_command+=("$command\n")
 
     #command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_MaintenanceTasks.sh -x $XIMDEX_TARGET_DIR\" ${USER_APACHE}"
-    arr_command+=("$command\n")
+    #arr_command+=("$command\n")
 
     #command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_InitializeInstance.sh -x $XIMDEX_TARGET_DIR -m 1 -i 0 -p 0\" ${USER_APACHE}"
-    arr_command+=("$command\n")
+    #arr_command+=("$command\n")
 
     arr_command+=("exit 0\n")
 
