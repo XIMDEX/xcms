@@ -464,6 +464,22 @@ li[class*="module"] {
   background-color: #e5dc1e !important; }
 
 /**************
+// ERRORS
+***************/
+.error {
+  padding-bottom: 0 !important;
+  position: relative; }
+  .error::before {
+    content: "!";
+    display: inline-block;
+    width: 1.2em;
+    text-align: center;
+    font-weight: bold;
+    background: #ff7e68;
+    margin-right: .5em;
+    color: #fff; }
+
+/**************
 // ICONS
 ***************/
 @font-face {

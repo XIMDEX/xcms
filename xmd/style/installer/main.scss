@@ -597,9 +597,31 @@ textarea {
             background-color:#e5dc1e !important;
         }
     }
-
- 
 }
+
+    
+
+    /**************
+    // ERRORS
+    ***************/
+
+.error{
+    padding-bottom: 0 !important; 
+    position: relative;
+    &::before{
+        content: "!";
+        display: inline-block;
+        width: 1.2em;
+        text-align: center;
+        font-weight: bold;
+        background:lighten(#ff684f, 5%);
+        margin-right: .5em;
+        color: #fff;
+    }
+
+  
+}
+
     /**************
     // ICONS
     ***************/
