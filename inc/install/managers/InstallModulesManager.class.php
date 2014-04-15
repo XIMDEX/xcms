@@ -35,6 +35,8 @@ class InstallModulesManager extends InstallManager {
 
 	public function installModule($name){
 
+		error_log($name);
+		error_log("==============");
 		$installState = self::UNINSTALLED;
 		$modMngr = new ModulesManager();
 		$state = $modMngr->checkModule($name);
@@ -59,11 +61,15 @@ class InstallModulesManager extends InstallManager {
 				break;
 		}
 
-		if (strtolower($name) != "ximloader"){
+		return $installState;
+	}
+
+	public function enableModule($name){
+
+		if (strtolower($name)!="ximloader"){
+			$modMngr = new ModulesManager();
 			$modMngr->enableModule($name);
 		}
-
-		return $installState;
 	}
 
 	public function buildModulesFile(){
