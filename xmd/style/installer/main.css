@@ -475,9 +475,14 @@ li[class*="module"] {
     width: 1.2em;
     text-align: center;
     font-weight: bold;
-    background: #ff7e68;
+    border: 3px solid #ccc;
+    border-color: #ff7e68;
     margin-right: .5em;
-    color: #fff; }
+    color: #ff7e68;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    line-height: 1.3; }
 
 /**************
 // ICONS

@@ -614,12 +614,15 @@ textarea {
         width: 1.2em;
         text-align: center;
         font-weight: bold;
-        background:lighten(#ff684f, 5%);
+        border: 3px solid #ccc;
+        border-color: lighten(#ff684f, 5%);
         margin-right: .5em;
-        color: #fff;
-    }
-
-  
+        color: lighten(#ff684f, 5%);
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        line-height: 1.3;
+    }  
 }
 
     /**************
