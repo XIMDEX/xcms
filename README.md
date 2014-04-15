@@ -44,7 +44,7 @@ To install our last BETA release, download the shell script [INSTALL_XIMDEX.sh] 
 * Installation
   ------------
   See 'INSTALLATION.md' for detailed instructions for an assisted installation.
-  To install last Ximdex release, download the shell script [INSTALL_XIMDEX.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
+  To install last Ximdex release, download the shell script [XIMDEX_INSTALL.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
 
 
 * Ximdex Core Requirements 
