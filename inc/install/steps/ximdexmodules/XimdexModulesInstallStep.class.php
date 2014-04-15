@@ -55,10 +55,10 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 		$ftManager = new FastTraverseManager (FastTraverseManager::WEB_MODE);		
 		$ftManager->buildFastTraverse();
 		$modules = $this->installManager->getModulesByDefault();
+		include(XIMDEX_ROOT_PATH."/conf/install-modules.conf");
 		foreach ($modules as $module) {
 			$imManager->installModule($module["name"]);
 		}
-		include(XIMDEX_ROOT_PATH."/conf/install-modules.conf");
 		foreach ($modules as $module) {
 			$imManager->enableModule($module["name"]);
 		}
