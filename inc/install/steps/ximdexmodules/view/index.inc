@@ -40,7 +40,7 @@
 	    </li>
 		
 	</ul>
-	<button ng-show="loaded" ng-hide="error" ui-ladda="loading" class="ladda-button launch_ximdex" data-style="slide-up" id="submitButton" xim-state="loading">
+	<button ng-hide="!loaded" ui-ladda="loading" class="ladda-button launch_ximdex" data-style="slide-up" id="submitButton" xim-state="loading">
           <span class="ladda-label">Continue</span>
       </button>
 </form>
