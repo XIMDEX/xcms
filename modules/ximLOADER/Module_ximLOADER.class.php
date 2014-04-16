@@ -429,7 +429,13 @@ class Module_ximLOADER extends Module {
 				$this->log(Module::ERROR, "document ".$file->name." couldn't be created ($containerId)");
 				continue;
 			}
-			$time2 = $time1 - microtime(true);
+
+			$newContainer = new Node($containerId);
+			$children = $newContainer->getChildren();
+			foreach ($children as $idChild) {
+				$child = new Node($idChild);
+				$child->setContent(FsUtils::file_get_contents($file->getPath()));
+			}
 			
 			$ret[$file->filename] = $containerId;
 				
