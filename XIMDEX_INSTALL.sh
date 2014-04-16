@@ -12,8 +12,8 @@ export DEBUG=1
 REPO_NAME="myximdex"
 REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 
-REPO_BRANCH="3.5-beta3"
-#REPO_BRANCH="develop"
+#REPO_BRANCH="3.5-beta3"
+REPO_BRANCH="develop"
 
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
