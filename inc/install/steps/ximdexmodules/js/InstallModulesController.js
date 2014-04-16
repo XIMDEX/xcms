@@ -51,6 +51,7 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
     $scope.loaded = false;
     $scope.message = "";
     $scope.error = false;
+    $scope.foundModuleError=false;
 
     installerService.sendAction("getModulesLikeJson").then(function(response) {
         if (response.data.error){
@@ -74,6 +75,8 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
 			installerService.sendAction("installModule","module="+module.name).then(function(response) {
 		        $scope.modules[index]["processed"]=true;
 		        $scope.modules[index]["state"]=response.data.result;
+                if (response.data.result.toLowerCase() == "error")
+                    $scope.foundModuleError = true;
 		        index++;
 		        $scope.installModule(index);
 		    });
@@ -81,7 +84,8 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
 			$scope.loading = false;
             
             installerService.sendAction("loadNextAction").then(function(response) {
-                $timeout(function(){location.reload();},1000);
+                if (!$scope.foundModuleError)
+                    $timeout(function(){location.reload();},1000);
 		    });
 		}
 	}
