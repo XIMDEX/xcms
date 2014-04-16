@@ -25,6 +25,7 @@
  */
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
 class GetStartedInstallStep extends GenericInstallStep {
 
@@ -33,6 +34,12 @@ class GetStartedInstallStep extends GenericInstallStep {
 	 */
 	public function index(){
 		
+		$modules = $this->installManager->getModulesByDefault();	
+		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);		
+		foreach ($modules as $module) {
+			$imManager->installModule($module["name"]);
+			$imManager->enableModule($module["name"]);
+		}	
 		$values=array();
 		$values["go_method"]="startXimdex";
 		$this->render($values);
