@@ -88,10 +88,17 @@ function module_install($argv){
 				break;
 			case "-r":
 				$modules = $imManager->getModulesByDefault(false);
-				break;
+				break;			
 			default:
 				$modules = $imManager->getModuleByName($argv[2],false);
-				break;			
+				if (!$modules){
+					$module["name"] = $argv[2];
+					$module["description"] = "";
+					$module["alias"] = "";
+					$modules[] = $module;
+					
+				}
+				
 		}
 
 	}else { //Default usage, install core modules
