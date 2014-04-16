@@ -242,13 +242,21 @@ button {
   .content p {
     padding-bottom: 2em; }
 
-.step-start {
-  background: url(../../images/installer/ximdex_cms.png) no-repeat center bottom;
-  -webkit-background-size: 90%;
-  background-size: 90%;
+.step-modules-installed {
   -webkit-box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.3);
-  box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.3); }
+  box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.3);
+  position: relative; }
+  .step-modules-installed::before {
+    content: '';
+    background: url(../../images/installer/ximdex_cms.png) no-repeat center top;
+    -webkit-background-size: 90%;
+    background-size: 90%;
+    position: absolute;
+    top: 20em;
+    bottom: 0;
+    left: 0;
+    right: 0; }
 
 h2 {
   font-family: "Coustard", serif;
