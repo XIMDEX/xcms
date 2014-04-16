@@ -304,6 +304,8 @@ h2.nodo_path {
 .action_container {
   height: 100%;
   position: relative; }
+  .action_container > form {
+    height: 100%; }
 
 fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
   background: none;
