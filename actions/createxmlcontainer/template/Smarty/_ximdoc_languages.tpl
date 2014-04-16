@@ -40,8 +40,8 @@
 	{if count($channels) > 0}
 			{foreach from=$channels item=channel}
 				<div class="channel-section">
-					<input name='channels[]' type='checkbox' value='{$channel.IdChannel}' class="hidden-focus" id="{$channel.IdChannel}"/>
-					<label  class="icon checkbox-label"  for="{$channel.IdChannel}">{$channel.Description|gettext}</label>
+					<input name='channels[]' type='checkbox' value='{$channel.IdChannel}' class="hidden-focus" id="{$channel.IdChannel}_{$idNode}"/>
+					<label  class="icon checkbox-label"  for="{$channel.IdChannel}_{$idNode}">{$channel.Description|gettext}</label>
 				</div>
 			{/foreach}
 		
@@ -59,8 +59,8 @@
 					
 					<div class="languages-section">
 		
-						<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}' class="hidden-focus"/>
-						<label  for="{$language.IdLanguage}" class="icon checkbox-label">{$language.Name|gettext}</label>
+						<input name='languages[]' type='checkbox' value='{$language.IdLanguage}'  id='{$language.IdLanguage}_{$idNode}' class="hidden-focus"/>
+						<label  for="{$language.IdLanguage}_{$idNode}" class="icon checkbox-label">{$language.Name|gettext}</label>
 						<input type='text' name='aliases[{$language.IdLanguage}]' class="alternative-name" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}"/>
 					</div>
 					
