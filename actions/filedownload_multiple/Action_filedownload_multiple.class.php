@@ -28,11 +28,7 @@
 class Action_filedownload_multiple extends ActionAbstract {
 
 	public function index() {
-	
-    		// TODO: Recursive process
-
 		$nodes = $this->request->getParam('nodes');
-
 		$tmpFolder = FsUtils::getUniqueFolder(
 			Config::getValue('AppRoot') . Config::getValue('TempRoot'), '', 'export_'
 		);
@@ -46,16 +42,16 @@ class Action_filedownload_multiple extends ActionAbstract {
 		
 		if(!empty($nodes)){
 			foreach ($nodes as $nodeid) {
-	
 				$node = new Node($nodeid);
 	    			if (!$node->get('IdNode')) {
 					continue;
 				}
 
 				$children = $node->getChildren();
-				$folder = $tmpFolder . '/' . $node->get('Name');
-				$errors = $this->copyContents($folder, $children);
-	
+                if(count($children)>0){
+    				$folder = $tmpFolder . '/' . $node->get('Name');
+	    			$errors = $this->copyContents($folder, $children);
+	            }
 				if ($errors !== false) {
 					// TODO
 				}
@@ -80,36 +76,29 @@ class Action_filedownload_multiple extends ActionAbstract {
 
 		$this->addJs('/actions/filedownload_multiple/resources/js/index.js');
 		$this->render($values, '', 'default-3.0.tpl');
-    	}
-
-    	public function download() {
-		// TODO
-    	}
+    }
 
     private function copyContents($folder, $nodes) {
-
     	if (!FsUtils::mkdir($folder)) {
-    		// mensaje
     		return false;
     	}
 
     	$errors = array();
 
-	if(!empty($nodes)){
+	    if(!empty($nodes)){
     		foreach ($nodes as $nodeid) {
-
 	    		$node = new Node($nodeid);
 	    		if (!$node->get('IdNode')) {
-				continue;
-			}
+				    continue;
+			    }
 
-			$fileName = $node->get('Name');
-			$filePath = $folder . '/' . $fileName;
-			if (!FsUtils::file_put_contents($filePath, $node->getContent())) {
-				$errors[] = $fileName;
-			}
-    		}
-	}
+			    $fileName = $node->get('Name');
+			    $filePath = $folder . '/' . $fileName;
+			    if (!FsUtils::file_put_contents($filePath, $node->getContent())) {
+				    $errors[] = $fileName;
+			    }
+   		    }
+	    }
 
     	if (count($errors) == 0) {
     		$errors = false;
@@ -118,15 +107,13 @@ class Action_filedownload_multiple extends ActionAbstract {
     }
 
     private function deleteContents($tmpFolder) {
-
-    	$ret = FsUtils::deltree($tmpFolder);
+       	$ret = FsUtils::deltree($tmpFolder);
 	    if (!$ret) {
     		XMD_Log::info(_("Directory could not be deleted ").$tmpFolder);
     	}
     }
 
     private function tarContents($folderToTar) {
-
     	$tarName = sprintf('%s/%s.zip', dirname($folderToTar), basename($folderToTar));
     	exec(sprintf('zip -jr %s %s', $tarName, $folderToTar));
     	return $tarName;
