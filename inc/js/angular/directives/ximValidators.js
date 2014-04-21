@@ -40,3 +40,30 @@ angular.module('ximdex.common.directive.validator')
 			}
 		}
 	});
+angular.module('ximdex.common.directive.validator')
+	.directive('ximunique', ['xCheck', function(xCheck){
+		return {
+			require: 'ngModel',
+			link: function(scope, element, attrs, ctrl){
+				var url = attrs.ximUnique;
+				var context = attrs.ximUniqueContext;
+				ctrl.$parsers.unshift(function(viewValue){
+					xCheck.isUnique({
+						value: viewValue, 
+						context: context, 
+						url: url
+					}, function(isUnique){
+						if (isUnique){
+							ctrl.$setValidity('unique', true);
+							return viewValue
+						} else {
+							ctrl.$setValidity('unique', false);
+							return undefined
+						}	
+					});
+					
+				});
+
+			}
+		}
+	}]);	

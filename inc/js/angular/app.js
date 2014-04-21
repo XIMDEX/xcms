@@ -25,7 +25,7 @@
 
 angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximdex.module', 'ximdex.vendor']);
 
-angular.module('ximdex.vendor', ['ngAnimate', 'blueimp.fileupload']);
+angular.module('ximdex.vendor', ['ngAnimate', 'blueimp.fileupload', 'flow']);
 angular.module('ximdex.module', ['ximdex.module.xlyre', 'ximdex.module.xtags']);
 
 angular.module('ximdex.common', ['ximdex.common.service', 'ximdex.common.directive', 'ximdex.common.filter']);

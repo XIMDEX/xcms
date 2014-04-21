@@ -1,0 +1,39 @@
+<form action="{$action_url}"  method="POST" name="f_m_u" enctype="multipart/form-data" ng-controller="XUploaderCtrl">
+	<div class="action_header">
+		<h2>i18n Subir</h2>
+		
+	</div>
+
+	<div class="action_content uploader {if $type_node == "XmlContainer"}xml-uploader{/if}">
+		<fieldset>
+	{* for the XML massive upload *} 
+	{if $type_node == "XmlContainer"}
+			<div class="xml-properties">
+			<h3>{t}Please, select the schema to follow and a language for your documents before uploading them{/t}.</h3>	
+			<div class="col1-2">
+				
+					<select name="id_schema" id="schemaid" class="cajaxg validable not_empty extra-param">
+						<option value="">&laquo;{t}Select schema{/t}&raquo;</option>
+					{foreach from=$schemas item=schema}
+						<option value="{$schema.idSchema}">{$schema.Name}</option>
+					{/foreach}
+					</select>
+				</div>
+				<div class="col1-2">
+					<select name="id_language" id="id_language" class="cajaxg validable not_empty extra-param">
+						<option value="">&laquo;{t}Select language{/t}&raquo;</option>
+					{foreach from=$languages item=language}
+						<option value="{$language.IdLanguage}">{$language.Name|gettext}</option>		
+					{/foreach}	
+					</select>
+				</div>
+	</div>
+	{/if}
+			<uploader {if ($filter)}filter="{$filter}"{/if} is_structured="{$is_structured}"/>
+		</fieldset>
+	</div>
+<fieldset class="buttons-form positioned_btn">
+			{button label="Upload files" class="btn main_action"}
+			{*message="Are you sure you want to continue?"*}
+</fieldset>	
+</form>

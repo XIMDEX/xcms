@@ -3150,7 +3150,7 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (35, 5035, 'httpd/unix-directory', '', 
 INSERT INTO `RelNodeTypeMimeType` VALUES (36, 5036, 'text/xml', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (37, 5037, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (38, 5038, 'httpd/unix-directory', '', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (39, 5039, 'text/plain', '', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (39, 5039, 'text/plain', ';txt;js;coffee;scss;', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (40, 5040, 'image/jpeg | image/png | image/gif |image/x-icon',';jpeg;jpg;gif;png;ico;','image');
 INSERT INTO `RelNodeTypeMimeType` VALUES (41, 5041, 'query/file', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (42, 5042, 'text/html', '', '');

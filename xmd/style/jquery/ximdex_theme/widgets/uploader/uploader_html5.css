@@ -25,18 +25,6 @@
 .xim-uploader-selected::before {
   content: "\e039"; }
 
-.xim-loader-list-container {
-  min-height: 250px;
-  max-height: 91%;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px dashed #C8C8C8;
-  border-bottom: none;
-  background: #fff;
-  position: relative;
-  overflow: auto; }
-
 .guide {
   width: 50%;
   margin: 3em auto 0;
@@ -87,14 +75,18 @@
 
 .xim-loader-file {
   padding: 1em 1.2em;
-  border-bottom: 1px solid #e4e5e9; }
+  border-bottom: 1px solid #e4e5e9;
+  position: relative;
+  z-index: 1; }
   .xim-loader-file:hover {
     background: #c4e7e2; }
   .xim-loader-file:last-child {
     border-bottom: none; }
-  .xim-loader-file > * {
-    display: inline-block; }
-  .xim-loader-file label {
+  .xim-loader-file .row-item-column {
+    display: inline-block;
+    position: relative;
+    z-index: 3; }
+  .xim-loader-file .xim-loader-name {
     width: 45%;
     padding: 0;
     cursor: pointer;
@@ -109,72 +101,36 @@
   .xim-loader-file input[type=checkbox] {
     margin-right: .8em;
     vertical-align: middle; }
+  .xim-loader-file.xim-loader-file-success {
+    opacity: 0.5; }
+  .xim-loader-file.xim-loader-file-error {
+    border: 1px solid #cc3333; }
+  .xim-loader-file button {
+    float: right;
+    margin: -4px 0 0 0; }
+  .xim-loader-file .xim-loader-progress {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #acafbb;
+    opacity: 0.5;
+    z-index: 2;
+    text-indent: -99999px; }
+
+.xim-loader-error {
+  color: #cc3333; }
 
 .img-preview {
   max-width: 65px;
   vertical-align: middle;
   margin-right: 1em; }
 
-.xim-loader-progress {
-  float: right;
-  width: 10%; }
-
-.progress.upload {
-  position: relative;
-  padding-left: .5em; }
-  .progress.upload::before {
-    content: "";
-    width: 0;
-    height: 0;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    border: 1em solid #2fb7a4;
-    border-left-color: #7bcabf;
-    border-top-color: #7bcabf;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-top: -1em;
-    margin-left: -1em;
-    -webkit-animation: spin 0.75s infinite ease-in-out;
-    -moz-animation: spin 0.75s infinite ease-in-out;
-    -ms-animation: spin 0.75s infinite ease-in-out;
-    -o-animation: spin 0.75s infinite ease-in-out;
-    animation: spin 0.75s infinite ease-in-out;
-    border-width: .5em;
-    top: 0;
-    left: 0;
-    margin-left: -1.5em;
-    margin-top: 0; }
-.progress.complete::before {
-  content: "\0079";
-  border: none;
-  width: 1em;
-  height: 1.1em;
-  background: #2fb7a4;
-  -webkit-animation: none;
-  -moz-animation: none;
-  -ms-animation: none;
-  -o-animation: none;
-  animation: none;
-  color: #fff;
-  font-size: .9em;
-  line-height: 1.2em;
-  padding-left: .1em; }
-
 .xim-loader-list-actions {
-  background: #e4e5e9;
-  -webkit-border-radius: 0 0 2px 2px;
-  -moz-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
-  border: 1px dashed  #C8C8C8;
-  border-top: 1px solid #d6d8dd;
   padding: .5em;
   margin: 0 !important;
   width: 100%;
   text-align: center;
-  position: relative;
   min-height: 2.9em; }
   .xim-loader-list-actions .xim-uploader-selected, .xim-loader-list-actions .xim-uploader-delete {
     background: #828699;
@@ -196,8 +152,21 @@
   .xim-loader-list-actions .xim-uploader-delete {
     display: none; }
 
+.xim-uploader-selected {
+  position: relative; }
+
 .align-left {
   text-align: left; }
+
+input.xim-uploader {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  cursor: pointer; }
 
 #numfiles {
   position: absolute;

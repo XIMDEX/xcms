@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<form action="{$action_url}"  method="POST" name="f_m_u" enctype="multipart/form-data" >
+<form name="f_m_u" ng-controller="XUploaderCtrl" xim-node-id="{$nodeid}" ng-cloak>
 	<div class="action_header">
 		<h2>{$lbl_anadir}</h2>
 		
@@ -58,7 +58,13 @@
 		</fieldset>
 	</div>
 <fieldset class="buttons-form positioned_btn">
-			{button label="Upload files" class="validate btn main_action"}
-			{*message="Are you sure you want to continue?"*}
-		</fieldset>	
+	<button class="button_main_action"
+		xim-button
+		xim-loading="uploader.flow.isUploading()"
+		xim-label="'submitLabel'"
+		xim-progress="uploader.flow.progress()"
+		xim-disabled="!uploader.flow.files.length"
+		ng-click="uploadFiles(uploader.flow)">
+	</button>
+</fieldset>	
 </form>

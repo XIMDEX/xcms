@@ -1,0 +1,22 @@
+<div class="xim-loader-file row-item" 
+	ng-class="{'xim-loader-file-success': file.isComplete() && !file.error, 'xim-loader-file-error': file.error || file.invalid}" 
+	ng-form name="fileForm">
+		<span class="xim-loader-name row-item-column" >
+			<img class="img-preview" flow-img="file" ng-if="file.isImage"/>
+			<span contenteditable="true" ng-model="file.ximFilename" name="name" required xim-unique="/url/unicidad" xim-unique-context="parentId">#/file.name/#</span>
+		</span>
+		<span class="xim-loader-size row-item-column">#/file.size | xBytes/#</span>
+		<span class="xim-loader-size row-item-column" ng-show="file.isProcessing">Processing</span>
+		<span class="xim-loader-error row-item-column" ng-show="file.error && file.errorMsg && !file.isUploading()">#/file.errorMsg/#</span>
+		<button type="button" class="delete-button icon btn-unlabel-rounded row-item-column" ng-click="file.cancel()" ng-hide="file.isComplete() && !file.error"></button>
+		<button type="button" class="retry-button icon btn-unlabel-rounded row-item-column" ng-click="file.retry()" ng-hide="!file.error"></button>
+		<div class="xim-loader-progress" ng-style="{width: file.progress()*100+'%'}" ng-show="file.isUploading()">#/file.progress()*100/#%</div>
+		<ul class="xim-loader-meta" ng-if="metaFields">
+			<li ng-repeat="field in metaFields">
+				<ng-form name="fileMeta" >
+					<label>#/field.label/#</label>
+					<input type="text" ng-model="file.meta[field.key]">
+				</ng-form>
+			</li>
+		</ul>
+</div>
