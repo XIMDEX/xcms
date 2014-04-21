@@ -226,8 +226,20 @@
 		<pre>$ cd /var/www/ximdex_home</pre>
 		</li>
 		
-		<li>Run the Ximdex installer as a privileged user
-		<pre>$ sudo ./install/install.sh</pre>
+		<li>Run the Ximdex installer.
+		<pre>$ ./XIMDEX_INSTALL.sh -i</pre>
+		</li>
+		<li>
+			The installer ask you about Ximdex's instance name and the user name and group name for the Ximdex folder.
+			<pre>The name for your Ximdex instance will be 'ximdex_home'
+			<br/>- Do you want to modify it (y/N)?</pre>
+			<pre>Select a target directory for Ximdex:<ol><li>/var/www</li><li>/var/www/html</li><li>None of these. I'll write the target path directly.</li></ol></pre>
+			<pre>I've got that your Web Server User is: www-data
+			<br/>- Do you want to modify it (y/N)? y
+			</pre>
+			<pre>I've got that your Web Server Group is: www-data
+			<br/>- Do you want to modify it (y/N)? y
+			</pre>
 		</li>
 		
 		<li>Now, the script will create all the required Ximdex infraestructure, adding the default information into the new database. You will be asked for the following information:
@@ -244,19 +256,15 @@
 		<pre>$ Ximdex admin user [ximdex] (the new Ximdex user)</pre>
 		<pre>$ Ximdex admin password (password for Ximdex user)</pre>
 		<pre>$ Select your Ximdex default language choosing betweeen: <ol><li>German</li><li>English</li><li>Spanish</li><li>Portuguese</li></ol></pre>
+		<pre>Would you like to help us sending anonymous information about usage (Y/n)?</pre>
 		</li>
-		<li>After that, you can decide about a few extra features just writting "y" o "n" on the console window:
-			<ul>
-				<li>Help us to improve sending us information about your Ximdex usage.</li>
-				<li>Install some demo projects on Ximdex.</li>
-				<li>Install a set of basic modules in order to extend and improve the functionality of Ximdex.</li>
-				<li>Add scheduled publication processes to your crontab to perform document publications in an automatic way.</li>
-			</ul>
+		<li>After that, you can decide to run the script 1-MoveXimdexToDocRoot.sh as a priviledged user. This script will set owners for ximdex_home folder
 		</li>
+		<li>Then, you can reload Ximdex's index page, to finish the installation and <i>Ta Daaa</i>. Enjoy Ximdex! </li>
 		<li>Once the installation has finished, you can also install more Ximdex modules avaliable on '&lt;XIMDEX_HOME&gt;/modules/' typing the following sentence:
 		<pre>$ ./install/module.sh install &lt;MODULE_NAME&gt;</pre>
 		</li>
-		<li>Then, you can reload Ximdex's index page and <i>Ta Daaa</i>. Enjoy Ximdex! </li>
+		
 	</ol>
 	</ol>
 </div>

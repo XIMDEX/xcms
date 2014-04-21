@@ -402,7 +402,6 @@ class Module_ximLOADER extends Module {
 		$io = new BaseIO();
 
 		foreach ($files as $file) {
-			echo ".";
 			$templateId = $this->templates[$file->templatename];
 			$file->channel = $file->channel == '{?}' ? $this->project->channel : $file->channel;
 			$file->language = $file->language == '{?}' ? $this->project->language : $file->language;
@@ -430,7 +429,13 @@ class Module_ximLOADER extends Module {
 				$this->log(Module::ERROR, "document ".$file->name." couldn't be created ($containerId)");
 				continue;
 			}
-			$time2 = $time1 - microtime(true);
+
+			$newContainer = new Node($containerId);
+			$children = $newContainer->getChildren();
+			foreach ($children as $idChild) {
+				$child = new Node($idChild);
+				$child->setContent(FsUtils::file_get_contents($file->getPath()));
+			}
 			
 			$ret[$file->filename] = $containerId;
 				
@@ -457,7 +462,6 @@ class Module_ximLOADER extends Module {
 		$io = new BaseIO();
 
 		foreach ($files as $file) {
-			echo ".";
 			$nodeType = new NodeType();
 			$nodeType->SetByName($file->nodetypename);
 			$idNodeType = $nodeType->get('IdNodeType') > 0 ? $nodeType->get('IdNodeType') : NULL;
@@ -517,7 +521,6 @@ class Module_ximLOADER extends Module {
 		$serverUrl = $projectUrl . '/' . $servers[0]->name;
 
 		foreach ($files as $file) {
-			echo ".";
 			$content = $file->getContent();
 
 			if (preg_match('/\{URL_ROOT\}/', $content)) {

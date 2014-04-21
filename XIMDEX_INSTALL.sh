@@ -12,8 +12,8 @@ export DEBUG=1
 REPO_NAME="myximdex"
 REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 
-REPO_BRANCH="3.5-beta3"
-#REPO_BRANCH="develop"
+#REPO_BRANCH="3.5-beta3"
+REPO_BRANCH="develop"
 
 SCRIPT1="1-MoveXimdexToDocRoot.sh"
 SCRIPT2="2-AddXimdexToCrontab.txt"
@@ -154,11 +154,11 @@ function CreateScriptToSetPermsAndMove() {
     command="chown -R ${USER_APACHE}:${GROUP_APACHE} $XIMDEX_TARGET_DIR"
     arr_command+=("$command\n")
 
-    command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_MaintenanceTasks.sh -x $XIMDEX_TARGET_DIR\" ${USER_APACHE}"
-    arr_command+=("$command\n")
+    #command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_MaintenanceTasks.sh -x $XIMDEX_TARGET_DIR\" ${USER_APACHE}"
+    #arr_command+=("$command\n")
 
-    command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_InitializeInstance.sh -x $XIMDEX_TARGET_DIR -m 1 -i 0 -p 0\" ${USER_APACHE}"
-    arr_command+=("$command\n")
+    #command="su -c \"$XIMDEX_TARGET_DIR/install/scripts/ximdex_installer_InitializeInstance.sh -x $XIMDEX_TARGET_DIR -m 1 -i 0 -p 0\" ${USER_APACHE}"
+    #arr_command+=("$command\n")
 
     arr_command+=("exit 0\n")
 
@@ -736,6 +736,9 @@ echo ""
 $(chmod -R 2770 ${REPO_NAME}/data)
 $(chmod -R 2770 ${REPO_NAME}/logs)
 $(chmod -R 2770 ${REPO_NAME}/install)
+
+# Set permission to config files
+$(chmod -R 770 ${REPO_NAME}/conf/install-modules.conf)
 
 # Launching steps
 Step_Dependencies && SetInstallStatus "CHECKED"

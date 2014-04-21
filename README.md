@@ -1,19 +1,18 @@
-////////////////////////////// Ximdex 3.4 - README /////////////////////////////
+# Ximdex 3.5 - README
 
-Ximdex is a semantic Content Management System (CMS) that allows the generation of content and services in different technologies (PHP, J2EE, .NET, XML/XSLT, etc.).
+Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipulation and generation of content, data and web apps in different technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...
 
-To install our last BETA release, download the shell script [INSTALL_XIMDEX.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
+To install our last BETA release, download the shell script [XIMDEX_INSTALL.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
 
 
 * Description
   -----------
 
-
   In fact, it is a powerful and versatile Content Management Framework (CMF) to help you manage information in form of data, content or services to be published in the cloud as web portals, structured semantic repositories or open datasets. 
 
-  With Ximdex CMS you can mix structured and non-structured content and data, represent apps and services, capture metadata, automatically generate suggestions for your content (as images, new links or references, ...)
+  With Ximdex CMS you can mix structured and non-structured content and data, represent apps and services, aggretate from remote sources, capture metadata, automatically generate suggestions for your content (as images, new links or references, ...)
 
-  Ximdex is modular, based on standards (XML, XSLT, RDF, ...) and it adds a semantic layer to any managed element (doc, app, picture, metadata, video, etc.) that makes it easy to adapt information to any exploitation format (html5, rdf, j2ee, php, json, RoR, xml/xslt, …)
+  Ximdex is modular, based on standards (XML, XSLT, RDF, ...) and it adds a semantic layer to any managed element (doc, app, picture, metadata, video, etc.) that makes it easy to adapt information to any final exploitation format (html5, rdf, j2ee, php, json, RoR, xml/xslt, …)
 
 * Features
   --------
@@ -30,24 +29,22 @@ To install our last BETA release, download the shell script [INSTALL_XIMDEX.sh] 
 
 * Future plans
   ------------
-  See our project roadmap at www.ximdex.org.
+  See our project roadmap at ROADMAP.md or Ximdex.org
 
 
 * Get Involved
   ------------
-  If you are interested on the power of Semantic Web for CMS this is a good starting point!. See www.ximdex.org for more information.
+  If you are interested on the power of Semantic Web for CMS this is a good starting point!.
 
 
 * Availability
   ------------
-  Ximdex can be downloaded from http://www.ximdex.org.
-  See 'LICENSE' file or http://www.gnu.org/licenses/agpl.html for details.
-
+  Ximdex is open source (see 'LICENSE') and can be downloaded from http://www.ximdex.org.
  
 * Installation
   ------------
-  See 'INSTALLATION' for detailed instructions.
-  To install last Ximdex release, download the shell script [INSTALL_XIMDEX.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
+  See 'INSTALLATION.md' for detailed instructions for an assisted installation.
+  To install last Ximdex release, download the shell script [XIMDEX_INSTALL.sh]  (https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) to a clean linux directory and run it. This bash script will automatically download the last release, ask you some parameters to configure it and install Ximdex. 
 
 
 * Ximdex Core Requirements 

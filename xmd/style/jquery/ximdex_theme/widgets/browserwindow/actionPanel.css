@@ -304,6 +304,8 @@ h2.nodo_path {
 .action_container {
   height: 100%;
   position: relative; }
+  .action_container > form {
+    height: 100%; }
 
 fieldset.buttons-form, div.buttonset, .ui-dialog .ui-dialog-buttonpane {
   background: none;
@@ -845,26 +847,26 @@ input:focus + .tooltip_info {
   .row-item_selectable::before {
     content: "";
     border: 0.4em solid rgba(255, 255, 255, 0);
-    border-top-color: #606060;
-    top: 1.3em;
-    left: 1em;
+    border-left-color: #606060;
+    top: 1.1em;
+    left: 1.3em;
     position: absolute;
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
     -ms-transition: all .3s;
     -o-transition: all .3s;
     transition: all .3s;
-    -webkit-transform-origin: center .2em;
-    -moz-transform-origin: center .2em;
-    -ms-transform-origin: center .2em;
-    -o-transform-origin: center .2em;
-    transform-origin: center .2em; }
+    -webkit-transform-origin: .2em center;
+    -moz-transform-origin: .2em center;
+    -ms-transform-origin: .2em center;
+    -o-transform-origin: .2em center;
+    transform-origin: .2em center; }
   .row-item_selectable.opened::before {
-    -webkit-transform: rotate(-180deg);
-    -moz-transform: rotate(-180deg);
-    -ms-transform: rotate(-180deg);
-    -o-transform: rotate(-180deg);
-    transform: rotate(-180deg); }
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg); }
 
 .row-item .col1-2, .row-item_selectable .col1-2, .row-item .col1-3, .row-item_selectable .col1-3 {
   display: inline-block;
@@ -985,7 +987,8 @@ input:focus + .tooltip_info {
   display: inline-block;
   text-indent: 100%;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
+  cursor: pointer;
   border: none;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
@@ -1000,7 +1003,8 @@ input:focus + .tooltip_info {
   .browser-window .btn-unlabel-rounded:hover {
     background: #9fd9d1; }
   .browser-window .btn-unlabel-rounded span {
-    position: absolute;
+    top: 0;
+    position: absolute !important;
     display: none;
     text-indent: 0;
     margin-top: 2.5em;
@@ -1057,7 +1061,7 @@ input:focus + .tooltip_info {
     .browser-window .enabled-version:hover span {
       display: none; }
 
-.action_content .checkbox-label:not(.reduced_label) {
+.action_content .checkbox-label:not(.reduced_label), .action_content .radio-label {
   width: 100%;
   background: #fff;
   border: 1px solid #dedede;
@@ -1075,16 +1079,16 @@ input:focus + .tooltip_info {
   border-color: #fff;
   background: #d6d8dd;
   margin-bottom: 1em; }
-  .action_content .checkbox-label:not(.reduced_label):hover {
+  .action_content .checkbox-label:not(.reduced_label):hover, .action_content .radio-label:hover {
     background: #c8cad2; }
-  .action_content .checkbox-label:not(.reduced_label).disabled:hover {
+  .action_content .checkbox-label:not(.reduced_label).disabled:hover, .action_content .radio-label.disabled:hover {
     background: #d6d8dd; }
-  .action_content .checkbox-label:not(.reduced_label)::before {
+  .action_content .checkbox-label:not(.reduced_label)::before, .action_content .radio-label::before {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     padding-right: .8em;
     color: rgba(255, 255, 255, 0.7); }
-  .action_content .checkbox-label:not(.reduced_label):after {
+  .action_content .checkbox-label:not(.reduced_label):after, .action_content .radio-label:after {
     content: "";
     position: absolute;
     background: rgba(255, 255, 255, 0.7);
@@ -1095,16 +1099,26 @@ input:focus + .tooltip_info {
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px; }
-.action_content :checked + .checkbox-label:not(.reduced_label), .action_content :checked ~ .checkbox-label:not(.reduced_label), .action_content .checkbox-label:not(.reduced_label)[checked] {
+.action_content :checked + .checkbox-label:not(.reduced_label), .action_content :checked ~ .checkbox-label:not(.reduced_label), .action_content .checkbox-label:not(.reduced_label)[checked], .action_content :checked + .radio-label, .action_content :checked ~ .radio-label, .action_content .radio-label[checked] {
   border-color: #fff;
   background: #9fd9d1;
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2); }
-  .action_content :checked + .checkbox-label:not(.reduced_label)::before, .action_content :checked ~ .checkbox-label:not(.reduced_label)::before, .action_content .checkbox-label:not(.reduced_label)[checked]::before {
+  .action_content :checked + .checkbox-label:not(.reduced_label)::before, .action_content :checked ~ .checkbox-label:not(.reduced_label)::before, .action_content .checkbox-label:not(.reduced_label)[checked]::before, .action_content :checked + .radio-label::before, .action_content :checked ~ .radio-label::before, .action_content .radio-label[checked]::before {
     color: #464646; }
-  .action_content :checked + .checkbox-label:not(.reduced_label)::after, .action_content :checked ~ .checkbox-label:not(.reduced_label)::after, .action_content .checkbox-label:not(.reduced_label)[checked]::after {
+  .action_content :checked + .checkbox-label:not(.reduced_label)::after, .action_content :checked ~ .checkbox-label:not(.reduced_label)::after, .action_content .checkbox-label:not(.reduced_label)[checked]::after, .action_content :checked + .radio-label::after, .action_content :checked ~ .radio-label::after, .action_content .radio-label[checked]::after {
     border-color: white; }
+.action_content .radio-label::after {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%; }
+.action_content .radio-label::before {
+  content: '\25CF';
+  top: -.25em;
+  opacity: 0; }
+.action_content :checked + .radio-label::before, .action_content :checked ~ .radio-label::before {
+  opacity: 1; }
 .action_content .alternative-name {
   margin-top: -2.5em;
   opacity: 0;

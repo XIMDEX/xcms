@@ -39,7 +39,7 @@ See http://www.ximdex.org/documentacion/requirements_en.html for further informa
 	```shell
 	mkdir tryximdex
 	cd tryximdex
-	wget wget --no-check-certificate https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh
+	wget --no-check-certificate https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh
 	```
 
 2. **Prepare the answers** to the questions the installation script will ask you:
