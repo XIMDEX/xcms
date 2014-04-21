@@ -47,7 +47,7 @@
 			<div class="deletenodes">
 				<ul>
 					{foreach from=$depList key=id item=dep}
-					<li class="box_short">{$dep.name|gettext} <span class="node_id">({$id})</span></li>
+					<li class="box_short" data-tooltip="{{$dep.name|gettext}} "><div class="name">{$dep.name|gettext}</div> <span class="node_id">({$id})</span></li>
 					{foreachelse}
 					<li><span>{t}No dependencies were found{/t}</span></li>
 					{/foreach}

@@ -28,11 +28,78 @@
 
 .deletenodes {
 		.box_short{
-				width: 150px;
+				
 				padding:0 1em;
 				text-transform: uppercase;
 				margin: 1em 0;
 				border-left: .3em solid $c_mainlight;
+				position: relative;
+
+
+				&::before{
+					content: attr(data-tooltip);
+					@extend %tooltip;
+					margin-left: -1em;
+					font-size: .85em;
+					-webkit-transform: translateY(100%);
+					-moz-transform: translateY(100%);
+					-ms-transform: translateY(100%);
+					-o-transform: translateY(100%);
+					transform: translateY(100%);
+					 -webkit-transition: none;
+			            -moz-transition: none;
+			            -ms-transition: none;
+			            -o-transition: none;
+			            transition: none;
+
+				}
+
+					/*&::after{
+					@include triangle(bottom, rgba(35,35,35,.8), .4em);
+					top: 50%;
+					margin-left: .5em;
+					-webkit-transform: translateY(-50%);
+					-moz-transform: translateY(-50%);
+					-ms-transform: translateY(-50%);
+					-o-transform: translateY(-50%);
+					transform: translateY(-50%);
+					-webkit-transition: none;
+			            -moz-transition: none;
+			            -ms-transition: none;
+			            -o-transition: none;
+			            transition: none;
+					opacity: 0;
+				}*/
+
+				&:hover::before{
+					height: auto;
+					opacity: 1;
+					  -webkit-transition: all .5s .3s;
+			            -moz-transition: all .5s .3s;
+			            -ms-transition: all .5s .3s;
+			            -o-transition: all .5s .3s;
+			            transition: all .5s .3s;
+					
+				}
+
+				/*&:hover::after{
+					opacity: 1;
+					  -webkit-transition: all .5s .3s;
+			            -moz-transition: all .5s .3s;
+			            -ms-transition: all .5s .3s;
+			            -o-transition: all .5s .3s;
+			            transition: all .5s .3s;
+				}*/
+
+			
+		}
+
+		.name{
+			display: inline-block;
+			width: 100%;
+			-ms-text-overflow: ellipsis;
+				text-overflow: ellipsis;
+				overflow: hidden;
 		}
 
 		.node_id{
@@ -41,5 +108,7 @@
 			line-height: 1.4;
 			color: darken($c_mainlight, 20%);
 		}
+
+
  }
 
