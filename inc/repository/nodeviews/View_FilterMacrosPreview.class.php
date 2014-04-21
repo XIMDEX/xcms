@@ -33,6 +33,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacros.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
 class View_FilterMacrosPreview extends View_FilterMacros implements Interface_View {
@@ -125,7 +126,7 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 
 		// Check Params:
 		if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado la sección del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado la secciï¿½n del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
 			return NULL;
 		}
 
