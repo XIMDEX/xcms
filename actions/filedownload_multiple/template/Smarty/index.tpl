@@ -23,16 +23,13 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-	<h2>{t}Descargar archivos{/t}</h2>
+	<h2>{t}Download files{/t}</h2>
 	<fieldset class="buttons-form">
-		{button label="Descargar" class="button-download  btn main_action"}
+		{button label="{t}Download{/t}" class="button-download  btn main_action"}
 	</fieldset>
 </div>
 <div class="action_content">
 	<fieldset>
-	<p>
-	{t}La descarga del archivo comenzará inmediatamente. En caso de no hacerlo, pulse {/t}
-	<a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a>
-	</p>
+	<p>{t}The download will start immediately. If don't, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a></p>
 	</fieldset>
 </div>
