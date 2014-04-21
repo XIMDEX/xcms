@@ -304,24 +304,35 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
 .view-group button[value="List"]:hover, .view-group button[value="List"]:active {
   background-position: -43px -31px; }
 
-.view-group button span {
+.view-group button span:not(tooltip) {
   display: none; }
 
-.view-group button:hover span {
+.view-group button .tooltip {
   position: absolute;
-  top: 32px;
-  right: -10px;
-  background: #9F0;
+  top: 2.8em;
+  right: 0;
   z-index: 100;
-  display: block;
   color: white;
   text-shadow: 1px 1px 0px #464646;
-  background: url("../../../../../images/browser/hbox/fnd-vistas.png") no-repeat left top;
-  width: 70px;
-  height: 34px;
-  padding-top: 11px;
   font-size: 14px;
-  font-size: 1.4rem; }
+  font-size: 1.4rem;
+  display: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background: rgba(37, 37, 37, 0.8);
+  padding: .2em .8em; }
+  .view-group button .tooltip::before {
+    border: 0.45em solid transparent;
+    position: absolute;
+    content: "";
+    border-bottom-color: rgba(37, 37, 37, 0.8);
+    margin-top: -0.9em;
+    right: .5em;
+    margin-top: -1.1em; }
+
+.view-group button:hover .tooltip {
+  display: block; }
 
 .xim-tabs-nav {
   position: absolute;
