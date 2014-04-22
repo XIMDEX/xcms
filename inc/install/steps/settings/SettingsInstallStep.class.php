@@ -33,7 +33,7 @@ class SettingsInstallStep extends GenericInstallStep {
 	 * Main function. Show the step	 
 	 */
 	public function index(){
-		
+		$this->render();
 		
 	}
 

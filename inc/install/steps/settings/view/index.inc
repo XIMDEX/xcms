@@ -28,8 +28,20 @@
 <form method="post" action=".">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Settings</h2>
-	<input type="text" name="server"/>
-	<input type="text" name="port"/>
-	<input type="radio" name="mode" value="withdb">		
-	<input type="text" name="server"/>
+	<div class="form_item  form_item--user full-width">
+	<label for="">User</label>
+	<span class="user">ximdex</span></div>
+	<div class="form_item">
+		<label for="password">Password</label>
+		<input type="password" name="pass" id="password" placeholder="Insert a new database password here" />
+	</div>
+	<div class="form_item">
+		<label for="language">Language</label>
+		<select name="" id="language">
+			<option value="">Spanish</option>
+			<option value="">English</option>
+			<option value="">German</option>
+			<option value="">Portuguese</option>
+		</select>
+	</div>
 </form>

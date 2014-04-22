@@ -7,7 +7,7 @@
     $c-mainlight: #cbfbe7;
     $c-light: #e6e7f1;
     $c-footer:#383943;
-    $c-text:#7d7d7d;
+    $c-text:#767987;
 
     $t-title: 'Coustard', serif;
 
@@ -222,7 +222,7 @@ textarea {
         -moz-box-shadow: 0 2px 1px rgba(0,0,0,.4);
         box-shadow: 0 2px 1px rgba(0,0,0,.4);
 
-        button{
+        span{
             color: $c-dark;
         }
 
@@ -260,7 +260,9 @@ textarea {
         font-family: $t-title;
         color: $c-light;
         text-align: left;
-
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
 
     }
 
@@ -314,7 +316,7 @@ textarea {
        padding: 4em 5em;
 
        p{
-        padding-bottom: 2em;
+        padding-bottom: 1em;
        }
     }
 
@@ -344,7 +346,7 @@ textarea {
         margin-bottom: 1.9em;
     }
 
-    .launch_ximdex{
+    .action_launcher{
         background:$c-main;
         color: $c-mainlight;
         text-transform: uppercase;
@@ -356,12 +358,19 @@ textarea {
         box-shadow: inset 0 1px 2px rgba(255,255,255,.17);
         text-shadow: 0 1px 0 rgba(0,0,0,.2);
         font-size: 0.88em;
+        display: inline-block;
 
-        &:hover{
+        &:hover, &:focus{
         background:lighten($c-main, 15%);
         border-color:lighten(#15bb77, 15%);
 
         }
+
+         &:focus{
+           -webkit-box-shadow: 0 0 4px 2px rgba(30, 202, 132, 1), inset 0 1px 2px rgba(255,255,255,.17);
+           -moz-box-shadow: 0 0 4px 2px rgba(30, 202, 132, 1), inset 0 1px 2px rgba(255,255,255,.17);
+           box-shadow: 0 0 4px 2px rgba(30, 202, 132, 1), inset 0 1px 2px rgba(255,255,255,.17);
+         }
     }
 
 
@@ -383,6 +392,113 @@ textarea {
 
 
 
+    /**************
+    // DATABASE page
+    ***************/    
+
+    .form_item{
+        display: inline-block;
+        width: 46%;
+        margin-bottom: 3em;
+
+
+        &:nth-of-type(odd){
+            margin-right: 7%;
+        }
+
+       
+        label{
+            display: block;
+            font-family: $t-title;
+            color: desaturate(darken(#e6e7f1, 48), 12);
+            font-size: 14px;
+            padding-bottom: .8em;
+        }
+
+        input{
+            width: 100%;
+            border: none;
+            background:darken($c-light, 4%);
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: .5em 1em;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            color: darken($c-light,65%);
+        }
+
+        
+    }
+
+    .form_item--user{
+        padding-bottom: 1.5em;
+        &::before{
+            content: "\e605";
+            font-family: 'social_icons';
+            float: left;
+            font-size: 2em;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            width: 2em;
+            height: 2em;
+            text-align: center;
+            margin-right: .5em;
+            vertical-align: middle;
+            background:$c-dark;
+            color: $c-main;
+            line-height: 1.9;   
+        }
+
+        label{
+            color: $c-main;
+            padding-bottom: 0;
+            padding-top: .6em;
+        }
+
+        .user{
+            font-weight: bold;
+            color: $c-dark;
+            font-size: 1.7em;
+            line-height: 1;
+        }
+    }
+
+
+    .full-width{
+        width: 100%;
+
+        ~ .form_item:nth-of-type(even){
+            margin-right: 7%;
+        } 
+        ~ .form_item:nth-of-type(odd){
+            margin-right: 0;
+        }
+
+
+    }
+
+    ::-webkit-input-placeholder {
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);
+        }
+
+      :-moz-placeholder { /* Firefox 18- */
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);  
+        }
+
+        ::-moz-placeholder {  /* Firefox 19+ */
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);  
+        }
+
+      :-ms-input-placeholder {  
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);  
+        }
     
 
 

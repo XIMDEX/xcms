@@ -117,7 +117,7 @@ h1 {
     color: #e6e7f1; }
 
 p {
-  color: #7d7d7d; }
+  color: #767987; }
 
 a {
   text-decoration: none; }
@@ -168,7 +168,7 @@ button {
   -webkit-box-shadow: 0 2px 1px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 2px 1px rgba(0, 0, 0, 0.4);
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.4); }
-  .installer_step-current button {
+  .installer_step-current span {
     color: #4c4d57; }
   .installer_step-current::before {
     content: "";
@@ -195,7 +195,10 @@ button {
   padding: 1em 1.5em 1em 4.5em;
   font-family: "Coustard", serif;
   color: #e6e7f1;
-  text-align: left; }
+  text-align: left;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 .icon_btn {
   width: 2em;
@@ -240,7 +243,7 @@ button {
   vertical-align: top;
   padding: 4em 5em; }
   .content p {
-    padding-bottom: 2em; }
+    padding-bottom: 1em; }
 
 .step-modules-installed {
   -webkit-box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.3);
@@ -263,7 +266,7 @@ h2 {
   color: #1eca84;
   margin-bottom: 1.9em; }
 
-.launch_ximdex {
+.action_launcher {
   background: #1eca84;
   color: #cbfbe7;
   text-transform: uppercase;
@@ -274,10 +277,15 @@ h2 {
   -moz-box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.17);
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.17);
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-  font-size: 0.88em; }
-  .launch_ximdex:hover {
+  font-size: 0.88em;
+  display: inline-block; }
+  .action_launcher:hover, .action_launcher:focus {
     background: #50e5a8;
     border-color: #34e89f; }
+  .action_launcher:focus {
+    -webkit-box-shadow: 0 0 4px 2px #1eca84, inset 0 1px 2px rgba(255, 255, 255, 0.17);
+    -moz-box-shadow: 0 0 4px 2px #1eca84, inset 0 1px 2px rgba(255, 255, 255, 0.17);
+    box-shadow: 0 0 4px 2px #1eca84, inset 0 1px 2px rgba(255, 255, 255, 0.17); }
 
 .footer {
   position: absolute;
@@ -290,6 +298,87 @@ h2 {
     color: #e6e7f1; }
     .footer a:hover {
       color: #1eca84; }
+
+/**************
+// DATABASE page
+***************/
+.form_item {
+  display: inline-block;
+  width: 46%;
+  margin-bottom: 3em; }
+  .form_item:nth-of-type(odd) {
+    margin-right: 7%; }
+  .form_item label {
+    display: block;
+    font-family: "Coustard", serif;
+    color: #5f6283;
+    font-size: 14px;
+    padding-bottom: .8em; }
+  .form_item input {
+    width: 100%;
+    border: none;
+    background: #d9daea;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: .5em 1em;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    color: #323659; }
+
+.form_item--user {
+  padding-bottom: 1.5em; }
+  .form_item--user::before {
+    content: "\e605";
+    font-family: 'social_icons';
+    float: left;
+    font-size: 2em;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    margin-right: .5em;
+    vertical-align: middle;
+    background: #4c4d57;
+    color: #1eca84;
+    line-height: 1.9; }
+  .form_item--user label {
+    color: #1eca84;
+    padding-bottom: 0;
+    padding-top: .6em; }
+  .form_item--user .user {
+    font-weight: bold;
+    color: #4c4d57;
+    font-size: 1.7em;
+    line-height: 1; }
+
+.full-width {
+  width: 100%; }
+  .full-width ~ .form_item:nth-of-type(even) {
+    margin-right: 7%; }
+  .full-width ~ .form_item:nth-of-type(odd) {
+    margin-right: 0; }
+
+::-webkit-input-placeholder {
+  font-style: italic;
+  color: #6f7396; }
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-style: italic;
+  color: #6f7396; }
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-style: italic;
+  color: #6f7396; }
+
+:-ms-input-placeholder {
+  font-style: italic;
+  color: #6f7396; }
 
 /**************
 // MODULES page

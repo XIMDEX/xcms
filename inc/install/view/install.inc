@@ -60,11 +60,11 @@
                 $extraStyle = ($index == $this->currentStep)? "installer_step-current" : $extraStyle;
                 ?>
                    <li class='installer_step <?php echo $extraStyle; ?>'>
-                    <button class="installer_step-launcher icon">
+                    <span class="installer_step-launcher icon">
                         <?php
                          echo $step["description"];
                         ?>
-                    </button>
+                    </span>
                 </li>    
                 <?php
             }

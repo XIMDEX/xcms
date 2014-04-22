@@ -28,14 +28,43 @@
 <form method="post" action=".">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Installing DataBase</h2>
-	<input type="text" name="server"/>
-	<input type="text" name="port"/>
 
-	<input type="radio" name="mode" value="withdb">		
-	<input type="text" name="server"/>
+	<p>Change and fill the fields below you need to connect to your data base.</p>
+
+	<div class="form_item">
+		<label for="db_server">Server</label>
+		<input type="text" name="server" id="db_server" value="Localhost" />
+	</div>
+	<div class="form_item">
+		<label for="db_port">Port</label>
+		<input type="text" name="port" id="db_port" value="3306" />
+	</div>
+
+	<div class="form_item">
+		<label for="db_admin">Database Admin User</label>
+		<input type="text" name="user" id="db_admin" value="root"/>
+	</div>
+
+	<div class="form_item">
+		<label for="db_pass">Database Admin Password</label>
+		<input type="password" name="pass" id="db_pass" placeholder="Insert your admin user password here" />
+	</div>
+
+	<div class="form_item  form_item--dbname full-width">
+		<label for="db_name">Database name</label>
+		<input type="text" name="pass" id="db_name" value="ximdex" />
+	</div>
+	<div class="form_item">
+		<label for="db_user">Database user</label>
+		<input type="text" name="pass" id="db_user" value="ximdex_user " />
+	</div>
+	<div class="form_item">
+		<label for="db_user_pass">Database password</label>
+		<input type="password" name="pass" id="db_user_pass" placeholder="Insert a new database password here" />
+	</div>
 	
 
-	
+	<a href="" class="launch_ximdex action_launcher" onclick="">Connect to database</a>
 		
 	
 </form>
