@@ -25,6 +25,8 @@
 
 
 @import "../themes/ximdex_theme";
+@import "../themes/extends";
+@import "../themes/icons";
 
 /**************
 // GENERIC STYLES
@@ -359,24 +361,39 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
 	background-position: -43px -31px;
 }
 
-.view-group button span{
-	display:none;
+.view-group button span:not(tooltip){
+	display: none;
 }
 
-.view-group button:hover span{
+.view-group button .tooltip{
 	position: absolute;
-	top: 32px;
-	right: -10px;
-	background: #9F0;
+	top: 2.8em;
+	right: 0;
 	z-index: 100;
-	display: block;
 	color: $c_white;
 	text-shadow: 1px 1px 0px $c_grey-l;
-	background:	url('../../../../../images/browser/hbox/fnd-vistas.png') no-repeat left top;
-	width: 70px;
-	height: 34px;
-	padding-top: 11px;
+	//width: 70px;
+	//height: 34px;
 	font-size: 14px;font-size: 1.4rem;
+	display: none;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	background:rgba(37,37,37,.8);
+	padding: .2em .8em;
+
+	&::before{
+		@include triangle(top, rgba(37,37,37,.8), .45em);
+		right: .5em;
+		margin-top: -1.1em;
+	}
+}
+
+.view-group button:hover .tooltip{
+	
+	display: block;
+
+
 }
 
 
