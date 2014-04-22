@@ -50,8 +50,6 @@ class String {
 		$texto = str_replace(" ","_",$texto);
 		$texto = str_replace("!","",$texto);
 		$texto = str_replace("?","",$texto);
-		$texto = str_replace("?","",$texto);
-		$texto = str_replace("?","",$texto);
 		$texto = str_replace("(","",$texto);
 		$texto = str_replace(")","",$texto);
 		$texto = str_replace("[","",$texto);
