@@ -26,6 +26,8 @@
 X.actionLoaded(function(event, fn, params) {
 	var url = fn('.tarfile').attr('href');
 	fn('.button-download').click(function() {
-		window.open(url);
+        if(url){
+		    window.open(url);
+        }
 	}).click();
 });

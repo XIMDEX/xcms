@@ -30,6 +30,10 @@
 </div>
 <div class="action_content">
 	<fieldset>
-	<p>{t}The download will start immediately. If don't, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a></p>
+    {if $numChildren>0}
+	    <p>{t}The download will start immediately. If not, click here{/t}: <a href="{$tarFile}" class="tarfile destacada">{$nodeName}</a></p>
+    {else}
+        <p>{t}There aren't any files to download{/t}.</p>
+    {/if}
 	</fieldset>
 </div>
