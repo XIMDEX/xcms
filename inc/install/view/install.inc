@@ -100,7 +100,7 @@
     <script type="text/javascript" >
         var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
     </script>
-    <?
+    <?php
         foreach($js_files as $js_file){
         ?>
             <script type="text/javascript" src="<?php echo $js_file; ?>"></script>
