@@ -266,8 +266,8 @@ button::-moz-focus-inner {
   position: absolute;
   z-index: -1 !important;
   font-size: 1.6em;
-  top: .1em;
-  right: -.15em; }
+  top: 0;
+  right: -0.22222em; }
 
 .selector_language {
   display: none;
