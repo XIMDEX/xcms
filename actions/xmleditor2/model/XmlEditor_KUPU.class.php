@@ -611,7 +611,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		if(ModulesManager::isEnabled('Xowl')){
 			if(Config::getValue('EnricherKey') === NULL || Config::getValue('EnricherKey') == '') {
 				XMD_Log::error(_("EnricherKey configuration value has not been defined"));
-				$resp = '{"status": "no  EnricherKey defined"}';
+				$resp = array("status"=>"no  EnricherKey defined");
 			} else {
 				$ontologyService = new OntologyService();
 				$resp = $ontologyService->suggest($content);
@@ -624,7 +624,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$videomsg=sprintf($ximRAmsg,$videolink);
 			$urlvideo = "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>";
 			XMD_Log::error(_("Xowl module has not been installed. It is included in the advanced package WIX."));
-		        $resp = '{"status": "'.$videomsg.'","videourl":"'.$urlvideo.'"}';
+			
+			$resp = array("status" =>$videomsg,
+						  "videourl" => $urlvideo);
+		        
 		}
 
 		return $resp;

@@ -71,13 +71,19 @@ function XimdocAnnotationTool() {
                         resolveXimlinks: false,
                         onCreateNode: null
 		});
-		content= encodeURIComponent(content);
+		
 		var lang = "es";
 		var encodedContent = "&nodeid=" + this.editor.nodeId +
-							 "&content=" + content +
+							 "&content=" + encodeURIComponent(content) +
 							 "&lang=" + encodeURIComponent(lang);
 
-		com.ximdex.ximdex.editors.AnnotationHandler(kupu.getBaseURL(), encodedContent, {
+		var encodedObject = {
+			"nodeid": this.editor.nodeId,
+			"content": content,
+			"lang":lang
+		};
+
+		com.ximdex.ximdex.editors.AnnotationHandler(kupu.getBaseURL(), encodedObject, {
 			onComplete: function(req, json) {
 				if(req.responseText != '' && req.responseText !== null) {
 //					var responseObj = eval('(' + req.responseText + ')');

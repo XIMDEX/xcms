@@ -44,7 +44,8 @@
 			'movenode', 
 			'copy', 
 			'expiresection',
-			'publicatesection'
+			'publicatesection',
+            'deletecatalog'
 		],
 		reload: [
 			'addximlet', 

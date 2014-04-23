@@ -643,8 +643,14 @@ function XimdocEditor(options) {
 			var encodedContent = "&nodeid=" + this.nodeId +
 								 "&content=" + content +
 								 "&channelid=" + this._ximdoc._channelId;
+			var encondedObject = {
 
-			com.ximdex.ximdex.editors.PreviewInServerHandler(this.getBaseURL(), encodedContent, {
+				"nodeid": this.nodeId,
+				"content": content,
+				"channelid": this._ximdoc._channelId
+			};
+
+			com.ximdex.ximdex.editors.PreviewInServerHandler(this.getBaseURL(), encondedObject, {
 				onComplete: function(req, json) {
 					switch(req.responseText) {
 						case '1':

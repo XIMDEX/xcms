@@ -48,13 +48,11 @@ class Action_filedownload_multiple extends ActionAbstract {
 				}
 
 				$children = $node->getChildren();
-                if(count($children)>0){
+                $numChildren = count($children);
+                if($numChildren>0){
     				$folder = $tmpFolder . '/' . $node->get('Name');
 	    			$errors = $this->copyContents($folder, $children);
 	            }
-				if ($errors !== false) {
-					// TODO
-				}
 			}
 
 			$tarFile = $this->tarContents($tmpFolder);
@@ -62,16 +60,15 @@ class Action_filedownload_multiple extends ActionAbstract {
 		}
 
 		if (!is_file($tarFile)) {
-			$this->messages->add(_('All selected documents could not be exported.'), MSG_TYPE_ERROR);
-    			$this->render(array($this->messages->messages), NULL, 'messages.tpl');
-    			return;
+            XMD_Log::error('All selected documents could not be exported.');
 		}
 
 		$tarFile = preg_replace(sprintf('#^%s#', Config::getValue('AppRoot')), Config::getValue('UrlRoot'), $tarFile);
 
 		$values = array(
 			'nodeName' => basename($tarFile),
-			'tarFile' => $tarFile
+			'tarFile' => $tarFile,
+            'numChildren' => $numChildren
 		);
 
 		$this->addJs('/actions/filedownload_multiple/resources/js/index.js');
