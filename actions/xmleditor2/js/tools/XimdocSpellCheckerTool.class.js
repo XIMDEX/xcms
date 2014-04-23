@@ -93,13 +93,19 @@ function XimdocSpellCheckerTool() {
 
     	this._setSpellCheckDoc = function (XimdocSpellCheckerTool) {
 		// Calling SpellCheckingHandler
-		var content = encodeURIComponent($('body', this.editor.getInnerDocument()).text());
+		var content = $('body', this.editor.getInnerDocument()).text();
 		var lang = "es";
 		var encodedContent = "&nodeid=" + this.editor.nodeId +
-							 "&content=" + content +
+							 "&content=" + encodeURIComponent(content) +
 							 "&lang=" + encodeURIComponent(lang);
 
-		com.ximdex.ximdex.editors.SpellCheckingHandler(kupu.getBaseURL(), encodedContent, {
+		var encodedObject = {
+			"nodeid": this.editor.nodeId,
+			"content": content,
+			"lang": lang
+		}
+
+		com.ximdex.ximdex.editors.SpellCheckingHandler(kupu.getBaseURL(), encodedObject, {
 			onComplete: function(req, json) {
 		        	this._spellCheckDoc = this.editor.createDomDocument(req.responseText);
 		        	this._setSpellCheckWordsArray();

@@ -725,9 +725,10 @@ XimDocument = function(editorConfig) {
     	});
 
 		var encodedContent = "content=" + encodeURIComponent(content);
+		var encodedObject = {"content": content};
 
 		// XML validation on the server
-		com.ximdex.ximdex.editors.ValidateHandler(kupu.getBaseURL(), encodedContent, {
+		com.ximdex.ximdex.editors.ValidateHandler(kupu.getBaseURL(), encodedObject, {
 			onComplete: function(req, json) {
 				var msg = null;
 				if (!json.valid) {

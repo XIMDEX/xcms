@@ -35,6 +35,11 @@ function prepareForm(autoSave, publicate) {
 	var encodedContent = "XML=" + encodeURIComponent(xmlfile) +
 						 "&content=" + encodeURIComponent(content) +
 						 "&lang=" + encodeURIComponent(lang);
+	var encondedObject = {
+		"XML": xmlfile,
+		"content": content,
+		"lang": lang
+	};
 
 	// NOTE: XML validation on the server
 	var validate = ximdoc.schemaValidatorIsActive();
@@ -51,7 +56,7 @@ function prepareForm(autoSave, publicate) {
 		}
 
 		if(publicate === true) {
-			com.ximdex.ximdex.editors.PublicateHandler(kupu.getBaseURL(), encodedContent, {
+			com.ximdex.ximdex.editors.PublicateHandler(kupu.getBaseURL(), encondedObject, {
 				onComplete: function(req, json) {
 					if(autoSave === false) {
 						kupu.alert(_('The document has been saved and sent to be published.'));
@@ -70,7 +75,7 @@ function prepareForm(autoSave, publicate) {
 				}
 			}, autoSave);
 		} else {
-			com.ximdex.ximdex.editors.SaveHandler(kupu.getBaseURL(), encodedContent, {
+			com.ximdex.ximdex.editors.SaveHandler(kupu.getBaseURL(), encondedObject, {
 				onComplete: function(req, json) {
 					if(autoSave === false) {
 						kupu.alert(_('The document has been successfully saved.'));
