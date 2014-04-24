@@ -27,6 +27,9 @@
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/WebMessagesStrategy.class.php');
 
+/**
+ * Manager for install process
+ */
 class InstallManager {
 
 	//CONSTANTS FOR INSTALL MODE
@@ -43,6 +46,10 @@ class InstallManager {
 	public $currentState;
 	public $currentStep;
 
+	/**
+	 * Construct method
+	 * @param string $mode Install mode: Web or console
+	 */
 	public function __construct($mode = self::CONSOLE_MODE){
 		$this->mode = $mode;
 		$messageClassName = $this->mode."MessagesStrategy";
@@ -54,6 +61,10 @@ class InstallManager {
 		$this->currentState = $this->getCurrentState();		
 	}
 
+	/**
+	 * Get Steps from config xml.
+	 * @return array Associative array
+	 */
 	public function getSteps(){
 		$xpath = new DomXPath($this->installConfig);
 		$query = "/install/steps/step";
@@ -73,6 +84,10 @@ class InstallManager {
 		return $result;
 	}
 
+	/**
+	 * Get status from _STATUSFILE
+	 * @return string get Status
+	 */
 	public function getCurrentState(){
 		$statusFile = XIMDEX_ROOT_PATH.self::STATUSFILE;
 		if (!file_exists($statusFile))
@@ -80,6 +95,10 @@ class InstallManager {
 		return trim(strtolower(FsUtils::file_get_contents($statusFile)));
 	}
 
+	/**
+	 * Check if Ximdex is already installed.
+	 * @return boolean true if is already installed.
+	 */
 	public function isInstalled(){
 		$currentState = $this->getCurrentState();		
 		if (!$currentState)
@@ -88,6 +107,9 @@ class InstallManager {
 		return $currentState == strtolower(self::LAST_STATE);
 	}
 
+	/**
+	 * Write the next step into _STATUSFILE file
+	 */
 	public function nextStep(){
 
 		$newState = "";
@@ -100,6 +122,20 @@ class InstallManager {
     		$newState =  self::LAST_STATE;
     	}
     	FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
+	}
+
+	/**
+	 * Write the prev step into _STATUSFILE file
+	 */
+	public function prevStep(){
+
+		$newState = "";
+		$steps = $this->getSteps();
+		$prevStep = $this->currentStep - 1;
+    	if ($prevStep >= 0){
+    		$newState = $steps[$prevStep]["state"];
+    		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
+    	}    	
 	}
 
 	public function getModulesByDefault($default=true){

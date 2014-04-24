@@ -25,11 +25,14 @@
 				content: Description name
 	-->
 	<steps file="install/_STATUSFILE">
+		<step state="initialized" class-name="Welcome" >
+			Welcome
+		</step>
 		<step state="checked" class-name="BuildDataBase" >
-			Database installation
+			Database configuration
 		</step>
 		<step state="created_db" class-name="Settings" >
-			Settings
+			Initial settings
 		</step>
 		<step state="configured" class-name="XimdexModules" >
 			Ximdex Modules

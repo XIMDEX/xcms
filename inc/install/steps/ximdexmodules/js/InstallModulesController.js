@@ -22,28 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-ximdexInstallerApp.factory('installerService', function($http) {
-//   this.installPath = "/";	
-   return {
-
-        sendAction: function(method, extraParams) {
-             //return the promise directly.
-             var params = "method="+method;
-             if (extraParams)
-             	params +="&"+extraParams;
-             return $http({method: 'POST',
-						    url: '',
-						    data: params,
-						    headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-                       .success(function(response) {
-                            //resolve the promise as the data
-                            return response;
-                        });
-        }
-   }
-});
-
 ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope', 'installerService', "$q", "$window",
  function($timeout, $scope, installerService, $q, $window) {
 

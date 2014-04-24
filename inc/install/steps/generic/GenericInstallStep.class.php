@@ -43,7 +43,8 @@ class GenericInstallStep {
 	}
 
 	public function index(){
-		header(sprintf("Location: %s", "xmd/uninstalled/index.html"));
+		$this->installManager->prevStep();
+		header("Location: index.php");
 		die();
 	}
 
@@ -121,6 +122,10 @@ class GenericInstallStep {
 
     	$this->installManager->nextStep();
 
+    }
+
+    public function check(){
+    	return true;
     }
 
 
