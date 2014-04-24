@@ -27,15 +27,19 @@
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
-class WellcomeInstallStep extends GenericInstallStep {
+class WelcomeInstallStep extends GenericInstallStep {
 
 	/**
 	 * Main function. Show the step	 
 	 */
 	public function index(){
-		$this->render();
+		$checking = $this->installManager->initialChecking();
+		$values=array("checks" => $checking);
+		$this->render($values);
 		
 	}
+
+
 
 
 }

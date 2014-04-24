@@ -26,6 +26,7 @@
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/WebMessagesStrategy.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/helper/ServerConfig.class.php');
 
 /**
  * Manager for install process
@@ -132,10 +133,11 @@ class InstallManager {
 		$newState = "";
 		$steps = $this->getSteps();
 		$prevStep = $this->currentStep - 1;
-    	if ($prevStep >= 0){
-    		$newState = $steps[$prevStep]["state"];
-    		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
-    	}    	
+		if ($prevStep<0)
+			$prevStep = 0;    	
+		$newState = $steps[$prevStep]["state"];
+		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, strtoupper($newState));
+    	    	
 	}
 
 	public function getModulesByDefault($default=true){
@@ -171,6 +173,100 @@ class InstallManager {
 		$query = "/install/modules/module[@name='{$name}' $extra_query]";
 		return $this->getModulesByQuery($query);
 	}
+
+	
+	public function initialChecking(){
+		$result = array();
+		$result[] = $this->checkDiskSpace();
+		$result[] = $this->checkPHPVersion();
+		$result[] = $this->checkRequiredPHPExtensions();
+		$result[] = $this->checkRecommendedPHPExtensions();
+		$result[] = $this->checkDisabledFunctions();
+		$result[] = $this->checkMySQL();
+
+		return $result;		
+	}
+
+	private function checkDiskSpace(){
+		$result = array();
+		$freeSpace = DiskUtils::disk_free_space("GB",XIMDEX_ROOT_PATH);
+		$result["name"] = "DiskSpace";
+		if ($freeSpace>1000){
+			$result["state"]="success";
+		}else{
+			$result["state"]="warning";
+			$result["messages"][] = "Only $freeSpace available. Please free space from your disk";
+		}
+
+		return $result;
+	}
+
+	private function checkPHPVersion(){
+		$version = phpversion();
+		$minPHPVersion = "5.2.5";
+		$version = explode(".", $version);
+		$version = "{$version[0]}.{$version[0]}";
+		$result["name"] = "PHP version";
+		if ($version >= "5.2.5" && false){
+			$result["state"]="success";
+		}
+		else {
+			$result["state"]="warning";
+			$result["messages"][] = "Recomended PHP $minPHPVersion or higher";
+		}
+
+		return $result;
+	}
+
+	private function checkRequiredPHPExtensions(){
+		$modules = array_merge(apache_get_modules(),get_loaded_extensions());
+		$requiredModules = array("gd","curl", "mysql", "xsl","xml");
+		$result["state"] = "success";
+		$result["name"] = "PHP required extensions";
+
+		foreach ($requiredModules as $requiredModule) {
+			if (!in_array($requiredModule, $modules) || true){
+				$result["state"] = "error";
+				$result["messages"][] = "PHP $requiredModule  extension is required";
+			}
+		}
+
+		return $result;
+	}
+
+	private function checkRecommendedPHPExtensions(){
+		$modules = array_merge(apache_get_modules(),get_loaded_extensions());
+		$recommendedModules = array("enchant");
+		$result["state"] = "success";
+		$result["name"] = "PHP recommended extensions";
+
+		foreach ($recommendedModules as $recommendedModule) {
+			if (!in_array($recommendedModule, $modules)){
+				$result["state"] = "warning";
+				$result["message"][] = "PHP $recommendedModule extension is recommended.";
+			}
+		}
+		return $result;
+	}
+
+
+	private function checkDisabledFunctions(){
+		$ximdexServerConfig = new ServerConfig();
+        //Checking pcntl_fork function is not disabled
+        $result["state"]="success";
+        $result["name"]="Disabled functions";
+        if ($ximdexServerConfig->hasDisabledFunctions() || true){
+        		$result["state"] = "warning";
+	            $result["messages"][] = "Disabled pcntl_fork and pcntl_waitpid functions are recommended. Please, check php.ini file.";
+        }
+
+        return $result;
+	}
+
+	private function checkMySQL(){
+		
+	}
+		
 	
 }
 ?>

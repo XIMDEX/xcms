@@ -24,15 +24,31 @@
  *  @version $Revision$
  */
 ?>
-<h2>Installing Ximdex</h2>	
-<?php
-	foreach ($exception as $exception) {
-		?>
-		<p class="error"><?php echo $exception["message"];?></p>			
-		<?php
-		if ($exception["help"])
-			?>
-		<pre><?php echo $exception["help"];?></pre>
-		<?php
-	}
-?>
+
+<form method="post" action=".">
+<h2>Welcome</h2>
+<p>
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+</p>
+    <ul>
+    <?php foreach ($checks as $check) {
+    	?>
+    	<li class="<?php echo $check["state"]?>">
+	      <p class="title"> <?php echo $check["name"]?> <span ng-show="module.processed"><?php echo $check["state"]?></span>
+		
+	      </p> 	      
+	      	<?php
+	      		foreach ($check["messages"] as $message) {
+	      			?>
+	      			<p class="desc"><?php echo $message;  ?></p>
+	      			<?php
+	      		}
+	      	?>	      
+
+	    </li>
+    <?php
+    }
+	?>	
+		
+	</ul>
+</form>

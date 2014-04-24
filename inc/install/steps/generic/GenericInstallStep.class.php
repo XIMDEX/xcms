@@ -23,6 +23,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 class GenericInstallStep {
 
 	protected $steps;
@@ -42,10 +43,10 @@ class GenericInstallStep {
 		$this->checkInstall();
 	}
 
-	public function index(){
+	public function index(){		
 		$this->installManager->prevStep();
-		header("Location: index.php");
-		die();
+		$this->currentStep = 0;
+		$this->render();
 	}
 
 	protected function render($values=array(), $view=null, $layout="installer.tpl"){
@@ -72,16 +73,36 @@ class GenericInstallStep {
 	 * Checking install parameters	 
 	 */
 	private  function checkInstall(){
+
+		$this->checkInstanceGroup();
+
+
 		$filesToCheck = array(self::STATUSFILE,
 								"/data",
 								"/logs");
 		
 		foreach ($filesToCheck as $file) {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){
-				$this->exception[] = "$file doesn't found.";
+				$exception["message"] = "$file doesn't found.";
+				$this->exception[] = $exception;
 			}else if (!is_writable(XIMDEX_ROOT_PATH.$file)){
-				$this->exception[] = "Ximdex need permissions to write on $file";
+				$exception["message"] = "Write permissions on $file required.";
+				$exception["help"] = "chmod -R 664 ".XIMDEX_ROOT_PATH.$file;
+				$this->exception[] = $exception;
 			}
+		}
+
+	}
+
+	private function checkInstanceGroup(){
+		$groupId = posix_getgroups();
+		$groupName = posix_getgrgid($groupId[0]);
+		$ximdexGroupId = filegroup(XIMDEX_ROOT_PATH);
+		$ximdexGroupName = posix_getgrgid($ximdexGroupId);
+		if (!in_array($ximdexGroupId, $groupId)){
+			$exception["message"] = "Advice you use {$groupName["name"]} group instead of {$ximdexGroupName["name"]}" ;
+			$exception["help"] = "chgrp -R {$groupName["name"]} ".XIMDEX_ROOT_PATH;			
+			$this->exception[] = $exception;
 		}
 	}
 

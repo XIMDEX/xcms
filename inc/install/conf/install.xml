@@ -25,7 +25,7 @@
 				content: Description name
 	-->
 	<steps file="install/_STATUSFILE">
-		<step state="initialized" class-name="Welcome" >
+		<step state="init" class-name="Welcome" >
 			Welcome
 		</step>
 		<step state="checked" class-name="BuildDataBase" >
