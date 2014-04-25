@@ -193,7 +193,7 @@ class InstallManager {
 		$result = array();
 		$freeSpace = DiskUtils::disk_free_space("GB",XIMDEX_ROOT_PATH);
 		$result["name"] = "DiskSpace";
-		if ($freeSpace>1000){
+		if ($freeSpace>1){
 			$result["state"]="success";
 		}else{
 			$result["state"]="warning";
@@ -210,7 +210,7 @@ class InstallManager {
 		$version = explode(".", $version);
 		$version = "{$version[0]}.{$version[0]}";
 		$result["name"] = "PHP version";
-		if ($version >= "5.2.5" && false){
+		if ($version >= "5.2.5"){
 			$result["state"]="success";
 		}
 		else {
@@ -229,7 +229,7 @@ class InstallManager {
 		$result["name"] = "PHP required extensions";
 
 		foreach ($requiredModules as $requiredModule) {
-			if (!in_array($requiredModule, $modules) || true){
+			if (!in_array($requiredModule, $modules)){
 				$result["state"] = "error";
 				$result["messages"][] = "PHP $requiredModule  extension is required";
 				$result["help"][] = "";
@@ -261,7 +261,7 @@ class InstallManager {
         //Checking pcntl_fork function is not disabled
         $result["state"]="success";
         $result["name"]="Disabled functions";
-        if ($ximdexServerConfig->hasDisabledFunctions() || true){
+        if ($ximdexServerConfig->hasDisabledFunctions()){
         		$result["state"] = "warning";
 	            $result["messages"][] = "Disabled pcntl_fork and pcntl_waitpid functions are recommended. Please, check php.ini file.";
 	            $result["help"][] = "";
