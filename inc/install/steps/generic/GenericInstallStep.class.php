@@ -113,8 +113,8 @@ class GenericInstallStep {
     }
 
     protected function checkPermissions(){
-    	$this->exception[] = $this->installManager->checkFilePermissions();
-    	$this->exception[] = $this->installManager->checkInstanceGroup();
+    	$this->exceptions[] = $this->installManager->checkFilePermissions();
+    	$this->exceptions[] = $this->installManager->checkInstanceGroup();    	
     }
 
 

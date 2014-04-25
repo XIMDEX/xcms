@@ -22,10 +22,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope', 'installerService', "$q", "$window",
+ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'installerService', "$q", "$window",
  function($timeout, $scope, installerService, $q, $window) {
 
-    $scope.error=false;
+    $scope.cosa="";
     $scope.submit = false;
     $scope.root_user="root";
     $scope.name="ximdex";
@@ -34,67 +34,33 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
         if (response.data.success){
             $scope.host=response.data.host;
             $scope.port=response.data.port;
-            $scope.hostCheck = true;
+            $scope.hostCheck = false;
         }
 
     });
 
     $scope.processForm = function(){
-        $scope.error="";
         $scope.loading = true;
         var index = 0;
         $scope.checkRootUser();
     };
 
     $scope.checkRootUser = function(){
-        
-        var params = "user="+$scope.root_user;
-        params += "&pass="+$scope.root_pass;
+
+        var params = "root_user="+$scope.root_user;
+        params += "&root_pass="+$scope.root_pass;
         params += "&host="+$scope.host;
         params += "&port="+$scope.port;
         installerService.sendAction("checkUser",params).then(function(response) {
         if (response.data.success){
-            $scope.checkExistDataBase();
 
-        }else{
-            $scope.loading = false;
-            $scope.error = response.data.errors;
         }
 
     });
-    };
-
-    $scope.checkExistDataBase = function(){
-        var params = "user="+$scope.root_user;
-        params += "&pass="+$scope.root_pass;
-        params += "&host="+$scope.host;
-        params += "&port="+$scope.port;
-        params += "&name="+$scope.name;
-        installerService.sendAction("checkExistDataBase",params).then(function(response) {        
-        if (response.data.success){
-            $scope.installDataBase();
-        }else{
-            $scope.error = $scope.name+" database already exists";
-            $scope.loading=false;
-        }
-     });
     };
 
     $scope.installDataBase = function(){
-        var params = "user="+$scope.root_user;
-        params += "&pass="+$scope.root_pass;
-        params += "&host="+$scope.host;
-        params += "&port="+$scope.port;
-        params += "&name="+$scope.name;
-        installerService.sendAction("createDataBase",params).then(function(response) {
-        $scope.loading=false;
-        if (response.data.success){
 
-        }else{
-            $scope.error = response.data.errors;
-        }
-    });
-   
     }
 
 }]);

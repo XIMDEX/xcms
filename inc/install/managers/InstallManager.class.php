@@ -289,7 +289,7 @@ class InstallManager {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
 				$result["state"] = "error";
 				$exception["messages"][] = "$file doesn't found.";				
-			}else if (!is_writable(XIMDEX_ROOT_PATH.$file)){
+			}else if (!$this->isWritable(XIMDEX_ROOT_PATH.$file)){
 				$result["state"] = "error";
 				$result["messages"][]="Write permissions on $file required.";
 				$result["help"][] = "chmod -R 664 ".XIMDEX_ROOT_PATH.$file;				
@@ -298,6 +298,12 @@ class InstallManager {
 
 		return $result;
 	}
+
+	private function isWritable($file){
+
+		return is_writable($file);
+	}
+
 
 	public function checkInstanceGroup(){
 		

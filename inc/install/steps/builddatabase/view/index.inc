@@ -29,13 +29,13 @@
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Installing DataBase</h2>
 
-	
+	<p class="errors" ng-show="error">{{error}}</p>
 
-	<div class="form_item"  ng-class="{success:hostCheck=true}">
+	<div class="form_item"  ng-class="{success:hostCheck==true}">
 		<label  for="db_server">Host</label>
 		<input ng-model="host" type="text" name="host" id="db_server" value="{{host}}" required />
 	</div>
-	<div class="form_item"  ng-class="{success:hostCheck=true}">
+	<div class="form_item"  ng-class="{success:hostCheck==true}">
 		<label for="db_port">Port</label>
 		<input ng-model="port" type="text" name="port" id="db_port" value="{{port}}" required />
 	</div>

@@ -64,13 +64,14 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 		$idbManager->reconectDataBase();
 		$host = $this->request->getParam("host");
 		$port = $this->request->getParam("port");
-		$root_user = $this->request->getParam("root_user");
-		$root_pass = $this->request->getParam("root_pass");
+		$user = $this->request->getParam("user");
+		$pass = $this->request->getParam("pass");
 		$values = array();
 		if ($idbManager->connect($host, $port, $user, $pass)){
 			$values["success"]=true;
 		}else{
 			$values["failure"] = true;
+			$values["errors"] = $idbManager->getConnectionErrors();
 		}
 
 		$this->sendJson($values);
@@ -78,34 +79,64 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 
 	}
 
+
+	public function checkExistDataBase(){
+
+		$idbManager = new InstallDataBaseManager();
+		$idbManager->reconectDataBase();
+		$host = $this->request->getParam("host");
+		$port = $this->request->getParam("port");
+		$name = $this->request->getParam("name");
+		$user = $this->request->getParam("user");
+		$pass = $this->request->getParam("pass");
+		$values = array();
+		if ($idbManager->connect($host, $port, $user, $pass, $name)){
+			$values["failure"] = true;			
+			
+		}else{
+			$values["success"] = true;
+		}
+		$this->sendJson($values);
+	}
+
 	/**
 	 * [createDataBase description]
 	 * @return [type] [description]
 	 */
-	public function createDataBase(){
-
+	public function createDataBase(){		
+		
 		$idbManager = new InstallDataBaseManager();
 		$host = $this->request->getParam("host");
 		$port = $this->request->getParam("port");
-		$root_user = $this->request->getParam("root_user");
-		$root_pass = $this->request->getParam("root_pass");
 		$name = $this->request->getParam("name");
 		$user = $this->request->getParam("user");
 		$pass = $this->request->getParam("pass");
-		$userExist = $databaseExist = false;
-		if ($idbManager->connect($host, $port, $user, $pass)){
-			$userExist = true;
-			if ($idbManager->selectDataBase()){
-				$idbManager->loadData();
-			}
-		}else{
-			if ($idbManager->connect($host, $port, $root_user, $root_pass)){
-				if (!true){
-					//crea el usuario
-				}
-				
-			}
+		$values = array();
+		if ($idbManager->connect($host, $port, $user, $pass, $name)){
+			$idbManager->deleteDataBase($name);
+			$idbManager->reconectDataBase();
 		}
+		
+		if ($idbManager->connect($host, $port, $user, $pass)){
+			$result = $idbManager->createDataBase($name);
+			$idbManager->reconectDataBase();
+			$idbManager->connect($host, $port, $user, $pass, $name);
+
+			$result = $idbManager->loadData();
+			if ($result){
+				$values["success"] = true;				
+			}else{
+				$values["failure"] = true;
+				$values["errors"] = $idbManager->getErrors();
+			}
+			
+			
+		}else{
+			$values["failure"] = true;
+			$values["errors"] = $idbManager->getErrors();
+		}
+
+		$this->sendJSON($values);
 	}
 
 

@@ -65,14 +65,13 @@ class InstallDataBaseManager extends InstallManager{
 			$result = true;
 		} else {			
 			
-			$this->dbConnection = mysqli_connect($host.":".$port,$user,$pass, true);
+			$this->dbConnection = new mysqli($host,$user,$pass,$name,$port);
 			$GLOBALS[self::DB_ARRAY_KEY][$myPid] = $this->dbConnection;
-
-			if ($this->dbConnection){
+			if (!$this->dbConnection->connect_error){
 				$this->host = $host;
 				$this->port = $port;
 				$this->user = $user;
-				$this->pass = $pass;
+				$this->pass = $pass;				
 				$result = true;
 				if ($name)
 					$result = $this->selectDataBase($name);
@@ -84,11 +83,21 @@ class InstallDataBaseManager extends InstallManager{
 	}
 
 	public function selectDataBase($name){
-		$res = mysql_select_db($name,$this->dbConnection);
+
+		$res = $this->dbConnection->select_db($name);
 		if ($res)
-			$this->name;
+			$this->name = $name;
 		return $res;
 	}
+
+	public function getConnectionErrors(){
+		return $this->dbConnection->connect_error;
+	}
+
+	public function getErrors(){
+		return $this->dbConnection->error;
+	}
+
 	/**
 	 * Forcing to reconnect to database next time
 	 */	
@@ -99,9 +108,37 @@ class InstallDataBaseManager extends InstallManager{
 
 	public function createUser($user, $pass){
 		$sql = "GRANT ALL PRIVILEGES  ON $$this->name.* TO '$user'@'%' IDENTIFIED BY '$pass'";
-		$result = mysqli_query($this->dbConnection, $sql);
+		$result = $this->dbConnection->query($this->dbConnection, $sql);
 		$sql = "FLUSH privileges";
-		$result = $result && mysqli_query($this->dbConnection, $sql);		
+		$result = $result && $this->dbConnection->query($this->dbConnection, $sql);		
+		return $result;
+	}
+
+	public function createDataBase($name){
+		$result = false;
+		error_log("aaaaaa");
+		if($this->dbConnection){
+			$query = sprintf("create database %s", $name);
+			$result = $this->dbConnection->query($query);
+			if ($result === TRUE)
+				error_log("Suc");
+			else
+				error_log("faiulre");
+			error_log("a $result".print_r($result, true)." $query ".$this->dbConnection->error);
+		}else{
+			error_log("CREATE DATABASE");
+		}
+		return $result;
+	}
+
+	public function deleteDataBase($name){
+		$result = false;
+		if($this->dbConnection){
+			$query = sprintf("drop database %s", $name);
+			$result = $this->dbConnection->query($query);
+		}else{
+			error_log("DELETE DATABASE");
+		}
 		return $result;
 	}
 
@@ -112,7 +149,8 @@ class InstallDataBaseManager extends InstallManager{
         . ' --user=' . $this->user
         . ' --password=' . $this->pass
         . ' --database=' . $this->name
-        . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH.$self::SCRIPT_PATH;
+        . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH.self::SCRIPT_PATH;
+        error_log($command);
         //$result = shell_exec($command . '/shellexec.sql');
         $result = shell_exec($command);
 	}

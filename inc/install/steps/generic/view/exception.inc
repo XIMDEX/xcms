@@ -26,7 +26,7 @@
 ?>
 <h2>Installing Ximdex</h2>	
 <?php
-	foreach ($exception as $exception) {
+	foreach ($exceptions as $exception) {
 		?>
 		<p class="error"><?php echo $exception["message"];?></p>			
 		<?php

@@ -31,7 +31,7 @@ class WelcomeInstallStep extends GenericInstallStep {
 
 
 	public function __construct(){
-		$this->js_files = array();
+		$this->js_files = array("WelcomeController.js");
 		$this->installManager = new installManager();
 		$this->steps = $this->installManager->getSteps();		
 	}
@@ -40,19 +40,28 @@ class WelcomeInstallStep extends GenericInstallStep {
 	 * Main function. Show the step	 
 	 */
 	public function index(){
-		$checks = $this->installManager->initialChecking();
 		$error = false;
+
 		foreach ($checks as $check) {
 			if ($check["state"] == "error"){
 				$error = true;
 				break;
 			}
 		}
-		
+
 		$values=array("checks" => $checks, "error" => $error);
+		$values["go_method"]="continueInstallation";
 		$this->render($values);
 		
 	}
+
+	public function continueInstallation(){
+		$checks = $this->installManager->initialChecking();
+		$this->loadNextAction();
+		header(sprintf("Location: %s", "index.php"));
+		die();
+	}
+
 
 
 
