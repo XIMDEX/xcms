@@ -40,8 +40,16 @@ class WelcomeInstallStep extends GenericInstallStep {
 	 * Main function. Show the step	 
 	 */
 	public function index(){
-		$checking = $this->installManager->initialChecking();
-		$values=array("checks" => $checking);
+		$checks = $this->installManager->initialChecking();
+		$error = false;
+		foreach ($checks as $check) {
+			if ($check["state"] == "error"){
+				$error = true;
+				break;
+			}
+		}
+		
+		$values=array("checks" => $checks, "error" => $error);
 		$this->render($values);
 		
 	}

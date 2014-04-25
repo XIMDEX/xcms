@@ -43,5 +43,13 @@
   			}
   		}
     }
+	
+	
+	if (!$error){
+		?>
+			<button class="launch_ximdex action_launcher">Continue</button>		
+		<?php
+	}
 	?>
+
 </form>
