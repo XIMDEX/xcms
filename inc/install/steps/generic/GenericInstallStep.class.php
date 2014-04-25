@@ -23,6 +23,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/welcome/WelcomeInstallStep.class.php');
 
 class GenericInstallStep {
 
@@ -39,14 +40,14 @@ class GenericInstallStep {
 	public function __construct(){
 		$this->js_files = array();
 		$this->installManager = new installManager();
-		$this->steps = $this->installManager->getSteps();
-		$this->checkInstall();
+		$this->steps = $this->installManager->getSteps();		
+		$this->checkPermissions();
 	}
 
 	public function index(){		
 		$this->installManager->prevStep();
 		$this->currentStep = 0;
-		$this->render();
+		$this->render();		
 	}
 
 	protected function render($values=array(), $view=null, $layout="installer.tpl"){
@@ -68,44 +69,6 @@ class GenericInstallStep {
 		include(XIMDEX_ROOT_PATH."/inc/install/view/install.inc");
 		die();
 	}
-
-	/**
-	 * Checking install parameters	 
-	 */
-	private  function checkInstall(){
-
-		$this->checkInstanceGroup();
-
-
-		$filesToCheck = array(self::STATUSFILE,
-								"/data",
-								"/logs");
-		
-		foreach ($filesToCheck as $file) {
-			if (!file_exists(XIMDEX_ROOT_PATH.$file)){
-				$exception["message"] = "$file doesn't found.";
-				$this->exception[] = $exception;
-			}else if (!is_writable(XIMDEX_ROOT_PATH.$file)){
-				$exception["message"] = "Write permissions on $file required.";
-				$exception["help"] = "chmod -R 664 ".XIMDEX_ROOT_PATH.$file;
-				$this->exception[] = $exception;
-			}
-		}
-
-	}
-
-	private function checkInstanceGroup(){
-		$groupId = posix_getgroups();
-		$groupName = posix_getgrgid($groupId[0]);
-		$ximdexGroupId = filegroup(XIMDEX_ROOT_PATH);
-		$ximdexGroupName = posix_getgrgid($ximdexGroupId);
-		if (!in_array($ximdexGroupId, $groupId)){
-			$exception["message"] = "Advice you use {$groupName["name"]} group instead of {$ximdexGroupName["name"]}" ;
-			$exception["help"] = "chgrp -R {$groupName["name"]} ".XIMDEX_ROOT_PATH;			
-			$this->exception[] = $exception;
-		}
-	}
-
 
 	/**
 	 * Sends a JSON string
@@ -147,6 +110,11 @@ class GenericInstallStep {
 
     public function check(){
     	return true;
+    }
+
+    protected function checkPermissions(){
+    	$this->exception[] = $this->installManager->checkFilePermissions();
+    	$this->exception[] = $this->installManager->checkInstanceGroup();
     }
 
 

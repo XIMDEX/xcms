@@ -30,25 +30,18 @@
 <p>
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 </p>
-    <ul>
-    <?php foreach ($checks as $check) {
-    	?>
-    	<li class="<?php echo $check["state"]?>">
-	      <p class="title"> <?php echo $check["name"]?> <span ng-show="module.processed"><?php echo $check["state"]?></span>
-		
-	      </p> 	      
-	      	<?php
-	      		foreach ($check["messages"] as $message) {
-	      			?>
-	      			<p class="desc"><?php echo $message;  ?></p>
-	      			<?php
-	      		}
-	      	?>	      
-
-	    </li>
-    <?php
+    <?php 
+    	foreach ($checks as $check) {
+  			foreach ($check["messages"] as $i => $message) {
+  			?>
+  			<p class="<?php echo $check["state"]?>"><?php echo $message;  ?></p>
+  			<?php
+  			if ($check["help"][$i] && $check["help"][$i] != ""){
+  				?>
+  				<p class="desc"><?php echo $check["help"][$i];  ?></p>
+  				<?php
+  			}
+  		}
     }
-	?>	
-		
-	</ul>
+	?>
 </form>

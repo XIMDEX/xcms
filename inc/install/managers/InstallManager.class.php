@@ -182,7 +182,9 @@ class InstallManager {
 		$result[] = $this->checkRequiredPHPExtensions();
 		$result[] = $this->checkRecommendedPHPExtensions();
 		$result[] = $this->checkDisabledFunctions();
-		$result[] = $this->checkMySQL();
+		$result[] = $this->checkFilePermissions();
+		$result[] = $this->checkInstanceGroup();
+ 		$result[] = $this->checkMySQL();
 
 		return $result;		
 	}
@@ -195,7 +197,8 @@ class InstallManager {
 			$result["state"]="success";
 		}else{
 			$result["state"]="warning";
-			$result["messages"][] = "Only $freeSpace available. Please free space from your disk";
+			$result["messages"][] = "Only {$freeSpace}GB available. Please free space from your disk";
+			$result["help"][] = "";
 		}
 
 		return $result;
@@ -213,6 +216,7 @@ class InstallManager {
 		else {
 			$result["state"]="warning";
 			$result["messages"][] = "Recomended PHP $minPHPVersion or higher";
+			$result["help"][] = "";
 		}
 
 		return $result;
@@ -228,6 +232,7 @@ class InstallManager {
 			if (!in_array($requiredModule, $modules) || true){
 				$result["state"] = "error";
 				$result["messages"][] = "PHP $requiredModule  extension is required";
+				$result["help"][] = "";
 			}
 		}
 
@@ -244,6 +249,7 @@ class InstallManager {
 			if (!in_array($recommendedModule, $modules)){
 				$result["state"] = "warning";
 				$result["message"][] = "PHP $recommendedModule extension is recommended.";
+				$result["help"][] = "";
 			}
 		}
 		return $result;
@@ -258,6 +264,7 @@ class InstallManager {
         if ($ximdexServerConfig->hasDisabledFunctions() || true){
         		$result["state"] = "warning";
 	            $result["messages"][] = "Disabled pcntl_fork and pcntl_waitpid functions are recommended. Please, check php.ini file.";
+	            $result["help"][] = "";
         }
 
         return $result;
@@ -267,6 +274,49 @@ class InstallManager {
 		
 	}
 		
+	/**
+	 * Checking install parameters	 
+	 */
+	public  function checkFilePermissions(){
+
+		$result["state"] = "success";
+		$result["name"] = "File permission";
+		$filesToCheck = array(self::STATUSFILE,
+								"/data",
+								"/logs");
+		
+		foreach ($filesToCheck as $file) {
+			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
+				$result["state"] = "error";
+				$exception["messages"][] = "$file doesn't found.";				
+			}else if (!is_writable(XIMDEX_ROOT_PATH.$file)){
+				$result["state"] = "error";
+				$result["messages"][]="Write permissions on $file required.";
+				$result["help"][] = "chmod -R 664 ".XIMDEX_ROOT_PATH.$file;				
+			}
+		}
+
+		return $result;
+	}
+
+	public function checkInstanceGroup(){
+		
+		$result["state"] = "success";
+		$result["name"] = "File permission";
+		
+		$groupId = posix_getgroups();
+		$groupName = posix_getgrgid($groupId[0]);
+		$ximdexGroupId = filegroup(XIMDEX_ROOT_PATH);
+		$ximdexGroupName = posix_getgrgid($ximdexGroupId);
+		if (!in_array($ximdexGroupId, $groupId)){
+			$result["state"] = "error";
+			$result["messages"][] = "Advice you use {$groupName["name"]} group instead of {$ximdexGroupName["name"]}" ;
+			$result["help"][] = "chgrp -R {$groupName["name"]} ".XIMDEX_ROOT_PATH;			
+			
+		}
+
+		return $result;
+	}	
 	
 }
 ?>

@@ -29,6 +29,13 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.cla
 
 class WelcomeInstallStep extends GenericInstallStep {
 
+
+	public function __construct(){
+		$this->js_files = array();
+		$this->installManager = new installManager();
+		$this->steps = $this->installManager->getSteps();		
+	}
+
 	/**
 	 * Main function. Show the step	 
 	 */
