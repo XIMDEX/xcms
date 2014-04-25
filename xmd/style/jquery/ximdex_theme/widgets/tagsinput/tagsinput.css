@@ -333,7 +333,7 @@
   background: #e32e3f;
   font-size: 1.3em;
   line-height: 2.35 !important;
-  max-width: 1.5em; }
+  max-width: 3.2rem; }
 
 .type-structured::before, .xim-tagsinput-taglist.xim-tagsinput-type-structured::before {
   line-height: 1.67 !important; }
@@ -392,11 +392,12 @@
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  height: 2.22em;
+  height: 2.29em;
   cursor: pointer;
   margin-right: -6px;
-  margin-top: -6px;
-  border: 1px solid #ccc; }
+  margin-top: -1px;
+  border: 1px solid #ccc;
+  vertical-align: top; }
 
 .xim-tagsinput-newtag .add-btn {
   background: #57bbad;
@@ -404,7 +405,9 @@
   height: 2em;
   cursor: pointer;
   margin-left: .4em;
-  position: relative; }
+  position: relative;
+  overflow: hidden;
+  text-indent: 4em; }
   .xim-tagsinput-newtag .add-btn::before {
     font-size: 1.4em;
     line-height: 1.5 !important;
@@ -412,7 +415,8 @@
     width: 100%;
     text-align: center;
     left: 0;
-    top: 0; }
+    top: 0;
+    text-indent: 0; }
 
 .xim-tagsinput-container-related .empty_state {
   text-align: center;

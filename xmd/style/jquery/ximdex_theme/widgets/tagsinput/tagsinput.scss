@@ -439,7 +439,7 @@
     background:$c_tag_ontology;
     font-size: 1.3em;
     line-height: 2.35 !important;
-    max-width: 1.5em;
+    max-width: 3.2rem;
   }
 }
 
@@ -512,11 +512,12 @@
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  height: 2.22em;
+  height: 2.29em;
   cursor: pointer;
   margin-right: -6px;
-  margin-top: -6px;
+  margin-top: -1px;
   border: 1px solid #ccc;
+  vertical-align: top;
 
 }
 
@@ -528,6 +529,8 @@
   margin-left: .4em;
   position: relative;
   @extend %add;
+  overflow: hidden;
+  text-indent: 4em;
   &::before{
     font-size: 1.4em;
     line-height: 1.5 !important;
@@ -536,6 +539,7 @@
     text-align: center;
     left: 0;
     top: 0;
+    text-indent: 0;
   }
 }
 
