@@ -39,6 +39,9 @@ class FormValidation {
         $idnode = $params["nodeid"];
         $inputName = $params["inputName"];
         $name=$params[$inputName];
+        if (!empty($params["process"]) && $params["process"] == "normalize") {
+            $name = self::normalizeName($name);
+        }
         $node = new Node($idnode);
         $names = $node->find("Name","idparent=%s",array($idnode),MONO);        
         $names = $names? $names: array();
@@ -82,6 +85,15 @@ class FormValidation {
                 return true;
         }
         return false;        
+    }
+
+    //This function should be a helper service
+    private static function normalizeName($name) {   
+        $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+        $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+        $decodedName = utf8_decode($name);
+        $decodedName = strtr($decodedName, utf8_decode($source), $target);
+        return str_replace(' ', '_', utf8_encode($decodedName));
     }
 }
 ?>
