@@ -100,6 +100,12 @@
 			}.bind(this));
 		},
 
+		reloadAction: function() {
+			this.content.load(this.url, function(data, textStatus, xhr) {
+				this.processAction();
+			}.bind(this));	
+		},
+
 		actionDoneCallback: function(result, form) {
     		$form = $(form);
     		
