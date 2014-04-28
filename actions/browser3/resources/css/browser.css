@@ -22,6 +22,21 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.selector_language li::before {
+  font-family: 'ximdex_icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle; }
+
+.selector_language li::before {
+  content: "\79"; }
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -290,13 +305,13 @@ button::-moz-focus-inner {
     position: relative; }
     .selector_language li:hover {
       color: #7bcabf; }
+    .selector_language li::before {
+      position: absolute;
+      left: 0; }
   .selector_language li:first-child {
     border-top: none; }
   .selector_language .selected {
     color: #7bcabf; }
-  .selector_language .selected::before {
-    position: absolute;
-    left: 0; }
   .selector_language::before {
     content: '';
     display: block;

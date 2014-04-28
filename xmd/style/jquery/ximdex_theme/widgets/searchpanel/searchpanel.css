@@ -117,7 +117,8 @@
     .dialog_advanced_search > .ui-widget-header > span {
       display: none; }
     .dialog_advanced_search > .ui-widget-header > a {
-      margin: 0; }
+      margin: 0;
+      right: 20px; }
     .dialog_advanced_search > .ui-widget-header .ui-dialog .ui-dialog-titlebar-close {
       margin-top: 0; }
   .dialog_advanced_search .advanced-search {
@@ -128,7 +129,10 @@
       background: #404444;
       height: 100%;
       padding: 1em 1.5em;
-      overflow: auto; }
+      overflow: auto;
+      position: absolute;
+      top: 0;
+      bottom: 0; }
       .dialog_advanced_search .xim-search-dialog .search_options h2, .dialog_advanced_search .xim-search-dialog .search_options h3 {
         color: rgba(255, 255, 255, 0.8);
         font-family: "Ubuntu Condensed";
@@ -196,7 +200,8 @@
         display: block; }
     .dialog_advanced_search .xim-search-dialog .results, .dialog_advanced_search .xim-search-dialog .simple_search {
       padding: 2em 1.5em;
-      position: relative; }
+      position: relative;
+      margin-left: 34%; }
       .dialog_advanced_search .xim-search-dialog .results .xim-listview-table, .dialog_advanced_search .xim-search-dialog .results tr, .dialog_advanced_search .xim-search-dialog .results tbody, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table, .dialog_advanced_search .xim-search-dialog .simple_search tr, .dialog_advanced_search .xim-search-dialog .simple_search tbody {
         float: left;
         width: 100%;
@@ -216,7 +221,8 @@
           background: #e1e1e1;
           /*border-left: none;
           border-top: none;*/
-          border-width: 0 0 1px 0; }
+          border-width: 0 1px 1px 1px;
+          border-right: 1px solid #d5dbde; }
       .dialog_advanced_search .xim-search-dialog .results .xim-listview-table, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table {
         padding: 0;
         margin: 0;
@@ -224,7 +230,8 @@
         .dialog_advanced_search .xim-search-dialog .results .xim-listview-table tr, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table tr {
           position: relative;
           border-style: solid;
-          padding: 1em 0; }
+          padding: 1em 0;
+          border-left: none; }
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table tr .xim-listview-actions-dropdown, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table tr .xim-listview-actions-dropdown {
             left: 5px; }
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table tr:first-child, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table tr:first-child {
@@ -247,6 +254,7 @@
               top: 0; }
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(2), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(2) {
             position: absolute;
+            text-align: right !important;
             left: 29.5em; }
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(3), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(3) {
             margin-left: 3.1em; }
@@ -261,7 +269,7 @@
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5) {
             clear: left;
             margin-left: 3.1em;
-            width: 93%; }
+            width: 87% !important; }
             .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5) span, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5) span {
               position: relative;
               text-overflow: ellipsis;
@@ -305,18 +313,19 @@
               opacity: 0; }
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(6), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(6) {
             margin-top: -2.6em;
-            float: right;
-            margin-right: .8em; }
+            float: left;
+            margin-left: 59%; }
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(7), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(7) {
             position: absolute;
             left: 29.5em;
             top: 2.18em;
             color: #69c3b6;
-            font-weight: bold; }
+            font-weight: bold;
+            text-align: right !important; }
           .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:last-child, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:last-child {
             margin-top: -1.3em;
-            float: right;
-            margin-right: .8em; }
+            float: left;
+            margin-left: 59%; }
         .dialog_advanced_search .xim-search-dialog .results .xim-listview-table .xim-listview-icon, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table .xim-listview-icon {
           height: 1.5em;
           margin: 0; }
@@ -330,7 +339,7 @@
         font-family: "Coustard"; }
     .dialog_advanced_search .xim-search-dialog .xim-listview-item:not(.xim-listview-selected):hover {
       border: none;
-      border-bottom: 1px solid #e3e7e9;
+      border-right: 1px solid #d5dbde;
       border-bottom: 1px solid #e3e7e9;
       border-top: 1px solid #d5dbde;
       background: #e1e1e1; }
