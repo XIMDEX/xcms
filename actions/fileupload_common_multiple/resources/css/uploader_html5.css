@@ -78,8 +78,6 @@
   border-bottom: 1px solid #e4e5e9;
   position: relative;
   z-index: 1; }
-  .xim-loader-file:hover {
-    background: #c4e7e2; }
   .xim-loader-file:last-child {
     border-bottom: none; }
   .xim-loader-file .row-item-column {
@@ -91,8 +89,15 @@
     padding: 0;
     cursor: pointer;
     word-wrap: break-word; }
+    .xim-loader-file .xim-loader-name input {
+      border: none;
+      background: none;
+      width: 98%;
+      color: inherit; }
+      .xim-loader-file .xim-loader-name input:hover {
+        background: white; }
   .xim-loader-file .xim-loader-size {
-    width: 20%; }
+    width: 11%; }
   .xim-loader-file select {
     background: none;
     padding: 0;
@@ -103,8 +108,10 @@
     vertical-align: middle; }
   .xim-loader-file.xim-loader-file-success {
     opacity: 0.5; }
+  .xim-loader-file.xim-loader-file-warning {
+    border: 1px solid #e6d517; }
   .xim-loader-file.xim-loader-file-error {
-    border: 1px solid #cc3333; }
+    border: 1px solid #b9593c; }
   .xim-loader-file button {
     float: right;
     margin: -4px 0 0 0; }
@@ -119,12 +126,23 @@
     text-indent: -99999px; }
 
 .xim-loader-error {
-  color: #cc3333; }
+  color: #b9593c; }
+
+.xim-loader-warning {
+  color: #e6d517;
+  width: 27%;
+  white-space: nowrap;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+  vertical-align: baseline; }
 
 .img-preview {
-  max-width: 65px;
+  max-width: 29%;
   vertical-align: middle;
-  margin-right: 1em; }
+  max-height: 31px; }
+
+.xim-loader-file-image .xim-loader-name input {
+  width: 66%; }
 
 .xim-loader-list-actions {
   padding: .5em;
@@ -181,6 +199,21 @@ input.xim-uploader {
   border-radius: 2px;
   padding: .1em .3em;
   margin-left: .5em; }
+
+.xim-uploader-container.drag-in {
+  opacity: 0.2;
+  border: 4px dashed #7e7c7c;
+  position: relative;
+  transition: all 1s; }
+  .xim-uploader-container.drag-in:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: 0;
+    content: "+";
+    display: block;
+    font-size: 200px;
+    color: #7e7c7c; }
 
 @-webkit-keyframes spin {
   100% {

@@ -584,6 +584,9 @@ class BaseIO {
 			$userid = XSession::get('userID');
 		}
 
+		// upper all the indexes in data and the nodetypename.		
+		$data = $this->dataToUpper($data);
+
 		if (empty($data['NODETYPENAME'])) {
 			return ERROR_INCORRECT_DATA;
 		}
@@ -591,17 +594,19 @@ class BaseIO {
 		if (empty($data['CLASS'])) {
 			$data['CLASS'] = $this->_infereNodeTypeClass($data['NODETYPENAME']);
 			if (empty($data['CLASS'])) {
+				XMD_Log::error(_('Nodetype could not be infered'));
+				$this->messages->add(_('Nodetype could not be infered'), MSG_TYPE_ERROR);
 				return ERROR_INCORRECT_DATA;
 			}
 		}
-		$nodeTypeClass = $data['CLASS'];
+
+		$nodeTypeClass = strtoupper($data['CLASS']);
+		$nodeTypeName = strtoupper($data['NODETYPENAME']);
 		if (array_key_exists($nodeTypeClass, $metaTypesArray)) {
 			$metaType = $metaTypesArray[$nodeTypeClass];
 		}
 
-		// upper all the indexes in data and the nodetypename.		
-		$data = $this->dataToUpper($data);
-		$nodeTypeName = strtoupper($data['NODETYPENAME']);
+		
 
 		if (!($this->_checkPermissions($nodeTypeName, $userid, UPDATE) || $this->_checkName($data))) {
 			return ERROR_NO_PERMISSIONS;
@@ -618,21 +623,6 @@ class BaseIO {
 			return ERROR_INCORRECT_DATA;
 		}
 		$node = new Node($data['ID']);
-
-		if (empty($data['CLASS'])) {
-			$data['CLASS'] = $this->_infereNodeTypeClass($data['NODETYPENAME']);
-			if (empty($data['CLASS'])) {
-				XMD_Log::error(_('Nodetype could not be infered'));
-				$this->messages->add(_('Nodetype could not be infered'), MSG_TYPE_ERROR);
-				return ERROR_INCORRECT_DATA;
-			}
-		}
-
-		$nodeTypeClass = strtoupper($data['CLASS']);
-		$nodeTypeName = strtoupper($data['NODETYPENAME']);
-		if (array_key_exists($nodeTypeClass, $metaTypesArray)) {
-			$metaType = $metaTypesArray[$nodeTypeClass];
-		}
 
 		switch (strtoupper($metaType)) {
 			/* folder nodes */
@@ -663,6 +653,7 @@ class BaseIO {
                         }    
                         $data['PATH'] = $paths[0];
                         if (is_file($data['PATH'])) {
+                            xdebug_break();
                             $node->setContent(FsUtils::file_get_contents($data['PATH']));
                         }    
                         unset($data['CHILDRENS']);

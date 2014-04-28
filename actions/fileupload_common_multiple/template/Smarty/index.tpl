@@ -22,49 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-
-<form name="f_m_u" ng-controller="XUploaderCtrl" xim-node-id="{$nodeid}" ng-cloak>
-	<div class="action_header">
-		<h2>{$lbl_anadir}</h2>
-		
-	</div>
-
-	<div class="action_content uploader {if $type_node == "XmlContainer"}xml-uploader{/if}">
-		<fieldset>
-	{* for the XML massive upload *} 
-	{if $type_node == "XmlContainer"}
-			<div class="xml-properties">
-			<h3>{t}Please, select the schema to follow and a language for your documents before uploading them{/t}.</h3>	
-			<div class="col1-2">
-				
-					<select name="id_schema" id="schemaid" class="cajaxg validable not_empty extra-param">
-						<option value="">&laquo;{t}Select schema{/t}&raquo;</option>
-					{foreach from=$schemas item=schema}
-						<option value="{$schema.idSchema}">{$schema.Name}</option>
-					{/foreach}
-					</select>
-				</div>
-				<div class="col1-2">
-					<select name="id_language" id="id_language" class="cajaxg validable not_empty extra-param">
-						<option value="">&laquo;{t}Select language{/t}&raquo;</option>
-					{foreach from=$languages item=language}
-						<option value="{$language.IdLanguage}">{$language.Name|gettext}</option>		
-					{/foreach}	
-					</select>
-				</div>
-	</div>
-	{/if}
-			<uploader {if ($filter)}filter="{$filter}"{/if} is_structured="{$is_structured}"/>
-		</fieldset>
-	</div>
-<fieldset class="buttons-form positioned_btn">
-	<button class="button_main_action"
-		xim-button
-		xim-loading="uploader.flow.isUploading()"
-		xim-label="'submitLabel'"
-		xim-progress="uploader.flow.progress()"
-		xim-disabled="!uploader.flow.files.length"
-		ng-click="uploadFiles(uploader.flow)">
-	</button>
-</fieldset>	
-</form>
+<xim-uploader 
+	xim-uploader-options='{$uploaderOptions}'
+	xim-node-id="{$nodeid}">
+</xim-uploader>

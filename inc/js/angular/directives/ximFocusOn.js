@@ -1,4 +1,4 @@
-{**
+ /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,40 +21,14 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
-
-{if (null != $files_nok.name)}
-<div class="action_header">
-<h2>{t}Not added files{/t}</h2>
-	
-	</div>
-	<div class="action_content">
-<fieldset>
-
-
-	 <ul class="files_nok">
-		  {section name=i loop=$files_nok.name}
-		  <li><strong>{$files_nok.name[i]}:</strong> {$files_nok.msg[i]}</li>
-		  {/section}
-	 </ul>
-	 
-</fieldset>
-</div>
-{/if}
-
-{if (null != $files_ok.name)}
-<div class="action_header">
-<h2>{t}Added files{/t}</h2>
-	
-	</div>
-	<div class="action_content">
-
-<fieldset>
-	 <ul class="files_ok">
-		{section name=i loop=$files_ok.name}
-		<li><strong>{$files_ok.name[i]}:</strong> {$files_ok.msg[i]}</li>
-		{/section}
-	 </ul>
-</fieldset>
-</div>
-{/if}
+ */
+angular.module('ximdex.common.directive')
+	.directive('ximFocusOn', function() {
+	   return function(scope, elem, attrs) {
+	      console.log("Linking focusName")
+	      scope.$on(attrs.ximFocusOn, function(e) {
+	          console.log("ON ON ON")
+	          elem[0].focus();
+	      });
+	   };
+	});

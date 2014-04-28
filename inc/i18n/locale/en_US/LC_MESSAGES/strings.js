@@ -19,6 +19,19 @@ X.i18nStrings = {
 			}
 		}
 	},
+	"widgets": {
+		"fileUploader": {
+			"upload": "Upload",
+			"files": "file(s)",
+			"invalid_files": "file(s) wont be uploaded",
+			"validation": {
+				"file_exists": "A file already exist with this name:",
+				"overwrite": "Overwrite",
+				"cancel": "Cancel",
+				"rename": "Rename"
+			}
+		}
+	},
 	"xlyre": {
 		"actions": {
 			"managedataset": {

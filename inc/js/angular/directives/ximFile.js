@@ -23,30 +23,60 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-    .directive('ximFile', ['$window', function ($window) {
+    .directive('ximFile', ['$timeout', function ($timeout) {
         return {
             replace: true,
             scope: {
             	file: '=ximModel',
             	metaFields: '=ximMetaFields',
+                metaModel: '=ximMetaModel',
             	parentId: '=ximNodeId'
             },
             restrict: 'E',
             templateUrl : 'inc/js/angular/templates/ximFile.html',
             controller: ['$scope', '$element', '$attrs', function($scope, $element, $attrs){
+            	$scope.file.ximFilename = $scope.file.name;
+                
+                if ($scope.metaModel) {
+                    $scope.file.meta = angular.copy($scope.metaModel);
+                }
+                $scope.$watch('metaModel', function(newVal, oldVal){
+                    for (field in $scope.metaForm) {
+                        if ($scope.metaForm[field].$pristine) {
+                            $scope.file.meta[field] = newVal[field];
+                        }
+                    } 
+                }, true);
+                
+                $scope.file.meta = $scope.file.meta || {};
             	
-            	$scope.$watch('fileForm.$error.required', function(requireError){
-            		$scope.file.invalid = (!!requireError) ? true : false;
+                $scope.$watch('fileForm.$invalid', function(invalid){
+                    console.log("required: ", invalid);
+
+                    $scope.file.invalid = (invalid) ? true : false;
             		//Prevent flow.js from uploading invalid files
-            		$scope.file.paused = (!!requireError) ? true : false;
+            		$scope.file.paused = (invalid) ? true : false;
+            	});
+            	
+                $scope.$watch('file.ximFilename', function(name){
+                    $scope.file.overwrite = false;
             	});
 
-            	$scope.$watch('file.form.$error.unique', function(uniqueError){
-            		$scope.file.overwrite = (uniqueError) ? true : false;
-            	});
-            }],
-            link: function postLink(scope, element, attrs) {
-            		    
-            }
+
+                $scope.addInputForm = function(key, scope){
+                    $scope.metaForm = $scope.metaForm || {}
+                    $timeout(function(){ $scope.metaForm[key] = scope[key]; })
+                };
+                
+                $scope.overwriteFile = function(){
+                    $scope.file.overwrite = true;
+                    $scope.fileForm.name.$setValidity('unique', true)
+                }
+                
+                $scope.renameFile = function(){
+                    $scope.$broadcast('focusOnName');
+                }
+
+            }]
         }
     }]);

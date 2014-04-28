@@ -68,54 +68,62 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		/** ********* Preparing view ************ */
 		//Filter and button tag according to type of upload file
+		
 		switch($type_node)  {
 			case 'CssFolder':
 				$lbl_anadir = _(' Add style sheets');
-				$filter = ".*css";
-			 break;
+				$allowedMimes = 'text/css';
+				$allowedExtensions = '.css';
+			 	break;
 			case 'ImagesFolder':
 				$lbl_anadir = _(' Add images ');
-				$filter = ".*jpeg,.*jpg,.*gif,.*png,.*ico";
-			break;
+				$allowedMimes = 'image/*';
+				$allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg';
+				break;
 			case 'TemplateViewFolder':
 				$lbl_anadir = _(' Add schemas ');
-				$filter = ".*xml";
-			break;
+				$allowedExtensions = '.xml';
+				$allowedMimes = 'text/xml';
+				break;
 			case 'TemplatesFolder':
 				$lbl_anadir = _(' Add templates ');
-				$filter = ".*xml,.*xsl";
-			break;
+				$allowedExtensions = '.xml, .xsl';
+				$allowedMimes = 'text/xml';
+				break;
 			case 'ImportFolder':
 				$lbl_anadir = _(' Add HTML files ');
-				$filter = ".*ht,.*htm,.*html,.*xhtml,.*plain,.*txt"; 
-			break;
+				$allowedExtensions = 'ht, .htm, .html, .xhtml, .plain, .txt';
+				$allowedMimes = 'text/xml, text/html, text/plain, text/txt';
+				break;
 			case 'XmlContainer':
 				$lbl_anadir = _(' Add XML files ');
 				$is_structured=true;
-				$filter = ".*xml";	
-			break;
+				$allowedExtensions = '.xml';
+				$allowedMimes = 'text/xml';	
+				break;
 			/*case 'CommonFolder':
 				$lbl_anadir = _(' Add common files ');
-				$filter = ".*ht,.*htm,.*html,.*xhtml,.*plain,.*txt,.*zip"; 
-			break;*/
+				$allowedExtensions = array( 'ht','htm','html','xhtml','plain','txt','zip'); 
+				$allowedMimes = array( 'ht','htm','html','xhtml','plain','txt','zip'); 
+				break;*/
 			default:
 				$lbl_anadir = _(' Add files');
-				$filter = "all";
 				break;
 		};
 
 		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
 		$this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css');
+		$this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css');
 
-		$values = array (
+		$uploaderOptions = array (
 			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			"lbl_anadir" => $lbl_anadir,
 			'messages' => $this->messages->messages,
-			'go_method' => 'showUploadResult',
 			'nodeid' => $idNode,
 			'actionid' => $this->request->getParam('actionid'),
 			'type' => $type,
-			'filter' => $filter,
+			'allowedMimes' => $allowedMimes,
+			'allowedExtensions' => $allowedExtensions,
 			'type_node'=>$type_node,
 			'is_structured' => $is_structured
 		);
@@ -142,18 +150,42 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			if (!is_null($schemas)) {
 				foreach ($schemas as $idSchema) {
 					$schemaNode = new Node($idSchema);
-					$schemaArray[] = array('idSchema' => $idSchema, 'Name' => $schemaNode->get('Name'));
+					$schemaArray[] = array('id' => $idSchema, 'name' => $schemaNode->get('Name'));
 				}
 			}
 
 			$language = new Language();
-			$languages = $language->getLanguagesForNode($idNode);	
-
-			$values["schemas"]=$schemaArray;
-			$values["languages"]=$languages;
+			$languages = $language->getLanguagesForNode($idNode);
+			$languageArray = array();
+			foreach ($languages as $lang) {
+				$languageArray[] = array('id' => $lang['IdLanguage'], 'name' => $lang['Name']);
+			}	
+			$uploaderOptions['globalMetaOnly'] = true;
+			$uploaderOptions['metaFields'] = array(
+				"schema" => array(
+					"type" => "select",
+					"options" => $schemaArray,
+					"label" => _("Select a schema"),
+					"required" => true
+				),
+				"language" => array(
+					"type" => "select",
+					"options" => $languageArray,
+					"label" => _("Select a language"),
+					"required" => true
+				)
+			);
 		}
-
+		$values = array (
+			'nodeid' => $idNode,
+			'uploaderOptions' => json_encode($uploaderOptions)
+		);
 		$this->render($values, 'index', 'default-3.0.tpl');
+   	}
+
+   	function clearChunks() {
+   		$uploader = new \Flow\Uploader();
+   		$uploader->pruneChunks(XIMDEX_ROOT_PATH . '/data/tmp/chunks');	
    	}
 
    	function _saveFile($path) {
@@ -242,17 +274,9 @@ class Action_fileupload_common_multiple extends ActionAbstract {
     		return $retval;
 	}
 
-    private function normalizeName($name) {   
-        $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-        $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-        $decodedName = utf8_decode($name);
-        $decodedName = strtr($decodedName, utf8_decode($source), $target);
-        return str_replace(' ', '_', utf8_encode($decodedName));
-    }
-
 	//Creating a node according to name and file path
-	private function _createNode($file, $idNode,  $type, $overwrite) {
-        //xdebug_break();
+	private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
+        xdebug_break();
         $normalizedName = $this->normalizeName($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
@@ -291,10 +315,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				//To upload xml content
 				if ($node->nodeType->get("Name")=="XmlRootFolder"){	
 					$newNodeName = str_replace(".xml","",$normalizedName);
-					$idSchema = $this->request->getParam("id_schema");
-					$idSchema = $idSchema[0];
-					$idLanguage = $this->request->getParam("id_language");
-					$idLanguage = $idLanguage[0];
 					$data = array(
 		          		'NODETYPENAME' => "XmlContainer",
 		            		'NAME' => $newNodeName,
@@ -302,7 +322,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			        	'CHILDRENS' => array(
 	                		array(
 		                    	'NODETYPENAME' => 'VISUALTEMPLATE',
-		                    	'ID' => $idSchema
+		                    	'ID' => $metadata->schema
 		                	)
 	            		)
 		            );
@@ -317,8 +337,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				                'NODETYPE' => $documentNodeType->get('IdNodeType'),
 				                'PARENTID' => $result,
 				                'CHILDRENS' => array(
-				                    array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema),
-				                    array('NODETYPENAME' => 'LANGUAGE', 'ID' => $idLanguage),
+				                    array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $metadata->schema),
+				                    array('NODETYPENAME' => 'LANGUAGE', 'ID' => $metadata->language),
                 				)
 				       );
 					
@@ -368,20 +388,13 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		return $result;
 	}
 
-  	function checkname() {
-		$idNode = (int) $this->request->getParam("nodeid");
-	 	$name = $this->request->getParam("name");
-        $normalizedName = $this->normalizeName($name);
 
-		$node = new Node($idNode);
-		$estimatedNode = $node->GetChildByName($normalizedName);
-
-   		if($estimatedNode > 0 ) {
-			$retval = $this->_setRest( _('File already exists.') );
-   		}else {
-			$retval = $this->_setRest( _('File does not exist.'), 'ok');
-    		}
-		die(json_encode($retval));
+  	private function normalizeName($name) {   
+  	    $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+  	    $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+  	    $decodedName = utf8_decode($name);
+  	    $decodedName = strtr($decodedName, utf8_decode($source), $target);
+  	    return str_replace(' ', '_', utf8_encode($decodedName));
   	}
 }
 ?>

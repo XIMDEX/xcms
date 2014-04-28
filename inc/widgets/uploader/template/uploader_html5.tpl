@@ -28,6 +28,7 @@
   flow-name="uploader.flow" 
   flow-file-added="$parent.fileAdded($event, $file)"
   flow-file-error="$parent.fileError($file, $message)"
+  flow-file-success="$parent.fileSuccess($file, $message)"
   flow-complete="$parent.uploadComplete()"
   flow-drop
   ng-cloak>
@@ -42,22 +43,7 @@
       <li ng-repeat="file in $flow.files">
         <xim-file xim-model="file" xim-node-id="{$nodeid}"></xim-file>
       </li>
-      <!-- <li ng-repeat="file in $flow.files" class="xim-loader-file row-item" ng-class="{literal}{'xim-loader-file-success': file.isComplete() && !file.error, 'xim-loader-file-error': file.error}{/literal}" ng-form>
-          <label class="xim-loader-name">
-            <img class="img-preview" flow-img="file" ng-if="file.isImage"/>
-            <span contenteditable="true" ng-model="file.meta.name" required>#/file.name/#</span>
-          </label>
-          <span class="xim-loader-size">#/file.size | xBytes/#</span>
-          <span class="xim-loader-size" ng-show="file.isProcessing">Processing</span>
-          <span class="xim-loader-error" ng-show="file.error && file.errorMsg && !file.isUploading()">#/file.errorMsg/#</span>
-          <button type="button" class="delete-button icon btn-unlabel-rounded" ng-click="file.cancel()" ng-hide="file.isComplete() && !file.error">
-          </button>
-          <button type="button" class="retry-button icon btn-unlabel-rounded" ng-click="file.retry()" ng-hide="!file.error">
-          </button>
-          <div class="xim-loader-progress" ng-style="{literal}{width: file.progress()*100+'%' }{/literal}" ng-show="file.isUploading()">#/file.progress()*100/#%</div>
-      </li> -->
     </ul>
-
   </div>
     <ul class="xim-loader-list-actions" >
       <a href="#" class="xim-uploader-selected btn-labeled icon btn">

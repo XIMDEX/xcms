@@ -47,7 +47,7 @@ angular.module('ximdex.main.controller')
     		flow.opts.query = function(file, chunk) {
                 return {
                     meta: angular.toJson(file.meta), 
-                    overwrite: file.nameExist || false,
+                    overwrite: file.overwrite || false,
                     ximFilename: file.ximFilename
                 }
             };
@@ -60,6 +60,12 @@ angular.module('ximdex.main.controller')
             var message = angular.fromJson(jsonMessage);
             if (message && message.msg) {
                 file.errorMsg = message.msg;
+            }  
+        }
+        $scope.fileSuccess= function(file, jsonMessage) {
+            var message = angular.fromJson(jsonMessage);
+            if (message && message.msg) {
+                file.successMsg = message.msg;
             }  
         }
 
