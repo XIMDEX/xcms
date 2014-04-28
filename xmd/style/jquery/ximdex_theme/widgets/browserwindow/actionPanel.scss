@@ -77,6 +77,8 @@ input, select, textarea {
 	@include radius(3px);
 	 background:#fff;
 }
+
+
 input:hover, select:hover {
 	@include boxshadow( 0 0 4px $s_grey);
 

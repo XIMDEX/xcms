@@ -58,6 +58,7 @@
 
 		>a{
 			margin: 0;
+			right: 20px;
 		}
 
 		.ui-dialog .ui-dialog-titlebar-close{
@@ -80,6 +81,9 @@
 		height: 100%;
 		padding: 1em 1.5em;
 		overflow: auto;
+		position: absolute;
+		top: 0;
+		bottom: 0;
 
 		h2, h3{
 			color: rgba(255,255,255,.8);
@@ -186,6 +190,7 @@
 		@extend %col2_3;
 		padding: 2em 1.5em;
 		position: relative;
+		margin-left: 34%;
 		.xim-listview-table, tr, tbody{
 			float: left;
 			width: 100%;
@@ -212,7 +217,9 @@
 				background: $c-grey-ppp;
 				/*border-left: none;
 				border-top: none;*/
-				border-width: 0 0 1px 0;
+				border-width: 0 1px 1px 1px;
+				border-right: 1px solid darken($c_background, 5%);
+
 			}
 		}
 
@@ -225,6 +232,7 @@
 				position: relative;
 				border-style: solid;
 				padding: 1em 0;
+				border-left: none;
 
 				.xim-listview-actions-dropdown {
 					left: 5px;
@@ -262,6 +270,7 @@
 
 				&:nth-child(2){
 					position: absolute;
+					text-align: right !important;
 					left: 29.5em;
 				}
 				&:nth-child(3){
@@ -284,7 +293,7 @@
 				&:nth-child(5){
 					clear: left;
 					margin-left: 3.1em;
-					width: 93%;
+					width: 87% !important;
 
 					span{
 					position: relative;
@@ -343,8 +352,8 @@
 
 				&:nth-child(6){
 					margin-top: -2.6em;
-					float: right;
-					margin-right: .8em;
+					float: left;
+					margin-left: 59%;
 				}
 
 				&:nth-child(7){
@@ -353,11 +362,12 @@
 					top: 2.18em;
 					color: darken($c_mainlight, 5%);
 					font-weight: bold;
+					text-align: right !important;
 				}
 				&:last-child{
 					margin-top: -1.3em;
-					float: right;
-					margin-right: .8em;
+					float: left;
+					margin-left: 59%;
 
 				}
 			}
@@ -393,7 +403,7 @@
 	.xim-listview-item:not(.xim-listview-selected):hover{
 		//background: none;
 		border: none;
-		border-bottom: 1px solid $c_background;
+		border-right: 1px solid darken($c_background, 5%);
 		border-bottom: 1px solid $c_background;
 		border-top: 1px solid darken($c_background, 5%);
 		background: $c-grey-ppp;

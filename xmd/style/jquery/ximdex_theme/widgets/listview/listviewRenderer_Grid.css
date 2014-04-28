@@ -77,23 +77,15 @@ div.xim-listview-table-container div.t_fixed_header div.body{
     width: 100%; }
   .xim-listview-table-container .xim-listview-table {
     width: 100%; }
-  .xim-listview-table-container .xim-listview-item {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: row wrap;
-    justify-content: space-around; }
-    .xim-listview-table-container .xim-listview-item th {
-      width: 20% !important;
-      text-transform: uppercase;
-      padding: .5em 1em;
-      font-weight: bold;
-      font-size: 1.5rem;
-      background: #7bcabf;
-      color: #d6efeb; }
-      .xim-listview-table-container .xim-listview-item th:first-child {
-        width: 30px !important; }
+  .xim-listview-table-container .xim-listview-item th {
+    width: 20% !important;
+    text-transform: uppercase;
+    padding: .5em 1em;
+    font-weight: bold;
+    font-size: 1.5rem;
+    background: #7bcabf;
+    color: #d6efeb; }
+    .xim-listview-table-container .xim-listview-item th:first-child {
+      width: 30px !important; }
   .xim-listview-table-container .xim-listview-grid-view {
     width: 20% !important; }
