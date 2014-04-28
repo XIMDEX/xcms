@@ -112,17 +112,17 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 		$user = $this->request->getParam("user");
 		$pass = $this->request->getParam("pass");
 		$values = array();
-		if ($idbManager->connect($host, $port, $user, $pass, $name)){
+		$idbManager->connect($host, $port, $user, $pass);
+		if ($idbManager->existDataBase($name)){
 			$idbManager->deleteDataBase($name);
-			$idbManager->reconectDataBase();
+			
 		}
 		
 		if ($idbManager->connect($host, $port, $user, $pass)){
-			$result = $idbManager->createDataBase($name);
-			$idbManager->reconectDataBase();
+			$result = $idbManager->createDataBase($name);			
 			$idbManager->connect($host, $port, $user, $pass, $name);
 
-			$result = $idbManager->loadData();
+			$result = $idbManager->loadData($host, $port, $user, $pass, $name);			
 			if ($result){
 				$values["success"] = true;				
 			}else{

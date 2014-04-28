@@ -63,8 +63,7 @@ class InstallDataBaseManager extends InstallManager{
 		if($GLOBALS[self::DB_ARRAY_KEY][$myPid]) {
 			$this->dbConnection = $GLOBALS[self::DB_ARRAY_KEY][$myPid];
 			$result = true;
-		} else {			
-			
+		} else {
 			$this->dbConnection = new mysqli($host,$user,$pass,$name,$port);
 			$GLOBALS[self::DB_ARRAY_KEY][$myPid] = $this->dbConnection;
 			if (!$this->dbConnection->connect_error){
@@ -102,7 +101,10 @@ class InstallDataBaseManager extends InstallManager{
 	 * Forcing to reconnect to database next time
 	 */	
 	function reconectDataBase(){
+		if ($this->dbConnection)
+			$this->dbConnection->close();
 		$GLOBALS['db_connection'][getmypid()] = null;
+		
 	}
 
 
@@ -116,9 +118,9 @@ class InstallDataBaseManager extends InstallManager{
 
 	public function createDataBase($name){
 		$result = false;
-		error_log("aaaaaa");
 		if($this->dbConnection){
-			$query = sprintf("create database %s", $name);
+			var_dump($this->dbConnection);
+			$query = "create database '$name'"	;
 			$result = $this->dbConnection->query($query);
 			if ($result === TRUE)
 				error_log("Suc");
@@ -143,16 +145,25 @@ class InstallDataBaseManager extends InstallManager{
 	}
 
 
-	public function loadData(){
+	public function loadData($host, $port, $user, $pass,  $name){
 		$command = 'mysql'
-        . ' --host=' . $this->host
-        . ' --user=' . $this->user
-        . ' --password=' . $this->pass
-        . ' --database=' . $this->name
-        . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH.self::SCRIPT_PATH;
+        . ' --host=' . $host
+        . ' --user=' . $user
+        . ' --port=' . $port
+        . ' --password=' . $pass
+        . ' --database=' . $name
+        . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH.self::SCRIPT_PATH.'"';
         error_log($command);
         //$result = shell_exec($command . '/shellexec.sql');
         $result = shell_exec($command);
+	}
+
+	public function existDataBase($name){
+		if($this->dbConnection){
+			$query = sprintf("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = %s", $name);
+			$result = $this->dbConnection->query($query);
+			var_dump($result);		
+		}
 	}
 
 	
