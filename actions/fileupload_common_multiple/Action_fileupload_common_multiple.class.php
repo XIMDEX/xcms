@@ -26,6 +26,14 @@
 
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/ConfigInterface.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Config.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Exception.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/File.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/RequestInterface.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Request.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Uploader.php');
+// require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Autoloader.php');
 
 
 class Action_fileupload_common_multiple extends ActionAbstract {
@@ -148,14 +156,39 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$this->render($values, 'index', 'default-3.0.tpl');
    	}
 
-	function uploadFile() {
-		$idNode = $this->request->getParam('nodeid');
-  	  	$type = $this->request->getParam('type');
-   		$overwrite = $_POST['overwrite'];
-	  	$retval = "";
-	  	xdebug_break();
-	  	if(count($_FILES)>0) { 
+   	function _saveFile($path) {
+        $config = new \Flow\Config(array(
+            'tempDir' => XIMDEX_ROOT_PATH . '/data/tmp/chunks'
+        ));
+        
+        $file = new \Flow\File($config);
+ 
+        if ($file->validateChunk()) {
+            $file->saveChunk();
+        } else {
+            // error, invalid chunk upload request, retry
+            header("HTTP/1.1 400 Bad Request");
+            return false;
+        }
+        
+        if ($file->validateFile() && $file->save($path)) {
+            return true;
+        } else {
+            return false;
+        }	
+   	}
+
+	function uploadFlowFile() {
+		xdebug_break();
+		$path = XIMDEX_ROOT_PATH . '/data/tmp/files/' . $_POST['flowIdentifier'];
+		
+		if ($this->_saveFile($path)) {
+			$idNode = $this->request->getParam('nodeid');
+	  	  	$type = $this->request->getParam('type');
+	  	  	$metadata = json_decode($this->request->getParam('meta'));
+	   		$overwrite = ($_POST['overwrite'] == 'true') ? ture : false;
 			$file = $_FILES['file'];
+			$file['tmp_name'] = $path;
 			if (!empty($_POST['ximFilename']))
 			{
 				$file['name'] = $_POST['ximFilename'];
@@ -164,34 +197,17 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			{
 				$file['name'] = $_POST['flowFilename'];
 			}
-		   	if(null == $file || 0 == $file["size"]) {
-    			$retval  = $this->_setRest(_("Unexpected error while uploading file ").$file["name"]);
-    		} else {
-    			$retval = $this->_createNode($file, $idNode, $type, $overwrite);
-    		}
-	   	}
-	   	
-        $this->sendJSON($retval);
-   	}
+			$result = $this->_createNode($file, $idNode, $type, $metadata, $overwrite);
+		   	if (file_exists($path)) {
+		   	    unlink($path);
+		   	}
+		   	$this->sendJSON($result);
 
-	public function getpreview() { //Old browser image preview fallback. Not being used now
-		$up = $this->request->getParam("up");
-      	$base64 = $this->request->getParam("base64");
-		$headers = getallheaders();
-	   	$headers = array_change_key_case($headers, CASE_UPPER);
-	   	if($up == "true") {
-	   	 	if($base64 == "true") {
-	   	 		$content = file_get_contents('php://input');
-	   	 	}
-	   	 	else {
-	   	 		$content = base64_encode(file_get_contents('php://input'));
-	   	 	}
-	   	 	$retval = array("data" => "data:".$headers["XIM-TYPE"].";base64,".$content,"status" => "ok");
-	    		die(json_encode($retval));
-	   	}
-	   	$retval = array("data" => "","status" => "nok");
-		die(json_encode($retval));
-	}
+		} else {
+			return false;
+		}
+		
+   	}
 
     private function _checkExistence($file, $idNode) {
 
