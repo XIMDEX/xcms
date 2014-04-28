@@ -133,9 +133,10 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/directives/xtagsSuggested.js');
 		$this->addJs('/inc/js/angular/directives/contenteditable.js');
 		$this->addJs('/inc/js/angular/directives/ximFile.js');
+		$this->addJs('/inc/js/angular/directives/ximUploader.js');
+		$this->addJs('/inc/js/angular/directives/ximFocusOn.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
-		$this->addJs('/inc/js/angular/controllers/XUploaderCtrl.js');
 		$this->addActionJs('XMainCtrl.js');
 		$this->addActionJs('controller.js');
 
@@ -1164,11 +1165,19 @@ class Action_browser3 extends ActionAbstract {
 	 * Launch a validation from the params values.
 	 */
 	public function validation(){
-            $method = $this->request->getParam('validationMethod');
-            if(method_exists("FormValidation", $method)){
-                FormValidation::$method($this->request->getRequests());
-            }
-            die("false");
+        $request = $this->request->getRequests();
+        $method = $this->request->getParam('validationMethod');
+        if (empty($method)) {
+	   		$request_content = file_get_contents("php://input");
+			$request = (array) json_decode($request_content);
+	   		if (array_key_exists('validationMethod', $request)){
+	   			$method = $request['validationMethod'];
+	   		}
+        }
+        if(method_exists("FormValidation", $method)){
+            FormValidation::$method($request);
+        }
+        die("false");
 	}
 	// ----- Nodes contextual menus -----
 
