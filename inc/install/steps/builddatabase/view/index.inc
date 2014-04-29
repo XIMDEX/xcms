@@ -25,19 +25,19 @@
  */
 ?>
 
-<form method="post"  ng-controller="InstallDatabaseController" ng-cloak  ng-submit="processForm()">
-    <input type="hidden" name="method" value="<?php echo $goMethod ?>">
+<form method="post"  ng-controller="InstallDatabaseController" ng-cloak  >
+    <input type="hidden" name="method" value="<?php echo $goMethod ?>">    
 	<h2>Installing DataBase</h2>
-
-	<p class="errors" ng-show="error">{{error}}</p>
+	<div ng-show="!installed">
+	<p class="errors" ng-show="genericErrors">{{genericErrors}}</p>
 
 	<div class="form_item"  ng-class="{success:hostCheck==true}">
 		<label  for="db_server">Host</label>
 		<input ng-model="host" type="text" name="host" id="db_server" value="{{host}}" required />
 	</div>
-	<div class="form_item" ng-hide="host=='localhost'" ng-class="{success:hostCheck==true}">
+	<div class="form_item" ng-class="{success:hostCheck==true}">
 		<label for="db_port" >Port</label>
-		<input ng-model="port"  type="text" name="port" id="db_port" value="{{port}}" required />
+		<input ng-model="port"  type="text" name="port" id="db_port" value="{{port}}" />
 	</div>
 
 	<div class="form_item">
@@ -48,17 +48,22 @@
 	<div class="form_item">
 		<label for="db_pass">Database Admin Password</label>
 		<input ng-model="root_pass" required ng- type="password" name="root_pass" id="db_pass" placeholder="Insert your admin user password here" />
+		<p class="errors" ng-show="loginErrors">{{loginErrors}}</p>
 	</div>
 
 	<div class="form_item  form_item--dbname full-width">
 		<label for="db_name">Database name</label>
 		<input ng-model="name" required type="text" name="name" id="db_name" value="ximdex" />
+		<p class="errors" ng-show="dbErrors">{{dbErrors}}</p>
 	</div>
 
-	<button class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-style="slide-up" xim-state="loading">Install database</button>
+	<button ng-hide="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-
+	style="slide-up" xim-state="loading" ng-click="processForm()">Install Database</button>
 	
+	<button ng-show="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-style="slide-up" xim-state="loadingOverwrite" ng-click="installDataBase()">Overwrite database</button>
+	</div>
 	<div ng-show="installed">
-	<p>Who will access to Ximdex DataBase?. Advice you against using root user. </p>
+	<p>Who will access to Ximdex DataBase? Warn you against using root user. </p>
 	<div class="form_item">
 		<label for="db_user">Database user</label>
 		<input ng-model="user" type="text" name="user" id="db_user" value="ximdex_user " />

@@ -29,7 +29,9 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     $scope.submit = false;
     $scope.root_user="root";
     $scope.name="ximdex";
-
+    $scope.installed=false;
+    $scope.overwrite = false;
+    
     installerService.sendAction("checkHost").then(function(response) {
         if (response.data.success){
             $scope.host=response.data.host;
@@ -40,7 +42,8 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     });
 
     $scope.processForm = function(){
-        $scope.error="";
+        $scope.genericErrors="";
+        $scope.dbErrors="";
         $scope.loading = true;
         var index = 0;
         $scope.checkRootUser();
@@ -58,7 +61,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
 
         }else{
             $scope.loading = false;
-            $scope.error = response.data.errors;
+            $scope.genericErrors = response.data.errors;
         }
 
     });
@@ -72,29 +75,35 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
         params += "&name="+$scope.name;
         installerService.sendAction("checkExistDataBase",params).then(function(response) {        
         if (response.data.success){
-            $scope.installDataBase();
+            $scope.installDataBase();            
         }else{
-            $scope.error = $scope.name+" database already exists";
+            $scope.dbErrors = $scope.name+" database already exists. Overwrite it?";
+            $scope.overwrite = true;
             $scope.loading=false;
         }
      });
     };
 
     $scope.installDataBase = function(){
+        if ($scope.overwrite)
+            $scope.loadingOverwrite = true;
         var params = "user="+$scope.root_user;
         params += "&pass="+$scope.root_pass;
         params += "&host="+$scope.host;
         params += "&port="+$scope.port;
         params += "&name="+$scope.name;
         installerService.sendAction("createDataBase",params).then(function(response) {
-        $scope.loading=false;
+        if ($scope.overwrite)
+            $scope.loadingOverwrite = false;
+        else
+            $scope.loading=false;
         if (response.data.success){
-
+            $scope.installed = true;
         }else{
             $scope.error = response.data.errors;
         }
     });
    
     }
-
+   
 }]);

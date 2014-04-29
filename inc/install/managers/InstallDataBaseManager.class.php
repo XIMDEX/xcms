@@ -35,7 +35,7 @@ class InstallDataBaseManager extends InstallManager{
 
 	const DB_ARRAY_KEY="db_installer_connection";
 	const DEFAULT_PORT = 3306;
-	const SCRIPT_PATH = "/install/scripts/ximdex_data/ximdex.sql";
+	const SCRIPT_PATH = "/install/ximdex_data/ximdex.sql";
 
 	private $dbConnection = null;
 	private $host;
@@ -119,14 +119,14 @@ class InstallDataBaseManager extends InstallManager{
 	public function createDataBase($name){
 		$result = false;
 		if($this->dbConnection){
-			var_dump($this->dbConnection);
-			$query = "create database '$name'"	;
+			$query = "create database $name";			
 			$result = $this->dbConnection->query($query);
 			if ($result === TRUE)
 				error_log("Suc");
-			else
+			else{
 				error_log("faiulre");
-			error_log("a $result".print_r($result, true)." $query ".$this->dbConnection->error);
+				error_log("a $result".print_r($result, true)." $query ".$this->dbConnection->error);
+			}
 		}else{
 			error_log("CREATE DATABASE");
 		}
@@ -153,19 +153,29 @@ class InstallDataBaseManager extends InstallManager{
         . ' --password=' . $pass
         . ' --database=' . $name
         . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH.self::SCRIPT_PATH.'"';
-        error_log($command);
         //$result = shell_exec($command . '/shellexec.sql');
-        $result = shell_exec($command);
+        $result = shell_exec($command);        
+        return $result;
 	}
 
 	public function existDataBase($name){
+		$result = false;
 		if($this->dbConnection){
-			$query = sprintf("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = %s", $name);
+			$query = sprintf("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s'", $name);
 			$result = $this->dbConnection->query($query);
-			var_dump($result);		
 		}
+		return $result;
 	}
 
+	public function checkDataBase($host, $port, $user, $pass, $name){
+		$result = $this->selectDataBase($name);
+		if ($result){
+			$query = "show tables like 'NodeProperties'";
+			$result = $this->dbConnection->query($query);	
+		}		
+		return $result;
+
+	}
 	
 }
 
