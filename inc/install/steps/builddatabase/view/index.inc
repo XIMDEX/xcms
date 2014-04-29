@@ -31,29 +31,29 @@
 	<div ng-show="!installed">
 	<p class="errors" ng-show="genericErrors">{{genericErrors}}</p>
 
-	<div class="form_item"  ng-class="{success:hostCheck==true}">
+	<div class="form_item"  >
 		<label  for="db_server">Host</label>
-		<input ng-model="host" type="text" name="host" id="db_server" value="{{host}}" required />
+		<input ng-model="host" type="text" name="host" id="db_server" value="{{host}}" required ng-class="{success:hostCheck==true, error:hostCheck == 'host'}" />
 	</div>
-	<div class="form_item" ng-class="{success:hostCheck==true}">
+	<div class="form_item" >
 		<label for="db_port" >Port</label>
-		<input ng-model="port"  type="text" name="port" id="db_port" value="{{port}}" />
+		<input ng-model="port" ng-class="{success:hostCheck==true, error:hostCheck == 'host'}" type="text" name="port" id="db_port" value="{{port}}" />
 	</div>
 
-	<div class="form_item">
+	<div class="form_item" >
 		<label for="db_admin">Database Admin User</label>
-		<input ng-model="root_user" type="text" name="root_user" id="db_admin" value="root" required/>
+		<input ng-model="root_user" type="text" name="root_user" id="db_admin" value="root" required ng-class="{success:hostCheck==true, error:hostCheck == 'root_user'}"/>
 	</div>
 
-	<div class="form_item">
+	<div class="form_item" >
 		<label for="db_pass">Database Admin Password</label>
-		<input ng-model="root_pass" required ng- type="password" name="root_pass" id="db_pass" placeholder="Insert your admin user password here" />
+		<input ng-model="root_pass" required ng- type="password" name="root_pass" id="db_pass" placeholder="Insert your admin user password here" ng-class="{success:hostCheck==true, error:hostCheck == 'root_user'}" />
 		<p class="errors" ng-show="loginErrors">{{loginErrors}}</p>
 	</div>
 
-	<div class="form_item  form_item--dbname full-width">
+	<div class="form_item  form_item--dbname full-width" >
 		<label for="db_name">Database name</label>
-		<input ng-model="name" required type="text" name="name" id="db_name" value="ximdex" />
+		<input ng-model="name" required type="text" name="name" id="db_name" value="ximdex" ng-class="{success:hostCheck==true, error:hostCheck == 'exist_db'}" />
 		<p class="errors" ng-show="dbErrors">{{dbErrors}}</p>
 	</div>	
 

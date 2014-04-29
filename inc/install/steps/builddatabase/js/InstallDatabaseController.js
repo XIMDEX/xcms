@@ -37,6 +37,8 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.host=response.data.host;
             $scope.port=response.data.port;
             $scope.hostCheck = true;
+        }else{
+            $scope.hostCheck = 'host';
         }
 
     });
@@ -60,6 +62,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.checkExistDataBase();
 
         }else{
+            $scope.hostCheck = "root_user";
             $scope.loading = false;
             $scope.genericErrors = response.data.errors;
         }
@@ -78,6 +81,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.installDataBase();            
         }else{
             $scope.dbErrors = $scope.name+" database already exists. Overwrite it?";
+            $scope.hostCheck = "exist_db";
             $scope.overwrite = true;
             $scope.loading=false;
         }
