@@ -61,8 +61,8 @@ class GenericInstallStep {
 		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
 		
 		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
-		if ($this->exception && is_array($this->exception) && count($this->exception)){
-			$exception = $this->exception;
+		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)){
+			$exceptions = $this->exceptions;
 			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/generic/view/exception.inc";
 		}else
 			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.inc";
@@ -113,9 +113,14 @@ class GenericInstallStep {
     }
 
     protected function checkPermissions(){
-    	$this->exceptions[] = $this->installManager->checkFilePermissions();
-    	$this->exceptions[] = $this->installManager->checkInstanceGroup();    	
-    }
+    	$checkPermissions = $this->installManager->checkFilePermissions();
+    	if ($checkPermissions["state"]!= "success")
+    		$this->exceptions[] = $checkPermissions;
+    	$checkGroup = $this->installManager->checkInstanceGroup();    	
+    	if ($checkGroup["state"] != "success")
+    		$this->exceptions[] = $checkGroup;
+    	
+   }
 
 
 }

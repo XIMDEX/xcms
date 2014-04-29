@@ -105,5 +105,24 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     });
    
     }
+    $scope.$watch("name", function(){
+        $scope.overwrite = false;
+        $scope.dbErrors = false;
+    })
+    $scope.addUser = function(){
+        $scope.loadingAddUser = true;
+        var params = "user="+$scope.user;
+        params += "&pass="+$scope.pass;
+        params += "&host="+$scope.host;
+        params += "&port="+$scope.port;
+        params += "&name="+$scope.name;
+        params += "&root_user="+$scope.root_user;
+        params += "&root_pass="+$scope.root_pass;
+        installerService.sendAction("addUser",params).then(function(response) {
+            $scope.loadingAddUser = false;
+            //location.reload();
+    });
+   
+    }
    
 }]);

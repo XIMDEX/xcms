@@ -140,6 +140,38 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 		$this->sendJSON($values);
 	}
 
+	public function addUser(){
+		$idbManager = new InstallDataBaseManager();		
+		$host = $this->request->getParam("host");
+		$port = $this->request->getParam("port");
+		$user = $this->request->getParam("user");
+		$pass = $this->request->getParam("pass");
+		$name = $this->request->getParam("name");
+		$root_user = $this->request->getParam("root_user");
+		$root_pass = $this->request->getParam("root_pass");
+		$values = array();
+		$idbManager->connect($host, $port, $root_user, $root_pass);
+		$values = array();
+		$failure = false;		
+		if (!$idbManager->changeUser($user,$pass, $name)){
+			$idbManager->addUser($user, $pass, $name);	
+		}
+		if ($failure)
+			$values["failure"] = true;
+		else{
+			$values["success"] = true;
+			$this->initParams($host, $port, $Name, $user, $pass);
+		}
+
+		$this->sendJson($values);
+	}
+
+	public function initParams($host, $port, $bdName, $user, $pass){
+
+		$this->installManager->setInstallParams($host, $port, $bdName, $user, $pass);
+		$this->installManager->setConfigValues();
+		$this->loadNextAction();
+	}
 
 
 

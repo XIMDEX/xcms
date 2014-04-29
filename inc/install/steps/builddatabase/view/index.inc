@@ -55,7 +55,7 @@
 		<label for="db_name">Database name</label>
 		<input ng-model="name" required type="text" name="name" id="db_name" value="ximdex" />
 		<p class="errors" ng-show="dbErrors">{{dbErrors}}</p>
-	</div>
+	</div>	
 
 	<button ng-hide="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-
 	style="slide-up" xim-state="loading" ng-click="processForm()">Install Database</button>
@@ -73,8 +73,8 @@
 		<input ng-model="pass" type="password" name="pass" id="db_user_pass" placeholder="Insert your user password here" />
 	</div>
 	
-
-	<button class="launch_ximdex action_launcher" onclick="">Add user</button>
+	<button class="launch_ximdex action_launcher ladda-button"  ui-ladda="loadingAddUser" data-
+	style="slide-up" xim-state="loadingAddUser" ng-click="addUser()">Add user</button>
 	</div>
 		
 	

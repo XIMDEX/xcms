@@ -176,6 +176,46 @@ class InstallDataBaseManager extends InstallManager{
 		return $result;
 
 	}
+
+	public function userExist($userName){
+		$result = false;
+		if ($this->dbConnection){
+			$query = " SELECT user FROM mysql.user where user='$userName' and host='%'";
+			$result = $this->dbConnection->query($query);				}
+		return $result && $result->num_rows;
+	}
+
+	public function addUser($userName, $pass, $name){
+		$result = false;
+		if ($this->dbConnection){
+			$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'localhost' IDENTIFIED BY '$pass'" ;
+			$result = $this->dbConnection->query($query);
+			$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%' IDENTIFIED BY '$pass'" ;			
+			$result = $result && $this->dbConnection->query($query);
+			$result = $result && $this->dbConnection->query("FLUSH privileges");
+		}
+		return $result;
+	}
+
+	public function addPrivileges($userName,$name){
+		$result = false;
+		if ($this->dbConnection){
+			$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%'" ;
+			error_log($query);
+			$result = $this->dbConnection->query($query);
+			$result = $result && $this->dbConnection->query("FLUSH privileges");
+		}
+		return $result;
+	}
+
+	public function changeUser($user, $pass, $name){
+		$result = false;
+		if ($this->dbConnection){
+			$result = $this->dbConnection->change_user($user,$pass, $name);
+		}
+
+		return $result;
+	}
 	
 }
 

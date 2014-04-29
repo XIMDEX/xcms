@@ -26,13 +26,15 @@
 ?>
 <h2>Installing Ximdex</h2>	
 <?php
-	foreach ($exceptions as $exception) {
+	foreach ($exceptions as $key => $exception) {
+		foreach ($exception["messages"] as $i => $message) {			
 		?>
-		<p class="error"><?php echo $exception["message"];?></p>			
+		<p class="error"><?php echo $message;?></p>			
 		<?php
 		if ($exception["help"])
 			?>
-		<pre><?php echo $exception["help"];?></pre>
+		<pre><?php echo $exception["help"][$i];?></pre>
 		<?php
+		}
 	}
 ?>

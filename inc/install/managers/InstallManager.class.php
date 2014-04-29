@@ -39,6 +39,8 @@ class InstallManager {
 	const STATUSFILE = "/install/_STATUSFILE";
 
 	const INSTALL_CONF_FILE = "install.xml";	
+	const INSTALL_PARAMS_TEMPLATE = "/install/templates/install-params.conf.php";
+	const INSTALL_PARAMS_FILE = "conf/install-params.conf.php";
 	const LAST_STATE = "INSTALLED";
 	
 	protected $mode = ""; //install mode.
@@ -283,8 +285,8 @@ class InstallManager {
 		$result["name"] = "File permission";
 		$filesToCheck = array(self::STATUSFILE,
 								"/data",
-								"/logs");
-		
+								"/logs",
+								"/conf");
 		foreach ($filesToCheck as $file) {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
 				$result["state"] = "error";
@@ -292,7 +294,7 @@ class InstallManager {
 			}else if (!$this->isWritable(XIMDEX_ROOT_PATH.$file)){
 				$result["state"] = "error";
 				$result["messages"][]="Write permissions on $file required.";
-				$result["help"][] = "chmod -R 664 ".XIMDEX_ROOT_PATH.$file;				
+				$result["help"][] = "chmod -R 664 ".XIMDEX_ROOT_PATH.$file;
 			}
 		}
 
@@ -300,7 +302,6 @@ class InstallManager {
 	}
 
 	private function isWritable($file){
-
 		return is_writable($file);
 	}
 
@@ -322,7 +323,31 @@ class InstallManager {
 		}
 
 		return $result;
-	}	
+	}
+
+
+	public function setInstallParams($host, $port, $bdName, $user, $pass){
+
+		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_TEMPLATE);
+		$content = str_replace("##DB_HOST##", $host, $content);
+		$content = str_replace("##DB_PORT##", $port, $content);
+		$content = str_replace("##DB_USER##", $user, $content);
+		$content = str_replace("##DB_PASSWD##", $pass, $content);
+		$content = str_replace("##DB_NAME##", $bdName, $content);
+
+		$content = str_replace("##XIMDEX_TIMEZONE##", date_timezone_get(), $content);
+		$content = str_replace("##XIMDEX_PATH##", XIMDEX_ROOT_PATH, $content);
+
+		if (file_exists(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE)){
+			rename(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE."bck_".date(Ymd_his));
+		}
+
+		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);
+	}
+		
+	public function setConfigValues(){
+
+	}
 	
 }
 ?>
