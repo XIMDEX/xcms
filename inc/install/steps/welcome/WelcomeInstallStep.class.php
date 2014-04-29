@@ -41,7 +41,7 @@ class WelcomeInstallStep extends GenericInstallStep {
 	 */
 	public function index(){
 		$error = false;
-		$this->js_files = array("WelcomeController.js");
+		$this->addJs("WelcomeController.js");
 	
 		$this->render();
 		

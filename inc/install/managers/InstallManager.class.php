@@ -179,13 +179,13 @@ class InstallManager {
 	
 	public function initialChecking(){
 		$result = array();
+		$result[] = $this->checkInstanceGroup();
+		$result[] = $this->checkFilePermissions();
 		$result[] = $this->checkDiskSpace();
 		$result[] = $this->checkPHPVersion();
 		$result[] = $this->checkRequiredPHPExtensions();
 		$result[] = $this->checkRecommendedPHPExtensions();
 		$result[] = $this->checkDisabledFunctions();
-		$result[] = $this->checkFilePermissions();
-		$result[] = $this->checkInstanceGroup();
  		$result[] = $this->checkMySQL();
 
 		return $result;		
@@ -294,7 +294,7 @@ class InstallManager {
 			}else if (!$this->isWritable(XIMDEX_ROOT_PATH.$file)){
 				$result["state"] = "error";
 				$result["messages"][]="Write permissions on $file required.";
-				$result["help"][] = "chmod -R 664 ".XIMDEX_ROOT_PATH.$file;
+				$result["help"][] = "chmod -R 770 ".XIMDEX_ROOT_PATH.$file;
 			}
 		}
 
