@@ -31,7 +31,7 @@ class WelcomeInstallStep extends GenericInstallStep {
 
 
 	public function __construct(){
-		$this->js_files = array("WelcomeController.js");
+		
 		$this->installManager = new installManager();
 		$this->steps = $this->installManager->getSteps();		
 	}
@@ -41,27 +41,43 @@ class WelcomeInstallStep extends GenericInstallStep {
 	 */
 	public function index(){
 		$error = false;
-
-		foreach ($checks as $check) {
-			if ($check["state"] == "error"){
-				$error = true;
-				break;
-			}
-		}
-
-		$values=array("checks" => $checks, "error" => $error);
-		$values["go_method"]="continueInstallation";
-		$this->render($values);
+		$this->js_files = array("WelcomeController.js");
+	
+		$this->render();
 		
 	}
 
 	public function continueInstallation(){
-		$checks = $this->installManager->initialChecking();
 		$this->loadNextAction();
-		header(sprintf("Location: %s", "index.php"));
-		die();
+		
 	}
 
+	public function hasErrors(){
+		$checks = $this->installManager->initialChecking();
+				$checks = $this->installManager->initialChecking();
+		$errors = array();
+		foreach ($checks as $check) {
+			if ($check["state"] == "error"){
+				$error = "1";
+			}
+			if 	($check["state"] != "success"){
+				$aux = array();
+				foreach ($check["messages"] as $i => $message) {
+					$aux["message"] = $message;
+					$aux["help"] = $check["help"][$i];
+					$aux["state"] = $check["state"] ;
+					$errors[] = $aux;
+				}
+			}
+		}
+
+		if ($error)
+			$values["failure"] = true;
+		else 
+			$values["success"] = true;
+		$values["errors"] = $errors;
+		$this->sendJSON($values);
+	}
 
 
 

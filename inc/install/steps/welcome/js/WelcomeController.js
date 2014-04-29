@@ -22,45 +22,20 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'installerService', "$q", "$window",
- function($timeout, $scope, installerService, $q, $window) {
+ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'installerService', "$q", "$window", "$attrs",
+ function($timeout, $scope, installerService, $q, $window, $attrs) {
 
-    $scope.cosa="";
-    $scope.submit = false;
-    $scope.root_user="root";
-    $scope.name="ximdex";
-
-    installerService.sendAction("checkHost").then(function(response) {
-        if (response.data.success){
-            $scope.host=response.data.host;
-            $scope.port=response.data.port;
-            $scope.hostCheck = false;
-        }
-
-    });
-
-    $scope.processForm = function(){
-        $scope.loading = true;
-        var index = 0;
-        $scope.checkRootUser();
-    };
-
-    $scope.checkRootUser = function(){
-
-        var params = "root_user="+$scope.root_user;
-        params += "&root_pass="+$scope.root_pass;
-        params += "&host="+$scope.host;
-        params += "&port="+$scope.port;
-        installerService.sendAction("checkUser",params).then(function(response) {
-        if (response.data.success){
-
-        }
-
-    });
-    };
-
-    $scope.installDataBase = function(){
-
-    }
+    $scope.checked = false;
+    
+    $scope.checkInstaller = function(){
+        installerService.sendAction("hasErrors").then(function(response) {            
+            if (response.data.failure)
+                $scope.errors = response.data.errors;
+            else
+                installerService.sendAction("continueInstallation").then(function(response) {
+                    location.reload();
+                });
+        });
+    }    
 
 }]);

@@ -25,31 +25,16 @@
  */
 ?>
 
-<form method="post" action=".">
+<form method="post" ng-controller="WelcomeController" ng-cloak>
 <h2>Welcome to Ximdex CMS installer</h2>
 <p>
 	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
 </p>
-    <?php 
-    	foreach ($checks as $check) {
-  			foreach ($check["messages"] as $i => $message) {
-  			?>
-  			<p class="<?php echo $check["state"]?>"><?php echo $message;  ?></p>
-  			<?php
-  			if ($check["help"][$i] && $check["help"][$i] != ""){
-  				?>
-  				<p class="desc"><?php echo $check["help"][$i];  ?></p>
-  				<?php
-  			}
-  		}
-    }
+    
+  			<p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
+  	
+  				<p ng-repeat-end class="desc">{{error.help}}</p>
 	
-	
-	if (!$error){
-		?>
-			<button class="launch_ximdex action_launcher">Check your config and continue</button>		
-		<?php
-	}
-	?>
+			<button class="launch_ximdex action_launcher" ng-click="checkInstaller()">Check your config and continue</button
 
 </form>
