@@ -26,6 +26,7 @@
  */
 
 ModulesManager::file('/inc/model/Links.inc');
+include_once( XIMDEX_ROOT_PATH . "/inc/helper/String.class.php" );
 
 class FormValidation {
     
@@ -39,6 +40,9 @@ class FormValidation {
         $idnode = $params["nodeid"];
         $inputName = $params["inputName"];
         $name=$params[$inputName];
+        if (!empty($params["process"]) && $params["process"] == "normalize") {
+            $name = String::normalize($name);
+        }
         $node = new Node($idnode);
         $names = $node->find("Name","idparent=%s",array($idnode),MONO);        
         $names = $names? $names: array();

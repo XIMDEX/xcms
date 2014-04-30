@@ -73,6 +73,15 @@ class String {
 
 		return $string;
 	}
+
+	public static function normalize($string){   
+        $string = String::convertText($string);
+        $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+        $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+        $decodedString = utf8_decode($string);
+        $decodedString = strtr($decodedString, utf8_decode($source), $target);
+        return utf8_encode($decodedString);
+    }
 }
 
 ?>
