@@ -44,8 +44,10 @@
 			<option value="pt_BR">Portuguese</option>
 		</select>
 	</div>
-	<div class="form_item full-width">
+	<div class="form_item full-width form_item--information">
 		<label for="anonymous_information"><input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" />Would you like to help us sending anonymous information about usage </label>
 		
 	</div>
+
+	<button class=" action_launcher ladda-button">Set general settings</button>
 </form>

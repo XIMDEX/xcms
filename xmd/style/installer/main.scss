@@ -430,7 +430,7 @@ textarea {
             padding-bottom: .8em;
         }
 
-        input{
+        input[type="text"],input[type="password"], select{
             width: 100%;
             border: none;
             background:darken($c-light, 4%);
@@ -444,8 +444,18 @@ textarea {
             color: darken($c-light,65%);
         }
 
+        input[type="checkbox"]{
+            margin-right: .5em;
+        }
+
         
     }
+
+.form_item--information{
+    margin-bottom: 1em;
+    top: -1.5em;
+    position: relative;
+}
 
     .form_item--user{
         padding-bottom: 1.5em;
