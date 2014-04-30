@@ -82,8 +82,8 @@ class Action_createlanguage extends ActionAbstract {
 
 		$this->reloadNode($idNode);
 
-		$values = array('messages' =>  $this->messages->messages );
-		$this->render($values);
+		$values = array('messages' =>  $this->messages->messages, 'idNode' => $idNode );
+		$this->sendJSON($values);
     	}
 }
 ?>

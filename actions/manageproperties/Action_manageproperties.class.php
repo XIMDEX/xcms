@@ -286,7 +286,7 @@ class Action_manageproperties extends ActionAbstract {
 			'goback' => true,
 			'history_value' => $confirmed ? 2 : 1
 		);
-		$this->render($values);
+		$this->sendJSON($values);
 	}
 
 

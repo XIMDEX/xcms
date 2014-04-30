@@ -45,8 +45,8 @@ class Action_modifychannel extends ActionAbstract {
 
     		$channel = new Channel($idNode);
     		$renderCheck[$channel->get('RenderMode')] = 'checked';
-		$ext=$channel->get('DefaultExtension')==NULL ? "(empty)": $channel->get('DefaultExtension');
-		$desc=$channel->get('Description')==NULL ? "(empty)": $channel->get('Description');
+            $ext=$channel->get('DefaultExtension')==NULL ? "(empty)": $channel->get('DefaultExtension');
+            $desc=$channel->get('Description')==NULL ? "(empty)": $channel->get('Description');
     		$values = array(
     			'id_node' => $idNode,
     			'name' => $channel->get('Name'),
