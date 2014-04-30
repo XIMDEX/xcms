@@ -139,6 +139,7 @@ angular.module('ximdex.module.xtags')
                     $timeout(function(){
                         $scope.submitMessages = null;
                     }, 4000);
+                    $scope.$emit('nodemodified', $scope.nodeId);
                 })
                 .error(function(data){
                     $scope.submitState = 'error'
