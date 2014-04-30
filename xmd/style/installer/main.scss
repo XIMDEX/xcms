@@ -24,7 +24,7 @@
 
 /* ==========================================================================
    Base styles: opinionated defaults
-   ========================================================================== */
+========================================================================== */
 
 html,
 button,
@@ -747,10 +747,10 @@ textarea {
     // ERRORS
     ***************/
 
-.error, .warning{
+.error, .warning, .errors{
     padding-bottom: 0 !important; 
     position: relative;
-    font-weight: bold;
+    font-weight: bold; 
     &::before{
         content: "!";
         display: inline-block;
@@ -766,10 +766,12 @@ textarea {
         -moz-border-radius: 50%;
         border-radius: 50%;
         line-height: 1.4;
+        position: relative;
+        z-index: 2;
     }  
 }
 
-.error{
+.error, .errors{
     &::before{
 
         font-family: 'social_icons';
@@ -781,12 +783,49 @@ textarea {
     }
 }
 
-.error + .desc{
+.error + .desc, .error--inline{
     margin-left:  calc( #{(22/16)}em + .5em);
     background:$c-light;
     padding: .5em .8em;
     margin-top: 0;
     display: inline-block;
+}
+
+.errors{
+    text-align: center;
+}
+
+.error_element{
+    border: 1px solid #e05050 !important;
+    background:lighten(#e05050, 30%) !important;
+}
+
+.overwrite{
+    position: relative;
+    top: 1em;
+    margin: 0 0 -.8em 0;
+    padding-bottom: .5em !important;
+    border: 1px solid darken($c-light, 5%);
+
+    &::after{
+       content: "";
+       position: absolute;
+       width: .8em;
+       height: .8em;
+       -webkit-box-shadow: 1px -2px 0 darken($c-light, 5%);
+       -moz-box-shadow: 1px -2px 0 darken($c-light, 5%);
+       box-shadow: 1px -2px 0 darken($c-light, 5%);
+     /*  border: .8em solid transparent;
+        border-bottom-color: #e6e7f1;*/
+        top: -.3em;
+        left: 1.3em;
+        background:$c-light;
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
 }
 
     /**************

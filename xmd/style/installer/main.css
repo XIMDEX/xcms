@@ -9,7 +9,7 @@
  */
 /* ==========================================================================
    Base styles: opinionated defaults
-   ========================================================================== */
+========================================================================== */
 html,
 button,
 input,
@@ -577,11 +577,11 @@ li[class*="module"] {
 /**************
 // ERRORS
 ***************/
-.error, .warning {
+.error, .warning, .errors {
   padding-bottom: 0 !important;
   position: relative;
   font-weight: bold; }
-  .error::before, .warning::before {
+  .error::before, .warning::before, .errors::before {
     content: "!";
     display: inline-block;
     width: 1.375em;
@@ -595,20 +595,54 @@ li[class*="module"] {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    line-height: 1.4; }
+    line-height: 1.4;
+    position: relative;
+    z-index: 2; }
 
-.error::before {
+.error::before, .errors::before {
   font-family: 'social_icons';
   content: "\e606";
   color: #e46666;
   border-color: #e46666; }
 
-.error + .desc {
+.error + .desc, .error--inline {
   margin-left: calc(1.375em + .5em);
   background: #e6e7f1;
   padding: .5em .8em;
   margin-top: 0;
   display: inline-block; }
+
+.errors {
+  text-align: center; }
+
+.error_element {
+  border: 1px solid #e05050 !important;
+  background: #f7d2d2 !important; }
+
+.overwrite {
+  position: relative;
+  top: 1em;
+  margin: 0 0 -.8em 0;
+  padding-bottom: .5em !important;
+  border: 1px solid #d6d7e8; }
+  .overwrite::after {
+    content: "";
+    position: absolute;
+    width: .8em;
+    height: .8em;
+    -webkit-box-shadow: 1px -2px 0 #d6d7e8;
+    -moz-box-shadow: 1px -2px 0 #d6d7e8;
+    box-shadow: 1px -2px 0 #d6d7e8;
+    /*  border: .8em solid transparent;
+       border-bottom-color: #e6e7f1;*/
+    top: -.3em;
+    left: 1.3em;
+    background: #e6e7f1;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
 
 /**************
 // ICONS
