@@ -164,7 +164,7 @@ class InstallDataBaseManager extends InstallManager{
 			$query = sprintf("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '%s'", $name);
 			$result = $this->dbConnection->query($query);
 		}
-		return $result;
+		return $result && $result->num_rows;
 	}
 
 	public function checkDataBase($host, $port, $user, $pass, $name){
@@ -173,7 +173,7 @@ class InstallDataBaseManager extends InstallManager{
 			$query = "show tables like 'NodeProperties'";
 			$result = $this->dbConnection->query($query);	
 		}		
-		return $result;
+		return $result && $result->num_rows;
 
 	}
 
