@@ -33,7 +33,12 @@ class SettingsInstallStep extends GenericInstallStep {
 	 * Main function. Show the step	 
 	 */
 	public function index(){
-		$this->render();
+		$values = array("go_method"=>"initializeSettings");
+		$this->render($values);
+		
+	}
+
+	public function initializeSettings(){
 		
 	}
 
