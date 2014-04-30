@@ -40,7 +40,7 @@ class InstallManager {
 
 	const INSTALL_CONF_FILE = "install.xml";	
 	const INSTALL_PARAMS_TEMPLATE = "/install/templates/install-params.conf.php";
-	const INSTALL_PARAMS_FILE = "conf/install-params.conf.php";
+	const INSTALL_PARAMS_FILE = "/conf/install-params.conf.php";
 	const LAST_STATE = "INSTALLED";
 	
 	protected $mode = ""; //install mode.
@@ -291,38 +291,61 @@ class InstallManager {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
 				$result["state"] = "error";
 				$exception["messages"][] = "$file doesn't found.";				
-			}else if (!$this->isWritable(XIMDEX_ROOT_PATH.$file)){
-				$result["state"] = "error";
-				$result["messages"][]="Write permissions on $file required.";
-				$result["help"][] = "chmod -R 770 ".XIMDEX_ROOT_PATH.$file;
-			}
+			}else{
+				 $checkGroup  = $this->checkGroup(XIMDEX_ROOT_PATH.$file);
+				 if ($checkGroup["state"] != "success" ){
+				 	$result = $checkGroup ;
+				 }else if (!$this->isWritable(XIMDEX_ROOT_PATH.$file)){
+					$result["state"] = "error";
+					$result["messages"][]="Write permissions on $file required.";
+					$result["help"][] = "chmod -R 770 ".XIMDEX_ROOT_PATH.$file;
+				}
+			}	
 		}
 
 		return $result;
 	}
 
 	private function isWritable($file){
-		return is_writable($file);
+		$textToCheck = "TEST";
+		if (!is_writable($file))
+			return false;
+		if (is_dir($file)){ //Try to create and read in a file
+			$dummyFile = $file."/.dummy";
+			$result = file_put_contents($dummyFile, $textToCheck);
+			if ($result ===FALSE)
+				return $result;
+			$result = file_get_contents($dummyFile) == $textToCheck;
+			$result = $result && unlink($dummyFile);
+			return $result == $textToCheck;
+		}
+		return true;
 	}
 
 
 	public function checkInstanceGroup(){
 		
+		return $this->checkGroup(XIMDEX_ROOT_PATH);
+	}
+
+	public function checkGroup($file){
+
 		$result["state"] = "success";
 		$result["name"] = "File permission";
 		
 		$groupId = posix_getgroups();
 		$groupName = posix_getgrgid($groupId[0]);
-		$ximdexGroupId = filegroup(XIMDEX_ROOT_PATH);
+		$ximdexGroupId = filegroup($file);
 		$ximdexGroupName = posix_getgrgid($ximdexGroupId);
 		if (!in_array($ximdexGroupId, $groupId)){
 			$result["state"] = "error";
 			$result["messages"][] = "Advice you use {$groupName["name"]} group instead of {$ximdexGroupName["name"]}" ;
-			$result["help"][] = "chgrp -R {$groupName["name"]} ".XIMDEX_ROOT_PATH;			
+			$result["help"][] = "chgrp -R {$groupName["name"]} ".$file;
 			
 		}
 
 		return $result;
+	
 	}
 
 
@@ -337,12 +360,12 @@ class InstallManager {
 
 		$content = str_replace("##XIMDEX_TIMEZONE##", date_timezone_get(), $content);
 		$content = str_replace("##XIMDEX_PATH##", XIMDEX_ROOT_PATH, $content);
-
+		error_log(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE);
 		if (file_exists(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE)){
 			rename(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE."bck_".date(Ymd_his));
 		}
 
-		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);
+		$result = FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);		
 	}
 		
 	public function setConfigValues(){
