@@ -50,9 +50,10 @@
                </select>
            </p> 
  <p class="col1_2 col_right ">
+        <label class="label_title">{t}Activated{/t}</label>
         <span class="slide-element title_block">
             <input class="input-slide" type="checkbox" name="enabled" id="enabled" value="1" checked="checked"/>
-                <label for="enabled" class="label-slide "><span class="label_title">{t}Activated{/t}</span></label></span>
+                <label for="enabled" class="label-slide "></label></span>
     </p>               
     </div>
 
