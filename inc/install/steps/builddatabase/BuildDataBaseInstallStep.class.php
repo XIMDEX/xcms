@@ -160,9 +160,9 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 			$values["failure"] = true;
 		else{
 			$values["success"] = true;
-			$this->initParams($host, $port, $Name, $user, $pass);
+			$this->initParams($host, $port, $name, $user, $pass);
 		}
-
+		
 		$this->sendJson($values);
 	}
 
@@ -173,8 +173,5 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 		$this->loadNextAction();
 	}
 
-
-
 }
-
 ?>

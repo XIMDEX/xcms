@@ -37,7 +37,7 @@
 	</div>
 	<div class="form_item">
 		<label for="language">Language</label>
-		<select name="" id="language">
+		<select name="language" id="language">
 			<option value="es_ES">Spanish</option>
 			<option value="en_US">English</option>
 			<option value="de_DE">German</option>

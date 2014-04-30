@@ -27,6 +27,7 @@
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
+
 class SettingsInstallStep extends GenericInstallStep {
 
 	/**
@@ -38,7 +39,23 @@ class SettingsInstallStep extends GenericInstallStep {
 		
 	}
 
+
 	public function initializeSettings(){
+		$password = $this->request->getParam("pass");
+		$language = $this->request->getParam("language");
+		$anonymousInformation = $this->request->getParam("anonymous_information");
+		if($anonymousInformation)
+			Config::update("ActionStats","1");
+		$this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
+		Config::update("AppRoot", XIMDEX_ROOT_PATH);
+		$urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']),0,-1) ;
+		Config::update("UrlRoot", $urlRoot);
+		Config::update("locale", $language);
+		$this->installManager->setLocale($language);
+		$this->installManager->setXid();
+		$this->loadNextAction();
+		header(sprintf("Location: %s", "index.php"));
+		die();
 		
 	}
 

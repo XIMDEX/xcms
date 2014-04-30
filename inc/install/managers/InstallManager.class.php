@@ -27,6 +27,8 @@
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/WebMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/ServerConfig.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/rest/REST_Provider.class.php');
+
 
 /**
  * Manager for install process
@@ -351,26 +353,65 @@ class InstallManager {
 
 	public function setInstallParams($host, $port, $bdName, $user, $pass){
 
-		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_TEMPLATE);
-		$content = str_replace("##DB_HOST##", $host, $content);
-		$content = str_replace("##DB_PORT##", $port, $content);
-		$content = str_replace("##DB_USER##", $user, $content);
-		$content = str_replace("##DB_PASSWD##", $pass, $content);
-		$content = str_replace("##DB_NAME##", $bdName, $content);
-
-		$content = str_replace("##XIMDEX_TIMEZONE##", date_timezone_get(), $content);
-		$content = str_replace("##XIMDEX_PATH##", XIMDEX_ROOT_PATH, $content);
-		error_log(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE);
 		if (file_exists(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE)){
 			rename(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE."bck_".date(Ymd_his));
 		}
 
-		$result = FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);		
+		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_TEMPLATE);
+		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);
+
+
+		$result = $this->setSingleParam("##DB_HOST##", $host);
+		$result = $result && $this->setSingleParam("##DB_PORT##", $port);
+		$result = $result && $this->setSingleParam("##DB_USER##", $user);
+		$result = $result && $this->setSingleParam("##DB_PASSWD##", $pass);
+		$result = $result && $this->setSingleParam("##DB_NAME##", $bdName);
+		$result = $result && $this->setSingleParam("##XIMDEX_TIMEZONE##", $this->getTimeZone());
+		$result = $result && $this->setSingleParam("##XIMDEX_PATH##", XIMDEX_ROOT_PATH);
+
+		return $result;
 	}
-		
-	public function setConfigValues(){
+
+	public function setSingleParam($oldValue, $newValue){
+
+		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE);
+		$content = str_replace($oldValue, $newValue, $content);
+		return FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);
+	}
+
+	private function getTimeZone(){
+
+		$result = "Europe/Madrid";
+		if (file_exists("/etc/timezone") && is_readable("/etc/timezone")){
+			$result = file_get_contents("/etc/timezone");
+		}else if (date_default_timezone_get()){
+			$result = date_default_timezone_get();
+		}
+
+		return trim($result);
 
 	}
+
+	public function setLocale($lang){
+		$db = new DB();
+		$db->execute("UPDATE Locales SET Enabled='1' where Code = '$lang'");
+
+	}
+
+	public function insertXimdexUser($pass){
+		$db = new DB();
+		$db->execute("UPDATE Users SET Pass=MD5('$pass') where IdUser = '301'");		
+	}
 	
+	public function setXid(){
+
+		$restProvider = new REST_Provider();
+		$hostName = $_SERVER["HTTP_HOST"];
+		$url = "http://xid.ximdex.net/stats/getximid.php?host=$hostName";
+		$response = $restProvider->getHttp_provider()->post($url, $data);
+		
+		$result = isset($response["data"])? $response["data"] : $hostName.uniqid($hostName);
+		Config::update("ximid",$result);
+	}
 }
 ?>

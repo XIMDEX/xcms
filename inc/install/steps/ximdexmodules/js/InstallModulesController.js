@@ -70,18 +70,3 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
 
 
 }]);
-
-ximdexInstallerApp.directive('uiLadda', [function () {
-    return {
-    	scope: {
-    		state: '=ximState'
-    	},
-        link: function postLink(scope, element, attrs) {
-        	var Ladda = window.Ladda, 
-        	ladda = Ladda.create(element[0]);            
-            scope.$watch('state', function(newVal, oldVal){
-               newVal && ladda.start() || ladda.stop();
-            });
-        }
-    };
-}]);
