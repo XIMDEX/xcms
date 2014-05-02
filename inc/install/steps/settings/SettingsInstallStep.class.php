@@ -53,6 +53,7 @@ class SettingsInstallStep extends GenericInstallStep {
 		Config::update("locale", $language);
 		$this->installManager->setLocale($language);
 		$this->installManager->setXid();
+		$this->installManager->insertXimdexUser();
 		$this->loadNextAction();
 		header(sprintf("Location: %s", "index.php"));
 		die();

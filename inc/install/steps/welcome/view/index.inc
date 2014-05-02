@@ -28,8 +28,9 @@
 <form method="post" ng-controller="WelcomeController" ng-cloak>
 <h2>Welcome to Ximdex CMS installer</h2>
 <p>
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+	Welcome to Ximdex, the semantic CMS. Ximdex and its modules -Xowl, Xlyre, Xnews,...- help you to build semantic, secures and structured sites.
 </p>
+<p>At first we're goint to check requirements for Ximdex.</p>
     
   			<p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
   	

@@ -29,6 +29,8 @@
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">    
 	<h2>Installing DataBase</h2>
 	<div ng-show="!installed">
+	<p>Time to install MySQL or MariaDB database. Root user is required to create the database.</p>
+	<p> After create it, we ask you the user who will access to the database. </p>
 	<p class="errors" ng-show="genericErrors">{{genericErrors}}</p>
 
 	<div class="form_item"  >
