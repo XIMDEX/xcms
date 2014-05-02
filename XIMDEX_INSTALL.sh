@@ -683,7 +683,7 @@ if [  $DO_INSTALL -eq 0 ]; then
 	exit 0
 fi
 
-if [ "$mystatus" == "DOWNLOADED" ] || [ "$mystatus" == "CHECKED" ] ; then
+if [ "$mystatus" == "DOWNLOADED" ] || [ "$mystatus" == "INIT" ] ; then
     echo -e "\nXimdex instance is suitable for installation. Starting configuration:"
 else
     echo -e "\n$REPO_NAME has traces of a previous installation ended at $mystatus step."
@@ -741,9 +741,9 @@ $(chmod -R 2770 ${REPO_NAME}/install)
 $(chmod -R 770 ${REPO_NAME}/conf/install-modules.conf)
 
 # Launching steps
-Step_Dependencies && SetInstallStatus "CHECKED"
-Step_CreateDB && SetInstallStatus "CREATED_DB"
-Step_Configurator && SetInstallStatus "CONFIGURED"
+#Step_Dependencies && SetInstallStatus "CHECKED"
+#Step_CreateDB && SetInstallStatus "CREATED_DB"
+#Step_Configurator && SetInstallStatus "CONFIGURED"
 CreateScriptToSetPermsAndMove && Step_LaunchAsRoot
 exit 0
 Step_Maintenance
