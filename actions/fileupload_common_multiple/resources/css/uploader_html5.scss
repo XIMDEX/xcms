@@ -99,7 +99,7 @@
 }
 
 .xim-loader-file{
-	padding: 1em 1.2em;
+	padding: 1em 8em 1em 1.2em;
 	border-bottom: 1px solid lighten($c_greymain, 20%);
 	position: relative;
 	z-index: 1;
@@ -121,18 +121,29 @@
 		padding: 0;
 		cursor: pointer;
 		word-wrap: break-word;
+
+		.img-preview {
+			margin-right: .5em;
+		}
+
 		input {
-			border: none;
+			border: 1px dashed $c_grey-pp;
 			background: none;
 			width: 98%;
 			color: inherit;
 			&:hover {
-				background: white;
+				border-style: solid;
 			}
 		}
+
+		&::after{
+			@extend %pencil;
+		}
+
+
 	}
 	.xim-loader-size{
-		width: 11%;
+		width: 14%;
 	}
 	select{
 		background: none;
@@ -146,13 +157,46 @@
 		vertical-align: middle;
 	}
 	&.xim-loader-file-success {
-		opacity: 0.5;
+
+		input[type="text"]{
+			border: none;
+		}
+
+		&::before{
+			position: absolute;
+			@extend %icon;
+			@extend %tic::before;
+			right: 1.5em;
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			background: $c_tag_dorganization;
+			color: #fff;
+			-webkit-border-radius: 50%;
+			-moz-border-radius: 50%;
+			border-radius: 50%;
+			font-size: 1.2em;
+			width: #{(28/19)}em;
+			height: #{(28/19)}em;
+			text-align: center;
+			line-height: #{(28/19)};
+		}
+
+		.input{
+			border: none;
+		}
 	}
 	&.xim-loader-file-warning{
 		border: 1px solid rgb(230, 213, 23);
 	}
 	&.xim-loader-file-error{
-		border: 1px solid rgb(185, 89, 60);
+		padding-bottom: 3em;
+		input[type="text"]{
+			border: 1px solid $c_warning;
+		}
 	}
 	button{
 		float: right;
@@ -161,12 +205,14 @@
 	.xim-loader-progress {
 		position: absolute;
 		top: 0;
-		bottom: 0;
+		height: .2em;
 		left: 0;
-		background-color: $c_greymain;
-		opacity: 0.5;
+		background-color: $c_mainlight;
 		z-index: 2;
 		text-indent: -99999px;
+		-webkit-border-radius: 3px 3px 0 0;
+		-moz-border-radius: 3px 3px 0 0;
+		border-radius: 3px 3px 0 0;
 	}
 }
 .xim-loader-error {
@@ -316,3 +362,44 @@ input.xim-uploader {
 }
 
 @include loading-animation;
+
+
+/*  BUTTONS */
+.uploader{
+	.delete-btn{
+		background: lighten($c_delete, 10%) !important;
+	}
+
+	.rename-btn, .overwrite-btn{
+		background: none;
+		border: none;
+		color: $c-mainlight;
+		text-decoration: underline;
+	}
+
+	.retry-btn{
+		background:$c_bluelight;
+		@extend %reload;
+
+		&::before{
+			font-size: 1.5em;
+			width: 1.2em;
+			line-height: 1.25;
+		}
+
+		&:hover{
+			background:darken($c_bluelight, 5%);
+		}
+	}
+
+	.pause-btn{
+		background:$c_tag_dperson;
+		@extend %pause;
+		
+		&:hover{
+			background:darken($c_tag_dperson, 10%);
+		}
+
+	}
+	
+}

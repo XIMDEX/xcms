@@ -22,8 +22,29 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+.xim-loader-file.xim-loader-file-success::before {
+  font-family: 'ximdex_icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle; }
+
 .xim-uploader-selected::before {
   content: "\e039"; }
+
+.xim-loader-file.xim-loader-file-success::before {
+  content: "\79"; }
+
+.uploader .retry-btn::before {
+  content: "\e016"; }
+
+.uploader .pause-btn::before {
+  content: "\e01c"; }
 
 .guide {
   width: 50%;
@@ -74,7 +95,7 @@
   margin: 0 !important; }
 
 .xim-loader-file {
-  padding: 1em 1.2em;
+  padding: 1em 8em 1em 1.2em;
   border-bottom: 1px solid #e4e5e9;
   position: relative;
   z-index: 1; }
@@ -89,15 +110,17 @@
     padding: 0;
     cursor: pointer;
     word-wrap: break-word; }
+    .xim-loader-file .xim-loader-name .img-preview {
+      margin-right: .5em; }
     .xim-loader-file .xim-loader-name input {
-      border: none;
+      border: 1px dashed #cccccc;
       background: none;
       width: 98%;
       color: inherit; }
       .xim-loader-file .xim-loader-name input:hover {
-        background: white; }
+        border-style: solid; }
   .xim-loader-file .xim-loader-size {
-    width: 11%; }
+    width: 14%; }
   .xim-loader-file select {
     background: none;
     padding: 0;
@@ -106,24 +129,49 @@
   .xim-loader-file input[type=checkbox] {
     margin-right: .8em;
     vertical-align: middle; }
-  .xim-loader-file.xim-loader-file-success {
-    opacity: 0.5; }
+  .xim-loader-file.xim-loader-file-success input[type="text"] {
+    border: none; }
+  .xim-loader-file.xim-loader-file-success::before {
+    position: absolute;
+    right: 1.5em;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    background: #43c35b;
+    color: #fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    font-size: 1.2em;
+    width: 1.47368em;
+    height: 1.47368em;
+    text-align: center;
+    line-height: 1.47368; }
+  .xim-loader-file.xim-loader-file-success .input {
+    border: none; }
   .xim-loader-file.xim-loader-file-warning {
     border: 1px solid #e6d517; }
   .xim-loader-file.xim-loader-file-error {
-    border: 1px solid #b9593c; }
+    padding-bottom: 3em; }
+    .xim-loader-file.xim-loader-file-error input[type="text"] {
+      border: 1px solid #cc3333; }
   .xim-loader-file button {
     float: right;
     margin: -4px 0 0 0; }
   .xim-loader-file .xim-loader-progress {
     position: absolute;
     top: 0;
-    bottom: 0;
+    height: .2em;
     left: 0;
-    background-color: #acafbb;
-    opacity: 0.5;
+    background-color: #7bcabf;
     z-index: 2;
-    text-indent: -99999px; }
+    text-indent: -99999px;
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0; }
 
 .xim-loader-error {
   color: #b9593c; }
@@ -230,3 +278,24 @@ input.xim-uploader {
 @keyframes spin {
   100% {
     transform: rotate(359deg); } }
+
+/*  BUTTONS */
+.uploader .delete-btn {
+  background: #d28e76 !important; }
+.uploader .rename-btn, .uploader .overwrite-btn {
+  background: none;
+  border: none;
+  color: #7bcabf;
+  text-decoration: underline; }
+.uploader .retry-btn {
+  background: #728ad7; }
+  .uploader .retry-btn::before {
+    font-size: 1.5em;
+    width: 1.2em;
+    line-height: 1.25; }
+  .uploader .retry-btn:hover {
+    background: #5e7ad1; }
+.uploader .pause-btn {
+  background: #d1ac2a; }
+  .uploader .pause-btn:hover {
+    background: #a78921; }
