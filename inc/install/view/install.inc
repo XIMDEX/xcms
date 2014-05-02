@@ -103,7 +103,7 @@
     </script>
     <script type="text/javascript" src="inc/install/view/js/directives/ladda.js"></script>
     <script type="text/javascript" src="inc/install/view/js/services/installerService.js"></script>
-
+    <?php
         foreach($js_files as $js_file){
         ?>
             <script type="text/javascript" src="<?php echo $js_file; ?>"></script>
