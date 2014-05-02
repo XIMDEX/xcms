@@ -101,15 +101,9 @@
     <script type="text/javascript" >
         var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
     </script>
-<<<<<<< HEAD
-    <?php
-=======
-
     <script type="text/javascript" src="inc/install/view/js/directives/ladda.js"></script>
     <script type="text/javascript" src="inc/install/view/js/services/installerService.js"></script>
 
-    <?
->>>>>>> feature/installer
         foreach($js_files as $js_file){
         ?>
             <script type="text/javascript" src="<?php echo $js_file; ?>"></script>
