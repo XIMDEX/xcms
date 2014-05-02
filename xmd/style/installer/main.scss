@@ -7,7 +7,7 @@
     $c-mainlight: #cbfbe7;
     $c-light: #e6e7f1;
     $c-footer:#383943;
-    $c-text:#7d7d7d;
+    $c-text:#767987;
 
     $t-title: 'Coustard', serif;
 
@@ -24,7 +24,7 @@
 
 /* ==========================================================================
    Base styles: opinionated defaults
-   ========================================================================== */
+========================================================================== */
 
 html,
 button,
@@ -179,7 +179,7 @@ textarea {
         color: $c-light;
         height: 100%;
         display: inline-block;
-        position: relative;
+        position: fixed;
     }
 
     button{
@@ -222,7 +222,7 @@ textarea {
         -moz-box-shadow: 0 2px 1px rgba(0,0,0,.4);
         box-shadow: 0 2px 1px rgba(0,0,0,.4);
 
-        button{
+        span{
             color: $c-dark;
         }
 
@@ -237,16 +237,27 @@ textarea {
 
         &::after{
             content: "";
-            border: 1.7em solid transparent;
-            border-left-color: $c-light;
+            /*border: 1.7em solid transparent;
+            border-left-color: $c-light;*/
+            width: 2.4em;
+            height: 2.4em;
+            background:$c-light;
             position: absolute;
-            right: -3.4em;
-            top: 0;
-            -webkit-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+            right: -1.2em;
+            top: .5em;
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            -webkit-box-shadow: 1px 3px 1px rgba(0,0,0,.17);
+            -moz-box-shadow: 1px 3px 1px rgba(0,0,0,.17);
+            box-shadow: 1px 3px 1px rgba(0,0,0,.17);
+           /* -webkit-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
             -moz-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
             -ms-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
             -o-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
-            filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+            filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));*/
 
         }
 
@@ -260,7 +271,9 @@ textarea {
         font-family: $t-title;
         color: $c-light;
         text-align: left;
-
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
 
     }
 
@@ -312,9 +325,13 @@ textarea {
        width: 75%;
        vertical-align: top;
        padding: 4em 5em;
+       margin-left: 25%;
 
        p{
-        padding-bottom: 2em;
+        padding-bottom: 1em;
+       }
+       form{
+        padding-bottom: 3em;
        }
     }
 
@@ -344,7 +361,7 @@ textarea {
         margin-bottom: 1.9em;
     }
 
-    .launch_ximdex{
+    .action_launcher{
         background:$c-main;
         color: $c-mainlight;
         text-transform: uppercase;
@@ -356,12 +373,19 @@ textarea {
         box-shadow: inset 0 1px 2px rgba(255,255,255,.17);
         text-shadow: 0 1px 0 rgba(0,0,0,.2);
         font-size: 0.88em;
+        display: inline-block;
 
-        &:hover{
+        &:hover, &:focus{
         background:lighten($c-main, 15%);
         border-color:lighten(#15bb77, 15%);
 
         }
+
+         &:focus{
+           -webkit-box-shadow: 0 0 4px 2px rgba(30, 202, 132, 1), inset 0 1px 2px rgba(255,255,255,.17);
+           -moz-box-shadow: 0 0 4px 2px rgba(30, 202, 132, 1), inset 0 1px 2px rgba(255,255,255,.17);
+           box-shadow: 0 0 4px 2px rgba(30, 202, 132, 1), inset 0 1px 2px rgba(255,255,255,.17);
+         }
     }
 
 
@@ -383,6 +407,123 @@ textarea {
 
 
 
+    /**************
+    // DATABASE page
+    ***************/    
+
+    .form_item{
+        display: inline-block;
+        width: 46%;
+        margin-bottom: 3em;
+
+
+        &:nth-of-type(odd){
+            margin-right: 7%;
+        }
+
+       
+        label{
+            display: block;
+            font-family: $t-title;
+            color: desaturate(darken(#e6e7f1, 48), 12);
+            font-size: 14px;
+            padding-bottom: .8em;
+        }
+
+        input[type="text"],input[type="password"], select{
+            width: 100%;
+            border: none;
+            background:darken($c-light, 4%);
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: .5em 1em;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            color: darken($c-light,65%);
+        }
+
+        input[type="checkbox"]{
+            margin-right: .5em;
+        }
+
+        
+    }
+
+.form_item--information{
+    margin-bottom: 1em;
+    top: -1.5em;
+    position: relative;
+}
+
+    .form_item--user{
+        padding-bottom: 1.5em;
+        &::before{
+            content: "\e605";
+            font-family: 'social_icons';
+            float: left;
+            font-size: 2em;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            width: 2em;
+            height: 2em;
+            text-align: center;
+            margin-right: .5em;
+            vertical-align: middle;
+            background:$c-dark;
+            color: $c-main;
+            line-height: 1.9;   
+        }
+
+        label{
+            color: $c-main;
+            padding-bottom: 0;
+            padding-top: .6em;
+        }
+
+        .user{
+            font-weight: bold;
+            color: $c-dark;
+            font-size: 1.7em;
+            line-height: 1;
+        }
+    }
+
+
+    .full-width{
+        width: 100%;
+
+        ~ .form_item:nth-of-type(even){
+            margin-right: 7%;
+        } 
+        ~ .form_item:nth-of-type(odd){
+            margin-right: 0;
+        }
+
+
+    }
+
+    ::-webkit-input-placeholder {
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);
+        }
+
+      :-moz-placeholder { /* Firefox 18- */
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);  
+        }
+
+        ::-moz-placeholder {  /* Firefox 19+ */
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);  
+        }
+
+      :-ms-input-placeholder {  
+            font-style: italic;
+            color:darken(#b9bbcc, 25%);  
+        }
     
 
 
@@ -616,24 +757,85 @@ textarea {
     // ERRORS
     ***************/
 
-.error{
+.error, .warning, .errors{
     padding-bottom: 0 !important; 
     position: relative;
+    font-weight: bold; 
     &::before{
         content: "!";
         display: inline-block;
-        width: 1.2em;
+        width: #{(22/16)}em;
+        height: #{(22/16)}em;
         text-align: center;
         font-weight: bold;
         border: 3px solid #ccc;
-        border-color: lighten(#ff684f, 5%);
+        color: darken(#f2c341, 5%);
+        border-color: darken(#f2c341, 5%);
         margin-right: .5em;
-        color: lighten(#ff684f, 5%);
         -webkit-border-radius: 50%;
         -moz-border-radius: 50%;
         border-radius: 50%;
-        line-height: 1.3;
+        line-height: 1.4;
+        position: relative;
+        z-index: 2;
     }  
+}
+
+.error, .errors{
+    &::before{
+
+        font-family: 'social_icons';
+        content: "\e606";
+        color: lighten(#e05050, 5%);
+        border-color: lighten(#e05050, 5%);
+
+
+    }
+}
+
+.error + .desc, .error--inline{
+    margin-left:  calc( #{(22/16)}em + .5em);
+    background:$c-light;
+    padding: .5em .8em;
+    margin-top: 0;
+    display: inline-block;
+}
+
+.errors{
+    text-align: center;
+}
+
+.error_element{
+    border: 1px solid #e05050 !important;
+    background:lighten(#e05050, 30%) !important;
+}
+
+.overwrite{
+    position: relative;
+    top: 1em;
+    margin: 0 0 -.8em 0;
+    padding-bottom: .5em !important;
+    border: 1px solid darken($c-light, 5%);
+
+    &::after{
+       content: "";
+       position: absolute;
+       width: .8em;
+       height: .8em;
+       -webkit-box-shadow: 1px -2px 0 darken($c-light, 5%);
+       -moz-box-shadow: 1px -2px 0 darken($c-light, 5%);
+       box-shadow: 1px -2px 0 darken($c-light, 5%);
+     /*  border: .8em solid transparent;
+        border-bottom-color: #e6e7f1;*/
+        top: -.3em;
+        left: 1.3em;
+        background:$c-light;
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
 }
 
     /**************

@@ -60,11 +60,11 @@
                 $extraStyle = ($index == $this->currentStep)? "installer_step-current" : $extraStyle;
                 ?>
                    <li class='installer_step <?php echo $extraStyle; ?>'>
-                    <button class="installer_step-launcher icon">
+                    <span class="installer_step-launcher icon">
                         <?php
                          echo $step["description"];
                         ?>
-                    </button>
+                    </span>
                 </li>    
                 <?php
             }
@@ -97,10 +97,19 @@
     <script type="text/javascript" src="extensions/ladda/dist/spin.min.js" ></script>
     <script type="text/javascript" src="extensions/ladda/dist/ladda.min.js" ></script>
     <script type="text/javascript" src="extensions/humane/humane.min.js" ></script>
+
     <script type="text/javascript" >
         var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
     </script>
+<<<<<<< HEAD
     <?php
+=======
+
+    <script type="text/javascript" src="inc/install/view/js/directives/ladda.js"></script>
+    <script type="text/javascript" src="inc/install/view/js/services/installerService.js"></script>
+
+    <?
+>>>>>>> feature/installer
         foreach($js_files as $js_file){
         ?>
             <script type="text/javascript" src="<?php echo $js_file; ?>"></script>

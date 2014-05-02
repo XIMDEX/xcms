@@ -22,28 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-ximdexInstallerApp.factory('installerService', function($http) {
-//   this.installPath = "/";	
-   return {
-
-        sendAction: function(method, extraParams) {
-             //return the promise directly.
-             var params = "method="+method;
-             if (extraParams)
-             	params +="&"+extraParams;
-             return $http({method: 'POST',
-						    url: '',
-						    data: params,
-						    headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
-                       .success(function(response) {
-                            //resolve the promise as the data
-                            return response;
-                        });
-        }
-   }
-});
-
 ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope', 'installerService', "$q", "$window",
  function($timeout, $scope, installerService, $q, $window) {
 
@@ -63,9 +41,15 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
     });
 
     $scope.processForm = function(){
-    	$scope.loading = true;
-    	var index = 0;
-    	$scope.installModule(0);
+        if (!$scope.foundModuleError){
+                $scope.loading = true;
+                var index = 0;
+                $scope.installModule(0);
+        }else{
+            installerService.sendAction("loadNextAction").then(function(response) {                
+                    location.reload();
+            });
+        }
 	};
 
 	$scope.installModule = function(index){
@@ -83,27 +67,12 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
 		}else{
 			$scope.loading = false;
             
-            installerService.sendAction("loadNextAction").then(function(response) {
-                if (!$scope.foundModuleError)
+            if (!$scope.foundModuleError)
+                installerService.sendAction("loadNextAction").then(function(response) {                
                     $timeout(function(){location.reload();},1000);
 		    });
 		}
 	}
 
 
-}]);
-
-ximdexInstallerApp.directive('uiLadda', [function () {
-    return {
-    	scope: {
-    		state: '=ximState'
-    	},
-        link: function postLink(scope, element, attrs) {
-        	var Ladda = window.Ladda, 
-        	ladda = Ladda.create(element[0]);            
-            scope.$watch('state', function(newVal, oldVal){
-               newVal && ladda.start() || ladda.stop();
-            });
-        }
-    };
 }]);
