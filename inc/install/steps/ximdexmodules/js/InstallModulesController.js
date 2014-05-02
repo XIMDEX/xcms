@@ -41,9 +41,15 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
     });
 
     $scope.processForm = function(){
-    	$scope.loading = true;
-    	var index = 0;
-    	$scope.installModule(0);
+        if (!$scope.foundModuleError){
+                $scope.loading = true;
+                var index = 0;
+                $scope.installModule(0);
+        }else{
+            installerService.sendAction("loadNextAction").then(function(response) {                
+                    location.reload();
+            });
+        }
 	};
 
 	$scope.installModule = function(index){
@@ -61,8 +67,8 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
 		}else{
 			$scope.loading = false;
             
-            installerService.sendAction("loadNextAction").then(function(response) {
-                if (!$scope.foundModuleError)
+            if (!$scope.foundModuleError)
+                installerService.sendAction("loadNextAction").then(function(response) {                
                     $timeout(function(){location.reload();},1000);
 		    });
 		}
