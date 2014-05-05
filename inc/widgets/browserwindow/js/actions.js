@@ -100,6 +100,16 @@
 			}.bind(this));
 		},
 
+		setNode: function(nodeid) {
+			
+			if( Object.prototype.toString.call(this.nodes) === '[object Array]' ) {
+				for (var i = this.nodes.length - 1; i >= 0; i--) {
+					this.url = this.url.replace(this.nodes[i], nodeid);
+				};
+			}
+			this.nodes = [nodeid];
+		},
+
 		reloadAction: function() {
 			this.content.load(this.url, function(data, textStatus, xhr) {
 				this.processAction();
