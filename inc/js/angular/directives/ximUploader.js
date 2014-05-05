@@ -53,14 +53,14 @@ angular.module('ximdex.common.directive')
     	    	});
 
     	    	$scope.$on('flow::fileError', function (event, $flow, file, jsonMessage) {
-    	    		var message = angular.fromJson(jsonMessage);
+    	    		var message = (jsonMessage) ? angular.fromJson(jsonMessage) : null;
                     if (message && message.msg) {
                         file.errorMsg = message.msg;
                     } 
     	    	});
 
     	    	$scope.$on('flow::fileSuccess', function (event, $flow, file, jsonMessage) {
-    	    		var message = angular.fromJson(jsonMessage);
+    	    		var message = (jsonMessage) ? angular.fromJson(jsonMessage) : null;
                     if (message && message.msg) {
                         file.successMsg = message.msg;
                     }  	
