@@ -29,7 +29,8 @@ button{background:0;border:0}
 .social{text-align:center;position:absolute;bottom:2.5em;width:100%}
 .content{height:100%;display:inline-block;width:75%;vertical-align:top;padding:4em 5em}
 .content p{padding-bottom:2em}
-.step-start{background:url(../../images/installer/ximdex_cms.png) no-repeat center bottom;-webkit-background-size:90%;background-size:90%;-webkit-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);-moz-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);box-shadow:inset 0 -3px 3px rgba(0,0,0,.3)}
+.step-modules-installed{-webkit-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);-moz-box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);box-shadow:inset 0 -3px 3px rgba(0,0,0,.3);position:relative}
+.step-modules-installed::before{content:'';background:url(../../images/installer/ximdex_cms.png) no-repeat center top;-webkit-background-size:90%;background-size:90%;position:absolute;top:20em;bottom:0;left:0;right:0}
 h2{font-family:Coustard,serif;color:#1eca84;margin-bottom:1.9em}
 .launch_ximdex{background:#1eca84;color:#cbfbe7;text-transform:uppercase;padding:.6em 5em;font-weight:600;border:1px solid #15bb77;-webkit-box-shadow:inset 0 1px 2px rgba(255,255,255,.17);-moz-box-shadow:inset 0 1px 2px rgba(255,255,255,.17);box-shadow:inset 0 1px 2px rgba(255,255,255,.17);text-shadow:0 1px 0 rgba(0,0,0,.2);font-size:.88em}
 .launch_ximdex:hover{background:#50e5a8;border-color:#34e89f}
@@ -41,12 +42,31 @@ li[class*=module] p{padding-bottom:0;margin:0}
 li[class*=module]::before{content:"";position:absolute;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%);border:3px solid #b0b3cf;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;width:.7em;height:.7em;left:0;background:#fff;z-index:2}
 li[class*=module]::after{content:"";width:.2em;height:calc(100% + 3em);top:50%;position:absolute;background:#4c4d57;opacity:.4;left:.45em}
 li[class*=module]:last-child::after{content:none}
-li[class*=module] .title{display:block;font-family:Coustard,serif;color:#4c4d57}
+li[class*=module] .title{display:block;font-family:Coustard,serif;color:#8a8b99}
 li[class*=module] .title::before{content:"";position:absolute;width:3em;height:.2em;left:1em;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%);background:#4c4d57;opacity:.4}
 li[class*=module] .title::after{content:"";position:absolute;width:4em;height:4em;background:#d1d3e7 url(../../images/installer/modules.svg) no-repeat center .2em;-webkit-background-size:150%;background-size:150%;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;left:3em;top:50%;-webkit-transform:translateY(-50%);-moz-transform:translateY(-50%);-ms-transform:translateY(-50%);-o-transform:translateY(-50%);transform:translateY(-50%)}
 li[class*=module] .title.ximTOUR::after{background-position:center -15em;-webkit-background-size:130%;background-size:130%}
 li[class*=module] .title.ximNEWS::after{background-position:center -10em;-webkit-background-size:130%;background-size:130%}
 li[class*=module] .title.xlyre::after{background-position:center -6.7em;-webkit-background-size:170%;background-size:170%}
+.module-installed::before,.module-already::before{background:#4c4d57!important;border-color:#4c4d57!important}
+.module-installed .title,.module-already .title{color:#4c4d57!important}
+.module-installing::before{border-color:#1eca84!important;border-top-color:#b0b3cf!important;-webkit-animation:rotate .8s linear infinite;-o-animation:rotate .8s linear infinite;animation:rotate .8s linear infinite;-webkit-transform-origin:50% 0;-moz-transform-origin:50% 0;-ms-transform-origin:50% 0;-o-transform-origin:50% 0;transform-origin:50% 0}
+@-webkit-keyframes rotate{from{-webkit-transform:rotate(0) translateY(-50%);-moz-transform:rotate(0) translateY(-50%);-ms-transform:rotate(0) translateY(-50%);-o-transform:rotate(0) translateY(-50%);transform:rotate(0) translateY(-50%)}
+to{-webkit-transform:rotate(359deg) translateY(-50%);-moz-transform:rotate(359deg) translateY(-50%);-ms-transform:rotate(359deg) translateY(-50%);-o-transform:rotate(359deg) translateY(-50%);transform:rotate(359deg) translateY(-50%)}}
+@-o-keyframes rotate{from{-webkit-transform:rotate(0) translateY(-50%);-moz-transform:rotate(0) translateY(-50%);-ms-transform:rotate(0) translateY(-50%);-o-transform:rotate(0) translateY(-50%);transform:rotate(0) translateY(-50%)}
+to{-webkit-transform:rotate(359deg) translateY(-50%);-moz-transform:rotate(359deg) translateY(-50%);-ms-transform:rotate(359deg) translateY(-50%);-o-transform:rotate(359deg) translateY(-50%);transform:rotate(359deg) translateY(-50%)}}
+@-moz-keyframes rotate{from{-webkit-transform:rotate(0) translateY(-50%);-moz-transform:rotate(0) translateY(-50%);-ms-transform:rotate(0) translateY(-50%);-o-transform:rotate(0) translateY(-50%);transform:rotate(0) translateY(-50%)}
+to{-webkit-transform:rotate(359deg) translateY(-50%);-moz-transform:rotate(359deg) translateY(-50%);-ms-transform:rotate(359deg) translateY(-50%);-o-transform:rotate(359deg) translateY(-50%);transform:rotate(359deg) translateY(-50%)}}
+@keyframes rotate{from{-webkit-transform:rotate(0) translateY(-50%);-moz-transform:rotate(0) translateY(-50%);-ms-transform:rotate(0) translateY(-50%);-o-transform:rotate(0) translateY(-50%);transform:rotate(0) translateY(-50%)}
+to{-webkit-transform:rotate(359deg) translateY(-50%);-moz-transform:rotate(359deg) translateY(-50%);-ms-transform:rotate(359deg) translateY(-50%);-o-transform:rotate(359deg) translateY(-50%);transform:rotate(359deg) translateY(-50%)}}
+.module-error::before{border-color:#ec3719!important}
+.module-error .title{color:#ec3719!important}
+.module-installed .ximTOUR::after,.module-already .ximTOUR::after{background-color:#57e3aa!important}
+.module-installed .ximTAGS::after,.module-already .ximTAGS::after{background-color:#ff684f!important}
+.module-installed .ximNEWS::after,.module-already .ximNEWS::after{background-color:#10e2ea!important}
+.module-installed .xlyre::after,.module-already .xlyre::after{background-color:#e5dc1e!important}
+.error{padding-bottom:0!important;position:relative}
+.error::before{content:"!";display:inline-block;width:1.2em;text-align:center;font-weight:700;border:3px solid #ccc;border-color:#ff7e68;margin-right:.5em;color:#ff7e68;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;line-height:1.3}
 @font-face{font-family:social_icons;src:url(../../fonts/social_icons.eot);src:url(../../fonts/social_icons.eot?#iefix) format("embedded-opentype"),url(../../fonts/social_icons.ttf) format("truetype"),url(../../fonts/social_icons.woff) format("woff"),url(../../fonts/social_icons.svg#social_icons) format("svg");font-weight:400;font-style:normal}
 .twitter_btn::before{content:"\e600"}
 .facebook_btn::before{content:"\e601"}

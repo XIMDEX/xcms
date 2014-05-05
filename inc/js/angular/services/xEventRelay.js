@@ -24,10 +24,14 @@
  */
 angular.module('ximdex.common.service')
     .factory('xEventRelay', ['$window', '$rootScope', function($window, $rootScope) {
-		var $relay = $window.jQuery('#angular-event-relay');
-    	var repeatEvent = function(event, data) {
-    		$rootScope.$broadcast(event.type, data);
+    	var repeatAngularEvent = function(event, data, repeated) {
+    		if (!repeated) $window.jQuery(document).trigger(event.name, data, true);
     	}
-    	$relay.on('openAction', repeatEvent);
+    	var repeatJQueryEvent = function(event, data, repeated) {
+    		if (!repeated) $rootScope.$broadcast(event.type, data, true);
+    	}
+    	
+    	$rootScope.$on('nodemodified', repeatAngularEvent);
+    	$window.jQuery(document).on('nodemodified', repeatJQueryEvent);
     	
 	}]);

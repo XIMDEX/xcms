@@ -33,7 +33,6 @@
 		<p class="input-select icon icon-positioned link">
 			<input type="text" name="name" id="name" class="cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" data-idnode="{$id_node}" placeholder="{t}Link name{/t}"/>
 			<select name="link_type" id="link_type" class="cajaxg document-type validable not_empty">
-				<option value="" disabled>{t}Select link type{/t}</option>
 				<option value="url" selected>URL (http://)</option>
 				<option value="email">E-mail (mailto:)</option>
 			</select>

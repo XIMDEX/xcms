@@ -29,6 +29,7 @@ X.i18nStrings = {
 				"distribution": {
 					"attach": "Adjuntar archivo",
 					"upload": "Subir distribución",
+					"new_file": "Selecciona un archivo nuevo",
 					"uploading": "Subiendo",
 					"created": "Creado",
 					"modified": "Modificado",

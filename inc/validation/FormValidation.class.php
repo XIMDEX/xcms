@@ -26,6 +26,7 @@
  */
 
 ModulesManager::file('/inc/model/Links.inc');
+include_once( XIMDEX_ROOT_PATH . "/inc/helper/String.class.php" );
 
 class FormValidation {
     
@@ -40,7 +41,7 @@ class FormValidation {
         $inputName = $params["inputName"];
         $name=$params[$inputName];
         if (!empty($params["process"]) && $params["process"] == "normalize") {
-            $name = self::normalizeName($name);
+            $name = String::normalize($name);
         }
         $node = new Node($idnode);
         $names = $node->find("Name","idparent=%s",array($idnode),MONO);        
@@ -85,15 +86,6 @@ class FormValidation {
                 return true;
         }
         return false;        
-    }
-
-    //This function should be a helper service
-    private static function normalizeName($name) {   
-        $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-        $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-        $decodedName = utf8_decode($name);
-        $decodedName = strtr($decodedName, utf8_decode($source), $target);
-        return str_replace(' ', '_', utf8_encode($decodedName));
     }
 }
 ?>

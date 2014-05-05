@@ -126,7 +126,7 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 
 		// Check Params:
 		if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado la secci�n del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW FILTERMACROSPREVIEW: Node section not specified: ' . $args['NODENAME']);
 			return NULL;
 		}
 

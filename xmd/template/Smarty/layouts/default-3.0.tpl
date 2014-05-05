@@ -25,7 +25,7 @@
 
 {include file="`$_APP_ROOT`/xmd/template/Smarty/helper/li_for_js.tpl"}
 	<div class="container">
- <!--		{if ($view_head)}
+ {*		{if ($view_head)}
 			 {if $num_nodes > 1}
 			 	<h2 class='nodo_path'><strong>{t}Executing the action on the nodes{/t}: </strong>
 				{foreach from=$nodes item=node}
@@ -39,7 +39,7 @@
 		<h3 class='action_tour'>&nbsp;</h3>
 		{if ($_ACTION_DESCRIPTION)}
 		<h3 class='action_desc'><span><strong>{t}Description{/t}: </strong>{$_ACTION_DESCRIPTION|gettext}</span></h3>
-		{/if} -->
+		{/if} *}
 		<div class="action_container ui-widget">
 		{if ($_ACTION_CONTROLLER)}
 			{include file="$_ACTION_CONTROLLER"}

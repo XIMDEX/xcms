@@ -31,7 +31,7 @@
 	content: "\e610";
 }
 %upload::before {
-	content: "\e611";
+	content: "\e615";
 }
 %pencil::before {
 	content: "\45";
@@ -58,6 +58,10 @@
 
 %tic::before, %tic::after{
 	content: "\79";
+}
+
+%tic-outer::before{
+	content: "\e602";
 }
 
 %rdf::before{
@@ -91,4 +95,12 @@
 
 %pause::before{
 	content: "\e01c";
+}
+
+%language{
+	content: "\006c";
+}
+
+%arrow-down{
+	content: "\e038";
 }

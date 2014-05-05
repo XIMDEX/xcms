@@ -48,7 +48,8 @@ class InstallController extends IController {
 	 */
 	public function __construct(){
 		$this->installManager = new InstallManager(InstallManager::WEB_MODE);
-		parent::__construct();
+		$this->request = new Request();
+		$this->response = new Response();
 		$this->steps = $this->installManager->getSteps();
 		$this->currentState = $this->installManager->getCurrentState();		
 	}
@@ -63,17 +64,26 @@ class InstallController extends IController {
 		
 		//Instancing the step object, 
 		//setting step properties 
-		//and get the method to run		
-		
+		//and get the method to run
 		$installStep = $this->compose();
 		$method = (null !== $this->request->getParam('method'))? $this->request->getParam('method') : "index";
 		$this->request->setParam("method",$method);
 		$installStep->setRequest($this->request);
 		$installStep->setResponse($this->response);
 
-		if ($installStep && method_exists($installStep, $method)){
+
+		if ($installStep){
+			$check = $installStep->check();
+			if (!$check){
+				$this->installManager->prevStep();
+				$this->dispatch();
+				return;
+			}
+
+			if (method_exists($installStep, $method)){
 				$installStep->$method();			
-		}
+			}
+		} 
 	}
 
 	/**

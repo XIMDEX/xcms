@@ -22,7 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-.dialog_advanced_search .selectionButton, .xim-listview-selectionhandler button, .xim-listview-selectionhandler .dialog_advanced_search .search_button, .dialog_advanced_search .xim-listview-selectionhandler .search_button {
+.dialog_advanced_search .xim-search-dialog .selectionButton, .dialog_advanced_search .xim-listview-selectionhandler button, .dialog_advanced_search .xim-listview-selectionhandler .xim-search-dialog .search_button, .dialog_advanced_search .xim-search-dialog .xim-listview-selectionhandler .search_button {
   width: 100%;
   background: #fff;
   border: 1px solid #dedede;
@@ -40,13 +40,13 @@
   border-color: #fff;
   background: #d6d8dd; }
 
-.dialog_advanced_search .save_search button, .dialog_advanced_search .xim-filter-add, .dialog_advanced_search .xim-filter-remove, .dialog_advanced_search .search_button {
+.dialog_advanced_search .xim-search-dialog .save_search button, .dialog_advanced_search .xim-search-dialog .xim-filter-add, .dialog_advanced_search .xim-search-dialog .xim-filter-remove, .dialog_advanced_search .xim-search-dialog .search_button {
   border: none;
   background: none;
   cursor: pointer;
   font-size: 1.4rem; }
 
-.simple_search .xim-listview-table tr {
+.dialog_advanced_search .simple_search .xim-listview-table tr {
   background: #fff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -59,22 +59,22 @@
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
 
-.dialog_advanced_search .search_options {
+.dialog_advanced_search .xim-search-dialog .search_options {
   display: inline-block;
   vertical-align: top;
   width: calc(33% - 1em); }
 
-.dialog_advanced_search .results, .dialog_advanced_search .simple_search {
+.dialog_advanced_search .xim-search-dialog .results, .dialog_advanced_search .xim-search-dialog .simple_search {
   display: inline-block;
   vertical-align: top;
   width: calc(66% - 1em); }
 
-.dialog_advanced_search .xim-filter-field, .dialog_advanced_search .xim-filter-active-comparation, .xim-itemsSelector, .xim-listview-selectionhandler {
+.dialog_advanced_search .xim-search-dialog .xim-filter-field, .dialog_advanced_search .xim-search-dialog .xim-filter-active-comparation, .dialog_advanced_search .xim-itemsSelector, .dialog_advanced_search .xim-listview-selectionhandler {
   display: inline-block;
   vertical-align: top;
   width: calc(50% - 1em); }
 
-.dialog_advanced_search .results .xim-listview-table td:nth-child(5)::before, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5)::before {
+.dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5)::before, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5)::before {
   background: rgba(35, 35, 35, 0.8);
   color: #fff;
   padding: .5em 1em;
@@ -117,362 +117,360 @@
     .dialog_advanced_search > .ui-widget-header > span {
       display: none; }
     .dialog_advanced_search > .ui-widget-header > a {
-      margin: 0; }
+      margin: 0;
+      right: 20px; }
     .dialog_advanced_search > .ui-widget-header .ui-dialog .ui-dialog-titlebar-close {
       margin-top: 0; }
   .dialog_advanced_search .advanced-search {
     padding: 0; }
   .dialog_advanced_search .xim-search-dialog {
     height: 100%; }
-  .dialog_advanced_search .search_options {
-    background: #404444;
-    height: 100%;
-    padding: 1em 1.5em;
-    overflow: auto; }
-    .dialog_advanced_search .search_options h2, .dialog_advanced_search .search_options h3 {
-      color: rgba(255, 255, 255, 0.8);
-      font-family: "Ubuntu Condensed";
-      text-transform: uppercase;
-      padding: .5em 0;
-      border-bottom: 1px solid;
-      font-size: 1.5rem;
-      margin-bottom: 1em;
-      font-weight: bold; }
-    .dialog_advanced_search .search_options select, .dialog_advanced_search .search_options input {
-      background: rgba(255, 255, 255, 0.18);
-      -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-      -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-      border: none;
-      -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
-      border-radius: 2px;
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: .5em;
-      font-size: 1.4rem; }
-    .dialog_advanced_search .search_options option {
-      color: #000; }
-  .dialog_advanced_search .save_search {
-    float: right;
-    margin-top: .5em; }
-    .dialog_advanced_search .save_search button, .dialog_advanced_search .save_search .search_button {
-      color: #47b1a3; }
-  .dialog_advanced_search .xim-filter-field, .dialog_advanced_search .xim-filter-active-comparation {
-    margin: 0;
-    width: calc(50% - .5rem); }
-  .dialog_advanced_search .xim-filter-field {
-    margin-right: 1rem; }
-  .dialog_advanced_search .xim-filter-content {
-    width: calc(100% - 4.5em);
-    background: rgba(255, 255, 255, 0.6) !important;
-    color: #404444 !important; }
-  .dialog_advanced_search .xim-filter-add, .dialog_advanced_search .xim-filter-remove {
-    font-size: 3rem;
-    color: #7bcabf;
-    line-height: .4; }
-  .dialog_advanced_search .buttonset:not(.save_search) {
-    margin-bottom: 3em; }
-  .dialog_advanced_search .selectionButton {
-    max-width: 12em;
-    margin-top: 1em;
-    float: right; }
-  .dialog_advanced_search .search_button {
-    background: #7bcabf;
-    width: 100%;
-    padding: .5em;
-    text-transform: uppercase;
-    color: #404444; }
-  .dialog_advanced_search .xim-search-options {
-    display: none;
-    margin: .5em;
-    color: #fff; }
-    .dialog_advanced_search .xim-search-options .label {
-      display: block;
-      padding-bottom: .5em; }
-    .dialog_advanced_search .xim-search-options label {
-      color: #fff;
-      font-size: 1.4rem; }
-    .dialog_advanced_search .xim-search-options.visible {
-      display: block; }
-  .dialog_advanced_search .results, .dialog_advanced_search .simple_search {
-    padding: 2em 1.5em;
-    position: relative; }
-    .dialog_advanced_search .results .xim-listview-table, .dialog_advanced_search .results tr, .dialog_advanced_search .results tbody, .dialog_advanced_search .simple_search .xim-listview-table, .dialog_advanced_search .simple_search tr, .dialog_advanced_search .simple_search tbody {
-      float: left;
-      width: 100%;
-      display: block; }
-    .dialog_advanced_search .results .t_fixed_header, .dialog_advanced_search .simple_search .t_fixed_header {
-      background: none;
-      border: none; }
-      .dialog_advanced_search .results .t_fixed_header .xim-listview-item, .dialog_advanced_search .simple_search .t_fixed_header .xim-listview-item {
-        border-bottom: 1px solid #c6cfd3;
-        border-right: 1px solid #c6cfd3;
-        border-top: 1px solid #d5dbde;
-        margin-bottom: .5em; }
-        .dialog_advanced_search .results .t_fixed_header .xim-listview-item th, .dialog_advanced_search .simple_search .t_fixed_header .xim-listview-item th {
-          width: auto !important;
-          text-transform: uppercase; }
-      .dialog_advanced_search .results .t_fixed_header .xim-listview-selected, .dialog_advanced_search .simple_search .t_fixed_header .xim-listview-selected {
-        background: #e1e1e1;
-        /*border-left: none;
-        border-top: none;*/
-        border-width: 0 0 1px 0; }
-    .dialog_advanced_search .results .xim-listview-table, .dialog_advanced_search .simple_search .xim-listview-table {
-      padding: 0;
+    .dialog_advanced_search .xim-search-dialog .search_options {
+      background: #404444;
+      height: 100%;
+      padding: 1em 1.5em;
+      overflow: auto;
+      position: absolute;
+      top: 0;
+      bottom: 0; }
+      .dialog_advanced_search .xim-search-dialog .search_options h2, .dialog_advanced_search .xim-search-dialog .search_options h3 {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: "Ubuntu Condensed";
+        text-transform: uppercase;
+        padding: .5em 0;
+        border-bottom: 1px solid;
+        font-size: 1.5rem;
+        margin-bottom: 1em;
+        font-weight: bold; }
+      .dialog_advanced_search .xim-search-dialog .search_options select, .dialog_advanced_search .xim-search-dialog .search_options input {
+        background: rgba(255, 255, 255, 0.18);
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+        border: none;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        border-radius: 2px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: .5em;
+        font-size: 1.4rem; }
+      .dialog_advanced_search .xim-search-dialog .search_options option {
+        color: #000; }
+    .dialog_advanced_search .xim-search-dialog .save_search {
+      float: right;
+      margin-top: .5em; }
+      .dialog_advanced_search .xim-search-dialog .save_search button, .dialog_advanced_search .xim-search-dialog .save_search .search_button {
+        color: #47b1a3; }
+    .dialog_advanced_search .xim-search-dialog .xim-filter-field, .dialog_advanced_search .xim-search-dialog .xim-filter-active-comparation {
       margin: 0;
-      width: 100% !important; }
-      .dialog_advanced_search .results .xim-listview-table tr, .dialog_advanced_search .simple_search .xim-listview-table tr {
-        position: relative;
-        border-style: solid;
-        padding: 1em 0; }
-        .dialog_advanced_search .results .xim-listview-table tr .xim-listview-actions-dropdown, .dialog_advanced_search .simple_search .xim-listview-table tr .xim-listview-actions-dropdown {
-          left: 5px; }
-        .dialog_advanced_search .results .xim-listview-table tr:first-child, .dialog_advanced_search .simple_search .xim-listview-table tr:first-child {
-          border-top: 1px solid #c6cfd3; }
-        .dialog_advanced_search .results .xim-listview-table tr:hover .xim-actions-dropdown, .dialog_advanced_search .simple_search .xim-listview-table tr:hover .xim-actions-dropdown {
-          background: none; }
-      .dialog_advanced_search .results .xim-listview-table td, .dialog_advanced_search .simple_search .xim-listview-table td {
-        font-size: 1.2em;
-        float: left; }
-        .dialog_advanced_search .results .xim-listview-table td:first-child, .dialog_advanced_search .simple_search .xim-listview-table td:first-child {
-          margin-left: 1em;
-          position: absolute;
-          width: 100%;
-          height: 100%; }
-          .dialog_advanced_search .results .xim-listview-table td:first-child .xim-actions-dropdown, .dialog_advanced_search .simple_search .xim-listview-table td:first-child .xim-actions-dropdown {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            left: 0;
-            top: 0; }
-        .dialog_advanced_search .results .xim-listview-table td:nth-child(2), .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(2) {
-          position: absolute;
-          left: 29.5em; }
-        .dialog_advanced_search .results .xim-listview-table td:nth-child(3), .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(3) {
-          margin-left: 3.1em; }
-        .dialog_advanced_search .results .xim-listview-table td:nth-child(4), .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(4) {
-          color: #7bcabf;
-          margin-top: -.1em;
-          font-weight: bold; }
-          .dialog_advanced_search .results .xim-listview-table td:nth-child(4)::before, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(4)::before {
-            content: "["; }
-          .dialog_advanced_search .results .xim-listview-table td:nth-child(4)::after, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(4)::after {
-            content: "]"; }
-        .dialog_advanced_search .results .xim-listview-table td:nth-child(5), .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5) {
-          clear: left;
-          margin-left: 3.1em;
-          width: 93%; }
-          .dialog_advanced_search .results .xim-listview-table td:nth-child(5) span, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5) span {
-            position: relative;
-            text-overflow: ellipsis;
-            display: block;
-            overflow: hidden;
-            width: 100%;
-            padding-right: 13.5em; }
-          .dialog_advanced_search .results .xim-listview-table td:nth-child(5):hover::before, .dialog_advanced_search .results .xim-listview-table td:nth-child(5):hover::after, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5):hover::before, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5):hover::after {
-            opacity: 1;
-            -webkit-transition: all .5s .3s;
-            -moz-transition: all .5s .3s;
-            -ms-transition: all .5s .3s;
-            -o-transition: all .5s .3s;
-            transition: all .5s .3s; }
-          .dialog_advanced_search .results .xim-listview-table td:nth-child(5):hover::before, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5):hover::before {
-            height: auto;
-            overflow: visible;
-            padding: .5em 1em; }
-          .dialog_advanced_search .results .xim-listview-table td:nth-child(5)::before, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5)::before {
-            content: attr(data-tooltip);
-            top: 3.7em;
-            margin-left: -1em;
-            -webkit-transition: all .2s;
-            -moz-transition: all .2s;
-            -ms-transition: all .2s;
-            -o-transition: all .2s;
-            transition: all .2s; }
-          .dialog_advanced_search .results .xim-listview-table td:nth-child(5)::after, .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5)::after {
-            border: 0.5em solid transparent;
-            position: absolute;
-            content: "";
-            border-bottom-color: rgba(35, 35, 35, 0.8);
-            margin-top: -1em;
-            margin-bottom: -.9em;
-            top: 3.8em;
-            -webkit-transition: all .2s;
-            -moz-transition: all .2s;
-            -ms-transition: all .2s;
-            -o-transition: all .2s;
-            transition: all .2s;
-            opacity: 0; }
-        .dialog_advanced_search .results .xim-listview-table td:nth-child(6), .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(6) {
-          margin-top: -2.6em;
-          float: right;
-          margin-right: .8em; }
-        .dialog_advanced_search .results .xim-listview-table td:nth-child(7), .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(7) {
-          position: absolute;
-          left: 29.5em;
-          top: 2.18em;
-          color: #69c3b6;
-          font-weight: bold; }
-        .dialog_advanced_search .results .xim-listview-table td:last-child, .dialog_advanced_search .simple_search .xim-listview-table td:last-child {
-          margin-top: -1.3em;
-          float: right;
-          margin-right: .8em; }
-      .dialog_advanced_search .results .xim-listview-table .xim-listview-icon, .dialog_advanced_search .simple_search .xim-listview-table .xim-listview-icon {
-        height: 1.5em;
-        margin: 0; }
-      .dialog_advanced_search .results .xim-listview-table .xim-listview-actions-dropdown, .dialog_advanced_search .simple_search .xim-listview-table .xim-listview-actions-dropdown {
-        margin-top: 0;
-        width: 23px; }
-    .dialog_advanced_search .results .ui-widget-content, .dialog_advanced_search .simple_search .ui-widget-content {
-      border: none;
-      background: none; }
-    .dialog_advanced_search .results .xim-listview-label, .dialog_advanced_search .simple_search .xim-listview-label {
-      font-family: "Coustard"; }
-  .dialog_advanced_search .xim-listview-item:not(.xim-listview-selected):hover {
-    border: none;
-    border-bottom: 1px solid #e3e7e9;
-    border-bottom: 1px solid #e3e7e9;
-    border-top: 1px solid #d5dbde;
-    background: #e1e1e1; }
-  .dialog_advanced_search thead .xim-listview-item {
-    padding: .5em .5em .5em 5.5em;
-    position: relative; }
-  .dialog_advanced_search thead th {
-    float: left; }
-  .dialog_advanced_search thead th:nth-child(3) {
-    padding-left: .8em; }
-  .dialog_advanced_search thead th:nth-child(4) {
-    padding-left: 1em; }
-    .dialog_advanced_search thead th:nth-child(4)::before {
-      content: "["; }
-    .dialog_advanced_search thead th:nth-child(4)::after {
-      content: "]"; }
-  .dialog_advanced_search thead th:nth-child(5) {
-    padding-left: 1.8em;
-    clear: both; }
-  .dialog_advanced_search thead th:nth-child(7) {
-    position: absolute;
-    left: 2em;
-    top: 1.5em; }
-  .dialog_advanced_search thead th:nth-child(6), .dialog_advanced_search thead th:nth-child(8) {
-    float: right;
-    margin-right: 1.8em; }
-  .dialog_advanced_search thead th:nth-child(6) {
-    margin-top: -1em; }
-
-.xim-search-panel {
-  color: #fff;
-  line-height: 1.5; }
-
-.saved-searches-items, .last-searches-items {
-  padding-bottom: 1.5em; }
-  .saved-searches-items li, .last-searches-items li {
-    cursor: pointer;
-    font-size: 1.2em; }
-    .saved-searches-items li:hover, .last-searches-items li:hover {
-      color: #7bcabf; }
-
-.xim-listview-table-container > div {
-  width: 100% !important; }
-.xim-listview-table-container .ui-widget-header {
-  background: none;
-  border: none; }
-.xim-listview-table-container .ui-resize-ghost {
-  display: none; }
-
-.xim-itemsSelector, .xim-listview-selectionhandler {
-  width: 50%; }
-
-.xim-itemsSelector-legend {
-  padding-right: .8em;
-  padding-left: 1em;
-  line-height: 3.5; }
-
-.xim-listview-selectionhandler {
-  text-align: right; }
-  .xim-listview-selectionhandler button, .xim-listview-selectionhandler .dialog_advanced_search .search_button, .dialog_advanced_search .xim-listview-selectionhandler .search_button {
-    display: inline-block !important;
-    width: auto; }
-    .xim-listview-selectionhandler button:hover, .xim-listview-selectionhandler .dialog_advanced_search .search_button:hover, .dialog_advanced_search .xim-listview-selectionhandler .search_button:hover {
+      width: calc(50% - .5rem); }
+    .dialog_advanced_search .xim-search-dialog .xim-filter-field {
+      margin-right: 1rem; }
+    .dialog_advanced_search .xim-search-dialog .xim-filter-content {
+      width: calc(100% - 4.5em);
+      background: rgba(255, 255, 255, 0.6) !important;
+      color: #404444 !important; }
+    .dialog_advanced_search .xim-search-dialog .xim-filter-add, .dialog_advanced_search .xim-search-dialog .xim-filter-remove {
+      font-size: 3rem;
+      color: #7bcabf;
+      line-height: .4; }
+    .dialog_advanced_search .xim-search-dialog .buttonset:not(.save_search) {
+      margin-bottom: 3em; }
+    .dialog_advanced_search .xim-search-dialog .selectionButton {
+      max-width: 12em;
+      margin-top: 1em;
+      float: right; }
+    .dialog_advanced_search .xim-search-dialog .search_button {
       background: #7bcabf;
+      width: 100%;
+      padding: .5em;
+      text-transform: uppercase;
+      color: #404444; }
+    .dialog_advanced_search .xim-search-dialog .xim-search-options {
+      display: none;
+      margin: .5em;
       color: #fff; }
-
-.number_results {
-  position: absolute;
-  top: 1.5em;
-  font-size: 1.2em;
-  height: 3em;
-  overflow: auto;
-  right: 1.5em; }
-  .number_results span {
-    background: #7bcabf;
-    -webkit-border-radius: 1px;
-    -moz-border-radius: 1px;
-    border-radius: 1px;
-    padding: .1em .4em;
-    font-weight: bold;
-    margin-left: .5em; }
-
-.simple_search .xim-listview-table-container {
-  padding-top: 1em; }
-.simple_search .ui-state-default, .simple_search .ui-widget-content {
-  border: none;
-  background: none; }
-.simple_search .xim-listview-table {
-  width: 100% !important;
-  display: block;
-  margin: 0; }
-  .simple_search .xim-listview-table tbody, .simple_search .xim-listview-table tr {
-    display: block; }
-  .simple_search .xim-listview-table tr {
-    background: #fff;
-    overflow: hidden; }
-  .simple_search .xim-listview-table td {
-    float: left; }
-  .simple_search .xim-listview-table .xim-listview-label {
-    font-weight: bold; }
-  .simple_search .xim-listview-table .xim-listview-label + td::before {
-    content: "["; }
-  .simple_search .xim-listview-table .xim-listview-label + td::after {
-    content: "]"; }
-  .simple_search .xim-listview-table td:nth-child(5) {
-    clear: both;
-    margin-left: 5em;
-    margin-top: -.5em; }
-  .simple_search .xim-listview-table td:nth-child(6) {
-    margin-top: -1.9em; }
-  .simple_search .xim-listview-table td:nth-child(6), .simple_search .xim-listview-table td:nth-child(8) {
-    float: right; }
-  .simple_search .xim-listview-table td:nth-child(7) {
+      .dialog_advanced_search .xim-search-dialog .xim-search-options .label {
+        display: block;
+        padding-bottom: .5em; }
+      .dialog_advanced_search .xim-search-dialog .xim-search-options label {
+        color: #fff;
+        font-size: 1.4rem; }
+      .dialog_advanced_search .xim-search-dialog .xim-search-options.visible {
+        display: block; }
+    .dialog_advanced_search .xim-search-dialog .results, .dialog_advanced_search .xim-search-dialog .simple_search {
+      padding: 2em 1.5em;
+      position: relative;
+      margin-left: 34%; }
+      .dialog_advanced_search .xim-search-dialog .results .xim-listview-table, .dialog_advanced_search .xim-search-dialog .results tr, .dialog_advanced_search .xim-search-dialog .results tbody, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table, .dialog_advanced_search .xim-search-dialog .simple_search tr, .dialog_advanced_search .xim-search-dialog .simple_search tbody {
+        float: left;
+        width: 100%;
+        display: block; }
+      .dialog_advanced_search .xim-search-dialog .results .t_fixed_header, .dialog_advanced_search .xim-search-dialog .simple_search .t_fixed_header {
+        background: none;
+        border: none; }
+        .dialog_advanced_search .xim-search-dialog .results .t_fixed_header .xim-listview-item, .dialog_advanced_search .xim-search-dialog .simple_search .t_fixed_header .xim-listview-item {
+          border-bottom: 1px solid #c6cfd3;
+          border-right: 1px solid #c6cfd3;
+          border-top: 1px solid #d5dbde;
+          margin-bottom: .5em; }
+          .dialog_advanced_search .xim-search-dialog .results .t_fixed_header .xim-listview-item th, .dialog_advanced_search .xim-search-dialog .simple_search .t_fixed_header .xim-listview-item th {
+            width: auto !important;
+            text-transform: uppercase; }
+        .dialog_advanced_search .xim-search-dialog .results .t_fixed_header .xim-listview-selected, .dialog_advanced_search .xim-search-dialog .simple_search .t_fixed_header .xim-listview-selected {
+          background: #e1e1e1;
+          /*border-left: none;
+          border-top: none;*/
+          border-width: 0 1px 1px 1px;
+          border-right: 1px solid #d5dbde; }
+      .dialog_advanced_search .xim-search-dialog .results .xim-listview-table, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table {
+        padding: 0;
+        margin: 0;
+        width: 100% !important; }
+        .dialog_advanced_search .xim-search-dialog .results .xim-listview-table tr, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table tr {
+          position: relative;
+          border-style: solid;
+          padding: 1em 0;
+          border-left: none; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table tr .xim-listview-actions-dropdown, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table tr .xim-listview-actions-dropdown {
+            left: 5px; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table tr:first-child, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table tr:first-child {
+            border-top: 1px solid #c6cfd3; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table tr:hover .xim-actions-dropdown, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table tr:hover .xim-actions-dropdown {
+            background: none; }
+        .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td {
+          font-size: 1.2em;
+          float: left; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:first-child, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:first-child {
+            margin-left: 1em;
+            position: absolute;
+            width: 100%;
+            height: 100%; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:first-child .xim-actions-dropdown, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:first-child .xim-actions-dropdown {
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              left: 0;
+              top: 0; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(2), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(2) {
+            position: absolute;
+            text-align: right !important;
+            left: 29.5em; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(3), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(3) {
+            margin-left: 3.1em; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(4), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(4) {
+            color: #7bcabf;
+            margin-top: -.1em;
+            font-weight: bold; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(4)::before, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(4)::before {
+              content: "["; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(4)::after, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(4)::after {
+              content: "]"; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5) {
+            clear: left;
+            margin-left: 3.1em;
+            width: 87% !important; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5) span, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5) span {
+              position: relative;
+              text-overflow: ellipsis;
+              display: block;
+              overflow: hidden;
+              width: 100%;
+              padding-right: 13.5em; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5):hover::before, .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5):hover::after, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5):hover::before, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5):hover::after {
+              opacity: 1;
+              -webkit-transition: all .5s .3s;
+              -moz-transition: all .5s .3s;
+              -ms-transition: all .5s .3s;
+              -o-transition: all .5s .3s;
+              transition: all .5s .3s; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5):hover::before, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5):hover::before {
+              height: auto;
+              overflow: visible;
+              padding: .5em 1em; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5)::before, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5)::before {
+              content: attr(data-tooltip);
+              top: 3.7em;
+              margin-left: -1em;
+              -webkit-transition: all .2s;
+              -moz-transition: all .2s;
+              -ms-transition: all .2s;
+              -o-transition: all .2s;
+              transition: all .2s; }
+            .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(5)::after, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(5)::after {
+              border: 0.5em solid transparent;
+              position: absolute;
+              content: "";
+              border-bottom-color: rgba(35, 35, 35, 0.8);
+              margin-top: -1em;
+              margin-bottom: -.9em;
+              top: 3.8em;
+              -webkit-transition: all .2s;
+              -moz-transition: all .2s;
+              -ms-transition: all .2s;
+              -o-transition: all .2s;
+              transition: all .2s;
+              opacity: 0; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(6), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(6) {
+            margin-top: -2.6em;
+            float: left;
+            margin-left: 59%; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:nth-child(7), .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:nth-child(7) {
+            position: absolute;
+            left: 29.5em;
+            top: 2.18em;
+            color: #69c3b6;
+            font-weight: bold;
+            text-align: right !important; }
+          .dialog_advanced_search .xim-search-dialog .results .xim-listview-table td:last-child, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table td:last-child {
+            margin-top: -1.3em;
+            float: left;
+            margin-left: 59%; }
+        .dialog_advanced_search .xim-search-dialog .results .xim-listview-table .xim-listview-icon, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table .xim-listview-icon {
+          height: 1.5em;
+          margin: 0; }
+        .dialog_advanced_search .xim-search-dialog .results .xim-listview-table .xim-listview-actions-dropdown, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-table .xim-listview-actions-dropdown {
+          margin-top: 0;
+          width: 23px; }
+      .dialog_advanced_search .xim-search-dialog .results .ui-widget-content, .dialog_advanced_search .xim-search-dialog .simple_search .ui-widget-content {
+        border: none;
+        background: none; }
+      .dialog_advanced_search .xim-search-dialog .results .xim-listview-label, .dialog_advanced_search .xim-search-dialog .simple_search .xim-listview-label {
+        font-family: "Coustard"; }
+    .dialog_advanced_search .xim-search-dialog .xim-listview-item:not(.xim-listview-selected):hover {
+      border: none;
+      border-right: 1px solid #d5dbde;
+      border-bottom: 1px solid #e3e7e9;
+      border-top: 1px solid #d5dbde;
+      background: #e1e1e1; }
+    .dialog_advanced_search .xim-search-dialog thead .xim-listview-item {
+      padding: .5em .5em .5em 5.5em;
+      position: relative; }
+    .dialog_advanced_search .xim-search-dialog thead th {
+      float: left; }
+    .dialog_advanced_search .xim-search-dialog thead th:nth-child(3) {
+      padding-left: .8em; }
+    .dialog_advanced_search .xim-search-dialog thead th:nth-child(4) {
+      padding-left: 1em; }
+      .dialog_advanced_search .xim-search-dialog thead th:nth-child(4)::before {
+        content: "["; }
+      .dialog_advanced_search .xim-search-dialog thead th:nth-child(4)::after {
+        content: "]"; }
+    .dialog_advanced_search .xim-search-dialog thead th:nth-child(5) {
+      padding-left: 1.8em;
+      clear: both; }
+    .dialog_advanced_search .xim-search-dialog thead th:nth-child(7) {
+      position: absolute;
+      left: 2em;
+      top: 1.5em; }
+    .dialog_advanced_search .xim-search-dialog thead th:nth-child(6), .dialog_advanced_search .xim-search-dialog thead th:nth-child(8) {
+      float: right;
+      margin-right: 1.8em; }
+    .dialog_advanced_search .xim-search-dialog thead th:nth-child(6) {
+      margin-top: -1em; }
+  .dialog_advanced_search .xim-search-panel {
+    color: #fff;
+    line-height: 1.5; }
+  .dialog_advanced_search .saved-searches-items, .dialog_advanced_search .last-searches-items {
+    padding-bottom: 1.5em; }
+    .dialog_advanced_search .saved-searches-items li, .dialog_advanced_search .last-searches-items li {
+      cursor: pointer;
+      font-size: 1.2em; }
+      .dialog_advanced_search .saved-searches-items li:hover, .dialog_advanced_search .last-searches-items li:hover {
+        color: #7bcabf; }
+  .dialog_advanced_search .xim-listview-table-container > div {
+    width: 100% !important; }
+  .dialog_advanced_search .xim-listview-table-container .ui-widget-header {
+    background: none;
+    border: none; }
+  .dialog_advanced_search .xim-listview-table-container .ui-resize-ghost {
+    display: none; }
+  .dialog_advanced_search .xim-itemsSelector, .dialog_advanced_search .xim-listview-selectionhandler {
+    width: 50%; }
+  .dialog_advanced_search .xim-itemsSelector-legend {
+    padding-right: .8em;
+    padding-left: 1em;
+    line-height: 3.5; }
+  .dialog_advanced_search .xim-listview-selectionhandler {
+    text-align: right; }
+    .dialog_advanced_search .xim-listview-selectionhandler button, .dialog_advanced_search .xim-listview-selectionhandler .xim-search-dialog .search_button, .dialog_advanced_search .xim-search-dialog .xim-listview-selectionhandler .search_button {
+      display: inline-block !important;
+      width: auto; }
+      .dialog_advanced_search .xim-listview-selectionhandler button:hover, .dialog_advanced_search .xim-listview-selectionhandler .xim-search-dialog .search_button:hover, .dialog_advanced_search .xim-search-dialog .xim-listview-selectionhandler .search_button:hover {
+        background: #7bcabf;
+        color: #fff; }
+  .dialog_advanced_search .number_results {
     position: absolute;
-    left: 4.3em;
-    top: 2em;
-    color: #7bcabf;
-    font-weight: bold; }
-  .simple_search .xim-listview-table td:nth-child(8) {
-    margin-top: -.5em; }
-.simple_search .xim-listview-actions-dropdown {
-  width: 22px; }
-
-.results h2 {
-  font-size: 1.2em;
-  padding-bottom: 1em;
-  border-bottom: 1px solid #e1e1e1;
-  margin-bottom: 1em; }
-.results select {
-  border: none;
-  padding: 0; }
-
-.headtable {
-  display: none; }
-
-.xim-listview-item {
-  position: relative; }
-  .xim-listview-item::before {
-    content: "";
-    width: .5em;
-    background: #7bcabf;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0; }
+    top: 1.5em;
+    font-size: 1.2em;
+    height: 3em;
+    overflow: auto;
+    right: 1.5em; }
+    .dialog_advanced_search .number_results span {
+      background: #7bcabf;
+      -webkit-border-radius: 1px;
+      -moz-border-radius: 1px;
+      border-radius: 1px;
+      padding: .1em .4em;
+      font-weight: bold;
+      margin-left: .5em; }
+  .dialog_advanced_search .simple_search .xim-listview-table-container {
+    padding-top: 1em; }
+  .dialog_advanced_search .simple_search .ui-state-default, .dialog_advanced_search .simple_search .ui-widget-content {
+    border: none;
+    background: none; }
+  .dialog_advanced_search .simple_search .xim-listview-table {
+    width: 100% !important;
+    display: block;
+    margin: 0; }
+    .dialog_advanced_search .simple_search .xim-listview-table tbody, .dialog_advanced_search .simple_search .xim-listview-table tr {
+      display: block; }
+    .dialog_advanced_search .simple_search .xim-listview-table tr {
+      background: #fff;
+      overflow: hidden; }
+    .dialog_advanced_search .simple_search .xim-listview-table td {
+      float: left; }
+    .dialog_advanced_search .simple_search .xim-listview-table .xim-listview-label {
+      font-weight: bold; }
+    .dialog_advanced_search .simple_search .xim-listview-table .xim-listview-label + td::before {
+      content: "["; }
+    .dialog_advanced_search .simple_search .xim-listview-table .xim-listview-label + td::after {
+      content: "]"; }
+    .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(5) {
+      clear: both;
+      margin-left: 5em;
+      margin-top: -.5em; }
+    .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(6) {
+      margin-top: -1.9em; }
+    .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(6), .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(8) {
+      float: right; }
+    .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(7) {
+      position: absolute;
+      left: 4.3em;
+      top: 2em;
+      color: #7bcabf;
+      font-weight: bold; }
+    .dialog_advanced_search .simple_search .xim-listview-table td:nth-child(8) {
+      margin-top: -.5em; }
+  .dialog_advanced_search .simple_search .xim-listview-actions-dropdown {
+    width: 22px; }
+  .dialog_advanced_search .results h2 {
+    font-size: 1.2em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #e1e1e1;
+    margin-bottom: 1em; }
+  .dialog_advanced_search .results select {
+    border: none;
+    padding: 0; }
+  .dialog_advanced_search .headtable {
+    display: none; }
+  .dialog_advanced_search .xim-listview-item {
+    position: relative; }
+    .dialog_advanced_search .xim-listview-item::before {
+      content: "";
+      width: .5em;
+      background: #7bcabf;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0; }

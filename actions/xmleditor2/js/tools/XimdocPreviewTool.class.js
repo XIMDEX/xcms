@@ -59,7 +59,13 @@ function XimdocPreviewTool() {
 				 "&channelid="+ channelValue +
 				 "&content=" + encodeURIComponent(content);
 
-		com.ximdex.ximdex.editors.PreviewHandler(kupu.getLoadActionURL(), encodedContent, {
+		var encondedObject = {
+			"nodeid": this.editor.nodeId,
+			"channelid": channelValue,
+			"content": content
+		};
+
+		com.ximdex.ximdex.editors.PreviewHandler(kupu.getLoadActionURL(), encondedObject, {
 			onComplete: function(req, json) {
 //				this.showPreviewByContent(req.responseText);
 				this.showPreviewByUrl(json.prevUrl);

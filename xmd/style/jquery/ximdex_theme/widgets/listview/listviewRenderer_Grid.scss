@@ -23,8 +23,10 @@
  *  @version $Revision$
  */
 
-@import "../themes/ximdex_theme";
-.xim-listview-table{
+@import "../themes/_ximdex_theme";
+@import "../themes/_icons";
+@import "../themes/_extends";
+/*.xim-listview-table{
 	margin: 15px 20px;
 	border-collapse: collapse;
 	
@@ -64,4 +66,53 @@
 
 div.xim-listview-table-container div.t_fixed_header div.body{
 	overflow: visible;
+}*/
+
+.xim-listview-table-container{
+	margin:0 15px;
+	>div{
+		width: auto !important;
+	}
+	.ui-widget-header, .t_fixed_header, .xim-listview-item, .ui-widget-header, .ui-widget-content{
+		//RESET STYLES FROM JQUERY UI
+		border: none;
+		background: none;
+	}
+
+	.headtable{
+		border: none;
+		background: none;
+	}
+
+	.head{
+		width: 100%;
+	}
+
+	.xim-listview-table{
+		width: 100%;
+	}
+
+	.xim-listview-item {
+		
+		th{
+			width: 20% !important;
+			text-transform: uppercase;
+			padding: .5em 1em;
+			font-weight: bold;
+			font-size: 1.5rem;
+			background:$c-mainlight;
+			color: lighten($c-mainlight,25%);
+
+			&:first-child{
+				width: 30px !important;
+			}
+		}
+
+	}
+
+	.xim-listview-grid-view{
+		width: 20% !important;
+	}
+
+	
 }

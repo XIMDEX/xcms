@@ -22,35 +22,70 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-.xim-listview-table {
-  margin: 15px 20px;
-  border-collapse: collapse; }
+/*.xim-listview-table{
+	margin: 15px 20px;
+	border-collapse: collapse;
+	
+}
 
-.xim-listview-table-container .xim-listview-table tr th {
-  background: url("../../../../../images/tree/fnd-th-gridview.png") repeat-x left center;
-  height: 35px;
-  color: #888888;
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 2px 5px;
-  text-align: left;
-  font-size: .9em; }
+.xim-listview-table-container .xim-listview-table tr th{
+	background: url('../../../../../images/tree/fnd-th-gridview.png') repeat-x left center;
+	height: 35px;
+	color: $c_grey-p;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 2px 5px;
+	text-align: left;
+	font-size: .9em;
+}
 
-.xim-listview-item {
-  border-bottom: 1px solid #b3b3b3; }
+.xim-listview-item{
+	border-bottom: 1px solid $c_disabled;	
+}
 
-.xim-listview-item td {
-  white-space: nowrap;
-  padding: 2px 5px;
-  cursor: pointer; }
+.xim-listview-item td{
+	white-space: nowrap;
+	padding: 2px 5px;
+	cursor: pointer;
+	
+}
 
-.action_container .xim-listview-item td {
-  cursor: auto; }
+.action_container .xim-listview-item td{
+	cursor: auto;
+}
 
 .action_container .xim-listview-item:hover, .action_container .xim-listview-selected, .action_container tr.xim-listview-selected:hover {
-  background: none;
-  color: #606060;
-  border-bottom: 1px dashed #cccccc; }
+	background: none;
+	color: $c_grey;
+	border-bottom: 1px dashed $c_grey-pp;
+}
 
-div.xim-listview-table-container div.t_fixed_header div.body {
-  overflow: visible; }
+div.xim-listview-table-container div.t_fixed_header div.body{
+	overflow: visible;
+}*/
+.xim-listview-table-container {
+  margin: 0 15px; }
+  .xim-listview-table-container > div {
+    width: auto !important; }
+  .xim-listview-table-container .ui-widget-header, .xim-listview-table-container .t_fixed_header, .xim-listview-table-container .xim-listview-item, .xim-listview-table-container .ui-widget-header, .xim-listview-table-container .ui-widget-content {
+    border: none;
+    background: none; }
+  .xim-listview-table-container .headtable {
+    border: none;
+    background: none; }
+  .xim-listview-table-container .head {
+    width: 100%; }
+  .xim-listview-table-container .xim-listview-table {
+    width: 100%; }
+  .xim-listview-table-container .xim-listview-item th {
+    width: 20% !important;
+    text-transform: uppercase;
+    padding: .5em 1em;
+    font-weight: bold;
+    font-size: 1.5rem;
+    background: #7bcabf;
+    color: #d6efeb; }
+    .xim-listview-table-container .xim-listview-item th:first-child {
+      width: 30px !important; }
+  .xim-listview-table-container .xim-listview-grid-view {
+    width: 20% !important; }

@@ -69,4 +69,7 @@ X.actionLoaded(function(event, fn, params) {
                                         name: 'Edit file with Xedit',
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
+    $(document).on('nodemodified', function(e, node){
+        params.actionView.reloadAction();
+    });
 });
