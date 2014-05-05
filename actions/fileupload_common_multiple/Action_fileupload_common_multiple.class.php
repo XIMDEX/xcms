@@ -26,14 +26,14 @@
 
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/ConfigInterface.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Config.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Exception.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/File.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/RequestInterface.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Request.php');
-require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Uploader.php');
-// require_once(XIMDEX_ROOT_PATH . '/extensions/Flow/Autoloader.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/ConfigInterface.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Config.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Exception.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/File.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/RequestInterface.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Request.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Uploader.php');
+// require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Autoloader.php');
 
 
 class Action_fileupload_common_multiple extends ActionAbstract {
@@ -206,6 +206,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         if ($file->validateFile() && $file->save($path)) {
             return true;
         } else {
+            header("HTTP/1.1 500 Internal server error");
             return false;
         }	
    	}
