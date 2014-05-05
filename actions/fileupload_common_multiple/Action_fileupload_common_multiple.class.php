@@ -26,6 +26,7 @@
 
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
+ModulesManager::file('/inc/helper/String.class.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/ConfigInterface.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Config.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Exception.php');
@@ -212,7 +213,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
    	}
 
 	function uploadFlowFile() {
-		xdebug_break();
+		
 		$path = XIMDEX_ROOT_PATH . '/data/tmp/files/' . $_POST['flowIdentifier'];
 		
 		if ($this->_saveFile($path)) {
@@ -278,7 +279,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 	//Creating a node according to name and file path
 	private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
         xdebug_break();
-        $normalizedName = $this->normalizeName($file["name"]);
+        $normalizedName = String::normalize($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
 		if (empty($type)) {
