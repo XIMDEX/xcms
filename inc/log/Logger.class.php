@@ -25,8 +25,8 @@
  */
 
 
-
-include_once(XIMDEX_ROOT_PATH . "/conf/install-params.conf.php");
+if (file_exists(XIMDEX_ROOT_PATH . "/conf/install-params.conf.php"))
+	include_once(XIMDEX_ROOT_PATH . "/conf/install-params.conf.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/lang/AssociativeArray.class.php");
 
 if (!defined('LOGGER_LEVEL_ALL'))		define('LOGGER_LEVEL_ALL',		0x0000);

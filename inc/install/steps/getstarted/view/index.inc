@@ -31,5 +31,7 @@
 	<p>You've succesfully installed Ximdex CMS! <br /> 
 		Now you can start using your CMS and edit an publish your content.
 	</p>
-	<a href="" class="launch_ximdex" onclick="document.forms[0].submit(); return false;">Get started</a>
+	<button class="launch_ximdex action_launcher" id="submitButton" onclick="document.forms[0].submit(); return false;">
+          Get started
+      </button>
 </form>

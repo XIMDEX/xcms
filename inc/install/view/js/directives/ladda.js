@@ -1,4 +1,3 @@
-<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,18 +22,18 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-?>
-<h2>Installing Ximdex</h2>	
-<?php
-	foreach ($exceptions as $key => $exception) {
-		foreach ($exception["messages"] as $i => $message) {			
-		?>
-		<p class="error"><?php echo $message;?></p>			
-		<?php
-		if ($exception["help"])
-			?>
-		<pre><?php echo $exception["help"][$i];?></pre>
-		<?php
-		}
-	}
-?>
+
+ximdexInstallerApp.directive('uiLadda', [function () {
+    return {
+      scope: {
+        state: '=ximState'
+      },
+        link: function postLink(scope, element, attrs) {
+          var Ladda = window.Ladda, 
+          ladda = Ladda.create(element[0]);            
+            scope.$watch('state', function(newVal, oldVal){
+               newVal && ladda.start() || ladda.stop();
+            });
+        }
+    };
+}]);

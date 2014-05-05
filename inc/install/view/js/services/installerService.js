@@ -1,4 +1,3 @@
-<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,18 +22,24 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-?>
-<h2>Installing Ximdex</h2>	
-<?php
-	foreach ($exceptions as $key => $exception) {
-		foreach ($exception["messages"] as $i => $message) {			
-		?>
-		<p class="error"><?php echo $message;?></p>			
-		<?php
-		if ($exception["help"])
-			?>
-		<pre><?php echo $exception["help"][$i];?></pre>
-		<?php
-		}
-	}
-?>
+
+ximdexInstallerApp.factory('installerService', function($http) {
+//   this.installPath = "/";	
+   return {
+
+        sendAction: function(method, extraParams) {
+             //return the promise directly.
+             var params = "method="+method;
+             if (extraParams)
+             	params +="&"+extraParams;
+             return $http({method: 'POST',
+						    url: '',
+						    data: params,
+						    headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+                       .success(function(response) {
+                            //resolve the promise as the data
+                            return response;
+                        });
+        }
+   }
+});

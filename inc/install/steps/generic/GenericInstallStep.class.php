@@ -23,6 +23,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/welcome/WelcomeInstallStep.class.php');
+
 class GenericInstallStep {
 
 	protected $steps;
@@ -38,13 +40,14 @@ class GenericInstallStep {
 	public function __construct(){
 		$this->js_files = array();
 		$this->installManager = new installManager();
-		$this->steps = $this->installManager->getSteps();
-		$this->checkInstall();
+		$this->steps = $this->installManager->getSteps();		
+		$this->checkPermissions();
 	}
 
-	public function index(){
-		header(sprintf("Location: %s", "xmd/uninstalled/index.html"));
-		die();
+	public function index(){		
+		$this->installManager->prevStep();
+		$this->currentStep = 0;
+		$this->render();		
 	}
 
 	protected function render($values=array(), $view=null, $layout="installer.tpl"){
@@ -58,32 +61,14 @@ class GenericInstallStep {
 		$goMethod = isset($values["go_method"])? $values["go_method"]: $view;
 		
 		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
-		if ($this->exception && is_array($this->exception) && count($this->exception)){
-			$exception = $this->exception;
+		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)){
+			$exceptions = $this->exceptions;
 			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/generic/view/exception.inc";
 		}else
 			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.inc";
 		include(XIMDEX_ROOT_PATH."/inc/install/view/install.inc");
 		die();
 	}
-
-	/**
-	 * Checking install parameters	 
-	 */
-	private  function checkInstall(){
-		$filesToCheck = array(self::STATUSFILE,
-								"/data",
-								"/logs");
-		
-		foreach ($filesToCheck as $file) {
-			if (!file_exists(XIMDEX_ROOT_PATH.$file)){
-				$this->exception[] = "$file doesn't found.";
-			}else if (!is_writable(XIMDEX_ROOT_PATH.$file)){
-				$this->exception[] = "Ximdex need permissions to write on $file";
-			}
-		}
-	}
-
 
 	/**
 	 * Sends a JSON string
@@ -122,6 +107,20 @@ class GenericInstallStep {
     	$this->installManager->nextStep();
 
     }
+
+    public function check(){
+    	return true;
+    }
+
+    protected function checkPermissions(){
+    	$checkPermissions = $this->installManager->checkFilePermissions();
+    	if ($checkPermissions["state"]!= "success")
+    		$this->exceptions[] = $checkPermissions;
+    	$checkGroup = $this->installManager->checkInstanceGroup();    	
+    	if ($checkGroup["state"] != "success")
+    		$this->exceptions[] = $checkGroup;
+    	
+   }
 
 
 }

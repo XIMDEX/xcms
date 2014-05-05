@@ -9,7 +9,7 @@
  */
 /* ==========================================================================
    Base styles: opinionated defaults
-   ========================================================================== */
+========================================================================== */
 html,
 button,
 input,
@@ -117,7 +117,7 @@ h1 {
     color: #e6e7f1; }
 
 p {
-  color: #7d7d7d; }
+  color: #767987; }
 
 a {
   text-decoration: none; }
@@ -131,7 +131,7 @@ a {
   color: #e6e7f1;
   height: 100%;
   display: inline-block;
-  position: relative; }
+  position: fixed; }
 
 button {
   background: none;
@@ -168,7 +168,7 @@ button {
   -webkit-box-shadow: 0 2px 1px rgba(0, 0, 0, 0.4);
   -moz-box-shadow: 0 2px 1px rgba(0, 0, 0, 0.4);
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.4); }
-  .installer_step-current button {
+  .installer_step-current span {
     color: #4c4d57; }
   .installer_step-current::before {
     content: "";
@@ -178,16 +178,27 @@ button {
     height: .65em; }
   .installer_step-current::after {
     content: "";
-    border: 1.7em solid transparent;
-    border-left-color: #e6e7f1;
+    /*border: 1.7em solid transparent;
+    border-left-color: $c-light;*/
+    width: 2.4em;
+    height: 2.4em;
+    background: #e6e7f1;
     position: absolute;
-    right: -3.4em;
-    top: 0;
-    -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.2));
-    -moz-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.2));
-    -ms-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.2));
-    -o-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.2));
-    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 0.2)); }
+    right: -1.2em;
+    top: .5em;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    -webkit-box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.17);
+    -moz-box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.17);
+    box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.17);
+    /* -webkit-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+     -moz-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+     -ms-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+     -o-filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+     filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));*/ }
 
 .installer_step-launcher {
   display: block;
@@ -195,7 +206,10 @@ button {
   padding: 1em 1.5em 1em 4.5em;
   font-family: "Coustard", serif;
   color: #e6e7f1;
-  text-align: left; }
+  text-align: left;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
 
 .icon_btn {
   width: 2em;
@@ -238,9 +252,12 @@ button {
   display: inline-block;
   width: 75%;
   vertical-align: top;
-  padding: 4em 5em; }
+  padding: 4em 5em;
+  margin-left: 25%; }
   .content p {
-    padding-bottom: 2em; }
+    padding-bottom: 1em; }
+  .content form {
+    padding-bottom: 3em; }
 
 .step-modules-installed {
   -webkit-box-shadow: inset 0 -3px 3px rgba(0, 0, 0, 0.3);
@@ -263,7 +280,7 @@ h2 {
   color: #1eca84;
   margin-bottom: 1.9em; }
 
-.launch_ximdex {
+.action_launcher {
   background: #1eca84;
   color: #cbfbe7;
   text-transform: uppercase;
@@ -274,10 +291,15 @@ h2 {
   -moz-box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.17);
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.17);
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-  font-size: 0.88em; }
-  .launch_ximdex:hover {
+  font-size: 0.88em;
+  display: inline-block; }
+  .action_launcher:hover, .action_launcher:focus {
     background: #50e5a8;
     border-color: #34e89f; }
+  .action_launcher:focus {
+    -webkit-box-shadow: 0 0 4px 2px #1eca84, inset 0 1px 2px rgba(255, 255, 255, 0.17);
+    -moz-box-shadow: 0 0 4px 2px #1eca84, inset 0 1px 2px rgba(255, 255, 255, 0.17);
+    box-shadow: 0 0 4px 2px #1eca84, inset 0 1px 2px rgba(255, 255, 255, 0.17); }
 
 .footer {
   position: absolute;
@@ -290,6 +312,94 @@ h2 {
     color: #e6e7f1; }
     .footer a:hover {
       color: #1eca84; }
+
+/**************
+// DATABASE page
+***************/
+.form_item {
+  display: inline-block;
+  width: 46%;
+  margin-bottom: 3em; }
+  .form_item:nth-of-type(odd) {
+    margin-right: 7%; }
+  .form_item label {
+    display: block;
+    font-family: "Coustard", serif;
+    color: #5f6283;
+    font-size: 14px;
+    padding-bottom: .8em; }
+  .form_item input[type="text"], .form_item input[type="password"], .form_item select {
+    width: 100%;
+    border: none;
+    background: #d9daea;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: .5em 1em;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    color: #323659; }
+  .form_item input[type="checkbox"] {
+    margin-right: .5em; }
+
+.form_item--information {
+  margin-bottom: 1em;
+  top: -1.5em;
+  position: relative; }
+
+.form_item--user {
+  padding-bottom: 1.5em; }
+  .form_item--user::before {
+    content: "\e605";
+    font-family: 'social_icons';
+    float: left;
+    font-size: 2em;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    margin-right: .5em;
+    vertical-align: middle;
+    background: #4c4d57;
+    color: #1eca84;
+    line-height: 1.9; }
+  .form_item--user label {
+    color: #1eca84;
+    padding-bottom: 0;
+    padding-top: .6em; }
+  .form_item--user .user {
+    font-weight: bold;
+    color: #4c4d57;
+    font-size: 1.7em;
+    line-height: 1; }
+
+.full-width {
+  width: 100%; }
+  .full-width ~ .form_item:nth-of-type(even) {
+    margin-right: 7%; }
+  .full-width ~ .form_item:nth-of-type(odd) {
+    margin-right: 0; }
+
+::-webkit-input-placeholder {
+  font-style: italic;
+  color: #6f7396; }
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-style: italic;
+  color: #6f7396; }
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-style: italic;
+  color: #6f7396; }
+
+:-ms-input-placeholder {
+  font-style: italic;
+  color: #6f7396; }
 
 /**************
 // MODULES page
@@ -474,23 +584,72 @@ li[class*="module"] {
 /**************
 // ERRORS
 ***************/
-.error {
+.error, .warning, .errors {
   padding-bottom: 0 !important;
-  position: relative; }
-  .error::before {
+  position: relative;
+  font-weight: bold; }
+  .error::before, .warning::before, .errors::before {
     content: "!";
     display: inline-block;
-    width: 1.2em;
+    width: 1.375em;
+    height: 1.375em;
     text-align: center;
     font-weight: bold;
     border: 3px solid #ccc;
-    border-color: #ff7e68;
+    color: #f0bb29;
+    border-color: #f0bb29;
     margin-right: .5em;
-    color: #ff7e68;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    line-height: 1.3; }
+    line-height: 1.4;
+    position: relative;
+    z-index: 2; }
+
+.error::before, .errors::before {
+  font-family: 'social_icons';
+  content: "\e606";
+  color: #e46666;
+  border-color: #e46666; }
+
+.error + .desc, .error--inline {
+  margin-left: calc(1.375em + .5em);
+  background: #e6e7f1;
+  padding: .5em .8em;
+  margin-top: 0;
+  display: inline-block; }
+
+.errors {
+  text-align: center; }
+
+.error_element {
+  border: 1px solid #e05050 !important;
+  background: #f7d2d2 !important; }
+
+.overwrite {
+  position: relative;
+  top: 1em;
+  margin: 0 0 -.8em 0;
+  padding-bottom: .5em !important;
+  border: 1px solid #d6d7e8; }
+  .overwrite::after {
+    content: "";
+    position: absolute;
+    width: .8em;
+    height: .8em;
+    -webkit-box-shadow: 1px -2px 0 #d6d7e8;
+    -moz-box-shadow: 1px -2px 0 #d6d7e8;
+    box-shadow: 1px -2px 0 #d6d7e8;
+    /*  border: .8em solid transparent;
+       border-bottom-color: #e6e7f1;*/
+    top: -.3em;
+    left: 1.3em;
+    background: #e6e7f1;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
 
 /**************
 // ICONS

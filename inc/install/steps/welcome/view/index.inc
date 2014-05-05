@@ -24,17 +24,18 @@
  *  @version $Revision$
  */
 ?>
-<h2>Installing Ximdex</h2>	
-<?php
-	foreach ($exceptions as $key => $exception) {
-		foreach ($exception["messages"] as $i => $message) {			
-		?>
-		<p class="error"><?php echo $message;?></p>			
-		<?php
-		if ($exception["help"])
-			?>
-		<pre><?php echo $exception["help"][$i];?></pre>
-		<?php
-		}
-	}
-?>
+
+<form method="post" ng-controller="WelcomeController" ng-cloak>
+<h2>Welcome to Ximdex CMS installer</h2>
+<p>
+	Welcome to Ximdex, the semantic CMS. Ximdex and its modules -Xowl, Xlyre, Xnews,...- help you to build semantic, secures and structured sites.
+</p>
+<p>At first we're goint to check requirements for Ximdex.</p>
+    
+  			<p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
+  	
+  				<p ng-repeat-end class="desc">{{error.help}}</p>
+	
+			<button class="launch_ximdex action_launcher" ng-click="checkInstaller()">Check your config and continue</button
+
+</form>

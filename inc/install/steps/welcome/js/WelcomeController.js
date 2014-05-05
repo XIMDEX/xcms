@@ -1,4 +1,3 @@
-<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,18 +22,20 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-?>
-<h2>Installing Ximdex</h2>	
-<?php
-	foreach ($exceptions as $key => $exception) {
-		foreach ($exception["messages"] as $i => $message) {			
-		?>
-		<p class="error"><?php echo $message;?></p>			
-		<?php
-		if ($exception["help"])
-			?>
-		<pre><?php echo $exception["help"][$i];?></pre>
-		<?php
-		}
-	}
-?>
+ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'installerService', "$q", "$window", "$attrs",
+ function($timeout, $scope, installerService, $q, $window, $attrs) {
+
+    $scope.checked = false;
+    
+    $scope.checkInstaller = function(){
+        installerService.sendAction("hasErrors").then(function(response) {            
+            if (response.data.failure)
+                $scope.errors = response.data.errors;
+            else
+                installerService.sendAction("continueInstallation").then(function(response) {
+                    location.reload();
+                });
+        });
+    }    
+
+}]);
