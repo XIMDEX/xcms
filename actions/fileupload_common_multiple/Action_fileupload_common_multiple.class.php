@@ -39,6 +39,12 @@ require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Uploader.php');
 
 class Action_fileupload_common_multiple extends ActionAbstract {
 
+	function __construct() {
+	    parent::__construct();
+	    $this->uploadsFolder = XIMDEX_ROOT_PATH . Config::getValue('UploadsFolder');
+	    $this->chunksFolder = XIMDEX_ROOT_PATH . Config::getValue('ChunksFolder');
+	}
+
 	// Main method: shows initial form
 	function index () {
 		$is_structured=false;
@@ -182,16 +188,22 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			'uploaderOptions' => json_encode($uploaderOptions)
 		);
 		$this->render($values, 'index', 'default-3.0.tpl');
+		$this->clearChunks();
    	}
 
    	function clearChunks() {
-   		$uploader = new \Flow\Uploader();
-   		$uploader->pruneChunks(XIMDEX_ROOT_PATH . '/data/tmp/chunks');	
+   		if (file_exists($this->chunksFolder)) {
+   			$uploader = new \Flow\Uploader();
+   			$uploader->pruneChunks($this->chunksFolder);
+   		}
    	}
 
    	function _saveFile($path) {
+		if (!file_exists($this->chunksFolder)) {
+		    mkdir($this->chunksFolder, 0777, true);
+		}
         $config = new \Flow\Config(array(
-            'tempDir' => XIMDEX_ROOT_PATH . '/data/tmp/chunks'
+            'tempDir' => $this->chunksFolder
         ));
         
         $file = new \Flow\File($config);
@@ -207,14 +219,15 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         if ($file->validateFile() && $file->save($path)) {
             return true;
         } else {
-            header("HTTP/1.1 500 Internal server error");
             return false;
         }	
    	}
 
 	function uploadFlowFile() {
-		
-		$path = XIMDEX_ROOT_PATH . '/data/tmp/files/' . $_POST['flowIdentifier'];
+		if (!file_exists($this->uploadsFolder)) {
+		    mkdir($this->uploadsFolder, 0777, true);
+		}
+		$path = $this->uploadsFolder . $_POST['flowIdentifier'];
 		
 		if ($this->_saveFile($path)) {
 			$idNode = $this->request->getParam('nodeid');
@@ -278,7 +291,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 	//Creating a node according to name and file path
 	private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
-        xdebug_break();
         $normalizedName = String::normalize($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
