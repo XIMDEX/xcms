@@ -244,6 +244,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			{
 				$file['name'] = $_POST['flowFilename'];
 			}
+			ini_set('memory_limit', -1);
 			$result = $this->_createNode($file, $idNode, $type, $metadata, $overwrite);
 		   	if (file_exists($path)) {
 		   	    unlink($path);
@@ -279,7 +280,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');
-    	}
+    }
 
 	private function _setRest($msg, $status=500) {
 		$retval = array();
@@ -291,6 +292,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 	//Creating a node according to name and file path
 	private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
+       
         $normalizedName = String::normalize($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
