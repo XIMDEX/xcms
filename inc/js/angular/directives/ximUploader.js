@@ -75,8 +75,11 @@ angular.module('ximdex.common.directive')
                     if ($scope.allowUpload()) {
                 		$scope.$flow.opts.target = $scope.targetUrl;
                         $scope.$flow.opts.query = function(file, chunk) {
+                            var meta = {}
+                            if (!!$scope.globalMeta) meta = $scope.globalMeta;
+                            if (!!file.meta) angular.extend(meta, file.meta);
                             var query = {
-                                meta: angular.toJson(file.meta || $scope.globalMeta), 
+                                meta: angular.toJson(meta),
                                 overwrite: file.overwrite || false,
                                 ximFilename: file.ximFilename,
                                 type: $scope.options.type || null
