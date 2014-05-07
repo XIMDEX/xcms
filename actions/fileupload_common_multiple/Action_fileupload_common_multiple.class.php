@@ -227,7 +227,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		if (!file_exists($this->uploadsFolder)) {
 		    mkdir($this->uploadsFolder, 0777, true);
 		}
-		$path = $this->uploadsFolder . $_POST['flowIdentifier'];
+		$path = $this->uploadsFolder . '/' . $_POST['flowIdentifier'];
 		
 		if ($this->_saveFile($path)) {
 			$idNode = $this->request->getParam('nodeid');
