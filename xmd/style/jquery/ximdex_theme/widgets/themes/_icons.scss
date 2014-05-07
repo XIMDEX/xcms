@@ -36,6 +36,9 @@
 %pencil::before {
 	content: "\45";
 }
+%pencil {
+	content: "\45";
+}
 %cancel::before {
 	content: "\63";
 }
@@ -103,4 +106,7 @@
 
 %arrow-down{
 	content: "\e038";
+}
+%play{
+	content: "\e618";
 }

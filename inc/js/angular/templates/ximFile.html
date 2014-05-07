@@ -1,4 +1,4 @@
-<div class="xim-loader-file row-item file-#/file.getType()/#" 
+<div class="xim-loader-file row-item xim-loader-file-#/file.getType()/#" 
 	ng-class="{'xim-loader-file-success': file.isComplete() && !file.error, 
 		'xim-loader-file-error': file.error || fileForm.$invalid, 
 		'xim-loader-file-warning': file.overwrite, 
@@ -18,15 +18,15 @@
 					xim-unique-context="#/parentId/#"
 				xim-focus-on="focusOnName">
 				<span class="overwrite-warning">
-					<button type="button" class="overwrite-btn btn-rounded row-item-column" 
-						ng-click="overwriteFile()"
-						ng-show="fileForm.name.$error.unique">
-						<span>#/'widgets.fileUploader.validation.overwrite' | xI18n/#</span>
-					</button>
 					<button type="button" class="rename-btn btn-rounded row-item-column" 
 						ng-click="renameFile()"
 						ng-show="fileForm.name.$error.unique">
 						<span>#/'widgets.fileUploader.validation.rename' | xI18n/#</span>
+					</button>
+					<button type="button" class="overwrite-btn btn-rounded row-item-column" 
+						ng-click="overwriteFile()"
+						ng-show="fileForm.name.$error.unique"> Or
+						<span>#/'widgets.fileUploader.validation.overwrite' | xI18n/#</span>
 					</button>
 				</span>
 		</span>

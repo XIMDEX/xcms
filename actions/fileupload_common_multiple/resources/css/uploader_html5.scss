@@ -104,6 +104,7 @@
 	border-bottom: 1px solid lighten($c_greymain, 20%);
 	position: relative;
 	z-index: 1;
+
 	// &:hover{
 	// 	background: lighten($c_mainlight, 20%);
 	// }
@@ -136,11 +137,6 @@
 				border-style: solid;
 			}
 		}
-
-		&::after{
-			@extend %pencil;
-		}
-
 
 	}
 	.xim-loader-size{
@@ -194,10 +190,37 @@
 		border: 1px solid rgb(230, 213, 23);
 	}
 	&.xim-loader-file-error{
-		padding-bottom: 3em;
 		input[type="text"]{
 			border: 1px solid $c_warning;
+			-webkit-transition: all .2s;
+			-moz-transition: all .2s;
+			-ms-transition: all .2s;
+			-o-transition: all .2s;
+			transition: all .2s;
+			background:#fff;
+			
+
+			&:hover{
+				-webkit-transform: scale(1.02);
+				-moz-transform: scale(1.02);
+				-ms-transform: scale(1.02);
+				-o-transform: scale(1.02);
+				transform: scale(1.02);
+			}
+
+			&:focus{
+				-webkit-box-shadow: 0 0 3px darken($c_warning, 20%);
+				-moz-box-shadow: 0 0 3px darken($c_warning, 20%);
+				box-shadow: 0 0 3px darken($c_warning, 20%);
+			}
 		}
+
+		.xim-loader-size{
+			opacity: 0;
+		}
+		
+
+		
 	}
 	button{
 		float: right;
@@ -232,12 +255,12 @@
 	max-width: 29%;
 	vertical-align: middle;
 	max-height: 31px;
+	margin-right: .6em;
 }
 .xim-loader-file-image {
 	.xim-loader-name {
-		input {
-			width: 66%;
-		}
+		z-index: 4;
+		width: 35%;
 	}
 }
 
@@ -402,5 +425,147 @@ input.xim-uploader {
 		}
 
 	}
+
+	.resume-btn{
+		background:$c_tag_dplace;
+		
+		&::before{
+			@extend %play;
+			padding-left: .22em;
+			font-size: 1.4rem;
+			padding-top: 1.8em;
+		}
+
+		&:hover{
+			background:darken($c_tag_dplace, 10%);
+		}
+
+		}
+
+
+	// Overwrite
+
+	.overwrite-warning{
+		
+		position: absolute;
+		right: 0;
+		top: 50%;
+		margin-top: -.3em;
+			button{
+			color: $c-grey-ll;
+			text-decoration: none;
+			cursor: pointer;
+			padding: .4em .8em;
+			
+			float: none;
+			position: absolute;
+			white-space: nowrap;
+			}
+
+			.rename-btn{
+				@extend %hide-text;
+				width: 2em;
+				padding: 0;
+				right: 0;
+				
+				&:hover::before{
+					color: lighten($c_warning, 10%);
+				}
+
+				&::before{
+					@extend %icon;
+					@extend %pencil;
+					position: absolute;
+					right: 1em;
+					top: 50%;
+					-webkit-transform: translateY(-50%);
+					-moz-transform: translateY(-50%); 
+					-ms-transform: translateY(-50%);
+					-o-transform: translateY(-50%);
+					transform: translateY(-50%);
+					color: $c_warning;
+					-webkit-animation: edit .8s 2 ease-out; /* Safari 4+ */
+					-moz-animation:    edit .8s 2 ease-out; /* Fx 5+ */
+					-o-animation:      edit .8s 2 ease-out; /* Opera 12+ */
+					animation:         edit .8s 2 ease-out;
+					-webkit-border-radius: 50%;
+					-moz-border-radius: 50%;
+					border-radius: 50%;
+
+				}
+
+				
+			}
+
+			.overwrite-btn{
+				background:lighten($c_warning, 20%);
+				color: #fff;
+				top: -.65em;
+				z-index: -1;
+				font-size: 1.5rem;
+				-webkit-border-radius:0 2px 2px 0;
+				-moz-border-radius:0 2px 2px 0;
+				border-radius:0 2px 2px 0;
+				z-index: -1;
+				height: 3.7rem;
+				left: -.4em;
+
+				&:hover{
+					background:lighten($c_warning, 10%);
+				}
+			}
+	}
+		/*margin: 0 5%;
+		top: 2.5em;
+		position: absolute;
+		text-align: center;
+		z-index: -1;
+
+		
+		button{
+			color: #fff;
+			text-decoration: none;
+			cursor: pointer;
+			padding: .4em .8em;
+			background: lighten($c_warning, 15%);
+			-webkit-border-radius: 0 0 2px 0;
+			-moz-border-radius: 0 0 2px 0;
+			border-radius: 0 0 2px 0;
+			float: none;
+			width: 50%;
+
+
+			&:first-child{
+				-webkit-border-radius: 0 0 0 2px;
+				-moz-border-radius: 0 0 0 2px;
+				border-radius: 0 0 0 2px;
+				border-right: 1px solid #fff;
+			}
+
+			&:hover{
+			background: $c_warning;
+			}
+		}
+	} */
 	
 }
+
+@-webkit-keyframes edit {
+	0%{color: #fff} 
+	50%{color: darken($c_warning, 15%);}
+	100% {color: #fff; } }
+
+	@-moz-keyframes edit {
+	0%{color: #fff} 
+	50%{color: darken($c_warning, 15%);}
+	100% {color: #fff; }  }
+
+	@-o-keyframes edit {
+	0%{color: #fff} 
+	50%{color: darken($c_warning, 15%);}
+	100% {color: #fff; }  }
+
+	@keyframes edit {
+	0%{color: #fff} 
+	50%{color: darken($c_warning, 15%);}
+	100% {color: #fff; }  }
