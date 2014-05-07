@@ -24,8 +24,9 @@ X.i18nStrings = {
 			"upload": "Upload",
 			"files": "file(s)",
 			"invalid_files": "file(s) wont be uploaded",
+			"processing": "Processing file...",
 			"validation": {
-				"file_exists": "A file already exist with this name:",
+				"file_exist": "A file with this name already exist",
 				"overwrite": "Overwrite",
 				"cancel": "Cancel",
 				"rename": "Rename"

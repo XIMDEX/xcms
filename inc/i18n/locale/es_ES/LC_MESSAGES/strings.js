@@ -19,6 +19,20 @@ X.i18nStrings = {
 			}
 		}
 	},
+	"widgets": {
+		"fileUploader": {
+			"upload": "Subir",
+			"files": "archivo(s)",
+			"invalid_files": "archivo(s) no se subirán",
+			"processing": "Procesando archivos...",
+			"validation": {
+				"file_exist": "Ya existe un archivo con este nombre",
+				"overwrite": "Sobreescribir",
+				"cancel": "Cancelar",
+				"rename": "Renombrar"
+			}
+		}
+	},
 	"xlyre": {
 		"actions": {
 			"managedataset": {
