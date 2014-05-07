@@ -78,7 +78,8 @@ angular.module('ximdex.common.directive')
                             var query = {
                                 meta: angular.toJson(file.meta || $scope.globalMeta), 
                                 overwrite: file.overwrite || false,
-                                ximFilename: file.ximFilename
+                                ximFilename: file.ximFilename,
+                                type: $scope.options.type || null
                             };
                             return query;
         	            };

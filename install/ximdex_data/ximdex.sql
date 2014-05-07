@@ -3209,6 +3209,19 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (147, 5077, 'text/plain', ';xsl;', 'ptd
 INSERT INTO `RelNodeTypeMimeType` VALUES (148, 5077, 'application/xml', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (149, 5077, 'text/html', ';xsl;', 'ptd');
 INSERT INTO `RelNodeTypeMimeType` VALUES (151, 5078, 'text/xml', ';xml;', 'pvd');
+INSERT INTO `RelNodeTypeMimeType` VALUES (152, 5041, 'application/zip', ';docx;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (153, 5041, 'audio/x-aiff', ';aiff;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (154, 5041, 'audio/x-aiff', ';aif;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (155, 5041, 'audio/x-wav', ';wav;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (156, 5041, 'video/x-msvideo', ';avi;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (157, 5041, 'audio/mpeg', ';mp3;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (158, 5041, 'video/mpeg', ';mpg;mpeg;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (158, 5041, 'application/zip', ';zip;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (159, 5078, 'application/xml', ';xml;', 'pvd');
+
+
+
+
 
 DROP TABLE IF EXISTS `RelNodeTypeMetadata`;
 CREATE TABLE `RelNodeTypeMetadata` (

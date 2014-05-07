@@ -90,7 +90,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			case 'TemplateViewFolder':
 				$lbl_anadir = _(' Add schemas ');
 				$allowedExtensions = '.xml';
-				$allowedMimes = 'text/xml';
+				$allowedMimes = 'text/xml, application/xml';
 				break;
 			case 'TemplatesFolder':
 				$lbl_anadir = _(' Add templates ');
@@ -105,7 +105,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			case 'XmlContainer':
 				$lbl_anadir = _(' Add XML files ');
 				$is_structured=true;
-				$allowedExtensions = '.xml';
+				$allowedExtensions = '.xml, .xsl';
 				$allowedMimes = 'text/xml';	
 				break;
 			/*case 'CommonFolder':
