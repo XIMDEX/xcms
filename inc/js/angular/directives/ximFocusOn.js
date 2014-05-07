@@ -25,9 +25,7 @@
 angular.module('ximdex.common.directive')
 	.directive('ximFocusOn', function() {
 	   return function(scope, elem, attrs) {
-	      console.log("Linking focusName")
 	      scope.$on(attrs.ximFocusOn, function(e) {
-	          console.log("ON ON ON")
 	          elem[0].focus();
 	      });
 	   };

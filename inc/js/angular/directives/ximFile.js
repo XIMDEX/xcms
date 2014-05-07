@@ -51,8 +51,6 @@ angular.module('ximdex.common.directive')
                 $scope.file.meta = $scope.file.meta || {};
             	
                 $scope.$watch('fileForm.$invalid', function(invalid){
-                    console.log("required: ", invalid);
-
                     $scope.file.invalid = (invalid) ? true : false;
             		//Prevent flow.js from uploading invalid files
             		$scope.file.paused = (invalid) ? true : false;

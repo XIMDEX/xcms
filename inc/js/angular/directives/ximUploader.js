@@ -49,7 +49,7 @@ angular.module('ximdex.common.directive')
                         //Prevent adding file if is not accepted
                         event.preventDefault();
                     };
-                    file.isImage = (file.file.type.indexOf("image") === -1) ? false : true;
+                    file.isImage = file.file.type.indexOf("image") !== -1;
     	    	});
 
     	    	$scope.$on('flow::fileError', function (event, $flow, file, jsonMessage) {
@@ -66,8 +66,7 @@ angular.module('ximdex.common.directive')
                     }  	
     	    	});
 
-    	    	$scope.$on('flow::Complete', function () {
-    	    		console.log("nodeModified", $scope.nodeId)
+    	    	$scope.$on('flow::complete', function () {
                     $scope.$emit('nodeModified', $scope.nodeId);
     	    	});
 
@@ -89,7 +88,6 @@ angular.module('ximdex.common.directive')
         	    		$scope.$flow.opts.testChunks = false;
         	            $scope.$flow.opts.progressCallbacksInterval = 0;
         	    		$scope.$flow.upload();
-                        console.log("UPLOAD, ", $scope.$flow.files);
                     }
     	    	}
 
