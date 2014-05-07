@@ -94,7 +94,7 @@ angular.module('ximdex.common.directive')
     	    	}
 
                 $scope.allowUpload = function(){
-                    if (!$scope.totalFiles() > 0 && $scope.invalidFiles === $scope.totalFiles()) {
+                    if (!$scope.totalFiles() > 0 || $scope.invalidFiles() === $scope.totalFiles()) {
                         return false;
                     } else if(!!$scope.options.metaFields && $scope.options.globalMetaOnly){
                         for (field in $scope.options.metaFields) {
@@ -105,7 +105,7 @@ angular.module('ximdex.common.directive')
                             }
                         }
                     }
-                    if ($scope.invalidFiles === $scope.$flow.files.length) return false;
+                    if ($scope.invalidFiles() === $scope.$flow.files.length) return false;
                     return true;  
                 }
 
