@@ -2,7 +2,8 @@
 	ng-class="{'xim-loader-file-success': file.isComplete() && !file.error, 
 		'xim-loader-file-error': file.error || fileForm.$invalid, 
 		'xim-loader-file-warning': file.overwrite, 
-		'xim-loader-file-image': file.isImage}" 
+		'xim-loader-file-image': file.isImage,
+		'xim-loader-file-processing': file.progress() == 1 && !file.isComplete()}" 
 	ng-form name="fileForm">
 		<img class="img-preview"
 				ng-if="file.isImage"
