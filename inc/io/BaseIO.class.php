@@ -653,7 +653,6 @@ class BaseIO {
                         }    
                         $data['PATH'] = $paths[0];
                         if (is_file($data['PATH'])) {
-                            xdebug_break();
                             $node->setContent(FsUtils::file_get_contents($data['PATH']));
                         }    
                         unset($data['CHILDRENS']);
