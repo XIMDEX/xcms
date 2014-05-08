@@ -26,16 +26,10 @@
 ?>
 
 <form method="post" ng-controller="WelcomeController" ng-cloak>
-<h2>Welcome to Ximdex CMS installer</h2>
-<p>
-	Welcome to Ximdex, the semantic CMS. Ximdex and its modules -Xowl, Xlyre, Xnews,...- help you to build semantic, secures and structured sites.
-</p>
-<p>At first we're goint to check requirements for Ximdex.</p>
-    
-  			<p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
-  	
-  				<p ng-repeat-end class="desc">{{error.help}}</p>
-	
-			<button class="launch_ximdex action_launcher" ng-click="checkInstaller()">Check your config and continue</button
-
+<h2>Welcome to the Ximdex CMS's installation process!</h2>
+<p>The semantic Ximdex CMS and its modules -Xowl, Xlyre, Xnews,...- help you to build semantic, secures and structured sites.</p>
+<p>In this first step, we will check for the basic requirements needed to install Ximdex CMS on your server.</p>
+<p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
+<p ng-repeat-end class="desc">{{error.help}}</p>
+<button class="launch_ximdex action_launcher" ng-click="checkInstaller()">Check your server's configuration and continue</button>
 </form>

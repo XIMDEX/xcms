@@ -292,14 +292,14 @@ class InstallManager {
 		foreach ($filesToCheck as $file) {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
 				$result["state"] = "error";
-				$exception["messages"][] = "$file doesn't found.";				
+				$exception["messages"][] = "$file not found.";				
 			}else{
 				 $checkGroup  = $this->checkGroup(XIMDEX_ROOT_PATH.$file);
 				 if ($checkGroup["state"] != "success" ){
 				 	$result = $checkGroup ;
 				 }else if (!$this->isWritable(XIMDEX_ROOT_PATH.$file)){
 					$result["state"] = "error";
-					$result["messages"][]="Write permissions on $file required.";
+					$result["messages"][]="Notice: write permissions on $file required.";
 					$result["help"][] = "chmod -R 770 ".XIMDEX_ROOT_PATH.$file;
 				}
 			}	
@@ -326,9 +326,9 @@ class InstallManager {
 
 
 	public function checkInstanceGroup(){
-		
 		return $this->checkGroup(XIMDEX_ROOT_PATH);
 	}
+
 
 	public function checkGroup($file){
 
@@ -339,15 +339,15 @@ class InstallManager {
 		$groupName = posix_getgrgid($groupId[0]);
 		$ximdexGroupId = filegroup($file);
 		$ximdexGroupName = posix_getgrgid($ximdexGroupId);
+
 		if (!in_array($ximdexGroupId, $groupId)){
 			$result["state"] = "error";
-			$result["messages"][] = "Advice you use {$groupName["name"]} group instead of {$ximdexGroupName["name"]}" ;
-			$result["help"][] = "chgrp -R {$groupName["name"]} ".$file;
+			$result["messages"][] = "Notice: you must set the {$groupName["name"]} group for your files instead of {$ximdexGroupName["name"]}." ;
+			$result["help"][] = "Please, execute this command: chgrp  -R  {$groupName["name"]}  ".$file;
 			
 		}
 
 		return $result;
-	
 	}
 
 
@@ -359,7 +359,6 @@ class InstallManager {
 
 		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_TEMPLATE);
 		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);
-
 
 		$result = $this->setSingleParam("##DB_HOST##", $host);
 		$result = $result && $this->setSingleParam("##DB_PORT##", $port);
@@ -373,29 +372,24 @@ class InstallManager {
 	}
 
 	public function setSingleParam($oldValue, $newValue){
-
 		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE);
 		$content = str_replace($oldValue, $newValue, $content);
 		return FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, $content);
 	}
 
 	private function getTimeZone(){
-
 		$result = "Europe/Madrid";
 		if (file_exists("/etc/timezone") && is_readable("/etc/timezone")){
 			$result = file_get_contents("/etc/timezone");
 		}else if (date_default_timezone_get()){
 			$result = date_default_timezone_get();
 		}
-
 		return trim($result);
-
 	}
 
 	public function setLocale($lang){
 		$db = new DB();
 		$db->execute("UPDATE Locales SET Enabled='1' where Code = '$lang'");
-
 	}
 
 	public function insertXimdexUser($pass){
@@ -404,12 +398,10 @@ class InstallManager {
 	}
 	
 	public function setXid(){
-
 		$restProvider = new REST_Provider();
 		$hostName = $_SERVER["HTTP_HOST"];
 		$url = "http://xid.ximdex.net/stats/getximid.php?host=$hostName";
 		$response = $restProvider->getHttp_provider()->post($url, $data);
-		
 		$result = isset($response["data"])? $response["data"] : $hostName.uniqid($hostName);
 		Config::update("ximid",$result);
 	}

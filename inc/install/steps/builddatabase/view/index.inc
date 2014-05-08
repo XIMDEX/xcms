@@ -27,10 +27,10 @@
 
 <form method="post"  ng-controller="InstallDatabaseController" ng-cloak  >
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">    
-	<h2>Installing DataBase</h2>
+	<h2>Installing Database</h2>
 	<div ng-show="!installed">
-	<p>Time to install MySQL or MariaDB database. Root user is required to create the database.</p>
-	<p> After create it, we ask you the user who will access to the database. </p>
+	<p>Now it's time to install a MySQL or MariaDB database. A priviledge user (e.g. root) is required to create this database.</p>
+	<p>After create it, you will be asked to grant access permissions to another unpriviledge users.</p>
 	<p class="errors" ng-show="genericErrors">{{genericErrors}}</p>
 
 	<div class="form_item"  >
@@ -59,12 +59,12 @@
 		<p class=" warning error--inline overwrite" ng-show="dbErrors">{{dbErrors}}</p>
 	</div>	
 
-	<button ng-hide="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-style="slide-up" xim-state="loading" ng-click="processForm()">Install Database</button>
+	<button ng-hide="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loading" data-style="slide-up" xim-state="loading" ng-click="processForm()">Create Database</button>
 	
 	<button ng-show="dbErrors" class="launch_ximdex action_launcher ladda-button"  ui-ladda="loadingOverwrite" data-style="slide-up" xim-state="loadingOverwrite" ng-click="installDataBase()">Overwrite database</button>
 	</div>
 	<div ng-show="installed">
-	<p>Who will access to Ximdex DataBase? Warn you against using root user. </p>
+	<p>Once the database is created, is a good recommended security practice to use an <em>unpriviledge user</em> to access to it. Set here the name and password for this user.</p>
 	<div class="form_item">
 		<label for="db_user">Database user</label>
 		<input ng-model="user" type="text" name="user" id="db_user" value="ximdex_user " />

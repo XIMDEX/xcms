@@ -54,7 +54,7 @@ class WelcomeInstallStep extends GenericInstallStep {
 
 	public function hasErrors(){
 		$checks = $this->installManager->initialChecking();
-				$checks = $this->installManager->initialChecking();
+		$checks = $this->installManager->initialChecking();
 		$errors = array();
 		foreach ($checks as $check) {
 			if ($check["state"] == "error"){
@@ -62,12 +62,14 @@ class WelcomeInstallStep extends GenericInstallStep {
 			}
 			if 	($check["state"] != "success"){
 				$aux = array();
-				foreach ($check["messages"] as $i => $message) {
-					$aux["message"] = $message;
-					$aux["help"] = $check["help"][$i];
-					$aux["state"] = $check["state"] ;
-					$errors[] = $aux;
-				}
+                if(count($check["messages"])>0){
+				    foreach ($check["messages"] as $i => $message) {
+					    $aux["message"] = $message;
+					    $aux["help"] = $check["help"][$i];
+					    $aux["state"] = $check["state"] ;
+					    $errors[] = $aux;
+				    }
+                }
 			}
 		}
 

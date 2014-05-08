@@ -32,7 +32,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php'
 
 class InstallDataBaseManager extends InstallManager{
 
-
 	const DB_ARRAY_KEY="db_installer_connection";
 	const DEFAULT_PORT = 3306;
 	const SCRIPT_PATH = "/install/ximdex_data/ximdex.sql";
@@ -43,8 +42,6 @@ class InstallDataBaseManager extends InstallManager{
 	private $user;
 	private $pass;
 	private $name; 
-	
-
 	private $errors = array();
 
 	public function __construct(){
@@ -101,10 +98,10 @@ class InstallDataBaseManager extends InstallManager{
 	 * Forcing to reconnect to database next time
 	 */	
 	function reconectDataBase(){
-		if ($this->dbConnection)
-			$this->dbConnection->close();
-		$GLOBALS['db_connection'][getmypid()] = null;
-		
+		if ($this->dbConnection){
+		    $this->dbConnection->close();
+        }
+	    $GLOBALS['db_connection'][getmypid()] = null;
 	}
 
 
@@ -124,7 +121,7 @@ class InstallDataBaseManager extends InstallManager{
 			if ($result === TRUE)
 				error_log("Suc");
 			else{
-				error_log("faiulre");
+				error_log("ERROR:");
 				error_log("a $result".print_r($result, true)." $query ".$this->dbConnection->error);
 			}
 		}else{

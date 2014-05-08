@@ -28,15 +28,16 @@
 <form method="post" action=".">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Settings</h2>
+    <p>By default it's created an admin user for Ximdex CMS called <em>ximdex</em>. Set his password here.</p>
 	<div class="form_item  form_item--user full-width">
 	<label for="">User</label>
 	<span class="user">ximdex</span></div>
 	<div class="form_item">
 		<label for="password">Password</label>
-		<input type="password" name="pass" id="password" placeholder="Insert a new database password here" />
+		<input type="password" name="pass" id="password" placeholder="Insert password here" />
 	</div>
 	<div class="form_item">
-		<label for="language">Language</label>
+		<label for="language">Interface language</label>
 		<select name="language" id="language">
 			<option value="es_ES">Spanish</option>
 			<option value="en_US">English</option>
@@ -45,9 +46,8 @@
 		</select>
 	</div>
 	<div class="form_item full-width form_item--information">
-		<label for="anonymous_information"><input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" />Would you like to help us sending anonymous information about usage </label>
-		
+		<label for="anonymous_information">
+            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" />Would you like to help us sending anonymous information about your usage?</label>
 	</div>
-
-	<button class=" action_launcher ladda-button">Set general settings</button>
+	<button class=" action_launcher ladda-button">Save these settings</button>
 </form>

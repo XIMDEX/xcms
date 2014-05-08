@@ -27,10 +27,8 @@
 
 <form method="post" action=".">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
-	<h2>Installation done</h2>
-	<p>You've succesfully installed Ximdex CMS! <br /> 
-		Now you can start using your CMS and edit an publish your content.
-	</p>
+	<h2>Installation finished</h2>
+	<p>That's it! You've succesfully installed Ximdex CMS on your server!<br/>Log in and discover a different way to manage your content.</p>
 	<button class="launch_ximdex action_launcher" id="submitButton" onclick="document.forms[0].submit(); return false;">
           Get started
       </button>
