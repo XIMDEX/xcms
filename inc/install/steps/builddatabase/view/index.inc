@@ -30,7 +30,6 @@
 	<h2>Installing Database</h2>
 	<div ng-show="!installed">
 	<p>Now it's time to install a MySQL or MariaDB database. A priviledge user (e.g. root) is required to create this database.</p>
-	<p>After create it, you will be asked to grant access permissions to another unpriviledge users.</p>
 	<p class="errors" ng-show="genericErrors">{{genericErrors}}</p>
 
 	<div class="form_item"  >

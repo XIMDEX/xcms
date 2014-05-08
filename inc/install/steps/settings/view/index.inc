@@ -28,7 +28,7 @@
 <form method="post" action=".">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Settings</h2>
-    <p>By default it's created an admin user for Ximdex CMS called <em>ximdex</em>. Set his password here.</p>
+    <p>By default it's created an admin user for Ximdex CMS called <em>ximdex</em>. Set the password here.</p>
 	<div class="form_item  form_item--user full-width">
 	<label for="">User</label>
 	<span class="user">ximdex</span></div>
@@ -49,5 +49,5 @@
 		<label for="anonymous_information">
             <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" />Would you like to help us sending anonymous information about your usage?</label>
 	</div>
-	<button class=" action_launcher ladda-button">Save these settings</button>
+	<button class=" action_launcher ladda-button">Save settings</button>
 </form>

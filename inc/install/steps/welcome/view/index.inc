@@ -31,5 +31,5 @@
 <p>In this first step, we will check for the basic requirements needed to install Ximdex CMS on your server.</p>
 <p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
 <p ng-repeat-end class="desc">{{error.help}}</p>
-<button class="launch_ximdex action_launcher" ng-click="checkInstaller()">Check your server's configuration and continue</button>
+<button class="launch_ximdex action_launcher" ng-click="checkInstaller()">Check your server's configuration</button>
 </form>
