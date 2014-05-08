@@ -354,7 +354,7 @@ class InstallManager {
 	public function setInstallParams($host, $port, $bdName, $user, $pass){
 
 		if (file_exists(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE)){
-			rename(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE."bck_".date(Ymd_his));
+			rename(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE, XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_FILE."bck_".date('Ymd_his'));
 		}
 
 		$content = FsUtils::file_get_contents(XIMDEX_ROOT_PATH.self::INSTALL_PARAMS_TEMPLATE);
