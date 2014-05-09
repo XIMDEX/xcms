@@ -40,8 +40,11 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 		$this->addJs("InstallModulesController.js");
 		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
 		$result = $imManager->buildModulesFile();		
-		if (!$result)
-			$this->exception[]="Impossible to install modules. Do you have the proper permissions on install/install-modules.conf file?";
+		if (!$result){
+					$error["state"]="error";
+					$error["messages"][] = "Impossible to install modules. Do you have the proper permissions on install/install-modules.conf file?";
+					$this->exceptions[]=$error;
+				}
 		$this->render();
 	}
 

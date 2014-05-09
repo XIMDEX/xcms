@@ -401,7 +401,7 @@ class InstallManager {
 		$restProvider = new REST_Provider();
 		$hostName = $_SERVER["HTTP_HOST"];
 		$url = "http://xid.ximdex.net/stats/getximid.php?host=$hostName";
-		$response = $restProvider->getHttp_provider()->post($url, $data);
+		$response = $restProvider->getHttp_provider()->get($url);
 		$result = isset($response["data"])? $response["data"] : $hostName.uniqid($hostName);
 		Config::update("ximid",$result);
 	}

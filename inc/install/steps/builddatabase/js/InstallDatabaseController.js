@@ -44,11 +44,16 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     });
 
     $scope.processForm = function(){
-        $scope.genericErrors="";
-        $scope.dbErrors="";
-        $scope.loading = true;
-        var index = 0;
-        $scope.checkRootUser();
+        if ($scope.formDataBase.name.$error.pattern){
+            $scope.dbErrors = "Invalid database name. Only alphanumeric and underline characters are valid.";
+            $scope.hostCheck = "exist_db";
+        }else{
+            $scope.genericErrors="";
+            $scope.dbErrors="";
+            $scope.loading = true;
+            var index = 0;
+            $scope.checkRootUser();
+        }
     };
 
     $scope.checkRootUser = function(){
@@ -112,6 +117,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     $scope.$watch("name", function(){
         $scope.overwrite = false;
         $scope.dbErrors = false;
+        $scope.hostCheck=true;
     })
     $scope.addUser = function(){
         $scope.loadingAddUser = true;

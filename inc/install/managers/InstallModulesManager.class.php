@@ -38,8 +38,11 @@ class InstallModulesManager extends InstallManager {
 		$installState = self::UNINSTALLED;
 		$modMngr = new ModulesManager();
 		$state = $modMngr->checkModule($name);
-
+		error_log("======================");
+		error_log($state);
 		$myenabled = $modMngr->isEnabled($name);
+		error_log($myenabled);
+		error_log("======================");
 		
 		switch ($state) {
 			case MODULE_STATE_INSTALLED:
@@ -72,21 +75,32 @@ class InstallModulesManager extends InstallManager {
 
 	public function buildModulesFile(){
 
+
 		$fileName = XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS;
-		if(!file_exists($fileName) || !is_writable($fileName))
-			return false;
+		@unlink($fileName);
+		/*if(!file_exists($fileName) || !is_writable($fileName))
+			return false;*/
 		$config = FsUtils::file_get_contents($fileName);
 		
 		$modMan=new ModulesManager();
 		$modules=$modMan->getModules();
+		foreach ($modules as $mod) {
+			if ($mod["enabled"]){
+				$modMan->uninstallModule($mod["name"]);
+			}
+		}
 		$str="<?php\n\n";
 		$str .= "/**
+			}
  * Paths and states constants for the Ximdex Modules, e.g.
  * The path is relative to ximdex folder.
  * define('MODULE_XIMSYNC_PATH','/modules/ximSYNC');
  */\n\n";
+
 		foreach($modules as $mod){
-			$str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";
+			@unlink(XIMDEX_ROOT_PATH."/data/.".$mod["name"]);
+			error_log(XIMDEX_ROOT_PATH."/data/.".$mod["name"]);
+			$str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";			
 		}
 		$str.="\n?>";
 		$result = FsUtils::file_put_contents($fileName,$str);

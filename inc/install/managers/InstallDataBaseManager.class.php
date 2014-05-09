@@ -143,14 +143,16 @@ class InstallDataBaseManager extends InstallManager{
 
 
 	public function loadData($host, $port, $user, $pass,  $name){
-		$command = 'mysql'
+		$mysqlCommand = shell_exec("which mysql");
+		$mysqlCommand = $mysqlCommand? trim($mysqlCommand) : "mysql";
+		$command = $mysqlCommand
         . ' --host=' . $host
         . ' --user=' . $user
         . ' --port=' . $port
         . ' --password=' . $pass
         . ' --database=' . $name
         . ' --execute="SOURCE ' . XIMDEX_ROOT_PATH.self::SCRIPT_PATH.'"';
-        //$result = shell_exec($command . '/shellexec.sql');
+        
         $result = shell_exec($command);        
         return $result;
 	}

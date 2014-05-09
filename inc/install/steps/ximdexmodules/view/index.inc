@@ -25,7 +25,7 @@
  */
 ?>
 
-<form method="post" ng-controller="InstallModulesController" name="installModulesForm" ng-submit="processForm()"  >
+<form method="post" ng-controller="InstallModulesController" name="installModulesForm" ng-submit="processForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Installing Ximdex CMS's default modules</h2>
 	<p ng-hide="loaded">Preparing default modules ...<span>{{preLoading}}</span></p>
