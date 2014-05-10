@@ -63,11 +63,18 @@ class DataFactory{
 
         switch ($rep) {
             case "solr":
+                $solrServer = Config::GetValue("SolrServer");
+				$solrPort = Config::GetValue("SolrPort");
+				$solrCorePath = Config::GetValue("SolrCorePath");
+				/* Config checkings */
+				$solrServer = !empty($solrServer) ? $solrServer : "localhost";
+				$solrPort = !empty($solrPort) ? $solrPort : 8983;
+				$solrCorePath = !empty($solrCorePath) ? $solrCorePath : "/solr/collection1";
                 $options = array
                     (
-                    'hostname' => !empty(Config::GetValue("SolrServer"))? Config::GetValue("SolrServer") : "localhost",
-                    'port' => !empty(Config::GetValue("SolrPort")) ? Config::GetValue("SolrPort") : 8983,
-                    'path' => !empty(Config::GetValue("SolrCorePath")) ? Config::GetValue("SolrCorePath") : ""
+                    'hostname' => $solrServer,
+                    'port' => $solrPort,
+                    'path' => $solrCorePath
                 );
                 
                 $this->repository = new SolrRepository($nodeID, $options);
