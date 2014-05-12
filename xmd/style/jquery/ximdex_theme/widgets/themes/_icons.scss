@@ -36,6 +36,9 @@
 %pencil::before {
 	content: "\45";
 }
+%pencil {
+	content: "\45";
+}
 %cancel::before {
 	content: "\63";
 }
@@ -93,10 +96,17 @@
 	content: "\e60a";
 }
 
+%pause::before{
+	content: "\e01c";
+}
+
 %language{
 	content: "\006c";
 }
 
 %arrow-down{
 	content: "\e038";
+}
+%play{
+	content: "\e618";
 }

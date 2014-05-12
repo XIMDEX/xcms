@@ -1,4 +1,4 @@
-{**
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,8 +21,28 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
-<xim-uploader 
-	xim-uploader-options='{$uploaderOptions}'
-	xim-node-id="{$nodeid}">
-</xim-uploader>
+ */
+
+angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
+    .factory('xCheck', ['$http', 'xUrlHelper', function($http, xUrlHelper) {
+        return {
+            isUnique: function(options, callback) {
+                var url = xUrlHelper.getAction({
+                	action: 'Action_browser3',
+                	method: 'validation',
+                	id: options.context
+                });
+                var options = {
+                        value: options.value,
+                        validationMethod: 'isUniqueName',
+                        inputName: 'value',
+                        nodeid: options.context,
+                        process: options.process || false 
+                    }
+                $http.post(url, options).success(function(response){
+                	callback((response === 'true') ? true : false);
+                });
+                
+            }
+        }
+    }]);

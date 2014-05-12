@@ -501,6 +501,9 @@ class ActionAbstract extends IController {
 	public function sendJSON($data) {
 		if (!$this->endActionLogged)
 			$this->logSuccessAction();
+		if (isset($data['status']) && is_int($data['status'])) {
+			header('HTTP/1.1 {$data["status"]}');	
+		}
     	header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
 		$data = Serializer::encode(SZR_JSON, $data);
 		echo $data;

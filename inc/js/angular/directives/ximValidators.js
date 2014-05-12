@@ -40,3 +40,52 @@ angular.module('ximdex.common.directive.validator')
 			}
 		}
 	});
+angular.module('ximdex.common.directive.validator')
+	.directive('ximUnique', ['xCheck', '$timeout', function(xCheck, $timeout){
+		return {
+			require: 'ngModel',
+			link: function(scope, element, attrs, ctrl){
+				var debounce = {
+					timeout: null,
+					tryExec: function(dFunction){
+						dFunction();		
+					}
+				}
+				if (attrs.ngModelOptions) {
+					var options = scope.$eval(attrs.ngModelOptions); 
+					if (options) {
+						debounce.tryExec = function(dFunction){
+							if (this.timeout) $timeout.cancel(this.timeout);
+							this.timeout = $timeout(function(){
+								dFunction();	
+							}, options.debounce || 0);	
+						};	
+					}	
+				}
+				function check(viewValue) {
+					xCheck.isUnique({
+						value: viewValue, 
+						context: attrs.ximUniqueContext, 
+						url: attrs.ximUnique,
+						process: attrs.ximUniqueOptions || false
+					}, function(isUnique){
+						if (isUnique){
+							ctrl.$setValidity('unique', true);
+						} else {
+							ctrl.$setValidity('unique', false);
+						}	
+					});
+				}
+				$timeout(function(){
+					check(ctrl.$viewValue);
+				});
+				ctrl.$parsers.unshift(function(viewValue){
+					debounce.tryExec(function(){
+						check(viewValue);
+					});
+					return viewValue;
+				});
+
+			}
+		}
+	}]);	

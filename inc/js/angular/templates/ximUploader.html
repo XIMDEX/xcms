@@ -1,0 +1,68 @@
+<form name="f_m_u" flow-init ng-cloak>
+	<div class="action_header">
+		<h2>#/options.lbl_anadir/#</h2>
+	</div>
+
+	<div class="action_content uploader">
+	<!-- <div class="action_content uploader {if $type_node == "XmlContainer"}xml-uploader{/if}"> -->
+		<fieldset>
+			<div class="files-properties xml-properties" ng-if="options.metaFields">
+				<h3>Please, select the schema to follow and a language for your documents before uploading them.</h3>	
+				<div class="col1-2" ng-repeat="(key, field) in options.metaFields">
+					<select name="global-#/key/#" id="global-#/key/#" class="cajaxg extra-param" 
+						ng-if="field.type == 'select'"
+						ng-options="option.id as option.name for option in field.options"
+						ng-model="$parent.globalMeta[key]"
+						ng-required="field.required && options.globalMetaOnly">
+					</select>
+				</div>
+			</div>
+			<div class="xim-uploader-container #/dragState/#" 
+				flow-drop
+				flow-drag-enter="dragState='drag-in'" 
+				flow-drag-leave="dragState=''">
+				<div class="xim-loader-list-container">
+					<div class="guide" ng-hide="$flow.files.length">
+						<span class="icon document">Documents</span>
+						<span class="icon image">Images</span>
+						<span class="icon video">Videos</span>
+						<p>Drag your files here or add them using the 'Add' button below.</p>
+					</div>
+					<ul class="xim-loader-list" ng-show="$flow.files.length">
+						<li ng-repeat="file in $flow.files">
+							<xim-file ng-if="options.globalMetaOnly"
+								xim-model="file" 
+								xim-node-id="nodeId">
+							</xim-file>
+							<xim-file ng-if="!options.globalMetaOnly"
+								xim-model="file" 
+								xim-node-id="nodeId" 
+								xim-meta-fields="options.metaFields"
+								xim-meta-model="globalMeta">
+							</xim-file>
+						</li>
+					</ul>
+				</div>
+				<ul class="xim-loader-list-actions" >
+					<a href="#" class="xim-uploader-selected btn-labeled icon btn">
+						Add
+						<input type="file" class="xim-uploader" accept="#/options.allowedMimes || options.allowedExtensions/#" flow-btn />
+						<!-- <input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"> -->
+					</a>
+				</ul>
+			</div>
+		</fieldset>
+	</div>
+	<fieldset class="buttons-form positioned_btn">
+		<span ng-show="invalidFiles()">#/ invalidFiles() /# #/ 'widgets.fileUploader.invalid_files' | xI18n /#</span>
+		
+		<button class="button_main_action"
+			xim-button
+			xim-loading="$flow.isUploading()"
+			xim-label="uploadButtonLabel()"
+			xim-progress="$flow.progress()"
+			xim-disabled="!allowUpload()"
+			ng-click="uploadFiles($flow)">
+		</button>
+	</fieldset>	
+</form>

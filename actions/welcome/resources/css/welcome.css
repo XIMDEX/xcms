@@ -105,6 +105,9 @@
 .document_item .edit::before {
   content: "\45"; }
 
+.document_item .edit {
+  content: "\45"; }
+
 .config_button::before {
   content: "\e02a"; }
 

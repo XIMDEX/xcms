@@ -26,6 +26,9 @@
 .hidden-focus:checked + .reduced_label::before {
   content: "\79"; }
 
+.metadata_action .empty_state .title {
+  content: "\006c"; }
+
 .text_label {
   position: absolute;
   bottom: .5em;

@@ -76,23 +76,24 @@ class BaseIOInferer {
 	 */
 	function infereFileType($file, $nodeTypeFilter = "common" ) {
 
-
 		$filePath = isset($file) && isset($file['tmp_name']) ? $file['tmp_name'] : NULL;
 		$fileName = isset($file) && isset($file['name']) ? $file['name'] : NULL;
 
 		$fileMimeType = FsUtils::get_mime_type($filePath);
 		$extension = FsUtils::get_extension($fileName);
 
+		$extraQuery = $extension ? "AND rntmt.extension like '%$extension%' " : NULL;
+
 		$query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
-		$query .= "  INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
-		$query .= "  INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
-		$query .= "  WHERE ( rntmt.mimeString like '%$fileMimeType%'  ";
-		$query .= "  OR rntmt.extension like '%$extension%' ) ";
+		$query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
+		$query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
+		$query .= "WHERE ( rntmt.mimeString like '%$fileMimeType%' $extraQuery)";
+
 		if( $nodeTypeFilter != "common" ) {
 			$query .= "  AND rntmt.filter = '$nodeTypeFilter' ";
 		}
 		//Maybe the query would be better with AND operator in where clause instead of OR. Sure for XSL.
-		
+
 		//For 
 		$db = new DB();
 		$db->Query($query);

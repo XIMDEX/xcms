@@ -1,4 +1,4 @@
-{**
+ /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,8 +21,18 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
-<xim-uploader 
-	xim-uploader-options='{$uploaderOptions}'
-	xim-node-id="{$nodeid}">
-</xim-uploader>
+ */
+angular.module('ximdex.common.directive')
+  .directive('ximDynamicName', function($compile, $parse) {
+    return {
+      restrict: 'A',
+      terminal: true,
+      priority: 100000,
+      link: function(scope, elem) {
+        var name = $parse(elem.attr('dynamic-name'))(scope);
+        elem.removeAttr('dynamic-name');
+        elem.attr('name', name);
+        $compile(elem)(scope);
+      }
+    };
+  });

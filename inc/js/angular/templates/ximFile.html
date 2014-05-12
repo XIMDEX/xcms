@@ -1,0 +1,96 @@
+<div class="xim-loader-file row-item xim-loader-file-#/file.getType()/#" 
+	ng-class="{'xim-loader-file-success': file.isComplete() && !file.error, 
+		'xim-loader-file-error': file.error || fileForm.$invalid, 
+		'xim-loader-file-warning': file.overwrite, 
+		'xim-loader-file-image': file.isImage,
+		'xim-loader-file-processing': file.progress() == 1 && !file.isComplete() && file.isUploading()}" 
+	ng-form name="fileForm">
+	<span class="img-preview">
+		<img ng-if="file.isImage"
+				flow-img="file"/>
+	</span>
+		
+		<span class="xim-loader-name row-item-column" >
+			<input type="text" name="name"
+				ng-disabled="file.isUploading() || (file.isComplete() && !file.error)" 
+				required
+				ng-model="file.ximFilename" 
+				ng-model-options="{ debounce: 300 }" 
+				xim-unique 
+					xim-unique-options="normalize" 
+					xim-unique-context="#/parentId/#"
+				xim-focus-on="focusOnName">
+				<span class="overwrite-warning">
+					<button type="button" class="rename-btn btn-rounded row-item-column" 
+						ng-click="renameFile()"
+						ng-show="fileForm.name.$error.unique">
+						<span>#/'widgets.fileUploader.validation.rename' | xI18n/#</span>
+					</button>
+					<button type="button" class="overwrite-btn btn-rounded row-item-column" 
+						ng-click="overwriteFile()"
+						ng-show="fileForm.name.$error.unique">
+						<span>#/'widgets.fileUploader.validation.overwrite' | xI18n/#</span>
+					</button>
+				</span>
+		</span>
+		<span class="xim-loader-size row-item-column">#/file.size | xBytes/#</span>
+		<span class="xim-loader-error row-item-column xim-loader-message" 
+			ng-show="file.error && file.errorMsg && !file.isUploading()">
+			#/file.errorMsg/#
+		</span>
+		<span class="xim-loader-success row-item-column xim-loader-message" 
+			ng-show="file.isComplete() && !file.error && file.successMsg && !file.isUploading()">
+			#/file.successMsg/#
+		</span>
+		<span class="xim-loader-error row-item-column xim-loader-message" 
+			ng-show="fileForm.name.$error.unique && !file.isUploading() && !file.isComplete()">
+			#/'widgets.fileUploader.validation.file_exist' | xI18n/#	
+		</span>
+		<span class="row-item-column file-processing xim-loader-message" 
+			ng-show="file.progress() == 1 && !file.isComplete() && file.isUploading()">
+			#/'widgets.fileUploader.processing' | xI18n/#	
+		</span>
+		<span class="row-item-actions">	
+			<button type="button" class="delete-btn icon btn-unlabel-rounded" 
+				ng-click="file.cancel()"
+				ng-hide="file.isComplete() && !file.error">
+				<span>#/'widgets.fileUploader.cancel' | xI18n/#</span>
+			</button>
+			<button type="button" class="pause-btn icon btn-unlabel-rounded" 
+				ng-click="file.pause()"
+				ng-show="file.isUploading()">
+				<span>#/'widgets.fileUploader.pause' | xI18n/#</span>
+			</button>
+			<button type="button" class="resume-btn icon btn-unlabel-rounded" 
+				ng-click="file.resume()"
+				ng-show="file.paused && !file.invalid">
+				<span>#/'widgets.fileUploader.resume' | xI18n/#</span>
+			</button>
+			<button type="button" class="retry-btn icon btn-unlabel-rounded" 
+				ng-click="file.retry()"
+				ng-hide="!file.error">
+				<span>#/'widgets.fileUploader.retry' | xI18n/#</span>
+			</button>
+			
+			
+		</span>
+		<div class="xim-loader-progress" 
+			ng-style="{width: file.progress()*100+'%'}" 
+			ng-show="file.isUploading() || (file.paused && !file.invalid)">
+			#/file.progress()*100/#%
+		</div>
+		<ul class="xim-loader-meta" ng-if="metaFields" ng-click="editMetadata()">
+			<li ng-repeat="(key, field) in metaFields">
+				<ng-form name="#/key/#" ng-init="addInputForm(key, this)">
+					<label>#/field.label/#</label>
+					<input type="text" ng-model="$parent.file.meta[key]" ng-if="field.type == 'text'">
+					<select name="#/$parent.file.uniqueIdentifier/#-#/key/#" id="#/$parent.file.uniqueIdentifier/#-#/key/#"
+						ng-if="field.type == 'select'"
+						ng-options="option.id as option.name for option in field.options"
+						ng-model="$parent.file.meta[key]"
+						ng-required="field.required">
+					</select>
+				</ng-form>
+			</li>
+		</ul>
+</div>

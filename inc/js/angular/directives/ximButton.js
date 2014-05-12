@@ -28,6 +28,7 @@ angular.module('ximdex.common.directive')
             replace: true,
             scope: {
                 state: '=ximState',
+                loading: '=ximLoading', 
                 disabled: '=ximDisabled',
                 label: '=ximLabel',
                 progress: '=ximProgress'
@@ -49,6 +50,11 @@ angular.module('ximdex.common.directive')
                         case 'error':
                             loader.stop();
                             break;
+                    }
+                });
+                scope.$watch('loading', function(newState, oldState){
+                    if (newState != oldState) {
+                        (newState) ? loader.start() : loader.stop();
                     }
                 });
                 scope.$watch('progress', function(newValue, oldValue){
