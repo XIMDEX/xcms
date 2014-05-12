@@ -5,9 +5,11 @@
 		'xim-loader-file-image': file.isImage,
 		'xim-loader-file-processing': file.progress() == 1 && !file.isComplete() && file.isUploading()}" 
 	ng-form name="fileForm">
-		<img class="img-preview"
-				ng-if="file.isImage"
+	<span class="img-preview">
+		<img ng-if="file.isImage"
 				flow-img="file"/>
+	</span>
+		
 		<span class="xim-loader-name row-item-column" >
 			<input type="text" name="name"
 				ng-disabled="file.isUploading() || (file.isComplete() && !file.error)" 
@@ -26,45 +28,45 @@
 					</button>
 					<button type="button" class="overwrite-btn btn-rounded row-item-column" 
 						ng-click="overwriteFile()"
-						ng-show="fileForm.name.$error.unique"> Or
+						ng-show="fileForm.name.$error.unique">
 						<span>#/'widgets.fileUploader.validation.overwrite' | xI18n/#</span>
 					</button>
 				</span>
 		</span>
 		<span class="xim-loader-size row-item-column">#/file.size | xBytes/#</span>
-		<span class="xim-loader-error row-item-column" 
+		<span class="xim-loader-error row-item-column xim-loader-message" 
 			ng-show="file.error && file.errorMsg && !file.isUploading()">
 			#/file.errorMsg/#
 		</span>
-		<span class="xim-loader-success row-item-column" 
+		<span class="xim-loader-success row-item-column xim-loader-message" 
 			ng-show="file.isComplete() && !file.error && file.successMsg && !file.isUploading()">
 			#/file.successMsg/#
 		</span>
-		<span class="xim-loader-error row-item-column" 
+		<span class="xim-loader-error row-item-column xim-loader-message" 
 			ng-show="fileForm.name.$error.unique && !file.isUploading() && !file.isComplete()">
 			#/'widgets.fileUploader.validation.file_exist' | xI18n/#	
 		</span>
-		<span class="row-item-column" 
+		<span class="row-item-column file-processing xim-loader-message" 
 			ng-show="file.progress() == 1 && !file.isComplete() && file.isUploading()">
 			#/'widgets.fileUploader.processing' | xI18n/#	
 		</span>
 		<span class="row-item-actions">	
-			<button type="button" class="delete-btn icon btn-unlabel-rounded row-item-column" 
+			<button type="button" class="delete-btn icon btn-unlabel-rounded" 
 				ng-click="file.cancel()"
 				ng-hide="file.isComplete() && !file.error">
 				<span>#/'widgets.fileUploader.cancel' | xI18n/#</span>
 			</button>
-			<button type="button" class="pause-btn icon btn-unlabel-rounded row-item-column" 
+			<button type="button" class="pause-btn icon btn-unlabel-rounded" 
 				ng-click="file.pause()"
 				ng-show="file.isUploading()">
 				<span>#/'widgets.fileUploader.pause' | xI18n/#</span>
 			</button>
-			<button type="button" class="resume-btn icon btn-unlabel-rounded row-item-column" 
+			<button type="button" class="resume-btn icon btn-unlabel-rounded" 
 				ng-click="file.resume()"
 				ng-show="file.paused && !file.invalid">
 				<span>#/'widgets.fileUploader.resume' | xI18n/#</span>
 			</button>
-			<button type="button" class="retry-btn icon btn-unlabel-rounded row-item-column" 
+			<button type="button" class="retry-btn icon btn-unlabel-rounded" 
 				ng-click="file.retry()"
 				ng-hide="!file.error">
 				<span>#/'widgets.fileUploader.retry' | xI18n/#</span>
