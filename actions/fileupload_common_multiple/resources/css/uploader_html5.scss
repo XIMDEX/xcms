@@ -316,7 +316,7 @@
 			content: '';
 			width: 100%;
 			height: 3em;
-			background:url(../imgs/mimetype_svg.svg) no-repeat 0 -4px;
+			background:url(../imgs/mimetype_svg.svg) no-repeat 0 -3px;
 			position: absolute;
 			left: -.3em;
 			top: -.2em;
@@ -331,115 +331,125 @@
 
 	.xim-loader-file-pdf &{
 		&::before{
-			background-position: -50px -4px;
+			background-position: -50px -3px;
 		}
 	}
 
 	.xim-loader-file-javascript &{
 		&::before{
-			background-position: -100px -4px;
+			background-position: -100px -3px;
 		}
 	}
 
 	.xim-loader-file-css &{
 		&::before{
-			background-position: -150px -4px;
+			background-position: -150px -3px;
 		}
 	}
 
 	.xim-loader-file-zip &{
 		&::before{
-			background-position: -450px -4px;
+			background-position: -450px -3px;
 		}
 	}
 
 	.xim-loader-file-vnd\.oasis\.opendocument\.text &{
 		&::before{
-			background-position: -300px -4px;
+			background-position: -300px -3px;
 		}
 	}
 
 	.xim-loader-file-msword &{
 		&::before{
-			background-position: -200px -4px; 
+			background-position: -200px -3px; 
 		}
 	}
 	.xim-loader-file-vnd\.ms-excel &{
 		&::before{
-			background-position: -250px -4px;
+			background-position: -250px -3px;
 		}
 	}
 	.xim-loader-file-vnd\.ms-powerpoint &, 
 	.xim-loader-file-vnd\.openxmlformats-officedocument\.presentationml\.presentation &{
 		&::before{
-			background-position: -350px -4px;
+			background-position: -350px -3px;
 		}
 	}
 
 	.xim-loader-file-vnd\.oasis\.opendocument\.presentation &{
 		&::before{
-			background-position: -400px -4px;
+			background-position: -400px -3px;
 		}
 	}
 	.xim-loader-file-x-shockwave-flash &{
 		&::before{
-			background-position: -800px -4px;
+			background-position: -800px -3px;
 		}
 	}
 	.xim-loader-file-quicktime &{
 		&::before{
-			background-position: -650px -4px;
+			background-position: -650px -3px;
 		}
 	}
 
 	.xim-loader-file-x-flv &{
 		&::before{
-			background-position: -750px -4px;
+			background-position: -750px -3px;
 		}
 	}
 	.xim-loader-file-mp4 &{
 		&::before{
-			background-position: -700px -4px;
+			background-position: -700px -3px;
 		}
 	}
 	.xim-loader-file-x-msvideo &{
 		&::before{
-			background-position: -550px -4px;
+			background-position: -550px -3px;
 		}
 	}
 	.xim-loader-file-mp3 &{
 		&::before{
-			background-position: -500px -4px;
+			background-position: -500px -3px;
 		}
 	}
 	.xim-loader-file-wav &{
 		&::before{
-			background-position: -900px -4px;
+			background-position: -900px -3px;
 		}
 	}
 	.xim-loader-file-aiff &{
 		&::before{
-			background-position: -950px -4px;
+			background-position: -950px -3px;
 		}
 	}
 	.xim-loader-file-x-msvideo &{
 		&::before{
-			background-position: -550px -4px;
+			background-position: -550px -3px;
 		}
 	}
 	.xim-loader-file-x-msvideo &{
 		&::before{
-			background-position: -550px -4px;
+			background-position: -550px -3px;
 		}
 	}
 	.xim-loader-file-html &{
 		&::before{
-			background-position: -600px -4px;
+			background-position: -600px -3px;
 		}
 	}
 	.xim-loader-file-vnd\.oasis\.opendocument\.spreadsheet &{
 		&::before{
-			background-position: -1150px -4px;
+			background-position: -1150px -3px;
+		}
+	}
+	.xim-loader-file-xml &{
+		&::before{
+			background-position: -1200px -3px;
+		}
+	}
+	.xim-loader-file-x-php &{
+		&::before{
+			background-position: -1250px -3px;
 		}
 	}
 
