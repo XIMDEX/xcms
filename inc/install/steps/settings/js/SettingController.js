@@ -42,7 +42,7 @@ ximdexInstallerApp.controller('SettingController', ["$timeout", '$scope', 'insta
         params += "&language="+$scope.language;
         params += "&anonymous_information="+$scope.anonymous_information;
         if ($scope.settingForm.$valid){
-            installerService.sendAction("initializeSettings").then(function(response) {
+            installerService.sendAction("initializeSettings", params).then(function(response) {
                     if (response.data.success){
                         location.reload();
                     }
