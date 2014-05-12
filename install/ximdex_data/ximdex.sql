@@ -3216,8 +3216,8 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (155, 5041, 'audio/x-wav', ';wav;', '')
 INSERT INTO `RelNodeTypeMimeType` VALUES (156, 5041, 'video/x-msvideo', ';avi;', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (157, 5041, 'audio/mpeg', ';mp3;', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (158, 5041, 'video/mpeg', ';mpg;mpeg;', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (158, 5041, 'application/zip', ';zip;', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (159, 5078, 'application/xml', ';xml;', 'pvd');
+INSERT INTO `RelNodeTypeMimeType` VALUES (159, 5041, 'application/zip', ';zip;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (160, 5078, 'application/xml', ';xml;', 'pvd');
 
 
 
