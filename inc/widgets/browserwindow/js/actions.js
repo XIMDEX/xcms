@@ -52,8 +52,7 @@
 			'linkreport', 
 			'workflow_forward',
 			'modifyserver',
-			'modifygroupsnode',
-			'edittext'
+			'modifygroupsnode'
 		]
 	};
 
