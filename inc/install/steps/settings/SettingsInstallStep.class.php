@@ -34,6 +34,8 @@ class SettingsInstallStep extends GenericInstallStep {
 	 * Main function. Show the step	 
 	 */
 	public function index(){
+		$this->addJs("SettingController.js");
+
 		$values = array("go_method"=>"initializeSettings");
 		$this->render($values);
 		
@@ -55,8 +57,8 @@ class SettingsInstallStep extends GenericInstallStep {
 		$this->installManager->setXid();
 		$this->installManager->insertXimdexUser($password);
 		$this->loadNextAction();
-		header(sprintf("Location: %s", "index.php"));
-		die();
+		$result["success"] = true;
+		$this->sendJSON($result);
 		
 	}
 

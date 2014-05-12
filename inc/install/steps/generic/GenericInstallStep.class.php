@@ -34,7 +34,7 @@ class GenericInstallStep {
 	protected $currentStep;
 	protected $installManager;
 	protected $js_files;
-	protected $exception;
+	protected $exceptions;
 	const STATUSFILE = "/install/_STATUSFILE";
 
 	public function __construct(){

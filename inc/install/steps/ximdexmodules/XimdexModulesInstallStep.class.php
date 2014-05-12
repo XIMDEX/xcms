@@ -37,12 +37,14 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 	 * Default step method. List all the modules	 
 	 */
 	public function index(){		
-		
 		$this->addJs("InstallModulesController.js");
 		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
 		$result = $imManager->buildModulesFile();		
-		if (!$result)
-			$this->exception[]="Unavailable install modules. Do you have right permission on install/install-modules.conf?";
+		if (!$result){
+					$error["state"]="error";
+					$error["messages"][] = "Impossible to install modules. Do you have the proper permissions on install/install-modules.conf file?";
+					$this->exceptions[]=$error;
+				}
 		$this->render();
 	}
 
@@ -50,7 +52,6 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 	 * List all none default modules and send a json object
 	 */
 	public function getModulesLikeJson(){
-		
 		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
 		$ftManager = new FastTraverseManager (FastTraverseManager::WEB_MODE);		
 		$ftManager->buildFastTraverse();		
@@ -62,14 +63,12 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 	 * Install a module specified in params.	 
 	 */
 	public function installModule(){
-		
 		$moduleName = $this->request->getParam("module");
 		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
 		$installState = $imManager->installModule($moduleName);
 		$imManager->enableModule($moduleName);
 		$values=array("result"=>strtolower($installState));
 		$this->sendJSON($values);
-				
 	}
 }
 

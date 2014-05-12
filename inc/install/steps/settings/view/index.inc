@@ -25,29 +25,27 @@
  */
 ?>
 
-<form method="post" action=".">
+<form method="post" name="settingForm" ng-controller="SettingController" ng-submit="checkForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Settings</h2>
+    <p>By default it's created an admin user for Ximdex CMS called <em>ximdex</em>. Set the password here.</p>
 	<div class="form_item  form_item--user full-width">
 	<label for="">User</label>
 	<span class="user">ximdex</span></div>
+	<p class="errors" ng-show="minLenghtFail">{{minLengthMessage}}</p>	
 	<div class="form_item">
 		<label for="password">Password</label>
-		<input type="password" name="pass" id="password" placeholder="Insert a new database password here" />
+		<input type="password" name="pass" id="password" placeholder="Insert password here" ng-minlength="6" ng-model="pass" required ng-class="{error_element:minLenghtFail==true}" />
+
 	</div>
 	<div class="form_item">
-		<label for="language">Language</label>
-		<select name="language" id="language">
-			<option value="es_ES">Spanish</option>
-			<option value="en_US">English</option>
-			<option value="de_DE">German</option>
-			<option value="pt_BR">Portuguese</option>
+		<label for="language">Interface language</label>
+		<select name="language" id="language" ng-model="language" ng-options="lang.iso as lang.name for lang in languages">
 		</select>
 	</div>
 	<div class="form_item full-width form_item--information">
-		<label for="anonymous_information"><input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" />Would you like to help us sending anonymous information about usage </label>
-		
+		<label for="anonymous_information">
+            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" ng-model="anonymous_information" />Would you like to help us sending anonymous information about your usage?</label>
 	</div>
-
-	<button class=" action_launcher ladda-button">Set general settings</button>
+	<button class=" action_launcher ladda-button">Save settings</button>
 </form>

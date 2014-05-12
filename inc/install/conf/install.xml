@@ -6,14 +6,14 @@
 			name: real module name
 			alias: short name
 			default: 1 if it's a core module
-			content: Module's descrition.
+			content: Module's description.
 	-->
 	<modules>
 		<module name="ximIO" alias="IO" default="1">for the Ximdex API.</module>
 		<module name="ximSYNC" alias="Xsync"  default="1">for dynamic publishing into the cloud.</module>
-		<module name="ximTOUR" alias="Xtour">Take a tour of Ximdex.</module>
-		<module name="ximTAGS" alias="Xtags">Add semantic tags to your documents and files.</module>
-		<module name="ximNEWS" alias="Xnews">Build newsletter and blogs.</module>
+		<module name="ximTAGS" alias="Xtags">Provides the user to add semantic tags to it's documents and files.</module>
+		<module name="ximTOUR" alias="Xtour">Performs a short tour on Ximdex CMS's interface to show the main areas and functionalities.</module>
+		<module name="ximNEWS" alias="Xnews">Build your own newsletters and blogs.</module>
 	</modules>
 	<!--Steps-->
 	<!--For every step we must define

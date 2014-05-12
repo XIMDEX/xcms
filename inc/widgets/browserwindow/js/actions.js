@@ -52,8 +52,7 @@
 			'linkreport', 
 			'workflow_forward',
 			'modifyserver',
-			'modifygroupsnode',
-			'edittext'
+			'modifygroupsnode'
 		]
 	};
 
@@ -111,7 +110,7 @@
 		},
 
 		reloadAction: function() {
-			this.content.load(this.url, function(data, textStatus, xhr) {
+			this.content.load(this.url+'&actionReload=true', function(data, textStatus, xhr) {
 				this.processAction();
 			}.bind(this));	
 		},

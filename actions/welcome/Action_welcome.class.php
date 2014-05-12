@@ -31,7 +31,7 @@ class Action_welcome extends ActionAbstract {
     // Main method: shows the initial form
     function index () {
 		$values=array();
-		if ($this->tourEnabled(XSession::get("userID"), "welcome")){
+		if ($_REQUEST['actionReload'] != 'true' && $this->tourEnabled(XSession::get("userID"), "welcome")){
 			$values[] = $this->addJs('/resources/js/start_tour.js','ximTOUR');
         }
 		if (ModulesManager::isEnabled('ximTOUR')){
