@@ -5,6 +5,7 @@
 *.swp
 *.out
 .sass-cache
+.idea
 node_modules
 data/
 logs/
