@@ -296,7 +296,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
         $normalizedName = String::normalize($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
-		if (empty($type)) {
+		if (empty($type) || $type == 'null') {
 			$nodeTypeName = $baseIoInferer->infereFileType($file);
 		} else {
 			$nodeTypeName = $baseIoInferer->infereFileType($file, $type);
