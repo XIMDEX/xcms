@@ -317,6 +317,8 @@
     background-position: -1200px -3px; }
   .xim-loader-file-x-php .img-preview::before {
     background-position: -1250px -3px; }
+  .xim-loader-file-plain .img-preview::before {
+    background-position: -850px -3px; }
 
 .xim-loader-file-image .xim-loader-name {
   z-index: 4; }
