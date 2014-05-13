@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 
-angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
+angular.module('ximdex.common.service')
     .factory('xTranslate', ['$window', '$http', function($window, $http) {
         return function(input){
         	path = input.split('.');
