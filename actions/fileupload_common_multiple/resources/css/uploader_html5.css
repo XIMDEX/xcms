@@ -144,6 +144,7 @@
     padding: 0;
     cursor: pointer;
     word-wrap: break-word;
+    white-space: nowrap;
     flex-grow: 7;
     -webkit-flex-grow: 7;
     width: 35%; }
@@ -219,7 +220,7 @@
   .xim-loader-file.xim-loader-file-warning {
     border: 1px solid #e6d517; }
   .xim-loader-file.xim-loader-file-error .xim-loader-size {
-    opacity: 0; }
+    display: none; }
   .xim-loader-file button {
     float: right;
     margin: -4px 0 0 0; }

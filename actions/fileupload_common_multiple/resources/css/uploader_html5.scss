@@ -147,6 +147,7 @@
 		padding: 0;
 		cursor: pointer;
 		word-wrap: break-word;
+        white-space: nowrap;
 		flex-grow: 7;
 		-webkit-flex-grow: 7;
 		width: 35%;
@@ -257,7 +258,7 @@
 	
 
 		.xim-loader-size{
-			opacity: 0;
+			display: none;
 		}
 		
 
