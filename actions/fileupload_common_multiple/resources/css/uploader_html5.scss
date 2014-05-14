@@ -453,6 +453,11 @@
 			background-position: -1250px -3px;
 		}
 	}
+	.xim-loader-file-plain &{
+		&::before{
+			background-position: -850px -3px;
+		}
+	} 
 
 
 	
