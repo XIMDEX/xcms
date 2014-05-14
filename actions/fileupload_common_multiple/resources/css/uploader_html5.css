@@ -219,6 +219,8 @@
       border: none; }
   .xim-loader-file.xim-loader-file-warning {
     border: 1px solid #e6d517; }
+  .xim-loader-file.xim-loader-file-error {
+    border: 1px solid #cc3333; }
   .xim-loader-file.xim-loader-file-error .xim-loader-size {
     display: none; }
   .xim-loader-file button {
