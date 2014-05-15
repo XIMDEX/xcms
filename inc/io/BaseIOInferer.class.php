@@ -99,7 +99,7 @@ class BaseIOInferer {
 		$db->Query($query);
 		if ($db->numRows > 0) {
 			$nodeType = $db->GetValue('Name');
-			if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" ) {
+			if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" && $nodeType != "XslTemplate") {
 					$nodeType = "BinaryFile";
 			}
 

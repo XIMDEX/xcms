@@ -253,6 +253,9 @@
 	&.xim-loader-file-warning{
 		border: 1px solid rgb(230, 213, 23);
 	}
+    &.xim-loader-file-error {
+      border: 1px solid $c_warning;
+    }
 
 
 	&.xim-loader-file-error{
