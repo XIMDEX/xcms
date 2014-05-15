@@ -1,4 +1,4 @@
-{**
+/**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -21,13 +21,22 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- *}
-
-<div class="action_header">
-	<h2>{t}Search results{/t}</h2>
-</div>
-
-
-<div class="action_content">
-	<xim-grid xim-list="actionParams.action.data" xim-init-fields='{$fields}'><xim-grid/>
-</div>
+ */
+angular.module('ximdex.common.directive')
+    .directive('ximGrid', function () {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+            	list: '=ximList'
+            },
+            templateUrl : 'inc/js/angular/templates/ximGrid.html',
+            controller: ['$scope', '$element', '$attrs',  function($scope, $element, $attrs){   
+    			if ($attrs.ximInitFields) {
+    				$scope.fields = angular.fromJson($attrs.ximInitFields);
+    			}
+    			$scope.sortByField = 'modification';
+    			$scope.reverse = true;
+            }]
+        }
+    });

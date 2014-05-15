@@ -41,7 +41,17 @@ class Action_searchpanel extends ActionAbstract {
 
 		$this->addJs('/actions/searchpanel/resources/js/results.js');
 		$this->addCSS('/actions/searchpanel/resources/css/searchpanel.css');
-		$this->render(array(), 'results', 'default-3.0.tpl');
+		$fields = array(
+			array('key' => 'nodeid', 'label' => _('Id')),
+			array('key' => 'name', 'label' => _('Name')),
+			array('key' => 'nodetype', 'label' => _('Nodetype')),
+			array('key' => 'abspath', 'label' => _('Path')),
+			array('key' => 'creation', 'label' => _('Created')),
+			array('key' => 'modification', 'label' => _('Modified')),
+			array('key' => 'versionnumber', 'label' => _('Version'))
+		);
+
+		$this->render(array('fields' => json_encode($fields)), 'results', 'default-3.0.tpl');
 	}
 
 	/**
