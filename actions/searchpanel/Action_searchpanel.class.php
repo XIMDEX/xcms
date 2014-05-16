@@ -44,7 +44,7 @@ class Action_searchpanel extends ActionAbstract {
 		$fields = array(
 			array(
 				'key' => 'nodetype',
-				'type' => 'icon'
+				'type' => 'action-icon'
 			),
 			array(
 				'key' => 'nodeid',

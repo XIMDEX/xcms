@@ -53,9 +53,15 @@ angular.module('ximdex.common.directive')
     				return ($scope.selectedItems.indexOf(itemId) < 0)? false: true ;
     			}
 
-    			$scope.contextmenu = function(item, event){
+    			$scope.contextmenu = function(item, event, inline){
     				$scope.selectItem(item, event);
-
+					if (!event.ctrlKey) {
+						$scope.$emit('openActionsMenu', {
+							event: event,
+							nodes: $scope.selectedItems,
+							inline: inline
+						});
+					}
     			}
             }]
         }
