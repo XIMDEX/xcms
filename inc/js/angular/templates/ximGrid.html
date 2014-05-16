@@ -9,11 +9,20 @@
 			</th>
 		</thead>
 		<tbody>
-			<tr ng-repeat="item in list.data | filter:filterText | orderBy:sortByField:reverse">
-				<td ng-repeat="field in fields">#/item[field.key]/#</td>
+			<tr ng-repeat="item in list.data | filter:filterText | orderBy:sortByField:reverse"
+				ng-click="selectItem(item, $event)"
 				ng-right-click="contextmenu(item, $event)"
+				ng-class="{'selected': isSelected(item.nodeid)}">
+				<td ng-repeat="field in fields" ng-switch="field.type">
+					<span class="row-cell-#/field.type/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
+					<span class="row-cell-#/field.type/#" ng-switch-default>#/item[field.key]/#</span>
+				</td>
 			</tr>
 		</tbody>
 		
 	</table>
+	
+	<style>
+
+	</style>
 </div>

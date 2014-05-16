@@ -42,13 +42,45 @@ class Action_searchpanel extends ActionAbstract {
 		$this->addJs('/actions/searchpanel/resources/js/results.js');
 		$this->addCSS('/actions/searchpanel/resources/css/searchpanel.css');
 		$fields = array(
-			array('key' => 'nodeid', 'label' => _('Id')),
-			array('key' => 'name', 'label' => _('Name')),
-			array('key' => 'nodetype', 'label' => _('Nodetype')),
-			array('key' => 'abspath', 'label' => _('Path')),
-			array('key' => 'creation', 'label' => _('Created')),
-			array('key' => 'modification', 'label' => _('Modified')),
-			array('key' => 'versionnumber', 'label' => _('Version'))
+			array(
+				'key' => 'nodetype',
+				'type' => 'icon'
+			),
+			array(
+				'key' => 'nodeid',
+				'label' => _('Id'),
+				'type' => 'text'
+			),
+			array(
+				'key' => 'name',
+				'label' => _('Name'),
+				'type' => 'text'
+			),
+			array(
+				'key' => 'nodetype',
+				'label' => _('Nodetype'),
+				'type' => 'text'
+			),
+			array(
+				'key' => 'abspath',
+				'label' => _('Path'),
+				'type' => 'path'
+			),
+			array(
+				'key' => 'creation',
+				'label' => _('Created'),
+				'type' => 'date'
+			),
+			array(
+				'key' => 'modification',
+				'label' => _('Modified'),
+				'type' => 'date'
+			),
+			array(
+				'key' => 'versionnumber',
+				'label' => _('Version'),
+					'type' => 'text'
+			)
 		);
 
 		$this->render(array('fields' => json_encode($fields)), 'results', 'default-3.0.tpl');

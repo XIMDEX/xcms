@@ -24,10 +24,13 @@
  *}
 
 <div class="action_header">
-	<h2>{t}Search results{/t}</h2>
+	<h2>{t}Search results for: {/t}<span class="search-criteria">#/viewData.query.filters[0].content/#</span></h2>
 </div>
 
-
+	
 <div class="action_content">
-	<xim-grid xim-list="actionParams.action.data" xim-init-fields='{$fields}'><xim-grid/>
+	<div class="search-query-info">
+		<span>Showing #/viewData.items/# of #/viewData.records/# results</span>
+	</div>
+	<xim-grid xim-list="viewData" xim-init-fields='{$fields}'><xim-grid/>
 </div>
