@@ -23,6 +23,8 @@
  *  @version $Revision$
  */
 @import "../themes/ximdex_theme";
+@import "../themes/extends";
+@import "../themes/icons";
 
 .xim-treeview-branch-container{
 	overflow: auto;
@@ -195,3 +197,12 @@ a + span.path-separator + span{
 
 
 
+/****** 
+* treeview icons
+******/
+
+.tree-icon-XmlContainer{
+
+	.row-cell-icon
+
+}

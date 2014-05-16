@@ -1,6 +1,9 @@
 <div>
-	<input type="text" ng-model="filterText"/>
-	<table>
+	<div class="filter">
+		#/'ui.search.filter_by' | xI18n/#: 
+		<input type="text" ng-model="filterText"/>
+	</div>
+	<table  class="simple-results">
 		<thead>
 			<th ng-repeat="field in fields"
 				ng-click="$parent.sortByField=field.key; $parent.reverse=!$parent.reverse" 
@@ -14,9 +17,9 @@
 				ng-right-click="contextmenu(item, $event)"
 				ng-class="{'selected': isSelected(item.nodeid)}">
 				<td ng-repeat="field in fields" ng-switch="field.type">
-					<span class="row-cell-#/field.type/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
-					<span class="row-cell-#/field.type/# node-icon-#/item[field.key]/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
-					<span class="row-cell-#/field.type/#" ng-switch-default>#/item[field.key]/#</span>
+					<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
+					<span class="row-cell-#/field.type/# row-cell-#/field.key/# node-icon-#/item[field.key]/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
+					<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-default>#/item[field.key]/#</span>
 				</td>
 			</tr>
 		</tbody>

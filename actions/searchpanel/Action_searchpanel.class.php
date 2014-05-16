@@ -62,7 +62,7 @@ class Action_searchpanel extends ActionAbstract {
 				'type' => 'text'
 			),
 			array(
-				'key' => 'abspath',
+				'key' => 'relpath',
 				'label' => _('Path'),
 				'type' => 'path'
 			),
