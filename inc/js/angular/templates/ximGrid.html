@@ -15,7 +15,7 @@
 				ng-class="{'selected': isSelected(item.nodeid)}">
 				<td ng-repeat="field in fields" ng-switch="field.type">
 					<span class="row-cell-#/field.type/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
-					<span class="row-cell-#/field.type/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
+					<span class="row-cell-#/field.type/# node-icon-#/item[field.key]/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
 					<span class="row-cell-#/field.type/#" ng-switch-default>#/item[field.key]/#</span>
 				</td>
 			</tr>
