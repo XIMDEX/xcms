@@ -80,14 +80,6 @@ angular.module('ximdex.common.service')
     	    var ndiv = $('<div/>').addClass('button-container-list icon').addClass(options.value).html(options.text);
     	    ndiv.data('data',options.data).click(options.click);
 
-    	    /*if (!Object.isEmpty(options.icon)) {
-
-    	        var icon = options.icon.substr(0, options.icon.length-4);
-    	        ndiv.append($('<span/>').addClass(options.value).addClass('list-icon').html("Icono"));
-    	    }
-
-    	    ndiv.append($('<span/>').addClass('button-text icon').addClass(options.value).html(options.text));*/
-
     	    if (options.container !== null) {
     	        ndiv.appendTo(options.container);
     	    }
