@@ -26,7 +26,7 @@
 
 X.actionLoaded(function(event, fn, params)  {
     var scope = X.angularTools.initView(params.context, params.tabId);
-    scope.actionParams = params;
+    scope.$apply(function(){scope.viewData = params.action.data});
 });
 
 // X.actionLoaded(function(event, fn, params) {
