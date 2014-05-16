@@ -136,6 +136,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/directives/ximFile.js');
 		$this->addJs('/inc/js/angular/directives/ximUploader.js');
 		$this->addJs('/inc/js/angular/directives/ximFocusOn.js');
+		$this->addJs('/inc/js/angular/directives/rightClick.js');
 		$this->addJs('/inc/js/angular/directives/ximGrid.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');

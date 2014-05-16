@@ -37,6 +37,26 @@ angular.module('ximdex.common.directive')
     			}
     			$scope.sortByField = 'modification';
     			$scope.reverse = true;
+    			$scope.selectedItems = []
+
+    			$scope.selectItem = function(item, event) {
+    				console.log("selecting", event);
+					event.preventDefault();
+    				if (event.ctrlKey) {
+    					$scope.selectedItems.push(item.nodeid);	
+    				} else {
+    					$scope.selectedItems = [item.nodeid];
+    				}
+    				return false;
+    			}
+    			$scope.isSelected = function(itemId) {
+    				return ($scope.selectedItems.indexOf(itemId) < 0)? false: true ;
+    			}
+
+    			$scope.contextmenu = function(item, event){
+    				$scope.selectItem(item, event);
+
+    			}
             }]
         }
     });

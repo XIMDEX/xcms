@@ -11,6 +11,7 @@
 		<tbody>
 			<tr ng-repeat="item in list.data | filter:filterText | orderBy:sortByField:reverse">
 				<td ng-repeat="field in fields">#/item[field.key]/#</td>
+				ng-right-click="contextmenu(item, $event)"
 			</tr>
 		</tbody>
 		
