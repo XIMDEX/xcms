@@ -54,7 +54,7 @@ class Action_searchpanel extends ActionAbstract {
 			array(
 				'key' => 'name',
 				'label' => _('Name'),
-				'type' => 'text'
+				'type' => 'long_text'
 			),
 			array(
 				'key' => 'nodetype',
@@ -64,7 +64,7 @@ class Action_searchpanel extends ActionAbstract {
 			array(
 				'key' => 'relpath',
 				'label' => _('Path'),
-				'type' => 'path'
+				'type' => 'long_text'
 			),
 			array(
 				'key' => 'creation',

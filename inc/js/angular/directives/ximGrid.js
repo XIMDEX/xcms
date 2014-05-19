@@ -40,7 +40,6 @@ angular.module('ximdex.common.directive')
     			$scope.selectedItems = []
 
     			$scope.selectItem = function(item, event) {
-    				console.log("selecting", event);
 					event.preventDefault();
     				if (event.ctrlKey) {
     					$scope.selectedItems.push(item.nodeid);	
@@ -63,6 +62,11 @@ angular.module('ximdex.common.directive')
 						});
 					}
     			}
+
+    			$scope.$watch('fields', function(){
+    				console.log("Refreshing");
+    				$scope.$broadcast('ui-refresh');
+    			}, true);
             }]
         }
     });

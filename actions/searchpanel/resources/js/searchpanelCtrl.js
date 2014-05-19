@@ -22,24 +22,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-angular.module('ximdex.common.service')
-    .factory('xEventRelay', ['$window', '$rootScope', function($window, $rootScope) {
-    	var repeatAngularEvent = function(event, data, repeated) {
-    		if (!repeated) $window.jQuery(document).trigger(event.name, data, true);
-    	}
-    	var repeatJQueryEvent = function(event, data, repeated) {
-    		if (!repeated) $rootScope.$broadcast(event.type, data, true);
-    	}
+angular.module('ximdex.main.controller')
+    .controller('searchpanelCtrl', ['$scope', '$attrs', function($scope, $attrs){
     	
-        var broadcastResize = function(event) {
-            $rootScope.$broadcast('ui-resize');
-        }
 
-    	$rootScope.$on('nodemodified', repeatAngularEvent);
-    	$window.jQuery(document).on('nodemodified', repeatJQueryEvent);
-    	
-        $window.jQuery(window).on('resize', broadcastResize);
-        $window.jQuery(document).on('hboxresize', broadcastResize);
-
-
-	}]);
+    }]);

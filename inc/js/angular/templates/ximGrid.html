@@ -3,11 +3,22 @@
 		#/'ui.search.filter_by' | xI18n/#: 
 		<input type="text" ng-model="filterText"/>
 	</div>
+	<div class="fields-selector"
+	 	ng-click="$event.stopPropagation; showFieldsSelector = true;"
+		ng-mouseleave="showFieldsSelector = false;">
+		Collumns
+		<ul ng-show="showFieldsSelector">
+			<li ng-repeat="field in fields" ng-if="field.type != 'action-icon'">
+				<input type="checkbox" id="#/field.label/#-check" ng-model="field.hide" xim-inverted>
+				<label for="#/field.name/#-check">#/field.label/#</label>
+			</li>
+		</ul>
 	<table  class="simple-results">
 		<thead>
 			<th ng-repeat="field in fields"
 				ng-click="$parent.sortByField=field.key; $parent.reverse=!$parent.reverse" 
-				ng-class="{sort: sortByField == field.key, reverse: reverse}">
+				ng-class="{sort: sortByField == field.key, reverse: reverse}"
+				ng-hide="field.hide">
 				#/field.label/#
 			</th>
 		</thead>
@@ -16,9 +27,10 @@
 				ng-click="selectItem(item, $event)"
 				ng-right-click="contextmenu(item, $event)"
 				ng-class="{'selected': isSelected(item.nodeid)}">
-				<td ng-repeat="field in fields" ng-switch="field.type">
+				<td ng-repeat="field in fields" ng-switch="field.type" ng-hide="field.hide">
 					<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
 					<span class="row-cell-#/field.type/# row-cell-#/field.key/# node-icon-#/item[field.key]/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
+					<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="long_text" xim-fit-text xim-refresh="ui-refresh, ui-resize" data-tooltip="#/item[field.key]/#">#/item[field.key]/#</span>
 					<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-default>#/item[field.key]/#</span>
 				</td>
 			</tr>
