@@ -43,7 +43,7 @@ class Action_searchpanel extends ActionAbstract {
 		$this->addCSS('/actions/searchpanel/resources/css/searchpanel.css');
 		$fields = array(
 			array(
-				'key' => 'nodetype',
+				'key' => 'nodetype_nemo',
 				'type' => 'action-icon'
 			),
 			array(

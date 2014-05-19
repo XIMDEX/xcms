@@ -46,3 +46,11 @@ angular.module('ximdex.common.filter')
             return xTranslate(string);
         }
 }]);
+
+angular.module('ximdex.common.filter')
+    .filter('xNormalize', ['xTranslate', function(xTranslate){
+        return function(string){
+            //Basic normalization
+            return string.replace(' ', '_');
+        }
+}]);
