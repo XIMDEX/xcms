@@ -22,30 +22,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
- *
- *  Ximdex a Semantic Content Management System (CMS)
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as published
- *  by the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Affero General Public License for more details.
- *
- *  See the Affero GNU General Public License for more details.
- *  You should have received a copy of the Affero GNU General Public License
- *  version 3 along with Ximdex (see LICENSE file).
- *
- *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
- *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
- */
 .simple-results .row-cell-action-icon {
   display: block;
   text-indent: 110%;
@@ -144,3 +120,20 @@
       -moz-box-shadow: none;
       box-shadow: none;
       width: 30%; }
+
+.simple-results tr.ng-move, .simple-results tr.ng-enter, .simple-results tr.ng-leave {
+  -webkit-transition: 200ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -moz-transition: 200ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -ms-transition: 200ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -o-transition: 200ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  transition: 200ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  position: relative;
+  display: table-row; }
+.simple-results tr.ng-leave.ng-leave-active, .simple-results tr.ng-move, .simple-results tr.ng-enter {
+  opacity: 0;
+  top: -50px;
+  height: 0px; }
+.simple-results tr.ng-leave, .simple-results tr.ng-move.ng-move-active, .simple-results tr.ng-enter.ng-enter-active {
+  opacity: 1;
+  top: 0;
+  height: 30px; }
