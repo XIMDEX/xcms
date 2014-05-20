@@ -11,6 +11,8 @@ data/
 logs/
 install/install.log
 conf/install-params.conf.php
+conf/install-modules.conf
+conf/_STATUSFILE
 conf/install-params.conf_bk_*.php
 modules/dexT/xslt/dext_main.xsl
 inc/model/orm/*.bck*
