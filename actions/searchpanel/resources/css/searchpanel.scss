@@ -125,9 +125,12 @@
 
   .row-cell-action-icon{
     @extend %hide-text;
-    width: 3.8em;
-    background:url(../../../../xmd/images/tree/treeview-icons.png) no-repeat 1.3em top;
+    width: 1.2em;
+    background-image:url(../../../../xmd/images/tree/treeview-icons.png);
+    background-repeat: no-repeat;
     padding: 0;
+    margin: 0 .2em 0 1.5em;
+
   }
 
   .row-cell-date{
@@ -163,4 +166,76 @@
       width: 30%;
     }
   }
+}
+
+// Field selector
+
+.results-container{
+
+  position: relative;
+}
+
+.fields-selector{
+ 
+  
+
+  span{
+  @extend %hide-text;
+    position: absolute;
+    width: 3em;
+    overflow: hidden;
+    display: block;
+    height: 3em;
+
+     &::before{
+    @extend %field-selector;
+    color: #fff;
+     width: 100%;
+     text-align: center;
+     display: block;
+     font-size: 1.3em;
+     line-height: 2.3;
+      position: absolute;
+      text-indent: 0;
+  }
+  }
+
+ 
+}
+
+.fields-selector-options{
+ // width: calc(100% - 3.5em);
+  margin: 3em 0 0 0;
+  //position: absolute;
+ // height: 2.8em;
+ 
+  background: $c_grey-ll;
+   -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  opacity:1;
+  //z-index: 5;
+  padding: 1em 3em;
+
+
+  li{
+   display: inline-block;
+   width: 32%;
+    line-height: 2.5;
+  }
+  label{
+    color: #fff;
+
+  }
+}
+
+
+.fields-selector-options.ng-hide-add,
+.fields-selector-options.ng-hide-remove {
+   -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  display:block!important;
+}
+
+.fields-selector-options.ng-hide {
+  opacity:0;
 }

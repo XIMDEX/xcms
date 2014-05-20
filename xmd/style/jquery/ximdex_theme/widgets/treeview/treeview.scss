@@ -198,11 +198,60 @@ a + span.path-separator + span{
 
 
 /****** 
-* treeview icons
+* nodetype icons
 ******/
 
-.tree-icon-XmlContainer{
-
-	.row-cell-icon
-
+.node-icon-xmlcontainer{
+	background-position: -22px -358px;
 }
+.node-icon-xmlrootfolder{
+	background-position: -22px -102px;
+}
+.node-icon-xmldocument, 
+.node-icon-rngvisualtemplate, 
+.node-icon-xsltemplate, 
+.node-icon-textfile{
+	background-position: -22px -315px;
+}
+.node-icon-project{
+	background-position: -2px -22px;
+} 
+.node-icon-server{
+	background-position: -2px -62px;
+} 
+.node-icon-imagesrootfolder{
+	background-position: -22px -82px;
+} 
+.node-icon-imagefile{
+	background-position: -1px -336px;
+} 
+.node-icon-cssfile{
+	background-position:-22px -336px;
+} 
+.node-icon-linkmanager{
+	background-position:-22px -21px;
+} 
+.node-icon-templateviewfolder{
+	background-position:-22px -42px;
+} 
+.node-icon-templatesrootfolder{
+	background-position:-2px -42px;
+} 
+.node-icon-commonrootfolder{
+	background-position:-22px -61px;
+} 
+.node-icon-binaryfile{
+	background-position:-1px -580px;
+} 
+.node-icon-cssrootfolder{
+	background-position:-2px -81px;
+} 
+.node-icon-importrootfolder{
+	background-position:-2px -102px;
+} 
+.node-icon-ximletrootfolder{
+	background-position:-2px -123px;
+} 
+.node-icon-section{
+	background-position:-2px -379px;
+} 
