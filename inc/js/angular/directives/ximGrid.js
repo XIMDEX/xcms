@@ -64,9 +64,11 @@ angular.module('ximdex.common.directive')
     			}
 
     			$scope.$watch('fields', function(){
-    				console.log("Refreshing");
     				$scope.$broadcast('ui-refresh');
     			}, true);
+                $scope.$watch('filterText', function(){
+                    $scope.$broadcast('ui-refresh');
+                });
             }]
         }
     });

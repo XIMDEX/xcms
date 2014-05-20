@@ -38,6 +38,22 @@ angular.module('ximdex.common.directive')
                     context.font = font;
                     return context.measureText(text).width;
                 }
+
+                var trimText = function (string, size) {
+                    var sLength = string.length;
+                    switch (attrs.ximFitText) {
+                        case 'trim left': 
+                            var trim = sLength - size;
+                            return '...'+string.substring(trim + 4, sLength); 
+                        case 'trim center':
+                            var mid = Math.floor(sLength/2);
+                            var trim = Math.ceil( (sLength-size) / 2);
+                            return string.substring(0, mid-trim-3)+'...'+string.substring(mid+trim+2, sLength);;
+                        default:
+                            return string.substring(0, size - 4)+'...'; 
+                    }
+                }
+
                 var fitText = function(event) {
                     var font = element.css('font');
                     var elementWidth = element.width();
@@ -48,12 +64,12 @@ angular.module('ximdex.common.directive')
                         var fits = null;
                         var subString = null;
                         while (i < text.length && !fits) {
-                            subString = text.substring(0, text.length - i);
+                            subString = trimText(text, text.length - i);
                             if (getTextWidth(subString, font) > elementWidth) {
                                 i++;
                             } else {
                                 fits = true;
-                                element.html(subString.substring(0, subString.length - 4)+'...');
+                                element.html(subString);
                             }
                         }
                     } else if (event){
