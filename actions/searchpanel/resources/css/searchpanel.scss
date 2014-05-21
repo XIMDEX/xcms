@@ -180,14 +180,12 @@
 
 .fields-selector-options{
  // width: calc(100% - 3.5em);
-  margin: 3em 0 0 0;
+  //margin: 3em 0 0 0;
   //position: absolute;
  // height: 2.8em;
  
   background: $c_grey-ll;
-   -webkit-transition:all linear 0.5s;
-  transition:all linear 0.5s;
-  opacity:1;
+
   //z-index: 5;
   padding: 1em 3em;
 
@@ -204,13 +202,13 @@
 }
 
 
-.fields-selector-options.ng-hide-add,
-.fields-selector-options.ng-hide-remove {
-   -webkit-transition:all linear 0.5s;
-  transition:all linear 0.5s;
-  display:block!important;
-}
+// .fields-selector-options.ng-hide-add,
+// .fields-selector-options.ng-hide-remove {
+//    -webkit-transition:all linear 0.5s;
+//   transition:all linear 0.5s;
+//   display:block!important;
+// }
 
-.fields-selector-options.ng-hide {
-  opacity:0;
-}
+// .fields-selector-options.ng-hide {
+//   opacity:0;
+// }
