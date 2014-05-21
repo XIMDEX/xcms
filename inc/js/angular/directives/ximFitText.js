@@ -22,11 +22,22 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
 angular.module('ximdex.common.directive')
     .directive('ximFitText', ['$window', '$timeout', function ($window, $timeout) {
         return {
             link: function (scope, element, attrs) {
                 var text="";
+                
+                var debounce = {
+                    timeout: null,
+                    tryExec: function(dFunction){
+                        if (this.timeout) $timeout.cancel(this.timeout);
+                        this.timeout = $timeout(function(){
+                            dFunction();    
+                        }, 100);  
+                    }
+                }
                 var getTextWidth = function(text, font) {
                     if (!$window.jQuery._cacheCanvas) {
                         var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
@@ -45,10 +56,16 @@ angular.module('ximdex.common.directive')
                         case 'trim left': 
                             var trim = sLength - size;
                             return '...'+string.substring(trim + 4, sLength); 
+                        case 'trim path':
+                            var slashIndex = string.lastIndexOf('/');
+                            var trimedString = string.substring(0, slashIndex-sLength+size-3)+'...'+string.substring(slashIndex, sLength);
+                            if (trimedString.length <= size) {
+                                return trimedString;
+                            }
                         case 'trim center':
                             var mid = Math.floor(sLength/2);
                             var trim = Math.ceil( (sLength-size) / 2);
-                            return string.substring(0, mid-trim-3)+'...'+string.substring(mid+trim+2, sLength);;
+                            return string.substring(0, mid-trim-3)+'...'+string.substring(mid+trim+2, sLength);
                         default:
                             return string.substring(0, size - 4)+'...'; 
                     }
@@ -56,21 +73,43 @@ angular.module('ximdex.common.directive')
 
                 var fitText = function(event) {
                     var font = element.css('font');
-                    var elementWidth = element.width();
+                    var elementWidth = Math.floor(element.width());
                     //TODO: Use binary search recursive function to optimize
                     var textWidth = getTextWidth(text, font);
                     if (textWidth > elementWidth) {
-                        var i = 1;
+                        var candidateSize = Math.floor(text.length*elementWidth/textWidth);
+                        var increment = 1;
                         var fits = null;
-                        var subString = null;
-                        while (i < text.length && !fits) {
-                            subString = trimText(text, text.length - i);
-                            if (getTextWidth(subString, font) > elementWidth) {
-                                i++;
-                            } else {
+                        var candidate = null;
+                        var i = 1;
+                        var lastFit = null;
+                        var lastCandidate = null;
+
+                        while (!fits && i < 5) {
+                            candidate = trimText(text, candidateSize);
+                            var textWidth = getTextWidth(candidate, font);
+                            if (textWidth > elementWidth) {
+                                candidateSize = Math.floor(candidateSize*elementWidth/textWidth);
+                                if (lastFit === true || lastCandidate == candidate) {
+                                    fits = true;
+                                    element.html(lastCandidate);    
+                                }
+                                lastFit = false;
+                                lastCandidate = candidate;
+                            } else if (textWidth < elementWidth){
+                                candidateSize = Math.floor(candidateSize*elementWidth/textWidth);
+                                lastCandidate = candidate;
+                                if (lastFit === false || lastCandidate == candidate) {
+                                    fits = true;
+                                    element.html(candidate);  
+                                }
+                                lastFit = true;
+                                lastCandidate = candidate;
+                            } else if(textWidth = elementWidth){
                                 fits = true;
-                                element.html(subString);
+                                element.html(candidate);
                             }
+                            i++;
                         }
                     } else if (event){
                         element.html(text);   
@@ -86,7 +125,7 @@ angular.module('ximdex.common.directive')
                     scope.$on(uiRefresh[i], function(){
                         $timeout(function(){
                             fitText(true);
-                        },0);
+                        }, 0);
                     });
                 };
             }

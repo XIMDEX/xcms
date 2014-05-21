@@ -7,7 +7,7 @@
 		<div class="fields-selector "
 		 	ng-class="{opened : showFieldsSelector}"
 			><!--ng-mouseleave="showFieldsSelector = false;" -->
-			<ul class="fields-selector-options " ng-class="{'opened-view' : showFieldsSelector}" ng-show="showFieldsSelector" ng-click="$event.stopPropagation;">   
+			<ul class="fields-selector-options slide-item" ng-show="showFieldsSelector" ng-click="$event.stopPropagation;">   
 				<li ng-repeat="field in fields" ng-if="field.type != 'action-icon'">
 					<input type="checkbox" id="#/field.key/#-check" ng-model="field.hide" xim-inverted class="input-slide">
 					<label for="#/field.key/#-check" class="label-slide">#/field.label/#</label>
@@ -37,7 +37,7 @@
 					<td ng-repeat="field in fields" ng-switch="field.type" ng-hide="field.hide">
 						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
 						<span class="row-cell-#/field.type/# row-cell-#/field.key/# node-icon-#/item[field.key] | xNormalize | lowercase/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
-						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="long_text" xim-fit-text xim-refresh="ui-refresh, ui-resize" data-tooltip="#/item[field.key]/#">#/item[field.key]/#</span>
+						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="long_text" xim-fit-text="trim path" xim-refresh="ui-refresh, ui-resize" data-tooltip="#/item[field.key]/#">#/item[field.key]/#</span>
 						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-default>#/item[field.key]/#</span>
 					</td>
 				</tr>
