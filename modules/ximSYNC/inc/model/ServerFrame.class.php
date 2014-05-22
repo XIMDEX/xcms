@@ -381,9 +381,8 @@ class ServerFrame extends ServerFrames_ORM {
 			FsUtils::copy($file, $path);
 		}
 
+		clearstatcache();
 		// Its necessary to updating SyncFile size in BD
-
-
 		$fileSize = filesize($path);
 
 		return $fileSize;
