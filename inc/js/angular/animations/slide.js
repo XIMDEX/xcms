@@ -31,10 +31,12 @@ angular.module('ximdex')
 		}
 		//TODO: Change jquery code for vanilla javascript
 		var runTheShowAnimation = function(element, done){
-			jQuery(element).hide().slideDown(400, done);
+			var duration = parseInt(element.attr('xim-slide-duration')) || 400;
+			jQuery(element).hide().slideDown(duration, done);
 		}
 		var runTheHideAnimation = function(element, done){
-			jQuery(element).slideUp(400, done);
+			var duration = parseInt(element.attr('xim-slide-duration')) || 400;
+			jQuery(element).slideUp(duration, done);
 		}
 
 		return {
