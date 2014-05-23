@@ -38,12 +38,13 @@ class InstallManager {
 	//CONSTANTS FOR INSTALL MODE
 	const WEB_MODE = "web";
 	const CONSOLE_MODE = "console";
-	const STATUSFILE = "/install/_STATUSFILE";
+	const STATUSFILE = "/conf/_STATUSFILE";
 
 	const INSTALL_CONF_FILE = "install.xml";	
 	const INSTALL_PARAMS_TEMPLATE = "/install/templates/install-params.conf.php";
 	const INSTALL_PARAMS_FILE = "/conf/install-params.conf.php";
 	const LAST_STATE = "INSTALLED";
+	const FIRST_STATE = "INIT";
 	
 	protected $mode = ""; //install mode.
 	protected $installMessages = null;
@@ -110,6 +111,10 @@ class InstallManager {
 			return false;
 
 		return $currentState == strtolower(self::LAST_STATE);
+	}
+
+	public function createStatusFile(){
+		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, self::FIRST_STATE);
 	}
 
 	/**
@@ -285,8 +290,7 @@ class InstallManager {
 
 		$result["state"] = "success";
 		$result["name"] = "File permission";
-		$filesToCheck = array(self::STATUSFILE,
-								"/data",
+		$filesToCheck = array(	"/data",
 								"/logs",
 								"/conf");
 		foreach ($filesToCheck as $file) {
