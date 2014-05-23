@@ -28,7 +28,8 @@ angular.module('ximdex.common.directive')
             replace: true,
             restrict: 'E',
             scope: {
-            	list: '=ximList'
+            	list: '=ximList',
+                filterText: '=ximFilter'
             },
             templateUrl : 'inc/js/angular/templates/ximGrid.html',
             controller: ['$scope', '$element', '$attrs',  function($scope, $element, $attrs){   
@@ -41,7 +42,7 @@ angular.module('ximdex.common.directive')
 
     			$scope.selectItem = function(item, event) {
 					event.preventDefault();
-    				if (event.ctrlKey) {
+                    if (event.ctrlKey) {
     					$scope.selectedItems.push(item.nodeid);	
     				} else {
     					$scope.selectedItems = [item.nodeid];

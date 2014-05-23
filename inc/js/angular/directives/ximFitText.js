@@ -77,21 +77,18 @@ angular.module('ximdex.common.directive')
                     //TODO: Use binary search recursive function to optimize
                     var textWidth = getTextWidth(text, font);
                     if (textWidth > elementWidth) {
-                        var candidateSize = Math.floor(text.length*elementWidth/textWidth);
-                        var increment = 1;
-                        var fits = null;
-                        var candidate = null;
-                        var i = 1;
-                        var lastFit = null;
-                        var lastCandidate = null;
-
-                        while (!fits && i < 5) {
+                        var candidateSize = Math.floor(text.length*elementWidth/textWidth),
+                        fit, 
+                        lastFit, 
+                        candidate, 
+                        lastCandidate;
+                        while (!fit) {
                             candidate = trimText(text, candidateSize);
                             var textWidth = getTextWidth(candidate, font);
                             if (textWidth > elementWidth) {
                                 candidateSize = Math.floor(candidateSize*elementWidth/textWidth);
                                 if (lastFit === true || lastCandidate == candidate) {
-                                    fits = true;
+                                    fit = true;
                                     element.html(lastCandidate);    
                                 }
                                 lastFit = false;
@@ -100,16 +97,15 @@ angular.module('ximdex.common.directive')
                                 candidateSize = Math.floor(candidateSize*elementWidth/textWidth);
                                 lastCandidate = candidate;
                                 if (lastFit === false || lastCandidate == candidate) {
-                                    fits = true;
+                                    fit = true;
                                     element.html(candidate);  
                                 }
                                 lastFit = true;
                                 lastCandidate = candidate;
                             } else if(textWidth = elementWidth){
-                                fits = true;
+                                fit = true;
                                 element.html(candidate);
                             }
-                            i++;
                         }
                     } else if (event){
                         element.html(text);   

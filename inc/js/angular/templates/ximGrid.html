@@ -25,7 +25,7 @@
 				<th ng-repeat="field in fields"
 					ng-click="$parent.sortByField=field.key; $parent.reverse=!$parent.reverse" 
 					ng-class="{sort: sortByField == field.key, reverse: reverse}"
-					ng-hide="field.hide">
+					ng-if="!field.hide">
 					#/field.label/#
 				</th>
 			</thead>
@@ -34,7 +34,7 @@
 					ng-click="selectItem(item, $event)"
 					ng-right-click="contextmenu(item, $event)"
 					ng-class="{'selected': isSelected(item.nodeid)}">
-					<td ng-repeat="field in fields" ng-switch="field.type" ng-hide="field.hide">
+					<td ng-repeat="field in fields" ng-switch="field.type" ng-if="!field.hide">
 						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
 						<span class="row-cell-#/field.type/# row-cell-#/field.key/# node-icon-#/item[field.key] | xNormalize | lowercase/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
 						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="long_text" xim-fit-text="trim path" xim-refresh="ui-refresh, ui-resize" data-tooltip="#/item[field.key]/#">#/item[field.key]/#</span>
