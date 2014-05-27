@@ -19,7 +19,7 @@ To install our last BETA release, download the shell script [XIMDEX_INSTALL.sh] 
 
   - Flexible, Secure, Scalable
   - Neutral: content independence, format agnostic, free structure, open access, ...
-  - Information adaptable, structurizable and semantizable
+  - Information adaptable, structurizable and semantizable applying Dynamic Semantic Publishing (DSP) techniques
   - Multichannel in the cloud
   - Visual Edition of XML + automatic transformation of XML 
   - Visual Role/User/Workflow edition in an object-action UI
