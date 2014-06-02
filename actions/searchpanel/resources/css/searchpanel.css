@@ -22,7 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-.simple-results .row-cell-action-icon, .fields-selector span {
+.simple-results .row-cell-action-icon, .fields-selector-launcher {
   display: block;
   text-indent: 110%;
   white-space: nowrap;
@@ -40,7 +40,7 @@
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
-.fields-selector span::before {
+.fields-selector-launcher::before {
   content: "\e61b"; }
 
 .search-query-info {
@@ -49,21 +49,14 @@
   margin-right: .2em; }
 
 .simple-results {
-  width: 100%;
-  background: #fff;
-  border: 1px solid #d5d9df;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border-collapse: collapse; }
+  width: 100%; }
   .simple-results th {
     background: #7bcabf;
     color: #fff;
     font-weight: bold;
     padding: .8em;
-    text-align: left; }
-  .simple-results tr {
-    border-top: 1px solid #d5d9df; }
+    text-align: left;
+    cursor: pointer; }
   .simple-results td span {
     padding: .8em;
     -ms-word-break: break-word;
@@ -102,15 +95,16 @@
     white-space: nowrap; }
 
 .filter {
-  font-weight: bold;
-  color: #7f8689;
-  margin-bottom: 1.3em; }
+  float: right; }
   .filter input {
-    border: 1px solid #eaf1f4;
-    background: #dde2e4;
-    -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.2);
+    border: none;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 0;
+   /* border: 1px solid #eaf1f4;
+    background:#dde2e4;
+    -webkit-box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
+    box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
     padding: .3em .5em;
     margin-left: 1em;
     -webkit-transition: all .3s ease-in;
@@ -118,24 +112,32 @@
     -ms-transition: all .3s ease-in;
     -o-transition: all .3s ease-in;
     transition: all .3s ease-in;
-    width: 20%; }
-    .filter input:focus {
-      background: #fff;
+    width: 20%;
+
+    &:focus{
+      background:#fff;
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;
-      width: 30%; }
+      width: 30%;
+    }*/ }
 
 .results-container {
   position: relative; }
 
-.fields-selector span {
+.fields-selector-launcher {
   position: absolute;
-  width: 3em;
+  width: 3.3em;
   overflow: hidden;
   display: block;
-  height: 3em; }
-  .fields-selector span::before {
+  cursor: pointer;
+  height: 2.8em;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease; }
+  .fields-selector-launcher::before {
     color: #fff;
     width: 100%;
     text-align: center;
@@ -143,14 +145,34 @@
     font-size: 1.3em;
     line-height: 2.3;
     position: absolute;
-    text-indent: 0; }
+    text-indent: 0;
+    background: transparent;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -ms-transition: all .2s;
+    -o-transition: all .2s;
+    transition: all .2s; }
+  .fields-selector-launcher.opened {
+    background: #4c4c4c; }
+
+.results-number {
+  font-family: "Ubuntu Condensed"; }
+  .results-number::before {
+    content: '['; }
+  .results-number::after {
+    content: ']'; }
 
 .fields-selector-options {
-  background: #212121;
-  padding: 1em 3em; }
+  background: #4c4c4c;
+  /*  -webkit-transition:all linear 0.5s;
+   transition:all linear 0.5s;
+   opacity:1;*/
+  overflow: hidden;
+  padding: 1em 3em 1em 6em; }
   .fields-selector-options li {
     display: inline-block;
-    width: 32%;
-    line-height: 2.5; }
+    width: 24%;
+    line-height: 2.5;
+    min-width: 150px; }
   .fields-selector-options label {
     color: #fff; }

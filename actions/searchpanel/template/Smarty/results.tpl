@@ -23,14 +23,16 @@
  *  @version $Revision$
  *}
 
-<div class="action_header">
-	<h2>{t}Search results for: {/t}<span class="search-criteria">#/viewData.query.filters[0].content/#</span></h2>
+<div class="action_header" ng-cloak>
+	<h2>{t}Search results for: {/t}<span class="search-criteria">#/viewData.query.filters[0].content/#</span> <span class="results-number">#/viewData.data.length/#/#/viewData.records/#</span></h2>
+	<div class="filter">
+		#/'ui.search.filter_by' | xI18n/#: 
+		<input type="text" ng-model="filterText"/>
+	</div>
+
 </div>
 
 	
-<div class="action_content">
-	<div class="search-query-info">
-		<span>Showing #/viewData.items/# of #/viewData.records/# results</span>
-	</div>
-	<xim-grid xim-list="viewData" xim-init-fields='{$fields}'><xim-grid/>
+<div class="action_content fullwidth">
+	<xim-grid xim-list="viewData" xim-init-fields='{$fields}' xim-filter='filterText'><xim-grid/>
 </div>

@@ -1,36 +1,32 @@
 <div>
-	<div class="filter">
-		#/'ui.search.filter_by' | xI18n/#: 
-		<input type="text" ng-model="filterText"/>
-	</div>
+	
 	<div class="results-container">
 		<div class="fields-selector "
 		 	ng-class="{opened : showFieldsSelector}"
 			><!--ng-mouseleave="showFieldsSelector = false;" -->
 			<ul class="fields-selector-options slide-item" ng-show="showFieldsSelector" ng-click="$event.stopPropagation;">   
 				<li ng-repeat="field in fields" ng-if="field.type != 'action-icon'">
-					<input type="checkbox" id="#/field.key/#-check" ng-model="field.hide" xim-inverted class="input-slide">
-					<label for="#/field.key/#-check" class="label-slide">#/field.label/#</label>
+					<input type="checkbox" id="#/field.key/#-check-#/$id/#" ng-model="field.hide" xim-inverted class="input-slide">
+					<label for="#/field.key/#-check-#/$id/#" class="label-slide">#/field.label/#</label>
 				</li>
 			</ul>
-			<span class="icon"
-				ng-click="$event.stopPropagation; showFieldsSelector = !showFieldsSelector;">
+			<span class="icon btn-rounded fields-selector-launcher"
+				ng-click="$broadcast('toggleFieldsSelector')"
+				ng-class="{'opened': showFieldsSelector}">
 				Collumns
 			</span>
-
-			
 			</div>
 		<table  class="simple-results">
 			<thead>
 				<th ng-repeat="field in fields"
-					ng-click="$parent.sortByField=field.key; $parent.reverse=!$parent.reverse" 
-					ng-class="{sort: sortByField == field.key, reverse: reverse}"
+					ng-click="tableSort.sortByField=field.key; tableSort.reverse=!tableSort.reverse" 
+					ng-class="{sort: tableSort.sortByField == field.key, reverse: tableSort.reverse}"
 					ng-if="!field.hide">
 					#/field.label/#
 				</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in list.data | filter:filterText | orderBy:sortByField:reverse"
+				<tr ng-repeat="item in list.data | filter:filterText | orderBy:tableSort.sortByField:tableSort.reverse"
 					ng-click="selectItem(item, $event)"
 					ng-right-click="contextmenu(item, $event)"
 					ng-class="{'selected': isSelected(item.nodeid)}">

@@ -36,9 +36,11 @@ angular.module('ximdex.common.directive')
     			if ($attrs.ximInitFields) {
     				$scope.fields = angular.fromJson($attrs.ximInitFields);
     			}
-    			$scope.sortByField = 'modification';
-    			$scope.reverse = true;
-    			$scope.selectedItems = []
+    			$scope.tableSort = {
+                                        sortByField: 'modification',
+                                        reverse: true
+                                };
+    			$scope.selectedItems = [];
 
     			$scope.selectItem = function(item, event) {
 					event.preventDefault();
@@ -69,6 +71,9 @@ angular.module('ximdex.common.directive')
     			}, true);
                 $scope.$watch('filterText', function(){
                     $scope.$broadcast('ui-refresh');
+                });
+                $scope.$on('toggleFieldsSelector', function(event){
+                    $scope.showFieldsSelector = !$scope.showFieldsSelector;
                 });
             }]
         }

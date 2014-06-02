@@ -248,6 +248,8 @@ fieldset {
   /*.message + &{
   	padding-top: 1em;
   }*/ }
+  .action_content.fullwidth {
+    padding: 0; }
   .action_content p {
     font-size: 1.8rem;
     position: relative; }

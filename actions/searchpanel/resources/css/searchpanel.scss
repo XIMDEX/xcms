@@ -35,12 +35,6 @@
 
 .simple-results{
   width: 100%;
-  background:#fff;
-  border: 1px solid #d5d9df;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border-collapse: collapse;     
 
   th{
     background:$c-mainlight;
@@ -48,11 +42,11 @@
     font-weight: bold;
     padding: .8em;
     text-align: left;
+    cursor: pointer;
+
   }
 
-  tr{
-    border-top: 1px solid #d5d9df;    
-  }
+ 
 
   td{
     span{
@@ -115,11 +109,12 @@
 }
 
 .filter{
-  font-weight: bold;
-  color: #7f8689;
-  margin-bottom: 1.3em;
+  float: right;
   input{
-    border: 1px solid #eaf1f4;
+    border: none;
+    border-bottom: 1px solid $c_grey-ppp;
+    padding: 0;
+   /* border: 1px solid #eaf1f4;
     background:#dde2e4;
     -webkit-box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
     -moz-box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
@@ -139,7 +134,7 @@
       -moz-box-shadow: none;
       box-shadow: none;
       width: 30%;
-    }
+    }*/
   }
 }
 
@@ -150,33 +145,59 @@
   position: relative;
 }
 
-.fields-selector{
- 
-  
-
-  span{
+.fields-selector-launcher{
   @extend %hide-text;
     position: absolute;
-    width: 3em;
+    width: 3.3em;
     overflow: hidden;
     display: block;
-    height: 3em;
+    cursor: pointer;
+    height: 2.8em;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+  
+   
 
      &::before{
-    @extend %field-selector;
-    color: #fff;
-     width: 100%;
-     text-align: center;
-     display: block;
-     font-size: 1.3em;
-     line-height: 2.3;
-      position: absolute;
-      text-indent: 0;
-  }
-  }
+        @extend %field-selector;
+        color: #fff;
+         width: 100%;
+         text-align: center;
+         display: block;
+         font-size: 1.3em;
+         line-height: 2.3;
+          position: absolute;
+          text-indent: 0;
+          background:transparent;
+          -webkit-transition: all .2s;
+          -moz-transition: all .2s;
+          -ms-transition: all .2s;
+          -o-transition: all .2s;
+          transition: all .2s;
+    }
 
- 
+    &.opened{
+        background: $c_dark-grey;
+    }
+
+   
 }
+
+
+.results-number{
+  font-family: $t-text;
+
+  &::before{
+    content: '[';
+  }
+  &::after{
+    content: ']';
+  }
+}
+  
 
 .fields-selector-options{
  // width: calc(100% - 3.5em);
@@ -184,16 +205,20 @@
   //position: absolute;
  // height: 2.8em;
  
-  background: $c_grey-ll;
-
+  background: $c_dark-grey;
+ /*  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  opacity:1;*/
+  overflow: hidden;
   //z-index: 5;
-  padding: 1em 3em;
+  padding: 1em 3em 1em 6em;
 
 
   li{
    display: inline-block;
-   width: 32%;
+   width: 24%;
     line-height: 2.5;
+    min-width: 150px;
   }
   label{
     color: #fff;
@@ -202,13 +227,3 @@
 }
 
 
-// .fields-selector-options.ng-hide-add,
-// .fields-selector-options.ng-hide-remove {
-//    -webkit-transition:all linear 0.5s;
-//   transition:all linear 0.5s;
-//   display:block!important;
-// }
-
-// .fields-selector-options.ng-hide {
-//   opacity:0;
-// }
