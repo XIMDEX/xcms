@@ -24,9 +24,9 @@
  *}
 
 <div class="gral">
-	<div class="content_header">
+	<div class="action_header">
 
-				<h2>&lt; Module {$module_name} &gt;</h2>
-				<h3>Description of {$module_name} module.</h3>
+				<h2>Module {$module_name}</h2>
 	</div>
-	<div class="content">
+	<div class="action_content">
+
