@@ -9752,3 +9752,6 @@ msgstr "Todos los campos se han guardado correctamente."
 
 msgid "Distribution title"
 msgstr "T&iacute;tulo de la distribuci&oacute;n"
+
+msgid "The document has been saved"
+msgstr "El documento se ha guardado correctamente"

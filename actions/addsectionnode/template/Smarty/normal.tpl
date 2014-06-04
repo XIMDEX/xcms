@@ -3,8 +3,8 @@
         {if $subfolders|@count != 0}
         	{foreach from=$subfolders key=nt item=foldername}
                 <div class="subfolder box-col1-1">
-                	<input name="folderlst[]" type="checkbox" value="{$nt}" {if $nt eq 5018 || $nt eq 5016 || $nt eq 5022 || $nt eq 5301 || $nt eq 5304} checked{/if} {if $nt eq 5301 || $nt eq 5304} readonly {/if} class="hidden-focus" id="{$nt}"/>
-                        <label class="icon" for="{$nt}"><strong class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
+                	<input name="folderlst[]" type="checkbox" value="{$nt}" {if $nt eq 5018 || $nt eq 5016 || $nt eq 5022 || $nt eq 5301 || $nt eq 5304} checked{/if} {if $nt eq 5301 || $nt eq 5304} readonly {/if} class="hidden-focus" id="{$nt}_{$nodeID}"/>
+                        <label class="icon" for="{$nt}_{$nodeID}"><strong class="icon {$foldername[0]}">{$foldername[0]}</strong></label>
                         <span class="info">{t}{$foldername[1]}{/t}</span>
                 </div>      
         	{/foreach}  
