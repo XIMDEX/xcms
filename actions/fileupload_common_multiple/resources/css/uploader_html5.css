@@ -22,6 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
 .xim-loader-file.xim-loader-file-success::before, .uploader .overwrite-warning .rename-btn::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
@@ -34,6 +37,9 @@
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
+/*******
+//	ICONS
+*******/
 .uploader .overwrite-warning .rename-btn::before {
   content: "\45"; }
 
@@ -339,7 +345,7 @@
     background: #47b1a3;
     color: #fff;
     display: inline-block;
-    font-family: "Ubuntu Condensed";
+    font-family: "Source Sans Pro";
     text-shadow: none;
     font-size: 1.3rem;
     padding: .5em 2em .7em 3em; }
@@ -467,19 +473,15 @@ input.xim-uploader {
 @-webkit-keyframes spin {
   100% {
     -webkit-transform: rotate(359deg); } }
-
 @-moz-keyframes spin {
   100% {
     -moz-transform: rotate(359deg); } }
-
 @-o-keyframes spin {
   100% {
     -moz-transform: rotate(359deg); } }
-
 @keyframes spin {
   100% {
     transform: rotate(359deg); } }
-
 /*  BUTTONS */
 .uploader {
   /*.rename-btn, .overwrite-btn{
@@ -632,7 +634,6 @@ input.xim-uploader {
 
   100% {
     color: #fff; } }
-
 @-moz-keyframes edit {
   0% {
     color: #fff; }
@@ -642,7 +643,6 @@ input.xim-uploader {
 
   100% {
     color: #fff; } }
-
 @-o-keyframes edit {
   0% {
     color: #fff; }
@@ -652,7 +652,6 @@ input.xim-uploader {
 
   100% {
     color: #fff; } }
-
 @keyframes edit {
   0% {
     color: #fff; }

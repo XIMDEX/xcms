@@ -22,6 +22,12 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .links.icon::before, .descriptions.icon::before {
   content: "\2a"; }
 
@@ -116,7 +122,7 @@
   width: 96%;
   padding: 0;
   font-size: 1.5em;
-  font-family: "Ubuntu Condensed";
+  font-family: "Source Sans Pro";
   padding-left: 1em; }
 
 .add_panel {

@@ -847,6 +847,9 @@
       this.flowObj.upload();
     },
 
+    upload:function() {
+      this.flowObj.upload();
+    },
     /**
      * Clear current chunks and slice file again
      * @function
@@ -1685,6 +1688,7 @@ angular.module('flow.drop', ['flow.init'])
     filesAdded: ['$files', '$event'],
     filesSubmitted: ['$files', '$event'],
     fileRetry: ['$file'],
+    fileUpload: ['$file'],
     fileError: ['$file', '$message'],
     uploadStart: [],
     complete: [],

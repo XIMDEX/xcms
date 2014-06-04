@@ -102,6 +102,12 @@
   -o-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all; }
 
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .document_item .edit::before {
   content: "\45"; }
 
@@ -305,7 +311,7 @@
     line-height: 1.2; }
   .document_item .document-version {
     color: #7bcabf;
-    font-family: "Ubuntu Condensed";
+    font-family: "Source Sans Pro";
     font-weight: bold;
     font-size: 1.08em; }
   .document_item .document-path {
@@ -314,7 +320,7 @@
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: "Ubuntu Condensed";
+    font-family: "Source Sans Pro";
     margin: .1em 0 0 1.7em;
     cursor: pointer;
     font-size: 1.08em; }

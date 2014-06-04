@@ -62,7 +62,7 @@
 }
 
 
-// :checked + label strong::after, se elimina de la lista porque es demasiado genérico y afecta a secciones como  Publicar sección
+// :checked + label strong::after, se elimina de la lista porque es demasiado generico y afecta a secciones como  Publicar seccion
 .recover-btn::before,  
 .checkbox-label:not(.reduced_label)::before, 
 .progress.complete::before, 

@@ -22,6 +22,12 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .editor_tags .add-btn::before {
   content: "\e039"; }
 

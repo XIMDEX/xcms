@@ -10,6 +10,12 @@
  *
  *****************************************************************************/
 /* $Id: kupudrawerstyles.css 21177 2005-12-15 14:39:58Z duncan $ */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .kupu-drawer {
   position: absolute;
   display: none;
@@ -111,7 +117,7 @@ div.kupu-dialogbuttons {
   border-radius: 2px;
   cursor: pointer;
   padding: 7px 14px 5px;
-  font-family: "Ubuntu Condensed"; }
+  font-family: "Source Sans Pro"; }
   .kupu-drawer .btn:hover {
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4b4b4b), to(#707070));
     background-image: -webkit-linear-gradient(#4b4b4b, #707070);

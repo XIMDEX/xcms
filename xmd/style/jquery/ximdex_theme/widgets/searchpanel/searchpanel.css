@@ -40,7 +40,7 @@
   border-color: #fff;
   background: #d6d8dd; }
 
-.dialog_advanced_search .xim-search-dialog .save_search button, .dialog_advanced_search .xim-search-dialog .xim-filter-add, .dialog_advanced_search .xim-search-dialog .xim-filter-remove, .dialog_advanced_search .xim-search-dialog .search_button {
+.dialog_advanced_search .xim-search-dialog .save_search button, .dialog_advanced_search .xim-search-dialog .save_search .search_button, .dialog_advanced_search .xim-search-dialog .xim-filter-add, .dialog_advanced_search .xim-search-dialog .xim-filter-remove, .dialog_advanced_search .xim-search-dialog .search_button {
   border: none;
   background: none;
   cursor: pointer;
@@ -92,6 +92,12 @@
   transition: all .5s .3s;
   z-index: 5; }
 
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .dialog_advanced_search .ui-dialog-content {
   padding: 0 !important; }
 
@@ -136,7 +142,7 @@
       bottom: 0; }
       .dialog_advanced_search .xim-search-dialog .search_options h2, .dialog_advanced_search .xim-search-dialog .search_options h3 {
         color: rgba(255, 255, 255, 0.8);
-        font-family: "Ubuntu Condensed";
+        font-family: "Source Sans Pro";
         text-transform: uppercase;
         padding: .5em 0;
         border-bottom: 1px solid;

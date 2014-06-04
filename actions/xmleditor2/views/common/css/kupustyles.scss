@@ -38,8 +38,13 @@
 
 /* $Id: kupustyles.css 16467 2005-08-25 11:08:10Z guido $ */
 
+
+@import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+@import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+@import "../../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
+
 @font-face {
-        font-family: 'Ubuntu Condensed';
+        font-family: $t_text;
         src:url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot');
         src:url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot?#iefix') format('embedded-opentype'),
                 url('../../../../../xmd/fonts/ubuntucondensed-regular-webfont.woff') format('woff'),
@@ -129,7 +134,7 @@ button::-moz-focus-inner{
 	text-shadow: 1px 1px 1px #fff;
 	padding:7px 0 10px;
 	background: url(../../../gfx/fnd-tab-dark.png);
-	font-family: 'Ubuntu Condensed';
+	font-family: $t_text;
 }
 .ui-floated-panel{
 	position: absolute;

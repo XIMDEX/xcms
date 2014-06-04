@@ -40,8 +40,8 @@
 	<div class="copy_options">
 		{foreach from=$targetNodes key=index item=targetNode}
 				<div>
-							<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
-							<label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
+							<input id="move_{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
+							<label for="move_{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
 								
 							
 				</div>	

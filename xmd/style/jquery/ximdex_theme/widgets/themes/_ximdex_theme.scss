@@ -1,32 +1,62 @@
 
-		//**************
-	// COLORS
-	//***************/
-		$c_background:  #e3e7e9;
-		$c_selected: #43A1A2;
+//*------------------------------------*\
+//	$COLORS
+//*------------------------------------*/
+
+	// /**
+	// ** Corporate colors
+	// **/
+
 		$c_main: rgb(0, 107, 108);
 		$c_mainlight: rgb(123, 202, 191);
 		$c_maininset: #3b8e8f;
 		$c_maindark: #2c4b4b;
 		$c_complementary: #cd4e36;
 		$c_complementarylight: #e8563b;
-		$c_white-l: #f5f5f5;
-		$c_white: #fff;
-		$c_black: #000;
+
+
+	// /**
+	// ** Colors
+	// **/
+		$almost-white-1: #f5f5f5;
+		$almost-white-2: #ececec;
+
+
+		$grey-light: #e3e7e9;
 		$c_grey-ll: #212121;
 		$c_grey-l: #464646;
 		$c_grey: #606060;
 		$c_grey-p: #888;
 		$c_grey-pp: #ccc;
 		$c_grey-ppp: #e1e1e1;
-		$c_warning: #CC3333;
-		$c_delete: #c56e50;
-		$c_bluelight: #728ad7;
 		$c_greymain: #ACAFBB;
 		$c_dark-grey: #4C4C4C;
 
+		$orange: #CC3333;
+		$orange-light: #c56e50;
 
-		$c_bg-disabled: #ececec;
+		$c_bluelight: #728ad7;
+
+		$green:  #43A1A2;
+		
+
+	
+	// /**
+	// ** Color elements
+	// **/
+
+		$c_background:  $grey-light;
+		$c_warning: 	$orange;
+		$c_delete: 		$orange-light;
+
+
+
+		$c_selected: $green;
+
+
+
+		$c_bg-disabled: $almost-white-2;
+
 		$c_disabled: #b3b3b3;
 
 		$c_btn-grey1:#6e6e6e;
@@ -74,7 +104,7 @@
 		$t_title: 'Coustard';
 		$t_title-kupu: 'coustardregular';
 		$t_title-kupu-bold: 'coustardbold';
-		$t_text: 'Ubuntu Condensed';
+		$t_text: 'Source Sans Pro'; // Source Sans Pro, Droid Sans, Ubuntu, Open Sans
 
 	//**************
 	// INCLUDES

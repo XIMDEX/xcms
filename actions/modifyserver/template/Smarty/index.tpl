@@ -74,12 +74,12 @@
 				<input type="text" id='description' name='description' MAXLENGTH="100" VALUE="{$server.description}" class='server-title' placeholder="{t}New server name{/t}"/>
 				<span>
 					<span class="slide-element">
-						<input type="checkbox" id='enabled' name='enabled' {if ($server.enable)}checked{/if} class="input-slide"/>
-						<label for='enabled' class="label-slide"> {t}Enabled{/t}</label>
+						<input type="checkbox" id='enabled_{$id_node}' name='enabled' {if ($server.enable)}checked{/if} class="input-slide"/>
+						<label for='enabled_{$id_node}' class="label-slide"> {t}Enabled{/t}</label>
 					</span>					
 					<span class="slide-element">
-						<input type="checkbox" id='preview' name='preview' {if ($server.preview)}checked{/if} class="input-slide">
-						<label for='preview' class="label-slide">{t}Preview server{/t}</label>
+						<input type="checkbox" id='preview_{$id_node}' name='preview' {if ($server.preview)}checked{/if} class="input-slide">
+						<label for='preview_{$id_node}' class="label-slide">{t}Preview server{/t}</label>
 					</span>
 				</span>
 			</div>
@@ -112,8 +112,8 @@
 				<input type="text" id='host' name='host' MAXLENGTH="100" VALUE="{$server.host}" class='cajag'/>
 				<div class="abs_url">
 					<span class="slide-element">
-						<input type="checkbox" id='override' name='overridelocalpaths' {if ($server.path)}checked{/if} class="input-slide"/>
-						<label for='override' class="label-slide">{t}Absolute URLs{/t}</label>
+						<input type="checkbox" id='override_{$id_node}' name='overridelocalpaths' {if ($server.path)}checked{/if} class="input-slide"/>
+						<label for='override_{$id_node}' class="label-slide">{t}Absolute URLs{/t}</label>
 					</span>
 				</div>
 			</div>
