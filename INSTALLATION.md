@@ -36,13 +36,15 @@ See http://www.ximdex.org/documentacion/requirements_en.html for further informa
 ##Manual Installation Steps
 
 
-1. Download Ximdex package, tar file and expand it:
+1. **Download Ximdex** package (https://github.com/XIMDEX/ximdex/archive/develop.zip) and expand it:
 	```
-  	tar zxvf ximdex.tgz .
+  	unzip develop.zip
   	```
+	You may need a terminal to do this and next steps!
+
 	You should end with a directory (i.e.: Ximdex_v35) containing all the Ximdex files and directories.
 
-2. Move it to your Web Server Document Root with the name you want (i.e.: myximdex)
+2. **Move it to your Web Server Document Root** with the name you want (i.e.: myximdex)
 
 	```
 	mv Ximdex_v35 /var/www/myximdex
@@ -51,7 +53,7 @@ See http://www.ximdex.org/documentacion/requirements_en.html for further informa
 
 	So, in this example, 'myximdex' will be your Ximdex instance after installing it.
 
-3. Set File Owners and Permissions:
+3. **Set File Owners and Permissions:**
 	```
 	cd /var/www
 	chown -R www-data:www-data myximdex
