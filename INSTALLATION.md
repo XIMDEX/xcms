@@ -8,7 +8,7 @@ Ximdex can also be found as TAR (or TGZ or zip) files, linux packages, virtual m
 
 Install Ximdex using one of the following methods:
 
-- **Classic**: you have to prepare your downloaded Ximdex CMS instance in its final destination (i.e.: /var/www/myximdex) and set permissions and user/group for your web server configuration. End the installation visiting your just prepared Ximdex CMS (i.e.: http://yourhost/myximdex) from your browser to load the database and configure Ximdex.
+- **Manual**: you have to prepare your downloaded Ximdex CMS instance in its final destination (i.e.: /var/www/myximdex) and set permissions and user/group for your web server configuration. End the installation visiting your just prepared Ximdex CMS (i.e.: http://yourhost/myximdex) from your browser to load the database and configure Ximdex.
 - **Assisted**: the `XIMDEX_INSTALL.sh` script will download Ximdex for you and it will ask you for the the name of the instance, installation paths, etc., making a script called `1.-MoveXimdexToDocRoot.sh` that will run with root privileges (via sudo) or, if you want to control how commands are executed, it will suggest you to run the commands from a root console. End the installation visiting Ximdex CMS instance from your browser.
 - **Fully Manual**: the guideline at install/manual_install.md provides instructions for unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc.
 
@@ -32,6 +32,36 @@ Install Ximdex using one of the following methods:
 *  Postfix or Sendmail (if you want to use notification by mail as it's defined by default). Otherwise, configure your 'conf/mail.conf'
 
 See http://www.ximdex.org/documentacion/requirements_en.html for further information.
+
+##Manual Installation Steps
+
+
+1. Download Ximdex package, tar file and expand it:
+	```
+  	tar zxvf ximdex.tgz .
+  	```
+	You should end with a directory (i.e.: Ximdex_v35) containing all the Ximdex files and directories.
+
+2. Move it to your Web Server Document Root with the name you want (i.e.: myximdex)
+
+	```
+	mv Ximdex_v35 /var/www/myximdex
+	```
+	You may need superuser privileges to do that!
+
+	So, in this example, 'myximdex' will be your Ximdex instance after installing it.
+
+3. Set File Owners and Permissions:
+	```
+	cd /var/www
+	chown -R www-data:www-data myximdex
+	chmod g+s data
+	chmod g+s logs
+	```
+
+	You may need superuser privileges to do that!
+
+	So, in this example, user and group 'www-data' will be running the web processes linked to Ximdex CMS .
 
 
 ##Assisted Installation Steps
@@ -66,6 +96,6 @@ That's all folks. Enjoy Ximdex!
 
 And contact us at help@ximdex.org if you need further assistance or want to make any comment or suggestion.
 
-Addi
+
 
 
