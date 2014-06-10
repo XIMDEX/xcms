@@ -2,16 +2,17 @@
 
 Ximdex CMS basically requires a Linux machine, a Database server as MySQL (or MariaDB) and Apache Web Server with PHP.
 
-The easiest way to install Ximdex is downloading the bash script `XIMDEX_INSTALL.sh` into a clean directory and run the script. Ximdex can also be found as TAR (or TGZ or zip) files, linux packages, virtual machines. The XIMDEX_INSTALL.sh script, additional flavours or old versions of Ximdex can be downloaded from http://www.ximdex.com
+The easiest way to install Ximdex is by downloading the bash script `XIMDEX_INSTALL.sh` (wget --no-check-certificate https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh) into a clean directory and run the script. This script will download Ximdex CMS for you and it will determine or ask you a few parameters (document root for the web server where Ximdex should run or the user and group for Apache). Finally it will create a script to assign permissions and to move Ximdex CMS to its final destination where you can end the configuration using your web browser.
+
+Ximdex can also be found as TAR (or TGZ or zip) files, linux packages, virtual machines. The XIMDEX_INSTALL.sh script and additional flavours or old versions of Ximdex can be downloaded from http://www.ximdex.com
 
 Install Ximdex using one of the following methods:
 
-- **Assisted**: the `XIMDEX_INSTALL.sh` script will ask you for the the name of the instance, name of the Ximdex database, usernames and passwords, installation pahts, etc. During the last step, the script will create a script called `1.-MoveXimdexToDocRoot.sh` that will run with root privileges (via sudo) or, if you want to control which commands are executed, will suggests you to run the commands from a root console.
-	- **Automatic**: the XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically. A commented template setup is at install/templates/setup.conf.
-	
-- **Manual**: the guideline at install/manual_install.md provides instructions for unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc.
+- **Classic**: you have to prepare your downloaded Ximdex CMS instance in its final destination (i.e.: /var/www/myximdex) and set permissions and user/group for your web server configuration. End the installation visiting your just prepared Ximdex CMS (i.e.: http://yourhost/myximdex) from your browser to load the database and configure Ximdex.
+- **Assisted**: the `XIMDEX_INSTALL.sh` script will download Ximdex for you and it will ask you for the the name of the instance, installation paths, etc., making a script called `1.-MoveXimdexToDocRoot.sh` that will run with root privileges (via sudo) or, if you want to control how commands are executed, it will suggest you to run the commands from a root console. End the installation visiting Ximdex CMS instance from your browser.
+- **Fully Manual**: the guideline at install/manual_install.md provides instructions for unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc.
 
->We recommend the `Assisted Installation` through the Bash Script XIMDEX_INSTALL.sh because it is fully interactive, less prone to errors and let you decide how to run commands requiring a superuser.  
+>We recommend the `Assisted Installation` (see instructions below) through the Bash Script XIMDEX_INSTALL.sh because it is fully interactive, less prone to errors and let you decide how to run commands when requiring a superuser.  
 
 ###Installation Requirements
 
@@ -46,14 +47,8 @@ See http://www.ximdex.org/documentacion/requirements_en.html for further informa
 	- If you want to modify the name for your Ximdex instance (i.e.: myximdex)
 	- Target `directory` to install Ximdex (i.e.: /var/www). 
 		- Your web server has to consider it a `DOCROOT` (document root for the web server with PHP capabilities). Please, be sure it is a suitable directory to run PHP code.
-		- Ximdex files will be finally stored there (i.e.: /var/www/myximdex)
-	- The `URL` where Ximdex will be accessed (i.e.: http://YOURHOST/myximdex)
+		- Ximdex files will be finally stored there (i.e.: /var/www/myximdex) and the URL where Ximdex will be accessed (i.e.: http://YOURHOST/myximdex) will be calculated
 	- User Name and Group for your Apache Web Documents to set file owners.
-	- Access credentials to your Database Server (i.e.: MySQL) as its HOSTNAME and PORT, the user with privileged access to create the ximdex database and its password. The script will then create the Ximdex DB for you (i.e.: myximdex database).
-	- Some parameters for Ximdex:
-		* Username (i.e.: myximdex) to access the just created Ximdex database (please, do not use the privileged database user. The root user is only required to create the DB but not to daily run Ximdex CMS)
-		* Default Language for your Ximdex (English, German, Portuguese or Spanish)
-		* Password for the Ximdex user with CMS ADMIN privileges (by the way, it is named `ximdex`)
 
 
 3. **Run** the Installation script with:
@@ -70,5 +65,7 @@ See http://www.ximdex.org/documentacion/requirements_en.html for further informa
 That's all folks. Enjoy Ximdex!
 
 And contact us at help@ximdex.org if you need further assistance or want to make any comment or suggestion.
+
+Addi
 
 
