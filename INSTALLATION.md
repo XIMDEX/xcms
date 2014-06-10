@@ -63,6 +63,7 @@ See http://www.ximdex.org/documentacion/requirements_en.html for further informa
 
 	So, in this example, user and group 'www-data' will be running the web processes linked to Ximdex CMS .
 
+4. Point your browser to your Ximdex instance (i.e.: http://YOURHOST/myximdex) to end the installation.
 
 ##Assisted Installation Steps
 
