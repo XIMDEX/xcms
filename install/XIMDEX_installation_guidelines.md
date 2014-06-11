@@ -7,7 +7,7 @@ The easiest way to install Ximdex is by downloading it, setting file permissions
 The easiest way to install Ximdex is downloading the bash script `XIMDEX_INSTALL.sh` into a clean directory and run the script. Ximdex can also be found as TAR (or TGZ or zip) files, linux packages, virtual machines. The XIMDEX_INSTALL.sh script, additional flavours or old versions of Ximdex can be downloaded from http://www.ximdex.com
 
 Install Ximdex using one of the following methods:
-- **Recommended**: the easiest way to install Ximdex is by downloading it, setting file permissions and pointing your web browser to your Ximdex CMS to end its configuration. This method is described at the INSTALLATION.md file.
+- **Recommended**: the easiest way to install Ximdex is by downloading it, setting file permissions and pointing your web browser to your Ximdex CMS to end its configuration. This method is the described at the INSTALLATION.md file.
 
 - **Assisted**: the `XIMDEX_INSTALL.sh` script will ask you for the the name of the instance, installation pahts, etc.; and it will create a script called `1.-MoveXimdexToDocRoot.sh` that will run with root privileges (via sudo) or, if you want to control which commands are executed, will suggests you to run the commands from a root console.
 	- **Automatic**: the XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically. A commented template setup is at install/templates/setup.conf.
@@ -70,7 +70,7 @@ Once PHP is running with the requested packages you have to download Ximdex CMS,
 
 
 ##Assisted Installation Steps
-In case of neeeding any assistance to install Ximdex CMS we have prepared the XIMDEX_INSTALL.sh script that will download Ximdex for you, ask you some parameters (instance name, installation paths, etc.) and create a new script called 1.-MoveXimdexToDocRoot.sh that will move the directory to its final destination and set the right permissions. 
+If the previous method did not work or just In case of neeeding any assistance to install Ximdex CMS we have prepared the XIMDEX_INSTALL.sh script that will download Ximdex for you, ask you some parameters (instance name, installation paths, etc.) and create a new script called 1.-MoveXimdexToDocRoot.sh that will move the directory to its final destination and set the right permissions. 
 >This installation can be fully automated or interactive, it is less prone to errors and let you decide how to run commands requiring a superuser. The steps are:
 
 
@@ -104,6 +104,7 @@ In case of neeeding any assistance to install Ximdex CMS we have prepared the XI
 
 
 ##Manual Installation Steps
+If you prefer to control all the steps this is your installation method:
 
 1. Download Ximdex package, tar file and expand it:
 	```
@@ -215,5 +216,5 @@ In case of neeeding any assistance to install Ximdex CMS we have prepared the XI
 	```
 	
 	
-11. Open Ximdex with your browser to end the installation (http://HOST/myximdex)
+11. Open Ximdex with your browser to end the configuration (http://HOST/myximdex)
 
