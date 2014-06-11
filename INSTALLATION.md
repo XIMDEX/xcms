@@ -2,7 +2,7 @@
 
 Ximdex CMS basically requires a Linux machine, a Database server as MySQL (or MariaDB) and Apache Web Server with PHP.
 
-The easiest way to install Ximdex is by downloading it, setting file permissions and pointing your web browser to your Ximdex CMS to end its configuration. Additional installation methods as a fully manual or a fully automatic are described at install/ximdex_installation.md
+The easiest way to install Ximdex is by downloading it, setting file permissions and pointing your web browser to your Ximdex CMS to end its configuration. Additional installation methods as a fully manual or a fully automatic are described at install/XIMDEX_installation_guidelines.md
 
 ###Requirements
 *  Access to a terminal with Telnet or SSH.
@@ -19,7 +19,7 @@ The easiest way to install Ximdex is by downloading it, setting file permissions
 *  Postfix or Sendmail (if you want to use notification by mail see 'conf/mail.conf')
 
 See http://www.ximdex.org/documentacion/requirements_en.html for further information.
-Once PHP is running with the requested packages you have to download Ximdex CMS, move it to the final destination (i.e.: /var/www/myximdex), set permissions and file owners (user/group) in harmony with your web server configuration and configure it using your web browser pointing to its URL (i.e.: http://yourhost/myximdex). You will need root access to a unix console to execute some steps...
+Once PHP is running with the requested packages you have to download Ximdex CMS, move it to the final destination (i.e.: /var/www/myximdex), set permissions and file owners (user/group) in harmony with your web server configuration and configure it pointing your web browser to the Ximdex URL (i.e.: http://yourhost/myximdex). You will need root access to a unix console to execute some steps...
 
 ## Recommended Installation Steps
 
@@ -52,12 +52,12 @@ Once PHP is running with the requested packages you have to download Ximdex CMS,
 
 	> So, in this example, user and group 'www-data' are running the web processes as declared in the apache configuration file.
 
-4. Point your web browser to your just installed Ximdex CMS instance (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to load its database and configure it.
+4. Point your web browser to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
 5. Thank you for installing Ximdex CMS. Please, contact us at help@ximdex.org if you need further assistance.
 
 ##Assisted Installation Steps
 In case of neeeding any assistance to install Ximdex CMS we have prepared the XIMDEX_INSTALL.sh script that will download Ximdex for you, ask you some parameters (instance name, installation paths, etc.) and create a new script called 1.-MoveXimdexToDocRoot.sh that will move the directory to its final destination and set the right permissions. 
 
-The file install/ximdex_installation.md provides the steps to execute.
+The file install/XIMDEX_installation_guidelines.md provides the steps to execute.
 
