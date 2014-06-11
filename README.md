@@ -7,7 +7,7 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 
   In fact, it is a powerful and versatile Content Management Framework (CMF) to help you manage information in form of data, content or services to be published in the cloud as web portals, structured semantic repositories or linked open datasets. 
 
-  With Ximdex CMS you can mix structured and non-structured content and data, represent apps and services, aggregate information from remote sources, capture metadata, annotate it with semantic tags from the visual ontology browser, add a semantic layer and publish it using Semantic Dynamic Publishing (DSP) technologies, automatically generate suggestions to enrich your content (as images, new links or references, ...), etc.
+  With Ximdex CMS you can mix structured and non-structured content and data, represent apps and services, aggregate information from remote sources, capture metadata, annotate it with semantic tags from the visual ontology browser, add a semantic layer and publish it using Dynamic Semantic Publishing (DSP) technologies, automatically generate suggestions to enrich your content (as images, new links or references, ...), etc.
 
   Ximdex is modular, based on standards (XML, XSLT, RDF, ...) and it adds a semantic layer to any managed element (doc, app, picture, metadata, video, etc.) that makes it easy to adapt information to any final exploitation format (html5, rdf, j2ee, php, json, RoR, xml/xslt, …) and publish it into the cloud as web portals, semantic portals, mobile services, linked open datasets, etc.
 
