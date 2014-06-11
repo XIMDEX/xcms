@@ -70,7 +70,7 @@ Once PHP is running with the requested packages you have to download Ximdex CMS,
 
 
 ##Assisted Installation Steps
-If the previous method did not work or just In case of neeeding any assistance to install Ximdex CMS we have prepared the XIMDEX_INSTALL.sh script that will download Ximdex for you, ask you some parameters (instance name, installation paths, etc.) and create a new script called 1.-MoveXimdexToDocRoot.sh that will move the directory to its final destination and set the right permissions. 
+If the previous method did not work or just in case of neeeding any assistance to install Ximdex CMS we have prepared the XIMDEX_INSTALL.sh script that will download Ximdex for you, ask you some parameters (instance name, installation paths, etc.) and create a new script called 1.-MoveXimdexToDocRoot.sh that will move the directory to its final destination and set the right permissions. 
 >This installation can be fully automated or interactive, it is less prone to errors and let you decide how to run commands requiring a superuser. The steps are:
 
 
