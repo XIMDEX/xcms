@@ -52,7 +52,7 @@ Once PHP is running with the requested packages you have to download Ximdex CMS,
 
 	> So, in this example, user and group 'www-data' are running the web processes as declared in the apache configuration file.
 
-4. Point your web browser to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
+4. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
 5. Thank you for installing Ximdex CMS. Please, contact us at help@ximdex.org if you need further assistance.
 
