@@ -29,6 +29,10 @@
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Installation finished</h2>
 	<p>That's it! You've succesfully installed Ximdex CMS on your server!<br/>Log in and discover a different way to manage your content.</p>
+        <p>Enable decoupled publishing adding these lines to your crontab</p>
+        <pre>* * * * * (php /var/www/git/ximdex/modules/ximNEWS/actions/generatecolector/automatic.php) >> /var/www/my_x35/logs/automatic.log 2>&1<br/>
+            * * * * * (php /var/www/git/ximdex/modules/ximSYNC/scripts/scheduler/scheduler.php) >> /var/www/my_x35/logs/scheduler.log 2>&1
+        </pre>
 	<button class="launch_ximdex action_launcher" id="submitButton" onclick="document.forms[0].submit(); return false;">
           Get started
       </button>
