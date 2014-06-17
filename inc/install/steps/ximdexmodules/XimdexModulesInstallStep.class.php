@@ -65,6 +65,7 @@ class XimdexModulesInstallStep extends GenericInstallStep {
 	public function installModule(){
 		$moduleName = $this->request->getParam("module");
 		$imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
+                $imManager->uninstallModule($moduleName);
 		$installState = $imManager->installModule($moduleName);
 		$imManager->enableModule($moduleName);
 		$values=array("result"=>strtolower($installState));
