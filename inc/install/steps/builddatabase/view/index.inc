@@ -25,7 +25,7 @@
  */
 ?>
 
-<form method="post"  ng-controller="InstallDatabaseController" ng-cloak name="formDataBase" ui-keypress="{13:'sendForm($event)'}" xim-install-instance-name="<?php echo ximdexName; ?>">
+<form method="post"  ng-controller="InstallDatabaseController" ng-cloak name="formDataBase" ui-keypress="{13:'sendForm($event)'}" xim-install-instance-name="<?php echo $ximdexName; ?>">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">    
 	<h2>Installing Database</h2>
 	<div ng-show="!installed">
