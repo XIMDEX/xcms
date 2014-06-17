@@ -22,14 +22,14 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope', 'installerService', "$q", "$window",
- function($timeout, $scope, installerService, $q, $window) {
+ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope', '$attrs', 'installerService', "$q", "$window",
+ function($timeout, $scope, $attrs, installerService, $q, $window) {
 
     $scope.error=false;
     $scope.submit = false;
-    $scope.root_user="root";
-    $scope.name="ximdex";
+    $scope.root_user="root";    
     $scope.installed=false;
+    $scope.name = $attrs.ximInstallInstanceName;
     $scope.overwrite = false;
     $scope.host="localhost";
     $scope.port="3306";

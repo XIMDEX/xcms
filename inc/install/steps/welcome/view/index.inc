@@ -31,6 +31,6 @@
 
     <p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
     <p ng-repeat-end class="desc">{{error.help}}</p>
-    <button class="launch_ximdex action_launcher" ng-click="checkInstaller()" ng-show="!checked">Check configuration</button>
+    <button class="launch_ximdex action_launcher" ng-click="checkInstaller()" ng-hide="checked">Check configuration</button>
     <button class="launch_ximdex action_launcher" ng-click="nextStep()" ng-show="checked">Start installation</button>
 </form>
