@@ -28,13 +28,14 @@
 <form method="post" ng-controller="InstallModulesController" name="installModulesForm" ng-submit="processForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Installing Ximdex CMS's default modules</h2>
-	<p ng-hide="loaded">Preparing default modules ...<span>{{preLoading}}</span></p>
+	<p ng-hide="loaded">Preparing default modules ...<span>{{preLoading}}</span></p>        
 	<p class="error" ng-show="error">{{message}}</p>
+        <p ng-show="loaded">This step could take a while</p>
 	<ul ng-hide="error">
 		<li class="module-{{module.state}} " ng-repeat="module in modules">
 	      <p class="title  {{module.name}} "> {{module.alias}} <span ng-show="module.processed">{{module.state}}</span></p> 
 	      <p class="desc">{{module.description}}</p>
 	    </li>		
 	</ul>
-	<button ng-hide="!loaded" ui-ladda="loading" class="launch_ximdex action_launcher ladda-button" data-style="slide-up" id="submitButton" xim-state="loading"><span class="ladda-label">Install modules</span></button>
+        <button tabindex="1" ng-hide="!loaded" ui-ladda="loading" class="launch_ximdex action_launcher ladda-button" data-style="slide-up" id="submitButton" xim-state="loading"><span class="ladda-label">Install modules</span></button>
 </form>

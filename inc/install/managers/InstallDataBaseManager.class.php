@@ -51,7 +51,7 @@ class InstallDataBaseManager extends InstallManager{
 	/**
 	 * Build FastTraverse and full path to every node in Ximdex	 
 	 */
-	public function connect($host, $port, $user, $pass, $name=false){
+	public function connect($host, $port, $user, $pass=NULL, $name=false){
 		$myPid = getmypid();
 		$result = false;
 		if (!isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) 

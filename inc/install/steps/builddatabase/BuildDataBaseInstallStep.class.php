@@ -35,26 +35,28 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 	 */
 	public function index(){
 		
-		$this->addJs("InstallDatabaseController.js");
-		$this->render();
+            	$this->addJs("InstallDatabaseController.js");
+                $values = array();
+                $values["ximdexName"] = basename(XIMDEX_ROOT_PATH);
+		$this->render($values);
 		
 	}
 
 	public function checkHost(){
 
-		$host = $this->request->getParam("host");
+            $host = $this->request->getParam("host");
 
-		if (!$host){
-			if (mysqli_connect()){
-				$values["host"]="localhost";
-				$values["port"]="3306";
-				$values["success"]="1";
-			}else{
-				$values = array("host"=>"",
-							"port"=>"", 
-							"failure"=>"1");
-			}		
-		}
+            if (!$host){
+                    if (mysqli_connect()){
+                            $values["host"]="localhost";
+                            $values["port"]="3306";
+                            $values["success"]="1";
+                    }else{
+                        $values = array("host"=>"",
+                            "port"=>"", 
+                            "failure"=>"1");
+                    }		
+            }
 
 		$this->sendJson($values);
 	}
@@ -65,7 +67,8 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 		$host = $this->request->getParam("host");
 		$port = $this->request->getParam("port");
 		$user = $this->request->getParam("user");
-		$pass = $this->request->getParam("pass");
+		$pass = $this->request->getParam("pass") == "undefined"? NULL: $this->request->getParam("pass");
+                
 		$values = array();
 		if ($idbManager->connect($host, $port, $user, $pass)){
 			$values["success"]=true;
@@ -75,8 +78,6 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 		}
 
 		$this->sendJson($values);
-
-
 	}
 
 

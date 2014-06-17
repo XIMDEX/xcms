@@ -25,7 +25,7 @@
 ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope', 'installerService', "$q", "$window",
  function($timeout, $scope, installerService, $q, $window) {
 
- 	$scope.modules = {};
+    $scope.modules = {};
     $scope.loaded = false;
     $scope.message = "";
     $scope.error = false;

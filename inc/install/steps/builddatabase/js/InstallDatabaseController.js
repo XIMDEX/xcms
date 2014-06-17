@@ -31,6 +31,8 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     $scope.name="ximdex";
     $scope.installed=false;
     $scope.overwrite = false;
+    $scope.host="localhost";
+    $scope.port="3306";
     
     installerService.sendAction("checkHost").then(function(response) {
         if (response.data.success){
@@ -42,6 +44,19 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
         }
 
     });
+
+    $scope.sendForm = function(){
+        if ($scope.installed){
+            $scope.addUser();
+        }else{
+            if ($scope.overwrite){
+                $scope.installDataBase();
+            }
+            else{    
+                $scope.processForm();
+            }
+        }
+    }
 
     $scope.processForm = function(){
         if ($scope.formDataBase.name.$error.pattern){
@@ -108,6 +123,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.loading=false;
         if (response.data.success){
             $scope.installed = true;
+            $scope.user = $scope.name;
         }else{
             $scope.error = response.data.errors;
         }
