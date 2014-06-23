@@ -22,6 +22,9 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
 .message p::before, .notification-success li::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
@@ -34,6 +37,9 @@
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
+/*******
+//	ICONS
+*******/
 .message-delete p:first-child::before, .message-error p:first-child::before {
   content: "\63"; }
 
@@ -218,6 +224,9 @@ fieldset {
   .alternative_select:hover {
     background: #9ea1b0; }
 
+/**************
+// ACTION HEADER
+***************/
 .action_header {
   background: white;
   -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
@@ -451,7 +460,7 @@ label {
   /*display: block;*/
   /* avoiding jump in heritable properties*/
   color: #606060;
-  font-family: "Ubuntu Condensed";
+  font-family: "Source Sans Pro";
   /*padding: 1em 0 .5em;*/
   font-size: 1.8rem; }
 
@@ -482,6 +491,9 @@ input[type="checkbox"] + label, input[type="radio"] + label {
   display: inline;
   padding-right: 8%; }
 
+/**************
+// SLIDE CHECKBOX INPUT
+***************/
 .slide-element {
   width: 30%;
   display: inline-block; }
@@ -544,6 +556,9 @@ input[type="checkbox"] + label, input[type="radio"] + label {
 .input-slide:checked + .label-slide::after {
   left: 2.62em; }
 
+/**************
+// MESSAGES
+***************/
 .message {
   padding: .6em 4% .6em 4.5em;
   background: #646572;
@@ -649,6 +664,266 @@ span.error {
   .notification-success li::after {
     content: none; }
 
+/*
+.message, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
+	padding: .6em 4% .6em 4.5em;
+	background:$c_grey-ppp;
+	position: relative;
+	border: none;
+	border-bottom: 1px solid #fff;
+	-webkit-animation:all .2s;
+	-moz-animation:all .2s;
+	-o-animation:all .2s;
+	animation:all .2s;
+
+	&::before{
+		content: '';
+		position: absolute;
+		width: 5.3rem;
+		height: 100%;
+		background: $c_grey-l;
+		left: 0;
+		top: 0;
+		font: normal 1.5em bold 'Coustard';
+		line-height: 2;
+	}
+
+	p{
+		padding: .4em 0;
+		margin-bottom:  0;
+	}
+}
+
+
+.msg-error {
+}
+.msg-warning {
+}
+li.msg-info {
+	line-height: 1.7em;
+	padding: 5px;
+}
+li.msg-info span.ui-icon-info {
+	background: url('../../../../../images/action/icon-msg.png') no-repeat left -5px;
+	margin-top: 0;
+	padding: 0 15px 5px 0;
+}
+li.ui-state-primary span.ui-icon-info {
+	display: none;
+}
+
+input.error, input.error:focus, .ng-dirty input.ng-invalid, .ng-dirty input.ng-invalid:focus{
+	-webkit-box-shadow: 0 0 2px 1px #f72f42;
+	-moz-box-shadow: 0 0 2px 1px #f72f42;	
+	box-shadow: 0 0 2px 1px #f72f42;	
+	border: 1px solid #f72f42;
+	outline: none;
+}
+
+.error_block{
+	position: relative;
+	display: inline-block;
+	vertical-align: top;
+	width: 100%;
+	&.select_block{
+		position: absolute;
+		top: 0;
+		height: 100%;
+		width: auto;
+		min-width: 33%;
+		right: 0;
+		.error{
+
+		}
+		select{
+			width: 100%;
+		}
+	}
+}
+
+.xim-filter-comparation + .error_block{
+		display: inline-block;
+		width: auto; // GNAPA
+	}
+
+span.error{
+	background:#f72f42;
+	color: #fff;
+	position: absolute;
+	z-index: 10;
+	bottom: 2.1em;
+	left: 0;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	padding: .3em .5em;
+	&::before{
+		content: "";
+		border: .5em solid rgba(255,255,255,0);
+		border-top-color: #f72f42;
+		position: absolute;
+		left: .5em;
+		bottom: -1.5em;
+		-webkit-transform: translateY(-50%);
+		-moz-transform: translateY(-50%);
+		-ms-transform: translateY(-50%);
+		-o-transform: translateY(-50%);
+		transform: translateY(-50%);
+		
+	}
+}
+
+
+
+
+
+
+.hidden-message{
+		height: 0;
+		padding: 0;
+		visibility: hidden;
+}
+
+
+.message-warning, .ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
+	background:lighten(#ffd04a, 32%);
+
+	&::before{
+		background:#ffd04a;
+		content: '< ! >';
+		color:$c_background;
+		text-align: center;
+		line-height: 2;
+	}
+}
+
+// Overwritting jquery messages styles
+
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error{
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	position: absolute;
+	width: 100%;
+	height: 3em;
+	left: 0;
+	top: 0;
+	color: $c_dark-grey;
+	padding-top: .95em;
+}
+
+.delete-message{
+	background: lighten(#d93e42, 41%);
+	&::before{
+		background: #d93e42;
+		text-align: center;
+		line-height: 2 !important;
+		color: lighten(#d93e42, 38%);
+	}
+	&::after{
+		position: absolute;
+		width: 1.5em;
+		height: 1.5em;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		background:lighten(#d93e42, 38%);
+		color: #d93e42;
+		line-height: 1.4 !important;
+		left: .6em;
+		top: .5em;
+		text-align: center;
+		font-size: 1.2em;
+	}
+
+}
+
+
+
+
+label + p{
+	margin-top: 0;
+}
+
+fieldset table th {
+	color: $c_grey;
+	font-weight: normal;
+	text-transform: uppercase;
+	padding: 5px 15px;
+}
+.action_container form {
+	height: 100%;
+	max-width:100%;
+}
+
+.action_container .inline-form{
+	height: auto;
+}
+.action_container form textarea.normal {
+	width: 100%;
+	border:none;
+	border-bottom: 1px solid $c_grey-ppp;
+	padding-top: 5px;
+}
+.action_container form textarea.normal+.buttons-form {
+	margin-bottom: 0;
+	margin-top: 10px;
+}
+.browser-action-view-content iframe.action_iframe {
+	border: none;
+}
+
+
+.ui-widget-content fieldset .ui-state-highlight, .ui-widget-content fieldset  .ui-state-error {
+	background: none;
+	border: none;
+	line-height: 2.1em;
+	color: $c_grey;
+	margin-bottom: 5px;
+}
+
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-notice,
+.ui-widget-content fieldset .ui-state-error .ui-icon-alert,
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-info{
+	background: url('../../../../../images/action/icon-msg.png') no-repeat left top;
+	margin-top: 0;
+	padding-bottom: 8px;
+	padding-left: 15px;
+}
+
+.ui-widget-content fieldset .ui-state-error .ui-icon-alert{
+	background-position: -33px top;
+}
+
+.ui-widget-content fieldset .ui-state-highlight .ui-icon-info{
+	background-position: -66px top;
+}
+
+#publishing_message{
+	position: absolute;
+	opacity: .94;
+	background: $c_grey;
+	top: 35%;
+	left: 40%;
+	@include radius(15px);
+	@include boxshadow(0 0 5px $s_grey);
+	padding: 20px 40px 18px;
+
+}
+
+#publishing_message img{
+	margin: 8px 0 5px 0;
+}
+
+#publishing_message p{
+	color: $c_grey-ppp;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px $c_grey-l;
+	text-align:center;
+	padding: 3px 5px;
+	font-weight: bold;
+}
+*/
 .inline {
   display: inline !important; }
 
@@ -824,9 +1099,15 @@ input:focus + .tooltip_info {
   height: 0;
   overflow: hidden; }
 
+/**************
+// LAYOUT
+***************/
 .col1-2 {
   width: 48%; }
 
+/**************
+// ELEMNTS
+***************/
 .row-item, .row-item_selectable {
   background: #fff;
   -webkit-border-radius: 3px;
@@ -920,6 +1201,9 @@ input:focus + .tooltip_info {
   font-family: "Coustard";
   font-size: 1.3rem; }
 
+/**************
+// BUTTONS
+***************/
 /* first class used to fight against jQuery ui classes!! */
 .browser-window .btn {
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6e6e6e), to(#7b7b7b));

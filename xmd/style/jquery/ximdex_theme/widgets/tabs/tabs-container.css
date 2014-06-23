@@ -23,7 +23,6 @@
  *  @version $Revision$
  */
 /*************** Common style for element which appears in viewer area **********************/
-/* NO Extends because they are inserted at the beggining of each CSS file */
 .browser-projects-view-treecontainer,
 .browser-projects-view-listcontainer, .browser-ccenter-view-treecontainer, .browser-reports-view-list-container,
 .browser-modules-view-list-container {

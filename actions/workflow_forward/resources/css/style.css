@@ -51,7 +51,7 @@
   float: right;
   counter-reset: publications; }
   .programed_publication h2 {
-    font-family: "Ubuntu Condensed";
+    font-family: $t_text;
     border-bottom: 1px solid #d8d8d8;
     text-transform: uppercase;
     padding: .8em .5em .6em;

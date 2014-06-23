@@ -30,6 +30,9 @@ button.hbox-panel-tie {
     outline: none;
     box-shadow: none; }
 
+/*******
+//	ICON GENERIC STYLES
+*******/
 button.hbox-panel-tie::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
@@ -42,6 +45,9 @@ button.hbox-panel-tie::before {
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
+/*******
+//	ICONS
+*******/
 button.hbox-panel-tie.hide::before {
   content: "\e037"; }
 

@@ -22,6 +22,12 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .xim-tagsinput-newtag .add-btn::before {
   content: "\e039"; }
 
@@ -179,7 +185,7 @@
   white-space: nowrap; }
   .xim-tagsinput-text::before {
     content: "";
-    border: 6px solid rgba(0, 0, 0, 0);
+    border: 6px solid transparent;
     border-bottom-color: #4c4c4c;
     position: absolute;
     top: calc(3em - 12px);
@@ -375,19 +381,15 @@
 @-webkit-keyframes spin {
   100% {
     -webkit-transform: rotate(359deg); } }
-
 @-moz-keyframes spin {
   100% {
     -moz-transform: rotate(359deg); } }
-
 @-o-keyframes spin {
   100% {
     -moz-transform: rotate(359deg); } }
-
 @keyframes spin {
   100% {
     transform: rotate(359deg); } }
-
 .tag-type {
   position: relative;
   display: inline-block;

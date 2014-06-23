@@ -22,6 +22,15 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
+/**************
+// GENERIC STYLES
+***************/
 .ui-tabs, .ui-tabs-nav {
   background: none;
   padding: 0px;
@@ -140,7 +149,7 @@ ui-tabs .ui-tabs-nav li:hover {
   .hbox-panel-container-0 li:not(.ui-tabs-active) .browser-modules-view:hover {
     background-position: -45px -88px; }
 
-	/*.hbox-panel-container-0 .ui-tabs-nav>li>a{
+/*.hbox-panel-container-0 .ui-tabs-nav>li>a{
 	width: 38px;
 	text-indent: -9999999px;
 	height: 14px;

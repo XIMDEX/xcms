@@ -28,7 +28,6 @@
   src: url("../../../../../fonts/ximdex_icons.eot?#iefix") format("embedded-opentype"), url("../../../../../fonts/ximdex_icons.woff") format("woff"), url("../../../../../fonts/ximdex_icons.ttf") format("truetype"), url("../../../../../fonts/ximdex_icons.svg#ximdex_icons") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 .icon::before,
 .icon::after,
 .icon-button::before,

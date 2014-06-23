@@ -46,8 +46,8 @@ ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
 /*
-     * Definición de constantes.
-     * Esto debería ir al conf.
+     * Definiciï¿½n de constantes.
+     * Esto deberï¿½a ir al conf.
     */
 
 // Errores:
@@ -283,10 +283,12 @@ class DexPumper {
 						$this->info("$totalToRename files to rename ");
 
 						foreach ($filesToRename as $file) {
-							 $this->RenameFile($file);
+							 $renameResult = $this->RenameFile($file);
+                                                         if ($renameResult)
+                                                             $this->finishTask ($file["IdSync"]);
+                                                         
 						}
-					}
-					$this->updateStateFiles($idBatchUp,$idServer);
+					}					
 			}
 	}
 
@@ -354,7 +356,7 @@ class DexPumper {
 
 
 		$this->info("Copying $localFile in {$baseRemoteFolder}{$relativeRemoteFolder}{$remoteFile}");
-
+                $this->getHostConnection();
 		if ( !$this->taskBasic($baseRemoteFolder, $relativeRemoteFolder) ) {
 			return false;
 		}
@@ -376,7 +378,7 @@ class DexPumper {
 
 	private function taskRename($targetFile, $targetFolder, $newFile) {
 		$msg_not_rename= "No se ha podido renombrar al documento destino: {$targetFile} -> {$targetFolder}/{$newFile} ";
-
+                $this->getHostConnection();
 		if ( !$this->taskBasic($targetFolder, "") ) {
 			return false;
 		}
@@ -410,6 +412,14 @@ class DexPumper {
 
 		$this->updateTimeInPumper();
 	}
+        
+        private function finishTask($idSync){
+            
+            $query = "Update ServerFrames set state='In' where idsync = $idSync";
+            $this->serverFrame->execute($query);
+            $this->updateTimeInPumper();
+            
+        }
 
 	//DONE
 	private function updateServerState($status) {

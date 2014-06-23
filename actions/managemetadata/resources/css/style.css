@@ -23,6 +23,12 @@
 <dev@ximdex.com>
     *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .hidden-focus:checked + .reduced_label::before {
   content: "\79"; }
 
@@ -47,6 +53,9 @@
 textarea {
   max-width: 100%; }
 
+/**************
+// metadata info
+***************/
 .metadata_action .language_selector:not(.ng-hide) + .empty_state {
   display: none; }
 .metadata_action .empty_state {
@@ -95,7 +104,7 @@ textarea {
     z-index: 2;
     padding: 0 1em;
     text-transform: uppercase;
-    font-family: "Ubuntu Condensed";
+    font-family: "Source Sans Pro";
     font-weight: bold; }
   .metadata_action .headline::before {
     content: "";
@@ -126,7 +135,7 @@ textarea {
       margin-top: 1em; }
   .metadata_info h3, .metadata_info h3 label {
     text-transform: uppercase;
-    font-family: "Ubuntu Condensed";
+    font-family: "Source Sans Pro";
     font-size: 1.3rem;
     color: #fff;
     padding-bottom: .1em;

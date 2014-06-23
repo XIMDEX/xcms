@@ -59,8 +59,8 @@
 				<div class="copy_options" tabindex="1">
 					{foreach from=$targetNodes key=index item=targetNode}
 						<div>
-							<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
-							<label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
+							<input id="copy_{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
+							<label for="copy_{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
 						</div>					
 					{/foreach}
 				</div>

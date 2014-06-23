@@ -28,6 +28,12 @@
   white-space: nowrap;
   overflow: hidden; }
 
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 #body .advanced-btn {
   display: block;
   text-align: right;
@@ -38,6 +44,9 @@
   height: 0;
   overflow: hidden; }
 
+/**************
+// GALLERY themes 
+***************/
 .theme {
   display: inline-block;
   position: relative;
@@ -239,7 +248,6 @@
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg); } }
-
 @-moz-keyframes rotateOpen {
   0% {
     -webkit-transform: rotate(0deg);
@@ -254,7 +262,6 @@
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg); } }
-
 @-ms-keyframes rotateOpen {
   0% {
     -webkit-transform: rotate(0deg);
@@ -269,7 +276,6 @@
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg); } }
-
 @-o-keyframes rotateOpen {
   0% {
     -webkit-transform: rotate(0deg);
@@ -284,7 +290,6 @@
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg); } }
-
 @keyframes rotateOpen {
   0% {
     -webkit-transform: rotate(0deg);
@@ -299,7 +304,6 @@
     -ms-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg); } }
-
 .custom_options .closed::before {
   -webkit-animation: rotateClose .5s ease-out;
   -o-animation: rotateClose .5s ease-out;
@@ -325,7 +329,6 @@
     -ms-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     transform: rotate(0deg); } }
-
 @-moz-keyframes rotateClose {
   0% {
     -webkit-transform: rotate(90deg);
@@ -340,7 +343,6 @@
     -ms-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     transform: rotate(0deg); } }
-
 @-ms-keyframes rotateClose {
   0% {
     -webkit-transform: rotate(90deg);
@@ -355,7 +357,6 @@
     -ms-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     transform: rotate(0deg); } }
-
 @-o-keyframes rotateClose {
   0% {
     -webkit-transform: rotate(90deg);
@@ -370,7 +371,6 @@
     -ms-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     transform: rotate(0deg); } }
-
 @keyframes rotateClose {
   0% {
     -webkit-transform: rotate(90deg);
@@ -385,7 +385,6 @@
     -ms-transform: rotate(0deg);
     -o-transform: rotate(0deg);
     transform: rotate(0deg); } }
-
 .closed + dl {
   display: none; }
 
@@ -429,6 +428,9 @@ dd {
     vertical-align: middle;
     cursor: pointer; }
 
+/**************
+// CUSTOM BUTTONS 
+***************/
 /*
 .button, .no-collapsable .option{
 	min-width: 1.6em;
@@ -536,6 +538,9 @@ dd {
 
 
 */
+/**************
+// Components 
+***************/
 /*
 	.colorpicker{
 		margin-top: 1em;

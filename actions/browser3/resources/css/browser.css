@@ -22,7 +22,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-.selector_language li::before {
+/*******
+//	ICON GENERIC STYLES
+*******/
+.selector_language li.selected::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
   font-style: normal;
@@ -34,7 +37,10 @@
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
-.selector_language li::before {
+/*******
+//	ICONS
+*******/
+.selector_language li.selected::before {
   content: "\79"; }
 
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -88,7 +94,7 @@ html {
   font-size: 62.5%; }
 
 body {
-  font-family: 'Ubuntu Condensed', Verdana, Arial, Geneva, sans-serif  !important;
+  font-family: "Source Sans Pro";
   background-color: #006b6c;
   color: #6b6b6b;
   overflow: hidden;
@@ -97,6 +103,12 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
+strong {
+  font-weight: 600; }
+
+/*------------------------------------*\
+	$Splash
+\*------------------------------------*/
 #ximdex-splash {
   position: absolute;
   top: 0px;
@@ -115,13 +127,14 @@ body {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  border: 1px solid #4f4f4f; }
+  border: 1px solid #4f4f4f;
+  overflow: hidden; }
 
 .loading p {
   color: #9ac7c8;
   text-shadow: 0 1px 0 #252525;
   position: absolute;
-  top: 20px;
+  top: 17px;
   left: 25px;
   font-size: 14px;
   font-size: 1.4rem; }
@@ -200,6 +213,9 @@ body {
 button::-moz-focus-inner {
   border: 0px; }
 
+/*------------------------------------*\
+	$LAYOUT
+\*------------------------------------*/
 #header {
   background: url("../../../../xmd/images/header/cabecera_fnd.png") repeat left top;
   height: 38px;
@@ -221,7 +237,7 @@ button::-moz-focus-inner {
   margin: 0px; }
 
 #body .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-  font-family: 'Ubuntu Condensed'; }
+  font-family: "Source Sans Pro"; }
 
 .browser-window {
   height: 100%; }
@@ -249,7 +265,8 @@ button::-moz-focus-inner {
   vertical-align: top;
   color: #e8e8e8;
   position: relative;
-  margin-right: 1em; }
+  margin-right: 1em;
+  z-index: 2; }
 
 .session-info .language::after {
   content: ' | ';
@@ -257,32 +274,23 @@ button::-moz-focus-inner {
 
 .current-language {
   position: relative;
-  z-index: 2;
+  top: -.7em;
   color: #7bcabf;
-  font-size: 1.1rem;
   font-weight: bold;
   margin-right: .8em;
-  top: -1em;
-  cursor: pointer; }
-
-.current-language::after,
-.current-language::before {
-  color: #e8e8e8; }
-
-.current-language::before {
-  font-size: 1.3em;
-  position: absolute;
-  left: -1em;
-  top: .8em;
-  height: 2em;
+  display: inline-block;
   width: 3em; }
-
-.current-language::after {
-  position: absolute;
-  z-index: -1 !important;
-  font-size: 1.6em;
-  top: 0;
-  right: -0.22222em; }
+  .current-language::before {
+    position: relative;
+    top: .62em;
+    color: #e8e8e8; }
+  .current-language::after {
+    position: absolute;
+    font-size: 1.5em;
+    z-index: -1 !important;
+    margin-left: -0.85em;
+    color: #e8e8e8;
+    margin-top: -0.10em; }
 
 .selector_language {
   display: none;
@@ -305,7 +313,7 @@ button::-moz-focus-inner {
     position: relative; }
     .selector_language li:hover {
       color: #7bcabf; }
-    .selector_language li::before {
+    .selector_language li.selected::before {
       position: absolute;
       left: 0; }
   .selector_language li:first-child {
@@ -325,4 +333,4 @@ button::-moz-focus-inner {
   display: block;
   position: absolute;
   top: 2em;
-  left: -2em; }
+  left: -1em; }
