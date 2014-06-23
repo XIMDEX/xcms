@@ -28,14 +28,24 @@ ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'insta
     $scope.checked = false;
     
     $scope.checkInstaller = function(){
+        $scope.errors = false;
         installerService.sendAction("hasErrors").then(function(response) {            
-            if (response.data.failure)
+            if (response.data.failure){
                 $scope.errors = response.data.errors;
+                $scope.checked = false;
+            }
             else
-                installerService.sendAction("continueInstallation").then(function(response) {
+                $scope.checked = true;
+            
+                
+        });
+    }
+
+    $scope.nextStep = function(){
+        installerService.sendAction("continueInstallation").then(function(response) {
                     location.reload();
                 });
-        });
-    }    
+    }
+    $scope.checkInstaller();    
 
 }]);

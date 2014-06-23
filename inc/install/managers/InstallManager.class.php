@@ -290,9 +290,10 @@ class InstallManager {
 
 		$result["state"] = "success";
 		$result["name"] = "File permission";
-		$filesToCheck = array(	"/data",
-								"/logs",
-								"/conf");
+		$filesToCheck = array(	"/conf/_STATUSFILE",
+                                        "/data",
+                                        "/logs",
+                                        "/conf");
 		foreach ($filesToCheck as $file) {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
 				$result["state"] = "error";

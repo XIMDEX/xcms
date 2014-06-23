@@ -25,16 +25,17 @@
 ximdexInstallerApp.controller('SettingController', ["$timeout", '$scope', 'installerService', "$q", "$window",
  function($timeout, $scope, installerService, $q, $window) {
 
-    $scope.languages = [{"iso": "es_ES",
-                         "name": "Spanish"},
-                         {"iso": "en_US",
+    $scope.languages = [{"iso": "en_US",
                          "name": "English"},
+                        {"iso": "es_ES",
+                         "name": "Spanish"},                         
                          {"iso": "de_DE",
                          "name": "German"},
                          {"iso": "pt_BR",
                          "name": "Portuguese"}];
 
-    $scope.language = "es_ES";
+    $scope.language = "en_US";
+    $scope.anonymous_information = "1";
     $scope.minLengthMessage = "Password length minimun: 6";
     $scope.minLenghtFail = false;
     $scope.checkForm = function(){

@@ -45,7 +45,7 @@
 	</div>
 	<div class="form_item full-width form_item--information">
 		<label for="anonymous_information">
-            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" ng-model="anonymous_information" />Would you like to help us sending anonymous information about your usage?</label>
+            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" ng-model="anonymous_information" ng-true-value="1"  />Would you like to help us sending anonymous information about your usage?</label>
 	</div>
 	<button class=" action_launcher ladda-button">Save settings</button>
 </form>
