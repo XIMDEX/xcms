@@ -45,7 +45,7 @@ class BuildDataBaseInstallStep extends GenericInstallStep {
 	public function checkHost(){
 
             $host = $this->request->getParam("host");
-
+            $port = $this->request->getParam("port");
             if (!$host){
                     if (mysqli_connect()){
                             $values["host"]="localhost";

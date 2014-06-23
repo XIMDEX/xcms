@@ -82,7 +82,12 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.checkExistDataBase();
 
         }else{
-            $scope.hostCheck = "root_user";
+            var error = response.data.errors.toLowerCase();
+            if (error.indexOf("unknown mysql server host")>-1){
+                $scope.hostCheck = "host";
+            }else{
+                $scope.hostCheck = "root_user";
+            }
             $scope.loading = false;
             $scope.genericErrors = response.data.errors;
         }
@@ -130,12 +135,33 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     });
    
     }
+    
     $scope.$watch("name", function(){
         $scope.overwrite = false;
         $scope.dbErrors = false;
         $scope.hostCheck=true;
-    })
-    $scope.addUser = function(){
+    });
+    
+    $scope.$watch("host", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    $scope.$watch("port", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    
+    $scope.$watch("root_user", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    
+    $scope.$watch("root_pass", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    
+     $scope.addUser = function(){
         $scope.loadingAddUser = true;
         var params = "user="+$scope.user;
         params += "&pass="+$scope.pass;
