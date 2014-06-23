@@ -607,7 +607,7 @@ li[class*="module"] {
   color: #e46666;
   border-color: #e46666; }
 
-.error + .desc, .error--inline {
+.error + .desc, .error--inline, .code {
   margin-left: calc(1.375em + .5em);
   background: #e6e7f1;
   padding: .5em .8em;

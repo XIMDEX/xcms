@@ -792,7 +792,7 @@ textarea {
     }
 }
 
-.error + .desc, .error--inline{
+.error + .desc, .error--inline, .code{
     margin-left:  calc( #{(22/16)}em + .5em);
     background:$c-light;
     padding: .5em .8em;
