@@ -38,11 +38,7 @@ class InstallModulesManager extends InstallManager {
 		$installState = self::UNINSTALLED;
 		$modMngr = new ModulesManager();
 		$state = $modMngr->checkModule($name);
-		error_log("======================");
-		error_log($state);
 		$myenabled = $modMngr->isEnabled($name);
-		error_log($myenabled);
-		error_log("======================");
 		
 		switch ($state) {
 			case MODULE_STATE_INSTALLED:
@@ -104,7 +100,6 @@ class InstallModulesManager extends InstallManager {
 
 		foreach($modules as $mod){
 			@unlink(XIMDEX_ROOT_PATH."/data/.".$mod["name"]);
-			error_log(XIMDEX_ROOT_PATH."/data/.".$mod["name"]);
 			$str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";			
 		}
 		$str.="\n?>";

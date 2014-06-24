@@ -148,7 +148,7 @@ class Action_modifyrole extends ActionAbstract {
 						'selected_pipeline' => $selectedPipeline,
 						'go_method' => 'modifyrole'
 		);
-		error_log(print_r($allNodeTypes, true));
+		//error_log(print_r($allNodeTypes, true));
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
