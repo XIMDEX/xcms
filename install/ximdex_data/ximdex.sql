@@ -311,7 +311,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7216', '5041', 'Copy', 'copy', 'copiar_documento.png', 'Copy a binary document to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7217', '5048', 'Copy', 'copy', 'copiar_carpeta_ximlink.png', 'Copy a link subfolder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7218', '5049', 'Copy', 'copy', 'copiar_documento.png', 'Copy a link to another destination', '30', NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7219', '5050', 'Copy', 'copy', 'copiar_carpeta_ximlink.png', 'Copy a links folder to another destination', '30', NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7219', '5050', 'Copy', 'copy', 'copiar_carpeta_ximlink.png', 'Copy a links folder to another destination', -93, NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7220', '5054', 'Copy', 'copy', 'copiar_carpeta_ximlet.png', 'Copy a ximlet folder to another destination', '30', NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7221', '5055', 'Copy', 'copy', 'copiar_carpeta_ximlet.png', 'Copy a ximlet subfolder to another destination', 85, NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES('7222', '5056', 'Copy', 'copy', 'copiar_carpeta_ximdoc.png', 'Copy a ximlet document to another destination', '30', NULL,0,'');
@@ -1101,7 +1101,7 @@ CREATE TABLE `Nodes` (
   `SharedWorkflow` int(12) unsigned default NULL,
   `Path` text NOT NULL default '',
   PRIMARY KEY  (`IdNode`),
-  UNIQUE KEY `IdNode` (`IdNode`,`IdParent`),
+  UNIQUE KEY `UniqueName` (`Name`,`IdParent`),
   KEY `IdNode_2` (`IdNode`,`IdParent`)
 ) ENGINE=MYISAM COMMENT='Table of system nodes';
 

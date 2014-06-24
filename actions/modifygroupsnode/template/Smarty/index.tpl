@@ -102,7 +102,7 @@
         	       {if ($all_groups)}
         		<fieldset class="buttons-form">
         			{button label="Delete subscriptions" class="validate btn" onclick="call_submit('deletegroupnode')" message="Are you sure you want to delete selected subscriptions?"}
-        			{button class="validate" label="Save changes  btn main_action" onclick="call_submit('updategroupnode');"  message="Are you sure you want to update selected subscriptions?" }
+        			{button class="validate btn main_action" label="Save changes" onclick="call_submit('updategroupnode');"  message="Are you sure you want to update selected subscriptions?" }
         		</fieldset>
         		{/if}</div>
 </form>
