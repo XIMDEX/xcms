@@ -24,7 +24,7 @@
  *}
 
 {if ($docs)}
-<h2>{t}Publish ximLet{/t}</h2>
+<h2>{t}Publish ximlet{/t}</h2>
 <form  method="post" name="formulario" id="formulario" action='{$action_url}'>
 	<input type="hidden" name="id_node" value="{$node_id}" />	
 

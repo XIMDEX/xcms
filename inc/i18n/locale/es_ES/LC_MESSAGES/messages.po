@@ -383,6 +383,9 @@ msgstr "Crear %1"
 msgid "Add"
 msgstr "A&ntilde;adir"
 
+msgid "Add "
+msgstr "Añadir "
+
 #: /actions/addfoldernode/template/Smarty/addSectionNode.tpl
 msgid "<strong>%1</strong> has been successfully created"
 msgstr "La creaci&oacute;n de <strong>%1</strong> se ha realizado correctamente"
@@ -9654,7 +9657,7 @@ msgid "Below are listed all the relevant documents in your system, grouped by st
 msgstr "Abajo se listan todos los documentos relevantes de tu proyecto, agrupados por estado. S&oacute;lo se muestran los archivos que se han modificado con respecto a su &uacute;ltima versi&oacute;n publicada."
 
 msgid "There aren't any edited files yet"
-msgstr "No hay documentos publicados ni editados a&uacute;n"
+msgstr "No hay documentos editados a&uacute;n"
 
 #xlyre module
 msgid "Create a new Open Data Catalog"
@@ -9755,3 +9758,72 @@ msgstr "T&iacute;tulo de la distribuci&oacute;n"
 
 msgid "The document has been saved"
 msgstr "El documento se ha guardado correctamente"
+
+msgid "%s has been successfully created"
+msgstr "%s se ha creado correctamente"
+
+msgid "Container %s has been successfully created"
+msgstr "El documento %s ha sido creado correctamente"
+
+msgid "An error ocurred creating the container node"
+msgstr "Ocurri&oacute; un error al crear el documento"
+
+msgid "Image folder name"
+msgstr "Nombre de carpeta de imágenes"
+
+msgid "Manage metadata"
+msgstr "Gestión de metadatos"
+
+msgid "AUTHOR"
+msgstr "AUTOR"
+
+msgid "DESCRIPTION"
+msgstr "DESCRIPCIÓN"
+
+msgid "[Author]"
+msgstr "[Autor]"
+
+msgid "[Description]"
+msgstr "[Descripci&oacute;n]"
+
+msgid "System metadata info"
+msgstr "Información del sistema de metadatos"
+
+msgid "Name [NodeID]"
+msgstr "Nombre [NodeID]"
+
+msgid "The version %s has been deleted successfully"
+msgstr "La versión %s ha sido borrada correctamente"
+
+msgid "Edit metadata"
+msgstr "Editar metadatos"
+
+msgid "Download files"
+msgstr "Descargar archivos"
+
+msgid "The download will start immediately. If not, click here"
+msgstr "La descarga empezará inmediatamente. Si no, haga click aquí"
+
+msgid "There aren't any files to download"
+msgstr "No hay ningún archivo para descargar"
+
+msgid "Scheduled publications for these files will be cancelled."
+msgstr "Se cancelarán las publicaciones programadas para estos archivos."
+
+msgid "You have selected to publish contents of "
+msgstr "Has seleccionado publicar contenido de "
+
+msgid "Would you like to publish the contained subsections?"
+msgstr "¿Te gustaría publicar las subsecciones contenidas?"
+
+msgid "XimCLUDE folder name"
+msgstr "Nombre de carpeta ximCLUDE"
+
+msgid "Ximlets folder name"
+msgstr "Nombre de carpeta de ximlets"
+
+msgid "There aren't any published files yet"
+msgstr "No hay documentos publicados aún"
+
+msgid "Link folder name"
+msgstr "Nombre de carpeta de enlaces"

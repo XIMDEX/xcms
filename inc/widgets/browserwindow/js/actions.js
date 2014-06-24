@@ -52,7 +52,8 @@
 			'linkreport', 
 			'workflow_forward',
 			'modifyserver',
-			'modifygroupsnode'
+			'modifygroupsnode',
+			'manageversions'
 		]
 	};
 

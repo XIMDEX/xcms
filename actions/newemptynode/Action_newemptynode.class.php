@@ -81,7 +81,7 @@ class Action_newemptynode extends ActionAbstract {
         if ($idfile > 0) {
 			$content=$this->getDefaultContent($nodetype,$name);
 			$file->SetContent($content);
-                $this->messages->add(sprintf('%s '._('has been successfully created'), $name), MSG_TYPE_NOTICE);
+                $this->messages->add(sprintf('%s'._(' has been successfully created'), $name), MSG_TYPE_NOTICE);
                     $this->reloadNode($parentId);
                 } else {
                     $this->messages->add(sprintf(_('The operation has failed: %s'), $file->msgErr), MSG_TYPE_ERROR);

@@ -186,7 +186,7 @@ class Action_manageproperties extends ActionAbstract {
 						$message = sprintf(_('A total of %s channels are going to be disassociated from %s nodes.'), $totalProps, $totalNodes);
 						break;
 					case 'Language':
-						$message = sprintf(_('A total of %s idiomatic versions are going to be deleted.'), $totalNodes);
+						$message = sprintf(_('A total of %s language versions are going to be deleted.'), $totalNodes);
 						break;
 				}
 
