@@ -22,8 +22,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+angular.module('ximdex.main.controller')
+    .controller('searchpanelCtrl', ['$scope', '$attrs', function($scope, $attrs){
+    	
 
-
-X.actionLoaded(function(event, fn, params)  {
-        X.angularTools.initView(params.context, params.tabId);
-}); 
+    }]);

@@ -22,8 +22,13 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-X.actionLoaded(function(event, fn, params)  {
-        X.angularTools.initView(params.context, params.tabId);
-}); 
+angular.module('ximdex.common.directive')
+    .directive('ximInverted', function(){
+        return {
+            require: 'ngModel',
+            link: function(scope, element, attrs, ngModel){
+                ngModel.$parsers.push(function(val) { return !val; });
+                ngModel.$formatters.push(function(val) { return !val; });
+            }
+        }
+    });
