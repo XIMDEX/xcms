@@ -26,11 +26,11 @@
     angular.module('ximdex')
         .controllerProvider.register('XPublishStatus', ['$scope', '$attrs', 'xBackend', '$timeout', '$http', 'xUrlHelper', 'xTranslate', function($scope, $attrs, xBackend, $timeout, $http, xUrlHelper, xTranslate){
             $scope.publications = {};
-            $scope.publications.published = ['hola'];
-            $scope.publications.unpublished = ['adios'];
+            $scope.publications.published = [];
+            $scope.publications.unpublished = [];
             $scope.translate = xTranslate;
             $scope.backend = xBackend.subscribe({id: $attrs.ximNodeid, action:'checkstatus', method:'getPublicationQueue'}, function(data){
-            	if (data && data.publications) {
+                if (data && data.publications) {
             		$scope.publications.published = []
             		$scope.publications.unpublished = []
             		angular.element.each(data.publications, function(key, pub){
