@@ -1,6 +1,6 @@
 <form name="f_m_u" flow-init ng-cloak>
 	<div class="action_header">
-		<h2>#/options.lbl_anadir/#</h2>
+		<h2>#/'widgets.fileUploader.add_schemas' | xI18n/#</h2>
 	</div>
 
 	<div class="action_content uploader">
@@ -26,7 +26,7 @@
 						<span class="icon document">Documents</span>
 						<span class="icon image">Images</span>
 						<span class="icon video">Videos</span>
-						<p>Drag your files here or add them using the 'Add' button below.</p>
+						<p>#/ 'widgets.fileUploader.drag_your_files_here_or_add_them_using_the_\'Add\'_button_below' | xI18n /#.</p>
 					</div>
 					<ul class="xim-loader-list" ng-show="$flow.files.length">
 						<li ng-repeat="file in $flow.files">
@@ -45,7 +45,7 @@
 				</div>
 				<ul class="xim-loader-list-actions" >
 					<a href="#" class="xim-uploader-selected btn-labeled icon btn">
-						Add
+						#/ 'widgets.fileUploader.add' | xI18n /#
 						<input type="file" class="xim-uploader" accept="#/options.allowedMimes || options.allowedExtensions/#" flow-btn />
 						<!-- <input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"> -->
 					</a>

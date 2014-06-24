@@ -53,7 +53,8 @@
 			'workflow_forward',
 			'modifyserver',
 			'modifygroupsnode',
-			'manageversions'
+			'manageversions',
+			'deletetemplates'
 		]
 	};
 

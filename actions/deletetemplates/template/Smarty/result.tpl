@@ -1,5 +1,9 @@
+<div class="action_header">
+	<h2>{t}Removed templates{/t}</h2>
+</div>
+<div class="action_content">
 {if (null != $templates)}
-<h2>{t}Removed templates{/t}</h2>
+<p>{t}Results{/t}:</p>
 <fieldset>
 	 <ul class="files_ok">
 		{section name=i loop=$templates}
@@ -7,4 +11,7 @@
 		{/section}
 	 </ul>
 </fieldset>
+{else}
+<p>{t}There aren't any selected template{/t}</p>
 {/if}
+</div>

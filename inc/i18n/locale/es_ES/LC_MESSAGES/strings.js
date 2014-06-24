@@ -30,7 +30,13 @@ X.i18nStrings = {
 				"overwrite": "Sobreescribir",
 				"cancel": "Cancelar",
 				"rename": "Renombrar"
-			}
+			},
+			"drag_your_files_here_or_add_them_using_the_'Add'_button_below": "Arrastra los archivos aquí o añádelos usando el botón 'Añadir'",
+			"add": "Añadir",
+			"add_schemas": "Añadir esquemas",
+			"pause": "Pausar",
+			"resume": "Reanudar",
+			"retry": "Reintentar"
 		}
 	},
 	"xlyre": {

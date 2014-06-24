@@ -74,8 +74,8 @@ msgstr "A&ntilde;adir nueva hoja de estilos"
 msgid "Add empty XSL template"
 msgstr "A&ntilde;adir nueva plantilla XSL"
 
-msgid "Add empty RNG schema"
-msgstr "A&ntilde;adir nuevo esquema RNG"
+msgid "Add an empty RNG schema"
+msgstr "Añadir un nuevo esquema RNG"
 
 msgid "Create a new empty file"
 msgstr "Crea un nuevo archivo vac&iacute;o"
@@ -2053,7 +2053,7 @@ msgid "Add templates"
 msgstr "A&ntilde;adir plantillas"
 
 msgid "Add schemes"
-msgstr "A&ntilde;adir esquemas"
+msgstr "Añadir esquemas"
 
 msgid " Add HTML files "
 msgstr " A&ntilde;adir archivos HTML "
@@ -9827,3 +9827,27 @@ msgstr "No hay documentos publicados aún"
 
 msgid "Link folder name"
 msgstr "Nombre de carpeta de enlaces"
+
+msgid "Source node cannot be the same as destination node"
+msgstr "La carpeta origen no puede ser la misma que la carpeta destino"
+
+msgid "Delete RNG schema"
+msgstr "Borrar esquema RNG"
+
+msgid "Generic schema"
+msgstr "Esquema general"
+
+msgid "Metadata schema"
+msgstr "Esquema de metadatos"
+
+msgid "XimNEWS news schema"
+msgstr "Esquema de noticias XimNEWS"
+
+msgid "XimNEWS newsletter schema"
+msgstr "Esquema de newsletter XimNEWS"
+
+msgid "Results"
+msgstr "Resultados"
+
+msgid "There aren't any selected template"
+msgstr "No hay ninguna plantilla seleccionada"

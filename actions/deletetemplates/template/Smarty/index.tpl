@@ -42,8 +42,8 @@
 				{section name=i loop=$templates}
 					<li class="box-item box_item-template">
 						<span>
-							<input type="checkbox" name="templates[]" value="{$templates[i].Id}" class="hidden-focus" id="{$templates[i].Id}"/> 
-							<label for="{$templates[i].Id}" class="checkbox-label icon">{$templates[i].Name}</label>
+							<input type="checkbox" name="templates[]" value="{$templates[i].Id}" class="hidden-focus" id="delete_{$templates[i].Id}"/> 
+							<label for="delete_{$templates[i].Id}" class="checkbox-label icon">{$templates[i].Name}</label>
 						</span>
 					</li>
 				{/section}
