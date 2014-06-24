@@ -1,0 +1,45 @@
+<div>
+	
+	<div class="results-container">
+		<div class="fields-selector "
+		 	ng-class="{opened : showFieldsSelector}"
+			><!--ng-mouseleave="showFieldsSelector = false;" -->
+			<ul class="fields-selector-options slide-item" ng-show="showFieldsSelector" ng-click="$event.stopPropagation;">   
+				<li ng-repeat="field in fields" ng-if="field.type != 'action-icon'">
+					<input type="checkbox" id="#/field.key/#-check-#/$id/#" ng-model="field.hide" xim-inverted class="input-slide">
+					<label for="#/field.key/#-check-#/$id/#" class="label-slide">#/field.label/#</label>
+				</li>
+			</ul>
+			<span class="icon btn-rounded fields-selector-launcher"
+				ng-click="$broadcast('toggleFieldsSelector')"
+				ng-class="{'opened': showFieldsSelector}">
+				Collumns
+			</span>
+			</div>
+		<table  class="simple-results">
+			<thead>
+				<th ng-repeat="field in fields"
+					ng-click="tableSort.sortByField=field.key; tableSort.reverse=!tableSort.reverse" 
+					ng-class="{sort: tableSort.sortByField == field.key, reverse: tableSort.reverse}"
+					ng-if="!field.hide">
+					#/field.label/#
+				</th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in list.data | filter:filterText | orderBy:tableSort.sortByField:tableSort.reverse"
+					ng-click="selectItem(item, $event)"
+					ng-right-click="contextmenu(item, $event)"
+					ng-class="{'selected': isSelected(item.nodeid)}">
+					<td ng-repeat="field in fields" ng-switch="field.type" ng-if="!field.hide">
+						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
+						<span class="row-cell-#/field.type/# row-cell-#/field.key/# node-icon-#/item[field.key] | xNormalize | lowercase/#" ng-switch-when="action-icon" ng-click="contextmenu(item, $event, true)">#/item[field.key]/#</span>
+						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="path" xim-fit-text="trim path" xim-refresh="ui-refresh, ui-resize" data-tooltip="#/item[field.key]/#">#/item[field.key]/#</span>
+						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="long_text" xim-fit-text="trim path" xim-refresh="ui-refresh, ui-resize" data-tooltip="#/item[field.key]/#">#/item[field.key]/#</span>
+						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-default>#/item[field.key]/#</span>
+					</td>
+				</tr>
+			</tbody>
+			
+		</table>
+	</div>
+</div>

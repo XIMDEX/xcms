@@ -5,6 +5,10 @@ X.i18nStrings = {
 				"accept": "Accept",
 				"cancel": "Cancel"
 			}	
+		}, 
+		"search": {
+			"filter_by": "Filter by", 
+			"filter_by": "Filter by"
 		}
 	},
 	"actions": {

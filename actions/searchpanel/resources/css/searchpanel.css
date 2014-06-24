@@ -22,38 +22,157 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-/**
- *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
- *
- *  Ximdex a Semantic Content Management System (CMS)
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Affero General Public License as published
- *  by the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU Affero General Public License for more details.
- *
- *  See the Affero GNU General Public License for more details.
- *  You should have received a copy of the Affero GNU General Public License
- *  version 3 along with Ximdex (see LICENSE file).
- *
- *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
- *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
- */
-/*******
-//	ICON GENERIC STYLES
-*******/
-/*******
-//	ICONS
-*******/
-.xim-listview-table-container > div {
-  width: auto !important; }
+.simple-results .row-cell-action-icon, .fields-selector-launcher {
+  display: block;
+  text-indent: 110%;
+  white-space: nowrap;
+  overflow: hidden; }
 
-.simple_search .ui-widget-content {
-  background: none; }
+.simple-results .sort::after {
+  font-family: 'ximdex_icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle; }
+
+.fields-selector-launcher::before {
+  content: "\e61b"; }
+
+.search-query-info {
+  float: right;
+  margin-top: .8em;
+  margin-right: .2em; }
+
+.simple-results {
+  width: 100%; }
+  .simple-results th {
+    background: #7bcabf;
+    color: #fff;
+    font-weight: bold;
+    padding: .8em;
+    text-align: left;
+    cursor: pointer; }
+  .simple-results td span {
+    padding: .8em;
+    -ms-word-break: break-word;
+    word-break: break-word;
+    display: block; }
+  .simple-results .sort::after {
+    content: "\e619";
+    -webkit-transition: all  .3s ease-out;
+    -moz-transition: all  .3s ease-out;
+    -ms-transition: all  .3s ease-out;
+    -o-transition: all  .3s ease-out;
+    transition: all  .3s ease-out;
+    display: inline-block;
+    margin-top: -.2em; }
+  .simple-results .sort.reverse::after {
+    /* content:'\e61a' ;*/
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    transform: rotate(-180deg);
+    -webkit-transition: all  .3s ease-out;
+    -moz-transition: all  .3s ease-out;
+    -ms-transition: all  .3s ease-out;
+    -o-transition: all  .3s ease-out;
+    transition: all  .3s ease-out; }
+  .simple-results .row-cell-nodeid, .simple-results .row-cell-nodetype {
+    white-space: nowrap; }
+  .simple-results .row-cell-action-icon {
+    width: 1.2em;
+    background-image: url(../../../../xmd/images/tree/treeview-icons.png);
+    background-repeat: no-repeat;
+    padding: 0;
+    margin: 0 .2em 0 1.5em; }
+  .simple-results .row-cell-date {
+    white-space: nowrap; }
+
+.filter {
+  float: right; }
+  .filter input {
+    border: none;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 0;
+   /* border: 1px solid #eaf1f4;
+    background:#dde2e4;
+    -webkit-box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
+    -moz-box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
+    box-shadow: inset 0 1px 0 rgba(0,0,0,.2);
+    padding: .3em .5em;
+    margin-left: 1em;
+    -webkit-transition: all .3s ease-in;
+    -moz-transition: all .3s ease-in;
+    -ms-transition: all .3s ease-in;
+    -o-transition: all .3s ease-in;
+    transition: all .3s ease-in;
+    width: 20%;
+
+    &:focus{
+      background:#fff;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+      width: 30%;
+    }*/ }
+
+.results-container {
+  position: relative; }
+
+.fields-selector-launcher {
+  position: absolute;
+  width: 3.3em;
+  overflow: hidden;
+  display: block;
+  cursor: pointer;
+  height: 2.8em;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease; }
+  .fields-selector-launcher::before {
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    display: block;
+    font-size: 1.3em;
+    line-height: 2.3;
+    position: absolute;
+    text-indent: 0;
+    background: transparent;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    -ms-transition: all .2s;
+    -o-transition: all .2s;
+    transition: all .2s; }
+  .fields-selector-launcher.opened {
+    background: #4c4c4c; }
+
+.results-number {
+  font-family: "Ubuntu Condensed"; }
+  .results-number::before {
+    content: '['; }
+  .results-number::after {
+    content: ']'; }
+
+.fields-selector-options {
+  background: #4c4c4c;
+  /*  -webkit-transition:all linear 0.5s;
+   transition:all linear 0.5s;
+   opacity:1;*/
+  overflow: hidden;
+  padding: 1em 3em 1em 6em; }
+  .fields-selector-options li {
+    display: inline-block;
+    width: 24%;
+    line-height: 2.5;
+    min-width: 150px; }
+  .fields-selector-options label {
+    color: #fff; }

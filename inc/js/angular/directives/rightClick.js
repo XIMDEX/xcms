@@ -22,8 +22,14 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-X.actionLoaded(function(event, fn, params)  {
-        X.angularTools.initView(params.context, params.tabId);
-}); 
+angular.module('ximdex.common.directive').directive('ngRightClick', ['$parse', function ($parse) {
+    return function(scope, element, attrs) {
+        var fn = $parse(attrs.ngRightClick);
+        element.bind('contextmenu', function(event) {
+            scope.$apply(function() {
+                event.preventDefault();
+                fn(scope, {$event:event});
+            });
+        });
+    };
+}]);

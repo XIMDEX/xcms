@@ -445,6 +445,7 @@
 			p.dimension({width: (position.left - offset) + borderSize});
 
 			this.render();
+			$(document).trigger("hboxresize");
 		},
 
 		onDragStart: function(event, element, position) {
@@ -455,6 +456,7 @@
 			var data = $(element).data('data');
 			X.session.set('hbox.sep.%s'.printf(data.index), position.left);
 			$(this.element).trigger('dragstop', [{event: event, sep: element, pos: position}]);
+
 		},
 
 		togglePanel: function(panelIndex) {
