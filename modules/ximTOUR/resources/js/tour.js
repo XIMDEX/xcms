@@ -114,7 +114,8 @@
 	    var calculatedTop = $(window).height() - $('#tourcontrols',this.scope).outerHeight();
 	    $('#tourcontrols',this.scope).animate({
 		"left":"10px",
-		"margin-top": calculatedTop+"px"
+		"margin-top": "0px",
+		"bottom":"10px"
 		},700);
 	    $('#activatetour',this.scope).remove();
 	    $('#endtour,#restarttour',this.scope).show();
@@ -208,9 +209,13 @@
 	},
 
 	showTooltip: function(){
+	
+		
 	    this.removeTooltip();
 
 	    var step_config		= this.config[this.step-1];
+            if (step_config.beforeTooltip)
+                step_config.beforeTooltip();
 	    var $elem
 	    var frameCount;
 	    if (step_config.scope && step_config.scope == "editor"){
