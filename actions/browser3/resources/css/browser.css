@@ -279,7 +279,8 @@ button::-moz-focus-inner {
   font-weight: bold;
   margin-right: .8em;
   display: inline-block;
-  width: 3em; }
+  width: 3em;
+  height: 3em; }
   .current-language::before {
     position: relative;
     top: .62em;
