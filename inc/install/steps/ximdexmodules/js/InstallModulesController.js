@@ -25,11 +25,12 @@
 ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope', 'installerService', "$q", "$window",
  function($timeout, $scope, installerService, $q, $window) {
 
- 	$scope.modules = {};
+    $scope.modules = {};
     $scope.loaded = false;
     $scope.message = "";
     $scope.error = false;
     $scope.foundModuleError=false;
+    $scope.modulesInstalled = false;
 
     installerService.sendAction("getModulesLikeJson").then(function(response) {
         if (response.data.error){
@@ -51,6 +52,10 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
             });
         }
 	};
+        
+        $scope.isButtonHide = function(){
+            return !$scope.loaded || $scope.modulesInstalled;
+        }
 
 	$scope.installModule = function(index){
 		if ($scope.modules.length > index){
@@ -65,7 +70,7 @@ ximdexInstallerApp.controller('InstallModulesController', ["$timeout", '$scope',
 		        $scope.installModule(index);
 		    });
 		}else{
-			$scope.loading = false;
+                        $scope.modulesInstalled = true;			
             
             if (!$scope.foundModuleError)
                 installerService.sendAction("loadNextAction").then(function(response) {                

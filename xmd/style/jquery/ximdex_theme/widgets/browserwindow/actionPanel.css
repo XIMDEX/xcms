@@ -1600,10 +1600,10 @@ input:focus + .tooltip_info {
 .ui-datepicker {
   display: none; }
 
-.tarfile {
+.tarfile, .download_link {
   padding: .2em .4em .3em;
   color: #7bcabf !important; }
-  .tarfile:hover {
+  .tarfile:hover, .download_link:hover {
     background: #4c4c4c;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;

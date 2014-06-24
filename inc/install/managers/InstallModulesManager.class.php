@@ -72,6 +72,11 @@ class InstallModulesManager extends InstallManager {
 			$modMngr->enableModule($name);
 		}
 	}
+        
+        public function uninstallModule($name){
+            $modMngr = new ModulesManager();
+            $modMngr->uninstallModule($name);
+        }
 
 	public function buildModulesFile(){
 

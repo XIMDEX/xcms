@@ -1789,7 +1789,7 @@ input:focus + .tooltip_info{
 
 	// Download files link
 
-	.tarfile{
+	.tarfile, .download_link{
 		padding: .2em .4em .3em;
 		color: $c_mainlight !important; //jquery faults
 		&:hover{
