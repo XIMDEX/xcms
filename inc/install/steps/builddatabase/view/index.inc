@@ -29,7 +29,7 @@
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">    
 	<h2>Installing Database</h2>
 	<div ng-show="!installed">
-	<p>Now it's time to install a MySQL or MariaDB database. A priviledge user (e.g. root) is required to create this database.</p>
+	<p>Now it's time to install a MySQL or MariaDB database. A priviledged user (i.e. root) will be required to create Ximdex's database.</p>
 	<p class="errors" ng-show="genericErrors">{{genericErrors}}</p>
 
 	<div class="form_item"  >
@@ -64,7 +64,7 @@
 	<button ng-show="dbErrors" class="launch_ximdex action_launcher ladda-button"   ui-ladda="loadingOverwrite" data-style="slide-up" xim-state="loadingOverwrite" ng-click="sendForm()">Overwrite database</button>
 	</div>
 	<div ng-show="installed">
-	<p>Once the database is created, is a good recommended security practice to use an <em>unpriviledge user</em> to access to it. Set here the name and password for this user.</p>
+	<p>Once the database is created, it is a good practice to use an <em>unpriviledged user</em> to access it. Set the name and password for the database user accesing the Ximdex's database.</p>
 	<div class="form_item">
 		<label for="db_user">Database user</label>
 		<input ng-model="user" type="text" name="user" id="db_user" value="ximdex_user " />

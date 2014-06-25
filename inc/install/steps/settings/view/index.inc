@@ -28,7 +28,7 @@
 <form method="post" name="settingForm" ng-controller="SettingController" ng-submit="checkForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Settings</h2>
-    <p>By default it's created an admin user for Ximdex CMS called <em>ximdex</em>. Set the password here.</p>
+    <p>The user with the administration role in Ximdex CMS is called <em>ximdex</em>. Set the password for this admin user here:</p>
 	<div class="form_item  form_item--user full-width">
 	<label for="">User</label>
 	<span class="user">ximdex</span></div>
