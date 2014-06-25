@@ -496,7 +496,8 @@ INSERT INTO `Config` VALUES (48, 'TokenTTL','30');
 INSERT INTO `Config` VALUES (49, 'ApiIV','');
 INSERT INTO `Config` VALUES (50, 'ApiKey','');
 INSERT INTO `Config` VALUES (51, 'DevEnv','1');
-INSERT INTO `Config` VALUES (52, 'PublishPathFormat','prefix'); /*Accept default, prefix and sufix*/
+-- PublishPathFormat: Accepts default, prefix and sufix values
+INSERT INTO `Config` VALUES (52, 'PublishPathFormat','prefix');
 INSERT INTO `Config` VALUES (53, 'ChunksFolder','uploaded_files');
 INSERT INTO `Config` VALUES (54, 'UploadsFolder','uploaded_files');
 UNLOCK TABLES;
