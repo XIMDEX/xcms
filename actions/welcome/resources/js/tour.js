@@ -130,11 +130,12 @@ function start_tour(command) {
 	"position"	: "B",
 	"scope"		: "editor"	
     },//Editor
-    {
+    /*{
 	"name" 		: "div.kupu-fulleditor div.kupu-tb",
 	"position"	: "T",
 	"scope"		: "editor"
     },//Editor
+    */
     {
 	"name" 		: "button.kupu-treeview",		
 	"position"	: "TL",
@@ -165,7 +166,7 @@ function start_tour(command) {
 	"scope"		:"editor"
     },//6 */
 		
-    {
+/*    {
 	"name" 		: "button.kupu-toolbox-tags-button",
 	"position"	: "R",
 	"scope"		: "editor",
@@ -193,8 +194,8 @@ function start_tour(command) {
 	    button.val("");
 	    var interval = setInterval(addValue, 200, text,button);
 	}
-    },//7
-    {
+    },*///7
+    /*{
 	"name" 		: "div#xedit-attributes-toolbox div.xedit-element-name",
 	"position"	: "B",
 	"scope"		: "editor"
@@ -210,18 +211,22 @@ function start_tour(command) {
 		$( "button.xedit-annotations-toolbox-button:parent", window.frames[frameCount-1].document).click();
 	}
     },//8
-
+*/
     {
 	"name" 		: "div#xedit-annotations-toolbox button.kupu-annotation",
 	"position"	: "R",
 	"scope"		: "editor",
 	"beforeTooltip" : function(){
 		$("a#"+ximTourDefaultNode+"_xmleditor2").click();
+		var frameCount = window.frames.length;
+	    var display = $("div.kupu-toolbox-container div#xedit-annotations-toolbox",window.frames[frameCount-1].document).css("display");
+	    if (display == "none")
+		$( "button.xedit-annotations-toolbox-button:parent", window.frames[frameCount-1].document).click();
 	},
 	"callback"      :   function(){
             var frameCount = window.frames.length;
             $( "div#xedit-annotations-toolbox button.kupu-annotation", window.frames[frameCount-1].document).click();
-	    $("#anottationtoolbox-section-image", window.frames[frameCount-1].document).show();
+	
         }
 
     },//8
@@ -247,7 +252,7 @@ function start_tour(command) {
 
     var textDescription =  "";
     var titleDescription =  "";
-    textDescription = _('Welcome to the Ximdex Help Guide.<br/>In a few steps you will discover the basic features of Ximdex CMS.');
+    textDescription = _('Welcome to Ximdex!<br/>In a few steps you will discover the basic features of Ximdex CMS.');
     titleDescription = _("Ximdex Demo Tour.");
     arrayText.push(textDescription);
     arrayTitle.push(titleDescription);
@@ -262,33 +267,34 @@ function start_tour(command) {
     arrayText.push(textDescription);
     /*textDescription = _("Now we expand the node tree for you until we reach the picasso document.");
     arrayText.push(textDescription);    */
-    textDescription = _("Use Xedit, the XML editor with a semantic layer,<br/> to edit your document in a WYSIWYG & WYSIWYM way.");
+    textDescription = _("Use Xedit, the XML editor,<br/> to edit your document in a WYSIWYG way.");
     arrayText.push(textDescription);
     textDescription = _('Double-click here to close the left panel.');
     arrayText.push(textDescription);
-    textDescription = _("This is the document area.<br/>Hey, it looks like a HTML document. Actually it's a XML file!!");
+    textDescription = _("This is the document area.<br/>It looks like a HTML document. Actually it's a XML file with a semantic layer.");
     arrayText.push(textDescription);
-    textDescription = _('The editor toolbar allows you to access the basic controls: undo, redo, save, views, copy, paste...');
-    arrayText.push(textDescription);    
-    textDescription = _('Press the Tree View button in order to change to XML view for your structured document.');
+    //textDescription = _('The editor toolbar allows you to access the basic controls: undo, redo, save, views, copy, paste...');
+    //arrayText.push(textDescription);    
+    textDescription = _('Press the Tree View button to change to XML view for your structured document.');
     arrayText.push(textDescription);
-    textDescription = _('Press the Design View button in order to return to WYSIWYG view for your structured document.');
+    textDescription = _('Press the Design View button in order to return to WYSIWYG view.');
     arrayText.push(textDescription);
-    textDescription = _("We've been editing a XML file. <br/><br/>The preview button allows you to see it in the final format for yout web portal (html5, php, jsf, ...) or for other platform (digital TV, smartphone apps, etc.)<br/><br/>It's really easy to extend it with templates for oncoming technologies.");
+    textDescription = _("We've been editing a XML file. <br/><br/>The preview button allows you to see it in the final format for yout web portal (HTML5, php, jsp, RoR, ...) or for other platform (digital TV, smartphone apps, etc.)<br/><br/>It's really easy to extend it with templates for oncoming technologies.");
     arrayText.push(textDescription);
     /*textDescription = _('On the right you will find the extra tools.');
     arrayText.push(textDescription);    */
-    textDescription = _('Tags in Ximdex can be structured (as semantic tags based on ontologies and annotations when anchored to a text selection) or free (a simple tag) as the one just shown.');
-    arrayText.push(textDescription);
-    textDescription = _("Use this box to see and modify the attributes of the XML element in use.<br/><br/>Ximdex CMS templates allow you to freely define the structure of your XML documents and to associate semantic to elements.");
+//    textDescription = _('Tags in Ximdex can be structured (as semantic tags based on ontologies and annotations when anchored to a text selection) or free (a simple tag) as the one just shown.');
+  //  arrayText.push(textDescription);
+    /*textDescription = _("Use this box to see and modify the attributes of the XML element in use.<br/><br/>Ximdex CMS templates allow you to freely define the structure of your XML documents and to associate semantic to elements.");
     arrayText.push(textDescription);
     textDescription = _('Find resources and semantic links related to this document.');
     arrayText.push(textDescription);    
-    textDescription = _('With Xowl module you will get automagically links (to images, maps, videos, references, ...) and semantic tags (as text annotations from Linked Data Hubs as DBpedia)');
+    */
+    textDescription = _('With Xowl module you will get automagically links (to images, maps, videos, references, ...) and semantic tags from sources like DBpedia.');
     arrayText.push(textDescription);    
 
 
-    textDescription = _("You can easily add structured (based on an ontology) or custom tags to your content. Ximdex CMS will automatically provide tag suggestions based on your content (with a confidence indicator).");
+    textDescription = _("You can easily add your own custom tags or use an ontology to select semantic tags...");
     arrayText.push(textDescription);
     config_action.push({
 	"name" 		: "div.hbox-panel-container-1",
@@ -321,7 +327,26 @@ function start_tour(command) {
 
     });
 
-    textDescription = _("Let's add a couple of structured tags that are automatically provided by Ximdex based on your text (via the xowl module for content enrichment).");
+
+
+	textDescription = _("Ximdex CMS can automatically suggest tags based on your written text.<br/>Let's select a couple of tags from these suggestions.");
+    arrayText.push(textDescription);
+    config_action.push({
+	"name" 		: "div.xim-tagsinput-container-related",
+	"position"	: "B",
+	"callback"	: function(){		
+				var l=$("ul.xim-tagsinput-list-related li").length;
+                setTimeout(function(){
+
+                	$("ul.xim-tagsinput-list-related li")[1].click();
+		},500);		
+                $("ul.xim-tagsinput-list-related li")[l-4].click();
+                
+    }
+    });            
+
+
+   /* textDescription = _("Let's add a couple of structured tags that are automatically provided by Ximdex based on your text (via the xowl module for content enrichment).");
     arrayText.push(textDescription);
     config_action.push({
         "name"          : "div.hbox-panel-container-1",
@@ -329,14 +354,13 @@ function start_tour(command) {
         "callback"      : function(){
 		var l=$("ul.xim-tagsinput-list-related li").length;
                 $("ul.xim-tagsinput-list-related li")[1].click();
-		setTimeout(function(){},20000);
                 $("ul.xim-tagsinput-list-related li")[l-4].click();
-                setTimeout(function(){},1000);
         }
     });
-
+*/
 	
-    textDescription = _("Or let's navigate through a tag space to manually select the best TAG that categorize your content. Tag spaces are described as predefined vocabularies or ontologies (i.e.: schema.org) or from your own ones.");
+   // textDescription = _("Or let's navigate through a tag space to manually select the best TAG that categorize your content. Tag spaces are described as predefined vocabularies or ontologies (i.e.: schema.org) or from your own ones.");
+    textDescription = _("You can also create your own custom tags or browse tag sets to choose the best one for your content.");
     arrayText.push(textDescription);
     config_action.push({
 	"name" 		: ".ontology-browser-container",
@@ -344,16 +368,12 @@ function start_tour(command) {
 	"beforeTooltip" : function(){
 				if ($(".ontology-close").length){
 					$(".ontology-close").click();
-					$(".infobox").hide();
+					
 				}
-			},
-	"callback"	: function(){		
-		setTimeout(function(){
-		},10000);
-	}
+			}
     });
 
-    textDescription = _("Here you can visually choose entities and browse through them.");
+    textDescription = _("With the Ontology Browser you can navigate through vocabularies and ontologies as schema.org, etc.");
     arrayText.push(textDescription);
     config_action.push({
 	"name" 		: "div.ontology-browser div.treeViewer select",
@@ -361,19 +381,11 @@ function start_tour(command) {
 	"beforeTooltip" : function(){				
 				$("div.ontology-browser-container a.tree").click();
 				$("#xim-tour-tag").remove();
-			},
-	"callback"	: function(){		
-		setTimeout(function(){
-			$(".infobox h1").text("Painting");
-			$(".infobox .main_action").text("Add");
-			$($("div.treeViewer text")[11]).css("font-weight","bold");			
-			$(".infobox").show();
-		},10000);
-	}
+			}
     });
 
 	
-    textDescription = _("The Painting entity has been added to your document.");
+    textDescription = _("Tag 'Painting' from schema.org has been associated to your document.");
     arrayText.push(textDescription);
     config_action.push({
         "name"          : "div.hbox-panel-container-1",
