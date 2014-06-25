@@ -41,8 +41,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 	function __construct() {
 	    parent::__construct();
-	    $this->uploadsFolder = XIMDEX_ROOT_PATH . Config::getValue('UploadsFolder');
-	    $this->chunksFolder = XIMDEX_ROOT_PATH . Config::getValue('ChunksFolder');
+        $this->uploadsFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') . Config::getValue('UploadsFolder');
+        $this->chunksFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') . Config::getValue('ChunksFolder');
 	}
 
 	// Main method: shows initial form

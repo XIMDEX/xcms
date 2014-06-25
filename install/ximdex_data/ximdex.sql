@@ -497,8 +497,8 @@ INSERT INTO `Config` VALUES (49, 'ApiIV','');
 INSERT INTO `Config` VALUES (50, 'ApiKey','');
 INSERT INTO `Config` VALUES (51, 'DevEnv','1');
 INSERT INTO `Config` VALUES (52, 'PublishPathFormat','prefix'); /*Accept default, prefix and sufix*/
-INSERT INTO `Config` VALUES (NULL,'ChunksFolder','/data/tmp/chunks');
-INSERT INTO `Config` VALUES (NULL,'UploadsFolder','/data/tmp/temp_files');
+INSERT INTO `Config` VALUES (53, 'ChunksFolder','uploaded_files');
+INSERT INTO `Config` VALUES (54, 'UploadsFolder','uploaded_files');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Config` ENABLE KEYS */;
 
