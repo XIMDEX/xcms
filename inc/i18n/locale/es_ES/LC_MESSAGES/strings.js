@@ -3,7 +3,8 @@ X.i18nStrings = {
 		"dialog": {
 			"confirmation": {
 				"accept": "Aceptar",
-				"cancel": "Cancelar"
+				"cancel": "Cancelar",
+				"save": "Guardar"
 			}	
 		}
 	},

@@ -87,7 +87,7 @@
 			<button class="button_main_action"
 				xim-button
 				xim-state="submitState"
-				xim-label="submitLabel"
+				xim-label="'ui.dialog.confirmation.save' | xI18n"
 				ng-click="saveTags(documentTags)"
 				xim-disabled="!dirty">
 			</button>

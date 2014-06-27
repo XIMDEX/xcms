@@ -2928,7 +2928,7 @@ msgid "Remote URL"
 msgstr "URL remota"
 
 msgid "Remote address"
-msgstr "Direcci&oacute;n remota"
+msgstr "Dirección remota"
 
 msgid "Remote directory"
 msgstr "Directorio remoto"
@@ -3225,6 +3225,12 @@ msgstr "El servidor '%s' se ha enviado a publicar correctamente."
 msgid "The section '%s' has been successfully sent to publish."
 msgstr "La secci&oacute;n '%s' se ha enviado a publicar correctamente."
 
+msgid "%s %s has been successfully sent to publish"
+msgstr "El nodo ha sido enviado a publicar correctamente"
+
+msgid "The node has been successfully sent to publish"
+msgstr "El nodo ha sido enviado a publicar correctamente"
+
 #: /actions/publicatesection/publicatesection_IO.php
 msgid "Launching publicate section"
 msgstr "Lanzando publicate section"
@@ -3482,6 +3488,9 @@ msgstr "Parece que no tienes proyectos creados a&uacute;n. &iexcl;Empecemos ahor
 msgid "Create a new project"
 msgstr "Crear un nuevo proyecto"
 
+msgid "Create a New Project"
+msgstr "Crear un nuevo proyecto"
+
 msgid "Your latest documents"
 msgstr "Tus documentos recientes"
 
@@ -3548,6 +3557,9 @@ msgstr "Ximdex CMS: Nuevo estado para el documento:"
 
 msgid "The user"
 msgstr "El usuario"
+
+msgid "is going to be deleted"
+msgstr "va a ser eliminado"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
@@ -3974,7 +3986,10 @@ msgstr "Error en servidor"
 
 #: /actions/xmleditor2/js/editor/ximdexeditor.js
 msgid "Yes"
-msgstr "S&iacute;"
+msgstr "Sí"
+
+msgid "Yes "
+msgstr "Sí"
 
 msgid "No"
 msgstr "No"
@@ -9851,3 +9866,12 @@ msgstr "Resultados"
 
 msgid "There aren't any selected template"
 msgstr "No hay ninguna plantilla seleccionada"
+
+msgid "Name for the new language"
+msgstr "Nombre del nuevo lenguaje"
+
+msgid "Description for the new language"
+msgstr "Descripcion del nuevo lenguaje"
+
+msgid "Group's name"
+msgstr "Nombre del grupo"
