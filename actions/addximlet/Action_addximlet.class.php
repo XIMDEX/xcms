@@ -116,7 +116,7 @@ class Action_addximlet extends ActionAbstract {
             $sections = array_merge($sections, $this->getDescentantSections($idNode));
 
         //Set the association for every ximlet.
-        error_log(print_r($sections, true));
+        //error_log(print_r($sections, true));
         foreach ($idXimletContainers as $idXimletContainer){
             $ximletContainer = new Node($idXimletContainer);
             $ximletName = $ximletContainer->get('Name');
@@ -208,7 +208,7 @@ class Action_addximlet extends ActionAbstract {
         if ($recursive == 'on') 
             $sections = array_merge($sections, $this->getDescentantSections($idNode));
         //Set the association for every ximlet.
-        error_log(print_r($ximletContainers,true));
+        //error_log(print_r($ximletContainers,true));
         foreach ($ximletContainers as $idXimletContainer){
             $ximletContainer = new Node($idXimletContainer);
             $ximletName = $ximletContainer->get('Name');

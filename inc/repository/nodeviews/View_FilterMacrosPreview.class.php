@@ -202,7 +202,6 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 
 		if ($isStructuredDocument) {
 			if ($this->mode == 'dinamic') {
-				error_log('returning js');
 				return "javascript:parent.loadDivsPreview(" . $idNode . ")";
 			} else {
 				$query = App::get('QueryManager');

@@ -88,7 +88,6 @@ class QueryHandler_SQLTREE extends QueryHandler_SQL {
 
 		$rset = new DB();
 		$rset->query($query);
-		error_log("DEBUG $query");
 		$rset = $this->recordsetToArray($rset);
 
 		$result = array(

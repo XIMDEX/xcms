@@ -293,7 +293,9 @@ class InstallManager {
 		$filesToCheck = array(	"/conf/_STATUSFILE",
                                         "/data",
                                         "/logs",
-                                        "/conf");
+                                        "/conf",
+                                        "/data/tmp");
+
 		foreach ($filesToCheck as $file) {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
 				$result["state"] = "error";

@@ -31,7 +31,15 @@ angular.module('ximdex.common.service')
     		if (!repeated) $rootScope.$broadcast(event.type, data, true);
     	}
     	
+        var broadcastResize = function(event) {
+            $rootScope.$broadcast('ui-resize');
+        }
+
     	$rootScope.$on('nodemodified', repeatAngularEvent);
     	$window.jQuery(document).on('nodemodified', repeatJQueryEvent);
     	
+        $window.jQuery(window).on('resize', broadcastResize);
+        $window.jQuery(document).on('hboxresize', broadcastResize);
+
+
 	}]);

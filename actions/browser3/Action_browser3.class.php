@@ -128,6 +128,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/services/xEventRelay.js');
 		$this->addJs('/inc/js/angular/services/xDialog.js');
 		$this->addJs('/inc/js/angular/services/xCheck.js');
+		$this->addJs('/inc/js/angular/services/xMenu.js');
 		$this->addJs('/inc/js/angular/directives/ximButton.js');
 		$this->addJs('/inc/js/angular/directives/ximSelect.js');
 		$this->addJs('/inc/js/angular/directives/ximValidators.js');
@@ -136,6 +137,10 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/directives/ximFile.js');
 		$this->addJs('/inc/js/angular/directives/ximUploader.js');
 		$this->addJs('/inc/js/angular/directives/ximFocusOn.js');
+		$this->addJs('/inc/js/angular/directives/rightClick.js');
+		$this->addJs('/inc/js/angular/directives/ximGrid.js');
+		$this->addJs('/inc/js/angular/directives/ximInverted.js');
+		$this->addJs('/inc/js/angular/directives/ximFitText.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
 		$this->addActionJs('XMainCtrl.js');

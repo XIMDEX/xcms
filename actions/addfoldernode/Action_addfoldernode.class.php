@@ -409,7 +409,6 @@ class Action_addfoldernode extends ActionAbstract {
             
             $formChannels = array();    
             foreach ($file->channel as $idChannel) {
-                error_log("Canal a añadir: $idChannel");
                 $formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
             }
             if(!empty($formChannels ) ) {

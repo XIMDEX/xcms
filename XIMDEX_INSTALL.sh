@@ -9,7 +9,7 @@
 
 # INITIAL VARS
 export DEBUG=1
-REPO_NAME="myximdex"
+REPO_NAME="ximdex"
 REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 
 #REPO_BRANCH="3.5-beta3"
@@ -565,7 +565,7 @@ function Step_LaunchAsRoot() {
 
 	echo -e "Once moved to its final place, visit your Ximdex instance to end configuring it."
 	echo -e "by pointing your web browser to your just installed Ximdex CMS instance URL "
-	echo -e "(i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the "
+	echo -e "(i.e.: http://YOURHOST/${REPO_NAME} or http://localhost/${REPO_NAME}) to run the "
 	echo -e "configuration tool that will load the database and install Ximdex's modules."
 	echo -e "\nThanks for installing Ximdex. Write to help@ximdex.org if you need help.\n"
 	

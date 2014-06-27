@@ -74,6 +74,8 @@ class XmlContainerNode extends FolderNode{
      */
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $idSchema = null, $aliasLangList = null, $channelList = null, $idNodeMaster = null,$dataChildren=null){
 
+        $result=false;
+
 		$reltemplate = new RelTemplateContainer();
         $reltemplate->createRel($idSchema,$this->nodeID);
 

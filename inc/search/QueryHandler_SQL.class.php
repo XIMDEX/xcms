@@ -49,6 +49,7 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 				$record['name']                 = _($node->getNodeName());
 				$record['nodetypeid']           = $node->getNodeType();
 				$record['nodetype']             = _($node->getTypeName());
+                $record['nodetype_nemo']        = ($node->getTypeName());
 				$record['relpath']              = $node->getPathList();
 				$record['isdir']                = $node->nodeType->isFolder();
 				$record['icon']                 = $node->getIcon();

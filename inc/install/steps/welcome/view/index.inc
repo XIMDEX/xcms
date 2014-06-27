@@ -26,11 +26,12 @@
 ?>
 
 <form method="post" ng-controller="WelcomeController" ng-cloak>
-    <h2>Welcome to the Ximdex CMS's installation process!</h2>
-    <p>The semantic Ximdex CMS and its modules -Xowl, Xlyre, Xnews,...- help you to build semantic, secures and structured sites.</p>
+    <h2>Welcome to Ximdex CMS's web installer!</h2>
+    <p>Build flexible, scalable and secure Web Portals with the Semantic CMS XIMDEX and its modules: Xowl, to automatically enhance your content; Xlyre for linked open data; Xfind, to index and retrieve information, Xhawk to check content integrity, etc. </p>
 
     <p ng-repeat-start="(index, error) in errors" ng-class="error.state">{{error.message}}</p>
     <p ng-repeat-end class="desc">{{error.help}}</p>
+    <br/>
     <button class="launch_ximdex action_launcher" ng-click="checkInstaller()" ng-hide="checked">Check configuration</button>
     <button class="launch_ximdex action_launcher" ng-click="nextStep()" ng-show="checked">Start installation</button>
 </form>

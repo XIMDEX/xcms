@@ -6,6 +6,10 @@ X.i18nStrings = {
 				"cancel": "Cancelar",
 				"save": "Guardar"
 			}	
+		}, 
+		"search": {
+			"filter_by": "Filtrar por", 
+			"sort_by": "Ordenar por"
 		}
 	},
 	"actions": {
