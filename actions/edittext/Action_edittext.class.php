@@ -207,13 +207,13 @@ class Action_edittext extends ActionAbstract {
 			}
 		}
 
-		if ($nodeTypeName == 'Template' || $nodeTypeName == 'XslTemplate' ) {
+		/*if ($nodeTypeName == 'XslTemplate' ) {
 			$this->redirectTo('publishForm');
 			return;
-		} else {
+		} else {*/
             $values = array(array('message'=> _('The document has been saved'), 'type' => 1));
             $this->sendJSON(array('messages' => $values));
-		}
+		//}
     	}
 
 	function formatXml($xml) {

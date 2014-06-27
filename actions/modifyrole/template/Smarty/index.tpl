@@ -28,9 +28,9 @@
 					<h2>{t}Role data{/t}</h2>
 								<fieldset class="buttons-form">
 				{* button label="Reset" class="form_reset btn" *}
-				{button label="Modify" class="validate button-modify  btn main_action" }{*message="Are you sure you want to modify this role?"*}
-				{button label="Select all" class="button-select-all"}
-				{button label="Select none" class="button-deselect-all"}
+					{button label="Modify" class="validate button-modify btn main_action" }{*message="Are you sure you want to modify this role?"*}
+					{button label="Select all" class="button-select-all btn"}
+					{button label="Select none" class="button-deselect-all btn"}
 			</fieldset>
 				</div>
 
@@ -57,10 +57,7 @@
 							<legend><span>{t}Modify role permits{/t}</span></legend>
 
 							<fieldset class="buttons-form fixed">
-					{* button label="Reset" class="form_reset btn" *}
-					{button label="Modify" class="validate button-modify btn main_action" }{*message="Are you sure you want to modify this role?"*}
-					{button label="Select all" class="button-select-all btn"}
-					{button label="Select none" class="button-deselect-all btn"}
+					
 				</fieldset>
 				<label class="aligned">	{t}Generic permits{/t}</label>
 				<div class="right-block">

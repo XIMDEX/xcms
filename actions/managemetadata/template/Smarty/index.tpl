@@ -38,10 +38,9 @@
             <button class="btn main_action button_main_action button" 
                 ng-click="submitForm(managemetadata)"
                 xim-button
-                xim-label="submitLabel"
+                xim-label="'ui.dialog.confirmation.save' | xI18n"
                 xim-state="submitStatus"
                 xim-disabled="managemetadata.$invalid || managemetadata.$pristine">
-                {t}Save{/t}
             </button>
 		</fieldset>
 	</div>
