@@ -24,8 +24,14 @@
  *}
 
 {if ($docs)}
-<h2>{t}Publish ximlet{/t}</h2>
 <form  method="post" name="formulario" id="formulario" action='{$action_url}'>
+<div class="action_header">
+<h2>{t}Publish ximlet{/t}</h2>
+<fieldset class="buttons-form">
+	{button class="validate start_publication btn main_action" label="Accept" message="Would you like to continue with publication?"}
+</fieldset>
+</div>
+<div class="action_content">
 	<input type="hidden" name="id_node" value="{$node_id}" />	
 
 	<fieldset>
@@ -40,17 +46,15 @@
 		</ul>
 		<p><input class="see_paths" name="see_paths" type="checkbox" value=""/><label>{t}Show paths{/t}</label></p>
 	</fieldset>
-
-	<fieldset class="buttons-form">
-		{button class="validate start_publication btn main_action" label="Accept" message="Would you like to continue with publication?"}
-	</fieldset>
-
 </form>
+</div>
 {else}
+<div class="action_header">
 <h2>Publish ximLet</h2>
-
+</div>
+<div class="action_content">
 	<p>No ximlet to publish has been found.</p>
-
+</div>
 {/if}
 
 {* 

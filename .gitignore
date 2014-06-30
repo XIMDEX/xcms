@@ -16,6 +16,7 @@ conf/_STATUSFILE
 conf/install-params.conf_bk_*.php
 conf/install-params.conf.phpbck_*.php
 modules/dexT/xslt/dext_main.xsl
+modules/modules_PRO/
 inc/model/orm/*.bck*
 modules/xlyre
 koala-config.json

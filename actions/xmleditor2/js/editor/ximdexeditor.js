@@ -808,7 +808,7 @@ function XimdocEditor(options) {
 			width: 400,
 			modal: true,
 			buttons: {
-				_('Yes'): function() {
+				_('Yes '): function() {
 					callback.yes();
 					$(this).dialog('close');
 				},

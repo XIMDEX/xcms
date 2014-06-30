@@ -37,7 +37,8 @@
 			'copy', 
 			'createrole', 
 			'createuser',
-			'createxmlcontainer'
+			'createxmlcontainer',
+			'creategroup'
 		],
 		remove: [
 			'deletenode',
@@ -45,7 +46,9 @@
 			'copy', 
 			'expiresection',
 			'publicatesection',
-            'deletecatalog'
+            'deletecatalog',
+            'publicateximlet',
+            'deleteuser'
 		],
 		reload: [
 			'addximlet', 
@@ -54,7 +57,8 @@
 			'modifyserver',
 			'modifygroupsnode',
 			'manageversions',
-			'deletetemplates'
+			'deletetemplates',
+			'modifygroupusers'
 		]
 	};
 

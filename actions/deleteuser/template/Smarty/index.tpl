@@ -23,13 +23,17 @@
  *  @version $Revision$
  *}
 
-<h2>{t}Delete user{/t}</h2>
 <form method="post" name="el_form" action="{$action_url}">
-	<fieldset>
-		<input type=hidden name='id_node' value="{$id_node}">
-		<p>{t}The user <b>{$login}</b> ({$email}) is going to be deleted.{/t}</p>
-	</fieldset>
-	<fieldset class="buttons-form">
-		{button class="validate btn main_action" label="Delete" message="Are you sure you want to delete this user?"}
-	</fieldset>
+	<div class="action_header">
+		<h2>{t}Delete user{/t}</h2>
+		<fieldset class="buttons-form">
+			{button class="validate btn main_action" label="Delete" message="Are you sure you want to delete this user?"}
+		</fieldset>
+	</div>
+	<div class="action_content">
+		<fieldset>
+			<input type=hidden name='id_node' value="{$id_node}">
+			<p>{t}The user{/t} <b>{$login}</b> ({$email}) {t}is going to be deleted{/t}.</p>
+		</fieldset>
+	</div>
 </form>

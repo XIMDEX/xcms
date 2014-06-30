@@ -200,7 +200,8 @@ class Action_modifyrole extends ActionAbstract {
 			'goback' => true,
 			'messages' => $this->messages->messages
 		);
-		$this->render($values);
+		//$this->render($values);
+		$this->sendJSON($values);
 	}
 }
 ?>
