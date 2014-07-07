@@ -9085,6 +9085,9 @@ msgstr "No se ha podido encontrar la carpeta base"
 msgid "Could not find or create the destination folder"
 msgstr "No se ha podido encontrar o crear la carpeta destino "
 
+msgid "Could not upload the file"
+msgstr "No se ha podido subir el fichero"
+
 msgid "Unable to create the target document"
 msgstr "No se ha podido crear el documento destino"
 
