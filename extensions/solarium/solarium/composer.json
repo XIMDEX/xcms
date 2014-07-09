@@ -1,0 +1,21 @@
+{
+    "name": "solarium/solarium",
+    "type": "library",
+    "description": "PHP Solr client",
+    "keywords": ["solr", "search", "php"],
+    "homepage": "http://www.solarium-project.org",
+    "version": "2.4.0",
+    "license": "NewBSD",
+    "authors": [
+        {
+            "name": "See GitHub contributors",
+            "homepage": "https://github.com/basdenooijer/solarium/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0"
+    },
+    "autoload": {
+        "psr-0": { "Solarium": "library/" }
+    }
+}

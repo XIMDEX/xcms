@@ -218,7 +218,7 @@ class DexPumper {
 		$this->info("ServerFrame $IdSync DU2OUT: download file from server ");
 
 
-		$targetFile = "{$initialDirectory}{$remotePath}{$fileName}";
+		$targetFile = "{$initialDirectory}{$remotePath}/{$fileName}";
 
 		$removing = $this->taskDelete($targetFile);
 		$this->updateTask($removing, ServerFrame::OUT);
@@ -362,7 +362,7 @@ class DexPumper {
 		}
 
 		$fullPath = $baseRemoteFolder . $relativeRemoteFolder . '/' . $remoteFile;
-		$msg_not_upload = _('Could not find or create the destination folder').": {$localFile} -> {$fullPath}";
+		$msg_not_upload = _('Could not upload the file').": {$localFile} -> {$fullPath}";
 
 
 		if (!$this->connection->put($localFile, $fullPath)) {

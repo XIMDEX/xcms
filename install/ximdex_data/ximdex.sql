@@ -1534,6 +1534,7 @@ LOCK TABLES `Protocols` WRITE;
 INSERT INTO `Protocols` VALUES ('SSH',22,'Secure transfer protocol (ssh)',1);
 INSERT INTO `Protocols` VALUES ('LOCAL',NULL,'Local synchronization',0);
 INSERT INTO `Protocols` VALUES ('FTP',21,'FTP synchronization',1);
+INSERT INTO `Protocols` VALUES ('SOLR',8983,'SOLR synchronization',0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Protocols` ENABLE KEYS */;
 
