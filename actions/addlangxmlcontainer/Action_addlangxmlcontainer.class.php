@@ -244,15 +244,13 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 			}
 		}
 
-		$this->reloadNode($nodeid);
 		if (isset($result) && $result > 0) {
 			$this->messages->add(_('Changes have been successfully done'), MSG_TYPE_NOTICE);
 		}
-		$values = array(
-			'messages' => $this->messages->messages,
-			'goback' => true
-		);
-		$this->render($values);
+
+        $values = array('messages' => $this->messages->messages, "parentID" =>$nodeid );
+
+        $this->sendJSON($values);
 	}
 
 	function _getVisualTemplate($idNode) {
