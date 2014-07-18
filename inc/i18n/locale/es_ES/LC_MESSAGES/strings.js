@@ -41,7 +41,8 @@ X.i18nStrings = {
 			"add_schemas": "Añadir esquemas",
 			"pause": "Pausar",
 			"resume": "Reanudar",
-			"retry": "Reintentar"
+			"retry": "Reintentar",
+            "please,_select_the_schema_to_follow_and_a_language_for_your_documents_before_uploading_them":"Por favor, selecciona el esquema a seguir y un idioma para sus documentos antes de subirlos"
 		}
 	},
 	"xlyre": {

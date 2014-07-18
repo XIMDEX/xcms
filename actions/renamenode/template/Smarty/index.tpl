@@ -28,7 +28,7 @@
 	<div class="action_header">
 			<h2>{t}Change name{/t}</h2>
 			<fieldset class="buttons-form">
-			{if $id_nodetype!=5078}
+			{if $id_nodetype!=5078 & $id_nodetype!=5048}
 				{button label="Check dependencies" class="open_report btn"}
 			{/if}
 				{button label="Modify" class='validate btn main_action' }{*message="Are you sure you want to change the name?"*}

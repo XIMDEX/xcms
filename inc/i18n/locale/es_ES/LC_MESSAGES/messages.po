@@ -9878,3 +9878,12 @@ msgstr "Descripcion del nuevo lenguaje"
 
 msgid "Group's name"
 msgstr "Nombre del grupo"
+
+msgid "All the tags have been properly associated."
+msgstr "Todas las etiquetas han sido asociadas correctamente."
+
+msgid "CSS folder name"
+msgstr "Nombre de carpeta CSS"
+
+msgid "Common folder name"
+msgstr "Nombre de carpeta Common"

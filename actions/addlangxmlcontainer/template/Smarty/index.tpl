@@ -45,8 +45,8 @@
 		  	{if $numchannels neq 0}
 		 		{foreach from=$channels item=channel}
 		  		    <div class="channel-section">
-		  			    <input type="checkbox" name="channels[]" id="channel_{$channel.IdChannel}" value="{$channel.IdChannel}" {if ($channel.selected)} checked="checked" {/if} class="hidden-focus">
-		  				<label class="icon checkbox-label" for="channel_{$channel.IdChannel}">{$channel.Description}</label>
+		  			    <input type="checkbox" name="channels[]" id="channel_{$channel.IdChannel}_{$idNode}" value="{$channel.IdChannel}" {if ($channel.selected)} checked="checked" {/if} class="hidden-focus">
+		  				<label class="icon checkbox-label" for="channel_{$channel.IdChannel}_{$idNode}">{$channel.Description}</label>
 		  			</div>
 		  		{/foreach}
 		  	{else}
@@ -60,11 +60,11 @@
 						{foreach from=$languages item=language}
 				<div class="languages-section">
 				{if ($language.idChildren > 0)}
-                    <input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}" value="{$language.idLanguage}" checked="checked" class="hidden-focus" />
+                    <input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" checked="checked" class="hidden-focus" />
 				{else}
-					<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}" value="{$language.idLanguage}" class= "hidden-focus"/>
+					<input type="checkbox" name="languages[]" id="lang_{$language.idLanguage}_{$idNode}" value="{$language.idLanguage}" class= "hidden-focus"/>
 				{/if}
-				<label for="lang_{$language.idLanguage}" class="icon checkbox-label">{$language.name}</label>
+				<label for="lang_{$language.idLanguage}_{$idNode}" class="icon checkbox-label">{$language.name}</label>
 				<input type="text" name="aliases[{$language.idLanguage}]" class="alternative-name" value="{$language.alias}" class="cajag" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}">
 				</div>
 						{/foreach}

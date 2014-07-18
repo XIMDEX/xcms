@@ -7,7 +7,8 @@
 	<!-- <div class="action_content uploader {if $type_node == "XmlContainer"}xml-uploader{/if}"> -->
 		<fieldset>
 			<div class="files-properties xml-properties" ng-if="options.metaFields">
-				<h3>Please, select the schema to follow and a language for your documents before uploading them.</h3>	
+				<h3>#/ 'widgets.fileUploader.please,_select_the_schema_to_follow_and_a_language_for_your_documents_before_uploading_them' | xI18n /#.</h3>
+
 				<div class="col1-2" ng-repeat="(key, field) in options.metaFields">
 					<select name="global-#/key/#" id="global-#/key/#" class="cajaxg extra-param" 
 						ng-if="field.type == 'select'"
