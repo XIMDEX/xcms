@@ -45,7 +45,8 @@ class Channels_ORM extends GenericData   {
 				'DefaultExtension' => array('type' => "varchar(255)", 'not_null' => 'false'),
 				'Format' => array('type' => "varchar(255)", 'not_null' => 'false'),
 				'Filter' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'RenderMode' => array('type' => "varchar(255)", 'not_null' => 'false')
+				'RenderMode' => array('type' => "varchar(255)", 'not_null' => 'false'),
+                                'OutputType' => array('type' => "varchar(100)", 'not_null' => 'false')
 				);
 	var $_uniqueConstraints = array(
 
@@ -58,5 +59,6 @@ class Channels_ORM extends GenericData   {
 	var $Format;
 	var $Filter;
 	var $RenderMode;
+	var $OutputType;
 }
 ?>

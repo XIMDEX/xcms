@@ -67,11 +67,11 @@ class ChannelNode extends Root {
 	*  @return unknown
 	*/
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null, $format = null, $description = null, $filter = "", $renderMode = NULL) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $channelName = null, $extension = null, $format = null, $description = null, $filter = "", $renderMode = NULL, $outputType= NULL) {
 
   		$channel = new Channel();
   		$channel->CreateNewChannel($channelName, $extension, $format, $description, $this->parent->get('IdNode'), $filter,
-				$renderMode);
+				$renderMode, $outputType);
 
 		$this->UpdatePath();
 	}
