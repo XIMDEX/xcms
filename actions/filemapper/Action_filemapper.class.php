@@ -26,7 +26,6 @@
 
 
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
-ModulesManager::file('/actions/filedownload_multiple/Action_filedownload_multiple.class.php');
 
 class Action_filemapper extends ActionAbstract {
    // Main method: shows initial form
