@@ -304,17 +304,19 @@ class Channel extends Channels_ORM {
 	 * @param $idChannel
 	 * @param $filter
 	 * @param $renderMode
+	 * @param $outputType
 	 * @return channelID - loaded as a attribute.
 	 */
-	function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = "", $renderMode)
+	function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = "",$renderMode="", $outputType="")
 	{
 		$this->set('IdChannel', (int) $idChannel);
 		$this->set('Name', $name);
 		$this->set('Description', $description);
 		$this->set('DefaultExtension', $defaultExtension);
 		$this->set('Format', $format);
-		$this->set('Filter', $filter);
+		$this->set('Filter', $filter);		
 		$this->set('RenderMode', $renderMode);
+		$this->set('OutputType', $outputType);
 		if ($this->add()) {
 			return $this->get('IdChannel');
 		}

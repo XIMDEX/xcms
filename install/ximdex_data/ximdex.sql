@@ -409,6 +409,7 @@ CREATE TABLE `Channels` (
 	`Format` varchar(255) default NULL,
 	`Filter` varchar(255) default NULL,
 	`RenderMode` varchar(255) default NULL,
+        `OutputType` varchar(100) default NULL,
 	PRIMARY KEY  (`IdChannel`)
 ) ENGINE=MYISAM COMMENT='Distribution channels';
 
@@ -419,7 +420,7 @@ CREATE TABLE `Channels` (
 
 /*!40000 ALTER TABLE `Channels` DISABLE KEYS */;
 LOCK TABLES `Channels` WRITE;
-INSERT INTO `Channels` (`IdChannel`, `Name`, `Description`, `DefaultExtension`, `Format`, `Filter`, `RenderMode`) VALUES(10001, 'html', 'Html channel', 'html', NULL, NULL, 'ximdex');
+INSERT INTO `Channels` (`IdChannel`, `Name`, `Description`, `DefaultExtension`, `Format`, `Filter`, `RenderMode`,`OutputType`) VALUES(10001, 'html', 'Html channel', 'html', NULL, NULL, 'ximdex','web');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Channels` ENABLE KEYS */;
 
