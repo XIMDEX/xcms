@@ -692,9 +692,10 @@ class Action_workflow_forward extends ActionAbstract {
 		$idWorkFlowSlave = $node->get('SharedWorkflow');
 		if ($idWorkFlowSlave > 0) {
 			$masterNode = new Node($idWorkFlowSlave);
-			$this->messages->add(sprintf(_('The publication cycle of the selected document is currently linked to the document [%s]'), $masterNode->GetPath()), MSG_TYPE_WARNING);
-			$this->messages->add(_('The linked file should be selected in order to go forward the next state'), MSG_TYPE_WARNING);
-
+            $values = array(
+                'path_master' => $masterNode->GetPath()
+            );
+            $this->render($values, 'linked_document', 'default-3.0.tpl');
 			return false;
 		}
 

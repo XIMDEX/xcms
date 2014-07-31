@@ -27,48 +27,54 @@
 <form method="post" name="sl_form" class="sl_form" id="sl_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}" class="id_node" />
 	<div class="action_header">
-		<h2>{t}Select master document{/t}</h2>
-		<fieldset class="buttons-form">
+        {if $id_target > 0}
+            <h2>{t}Break the link with master document{/t}</h2>
+        {else}
+            <h2>{t}Select master document{/t}</h2>
+        {/if}
+        {if {count($targetNodes)}}
+        <fieldset class="buttons-form">
 				{button class="validate btn main_action" onclick="" label="Save changes" }{*message="Are you sure you want to performe the changes?"*}
 		</fieldset>
+        {/if}
 	</div>
+    {if {!count($targetNodes)}}
+        <div class="message-warning message">
+            <p>{t}There aren't any possible master document{/t}.</p>
+        </div>
+    {/if}
 	<div class="action_content">
 		<fieldset>
-			{if {count($targetNodes)}}
-					<div class="copy_options" tabindex="1">
-						{foreach from=$targetNodes key=index item=targetNode}
-							<div>
-								<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" {if $targetNode.idnode == $id_target}checked{/if}   />
-								<label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
-							</div>					
-						{/foreach}
-					</div>								
-				{else}
-					<div class="info-message message">
-						<div>{t}There aren't any available destination{/t}.</div>
-					</div>
-				{/if}
+            {if $id_target > 0}
+                <span class="recursive_control">
+                    <input type="checkbox" id="{$id_node}_delete_link" name="delete_link" value="true" class="normal input-slide" />
+                    <label class="label-slide" for="{$id_node}_delete_link">{t}Do you want to break the link with the following document?{/t}: {$name_target}</label>
+                </span>
 
-			<span class="slide-element">
-				<input type="checkbox" id="{$id_node}_sharewf" name="sharewf" value="true" class="normal input-slide" {if $sharewf == 1}checked{/if} />
-				<label class="label-slide" for="{$id_node}_sharewf">{t}Do you want to share the master document workflow?{/t}</label>
-			</span>
-			
-			{if $id_target > 0}			
-			</ol>
-				<li>
-					<input type="checkbox" name="delete_link" value="true" class="normal" />
-					{t}Do you want to delete the document link?{/t}
-				</li>
-				<li>
-					<div class="translation_box hidden">
-						<input type="checkbox" name="delete_method" value="unlink" class="delete_method">
-						{t}Do you want to copy the master document content when a link would be deleted?{/t} <br/>
-						{*<input type="radio" name="delete_method" value="show_translation" class="delete_method">{t}Do you want to suggest Google Translate traduction?{/t}*}
-					</div>
-				</li>
-			</ol>
-			{/if}
+                <div class="translation_box hidden">
+                    <br/>
+                    <input type="checkbox" id="{$id_node}_delete_method" name="delete_method" value="unlink" class="normal input-slide delete_method" />
+                    <label class="label-slide" for="{$id_node}_delete_method">{t}Do you want to copy the master document content when a link would be deleted?{/t}</label>
+                </div>
+            {else}
+                {if {count($targetNodes)}}
+                    <label for="id_node" class="label_title">{t}This document can be linked to one of the following documents{/t}:</label>
+                        <div class="copy_options" tabindex="1">
+                            {foreach from=$targetNodes key=index item=targetNode}
+                                <div>
+                                    <input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" {if $targetNode.idnode == $id_target}checked{/if}   />
+                                    <label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
+                                </div>
+                            {/foreach}
+                        </div>
+
+                <span class="recursive_control">
+                    <br />
+                    <input type="checkbox" id="{$id_node}_sharewf" name="sharewf" value="true" class="normal input-slide" {if $sharewf == 1}checked{/if} />
+                    <label class="label-slide" for="{$id_node}_sharewf">{t}Do you want to share the master document workflow?{/t}</label>
+                </span>
+                {/if}
+            {/if}
 			
 				
 		</fieldset>

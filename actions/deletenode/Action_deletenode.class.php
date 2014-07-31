@@ -49,6 +49,29 @@ class Action_deletenode extends ActionAbstract {
 		$node	= new Node($idNode);
 		$children = $node->GetChildren();
 
+        if($node->GetNodeType()==5032){
+
+            $dbObj=new DB();
+            $query="select IdDoc from StructuredDocuments where TargetLink=".$idNode;
+            $dbObj->Query($query);
+
+            $symbolics=array();
+            while(!$dbObj->EOF) {
+                $n=new Node($dbObj->GetValue("IdDoc"));
+                $symbolics[]=$n->GetPath();
+                error_log("HOLAAA "+count($symbolics));
+                $dbObj->Next();
+            }
+            error_log("HOLAAA ".print_r($symbolics,true));
+
+            if(count($symbolics)>0) {
+                $values = array(
+                    'path_symbolics' => $symbolics
+                );
+                $this->render($values, 'linked_document', 'default-3.0.tpl');
+                return false;
+            }
+        }
 		$user = new User($userID);
 		$depList = array();
 
