@@ -9914,3 +9914,6 @@ msgstr "Este documento tiene un enlace simbólico"
 
 msgid "To delete this node you have to break the link with the following node(s)"
 msgstr "Para borrar este nodo se ha de romper el enlace con el/los siguiente/s nodo/s"
+
+msgid "Preview as"
+msgstr "Vista previa como"

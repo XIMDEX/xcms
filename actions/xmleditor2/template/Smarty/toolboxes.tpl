@@ -33,26 +33,6 @@
 		</div>
 	</div>
 
-	{if !$rngEditorMode}
-	<div class="kupu-toolbox" id="kupu-toolbox-channels">
-		<h1 class="kupu-toolbox-heading" i18n:translate="">
-			{t}Channels{/t}
-		</h1>
-		<div>
-			<div id="kupu-toolbox-channels-elements">
-				<div i18n:translate="" class="kupu-toolbox-label">
-					<strong>{t}Choose a channel{/t} </strong>
-				</div>
-				<select id="kupu-channels" class="wide">
-					{foreach from = $channels key = id_channel item = channel}
-				  		<option value="{$id_channel}">{$channel}</option>
-					{/foreach}
-				</select>
-			</div>
-		</div>
-	</div>
-	{/if}
-
 	<div class="kupu-toolbox" id="kupu-toolbox-annotationbox">
 		<h1 class="kupu-toolbox-heading" i18n:translate="">
 			{t}Annotation{/t}

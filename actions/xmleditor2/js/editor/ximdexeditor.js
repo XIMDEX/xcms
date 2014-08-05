@@ -628,69 +628,6 @@ function XimdocEditor(options) {
 
 		this.postSanitizeHTML(xslResult, this.getBody());
 
-
-		// If extended view is choosen, previewInServer is active and there are preview servers:
-		// get preview
-		if(this.getView() == 'pro') {
-			// TODO: Are there preview servers? Choose one.
-
-			var newBodyString = $('html', this.getInnerDocument()).html();
-
-			var content = encodeURIComponent(newBodyString);
-
-			this._ximdoc.editor.tools.ximdoctool.toolboxes.channelstoolbox.getChannelId();
-
-			var encodedContent = "&nodeid=" + this.nodeId +
-								 "&content=" + content +
-								 "&channelid=" + this._ximdoc._channelId;
-			var encondedObject = {
-
-				"nodeid": this.nodeId,
-				"content": content,
-				"channelid": this._ximdoc._channelId
-			};
-
-			com.ximdex.ximdex.editors.PreviewInServerHandler(this.getBaseURL(), encondedObject, {
-				onComplete: function(req, json) {
-					switch(req.responseText) {
-						case '1':
-							this.alert(_('Cannot show Remote View') + '. ' + _('PreviewInServer mode is disabled'));
-							selectView('normal');
-							break;
-						case '2':
-							this.alert(_('Cannot show Remote View') + '. ' + _('No Preview Servers for this channel'));
-							selectView('normal');
-							break;
-						case '3':
-							this.alert(_('Cannot show Remote View') + '. ' + _('Error accessing remote server. Please, verify permissions and synchro base path'));
-							selectView('normal');
-							break;
-						case '4':
-							this.alert(_('Cannot show Remote View') + '. ' + _('Error connecting remote server. Please, verify synchro data (IP, access keys)'));
-							selectView('normal');
-							break;
-						case '5':
-							this.alert(_('Cannot show Remote View') + '. ' + _('Unknown error'));
-							selectView('normal');
-							break;
-						default:
-							var rgx = new RegExp("<head[^>]*>(.*)</head>", "g");
-							var head = req.responseText.match(rgx);
-							var rgx = new RegExp("<body(.*[^>])*>(.*)</body>", "g");
-							var body = req.responseText.match(rgx);
-							$('head', this.getInnerDocument()).html(head[0]);
-							$('body', this.getInnerDocument()).html(body[0]);
-
-							this.afterUpdateContent(options);
-							loadingImage.hideLoadingImage();
-					}
-				}.bind(this),
-				onError: function(req) {
-					this.alert(_('Error obtaining preview file in server.'));
-				}.bind(this)
-			});
-		}
-
 		this.afterUpdateContent(options);
 		loadingImage.hideLoadingImage();
 

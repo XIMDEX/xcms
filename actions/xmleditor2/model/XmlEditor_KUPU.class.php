@@ -77,22 +77,24 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		}
 
 		$channels = $node->getChannels();
-		$channelNames = array();
+        $channelList = array();
 		foreach ($channels as $idChannel) {
 			$channel = new Channel($idChannel);
-			$channelName = $channel->getName();
-			$channelNames[$idChannel] = $channelName;
+            $channelObj = array();
+            $channelObj["text"]=_('Preview as').' '.$channel->getName();
+			$channelObj["href"]=Config::getValue('UrlRoot')."/xmd/loadaction.php?action=prevdoc&nodeid=".$idnode."&channel=".$idChannel;
+            $channelList[]=$channelObj;
 		}
 
 		$availableViews = array('tree');
 
-		if (!$this->getXslFile($idnode, $view) || count($channels) == 0) {
+		if (!$this->getXslFile($idnode, $view) || count($channelList) == 0) {
 			$view = 'tree';
 		} else {
 			$availableViews[] = 'normal';
 		}
 
-		if ((boolean)Config::getValue('PreviewInServer') && (boolean)count($channels)) {
+		if ((boolean)Config::getValue('PreviewInServer') && (boolean)count($channelList)) {
 			$availableViews[] = 'pro';
 		}
 
@@ -200,7 +202,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/tools/EditorViewTool.class.js',
 			$actionURL . '/js/tools/XimdocSpellCheckerTool.class.js',
 			$actionURL . '/js/tools/XimdocAnnotationTool.class.js',
-			$actionURL . '/js/tools/XimdocPreviewTool.class.js',
+			//$actionURL . '/js/tools/XimdocPreviewTool.class.js',
 			$actionURL . '/js/tools/ximletTool.class.js',
 			$actionURL . '/js/tools/StructuredListTool.class.js',
 			$actionURL . '/js/tools/AttributesTool.js',
@@ -227,7 +229,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/toolboxes/XimdexLogger.class.js',
 			$actionURL . '/js/toolboxes/InfoToolBox.class.js',
 			$actionURL . '/js/toolboxes/AttributesToolBox.class.js',
-			$actionURL . '/js/toolboxes/ChannelsToolBox.class.js',
+			//$actionURL . '/js/toolboxes/ChannelsToolBox.class.js',
 			$actionURL . '/js/toolboxes/ChangesetToolBox.class.js',
 			$actionURL . '/js/toolboxes/AnnotationToolBox.class.js',
 			$actionURL . '/js/toolboxes/AnnotationRdfaToolBox.class.js',
@@ -277,21 +279,14 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$kupuURL . '/common/'
 	        );
 
-
-		$_channels = array();
-		foreach ($channelNames as $channelId=>$channel) {
-			$_channels[] = sprintf("{channelId: %s, channel: '%s'}", $channelId, $channel);
-		}
 		$options = array(
 			sprintf("editor_view: '%s'", $view),
 			sprintf("rngEditorMode: '%s'", $rngEditorMode),
 			sprintf("dotdotPath: '%s'", $dotdotPath),
 			sprintf("availableViews: ['%s']", implode("','", $availableViews)),
-			sprintf("channels: [%s]", implode(',', $_channels)),
 		);
 
 		$onloadfunctions = sprintf("kupu = startKupu({%s});", implode(", ", $options));
-
 	        $values = array('nodeid' => $idnode,
         			'xmlFile' => $xmlFile,
         			'actionUrlShowPost' => $actionUrlShowPost,
@@ -300,7 +295,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
        				'js_files' => $jsFiles,
        				'css_files' => $cssFiles,
        				'base_tags' => $baseTags,
-       				'channels' => $channelNames,
+       				'channels' => json_encode($channelList),
 				'on_load_functions' => $onloadfunctions
 				);
 

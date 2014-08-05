@@ -58,9 +58,6 @@ function initKupuTools(kupu) {
 	var ximdocspellcheckertool = new XimdocSpellCheckerTool();
 	kupu.registerTool('ximdocspellcheckertool', ximdocspellcheckertool);
 
-	var ximdocpreviewtool = new XimdocPreviewTool();
-	kupu.registerTool('ximdocpreviewtool', ximdocpreviewtool);
-
 	var tablemanagertool = new TableManagerTool();
 	kupu.registerTool('tablemanagertool', tablemanagertool);
 
@@ -90,18 +87,6 @@ function initKupuTools(kupu) {
 		buttonInactiveClass: 'xedit-annotations-toolbox-button-closed',
 		visible: new Boolean(kupu.config.toolboxes.annotations)
 	});
-    
-    //Channel Toolbox 
-    if(!kupu.isRngEditionMode()) {
-		var channelstoolbox = new ChannelsToolBox({
-			toolboxId: 'xedit-channels-toolbox',
-			ctrlButtonId: 'xedit-channels-toolbox-button',
-			buttonActiveClass: 'xedit-channels-toolbox-button',
-			buttonInactiveClass: 'xedit-channels-toolbox-button-closed',
-			visible: new Boolean(kupu.config.toolboxes.channels)
-		});
-		
-	}
 
 	//Availables elements for the selected element toolbox
 	var rngelementstoolbox = new RNGElementsToolBox({
@@ -154,7 +139,6 @@ function initKupuTools(kupu) {
 		8. Log.
 	*/
 	ximdoctool.registerToolBox('changesettoolbox', changesettoolbox);	
-	ximdoctool.registerToolBox('channelstoolbox', channelstoolbox);
 	ximdoctool.registerToolBox('infotoolbox', infotoolbox);
 	ximdoctool.registerToolBox('rngelementstoolbox', rngelementstoolbox);
 	attributestool.registerToolBox('attributestoolbox', attributestoolbox);
@@ -193,9 +177,6 @@ function initKupuTools(kupu) {
     var annotation = new KupuButton('kupu-annotation-button', function() {ximdocannotationtool.doAnnotate();});
     kupu.registerTool('annotation', annotation);
 
-    var previewbutton = new KupuButton('kupu-prevdoc-button', function() {ximdocpreviewtool.preview();});
-    kupu.registerTool('previewbutton', previewbutton);
-
     // create some drawers, drawers are some sort of popups that appear when a
     // toolbar button is clicked
     var drawertool = new DrawerTool();
@@ -217,7 +198,6 @@ function initKupuTools(kupu) {
     	kupu.maintoolboxes['xedit-rngelements-toolbox'] 	= rngelementstoolbox;
     	kupu.maintoolboxes['xedit-annotations-toolbox'] 	= annotationstoolbox;
     	kupu.maintoolboxes['xedit-changeset-toolbox'] 		= changesettoolbox;
-    	kupu.maintoolboxes['xedit-channels-toolbox'] 		= channelstoolbox;
 	kupu.maintoolboxes['xedit-info-toolbox'] 		= infotoolbox;
     	kupu.maintoolboxes['xedit-ximdexlogger-toolbox'] 	= kupu.log;
 
