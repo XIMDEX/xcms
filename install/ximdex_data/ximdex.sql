@@ -3033,7 +3033,7 @@ CREATE TABLE `Versions` (
   `IdVersion` int(12) unsigned NOT NULL auto_increment,
   `IdNode` int(12) unsigned NOT NULL default '0',
   `Version` int(12) unsigned NOT NULL default '0',
-  `SubVersion` tinyint(3) unsigned NOT NULL default '0',
+  `SubVersion` int(12) unsigned NOT NULL default '0',
   `File` varchar(255) NOT NULL default '',
   `IdUser` int(12) unsigned default '0',
   `Date` int(14) unsigned default '0',
