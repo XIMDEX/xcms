@@ -59,10 +59,8 @@ class Action_deletenode extends ActionAbstract {
             while(!$dbObj->EOF) {
                 $n=new Node($dbObj->GetValue("IdDoc"));
                 $symbolics[]=$n->GetPath();
-                error_log("HOLAAA "+count($symbolics));
                 $dbObj->Next();
             }
-            error_log("HOLAAA ".print_r($symbolics,true));
 
             if(count($symbolics)>0) {
                 $values = array(
