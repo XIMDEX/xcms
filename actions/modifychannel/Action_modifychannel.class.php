@@ -42,17 +42,26 @@ class Action_modifychannel extends ActionAbstract {
     			'ximdex' => '',
     			'client' => ''
     		);
+                
+                $outputCheck = array(
+                    'web' => '',
+                    'xml' => '',
+                    'other' => ''
+    		);
 
     		$channel = new Channel($idNode);
     		$renderCheck[$channel->get('RenderMode')] = 'checked';
-            $ext=$channel->get('DefaultExtension')==NULL ? "(empty)": $channel->get('DefaultExtension');
-            $desc=$channel->get('Description')==NULL ? "(empty)": $channel->get('Description');
+                $outputCheck[$channel->get("OutputType")] = 'checked';
+                $ext=$channel->get('DefaultExtension')==NULL ? "(empty)": $channel->get('DefaultExtension');
+                $desc=$channel->get('Description')==NULL ? "(empty)": $channel->get('Description');
+                
     		$values = array(
     			'id_node' => $idNode,
     			'name' => $channel->get('Name'),
     			'extension' => $ext,
     			'description' => $desc,
     			'render_check' => $renderCheck,
+    			'output_check' => $outputCheck,
     			'go_method' => 'modifychannel'
     	);
 
