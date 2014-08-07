@@ -283,8 +283,25 @@ class Connection_Solr implements I_Connector {
          $doc->addField($key, $field);
       }
 
+      // Retrieve server that belongs to node's project and has channel html 
       $node = new Node($nodeID);
+      $idChannelHtml = "10001";
       $publicationPath[] = $node->GetNodeName();
+      $relServers = new RelServersChannels();
+      $htmlServers = $relServers->find('IdServer', 'IdChannel = %s', array($idChannelHtml), MULTI);
+      $queryParams = array();
+      $inSqlSectionArray = array();
+      foreach ($htmlServers as $s) {
+         $queryParams[] = $s["IdServer"];
+         $inSqlSectionArray[] = "%s";
+      }
+      $dbServer = new Server();
+      $inSqlSection = implode(",", $inSqlSectionArray);
+      $queryParams[] = $node->getServer();
+      $myServer = $dbServer->find('Url', "IdServer in ($inSqlSection) and IdNode = %s", $queryParams, MONO);
+      
+      // Use full url in solr
+      array_unshift($publicationPath, $myServer[0]);
       $publicationUrl = implode("/", $publicationPath) . "-idhtml.html";
       $doc->addField("publicationUrl", $publicationUrl);
       $update->addDocument($doc);
