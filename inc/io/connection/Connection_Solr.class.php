@@ -268,6 +268,8 @@ class Connection_Solr implements I_Connector {
       $update = $client->createUpdate();
       $doc = $update->createDocument();
       $publicationPath = array();
+
+      // Adapt all attributes except "id" and "names"
       foreach ($xml->children() as $field) {
          $attr = $field->attributes();
          $key = (string) $attr["name"];
@@ -282,6 +284,28 @@ class Connection_Solr implements I_Connector {
          }
          $doc->addField($key, $field);
       }
+
+      // check if the document already exists, set "creationdate"
+      $CREATION_DATE_FIELD = 'creationdate';
+      $selectQuery = $client->createSelect();
+      $selectQuery->setQuery("id:$nodeID");
+      $selectQuery->setFields(array($CREATION_DATE_FIELD));
+      $resultset = $client->select($selectQuery);
+      $creationdate = "";
+      if ($resultset->getNumFound() !== 0) {
+         foreach ($resultset as $res) {
+            foreach ($res as $field => $value) {
+               if ($field === $CREATION_DATE_FIELD) {
+                  $creationdate = $value;
+                  break;
+               }
+            }
+            break;
+         }
+      } else {
+         $creationdate = date("Y-m-d\TH:i:s\Z");
+      }
+      $doc->addField($CREATION_DATE_FIELD, $creationdate);
 
       // Retrieve server that belongs to node's project and has channel html 
       $node = new Node($nodeID);
@@ -299,11 +323,12 @@ class Connection_Solr implements I_Connector {
       $inSqlSection = implode(",", $inSqlSectionArray);
       $queryParams[] = $node->getServer();
       $myServer = $dbServer->find('Url', "IdServer in ($inSqlSection) and IdNode = %s", $queryParams, MONO);
-      
+
       // Use full url in solr
       array_unshift($publicationPath, $myServer[0]);
       $publicationUrl = implode("/", $publicationPath) . "-idhtml.html";
       $doc->addField("publicationUrl", $publicationUrl);
+
       $update->addDocument($doc);
       $update->addCommit();
       try {
