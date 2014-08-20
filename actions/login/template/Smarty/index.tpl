@@ -44,8 +44,9 @@
 		</p>
 		<p>
 			<label for="password">{t}Password{/t}</label>
-			<input type="password" name="password" id="password" />
+			<input type="password" name="password" id="password" onkeypress="capLock(event)" />
 		</p>
+        <p id="capsLockAdvice" class="capsLockWarnig" style="visibility: hidden;">Warning: CapsLock enabled</p>
 		<p>
 			<input type="submit" name="login" id="login" value="{t}Sign in{/t}" />
 			<span>{t}Recommended browsers{/t}:<br/> Firefox &gt; 4, Chrome, Opera and Safari.</span>
