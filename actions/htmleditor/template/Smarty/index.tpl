@@ -22,15 +22,19 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-<h2>{t}Edit html{/t}</h2>
-<form enctype="multipart/form-data" method="post" name="up_form" action="{$action_url}">
-	<fieldset class="up_form">
-		<p>
+
+<form enctype="multipart/form-data" method="post" name="up_form" action="{$action_url}"">
+	<div class="action_header">
+		<h2>{t}Edit HTML{/t}</h2>
+		<fieldset class="buttons-form">
+			{button label="Save" class="validate btn main_action" }{*message="Are you sure you want to modify this file?"*}
+		</fieldset>
+	</div>
+	<div class="action_content">
+		<fieldset class="up_form">
+			<p>
 				<textarea id="htmleditor_{$id_editor}" name="htmleditor" class="htmleditor">{$html|escape:html}</textarea>
 			</p>
-	</fieldset>
-	<fieldset class="buttons-form">
-		{button label="Save" class="validate btn main_action" }{*message="Are you sure you want to modify this file?"*}
-	</fieldset>
-
+		</fieldset>	
+	</div>
 </form>
