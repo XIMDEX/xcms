@@ -24,35 +24,21 @@
  */
 
 X.actionLoaded(function(event, fn, params) {
-
-		//console.info(fn('.prevdoc-button'));
+		fn("select[name='channellist']").change(function(){
+			var str_channel = "&channel="+fn(this).val();
+			var container = fn(this).closest('fieldset');
+			var nodeid = fn('input[name=node_id]', container).val();
+			var link=fn('a', container).attr('href');
+			document.getElementById('preview'+nodeid).src = link+str_channel;
+		});
 
 		fn('#prevdoc-button').click(function(event) {
 			event.preventDefault();
 			var link = fn(this).attr('href');
-
-			var container_button = fn(this).closest('fieldset');
-
-			//get nodeid
-			var nodeid = fn('input[name=node_id]', container_button).val();
-
-			//get channel
-			
+			var container = fn(this).closest('fieldset');
+			var nodeid = fn('input[name=node_id]', container).val();
 			var selected_channel = fn('#channellist'+nodeid).val();
-			
 			var str_channel = "&channel="+selected_channel;
-
-			//join all
-			var query_string = str_channel;
-
-			//¿in new window?
-			var newwindow = fn('input:checkbox:checked', container_button).val();
-			if("on" == newwindow) {
-			 	window.open(link+query_string);
-				return ;
-			}
-
-			document.getElementById('preview'+nodeid).src = link+query_string;
-		})
-
+			window.open(link+str_channel);
+		});
 });

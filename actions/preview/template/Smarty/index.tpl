@@ -27,11 +27,6 @@
 </div>
 <div class="action_header">
 	<fieldset>
-				<input type="checkbox" checked align="middle" name="tabview" id="tabview" class="prevdoc_check" />
-
-				<label for="tabview">{t}View in a new window{/t}</label>
-							
-							
 						<input type="hidden" name="node_id" class="node_id" value="{$id_node}">
 
 						{*  If it is a document, it shows combo with channels *}
@@ -43,7 +38,7 @@
 							</select>
 						{/if}
 
-						<a id="prevdoc-button" href="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}" class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"><span class="ladda-label">Preview</span></a>
+						<a id="prevdoc-button" href="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}" class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"><span class="ladda-label">{t}View in a new window{/t}</span></a>
 
 	</fieldset>
 </div>
