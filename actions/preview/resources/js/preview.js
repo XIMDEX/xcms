@@ -27,33 +27,23 @@ X.actionLoaded(function(event, fn, params) {
 
 		//console.info(fn('.prevdoc-button'));
 
-		fn('.prevdoc-button').click(function(event) {
+		fn('#prevdoc-button').click(function(event) {
 			event.preventDefault();
 			var link = fn(this).attr('href');
 
-			//¿prevdoc or filepreview?
-			if(link.indexOf("prevdoc") != -1)
-				var link_params = link.split('prevdoc&');
-			else
-				var link_params = link.split('filepreview&');
-
-			var container_button = fn(this).closest('tr');
+			var container_button = fn(this).closest('fieldset');
 
 			//get nodeid
 			var nodeid = fn('input[name=node_id]', container_button).val();
-			var str_node = "&nodeid="+nodeid;
 
 			//get channel
-			if(-1 == link.indexOf("channel") ) {
-				var selected_channel = fn('.prevdoc [name="channellist"]').val();
-			}else {
-				var selected_channel = 1;
-			}
-
+			
+			var selected_channel = fn('#channellist'+nodeid).val();
+			
 			var str_channel = "&channel="+selected_channel;
 
 			//join all
-			var query_string = str_channel+str_node;
+			var query_string = str_channel;
 
 			//¿in new window?
 			var newwindow = fn('input:checkbox:checked', container_button).val();
@@ -62,15 +52,7 @@ X.actionLoaded(function(event, fn, params) {
 				return ;
 			}
 
-			//open action
-			//console.log(link_params);
-			var action = {
-					bulk: 0,
-					command: 'prevdoc',
-				name: 'Previo',
-				params: link_params[1]+query_string
-			};
-			$(params.browser).browserwindow('openAction', action, [nodeid]);
+			document.getElementById('preview'+nodeid).src = link+query_string;
 		})
 
 });
