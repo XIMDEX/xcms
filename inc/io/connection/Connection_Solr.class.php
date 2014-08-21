@@ -268,6 +268,7 @@ class Connection_Solr implements I_Connector {
       $update = $client->createUpdate();
       $doc = $update->createDocument();
       $publicationPath = array();
+      $tags = array();
 
       // Adapt all attributes except "id" and "names"
       foreach ($xml->children() as $field) {
@@ -281,8 +282,23 @@ class Connection_Solr implements I_Connector {
                $publicationPath[] = (string) $partialPath;
             }
             continue;
+         } elseif ($key === "tags") {
+            $tagAndTypes = explode(",", $field);
+
+            $getTag = function($tagWithType) {
+               $tagStr = explode(":", $tagWithType);
+               return $tagStr[0];
+            };
+
+            $tags = array_map($getTag, $tagAndTypes);
+            continue;
          }
          $doc->addField($key, $field);
+      }
+
+      // tags
+      foreach ($tags as $tag) {
+         $doc->addField('tags', $tag);
       }
 
       // check if the document already exists, set "creationdate"
