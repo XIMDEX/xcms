@@ -22,21 +22,20 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+  @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+  @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
+  @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
 
-
-.prevdoc-body{
-	margin: 0;
+  .action-controls{
+	text-align: right;	
 }
 
-.prevdoc-container {
-	height: 100%;
-	border: none;
-	margin: 0;
-	padding: 0;
+.prevdoc{
+	&.action_content{
+		height: 100%;
+	}
 }
 
-.prevdoc-document {
-	border: none;
-	width: 100%;
-	height: 100%;
+.prevdoc-channel-selector{
+	vertical-align: middle
 }

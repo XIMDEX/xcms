@@ -23,15 +23,13 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-	<h2>{t}Document preview{/t}</h2>
-</div>
-<div class="action_header">
-	<fieldset>
+<h2>{t}Document preview{/t}</h2>
+	<fieldset class="action-controls">
 						<input type="hidden" name="node_id" class="node_id" value="{$id_node}">
 
 						{*  If it is a document, it shows combo with channels *}
 						{if ($nameNodeType != 'TextFile' && $nameNodeType != 'ImageFile' && $nameNodeType !='BinaryFile'   && $nameNodeType != 'NodeHt')}
-							<select id="channellist{$id_node}" name="channellist" class="normal" style="width: 75px;	vertical-align: middle;">
+							<select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector" >
 							 {foreach from=$channels item=_channel}
 								<option value='{$_channel.Id}'>{$_channel.Name}</option>
 							{/foreach}
@@ -42,9 +40,8 @@
 
 	</fieldset>
 </div>
-
+<div class="content_container prevdoc">
 	<iframe id="preview{$id_node}" src="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}&channel=10001" height="100%" width="100%">
-  <p>Your browser does not support iframes.</p>
-</iframe>
-
-
+	  <p>Your browser does not support iframes.</p>
+	</iframe>
+</div>
