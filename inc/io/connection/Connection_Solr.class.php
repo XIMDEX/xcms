@@ -287,7 +287,7 @@ class Connection_Solr implements I_Connector {
 
             $getTag = function($tagWithType) {
                $tagStr = explode(":", $tagWithType);
-               return $tagStr[0];
+               return utf8_decode($tagStr[0]);
             };
 
             $tags = array_map($getTag, $tagAndTypes);
