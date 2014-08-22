@@ -27,7 +27,8 @@
 	ng-controller="XTagsCtrl"
 	xim-document-tags='{$tags}'
 	xim-namespaces='{$namespaces}'
-	xim-node-id='{$_enviroment["id_node"]}'>
+	xim-node-id='{$_enviroment["id_node"]}'
+	xim-is-editor="1">
 	<h3 id="kupu-toolbox-tags-header" style="-moz-user-select: none"
 		class="kupu-toolbox-heading kupu-toolbox-heading-closed ui-draggable"
 		ng-click="show = !show">
@@ -50,7 +51,7 @@
 						xim-sel-prop="id"
 						ng-init="newTag.IdNamespace = namespaces['1'].id">
 					</xim-select>
-					<input type="text" class="xim-tagsinput-input editor_input_tags" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-keyup="keyPress($event)"/>
+					<input type="text" class="xim-tagsinput-input editor_input_tags" id="tag_input" placeholder="{t}Create new tags here{/t}..." ng-model="newTag.Name" ng-class="{literal}{error: tagExistInArray(newTag, documentTags)}{/literal}" ng-focus="focus($event)" ng-keyup="keyPress($event)"/>
 					<button type="button" class="btn-unlabel-rounded icon add-btn" ng-click="addNewTag()" ng-disabled="tagExistInArray(newTag, documentTags)">{t}Add{/t}</button>
 		     	</li>		    	
 				<div class="tags_container">

@@ -119,6 +119,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			Extensions::JQUERY_PATH.'/js/fix.jquery.getters.js',
 			Extensions::JQUERY_PATH.'/js/fix.jquery.parsejson.js',
 			Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js',
+			'/extensions/d3js/d3.v3.min.js',
 			'/inc/js/helpers.js',
 			'/inc/js/sess.js',
 			'/inc/js/collection.js',
@@ -269,6 +270,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 //future		$actionURL . '/views/common/css/colorpicker.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
 			Config::getValue('UrlRoot') .'/inc/widgets/select/css/ximdex.select.css',
+			Config::getValue('UrlRoot') .'/inc/widgets/ontologyBrowser/css/ontologyBrowser.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         	);
