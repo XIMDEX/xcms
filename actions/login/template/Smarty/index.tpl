@@ -42,11 +42,12 @@
 			<label for="user">{t}User{/t}</label>
 			<input type="text" name="user" id="user" />
 		</p>
-		<p>
+		<p class="input-pass">
 			<label for="password">{t}Password{/t}</label>
 			<input type="password" name="password" id="password" onkeypress="capLock(event)" />
+			<span id="capsLockAdvice" class="warning-msg">CapsLock enabled</span>
 		</p>
-        <p id="capsLockAdvice" class="capsLockWarnig" style="visibility: hidden;">Warning: CapsLock enabled</p>
+        		
 		<p>
 			<input type="submit" name="login" id="login" value="{t}Sign in{/t}" />
 			<span>{t}Recommended browsers{/t}:<br/> Firefox &gt; 4, Chrome, Opera and Safari.</span>
