@@ -120,10 +120,13 @@ path.link {
           margin: 0; }
         .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox p {
           margin: 0; }
-        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action:hover {
-          background: #7bcabf;
-          border-bottom: #b2e0d9;
-          color: #fff; }
+        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action {
+          padding: .5em;
+          text-align: center; }
+          .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action:hover {
+            background: #7bcabf;
+            border-bottom: #b2e0d9;
+            color: #fff; }
       .kupu-fulleditor .ontology-browser-container .ontology-browser .selectbox-tree {
         display: inline-block;
         margin-left: 2em; }

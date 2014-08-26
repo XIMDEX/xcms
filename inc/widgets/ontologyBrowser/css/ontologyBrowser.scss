@@ -182,10 +182,14 @@ path.link {
 				}
 
 				.main_action{
+					padding: .5em;
+					text-align: center;
+					
 					&:hover{
 						background: $c-mainlight;
 						border-bottom: lighten($c-mainlight, 15%);
 						color: #fff;
+
 					}
 				}
 			}
