@@ -96,6 +96,39 @@ path.link {
     background: rgba(0, 0, 0, 0.7);
     z-index: 5;
     min-height: 100%; }
+    .kupu-fulleditor .ontology-browser-container .ontology-browser {
+      top: 3.5em;
+      bottom: 0; }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser .treeViewer {
+        max-height: calc(100% - 8em); }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser h3 {
+        margin-top: 0; }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser .ontology-close, .kupu-fulleditor .ontology-browser-container .ontology-browser .close {
+        border: none;
+        right: 1em;
+        top: 2.5em;
+        width: 1em; }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser .ontology-close {
+        background: #7bcabf; }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser .close {
+        right: -1em;
+        top: .7em;
+        cursor: pointer; }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox {
+        right: 2.3em; }
+        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox h1 {
+          margin: 0; }
+        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox p {
+          margin: 0; }
+        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action:hover {
+          background: #7bcabf;
+          border-bottom: #b2e0d9;
+          color: #fff; }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser .selectbox-tree {
+        display: inline-block;
+        margin-left: 2em; }
+      .kupu-fulleditor .ontology-browser-container .ontology-browser a {
+        cursor: pointer; }
   .ontology-browser-container .treeViewer, .ontology-browser-container .textViewer {
     background: #fff;
     position: relative;
@@ -147,3 +180,5 @@ path.link {
       background: none !important; }
       .ontology-browser-container .infobox .close:hover, .ontology-browser-container .infobox .close::before {
         background: none !important; }
+  .ontology-browser-container .hidden {
+    visibility: hidden; }
