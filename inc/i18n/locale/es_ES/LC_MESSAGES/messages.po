@@ -1790,7 +1790,7 @@ msgid "Document cannot be opened."
 msgstr "No se pudo abrir el documento."
 
 msgid "It is a symbolic link"
-msgstr "Se trata de un enlace simb&oacute;lico."
+msgstr "Se trata de un enlace simb&oacute;lico"
 
 msgid " have been successfully published"
 msgstr " se han publicado correctamente"
@@ -3787,8 +3787,8 @@ msgstr "No se ha podido cargar el servidor"
 msgid "The document belongs to a server which has not any configured physical server."
 msgstr "El servidor al que pertenece el documento no tiene servidores f&iacute;sicos configurados"
 
-msgid "The publication cycle of the selected document is currently linked to the document [%s]"
-msgstr "El ciclo de publicaci&oacute;n del documento seleccionado actualmente se encuentra vinculado al documento [%s]"
+msgid "The publication cycle of the selected document is currently linked to the document"
+msgstr "El ciclo de publicaci&oacute;n del documento seleccionado actualmente se encuentra vinculado al documento"
 
 msgid "The linked file should be selected in order to go forward the next state"
 msgstr "Para pasar al estado siguiente deber&aacute; seleccionar el archivo al que se encuentra vinculado"
@@ -9085,6 +9085,9 @@ msgstr "No se ha podido encontrar la carpeta base"
 msgid "Could not find or create the destination folder"
 msgstr "No se ha podido encontrar o crear la carpeta destino "
 
+msgid "Could not upload the file"
+msgstr "No se ha podido subir el fichero"
+
 msgid "Unable to create the target document"
 msgstr "No se ha podido crear el documento destino"
 
@@ -9875,3 +9878,42 @@ msgstr "Descripcion del nuevo lenguaje"
 
 msgid "Group's name"
 msgstr "Nombre del grupo"
+
+msgid "All the tags have been properly associated."
+msgstr "Todas las etiquetas han sido asociadas correctamente."
+
+msgid "CSS folder name"
+msgstr "Nombre de carpeta CSS"
+
+msgid "Common folder name"
+msgstr "Nombre de carpeta Common"
+
+msgid "Break the link with master document"
+msgstr "Romper el enlace con documento maestro"
+
+msgid "There aren't any possible master document"
+msgstr "No existe ningún posible documento maestro"
+
+msgid "Do you want to break the link with the following document?"
+msgstr "¿Quieres romper el link con el siguiente documento?"
+
+msgid "This document can be linked to one of the following documents"
+msgstr "Este documento puede se enlazado a uno de los siguientes documentos"
+
+msgid "This document is already the master document of "
+msgstr "Este documento ya es el documento maestro de "
+
+msgid "The linked file should be selected in order to publicate the file"
+msgstr "Para publicar el archivo deberá de seleccionar el archivo al que se encuentra vinculado"
+
+msgid "You can't delete the node"
+msgstr "No puedes borrar este nodo"
+
+msgid "This document has a symbolic link"
+msgstr "Este documento tiene un enlace simbólico"
+
+msgid "To delete this node you have to break the link with the following node(s)"
+msgstr "Para borrar este nodo se ha de romper el enlace con el/los siguiente/s nodo/s"
+
+msgid "Edit HTML"
+msgstr "Editar HTML"

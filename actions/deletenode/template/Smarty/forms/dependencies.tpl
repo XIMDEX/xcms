@@ -47,15 +47,15 @@
 			<div class="deletenodes">
 				<ul>
 					{foreach from=$depList key=id item=dep}
-					<li class="box_short" data-tooltip="{{$dep.name|gettext}} "><div class="name">{$dep.name|gettext}</div> <span class="node_id">({$id})</span></li>
+					<li class="box_short" data-tooltip="{{$dep.path|gettext}} "><div class="name">{$dep.name|gettext}</div> <span class="node_id">({$id})</span></li>
 					{foreachelse}
 					<li><span>{t}No dependencies were found{/t}</span></li>
 					{/foreach}
 				</ul>
 			</div>
 			
-			<span  class="hidden"><input type="checkbox" name="unpublishnode" checked id="asegurado" />
-				<span  class="hidden">{t}Tick to delete all dependencies{/t}</span></span>
+			<span><input type="checkbox" name="unpublishnode" id="asegurado" />
+				<span>{t}Tick to delete all dependencies{/t}</span></span>
 
 				{else}
 				<div class="deletenodes">

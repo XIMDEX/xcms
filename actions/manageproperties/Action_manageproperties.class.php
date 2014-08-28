@@ -155,11 +155,11 @@ class Action_manageproperties extends ActionAbstract {
 
 		if ($confirm) {
 
-			$this->showConfirmation($nodeId, $properties, $affected);
+            $this->showConfirmation($nodeId, $properties, $affected);
 		} else {
 			$results = InheritedPropertiesManager::setValues($nodeId, $properties);
 
-			$applyResults = array();
+            $applyResults = array();
 			if (count($channel_recursive) > 0) {
 				$applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channel_recursive));
 			}
@@ -276,7 +276,7 @@ class Action_manageproperties extends ActionAbstract {
 				}
 
 				foreach ($message as $msg) {
-					$this->messages->add(_($msg), MSG_TYPE_NOTICE);
+					$this->messages->add($msg, MSG_TYPE_NOTICE);
 				}
 			}
 		}

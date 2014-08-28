@@ -29,144 +29,150 @@
 
 
 .editor_tags{
-  .xim-tagsinput-container-list{
-  padding: 0;
-    
-  }
+	.xim-tagsinput-container-list{
+	padding: 0;
+		
+	}
 
-  .tag-type{
-    font-size: 1.2em;
-    margin-left: -3px;
-    margin-top: 0;
-    vertical-align: top;
-    height: 2.12em;
-  }
+	.tag-type{
+		font-size: 1.2em;
+		margin-left: -3px;
+		margin-top: 0;
+		vertical-align: top;
+		height: 2.12em;
+	}
 
-    
-  .xim-tagsinput-list{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
+		
+	.xim-tagsinput-list{
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
 
-  .editor_input_tags{
-    font-size: 1.2em;
-    width: calc(100% - 2em + 8px);
-    margin: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    padding: .5em 2.5em .5em .7em;
-    max-height: 2.29em;
-  }
+	.editor_input_tags{
+		font-size: 1.2em;
+		width: calc(100% - 2em + 8px);
+		margin: 0;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0;
+		padding: .5em 2.5em .5em .7em;
+		max-height: 2.29em;
+	}
 
-  .xim-tagsinput-tag{
-    display: block;
-    margin: .5em;
-    max-width: none;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-  }
+	.xim-tagsinput-tag{
+		display: block;
+		margin: .5em;
+		max-width: none;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
 
 
-    .xim-tagsinput-newtag{
-      position: relative;
-      margin: .5em;
-    }
+		.xim-tagsinput-newtag{
+			position: relative;
+			margin: .5em;
+		}
 
-    /**************
-    // Type Selector
-    ***************/
+		/**************
+		// Type Selector
+		***************/
 
-    .options{
-      list-style: none;
-      padding: 0;
-    }
+		.options{
+			list-style: none;
+			padding: 0;
+		}
 
-      /**************
-      // Add button
-      ***************/
+			/**************
+			// Add button
+			***************/
 
-      .add-btn{
-        position: absolute !important;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        text-indent: 5em;
-        border: none;
-        right: .5em;
-        margin-top: .5em;
-        font-size: .9em;
-        overflow: hidden;
-      @extend %add;
+			.add-btn{
+				position: absolute !important;
+				-webkit-border-radius: 50%;
+				-moz-border-radius: 50%;
+				border-radius: 50%;
+				text-indent: 5em;
+				border: none;
+				right: .5em;
+				margin-top: .5em;
+				font-size: .9em;
+				overflow: hidden;
+			@extend %add;
 
-        &::before{
-          text-indent: 0;
-          color: #fff;
-          line-height: 1.55 !important;
-        }
-      }
+				&::before{
+					text-indent: 0;
+					color: #fff;
+					line-height: 1.55 !important;
+				}
+			}
 
-        /**************
-        // Tags container
-        ***************/
+				/**************
+				// Tags container
+				***************/
 
-        .tags_container{
-          max-height: 15em;
-          overflow: auto;
-          margin-bottom: .1em;
-        }
+				.tags_container{
+					max-height: 15em;
+					overflow: auto;
+					margin-bottom: .1em;
+				}
 
-        .xim-tagsinput-text {
-          &::after,   &::before{
-            display: none; 
-          }
-        }
+				.xim-tagsinput-text {
+					&::after,   &::before{
+						display: none; 
+					}
+				}
 
-        .xim-tagsinput-tag::before{
-          line-height: 2em;
-        }
+				.xim-tagsinput-tag::before{
+					line-height: 2em;
+				}
 
-        .type-structured::before{
-          max-width: 1.57em;
-        }
+				.type-structured::before{
+					max-width: 1.57em;
+				}
 
-        .xim-tagsinput-tag-remove{
-          background: none;
-          width: 2em;
-          height: 100%;
-          right: 0;
-          -webkit-box-shadow: none;
-          -moz-box-shadow: none;
-          box-shadow: none;
-         
+				.xim-tagsinput-tag-remove{
+					background: none;
+					width: 2em;
+					height: 100%;
+					right: 0;
+					-webkit-box-shadow: none;
+					-moz-box-shadow: none;
+					box-shadow: none;
+					cursor: pointer;
+				 
 
-         &::before{
-          height: 100%;
-          top: 0;
-         } 
-        }
+				 &::before{
+					height: 100%;
+					top: 0;
+				 } 
+				}
 
-        .xim-tagsinput-tag:hover{
-          .xim-tagsinput-tag-remove{
-            right: 0;
-            width: 1.8em;
-          }
-        }
+				.xim-tagsinput-tag:hover{
+					.xim-tagsinput-tag-remove{
+						right: 0;
+						width: 1.8em;
+					}
+				}
 
-        .xim-tagsinput-type-structured::before, .type-structured::before{
-          line-height: 1.8 !important;
-        }
+				.xim-tagsinput-type-structured::before, .type-structured::before{
+					line-height: 1.8 !important;
+					
+				}
 
-        .xim-tagsinput-type-custom{
-          &::before{
-            line-height: 1.8;
-          }
-        }
+				.xim-tagsinput-type-structured::before{
+					max-width: 2.5rem;
+				}
 
-        .type-custom::before{
-          line-height: 1.85;
-        }
+				.xim-tagsinput-type-custom{
+					&::before{
+						line-height: 1.8;
+					}
+				}
+
+				.type-custom::before{
+					line-height: 1.85;
+				}
 
 }

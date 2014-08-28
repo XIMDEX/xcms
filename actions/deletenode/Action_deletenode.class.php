@@ -49,6 +49,27 @@ class Action_deletenode extends ActionAbstract {
 		$node	= new Node($idNode);
 		$children = $node->GetChildren();
 
+        if($node->GetNodeType()==5032){
+
+            $dbObj=new DB();
+            $query="select IdDoc from StructuredDocuments where TargetLink=".$idNode;
+            $dbObj->Query($query);
+
+            $symbolics=array();
+            while(!$dbObj->EOF) {
+                $n=new Node($dbObj->GetValue("IdDoc"));
+                $symbolics[]=$n->GetPath();
+                $dbObj->Next();
+            }
+
+            if(count($symbolics)>0) {
+                $values = array(
+                    'path_symbolics' => $symbolics
+                );
+                $this->render($values, 'linked_document', 'default-3.0.tpl');
+                return false;
+            }
+        }
 		$user = new User($userID);
 		$depList = array();
 
@@ -143,7 +164,7 @@ class Action_deletenode extends ActionAbstract {
 			//	$values["depList"][$idDep]["name"] = $depNode->GetNodeName();
 				$depListTmp[$idDep]["name"] = $depNode->GetNodeName();
 			//	$values["depList"][$idDep]["path"] = $depNode->GetPath();
-				$depListTmp[$idDep]["path"] = $depNode->GetPath();
+				$depListTmp[$idDep]["path"] = substr($depNode->GetPath(),16);
 			}
 		}
 		if ($formType == 'no_permisos') {
@@ -188,6 +209,8 @@ class Action_deletenode extends ActionAbstract {
 		$idNode	= $this->request->getParam("nodeid");
 	    	$depList = array();
 
+	    $deleteDep=$this->request->getParam("unpublishnode");
+
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
 		if(ModulesManager::isEnabled("ximDEMOS") &&  XSession::get('user_demo')) {
 			$node = new Node($idNode);
@@ -219,7 +242,7 @@ class Action_deletenode extends ActionAbstract {
 		$user = new User($userID);
 		$canDeleteOnCascade = $user->HasPermission("delete on cascade");
 
-		if ($canDeleteOnCascade) {
+		if ($canDeleteOnCascade && $deleteDep) {
 
 			if ($node->nodeType->get('Name') != 'Channel') {
 				$depList = $node->GetDependencies();

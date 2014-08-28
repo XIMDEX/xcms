@@ -50,8 +50,6 @@ class Action_xmlsetlink extends ActionAbstract {
 		$idTarget = $structuredDocument->get('TargetLink');
 
 		$targetNode = new Node($idTarget);
-		$targetNodePath = ($targetNode->get('IdNode') > 0) ? $targetNode->GetPath() : '';
-
 	    $targetNodes = $this->getTargetNodes($node->GetID());
 
 		$type = $node->get('IdNodeType');
@@ -62,6 +60,7 @@ class Action_xmlsetlink extends ActionAbstract {
 		$values = array(
 			'id_node' => $idNode,
 			'id_target' => $idTarget,
+            'name_target' => $targetNode->GetNodeName(),
 			'type' => $type,
 			'targetNodes' => $targetNodes,
 			'go_method' => 'setlink',
@@ -87,9 +86,19 @@ class Action_xmlsetlink extends ActionAbstract {
 		if (($idTarget > 0)
 			&& (!$rel->isCompatible($idNodeTemplate, $idTargetTemplate))) {
 			$this->messages->add(_('The document to link has a different view template. The link cannot be created'), MSG_TYPE_ERROR);
-			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
-			return false;
+            $values = array('messages' => $this->messages->messages);
+            $this->sendJSON($values);
+            return false;
 		}
+        $targetOfTarget=$targetStructuredDocument->get('TargetLink');
+
+        if($targetOfTarget==$idNode){
+            $this->messages->add(_('This document is already the master document of ').$targetStructuredDocument->GetName(), MSG_TYPE_ERROR);
+            $values = array('messages' => $this->messages->messages);
+            $this->sendJSON($values);
+            return false;
+        }
+
 
 		$node = new Node($idNode);
 
@@ -106,21 +115,8 @@ class Action_xmlsetlink extends ActionAbstract {
 		$messages->mergeMessages($node->messages);
 		$messages->mergeMessages($structuredDocument->messages);
 
-		$url = sprintf(
-			Config::getValue('UrlRoot') . '/xmd/loadaction.php?method=includeDinamicJs&%s&js_file=reloadNode',
-			'xparams[reload_node_id]='.$node->get('IdParent')
-		);
-		$jsFiles = array($url);
-
-
-		$this->render(
-			array(
-				'messages' => $this->messages->messages,
-				'js_files' => $jsFiles,
-				'on_load_functions' => sprintf("reloadNode(%s);", $node->get('IdParent')),
-				'goback' => true
-			),
-			NULL, 'messages.tpl');
+        $values = array('messages' => $this->messages->messages, "parentID"=> $node->get('IdParent'));
+        $this->sendJSON($values);
 	}
 
 /*
@@ -130,10 +126,8 @@ class Action_xmlsetlink extends ActionAbstract {
 	function unlink() {
 
 		$idNode = $this->request->getParam('nodeid');
-		$idTarget = $this->request->getParam('targetfield');
 
 		$structuredDocument = new StructuredDocument($idNode);
-		$targetStructuredDocument = new StructuredDocument($idTarget);
 
 		$content = ($this->request->getParam('keepcontent') || $this->request->getParam('delete_method') == 'unlink')
 			? $structuredDocument->GetContent() : $this->request->getParam('editor');
@@ -147,12 +141,8 @@ class Action_xmlsetlink extends ActionAbstract {
 
 		$this->messages->add(_('The link has been deleted successfully'), MSG_TYPE_NOTICE);
 
-		$values = array('messages' => $this->messages->messages);
-
-		$this->reloadNode($idParent);
-
-		$this->render($values,	NULL, 'messages.tpl');
-
+        $values = array('messages' => $this->messages->messages, "parentID"=> $idParent);
+        $this->sendJSON($values);
 	}
 
 

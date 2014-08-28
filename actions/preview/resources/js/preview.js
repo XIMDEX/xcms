@@ -24,53 +24,21 @@
  */
 
 X.actionLoaded(function(event, fn, params) {
+		fn("select[name='channellist']").change(function(){
+			var str_channel = "&channel="+fn(this).val();
+			var container = fn(this).closest('fieldset');
+			var nodeid = fn('input[name=node_id]', container).val();
+			var link=fn('a', container).attr('href');
+			document.getElementById('preview'+nodeid).src = link+str_channel;
+		});
 
-		//console.info(fn('.prevdoc-button'));
-
-		fn('.prevdoc-button').click(function(event) {
+		fn('#prevdoc-button').click(function(event) {
 			event.preventDefault();
 			var link = fn(this).attr('href');
-
-			//¿prevdoc or filepreview?
-			if(link.indexOf("prevdoc") != -1)
-				var link_params = link.split('prevdoc&');
-			else
-				var link_params = link.split('filepreview&');
-
-			var container_button = fn(this).closest('tr');
-
-			//get nodeid
-			var nodeid = fn('input[name=node_id]', container_button).val();
-			var str_node = "&nodeid="+nodeid;
-
-			//get channel
-			if(-1 == link.indexOf("channel") ) {
-				var selected_channel = fn('.prevdoc [name="channellist"]').val();
-			}else {
-				var selected_channel = 1;
-			}
-
+			var container = fn(this).closest('fieldset');
+			var nodeid = fn('input[name=node_id]', container).val();
+			var selected_channel = fn('#channellist'+nodeid).val();
 			var str_channel = "&channel="+selected_channel;
-
-			//join all
-			var query_string = str_channel+str_node;
-
-			//¿in new window?
-			var newwindow = fn('input:checkbox:checked', container_button).val();
-			if("on" == newwindow) {
-			 	window.open(link+query_string);
-				return ;
-			}
-
-			//open action
-			//console.log(link_params);
-			var action = {
-					bulk: 0,
-					command: 'prevdoc',
-				name: 'Previo',
-				params: link_params[1]+query_string
-			};
-			$(params.browser).browserwindow('openAction', action, [nodeid]);
-		})
-
+			window.open(link+str_channel);
+		});
 });

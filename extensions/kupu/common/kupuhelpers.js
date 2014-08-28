@@ -1265,12 +1265,14 @@ Array.prototype.removeDoubles = function() {
     return ret;
 };
 
+if (typeof Array.prototype.map !== 'function'){
 Array.prototype.map = function(func) {
     /* apply 'func' to each element in the array */
     for (var i=0; i < this.length; i++) {
         this[i] = func(this[i]);
     };
 };
+}
 
 Array.prototype.reversed = function() {
     var ret = [];

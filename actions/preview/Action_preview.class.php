@@ -63,6 +63,9 @@ class Action_preview extends ActionAbstract {
 			}
 		}
 
+		$this->addCss('/actions/preview/resources/css/style.css');
+
+
 		$queryManager = new QueryManager();
 		$this->addJs('/actions/preview/resources/js/preview.js');
 		$values = array(

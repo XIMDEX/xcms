@@ -39,10 +39,21 @@
         <p>
             <label class="label_title">{t}File extension{/t}:</label>{$extension}
         </p>
+{**
+Names must be in the same case that database fields.
+*}
+        <p>    
+            <label for="rendermode" class="label_title">{t}Output{/t}</label>
+            <input type='radio' id="web_{$id_node_parent}" name="OutputType" {$output_check.web} value='web'><label for="web_{$id_node_parent}">{t}Web{/t}</label>
+            <input type='radio' id="xml_{$id_node_parent}" name="OutputType" {$output_check.xml} value='xml'><label for="xml_{$id_node_parent}">{t}Xml{/t}</label>
+            <input type='radio' id="other_{$id_node_parent}" name="OutputType" {$output_check.other} value='other'><label for="other_{$id_node_parent}">{t}Other{/t}</label>
+        </p>
+        
         <p>
             <label for="description" class="label_title">{t}Description{/t}</label>
             <input type="text" name="Description" id="description" value="{$description|gettext}" class='cajag validable not_empty' />
         </p>
+        
         <p>
             <label for="rendermode" class="label_title">{t}Rendering in{/t}</label>
             <input type="radio" id="rendermode" name="RenderMode" {$render_check.ximdex} value="ximdex"/>{t}Ximdex{/t}
