@@ -409,6 +409,7 @@ CREATE TABLE `Channels` (
 	`Format` varchar(255) default NULL,
 	`Filter` varchar(255) default NULL,
 	`RenderMode` varchar(255) default NULL,
+        `OutputType` varchar(100) default NULL,
 	PRIMARY KEY  (`IdChannel`)
 ) ENGINE=MYISAM COMMENT='Distribution channels';
 
@@ -419,7 +420,7 @@ CREATE TABLE `Channels` (
 
 /*!40000 ALTER TABLE `Channels` DISABLE KEYS */;
 LOCK TABLES `Channels` WRITE;
-INSERT INTO `Channels` (`IdChannel`, `Name`, `Description`, `DefaultExtension`, `Format`, `Filter`, `RenderMode`) VALUES(10001, 'html', 'Html channel', 'html', NULL, NULL, 'ximdex');
+INSERT INTO `Channels` (`IdChannel`, `Name`, `Description`, `DefaultExtension`, `Format`, `Filter`, `RenderMode`,`OutputType`) VALUES(10001, 'html', 'Html channel', 'html', NULL, NULL, 'ximdex','web');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Channels` ENABLE KEYS */;
 
@@ -803,6 +804,7 @@ INSERT INTO `NodeAllowedContents` VALUES (38,5016,5017,0);
 INSERT INTO `NodeAllowedContents` VALUES (39,5016,5040,0);
 INSERT INTO `NodeAllowedContents` VALUES (40,5017,5040,0);
 INSERT INTO `NodeAllowedContents` VALUES (41,5017,5017,0);
+INSERT INTO `NodeAllowedContents` VALUES (42,5017,5039,0);
 INSERT INTO `NodeAllowedContents` VALUES (43,5018,5031,0);
 INSERT INTO `NodeAllowedContents` VALUES (44,5021,5076,0);
 INSERT INTO `NodeAllowedContents` VALUES (45,5055,5056,0);
@@ -824,6 +826,7 @@ INSERT INTO `NodeAllowedContents` VALUES (60,5035,5079,0);
 INSERT INTO `NodeAllowedContents` VALUES (61,5014,5083,1);
 INSERT INTO `NodeAllowedContents` VALUES (62,5083,5084,0);
 INSERT INTO `NodeAllowedContents` VALUES (63,5084,5085,0);
+INSERT INTO `NodeAllowedContents` VALUES (64,5016,5039,0);
 INSERT INTO `NodeAllowedContents` VALUES (66,5024,5025,0);
 INSERT INTO `NodeAllowedContents` VALUES (67,5024,5028,0);
 INSERT INTO `NodeAllowedContents` VALUES (68,5025,5025,0);
@@ -1534,6 +1537,7 @@ LOCK TABLES `Protocols` WRITE;
 INSERT INTO `Protocols` VALUES ('SSH',22,'Secure transfer protocol (ssh)',1);
 INSERT INTO `Protocols` VALUES ('LOCAL',NULL,'Local synchronization',0);
 INSERT INTO `Protocols` VALUES ('FTP',21,'FTP synchronization',1);
+INSERT INTO `Protocols` VALUES ('SOLR',8983,'SOLR synchronization',0);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Protocols` ENABLE KEYS */;
 
@@ -3031,7 +3035,7 @@ CREATE TABLE `Versions` (
   `IdVersion` int(12) unsigned NOT NULL auto_increment,
   `IdNode` int(12) unsigned NOT NULL default '0',
   `Version` int(12) unsigned NOT NULL default '0',
-  `SubVersion` tinyint(3) unsigned NOT NULL default '0',
+  `SubVersion` int(12) unsigned NOT NULL default '0',
   `File` varchar(255) NOT NULL default '',
   `IdUser` int(12) unsigned default '0',
   `Date` int(14) unsigned default '0',

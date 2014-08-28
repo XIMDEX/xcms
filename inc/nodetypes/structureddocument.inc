@@ -43,6 +43,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
+ModulesManager::file('/inc/model/Namespaces.class.php');
 
 class AbstractStructuredDocument extends FileNode  {
 

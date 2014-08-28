@@ -211,7 +211,7 @@ CREATE TABLE `NodesToPublish` (
   `IdNode` int(11) unsigned NOT NULL,
   `IdNodeGenerator` int(11) NOT NULL,
   `Version` int(12) default NULL,
-  `Subversion` tinyint(3) default NULL,
+  `Subversion` int(12) default NULL,
   `DateUp` int(14) unsigned NOT NULL default '0',
   `DateDown` int(14) unsigned default '0',
   `State` tinyint(3) unsigned NOT NULL default '0',

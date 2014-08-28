@@ -62,12 +62,12 @@ X.actionLoaded(function(event, fn, params)  {
 
 		language: lang
 	});
+	         
+    CKEDITOR.instances[id_editor].on('change', function() { CKEDITOR.instances[id_editor].updateElement() });
 
 	var max_height = max_height+"px" ;
 
 	$("#cke_contents_"+id_editor).css("height", max_height);
-
-
 
 	$(document).on("action_resize", function(event, params) {
 		var max_height = ( params.dimension.height - 450 )+"px";
@@ -76,4 +76,6 @@ X.actionLoaded(function(event, fn, params)  {
 		$("#"+id_editor).css("width", max_width);
 		$("#cke_contents_"+id_editor).css("height", max_height);
 	});
+
+	
 });

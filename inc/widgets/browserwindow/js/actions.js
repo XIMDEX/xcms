@@ -48,7 +48,8 @@
 			'publicatesection',
             'deletecatalog',
             'publicateximlet',
-            'deleteuser'
+            'deleteuser',
+            'xmlsetlink'
 		],
 		reload: [
 			'addximlet', 

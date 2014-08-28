@@ -66,7 +66,8 @@ X.actionLoaded(function(event, fn, params) {
 					var fm = btn.getFormMgr();
 					fm.sendForm({
 						button: btn,
-						confirm: false
+						confirm: false,
+						jsonResponse: true
 					});
 				}
 			});

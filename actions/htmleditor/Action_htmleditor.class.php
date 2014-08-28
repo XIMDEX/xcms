@@ -56,14 +56,15 @@ class Action_htmleditor extends ActionAbstract {
 
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
-			$this->messages->add(_('Requested document does not exist'), MSG_TYPE_ERROR);
-			$this->renderMessages();
+			$values = array(array('message'=> _('Requested document does not exist'), 'type' => 0));
+        	$this->sendJSON(array('messages' => $values));
 			return;
 		}
 
 		if ($node->SetContent($content, true));
-		$this->messages->add(_('Document has been successfully updated'), MSG_TYPE_NOTICE);
-		$this->renderMessages();
+
+		$values = array(array('message'=> _('Document has been successfully updated'), 'type' => 1));
+        $this->sendJSON(array('messages' => $values));
 	}
 }
 ?>

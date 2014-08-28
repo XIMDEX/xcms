@@ -875,7 +875,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 					({$languageCondition}) AND
 					({$nodetypeCondition})AND					
 					{$nodePathCondition} AND
-					{$fastTraverseCondition}";
+					{$fastTraverseCondition} ORDER BY LENGTH(n.path)";
 		$dbObj = new DB();
 		$dbObj->query($sql);
 		if ($dbObj->numErr != 0)

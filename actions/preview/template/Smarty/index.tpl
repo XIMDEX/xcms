@@ -23,34 +23,25 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-	<h2>{t}Document preview{/t}</h2>
-</div>
-<div class="action_content">
-	<fieldset>
-		<table align=center class="versions">
-			<tr class="prevdoc">
-				<td align="center" valign="middle"><strong>Version {$version}.{$subversion}</strong></td>
-				<td align="left" nowrap>{$date}</td>
-				<td align="left">{$user_name}</td>
-				<td align="left"><input type="checkbox" checked align="middle" onclick="if(this.checked) alert('{t}As long as this box is ticked, preview will be opened in new windows.{/t}');" name="tabview" id="tabview" class="prevdoc_check"></td>
-						{if ($nameNodeType != 'NodeHt')}
-							<td align="left"><a href="{$_URL_ROOT}/xmd/loadaction.php?action={if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodeType)}filepreview{else}prevdoc{/if}&nodeid={$id_node}{* &version={$version}&subversion={$subversion}*}{if ("BinaryFile" == $nameNodeType || "ImageFile" == $nameNodetype || "TextFile" == $nameNodeType)}&channel=1{/if}" class="prevdoc-button ui-state-default ui-corner-all button submit-button"><span>Previo</span></a>
-							</td>
+<h2>{t}Document preview{/t}</h2>
+	<fieldset class="action-controls">
 						<input type="hidden" name="node_id" class="node_id" value="{$id_node}">
-						{/if}
 
-						<td align="left">
 						{*  If it is a document, it shows combo with channels *}
 						{if ($nameNodeType != 'TextFile' && $nameNodeType != 'ImageFile' && $nameNodeType !='BinaryFile'   && $nameNodeType != 'NodeHt')}
-							<select id="channellist" name="channellist" class="normal" style="width: 75px;	vertical-align: middle;">
+							<select id="channellist{$id_node}" name="channellist" class="prevdoc-channel-selector" >
 							 {foreach from=$channels item=_channel}
 								<option value='{$_channel.Id}'>{$_channel.Name}</option>
 							{/foreach}
 							</select>
 						{/if}
-						</td>
-					</tr>
-				</table>
+
+						<a id="prevdoc-button" href="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}" class="btn main_action ui-state-default ui-corner-all button submit-button ladda-button"><span class="ladda-label">{t}View in a new window{/t}</span></a>
+
 	</fieldset>
 </div>
-
+<div class="content_container prevdoc">
+	<iframe id="preview{$id_node}" src="{$_URL_ROOT}/xmd/loadaction.php?action=prevdoc&nodeid={$id_node}&channel=10001" height="100%" width="100%">
+	  <p>Your browser does not support iframes.</p>
+	</iframe>
+</div>
