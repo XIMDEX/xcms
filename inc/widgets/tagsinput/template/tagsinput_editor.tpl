@@ -23,12 +23,7 @@
  *  @version $Revision$
  *}
 
-<div class="kupu-toolbox-container" 
-	ng-controller="XTagsCtrl"
-	xim-document-tags='{$tags}'
-	xim-namespaces='{$namespaces}'
-	xim-node-id='{$_enviroment["id_node"]}'
-	xim-is-editor="1">
+<div class="kupu-toolbox-container" >
 	<h3 id="kupu-toolbox-tags-header" style="-moz-user-select: none"
 		class="kupu-toolbox-heading kupu-toolbox-heading-closed ui-draggable"
 		ng-click="show = !show">

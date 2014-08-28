@@ -23,7 +23,11 @@
  *  @version $Revision$
  *}
 
-<form action="{$actionUrlShowPost}" method="POST">
+<form action="{$actionUrlShowPost}" method="POST" ng-controller="XTagsCtrl" 
+xim-document-tags='{$tags}'
+	xim-namespaces='{$namespaces}'
+	xim-node-id='{$nodeid}'
+	xim-is-editor="1">
 
 	<div class="kupu-fulleditor">
 		<ontologyBrowser editor="1" />

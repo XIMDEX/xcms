@@ -157,17 +157,10 @@ angular.module('ximdex.module.xtags')
 
         $scope.focus = function(event){
             if ($scope.isEditor && parseInt($scope.newTag.IdNamespace) == 2){
-            $window.jQuery(".ontology-browser").ontologywidget({
-                selected:[],
-                onSelect: function(el){
-                $scope.newTag.Name = el.name;
-                $scope.$apply();
-                }
-            });
-            $window.jQuery(".ontology-browser").ontologywidget("showTree");
-            $window.jQuery(".ontology-browser").removeClass("hidden");
-            $window.jQuery(".ontology-browser .textViewer").addClass("hidden");
-            $window.jQuery(".ontology-browser .treeViewer").removeClass("hidden");
+                $window.jQuery(".ontology-browser-container").ontologywidget("showTree");
+                $window.jQuery(".ontology-browser").removeClass("hidden");
+                $window.jQuery(".ontology-browser-container .textViewer").addClass("hidden");
+                $window.jQuery(".ontology-browser-container .treeViewer").removeClass("hidden");
             }
         }   
 

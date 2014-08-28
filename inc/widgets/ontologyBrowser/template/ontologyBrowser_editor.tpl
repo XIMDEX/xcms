@@ -22,7 +22,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
- <div class="ontology-browser-container">
+ <div class="ontology-browser-container" xim-ontology-browser xim-on-select="addOntology(ontology)" xim-on-un-select="removeOntology(ontology)" xim-selected-list="documentTags">
  <div class="ontology-browser hidden">
       <div class="treeViewer hidden">
           <h3>{t}Tree view ontology browser{/t}</h3>
