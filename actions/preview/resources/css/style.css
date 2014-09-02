@@ -22,21 +22,20 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-.prevdoc-body{
-	margin: 0;
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
+.action-controls {
+  text-align: right;
 }
 
-.prevdoc-container {
-	height: 100%;
-	border: none;
-	margin: 0;
-	padding: 0;
+.prevdoc.action_content {
+  height: 100%;
 }
 
-.prevdoc-document {
-	border: none;
-	width: 100%;
-	height: 100%;
+.prevdoc-channel-selector {
+  vertical-align: middle;
 }

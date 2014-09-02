@@ -107,7 +107,8 @@
     right: 0;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
-    box-shadow: none; }
+    box-shadow: none;
+    cursor: pointer; }
     .editor_tags .xim-tagsinput-tag-remove::before {
       height: 100%;
       top: 0; }
@@ -116,6 +117,8 @@
     width: 1.8em; }
   .editor_tags .xim-tagsinput-type-structured::before, .editor_tags .type-structured::before {
     line-height: 1.8 !important; }
+  .editor_tags .xim-tagsinput-type-structured::before {
+    max-width: 2.5rem; }
   .editor_tags .xim-tagsinput-type-custom::before {
     line-height: 1.8; }
   .editor_tags .type-custom::before {
