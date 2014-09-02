@@ -325,13 +325,21 @@ class Connection_Solr implements I_Connector {
 
       // Retrieve server that belongs to node's project and has channel html 
       $node = new Node($nodeID);
-      $idChannelHtml = "10001";
+      $channelsTable = new Channel();
+      // Asumme one and only one web channel per server
+      // TODO: Store and retrieve from table
+      $channelName = "web";
+      $idChannelArray = $channelsTable->find('IdChannel,DefaultExtension', 'Name = %s', array($channelName), MULTI);
+      $channelWeb = $idChannelArray[0];
+      $channelWebId = $channelWeb['IdChannel'];
+      $channelWebExtension = $channelWeb['DefaultExtension'];
+      
       $publicationPath[] = $node->GetNodeName();
-      $relServers = new RelServersChannels();
-      $htmlServers = $relServers->find('IdServer', 'IdChannel = %s', array($idChannelHtml), MULTI);
+      $relServersTable = new RelServersChannels();
+      $publicationServer = $relServersTable->find('IdServer', 'IdChannel = %s', array($channelWebId), MULTI);
       $queryParams = array();
       $inSqlSectionArray = array();
-      foreach ($htmlServers as $s) {
+      foreach ($publicationServer as $s) {
          $queryParams[] = $s["IdServer"];
          $inSqlSectionArray[] = "%s";
       }
@@ -339,10 +347,11 @@ class Connection_Solr implements I_Connector {
       $inSqlSection = implode(",", $inSqlSectionArray);
       $queryParams[] = $node->getServer();
       $myServer = $dbServer->find('Url', "IdServer in ($inSqlSection) and IdNode = %s", $queryParams, MONO);
-
+      
+      
       // Use full url in solr
       array_unshift($publicationPath, $myServer[0]);
-      $publicationUrl = implode("/", $publicationPath) . "-idhtml.html";
+      $publicationUrl = implode("/", $publicationPath) . "-id{$channelName}.{$channelWebExtension}";
       $doc->addField("publicationUrl", $publicationUrl);
 
       $update->addDocument($doc);
