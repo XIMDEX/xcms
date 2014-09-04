@@ -28,529 +28,530 @@
 @import "../themes/extends";
 
 .suggested > div:not(:first-child){
-  margin-top: 2em;
+	margin-top: 2em;
 }
 
 .xim-tagsinput-container-list{
-   padding: 1em 0 3em;
+	 padding: 1em 0 3em;
 }
 
 .xim-tagsinput-container .xim-tagsinput-input{
-   display: inline-block;
-   vertical-align: middle;
+	 display: inline-block;
+	 vertical-align: middle;
 }
 
 .title-box{
-   color: #fff;
-   border-bottom: 1px solid #c7c7c7;
-   padding: 1em 1em .8em;
-   background: $c_dark_grey;
+	 color: #fff;
+	 border-bottom: 1px solid #c7c7c7;
+	 padding: 1em 1em .8em;
+	 background: $c_dark_grey;
 
 }
 
 .xim-tagsinput-container.col2-3 .title-box{
-   @extend .title-box;
-   width: 90%;
-   background: $c_grey-p;
-   border-top: 4px solid $c_mainlight;
-   margin-bottom: 2em;
+	 @extend .title-box;
+	 width: 90%;
+	 background: $c_grey-p;
+	 border-top: 4px solid $c_mainlight;
+	 margin-bottom: 2em;
 }
 .xim-tagsinput-taglist, .xim-tagsinput-tag, .ontology-browser-container a {
-   background: #fff;
-   color: $c_dark_grey;
-   border-bottom: 1px solid $c_grey-ppp;
-   padding: .5em .5em .5em 3em;
-   position: relative;
+	 background: #fff;
+	 color: $c_dark_grey;
+	 border-bottom: 1px solid $c_grey-ppp;
+	 padding: .5em .5em .5em 3em;
+	 position: relative;
 
-   &::before{
-      position: absolute;
-      height: 100%;
-      width: 2em;
-      background: $c_tag_custom;
-      border-top-color: rgba(255,255,255,.3); 
-      left: 0;
-      top: 0;
-      text-align: center;
-      color: $c_background;
-      line-height: 2;
-   }
+	 &::before{
+			position: absolute;
+			height: 100%;
+			width: 2em;
+			background: $c_tag_custom;
+			border-top-color: rgba(255,255,255,.3); 
+			left: 0;
+			top: 0;
+			text-align: center;
+			color: $c_background;
+			line-height: 2;
+	 }
 
-   &:hover{
-      background: darken(#fff, 5%);
-      &::before, &::after{
-         opacity: .75;
-      }
-   }
+	 &:hover{
+			background: darken(#fff, 5%);
+			&::before, &::after{
+				 opacity: .75;
+			}
+	 }
 }
 //Animations
 .xim-tagsinput-taglist {
-  -webkit-transition: all ease-out .2s;
-  -moz-transition: all ease-out .2s;
-  -ms-transition: all ease-out .2s;
-  -o-transition: all ease-out .2s;
-  transition: all ease-out .2s;
-  opacity:1;
-  max-height: 100px;
+	-webkit-transition: all ease-out .2s;
+	-moz-transition: all ease-out .2s;
+	-ms-transition: all ease-out .2s;
+	-o-transition: all ease-out .2s;
+	transition: all ease-out .2s;
+	opacity:1;
+	max-height: 100px;
 }
 .xim-tagsinput-taglist.ng-hide-add,
 .xim-tagsinput-taglist.ng-hide-remove {
-  display:block!important;
-  // -ms-transform:translate(-50px,0); /* IE 9 */
-  // -webkit-transform:translate(-50px,0); /* Chrome, Safari, Opera */
-  // transform:translate(-50px,0); /* Standard syntax */
+	display:block!important;
+	// -ms-transform:translate(-50px,0); /* IE 9 */
+	// -webkit-transform:translate(-50px,0); /* Chrome, Safari, Opera */
+	// transform:translate(-50px,0); /* Standard syntax */
 }
  
 .xim-tagsinput-taglist.ng-hide {
 /*  padding-top: 0;
-  padding-bottom: 0;*/
-  max-height: 0px;
-  opacity:0.5;
+	padding-bottom: 0;*/
+	max-height: 0px;
+	opacity:0.5;
 }
 
 .xim-tagsinput-tag{
-  &::before{
-    line-height: 3em;
-  }
+	&::before{
+		line-height: 3em;
+	}
 }
 
 .xim-tagsinput-taglist{
-  cursor: pointer;
+	cursor: pointer;
 
-   &:hover{
-      background: darken(#fff, 15%);
-    }
+	 &:hover{
+			background: darken(#fff, 15%);
+		}
 }
 
 
 .xim-tagsinput-tag{
-   max-width: 40%;
-   min-width:  7em;
-   display: inline-block;
-   vertical-align: top;
-   margin: .5em 3% .5em 0;
-   padding: .5em 1em .5em 2.5em;
-   border: 1px solid #dedede;
-   @include boxshadow(0 0px 1px rgba(0,0,0,.1));
-   -webkit-box-sizing: content-box;
-   -moz-box-sizing: content-box;
-   box-sizing: content-box;
-   .amount{
-      position: absolute;
-      top: .5em;
-      right: .8em;
-   }
-   
-   &:hover .xim-tagsinput-tag-remove{
-      width: 1.2em;
-      right: -1.25em;
-      background: $c_complementarylight;
-      color: #fff;      
-   }
+	 max-width: 40%;
+	 min-width:  7em;
+	 display: inline-block;
+	 vertical-align: top;
+	 margin: .5em 3% .5em 0;
+	 padding: .5em 1em .5em 2.5em;
+	 border: 1px solid #dedede;
+	 @include boxshadow(0 0px 1px rgba(0,0,0,.1));
+	 -webkit-box-sizing: content-box;
+	 -moz-box-sizing: content-box;
+	 box-sizing: content-box;
+	 .amount{
+			position: absolute;
+			top: .5em;
+			right: .8em;
+	 }
+	 
+	 &:hover .xim-tagsinput-tag-remove{
+			width: 1.2em;
+			right: -1.25em;
+			background: $c_complementarylight;
+			color: #fff;      
+	 }
 
-  &:hover{
+	&:hover{
 
-  }
+	}
 
-   
+	 
 
 }
 
 
 .type-selector{
-   position: absolute;
-   left: 0;
-   top: 0;
-   height: 100%;
-   width: 2em;
-   .options{
-        position: absolute;
-     }
+	 position: absolute;
+	 left: 0;
+	 top: 0;
+	 height: 100%;
+	 width: 2em;
+	 .options{
+				position: absolute;
+		 }
 
 }
 
 .selection{
-      width: inherit;
-      height: inherit;
-      background: $c_tag_custom;
-      cursor: pointer;
+			width: inherit;
+			height: inherit;
+			background: $c_tag_custom;
+			cursor: pointer;
 
-      &::before{
-         color: $c_background;
-         display: block;
-         text-align: center;
-         line-height: 2.05;
-         height: 100%;
-      }
+			&::before{
+				 color: $c_background;
+				 display: block;
+				 text-align: center;
+				 line-height: 2.05;
+				 height: 100%;
+			}
 
 }
 
 
 .options{ /* Getting importance to css to overwrite widget styles*/
-   .option{
-      padding: .6em 1em .6em 2.8em;
-      cursor: pointer;
-      &::before{
-         position: absolute;
-         height: 100%;
-         width: 2em;
-         left: 0;
-         top: 0;
-         display: block;
-         line-height: 2.3;
-         text-align: center;
-         }
-         &:hover ,&.selected{
-          background:rgba(255,255,255,.2);
-         }
-         &:hover::before ,&.selected::before{
-          opacity: .8;
-         }
-   }
+	 .option{
+			padding: .6em 1em .6em 2.8em;
+			cursor: pointer;
+			&::before{
+				 position: absolute;
+				 height: 100%;
+				 width: 2em;
+				 left: 0;
+				 top: 0;
+				 display: block;
+				 line-height: 2.3;
+				 text-align: center;
+				 }
+				 &:hover ,&.selected{
+					background:rgba(255,255,255,.2);
+				 }
+				 &:hover::before ,&.selected::before{
+					opacity: .8;
+				 }
+	 }
 }
 
 .type-zImage{}
 .xim-tagsinput-tag{
  &:hover .xim-tagsinput-text::after, &:hover .xim-tagsinput-text::before{
-    opacity: 1;
-    visibility: visible;
-     -webkit-transition: all .2s  ease-out .5s;
-    -moz-transition: all .2s ease-out .5s;
-    -ms-transition: all .2s ease-out .5s;
-    -o-transition: all .2s ease-out .5s;
-    transition: all .2s ease-out .5s;
-  }  
+		opacity: 1;
+		visibility: visible;
+		 -webkit-transition: all .2s  ease-out .5s;
+		-moz-transition: all .2s ease-out .5s;
+		-ms-transition: all .2s ease-out .5s;
+		-o-transition: all .2s ease-out .5s;
+		transition: all .2s ease-out .5s;
+	}  
 }
 
 
 .xim-tagsinput-text{
-  display: block;
-   text-overflow: ellipsis;
+	display: block;
+	 text-overflow: ellipsis;
  overflow: hidden;
-  white-space: nowrap;   
+	white-space: nowrap;   
 
-  &::before{
-    content: "";
-    border: 6px solid rgba(0,0,0,0);
-    border-bottom-color: $c_dark_grey;
-    position: absolute;
-    top: calc(3em - 12px);
-    opacity: 0;
-    visibility: hidden;
-    -webkit-transition: all .2s ease-out;
-    -moz-transition: all .2s ease-out;
-    -ms-transition: all .2s ease-out;
-    -o-transition: all .2s ease-out;
-    transition: all .2s ease-out;
-    
-  }
+	&::before{
+		content: "";
+		border: 6px solid rgba(0,0,0,0);
+		border-bottom-color: $c_dark_grey;
+		position: absolute;
+		top: calc(3em - 12px);
+		opacity: 0;
+		visibility: hidden;
+		-webkit-transition: all .2s ease-out;
+		-moz-transition: all .2s ease-out;
+		-ms-transition: all .2s ease-out;
+		-o-transition: all .2s ease-out;
+		transition: all .2s ease-out;
+		
+	}
 
-  &::after{
-    content: attr(data-tooltip);
-    position: absolute;
-    background:$c_dark_grey;
-    color: #fff;
-    top: 3em;
-    left: 2.2em;
-    border-radius: 2px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
-    border-radius: 2px;
-    white-space: normal;
-    -webkit-transition: all .2s ease-out;
-    -moz-transition: all .2s ease-out;
-    -ms-transition: all .2s ease-out;
-    -o-transition: all .2s ease-out;
-    transition: all .2s ease-out;
-    opacity: 0;
-    visibility: hidden;
-    padding: .5em .8em;
-    z-index: 3;
-  }
+	&::after{
+		content: attr(data-tooltip);
+		position: absolute;
+		background:$c_dark_grey;
+		color: #fff;
+		top: 3em;
+		left: 2.2em;
+		border-radius: 2px;
+		-webkit-border-radius: 2px;
+		-moz-border-radius: 2px;
+		border-radius: 2px;
+		white-space: normal;
+		-webkit-transition: all .2s ease-out;
+		-moz-transition: all .2s ease-out;
+		-ms-transition: all .2s ease-out;
+		-o-transition: all .2s ease-out;
+		transition: all .2s ease-out;
+		opacity: 0;
+		visibility: hidden;
+		padding: .5em .8em;
+		z-index: 3;
+	}
 }
 
 .xim-tagsinput-tag .ontology_link{
-  font-size: .9em;
-  color: lighten($c_dark_grey, 15%);
-  display: block;
-  margin-top: .1em;
+	font-size: .9em;
+	color: lighten($c_dark_grey, 15%);
+	display: block;
+	margin-top: .1em;
 
-  &:hover{
-    text-decoration: underline;
-  }
+	&:hover{
+		text-decoration: underline;
+	}
 }
 
 .xim-tagsinput-tag-remove{
-   position: absolute;
-   @include hide-text;
-   width: .2em;
-   height: 2em;
-   top: 0;
-   right: -.3em;
-   background: #dedede;
-   /*background: $c_complementarylight;*/
-   -webkit-transition: all .2s;
-   -moz-transition: all .2s;
-   -ms-transition: all .2s;
-   -o-transition: all .2s;
-   transition: all .2s;
-   /*opacity: 0;*/
-   @include boxshadow(inset 1px 0 1px rgba(0,0,0,.2));
-   &::before{
-      text-indent: 0;
-      display: block;
-      text-align: center;
-      color: $c_grey-p;  
-      font-size: .8em;
-      line-height: 2.6;
-   }
+	 position: absolute;
+	 @include hide-text;
+	 width: .2em;
+	 height: 2em;
+	 top: 0;
+	 right: -.3em;
+	 background: #dedede;
+	 /*background: $c_complementarylight;*/
+	 -webkit-transition: all .2s;
+	 -moz-transition: all .2s;
+	 -ms-transition: all .2s;
+	 -o-transition: all .2s;
+	 transition: all .2s;
+	 /*opacity: 0;*/
+	 @include boxshadow(inset 1px 0 1px rgba(0,0,0,.2));
+	 &::before{
+			text-indent: 0;
+			display: block;
+			text-align: center;
+			color: $c_grey-p;  
+			font-size: .8em;
+			line-height: 2.6;
+	 }
 
-   &:hover, &:hover::before{
-      background: $c_complementarylight;
-      color: #fff;
-   }
-   
+	 &:hover, &:hover::before{
+			background: $c_complementarylight;
+			color: #fff;
+	 }
+	 
 }
 
 
 .type-custom, .custom, .options .type-custom, .xim-tagsinput-type-custom{
-   .amount{
-      background: none;
-      color: $c_tag_custom;
-   }
+	 .amount{
+			background: none;
+			color: $c_tag_custom;
+	 }
 
-   &~.amount{
-       background: none;
-      color: $c_tag_custom;
-   }
-   & ~ .amount{
-       background: none;
-      color: $c_tag_custom;
-   }
+	 &~.amount{
+			 background: none;
+			color: $c_tag_custom;
+	 }
+	 & ~ .amount{
+			 background: none;
+			color: $c_tag_custom;
+	 }
 
-   &::before{
-      position: absolute;
-      width: 1.5em;
-      height: 1.5em; 
-      top: 50%;
-      -webkit-transform: translateY(-50%);
-      -moz-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      -o-transform: translateY(-50%);
-      transform: translateY(-50%);
-      
-      margin-left: .25em;
-      background:#fff;
-      color:$c_tag_custom;
-      -webkit-border-radius: 50%;
-      -moz-border-radius: 50%;
-      border-radius: 50%;
-      line-height: 1.63;
-      z-index: 2;
-   }
-   
-   &::after{
-      z-index: 1;
-      background: $c_tag_custom;
-      position: absolute;
-      width: 2em;
-      height: 100%;
-      content: "";
-      left: 0;
-      top: 0;
-      
-   }
+	 &::before{
+			position: absolute;
+			width: 1.5em;
+			height: 1.5em; 
+			top: 50%;
+			-webkit-transform: translateY(-50%);
+			-moz-transform: translateY(-50%);
+			-ms-transform: translateY(-50%);
+			-o-transform: translateY(-50%);
+			transform: translateY(-50%);
+			
+			margin-left: .25em;
+			background:#fff;
+			color:$c_tag_custom;
+			-webkit-border-radius: 50%;
+			-moz-border-radius: 50%;
+			border-radius: 50%;
+			line-height: 1.63;
+			z-index: 2;
+	 }
+	 
+	 &::after{
+			z-index: 1;
+			background: $c_tag_custom;
+			position: absolute;
+			width: 2em;
+			height: 100%;
+			content: "";
+			left: 0;
+			top: 0;
+			
+	 }
 }
 
 .type-custom, .xim-tagsinput-type-custom{
-  &::before{
-    z-index: 2;
-  }
-  &::after{
-    z-index: 0;
-  }
+	&::before{
+		z-index: 2;
+	}
+	&::after{
+		z-index: 0;
+	}
 }
 .xim-tagsinput-type-dOrganisation, .type-dOrganisation{
-   .amount{
-      background: none;
-      color: $c_tag_dorganization;
-   }
+	 .amount{
+			background: none;
+			color: $c_tag_dorganization;
+	 }
 
-   &::before{
-   background:$c_tag_dorganization;
-   }
+	 &::before{
+	 background:$c_tag_dorganization;
+	 }
 }
 
 .xim-tagsinput-type-dPerson, .type-dPerson{
-    .amount{
-      background: none;
-      color: $c_tag_dperson;
-   }
-   &::before{
-      background: $c_tag_dperson;
-   }
-  
+		.amount{
+			background: none;
+			color: $c_tag_dperson;
+	 }
+	 &::before{
+			background: $c_tag_dperson;
+	 }
+	
 }
 
 .xim-tagsinput-type-dPlace, .type-dPlace{
-    .amount{
-      background: none;
-      color: $c_tag_dplace;
-   }
-   &::before{
-      background: $c_tag_dplace;
-   }
+		.amount{
+			background: none;
+			color: $c_tag_dplace;
+	 }
+	 &::before{
+			background: $c_tag_dplace;
+	 }
 }
 .xim-tagsinput-type-zLink, .type-zLink{
-    .amount{  
-      background: none;
-      color: $c_tag_zLink;
-   }
-   &::before{
-      background: $c_tag_zLink;
-   }
+		.amount{  
+			background: none;
+			color: $c_tag_zLink;
+	 }
+	 &::before{
+			background: $c_tag_zLink;
+	 }
 }
 
 .xim-tagsinput-type-zImage, .type-zImage{
-    .amount{
-      background: none;
-      color: $c_tag_zImage;
-   }
-   &::before{
-      background: $c_tag_zImage;
-   }
+		.amount{
+			background: none;
+			color: $c_tag_zImage;
+	 }
+	 &::before{
+			background: $c_tag_zImage;
+	 }
 }
 
 
 .xim-tagsinput-type-zArticle, .type-zArticle{
-    .amount{
-      background: none;
-      color: $c_tag_zArticle;
-   }
-   &::before{
-      background: $c_tag_zArticle;
-   }
+		.amount{
+			background: none;
+			color: $c_tag_zArticle;
+	 }
+	 &::before{
+			background: $c_tag_zArticle;
+	 }
 }
 
 .xim-tagsinput-type-structured, .type-structured{
 
-  @extend %rdf; 
+	@extend %rdf; 
 
-  &::before{
-    background:$c_tag_ontology;
-    font-size: 1.3em;
-    line-height: 2.35 !important;
-    max-width: 3.2rem;
-  }
+	&::before{
+		background:$c_tag_ontology;
+		font-size: 1.3em;
+		line-height: 2.35 !important;
+		max-width: 3.2rem;
+	}
+
 }
 
  .type-structured, .xim-tagsinput-taglist.xim-tagsinput-type-structured{
-    &::before{
-      line-height: 1.67 !important;
-    }
-  }
+		&::before{
+			line-height: 1.67 !important;
+		}
+	}
 
 
 
 .custom .amount{
-   color: $c_tag_custom;
+	 color: $c_tag_custom;
 }
 .xim-tagsinput-list-related, .nube_tags{
-   background: #fff;
-   min-height: 8em;
-   position: relative;
-   max-height: 12em;
-   overflow: auto;
+	 background: #fff;
+	 min-height: 8em;
+	 position: relative;
+	 max-height: 12em;
+	 overflow: auto;
 }
 
 
 .nube_tags{
-  min-height: 0;
+	min-height: 0;
 }
 
 
 .loading{
-     &::before{
-          content: "";
-          width: 0;
-          height: 0;
-          -webkit-border-radius: 50%;
-          -moz-border-radius: 50%;
-          border-radius: 50%;
-          border: 1em solid $c_tag_custom;
-          border-left-color: $c_mainlight;
-          border-top-color: $c_mainlight;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          margin-top: -1em;
-          margin-left: -1em;
-              -webkit-animation: spin 0.75s infinite ease-in-out;
-      -moz-animation: spin 0.75s infinite ease-in-out;
-      -ms-animation: spin 0.75s infinite ease-in-out;
-      -o-animation: spin 0.75s infinite ease-in-out;
-      animation: spin 0.75s infinite ease-in-out;
-       }
+		 &::before{
+					content: "";
+					width: 0;
+					height: 0;
+					-webkit-border-radius: 50%;
+					-moz-border-radius: 50%;
+					border-radius: 50%;
+					border: 1em solid $c_tag_custom;
+					border-left-color: $c_mainlight;
+					border-top-color: $c_mainlight;
+					position: absolute;
+					left: 50%;
+					top: 50%;
+					margin-top: -1em;
+					margin-left: -1em;
+							-webkit-animation: spin 0.75s infinite ease-in-out;
+			-moz-animation: spin 0.75s infinite ease-in-out;
+			-ms-animation: spin 0.75s infinite ease-in-out;
+			-o-animation: spin 0.75s infinite ease-in-out;
+			animation: spin 0.75s infinite ease-in-out;
+			 }
 }
 @-webkit-keyframes spin {
-  100% { -webkit-transform: rotate(359deg); }
-  }
+	100% { -webkit-transform: rotate(359deg); }
+	}
 
 @-moz-keyframes spin {
-  100% { -moz-transform: rotate(359deg); }
-  }
+	100% { -moz-transform: rotate(359deg); }
+	}
 
 @-o-keyframes spin {
-  100% { -moz-transform: rotate(359deg); }
-  }
+	100% { -moz-transform: rotate(359deg); }
+	}
 
 @keyframes spin {
-  100% {  transform: rotate(359deg); }
-  }
+	100% {  transform: rotate(359deg); }
+	}
 
 
 .tag-type{
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  height: 2.29em;
-  cursor: pointer;
-  margin-right: -6px;
-  margin-top: -1px;
-  border: 1px solid #ccc;
-  vertical-align: top;
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	height: 2.29em;
+	cursor: pointer;
+	margin-right: -6px;
+	margin-top: -1px;
+	border: 1px solid #ccc;
+	vertical-align: top;
 
 }
 
 .xim-tagsinput-newtag .add-btn{
-  background:darken($c_mainlight, 10%);
-  width: 2em;
-  height: 2em;
-  cursor: pointer;
-  margin-left: .4em;
-  position: relative;
-  @extend %add;
-  overflow: hidden;
-  text-indent: 4em;
-  &::before{
-    font-size: 1.4em;
-    line-height: 1.5 !important;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    left: 0;
-    top: 0;
-    text-indent: 0;
-  }
+	background:darken($c_mainlight, 10%);
+	width: 2em;
+	height: 2em;
+	cursor: pointer;
+	margin-left: .4em;
+	position: relative;
+	@extend %add;
+	overflow: hidden;
+	text-indent: 4em;
+	&::before{
+		font-size: 1.4em;
+		line-height: 1.5 !important;
+		position: absolute;
+		width: 100%;
+		text-align: center;
+		left: 0;
+		top: 0;
+		text-indent: 0;
+	}
 }
 
 .xim-tagsinput-container-related{
-  .empty_state{
-    text-align: center;
-    padding-top: 1em;
+	.empty_state{
+		text-align: center;
+		padding-top: 1em;
 
-    a{
-      margin-top: 1em;
-      display: inline-block;
-    }
-  }
+		a{
+			margin-top: 1em;
+			display: inline-block;
+		}
+	}
 }

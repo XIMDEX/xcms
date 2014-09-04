@@ -1,6 +1,5 @@
-if (angular.module('ximdex').notRegistred && angular.module('ximdex').notRegistred('ximOntologyBrowser')){
-    angular.module('ximdex')
-        .compileProvider.directive('ximOntologyBrowser', ['$window', function ($window) {
+angular.module('ximdex')
+        .directive('ximOntologyBrowser', ['$window', function ($window) {
             return {
                 replace: true,
                 scope: {
@@ -49,5 +48,3 @@ if (angular.module('ximdex').notRegistred && angular.module('ximdex').notRegistr
                 }
             }
         }]);
-    angular.module('ximdex').registerItem('ximOntologyBrowser');
-}
