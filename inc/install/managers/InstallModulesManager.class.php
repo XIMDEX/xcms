@@ -86,7 +86,7 @@ class InstallModulesManager extends InstallManager {
 		$modMan=new ModulesManager();
 		$modules=$modMan->getModules();
 		foreach ($modules as $mod) {
-			if ($mod["enabled"]){
+			if (isset($mod["enabled"])){
 				$modMan->uninstallModule($mod["name"]);
 			}
 		}

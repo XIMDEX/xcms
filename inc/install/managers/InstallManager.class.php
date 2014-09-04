@@ -224,7 +224,7 @@ class InstallManager {
 		}
 		else {
 			$result["state"]="warning";
-			$result["messages"][] = "Recomended PHP $minPHPVersion or higher";
+			$result["messages"][] = "Recommended PHP $minPHPVersion or higher";
 			$result["help"][] = "";
 		}
 
@@ -241,7 +241,7 @@ class InstallManager {
 			if (!in_array($requiredModule, $modules)){
 				$result["state"] = "error";
 				$result["messages"][] = "PHP $requiredModule  extension is required";
-				$result["help"][] = "";
+				$result["help"][] = "Please install the php5-$requiredModule package on your system.";
 			}
 		}
 
