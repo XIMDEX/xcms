@@ -24,6 +24,15 @@
  */
 
 
+.content_container.prevdoc{
+	height: calc(100% - 3.5em);
+	overflow: scroll;
+}
+
+.prevdoc-channel-selector{
+	padding: 0 .7em;
+}
+
 .prevdoc-body{
 	margin: 0;
 }
