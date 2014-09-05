@@ -60,7 +60,7 @@ class Action_filedownload_multiple extends ActionAbstract {
 		}
 
 		if (!is_file($tarFile)) {
-            XMD_Log::error('All selected documents could not be exported.');
+            XMD_Log::error('All selected documents could not be exported. Do you have zip installed?');
 		}
 
 		$tarFile = preg_replace(sprintf('#^%s#', Config::getValue('AppRoot')), Config::getValue('UrlRoot'), $tarFile);
@@ -88,10 +88,15 @@ class Action_filedownload_multiple extends ActionAbstract {
 	    		if (!$node->get('IdNode')) {
 				    continue;
 			    }
-
 			    $fileName = $node->get('Name');
 			    $filePath = $folder . '/' . $fileName;
-			    if (!FsUtils::file_put_contents($filePath, $node->getContent())) {
+			    if($node->GetNodeType()==NodetypeService::COMMON_FOLDER ||
+			    	$node->GetNodeType()==NodetypeService::CSS_FOLDER ||
+			    	$node->GetNodeType()==NodetypeService::IMAGES_FOLDER){
+			    	if(!$this->copyContents($filePath, $node->GetChildren())){
+			    		$errors[] = $fileName;
+			    	}
+			    }elseif (!FsUtils::file_put_contents($filePath, $node->getContent())) {
 				    $errors[] = $fileName;
 			    }
    		    }
@@ -112,7 +117,7 @@ class Action_filedownload_multiple extends ActionAbstract {
 
     private function tarContents($folderToTar) {
     	$tarName = sprintf('%s/%s.zip', dirname($folderToTar), basename($folderToTar));
-    	exec(sprintf('zip -jr %s %s', $tarName, $folderToTar));
+    	exec(sprintf('cd %s && zip -r %s %s', $folderToTar, $tarName, '*'));
     	return $tarName;
     }
 }
