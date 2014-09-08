@@ -34,4 +34,3 @@ class DbmsSyntaxMsSql extends DbmsSyntax
 		return "DATEDIFF(s, '19700101', GETDATE())";
 	}
 }
-

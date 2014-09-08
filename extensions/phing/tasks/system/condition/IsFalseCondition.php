@@ -57,4 +57,3 @@ class IsFalseCondition extends ProjectComponent implements Condition {
     }
 
 }
-

@@ -81,4 +81,3 @@ class OutputStreamWriter extends Writer {
     	return $this->outStream->__toString();
     }
 }
-

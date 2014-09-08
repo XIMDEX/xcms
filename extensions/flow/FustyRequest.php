@@ -31,4 +31,4 @@ class FustyRequest extends Request
     {
         return $this->isFusty;
     }
-} 
+}

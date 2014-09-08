@@ -263,4 +263,3 @@ class ExecTask extends Task {
 		$this->returnProperty = $prop;
 	}
 }
-

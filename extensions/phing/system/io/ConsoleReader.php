@@ -81,4 +81,3 @@ class ConsoleReader extends Reader {
         return "console";
     }
 }
-

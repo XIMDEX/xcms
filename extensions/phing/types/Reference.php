@@ -53,4 +53,3 @@ class Reference {
         return $o;
     }
 }
-

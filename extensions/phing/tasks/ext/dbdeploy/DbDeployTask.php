@@ -189,4 +189,3 @@ class DbDeployTask extends Task {
         return $this->fileset;
     }
 }
-

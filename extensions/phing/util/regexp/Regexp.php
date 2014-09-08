@@ -163,5 +163,4 @@ class Regexp {
     function getIgnoreCase() {
         return $this->engine->getIgnoreCase();
     }
-} 
-
+}

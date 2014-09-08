@@ -51,4 +51,4 @@ interface RequestInterface {
      */
     function getCurrentChunkSize();
 
-} 
+}

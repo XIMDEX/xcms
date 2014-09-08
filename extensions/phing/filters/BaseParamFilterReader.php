@@ -65,5 +65,3 @@ class BaseParamFilterReader extends BaseFilterReader implements Parameterizable 
         return $this->_parameters;
     }
 }
-
-

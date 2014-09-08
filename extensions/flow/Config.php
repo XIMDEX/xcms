@@ -96,4 +96,4 @@ class Config implements ConfigInterface
     {
         return sha1($request->getIdentifier());
     }
-} 
+}

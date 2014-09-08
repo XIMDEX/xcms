@@ -464,4 +464,3 @@ class CommandlineMarker {
         return $this->realPos;
     }
 }
-

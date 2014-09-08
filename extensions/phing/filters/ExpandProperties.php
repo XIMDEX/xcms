@@ -78,5 +78,3 @@ class ExpandProperties extends BaseFilterReader implements ChainableReader {
         return $newFilter;
     }
 }
-
-

@@ -37,4 +37,3 @@ class Widget_select extends Widget_Abstract {
 	}
 }
 ?>
-

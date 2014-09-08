@@ -40,4 +40,3 @@ interface ExtendFileSelector extends Parameterizable, FileSelector {
   // No further methods necessary. This is just an amalgamation of two other
   // interfaces.
 }
-

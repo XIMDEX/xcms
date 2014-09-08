@@ -256,6 +256,3 @@ class PhpDocumentorExternalTask extends PhpDocumentorTask
         }
     }
 };
-
-
-

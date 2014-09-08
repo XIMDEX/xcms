@@ -101,5 +101,3 @@ class RegularExpression extends DataType {
         }
     }
 }
-
-

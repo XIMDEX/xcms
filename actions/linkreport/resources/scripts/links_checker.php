@@ -60,4 +60,3 @@ echo "\n\n[".date("H:i:s d/m/y")."] (Id: ".$idlink.") -> ".$url;
         $dbObj->Next();
 }
 ?>
-

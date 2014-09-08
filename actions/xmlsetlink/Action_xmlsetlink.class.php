@@ -211,4 +211,3 @@ class Action_xmlsetlink extends ActionAbstract {
 	}
 
 }
-

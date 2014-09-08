@@ -70,4 +70,3 @@ interface RegexpEngine {
     function replace($pattern, $replace, $source);
 
 }
-

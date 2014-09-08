@@ -34,4 +34,3 @@ class DbmsSyntaxMysql extends DbmsSyntax
 		return "NOW()";
 	}
 }
-

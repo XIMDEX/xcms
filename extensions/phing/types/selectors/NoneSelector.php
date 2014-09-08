@@ -68,4 +68,3 @@ class NoneSelector extends BaseSelectorContainer {
     }
 
 }
-

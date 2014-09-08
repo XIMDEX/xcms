@@ -86,4 +86,3 @@ class Action_deletetemplates extends ActionAbstract {
 	}
 
 }
-

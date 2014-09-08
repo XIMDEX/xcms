@@ -38,5 +38,3 @@ interface ChainableReader {
      */
     public function chain(Reader $rdr);
 }
-
-

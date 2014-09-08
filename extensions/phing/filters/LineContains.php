@@ -255,4 +255,3 @@ class Contains {
         return $this->_value;
     }
 }
-

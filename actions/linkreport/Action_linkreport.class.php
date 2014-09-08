@@ -225,4 +225,3 @@ class Action_linkreport extends ActionAbstract {
     }
 }
 ?>
-

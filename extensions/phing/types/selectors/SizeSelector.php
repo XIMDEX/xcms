@@ -225,4 +225,3 @@ class SizeSelector extends BaseExtendSelector {
     }
     
 }
-

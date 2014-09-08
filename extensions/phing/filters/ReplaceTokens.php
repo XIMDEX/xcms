@@ -411,5 +411,3 @@ class Token {
         return $this->_value;
     }
 }
-
-

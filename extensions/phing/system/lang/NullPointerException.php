@@ -23,4 +23,3 @@
  * @package phing.system.lang
  */
 class NullPointerException extends Exception {}
-

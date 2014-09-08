@@ -151,4 +151,4 @@ class ActionsStats extends ActionsStats_ORM {
 		return NULL;
 
 	}
-}	
+}

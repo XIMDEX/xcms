@@ -73,4 +73,3 @@ class FileInputStream extends InputStream {
         return true;
     }
 }
-

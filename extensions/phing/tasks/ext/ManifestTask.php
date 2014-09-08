@@ -337,5 +337,3 @@ class ManifestTask extends Task
         
     }     
 }
-
-

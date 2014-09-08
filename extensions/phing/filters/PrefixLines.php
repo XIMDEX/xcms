@@ -138,5 +138,3 @@ class PrefixLines extends BaseParamFilterReader implements ChainableReader {
         }
     }
 }
-
-

@@ -167,4 +167,3 @@ class TouchTask extends Task {
     }
 
 }
-

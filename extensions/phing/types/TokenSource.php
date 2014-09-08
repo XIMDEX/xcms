@@ -152,6 +152,3 @@ class TokenSource extends DataType {
         return $this->parameters[$num-1];
     }
 }
-
-
-

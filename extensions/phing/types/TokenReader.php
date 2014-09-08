@@ -62,5 +62,3 @@ abstract class TokenReader {
     abstract public function readToken();
     
 }
-
-

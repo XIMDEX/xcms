@@ -137,4 +137,3 @@ class PHPUnitTestRunner
 		return $this->retCode;
 	}
 }
-

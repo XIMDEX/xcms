@@ -95,5 +95,3 @@ class Parameter extends DataType {
         return $this->parameters;
     }
 }
-
-
