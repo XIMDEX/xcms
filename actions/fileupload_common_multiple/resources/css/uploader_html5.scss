@@ -364,12 +364,15 @@
 		}
 	}
 
-	.xim-loader-file-msword &{
+	.xim-loader-file-msword &,
+	.xim-loader-file-vnd\.openxmlformats-officedocument\.wordprocessingml\.document &{
 		&::before{
 			background-position: -200px -3px; 
 		}
 	}
-	.xim-loader-file-vnd\.ms-excel &{
+	
+	.xim-loader-file-vnd\.ms-excel &,
+	.xim-loader-file-vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet &{
 		&::before{
 			background-position: -250px -3px;
 		}

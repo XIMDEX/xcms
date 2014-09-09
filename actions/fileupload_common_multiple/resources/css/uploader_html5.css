@@ -157,14 +157,14 @@
     .xim-loader-file .xim-loader-name .img-preview {
       margin-right: .5em; }
     .xim-loader-file .xim-loader-name input {
-      border: 1px dashed #cccccc;
+      border: 1px dashed #ccc;
       background: none;
       color: inherit;
       width: 100%; }
       .xim-loader-file .xim-loader-name input:hover {
         border-style: solid; }
   .xim-loader-file input[type="text"].ng-invalid {
-    border: 1px solid #cc3333;
+    border: 1px solid #CC3333;
     -webkit-transition: all .2s;
     -moz-transition: all .2s;
     -ms-transition: all .2s;
@@ -199,7 +199,7 @@
     margin-right: .8em;
     vertical-align: middle; }
   .xim-loader-file.xim-loader-file-success {
-    border: 1px solid #43c35b;
+    border: 1px solid #43C35B;
     padding: 1em 3.5em 1em 1.2em; }
     .xim-loader-file.xim-loader-file-success input[type="text"] {
       border: none; }
@@ -212,7 +212,7 @@
       -ms-transform: translateY(-50%);
       -o-transform: translateY(-50%);
       transform: translateY(-50%);
-      background: #43c35b;
+      background: #43C35B;
       color: #fff;
       -webkit-border-radius: 50%;
       -moz-border-radius: 50%;
@@ -227,7 +227,7 @@
   .xim-loader-file.xim-loader-file-warning {
     border: 1px solid #e6d517; }
   .xim-loader-file.xim-loader-file-error {
-    border: 1px solid #cc3333; }
+    border: 1px solid #CC3333; }
   .xim-loader-file.xim-loader-file-error .xim-loader-size {
     display: none; }
   .xim-loader-file button {
@@ -291,9 +291,9 @@
     background-position: -450px -3px; }
   .xim-loader-file-vnd\.oasis\.opendocument\.text .img-preview::before {
     background-position: -300px -3px; }
-  .xim-loader-file-msword .img-preview::before {
+  .xim-loader-file-msword .img-preview::before, .xim-loader-file-vnd\.openxmlformats-officedocument\.wordprocessingml\.document .img-preview::before {
     background-position: -200px -3px; }
-  .xim-loader-file-vnd\.ms-excel .img-preview::before {
+  .xim-loader-file-vnd\.ms-excel .img-preview::before, .xim-loader-file-vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet .img-preview::before {
     background-position: -250px -3px; }
   .xim-loader-file-vnd\.ms-powerpoint .img-preview::before, .xim-loader-file-vnd\.openxmlformats-officedocument\.presentationml\.presentation .img-preview::before {
     background-position: -350px -3px; }
@@ -352,7 +352,7 @@
     .xim-loader-list-actions .xim-uploader-selected.xim-uploader-selected:hover, .xim-loader-list-actions .xim-uploader-delete.xim-uploader-selected:hover {
       background: #8dd1c8; }
     .xim-loader-list-actions .xim-uploader-selected.xim-uploader-delete:hover, .xim-loader-list-actions .xim-uploader-delete.xim-uploader-delete:hover {
-      background: #cc3333; }
+      background: #CC3333; }
     .xim-loader-list-actions .xim-uploader-selected::before, .xim-loader-list-actions .xim-uploader-delete::before {
       font-size: 1.6rem;
       position: absolute;
@@ -555,11 +555,11 @@ input.xim-uploader {
     .uploader .retry-btn:hover {
       background: #5e7ad1; }
   .uploader .pause-btn {
-    background: #d1ac2a; }
+    background: #D1AC2A; }
     .uploader .pause-btn:hover {
       background: #a78921; }
   .uploader .resume-btn {
-    background: #22b8c1; }
+    background: #22B8C1; }
     .uploader .resume-btn::before {
       padding-left: .22em;
       font-size: 1.4rem;
@@ -592,7 +592,7 @@ input.xim-uploader {
       -o-transform: translateY(-50%);
       transform: translateY(-50%);
       transform: translateY(-50%);
-      color: #cc3333;
+      color: #CC3333;
       -webkit-animation: edit .8s 2 ease-out;
       -moz-animation: edit .8s 2 ease-out;
       -o-animation: edit .8s 2 ease-out;
@@ -628,36 +628,30 @@ input.xim-uploader {
 @-webkit-keyframes edit {
   0% {
     color: #fff; }
-
   50% {
     color: #8f2424; }
-
   100% {
     color: #fff; } }
 @-moz-keyframes edit {
   0% {
     color: #fff; }
-
   50% {
     color: #8f2424; }
-
   100% {
     color: #fff; } }
 @-o-keyframes edit {
   0% {
     color: #fff; }
-
   50% {
     color: #8f2424; }
-
   100% {
     color: #fff; } }
 @keyframes edit {
   0% {
     color: #fff; }
-
   50% {
     color: #8f2424; }
-
   100% {
     color: #fff; } }
+
+/*# sourceMappingURL=uploader_html5.css.map */
