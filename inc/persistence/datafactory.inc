@@ -48,7 +48,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');
 
-ModulesManager::file('/inc/SolrService.class.php', 'XRAM');
+ModulesManager::file('/inc/SolariumSolrService.class.php', 'XRAM');
 
 /**
 *
@@ -99,7 +99,7 @@ class DataFactory
 		);
     var $conector;
 
-	/**
+       /**
 	*
 	* Constructor de la clase
 	*
@@ -110,11 +110,11 @@ class DataFactory
 	* @return	$this
 	*
 	*/
-    function DataFactory($nodeID = null) {
-		$this->ClearError();
-		$this->nodeID = (int) $nodeID;
-		if (ModulesManager::isEnabled('XRAM'))
-		   $this->solrService = new SolrService();
+        function DataFactory($nodeID = null) {
+            $this->ClearError();
+            $this->nodeID = (int) $nodeID;
+            if (ModulesManager::isEnabled('XRAM'))
+               $this->solrService = new SolariumSolrService();
 	}
 
 	/**
@@ -324,7 +324,7 @@ class DataFactory
 				XMD_Log::warning('No se ha podido obtener el contenido de Solr. Intentando obtener contenido del sistema de ficheros');
 			}
 			else {
-				$content = 	$resultNode['content'];
+				$content = $resultNode['content'];
 			}
 		}		
 		
@@ -408,14 +408,14 @@ class DataFactory
 	*/
 	function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL) {
 		$nodo = new Node($this->nodeID);
-    	$isPlainFile = $nodo->nodeType->get('IsPlainFile');
+                $isPlainFile = $nodo->nodeType->get('IsPlainFile');
     	
-    	//only encoding the content if the node is not one of this 3.
+                //only encoding the content if the node is not one of this 3.
 		if (!$isPlainFile){
-				//look for the working encoding from Config
-				$dataEncoding = Config::getValue('dataEncoding');
-				$content = XmlBase::recodeSrc($content, $dataEncoding);
-		    }
+                    //look for the working encoding from Config
+                    $dataEncoding = Config::getValue('dataEncoding');
+                    $content = XmlBase::recodeSrc($content, $dataEncoding);
+		}
 
 		$this->ClearError();
 
@@ -425,9 +425,9 @@ class DataFactory
 		}
 		// (1) No se pasa version determinada, se incrementa la version con el contenido nuevo.
 		if (empty($versionID) && empty($subVersion)) {
-			$idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
-			$this->_generateCaches($idVersion);
-			return $idVersion;
+                    $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
+                    $this->_generateCaches($idVersion);
+                    return $idVersion;
 		}
 
 		// (2) Se pasa version determinada y se machaca el contenido de esa version.
@@ -447,15 +447,16 @@ class DataFactory
 
 			/* XRAM Module */
 			if ($result && ModulesManager::isEnabled('XRAM')) {
-				$result = $this->indexNode($idVersion, $commitNode);
-				$msg = $result ? "Node with Id Version ".$idVersion." indexed successfully" : "Error indexing node with Id Version ".$idVersion;
-				XMD_log::debug($msg);
+                            $result = $this->indexNode($idVersion, $commitNode);
+                            $msg = $result ? "Node with Id Version ".$idVersion." indexed successfully" : "Error indexing node with Id Version ".$idVersion;
+                            XMD_log::debug($msg);
 			}
 			
 			$this->_generateCaches($idVersion);
 
 			return $result;
 		}
+                
 		return false;
 	}
 
