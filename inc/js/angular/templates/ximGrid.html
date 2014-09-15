@@ -19,14 +19,14 @@
 		<table  class="simple-results">
 			<thead>
 				<th ng-repeat="field in fields"
-					ng-click="tableSort.sortByField=field.key; tableSort.reverse=!tableSort.reverse" 
-					ng-class="{sort: tableSort.sortByField == field.key, reverse: tableSort.reverse}"
+					ng-click="sort(field)" 
+					ng-class="{sort: list.query.sorts[0].field == field.target, reverse: list.query.sorts[0].order=='desc'}"
 					ng-if="!field.hide">
 					#/field.label/#
 				</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in list.data | filter:filterText | orderBy:tableSort.sortByField:tableSort.reverse"
+				<tr ng-repeat="item in list.data | filter:filterText"
 					ng-click="selectItem(item, $event)"
 					ng-right-click="contextmenu(item, $event)"
 					ng-class="{'selected': isSelected(item.nodeid)}">

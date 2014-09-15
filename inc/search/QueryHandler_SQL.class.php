@@ -123,7 +123,9 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		$query = $this->createQuery($options);
 		$rset = new DB();
 		$countQuery = preg_replace('/^select\s(.+?)\sfrom/ims', 'select count(1) as records from', $query);
+		$countQuery = preg_replace('/\sorder\sby\s(.+?)$/ims', '', $countQuery);
 //debug::log($query, $countQuery);
+		error_log($countQuery);
 		$rset->query($countQuery);
 		$records = $rset->getValue('records');
 
@@ -144,9 +146,9 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		$options['depth'] = isset($options['depth']) ? $options['depth'] : 0;
 		$options['depth'] = $options['depth'] >= 1 ? $options['depth'] : 0;
 
-		$this->select[] = "distinct n.IdNode, n.*, v.IdVersion, v.Version, v.SubVersion, concat(v.Version, '.', v.SubVersion) as VersionNumber,
+		$this->select[] = "distinct n.IdNode, n.*, t.name as NodeTypeName, v.IdVersion, v.Version, v.SubVersion, concat(v.Version, '.', v.SubVersion) as VersionNumber,
 							v.Date as VersionDate";
-		$this->joins[] = 'FastTraverse ft left join Nodes n on ft.idChild = n.idNode';
+		$this->joins[] = 'FastTraverse ft left join Nodes n on ft.idChild = n.idNode left join NodeTypes t on n.IdNodeType=t.IdNodeType';
 		$this->joins[] = 'left join
 						(select v.IdNode, max(IdVersion) as IdVersion, max(v.Version) as Version, max(v.SubVersion) as SubVersion,
 						max(v.Date) as Date
@@ -179,7 +181,6 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 			(count($this->filters) == 0 ? '' : sprintf(' and (%s)', implode(" {$options['condition']} ", $this->filters))),
 			(count($this->order) == 0 ? '' : ' order by ' . implode(', ', $this->order))
 		);
-
 		return $query;
 	}
 

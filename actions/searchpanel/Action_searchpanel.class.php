@@ -49,40 +49,46 @@ class Action_searchpanel extends ActionAbstract {
 			array(
 				'key' => 'nodeid',
 				'label' => _('Id'),
-				'type' => 'text'
+				'type' => 'text',
+				'target' => 'nodeid'
 			),
 			array(
 				'key' => 'name',
 				'label' => _('Name'),
-				'type' => 'long_text'
+				'type' => 'long_text',
+				'target' => 'Name'
 			),
 			array(
 				'key' => 'nodetype',
 				'label' => _('Nodetype'),
-				'type' => 'text'
+				'type' => 'text',
+				'target' => 'NodeTypeName'
 			),
 			array(
 				'key' => 'relpath',
 				'label' => _('Path'),
-				'type' => 'path'
+				'type' => 'path',
+				'target' => 'Path'
 			),
 			array(
 				'key' => 'creation',
 				'label' => _('Created'),
-				'type' => 'date'
+				'type' => 'date',
+				'target' => 'CreationDate'
 			),
 			array(
 				'key' => 'modification',
 				'label' => _('Modified'),
-				'type' => 'date'
+				'type' => 'date',
+				'target' => 'ModificationDate'
 			),
 			array(
 				'key' => 'versionnumber',
 				'label' => _('Version'),
-					'type' => 'text'
+				'type' => 'text',
+				'target' => 'versionnumber'
 			)
 		);
-
 		$this->render(array('fields' => json_encode($fields)), 'results', 'default-3.0.tpl');
 	}
 

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -28,6 +29,9 @@
   white-space: nowrap;
   overflow: hidden; }
 
+/*******
+//	ICON GENERIC STYLES
+*******/
 .simple-results .sort::after {
   font-family: 'ximdex_icons' !important;
   speak: none;
@@ -40,8 +44,28 @@
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
+/*******
+//	ICONS
+*******/
 .fields-selector-launcher::before {
   content: "\e61b"; }
+
+.loading_background {
+  background: #ececec url(../../../xmleditor2/gfx/loading_page/bg-loading.png) repeat;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%; }
+
+.loading_image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 238px;
+  height: 169px;
+  margin-left: -119px;
+  margin-top: -84px; }
 
 .search-query-info {
   float: right;
@@ -63,7 +87,7 @@
     word-break: break-word;
     display: block; }
   .simple-results .sort::after {
-    content: "\e619";
+    content: "";
     -webkit-transition: all  .3s ease-out;
     -moz-transition: all  .3s ease-out;
     -ms-transition: all  .3s ease-out;
@@ -153,17 +177,17 @@
     -o-transition: all .2s;
     transition: all .2s; }
   .fields-selector-launcher.opened {
-    background: #4c4c4c; }
+    background: #4C4C4C; }
 
 .results-number {
-  font-family: "Ubuntu Condensed"; }
+  font-family: "Source Sans Pro"; }
   .results-number::before {
     content: '['; }
   .results-number::after {
     content: ']'; }
 
 .fields-selector-options {
-  background: #4c4c4c;
+  background: #4C4C4C;
   /*  -webkit-transition:all linear 0.5s;
    transition:all linear 0.5s;
    opacity:1;*/
@@ -176,3 +200,5 @@
     min-width: 150px; }
   .fields-selector-options label {
     color: #fff; }
+
+/*# sourceMappingURL=searchpanel.css.map */

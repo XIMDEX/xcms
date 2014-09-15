@@ -25,14 +25,18 @@
 
 <div class="action_header" ng-cloak>
 	<h2>{t}Search results for: {/t}<span class="search-criteria">#/viewData.query.filters[0].content/#</span> <span class="results-number">#/viewData.data.length/#/#/viewData.records/#</span></h2>
+	<h2><span ng-click="downPage()" ng-hide="page<=1">&lt;</span>{t}Page{/t} #/page/# {t}of{/t} #/pages/#<span ng-click="upPage()" ng-hide="page>=pages">&gt;</span></h2>
+	
 	<div class="filter">
 		#/'ui.search.filter_by' | xI18n/#: 
-		<input type="text" ng-model="filterText"/>
+		<input type="text" ng-disabled="searching" ng-model="filterText"/>
 	</div>
 
 </div>
-
 	
 <div class="action_content fullwidth">
-	<xim-grid xim-list="viewData" xim-init-fields='{$fields}' xim-filter='filterText'><xim-grid/>
+	<div ng-show="searching" class="loading_background">
+		<img class="loading_image" src="./actions/xmleditor2/gfx/loading.gif" />
+	</div>
+	<xim-grid xim-list="viewData" xim-init-fields='{$fields}' xim-filter='filterText' xim-actual-page="page" xim-total-pages="pages" xim-up-page="upPage" xim-down-page="downPage" xim-searching="searching"><xim-grid/>
 </div>

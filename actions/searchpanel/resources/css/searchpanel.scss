@@ -27,6 +27,25 @@
   @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
   @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
 
+  .loading_background{
+    background: #ececec url(../../../xmleditor2/gfx/loading_page/bg-loading.png) repeat;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .loading_image{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 238px;
+    height: 169px;
+    margin-left: -119px;
+    margin-top: -84px;
+  }
+  
   .search-query-info{
     float: right;
     margin-top: .8em;
