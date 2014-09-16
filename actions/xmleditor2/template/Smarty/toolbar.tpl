@@ -32,7 +32,7 @@
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Save{/t}</span>
 			</button>
-            <xim-select class="tag-type btn-rounded"
+            <xim-select class="kupu-preview"
                         xim-options='{$channels}'
                         xim-label-prop="text"
                         ng-model="IdChannel"

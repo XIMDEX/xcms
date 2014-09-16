@@ -199,7 +199,7 @@ div.kupu-smalleditor {
 .kupu-tb-buttons button,
 .kupu-tb-buttons div.kupu-button,
 .kupu-toolbox-heading button,
-.kupu-floatingtoolbox-button {
+.kupu-floatingtoolbox-button, .kupu-tb-buttons .kupu-preview{
   	/*color: ButtonText;*/
   	border: 1px solid transparent;
   	height: 31px;
@@ -213,6 +213,85 @@ div.kupu-smalleditor {
   	margin-right: 3px;
   	position: relative;
   	margin-left: 1px;
+}
+
+.kupu-tb-buttons .kupu-preview{
+	position: static;
+	display: inline-block;
+	vertical-align: bottom;
+
+
+
+	.selection{
+		background: none;
+	}
+
+	.options{
+		top: 100%;
+		margin: 0;
+		list-style: none;
+		padding: .1em;
+		background: none;
+		
+		&::before{
+			content: '';
+			width: calc(100% - .2em);
+			top: 1em;
+			bottom: .2em;
+			background: #fff;
+			box-shadow: inset 0 1px 0  0 rgba(0,0,0,.2), 0 2px 1px rgba(0,0,0,.2);
+			position: absolute;
+			z-index: -1;
+		}
+		
+	}
+
+	.option{
+		padding-left: 1em;
+		transition: all .2s ease-in;
+		position: relative;
+		box-sizing: border-box;
+
+
+		&:first-child{
+			margin-top: 1em;
+			padding-top: .8em;
+			
+			&::before, &::after{
+			content: '';
+			position: absolute;
+		}
+
+		&::before{
+			width: 100%;
+			height: .35em;
+			margin-top: -.2em;
+			background: $c-mainlight;
+		}
+
+		&::after{
+			border: .5em solid transparent;
+			border-bottom-color: $c-mainlight;
+			left: .8em;
+			top: -1.1em;
+		}
+	}
+
+		&:hover{
+			background: lighten($c_grey-ll, 15%);
+
+			a{
+				color: #fff;
+			}
+		}
+
+		a{
+			font-size: 1.2em;
+			color: $c-maindark;
+
+			
+		}
+	}
 }
 
 .kupu-tb-buttons button:hover{
@@ -561,11 +640,11 @@ button.kupu-logo {
 	background-image: url("../../../gfx/zoom-in.gif");
 }
 
-.kupu-prevdoc {
+.kupu-preview {
 	background-position: -37px -76px;
 }
 
-.kupu-prevdoc:hover {
+.kupu-preview:hover {
 	background-position: -37px -118px;
 }
 

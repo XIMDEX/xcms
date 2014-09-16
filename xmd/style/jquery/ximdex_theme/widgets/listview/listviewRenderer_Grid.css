@@ -70,28 +70,37 @@ div.xim-listview-table-container div.t_fixed_header div.body{
 	overflow: visible;
 }*/
 .xim-listview-table-container {
-  margin: 0 15px; }
-  .xim-listview-table-container > div {
-    width: auto !important; }
-  .xim-listview-table-container .ui-widget-header, .xim-listview-table-container .t_fixed_header, .xim-listview-table-container .xim-listview-item, .xim-listview-table-container .ui-widget-header, .xim-listview-table-container .ui-widget-content {
-    border: none;
-    background: none; }
-  .xim-listview-table-container .headtable {
-    border: none;
-    background: none; }
-  .xim-listview-table-container .head {
-    width: 100%; }
-  .xim-listview-table-container .xim-listview-table {
-    width: 100%; }
-  .xim-listview-table-container .xim-listview-item th {
-    width: 20% !important;
-    text-transform: uppercase;
-    padding: .5em 1em;
-    font-weight: bold;
-    font-size: 1.5rem;
-    background: #7bcabf;
-    color: #d6efeb; }
-    .xim-listview-table-container .xim-listview-item th:first-child {
-      width: 30px !important; }
-  .xim-listview-table-container .xim-listview-grid-view {
-    width: 20% !important; }
+  margin: 0 15px;
+}
+.xim-listview-table-container > div {
+  width: auto !important;
+}
+.xim-listview-table-container .ui-widget-header, .xim-listview-table-container .t_fixed_header, .xim-listview-table-container .xim-listview-item, .xim-listview-table-container .ui-widget-header, .xim-listview-table-container .ui-widget-content {
+  border: none;
+  background: none;
+}
+.xim-listview-table-container .headtable {
+  border: none;
+  background: none;
+}
+.xim-listview-table-container .head {
+  width: 100%;
+}
+.xim-listview-table-container .xim-listview-table {
+  width: 100%;
+}
+.xim-listview-table-container .xim-listview-item th {
+  width: 20% !important;
+  text-transform: uppercase;
+  padding: .5em 1em;
+  font-weight: bold;
+  font-size: 1.5rem;
+  background: #7bcabf;
+  color: #d6efeb;
+}
+.xim-listview-table-container .xim-listview-item th:first-child {
+  width: 30px !important;
+}
+.xim-listview-table-container .xim-listview-grid-view {
+  width: 20% !important;
+}
