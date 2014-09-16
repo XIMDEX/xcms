@@ -40,7 +40,6 @@ ModulesManager::file('/inc/model/Versions.inc');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
 ModulesManager::file('/inc/parsers/ParsingJsGetText.class.php');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');
-ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 
 class XmlEditor_KUPU extends XmlEditor_Abstract {
@@ -78,22 +77,24 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		}
 
 		$channels = $node->getChannels();
-		$channelNames = array();
+        $channelList = array();
 		foreach ($channels as $idChannel) {
 			$channel = new Channel($idChannel);
-			$channelName = $channel->getName();
-			$channelNames[$idChannel] = $channelName;
+            $channelObj = array();
+            $channelObj["text"]=_('Preview as').' '.$channel->getName();
+			$channelObj["href"]=Config::getValue('UrlRoot')."/xmd/loadaction.php?action=prevdoc&nodeid=".$idnode."&channel=".$idChannel;
+            $channelList[]=$channelObj;
 		}
 
 		$availableViews = array('tree');
 
-		if (!$this->getXslFile($idnode, $view) || count($channels) == 0) {
+		if (!$this->getXslFile($idnode, $view) || count($channelList) == 0) {
 			$view = 'tree';
 		} else {
 			$availableViews[] = 'normal';
 		}
 
-		if ((boolean)Config::getValue('PreviewInServer') && (boolean)count($channels)) {
+		if ((boolean)Config::getValue('PreviewInServer') && (boolean)count($channelList)) {
 			$availableViews[] = 'pro';
 		}
 
@@ -120,10 +121,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			Extensions::JQUERY_PATH.'/js/fix.jquery.getters.js',
 			Extensions::JQUERY_PATH.'/js/fix.jquery.parsejson.js',
 			Extensions::JQUERY_PATH.'/plugins/jquery.json/jquery.json-2.2.min.js',
-			'/extensions/angular/angular.min.js',
-			$actionURL . '/js/angular/app.js',
-			$actionURL . '/js/angular/ximOntologyBrowser.js',
-			'/extensions/d3js/d3.v3.min.js',
 			'/inc/js/helpers.js',
 			'/inc/js/sess.js',
 			'/inc/js/collection.js',
@@ -131,7 +128,9 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			'/inc/js/ximtimer.js',
 			'/inc/js/console.js',
 			'/inc/widgets/select/js/ximdex.select.js',
-			'/inc/js/i18n.js',			
+			'/inc/js/i18n.js',
+			'/extensions/angular/angular.min.js',
+			$actionURL . '/js/angular/app.js',
 			//'/inc/js/angular/app.js',
 			'/inc/js/angular/services/xTranslate.js',
 			'/inc/js/angular/services/xBackend.js',
@@ -203,7 +202,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/tools/EditorViewTool.class.js',
 			$actionURL . '/js/tools/XimdocSpellCheckerTool.class.js',
 			$actionURL . '/js/tools/XimdocAnnotationTool.class.js',
-			$actionURL . '/js/tools/XimdocPreviewTool.class.js',
+			//$actionURL . '/js/tools/XimdocPreviewTool.class.js',
 			$actionURL . '/js/tools/ximletTool.class.js',
 			$actionURL . '/js/tools/StructuredListTool.class.js',
 			$actionURL . '/js/tools/AttributesTool.js',
@@ -230,7 +229,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/toolboxes/XimdexLogger.class.js',
 			$actionURL . '/js/toolboxes/InfoToolBox.class.js',
 			$actionURL . '/js/toolboxes/AttributesToolBox.class.js',
-			$actionURL . '/js/toolboxes/ChannelsToolBox.class.js',
+			//$actionURL . '/js/toolboxes/ChannelsToolBox.class.js',
 			$actionURL . '/js/toolboxes/ChangesetToolBox.class.js',
 			$actionURL . '/js/toolboxes/AnnotationToolBox.class.js',
 			$actionURL . '/js/toolboxes/AnnotationRdfaToolBox.class.js',
@@ -272,7 +271,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 //future		$actionURL . '/views/common/css/colorpicker.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
 			Config::getValue('UrlRoot') .'/inc/widgets/select/css/ximdex.select.css',
-			Config::getValue('UrlRoot') .'/inc/widgets/ontologyBrowser/css/ontologyBrowser.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
 			Config::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         	);
@@ -281,25 +279,14 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$kupuURL . '/common/'
 	        );
 
-
-		$_channels = array();
-		foreach ($channelNames as $channelId=>$channel) {
-			$_channels[] = sprintf("{channelId: %s, channel: '%s'}", $channelId, $channel);
-		}
 		$options = array(
 			sprintf("editor_view: '%s'", $view),
 			sprintf("rngEditorMode: '%s'", $rngEditorMode),
 			sprintf("dotdotPath: '%s'", $dotdotPath),
 			sprintf("availableViews: ['%s']", implode("','", $availableViews)),
-			sprintf("channels: [%s]", implode(',', $_channels)),
 		);
 
-		$namespaces = json_encode($this->getAllNamespaces());
-		$relTags = new RelTagsNodes();
-		$tags = json_encode($relTags->getTags($idnode));
-
 		$onloadfunctions = sprintf("kupu = startKupu({%s});", implode(", ", $options));
-
 	        $values = array('nodeid' => $idnode,
         			'xmlFile' => $xmlFile,
         			'actionUrlShowPost' => $actionUrlShowPost,
@@ -308,10 +295,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
        				'js_files' => $jsFiles,
        				'css_files' => $cssFiles,
        				'base_tags' => $baseTags,
-       				'channels' => $channelNames,
-					'on_load_functions' => $onloadfunctions,
-					'namespaces' => $namespaces,
-					'tags' => $tags
+       				'channels' => json_encode($channelList),
+				'on_load_functions' => $onloadfunctions
 				);
 
 		return $values;
@@ -755,26 +740,5 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			return false;
 		}
 	}
-
-	private function getAllNamespaces(){
-  		$result = array();
-  		//Load from Xowl Service
-  		$namespacesArray = OntologyService::getAllNamespaces();
-  		//For every namespace build an array. This will be a json object
-  		foreach ($namespacesArray as $namespace) {
-  			$array = array(
-  					"id"=>$namespace->get("idNamespace"),
-  					"type"=>$namespace->get("type"),
-  					"isSemantic"=>$namespace->get("isSemantic"),
-  					"nemo"=>$namespace->get("nemo"),
-  					"category"=>$namespace->get("category"),
-  					"uri"=>$namespace->get("uri")
-				);
-
-  			$result[] = $array;
-  		}
-  		return $result;		
-	}
 }
-
 ?>
