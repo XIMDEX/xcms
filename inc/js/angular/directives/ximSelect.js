@@ -32,7 +32,10 @@ angular.module('ximdex.common.directive')
                 selProp: '@ximSelProp',
                 styleProp: '@ximStyleProp',
                 labelProp: '@ximLabelProp',
-                disabled: '=ximDisabled'
+                disabled: '=ximDisabled',
+                menu: '=ximMenu',
+                style: '=ximStyle',
+                labelHref: '=ximLabelHref'
             },
             templateUrl: base_url+'/inc/js/angular/templates/ximSelect.html',
             restrict: 'E',

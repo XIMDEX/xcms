@@ -1,187 +1,238 @@
 rect {
   pointer-events: all;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .node rect.isLeaf {
   fill: #acafbb;
-  fill-opacity: .3; }
-  .node rect.isLeaf + rect.isLeaf {
-    fill-opacity: 1; }
+  fill-opacity: .3;
+}
+.node rect.isLeaf + rect.isLeaf {
+  fill-opacity: 1;
+}
 
 .node rect.hasChild {
   fill: #acafbb;
-  fill-opacity: .8; }
-  .node rect.hasChild + rect.hasChild {
-    fill-opacity: 1; }
+  fill-opacity: .8;
+}
+.node rect.hasChild + rect.hasChild {
+  fill-opacity: 1;
+}
 
 .selector {
-  fill: #acafbb; }
+  fill: #acafbb;
+}
 
 .node rect.added {
   cursor: pointer;
   fill: #2fb7a4;
-  font-weight: bold; }
-  .node rect.added + rect.added {
-    fill-opacity: .5; }
+  font-weight: bold;
+}
+.node rect.added + rect.added {
+  fill-opacity: .5;
+}
 
 .node text:hover {
   font-weight: normal !important;
-  fill: #006b6c; }
+  fill: #006b6c;
+}
 
 .node text.action {
-  font-weight: bold; }
+  font-weight: bold;
+}
 
 path.link {
   fill: none;
   stroke: none;
   /*stroke: #9ecae1;
-  stroke-width: 1.5px;*/ }
+  stroke-width: 1.5px;*/
+}
 
 .node circle {
   cursor: pointer;
   fill: #2fb7a4;
   stroke: #2fb7a4;
-  stroke-width: 1.5px; }
-  .node circle:focus {
-    stroke-width: 2.5px; }
-  .node circle.isLeaf {
-    fill: #fff; }
-  .node circle.hasChild:hover {
-    fill: #41ceba;
-    stroke: #41ceba; }
-  .node circle.isLeaf:hover {
-    fill: #41ceba; }
+  stroke-width: 1.5px;
+}
+.node circle:focus {
+  stroke-width: 2.5px;
+}
+.node circle.isLeaf {
+  fill: #fff;
+}
+.node circle.hasChild:hover {
+  fill: #41ceba;
+  stroke: #41ceba;
+}
+.node circle.isLeaf:hover {
+  fill: #41ceba;
+}
 
 .node text {
   color: #990000;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .node text.added {
   fill: #006b6c;
   cursor: pointer;
-  position: relative; }
-  .node text.added::before {
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: #000;
-    content: ""; }
+  position: relative;
+}
+.node text.added::before {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #000;
+  content: "";
+}
 
 path.link {
   fill: none;
   stroke: #AAA;
-  stroke-width: 1.5px; }
+  stroke-width: 1.5px;
+}
 
 /***
 ** Ontology browser
 ***/
 .ontology-browser-container {
   background: #fff;
-  width: 100%; }
-  .ontology-browser-container a {
-    display: inline-block;
-    width: 49%;
-    padding: .6em 2em .6em 3em; }
-    .ontology-browser-container a::before {
-      font-size: 1.4em !important;
-      line-height: 1.6em !important;
-      width: 1.5em !important;
-      background: #e32e3f !important; }
-  .ontology-browser-container .ontology-browser {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 5;
-    min-height: 100%; }
-    .kupu-fulleditor .ontology-browser-container .ontology-browser {
-      top: 3.5em;
-      bottom: 0; }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser .treeViewer {
-        max-height: calc(100% - 8em); }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser h3 {
-        margin-top: 0; }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser .ontology-close, .kupu-fulleditor .ontology-browser-container .ontology-browser .close {
-        border: none;
-        right: 1em;
-        top: 2.5em;
-        width: 1em; }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser .ontology-close {
-        background: #7bcabf; }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser .close {
-        right: -1em;
-        top: .7em;
-        cursor: pointer; }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox {
-        right: 2.3em; }
-        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox h1 {
-          margin: 0; }
-        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox p {
-          margin: 0; }
-        .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action {
-          padding: .5em;
-          text-align: center; }
-          .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action:hover {
-            background: #7bcabf;
-            border-bottom: #b2e0d9;
-            color: #fff; }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser .selectbox-tree {
-        display: inline-block;
-        margin-left: 2em; }
-      .kupu-fulleditor .ontology-browser-container .ontology-browser a {
-        cursor: pointer; }
-  .ontology-browser-container .treeViewer, .ontology-browser-container .textViewer {
-    background: #fff;
-    position: relative;
-    overflow: auto;
-    margin: 2em 2em 0 2em; }
-    .ontology-browser-container .treeViewer h3, .ontology-browser-container .textViewer h3 {
-      padding: 1.1em 2em .8em;
-      background: #7bcabf;
-      color: #fff; }
-  .ontology-browser-container .ontology-close {
-    position: absolute;
-    right: 3em;
-    top: 2.2em;
-    background: none !important;
-    cursor: pointer; }
-    .ontology-browser-container .ontology-close:hover, .ontology-browser-container .ontology-close:hover ::before, .ontology-browser-container .ontology-close::before {
-      background: none !important; }
-  .ontology-browser-container .infobox {
-    position: absolute;
-    display: none;
-    top: 5.5em;
-    right: 4em;
-    padding: 1em;
-    background-color: #4c4c4c;
-    color: white;
-    z-index: 6;
-    width: 25%; }
-    .ontology-browser-container .infobox h1 {
-      font-size: 1em;
-      text-transform: uppercase;
-      color: #7bcabf; }
-    .ontology-browser-container .infobox p {
-      max-height: 400px;
-      overflow: auto;
-      padding: 1em 0; }
-    .ontology-browser-container .infobox ul {
-      list-style: disc;
-      padding-left: 1.2em; }
-    .ontology-browser-container .infobox li {
-      padding: .2em 0; }
-    .ontology-browser-container .infobox button {
-      margin: 0;
-      border: none; }
-    .ontology-browser-container .infobox .close {
-      position: absolute;
-      right: 0;
-      top: .3em;
-      cursor: pointer;
-      background: none !important; }
-      .ontology-browser-container .infobox .close:hover, .ontology-browser-container .infobox .close::before {
-        background: none !important; }
-  .ontology-browser-container .hidden {
-    visibility: hidden; }
+  width: 100%;
+}
+.ontology-browser-container a {
+  display: inline-block;
+  width: 49%;
+  padding: .6em 2em .6em 3em;
+}
+.ontology-browser-container a::before {
+  font-size: 1.4em !important;
+  line-height: 1.6em !important;
+  width: 1.5em !important;
+  background: #e32e3f !important;
+}
+.ontology-browser-container .ontology-browser {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 5;
+  min-height: 100%;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser {
+  top: 3.5em;
+  bottom: 0;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .treeViewer {
+  max-height: -webkit-calc(100% - 8em);
+  max-height: calc(100% - 8em);
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser h3 {
+  margin-top: 0;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .ontology-close, .kupu-fulleditor .ontology-browser-container .ontology-browser .close {
+  border: none;
+  right: 1em;
+  top: 2.5em;
+  width: 1em;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .ontology-close {
+  background: #7bcabf;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .close {
+  right: -1em;
+  top: .7em;
+  cursor: pointer;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .infobox {
+  right: 2.3em;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .infobox h1 {
+  margin: 0;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .infobox p {
+  margin: 0;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action {
+  padding: .5em;
+  text-align: center;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action:hover {
+  background: #7bcabf;
+  border-bottom: #b2e0d9;
+  color: #fff;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser .selectbox-tree {
+  display: inline-block;
+  margin-left: 2em;
+}
+.kupu-fulleditor .ontology-browser-container .ontology-browser a {
+  cursor: pointer;
+}
+.ontology-browser-container .treeViewer, .ontology-browser-container .textViewer {
+  background: #fff;
+  position: relative;
+  overflow: auto;
+  margin: 2em 2em 0 2em;
+}
+.ontology-browser-container .treeViewer h3, .ontology-browser-container .textViewer h3 {
+  padding: 1.1em 2em .8em;
+  background: #7bcabf;
+  color: #fff;
+}
+.ontology-browser-container .ontology-close {
+  position: absolute;
+  right: 3em;
+  top: 2.2em;
+  background: none !important;
+  cursor: pointer;
+}
+.ontology-browser-container .ontology-close:hover, .ontology-browser-container .ontology-close:hover ::before, .ontology-browser-container .ontology-close::before {
+  background: none !important;
+}
+.ontology-browser-container .infobox {
+  position: absolute;
+  display: none;
+  top: 5.5em;
+  right: 4em;
+  padding: 1em;
+  background-color: #4c4c4c;
+  color: white;
+  z-index: 6;
+  width: 25%;
+}
+.ontology-browser-container .infobox h1 {
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #7bcabf;
+}
+.ontology-browser-container .infobox p {
+  max-height: 400px;
+  overflow: auto;
+  padding: 1em 0;
+}
+.ontology-browser-container .infobox ul {
+  list-style: disc;
+  padding-left: 1.2em;
+}
+.ontology-browser-container .infobox li {
+  padding: .2em 0;
+}
+.ontology-browser-container .infobox button {
+  margin: 0;
+  border: none;
+}
+.ontology-browser-container .infobox .close {
+  position: absolute;
+  right: 0;
+  top: .3em;
+  cursor: pointer;
+  background: none !important;
+}
+.ontology-browser-container .infobox .close:hover, .ontology-browser-container .infobox .close::before {
+  background: none !important;
+}
+.ontology-browser-container .hidden {
+  visibility: hidden;
+}
