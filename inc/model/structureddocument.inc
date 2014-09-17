@@ -372,7 +372,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	// Obtiene la lista de canales del structure document actual.
 	function GetChannels() {
-		$sql = sprintf("SELECT IdChannel FROM RelStrDocChannels" .
+		$sql = sprintf("SELECT DISTINCT(IdChannel) FROM RelStrDocChannels" .
 				" WHERE IdDoc = %d", $this->get('IdDoc'));
 	 	$dbObj = new DB();
 		$dbObj->Query($sql);
