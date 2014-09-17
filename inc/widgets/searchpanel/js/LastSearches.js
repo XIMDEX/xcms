@@ -39,7 +39,10 @@
 					template: '<li>%s</li>'
 				},
 				options,
-				{unique: false}
+				{
+					unique: false
+				},
+				{maxSize:10}
 			);
 
 			this.key = 'last.searches';
@@ -66,6 +69,9 @@
 					this.container.trigger('last-searches-select', [item.query]);
 				}.bind(this));
 			this.container.prepend(li);
+			if(this.container.children().length>10){
+				this.container.children().last().remove();
+			}
 		},
 
 		refreshContainer: function() {

@@ -53,35 +53,48 @@ angular.module('ximdex.common.directive')
                 $scope.pages=$attrs.ximList.pages;
                 $scope.searching=false;
 
+                $scope.JSONtoParams = function (json){
+                	var res={action:"browser3",
+                                handler:"SQL",
+                                method:"search",
+                                output:"JSON"};
+                	for (var i in json) {
+				      	if(json.hasOwnProperty(i)){
+					      	if(typeof json[i] != 'string' & isNaN(json[i])){
+					      		for (var j in json[i]) {
+					      			if(json[i].hasOwnProperty(j)){
+								      	if(typeof json[i][j] != 'string' & isNaN(json[i][j])){
+								      		for (var k in json[i][j]) {
+								      			if(json[i][j].hasOwnProperty(k)){
+									      			if(typeof json[i][j][k] == 'string' || !isNaN(json[i][j][k])){
+											      		res['query['+i+']['+j+']['+k+']']=json[i][j][k];
+											      	}
+										      	}
+										   	}
+								      	}else{
+								      		res['query['+i+']['+j+']']=json[i][j];
+								      	}
+								    }
+							   	}
+					      	}else{
+					      		res['query['+i+']']=json[i];
+					      	}
+					    }
+				   	}
+				   	
+				   	return res;
+                }
+
                 $scope.updateGrid = function(page) {
                     
                     $scope.searching=true;
                     $scope.showFieldsSelector=false;
-
+                    $attrs.ximList.query.page=$scope.page;
                     $http(
                         {
                             url:url,
                             method:'POST',
-                            params:{
-                                action:"browser3",
-                                handler:"SQL",
-                                method:"search",
-                                output:"JSON",
-                                'query[condition]': $attrs.ximList.query.condition,
-                                'query[depth]':$attrs.ximList.query.depth,
-                                'query[filters][0][comparation]':$attrs.ximList.query.filters[0].comparation,
-                                'query[filters][0][content]':$attrs.ximList.query.filters[0].content,
-                                'query[filters][0][field]':$attrs.ximList.query.filters[0].field,
-                                'query[filters][1][comparation]':$attrs.ximList.query.filters[1].comparation,
-                                'query[filters][1][content]':$attrs.ximList.query.filters[1].content,
-                                'query[filters][1][field]':$attrs.ximList.query.filters[1].field,
-                                'query[items]':$attrs.ximList.query.items,
-                                'query[page]':$scope.page,
-                                'query[parentid]':$attrs.ximList.query.parentid,
-                                'query[sorts][0][field]':$attrs.ximList.query.sorts[0].field,
-                                'query[sorts][0][order]':$attrs.ximList.query.sorts[0].order,
-                                'query[view]':$attrs.ximList.query.view
-                            }
+                            params:$scope.JSONtoParams($attrs.ximList.query)
                         }).
                         success(function(data, status, headers, config) {
                           $scope.filterText="";

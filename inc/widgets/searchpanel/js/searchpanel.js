@@ -52,8 +52,8 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			this.element.dialog({
 				title: _('Search'),
 				autoOpen: false,
-				width: 900,
-				height: 600,
+				width: 1100,
+				height: 750,
 				minWidth: 630,
 				minHeight: 280,
 				modal: false,
@@ -277,7 +277,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			if (addToLastSearches !== false) {
 				var search = this.as.getLastQuery();
 				var f = search.getFilters();
-				var title = '%s %s %s ...'.printf(f[0].field, f[0].comparation, f[0].content);
+				var title = '%s %s %s'.printf(f[0].field, f[0].comparation, f[0].content);
 				this.ls.add(title, search.getQuery(this.options.inputFormat));
 			}
 		},

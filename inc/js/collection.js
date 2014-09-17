@@ -31,7 +31,7 @@
 		collection: null,
 		
 		_init: function(options) {
-			this.options = options || {unique: false};
+			this.options = options || {unique: false,maxSize:-1};
 			this.options.unique = Object.isBoolean(this.options.unique) ? this.options.unique : false;
 			// NOTE: You can overwrite the comparation method to your needs
 			this.contains = (Object.isFunction(this.options.contains) ? this.options.contains.bind(this) : null) || this.contains;
@@ -43,6 +43,9 @@
 				return this;
 			}
 			this.collection.push(item);
+			if(this.options.maxSize>=0 && this.collection.length>this.options.maxSize){
+				this.collection.shift();
+			}
 			return this;
 		},
 		

@@ -88,11 +88,30 @@
 				}.bind(this)
 			);
 		},
-		
+
+		_showLoading: function() {
+
+			if ($('.xim-listview-loading').length > 0) return;
+
+			var container = $('<div></div>')
+				.addClass('xim-listview-loading');
+			var loading = $('<img></img>')
+				.attr('src', X.baseUrl + '/actions/browser3/resources/images/loading.gif');
+			$('.results-view').fadeTo(500, 0.3);
+			$('#loading').append(container.append(loading));
+		},
+
+		_hideLoading: function() {
+			$('.results-view').fadeTo(500, 1);
+			if ($('.xim-listview-loading').length == 0) return;
+			$('.xim-listview-loading').remove();
+		},
+
 		execFilter: function(event, filterId) {
 			if (filterId.type != undefined){
 				filterId = event;			
 			}
+			this._showLoading();
 			this.ds.load_data({
 					params: {filterid: filterId},
 					options: this.options
@@ -101,6 +120,7 @@
 					var results = store.get_model();
 					var query = store.source.query;
 					this.container.trigger('saved-searches-select', [store.source, results, query]);
+					this._hideLoading();
 				}.bind(this)
 			);
 		}

@@ -9917,3 +9917,12 @@ msgstr "Para borrar este nodo se ha de romper el enlace con el/los siguiente/s n
 
 msgid "Edit HTML"
 msgstr "Editar HTML"
+
+msgid "Search results for: "
+msgstr "Resultados de búsqueda para: "
+
+msgid "Page"
+msgstr "Página"
+
+msgid "Show"
+msgstr "Mostrar"

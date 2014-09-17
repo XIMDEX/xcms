@@ -77,8 +77,8 @@
 				$span = $("<span/>").html(source.records);
 				$div.append($span);
 				this.element.append($div);
-
-				$('.xim-search-panel .searchpanel-paginator')
+				$('.xim-search-panel.searchpanel-paginator').paginator();
+				$('.xim-search-panel.searchpanel-paginator')
 					.paginator('loadOptions', {
 						pages: parseInt(source.pages),
 						selected: parseInt(source.page)
