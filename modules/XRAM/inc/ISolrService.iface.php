@@ -33,12 +33,13 @@ interface ISolrService
      *
      * <p>Indexes a node version in Solr identified by the version id</p>
      *
-	 *
+     *
      * @param string|int $idVersion The id of the node version to be indexed
+     * @param string $content The content of the node
      * @param boolean $commitNode Boolean indicating if a commit needs to be performed after the indexing process
      *
      */
-    public function indexNode($idVersion, $commitNode = true);
+    public function indexNode($idVersion, $content, $commitNode = true);
     
     /**
      * <p>Retrieves an specific version of a node</p>

@@ -45,8 +45,11 @@ Solarium_Autoloader::register();
  */
 class SolariumSolrService implements ISolrService
 {
-
+    const INDEX_MODE_STRICT = "strict";
+    const INDEX_MODE_DEFAULT = "default";
+    
     private $solrClient;
+    private $indexMode;
 
     /**
      *
@@ -64,17 +67,19 @@ class SolariumSolrService implements ISolrService
      * @param string $solrCorePath The path to the Solr Core to be used
      *
      */
-    public function __construct($solrServer = null, $solrPort = null, $solrCorePath = null)
+    public function __construct($solrServer = null, $solrPort = null, $solrCorePath = null, $indexMode = SolariumSolrService::INDEX_MODE_DEFAULT)
     {
     	if(is_null($solrServer) && is_null($solrPort) && is_null($solrCorePath)) {
             $solrServer = Config::GetValue("SolrServer");
             $solrPort = Config::GetValue("SolrPort");
             $solrCorePath = Config::GetValue("SolrCorePath");
+            $indexModeConfig = Config::GetValue("XRAMIndexMode");
             /* Config checkings */
             $solrServer = !empty($solrServer) ? $solrServer : "localhost";
             $solrPort = !empty($solrPort) ? $solrPort : 8983;
             $solrCorePath = !empty($solrCorePath) ? $solrCorePath : "/solr/collection1";
             $solrCorePath = substr($solrCorePath,0,1) !== '/' ? '/'.$solrCorePath : $solrCorePath;
+            $this->indexMode = !empty($indexModeConfig) ? $indexModeConfig : $indexMode;
         }
 		
         $options = array(
@@ -88,16 +93,17 @@ class SolariumSolrService implements ISolrService
         $this->solrClient = new Solarium_Client($options);
     }
 
-	/**
+    /**
      *
      * <p>Indexes a node version in Solr identified by the version id</p>
      *
-	 *
+     *
      * @param string|int $idVersion The id of the node version to be indexed
+     * @param string $content The content of the node
      * @param boolean $commitNode Boolean indicating if a commit needs to be performed after the indexing process
      *
      */
-    public function indexNode($idVersion, $commitNode = true) {
+    public function indexNode($idVersion, $content, $commitNode = true) {
 
             $version = new Version($idVersion);
             if (!($version->get('IdVersion') > 0)) {
@@ -107,12 +113,6 @@ class SolariumSolrService implements ISolrService
             $node = new Node($version->get('IdNode'));
             if (!($node->get('IdNode') > 0)) {
 		$this->Debug('Se ha solicitado indexar una versión de un nodo que no existe');
-		return false;
-            }
-            $filePath = XIMDEX_ROOT_PATH . Config::GetValue('FileRoot') . "/" . $version->get('File');
-            $content = FsUtils::file_get_contents($filePath);
-            if (empty($content)) {
-		XMD_Log::debug("Aborting node indexing identified by version id $versionid: Empty content");
 		return false;
             }
 		
@@ -196,9 +196,9 @@ class SolariumSolrService implements ISolrService
             }
 		
             $doc = array_pop($queryResponse->getDocuments());
-            $doc['content'] = base64_decode($doc['content']);
-		
-            return $doc;
+            
+            $res = array('id' => $doc['id'], 'content' => base64_decode($doc['content']));
+            return $res;
         }
         catch(Exception $e) {
             XMD_Log::debug($e->getMessage());

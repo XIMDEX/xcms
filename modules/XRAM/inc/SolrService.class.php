@@ -86,12 +86,13 @@ class SolrService implements ISolrService
      *
      * <p>Indexes a node version in Solr identified by the version id</p>
      *
-	 *
+     *
      * @param string|int $idVersion The id of the node version to be indexed
+     * @param string $content The content of the node
      * @param boolean $commitNode Boolean indicating if a commit needs to be performed after the indexing process
      *
      */
-    public function indexNode($idVersion, $commitNode = true) {
+    public function indexNode($idVersion, $content, $commitNode = true) {
 
 	$version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
@@ -101,12 +102,6 @@ class SolrService implements ISolrService
         $node = new Node($version->get('IdNode'));
 	if (!($node->get('IdNode') > 0)) {
             $this->Debug('Se ha solicitado indexar una versión de un nodo que no existe');
-            return false;
-        }
-	$filePath = XIMDEX_ROOT_PATH . Config::GetValue('FileRoot') . "/" . $version->get('File');
-	$content = FsUtils::file_get_contents($filePath);
-	if (empty($content)) {
-            XMD_Log::debug("Aborting node indexing identified by version id $versionid: Empty content");
             return false;
         }
 		
