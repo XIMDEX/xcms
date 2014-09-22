@@ -9926,3 +9926,6 @@ msgstr "Página"
 
 msgid "Show"
 msgstr "Mostrar"
+
+msgid "Modify your account"
+msgstr "Modifica tu cuenta"

@@ -75,19 +75,36 @@
            <h1><img src="{$_URL_ROOT}/xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}" title="{t}Semantic content management with Ximdex{/t}" id="logo" /></h1>
             <div class="session-info">
 	           <!-- <img class="login-img" src="{$_URL_ROOT}/xmd/images/user_48.png" border="0" alt="Login" title="Login"/>-->
-	            <div class="language"><span class="current-language icon">{$user_locale.Lang}</span>
-	            <div class="selector_language">
-	            	<ul>
-							{section name=i loop=$locales}
-							<li {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected icon" {/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})
-							<input type="hidden" name="language" value="{$locales[i].Code}" />
-							</li>
-							{/section}
-	            	</ul>
+	            <div class="language">
+		            <div class="menu-header">
+		            	<span class="current-language icon">{$user_locale.Lang}</span>
+	            		<span class="login-name session-info-text">{$loginName}</span>
+	            	</div>
+	            	<div class="user-menu">
+		            	<ul>
+								<li>
+									<a target="_blank" href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
+								</li>
+								<li>
+									<a data-command="modifyuser" data-params="nodes[]={$userID}&nodeid={$userID}&method=index">{t}Modify your account{/t}</a>
+								</li>
+								<li>
+									<a>{t}Language{/t}</a>
+						            <ul class="selector_language">
+										{section name=i loop=$locales}
+											<li {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected icon" {/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})
+												<input type="hidden" name="language" value="{$locales[i].Code}" />
+											</li>
+										{/section}
+						            </ul>
+								</li>
+								<li>
+									<a target="_blank" href="https://github.com/XIMDEX/ximdex/wiki">{t}Help{/t}</a>
+								</li>
+								<li><a href="{$_URL_ROOT}/xmd/loadaction.php?action=logout">{t}Logout{/t}</a></li>
+		            	</ul>
+		            </div>
 	            </div>
-	            	<span class="session-info-text login-name">{$loginName}</span>
-	            </div>
-	            <a class="session-info-text session-logout" href="{$_URL_ROOT}/xmd/loadaction.php?action=logout">{t}Logout{/t}</a>
             </div>
 			<spotlight id="mini-spotlight" />
 		</div>

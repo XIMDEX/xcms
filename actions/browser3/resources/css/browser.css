@@ -25,7 +25,7 @@
 /*******
 //	ICON GENERIC STYLES
 *******/
-.selector_language li.selected::before {
+.user-menu li.selected::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
   font-style: normal;
@@ -40,7 +40,7 @@
 /*******
 //	ICONS
 *******/
-.selector_language li.selected::before {
+.user-menu li.selected::before {
   content: "\79"; }
 
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -117,7 +117,7 @@ strong {
   width: 100%;
   height: 100%;
   background-color: #fff;
-  background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom, url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, white;
+  background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom, url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
   overflow: auto; }
 
 #ximdex-splash .loading {
@@ -157,7 +157,7 @@ strong {
   font-size: 25px;
   font-size: 2.5rem;
   text-transform: none;
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.4), 0 -2px 1px rgba(0, 0, 0, 0.1), 0 0 2px white;
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.4), 0 -2px 1px rgba(0, 0, 0, 0.1), 0 0 2px #FFFFFF;
   margin: 0 0 0.72em 2%;
   color: #898989; }
 
@@ -268,9 +268,12 @@ button::-moz-focus-inner {
   margin-right: 1em;
   z-index: 2; }
 
-.session-info .language::after {
-  content: ' | ';
-  padding-left: 1em; }
+.login-name {
+  position: relative;
+  margin-right: .8em;
+  display: inline-block;
+  width: 3.5em;
+  height: 3em; }
 
 .current-language {
   position: relative;
@@ -293,7 +296,7 @@ button::-moz-focus-inner {
     color: #e8e8e8;
     margin-top: -0.10em; }
 
-.selector_language {
+.user-menu {
   display: none;
   white-space: nowrap;
   -webkit-border-radius: 3px;
@@ -303,25 +306,31 @@ button::-moz-focus-inner {
   -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
-  z-index: 3;
+  z-index: 4;
   background: #fff;
-  color: #888888;
+  color: #888;
   padding: 1em 1.7em 1em 1.5em; }
-  .selector_language li {
+  .user-menu li {
     cursor: pointer;
     padding: .8em .8em .8em 1.6em;
-    border-top: 1px dotted #cccccc;
+    border-top: 1px dotted #ccc;
     position: relative; }
-    .selector_language li:hover {
-      color: #7bcabf; }
-    .selector_language li.selected::before {
+    .user-menu li.selected::before {
       position: absolute;
       left: 0; }
-  .selector_language li:first-child {
+  .user-menu li a {
+    color: #888; }
+    .user-menu li a:hover {
+      color: #7bcabf; }
+  .user-menu li ul li {
+    color: #888; }
+    .user-menu li ul li:hover {
+      color: #7bcabf; }
+  .user-menu li:first-child {
     border-top: none; }
-  .selector_language .selected {
+  .user-menu .selected {
     color: #7bcabf; }
-  .selector_language::before {
+  .user-menu::before {
     content: '';
     display: block;
     position: absolute;
@@ -330,8 +339,10 @@ button::-moz-focus-inner {
     top: -12px;
     left: 1em; }
 
-.current-language:hover + .selector_language, .selector_language:hover {
+.menu-header:hover + .user-menu, .user-menu:hover {
   display: block;
   position: absolute;
   top: 2em;
-  left: -1em; }
+  left: -0.5em; }
+
+/*# sourceMappingURL=browser.css.map */

@@ -70,6 +70,7 @@ class Action_browser3 extends ActionAbstract {
 
 		$values = array(
 			'params' => $params,
+			'userID' => $userID,
 			'time_id'	=> time()."_".XSession::get('userID'), /* For uid for scripts */
 			'loginName' => $loginName,
 			'user_locale' => $user_locale,

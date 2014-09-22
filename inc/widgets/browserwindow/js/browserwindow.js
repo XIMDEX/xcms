@@ -146,7 +146,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 			
 			//contextmenu in logo
-			$('.xim-contextmenu-container',  this.element).contextmenu();
+			//$('.xim-contextmenu-container',  this.element).contextmenu();
 
 			this.registerTriggers();
 			this.registerEvents();

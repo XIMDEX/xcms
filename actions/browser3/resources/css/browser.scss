@@ -299,9 +299,12 @@ strong{
 		z-index: 2;
 	}
 
-	.session-info .language::after{
-		content: ' | ';
-		padding-left: 1em;
+	.login-name{
+		position: relative;
+		margin-right: .8em;
+		display: inline-block;
+		width: 3.5em;
+		height: 3em;
 	}
 
 	.current-language{
@@ -330,7 +333,7 @@ strong{
 		}
 	}
 		
-	.selector_language{
+	.user-menu{
 		display: none;
 		white-space: nowrap;
 		-webkit-border-radius: 3px;
@@ -340,7 +343,7 @@ strong{
 		-moz-box-shadow: 0 2px 0 rgba(0,0,0,.3);
 		-webkit-box-shadow: 0 2px 0 rgba(0,0,0,.3);
 		box-shadow: 0 2px 0 rgba(0,0,0,.3);
-		z-index: 3;
+		z-index: 4;
 		background:#fff;
 		color: $c_grey-p;
 		padding: 1em 1.7em 1em 1.5em;
@@ -349,9 +352,6 @@ strong{
 			padding: .8em .8em .8em 1.6em;
 			border-top: 1px dotted $c_grey-pp;
 			position: relative;
-			&:hover{
-				color: $c_mainlight;
-			}
 
 			&.selected::before{
 				@extend %icon;
@@ -361,6 +361,20 @@ strong{
 				left: 0;
 			}
 		}
+		li a{
+			color: $c_grey-p;
+			&:hover{
+				color: $c_mainlight;
+			}
+		}
+
+		li ul li{
+			color: $c_grey-p;
+			&:hover{
+				color: $c_mainlight;
+			}
+		}
+
 
 		li:first-child{
 			border-top: none;
@@ -384,10 +398,9 @@ strong{
 
 	}
 
-	.current-language:hover + .selector_language, .selector_language:hover{
+	.menu-header:hover + .user-menu, .user-menu:hover{
 		display: block;
 		position: absolute;
 		top: 2em;
-		left: -1em;
+		left: -0.5em;
 	}
-
