@@ -38,6 +38,16 @@ ximdexInstallerApp.controller('SettingController', ["$timeout", '$scope', 'insta
     $scope.anonymous_information = "1";
     $scope.minLengthMessage = "Password length minimun: 6";
     $scope.minLenghtFail = false;
+    $scope.localhash=false;
+
+    $scope.init = function(){
+        installerService.sendAction("setId").then(function(response) {
+            $scope.localhash=response.data.localhash;
+        });
+    }
+
+    $scope.init();
+
     $scope.checkForm = function(){
         var params = "pass="+$scope.pass;
         params += "&language="+$scope.language;
@@ -47,7 +57,6 @@ ximdexInstallerApp.controller('SettingController', ["$timeout", '$scope', 'insta
                     if (response.data.success){
                         location.reload();
                     }
-    
             });
         }else{
             $scope.minLenghtFail = true;

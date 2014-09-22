@@ -54,7 +54,6 @@ class WelcomeInstallStep extends GenericInstallStep {
 
 	public function hasErrors(){
 		$checks = $this->installManager->initialChecking();
-		$checks = $this->installManager->initialChecking();
 		$errors = array();
 		foreach ($checks as $check) {
 			if ($check["state"] == "error"){

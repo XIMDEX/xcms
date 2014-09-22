@@ -32,6 +32,7 @@
 	<div class="form_item  form_item--user full-width">
 	<label for="">User</label>
 	<span class="user">ximdex</span></div>
+	<p ng-show="localhash">There are problems with your internet connection. Local id generated.</p>
 	<p class="errors" ng-show="minLenghtFail">{{minLengthMessage}}</p>	
 	<div class="form_item">
 		<label for="password">Password</label>

@@ -412,5 +412,11 @@ class InstallManager {
 		$result = isset($response["data"])? $response["data"] : $hostName.uniqid($hostName);
 		Config::update("ximid",$result);
 	}
+
+	public function setLocalXid(){
+		$hostName = $_SERVER["HTTP_HOST"];
+		$uniqid=$hostName."_".uniqid();
+		Config::update("ximid",$uniqid);
+	}
 }
 ?>
