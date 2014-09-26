@@ -156,7 +156,7 @@ function start_tour(command) {
 	}
     },//4
     {
-	"name" 		: "button.kupu-prevdoc",		
+	"name" 		: "div.kupu-preview",		
 	"position"	: "TL",
 	"scope"		: "editor"
     },//5
