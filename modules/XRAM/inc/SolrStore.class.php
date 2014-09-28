@@ -34,7 +34,7 @@ require_once('SolariumSolrService.class.php');
 
 /**
  * <p>SolrStore class</p>
- * <p>Manages the storing of nodes in Solr</p>
+ * <p>Manages the CRUD operations of nodes using Solr as backend</p>
  * 
  */
 class SolrStore implements Store
@@ -45,6 +45,23 @@ class SolrStore implements Store
     {
         $this->solrService = new SolariumSolrService();
     }
+    
+    /**
+     * <p>Sets the instace of <code>ISolrService</code> used to communicates with Solr</p>
+     * @param ISolrService $solrService the ISolrService instance to be used
+     */
+    public function setSolrService(ISolrService $solrService) {
+        $this->solrService = $solrService;
+    }
+    
+    /**
+     * <p>Gets the <code>ISolrService</code> instance being used to interact with Solr
+     * @return ISolrService the instance being used
+     */
+    public function getSolrService() {
+        return $this->solrService;
+    }
+    
     /**
      * <p>Gets the node content from the specified version id in the file system</p>
      * 
@@ -80,10 +97,10 @@ class SolrStore implements Store
     {
         $df = new DataFactory($nodeId);
         $idVersion = $df->getVersionId($versionId,$subversion);
-	$result = $this->indexNode($idVersion, $content, $commitNode);
+	$result = $this->indexNode($idVersion, $content);
 	$msg = $result ? "Node with Id Version ".$idVersion." indexed successfully" : "Error indexing node with Id Version ".$idVersion;
 	XMD_log::debug($msg);
-	
+        
         return $result;
     }
 

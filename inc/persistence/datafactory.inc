@@ -39,8 +39,8 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');
 
-ModulesManager::file('/inc/persistence/store/FileSystemStore.class.php');
-ModulesManager::file('/inc/SolrStore.class.php', 'XRAM');
+ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');
+
 
 /**
 *
@@ -96,8 +96,8 @@ class DataFactory
      *
      * Constructor de la clase
      *
-     * @name		DataFactory
-     * @author 	Jose I. Villar
+     * @name	DataFactory
+     * @author 	Ximdex
      * @version	1.0
      * @param	int $nodeID=null (opcional) Identificador del Nodo cargado en el objeto
      * @return	$this
@@ -106,8 +106,8 @@ class DataFactory
      function DataFactory($nodeID = null) {
         $this->ClearError();
         $this->nodeID = (int) $nodeID;
-        
-        $this->store = new FileSystemStore();
+        $storeFactory = new StoreFactory();
+        $this->store = $storeFactory->getDefaultStore();
      }
 
 	/**
@@ -482,6 +482,8 @@ class DataFactory
 			$userID = "301"; // ximdex admin
 		}
 
+                $uniqueName = $this->_getUniqueFileName();
+                
 		$version = new Version();
 		$version->set('IdNode', $this->nodeID);
 		$version->set('Version', $newVersion);
@@ -495,7 +497,8 @@ class DataFactory
 
                 $result = $this->store->setContent($newContent, $this->nodeID, $newVersion, $newSubVersion);
                 
-		XMD_Log::info("AddVersion for Node:".$this->nodeID.", Version: ".$newVersion.".".$newSubVersion.", File: .".$uniqueName.", Error: ".$result);
+                
+		XMD_Log::info("AddVersion for Node:".$this->nodeID.", Version: ".$newVersion.".".$newSubVersion.", File: .".$uniqueName.", Error: ".!$result);
 
 		return $IdVersion;
 	}

@@ -35,7 +35,7 @@ require_once(XIMDEX_ROOT_PATH . "/inc/db/db.inc");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.inc");
 require_once(XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php' );
-require("ISolrService.iface.php");
+require_once("ISolrService.iface.php");
 require_once (XIMDEX_ROOT_PATH . '/extensions/solarium/solarium/library/Solarium/Autoloader.php');
 Solarium_Autoloader::register();
 
@@ -45,43 +45,23 @@ Solarium_Autoloader::register();
  */
 class SolariumSolrService implements ISolrService
 {
-    const INDEX_MODE_STRICT = "strict";
-    const INDEX_MODE_DEFAULT = "default";
-    
     private $solrClient;
-    private $indexMode;
 
     /**
      *
      * <p>Class constructor</p>
      * <p>Creates an instance of Solr Service</p>
      *
-     * <p>If no parameters are passed to this function, the values configured in Config table are used</p>
-     * <p>As fallback, if no configuration values are found in Config table
-     *	 localhost, 8983 and '/solr/collection1' are used as default values for $solrServer, $solrPort
-     *	 and $solrCorePath respectively</p>
      *
      *
-     * @param string $solrServer The Solr server
-     * @param string $solrPort The Solr server port
-     * @param string $solrCorePath The path to the Solr Core to be used
+     * @param string $solrServer The Solr server. Default localhost
+     * @param string $solrPort The Solr server port. Default 8983
+     * @param string $solrCorePath The path to the Solr Core to be used. Default /solr/collection1
      *
      */
-    public function __construct($solrServer = null, $solrPort = null, $solrCorePath = null, $indexMode = SolariumSolrService::INDEX_MODE_DEFAULT)
+    public function __construct($solrServer = 'localhost', $solrPort = 8983, $solrCorePath = '/solr/collection1')
     {
-    	if(is_null($solrServer) && is_null($solrPort) && is_null($solrCorePath)) {
-            $solrServer = Config::GetValue("SolrServer");
-            $solrPort = Config::GetValue("SolrPort");
-            $solrCorePath = Config::GetValue("SolrCorePath");
-            $indexModeConfig = Config::GetValue("XRAMIndexMode");
-            /* Config checkings */
-            $solrServer = !empty($solrServer) ? $solrServer : "localhost";
-            $solrPort = !empty($solrPort) ? $solrPort : 8983;
-            $solrCorePath = !empty($solrCorePath) ? $solrCorePath : "/solr/collection1";
-            $solrCorePath = substr($solrCorePath,0,1) !== '/' ? '/'.$solrCorePath : $solrCorePath;
-            $this->indexMode = !empty($indexModeConfig) ? $indexModeConfig : $indexMode;
-        }
-		
+        $solrCorePath = substr($solrCorePath,0,1) !== '/' ? '/'.$solrCorePath : $solrCorePath;
         $options = array(
             'adapteroptions' => array(
                     'host' => $solrServer,
@@ -122,11 +102,11 @@ class SolariumSolrService implements ISolrService
             }
             try{
                 $response = $this->solrClient->update($updateRequest);
-                return $response->getStatus() === 0 ? $response : null;
+                return $response->getStatus() === 0 ? true : false;
             }
             catch(Exception $e) {
                 XMD_Log::debug($e->getMessage());
-                return null;
+                return false;
             }
     }
     
@@ -161,7 +141,8 @@ class SolariumSolrService implements ISolrService
             $newDocument->mimetype = $version->get('MimeType');
         }
         
-        $newDocument->content = base64_encode($content);
+//        $newDocument->content = base64_encode($content);
+          $newDocument->content = $content;
         
         $update->addDocument($newDocument);
 	return $update;
@@ -197,7 +178,7 @@ class SolariumSolrService implements ISolrService
 		
             $doc = array_pop($queryResponse->getDocuments());
             
-            $res = array('id' => $doc['id'], 'content' => base64_decode($doc['content']));
+            $res = array('id' => $doc['id'], 'content' => $doc['content']);
             return $res;
         }
         catch(Exception $e) {
@@ -221,6 +202,7 @@ class SolariumSolrService implements ISolrService
         }
         catch (Exception $e) {
             XMD_Log::debug($e->getMessage());
+            return false;
         }
         return true;
     }

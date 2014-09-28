@@ -57,23 +57,13 @@ class SolrService implements ISolrService
      *	 and $solrCorePath respectively</p>
      *
      *
-     * @param string $solrServer The Solr server
-     * @param string $solrPort The Solr server port
-     * @param string $solrCorePath The path to the Solr Core to be used
+     * @param string $solrServer The Solr server. Default localhost
+     * @param string $solrPort The Solr server port. Default 8983
+     * @param string $solrCorePath The path to the Solr Core to be used. Default /solr/collection1
      *
      */
-    public function __construct($solrServer = null, $solrPort = null, $solrCorePath = null)
+    public function __construct($solrServer = 'localhost', $solrPort = 8983, $solrCorePath = '/solr/collection1')
     {
-    	if(is_null($solrServer) && is_null($solrPort) && is_null($solrCorePath)) {
-			$solrServer = Config::GetValue("SolrServer");
-			$solrPort = Config::GetValue("SolrPort");
-			$solrCorePath = Config::GetValue("SolrCorePath");
-			/* Config checkings */
-			$solrServer = !empty($solrServer) ? $solrServer : "localhost";
-			$solrPort = !empty($solrPort) ? $solrPort : 8983;
-			$solrCorePath = !empty($solrCorePath) ? $solrCorePath : "/solr/collection1";
-		}
-		
         $options = array(
                    'hostname' => $solrServer,
 	           'port' => $solrPort,
@@ -114,7 +104,7 @@ class SolrService implements ISolrService
             $this->performCommit();
         }
         
-        return $response;
+        return $response['responseHeader']['status'] === 0;
     }
     
     /**
@@ -144,7 +134,7 @@ class SolrService implements ISolrService
             $newDocument->addField('mimetype', $version->get('MimeType'));
         }
         
-        $newDocument->addField("content", base64_encode($content));
+        $newDocument->addField("content", $content);
 
 		return $newDocument;
     }
@@ -191,7 +181,7 @@ class SolrService implements ISolrService
         }
 		
 	$doc = $docs[0];
-        $doc['content'] = base64_decode($doc['content']);;
+        $doc['content'] = $doc['content'];
 		
 	return $doc;
     

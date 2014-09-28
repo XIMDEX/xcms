@@ -30,9 +30,10 @@ if (!defined ('XIMDEX_ROOT_PATH')) {
 }
 require_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file('/inc/persistence/store/Store.iface.php');
+
 /**
  * <p>FileSystemStore class</p>
- * <p>Manages the storing of nodes in the File system</p>
+ * <p>Manages the CRUD operations of nodes using the file system as backend</p>
  * 
  */
 class FileSystemStore implements Store
@@ -75,7 +76,7 @@ class FileSystemStore implements Store
     {
         $df = new DataFactory($nodeId);
         $df->GetTmpFile($versionId, $subversion);
-        $uniqueName = $df->GetTmpFile($versionID, $subVersion);
+        $uniqueName = $df->GetTmpFile($versionId, $subversion);
 	if(!$uniqueName) {
             XMD_Log::warning('No se ha podido obtener el file');
             $this->SetError(3);
@@ -84,7 +85,7 @@ class FileSystemStore implements Store
 
 	$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
 
-	return FsUtils::file_put_contents($targetPath, $newContent);
+	return FsUtils::file_put_contents($targetPath, $content);
     }
 
     /**
@@ -96,7 +97,7 @@ class FileSystemStore implements Store
      */
     public function deleteContent($nodeId, $versionId, $subversion = null) {
         $df = new DataFactory($nodeId);
-        $uniqueName = $df->GetTmpFile($versionID, $subVersion);
+        $uniqueName = $df->GetTmpFile($versionId, $subversion);
 
 	if(!$uniqueName) {
             return false;
