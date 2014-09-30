@@ -2942,6 +2942,9 @@ msgstr "Usuario remoto"
 msgid "Address"
 msgstr "Direcci&oacute;n"
 
+msgid "Core"
+msgstr "Core"
+
 #: /actions/modifyserver/template/Smarty/index.tpl
 msgid "OTF server"
 msgstr "Servidor OTF"
