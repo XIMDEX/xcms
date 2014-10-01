@@ -71,6 +71,7 @@
 </div>
 
 <fieldset class="buttons-form positioned_btn">
-	{button label="Go back" type="goback" class="btn"}
+        {button label="Check all" class="btn main_action ladda-button js_check_all" }
+	{button label="Go back" type="goback"  class="btn"}
 </fieldset>
 

@@ -198,30 +198,35 @@ class Action_linkreport extends ActionAbstract {
 		return $nodeList;
 	}
 
-    function checkLink(){
+    public function checkLink(){
         $linkUrl = $this->request->getParam('linkurl');
         $nodeid = $this->request->getParam('nodeid');
       
-        $linkSearcher = new Link();
-        $res = $linkSearcher->find('IdLink','Url=%s AND IdLink=%s',array($linkUrl,$nodeid),MONO);
-
-        $link = new Link($res[0]);
-
-        $headers=get_headers($linkUrl,1);
-        if($headers[0]!=""){
-            $pos1 = strpos($headers[0], '200');
-            $pos2 = strpos($headers[0], '301');
-            $pos3 = strpos($headers[0], '302');
-            if(($pos1!==false)||($pos2!==false)||($pos3!==false)){$st="ok";}   
-         }   
-         else{$st="fail";}
-
-        $link->set('ErrorString',$st);
-        $link->set('CheckTime',time());
-        $link->update();
-                                                                                                 
+        $link = new Link($nodeid);
+        $st = Link::LINK_FAIL;
+        if($link->get("IdLink")){
+            $st = Link::LINK_WAITING;
+            $link->set('ErrorString',$st);
+            $link->set('CheckTime',time());
+            $link->update();              
+        }                                                                                                 
+        $cmd = 'php ' . XIMDEX_ROOT_PATH . '/actions/linkreport/resources/scripts/links_checker.php '.$nodeid;
+        $pid = shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
         echo json_encode(array('state' => $st, 'date' =>date('d/m/Y H:i',time())));
-        die();
+        die();       
+        
+    }
+    
+    public function readLinkState(){
+        $nodeid = $this->request->getParam('nodeid');
+        $link = new Link($nodeid);
+        if ($link->get("IdLink")){
+            $st = $link->get("ErrorString");
+            $time = $link->get("CheckTime");
+        }
+        echo json_encode(array('state' => $st, 'date' =>date('d/m/Y H:i',$time)));
+        die();        
+        
     }
 }
 ?>
