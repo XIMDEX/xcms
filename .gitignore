@@ -22,3 +22,5 @@ modules/xlyre
 koala-config.json
 install/1-MoveXimdexToDocRoot.sh
 install/_STATUSFILE
+nbproject/**
+
