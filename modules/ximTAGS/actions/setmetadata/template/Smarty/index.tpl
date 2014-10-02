@@ -31,7 +31,7 @@
 	xim-node-id="{$id_node}" 
 	ng-cloak>
 	<div class="action_header">
-		<h2>{t}Tag this node{/t}</h2>
+		<h2>{t}Tag this node{/t}: {$node_name}</h2>
 	</div>
 	<div class="message slide-item" ng-show="submitMessages.length" ng-class="{literal}{'message-success': submitState == 'success'}{/literal}">
 	    <p class="ui-state-primary ui-corner-all msg-info" ng-repeat="message in submitMessages">
