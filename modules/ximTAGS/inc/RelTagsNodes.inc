@@ -159,8 +159,35 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 	  	$this->execute($sql);
 	}
 
+    /**
+     * Remove relation for the current node. If neither node has that tags, 
+     * the tag must be removed
+     * @param int $idnode
+     */
     public function deleteTags($idnode){
-	    $sql = sprintf("DELETE FROM RelTagsNodes WHERE Node='%d'",$idnode);
-	  	$this->execute($sql);
+        //Get the tags to delete
+        $tagsToDelete = $this->find("TagDesc", "node=%s", array($idnode), MONO);
+        
+        //Delete the rows for this idnode
+        $sql = sprintf("DELETE FROM RelTagsNodes WHERE Node='%d'",$idnode);
+	$this->execute($sql);
+        
+        //Check if every tag is linked to other node. If it isn't 
+        //must to delete the node. 
+        if ($tagsToDelete){
+            foreach ($tagsToDelete as $idTag) {
+                $currentExistingRelations = $this->count("TagDesc=%s", array($idTag));
+                if (count($currentExistingRelations) &&
+                    intval($currentExistingRelations[0]) === 0){
+                        //Deleting tag.
+                        $tag = new Tag($idTag);
+                        if ($tag->get("IdTag")){
+                            $tag->delete();
+                        }
+                }
+            }        
+        }
+        
+        
     }
 }
