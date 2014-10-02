@@ -460,7 +460,7 @@ class GenericData extends Overloadable {
 	}
 
 	/**
-	 * Validación/conversión por tipo de campo
+	 * Validaciï¿½n/conversiï¿½n por tipo de campo
 	 *
 	 * @param unknown_type $fieldValue
 	 * @param array $fieldTypeMatches
@@ -514,7 +514,7 @@ class GenericData extends Overloadable {
 			switch ($fieldType) {
 				case in_array($fieldType, $dataTypeFloat):
 				case in_array($fieldType, $dataTypeDouble):
-					if (!is_numeric($value)) $this->messages->add(sprintf(_("El campo %s tiene un formato inválido"), $key), MSG_TYPE_ERROR);
+					if (!is_numeric($value)) $this->messages->add(sprintf(_("El campo %s tiene un formato invï¿½lido"), $key), MSG_TYPE_ERROR);
 					break;
 				case in_array($fieldType, $dataTypeText):
 					/*				case 'text':
@@ -526,7 +526,7 @@ class GenericData extends Overloadable {
 					 case 'longtext':
 					 case 'blob':
 					 case 'longblob':*/
-					//if (!is_string($value)) $this->messages->add("El campo $key tiene un formato inválido", MSG_TYPE_ERROR);
+					//if (!is_string($value)) $this->messages->add("El campo $key tiene un formato invï¿½lido", MSG_TYPE_ERROR);
 					break;
 					//				case in_array($fieldType, $dataTypeDate):
 				case 'datetime':
@@ -560,35 +560,35 @@ class GenericData extends Overloadable {
 					}
 					break;
 				case in_array($fieldType, $dataTypeInt):
-					if (!is_int((int)$value)) $this->messages->add(sprintf(_("El campo %s tiene un formato inválido"), $key), MSG_TYPE_ERROR);
+					if (!is_int((int)$value)) $this->messages->add(sprintf(_("El campo %s tiene un formato invï¿½lido"), $key), MSG_TYPE_ERROR);
 					switch ($fieldType) {
 						case 'tinyint':
 							if ((int)$value > self::MAX_TINYINT) {
-								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaño máximo de %d con el valor %s'),
+								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaï¿½o mï¿½ximo de %d con el valor %s'),
 								$key, self::MAX_TINYINT, $value), MSG_TYPE_ERROR);
 							}
 							break;
 						case 'smallint':
 							if ((int)$value > self::MAX_SMALLINT) {
-								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaño máximo de %d con el valor %s'),
+								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaï¿½o mï¿½ximo de %d con el valor %s'),
 								$key, self::MAX_SMALLINT, $value), MSG_TYPE_ERROR);
 							}
 							break;
 						case 'mediumint':
 							if ((int)$value > self::MAX_MEDIUMINT) {
-								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaño máximo de %d con el valor %s'),
+								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaï¿½o mï¿½ximo de %d con el valor %s'),
 								$key, self::MAX_MEDIUMINT, $value), MSG_TYPE_ERROR);
 							}
 							break;
 						case 'int':
 							if ((int)$value > self::MAX_INT) {
-								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaño máximo de %d con el valor %s'),
+								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaï¿½o mï¿½ximo de %d con el valor %s'),
 								$key, self::MAX_INT, $value), MSG_TYPE_ERROR);
 							}
 							break;
 						case 'bigint':
 							if ((int)$value > self::MAX_BIGINT) {
-								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaño máximo de %d con el valor %s'),
+								$this->messages->add(sprintf(_('El campo %s ha excedido el tamaï¿½o mï¿½ximo de %d con el valor %s'),
 								$key, self::MAX_BIGINT, $value), MSG_TYPE_ERROR);
 							}
 							break;
@@ -736,10 +736,9 @@ class GenericData extends Overloadable {
 	}
 
 	/**
-	 *
-	 * @param $condition
-	 * @param $params
-	 * @return unknown_type
+	 * @param string $condition
+	 * @param array $params params to replace in $condition array.
+	 * @return array One element array. The element is the count returned value.         
 	 */
 	function count($condition = '', $params = NULL) {
 		return $this->find('count(1)', $condition, $params, MONO);
@@ -811,7 +810,7 @@ class GenericData extends Overloadable {
 	 */
 	function call__($method, $params) {
 		/**
-		 * Overloadable añade un nivel de array a los parámetros
+		 * Overloadable aï¿½ade un nivel de array a los parï¿½metros
 		 */
 		return $this->behaviors->$method($this, isset($params[0]) ? $params[0] : NULL);
 	}
