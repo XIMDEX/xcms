@@ -50,7 +50,7 @@ angular.module('ximdex.common.directive')
                 var url = xUrlHelper.baseUrl()+"/xmd/loadaction.php";
                 $scope.lastpage;
                 $scope.page=1;
-                $scope.pages=$attrs.ximList.pages;
+                //$scope.pages=$scope.list.pages;
                 $scope.searching=false;
 
                 $scope.JSONtoParams = function (json){
@@ -89,12 +89,12 @@ angular.module('ximdex.common.directive')
                     
                     $scope.searching=true;
                     $scope.showFieldsSelector=false;
-                    $attrs.ximList.query.page=$scope.page;
+                    $scope.list.query.page=$scope.page;
                     $http(
                         {
                             url:url,
                             method:'POST',
-                            params:$scope.JSONtoParams($attrs.ximList.query)
+                            params:$scope.JSONtoParams($scope.list.query)
                         }).
                         success(function(data, status, headers, config) {
                           $scope.filterText="";
@@ -111,7 +111,7 @@ angular.module('ximdex.common.directive')
                 }
 
                 $scope.upPage = function(){
-                    if(!$scope.searching & $scope.page<$attrs.ximList.pages){
+                    if(!$scope.searching & $scope.page<$scope.list.pages){
                         $scope.lastpage=$scope.page;
                         $scope.page++;
                         $scope.updateGrid(true);

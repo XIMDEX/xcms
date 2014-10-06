@@ -43,7 +43,10 @@ X.i18nStrings = {
 			"resume": "Reanudar",
 			"retry": "Reintentar",
             "please,_select_the_schema_to_follow_and_a_language_for_your_documents_before_uploading_them":"Por favor, selecciona el esquema a seguir y un idioma para sus documentos antes de subirlos"
-		}
+		},
+        "ximGrid":{
+            "no_search_results":"No se han encontrado resultados para la búsqueda"
+        }
 	},
 	"xlyre": {
 		"actions": {

@@ -125,7 +125,6 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		$countQuery = preg_replace('/^select\s(.+?)\sfrom/ims', 'select count(1) as records from', $query);
 		$countQuery = preg_replace('/\sorder\sby\s(.+?)$/ims', '', $countQuery);
 //debug::log($query, $countQuery);
-		error_log($countQuery);
 		$rset->query($countQuery);
 		$records = $rset->getValue('records');
 

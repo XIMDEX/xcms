@@ -16,7 +16,7 @@
 				Collumns
 			</span>
 			</div>
-		<table  class="simple-results">
+		<table class="simple-results">
 			<thead>
 				<th ng-repeat="field in fields"
 					ng-click="sort(field)" 
@@ -26,7 +26,7 @@
 				</th>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in list.data | filter:filterText"
+				<tr ng-repeat="item in filtered = (list.data | filter:filterText)"
 					ng-click="selectItem(item, $event)"
 					ng-right-click="contextmenu(item, $event)"
 					ng-class="{'selected': isSelected(item.nodeid)}">
@@ -39,7 +39,9 @@
 					</td>
 				</tr>
 			</tbody>
-			
 		</table>
+        <div class="no-results" ng-hide="filtered.length>0">
+            <span>#/ 'widgets.ximGrid.no_search_results' | xI18n /#.</span>
+        </div>
 	</div>
 </div>
