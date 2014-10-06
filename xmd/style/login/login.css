@@ -636,6 +636,7 @@ body{
 	-webkit-transition: all .3s ease-in;
 	-o-transition: all .3s ease-in;
 	transition: all .3s ease-in;
+	z-index: -1;
 }
 
 .show-msg{
@@ -644,6 +645,7 @@ body{
 	-ms-transform: translateX(-50%) translateY(100%);
 	-o-transform: translateX(-50%) translateY(100%);
 	transform: translateX(-50%) translateY(100%);
+	z-index: 1;
 }
 
 .warning-msg::before{

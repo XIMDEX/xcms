@@ -167,6 +167,11 @@ fieldset{
 	float: left
 }
 
+.content_container.prevdoc{
+	height: calc(100% - 3.5em);
+}
+
+
 
 .action_content{
 	min-width: 350px;
