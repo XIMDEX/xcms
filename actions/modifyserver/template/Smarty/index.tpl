@@ -137,17 +137,17 @@
 				</div>
 
 				<label>{t}Channels{/t}</label>
-				{if $numchannels neq 0}
-					{foreach from=$channels item=_channel}
-					<span class="slide-element">
-						<input id='channels{$_channel.IdChannel}_{$id_node}' name='channels[]' type='checkbox' value='{$_channel.IdChannel}' {if ($_channel.InServer)}checked{/if} class="input-slide"/>
-						<label for='channels{$_channel.IdChannel}_{$id_node}' class="label-slide server_channel"> {$_channel.Description|gettext}</label>
-					</span>
-					{/foreach}
-			
-				{else}
-				<p>{t}There are no channels associated to this project{/t}.</p>
-				{/if}
+				<div class="channels-wrapper">{if $numchannels neq 0}
+						{foreach from=$channels item=_channel}
+						<span class="slide-element">
+							<input id='channels{$_channel.IdChannel}_{$id_node}' name='channels[]' type='checkbox' value='{$_channel.IdChannel}' {if ($_channel.InServer)}checked{/if} class="input-slide"/>
+							<label for='channels{$_channel.IdChannel}_{$id_node}' class="label-slide server_channel"> {$_channel.Description|gettext}</label>
+						</span>
+						{/foreach}
+								
+					{else}
+					<p>{t}There are no channels associated to this project{/t}.</p>
+					{/if}</div>
 			</div>
 
 		</div>
