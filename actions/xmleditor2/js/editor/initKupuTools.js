@@ -58,6 +58,9 @@ function initKupuTools(kupu) {
 	var ximdocspellcheckertool = new XimdocSpellCheckerTool();
 	kupu.registerTool('ximdocspellcheckertool', ximdocspellcheckertool);
 
+    var ximdocpreviewtool = new XimdocPreviewTool();
+    kupu.registerTool('ximdocpreviewtool', ximdocpreviewtool);
+
 	var tablemanagertool = new TableManagerTool();
 	kupu.registerTool('tablemanagertool', tablemanagertool);
 
@@ -176,6 +179,9 @@ function initKupuTools(kupu) {
 
     var annotation = new KupuButton('kupu-annotation-button', function() {ximdocannotationtool.doAnnotate();});
     kupu.registerTool('annotation', annotation);
+
+    var previewmenu = new KupuMenu('kupu-prevdoc-menu', function(channel) {ximdocpreviewtool.preview(channel);});
+    kupu.registerTool('previewmenu', previewmenu);
 
     // create some drawers, drawers are some sort of popups that appear when a
     // toolbar button is clicked

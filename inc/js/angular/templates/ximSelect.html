@@ -9,6 +9,6 @@
         <li ng-if="menu" ng-repeat="option in options"
             class="type-#/option[styleProp || 'icon']/# option icon"
             ng-class="{selected: selectedOption == option || selectedOption == option[selProp]}">
-            <a target="_blank" href="#/option[labelHref || 'href']/#">#/option[labelProp || "label"]/#</a></li>
+            <a data="#/option['data']/#">#/option[labelProp || "label"]/#</a></li>
     </ul>
 </div>

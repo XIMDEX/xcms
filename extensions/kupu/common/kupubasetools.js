@@ -128,6 +128,41 @@ function KupuButtonEnable(button) {
 //----------------------------------------------------------------------------
 // Implementations
 //----------------------------------------------------------------------------
+function KupuMenu(menuid, commandfunc, tool) {
+    /* Base prototype for kupu menu tools */
+    this.menuid = menuid;
+    this.menu = getFromSelector(this.menuid);
+    this.commandfunc = commandfunc;
+    this.tool = tool;
+
+    this.initialize = function(editor) {
+        this.editor = editor;
+        this._fixTabIndex(this.menu);
+        var lis=this.menu.getElementsByTagName('ul')[0].getElementsByTagName('li');
+        var ind,links=[];
+        for (ind = 0; ind < lis.length ;ind++) {
+            links.push(lis[ind].getElementsByTagName('a')[0]);
+        }
+        var that=this;
+        for (ind = 0; ind < links.length ;ind++) {
+            (function(i,t){
+                addEventHandler(links[i], 'click', function(){
+                    t.execCommand(links[i].attributes.getNamedItem("data").textContent);
+                }, this);
+            })(ind,that);
+
+        }
+
+    };
+
+    this.execCommand = function(channel) {
+        /* exec this menu's command */
+        this.commandfunc(channel);
+    };
+
+};
+
+KupuMenu.prototype = new KupuTool;
 
 function KupuButton(buttonid, commandfunc, tool) {
     /* Base prototype for kupu button tools */
@@ -1197,8 +1232,8 @@ function TableTool() {
         table = doc.createElement("table");
         table.className = tableclass;
 
-        // TODO: La asociación de una plantilla debe obtenerse de un fichero de
-        // configuración.
+        // TODO: La asociaciï¿½n de una plantilla debe obtenerse de un fichero de
+        // configuraciï¿½n.
         table.setAttribute("uid","tabla");
 
         // If the user wants a row of headings, make them
