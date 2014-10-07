@@ -82,7 +82,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$channel = new Channel($idChannel);
             $channelObj = array();
             $channelObj["text"]=_('Preview as').' '.$channel->getName();
-			$channelObj["href"]=Config::getValue('UrlRoot')."/xmd/loadaction.php?action=prevdoc&nodeid=".$idnode."&channel=".$idChannel;
+            $channelObj["href"]="#";
+			$channelObj["data"]=$idChannel;
             $channelList[]=$channelObj;
 		}
 
@@ -202,7 +203,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			$actionURL . '/js/tools/EditorViewTool.class.js',
 			$actionURL . '/js/tools/XimdocSpellCheckerTool.class.js',
 			$actionURL . '/js/tools/XimdocAnnotationTool.class.js',
-			//$actionURL . '/js/tools/XimdocPreviewTool.class.js',
+			$actionURL . '/js/tools/XimdocPreviewTool.class.js',
 			$actionURL . '/js/tools/ximletTool.class.js',
 			$actionURL . '/js/tools/StructuredListTool.class.js',
 			$actionURL . '/js/tools/AttributesTool.js',
