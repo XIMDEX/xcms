@@ -244,6 +244,8 @@ strong{
 		-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
 		box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
 		border-top: 1px solid #006b6c;
+		position: relative;
+		z-index: 4;
 	}
 
 	#header h1{
@@ -340,17 +342,69 @@ strong{
 		-moz-border-radius: 3px;
 		border-radius: 3px;
 		text-transform: none;
-		-moz-box-shadow: 0 2px 0 rgba(0,0,0,.3);
-		-webkit-box-shadow: 0 2px 0 rgba(0,0,0,.3);
-		box-shadow: 0 2px 0 rgba(0,0,0,.3);
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.3);
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.3);
+		box-shadow: 0 1px 2px rgba(0,0,0,.3);
 		z-index: 4;
-		background:#fff;
+		background:#474850;
 		color: $c_grey-p;
-		padding: 1em 1.7em 1em 1.5em;
+		min-width: 13em;
+
+		>ul>li{
+			
+
+			border-bottom: 1px solid #5f606a;
+
+			&:first-child{
+				box-shadow: inset 0 -1px 0  #36373e;
+				a{
+					border-bottom: 1px solid #5f606a;
+				}
+			}
+
+			&:last-child{
+				border-bottom: none;
+			}
+
+			&::before{
+				font-family: 'ximdex-icon';
+				color: #fff;
+				position: absolute;
+
+				font-size: 2rem;
+				top: .5em;
+				left: .5em;
+			}
+
+			&.language-icon::before{
+				content: '\6c';
+				font-size: 1.4rem;
+				top: 1em;
+				left: 1em;
+			}
+			&.config::before{
+				content: '\e02a';
+				font-size: 2.4rem;
+				top: .4em;
+				left: .3em;
+			}
+			&.help::before{
+				content: '\e61e';
+			}
+			&.contact::before{
+				content: '\e60b';
+			}
+			&.logout::before{
+				content: '\e61f';
+				font-size: 1.95rem;
+				top: .6em;
+				left: .6em;
+			}
+			
+		}
+
 		li{
 			cursor: pointer;
-			padding: .8em .8em .8em 1.6em;
-			border-top: 1px dotted $c_grey-pp;
 			position: relative;
 
 			&.selected::before{
@@ -358,11 +412,15 @@ strong{
 				@extend %tic;
 
 				position: absolute;
-				left: 0;
+				left: 1em;
 			}
 		}
 		li a{
-			color: $c_grey-p;
+			color: #fff;
+			padding: 1em 1.5em 1em 3em;
+			display:  block;
+			position: relative;
+
 			&:hover{
 				color: $c_mainlight;
 			}
@@ -376,12 +434,11 @@ strong{
 		}
 
 
-		li:first-child{
-			border-top: none;
-		}
-
+		
 		.selected{
-			color: $c_mainlight;
+			&::before{
+				color: $c_mainlight;
+			}
 		}
 
 
@@ -390,7 +447,7 @@ strong{
 			display: block;
 			position: absolute;
 			border: 6px solid transparent;
-			border-bottom-color: #fff;
+			border-bottom-color: #474850;
 			top: -12px;
 			left: 1em;
 		}
@@ -402,5 +459,20 @@ strong{
 		display: block;
 		position: absolute;
 		top: 2em;
-		left: -0.5em;
+		left: -1em;
+	}
+
+	.selector_language{
+		li{
+			display: inline-block;
+			padding: .8em 1.4em .8em 1.6em;
+
+			&.selected{
+				padding-left: 2.9em;
+			}
+		}
+
+		.selected{
+			background: #36373e;
+		}
 	}

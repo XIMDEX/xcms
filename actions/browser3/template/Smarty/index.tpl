@@ -82,26 +82,28 @@
 	            	</div>
 	            	<div class="user-menu">
 		            	<ul>
-								<li>
-									<a target="_blank" href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
-								</li>
-								<li>
-									<a data-command="modifyuser" data-params="nodes[]={$userID}&nodeid={$userID}&method=index">{t}Modify your account{/t}</a>
-								</li>
-								<li>
-									<a>{t}Language{/t}</a>
-						            <ul class="selector_language">
-										{section name=i loop=$locales}
-											<li {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected icon" {/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})
-												<input type="hidden" name="language" value="{$locales[i].Code}" />
-											</li>
-										{/section}
-						            </ul>
-								</li>
-								<li>
-									<a target="_blank" href="https://github.com/XIMDEX/ximdex/wiki">{t}Help{/t}</a>
-								</li>
-								<li><a href="{$_URL_ROOT}/xmd/loadaction.php?action=logout">{t}Logout{/t}</a></li>
+		            		<li class="icon language-icon">
+						<a>{t}Language{/t}</a>
+						<ul class="selector_language">
+						{section name=i loop=$locales}
+							<li {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected icon" {/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})
+								<input type="hidden" name="language" value="{$locales[i].Code}" />
+							</li>
+						{/section}
+						</ul>
+					</li>
+					<li class="icon config">
+						<a data-command="modifyuser" data-params="nodes[]={$userID}&nodeid={$userID}&method=index">{t}Modify your account{/t}</a>
+					</li>
+					<li class="icon help">
+						<a target="_blank" href="https://github.com/XIMDEX/ximdex/wiki">{t}Help{/t}</a>
+					</li>
+					<li class="icon contact">
+						<a target="_blank" href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
+					</li>				
+					<li class="icon logout">
+						<a href="{$_URL_ROOT}/xmd/loadaction.php?action=logout">{t}Logout{/t}</a>
+					</li>
 		            	</ul>
 		            </div>
 	            </div>
