@@ -24,101 +24,98 @@
  *}
 
 <form method="post" action="{$action_url}" class="form_group_user">
-	<div class="action_header">
-		<h2>{t}Manage groups{/t}</h2>
-		<fieldset class="buttons-form">
-			{button
-			label="Save"
-			class="updategroupuser validate  btn main_action"
-			message="Subscriptions to groups will be updated. Would you like to continue?"}
-		</fieldset>
-	</div>
+    <div class="action_header">
+        <h2>{t}Manage groups{/t}</h2>
+        <fieldset class="buttons-form">
 
-	<div class="action_content">
-		<h3>{t}Available groups{/t}</h3>
-			<input type="hidden" name="nodeid" value="{$id_node}"/>
-			<div class="associate-group">
-			{if ($filtered_groups)}
-		    	<div class="row-item col2-3">
+        </fieldset>
+    </div>
+
+    <div class="action_content">
+        <h3>{t}Available groups{/t}</h3>
+        <input type="hidden" name="nodeid" value="{$id_node}"/>
+        <div class="associate-group">
+            {if ($filtered_groups)}
+                <div class="row-item col2-3">
 			 		<span class="col1-2 icon icon-group label-select">
 			 			<select name='newgroup' class='select-clean block'>
-			 				{foreach from=$filtered_groups item=group_info}
-							<option value="{$group_info.IdGroup}">
-								{$group_info.Name}
-							</option>
-							{/foreach}
-						</select>
+                            {foreach from=$filtered_groups item=group_info}
+                                <option value="{$group_info.IdGroup}">
+                                    {$group_info.Name}
+                                </option>
+                            {/foreach}
+                        </select>
 			 		</span>
 
 					<span class="col1-2 icon icon-rol label-select">
 						<select name='newrole' class='select-clean block'>
-						{foreach from=$all_roles item=rol_info}
-							<option value="{$rol_info.IdRole}">
-						 	{$rol_info.Name|gettext}
-						 	</option>
-						{/foreach}
-						</select>
+                            {foreach from=$all_roles item=rol_info}
+                                <option value="{$rol_info.IdRole}">
+                                    {$rol_info.Name|gettext}
+                                </option>
+                            {/foreach}
+                        </select>
 					</span>
-					<div class="buttons-form row-item-actions actions-outside col1-3">
-			{button label="Add group" title="Add group" class="validate icon add-btn  btn-unlabel-rounded btn"}{*message="You are adding a new subscription. Would you like to continue?"*}
-		</div>
-			</div>
+                    <div class="buttons-form row-item-actions actions-outside col1-3">
+                        {button label="Add group" title="Add group" class="validate icon add-btn  btn-unlabel-rounded btn addgroupuser"}{*message="You are adding a new subscription. Would you like to continue?"*}
+                    </div>
+                </div>
 
 
-			{else}
-		<p>{t}There are not{/t} {if ($user_groups_with_role)}{t}more{/t}{/if} {t}available groups to be associated with the user{/t}</p>
-			{/if}
-	</div>
-		<h3>{t}Grupos a los que pertenece XXX{/t}</h3>
-		{if ($user_groups_with_role )}
-			<div class="change-group">
+            {else}
+                <p>{t}There are not{/t} {if ($user_groups_with_role)}{t}more{/t}{/if} {t}available groups to be associated with the user{/t}</p>
+            {/if}
+        </div>
+        <h3>{$user_name} {t}belongs to the next groups{/t}:</h3>
+        <input name="group" type="hidden" value="" />
+        <input name="role" type="hidden" value="" />
+        <input name="roleOld" type="hidden" value="" />
+        {if ($user_groups_with_role )}
+        <div class="change-group">
 
-			  {foreach from=$user_groups_with_role item=user_group_info}
-					<div class="row-item icon">
-					{if ($user_group_info.IdGroup != "101")} {* if not group general *}
-					<input name='checked[]' type='checkbox' value='{$user_group_info.IdGroup}' />
-					{else}
-					<input name='checked[]' type='checkbox' value='{$user_group_info.IdGroup}' disabled="true" />
-					{/if}
-
-			 		<span class="col1-3">
+            {foreach from=$user_groups_with_role item=user_group_info}
+                <div class="row-item icon">
+                    <input name="info-IdGroup" type="hidden" value="{$user_group_info.IdGroup}"/>
+                    <input name="info-IdRoleOld" type="hidden" value="{$user_group_info.IdRole}"/>
+                    <span class="col1-3">
 						{$user_group_info.Name}
 					</span>
-			     		<input type='hidden' name='idGroups[]' value='{$user_group_info.IdGroup}'>
-					<input type='hidden' name='idRoleOld[]' value='{$user_group_info.IdRole}'>
-			 		<span class="col1-3">
-					<select name='idRole[]' class='select-clean block'>
-
-					{foreach from=$all_roles item=rol_info}
-						<option value="{$rol_info.IdRole}"{if $rol_info.IdRole == $user_group_info.IdRole} selected="selected"{/if}>
-						{$rol_info.Name|gettext}
-						</option>
-					{/foreach}
-					</select>
+                    <span class="col1-3">
+					<select name='idRole' class='select-clean block'>
+                        {foreach from=$all_roles item=rol_info}
+                            <option value="{$rol_info.IdRole}"{if $rol_info.IdRole == $user_group_info.IdRole} selected="selected"{/if}>
+                                {$rol_info.Name|gettext}
+                            </option>
+                        {/foreach}
+                    </select>
 				</span>
 
-					{if ($user_group_info.IdGroup != "101")} {* if not group general *}
-					<div class="buttons-form row-item-actions col1-3">
 
-					{button
-						label="Delete associations"
-						class="deletegroupuser validate btn icon btn-unlabel-rounded delete-btn"
-						message="If some subscription is selected it will be deleted. Are you sure you want to continue?"}
-					{else}
+                    <div class="buttons-form row-item-actions col1-3">
+                        <span>
+                            {button label="Update"
+                            class="updategroupuser hidden validate recover-btn disabled-version icon btn-unlabel-rounded"
+                            }
+                        </span>
+                        {if ($user_group_info.IdGroup != "101")} {* if not group general *}
+                        <span>
+                            {button
+                            label="Delete associations"
+                            class="deletegroupuser validate btn icon btn-unlabel-rounded delete-btn"
+                            message="This subscription will be deleted. Are you sure you want to continue?"}
+                        </span>
+                        {/if}
+                    </div>
 
-					{/if}
-					</div>
-					</div>
 
-		        {/foreach}
-					</div>	{button
-			label="Delete associations"
-			class="deletegroupuser validate btn btn-unlabel-rounded"
-			message="If some subscription is selected it will be deleted. Are you sure you want to continue?"}
 
-			</div>
+                </div>
 
-		{else}
-					<p>{t}There are no groups associated with user yet{/t}</p>
-		{/if}</div>
+            {/foreach}
+        </div>
+    </div>
+
+    {else}
+    <p>{t}There are no groups associated with user yet{/t}</p>
+    {/if}</div>
 </form>

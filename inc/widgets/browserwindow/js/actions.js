@@ -59,7 +59,8 @@
 			'modifygroupsnode',
 			'manageversions',
 			'deletetemplates',
-			'modifygroupusers'
+			'modifygroupusers',
+            'modifyusergroups'
 		]
 	};
 

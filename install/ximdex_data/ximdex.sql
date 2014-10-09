@@ -844,7 +844,6 @@ INSERT INTO `NodeAllowedContents` VALUES (85,5020,5076,0);
 INSERT INTO `NodeAllowedContents` VALUES (86,5014,5054,1);
 INSERT INTO `NodeAllowedContents` VALUES (87,5015,5054,1);
 INSERT INTO `NodeAllowedContents` VALUES (88,5054,5056,0);
-INSERT INTO `NodeAllowedContents` VALUES (89,5053,5040,0);
 INSERT INTO `NodeAllowedContents` VALUES (90,5018,5032,0);
 INSERT INTO `NodeAllowedContents` VALUES (91,5054,5055,0);
 INSERT INTO `NodeAllowedContents` VALUES (92,5055,5055,0);

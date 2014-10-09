@@ -2694,8 +2694,8 @@ msgstr "Actualizar asociaciones"
 msgid "There are no groups associated with user yet"
 msgstr "A&uacute;n no hay grupos asociados con el usuario"
 
-msgid "If some subscription is selected it will be deleted. Are you sure you want to continue?"
-msgstr "Las asociaciones seleccionadas ser&aacute;n eliminadas. &iquest;Est&aacute; seguro que quiere continuar?"
+msgid "This subscription will be deleted. Are you sure you want to continue?"
+msgstr "Esta asociación será eliminada. ¿Está seguro que quiere continuar?"
 
 msgid "Subscriptions to groups will be updated. Would you like to continue?"
 msgstr "Las asociaciones a grupos ser&aacute;n actualizadas. &iquest;Desea continuar?"
@@ -9932,3 +9932,9 @@ msgstr "Mostrar"
 
 msgid "Modify your account"
 msgstr "Modifica tu cuenta"
+
+msgid "belongs to the next groups"
+msgstr "pertenece a los siguientes grupos"
+
+msgid "Preview as"
+msgstr "Previsualizar como"

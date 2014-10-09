@@ -277,7 +277,7 @@ strong{
 	}
 
 	.hidden{
-			display:none;
+			display:none !important;
 	}
 	.novisible{
 		visibility: hidden;
