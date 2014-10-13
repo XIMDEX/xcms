@@ -40,6 +40,7 @@ require_once('SolariumSolrService.class.php');
 class SolrStore implements Store
 {
     private $solrService;
+    private $processors = array();
     
     public function __construct()
     {
@@ -60,6 +61,40 @@ class SolrStore implements Store
      */
     public function getSolrService() {
         return $this->solrService;
+    }
+    
+    /**
+     * <p>Adds a new processor to the list of processors of this store</p>
+     * @param IndexerLifecycle $processor A <code>IndexerLifecycle</code> instance to be added to the list of processors for this store
+     */
+    public function addProcessor($processor) {
+        if(!in_array($processor, $this->processors)) {
+            array_push($this->processors, $processor);
+        }
+    }
+    
+    /**
+     * <p>Remove a processor from the list of processors of this store</p>
+     * @param IndexerLifecycle $processor
+     * @return Boolean indicating if the processor has been deleted sucessfully or not
+     */
+    public function removeProcessor($processor) {
+        $index = array_search($processor, $this->processors);
+        if($index !== FALSE) {
+            $this->processors = array_splice($this->processors, $index, 1);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * <p>Checks whether the processor exists in the list of processors</p>
+     * @param IndexerLifecycle $processor The processor to be searched
+     * @return Boolean indicating whether the processor already exists in the list of processors or not
+     */
+    public function hasProcessor($processor) {
+        return array_search($processor, $this->processors) !== FALSE;
     }
     
     /**
@@ -130,9 +165,29 @@ class SolrStore implements Store
         if(!is_numeric($idVersion)) {
             XMD_Log::warning('Se ha intentado recuperar un nodo con un IdVersion no valido.');
             return null;	
-	}		
+        }
+        
+        $this->applyLifecycleMethod('beforeRetrieve');
         $node =	$this->solrService->retrieveNode($idVersion);
+        $node = $this->applyLifecycleMethod('afterRetrieve', $node);
 	return $node;
+    }
+    
+    /**
+     * <p>Apply a Lifecycle method in the configured processors</p>
+     * 
+     * @param String $method Method name to be executed
+     * @param mixed $parameters Optional. The parameters used to execute the method
+     * @return mixed. The result of the processors chain
+     */
+    private function applyLifecycleMethod($method, $parameters = array()) {
+        foreach($this->processors as $processor) {
+            if(method_exists($processor, $method)) {
+                $parameters = call_user_func_array(array($processor, $method), array($parameters));
+            }
+        }
+        
+        return $parameters;
     }
     
     /**
@@ -146,7 +201,10 @@ class SolrStore implements Store
             XMD_Log::warning('Se ha intentado eliminar un nodo con un IdVersion no valido.');
             return false;	
 	}		
+        
+        $this->applyLifecycleMethod('beforeDelete', $idVersion);
 	$result = $this->solrService->deleteNode($idVersion, $commit);
+        $this->applyLifecycleMethod('afterDelete', $idVersion);
 	return $result;
     }
     
@@ -163,7 +221,10 @@ class SolrStore implements Store
             XMD_Log::warning('Se ha intentado indexar un nodo por un IdVersion no valido.');
             return false;
         }
-        $result = $this->solrService->indexNode($idVersion, $content, $commitNode);
+        
+        $nodeToIndex = $this->applyLifecycleMethod('beforeIndex', array('id' => $idVersion, 'content' => $content));
+        $result = $this->solrService->indexNode($nodeToIndex['id'], $nodeToIndex['content'], $commitNode);
+        $this->applyLifecycleMethod('afterIndex', $nodeToIndex);
         return $result;
 }
 }

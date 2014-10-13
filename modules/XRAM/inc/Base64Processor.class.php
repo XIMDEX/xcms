@@ -27,35 +27,44 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
-interface ISolrService
+
+require_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
+ModulesManager::file('/inc/IndexerLifecycle.iface.php', 'XRAM');
+
+class Base64Processor implements IndexerLifecycle
 {
-    /**
-     *
-     * <p>Indexes a node version in Solr identified by the version id</p>
-     *
-     *
-     * @param string|int $idVersion The id of the node version to be indexed
-     * @param string $content The content of the node
-     * @param boolean $commitNode Boolean indicating if a commit needs to be performed after the indexing process
-     *
-     */
-    public function indexNode($idVersion, $content, $commitNode = true);
-    
-    /**
-     * <p>Retrieves an specific version of a node</p>
-     * 
-     * @param int $idVersion The version of the node to be retrieved
-     * 
-     * return array The retrieved node or null if an error ocurred
-     */
-    public function retrieveNode($idVersion);
-    
-    /*
-     * <p>Delete a node version from Solr</p>
-     * 
-     * @param int $idVersion The node version id to be deleted
-     */
-    public function deleteNode($idVersion);
+    public function __construct()
+    {
+    }
+
+    public function afterIndex($document)
+    {
+    }
+
+    public function afterRetrieve($document)
+    {
+        $document['content'] = base64_decode($document['content']);
+        return $document;
+    }
+
+    public function beforeIndex($document)
+    {
+        $document['content'] = base64_encode($document['content']);
+        return $document;
+    }
+
+    public function beforeRetrieve()
+    {
+    }
+
+    public function beforeDelete($id)
+    {
+        
+    }
+
+    public function afterDelete($id)
+    {
+    }
 }
 
 ?>
