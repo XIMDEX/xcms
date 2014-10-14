@@ -33,16 +33,20 @@ class Action_welcome extends ActionAbstract {
     // Main method: shows the initial form
     function index () {
 		$values=array();
-		if ($_REQUEST['actionReload'] != 'true' && $this->tourEnabled(XSession::get("userID"), "welcome")){
-			$values[] = $this->addJs('/resources/js/start_tour.js','ximTOUR');
+		if ($_REQUEST['actionReload'] != 'true'){
+            if($this->tourEnabled(XSession::get("userID"), "welcome")){
+                $values[] = $this->addJs('/resources/js/start_tour.js','ximTOUR');
+            }
+            if (ModulesManager::isEnabled('ximTOUR')){
+                $values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
+                $values[] = $this->addJs('/resources/js/tour.js','ximTOUR');
+            }
+            $this->addJs('/actions/welcome/resources/js/index.js');
+            $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
-		if (ModulesManager::isEnabled('ximTOUR')){
-			$values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
-			$values[] = $this->addJs('/resources/js/tour.js','ximTOUR');			
-		}
+
 		$user = new User(XSession::get("userID"));
-		$this->addJs('/actions/welcome/resources/js/index.js');
-		$this->addCss('/actions/welcome/resources/css/welcome.css');
+
 
 	 $permissionsToCreateProject=false;
                 $idNodeRoot = 10000;
