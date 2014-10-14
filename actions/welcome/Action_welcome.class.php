@@ -26,6 +26,8 @@
 
 
 ModulesManager::file("/services/ProjectService.class.php");
+ModulesManager::file("/actions/browser3/Action_browser3.class.php");
+
 
 class Action_welcome extends ActionAbstract {
     // Main method: shows the initial form
@@ -41,6 +43,23 @@ class Action_welcome extends ActionAbstract {
 		$user = new User(XSession::get("userID"));
 		$this->addJs('/actions/welcome/resources/js/index.js');
 		$this->addCss('/actions/welcome/resources/css/welcome.css');
+
+	 $permissionsToCreateProject=false;
+                $idNodeRoot = 10000;
+                $actionBrowser3 = new Action_browser3();
+                $arrayPermissions = $actionBrowser3->getActionsOnNodeList(XSession::get("userID"), array($idNodeRoot));
+                if ($arrayPermissions && is_array($arrayPermissions) && count($arrayPermissions)){
+
+                        foreach($arrayPermissions as $permission){
+                                if ($permission["command"] == "addfoldernode"){
+
+                                        $permissionsToCreateProject = true;
+                                        break;
+                                }
+                        }
+                }
+
+        $values["permissionsToCreateProject"] = $permissionsToCreateProject;
         $values["projects_info"]=ProjectService::getProjectsInfo();
         $values["user"]=XSession::get("user_name");
         $values["docs"]=$user->getLastestDocs();

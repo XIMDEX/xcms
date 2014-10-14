@@ -931,7 +931,7 @@ class Action_browser3 extends ActionAbstract {
 	 * It depends on roles, states and nodetypes of nodes.
 	 * Returns an array of actions.
 	 */
-	protected function getActionsOnNodeList($idUser, $nodes, $processActionName=true) {
+	public function getActionsOnNodeList($idUser, $nodes, $processActionName=true) {
 
 		$db = new DB();
 
