@@ -693,7 +693,7 @@ DROP TABLE IF EXISTS `RelLinkDescriptions`;
 CREATE TABLE `RelLinkDescriptions` (
   `IdRel` int(12) unsigned NOT NULL auto_increment,
   `IdLink` int(12) unsigned NOT NULL,
-  `Description` varchar(255) NOT NULL,
+  `Description` varchar(255),
   PRIMARY KEY  (`IdRel`),
   UNIQUE KEY `Description` (`IdLink`, `Description`)
 ) ENGINE=MYISAM COMMENT='Table of descriptions of Ximdex links';
