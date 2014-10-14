@@ -97,7 +97,6 @@ class Action_copy extends ActionAbstract {
 
         $node = new Node($idNode);
         $arrayIdnodes = $node->find("IdNode", "idnodetype in (".implode(",", $arrayNodeTypesAllowed).") order by path",array( ),MONO);
-        error_log(print_r($arrayIdnodes,true));
         $idTargetNodes = array();
         foreach ($arrayIdnodes as $idCandidateNode) {
             if ($this->checkTargetConditions($idNode, $idCandidateNode))
