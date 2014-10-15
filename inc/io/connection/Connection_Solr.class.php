@@ -25,7 +25,7 @@
  *  @version $Revision$
  */
 if (!defined('XIMDEX_ROOT_PATH')) {
-   define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
@@ -34,364 +34,328 @@ Solarium_Autoloader::register();
 
 class Connection_Solr implements I_Connector {
 
-   private $connected = false;
-   private $config;
+    private $connected = false;
+    private $config;
 
-   /**
-    * Connect to server.
-    * Send ping to servidor to ensure it is active.
-    * 
-    * @access public
-    * @param host string
-    * @param port int
-    * @return boolean
-    */
-   public function connect($host = NULL, $port = NULL) {
-      XMD_Log::info("CONNECT $host $port");
-      $this->config = array(
-          'adapteroptions' => array(
-              'host' => $host,
-              'port' => $port,
+    /**
+     * Connect to server.
+     * Send ping to servidor to ensure it is active.
+     * 
+     * @access public
+     * @param host string
+     * @param port int
+     * @return boolean
+     */
+    public function connect($host = NULL, $port = NULL) {
+        XMD_Log::info("CONNECT $host $port");
+        $this->config = array(
+            'adapteroptions' => array(
+                'host' => $host,
+                'port' => $port,
 //              'core' => 'solr' //defined in method 'put'
-          ),
-      );
-      $this->connected = true;
+            ),
+        );
+        $this->connected = true;
 
-      return true;
-   }
+        return true;
+    }
 
-   /**
-    * Disconnect from server
-    * 
-    * @access public
-    * @return boolean
-    */
-   public function disconnect() {
-      $this->connected = false;
-      return true;
-   }
+    /**
+     * Disconnect from server
+     * 
+     * @access public
+     * @return boolean
+     */
+    public function disconnect() {
+        $this->connected = false;
+        return true;
+    }
 
-   /**
-    * Check the status of the connection
-    *
-    */
-   public function isConnected() {
-      return $this->connected;
-   }
+    /**
+     * Check the status of the connection
+     *
+     */
+    public function isConnected() {
+        return $this->connected;
+    }
 
-   /**
-    * Authenticate into server.
-    * Useless in solr. Connection status is done in connect method.
-    * 
-    * @access public
-    * @param login string
-    * @param password string
-    * @return boolean
-    */
-   public function login($username = 'anonymous', $username = 'john.doe@example.com') {
-      return true;
-   }
+    /**
+     * Authenticate into server.
+     * Useless in solr. Connection status is done in connect method.
+     * 
+     * @access public
+     * @param login string
+     * @param password string
+     * @return boolean
+     */
+    public function login($username = 'anonymous', $username = 'john.doe@example.com') {
+        return true;
+    }
 
-   /**
-    * Change directory in server.
-    * CHECK scheduler: is called several times.
-    * 
-    * @access public
-    * @param dir string
-    * @return boolean false if folder no exist
-    */
-   public function cd($dir) {
-      return true;
-   }
+    /**
+     * Change directory in server.
+     * CHECK scheduler: is called several times.
+     * 
+     * @access public
+     * @param dir string
+     * @return boolean false if folder no exist
+     */
+    public function cd($dir) {
+        return true;
+    }
 
-   /**
-    * Get the server folder. UNUSED.
-    * 
-    * @access public
-    * @param dir string
-    * @return string
-    */
-   public function pwd() {
-      return "";
-   }
+    /**
+     * Get the server folder. UNUSED.
+     * 
+     * @access public
+     * @param dir string
+     * @return string
+     */
+    public function pwd() {
+        return "";
+    }
 
-   /**
-    * Create a folder in the server. UNUSED.
-    * 
-    * @access public
-    * @param dir string
-    * @param mode int
-    * @param recursive boolean
-    * @return boolean
-    */
-   public function mkdir($dir, $mode = 0755, $recursive = false) {
-      return true;
-   }
+    /**
+     * Create a folder in the server. UNUSED.
+     * 
+     * @access public
+     * @param dir string
+     * @param mode int
+     * @param recursive boolean
+     * @return boolean
+     */
+    public function mkdir($dir, $mode = 0755, $recursive = false) {
+        return true;
+    }
 
-   /**
-    * Manage permissions on a file/folder. UNUSED.
-    * 
-    * @access public
-    * @param target string
-    * @param mode string
-    * @param recursive boolean
-    * @return boolean
-    */
-   public function chmod($target, $mode = 0755, $recursive = false) {
-      return false;
-   }
+    /**
+     * Manage permissions on a file/folder. UNUSED.
+     * 
+     * @access public
+     * @param target string
+     * @param mode string
+     * @param recursive boolean
+     * @return boolean
+     */
+    public function chmod($target, $mode = 0755, $recursive = false) {
+        return false;
+    }
 
-   /**
-    * Rename a file in the server. UNUSED.
-    * 
-    * @access public
-    * @param renameFrom string
-    * @param renameTo string
-    * @return boolean
-    */
-   public function rename($renameFrom, $renameTo) {
-      XMD_Log::info("RENAME $renameFrom -> $renameTo");
-      return true;
-   }
+    /**
+     * Rename a file in the server. UNUSED.
+     * 
+     * @access public
+     * @param renameFrom string
+     * @param renameTo string
+     * @return boolean
+     */
+    public function rename($renameFrom, $renameTo) {
+        XMD_Log::info("RENAME $renameFrom -> $renameTo");
+        return true;
+    }
 
-   /**
-    * Get the size of a file. UNUSED.
-    * 
-    * @access public
-    * @param file string
-    * @return int
-    */
-   public function size($file) {
-      return 0;
-   }
+    /**
+     * Get the size of a file. UNUSED.
+     * 
+     * @access public
+     * @param file string
+     * @return int
+     */
+    public function size($file) {
+        return 0;
+    }
 
-   /**
-    * Get the folder contents. UNUSED.
-    * 
-    * @access public
-    * @param dir string
-    * @param mode int
-    * @return mixed
-    */
-   public function ls($dir, $mode = NULL) {
-      return array();
-   }
+    /**
+     * Get the folder contents. UNUSED.
+     * 
+     * @access public
+     * @param dir string
+     * @param mode int
+     * @return mixed
+     */
+    public function ls($dir, $mode = NULL) {
+        return array();
+    }
 
-   /**
-    * Removes a file from server
-    * 
-    * @access public
-    * @param path string
-    * @param recursive boolean
-    * @param filesOnly boolean
-    * @return boolean
-    */
-   public function rm($path) {
-      XMD_Log::info("RM $path");
+    /**
+     * Removes a file from server
+     * 
+     * @access public
+     * @param path string
+     * @param recursive boolean
+     * @param filesOnly boolean
+     * @return boolean
+     */
+    public function rm($path) {
+        XMD_Log::info("RM $path");
 
-      // guess idnode from server path
-      $pathParts = explode("/", $path);
+        // guess idnode from server path
+        $pathParts = explode("/", $path);
 
-      $docNameFull = array_pop($pathParts);
-      $nameSplit = explode("-", $docNameFull);
-      $docName = $nameSplit[0];
+        $docNameFull = array_pop($pathParts);
+        $nameSplit = explode("-", $docNameFull);
+        $docName = $nameSplit[0];
 
-      $partsJoin = implode("/", $pathParts);
-      $partialTablePath = "{$partsJoin}/documents/{$docName}";
+        $partsJoin = implode("/", $pathParts);
+        $partialTablePath = "{$partsJoin}/documents/{$docName}";
 
-      $node = new Nodes_ORM();
-      $result = $node->find('idnode', "Path REGEXP %s", array($partialTablePath), MONO);
+        $node = new Nodes_ORM();
+        $result = $node->find('idnode', "Path REGEXP %s", array($partialTablePath), MONO);
 
-      if (!isset($result[0])) {
-         XMD_Log::error("unexpected result, document may have not been deleted");
-         return false;
-      }
+        if (!isset($result[0])) {
+            XMD_Log::error("unexpected result, document may have not been deleted");
+            return false;
+        }
 
-      // delete solr document using id
-      $client = new Solarium_Client($this->config);
-      $update = $client->createUpdate();
-      $update->addDeleteById($result[0]);
-      $update->addCommit();
-      $solrResp = $client->update($update);
+        // delete solr document using id
+        $client = new Solarium_Client($this->config);
+        $update = $client->createUpdate();
+        $update->addDeleteById($result[0]);
+        $update->addCommit();
+        $solrResp = $client->update($update);
 
-      if ($solrResp->getStatus() !== 0) {
-         XMD_Log::error("solr error deleting doc id: {$result[0]}");
-         return false;
-      }
+        if ($solrResp->getStatus() !== 0) {
+            XMD_Log::error("solr error deleting doc id: {$result[0]}");
+            return false;
+        }
 
-      XMD_Log::info("solr doc id: {$result[0]} was deleted");
-      return true;
-   }
+        XMD_Log::info("solr doc id: {$result[0]} was deleted");
+        return true;
+    }
 
-   /**
-    * Copies a file from server to local. UNUSED.
-    * 
-    * @access public
-    * @param remoteFile string
-    * @param localFile string
-    * @param overwrite boolean
-    * @param mode
-    * @return boolean
-    */
-   public function get($sourceFile, $targetFile, $mode = 0755) {
-      XMD_Log::info("GET $sourceFile, $targetFile");
-      return false;
-   }
+    /**
+     * Copies a file from server to local. UNUSED.
+     * 
+     * @access public
+     * @param remoteFile string
+     * @param localFile string
+     * @param overwrite boolean
+     * @param mode
+     * @return boolean
+     */
+    public function get($sourceFile, $targetFile, $mode = 0755) {
+        XMD_Log::info("GET $sourceFile, $targetFile");
+        return false;
+    }
 
-   /**
-    * Copies a file from local to server.
-    * 
-    * @access public
-    * @param localFile string
-    * @param remoteFile string
-    * @param overwrite boolean
-    * @param mode
-    * @return boolean
-    */
-   public function put($localFile, $targetFile, $mode = 0755) {
-      XMD_Log::info("PUT $localFile TO $targetFile");
-      $core = array_shift(explode("/", $targetFile));
-      $this->config['adapteroptions']['core'] = $core;
+    public function loadAdditionalFields($doc, $client, $core) {
+        // data folders are not commited, so must be configured per project.
+        $fieldsConf = include(XIMDEX_ROOT_PATH . "/data/solr-core/{$core}/solr_additional_fields.conf");
+        if (empty($fieldsConf) || count($fieldsConf) == 0) {
+            return;
+        }
 
-      $xml = simplexml_load_file($localFile);
-      if (!$xml) {
-         XMD_Log::error("invalid xml file: $localFile");
-         return false;
-      }
+        $fieldnameArray = array_keys($fieldsConf);
+        $selectQuery = $client->createSelect();
+        $selectQuery->setQuery("id:" . $doc["id"]);
+        $selectQuery->setFields($fieldnameArray);
+        $resultset = $client->select($selectQuery);
 
-      //Adapt xml to Solarium
-      $client = new Solarium_Client($this->config);
-      if (!$client) {
-         XMD_Log::error("fail to create a Solarium_Client instance");
-         return false;
-      }
-      $update = $client->createUpdate();
-      $doc = $update->createDocument();
-      $publicationPath = array();
-      $tags = array();
-
-      // Adapt all attributes except "id" and "names"
-      foreach ($xml->children() as $field) {
-         $attr = $field->attributes();
-         $key = (string) $attr["name"];
-
-         if ($key === "id") {
-            $nodeID = $field;
-         } elseif ($key === "names") {
-            foreach ($field->children() as $partialPath) {
-               $publicationPath[] = (string) $partialPath;
+        foreach ($fieldnameArray as $fieldname) {
+            $fieldCfg = $fieldsConf[$fieldname];
+            $fieldValue = "";
+            if ($fieldCfg["STORE"] === 'ALWAYS') { //calculate value
+                $fieldValue = $fieldCfg["FUNCTION"]();
+            } else { //"IF_NEW"
+                if ($resultset->getNumFound() !== 0) {
+                    foreach ($resultset as $document) {
+                        foreach ($document as $field => $value) {
+                            if ($field === $fieldname) {
+                                $fieldValue = $value;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                if ($fieldValue === "") { //calculate value
+                    $fieldValue = $fieldCfg["FUNCTION"]();
+                }
             }
-            continue;
-         } elseif ($key === "tags") {
-            $tagAndTypes = explode(",", $field);
 
-            $getTag = function($tagWithType) {
-               $tagStr = explode(":", $tagWithType);
-               return utf8_decode($tagStr[0]);
-            };
+            $doc->addField($fieldname, $fieldValue);
+        }
+    }
 
-            $tags = array_map($getTag, $tagAndTypes);
-            continue;
-         }
-         $doc->addField($key, $field);
-      }
+    /**
+     * Copies a file from local to server.
+     * 
+     * @access public
+     * @param localFile string
+     * @param remoteFile string
+     * @param overwrite boolean
+     * @param mode
+     * @return boolean
+     */
+    public function put($localFile, $targetFile, $mode = 0755) {
+        XMD_Log::info("PUT $localFile TO $targetFile");
+        $core = array_shift(explode("/", $targetFile));
+        $this->config['adapteroptions']['core'] = $core;
 
-      // tags
-      foreach ($tags as $tag) {
-         $doc->addField('tags', $tag);
-      }
+        // Load xml coming from transformation
+        $xml = simplexml_load_file($localFile);
+        if (!$xml) {
+            XMD_Log::error("invalid xml file: $localFile");
+            return false;
+        }
 
-      // check if the document already exists, set "creationdate"
-      $CREATION_DATE_FIELD = 'creationdate';
-      $selectQuery = $client->createSelect();
-      $selectQuery->setQuery("id:$nodeID");
-      $selectQuery->setFields(array($CREATION_DATE_FIELD));
-      $resultset = $client->select($selectQuery);
-      $creationdate = "";
-      if ($resultset->getNumFound() !== 0) {
-         foreach ($resultset as $res) {
-            foreach ($res as $field => $value) {
-               if ($field === $CREATION_DATE_FIELD) {
-                  $creationdate = $value;
-                  break;
-               }
-            }
-            break;
-         }
-      } else {
-         $creationdate = date("Y-m-d\TH:i:s\Z");
-      }
-      $doc->addField($CREATION_DATE_FIELD, $creationdate);
+        // Create client
+        $client = new Solarium_Client($this->config);
+        if (!$client) {
+            XMD_Log::error("fail to create a Solarium_Client instance");
+            return false;
+        }
+        
+        // Adapt all attributes to Solarium
+        $update = $client->createUpdate();
+        $doc = $update->createDocument();
+        foreach ($xml->children() as $field) {
+            $attr = $field->attributes();
+            $key = (string) $attr["name"];
+            $doc->addField($key, $field);
+        }
 
-      // Retrieve server that belongs to node's project and has channel html 
-      $node = new Node($nodeID);
-      $channelsTable = new Channel();
-      // Asumme one and only one web channel per server
-      // TODO: Store and retrieve from table
-      $channelName = "web";
-      $idChannelArray = $channelsTable->find('IdChannel,DefaultExtension', 'Name = %s', array($channelName), MULTI);
-      $channelWeb = $idChannelArray[0];
-      $channelWebId = $channelWeb['IdChannel'];
-      $channelWebExtension = $channelWeb['DefaultExtension'];
-      
-      $publicationPath[] = $node->GetNodeName();
-      $relServersTable = new RelServersChannels();
-      $publicationServer = $relServersTable->find('IdServer', 'IdChannel = %s', array($channelWebId), MULTI);
-      $queryParams = array();
-      $inSqlSectionArray = array();
-      foreach ($publicationServer as $s) {
-         $queryParams[] = $s["IdServer"];
-         $inSqlSectionArray[] = "%s";
-      }
-      $dbServer = new Server();
-      $inSqlSection = implode(",", $inSqlSectionArray);
-      $queryParams[] = $node->getServer();
-      $myServer = $dbServer->find('Url', "IdServer in ($inSqlSection) and IdNode = %s", $queryParams, MONO);
-      
-      
-      // Use full url in solr
-      array_unshift($publicationPath, $myServer[0]);
-      $publicationUrl = implode("/", $publicationPath) . "-id{$channelName}.{$channelWebExtension}";
-      $doc->addField("publicationUrl", $publicationUrl);
+        // Add additional fields according to conf file.
+        // It may be used to change/delete fields.
+        $this->loadAdditionalFields($doc, $client, $core);
+        $update->addDocument($doc);
+        $update->addCommit();
+        try {
+            $result = $client->update($update);
+        } catch (Exception $e) {
+            XMD_Log::error("Exception: {$e->getMessage()}");
+            return false;
+        }
 
-      $update->addDocument($doc);
-      $update->addCommit();
-      try {
-         $result = $client->update($update);
-      } catch (Exception $e) {
-         XMD_Log::error("Exception: {$e->getMessage()}");
-         return false;
-      }
+        if ($result->getStatus() !== 0) {
+            XMD_Log::error("<< Solr update error - status: {$result->getStatus()} >>");
+            return false;
+        }
+        XMD_Log::info("<< Solr update ok >>");
+        return true;
+    }
 
-      if ($result->getStatus() !== 0) {
-         XMD_Log::error("<< Solr update error - status: {$result->getStatus()} >>");
-         return false;
-      }
-      XMD_Log::info("<< Solr update ok >>");
-      return true;
-   }
+    /**
+     * Checks if the especified path is a folder. UNUSED.
+     * 
+     * @access public
+     * @param path string
+     * @return boolean
+     */
+    public function isDir($path) {
+        return false;
+    }
 
-   /**
-    * Checks if the especified path is a folder. UNUSED.
-    * 
-    * @access public
-    * @param path string
-    * @return boolean
-    */
-   public function isDir($path) {
-      return false;
-   }
-
-   /**
-    * Checks if the especified path is a file. UNUSED.
-    * 
-    * @access public 
-    * @param path string
-    * @return boolean
-    */
-   public function isFile($path) {
-      return false;
-   }
+    /**
+     * Checks if the especified path is a file. UNUSED.
+     * 
+     * @access public 
+     * @param path string
+     * @return boolean
+     */
+    public function isFile($path) {
+        return false;
+    }
 
 }
 
