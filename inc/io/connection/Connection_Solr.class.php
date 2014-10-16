@@ -29,8 +29,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
-require_once (XIMDEX_ROOT_PATH . '/extensions/solarium/solarium/library/Solarium/Autoloader.php');
-Solarium_Autoloader::register();
+require_once (XIMDEX_ROOT_PATH . '/extensions/autoload.php');
 
 class Connection_Solr implements I_Connector {
 
@@ -52,7 +51,7 @@ class Connection_Solr implements I_Connector {
             'adapteroptions' => array(
                 'host' => $host,
                 'port' => $port,
-//              'core' => 'solr' //defined in method 'put'
+            // 'core' => 'solr' //defined in method 'put'
             ),
         );
         $this->connected = true;
@@ -189,26 +188,40 @@ class Connection_Solr implements I_Connector {
     public function rm($path) {
         XMD_Log::info("RM $path");
 
-        // guess idnode from server path
-        $pathParts = explode("/", $path);
+        // this variable will be used to query table "Nodes"
+        $regexPathArray = array();
 
-        $docNameFull = array_pop($pathParts);
-        $nameSplit = explode("-", $docNameFull);
-        $docName = $nameSplit[0];
+        // Guess idnode from server path
+        $subPathArray = explode("/", $path);
+        $fullDocName = array_pop($subPathArray);
+        array_shift($subPathArray); //core Solr
+        $subPathStr = implode("/", $subPathArray);
+        if (strlen($subPathStr) > 0) {
+            $regexPathArray[] = $subPathStr;
+        }
 
-        $partsJoin = implode("/", $pathParts);
-        $partialTablePath = "{$partsJoin}/documents/{$docName}";
+        $docNameArray = explode("-", $fullDocName);
+        $docBase = $docNameArray[0];
+        $docIdiomatic = $docBase . "-" . $docNameArray[1];
+        
+        $regexPathArray[] = "documents";
+        $regexPathArray[] = $docBase;
+        $regexPathStr = implode("/", $regexPathArray);
 
         $node = new Nodes_ORM();
-        $result = $node->find('idnode', "Path REGEXP %s", array($partialTablePath), MONO);
+        $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($docIdiomatic, $regexPathStr), MONO);
 
         if (!isset($result[0])) {
             XMD_Log::error("unexpected result, document may have not been deleted");
+            XMD_Log::error(print_r(array(
+                "path" => $path,
+                "docIdiomatic" => $docIdiomatic,
+                "regexPathStr" => $regexPathStr), true));
             return false;
         }
 
         // delete solr document using id
-        $client = new Solarium_Client($this->config);
+        $client = new Solarium\Client($this->config);
         $update = $client->createUpdate();
         $update->addDeleteById($result[0]);
         $update->addCommit();
@@ -300,12 +313,17 @@ class Connection_Solr implements I_Connector {
         }
 
         // Create client
-        $client = new Solarium_Client($this->config);
-        if (!$client) {
+        try {
+            $client = new Solarium\Client($this->config);
+        } catch (Exception $e) {
             XMD_Log::error("fail to create a Solarium_Client instance");
             return false;
         }
-        
+//        $client = new Solarium\Client($this->config);
+//        if (!$client) {
+//            XMD_Log::error("fail to create a Solarium_Client instance");
+//            return false;
+//        }
         // Adapt all attributes to Solarium
         $update = $client->createUpdate();
         $doc = $update->createDocument();

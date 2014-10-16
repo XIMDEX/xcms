@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 // get a select query instance
 $query = $client->createSelect();
@@ -32,7 +32,7 @@ foreach ($debugResult->getExplain() as $key => $explanation) {
     echo 'Match: ' . (($explanation->getMatch() == true) ? 'true' : 'false')  . '<br/>';
     echo 'Description: ' . $explanation->getDescription() . '<br/>';
     echo '<h4>Details</h4>';
-    foreach ($explanation AS $detail) {
+    foreach ($explanation as $detail) {
         echo 'Value: ' . $detail->getValue() . '<br/>';
         echo 'Match: ' . (($detail->getMatch() == true) ? 'true' : 'false')  . '<br/>';
         echo 'Description: ' . $detail->getDescription() . '<br/>';
@@ -47,7 +47,7 @@ foreach ($debugResult->getExplainOther() as $key => $explanation) {
     echo 'Match: ' . (($explanation->getMatch() == true) ? 'true' : 'false')  . '<br/>';
     echo 'Description: ' . $explanation->getDescription() . '<br/>';
     echo '<h4>Details</h4>';
-    foreach ($explanation AS $detail) {
+    foreach ($explanation as $detail) {
         echo 'Value: ' . $detail->getValue() . '<br/>';
         echo 'Match: ' . (($detail->getMatch() == true) ? 'true' : 'false')  . '<br/>';
         echo 'Description: ' . $detail->getDescription() . '<br/>';

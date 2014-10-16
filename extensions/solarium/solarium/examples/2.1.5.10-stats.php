@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 // get a select query instance
 $query = $client->createSelect();
@@ -35,7 +35,7 @@ foreach ($statsResult as $field) {
     echo '<h2>Field facets</h2>';
     foreach ($field->getFacets() as $field => $facet) {
         echo '<h3>Facet ' . $field . '</h3>';
-        foreach ($facet AS $facetStats) {
+        foreach ($facet as $facetStats) {
             echo '<h4>Value: ' . $facetStats->getValue() . '</h4>';
             echo 'Min: ' . $facetStats->getMin() . '<br/>';
             echo 'Max: ' . $facetStats->getMax() . '<br/>';

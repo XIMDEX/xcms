@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 // get a select query instance
 $query = $client->createSelect();
@@ -28,7 +28,7 @@ echo 'NumFound: '.$resultset->getNumFound();
 // display facet counts
 echo '<hr/>Facet ranges:<br/>';
 $facet = $resultset->getFacetSet()->getFacet('priceranges');
-foreach($facet as $range => $count) {
+foreach ($facet as $range => $count) {
     echo $range . ' to ' . ($range + 100) . ' [' . $count . ']<br/>';
 }
 

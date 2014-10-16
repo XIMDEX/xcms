@@ -1,6 +1,6 @@
 {
    "require": {
-      "solarium/solarium": "2.4.0"
+      "solarium/solarium": "3.2.0"
    },
    "config": {
       "vendor-dir": "extensions/"

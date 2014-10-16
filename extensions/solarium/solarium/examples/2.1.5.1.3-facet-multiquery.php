@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 // get a select query instance
 $query = $client->createSelect();
@@ -28,7 +28,7 @@ echo 'NumFound: '.$resultset->getNumFound();
 // display facet counts
 echo '<hr/>Multiquery facet counts:<br/>';
 $facet = $resultset->getFacetSet()->getFacet('stock');
-foreach($facet as $key => $count) {
+foreach ($facet as $key => $count) {
     echo $key . ' [' . $count . ']<br/>';
 }
 

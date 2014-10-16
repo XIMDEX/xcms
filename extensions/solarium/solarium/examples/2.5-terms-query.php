@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 // get a terms query instance
 $query = $client->createTerms();
@@ -18,7 +18,7 @@ $resultset = $client->terms($query);
 foreach ($resultset as $field => $terms) {
     echo '<h3>' . $field . '</h3>';
     foreach ($terms as $term => $count) {
-       echo $term . ' (' . $count . ')<br/>';
+        echo $term . ' (' . $count . ')<br/>';
     }
     echo '<hr/>';
 }

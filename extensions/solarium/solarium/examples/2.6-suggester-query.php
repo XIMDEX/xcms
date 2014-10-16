@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 // get a suggester query instance
 $query = $client->createSuggester();
@@ -26,7 +26,7 @@ foreach ($resultset as $term => $termResult) {
     echo 'StartOffset: '.$termResult->getStartOffset().'<br/>';
     echo 'EndOffset: '.$termResult->getEndOffset().'<br/>';
     echo 'Suggestions:<br/>';
-    foreach($termResult as $result){
+    foreach ($termResult as $result) {
         echo '- '.$result.'<br/>';
     }
 

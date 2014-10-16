@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 // get a select query instance
 $query = $client->createSelect();
@@ -22,18 +22,19 @@ $groupComponent->setLimit(5);
 $resultset = $client->select($query);
 
 $groups = $resultset->getGrouping();
-foreach($groups AS $groupKey => $group) {
+foreach ($groups as $groupKey => $group) {
 
     echo '<h1>'.$groupKey.'</h1>';
 
-    foreach($group AS $document) {
+    foreach ($group as $document) {
         echo '<hr/><table>';
 
         // the documents are also iterable, to get all fields
-        foreach($document AS $field => $value)
-        {
+        foreach ($document as $field => $value) {
             // this converts multivalue fields to a comma-separated string
-            if(is_array($value)) $value = implode(', ', $value);
+            if (is_array($value)) {
+                $value = implode(', ', $value);
+            }
 
             echo '<tr><th>' . $field . '</th><td>' . $value . '</td></tr>';
         }

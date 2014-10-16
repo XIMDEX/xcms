@@ -1,20 +1,22 @@
 <?php
-require('init.php');
+require(__DIR__.'/init.php');
 
 htmlHeader();
 
 // create a client instance and autoload the customize request plugin
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 $customizer = $client->getPlugin('customizerequest');
 
 // add a persistent HTTP header (using array input values)
-$customizer->createCustomization(array(
-    'key' => 'auth',
-    'type' => 'header',
-    'name' => 'X-my-auth',
-    'value' => 'mypassword',
-    'persistent' => true
-));
+$customizer->createCustomization(
+    array(
+        'key' => 'auth',
+        'type' => 'header',
+        'name' => 'X-my-auth',
+        'value' => 'mypassword',
+        'persistent' => true
+    )
+);
 
 // add a persistent GET param (using fluent interface)
 $customizer->createCustomization('session')

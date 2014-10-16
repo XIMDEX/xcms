@@ -1,10 +1,10 @@
 <?php
 
-require('init.php');
+require(__DIR__.'/init.php');
 htmlHeader();
 
 // create a client instance and get a select query instance
-$client = new Solarium_Client($config);
+$client = new Solarium\Client($config);
 
 
 
@@ -34,8 +34,5 @@ $query->setQuery($queryString);
 $request = $client->createRequest($query);
 
 echo urldecode($request->getUri());
-
-
-
 
 htmlFooter();
