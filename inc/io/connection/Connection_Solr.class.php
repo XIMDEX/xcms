@@ -176,6 +176,46 @@ class Connection_Solr implements I_Connector {
         return array();
     }
 
+    public function splitPath($path) {
+        XMD_Log::info("splitPath");
+        $arr = explode("/", $path);
+        return array("core" => $arr[0],
+            "subPath" => $arr[1],
+            "fullName" => $arr[2]);
+    }
+
+    public function getNameExtension($name) {
+        $arr = explode(".", $name);
+        $ext = array_pop($arr);
+        return $ext;
+    }
+
+    public function extractNodeName($fullName, $withIdiom = false) {
+        $name = "";
+        $fullNameParts = explode("_", $fullName);
+        $nameNoServerFrame = implode("", array($fullNameParts[0], $fullNameParts[1]));
+        if ($this->getNameExtension($fullName) === "xml") {
+            $nameNoServerFrameParts = explode("-", $nameNoServerFrame);
+            if($withIdiom) {
+                $name = implode("-", array($nameNoServerFrameParts[0], $nameNoServerFrameParts[1]));
+            } else {
+                $name = $nameNoServerFrameParts[0];
+            }
+            
+        } else {
+            $name = $nameNoServerFrame;
+        }
+
+        return $name;
+    }
+
+    public function extractNodeNameBinaryPut($fullName) {
+        $fullNameParts = explode("_", $fullName, 2);
+        array_shift($fullNameParts);
+        $trueName = implode("", $fullNameParts);
+        return $trueName;
+    }
+    
     /**
      * Removes a file from server
      * 
@@ -188,35 +228,25 @@ class Connection_Solr implements I_Connector {
     public function rm($path) {
         XMD_Log::info("RM $path");
 
-        // this variable will be used to query table "Nodes"
-        $regexPathArray = array();
-
-        // Guess idnode from server path
-        $subPathArray = explode("/", $path);
-        $fullDocName = array_pop($subPathArray);
-        array_shift($subPathArray); //core Solr
-        $subPathStr = implode("/", $subPathArray);
-        if (strlen($subPathStr) > 0) {
-            $regexPathArray[] = $subPathStr;
+        $pathInfo = $this->splitPath($path);
+        if($this->getNameExtension($pathInfo["fullName"]) === "xml") {
+            $nodeNameNoIdiom = $this->extractNodeName($pathInfo["fullName"]);
+            $qPath = implode("/", array($pathInfo["subPath"], "documents", $nodeNameNoIdiom));
+            $qName = $this->extractNodeName($pathInfo["fullName"], true);
         }
-
-        $docNameArray = explode("-", $fullDocName);
-        $docBase = $docNameArray[0];
-        $docIdiomatic = $docBase . "-" . $docNameArray[1];
+        else {
+            $qPath = $pathInfo["subPath"];
+            $qName = $pathInfo["fullName"];
+        }
         
-        $regexPathArray[] = "documents";
-        $regexPathArray[] = $docBase;
-        $regexPathStr = implode("/", $regexPathArray);
-
         $node = new Nodes_ORM();
-        $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($docIdiomatic, $regexPathStr), MONO);
+        $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($qName, $qPath), MONO);
 
         if (!isset($result[0])) {
             XMD_Log::error("unexpected result, document may have not been deleted");
             XMD_Log::error(print_r(array(
-                "path" => $path,
-                "docIdiomatic" => $docIdiomatic,
-                "regexPathStr" => $regexPathStr), true));
+                "qName" => $qName,
+                "qPath" => $qPath), true));
             return false;
         }
 
@@ -290,21 +320,8 @@ class Connection_Solr implements I_Connector {
         }
     }
 
-    /**
-     * Copies a file from local to server.
-     * 
-     * @access public
-     * @param localFile string
-     * @param remoteFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
-     */
-    public function put($localFile, $targetFile, $mode = 0755) {
-        XMD_Log::info("PUT $localFile TO $targetFile");
-        $core = array_shift(explode("/", $targetFile));
-        $this->config['adapteroptions']['core'] = $core;
-
+    public function putXmlFile($localFile, $pathInfo) {
+        XMD_Log::info("putXmlFile");
         // Load xml coming from transformation
         $xml = simplexml_load_file($localFile);
         if (!$xml) {
@@ -319,11 +336,7 @@ class Connection_Solr implements I_Connector {
             XMD_Log::error("fail to create a Solarium_Client instance");
             return false;
         }
-//        $client = new Solarium\Client($this->config);
-//        if (!$client) {
-//            XMD_Log::error("fail to create a Solarium_Client instance");
-//            return false;
-//        }
+
         // Adapt all attributes to Solarium
         $update = $client->createUpdate();
         $doc = $update->createDocument();
@@ -335,7 +348,7 @@ class Connection_Solr implements I_Connector {
 
         // Add additional fields according to conf file.
         // It may be used to change/delete fields.
-        $this->loadAdditionalFields($doc, $client, $core);
+        $this->loadAdditionalFields($doc, $client, $pathInfo["core"]);
         $update->addDocument($doc);
         $update->addCommit();
         try {
@@ -349,8 +362,72 @@ class Connection_Solr implements I_Connector {
             XMD_Log::error("<< Solr update error - status: {$result->getStatus()} >>");
             return false;
         }
-        XMD_Log::info("<< Solr update ok >>");
+
         return true;
+    }
+
+    public function putBinaryFile($localFile, $pathInfo) {
+        XMD_Log::info("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
+        $trueName = $this->extractNodeNameBinaryPut($pathInfo["fullName"]);
+        
+        $node = new Nodes_ORM();
+        $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
+        if (!isset($result[0])) {
+            XMD_Log::error("unexpected result, node not found:");
+            $cond = $node->_getCondition("Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), true);
+            XMD_Log::error("$cond");
+            return false;
+        }
+
+        $client = new Solarium\Client($this->config);
+        // get an extract query instance and add settings
+        $query = $client->createExtract();
+        $query->setFile($localFile);
+        $query->setCommit(true);
+        $query->setOmitHeader(false);
+
+        // add document
+        $doc = $query->createDocument();
+        $doc->id = $result[0];
+        $query->setDocument($doc);
+
+        // this executes the query and returns the result
+        $resultExtract = $client->extract($query);
+        if ($resultExtract->getStatus() !== 0) {
+            XMD_Log::error("<< Solr update error - status: {$resultExtract->getStatus()} >>");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Copies a file from local to server.
+     * 
+     * @access public
+     * @param localFile string
+     * @param remoteFile string
+     * @param overwrite boolean
+     * @param mode
+     * @return boolean
+     */
+    public function put($localFile, $targetFile, $mode = 0755) {
+        XMD_Log::info("PUT $localFile TO $targetFile");
+
+        $pathInfo = $this->splitPath($targetFile);
+        $this->config['adapteroptions']['core'] = $pathInfo["core"];
+
+        // Get file extension
+        $targetFileParts = explode("/", $targetFile);
+        $filename = array_pop($targetFileParts);
+        $fileParts = explode(".", $filename);
+        $fileExtension = array_pop($fileParts);
+
+        if ($fileExtension === "xml") {
+            return $this->putXmlFile($localFile, $pathInfo);
+        } else {
+            return $this->putBinaryFile($localFile, $pathInfo);
+        }
     }
 
     /**
