@@ -9938,3 +9938,9 @@ msgstr "pertenece a los siguientes grupos"
 
 msgid "Preview as"
 msgstr "Previsualizar como"
+
+msgid "Are you sure to continue?"
+msgstr "¿Estás seguro de que quieres continuar?"
+
+msgid "This association will be deleted"
+msgstr "Esta asociación será eliminada"
