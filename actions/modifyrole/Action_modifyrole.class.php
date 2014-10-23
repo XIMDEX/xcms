@@ -64,7 +64,7 @@ class Action_modifyrole extends ActionAbstract {
         	$allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
        	}
 
-		$action = new Node();
+		/*$action = new Node();
 		$allActions = $action->find("IdAction, Command, IdNodeType, Module, Name");
 		$permisionsToEdit = array();
 		foreach ($allActions as $key => $actionInfo){
@@ -92,7 +92,7 @@ class Action_modifyrole extends ActionAbstract {
 			}
 			
 
-		}
+		}*/
 
 		$sql = 'select id, Pipeline from Pipelines where IdNode > 0 order by id asc limit 1';
 		$db = new DB();
@@ -105,7 +105,7 @@ class Action_modifyrole extends ActionAbstract {
 		$values = array('name' => $role->get('Name'),
 						'description' => $role->get('Description'),
 						'permissions' => $allPermissionData,
-						'actions' => $permisionsToEdit,
+		//				'actions' => $permisionsToEdit,
                         'nodetypes' => $this->getAllNodeTypes($allStates,$role,$selectedPipeline),
 						'workflow_states' => $allStates,
 						'pipelines' => $pipelines,

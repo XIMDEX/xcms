@@ -69,7 +69,7 @@
 
                     {foreach name="outer_nodetypes" from=$nodetypes key=index item=nodetype}
                         {assign var=displayed_nodetype value=1}
-                        {if (count($nodetype.actions)) > 0}
+                        {if (isset($nodetype.actions) && (count($nodetype.actions)) > 0)}
                             <accordion-group heading="{$nodetype.Description}" >
                                 <table>
                                     <th></th>
