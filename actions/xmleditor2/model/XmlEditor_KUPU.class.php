@@ -357,7 +357,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 		$xmldoc = "<?xml version='1.0' encoding='UTF-8'?>".trim($xmldoc);
     	$rngvalidator = new XMLValidator_RNG();
 		$valid = $rngvalidator->validate(XmlBase::recodeSrc($schema, XML::UTF8), $xmldoc);
-		$valid=true;
+		//$valid=true;
 		$response = array('valid' => $valid,'errors' => $rngvalidator->getErrors());
     	return $response;
     }
