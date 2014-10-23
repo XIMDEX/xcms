@@ -34,7 +34,7 @@
 			</fieldset>
 				</div>
 
-			<div class="action_content">
+			<div ng-cloak class="action_content">
                 <fieldset>
                 <accordion close-others="true" ng-init="firstOpen=true; firstDisabled=false;">
                     <accordion-group heading="Datos generales" is-open="firstOpen" is-disabled="firstDisabled">
