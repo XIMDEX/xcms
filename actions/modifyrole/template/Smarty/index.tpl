@@ -34,85 +34,72 @@
 			</fieldset>
 				</div>
 
-			<div class="action_content">
-				<fieldset>
-				<ol>
-				<li><label class="aligned">{t}Name{/t}</label>{$name}</li>
-				<li><label for="description" class="aligned">{t}Descripción{/t}</label>
-				<input type="text" name="description" id="description" value="{$description}" class="cajaxg validable not_empty"></li>
-				<li><label class="aligned">{t}Workflow{/t}</label>
-					<select name="id_workflow" id="id_workflow" disabled>
-						{foreach from=$pipelines key=id_pipeline item=name }
-						<option value="{$id_pipeline}"{if $id_pipeline == $selected_pipeline} selected="selected"{/if}>{$name}</option>
-						{/foreach}
-					</select>
-				</li>
-				</ol>
-				</fieldset>
+			<div ng-cloak class="action_content">
+                <fieldset>
+                <accordion close-others="true" ng-init="firstOpen=true; firstDisabled=false;">
+                    <accordion-group heading="Datos generales" is-open="firstOpen" is-disabled="firstDisabled">
+                        <ul>
+                            <li><label class="">{t}Name{/t}</label>{$name}</li>
+                            <li>
+                                <label for="" class="aligned">{t}Description{/t}</label>
+                                <input type="text" name="description" id="description" value="{$description}" class=" validable not_empty">
+                            </li>
+                            <li>
+                                <label class="">{t}Workflow{/t}</label>
+                                <select name="id_workflow" id="id_workflow" disabled>
+                                     {foreach from=$pipelines key=id_pipeline item=name }
+                                        <option value="{$id_pipeline}"{if $id_pipeline == $selected_pipeline} selected="selected"{/if}>{$name}</option>
+                                     {/foreach}
+                                </select>
+                            </li>
+                        </ul>
+                    </accordion-group>
+                    <accordion-group heading="{t}Generic permits{/t}">
+                        <ul>
+                            {foreach from=$permissions key=index item=permissionData}
+                                <li>
+                                    <input type="checkbox" name="permissions[{$permissionData.IdPermission}]" id="p_{$permissionData.IdPermission}"{if $permissionData.HasPermission} checked="checked"{/if} >
+                                    <label for="p_{$permissionData.IdPermission}">{$permissionData.Description}</label>
 
 
+                                </li>
+                            {/foreach}
+                        </ul>
+                    </accordion-group>
 
-							<fieldset>
-
-							<legend><span>{t}Modify role permits{/t}</span></legend>
-
-							<fieldset class="buttons-form fixed">
-					
-				</fieldset>
-				<label class="aligned">	{t}Generic permits{/t}</label>
-				<div class="right-block">
-				<ol>
-				{foreach from=$permissions key=index item=permissionData}
-								<li>
-										<input type="checkbox" name="permissions[{$permissionData.IdPermission}]" id="p_{$permissionData.IdPermission}"{if $permissionData.HasPermission} checked="checked"{/if} >
-										<label for="p_{$permissionData.IdPermission}">{$permissionData.Description}</label>
-
-
-									</li>
-								{/foreach}
-								</ol>
-								</div>
-
-							<table>
-								<tr>
-									<th colspan="5">Action permits</th>
-									</tr>
-								<tr>
-									<th  align="center">{t}Node type{/t}</td>
-									<th align="center">{t}Action{/t}</td>
-									{foreach from=$workflow_states item=workflow_state}
-									<th align="center">{$workflow_state.Name}</td>
-									{/foreach}
-									<th align="center">{t}Without state{/t}</td>
-								</tr>
-								{foreach name="outer_nodetypes" from=$nodetypes key=index item=nodetype}
-								{assign var=displayed_nodetype value=1}
-								{if (count($nodetype.actions)) > 0}
-								{foreach name="medium_actions" from=$nodetype.actions key=action_key item=action}
-								<tr>
-									{if $displayed_nodetype == 1}
-									{assign var=displayed_nodetype value=0}
-									<td rowspan="{$smarty.foreach.medium_actions.total}" class="{if $index is not even}evenrow{else}oddrow{/if}">{$nodetype.Description} {* $nodetype.IdNodeType *}</td>
-									{/if}
-									<td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">{$action.Name}</td>
-									{foreach from=$workflow_states item=workflow_state}
-									{literal}<td class="{/literal}{if $index is not even}evenrow{else}oddrow{/if}{literal}" align="center">{/literal}
-										{if (array_key_exists('states', $action))}
-										{literal}<input type="checkbox" name="action_workflow[{/literal}{$action.IdAction}][{$workflow_state.IdState}]"
-										{if $action.states[$workflow_state.IdState]} checked="checked"{/if} {* $action.IdAction *}
-										{literal}>{/literal}
-										{/if}&nbsp;
-									</td>
-									{/foreach}
-									<td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">{if (array_key_exists('state', $action))}<input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]"{if $action.state} checked="checked"{/if}>{/if}</td>
-								</tr>
-								{/foreach}
-								{/if}
-								{/foreach}
-							</table>
-
-
-				</fieldset>
+                    {foreach name="outer_nodetypes" from=$nodetypes key=index item=nodetype}
+                        {assign var=displayed_nodetype value=1}
+                        {if (count($nodetype.actions)) > 0}
+                            <accordion-group heading="{$nodetype.Description}" >
+                                <table>
+                                    <th></th>
+                                    {foreach from=$workflow_states item=workflow_state}
+                                    <th align="center">{$workflow_state.Name}</th>
+                                        {/foreach}
+                                    <th align="center">{t}Without state{/t}</th>
+                                {foreach name="medium_actions" from=$nodetype.actions key=action_key item=action}
+                                    <tr>
+                                        {if $displayed_nodetype == 1}
+                                            {assign var=displayed_nodetype value=0}
+                                        {/if}
+                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">{$action.Name}</td>
+                                        {foreach from=$workflow_states item=workflow_state}
+                                            <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">
+                                        {if (array_key_exists('states', $action))}
+                                        <input type="checkbox" name="action_workflow[{$action.IdAction}][{$workflow_state.IdState}]"
+                                            {if $action.states[$workflow_state.IdState]} checked="checked"{/if} {* $action.IdAction *}
+                                            />
+                                        {/if}
+                                            </td>
+                                        {/foreach}
+                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">{if (array_key_exists('state', $action))}<input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]"{if $action.state} checked="checked"{/if}>{/if}</td>
+                                    </tr>
+                                {/foreach}
+                                </table>
+                            </accordion-group>
+                        {/if}
+                    {/foreach}
+                </fieldset>
 			</div>
 
 			</form>

@@ -25,64 +25,6 @@
 
 X.actionLoaded(function(event, fn, params) {
 
-
-	var $form = fn('.form_group_user');
-    var $group = $form.find('input[name=group]');
-    var $role = $form.find('input[name=role]');
-    var $roleOld = $form.find('input[name=roleOld]');
-	var action = $form.attr('action');
-
-    function getRowGroup(button) {
-        return fn(button).parent().parent().parent().find('input[name=info-IdGroup]').val();
-    }
-
-    function getRowRole(button) {
-        return fn(button).parent().parent().parent().find('select[name=idRole] option:selected').val();
-    }
-
-    function getRowRoleOld(button) {
-        return fn(button).parent().parent().parent().find('input[name=info-IdRoleOld]').val();
-    }
-
-	var btn1 = fn('.addgroupuser').get(0);
-	if(btn1) {
-		btn1.beforeSubmit.add(function(event, button) {
-			$form.attr('action', action + '&method=suscribegroupuser');
-		});
-	}
-
-    var cbDelete = function(event, button) {
-        $form.attr('action', action + '&method=deletegroupuser');
-        $group.val(getRowGroup(button));
-    };
-
-    fn('.deletegroupuser').each(function(index, button) {
-        button.beforeSubmit.add(cbDelete);
-    });
-
-    var cbUpdate = function(event, button) {
-        $form.attr('action', action + '&method=updategroupuser');
-        $group.val(getRowGroup(button));
-        $role.val(getRowRole(button));
-        $roleOld.val(getRowRoleOld(button));
-    };
-
-    fn('.updategroupuser').each(function(index, button) {
-        button.beforeSubmit.add(cbUpdate);
-    });
-
-    var cbChange = function() {
-        var newRole=fn(this).find('option:selected').val();
-        var oldRole=fn(this).parent().parent().find('input[name=info-IdRoleOld]').val();
-        if(newRole!=oldRole){
-            fn(this).parent().parent().find('.updategroupuser').removeClass('hidden');
-        }else{
-            fn(this).parent().parent().find('.updategroupuser').addClass('hidden');
-        }
-    };
-
-    fn('select[name=idRole]').each(function(index, select) {
-        fn(this).change(cbChange);
-    });
+    X.angularTools.initView(params.context, params.tabId);
 });
 

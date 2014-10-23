@@ -102,7 +102,7 @@
 						<a target="_blank" href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
 					</li>				
 					<li class="icon logout">
-						<a href="{$_URL_ROOT}/xmd/loadaction.php?action=logout">{t}Logout{/t}</a>
+						<a href="{$_URL_ROOT}?action=logout">{t}Logout{/t}</a>
 					</li>
 		            	</ul>
 		            </div>

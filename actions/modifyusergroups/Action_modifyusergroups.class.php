@@ -29,6 +29,16 @@ class Action_modifyusergroups extends ActionAbstract {
     // Main method: shows initial form
     function index () {
         $idNode = $this->request->getParam('nodeid');
+
+        $this->addJs('/actions/modifyusergroups/resources/js/helper.js');
+
+        $values = array('id_node' => $idNode);
+
+        $this->render($values, null, 'default-3.0.tpl');
+    }
+
+    function getGroups(){
+        $idNode = $this->request->getParam('nodeid');
         $user = new User($idNode);
 
         $group = new Group();
@@ -60,21 +70,18 @@ class Action_modifyusergroups extends ActionAbstract {
                     $tmpGroup = new Group($value);
                     $userGroupsWithRole[$index]['Name'] = $tmpGroup->get('Name');
                     $userGroupsWithRole[$index]['IdRole'] = $user->GetRoleOnGroup($value);
+                    $userGroupsWithRole[$index]['dirty'] = false;
                     $index ++;
                 }
             }
         }
-
-        $this->addJs('/actions/modifyusergroups/resources/js/helper.js');
-
         $values = array('id_node' => $idNode,
             'user_name' => $user->get('Name'),
             'general_role' => $generalRole,
             'all_roles' => $roles,
             'filtered_groups' => $filteredGroups,
             'user_groups_with_role' => $userGroupsWithRole);
-
-        $this->render($values, null, 'default-3.0.tpl');
+        $this->sendJSON($values);
     }
 
     function suscribegroupuser() {
@@ -82,45 +89,62 @@ class Action_modifyusergroups extends ActionAbstract {
         $newgroup = $this->request->getParam("newgroup");
         $idUser = $this->request->getParam('nodeid');
 
-        $group = new Group($newgroup);		//Create group object with appropriate ID
+        $group = new Group($newgroup);
         $group->AddUserWithRole($idUser, $newrole);
-        $this->redirectTo('index');
+
+        $values = array(
+            'result' => "OK",
+            'message' => "The association was created successfully"
+        );
+
+        $this->sendJSON($values);
     }
 
     function updategroupuser() {
         $iduser = $this->request->getParam('nodeid');
         $idGroup = $this->request->getParam("group");
-        $idRoleOld = $this->request->getParam("roleOld");
+        //$idRoleOld = $this->request->getParam("roleOld");
         $idRole = $this->request->getParam("role");
-        $globalRole = $this->request->getParam("globalRole");
-        $oldglobalRole = $this->request->getParam("oldglobalRole");
+        /*$globalRole = $this->request->getParam("globalRole");
+        $oldglobalRole = $this->request->getParam("oldglobalRole");*/
 
         $group = new Group();
-
-        if($idRole != $idRoleOld) {
-             $group->SetID($idGroup);
-             $group->ChangeUserRole($iduser,$idRole);
+        $group->SetID($idGroup);
+        $userRoles=$group->getUserRoleInfo();
+        $exist=false;
+        foreach($userRoles as $u){
+            if($u["IdUser"]==$iduser && $u["IdRole"]==$idRole){
+                $exist=true;
+                break;
+            }
         }
-
-
-        /*if ($globalRole != $oldglobalRole) {
-            $group->SetID($group->GetGeneralGroup());
-            $group->ChangeUserRole($iduser,$globalRole);
-        }*/
-        $this->redirectTo('index');
+        if(!$exist) {
+            $group->ChangeUserRole($iduser,$idRole);
+            $values = array(
+                'result' => "OK",
+                'message' => "The association has been successfully updated"
+            );
+        }else{
+            $values = array(
+                'result' => "FAIL"
+            );
+        }
+        $this->sendJSON($values);
     }
 
     function deletegroupuser() {
-        $cked = $this->request->getParam("group");
+        $group = $this->request->getParam("group");
         $iduser = $this->request->getParam('nodeid');
 
-        //foreach ($checked as $cked) {
-            if($cked) {
-                $group = new Group($cked);
-                $group->DeleteUser($iduser);
-            }
-        //}
-        $this->redirectTo('index');
+        if($group){
+            $group = new Group($group);
+            $group->DeleteUser($iduser);
+            $values = array(
+                'result' => "OK",
+                'message' => "The association has been successfully deleted"
+            );
+        }
+        $this->sendJSON($values);
     }
 }
 

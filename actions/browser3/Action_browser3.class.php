@@ -79,6 +79,7 @@ class Action_browser3 extends ActionAbstract {
 		);
 
 		$this->addCss('/xmd/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
+        $this->addCss('/extensions/bootstrap/dist/css/bootstrap.min.css');
 		$this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
 		$this->addCss('/extensions/humane/flatty.css');
 		$this->addActionCss('browser.css');
@@ -106,7 +107,8 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');
 		$this->addJs('/extensions/humane/humane.min.js');
-		$this->addJs('/extensions/flow/ng-flow-standalone.js');
+		$this->addJs('/extensions/flow/ng-flow-standalone.min.js');
+        $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.12.0-SNAPSHOT.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
@@ -144,6 +146,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/directives/ximFitText.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
+        $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
 		$this->addActionJs('XMainCtrl.js');
 		$this->addActionJs('controller.js');
 

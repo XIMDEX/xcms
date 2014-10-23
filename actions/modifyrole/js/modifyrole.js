@@ -25,6 +25,9 @@
 
 
 X.actionLoaded(function(event, fn, params) {
+
+    //Start angular compile and binding
+    X.angularTools.initView(params.context, params.tabId);
 	
 	fn('select[name=id_workflow]').change(function(event) {
 		var id_pipeline = $(this).val();
