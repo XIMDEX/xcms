@@ -47,13 +47,17 @@ class Connection_Solr implements I_Connector {
      */
     public function connect($host = NULL, $port = NULL) {
         XMD_Log::info("CONNECT $host $port");
+
         $this->config = array(
-            'adapteroptions' => array(
-                'host' => $host,
-                'port' => $port,
-            // 'core' => 'solr' //defined in method 'put'
-            ),
+            'endpoint' => array(
+                'localhost' => array(
+                    'host' => $host,
+                    'port' => $port,
+                    'path' => '/solr/',
+                )
+            )
         );
+
         $this->connected = true;
 
         return true;
@@ -196,12 +200,11 @@ class Connection_Solr implements I_Connector {
         $nameNoServerFrame = implode("", array($fullNameParts[0], $fullNameParts[1]));
         if ($this->getNameExtension($fullName) === "xml") {
             $nameNoServerFrameParts = explode("-", $nameNoServerFrame);
-            if($withIdiom) {
+            if ($withIdiom) {
                 $name = implode("-", array($nameNoServerFrameParts[0], $nameNoServerFrameParts[1]));
             } else {
                 $name = $nameNoServerFrameParts[0];
             }
-            
         } else {
             $name = $nameNoServerFrame;
         }
@@ -215,7 +218,7 @@ class Connection_Solr implements I_Connector {
         $trueName = implode("", $fullNameParts);
         return $trueName;
     }
-    
+
     /**
      * Removes a file from server
      * 
@@ -229,16 +232,17 @@ class Connection_Solr implements I_Connector {
         XMD_Log::info("RM $path");
 
         $pathInfo = $this->splitPath($path);
-        if($this->getNameExtension($pathInfo["fullName"]) === "xml") {
+        $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
+
+        if ($this->getNameExtension($pathInfo["fullName"]) === "xml") {
             $nodeNameNoIdiom = $this->extractNodeName($pathInfo["fullName"]);
             $qPath = implode("/", array($pathInfo["subPath"], "documents", $nodeNameNoIdiom));
             $qName = $this->extractNodeName($pathInfo["fullName"], true);
-        }
-        else {
+        } else {
             $qPath = $pathInfo["subPath"];
             $qName = $pathInfo["fullName"];
         }
-        
+
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($qName, $qPath), MONO);
 
@@ -369,7 +373,8 @@ class Connection_Solr implements I_Connector {
     public function putBinaryFile($localFile, $pathInfo) {
         XMD_Log::info("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
         $trueName = $this->extractNodeNameBinaryPut($pathInfo["fullName"]);
-        
+
+        // get node id
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
         if (!isset($result[0])) {
@@ -379,8 +384,8 @@ class Connection_Solr implements I_Connector {
             return false;
         }
 
+        // create an extract query instance and add settings
         $client = new Solarium\Client($this->config);
-        // get an extract query instance and add settings
         $query = $client->createExtract();
         $query->setFile($localFile);
         $query->setCommit(true);
@@ -389,6 +394,15 @@ class Connection_Solr implements I_Connector {
         // add document
         $doc = $query->createDocument();
         $doc->id = $result[0];
+        // add tags if attached to ximdex document
+        $relTag = new RelTagsNodes();
+        $tags = $relTag->getTags($result[0]);
+        if (count($tags) > 0) {
+            foreach ($tags as $tag) {
+                XMD_Log::error("tag: " . $tag["Name"]);
+                $doc->addField("tags", $tag["Name"]);
+            }
+        }
         $query->setDocument($doc);
 
         // this executes the query and returns the result
@@ -415,7 +429,7 @@ class Connection_Solr implements I_Connector {
         XMD_Log::info("PUT $localFile TO $targetFile");
 
         $pathInfo = $this->splitPath($targetFile);
-        $this->config['adapteroptions']['core'] = $pathInfo["core"];
+        $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
 
         // Get file extension
         $targetFileParts = explode("/", $targetFile);
