@@ -1,0 +1,4 @@
+--command migratePair 
+--ruta_fich_pdf /home/jmgomez/agpd_ximnota/Proyectos/AGPD/www.agpd.es/resoluciones/procedimientos_LOPD/proc_lopd_2009/common/pdfs/A5-00002-2009_Resolucion-de-fecha-20-11-2009_Art-ii-culo-5.5-LOPD.pdf 
+--ruta_fich_xml /home/jmgomez/agpd_ximnota/Proyectos/AGPD/www.agpd.es/resoluciones/procedimientos_LOPD/proc_lopd_2009/common/pdfs/metadata/A5-00002-2009_Resolucion-de-fecha-20-11-2009_Art-ii-culo-5.5-LOPD.pdf 
+--destino /test/test/common/

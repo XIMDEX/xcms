@@ -4051,8 +4051,8 @@ INSERT INTO Namespaces (service, type, nemo, uri, recursive, category,isSemantic
 VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",0);
 
 -- Table structure for table RelNodeMetadata
-DROP TABLE IF EXISTS `RelNodeMetadata`;
-CREATE TABLE RelNodeMetadata (
+DROP TABLE IF EXISTS `RelNodeMetadataCore`;
+CREATE TABLE RelNodeMetadataCore (
         idRel int(12) unsigned NOT NULL auto_increment,
         idNode int(12) unsigned NOT NULL default '0',
         idMetadata int(12) unsigned NOT NULL default '0',

@@ -28,6 +28,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
+require_once (XIMDEX_ROOT_PATH . '/modules/ximNOTA/model/RelNodeMetaData.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
 require_once (XIMDEX_ROOT_PATH . '/extensions/autoload.php');
 
@@ -183,9 +184,12 @@ class Connection_Solr implements I_Connector {
     public function splitPath($path) {
         XMD_Log::info("splitPath");
         $arr = explode("/", $path);
-        return array("core" => $arr[0],
-            "subPath" => $arr[1],
-            "fullName" => $arr[2]);
+        $core = array_shift($arr);
+        $fullName = array_pop($arr);
+        $subPath = implode('/', $arr);
+        return array("core" => $core,
+            "subPath" => $subPath,
+            "fullName" => $fullName);
     }
 
     public function getNameExtension($name) {
@@ -378,9 +382,7 @@ class Connection_Solr implements I_Connector {
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
         if (!isset($result[0])) {
-            XMD_Log::error("unexpected result, node not found:");
-            $cond = $node->_getCondition("Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), true);
-            XMD_Log::error("$cond");
+            XMD_Log::error(sprintf("NOT found: Name = %s AND Path REGEXP %s", $trueName, $pathInfo["subPath"] . '$'));
             return false;
         }
 
@@ -394,18 +396,60 @@ class Connection_Solr implements I_Connector {
         // add document
         $doc = $query->createDocument();
         $doc->id = $result[0];
+
         // add tags if attached to ximdex document
         $relTag = new RelTagsNodes();
         $tags = $relTag->getTags($result[0]);
         if (count($tags) > 0) {
             foreach ($tags as $tag) {
-                XMD_Log::error("tag: " . $tag["Name"]);
                 $doc->addField("tags", $tag["Name"]);
             }
         }
-        $query->setDocument($doc);
+
+        // add xml metadata fields if the file exists
+        $relNodeMetaData = new RelNodeMetaData();
+        $idMetadata = $relNodeMetaData->find('idMetadata', 'idNode = %s', array($result[0]), MONO);
+        if (isset($idMetadata[0])) {
+            XMD_Log::info("found node metadata");
+            $metaNode = new Node($idMetadata[0]);
+            $content = $metaNode->GetContent();
+            XMD_Log::info("loaded node metadata");
+            $Resolucion = new SimpleXMLElement($content);
+            if ($Resolucion) {
+                XMD_Log::info("parsed node metadata");
+                $metaFieldsConf = include_once(XIMDEX_ROOT_PATH . "/data/solr-core/{$pathInfo["core"]}/metadata/metadata.conf");
+                if (!empty($metaFieldsConf) && count($metaFieldsConf) > 0) {
+                    foreach ($metaFieldsConf as $xmlPath => $mapSolrField) {
+                        // check if path exist in xml object
+                        $xmlPathParts = explode('/', $xmlPath);
+                        $thisLevel = $Resolucion;
+                        $existsNode = false;
+                        foreach ($xmlPathParts as $subLevel) {
+                            if (isset($thisLevel->{$subLevel})) {
+                                $thisLevel = $thisLevel->{$subLevel};
+                                $existsNode = true;
+                            } else {
+                                $existsNode = false;
+                                break;
+                            }
+                        }
+                        if ($existsNode) {
+                            $thisLevelContent = trim((string) $thisLevel);
+                            if (strlen($thisLevelContent) > 0) {
+                                $doc->addField($mapSolrField, $thisLevelContent);
+                            }
+                        }
+                    }
+                }
+            } else {
+                XMD_Log::error("invalid xml metadata file. node id: " . $idMetadata[0]);
+            }
+        }
 
         // this executes the query and returns the result
+        XMD_Log::info(print_r($doc->getFields(), true));
+        $query->addParam('lowernames', 'false');
+        $query->setDocument($doc);
         $resultExtract = $client->extract($query);
         if ($resultExtract->getStatus() !== 0) {
             XMD_Log::error("<< Solr update error - status: {$resultExtract->getStatus()} >>");
