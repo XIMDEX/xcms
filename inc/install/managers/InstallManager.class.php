@@ -189,6 +189,7 @@ class InstallManager {
 		$result[] = $this->checkInstanceGroup();
 		$result[] = $this->checkFilePermissions();
 		$result[] = $this->checkDiskSpace();
+        $result[] = $this->checkRequiredPackages();
 		$result[] = $this->checkPHPVersion();
 		$result[] = $this->checkRequiredPHPExtensions();
 		$result[] = $this->checkRecommendedPHPExtensions();
@@ -197,6 +198,20 @@ class InstallManager {
 
 		return $result;		
 	}
+
+    private function checkRequiredPackages(){
+        $result = array();
+        $result["name"] = "OpenSSL";
+        exec('openssl version',$res);
+        if (count($res)>0){
+            $result["state"]="success";
+        }else{
+            $result["state"]="error";
+            $result["messages"][] = "OpenSSL package is needed";
+            $result["help"][] = "Please install the openssl package on your system.";
+        }
+        return $result;
+    }
 
 	private function checkDiskSpace(){
 		$result = array();
@@ -418,5 +433,15 @@ class InstallManager {
 		$uniqid=$hostName."_".uniqid();
 		Config::update("ximid",$uniqid);
 	}
+
+    public function setApiKey(){
+        $random = md5(rand());
+        exec('openssl enc -aes-128-cbc -k "'.$random.'" -P -md sha1',$res);
+        $key = explode("=",$res[1])[1];
+        $iv = explode("=",$res[2])[1];
+        $db = new DB();
+        $db->execute("UPDATE Config SET ConfigValue='".$key."' where ConfigKey='ApiKey'");
+        $db->execute("UPDATE Config SET ConfigValue='".$iv."' where ConfigKey='ApiIV'");
+    }
 }
 ?>

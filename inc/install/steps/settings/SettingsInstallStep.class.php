@@ -71,6 +71,7 @@ class SettingsInstallStep extends GenericInstallStep {
 		Config::update("locale", $language);
 		$this->installManager->setLocale($language);
 		$this->installManager->insertXimdexUser($password);
+        $this->installManager->setApiKey();
 		$this->loadNextAction();
 		$result["success"] = true;
 		$this->sendJSON($result);
