@@ -316,9 +316,12 @@ function continueStartKupu(kupu) {
    	if(!kupu.getXimDocument().checkSpellingIsAllowed())
 	   	KupuButtonDisable(getFromSelector('kupu-spellchecker-button'));
 
+	/*
+	Validate the document on init
 	kupu.getXimDocument().validateXML(function(valid, msg) {
     		if (!valid) kupu.alert(msg);
     });
+    */
 
 	loadingImage.hideLoadingImage();
 

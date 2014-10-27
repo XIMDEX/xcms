@@ -732,17 +732,18 @@ XimDocument = function(editorConfig) {
 			onComplete: function(req, json) {
 				var msg = null;
 				if (!json.valid) {
-					msg = _("Document cannot be validated!");
+					msg = _("<h2>Document cannot be validated! It contains the following errors:</h2>");
 
 					if (json.errors) {
-						msg = msg+"\n\n"
+                        msg += "<ul>";
 						var l = json.errors.length;
 						for (var i=0; i<l; i++) {
-							msg += '-\n\n' + json.errors[i] + '\n';
+							msg += '<li>' + json.errors[i] + '</li>';
 						}
+                        msg += "</ul>";
 					}
 				}
-//				if (typeof(callback) == 'function') callback(json.valid, msg);
+				if (typeof(callback) == 'function') callback(json.valid, msg);
 			},
 			onError: function(req) {
 				if (typeof(callback) == 'function') callback(false, _("Document cannot be validated!"));
