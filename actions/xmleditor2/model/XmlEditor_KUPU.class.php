@@ -132,6 +132,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			'/inc/js/i18n.js',
 			'/extensions/angular/angular.min.js',
 			$actionURL . '/js/angular/app.js',
+            $actionURL . '/js/angular/ximOntologyBrowser.js',
+            '/extensions/d3js/d3.v3.min.js',
 			//'/inc/js/angular/app.js',
 			'/inc/js/angular/services/xTranslate.js',
 			'/inc/js/angular/services/xBackend.js',
@@ -287,6 +289,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			sprintf("availableViews: ['%s']", implode("','", $availableViews)),
 		);
 
+        $namespaces = json_encode($this->getAllNamespaces());
+        $relTags = new RelTagsNodes();
+        $tags = json_encode($relTags->getTags($idnode));
+
 		$onloadfunctions = sprintf("kupu = startKupu({%s});", implode(", ", $options));
 	        $values = array('nodeid' => $idnode,
         			'xmlFile' => $xmlFile,
@@ -296,6 +302,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
        				'js_files' => $jsFiles,
        				'css_files' => $cssFiles,
        				'base_tags' => $baseTags,
+                    'tags' => $tags,
+                    'namespaces' => $namespaces,
        				'channels' => json_encode($channelList),
 				'on_load_functions' => $onloadfunctions
 				);
@@ -741,5 +749,24 @@ class XmlEditor_KUPU extends XmlEditor_Abstract {
 			return false;
 		}
 	}
+
+    private function getAllNamespaces(){
+        $result = array();
+        //Load from Xowl Service
+        $namespacesArray = OntologyService::getAllNamespaces();
+        //For every namespace build an array. This will be a json object
+        foreach ($namespacesArray as $namespace) {
+            $array = array(
+                "id"=>$namespace->get("idNamespace"),
+                "type"=>$namespace->get("type"),
+                "isSemantic"=>$namespace->get("isSemantic"),
+                "nemo"=>$namespace->get("nemo"),
+                "category"=>$namespace->get("category"),
+                "uri"=>$namespace->get("uri")
+                    );
+            $result[] = $array;
+            }
+  		return $result;
+    }
 }
 ?>
