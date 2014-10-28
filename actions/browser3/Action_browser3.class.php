@@ -1200,6 +1200,14 @@ class Action_browser3 extends ActionAbstract {
 		$result["success"] = true;
 		$this->sendJSON($result);
 	}
+
+    /**
+     * Return preferences like MaxItemsPerGroup as JSON
+     */
+    function getPreferences(){
+        $res["preferences"]=array("MaxItemsPerGroup" => Config::getValue("MaxItemsPerGroup"));
+        $this->sendJSON($res);
+    }
 }
 
 ?>
