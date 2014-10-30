@@ -32,6 +32,8 @@
 if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)));
 
+require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
+
 //General class
 if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
 	include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');

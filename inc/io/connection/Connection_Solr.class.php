@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once (XIMDEX_ROOT_PATH . '/modules/ximNOTA/model/RelNodeMetaData.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
-require_once (XIMDEX_ROOT_PATH . '/extensions/autoload.php');
 
 class Connection_Solr implements I_Connector {
 

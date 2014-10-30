@@ -3,7 +3,7 @@
       "solarium/solarium": "3.2.0"
    },
    "config": {
-      "vendor-dir": "extensions/"
+      "vendor-dir": "extensions/vendors/"
   } 
 }
 
