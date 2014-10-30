@@ -565,6 +565,7 @@ function XimdocEditor(options) {
         // <body/> element maybe is not present in docxap template
         // A better way to resolve this problem is to assign the first possible uid directly
         htmlDoc.setAttribute('uid', this.nodeId + ".1");
+        htmlDoc.setAttribute('spellcheck','false');
 
         $('img[uid]', htmlDoc).each(
             function (i, e) {

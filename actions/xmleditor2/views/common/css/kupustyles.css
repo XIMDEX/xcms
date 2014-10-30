@@ -34,30 +34,27 @@
  *
  *****************************************************************************/
 /* $Id: kupustyles.css 16467 2005-08-25 11:08:10Z guido $ */
-/*******
-//	ICON GENERIC STYLES
-*******/
-/*******
-//	ICONS
-*******/
 @font-face {
   font-family: "Source Sans Pro";
   src: url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot");
   src: url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.woff") format("woff"), url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.svg#ubuntucondensed-regular-webfont") format("svg");
   font-weight: normal;
   font-style: normal; }
+
 @font-face {
   font-family: 'coustardbold';
   src: url("../../../../../xmd/fonts/coustard-black-webfont.eot");
   src: url("../../../../../xmd/fonts/coustard-black-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/coustard-black-webfont.woff") format("woff"), url("../../../../../xmd/fonts/coustard-black-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/coustard-black-webfont.svg#coustardbold") format("svg");
   font-weight: normal;
   font-style: normal; }
+
 @font-face {
   font-family: 'coustardregular';
   src: url("../../../../../xmd/fonts/coustard-regular-webfont.eot");
   src: url("../../../../../xmd/fonts/coustard-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/coustard-regular-webfont.woff") format("woff"), url("../../../../../xmd/fonts/coustard-regular-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/coustard-regular-webfont.svg#coustardregular") format("svg");
   font-weight: normal;
   font-style: normal; }
+
 html {
   font-size: 62.5%; }
 
@@ -145,7 +142,7 @@ div.kupu-smalleditor {
   /*top:0;*/
   width: 100%;
   border-bottom: 1px solid #e1e1e1;
-  background: url("../../../../../xmd/images/browser/hbox/fnd-tab.png") repeat-x scroll left top #F5F5F5;
+  background: url("../../../../../xmd/images/browser/hbox/fnd-tab.png") repeat-x scroll left top whitesmoke;
   -moz-border-radius-topright: 12px;
   z-index: 5; }
 
@@ -564,7 +561,7 @@ button.kupu-logo {
 .kupu-tb-buttons button.visible {
   display: inline; }
 
-/*div.kupu-editorframe {
+  /*div.kupu-editorframe {
   /*margin-left: 0.3em;
   margin-bottom: 0.3em;
   border: solid 2px ButtonFace;*  /
@@ -1509,7 +1506,7 @@ h3 .xedit-rngelements-toolbox-button-closed:hover {
   height: 1px;
   margin: 0px; }
 
-/*
+	/*
 .tooltip {
 	padding: 1px;
 	font-size: 12px;
@@ -1702,7 +1699,7 @@ span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
   background: #ececec url("../../../../../xmd/images/publicando_seccion2.gif") no-repeat center 45px;
   -moz-border-radius: 7px;
   width: 180px;
-  height: 45px;
+  height: auto;
   color: #666;
   padding-top: 100px;
   font-weight: bold;
@@ -1892,21 +1889,27 @@ div.buttons {
   font-weight: bold;
   color: #c1e9e4; }
 
-@keyframes fadein /*W3C and Opera*/ {
+@keyframes fadein {
   from {
     text-indent: -40%; }
+
   to {
     text-indent: 0; } }
-@-moz-keyframes fadein /*Firefox*/ {
+
+@-moz-keyframes fadein {
   from {
     text-indent: -40%; }
+
   to {
     text-indent: 0; } }
-@-webkit-keyframes fadein /*Safari and Chrome*/ {
+
+@-webkit-keyframes fadein {
   from {
     text-indent: -40%; }
+
   to {
     text-indent: 0; } }
+
 /**************
 	// Overlay layer
 	***************/
@@ -1917,5 +1920,3 @@ div.buttons {
   background: rgba(0, 0, 0, 0.5);
   left: 0;
   top: 0; }
-
-/*# sourceMappingURL=kupustyles.css.map */
