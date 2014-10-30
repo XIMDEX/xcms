@@ -62,12 +62,16 @@ var ImagesTool = Object.xo_create(XimdocTool, {
 		if($(image).length <1) return ;
 		
 		var width = 0, height = 0;
-		if($(image).attr('width')   )
-			width = $(image).width();
-
-		if($(image).attr('height') )
-			height = $(image).height();
-		
+		if($(image).attr('width') == "auto"){
+			width = null;
+        }else if($(image).attr('width')){
+            width = $(image).width();
+        }
+		if($(image).attr('height') == "auto" ){
+            height = null;
+        }else if($(image).attr('height')){
+            height = $(image).height();
+        }
 
 		var dim = {
 			'w': parseInt(width),

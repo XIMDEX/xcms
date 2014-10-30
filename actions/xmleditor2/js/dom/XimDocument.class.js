@@ -724,7 +724,6 @@ XimDocument = function(editorConfig) {
 			hideXimlets: true
     	});
 
-		var encodedContent = "content=" + encodeURIComponent(content);
 		var encodedObject = {"content": content};
 
 		// XML validation on the server
@@ -733,7 +732,8 @@ XimDocument = function(editorConfig) {
 				var msg = null;
 				if (!json.valid) {
 					msg = _("<h2>Document cannot be validated! It contains the following errors:</h2>");
-
+                    $('#kupu-schemavalidator-button').removeClass('kupu-schemavalidator-valid');
+                    $('#kupu-schemavalidator-button').addClass('kupu-schemavalidator-notvalid');
 					if (json.errors) {
                         msg += "<ul>";
 						var l = json.errors.length;
@@ -742,7 +742,10 @@ XimDocument = function(editorConfig) {
 						}
                         msg += "</ul>";
 					}
-				}
+				}else{
+                    $('#kupu-schemavalidator-button').removeClass('kupu-schemavalidator-notvalid');
+                    $('#kupu-schemavalidator-button').addClass('kupu-schemavalidator-valid');
+                }
 				if (typeof(callback) == 'function') callback(json.valid, msg);
 			},
 			onError: function(req) {

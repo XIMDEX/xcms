@@ -331,6 +331,14 @@ div.kupu-smalleditor {
 	margin-left: 0px;
 }
 
+.kupu-tb button.kupu-schemavalidator-pressed.kupu-schemavalidator-valid{
+  border: 2px solid #74b300;
+}
+
+.kupu-tb button.kupu-schemavalidator-pressed.kupu-schemavalidator-notvalid{
+  border: 2px solid #b3000a;
+}
+
 *{
 	outline-style: none;
 	outline-width: 0px;
@@ -1812,6 +1820,7 @@ h3 .xedit-rngelements-toolbox-button-closed:hover{
  	background-color: #FAFAFA;
  	position: absolute;
 	padding: 3px;
+    z-index: 3;
  	/*font-family: 'Verdana, Arial, Helvetica, sans-serif';
  	font-size: 12px;
  	line-height: 16px;*/
@@ -1981,7 +1990,7 @@ span.kupu-tb-buttongroup button:hover span.tooltip{
 	white-space: nowrap;
 	padding: 0 15px 1px 15px;
 	-moz-border-radius: 15px;
-	height: 22px;
+	//height: 22px;
 	line-height: 1.7em;
 	top: 31px;
 	left: -10px;
