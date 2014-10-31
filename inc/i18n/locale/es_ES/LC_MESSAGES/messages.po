@@ -9944,3 +9944,6 @@ msgstr "¿Estás seguro de que quieres continuar?"
 
 msgid "This association will be deleted"
 msgstr "Esta asociación será eliminada"
+
+msgid "There aren't any created languages. You should create a new one"
+msgstr "No hay ningún idioma creado. Deberías crear uno nuevo"

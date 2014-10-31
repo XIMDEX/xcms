@@ -254,7 +254,7 @@ class Action_addfoldernode extends ActionAbstract {
                 $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description, $server->isServerOTF
         );
 
-        $nodeServer->class->AddChannel($physicalServerId, $this->project->channel);
+        //$nodeServer->class->AddChannel($physicalServerId, $this->project->channel);
         Module::log(Module::SUCCESS, "Server creation O.K.");        
         
         // common
@@ -373,7 +373,11 @@ class Action_addfoldernode extends ActionAbstract {
         foreach ($files as $file) {            
             $idSchema = $this->schemas[$file->templatename];
             $file->channel = $file->channel == '{?}' ? $this->channels : $file->channel;
-            $file->language = $file->language == '{?}' ? $languageObject->getList() : $file->language;
+            if(!$languageObject->LanguageEnabled($file->language)){
+                $file->language=$languageObject->getList();
+            }else{
+                $file->language=array($file->language);
+            }
 
 
             $data = array(
@@ -418,7 +422,7 @@ class Action_addfoldernode extends ActionAbstract {
             }
 
 			$dataTmp = $data;
-    			foreach ($file->language as $language) {
+    		foreach ($file->language as $language) {
 				$data = $dataTmp;
 				$data["CHILDRENS"][]=array('NODETYPENAME' => 'LANGUAGE', 'ID' => $language);
 				$docId = $io->build($data);
