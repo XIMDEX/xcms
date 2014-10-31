@@ -44,7 +44,6 @@ ModulesManager::file('/inc/mvc/drawers/gprint.inc');
 ModulesManager::file('/inc/persistence/Config.class.php');
 ModulesManager::file('/conf/install-modules.conf');
 ModulesManager::file('/inc/db/db.inc');
-ModulesManager::file('/inc/db/db.inc');
 ModulesManager::file("/inc/persistence/datafactory.inc");
 ModulesManager::file("/inc/sync/synchro.inc");
 ModulesManager::file("/inc/workflow/Workflow.class.php");
