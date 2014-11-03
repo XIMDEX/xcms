@@ -906,10 +906,6 @@ class Action_browser3 extends ActionAbstract {
 		$sets = $this->getSetsIntersection($nodes);
 		$actions = $this->getActions($nodes);
 
-		error_log(print_r($actions,true));
-
-
-
 		$arrayActionsParams = array();
         //For every action, build the params for json response
         
