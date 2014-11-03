@@ -1356,8 +1356,8 @@ msgstr "Descripci&oacute;n"
 
 #: /actions/createchannel/template/Smarty/index.tpl
 #: /actions/modifychannel/template/Smarty/index.tpl
-msgid "Rendering in"
-msgstr "Renderizado en"
+msgid "Rendering XSLT in"
+msgstr "Renderizado XSLT en"
 
 msgid "Client"
 msgstr "Cliente"
@@ -9947,3 +9947,12 @@ msgstr "Esta asociación será eliminada"
 
 msgid "There aren't any created languages. You should create a new one"
 msgstr "No hay ningún idioma creado. Deberías crear uno nuevo"
+
+msgid "Other"
+msgstr "Otro"
+
+msgid "Default channel"
+msgstr "Canal por defecto"
+
+msgid "Error setting Default Channel property"
+msgstr "Error configurando la propiedad Canal por defecto"

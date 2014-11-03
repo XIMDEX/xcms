@@ -317,6 +317,7 @@ class Channel extends Channels_ORM {
 		$this->set('Filter', $filter);		
 		$this->set('RenderMode', $renderMode);
 		$this->set('OutputType', $outputType);
+        $this->set('Default_Channel', 0);
 		if ($this->add()) {
 			return $this->get('IdChannel');
 		}
@@ -391,4 +392,13 @@ class Channel extends Channels_ORM {
 		$this->ClearError();
 		return $aux;
 	}
+
+    /**
+     * Set property Default_Channel to 0 for all
+     * Channels except the channel with id $idchannel
+     */
+    function setDefaultChannelToZero($idchannel){
+        $dbObj = new DB();
+        return $dbObj->Execute(sprintf("UPDATE Channels SET Default_Channel=0 WHERE IdChannel<>%s;",$idchannel));
+    }
 }
