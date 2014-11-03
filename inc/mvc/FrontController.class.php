@@ -85,5 +85,23 @@ class FrontController extends IController {
 		}
 	}
 
+	/**
+    * Check permissions for an idnode
+    * @param int $idNode 
+    * @param int $idAction 
+    * @return boolean True if action is allowed
+    * @since Ximdex 3.6
+    */
+    protected function isAllowedAction($idNode, $idAction){
+        if (!$idNode)
+            return true;
+        $idUser = XSession::get("userID");
+        if (!$idUser){
+            return false;
+        }
+        $user = new User($idUser);
+        return $user->isAllowedAction($idNode, $idAction);
+    }
+
 }
 ?>

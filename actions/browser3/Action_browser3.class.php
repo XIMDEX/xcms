@@ -897,6 +897,7 @@ class Action_browser3 extends ActionAbstract {
 	}
 
 	/**
+	 * Get the action params for a node list in frontend. 
 	 * Returns a contextual menu data, composed by actions and sets.
 	 */
 	public function cmenu() {
@@ -904,8 +905,36 @@ class Action_browser3 extends ActionAbstract {
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$sets = $this->getSetsIntersection($nodes);
 		$actions = $this->getActions($nodes);
-		// workaround
-		$options = array_merge($sets, $actions);
+
+		error_log(print_r($actions,true));
+
+
+
+		$arrayActionsParams = array();
+        //For every action, build the params for json response
+        
+        foreach ($actions as $idAction){
+            $actionsParamsAux = array();
+            $action = new Action($idAction);
+            $name = $action->get("Name");
+            
+            //Changing name when node sets.
+            if (count($nodes) > 1){
+                $auxName = explode(" ", $name);
+                $name = $auxName[0]." Seleccion";
+            }
+            $actionsParamsAux["name"] = $name;
+            
+            $actionsParamsAux["module"] = $action->get("Module")?$action->get("Module"):"";
+            $actionsParamsAux["params"] = $action->get("Params")?$action->get("Params"):"";
+            $actionsParamsAux["command"] = $action->get("Command");
+            $actionsParamsAux["icon"] = $action->get("Icon");
+            $actionsParamsAux["callback"] = "callAction";
+            $actionsParamsAux["bulk"] = $action->get("IsBulk");
+            $arrayActionsParams[] = $actionsParamsAux;
+        }
+
+		$options = array_merge($sets, $arrayActionsParams);
 
 		foreach($options as $key => $value) {
 			$options[$key]['params'] = urlencode($options[$key]['params']);
@@ -916,207 +945,33 @@ class Action_browser3 extends ActionAbstract {
 
 	/**
 	 * Calculates the posible actions for a group of nodes.
-	 * Returns the actions on a JSON string.
+	 * @param array $nodes IdNodes array
+     * @return array IdActions array
 	 */
-	protected function getActions($nodes=null, $processActionName=true) {
+    protected function getActions($nodes=null) {
 
 		$idUser = XSession::get('userID');
 		$nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
 		if (!is_array($nodes)) $nodes = array($nodes);
 
-		$actions = $this->getActionsOnNodeList($idUser, $nodes, $processActionName);
+		$actions = $this->getActionsOnNodeList($idUser, $nodes);
 
 		return $actions;
 	}
 
 	/**
-	 * Calculates the posible actions for a group of nodes.
-	 * It depends on roles, states and nodetypes of nodes.
-	 * Returns an array of actions.
+	* Calculates the posible actions for a group of nodes.
+	* It depends on roles, states and nodetypes of nodes.
+    * @param int $idUser Current user.
+    * @param array $nodes IdNodes array.
+    * @return array IdActions array.         * 
 	 */
-	public function getActionsOnNodeList($idUser, $nodes, $processActionName=true) {
+    public function getActionsOnNodeList($idUser, $nodes, $processActionName=true) {
 
-		$db = new DB();
-
-		$nodes = array_unique($nodes);
-
-		// Used for commands intersection (1)
-		$arrNodeTypes = array();
-		// Used for actions intersection (2)
-		$arrStates = array("0");
-		// Used for groups intersection (3)
-		$arrNodes2 = array();
-
-		// ---------------------------- Step 1 -----------------------------
-
-		// Find groups for the node list:
-		// 1) User groups
-		// 2) Node groups
-		// If NodeType::CanAttachGroups == 0 find parent groups until CanAttachGroup == 1
-
-		XMD_Log::debug(sprintf(_('Debugging actions intersection with nodes - [%s]'), implode(', ', $nodes)));
-
-		for ($i=0; $i<count($nodes); $i++) {
-
-			$idNode = $nodes[$i];
-			//First get actions no allowed
-			$noActions = array();
-			$sqlNoActions = "select IdAction From `NoActionsInNode` WHERE IdNode = {$idNode} order by IdAction ASC";
-
-			$db->query($sqlNoActions);
-			while (!$db->EOF) {
-				$noActions[] = $db->getValue('IdAction');
-				$db->next();
-			}
-			$noActions = implode(",", $noActions);
-
-			$sqlNodeInfo = 'select n.idNode, n.idParent, ft.depth, n.idNodeType, n.name, IFNULL(n.idState, 0) as idState,
-				nt.canAttachGroups
-				from FastTraverse ft join Nodes n using(idNode) join NodeTypes nt using(idNodeType)
-				where ft.idChild = %s
-				order by ft.depth';
-
-			$sqlNodeInfo = sprintf($sqlNodeInfo, $idNode);
-			XMD_Log::debug(sprintf('sqlNodeInfo - [%s]', $sqlNodeInfo));
-
-			$db->query($sqlNodeInfo);
-
-			if ($db->EOF) {
-				continue;
-			}
-
-			$arrNodeTypes[] = $db->getValue('idNodeType');
-
-			$arrStates[] = $db->getValue('idState');
-
-			$canAttachGroups = $db->getValue('canAttachGroups');
-			$idParent = $db->getValue('idParent');
-			$nodeHasGroups = true;
-
-			while ($canAttachGroups != 1 && $nodeHasGroups) {
-				$db->next();
-				if (!$db->EOF) {
-					$idNode = $db->getValue('idNode');
-					$idParent = $db->getValue('idParent');
-					$canAttachGroups = $db->getValue('canAttachGroups');
-				} else {
-					$nodeHasGroups = false;
-				}
-			}
-
-			if ($nodeHasGroups) $arrNodes2[] = $idNode;
-		}
-
-		// At this point we have all idnodes needed for obtain the groups
-		// plus a few necessary node attributes.
-
-		// Find the roles of each group, wich depends on user and nodes groups. (3)
-
-		// Used for actions intersection. (4)
-		$roles = array();
-		$sqlGroupsIntersection = 'select ug.idRole
-			from RelUsersGroups ug join RelGroupsNodes gn using(idGroup)
-			where ug.idUser = %s and gn.idNode in (%s)
-			group by ug.idRole';
-
-		$arrNodes2 = array_unique($arrNodes2);
-		$sqlGroupsIntersection = sprintf($sqlGroupsIntersection, $idUser, implode(',', $arrNodes2));
-
-		XMD_Log::debug(sprintf('sqlGroupsIntersection - [%s]', $sqlGroupsIntersection));
-
-		$db->query($sqlGroupsIntersection);
-		while (!$db->EOF) {
-			$roles[] = $db->getValue('idRole');
-			$db->next();
-		}
-
-		// ---------------------------- Step 1 -----------------------------
-
-
-		// ---------------------------- Step 2 -----------------------------
-
-		// Find the actions intersection:
-		// 1) Actions depending on nodetypes.
-		// 2) Actions depending on states.
-
-		// We need to group de actions by command, module and params so the web interface
-		// don't repeat the same action many times.
-
-		// Used for actions intersection. (5)
-		$commands = array();
-		$arrNodeTypes = array_unique($arrNodeTypes);
-		$strNodeTypes = implode(',', $arrNodeTypes);
-
-		// This query finds the commands intersection (1)
-		$sqlCommandIntersection = "select count(1) as c, Command,
-			ifnull(Params, '') as aliasParams,
-			ifnull(Module, '') as aliasModule
-			from Actions
-			where IdNodeType IN (%s) ";
-			if(!empty($noActions) )
-				$sqlCommandIntersection .= " AND IdAction NOT IN({$noActions}) ";
-
-			$sqlCommandIntersection .= "group by Command, aliasParams, aliasModule
-			having c = %s";
-		$sqlCommandIntersection = sprintf($sqlCommandIntersection, $strNodeTypes, count($arrNodeTypes));
-
-		XMD_Log::debug(sprintf('sqlCommandIntersection - [%s]', $sqlCommandIntersection));
-
-		$db->query($sqlCommandIntersection);
-		while (!$db->EOF) {
-			$command = $db->getValue('Command');
-			$commands[] = $command;
-			$db->next();
-		}
-
-		// Now find the actions attributes depending on the commands intersection before,
-		// the nodetypes, the roles and the node states
-		// (1, 2, 4, 5)
-
-		$actions = array();
-		$sqlRolesActions = "select idNodeType, Command, Name, Icon, ifnull(Params, '') as aliasParams, ifnull(Module, '') as aliasModule,%s, IsBulk from Actions a inner join RelRolesActions ra using(idAction) where idNodeType in (%s) and a.Command in ('%s') and Sort > 0 ";
-		if (!empty($roles) && ($idUser!=$nodes[0])) {
-			$sqlRolesActions .=  sprintf(" and idRol in (%s) " , implode(',', $roles));
-		}
-
-		if (!empty($arrStates)) {
-			$sqlRolesActions .=  sprintf(" and ifnull(idState, 0) in (%s) ", implode(',', $arrStates));
-		}
-		$sqlRolesActions .= " group by command, aliasParams, aliasModule
-			order by Sort";
-
-		$actionName = $processActionName === true && count($nodes) > 1
-				? "concat(SUBSTRING_INDEX(name, ' ', 1), ' Selecci�n') as Name"
-				: 'name as Name';
-
-
-		$sqlRolesActions = sprintf(
-			$sqlRolesActions,
-			$actionName,
-			$strNodeTypes,
-			implode("','", $commands)
-		);
-
-		XMD_Log::debug(sprintf('sqlRolesActions - [%s]', $sqlRolesActions));
-
-		$db->query($sqlRolesActions);
-
-		while (!$db->EOF) {
-			$actions[] = array(
-				'name' => _($db->getValue('Name')),
-				'command' => $db->getValue('Command'),
-				'icon' => $db->getValue('Icon'),
-				'module' => $db->getValue('aliasModule'),
-				'params' => $db->getValue('aliasParams'),
-				'callback' => 'callAction',
-				'bulk' => $db->getValue('IsBulk')
-			);
-			$db->next();
-		}
-
-		// ---------------------------- Step 2 -----------------------------
-
-		return $actions;
+        $result = array();
+        $db = new DB();
+        $user = new User($idUser);
+        return $user->getActionsOnNodeList($nodes);    
 	}
 
 	/**

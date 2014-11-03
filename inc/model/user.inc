@@ -24,8 +24,9 @@
  *  @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Users_ORM.class.php';
+ModulesManager::file('/inc/model/orm/Users_ORM.class.php');
+ModulesManager::file('/inc/model/NoActionsInNode.class.php');
+require_once XIMDEX_ROOT_PATH . '/inc/model/NoActionsInNode.class.php';
 
 class User extends Users_ORM {
 	var $userID;
@@ -53,12 +54,12 @@ class User extends Users_ORM {
 	}
 
 	// Class constructor function. If a param is received, $idUser is initialized.
-	function GetAllUsers() {
+	function getAllUsers() {
 		return $this->find('IdUser', '1 ORDER BY Name', NULL, MONO);
 	}
 
     // This function returns all the groups belonging to an user
-	function GetGroupList() {
+	function getGroupList() {
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
 			$dbObj = new DB();
@@ -78,7 +79,7 @@ class User extends Users_ORM {
 	}
 
  	// Returns an obgect idUser
- 	function GetID(){
+ 	function getID(){
 		$this->ClearError();
 		return $this->get('IdUser');
 	}
@@ -86,34 +87,34 @@ class User extends Users_ORM {
     /* *** getters *** */
 
     // Returns the user name associated to an idUser
-	function GetRealName(){
+	function getRealName(){
 		return $this->get("Name");
 	}
 
    	// Returns the user login
-   	function GetLogin(){
+   	function getLogin(){
 		return $this->get("Login");
 	}
 
    	// Returns de user email
-	function GetEmail(){
+	function getEmail(){
 		return $this->get("Email");
 	}
 
    	// Returns user locale
-	function GetLocale(){
+	function getLocale(){
 		return $this->get("Locale");
 	}
 
    	// Returns user's number of access
-	function GetNumAccess(){
+	function getNumAccess(){
 		return $this->get("NumAccess");
 	}
 
     /* *** setters *** */
 
   	// It allows to change an object idUser. It avoid to have to destroy and create again
-   	function SetID($id){
+   	function setID($id){
 		parent::GenericData($id);
 		if (!($this->get('IdUser') > 0)) {
 			$this->SetError(1);
@@ -123,7 +124,7 @@ class User extends Users_ORM {
 	}
 
    	// Updating database with the new user name
-	function SetRealName($name){
+	function setRealName($name){
 		if (!($this->get('IdUser') > 0)) {
 			$this->SetError(1);
 			return false;
@@ -137,7 +138,7 @@ class User extends Users_ORM {
 	}
 
    	// Modifies the user pass
-	function SetPassword($pass){
+	function setPassword($pass){
 		if (!($this->get('IdUser') > 0)) {
 			$this->SetError(1);
 			return false;
@@ -151,7 +152,7 @@ class User extends Users_ORM {
 	}
 
 	// Modifies the user email
-	function SetEmail($email){
+	function setEmail($email){
 		if (!($this->get('IdUser') > 0)) {
 			$this->SetError(1);
 			return false;
@@ -164,7 +165,7 @@ class User extends Users_ORM {
 		return false;
 	}
 
-	function SetLocale($code){
+	function setLocale($code){
 		if (!($this->get('IdUser') > 0)) {
 			$this->SetError(1);
 			return false;
@@ -178,7 +179,7 @@ class User extends Users_ORM {
 	}
 
     // looks for an user by login, and load the corresponding idUser
-	function SetByLogin($login){
+	function setByLogin($login){
 		$this->ClearError();
 		$dbObj = new DB();
 		$query = sprintf("SELECT IdUser FROM Users WHERE Login = %s",
@@ -192,7 +193,7 @@ class User extends Users_ORM {
 	}
 
     // Function which returns true if an user is in a node
-    function IsOnNode($nodeID, $ignoreGeneralGroup = null){
+    function isOnNode($nodeID, $ignoreGeneralGroup = null){
         if(is_array($nodeID)){
             $nodeID = $nodeID['id'];
         }
@@ -215,7 +216,7 @@ class User extends Users_ORM {
 	}
 
     // Function which retrieve a list of roles of an user in a determined node
-    function GetRolesOnNode($nodeID){
+    function getRolesOnNode($nodeID){
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
 			$groupList = $this->GetGroupListOnNode($nodeID);
@@ -242,7 +243,7 @@ class User extends Users_ORM {
 		}
 	}
 
-	function HasPermissionOnNode($nodeID, $pName){
+	function hasPermissionOnNode($nodeID, $pName){
 		$roles  = $this->GetRolesOnNode($nodeID);
 		$permission = new Permission();
 		$permission->SetByName($pName);
@@ -256,7 +257,7 @@ class User extends Users_ORM {
 		return false;
 	}
 
-	function HasPermissionOnGroup($groupID, $pName){
+	function hasPermissionOnGroup($groupID, $pName){
 		$permission = new Permission();
 		$permission->SetByName($pName);
 		$pID = $permission->GetID();
@@ -270,13 +271,13 @@ class User extends Users_ORM {
 		return false;
 	}
 
-	function HasPermission($pName){
+	function hasPermission($pName){
 		$groupID = Config::GetValue("GeneralGroup");
 		return  $this->HasPermissionOnGroup($groupID, $pName);
 	}
 
 	//Check perms with name $pname in all user groups of $nodeID
-	function HasPermissionInNode($pName, $nodeID){
+	function hasPermissionInNode($pName, $nodeID){
 		$groups = $this->GetGroupListOnNode($nodeID);
 		if(!empty($groups) ) {
 			foreach($groups as $_group) {
@@ -290,7 +291,7 @@ class User extends Users_ORM {
 	}
 
 	// Function which returns true if an user is in a node
-	function IsOnGroup($groupID){
+	function isOnGroup($groupID){
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
 			$dbObj = new DB();
@@ -334,7 +335,7 @@ class User extends Users_ORM {
 	}
 
     // Function which returns the role of an user in a group
-	function GetRoleOnGroup($groupid) {
+	function getRoleOnGroup($groupid) {
 		$this->ClearError();
 		if(!is_null($groupid)) {
 			$dbObj = new DB();
@@ -347,7 +348,7 @@ class User extends Users_ORM {
 		return NULL;
 	}
 
-	function GetRoles(){
+	function getRoles(){
 		$this->ClearError();
 		$query = sprintf("SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d group by IdRole", $this->get('IdUser'));
 		$dbObj = new DB();
@@ -361,7 +362,7 @@ class User extends Users_ORM {
 	}
 
 	// Function which returns true if the indicated pass is correct
-	function CheckPassword($pass){
+	function checkPassword($pass){
 		$this->ClearError();
 		if ($this->get('IdUser') > 0) {
 			$dbObj = new DB();
@@ -380,7 +381,7 @@ class User extends Users_ORM {
 	}
 
 	// Function which returns the list of groups subscribed by a node belonging to the user
-	function GetGroupListOnNode($nodeID){
+	function getGroupListOnNode($nodeID){
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
 	        	$userGroups = $this->GetGroupList();
@@ -400,7 +401,7 @@ class User extends Users_ORM {
 	}
 
 	// Function which retrieve a list of actions of an user for given node and group
-	function GetToolbarOnNode($nodeID, $groupID){
+	function getToolbarOnNode($nodeID, $groupID){
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
        		$roleID = $this->GetRoleOnGroup($groupID);
@@ -420,7 +421,7 @@ class User extends Users_ORM {
 	}
 
 	// Function which returns the list of actions of an user for given node and group
-	function GetRoleOnNode($nodeID, $groupID){
+	function getRoleOnNode($nodeID, $groupID){
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
         	$roleID = $this->GetRoleOnGroup($groupID);
@@ -440,7 +441,7 @@ class User extends Users_ORM {
 	}
 
 	// Function which returns an array of tollbars for each subscribed group
-	function GetToolbarsOnNode($nodeID){
+	function getToolbarsOnNode($nodeID){
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
 			$groupIDs = $this->GetGroupListOnNode($nodeID);
@@ -468,7 +469,7 @@ class User extends Users_ORM {
    		return parent::set($attrib, $value);
    	}
 
-	function CreateNewUser($realname, $login, $pass, $email, $locale, $roleID, $idUser) {
+	function createNewUser($realname, $login, $pass, $email, $locale, $roleID, $idUser) {
 
 		if (is_null($idUser)) {
 			XMD_Log::error(_("The node must be previously created"));
@@ -499,7 +500,7 @@ class User extends Users_ORM {
 	}
 
 	// Function which delete the current user
-	function DeleteUser(){
+	function deleteUser(){
 		$this->ClearError();
 		if($this->get('IdUser') > 0) {
 			$groupList = $this->GetGroupList();			
@@ -516,19 +517,19 @@ class User extends Users_ORM {
 	}
 
 	/// Cleaning class errors
-	function ClearError(){
+	function clearError(){
 		$this->numErr = null;
 		$this->msgErr = null;
 	}
 
 	/// Loading a class error
-	function SetError($code){
+	function setError($code){
 		$this->numErr = $code;
 		$this->msgErr = $this->errorList[$code];
 	}
 
 	// Returning true if the class has produced an error
-	function HasError(){
+	function hasError(){
 		return ($this->numErr != null);
 	}
 
@@ -549,6 +550,123 @@ class User extends Users_ORM {
         $v = new Version();
         $docs=$v->getLastestDocsByUser($this->GetID()); 
         return $docs;
+    }
+
+    /**
+     * Get an array with allowed actions on a node
+     * @param int $idNode Node to check Actions
+     * @return array idActions array.
+     * @version Ximdex 3.6
+     */
+    public function getActionsOnNode($idNode){
+        $result = array();
+        
+        //Getting no specific not allowed actions for $idNode
+        $noActionsInNode = new NoActionsInNode();
+        $arrayForbiddenActions = $noActionsInNode->getForbiddenActions($idNode);
+        
+        /*To get the actions the steps are:
+         * 1. Get the Groups on node for the current User
+         * 2. For every group, the user roles.
+         * 3. For every role get the actions on idnode
+         */
+        
+        //Getting groups for the user for $idNode
+        $arrayGroups = $this->GetGroupListOnNode($idNode);
+        $arrayRoles = array();
+        $arrayActions = array();
+        
+        
+        //Getting roles for the user for every group.
+        foreach ($arrayGroups as $idGroup){
+            $aux = array();
+            $aux[] = $this->GetRoleOnGroup($idGroup);
+            $arrayRoles = array_merge($arrayRoles, $aux);
+        }        
+        
+        $arrayRoles = array_unique($arrayRoles);
+        
+        //Getting actions for every rol .
+        foreach ($arrayRoles as $idRol){
+            $role = new Role($idRol);
+            $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode));            
+        }
+        
+        $arrayActions = array_unique($arrayActions);
+        
+        //Deleting not allowed actions from actions array.
+        $result = array_diff($arrayActions, $arrayForbiddenActions);
+        
+        return $result;
+    }
+    	
+    /**
+    * Calculates the posible actions for a group of nodes.
+    * It depends on roles, states and nodetypes of nodes.         
+	* @param array $nodes IdNodes array.
+    * @return array IdActions array
+    * @since Ximdex 3.6
+    * 
+	*/
+	public function getActionsOnNodeList($nodes) {
+
+        $result = array();
+		$db = new DB();
+
+		$nodes = array_unique($nodes);
+        $actionsArray = array();
+        //Get idactions for everynode
+        foreach ($nodes as $idNode){
+            $aux = $this->getActionsOnNode($idNode);
+            $actionsArray = array_merge($actionsArray, $aux);
+         
+        }
+        
+        /*Actions can be different idactions and same command, params
+         * and module, so we must group this actions.
+         * The idActions returned have allowed commands for the selected
+         * nodes.
+         */
+        $actionsArray = array_unique($actionsArray);
+        $foundedActions = array();
+        foreach ($actionsArray as $idAction) {
+            $action = new Action($idAction);
+            
+            $name = $action->get("Name");
+            $aliasModule =$action->get("Module")?$action->get("Module"):"nomodule";
+            $aliasParam = $action->get("Params")?$action->get("Params"):"";
+
+            if (isset($founded[$name])){
+                if (isset($founded[$name][$aliasModule])){                    
+                    if (isset($founded[$name][$aliasModule][$aliasParams]))
+                        continue;
+                }
+            }
+
+            $founded[$name][$aliasModule][$aliasParam]=true;
+            $result[] = $idAction;                    
+        }        
+        return $result;                
+	}
+    
+    
+    /**
+     * Check if the user can run the action for a node
+     * @param int $idNode
+     * @param int $idAction
+     * @return boolean True if the action is allowed. Otherwise false.
+     * @since Ximdex 3.6
+     */
+    public function isAllowedAction($idNode, $idAction){
+        
+        //The action cant be specifically forbidden.
+        $noActionsInNode = new NoActionsInNode();
+        if ($noActionsInNode->isActionForbiddenForNode($idNode, $idAction)){
+            return false;            
+        }
+        
+        $arrayActions = $this->getActionsOnNode($idNode);
+        return in_array($idAction, $arrayActions);
     }
 }
 ?>

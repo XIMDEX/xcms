@@ -48,20 +48,12 @@ class Action_welcome extends ActionAbstract {
 		$user = new User(XSession::get("userID"));
 
 
-	 $permissionsToCreateProject=false;
-                $idNodeRoot = 10000;
-                $actionBrowser3 = new Action_browser3();
-                $arrayPermissions = $actionBrowser3->getActionsOnNodeList(XSession::get("userID"), array($idNodeRoot));
-                if ($arrayPermissions && is_array($arrayPermissions) && count($arrayPermissions)){
-
-                        foreach($arrayPermissions as $permission){
-                                if ($permission["command"] == "addfoldernode"){
-
-                                        $permissionsToCreateProject = true;
-                                        break;
-                                }
-                        }
-                }
+	    //Getting idaction to check Create new project permissions for user
+        $user = new User(XSession::get("userID"));
+        $idNodeRoot = 10000;
+        $action = new Action();
+        $action->setByCommandAndModule("addfoldernode", $idNodeRoot);
+        $permissionsToCreateProject = $user->isAllowedAction($idNodeRoot, $action->get("IdAction"));
 
         $values["permissionsToCreateProject"] = $permissionsToCreateProject;
         $values["projects_info"]=ProjectService::getProjectsInfo();
