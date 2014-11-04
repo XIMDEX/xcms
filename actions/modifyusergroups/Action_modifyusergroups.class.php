@@ -75,6 +75,9 @@ class Action_modifyusergroups extends ActionAbstract {
                 }
             }
         }
+        if(!is_array($filteredGroups)){
+            $filteredGroups = array();
+        }
         $values = array('id_node' => $idNode,
             'user_name' => $user->get('Name'),
             'general_role' => $generalRole,

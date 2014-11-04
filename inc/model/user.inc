@@ -609,9 +609,7 @@ class User extends Users_ORM {
     * 
 	*/
 	public function getActionsOnNodeList($nodes) {
-
         $result = array();
-		$db = new DB();
 
 		$nodes = array_unique($nodes);
         $actionsArray = array();
@@ -628,7 +626,6 @@ class User extends Users_ORM {
          * nodes.
          */
         $actionsArray = array_unique($actionsArray);
-        $foundedActions = array();
         foreach ($actionsArray as $idAction) {
             $action = new Action($idAction);
             
@@ -636,11 +633,8 @@ class User extends Users_ORM {
             $aliasModule =$action->get("Module")?$action->get("Module"):"nomodule";
             $aliasParam = $action->get("Params")?$action->get("Params"):"";
 
-            if (isset($founded[$name])){
-                if (isset($founded[$name][$aliasModule])){                    
-                    if (isset($founded[$name][$aliasModule][$aliasParams]))
-                        continue;
-                }
+            if (isset($founded[$name][$aliasModule][$aliasParam])){
+                continue;
             }
 
             $founded[$name][$aliasModule][$aliasParam]=true;

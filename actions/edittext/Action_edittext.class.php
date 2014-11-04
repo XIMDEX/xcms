@@ -211,7 +211,7 @@ class Action_edittext extends ActionAbstract {
 			$this->redirectTo('publishForm');
 			return;
 		} else {*/
-            $values = array(array('message'=> _('The document has been saved'), 'type' => 1));
+            $values = array(array('message'=> _('The document has been saved'), 'type' => MSG_TYPE_NOTICE));
             $this->sendJSON(array('messages' => $values));
 		//}
     	}

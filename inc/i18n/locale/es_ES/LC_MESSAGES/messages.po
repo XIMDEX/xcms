@@ -9956,3 +9956,6 @@ msgstr "Canal por defecto"
 
 msgid "Error setting Default Channel property"
 msgstr "Error configurando la propiedad Canal por defecto"
+
+msgid "You don't have enough permissions to modify the user role"
+msgstr "No tienes suficientes permisos para modificar el rol del usuario"

@@ -71,13 +71,10 @@
                     </div>
                 </div>
 
-                <p ng-hide="filtered_groups.length>0">{t}There are not{/t} {if ($user_groups_with_role)}{t}more{/t}{/if} {t}available groups to be associated with the user{/t}</p>
+                <p ng-hide="filtered_groups.length>0">{t}There are not{/t} <span ng-if="user_groups_with_role.length>0">{t}more{/t} </span>{t}available groups to be associated with the user{/t}</p>
         </div>
         <h3>#/user_name/# {t}belongs to the next groups{/t}:</h3>
-        <input name="group" type="hidden" value="" />
-        <input name="role" type="hidden" value="" />
-        <input name="roleOld" type="hidden" value="" />
-        <div ng-if="user_groups_with_role" class="change-group">
+        <div ng-if="user_groups_with_role.length>0" class="change-group">
 
                 <div ng-repeat="user_group_info in user_groups_with_role" class="row-item icon">
 
@@ -108,10 +105,6 @@
                                     >
                                 <span>{t}Delete{/t}</span>
                             </button>
-                            {*{button
-                            label="Delete associations"
-                            class="deletegroupuser validate btn icon btn-unlabel-rounded delete-btn"
-                            message="This subscription will be deleted. Are you sure you want to continue?"}*}
                         </span>
                     </div>
                 </div>

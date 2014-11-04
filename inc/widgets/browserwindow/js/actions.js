@@ -145,21 +145,32 @@
     			this.close();
     			humane.log(messages, {addnCls: 'notification-success'});
 			} else {
-				this.actionNotify(messages, $form, submitError);
+				this.actionNotify(result.messages, $form, submitError);
 			}
 		},
 
 		actionNotify: function(messages, $form, error) {
-			var $message = $('<div class="message" style="display: none;"></div>');
-			$message.addClass(error ? 'message-error':'message-success');
 			for (var i = messages.length - 1; i >= 0; i--) {
-				$message.html($message.html()+'<p class="icon">'+messages[i]+'</p>');
-			};
-			$form.find('.action_header').after($message);
-			$message.slideDown();
-			setTimeout(function(){$message.slideUp(400, function(){
-				$message.remove();
-			})}, 4000);	
+                (function(msg,form){
+                    var message = $('<div class="message" style="display: none;"><p>'+msg.message+'</p></div>');
+                    switch (msg.type){
+                        case 0:
+                            message.addClass('message-error');
+                            break;
+                        case 1:
+                            message.addClass('message-warning');
+                            break;
+                        default:
+                            message.addClass('message-success');
+                    }
+                    form.find('.action_header').after(message);
+                    message.slideDown();
+                    setTimeout(function(){message.slideUp(400, function(){
+                        message.remove();
+                    })}, 4000);
+                })(messages[i],$form);
+            };
+
 		},
 
 		getForm: function(name) {

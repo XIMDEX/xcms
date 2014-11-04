@@ -56,7 +56,7 @@ class FrontController extends IController {
 	}
 
 	/**
-	 * Determina el tipo de controlador que debe gestionar la petición
+	 * Determina el tipo de controlador que debe gestionar la peticiï¿½n
 	 * @return unknown_type
 	 */
 	function _selectFrontControllerType () {
@@ -98,6 +98,9 @@ class FrontController extends IController {
         $idUser = XSession::get("userID");
         if (!$idUser){
             return false;
+        }
+        if($idNode==$idUser && $idAction==6002){
+            return true;
         }
         $user = new User($idUser);
         return $user->isAllowedAction($idNode, $idAction);

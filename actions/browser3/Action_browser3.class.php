@@ -948,9 +948,17 @@ class Action_browser3 extends ActionAbstract {
 
 		$idUser = XSession::get('userID');
 		$nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
-		if (!is_array($nodes)) $nodes = array($nodes);
+
+        if (!is_array($nodes)) $nodes = array($nodes);
 
 		$actions = $this->getActionsOnNodeList($idUser, $nodes);
+
+        /**
+         * Users can modify their account
+         */
+        if(is_array($nodes) && count($nodes)==1 && $nodes[0]==$idUser && !in_array(6002,$actions)){
+            $actions[]=6002;
+        }
 
 		return $actions;
 	}
@@ -963,9 +971,6 @@ class Action_browser3 extends ActionAbstract {
     * @return array IdActions array.         * 
 	 */
     public function getActionsOnNodeList($idUser, $nodes, $processActionName=true) {
-
-        $result = array();
-        $db = new DB();
         $user = new User($idUser);
         return $user->getActionsOnNodeList($nodes);    
 	}
