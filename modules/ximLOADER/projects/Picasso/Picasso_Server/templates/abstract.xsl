@@ -3,11 +3,11 @@
 <xsl:template name="abstract" match="abstract"> 
 
 
-	<xsl:if test="(ancestor-or-self::*[@tipo_documento][1]/@tipo_documento = 'rng-page.xml')">
+	<xsl:if test="(ancestor-or-self::*[@schema][1]/@schema = 'rng-page.xml')">
 		<p uid="{@uid}"><xsl:value-of select="."/></p>
 	</xsl:if>
 
-	<xsl:if test="(ancestor-or-self::*[@tipo_documento][1]/@tipo_documento = 'rng-post.xml')">
+	<xsl:if test="(ancestor-or-self::*[@schema][1]/@schema = 'rng-post.xml')">
 		<p uid="{@uid}" class="bold_abstract"><xsl:value-of select="."/></p>
 	</xsl:if>
 	

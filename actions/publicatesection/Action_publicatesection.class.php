@@ -42,16 +42,16 @@ class Action_publicatesection extends ActionAbstract {
 		foreach ($nodeTypes as $type) {
 			$nodeType = new NodeType();
 			$nodeType->SetByName($type);
-			$nameShowed = preg_match('/image/i', $type) > 0 ? 'Imagen' : 'Documento';
-			$publishabledNodeTypes[] = array('id' => $nodeType->get('IdNodeType'), 'name' => $nameShowed);
+			//$nameShowed = preg_match('/image/i', $type) > 0 ? 'Imagen' : 'Documento';
+			//$publishabledNodeTypes[] = array('id' => $nodeType->get('IdNodeType'), 'name' => $nameShowed);
 		}
 
 		$values = array(
-			"go_method" => "publicate_section",
-			'publishabledtypes' => $publishabledNodeTypes,
+			'go_method' => 'publicate_section',
+			//'publishabledtypes' => $publishabledNodeTypes,
 			'synchronizer_to_use' => ModulesManager::isEnabled('ximSYNC') ? 'ximSYNC' : 'default',
 			'ximpublish_tools_enabled' => ModulesManager::isEnabled('ximPUBLISHtools'),
-			"folderName" => in_array($nodeTypeName, array('XimNewsSection', 'Section', 'XimNewsImagesFolder', 'XimNewsImagesRootFolder', 'ImagesFolder', 'ImagesRootFolder', 'CssRootFolder', 'CssFolder', 'CommonFolder', 'CommonRootFolder','XimNewsImagesFolder')) ? 'sección' : 'servidor'
+			'folderName' => in_array($nodeTypeName, array('XimNewsSection', 'Section', 'XimNewsImagesFolder', 'XimNewsImagesRootFolder', 'ImagesFolder', 'ImagesRootFolder', 'CssRootFolder', 'CssFolder', 'CommonFolder', 'CommonRootFolder','XimNewsImagesFolder')) ? 'section' : 'server'
 		);
 
 		$serverID = $node->getServer();
@@ -81,8 +81,7 @@ class Action_publicatesection extends ActionAbstract {
 		$node = new Node($idNode);
 		$nodename = $node->get('Name');
 		$nodeTypeName = $node->nodeType->GetName();
-		$folderName = in_array($nodeTypeName, array('XimNewsSection','Section','XimNewsImagesRootFolder','XimNewsImagesFolder','ImagesFolder', 'ImagesRootFolder', 'CssFolder', 'CssRootFolder','CommonFolder','CommonRootFolder','XimNewsImagesFolder')) ? 'La sección' : 'El servidor';
-
+		$folderName = in_array($nodeTypeName, array('XimNewsSection','Section','XimNewsImagesRootFolder','XimNewsImagesFolder','ImagesFolder', 'ImagesRootFolder', 'CssFolder', 'CssRootFolder','CommonFolder','CommonRootFolder','XimNewsImagesFolder')) ? 'Section' : 'Server';
 
 		$otfPublication = $node->getSimpleBooleanProperty('otf');	
 		$flagsPublication = array('markEnd' => true,

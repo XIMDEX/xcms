@@ -85,12 +85,12 @@ class PipeCache extends PipeCaches_ORM {
 		 		if ($idCache) {
 		 			$this->PipeCache($idCache);
 			 		if ($this->get('id') > 0) {
-			 			XMD_Log::info("PipeCache: Se ha estimado la cache correctamente a partir de una regeneración anterior Version: $idVersion Transition: $idTransition");
+			 			XMD_Log::info("PipeCache: Se ha estimado la cache correctamente a partir de una regeneraciï¿½n anterior Version: $idVersion Transition: $idTransition");
 						GraphManager::createSerie('PipelineGraph', "Cache hit lvl $depth");
 						GraphManager::createSerieValue('PipelineGraph', "Cache hit lvl $depth", $idVersion, $idTransition);
 						return $this->_getPointer();
 			 		} else {
-			 			XMD_Log::fatal("PipeCache: Se ha estimado una cache que después ha resultado no existir Version: $idVersion Transition: $idTransition");
+			 			XMD_Log::fatal("PipeCache: Se ha estimado una cache que despuï¿½s ha resultado no existir Version: $idVersion Transition: $idTransition");
 			 			return NULL;
 			 		}
 		 		}
@@ -105,7 +105,7 @@ class PipeCache extends PipeCaches_ORM {
 			$this->_transition = new PipeTransition($idTransition);
 			$lastVersion = $version->get('Version');
 			if ($version->get('SubVersion') == '0' && ($lastVersion >= 1)) {
-				// Estimamos la última versión
+				// Estimamos la ï¿½ltima versiï¿½n
 				$subVersions = $version->find('IdVersion', 'Version = %s AND IdNode = %s ORDER BY Version DESC, SubVersion DESC',
 		 			array(($lastVersion - 1), $version->get('IdNode')), MONO);
 
@@ -114,7 +114,6 @@ class PipeCache extends PipeCaches_ORM {
 		 			XMD_Log::info('PipeCache Loading previous version for caching :' . $previousVersion);
 		 			if ($this->_transition->get('id') > 0) {
 
-						// 	Evitamos que se busque la caché en versiones anteriores del documento si la transición no es cacheable
 		 				$caches = $this->_getCache($idVersion, $idTransition);
 
 					 	if (count($caches) > 0) {
@@ -191,7 +190,7 @@ class PipeCache extends PipeCaches_ORM {
 		 		. ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
 	 	}
 	 	$result = $this->query($query, MONO, 'id');
-		XMD_Log::info("PipeCache: Resultado del método _getCache " . str_replace("\n", " ", print_r($result, true)));
+		XMD_Log::info("PipeCache: Resultado del mï¿½todo _getCache " . str_replace("\n", " ", print_r($result, true)));
 		return $result;
 	 }
 
@@ -220,7 +219,7 @@ class PipeCache extends PipeCaches_ORM {
 	 		if (count($idCaches) == 1) {
 	 			return $idCaches[0];
 	 		} else {
-	 			XMD_Log::fatal('PipeCache No se ha podido estimar una única caché');
+	 			XMD_Log::fatal('PipeCache No se ha podido estimar una ï¿½nica cachï¿½');
 	 			return false;
 	 		}
 	 	}
@@ -292,7 +291,7 @@ class PipeCache extends PipeCaches_ORM {
 		XMD_Log::info("PipeCache: Trying to store cache for version $idVersion transition $idTransition args " . print_r($args, true));
 	 	$this->_transition = new PipeTransition($idTransition);
 	 	if (!($this->_transition->get('id') > 0)) {
-	 		XMD_Log::fatal('PipeCache: Error storing cache, no se ha podido estimar la transicion a la que se va a asociar la caché: ' . $idTransition);
+	 		XMD_Log::fatal('PipeCache: Error storing cache, no se ha podido estimar la transicion a la que se va a asociar la cachï¿½: ' . $idTransition);
 	 		return false;
 	 	}
 
@@ -340,7 +339,7 @@ class PipeCache extends PipeCaches_ORM {
 		 	}
 	 	}
 	 	if (!isset($idCache)) {
-			XMD_Log::error("PipeCache: No se ha obtenido un idCache Válido $idVersion $idTransition $contentFile");
+			XMD_Log::error("PipeCache: No se ha obtenido un idCache Vï¿½lido $idVersion $idTransition $contentFile");
 			return false;
 		}
 	 	$this->_transition->properties->reset();

@@ -33,20 +33,14 @@ ModulesManager::file('/inc/utils.inc');
 
 /*
 	 TODO Toda la parte de arriba hay que refactorizarla, hay dos posibles refactorizaciones
-	 primero:(optimiza en velocidad) sustituir los nombres por idNodeTypes (ahorrará muchas consultas de selección)
+	 primero:(optimiza en velocidad) sustituir los nombres por idNodeTypes (ahorrarï¿½ muchas consultas de selecciï¿½n)
 	 segundo:(optimiza en mantenibilidad) estimar los arrays en funcion de la tabla nodeallowedcontents
 */
 ?>
 <?php
 
-
-//TODO ESTA LINEA HAY QUE DECOMENTARLA
 XSession::check();
-
 $userID = XSession::get('userID');
-
-//error_reporting(1); WTF!! Establecía el error reporting en este script a E_ERROR
-
 $contentType = isset($_GET['contenttype']) ? $_GET['contenttype'] : NULL;
 $selectedNodeID = isset($_GET['nodeid']) ? $_GET['nodeid'] : NULL;
 $targetNodeID = isset($_GET['targetid']) ? $_GET['targetid'] : NULL;
@@ -68,22 +62,18 @@ if ((!$filterType)&&($contentType=='dynamic')) {
 
 if($contentType) {
 		/// Tenemos varios sets de tipos de nodo prefabricados, segun que arbol queramos mostrar
-		/// Los configuramos diciendo qué tipos de nodo solo se muestran y qué tipos de nodo, además, pueden ser seleccionados.
+		/// Los configuramos diciendo quï¿½ tipos de nodo solo se muestran y quï¿½ tipos de nodo, ademï¿½s, pueden ser seleccionados.
 		$prefabricados = array('all', 'images', 'xmldocs','links', 'common', 'import', 'common_import', 'ximlet', 'ximletContainer', 'dynamic', 'pvds', 'ximnewsnewlanguage');
 		if(!in_array($contentType, $prefabricados) ) {
 			$contentType = 'all';
 		}
 
-		/// Si no se nos solicita un nodo en concreto, buscamos la raiz de los proyectos
 		$nodeType = new NodeType();
 		if(!$selectedNodeID)
-			{
-			$config = new Config();
-			$selectedNodeID = $config->GetValue("ProjectsNode");
-			}
-
-		/// Segun lo que se nos pida, enlaces, imagenes o todo, hacemos dos listas
-		/// la de los tipos de nodo a mostrar y la de los tipos de nodo seleccionables
+        {
+            $config = new Config();
+            $selectedNodeID = $config->GetValue("ProjectsNode");
+        }
 
 		if($contentType == 'dynamic')
 			{
@@ -94,7 +84,6 @@ if($contentType) {
 
 			$targetNodeType=new NodeType($targetNode->GetNodeType());
 
-			//Esto es para incluir las subcarpetas, porque son de distinto tipo a los padres
 			if ($filterType=='CommonRootFolder') {
 				$filterTypeAdd='CommonFolder';
 			}
@@ -198,9 +187,9 @@ if($contentType) {
 	$targetNode = new Node($targetNodeID);
 	$pathList = $targetNode->TraverseToRoot();
 	//array_pop($pathList);
-	// Quizás habría que pasar esta función a la clase nodetype
+	// Quizï¿½s habrï¿½a que pasar esta funciï¿½n a la clase nodetype
 	function getContainers($idNodeTypeArray) {
-		//Condición de ejecución de la función
+		//Condiciï¿½n de ejecuciï¿½n de la funciï¿½n
 		if(!is_array($idNodeTypeArray)) {
 			return array();
 		}
@@ -239,7 +228,7 @@ function PrintContent($nodeID, $contentType=null, $pathList=null, $targetNodeID=
 	{
 
 	//*******************************************************
-	// Comienzo de parte nueva añadida por Jose Luis el 11.08.2004 para solo dejar ver los nodos asociados a tu grupo
+	// Comienzo de parte nueva aï¿½adida por Jose Luis el 11.08.2004 para solo dejar ver los nodos asociados a tu grupo
 	//*******************************************************
 
 	/* Verifica variables globales
@@ -263,12 +252,12 @@ function PrintContent($nodeID, $contentType=null, $pathList=null, $targetNodeID=
 	$selectedNode = new Node($nodeID);
 	if(!$selectedNode->numErr) {
 		$children = $selectedNode->GetChildren();
-		$childNode = null; // Declaración de la variable
+		$childNode = null; // Declaraciï¿½n de la variable
 
 		if ($children) {
 			$i=0;
 			foreach($children as $childID) {
-				//Esta condición también ha sido añadida el 11.08.2004
+				//Esta condiciï¿½n tambiï¿½n ha sido aï¿½adida el 11.08.2004
 				if ($user->HasPermission("view all nodes") or (is_array($nodeList) && in_array($childID,$nodeList)) or $user->IsOnNode($childID, true)) {
 					$selectedNode->SetID($childID);
 					$listaDatos=$selectedNode->DatosNodo();
@@ -566,7 +555,7 @@ function getNodelist($userID, $nodeID) {
 			  	$nodeList = array_unique($nodeList);
 		  }
 
-		//vamos añadiendo los padres de los nodos actuales
+		//vamos aï¿½adiendo los padres de los nodos actuales
 		$nodeList = getParentList($nodeList);
 
 		//$session->set("nodelist", $nodeList);
@@ -686,7 +675,7 @@ function getTypeAndSelectableList($contentType, &$typeList, &$selectableList) {
 			$selectableList = array('XmlDocument');
 			break;
 
-		//Parte añadida para la acción asociar pvd a rol. Se pretende presentar las plantillas vista en el árbol.
+		//Parte aï¿½adida para la acciï¿½n asociar pvd a rol. Se pretende presentar las plantillas vista en el ï¿½rbol.
 		case  'pvds': /* ##################### pvds ############################ */
 		   $typeList = array('Projects', 'Project', 'TemplateViewFolder', 'VisualTemplate');
 	  	   $selectableList = array('TemplateViewFolder','VisualTemplate');

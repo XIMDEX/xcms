@@ -128,7 +128,7 @@ class Language extends Languages_ORM
 	function SetName($name)
 	{
 		if (!($this->get('IdLanguage') > 0)) {
-			$this->SetError(2, 'No Existe el idioma');
+			$this->SetError(2, 'Language does not exist');
 			return false;
 		}
 		$result = $this->set('Name', $name);
@@ -149,7 +149,7 @@ class Language extends Languages_ORM
 	function SetIsoName($isoName)
 	{
 		if (!($this->get('IdLanguage') > 0)) {
-			$this->SetError(2, 'No Existe el idioma');
+			$this->SetError(2, 'Language does not exist');
 			return false;
 		}
 
@@ -305,7 +305,7 @@ class Language extends Languages_ORM
 	function SetEnabled($enabled) {
 
 		if (!($this->get('IdLanguage') > 0)) {
-			$this->SetError(2, 'No Existe el idioma');
+			$this->SetError(2, 'Language does not exist');
 			return false;
 		}
 

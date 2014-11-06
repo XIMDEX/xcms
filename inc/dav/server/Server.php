@@ -2051,27 +2051,13 @@ class HTTP_WebDAV_Server
      */
     function _urldecode($path) 
     {
-        
         $path = urldecode($path);
-        
-        // Nautilus envia el path codificado con UTF8, se convierte a ISO-8859-15
-        // TODO: Parece que el servidor tiene problemas con UTF-8 => ¿Configuracion local de caracteres?
+
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
         if (strpos($user_agent, 'gnome') !== false) {
-//        	$path = utf8_decode($path);
         	$path = iconv('UTF-8', 'ISO-8859-15//TRANSLIT', $path);
-//        	$path = iconv('UTF-8', 'ISO-8859-15//IGNORE', $path);
         }
-        
-        // Clientes como Konqueror solicitan el nombre del recurso antes de crearlo.
-        // Otros como Nautilus asignan un nombre automaticamente y crean el recurso sin preguntar.
-        // El problema con Nautilus es que introduce tildes y espacios en blanco, que no son admitidos por ximdex.
-        // De cualquier forma, se intenta eliminar cualquier caracter no valido.
-        //
-        // Si se encuentra algun caracter no valido para un nombre de recurso en ximDEX este se reemplaza.
-        // Normalmente esto implica el uso tildes.
-        // Lo que hace esta seccion es transformar el path a su representacion con entidades HTML,
-        // de esta forma se pueden identificar los modificadores para pintar las tildes y suprimirlos.
+
         if (preg_match("/[^A-Za-z0-9\_\-\.\/]+/", $path) > 0) {
 
 			$path1 = htmlentities($path);

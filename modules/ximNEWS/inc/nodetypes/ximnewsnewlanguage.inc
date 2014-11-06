@@ -338,7 +338,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 
     /**
-     * Función que actualiza el esquema de una noticia al del esquema 
+     * Funciï¿½n que actualiza el esquema de una noticia al del esquema 
      *
      * @return bool
      */
@@ -346,19 +346,19 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 	function updateToSchema() {
 		$structuredDocument = new StructuredDocument($this->nodeID);
 		if (!$structuredDocument->get('IdDoc') > 0) {
-			XMD_Log::error('No se ha podido cargar el structured Document asociado a la noticia ' . $this->nodeID . ' abortando adecuación a schema');
+			XMD_Log::error('No se ha podido cargar el structured Document asociado a la noticia ' . $this->nodeID . ' abortando adecuaciï¿½n a schema');
 			return false;
 		}
 
 		$idTemplate = $structuredDocument->get('IdTemplate');
 		if (!($idTemplate > 0)) {
-			XMD_Log::error("Ha ocurrido un error al cargar el template del documento {$this->nodeID}");
+			XMD_Log::error("An error has occurred while loading the document {$this->nodeID} schema.");
 			return false;
 		}
 
 		$visualTemplate = new Node($idTemplate);
 		if (!($visualTemplate->get('IdNode') > 0)) {
-			XMD_Log::error("La plantilla $idTemplate a la que está asociada la noticia {$this->nodeID} ha sido borrada, por lo que la noticia no se puede adecuar al esquema");
+			XMD_Log::error("La plantilla $idTemplate a la que estï¿½ asociada la noticia {$this->nodeID} ha sido borrada, por lo que la noticia no se puede adecuar al esquema");
 			return false;
 		}
 
@@ -393,7 +393,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$domContent = domxml_open_mem($xmlContents);
 
 		if (!$domContent) {
-			XMD_Log::error("El contenido del documento {$this->nodeID} no se ha podido cargar como xml");
+			XMD_Log::error("The content of the document {$this->nodeID} could not be loaded as XML.");
 			$error = true;
 		}
 
@@ -405,7 +405,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$rootContent = $domContent->document_element();
 
 		if ($rootDefault->tagname() != $rootContent->tagname()) {
-			$msg = "El esquema $idTemplate no coincide con este documento, no se puede adaptar";
+			$msg = "The schema $idTemplate doesn't match with this document.";
 			XMD_Log::error($msg);
 			$this->messages->add($msg, MSG_TYPE_ERROR);
 			return false;
@@ -503,7 +503,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 			foreach ($attributes as $attribute) {
 				$attributeName = $attribute->name();
 				if (in_array($attributeName, $nodeInfo['ATTRIBUTES'])) {
-		 			// no se pueden actualizar los atributos de los nodos por que pisaríamos valores antiguos
+		 			// no se pueden actualizar los atributos de los nodos por que pisarï¿½amos valores antiguos
 //					$attribute->set_value($nodeInfo['ATTRIBUTES'][$attributeName]);
 					unset($nodeInfo);
 				}
@@ -579,9 +579,9 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		if ((!$colectorMasterLanguage && !in_array($idNewsLanguage, $colectorLanguages)) 
 			|| ($colectorMasterLanguage && $idNewsLanguage != $colectorMasterLanguage)) {
 		
-			$this->messages->add("El idioma de la noticia $newsName no es compatible con el colector $colectorName", 
+			$this->messages->add("News $newsName language is not compatible with the colector $colectorName",
 				MSG_TYPE_WARNING);
-			XMD_Log::warning("Noticia $newsID tiene idioma incompatible con el colector $idColector");
+			XMD_Log::warning("News $newsID has an incompatible language with the colector $idColector");
 
 			return false;
 		}
@@ -637,7 +637,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		}
 
 		if (!$result) {
-			XMD_Log::error("La noticia $newsName no se ha asociado al colector $idColector. información adicional " . 
+			XMD_Log::error("La noticia $newsName no se ha asociado al colector $idColector. informaciï¿½n adicional " . 
 				print_r($relNewsColector->messages->messages, true));
 			$this->messages->mergeMessages($relNewsColector->messages);
 			return false;

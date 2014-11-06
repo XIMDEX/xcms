@@ -116,7 +116,7 @@ X.actionLoaded(function(event, fn, params) {
 								message = _('Channel %s has been associated with %s documents.').printf(data.result.values.length, data.result.nodes);
 								break;
 							case 'Language':
-								message = _('%s idiomatic versions have been created.').printf(data.result.nodes);
+								message = _('%s language versions have been created.').printf(data.result.nodes);
 								break;
 						}
 						manageproperties_showDialog([message], fn, params, function(send) {

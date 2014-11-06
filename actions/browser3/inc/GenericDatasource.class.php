@@ -113,9 +113,7 @@ class GenericDatasource extends AbstractDatasource {
 
 	static public function search($request) {
 		$path = '/';
-		if (ModulesManager::isEnabled('tolDox')) {
-			$path = '/Docs';
-		}
+
 		if ($request->getParam('filters') == 'tags') {
 			$path = '/Tags';
 		}

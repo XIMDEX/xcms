@@ -167,8 +167,8 @@ class Datasource_XVFS extends AbstractDatasource implements IDatasource {
 	}
 	
 	public function search($request) {
-		$ds = GenericDatasource::getDatasource(GenericDatasource::DS_TOLDOX);
-        return $ds->search($request);
+		/*$ds = GenericDatasource::getDatasource(GenericDatasource::DS_TOLDOX);
+        return $ds->search($request);*/
 
 	}
 	

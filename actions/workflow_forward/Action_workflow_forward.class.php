@@ -32,7 +32,6 @@ ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('inc/pipeline/PipeTransition.class.php');
-ModulesManager::file('/inc/Toldox.class.php', 'tolDOX');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/helper/ServerConfig.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');
@@ -734,7 +733,7 @@ class Action_workflow_forward extends ActionAbstract {
 				$group = new Node($idGroup);
 
 				$workflow = new WorkFlow($idNode, $idState);
-				$this->messages->add(sprintf(_("El grupo '%s' puede promocionar el documento al estado '%s'"),
+				$this->messages->add(sprintf(_("The group %s con move the document to the state %s"),
 				$group->get('Name'), $workflow->pipeStatus->get('Name')), MSG_TYPE_WARNING);
 			}
 		} 

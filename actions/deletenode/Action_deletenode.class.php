@@ -120,7 +120,7 @@ class Action_deletenode extends ActionAbstract {
 			if (sizeof($children) && sizeof($depList)) {
 
 				$texto = $node->nodeType->get('Name') != "XmlContainer" ?
-					_("Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.") : _("Your role cannot delete the selected container because of it has idiomatic versions depending on it.");
+					_("Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.") : _("Your role cannot delete the selected container because of it has language versions depending on it.");
 
 				$formType = "no_permisos";
 			}
@@ -170,7 +170,7 @@ class Action_deletenode extends ActionAbstract {
 		if ($formType == 'no_permisos') {
 
 			$values['titulo'] = $node->nodeType->get('Name') != "XmlContainer" ?  _("List of pending documents")
-				: _("To be able to delete this node, you should first delete the following idiomatic versions");
+				: _("To be able to delete this node, you should first delete the following language versions");
 
 		} else if ($formType == 'dependencies') {
 

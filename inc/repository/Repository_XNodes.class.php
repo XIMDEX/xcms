@@ -468,7 +468,7 @@ class Repository_XNodes extends Repository {
 			$visualtemplate = $this->_getDefaultVisualTemplate();
 		}
 		if (empty($visualtemplate)) {
-			XMD_Log::error('No se ha encontrado pvd/rng para crear el nodo, compruebe que la instancia está correctamente configurada');
+			XMD_Log::error('No se ha encontrado pvd/rng para crear el nodo, compruebe que la instancia estï¿½ correctamente configurada');
 		}
 
 		// Ok, let's rock
@@ -500,28 +500,6 @@ class Repository_XNodes extends Repository {
 
 			case 'XMLDOCUMENT':
 			case 'XIMLET':
-			case 'TOLDOXDOCUMENT':
-				
-				if (is_null($visualtemplate)) {
-					// TODO: Cambiar el tipo de error devuelto
-					// No se puede crear el contenedor
-					$this->addError(REP_UNKNOWN);
-					XMD_Log::error("Repository_XNodes::append($path) - No fue posible asociar el documento a una plantilla.");
-					return REP_UNKNOWN;
-				}
-
-				if (!empty($infere_res['FILTER'])) $struct_io['FILTER'] = $infere_res['FILTER'];
-				$struct_io['CHILDRENS'][] = array ('NODETYPENAME' => 'LANGUAGE', 'ID' => $entity->get('idlanguage'));
-				$struct_io['CHILDRENS'][] = array ('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $visualtemplate);
-
-				$channels = $entity->get('channels');
-				if (is_array($channels)) {
-					foreach ($channels as $channel) {
-						$struct_io['CHILDRENS'][] = array ("NODETYPENAME" => "CHANNEL", 'ID' => $channel);
-					}
-				}
-
-				break;
 		}
 
 //		logdump($nodetype, print_r($struct_io, true));
@@ -968,11 +946,11 @@ class Repository_XNodes extends Repository {
 
 
 	/**
-	 * Asocia uno o varios canales a un nodo.
+	 * Associate one or more channels to a node.
 	 * Este metodo es usado por el sistema virtual de nodos.
 	 *
 	 * @param object entity Entidad que se modificara
-	 * @param array channels Coleccion de IDs de canales que se quieren asociar
+	 * @param array channels Collection of channel ids to be associate
 	 * @param string username Usuario que realiza la peticion
 	 * @return int Devuelve el ID del nodo modificado o el codigo de error producido
 	 */
@@ -1006,7 +984,7 @@ class Repository_XNodes extends Repository {
 		if ($ret > 0) {
 			$this->addError(REP_NONE);
 			$idNode = $entity->get('idnode');
-			XMD_Log::info("Repository_XNodes::addChannel() - Se ha creado el canal correctamente para el nodo con idNode = $idNode");
+			XMD_Log::info("Repository_XNodes::addChannel() - A channel has been set correctly to the node $idNode");
 			$entity->update();
 		} else {
 			$this->_baseio_error = $ret;
@@ -1023,7 +1001,7 @@ class Repository_XNodes extends Repository {
 	}
 
 	/**
-	 * Elimina la asociacion a un canal de un nodo
+	 * Deletes the association between a channel and a node.
 	 *
 	 * @param object entity Objeto NodeEntity que se quiere actualizar
 	 * @param string username Usuario que realiza la peticion
@@ -1057,7 +1035,7 @@ class Repository_XNodes extends Repository {
 
 		if ($ret > 0) {
 			$this->addError(REP_NONE);
-			XMD_Log::info("Repository_XNodes::deleteChannel() - Se ha eliminado el canal correctamente del nodo con idNode = $ret");
+			XMD_Log::info("Repository_XNodes::deleteChannel() - Removed the channel correctly for node $ret");
 			$entity->update();
 		} else {
 			// Si BaseIO devuelve un entero negativo se trata de un error

@@ -43,7 +43,7 @@ class View_ChannelFilter extends Abstract_View implements Interface_View {
 		}
 	
 		if (!($this->_idChannel > 0)) {
-			XMD_Log::error('VIEW CHANNELFILTER: No se ha especificado el canal del nodo que quiere renderizar');
+			XMD_Log::error('VIEW CHANNELFILTER: Channel not specified for node');
 			return NULL;
 		}
 

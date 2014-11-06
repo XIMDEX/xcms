@@ -377,7 +377,7 @@ class DexPumper {
 	}
 
 	private function taskRename($targetFile, $targetFolder, $newFile) {
-		$msg_not_rename= "No se ha podido renombrar al documento destino: {$targetFile} -> {$targetFolder}/{$newFile} ";
+		$msg_not_rename= "Could not rename the target document: {$targetFile} -> {$targetFolder}/{$newFile} ";
                 $this->getHostConnection();
 		if ( !$this->taskBasic($targetFolder, "") ) {
 			return false;

@@ -632,9 +632,9 @@ class Action_composer extends ActionAbstract {
 
 	function getTraverseForPath() {
 		$path = $this->request->getParam('nodeid');
-		$cachePath = XIMDEX_ROOT_PATH.ModulesManager::path('tolDOX').'/resources/cache/';
-		$file = sprintf('%s%s_%s', $cachePath, str_replace('/', '_', $path), 'Traverse');
-		$modeTags = false;
+		//$cachePath = XIMDEX_ROOT_PATH.ModulesManager::path('tolDOX').'/resources/cache/';
+		//$file = sprintf('%s%s_%s', $cachePath, str_replace('/', '_', $path), 'Traverse');
+		/*$modeTags = false;
 		if (preg_match('/\/Tags/', $path) > 0) {
 			$modeTags = true;
 			if (is_file($file)) {
@@ -643,7 +643,7 @@ class Action_composer extends ActionAbstract {
 				echo $data;
 				return;
 			}
-		}
+		}*/
 		$entities[] = array();
 		$this->request->setParam('nodeid', $path);
 		while(($entity = GenericDatasource::read($this->request, false)) != NULL) {
@@ -672,9 +672,9 @@ class Action_composer extends ActionAbstract {
 		}
 
 		$data = Serializer::encode(SZR_JSON, array('nodes' => $reversedEntities));
-		if ($modeTags) {
+		/*if ($modeTags) {
 			FsUtils::file_put_contents($file, $data);
-		}
+		}*/
 		$this->render(array('nodes' => $reversedEntities));
 	}
 

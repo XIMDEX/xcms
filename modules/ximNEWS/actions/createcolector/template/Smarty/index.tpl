@@ -159,7 +159,7 @@
 			</li>
 		</ol>
 		{if ($go_method != "createColector")}
-			<p>{t}In order to defuse idiomatic versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news){/t}.</p>
+			<p>{t}In order to defuse language versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news){/t}.</p>
 		{/if}
 	</fieldset>
 

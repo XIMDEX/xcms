@@ -55,7 +55,7 @@ ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
 		var $revision = '';
 		
 		/**
-		 * Objeto de interacción con la base de datos
+		 * Objeto de interacciï¿½n con la base de datos
 		 *
 		 * @var $dbObj DB
 		 */
@@ -67,8 +67,8 @@ ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
 		
 		function updateFiles ($mode = true) {
 			// Estimamos las rutas que vamos a usar dependiendo del uso que le estemos dando a la clase
-			// Revisión == 0  Estamos haciendo una copia
-			// Revisión != 0  Estamos haciendo una importación
+			// Revisiï¿½n == 0  Estamos haciendo una copia
+			// Revisiï¿½n != 0  Estamos haciendo una importaciï¿½n
 			if (!strcmp($this->revision, REVISION_COPY)) {
 				$routeToFiles = sprintf('%s/data/files/', XIMDEX_ROOT_PATH);
 			} else {
@@ -77,7 +77,7 @@ ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
 				// TODO esto esta un poco cutre, hay que arreglar la extension doble
 				$compressedFile = sprintf('%s/files.tar.', $routeToBackupFolder);
 				// Descomprimimos los archivos
-				//TODO estas dos líneas van descomentadas (solo las comento para hacer pruebas rápidas)
+				//TODO estas dos lï¿½neas van descomentadas (solo las comento para hacer pruebas rï¿½pidas)
 				XMD_Log::info(_("Starting the decompression of files of the package")." {$this->revision}");
 				$tarArchiver = new TarArchiver($compressedFile);
 				$tarArchiver->unpack($routeToFiles);
@@ -165,7 +165,7 @@ ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
 					
 				// For the moment, we are not going to make any notification
 				if ($status == IMPORTED_STATUS_OK_TO_PUBLISH) {
-					baseIO_PublicarDocumento($idNode, time(), null);
+					baseIO_PublishDocument($idNode, time(), null);
 				}
 				//baseIO_CambiarEstado($idNode, $finalState);
 				

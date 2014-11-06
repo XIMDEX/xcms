@@ -32,7 +32,7 @@ class Action_htmleditor extends ActionAbstract {
 		$idNode = $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
-			$this->messages->add(_('El documento solicitado no existe'), MSG_TYPE_ERROR);
+			$this->messages->add(_('Requested document does not exist'), MSG_TYPE_ERROR);
 			$this->renderMessages();
 			return;
 		}

@@ -56,7 +56,7 @@ class AbstractStructuredDocument extends FileNode  {
 
 		if ($templateNode->get('IdNode') > 0) {
 
-			// relaxng schema 
+			// relaxng schema
 			$templateNodeType = new NodeType($templateNode->get('IdNodeType'));
 
 			if ($templateNodeType->get('Name') == 'RngVisualTemplate') {
@@ -87,7 +87,7 @@ class AbstractStructuredDocument extends FileNode  {
 	}
 
 
-	// Name for the file/resource on production servers 
+	// Name for the file/resource on production servers
 	function GetPublishedNodeName($channel = null) {
 
 		$channel = new Channel($channel);
@@ -295,7 +295,7 @@ class AbstractStructuredDocument extends FileNode  {
 		/// Lo guardamos en el sistema de archivos
 		if (!FsUtils::file_put_contents($fileName, $fileContent)) {
 				$this->parent->SetError(7);
-				$this->parent->messages->add(_('Ha ocurrido un error al intentar guardar el documento'), MSG_TYPE_ERROR);
+				$this->parent->messages->add(_('An error occured while trying to save the document'), MSG_TYPE_ERROR);
 				return false;
 		}
 		return true;
@@ -314,7 +314,7 @@ class AbstractStructuredDocument extends FileNode  {
 
 		$schema = new Node($documentType);
 		$schemaName = $schema->get('Name');
-		$schemaTag = 'tipo_documento="'.$schemaName .'"';
+		$schemaTag = 'schema="'.$schemaName .'"';
 		$layoutName = str_replace('.xml', '', $schemaName);
 		$layoutTag = 'layout ="'. $layoutName .'"';
 
@@ -342,10 +342,10 @@ class AbstractStructuredDocument extends FileNode  {
 			$xtags=substr_replace($xtags,"",-1);
 		}
 		$xtags = 'xtags = "'.utf8_encode($xtags).'"';
-		
+
 		$docxap = '';
 
-		$docxap = sprintf("<docxap %s %s %s %s %s %s %s %s %s>", 
+		$docxap = sprintf("<docxap %s %s %s %s %s %s %s %s %s>",
 					$layoutTag,
 					$this->_langXapAttrib($idLanguage),
                         		$schemaTag,
@@ -467,10 +467,8 @@ class AbstractStructuredDocument extends FileNode  {
 	// TODO: Rewrite in Views.
 	function ToXml($depth, & $files, $recurrence) {
 
-
 		$xmlBody = parent::ToXML($depth, $files, $recurrence);
 
-		//Canales
 		$channelList = $this->GetChannels();
 		if (is_array($channelList)) {
 			reset($channelList);
@@ -570,7 +568,7 @@ class AbstractStructuredDocument extends FileNode  {
 		  	$this->parent->SetError(5);
 	}
 
-	// Borra la asociacion entre un canal y el nodo actual.
+	// Deletes the association between a channel and the current document
 	function DeleteChannel($channelID) {
 
 		$sqls = "DELETE FROM RelStrDocChannels " .
@@ -583,7 +581,7 @@ class AbstractStructuredDocument extends FileNode  {
 			$this->parent->SetError(5);
 	}
 
-	// Borra todos las asociaciones entre el nodo actual y los canales.
+    // Deletes all the associations between a channel and the current document
 	function DeleteChannels() {
 
 		$sqls = "DELETE FROM RelStrDocChannels " .
@@ -596,9 +594,9 @@ class AbstractStructuredDocument extends FileNode  {
 	}
 
 	function _langXapAttrib($idLang) {
-			// Insertamos los idiomas de los hermanos del nodo
+			// Inserting languages
 			$outPut2 = NULL;
-	                $colectible = ' idiomas="' ;
+	                $colectible = ' languages="' ;
 	                $node = new Node($this->parent->get('IdNode'));
 	                $idParent = $node->get('IdParent');
 	                $nodeParent = new Node($idParent);
@@ -606,7 +604,7 @@ class AbstractStructuredDocument extends FileNode  {
 	                foreach ($docList as $docID)
 			                        {
 			                        foreach($docID as $docdocID){
-			                                // obtengo el lenguaje
+			                                // Getting the language
 			                                $strDoc = new StructuredDocument($docdocID);
 		        	                        $langID = $strDoc->GetLanguage();
 		                	                $lang = new Language($langID);
@@ -615,10 +613,9 @@ class AbstractStructuredDocument extends FileNode  {
 		                        	}
 			$colectible = substr($colectible,0,strlen($colectible)-1);
 			$outPut2 .= $colectible.'"';
-			// Fin insercion del los idiomas
 
 		$lang = new Language($idLang);
-		$outPut2 .= ' idioma="' . $lang->GetIsoName() . '"';
+		$outPut2 .= ' language="' . $lang->GetIsoName() . '"';
 		return $outPut2;
 
 	}
@@ -637,10 +634,10 @@ class AbstractStructuredDocument extends FileNode  {
 		if($channelList) {
 			if(in_array($channelID, $channelList)) {
 				$channel = new Channel($channelID);
-				$outPut = 'canal="' . $channel->GetName() . '"';
+				$outPut = 'channel="' . $channel->GetName() . '"';
 				$outPut .= ' extension="' . $channel->GetExtension() . '"';
 			} else {
-				$outPut = 'canal="" ';
+				$outPut = 'channel="" ';
 			}
 
 			reset($channelList);
@@ -650,14 +647,12 @@ class AbstractStructuredDocument extends FileNode  {
 				$channelDesc[] = $channel->get('Description');
 			}
 
-			$outPut .= ' canales="'.implode(",",$channelNames).'"';
-			$outPut .= ' canales_desc="'.implode(",",$channelDesc).'"';
+			$outPut .= ' channels="'.implode(",",$channelNames).'"';
+			//$outPut .= ' channels_desc="'.implode(",",$channelDesc).'"';
 		}
 
 		return $outPut;
 	}
-
-	// Genera un documento
 
 	private function Generate($channel, $content=null, $outPut=null) {
 		$nodeid = $this->nodeID;
@@ -685,7 +680,7 @@ class AbstractStructuredDocument extends FileNode  {
 		if (Config::getValue('dexCache')) {
 			$nodeid = $this->nodeID;
 			if (!DexCache::createPersistentSyncFile($nodeid, $channel, $output)) {
-				$this->messages->add(sprintf(_('Ha ocurrido un error al generar el documento %s para el canal %s'), $this->parent->get('Name'), $channel), MSG_TYPE_ERROR);
+				$this->messages->add(sprintf(_('An error occurred while generating the document %s for the channel %s'), $this->parent->get('Name'), $channel), MSG_TYPE_ERROR);
 				return false;
 			}
 		}
@@ -756,16 +751,14 @@ class AbstractStructuredDocument extends FileNode  {
 		  $parent = new Node($node->get('IdParent'));
 
 		  $s = ' nodeid="'.$node->get('IdNode').'"  parentnodeid="'.$parent->get('IdNode').'"';
-  		  $s .= ' nombre_tiponodo="'.$node->nodeType->get('Name').'"  id_tiponodo="'.$node->nodeType->get('IdNodeType').'"';
-		  $s .= ' documento="'.$parent->get('Name').'" nombre_documento="'.$parent->GetAliasForLang($langID).'"';
+  		  $s .= ' nodetype-name="'.$node->nodeType->get('Name').'"  nodetype-id="'.$node->nodeType->get('IdNodeType').'"';
+		  $s .= ' document-name="'.$parent->get('Name').'" alias="'.$parent->GetAliasForLang($langID).'"';
 		  $tree = $node->TraverseToRoot();
 
-		  // It must to exclude from lenght the node itself, its container, and its folder
-
+		  // It must exclude from length the node itself, its container, and its folder
 		  $length = sizeof($tree) - 3;
 
 		  // the level
-
 		  $j = 0;
 
 		  for ($i = 1; $i < $length; $i++) {
@@ -775,18 +768,18 @@ class AbstractStructuredDocument extends FileNode  {
 
 			  switch ($i) {
 				  case 1:
-					  $s .= ' proyecto="'. $ancestor->get('Name').'"';
+					  $s .= ' proyect="'. $ancestor->get('Name').'"';
 					  continue;
 
 				  case 2:
-					  $s .= ' servidor="'. $ancestor->get('Name').'"';
+					  $s .= ' server="'. $ancestor->get('Name').'"';
 					  continue;
 
 				  default:
 
 					  if ($ancestor->nodeType->get('IsSection') == 1) {
 						  $j++;
-						  $s .= " nivel$j=\"".$ancestor->get('Name')."\" nombre_nivel$j=\"".
+						  $s .= " level$j=\"".$ancestor->get('Name')."\" level_name$j=\"".
 						  	$ancestor->GetAliasForLang($langID)."\"\n";
 					  }
 

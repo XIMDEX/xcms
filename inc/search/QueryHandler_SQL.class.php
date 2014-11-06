@@ -42,7 +42,6 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 			$node = new Node($nodeId);
 
 			if ($node->getID() !== null) {
-
 				$record = array();
 				$record['nodeid']               = $nodeId;
 				$record['parentid']             = $node->getParent();
@@ -59,14 +58,12 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 				$record['creationformated']     = date('d/m/Y', $record['creation']);
 				$record['modification']         = $node->get('ModificationDate');
 				$record['modificationformated'] = date('d/m/Y', $record['modification']);
-
 				$record['versionid']            = $rset->getValue('IdVersion');
 				$record['version']              = $rset->getValue('Version');
 				$record['subversion']           = $rset->getValue('SubVersion');
 				$record['versionnumber']        = $rset->getValue('VersionNumber');
 				$record['versiondate']          = $rset->getValue('VersionDate');
 				$record['versiondateformated']  = $record['versionid'] > 0 ? date('d/m/Y', $record['versiondate']) : '';
-
 				$array[] = $record;
 			}
 

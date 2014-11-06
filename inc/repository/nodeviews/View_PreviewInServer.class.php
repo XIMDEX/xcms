@@ -103,12 +103,12 @@ class View_PreviewInServer extends Abstract_View implements Interface_View {
 				//return '3';
 				break;
 			case 200:
-				XMD_Log::error('Error en acceso a servidor remoto (verifique IPs y la configuración de claves');
+				XMD_Log::error('Error accessing to the remote server (please, check IPs and login credentials)');
 				$content = '';
 				//return '4';
 				break;
 			default:				
-				XMD_Log::error('Error de invocación, comando mal formado, etc. (error desconocido)');
+				XMD_Log::error('Error de invocaciï¿½n, comando mal formado, etc. (error desconocido)');
 				$content = '';
 				break;
 				//return '5';
@@ -122,13 +122,13 @@ class View_PreviewInServer extends Abstract_View implements Interface_View {
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW FILTERMACROSPREVIEW: Se ha cargado una versión incorrecta (' . $idVersion . ')');
+				XMD_Log::error('VIEW FILTERMACROSPREVIEW: Se ha cargado una versiï¿½n incorrecta (' . $idVersion . ')');
 				return NULL;
 			}
 			
 			$this->_node = new Node($version->get('IdNode'));
 			if (!($this->_node->get('IdNode') > 0)) {
-				XMD_Log::error('VIEW FILTERMACROSPREVIEW: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
+				XMD_Log::error('VIEW FILTERMACROSPREVIEW: El nodo que se estï¿½ intentando convertir no existe: ' . $version->get('IdNode'));
 				return NULL;
 			}
 		}
@@ -144,7 +144,7 @@ class View_PreviewInServer extends Abstract_View implements Interface_View {
 		
 		// Check Params:
 		if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado el canal del nodo ' . $args['SERVERNODE'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW FILTERMACROSPREVIEW: Channel not specified for node ' . $args['SERVERNODE']);
 			return NULL;
 		}
 		
@@ -161,7 +161,7 @@ class View_PreviewInServer extends Abstract_View implements Interface_View {
 
 		// Check Params:
 		if (!($this->_serverNode) || !is_object($this->_serverNode)) {
-			XMD_Log::error('VIEW FILTERMACROSPREVIEW: No se ha especificado el servidor del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW FILTERMACROSPREVIEW: There is no server linked to the node ' . $args['NODENAME']);
 			return NULL;
 		}
 		

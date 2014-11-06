@@ -24,44 +24,38 @@
  *  @version $Revision$
  */
 
-
-
 ModulesManager::file('/inc/serializer/Serializer.class.php');
 
+class Action_reportslist extends ActionAbstract
+{
+    public function index()
+    {
+        $reports = $this->getReports();
+        $values = array('reports' => $reports);
 
-class Action_reportslist extends ActionAbstract {
+        $this->render($values, null, 'only_template.tpl');
 
-	public function index() {
+        //header('Content-type: application/json');
+        //echo Serializer::encode(SZR_JSON, $data);
+    }
 
-		$reports = $this->getReports();
-		$values = array('reports' => $reports);
-		
-		$this->render($values, null, 'only_template.tpl');
-		
-		//header('Content-type: application/json');
-		//echo Serializer::encode(SZR_JSON, $data);
-	}
-	
-	protected function getReports() {
-		
-		$reports = array(
-			array(
-				'name' => 'managebatchs',
-				'mod' => 'ximPUBLISHtools',
-				'action' => 'managebatchs',
-				'method' => 'batchlist'
-			),
-			array(
-				'name' => 'viewcolectorstates',
-				'mod' => 'ximPUBLISHtools',
-				'action' => 'viewcolectorstates',
-				'method' => 'index'
-			)
-		);
-		
-		return $reports;
-	}
-	
+    protected function getReports()
+    {
+        $reports = array(
+            array(
+                'name' => 'managebatchs',
+                'mod' => 'ximPUBLISHtools',
+                'action' => 'managebatchs',
+                'method' => 'batchlist'
+            ),
+            array(
+                'name' => 'viewcolectorstates',
+                'mod' => 'ximPUBLISHtools',
+                'action' => 'viewcolectorstates',
+                'method' => 'index'
+            )
+        );
+
+        return $reports;
+    }
 }
-
-?>

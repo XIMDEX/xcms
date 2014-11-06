@@ -239,12 +239,12 @@ class Action_browser3 extends ActionAbstract {
 	 * Returns a JSON document with all children of the specified node id
 	 */
 	public function read() {
-		$idNode = $this->request->getParam('nodeid');
-		$items = $this->request->getParam('items');
-		$path = XIMDEX_ROOT_PATH .ModulesManager::path('tolDOX').'/resources/cache/';
-		$file = sprintf('%s%s_%s', $path, str_replace('/', '_', $idNode), $items);
+		//$idNode = $this->request->getParam('nodeid');
+		//$items = $this->request->getParam('items');
+		//$path = XIMDEX_ROOT_PATH .ModulesManager::path('tolDOX').'/resources/cache/';
+		//$file = sprintf('%s%s_%s', $path, str_replace('/', '_', $idNode), $items);
 
-		$modeTags = false;
+		/*$modeTags = false;
 		if (preg_match('/\/Tags/', $idNode) > 0) {
 			$modeTags = true;
 			if (is_file($file)) {
@@ -252,19 +252,17 @@ class Action_browser3 extends ActionAbstract {
 				echo $data;
 				return;
 			}
-		}
+		}*/
 
 		$ret = GenericDatasource::read($this->request);
 		$ret['collection'] = $this->checkNodeAction($ret['collection']);
 
 		header('Content-type: application/json');
 		$data = Serializer::encode(SZR_JSON, $ret);		
-		if ($modeTags) {
+		/*if ($modeTags) {
 			FsUtils::file_put_contents($file, $data);
 			
-		}
-
-
+		}*/
 
 		echo $data;
 	}

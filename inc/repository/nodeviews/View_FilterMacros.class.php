@@ -151,8 +151,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		// Check Params:
 		if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
 			XMD_Log::error(
-					'VIEW FILTERMACROS: No se ha especificado el canal del nodo ' . $args['NODENAME'] .
-							 ' que quiere renderizar');
+					'VIEW FILTERMACROS: Channel not specified for node ' . $args['NODENAME']);
 			return NULL;
 		}
 		
@@ -170,7 +169,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 			$this->_server = new Server($args['SERVER']);
 			if (!($this->_server->get('IdServer') > 0)) {
 				XMD_Log::error(
-						'VIEW FILTERMACROS: No se ha especificado el servidor en el que se quiere renderizar el nodo');
+						'VIEW FILTERMACROS: Server where you want to render the node not specified ');
 				return NULL;
 			}
 			$this->_isPreviewServer = $this->_server->get('Previsual');
@@ -196,7 +195,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		// Check Params:
 		if (!($this->_serverNode) || !is_object($this->_serverNode)) {
 			XMD_Log::error(
-					'VIEW FILTERMACROS: No se ha especificado el servidor del nodo ' . $args['NODENAME'] .
+					'VIEW FILTERMACROS: There is no server linked to the node ' . $args['NODENAME'] .
 							 ' que quiere renderizar');
 			return NULL;
 		}
@@ -220,8 +219,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View {
 		// Check Params:
 		if (!isset($this->_projectNode) || !($this->_projectNode > 0)) {
 			XMD_Log::error(
-					'VIEW FILTERMACROS: No se ha especificado el proyecto del nodo ' . $args['NODENAME'] .
-							 ' que quiere renderizar');
+					'VIEW FILTERMACROS: There is not associated project for the node ' . $args['NODENAME']);
 			return NULL;
 		}
 		

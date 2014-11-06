@@ -169,7 +169,7 @@ class MailReceiver extends xObject {
 	public function searchMail($clause) {
 		
 		if (!$this->getMailConnection()) {
-			$this->messages->add(_('No hay conexión establecida con el servidor'), MSG_TYPE_ERROR);
+			$this->messages->add(_('There is no established connection with the server'), MSG_TYPE_ERROR);
 			return false;
 		}
 		

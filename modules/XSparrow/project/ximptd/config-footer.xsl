@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:template name="config-footer" match="config-footer">
 		<xsl:choose>
-			<xsl:when test="//docxap[@tipo_documento]/@tipo_documento='rng-configuracion.xml'">
+			<xsl:when test="//docxap[@schema]/@schema='rng-configuracion.xml'">
 				<div uid="{@uid}" class="footer">
 					<xsl:apply-templates/>
 				</div>
