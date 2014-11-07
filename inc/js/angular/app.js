@@ -26,7 +26,8 @@
 angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximdex.module', 'ximdex.vendor']);
 
 angular.module('ximdex.vendor', ['ngAnimate', 'blueimp.fileupload', 'flow', 'ui.bootstrap']);
-angular.module('ximdex.module', ['ximdex.module.xlyre', 'ximdex.module.xtags', 'ximdex.module.xmodifyusergroups']);
+angular.module('ximdex.module', ['ximdex.module.xlyre', 'ximdex.module.xtags',
+    'ximdex.module.xmodifyusergroups', "ximdex.module.xmodifystates", "ximdex.module.xmodifystatesrole"]);
 
 angular.module('ximdex.common', ['ximdex.common.service', 'ximdex.common.directive', 'ximdex.common.filter']);
 angular.module('ximdex.main', ['ximdex.main.controller']);

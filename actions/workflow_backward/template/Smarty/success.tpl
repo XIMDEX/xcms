@@ -33,10 +33,8 @@
 		{/if}
     </fieldset>
 </div>
-<div class="message">	
-	<ol>	
-		<li>{t}The document has been moved to the previous state.{/t}</li>	
-	</ol>
+<div class="message message-success">
+	<p>{t}The document has been moved to the previous state.{/t}</p>
 </div>
 
 

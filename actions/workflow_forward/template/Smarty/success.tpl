@@ -24,19 +24,16 @@
  *}
 
 <div class="action_header">
-    <fieldset class="buttons-form">
     <h2>{t}Next state{/t}</h2>
-{if ($goback) }
-        {button class="goback-button btn main_action" label="Go back"}
-{else} 
-        {button class="close-button btn main_action" label="Close"}
-{/if}
-</fieldset>
+    <fieldset class="buttons-form">
+        {if ($goback) }
+            {button class="goback-button btn main_action" label="Go back"}
+        {else}
+            {button class="close-button btn main_action" label="Close"}
+        {/if}
+    </fieldset>
 </div>
-<div class="message">
-<ol>
-        <li>{t}The document has been moved to the next state.{/t}</li>
-</ol>
-
+<div class="message message-success">
+    <p>{t}The document has been moved to the next state.{/t}</p>
 </div>
 

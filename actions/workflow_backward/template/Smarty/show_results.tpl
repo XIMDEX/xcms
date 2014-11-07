@@ -33,16 +33,13 @@
 		{/if}
     </fieldset>
 </div>
-<div class="message">
-	{if (count($messages)) }
-	<ol>
-	{foreach name=messages from=$messages key=message_id item=message}
-		<li>{$message.message}</li>
-	{/foreach}
-	</ol>
+{if (count($messages)) }
+    {foreach name=messages from=$messages key=message_id item=message}
+        <div class="message {if $message["type"]==2}message-success{elseif $message["type"]==1}message-warning{else}message-error{/if}">
+            <p class="ui-icon-notice">{$message.message}</p>
+        </div>
+    {/foreach}
 {/if}
-</div>
-
 
 
 

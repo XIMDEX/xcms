@@ -55,6 +55,7 @@
 			'addximlet', 
 			'linkreport', 
 			'workflow_forward',
+            'workflow_backward',
 			'modifyserver',
 			'modifygroupsnode',
 			'manageversions',

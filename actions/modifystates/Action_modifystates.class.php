@@ -20,8 +20,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
@@ -30,183 +30,244 @@ ModulesManager::file('/inc/workflow/Workflow.class.php');
 
 define('NODETYPE_WORKFLOW_STATE', 5036);
 
-class Action_modifystates extends ActionAbstract {
+class Action_modifystates extends ActionAbstract
+{
 
-	// Main method: shows initial form
-    	function index () {
-    		$idNode = $this->request->getParam('nodeid');
-    		$pipeline = new Pipeline();
-	
-    		$pipeline->loadByIdNode($idNode);
-    		// in this case there is just one process
+    // Main method: shows initial form
+    function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $pipeline = new Pipeline();
 
-    		$pipeProcess = $pipeline->processes->next();
-    		$statusTransitions = array();
-    		$allStatusInfo = array();
-    		if (!empty($pipeProcess)) {
-	    		$pipeProcess->transitions->reset();
+        $pipeline->loadByIdNode($idNode);
+        // in this case there is just one process
 
-	    		while ($transition = $pipeProcess->transitions->next()) {
+        $pipeProcess = $pipeline->processes->next();
+        $statusTransitions = array();
+        $allStatusInfo = array();
+        if (!empty($pipeProcess)) {
+            $pipeProcess->transitions->reset();
 
-	    			$currentStatus = new PipeStatus($transition->get('IdStatusFrom'));
-	    			$nextStatus = new PipeStatus($transition->get('IdStatusTo'));
+            while ($transition = $pipeProcess->transitions->next()) {
 
-	    			$statusTransitions[$transition->get('id')] = sprintf('%s->%s',
-						$currentStatus->get('Name'), $nextStatus->get('Name'));
+                $currentStatus = new PipeStatus($transition->get('IdStatusFrom'));
+                $nextStatus = new PipeStatus($transition->get('IdStatusTo'));
 
-				$allStatusInfo[$currentStatus->get('id')] =
-						array('NAME' => $currentStatus->get('Name'),
-							'DESCRIPTION' => $currentStatus->get('Description'));
-	    		}
+                $statusTransitions[] = array("id" => $transition->get('id'),
+                    "value"=> sprintf('%s->%s', $currentStatus->get('Name'), $nextStatus->get('Name')));
 
-			$allStatusInfo[$nextStatus->get('id')] =
-					array('NAME' => $nextStatus->get('Name'),
-					'DESCRIPTION' => $nextStatus->get('Description'));
-    		}
+                $allStatusInfo[] =
+                    array('id' => $currentStatus->get('id'),
+                        'name' => $currentStatus->get('Name'),
+                        'description' => $currentStatus->get('Description'));
+            }
 
-        	$query = App::get('QueryManager');
-        	$actionCreate = $query->getPage() . $query->buildWith(array('method' => 'create_state'));
-        	$actionUpdate = $query->getPage() . $query->buildWith(array('method' => 'update_states'));
+            $allStatusInfo[] =
+                array('id' => $nextStatus->get('id'),
+                    'name' => $nextStatus->get('Name'),
+                    'description' => $nextStatus->get('Description'));
+        }
 
-		$this->addJs('/actions/modifystates/resources/js/manager.js');
-		$this->addCss('/xmd/style/forms/tabulators.css');
-		$this->addCss('/actions/modifystates/resources/css/default.css');
+        $this->addJs('/actions/modifystates/resources/js/manager.js');
+        $this->addCss('/xmd/style/forms/tabulators.css');
+        $this->addCss('/actions/modifystates/resources/css/default.css');
 
-		$nodeType = new NodeType();
-		$allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublicable = 1', array());
+        $nodeType = new NodeType();
+        $allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublicable = 1', array());
 
-		foreach ($allNodeTypes as $nodeTypeInfo) {
-			if($nodeTypeInfo['IdNodeType']==5032 || 
-			   $nodeTypeInfo['IdNodeType']==5039 ||
- 			   $nodeTypeInfo['IdNodeType']==5040 ||
-			   $nodeTypeInfo['IdNodeType']==5041){
-				$nodeTypeValues[$nodeTypeInfo['IdNodeType']] = $nodeTypeInfo['Name'];
-			}
-		}
+        foreach ($allNodeTypes as $nodeTypeInfo) {
+            if ($nodeTypeInfo['IdNodeType'] == 5032 ||
+                $nodeTypeInfo['IdNodeType'] == 5039 ||
+                $nodeTypeInfo['IdNodeType'] == 5040 ||
+                $nodeTypeInfo['IdNodeType'] == 5041
+            ) {
+                $nodeTypeValues[] = array("id" => $nodeTypeInfo['IdNodeType'],
+                    "name" => $nodeTypeInfo['Name']);
+            }
+        }
 
-		$checkUrl = Config::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
-			. $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
-			. '&id_nodetype=IDNODETYPE&is_workflow_master=ISWORKFLOWMASTER&method=checkNodeDependencies';
+        $checkUrl = Config::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
+            . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
+            . '&id_nodetype=IDNODETYPE&is_workflow_master=ISWORKFLOWMASTER&method=checkNodeDependencies';
 
-		$values = array('all_status_info' => $allStatusInfo,
-						'status_transitions' => $statusTransitions,
-						'action_create' => $actionCreate,
-						'action_update' => $actionUpdate,
-						'nodetype_list' => $nodeTypeValues,
-						'selectedNodetype' => $pipeline->get('IdNodeType'),
-						'is_workflow_master' => $pipeline->isWorkflowMaster,
-						'id_nodetype' => $pipeline->get('IdNodeType'),
-						'url_to_nodelist' => $checkUrl,
-						'idNode' => $idNode
-						);
+        $values = array('all_status_info' => json_encode($allStatusInfo),
+            'status_transitions' => json_encode($statusTransitions),
+            'nodetype_list' => json_encode($nodeTypeValues),
+            'selectedNodetype' => $pipeline->get('IdNodeType'),
+            'is_workflow_master' => $pipeline->isWorkflowMaster,
+            'id_nodetype' => $pipeline->get('IdNodeType'),
+            'url_to_nodelist' => $checkUrl,
+            'idNode' => $idNode
+        );
 
-		$this->render($values, null, 'default-3.0.tpl');
-    	}
+        $this->render($values, null, 'default-3.0.tpl');
+    }
 
-    	function create_state() {
-    		$name = $this->request->getParam('name');
-    		$description = $this->request->getParam('description');
-    		$idTransition = $this->request->getParam('transition');
+    function update_states()
+    {
+        $req = json_decode($GLOBALS['HTTP_RAW_POST_DATA'],true);
+        $idNode = $req["idNode"];
+        $all_status = $req["states"];
+        $toDelete = $req["toDelete"];
 
-    		$pipeTransition = new PipeTransition($idTransition);
-    		$result = $pipeTransition->addStatus($name, $description);
+        $workflow = new WorkFlow(NULL, NULL, $idNode);
+        $pipeProcess = $workflow->pipeProcess;
+        $first = $pipeProcess->transitions->first();
+        $firstStatus = new PipeStatus($first->get('IdStatusFrom'));
+        $last = $pipeProcess->transitions->last();
+        $lastStatus = new PipeStatus($last->get('IdStatusTo'));
 
-    		if ($result > 0) {
-    			$this->messages->add(_('State has been successfully added'), MSG_TYPE_NOTICE);
-	    		$this->redirectTo('index');
-    		}
+        $ids = $all_status[0]["id"]==$firstStatus->id &&
+            $all_status[count($all_status)-1]["id"]==$lastStatus->id;
+        $names = $all_status[0]["name"]==$firstStatus->Name &&
+            $all_status[count($all_status)-1]["name"]==$lastStatus->Name;
+        $descriptions = $all_status[0]["description"]==$firstStatus->Description &&
+            $all_status[count($all_status)-1]["description"]==$lastStatus->Description;
 
-    		$this->render($this->messages->messages, NULL, 'messages.tpl');
-    	}
+        if(!$ids | !$names | !$descriptions){
+            $this->sendJSON(array("result" => "fail",
+                "message" => _("The first and the last status can't be modified")));
+        }
 
-    	function update_states() {
-    		$idNode = $this->request->getParam('nodeid');
-    		$names = $this->request->getParam('name');
-    		$descriptions = $this->request->getParam('description');
-    		$idNodeType = $this->request->getParam('id_nodetype');
-    		$isWorkFlowMaster = (bool) $this->request->getParam('is_workflow_master');
+        foreach($all_status as $status){
+            if(empty($status["name"]) | empty($status["description"])){
+                $this->sendJSON(array("result" => "fail",
+                    "message" => _("Name or description of status can't be empty")));
+            }
+        }
 
-    		foreach ($names as $key => $name) {
-    			$pipeStatus = new PipeStatus($key);
-    			$pipeStatus->set('Name', $name);
-    			$pipeStatus->set('Description', $descriptions[$key]);
-    			$pipeStatus->update();
-    		}
+        while ($transition = $pipeProcess->transitions->next()) {
+                $transition->delete();
+        }
 
-		$workflow = new WorkFlow(NULL, NULL, $idNode);
-		$pipeProcess = $workflow->pipeProcess;
+        foreach($toDelete as $status){
+            if(is_numeric($status["id"]) && $status["id"] != $firstStatus->id && $status["id"] != $lastStatus->id){
+                $pipeStatus = new PipeStatus($status["id"]);
+                $pipeStatus->delete();
+            }
+        }
 
-		$transitionOrder = array_keys($names);
-		$order = 0;
-		while ($transition = $pipeProcess->transitions->next()) {
-			$transition->set('IdStatusFrom', $transitionOrder[$order]);
-			$transition->set('IdStatusTo', $transitionOrder[($order +1)]);
-			$transition->update();
-			$order ++;
-		}
+        for($i=0; $i<count($all_status); $i++){
+            $pipeStatus = new PipeStatus($all_status[$i]["id"]);
+            $pipeStatus->set('Name', $all_status[$i]["name"]);
+            $pipeStatus->set('Description', $all_status[$i]["description"]);
+            if($all_status[$i]["id"]!=null){
+                $pipeStatus->update();
+            }else{
+                $all_status[$i]["id"]=$pipeStatus->add();
+                if($all_status[$i]["id"]<0){
+                    $this->sendJSON(array("result" => "fail",
+                        "message" => sprintf(_("Error adding status %s"), $all_status[$i]["name"])));
+                }
+            }
+            if($i>0){
+                $pipeTransition = new PipeTransition();
+                $pipeTransition->set('IdStatusFrom', $all_status[$i-1]["id"]);
+                $pipeTransition->set('IdStatusTo', $all_status[$i]["id"]);
+                $pipeTransition->set('Name', sprintf('%s_to_%s', $all_status[$i-1]["name"], $all_status[$i]["name"]));
+                $pipeTransition->set('IdPipeProcess', $pipeProcess->id);
+                $pipeTransition->set('Cacheable', 0);
+                $pipeTransition->set('Callback', '-');
+                $idNewTransition = $pipeTransition->add();
+                if($idNewTransition<0){
+                    $this->sendJSON(array("result" => "fail",
+                        "message" => sprintf(_("Error adding transition %s"),
+                            sprintf('%s_to_%s', $all_status[$i-1]["name"], $all_status[$i]["name"]))));
+                }
+            }
+        }
+        $action = new Action();
+        if(count($all_status)>2){
+            $actions = $action->find(ALL,"Command=%s AND Name=%s", array("workflow_forward","Publish"));
+            foreach($actions as $a){
+                $act = new Action($a["IdAction"]);
+                $act->set('Name', "Move to next state");
+                $act->update();
+            }
 
-		$workflow->setNodeType($idNodeType);
+            $actions = $action->find(ALL,"Command=%s", array("workflow_backward"));
+            foreach($actions as $a){
+                $act = new Action($a["IdAction"]);
+                $act->set('Sort', 73);
+                $act->update();
+            }
 
-		if ($isWorkFlowMaster) {
-			if ($workflow->pipeline->get('IdNode') != Config::getValue('IdDefaultWorkflow')) {
-				$workflow->setWorkflowMaster();
-			}
-		}
-    		$this->redirectTo('index');
-    	}
+        }else{
+            $actions = $action->find(ALL,"Command=%s AND Name=%s", array("workflow_forward","Move to next state"));
+            foreach($actions as $a){
+                $act = new Action($a["IdAction"]);
+                $act->set('Name', "Publish");
+                $act->update();
+            }
+            $actions = $action->find(ALL,"Command=%s", array("workflow_backward"));
+            foreach($actions as $a){
+                $act = new Action($a["IdAction"]);
+                $act->set('Sort', -10);
+                $act->update();
+            }
+        }
 
-    	function checkNodeDependencies() {
-    		$idNode = $this->request->getParam('nodeid');
-    		$idNodeType = $this->request->getParam('id_nodetype');
-    		$isWorkFlowMaster = (bool) $this->request->getParam('is_workflow_master');
-		$search=array();
-		$wfresult=array();
-		$result=array();
+        $this->sendJSON(array(
+            "result" => "ok",
+            "all_status_info" => json_encode($all_status),
+            "message" => _("The workflow has been successfully updated")
+        ));
+    }
 
-    		$workflow = new WorkFlow(NULL, NULL, $idNode);
-    		$oldNodeType = $workflow->pipeline->get('IdNodeType');
-		if ($oldNodeType > 0) {
-			$search[] = $oldNodeType;
-		}
+    function checkNodeDependencies()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $idNodeType = $this->request->getParam('id_nodetype');
+        $isWorkFlowMaster = (bool)$this->request->getParam('is_workflow_master');
+        $search = array();
+        $wfresult = array();
+        $result = array();
 
-		if ($idNodeType > 0) {
-			$search[] = $idNodeType;
-		}
+        $workflow = new WorkFlow(NULL, NULL, $idNode);
+        $oldNodeType = $workflow->pipeline->get('IdNodeType');
+        if ($oldNodeType > 0) {
+            $search[] = $oldNodeType;
+        }
 
-		if(count($search)>0) {
-			$node = new Node();
-			$result = $node->find('IdNode', 'IdNodeType IN (%s)', $search, MONO, false);
-		}
+        if ($idNodeType > 0) {
+            $search[] = $idNodeType;
+        }
 
-		if ($isWorkFlowMaster) {
-			if ($workflow->pipeline->get('IdNode') != Config::getValue('IdDefaultWorkflow')) {
-				$allStatus = $workflow->GetAllStates();
-				$node = new Node();
-				$wfresult = $node->find('IdNode', 'IdState IN (%s)', array(implode(', ', $allStatus)), MONO, false);
-			}
-		}
+        if (count($search) > 0) {
+            $node = new Node();
+            $result = $node->find('IdNode', 'IdNodeType IN (%s)', $search, MONO, false);
+        }
 
-		if (!is_array($result)) {
-			$result = array();
-		}
+        if ($isWorkFlowMaster) {
+            if ($workflow->pipeline->get('IdNode') != Config::getValue('IdDefaultWorkflow')) {
+                $allStatus = $workflow->GetAllStates();
+                $node = new Node();
+                $wfresult = $node->find('IdNode', 'IdState IN (%s)', array(implode(', ', $allStatus)), MONO, false);
+            }
+        }
 
-		if (!is_array($wfresult)) {
-			$wfresult = array();
-		}
+        if (!is_array($result)) {
+            $result = array();
+        }
 
-		$allNodes = array_merge($result, $wfresult);
-		if(empty($allNodes))
-			$this->messages->add(_('Any node will change of workflow state'), MSG_TYPE_NOTICE);
+        if (!is_array($wfresult)) {
+            $wfresult = array();
+        }
 
-		if (!empty($allNodes)) {
-			$this->messages->add(_('Nodes which will change workflow state'), MSG_TYPE_NOTICE);
-			foreach ($allNodes as $idNode) {
-				$node = new Node($idNode);
-				$this->messages->add(sprintf(_('If you perform this modification, the node workflow state %s will be modified'), $node->GetPath()), MSG_TYPE_NOTICE);
-			}
-		}
-		// end of obtaining information 
-		$this->render(array('messages' => $this->messages->messages, 'action_with_no_return' => true), NULL, 'messages.tpl');
-	}
+        $allNodes = array_merge($result, $wfresult);
+        if (empty($allNodes))
+            $this->messages->add(_('Any node will change of workflow state'), MSG_TYPE_NOTICE);
+
+        if (!empty($allNodes)) {
+            $this->messages->add(_('Nodes which will change workflow state'), MSG_TYPE_NOTICE);
+            foreach ($allNodes as $idNode) {
+                $node = new Node($idNode);
+                $this->messages->add(sprintf(_('If you perform this modification, the node workflow state %s will be modified'), $node->GetPath()), MSG_TYPE_NOTICE);
+            }
+        }
+        // end of obtaining information
+        $this->render(array('messages' => $this->messages->messages, 'action_with_no_return' => true), NULL, 'messages.tpl');
+    }
 }
+
 ?>
