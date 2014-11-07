@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 <form method="post" id="msu_form" ng-controller="XModifyStatesCtrl"
-        ng-init="idNode={$idNode};">
+      ng-init="idNode={$idNode};">
     <div class="action_header">
         <h2>{t}Manage workflow{/t}</h2>
         <fieldset ng-init="loading=false; label='{t}Save changes{/t}';" class="buttons-form">
@@ -44,56 +44,54 @@
 
     <div class="action_content">
         <fieldset>
-            <ol>
-                <li ng-init='nodetype_list={$nodetype_list};'>
-                    <label for="id_nodetype" class="aligned">{t}Node type (optional){/t}</label>
-                    <select ng-model="nodetype" ng-options="nt.id as nt.name for nt in nodetype_list"
-                            class="cajag" {if $is_workflow_master == true} disabled{/if}>
-                        <option value="">{t}Select a node type{/t}</option>
-                    </select>
-                </li>
-                <li>
-                    <input type="checkbox" name="is_workflow_master"
-                           id="is_workflow_master"{if $is_workflow_master == true} checked="checked" disabled="disabled"{/if} />
-                    {t}This workflow will behave as default item{/t}
-                </li>
-                <li>
-                    <strong>{t}Existing status{/t}</strong>
-                </li>
-                <li>
-                    <ul ui-sortable="sortableOptions" class="sortable"
-                        ng-model="all_status_info"
-                        ng-init='all_status_info={$all_status_info}; first=all_status_info[0]; last=all_status_info[all_status_info.length-1]'>
-                        <li ng-repeat="status in all_status_info"
-                            ng-class="{literal}{sortable: $middle, first: $first, last: $last}{/literal}">
+            <p>
+                <strong>{t}Existing status{/t}</strong>
+            </p>
+            <ul ui-sortable="sortableOptions" class="sortable"
+                ng-model="all_status_info"
+                ng-init='all_status_info={$all_status_info}; first=all_status_info[0]; last=all_status_info[all_status_info.length-1]'>
+                <li ng-repeat="status in all_status_info"
+                    ng-class="{literal}{sortable: $middle, first: $first, last: $last}{/literal}">
 
-                            <label for="id_#/status.id/#" class="status">{t}Status{/t} #/$index+1/#:</label>
+                    <label for="id_#/status.id/#" class="status">{t}Status{/t} #/$index+1/#:</label>
 
-                            <input ng-disabled="!$middle" placeholder="{t}Status name{/t}" type="text" id="id_#/status.id/#" class="name"
-                                   ng-model="status.name"/>
+                    <input ng-disabled="!$middle" placeholder="{t}Status name{/t}" type="text" id="id_#/status.id/#"
+                           class="name"
+                           ng-model="status.name"/>
 
-                            <input ng-disabled="!$middle" placeholder="{t}Description{/t}" type="text" class="description"
-                                   ng-model="status.description"">
-                            {*<img src="{$_URL_ROOT}/xmd/images/show.png" class="modifyrolesstate" />*}
-                            <img ng-if="!$first && !$last" alt="<t>Flecha</t>" title="Cambiar orden"
-                                 src="{$_URL_ROOT}/xmd/images/action/move.png" class="sortable_element"/>
-                            <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded"
-                                    ng-click="deleteStatus($index)"
-                                    >
-                                <span>{t}Delete status{/t}</span>
-                            </button>
-                            <div ng-click="addStatus($index)" ng-if="$first || $middle" class="separator">
-                                <button type="button" class="add-btn icon btn-unlabel-rounded">
-                                    <span>{t}Add status{/t}</span>
-                                </button>
-                            </div>
-                        </li>
-
-                    </ul>
+                    <input ng-disabled="!$middle" placeholder="{t}Description{/t}" type="text" class="description"
+                           ng-model="status.description"">
+                    {*<img src="{$_URL_ROOT}/xmd/images/show.png" class="modifyrolesstate" />*}
+                    <img ng-if="!$first && !$last" alt="<t>Flecha</t>" title="Cambiar orden"
+                         src="{$_URL_ROOT}/xmd/images/action/move.png" class="sortable_element"/>
+                    <button ng-if="$middle" type="button" class="delete-btn icon btn-unlabel-rounded"
+                            ng-click="deleteStatus($index)"
+                            >
+                        <span>{t}Delete status{/t}</span>
+                    </button>
+                    <div ng-click="addStatus($index)" ng-if="$first || $middle" class="separator">
+                        <button type="button" class="add-btn icon btn-unlabel-rounded">
+                            <span>{t}Add status{/t}</span>
+                        </button>
+                    </div>
                 </li>
-            </ol>
+            </ul>
+
+            <br />
+
+            <p class="disabled" ng-init='nodetype_list={$nodetype_list};'>
+                <label for="id_nodetype" class="aligned">{t}Node type (optional){/t}</label>
+                <select ng-model="nodetype" ng-options="nt.id as nt.name for nt in nodetype_list"
+                        class="cajag" {if $is_workflow_master == true} disabled{/if}>
+                    <option value="">{t}Select a node type{/t}</option>
+                </select>
+            </p>
+            <p class="disabled">
+                <input type="checkbox" name="is_workflow_master"
+                       id="is_workflow_master"{if $is_workflow_master == true} checked="checked" disabled="disabled"{/if} />
+                {t}This workflow will behave as default item{/t}
+            </p>
         </fieldset>
-
     </div>
 </form>
 
