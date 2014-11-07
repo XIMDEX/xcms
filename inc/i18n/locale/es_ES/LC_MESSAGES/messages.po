@@ -9959,3 +9959,30 @@ msgstr "Error configurando la propiedad Canal por defecto"
 
 msgid "You don't have enough permissions to modify the user role"
 msgstr "No tienes suficientes permisos para modificar el rol del usuario"
+
+msgid "Status name"
+msgstr "Nombre del estado"
+
+msgid "The workflow has been successfully updated"
+msgstr "Se ha actualizado correctamente el workflow"
+
+msgid "The first and the last status can't be modified"
+msgstr "El primero y el último estado no pueden ser modificados"
+
+msgid "Error adding status %s"
+msgstr "Error añadiendo el estado %s"
+
+msgid "Error adding transition %s"
+msgstr "Error añadiendo la transición %s"
+
+msgid "Name or description of status can't be empty"
+msgstr "El nombre o la descripción de los estados no pueden ser vacíos"
+
+msgid "Select the status asociated with the role"
+msgstr "Selecciona los estados asociados con el rol"
+
+msgid "Modify asociated status of role"
+msgstr "Modificar los estados asociados del rol"
+
+msgid "The rol has been successfully updated"
+msgstr "Se ha actualizado correctamente el rol"

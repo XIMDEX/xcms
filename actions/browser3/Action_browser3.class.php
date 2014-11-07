@@ -104,6 +104,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/i18n.js');
 		$this->addJs('/extensions/angular/angular.min.js');
 		$this->addJs('/extensions/angular/angular-animate.min.js');
+        $this->addJs('/extensions/angular-ui-sortable/src/sortable.js');
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');
 		$this->addJs('/extensions/humane/humane.min.js');
@@ -147,6 +148,8 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
+        $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
+        $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
 		$this->addActionJs('XMainCtrl.js');
 		$this->addActionJs('controller.js');
 
