@@ -4,19 +4,19 @@
          <xsl:include href="{URL_PATH}/data/nodes/{PROJECT_NAME}/ximptd/templates_include.xsl"/>
          	<xsl:template name="docxap" match="docxap">
      	   <xsl:choose>
-      	      <xsl:when test="/docxap/@tipo_documento='rng-configuracion.xml'">
+      	      <xsl:when test="/docxap/@schema='rng-configuracion.xml'">
                      <xsl:call-template name="docxap-configuracion"/>
                   </xsl:when>
-                <xsl:when test="/docxap/@tipo_documento='rng-bootstrap-new.xml'">
+                <xsl:when test="/docxap/@schema='rng-bootstrap-new.xml'">
                      <xsl:call-template name="docxap-configuracion"/>
                   </xsl:when>
-    	       <xsl:when test="/docxap/@tipo_documento='rng-bootstrap-based.xml'">
+    	       <xsl:when test="/docxap/@schema='rng-bootstrap-based.xml'">
                      <xsl:call-template name="docxap-configuracion"/>
                   </xsl:when>
-    	       <xsl:when test="/docxap/@tipo_documento='rng-bootstrap-footer.xml'">
+    	       <xsl:when test="/docxap/@schema='rng-bootstrap-footer.xml'">
                      <xsl:call-template name="docxap-footer"/>
                   </xsl:when>
-                <xsl:when test="/docxap/@tipo_documento='rng-ximlet-bootstrap-menu.xml'">
+                <xsl:when test="/docxap/@schema='rng-ximlet-bootstrap-menu.xml'">
                      <xsl:call-template name="docxap-menu"/>
                   </xsl:when>
                </xsl:choose>

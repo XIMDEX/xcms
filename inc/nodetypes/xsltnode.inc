@@ -311,14 +311,14 @@ class xsltnode extends FileNode {
 
 	private function sanitizeContent($content) {
 		if (empty($content)) {
-			XMD_Log::info('Se ha creado/editado un documento con contenido vacio');
+			XMD_Log::info('It have been created or edited a document with empty content');
 			return $content;
 		}
 
 		$xsldom = new DOMDocument();
 		$result = $xsldom->loadXML($content);
 		if (!$result) {
-			XMD_Log::info('Se ha creado/editado un documento cuyo contenido no es xml valido');
+			XMD_Log::info('It have been created or edited a document which content is not a valid XML');
 			return $content;
 		}
 		$xpath = new DOMXPath($xsldom);

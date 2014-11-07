@@ -24,9 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
@@ -35,7 +32,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
-
 require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.inc');
@@ -43,12 +39,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xmldocumentnode.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-/**
- * Convierte un documento en un documento docxap
- *
- * Requiere un channel
- *
- */
 class View_NodeToRenderizedContent extends Abstract_View implements Interface_View {
 
 	private $_node = null;
@@ -56,7 +46,6 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 	private $_idChannel = null;
 	private $_idLanguage = null;
 	private $_idSection = null;
-	private $_docxapHeader = "";
 	private $_linkedXimlets = "";
 	private $_content = "";
 
@@ -105,13 +94,13 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Se ha cargado una versión incorrecta (' . $idVersion . ')');
+				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Se ha cargado una versiï¿½n incorrecta (' . $idVersion . ')');
 				return false;
 			}
 
 			$this->_node = new Node($version->get('IdNode'));
 			if (!($this->_node->get('IdNode') > 0)) {
-				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
+				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: El nodo que se estï¿½ intentando convertir no existe: ' . $version->get('IdNode'));
 				return false;
 			}
 		}
@@ -154,7 +143,7 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Se ha cargado una versión incorrecta (' . $idVersion . ')');
+				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Se ha cargado una versiï¿½n incorrecta (' . $idVersion . ')');
 				return false;
 			}
 
@@ -176,7 +165,7 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 
 		// Check Params:
 		if (!isset($idChannel) || !($idChannel > 0)) {
-			XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: No se ha especificado el canal del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: Channel not specified for node ' . $args['NODENAME']);
 			return false;
 		}
 
@@ -195,7 +184,7 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 
 			// Check Params:
 			if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: No se ha especificado la sección del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+				XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: No se ha especificado la secciï¿½n del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
 				return false;
 			}
 		}
@@ -215,7 +204,7 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 
 		// Check Params:
 		if (!isset($this->_idLanguage) || !($this->_idLanguage > 0)) {
-			XMD_Log::error('VIEW NODETORENDERIZEDCONTENT: No se ha especificado el idioma del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error("VIEW NODETORENDERIZEDCONTENT: Node's language not specified " . $args['NODENAME'] . " que quiere renderizar");
 			return false;
 		}
 

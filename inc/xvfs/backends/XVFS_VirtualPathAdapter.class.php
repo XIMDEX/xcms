@@ -48,12 +48,12 @@ class XVFS_VirtualPathAdapter {
     var $_rentities;
 
     /**
-     * @var array Coleccion de idiomas existentes en el sistema
+     * @var array Collection of existing languages on the system
      */
     var $_languages;
 
     /**
-     * @var array Coleccion de canales existentes en el sistema
+     * @var array Collection of existing channels on the system
      */
     var $_channels;
 
@@ -82,9 +82,6 @@ class XVFS_VirtualPathAdapter {
     	return $_instance;
     }
 
-    /**
-     * Recarga la estructura virtual de documentos
-     */
     function update() {
 
     	$this->_indexes = array();
@@ -112,7 +109,6 @@ class XVFS_VirtualPathAdapter {
 		}
 
 		if (!is_null($entity)) {
-			// Si la entidad representa un canal se carga la coleccion entidades descendientes
 			if ($entity->get('ischannel')) {
 				$this->_loadXmlDocuments($entity);
 			}
@@ -169,7 +165,7 @@ class XVFS_VirtualPathAdapter {
 	}
 
     /**
-     * Obtiene todos los idiomas disponibles
+     * Gets all the available languages
      */
     function _loadLanguages() {
 
@@ -192,7 +188,7 @@ class XVFS_VirtualPathAdapter {
     }
 
     /**
-     * Obtiene todos los canales disponibles
+     * Gets all the available channels
      */
     function _loadChannels() {
 
@@ -208,16 +204,12 @@ class XVFS_VirtualPathAdapter {
     }
 
     /**
-     * Devuelve un array con todos los canales disponibles
+     * Returns an array with all the channels
      */
     function getChannels() {
     	return $this->_channels;
     }
 
-    /**
-     * Obtiene todos los nodos RootFolders, necesario para tener una base y
-     * decidir que documento pertenece a este sistema virtual.
-     */
     function _loadXmlRootFolders() {
 
     	// TODO: XmlRootFolder, XimletRootFolder, .... ???
@@ -271,7 +263,6 @@ class XVFS_VirtualPathAdapter {
     		if ($node->get('isdir')) {
 	    		$node->set('collection', array());
 	    		$node->set('isvirtualcontainer', true);
-	    		// Se cargan todos los idiomas y canales disponibles
 	    		$node->set('languages', $this->getLanguages());
 	    		$node->set('channels', $this->getChannels());
     		}
@@ -280,8 +271,6 @@ class XVFS_VirtualPathAdapter {
     		$path = $node->get('path');
     		$paths[] = $path;
 
-    		// Si es un directorio se carga la coleccion de rutas virtuales descendientes,
-    		// estas son las rutas hacia cada idioma
     		if ($node->get('isdir')) $this->_loadLanguageCollection($node);
     		$this->_entities[$path] = $node;
 
@@ -291,9 +280,6 @@ class XVFS_VirtualPathAdapter {
     	$container->set('collection', $paths);
     }
 
-    /**
-     * Coleccion de rutas virtuales de directorios de idiomas
-     */
     function _loadLanguageCollection(&$entity) {
 
     	$base = $entity->get('path');
@@ -310,7 +296,6 @@ class XVFS_VirtualPathAdapter {
     		$lang_entity->set('xmlrootfolder', $entity->get('xmlrootfolder'));
     		$lang_entity->set('xmlcontainer', $entity->get('path'));
     		$lang_entity->set('name', $lang);
-    		// TODO: Obtener el nodetype del idioma de alguna otra forma? -> sql
     		$lang_entity->set('idnodetype', 5400);
     		$lang_entity->set('nodetype', 'VirtualLanguage');
     		$lang_entity->set('nodeclass', 'foldernode');
@@ -331,9 +316,6 @@ class XVFS_VirtualPathAdapter {
     	$entity->set('collection', $col);
     }
 
-    /**
-     * Coleccion de rutas virtuales de directorios de canales
-     */
     function _loadChannelCollection(&$entity) {
 
     	$base = $entity->get('path');
@@ -369,9 +351,6 @@ class XVFS_VirtualPathAdapter {
     	$entity->set('collection', $col);
     }
 
-    /**
-     * Obtiene todas las entidades reales, los XmlDocument, segun el idioma y el canal.
-     */
     function _loadXmlDocuments(&$channel) {
 
     	$idlang = $channel->get('idlanguage');
@@ -416,18 +395,6 @@ class XVFS_VirtualPathAdapter {
     	$channel->set('collection', $col);
     }
 
-    /**
-     * Devuelve informacion del contenido de una ruta virtual:
-     *
-     * 1.	Por una parte devuelve la informacion de los nodos existentes bajo esa
-     * 		ruta, indicando sus idiomas y canales asociados.
-     *
-     * 2.	Por otra parte devuelve la estructura de directorios existente bajo
-     * 		la ruta indicada, directorios de idiomas y canales que se encuentran
-     * 		en niveles mas bajos.
-     *
-     * 3.	Tambien obtiene el contenedor, si existe, descendiente del RootFolder.
-     */
     function & getXmlDocumentsInfo($vpath) {
 
     	$info = array();
@@ -455,7 +422,6 @@ class XVFS_VirtualPathAdapter {
 
 	    		case 'XMLCONTAINER':
 	    		case 'XIMLETCONTAINER':
-	    			// Todos los idiomas, todos los canales
 	    			$containerPath = $entity->get('path');
 	    			$rootPath = $entity->get('xmlrootfolder');
 	    			$col = $entity->getCollection();
@@ -468,7 +434,6 @@ class XVFS_VirtualPathAdapter {
 	    			break;
 
 	    		case 'VIRTUALLANGUAGE':
-	    			// Un solo idioma, todos los canales
 	    			$container = $entity->get('xmlcontainer');
 	    			$containerPath = $container;
 	    			$container = $this->getEntity($container);
@@ -489,7 +454,6 @@ class XVFS_VirtualPathAdapter {
 	    			break;
 
 	    		case 'VIRTUALCHANNEL':
-	    			// Un solo idioma, un solo canal
 	    			$container = $entity->get('xmlcontainer');
 	    			$containerPath = $container;
 	    			$container = $this->getEntity($container);
@@ -515,9 +479,6 @@ class XVFS_VirtualPathAdapter {
 
     	}
 
-    	// Se obtiene la informacion de los idiomas y canales existentes bajo la ruta indicada.
-    	// No se tienen en cuenta los posibles nodos que puedan existir, sino la estructura que
-    	// existe bajo la ruta indicada.
     	$langs = $this->getLanguages();
     	$channels = $this->getChannels();
 
@@ -529,7 +490,6 @@ class XVFS_VirtualPathAdapter {
 
     	if (in_array($item, $langs)) {
 
-    		// El ultimo elemento del path representa un idioma
     		$key = array_search($item, $langs);
     		$pathinfo['languages'] = array($key => $item);
     		$pathinfo['channels'] = $channels;
@@ -538,7 +498,6 @@ class XVFS_VirtualPathAdapter {
 
     	} else if (in_array($item, $channels)) {
 
-    		// El ultimo elemento del path representa un canal
     		$lang = prev($paths);
     		$key = array_search($lang, $langs);
 			$pathinfo['languages'] = array($key => $lang);
@@ -549,7 +508,6 @@ class XVFS_VirtualPathAdapter {
 
     	} else {
 
-    		// No se especifica el idioma ni el canal
     		$pathinfo['languages'] = $langs;
     		$pathinfo['channels'] = $channels;
 

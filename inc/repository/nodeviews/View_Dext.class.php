@@ -101,9 +101,9 @@ class View_Dext extends Abstract_View implements Interface_View {
 
 		if($returnValue) {
 			if($returnValue == 127) {
-				XMD_Log::error("Error de llamada al módulo dexT");
+				XMD_Log::error("Error de llamada al mï¿½dulo dexT");
 			} elseif ($returnValue == 2) {
-				XMD_Log::error("Error en configuración de librerias del módulo dexT");
+				XMD_Log::error("Error en configuraciï¿½n de librerias del mï¿½dulo dexT");
 			} else {
 				$j = 0;
 				$out = explode("\n",$output);
@@ -115,7 +115,7 @@ class View_Dext extends Abstract_View implements Interface_View {
 				}
 
 
-				$tmp[0] = preg_replace("/GENERATION ERROR -->/", "Error de Generación", $tmp[0]);
+				$tmp[0] = preg_replace("/GENERATION ERROR -->/", "Error de Generaciï¿½n", $tmp[0]);
 				$tmp[0] = preg_replace("/SYNTAX ERROR -->/", "Error de Sintaxis en la llamada", $tmp[0]);
 				$tmp[0] = preg_replace("/CONFIGURATION ERROR -->/", "Error de Configuracion", $tmp[0]);
 
@@ -162,13 +162,13 @@ class View_Dext extends Abstract_View implements Interface_View {
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW DEXT: Se ha cargado una versión incorrecta (' . $idVersion . ')');
+				XMD_Log::error('VIEW DEXT: Se ha cargado una versiï¿½n incorrecta (' . $idVersion . ')');
 				return NULL;
 			}
 
 			$this->_node = new Node($version->get('IdNode'));
 			if (!($this->_node->get('IdNode') > 0)) {
-				XMD_Log::error('VIEW DEXT: El nodo que se está intentando convertir no existe: ' . $version->get('IdNode'));
+				XMD_Log::error('VIEW DEXT: El nodo que se estï¿½ intentando convertir no existe: ' . $version->get('IdNode'));
 				return NULL;
 			}
 		}
@@ -186,7 +186,7 @@ class View_Dext extends Abstract_View implements Interface_View {
 
 		// Check Params:
 		if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-			XMD_Log::error('VIEW DEXT: No se ha especificado la sección del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW DEXT: No se ha especificado la secciï¿½n del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
 			return NULL;
 		}
 
@@ -203,7 +203,7 @@ class View_Dext extends Abstract_View implements Interface_View {
 
 		// Check Params:
 		if (!isset($this->_idProject) || !($this->_idProject > 0)) {
-			XMD_Log::error('VIEW DEXT: No se ha especificado el proyecto del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW DEXT: There is not associated project for the node ' . $args['NODENAME']);
 			return NULL;
 		}
 

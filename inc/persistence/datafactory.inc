@@ -86,10 +86,10 @@ ModulesManager::file('/inc/SolrConector.class.php', 'ximRAM');
 **/
 class DataFactory
 {
-	var $ID;					// Identificador del tipo de nodo actual.
-   	var $numErr;				// Codigo de error.
-    var $msgErr;				// Mensaje de Error.
-	var $errorList = array(		// Lista de errores de la clase.
+	var $ID;
+   	var $numErr;
+    var $msgErr;
+	var $errorList = array(
 		1 => 'No existe el Nodo',
 		2 => 'Error de conexion con la base de datos',
 		3 => 'No se encontro el contenido para la version solicitada',
@@ -313,7 +313,7 @@ class DataFactory
 		}
 
 		if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
-			XMD_Log::warning('No se ha podido estimar la versión o la subversion');
+			XMD_Log::warning('No se ha podido estimar la versiï¿½n o la subversion');
 			return false;
 		}
 
@@ -367,7 +367,7 @@ class DataFactory
 			$channels = $node->GetChannels();
 			$pipelineManager = new PipelineManager();
 			foreach ($channels as $idChannel) {
-				XMD_Log::info("Generando cache para la versión $idVersion y el canal $idChannel");
+				XMD_Log::info("Generating cache for version $idVersion and the channel $idChannel");
 				$data = array('CHANNEL' => $idChannel);
 
 				if (!$isOTF) {
@@ -468,7 +468,7 @@ class DataFactory
 			$curVersion = $this->GetLastVersion();
 
 			if (is_null($curVersion)) {
-				XMD_Log::warning('No se ha podido obtener la última versión del documento');
+				XMD_Log::warning('Could not get the latest version of the document');
 				return false;
 			}
 			$curSubVersion = $this->GetLastSubVersion($curVersion);
@@ -587,7 +587,7 @@ class DataFactory
 		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot") . "/" . $uniqueName;
 
 		if (!FsUtils::file_put_contents($targetPath, $newContent)) {
-			XMD_Log::error('Error al establecer el contenido del documento');
+			XMD_Log::error('An error occurred while trying to set the document');
 			$this->SetError(5);
 		}
 
@@ -610,7 +610,7 @@ class DataFactory
 
 		/// Lo guardamos en el sistema de archivos
 		if (!FsUtils::file_put_contents($fileName, $fileContent)) {
-				XMD_Log::error('Ha ocurrido un error al intentar guardar el documento');
+				XMD_Log::error('An error occurred while trying to save the document');
 				$this->SetError(6);
 				return false;
 		}

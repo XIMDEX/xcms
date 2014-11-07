@@ -27,7 +27,7 @@
                             	</xsl:variable>
 
                             	<xsl:choose>
-                      			<xsl:when test="/docxap/@tipo_documento='rng-configuracion.xml'">
+                      			<xsl:when test="/docxap/@schema='rng-configuracion.xml'">
 
                                                <div class="main span{$mainColumnWidth}">
                     		    <div class="page-header">
@@ -79,7 +79,7 @@
                     		    </ul>
                     		</div>
                       			</xsl:when>
-                               		<xsl:when test="/docxap/@tipo_documento='rng-bootstrap-based.xml'">
+                               		<xsl:when test="/docxap/@schema='rng-bootstrap-based.xml'">
                                                 <xsl:apply-templates select="/docxap/content">
                                                   <xsl:with-param name="paramMainColumnWidth" select="$mainColumnWidth"/>
                                                  </xsl:apply-templates>

@@ -236,7 +236,6 @@ msgstr ""
 msgid "CatID"
 msgstr ""
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Revision date"
 msgstr ""
 
@@ -558,7 +557,6 @@ msgid "The query handler was not found."
 msgstr ""
 
 #: /actions/browser3/inc/Datasource_tags.class.php
-#: /actions/browser3/inc/Datasource_tolDOX.class.php
 #: /actions/browser3/inc/Datasource_XVFS.class.php
 msgid "The path cannot be read"
 msgstr ""
@@ -1332,7 +1330,6 @@ msgstr ""
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: xmd/login.php
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -1430,7 +1427,7 @@ msgstr ""
 msgid "Selected document or folder is not empty. It also have dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
 msgstr ""
 
-msgid "Your role cannot delete the selected container because of it has idiomatic versions depending on it."
+msgid "Your role cannot delete the selected container because of it has language versions depending on it."
 msgstr ""
 
 msgid "Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
@@ -1442,7 +1439,7 @@ msgstr ""
 msgid "List of pending documents"
 msgstr ""
 
-msgid "To be able to delete this node, you should first delete the following idiomatic versions"
+msgid "To be able to delete this node, you should first delete the following language versions"
 msgstr ""
 
 msgid "Node does not exist. Update XimSearch."
@@ -1928,7 +1925,6 @@ msgstr ""
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
 #: /actions/searchpanel/inc/Filters_Ximdex.class.php
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "contains"
 msgstr ""
 
@@ -1997,7 +1993,6 @@ msgstr ""
 msgid "Being unpublished"
 msgstr ""
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: /actions/managebatchs/forms.php
 #: /modules/ximSYNC/actions/managebatchs/Action_managebatchs.class.php
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -2179,7 +2174,7 @@ msgstr ""
 msgid "A total of %s channels are going to be disassociated from %s nodes."
 msgstr ""
 
-msgid "A total of %s idiomatic versions are going to be deleted."
+msgid "A total of %s language versions are going to be deleted."
 msgstr ""
 
 msgid "A total of %s channels have been disassociated from %s nodes."
@@ -2194,7 +2189,7 @@ msgstr ""
 msgid "A total of %s channels have been recursively associated with %s documents."
 msgstr ""
 
-msgid "A total of %s idiomatic versions have been deleted."
+msgid "A total of %s language versions have been deleted."
 msgstr ""
 
 msgid "Language values will be inherited."
@@ -2203,7 +2198,7 @@ msgstr ""
 msgid "%s Languages have been successfully assigned."
 msgstr ""
 
-msgid "A total of %S idiomatic versions have been recursively created."
+msgid "A total of %S language versions have been recursively created."
 msgstr ""
 
 msgid "Template values will be inherited."
@@ -2238,7 +2233,7 @@ msgstr ""
 msgid "Channel %s has been associated with %s documents."
 msgstr ""
 
-msgid "%s idiomatic versions have been created."
+msgid "%s language versions have been created."
 msgstr ""
 
 #: /actions/manageproperties/template/Smarty/Channel.tpl
@@ -2268,7 +2263,7 @@ msgstr ""
 msgid "Overwrite inherited languages"
 msgstr ""
 
-msgid "Create idiomatic version recursively"
+msgid "Create language version recursively"
 msgstr ""
 
 #: /actions/manageproperties/template/Smarty/Schema.tpl
@@ -4120,6 +4115,7 @@ msgid "Create "
 msgstr ""
 
 msgid "element"
+msgstr "elemento"
 
 #: /actions/xmleditor2/js/editor/Ximdextools.js
 msgid "Disapply element"
@@ -5360,6 +5356,7 @@ msgstr ""
 # -------- widget tabs --------
 #: /inc/widgets/jquery/tabs/js/tabs.js
 msgid "Close all tabs"
+msgstr "Cerrar todas las pestañas"
 
 # -------- widget uploader --------
 #: /inc/widgets/jquery/uploader/template/uploader_html5.tpl
@@ -5838,7 +5835,7 @@ msgstr ""
 msgid "Change name of XML document"
 msgstr ""
 
-msgid "Change the document name and all its idiomatic versions"
+msgid "Change the document name and all its language versions"
 msgstr ""
 
 msgid "Add new file"
@@ -7247,7 +7244,6 @@ msgstr ""
 
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Category"
 msgstr ""
 
@@ -7297,7 +7293,7 @@ msgstr ""
 msgid "news"
 msgstr ""
 
-msgid "In order to defuse idiomatic versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
+msgid "In order to defuse language versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
 msgstr ""
 
 msgid "In order to defuse publication channels of document previously published, defuse the corresponding channel and unpublish the implicated documents (bulletins and news)"

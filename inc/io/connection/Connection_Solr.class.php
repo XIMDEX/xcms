@@ -39,7 +39,7 @@ class Connection_Solr implements I_Connector {
 
    /**
     * Connect to server.
-    * Send ping to servidor to ensure it is active.
+    * Send ping to server to ensure that it is active.
     * 
     * @access public
     * @param host string

@@ -31,5 +31,5 @@ CREATE TABLE `Filters` (
   `Type` varchar(10) NOT NULL default '',
   PRIMARY KEY  (`IdFilter`),
   UNIQUE KEY `IdFilter` (`IdFilter`)
-) TYPE=MyISAM COMMENT='Filtros aplicables en un canal';
+) TYPE=MyISAM COMMENT='Applied filters to a channel';
 

@@ -126,13 +126,6 @@ class XVFS_Backend_xnodes
 		return $nodeEntity;
 	}
 
-	/**
-	 * Devuelve un array que contiene el nombre de un documento estructurado
-	 * sin el sufijo de idiomas y el sufijo encontrado.
-	 *
-	 * @param string Nombre o path del documento
-	 * @return string
-	 */
 	function _stripLanguageSuffix($path) {
 
 		$regexp = '/-(id[a-z]*)$/im';
@@ -593,7 +586,7 @@ class XVFS_Backend_xnodes
 				// Estos ficheros no pueden ser renombrados si no es a traves del contenedor.
 				if ($target_isvirtual && (dirname($source) == dirname($target))) {
 					if (basename($source) != basename($target)) {
-						XVFS_Log::warning("XVFS::copy($source, $target) - Se ha intentado renombrar un documento virtual: ABORTADO!.");
+						XVFS_Log::warning("XVFS::copy($source, $target) - Attempting to rename a virtual document: ABORTED !.");
 						return XVFS_IS_VIRTUAL;
 					}
 				} else {
@@ -684,13 +677,10 @@ class XVFS_Backend_xnodes
 //		logdump($docinfo, $rpath);
 //		return true;
 
-
-		// El documento debe nombrarse como el contendor, ver comportamiento en ximdex
-		// cuando se renombra un XMLContainer o XimletContainer.
 		$container_name = $this->_stripLanguageSuffix($docinfo['container']);
 		$rpath_name = $this->_stripLanguageSuffix($rpath);
 		if (!is_null($docinfo['container']) && $container_name['name'] != $rpath_name['name']) {
-			XVFS_Log::warning("XVFS::_virtualAppend($rpath) - El documento se renombrara para que coincida con el nombre del contenedor: {$container_name['name']}");
+			XVFS_Log::warning("XVFS::_virtualAppend($rpath) - The document will be renamed in order to be the same that its container: {$container_name['name']}");
 			$rpath = dirname($rpath) . "/{$container_name['name']}-{$rpath_name['suffix']}";
 		}
 
@@ -705,8 +695,6 @@ class XVFS_Backend_xnodes
 
 			foreach ($nodes as $idnode => $info) {
 
-				// Si el nodo no tiene ningun canal asociado no es necesario
-				// actualizar el contenido, se actualizara mas abajo.
 				if (count($info['channels']) > 0) {
 
 					$node = NodeEntity::getEntity($idnode);
@@ -723,9 +711,6 @@ class XVFS_Backend_xnodes
 		$pathinfo =& $docinfo['pathinfo'];
 		$channels = array_keys($pathinfo['channels']);
 
-
-		// Si existen nodos pero no se ha actualizado ninguno se asume que se esta
-		// creando un nuevo canal
 		if (count($nodes) > 0) {
 
 			$lang = array_keys($pathinfo['languages']);
@@ -736,7 +721,6 @@ class XVFS_Backend_xnodes
 				if ($node->get('idlanguage') == $lang) {
 
 					$ret = $this->_repository->addChannel($node, $channels, $username);
-					// Si se creo correctamente el canal actualizamos el contenido del nodo
 					if ($ret) {
 						$node->setContent($content);
 						$ret = $this->_repository->update($node, $username, null);
@@ -746,8 +730,6 @@ class XVFS_Backend_xnodes
 			}
 		}
 
-		// Si no se actualiza ningun nodo, ni se crea ningun canal, se crean nuevos idiomas.
-		// Se crearan nodos con los idiomas y canales que se especifican en el ruta.
 		$langs =& $pathinfo['languages'];
 
 
@@ -771,11 +753,8 @@ class XVFS_Backend_xnodes
 			$xmlcontainer = $this->_getEntity($container);
 		}
 
-		// Crea tantos nodos como idiomas se han obtenido del padre
 		foreach ($langs as $idlang => $lang) {
 
-			// Este es el path real del documento a guardar
-			// Elimina posibles coletillas de idiomas
 			$basename = $this->_stripLanguageSuffix($rpath);
 			$basename = $basename['name'];
 			$path = "$base/$basename";
@@ -817,13 +796,6 @@ class XVFS_Backend_xnodes
 
 		if ($entity->get('isdir')) {
 
-			// Solo se permite eliminar el XmlContainer, esto es eliminar
-			// un documento con todos sus idiomas y enlaces.
-			// ***************************************************************************
-			// Si se intenta eliminar un directorio que represente a un idioma o canal
-			// el resultado seria eliminar el documento o la asociacion al canal,
-			// pero el efecto en la interfaz de usuario seria que no desapareceria el directorio.
-			// ***************************************************************************
 			if (!$entity->get('isvirtualcontainer')) return XVFS_NOT_EXISTS;
 
 			// Se elimina el contenedor y todos sus descendientes
@@ -831,7 +803,6 @@ class XVFS_Backend_xnodes
 
 		} else {
 
-			// Se esta eliminando la asociacion a un canal
 			$ret = $this->_repository->deleteChannel($entity, $username);
 		}
 

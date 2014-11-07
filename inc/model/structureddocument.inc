@@ -33,18 +33,16 @@ require_once(XIMDEX_ROOT_PATH . "/inc/parsers/ParsingRng.class.php");
 
 class StructuredDocument extends StructuredDocuments_ORM
 {
-	var $ID;		// Identificador del structure document actual.
-//	var $dbObj;		// Objeto DB que se usaria en los metodos.
+	var $ID;
+	var $flagErr;
+	var $numErr;
+	var $msgErr;
 
-	var $flagErr;				// marca si hubo error
-	var $numErr;				// Codigo de error.
-	var $msgErr;				// Mensaje de Error.
-
-	var $errorList= array(		// Lista de errores de la clase.
-		1 => 'Error de conexion con la base de datos',
-		2 => 'No Existe el Documento Estructurado',
-		3 => 'No implementado',
-		4 => 'Un documento no puede autoenlazarse'
+	var $errorList= array(
+		1 => 'Error while connecting with the database',
+		2 => 'The structured document does not exist',
+		3 => 'Not implemented yet',
+		4 => 'A document cannot be linked to itself'
 		);
 
 	function StructuredDocument($docID = null)
@@ -153,15 +151,10 @@ class StructuredDocument extends StructuredDocuments_ORM
 		return false;
 	}
 
-
-	// Devuelve el tipo de documento del structure document actual.
-	// return int (IdDocumentType)
 	function GetDocumentType () {
 	 	return $this->get("IdTemplate");
 	}
 
-	// Cambia el tipo de documento del structure document actual.
-	// return int (status)
 	function SetDocumentType($templateID)
 	{
 		if (!($this->get('IdDoc') > 0)) {
@@ -193,19 +186,9 @@ class StructuredDocument extends StructuredDocuments_ORM
 				$this->update();
 			}
 
-			$target = new StructuredDocument($docID);
-
-			// Genera una version adicional del MASTER al crear un documento con enlaces idiomaticos
-			//$target->SetContent($target->GetContent()); //WTF!!
-
-			//*****************************************
-			//Agnadimos la dependencia
 			$dependencies=new dependencies();
 			$dependencies->insertDependence($docID,$this->get('IdDoc'),'SYMLINK',$this->GetLastVersion());
 			return true;
-			//****************************************
-
-
 			}
 		else
 			$this->SetError(4);
@@ -283,7 +266,6 @@ class StructuredDocument extends StructuredDocuments_ORM
 	}
 
 	/**
-	 * Establece el contenido del documento actual
 	 *
 	 * @param string $content
 	 * @param boolean $commitNode
@@ -347,7 +329,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 		return false;
 	}
 
-	// Agrega un canal al structure document actual.
+	// Adds a channel to the current document
 	function AddChannel($IdChannel) {
 		$sqls = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel)"
 	 		. " VALUES (%d, %d)", $this->get('IdDoc'), $IdChannel);
@@ -358,7 +340,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 		}
 	}
 
-	// controla si tiene un canal
+	// Checks if the current document has the given channel
 	function HasChannel($idChannel) {
 		$sql = sprintf("SELECT COUNT(*) as total FROM RelStrDocChannels"
 				. " WHERE IdDoc = %d"
@@ -370,7 +352,6 @@ class StructuredDocument extends StructuredDocuments_ORM
  		return $dbObj->GetValue("total");
 	}
 
-	// Obtiene la lista de canales del structure document actual.
 	function GetChannels() {
 		$sql = sprintf("SELECT DISTINCT(IdChannel) FROM RelStrDocChannels" .
 				" WHERE IdDoc = %d", $this->get('IdDoc'));
@@ -388,7 +369,7 @@ class StructuredDocument extends StructuredDocuments_ORM
  	return $salida;
 	}
 
-	// Borra un canal del structure document actual.
+	// Delete the given channel for the current node
 	function DeleteChannel($idChannel) {
 		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d"
 	 		. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
@@ -399,7 +380,6 @@ class StructuredDocument extends StructuredDocuments_ORM
 		}
 	}
 
-	// Borra los canales del structure document actual.
 	function DeleteChannels() {
 		$dbObj = new DB();
 		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d", $this->get('IdDoc'));
@@ -468,9 +448,6 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 		$this->ID = null;
 	}
-
-
-	// Obtiene la lista de versiones para un documento
 
 	function GetLastVersion()
 	{

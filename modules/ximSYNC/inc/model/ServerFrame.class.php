@@ -602,7 +602,7 @@ class ServerFrame extends ServerFrames_ORM {
 		$serverID = $node->GetServer();
 		if (!($serverID > 0)) {
 			XMD_log::error(
-					'Se ha intentado publicar un nodo que no esta contenido en un servidor: ' . $nodeID);
+					'Trying to publish a node that is not contained on a server ' . $nodeID);
 			return NULL;
 		}
 		$nodeServer = new Node($serverID);

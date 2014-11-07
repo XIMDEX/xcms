@@ -336,7 +336,6 @@ msgstr "Tema"
 msgid "CatID"
 msgstr "CatID"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Revision date"
 msgstr "Fecha revisi&oacute;n"
 
@@ -690,7 +689,6 @@ msgid "The query handler was not found."
 msgstr "No se encuentra el manipulador de consultas."
 
 #: /actions/browser3/inc/Datasource_tags.class.php
-#: /actions/browser3/inc/Datasource_tolDOX.class.php
 #: /actions/browser3/inc/Datasource_XVFS.class.php
 msgid "The path cannot be read"
 msgstr "No es posible leer la ruta "
@@ -1515,7 +1513,6 @@ msgstr "A&ntilde;adir usuario"
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: xmd/login.php
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -2188,7 +2185,6 @@ msgstr "correcto"
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
 #: /actions/searchpanel/inc/Filters_Ximdex.class.php
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "contains"
 msgstr "contiene"
 
@@ -2257,7 +2253,6 @@ msgstr "Preparado para caducar"
 msgid "Being unpublished"
 msgstr "Caduc&aacute;ndose"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: /actions/managebatchs/forms.php
 #: /modules/ximSYNC/actions/managebatchs/Action_managebatchs.class.php
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -7640,7 +7635,6 @@ msgstr "Por Fecha (Semana)"
 
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Category"
 msgstr "Categor&iacute;a"
 

@@ -63,7 +63,7 @@ class LanguageNode extends Root {
 		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
 
 		if ($result > 0) {
-			$this->parent->messages->add(_('El código ISO introducido ya está asignado a otro idioma'), MSG_TYPE_ERROR);
+			$this->parent->messages->add(_('The ISO code entered is already assigned to another language'), MSG_TYPE_ERROR);
 			$this->parent->delete();
 			return NULL;
 		}

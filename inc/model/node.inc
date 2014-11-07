@@ -1700,7 +1700,6 @@ class	Node extends Nodes_ORM{
 				return $dbObj->GetValue("Name");
 			}
 
-			// si no, busca el lenguaje default del proyecto
 			$conf = new Config();
 			$langDefault = $conf->GetValue("DefaultLanguage");
 			if (strlen($langDefault) != 0) {
@@ -1713,12 +1712,11 @@ class	Node extends Nodes_ORM{
 				$dbObj->Query($sql);
 				if ($dbObj->numRows > 0)
 				{
-					// si encuentra el idioma x defecto lo devuelve
+					// Returns the default language
 			 		return $dbObj->GetValue("Name");
 				}
 			}
 
-			// y si no encuentra nada devuelve el nombre del nodo.
 			return $this->GetNodeName();
 		}
 		$this->SetError(1);

@@ -888,7 +888,6 @@ class BatchManager {
 			return false;
 		}
 
-		//ServerFrames que corresponden a Servidores inactivos
 		$inactives = implode(',',$activeAndEnabledServers);
 
 		$query = "SELECT IdSync FROM ServerFrames, Batchs, Pumpers WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND " .
@@ -898,7 +897,6 @@ class BatchManager {
 
 		$numServerFramesFromInactiveServers = $dbObj->numRows;
 
-		//Si s�lo quedan por procesar ServerFrames de servidores inactivos finalizo el Batch
 		if ($totalServerFrames == $numServerFramesFromInactiveServers + $sucessServerFrames) {
 			XMD_Log::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
 			$this->set('State','Ended');

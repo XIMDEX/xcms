@@ -307,7 +307,7 @@ function XimdocEditor(options) {
             success: function (data) {
 
                 if (data["result"] !== false) {
-                    //var data = data.data || req.responseText;
+                    var data = data.data || data;
 
                     if (this.method && this.method == 'verifyTmpFile') {
                         that[propertyName] = this.result;

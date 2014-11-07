@@ -50,7 +50,7 @@
 	</fieldset>
 
 	<fieldset>
-		<legend><span>{t}Idiomas{/t}</span></legend>
+		<legend><span>{t}Languages{/t}</span></legend>
 		<ol>
 			{foreach from=$languages key=ene item=language}
 				<li><label class="aligned">{$language.name}</label>

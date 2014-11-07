@@ -75,7 +75,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		    $fileXsl = $this->buildXslBulletin($idTemplate);
 		    if(is_null($fileXsl)){
 				XMD_Log::info("Creando el xsl de ".$this->nodeID."");
-				$this->parent->messages->add(_('Se ha encontrado un error al parsear el xml del documento'), MSG_TYPE_ERROR);
+				$this->parent->messages->add(_('An error occurred while parsing the document'), MSG_TYPE_ERROR);
 				return false;
 		    }
 		}
@@ -327,8 +327,8 @@ class XimNewsColectorNodeType extends FolderNode  {
 	*	@return bool
 	*	Campo inactive:
 	*		- 0: se comprueban numero de noticias y tiempo de generacion para ver si el colector es generable
-	*		- 1: sólo se comprueba el número de noticias pendientes para la generacion del colector (condicion de tiempo de generacion del colector inactiva)
-	*		- 2: sólo se comprueba el tiempo de generacion (condicion de numero de noticias inactiva)
+	*		- 1: sï¿½lo se comprueba el nï¿½mero de noticias pendientes para la generacion del colector (condicion de tiempo de generacion del colector inactiva)
+	*		- 2: sï¿½lo se comprueba el tiempo de generacion (condicion de numero de noticias inactiva)
 	*		- 3: no se compureba ninguna, el colector esta inactivo y no se genera nunca
 	*
 	*/
@@ -521,7 +521,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		}
 
 
-		//Si es una generación forzada se borran todos los boletines que tuviera el colector
+		//Si es una generaciï¿½n forzada se borran todos los boletines que tuviera el colector
 		if ($forceTotalGeneration == 2) {
 			$ximNewsBulletin = new XimNewsBulletin();
 			$bulletinContainers = array();
@@ -601,7 +601,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		$ximNewsColector->UnLock(); //unlocked colector
 		if (!(sizeof($bulletinsGenerated) > 0)) {
-			XMD_Log::info('No se ha generado ningún boletín');
+			XMD_Log::info('No se ha generado ningï¿½n boletï¿½n');
 			return NULL;
 		}
 
@@ -666,7 +666,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		if(!($nNews > 0)) {
 
-			//Se borran boletines vacíos
+			//Se borran boletines vacï¿½os
 
 			foreach($array_pages as $page){
 				XMD_Log::info("Boletin ".$bulletins[$page-1]);

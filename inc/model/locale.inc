@@ -197,7 +197,7 @@ class XimLocale extends Locales_ORM
 	}
 
 
-    // Crear un nuevo idioma y cargar su ID en el objeto
+    // Create a new language and update its ID in the object
 	function CreateLocale($code, $name, $enabled=0, $ID=null)
 	{
 
@@ -218,7 +218,7 @@ class XimLocale extends Locales_ORM
 		return $ID;
 	}
 
-    // Elimina el idioma actual
+    // Delete the current language
 	function DeleteLanguage()
 		{
 		$this->ClearError();
