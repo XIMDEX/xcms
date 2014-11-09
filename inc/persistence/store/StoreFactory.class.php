@@ -33,6 +33,7 @@ ModulesManager::file('/inc/persistence/store/FileSystemStore.class.php');
 ModulesManager::file('/inc/persistence/store/ChainedStore.class.php');
 ModulesManager::file('/inc/SolrStore.class.php', 'XRAM');
 ModulesManager::file('/inc/SolariumSolrService.class.php', 'XRAM');
+ModulesManager::file('/inc/ProcessorFactory.class.php', 'XRAM');
 
 /**
  * <p>Store Factory</p>
@@ -41,11 +42,13 @@ ModulesManager::file('/inc/SolariumSolrService.class.php', 'XRAM');
  */
 class StoreFactory
 {
+
     private static $ACTIVE_REPOSITORY = 'ActiveRepository';
+
     const SOLR_STORE_CONF_VALUE = "solr";
     const FILESYSTEM_STORE_CONF_VALUE = "filesystem";
     const CHAINED_STORE_CONF_VALUE = "chained";
-    
+
     /**
      * <p>Default constructor</p>
      */
@@ -82,55 +85,57 @@ class StoreFactory
         $solrServer = Config::GetValue("SolrServer");
         $solrPort = Config::GetValue("SolrPort");
         $solrCorePath = Config::GetValue("SolrCorePath");
-        
+
         $store = new SolrStore();
         $solrService = new SolariumSolrService($solrServer, $solrPort, $solrCorePath);
         $store->setSolrService($solrService);
-                
+        $processorFactory = new ProcessorFactory();
+        $aesProcessor = $processorFactory->createAESProcessor();
+        $store->addProcessor($aesProcessor);
+
         return $store;
     }
-    
-    public function createChainedStore() {
+
+    public function createChainedStore()
+    {
         $store = new ChainedStore();
         $store->addStore($this->createSolrStore());
         $store->addStore($this->createFileSystemStore());
         return $store;
     }
-    
+
     /**
      * <p>Gets the default configured store from configuration</p>
      * @return an instance of <code>Store</code>
      */
-    public static function getDefaultStore() {
-        
+    public static function getDefaultStore()
+    {
         /*
          * Using static variable to initialize only once the store
          */
         static $store;
-        
-        if(isset($store)) {
-            return $store;
-        } 
-        
-        $storeFactory = new self(); // $class = __CLASS__; $storeFactory = new $class();
-        $activeRepository = Config::getValue(StoreFactory::$ACTIVE_REPOSITORY);
-        if($activeRepository === NULL) {
-            $store = $storeFactory->createFileSystemStore();
-            return $store;
-        }
-        
-        switch ($activeRepository) {
-            case StoreFactory::SOLR_STORE_CONF_VALUE:
-                $store = $storeFactory->createSolrStore();
-                break;
-            case StoreFactory::CHAINED_STORE_CONF_VALUE:
-               $store = $storeFactory->createChainedStore();
-               break;
-            default:
+
+        if (!isset($store)) {
+            $storeFactory = new self(); // $class = __CLASS__; $storeFactory = new $class();
+            $activeRepository = Config::getValue(StoreFactory::$ACTIVE_REPOSITORY);
+            if ($activeRepository === NULL) {
                 $store = $storeFactory->createFileSystemStore();
-                break;
+                return $store;
+            }
+
+            switch ($activeRepository) {
+                case StoreFactory::SOLR_STORE_CONF_VALUE:
+                    $store = $storeFactory->createSolrStore();
+                    break;
+                case StoreFactory::CHAINED_STORE_CONF_VALUE:
+                    $store = $storeFactory->createChainedStore();
+                    break;
+                default:
+                    $store = $storeFactory->createFileSystemStore();
+                    break;
+            }
         }
-        
+
         return $store;
     }
 

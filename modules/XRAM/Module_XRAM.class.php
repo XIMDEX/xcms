@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,70 +24,62 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-
-
 ModulesManager::file('/inc/modules/Module.class.php');
 
-class Module_XRAM extends Module {
+class Module_XRAM extends Module
+{
 
-	function Module_XRAM() {
-		// Call Module constructor.
-		parent::Module('XRAM', dirname(__FILE__));
+    function Module_XRAM()
+    {
+        // Call Module constructor.
+        parent::Module('XRAM', dirname(__FILE__));
+        // Initialization stuff.
+    }
 
-		// Initialization stuff.
-	
-	}
-
-	function install() {
-
+    function install()
+    {
         // Install logic.
-        
         // get module from ftp, webdav, subversion, etc...?
         // need to be extracted?
         // extract and copy files to modules location.
-        
         // get constructor SQL   
-		$this->loadConstructorSQL("XRAM.constructor.sql");
-		
-		$install_ret = parent::install();
-		if($install_ret){
-			echo "XRAM module has been successfully installed on Ximdex CMS!.\n";
-		}
-		
-	}
+        $this->loadConstructorSQL("XRAM.constructor.sql");
+        $install_ret = parent::install();
+        if ($install_ret) {
+            echo "XRAM module has been successfully installed on Ximdex CMS!.\n";
+        }
+    }
 
-	function uninstall() {
-		
-		// Uninstall logic.
-          
+    function uninstall()
+    {
+
+        // Uninstall logic.
         // get destructor SQL          
-		$this->loadDestructorSQL("XRAM.destructor.sql");
+        $this->loadDestructorSQL("XRAM.destructor.sql");
 
         // Uninstall !      
-		parent::uninstall();
+        parent::uninstall();
+    }
 
-	}
-	
-	function preInstall() {
-		/* Check curl extension and Solr PECL extension */
-		 // PHP-CURL
-		if (!extension_loaded('curl')) {
-			echo "Se necesita tener instalada la extension php-curl\n";
-			return false;
-		} else {
-			echo "La extension php-curl se ha detectado correctamente.\n";
+    function preInstall()
+    {
+        /* Check curl extension and Solr PECL extension */
+        // PHP-CURL
+        if (!extension_loaded('curl')) {
+            echo "Se necesita tener instalada la extension php-curl\n";
+            return false;
+        } else {
+            echo "La extension php-curl se ha detectado correctamente.\n";
         }
 
-		if (!extension_loaded('solr')) {
-			echo "Se necesita tener instalada la extension solr\n";
-			return false;
-		} else {
-			echo "La extension solr se ha detectado correctamente.\n";
+        if (!extension_loaded('solr')) {
+            echo "Se necesita tener instalada la extension solr\n";
+            return false;
+        } else {
+            echo "La extension solr se ha detectado correctamente.\n";
         }
-		return true;
-	}
+        return true;
+    }
 
 }
 
