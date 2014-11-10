@@ -3111,7 +3111,7 @@ CREATE TABLE `RelNodeTypeMimeType` (
   `idRelNodeTypeMimeType` int(12) unsigned NOT NULL auto_increment,
   `idNodeType` int(12) unsigned NOT NULL default '0',
   `mimeString` varchar(255) NOT NULL default '',
-  `extension` char(20) NULL,
+  `extension` varchar(255) NULL,
   `filter` char(50) NULL,
   PRIMARY KEY  (`idRelNodeTypeMimeType`)
 ) ENGINE=MyISAM COMMENT='Relation between nodetypes and mime-types' AUTO_INCREMENT= 141 ;
@@ -3158,8 +3158,8 @@ INSERT INTO `RelNodeTypeMimeType` VALUES (35, 5035, 'httpd/unix-directory', '', 
 INSERT INTO `RelNodeTypeMimeType` VALUES (36, 5036, 'text/xml', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (37, 5037, 'httpd/unix-directory', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (38, 5038, 'httpd/unix-directory', '', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (39, 5039, 'text/plain', ';txt;js;coffee;scss;', '');
-INSERT INTO `RelNodeTypeMimeType` VALUES (40, 5040, 'image/jpeg | image/png | image/gif |image/x-icon',';jpeg;jpg;gif;png;ico;','image');
+INSERT INTO `RelNodeTypeMimeType` VALUES (39, 5039, 'text/plain|text/x-php|image/svg+xml', ';txt;js;coffee;scss;svg;', '');
+INSERT INTO `RelNodeTypeMimeType` VALUES (40, 5040, 'image/jpeg|image/png|image/gif|image/x-icon|image/x-ms-bmp',';jpeg;jpg;gif;png;ico;bmp;','image');
 INSERT INTO `RelNodeTypeMimeType` VALUES (41, 5041, 'query/file', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (42, 5042, 'text/html', '', '');
 INSERT INTO `RelNodeTypeMimeType` VALUES (43, 5043, 'httpd/unix-directory', '', '');

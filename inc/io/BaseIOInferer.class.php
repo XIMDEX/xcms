@@ -89,9 +89,9 @@ class BaseIOInferer {
 		$query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
 		$query .= "WHERE ( rntmt.mimeString like '%$fileMimeType%' $extraQuery)";
 
-		if( $nodeTypeFilter != "common" ) {
+		/*if( $nodeTypeFilter != "common" ) {
 			$query .= "  AND rntmt.filter = '$nodeTypeFilter' ";
-		}
+		}*/
 		//Maybe the query would be better with AND operator in where clause instead of OR. Sure for XSL.
 
 		//For 

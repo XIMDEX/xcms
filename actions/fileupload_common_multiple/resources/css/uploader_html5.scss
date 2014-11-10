@@ -328,7 +328,8 @@
 		}
 	}
 
-	.xim-loader-file-jpeg &, .xim-loader-file-png &{
+	.xim-loader-file-jpeg &, .xim-loader-file-png &, .xim-loader-file-gif &,
+    .xim-loader-file-svg\+xml &, .xim-loader-file-bmp & {
 		&::before{
 			content: none;
 		}

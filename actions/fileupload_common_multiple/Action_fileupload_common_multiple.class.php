@@ -85,7 +85,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			case 'ImagesFolder':
 				$lbl_anadir = _(' Add images ');
 				$allowedMimes = 'image/*';
-				$allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg';
+				$allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg, .bmp';
 				break;
 			case 'TemplateViewFolder':
 				$lbl_anadir = _(' Add schemas ');
@@ -233,7 +233,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			$idNode = $this->request->getParam('nodeid');
 	  	  	$type = $this->request->getParam('type');
 	  	  	$metadata = json_decode($this->request->getParam('meta'));
-	   		$overwrite = ($_POST['overwrite'] == 'true') ? ture : false;
+	   		$overwrite = ($_POST['overwrite'] == 'true') ? true : false;
 			$file = $_FILES['file'];
 			$file['tmp_name'] = $path;
 			if (!empty($_POST['ximFilename']))
