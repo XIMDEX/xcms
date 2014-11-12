@@ -20,36 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+include_once '../../bootstrap/start.php';
 
-	if (!defined('XIMDEX_ROOT_PATH')) {
-		define ('XIMDEX_ROOT_PATH', realpath('../../'));
-	}
 
-	require(XIMDEX_ROOT_PATH . '/conf/log.conf');
-	include_once(XIMDEX_ROOT_PATH."/inc/utils.inc");
-	ModulesManager::file("/inc/persistence/XSession.class.php");
-	ModulesManager::file('/inc/i18n/I18N.class.php');
+require(App::getValue('XIMDEX_ROOT_PATH') . '/conf/log.conf');
+include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/utils.inc");
+ModulesManager::file("/inc/persistence/XSession.class.php");
+ModulesManager::file('/inc/i18n/I18N.class.php');
 
-	XSession::check();
+XSession::check();
 
-	$locale = XSession::get('locale');
-	// Check coherence with HTTP_ACCEPT_LANGUAGE
-	I18N::setup($locale);
-	$userID = XSession::get('userID');
+$locale = XSession::get('locale');
+// Check coherence with HTTP_ACCEPT_LANGUAGE
+I18N::setup($locale);
+$userID = XSession::get('userID');
 
-	echo "\nrenderer = '".XSession::get("renderer")."';";
-	echo "\nurl_root = '". Config::getValue('UrlRoot')."';";
-	echo "\nximdex_root = '".XIMDEX_ROOT_PATH."';";
-	echo "\nbase_action = '".XSession::get("base_action")."';";
-	echo "\nurl_root = '".Config::getValue('UrlRoot')."';";
-	echo "\napp_root = '".Config::getValue('AppRoot')."';";
-	echo "\nuser_id = '".XSession::get('userID')."';";
-	echo "\nlocale = '".XSession::get('locale')."';";
-	$load_welcome = (int) ( ModulesManager::isEnabled("ximDEMOS") && XSession::get('user_demo') );
-	echo "\nload_welcome =".$load_welcome.";";
-?>
+echo "\nrenderer = '" . XSession::get("renderer") . "';";
+echo "\nurl_root = '" . Config::getValue('UrlRoot') . "';";
+echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";
+echo "\nbase_action = '" . XSession::get("base_action") . "';";
+echo "\nurl_root = '" . Config::getValue('UrlRoot') . "';";
+echo "\napp_root = '" . Config::getValue('AppRoot') . "';";
+echo "\nuser_id = '" . XSession::get('userID') . "';";
+echo "\nlocale = '" . XSession::get('locale') . "';";
+$load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && XSession::get('user_demo'));
+echo "\nload_welcome =" . $load_welcome . ";";

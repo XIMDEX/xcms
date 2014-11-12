@@ -1,9 +1,19 @@
 {
-   "require": {
-      "solarium/solarium": "2.4.0"
-   },
-   "config": {
-      "vendor-dir": "extensions/"
-  } 
-}
+    "require": {
+        "solarium/solarium": "3.2.0",
+        "stolz/assets": "dev-master",
+        "werkint/jsmin": "dev-master",
+        "mnapoli/php-di": "~4.0",
+        "phpunit/phpunit": "3.7.21",
+        "mockery/mockery": "0.8.0",
+        "monolog/monolog": "~1.11"
 
+    },
+
+    "autoload": {
+        "psr-0": { "Ximdex": "lib" }
+    },
+    "config": {
+        "vendor-dir": "extensions/vendors/"
+    }
+}

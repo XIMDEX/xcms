@@ -20,18 +20,15 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-// Defines root directory
-if (!defined('XIMDEX_ROOT_PATH'))
-	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../"));
+include_once '../bootstrap/start.php';
 
 //General class
-include_once(XIMDEX_ROOT_PATH."/inc/modules/ModulesManager.class.php");
+include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file('/inc/utils.inc');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -55,4 +52,3 @@ I18N::setup($locale);
 // FrontController dipatches HTTP requests
 $frontController = new FrontController();
 $frontController->dispatch();
-?>
