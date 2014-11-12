@@ -13,15 +13,10 @@ include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
 
 class_alias('Ximdex\Runtime\App', 'App');
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 09d176833b693fb86633f7b0030e633979d87150
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
 
 
-<<<<<<< HEAD
 // get Config from install file
 if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php' ) ) {
 
@@ -32,20 +27,6 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
 
 }
 
-=======
-
-
-
-
-
-// get Config
-$conf = require_once(App::getValue('XIMDEX_ROOT_PATH') . '/conf/config.php');
-foreach ($conf as $key => $value) {
-    App::setValue($key, $value);
-}
-
-
->>>>>>> 09d176833b693fb86633f7b0030e633979d87150
 // setup log
 class_alias('Ximdex\Logger', 'XMD_Log');
 
@@ -60,14 +41,6 @@ $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/ac
 Ximdex\Logger::addLog( $log , 'actions' ) ;
 
 
-<<<<<<< HEAD
-=======
-XMD_Log::setActiveLog() ;
-
-
-
-
->>>>>>> 09d176833b693fb86633f7b0030e633979d87150
 // read install-modules.conf
 $modulesConfString = file_get_contents(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.conf');
 $matches = array();
