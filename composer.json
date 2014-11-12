@@ -1,13 +1,10 @@
 {
     "require": {
         "solarium/solarium": "3.2.0",
-        "stolz/assets": "dev-master",
-        "werkint/jsmin": "dev-master",
-        "mnapoli/php-di": "~4.0",
+        "mnapoli/php-di": "4.4.2",
         "phpunit/phpunit": "3.7.21",
         "mockery/mockery": "0.8.0",
-        "monolog/monolog": "~1.11"
-
+        "monolog/monolog": "1.11.0"
     },
 
     "autoload": {
