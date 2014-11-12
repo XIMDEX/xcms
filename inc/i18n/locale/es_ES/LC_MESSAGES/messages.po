@@ -9980,3 +9980,30 @@ msgstr "Modificar los estados asociados del rol"
 
 msgid "The rol has been successfully updated"
 msgstr "Se ha actualizado correctamente el rol"
+
+msgid "There are errors on extensions"
+msgstr "Hay errores en las extensiones"
+
+msgid "Extensions have ambiguous values"
+msgstr "Las extensiones tienen valores ambiguos"
+
+msgid "The extensions have been updated"
+msgstr "Las extensiones han sido actualizadas"
+
+msgid "Common folder:"
+msgstr "Carpeta common:"
+
+msgid "Set the extensions for the next Nodetypes"
+msgstr "Introduzca las extensiones para los siguientes tipos de nodos"
+
+msgid "Note:"
+msgstr "Nota:"
+
+msgid "the * value means any extension, empty value means none extension. You can't put ambiguous values."
+msgstr "el valor * significa cualquier extensión, el valor vacío significa ninguna extension. No se admiten valores ambiguos."
+
+msgid "Allowed extensions"
+msgstr "Extensiones permitidas"
+
+msgid "Set allowed extensions"
+msgstr "Modificar extensiones permitidas"

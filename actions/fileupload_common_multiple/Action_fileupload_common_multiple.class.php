@@ -82,11 +82,11 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				$allowedMimes = 'text/css';
 				$allowedExtensions = '.css';
 			 	break;
-			case 'ImagesFolder':
+			/*case 'ImagesFolder':
 				$lbl_anadir = _(' Add images ');
 				$allowedMimes = 'image/*';
 				$allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg, .bmp';
-				break;
+				break;*/
 			case 'TemplateViewFolder':
 				$lbl_anadir = _(' Add schemas ');
 				$allowedExtensions = '.xml';
@@ -297,9 +297,9 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
 		if (empty($type) || $type == 'null') {
-			$nodeTypeName = $baseIoInferer->infereFileType($file);
+			$nodeTypeName = $baseIoInferer->infereFileType($file, $idNode);
 		} else {
-			$nodeTypeName = $baseIoInferer->infereFileType($file, $type);
+			$nodeTypeName = $baseIoInferer->infereFileType($file, $idNode, $type);
 		}
 		$result = 0;
 

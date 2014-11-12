@@ -41,7 +41,6 @@ class RelNodeTypeMimeType_ORM extends GenericData   {
 	var $_metaData = array(
 				'idRelNodeTypeMimeType' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
 				'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
-				'mimeString' => array('type' => "varchar(255)", 'not_null' => 'true'),
 				'extension' => array('type' => "varchar(255)", 'not_null' => 'false'),
 				'filter' => array('type' => "char(50)", 'not_null' => 'false')
 				);
@@ -51,7 +50,6 @@ class RelNodeTypeMimeType_ORM extends GenericData   {
 	var $_indexes = array('idRelNodeTypeMimeType');
 	var $idRelNodeTypeMimeType;
 	var $idNodeType = 0;
-	var $mimeString;
 	var $extension;
 	var $filter;
 }
