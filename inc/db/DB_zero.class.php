@@ -172,7 +172,16 @@ class DB
 			$this->dbConnection = $GLOBALS['db_connection'][getmypid()];
 			$this->debug = $debug;
 		} else {
-			include(MAIN_INSTALL_PARAMS);
+            /**
+             * Load configuration from App Class
+             */
+            $dbConfig = App::getValue('db');
+            $USE_SQL_LOG = $dbConfig['log'];
+            $DBHOST = $dbConfig['host'];
+            $DBPORT = $dbConfig['port'];
+            $DBUSER = $dbConfig['user'];
+            $DBPASSWD = $dbConfig['password'];
+            $DBNAME = $dbConfig['db'];
 				
 			$this->dbhost = $DBHOST;
 			$this->dbport = $DBPORT;

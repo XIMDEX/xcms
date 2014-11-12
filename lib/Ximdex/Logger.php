@@ -22,7 +22,7 @@ Class Logger  {
      * @param string $loggerInstance
      */
     public static function addLog( $logger , $loggerInstance = 'default' ) {
-        self::$instance[ $loggerInstance ] = new Logger( $logger) ;
+        self::$instances[ $loggerInstance ] = new Logger( $logger) ;
         if ( count( self::$instances ) == 1 ) {
             self::$active = $loggerInstance;
         }
@@ -63,5 +63,7 @@ Class Logger  {
     public static function fatal( $string ) {
         return self::get()->logger->addFatal( $string ) ;
     }
-
+    public static function info( $string ) {
+        return self::get()->logger->addInfo( $string ) ;
+    }
 }

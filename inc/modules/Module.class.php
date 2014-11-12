@@ -222,16 +222,26 @@ class Module {
 		$sql_path = $this->getModulePath() . '/sql/';
 		$sql_file = $sql_path . $sql_file;
 
-		$install_params_file = MAIN_INSTALL_PARAMS;
+
+
+
+
+
 
 		if (file_exists($sql_file)) {
 
-			if (file_exists($install_params_file)) {
-				include(MAIN_INSTALL_PARAMS);
-			} else {
-				$this->messages->add(sprintf(_("* FATAL ERROR: ximDEX is not fully configured. [%s not found]"), $install_params_file), MSG_TYPE_ERROR);
-				return false;
-			}
+            /**
+             * Load configuration from App Class
+             */
+            $dbConfig = App::getValue('db');
+            $USE_SQL_LOG = $dbConfig['log'];
+            $DBHOST = $dbConfig['host'];
+            $DBPORT = $dbConfig['port'];
+            $DBUSER = $dbConfig['user'];
+            $DBPASSWD = $dbConfig['password'];
+            $DBNAME = $dbConfig['db'];
+
+
 
 			// Mysql call construction...
 			$command = "mysql --host=$DBHOST --port=$DBPORT --user=$DBUSER";
@@ -264,7 +274,7 @@ class Module {
 
 		$ret = true;
 		if (!$this->preInstall()) {
-			echo "Se ha abortado la instalación por no cumplirse los prerequisitos\n";
+			echo "Se ha abortado la instalaciï¿½n por no cumplirse los prerequisitos\n";
 			$ret = false;
 		}
 		else {
@@ -272,7 +282,7 @@ class Module {
 			if (!empty($this->sql_constructor)) {
 				$this->injectSQLFile($this->sql_constructor_file);
 				//$this->messages->add(_("-- SQL constructor loaded"), MSG_TYPE_NOTICE);
-				//Añadimos aqui 
+				//Aï¿½adimos aqui 
 			   XMD_Log::info(_("-- SQL constructor loaded"));
 			} else {
 				$this->messages->add(_("* ERROR: SQL constructor not loaded"), MSG_TYPE_ERROR);
@@ -281,7 +291,7 @@ class Module {
 			// Actions Registration
 			// Actions Activation
 			if (!$this->postInstall()) {
-				echo "Ha fallado el proceso de post instalación, puede que el módulo no funcione correctamente\n";
+				echo "Ha fallado el proceso de post instalaciï¿½n, puede que el mï¿½dulo no funcione correctamente\n";
 				$ret = false;
 			}else {
 				$this->addStateFile();

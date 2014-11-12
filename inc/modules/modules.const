@@ -42,11 +42,7 @@ define('MODULE_STATE_ERROR', -1);
 
 define('MODULES_INSTALL_PARAMS',  '/conf/install-modules.conf');
 
-if (!defined('MAIN_INSTALL_PARAMS'))
-	define('MAIN_INSTALL_PARAMS', XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-
 define('PRE_DEFINE_MODULE', "define('MODULE_");
 define('POST_DEFINE_MODULE', "_ENABLED', 1);");
 define('POST_PATH_DEFINE_MODULE', "_PATH','");
 
-?>
