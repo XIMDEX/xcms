@@ -24,9 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-if (!defined ('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath (dirname (__FILE__)."/../../../"));
+if (!defined('XIMDEX_ROOT_PATH')) {
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
 require_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file('/inc/persistence/store/Store.iface.php');
@@ -37,16 +36,15 @@ require_once('SolariumSolrService.class.php');
  * <p>Manages the CRUD operations of nodes using Solr as backend</p>
  * 
  */
-class SolrStore implements Store
-{
+class SolrStore implements Store {
+
     private $solrService;
     private $processors = array();
-    
-    public function __construct()
-    {
+
+    public function __construct() {
         $this->solrService = new SolariumSolrService();
     }
-    
+
     /**
      * <p>Sets the instace of <code>ISolrService</code> used to communicates with Solr</p>
      * @param ISolrService $solrService the ISolrService instance to be used
@@ -54,7 +52,7 @@ class SolrStore implements Store
     public function setSolrService(ISolrService $solrService) {
         $this->solrService = $solrService;
     }
-    
+
     /**
      * <p>Gets the <code>ISolrService</code> instance being used to interact with Solr
      * @return ISolrService the instance being used
@@ -62,17 +60,17 @@ class SolrStore implements Store
     public function getSolrService() {
         return $this->solrService;
     }
-    
+
     /**
      * <p>Adds a new processor to the list of processors of this store</p>
      * @param IndexerLifecycle $processor A <code>IndexerLifecycle</code> instance to be added to the list of processors for this store
      */
     public function addProcessor($processor) {
-        if(!in_array($processor, $this->processors)) {
+        if (!in_array($processor, $this->processors)) {
             array_push($this->processors, $processor);
         }
     }
-    
+
     /**
      * <p>Remove a processor from the list of processors of this store</p>
      * @param IndexerLifecycle $processor
@@ -80,14 +78,14 @@ class SolrStore implements Store
      */
     public function removeProcessor($processor) {
         $index = array_search($processor, $this->processors);
-        if($index !== FALSE) {
+        if ($index !== FALSE) {
             $this->processors = array_splice($this->processors, $index, 1);
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * <p>Checks whether the processor exists in the list of processors</p>
      * @param IndexerLifecycle $processor The processor to be searched
@@ -96,7 +94,7 @@ class SolrStore implements Store
     public function hasProcessor($processor) {
         return array_search($processor, $this->processors) !== FALSE;
     }
-    
+
     /**
      * <p>Gets the node content from the specified version id in the file system</p>
      * 
@@ -106,16 +104,15 @@ class SolrStore implements Store
      * 
      * @return string The content of the node for the specified version/subversion or false if an error occurred while retrieving the content
      */
-    public function getContent($nodeId, $versionId, $subversion = null)
-    {
+    public function getContent($nodeId, $versionId, $subversion = null) {
         $df = new DataFactory($nodeId);
         $version = $df->getVersionId($versionId, $subversion);
-	$resultNode = $this->retrieveNode($version);
-        if(is_null($resultNode)) {
+        $resultNode = $this->retrieveNode($version);
+        if (is_null($resultNode)) {
             XMD_Log::warning('No se ha podido obtener el contenido de Solr. Intentando obtener contenido del sistema de ficheros');
             return false;
-	}
-	
+        }
+
         $content = $resultNode['content'];
         return $content;
     }
@@ -128,14 +125,13 @@ class SolrStore implements Store
      * @param integer $versionId The version id from a node to set the content
      * @param integer $subversion The subversion number
      */
-    public function setContent($content, $nodeId, $versionId, $subversion) 
-    {
+    public function setContent($content, $nodeId, $versionId, $subversion) {
         $df = new DataFactory($nodeId);
-        $idVersion = $df->getVersionId($versionId,$subversion);
-	$result = $this->indexNode($idVersion, $content);
-	$msg = $result ? "Node with Id Version ".$idVersion." indexed successfully" : "Error indexing node with Id Version ".$idVersion;
-	XMD_log::debug($msg);
-        
+        $idVersion = $df->getVersionId($versionId, $subversion);
+        $result = $this->indexNode($idVersion, $content);
+        $msg = $result ? "Node with Id Version " . $idVersion . " indexed successfully" : "Error indexing node with Id Version " . $idVersion;
+        XMD_log::debug($msg);
+
         return $result;
     }
 
@@ -146,15 +142,14 @@ class SolrStore implements Store
      * @param integer $versionId The version id from a node to be retrieved or version number
      * @param integer $subversion The subversion number
      */
-    public function deleteContent($nodeId, $versionId, $subversion = null)
-    {
+    public function deleteContent($nodeId, $versionId, $subversion = null) {
         $df = new DataFactory($nodeId);
         $versionToDelete = $df->getVersionId($versionId, $subversion);
-	$res = $this->deleteNode($versionToDelete, true);
-	$msg = $res ? "Node version ".$versionToDelete." deleted successfully" : "Error deleting node version ".$versionToDelete;
-	XMD_log::debug($msg);
-
+        $res = $this->deleteNode($versionToDelete, true);
+        $msg = $res ? "Node version " . $versionToDelete . " deleted successfully" : "Error deleting node version " . $versionToDelete;
+        XMD_log::debug($msg);
     }
+
     /**
      * <p>Retrieves the Solr document representing a node</p>
      * 
@@ -162,17 +157,20 @@ class SolrStore implements Store
      * @return The Solr document representing the node
      */
     private function retrieveNode($idVersion) {
-        if(!is_numeric($idVersion)) {
+        if (!is_numeric($idVersion)) {
             XMD_Log::warning('Se ha intentado recuperar un nodo con un IdVersion no valido.');
-            return null;	
+            return null;
         }
-        
+
         $this->applyLifecycleMethod('beforeRetrieve');
-        $node =	$this->solrService->retrieveNode($idVersion);
-        $node = $this->applyLifecycleMethod('afterRetrieve', $node);
-	return $node;
+        $retrievedContent = $this->solrService->retrieveNode($idVersion);
+        if ($retrievedContent === null) {
+            $retrievedContent = '';
+        }
+        $node = $this->applyLifecycleMethod('afterRetrieve', $retrievedContent);
+        return $node;
     }
-    
+
     /**
      * <p>Apply a Lifecycle method in the configured processors</p>
      * 
@@ -181,15 +179,15 @@ class SolrStore implements Store
      * @return mixed. The result of the processors chain
      */
     private function applyLifecycleMethod($method, $parameters = array()) {
-        foreach($this->processors as $processor) {
-            if(method_exists($processor, $method)) {
+        foreach ($this->processors as $processor) {
+            if (method_exists($processor, $method)) {
                 $parameters = call_user_func_array(array($processor, $method), array($parameters));
             }
         }
-        
+
         return $parameters;
     }
-    
+
     /**
      * <p>Deletes the node from Solr</p>
      * @param integer $idVersion the id of the version to be deleted (matches the Solr document ID)
@@ -197,17 +195,17 @@ class SolrStore implements Store
      * @return boolean
      */
     private function deleteNode($idVersion, $commit = true) {
-	if(!is_numeric($idVersion)) {
+        if (!is_numeric($idVersion)) {
             XMD_Log::warning('Se ha intentado eliminar un nodo con un IdVersion no valido.');
-            return false;	
-	}		
-        
+            return false;
+        }
+
         $this->applyLifecycleMethod('beforeDelete', $idVersion);
-	$result = $this->solrService->deleteNode($idVersion, $commit);
+        $result = $this->solrService->deleteNode($idVersion, $commit);
         $this->applyLifecycleMethod('afterDelete', $idVersion);
-	return $result;
+        return $result;
     }
-    
+
     /**
      * <p>Indexes a node identified by the version if in Solr</p>
      * 
@@ -221,12 +219,13 @@ class SolrStore implements Store
             XMD_Log::warning('Se ha intentado indexar un nodo por un IdVersion no valido.');
             return false;
         }
-        
+
         $nodeToIndex = $this->applyLifecycleMethod('beforeIndex', array('id' => $idVersion, 'content' => $content));
         $result = $this->solrService->indexNode($nodeToIndex['id'], $nodeToIndex['content'], $commitNode);
         $this->applyLifecycleMethod('afterIndex', $nodeToIndex);
         return $result;
-}
+    }
+
 }
 
 ?>

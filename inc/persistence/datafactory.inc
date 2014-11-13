@@ -492,7 +492,6 @@ class DataFactory
 		$version->set('IdUser', $userID);
 		$version->set('Date', time());
 		$version->set('Comment', $comment);
-		$version->set('MimeType', $mimetype);
 		$IdVersion = $version->add();
 
                 $result = $this->store->setContent($newContent, $this->nodeID, $newVersion, $newSubVersion);
@@ -691,7 +690,7 @@ class DataFactory
 
 		$dbObj->Execute($query);
 
-		XMD_Log::info("DeleteVersion  for Node:".$this->nodeID.", Version: ".$versionID.".".$subVersion.", File: .".$uniqueName);
+		XMD_Log::info("DeleteVersion  for Node:".$this->nodeID.", Version: ".$versionID.".".$subVersion);
 		return true;
 	}
 

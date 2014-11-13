@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2014  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -28,8 +29,7 @@
  * <p>AES encryption class</p>
  * <p>Performs encryption and decryption using AES cipher algorithm</p>
  */
-class AES
-{
+class AES {
 
     const M_CBC = 'cbc';
     const M_CFB = 'cfb';
@@ -51,8 +51,7 @@ class AES
      * @param type $blockSize
      * @param type $mode
      */
-    function __construct($data = null, $key = null, $blockSize = null, $mode = null)
-    {
+    function __construct($data = null, $key = null, $blockSize = null, $mode = null) {
         $this->setData($data);
         $this->setKey($key);
         $this->setBlockSize($blockSize);
@@ -64,8 +63,7 @@ class AES
      * <p>Sets the data to be encrypted</p>
      * @param string $data
      */
-    public function setData($data)
-    {
+    public function setData($data) {
         $this->data = $data;
     }
 
@@ -73,8 +71,7 @@ class AES
      * <p>Sets the key used for encryption and decryption</p>
      * @param string $key
      */
-    public function setKey($key)
-    {
+    public function setKey($key) {
         $this->key = $key;
     }
 
@@ -91,8 +88,7 @@ class AES
      * 
      * @param int $blockSize The block size. Default is 128
      */
-    public function setBlockSize($blockSize)
-    {
+    public function setBlockSize($blockSize) {
         switch ($blockSize) {
             case 128:
                 $this->cipher = MCRYPT_RIJNDAEL_128;
@@ -104,7 +100,7 @@ class AES
                 $this->cipher = MCRYPT_RIJNDAEL_256;
                 break;
             default:
-                error_log("default entering cipher");
+                XMD_Log::info("default entering cipher");
                 $this->cipher = MCRYPT_RIJNDAEL_128;
         }
     }
@@ -121,10 +117,9 @@ class AES
      *      <li>stream or AES::M_STREAM</li>
      *  </ul>
      * </p>
-    * @param string $mode The ciphering mode. Default is AES::M_ECB
+     * @param string $mode The ciphering mode. Default is AES::M_ECB
      */
-    public function setMode($mode)
-    {
+    public function setMode($mode) {
         switch ($mode) {
             case AES::M_CBC:
                 $this->mode = MCRYPT_MODE_CBC;
@@ -154,11 +149,10 @@ class AES
      * <p>Validates the mandatory parameters</p>
      * @return boolean if the parameters are valid. false otherwise
      */
-    public function validateParams()
-    {
-        if ($this->data != null &&
-                $this->key != null &&
-                $this->cipher != null) {
+    public function validateParams() {
+        if ($this->data !== null &&
+                $this->key !== null &&
+                $this->cipher !== null) {
             return true;
         } else {
             return FALSE;
@@ -169,8 +163,7 @@ class AES
      * <p>Sets the Initialization Vector (IV) for the cipher algorithm</p>
      * @param string $IV
      */
-    public function setIV($IV)
-    {
+    public function setIV($IV) {
         $this->IV = $IV;
     }
 
@@ -180,8 +173,7 @@ class AES
      * 
      * @return string the Initialization Vector
      */
-    protected function getIV()
-    {
+    protected function getIV() {
         if ($this->IV == "") {
             $this->IV = mcrypt_create_iv(mcrypt_get_iv_size($this->cipher, $this->mode), MCRYPT_RAND);
         }
@@ -193,8 +185,7 @@ class AES
      * @return The encrypted data encoded in base 64 or false if an error ocurred while encrypting or encoding the data
      * @throws Exception if the provided information is not valid
      */
-    public function encrypt()
-    {
+    public function encrypt() {
         if ($this->validateParams()) {
             return trim(base64_encode(
                             mcrypt_encrypt(
@@ -209,13 +200,13 @@ class AES
      * @return The decrypted data or false if an error ocurred while decrypting or decoding the data
      * @throws Exception if the provided information is not valid
      */
-    public function decrypt()
-    {
+    public function decrypt() {
         if ($this->validateParams()) {
             return trim(mcrypt_decrypt(
                             $this->cipher, $this->key, base64_decode($this->data), $this->mode, $this->getIV()));
         } else {
-            throw new Exception('Invalid params!');
+            $error = sprintf('Invalid params: data(%s)"%s" key(%s)"%s" cipher(%s)"%s"', gettype($this->data), $this->data, gettype($this->key), $this->key, gettype($this->cipher), $this->cipher);
+            throw new Exception($error);
         }
     }
 

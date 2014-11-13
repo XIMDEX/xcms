@@ -48,7 +48,6 @@ class Versions_ORM extends GenericData   {
 				'Date' => array('type' => "int(14)", 'not_null' => 'false'),
 				'Comment' => array('type' => "blob", 'not_null' => 'false'),
 				'IdSync' => array('type' => "int(12)", 'not_null' => 'false'),
-				'MimeType' => array('type' => 'varchar(255)', 'not_null' => 'false')
 				);
 	var $_uniqueConstraints = array(
 
@@ -63,6 +62,5 @@ class Versions_ORM extends GenericData   {
 	var $Date = 0;
 	var $Comment;
 	var $IdSync;
-	var $MimeType;
 }
 ?>

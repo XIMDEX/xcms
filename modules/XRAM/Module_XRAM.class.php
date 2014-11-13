@@ -72,12 +72,6 @@ class Module_XRAM extends Module
             echo "La extension php-curl se ha detectado correctamente.\n";
         }
 
-        if (!extension_loaded('solr')) {
-            echo "Se necesita tener instalada la extension solr\n";
-            return false;
-        } else {
-            echo "La extension solr se ha detectado correctamente.\n";
-        }
         return true;
     }
 

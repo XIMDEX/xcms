@@ -34,8 +34,7 @@ ModulesManager::file('/inc/persistence/store/Store.iface.php');
  * <p>ChainedStore class</p>
  * <p>Manages the CRUD operations of nodes using a chain of stores</p>
  */
-class ChainedStore implements Store
-{
+class ChainedStore implements Store {
 
     private $stores;
 
@@ -44,8 +43,7 @@ class ChainedStore implements Store
      * 
      * @param Store|array $stores a simple <code>Store</code> instance or an array of <code>Stores</code>
      */
-    public function __construct($stores = array())
-    {
+    public function __construct($stores = array()) {
         if (!is_array($stores)) {
             $stores = array($stores);
         }
@@ -58,8 +56,7 @@ class ChainedStore implements Store
      * @param Store $store the <code>Store</code> to be added
      * @param Boolean $atBeginning indicates if the new Store must be added at the beginning or at the end of the chain
      */
-    public function addStore(Store $store, $atBeginning = false)
-    {
+    public function addStore(Store $store, $atBeginning = false) {
         $atBeginning ? array_unshift($this->stores, $store) : array_push($this->stores, $store);
     }
 
@@ -68,8 +65,7 @@ class ChainedStore implements Store
      * @param Store $store the <code>Store</code> to be removed
      * @return boolean indicating if the specified Store has been deleted or not
      */
-    public function removeStore(Store $store)
-    {
+    public function removeStore(Store $store) {
         if (in_array($store, $this->stores)) {
             return count(array_splice($this->stores, array_search($store, $this->stores), 1)) > 0 ? true : false;
         }
@@ -87,16 +83,15 @@ class ChainedStore implements Store
      * 
      * @return string The content of the node for the specified version/subversion or false if an error occurred while retrieving the content
      */
-    public function getContent($nodeId, $versionId, $subversion = null)
-    {
+    public function getContent($nodeId, $versionId, $subversion = null) {
         foreach ($this->stores as $store) {
             $content = $store->getContent($nodeId, $versionId, $subversion);
-            if ($content !== false) {
+            if ($content !== null && $content !== false) {
                 return $content;
             }
         }
 
-        return $false;
+        return false;
     }
 
     /**
@@ -111,15 +106,14 @@ class ChainedStore implements Store
      * @param integer $versionId The version id from a node to set the content
      * @param integer $subversion The subversion number
      */
-    public function setContent($content, $nodeId, $versionId, $subversion)
-    {
-        foreach($this->stores as $store) {
+    public function setContent($content, $nodeId, $versionId, $subversion) {
+        foreach ($this->stores as $store) {
             $result = $store->setContent($content, $nodeId, $versionId, $subversion);
-            if($result === false) {
+            if ($result === false) {
                 return $result;
             }
         }
-        
+
         return true;
     }
 
@@ -133,17 +127,17 @@ class ChainedStore implements Store
      * @param integer $versionId The version id from a node to be retrieved or version number
      * @param integer $subversion The subversion number
      */
-    public function deleteContent($nodeId, $versionId, $subversion = null)
-    {
-        foreach($this->stores as $store) {
+    public function deleteContent($nodeId, $versionId, $subversion = null) {
+        foreach ($this->stores as $store) {
             $result = $store->deleteContent($nodeId, $versionId, $subversion);
-            if($result === false) {
+            if ($result === false) {
                 return $result;
             }
         }
-        
+
         return true;
     }
+
 }
 
 ?>
