@@ -919,7 +919,7 @@ class Action_browser3 extends ActionAbstract {
             //Changing name when node sets.
             if (count($nodes) > 1){
                 $auxName = explode(" ", $name);
-                $name = $auxName[0]." Seleccion";
+                $name = $auxName[0] . " ". _("selection");
             }
             $actionsParamsAux["name"] = $name;
             

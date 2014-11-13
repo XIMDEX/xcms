@@ -45,6 +45,6 @@ return array(
     ),
     'ximdex_root_path' => '##XIMDEX_PATH##',
     'default.db' => 'db' ,
-    'timezone' => '"##XIMDEX_TIMEZONE##"',
+    'timezone' => '##XIMDEX_TIMEZONE##',
     'locale' => '##XIMDEX_LOCALE##',
 ) ;

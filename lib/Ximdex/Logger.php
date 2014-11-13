@@ -51,7 +51,7 @@ Class Logger  {
         return self::$instances[ $loggerInstance ];
     }
 
-    public static function error( $string , $object = null ) {
+    public static function error( $string , $object = array() ) {
         return self::get()->logger->addError( $string , $object  ) ;
     }
     public static function warning( $string ) {

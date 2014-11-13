@@ -28,7 +28,7 @@ X.actionLoaded(function(event, fn, params) {
 	var url = fn('.download_link').attr('href');
 	
 	fn('.button-download').click(function() {
-		window.open(url);
-	}).click();
+        window.location.assign(url);
+    }).click();
 	
 });

@@ -10007,3 +10007,6 @@ msgstr "Extensiones permitidas"
 
 msgid "Set allowed extensions"
 msgstr "Modificar extensiones permitidas"
+
+msgid "selection"
+msgstr "selección"

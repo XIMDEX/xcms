@@ -38,7 +38,7 @@ X.i18nStrings = {
 			},
 			"drag_your_files_here_or_add_them_using_the_'Add'_button_below": "Arrastra los archivos aquí o añádelos usando el botón 'Añadir'",
 			"add": "Añadir",
-			"add_schemas": "Añadir esquemas",
+			"add_files": "Añadir archivos",
 			"pause": "Pausar",
 			"resume": "Reanudar",
 			"retry": "Reintentar",
