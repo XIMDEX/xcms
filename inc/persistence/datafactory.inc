@@ -24,15 +24,6 @@
  *                                                                            *
  ******************************************************************************/
 
-
-
-
-
-
-
-
-
-
 if (!defined ('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath (dirname (__FILE__)."/../"));
 }
@@ -48,7 +39,8 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');
 
-ModulesManager::file('/inc/SolrConector.class.php', 'ximRAM');
+ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');
+
 
 /**
 *
@@ -86,10 +78,10 @@ ModulesManager::file('/inc/SolrConector.class.php', 'ximRAM');
 **/
 class DataFactory
 {
-	var $ID;
-   	var $numErr;
-    var $msgErr;
-	var $errorList = array(
+	var $ID;					// Identificador del tipo de nodo actual.
+   	var $numErr;				// Codigo de error.
+    var $msgErr;				// Mensaje de Error.
+	var $errorList = array(		// Lista de errores de la clase.
 		1 => 'No existe el Nodo',
 		2 => 'Error de conexion con la base de datos',
 		3 => 'No se encontro el contenido para la version solicitada',
@@ -313,7 +305,7 @@ class DataFactory
 		}
 
 		if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
-			XMD_Log::warning('No se ha podido estimar la versiï¿½n o la subversion');
+			XMD_Log::warning('No se ha podido estimar la versión o la subversion');
 			return false;
 		}
 
@@ -367,7 +359,7 @@ class DataFactory
 			$channels = $node->GetChannels();
 			$pipelineManager = new PipelineManager();
 			foreach ($channels as $idChannel) {
-				XMD_Log::info("Generating cache for version $idVersion and the channel $idChannel");
+				XMD_Log::info("Generando cache para la versión $idVersion y el canal $idChannel");
 				$data = array('CHANNEL' => $idChannel);
 
 				if (!$isOTF) {
@@ -468,7 +460,7 @@ class DataFactory
 			$curVersion = $this->GetLastVersion();
 
 			if (is_null($curVersion)) {
-				XMD_Log::warning('Could not get the latest version of the document');
+				XMD_Log::warning('No se ha podido obtener la última versión del documento');
 				return false;
 			}
 			$curSubVersion = $this->GetLastSubVersion($curVersion);
@@ -587,7 +579,7 @@ class DataFactory
 		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot") . "/" . $uniqueName;
 
 		if (!FsUtils::file_put_contents($targetPath, $newContent)) {
-			XMD_Log::error('An error occurred while trying to set the document');
+			XMD_Log::error('Error al establecer el contenido del documento');
 			$this->SetError(5);
 		}
 
@@ -610,7 +602,7 @@ class DataFactory
 
 		/// Lo guardamos en el sistema de archivos
 		if (!FsUtils::file_put_contents($fileName, $fileContent)) {
-				XMD_Log::error('An error occurred while trying to save the document');
+				XMD_Log::error('Ha ocurrido un error al intentar guardar el documento');
 				$this->SetError(6);
 				return false;
 		}
