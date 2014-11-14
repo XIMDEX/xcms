@@ -497,11 +497,6 @@ INSERT INTO `Config` VALUES (49, 'ApiIV','');
 INSERT INTO `Config` VALUES (50, 'ApiKey','');
 INSERT INTO `Config` VALUES (51, 'DevEnv','1');
 INSERT INTO `Config` VALUES (52, 'PublishPathFormat','prefix'); /*Accept default, prefix and sufix*/
--- These queries will be moved to the XRam module (solr as a repository)
-INSERT INTO `Config` VALUES (53, 'ActiveRepository','solr');
-INSERT INTO `Config` VALUES (54, 'SolrServer','localhost');
-INSERT INTO `Config` VALUES (55, 'SolrPort','8983');
-INSERT INTO `Config` VALUES (56, 'SolrCorePath','solr/collection1');
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Config` ENABLE KEYS */;
 

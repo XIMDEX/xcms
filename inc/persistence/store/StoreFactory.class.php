@@ -40,8 +40,7 @@ ModulesManager::file('/inc/ProcessorFactory.class.php', 'XRAM');
  * <p>Creates instances of stores</p>
  * 
  */
-class StoreFactory
-{
+class StoreFactory {
 
     private static $ACTIVE_REPOSITORY = 'ActiveRepository';
 
@@ -52,8 +51,7 @@ class StoreFactory
     /**
      * <p>Default constructor</p>
      */
-    public function __construct()
-    {
+    public function __construct() {
         
     }
 
@@ -61,8 +59,7 @@ class StoreFactory
      * <p>Creates an instance of {@link FileSystemStore}</p>
      * @return \FileSystemStore an instance of FileSystemStore store
      */
-    public function createFileSystemStore()
-    {
+    public function createFileSystemStore() {
         return new FileSystemStore();
     }
 
@@ -76,31 +73,31 @@ class StoreFactory
      * @return \SolrStore an instance of SolrStore store
      * @throws RuntimeException if XRAM module is not enabled (XRAM module contains the SolrStore definition)
      */
-    public function createSolrStore()
-    {
+    public function createSolrStore() {
         if (!ModulesManager::isEnabled('XRAM')) {
             throw new RuntimeException('Module XRAM is not enabled');
         }
 
         $solrServer = Config::GetValue("SolrServer");
         $solrPort = Config::GetValue("SolrPort");
-        $solrCorePath = Config::GetValue("SolrCorePath");
-
+        $solrPath = Config::GetValue("SolrPath");
+        $solrCore = Config::GetValue("SolrCore");
         $store = new SolrStore();
-        $solrService = new SolariumSolrService($solrServer, $solrPort, $solrCorePath);
+        $solrService = new SolariumSolrService($solrServer, $solrPort, $solrPath, $solrCore);
         $store->setSolrService($solrService);
         $processorFactory = new ProcessorFactory();
+//        $aesProcessor = $processorFactory->createBase64Processor();
         $aesProcessor = $processorFactory->createAESProcessor();
         $store->addProcessor($aesProcessor);
 
         return $store;
     }
 
-    public function createChainedStore()
-    {
+    public function createChainedStore() {
         $store = new ChainedStore();
-        $store->addStore($this->createSolrStore());
         $store->addStore($this->createFileSystemStore());
+        $store->addStore($this->createSolrStore());
+        
         return $store;
     }
 
@@ -108,15 +105,14 @@ class StoreFactory
      * <p>Gets the default configured store from configuration</p>
      * @return an instance of <code>Store</code>
      */
-    public static function getDefaultStore()
-    {
+    public static function getDefaultStore() {
         /*
          * Using static variable to initialize only once the store
          */
         static $store;
 
         if (!isset($store)) {
-            $storeFactory = new self(); // $class = __CLASS__; $storeFactory = new $class();
+            $storeFactory = new self();
             $activeRepository = Config::getValue(StoreFactory::$ACTIVE_REPOSITORY);
             if ($activeRepository === NULL) {
                 $store = $storeFactory->createFileSystemStore();

@@ -1,6 +1,6 @@
-DELETE FROM CONFIG WHERE ConfigKey = 'ActiveRepository';
-DELETE FROM CONFIG WHERE ConfigKey = 'SolrServer';
-DELETE FROM CONFIG WHERE ConfigKey = 'SolrPort';
-DELETE FROM CONFIG WHERE ConfigKey = 'SolrPath';
-DELETE FROM CONFIG WHERE ConfigKey = 'SolrCore';
-DELETE FROM CONFIG WHERE ConfigKey = 'AESCipherKey';
+DELETE FROM Config WHERE ConfigKey = 'ActiveRepository';
+DELETE FROM Config WHERE ConfigKey = 'SolrServer';
+DELETE FROM Config WHERE ConfigKey = 'SolrPort';
+DELETE FROM Config WHERE ConfigKey = 'SolrPath';
+DELETE FROM Config WHERE ConfigKey = 'SolrCore';
+DELETE FROM Config WHERE ConfigKey = 'AESCipherKey';

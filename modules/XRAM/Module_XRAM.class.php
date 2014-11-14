@@ -46,8 +46,9 @@ class Module_XRAM extends Module
         $this->loadConstructorSQL("XRAM.constructor.sql");
         $install_ret = parent::install();
         if ($install_ret) {
-            echo "XRAM module has been successfully installed on Ximdex CMS!.\n";
+//            echo "XRAM module has been successfully installed on Ximdex CMS!.\n";
         }
+        return $install_ret;
     }
 
     function uninstall()
@@ -66,10 +67,10 @@ class Module_XRAM extends Module
         /* Check curl extension and Solr PECL extension */
         // PHP-CURL
         if (!extension_loaded('curl')) {
-            echo "Se necesita tener instalada la extension php-curl\n";
+//            echo "Se necesita tener instalada la extension php-curl\n";
             return false;
         } else {
-            echo "La extension php-curl se ha detectado correctamente.\n";
+//            echo "La extension php-curl se ha detectado correctamente.\n";
         }
 
         return true;
