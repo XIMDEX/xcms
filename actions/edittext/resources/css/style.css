@@ -25,51 +25,28 @@
 
 .text-editor-form{
 	height: 100%;
-	max-width: 100%;
+	width: 100%;
 }
 
 .text-editor{
 	background:#fff;
 	padding: 0;
 	position: relative;
+    width: 100%;
 }
-
-.text-editor .editor{
-	position: static;
-	padding: 0;
-	margin: 0;
-}
-
-#et_form fieldset.editor textarea{
-		/* height: 95%; */
-		background-color: #fff;
-
-	}
 
 .CodeMirror {
 	border: none;
 }
 
-.CodeMirror, .CodeMirror-scroll{
+.CodeMirror{
 	width: 100% !important;
+    height: 99% !important;
 	max-width: none !important;
 	max-height: none !important;
 }
 
 
-.CodeMirror::before{
-	background: #dfdfdf;
-	border: 1px solid #eee;
-	content: "";
-	position: absolute;
-	height: 100%;
-	width: 2em;
-
-}
-
-.CodeMirror-scroll{
-	overflow: hidden !important;
-}
 
 .CodeMirror-gutter{
 	background: #dfdfdf !important;

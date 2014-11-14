@@ -97,11 +97,11 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				$allowedExtensions = '.xml, .xsl';
 				$allowedMimes = 'text/xml';
 				break;
-			case 'ImportFolder':
+			/*case 'ImportFolder':
 				$lbl_anadir = _(' Add HTML files ');
 				$allowedExtensions = 'ht, .htm, .html, .xhtml, .plain, .txt';
 				$allowedMimes = 'text/xml, text/html, text/plain, text/txt';
-				break;
+				break;*/
 			case 'XmlContainer':
 				$lbl_anadir = _(' Add XML files ');
 				$is_structured=true;

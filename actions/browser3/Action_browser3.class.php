@@ -122,6 +122,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-process.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
 		$this->addJs('/extensions/d3js/d3.v3.min.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/lib/codemirror.js');
 		$this->addJs('/inc/js/angular/app.js');
 		$this->addJs('/inc/js/angular/animations/slide.js');
 		$this->addJs('/inc/js/angular/services/xTranslate.js');

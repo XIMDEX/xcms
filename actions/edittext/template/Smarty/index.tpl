@@ -32,7 +32,8 @@
 			 onclick="$('#publicar').attr('value', '1');"
 			  }{*message="{t}Are you sure you want to save and publish the document?{/t}"*}
 	{/if}
-		{button label="Save" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
+
+		{button label="Save" type="submit" class="validate btn main_action"}{*message="{t}Are you sure you want to save the changes?{/t}"*}
 	</fieldset>
 	</div>
  <div class="action_content full text-editor">
@@ -42,8 +43,9 @@
  		<input type="hidden" id="publicar" name="publicar" value="0">
  		<input type="hidden" name="node_name" value="{$node_name}">
  		<input type="hidden" class="node_ext" name="node_ext" value="{$ext}">
+        <input type="hidden" class="codemirror_url" name="codemirror_url" value="{$codemirror_url}">
 
- 		<textarea class="normal editor_textarea" name="editor" class="text_editor"  id="editor_{$id_editor}">{$content}</textarea>
+ 		<textarea class="normal editor_textarea"  name="editor" class="text_editor"  id="editor_{$id_editor}">{$content}</textarea>
  	</fieldset>
  </div>
 

@@ -74,7 +74,7 @@ class BaseIOInferer {
 	 * @param $nodeTypeFilter
 	 * @return unknown_type
 	 */
-	function infereFileType($file, $idFather, $nodeTypeFilter = "common" ) {
+	function infereFileType($file, $idFather, $nodeTypeFilter = "" ) {
 
 		$filePath = isset($file) && isset($file['tmp_name']) ? $file['tmp_name'] : NULL;
 		$fileName = isset($file) && isset($file['name']) ? $file['name'] : NULL;
