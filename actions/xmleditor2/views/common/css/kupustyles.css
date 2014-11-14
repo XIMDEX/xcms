@@ -34,27 +34,30 @@
  *
  *****************************************************************************/
 /* $Id: kupustyles.css 16467 2005-08-25 11:08:10Z guido $ */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 @font-face {
-  font-family: 'Ubuntu Condensed';
+  font-family: "Source Sans Pro";
   src: url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot");
   src: url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.woff") format("woff"), url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/ubuntucondensed-regular-webfont.svg#ubuntucondensed-regular-webfont") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 @font-face {
   font-family: 'coustardbold';
   src: url("../../../../../xmd/fonts/coustard-black-webfont.eot");
   src: url("../../../../../xmd/fonts/coustard-black-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/coustard-black-webfont.woff") format("woff"), url("../../../../../xmd/fonts/coustard-black-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/coustard-black-webfont.svg#coustardbold") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 @font-face {
   font-family: 'coustardregular';
   src: url("../../../../../xmd/fonts/coustard-regular-webfont.eot");
   src: url("../../../../../xmd/fonts/coustard-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../../../../../xmd/fonts/coustard-regular-webfont.woff") format("woff"), url("../../../../../xmd/fonts/coustard-regular-webfont.ttf") format("truetype"), url("../../../../../xmd/fonts/coustard-regular-webfont.svg#coustardregular") format("svg");
   font-weight: normal;
   font-style: normal; }
-
 html {
   font-size: 62.5%; }
 
@@ -62,7 +65,7 @@ body {
   margin: 0px;
   padding: 0px;
   font-size: 1.2em;
-  font-family: Verdana, "Lucida Grande", Helvetica,  Arial,sans-serif; }
+  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif; }
 
 button::-moz-focus-inner {
   border: 0px; }
@@ -97,7 +100,7 @@ button::-moz-focus-inner {
   text-shadow: 1px 1px 1px #fff;
   padding: 7px 0 10px;
   background: url(../../../gfx/fnd-tab-dark.png);
-  font-family: 'Ubuntu Condensed'; }
+  font-family: "Source Sans Pro"; }
 
 .ui-floated-panel {
   position: absolute;
@@ -130,11 +133,11 @@ div.kupu-smalleditor {
 
 .kupu-tb {
   /*  	padding: 3px;
-    	margin-bottom: 0.4em;
-    	background-color: ButtonFace;
-    	border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
-  
-    	background:transparent url(../../../gfx/fnd_toolbar.png) repeat-x scroll 0 0;*/
+        margin-bottom: 0.4em;
+        background-color: ButtonFace;
+        border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
+
+        background:transparent url(../../../gfx/fnd_toolbar.png) repeat-x scroll 0 0;*/
   height: 40px;
   margin: 0;
   /*overflow:hidden;*/
@@ -142,7 +145,7 @@ div.kupu-smalleditor {
   /*top:0;*/
   width: 100%;
   border-bottom: 1px solid #e1e1e1;
-  background: url("../../../../../xmd/images/browser/hbox/fnd-tab.png") repeat-x scroll left top whitesmoke;
+  background: url("../../../../../xmd/images/browser/hbox/fnd-tab.png") repeat-x scroll left top #F5F5F5;
   -moz-border-radius-topright: 12px;
   z-index: 5; }
 
@@ -153,7 +156,7 @@ div.kupu-smalleditor {
 .kupu-tb-buttons button,
 .kupu-tb-buttons div.kupu-button,
 .kupu-toolbox-heading button,
-.kupu-floatingtoolbox-button {
+.kupu-floatingtoolbox-button, .kupu-tb-buttons .kupu-preview {
   /*color: ButtonText;*/
   border: 1px solid transparent;
   height: 31px;
@@ -167,6 +170,36 @@ div.kupu-smalleditor {
   margin-right: 3px;
   position: relative;
   margin-left: 1px; }
+
+.kupu-tb-buttons .kupu-preview {
+  position: static;
+  display: inline-block;
+  vertical-align: bottom; }
+  .kupu-tb-buttons .kupu-preview .selection {
+    background: none; }
+  .kupu-tb-buttons .kupu-preview .options {
+    position: absolute;
+    top: -0.3em;
+    list-style: none;
+    border-left: 0.35em solid #7bcabf;
+    background: #fff;
+    box-shadow: inset 0 1px 0 0 rgba(0, 0, 0, 0.2), 0 2px 1px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    left: 7.5em; }
+  .kupu-tb-buttons .kupu-preview .option {
+    padding-left: 1em;
+    transition: all .2s ease-in;
+    position: relative;
+    box-sizing: border-box; }
+    .kupu-tb-buttons .kupu-preview .option:first-child {
+      padding-top: .8em; }
+    .kupu-tb-buttons .kupu-preview .option:hover {
+      background: #474747; }
+      .kupu-tb-buttons .kupu-preview .option:hover a {
+        color: #fff; }
+    .kupu-tb-buttons .kupu-preview .option a {
+      font-size: 1.2em;
+      color: #2c4b4b; }
 
 .kupu-tb-buttons button:hover {
   /*.kupu-tb-buttons div.kupu-button,*/
@@ -199,6 +232,12 @@ div.kupu-smalleditor {
   margin-right: 2px;
   outer: none;
   margin-left: 0px; }
+
+.kupu-tb button.kupu-schemavalidator-pressed.kupu-schemavalidator-valid {
+  border: 2px solid #74b300; }
+
+.kupu-tb button.kupu-schemavalidator-pressed.kupu-schemavalidator-notvalid {
+  border: 2px solid #b3000a; }
 
 * {
   outline-style: none;
@@ -264,8 +303,8 @@ div.kupu-smalleditor {
 
 .kupu-tb-buttongroup {
   padding: 0 3px 0px 11px;
-  	/* border-left: 1px solid #dedede;
-   	border-right: 2px solid #ffffff;*/
+  /* border-left: 1px solid #dedede;
+   border-right: 2px solid #ffffff;*/
   display: block;
   float: left;
   height: 100%;
@@ -444,10 +483,10 @@ button.kupu-logo {
 .kupu-zoom {
   background-image: url("../../../gfx/zoom-in.gif"); }
 
-.kupu-prevdoc {
+.kupu-preview {
   background-position: -37px -76px; }
 
-.kupu-prevdoc:hover {
+.kupu-preview:hover {
   background-position: -37px -118px; }
 
 .kupu-newwindow {
@@ -505,7 +544,7 @@ button.kupu-logo {
 .kupu-tb-buttons button.visible {
   display: inline; }
 
-  /*div.kupu-editorframe {
+/*div.kupu-editorframe {
   /*margin-left: 0.3em;
   margin-bottom: 0.3em;
   border: solid 2px ButtonFace;*  /
@@ -682,10 +721,10 @@ div.kupu-toolboxes-container-container {
   /*font-size: 0.9em;*/
   height: 97%;
   overflow: auto;
-  	/*border-top: 1px solid #A6C9E2;
-   	border-bottom: 1px solid #A6C9E2;
-   	padding-top: 2px;
-  	padding-bottom: 2px;*/
+  /*border-top: 1px solid #A6C9E2;
+   border-bottom: 1px solid #A6C9E2;
+   padding-top: 2px;
+  padding-bottom: 2px;*/
   background: #f1f1f1;
   border-left: 1px solid #ccc; }
 
@@ -1417,12 +1456,13 @@ h3 .xedit-rngelements-toolbox-button-closed:hover {
   background-color: #FAFAFA;
   position: absolute;
   padding: 3px;
+  z-index: 3;
   /*font-family: 'Verdana, Arial, Helvetica, sans-serif';
   font-size: 12px;
   line-height: 16px;*/
   /*		width: 18em;
   padding:  10px;
-  	-moz-box-shadow: 0px 2px 2px #BBBBBB;*/ }
+      -moz-box-shadow: 0px 2px 2px #BBBBBB;*/ }
 
 .context-menu div {
   color: #777;
@@ -1449,7 +1489,7 @@ h3 .xedit-rngelements-toolbox-button-closed:hover {
   height: 1px;
   margin: 0px; }
 
-	/*
+/*
 .tooltip {
 	padding: 1px;
 	font-size: 12px;
@@ -1578,7 +1618,6 @@ span.kupu-tb-buttongroup button:hover span.tooltip {
   white-space: nowrap;
   padding: 0 15px 1px 15px;
   -moz-border-radius: 15px;
-  height: 22px;
   line-height: 1.7em;
   top: 31px;
   left: -10px;
@@ -1643,7 +1682,7 @@ span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
   background: #ececec url("../../../../../xmd/images/publicando_seccion2.gif") no-repeat center 45px;
   -moz-border-radius: 7px;
   width: 180px;
-  height: 45px;
+  height: auto;
   color: #666;
   padding-top: 100px;
   font-weight: bold;
@@ -1833,27 +1872,21 @@ div.buttons {
   font-weight: bold;
   color: #c1e9e4; }
 
-@keyframes fadein {
+@keyframes fadein /*W3C and Opera*/ {
   from {
     text-indent: -40%; }
-
   to {
     text-indent: 0; } }
-
-@-moz-keyframes fadein {
+@-moz-keyframes fadein /*Firefox*/ {
   from {
     text-indent: -40%; }
-
   to {
     text-indent: 0; } }
-
-@-webkit-keyframes fadein {
+@-webkit-keyframes fadein /*Safari and Chrome*/ {
   from {
     text-indent: -40%; }
-
   to {
     text-indent: 0; } }
-
 /**************
 	// Overlay layer
 	***************/
@@ -1864,3 +1897,5 @@ div.buttons {
   background: rgba(0, 0, 0, 0.5);
   left: 0;
   top: 0; }
+
+/*# sourceMappingURL=kupustyles.css.map */

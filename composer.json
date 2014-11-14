@@ -1,8 +1,31 @@
 {
-   "require": {
-      "solarium/solarium": "3.2.0"
-   },
-   "config": {
-      "vendor-dir": "extensions/vendors"
-  } 
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "codemirror/Codemirror",
+                "version": "4.7.0",
+                "source": {
+                    "url": "https://github.com/codemirror/CodeMirror.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        }
+    ],
+    "require": {
+        "solarium/solarium": "3.2.0",
+        "mnapoli/php-di": "4.4.2",
+        "phpunit/phpunit": "3.7.21",
+        "mockery/mockery": "0.8.0",
+        "monolog/monolog": "1.11.0",
+        "codemirror/Codemirror": "4.7.0"
+    },
+
+    "autoload": {
+        "psr-0": { "Ximdex": "lib" }
+    },
+    "config": {
+        "vendor-dir": "extensions/vendors/"
+    }
 }

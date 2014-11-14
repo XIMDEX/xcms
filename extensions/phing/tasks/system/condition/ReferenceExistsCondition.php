@@ -49,4 +49,3 @@ class ReferenceExistsCondition extends ProjectComponent implements Condition {
     }
 
 }
-

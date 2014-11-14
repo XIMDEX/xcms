@@ -35,7 +35,7 @@ class Action_copy extends ActionAbstract {
      * Main method
      */
     function index() {
-        
+
         $node = new Node($this->request->getParam('nodeid'));
 
         if (!($node->get('IdNode') > 0)) {
@@ -43,7 +43,7 @@ class Action_copy extends ActionAbstract {
             $values = array('messages' => $this->messages->messages);
             $this->renderMessages();
         } else {
-           
+
             $targetNodes = $this->getTargetNodes($node->GetID(), $node->GetNodeType());
             $values = array(
                 'id_node' => $node->get('IdNode'),
@@ -53,7 +53,7 @@ class Action_copy extends ActionAbstract {
                 'node_path' => $node->GetPath(),
                 'go_method' => 'copyNodes'
             );
-            
+
             $this->addCss('/actions/copy/resources/css/style.css');
             $this->render($values, NULL, 'default-3.0.tpl');
         }
@@ -78,13 +78,12 @@ class Action_copy extends ActionAbstract {
             $this->sendJSON(array('messages' => $this->messages->messages));
             return;
         }
-
         $this->messages = copyNode($nodeID, $destIdNode, $recursive);
 
         $values = array('messages' => $this->messages->messages, "parentID"=> $destIdNode);
         $this->sendJSON($values);
     }
-    
+
     /**
      * Get an array with the available target info
      * @param int $idNode of the node to move.
@@ -92,28 +91,28 @@ class Action_copy extends ActionAbstract {
      * @return array With path and idnode for every target folder
      */
     protected function getTargetNodes($idNode, $idNodeType){
-        
+
         $nodeAllowedContent = new NodeAllowedContent();
         $arrayNodeTypesAllowed = $nodeAllowedContent->getAllowedParents($idNodeType);
-        
+
         $node = new Node($idNode);
-        $arrayIdnodes = $node->find("IdNode", "idnodetype in (".implode(",", $arrayNodeTypesAllowed).") and idnode <> %s order by path",array( $node->GetParent()),MONO);        
-      
+        $arrayIdnodes = $node->find("IdNode", "idnodetype in (".implode(",", $arrayNodeTypesAllowed).") order by path",array( ),MONO);
         $idTargetNodes = array();
-        foreach ($arrayIdnodes as $idCandidateNode) {            
+        foreach ($arrayIdnodes as $idCandidateNode) {
             if ($this->checkTargetConditions($idNode, $idCandidateNode))
                 $idTargetNodes[] = $idCandidateNode;
         }
         $targetNodes = array();
         foreach ($idTargetNodes as $idTargetNode) {
-            $targetNode =  new Node($idTargetNode);                
+            $targetNode =  new Node($idTargetNode);
             $arrayAux["path"] = str_replace("/Ximdex/Projects/","", $targetNode->GetPath());
             $arrayAux["idnode"] = $targetNode->GetID();
+
             $targetNodes[] = $arrayAux;
         }
         return $targetNodes;
     }
-    
+
     /**
      * Check if the propousal node can be target for the current one.
      * Must be in the same project

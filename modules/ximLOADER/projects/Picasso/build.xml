@@ -12,9 +12,9 @@
 		overrideLocalPaths="0" enabled="1" previsual="0" description="Local" isServerOTF="false">
 
 		<ximdoccontainer>
-			<document name="picasso" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="{?}" />
+			<document name="picasso" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="10003" />
 
-			<document name="sevilla" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="{?}" />
+			<document name="sevilla" nodetypename="XMLDOCUMENT" templatename="rng-vista-picasso" channel="{?}" language="10003" />
 		</ximdoccontainer>
 
 	</section>

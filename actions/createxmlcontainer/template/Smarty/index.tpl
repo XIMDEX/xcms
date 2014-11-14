@@ -36,7 +36,7 @@
 		<div class="input-select icon document">
 				<input type="text" name="name" id="docname" class="validable not_empty full-size" placeholder="{t}Name of your document{/t}"/>
 				<select name="id_schema" id="schemaid" class="cajaxg validable not_empty document-type">
-					<option value="">{t}Select Schema{/t}</option>
+					<option value="">{t}Select schema{/t}</option>
 					{foreach from=$schemes item=schema}
 						<option value="{$schema.idSchema}">{$schema.Name}</option>
 					{/foreach}

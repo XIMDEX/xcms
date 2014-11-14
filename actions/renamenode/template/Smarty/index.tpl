@@ -28,7 +28,7 @@
 	<div class="action_header">
 			<h2>{t}Change name{/t}</h2>
 			<fieldset class="buttons-form">
-			{if $id_nodetype!=5078}
+			{if $id_nodetype!=5078 & $id_nodetype!=5048}
 				{button label="Check dependencies" class="open_report btn"}
 			{/if}
 				{button label="Modify" class='validate btn main_action' }{*message="Are you sure you want to change the name?"*}
@@ -47,21 +47,21 @@
 			
 			{if $id_nodetype==5078}
 				<div class="col1-2">
-				<input type="radio" name="schema_type" value="generic_schema"{if $schema_type == 'generic_schema' || $schema_type == ''} checked="checked"{/if} id="generic-scheme" class="hidden-focus">
-				<label for="generic-scheme" class="icon radio-label">{t}Generic schema{/t}</label>
+				<input type="radio" name="schema_type" value="generic_schema"{if $schema_type == 'generic_schema' || $schema_type == ''} checked="checked"{/if} id="generic-scheme_{$id_node}" class="hidden-focus">
+				<label for="generic-scheme_{$id_node}" class="icon radio-label">{t}Generic schema{/t}</label>
 				</div class="col1-2">
 				<div class="col1-2">
-				<input type="radio" name="schema_type" value="metadata_schema"{if $schema_type == 'metadata_schema'} checked="checked"{/if} id="metadata-scheme" class="hidden-focus">
-				<label for="metadata-scheme" class="icon radio-label">{t}Metadata schema{/t}</label>
+				<input type="radio" name="schema_type" value="metadata_schema"{if $schema_type == 'metadata_schema'} checked="checked"{/if} id="metadata-scheme_{$id_node}" class="hidden-focus">
+				<label for="metadata-scheme_{$id_node}" class="icon radio-label">{t}Metadata schema{/t}</label>
 				</div class="col1-2">
 				{if ($module_ximnews == true)}
 				<div class="col1-2">
-				<input type="radio" name="schema_type" value="news_schema"{if $schema_type == 'news_schema'} checked="checked"{/if} id="news-cheme" class="hidden-focus">
-				<label for="news-cheme" class="icon radio-label">{t}XimNEWS news schema{/t}</label>
+				<input type="radio" name="schema_type" value="news_schema"{if $schema_type == 'news_schema'} checked="checked"{/if} id="news-scheme_{$id_node}" class="hidden-focus">
+				<label for="news-scheme_{$id_node}" class="icon radio-label">{t}XimNEWS news schema{/t}</label>
 				</div class="col1-2">
 				<div class="col1-2">
-				<input type="radio" name="schema_type" value="bulletin_schema"{if $schema_type == 'bulletin_schema'} checked="checked"{/if} id="newsletter-cheme" class="hidden-focus">
-				<label for="newsletter-cheme" class="icon radio-label">{t}XimNEWS newsletter schema{/t}</label>
+				<input type="radio" name="schema_type" value="bulletin_schema"{if $schema_type == 'bulletin_schema'} checked="checked"{/if} id="newsletter-scheme_{$id_node}" class="hidden-focus">
+				<label for="newsletter-scheme_{$id_node}" class="icon radio-label">{t}XimNEWS newsletter schema{/t}</label>
 				</div class="col1-2">
 				{/if}
 			{/if}

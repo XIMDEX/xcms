@@ -53,9 +53,9 @@ return sw;
 }
 function valida(){
 	if (cdx_form.colector.value == "") {alert(_("The collector Name should be specified")); cdx_form.colector.focus(); return;}
-	idioma = valida_checkbox("langidlst[]");
-	canal = valida_checkbox("channellst[]");
-	if(canal==false || idioma==false)
+	lang = valida_checkbox("langidlst[]");
+	ch = valida_checkbox("channellst[]");
+	if(ch==false || lang==false)
 			{
 			alert(_("At least one language and one channel should be specified")); return;
 			}

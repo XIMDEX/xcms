@@ -234,7 +234,7 @@ class NodeEntity {
 	}
 
 	/**
-	 * Devuelve un array con los canales asociados al nodo
+	 * Returns an array of channels associated to the node
 	 */
 	function getChannels() {
 
@@ -496,15 +496,6 @@ class NodeEntity {
 		return $res;
 	}
 
-
-	/**
-	 * Transforma un Path absoluto en ximDEX en un idNode y obtiene
-	 * toda la informacion relativa al nodo.
-	 *
-	 * Version alternativa para antiguos servidores que no soportan subconsultas.
-	 *
-	 * @return array Devuelve un array con el valor de los atributos del nodo.
-	 */
 	function _pathToId_Alt() {
 
 		$db =& $this->_db;
@@ -595,14 +586,6 @@ class NodeEntity {
 		return $res;
 	}
 
-	/**
-	 * Transforma un idNode en un Path absoluto en ximDEX y obtiene
-	 * toda la informacion relativa al nodo.
-	 *
-	 * Version alternativa para antiguos servidores que no soportan subconsultas.
-	 *
-	 * @return array Devuelve un array con el valor de los atributos del nodo.
-	 */
 	function _idToPath_Alt() {
 
 		$db =& $this->_db;

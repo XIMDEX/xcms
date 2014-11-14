@@ -45,11 +45,12 @@ class Action_xmleditor2 extends ActionAbstract {
 
 		$strDoc = new StructuredDocument($idnode);
                 if($strDoc->GetSymLink()) {
-                        $this->messages->add(_('Document cannot be opened.'), MSG_TYPE_WARNING);
-                        $this->messages->add(_('It is a symbolic link'), MSG_TYPE_WARNING);
-                        $values = array('id_node' => $idnode,'messages' => $this->messages->messages);
-                        $this->render($values, NULL, 'messages.tpl');
-                        return;
+                    $masterNode = new Node($strDoc->GetSymLink());
+                    $values = array(
+                        'path_master' => $masterNode->GetPath()
+                    );
+                    $this->render($values, 'linked_document', 'default-3.0.tpl');
+                    return false;
                 }
 
 		$queryManager = new QueryManager();

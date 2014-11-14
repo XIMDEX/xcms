@@ -81,4 +81,3 @@ class StringReader extends Reader {
         return '(string) "'.$this->_string . '"';
     }
 }
-

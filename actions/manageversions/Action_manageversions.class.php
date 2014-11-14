@@ -58,7 +58,7 @@ class Action_manageversions extends ActionAbstract {
 			. " v.Date, v.Comment, u.Name"
 			. " FROM Versions v INNER JOIN Users u USING (IdUser)"
 			. " WHERE IdNode = %s"
-			. " ORDER BY v.Version ASC, v.SubVersion ASC",
+			. " ORDER BY v.Version DESC, v.SubVersion DESC",
 			$dbObj->sqlEscapeString($idNode));
 
 		$dbObj->query($query);
@@ -74,13 +74,11 @@ class Action_manageversions extends ActionAbstract {
 			$dbObj->Next();
 		}
 
-		ksort($versionList, SORT_NUMERIC);
 		$keys = array_keys($versionList);
-		$lastVersion = end($keys);
+		$lastVersion = $keys[0];
 
-		ksort($versionList[$lastVersion], SORT_NUMERIC);
 		$keys = array_keys($versionList[$lastVersion]);
-		$lastSubversion = end($keys);
+		$lastSubversion = $keys[0];
 
 		$versionList[$lastVersion][$lastSubversion]['isLastVersion'] = 'true';
 

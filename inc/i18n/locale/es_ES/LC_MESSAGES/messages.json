@@ -754,7 +754,7 @@
     "Server properties": "Propiedades del servidor",
     "Protocol": "Protocolo",
     "Remote URL": "URL remota",
-    "Remote address": "Direcci&oacute;n remota",
+    "Remote address": "Dirección remota",
     "Remote directory": "Directorio remoto",
     "Directory": "Directorio",
     "Remote user": "Usuario remoto",
@@ -2769,5 +2769,6 @@
     "OpenData Section": "Secci&oacute;n OpenData",
     "New Dataset": "Nuevo Dataset",
     "Name of your catalog": "Nombre de tu cat&aacute;logo",
-    "A dataset should be for a single data in several formats": "Un dataset deber&iacute;a emplearse para un mismo dato en diferentes formatos"
+    "A dataset should be for a single data in several formats": "Un dataset deber&iacute;a emplearse para un mismo dato en diferentes formatos",
+    "Show": "Mostrar"
 }

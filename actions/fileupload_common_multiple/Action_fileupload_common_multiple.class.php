@@ -26,13 +26,27 @@
 
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
+ModulesManager::file('/inc/helper/String.class.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/ConfigInterface.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Config.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Exception.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/File.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/RequestInterface.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Request.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Uploader.php');
+// require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Autoloader.php');
 
 
 class Action_fileupload_common_multiple extends ActionAbstract {
 
+	function __construct() {
+	    parent::__construct();
+        	$this->uploadsFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') .'/'. Config::getValue('UploadsFolder');
+	        $this->chunksFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') .'/'. Config::getValue('ChunksFolder');
+	}
+
 	// Main method: shows initial form
 	function index () {
-		
 		$is_structured=false;
    		$idNode = (int) $this->request->getParam("nodeid");
      	$actionID = (int) $this->request->getParam("actionid");
@@ -61,54 +75,62 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		/** ********* Preparing view ************ */
 		//Filter and button tag according to type of upload file
+		
 		switch($type_node)  {
 			case 'CssFolder':
 				$lbl_anadir = _(' Add style sheets');
-				$filter = ".*css";
-			 break;
-			case 'ImagesFolder':
+				$allowedMimes = 'text/css';
+				$allowedExtensions = '.css';
+			 	break;
+			/*case 'ImagesFolder':
 				$lbl_anadir = _(' Add images ');
-				$filter = ".*jpeg,.*jpg,.*gif,.*png,.*ico";
-			break;
+				$allowedMimes = 'image/*';
+				$allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg, .bmp';
+				break;*/
 			case 'TemplateViewFolder':
 				$lbl_anadir = _(' Add schemas ');
-				$filter = ".*xml";
-			break;
+				$allowedExtensions = '.xml';
+				$allowedMimes = 'text/xml, application/xml';
+				break;
 			case 'TemplatesFolder':
 				$lbl_anadir = _(' Add templates ');
-				$filter = ".*xml,.*xsl";
-			break;
-			case 'ImportFolder':
+				$allowedExtensions = '.xml, .xsl';
+				$allowedMimes = 'text/xml';
+				break;
+			/*case 'ImportFolder':
 				$lbl_anadir = _(' Add HTML files ');
-				$filter = ".*ht,.*htm,.*html,.*xhtml,.*plain,.*txt"; 
-			break;
+				$allowedExtensions = 'ht, .htm, .html, .xhtml, .plain, .txt';
+				$allowedMimes = 'text/xml, text/html, text/plain, text/txt';
+				break;*/
 			case 'XmlContainer':
 				$lbl_anadir = _(' Add XML files ');
 				$is_structured=true;
-				$filter = ".*xml";	
-			break;
+				$allowedExtensions = '.xml, .xsl';
+				$allowedMimes = 'text/xml';	
+				break;
 			/*case 'CommonFolder':
 				$lbl_anadir = _(' Add common files ');
-				$filter = ".*ht,.*htm,.*html,.*xhtml,.*plain,.*txt,.*zip"; 
-			break;*/
+				$allowedExtensions = array( 'ht','htm','html','xhtml','plain','txt','zip'); 
+				$allowedMimes = array( 'ht','htm','html','xhtml','plain','txt','zip'); 
+				break;*/
 			default:
 				$lbl_anadir = _(' Add files');
-				$filter = "all";
 				break;
 		};
 
 		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
 		$this->addCss('/actions/fileupload_common_multiple/resources/css/loader.css');
+		$this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css');
 
-		$values = array (
+		$uploaderOptions = array (
 			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			"lbl_anadir" => $lbl_anadir,
 			'messages' => $this->messages->messages,
-			'go_method' => 'showUploadResult',
 			'nodeid' => $idNode,
 			'actionid' => $this->request->getParam('actionid'),
 			'type' => $type,
-			'filter' => $filter,
+			'allowedMimes' => $allowedMimes,
+			'allowedExtensions' => $allowedExtensions,
 			'type_node'=>$type_node,
 			'is_structured' => $is_structured
 		);
@@ -135,94 +157,109 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			if (!is_null($schemas)) {
 				foreach ($schemas as $idSchema) {
 					$schemaNode = new Node($idSchema);
-					$schemaArray[] = array('idSchema' => $idSchema, 'Name' => $schemaNode->get('Name'));
+					$schemaArray[] = array('id' => $idSchema, 'name' => $schemaNode->get('Name'));
 				}
 			}
 
 			$language = new Language();
-			$languages = $language->getLanguagesForNode($idNode);	
-
-			$values["schemas"]=$schemaArray;
-			$values["languages"]=$languages;
+			$languages = $language->getLanguagesForNode($idNode);
+			$languageArray = array();
+			foreach ($languages as $lang) {
+				$languageArray[] = array('id' => $lang['IdLanguage'], 'name' => $lang['Name']);
+			}	
+			$uploaderOptions['globalMetaOnly'] = true;
+			$uploaderOptions['metaFields'] = array(
+				"schema" => array(
+					"type" => "select",
+					"options" => $schemaArray,
+					"label" => _("Select a schema"),
+					"required" => true
+				),
+				"language" => array(
+					"type" => "select",
+					"options" => $languageArray,
+					"label" => _("Select a language"),
+					"required" => true
+				)
+			);
 		}
-
+		$values = array (
+			'nodeid' => $idNode,
+			'uploaderOptions' => json_encode($uploaderOptions)
+		);
 		$this->render($values, 'index', 'default-3.0.tpl');
+		$this->clearChunks();
    	}
 
-	function uploadFile() {
-   		//$idNode = (int) $this->request->getParam("nodeid");
-		$idNode = $this->request->getParam('nodeid');
-  	  	$type = $this->request->getParam('type');
-   		$option = $this->request->getParam('option');
-  	    $up = $this->request->getParam("up");
-   		$base64 = $this->request->getParam("base64");
-	  	$retval = "";
-
-		//Browser supporting sendAsBinary()
-	  	if(count($_FILES)>0) { 
-			$file = $_FILES["ximfile"];
-		   	if(null == $file || 0 == $file["size"]) {
-    			$retval  = $this->_setRest(_("Unexpected error while uploading file ").$file["name"]);
-    		} else {
-    			$retval = $this->_createNode($file, $idNode, $type, $option);
-    		}
-	   	}
-	   	else {
-	   		$headers = getallheaders();
-	   	  	$headers = array_change_key_case($headers, CASE_UPPER);
-	   	 	if($up == "true") {
-	   	 		if($base64 == "true") {
-	   	 	  		$content = base64_decode(file_get_contents('php://input'));
-	   	 		}
-	   	 		else {
-	   	 			$content = file_get_contents('php://input');
-	   	 		}
-	   	 	
-	   	 		$tmp_folder = XIMDEX_ROOT_PATH."/data/tmp/uploaded_files/";
-	   	 		$tmp_name = $tmp_folder.$headers['XIM-FILENAME'].".".mt_rand();
-	   	 		if(file_put_contents($tmp_name,$content)==false) {
-	   	 			$retval  = $this->_setRest(_("Unexpected error while uploading file ").$headers["XIM-FILENAME"]);
-	   	 		}
-	   	 	
-	   	 		$file = array('name' => $headers['XIM-FILENAME'],
-	   	 			  'type' => $headers['XIM-TYPE'],
-	   	 			  'size' => $headers['XIM-SIZE'],
-	   	 			  'tmp_name' => $tmp_name,
-	   	 			  'error' => 0
-	   	 	    );
-	   	    	$retval = $this->_createNode($file, $idNode, $type, $option);
-				//Delete the tmp_file
-	   	    	unlink($tmp_name);
-	   	 	}
-	   	 	else {
-	   			$retval  = $this->_setRest(_("Unexpected error while uploading file. Maybe your web server is not configured properly."));
-	   	 	}
-	   	}
-        die(json_encode($retval));
+   	function clearChunks() {
+   		if (file_exists($this->chunksFolder)) {
+   			$uploader = new \Flow\Uploader();
+   			$uploader->pruneChunks($this->chunksFolder);
+   		}
    	}
 
-	public function getpreview() {
-		$up = $this->request->getParam("up");
-      		$base64 = $this->request->getParam("base64");
-		$headers = getallheaders();
-	   	$headers = array_change_key_case($headers, CASE_UPPER);
-	   	if($up == "true") {
-	   	 	if($base64 == "true") {
-	   	 		$content = file_get_contents('php://input');
-	   	 	}
-	   	 	else {
-	   	 		$content = base64_encode(file_get_contents('php://input'));
-	   	 	}
-	   	 	$retval = array("data" => "data:".$headers["XIM-TYPE"].";base64,".$content,"status" => "ok");
-	    		die(json_encode($retval));
-	   	}
-	   	$retval = array("data" => "","status" => "nok");
-		die(json_encode($retval));
-	}
+   	function _saveFile($path) {
+		if (!file_exists($this->chunksFolder)) {
+		    mkdir($this->chunksFolder, 0777, true);
+		}
+        $config = new \Flow\Config(array(
+            'tempDir' => $this->chunksFolder
+        ));
+        
+        $file = new \Flow\File($config);
+ 
+        if ($file->validateChunk()) {
+            $file->saveChunk();
+        } else {
+            // error, invalid chunk upload request, retry
+            header("HTTP/1.1 400 Bad Request");
+            return false;
+        }
+        
+        if ($file->validateFile() && $file->save($path)) {
+            return true;
+        } else {
+            return false;
+        }	
+   	}
 
-    	private function _checkExistence($file, $idNode) {
+	function uploadFlowFile() {
+		if (!file_exists($this->uploadsFolder)) {
+		    mkdir($this->uploadsFolder, 0777, true);
+		}
+		$path = $this->uploadsFolder . '/' . $_POST['flowIdentifier'];
+		
+		if ($this->_saveFile($path)) {
+			$idNode = $this->request->getParam('nodeid');
+	  	  	$type = $this->request->getParam('type');
+	  	  	$metadata = json_decode($this->request->getParam('meta'));
+	   		$overwrite = ($_POST['overwrite'] == 'true') ? true : false;
+			$file = $_FILES['file'];
+			$file['tmp_name'] = $path;
+			if (!empty($_POST['ximFilename']))
+			{
+				$file['name'] = $_POST['ximFilename'];
+			}
+			else if (isset($_POST['flowFilename']))
+			{
+				$file['name'] = $_POST['flowFilename'];
+			}
+			ini_set('memory_limit', -1);
+			$result = $this->_createNode($file, $idNode, $type, $metadata, $overwrite);
+		   	if (file_exists($path)) {
+		   	    unlink($path);
+		   	}
+		   	$this->sendJSON($result);
 
-    		$node = new Node($idNode);
+		} else {
+			return false;
+		}
+		
+   	}
+
+    private function _checkExistence($file, $idNode) {
+
+    	$node = new Node($idNode);
   		$idNode = $node->GetChildByName($file);
   		if ($idNode > 0) {
   			 return true;
@@ -243,9 +280,9 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');
-    	}
+    }
 
-	private function _setRest($msg, $status="nok") {
+	private function _setRest($msg, $status=500) {
 		$retval = array();
 	   	$retval["msg"] = utf8_encode($msg);
     		$retval['status'] =  $status;
@@ -253,37 +290,30 @@ class Action_fileupload_common_multiple extends ActionAbstract {
     		return $retval;
 	}
 
-    private function normalizeName($name){   
-        $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-        $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-        $decodedName = utf8_decode($name);
-        $decodedName = strtr($decodedName, utf8_decode($source), $target);
-        return utf8_encode($decodedName);
-    }
-
 	//Creating a node according to name and file path
-	private function _createNode($file, $idNode,  $type, $option) {
-        $normalizedName = $this->normalizeName($file["name"]);
+	private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
+       
+        $normalizedName = String::normalize($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
-		if (empty($type)) {
-			$nodeTypeName = $baseIoInferer->infereFileType($file);
+		if (empty($type) || $type == 'null') {
+			$nodeTypeName = $baseIoInferer->infereFileType($file, $idNode);
 		} else {
-			$nodeTypeName = $baseIoInferer->infereFileType($file, $type);
+			$nodeTypeName = $baseIoInferer->infereFileType($file, $idNode, $type);
 		}
 		$result = 0;
 
 		if(!$nodeTypeName) {
-     			return  $this->_setRest(_(" File is not of expected type " ) );
+     		return  $this->_setRest(_(" File is not of expected type " ) );
 		} else {
 			$node = new Node($idNode);
 			if(!$node) {
-		     		return  $this->_setRest(_(" Destination node has not been found "));
+		     	return  $this->_setRest(_(" Destination node has not been found "));
 			}
 
 			$estimatedNode = $node->GetChildByName($normalizedName);
 			if ($estimatedNode > 0) {
-				if (1 == $option) {
+				if ($overwrite) {
 					$data = array(
 						'NODETYPENAME' => $nodeTypeName,
 						'ID' => $estimatedNode,
@@ -301,21 +331,17 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				//To upload xml content
 				if ($node->nodeType->get("Name")=="XmlRootFolder"){	
 					$newNodeName = str_replace(".xml","",$normalizedName);
-					$idSchema = $this->request->getParam("id_schema");
-					$idSchema = $idSchema[0];
-					$idLanguage = $this->request->getParam("id_language");
-					$idLanguage = $idLanguage[0];
 					$data = array(
-				          		'NODETYPENAME' => "XmlContainer",
-				            		'NAME' => $newNodeName,
-					        	'PARENTID' => $idNode,
-					        	'CHILDRENS' => array(
-				                		array(
-					                    	'NODETYPENAME' => 'VISUALTEMPLATE',
-					                    	'ID' => $idSchema
-					                	)
-				            		)
-				            	);
+		          		'NODETYPENAME' => "XmlContainer",
+		            		'NAME' => $newNodeName,
+			        	'PARENTID' => $idNode,
+			        	'CHILDRENS' => array(
+	                		array(
+		                    	'NODETYPENAME' => 'VISUALTEMPLATE',
+		                    	'ID' => $metadata->schema
+		                	)
+	            		)
+		            );
 					$baseIO = new baseIO();
 					$result = $baseIO->build($data);
 					$documentNodeType = new NodeType();
@@ -327,8 +353,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				                'NODETYPE' => $documentNodeType->get('IdNodeType'),
 				                'PARENTID' => $result,
 				                'CHILDRENS' => array(
-				                    array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema),
-				                    array('NODETYPENAME' => 'LANGUAGE', 'ID' => $idLanguage),
+				                    array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $metadata->schema),
+				                    array('NODETYPENAME' => 'LANGUAGE', 'ID' => $metadata->language),
                 				)
 				       );
 					
@@ -364,60 +390,27 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 			// If there is any problem with file name: spaces, uncommon characters, etc.
 			if ($result > 0) {
-				if ($option > 0) {
+				if ($overwrite) {
 					return  $this->_setRest(_('File has been successfully overwritten.'), "ok" );
 				} else {
 					return  $this->_setRest(_('File has been successfully uploaded.'), "ok" );
 				}
 			}else {
 				XMD_Log::error(_("BaseIO has returned the error code"). $result);
-				return  $this->_setRest($baseIO->messages->messages[0]["message"] );
+				return  $this->_setRest($baseIO->messages->messages[0]["message"]);
 			}
 		}
 
 		return $result;
 	}
 
-	function showUploadResult() {
 
-		if(array_key_exists("ximfile", $_POST) ){
-			 $idNode = (int) $this->request->getParam("nodeid");
-			 $values = array();
-			 if(array_key_exists("ok", $_POST["ximfile"] ) ) {
-				  $values["files_ok"] = $_POST["ximfile"]["ok"];
-			 }else {
-				  $values["files_ok"] = array();
-			 }
-
-			 if(array_key_exists("nok", $_POST["ximfile"] ) ) {
-				  $values["files_nok"] = $_POST["ximfile"]["nok"];
-			 }else {
-				  $values["files_nok"] = array();
-			 }
-
-			 $this->reloadNode($idNode);
-			 $this->render($values, 'result', 'default-3.0.tpl');
-		}else {
-			$this->messages->add(_("No files have been found"), MSG_TYPE_ERROR);
-		  	$this->render(array('messages' => $this->messages->messages));
-		}
-    	}
-
-
-  	function checkname() {
-		$idNode = (int) $this->request->getParam("nodeid");
-	 	$name = $this->request->getParam("name");
-        $normalizedName = $this->normalizeName($name);
-
-		$node = new Node($idNode);
-		$estimatedNode = $node->GetChildByName($normalizedName);
-
-   		if($estimatedNode > 0 ) {
-			$retval = $this->_setRest( _('File already exists.') );
-   		}else {
-			$retval = $this->_setRest( _('File does not exist.'), 'ok');
-    		}
-		die(json_encode($retval));
+  	private function normalizeName($name) {   
+  	    $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+  	    $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+  	    $decodedName = utf8_decode($name);
+  	    $decodedName = strtr($decodedName, utf8_decode($source), $target);
+  	    return str_replace(' ', '_', utf8_encode($decodedName));
   	}
 }
 ?>

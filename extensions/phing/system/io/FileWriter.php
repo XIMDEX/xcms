@@ -39,4 +39,3 @@ class FileWriter extends OutputStreamWriter {
     	parent::__construct($out);
     }
 }
-

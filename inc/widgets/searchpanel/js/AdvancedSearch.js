@@ -155,7 +155,7 @@
 
 		search: function(options, cb, save) {
 
-			this._showLoading();
+			
 			if (this.options.datastore.options.ds.running) return;
 			if (!Object.isFunction(cb)) cb = function(results, errors) {};
 
@@ -187,7 +187,7 @@
 				cb(this.cache.results, []);
 				return;
 			}
-
+			this._showLoading();
 			this.options.datastore.datasource().type(this.options.outputFormat.toLowerCase());
 			this.options.datastore.load_data({
 					params: query,

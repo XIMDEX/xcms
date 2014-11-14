@@ -42,17 +42,27 @@ class Action_modifychannel extends ActionAbstract {
     			'ximdex' => '',
     			'client' => ''
     		);
+                
+                $outputCheck = array(
+                    'web' => '',
+                    'xml' => '',
+                    'other' => ''
+    		);
 
     		$channel = new Channel($idNode);
     		$renderCheck[$channel->get('RenderMode')] = 'checked';
-            $ext=$channel->get('DefaultExtension')==NULL ? "(empty)": $channel->get('DefaultExtension');
-            $desc=$channel->get('Description')==NULL ? "(empty)": $channel->get('Description');
+                $outputCheck[$channel->get("OutputType")] = 'checked';
+                $ext=$channel->get('DefaultExtension')==NULL ? "(empty)": $channel->get('DefaultExtension');
+                $desc=$channel->get('Description')==NULL ? "(empty)": $channel->get('Description');
+
     		$values = array(
     			'id_node' => $idNode,
     			'name' => $channel->get('Name'),
+                'default_channel' => $channel->get('Default_Channel'),
     			'extension' => $ext,
     			'description' => $desc,
     			'render_check' => $renderCheck,
+    			'output_check' => $outputCheck,
     			'go_method' => 'modifychannel'
     	);
 
@@ -62,6 +72,8 @@ class Action_modifychannel extends ActionAbstract {
     function modifychannel() {
     	$idNode = $this->request->getParam('nodeid');
     	$channel = new Channel($idNode);
+        $_POST["Default_Channel"] = isset($_POST["Default_Channel"]) &&
+                                    $_POST["Default_Channel"]=="on" ? 1 : 0;
     	$channel->loadFromArray($_POST);
 
 		$result = $channel->update();
@@ -73,14 +85,23 @@ class Action_modifychannel extends ActionAbstract {
 				$channel->messages->add(_('An error occurred while modifying channel'), MSG_TYPE_ERROR);
 				break;
 			default:
-				$channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
-				break;
+                if($_POST["Default_Channel"]==1){
+                    if($channel->setDefaultChannelToZero($idNode)){
+                        $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
+                    }else{
+                        $channel->messages->add(_('Error setting Default Channel property'), MSG_TYPE_NOTICE);
+                    }
+                }else{
+                    $channel->messages->add(_('Channel has been successfully modified'), MSG_TYPE_NOTICE);
+                }
+                break;
 		}
 
 		$this->reloadNode($idNode);
 
 		$values = array('messages' => $channel->messages->messages );
-		$this->render($values, NULL, 'messages.tpl');
+		//$this->render($values, NULL, 'messages.tpl');
+        $this->sendJSON($values);
     }
 }
 ?>

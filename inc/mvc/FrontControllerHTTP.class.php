@@ -62,9 +62,22 @@ class FrontControllerHTTP extends FrontController {
 			// Llama al ApplicationController
 			$appController = new ApplicationController();
 			$appController->setRequest($this->request);
-			$appController->compose();
-			$this->hasError = $appController->hasError();
-			$this->msgError = $appController->getMsgError();
+			/* Getting params to check permissions.
+             * Some actions can be loaded for everyone
+             */
+            $idNode = $this->request->getParam('nodeid');
+            $actionName = $this->request->getParam('action');
+            $idAction = $this->getActionId();
+            $listAllowedActions = Action::getAlwaysAllowedActions();
+            if (in_array($actionName, $listAllowedActions) || 
+                    $this->isAllowedAction($idNode, $idAction)){
+                $appController->compose();
+                $this->hasError = $appController->hasError();
+                $this->msgError = $appController->getMsgError();
+            }else{
+                $this->hasError = true;
+                $this->msgError = "";
+            }
 		}
 	}
 

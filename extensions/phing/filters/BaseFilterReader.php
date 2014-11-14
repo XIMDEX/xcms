@@ -153,5 +153,3 @@ class BaseFilterReader extends FilterReader {
         }
     }
 }
-
-

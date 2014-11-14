@@ -154,4 +154,3 @@ class FilenameSelector extends BaseExtendSelector {
     }
 
 }
-

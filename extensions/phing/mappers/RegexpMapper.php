@@ -94,4 +94,3 @@ class RegexpMapper implements FileNameMapper {
     }
     
 }
-

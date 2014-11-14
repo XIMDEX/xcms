@@ -22,15 +22,17 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope', 'installerService', "$q", "$window",
- function($timeout, $scope, installerService, $q, $window) {
+ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope', '$attrs', 'installerService', "$q", "$window",
+ function($timeout, $scope, $attrs, installerService, $q, $window) {
 
     $scope.error=false;
     $scope.submit = false;
-    $scope.root_user="root";
-    $scope.name="ximdex";
+    $scope.root_user="root";    
     $scope.installed=false;
+    $scope.name = $attrs.ximInstallInstanceName;
     $scope.overwrite = false;
+    $scope.host="localhost";
+    $scope.port="3306";
     
     installerService.sendAction("checkHost").then(function(response) {
         if (response.data.success){
@@ -42,6 +44,19 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
         }
 
     });
+
+    $scope.sendForm = function(){
+        if ($scope.installed){
+            $scope.addUser();
+        }else{
+            if ($scope.overwrite){
+                $scope.installDataBase();
+            }
+            else{    
+                $scope.processForm();
+            }
+        }
+    }
 
     $scope.processForm = function(){
         if ($scope.formDataBase.name.$error.pattern){
@@ -67,7 +82,12 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.checkExistDataBase();
 
         }else{
-            $scope.hostCheck = "root_user";
+            var error = response.data.errors.toLowerCase();
+            if (error.indexOf("unknown mysql server host")>-1){
+                $scope.hostCheck = "host";
+            }else{
+                $scope.hostCheck = "root_user";
+            }
             $scope.loading = false;
             $scope.genericErrors = response.data.errors;
         }
@@ -108,18 +128,40 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.loading=false;
         if (response.data.success){
             $scope.installed = true;
+            $scope.user = $scope.name;
         }else{
             $scope.error = response.data.errors;
         }
     });
    
     }
+    
     $scope.$watch("name", function(){
         $scope.overwrite = false;
         $scope.dbErrors = false;
         $scope.hostCheck=true;
-    })
-    $scope.addUser = function(){
+    });
+    
+    $scope.$watch("host", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    $scope.$watch("port", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    
+    $scope.$watch("root_user", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    
+    $scope.$watch("root_pass", function(){        
+        $scope.genericErrors = false;
+        $scope.hostCheck=true;
+    });
+    
+     $scope.addUser = function(){
         $scope.loadingAddUser = true;
         var params = "user="+$scope.user;
         params += "&pass="+$scope.pass;
@@ -129,7 +171,6 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
         params += "&root_user="+$scope.root_user;
         params += "&root_pass="+$scope.root_pass;
         installerService.sendAction("addUser",params).then(function(response) {
-            $scope.loadingAddUser = false;
             location.reload();
     });
    

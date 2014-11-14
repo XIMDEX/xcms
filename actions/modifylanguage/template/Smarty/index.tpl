@@ -25,7 +25,7 @@
 
 <form method="post" name="ml_form" id="ml_form" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Modificar Idioma{/t}</h2>
+		<h2>{t}Modify language{/t}</h2>
    		<fieldset class="buttons-form">
 				{button label="Modify" class="validate btn main_action" }{*message="Would you like to modify this language?"*}
 		</fieldset>

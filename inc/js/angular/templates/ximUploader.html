@@ -1,0 +1,69 @@
+<form name="f_m_u" flow-init ng-cloak>
+	<div class="action_header">
+		<h2>#/'widgets.fileUploader.add_files' | xI18n/#</h2>
+	</div>
+
+	<div class="action_content uploader">
+	<!-- <div class="action_content uploader {if $type_node == "XmlContainer"}xml-uploader{/if}"> -->
+		<fieldset>
+			<div class="files-properties xml-properties" ng-if="options.metaFields">
+				<h3>#/ 'widgets.fileUploader.please,_select_the_schema_to_follow_and_a_language_for_your_documents_before_uploading_them' | xI18n /#.</h3>
+
+				<div class="col1-2" ng-repeat="(key, field) in options.metaFields">
+					<select name="global-#/key/#" id="global-#/key/#" class="cajaxg extra-param" 
+						ng-if="field.type == 'select'"
+						ng-options="option.id as option.name for option in field.options"
+						ng-model="$parent.globalMeta[key]"
+						ng-required="field.required && options.globalMetaOnly">
+					</select>
+				</div>
+			</div>
+			<div class="xim-uploader-container #/dragState/#" 
+				flow-drop
+				flow-drag-enter="dragState='drag-in'" 
+				flow-drag-leave="dragState=''">
+				<div class="xim-loader-list-container">
+					<div class="guide" ng-hide="$flow.files.length">
+						<span class="icon document">Documents</span>
+						<span class="icon image">Images</span>
+						<span class="icon video">Videos</span>
+						<p>#/ "widgets.fileUploader.drag_your_files_here_or_add_them_using_the_'Add'_button_below" | xI18n /#.</p>
+					</div>
+					<ul class="xim-loader-list" ng-show="$flow.files.length">
+						<li ng-repeat="file in $flow.files">
+							<xim-file ng-if="options.globalMetaOnly"
+								xim-model="file" 
+								xim-node-id="nodeId">
+							</xim-file>
+							<xim-file ng-if="!options.globalMetaOnly"
+								xim-model="file" 
+								xim-node-id="nodeId" 
+								xim-meta-fields="options.metaFields"
+								xim-meta-model="globalMeta">
+							</xim-file>
+						</li>
+					</ul>
+				</div>
+				<ul class="xim-loader-list-actions" >
+					<a href="#" class="xim-uploader-selected btn-labeled icon btn">
+						#/ 'widgets.fileUploader.add' | xI18n /#
+						<input type="file" class="xim-uploader" accept="#/options.allowedMimes || options.allowedExtensions/#" flow-btn />
+						<!-- <input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"> -->
+					</a>
+				</ul>
+			</div>
+		</fieldset>
+	</div>
+	<fieldset class="buttons-form positioned_btn">
+		<span ng-show="invalidFiles()">#/ invalidFiles() /# #/ 'widgets.fileUploader.invalid_files' | xI18n /#</span>
+		
+		<button class="button_main_action"
+			xim-button
+			xim-loading="$flow.isUploading()"
+			xim-label="uploadButtonLabel()"
+			xim-progress="$flow.progress()"
+			xim-disabled="!allowUpload()"
+			ng-click="uploadFiles($flow)">
+		</button>
+	</fieldset>	
+</form>

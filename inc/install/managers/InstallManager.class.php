@@ -38,12 +38,13 @@ class InstallManager {
 	//CONSTANTS FOR INSTALL MODE
 	const WEB_MODE = "web";
 	const CONSOLE_MODE = "console";
-	const STATUSFILE = "/install/_STATUSFILE";
+	const STATUSFILE = "/conf/_STATUSFILE";
 
 	const INSTALL_CONF_FILE = "install.xml";	
 	const INSTALL_PARAMS_TEMPLATE = "/install/templates/install-params.conf.php";
 	const INSTALL_PARAMS_FILE = "/conf/install-params.conf.php";
 	const LAST_STATE = "INSTALLED";
+	const FIRST_STATE = "INIT";
 	
 	protected $mode = ""; //install mode.
 	protected $installMessages = null;
@@ -110,6 +111,10 @@ class InstallManager {
 			return false;
 
 		return $currentState == strtolower(self::LAST_STATE);
+	}
+
+	public function createStatusFile(){
+		FsUtils::file_put_contents(XIMDEX_ROOT_PATH.self::STATUSFILE, self::FIRST_STATE);
 	}
 
 	/**
@@ -184,6 +189,7 @@ class InstallManager {
 		$result[] = $this->checkInstanceGroup();
 		$result[] = $this->checkFilePermissions();
 		$result[] = $this->checkDiskSpace();
+        $result[] = $this->checkRequiredPackages();
 		$result[] = $this->checkPHPVersion();
 		$result[] = $this->checkRequiredPHPExtensions();
 		$result[] = $this->checkRecommendedPHPExtensions();
@@ -192,6 +198,20 @@ class InstallManager {
 
 		return $result;		
 	}
+
+    private function checkRequiredPackages(){
+        $result = array();
+        $result["name"] = "OpenSSL";
+        exec('openssl version',$res);
+        if (count($res)>0){
+            $result["state"]="success";
+        }else{
+            $result["state"]="error";
+            $result["messages"][] = "OpenSSL package is needed";
+            $result["help"][] = "Please install the openssl package on your system.";
+        }
+        return $result;
+    }
 
 	private function checkDiskSpace(){
 		$result = array();
@@ -219,7 +239,7 @@ class InstallManager {
 		}
 		else {
 			$result["state"]="warning";
-			$result["messages"][] = "Recomended PHP $minPHPVersion or higher";
+			$result["messages"][] = "Recommended PHP $minPHPVersion or higher";
 			$result["help"][] = "";
 		}
 
@@ -236,7 +256,7 @@ class InstallManager {
 			if (!in_array($requiredModule, $modules)){
 				$result["state"] = "error";
 				$result["messages"][] = "PHP $requiredModule  extension is required";
-				$result["help"][] = "";
+				$result["help"][] = "Please install the php5-$requiredModule package on your system.";
 			}
 		}
 
@@ -285,10 +305,12 @@ class InstallManager {
 
 		$result["state"] = "success";
 		$result["name"] = "File permission";
-		$filesToCheck = array(self::STATUSFILE,
-								"/data",
-								"/logs",
-								"/conf");
+		$filesToCheck = array(	"/conf/_STATUSFILE",
+                                        "/data",
+                                        "/logs",
+                                        "/conf",
+                                        "/data/tmp");
+
 		foreach ($filesToCheck as $file) {
 			if (!file_exists(XIMDEX_ROOT_PATH.$file)){				
 				$result["state"] = "error";
@@ -405,5 +427,21 @@ class InstallManager {
 		$result = isset($response["data"])? $response["data"] : $hostName.uniqid($hostName);
 		Config::update("ximid",$result);
 	}
+
+	public function setLocalXid(){
+		$hostName = $_SERVER["HTTP_HOST"];
+		$uniqid=$hostName."_".uniqid();
+		Config::update("ximid",$uniqid);
+	}
+
+    public function setApiKey(){
+        $random = md5(rand());
+        exec('openssl enc -aes-128-cbc -k "'.$random.'" -P -md sha1',$res);
+        $key = explode("=",$res[1])[1];
+        $iv = explode("=",$res[2])[1];
+        $db = new DB();
+        $db->execute("UPDATE Config SET ConfigValue='".$key."' where ConfigKey='ApiKey'");
+        $db->execute("UPDATE Config SET ConfigValue='".$iv."' where ConfigKey='ApiIV'");
+    }
 }
 ?>

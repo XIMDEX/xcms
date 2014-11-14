@@ -78,11 +78,12 @@ class Action_modifylanguage extends ActionAbstract {
     	}
 
 
-		$this->reloadNode($node->get('IdParent') );
+		//$this->reloadNode($node->get('IdParent') );
 
-		$values = array('goback' => true, 'messages' => $this->messages->messages );
+		$values = array('goback' => true, 'messages' => $this->messages->messages,"parentID" => $node->get('IdParent'));
 
-		$this->render($values, NULL, 'messages.tpl');
+		//$this->render($values, NULL, 'messages.tpl');
+        $this->sendJSON($values);
     }
 }
 ?>

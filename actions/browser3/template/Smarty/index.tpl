@@ -38,8 +38,7 @@
 			<link type="text/css" href="{$href}" rel="stylesheet" />
 		{/foreach}
 		<link href='http://fonts.googleapis.com/css?family=Coustard:400,900' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700|Ubuntu+Condensed|Francois+One|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
-
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,400italic,700italic' rel='stylesheet' type='text/css'>
 		<!-- css widgets -->
 		%=css_widgets%
 
@@ -76,19 +75,38 @@
            <h1><img src="{$_URL_ROOT}/xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}" title="{t}Semantic content management with Ximdex{/t}" id="logo" /></h1>
             <div class="session-info">
 	           <!-- <img class="login-img" src="{$_URL_ROOT}/xmd/images/user_48.png" border="0" alt="Login" title="Login"/>-->
-	            <div class="language"><span class="current-language icon">{$user_locale.Lang}</span>
-	            <div class="selector_language">
-	            	<ul>
-							{section name=i loop=$locales}
+	            <div class="language">
+		            <div class="menu-header">
+		            	<span class="current-language icon">{$user_locale.Lang}</span>
+	            		<span class="login-name session-info-text">{$loginName}</span>
+	            	</div>
+	            	<div class="user-menu">
+		            	<ul>
+		            		<li class="icon language-icon">
+						<a>{t}Language{/t}</a>
+						<ul class="selector_language">
+						{section name=i loop=$locales}
 							<li {if ($user_locale.ID == $locales[i].ID || ( null == $user_locale && $locales[i].ID == $smarty.const.DEFAULT_LOCALE)  )} class="selected icon" {/if}>{$locales[i].Name|gettext} ({$locales[i].Lang})
-							<input type="hidden" name="language" value="{$locales[i].Code}" />
+								<input type="hidden" name="language" value="{$locales[i].Code}" />
 							</li>
-							{/section}
-	            	</ul>
+						{/section}
+						</ul>
+					</li>
+					<li class="icon config">
+						<a data-command="modifyuser" data-params="nodes[]={$userID}&nodeid={$userID}&method=index">{t}Modify your account{/t}</a>
+					</li>
+					<li class="icon help">
+						<a target="_blank" href="https://github.com/XIMDEX/ximdex/wiki">{t}Help{/t}</a>
+					</li>
+					<li class="icon contact">
+						<a target="_blank" href="mailto:help@ximdex.org">{t}Contact us{/t}</a>
+					</li>				
+					<li class="icon logout">
+						<a href="{$_URL_ROOT}?action=logout">{t}Logout{/t}</a>
+					</li>
+		            	</ul>
+		            </div>
 	            </div>
-	            	<span class="session-info-text login-name">{$loginName}</span>
-	            </div>
-	            <a class="session-info-text session-logout" href="{$_URL_ROOT}/xmd/loadaction.php?action=logout">{t}Logout{/t}</a>
             </div>
 			<spotlight id="mini-spotlight" />
 		</div>

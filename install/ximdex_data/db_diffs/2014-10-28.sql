@@ -1,0 +1,1 @@
+INSERT INTO `Config` VALUES (NULL, 'MaxItemsPerGroup',50);

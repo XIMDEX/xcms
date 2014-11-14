@@ -1,10 +1,14 @@
-<div class="vertical collapsable ximdexInput icon button type-selector" ng-class="{disabled: disabled}">
+<div class="vertical collapsable ximdexInput icon button type-selector #/style/#" ng-class="{disabled: disabled}">
     <div class="selection icon type-#/selectedOption[styleProp || 'icon']/#"></div>
     <ul class="options">
-        <li ng-repeat="option in options" 
+        <li ng-if="!menu" ng-repeat="option in options"
         	ng-click="selectOption(option)" 
         	class="type-#/option[styleProp || 'icon']/# option icon"
         	ng-class="{selected: selectedOption == option || selectedOption == option[selProp]}">
         	#/option[labelProp || "label"]/#</li>
+        <li ng-if="menu" ng-repeat="option in options"
+            class="type-#/option[styleProp || 'icon']/# option icon"
+            ng-class="{selected: selectedOption == option || selectedOption == option[selProp]}">
+            <a data="#/option['data']/#">#/option[labelProp || "label"]/#</a></li>
     </ul>
 </div>

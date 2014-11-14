@@ -105,4 +105,3 @@ class OutputStream {
         return (string) $this->stream;
     }
 }
-

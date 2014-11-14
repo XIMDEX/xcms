@@ -26,21 +26,36 @@
 
 
 ModulesManager::file("/services/ProjectService.class.php");
+ModulesManager::file("/actions/browser3/Action_browser3.class.php");
+
 
 class Action_welcome extends ActionAbstract {
     // Main method: shows the initial form
     function index () {
 		$values=array();
-		if ($this->tourEnabled(XSession::get("userID"), "welcome")){
-			$values[] = $this->addJs('/resources/js/start_tour.js','ximTOUR');
+		if ($_REQUEST['actionReload'] != 'true'){
+            if($this->tourEnabled(XSession::get("userID"), "welcome")){
+                $values[] = $this->addJs('/resources/js/start_tour.js','ximTOUR');
+            }
+            if (ModulesManager::isEnabled('ximTOUR')){
+                $values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
+                $values[] = $this->addJs('/resources/js/tour.js','ximTOUR');
+            }
+            $this->addJs('/actions/welcome/resources/js/index.js');
+            $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
-		if (ModulesManager::isEnabled('ximTOUR')){
-			$values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
-			$values[] = $this->addJs('/resources/js/tour.js','ximTOUR');			
-		}
+
 		$user = new User(XSession::get("userID"));
-		$this->addJs('/actions/welcome/resources/js/index.js');
-		$this->addCss('/actions/welcome/resources/css/welcome.css');
+
+
+	    //Getting idaction to check Create new project permissions for user
+        $user = new User(XSession::get("userID"));
+        $idNodeRoot = 10000;
+        $action = new Action();
+        $action->setByCommandAndModule("addfoldernode", $idNodeRoot);
+        $permissionsToCreateProject = $user->isAllowedAction($idNodeRoot, $action->get("IdAction"));
+
+        $values["permissionsToCreateProject"] = $permissionsToCreateProject;
         $values["projects_info"]=ProjectService::getProjectsInfo();
         $values["user"]=XSession::get("user_name");
         $values["docs"]=$user->getLastestDocs();

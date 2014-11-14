@@ -58,6 +58,12 @@
   -o-transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) all; }
 
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .props-server {
   background: #fff;
   -webkit-border-radius: 3px;
@@ -99,11 +105,13 @@
   padding-right: 2em;
   color: #4c4c4c; }
 
-.props-server .slide-element {
-  width: auto; }
+.channels-wrapper {
+  width: 80% !important; }
 
-.props-server .slide-element + .slide-element {
-  margin-left: .5em; }
+.props-server .slide-element {
+  width: auto;
+  display: inline-block;
+  margin: .5em 1em 1em 0; }
 
 .props-server .label-slide:not(.server_channel) {
   font-size: 1.4rem;
@@ -130,16 +138,18 @@
   padding: 0 1em .5em;
   margin-bottom: 1em;
   overflow: hidden;
-  position: relative; }
+  position: relative;
+  height: 4.6em; }
 
 .header-server > span {
   text-align: right;
   position: absolute;
   right: .5em;
-  top: .25em; }
+  top: 2em; }
 
 .server-title {
-  float: left; }
+  float: left;
+  width: 100%; }
 
 .inactive_field {
   display: none; }
@@ -168,3 +178,8 @@ fieldset.mdfsv_errors {
   margin-top: 1em;
   display: block;
   text-align: center; }
+
+.remote_url label, .remote_folder label, .port label, .host label, .login label, .password label {
+  display: block; }
+
+/*# sourceMappingURL=style.css.map */

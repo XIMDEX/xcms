@@ -23,102 +23,94 @@
  *  @version $Revision$
  *}
 
-<form method="post" action="{$action_url}" class="form_group_user">
-	<div class="action_header">
-		<h2>{t}Manage groups{/t}</h2>
-		<fieldset class="buttons-form">
-			{button
-			label="Save"
-			class="updategroupuser validate  btn main_action"
-			message="Subscriptions to groups will be updated. Would you like to continue?"}
-		</fieldset>
-	</div>
+<form ng-controller="XModifyUserGroupsCtrl" ng-init="init({$id_node})" method="post" action="{$action_url}" class="form_group_user">
 
-	<div class="action_content">
-		<h3>{t}Available groups{/t}</h3>
-			<input type="hidden" name="nodeid" value="{$id_node}"/>
-			<div class="associate-group">
-			{if ($filtered_groups)}
-		    	<div class="row-item col2-3">
+    <script type="text/ng-template" id="XModifyUserGroupsModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">{t}Are you sure to continue?{/t}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{t}This association will be deleted{/t}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">{t}OK{/t}</button>
+            <button class="btn btn-warning" ng-click="cancel()">{t}Cancel{/t}</button>
+        </div>
+    </script>
+
+    <div class="action_header">
+        <h2>{t}Manage groups{/t}</h2>
+        <fieldset class="buttons-form">
+
+        </fieldset>
+    </div>
+
+    <div class="action_content">
+        <h3>{t}Available groups{/t}</h3>
+        <div class="associate-group">
+                <div ng-show="filtered_groups.length>0" class="row-item col2-3">
 			 		<span class="col1-2 icon icon-group label-select">
-			 			<select name='newgroup' class='select-clean block'>
-			 				{foreach from=$filtered_groups item=group_info}
-							<option value="{$group_info.IdGroup}">
-								{$group_info.Name}
-							</option>
-							{/foreach}
-						</select>
+			 			<select  class='select-clean block' ng-model="newGroup"
+                                ng-options="group_info as group_info.Name for group_info in filtered_groups">
+
+                        </select>
 			 		</span>
 
 					<span class="col1-2 icon icon-rol label-select">
-						<select name='newrole' class='select-clean block'>
-						{foreach from=$all_roles item=rol_info}
-							<option value="{$rol_info.IdRole}">
-						 	{$rol_info.Name|gettext}
-						 	</option>
-						{/foreach}
-						</select>
+						<select  class='select-clean block' ng-model="newRole"
+                                ng-options="rol_info.IdRole as rol_info.Name for rol_info in all_roles">
+
+                        </select>
 					</span>
-					<div class="buttons-form row-item-actions actions-outside col1-3">
-			{button label="Add group" title="Add group" class="validate icon add-btn  btn-unlabel-rounded btn"}{*message="You are adding a new subscription. Would you like to continue?"*}
-		</div>
-			</div>
+                    <div class="buttons-form row-item-actions actions-outside col1-3">
+                        <button type="button" class="add-btn icon btn-unlabel-rounded"
+                                ng-click="addGroup()"
+                                >
+                            <span>{t}Add group{/t}</span>
+                        </button>
+                    </div>
+                </div>
 
+                <p ng-hide="filtered_groups.length>0">{t}There are not{/t} <span ng-if="user_groups_with_role.length>0">{t}more{/t} </span>{t}available groups to be associated with the user{/t}</p>
+        </div>
+        <h3>#/user_name/# {t}belongs to the next groups{/t}:</h3>
+        <div ng-if="user_groups_with_role.length>0" class="change-group">
 
-			{else}
-		<p>{t}There are not{/t} {if ($user_groups_with_role)}{t}more{/t}{/if} {t}available groups to be associated with the user{/t}</p>
-			{/if}
-	</div>
-		<h3>{t}Grupos a los que pertenece XXX{/t}</h3>
-		{if ($user_groups_with_role )}
-			<div class="change-group">
+                <div ng-repeat="user_group_info in user_groups_with_role" class="row-item icon">
 
-			  {foreach from=$user_groups_with_role item=user_group_info}
-					<div class="row-item icon">
-					{if ($user_group_info.IdGroup != "101")} {* if not group general *}
-					<input name='checked[]' type='checkbox' value='{$user_group_info.IdGroup}' />
-					{else}
-					<input name='checked[]' type='checkbox' value='{$user_group_info.IdGroup}' disabled="true" />
-					{/if}
-
-			 		<span class="col1-3">
-						{$user_group_info.Name}
+                    <span class="col1-3">
+						#/user_group_info.Name/#
 					</span>
-			     		<input type='hidden' name='idGroups[]' value='{$user_group_info.IdGroup}'>
-					<input type='hidden' name='idRoleOld[]' value='{$user_group_info.IdRole}'>
-			 		<span class="col1-3">
-					<select name='idRole[]' class='select-clean block'>
+                    <span class="col1-3">
+                        <select name='idRole' class='select-clean block'
+                                ng-model="user_groups_with_role[$index].IdRole"
+                                ng-change="user_groups_with_role[$index].dirty=true"
+                                ng-options="rol_info.IdRole as rol_info.Name for rol_info in all_roles">
 
-					{foreach from=$all_roles item=rol_info}
-						<option value="{$rol_info.IdRole}"{if $rol_info.IdRole == $user_group_info.IdRole} selected="selected"{/if}>
-						{$rol_info.Name|gettext}
-						</option>
-					{/foreach}
-					</select>
-				</span>
+                        </select>
+                    </span>
 
-					{if ($user_group_info.IdGroup != "101")} {* if not group general *}
-					<div class="buttons-form row-item-actions col1-3">
+                    <div class="buttons-form row-item-actions col1-3">
+                        <span ng-show="user_groups_with_role[$index].dirty">
 
-					{button
-						label="Delete associations"
-						class="deletegroupuser validate btn icon btn-unlabel-rounded delete-btn"
-						message="If some subscription is selected it will be deleted. Are you sure you want to continue?"}
-					{else}
+                            <button type="button" class="recover-btn icon btn-unlabel-rounded"
+                                    ng-click="update($index)"
+                                    >
+                                <span>{t}Update{/t}</span>
+                            </button>
+                        </span>
+                        <span ng-if="user_group_info.IdGroup != '101'">
+                            <button type="button" class="delete-btn icon btn-unlabel-rounded"
+                                    ng-click="openDeleteModal($index)"
+                                    >
+                                <span>{t}Delete{/t}</span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+        </div>
+    </div>
 
-					{/if}
-					</div>
-					</div>
-
-		        {/foreach}
-					</div>	{button
-			label="Delete associations"
-			class="deletegroupuser validate btn btn-unlabel-rounded"
-			message="If some subscription is selected it will be deleted. Are you sure you want to continue?"}
-
-			</div>
-
-		{else}
-					<p>{t}There are no groups associated with user yet{/t}</p>
-		{/if}</div>
+    <p ng-if="!user_groups_with_role">{t}There are no groups associated with user yet{/t}</p>
+    </div>
 </form>

@@ -21248,8 +21248,7 @@ var ChannelsToolBox = Object.xo_create(FloatingToolBox, {
 		var channelId = this.select.options[this.select.selectedIndex].value;
 		this.editor.getXimDocument()._channelId = channelId;
 		var docxap = this.editor.getXimDocument().getRootElement();
-		docxap.attributes['canal'] = newChannel;
-		// TODO: set 'canales' & 'canales_desc' attributes?
+		docxap.attributes['channel'] = newChannel;
 
 		this.setActionDescription(_('Channel changed to') + ' ' + newChannel);
 		this.editor.logMessage(_('Channel changed to') + ' ' + newChannel);

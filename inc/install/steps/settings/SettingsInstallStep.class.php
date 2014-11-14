@@ -41,6 +41,22 @@ class SettingsInstallStep extends GenericInstallStep {
 		
 	}
 
+	public function setId(){
+        if(strlen(Config::getValue("ximid"))>2){
+            $result["localhash"]=false;
+            $this->sendJSON($result);
+            return;
+        }
+		try {
+			$this->installManager->setXid();
+			$result["localhash"]=false;
+			$this->sendJSON($result);
+		} catch (ErrorException $e) {
+			$this->installManager->setLocalXid();
+			$result["localhash"]=true;
+			$this->sendJSON($result);
+		}
+	}
 
 	public function initializeSettings(){
 		$password = $this->request->getParam("pass");
@@ -54,8 +70,8 @@ class SettingsInstallStep extends GenericInstallStep {
 		Config::update("UrlRoot", $urlRoot);
 		Config::update("locale", $language);
 		$this->installManager->setLocale($language);
-		$this->installManager->setXid();
 		$this->installManager->insertXimdexUser($password);
+        $this->installManager->setApiKey();
 		$this->loadNextAction();
 		$result["success"] = true;
 		$this->sendJSON($result);

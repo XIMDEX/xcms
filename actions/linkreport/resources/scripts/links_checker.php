@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -31,33 +32,57 @@ if (!defined('XIMDEX_ROOT_PATH'))
 include_once(XIMDEX_ROOT_PATH . "/inc/db/db.inc");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/Links.inc");
 
-$dbObj = new DB();
-$sql = "SELECT IdLink,Url FROM Links";
-$dbObj->Query($sql);
+function main ($argc, $argv){
+    // Command line mode call
+	if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
+            $idlink = $argv[1];
+            $link = new Link($idlink);
+            if ($link->get("IdLink")){
+                $checkResult = checkLink($link->get("Url"))? Link::LINK_OK: Link::LINK_FAIL;;
+                updateLinkState($idlink, $checkResult);
+            }
+        }else{
+            $dbObj = new DB();
+            $sql = "SELECT IdLink,Url FROM Links";
+            $dbObj->Query($sql);
 
-while (!$dbObj->EOF) {
-
-        $idlink = $dbObj->GetValue('IdLink');
-        $url = $dbObj->GetValue('Url');
-echo "\n\n[".date("H:i:s d/m/y")."] (Id: ".$idlink.") -> ".$url;
-        $headers=get_headers($url,1);
-	if($headers[0]!=""){
-		echo "\nStatus:".$headers[0];
-	        $pos1 = strpos($headers[0], '200');
-        	$pos2 = strpos($headers[0], '301');
-        	$pos3 = strpos($headers[0], '302');
-        	if(($pos1!==false)||($pos2!==false)||($pos3!==false)){
-        	        $st="OK";
-		}
-	}
-       	else{
-               	$st="FAIL";
-       	}
-
-       	$dbObj2 = new DB();
-       	$sql2 = "UPDATE Links SET ErrorString='$st',CheckTime=".time()." WHERE IdLink=$idlink";
-       	$dbObj2->Query($sql2);
-        $dbObj->Next();
+            while (!$dbObj->EOF) {
+                $idlink = $dbObj->GetValue('IdLink');
+                $url = $dbObj->GetValue('Url');
+                $checkResult = checkLink($url)? Link::LINK_OK: Link::LINK_FAIL;
+                updateLinkState($idlink, $checkResult);
+                $dbObj->Next();
+            }
+        }
+        die();
 }
-?>
 
+function checkLink($url){
+    $result = false;
+    $link = new Link($idLink);
+    if ($link->get("IdLink")){
+        $url = $link->get("Url");
+        echo "\n\n[".date("H:i:s d/m/y")."] (Id: ".$idlink.") -> ".$url;
+    }
+    
+    $headers=get_headers($url,1);
+    if($headers[0]!=""){
+            echo "\nStatus:".$headers[0];
+            $pos1 = strpos($headers[0], '200');
+            $pos2 = strpos($headers[0], '301');
+            $pos3 = strpos($headers[0], '302');
+            if(($pos1!==false)||($pos2!==false)||($pos3!==false)){
+                $result = true;
+            }
+    }
+    return $result;
+}
+
+function updateLinkState($idLink, $errorString){
+    $dbObj = new DB();
+    $sql = "UPDATE Links SET ErrorString='$errorString',CheckTime=".time()." WHERE IdLink=$idLink";
+    $dbObj->Query($sql);
+}
+
+main($argc, $argv);
+?>

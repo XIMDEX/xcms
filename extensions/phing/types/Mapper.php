@@ -203,5 +203,3 @@ class Mapper extends DataType {
         }
     }
 }
-
-

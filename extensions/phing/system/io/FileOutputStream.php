@@ -68,4 +68,3 @@ class FileOutputStream extends OutputStream {
         return $this->file->getPath();
     }
 }
-

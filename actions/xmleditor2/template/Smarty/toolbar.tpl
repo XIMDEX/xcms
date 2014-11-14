@@ -27,15 +27,20 @@
 	<span id="kupu-tb-buttons" class="kupu-tb-buttons">
 	
 		{* File operations *}
-		<span class="kupu-tb-buttongroup">
+		<span class="kupu-tb-buttongroup" >
 			<button type="button" class="kupu-save" id="kupu-save-button" xim:title="{t}Save{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Save{/t}</span>
 			</button>
-			<button type="button" class="kupu-prevdoc" id="kupu-prevdoc-button" i18n:attributes="title" xim:title="{t}Preview{/t}" accesskey="x">
-				&#xA0;
-				<span class="triangle"></span><span class="tooltip">{t}Preview{/t}</span>
-			</button>
+            <xim-select id="kupu-prevdoc-menu" class="kupu-preview"
+                        xim-options='{$channels}'
+                        xim-label-prop="text"
+                        ng-model="IdChannel"
+                        xim-label-href="href"
+                        xim-menu="true"
+                        xim-style="preview-dropdown"
+                        >
+            </xim-select>
 			<button type="button" class="kupu-publicate" id="kupu-publicate-button" xim:title="{t}Publicate{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Publish{/t}</span>

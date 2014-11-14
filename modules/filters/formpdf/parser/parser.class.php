@@ -94,16 +94,16 @@ class Parser {
 	}
 
 	function build() {
-		$miDocumento =& new DOMIT_Document();
-		$exito = $miDocumento->loadXML($this->input_file);
+		$mydoc =& new DOMIT_Document();
+		$exito = $mydoc->loadXML($this->input_file);
 
 		if (!$exito) {
 			//echo "Error while loading XML";
 			XMD_Log::write("Error while loading XML", 8);
 		}
 		else {
-			$doc_element = $miDocumento->documentElement;
-			if ($miDocumento->documentElement->hasChildNodes()) {
+			$doc_element = $mydoc->documentElement;
+			if ($mydoc->documentElement->hasChildNodes()) {
 				/**
 				 * Generates the styles.tex translating to 'latex macros' all the elements of the style sheet				 * 					and then can call its on each element creation which contains this style.
 				 */
@@ -114,18 +114,18 @@ class Parser {
 				$style = new Style($nodes);
 				$style->build();
 
-				$miDocumento = & $miDocumento->documentElement;
+				$mydoc = & $mydoc->documentElement;
 
 				$handler = fopen($this->aux, "w");
 				// Document construction
-				$documento = new document();
+				$document = new document();
 
-				$documento->renderer =& new latex_document();
-				$documento->open_document($handler, $doc_element);
-				$this->unit = $documento->getUnit();
+				$document->renderer =& new latex_document();
+				$document->open_document($handler, $doc_element);
+				$this->unit = $document->getUnit();
 				// put_javascript is in latex.class.php and latex_javascript.class.php
-	//			$documento->put_javascript($miDocumento, $handler);
-	//			$documento->open_form($handler);
+	//			$document->put_javascript($mydoc, $handler);
+	//			$document->open_form($handler);
 
 				// Obtaining of canvas...
 				$canvas = $doc_element->getElementsByTagName("canvas");
@@ -158,10 +158,10 @@ class Parser {
 				$this->scanNodes($canvas, $blockAnalizer);
 
 				// It closes the form
-	//			$documento->close_form($handler);
+	//			$document->close_form($handler);
 
 				// It closes the document
-				$documento->close_document($handler);
+				$document->close_document($handler);
 
 				fclose($handler);
 

@@ -42,7 +42,7 @@ class Versions_ORM extends GenericData   {
 				'IdVersion' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
 				'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
 				'Version' => array('type' => "int(12)", 'not_null' => 'true'),
-				'SubVersion' => array('type' => "tinyint(3)", 'not_null' => 'true'),
+				'SubVersion' => array('type' => "int(12)", 'not_null' => 'true'),
 				'File' => array('type' => "varchar(255)", 'not_null' => 'true'),
 				'IdUser' => array('type' => "int(12)", 'not_null' => 'false'),
 				'Date' => array('type' => "int(14)", 'not_null' => 'false'),

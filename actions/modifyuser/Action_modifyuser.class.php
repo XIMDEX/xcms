@@ -33,6 +33,11 @@ class Action_modifyuser extends ActionAbstract {
 	    $idNode = $this->request->getParam('nodeid');
 		$user = new User($idNode);
 
+        $idRegisteredUser = XSession::get('userID');
+        $registeredUser = new User($idRegisteredUser);
+
+        $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
+
 		$locale = new XimLocale();
 		$locales = $locale->GetEnabledLocales();
 
@@ -50,7 +55,8 @@ class Action_modifyuser extends ActionAbstract {
 			'roles' => $roles,
 			'user_locale' => $user->get('Locale'),
 			'locales' => $locales,
-			'messages' => $this->messages->messages
+			'messages' => $this->messages->messages,
+            'canModifyUserGroup' => $canModifyUserGroup
             );
 
 		$this->render($values, null, 'default-3.0.tpl');
@@ -70,9 +76,20 @@ class Action_modifyuser extends ActionAbstract {
 	        $this->render($values, NULL, 'messages.tpl');
 	    }
 
+        $idRegisteredUser = XSession::get('userID');
+        $registeredUser = new User($idRegisteredUser);
+
+        $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
+
         $group = new Group();
         $group->SetID($group->GetGeneralGroup());
-        $group->ChangeUserRole($idNode,$general_role);
+        $group->GetUserList();
+        $roleOnNode = $group->GetRoleOnNode($idNode);
+        if($canModifyUserGroup){
+            $group->ChangeUserRole($idNode,$general_role);
+        }elseif($roleOnNode != $general_role){
+            $this->messages->add(_("You don't have enough permissions to modify the user role"), MSG_TYPE_WARNING);
+        }
 
     	$user = new User($idNode);
     	$user->set('Name', $name);
@@ -87,8 +104,8 @@ class Action_modifyuser extends ActionAbstract {
     	}
 
     	$this->messages->mergeMessages($user->messages);
-		$this->reloadNode( $node->get('IdParent') );
-		$values = array('messages' => $this->messages->messages, "parentID" => $idNode );
+		//$this->reloadNode( $node->get('IdParent') );
+		$values = array('messages' => $this->messages->messages);
 		$this->sendJSON($values);
     }
 }

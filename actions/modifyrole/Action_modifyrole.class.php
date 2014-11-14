@@ -27,7 +27,7 @@
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 
 class Action_modifyrole extends ActionAbstract {
-   
+
 	/** 
 	* Main method. Shows initial form.
 	*/
@@ -64,7 +64,7 @@ class Action_modifyrole extends ActionAbstract {
         	$allStates[] = array('IdState' => $idPipeStatus, 'Name' => $pipeStatus->get('Name'));
        	}
 
-		$action = new Node();
+		/*$action = new Node();
 		$allActions = $action->find("IdAction, Command, IdNodeType, Module, Name");
 		$permisionsToEdit = array();
 		foreach ($allActions as $key => $actionInfo){
@@ -92,44 +92,8 @@ class Action_modifyrole extends ActionAbstract {
 			}
 			
 
-		}
-		$nodeType = new NodeType();
-		$allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublicable, Module');
-		reset($allNodeTypes);
-		foreach ($allNodeTypes as $key => $nodeTypeInfo){
+		}*/
 
-			//Skipping permissions for actions in disabled modules.
-			if (!empty($nodeTypeInfo['Module']) &&
-				!ModulesManager::isEnabled($nodeTypeInfo['Module'])) {
-				unset($allNodeTypes[$key]);
-				continue;
-			}
-
-			$action = new Action();
-			$allNodeTypes[$key]['actions'] = $action->find('IdAction, Name, Module, Command',
-				'IdNodeType = %s', array($nodeTypeInfo['IdNodeType']));
-			if (is_array($allNodeTypes[$key]['actions'])) {
-				foreach ($allNodeTypes[$key]['actions'] as $actionKey => $actionInfo) {
-
-					if (!empty($actionInfo['Module']) &&
-						!ModulesManager::isEnabled($actionInfo['Module'])) {
-						unset($allNodeTypes[$key]['actions'][$actionKey]);
-						continue;
-					}
-
-					if ($nodeTypeInfo['IsPublicable'] > 0) {
-						foreach ($allStates as $stateInfo) {
-							$allNodeTypes[$key]['actions'][$actionKey]['states'][$stateInfo['IdState']] = $role->HasAction(
-									                            $actionInfo['IdAction'], $stateInfo['IdState'], $selectedPipeline
-									                            );
-						}
-					} else {
-						$allNodeTypes[$key]['actions'][$actionKey]['state'] = $role->HasAction($actionInfo['IdAction'], NULL, $selectedPipeline);
-					}
-
-				}
-			}
-		}
 		$sql = 'select id, Pipeline from Pipelines where IdNode > 0 order by id asc limit 1';
 		$db = new DB();
 		$db->query($sql);
@@ -141,14 +105,14 @@ class Action_modifyrole extends ActionAbstract {
 		$values = array('name' => $role->get('Name'),
 						'description' => $role->get('Description'),
 						'permissions' => $allPermissionData,
-						'actions' => $permisionsToEdit,
-                        'nodetypes' => $allNodeTypes,
+		//				'actions' => $permisionsToEdit,
+                        'nodetypes' => $this->getAllNodeTypes($allStates,$role,$selectedPipeline),
 						'workflow_states' => $allStates,
 						'pipelines' => $pipelines,
 						'selected_pipeline' => $selectedPipeline,
 						'go_method' => 'modifyrole'
 		);
-		error_log(print_r($allNodeTypes, true));
+		//error_log(print_r($allNodeTypes, true));
 		$this->render($values, null, 'default-3.0.tpl');
     }
 
@@ -200,7 +164,67 @@ class Action_modifyrole extends ActionAbstract {
 			'goback' => true,
 			'messages' => $this->messages->messages
 		);
-		$this->render($values);
+		//$this->render($values);
+		$this->sendJSON($values);
 	}
+
+    /*
+     * Gets the permissions of each nodetype
+     */
+    protected function getAllNodeTypes($allStates,$role,$selectedPipeline){
+
+        for($i=5003;$i<5012;$i++){
+            $groupeds[$i]=_("Control center permissions");
+        }
+
+        $nodeType = new NodeType();
+        $allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublicable, Module');
+        reset($allNodeTypes);
+        for($i=0;$i<count($allNodeTypes);$i++){
+
+            //Skipping permissions for actions in disabled modules.
+            if (!empty($allNodeTypes[$i]['Module']) &&
+                !ModulesManager::isEnabled($allNodeTypes[$i]['Module'])) {
+                unset($allNodeTypes[$i]);
+                continue;
+            }
+
+            $action = new Action();
+            $allNodeTypes[$i]['actions'] = $action->find('IdAction, Name, Module, Command',
+                'IdNodeType = %s', array($allNodeTypes[$i]['IdNodeType']));
+            if (is_array($allNodeTypes[$i]['actions'])) {
+                foreach ($allNodeTypes[$i]['actions'] as $actionKey => $actionInfo) {
+
+                    if (!empty($actionInfo['Module']) &&
+                        !ModulesManager::isEnabled($actionInfo['Module'])) {
+                        unset($allNodeTypes[$i]['actions'][$actionKey]);
+                        continue;
+                    }
+
+                    if ($allNodeTypes[$i]['IsPublicable'] > 0) {
+                        foreach ($allStates as $stateInfo) {
+                            $allNodeTypes[$i]['actions'][$actionKey]['states'][$stateInfo['IdState']] = $role->HasAction(
+                                $actionInfo['IdAction'], $stateInfo['IdState'], $selectedPipeline
+                            );
+                        }
+                    } else {
+                        $allNodeTypes[$i]['actions'][$actionKey]['state'] = $role->HasAction($actionInfo['IdAction'], NULL, $selectedPipeline);
+                    }
+
+                }
+            }
+            if(isset($groupeds[$allNodeTypes[$i]['IdNodeType']])){
+                $allNodeTypes[$i]['Description']=$groupeds[$allNodeTypes[$i]['IdNodeType']];
+                for($j=$i-1;$j>=0;$j--){
+                    if(isset($allNodeTypes[$j])&&$allNodeTypes[$j]["Description"]==$groupeds[$allNodeTypes[$i]['IdNodeType']]){
+                        $allNodeTypes[$i]["actions"]=array_merge($allNodeTypes[$j]["actions"],$allNodeTypes[$i]["actions"]);
+                        unset($allNodeTypes[$j]);
+                        continue;
+                    }
+                }
+            }
+        }
+        return $allNodeTypes;
+    }
 }
 ?>

@@ -51,7 +51,7 @@ class InstallDataBaseManager extends InstallManager{
 	/**
 	 * Build FastTraverse and full path to every node in Ximdex	 
 	 */
-	public function connect($host, $port, $user, $pass, $name=false){
+	public function connect($host, $port, $user, $pass=NULL, $name=false){
 		$myPid = getmypid();
 		$result = false;
 		if (!isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) 
@@ -125,7 +125,7 @@ class InstallDataBaseManager extends InstallManager{
 				error_log("a $result".print_r($result, true)." $query ".$this->dbConnection->error);
 			}
 		}else{
-			error_log("CREATE DATABASE");
+			error_log("ERROR: CREATING DATABASE.");
 		}
 		return $result;
 	}
@@ -136,7 +136,7 @@ class InstallDataBaseManager extends InstallManager{
 			$query = sprintf("drop database %s", $name);
 			$result = $this->dbConnection->query($query);
 		}else{
-			error_log("DELETE DATABASE");
+			error_log("ERROR: DELETING DATABASE.");
 		}
 		return $result;
 	}
@@ -200,7 +200,6 @@ class InstallDataBaseManager extends InstallManager{
 		$result = false;
 		if ($this->dbConnection){
 			$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%'" ;
-			error_log($query);
 			$result = $this->dbConnection->query($query);
 			$result = $result && $this->dbConnection->query("FLUSH privileges");
 		}

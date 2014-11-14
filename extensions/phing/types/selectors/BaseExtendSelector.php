@@ -59,4 +59,3 @@ abstract class BaseExtendSelector extends BaseSelector implements ExtendFileSele
         return $this->parameters;
     }
 }
-

@@ -23,4 +23,3 @@
  * @package phing.system.lang
  */
 class SecurityException extends Exception {}
-

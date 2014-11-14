@@ -23,49 +23,37 @@
  *  @version $Revision$
  *}
 
+<form method="post" id="msr_action" ng-controller="XModifyStatesRoleCtrl">
+    <div class="action_header">
+        <h2>{t}Modify asociated status of role{/t}</h2>
+        <fieldset ng-init="label='{t}Save changes{/t}'; loading=false;" class="buttons-form">
+            <button class="button_main_action"
+                    xim-button
+                    xim-loading="loading"
+                    xim-label="label"
+                    xim-progress=""
+                    xim-disabled=""
+                    ng-click="saveChanges();">
+        </fieldset>
+    </div>
 
-<form method="post" id="msr_action" action="{$action_add}">
-	<div class="action_header">
-		<h2>{t}Add status to role{/t}</h2>
-					<fieldset class="buttons-form">
-	{button label="Add status" class="validate btn main_action" }
-			</fieldset>
-	</div>
-		<div class="action_content">
-			<fieldset>
-			<ol>
-			<li>
-				<label for="id_state" class="aligned">{t}Status{/t}</label>
-				<select name="id_state" id="id_state" class="validable not_empty">
-			<option value="">{t}Select a status{/t}</option>
-				{foreach from=$all_states key=id_state item=state_name}
-			<option value="{$id_state}">{$state_name|gettext}</option>
-				{/foreach}
-				</select>
-				</li></ol>
-				</fieldset>
-		</div>
+    <div ng-view ng-show="thereAreMessages" class="slide-item #/messageClass/# message">
+        <p>#/message/#</p>
+    </div>
 
-</form>
-<form method="post" id="msrd_action" action="{$action_delete}">
-	<div class="action_header">
-<h2>{t}Delete-Status{/t}</h2>
-			<fieldset class="buttons-form">
-			{button label="Delete status" class="validate btn main_action" message="Would you like to delete this status of the role?"}
-
-		</fieldset>
-	</div>
-<div class="action_content"><fieldset>
-	<ol>
-		{foreach from=$role_states key=id_state item=state_name}
-		<li>
-		<input type="checkbox" name="states[]" value="{$id_state}">
-
-		{$state_name|gettext}
-	</li>
-		{/foreach}
-		</ol>
-		</fieldset>
-		</div>
-
+    <div class="action_content" ng-init='idRole={$idRole}; all_states={$all_states};'>
+        <p>{t}Select the status asociated with the role{/t}:</p>
+        <fieldset>
+            <div class="col1-2">
+                <p ng-repeat="state in all_states">
+                    <span>
+                        <input type="checkbox" class="hidden-focus" id="#/state.name/#_#/idRole/#"
+                               ng-model="state.asociated"/>
+                        <label for="#/state.name/#_#/idRole/#"
+                               class="checkbox-label icon">#/state.name/#</label>
+                    </span>
+                </p>
+            </div>
+        </fieldset>
+    </div>
 </form>

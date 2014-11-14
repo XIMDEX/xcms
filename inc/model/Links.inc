@@ -45,7 +45,13 @@ require_once (XIMDEX_ROOT_PATH . '/inc/model/iterators/I_LinkDescriptions.class.
 class Link extends Links_ORM {
 
 	var $actsAs = array('searcheable' => array('field' => 'IdLink'));
-
+        
+        
+        const LINK_FAIL="fail";
+        const LINK_OK="ok";
+        const LINK_WAITING="waiting";
+        const LINK_NOT_CHECKED = "not checked";
+        
 	function checkUrl($url, $name = null) {
 
 		$conditions = array('conditions' => array('Url' => $url));

@@ -93,5 +93,3 @@ class IniFileTokenReader extends TokenReader {
         $this->section = (string) $str;
     }
 }
-
-

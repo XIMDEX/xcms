@@ -83,7 +83,8 @@ html{
 }
 
 body {
-	font-family: 'Ubuntu Condensed', Verdana, Arial, Geneva, sans-serif  !important;
+	//font-family: 'Ubuntu Condensed', Verdana, Arial, Geneva, sans-serif  !important;
+	font-family: $t_text;
 	background-color: #006b6c;
 	color: #6b6b6b;
 	overflow: hidden;
@@ -93,292 +94,385 @@ body {
 	box-sizing: border-box;
 }
 
-
-#ximdex-splash {
-
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 9;
-	width: 100%;
-	height: 100%;
-	background-color: #fff;
-	background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom,
-				url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
-	overflow: auto;
+strong{
+	font-weight: 600;
 }
 
 
-#ximdex-splash .loading
-{
-	width: 98%;
-	height: 22px;
-	margin: 15px 1%;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	border: 1px solid #4f4f4f;
+/*------------------------------------*\
+	$Splash
+\*------------------------------------*/
 
-}
+	#ximdex-splash {
 
-.loading p{
-	color: #9ac7c8;
-	text-shadow: 0 1px 0 #252525;
-	position: absolute;
-	top: 20px;
-	left: 25px;
-	font-size: 14px;
-	font-size: 1.4rem;
-}
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		z-index: 9;
+		width: 100%;
+		height: 100%;
+		background-color: #fff;
+		background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom,
+					url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
+		overflow: auto;
+	}
 
 
+	#ximdex-splash .loading{
+		width: 98%;
+		height: 22px;
+		margin: 15px 1%;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		border: 1px solid #4f4f4f;
+		overflow: hidden;
 
-.loading .progress{
-	-moz-box-shadow: 0 1px 0 #9c9c9c inset;
-	-webkit-box-shadow: 0 1px 0 #9c9c9c inset;
-	box-shadow: 0 1px 0 #9c9c9c inset;
-	display: inline-block;
-	height: inherit;
-	background: #4f4f4f url(../../../../xmd/images/browser/splash/bg-pattern-grey.png) repeat;
-	max-width: 100%;
-}
+	}
 
-.ximdex_splash_content {
-
-	width: 80%;
-	margin: 5.625em auto;
-}
-.ximdex_splash_content h2{
-
-	font-family: Coustard, serif;
-	font-size: 25px;
-	font-size: 2.5rem;
-	text-transform: none;
-	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.4), 0 -2px 1px rgba(0, 0, 0, 0.1), 0 0 2px #FFFFFF;
-	margin: 0 0 0.72em 2%;
-	color: #898989;
-}
-
-.ximdex_splash_content li{
-	list-style: none;
-	width: 50%;
-	padding: 4px 2% 15px;
-	font-size: 16px;font-size: 1.6rem;
-	line-height: 1.4;
-	color: #9f9f9f;
-}
+	.loading p{
+		color: #9ac7c8;
+		text-shadow: 0 1px 0 #252525;
+		position: absolute;
+		top: 17px;
+		left: 25px;
+		font-size: 14px;
+		font-size: 1.4rem;
+	}
 
 
 
+	.loading .progress{
+		-moz-box-shadow: 0 1px 0 #9c9c9c inset;
+		-webkit-box-shadow: 0 1px 0 #9c9c9c inset;
+		box-shadow: 0 1px 0 #9c9c9c inset;
+		display: inline-block;
+		height: inherit;
+		background: #4f4f4f url(../../../../xmd/images/browser/splash/bg-pattern-grey.png) repeat;
+		max-width: 100%;
+	}
 
-.ximdex_splash_content strong{
-	font: normal 1em Coustard;
-	font-size: 20px;
-	font-size: 2rem;
-	display: block;
-	background: url(../../../../xmd/images/browser/splash/dots.png) no-repeat left center;
-	padding: 0.6em 0 4px 3em;
-	border-top: 1px solid #d9d9d9;
-	-moz-box-shadow: 0 2px 0 #fff inset;
-	-webkit-box-shadow: 0 2px 0 #fff inset;
-	box-shadow: 0 2px 0 #fff inset;
-	color: #626262;
-}
+	.ximdex_splash_content {
 
-.ximdex_splash_content li:first-child strong{
-	border-top: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-}
+		width: 80%;
+		margin: 5.625em auto;
+	}
+	.ximdex_splash_content h2{
 
-.ximdex_splash_content .more{
-	text-align: right;
-	width: 50%;
-	margin-top: 45px;
-}
-.more a{
-	background: #6d6d6d;
-	color: #E4E4E4;
-    font-family: Coustard,serif;
-    padding: 7px 12px 5px;
-    text-transform: uppercase;
-    -moz-border-radius: 12px;
-    -webkit-border-radius: 12px;
-    border-radius: 12px;
-    text-shadow: 0 1px 0 #252525;
-	font-size: 10px;
-	font-size: 1rem;
+		font-family: Coustard, serif;
+		font-size: 25px;
+		font-size: 2.5rem;
+		text-transform: none;
+		text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.4), 0 -2px 1px rgba(0, 0, 0, 0.1), 0 0 2px #FFFFFF;
+		margin: 0 0 0.72em 2%;
+		color: #898989;
+	}
 
-}
+	.ximdex_splash_content li{
+		list-style: none;
+		width: 50%;
+		padding: 4px 2% 15px;
+		font-size: 16px;font-size: 1.6rem;
+		line-height: 1.4;
+		color: #9f9f9f;
+	}
 
 
-.more a:hover{
-	background: #484848;
-}
-
-button::-moz-focus-inner{
-	border: 0px;
-}
-#header {
-	background: url('../../../../xmd/images/header/cabecera_fnd.png') repeat left top;
-	height: 38px;
-	/*float: left;*/
-
-	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
-	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
-	box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
-	border-top: 1px solid #006b6c;
-}
-
-#header h1{
-	float: left;
-	margin-top: 3px;
-}
-
-#body {
-	position: absolute;
-	top: 40px;
-	bottom: 0px;
-	width: 100%;
-	margin: 0px;
-}
-
-#body .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
-	font-family: 'Ubuntu Condensed';
-
-}
-
-.browser-window {
-	height: 100%;
-}
-
-.browser-window-content {
-	height: 100%;
-	width: 100%;
-	margin: 0px;
-}
-
-.hidden{
-		display:none;
-}
-.novisible{
-	visibility: hidden;
-}
 
 
-.session-info{
-	float: right;
-	margin-right: 200px;
-	font-size: 1.3rem;
-	text-transform: uppercase;
-	margin-top: 1.5em;
-}
+	.ximdex_splash_content strong{
+		font: normal 1em Coustard;
+		font-size: 20px;
+		font-size: 2rem;
+		display: block;
+		background: url(../../../../xmd/images/browser/splash/dots.png) no-repeat left center;
+		padding: 0.6em 0 4px 3em;
+		border-top: 1px solid #d9d9d9;
+		-moz-box-shadow: 0 2px 0 #fff inset;
+		-webkit-box-shadow: 0 2px 0 #fff inset;
+		box-shadow: 0 2px 0 #fff inset;
+		color: #626262;
+	}
 
-.session-info .language, .session-logout{
-	display: inline-block;
-	vertical-align: top;
-	color: #e8e8e8;
-	position: relative;
-	margin-right: 1em;
-}
+	.ximdex_splash_content li:first-child strong{
+		border-top: none;
+		-moz-box-shadow: none;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
 
-.session-info .language::after{
-	content: ' | ';
-	padding-left: 1em;
-}
+	.ximdex_splash_content .more{
+		text-align: right;
+		width: 50%;
+		margin-top: 45px;
+	}
+	.more a{
+		background: #6d6d6d;
+		color: #E4E4E4;
+	    font-family: Coustard,serif;
+	    padding: 7px 12px 5px;
+	    text-transform: uppercase;
+	    -moz-border-radius: 12px;
+	    -webkit-border-radius: 12px;
+	    border-radius: 12px;
+	    text-shadow: 0 1px 0 #252525;
+		font-size: 10px;
+		font-size: 1rem;
 
-.current-language{
-	position: relative;
-	z-index: 2;
-	color: $c_mainlight;
-	font-size: 1.1rem;
-	font-weight: bold;
-	margin-right: .8em;
-	top: -1em;
-	cursor: pointer;
-}
+	}
 
 
-.current-language::after,
-.current-language::before {
-	color: #e8e8e8;
-}
+	.more a:hover{
+		background: #484848;
+	}
 
-.current-language::before{
-	font-size: 1.3em;
-	position: absolute;
-	left: -1em;
-	top: .8em;
-	height: 2em;
-	width: 3em;
+	button::-moz-focus-inner{
+		border: 0px;
+	}
 
-}
-.current-language::after{
-	position: absolute;
-	z-index: -1 !important;
-	font-size: 1.6em;
-	top: 0;  
-	right: -#{(4/18)}em ;
-}
-.selector_language{
-	display: none;
-	white-space: nowrap;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
-	text-transform: none;
-	-moz-box-shadow: 0 2px 0 rgba(0,0,0,.3);
-	-webkit-box-shadow: 0 2px 0 rgba(0,0,0,.3);
-	box-shadow: 0 2px 0 rgba(0,0,0,.3);
-	z-index: 3;
-	background:#fff;
-	color: $c_grey-p;
-	padding: 1em 1.7em 1em 1.5em;
-	li{
-		cursor: pointer;
-		padding: .8em .8em .8em 1.6em;
-		border-top: 1px dotted $c_grey-pp;
+
+/*------------------------------------*\
+	$LAYOUT
+\*------------------------------------*/
+
+	#header {
+		background: url('../../../../xmd/images/header/cabecera_fnd.png') repeat left top;
+		height: 38px;
+		/*float: left;*/
+
+		-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+		-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+		box-shadow: inset 0 1px 0 rgba(255,255,255,.3);
+		border-top: 1px solid #006b6c;
 		position: relative;
-		&:hover{
-			color: $c_mainlight;
-		}
+		z-index: 4;
+	}
+
+	#header h1{
+		float: left;
+		margin-top: 3px;
+	}
+
+	#body {
+		position: absolute;
+		top: 40px;
+		bottom: 0px;
+		width: 100%;
+		margin: 0px;
+	}
+
+	#body .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button{
+		font-family: $t_text;
+
+	}
+
+	.browser-window {
+		height: 100%;
+	}
+
+	.browser-window-content {
+		height: 100%;
+		width: 100%;
+		margin: 0px;
+	}
+
+	.hidden{
+			display:none !important;
+	}
+	.novisible{
+		visibility: hidden;
+	}
+
+
+	.session-info{
+		float: right;
+		margin-right: 200px;
+		font-size: 1.3rem;
+		text-transform: uppercase;
+		margin-top: 1.5em;
+	}
+
+	.session-info .language, .session-logout{
+		display: inline-block;
+		vertical-align: top;
+		color: #e8e8e8;
+		position: relative;
+		margin-right: 1em;
+		z-index: 2;
+	}
+
+	.login-name{
+		position: relative;
+		margin-right: .8em;
+		display: inline-block;
+		width: 3.5em;
+		height: 3em;
+	}
+
+	.current-language{
+		position: relative;
+		top: -.7em;
+		color: $c_mainlight;	
+		font-weight: bold;
+		margin-right: .8em;
+		display: inline-block;
+		width: 3em;
+		height: 3em;
+
 
 		&::before{
-			@extend %icon;
-			@extend %tic;
-
+			position: relative;
+			top: .62em;
+			color: #e8e8e8;
+		}
+		&::after{
 			position: absolute;
-			left: 0;
+			font-size: 1.5em;
+			z-index: -1 !important;
+			margin-left: -0.85em;
+			color: #e8e8e8;
+			margin-top: -0.10em;
 		}
 	}
+		
+	.user-menu{
+		display: none;
+		white-space: nowrap;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		text-transform: none;
+		-moz-box-shadow: 0 1px 2px rgba(0,0,0,.3);
+		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.3);
+		box-shadow: 0 1px 2px rgba(0,0,0,.3);
+		z-index: 4;
+		background:#474850;
+		color: $c_grey-p;
+		min-width: 13em;
 
-	li:first-child{
-		border-top: none;
+		>ul>li{
+			
+
+			border-bottom: 1px solid #5f606a;
+
+			&:first-child{
+				box-shadow: inset 0 -1px 0  #36373e;
+				a{
+					border-bottom: 1px solid #5f606a;
+				}
+			}
+
+			&:last-child{
+				border-bottom: none;
+			}
+
+			&::before{
+				font-family: 'ximdex-icon';
+				color: #fff;
+				position: absolute;
+
+				font-size: 2rem;
+				top: .5em;
+				left: .5em;
+			}
+
+			&.language-icon::before{
+				content: '\6c';
+				font-size: 1.4rem;
+				top: 1em;
+				left: 1em;
+			}
+			&.config::before{
+				content: '\e02a';
+				font-size: 2.4rem;
+				top: .4em;
+				left: .3em;
+			}
+			&.help::before{
+				content: '\e61e';
+			}
+			&.contact::before{
+				content: '\e60b';
+			}
+			&.logout::before{
+				content: '\e61f';
+				font-size: 1.95rem;
+				top: .6em;
+				left: .6em;
+			}
+			
+		}
+
+		li{
+			cursor: pointer;
+			position: relative;
+
+			&.selected::before{
+				@extend %icon;
+				@extend %tic;
+
+				position: absolute;
+				left: 1em;
+			}
+		}
+		li a{
+			color: #fff;
+			padding: 1em 1.5em 1em 3em;
+			display:  block;
+			position: relative;
+
+			&:hover{
+				color: $c_mainlight;
+			}
+		}
+
+		li ul li{
+			color: $c_grey-p;
+			&:hover{
+				color: $c_mainlight;
+			}
+		}
+
+
+		
+		.selected{
+			&::before{
+				color: $c_mainlight;
+			}
+		}
+
+
+		&::before{
+			content: '';
+			display: block;
+			position: absolute;
+			border: 6px solid transparent;
+			border-bottom-color: #474850;
+			top: -12px;
+			left: 1em;
+		}
+
+
 	}
 
-	.selected{
-		color: $c_mainlight;
-	}
-
-
-	&::before{
-		content: '';
+	.menu-header:hover + .user-menu, .user-menu:hover{
 		display: block;
 		position: absolute;
-		border: 6px solid transparent;
-		border-bottom-color: #fff;
-		top: -12px;
-		left: 1em;
+		top: 2em;
+		left: -1em;
 	}
 
+	.selector_language{
+		li{
+			display: inline-block;
+			padding: .8em 1.4em .8em 1.6em;
 
-}
+			&.selected{
+				padding-left: 2.9em;
+			}
+		}
 
-.current-language:hover + .selector_language, .selector_language:hover{
-	display: block;
-	position: absolute;
-	top: 2em;
-	left: -2em;
-}
-
+		.selected{
+			background: #36373e;
+		}
+	}

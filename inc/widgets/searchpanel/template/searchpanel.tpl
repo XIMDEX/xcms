@@ -108,9 +108,9 @@
 			<div id="loading" class="loading-icon"></div>
 
 			<h2>{t}Results{/t}</h2>
-
+			<paginator class="xim-search-panel searchpanel-paginator" />
 			<div class="results-view" />
-			<paginator class="searchpanel-paginator" />
+			<paginator class="xim-search-panel searchpanel-paginator" />
 
 			<div class="buttonset">
 			<!--	<button class="createSetButton"  value="createSet" disabled>{t}Create set{/t}</button>

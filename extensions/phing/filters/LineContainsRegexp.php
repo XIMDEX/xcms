@@ -175,5 +175,3 @@ class LineContainsRegexp extends BaseParamFilterReader implements ChainableReade
         }
     }
 }
-
-

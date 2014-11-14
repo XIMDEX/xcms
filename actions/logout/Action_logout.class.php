@@ -27,11 +27,15 @@
 require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
+ModulesManager::file('/inc/model/NodeEdition.class.php');
 ModulesManager::file("/inc/persistence/XSession.class.php");
 
 class Action_logout extends ActionAbstract {
 
     function index() {
+    	$userID=(int) XSession::get('userID');
+    	$nodeEdition = new NodeEdition();
+    	$nodeEdition->deleteByUser($userID);
 		$authenticator =& new Authenticator();
 		$authenticator->logout();
 		header(sprintf("Location: %s/", Config::getValue('UrlRoot')));

@@ -292,6 +292,21 @@
 				bulk: '0'
 			}, 10000) }.bind(this) );
 
+			$('#header .user-menu li a').click(function (e) {
+				var label=e.target.innerHTML;
+				var command=$(e.target).data('command');
+				var params=$(e.target).data('params');
+				if(command){
+					this.openAction({
+						label: label,
+						name: label,
+						command: command,
+						params: params,
+						bulk: '0'
+					}, 10000) 
+				}}.bind(this) );
+				
+
 			$("#ximdex-splash .progress").width("50%");
 			this.openAction({
                                                 label: _("Welcome to the brand new Ximdex 3.5!"),

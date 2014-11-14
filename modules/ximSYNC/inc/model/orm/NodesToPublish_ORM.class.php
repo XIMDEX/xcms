@@ -36,7 +36,7 @@ class NodesToPublish_ORM extends GenericData   {
 				'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
 				'IdNodeGenerator' => array('type' => "int(11)", 'not_null' => 'true'),
 				'Version' => array('type' => "int(12)", 'not_null' => 'false'),
-				'Subversion' => array('type' => "tinyint(3)", 'not_null' => 'false'),
+				'Subversion' => array('type' => "int(12)", 'not_null' => 'false'),
 				'DateUp' => array('type' => "int(14)", 'not_null' => 'true'),
 				'DateDown' => array('type' => "int(14)", 'not_null' => 'false'),
 				'State' => array('type' => "tinyint(1)", 'not_null' => 'true'),

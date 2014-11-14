@@ -132,5 +132,3 @@ class PhingFilterReader extends DataType {
         parent::setRefid($r);
     }
 }
-
-

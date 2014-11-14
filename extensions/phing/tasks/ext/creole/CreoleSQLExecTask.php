@@ -586,5 +586,3 @@ class SQLExecTransaction {
         }
     }
 }
-
-

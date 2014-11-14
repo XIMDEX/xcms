@@ -9,7 +9,7 @@
 
 # INITIAL VARS
 export DEBUG=1
-REPO_NAME="myximdex"
+REPO_NAME="ximdex"
 REPO_HOME="https://github.com/XIMDEX/ximdex/archive/"
 
 #REPO_BRANCH="3.5-beta3"
@@ -166,6 +166,7 @@ function CreateScriptToSetPermsAndMove() {
     #command="chmod -R u+x ./$REPO_NAME/install/*sh ./$REPO_NAME/install/scripts/*.sh"
     #arr_command+=("$command\n")
 
+    echo -e "\n---> MOVE IT to its final directory..."
     echo -e "\nCreating script for setting ownership and permissions for $TARGET_NAME ..."
 
     my_script1="$SCRIPT_PATH/$SCRIPT1"
@@ -293,12 +294,12 @@ function SetDocRootForXimdex() {
 }
 
 function DetermineApacheUserGroup() {
-	echo -e "\nUnix user launching the script: $USER_UNIX (group $GROUP_UNIX)"
-	echo "I will list some files at $DOCROOT to show you user/group in use there:"
+	echo -e "\nUnix user launching the script is: $USER_UNIX (group $GROUP_UNIX)"
+	echo "I will list some files at $DOCROOT to show you the user/group in use there:"
 	ls -l $DOCROOT | head -10
 	
 	if [ ! -z $USER_APACHE ]; then
-		echo -e "\nI've got that your Web server User is: $USER_APACHE"
+		echo -e "\n\nI've got that your Web server User is: $USER_APACHE"
 		option="x"
 	else 
 		echo -e "\nI can not determine your Web Server User..."
@@ -375,11 +376,11 @@ function CheckFinalDirectory() {
 
 # Print instructions
 function PrintInstructions() {
-	echo -e "\nThe main steps are:"
-	echo "1.- Downloading Ximdex ($REPO_BRANCH branch) if you are in a clean directory."
-	echo "    (run only this step with option -d)"
-	echo "2.- Execute configuration scripts to create Database, set parameters, etc."
-	echo "    (run only this step with -i option)"
+	echo -e "\nThe main steps for installing Ximdex are:"
+	echo "1.- Downloading Ximdex (branch $REPO_BRANCH) if you are in a clean directory."
+	echo "    (to run only this step use option -d)"
+	echo "2.- Determine parameters for installation (final directory, ...)"
+	echo "    (to run only this step use -i option)"
 	echo "3.- Move Ximdex into your web server document root and assign permissions." 
 	echo "    This last step may require superuser privileges."
 	echo "    Script $SCRIPT1 will be generated to be run as root."
@@ -395,6 +396,7 @@ function Step_Download() {
 	ZIP_FILE="$REPO_BRANCH.zip"
 	REPO_FILE="$REPO_HOME$ZIP_FILE"
 	#REPO_FILE="https://github.com/XIMDEX/ximdex/archive/f555dcf3f7d9360d124afd1372bef6c7591c37bc.zip"
+	echo "---> DOWNLOAD Ximdex ..."
 	echo "Downloading Ximdex ($REPO_BRANCH branch) to directory '$REPO_NAME'"
 	echo "located at $LOCALPATH from $REPO_FILE..."
 	echo ""
@@ -549,14 +551,23 @@ function Step_LaunchAsRoot() {
 		myquestion "Do you want me to run the script $SCRIPT1 as root"
 	fi
 	
+	runasroot=0
 	if [ "$ANSWER" == 'Y' ]; then
 		RunScriptAsRoot
 	else
-		echo -e "YOU HAVE TO RUN SCRIPT $SCRIPT1 AS ROOT TO END THE INSTALLATION\n"
+		echo -e "\n\nYOU HAVE TO RUN THE SCRIPT $SCRIPT1 AS ROOT TO CONTINUE !!"
+		echo -e "(or run manually the commands in that script)\n"
 	fi
 	
-	
-	echo -e "Thanks for installing Ximdex. Write to help@ximdex.org if you need help.\n"
+	if [ $runasroot == "1" ]; then
+	    echo -e "\n---> CONFIGURE Ximdex from your web browser..."
+	fi
+
+	echo -e "Once moved to its final place, visit your Ximdex instance to end configuring it."
+	echo -e "by pointing your web browser to your just installed Ximdex CMS instance URL "
+	echo -e "(i.e.: http://YOURHOST/${REPO_NAME} or http://localhost/${REPO_NAME}) to run the "
+	echo -e "configuration tool that will load the database and install Ximdex's modules."
+	echo -e "\nThanks for installing Ximdex. Write to help@ximdex.org if you need help.\n"
 	
 	if [ -e install ]; then 
 	echo "********************************************************************************"
@@ -646,7 +657,8 @@ if [ -z $TARGET_NAME ]; then
 	TARGET_NAME=$REPO_NAME
 fi
 SCRIPT_PATH="./${REPO_NAME}/install"
-STATUSFILE="$SCRIPT_PATH/_STATUSFILE"
+SCRIPT_CONFIG_PATH="./${REPO_NAME}/conf"
+STATUSFILE="$SCRIPT_CONFIG_PATH/_STATUSFILE"
 LOCALPATH=$( pwd -P )
 USER_UNIX=`whoami`
 GROUP_UNIX=`id -gn`
@@ -684,6 +696,7 @@ if [  $DO_INSTALL -eq 0 ]; then
 fi
 
 if [ "$mystatus" == "DOWNLOADED" ] || [ "$mystatus" == "INIT" ] ; then
+    echo -e "---> SET directory and web server user..."
     echo -e "\nXimdex instance is suitable for installation. Starting configuration:"
 else
     echo -e "\n$REPO_NAME has traces of a previous installation ended at $mystatus step."
@@ -738,15 +751,22 @@ $(chmod -R 2770 ${REPO_NAME}/logs)
 $(chmod -R 2770 ${REPO_NAME}/install)
 
 # Set permission to config files
-$(chmod -R 770 ${REPO_NAME}/conf/install-modules.conf)
+if [ -f ${REPO_NAME}/conf/install-modules.conf ]; then
+    $(chmod -R 770 ${REPO_NAME}/conf/install-modules.conf)
+fi
 
 # Launching steps
-#Step_Dependencies && SetInstallStatus "CHECKED"
-#Step_CreateDB && SetInstallStatus "CREATED_DB"
-#Step_Configurator && SetInstallStatus "CONFIGURED"
-CreateScriptToSetPermsAndMove && Step_LaunchAsRoot
-exit 0
-Step_Maintenance
-Step_ProjectsAndCrontab
+if [ "$AUTOMATIC_INSTALL" = 1 ]; then
+    Step_Dependencies && SetInstallStatus "CHECKED"
+    Step_CreateDB && SetInstallStatus "CREATED_DB"
+    Step_Configurator && SetInstallStatus "CONFIGURED"
+fi
 
+CreateScriptToSetPermsAndMove && Step_LaunchAsRoot
+
+
+#if [ "$AUTOMATIC_INSTALL" = 1 ]; then
+#    Step_Maintenance
+#    Step_ProjectsAndCrontab
+#fi
 

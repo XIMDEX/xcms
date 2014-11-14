@@ -99,7 +99,7 @@ class Action_modifylink extends ActionAbstract {
 		
 		$this->reloadNode($node->get('IdParent') );
 
-		$values = array('messages' => $this->messages->messages, "parentID" =>$idNode );
+		$values = array('messages' => $this->messages->messages, "parentID" =>$node->get('IdParent') );
     	
 		$this->sendJSON($values);
     }

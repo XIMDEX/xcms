@@ -99,23 +99,23 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			if(this.currentSelection){		
 				$(this.currentSelection.replace("-header","")).slideDown('fast');
 				$(this.currentSelection,this.element).addClass("button-pressed");
-			}else if (annotationDoc.content.images.length > 0) {
+			}else if (!$.isEmptyObject(annotationDoc.content.images)) {
 				$('#anottationtoolbox-section-header-image').addClass("button-pressed");
 				$('#anottationtoolbox-section-image').slideDown('fast');
-			} else if (annotationDoc.content.links.length > 0) {
+			} else if (!$.isEmptyObject(annotationDoc.content.links)) {
 				$('#anottationtoolbox-section-link').slideDown('fast');
 				$('#anottationtoolbox-section-header-link').addClass("button-pressed");
-			} else if (annotationDoc.content.articles.length > 0){
+			} else if (!$.isEmptyObject(annotationDoc.content.articles)){
 				$('#anottationtoolbox-section-article').slideDown('fast');
 				$('#anottationtoolbox-section-header-article').addClass("button-pressed");
 			}
-			else if(annotationDoc.semantic.people.length > 0){
+			else if(!$.isEmptyObject(annotationDoc.semantic.people)){
 				$('#anottationtoolbox-section-people').slideDown('fast');
 				$('#anottationtoolbox-section-header.people').addClass("button-pressed");
-			} else if (annotationDoc.semantic.places.length > 0){
+			} else if (!$.isEmptyObject(annotationDoc.semantic.places)){
 				$('#anottationtoolbox-section-places').slideDown('fast');
 				$('#anottationtoolbox-section-header-places').addClass("button-pressed");
-			} else if (annotationDoc.semantic.orgs.length > 0){
+			} else if (!$.isEmptyObject(annotationDoc.semantic.orgs)){
 				$('#anottationtoolbox-section-organisations').slideDown('fast');
 				$('#anottationtoolbox-section-header-organisations').addClass("button-pressed");
 			}

@@ -34,4 +34,3 @@ class DbmsSyntaxSQLite extends DbmsSyntax
 		return "strftime('%s','now')";
 	}
 }
-

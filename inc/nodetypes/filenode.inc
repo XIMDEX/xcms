@@ -217,8 +217,8 @@ class FileNode extends Root {
 		$idLastState = $lastState->loadLastState();
 		if ($idState == $idLastState) {
 			$up = time();
-			$down = $up + 36000000; // fecha de despublicacion up+1 year
-			baseIO_PublicarDocumento($this->nodeID, $up, $down,null);
+			$down = $up + 36000000; // unpublish date = dateup + 1year
+			baseIO_PublishDocument($this->nodeID, $up, $down,null);
 		}
 	}
 

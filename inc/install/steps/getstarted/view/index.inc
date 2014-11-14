@@ -27,8 +27,11 @@
 
 <form method="post" action=".">
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
-	<h2>Installation finished</h2>
-	<p>That's it! You've succesfully installed Ximdex CMS on your server!<br/>Log in and discover a different way to manage your content.</p>
+	<h2>Installation finished!</h2>
+	<p>You've succesfully installed Ximdex CMS on your server.<br/>Log in and discover a different way to manage your content and data.</p>
+        <p>Enable decoupled dynamic semantic publishing by adding these lines to your root crontab:</p>
+        <pre class="cide">* * * * * (php <?php echo XIMDEX_ROOT_PATH ?>/modules/ximNEWS/actions/generatecolector/automatic.php) >>  <?php echo XIMDEX_ROOT_PATH ?>/logs/automatic.log 2>&1</pre>
+        <pre>* * * * * (php <?php echo XIMDEX_ROOT_PATH ?>/modules/ximSYNC/scripts/scheduler/scheduler.php) >>  <?php echo XIMDEX_ROOT_PATH ?>/logs/scheduler.log 2>&1</pre>
 	<button class="launch_ximdex action_launcher" id="submitButton" onclick="document.forms[0].submit(); return false;">
           Get started
       </button>

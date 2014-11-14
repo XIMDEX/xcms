@@ -93,7 +93,7 @@ class PVD2RNG {
 		}
 		
 		$this->_dompvd = new DOMDocument();
-		$result = $doc->loadXML($content);
+		$result = $this->_dompvd->loadXML($content);
 		if (!$result) {
 			return false;
 		}
@@ -102,11 +102,6 @@ class PVD2RNG {
 		return true;
 	}
 
-	/**
-	 * Realiza la transformacion del esquema en dos pasos, primero se obtiene una jerarquia
-	 * de elementos con sus correspondientes atributos, despues se forma el esquema RNG.
-	 * @return DOMDocument Retorna el documento RNG o false si ocurrio un error.
-	 */
 	public function transform($filters= null, $options=null) {
 
 		$this->_filters = is_array($filters) ? $filters : PVD2RNG_Filters::getDefaultRules();
@@ -115,8 +110,6 @@ class PVD2RNG {
 		unset($this->_domrng);
 		$this->_domrng = new DOMDocument('1.0', 'UTF-8');
 		$this->_rngxpath = new DOMXPath($this->_domrng);
-
-		// Crea una raiz temporal para el documento...
 		$start = $this->_domrng->createElement('start');
 		$start->setAttribute('xmlns', 'http://relaxng.org/ns/structure/1.0');
 		$this->_domrng->appendChild($start);
@@ -185,8 +178,6 @@ class PVD2RNG {
 	}
 
 	/**
-	 * Funcion recursiva
-	 * Procesa un unico elemento y lo inserta en el documento RNG.
 	 * @param DOMNode node Elemento a procesar
 	 * @param DOMNode parent Padre del elemento en el RNG
 	 * @param DOMNode grammar Elemento grammar donde insertar los namedPatterns

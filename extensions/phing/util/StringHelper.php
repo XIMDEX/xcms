@@ -204,5 +204,3 @@ class StringHelper {
     }
     
 }
-
-

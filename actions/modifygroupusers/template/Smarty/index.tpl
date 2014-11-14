@@ -62,10 +62,10 @@
 					<div class="action_header">
 						<h2>{t}Change roles{/t}</h2>
 						<fieldset class="buttons-form">
-						{button id="guardar" onclick="update_form_action('editgroupuser');"  label="Save associations" class="validate btn main_action"}
 						{if ($idnode != "101")} {* if not group general *}
 						{button id="eliminar" 	onclick="update_form_action('deletegroupuser');"  label="Delete selected associations" class='validate btn' message="Selected associations will be deleted. Would you like to continue?"}
 						{/if}
+						{button id="guardar" onclick="update_form_action('editgroupuser');"  label="Save associations" class="validate btn main_action" message=""}
 						</fieldset>
 					</div>
 					<div class="action_content">

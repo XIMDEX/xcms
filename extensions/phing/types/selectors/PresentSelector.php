@@ -151,4 +151,3 @@ class PresentSelector extends BaseSelector {
     }
 
 }
-

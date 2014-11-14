@@ -23,22 +23,33 @@
  *  @version $Revision$
  *}
 
-<div class="xim-uploader-container" id="{$id}" data-is-structured="%=is_structured%">
-	<div class="xim-loader-list-container">
-          <div class="guide">
-            <span class="icon document">Documents</span>
-            <span class="icon image">Images</span>
-            <span class="icon video">Videos</span>
-           <p> {t}Drag your files here or add them using the 'Add' button below{/t}.</p></div>
-	  	<ul class="xim-loader-list"></ul>
-
-  	</div>
-          <ul class="xim-loader-list-actions">
-  
-	<a href="#" class="xim-uploader-selected btn-labeled icon btn">{t}Add{/t}</a>
-	<a href="#" class="xim-uploader-link">{t}Add{/t}<input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"></a>
-    
-      <a href="#" class="xim-uploader-delete btn-labeled icon btn">{t}Remove{/t}</a>
-    <span id="numfiles"></span>
-  </ul>
+<div class="xim-uploader-container" id="{$id}" xim-is-structured="%=is_structured%" 
+  flow-init = "{literal}{target:'/mipuntofinal'}{/literal}"
+  flow-name="uploader.flow" 
+  flow-file-added="$parent.fileAdded($event, $file)"
+  flow-file-error="$parent.fileError($file, $message)"
+  flow-file-success="$parent.fileSuccess($file, $message)"
+  flow-complete="$parent.uploadComplete()"
+  flow-drop
+  ng-cloak>
+  <div class="xim-loader-list-container">
+    <div class="guide" ng-hide="$flow.files.length">
+      <span class="icon document">Documents</span>
+      <span class="icon image">Images</span>
+      <span class="icon video">Videos</span>
+      <p> {t}Drag your files here or add them using the 'Add' button below{/t}.</p>
+    </div>
+	  <ul class="xim-loader-list" ng-show="$flow.files.length">
+      <li ng-repeat="file in $flow.files">
+        <xim-file xim-model="file" xim-node-id="{$nodeid}"></xim-file>
+      </li>
+    </ul>
+  </div>
+    <ul class="xim-loader-list-actions" >
+      <a href="#" class="xim-uploader-selected btn-labeled icon btn">
+        {t}Add{/t}
+        <input type="file" class="xim-uploader" flow-btn />
+        <!-- <input name='file[]' type='file' multiple='true' class="xim-uploader" style="display: none;" class="xim-uploader"> -->
+      </a>
+    </ul>
  </div>

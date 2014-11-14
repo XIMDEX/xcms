@@ -54,7 +54,7 @@
 					    {t}Seems you don't have any projects yet. Let's start now!{/t}
     				</div>
                 {/if}
-				<button  class="new_item project_new">{t}Create a new project{/t}</button>			
+				<button {if $permissionsToCreateProject == false} disabled="disabled" {/if}  class="new_item project_new">{t}Create a new project{/t}</button>			
 			</div>
 					
 			<div class="ximdex_documents">

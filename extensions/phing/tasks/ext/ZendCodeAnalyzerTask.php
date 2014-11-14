@@ -179,4 +179,3 @@ class ZendCodeAnalyzerTask extends Task {
     }
   }
 }
-

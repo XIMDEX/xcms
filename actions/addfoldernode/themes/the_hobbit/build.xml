@@ -12,7 +12,7 @@
 		overrideLocalPaths="0" enabled="1" previsual="0" description="Local" isServerOTF="false">
 
 		<ximdoccontainer>
-			<document name="index" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="{?}" />
+			<document name="index" nodetypename="XMLDOCUMENT" templatename="rng-vista-hobbit" channel="{?}" language="10003" />
 		</ximdoccontainer>
 		
 	</section>

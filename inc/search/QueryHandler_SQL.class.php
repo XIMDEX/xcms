@@ -42,13 +42,13 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 			$node = new Node($nodeId);
 
 			if ($node->getID() !== null) {
-
 				$record = array();
 				$record['nodeid']               = $nodeId;
 				$record['parentid']             = $node->getParent();
 				$record['name']                 = _($node->getNodeName());
 				$record['nodetypeid']           = $node->getNodeType();
 				$record['nodetype']             = _($node->getTypeName());
+                $record['nodetype_nemo']        = ($node->getTypeName());
 				$record['relpath']              = $node->getPathList();
 				$record['isdir']                = $node->nodeType->isFolder();
 				$record['icon']                 = $node->getIcon();
@@ -58,14 +58,12 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 				$record['creationformated']     = date('d/m/Y', $record['creation']);
 				$record['modification']         = $node->get('ModificationDate');
 				$record['modificationformated'] = date('d/m/Y', $record['modification']);
-
 				$record['versionid']            = $rset->getValue('IdVersion');
 				$record['version']              = $rset->getValue('Version');
 				$record['subversion']           = $rset->getValue('SubVersion');
 				$record['versionnumber']        = $rset->getValue('VersionNumber');
 				$record['versiondate']          = $rset->getValue('VersionDate');
 				$record['versiondateformated']  = $record['versionid'] > 0 ? date('d/m/Y', $record['versiondate']) : '';
-
 				$array[] = $record;
 			}
 
@@ -122,6 +120,7 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		$query = $this->createQuery($options);
 		$rset = new DB();
 		$countQuery = preg_replace('/^select\s(.+?)\sfrom/ims', 'select count(1) as records from', $query);
+		$countQuery = preg_replace('/\sorder\sby\s(.+?)$/ims', '', $countQuery);
 //debug::log($query, $countQuery);
 		$rset->query($countQuery);
 		$records = $rset->getValue('records');
@@ -143,9 +142,9 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 		$options['depth'] = isset($options['depth']) ? $options['depth'] : 0;
 		$options['depth'] = $options['depth'] >= 1 ? $options['depth'] : 0;
 
-		$this->select[] = "distinct n.IdNode, n.*, v.IdVersion, v.Version, v.SubVersion, concat(v.Version, '.', v.SubVersion) as VersionNumber,
+		$this->select[] = "distinct n.IdNode, n.*, t.name as NodeTypeName, v.IdVersion, v.Version, v.SubVersion, concat(v.Version, '.', v.SubVersion) as VersionNumber,
 							v.Date as VersionDate";
-		$this->joins[] = 'FastTraverse ft left join Nodes n on ft.idChild = n.idNode';
+		$this->joins[] = 'FastTraverse ft left join Nodes n on ft.idChild = n.idNode left join NodeTypes t on n.IdNodeType=t.IdNodeType';
 		$this->joins[] = 'left join
 						(select v.IdNode, max(IdVersion) as IdVersion, max(v.Version) as Version, max(v.SubVersion) as SubVersion,
 						max(v.Date) as Date
@@ -178,7 +177,6 @@ class QueryHandler_SQL extends QueryHandler_Abstract {
 			(count($this->filters) == 0 ? '' : sprintf(' and (%s)', implode(" {$options['condition']} ", $this->filters))),
 			(count($this->order) == 0 ? '' : ' order by ' . implode(', ', $this->order))
 		);
-
 		return $query;
 	}
 

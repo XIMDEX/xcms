@@ -140,5 +140,3 @@ class TabToSpaces extends BaseParamFilterReader implements ChainableReader {
         }
     }
 }
-
-

@@ -41,7 +41,7 @@ class RelLinkDescriptions_ORM extends GenericData   {
 	var $_metaData = array(
 				'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
 				'IdLink' => array('type' => "int(12)", 'not_null' => 'true'),
-				'Description' => array('type' => "varchar(255)", 'not_null' => 'true')
+				'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
 				);
 	var $_uniqueConstraints = array(
 

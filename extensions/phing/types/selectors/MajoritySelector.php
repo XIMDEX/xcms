@@ -89,4 +89,3 @@ class MajoritySelector extends BaseSelectorContainer {
         return $this->allowtie;
     }
 }
-

@@ -31,25 +31,20 @@
 		 Warning: Do not touch this file manually
 	*********************************************************/
 
+return array(
 
-	/* DATABASE_PARAMS (do not remove this comment, please) */
-        $DBHOST = "##DB_HOST##";
-        $DBPORT = "##DB_PORT##";
-        $DBUSER = "##DB_USER##";
-        $DBPASSWD = "##DB_PASSWD##";
-        $DBNAME = "##DB_NAME##";
+    'db' => array(
+        'type' => 'mysql',
+        'host' => '##DB_HOST##',
+        'port' => '##DB_PORT##',
+        'user' => '##DB_USER##',
+        'password' => '##DB_PASSWD##',
+        'db' => '##DB_NAME##',
+        'log' => false,
 
-
-	/* XIMDEX_PARAMS (do not remove this comment, please) */
-		  if (!defined('XIMDEX_TIMEZONE'))
-			define("XIMDEX_TIMEZONE", "##XIMDEX_TIMEZONE##");
-
-		  date_default_timezone_set(XIMDEX_TIMEZONE);
-
-        $XIMDEX_ROOT_PATH = "##XIMDEX_PATH##";
-
-		  if (!defined('DEFAULT_LOCALE'))
-			 define('DEFAULT_LOCALE', '##XIMDEX_LOCALE##');
-
-        $USE_SQL_LOG = false;
-?>
+    ),
+    'ximdex_root_path' => '##XIMDEX_PATH##',
+    'default.db' => 'db' ,
+    'timezone' => '##XIMDEX_TIMEZONE##',
+    'locale' => '##XIMDEX_LOCALE##',
+) ;

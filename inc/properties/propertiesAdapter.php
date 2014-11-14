@@ -40,4 +40,3 @@ if($identificador!=null){
 	echo $manager->getSystemPropertiesXML();
 }
 ?>
-

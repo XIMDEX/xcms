@@ -161,4 +161,3 @@ class ContainsRegexpSelector extends BaseExtendSelector {
     }
 
 }
-

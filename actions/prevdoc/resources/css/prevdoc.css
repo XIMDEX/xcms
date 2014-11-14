@@ -24,14 +24,23 @@
  */
 
 
-
-fieldset.prevdoc-container {
-	height: 90%;
+.prevdoc-channel-selector{
+	padding: 0 .7em;
 }
 
-iframe.prevdoc-document {
+.prevdoc-body{
+	margin: 0;
+}
+
+.prevdoc-container {
+	height: 100%;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+.prevdoc-document {
 	border: none;
 	width: 100%;
-	min-height: 450px;
 	height: 100%;
 }

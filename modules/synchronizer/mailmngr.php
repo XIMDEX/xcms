@@ -50,14 +50,12 @@ ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 function GetMessageFromSync($idSync, $nodeID) {
 
 	// Gets frame data
-
 	$path = SynchroFacade::getFramePath($idSync);
 	$fileName = SynchroFacade::getFrameName($idSync);
 	$physicalID = SynchroFacade::getFrameServer($idSync);
 	$channel = SynchroFacade::getFrameChannel($idSync);
 
 	// Gets server data
-
 	$server = new Server($physicalID);
 	$serverID = $server->get('IdNode');
 	$uri = $server->get('Url');
@@ -67,9 +65,7 @@ function GetMessageFromSync($idSync, $nodeID) {
 	}
 
 	// Gets the content
-
 	$urlRoot = Config::getValue("UrlRoot");
-
 
 	$df = new DataFactory($nodeID);
 	$lv = $df->GetLastVersionId();
@@ -77,14 +73,9 @@ function GetMessageFromSync($idSync, $nodeID) {
 	$content = $pipeman->getCacheFromProcessAsContent($lv, 'StrDocToDexT', array('CHANNEL' => $channel));
 	
 	if ($content === null) {
-		XMD_Log::error("No se ha podido obtener el contenido del documento: NodeId: $nodeID, ChannelId: $channel, Process: StrDocToDexT");
+		XMD_Log::error("Could not get the content of the document: NodeId: $nodeID, ChannelId: $channel, Process: StrDocToDexT");
 		return null;
 	}
-
-
-	// NOTE: It needs http authentication to work correctly	
-//	$file = sprintf('%s/xmd/loadaction.php?nodes[]=%s&action=prevdoc&noCacheVar=1290000809296&channelid=%s&showprev=1', $urlRoot, $nodeID, $channel);
-//	$content = file_get_contents($file);
 
 	$nodeRoot = Config::getValue("NodeRoot");
 	$nodeRoot = str_replace("/","\/",$nodeRoot);

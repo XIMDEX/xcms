@@ -27,7 +27,8 @@ angular.module('ximdex.module.xtags')
     	$scope.documentTags = [];
     	$scope.cloudTags = [];
         $scope.namespaces = {};
-    	$scope.nodeId = $attrs.ximNodeId;
+        $scope.nodeId = $attrs.ximNodeId;
+    	$scope.isEditor = $attrs.ximIsEditor;
         $scope.submitLabel = xTranslate('common.save');
         
         $scope.tagExistInArray = function(tag, array) {
@@ -139,7 +140,7 @@ angular.module('ximdex.module.xtags')
                     $timeout(function(){
                         $scope.submitMessages = null;
                     }, 4000);
-                    $scope.$emit('nodemodified', $scope.nodeId);
+                    //$scope.$emit('nodemodified', $scope.nodeId);
                 })
                 .error(function(data){
                     $scope.submitState = 'error'
@@ -153,6 +154,15 @@ angular.module('ximdex.module.xtags')
         $scope.keyPress = function (event) {
             if (event.keyCode == 13) $scope.addNewTag();
         }
+
+        $scope.focus = function(event){
+            if ($scope.isEditor && parseInt($scope.newTag.IdNamespace) == 2){
+                $window.jQuery(".ontology-browser-container").ontologywidget("showTree");
+                $window.jQuery(".ontology-browser").removeClass("hidden");
+                $window.jQuery(".ontology-browser-container .textViewer").addClass("hidden");
+                $window.jQuery(".ontology-browser-container .treeViewer").removeClass("hidden");
+            }
+        }   
 
         //Hacks to deal with mixed enviroment
         //Semantics tags added from the xeditor

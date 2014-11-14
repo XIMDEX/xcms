@@ -22,7 +22,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-.selector_language li::before {
+/*******
+//	ICON GENERIC STYLES
+*******/
+.user-menu li.selected::before {
   font-family: 'ximdex_icons' !important;
   speak: none;
   font-style: normal;
@@ -34,7 +37,10 @@
   -moz-osx-font-smoothing: grayscale;
   vertical-align: middle; }
 
-.selector_language li::before {
+/*******
+//	ICONS
+*******/
+.user-menu li.selected::before {
   content: "\79"; }
 
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -88,7 +94,7 @@ html {
   font-size: 62.5%; }
 
 body {
-  font-family: 'Ubuntu Condensed', Verdana, Arial, Geneva, sans-serif  !important;
+  font-family: "Source Sans Pro";
   background-color: #006b6c;
   color: #6b6b6b;
   overflow: hidden;
@@ -97,6 +103,12 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
+strong {
+  font-weight: 600; }
+
+/*------------------------------------*\
+	$Splash
+\*------------------------------------*/
 #ximdex-splash {
   position: absolute;
   top: 0px;
@@ -105,7 +117,7 @@ body {
   width: 100%;
   height: 100%;
   background-color: #fff;
-  background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom, url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, white;
+  background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom, url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
   overflow: auto; }
 
 #ximdex-splash .loading {
@@ -115,13 +127,14 @@ body {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  border: 1px solid #4f4f4f; }
+  border: 1px solid #4f4f4f;
+  overflow: hidden; }
 
 .loading p {
   color: #9ac7c8;
   text-shadow: 0 1px 0 #252525;
   position: absolute;
-  top: 20px;
+  top: 17px;
   left: 25px;
   font-size: 14px;
   font-size: 1.4rem; }
@@ -144,7 +157,7 @@ body {
   font-size: 25px;
   font-size: 2.5rem;
   text-transform: none;
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.4), 0 -2px 1px rgba(0, 0, 0, 0.1), 0 0 2px white;
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.4), 0 -2px 1px rgba(0, 0, 0, 0.1), 0 0 2px #FFFFFF;
   margin: 0 0 0.72em 2%;
   color: #898989; }
 
@@ -200,6 +213,9 @@ body {
 button::-moz-focus-inner {
   border: 0px; }
 
+/*------------------------------------*\
+	$LAYOUT
+\*------------------------------------*/
 #header {
   background: url("../../../../xmd/images/header/cabecera_fnd.png") repeat left top;
   height: 38px;
@@ -207,7 +223,9 @@ button::-moz-focus-inner {
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border-top: 1px solid #006b6c; }
+  border-top: 1px solid #006b6c;
+  position: relative;
+  z-index: 4; }
 
 #header h1 {
   float: left;
@@ -221,7 +239,7 @@ button::-moz-focus-inner {
   margin: 0px; }
 
 #body .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-  font-family: 'Ubuntu Condensed'; }
+  font-family: "Source Sans Pro"; }
 
 .browser-window {
   height: 100%; }
@@ -232,7 +250,7 @@ button::-moz-focus-inner {
   margin: 0px; }
 
 .hidden {
-  display: none; }
+  display: none !important; }
 
 .novisible {
   visibility: hidden; }
@@ -249,80 +267,125 @@ button::-moz-focus-inner {
   vertical-align: top;
   color: #e8e8e8;
   position: relative;
-  margin-right: 1em; }
+  margin-right: 1em;
+  z-index: 2; }
 
-.session-info .language::after {
-  content: ' | ';
-  padding-left: 1em; }
+.login-name {
+  position: relative;
+  margin-right: .8em;
+  display: inline-block;
+  width: 3.5em;
+  height: 3em; }
 
 .current-language {
   position: relative;
-  z-index: 2;
+  top: -.7em;
   color: #7bcabf;
-  font-size: 1.1rem;
   font-weight: bold;
   margin-right: .8em;
-  top: -1em;
-  cursor: pointer; }
+  display: inline-block;
+  width: 3em;
+  height: 3em; }
+  .current-language::before {
+    position: relative;
+    top: .62em;
+    color: #e8e8e8; }
+  .current-language::after {
+    position: absolute;
+    font-size: 1.5em;
+    z-index: -1 !important;
+    margin-left: -0.85em;
+    color: #e8e8e8;
+    margin-top: -0.10em; }
 
-.current-language::after,
-.current-language::before {
-  color: #e8e8e8; }
-
-.current-language::before {
-  font-size: 1.3em;
-  position: absolute;
-  left: -1em;
-  top: .8em;
-  height: 2em;
-  width: 3em; }
-
-.current-language::after {
-  position: absolute;
-  z-index: -1 !important;
-  font-size: 1.6em;
-  top: 0;
-  right: -0.22222em; }
-
-.selector_language {
+.user-menu {
   display: none;
   white-space: nowrap;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
   text-transform: none;
-  -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
-  z-index: 3;
-  background: #fff;
-  color: #888888;
-  padding: 1em 1.7em 1em 1.5em; }
-  .selector_language li {
-    cursor: pointer;
-    padding: .8em .8em .8em 1.6em;
-    border-top: 1px dotted #cccccc;
-    position: relative; }
-    .selector_language li:hover {
-      color: #7bcabf; }
-    .selector_language li::before {
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  z-index: 4;
+  background: #474850;
+  color: #888;
+  min-width: 13em; }
+  .user-menu > ul > li {
+    border-bottom: 1px solid #5f606a; }
+    .user-menu > ul > li:first-child {
+      box-shadow: inset 0 -1px 0  #36373e; }
+      .user-menu > ul > li:first-child a {
+        border-bottom: 1px solid #5f606a; }
+    .user-menu > ul > li:last-child {
+      border-bottom: none; }
+    .user-menu > ul > li::before {
+      font-family: 'ximdex-icon';
+      color: #fff;
       position: absolute;
-      left: 0; }
-  .selector_language li:first-child {
-    border-top: none; }
-  .selector_language .selected {
+      font-size: 2rem;
+      top: .5em;
+      left: .5em; }
+    .user-menu > ul > li.language-icon::before {
+      content: '\6c';
+      font-size: 1.4rem;
+      top: 1em;
+      left: 1em; }
+    .user-menu > ul > li.config::before {
+      content: '\e02a';
+      font-size: 2.4rem;
+      top: .4em;
+      left: .3em; }
+    .user-menu > ul > li.help::before {
+      content: '\e61e'; }
+    .user-menu > ul > li.contact::before {
+      content: '\e60b'; }
+    .user-menu > ul > li.logout::before {
+      content: '\e61f';
+      font-size: 1.95rem;
+      top: .6em;
+      left: .6em; }
+  .user-menu li {
+    cursor: pointer;
+    position: relative; }
+    .user-menu li.selected::before {
+      position: absolute;
+      left: 1em; }
+  .user-menu li a {
+    color: #fff;
+    padding: 1em 1.5em 1em 3em;
+    display: block;
+    position: relative; }
+    .user-menu li a:hover {
+      color: #7bcabf; }
+  .user-menu li ul li {
+    color: #888; }
+    .user-menu li ul li:hover {
+      color: #7bcabf; }
+  .user-menu .selected::before {
     color: #7bcabf; }
-  .selector_language::before {
+  .user-menu::before {
     content: '';
     display: block;
     position: absolute;
     border: 6px solid transparent;
-    border-bottom-color: #fff;
+    border-bottom-color: #474850;
     top: -12px;
     left: 1em; }
 
-.current-language:hover + .selector_language, .selector_language:hover {
+.menu-header:hover + .user-menu, .user-menu:hover {
   display: block;
   position: absolute;
   top: 2em;
-  left: -2em; }
+  left: -1em; }
+
+.selector_language li {
+  display: inline-block;
+  padding: .8em 1.4em .8em 1.6em; }
+  .selector_language li.selected {
+    padding-left: 2.9em; }
+.selector_language .selected {
+  background: #36373e; }
+
+/*# sourceMappingURL=browser.css.map */

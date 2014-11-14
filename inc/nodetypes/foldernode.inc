@@ -299,7 +299,7 @@ class FolderNode extends Root {
 				$condition = array();
 				foreach ($dinamicCallerInfo['KEYS'] as $key => $xpathKey) {
 					$xpathValue = $dinamicCallerInfo['VALUES'][$key +1];
-					if ($xpathKey == 'tipo_documento') {
+					if ($xpathKey == 'schema') {
 						$xpathValue = $xpathValue . '.xml';
 					}
 					$condition[] = sprintf("/docxap/@%s = '%s'", $xpathKey, $xpathValue);

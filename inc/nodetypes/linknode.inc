@@ -77,12 +77,9 @@ class LinkNode extends Root {
 		$link->set('IdLink', $this->nodeID);
 		$link->set('Url', $url);
 
-		if($description) {
-			$result = $this->parent->SetDescription($description);
-		}
+		$result = $this->parent->SetDescription($description);
 
 		$insertedId = $link->add();
-
 		if (!$insertedId || !$result) {
 			$this->messages->add(_('No se ha podido insertar el enlace'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($link->messages);

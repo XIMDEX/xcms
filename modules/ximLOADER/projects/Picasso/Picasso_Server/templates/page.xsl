@@ -3,7 +3,7 @@
 
 <xsl:template name="page" match="page">
 
-	<xsl:if test="(ancestor-or-self::*[@tipo_documento][1]/@tipo_documento = 'rng-page.xml')">
+	<xsl:if test="(ancestor-or-self::*[@schema][1]/@schema = 'rng-page.xml')">
 
 		<div class="post-ppal">
 			<xsl:apply-templates select="page/post[1]"/>
@@ -15,7 +15,7 @@
 		
 	</xsl:if>
 
-	<xsl:if test="(ancestor-or-self::*[@tipo_documento][1]/@tipo_documento = 'rng-post.xml')">
+	<xsl:if test="(ancestor-or-self::*[@schema][1]/@schema = 'rng-post.xml')">
 		<div id="post">
 			<xsl:call-template name="post"/>
 		</div>

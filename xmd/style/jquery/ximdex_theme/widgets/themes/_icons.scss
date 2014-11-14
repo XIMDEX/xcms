@@ -3,6 +3,18 @@
 //	ICON GENERIC STYLES
 *******/
 
+%icon-a::after {
+	font-family: 'ximdex_icons' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	vertical-align: middle;
+} 
 %icon::before {
 	font-family: 'ximdex_icons' !important;
 	speak: none;
@@ -34,6 +46,9 @@
 	content: "\e615";
 }
 %pencil::before {
+	content: "\45";
+}
+%pencil {
 	content: "\45";
 }
 %cancel::before {
@@ -93,10 +108,20 @@
 	content: "\e60a";
 }
 
+%pause::before{
+	content: "\e01c";
+}
+
 %language{
 	content: "\006c";
 }
 
 %arrow-down{
 	content: "\e038";
+}
+%play{
+	content: "\e618";
+}
+%field-selector{
+	content: "\e61b";
 }

@@ -24,9 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
@@ -36,35 +33,20 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-/**
- * NOTE:
- * Vista usada desde webDAV (ximDEX_webDAV_Server.class.php) para incluir las XSLT en los documentos.
- * Para poder usar esta vista en un pipeline sera necesario modificar el metodo transform() para
- * que reciba un idVersion en lugar de un idNode.
- */
 class View_XmlDocument extends Abstract_View implements Interface_View {
 
-	/**
-	 * Este metodo solo trabaja con dos tipos de documentos, los structureddocuments
-	 * y la hoja de estilos docxap.xsl
-	 * Si el parametro $content es NULL se asume que se esta solicitando el contenido
-	 * del documento, se inserta entonces el contenido adicional.
-	 * Si el parametro $content no es NULL se asume que se esta guardando el documento,
-	 * se elimina entonces el contenido adicional para conservar la consistencia de
-	 * los datos.
-	 * El parametro $args no es usado.
-	 *
-	 * @param int $idNode
-	 * @param string $content
-	 * @param mixed $args
-	 * @return string
-	 */
+/**
+ * @param int $idVersion
+ * @param string $pointer
+ * @param mixed $args
+ * @return string
+ */
 	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
 
 		$this->retrieveContent($pointer);
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
-			XMD_Log::error("El nodo que se está intentando convertir no existe: $idNode");
+			XMD_Log::error("El nodo que se estï¿½ intentando convertir no existe: $idNode");
 			return false;
 		}
 
@@ -97,7 +79,6 @@ class View_XmlDocument extends Abstract_View implements Interface_View {
 		$xslPath = $this->getXslPath($node);
 
 		if ($xslPath !== null) {
-			// La hoja de estilos docxap.xsl se buscara en todas las secciones del proyecto
 			$xslPath = sprintf('<?xml-stylesheet type="text/xsl" href="{base_uri}%s"?>', $xslPath);
 			$c = 1;
 			$content = str_replace('?>', "?>\n".$xslPath, $content, $c);
@@ -134,7 +115,6 @@ class View_XmlDocument extends Abstract_View implements Interface_View {
 		$docxap = null;
 		$xslPath = null;
 
-		// Recorre todas las secciones del proyecto hasta encontrar un documento docxap
 		while (null !== ($idparent = $node->getParent()) && $docxap === null) {
 
 			unset($node);
@@ -176,7 +156,6 @@ class View_XmlDocument extends Abstract_View implements Interface_View {
 		$last = null;
 		$content = '';
 
-		// Recorre todas las secciones del proyecto en busca de hojas de estilos para incluir
 		while (null !== ($idsection = $node->getSection())) {
 
 

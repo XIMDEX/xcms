@@ -100,9 +100,9 @@ class Action_deleteuser extends ActionAbstract {
 
 		$this->reloadNode($idParent);
 
-		$values = array('messages' => $user->messages->messages );
+		$values = array('messages' => $user->messages->messages, 'parentID' => $idParent,'action_with_no_return' => true);
 
-		$this->render($values);
+		$this->sendJSON($values);
     }
 }
 ?>

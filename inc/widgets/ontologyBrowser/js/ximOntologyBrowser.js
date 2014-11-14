@@ -1,4 +1,4 @@
-if (angular.module('ximdex').notRegistred('ximOntologyBrowser')){
+if (angular.module('ximdex').notRegistred && angular.module('ximdex').notRegistred('ximOntologyBrowser')){
     angular.module('ximdex')
         .compileProvider.directive('ximOntologyBrowser', ['$window', function ($window) {
             return {

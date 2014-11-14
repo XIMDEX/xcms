@@ -211,7 +211,7 @@ CREATE TABLE `NodesToPublish` (
   `IdNode` int(11) unsigned NOT NULL,
   `IdNodeGenerator` int(11) NOT NULL,
   `Version` int(12) default NULL,
-  `Subversion` tinyint(3) default NULL,
+  `Subversion` int(12) default NULL,
   `DateUp` int(14) unsigned NOT NULL default '0',
   `DateDown` int(14) unsigned default '0',
   `State` tinyint(3) unsigned NOT NULL default '0',
@@ -222,7 +222,7 @@ CREATE TABLE `NodesToPublish` (
 
 
 -- Action "Publish a server massively"
-INSERT INTO Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sort, Module, Multiple) VALUES (7228, 5014, 'Publish server', 'publicatesection', 'publicate_section.png', 'Publish a server massively', 100, NULL, 0);
+INSERT INTO Actions (IdAction, IdNodeType, Name, Command, Icon, Description, Sort, Module, Multiple) VALUES (7228, 5014, 'Publish server', 'publicatesection', 'publicate_section.png', 'Publish a server massively', -100, NULL, 0);
 /*!40000 ALTER TABLE `Actions` ENABLE KEYS */;
 
 -- Add field ActiveForPumping on Servers table

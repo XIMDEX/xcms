@@ -57,14 +57,13 @@ class LanguageNode extends Root {
 	*  @param int enabled
 	*  @return unknown
 	*/
-
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null) {
 
 		$language = new Language();
 		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
 
 		if ($result > 0) {
-			$this->parent->messages->add(_('El código ISO introducido ya está asignado a otro idioma'), MSG_TYPE_ERROR);
+			$this->parent->messages->add(_('The ISO code entered is already assigned to another language'), MSG_TYPE_ERROR);
 			$this->parent->delete();
 			return NULL;
 		}
@@ -80,9 +79,7 @@ class LanguageNode extends Root {
 	*  Deletes the Language and its dependencies.
 	*  @return unknown
 	*/
-
 	function DeleteNode() {
-
 	 	$language = new Language($this->parent->get('IdNode'));
 		$language->DeleteLanguage();
 
@@ -95,9 +92,7 @@ class LanguageNode extends Root {
 	*  @param string name
 	*  @return unknown
 	*/
-
 	function RenameNode($name = null) {
-
 		$lang = new Language($this->parent->get('IdNode'));
 		$lang->SetName($name);
 		$this->UpdatePath();
@@ -107,9 +102,7 @@ class LanguageNode extends Root {
 	*  Gets the documents which have been written in the language.
 	*  @return array
 	*/
-
 	function GetDependencies() {
-
 		$sql ="SELECT DISTINCT IdDoc FROM StructuredDocuments WHERE IdLanguage='".$this->parent->get('IdNode')."'";
 		$this->dbObj->Query($sql);
 
@@ -118,28 +111,7 @@ class LanguageNode extends Root {
 			$deps[] = $this->dbObj->row["IdDoc"];
 			$this->dbObj->Next();
 		}
-
     	return $deps;
 	}
-
-/*
-	No vamos a asociar por isoname, sino por id de exportación  => importacion
-	function ToXml($depth, & $files, $recurrence) {
-		$query = sprintf("SELECT IsoName FROM `Languages`"
-					. " WHERE IdLanguage = %d",
-					$this->nodeID);
-		$this->dbObj->Query($query);
-		if (!$this->dbObj->numRows > 0) {
-			error_log ("***************** Idioma no encontrado -->" . $idNode);
-		} else {
-			$isoName = $this->dbObj->GetValue('IsoName');
-
-			$indexTabs = str_repeat("\t", $depth + 1);
-			return sprintf("%s<IsoName id=\"%s\" />\n", $indexTabs, $isoName);
-		}
-
-	}
-*/
 }
-
 ?>

@@ -74,4 +74,3 @@ class MailTask extends Task {
         $this->msg = (string) $msg;
     }
 }
-

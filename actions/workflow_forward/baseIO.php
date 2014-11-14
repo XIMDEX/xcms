@@ -68,7 +68,7 @@ function Publicar($nodeID, $userID){
 	setlocale (LC_TIME, "es_ES");
 	if(sizeof($gaps)){
 		foreach($gaps as $gap){
-			//valor que se presentaría para elegir
+			//valor que se presentarï¿½a para elegir
 			strftime("%d/%m/%Y %H:%M:%S", $gap[0]).'-'.($gap[1] ? strftime("%d/%m/%Y %H:%M:%S", $gap[1]) : null);
 		}
 	} else {
@@ -128,7 +128,7 @@ function baseIO_CambiarEstado($nodeID, $stateID, $listausers=null, $uID=null, $t
 
 		$content =_('State forward notification.')."\n\n";
 
-		$content.=_('The user')." `". $user->GetRealName(). "´ "._('has changed the state of the document')." `".$jap_doc."´\n\n";
+		$content.=_('The user')." `". $user->GetRealName(). "ï¿½ "._('has changed the state of the document')." `".$jap_doc."ï¿½\n\n";
 		$content.=_('Full path')."  --> ". $node->GetPath() ."\n\n";
 
 		$content.=_('Initial state')." --> ". $jap_estadoprevio ."\n";
@@ -158,7 +158,7 @@ function baseIO_CambiarEstado($nodeID, $stateID, $listausers=null, $uID=null, $t
 		}
 	}
 }
-function baseIO_PublicarDocumento($nodeID, $up, $down, $markEnd=null){
+function baseIO_PublishDocument($nodeID, $up, $down, $markEnd=null){
 	$node=new Node($nodeID);
 	$sync = new Synchronizer($nodeID);
 	$sync->CreateFrame($up, $down, $markEnd);

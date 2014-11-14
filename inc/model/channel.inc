@@ -304,17 +304,20 @@ class Channel extends Channels_ORM {
 	 * @param $idChannel
 	 * @param $filter
 	 * @param $renderMode
+	 * @param $outputType
 	 * @return channelID - loaded as a attribute.
 	 */
-	function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = "", $renderMode)
+	function CreateNewChannel($name, $defaultExtension, $format, $description, $idChannel, $filter = "",$renderMode="", $outputType="")
 	{
 		$this->set('IdChannel', (int) $idChannel);
 		$this->set('Name', $name);
 		$this->set('Description', $description);
 		$this->set('DefaultExtension', $defaultExtension);
 		$this->set('Format', $format);
-		$this->set('Filter', $filter);
+		$this->set('Filter', $filter);		
 		$this->set('RenderMode', $renderMode);
+		$this->set('OutputType', $outputType);
+        $this->set('Default_Channel', 0);
 		if ($this->add()) {
 			return $this->get('IdChannel');
 		}
@@ -389,4 +392,13 @@ class Channel extends Channels_ORM {
 		$this->ClearError();
 		return $aux;
 	}
+
+    /**
+     * Set property Default_Channel to 0 for all
+     * Channels except the channel with id $idchannel
+     */
+    function setDefaultChannelToZero($idchannel){
+        $dbObj = new DB();
+        return $dbObj->Execute(sprintf("UPDATE Channels SET Default_Channel=0 WHERE IdChannel<>%s;",$idchannel));
+    }
 }

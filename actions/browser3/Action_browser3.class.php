@@ -70,6 +70,7 @@ class Action_browser3 extends ActionAbstract {
 
 		$values = array(
 			'params' => $params,
+			'userID' => $userID,
 			'time_id'	=> time()."_".XSession::get('userID'), /* For uid for scripts */
 			'loginName' => $loginName,
 			'user_locale' => $user_locale,
@@ -78,6 +79,7 @@ class Action_browser3 extends ActionAbstract {
 		);
 
 		$this->addCss('/xmd/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
+        $this->addCss('/extensions/bootstrap/dist/css/bootstrap.min.css');
 		$this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
 		$this->addCss('/extensions/humane/flatty.css');
 		$this->addActionCss('browser.css');
@@ -102,9 +104,12 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/i18n.js');
 		$this->addJs('/extensions/angular/angular.min.js');
 		$this->addJs('/extensions/angular/angular-animate.min.js');
+        $this->addJs('/extensions/angular-ui-sortable/src/sortable.js');
 		$this->addJs('/extensions/ladda/dist/spin.min.js');
 		$this->addJs('/extensions/ladda/dist/ladda.min.js');
 		$this->addJs('/extensions/humane/humane.min.js');
+		$this->addJs('/extensions/flow/ng-flow-standalone.min.js');
+        $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.12.0-SNAPSHOT.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery-ui-timepicker-addon.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.tabs.min.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/ui/jquery.ui.dialog.min.js');
@@ -117,6 +122,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-process.js');
 		$this->addJs(Extensions::JQUERY_PATH.'/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
 		$this->addJs('/extensions/d3js/d3.v3.min.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/lib/codemirror.js');
 		$this->addJs('/inc/js/angular/app.js');
 		$this->addJs('/inc/js/angular/animations/slide.js');
 		$this->addJs('/inc/js/angular/services/xTranslate.js');
@@ -126,12 +132,26 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/services/xUrlHelper.js');
 		$this->addJs('/inc/js/angular/services/xEventRelay.js');
 		$this->addJs('/inc/js/angular/services/xDialog.js');
+		$this->addJs('/inc/js/angular/services/xCheck.js');
+		$this->addJs('/inc/js/angular/services/xMenu.js');
 		$this->addJs('/inc/js/angular/directives/ximButton.js');
 		$this->addJs('/inc/js/angular/directives/ximSelect.js');
 		$this->addJs('/inc/js/angular/directives/ximValidators.js');
 		$this->addJs('/inc/js/angular/directives/xtagsSuggested.js');
+		$this->addJs('/inc/js/angular/directives/contenteditable.js');
+		$this->addJs('/inc/js/angular/directives/ximFile.js');
+		$this->addJs('/inc/js/angular/directives/ximUploader.js');
+		$this->addJs('/inc/js/angular/directives/ximFocusOn.js');
+		$this->addJs('/inc/js/angular/directives/rightClick.js');
+		$this->addJs('/inc/js/angular/directives/ximGrid.js');
+		$this->addJs('/inc/js/angular/directives/ximInverted.js');
+		$this->addJs('/inc/js/angular/directives/ximFitText.js');
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
+        $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
+        $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
+        $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
+        $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');
 		$this->addActionJs('XMainCtrl.js');
 		$this->addActionJs('controller.js');
 
@@ -224,12 +244,12 @@ class Action_browser3 extends ActionAbstract {
 	 * Returns a JSON document with all children of the specified node id
 	 */
 	public function read() {
-		$idNode = $this->request->getParam('nodeid');
-		$items = $this->request->getParam('items');
-		$path = XIMDEX_ROOT_PATH .ModulesManager::path('tolDOX').'/resources/cache/';
-		$file = sprintf('%s%s_%s', $path, str_replace('/', '_', $idNode), $items);
+		//$idNode = $this->request->getParam('nodeid');
+		//$items = $this->request->getParam('items');
+		//$path = XIMDEX_ROOT_PATH .ModulesManager::path('tolDOX').'/resources/cache/';
+		//$file = sprintf('%s%s_%s', $path, str_replace('/', '_', $idNode), $items);
 
-		$modeTags = false;
+		/*$modeTags = false;
 		if (preg_match('/\/Tags/', $idNode) > 0) {
 			$modeTags = true;
 			if (is_file($file)) {
@@ -237,19 +257,17 @@ class Action_browser3 extends ActionAbstract {
 				echo $data;
 				return;
 			}
-		}
+		}*/
 
 		$ret = GenericDatasource::read($this->request);
 		$ret['collection'] = $this->checkNodeAction($ret['collection']);
 
 		header('Content-type: application/json');
 		$data = Serializer::encode(SZR_JSON, $ret);		
-		if ($modeTags) {
+		/*if ($modeTags) {
 			FsUtils::file_put_contents($file, $data);
 			
-		}
-
-
+		}*/
 
 		echo $data;
 	}
@@ -882,6 +900,7 @@ class Action_browser3 extends ActionAbstract {
 	}
 
 	/**
+	 * Get the action params for a node list in frontend. 
 	 * Returns a contextual menu data, composed by actions and sets.
 	 */
 	public function cmenu() {
@@ -889,8 +908,32 @@ class Action_browser3 extends ActionAbstract {
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$sets = $this->getSetsIntersection($nodes);
 		$actions = $this->getActions($nodes);
-		// workaround
-		$options = array_merge($sets, $actions);
+
+		$arrayActionsParams = array();
+        //For every action, build the params for json response
+        
+        foreach ($actions as $idAction){
+            $actionsParamsAux = array();
+            $action = new Action($idAction);
+            $name = $action->get("Name");
+            
+            //Changing name when node sets.
+            if (count($nodes) > 1){
+                $auxName = explode(" ", $name);
+                $name = $auxName[0] . " ". _("selection");
+            }
+            $actionsParamsAux["name"] = $name;
+            
+            $actionsParamsAux["module"] = $action->get("Module")?$action->get("Module"):"";
+            $actionsParamsAux["params"] = $action->get("Params")?$action->get("Params"):"";
+            $actionsParamsAux["command"] = $action->get("Command");
+            $actionsParamsAux["icon"] = $action->get("Icon");
+            $actionsParamsAux["callback"] = "callAction";
+            $actionsParamsAux["bulk"] = $action->get("IsBulk");
+            $arrayActionsParams[] = $actionsParamsAux;
+        }
+
+		$options = array_merge($sets, $arrayActionsParams);
 
 		foreach($options as $key => $value) {
 			$options[$key]['params'] = urlencode($options[$key]['params']);
@@ -901,207 +944,38 @@ class Action_browser3 extends ActionAbstract {
 
 	/**
 	 * Calculates the posible actions for a group of nodes.
-	 * Returns the actions on a JSON string.
+	 * @param array $nodes IdNodes array
+     * @return array IdActions array
 	 */
-	protected function getActions($nodes=null, $processActionName=true) {
+    protected function getActions($nodes=null) {
 
 		$idUser = XSession::get('userID');
 		$nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
-		if (!is_array($nodes)) $nodes = array($nodes);
 
-		$actions = $this->getActionsOnNodeList($idUser, $nodes, $processActionName);
+        if (!is_array($nodes)) $nodes = array($nodes);
+
+		$actions = $this->getActionsOnNodeList($idUser, $nodes);
+
+        /**
+         * Users can modify their account
+         */
+        if(is_array($nodes) && count($nodes)==1 && $nodes[0]==$idUser && !in_array(6002,$actions)){
+            $actions[]=6002;
+        }
 
 		return $actions;
 	}
 
 	/**
-	 * Calculates the posible actions for a group of nodes.
-	 * It depends on roles, states and nodetypes of nodes.
-	 * Returns an array of actions.
+	* Calculates the posible actions for a group of nodes.
+	* It depends on roles, states and nodetypes of nodes.
+    * @param int $idUser Current user.
+    * @param array $nodes IdNodes array.
+    * @return array IdActions array.         * 
 	 */
-	protected function getActionsOnNodeList($idUser, $nodes, $processActionName=true) {
-
-		$db = new DB();
-
-		$nodes = array_unique($nodes);
-
-		// Used for commands intersection (1)
-		$arrNodeTypes = array();
-		// Used for actions intersection (2)
-		$arrStates = array("0");
-		// Used for groups intersection (3)
-		$arrNodes2 = array();
-
-		// ---------------------------- Step 1 -----------------------------
-
-		// Find groups for the node list:
-		// 1) User groups
-		// 2) Node groups
-		// If NodeType::CanAttachGroups == 0 find parent groups until CanAttachGroup == 1
-
-		XMD_Log::debug(sprintf(_('Debugging actions intersection with nodes - [%s]'), implode(', ', $nodes)));
-
-		for ($i=0; $i<count($nodes); $i++) {
-
-			$idNode = $nodes[$i];
-			//First get actions no allowed
-			$noActions = array();
-			$sqlNoActions = "select IdAction From `NoActionsInNode` WHERE IdNode = {$idNode} order by IdAction ASC";
-
-			$db->query($sqlNoActions);
-			while (!$db->EOF) {
-				$noActions[] = $db->getValue('IdAction');
-				$db->next();
-			}
-			$noActions = implode(",", $noActions);
-
-			$sqlNodeInfo = 'select n.idNode, n.idParent, ft.depth, n.idNodeType, n.name, IFNULL(n.idState, 0) as idState,
-				nt.canAttachGroups
-				from FastTraverse ft join Nodes n using(idNode) join NodeTypes nt using(idNodeType)
-				where ft.idChild = %s
-				order by ft.depth';
-
-			$sqlNodeInfo = sprintf($sqlNodeInfo, $idNode);
-			XMD_Log::debug(sprintf('sqlNodeInfo - [%s]', $sqlNodeInfo));
-
-			$db->query($sqlNodeInfo);
-
-			if ($db->EOF) {
-				continue;
-			}
-
-			$arrNodeTypes[] = $db->getValue('idNodeType');
-
-			$arrStates[] = $db->getValue('idState');
-
-			$canAttachGroups = $db->getValue('canAttachGroups');
-			$idParent = $db->getValue('idParent');
-			$nodeHasGroups = true;
-
-			while ($canAttachGroups != 1 && $nodeHasGroups) {
-				$db->next();
-				if (!$db->EOF) {
-					$idNode = $db->getValue('idNode');
-					$idParent = $db->getValue('idParent');
-					$canAttachGroups = $db->getValue('canAttachGroups');
-				} else {
-					$nodeHasGroups = false;
-				}
-			}
-
-			if ($nodeHasGroups) $arrNodes2[] = $idNode;
-		}
-
-		// At this point we have all idnodes needed for obtain the groups
-		// plus a few necessary node attributes.
-
-		// Find the roles of each group, wich depends on user and nodes groups. (3)
-
-		// Used for actions intersection. (4)
-		$roles = array();
-		$sqlGroupsIntersection = 'select ug.idRole
-			from RelUsersGroups ug join RelGroupsNodes gn using(idGroup)
-			where ug.idUser = %s and gn.idNode in (%s)
-			group by ug.idRole';
-
-		$arrNodes2 = array_unique($arrNodes2);
-		$sqlGroupsIntersection = sprintf($sqlGroupsIntersection, $idUser, implode(',', $arrNodes2));
-
-		XMD_Log::debug(sprintf('sqlGroupsIntersection - [%s]', $sqlGroupsIntersection));
-
-		$db->query($sqlGroupsIntersection);
-		while (!$db->EOF) {
-			$roles[] = $db->getValue('idRole');
-			$db->next();
-		}
-
-		// ---------------------------- Step 1 -----------------------------
-
-
-		// ---------------------------- Step 2 -----------------------------
-
-		// Find the actions intersection:
-		// 1) Actions depending on nodetypes.
-		// 2) Actions depending on states.
-
-		// We need to group de actions by command, module and params so the web interface
-		// don't repeat the same action many times.
-
-		// Used for actions intersection. (5)
-		$commands = array();
-		$arrNodeTypes = array_unique($arrNodeTypes);
-		$strNodeTypes = implode(',', $arrNodeTypes);
-
-		// This query finds the commands intersection (1)
-		$sqlCommandIntersection = "select count(1) as c, Command,
-			ifnull(Params, '') as aliasParams,
-			ifnull(Module, '') as aliasModule
-			from Actions
-			where IdNodeType IN (%s) ";
-			if(!empty($noActions) )
-				$sqlCommandIntersection .= " AND IdAction NOT IN({$noActions}) ";
-
-			$sqlCommandIntersection .= "group by Command, aliasParams, aliasModule
-			having c = %s";
-		$sqlCommandIntersection = sprintf($sqlCommandIntersection, $strNodeTypes, count($arrNodeTypes));
-
-		XMD_Log::debug(sprintf('sqlCommandIntersection - [%s]', $sqlCommandIntersection));
-
-		$db->query($sqlCommandIntersection);
-		while (!$db->EOF) {
-			$command = $db->getValue('Command');
-			$commands[] = $command;
-			$db->next();
-		}
-
-		// Now find the actions attributes depending on the commands intersection before,
-		// the nodetypes, the roles and the node states
-		// (1, 2, 4, 5)
-
-		$actions = array();
-		$sqlRolesActions = "select idNodeType, Command, Name, Icon, ifnull(Params, '') as aliasParams, ifnull(Module, '') as aliasModule,%s, IsBulk from Actions a inner join RelRolesActions ra using(idAction) where idNodeType in (%s) and a.Command in ('%s') and Sort > 0 ";
-		if (!empty($roles) && ($idUser!=$nodes[0])) {
-			$sqlRolesActions .=  sprintf(" and idRol in (%s) " , implode(',', $roles));
-		}
-
-		if (!empty($arrStates)) {
-			$sqlRolesActions .=  sprintf(" and ifnull(idState, 0) in (%s) ", implode(',', $arrStates));
-		}
-		$sqlRolesActions .= " group by command, aliasParams, aliasModule
-			order by Sort";
-
-		$actionName = $processActionName === true && count($nodes) > 1
-				? "concat(SUBSTRING_INDEX(name, ' ', 1), ' Selecci�n') as Name"
-				: 'name as Name';
-
-
-		$sqlRolesActions = sprintf(
-			$sqlRolesActions,
-			$actionName,
-			$strNodeTypes,
-			implode("','", $commands)
-		);
-
-		XMD_Log::debug(sprintf('sqlRolesActions - [%s]', $sqlRolesActions));
-
-		$db->query($sqlRolesActions);
-
-		while (!$db->EOF) {
-			$actions[] = array(
-				'name' => _($db->getValue('Name')),
-				'command' => $db->getValue('Command'),
-				'icon' => $db->getValue('Icon'),
-				'module' => $db->getValue('aliasModule'),
-				'params' => $db->getValue('aliasParams'),
-				'callback' => 'callAction',
-				'bulk' => $db->getValue('IsBulk')
-			);
-			$db->next();
-		}
-
-		// ---------------------------- Step 2 -----------------------------
-
-		return $actions;
+    public function getActionsOnNodeList($idUser, $nodes, $processActionName=true) {
+        $user = new User($idUser);
+        return $user->getActionsOnNodeList($nodes);    
 	}
 
 	/**
@@ -1160,11 +1034,19 @@ class Action_browser3 extends ActionAbstract {
 	 * Launch a validation from the params values.
 	 */
 	public function validation(){
-            $method = $this->request->getParam('validationMethod');
-            if(method_exists("FormValidation", $method)){
-                FormValidation::$method($this->request->getRequests());
-            }
-            die("false");
+        $request = $this->request->getRequests();
+        $method = $this->request->getParam('validationMethod');
+        if (empty($method)) {
+	   		$request_content = file_get_contents("php://input");
+			$request = (array) json_decode($request_content);
+	   		if (array_key_exists('validationMethod', $request)){
+	   			$method = $request['validationMethod'];
+	   		}
+        }
+        if(method_exists("FormValidation", $method)){
+            FormValidation::$method($request);
+        }
+        die("false");
 	}
 	// ----- Nodes contextual menus -----
 
@@ -1177,6 +1059,14 @@ class Action_browser3 extends ActionAbstract {
 		$result["success"] = true;
 		$this->sendJSON($result);
 	}
+
+    /**
+     * Return preferences like MaxItemsPerGroup as JSON
+     */
+    function getPreferences(){
+        $res["preferences"]=array("MaxItemsPerGroup" => Config::getValue("MaxItemsPerGroup"));
+        $this->sendJSON($res);
+    }
 }
 
 ?>

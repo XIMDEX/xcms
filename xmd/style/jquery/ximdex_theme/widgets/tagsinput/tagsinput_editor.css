@@ -22,8 +22,15 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .editor_tags .add-btn::before {
-  content: "\e039"; }
+  content: "\e039";
+}
 
 .editor_tags {
   /**************
@@ -34,83 +41,103 @@
   ***************/
   /**************
   // Tags container
-  ***************/ }
-  .editor_tags .xim-tagsinput-container-list {
-    padding: 0; }
-  .editor_tags .tag-type {
-    font-size: 1.2em;
-    margin-left: -3px;
-    margin-top: 0;
-    vertical-align: top;
-    height: 2.12em; }
-  .editor_tags .xim-tagsinput-list {
-    margin: 0;
-    padding: 0;
-    list-style: none; }
-  .editor_tags .editor_input_tags {
-    font-size: 1.2em;
-    width: calc(100% - 2em + 8px);
-    margin: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-    padding: .5em 2.5em .5em .7em;
-    max-height: 2.29em; }
-  .editor_tags .xim-tagsinput-tag {
-    display: block;
-    margin: .5em;
-    max-width: none;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box; }
-  .editor_tags .xim-tagsinput-newtag {
-    position: relative;
-    margin: .5em; }
-  .editor_tags .options {
-    list-style: none;
-    padding: 0; }
-  .editor_tags .add-btn {
-    position: absolute !important;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    text-indent: 5em;
-    border: none;
-    right: .5em;
-    margin-top: .5em;
-    font-size: .9em;
-    overflow: hidden; }
-    .editor_tags .add-btn::before {
-      text-indent: 0;
-      color: #fff;
-      line-height: 1.55 !important; }
-  .editor_tags .tags_container {
-    max-height: 15em;
-    overflow: auto;
-    margin-bottom: .1em; }
-  .editor_tags .xim-tagsinput-text::after, .editor_tags .xim-tagsinput-text::before {
-    display: none; }
-  .editor_tags .xim-tagsinput-tag::before {
-    line-height: 2em; }
-  .editor_tags .type-structured::before {
-    max-width: 1.57em; }
-  .editor_tags .xim-tagsinput-tag-remove {
-    background: none;
-    width: 2em;
-    height: 100%;
-    right: 0;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none; }
-    .editor_tags .xim-tagsinput-tag-remove::before {
-      height: 100%;
-      top: 0; }
-  .editor_tags .xim-tagsinput-tag:hover .xim-tagsinput-tag-remove {
-    right: 0;
-    width: 1.8em; }
-  .editor_tags .xim-tagsinput-type-structured::before, .editor_tags .type-structured::before {
-    line-height: 1.8 !important; }
-  .editor_tags .xim-tagsinput-type-custom::before {
-    line-height: 1.8; }
-  .editor_tags .type-custom::before {
-    line-height: 1.85; }
+  ***************/
+}
+.editor_tags .xim-tagsinput-container-list {
+  padding: 0;
+}
+.editor_tags .tag-type {
+  font-size: 1.2em;
+  margin-left: -3px;
+  margin-top: 0;
+  vertical-align: top;
+  height: 2.12em;
+}
+.editor_tags .xim-tagsinput-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.editor_tags .editor_input_tags {
+  font-size: 1.2em;
+  width: -webkit-calc(100% - 2em + 8px);
+  width: calc(100% - 2em + 8px);
+  margin: 0;
+  border-radius: 0;
+  padding: .5em 2.5em .5em .7em;
+  max-height: 2.29em;
+}
+.editor_tags .xim-tagsinput-tag {
+  display: block;
+  margin: .5em;
+  max-width: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.editor_tags .xim-tagsinput-newtag {
+  position: relative;
+  margin: .5em;
+}
+.editor_tags .options {
+  list-style: none;
+  padding: 0;
+}
+.editor_tags .add-btn {
+  position: absolute !important;
+  border-radius: 50%;
+  text-indent: 5em;
+  border: none;
+  right: .5em;
+  margin-top: .5em;
+  font-size: .9em;
+  overflow: hidden;
+}
+.editor_tags .add-btn::before {
+  text-indent: 0;
+  color: #fff;
+  line-height: 1.55 !important;
+}
+.editor_tags .tags_container {
+  max-height: 15em;
+  overflow: auto;
+  margin-bottom: .1em;
+}
+.editor_tags .xim-tagsinput-text::after, .editor_tags .xim-tagsinput-text::before {
+  display: none;
+}
+.editor_tags .xim-tagsinput-tag::before {
+  line-height: 2em;
+}
+.editor_tags .type-structured::before {
+  max-width: 1.57em;
+}
+.editor_tags .xim-tagsinput-tag-remove {
+  background: none;
+  width: 2em;
+  height: 100%;
+  right: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+.editor_tags .xim-tagsinput-tag-remove::before {
+  height: 100%;
+  top: 0;
+}
+.editor_tags .xim-tagsinput-tag:hover .xim-tagsinput-tag-remove {
+  right: 0;
+  width: 1.8em;
+}
+.editor_tags .xim-tagsinput-type-structured::before, .editor_tags .type-structured::before {
+  line-height: 1.8 !important;
+}
+.editor_tags .xim-tagsinput-type-structured::before {
+  max-width: 2.5rem;
+}
+.editor_tags .xim-tagsinput-type-custom::before {
+  line-height: 1.8;
+}
+.editor_tags .type-custom::before {
+  line-height: 1.85;
+}

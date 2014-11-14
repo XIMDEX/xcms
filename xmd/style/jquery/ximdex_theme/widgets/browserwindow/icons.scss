@@ -62,7 +62,7 @@
 }
 
 
-// :checked + label strong::after, se elimina de la lista porque es demasiado genérico y afecta a secciones como  Publicar sección
+// :checked + label strong::after, se elimina de la lista porque es demasiado generico y afecta a secciones como  Publicar seccion
 .recover-btn::before,  
 .checkbox-label:not(.reduced_label)::before, 
 .progress.complete::before, 
@@ -168,8 +168,8 @@
   
 }
 
-.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before, .title_language.toggle::before, .download_link::before, .name_uploader::after{
-  content: "\e037";
+.custom_options .opened::before, .custom_options .closed::before, .ui-datepicker-prev span::before, .ui-datepicker-next span::before, .title_language.toggle::before, .name_uploader::after{
+  content: "\e037"; 
 }
 
 .result_description::before{

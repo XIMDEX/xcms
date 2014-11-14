@@ -59,6 +59,7 @@
 		>a{
 			margin: 0;
 			right: 20px;
+			z-index: 3;
 		}
 
 		.ui-dialog .ui-dialog-titlebar-close{
@@ -191,10 +192,14 @@
 		padding: 2em 1.5em;
 		position: relative;
 		margin-left: 34%;
-		.xim-listview-table, tr, tbody{
+		.xim-listview-table, tbody{
 			float: left;
 			width: 100%;
 			display: block;
+		}
+
+		tr{
+			 display: block;
 		}
 		
 		.t_fixed_header{
@@ -248,13 +253,12 @@
 			}
 			td{
 				font-size: 1.2em;
-				float: left;
+
+				
 				
 				&:first-child{
-					margin-left: 1em;
-					position: absolute;
-					width: 100%;
-					height: 100%;
+					order: 1;
+					padding: 0 .5em 0 1em;
 
 					.xim-actions-dropdown{
 						position: absolute;
@@ -262,25 +266,71 @@
 						height: 100%;
 						left: 0;
 						top: 0;
+					}	
+				}
 
+				&:nth-child(3){
+					max-width: 24%;
+					position: absolute;
+					left: 3.2em;
+					top: 1em;
+					color: $c-mainlight;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+
+
+					&:hover::before, &:hover::after{
+						opacity: 1;
+						 -webkit-transition: all .5s .3s;
+				            -moz-transition: all .5s .3s;
+				            -ms-transition: all .5s .3s;
+				            -o-transition: all .5s .3s;
+				            transition: all .5s .3s;							
+ 												
 
 					}
-					
-				}
+					&:hover::before{
+						height: auto;
+						overflow: visible;
+						padding: .5em 1em;
+					}
 
-				&:nth-child(2){
-					position: absolute;
-					text-align: right !important;
-					left: 29.5em;
-				}
-				&:nth-child(3){
-					margin-left: 3.1em;
-				}
+					&::before{
+						content: attr(data-tooltip);
+						@extend %tooltip;	
+						top: 3.7em;
+						margin-left: -1em;
+						-webkit-transition: all .2s;
+				            -moz-transition: all .2s;
+				            -ms-transition: all .2s;
+				            -o-transition: all .2s;
+				            transition: all .2s;		
 
+					}		
+
+					&::after{
+						@include triangle(top, rgba(35,35,35,.8), .5em);
+						margin-bottom: -.9em;
+						top: 3.8em;
+						-webkit-transition: all .2s;
+				            -moz-transition: all .2s;
+				            -ms-transition: all .2s;
+				            -o-transition: all .2s;
+				            transition: all .2s;													
+						opacity: 0;
+
+					}	
+				}
 				&:nth-child(4){
-					color: $c-mainlight;
-					margin-top: -.1em;
-					font-weight: bold;
+					position: absolute;
+					left: 35%;
+					max-width: 24%;
+					top: 1em;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+
 					&::before{
 						content: "[";
 					}
@@ -289,11 +339,30 @@
 						
 					}
 				}
-
+				&:nth-child(6){
+					max-width: 15%;
+					position: absolute;
+					right: 8em;
+					top: 1em;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
+				&:nth-child(2){
+					position: absolute;
+					right: 1em;
+					top: 1em;
+					max-width: 15%;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
 				&:nth-child(5){
-					clear: left;
-					margin-left: 3.1em;
-					width: 87% !important;
+					max-width: 50%;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+					display: block;
+					margin: .2em 0 0 3em;
 
 					span{
 					position: relative;
@@ -302,7 +371,6 @@
 					display: block;
 					overflow: hidden;							
 					width: 100%;
-					padding-right:13.5em;
 
 						
 					}
@@ -347,7 +415,43 @@
 				            transition: all .2s;													
 						opacity: 0;
 
-					}			
+					}	
+				}
+				&:nth-child(8){
+					position: absolute;
+					max-width: 15%;
+					right: 8em;
+					top: 2.5em;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+				}
+				&:nth-child(7){
+					position: absolute;
+					right: 1em;
+					top: 2.5em;
+					color: $c-mainlight;
+
+				}
+			}
+
+				/*t&:nth-child(2){
+					position: absolute;
+					text-align: right !important;
+					left: 29.5em;
+				}
+				
+
+				&:nth-child(4){
+					
+				}
+
+				&:nth-child(5){
+					clear: left;
+					margin-left: 3.1em;
+					width: 87% !important;
+
+							
 				}
 
 				&:nth-child(6){
@@ -360,8 +464,7 @@
 					position: absolute;
 					left:29.5em;
 					top: 2.18em;
-					color: darken($c_mainlight, 5%);
-					font-weight: bold;
+					
 					text-align: right !important;
 				}
 				&:last-child{
@@ -370,7 +473,7 @@
 					margin-left: 59%;
 
 				}
-			}
+			}*/
 
 			.xim-listview-icon{
 				height: 1.5em;
@@ -391,6 +494,8 @@
 	.ui-widget-content{
 		border: none;
 		background: none;
+		width: auto !important;
+
 	}
 
 
@@ -470,6 +575,7 @@
 
 
 .xim-listview-table-container{
+	margin: 1.5em 0;
 	>div{
 		width: 100% !important;
 	}

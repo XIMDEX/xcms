@@ -28,10 +28,11 @@
 <form method="post" name="settingForm" ng-controller="SettingController" ng-submit="checkForm()" ng-cloak>
     <input type="hidden" name="method" value="<?php echo $goMethod ?>">
 	<h2>Settings</h2>
-    <p>By default it's created an admin user for Ximdex CMS called <em>ximdex</em>. Set the password here.</p>
+    <p>The user with the administration role in Ximdex CMS is called <em>ximdex</em>. Set the password for this admin user here:</p>
 	<div class="form_item  form_item--user full-width">
 	<label for="">User</label>
 	<span class="user">ximdex</span></div>
+	<p ng-show="localhash">There are problems with your internet connection. Local id generated.</p>
 	<p class="errors" ng-show="minLenghtFail">{{minLengthMessage}}</p>	
 	<div class="form_item">
 		<label for="password">Password</label>
@@ -45,7 +46,7 @@
 	</div>
 	<div class="form_item full-width form_item--information">
 		<label for="anonymous_information">
-            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" ng-model="anonymous_information" />Would you like to help us sending anonymous information about your usage?</label>
+            <input type="checkbox" id="anonymous_information" value="1" name="anonymous_information" ng-model="anonymous_information" ng-true-value="1"  />Would you like to help us sending anonymous information about your usage?</label>
 	</div>
 	<button class=" action_launcher ladda-button">Save settings</button>
 </form>

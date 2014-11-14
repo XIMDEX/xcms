@@ -156,4 +156,3 @@ class SourceFileScanner {
         return $result;
     }
 }
-

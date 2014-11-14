@@ -155,11 +155,11 @@ class Action_manageproperties extends ActionAbstract {
 
 		if ($confirm) {
 
-			$this->showConfirmation($nodeId, $properties, $affected);
+            $this->showConfirmation($nodeId, $properties, $affected);
 		} else {
 			$results = InheritedPropertiesManager::setValues($nodeId, $properties);
 
-			$applyResults = array();
+            $applyResults = array();
 			if (count($channel_recursive) > 0) {
 				$applyResults = array_merge($applyResults, $this->_applyPropertyRecursively('Channel', $nodeId, $channel_recursive));
 			}
@@ -186,7 +186,7 @@ class Action_manageproperties extends ActionAbstract {
 						$message = sprintf(_('A total of %s channels are going to be disassociated from %s nodes.'), $totalProps, $totalNodes);
 						break;
 					case 'Language':
-						$message = sprintf(_('A total of %s idiomatic versions are going to be deleted.'), $totalNodes);
+						$message = sprintf(_('A total of %s language versions are going to be deleted.'), $totalNodes);
 						break;
 				}
 
@@ -243,7 +243,7 @@ class Action_manageproperties extends ActionAbstract {
 
 						if ($affectedNodes !== false) {
 							$totalProps = count($affectedNodes['props']);
-							$message[] = sprintf(_('A total of %s idiomatic versions have been deleted.'), $totalProps);
+							$message[] = sprintf(_('A total of %s language versions have been deleted.'), $totalProps);
 						} else {
 							if ($totalProps == 0) {
 								$message[] = _('Language values will be inherited.');
@@ -254,7 +254,7 @@ class Action_manageproperties extends ActionAbstract {
 
 						if (isset($applyResults['Language']) && $applyResults['Language'] !== false && $applyResults['Language']['nodes'] > 0) {
 							$message[] = sprintf(
-								_('A total of %S idiomatic versions have been recursively created.'),
+								_('A total of %S language versions have been recursively created.'),
 								count($applyResults['Language']['values'])
 							);
 						}
@@ -276,7 +276,7 @@ class Action_manageproperties extends ActionAbstract {
 				}
 
 				foreach ($message as $msg) {
-					$this->messages->add(_($msg), MSG_TYPE_NOTICE);
+					$this->messages->add($msg, MSG_TYPE_NOTICE);
 				}
 			}
 		}

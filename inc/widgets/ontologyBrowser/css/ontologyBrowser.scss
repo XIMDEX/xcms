@@ -5,106 +5,106 @@
 
 
 rect {
-  pointer-events: all;
-  cursor: pointer;
+	pointer-events: all;
+	cursor: pointer;
 }
 
 .node rect.isLeaf {
-  fill: $c_greymain;
-  fill-opacity: .3;
-  + rect.isLeaf {
-    fill-opacity: 1;
-  }
+	fill: $c_greymain;
+	fill-opacity: .3;
+	+ rect.isLeaf {
+		fill-opacity: 1;
+	}
 }
 
 .node rect.hasChild{
-  fill: $c_greymain;
-  fill-opacity: .8;
-  + rect.hasChild {
-    fill-opacity: 1;
-  }
+	fill: $c_greymain;
+	fill-opacity: .8;
+	+ rect.hasChild {
+		fill-opacity: 1;
+	}
 }
 
 .selector{
-  fill: $c_greymain;
+	fill: $c_greymain;
 }
 
 .node rect.added {
-  cursor: pointer;
-  fill: $c_tag_custom;
-  font-weight: bold;
+	cursor: pointer;
+	fill: $c_tag_custom;
+	font-weight: bold;
 
-  + rect.added {
-    fill-opacity: .5;
-  }
+	+ rect.added {
+		fill-opacity: .5;
+	}
 }
 
 
 
 .node text {
-  &:hover{
-    font-weight: normal !important;
-    fill: $c_main;
-  }
+	&:hover{
+		font-weight: normal !important;
+		fill: $c_main;
+	}
 }
 
 .node text.action {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 path.link {
-  fill: none;
-  stroke: none;
-  /*stroke: #9ecae1;
-  stroke-width: 1.5px;*/
+	fill: none;
+	stroke: none;
+	/*stroke: #9ecae1;
+	stroke-width: 1.5px;*/
 }
 
 .node circle {
-  cursor: pointer;
-  fill: $c_tag_custom;
-  stroke: $c_tag_custom;
-  stroke-width: 1.5px;
+	cursor: pointer;
+	fill: $c_tag_custom;
+	stroke: $c_tag_custom;
+	stroke-width: 1.5px;
 
-  &:focus{
-    stroke-width: 2.5px;
-  }
+	&:focus{
+		stroke-width: 2.5px;
+	}
 
-  &.isLeaf{
-    fill: #fff;
-  }
+	&.isLeaf{
+		fill: #fff;
+	}
 
-  &.hasChild:hover{
-    fill: lighten($c_tag_custom, 8%);
-    stroke: lighten($c_tag_custom, 8%);
-  }
-  &.isLeaf:hover{
-    fill: lighten($c_tag_custom, 8%);
-  }
+	&.hasChild:hover{
+		fill: lighten($c_tag_custom, 8%);
+		stroke: lighten($c_tag_custom, 8%);
+	}
+	&.isLeaf:hover{
+		fill: lighten($c_tag_custom, 8%);
+	}
 }
 
 .node text {
-  color: #990000;
-  cursor: pointer;
+	color: #990000;
+	cursor: pointer;
 }
 
 .node text.added {
-  fill: $c_main;
-  cursor: pointer;
-  position: relative;
-  &::before{
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: #000;
-    content: "";
-  }
+	fill: $c_main;
+	cursor: pointer;
+	position: relative;
+	&::before{
+		width: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		background: #000;
+		content: "";
+	}
 }
 
 path.link {
-  fill: none;
-  stroke: #AAA;
-  stroke-width: 1.5px;
+	fill: none;
+	stroke: #AAA;
+	stroke-width: 1.5px;
 
 }
 
@@ -115,101 +115,172 @@ path.link {
 
 .ontology-browser-container{
 
-    background:#fff;
-    width: 100%;
-  a{
-    display: inline-block;
-    width: 49%;
-    padding:.6em 2em .6em 3em;
+		background:#fff;
+		width: 100%;
+	a{
+		display: inline-block;
+		width: 49%;
+		padding:.6em 2em .6em 3em;
 
-    &::before{
-      font-size: 1.4em !important;
-      line-height: 1.6em !important;
-      width: 1.5em !important;
-      background:#e32e3f !important;
-    }
-  }
+		&::before{
+			font-size: 1.4em !important;
+			line-height: 1.6em !important;
+			width: 1.5em !important;
+			background:#e32e3f !important;
+		}
+	}
 
-  .ontology-browser{
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    background:rgba(0,0,0,.7);
-    z-index: 5;
-    min-height: 100%;
-  }
+	.ontology-browser{
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		background:rgba(0,0,0,.7);
+		z-index: 5;
+		min-height: 100%;
 
-  .treeViewer, .textViewer{
-    background:#fff;
-    position: relative;
-    overflow: auto;
-    margin: 2em 2em 0 2em;
-    h3{
-      padding: 1.1em 2em .8em;
-      background:$c_mainlight;
-      color: #fff;
-    }
-  }
 
-  .ontology-close{
-    position: absolute;
-    right: 3em;
-    top: 2.2em;
-    background: none !important;
-    cursor: pointer;
-    &:hover, &:hover ::before, &::before{
-      background: none !important;
-    }
-  }
 
-  .infobox {
-    position: absolute;
-    display: none;
-    top:5.5em;
-    right: 4em;
-    padding: 1em;
-    background-color: $c_dark_grey;
-    color: white;
-    z-index: 6;
-    width: 25%;
+		//Xeditor view
+		.kupu-fulleditor &{
+			top: 3.5em;
+			bottom: 0;
 
-    h1{
-      font-size: 1em;
-      text-transform: uppercase;
-      color: $c_mainlight;
-    }
-    p{
-      max-height: 400px;
-      overflow: auto;
-      padding: 1em 0;
-    }
+			.treeViewer{
+				max-height: calc(100% - 8em);
+			}
 
-    ul{
-      list-style: disc;
-      padding-left: 1.2em;
-    }
+			h3{
+				margin-top: 0;
+			}
 
-    li{
-      padding: .2em 0;
-    }
+			.ontology-close, .close {
+				border: none;
+				right: 1em;
+				top: 2.5em;
+				width: 1em;
+			}
 
-    button{
-      margin: 0;
-      border: none;
-    }
+			.ontology-close{
+				background: $c-mainlight;
+			}
 
-    .close{
-      position: absolute;
-      right: 0;
-      top: .3em;
-      cursor: pointer;
-      background: none !important;
+			.close{
+				right: -1em;
+				top: .7em;
+				cursor: pointer;
+			}
 
-      &:hover, &::before{
-        background: none !important;
-      }
-    }
-  }
+			.infobox{
+				right: 2.3em;
+				h1{
+					margin: 0;	
+				}
+
+				p{
+					margin: 0;
+				}
+
+				.main_action{
+					padding: .5em;
+					text-align: center;
+					
+					&:hover{
+						background: $c-mainlight;
+						border-bottom: lighten($c-mainlight, 15%);
+						color: #fff;
+
+					}
+				}
+			}
+			
+			.selectbox-tree{
+				display: inline-block;
+				margin-left: 2em;
+			}
+
+			a{
+				cursor: pointer;
+			}
+		}
+
+		//End xeditor view
+	}
+
+	.treeViewer, .textViewer{
+		background:#fff;
+		position: relative;
+		overflow: auto;
+		margin: 2em 2em 0 2em;
+		h3{
+			padding: 1.1em 2em .8em;
+			background:$c_mainlight;
+			color: #fff;
+		}
+	}
+
+	.ontology-close{
+		position: absolute;
+		right: 3em;
+		top: 2.2em;
+		background: none !important;
+		cursor: pointer;
+		&:hover, &:hover ::before, &::before{
+			background: none !important;
+		}
+	}
+
+	.infobox {
+		position: absolute;
+		display: none;
+		top:5.5em;
+		right: 4em;
+		padding: 1em;
+		background-color: $c_dark_grey;
+		color: white;
+		z-index: 6;
+		width: 25%;
+
+		h1{
+			font-size: 1em;
+			text-transform: uppercase;
+			color: $c_mainlight;
+		}
+		p{
+			max-height: 400px;
+			overflow: auto;
+			padding: 1em 0;
+		}
+
+		ul{
+			list-style: disc;
+			padding-left: 1.2em;
+		}
+
+		li{
+			padding: .2em 0;
+		}
+
+		button{
+			margin: 0;
+			border: none;
+		}
+
+		.close{
+			position: absolute;
+			right: 0;
+			top: .3em;
+			cursor: pointer;
+			background: none !important;
+
+			&:hover, &::before{
+				background: none !important;
+			}
+		}
+	}
+
+	.hidden{
+		visibility: hidden;
+	}
 
 }

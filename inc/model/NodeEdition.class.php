@@ -108,5 +108,26 @@ class NodeEdition extends NodeEdition_ORM {
 
 		return true;
 	}
+	/**
+	 * <p>Deletes all node edition of a user</p>
+         * <p>Indicates that a given user has finished the edition on the different nodes</`
+	 *
+     * @param int $idUser The user id
+	 * @return boolean indicating if the deletion of the edition has been successful or not
+	 */
+	
+	function deleteByUser($idUser = null) {
+		
+		if (is_null($idUser)) {
+			XMD_Log::error(_('Param user is mandatory'));
+			return false;
+		}
+
+ 		$dbObj = new DB();
+                $sql = sprintf("DELETE FROM NodeEdition WHERE IdUser = %s", $idUser);
+		$dbObj->Execute($sql);
+
+		return true;
+	}
 }
 ?>

@@ -221,4 +221,3 @@ class FileList extends DataType {
     }
 
 }
-

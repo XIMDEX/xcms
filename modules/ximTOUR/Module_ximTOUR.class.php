@@ -56,6 +56,13 @@ class Module_ximTOUR extends Module {
         
     function uninstall(){
 	    $this->removeStateFile();
+        $node = new Node(10000);
+        $idNode = $node->GetChildByName("Picasso");
+        if ($idNode){
+            $nodePicasso = new Node($idNode);
+            $nodePicasso->delete();
+        }
+        
         $this->loadDestructorSQL("ximTOUR.destructor.sql");
         parent::uninstall();
     }

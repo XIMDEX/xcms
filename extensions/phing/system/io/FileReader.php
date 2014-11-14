@@ -38,4 +38,3 @@ class FileReader extends InputStreamReader {
     }
         
 }
-

@@ -23,12 +23,9 @@
  *  @version $Revision$
  */
 /* NO Extends because they are inserted at the beggining of each CSS file */
-
-
- @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
- @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
- @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
-
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+@import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
 
 .props-server {
   background: #fff;
@@ -41,47 +38,76 @@
   cursor: pointer;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
 
 .server-name {
   width: 25%;
   margin-right: 5%;
-  padding: 1rem 0; }
-  .server-name div {
-    padding: 1em; }
-  .server-name .create-server {
-    margin: 0;
-    padding: 1.5em 1em;
-    text-align: center; }
-  .server-name .selected {
-    background: #666666;
-    color: #fff; }
-    .server-name .selected::before {
-      content: ""; }
+  padding: 1rem 0;
+}
+
+.server-name div {
+  padding: 1em;
+}
+
+.server-name .create-server {
+  margin: 0;
+  padding: 1.5em 1em;
+  text-align: center;
+}
+
+.server-name .selected {
+  background: #666666;
+  color: #fff;
+}
+
+.server-name .selected::before {
+  content: "";
+}
 
 .props-server {
-  cursor: default; }
-  .props-server label:not(.server_channel) {
-    line-height: 2;
-    padding-right: 2em;
-    color: #4c4c4c; }
-  .props-server .slide-element {
-    width: auto; }
-    .props-server .slide-element + .slide-element {
-      margin-left: .5em; }
-  .props-server .label-slide:not(.server_channel) {
-    font-size: 1.4rem;
-    white-space: nowrap; 
-    padding-top: 0;}
-  .props-server .input-slide + .label-slide:not(.server_channel)::before {
-    text-align: left;
-    content: 'ON \a0 \a0 OFF'; }
-  .props-server .input-slide + .label-slide:not(.server_channel)::before, .props-server .input-slide + .label-slide:not(.server_channel)::after {
-    margin-top: -.9em; }
-  .props-server .input-slide + .label-slide:not(.server_channel)::after {
-    margin-top: -.61em; }
-  .props-server input[type="password"] {
-    display: block; }
+  cursor: default;
+}
+
+.props-server label:not(.server_channel) {
+  line-height: 2;
+  padding-right: 2em;
+  color: #4c4c4c;
+}
+
+.channels-wrapper {
+  width: 80% !important;
+}
+
+.props-server .slide-element {
+  width: auto;
+  display: inline-block;
+  margin: .5em 1em 1em 0;
+}
+
+.props-server .label-slide:not(.server_channel) {
+  font-size: 1.4rem;
+  white-space: nowrap;
+  padding-top: 0;
+}
+
+.props-server .input-slide + .label-slide:not(.server_channel)::before {
+  text-align: left;
+  content: 'ON \a0 \a0 OFF';
+}
+
+.props-server .input-slide + .label-slide:not(.server_channel)::before, .props-server .input-slide + .label-slide:not(.server_channel)::after {
+  margin-top: -.9em;
+}
+
+.props-server .input-slide + .label-slide:not(.server_channel)::after {
+  margin-top: -.61em;
+}
+
+.props-server input[type="password"] {
+  display: block;
+}
 
 .header-server {
   border-bottom: 1px solid #e1e1e1;
@@ -90,39 +116,59 @@
   padding: 0 1em .5em;
   margin-bottom: 1em;
   overflow: hidden;
-  position: relative; }
-  .header-server > span {
-    text-align: right;
-    position: absolute;
-    right: .5em;
-    top: .25em; }
+  position: relative;
+  height: 4.6em;
+}
+
+.header-server > span {
+  text-align: right;
+  position: absolute;
+  right: .5em;
+  top: 2em;
+}
 
 .server-title {
-  float: left; }
+  float: left;
+  width: 100%;
+}
 
 .inactive_field {
-  display: none; }
+  display: none;
+}
 
 fieldset.mdfsv_errors {
-  display: none; }
+  display: none;
+}
 
 .content_server {
-  margin: 0 0 1em .5em; }
-  .content_server > div {
-    margin: 0 0 1.5em 0; }
-    .content_server > div:nth-child(1n+2) {
-      width: 49%;
-      display: inline-block;
-      vertical-align: top; }
-  .content_server .encoding {
-    width: 100% !important; }
+  margin: 0 0 1em .5em;
+}
+
+.content_server > div {
+  margin: 0 0 1.5em 0;
+}
+
+.content_server > div:nth-child(1n+2) {
+  width: 49%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.content_server .encoding {
+  width: 100% !important;
+}
 
 .protocol label {
-  padding-right: 2em; }
+  padding-right: 2em;
+}
 
-  .row_item_selectable {
+.row_item_selectable {
   margin-top: 1em;
-    @extend %button-default;
-    display: block;
-    text-align: center;
-    }
+  @extend %button-default;
+  display: block;
+  text-align: center;
+}
+
+.remote_url label, .remote_folder label, .port label, .host label, .login label, .password label{
+  display: block;
+}

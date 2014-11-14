@@ -146,7 +146,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 			
 			//contextmenu in logo
-			$('.xim-contextmenu-container',  this.element).contextmenu();
+			//$('.xim-contextmenu-container',  this.element).contextmenu();
 
 			this.registerTriggers();
 			this.registerEvents();
@@ -154,6 +154,10 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 
 		},
+
+        emptyActionsCache: function(){
+            this.cachedActions = new Object();
+        },
 
 		appendView: function(panelName, view) {
 			var panel = this.panels[panelName] || null;
@@ -205,7 +209,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 				
 				setTimeout(function() {
 						if (Object.isFunction(params.cb)) {
-							params.cb($.extend({ids: ids}, params, {cb:null, actions: that.cachedActions[cachedKey]})); 
+							params.cb($.extend({ids: ids}, params, {cb:null, actions: that.cachedActions[cachedKey]}));
 						}
 					  },100);
 			}

@@ -51,7 +51,11 @@ class InstallController extends IController {
 		$this->request = new Request();
 		$this->response = new Response();
 		$this->steps = $this->installManager->getSteps();
-		$this->currentState = $this->installManager->getCurrentState();		
+		$currentState = $this->installManager->getCurrentState();
+		if (!$currentState){
+			$this->installManager->createStatusFile();
+		}
+		$this->currentState = $currentState;
 	}
 
 	/**
@@ -102,7 +106,7 @@ class InstallController extends IController {
 	public static function isInstalled(){
 
 		$installManager = new InstallManager(InstallManager::WEB_MODE);
-		return $installManager->isInstalled();		
+		return $installManager->isInstalled();
 	}
 
 	private function setToRequest() {

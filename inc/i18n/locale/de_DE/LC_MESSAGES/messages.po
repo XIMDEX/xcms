@@ -236,7 +236,6 @@ msgstr "Thema"
 msgid "CatID"
 msgstr "CatID"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Revision date"
 msgstr "Datum der &Uuml;berprufung"
 
@@ -558,7 +557,6 @@ msgid "The query handler was not found."
 msgstr "Der Treiber f&uuml;r die Datenbankabfrage wurde nicht gefunden."
 
 #: /actions/browser3/inc/Datasource_tags.class.php
-#: /actions/browser3/inc/Datasource_tolDOX.class.php
 #: /actions/browser3/inc/Datasource_XVFS.class.php
 msgid "The path cannot be read"
 msgstr "Der Pfad kann nicht gelesen werden."
@@ -1331,7 +1329,6 @@ msgstr "Benutzer hinzuf&uuml;gen"
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: xmd/login.php
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -1429,7 +1426,7 @@ msgstr "Aufgrund von Systembeschr&auml;nkungen k&ouml;nnen folgende Knoten nicht
 msgid "Selected document or folder is not empty. It also have dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
 msgstr "Ausgew&auml;hltes Dokument oder Ordner ist nicht leer. Er h&auml;ngt ausserdem mit anderen Systemdokumenten zusammen und kann nicht gel&ouml;scht werden mit Ihrer Rolle. Bitte entfernen Sie die Abh&auml;ngigkeiten oder verwenden Sie einen Benutzer mit der n&ouml;tigen Berechtigung."
 
-msgid "Your role cannot delete the selected container because of it has idiomatic versions depending on it."
+msgid "Your role cannot delete the selected container because of it has language versions depending on it."
 msgstr "Ihre Rolle kann den ausgew&auml;hlten Ordner nicht l&ouml;schen weil idiomatische Versionen davon abh&auml;ngen."
 
 msgid "Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
@@ -1441,7 +1438,7 @@ msgstr "Ausgew&auml;hlte Datei h&auml;ngt mit anderen Systemdokumenten zusammen 
 msgid "List of pending documents"
 msgstr "Liste ausstehender Dokumente"
 
-msgid "To be able to delete this node, you should first delete the following idiomatic versions"
+msgid "To be able to delete this node, you should first delete the following language versions"
 msgstr "Um diesen Knoten l&ouml;schen zu k&ouml;nnen, m&uuml;ssen Sie zuerst folgende idiomatische Versionen l&ouml;schen"
 
 msgid "Node does not exist. Update XimSearch."
@@ -1927,7 +1924,6 @@ msgstr "Mit diesen Suchkriterien konnten keine besch&auml;digten Links gefunden 
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
 #: /actions/searchpanel/inc/Filters_Ximdex.class.php
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "contains"
 msgstr "enth&auml;lt"
 
@@ -1996,7 +1992,6 @@ msgstr "Bereit zum L&ouml;schen "
 msgid "Being unpublished"
 msgstr "Wird gel&ouml;scht"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: /actions/managebatchs/forms.php
 #: /modules/ximSYNC/actions/managebatchs/Action_managebatchs.class.php
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -2177,7 +2172,7 @@ msgstr "Best&auml;tigen und aktualisieren"
 msgid "A total of %s channels are going to be disassociated from %s nodes."
 msgstr "Insgesamt %s Kan&auml;le werden von Knoten %s getrennt."
 
-msgid "A total of %s idiomatic versions are going to be deleted."
+msgid "A total of %s language versions are going to be deleted."
 msgstr "Insgesamt %s idiomatische Versionen werden gel&ouml;scht."
 
 msgid "A total of %s channels have been disassociated from %s nodes."
@@ -2192,7 +2187,7 @@ msgstr "%s Kan&auml;le wurden erfolgreich hinzugef&uuml;gt."
 msgid "A total of %s channels have been recursively associated with %s documents."
 msgstr "Insgesamt %s Kan&auml;le wurden rekursiv hinzugef&uuml;gt zu %s Dokumenten."
 
-msgid "A total of %s idiomatic versions have been deleted."
+msgid "A total of %s language versions have been deleted."
 msgstr "Insgesamt %s idiomatische Versionen wurden gel&ouml;scht."
 
 msgid "Language values will be inherited."
@@ -2201,7 +2196,7 @@ msgstr "Sprachwerte werden weitergegeben."
 msgid "%s Languages have been successfully assigned."
 msgstr "%s Sprachen wurden erfolgreich hinzugef&uuml;gt."
 
-msgid "A total of %S idiomatic versions have been recursively created."
+msgid "A total of %S language versions have been recursively created."
 msgstr "Insgesamt %S idiomatische Versionen wurden rekursiv erstellt."
 
 msgid "Template values will be inherited."
@@ -2236,7 +2231,7 @@ msgstr "Andernfalls werden vererbbare Werte benutzt."
 msgid "Channel %s has been associated with %s documents."
 msgstr "Kanal %s wurde verkn&uuml;pft mit %s Dokumenten."
 
-msgid "%s idiomatic versions have been created."
+msgid "%s language versions have been created."
 msgstr "%s idiomatische Versionen wurden erstellt."
 
 #: /actions/manageproperties/template/Smarty/Channel.tpl
@@ -2266,7 +2261,7 @@ msgstr "Vererbte Sprachen benutzen"
 msgid "Overwrite inherited languages"
 msgstr "Vererbte Sprachen &uuml;berschreiben"
 
-msgid "Create idiomatic version recursively"
+msgid "Create language version recursively"
 msgstr "Idiomatische Version rekursiv erstellen"
 
 #: /actions/manageproperties/template/Smarty/Schema.tpl
@@ -5836,7 +5831,7 @@ msgstr "Neue HTML-Datei hinzuf&uuml;gen"
 msgid "Change name of XML document"
 msgstr "Name des XML-Dokuments &auml;ndern"
 
-msgid "Change the document name and all its idiomatic versions"
+msgid "Change the document name and all its language versions"
 msgstr "Dokumentnamen und alle seine idiomatischen Versionen &auml;ndern"
 
 msgid "Add new file"
@@ -7242,7 +7237,6 @@ msgstr "Nach Datum (Woche)"
 
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Category"
 msgstr "Kategorie"
 
@@ -7292,7 +7286,7 @@ msgstr "Stunden"
 msgid "news"
 msgstr "Nachrichten"
 
-msgid "In order to defuse idiomatic versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
+msgid "In order to defuse language versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
 msgstr "Um zuvor ver&ouml;ffentlichte idiomatische Versionen der Dokumente zu abzulehnen, deaktivieren Sie die jeweilige Sprache und lassen Sie die betroffenen Dokumente auslaufen (Newsletter und Nachrichten)"
 
 msgid "In order to defuse publication channels of document previously published, defuse the corresponding channel and unpublish the implicated documents (bulletins and news)"

@@ -43,22 +43,23 @@ class Action_createchannel extends ActionAbstract {
     		$extension = $this->request->getParam('extension');
     		$description = $this->request->getParam('description');
     		$renderMode = $this->request->getParam('rendermode');
+    		$outputType = $this->request->getParam('output_type');
 
-			$nodeType = new NodeType();
-			$nodeType->SetByName('Channel');
+                $nodeType = new NodeType();
+                $nodeType->SetByName('Channel');
 
-			$node = new Node();
-			$complexName = sprintf("%s.%s", $name, $extension);
-			// Control uniqueness of tupla, channel, format.
-			$result = $node->CreateNode($complexName, $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, '', $renderMode);
+                $node = new Node();
+                $complexName = sprintf("%s.%s", $name, $extension);
+                // Control uniqueness of tupla, channel, format.
+                $result = $node->CreateNode($complexName, $idNode, $nodeType->get('IdNodeType'), NULL, $name, $extension, NULL, $description, '', $renderMode, $outputType);
 
-			if ($result > 0) {
-				$node->messages->add(_('Channel has been succesfully inserted'), MSG_TYPE_NOTICE);
-			}
+                if ($result > 0) {
+                        $node->messages->add(_('Channel has been succesfully inserted'), MSG_TYPE_NOTICE);
+                }
 
-			// $this->reloadNode($idNode);
-			$values = array('messages' => $node->messages->messages, 'idNode' => $idNode);
-			$this->sendJSON($values);
+                // $this->reloadNode($idNode);
+                $values = array('messages' => $node->messages->messages, 'idNode' => $idNode);
+                $this->sendJSON($values);
     	}
 }
 ?>

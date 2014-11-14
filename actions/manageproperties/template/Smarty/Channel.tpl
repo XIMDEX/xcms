@@ -40,8 +40,8 @@
 			{if $channel.Checked == 1}
 				checked="checked"
 			{/if}
-			 id="{$channel.Name}"/>
-			<label for="{$channel.Name}" class="label-slide">{$channel.Name}</label>
+			 id="{$channel.Name}_{$id_node}"/>
+			<label for="{$channel.Name}_{$id_node}" class="label-slide">{$channel.Name}</label>
 		</span>
 		{/foreach}
 	{/if}

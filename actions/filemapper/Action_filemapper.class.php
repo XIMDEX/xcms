@@ -52,23 +52,22 @@ class Action_filemapper extends ActionAbstract {
     private function echoNode($idNode){
     	$fileNode = new Node($idNode);
 		$fileName = $fileNode->get('Name');
-		$fileContent = $fileNode->GetContent();
-		$gmDate =  gmdate("D, d M Y H:i:s");
-
-		/// Expiration headers
-		$this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-		$this->response->set('Last-Modified', $gmDate . " GMT");
-		$this->response->set('Cache-Control', 
-			array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
-		$this->response->set('Pragma', 'no-cache');
-		$this->response->set('ETag', md5($idNode.$gmDate));
-		$this->response->set('Content-Length', strlen(strval($fileContent)));
-		$this->response->set('Content-transfer-encoding', 'binary');
-		$this->response->set('Content-type', 'octet/stream');
-		$this->response->set('Content-Disposition', "attachment; filename=".$fileName);
-		$this->response->sendHeaders();
-		/// Content headers
-		echo $fileContent;
+        $gmDate =  gmdate("D, d M Y H:i:s");
+        $fileContent = $fileNode->GetContent();
+        
+        /// Expiration headers
+        $this->response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
+        $this->response->set('Last-Modified', $gmDate . " GMT");
+        $this->response->set('Cache-Control',
+            array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+        $this->response->set('Pragma', 'no-cache');
+        $this->response->set('ETag', md5($idNode.$gmDate));
+        $this->response->set('Content-transfer-encoding', 'binary');
+        $this->response->set('Content-type', 'octet/stream');
+        $this->response->set('Content-Disposition', "attachment; filename=".$fileName);
+        $this->response->set('Content-Length', strlen(strval($fileContent)));
+        $this->response->sendHeaders();
+        echo $fileContent;
     }
 }
 ?>

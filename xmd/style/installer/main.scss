@@ -14,7 +14,7 @@
     $t-text: 'Open Sans', sans-serif;
 
 
-/*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
+/* HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
 /*
  * What follows is the result of much research on cross-browser styling.
@@ -341,17 +341,16 @@ textarea {
         -moz-box-shadow: inset 0 -3px 3px rgba(0,0,0,.3); 
         box-shadow: inset 0 -3px 3px rgba(0,0,0,.3);
         position: relative;
+       overflow: hidden;
 
-        &::before{
-           content: '';
-           background:url(../../images/installer/ximdex_cms.png) no-repeat center top;
-           -webkit-background-size: 90%; 
-          background-size: 90%;
-          position: absolute;
-          top: 20em;
-          bottom: 0;
-          left: 0;
-          right: 0;
+        &::after{
+            content: '';
+            display: block;
+            background:url(../../images/installer/ximdex_cms.png) no-repeat center top;
+            -webkit-background-size: 100% auto; 
+            background-size: 100% auto;
+            width: 100%;
+            height: 100%;
         }
     }
 
@@ -793,7 +792,7 @@ textarea {
     }
 }
 
-.error + .desc, .error--inline{
+.error + .desc, .error--inline, .code{
     margin-left:  calc( #{(22/16)}em + .5em);
     background:$c-light;
     padding: .5em .8em;

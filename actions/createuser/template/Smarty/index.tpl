@@ -34,7 +34,7 @@
 	<div class="action_content">
 				<p>
 					<label  class="label_title" for="login">{t}Username{/t}</label>
-					<input type="text" name="login" id="login" class="full_size validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="Username in Ximdex CMS" tabindex="1" data-idnode="{$id_node}">
+					<input type="text" name="login" id="login" class="full_size validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}Username in Ximdex CMS{/t}" tabindex="1" data-idnode="{$id_node}">
 				</p>
 				<p class="col1_2 col_left">
 					<label for="pass" class="label_title" for="pass">{t}Password{/t}</label>

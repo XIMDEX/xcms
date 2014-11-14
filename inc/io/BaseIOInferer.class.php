@@ -74,8 +74,7 @@ class BaseIOInferer {
 	 * @param $nodeTypeFilter
 	 * @return unknown_type
 	 */
-	function infereFileType($file, $nodeTypeFilter = "common" ) {
-
+	function infereFileType($file, $idFather, $nodeTypeFilter = "" ) {
 
 		$filePath = isset($file) && isset($file['tmp_name']) ? $file['tmp_name'] : NULL;
 		$fileName = isset($file) && isset($file['name']) ? $file['name'] : NULL;
@@ -83,22 +82,33 @@ class BaseIOInferer {
 		$fileMimeType = FsUtils::get_mime_type($filePath);
 		$extension = FsUtils::get_extension($fileName);
 
-		$query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
-		$query .= "  INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
-		$query .= "  INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
-		$query .= "  WHERE ( rntmt.mimeString like '%$fileMimeType%'  ";
-		$query .= "  OR rntmt.extension like '%$extension%' ) ";
-		if( $nodeTypeFilter != "common" ) {
-			$query .= "  AND rntmt.filter = '$nodeTypeFilter' ";
-		}
-		//Maybe the query would be better with AND operator in where clause instead of OR. Sure for XSL.
-		
-		//For 
-		$db = new DB();
-		$db->Query($query);
+        $father = new Node($idFather);
+        $fatherNodeType = $father->Get('IdNodeType');
+
+        $extraQuery = $extension ? "AND rntmt.extension like '%;$extension;%'" : "";
+
+        $query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
+        $query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
+        $query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
+        $query .= "WHERE (nac.IdNodeType=$fatherNodeType $extraQuery)";
+
+        $db = new DB();
+        $db->Query($query);
+
+        if($db->numRows <= 0){
+            $query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
+            $query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
+            $query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
+            $query .= "WHERE (nac.IdNodeType=$fatherNodeType AND rntmt.extension='*')";
+
+            //For
+            $db = new DB();
+            $db->Query($query);
+        }
+
 		if ($db->numRows > 0) {
 			$nodeType = $db->GetValue('Name');
-			if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" ) {
+			if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" && $nodeType != "XslTemplate") {
 					$nodeType = "BinaryFile";
 			}
 

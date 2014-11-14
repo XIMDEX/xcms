@@ -179,4 +179,3 @@ class DataType extends ProjectComponent {
      */
     function parsingComplete() {}
 }
-

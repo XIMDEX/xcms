@@ -40,11 +40,9 @@ class XML{
 
 	// Parser xml
 	protected $_xmlParser;
-	// Codificación
 	protected $encoding;
-	// Contenido del documento xml
 	protected $xmlSrc;
-	// Información parseada
+	// Informaciï¿½n parseada
 	protected $data;
 	// Resultado del parseo
 	public $result;
@@ -80,10 +78,8 @@ class XML{
 		$this->setXmlSrc(FsUtils::file_get_contents($file));
 	}
 
-	// Carga el documento xml
 	public function load () {
-		
-		// Instancia el parser
+
 		$this->_xmlParser = xml_parser_create ("");
 		
 		if ($this->encoding == null){
@@ -91,35 +87,28 @@ class XML{
 		}
 		
 		xml_parser_set_option($this->_xmlParser, XML_OPTION_TARGET_ENCODING, $this->encoding);
-		
-		// Permite usar el parser xml dentro de un objecto
 		xml_set_object ($this->_xmlParser, $this);
-		// Opciones del parser
+		// Parser options
 		xml_parser_set_option ($this->_xmlParser, XML_OPTION_SKIP_WHITE, 1);
 		xml_parser_set_option( $this->_xmlParser, XML_OPTION_CASE_FOLDING, 0);
-		// Instancia los métodos para la gestión de los tags de apertura y de cierre
 		xml_set_element_handler ($this->_xmlParser, "_tag_open", "_tag_close");
-		// Instancia el método para la gestión del contenido
 		xml_set_character_data_handler ($this->_xmlParser, "_tag_data");
-		// Parsea el documento xml
-
+		// Parse the XML document
 		$this->result = xml_parse ($this->_xmlParser, $this->xmlSrc, true);
 		
 		// Asigna la cadena de errores
 		if (!$this->result) {
 			$this->error = "Error al parsear el XML: ".xml_error_string (xml_get_error_code ($this->_xmlParser)).
-				" - línea ".xml_get_current_line_number ($this->_xmlParser).
+				" - linea ".xml_get_current_line_number ($this->_xmlParser).
 				" - columna ".xml_get_current_column_number ($this->_xmlParser).
 				" - byte ".xml_get_current_byte_index ($this->_xmlParser);
 		}
 
 		xml_parser_free ($this->_xmlParser);
 
-		// Devuelve un boolean que indica si la carga ha tenido éxito
 		return $this->result;
 	}
 
-	// Devuelve el contenido parseado
 	public function getXml () {
 		return $this->data;
 	}
@@ -135,7 +124,7 @@ class XML{
 			return $domDocument;
 		}
 		
-		XMD_Log::error('El documento a cargar contiene errores');
+		XMD_Log::error('The loaded document has some errors');
 		return false;
 	}
 

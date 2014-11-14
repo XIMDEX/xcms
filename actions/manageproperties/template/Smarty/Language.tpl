@@ -41,13 +41,13 @@
 						type="checkbox"
 						class="languages input-slide"
 						name="Language[]"
-						id="{$language.Name}"						
+						id="{$language.Name}_{$id_node}"						
 						value="{$language.IdLanguage}"
 						{if $language.Checked == 1}
 							checked="checked"
 						{/if}						
 						/>
-					<label for="{$language.Name}" class="label-slide">{$language.Name}</label>
+					<label for="{$language.Name}_{$id_node}" class="label-slide">{$language.Name}</label>
 				</span>
 			{/foreach}
 		</div>

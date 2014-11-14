@@ -64,7 +64,8 @@ class CommonNode extends FileNode{
     }
 
 
-    function SetContent(){
+    function SetContent($content, $commitNode = NULL){
+        parent::SetContent($content, $commitNode);
         $mm = new MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }

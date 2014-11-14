@@ -202,4 +202,3 @@ class Comment {
         return $this->_value;
     }
 }
-

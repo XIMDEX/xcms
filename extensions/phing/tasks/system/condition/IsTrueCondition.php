@@ -56,4 +56,3 @@ class IsTrueCondition extends ProjectComponent implements Condition {
     }
 
 }
-

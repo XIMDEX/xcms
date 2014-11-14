@@ -16,13 +16,14 @@ v3.6 (Usability - 2nd quarter 2014)
 - AngularJS everywhere
 
 
-v4.0 (Semantic Dynamic Publishing - 4th quarter 2014)
+v4.0 (Decoupled Repository and Editor - 4th quarter 2014)
 ----
 
 - Themes: xlyre for opendata, xhawk for secure CMS, xowl for semantic hub)
 - Decoupled & stackable repositories
 - Pluggable semantic store with API
-- Semantic Dynamic publishing of Entities (MUG module with ontology based filtering)
+- Extend Dynamic Semantic publishing for the MUG module (allowing ontology based filtering)
 - Portal Configuration Manager
 - Intelligent folders (sets)
+- Decoupled Repository and WYWIWYG/WYSIWYM Editor as a Service
 - ...

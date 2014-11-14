@@ -197,4 +197,3 @@ abstract class PHPUnit3ResultFormatter implements PHPUnit_Framework_TestListener
 		return (float)$usec + (float)$sec;
 	}
 }
-

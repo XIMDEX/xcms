@@ -74,8 +74,8 @@ msgstr "A&ntilde;adir nueva hoja de estilos"
 msgid "Add empty XSL template"
 msgstr "A&ntilde;adir nueva plantilla XSL"
 
-msgid "Add empty RNG schema"
-msgstr "A&ntilde;adir nuevo esquema RNG"
+msgid "Add an empty RNG schema"
+msgstr "Añadir un nuevo esquema RNG"
 
 msgid "Create a new empty file"
 msgstr "Crea un nuevo archivo vac&iacute;o"
@@ -336,7 +336,6 @@ msgstr "Tema"
 msgid "CatID"
 msgstr "CatID"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Revision date"
 msgstr "Fecha revisi&oacute;n"
 
@@ -382,6 +381,9 @@ msgstr "Crear %1"
 #: /actions/xmleditor2/template/Smarty/toolboxes.tpl
 msgid "Add"
 msgstr "A&ntilde;adir"
+
+msgid "Add "
+msgstr "Añadir "
 
 #: /actions/addfoldernode/template/Smarty/addSectionNode.tpl
 msgid "<strong>%1</strong> has been successfully created"
@@ -687,7 +689,6 @@ msgid "The query handler was not found."
 msgstr "No se encuentra el manipulador de consultas."
 
 #: /actions/browser3/inc/Datasource_tags.class.php
-#: /actions/browser3/inc/Datasource_tolDOX.class.php
 #: /actions/browser3/inc/Datasource_XVFS.class.php
 msgid "The path cannot be read"
 msgstr "No es posible leer la ruta "
@@ -1353,8 +1354,8 @@ msgstr "Descripci&oacute;n"
 
 #: /actions/createchannel/template/Smarty/index.tpl
 #: /actions/modifychannel/template/Smarty/index.tpl
-msgid "Rendering in"
-msgstr "Renderizado en"
+msgid "Rendering XSLT in"
+msgstr "Renderizado XSLT en"
 
 msgid "Client"
 msgstr "Cliente"
@@ -1512,7 +1513,6 @@ msgstr "A&ntilde;adir usuario"
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: xmd/login.php
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -1787,7 +1787,7 @@ msgid "Document cannot be opened."
 msgstr "No se pudo abrir el documento."
 
 msgid "It is a symbolic link"
-msgstr "Se trata de un enlace simb&oacute;lico."
+msgstr "Se trata de un enlace simb&oacute;lico"
 
 msgid " have been successfully published"
 msgstr " se han publicado correctamente"
@@ -2050,7 +2050,7 @@ msgid "Add templates"
 msgstr "A&ntilde;adir plantillas"
 
 msgid "Add schemes"
-msgstr "A&ntilde;adir esquemas"
+msgstr "Añadir esquemas"
 
 msgid " Add HTML files "
 msgstr " A&ntilde;adir archivos HTML "
@@ -2185,7 +2185,6 @@ msgstr "correcto"
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
 #: /actions/searchpanel/inc/Filters_Ximdex.class.php
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "contains"
 msgstr "contiene"
 
@@ -2254,7 +2253,6 @@ msgstr "Preparado para caducar"
 msgid "Being unpublished"
 msgstr "Caduc&aacute;ndose"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: /actions/managebatchs/forms.php
 #: /modules/ximSYNC/actions/managebatchs/Action_managebatchs.class.php
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -2691,8 +2689,8 @@ msgstr "Actualizar asociaciones"
 msgid "There are no groups associated with user yet"
 msgstr "A&uacute;n no hay grupos asociados con el usuario"
 
-msgid "If some subscription is selected it will be deleted. Are you sure you want to continue?"
-msgstr "Las asociaciones seleccionadas ser&aacute;n eliminadas. &iquest;Est&aacute; seguro que quiere continuar?"
+msgid "This subscription will be deleted. Are you sure you want to continue?"
+msgstr "Esta asociación será eliminada. ¿Está seguro que quiere continuar?"
 
 msgid "Subscriptions to groups will be updated. Would you like to continue?"
 msgstr "Las asociaciones a grupos ser&aacute;n actualizadas. &iquest;Desea continuar?"
@@ -2925,7 +2923,7 @@ msgid "Remote URL"
 msgstr "URL remota"
 
 msgid "Remote address"
-msgstr "Direcci&oacute;n remota"
+msgstr "Dirección remota"
 
 msgid "Remote directory"
 msgstr "Directorio remoto"
@@ -2938,6 +2936,9 @@ msgstr "Usuario remoto"
 
 msgid "Address"
 msgstr "Direcci&oacute;n"
+
+msgid "Core"
+msgstr "Core"
 
 #: /actions/modifyserver/template/Smarty/index.tpl
 msgid "OTF server"
@@ -3222,6 +3223,12 @@ msgstr "El servidor '%s' se ha enviado a publicar correctamente."
 msgid "The section '%s' has been successfully sent to publish."
 msgstr "La secci&oacute;n '%s' se ha enviado a publicar correctamente."
 
+msgid "%s %s has been successfully sent to publish"
+msgstr "El nodo ha sido enviado a publicar correctamente"
+
+msgid "The node has been successfully sent to publish"
+msgstr "El nodo ha sido enviado a publicar correctamente"
+
 #: /actions/publicatesection/publicatesection_IO.php
 msgid "Launching publicate section"
 msgstr "Lanzando publicate section"
@@ -3479,6 +3486,9 @@ msgstr "Parece que no tienes proyectos creados a&uacute;n. &iexcl;Empecemos ahor
 msgid "Create a new project"
 msgstr "Crear un nuevo proyecto"
 
+msgid "Create a New Project"
+msgstr "Crear un nuevo proyecto"
+
 msgid "Your latest documents"
 msgstr "Tus documentos recientes"
 
@@ -3545,6 +3555,9 @@ msgstr "Ximdex CMS: Nuevo estado para el documento:"
 
 msgid "The user"
 msgstr "El usuario"
+
+msgid "is going to be deleted"
+msgstr "va a ser eliminado"
 
 #: /actions/workflow_forward/baseIO.class.php
 #: /actions/workflow_backward/Action_workflow_backward.class.php
@@ -3772,8 +3785,8 @@ msgstr "No se ha podido cargar el servidor"
 msgid "The document belongs to a server which has not any configured physical server."
 msgstr "El servidor al que pertenece el documento no tiene servidores f&iacute;sicos configurados"
 
-msgid "The publication cycle of the selected document is currently linked to the document [%s]"
-msgstr "El ciclo de publicaci&oacute;n del documento seleccionado actualmente se encuentra vinculado al documento [%s]"
+msgid "The publication cycle of the selected document is currently linked to the document"
+msgstr "El ciclo de publicaci&oacute;n del documento seleccionado actualmente se encuentra vinculado al documento"
 
 msgid "The linked file should be selected in order to go forward the next state"
 msgstr "Para pasar al estado siguiente deber&aacute; seleccionar el archivo al que se encuentra vinculado"
@@ -3971,7 +3984,10 @@ msgstr "Error en servidor"
 
 #: /actions/xmleditor2/js/editor/ximdexeditor.js
 msgid "Yes"
-msgstr "S&iacute;"
+msgstr "Sí"
+
+msgid "Yes "
+msgstr "Sí"
 
 msgid "No"
 msgstr "No"
@@ -7619,7 +7635,6 @@ msgstr "Por Fecha (Semana)"
 
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Category"
 msgstr "Categor&iacute;a"
 
@@ -9067,6 +9082,9 @@ msgstr "No se ha podido encontrar la carpeta base"
 msgid "Could not find or create the destination folder"
 msgstr "No se ha podido encontrar o crear la carpeta destino "
 
+msgid "Could not upload the file"
+msgstr "No se ha podido subir el fichero"
+
 msgid "Unable to create the target document"
 msgstr "No se ha podido crear el documento destino"
 
@@ -9654,7 +9672,7 @@ msgid "Below are listed all the relevant documents in your system, grouped by st
 msgstr "Abajo se listan todos los documentos relevantes de tu proyecto, agrupados por estado. S&oacute;lo se muestran los archivos que se han modificado con respecto a su &uacute;ltima versi&oacute;n publicada."
 
 msgid "There aren't any edited files yet"
-msgstr "No hay documentos publicados ni editados a&uacute;n"
+msgstr "No hay documentos editados a&uacute;n"
 
 #xlyre module
 msgid "Create a new Open Data Catalog"
@@ -9752,3 +9770,243 @@ msgstr "Todos los campos se han guardado correctamente."
 
 msgid "Distribution title"
 msgstr "T&iacute;tulo de la distribuci&oacute;n"
+
+msgid "The document has been saved"
+msgstr "El documento se ha guardado correctamente"
+
+msgid "%s has been successfully created"
+msgstr "%s se ha creado correctamente"
+
+msgid "Container %s has been successfully created"
+msgstr "El documento %s ha sido creado correctamente"
+
+msgid "An error ocurred creating the container node"
+msgstr "Ocurri&oacute; un error al crear el documento"
+
+msgid "Image folder name"
+msgstr "Nombre de carpeta de imágenes"
+
+msgid "Manage metadata"
+msgstr "Gestión de metadatos"
+
+msgid "AUTHOR"
+msgstr "AUTOR"
+
+msgid "DESCRIPTION"
+msgstr "DESCRIPCIÓN"
+
+msgid "[Author]"
+msgstr "[Autor]"
+
+msgid "[Description]"
+msgstr "[Descripci&oacute;n]"
+
+msgid "System metadata info"
+msgstr "Información del sistema de metadatos"
+
+msgid "Name [NodeID]"
+msgstr "Nombre [NodeID]"
+
+msgid "The version %s has been deleted successfully"
+msgstr "La versión %s ha sido borrada correctamente"
+
+msgid "Edit metadata"
+msgstr "Editar metadatos"
+
+msgid "Download files"
+msgstr "Descargar archivos"
+
+msgid "The download will start immediately. If not, click here"
+msgstr "La descarga empezará inmediatamente. Si no, haga click aquí"
+
+msgid "There aren't any files to download"
+msgstr "No hay ningún archivo para descargar"
+
+msgid "Scheduled publications for these files will be cancelled."
+msgstr "Se cancelarán las publicaciones programadas para estos archivos."
+
+msgid "You have selected to publish contents of "
+msgstr "Has seleccionado publicar contenido de "
+
+msgid "Would you like to publish the contained subsections?"
+msgstr "¿Te gustaría publicar las subsecciones contenidas?"
+
+msgid "XimCLUDE folder name"
+msgstr "Nombre de carpeta ximCLUDE"
+
+msgid "Ximlets folder name"
+msgstr "Nombre de carpeta de ximlets"
+
+msgid "There aren't any published files yet"
+msgstr "No hay documentos publicados aún"
+
+msgid "Link folder name"
+msgstr "Nombre de carpeta de enlaces"
+
+msgid "Source node cannot be the same as destination node"
+msgstr "La carpeta origen no puede ser la misma que la carpeta destino"
+
+msgid "Delete RNG schema"
+msgstr "Borrar esquema RNG"
+
+msgid "Generic schema"
+msgstr "Esquema general"
+
+msgid "Metadata schema"
+msgstr "Esquema de metadatos"
+
+msgid "XimNEWS news schema"
+msgstr "Esquema de noticias XimNEWS"
+
+msgid "XimNEWS newsletter schema"
+msgstr "Esquema de newsletter XimNEWS"
+
+msgid "Results"
+msgstr "Resultados"
+
+msgid "There aren't any selected template"
+msgstr "No hay ninguna plantilla seleccionada"
+
+msgid "Name for the new language"
+msgstr "Nombre del nuevo lenguaje"
+
+msgid "Description for the new language"
+msgstr "Descripcion del nuevo lenguaje"
+
+msgid "Group's name"
+msgstr "Nombre del grupo"
+
+msgid "All the tags have been properly associated."
+msgstr "Todas las etiquetas han sido asociadas correctamente."
+
+msgid "CSS folder name"
+msgstr "Nombre de carpeta CSS"
+
+msgid "Common folder name"
+msgstr "Nombre de carpeta Common"
+
+msgid "Break the link with master document"
+msgstr "Romper el enlace con documento maestro"
+
+msgid "There aren't any possible master document"
+msgstr "No existe ningún posible documento maestro"
+
+msgid "Do you want to break the link with the following document?"
+msgstr "¿Quieres romper el link con el siguiente documento?"
+
+msgid "This document can be linked to one of the following documents"
+msgstr "Este documento puede se enlazado a uno de los siguientes documentos"
+
+msgid "This document is already the master document of "
+msgstr "Este documento ya es el documento maestro de "
+
+msgid "The linked file should be selected in order to publicate the file"
+msgstr "Para publicar el archivo deberá de seleccionar el archivo al que se encuentra vinculado"
+
+msgid "You can't delete the node"
+msgstr "No puedes borrar este nodo"
+
+msgid "This document has a symbolic link"
+msgstr "Este documento tiene un enlace simbólico"
+
+msgid "To delete this node you have to break the link with the following node(s)"
+msgstr "Para borrar este nodo se ha de romper el enlace con el/los siguiente/s nodo/s"
+
+msgid "Edit HTML"
+msgstr "Editar HTML"
+
+msgid "Search results for: "
+msgstr "Resultados de búsqueda para: "
+
+msgid "Page"
+msgstr "Página"
+
+msgid "Show"
+msgstr "Mostrar"
+
+msgid "Modify your account"
+msgstr "Modifica tu cuenta"
+
+msgid "belongs to the next groups"
+msgstr "pertenece a los siguientes grupos"
+
+msgid "Preview as"
+msgstr "Previsualizar como"
+
+msgid "Are you sure to continue?"
+msgstr "¿Estás seguro de que quieres continuar?"
+
+msgid "This association will be deleted"
+msgstr "Esta asociación será eliminada"
+
+msgid "There aren't any created languages. You should create a new one"
+msgstr "No hay ningún idioma creado. Deberías crear uno nuevo"
+
+msgid "Other"
+msgstr "Otro"
+
+msgid "Default channel"
+msgstr "Canal por defecto"
+
+msgid "Error setting Default Channel property"
+msgstr "Error configurando la propiedad Canal por defecto"
+
+msgid "You don't have enough permissions to modify the user role"
+msgstr "No tienes suficientes permisos para modificar el rol del usuario"
+
+msgid "Status name"
+msgstr "Nombre del estado"
+
+msgid "The workflow has been successfully updated"
+msgstr "Se ha actualizado correctamente el workflow"
+
+msgid "The first and the last status can't be modified"
+msgstr "El primero y el último estado no pueden ser modificados"
+
+msgid "Error adding status %s"
+msgstr "Error añadiendo el estado %s"
+
+msgid "Error adding transition %s"
+msgstr "Error añadiendo la transición %s"
+
+msgid "Name or description of status can't be empty"
+msgstr "El nombre o la descripción de los estados no pueden ser vacíos"
+
+msgid "Select the status asociated with the role"
+msgstr "Selecciona los estados asociados con el rol"
+
+msgid "Modify asociated status of role"
+msgstr "Modificar los estados asociados del rol"
+
+msgid "The rol has been successfully updated"
+msgstr "Se ha actualizado correctamente el rol"
+
+msgid "There are errors on extensions"
+msgstr "Hay errores en las extensiones"
+
+msgid "Extensions have ambiguous values"
+msgstr "Las extensiones tienen valores ambiguos"
+
+msgid "The extensions have been updated"
+msgstr "Las extensiones han sido actualizadas"
+
+msgid "Common folder:"
+msgstr "Carpeta common:"
+
+msgid "Set the extensions for the next Nodetypes"
+msgstr "Introduzca las extensiones para los siguientes tipos de nodos"
+
+msgid "Note:"
+msgstr "Nota:"
+
+msgid "the * value means any extension, empty value means none extension. You can't put ambiguous values."
+msgstr "el valor * significa cualquier extensión, el valor vacío significa ninguna extension. No se admiten valores ambiguos."
+
+msgid "Allowed extensions"
+msgstr "Extensiones permitidas"
+
+msgid "Set allowed extensions"
+msgstr "Modificar extensiones permitidas"
+
+msgid "selection"
+msgstr "selección"

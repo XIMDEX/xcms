@@ -387,4 +387,3 @@ class PHPUnitTask extends Task
 		return $batchtest;
 	}
 }
-

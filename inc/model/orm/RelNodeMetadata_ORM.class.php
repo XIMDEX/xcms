@@ -46,4 +46,3 @@ class RelNodeMetadata_ORM extends GenericData   {
 	var $IdMetadata = 0;
 }
 ?>
-

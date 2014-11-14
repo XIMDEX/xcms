@@ -25,105 +25,130 @@
  */
 
 class Action_modifyusergroups extends ActionAbstract {
-	
-	// Main method: shows initial form
-    	function index () {
-		$idNode = $this->request->getParam('nodeid');
-		$user = new User($idNode);
 
-		$group = new Group();
-		
-		$generalRole = $user->GetRoleOnGroup($group->GetGeneralGroup());
+    // Main method: shows initial form
+    function index () {
+        $idNode = $this->request->getParam('nodeid');
 
-		$rol = new Role();
-		$roles = $rol->find('IdRole, Name');
-		
-		$userGroups = $user->GetGroupList();
-		$excludedGroups = '';
-		if (is_array($userGroups)) {
-			$excludedGroups = implode(', ', $userGroups);
-		}
-	 
-		if (empty($excludedGroups)) {
-		 	$filteredGroups = $group->find('IdGroup, Name');
-		} else {
-		 	$filteredGroups = $group->find('IdGroup, Name', 'NOT IdGroup IN (%s)', 
-		 		array($excludedGroups), MULTI, false);
-		}
-	 	
-	 	$userGroupsWithRole = array();
-	 	if (is_array($userGroups)) {
-		 	$index = 0;
-			foreach ($userGroups as $value) {
-				if (!is_array($value) ||  !array_key_exists('IdGroup', $value) || $value['IdGroup'] != $group->GetGeneralGroup()) {
-					$userGroupsWithRole[$index]['IdGroup'] = $value;
-					$tmpGroup = new Group($value);
-					$userGroupsWithRole[$index]['Name'] = $tmpGroup->get('Name');
-					$userGroupsWithRole[$index]['IdRole'] = $user->GetRoleOnGroup($value);
-					$index ++;
-				}
-			}
-    		}		
+        $this->addJs('/actions/modifyusergroups/resources/js/helper.js');
 
-    		$this->addJs('/actions/modifyusergroups/resources/js/helper.js');
+        $values = array('id_node' => $idNode);
 
-		$values = array('id_node' => $idNode,
-				'user_name' => $user->get('Name'),
-				'general_role' => $generalRole,
-				'all_roles' => $roles,
-				'filtered_groups' => $filteredGroups,
-				'user_groups_with_role' => $userGroupsWithRole);
-		
-		$this->render($values, null, 'default-3.0.tpl');
-    	}
-    
-    	function suscribegroupuser() {
-		$newrole = $this->request->getParam("newrole");
-		$newgroup = $this->request->getParam("newgroup");
-		$idUser = $this->request->getParam('nodeid');
+        $this->render($values, null, 'default-3.0.tpl');
+    }
 
-		$group = new Group($newgroup);		//Create group object with appropriate ID
-		$group->AddUserWithRole($idUser, $newrole);
-		$this->redirectTo('index');
-    	}
-    
-    	function updategroupuser() {
-      		$iduser = $this->request->getParam('nodeid');
-		$idGroups = $this->request->getParam("idGroups");
-		$idRoleOld = $this->request->getParam("idRoleOld");
-		$idRole = $this->request->getParam("idRole");
-		$globalRole = $this->request->getParam("globalRole");
-		$oldglobalRole = $this->request->getParam("oldglobalRole");
-		
-		$group = new Group();
-		if($idGroups) {
-			foreach ($idGroups as $idx => $gID) {
-				if($idRole[$idx] != $idRoleOld[$idx]) {
-					$group->SetID($gID);
-					$group->ChangeUserRole($iduser,$idRole[$idx]);
-				}
-			}
-		}
-		
-		if ($globalRole != $oldglobalRole) {
-			$group->SetID($group->GetGeneralGroup());
-			$group->ChangeUserRole($iduser,$globalRole);
-		}
-		$this->redirectTo('index');
-    	}
-    
-    	function deletegroupuser() {
-		$checked = $this->request->getParam("checked");
-      		$iduser = $this->request->getParam('nodeid');
-		
-		foreach ($checked as $cked) {
-			if($cked) {
-				$group = new Group($cked);
-				$group->DeleteUser($iduser);
-			}
-		}
-		$this->redirectTo('index');
-    	}
+    function getGroups(){
+        $idNode = $this->request->getParam('nodeid');
+        $user = new User($idNode);
+
+        $group = new Group();
+
+        $generalRole = $user->GetRoleOnGroup($group->GetGeneralGroup());
+
+        $rol = new Role();
+        $roles = $rol->find('IdRole, Name');
+
+        $userGroups = $user->GetGroupList();
+        $excludedGroups = '';
+        if (is_array($userGroups)) {
+            $excludedGroups = implode(', ', $userGroups);
+        }
+
+        if (empty($excludedGroups)) {
+            $filteredGroups = $group->find('IdGroup, Name');
+        } else {
+            $filteredGroups = $group->find('IdGroup, Name', 'NOT IdGroup IN (%s)',
+                array($excludedGroups), MULTI, false);
+        }
+
+        $userGroupsWithRole = array();
+        if (is_array($userGroups)) {
+            $index = 0;
+            foreach ($userGroups as $value) {
+                if (!is_array($value) ||  !array_key_exists('IdGroup', $value) || $value['IdGroup'] != $group->GetGeneralGroup()) {
+                    $userGroupsWithRole[$index]['IdGroup'] = $value;
+                    $tmpGroup = new Group($value);
+                    $userGroupsWithRole[$index]['Name'] = $tmpGroup->get('Name');
+                    $userGroupsWithRole[$index]['IdRole'] = $user->GetRoleOnGroup($value);
+                    $userGroupsWithRole[$index]['dirty'] = false;
+                    $index ++;
+                }
+            }
+        }
+        if(!is_array($filteredGroups)){
+            $filteredGroups = array();
+        }
+        $values = array('id_node' => $idNode,
+            'user_name' => $user->get('Name'),
+            'general_role' => $generalRole,
+            'all_roles' => $roles,
+            'filtered_groups' => $filteredGroups,
+            'user_groups_with_role' => $userGroupsWithRole);
+        $this->sendJSON($values);
+    }
+
+    function suscribegroupuser() {
+        $newrole = $this->request->getParam("newrole");
+        $newgroup = $this->request->getParam("newgroup");
+        $idUser = $this->request->getParam('nodeid');
+
+        $group = new Group($newgroup);
+        $group->AddUserWithRole($idUser, $newrole);
+
+        $values = array(
+            'result' => "OK",
+            'message' => "The association was created successfully"
+        );
+
+        $this->sendJSON($values);
+    }
+
+    function updategroupuser() {
+        $iduser = $this->request->getParam('nodeid');
+        $idGroup = $this->request->getParam("group");
+        //$idRoleOld = $this->request->getParam("roleOld");
+        $idRole = $this->request->getParam("role");
+        /*$globalRole = $this->request->getParam("globalRole");
+        $oldglobalRole = $this->request->getParam("oldglobalRole");*/
+
+        $group = new Group();
+        $group->SetID($idGroup);
+        $userRoles=$group->getUserRoleInfo();
+        $exist=false;
+        foreach($userRoles as $u){
+            if($u["IdUser"]==$iduser && $u["IdRole"]==$idRole){
+                $exist=true;
+                break;
+            }
+        }
+        if(!$exist) {
+            $group->ChangeUserRole($iduser,$idRole);
+            $values = array(
+                'result' => "OK",
+                'message' => "The association has been successfully updated"
+            );
+        }else{
+            $values = array(
+                'result' => "FAIL"
+            );
+        }
+        $this->sendJSON($values);
+    }
+
+    function deletegroupuser() {
+        $group = $this->request->getParam("group");
+        $iduser = $this->request->getParam('nodeid');
+
+        if($group){
+            $group = new Group($group);
+            $group->DeleteUser($iduser);
+            $values = array(
+                'result' => "OK",
+                'message' => "The association has been successfully deleted"
+            );
+        }
+        $this->sendJSON($values);
+    }
 }
 
 ?>

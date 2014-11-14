@@ -21,18 +21,16 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-if (!defined('XIMDEX_ROOT_PATH'))
-       define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
+include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 
-  include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
- ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
+include_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/modules/ModulesManager.class.php');
+ModulesManager::file('/scripts/scheduler/scheduler.class.php', 'ximSYNC');
 
-        Scheduler::start(true);
-?>
+Scheduler::start(true);
+

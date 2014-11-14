@@ -30,24 +30,33 @@
 <input type="hidden" id="editor">
 <div class="action_header">
 	<h2>{t}Move node{/t} {$name}</h2>
+	{if {count($targetNodes)}}
 	<fieldset class="buttons-form">
 		{button label="Move node" class="validate btn main_action" }{*message="Are you sure you want to move this node to selected destination?"*}
 	</fieldset>
+	{/if}
 </div>
+{if {!count($targetNodes)}}
+				<div class="message-warning message">
+					<p>{t}There aren't any available destination{/t}.</p> 
+				</div>
+			{/if}
 <div class="action_content">
+{if {count($targetNodes)}}
 <fieldset>
 	<label for="id_node"><span>{t}Select new node destination{/t}</span></label>
 	<div class="copy_options">
 		{foreach from=$targetNodes key=index item=targetNode}
 				<div>
-							<input id="{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
-							<label for="{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
+							<input id="move_{$id_node}_{$targetNode.idnode}" type="radio" name="targetid" value="{$targetNode.idnode}" />
+							<label for="move_{$id_node}_{$targetNode.idnode}" class="icon folder">{$targetNode.path}</label>
 								
 							
 				</div>	
 		{/foreach}
 	</div>		
 </fieldset>
+
     	{if ($isPublished)}
 <fieldset>
 	<legend><span>{t}Warning about publication{/t} </span> </legend>
@@ -58,4 +67,5 @@
 	</ul>
 </fieldset>
 	{/if}</div>
+{/if}
 </form>

@@ -80,7 +80,6 @@ class Pumper extends Pumpers_ORM {
 		$pumperID = $this->get('PumperId');
 
 		if ($pumperID > 0) {
-			// Se crea el registro para anotar posibles errores en el servidor
 			$serverError = new ServerErrorByPumper();
 			$serverError->create($pumperID, $idServer);
 
@@ -148,7 +147,7 @@ class Pumper extends Pumpers_ORM {
 			echo "..........";
 		}*/
 
-		//0: O.k, 200: problema de conexion, 255:servidor no existe, 127:command not found
+		//0: OK, 200: connection problem, 255: unexistent server, 127:command not found
 		if ($var == 0){
 			$this->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
 				__LINE__, "INFO", 8, "Pumper $pumperId started succefully", true);

@@ -24,32 +24,7 @@
  */
 
 X.actionLoaded(function(event, fn, params) {
-	
-	var $form = fn('.form_group_user');
-	var action = $form.attr('action');
-		
 
-	var btn1 = fn('.addgroupuser').get(0);
-	if(btn1) {
-		btn1.beforeSubmit.add(function(event, button) {
-			$form.attr('action', action + '&method=suscribegroupuser');
-		});
-	}
-	
-	var btn2 = fn('.deletegroupuser').get(0);
-	if(btn2) {
-		btn2.beforeSubmit.add(function(event, button) {
-			$form.attr('action', action + '&method=deletegroupuser');
-		});
-	}
-	
-	
-	var btn3 = fn('.updategroupuser').get(0);
-	if(btn3) {
-		btn3.beforeSubmit.add(function(event, button) {
-			$form.attr('action', action + '&method=updategroupuser');
-		});
-	}
-	
+    X.angularTools.initView(params.context, params.tabId);
 });
 

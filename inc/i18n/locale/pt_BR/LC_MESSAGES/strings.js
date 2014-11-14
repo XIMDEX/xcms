@@ -5,6 +5,10 @@ X.i18nStrings = {
 				"accept": "Accept",
 				"cancel": "Cancel"
 			}	
+		}, 
+		"search": {
+			"filter_by": "Filter by",
+			"sort_by": "Sort by"
 		}
 	},
 	"actions": {
@@ -16,6 +20,20 @@ X.i18nStrings = {
 				"unpublished":{
 					"title": "Documents in publication queue"
 				}
+			}
+		}
+	},
+	"widgets": {
+		"fileUploader": {
+			"upload": "Upload",
+			"files": "file(s)",
+			"invalid_files": "file(s) wont be uploaded",
+			"processing": "Processing file...",
+			"validation": {
+				"file_exist": "A file with this name already exist",
+				"overwrite": "Overwrite",
+				"cancel": "Cancel",
+				"rename": "Rename"
 			}
 		}
 	},

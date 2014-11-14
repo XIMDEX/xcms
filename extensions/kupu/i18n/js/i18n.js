@@ -88,15 +88,23 @@ MessageCatalog.prototype.getTextFromNode = function(node) {
 };
 
 MessageCatalog.prototype.acents = function( msg ) {
-
-	msg = msg.replace("\\xBF", "&iquest;"); /* ¿ */
-	msg = msg.replace("\\xe1", "&aacute;"); /* á */
-	msg = msg.replace("\\xe9", "&eacute;"); /* é */
-	msg = msg.replace("\\xed", "&iacute;"); /* í */
-	msg = msg.replace("\\xf3", "&oacute;"); /* ó */
-	msg = msg.replace("\\xfa", "&uacute;"); /* ú */
-	msg = msg.replace("\\xf1", "&ntilde;"); /* ñ */
-
+    if(msg._wrapped){ // msg is an Object
+        msg._wrapped = msg._wrapped.replace("\\xBF", "&iquest;"); /* ¿ */
+        msg._wrapped = msg._wrapped.replace("\\xe1", "&aacute;"); /* á */
+        msg._wrapped = msg._wrapped.replace("\\xe9", "&eacute;"); /* é */
+        msg._wrapped = msg._wrapped.replace("\\xed", "&iacute;"); /* í */
+        msg._wrapped = msg._wrapped.replace("\\xf3", "&oacute;"); /* ó */
+        msg._wrapped = msg._wrapped.replace("\\xfa", "&uacute;"); /* ú */
+        msg._wrapped = msg._wrapped.replace("\\xf1", "&ntilde;"); /* ñ */
+    }else if(msg){ //msg is a string
+        msg = msg.replace("\\xBF", "&iquest;"); /* ¿ */
+        msg = msg.replace("\\xe1", "&aacute;"); /* á */
+        msg = msg.replace("\\xe9", "&eacute;"); /* é */
+        msg = msg.replace("\\xed", "&iacute;"); /* í */
+        msg = msg.replace("\\xf3", "&oacute;"); /* ó */
+        msg = msg.replace("\\xfa", "&uacute;"); /* ú */
+        msg = msg.replace("\\xf1", "&ntilde;"); /* ñ */
+    }
 	return msg;
 };
 

@@ -154,6 +154,3 @@ class PhpLintTask extends Task {
 		}
 	}
 }
-
-
-

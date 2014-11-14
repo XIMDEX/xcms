@@ -54,19 +54,36 @@
 {/if}
 	<br/>
 	<h3>{t}Published documents{/t}:</h3>
-		<span>{t}Below are listed all the documents that have been sent to publish{/t}.</span>
+		<span ng-hide="publications.published.length>0||publications.unpublished.length>0">{t}There aren't any published files yet{/t}.</span>
+		<br ng-hide="publications.published.length>0||publications.unpublished.length>0" />
+		<br ng-hide="publications.published.length>0||publications.unpublished.length>0" />
+		<span ng-show="publications.published.length>0||publications.unpublished.length>0">{t}Below are listed all the documents that have been sent to publish{/t}.</span>
 	    <div class="state-info row-item_selectable" 
-	    	ng-repeat="(key, pubSet) in publications" 
-	    	ng-show="pubSet.length" 
+	    	ng-show="publications.published.length>0" 
 	    	ng-class="{literal}{opened: opened}{/literal}"
 	    	ng-click="opened = !opened">
-			<span class="state">#/'actions.checkstatus.publications.'+key+'.title' | xI18n/#</span>
-            <div class="docs-amount right">#/pubSet.length/#</div>
-		
+			<span class="state">#/'actions.checkstatus.publications.published.title' | xI18n/#</span>
+            <div class="docs-amount right">#/publications.published.length/#</div>
 		    <div class="documents-info" 
 		    	ng-class="{literal}{'hide-toggle': !opened}{/literal}"
 		    	ng-click="event.stopPropagation();">	
-				<div class="version-info" ng-repeat="pub in pubSet">
+				<div class="version-info" ng-repeat="pub in publications.published">
+					<span class="file-path">#/pub.path/#/#/pub.name/#</span><span class="file-size">#/pub.filesize | xBytes/#</span>
+					<span class="file-date">#/pub.date+'000' | date:'dd/MM/yyyy HH:MM'/# hrs.</span>
+					<span class="file-version">#/pub.version/#</span>
+				</div>
+		    </div>
+        </div>
+        <div class="state-info row-item_selectable" 
+	    	ng-show="publications.unpublished.length>0" 
+	    	ng-class="{literal}{opened: opened}{/literal}"
+	    	ng-click="opened = !opened">
+			<span class="state">#/'actions.checkstatus.publications.unpublished.title' | xI18n/#</span>
+            <div class="docs-amount right">#/publications.unpublished.length/#</div>
+		    <div class="documents-info" 
+		    	ng-class="{literal}{'hide-toggle': !opened}{/literal}"
+		    	ng-click="event.stopPropagation();">	
+				<div class="version-info" ng-repeat="pub in publications.unpublished">
 					<span class="file-path">#/pub.path/#/#/pub.name/#</span><span class="file-size">#/pub.filesize | xBytes/#</span>
 					<span class="file-date">#/pub.date+'000' | date:'dd/MM/yyyy HH:MM'/# hrs.</span>
 					<span class="file-version">#/pub.version/#</span>

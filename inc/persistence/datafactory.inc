@@ -78,10 +78,10 @@ ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');
 **/
 class DataFactory
 {
-    var $ID;					// Identificador del tipo de nodo actual.
-    var $numErr;				// Codigo de error.
+	var $ID;					// Identificador del tipo de nodo actual.
+   	var $numErr;				// Codigo de error.
     var $msgErr;				// Mensaje de Error.
-    var $errorList = array(		// Lista de errores de la clase.
+	var $errorList = array(		// Lista de errores de la clase.
 		1 => 'No existe el Nodo',
 		2 => 'Error de conexion con la base de datos',
 		3 => 'No se encontro el contenido para la version solicitada',
@@ -89,26 +89,25 @@ class DataFactory
 		5 => 'Error al establecer el contenido del documento',
 		6 => 'Ha ocurrido un error al intentar guardar el documento'
 		);
-  
-    var $store;
-    
-    /**
-     *
-     * Constructor de la clase
-     *
-     * @name	DataFactory
-     * @author 	Ximdex
-     * @version	1.0
-     * @param	int $nodeID=null (opcional) Identificador del Nodo cargado en el objeto
-     * @return	$this
-     *
-     */
-     function DataFactory($nodeID = null) {
-        $this->ClearError();
-        $this->nodeID = (int) $nodeID;
-        $storeFactory = new StoreFactory();
-        $this->store = $storeFactory->getDefaultStore();
-     }
+    var $conector;
+
+	/**
+	*
+	* Constructor de la clase
+	*
+	* @name		DataFactory
+	* @author 	Jose I. Villar
+	* @version	1.0
+	* @param	int $nodeID=null (opcional) Identificador del Nodo cargado en el objeto
+	* @return	$this
+	*
+	*/
+    function DataFactory($nodeID = null) {
+		$this->ClearError();
+		$this->nodeID = (int) $nodeID;
+		if (ModulesManager::isEnabled('ximRAM'))
+		   $this->conector = new SolrConector();
+	}
 
 	/**
 	*
@@ -120,13 +119,13 @@ class DataFactory
 	* @return	$nodeID
 	*
 	*/
-        function GetID() {
-            $this->ClearError();
-            if((int)$this->nodeID > 0) {
-		return $this->nodeID;
-            }
-            $this->SetError(1);
-            return false;
+    function GetID() {
+		$this->ClearError();
+		if((int)$this->nodeID > 0) {
+			return $this->nodeID;
+		}
+		$this->SetError(1);
+		return false;
 	}
 
 
@@ -306,21 +305,32 @@ class DataFactory
 		}
 
 		if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
-			XMD_Log::warning('No se ha podido estimar la versiÃ³n o la subversion');
+			XMD_Log::warning('No se ha podido estimar la versión o la subversion');
 			return false;
 		}
 
-		$content = $this->store->getContent($this->nodeID, $versionID, $subVersion);
+		$uniqueName = $this->GetTmpFile($versionID, $subVersion);
+
+		if(!$uniqueName) {
+			XMD_Log::warning('No se ha podido obtener el file');
+			$this->SetError(3);
+			return false;
+		}
+
+		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+		$content = FsUtils::file_get_contents($targetPath);
+
+		XMD_Log::info("GetContent for Node:".$this->nodeID.", Version: ".$versionID.".".$subVersion.", File: .".$uniqueName. ", Chars: ".strlen($content));
 
 		$nodo = new Node($this->nodeID);
 		$isPlainFile = $nodo->nodeType->get('IsPlainFile');    	
 
 		//only encoding the content if the node is not one of this 3.
 		if (!$isPlainFile){
-        	//look for the working encoding from Config
-                	$workingEncoding = Config::getValue('workingEncoding');
-			$content = XmlBase::recodeSrc($content, $workingEncoding);
-		}
+		    	//look for the working encoding from Config
+				$workingEncoding = Config::getValue('workingEncoding');
+				$content = XmlBase::recodeSrc($content, $workingEncoding);
+		    }
 
 	    return $content;
 	}
@@ -349,7 +359,7 @@ class DataFactory
 			$channels = $node->GetChannels();
 			$pipelineManager = new PipelineManager();
 			foreach ($channels as $idChannel) {
-				XMD_Log::info("Generando cache para la versiÃ³n $idVersion y el canal $idChannel");
+				XMD_Log::info("Generando cache para la versión $idVersion y el canal $idChannel");
 				$data = array('CHANNEL' => $idChannel);
 
 				if (!$isOTF) {
@@ -377,14 +387,14 @@ class DataFactory
 	*/
 	function SetContent($content, $versionID = NULL, $subVersion = NULL, $commitNode = NULL) {
 		$nodo = new Node($this->nodeID);
-                $isPlainFile = $nodo->nodeType->get('IsPlainFile');
+    	$isPlainFile = $nodo->nodeType->get('IsPlainFile');
     	
-                //only encoding the content if the node is not one of this 3.
+    	//only encoding the content if the node is not one of this 3.
 		if (!$isPlainFile){
-                    //look for the working encoding from Config
-                    $dataEncoding = Config::getValue('dataEncoding');
-                    $content = XmlBase::recodeSrc($content, $dataEncoding);
-		}
+				//look for the working encoding from Config
+				$dataEncoding = Config::getValue('dataEncoding');
+				$content = XmlBase::recodeSrc($content, $dataEncoding);
+		    }
 
 		$this->ClearError();
 
@@ -394,18 +404,32 @@ class DataFactory
 		}
 		// (1) No se pasa version determinada, se incrementa la version con el contenido nuevo.
 		if (empty($versionID) && empty($subVersion)) {
-                    $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
-                    $this->_generateCaches($idVersion);
-                    return $idVersion;
+			$idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
+			$this->_generateCaches($idVersion);
+			return $idVersion;
 		}
 
 		// (2) Se pasa version determinada y se machaca el contenido de esa version.
 		if (!is_null($versionID) && !is_null($subVersion)) {
-                    $result = $this->store->setContent($content, $this->nodeID, $versionID, $subVersion);
-         	    $this->_generateCaches($idVersion);
-                    return $result;
+			$uniqueName = $this->GetTmpFile($versionID, $subVersion);
+
+			if (!$uniqueName) {
+				XMD_Log::error("Error al hacer un setContent for Node (No se ha podido obtener el file):".$this->nodeID.", Version: ".$versionID.".".$subVersion.", File: .".$uniqueName. ", Chars: ".strlen($content));
+				return false;
+			}
+
+			$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+			XMD_Log::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
+			$result = FsUtils::file_put_contents($targetPath, $content);
+
+			$idVersion = $this->getVersionId($versionID, $subVersion);
+			if ($result && ModulesManager::isEnabled('ximRAM')) {
+				$this->indexNode($idVersion, $commitNode);
+			}
+			$this->_generateCaches($idVersion);
+
+			return $result;
 		}
-                
 		return false;
 	}
 
@@ -421,7 +445,7 @@ class DataFactory
 	* @param	string $comment = null
 	*
 	*/
-	function AddVersion($jumpNewVersion = NULL, $comment = NULL, $content = NULL, $commitNode = NULL, $mimetype = NULL) {
+	function AddVersion($jumpNewVersion = NULL, $comment = NULL, $content = NULL, $commitNode = NULL) {
 
 		$this->ClearError();
 
@@ -436,7 +460,7 @@ class DataFactory
 			$curVersion = $this->GetLastVersion();
 
 			if (is_null($curVersion)) {
-				XMD_Log::warning('No se ha podido obtener la Ãºltima versiÃ³n del documento');
+				XMD_Log::warning('No se ha podido obtener la última versión del documento');
 				return false;
 			}
 			$curSubVersion = $this->GetLastSubVersion($curVersion);
@@ -482,8 +506,12 @@ class DataFactory
 			$userID = "301"; // ximdex admin
 		}
 
-                $uniqueName = $this->_getUniqueFileName();
-                
+		$uniqueName = $this->_getUniqueFileName();
+
+		FsUtils::file_put_contents(Config::getValue("AppRoot") .
+					Config::getValue("FileRoot") .
+					"/" . $uniqueName, $newContent);
+
 		$version = new Version();
 		$version->set('IdNode', $this->nodeID);
 		$version->set('Version', $newVersion);
@@ -494,10 +522,12 @@ class DataFactory
 		$version->set('Comment', $comment);
 		$IdVersion = $version->add();
 
-                $result = $this->store->setContent($newContent, $this->nodeID, $newVersion, $newSubVersion);
-                
-                
-		XMD_Log::info("AddVersion for Node:".$this->nodeID.", Version: ".$newVersion.".".$newSubVersion.", File: .".$uniqueName.", Error: ".!$result);
+		XMD_Log::info("AddVersion for Node:".$this->nodeID.", Version: ".$newVersion.".".$newSubVersion.", File: .".$uniqueName);
+
+
+		if (ModulesManager::isEnabled('ximRAM')) {
+			$this->indexNode($this->getVersionId($newVersion,$newSubVersion), $commitNode);
+		}
 
 		return $IdVersion;
 	}
@@ -544,6 +574,15 @@ class DataFactory
 
 		$userID = XSession::get("userID");
 
+		/// Se guarda en un archivo de id unico
+		$uniqueName = $this->_getUniqueFileName();
+		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot") . "/" . $uniqueName;
+
+		if (!FsUtils::file_put_contents($targetPath, $newContent)) {
+			XMD_Log::error('Error al establecer el contenido del documento');
+			$this->SetError(5);
+		}
+
 		$dbObj = new DB();
 
 		/// Ejecutamos la insercion en la BD
@@ -557,28 +596,23 @@ class DataFactory
 		$version->set('Comment', $comment);
 		$IdVersion = $version->add();
 
-                // Storing the content for the recovered version (old content as current content)
-                $result = $this->store->setContent($newContent, $this->nodeID, $newVersion, $newSubVersion);
-                XMD_Log::info("RecoverVersion for Node".$this->nodeID." Version: ".$newVersion.".".$newSubVersion." , Error: ".$result);
-                
+
 		$fileName = $node->class->GetNodePath();
 		$fileContent = $node->class->GetRenderizedContent();
 
 		/// Lo guardamos en el sistema de archivos
 		if (!FsUtils::file_put_contents($fileName, $fileContent)) {
-                    XMD_Log::error('Ha ocurrido un error al intentar guardar el documento');
-                    $this->SetError(6);
-                    return false;
+				XMD_Log::error('Ha ocurrido un error al intentar guardar el documento');
+				$this->SetError(6);
+				return false;
 		}
 
 		XMD_Log::debug("RecoverVersion for Node".$this->nodeID." with result:" .
 			$IdVersion. ", Version: ".$newVersion.".".$newSubVersion .
 			", OldVersion: ".$tmpVersion.".".$subversion.", File: .".$uniqueName, 4, "DataFactory");
 
-		if (ModulesManager::isEnabled('XRAM')) {
-			$result = $this->indexNode($this->getVersionId($newVersion,$newSubVersion), null);
-			$msg = $result ? "Node with Id Version ".$idVersion." indexed successfully" : "Error indexing node with Id Version ".$idVersion;
-			XMD_log::debug($msg);
+		if (ModulesManager::isEnabled('ximRAM')) {
+			$this->indexNode($this->getVersionId($newVersion,$newSubVersion), null);
 		}
 
 
@@ -663,15 +697,23 @@ class DataFactory
 			return false;
 		}
 
-		$result = $this->store->deleteContent($this->nodeID, $versionID, $subVersion);
-                if(!$result) {
-                    XMD_log::debug("Error deleting content for node ".$this->nodeID." , version ".$versionID." and subversion ".$subVersion);
-                    $this->SetError(3);
-                    return false;
-                }
-                
+		$uniqueName = $this->GetTmpFile($versionID, $subVersion);
+
+		if(!$uniqueName) {
+			$this->SetError(3);
+			return false;
+		}
+
+		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+
+		/* Tal y como estaba el codigo dejaba sucia la base de datos
+			si se borraba el archivo manualmente o simplemente no se podia borrar por permisos
+		*/
+		if (is_file($targetPath)) {
+			FsUtils::delete($targetPath);
+		}
+
 		$dbObj = new DB();
-                $query = '';
 		if(is_null($subVersion)) {
 			$query = sprintf("DELETE FROM Versions WHERE IdVersion = %d AND IdNode = %d",
 				$versionID, $this->nodeID);
@@ -688,9 +730,15 @@ class DataFactory
 		$pipeline = new PipelineManager();
 		$pipeline->deleteCache($versionToDelete);
 
+		// Se ejecutaba en cualquier caso
+		if (ModulesManager::isEnabled('ximRAM')) {
+			$this->conector->deleteNode($versionToDelete, true);
+		}
+
 		$dbObj->Execute($query);
 
-		XMD_Log::info("DeleteVersion  for Node:".$this->nodeID.", Version: ".$versionID.".".$subVersion);
+
+		XMD_Log::info("DeleteVersion  for Node:".$this->nodeID.", Version: ".$versionID.".".$subVersion.", File: .".$uniqueName);
 		return true;
 	}
 
@@ -1082,7 +1130,28 @@ class DataFactory
 		return $result[0];
 	}
 
+	function indexNode($idVersion, $commitNode) {
+
+		if (!is_numeric($idVersion)) {
+			XMD_Log::warning('Se ha intentado indexar un nodo por un IdVersion no valido.');
+			return;
+		}
+
+		$usePool = (boolean)Config::getValue('AddVersionUsesPool');
+		
+		if (!$usePool) {
+
+			$this->conector->indexNode($idVersion, $commitNode);
+		} else {
+
+			try {
+				PoolerClient::request('Solr', array(
+					array('versionid' => $idVersion, 'commit' => $commitNode)
+				));
+			} catch (Exception $e) {
+				// do something
+			}
+		}
+	}
 }
-
-
 ?>

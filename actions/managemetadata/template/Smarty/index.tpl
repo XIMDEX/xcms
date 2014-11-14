@@ -38,10 +38,9 @@
             <button class="btn main_action button_main_action button" 
                 ng-click="submitForm(managemetadata)"
                 xim-button
-                xim-label="submitLabel"
+                xim-label="'ui.dialog.confirmation.save' | xI18n"
                 xim-state="submitStatus"
                 xim-disabled="managemetadata.$invalid || managemetadata.$pristine">
-                {t}Save{/t}
             </button>
 		</fieldset>
 	</div>
@@ -82,11 +81,11 @@
                             {if $e.type == 'text'}
                                 <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size" 
                                     ng-model="languages_metadata.{$l.IdLanguage}.{$e.name}" 
-                                    ng-init="languages_metadata.{$l.IdLanguage}.{$e.name} = '{$languages_metadata[{$l.IdLanguage}][{$e.name}]}'">
+                                    ng-init="languages_metadata.{$l.IdLanguage}.{$e.name} = '{t}{$languages_metadata[{$l.IdLanguage}][{$e.name}]}{/t}'">
                             {elseif $e.type == 'textarea'}
                                 <textarea name="languages_metadata[{$l.IdLanguage}][{$e.name}]" id="" cols="30" rows="9" class="full_size"
                                     ng-model="languages_metadata.{$l.IdLanguage}.{$e.name}" 
-                                    ng-init="languages_metadata.{$l.IdLanguage}.{$e.name} = '{$languages_metadata[{$l.IdLanguage}][{$e.name}]}'">
+                                    ng-init="languages_metadata.{$l.IdLanguage}.{$e.name} = '{t}{$languages_metadata[{$l.IdLanguage}][{$e.name}]}{/t}'">
                                 </textarea>
                             {else}
                                 <br/>

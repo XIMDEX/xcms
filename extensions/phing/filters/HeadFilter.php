@@ -157,5 +157,3 @@ class HeadFilter extends BaseParamFilterReader implements ChainableReader {
         }
     }
 }
-
-

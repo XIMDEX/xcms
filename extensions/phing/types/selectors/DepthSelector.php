@@ -155,4 +155,3 @@ class DepthSelector extends BaseExtendSelector {
     }
 
 }
-

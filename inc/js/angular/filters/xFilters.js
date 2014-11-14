@@ -46,3 +46,17 @@ angular.module('ximdex.common.filter')
             return xTranslate(string);
         }
 }]);
+
+angular.module('ximdex.common.filter')
+    .filter('xNormalize', ['xTranslate', function(xTranslate){
+        return function(string){
+            function replaceAll(find, replace, str) {
+              return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+            }
+            function escapeRegExp(string) {
+                return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+            }
+            normalizedString = replaceAll(' ', '_', string);
+            return normalizedString
+        }
+}]);

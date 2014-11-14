@@ -80,5 +80,3 @@ abstract class BaseSelector extends DataType implements FileSelector {
     }   
 
 }
-
-

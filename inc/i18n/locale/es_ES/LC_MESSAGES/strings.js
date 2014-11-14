@@ -3,8 +3,13 @@ X.i18nStrings = {
 		"dialog": {
 			"confirmation": {
 				"accept": "Aceptar",
-				"cancel": "Cancelar"
+				"cancel": "Cancelar",
+				"save": "Guardar"
 			}	
+		}, 
+		"search": {
+			"filter_by": "Filtrar por", 
+			"sort_by": "Ordenar por"
 		}
 	},
 	"actions": {
@@ -18,6 +23,30 @@ X.i18nStrings = {
 				}
 			}
 		}
+	},
+	"widgets": {
+		"fileUploader": {
+			"upload": "Subir",
+			"files": "archivo(s)",
+			"invalid_files": "archivo(s) no se subirán",
+			"processing": "Procesando archivos...",
+			"validation": {
+				"file_exist": "Ya existe un archivo con este nombre",
+				"overwrite": "Sobreescribir",
+				"cancel": "Cancelar",
+				"rename": "Renombrar"
+			},
+			"drag_your_files_here_or_add_them_using_the_'Add'_button_below": "Arrastra los archivos aquí o añádelos usando el botón 'Añadir'",
+			"add": "Añadir",
+			"add_files": "Añadir archivos",
+			"pause": "Pausar",
+			"resume": "Reanudar",
+			"retry": "Reintentar",
+            "please,_select_the_schema_to_follow_and_a_language_for_your_documents_before_uploading_them":"Por favor, selecciona el esquema a seguir y un idioma para sus documentos antes de subirlos"
+		},
+        "ximGrid":{
+            "no_search_results":"No se han encontrado resultados para la búsqueda"
+        }
 	},
 	"xlyre": {
 		"actions": {

@@ -32,7 +32,6 @@ ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('inc/pipeline/PipeTransition.class.php');
-ModulesManager::file('/inc/Toldox.class.php', 'tolDOX');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/helper/ServerConfig.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');
@@ -692,9 +691,10 @@ class Action_workflow_forward extends ActionAbstract {
 		$idWorkFlowSlave = $node->get('SharedWorkflow');
 		if ($idWorkFlowSlave > 0) {
 			$masterNode = new Node($idWorkFlowSlave);
-			$this->messages->add(sprintf(_('The publication cycle of the selected document is currently linked to the document [%s]'), $masterNode->GetPath()), MSG_TYPE_WARNING);
-			$this->messages->add(_('The linked file should be selected in order to go forward the next state'), MSG_TYPE_WARNING);
-
+            $values = array(
+                'path_master' => $masterNode->GetPath()
+            );
+            $this->render($values, 'linked_document', 'default-3.0.tpl');
 			return false;
 		}
 
@@ -733,7 +733,7 @@ class Action_workflow_forward extends ActionAbstract {
 				$group = new Node($idGroup);
 
 				$workflow = new WorkFlow($idNode, $idState);
-				$this->messages->add(sprintf(_("El grupo '%s' puede promocionar el documento al estado '%s'"),
+				$this->messages->add(sprintf(_("The group %s con move the document to the state %s"),
 				$group->get('Name'), $workflow->pipeStatus->get('Name')), MSG_TYPE_WARNING);
 			}
 		} 

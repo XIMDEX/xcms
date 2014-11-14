@@ -40,7 +40,7 @@ $(document).ready(function() {
 </script>
 {/literal}
 </head>
-<body>
+<body class="prevdoc-body">
 	<fieldset class="prevdoc-container">
 		<iframe class="prevdoc-document" id="prevdoc-document" name="prevdoc-document"  src="{$prevUrl}"/>
 	</fieldset>

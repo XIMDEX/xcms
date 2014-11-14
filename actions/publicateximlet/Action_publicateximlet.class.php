@@ -93,8 +93,15 @@ class Action_publicateximlet extends ActionAbstract {
 		}
 
 
-		$values = array("result" => $syncResult);
-		$this->render($values, 'publicate_ximlet', 'default-3.0.tpl');
+		//$values = array("result" => $syncResult);
+		//$this->render($values, 'publicate_ximlet', 'default-3.0.tpl');
+		$this->messages->add(_("The node has been successfully sent to publish"), MSG_TYPE_NOTICE);
+
+		$values = array(
+			'messages' => $this->messages->messages,
+		);
+
+		$this->sendJSON($values);
 	}
 
 	/**

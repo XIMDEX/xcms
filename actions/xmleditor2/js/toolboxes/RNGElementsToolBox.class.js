@@ -78,9 +78,9 @@ var RNGElementsToolBox = Object.xo_create(FloatingToolBox, {
 						.addClass(icon_class)
 						.addClass('kupu-button')
 						.attr('id', buttonId)
-						.attr('title', _('Add') + ' ' + model[rngElementName].description + ' ' + _('under the currently selected element'))
+						.attr('title', _('Add ') + model[rngElementName].description + ' ' + _('under the currently selected element'))
 						.attr('i18n:attributes', 'title');
-						var description = $('<div>' +window.i18n_message_catalog.acents(window.i18n_message_catalog.translate('Add')) + ' ' + model[rngElementName].description + '</div>');
+						var description = $('<div>' + _('Add ') + model[rngElementName].description + '</div>');
 
 					$(button).append(description);
 					$(commonGroup).append(button);

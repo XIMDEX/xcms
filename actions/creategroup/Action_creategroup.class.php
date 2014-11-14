@@ -59,8 +59,8 @@ class Action_creategroup extends ActionAbstract {
 		
 		$this->reloadNode($idNode);
 
-		$values = array('messages' => $grupo->messages->messages);
-		$this->render($values, NULL, 'messages.tpl');
+		$values = array('messages' => $grupo->messages->messages,"parentID" => $grupo->GetParent());
+		$this->sendJSON($values);
     }
 }
 ?>

@@ -44,7 +44,10 @@ class FormValidation {
             $name = String::normalize($name);
         }
         $node = new Node($idnode);
-        $names = $node->find("Name","idparent=%s",array($idnode),MONO);        
+        if($node->nodeType->get("IsFolder")==0){
+            $idnode=$node->get("IdParent");
+        }
+        $names = $node->find("Name","idparent=%s",array($idnode),MONO);
         $names = $names? $names: array();
         $result = in_array($name, $names)? "false": "true";
         die($result);

@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 
-angular.module('ximdex.common.service')//Abstraction for server communications. TODO: Expose to client a REST like interface
+angular.module('ximdex.common.service')
     .factory('xTranslate', ['$window', '$http', function($window, $http) {
         return function(input){
         	path = input.split('.');
@@ -31,7 +31,7 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
 			var humanize = function() {
                 var str = path[path.length - 1];
                 str = str.charAt(0).toUpperCase() + str.slice(1);
-                str = str.replace("_", " ");
+                str = str.replace(/_/g, " ");
                 return str || input;
             };
             

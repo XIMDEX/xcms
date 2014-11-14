@@ -39,7 +39,7 @@
         </p>
 		<div class="input">
 			<label for="url" class="label_title">{t}URL{/t}</label>
-			<input type="text" name="url" id="url" class="cajaxg validable not_empty js_val_unique_url" value="http://">
+			<input type="text" name="url" id="url" class="cajaxg validable not_empty js_val_unique_url" data-idnode="{$id_node}" value="http://">
 		</div>
 	    <div class="input">
 			<label for="description" class="label_title"><span>{t}Description{/t}</span></label>

@@ -46,8 +46,8 @@ ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
 /*
-     * Definición de constantes.
-     * Esto debería ir al conf.
+     * Definiciï¿½n de constantes.
+     * Esto deberï¿½a ir al conf.
     */
 
 // Errores:
@@ -218,7 +218,7 @@ class DexPumper {
 		$this->info("ServerFrame $IdSync DU2OUT: download file from server ");
 
 
-		$targetFile = "{$initialDirectory}{$remotePath}{$fileName}";
+		$targetFile = "{$initialDirectory}{$remotePath}/{$fileName}";
 
 		$removing = $this->taskDelete($targetFile);
 		$this->updateTask($removing, ServerFrame::OUT);
@@ -283,10 +283,12 @@ class DexPumper {
 						$this->info("$totalToRename files to rename ");
 
 						foreach ($filesToRename as $file) {
-							 $this->RenameFile($file);
+							 $renameResult = $this->RenameFile($file);
+                                                         if ($renameResult)
+                                                             $this->finishTask ($file["IdSync"]);
+                                                         
 						}
-					}
-					$this->updateStateFiles($idBatchUp,$idServer);
+					}					
 			}
 	}
 
@@ -354,13 +356,13 @@ class DexPumper {
 
 
 		$this->info("Copying $localFile in {$baseRemoteFolder}{$relativeRemoteFolder}{$remoteFile}");
-
+                $this->getHostConnection();
 		if ( !$this->taskBasic($baseRemoteFolder, $relativeRemoteFolder) ) {
 			return false;
 		}
 
 		$fullPath = $baseRemoteFolder . $relativeRemoteFolder . '/' . $remoteFile;
-		$msg_not_upload = _('Could not find or create the destination folder').": {$localFile} -> {$fullPath}";
+		$msg_not_upload = _('Could not upload the file').": {$localFile} -> {$fullPath}";
 
 
 		if (!$this->connection->put($localFile, $fullPath)) {
@@ -375,8 +377,8 @@ class DexPumper {
 	}
 
 	private function taskRename($targetFile, $targetFolder, $newFile) {
-		$msg_not_rename= "No se ha podido renombrar al documento destino: {$targetFile} -> {$targetFolder}/{$newFile} ";
-
+		$msg_not_rename= "Could not rename the target document: {$targetFile} -> {$targetFolder}/{$newFile} ";
+                $this->getHostConnection();
 		if ( !$this->taskBasic($targetFolder, "") ) {
 			return false;
 		}
@@ -410,6 +412,14 @@ class DexPumper {
 
 		$this->updateTimeInPumper();
 	}
+        
+        private function finishTask($idSync){
+            
+            $query = "Update ServerFrames set state='In' where idsync = $idSync";
+            $this->serverFrame->execute($query);
+            $this->updateTimeInPumper();
+            
+        }
 
 	//DONE
 	private function updateServerState($status) {

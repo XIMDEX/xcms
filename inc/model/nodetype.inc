@@ -11,7 +11,7 @@
  *                                                                            						 *
  *  This program is distributed in the hope that it will be useful,           		 *
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the * 
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the *
  *  GNU Affero General Public License for more details.                       		 *
  *                                                                            						 *
  * See the Affero GNU General Public License for more details.                	 *
@@ -19,7 +19,7 @@
  * version 3 along with Ximdex (see LICENSE).                                 		 *
  * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       		 *
  *                                                                            						 *
- * @version $Revision: $                                                      				 * 	 
+ * @version $Revision: $                                                      				 *
  *                                                                            						 *
  *                                                                            						 *
  *********************************************************************************/
@@ -50,7 +50,7 @@ class NodeType extends NodeTypes_ORM{
 
 
    	/**
-   	 * 
+   	 *
    	 * @param $nodeTypeID
    	 * @return unknown_type
    	 */
@@ -65,7 +65,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	* 
+	*
 	* @return unknown_type
 	*/
 	function GetConstructor(){
@@ -77,7 +77,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * Creates a new nodetype and load its nodeTypeID 
+	 * Creates a new nodetype and load its nodeTypeID
 	 * @param $name
 	 * @param $icon
 	 * @param $isRenderizable
@@ -147,7 +147,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $name
 	 * @return unknown_type
 	 */
@@ -171,7 +171,7 @@ class NodeType extends NodeTypes_ORM{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns the current node type name
 	 * @return string(name)
@@ -179,7 +179,7 @@ class NodeType extends NodeTypes_ORM{
 	function GetName() {
 		return $this->get("Name");
 	}
-	
+
 	/**
 	 * Returns true or false depending on a nodetype existence
 	 * @param $name
@@ -319,7 +319,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	public function isFolder() {
@@ -327,7 +327,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	function GetIsFolder() {
@@ -335,7 +335,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $value
 	 * @return unknown_type
 	 */
@@ -353,7 +353,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	function GetIsPlainFile() {
@@ -361,7 +361,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $value
 	 * @return unknown_type
 	 */
@@ -379,7 +379,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	function GetIsVirtualFolder() {
@@ -387,7 +387,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $value
 	 * @return unknown_type
 	 */
@@ -405,7 +405,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	function GetIsStructuredDocument() {
@@ -413,7 +413,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $value
 	 * @return unknown_type
 	 */
@@ -431,7 +431,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @return unknown_type
 	 */
 	function GetIsSection() {
@@ -439,7 +439,7 @@ class NodeType extends NodeTypes_ORM{
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $value
 	 * @return unknown_type
 	 */
@@ -739,7 +739,7 @@ class NodeType extends NodeTypes_ORM{
     }
 
     /**
-     * 
+     *
      * @return unknown_type
      */
     function SetAutoCleanOn() {
@@ -771,7 +771,7 @@ class NodeType extends NodeTypes_ORM{
         return $aux;
     }
 
-    function getAllowedAncestors(){	
+    function getAllowedAncestors(){
 	    if ($this->get('IdNodeType')){
 		$firstNode = array($this->get('IdNodeType'));
 		// El primer nivel va a ser la variable $selectableList, el resto va a ser $typeList
@@ -826,6 +826,29 @@ class NodeType extends NodeTypes_ORM{
 	}
 	return $returnObject;
     }
+
+    public function getAllowedExtensions(){
+        $dbObj = new DB();
+        $sql = sprintf('SELECT rntmt.idRelNodeTypeMimeType as idRelNodeTypeMimeType,
+            nt.Name as Name, nt.Description as Description, rntmt.extension as extension FROM
+            NodeAllowedContents as nac INNER JOIN RelNodeTypeMimeType rntmt on
+            nac.NodeType = rntmt.IdNodeType INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType
+            where nac.IdNodeType=5022 and nt.IsFolder=0',$this->get('IdNodeType'));
+        $dbObj->Query($sql);
+        $returnArray = array();
+        while(!$dbObj->EOF) {
+            $returnElement = array();
+            $returnElement["id"] = $dbObj->GetValue('idRelNodeTypeMimeType');
+            $returnElement["description"] = _($dbObj->GetValue('Description'));
+            $returnElement["extension"] = implode(",",
+                preg_split("/;/",$dbObj->GetValue('extension'),0,PREG_SPLIT_NO_EMPTY));
+            $returnArray[] = $returnElement;
+            $dbObj->Next();
+        }
+        unset($dbObj);
+        return $returnArray;
+    }
+
  }
 
 ?>

@@ -29,6 +29,12 @@
             <h2>{t friendlyName=$friendlyName}Add %1{/t}</h2>
         </div>
 
+        {if {empty($langs)}}
+            <div class="message-warning message">
+                <p>{t}There aren't any created languages. You should create a new one{/t}.</p>
+            </div>
+        {/if}
+
         <div class="action_content">
             <p class="icon icon-positioned project input">
                 <input type="text" name="name" id="foldername" class="cajaxg validable not_empty js_val_alphanumeric js_val_unique_name full-size" placeholder="{t}Project name{/t}" data-idnode="{$nodeID}"/>
