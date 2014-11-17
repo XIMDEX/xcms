@@ -27,8 +27,8 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/String.class.php');

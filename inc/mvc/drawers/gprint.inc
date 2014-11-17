@@ -39,7 +39,7 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 }
 
 include_once(XIMDEX_ROOT_PATH . "/inc/model/action.php");
-include_once (XIMDEX_ROOT_PATH . "/inc/model/node.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
 function gPrintHeader($scroll='no')

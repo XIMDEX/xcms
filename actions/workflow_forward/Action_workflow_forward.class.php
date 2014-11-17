@@ -25,9 +25,9 @@
  */
 
 
-ModulesManager::file('/inc/model/role.inc');
-ModulesManager::file('/inc/model/user.inc');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/role.php');
+ModulesManager::file('/inc/model/user.php');
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');

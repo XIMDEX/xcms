@@ -4652,39 +4652,39 @@ msgstr "Gew&uuml;nscht Aktion nicht gefunden."
 msgid "The action %s cannot be executed on the selected node"
 msgstr "Die Aktion %s kann f&uuml;r den gew&auml;hlten Knoten nicht ausgef&uuml;hrt werden"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "User does not exist"
 msgstr "Benutzer existiert nicht"
 
 msgid "An user with this login already exists"
 msgstr "Es existiert bereits ein Benutzer mit diesem Login"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 #: /inc/model/group.php
 #: /inc/model/language.php
 #: /inc/model/locale.inc
 msgid "Arguments missing"
 msgstr "Fehlen von Argumenten"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Einige der Verbindungen mit Ihren Gruppen konnten nicht gel&ouml;scht werden"
 
 #: inc/sync/synchro.inc
-#: /inc/model/user.inc
-#: /inc/model/node.inc
+#: /inc/model/user.php
+#: /inc/model/node.php
 #: /inc/model/action.php
 #: /inc/model/channel.php
 #: /inc/model/group.php
 #: /inc/model/language.php
 #: /inc/model/locale.inc
-#: /inc/model/nodetype.inc
-#: /inc/model/permissions.inc
-#: /inc/model/role.inc
+#: /inc/model/nodetype.php
+#: /inc/model/permissions.php
+#: /inc/model/role.php
 msgid "Database connection error"
 msgstr "Datenbankverbindungsfehler"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Error in associated object"
 msgstr "Fehler in zugeordnetem Objekt"
 
@@ -4809,7 +4809,7 @@ msgstr "Zeitlicher Ordner %s konnte nicht erstellt werden"
 msgid "Specified file could not be found"
 msgstr "Spezifizierte Datei konnte nicht gefunden werden"
 
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "The nodetype does not exist"
 msgstr "Der Knotentyp existiert nicht"
 
@@ -5009,18 +5009,18 @@ msgstr "Knoteneigenschaft hinzuf&uuml;gen"
 msgid "Param nodeId is mandatory"
 msgstr "Parameter nodeId ist obligatorisch"
 
-#: /inc/model/nodetype.inc
+#: /inc/model/nodetype.php
 msgid "Nodetype does not exist"
 msgstr "Knotentyp existiert nicht"
 
-#: /inc/model/permissions.inc
+#: /inc/model/permissions.php
 msgid "Permit does not exist"
 msgstr "Berechtigung existiert nicht"
 
 msgid "Not initialized object"
 msgstr "Nicht initialisiertes Objekt"
 
-#: /inc/model/role.inc
+#: /inc/model/role.php
 msgid "Role does not exist"
 msgstr "Rolle existiert nicht"
 
@@ -5115,12 +5115,12 @@ msgid "Error inserting information about relnewscolector relation (BaseIORelatio
 msgstr "Fehler beim Eingeben der Information zur relnewscolector Verbindung (BaseIORelations)"
 
 #: /inc/sync/synchro.inc
-#: inc/model/node.inc
+#: inc/model/node.php
 msgid "The node does not exist"
 msgstr "Knoten existiert nicht"
 
 #: /inc/sync/synchro.inc
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr "Fehler beim Zugreifen auf Dateisystem"
 

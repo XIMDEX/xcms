@@ -29,7 +29,7 @@ define('MODE_NODEATTRIB', 1);
 
 ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/model/structureddocument.inc');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/model/State.class.php');

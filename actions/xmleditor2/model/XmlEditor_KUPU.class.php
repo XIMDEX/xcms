@@ -36,7 +36,7 @@ ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php')
 ModulesManager::file('/inc/repository/nodeviews/View_Xedit.class.php');
 ModulesManager::file('/inc/parsers/ParsingXsl.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
-ModulesManager::file('/inc/model/Versions.inc');
+ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
 ModulesManager::file('/inc/parsers/ParsingJsGetText.class.php');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');

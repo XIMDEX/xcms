@@ -27,7 +27,7 @@
 
 
 
-include_once(XIMDEX_ROOT_PATH . "/inc/model/node.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/parsers/pvd2rng/PVD2RNG_Filters.class.php");
 
 class PVD2RNG {

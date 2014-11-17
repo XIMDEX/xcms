@@ -31,7 +31,7 @@
 
 
 
-ModulesManager::file('/inc/model/role.inc');
+ModulesManager::file('/inc/model/role.php');
 
 
 class Action_createrole extends ActionAbstract {
