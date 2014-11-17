@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/model/dependencies.inc');
+ModulesManager::file('/inc/model/dependencies.php');
 ModulesManager::file('/inc/persistence/Config.class.php');
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');

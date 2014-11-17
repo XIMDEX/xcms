@@ -29,7 +29,7 @@
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 ModulesManager::file('/actions/composer/Action_composer.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');
-ModulesManager::file('/inc/model/Links.inc');
+ModulesManager::file('/inc/model/Links.php');
 
 
 class Action_createnews extends ActionAbstract {

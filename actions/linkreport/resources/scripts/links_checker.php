@@ -30,7 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
 
 include_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/model/Links.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/model/Links.php");
 
 function main ($argc, $argv){
     // Command line mode call

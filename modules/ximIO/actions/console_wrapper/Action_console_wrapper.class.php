@@ -28,9 +28,9 @@
 
 ModulesManager::file('/inc/model/node.inc');
 ModulesManager::file('/inc/cli/Shell.class.php');
-ModulesManager::file('/inc/model/language.inc');
-ModulesManager::file('/inc/model/channel.inc');
-ModulesManager::file('/inc/model/group.inc');
+ModulesManager::file('/inc/model/language.php');
+ModulesManager::file('/inc/model/channel.php');
+ModulesManager::file('/inc/model/group.php');
 
 
 class Action_console_wrapper extends ActionAbstract {

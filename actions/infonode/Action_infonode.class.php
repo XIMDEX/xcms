@@ -24,8 +24,8 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/language.inc');
-ModulesManager::file('/inc/model/channel.inc');
+ModulesManager::file('/inc/model/language.php');
+ModulesManager::file('/inc/model/channel.php');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
 class Action_infonode extends ActionAbstract {

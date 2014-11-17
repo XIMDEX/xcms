@@ -35,7 +35,7 @@
 	
 	 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 	 ModulesManager::file('/inc/utils.php');
- 	 ModulesManager::file('/inc/model/action.inc');
+ 	 ModulesManager::file('/inc/model/action.php');
  	 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
  	 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
  	 ModulesManager::file('/actions/managebatchs/forms.php', 'ximSYNC');

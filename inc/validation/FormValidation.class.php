@@ -25,7 +25,7 @@
  *  @version $Revision: 8735 $
  */
 
-ModulesManager::file('/inc/model/Links.inc');
+ModulesManager::file('/inc/model/Links.php');
 include_once( XIMDEX_ROOT_PATH . "/inc/helper/String.class.php" );
 
 class FormValidation {

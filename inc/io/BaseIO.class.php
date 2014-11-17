@@ -40,7 +40,7 @@ ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 if (!defined('XIMDEX_BASEIO_PATH'))
 	define('XIMDEX_BASEIO_PATH', realpath(dirname(__FILE__)));
 
-ModulesManager::file('/inc/model/language.inc');
+ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/auth/Auth.class.php');
 
 class BaseIO {

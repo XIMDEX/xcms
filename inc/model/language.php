@@ -334,4 +334,3 @@ class Language extends Languages_ORM
 		return ($this->numErr != null);
         }
 }
-?>

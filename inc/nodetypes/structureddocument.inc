@@ -33,8 +33,8 @@ define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
 require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.inc");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/channel.inc");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/language.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/model/channel.php");
+require_once(XIMDEX_ROOT_PATH . "/inc/model/language.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");

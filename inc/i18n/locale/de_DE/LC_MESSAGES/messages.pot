@@ -4661,8 +4661,8 @@ msgid "An user with this login already exists"
 msgstr ""
 
 #: /inc/model/user.inc
-#: /inc/model/group.inc
-#: /inc/model/language.inc
+#: /inc/model/group.php
+#: /inc/model/language.php
 #: /inc/model/locale.inc
 msgid "Arguments missing"
 msgstr ""
@@ -4674,10 +4674,10 @@ msgstr ""
 #: inc/sync/synchro.inc
 #: /inc/model/user.inc
 #: /inc/model/node.inc
-#: /inc/model/action.inc
-#: /inc/model/channel.inc
-#: /inc/model/group.inc
-#: /inc/model/language.inc
+#: /inc/model/action.php
+#: /inc/model/channel.php
+#: /inc/model/group.php
+#: /inc/model/language.php
 #: /inc/model/locale.inc
 #: /inc/model/nodetype.inc
 #: /inc/model/permissions.inc
@@ -4952,11 +4952,11 @@ msgstr ""
 msgid "The node over which property want to be deleted does not exist "
 msgstr ""
 
-#: /inc/model/action.inc
+#: /inc/model/action.php
 msgid "Action does not exist"
 msgstr ""
 
-#: /inc/model/channel.inc
+#: /inc/model/channel.php
 msgid "Channel does not exist"
 msgstr ""
 
@@ -4967,7 +4967,7 @@ msgstr ""
 msgid "No dependencies deleted"
 msgstr ""
 
-#: /inc/model/group.inc
+#: /inc/model/group.php
 msgid "Group does not exist"
 msgstr ""
 
@@ -4986,7 +4986,7 @@ msgstr ""
 msgid "General group cant be removed"
 msgstr ""
 
-#: /inc/model/language.inc
+#: /inc/model/language.php
 msgid "Language does not exist"
 msgstr ""
 
