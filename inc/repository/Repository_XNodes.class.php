@@ -27,7 +27,7 @@
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/Repository.class.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/persistence/datafactory.inc');
+include_once(XIMDEX_ROOT_PATH . '/inc/persistence/datafactory.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/auth/Auth.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIO.class.php');

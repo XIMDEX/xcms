@@ -29,7 +29,7 @@ ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/manager/ServerFrameManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
-ModulesManager::file('/inc/persistence/datafactory.inc');
+ModulesManager::file('/inc/persistence/datafactory.php');
 ModulesManager::file('/inc/model/RelStrDocChannels.class.php');
 
 /**
