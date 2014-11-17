@@ -32,7 +32,7 @@ require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/Log.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/logger/Logger_error.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php' );
 require("ISolrService.iface.php");

@@ -29,7 +29,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Nodes_ORM.class.php';
-require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.inc';
+require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/group.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
 include_once XIMDEX_ROOT_PATH . '/inc/nodetypes/sectionnode.inc';

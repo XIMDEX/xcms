@@ -26,8 +26,8 @@
  */
 
 include_once(XIMDEX_ROOT_PATH."/inc/modules/ModulesManager.class.php");
-ModulesManager::file("/inc/model/node.inc");
-ModulesManager::file("/inc/model/user.inc");
+ModulesManager::file("/inc/model/node.php");
+ModulesManager::file("/inc/model/user.php");
 
 /**
  * <p>Service responsible of deal with nodes</p>

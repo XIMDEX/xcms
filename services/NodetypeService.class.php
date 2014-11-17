@@ -25,7 +25,7 @@
  *  @version $Revision$
  */
 include_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
-ModulesManager::file("/inc/model/nodetype.inc");
+ModulesManager::file("/inc/model/nodetype.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMetadata.class.php');
 
 class NodetypeService
