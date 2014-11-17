@@ -23,7 +23,7 @@
  *                                                                            *
  ******************************************************************************/
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/actions/movenode/baseIO.php');
 ModulesManager::file('/inc/helper/String.class.php');
 

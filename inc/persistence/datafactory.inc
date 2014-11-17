@@ -28,7 +28,7 @@ if (!defined ('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath (dirname (__FILE__)."/../"));
 }
 
-require_once(XIMDEX_ROOT_PATH . "/inc/utils.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/Log.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/logger/Logger_error.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.inc");
@@ -305,7 +305,7 @@ class DataFactory
 		}
 
 		if (!(!(is_null($versionID)) && !(is_null($subVersion)))) {
-			XMD_Log::warning('No se ha podido estimar la versión o la subversion');
+			XMD_Log::warning('No se ha podido estimar la versiï¿½n o la subversion');
 			return false;
 		}
 
@@ -359,7 +359,7 @@ class DataFactory
 			$channels = $node->GetChannels();
 			$pipelineManager = new PipelineManager();
 			foreach ($channels as $idChannel) {
-				XMD_Log::info("Generando cache para la versión $idVersion y el canal $idChannel");
+				XMD_Log::info("Generando cache para la versiï¿½n $idVersion y el canal $idChannel");
 				$data = array('CHANNEL' => $idChannel);
 
 				if (!$isOTF) {
@@ -460,7 +460,7 @@ class DataFactory
 			$curVersion = $this->GetLastVersion();
 
 			if (is_null($curVersion)) {
-				XMD_Log::warning('No se ha podido obtener la última versión del documento');
+				XMD_Log::warning('No se ha podido obtener la ï¿½ltima versiï¿½n del documento');
 				return false;
 			}
 			$curSubVersion = $this->GetLastSubVersion($curVersion);

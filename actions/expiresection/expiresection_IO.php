@@ -31,7 +31,7 @@
 ini_set("include_path",".:inc:../inc:../../inc");
 $ximDEX_path = realpath(dirname(__FILE__) .  "/../../");
 
-include_once( $ximDEX_path . "/inc/utils.inc" );
+include_once($ximDEX_path . "/inc/utils.php");
 
 /// Array with call parameters 
 $config = array();

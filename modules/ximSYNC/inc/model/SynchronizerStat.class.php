@@ -28,7 +28,7 @@
 
  ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
  ModulesManager::file('/inc/manager/Sync_Log.class.php', 'ximSYNC');
- ModulesManager::file('/inc/utils.inc');
+ ModulesManager::file('/inc/utils.php');
 
 /**
 *	@brief Logging for the publication incidences.
@@ -61,7 +61,7 @@ class SynchronizerStat extends SynchronizerStats_ORM {
 
 		if(strcmp(Config::getValue("SyncStats"),"1")==0){
 
-			// Según el valor del parametro $doLog se insertara en la tabla o no.
+			// Segï¿½n el valor del parametro $doLog se insertara en la tabla o no.
 			if ($doInsertSql) {
 				$this->set('IdStat', null);
 				$this->set('BatchId', $batchId);

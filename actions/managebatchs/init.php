@@ -27,13 +27,13 @@
 
 
 
-	ModulesManager::file('/inc/utils.inc');
+	ModulesManager::file('/inc/utils.php');
 	ModulesManager::file('/inc/sync/SyncManager.class.php');
 	ModulesManager::file('/inc/model/Batch.class.php');
 	ModulesManager::file('/actions/managebatchs/persistence/Config.class.php');
 	ModulesManager::file('/actions/managebatchs/forms.php');
 	ModulesManager::file('/xmd/js/sajax/sajax.php');
-	ModulesManager::file('/inc/utils.inc');    	
+	ModulesManager::file('/inc/utils.php');
 
 	// starting SAJAX stuff
 	$sajax_request_type = "POST";

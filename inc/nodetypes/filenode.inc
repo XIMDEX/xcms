@@ -28,7 +28,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once (XIMDEX_ROOT_PATH . "/inc/utils.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once (XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.inc");
 include_once (XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
 include_once (XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");

@@ -35,7 +35,7 @@ if (!defined("XIMDEX_ROOT_PATH"))
 
 
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 
 
 class Block_analyzer {

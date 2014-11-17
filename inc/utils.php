@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../'));
 
 
-/// Se incluyen las otras librerias de utilidades a partir de utils.inc, que es incluida por todo el sistema.
+/// Se incluyen las otras librerias de utilidades a partir de utils.php, que es incluida por todo el sistema.
 //require_once (XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 include_once (XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 
@@ -61,4 +61,3 @@ ModulesManager::file("/inc/log/XMD_log.class.php");
 ModulesManager::file("/inc/log/Action_log.class.php");
 ModulesManager::file("/inc/persistence/XSession.class.php");
 ModulesManager::file("/inc/mvc/Request.class.php");
-?>

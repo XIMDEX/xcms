@@ -40,7 +40,7 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 
 include_once (XIMDEX_ROOT_PATH . "/inc/model/action.inc");
 include_once (XIMDEX_ROOT_PATH . "/inc/model/node.inc");
-require_once (XIMDEX_ROOT_PATH . "/inc/utils.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
 function gPrintHeader($scroll='no')
 	{

@@ -32,7 +32,7 @@
 if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-require_once(XIMDEX_ROOT_PATH."/inc/utils.inc" );
+require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
 if (!defined('DEFAULT_LOCALE'))
   define('DEFAULT_LOCALE', 'es_ES');

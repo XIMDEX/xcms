@@ -35,7 +35,7 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.inc';
 include_once XIMDEX_ROOT_PATH . '/inc/nodetypes/sectionnode.inc';
 require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
-require_once(XIMDEX_ROOT_PATH . '/inc/utils.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 include_once (XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");

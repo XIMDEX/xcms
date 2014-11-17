@@ -32,7 +32,7 @@
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
 
-include_once(XIMDEX_ROOT_PATH . "/inc/utils.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/Synchronizer_ORM.class.php");
@@ -1479,7 +1479,7 @@ class Synchronizer {
 				$dbObj->Query($sql);
 				if($dbObj->numRows>1)
 				{
-					/// Sí ha cambiado
+					/// Sï¿½ ha cambiado
 					$sql = "SELECT DISTINCT IdSync FROM SynchronizerDependencies WHERE IdResource=".$frameID;
 					$this->dbObj->Query($sql);
 

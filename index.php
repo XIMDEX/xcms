@@ -31,7 +31,7 @@ include_once 'bootstrap/start.php';
 include_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/modules/ModulesManager.class.php');
 require_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/fsutils/DiskUtils.class.php');
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/conf/extensions.conf.php');
