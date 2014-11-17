@@ -41,7 +41,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
 //Including composer autoloader
 //ModulesManager::file('/vendor/autoload.php');
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');

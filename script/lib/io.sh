@@ -137,7 +137,7 @@ function io.php()
 {
   code=$1
 
-  IORESULT=$(${PHP_CMD} -d memory_limit=-1 -r "include_once('${XIMDEX_PATH}/inc/utils.inc'); ${code}");
+  IORESULT=$(${PHP_CMD} -d memory_limit=-1 -r "include_once('${XIMDEX_PATH}/inc/utils.php'); ${code}");
 }
 
 #log to xmd_log

@@ -27,7 +27,7 @@
 
 
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 
 class Action_viewaddednews extends ActionAbstract {
 

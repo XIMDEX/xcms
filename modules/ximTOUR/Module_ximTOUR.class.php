@@ -31,7 +31,7 @@ ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/model/RelRolesActions.class.php');
 ModulesManager::file('/inc/model/role.inc');
 ModulesManager::file('/inc/model/node.inc');
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/model/orm/RelRolesStates_ORM.class.php');
 ModuleSManager::file(MODULE_XIMLOADER_PATH.'/Module_ximLOADER.class.php');
 

@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 ModulesManager::file('/actions/addtoarea/baseIO.php', 'ximNEWS');
 ModulesManager::file('/inc/helper/String.class.php');

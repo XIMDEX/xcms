@@ -30,7 +30,7 @@
  
  
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 
 function PrintLoteBrowser($nodeID)
 {

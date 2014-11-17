@@ -27,7 +27,7 @@
 
 
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/persistence/Config.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');

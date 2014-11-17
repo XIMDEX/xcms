@@ -29,7 +29,7 @@ include_once '../../bootstrap/start.php';
 
 
 require(App::getValue('XIMDEX_ROOT_PATH') . '/conf/log.conf');
-include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/utils.inc");
+include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/utils.php");
 ModulesManager::file("/inc/persistence/XSession.class.php");
 ModulesManager::file('/inc/i18n/I18N.class.php');
 

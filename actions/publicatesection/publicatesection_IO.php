@@ -28,7 +28,7 @@
 
 
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 
 if (ModulesManager::isEnabled('ximSYNC')) {							
 	ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');

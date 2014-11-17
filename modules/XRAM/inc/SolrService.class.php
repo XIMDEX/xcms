@@ -28,7 +28,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
 
-require_once(XIMDEX_ROOT_PATH . "/inc/utils.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/Log.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/logger/Logger_error.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.inc");

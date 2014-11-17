@@ -34,7 +34,7 @@
 	}
 	
 	 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
-	 ModulesManager::file('/inc/utils.inc');
+	 ModulesManager::file('/inc/utils.php');
  	 ModulesManager::file('/inc/model/action.inc');
  	 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
  	 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
@@ -111,7 +111,7 @@
 	$frm_filter_batch = (isset($_POST['frm_filter_batch'])) ? $_POST['frm_filter_batch'] : 'no';
 	
 	////
-	//// Inicio del flujo de la acción.
+	//// Inicio del flujo de la acciï¿½n.
 	//// 
 	
 	gPrintHeader();

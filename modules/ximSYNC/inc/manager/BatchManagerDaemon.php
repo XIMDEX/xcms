@@ -30,7 +30,7 @@
 if (! defined ( 'XIMDEX_ROOT_PATH' ))
 	define ( 'XIMDEX_ROOT_PATH', realpath ( dirname ( __FILE__ ) . "/../../../../" ) );
 
-include_once (XIMDEX_ROOT_PATH . "/inc/utils.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 include_once( XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');

@@ -25,7 +25,7 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/utils.inc');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/helper/String.class.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
