@@ -4653,39 +4653,39 @@ msgstr ""
 msgid "The action %s cannot be executed on the selected node"
 msgstr ""
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "User does not exist"
 msgstr ""
 
 msgid "An user with this login already exists"
 msgstr ""
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 #: /inc/model/group.php
 #: /inc/model/language.php
 #: /inc/model/locale.inc
 msgid "Arguments missing"
 msgstr ""
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Some of the connections with your groups could not be deleted"
 msgstr ""
 
 #: inc/sync/synchro.inc
-#: /inc/model/user.inc
-#: /inc/model/node.inc
+#: /inc/model/user.php
+#: /inc/model/node.php
 #: /inc/model/action.php
 #: /inc/model/channel.php
 #: /inc/model/group.php
 #: /inc/model/language.php
 #: /inc/model/locale.inc
-#: /inc/model/nodetype.inc
-#: /inc/model/permissions.inc
-#: /inc/model/role.inc
+#: /inc/model/nodetype.php
+#: /inc/model/permissions.php
+#: /inc/model/role.php
 msgid "Database connection error"
 msgstr ""
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Error in associated object"
 msgstr ""
 
@@ -4810,7 +4810,7 @@ msgstr ""
 msgid "Specified file could not be found"
 msgstr ""
 
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "The nodetype does not exist"
 msgstr ""
 
@@ -5010,18 +5010,18 @@ msgstr ""
 msgid "Param nodeId is mandatory"
 msgstr ""
 
-#: /inc/model/nodetype.inc
+#: /inc/model/nodetype.php
 msgid "Nodetype does not exist"
 msgstr ""
 
-#: /inc/model/permissions.inc
+#: /inc/model/permissions.php
 msgid "Permit does not exist"
 msgstr ""
 
 msgid "Not initialized object"
 msgstr ""
 
-#: /inc/model/role.inc
+#: /inc/model/role.php
 msgid "Role does not exist"
 msgstr ""
 
@@ -5116,12 +5116,12 @@ msgid "Error inserting information about relnewscolector relation (BaseIORelatio
 msgstr ""
 
 #: /inc/sync/synchro.inc
-#: inc/model/node.inc
+#: inc/model/node.php
 msgid "The node does not exist"
 msgstr ""
 
 #: /inc/sync/synchro.inc
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr ""
 

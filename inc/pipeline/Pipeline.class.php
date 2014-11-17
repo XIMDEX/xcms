@@ -34,7 +34,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/Pipelines_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeNodeTypes.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/nodetype.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/nodetype.php');
 /**
  * 
  * @brief Orm extension for the pipeline table

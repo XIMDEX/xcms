@@ -37,7 +37,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.inc";
+include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
 require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
 
 /**
