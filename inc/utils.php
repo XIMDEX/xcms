@@ -45,7 +45,7 @@ ModulesManager::file('/inc/persistence/Config.class.php');
 ModulesManager::file('/conf/install-modules.conf');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file("/inc/persistence/datafactory.inc");
-ModulesManager::file("/inc/sync/synchro.inc");
+ModulesManager::file("/inc/sync/synchro.php");
 ModulesManager::file("/inc/workflow/Workflow.class.php");
 ModulesManager::file("/inc/model/user.php");
 ModulesManager::file("/inc/model/group.php");

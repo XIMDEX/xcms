@@ -38,7 +38,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/foldernode.php";
-include_once XIMDEX_ROOT_PATH . "/inc/sync/synchro.inc";
+include_once XIMDEX_ROOT_PATH . "/inc/sync/synchro.php";
 require_once XIMDEX_ROOT_PATH . "/inc/model/Server.class.php";
 
 class ServerNode extends FolderNode

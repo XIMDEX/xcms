@@ -4671,7 +4671,7 @@ msgstr ""
 msgid "Some of the connections with your groups could not be deleted"
 msgstr ""
 
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 #: /inc/model/user.php
 #: /inc/model/node.php
 #: /inc/model/action.php
@@ -5115,12 +5115,12 @@ msgstr ""
 msgid "Error inserting information about relnewscolector relation (BaseIORelations)"
 msgstr ""
 
-#: /inc/sync/synchro.inc
+#: /inc/sync/synchro.php
 #: inc/model/node.php
 msgid "The node does not exist"
 msgstr ""
 
-#: /inc/sync/synchro.inc
+#: /inc/sync/synchro.php
 #: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr ""
@@ -5178,7 +5178,7 @@ msgid "No deletion in table %s - server %s"
 msgstr ""
 
 #: /inc/sync/SynchroFacade.class.php
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 msgid "Void node"
 msgstr ""
 

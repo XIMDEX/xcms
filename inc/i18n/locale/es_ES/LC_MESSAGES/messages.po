@@ -5025,7 +5025,7 @@ msgstr "Faltan argumentos"
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Alguna de las vinculaciones con sus grupos no pudo ser eliminada"
 
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 #: /inc/model/user.php
 #: /inc/model/node.php
 #: /inc/model/action.php
@@ -5469,12 +5469,12 @@ msgstr "No se permite ning&uacute;n tipo de nodo en %s"
 msgid "Error inserting information about relnewscolector relation (BaseIORelations)"
 msgstr "Error al insertar la informaci&oacute;n sobre la relaci&oacute;n relnewscolector (BaseIORelations)"
 
-#: /inc/sync/synchro.inc
+#: /inc/sync/synchro.php
 #: inc/model/node.php
 msgid "The node does not exist"
 msgstr "No existe el nodo"
 
-#: /inc/sync/synchro.inc
+#: /inc/sync/synchro.php
 #: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr "Error accediendo al sistema de archivos"
@@ -5532,7 +5532,7 @@ msgid "No deletion in table %s - server %s"
 msgstr "Sin borrado de frames en la tabla %s - servidor %s"
 
 #: /inc/sync/SynchroFacade.class.php
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 msgid "Void node"
 msgstr "Nodo vac&iacute;o"
 
