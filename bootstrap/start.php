@@ -57,7 +57,7 @@ date_default_timezone_set(App::getValue('timezone'));
 // set DB Connection
 
 $dbConfig = App::getValue('db');
-if ( !empty( $dbconfig ) ) {
+if ( !empty( $dbConfig ) ) {
     $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}",
         $dbConfig['user'], $dbConfig['password']);
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
