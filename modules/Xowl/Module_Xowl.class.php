@@ -28,7 +28,7 @@
 
 // Point to ximdex root and include necessary class.
 ModulesManager::file('/inc/modules/Module.class.php');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/model/orm/Channels_ORM.class.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');

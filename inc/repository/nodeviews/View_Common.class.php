@@ -27,7 +27,7 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/LinksManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');

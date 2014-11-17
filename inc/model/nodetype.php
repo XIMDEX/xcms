@@ -158,7 +158,7 @@ class NodeType extends NodeTypes_ORM{
 		if (!($dbObj->numRows > 0)) {
 			$backtrace = debug_backtrace();
 			error_log(sprintf("Se ha intentado cargar obtener un tipo de nodo por el nombre %s"
-						. " y no se ha encontrado [inc/model/nodetype.inc] script: %s file: %s line: %s",
+						. " y no se ha encontrado [inc/model/nodetype.php] script: %s file: %s line: %s",
 						$name,
 						$_SERVER['SCRIPT_FILENAME'],
 						$backtrace[0]['file'],

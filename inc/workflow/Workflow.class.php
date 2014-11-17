@@ -38,7 +38,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/Pipeline.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeNodeTypes.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/role.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/role.php');
 
 define('WORKFLOW_PROCESS_NAME', 'workflow');
 

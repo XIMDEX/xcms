@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) .  "/../../"));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_PreviewInServer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');

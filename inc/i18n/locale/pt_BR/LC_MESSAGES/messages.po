@@ -4652,39 +4652,39 @@ msgstr "A a&ccedil;&atilde;o requerida n&atilde;o foi encontrada."
 msgid "The action %s cannot be executed on the selected node"
 msgstr "A a&ccedil;&atilde;o %s n&atilde;o p&ocirc;de ser executada sobre o nodo selecionado"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "User does not exist"
 msgstr "Usu&aacute;rio n&atilde;o existente"
 
 msgid "An user with this login already exists"
 msgstr "J&aacute; existe um usu&aacute;rio com este login"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 #: /inc/model/group.php
 #: /inc/model/language.php
 #: /inc/model/locale.inc
 msgid "Arguments missing"
 msgstr "Faltam argumentos"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Alguma das conex&otilde;es e os seus grupos n&atilde;o puderam ser eliminada"
 
 #: inc/sync/synchro.inc
-#: /inc/model/user.inc
-#: /inc/model/node.inc
+#: /inc/model/user.php
+#: /inc/model/node.php
 #: /inc/model/action.php
 #: /inc/model/channel.php
 #: /inc/model/group.php
 #: /inc/model/language.php
 #: /inc/model/locale.inc
-#: /inc/model/nodetype.inc
-#: /inc/model/permissions.inc
-#: /inc/model/role.inc
+#: /inc/model/nodetype.php
+#: /inc/model/permissions.php
+#: /inc/model/role.php
 msgid "Database connection error"
 msgstr "Erro de conex&atilde;o com a base de dados"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Error in associated object"
 msgstr "Erro no objeto associado"
 
@@ -4809,7 +4809,7 @@ msgstr "N&atilde;o foi poss&iacute;vel criar a pasta temporal %s"
 msgid "Specified file could not be found"
 msgstr "N&atilde;o foi poss&iacute;vel encontrar o arquivo especificado"
 
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "The nodetype does not exist"
 msgstr "N&atilde;o existe o tipo de nodo"
 
@@ -5009,18 +5009,18 @@ msgstr "Adicionando nodeproperty"
 msgid "Param nodeId is mandatory"
 msgstr "O par&acirc;metro nodeId &eacute; obrigat&oacute;rio"
 
-#: /inc/model/nodetype.inc
+#: /inc/model/nodetype.php
 msgid "Nodetype does not exist"
 msgstr "N&atilde;o existe o tipo de nodo"
 
-#: /inc/model/permissions.inc
+#: /inc/model/permissions.php
 msgid "Permit does not exist"
 msgstr "N&atilde;o h&aacute; uma permiss&atilde;o"
 
 msgid "Not initialized object"
 msgstr "Objeto sem inicializar"
 
-#: /inc/model/role.inc
+#: /inc/model/role.php
 msgid "Role does not exist"
 msgstr "N&atilde;o existe o rol"
 
@@ -5115,12 +5115,12 @@ msgid "Error inserting information about relnewscolector relation (BaseIORelatio
 msgstr "Erro ao inserir informa&ccedil;&atilde;o sobre a rela&ccedil;&atilde;o relnewscolector (BaseIORelations)"
 
 #: /inc/sync/synchro.inc
-#: inc/model/node.inc
+#: inc/model/node.php
 msgid "The node does not exist"
 msgstr "Nodo n&atilde;o existente"
 
 #: /inc/sync/synchro.inc
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr "Erro ao aceder ao sistema de arquivos"
 

@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/model/Versions.inc');
+ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/xml/XSLT.class.php');
 ModulesManager::file('/xslt/functions.php', 'dexT');

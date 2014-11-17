@@ -36,7 +36,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Mechanism.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/user.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/user.php');
 // Include Auth Configuration.
 include_once(XIMDEX_ROOT_PATH . "/conf/auth.conf");
 

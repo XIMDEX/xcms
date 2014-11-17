@@ -225,4 +225,3 @@ class Permission extends Permissions_ORM
 		return ($this->numErr != null);
 	}
 }
-  ?>
