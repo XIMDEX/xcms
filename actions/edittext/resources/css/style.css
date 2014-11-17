@@ -28,6 +28,11 @@
 	width: 100%;
 }
 
+fieldset.editor{
+    height: 100%;
+    width: 100%;
+}
+
 .text-editor{
 	background:#fff;
 	padding: 0;
