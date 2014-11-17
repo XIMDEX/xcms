@@ -31,7 +31,7 @@ if (!defined ('XIMDEX_ROOT_PATH')) {
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/Log.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/log/logger/Logger_error.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/db/db.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.inc");
 require_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php' );

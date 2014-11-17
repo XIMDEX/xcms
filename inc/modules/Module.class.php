@@ -28,7 +28,7 @@
 
 require_once(dirname(__FILE__) . '/ModulesManager.class.php');
 ModulesManager::file("/inc/modules/modules.const");
-ModulesManager::file("/inc/db/db.inc");
+ModulesManager::file("/inc/db/db.php");
 ModulesManager::file("/inc/cli/Shell.class.php");
 ModulesManager::file("/inc/helper/Messages.class.php");
 

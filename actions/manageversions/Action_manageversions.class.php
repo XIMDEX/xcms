@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/db/db.inc');
+ModulesManager::file('/inc/db/db.php');
 
 class Action_manageversions extends ActionAbstract {
 	//Main method: shows initial form

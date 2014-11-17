@@ -36,7 +36,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 
 function update_np() {
 

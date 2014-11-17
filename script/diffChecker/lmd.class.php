@@ -37,7 +37,7 @@ if (!isset($DB_TYPE_USAGE) && defined("ADODB") ) {
 require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
 require_once(XIMDEX_ROOT_PATH."/inc/helper/Messages.class.php");
 require_once(XIMDEX_ROOT_PATH."/inc/patterns/Factory.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/db/db.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_historic.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/Ldd.class.php");
@@ -45,8 +45,8 @@ require_once(XIMDEX_ROOT_PATH."/script/diffChecker/Ldd.class.php");
 class lmd {
 	function lmd() {
 		if (!defined("LOGGED_SCRIPT_BEGIN")) {
-			UpdateDb_log::info(sprintf("*** Ejecución script %s", $_SERVER["PHP_SELF"]));
-			UpdateDb_historic::info(sprintf("*** Ejecución script %s", $_SERVER["PHP_SELF"]));
+			UpdateDb_log::info(sprintf("*** Ejecuciï¿½n script %s", $_SERVER["PHP_SELF"]));
+			UpdateDb_historic::info(sprintf("*** Ejecuciï¿½n script %s", $_SERVER["PHP_SELF"]));
 			define("LOGGED_SCRIPT_BEGIN", true);
 		}
 	}

@@ -33,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once(XIMDEX_ROOT_PATH.'/inc/modules/ModulesManager.class.php');
 ModulesManager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
 ModulesManager::file('/inc/cli/CliReader.class.php');
-ModulesManager::file('/inc/db/db.inc');
+ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
 

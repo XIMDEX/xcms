@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . "/inc/patterns/Factory.class.php");
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelStrDocChannels.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
@@ -45,14 +45,14 @@ class View_SQL extends Abstract_View implements Interface_View {
 		$version = new Version($idVersion);
 
 		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("Se ha cargado una versión incorrecta ($idVersion)");
+			XMD_Log::error("Se ha cargado una versiï¿½n incorrecta ($idVersion)");
 			return NULL;
 		}
 
 		$node = new Node($version->get('IdNode'));
 
 		if (!($node->get('IdNode') > 0)) {
-			XMD_Log::error("El nodo que se está intentando convertir no existe: " . $version->get('IdNode'));
+			XMD_Log::error("El nodo que se estï¿½ intentando convertir no existe: " . $version->get('IdNode'));
 			return NULL;
 		}
 

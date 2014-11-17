@@ -38,7 +38,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . '/inc/db/db.inc';
+include_once XIMDEX_ROOT_PATH . '/inc/db/db.php';
 include_once XIMDEX_ROOT_PATH . '/inc/patterns/xObject.class.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 
