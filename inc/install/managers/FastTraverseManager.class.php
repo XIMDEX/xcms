@@ -25,7 +25,7 @@
  */
 
 
-include_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+include_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 

@@ -27,7 +27,7 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 
 class DexCacheDB {
 

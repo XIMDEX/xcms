@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 /**
  * Requires access to database
  */
-include_once(XIMDEX_ROOT_PATH.'/inc/db/db.inc');
+include_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 
 /**
  *

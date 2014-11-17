@@ -26,7 +26,7 @@
 
 
 require_once(XIMDEX_ROOT_PATH. '/inc/modules/ModulesManager.class.php');
-ModulesManager::file('/inc/db/db.inc');
+ModulesManager::file('/inc/db/db.php');
 
 /**
  * This class handles all the information stored into the Config table on the data model

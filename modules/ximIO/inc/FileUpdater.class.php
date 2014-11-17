@@ -35,7 +35,7 @@
 	define ('IMPORTED_STATUS_OK_TO_PUBLISH', 2);
 */
 
-ModulesManager::file('/inc/db/db.inc');
+ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');

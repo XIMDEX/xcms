@@ -33,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Cache.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Overloadable.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/behaviors/BehaviorCollection.class.php');
