@@ -37,52 +37,81 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.inc");
-require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingRng.class.php');
+include_once XIMDEX_ROOT_PATH . "/inc/model/language.php";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
-*  @brief Handles RNG templates.
+*  @brief Handles the languages in wich could be written the documents.
 */
 
-class rngvisualtemplatenode extends FileNode {
-
-	var $minimalXml = '';
-	var $xpathObj;
-	var $relaxSource;
-	var $elementsForRender;
-	var $renderCount = 0;
+class LanguageNode extends Root {
 
 	/**
-	*  Creates the file in data/files directory.
+	*  Calls for add a row to Languages table.
 	*  @param string name
 	*  @param int parentID
 	*  @param int nodeTypeID
 	*  @param int stateID
-	*  @param string sourcePath
+	*  @param string isoname
+	*  @param string description
+	*  @param int enabled
 	*  @return unknown
 	*/
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null) {
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null) {
+		$language = new Language();
+		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
 
-		$content = FsUtils::file_get_contents($sourcePath);
+		if ($result > 0) {
+			$this->parent->messages->add(_('The ISO code entered is already assigned to another language'), MSG_TYPE_ERROR);
+			$this->parent->delete();
+			return NULL;
+		}
 
-		$data = new DataFactory($this->parent->get('IdNode'));
-		$this->updatePath();
-		return $data->SetContent($content);
+  		$language = new Language();
+  		$ret = $language->CreateLanguage($name, $isoname, $description, $enabled,$this->parent->get('IdNode'));
+
+		$this->UpdatePath();
+		return $ret;
 	}
 
 	/**
-	*  Gets the minimal content of a document created by a template.
-	*  @return string
+	*  Deletes the Language and its dependencies.
+	*  @return unknown
 	*/
+	function DeleteNode() {
+	 	$language = new Language($this->parent->get('IdNode'));
+		$language->DeleteLanguage();
 
-	function buildDefaultContent() {
-
-		$rngParser = new ParsingRng();
-		$content = $rngParser->buildDefaultContent($this->nodeID);
-
-		return $content;
+		$nodeProperty = new NodeProperty();
+		$nodeProperty->cleanUpPropertyValue('language', $this->parent->get('IdNode'));
 	}
 
+	/**
+	*  Calls to method for updating the Name on the database.
+	*  @param string name
+	*  @return unknown
+	*/
+	function RenameNode($name = null) {
+		$lang = new Language($this->parent->get('IdNode'));
+		$lang->SetName($name);
+		$this->UpdatePath();
+	}
+
+	/**
+	*  Gets the documents which have been written in the language.
+	*  @return array
+	*/
+	function GetDependencies() {
+		$sql ="SELECT DISTINCT IdDoc FROM StructuredDocuments WHERE IdLanguage='".$this->parent->get('IdNode')."'";
+		$this->dbObj->Query($sql);
+
+		$deps = array();
+		while(!$this->dbObj->EOF) {
+			$deps[] = $this->dbObj->row["IdDoc"];
+			$this->dbObj->Next();
+		}
+    	return $deps;
+	}
 }
 ?>

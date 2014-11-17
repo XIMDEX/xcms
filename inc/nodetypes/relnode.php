@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 /******************************************************************************
  *  Ximdex a Semantic Content Management System (CMS)    							*
@@ -19,7 +19,7 @@
  * version 3 along with Ximdex (see LICENSE).                                 *
  * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       *
  *                                                                            *
- * @version $Revision: $                                                      *
+ * @version $Revision: $                                                      *  
  *                                                                            *
  *                                                                            *
  ******************************************************************************/
@@ -37,30 +37,22 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/user.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-class UserNode extends Root {
+/**
+*  @deprecated
+*/
 
-	function CreateNode($login = null, $parentID = null, $nodeTypeID = null, $stateID = null, $realName = null, $pass = null, $email = null,$locale = null, $generalRole = null) {
+class RelNode extends Root {
 
-		$user = new User();
-		$idUser = $user->SetByLogin($login);
+	/**
+	*  Does nothing.
+	*  @return null
+	*/
 
-		if ($idUser > 0) {
-			XMD_Log::error("Another user with the same login $login");
-			return NULL;
-		}
+	function RenderizeNode() {
 
-  		$ret = $user->CreateNewUser($realName, $login, $pass, $email, $locale, $generalRole, $this->parent->get('IdNode'));
-		$this->UpdatePath();
-
-		return $ret;
-	}
-
-	function DeleteNode() {
-	 	$user = new User($this->parent->get('IdNode'));
-		$user->DeleteUser();
+		return null;
 	}
 }
 

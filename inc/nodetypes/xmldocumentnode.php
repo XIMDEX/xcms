@@ -19,7 +19,7 @@
  * version 3 along with Ximdex (see LICENSE).                                 *
  * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       *
  *                                                                            *
- * @version $Revision: $                                                      *
+ * @version $Revision: $                                                      *  
  *                                                                            *
  *                                                                            *
  ******************************************************************************/
@@ -37,67 +37,10 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/role.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/structureddocument.php";
 
-/**
-*  @brief Handles roles.
-*/
+class XmlDocumentNode extends AbstractStructuredDocument  {
 
-class RoleNode extends Root {
-
-	/**
-	*  Does nothing.
-	*  @return null
-	*/
-
-	function RenderizeNode() {
-
-		return null;
-	}
-
-	/**
-	*  Calls to method for adding a row to Roles table.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string icon
-	*  @param string description
-	*  @return unknown
-	*/
-
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon=null, $description=null) {
-
-  		$role = new Role();
-  		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
-		$this->UpdatePath();
-	}
-
-	/**
-	*  Calls to method for deleting the Role from database.
-	*  @return unknown
-	*/
-
-	function DeleteNode(){
-
-		//Before delete delGroupRol
-
-
-	 	$role = new Role($this->parent->get('IdNode'));
-		$role->DeleteRole();
-	}
-
-	/**
-	*  Users and Groups arent dependecies,they are associations;
-	*  @return array
-	*/
-
-	function GetDependencies() {
-
-		$deps = array();
-
-    	return $deps;
-	}
-}
+}		
+		
 ?>
