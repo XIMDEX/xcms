@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/language.inc');
+ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/IsoCode.class.php');
 ModulesManager::file('/inc/helper/Messages.class.php');
 

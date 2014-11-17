@@ -28,7 +28,7 @@
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');

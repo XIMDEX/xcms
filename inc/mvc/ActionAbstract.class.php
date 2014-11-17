@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingJsGetText.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/action.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/action.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');

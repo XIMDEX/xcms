@@ -24,7 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-ModulesManager::file('/inc/model/language.inc');
+ModulesManager::file('/inc/model/language.php');
 
  /* <p>API language action</p>
  * <p>Handles requests to obtain the languages</p>

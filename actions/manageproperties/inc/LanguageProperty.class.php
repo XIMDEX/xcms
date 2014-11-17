@@ -28,7 +28,7 @@
 
 
 ModulesManager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
-ModulesManager::file('/inc/model/language.inc');
+ModulesManager::file('/inc/model/language.php');
 
 class LanguageProperty extends InheritableProperty {
 

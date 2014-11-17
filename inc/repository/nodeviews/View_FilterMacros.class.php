@@ -29,7 +29,7 @@
 
 ModulesManager::file('/inc/model/Versions.inc');
 ModulesManager::file('/inc/model/node.inc');
-ModulesManager::file('/inc/model/channel.inc');
+ModulesManager::file('/inc/model/channel.php');
 ModulesManager::file('/inc/model/Server.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');

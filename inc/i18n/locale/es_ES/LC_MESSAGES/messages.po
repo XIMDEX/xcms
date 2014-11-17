@@ -5015,8 +5015,8 @@ msgid "An user with this login already exists"
 msgstr "Ya existe un usuario con ese login"
 
 #: /inc/model/user.inc
-#: /inc/model/group.inc
-#: /inc/model/language.inc
+#: /inc/model/group.php
+#: /inc/model/language.php
 #: /inc/model/locale.inc
 msgid "Arguments missing"
 msgstr "Faltan argumentos"
@@ -5028,10 +5028,10 @@ msgstr "Alguna de las vinculaciones con sus grupos no pudo ser eliminada"
 #: inc/sync/synchro.inc
 #: /inc/model/user.inc
 #: /inc/model/node.inc
-#: /inc/model/action.inc
-#: /inc/model/channel.inc
-#: /inc/model/group.inc
-#: /inc/model/language.inc
+#: /inc/model/action.php
+#: /inc/model/channel.php
+#: /inc/model/group.php
+#: /inc/model/language.php
 #: /inc/model/locale.inc
 #: /inc/model/nodetype.inc
 #: /inc/model/permissions.inc
@@ -5306,11 +5306,11 @@ msgstr "Propiedad %s no encontrada"
 msgid "The node over which property want to be deleted does not exist "
 msgstr "No existe el nodo sobre el que se quiere eliminar la propiedad "
 
-#: /inc/model/action.inc
+#: /inc/model/action.php
 msgid "Action does not exist"
 msgstr "La acci&oacute;n no existe"
 
-#: /inc/model/channel.inc
+#: /inc/model/channel.php
 msgid "Channel does not exist"
 msgstr "No existe el canal"
 
@@ -5321,7 +5321,7 @@ msgstr "Inconsistencia en la base de datos"
 msgid "No dependencies deleted"
 msgstr "No se han borrado dependencias"
 
-#: /inc/model/group.inc
+#: /inc/model/group.php
 msgid "Group does not exist"
 msgstr "El grupo no existe"
 
@@ -5340,7 +5340,7 @@ msgstr "La relacion especificada ya existe"
 msgid "General group cant be removed"
 msgstr "El grupo general no se puede borrar"
 
-#: /inc/model/language.inc
+#: /inc/model/language.php
 msgid "Language does not exist"
 msgstr "No existe el idioma"
 

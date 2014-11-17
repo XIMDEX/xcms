@@ -29,7 +29,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
 require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');

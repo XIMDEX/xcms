@@ -32,8 +32,8 @@ ModulesManager::file('/inc/log/XMD_log.class.php');
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/model/language.inc');
-ModulesManager::file('/inc/model/channel.inc');
+ModulesManager::file('/inc/model/language.php');
+ModulesManager::file('/inc/model/channel.php');
 ModulesManager::file('/inc/model/node.inc');
 
 /***
