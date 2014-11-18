@@ -27,3 +27,78 @@
  /**
   * @TODO Remove this file (XMD_Log)
   */
+
+
+
+require_once( XIMDEX_ROOT_PATH . '/inc/log/Loggeable.class.php' );
+
+class XMD_Log_old {
+	
+	/**
+	 * 
+	 * @param $msg
+	 * @param $level
+	 * @return unknown_type
+	 */
+	public static function write($msg, $level=LOGGER_LEVEL_INFO) {
+		Loggeable::write($msg, 'xmd_logger', $level);
+	}
+	
+	/**
+	 * 
+	 * @param $msg
+	 * @return unknown_type
+	 */
+	public static function debug($msg) {
+		Loggeable::debug($msg, 'xmd_logger');
+	}
+
+	/**
+	 * 
+	 * @param $msg
+	 * @return unknown_type
+	 */
+	public static function info($msg) {
+		Loggeable::info($msg, 'xmd_logger');
+	}
+
+	/**
+	 * 
+	 * @param $msg
+	 * @return unknown_type
+	 */
+	public static function warning($msg) {
+		Loggeable::warning($msg, 'xmd_logger');
+	}
+
+	/**
+	 * 
+	 * @param $msg
+	 * @return unknown_type
+	 */	
+	public static function error($msg) {
+		Loggeable::error($msg, 'xmd_logger');
+	}
+
+	/**
+	 * 
+	 * @param $msg
+	 * @return unknown_type
+	 */
+	public static function fatal($msg) {
+		Loggeable::fatal($msg, 'xmd_logger');		
+	}
+
+	/**
+	 * 
+	 * @param $msg
+	 * @return unknown_type
+	 */
+	public static function display($msg) {
+		// detect environment (cli / web)
+		$output = sprintf("[%s]: %s\n", strftime("%d-%m-%y %T"), $msg);	
+		echo $output;
+	}
+		
+}
+ 

@@ -13,6 +13,7 @@ include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
 
 class_alias('Ximdex\Runtime\App', 'App');
 
+
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
 
@@ -25,7 +26,15 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
         App::setValue($key, $value);
     }
 
+
+
+
+// get Config
+$conf = require_once(App::getValue('XIMDEX_ROOT_PATH') . '/conf/config.php');
+foreach ($conf as $key => $value) {
+    App::setValue($key, $value);
 }
+
 
 // setup log
 class_alias('Ximdex\Logger', 'XMD_Log');
@@ -39,6 +48,11 @@ $log = new Logger('Actions');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log', Logger::DEBUG));
 
 Ximdex\Logger::addLog( $log , 'actions' ) ;
+
+
+XMD_Log::setActiveLog() ;
+
+
 
 
 // read install-modules.conf
@@ -72,6 +86,7 @@ if ( !empty( $dbConfig ) ) {
         App::setValue($row['ConfigKey'], $row['ConfigValue']);
     }
 }
+
 // special objects (pseudo-DI)
 
 App::setValue( 'class::definition::Messages',       '/inc/helper/Messages.class.php' );

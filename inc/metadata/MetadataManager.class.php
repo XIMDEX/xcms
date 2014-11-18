@@ -455,7 +455,7 @@ class MetadataManager{
                     $rnvmv->set('idMetadataVersion',$idMetadataVersion);
                     $res2 = $rnvmv->add();
                     if($res<0){
-                        XMD_Log::error("Relation between versions of nodes [".$nodes['nv']." - ".$nodes['mv']."] not added.");
+                        XMD_Log::error("Relation between versions of nodes [".$nodes['nv']." - ".$nodes['mv']."] not added." );
                     }
                 }
             }
