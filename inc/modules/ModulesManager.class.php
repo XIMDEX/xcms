@@ -53,7 +53,7 @@ class ModulesManager
      * Core modules are specials:
      * They are installed always and they never can be uninstalled or disabled
      */
-    public function getCoreModules()
+    public static function getCoreModules()
     {
         return self::$core_modules;
     }
