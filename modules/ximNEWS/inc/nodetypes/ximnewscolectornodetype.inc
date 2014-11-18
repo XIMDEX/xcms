@@ -24,7 +24,7 @@
  ******************************************************************************/
 
 
-ModulesManager::file('/inc/nodetypes/foldernode.inc');
+ModulesManager::file('/inc/nodetypes/foldernode.php');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColectorUsers.php', 'ximNEWS');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');

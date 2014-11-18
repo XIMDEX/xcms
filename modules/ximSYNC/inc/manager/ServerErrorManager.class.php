@@ -30,7 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
 
 include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/inc/model/ServerErrorByPumper.class.php");
-include_once(XIMDEX_ROOT_PATH."/inc/nodetypes/servernode.inc");
+include_once(XIMDEX_ROOT_PATH."/inc/nodetypes/servernode.php");
 include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/conf/synchro.conf");
 
 /**

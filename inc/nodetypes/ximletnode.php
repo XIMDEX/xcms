@@ -37,7 +37,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/structureddocument.inc";
+include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/structureddocument.php";
 
 class XimletNode extends AbstractStructuredDocument 
 {

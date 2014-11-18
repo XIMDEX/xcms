@@ -38,7 +38,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Links.php");
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 require_once (XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 
 /**

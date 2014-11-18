@@ -37,72 +37,76 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+include_once XIMDEX_ROOT_PATH . "/inc/model/group.php";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-class StateNode extends Root {
+/**
+*  @brief Handles groups.
+*
+*  Its purpose is to share the permissions of operations with Nodes between different Users.
+*/
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description='', $idTransition=null) {
-		$currentTransition = new PipeTransition($idTransition);
-		if (!$currentTransition->get('id') > 0) {
-			$this->messages->add(_('No se ha podido encontrar la transacción, consulte con su administrador'), MSG_TYPE_ERROR);
-			$this->messages->mergeMessages($currentTransition->messages);
-			return NULL;
-		}
+class GroupNode extends Root {
 
-		$this->UpdatePath();
+	/**
+	*  Constructor.
+	*  @param object parentObj
+	*/
+
+	function GroupNode($parentObj) {
+
+		parent::Root($parentObj);
 	}
+
+	/**
+	*  Calls to method for adding a new Group in the database.
+	*  @param string name
+	*  @param int parentID
+	*  @param int nodeTypeID
+	*  @param int stateID
+	*  @return unknown
+	*/
+
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null)	{
+
+		$grupo = new Group($this->parent->get('IdNode'));
+		$grupo -> CreateNewGroup($name, $this->parent->get('IdNode'));
+		$this->updatePath();
+	}
+
+	/**
+	*  Calls to method for deleting.
+	*  @return unknown
+	*/
 
 	function DeleteNode() {
 
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
-
-		$pipeProcess = new PipeProcess();
-		$pipeProcess->loadByName('workflow');
-
-		$pipeProcess->removeStatus($pipeStatus->get('id'));
+	 	$grupo = new Group($this->parent->get('IdNode'));
+		$grupo->DeleteGroup();
 	}
 
-	function RenameNode($name) {
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
-		$pipeStatus->set('Name', $name);
-		$pipeStatus->update();
-		$this->UpdatePath();
-	}
+	/**
+	*  Checks whether the Group belongs to GeneralGroup.
+	*  @return bool
+	*/
 
 	function CanDenyDeletion() {
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
 
-		$pipeProcess = new PipeProcess();
-		$pipeProcess->loadByName('workflow');
-
-		$idStatus = $pipeStatus->get('id');
-
-		if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
-			$this->messages->add(_('No se pueden eliminar los estados primero y último del workflow'), MSG_TYPE_ERROR);
-			XMD_Log::warning('Imposible eliminar estado primero y último de workflow');
-			return true;
-		}
-
-		return false;
+		$group = new Group();
+		return ($this->parent->get('IdNode') == $group->GetGeneralGroup());
 	}
 
-	function GetDependencies() {
-		$sql ="SELECT DISTINCT IdNode FROM Nodes WHERE IdState='".$this->nodeID."'";
-		$this->dbObj->Query($sql);
+	/**
+	*  Calls to method for updating the Name on the database.
+	*  @param string name
+	*  @return unknown
+	*/
 
-		$deps = array();
+	function RenameNode($name = null) 	{
 
-		while(!$this->dbObj->EOF) {
-			$deps[] = $this->dbObj->row["IdNode"];
-			$this->dbObj->Next();
-		}
-    	return $deps;
+		$grupo = new Group($this->parent->get('IdNode'));
+		$grupo->SetGroupName($name);
+		$this->updatePath();
 	}
 }
-
 ?>

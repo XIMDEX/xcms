@@ -32,7 +32,7 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Nodes_ORM.class.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/group.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
-include_once XIMDEX_ROOT_PATH . '/inc/nodetypes/sectionnode.inc';
+include_once XIMDEX_ROOT_PATH . '/inc/nodetypes/sectionnode.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
@@ -120,9 +120,9 @@ class	Node extends Nodes_ORM{
 				$nodeTypeClass = $this->nodeType->get('Class');
 				$nodeTypeModule = $this->nodeType->get('Module');
 				if (!empty($nodeTypeModule)) {
-					$fileToInclude = sprintf('%s%s/inc/nodetypes/%s.inc', XIMDEX_ROOT_PATH,ModulesManager::path($nodeTypeModule) , strtolower($nodeTypeClass));
+					$fileToInclude = sprintf('%s%s/inc/nodetypes/%s.php', XIMDEX_ROOT_PATH,ModulesManager::path($nodeTypeModule) , strtolower($nodeTypeClass));
 				} else {
-					$fileToInclude = sprintf('%s/inc/nodetypes/%s.inc', XIMDEX_ROOT_PATH, strtolower($nodeTypeClass));
+					$fileToInclude = sprintf('%s/inc/nodetypes/%s.php', XIMDEX_ROOT_PATH, strtolower($nodeTypeClass));
 				}
 				if (is_file($fileToInclude)) {
 					include_once($fileToInclude);

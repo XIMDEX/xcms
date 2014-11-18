@@ -37,54 +37,42 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/language.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+include_once XIMDEX_ROOT_PATH . "/inc/model/action.php";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
-*  @brief Handles the languages in wich could be written the documents.
+*  @brief Handles the Ximdex actions.
 */
 
-class LanguageNode extends Root {
+class ActionNode extends Root {
 
 	/**
-	*  Calls for add a row to Languages table.
+	*  Calls to method for adding a row to Actions table.
 	*  @param string name
 	*  @param int parentID
 	*  @param int nodeTypeID
 	*  @param int stateID
-	*  @param string isoname
+	*  @param string command
+	*  @param string icon
 	*  @param string description
-	*  @param int enabled
 	*  @return unknown
 	*/
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null) {
 
-		$language = new Language();
-		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $command = null, $icon = null, $description = null) {
 
-		if ($result > 0) {
-			$this->parent->messages->add(_('The ISO code entered is already assigned to another language'), MSG_TYPE_ERROR);
-			$this->parent->delete();
-			return NULL;
-		}
-
-  		$language = new Language();
-  		$ret = $language->CreateLanguage($name, $isoname, $description, $enabled,$this->parent->get('IdNode'));
-
+		$action = new Action();
+		$action->CreateNewAction($this->parent->get('IdNode'), $parentID, $name, $command, $icon, $description, $stateID);
 		$this->UpdatePath();
-		return $ret;
 	}
 
 	/**
-	*  Deletes the Language and its dependencies.
-	*  @return unknown
+	*  Does nothing.
+	*  @return null
 	*/
-	function DeleteNode() {
-	 	$language = new Language($this->parent->get('IdNode'));
-		$language->DeleteLanguage();
 
-		$nodeProperty = new NodeProperty();
-		$nodeProperty->cleanUpPropertyValue('language', $this->parent->get('IdNode'));
+	function RenderizeNode() {
+
+		return null;
 	}
 
 	/**
@@ -92,26 +80,23 @@ class LanguageNode extends Root {
 	*  @param string name
 	*  @return unknown
 	*/
+
 	function RenameNode($name = null) {
-		$lang = new Language($this->parent->get('IdNode'));
-		$lang->SetName($name);
+
+	 	$action = new Action($this->nodeID);
+		$action->SetName($name);
 		$this->UpdatePath();
 	}
 
 	/**
-	*  Gets the documents which have been written in the language.
-	*  @return array
+	*  Calls to method for deleting.
+	*  @return unknown
 	*/
-	function GetDependencies() {
-		$sql ="SELECT DISTINCT IdDoc FROM StructuredDocuments WHERE IdLanguage='".$this->parent->get('IdNode')."'";
-		$this->dbObj->Query($sql);
 
-		$deps = array();
-		while(!$this->dbObj->EOF) {
-			$deps[] = $this->dbObj->row["IdDoc"];
-			$this->dbObj->Next();
-		}
-    	return $deps;
+	function DeleteNode() {
+
+	 	$action = new Action($this->nodeID);
+		$action->DeleteAction();
 	}
 }
 ?>

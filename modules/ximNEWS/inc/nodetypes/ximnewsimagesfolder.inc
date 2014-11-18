@@ -22,7 +22,7 @@
  *                                                                            *
  *                                                                            *
  ******************************************************************************/
-ModulesManager::file('/inc/nodetypes/foldernode.inc');
+ModulesManager::file('/inc/nodetypes/foldernode.php');
 
 /**
 *   @brief Handles folders of images for purpose of its use on the ximNEWS browser.
@@ -132,7 +132,7 @@ class XimNewsImagesFolder extends FolderNode {
 
 	/**
 		@deprecated
-	   Devuelve html con los thumbnails del lote de imágenes para el browser
+	   Devuelve html con los thumbnails del lote de imï¿½genes para el browser
 	 */
 
 	function getThumbnails($flag, $scale) {

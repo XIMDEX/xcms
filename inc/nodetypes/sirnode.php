@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 /******************************************************************************
  *  Ximdex a Semantic Content Management System (CMS)    							*
@@ -37,59 +37,34 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-/**
-*  @brief Manages the NodeTypes as ximDEX Nodes.
-*/
+class SirNode extends Root {
 
-class NodeTypeNode extends Root {
-
-	/**
-	*  Does nothing.
-	*  @return null
-	*/
-
-	function RenderizeNode() {
-
+	/// Renderiza el nodo
+	function RenderizeNode()
+		{
 		return null;
+		}
+/*
+	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null)
+		{
+		$grupo = new Group($this -> $dbObj->newID);
+		$grupo -> CreateNewGroup($name, $this->dbObj->newID);
+		}
+	
+	function DeleteNode()
+		{
+	 	$grupo = new Group($this->nodeID);
+		$grupo->DeleteGroup();
+		}
+		
+	function RenameNode($name)
+		{
+	 	$grupo = new Group($this->nodeID);
+		$grupo->SetGroupName($name);
+		}
+		*/
 	}
 
-	/**
-	*  Calls to method for adding a row to Actions table.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string icon
-	*  @param int isRenderizable
-	*  @param int hasFSEntity
-	*  @param int canAttachGroups
-	*  @param int isContentNode
-	*  @param string description
-	*  @param string class
-	*  @return unknown
-	*/
-
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null) {
-
-		$nodeType = new NodeType();
-  		$nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
-			$description, $class, $this->parent->get('IdNode'));
-
-		$this->UpdatePath();
-	}
-
-	/**
-	*  Calls to method for deleting.
-	*  @return unknown
-	*/
-
-	function DeleteNode() {
-
-	 	$ntype = new NodeType($this->nodeID);
-		$ntype->DeleteNodeType();
-	}
-}
 ?>

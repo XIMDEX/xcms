@@ -27,7 +27,7 @@
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PreviewInServer.class.php');
-ModulesManager::file('/inc/nodetypes/xsltnode.inc');
+ModulesManager::file('/inc/nodetypes/xsltnode.php');
 ModulesManager::file('/inc/http/Curl.class.php');
 ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
 ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');

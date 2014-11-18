@@ -25,7 +25,7 @@
  ******************************************************************************/
 
 
-ModulesManager::file('/inc/nodetypes/structureddocument.inc');
+ModulesManager::file('/inc/nodetypes/structureddocument.php');
 ModulesManager::file('/inc/model/XimNewsNews.inc', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsArea.php', 'ximNEWS');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');

@@ -56,7 +56,7 @@ ModulesManager::file("/inc/model/language.php");
 ModulesManager::file("/inc/model/node.php");
 ModulesManager::file("/inc/model/nodetype.php");
 ModulesManager::file("/inc/model/action.php");
-ModulesManager::file("/inc/model/structureddocument.inc");
+ModulesManager::file("/inc/model/structureddocument.php");
 ModulesManager::file("/inc/log/XMD_log.class.php");
 ModulesManager::file("/inc/log/Action_log.class.php");
 ModulesManager::file("/inc/persistence/XSession.class.php");

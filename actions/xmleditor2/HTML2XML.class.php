@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/nodetypes/xsltnode.inc');
+ModulesManager::file('/inc/nodetypes/xsltnode.php');
 
 class HTML2XML {
 

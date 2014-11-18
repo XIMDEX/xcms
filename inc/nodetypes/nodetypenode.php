@@ -37,76 +37,59 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/Pipeline.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-class workflow_process extends Root {
+/**
+*  @brief Manages the NodeTypes as ximDEX Nodes.
+*/
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null) {
-		$pipeline = new Pipeline();
-		$pipeline->set('Pipeline', $name);
-		$pipeline->set('IdNode', $this->parent->get('IdNode'));
-		$pipeline->add();
+class NodeTypeNode extends Root {
 
-		$pipeline->initialize();
+	/**
+	*  Does nothing.
+	*  @return null
+	*/
 
-		if ($pipeline->messages->count() > 0) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-		}
+	function RenderizeNode() {
+
+		return null;
+	}
+
+	/**
+	*  Calls to method for adding a row to Actions table.
+	*  @param string name
+	*  @param int parentID
+	*  @param int nodeTypeID
+	*  @param int stateID
+	*  @param string icon
+	*  @param int isRenderizable
+	*  @param int hasFSEntity
+	*  @param int canAttachGroups
+	*  @param int isContentNode
+	*  @param string description
+	*  @param string class
+	*  @return unknown
+	*/
+
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null) {
+
+		$nodeType = new NodeType();
+  		$nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
+			$description, $class, $this->parent->get('IdNode'));
 
 		$this->UpdatePath();
 	}
+
+	/**
+	*  Calls to method for deleting.
+	*  @return unknown
+	*/
 
 	function DeleteNode() {
-		$pipeline = new Pipeline();
-		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
-		if (!$result) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-			return false;
-		}
 
-		return $pipeline->delete();
-	}
-
-	function RenameNode($name = null) {
-		$pipeline = new Pipeline();
-		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
-		if (!$result) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-		}
-
-		$pipeline->set('Name', $name);
-		$ret = $pipeline->update();
-		$this->UpdatePath();
-
-		return $ret;
-	}
-
-	function GetDependencies() {
-		$pipeline = new Pipeline();
-		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
-		if (!$result) {
-			$this->parent->messages->mergeMessages($pipeline->messages->messages);
-		}
-
-		$allStatus = array();
-		while ($process = $pipeline->processes->next()) {
-			while ($transition = $process->transitions->next()) {
-				$allStatus[] = $transition->get('IdStatusFrom');
-				$allStatus[] = $transition->get('IdStatusTo');
-			}
-		}
-
-		$node = new Node();
-		$dependencies = array();
-		foreach ($allStatus as $idStatus) {
-			$result = $node->find('IdNode', 'IdStatus = %s', array($idStatus));
-			array_merge($dependencies, $result);
-		}
-
-		return $dependencies;
+	 	$ntype = new NodeType($this->nodeID);
+		$ntype->DeleteNodeType();
 	}
 }
-
 ?>

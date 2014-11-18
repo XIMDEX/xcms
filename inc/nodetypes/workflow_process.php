@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /******************************************************************************
  *  Ximdex a Semantic Content Management System (CMS)    							*
@@ -37,34 +37,76 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/Pipeline.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
+require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-class SirNode extends Root {
+class workflow_process extends Root {
 
-	/// Renderiza el nodo
-	function RenderizeNode()
-		{
-		return null;
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null) {
+		$pipeline = new Pipeline();
+		$pipeline->set('Pipeline', $name);
+		$pipeline->set('IdNode', $this->parent->get('IdNode'));
+		$pipeline->add();
+
+		$pipeline->initialize();
+
+		if ($pipeline->messages->count() > 0) {
+			$this->parent->messages->mergeMessages($pipeline->messages->messages);
 		}
-/*
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null)
-		{
-		$grupo = new Group($this -> $dbObj->newID);
-		$grupo -> CreateNewGroup($name, $this->dbObj->newID);
-		}
-	
-	function DeleteNode()
-		{
-	 	$grupo = new Group($this->nodeID);
-		$grupo->DeleteGroup();
-		}
-		
-	function RenameNode($name)
-		{
-	 	$grupo = new Group($this->nodeID);
-		$grupo->SetGroupName($name);
-		}
-		*/
+
+		$this->UpdatePath();
 	}
+
+	function DeleteNode() {
+		$pipeline = new Pipeline();
+		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
+		if (!$result) {
+			$this->parent->messages->mergeMessages($pipeline->messages->messages);
+			return false;
+		}
+
+		return $pipeline->delete();
+	}
+
+	function RenameNode($name = null) {
+		$pipeline = new Pipeline();
+		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
+		if (!$result) {
+			$this->parent->messages->mergeMessages($pipeline->messages->messages);
+		}
+
+		$pipeline->set('Name', $name);
+		$ret = $pipeline->update();
+		$this->UpdatePath();
+
+		return $ret;
+	}
+
+	function GetDependencies() {
+		$pipeline = new Pipeline();
+		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
+		if (!$result) {
+			$this->parent->messages->mergeMessages($pipeline->messages->messages);
+		}
+
+		$allStatus = array();
+		while ($process = $pipeline->processes->next()) {
+			while ($transition = $process->transitions->next()) {
+				$allStatus[] = $transition->get('IdStatusFrom');
+				$allStatus[] = $transition->get('IdStatusTo');
+			}
+		}
+
+		$node = new Node();
+		$dependencies = array();
+		foreach ($allStatus as $idStatus) {
+			$result = $node->find('IdNode', 'IdStatus = %s', array($idStatus));
+			array_merge($dependencies, $result);
+		}
+
+		return $dependencies;
+	}
+}
 
 ?>
