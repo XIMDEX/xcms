@@ -25,7 +25,7 @@
  */
 
 ModulesManager::file('/conf/install-params.conf.php');
-ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/locale.php');
 
 class Action_createuser extends ActionAbstract {
     // Main method: shows main init form
