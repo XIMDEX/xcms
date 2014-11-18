@@ -19,7 +19,10 @@
         "phpunit/phpunit": "3.7.21",
         "mockery/mockery": "0.8.0",
         "monolog/monolog": "1.11.0",
-        "codemirror/Codemirror": "4.7.0"
+        "codemirror/Codemirror": "4.7.0",
+        "stolz/assets": "dev-master",
+        "werkint/jsmin": "dev-master"
+
     },
 
     "autoload": {

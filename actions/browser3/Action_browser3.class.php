@@ -25,7 +25,7 @@
  */
 
 
-ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/search/QueryProcessor.class.php');
 ModulesManager::file('/inc/xvfs/XVFS.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');

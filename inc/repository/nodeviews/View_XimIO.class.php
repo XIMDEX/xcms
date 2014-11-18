@@ -26,7 +26,7 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -36,7 +36,7 @@ class View_XimIO extends Abstract_View implements Interface_View {
 		$content = $this->retrieveContent($pointer);
 		$version = new Version($idVersion);
 		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("No se ha encontrado la versión ($idVersion) solicitada");
+			XMD_Log::error("No se ha encontrado la versiï¿½n ($idVersion) solicitada");
 			return NULL;
 		}
 		$idNode = $version->get('IdNode');

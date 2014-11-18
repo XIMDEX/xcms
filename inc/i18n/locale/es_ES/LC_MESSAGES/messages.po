@@ -5007,39 +5007,39 @@ msgstr "No se ha encontrado la acci&oacute;n pedida."
 msgid "The action %s cannot be executed on the selected node"
 msgstr "No es posible ejecutar la acci&oacute;n %s sobre el nodo seleccionado"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "User does not exist"
 msgstr "No existe el usuario"
 
 msgid "An user with this login already exists"
 msgstr "Ya existe un usuario con ese login"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Arguments missing"
 msgstr "Faltan argumentos"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Alguna de las vinculaciones con sus grupos no pudo ser eliminada"
 
-#: inc/sync/synchro.inc
-#: /inc/model/user.inc
-#: /inc/model/node.inc
+#: inc/sync/synchro.php
+#: /inc/model/user.php
+#: /inc/model/node.php
 #: /inc/model/action.php
 #: /inc/model/channel.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
-#: /inc/model/nodetype.inc
-#: /inc/model/permissions.inc
-#: /inc/model/role.inc
+#: /inc/model/locale.php
+#: /inc/model/nodetype.php
+#: /inc/model/permissions.php
+#: /inc/model/role.php
 msgid "Database connection error"
 msgstr "Error de conexi&oacute;n con la base de datos"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Error in associated object"
 msgstr "Error en objeto asociado"
 
@@ -5164,7 +5164,7 @@ msgstr "No se ha podido crear la carpeta temporal %s"
 msgid "Specified file could not be found"
 msgstr "No se ha podido encontrar el archivo especificado"
 
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "The nodetype does not exist"
 msgstr "No existe el tipo de nodo"
 
@@ -5347,7 +5347,7 @@ msgstr "No existe el idioma"
 msgid "A language with this name already exists"
 msgstr "Ya existe un lenguaje con ese nombre"
 
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Locale does not exist"
 msgstr "No existe Locale"
 
@@ -5364,18 +5364,18 @@ msgstr "A&ntilde;adiendo nodeproperty"
 msgid "Param nodeId is mandatory"
 msgstr "El par&aacute;metro nodeId es obligatorio"
 
-#: /inc/model/nodetype.inc
+#: /inc/model/nodetype.php
 msgid "Nodetype does not exist"
 msgstr "No existe el tipo de nodo"
 
-#: /inc/model/permissions.inc
+#: /inc/model/permissions.php
 msgid "Permit does not exist"
 msgstr "No existe el permiso"
 
 msgid "Not initialized object"
 msgstr "Objeto sin inicializar"
 
-#: /inc/model/role.inc
+#: /inc/model/role.php
 msgid "Role does not exist"
 msgstr "No existe el rol"
 
@@ -5469,13 +5469,13 @@ msgstr "No se permite ning&uacute;n tipo de nodo en %s"
 msgid "Error inserting information about relnewscolector relation (BaseIORelations)"
 msgstr "Error al insertar la informaci&oacute;n sobre la relaci&oacute;n relnewscolector (BaseIORelations)"
 
-#: /inc/sync/synchro.inc
-#: inc/model/node.inc
+#: /inc/sync/synchro.php
+#: inc/model/node.php
 msgid "The node does not exist"
 msgstr "No existe el nodo"
 
-#: /inc/sync/synchro.inc
-#: /inc/model/node.inc
+#: /inc/sync/synchro.php
+#: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr "Error accediendo al sistema de archivos"
 
@@ -5532,7 +5532,7 @@ msgid "No deletion in table %s - server %s"
 msgstr "Sin borrado de frames en la tabla %s - servidor %s"
 
 #: /inc/sync/SynchroFacade.class.php
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 msgid "Void node"
 msgstr "Nodo vac&iacute;o"
 

@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/helper/Messages.class.php');
 ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 

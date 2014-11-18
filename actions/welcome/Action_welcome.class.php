@@ -20,8 +20,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
@@ -29,26 +29,28 @@ ModulesManager::file("/services/ProjectService.class.php");
 ModulesManager::file("/actions/browser3/Action_browser3.class.php");
 
 
-class Action_welcome extends ActionAbstract {
+class Action_welcome extends ActionAbstract
+{
     // Main method: shows the initial form
-    function index () {
-		$values=array();
-		if ($_REQUEST['actionReload'] != 'true'){
-            if($this->tourEnabled(XSession::get("userID"), "welcome")){
-                $values[] = $this->addJs('/resources/js/start_tour.js','ximTOUR');
+    function index()
+    {
+        $values = array();
+        if ( !isset($_REQUEST['actionReload']) || $_REQUEST['actionReload'] != 'true') {
+            if ($this->tourEnabled(XSession::get("userID"), "welcome")) {
+                $values[] = $this->addJs('/resources/js/start_tour.js', 'ximTOUR');
             }
-            if (ModulesManager::isEnabled('ximTOUR')){
+            if (ModulesManager::isEnabled('ximTOUR')) {
                 $values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
-                $values[] = $this->addJs('/resources/js/tour.js','ximTOUR');
+                $values[] = $this->addJs('/resources/js/tour.js', 'ximTOUR');
             }
             $this->addJs('/actions/welcome/resources/js/index.js');
             $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
 
-		$user = new User(XSession::get("userID"));
+        $user = new User(XSession::get("userID"));
 
 
-	    //Getting idaction to check Create new project permissions for user
+        //Getting idaction to check Create new project permissions for user
         $user = new User(XSession::get("userID"));
         $idNodeRoot = 10000;
         $action = new Action();
@@ -56,10 +58,10 @@ class Action_welcome extends ActionAbstract {
         $permissionsToCreateProject = $user->isAllowedAction($idNodeRoot, $action->get("IdAction"));
 
         $values["permissionsToCreateProject"] = $permissionsToCreateProject;
-        $values["projects_info"]=ProjectService::getProjectsInfo();
-        $values["user"]=XSession::get("user_name");
-        $values["docs"]=$user->getLastestDocs();
-	    $this->render($values, "index.tpl", 'default-3.0.tpl');
-	}
+        $values["projects_info"] = ProjectService::getProjectsInfo();
+        $values["user"] = XSession::get("user_name");
+        $values["docs"] = $user->getLastestDocs();
+        $this->render($values, "index.tpl", 'default-3.0.tpl');
+    }
 }
-?>
+

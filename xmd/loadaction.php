@@ -27,6 +27,7 @@
 
 include_once '../bootstrap/start.php';
 
+
 //General class
 include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file('/inc/utils.php');
@@ -52,3 +53,4 @@ I18N::setup($locale);
 // FrontController dipatches HTTP requests
 $frontController = new FrontController();
 $frontController->dispatch();
+

@@ -31,7 +31,7 @@ ModulesManager::file('/inc/mvc/Request.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/model/NodeEdition.class.php');
 
 

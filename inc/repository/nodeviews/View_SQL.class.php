@@ -34,7 +34,7 @@ require_once(XIMDEX_ROOT_PATH . "/inc/patterns/Factory.class.php");
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelStrDocChannels.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 

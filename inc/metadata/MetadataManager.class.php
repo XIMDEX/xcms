@@ -34,7 +34,7 @@ ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/channel.php');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/node.php');
 
 /***
     Class for Metadata Manegement
@@ -455,7 +455,7 @@ class MetadataManager{
                     $rnvmv->set('idMetadataVersion',$idMetadataVersion);
                     $res2 = $rnvmv->add();
                     if($res<0){
-                        XMD_Log::error("Relation between versions of nodes [".$nodes['nv']." - ".$nodes['mv']."] not added.");
+                        XMD_Log::error("Relation between versions of nodes [".$nodes['nv']." - ".$nodes['mv']."] not added." );
                     }
                 }
             }

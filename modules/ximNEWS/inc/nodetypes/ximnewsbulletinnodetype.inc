@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/nodetypes/structureddocument.inc');
+ModulesManager::file('/inc/nodetypes/structureddocument.php');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/Automatic.class.php', 'ximNEWS');
 ModulesManager::file('/inc/mail/MailRenderer.class.php');
@@ -275,7 +275,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 				$subversion = $relNewsColector->get('SubVersion');
 				$cacheId = $relNewsColector->get('IdCache');
 			} else {
-				XMD_Log::info('Sin relación en la base de datos');
+				XMD_Log::info('Sin relaciï¿½n en la base de datos');
 				continue;
 			}
 
@@ -346,7 +346,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 			$relNewsBulletin->add($this->parent->get('IdNode'), $newID, $colectorID);
 		}
 
-		//rellenamos el boletín
+		//rellenamos el boletï¿½n
 
 		$header = ximNEWS_Adapter::getBulletinHeader($data, $bulletinPvd);
 

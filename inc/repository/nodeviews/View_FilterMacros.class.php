@@ -27,8 +27,8 @@
 
 
 
-ModulesManager::file('/inc/model/Versions.inc');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/Versions.php');
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/model/channel.php');
 ModulesManager::file('/inc/model/Server.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');

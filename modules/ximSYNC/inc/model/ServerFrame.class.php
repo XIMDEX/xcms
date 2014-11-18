@@ -32,7 +32,7 @@ ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_UnpublishOTF.class.php');
-ModulesManager::file('/inc/persistence/datafactory.inc');
+ModulesManager::file('/inc/persistence/datafactory.php');
 ModulesManager::file('/inc/log/XMD_log.class.php');
 ModulesManager::file('/inc/xml/XmlBase.class.php');
 ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC'); 
