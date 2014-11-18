@@ -86,8 +86,7 @@ class ModulesManager
     {
         $config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . MODULES_INSTALL_PARAMS);
 
-        $modMan = new ModulesManager();
-        $modules = $modMan->getModules();
+        $modules = self::getModules();
         $str = "<?php\n\n";
         foreach ($modules as $mod) {
             $str .= PRE_DEFINE_MODULE . strtoupper($mod["name"]) . POST_PATH_DEFINE_MODULE . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
@@ -103,10 +102,14 @@ class ModulesManager
 
         // Init stuff.
         $this->caller = $caller;
-        //$this->modules = $this->getModules();
     }
 
-    function parseModules($constModule, &$modules)
+    /**
+     * @param $constModule
+     * @param $modules
+     */
+
+    public static function parseModules($constModule, &$modules)
     {
         $paths = FsUtils::readFolder($constModule, false/*, $excluded = array()*/);
         if ($paths) {
@@ -140,7 +143,7 @@ class ModulesManager
         }
     }
 
-    function getModules()
+    public static function getModules()
     {
         $modules = array();
         self::parseModules(XIMDEX_MODULES_DIR, $modules);
