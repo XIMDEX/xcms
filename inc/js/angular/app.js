@@ -28,7 +28,8 @@ angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximd
 angular.module('ximdex.vendor', ['ngAnimate', 'blueimp.fileupload', 'flow', 'ui.bootstrap']);
 angular.module('ximdex.module', ['ximdex.module.xlyre', 'ximdex.module.xtags',
     'ximdex.module.xmodifyusergroups', "ximdex.module.xmodifystates",
-    "ximdex.module.xmodifystatesrole", "ximdex.module.xsetextensions"]);
+    "ximdex.module.xmodifystatesrole", "ximdex.module.xsetextensions",
+    'ximdex.module.xmodifygroupusers']);
 
 angular.module('ximdex.common', ['ximdex.common.service', 'ximdex.common.directive', 'ximdex.common.filter']);
 angular.module('ximdex.main', ['ximdex.main.controller']);
@@ -45,6 +46,7 @@ angular.module('ximdex.main.controller', []);
 angular.module('ximdex.module.xlyre', []);
 angular.module('ximdex.module.xtags', []);
 angular.module('ximdex.module.xmodifyusergroups',[]);
+angular.module('ximdex.module.xmodifygroupusers',[]);
 
 //Configure interpolation symbols to work in smarty templates
 angular.module('ximdex')

@@ -56,7 +56,7 @@ div.separator:hover{
 
 div.separator button{
     position: relative;
-    top: -0.8em;
+    top: -0.6em;
     left: -2.4em;
     visibility: hidden;
     cursor: pointer;

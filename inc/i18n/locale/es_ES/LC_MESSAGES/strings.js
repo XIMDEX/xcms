@@ -5,8 +5,11 @@ X.i18nStrings = {
 				"accept": "Aceptar",
 				"cancel": "Cancelar",
 				"save": "Guardar"
-			}	
-		}, 
+			},
+            "messages": {
+                "you_are_going_to_delete_this_association,_do_you_want_to_continue?": "Se va a eliminar esta asociación, desea continuar?"
+            }
+		},
 		"search": {
 			"filter_by": "Filtrar por", 
 			"sort_by": "Ordenar por"

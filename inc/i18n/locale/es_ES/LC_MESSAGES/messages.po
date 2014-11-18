@@ -10010,3 +10010,15 @@ msgstr "Modificar extensiones permitidas"
 
 msgid "selection"
 msgstr "selección"
+
+msgid "Available users"
+msgstr "Usuarios disponibles"
+
+msgid "The next users belongs to the group"
+msgstr "Los siguientes ususarios pertenecen al grupo"
+
+msgid "available users to be associated with the group"
+msgstr "usuarios disponibles para ser asociados al grupo"
+
+msgid "There are no users associated with this group yet"
+msgstr "Aún no hay usuarios asociados con este grupo"

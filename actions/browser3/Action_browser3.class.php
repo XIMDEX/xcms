@@ -149,6 +149,7 @@ class Action_browser3 extends ActionAbstract {
 		$this->addJs('/inc/js/angular/filters/xFilters.js');
 		$this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
+        $this->addJs('/inc/js/angular/controllers/XModifyGroupUsersCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
         $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');

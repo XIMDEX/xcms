@@ -20,12 +20,12 @@ angular.module("ximdex.module.xmodifystates", ["ui.sortable", 'ngAnimate']).cont
         name: "",
         description: ""
       };
-      return $scope.all_status_info.splice(index + 1, 0, n);
+      $scope.all_status_info.splice(index + 1, 0, n);
     };
     $scope.deleteStatus = function(index) {
-      return $scope.toDelete.push($scope.all_status_info.splice(index, 1)[0]);
+      $scope.toDelete.push($scope.all_status_info.splice(index, 1)[0]);
     };
-    return $scope.saveChanges = function() {
+    $scope.saveChanges = function() {
       var petition;
       $scope.loading = true;
       petition = $http.post(url, {
@@ -44,16 +44,16 @@ angular.module("ximdex.module.xmodifystates", ["ui.sortable", 'ngAnimate']).cont
           $scope.messageClass = data.result === "ok" ? "message-success" : "message-error";
           $scope.thereAreMessages = true;
           $scope.message = data.message;
-          return $timeout(function() {
+          $timeout(function() {
             $scope.thereAreMessages = false;
-            return $timeout(function() {
-              return $scope.message = "";
+            $timeout(function() {
+              $scope.message = "";
             }, 500);
           }, 2000);
         }
       });
-      return petition.error(function(data, status, headers, config) {
-        return $scope.loading = false;
+      petition.error(function(data, status, headers, config) {
+        $scope.loading = false;
       });
     };
   }

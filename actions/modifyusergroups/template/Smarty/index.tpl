@@ -23,20 +23,10 @@
  *  @version $Revision$
  *}
 
-<form ng-controller="XModifyUserGroupsCtrl" ng-init="init({$id_node})" method="post" action="{$action_url}" class="form_group_user">
-
-    <script type="text/ng-template" id="XModifyUserGroupsModal.html">
-        <div class="modal-header">
-            <h3 class="modal-title">{t}Are you sure to continue?{/t}</h3>
-        </div>
-        <div class="modal-body">
-            <p>{t}This association will be deleted{/t}</p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok()">{t}OK{/t}</button>
-            <button class="btn btn-warning" ng-click="cancel()">{t}Cancel{/t}</button>
-        </div>
-    </script>
+<form ng-controller="XModifyUserGroupsCtrl"
+      ng-init='nodeid={$id_node}; user_name="{$user_name}"; general_role={$general_role}; all_roles={$all_roles};
+      filtered_groups={$filtered_groups}; user_groups_with_role={$user_groups_with_role}; init();'
+      method="post" action="{$action_url}" class="form_group_user">
 
     <div class="action_header">
         <h2>{t}Manage groups{/t}</h2>

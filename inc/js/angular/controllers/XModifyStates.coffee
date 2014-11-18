@@ -24,10 +24,12 @@ angular.module("ximdex.module.xmodifystates", ["ui.sortable", 'ngAnimate']).cont
                 name: ""
                 description: ""
             $scope.all_status_info.splice index + 1, 0, n
+            return
 
         #Delete a state
         $scope.deleteStatus = (index) ->
             $scope.toDelete.push $scope.all_status_info.splice(index, 1)[0]
+            return
 
         $scope.saveChanges = () ->
             $scope.loading = true
@@ -51,12 +53,19 @@ angular.module("ximdex.module.xmodifystates", ["ui.sortable", 'ngAnimate']).cont
                             $timeout(
                                 ->
                                     $scope.message = ""
+                                    return
                             ,
                                 500
                             )
+                            return
                     ,
                         2000
                     )
+                return
+
             petition.error (data, status, headers, config) ->
                 $scope.loading = false
+                return
+            return
+        return
 ]

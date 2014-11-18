@@ -24,8 +24,7 @@
  */
 
 
-function update_form_action(method) {
-	var action = $('#muged_form').attr('action');
+X.actionLoaded(function(event, fn, params) {
+    X.angularTools.initView(params.context, params.tabId);
+});
 
-	$('#muged_form').attr('action', action + '&method=' + method);
-}
