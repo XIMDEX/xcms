@@ -92,4 +92,3 @@ class NodeTypeNode extends Root {
 		$ntype->DeleteNodeType();
 	}
 }
-?>

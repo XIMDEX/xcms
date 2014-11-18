@@ -63,5 +63,4 @@ class UserNode extends Root {
 		$user->DeleteUser();
 	}
 }
-
-?>
+ 

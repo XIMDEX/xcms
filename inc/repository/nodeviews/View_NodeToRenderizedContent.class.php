@@ -230,5 +230,4 @@ class View_NodeToRenderizedContent extends Abstract_View implements Interface_Vi
 
 		return true;
 	}
-}
-?>
+} 

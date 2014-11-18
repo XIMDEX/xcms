@@ -100,4 +100,3 @@ class RoleNode extends Root {
     	return $deps;
 	}
 }
-?>
