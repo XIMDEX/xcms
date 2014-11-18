@@ -32,7 +32,7 @@ ModulesManager::file("/formpdf/latex/latex_style.class.php", 'filters');
 ModulesManager::file("/formpdf/parser/parser_root.class.php", 'filters');
 ModulesManager::file("/inc/fsutils/FsUtils.class.php");
 ModulesManager::file("/inc/xml/XmlParser.class.php");
-ModulesManager::file("/inc/persistence/datafactory.inc");
+ModulesManager::file("/inc/persistence/datafactory.php");
 
 class Style extends ParserRoot {
 	var $nodes;

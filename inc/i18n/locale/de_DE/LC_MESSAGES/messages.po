@@ -4670,7 +4670,7 @@ msgstr "Fehlen von Argumenten"
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Einige der Verbindungen mit Ihren Gruppen konnten nicht gel&ouml;scht werden"
 
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 #: /inc/model/user.php
 #: /inc/model/node.php
 #: /inc/model/action.php
@@ -5114,12 +5114,12 @@ msgstr "Kein Knotentyp erlaubt in %s"
 msgid "Error inserting information about relnewscolector relation (BaseIORelations)"
 msgstr "Fehler beim Eingeben der Information zur relnewscolector Verbindung (BaseIORelations)"
 
-#: /inc/sync/synchro.inc
+#: /inc/sync/synchro.php
 #: inc/model/node.php
 msgid "The node does not exist"
 msgstr "Knoten existiert nicht"
 
-#: /inc/sync/synchro.inc
+#: /inc/sync/synchro.php
 #: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr "Fehler beim Zugreifen auf Dateisystem"
@@ -5177,7 +5177,7 @@ msgid "No deletion in table %s - server %s"
 msgstr "Kein L&ouml;schen der Frames in der Tabelle %s - Server %s"
 
 #: /inc/sync/SynchroFacade.class.php
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 msgid "Void node"
 msgstr "Leerer Knoten"
 

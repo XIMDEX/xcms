@@ -29,7 +29,7 @@
 define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/synchro.inc');
+ModulesManager::file('/inc/synchro.php');
 
 
 $db = new DB();
