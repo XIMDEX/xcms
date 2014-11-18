@@ -4663,7 +4663,7 @@ msgstr ""
 #: /inc/model/user.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Arguments missing"
 msgstr ""
 
@@ -4678,7 +4678,7 @@ msgstr ""
 #: /inc/model/channel.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 #: /inc/model/nodetype.php
 #: /inc/model/permissions.php
 #: /inc/model/role.php
@@ -4993,7 +4993,7 @@ msgstr ""
 msgid "A language with this name already exists"
 msgstr ""
 
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Locale does not exist"
 msgstr ""
 
