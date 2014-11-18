@@ -4662,7 +4662,7 @@ msgstr "J&aacute; existe um usu&aacute;rio com este login"
 #: /inc/model/user.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Arguments missing"
 msgstr "Faltam argumentos"
 
@@ -4677,7 +4677,7 @@ msgstr "Alguma das conex&otilde;es e os seus grupos n&atilde;o puderam ser elimi
 #: /inc/model/channel.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 #: /inc/model/nodetype.php
 #: /inc/model/permissions.php
 #: /inc/model/role.php
@@ -4992,7 +4992,7 @@ msgstr "O idioma n&atilde;o existe"
 msgid "A language with this name already exists"
 msgstr "J&aacute; existe um idioma com esse nome"
 
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Locale does not exist"
 msgstr "Locale n&atilde;o existente"
 

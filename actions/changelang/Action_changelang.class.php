@@ -25,7 +25,7 @@
  */
 
 
-ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/locale.php');
 class Action_changelang extends ActionAbstract {
    // Main mathod: it shows the init form
     function index() {

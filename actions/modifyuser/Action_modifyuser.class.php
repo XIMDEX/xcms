@@ -25,7 +25,7 @@
  */
 
 ModulesManager::file('/inc/model/orm/RelUsersGroups_ORM.class.php');
-ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/locale.php');
 
 class Action_modifyuser extends ActionAbstract {
     // Main method: it shows init form

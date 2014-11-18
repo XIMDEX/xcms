@@ -4662,7 +4662,7 @@ msgstr "Es existiert bereits ein Benutzer mit diesem Login"
 #: /inc/model/user.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Arguments missing"
 msgstr "Fehlen von Argumenten"
 
@@ -4677,7 +4677,7 @@ msgstr "Einige der Verbindungen mit Ihren Gruppen konnten nicht gel&ouml;scht we
 #: /inc/model/channel.php
 #: /inc/model/group.php
 #: /inc/model/language.php
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 #: /inc/model/nodetype.php
 #: /inc/model/permissions.php
 #: /inc/model/role.php
@@ -4992,7 +4992,7 @@ msgstr "Sprache existiert nicht"
 msgid "A language with this name already exists"
 msgstr "Sprache mit diesem Namen existiert bereits"
 
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Locale does not exist"
 msgstr "Locale exisitiert nicht"
 
