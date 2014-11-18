@@ -1,5 +1,5 @@
 <?php
- 
+
 /******************************************************************************
  *  Ximdex a Semantic Content Management System (CMS)    							*
  *  Copyright (C) 2011  Open Ximdex Evolution SL <dev@ximdex.org>	      *
@@ -37,26 +37,10 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/foldernode.inc";
+include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/structureddocument.php";
 
-/**
-*  @brief Handles the Projects Node.
-*
-*  The Projects Node is the container of all ximDEX projects.
-*/
+class XmlDocumentNode extends AbstractStructuredDocument  {
 
-class Projects extends FolderNode {
+}		
 		
-	/**
-	*  Does nothing.
-	*  @return null
-	*/
-
-	function RenderizeNode() {
-		
-		return null;
-	}
-
-}
-
 ?>

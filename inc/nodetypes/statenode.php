@@ -37,59 +37,72 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
+require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-/**
-*  @brief Manages the NodeTypes as ximDEX Nodes.
-*/
+class StateNode extends Root {
 
-class NodeTypeNode extends Root {
-
-	/**
-	*  Does nothing.
-	*  @return null
-	*/
-
-	function RenderizeNode() {
-
-		return null;
-	}
-
-	/**
-	*  Calls to method for adding a row to Actions table.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string icon
-	*  @param int isRenderizable
-	*  @param int hasFSEntity
-	*  @param int canAttachGroups
-	*  @param int isContentNode
-	*  @param string description
-	*  @param string class
-	*  @return unknown
-	*/
-
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null) {
-
-		$nodeType = new NodeType();
-  		$nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
-			$description, $class, $this->parent->get('IdNode'));
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description='', $idTransition=null) {
+		$currentTransition = new PipeTransition($idTransition);
+		if (!$currentTransition->get('id') > 0) {
+			$this->messages->add(_('No se ha podido encontrar la transacci�n, consulte con su administrador'), MSG_TYPE_ERROR);
+			$this->messages->mergeMessages($currentTransition->messages);
+			return NULL;
+		}
 
 		$this->UpdatePath();
 	}
 
-	/**
-	*  Calls to method for deleting.
-	*  @return unknown
-	*/
-
 	function DeleteNode() {
 
-	 	$ntype = new NodeType($this->nodeID);
-		$ntype->DeleteNodeType();
+		$pipeStatus = new PipeStatus();
+		$pipeStatus->loadByIdNode($this->nodeID);
+
+		$pipeProcess = new PipeProcess();
+		$pipeProcess->loadByName('workflow');
+
+		$pipeProcess->removeStatus($pipeStatus->get('id'));
+	}
+
+	function RenameNode($name) {
+		$pipeStatus = new PipeStatus();
+		$pipeStatus->loadByIdNode($this->nodeID);
+		$pipeStatus->set('Name', $name);
+		$pipeStatus->update();
+		$this->UpdatePath();
+	}
+
+	function CanDenyDeletion() {
+		$pipeStatus = new PipeStatus();
+		$pipeStatus->loadByIdNode($this->nodeID);
+
+		$pipeProcess = new PipeProcess();
+		$pipeProcess->loadByName('workflow');
+
+		$idStatus = $pipeStatus->get('id');
+
+		if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
+			$this->messages->add(_('No se pueden eliminar los estados primero y �ltimo del workflow'), MSG_TYPE_ERROR);
+			XMD_Log::warning('Imposible eliminar estado primero y �ltimo de workflow');
+			return true;
+		}
+
+		return false;
+	}
+
+	function GetDependencies() {
+		$sql ="SELECT DISTINCT IdNode FROM Nodes WHERE IdState='".$this->nodeID."'";
+		$this->dbObj->Query($sql);
+
+		$deps = array();
+
+		while(!$this->dbObj->EOF) {
+			$deps[] = $this->dbObj->row["IdNode"];
+			$this->dbObj->Next();
+		}
+    	return $deps;
 	}
 }
+
 ?>

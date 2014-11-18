@@ -20,15 +20,28 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+require_once(XIMDEX_ROOT_PATH . '/inc/patterns/xObject.class.php');
 
-if (version_compare(PHP_VERSION,'5','>=')) {
-        require(XIMDEX_ROOT_PATH . '/inc/patterns/Overloadable_php5.class.php');
-} else {
-        require(XIMDEX_ROOT_PATH . '/inc/patterns/Overloadable_php4.class.php');
+class Overloadable extends xObject
+{
+    /**
+     * @param $method string
+     * @param $params array
+     * @return mixed
+     */
+
+    function __call($method, $params = array())
+    {
+        if (!method_exists($this, 'call__')) {
+            trigger_error(sprintf(__('Magic method handler call__ not defined in %s', true), get_class($this)), E_USER_ERROR);
+        } else {
+            return $this->call__($method, $params);
+        }
+    }
 }
-?>
+

@@ -37,33 +37,14 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/action.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
-*  @brief Handles the Ximdex actions.
+*  @brief Manages the NodeTypes as ximDEX Nodes.
 */
 
-class ActionNode extends Root {
-
-	/**
-	*  Calls to method for adding a row to Actions table.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string command
-	*  @param string icon
-	*  @param string description
-	*  @return unknown
-	*/
-
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $command = null, $icon = null, $description = null) {
-
-		$action = new Action();
-		$action->CreateNewAction($this->parent->get('IdNode'), $parentID, $name, $command, $icon, $description, $stateID);
-		$this->UpdatePath();
-	}
+class NodeTypeNode extends Root {
 
 	/**
 	*  Does nothing.
@@ -76,15 +57,27 @@ class ActionNode extends Root {
 	}
 
 	/**
-	*  Calls to method for updating the Name on the database.
+	*  Calls to method for adding a row to Actions table.
 	*  @param string name
+	*  @param int parentID
+	*  @param int nodeTypeID
+	*  @param int stateID
+	*  @param string icon
+	*  @param int isRenderizable
+	*  @param int hasFSEntity
+	*  @param int canAttachGroups
+	*  @param int isContentNode
+	*  @param string description
+	*  @param string class
 	*  @return unknown
 	*/
 
-	function RenameNode($name = null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null) {
 
-	 	$action = new Action($this->nodeID);
-		$action->SetName($name);
+		$nodeType = new NodeType();
+  		$nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
+			$description, $class, $this->parent->get('IdNode'));
+
 		$this->UpdatePath();
 	}
 
@@ -95,8 +88,7 @@ class ActionNode extends Root {
 
 	function DeleteNode() {
 
-	 	$action = new Action($this->nodeID);
-		$action->DeleteAction();
+	 	$ntype = new NodeType($this->nodeID);
+		$ntype->DeleteNodeType();
 	}
 }
-?>

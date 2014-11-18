@@ -19,7 +19,7 @@
  * version 3 along with Ximdex (see LICENSE).                                 *
  * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       *
  *                                                                            *
- * @version $Revision: $                                                      *
+ * @version $Revision: $                                                      *  
  *                                                                            *
  *                                                                            *
  ******************************************************************************/
@@ -37,67 +37,76 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/role.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+include_once XIMDEX_ROOT_PATH . "/inc/model/group.php";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
-*  @brief Handles roles.
+*  @brief Handles groups.
+*
+*  Its purpose is to share the permissions of operations with Nodes between different Users.
 */
 
-class RoleNode extends Root {
+class GroupNode extends Root {
 
 	/**
-	*  Does nothing.
-	*  @return null
+	*  Constructor.
+	*  @param object parentObj
 	*/
 
-	function RenderizeNode() {
+	function GroupNode($parentObj) {
 
-		return null;
+		parent::Root($parentObj);
 	}
 
 	/**
-	*  Calls to method for adding a row to Roles table.
+	*  Calls to method for adding a new Group in the database.
 	*  @param string name
 	*  @param int parentID
 	*  @param int nodeTypeID
 	*  @param int stateID
-	*  @param string icon
-	*  @param string description
 	*  @return unknown
 	*/
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon=null, $description=null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null)	{
 
-  		$role = new Role();
-  		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
-		$this->UpdatePath();
+		$grupo = new Group($this->parent->get('IdNode'));
+		$grupo -> CreateNewGroup($name, $this->parent->get('IdNode'));
+		$this->updatePath();
 	}
 
 	/**
-	*  Calls to method for deleting the Role from database.
+	*  Calls to method for deleting.
 	*  @return unknown
 	*/
 
-	function DeleteNode(){
+	function DeleteNode() {
 
-		//Before delete delGroupRol
-
-
-	 	$role = new Role($this->parent->get('IdNode'));
-		$role->DeleteRole();
+	 	$grupo = new Group($this->parent->get('IdNode'));
+		$grupo->DeleteGroup();
 	}
 
 	/**
-	*  Users and Groups arent dependecies,they are associations;
-	*  @return array
+	*  Checks whether the Group belongs to GeneralGroup.
+	*  @return bool
 	*/
 
-	function GetDependencies() {
+	function CanDenyDeletion() {
 
-		$deps = array();
+		$group = new Group();
+		return ($this->parent->get('IdNode') == $group->GetGeneralGroup());
+	}
 
-    	return $deps;
+	/**
+	*  Calls to method for updating the Name on the database.
+	*  @param string name
+	*  @return unknown
+	*/
+
+	function RenameNode($name = null) 	{
+
+		$grupo = new Group($this->parent->get('IdNode'));
+		$grupo->SetGroupName($name);
+		$this->updatePath();
 	}
 }
 ?>

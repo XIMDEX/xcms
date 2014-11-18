@@ -40,7 +40,7 @@
   	   ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
   	   ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 	} else {
-		require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.inc');
+		require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.php');
 		require_once(XIMDEX_ROOT_PATH . '/inc/sync/SyncManager.class.php');
 	}
 

@@ -84,7 +84,7 @@ class XVFS {
 	 *  Constructor sets up {@link $_tree}
 	 */
 	function XVFS($key = false) {
-
+        error_log( '**XVFS**') ;
 		// to ensure singleton.
 		if ($key != M_PI) {
 			die('Use $obj =& XVFS::getInstance(); for XVFS construction!');
@@ -849,7 +849,7 @@ class XVFS {
 				// Si la copia es correcta se elimina el origen...
 				$ret = XVFS::delete($source);
 //				$ret = $ret > 0 ? true : false;
-				// Si no se pudo eliminar el origen... ¿Se elimina la copia?...
+				// Si no se pudo eliminar el origen... ï¿½Se elimina la copia?...
 				if ($ret < 0) XVFS::delete($target);
 			}
 		}
@@ -871,8 +871,8 @@ class XVFS {
 	 * recursivamente para copiar todo el arbol elemento a elemento.
 	 * Si la copia de uno de los elementos hijos de la raiz falla, el proceso de copia
 	 * debe continuar y copiar el arbol lo mejor que pueda.
-	 * ¿Como informar de los errores producidos en la copia de elementos hijos?
-	 * ¿El resultado final debe ser un error?
+	 * ï¿½Como informar de los errores producidos en la copia de elementos hijos?
+	 * ï¿½El resultado final debe ser un error?
 	 *
 	 * @param string source Backendpath de la entidad origen
 	 * @param string target Backendpath de la entidad destino

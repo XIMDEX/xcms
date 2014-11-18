@@ -19,7 +19,7 @@
  * version 3 along with Ximdex (see LICENSE).                                 *
  * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       *
  *                                                                            *
- * @version $Revision: $                                                      *  
+ * @version $Revision: $                                                      *
  *                                                                            *
  *                                                                            *
  ******************************************************************************/
@@ -37,72 +37,66 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+include_once XIMDEX_ROOT_PATH . "/inc/model/role.php";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-class StateNode extends Root {
+/**
+*  @brief Handles roles.
+*/
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description='', $idTransition=null) {
-		$currentTransition = new PipeTransition($idTransition);
-		if (!$currentTransition->get('id') > 0) {
-			$this->messages->add(_('No se ha podido encontrar la transacción, consulte con su administrador'), MSG_TYPE_ERROR);
-			$this->messages->mergeMessages($currentTransition->messages);
-			return NULL;
-		}
+class RoleNode extends Root {
 
+	/**
+	*  Does nothing.
+	*  @return null
+	*/
+
+	function RenderizeNode() {
+
+		return null;
+	}
+
+	/**
+	*  Calls to method for adding a row to Roles table.
+	*  @param string name
+	*  @param int parentID
+	*  @param int nodeTypeID
+	*  @param int stateID
+	*  @param string icon
+	*  @param string description
+	*  @return unknown
+	*/
+
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon=null, $description=null) {
+
+  		$role = new Role();
+  		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
 		$this->UpdatePath();
 	}
 
-	function DeleteNode() {
+	/**
+	*  Calls to method for deleting the Role from database.
+	*  @return unknown
+	*/
 
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
+	function DeleteNode(){
 
-		$pipeProcess = new PipeProcess();
-		$pipeProcess->loadByName('workflow');
+		//Before delete delGroupRol
 
-		$pipeProcess->removeStatus($pipeStatus->get('id'));
+
+	 	$role = new Role($this->parent->get('IdNode'));
+		$role->DeleteRole();
 	}
 
-	function RenameNode($name) {
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
-		$pipeStatus->set('Name', $name);
-		$pipeStatus->update();
-		$this->UpdatePath();
-	}
-
-	function CanDenyDeletion() {
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
-
-		$pipeProcess = new PipeProcess();
-		$pipeProcess->loadByName('workflow');
-
-		$idStatus = $pipeStatus->get('id');
-
-		if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
-			$this->messages->add(_('No se pueden eliminar los estados primero y último del workflow'), MSG_TYPE_ERROR);
-			XMD_Log::warning('Imposible eliminar estado primero y último de workflow');
-			return true;
-		}
-
-		return false;
-	}
+	/**
+	*  Users and Groups arent dependecies,they are associations;
+	*  @return array
+	*/
 
 	function GetDependencies() {
-		$sql ="SELECT DISTINCT IdNode FROM Nodes WHERE IdState='".$this->nodeID."'";
-		$this->dbObj->Query($sql);
 
 		$deps = array();
 
-		while(!$this->dbObj->EOF) {
-			$deps[] = $this->dbObj->row["IdNode"];
-			$this->dbObj->Next();
-		}
     	return $deps;
 	}
 }
-
-?>

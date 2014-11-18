@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /******************************************************************************
  *  Ximdex a Semantic Content Management System (CMS)    							*
@@ -37,23 +37,52 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
+require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingRng.class.php');
 
 /**
-*  @deprecated
+*  @brief Handles RNG templates.
 */
 
-class RelNode extends Root {
+class rngvisualtemplatenode extends FileNode {
+
+	var $minimalXml = '';
+	var $xpathObj;
+	var $relaxSource;
+	var $elementsForRender;
+	var $renderCount = 0;
 
 	/**
-	*  Does nothing.
-	*  @return null
+	*  Creates the file in data/files directory.
+	*  @param string name
+	*  @param int parentID
+	*  @param int nodeTypeID
+	*  @param int stateID
+	*  @param string sourcePath
+	*  @return unknown
 	*/
 
-	function RenderizeNode() {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null) {
 
-		return null;
+		$content = FsUtils::file_get_contents($sourcePath);
+
+		$data = new DataFactory($this->parent->get('IdNode'));
+		$this->updatePath();
+		return $data->SetContent($content);
 	}
-}
 
+	/**
+	*  Gets the minimal content of a document created by a template.
+	*  @return string
+	*/
+
+	function buildDefaultContent() {
+
+		$rngParser = new ParsingRng();
+		$content = $rngParser->buildDefaultContent($this->nodeID);
+
+		return $content;
+	}
+
+}
 ?>

@@ -24,7 +24,7 @@
  *                                                                            *
  ******************************************************************************/
 
-ModulesManager::file('/inc/nodetypes/filenode.inc');
+ModulesManager::file('/inc/nodetypes/filenode.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::component('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/io/BaseIO.class.php');

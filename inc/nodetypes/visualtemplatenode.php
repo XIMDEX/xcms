@@ -29,7 +29,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/mvc/App.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/parsers/pvd2rng/PVD2RNG.class.php");
 
@@ -165,7 +165,7 @@ class VisualTemplateNode extends FileNode {
 		$content = $this->GetContent();
 		$parts = explode('##########', $content);
 		if (count($parts) > 2) {
-			XMD_Log::error("El esquema PVD {$this->nodeID} tiene más de una vez la cadena ########## lo que hace que no se pueda obtener el contenido por defecto correctamente");
+			XMD_Log::error("El esquema PVD {$this->nodeID} tiene mï¿½s de una vez la cadena ########## lo que hace que no se pueda obtener el contenido por defecto correctamente");
 			return false;
 		}
 		if (!(count($parts) == 2)) {

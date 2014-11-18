@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 /******************************************************************************
  *  Ximdex a Semantic Content Management System (CMS)    							*
@@ -37,10 +37,34 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/structureddocument.inc";
+require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
-class XmlDocumentNode extends AbstractStructuredDocument  {
+class SirNode extends Root {
 
-}		
+	/// Renderiza el nodo
+	function RenderizeNode()
+		{
+		return null;
+		}
+/*
+	function CreateNode($name, $parentID, $nodeTypeID, $stateID = null)
+		{
+		$grupo = new Group($this -> $dbObj->newID);
+		$grupo -> CreateNewGroup($name, $this->dbObj->newID);
+		}
+	
+	function DeleteNode()
+		{
+	 	$grupo = new Group($this->nodeID);
+		$grupo->DeleteGroup();
+		}
 		
+	function RenameNode($name)
+		{
+	 	$grupo = new Group($this->nodeID);
+		$grupo->SetGroupName($name);
+		}
+		*/
+	}
+
 ?>

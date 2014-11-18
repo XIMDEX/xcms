@@ -26,7 +26,7 @@
 
 
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/nodetypes/statenode.inc');
+ModulesManager::file('/inc/nodetypes/statenode.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 
 class Action_checkstatus extends ActionAbstract {

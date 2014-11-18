@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/model/Versions.inc');
+ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/parsers/ParsingRng.class.php');
 ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
