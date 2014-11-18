@@ -1,6 +1,5 @@
 <?php
 
-
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -10,50 +9,29 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
-
 class_alias('Ximdex\Runtime\App', 'App');
-
 
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 
-
-
 // get Config from install file
 if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php' ) ) {
-
     $conf = require_once(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
     foreach ($conf as $key => $value) {
         App::setValue($key, $value);
     }
-
-
-
-
-// get Config
-$conf = require_once(App::getValue('XIMDEX_ROOT_PATH') . '/conf/config.php');
-foreach ($conf as $key => $value) {
-    App::setValue($key, $value);
 }
-
 
 // setup log
 class_alias('Ximdex\Logger', 'XMD_Log');
 
 $log = new Logger('XMD');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/xmd.log', Logger::DEBUG));
-
-Ximdex\Logger::addLog( $log  ) ;
-
+Ximdex\Logger::addLog( $log );
 $log = new Logger('Actions');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/actions.log', Logger::DEBUG));
-
 Ximdex\Logger::addLog( $log , 'actions' ) ;
 
-
-XMD_Log::setActiveLog() ;
-
-
-
+XMD_Log::setActiveLog();
 
 // read install-modules.conf
 $modulesConfString = file_get_contents(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.conf');
@@ -67,17 +45,13 @@ foreach ($matches[1] as $key => $value) {
 define('DEFAULT_LOCALE', App::getValue('locale'));
 date_default_timezone_set(App::getValue('timezone'));
 
-
 // set DB Connection
-
 $dbConfig = App::getValue('db');
 if ( !empty( $dbConfig ) ) {
     $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}",
         $dbConfig['user'], $dbConfig['password']);
     $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-
     App::addDbConnection($dbConn);
-
 
 // get Persistent Config
     $stm = App::Db()->prepare('select * from Config');
@@ -88,7 +62,6 @@ if ( !empty( $dbConfig ) ) {
 }
 
 // special objects (pseudo-DI)
-
 App::setValue( 'class::definition::Messages',       '/inc/helper/Messages.class.php' );
 App::setValue( 'class::definition::QueryManager',   '/inc/helper/QueryManager.class.php' );
 App::setValue( 'class::definition::DB',             '/inc/db/DB.class.php' );
