@@ -1278,5 +1278,164 @@
         },
         "type": "library",
         "installation-source": "source"
+    },
+    {
+        "name": "mrclay/minify",
+        "version": "2.2.0",
+        "version_normalized": "2.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/mrclay/minify.git",
+            "reference": "d245bca4987dec197d1e6d7dc117614b60ff7494"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/mrclay/minify/zipball/d245bca4987dec197d1e6d7dc117614b60ff7494",
+            "reference": "d245bca4987dec197d1e6d7dc117614b60ff7494",
+            "shasum": ""
+        },
+        "require": {
+            "ext-pcre": "*",
+            "php": ">=5.2.1"
+        },
+        "time": "2014-03-12 12:54:23",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "min/lib/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Steve Clay",
+                "email": "steve@mrclay.org",
+                "homepage": "http://www.mrclay.org/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
+        "homepage": "http://code.google.com/p/minify/"
+    },
+    {
+        "name": "stolz/assets",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Stolz/Assets.git",
+            "reference": "0f21782933e9cc2b262e8f86fd5ba329f9e31278"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Stolz/Assets/zipball/0f21782933e9cc2b262e8f86fd5ba329f9e31278",
+            "reference": "0f21782933e9cc2b262e8f86fd5ba329f9e31278",
+            "shasum": ""
+        },
+        "require": {
+            "mrclay/minify": "~2.1",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "evert/phpdoc-md": "0.0.*",
+            "phpdocumentor/phpdocumentor": "2.*",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "suggest": {
+            "laravel/laravel": "Included ServiceProvider and Facade to work out of the box with Laravel"
+        },
+        "time": "2014-11-10 10:29:27",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Stolz\\Assets": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Stolz",
+                "homepage": "https://github.com/Stolz/Assets",
+                "role": "developer"
+            }
+        ],
+        "description": "An ultra-simple-to-use assets management library",
+        "keywords": [
+            "JS",
+            "agnostic",
+            "asset",
+            "assets",
+            "css",
+            "javascript",
+            "laravel",
+            "minify",
+            "pipeline"
+        ]
+    },
+    {
+        "name": "werkint/jsmin",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Werkint/JsMin.git",
+            "reference": "49186aef5401c27f9a504a785032194f77d6dabd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Werkint/JsMin/zipball/49186aef5401c27f9a504a785032194f77d6dabd",
+            "reference": "49186aef5401c27f9a504a785032194f77d6dabd",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4"
+        },
+        "time": "2013-11-10 11:34:43",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "JsMin": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Douglas Crockford",
+                "homepage": "http://www.crockford.com"
+            },
+            {
+                "name": "Bogdan Yurov",
+                "email": "bogdan@yurov.me"
+            },
+            {
+                "name": "Steve Clay",
+                "email": "steve@mrclay.org",
+                "homepage": "http://www.mrclay.org/",
+                "role": "Developer"
+            },
+            {
+                "name": "Ryan Grove",
+                "email": "ryan@wonko.com",
+                "role": "PHP port"
+            },
+            {
+                "name": "Andrea Giammarchi",
+                "homepage": "http://www.3site.eu",
+                "role": "spaceBeforeRegExp"
+            }
+        ],
+        "description": "Library for minifying JavaScript files"
     }
 ]
