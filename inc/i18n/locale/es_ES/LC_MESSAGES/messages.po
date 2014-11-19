@@ -10022,3 +10022,6 @@ msgstr "usuarios disponibles para ser asociados al grupo"
 
 msgid "There are no users associated with this group yet"
 msgstr "Aún no hay usuarios asociados con este grupo"
+
+msgid "Server name"
+msgstr "Nombre del servidor"

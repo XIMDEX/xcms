@@ -92,7 +92,7 @@ class Config {
 				$conf->setValue($key, $dbObj->GetValue('ConfigValue'));
 			} else {
 				$backtrace = debug_backtrace();
-				error_log(sprintf('Trying to access to a value that does not exist [inc/persistence/Config.class.php] script: %s file: %s line: %s value: %s', $_SERVER['SCRIPT_FILENAME'],$backtrace[0]['file'],$backtrace[0]['line'],$key));
+				XMD_Log::warning(sprintf('Trying to access to a value that does not exist [inc/persistence/Config.class.php] script: %s file: %s line: %s value: %s', $_SERVER['SCRIPT_FILENAME'],$backtrace[0]['file'],$backtrace[0]['line'],$key));
 			}
 		}
 		return isset($conf->configData[$key]) ? $conf->configData[$key] : NULL;

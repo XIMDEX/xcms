@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-	<h2>{t}Descargar archivo{/t}</h2>
+	<h2>{t}Download file{/t}</h2>
 	<fieldset class="buttons-form">
 		{button label="Download" class="button-download  btn main_action"}
 	</fieldset>

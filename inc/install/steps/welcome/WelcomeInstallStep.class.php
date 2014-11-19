@@ -72,11 +72,12 @@ class WelcomeInstallStep extends GenericInstallStep {
 			}
 		}
 
-		if ($error)
-			$values["failure"] = true;
-		else 
-			$values["success"] = true;
-		$values["errors"] = $errors;
+		if (isset($error) && $error) {
+            $values["failure"] = true;
+            $values["errors"] = $errors;
+        }else {
+            $values["success"] = true;
+        }
 		$this->sendJSON($values);
 	}
 

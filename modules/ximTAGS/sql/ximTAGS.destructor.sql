@@ -23,9 +23,9 @@
 # *  @version $Revision$
 # */
 
-DROP TABLE `XimTAGSTags`;
-DROP TABLE `RelTagsNodes`;
-DROP TABLE `RelTagsDescriptions`;
+DROP TABLE IF EXISTS `XimTAGSTags`;
+DROP TABLE IF EXISTS `RelTagsNodes`;
+DROP TABLE IF EXISTS `RelTagsDescriptions`;
 
 -- -- Nodetype: 5012 ----
 DELETE FROM `RelRolesActions` WHERE `IdAction` = "5012";

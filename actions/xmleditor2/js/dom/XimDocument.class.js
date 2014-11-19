@@ -262,8 +262,9 @@ XimDocument = function(editorConfig) {
 
 		for (var i=0; i<l; i++) {
 
-			var name = attributes[i].nodeName;
-			var value = attributes[i].nodeValue;
+            //Attr.nodeName and Attr.nodeValue are deprecated
+			var name = attributes[i].name;
+			var value = attributes[i].value;
 			var htmlName = null;
 
 			if (rngElement

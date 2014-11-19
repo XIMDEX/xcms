@@ -40,6 +40,8 @@ $locale = XSession::get('locale');
 I18N::setup($locale);
 $userID = XSession::get('userID');
 
+header('Content-type: application/javascript');
+
 echo "\nrenderer = '" . XSession::get("renderer") . "';";
 echo "\nurl_root = '" . Config::getValue('UrlRoot') . "';";
 echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";

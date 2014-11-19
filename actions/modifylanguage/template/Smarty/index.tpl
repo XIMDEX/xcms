@@ -43,8 +43,8 @@
             <label class="aligned">{t}ISO code{/t}:</label> {$iso_name}
         </p>
         <p class="col1_2 col_left">
-			<input class="hidden-focus" type="checkbox" name="enabled" id="enabled" value="1"{if $enabled == 1} checked="checked"{/if}/>
-		    <label for="enabled" class="icon checkbox-label">{t}Activated{/t}</label>
+			<input class="hidden-focus" type="checkbox" name="enabled" id="enabled_{$iso_name}" value="1"{if $enabled == 1} checked="checked"{/if}/>
+		    <label for="enabled_{$iso_name}" class="icon checkbox-label">{t}Activated{/t}</label>
         </p>
 
 	</div>

@@ -61,8 +61,7 @@ class GetStartedInstallStep extends GenericInstallStep {
 	 * Change permissions to only reader mod.
 	 */
 	private function changePermissions(){
-		
-		chmod(XIMDEX_ROOT_PATH."/conf/install-params.conf",0644);		
+		chmod(XIMDEX_ROOT_PATH."/conf/install-params.conf.php",0644);
 	}
 
 }

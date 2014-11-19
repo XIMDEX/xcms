@@ -118,9 +118,7 @@ class InstallDataBaseManager extends InstallManager{
 		if($this->dbConnection){
 			$query = "create database $name";			
 			$result = $this->dbConnection->query($query);
-			if ($result === TRUE)
-				error_log("Suc");
-			else{
+			if ($result !== TRUE){
 				error_log("ERROR:");
 				error_log("a $result".print_r($result, true)." $query ".$this->dbConnection->error);
 			}

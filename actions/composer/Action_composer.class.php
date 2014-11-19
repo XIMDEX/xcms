@@ -48,6 +48,8 @@ class Action_composer extends ActionAbstract {
 		$userID = XSession::get('userID');
 		$theme = $this->request->getParam('theme');
 		$theme = $theme ? $theme : 'ximdex_theme';
+        $locale = new XimLocale();
+        $user_locale = $locale->GetLocaleByCode(XSession::get('locale'));
 
 		//Stopping any active debug_render
 		XSession::set('debug_render', NULL);
@@ -58,7 +60,8 @@ class Action_composer extends ActionAbstract {
 			"versionname" => $versionname,
 			"userID" => $userID,
 			"debug" => XSession::checkUserID(),
-			'theme' => $theme);
+			'theme' => $theme,
+            'user_locale' => $user_locale);
 
 		$this->render($values, "index_widgets", "only_template.tpl");
 	}

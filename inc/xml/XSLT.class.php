@@ -47,14 +47,15 @@ class XSLT implements I_XSLT {
 	}
 
 	public function setXML($xml_file) {
-		
 		$this->xml->load($xml_file);
 	}
 
 	public function setXSL($xsl_file) {
-
-		$this->xsl->load($xsl_file);
-		$this->xsltprocessor->importStyleSheet($this->xsl);
+        //Warnings when $xsl_file doesn't exist
+        if(file_exists($xsl_file)){
+            $this->xsl->load($xsl_file);
+            $this->xsltprocessor->importStyleSheet($this->xsl);
+        }
 	}
 
 	public function setXSD($xsd) {
