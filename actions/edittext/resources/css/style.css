@@ -49,9 +49,8 @@ fieldset.editor{
     height: 99% !important;
 	max-width: none !important;
 	max-height: none !important;
+    z-index: 0;
 }
-
-
 
 .CodeMirror-gutter{
 	background: #dfdfdf !important;

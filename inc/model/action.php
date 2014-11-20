@@ -428,7 +428,7 @@ class Action extends Actions_ORM {
 	* @return array Array with actions name.
 	*/
 	public static function getAlwaysAllowedActions(){
-        return array("browser3","composer","welcome","infonode","changelang");
+        return array("browser3","composer","welcome","infonode","changelang","prevdoc");
     }
 }
 

@@ -70,6 +70,7 @@ label.status{
     width: 12% !important;
     display: inline;
     float: left;
+    margin-top: 0.4em;
 }
 
 button.delete-btn{

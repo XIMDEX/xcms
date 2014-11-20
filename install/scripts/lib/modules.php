@@ -25,9 +25,10 @@
  *  @version $Revision$
  */
 
+include_once  realpath(dirname(__FILE__) ) . '/../../../bootstrap/start.php';
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
+
+
 
 if (!defined('CLI_MODE'))
 	define('CLI_MODE', 1);
