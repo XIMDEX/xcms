@@ -88,9 +88,9 @@ class FrontControllerHTTP extends FrontController {
 	function _checkURI() {
 		$host_request = $_SERVER["HTTP_HOST"];
 		$uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
-		$ximdex =  parse_url(Config::getValue('UrlRoot') );
+		$ximdex =  parse_url(App::getValue('UrlRoot') );
 
-		if($ximdex["host"] != $_SERVER["HTTP_HOST"] && strpos($uri_request, $ximdex["path"]) === 0 ) {
+		if($ximdex["host"] != $_SERVER['SERVER_NAME'] | (isset($ximdex["path"]) && strpos($uri_request[0], $ximdex["path"]) === false) ) {
 			$this->_setError("Error: la URL de acceso no coincide con la UrlRoot", "FrontController");
 			return false;
 		}else {
@@ -198,7 +198,7 @@ class FrontControllerHTTP extends FrontController {
 	 * @return unknown_type
 	 */
 	function parseURI() {
-		//Añadimos los distintos parametros tanto de get, como de post, como de file) al request de la clase
+		//Aï¿½adimos los distintos parametros tanto de get, como de post, como de file) al request de la clase
 		$this->setToRequest();
 		$this->ModuleShortUrl();
 

@@ -95,7 +95,7 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 		}
 
 		$limits = $aux;
-		$msg = sprintf(_('Warning from the server %s (instance %s): The free space in disk is %s MB'),php_uname("n"),Config::getValue('AppRoot'), DiskUtils::transformUnits($freeSpaceBytes, 'MB'));
+		$msg = sprintf(_('Warning from the server %s: The free space in disk is %s MB'),php_uname("n"), DiskUtils::transformUnits($freeSpaceBytes, 'MB'));
 
 		if (isset($limits['fatal_limit']) && $limits['fatal_limit']['notify']) {
 

@@ -199,7 +199,7 @@ class DB
 				if($this->debug) {
 					$this->numErr = mysql_errno();
 					$this->desErr = mysql_error();
-					$msgDebug = "\error number:".$this->numErr;
+					$msgDebug = "\nerror number:".$this->numErr;
 					$msgDebug .= " trying to connect ";
 					$msgDebug .= $this->dbname;
 					$msgDebug .=  "\ndescription: ";

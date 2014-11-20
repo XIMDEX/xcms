@@ -34,6 +34,7 @@ ModulesManager::file('/inc/serializer/Serializer.class.php');
 ModulesManager::file('/inc/parsers/ParsingXimMenu.class.php');
 ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+ModulesManager::file('/inc/model/locale.php');
 
 
 class Action_composer extends ActionAbstract {

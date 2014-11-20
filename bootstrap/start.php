@@ -42,8 +42,8 @@ foreach ($matches[1] as $key => $value) {
 }
 
 // use config values
-define('DEFAULT_LOCALE', App::getValue('locale'));
-date_default_timezone_set(App::getValue('timezone'));
+define('DEFAULT_LOCALE', App::getValue('locale', 'ES_es'));
+date_default_timezone_set(App::getValue('timezone', 'Europe/Madrid'));
 
 // set DB Connection
 $dbConfig = App::getValue('db');
