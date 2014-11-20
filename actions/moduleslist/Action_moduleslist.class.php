@@ -44,22 +44,20 @@ class Action_moduleslist extends ActionAbstract {
 			// Must be administrator
 			return $modules;
 		}		
-		
-		$paths = ModulesManager::getModules();
-				
-		foreach ($paths as $module) {
-			$moduleName=$module["name"];
-			if(strpos($moduleName,'xim')!==false || in_array($moduleName,self::$new_modules)){
-				$isEnabled = $this->isEnabled($moduleName);
-				$coreModule = in_array($moduleName, ModulesManager::getCoreModules() );
-				$modules[] = array(
-					'core_module' => $coreModule, 
-					'name' => $moduleName,
-					'enabled' => $isEnabled,
-					'class' => ($isEnabled ? 'browser-modules-view-enabled' : 'browser-modules-view-disabled')
-				);
-			}
-		}
+
+        $node = new Node();
+        $mods = $node->find(ALL, "IdNodeType=5081", NULL, MULTI);
+        foreach($mods as $mod){
+            $moduleName = $mod["Name"];
+            $isEnabled = $this->isEnabled($moduleName);
+            $modules[] = array(
+               // 'core_module' => $coreModule,
+                'id' => $mod["IdNode"],
+                'name' => $moduleName,
+                'enabled' => $isEnabled,
+                'class' => ($isEnabled ? 'browser-modules-view-enabled' : 'browser-modules-view-disabled')
+            );
+        }
 		
 		$values = array('modules' => $modules);
 		$this->render($values, "modulelist", 'only_template.tpl');

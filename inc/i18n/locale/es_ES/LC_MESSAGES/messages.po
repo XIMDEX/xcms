@@ -1390,7 +1390,7 @@ msgid " could not be "
 msgstr " no ha podido ser "
 
 msgid "added"
-msgstr "a&ntilde;adido"
+msgstr "añadido"
 
 #: /actions/createlanguage/template/Smarty/index.tpl
 #: /install/ximdex_data/ximdex.sql table Nodes
@@ -10025,3 +10025,6 @@ msgstr "Aún no hay usuarios asociados con este grupo"
 
 msgid "Server name"
 msgstr "Nombre del servidor"
+
+msgid "Check all"
+msgstr "Comprobar todos"

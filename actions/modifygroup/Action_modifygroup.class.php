@@ -57,10 +57,9 @@ class Action_modifygroup extends ActionAbstract {
 			$node->messages->add(_('An error occurred while modifying group'), MSG_TYPE_ERROR);
 		}
 
-		$this->reloadNode($node->get('IdParent') );
-		$values = array('messages' => $node->messages->messages );
+		$values = array('messages' => $node->messages->messages , "parentID" => $node->get('IdParent'));
 
-		$this->render($values, NULL, 'messages.tpl');
+        $this->sendJSON($values);
     }
 }
 ?>

@@ -82,16 +82,16 @@
 
 		openTab: function(link, module) {
 				var lbl_module = _("Module");
-
+                var id = $(link).data("id");
 				 parent.$('#bw1').browserwindow('openAction', {
 				   label: lbl_module+" "+module,
 					name: lbl_module+" "+module,
 					command: 'moduleslist',
 					params: 'method=opentab&modsel='+module,
-					nodes: 10000,
-					url: X.restUrl + '?action=moduleslist&nodes[]=10000&nodeid=10000&modsel='+module,
-					bulk: '10000'
-				},10000);
+					nodes: id,
+					url: X.restUrl + '?action=moduleslist&nodes[]='+id+'&nodeid='+id+'&modsel='+module,
+					bulk: id
+				},id);
 		},
 
 		getter: ['loadModulesList']

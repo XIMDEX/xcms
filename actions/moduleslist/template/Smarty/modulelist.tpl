@@ -25,6 +25,6 @@
 
 <ul class="browser-modules-view-list">
 {foreach from=$modules item=module}
-	<li class="{$module.class}">{$module.name}</li>
+	<li data-id="{$module.id}" class="{$module.class}">{$module.name}</li>
 {/foreach}
 </ul>

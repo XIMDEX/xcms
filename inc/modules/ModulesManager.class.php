@@ -357,7 +357,7 @@ class ModulesManager
     {
         $str = "MODULE_" . strtoupper($name) . "_ENABLED";
 
-        if (defined($str)) {
+        if (App::getValue($str)) {
             return true;
         } else {
             return false;
