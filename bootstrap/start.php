@@ -4,10 +4,31 @@
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
+
+
+
 // for legacy compatibility
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 }
+
+
+if ( function_exists( 'xdebug_start_code_coverage')) {
+    function ximdex_end_debug() {
+        $vars = xdebug_get_code_coverage() ; 
+        $hf = fopen(dirname(__FILE__) .'/../logs/coverage.log', 'a');
+        foreach( $vars as $file => $values ) {
+            fwrite( $hf,  json_encode( array( $file  =>  array_keys( $values)   )) . PHP_EOL);
+        }
+        fclose($hf);
+    }
+    register_shutdown_function( 'ximdex_end_debug');
+    xdebug_start_code_coverage();
+}
+
+
+
+
 
 include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
 
