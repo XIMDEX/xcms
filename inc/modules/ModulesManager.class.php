@@ -34,7 +34,6 @@ if (!defined('CLI_MODE'))
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/modules.const');
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesConfig.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/conf/extensions.conf.php');
 ModulesManager::file(MODULES_INSTALL_PARAMS);
 
 /**

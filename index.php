@@ -34,7 +34,6 @@ require_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/fsutils/DiskUtils.class.p
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/conf/extensions.conf.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/log/XMD_log.class.php'); // Main Logger

@@ -25,7 +25,6 @@
  */
 
 
-ModulesManager::file( '/conf/extensions.conf.php');
 include_once (XIMDEX_ROOT_PATH . '/inc/mvc/renderers/AbstractRenderer.class.php');
 require_once (XIMDEX_ROOT_PATH . Extensions::SMARTY);
 include_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
@@ -106,7 +105,7 @@ class SmartyRenderer extends AbstractRenderer {
 
 		$this->_set_controller_path($this->get('module'),$_method );
 
-		//pasamos los parámetros a smarty
+		//pasamos los parï¿½metros a smarty
 		$_parameters = $this->getParameters();
 
 		//we initialize params used in some actions
