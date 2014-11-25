@@ -27,7 +27,6 @@
 
 
 require_once(dirname(__FILE__) . '/ModulesManager.class.php');
-ModulesManager::file("/inc/modules/modules.const");
 ModulesManager::file("/inc/db/db.php");
 ModulesManager::file("/inc/cli/Shell.class.php");
 ModulesManager::file("/inc/helper/Messages.class.php");
@@ -112,14 +111,13 @@ class Module {
      */
 	function getModuleName() {
 		return $this->name;
-		//return trim($this->name, MODULE_PREFIX);
 	}
 
     /**
      *  @public
      */
 	function getModuleClassName() {
-		return MODULE_PREFIX . $this->name;
+		return ModuleManager::get_module_prefix() . $this->name;
 		//return get_class($this);
 	}
 
@@ -381,9 +379,9 @@ class Module {
 		$module_name = $this->getModuleName();
 
 		if ($this->checkStateFile() ) {
-				return MODULE_STATE_INSTALLED;
+				return ModulesManager::get_module_state_installed() ;
 		} else {
-			return MODULE_STATE_UNINSTALLED;
+			return ModulesManager::get_module_state_uninstalled() ;
 		}
 
     }

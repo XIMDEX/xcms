@@ -28,7 +28,6 @@
 
 require_once(dirname(__FILE__) . '/ModulesManager.class.php');
 
-ModulesManager::file("/inc/modules/modules.const");
 ModulesManager::file("/inc/modules/DefManager.class.php");
 
 
@@ -45,10 +44,10 @@ class ModulesConfig {
      */   
     function ModulesConfig() {
  		
-    	$this->defMngr = new DefManager(XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS);
+    	$this->defMngr = new DefManager(XIMDEX_ROOT_PATH. ModulesManager::get_modules_install_params() );
     	
-    	$this->defMngr->setPrefix(PRE_DEFINE_MODULE);
-    	$this->defMngr->setPostfix(POST_DEFINE_MODULE);
+    	$this->defMngr->setPrefix(ModulesManager::get_pre_define_module() );
+    	$this->defMngr->setPostfix( ModulesManager::get_post_define_module() );
 	}
 	
 	

@@ -1,8 +1,8 @@
 <?php
 
 /******************************************************************************
- *  Ximdex a Semantic Content Management System (CMS)    							*
- *  Copyright (C) 2011  Open Ximdex Evolution SL <dev@ximdex.org>	      *
+ *  Ximdex a Semantic Content Management System (CMS)                                *
+ *  Copyright (C) 2011  Open Ximdex Evolution SL <dev@ximdex.org>          *
  *                                                                            *
  *  This program is free software: you can redistribute it and/or modify      *
  *  it under the terms of the GNU Affero General Public License as published  *
@@ -19,7 +19,7 @@
  * version 3 along with Ximdex (see LICENSE).                                 *
  * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       *
  *                                                                            *
- * @version $Revision: $                                                      *  
+ * @version $Revision: $                                                      *
  *                                                                            *
  *                                                                            *
  ******************************************************************************/
@@ -27,10 +27,7 @@
 
 // Include config.
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
-if (!defined('MAIN_INSTALL_PARAMS')) {
-	require_once(XIMDEX_ROOT_PATH . '/inc/modules/modules.const');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
 
@@ -39,8 +36,7 @@ include_once XIMDEX_ROOT_PATH . '/inc/db/DB_Log.class.php';
 // Include config.
 
 if (isset($DB_TYPE_USAGE) && $DB_TYPE_USAGE == ADODB) {
-	include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_orm.class.php');
-} else if($DB_TYPE_USAGE == ZERO ) {
-	include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_zero.class.php');
+    include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_orm.class.php');
+} else if ($DB_TYPE_USAGE == ZERO) {
+    include_once(XIMDEX_ROOT_PATH . '/inc/db/DB_zero.class.php');
 }
-?>

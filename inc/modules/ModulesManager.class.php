@@ -31,10 +31,9 @@ if (!defined('XIMDEX_ROOT_PATH'))
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
 
-include_once(XIMDEX_ROOT_PATH . '/inc/modules/modules.const');
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesConfig.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
-ModulesManager::file(MODULES_INSTALL_PARAMS);
+ModulesManager::file(ModulesManager::get_modules_install_params());
 
 /**
  *
@@ -47,6 +46,67 @@ class ModulesManager
     private static $core_modules = array("ximIO", "ximSYNC");
     private static $deprecated_modules = array("ximDAV", "ximTRASH", "ximLOADERDEVEL", "ximTHEMES", "ximOTF", "ximPAS", "ximSIR", "ximDEMOS", "ximPORTA", "ximTEST", "ximTAINT");
     public static $msg = null;
+
+
+    public static function get_modules_dir()
+    {
+        // replaces XIMDEX_MODULES_DIR
+        return App::getValue('XIMDEX_ROOT_PATH') . "/modules/";
+    }
+
+    public static function get_modules_pro_dir()
+    {
+        // replaces XIMDEX_MODULES_PRO_DIR
+        return App::getValue('XIMDEX_ROOT_PATH') . '/modules/modules_PRO/';
+    }
+
+    public static function get_module_prefix()
+    {
+        // replaces MODULE_PREFIX
+        return 'Module_';
+    }
+
+    public static function get_module_state_installed()
+    {
+        // replaces MODULE_STATE_INSTALLED
+        return 1;
+    }
+
+    public static function get_module_state_uninstalled()
+    {
+        // replaces MODULE_STATE_UNINSTALLED
+        return 0;
+    }
+
+    public static function get_module_state_error()
+    {
+        // replaces MODULE_STATE_ERROR
+        return -1;
+    }
+
+    public static function get_modules_install_params()
+    {
+        // replaces MODULE_INSTALL_PARAMS
+        return '/conf/install-modules.conf';
+    }
+
+    public static function get_pre_define_module()
+    {
+        // replaces PRE_DEFINE_MODULE
+        return "define('MODULE_";
+    }
+
+    public static function get_post_define_module()
+    {
+        // replaces POST_DEFINE_MODULE
+        return "_ENABLED', 1);";
+    }
+
+    public static function get_post_path_define_module()
+    {
+        // replaces POST_PATH_DEFINE_MODULE
+        return "_PATH','";
+    }
 
     /**
      * Core modules are specials:
@@ -83,15 +143,15 @@ class ModulesManager
 
     function writeStates()
     {
-        $config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . MODULES_INSTALL_PARAMS);
+        $config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params());
 
         $modules = self::getModules();
         $str = "<?php\n\n";
         foreach ($modules as $mod) {
-            $str .= PRE_DEFINE_MODULE . strtoupper($mod["name"]) . POST_PATH_DEFINE_MODULE . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
+            $str .= ModulesManager::get_pre_define_module() . strtoupper($mod["name"]) . ModulesManager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
         }
         $str .= "\n?>";
-        FsUtils::file_put_contents(XIMDEX_ROOT_PATH . MODULES_INSTALL_PARAMS, $str);
+        FsUtils::file_put_contents(XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params(), $str);
 
     }
 
@@ -145,16 +205,16 @@ class ModulesManager
     public static function getModules()
     {
         $modules = array();
-        self::parseModules(XIMDEX_MODULES_DIR, $modules);
-        self::parseModules(XIMDEX_MODULES_PRO_DIR, $modules);
+        self::parseModules(self::get_modules_dir(), $modules);
+        self::parseModules(self::get_modules_pro_dir(), $modules);
         return $modules;
     }
 
     function getMetaParent()
     {
         $modules = array();
-        self::parseMetaParent(XIMDEX_MODULES_DIR, $metaParent);
-        self::parseMetaParent(XIMDEX_MODULES_PRO_DIR, $metaParent);
+        self::parseMetaParent(self::get_modules_dir(), $metaParent);
+        self::parseMetaParent(self::get_modules_pro_dir(), $metaParent);
         return $metaParent;
     }
 
@@ -196,7 +256,7 @@ class ModulesManager
         if (ModulesManager::isEnabled($name)) {
             self::$msg = "checkModule: MODULE_STATE_ENABLED, module is enabled... try to reinstall ";
             /* BUG? it returns true but as installation failed should return false*/
-            return MODULE_STATE_INSTALLED;
+            return ModulesManager::get_module_state_installed();
         }
         $module = ModulesManager::instanceModule($name);
 
@@ -236,31 +296,11 @@ class ModulesManager
 
         if (is_null($module)) {
             self::$msg = "Module instance down";
-            return MODULE_STATE_ERROR;
+            return ModulesManager::get_module_state_error();
         }
 
         return $module->state();
-        /*
-                switch ($module->state()) {
 
-                    case MODULE_STATE_INSTALLED:
-                        print("checkModule: MODULE_STATE_INSTALLED\n");
-                        break;
-
-                    case MODULE_STATE_UNINSTALLED:
-                        print("checkModule: MODULE_STATE_UNINSTALLED\n");
-                        break;
-
-                    case MODULE_STATE_ERROR:
-                        print("checkModule: MODULE_STATE_ERROR\n");
-                        break;
-
-                    default:
-                        print("checkModule: DEFAULT\n");
-                        break;
-
-                }
-            */
     }
 
 //END
@@ -331,8 +371,8 @@ class ModulesManager
 
         // If module not exists exit.
 
-        $moduleClassName = MODULE_PREFIX . $name;
-        $moduleClassFile = MODULE_PREFIX . $name . ".class.php";
+        $moduleClassName = ModuleManager::get_module_prefix() . $name;
+        $moduleClassFile = ModuleManager::get_module_prefix() . $name . ".class.php";
         //$moduleClassPath = XIMDEX_ROOT_PATH . "/modules/$name/" . $moduleClassFile;
         $moduleClassPath = XIMDEX_ROOT_PATH . self::path($name) . "/" . $moduleClassFile;
         if (file_exists($moduleClassPath)) {
