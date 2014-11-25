@@ -24,6 +24,14 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Modules ;
+
+use ModulesManager,
+    Messages,
+    Shell,
+    DB ,
+    XMD_Log,
+    Ximdex\Runtime\App;
 
 ModulesManager::file("/inc/db/db.php");
 ModulesManager::file("/inc/cli/Shell.class.php");
@@ -50,12 +58,39 @@ class Module
     const SUCCESS = 'SUCCESS';
 
     /**
+     * @public
+     */
+    public function __construct($name, $path)
+    {
+
+        if (empty($name) || empty($path)) {
+            die("* ERROR: name and path in Module constructor must be provided.\n");
+        }
+
+        $this->messages = new Messages();
+
+        //$this->name = get_class($this);
+        $this->name = $name;
+        $this->path = $path;
+
+        $this->sql_constructor = array();
+        $this->sql_destructor = array();
+
+        //  $this->messages->add(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"),
+        //   __CLASS__, $this->name, $this->path), MSG_TYPE_NOTICE);
+        XMD_Log::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
+
+    }
+
+
+
+    /**
      * Installed modules has a state file in XIMDEX_ROOT_PATH/data
      * Uninstalled modules hasn't
      */
     protected function getStateFile()
     {
-        return XIMDEX_ROOT_PATH . "/data/.{$this->getModuleName()}";
+        return App::getValue( 'XIMDEX_ROOT_PATH')  . "/data/.{$this->getModuleName()}";
     }
 
     protected function checkStateFile()
@@ -85,30 +120,7 @@ class Module
         return in_array($this->getModuleName(), ModulesManager::getCoreModules());
     }
 
-    /**
-     * @public
-     */
-    function Module($name, $path)
-    {
 
-        if (empty($name) || empty($path)) {
-            die("* ERROR: name and path in Module constructor must be provided.\n");
-        }
-
-        $this->messages = new Messages();
-
-        //$this->name = get_class($this);
-        $this->name = $name;
-        $this->path = $path;
-
-        $this->sql_constructor = array();
-        $this->sql_destructor = array();
-
-        //  $this->messages->add(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"),
-        //   __CLASS__, $this->name, $this->path), MSG_TYPE_NOTICE);
-        XMD_Log::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
-
-    }
 
     /**
      * @public

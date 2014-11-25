@@ -24,15 +24,16 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-ModulesManager::file('/inc/modules/Module.class.php');
+
+use Ximdex\Modules\Module;
 
 class Module_XRAM extends Module
 {
 
-    function Module_XRAM()
+    public function __construct()
     {
         // Call Module constructor.
-        parent::Module('XRAM', dirname(__FILE__));
+        parent::__construct('XRAM', dirname(__FILE__));
         // Initialization stuff.
     }
 
@@ -77,5 +78,3 @@ class Module_XRAM extends Module
     }
 
 }
-
-?>

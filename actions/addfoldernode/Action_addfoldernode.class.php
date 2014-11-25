@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Modules\Module ;
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
