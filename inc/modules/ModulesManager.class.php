@@ -25,14 +25,11 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
 
-include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesConfig.class.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
+include_once(App::getValue( 'XIMDEX_ROOT_PATH') . '/inc/modules/ModulesConfig.class.php');
+include_once(App::getValue( 'XIMDEX_ROOT_PATH') . '/inc/fsutils/FsUtils.class.php');
 ModulesManager::file(ModulesManager::get_modules_install_params());
 
 /**
@@ -143,15 +140,15 @@ class ModulesManager
 
     function writeStates()
     {
-        $config = FsUtils::file_get_contents(XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params());
+        $config = FsUtils::file_get_contents(App::getValue( 'XIMDEX_ROOT_PATH') . ModulesManager::get_modules_install_params());
 
         $modules = self::getModules();
         $str = "<?php\n\n";
         foreach ($modules as $mod) {
-            $str .= ModulesManager::get_pre_define_module() . strtoupper($mod["name"]) . ModulesManager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
+            $str .= ModulesManager::get_pre_define_module() . strtoupper($mod["name"]) . ModulesManager::get_post_path_define_module() . str_replace(App::getValue( 'XIMDEX_ROOT_PATH'), '', $mod["path"]) . "');" . "\n";
         }
         $str .= "\n?>";
-        FsUtils::file_put_contents(XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params(), $str);
+        FsUtils::file_put_contents(App::getValue( 'XIMDEX_ROOT_PATH') . ModulesManager::get_modules_install_params(), $str);
 
     }
 
@@ -373,8 +370,7 @@ class ModulesManager
 
         $moduleClassName = ModuleManager::get_module_prefix() . $name;
         $moduleClassFile = ModuleManager::get_module_prefix() . $name . ".class.php";
-        //$moduleClassPath = XIMDEX_ROOT_PATH . "/modules/$name/" . $moduleClassFile;
-        $moduleClassPath = XIMDEX_ROOT_PATH . self::path($name) . "/" . $moduleClassFile;
+        $moduleClassPath = App::getValue( 'XIMDEX_ROOT_PATH') . self::path($name) . "/" . $moduleClassFile;
         if (file_exists($moduleClassPath)) {
             include_once($moduleClassPath);
         } else {
@@ -441,12 +437,12 @@ class ModulesManager
         }
 
         //$trace = debug_backtrace();
-        if (file_exists(XIMDEX_ROOT_PATH . "{$dir}{$_file}")) {
+        if (file_exists(App::getValue( 'XIMDEX_ROOT_PATH') . "{$dir}{$_file}")) {
             if ((self::isEnabled($_module) || 'XIMDEX' == $_module)) {
                 // $from =  $trace[0]["file"]." in line ".$trace[0]["line"];
                 //XMD_Log::info(" load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>");
                 //	 	echo " load file: <em>$_file</em> <strong>{$_module}</strong>  in $from <br>";
-                return require_once(XIMDEX_ROOT_PATH . "{$dir}{$_file}");
+                return require_once(App::getValue( 'XIMDEX_ROOT_PATH') . "{$dir}{$_file}");
             } else {
                 //	$from =  $trace[1]["file"]." in line ".$trace[1]["line"];
                 //XMD_Log::info("Not load file: <em>$_file</em> necesita <strong> {$_module}</strong>  in $from ");
