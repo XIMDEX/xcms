@@ -24,17 +24,13 @@
  *  @version $Revision$
  */
 
+class Module_ximIO extends \Ximdex\Modules\Module {
 
 
-ModulesManager::file('/inc/modules/Module.class.php');
-
-class Module_ximIO extends Module {
-
-
-	function Module_ximIO() {
+	public function __construct()  {
 		
 		// Call Module constructor.
-		parent::Module('ximIO', dirname(__FILE__));
+		parent::__construct('ximIO', dirname(__FILE__));
 
 		// Initialization stuff.
 	
@@ -70,5 +66,3 @@ class Module_ximIO extends Module {
 	}
 
 }
-
-?>

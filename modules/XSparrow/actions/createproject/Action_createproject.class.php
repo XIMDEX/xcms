@@ -21,10 +21,13 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-ModulesManager::file('/inc/modules/Module.class.php');
+
+use Ximdex\Modules\Module;
+
+
 ModulesManager::file('/inc/cli/CliParser.class.php');
 ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -34,19 +37,21 @@ ModulesManager::file('/inc/helper/DebugLog.class.php');
 ModulesManager::file('/actions/addximlet/Action_addximlet.class.php');
 ModulesManager::file(MODULE_XSPARROW_PATH . '/inc/Theme.class.php');
 
-class Action_createproject extends ActionAbstract {
+class Action_createproject extends ActionAbstract
+{
 
     private $project = null;
-    public $name ="XSparrow";
+    public $name = "XSparrow";
 
     /**
      * Main function, first step in the creation project process
      * * */
-    public function index() {
+    public function index()
+    {
 
         $themes = Theme::getAllThemes();
         $arrayTheme = array();
-        foreach ($themes as $theme ) {
+        foreach ($themes as $theme) {
             $themeDescription["name"] = $theme->_shortname;
             $themeDescription["title"] = $theme->_title;
             $themeDescription["description"] = $theme->_description;
@@ -77,9 +82,8 @@ class Action_createproject extends ActionAbstract {
     }
 
 
-
-
-    public function createproject() {
+    public function createproject()
+    {
 
         //Creating project
         $nodeID = $this->request->getParam("nodeid");
@@ -100,62 +104,62 @@ class Action_createproject extends ActionAbstract {
 
 
         //Creating project
-         $data = array(
-          'NODETYPENAME' => $nodeTypeName,
-          'NAME' => $name,
-          'NODETYPE' => $nodeType->GetID(),
-          'PARENTID' => 10000
-          );
+        $data = array(
+            'NODETYPENAME' => $nodeTypeName,
+            'NAME' => $name,
+            'NODETYPE' => $nodeType->GetID(),
+            'PARENTID' => 10000
+        );
 
-          $io = new BaseIO();
-          $projectId = $io->build($data);
-          if ($projectId < 1) {
-          return false;
-          }
-
-
-          $project = new Node($projectId);
-          $this->project->projectid = $projectId;
-
-          $channel = $this->project->channel;
-          $channel = $channel == '{?}' ? $this->getChannel() : $channel;
-          $this->project->channel = $channel;
-
-          $lang = $this->project->language;
-          $lang = $lang == '{?}' ? $this->getLanguage() : $lang;
-          $this->project->language = $lang;
-
-          $project->setProperty('Transformer', $this->project->Transformer);
-          $project->setProperty('channel', $this->project->channel);
-          $project->setProperty('language', $this->project->lang);
-
-          Module::log(Module::SUCCESS, "Project creation O.K.");
+        $io = new BaseIO();
+        $projectId = $io->build($data);
+        if ($projectId < 1) {
+            return false;
+        }
 
 
-          // TODO: ximlink
-          $links = $this->project->getXimlink();
-          $this->templates = $this->insertFiles($this->project->projectid, 'ximlink', $links);
+        $project = new Node($projectId);
+        $this->project->projectid = $projectId;
 
-          // Update XSL
+        $channel = $this->project->channel;
+        $channel = $channel == '{?}' ? $this->getChannel() : $channel;
+        $this->project->channel = $channel;
 
-          $xsls = $this->project->getPTD('XSL');
-          $ret = $this->insertFiles($this->project->projectid, 'xìmptd', $xsls);
+        $lang = $this->project->language;
+        $lang = $lang == '{?}' ? $this->getLanguage() : $lang;
+        $this->project->language = $lang;
 
-          // Servers
-          $servers = $this->project->getServers();
-          foreach ($servers as $server) {
-          $this->insertServer($server);
-          }
+        $project->setProperty('Transformer', $this->project->Transformer);
+        $project->setProperty('channel', $this->project->channel);
+        $project->setProperty('language', $this->project->lang);
 
-          $template = "success";
+        Module::log(Module::SUCCESS, "Project creation O.K.");
 
-          $values = array();
-          $this->render($values, $template, 'default-3.0.tpl');
+
+        // TODO: ximlink
+        $links = $this->project->getXimlink();
+        $this->templates = $this->insertFiles($this->project->projectid, 'ximlink', $links);
+
+        // Update XSL
+
+        $xsls = $this->project->getPTD('XSL');
+        $ret = $this->insertFiles($this->project->projectid, 'xìmptd', $xsls);
+
+        // Servers
+        $servers = $this->project->getServers();
+        foreach ($servers as $server) {
+            $this->insertServer($server);
+        }
+
+        $template = "success";
+
+        $values = array();
+        $this->render($values, $template, 'default-3.0.tpl');
     }
 
 
-
-    private function buildProject(){
+    private function buildProject()
+    {
 
         $buildFile = sprintf('%s/../../project/build.xml', dirname(__FILE__));
         $b = new BuildParser($buildFile);
@@ -163,9 +167,10 @@ class Action_createproject extends ActionAbstract {
     }
 
     /***
-    Build a project from $nodeId and $name
-    */
-    private function createNodeProject($name,$nodeId=10000){
+     * Build a project from $nodeId and $name
+     */
+    private function createNodeProject($name, $nodeId = 10000)
+    {
 
         $nodeType = $this->GetTypeOfNewNode($nodeId);
         $nodeTypeName = $nodeType["name"];
@@ -176,23 +181,24 @@ class Action_createproject extends ActionAbstract {
         $this->buildProject();
 
         //Creating project
-         $data = array(
-          'NODETYPENAME' => $nodeTypeName,
-          'NAME' => $name,
-          'NODETYPE' => $nodeType->GetID(),
-          'PARENTID' => 10000
-          );
+        $data = array(
+            'NODETYPENAME' => $nodeTypeName,
+            'NAME' => $name,
+            'NODETYPE' => $nodeType->GetID(),
+            'PARENTID' => 10000
+        );
 
-          $io = new BaseIO();
-          $projectId = $io->build($data);
-          if ($projectId < 1) {
-          return false;
-          }
+        $io = new BaseIO();
+        $projectId = $io->build($data);
+        if ($projectId < 1) {
+            return false;
+        }
 
-          return $projectId;
+        return $projectId;
     }
 
-    public function loadProject(){
+    public function loadProject()
+    {
 
         //Creating project
 
@@ -201,9 +207,9 @@ class Action_createproject extends ActionAbstract {
 
         $projectId = $this->createNodeProject($name);
 
-        if (!$projectId){
-            $result["failure"]=1;
-        }else{
+        if (!$projectId) {
+            $result["failure"] = 1;
+        } else {
             $project = new Node($projectId);
             $this->project->projectid = $projectId;
 
@@ -221,18 +227,19 @@ class Action_createproject extends ActionAbstract {
 
             Module::log(Module::SUCCESS, "Project creation O.K.");
 
-            $result["success"]=1;
+            $result["success"] = 1;
             $resultProject["idproject"] = $projectId;
             $resultProject["lang"] = $lang;
             $resultProject["channel"] = $channel;
-            $result["project"]=$resultProject;
+            $result["project"] = $resultProject;
 
         }
         echo json_encode($result);
     }
 
 
-    public function loadProjectXimPtd(){
+    public function loadProjectXimPtd()
+    {
 
         $idProject = $this->request->getParam("idProject");
         $this->name = $this->request->getParam("name");
@@ -243,12 +250,13 @@ class Action_createproject extends ActionAbstract {
         $xsls = $this->project->getPTD('XSL');
         $ret = $this->insertFiles($this->project->projectid, 'ximptd', $xsls);
 
-        $result["success"]=1;
+        $result["success"] = 1;
         echo json_encode($result);
 
     }
 
-    public function loadProjectXimPvd(){
+    public function loadProjectXimPvd()
+    {
         // RNGs
         $idProject = $this->request->getParam("idProject");
 
@@ -259,13 +267,14 @@ class Action_createproject extends ActionAbstract {
         $this->templates = $this->insertFiles($this->project->projectid, 'ximpvd', $pvds);
 
 
-        $result["success"]=1;
-        $result["project"]["templates"]=$this->templates;
+        $result["success"] = 1;
+        $result["project"]["templates"] = $this->templates;
         echo json_encode($result);
     }
 
     //Get Possible Channel by default. Giving priority to html or web channel.
-    function getChannel() {
+    function getChannel()
+    {
         $channels = Channel::GetAllChannels();
         if (is_null($channels)) {
             return false;
@@ -284,7 +293,8 @@ class Action_createproject extends ActionAbstract {
         return $channelId;
     }
 
-    function getLanguage() {
+    function getLanguage()
+    {
         $language = new Language();
         $langs = $language->GetList();
         if (is_null($langs)) {
@@ -296,7 +306,8 @@ class Action_createproject extends ActionAbstract {
     }
 
 
-    function loadServer(){
+    function loadServer()
+    {
         $idProject = $this->request->getParam("idProject");
         $this->templates = $this->request->getParam("templates");
         $this->lang = $this->request->getParam("lang");
@@ -310,69 +321,71 @@ class Action_createproject extends ActionAbstract {
         $this->project->language = $this->request->getParam("lang");
         // Servers
 
-      $servers = $this->project->getServers();
-      foreach ($servers as $server) {
-          $idServer = $this->insertServer($server);
-          if (!$idServer)
-            $foundError = true;
-      }
+        $servers = $this->project->getServers();
+        foreach ($servers as $server) {
+            $idServer = $this->insertServer($server);
+            if (!$idServer)
+                $foundError = true;
+        }
 
-      if ($foundError)
-        $result["failure"]=1;
-      else
-        $result["success"]=1;
+        if ($foundError)
+            $result["failure"] = 1;
+        else
+            $result["success"] = 1;
 
         echo json_encode($result);
 
     }
 
-    public function reloadProjectNode(){
+    public function reloadProjectNode()
+    {
 
 
         $jsFolder = "/modules/XSparrow/actions/createproject/resources/js/";
-	$cssFolder = "/modules/XSparrow/actions/createproject/resources/css/";
+        $cssFolder = "/modules/XSparrow/actions/createproject/resources/css/";
         $this->addJs($jsFolder . "nextActions.js");
-	$this->addCss($cssFolder."createproject.css");
+        $this->addCss($cssFolder . "createproject.css");
 
         //$this->reloadNode(10000);
         $template = "success";
 
-	$projectName = $this->request->getParam("name");
+        $projectName = $this->request->getParam("name");
         $values = array(
-		"projectName"=>$projectName,
-		"projectPath"=>Config::GetValue("UrlRoot")
-		);
+            "projectName" => $projectName,
+            "projectPath" => Config::GetValue("UrlRoot")
+        );
         $this->render($values, $template, 'default-3.0.tpl');
     }
 
 
-
-	public function getIdNodeByName(){
-
-
-		$projectName = $this->request->getParam("projectName");
-		$nodeName = $this->request->getParam("nodeName");
-		$node = new Node(10000);
-		$arrayNodes = $node->GetByName($nodeName);
-		$oldestNode = 0;
-		foreach($arrayNodes as $nodeTarget){
-
-			if ($oldestNode<$nodeTarget["IdNode"])
-				$oldestNode = $nodeTarget["IdNode"];
-		}
+    public function getIdNodeByName()
+    {
 
 
-		if ($oldestNode){
-			$result["idnode"] = $oldestNode;
-			echo json_encode($result);
-		}else{
-			$result["error"] = 1;
-			echo json_encode($result);
-		}
-	}
+        $projectName = $this->request->getParam("projectName");
+        $nodeName = $this->request->getParam("nodeName");
+        $node = new Node(10000);
+        $arrayNodes = $node->GetByName($nodeName);
+        $oldestNode = 0;
+        foreach ($arrayNodes as $nodeTarget) {
+
+            if ($oldestNode < $nodeTarget["IdNode"])
+                $oldestNode = $nodeTarget["IdNode"];
+        }
 
 
-    function insertServer($server) {
+        if ($oldestNode) {
+            $result["idnode"] = $oldestNode;
+            echo json_encode($result);
+        } else {
+            $result["error"] = 1;
+            echo json_encode($result);
+        }
+    }
+
+
+    function insertServer($server)
+    {
 
         $nodeType = new NodeType();
         $nodeType->SetByName($server->nodetypename);
@@ -397,7 +410,7 @@ class Action_createproject extends ActionAbstract {
 
         $nodeServer = new Node($serverId);
         $physicalServerId = $nodeServer->class->AddPhysicalServer(
-                $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description, $server->isServerOTF
+            $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description, $server->isServerOTF
         );
 
         $nodeServer->class->AddChannel($physicalServerId, $this->project->channel);
@@ -413,7 +426,7 @@ class Action_createproject extends ActionAbstract {
         $common = $server->getCommon("/bootstrap");
         $ret = $this->insertFiles($commonFolderId, 'bootstrap', $common);
 
-         //images
+        //images
         $imageFolderId = $nodeServer->GetChildByName("images");
         $newFolderNodeType = new NodeType();
         $newFolderNodeType->SetByName("ImagesFolder");
@@ -444,13 +457,14 @@ class Action_createproject extends ActionAbstract {
         return $serverId;
     }
 
-    function insertDocs($parentId, $files,$isXimlet=false) {
+    function insertDocs($parentId, $files, $isXimlet = false)
+    {
 
-        if ($isXimlet){
+        if ($isXimlet) {
             $xFolderName = 'ximlet';
             $nodeTypeName = 'XIMLET';
             $nodeTypeContainer = "XIMLETCONTAINER";
-        }else{
+        } else {
             $xFolderName = 'documents';
             $nodeTypeName = 'XMLDOCUMENT';
             $nodeTypeContainer = "XMLCONTAINER";
@@ -517,48 +531,49 @@ class Action_createproject extends ActionAbstract {
             );
 
             $docId = $io->build($data);
-            if ($docId > 0  && $isXimlet && $file->name == "config") {
+            if ($docId > 0 && $isXimlet && $file->name == "config") {
                 $docNode = new Node($docId);
                 $content = $docNode->GetContent();
 
                 $domDoc = new DOMDocument();
                 $domDoc->preserveWhiteSpace = false;
-        		$domDoc->validateOnParse = true;
+                $domDoc->validateOnParse = true;
                 $domDoc->formatOutput = true;
-        		$domDoc->loadXML($content);
-        		$xpathObj = new DOMXPath($domDoc);
+                $domDoc->loadXML($content);
+                $xpathObj = new DOMXPath($domDoc);
                 $nodeList0 = $xpathObj->query('/config');
                 $nodeConf = $nodeList0->item(0);
-                $nodeConf->setAttribute("font-color",$fontColor);
-                $nodeConf->setAttribute("background-color",$principalColor);
-                $nodeConf->setAttribute("secundary-color","$secundaryColor");
+                $nodeConf->setAttribute("font-color", $fontColor);
+                $nodeConf->setAttribute("background-color", $principalColor);
+                $nodeConf->setAttribute("secundary-color", "$secundaryColor");
 
                 $nodeList0 = $xpathObj->query('/config/config-header/config-header-title');
                 $nodeTitle = $nodeList0->item(0);
-                $nodeTitle->nodeValue=$title;
+                $nodeTitle->nodeValue = $title;
                 $content = $domDoc->saveXML();
                 $content = str_replace('<?xml version="1.0"?>', '', $content);
                 $docNode->SetContent($content);
 
                 $ret[$file->filename] = $docId;
                 Module::log(Module::SUCCESS, "Importing " . $file->name);
-            } else if (!($docId > 0))  {
+            } else if (!($docId > 0)) {
 //              debug::log($project, $file, $data);
                 Module::log(Module::ERROR, "XML document " . $file->name . " couldn't be created ($docId)");
             }
 
 
-        	if ($isXimlet){
-	            $actionAddximlet = new Action_addximlet();
-        	    $actionAddximlet->createRelXimletSection($parentId, $containerId, 1);
-	        }
-	}
+            if ($isXimlet) {
+                $actionAddximlet = new Action_addximlet();
+                $actionAddximlet->createRelXimletSection($parentId, $containerId, 1);
+            }
+        }
         if (count($ret) == 0)
             $ret = false;
         return $ret;
     }
 
-    function insertFiles($parentId, $xFolderName, $files) {
+    function insertFiles($parentId, $xFolderName, $files)
+    {
 
         $ret = array();
         if (count($files) == 0)
@@ -623,7 +638,8 @@ class Action_createproject extends ActionAbstract {
         return $ret;
     }
 
-    function updateXsl($parentId, $files) {
+    function updateXsl($parentId, $files)
+    {
 
         if (count($files) == 0)
             return false;
@@ -682,11 +698,13 @@ class Action_createproject extends ActionAbstract {
     }
 
     //Change the default values from form values.
-    private function changeXimletValues() {
+    private function changeXimletValues()
+    {
 
     }
 
-    public function GetTypeOfNewNode($nodeID) {
+    public function GetTypeOfNewNode($nodeID)
+    {
 
         $node = new Node($nodeID);
         if (!$node->get('IdNode') > 0) {
@@ -708,11 +726,9 @@ class Action_createproject extends ActionAbstract {
         }
         $result = array();
         $result["name"] = $newNodeTypeName;
-        $result["friendlyName"]=$friendlyName;
-        $resukt["idNodeType"]=$node->GetNodeType();
+        $result["friendlyName"] = $friendlyName;
+        $resukt["idNodeType"] = $node->GetNodeType();
         return $result;
     }
 
 }
-
-?>

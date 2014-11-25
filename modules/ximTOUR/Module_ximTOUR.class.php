@@ -20,11 +20,13 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-ModulesManager::file('/inc/modules/Module.class.php');
+use Ximdex\Modules\Module;
+
+
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/cli/CliParser.class.php');
 ModulesManager::file('/inc/cli/CliReader.class.php');
@@ -33,39 +35,41 @@ ModulesManager::file('/inc/model/role.php');
 ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/model/orm/RelRolesStates_ORM.class.php');
-ModuleSManager::file(MODULE_XIMLOADER_PATH.'/Module_ximLOADER.class.php');
+ModuleSManager::file(MODULE_XIMLOADER_PATH . '/Module_ximLOADER.class.php');
 
-class Module_ximTOUR extends Module {
-    
-   	function Module_ximTOUR() {
-		// Call Module constructor.
-        parent::Module('ximTOUR', dirname(__FILE__));
-	}
+class Module_ximTOUR extends Module
+{
+
+    public function __construct()
+    {
+        // Call Module constructor.
+        parent::__construct('ximTOUR', dirname(__FILE__));
+    }
 
     //Function which installs the module
-	function install() {
-		$projects = new Node(10000);
+    function install()
+    {
+        $projects = new Node(10000);
         $projectid = $projects->GetChildByName("Picasso");
-        if (!($projectid>0)) {
-	            $moduleLoader = new Module_ximLOADER();
-	            $moduleLoader->install(2);
-	    }
-	    $this->loadConstructorSQL("ximTOUR.constructor.sql");
-	    return parent::install();
-	}
-        
-    function uninstall(){
-	    $this->removeStateFile();
+        if (!($projectid > 0)) {
+            $moduleLoader = new Module_ximLOADER();
+            $moduleLoader->install(2);
+        }
+        $this->loadConstructorSQL("ximTOUR.constructor.sql");
+        return parent::install();
+    }
+
+    function uninstall()
+    {
+        $this->removeStateFile();
         $node = new Node(10000);
         $idNode = $node->GetChildByName("Picasso");
-        if ($idNode){
+        if ($idNode) {
             $nodePicasso = new Node($idNode);
             $nodePicasso->delete();
         }
-        
+
         $this->loadDestructorSQL("ximTOUR.destructor.sql");
         parent::uninstall();
     }
 }
-
-?>
