@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-
+Use Ximdex\Modules\Manager as ModulesManager ;
 
 ModulesManager::file('/inc/serializer/Serializer.class.php');
 
@@ -49,6 +49,9 @@ class Action_moduleslist extends ActionAbstract {
 
         $node = new Node();
         $mods = $node->find(ALL, "IdNodeType=5081", NULL, MULTI);
+        if ( !is_array( $mods )) {
+            $mods = array();
+        }
         foreach($mods as $mod){
             $moduleName = $mod["Name"];
             $isEnabled = $this->isEnabled($moduleName);

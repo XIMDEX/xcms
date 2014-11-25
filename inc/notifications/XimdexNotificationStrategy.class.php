@@ -37,7 +37,7 @@ class XimdexNotificationStrategy{
 	 * Maybe a attachment or whatever
 	 * @return [type]            [description]
 	 */
-	public function sendNotification($subject, $content,$from, $to, $extraData){
+	public function sendNotification($subject, $content,$from, $to ){
 
 		$result = array();
 		$nowDate = date('Y-m-d H:i:s');
@@ -58,5 +58,3 @@ class XimdexNotificationStrategy{
 		return $result;
 	}
 }
-
-?>
