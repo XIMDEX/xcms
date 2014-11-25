@@ -1,8 +1,8 @@
 {include file="./header.tpl"}
 		
-<p><strong>ximLOADER module</strong> provides a list of demo projects that the user can install to see and understand how Ximdex CMS works.</p>
+<p><strong>{sprintf(_("%s module"),$module_name)}</strong> {t}provides a list of demo projects that the user can install to see and understand how Ximdex CMS works{/t}.</p>
 
-<p>It's one of the modules suggested during the installation process.</p>
+<p>{t}It's one of the suggested modules during the installation process{/t}.</p>
 
 <form method="post" name="mg_form" id="mg_form" action="{$_URL_ROOT}/xmd/loadaction.php?action=moduleslist&modsel={$module_name}&method=changeState">
 
@@ -10,7 +10,7 @@
 
 		<input type="hidden" name="laststate" value="{$module_actived}" />
 
-		<label><input type="checkbox" name="module_install" {if ($module_installed)} checked="checked" {/if} value="1" /> Installed</label>
+		<label><input {if ($userId!=301)}disabled {/if}type="checkbox" name="module_install" {if ($module_installed)} checked="checked" {/if} value="1" /> {t}Installed{/t}</label>
 		<input type="hidden" name="lastinstall" value="{$module_installed}" />
 	</p>
 

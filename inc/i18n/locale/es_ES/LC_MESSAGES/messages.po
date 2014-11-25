@@ -10028,3 +10028,54 @@ msgstr "Nombre del servidor"
 
 msgid "Check all"
 msgstr "Comprobar todos"
+
+msgid "Module %s"
+msgstr "Módulo %s"
+
+msgid "%s module"
+msgstr "El módulo %s"
+
+msgid "helps Ximdex CMS to export/import data serializing nodes into a single transaction"
+msgstr "ayuda a Ximdex CMS a exportar/importar nodos serializados en una sola transacción"
+
+msgid "It's one of the suggested modules during the installation process"
+msgstr "Es uno de los módulos sugeridos durante el proceso de instalación"
+
+msgid "provides a list of demo projects that the user can install to see and understand how Ximdex CMS works"
+msgstr "proporciona una lista de proyectos demo que el usuario puede instalar para ver y entender cómo funciona Ximdex CMS"
+
+msgid "Installed"
+msgstr "Instalado"
+
+msgid "manages both news and bulletins into Ximdex CMS. Once installed, you can create a new type of section where to store your news"
+msgstr "gestiona noticias y boletines en Ximdex CMS. Una vez instalado, puedes crear un nuevo tipo de sección donde almacenar tus noticias"
+
+msgid "Actived"
+msgstr "Activado"
+
+msgid "manages all the publication processes and file transfers of Ximdex CMS. It's based on a crontab file installed into your operative system"
+msgstr "gestiona todos los procesos de publicación y transferencia de archivos de Ximdex CMS. Está basado en un archivo crontab instalado en su sistema operativo"
+
+msgid "allows the user to tag his documents on Ximdex CMS. It's fully integrated with our visual XML editor, Xedit. The tags could be semantic or external references to another resources on the Web"
+msgstr "permite al usuario etiquetar sus documentos en Ximdex CMS. Está completamente integrado con nuestro editor visual de XML, Xedit. Las etiquetas pueden ser semanticas o referenciar externas a otros recursos en la Web"
+
+msgid "enables a small tour through Ximdex CMS interface every time that a user perform a login. This tour could be disable in any moment"
+msgstr "habilita un pequeño tour a través de la interfaz de Ximdex CMS cada vez que un usuario inicie sesión. Este tou puede ser deshabilitado en cualquier momento"
+
+msgid "allow the user to find and retrieve external references to resources on the web and recognition of places, people and organizations based on his document's content. It's closely related to ximTAGS module"
+msgstr "permite al usuario engontrar y recuperar referencias externas a recursos en la web y reconocimiento de lugares, personas y organizaciones basado en el contenido de su documento. Está estrechamente relacionado con el módulo ximTAGS"
+
+msgid "Ximdex CMS offers this module in a SaaS mode, so you need a proper key to enable it"
+msgstr "Ximdex CMS ofrece este módulo en modo SaaS, por lo que necesitas una clave apropiada para activarlo"
+
+msgid "allows the user to create landing pages in a fast and easy way. It's offers a set of themes that you can customize on your own"
+msgstr "permite al usuario crear paginas de promoción de una forma rápida y fácil. Ofrece un conjunto de temas que puedes personalizar a tu gusto"
+
+msgid "This module is not installed by default in Ximdex CMS"
+msgstr "Este modulo no esta instalado por defecto en Ximdex CMS"
+
+msgid "This module is now part of the Ximdex CMS's core. So you can't disable or uninstall it"
+msgstr "Este modulo es ahora parte del núcleo de Ximdex CMS. Por no que no puedes deshabilitarlo o desinstalarlo"
+
+msgid "It's one of the suggested modules during the installation process and it's based on the Picasso Demo Project to make the tour, so it will install it by default"
+msgstr "Es uno de los modulos sugeridos duerante el proceso de instalación y está basado en el Proyecto Demo Picasso para hacer el tour, por lo que lo instalará por defecto"

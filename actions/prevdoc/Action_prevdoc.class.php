@@ -181,12 +181,15 @@ class Action_prevdoc extends ActionAbstract
 		$this->response->set('Content-type', 'text/html');
 
     	$hash = $this->request->getParam('hash');
-    	$file = sprintf('%s/data/tmp/%s', Config::getValue('AppRoot'), $hash);
+    	$file = sprintf('%s/data/tmp/%s', App::getValue('AppRoot'), $hash);
     	$content = '';
 
     	if (file_exists($file)) {
     		$content = FsUtils::file_get_contents($file);
     	}
+
+        //Remove all used cache
+        exec(sprintf('rm -f %s/data/tmp/preview_%s_*', App::getValue('AppRoot'), $_GET["nodeid"]));
 
 		//Show preview as web
 		$content = str_replace("&ajax=json", "&showprev=1", $content);

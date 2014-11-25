@@ -40,10 +40,12 @@ class Action_moduleslist extends ActionAbstract {
 
 		$modules = array();
 		$userId = XSession::get('userID');
-		if ($userId != '301') {
+
+        //Now, every users
+        /*if ($userId != '301') {
 			// Must be administrator
 			return $modules;
-		}		
+		}	*/
 
         $node = new Node();
         $mods = $node->find(ALL, "IdNodeType=5081", NULL, MULTI);
@@ -62,12 +64,18 @@ class Action_moduleslist extends ActionAbstract {
 		$values = array('modules' => $modules);
 		$this->render($values, "modulelist", 'only_template.tpl');
 	}
-	
-	/*protected function isInstalled($moduleName) {
-		return ModulesManager::isEnabled($moduleName);
-	}*/
-	
-	protected function isEnabled($moduleName) { return ModulesManager::isEnabled($moduleName);	}
+
+    protected static function isEnabled($name)
+    {
+        $str = "MODULE_" . strtoupper($name) . "_ENABLED";
+
+        if (App::getValue($str)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 
 	private function moduleNotFound() {
 		$this->messages->add( _("Module not found"), MSG_TYPE_ERROR);
@@ -79,7 +87,8 @@ class Action_moduleslist extends ActionAbstract {
 		$this->addJs('/actions/moduleslist/resources/js/validate.js');
 		$this->addCss('/actions/moduleslist/resources/css/moduleslist.css');
 		$lang = strtolower(XSession::get("locale"));
-		$base = XIMDEX_ROOT_PATH."/actions/moduleslist/template/Smarty";
+		$base = XIMDEX_ROOT_PATH."/actions/moduleslist/template/Smarty/modules";
+        $userId = XSession::get('userID');
 
 		$module_name = $this->request->getParam('modsel');
 		$module_exists = ModulesManager::moduleExists($module_name);
@@ -95,15 +104,14 @@ class Action_moduleslist extends ActionAbstract {
 			"module_actived"   => $module_actived,
 			"module_installed" => $module_installed, 
 			"core_module"	   => $core_module, 
-			"lang" 		   => $lang
+			"lang" 		   => $lang,
+            "userId"       => $userId
 		);
 
 		$file = "{$module_name}.tpl";
 
-		if ( file_exists("{$base}/{$lang}/{$file}" ) )  {
-			 $this->render($values, "{$lang}/{$file}", 'default-3.0.tpl');
-		}else if ( file_exists("{$base}/en_us/{$file}" ) ) {
-			 $this->render($values, "en_us/{$file}", 'default-3.0.tpl');
+		if ( file_exists("{$base}/{$file}" ) )  {
+			 $this->render($values, "modules/{$file}", 'default-3.0.tpl');
 		}else {
 			return $this->moduleNotFound();
 		}

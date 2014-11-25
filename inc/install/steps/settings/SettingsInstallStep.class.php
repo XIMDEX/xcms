@@ -66,7 +66,8 @@ class SettingsInstallStep extends GenericInstallStep {
 			Config::update("ActionStats","1");
 		$this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
 		Config::update("AppRoot", XIMDEX_ROOT_PATH);
-		$urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']),0,-1) ;
+		$urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']),0,-1);
+        $urlRoot = strtok($urlRoot, '?');
 		Config::update("UrlRoot", $urlRoot);
 		Config::update("locale", $language);
 		$this->installManager->setLocale($language);
@@ -75,10 +76,7 @@ class SettingsInstallStep extends GenericInstallStep {
 		$this->loadNextAction();
 		$result["success"] = true;
 		$this->sendJSON($result);
-		
 	}
-
-
 }
 
 ?>
