@@ -32,8 +32,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 
 /// Se incluyen las otras librerias de utilidades a partir de utils.php, que es incluida por todo el sistema.
-//require_once (XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
-include_once (XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/conf/install-params.conf.php');

@@ -21,10 +21,10 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-include_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
+
 ModulesManager::file("/inc/model/nodetype.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMetadata.class.php');
 
@@ -93,7 +93,6 @@ class NodetypeService
     const METADATA_SECTION = 5083;
     const METADATA_CONTAINER = 5084;
     const METADATA_DOCUMENT = 5085;
-    
 
 
     public $nodeType;
@@ -109,20 +108,21 @@ class NodetypeService
      * Check if the nodetype allow metadata.
      * @return boolean
      */
-    public function isEnabledMetadata() {
+    public function isEnabledMetadata()
+    {
 
-        return RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType'))? true: false;
+        return RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')) ? true : false;
     }
 
     /**
      * Check if the nodetype must have metadata.
      * @return boolean
      */
-    public function isMetadataForced(){
+    public function isMetadataForced()
+    {
 
-        $relNodeTypeMetadata =  RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType'))? true: false; 
+        $relNodeTypeMetadata = RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')) ? true : false;
 
-        return $relNodeTypeMetadata? $relNodeTypeMetadata->get("forced") :false;
+        return $relNodeTypeMetadata ? $relNodeTypeMetadata->get("forced") : false;
     }
 }
-?>

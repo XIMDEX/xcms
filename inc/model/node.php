@@ -33,7 +33,6 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/group.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
 include_once XIMDEX_ROOT_PATH . '/inc/nodetypes/sectionnode.php';
-require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.php');

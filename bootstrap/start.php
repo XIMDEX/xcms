@@ -92,3 +92,6 @@ App::setValue( 'class::definition::XMD_log',        '/inc/log/XMD_log.class.php'
 // Extensions setup
 
 include_once( App::getValue('XIMDEX_ROOT_PATH') . '/conf/extensions.conf.php');
+
+// Load ModuleManager
+include_once( App::getValue('XIMDEX_ROOT_PATH') . '/inc/modules/ModulesManager.class.php');

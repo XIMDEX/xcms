@@ -30,7 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../../');
 }
 
-require_once(XIMDEX_ROOT_PATH.'/inc/modules/ModulesManager.class.php');
+//
 
 // We're not using the orm, bacuse this code has to be also compatible with v2.5 
 ModulesManager::file('/inc/db/db.php');

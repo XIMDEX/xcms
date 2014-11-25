@@ -29,7 +29,7 @@
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 
-include_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/modules/ModulesManager.class.php');
+
 ModulesManager::file('/inc/Automatic.class.php', 'ximNEWS');
 
 $automatic = new Automatic();

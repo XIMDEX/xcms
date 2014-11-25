@@ -20,52 +20,51 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-
-
-require_once(dirname(__FILE__) . '/ModulesManager.class.php');
 
 ModulesManager::file("/inc/modules/DefManager.class.php");
 
 
 /**
- *  
+ *
  */
-class ModulesConfig {
+class ModulesConfig
+{
 
-	// Object composition.
-	var $defMngr;
-	
-	/**
-     *  @public
-     */   
-    function ModulesConfig() {
- 		
-    	$this->defMngr = new DefManager(XIMDEX_ROOT_PATH. ModulesManager::get_modules_install_params() );
-    	
-    	$this->defMngr->setPrefix(ModulesManager::get_pre_define_module() );
-    	$this->defMngr->setPostfix( ModulesManager::get_post_define_module() );
-	}
-	
-	
+    // Object composition.
+    var $defMngr;
+
     /**
-     *  @public
-     */   
-	function enableModule($name) {
-		$this->defMngr->enableItem(strtoupper($name));
-	}
-	
-	/**
-     *  @public
-     */   
-	function disableModule($name) {
+     * @public
+     */
+    function ModulesConfig()
+    {
 
-		$this->defMngr->disableItem(strtoupper($name));
-	}	
-	
+        $this->defMngr = new DefManager(XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params());
+
+        $this->defMngr->setPrefix(ModulesManager::get_pre_define_module());
+        $this->defMngr->setPostfix(ModulesManager::get_post_define_module());
+    }
+
+
+    /**
+     * @public
+     */
+    function enableModule($name)
+    {
+        $this->defMngr->enableItem(strtoupper($name));
+    }
+
+    /**
+     * @public
+     */
+    function disableModule($name)
+    {
+
+        $this->defMngr->disableItem(strtoupper($name));
+    }
+
 }
-
-?>
