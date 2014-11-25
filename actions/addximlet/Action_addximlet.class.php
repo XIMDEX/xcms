@@ -34,6 +34,14 @@ ModulesManager::file('/inc/model/RelSectionXimlet.class.php');
  * @ingroup ximNEWS
  */
 class Action_addximlet extends ActionAbstract {
+    /**
+     *
+     */
+    public function __construct() {
+
+        parent::__construct();
+
+    }
 
     /**
      * Main method. Build the first form in the action.
@@ -134,7 +142,7 @@ class Action_addximlet extends ActionAbstract {
      * @param  array $sections          List of Sections id.
      * @param  int $idXimletContainer Ximlet id
      */
-    private function createRelXimletSection($sections, $idXimletContainer){
+    public function createRelXimletSection($sections, $idXimletContainer){
 
         //For every section set the dependencies.
         foreach ($sections as $sectionId) {
