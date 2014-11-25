@@ -24,14 +24,15 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Modules;
 
-ModulesManager::file("/inc/modules/DefManager.class.php");
-
+use ModulesManager,
+    Ximdex\Runtime\App;
 
 /**
  *
  */
-class ModulesConfig
+class Config
 {
 
     // Object composition.
@@ -40,11 +41,10 @@ class ModulesConfig
     /**
      * @public
      */
-    function ModulesConfig()
+    public function __construct()
     {
 
-        $this->defMngr = new DefManager(XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params());
-
+        $this->defMngr = new \Ximdex\Modules\DefManager(App::getValue('XIMDEX_ROOT_PATH') . ModulesManager::get_modules_install_params());
         $this->defMngr->setPrefix(ModulesManager::get_pre_define_module());
         $this->defMngr->setPostfix(ModulesManager::get_post_define_module());
     }

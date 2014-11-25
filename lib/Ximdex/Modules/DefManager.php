@@ -23,8 +23,10 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+namespace Ximdex\Modules ;
 
-
+use ModulesManager,
+    Ximdex\Runtime\App;
 /**
  *
  */
@@ -40,7 +42,7 @@ class DefManager
     /**
      * @public
      */
-    function DefManager($fileName, $prefix = '', $postfix = '')
+    public function __construct($fileName, $prefix = '', $postfix = '')
     {
 
         $this->configFilename = $fileName;
@@ -122,11 +124,7 @@ class DefManager
             $this->writeToConfig();
 
         }
-        /*
-        else {
-            printf("nothing to do in $this->configFilename\n");
-        }
-        */
+
     }
 
     /**
@@ -139,11 +137,7 @@ class DefManager
             unset($this->configData[$key]);
             $this->writeToConfig();
         }
-        /*
-        else {
-            print("nothing to do in $this->configFilename\n");
-        }
-        */
+
     }
 
     function isEnabledItem($name)
@@ -168,8 +162,4 @@ class DefManager
             print("* ERROR: " . __CLASS__ . "::" . __FUNCTION__ . ": Cant write to file " . $this->configFilename . "\n");
         }
     }
-
-
 }
-
-?>
