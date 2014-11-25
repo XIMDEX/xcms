@@ -28,7 +28,6 @@
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);
 
-include_once(App::getValue( 'XIMDEX_ROOT_PATH') . '/inc/modules/ModulesConfig.class.php');
 include_once(App::getValue( 'XIMDEX_ROOT_PATH') . '/inc/fsutils/FsUtils.class.php');
 ModulesManager::file(ModulesManager::get_modules_install_params());
 
@@ -320,7 +319,7 @@ class ModulesManager
             return false;
         }
 
-        $modConfig = new ModulesConfig();
+        $modConfig = new \Ximdex\Modules\Config();
         $modConfig->enableModule($module->getModuleName());
 
         $module->enable();
@@ -344,7 +343,7 @@ class ModulesManager
         }
 
 
-        $modConfig = new ModulesConfig();
+        $modConfig = new \Ximdex\Modules\Config();
         $modConfig->disableModule($module->getModuleName());
 
         $module->disable();
