@@ -29,7 +29,7 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../../');
 }
-require_once(XIMDEX_ROOT_PATH.'/inc/modules/ModulesManager.class.php');
+//
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
 ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
 ModulesManager::file('/inc/cli/CliReader.class.php');

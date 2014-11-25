@@ -35,7 +35,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingJsGetText.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/action.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/notifications/AbstractNotificationStrategy.class.php');
 

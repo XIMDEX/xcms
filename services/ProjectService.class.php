@@ -21,11 +21,11 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-include_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
+
 ModulesManager::file("/inc/model/node.php");
 //ModulesManager::file("/inc/model/user.php");
 ModulesManager::file("/services/NodetypeService.class.php");
@@ -34,13 +34,16 @@ ModulesManager::file("/services/NodetypeService.class.php");
  * <p>Service responsible of deal with nodes</p>
  *
  */
-class ProjectService{
+class ProjectService
+{
     private static $ROOTNODEID = 10000;
     public $nodeid = null;
+
     /**
      * <p>Default constructor</p>
      */
-    public function __construct($idNode = null, $lazyMode = true){
+    public function __construct($idNode = null, $lazyMode = true)
+    {
         if ($idNode)
             $this->node = new Node($idNode);
         $this->lazyMode = $lazyMode;
@@ -50,19 +53,21 @@ class ProjectService{
      * <p>Checks if the given node id exists</p>
      * @param int $nodeId The node id to be checked
      */
-    public function existsProject($projectId){
-        $id = (int) $projectId;
+    public function existsProject($projectId)
+    {
+        $id = (int)$projectId;
         $node = new Node($id);
         return $node->get("IdNode") != null;
     }
 
     /**
      * <p>Gets the node with the given node id or null if the node does not exist</p>
-     * 
+     *
      * @param int $nodeId The node id to be get
      * @return Node The requested node or null if the node does not exist
      */
-    public function getProject($idProject=null){
+    public function getProject($idProject = null)
+    {
         if ($idProject)
             return $this->existsNode($idProject) ? new Node($idProject) : null;
         else
@@ -84,12 +89,12 @@ class ProjectService{
      * @param string $projectId the project id to get the information
      * @return array containing the project information
      */
-    public function getProjectInfo(){
+    public function getProjectInfo()
+    {
 
-        if ($this->node == null){
+        if ($this->node == null) {
             return array();
-        }
-        else{
+        } else {
             return array(
                 'nodeid' => $this->node->GetID(),
                 'name' => $this->node->GetNodeName(),
@@ -98,23 +103,25 @@ class ProjectService{
             );
         }
     }
-    
-    public static function getProjectsInfo(){
-        $projectsInfo=array();
-        $projects=self::getAllProject();
-        foreach($projects as $project){
-            $projectsInfo[]=$project->getProjectInfo();   
-        }    
-        return $projectsInfo;    
+
+    public static function getProjectsInfo()
+    {
+        $projectsInfo = array();
+        $projects = self::getAllProject();
+        foreach ($projects as $project) {
+            $projectsInfo[] = $project->getProjectInfo();
+        }
+        return $projectsInfo;
     }
 
-    public static function getAllProject(){
-        $res=array();
-        $root=new Node(self::$ROOTNODEID);
-        $projectIds=$root->GetChildren();
-        if(count($projectIds)>0){
-            foreach($projectIds as $pid){
-                if($pid!=8122){
+    public static function getAllProject()
+    {
+        $res = array();
+        $root = new Node(self::$ROOTNODEID);
+        $projectIds = $root->GetChildren();
+        if (count($projectIds) > 0) {
+            foreach ($projectIds as $pid) {
+                if ($pid != 8122) {
                     $res[] = new ProjectService($pid);
                 }
             }
@@ -124,42 +131,43 @@ class ProjectService{
 
     /**
      * <p>Returns the Ximdex root node (projects)</p>
-     * 
+     *
      * @return Node The root node called projects
      */
-    public function getRootProject() {
+    public function getRootProject()
+    {
         return $this->getNode(self::$ROOTNODEID);
     }
 
     /**
      * <p>Deletes the given node</p>
-     * 
+     *
      * @param mixed $node The node id or the Node to be deleted
-     * 
+     *
      * @return boolean indicates whether the node has been deleted successfully or not
      */
-    public function deleteProject($project) {
+    public function deleteProject($project)
+    {
         $nid = $node instanceof Node ? $node->GetID() : $node;
-        
+
         $n = new Node($nid);
         $res = $n->DeleteNode(true);
-        
+
         return $res > 0;
-        
+
     }
 
-    public function getSiblings(){        
-        $result = $this->node->find("IdNode","idparent=%s",array($this->node->get("IdParent")),MONO);
-        for($i = 0; count($result); $i++){
-            if ($result[$i] == $this->node->nodeID){
+    public function getSiblings()
+    {
+        $result = $this->node->find("IdNode", "idparent=%s", array($this->node->get("IdParent")), MONO);
+        for ($i = 0; count($result); $i++) {
+            if ($result[$i] == $this->node->nodeID) {
                 unset($result[$i]);
                 break;
             }
         }
-        
+
         return $this->returnNode(array_values($result));
     }
 
 }
-
-?>

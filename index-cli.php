@@ -36,8 +36,6 @@ Ximdex\Logger::addLog( $log , 'sss' ) ;
 
 XMD_Log::setActiveLog( 'sss') ;
 
-App::getValue( '')
-
 
 
 
@@ -46,7 +44,6 @@ App::getValue( '')
 if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
 	include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
 
-include_once(XIMDEX_ROOT_PATH."/inc/modules/ModulesManager.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
 ModulesManager::file('/inc/utils.inc');

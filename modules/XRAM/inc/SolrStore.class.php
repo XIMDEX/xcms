@@ -27,7 +27,7 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
-require_once(XIMDEX_ROOT_PATH . "/inc/modules/ModulesManager.class.php");
+//
 ModulesManager::file('/inc/persistence/store/Store.iface.php');
 require_once('SolariumSolrService.class.php');
 

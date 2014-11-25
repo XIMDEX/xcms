@@ -24,7 +24,6 @@
  *                                                                            *
  ******************************************************************************/
 
-require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
 ModulesManager::file('/inc/model/NodeEdition.class.php');

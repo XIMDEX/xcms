@@ -37,7 +37,7 @@ function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {
 set_error_handler("showErrors");
 
 
-include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
+//
 
 ModulesManager::file('/inc/io/connection/ConnectionManager.class.php');
 ModulesManager::file('/inc/model/Pumper.class.php', 'ximSYNC');

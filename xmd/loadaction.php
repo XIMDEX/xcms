@@ -29,7 +29,6 @@ include_once '../bootstrap/start.php';
 
 
 //General class
-include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/modules/ModulesManager.class.php");
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
