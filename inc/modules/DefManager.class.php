@@ -20,147 +20,156 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 /**
- *  
+ *
  */
-class DefManager {
+class DefManager
+{
 
-	var $configFilename;
-	var $configData;
-	
-	var $prefix;
-	var $postfix;
-	
-	/**
-	 *  @public
-	 */
-	function DefManager($fileName, $prefix = '', $postfix = '') {
- 		
-		$this->configFilename = $fileName;
+    var $configFilename;
+    var $configData;
 
-		// Check config presence.
-		if ( !file_exists($this->configFilename) ) {
-			$this->createConfigFile();
-		}
-    	
-		// Acquire data	
-		if ( is_readable($this->configFilename) ) {
-    		
-			$this->configData = file($this->configFilename);
-    		
-			// Clean data.
-			foreach ($this->configData as $idx => $line) {
-				$line = rtrim($line);
-				$line = ltrim($line);
-				$this->configData[$idx] = $line;
-			}
-			} else {
-				printf("* ERROR: File is not readable. [$this->configFilename]\n");
-			}	
-	}
-	
-	function setPrefix($prefix) {
-		$this->prefix = $prefix;
-	}
-	
-	function setPostfix($postfix) {
-		$this->postfix = $postfix;
-	}
-	
-	/**
-	 *  @protected
-	 */
-	function createConfigFile() {
-		
-		//TODO: Check if we can open it!
-		$file_hnd = fopen($this->configFilename, "w");
-		
-		fwrite($file_hnd, "<?php\n  ");
-		//input modules path 
-		fwrite($file_hnd, self::get_modules_path() );
-		fwrite($file_hnd, "?>");
-		
-		fclose($file_hnd);
-	}
+    var $prefix;
+    var $postfix;
 
-	function get_modules_path() {
-		$modMngr = new ModulesManager();
-		$consts = '';
-		$modules = $modMngr->getModules();
-		foreach($modules as $id => $module ) {
-			$consts .= "define('".PRE_DEFINE_MODULE.strtoupper($module['name']).POST_PATH_DEFINE_MODULE."', '".$module["path"]."');\n";
-		}	
+    /**
+     * @public
+     */
+    function DefManager($fileName, $prefix = '', $postfix = '')
+    {
 
-		return $consts;	
-	}
+        $this->configFilename = $fileName;
+
+        // Check config presence.
+        if (!file_exists($this->configFilename)) {
+            $this->createConfigFile();
+        }
+
+        // Acquire data
+        if (is_readable($this->configFilename)) {
+
+            $this->configData = file($this->configFilename);
+
+            // Clean data.
+            foreach ($this->configData as $idx => $line) {
+                $line = rtrim($line);
+                $line = ltrim($line);
+                $this->configData[$idx] = $line;
+            }
+        } else {
+            printf("* ERROR: File is not readable. [$this->configFilename]\n");
+        }
+    }
+
+    function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
+
+    function setPostfix($postfix)
+    {
+        $this->postfix = $postfix;
+    }
+
+    /**
+     * @protected
+     */
+    function createConfigFile()
+    {
+
+        //TODO: Check if we can open it!
+        $file_hnd = fopen($this->configFilename, "w");
+
+        fwrite($file_hnd, "<?php\n  ");
+        //input modules path
+        fwrite($file_hnd, self::get_modules_path());
+        fwrite($file_hnd, "?>");
+
+        fclose($file_hnd);
+    }
+
+    function get_modules_path()
+    {
+        $modMngr = new ModulesManager();
+        $consts = '';
+        $modules = $modMngr->getModules();
+        foreach ($modules as $id => $module) {
+            $consts .= "define('" . ModulesManager::get_pre_define_module() . strtoupper($module['name']) . ModulesManager::get_post_path_define_module() . "', '" . $module["path"] . "');\n";
+        }
+
+        return $consts;
+    }
 
 
-	/**
-	 *  @public
-	 */
-	function enableItem($name) {
+    /**
+     * @public
+     */
+    function enableItem($name)
+    {
 
-		if ( $this->isEnabledItem($name) === FALSE ) {
-			
-			$str = $this->prefix . $name . $this->postfix;
-			$end_tag_idx = array_search("?>", $this->configData);
-			
-			array_splice($this->configData, $end_tag_idx, 0, $str);
-			
-			$this->writeToConfig();
-			
-		} 
-		/*	
-		else {
-			printf("nothing to do in $this->configFilename\n");
-		}
-		*/
-	}
-	
-	/**
-     *  @public
-     */   
-	function disableItem($name) {
-	
-		if ( ($key = $this->isEnabledItem($name)) !== FALSE ) {
-			unset($this->configData[$key]);
-			$this->writeToConfig();
-		} 
-		/*
-		else {
-			print("nothing to do in $this->configFilename\n");
-		}
-		*/
-	}
-	
-	function isEnabledItem($name) {
-		$str = $this->prefix . $name . $this->postfix;
-		return array_search($str, $this->configData);
-	}
+        if ($this->isEnabledItem($name) === FALSE) {
 
-	function writeToConfig() {
+            $str = $this->prefix . $name . $this->postfix;
+            $end_tag_idx = array_search("?>", $this->configData);
 
-		if ( is_writable($this->configFilename) ) {
-			
-			$file_hnd = fopen($this->configFilename, "w");
-			
-			foreach ($this->configData as $line) {
-				fwrite($file_hnd, "$line\n");
-			}
-			fclose($file_hnd);
-			
-		} else {
-			print("* ERROR: " . __CLASS__ . "::" . __FUNCTION__ . ": Cant write to file " . $this->configFilename . "\n");
-		}
-	}
-	
-	
+            array_splice($this->configData, $end_tag_idx, 0, $str);
+
+            $this->writeToConfig();
+
+        }
+        /*
+        else {
+            printf("nothing to do in $this->configFilename\n");
+        }
+        */
+    }
+
+    /**
+     * @public
+     */
+    function disableItem($name)
+    {
+
+        if (($key = $this->isEnabledItem($name)) !== FALSE) {
+            unset($this->configData[$key]);
+            $this->writeToConfig();
+        }
+        /*
+        else {
+            print("nothing to do in $this->configFilename\n");
+        }
+        */
+    }
+
+    function isEnabledItem($name)
+    {
+        $str = $this->prefix . $name . $this->postfix;
+        return array_search($str, $this->configData);
+    }
+
+    function writeToConfig()
+    {
+
+        if (is_writable($this->configFilename)) {
+
+            $file_hnd = fopen($this->configFilename, "w");
+
+            foreach ($this->configData as $line) {
+                fwrite($file_hnd, "$line\n");
+            }
+            fclose($file_hnd);
+
+        } else {
+            print("* ERROR: " . __CLASS__ . "::" . __FUNCTION__ . ": Cant write to file " . $this->configFilename . "\n");
+        }
+    }
+
+
 }
 
 ?>
