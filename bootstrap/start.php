@@ -12,6 +12,8 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 
+
+
 if ( function_exists( 'xdebug_start_code_coverage')) {
     function ximdex_end_debug() {
         $vars = xdebug_get_code_coverage() ; 
@@ -25,14 +27,24 @@ if ( function_exists( 'xdebug_start_code_coverage')) {
     xdebug_start_code_coverage();
 }
 
-
+if (!defined('CLI_MODE'))
+    define('CLI_MODE', 0);
 
 
 
 include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
-class_alias('Ximdex\Runtime\App', 'App');
 
+
+class_alias('Ximdex\Modules\Manager', 'ModulesManager');
+
+// load FSUtils
+
+// Initialize App
+class_alias('Ximdex\Runtime\App', 'App');
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
+
+
+
 
 // get Config from install file
 if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php' ) ) {
@@ -41,7 +53,12 @@ if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf
         App::setValue($key, $value);
     }
 }
+include_once( dirname(dirname(__FILE__))   . '/inc/fsutils/FsUtils.class.php');
 
+// Initialize Modules Manager
+// set ximdex root path
+Ximdex\Modules\Manager::init( App::getValue('XIMDEX_ROOT_PATH')   );
+Ximdex\Modules\Manager::file( Ximdex\Modules\Manager::get_modules_install_params() );
 // setup log
 class_alias('Ximdex\Logger', 'XMD_Log');
 
@@ -94,4 +111,6 @@ App::setValue( 'class::definition::XMD_log',        '/inc/log/XMD_log.class.php'
 include_once( App::getValue('XIMDEX_ROOT_PATH') . '/conf/extensions.conf.php');
 
 // Load ModuleManager
-include_once( App::getValue('XIMDEX_ROOT_PATH') . '/inc/modules/ModulesManager.class.php');
+
+
+// include_once( App::getValue('XIMDEX_ROOT_PATH') . '/inc/modules/ModulesManager.class.php');
