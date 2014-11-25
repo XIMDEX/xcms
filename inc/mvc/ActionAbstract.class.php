@@ -298,6 +298,8 @@ class ActionAbstract extends IController {
 		if ($this->request->getParam("out") == "WEB" ) {
 			echo $this->request->getParam("outHTML");
 		}
+
+        return null ;
 	}
 
 	/**
@@ -624,4 +626,3 @@ class ActionAbstract extends IController {
 	}
 
 }
-?>
