@@ -44,7 +44,7 @@ class Action_modifystatesrole extends ActionAbstract {
 		$asociatedStates = Array();
 		$notAsociatedStates = Array();
 
-		$workflow = new WorkFlow(NULL, NULL, Config::getValue('IdDefaultWorkflow'));
+		$workflow = new WorkFlow(NULL, NULL, \App::getValue( 'IdDefaultWorkflow'));
 		$idAllStates = $workflow->GetAllStates();
 		foreach ($idAllStates as $idStatus) {
 			$pipeStatus = new PipeStatus($idStatus);

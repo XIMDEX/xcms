@@ -95,7 +95,7 @@ class ActionAbstract extends IController {
 
 		parent::__construct();
 
-		$this->displayEncoding = Config::getValue('displayEncoding');
+		$this->displayEncoding = \App::getValue( 'displayEncoding');
 
 		/** Obtaining the render to use */
 		$rendererClass = $this->_get_render($_render);
@@ -455,7 +455,7 @@ class ActionAbstract extends IController {
 			$_css = $path.$_css;
 		}
 
-		$this->_css[] = Config::getValue('UrlRoot').$_css;
+		$this->_css[] = \App::getValue( 'UrlRoot').$_css;
 	}
 
 	/**
@@ -595,7 +595,7 @@ class ActionAbstract extends IController {
     			return false;
         }
 		$actionsStats = new ActionsStats();
-		$numReps = Config::getValue('ximTourRep');
+		$numReps = \App::getValue( 'ximTourRep');
 		if (!$action){
 	    		$action = $this->actionCommand;
         }

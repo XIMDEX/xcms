@@ -71,8 +71,7 @@ if($contentType) {
 		$nodeType = new NodeType();
 		if(!$selectedNodeID)
         {
-            $config = new Config();
-            $selectedNodeID = $config->GetValue("ProjectsNode");
+            $selectedNodeID =  \App::getValue("ProjectsNode");
         }
 
 		if($contentType == 'dynamic')

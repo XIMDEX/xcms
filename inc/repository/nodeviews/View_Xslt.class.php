@@ -59,7 +59,7 @@ class View_Xslt extends Abstract_View {
 			return NULL;
 
 
-		$ptdFolder = Config::getValue("TemplatesDirName");
+		$ptdFolder = \App::getValue( "TemplatesDirName");
 
 		$section = new Node($this->_idSection);
 		$sectionPath = $section->class->GetNodePath();
@@ -74,7 +74,7 @@ class View_Xslt extends Abstract_View {
 
 			if ($renderMode == 'client') {
 				$inclusionHeader = '<?xml-stylesheet type="text/xsl" href="' . $ptdFolder . '/docxap.xsl"?>';
-				$xmlHeader = Config::getValue('EncodingTag');
+				$xmlHeader = \App::getValue( 'EncodingTag');
 				$content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
 
 				XMD_Log::info('Render in client, return XML content + path to template');

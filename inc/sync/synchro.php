@@ -45,7 +45,6 @@ class Synchronizer
 {
 
     var $dbObj;
-    var $config;
     var $nodeID;
     var $frameID;
     var $numErr;            // Error code.
@@ -71,7 +70,6 @@ class Synchronizer
     function Synchronizer($nodeID = null)
     {
         $this->dbObj = new DB();
-        $this->config = new Config();
         if (!is_null($nodeID))
             $this->SetID($nodeID);
         $this->errorList[1] = _('The node does not exist');
@@ -126,7 +124,7 @@ class Synchronizer
             return NULL;
         }
 
-        $targetPath = Config::GetValue("AppRoot") . Config::GetValue("SyncRoot");
+        $targetPath = \App::getValue( "AppRoot") . \App::getValue( "SyncRoot");
 
         if ($markEnd && $this->HasUnlimitedLifeTime()) {
 
@@ -151,7 +149,7 @@ class Synchronizer
 
         $nodeServer = new Node($server);
 
-        if (Config::getValue('PublishOnDisabledServers') == 1) {
+        if (\App::getValue( 'PublishOnDisabledServers') == 1) {
             $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
         } else {
             $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
@@ -303,8 +301,7 @@ class Synchronizer
         $this->ClearError();
         if (!is_null($this->nodeID)) {
             if ($frameID) {
-                $conf = new Config();
-                $targetPath = $conf->GetValue("AppRoot") . $conf->GetValue("SyncRoot");
+                $targetPath =  \App::getValue("AppRoot") .  \App::getValue("SyncRoot");
 
                 $sql = "SELECT IdNode,DateUp,DateDown FROM Synchronizer WHERE IdSync=" . $frameID;
                 $this->dbObj->Query($sql);
@@ -646,7 +643,7 @@ class Synchronizer
     {
         $this->ClearError();
         if (!is_null($this->nodeID)) {
-            $gapTolerance = Config::GetValue("MaximunGapSizeTolerance");
+            $gapTolerance = \App::getValue( "MaximunGapSizeTolerance");
             $gaps = array();
 
 
@@ -1210,13 +1207,9 @@ class Synchronizer
         $this->dbObj->Query($sql);
 
         if ($this->dbObj->GetValue("IdSync")) {
-            $conf = new Config();
-            $targetPath = $conf->GetValue("AppRoot") . $conf->GetValue("SyncRoot");
-
+            $targetPath =  \App::getValue("AppRoot") .  \App::getValue("SyncRoot");
             $filePath = $targetPath . "/" . $frameID;
-
             $content = FsUtils::file_get_contents($filePath);
-
             return $content;
         } else {
             $this->SetError(5);
@@ -1544,7 +1537,7 @@ class Synchronizer
         $this->dbObj->Query($sql);
 
         $serverID = $this->dbObj->GetValue("IdServer");
-        $tmpPath = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/" . $frameID;
+        $tmpPath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/" . $frameID;
         $channel = $this->dbObj->GetValue("IdChannel");
         $nodeID = $this->dbObj->GetValue("IdNode");
 
@@ -1611,9 +1604,8 @@ class Synchronizer
     function DeleteSyncFile($frameID)
     {
 
-        $config = new Config();
 
-        $tmpPath = $config->GetValue("AppRoot") . $config->GetValue("SyncRoot") . "/" . $frameID;
+        $tmpPath =  \App::getValue("AppRoot") .  \App::getValue("SyncRoot") . "/" . $frameID;
 
         echo "ELIMINANDO FICHERO SYNC" . $tmpPath . "\n";
         FsUtils::delete($tmpPath);

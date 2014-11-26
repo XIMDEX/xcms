@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once (XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/xml/XmlBase.class.php');
 
 define ('MSG_TYPE_ERROR', 0);
@@ -60,7 +59,7 @@ class Messages {
 	function Messages(){
 		$this->_validTypes = array(MSG_TYPE_ERROR, MSG_TYPE_WARNING, MSG_TYPE_NOTICE);
 		$this->messages = array();
-		$this->displayEncoding = Config::getValue('displayEncoding');
+		$this->displayEncoding = \App::getValue( 'displayEncoding');
 	}
 	function add($message, $type) 
 	{
@@ -207,7 +206,7 @@ class Messages {
 	}
 	
 	/**
-	 * Añade a este objeto de mensajes los mensajes provenientes de otro objeto
+	 * Aï¿½ade a este objeto de mensajes los mensajes provenientes de otro objeto
 	 * @param $messages
 	 * @return unknown_type
 	 */

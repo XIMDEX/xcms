@@ -352,7 +352,7 @@ class Action_createproject extends ActionAbstract
         $projectName = $this->request->getParam("name");
         $values = array(
             "projectName" => $projectName,
-            "projectPath" => Config::GetValue("UrlRoot")
+            "projectPath" => \App::getValue( "UrlRoot")
         );
         $this->render($values, $template, 'default-3.0.tpl');
     }
@@ -405,7 +405,7 @@ class Action_createproject extends ActionAbstract
         }
 
         $server->serverid = $serverId;
-        $server->url = preg_replace('/\{URL_ROOT\}/', Config::GetValue('UrlRoot'), $server->url);
+        $server->url = preg_replace('/\{URL_ROOT\}/', \App::getValue( 'UrlRoot'), $server->url);
         $server->initialDirectory = preg_replace('/\{XIMDEX_ROOT_PATH\}/', XIMDEX_ROOT_PATH, $server->initialDirectory);
 
         $nodeServer = new Node($serverId);
@@ -617,7 +617,7 @@ class Action_createproject extends ActionAbstract
 
                 $newNode = new Node($id);
                 $docxapContent = $newNode->GetContent();
-                $urlPath = Config::GetValue("UrlRoot");
+                $urlPath = \App::getValue( "UrlRoot");
                 $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
                 $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
                 $newNode->SetContent($docxapContent);
@@ -661,8 +661,8 @@ class Action_createproject extends ActionAbstract
         $node = new Node($ptdFolderId);
         $io = new BaseIO();
 
-        $ximdexUrl = Config::getValue('UrlRoot');
-        $projectUrl = Config::getValue('UrlRoot') . '/data/nodes/' . $this->projectName;
+        $ximdexUrl = \App::getValue( 'UrlRoot');
+        $projectUrl = \App::getValue( 'UrlRoot') . '/data/nodes/' . $this->projectName;
         $servers = $this->project->getServers();
         $serverUrl = $projectUrl . '/' . $servers[0]->name;
 

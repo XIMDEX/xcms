@@ -47,7 +47,7 @@ class I18N {
 				$locale = XSession::get("locale");
 
 			if (empty($locale))
-				$locale = Config::getValue('locale');
+				$locale = \App::getValue( 'locale');
 
 			if (empty($locale) || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/'.$locale) )
 				$locale = DEFAULT_LOCALE;

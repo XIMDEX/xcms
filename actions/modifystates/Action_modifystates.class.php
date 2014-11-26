@@ -86,7 +86,7 @@ class Action_modifystates extends ActionAbstract
             }
         }
 
-        $checkUrl = Config::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
+        $checkUrl = \App::getValue( 'UrlRoot') . '/xmd/loadaction.php?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_nodetype=IDNODETYPE&is_workflow_master=ISWORKFLOWMASTER&method=checkNodeDependencies';
 
@@ -239,7 +239,7 @@ class Action_modifystates extends ActionAbstract
         }
 
         if ($isWorkFlowMaster) {
-            if ($workflow->pipeline->get('IdNode') != Config::getValue('IdDefaultWorkflow')) {
+            if ($workflow->pipeline->get('IdNode') != \App::getValue( 'IdDefaultWorkflow')) {
                 $allStatus = $workflow->GetAllStates();
                 $node = new Node();
                 $wfresult = $node->find('IdNode', 'IdState IN (%s)', array(implode(', ', $allStatus)), MONO, false);

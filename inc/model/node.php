@@ -785,9 +785,7 @@ class    Node extends Nodes_ORM
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $config = new Config();
-
-            if (time() < ($config->GetValue('BlockExpireTime') + $this->get('BlockTime'))) {
+            if (time() < ( \App::getValue('BlockExpireTime') + $this->get('BlockTime'))) {
                 return $this->get('BlockUser');
             } else {
                 $this->unBlock();
@@ -807,9 +805,7 @@ class    Node extends Nodes_ORM
         $this->ClearError();
 
         if ($this->get('IdNode') > 0) {
-            $config = new Config();
-
-            if (time() < ($config->GetValue('BlockExpireTime') + $this->get('BlockTime'))) {
+            if (time() < ( \App::getValue('BlockExpireTime') + $this->get('BlockTime'))) {
                 return $this->get('BlockTime');
             } else {
                 $this->unBlock();
@@ -876,7 +872,7 @@ class    Node extends Nodes_ORM
             $pathList = array();
 
             /// Consigue el path hasta el directorio de nodos
-            $absPath = Config::GetValue("AppRoot") . Config::GetValue("NodeRoot");
+            $absPath = \App::getValue( "AppRoot") . \App::getValue( "NodeRoot");
 
             /// consigue la lista de paths del nodo
             $pathList = $this->class->GetPathList();
@@ -954,7 +950,7 @@ class    Node extends Nodes_ORM
         }
 
         //finally, i get it from the default value
-        $idPipeline = Config::getValue('IdDefaultWorkflow');
+        $idPipeline = \App::getValue( 'IdDefaultWorkflow');
         $workflow = new WorkFlow(NULL, NULL, $idPipeline);
         return $workflow->GetInitialState();
     }
@@ -1140,8 +1136,7 @@ class    Node extends Nodes_ORM
 
         // Deleting from file system
         if ($this->nodeType->get('HasFSEntity')) {
-            $config = new Config();
-            $absPath = $config->GetValue("AppRoot") . $config->GetValue("NodeRoot");
+            $absPath =  \App::getValue("AppRoot") .  \App::getValue("NodeRoot");
             $deletablePath = $this->class->GetPathList();
 
             $nodePath = $absPath . $deletablePath;
@@ -1286,12 +1281,12 @@ class    Node extends Nodes_ORM
 
             if ($isDir) {
                 /// Temporal backup of children nodes. In this case, it is passed the path and a flag to specify that it is a path
-                $folderPath = Config::GetValue("AppRoot") . Config::GetValue("NodeRoot") . $this->class->GetChildrenPath();
+                $folderPath = \App::getValue( "AppRoot") . \App::getValue( "NodeRoot") . $this->class->GetChildrenPath();
 
             }
 
             if ($isFile) {
-                $absPath = Config::GetValue("AppRoot") . Config::GetValue("NodeRoot");
+                $absPath = \App::getValue( "AppRoot") . \App::getValue( "NodeRoot");
                 $deletablePath = $this->class->GetPathList();
                 FsUtils::delete($absPath . $deletablePath);
             }
@@ -1311,7 +1306,7 @@ class    Node extends Nodes_ORM
             if ($isDir) {
                 /// Retrieving all children from the backup we kept, identified by $backupID
                 $parentNode = new Node($this->get('IdParent'));
-                $newPath = Config::GetValue("AppRoot") . Config::GetValue("NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
+                $newPath = \App::getValue( "AppRoot") . \App::getValue( "NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
                 rename($folderPath, $newPath);
             }
 
@@ -1334,7 +1329,7 @@ class    Node extends Nodes_ORM
                 $target = new Node($targetNode);
                 if (!$target->IsOnNode($this->get('IdNode'))) {
                     $fsEntity = $this->nodeType->get('HasFSEntity');
-                    $absPath = Config::GetValue("AppRoot") . Config::GetValue("NodeRoot");
+                    $absPath = \App::getValue( "AppRoot") . \App::getValue( "NodeRoot");
                     ignore_user_abort(true);
 
                     // Temporal children backup. In this case it is passed the path and a flag to indicate that it is a path
@@ -1759,8 +1754,7 @@ class    Node extends Nodes_ORM
                 return $dbObj->GetValue("Name");
             }
 
-            $conf = new Config();
-            $langDefault = $conf->GetValue("DefaultLanguage");
+            $langDefault =  \App::getValue("DefaultLanguage");
             if (strlen($langDefault) != 0) {
                 $lang = new Language();
                 $lang->SetByIsoName($langDefault);
@@ -3071,7 +3065,7 @@ class    Node extends Nodes_ORM
             return NULL;
         }
 
-        $folder = new Node($project->GetChildByName(Config::GetValue("SchemasDirName")));
+        $folder = new Node($project->GetChildByName(\App::getValue( "SchemasDirName")));
         if (!($folder->get('IdNode') > 0)) {
             XMD_Log::debug('Pvd folder could not be obtained');
             return NULL;

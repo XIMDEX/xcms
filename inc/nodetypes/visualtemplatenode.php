@@ -65,7 +65,7 @@ class VisualTemplateNode extends FileNode {
 		}
 
 		$rngName = VisualTemplateNode::RNG_SUFFIX . $name;
-		$rngSourcePath = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot') . '/' . $rngName;
+		$rngSourcePath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/' . $rngName;
 		$parentNode = new Node($this->parent->get('IdParent'));
 		$idRng = $parentNode->GetChildByName($rngName);
 		if ($idRng > 0) {
@@ -129,7 +129,7 @@ class VisualTemplateNode extends FileNode {
 		}
 
 		$rngName = VisualTemplateNode::RNG_SUFFIX . $this->parent->get('Name');
-		$rngSourcePath = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot') . '/' . $rngName;
+		$rngSourcePath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/' . $rngName;
 		$parentNode = new Node($this->parent->get('IdParent'));
 		$idRng = $parentNode->GetChildByName($rngName);
 		if ($idRng > 0) {

@@ -88,7 +88,7 @@ class View_PrefilterMacros extends Abstract_View implements Interface_View {
 			$absPath = $matches[2];
 		} else {
 			$pathList = $node->class->GetPathList();			
-			$absPath = Config::GetValue("AppRoot") . Config::GetValue("NodeRoot") . $pathList;
+			$absPath = \App::getValue( "AppRoot") . \App::getValue( "NodeRoot") . $pathList;
  		}
 			
 		return " a_import_enlaceid{$matches[1]}='$absPath'";

@@ -56,7 +56,7 @@ class BuildParser {
 	*/
 	public function __construct($name=null){
 
-		$patternProjectPath = Config::GetValue("AppRoot").THEMES_FOLDER."/%s/";
+		$patternProjectPath = \App::getValue( "AppRoot").THEMES_FOLDER."/%s/";
 		$isDefault = false;
 
 		$buildFilePath = sprintf($patternProjectPath,$name).PROJECT_CONFIG_FILENAME;

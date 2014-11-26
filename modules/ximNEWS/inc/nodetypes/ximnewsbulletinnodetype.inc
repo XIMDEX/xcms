@@ -392,7 +392,7 @@ class XimNewsBulletinNodeType extends AbstractStructuredDocument  {
 
 			$nodeServer = new Node($serverID);
 
-			if (Config::getValue('PublishOnDisabledServers') == 1) {
+			if (\App::getValue( 'PublishOnDisabledServers') == 1) {
 				$physicalServers = $nodeServer->class->GetPhysicalServerList(true);
 			} else {
 				$physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);

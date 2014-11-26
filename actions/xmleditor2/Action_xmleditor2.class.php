@@ -75,10 +75,10 @@ class Action_xmleditor2 extends ActionAbstract {
 		$view = $this->request->getParam('view');
 		$this->getEditor($idnode);
 
-		$xslIncludesOnServer = Config::getValue("XslIncludesOnServer");
+		$xslIncludesOnServer = \App::getValue( "XslIncludesOnServer");
 		$values = $this->_editor->openEditor($idnode, $view);
 		$values['on_resize_functions'] = '';
-		$values['xinversion'] = Config::getValue("VersionName");
+		$values['xinversion'] = \App::getValue( "VersionName");
 		$template = 'loadEditor_' . $this->_editor->getEditorName();
 		//Adding Config params for xsl:includes
 		$values["xslIncludesOnServer"] = $xslIncludesOnServer;

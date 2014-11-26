@@ -138,7 +138,7 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 		//Getting section from parent function.
 		$section = $this->getSectionNode($matches[1]);
 		if (!$section){
-			return Config::getValue('EmptyHrefCode');
+			return \App::getValue( 'EmptyHrefCode');
 		}
 		$idTargetChannel = isset($matches[2]) ? $matches[2] : NULL;
 		$dotdot = str_repeat('../', $this->_depth - 2);

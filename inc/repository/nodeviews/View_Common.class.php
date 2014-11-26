@@ -67,7 +67,7 @@ class View_Common extends Abstract_View implements Interface_View {
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			$file = $version->get('File');
-			$this->_filePath = XIMDEX_ROOT_PATH . Config::getValue('FileRoot') .'/'. $file;
+			$this->_filePath = XIMDEX_ROOT_PATH . \App::getValue( 'FileRoot') .'/'. $file;
 		} else {
 			// Retrieves Params:
 			if (array_key_exists('FILEPATH', $args)) {

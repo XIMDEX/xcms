@@ -69,7 +69,7 @@ class Action_addtocolector extends ActionAbstract {
 			'go_method' => 'add_to_colector',
 			'asoc_disabled' => $disabledInputs,
 			'time_stamp' => mktime(),
-			'nodeUrl' => Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');

@@ -56,7 +56,7 @@ class TokenService {
 
         $token = array('user' => $user, 'created' => time(), 'validTo' => $validTo);
         $token = json_encode($token);
-        $token = base64_encode(Crypto::encryptAES($token, Config::getValue('ApiKey'), Config::getValue('ApiIV')));
+        $token = base64_encode(Crypto::encryptAES($token, \App::getValue( 'ApiKey'), \App::getValue( 'ApiIV')));
         return $token;
     }
     
@@ -66,7 +66,7 @@ class TokenService {
      * @return boolean indicating whether the token is valid or not
      */
     public function validateToken($token) {
-        $decryptedToken = json_decode(Crypto::decryptAES(base64_decode($token), Config::getValue('ApiKey'), Config::getValue('ApiIV')), true);
+        $decryptedToken = json_decode(Crypto::decryptAES(base64_decode($token), \App::getValue( 'ApiKey'), \App::getValue( 'ApiIV')), true);
 
         if ($decryptedToken == null)
             return false;

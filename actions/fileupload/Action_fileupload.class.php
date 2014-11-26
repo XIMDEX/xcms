@@ -179,7 +179,7 @@ class Action_fileupload extends ActionAbstract {
 		}
 		
 		// File alredy exists, we store it temporaly and ask for confirmation
-		$tmpFolder = Config::getValue('AppRoot') . '/data/tmp/uploaded_files/';
+		$tmpFolder = \App::getValue( 'AppRoot') . '/data/tmp/uploaded_files/';
 		$tmpFile = FsUtils::getUniqueFile($tmpFolder);
 		move_uploaded_file($filePath, $tmpFolder . $tmpFile);
 		
@@ -222,7 +222,7 @@ class Action_fileupload extends ActionAbstract {
     	$idNode = $this->request->getParam('id_node');
     	$tmpFile = $this->request->getParam('tmp_file');
     	$nodeTypeName = $this->request->getParam('node_type_name');
-    	$tmpFolder = Config::getValue('AppRoot') . '/data/tmp/uploaded_files/';
+    	$tmpFolder = \App::getValue( 'AppRoot') . '/data/tmp/uploaded_files/';
     	$data = array(
 					'NODETYPENAME' => $nodeTypeName,
 					'ID' => $idNode,

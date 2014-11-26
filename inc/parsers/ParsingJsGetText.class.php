@@ -141,8 +141,8 @@ class ParsingJsGetText {
 
 			fclose($file_in);
 			fclose($file_out);
-			XMD_Log::info('Js Cache generated ' . Config::getValue('UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file);
-			return Config::getValue('UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file;
+			XMD_Log::info('Js Cache generated ' . \App::getValue( 'UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file);
+			return \App::getValue( 'UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file;
 		}
 
 	}
@@ -156,20 +156,20 @@ class ParsingJsGetText {
 
 		foreach ($no_cacheable as $n_c) {
 			if (!substr_compare($_js, $n_c, 0, strlen($n_c))) {
-				$no_cached_url = Config::getValue('UrlRoot') . $_js;
+				$no_cached_url = \App::getValue( 'UrlRoot') . $_js;
 				return $no_cached_url;
 			}
 		}
 
-		if (!is_file(Config::getValue('AppRoot') . $_js)) { // dinamic call
-			$no_cached_url = Config::getValue('UrlRoot') . $_js;
+		if (!is_file(\App::getValue( 'AppRoot') . $_js)) { // dinamic call
+			$no_cached_url = \App::getValue( 'UrlRoot') . $_js;
 			return $no_cached_url;
 		}
 
 		//Checking if the file gettexted for the specificed langauge is existing
 		if($this->fileExists() ) {
 			//If it exists, returning its url
-			return Config::getValue('UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file;
+			return \App::getValue( 'UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file;
 		}
 
 
@@ -221,8 +221,8 @@ class ParsingJsGetText {
 				create_function( '$coincidencias', '$_out = null; eval(\'$_out = \'.$coincidencias[0].";"); return \'"\'.$_out.\'"\';'),
 				$content );
 
-		$content = str_replace("##BASE_URL##", Config::getValue('UrlRoot'), $content);
-		$content = str_replace("##APP_URL##", Config::getValue("AppRoot") , $content);
+		$content = str_replace("##BASE_URL##", \App::getValue( 'UrlRoot'), $content);
+		$content = str_replace("##APP_URL##", \App::getValue( "AppRoot") , $content);
 
 		return $content;
 	}

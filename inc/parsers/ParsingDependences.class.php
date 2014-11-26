@@ -299,7 +299,7 @@ class ParsingDependences {
 		// group dependencies css, asset and script in metadependencie 'structure'
 		$structures = array_merge($dotDots, $pathTos, $assets);
 
-		$structuralDeps = explode(',', Config::GetValue('StructuralDeps'));
+		$structuralDeps = explode(',', \App::getValue( 'StructuralDeps'));
 
 		foreach ($structures as $dep) {
 			if (in_array($dep['type'], $structuralDeps)) {

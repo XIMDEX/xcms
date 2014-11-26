@@ -316,7 +316,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return Config::getValue("UrlRoot") . Config::getValue("NodeRoot") . $relativePath;
+        return \App::getValue( "UrlRoot") . \App::getValue( "NodeRoot") . $relativePath;
     }
 
     /**
@@ -360,7 +360,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return Config::getValue("AppRoot") . Config::getValue("NodeRoot") . $relativePath;
+        return \App::getValue( "AppRoot") . \App::getValue( "NodeRoot") . $relativePath;
     }
 
     /**

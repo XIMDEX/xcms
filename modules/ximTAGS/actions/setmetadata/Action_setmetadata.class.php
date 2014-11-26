@@ -65,7 +65,7 @@ class Action_setmetadata extends ActionAbstract {
 			'id_node' => $idNode,
 			'node_name' => $node->GetNodeName(),
 			'go_method' => 'save_metadata',
-			'nodeUrl' => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
+			'nodeUrl' => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
 			'namespaces' => json_encode($this->getAllNamespaces())
 		);
 
@@ -168,7 +168,7 @@ class Action_setmetadata extends ActionAbstract {
 	   if (!$format)
 	       $format = "json";
 		
-       $ontologyPath = Config::GetValue("AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
+       $ontologyPath = \App::getValue( "AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
 	   $content = "";
 	   if (file_exists($ontologyPath)){
 			$content = FsUtils::file_get_contents($ontologyPath);

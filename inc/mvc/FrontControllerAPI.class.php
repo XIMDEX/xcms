@@ -95,7 +95,7 @@ class FrontControllerAPI extends FrontController {
 
             $tokenService = new TokenService();
             
-            $ximtoken = $tokenService->decryptToken($encryptedXimtoken, Config::getValue(self::XIM_API_KEY_CONFIG_PARAM), Config::getValue(self::XIM_API_IV_CONFIG_PARAM));
+            $ximtoken = $tokenService->decryptToken($encryptedXimtoken, \App::getValue( self::XIM_API_KEY_CONFIG_PARAM), \App::getValue( self::XIM_API_IV_CONFIG_PARAM));
 
             if ($ximtoken == null) {
                 $this->sendErrorResponse('400', 'The token does not have a valid format');
@@ -176,7 +176,7 @@ class FrontControllerAPI extends FrontController {
     function _checkURI() {
         $host_request = $_SERVER["HTTP_HOST"];
         $uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
-        $ximdex = parse_url(Config::getValue('UrlRoot'));
+        $ximdex = parse_url(\App::getValue( 'UrlRoot'));
 
         if ($ximdex["host"] != $_SERVER["HTTP_HOST"] && strpos($uri_request, $ximdex["path"]) === 0) {
             $this->_setError("Error: la URL de acceso no coincide con la UrlRoot", "FrontController");

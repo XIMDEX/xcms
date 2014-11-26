@@ -47,9 +47,9 @@ class ExternalVocabularySearcherStrategy extends AbstractSearcherStrategy{
 		
 		//$data = urlencode($text);
 		$query = "q=(".urlencode("nombre:{$text}* OR aka:{$text}* OR titulo:{$text}*").")";
-                if (!Config::getValue(self::LMF_URL_KEY))
+                if (!\App::getValue( self::LMF_URL_KEY))
                     return $this;
-		$uri = Config::getValue(self::LMF_URL_KEY).$this->core."/select?wt=json&$query";
+		$uri = \App::getValue( self::LMF_URL_KEY).$this->core."/select?wt=json&$query";
 		$response = $this->restProvider->getHttp_provider()->get($uri, $headers);
 
 		if ($response['http_code'] != Curl::HTTP_OK) {

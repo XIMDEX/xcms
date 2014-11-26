@@ -26,7 +26,7 @@
 
 
 ModulesManager::file('/inc/rest/REST_Provider.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 
 /**
  * 
@@ -73,7 +73,7 @@ class TagSuggester extends REST_Provider {
 		
 		//$data = urlencode($text);
 		
-		$response = $this->http_provider->post(Config::getValue("Xowl_location"), $text, $headers);
+		$response = $this->http_provider->post(\App::getValue( "Xowl_location"), $text, $headers);
 
 		if ($response['http_code'] != Curl::HTTP_OK) {
 			return NULL;

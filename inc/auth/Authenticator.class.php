@@ -131,10 +131,10 @@ class Authenticator
             $user_locale = $user->get('Locale');
 
             if (empty($user_locale))
-                $user_locale = Config::getValue('locale');
+                $user_locale = \App::getValue( 'locale');
 
             // STOPPER
-            $stopperFilePath = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/login.stop";
+            $stopperFilePath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/login.stop";
             if ($user->getID() != "301" && file_exists($stopperFilePath)) {
                 // login closed
                 return false;

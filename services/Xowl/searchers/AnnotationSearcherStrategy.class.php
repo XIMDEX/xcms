@@ -65,7 +65,7 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy{
 		
 		//$data = urlencode($text);
 		
-		$response = $this->restProvider->getHttp_provider()->post(Config::getValue("Xowl_location"), $text, $headers);
+		$response = $this->restProvider->getHttp_provider()->post(\App::getValue( "Xowl_location"), $text, $headers);
 
 		if ($response['http_code'] != Curl::HTTP_OK) {
 			return NULL;

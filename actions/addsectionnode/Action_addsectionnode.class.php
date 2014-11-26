@@ -66,7 +66,7 @@ class Action_addsectionnode extends ActionAbstract {
                 $subfolders=$this->_getAvailableSubfolders($nt);
 
                 $values = array('nodeID' => $nodeID,
-                                'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?action='.$action.'&nodeid='.$nodeID,
+                                'nodeURL' => \App::getValue( 'UrlRoot').'/xmd/loadaction.php?action='.$action.'&nodeid='.$nodeID,
                                 'sectionTypeOptions' => $sectionTypeOptions,
                                 'sectionTypeCount' => $sectionTypeCount,
                                 'selectedsectionType' => $type_sec,

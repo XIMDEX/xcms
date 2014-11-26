@@ -124,7 +124,7 @@ class ProjectTemplate{
 		//Returned array if everything is ok.
 		$result = array();
 		
-		$rootThemesFolder = Config::GetValue("AppRoot").THEMES_FOLDER;
+		$rootThemesFolder = \App::getValue( "AppRoot").THEMES_FOLDER;
 		//Getting all theme folders
 		$themesFolders = FsUtils::readFolder($rootThemesFolder,false);
 

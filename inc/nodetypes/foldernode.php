@@ -28,7 +28,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php";
 require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 require_once (XIMDEX_ROOT_PATH . "/services/NodetypeService.class.php");
 include_once (XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
@@ -50,7 +49,6 @@ class FolderNode extends Root {
 
 		$parentID = $this->parent->GetParent();
 		$parent = new Node($parentID);
-		$conf = new Config();
 
 		if(!$parent->IsRenderized()) {
 			$parent->RenderizeNode();
@@ -58,7 +56,7 @@ class FolderNode extends Root {
 
 		$folder = $this->GetChildrenPath();
 
-		$folder = $conf->GetValue("AppRoot") . $conf->GetValue("NodeRoot") . $folder;
+		$folder =  \App::getValue("AppRoot") .  \App::getValue("NodeRoot") . $folder;
 
 		if(file_exists($folder))
 			FsUtils::deltree($folder);
