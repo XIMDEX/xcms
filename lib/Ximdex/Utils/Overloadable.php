@@ -24,10 +24,9 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Utils ;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/xObject.class.php');
-
-class Overloadable extends xObject
+class Overloadable
 {
     /**
      * @param $method string
@@ -44,4 +43,3 @@ class Overloadable extends xObject
         }
     }
 }
-
