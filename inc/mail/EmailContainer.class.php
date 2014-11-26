@@ -20,10 +20,9 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 /**
@@ -31,87 +30,95 @@
  */
 
 if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-require_once (XIMDEX_ROOT_PATH . '/inc/patterns/xObject.class.php');
-require_once (XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 
 /**
  * Class for contain email messages
  *
  */
-        
-class EmailContainer extends xObject {
-	private $files = NULL;
-	private $subject = '';
-	private $body = '';
-	private $tsDate = '';
-	
-	/**
-	 * @return timestamp
-	 */
-	public function getTsDate() {
-		return $this->tsDate;
-	}
-	
-	/**
-	 * @param timestamp $tsDate
-	 */
-	public function setTsDate($tsDate) {
-		$this->tsDate = $tsDate;
-	}
-	/**
-	 * @param string $body
-	 */
-	public function setBody($body) {
-		$this->body = $body;
-	}
-	
-	/**
-	 * @param array $files
-	 */
-	public function setFiles($files) {
-		$this->files = $files;
-	}
-	
-	/**
-	 * @param string $subject
-	 */
-	public function setSubject($subject) {
-		$this->subject = $subject;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getBody() {
-		return $this->body;
-	}
-	
-	/**
-	 * @return array
-	 */
-	public function getFiles() {
-		return $this->files;
-	}
-	
-	/**
-	 * @return string
-	 */
-	public function getSubject() {
-		return $this->subject;
-	}
+class EmailContainer
+{
+    private $files = NULL;
+    private $subject = '';
+    private $body = '';
+    private $tsDate = '';
 
-	public function __destruct() {
-		/*if (!empty($this->getFiles())) {
-		
-			foreach($this->getFiles() as $file) {
-				FsUtils::delete($file);
-			}
-		}*/
-	}
-	
-	
-	
+    /**
+     * @return timestamp
+     */
+    public function getTsDate()
+    {
+        return $this->tsDate;
+    }
+
+    /**
+     * @param timestamp $tsDate
+     */
+    public function setTsDate($tsDate)
+    {
+        $this->tsDate = $tsDate;
+    }
+
+    /**
+     * @param string $body
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @param array $files
+     */
+    public function setFiles($files)
+    {
+        $this->files = $files;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    public function __destruct()
+    {
+        /*if (!empty($this->getFiles())) {
+
+            foreach($this->getFiles() as $file) {
+                FsUtils::delete($file);
+            }
+        }*/
+    }
+
+
 }
-?>
+
