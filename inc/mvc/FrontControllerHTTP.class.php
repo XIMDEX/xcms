@@ -102,7 +102,7 @@ class FrontControllerHTTP extends FrontController {
 
 	function parseFriendlyUrl() {
 
-		$urlRoot =  Config::getValue('UrlRoot');
+		$urlRoot =  \App::getValue( 'UrlRoot');
 		//get base url of ximdex
 		$base = "/".preg_replace("/http:\/\/.+?\//","",$urlRoot)."/";
 

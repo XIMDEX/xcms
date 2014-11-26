@@ -37,7 +37,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingRng.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_SQL.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/xml/XmlBase.class.php");
 include_once (XIMDEX_ROOT_PATH. "/inc/xml/XML.class.php");
-include_once (XIMDEX_ROOT_PATH. "/inc/persistence/Config.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -56,7 +55,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$nodeType = new NodeType($node->get('IdNodeType'));
 		$nodeId = $node->get('IdNode');
 		$nodeTypeName = $nodeType->get('Name');
-		$dataEncoding = Config::getValue('dataEncoding');
+		$dataEncoding = \App::getValue( 'dataEncoding');
 
 		if (!($nodeId > 0)) {
 			XMD_Log::error("El nodo que se est� intentando convertir no existe: " . $version->get('IdNode'));
@@ -68,7 +67,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		}
 
 		$tarFile = $args['PATH'];
-		$tmpFolder = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot');
+		$tmpFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
 
 		//Sets content on SQL and XML files
 		$arrayContent = explode('<sql_content>', $content);
@@ -198,7 +197,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 
 						$rngParser = new ParsingRng();
 						$defaultContent = $rngParser->buildDefaultContent($pvdId);
-						$tmpFolder = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot');
+						$tmpFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
 						$headerFile = $tmpFolder . '/' . "pvdheader$pvdId";
 
 						if (FsUtils::file_put_contents($headerFile, $defaultContent)) {

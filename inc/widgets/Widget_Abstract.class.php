@@ -74,8 +74,8 @@ abstract class Widget_Abstract {
 		for ($i=0; $i<$c; $i++) {
 			$array[$i] = sprintf(
 				'%s/%s/%s',
-				Config::getValue('UrlRoot'),
-				preg_replace('#^'.realpath(Config::getValue('AppRoot')).'#', '', realpath($this->_widget_style_dir)),
+				\App::getValue( 'UrlRoot'),
+				preg_replace('#^'.realpath(\App::getValue( 'AppRoot')).'#', '', realpath($this->_widget_style_dir)),
 				$array[$i]
 			);
 		}
@@ -228,7 +228,7 @@ abstract class Widget_Abstract {
 		if (count($attributes) > 0 && !$asInclude) {
 			$jsParams = $this->createJsParams($attributes['id'], $attributes);
 			$url = sprintf('%s/xmd/loadaction.php?method=includeDinamicJs&%s&js_file=widgetsVars',
-				Config::getValue('UrlRoot'), implode('&', $jsParams));
+				\App::getValue( 'UrlRoot'), implode('&', $jsParams));
 			$this->_js[] = $url;
 //			debug::log($url);
 		}

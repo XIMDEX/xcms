@@ -48,7 +48,7 @@ class Action_modifyrole extends ActionAbstract {
 		//Usually it is the Workflow master.
 		$selectedPipeline = $this->request->getParam('id_pipeline');
 		if (!($selectedPipeline > 0)) {
-			$selectedPipeline = Config::getValue('IdDefaultWorkflow');
+			$selectedPipeline = \App::getValue( 'IdDefaultWorkflow');
 			$pipeline = new Pipeline();
 			$pipeline->loadByIdNode($selectedPipeline);
 			$selectedPipeline = $pipeline->get('id');

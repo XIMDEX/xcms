@@ -36,7 +36,7 @@ require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/channel.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/language.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
+//
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
@@ -376,8 +376,8 @@ class AbstractStructuredDocument extends FileNode  {
 			return $docXapHeader;
 		}
 
-		$doctypeTag = Config::getValue("DoctypeTag");
-		$encodingTag = Config::getValue("EncodingTag");
+		$doctypeTag = \App::getValue( "DoctypeTag");
+		$encodingTag = \App::getValue( "EncodingTag");
 
 		if (is_null($content)) {
 			$content = $strDoc->GetContent();
@@ -659,7 +659,7 @@ class AbstractStructuredDocument extends FileNode  {
 
 		$node = new Node($nodeid);
 
-		if (Config::getValue('dexCache')) {
+		if (\App::getValue( 'dexCache')) {
 			if ( ! DexCache::isModified($nodeid) ) {
 				$content = DexCache::getPersistentSyncFile($nodeid, $channel);
 				return $content;
@@ -677,7 +677,7 @@ class AbstractStructuredDocument extends FileNode  {
 		$pipeMng = new PipelineManager();
 		$content = $pipeMng->getCacheFromProcessAsContent($version, 'StrDocToDexT', $data);
 
-		if (Config::getValue('dexCache')) {
+		if (\App::getValue( 'dexCache')) {
 			$nodeid = $this->nodeID;
 			if (!DexCache::createPersistentSyncFile($nodeid, $channel, $output)) {
 				$this->messages->add(sprintf(_('An error occurred while generating the document %s for the channel %s'), $this->parent->get('Name'), $channel), MSG_TYPE_ERROR);

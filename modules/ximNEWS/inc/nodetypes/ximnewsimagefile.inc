@@ -298,7 +298,7 @@ class XimNewsImageFile extends FileNode {
 			$idLote = $this->parent->get('IdParent');
 
 			$node = new Node($idLote);
-			$this->thumbnailsPath = Config::GetValue('AppRoot') . Config::GetValue('NodeRoot') . $node->GetPathList() .
+			$this->thumbnailsPath = \App::getValue( 'AppRoot') . \App::getValue( 'NodeRoot') . $node->GetPathList() .
 				'/thumbnails/';
 		}
 	}

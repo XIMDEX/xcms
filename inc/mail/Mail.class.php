@@ -34,7 +34,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mail/class.phpmailer.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 
 // Include mail configuration.
 include_once(XIMDEX_ROOT_PATH . "/conf/mail.conf");
@@ -80,7 +80,7 @@ class Mail extends PHPMailer {
 		$ret_send = parent::Send();
 
 		if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
-			$tmp_path = XIMDEX_ROOT_PATH . Config::getValue('TempRoot');
+			$tmp_path = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
 			$filename = tempnam($tmp_path, 'mail_');
 			$data = parent::CreateBody();
 			// just a log, no sense to log the fsutils error too

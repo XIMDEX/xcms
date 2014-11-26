@@ -28,7 +28,7 @@
 
 
 ModulesManager::file('/inc/model/orm/RelNewsColector_ORM.class.php', 'ximNEWS');
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 
 
 class RelNewsColector extends RelNewsColector_ORM  {
@@ -623,10 +623,10 @@ class RelNewsColector extends RelNewsColector_ORM  {
 
 	function fuelle($totalNews, $newsPerBulletin) {
 		// Quantity of news with can be over the number of news per bulletin in the bellows bulletins
-		$exceededNews = floor($newsPerBulletin / Config::getValue('RatioNewsFuelle'));
+		$exceededNews = floor($newsPerBulletin / \App::getValue( 'RatioNewsFuelle'));
 
 		// Porcent of bellows bulletins
-		$tolerance = Config::getValue('ToleranciaFuelle') / 100;
+		$tolerance = \App::getValue( 'ToleranciaFuelle') / 100;
 
 		// Each element of this array is a bulletin and its value is the number of news that bulletin has
 		$bulletins = array();

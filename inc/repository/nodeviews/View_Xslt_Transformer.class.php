@@ -61,7 +61,7 @@ class View_Xslt_Transformer extends Abstract_View implements Interface_View {
 		
 		// In this case the XSLT template does not provide an encoding
 		if (empty($doc->encoding)) {
-			$encoding = Config::getValue('displayEncoding');
+			$encoding = \App::getValue( 'displayEncoding');
 			$doc->encoding = $encoding;
 			$content = $doc->saveXML();
 		}

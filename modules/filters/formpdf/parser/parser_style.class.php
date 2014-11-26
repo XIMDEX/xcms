@@ -80,8 +80,8 @@ class Style extends ParserRoot {
 			$nodeId = $node->getAttribute("nodeid");
 			if ($nodeId != "default") {
 				$dF = new DataFactory($nodeId);
-				$fileName = Config::getValue("AppRoot").
-							Config::getValue("FileRoot").
+				$fileName = \App::getValue( "AppRoot").
+							\App::getValue( "FileRoot").
 							"/".$dF->GetTmpFile($dF->GetLastVersionId());
 			} else {
 				$fileName = $node->getAttribute("filename");

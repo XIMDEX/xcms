@@ -96,7 +96,7 @@ class NodeEntity_Link extends NodeEntity {
 //		$tmpfile = $df->GetTmpFile($version, $subversion);
 //		
 //		if (!empty($tmpfile)) {
-//			$descriptor = XIMDEX_ROOT_PATH . Config::getValue('FileRoot') . DIRECTORY_SEPARATOR . $df->GetTmpFile($version, $subversion);
+//			$descriptor = XIMDEX_ROOT_PATH . \App::getValue( 'FileRoot') . DIRECTORY_SEPARATOR . $df->GetTmpFile($version, $subversion);
 //		} else {
 ////			$descriptor = tempnam('/tmp', 'xvfs_');
 ////			if (is_resource($fp = fopen($descriptor, 'w', false))) {

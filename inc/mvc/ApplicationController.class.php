@@ -114,7 +114,7 @@ class ApplicationController extends IController {
 	}
 
 	function actionStatsStart() {
-		$actionStats = Config::getValue('ActionsStats');
+		$actionStats = \App::getValue( 'ActionsStats');
 		$action = $this->request->getParam("action");
 		$method = $this->request->getParam("method");
 		$nodeId = (int) $this->request->getParam("nodeid");
@@ -138,7 +138,7 @@ class ApplicationController extends IController {
 
 	// Inserts action stats
 	function actionStatsEnd($stats) {
-		$actionStats = Config::getValue('ActionsStats');
+		$actionStats = \App::getValue( 'ActionsStats');
 		$action = $this->request->getParam("action");
 		$method = $this->request->getParam("method");
 		$nodeId = (int) $this->request->getParam("nodeid");
@@ -179,7 +179,7 @@ class ApplicationController extends IController {
 			$event="action";
 
 		$remote =  ACTIONS_STATS;
-		$ximid= Config::getValue('ximid');
+		$ximid= \App::getValue( 'ximid');
 		$userId = XSession::get("userID");
 		if(strcmp($stats["nodeid"],'')!=0){
 			$nodeid = (int) $stats["nodeid"];

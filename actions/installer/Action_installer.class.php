@@ -27,7 +27,7 @@
 
 //
 require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
+//
 
 ModulesManager::file("/inc/persistence/XSession.class.php");
 
@@ -41,8 +41,8 @@ class Action_installer extends ActionAbstract {
 		$this->checkConfigFiles($install_params, $install_modules);
 
 		I18N::setup();
-		$values["ximid"] = Config::getValue("ximid");
-		$values["versionname"] = Config::getValue("VersionName");
+		$values["ximid"] = \App::getValue( "ximid");
+		$values["versionname"] = \App::getValue( "VersionName");
 		$values["install_params"] = (int) $install_params;
 		$values["install_modules"] = (int) $install_modules;
 		$values["db_connection"] = (int) DB_CONNECTION;
@@ -53,7 +53,7 @@ class Action_installer extends ActionAbstract {
 	function checkConfigFiles($install_params = 0, $install_modules = 0) {
 
 		if ($install_params && $install_modules && DB_CONNECTION ) {
-			header(sprintf("Location: %s", Config::getValue('UrlRoot')));
+			header(sprintf("Location: %s", \App::getValue( 'UrlRoot')));
 			die();
 		}
 	}

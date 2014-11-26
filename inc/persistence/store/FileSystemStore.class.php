@@ -57,7 +57,7 @@ class FileSystemStore implements Store
             return false;
 	}
 
-	$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
         $content = FsUtils::file_get_contents($targetPath);
 			
 	XMD_Log::info("GetContent for Node:".$nodeId.", Version: ".$versionId.".".$subversion.", File: .".$uniqueName. ", Chars: ".strlen($content));
@@ -83,7 +83,7 @@ class FileSystemStore implements Store
             return false;
 	}
 
-	$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
 
 	return FsUtils::file_put_contents($targetPath, $content);
     }
@@ -103,7 +103,7 @@ class FileSystemStore implements Store
             return false;
 	}
 
-	$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
 
 	if (is_file($targetPath)) {
             return FsUtils::delete($targetPath);
@@ -117,7 +117,7 @@ class FileSystemStore implements Store
      * @return string a unique filename
      */
     private function getUniqueFileName() {
-        return FsUtils::getUniqueFile(Config::getValue("AppRoot") . Config::getValue("FileRoot"));
+        return FsUtils::getUniqueFile(\App::getValue( "AppRoot") . \App::getValue( "FileRoot"));
     }
 }
 

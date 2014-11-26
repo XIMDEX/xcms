@@ -106,7 +106,7 @@ class ExportXml {
 	
 	function getXml($recurrence = true, &$files) {
 		
-		$ximId = Config::getValue('ximid');
+		$ximId = \App::getValue( 'ximid');
 		//header
 		$xml = sprintf("<ximio-structure id=\"%s\">\n", $ximId);
 		

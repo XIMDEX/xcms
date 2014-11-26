@@ -71,7 +71,7 @@ class Action_unlinknewscolector extends ActionAbstract {
 			'idnode' => $idNode,
 			'nodename' => $node->get('Name'),
 			'go_method' => 'unlink',
-			'nodeUrl' => Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
+			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
 		);
 		$this->render($values, 'index', 'default-3.0.tpl');
     }

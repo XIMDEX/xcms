@@ -152,7 +152,7 @@ class DexCache {
 	 * @return unknown_type
 	 */
 	function _createName($idNode, $channelId) {
-		return Config::getValue('AppRoot') . Config::getValue('SyncRoot') . "/$idNode.$channelId.cache";
+		return \App::getValue( 'AppRoot') . \App::getValue( 'SyncRoot') . "/$idNode.$channelId.cache";
 	}
 
 	/**

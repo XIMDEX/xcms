@@ -43,11 +43,11 @@ $userID = XSession::get('userID');
 header('Content-type: application/javascript');
 
 echo "\nrenderer = '" . XSession::get("renderer") . "';";
-echo "\nurl_root = '" . Config::getValue('UrlRoot') . "';";
-echo "\nximdex_root = '" . App::getValue('XIMDEX_ROOT_PATH') . "';";
+echo "\nurl_root = '" . \App::getValue( 'UrlRoot') . "';";
+echo "\nximdex_root = '" . \App::getValue('XIMDEX_ROOT_PATH') . "';";
 echo "\nbase_action = '" . XSession::get("base_action") . "';";
-echo "\nurl_root = '" . Config::getValue('UrlRoot') . "';";
-echo "\napp_root = '" . Config::getValue('AppRoot') . "';";
+echo "\nurl_root = '" . \App::getValue( 'UrlRoot') . "';";
+echo "\napp_root = '" . \App::getValue('AppRoot') . "';";
 echo "\nuser_id = '" . XSession::get('userID') . "';";
 echo "\nlocale = '" . XSession::get('locale') . "';";
 $load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && XSession::get('user_demo'));

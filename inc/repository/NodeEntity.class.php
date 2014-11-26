@@ -63,7 +63,7 @@ class NodeEntity {
 
 		// Directorio temporal para los descriptores
 		$this->_tmpdir = XIMDEX_ROOT_PATH . '/data/tmp/xvfs';
-//		$this->_tmpdir = '/tmp/xvfs_' . md5(Config::getValue('AppRoot'));
+//		$this->_tmpdir = '/tmp/xvfs_' . md5(\App::getValue( 'AppRoot'));
 		if (!is_dir($this->_tmpdir)) mkdir($this->_tmpdir);
 
 		// Inicializa las propiedades del objeto

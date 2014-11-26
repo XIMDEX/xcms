@@ -41,7 +41,7 @@ class QueryProcessor {
 	
 	static public function getQueryDefinition($definitionPath, $params=array()) {
 		
-		$definitionPath = sprintf('%s/%s', Config::GetValue('AppRoot'), $definitionPath);
+		$definitionPath = sprintf('%s/%s', \App::getValue( 'AppRoot'), $definitionPath);
 		$xml = FsUtils::file_get_contents($definitionPath);
 
 		if (empty($xml)) {

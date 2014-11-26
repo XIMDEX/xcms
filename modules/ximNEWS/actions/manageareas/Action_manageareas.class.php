@@ -28,7 +28,7 @@
 
 
 ModulesManager::file('/inc/mvc/drawers/gprint.inc');
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 
 class Action_manageareas extends ActionAbstract
@@ -45,7 +45,7 @@ class Action_manageareas extends ActionAbstract
 			'id_node' => $idNode,
 			'id_action' => $idAction,
 			'areas' => $areas,
-			'nodeUrl' => Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
+			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');
@@ -68,7 +68,7 @@ class Action_manageareas extends ActionAbstract
 			'id_action' => $idAction,
 			'area_data' => $areaData,
 			'go_method' => 'modifyArea',
-			'nodeUrl' => Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
+			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
 		);
 
 		$this->render($values, NULL, 'only_template.tpl');
@@ -83,7 +83,7 @@ class Action_manageareas extends ActionAbstract
 			'id_node' => $idNode,
 			'id_action' => $idAction,
 			'go_method' => 'createArea',
-			'nodeUrl' => Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
+			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$idAction&nodeid=$idNode"
 		);
 
 		$this->render($values, NULL, 'only_template.tpl');

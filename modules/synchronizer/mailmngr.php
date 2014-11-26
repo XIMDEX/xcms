@@ -65,7 +65,7 @@ function GetMessageFromSync($idSync, $nodeID) {
 	}
 
 	// Gets the content
-	$urlRoot = Config::getValue("UrlRoot");
+	$urlRoot = \App::getValue( "UrlRoot");
 
 	$df = new DataFactory($nodeID);
 	$lv = $df->GetLastVersionId();
@@ -77,7 +77,7 @@ function GetMessageFromSync($idSync, $nodeID) {
 		return null;
 	}
 
-	$nodeRoot = Config::getValue("NodeRoot");
+	$nodeRoot =  \App::getValue("NodeRoot");
 	$nodeRoot = str_replace("/","\/",$nodeRoot);
 
 	$srcServer = new Node($serverID);
@@ -139,7 +139,7 @@ function main($argc, $argv) {
         XMD_Log::display("");
         XMD_Log::display("Checking lock...");
 
-	$mutex = new Mutex(Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/mailmngr.lck");
+	$mutex = new Mutex(  \App::getValue("AppRoot") .  \App::getValue( "TempRoot") . "/mailmngr.lck");
         if (!$mutex->acquire()) {
                 XMD_Log::display("Closing...");
                 XMD_Log::display("INFO: lock file exists, there is another process running.");
@@ -226,5 +226,3 @@ function main($argc, $argv) {
  */
 
 main($argc, $argv);
-
-?>

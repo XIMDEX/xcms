@@ -36,7 +36,7 @@ ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/model/NodeProperty.class.php');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 ModulesManager::file('/inc/persistence/XSession.class.php');
 
 
@@ -196,7 +196,7 @@ class ImportXml {
 		$this->_firstExportationNode = $firstExportationNode;
 		$this->_insertFirstNode = (bool) $insertFirstNode;
 		$this->_recurrence = $recurrence;
-		$this->idLocalXimio = Config::getValue('ximid');
+		$this->idLocalXimio = \App::getValue( 'ximid');
 
 		$this->processedNodes = array();
 		$this->processedNodes['success'] = 0;

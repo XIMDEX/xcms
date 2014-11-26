@@ -183,7 +183,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 	function updateNew(){
 
 		$nodeNew = new Node($this->nodeID);
-		$content = Config::getValue('EncodingTag') . $nodeNew->getContent();
+		$content = \App::getValue( 'EncodingTag') . $nodeNew->getContent();
 
 		$domDoc = new DOMDocument();
 		

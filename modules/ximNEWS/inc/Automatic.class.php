@@ -27,7 +27,7 @@
 
 
 ModulesManager::file('/inc/sync/Mutex.class.php');
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 ModulesManager::file('/inc/log/Automatic_log.class.php');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsColectorUsers.php', 'ximNEWS');
@@ -57,17 +57,17 @@ class Automatic {
 	    Automatic_Log::info("Starting Automatic");
 	    GLOBAL $generate_pid;
 	    $generate_pid = posix_getpid();
-		$this->stopperFilePath = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/automatic.stop";
+		$this->stopperFilePath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/automatic.stop";
 	
-		$this->mutex = new Mutex(Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/generate.lck");
+		$this->mutex = new Mutex(\App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/generate.lck");
 		if (!$this->mutex->acquire()) {
 	        Automatic_Log::fatal("Automatic previo en ejecucion");
 	    }
 	    $this->now = mktime();
 	    
-		$this->minHourFuelle = mkTime(Config::getValue('StartCheckNoFuelle'), 
+		$this->minHourFuelle = mkTime(\App::getValue( 'StartCheckNoFuelle'),
 			0, 0, date('m', $this->now), date('d', $this->now), date('Y', $this->now));
-		$this->maxHourFuelle = mktime(Config::getValue('EndCheckNoFuelle'), 
+		$this->maxHourFuelle = mktime(\App::getValue( 'EndCheckNoFuelle'),
 			0, 0, date('m', $this->now), date('d', $this->now), date('Y', $this->now));
 	}
 	

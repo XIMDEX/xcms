@@ -26,7 +26,7 @@
 
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 

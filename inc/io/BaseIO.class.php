@@ -1241,7 +1241,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function _getDefaultRNG() {
-		$defaultRNG = Config::getValue('defaultRNG');
+		$defaultRNG = \App::getValue( 'defaultRNG');
 		$node = new Node($defaultRNG);
 		if ($node->get('IdNode') > 0) {
 			return ($node->nodeType->GetName() == 'VisualTemplate') ? $defaultRNG : NULL;
@@ -1254,7 +1254,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function _getDefaultChannel() {
-		$defaultChannel = Config::getValue('defaultChannel');
+		$defaultChannel = \App::getValue( 'defaultChannel');
 		$node = new Node($defaultChannel);
 		if ($node->get('IdNode') > 0) {
 			return ($node->nodeType->GetName() == 'Channel') ? $defaultChannel : NULL;
@@ -1267,7 +1267,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function _getDefaultLanguage() {
-		$defaultLanguage = Config::getValue('DefaultLanguage');
+		$defaultLanguage = \App::getValue( 'DefaultLanguage');
 		$language = new Language();
 		$language->SetByIsoName($defaultLanguage);
 

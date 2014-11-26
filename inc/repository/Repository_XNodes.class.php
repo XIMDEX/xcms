@@ -28,7 +28,7 @@
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/Repository.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/persistence/datafactory.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 include_once(XIMDEX_ROOT_PATH . '/inc/auth/Auth.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIO.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIOInferer.class.php');
@@ -344,7 +344,7 @@ class Repository_XNodes extends Repository {
 		$output = 'JSON';		// JSON / XML
 
 		if (is_string($query)) {
-			$query = XmlBase::recodeSrc($query, Config::getValue('workingEncoding'));
+			$query = XmlBase::recodeSrc($query, \App::getValue( 'workingEncoding'));
 			$query = str_replace('\\"', '"', $query);
 		}
 
@@ -376,9 +376,9 @@ class Repository_XNodes extends Repository {
 	 */
 	function _getDefaultVisualTemplate() {
 
-		$visualtemplate = Config::getValue('defaultWebdavPVD');
+		$visualtemplate = \App::getValue( 'defaultWebdavPVD');
 
-		if (is_null($visualtemplate)) $visualtemplate = Config::getValue('defaultPVD');
+		if (is_null($visualtemplate)) $visualtemplate = \App::getValue( 'defaultPVD');
 
 		if (is_null($visualtemplate)) {
 			$sql = 'select IdNode from Nodes where IdNodeType = 5045 order by IdNode limit 1';

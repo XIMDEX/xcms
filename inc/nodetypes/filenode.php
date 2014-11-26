@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once (XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.php");
-include_once (XIMDEX_ROOT_PATH . "/inc/persistence/Config.class.php");
 include_once (XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");
 include_once (XIMDEX_ROOT_PATH . "/actions/workflow_forward/baseIO.php");
 require_once (XIMDEX_ROOT_PATH . "/actions/workflow_forward/baseIO.php");

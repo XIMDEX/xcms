@@ -49,7 +49,7 @@ class Action_filepreview extends ActionAbstract {
             $hash = $version->get('File');
     	    $node = new Node($idNode);
 		$values = array('id_node' => $idNode,
-				'path' => Config::getValue('UrlRoot') . '/data/files/' . $hash,
+				'path' => \App::getValue( 'UrlRoot') . '/data/files/' . $hash,
                 'Name' => $node->get('Name'));
 		$this->render($values, null, 'default-3.0.tpl');
     	}
@@ -74,8 +74,8 @@ class Action_filepreview extends ActionAbstract {
         	/* Gets all child nodes of type image (nodetype 5040) of this node */
         	$nodes = $node->GetChildren(5040);
         	$imageNodes = array();
-        	$imagePath = Config::getValue('UrlRoot').Config::getValue('FileRoot');
-		$nodePath = Config::getValue('UrlRoot').Config::getValue('NodeRoot');
+        	$imagePath = \App::getValue( 'UrlRoot').\App::getValue( 'FileRoot');
+		$nodePath = \App::getValue( 'UrlRoot').\App::getValue( 'NodeRoot');
         	if(count($nodes) > 0) {
             		foreach($nodes as $idNode) {
                 		$n = new Node($idNode);
@@ -88,7 +88,7 @@ class Action_filepreview extends ActionAbstract {
                 		$version = new Version($selectedVersion);
 				$hash = $version->get('File');
 
-				$filepath = XIMDEX_ROOT_PATH.Config::getValue('FileRoot').DIRECTORY_SEPARATOR.$hash;
+				$filepath = XIMDEX_ROOT_PATH.\App::getValue( 'FileRoot').DIRECTORY_SEPARATOR.$hash;
                 		$imageInfo = getimagesize($filepath);
                 		$width = $imageInfo[0];
                 		$height = $imageInfo[1];

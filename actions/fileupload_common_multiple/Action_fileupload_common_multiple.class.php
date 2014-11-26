@@ -41,8 +41,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 	function __construct() {
 	    parent::__construct();
-        	$this->uploadsFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') .'/'. Config::getValue('UploadsFolder');
-	        $this->chunksFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') .'/'. Config::getValue('ChunksFolder');
+        	$this->uploadsFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') .'/'. \App::getValue( 'UploadsFolder');
+	        $this->chunksFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') .'/'. \App::getValue( 'ChunksFolder');
 	}
 
 	// Main method: shows initial form
@@ -52,7 +52,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
      	$actionID = (int) $this->request->getParam("actionid");
 		$type = $this->request->getParam('type');
 		$userid = XSession::get('userID');
-		$dir_tmp = XIMDEX_ROOT_PATH.Config::getValue('TempRoot');
+		$dir_tmp = XIMDEX_ROOT_PATH.\App::getValue( 'TempRoot');
 
 		/** ********* Find out folder nodetype **** */
 		$baseIoInferer = new BaseIOInferer();
@@ -123,7 +123,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css');
 
 		$uploaderOptions = array (
-			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
+			"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			"lbl_anadir" => $lbl_anadir,
 			'messages' => $this->messages->messages,
 			'nodeid' => $idNode,
@@ -269,7 +269,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
 
 		$values = array (
-			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
+			"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			"lbl_anadir" => $lbl_anadir,
 			'messages' => $this->messages->messages,
 			'go_method' => 'showUploadResult',

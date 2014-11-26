@@ -48,7 +48,7 @@ class XimNewsImagesFolder extends FolderNode {
 			return NULL;
 		}
 
-		if (!FsUtils::file_put_contents($this->thumbnailsPath . 'thumbnails.xml', Config::GetValue('EncodingTag') .
+		if (!FsUtils::file_put_contents($this->thumbnailsPath . 'thumbnails.xml', \App::getValue( 'EncodingTag') .
 			"\n<thumbnails>\n</thumbnails>")) {
 
 			XMD_Log::error("Creating thumbnail file");
@@ -66,9 +66,9 @@ class XimNewsImagesFolder extends FolderNode {
 
 	function RenameNode($name) {
 		//this line produced an error. It doesn't return de correct path. It was a PHP Fatal error.
-		//$newLotePath = Config::GetValue('AppRoot') . Config::GetValue('NodeRoot') .$this->parent->GetPublishPath()."/$name/";
+		//$newLotePath = \App::getValue( 'AppRoot') . \App::getValue( 'NodeRoot') .$this->parent->GetPublishPath()."/$name/";
 
-		$newLotePath = Config::GetValue('AppRoot') . Config::GetValue('NodeRoot') .dirname($this->GetPathList())."/$name/";
+		$newLotePath = \App::getValue( 'AppRoot') . \App::getValue( 'NodeRoot') .dirname($this->GetPathList())."/$name/";
 		$this->setThumbnailsPath();
 		$thumbnails = $this->thumbnailsPath . 'thumbnails.xml';
 
@@ -210,7 +210,7 @@ class XimNewsImagesFolder extends FolderNode {
 
 		if (empty($this->thumbnailsPath)) {
 
-			$this->thumbnailsPath = Config::GetValue('AppRoot') . Config::GetValue('NodeRoot') . $this->GetPathList() .
+			$this->thumbnailsPath = \App::getValue( 'AppRoot') . \App::getValue( 'NodeRoot') . $this->GetPathList() .
 				'/thumbnails/';
 		}
 	}

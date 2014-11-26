@@ -68,7 +68,7 @@ class Appender_mail extends Appender {
 			$this->_mail->addAddress($mailbox);
 		}
 
-		$ximid= Config::getValue('ximid');
+		$ximid= \App::getValue( 'ximid');
 
 		$this->_mail->Subject = "[$ximid] Notificaciones de Ximdex";
 		$this->_mail->Body = $this->_msg;

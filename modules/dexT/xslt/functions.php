@@ -345,7 +345,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 }
 
 function _getHeader() {
-	$docTypeTag = Config::getValue('DoctypeTag');
+	$docTypeTag = \App::getValue( 'DoctypeTag');
 	preg_match_all('/<\!ENTITY\s+(\w+)\s+\"(\w+)\"\s*>/', $docTypeTag, $matches);
 	$entities = array();
 	if (!empty($matches[1]) && count($matches[1]) > 0) {

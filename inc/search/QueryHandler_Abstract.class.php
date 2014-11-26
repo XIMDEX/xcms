@@ -146,7 +146,7 @@ abstract class QueryHandler_Abstract {
 
 		if (is_string($query)) {
 			$_query = $query;
-			$query = new DOMDocument('1.0', Config::getValue('workingEncoding'));
+			$query = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
 			$query->loadXML($_query);
 		}
 		return $this->parseDOMXML($query);
@@ -158,7 +158,7 @@ abstract class QueryHandler_Abstract {
 
 		if (!($dom instanceof DOMDocument)) {
 
-			$dom = new DOMDocument('1.0', Config::getValue('workingEncoding'));
+			$dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
 			$dom->loadXML($dom);
 		}
 
@@ -236,7 +236,7 @@ abstract class QueryHandler_Abstract {
 			$rset['records'], $rset['items'], $rset['page'], $rset['pages'], implode('', $data)
 		);
 
-		$xml = XmlBase::recodeSrc($xml, Config::getValue('workingEncoding'));
+		$xml = XmlBase::recodeSrc($xml, \App::getValue( 'workingEncoding'));
 //		$xml = str_replace('\\"', '"', $xml);
 
 		return $xml;
@@ -245,7 +245,7 @@ abstract class QueryHandler_Abstract {
 	protected function recordsetToXMLDOM($rset) {
 
 		$xml = $this->recordsetToXML($rset);
-		$dom = new DOMDocument('1.0', Config::getValue('workingEncoding'));
+		$dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
 		$dom->loadXML($xml);
 
 		return $dom;

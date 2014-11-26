@@ -272,7 +272,7 @@ class User extends Users_ORM {
 	}
 
 	function hasPermission($pName){
-		$groupID = Config::GetValue("GeneralGroup");
+		$groupID = \App::getValue( "GeneralGroup");
 		return  $this->HasPermissionOnGroup($groupID, $pName);
 	}
 
