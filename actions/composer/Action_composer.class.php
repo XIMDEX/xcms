@@ -624,8 +624,7 @@ class Action_composer extends ActionAbstract {
                     }else{
                         $fullPath="/ximdex/projects/Picasso".$defaultNodePath;
                         $node = new Node();
-                        error_log($defaultNodeName." ".$defaultNodePath);
-		    	$nodes = $node->GetByNameAndPath($defaultNodeName, $fullPath);
+		    	        $nodes = $node->GetByNameAndPath($defaultNodeName, $fullPath);
                         
                     }
 		}
