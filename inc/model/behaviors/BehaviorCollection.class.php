@@ -105,4 +105,3 @@ class BehaviorCollection extends \Ximdex\Utils\Overloadable
     }
 
 }
- 

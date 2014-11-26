@@ -16,7 +16,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 if ( function_exists( 'xdebug_start_code_coverage')) {
     function ximdex_end_debug() {
-        $vars = xdebug_get_code_coverage() ; 
+        $vars = xdebug_get_code_coverage() ;
         $hf = fopen(dirname(__FILE__) .'/../logs/coverage.log', 'a');
         foreach( $vars as $file => $values ) {
             fwrite( $hf,  json_encode( array( $file  =>  array_keys( $values)   )) . PHP_EOL);
@@ -109,8 +109,3 @@ App::setValue( 'class::definition::XMD_log',        '/inc/log/XMD_log.class.php'
 // Extensions setup
 
 include_once( App::getValue('XIMDEX_ROOT_PATH') . '/conf/extensions.conf.php');
-
-// Load ModuleManager
-
-
-// include_once( App::getValue('XIMDEX_ROOT_PATH') . '/inc/modules/ModulesManager.class.php');
