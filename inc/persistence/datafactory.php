@@ -317,7 +317,7 @@ class DataFactory
 			return false;
 		}
 
-		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+		$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
 		$content = FsUtils::file_get_contents($targetPath);
 
 		XMD_Log::info("GetContent for Node:".$this->nodeID.", Version: ".$versionID.".".$subVersion.", File: .".$uniqueName. ", Chars: ".strlen($content));
@@ -328,7 +328,7 @@ class DataFactory
 		//only encoding the content if the node is not one of this 3.
 		if (!$isPlainFile){
 		    	//look for the working encoding from Config
-				$workingEncoding = Config::getValue('workingEncoding');
+				$workingEncoding = \App::getValue( 'workingEncoding');
 				$content = XmlBase::recodeSrc($content, $workingEncoding);
 		    }
 
@@ -392,7 +392,7 @@ class DataFactory
     	//only encoding the content if the node is not one of this 3.
 		if (!$isPlainFile){
 				//look for the working encoding from Config
-				$dataEncoding = Config::getValue('dataEncoding');
+				$dataEncoding = \App::getValue( 'dataEncoding');
 				$content = XmlBase::recodeSrc($content, $dataEncoding);
 		    }
 
@@ -418,7 +418,7 @@ class DataFactory
 				return false;
 			}
 
-			$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+			$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
 			XMD_Log::info("SetContent for Node:" . $this->nodeID . ", Version: " . $versionID . "." . $subVersion . ", File: ." . $uniqueName . ", Chars: " . strlen($content));
 			$result = FsUtils::file_put_contents($targetPath, $content);
 
@@ -482,7 +482,7 @@ class DataFactory
 				$newContent = $content;
 			}
 
-			if(Config::getValue("PurgeVersionsOnNewVersion")) {
+			if(\App::getValue( "PurgeVersionsOnNewVersion")) {
 				$this->_purgeVersions();
 			}
 
@@ -508,8 +508,8 @@ class DataFactory
 
 		$uniqueName = $this->_getUniqueFileName();
 
-		FsUtils::file_put_contents(Config::getValue("AppRoot") .
-					Config::getValue("FileRoot") .
+		FsUtils::file_put_contents(\App::getValue( "AppRoot") .
+					\App::getValue( "FileRoot") .
 					"/" . $uniqueName, $newContent);
 
 		$version = new Version();
@@ -534,7 +534,7 @@ class DataFactory
 
 	function _getUniqueFileName() {
 
-		return FsUtils::getUniqueFile(Config::getValue("AppRoot") . Config::getValue("FileRoot"));
+		return FsUtils::getUniqueFile(\App::getValue( "AppRoot") . \App::getValue( "FileRoot"));
 	}
 	/*
 	*
@@ -565,7 +565,7 @@ class DataFactory
 
 		$newVersion = $this->GetLastVersion();
 		$curSubVersion = $this->GetLastSubVersion($newVersion);
-		$purgePreviousSubVersions = Config::getValue("PurgeSubversionsOnNewVersion");
+		$purgePreviousSubVersions = \App::getValue( "PurgeSubversionsOnNewVersion");
 
 		$newSubVersion = $curSubVersion + 1;
 
@@ -576,7 +576,7 @@ class DataFactory
 
 		/// Se guarda en un archivo de id unico
 		$uniqueName = $this->_getUniqueFileName();
-		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot") . "/" . $uniqueName;
+		$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot") . "/" . $uniqueName;
 
 		if (!FsUtils::file_put_contents($targetPath, $newContent)) {
 			XMD_Log::error('Error al establecer el contenido del documento');
@@ -616,7 +616,7 @@ class DataFactory
 		}
 
 
-		$purgePreviousSubVersions = Config::getValue("PurgeSubversionsOnNewVersion");
+		$purgePreviousSubVersions = \App::getValue( "PurgeSubversionsOnNewVersion");
 		if($purgePreviousSubVersions && $this->HasPreviousVersions()) {
 			$this->_purgeSubVersions($newVersion, $purgeAll);
 		}
@@ -704,7 +704,7 @@ class DataFactory
 			return false;
 		}
 
-		$targetPath = Config::getValue("AppRoot") . Config::getValue("FileRoot"). "/". $uniqueName;
+		$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/". $uniqueName;
 
 		/* Tal y como estaba el codigo dejaba sucia la base de datos
 			si se borraba el archivo manualmente o simplemente no se podia borrar por permisos
@@ -762,7 +762,7 @@ class DataFactory
 			return false;
 		}
 
-		$maxSubVersionsAllowed = Config::getValue("MaxSubversionsAllowed");
+		$maxSubVersionsAllowed = \App::getValue( "MaxSubversionsAllowed");
 
 		if($maxSubVersionsAllowed <= 0) {
 			$maxSubVersionsAllowed = 1;
@@ -796,7 +796,7 @@ class DataFactory
 			return false;
 		}
 
-		$maxVersionsAllowed = Config::getValue("MaxVersionsAllowed");
+		$maxVersionsAllowed = \App::getValue( "MaxVersionsAllowed");
 		if($maxVersionsAllowed <= 0) {
 			$maxVersionsAllowed = 1;
 		}
@@ -1137,7 +1137,7 @@ class DataFactory
 			return;
 		}
 
-		$usePool = (boolean)Config::getValue('AddVersionUsesPool');
+		$usePool = (boolean)\App::getValue( 'AddVersionUsesPool');
 		
 		if (!$usePool) {
 

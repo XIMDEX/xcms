@@ -30,7 +30,7 @@ class Action_filedownload_multiple extends ActionAbstract {
 	public function index() {
 		$nodes = $this->request->getParam('nodes');
 		$tmpFolder = FsUtils::getUniqueFolder(
-			Config::getValue('AppRoot') . Config::getValue('TempRoot'), '', 'export_'
+			\App::getValue( 'AppRoot') . \App::getValue( 'TempRoot'), '', 'export_'
 		);
     		
 		if (!FsUtils::mkdir($tmpFolder)) {
@@ -63,7 +63,7 @@ class Action_filedownload_multiple extends ActionAbstract {
             XMD_Log::error('All selected documents could not be exported. Do you have zip installed?');
 		}
 
-		$tarFile = preg_replace(sprintf('#^%s#', Config::getValue('AppRoot')), Config::getValue('UrlRoot'), $tarFile);
+		$tarFile = preg_replace(sprintf('#^%s#', \App::getValue( 'AppRoot')), \App::getValue( 'UrlRoot'), $tarFile);
 
 		$values = array(
 			'nodeName' => basename($tarFile),

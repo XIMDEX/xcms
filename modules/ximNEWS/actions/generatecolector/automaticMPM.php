@@ -45,10 +45,10 @@ ModulesManager::file('/inc/MPM/MPMProcess.class.php');
 
 GLOBAL $generate_pid;
 $generate_pid = posix_getpid();
-$stopperFilePath = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/automatic.stop";
+$stopperFilePath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/automatic.stop";
 $msg_lck = _("STOP: Detected file")." $stopperFilePath "._("You need to delete this file in order to get an Automatic succesfull restart");
 
-$mutex = new Mutex(Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/generate.lck");
+$mutex = new Mutex(\App::getValue( "AppRoot") . \App::getValue( "tmpRoot") . "/generate.lck");
 if (!$mutex->acquire()) {
 	Automatic_Log::info("Automatic previo en ejecucion");
 	exit(1);
@@ -58,8 +58,8 @@ Automatic_Log::info("Starting Automatic");
 
 // Si son horas se obtienen los colectores con fuelle
 
-$minHourFuelle = mkTime(Config::getValue('StartCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
-$maxHourFuelle = mktime(Config::getValue('EndCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
+$minHourFuelle = mkTime(\App::getValue( 'StartCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
+$maxHourFuelle = mktime(\App::getValue('EndCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
 
 $colectoresConFuelle = array();
 

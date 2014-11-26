@@ -40,10 +40,9 @@ Main($argv, $argc);
 function Main($argv, $argc) {
 	
 	$sync = new Synchronizer();
-	$config = new Config();
-	$tmpPath = $config->GetValue("AppRoot").$config->GetValue("TempRoot");
-	$command = $config->GetValue("AppRoot").$config->GetValue("SynchronizerCommand");
-	$stopper_file_path = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/synchronizer.stop";
+	$tmpPath =  \App::getValue("AppRoot"). \App::getValue("TempRoot");
+	$command =  \App::getValue("AppRoot"). \App::getValue("SynchronizerCommand");
+	$stopper_file_path = \App::getValue( "AppRoot") .  \App::getValue("TempRoot") . "/synchronizer.stop";
 
 	GLOBAL $synchro_pid;
 	$synchro_pid = posix_getpid();

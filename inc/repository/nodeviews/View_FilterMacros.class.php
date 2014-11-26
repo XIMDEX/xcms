@@ -389,10 +389,10 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $node = new Node($target);
         $section = $this->getSectionNode($target);
         if (!$section) {
-            return Config::getValue('EmptyHrefCode');
+            return \App::getValue( 'EmptyHrefCode');
         }
         if ($this->_isPreviewServer) {
-            return Config::getValue('UrlRoot') . Config::getValue('NodeRoot') . '/' . $section->GetPublishedPath(
+            return \App::getValue( 'UrlRoot') . \App::getValue( 'NodeRoot') . '/' . $section->GetPublishedPath(
                 NULL, true);
         }
 
@@ -417,12 +417,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $targetPath = $matches[1];
 
         if (!($this->_serverNode->get('IdNode') > 0)) {
-            return Config::getValue("EmptyHrefCode");
+            return \App::getValue( "EmptyHrefCode");
         }
 
         //If preview, we return the path to data/nodes
         if ($this->_isPreviewServer) {
-            return Config::GetValue("UrlRoot") . Config::GetValue("NodeRoot") . "/" . $targetPath;
+            return \App::getValue( "UrlRoot") . \App::getValue( "NodeRoot") . "/" . $targetPath;
         } else {
             //Getting relative or absolute path.
             if ($this->_server->get('OverrideLocalPaths')) {
@@ -430,7 +430,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
             }
 
             $deep = 2;
-            if (Config::exists("PublishPathFormat") &&
+            if (\App::getValue("PublishPathFormat", null) !== null &&
                 $this->_node->class &&
                 method_exists($this->_node->class, "getPathToDeep")
             ) {
@@ -488,16 +488,16 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         if ($this->_isPreviewServer) {
             if ($isStructuredDocument) {
-                return Config::getValue('UrlRoot') . Config::getValue('NodeRoot') . $targetNode->GetPublishedPath(
+                return \App::getValue( 'UrlRoot') . \App::getValue( 'NodeRoot') . $targetNode->GetPublishedPath(
                     $idTargetChannel, true);
             } else {
                 return $targetNode->class->GetNodeURL();
             }
         }
 
-        if (Config::getValue('PullMode') == 1) {
+        if (\App::getValue( 'PullMode') == 1) {
 
-            return Config::getValue('UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
+            return \App::getValue( 'UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
                 'IdNode') . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->_serverNode->get(
                 'IdNode');
         }
@@ -508,7 +508,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $targetServer = new server($idTargetServer);
         $idTargetServer = $targetServer->get('IdServer');
         if (!($idTargetServer > 0)) {
-            return Config::getValue('EmptyHrefCode');
+            return \App::getValue( 'EmptyHrefCode');
         }
 
         if (!$forceAbsolute && !$absolute && !$relative) {
@@ -535,7 +535,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
     {
 
         $deep = 2;
-        if (Config::exists("PublishPathFormat") &&
+        if ( \App::getValue("PublishPathFormat", null ) !== null  &&
             $this->_node->class &&
             method_exists($this->_node->class, "getPathToDeep")
         ) {
@@ -922,5 +922,3 @@ class View_FilterMacros extends Abstract_View implements Interface_View
     }
 
 }
-
-?>

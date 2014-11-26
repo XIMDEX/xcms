@@ -63,8 +63,8 @@ class View_Dext extends Abstract_View implements Interface_View {
 		$project = new Node($this->_idProject);
 		$nodeProjectPath = $project->class->GetNodePath();
 
-		$tplFolder = Config::getValue("TemplatesDirName");
-		$generatorCommand = Config::getValue("AppRoot").Config::getValue("GeneratorCommand");
+		$tplFolder = \App::getValue( "TemplatesDirName");
+		$generatorCommand = \App::getValue( "AppRoot").\App::getValue( "GeneratorCommand");
 
 		$command = $generatorCommand .
 				" --template='".$sectionPath."/".$tplFolder."'" .
@@ -73,7 +73,7 @@ class View_Dext extends Abstract_View implements Interface_View {
 				" --errorout";
 
 		$prefix = 'dextdin';
-		$tmpPath = Config::getValue("AppRoot") . Config::getValue("TempRoot");
+		$tmpPath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot");
 		$tmpfile = tempnam($tmpPath , $prefix);
 
 		$pipe = popen("$command 2>&1 >$tmpfile", 'w');
@@ -88,7 +88,7 @@ class View_Dext extends Abstract_View implements Interface_View {
 			$output = FsUtils::file_get_contents($tmpfile);
 			FsUtils::delete($tmpfile);
 
-			$ciclosDecode = Config::getValue("UTFLevel");
+			$ciclosDecode = \App::getValue( "UTFLevel");
 
 			if ( $ciclosDecode >= 0 && $ciclosDecode < 5 ) {
 				for($i = 0; $i < $ciclosDecode; $i++) {

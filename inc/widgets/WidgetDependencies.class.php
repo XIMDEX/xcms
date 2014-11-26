@@ -37,7 +37,7 @@ class WidgetDependencies {
 
 	protected static function loadDependencies() {
 		if (self::$deps === null) {
-			self::$deps = include(Config::getValue('AppRoot') . '/conf/wdeps.inc');
+			self::$deps = include(\App::getValue( 'AppRoot') . '/conf/wdeps.inc');
 		}
 		return self::$deps;
 	}

@@ -75,7 +75,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		if(!$xml){
 		    return false;
 		}
-		$filePath = Config::GetValue("AppRoot") . Config::GetValue("FileRoot"). "/";
+		$filePath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot"). "/";
 		$fileName = FsUtils::getUniqueFile($filePath);
 		$targetPath = $filePath . $fileName;
 		
@@ -149,9 +149,9 @@ class XimNewsCache extends XimNewsCache_ORM {
 
 		$doc = new DomDocument;
 		$doc->validateOnParse = true;
-		$newsXml = '<?xml version="1.0" encoding="' . Config::getValue('dataEncoding') . '"?>' . $newsXml;
+		$newsXml = '<?xml version="1.0" encoding="' . \App::getValue( 'dataEncoding') . '"?>' . $newsXml;
 
-		$doc->LoadXML(XmlBase::recodeSrc($newsXml, Config::getValue('dataEncoding')));
+		$doc->LoadXML(XmlBase::recodeSrc($newsXml, \App::getValue( 'dataEncoding')));
 
 		$xpath = new DOMXPath($doc);
 		$nodeList = $xpath->query('//*[@boletin = "yes"]');
@@ -192,9 +192,9 @@ class XimNewsCache extends XimNewsCache_ORM {
 
 		// Builds the cache
  	
-        $xmlNew = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot') . '/dummy.xml';		
+        $xmlNew = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/dummy.xml';
 		FSUtils::file_put_contents($xmlNew, '<?xml version="1.0" encoding="UTF-8"?><para>testing</para>');
-		$xslBulletin = XIMDEX_ROOT_PATH . Config::GetValue('FileRoot') . '/' . $xslBulletinFile;
+		$xslBulletin = XIMDEX_ROOT_PATH . \App::getValue( 'FileRoot') . '/' . $xslBulletinFile;
 
 		$xsltHandler = new XSLT();
 		$xsltHandler->setXML($xmlNew);
@@ -240,8 +240,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		// Borra la tabla cache
 		$IdCache = $this->get('IdCache');
 		$fileName = $this->get('File');
-		$config = new Config();
-		$targetPath = $config->GetValue("AppRoot") . $config->GetValue("FileRoot"). "/". $fileName;
+		$targetPath =  \App::getValue("AppRoot") .  \App::getValue("FileRoot"). "/". $fileName;
 
 		if(!FsUtils::delete($targetPath)){
 			XMD_Log::info(_("Deleting file $targetPath"));
@@ -270,8 +269,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		    return false;
 		}
 
-		$config = new Config();
-		$targetPath = $config->GetValue("AppRoot") . $config->GetValue("FileRoot"). "/". $cacheFile;
+		$targetPath =  \App::getValue("AppRoot") .  \App::getValue("FileRoot"). "/". $cacheFile;
 		$content = file_get_contents($targetPath);
 
 		return $content;
@@ -313,7 +311,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 			return false;
 		}
 
-		//Si el contador se queda a cero elimino la caché
+		//Si el contador se queda a cero elimino la cachï¿½
 		if($this->get('Counter') == 0){
 			$this->DeleteCache();
 		}
@@ -359,8 +357,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		    }
 
 		    $fileName = $cache['filename'];
-		    $config = new Config();
-		    $targetPath = $config->GetValue("AppRoot") . $config->GetValue("FileRoot"). "/". $fileName;
+		    $targetPath =  \App::getValue("AppRoot") . \App::getValue("FileRoot"). "/". $fileName;
 		    if (FsUtils::file_put_contents($targetPath, $xml) === false) {
 				$this->messages->add(_('Disk writing error (2)'), MSG_TYPE_ERROR);
 				return false;
@@ -408,4 +405,3 @@ class XimNewsCache extends XimNewsCache_ORM {
     }
 
 }
-?>

@@ -157,7 +157,7 @@ class Appender_rollingfile extends Appender_file {
 			 */
 			
 			$fileInfo = pathinfo( $newFile );
-			$tmpDir = Config::getValue('AppRoot') . Config::getValue('TempRoot') . DIRECTORY_SEPARATOR . 'xmdlogs';
+			$tmpDir = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . DIRECTORY_SEPARATOR . 'xmdlogs';
 			$tmpFile = $tmpDir . DIRECTORY_SEPARATOR . $fileInfo['basename'];
 			
 			$tar = new TarArchiver( $newFile, array( TAR_COMPRESSION=>TAR_COMPRESSION_GZIP ) );

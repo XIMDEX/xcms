@@ -102,7 +102,7 @@ class templatenode extends FileNode {
 		$varsList = $result[1];
 		$ptdContent = $this->_addUidAttributes($ptdContent, $fileName);
 
-		$tmpPath = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot') . '/tmpTemplateXml.xml';
+		$tmpPath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/tmpTemplateXml.xml';
 		FSUtils::file_put_contents($tmpPath, $ptdContent);
 
 		// build xslt content
@@ -380,8 +380,8 @@ class templatenode extends FileNode {
 			$relativePath = $section->GetRelativePath($projectId);
 		}
 
-		$xslDir = Config::GetValue('UrlRoot') . Config::GetValue('NodeRoot') . '/' . $relativePath . '/' .
-			Config::getValue("TemplatesDirName") . '/';
+		$xslDir = \App::getValue( 'UrlRoot') . \App::getValue( 'NodeRoot') . '/' . $relativePath . '/' .
+			\App::getValue( "TemplatesDirName") . '/';
 
 		return $xslDir;
 	}

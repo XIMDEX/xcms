@@ -843,8 +843,8 @@ class XimNewsColectorNodeType extends FolderNode  {
 			return NULL;
 		}
 
-		$filePath = Config::GetValue("AppRoot") . Config::GetValue("FileRoot");
-		$xslPath = Config::GetValue("AppRoot") .ModulesManager::path('ximNEWS'). "/inc/xsl/";
+		$filePath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot");
+		$xslPath = \App::getValue( "AppRoot") .ModulesManager::path('ximNEWS'). "/inc/xsl/";
 
 		$rngParser = new ParsingRng();
 		$bulletinXml = $rngParser->buildDefaultContent($templateID);
@@ -864,11 +864,11 @@ class XimNewsColectorNodeType extends FolderNode  {
 			$bulletinXml = $doc->saveXML();
 		}
 
-		$tmpPath = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot') . '/tmpBulletinXml.xml';
+		$tmpPath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/tmpBulletinXml.xml';
 		FSUtils::file_put_contents($tmpPath, $bulletinXml);
 
-    	$fileName = FsUtils::getUniqueFile(Config::GetValue("AppRoot") . Config::GetValue("FileRoot"));
-    	$targetPath = Config::GetValue("AppRoot") . Config::GetValue("FileRoot") . '/' . $fileName;
+    	$fileName = FsUtils::getUniqueFile(\App::getValue( "AppRoot") . \App::getValue( "FileRoot"));
+    	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot") . '/' . $fileName;
 
 		// Construimos el xsl del boletin
 

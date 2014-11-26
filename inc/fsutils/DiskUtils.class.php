@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 
 class DiskUtils {
 
@@ -41,7 +41,7 @@ class DiskUtils {
 	}
 
 	static private function computeFolder($folder) {
-		return is_null($folder) ? Config::getValue('AppRoot') : $folder;
+		return is_null($folder) ? \App::getValue( 'AppRoot') : $folder;
 	}
 
 	static public function disk_total_space($unit='B', $directory=null) {

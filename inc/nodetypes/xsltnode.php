@@ -61,7 +61,7 @@ class xsltnode extends FileNode {
 			$xslContent = FsUtils::file_get_contents($ptdSourcePath);
 			$xslContent = $this->sanitizeContent($xslContent);
 	
-			$xslSourcePath = Config::GetValue('AppRoot') . Config::getValue('TempRoot') . '/' . $parentID . $xsltName;
+			$xslSourcePath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . '/' . $parentID . $xsltName;
 	
 			if (!FsUtils::file_put_contents($xslSourcePath, $xslContent)) {
 				XMD_Log::error("Error saving xslt file");
@@ -93,7 +93,7 @@ class xsltnode extends FileNode {
 			$docxapProject = new Node($idDocxapProject);
 			$docxapContent = $docxapProject->GetContent();
 
-			$docxapProjectPath = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') . '/docxap.xsl';
+			$docxapProjectPath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/docxap.xsl';
 
 			$dummyXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 				<dext:root xmlns:dext=\"http://www.ximdex.com\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">
@@ -129,7 +129,7 @@ class xsltnode extends FileNode {
 			$idProject = $node->GetProject();
 			$project = new Node($idProject);
 
-			$ptdFolder = Config::getValue("TemplatesDirName");
+			$ptdFolder = \App::getValue( "TemplatesDirName");
 
 			if ($ximptd->get('IdParent') == $projectId) {
 
@@ -171,7 +171,7 @@ class xsltnode extends FileNode {
 
 		if (!($includeId > 0)) {
 
-			$xslSourcePath = Config::GetValue('AppRoot') . Config::getValue('TempRoot') . '/templates_include.xsl';
+			$xslSourcePath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . '/templates_include.xsl';
 
 			// Creating include file
 

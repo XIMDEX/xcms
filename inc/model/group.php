@@ -74,11 +74,11 @@ class Group extends Groups_ORM
 
 	/// Returns the "General" group
 	function GetGeneralGroup() {
-		if (Config::exists("GeneralGroup")) {
-			return Config::getValue("GeneralGroup");
-		}
-		$this->setError(6);
-		return NULL;
+        $generalGroup = \App::getValue( 'GeneralGroup' , null );
+        if ( is_null( $generalGroup ) ) {
+            $this->setError( 6 ) ;
+        }
+        return $generalGroup ;
 	}
 
 	/// Loads the General group

@@ -441,7 +441,7 @@ class  ximNEWS_Adapter {
 		$commonFolderNode = new Node($idCommonFolder);
 
 		// insert files
-		$tmpPath = Config::GetValue('AppRoot') . Config::GetValue('TempRoot');
+		$tmpPath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot');
 		$tmpFile = $tmpPath ."/".FsUtils::getUniqueFile($tmpPath);
 
 		foreach ($files as $file) {

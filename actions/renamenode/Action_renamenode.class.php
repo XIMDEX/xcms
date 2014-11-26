@@ -53,7 +53,7 @@ class Action_renamenode extends ActionAbstract {
 		    $node->nodeType->get('IsVirtualFolder')) {
 
 			// master pipeline
-			$IdNodeForWorkflowMaster = Config::getValue('IdDefaultWorkflow');
+			$IdNodeForWorkflowMaster = \App::getValue( 'IdDefaultWorkflow');
 			$pipelineMaster = new Pipeline();
 			$pipelineMaster->loadByIdNode($IdNodeForWorkflowMaster);
 			$diffPipelines = array($pipelineMaster->get('id'));
@@ -94,7 +94,7 @@ class Action_renamenode extends ActionAbstract {
 		}
 		
 
-		$checkUrl = Config::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
+		$checkUrl = \App::getValue( 'UrlRoot') . '/xmd/loadaction.php?actionid='
 			. $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
 			. '&id_pipeline=IDPIPELINE&method=checkNodeDependencies';
 

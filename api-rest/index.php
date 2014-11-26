@@ -125,7 +125,7 @@ function checkFolders () {
 }
 
 function goLoadAction() {
-	header(sprintf("Location: %s", Config::getValue('UrlRoot')));
+	header(sprintf("Location: %s", \App::getValue( 'UrlRoot')));
 }
 
 //Main thread

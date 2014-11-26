@@ -79,7 +79,7 @@ function createBatchsForBlock($nodesToPublish) {
 	$idServer = $node->GetServer();
 	$nodeServer = new Node($idServer);
 	$otfMode=0; //For the moment, otfMode is disabled
-	if (Config::getValue('PublishOnDisabledServers') == 1) {
+	if (\App::getValue( 'PublishOnDisabledServers') == 1) {
 		Publication_Log::write("PublishOnDisabledServers is true");
 		$physicalServers = $nodeServer->class->GetPhysicalServerList(true, $otfMode);
 	} else {
@@ -130,7 +130,7 @@ function createBatchsForBlock($nodesToPublish) {
 				$curVersion = $data->getLastVersion(true);
 				$prevVersion = $curVersion - 1;
 
-				if(Config::getValue("PurgeSubversionsOnNewVersion")) {
+				if(\App::getValue( "PurgeSubversionsOnNewVersion")) {
 					$data->_purgeSubVersions($prevVersion, true);
 				}
 
@@ -164,7 +164,7 @@ function createBatchsForBlock($nodesToPublish) {
 
 				XMD_log::info("Publication error: deleting version $curVersion for node $id");
 
-				if(Config::getValue("PurgeSubversionsOnNewVersion")) {
+				if(\App::getValue("PurgeSubversionsOnNewVersion")) {
 					$data->DeleteVersion($curVersion);
 				}
 			}

@@ -26,7 +26,7 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 /**
  *
  * @brief Abstract renderer who acts as base for all renderers
@@ -55,7 +55,7 @@ class AbstractRenderer {
 	 */
 	function __construct($fileName = NULL) {
 
-		$this->displayEncoding = Config::getValue('displayEncoding');
+		$this->displayEncoding = \App::getValue( 'displayEncoding');
 		$this->_template = $fileName;
 		$this->_parameters = new \Ximdex\Utils\AssociativeArray();
 	}
@@ -179,8 +179,8 @@ class AbstractRenderer {
 			$this->_set_action_property("composer", "visualiza los componentes de la web", "composer", "/actions/composer/" );
 		}
 
-		$this->set('_URL_ROOT', Config::getValue('UrlRoot'));
-		$this->set('_APP_ROOT', Config::getValue('AppRoot'));
+		$this->set('_URL_ROOT', \App::getValue( 'UrlRoot'));
+		$this->set('_APP_ROOT', \App::getValue( 'AppRoot'));
 
 		//Si es la misma accion que se ha ejecutado en FrontControllerHttp:
 		//Guardamos los datos en los valores de session
@@ -257,9 +257,9 @@ class AbstractRenderer {
 	 */
 	private function _set_module($module = NULL, $_ACTION_COMMAND ) {
 		if($module) {
-			$base_action = Config::getValue('AppRoot').ModulesManager::path($module)."/actions/".$_ACTION_COMMAND."/";
+			$base_action = \App::getValue( 'AppRoot').ModulesManager::path($module)."/actions/".$_ACTION_COMMAND."/";
 			//Especificamos los par�metros especificos de m�dulo
-			$this->set("base_module", Config::getValue('AppRoot').ModulesManager::path($module)."/");
+			$this->set("base_module", \App::getValue( 'AppRoot').ModulesManager::path($module)."/");
 			$this->set("module", $module);
 		}else {
 			$base_action = "/actions/".$_ACTION_COMMAND."/";

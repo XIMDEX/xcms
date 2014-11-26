@@ -76,7 +76,7 @@ function mainLoop()
     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
         __LINE__, "INFO", 8, _("Starting Scheduler") . " $synchro_pid");
     //Adquire the mutex
-    $mutex = new Mutex(Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/scheduler.lck");
+    $mutex = new Mutex( \App::getValue( "AppRoot") .  \App::getValue("TempRoot") . "/scheduler.lck");
     if (!$mutex->acquire()) {
         $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
             __LINE__, "INFO", 8, _("Lock file existing"));
@@ -88,7 +88,7 @@ function mainLoop()
 
     do {
         // STOPPER
-        $stopper_file_path = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/scheduler.stop";
+        $stopper_file_path =  \App::getValue("AppRoot") . \App::getValue("TempRoot") . "/scheduler.stop";
         if (file_exists($stopper_file_path)) {
             $mutex->release();
             die(_("STOP: Detected file") . " $stopper_file_path " . _("You need to delete this file in order to restart Scheduler successfully"));

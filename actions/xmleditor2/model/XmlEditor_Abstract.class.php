@@ -97,8 +97,8 @@ abstract class XmlEditor_Abstract {
     	$docxap = $this->getXslPath($idnode, false, $view);
 
 		if ($docxap !== null) {
-			$content = FsUtils::file_get_contents(str_replace(Config::getValue('UrlRoot'), Config::getValue('AppRoot'),  $docxap));
-			$content = str_replace('./templates_include.xsl', Config::getValue('UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/templates_include.xsl', $content);
+			$content = FsUtils::file_get_contents(str_replace(\App::getValue( 'UrlRoot'), \App::getValue( 'AppRoot'),  $docxap));
+			$content = str_replace('./templates_include.xsl', \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/templates_include.xsl', $content);
 			if ($includesInServer){
 			    $this->replaceIncludes($content);
 			}
@@ -121,12 +121,12 @@ abstract class XmlEditor_Abstract {
 		}
 
 		if($view == 'tree') {
-			return Config::getValue('UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl';
+			return \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl';
 		}
 
 		$nodeTypeName = $node->nodeType->GetName();
 		if ($nodeTypeName == 'RngVisualTemplate') {
-			return Config::getValue('UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl';
+			return \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/docxap.xsl';
 		}
 
 		$docxap = null;
@@ -147,7 +147,7 @@ abstract class XmlEditor_Abstract {
 		}
 
 		if ($docxap && $asURL) {
-			$docxap = str_replace(Config::getValue('AppRoot'), Config::getValue('UrlRoot'),  $docxap);
+			$docxap = str_replace(\App::getValue( 'AppRoot'), \App::getValue( 'UrlRoot'),  $docxap);
 		}
 
 		return $docxap;
@@ -159,7 +159,7 @@ abstract class XmlEditor_Abstract {
 
 		$nodeTypeName = $node->nodeType->GetName();
 		if ($nodeTypeName == 'RngVisualTemplate') {
-			$rngPath = Config::getValue('AppRoot') . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
+			$rngPath = \App::getValue( 'AppRoot') . '/actions/xmleditor2/views/rngeditor/schema/rng-schema.xml';
 			return trim(FsUtils::file_get_contents($rngPath));
 		}
 
@@ -207,7 +207,7 @@ abstract class XmlEditor_Abstract {
 
 //		$content = '<root><node>value</node></root>';
 
-		$schema = FsUtils::file_get_contents(Config::getValue('AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
+		$schema = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
 		$rngvalidator = new XMLValidator_RNG();
 		$valid = $rngvalidator->validate($schema, $content);
 

@@ -35,7 +35,7 @@ class Action_charts extends ActionAbstract
             $this->dynamicCharts();
         }
 
-        $url_root = Config::getValue('UrlRoot');
+        $url_root = \App::getValue( 'UrlRoot');
         $values = array(
             'url_root' => $url_root,
             'js_files' => array(
@@ -86,7 +86,7 @@ class Action_charts extends ActionAbstract
     protected function dynamicCharts()
     {
         /*
-		chs=250x100				tamaño
+		chs=250x100				tamaï¿½o
 		&chd=t:60,40			datos
 		&chds=30,70				escala
 		&cht=[l|b]				tipo
@@ -145,7 +145,7 @@ class Action_charts extends ActionAbstract
         }
         $series = Serializer::encode(SZR_JSON, $series);
 
-        $url_root = Config::getValue('UrlRoot');
+        $url_root = \App::getValue( 'UrlRoot');
         $values = array(
             'url_root' => $url_root,
             'js_files' => array(

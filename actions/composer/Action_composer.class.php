@@ -29,7 +29,7 @@
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/persistence/XSession.class.php');
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 ModulesManager::file('/inc/serializer/Serializer.class.php');
 ModulesManager::file('/inc/parsers/ParsingXimMenu.class.php');
 ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');
@@ -44,8 +44,8 @@ class Action_composer extends ActionAbstract {
 	public function index() {
 		XSession::check();
 
-		$ximid = Config::GetValue("ximid");
-		$versionname = Config::GetValue("VersionName");
+		$ximid = \App::getValue( "ximid");
+		$versionname = \App::getValue( "VersionName");
 		$userID = XSession::get('userID');
 		$theme = $this->request->getParam('theme');
 		$theme = $theme ? $theme : 'ximdex_theme';
@@ -80,7 +80,7 @@ class Action_composer extends ActionAbstract {
 		$userID = XSession::get('userID');
 
 		if (! isset($this->displayEncoding)) {
-			$this->displayEncoding = Config::getValue('displayEncoding');
+			$this->displayEncoding = \App::getValue( 'displayEncoding');
 		}
 
 		// The data to be returned
@@ -485,7 +485,7 @@ class Action_composer extends ActionAbstract {
 		$idNode = (int) $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 
-		$dom = new DOMDocument('1.0', Config::getValue('workingEncoding'));
+		$dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
 		$parents = $dom->createElement('node');
 		$dom->appendChild($parents);
 
@@ -595,8 +595,8 @@ class Action_composer extends ActionAbstract {
 
 	function getDefaultNode() {
 
-		$defaultNodeName= Config::GetValue("DefaultInitNodeName");
-		$defaultNodePath= Config::GetValue("DefaultInitNodePath");
+		$defaultNodeName= \App::getValue( "DefaultInitNodeName");
+		$defaultNodePath= \App::getValue( "DefaultInitNodePath");
 		$userID = XSession::get('userID');
 		$user = new User($userID);
 		$groupList = $user->GetGroupList();

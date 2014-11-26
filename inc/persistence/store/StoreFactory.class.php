@@ -28,7 +28,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
 
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 ModulesManager::file('/inc/persistence/store/FileSystemStore.class.php');
 ModulesManager::file('/inc/persistence/store/ChainedStore.class.php');
 ModulesManager::file('/inc/SolrStore.class.php', 'XRAM');
@@ -78,10 +78,10 @@ class StoreFactory {
             throw new RuntimeException('Module XRAM is not enabled');
         }
 
-        $solrServer = Config::GetValue("SolrServer");
-        $solrPort = Config::GetValue("SolrPort");
-        $solrPath = Config::GetValue("SolrPath");
-        $solrCore = Config::GetValue("SolrCore");
+        $solrServer = \App::getValue( "SolrServer");
+        $solrPort = \App::getValue( "SolrPort");
+        $solrPath = \App::getValue( "SolrPath");
+        $solrCore = \App::getValue( "SolrCore");
         $store = new SolrStore();
         $solrService = new SolariumSolrService($solrServer, $solrPort, $solrPath, $solrCore);
         $store->setSolrService($solrService);
@@ -113,7 +113,7 @@ class StoreFactory {
 
         if (!isset($store)) {
             $storeFactory = new self();
-            $activeRepository = Config::getValue(StoreFactory::$ACTIVE_REPOSITORY);
+            $activeRepository = \App::getValue( StoreFactory::$ACTIVE_REPOSITORY);
             if ($activeRepository === NULL) {
                 $store = $storeFactory->createFileSystemStore();
                 return $store;

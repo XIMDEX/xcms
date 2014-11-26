@@ -26,7 +26,7 @@
 use Ximdex\Modules\Module;
 
 
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
 class Module_ximSYNC extends Module {

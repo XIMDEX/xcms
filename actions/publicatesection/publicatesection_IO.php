@@ -59,7 +59,6 @@ function Main($argv, $argc)
 	
 	
 	$node		= new Node();
-	$ximConfig	= new Config();
 	/// Saves and checks parameters
 
 

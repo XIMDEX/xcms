@@ -120,7 +120,7 @@
 					<a href="javascript:parent.deletetabpage(parent.selected);" class="filacerrar"><?php echo
 						_('Close window');?> <img src="<?php
 
- echo Config::getValue('UrlRoot'); ?>/xmd/images/botones/cerrar.gif" alt="" border="0">
+ echo \App::getValue( 'UrlRoot'); ?>/xmd/images/botones/cerrar.gif" alt="" border="0">
 					</a>
 				</td>
 			</tr>

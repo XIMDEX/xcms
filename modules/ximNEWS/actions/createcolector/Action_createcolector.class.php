@@ -59,7 +59,7 @@ class Action_createcolector extends ActionAbstract {
 			'params' => $params,
 			'id_node' => $idNode,
 			'go_method' => $goMethod,
-			'nodeUrl' => Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$actionId&nodeid=$idNode"
+			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionId&nodeid=$idNode"
 		);
 
 		$values = array_merge($colectorRelatedValues, $actionValues, $colectorValues);
@@ -147,7 +147,7 @@ class Action_createcolector extends ActionAbstract {
 			if($currentFilter != $data['filter'] || $currentNewsPerBulletin != $data['newsperbull'] || $currentSorting != $data['sortnews'] || $currentName != $data['colector']){
 			    $forceTotal = 1;
 			    $data['forcetotalgeneration'] = 1;
-			    $oldValues = "Nombre del colector: $currentName;Tipo de colector: $currentType;Número de noticias por boletín: $currentNewsPerBulletin;Ordenación de noticias: $currentSorting";
+			    $oldValues = "Nombre del colector: $currentName;Tipo de colector: $currentType;Nï¿½mero de noticias por boletï¿½n: $currentNewsPerBulletin;Ordenaciï¿½n de noticias: $currentSorting";
 
 			    if($currentFilter != $data['filter']) {
 					$data['forcetotalgeneration'] = 2;
@@ -181,7 +181,7 @@ class Action_createcolector extends ActionAbstract {
 /*
 	    if ($mail->Send()) {
 
-			$this->messages->add(_("Se le ha enviado un email con los valores antiguos del colector para que pueda restaurarlos en caso de problemas durante la generación total"), MSG_TYPE_NOTICE);
+			$this->messages->add(_("Se le ha enviado un email con los valores antiguos del colector para que pueda restaurarlos en caso de problemas durante la generaciï¿½n total"), MSG_TYPE_NOTICE);
 	    }
 */
 		$this->render(array('goback' => true, 'messages' => $this->messages->messages), NULL, 'messages.tpl');

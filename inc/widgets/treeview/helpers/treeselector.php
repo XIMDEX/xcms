@@ -30,7 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 ModulesManager::file('/inc/utils.php');
 
 XSession::check();
-$urlroot = Config::getValue('UrlRoot');
+$urlroot = \App::getValue( 'UrlRoot');
 
 /* Verifica variables $_GET
  * emartos 04/05/2007
@@ -44,8 +44,7 @@ $nodeType = isset ($_GET['nodetype']) ? $_GET['nodetype'] : null;
 
 if(!isset ($rootID))
 	{
-	$config = new Config();
-	$rootID = $config->GetValue("ProjectsNode");
+	$rootID = \App::getValue("ProjectsNode");
 	}
 $rootNode->SetID($rootID);
 ?>

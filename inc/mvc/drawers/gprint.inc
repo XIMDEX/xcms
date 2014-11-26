@@ -83,7 +83,7 @@ function gPrintSelectNode($nodeID)
 
 function gPrintHeaderContent() {
 
-		$stylesPath = Config::GetValue('UrlRoot') .'/xmd/style';
+		$stylesPath = \App::getValue( 'UrlRoot') .'/xmd/style';
 ?>
 		<link rel="STYLESHEET" type="text/css" href="<?php echo "$stylesPath/style.css" ?>">
 		<link rel="STYLESHEET" type="text/css" href="<?php echo "$stylesPath/ximdex.css" ?>">
@@ -284,7 +284,7 @@ function gPrintMessageWindow ($title, $msg, $error = false) {
 
 function gPrintMessageWindow2 ($title, $msg, $error = false) {
 
-	  $src = Config::getValue('UrlRoot') . '/xmd/images';
+	  $src = \App::getValue( 'UrlRoot') . '/xmd/images';
 	  error_log('gprint::gPrintMessageWindow2 - ' . $src);
 	  
 	  $cierreVentana = "<img src='" . $src . "/botones/cerrar.gif' alt='' border='0'>";

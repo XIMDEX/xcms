@@ -68,7 +68,7 @@ class Pipeline extends Pipelines_ORM {
 			$this->idNodeType = $result[0];
 		}
 		
-		if (Config::getValue('IdDefaultWorkflow') == $this->get('IdNode')) {
+		if (\App::getValue( 'IdDefaultWorkflow') == $this->get('IdNode')) {
 			$this->isWorkflowMaster = true;
 		}
 	}
@@ -137,13 +137,13 @@ class Pipeline extends Pipelines_ORM {
 		$idPipeProcess = $pipeProcess->add();
 		
 		$pipeStatus = new PipeStatus();
-		$pipeStatus->set('Name', Config::getValue('DefaultInitialStatus'));
-		$pipeStatus->set('Description', Config::getValue('DefaultInitialStatus'));
+		$pipeStatus->set('Name', \App::getValue( 'DefaultInitialStatus'));
+		$pipeStatus->set('Description', \App::getValue( 'DefaultInitialStatus'));
 		$idInitialStatus = $pipeStatus->add();
 		
 		$pipeStatus = new PipeStatus();
-		$pipeStatus->set('Name', Config::getValue('DefaultFinalStatus'));
-		$pipeStatus->set('Description', Config::getValue('DefaultFinalStatus'));
+		$pipeStatus->set('Name', \App::getValue( 'DefaultFinalStatus'));
+		$pipeStatus->set('Description', \App::getValue( 'DefaultFinalStatus'));
 		$idFinalStatus = $pipeStatus->add();
 		
 		$pipeTransition = new PipeTransition();
@@ -152,8 +152,8 @@ class Pipeline extends Pipelines_ORM {
 		$pipeTransition->set('IdPipeProcess', $idPipeProcess);
 		$pipeTransition->set('Cacheable', 0);
 		$pipeTransition->set('Name', sprintf('%s_to_%s', 
-			Config::getValue('DefaultInitialStatus'),
-			Config::getValue('DefaultFinalStatus')));
+			\App::getValue( 'DefaultInitialStatus'),
+			\App::getValue( 'DefaultFinalStatus')));
 		$pipeTransition->set('Callback', '-');
 		$idPipeTransition = $pipeTransition->add();
 		

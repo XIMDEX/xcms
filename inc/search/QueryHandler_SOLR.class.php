@@ -33,7 +33,7 @@ class QueryHandler_SOLR extends QueryHandler_Abstract {
 
 	protected function recordsetToArray($data) {
 
-		$dom = new DOMDocument('1.0', Config::getValue('workingEncoding'));
+		$dom = new DOMDocument('1.0', \App::getValue( 'workingEncoding'));
 		$dom->resolveExternals = true;
 		$dom->loadXML($data);
 

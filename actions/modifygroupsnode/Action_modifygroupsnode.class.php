@@ -56,7 +56,7 @@ class Action_modifygroupsnode extends ActionAbstract {
 		$group = new Group();
 		$allGroups = $group->find('IdGroup, Name', 
 			'IdGroup in (%s) AND IdGroup <> %s', 
-			array($strGroupList, Config::getValue('GeneralGroup')),
+			array($strGroupList, \App::getValue( 'GeneralGroup')),
 			MULTI, false);
 		
 		if (is_array($allGroups)) {

@@ -26,7 +26,7 @@
 
 
 
-include_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 
 class REST_ximNOTA extends REST_Provider {
 
@@ -36,8 +36,8 @@ class REST_ximNOTA extends REST_Provider {
 
 	public function __construct() {
 		parent::__construct();
-		$this->URL_STRING = sprintf('%s'.ModulesManager::path('ximNOTA').'/rest/index.php', Config::getValue('UrlRoot'));
-#		$this->URL_STRING = sprintf('%s/xmd/loadaction.php', Config::getValue('UrlRoot'));
+		$this->URL_STRING = sprintf('%s'.ModulesManager::path('ximNOTA').'/rest/index.php', \App::getValue( 'UrlRoot'));
+#		$this->URL_STRING = sprintf('%s/xmd/loadaction.php', \App::getValue( 'UrlRoot'));
 	}
 
 	public function migratePair($pathToFile, $pathToXml, $pathToXimdex) {

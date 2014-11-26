@@ -177,7 +177,7 @@ class XSession {
 		if (!XSession::exists('logged') && "installer" != $_GET["action"]) {
 			if($redirect) {
 				$response = new Response();
-				$response->sendStatus(sprintf("Location: %s/", Config::getValue('UrlRoot')), true, 301);
+				$response->sendStatus(sprintf("Location: %s/", \App::getValue( 'UrlRoot')), true, 301);
 				setcookie("expired", "1", time() + 60);
 				die();
 			}

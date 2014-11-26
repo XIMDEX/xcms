@@ -11,7 +11,7 @@
  */
 function smarty_prefilter_encodingTemplate($source, &$smarty)
 {
-	$displayEncoding = Config::getValue('displayEncoding');
+	$displayEncoding = \App::getValue( 'displayEncoding');
 	$sourceEncoded = XmlBase::recodeSrc($source,$displayEncoding);
 	
 	return $sourceEncoded;
