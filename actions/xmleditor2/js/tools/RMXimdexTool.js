@@ -62,6 +62,15 @@ var RMXimdexTool = Object.xo_create(XimdocTool, {
 			var path = '%s?expresion=%s&action=filemapper&method=nodeFromExpresion'.printf(X.restUrl, targetid);
 			$(elem).attr('src', path);
 		});
+
+        // pathto macro
+        $("[style*='@@@RMximdex']", $('body', xslResult)[0]).each(function(index, elem) {
+            var targetid = unescape($(elem).attr('style'));
+            targetid = targetid.replace(/@@@RMximdex\.pathto\((.*)\)@@@/ig, X.restUrl+"?expresion=$1&action=filemapper&method=nodeFromExpresion");
+            targetid = targetid.replace(/@@@RMximdex\.dotdot\((.*)\)@@@/ig, this.editor.getDotDotPath() + "$1");
+            $(elem).attr('style', targetid);
+        }.bind(this));
+
 	}
 
 });
