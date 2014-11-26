@@ -98,6 +98,7 @@ class Action_edittext extends ActionAbstract {
             case "html":
                 $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closetag.js');
                 $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/xml-fold.js');
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
                 break;
             case "md":
                 $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/markdown-fold.js');
