@@ -97,7 +97,7 @@ class Widget {
 			$dir_widget = $dir_widget."/".$name;
 		}
 
-		$factory = new Factory($dir_widget, 'Widget_');
+		$factory = new \Ximdex\Utils\Factory($dir_widget, 'Widget_');
 		$widget = $factory->instantiate($name);
 		self::$_instances[$name] =& $widget;
 		return $widget;

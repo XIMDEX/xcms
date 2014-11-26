@@ -34,7 +34,6 @@ if (!defined('POOLER_ROOT_PATH'))
 	define('POOLER_ROOT_PATH', realpath(dirname(__FILE__)));
 
 require_once POOLER_ROOT_PATH . '/Queue_SharedMemory.class.php';
-require_once XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php';
 
 
 class Queue_Process extends Queue_SharedMemory {
@@ -51,7 +50,7 @@ class Queue_Process extends Queue_SharedMemory {
 		$this->blocked = false;
 
 		$path = sprintf('%s/%s/', XIMDEX_ROOT_PATH, $this->command['path']);
-		$factory = new Factory($path, $this->command['class']);
+		$factory = new \Ximdex\Utils\Factory($path, $this->command['class']);
 		$this->cmd = $factory->instantiate();
 
 		if (!is_object($this->cmd) || !method_exists($this->cmd, $this->command['method'])) {

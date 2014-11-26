@@ -24,7 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
 require_once(XIMDEX_ROOT_PATH . '/api/utils/Crypto.class.php');
 require_once(XIMDEX_ROOT_PATH . '/services/TokenService.class.php');
@@ -86,7 +86,7 @@ class FrontControllerAPIREST extends FrontController
             $this->sendErrorResponse('400', 'Bad request. Action does not exist');
         }
 
-        $factory = new Factory($this->apiActionsFolder . '/' . $this->action, "Action_");
+        $factory = new \Ximdex\Utils\Factory($this->apiActionsFolder . '/' . $this->action, "Action_");
         $actionObject = $factory->instantiate($this->action);
 
         //Retrieve and check the ximtoken if the action requires security

@@ -34,7 +34,7 @@ if (!defined('XIMDEX_XVFS_PATH'))
 	define('XIMDEX_XVFS_PATH', XIMDEX_ROOT_PATH . "/inc/xvfs");
 
 require_once(XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 
 require_once XIMDEX_XVFS_PATH . '/entities/XVFS_Entity_Dir.class.php';
 require_once XIMDEX_XVFS_PATH . '/entities/XVFS_Entity_File.class.php';
@@ -191,7 +191,7 @@ class XVFS {
 			// Se crea el backend usando la factoria. En caso de que no se pueda obtener
 			// el backend solicitado se loggea y se sale de la funcion
 			$backend = @$uri_array['scheme'];
-			$factory = new Factory(XIMDEX_XVFS_PATH . '/backends', 'XVFS_Backend_');
+			$factory = new \Ximdex\Utils\Factory(XIMDEX_XVFS_PATH . '/backends', 'XVFS_Backend_');
 			$be = $factory->instantiate($backend, $uri_array);
 
 			if (is_object($be)) {

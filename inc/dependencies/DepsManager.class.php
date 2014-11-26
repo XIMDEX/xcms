@@ -27,7 +27,7 @@
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelSectionXimlet.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 
 class DepsManager {
 
@@ -83,7 +83,7 @@ class DepsManager {
 	 * @return object
 	 */
 	private function getModel($tableName, $id = NULL) {
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/", $tableName);
 		$object = $factory->instantiate(NULL, $id);
 
 		if (!is_object($object)) {

@@ -70,7 +70,6 @@ class Block_analyzer {
 		// Name of node is enought to rendering.
 		// It just render nodes which should not be ignored
 
-		// TODO: Use Factory.class.php in $XIMDEX_ROOT_PATH/inc/patterns
 		$element_class = $this->root->nodeName;
 		if (!$this->ignoreNode($this->root->nodeName)) {
 			// It instanciates and sets up the element renderer

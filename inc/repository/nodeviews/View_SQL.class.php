@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . "/inc/patterns/Factory.class.php");
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelStrDocChannels.class.php');
@@ -295,7 +294,7 @@ class View_SQL extends Abstract_View implements Interface_View {
 
 		$insertQuery = '';
 
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$object = $factory->instantiate("_ORM");
 
 		if (!is_object($object)) {

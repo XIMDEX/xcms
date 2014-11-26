@@ -26,8 +26,6 @@
 
 
 
-ModulesManager::file('/inc/patterns/Factory.class.php');
-
 /**
  * Manager class for Inherited properties
  */
@@ -52,7 +50,7 @@ class InheritedPropertiesManager {
 	 */
 	static public function getValues($nodeId) {
 
-		$factory = new Factory(dirname(__FILE__), '');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		$ret = array();
 
 		foreach (self::$properties as $prop) {
@@ -84,7 +82,7 @@ class InheritedPropertiesManager {
 	 */
 	static public function setValues($nodeId, $properties) {
 
-		$factory = new Factory(dirname(__FILE__), '');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		if (!is_array($properties)) $properties = array();
 		$ret = array();
 
@@ -117,7 +115,7 @@ class InheritedPropertiesManager {
 	 */
 	static public function getAffectedNodes($nodeId, $properties) {
 
-		$factory = new Factory(dirname(__FILE__), '');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		if (!is_array($properties)) $properties = array();
 		$ret = array();
 
@@ -146,7 +144,7 @@ class InheritedPropertiesManager {
 	 */
 	static public function applyPropertyRecursively($property, $nodeId, $values) {
 
-		$factory = new Factory(dirname(__FILE__), '');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), '');
 		$ret = array();
 
 		$p = $factory->instantiate($property . 'Property', $nodeId);

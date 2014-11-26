@@ -115,7 +115,7 @@ class Action_searchpanel extends ActionAbstract {
 
 		$filters = ucfirst(strtolower($filters));
 
-		$factory = new Factory(dirname(__FILE__) . '/inc', 'Filters_');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__) . '/inc', 'Filters_');
 		$filter = $factory->instantiate('Ximdex');
 
 		$data = array();

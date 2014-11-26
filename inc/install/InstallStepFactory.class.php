@@ -28,7 +28,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 
 /**
  * Factory class to instance every step object.
@@ -70,7 +70,7 @@ class InstallStepFactory {
 		$stepPath = XIMDEX_ROOT_PATH.self::STEP_PATH."/".$currentState;
 
 		//Build the object and set the index for the current step
-		$factory = new Factory($stepPath, $className);		
+		$factory = new \Ximdex\Utils\Factory($stepPath, $className);
 		$stepObject = $factory->instantiate("InstallStep");
 		$stepObject->setCurrentStep($posStep);
 		return $stepObject;

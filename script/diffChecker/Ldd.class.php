@@ -30,11 +30,9 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/patterns/Factory.class.php");
 require_once(XIMDEX_ROOT_PATH."/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb.inc.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb-active-record.inc.php");
-require_once(XIMDEX_ROOT_PATH."/inc/patterns/Factory.class.php");
 require_once(XIMDEX_ROOT_PATH."/conf/log.conf");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/lddConstants.php");
@@ -75,7 +73,7 @@ class ldd {
 
 		$this->mode = $resultMode;
 
-		$factory = new Factory($path, $this->tableName);
+		$factory = new \Ximdex\Utils\Factory($path, $this->tableName);
 		$this->object = $factory->instantiate("_ORM");
 
 		return true;
