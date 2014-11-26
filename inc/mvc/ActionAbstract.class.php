@@ -30,7 +30,7 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__). "/../../"));
 }
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingJsGetText.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/action.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
@@ -100,7 +100,7 @@ class ActionAbstract extends IController {
 		/** Obtaining the render to use */
 		$rendererClass = $this->_get_render($_render);
 
-		$factory = new Factory(RENDERER_ROOT_PATH, '');
+		$factory = new \Ximdex\Utils\Factory(RENDERER_ROOT_PATH, '');
 		$this->renderer = $factory->instantiate($rendererClass.'Renderer');
 
 		$this->renderer->set("_BASE_TEMPLATE_PATH", sprintf('%s/xmd/template/%s/', XIMDEX_ROOT_PATH, $rendererClass)  );
@@ -310,7 +310,7 @@ class ActionAbstract extends IController {
 	function _renderWidgets($output) {
 
 		// DEBUG: Apply widgets renderer after smarty renderer
-		$factory = new Factory(RENDERER_ROOT_PATH, '');
+		$factory = new \Ximdex\Utils\Factory(RENDERER_ROOT_PATH, '');
 		$wr = $factory->instantiate('WidgetsRenderer');
 		$params = $this->renderer->getParameters();
 

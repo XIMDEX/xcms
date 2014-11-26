@@ -30,7 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 require_once(XIMDEX_ROOT_PATH . '/inc/log/Action_log.class.php');
 
 /**
@@ -81,7 +81,7 @@ class ActionFactory {
 					$action);
 			}
 
-			$factory = new Factory($actionPath, $actionRootName);
+			$factory = new \Ximdex\Utils\Factory($actionPath, $actionRootName);
 			$actionController = $factory->instantiate($action);
 		}
 

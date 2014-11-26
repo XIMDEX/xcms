@@ -49,7 +49,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		//VALIDATING DATA
 		$version = new Version($idVersion);
 		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("Se ha cargado una versión incorrecta ($idVersion)");
+			XMD_Log::error("Se ha cargado una versiï¿½n incorrecta ($idVersion)");
 			return NULL;
 		}
 		$node = new Node($version->get('IdNode'));
@@ -59,7 +59,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$dataEncoding = Config::getValue('dataEncoding');
 
 		if (!($nodeId > 0)) {
-			XMD_Log::error("El nodo que se está intentando convertir no existe: " . $version->get('IdNode'));
+			XMD_Log::error("El nodo que se estï¿½ intentando convertir no existe: " . $version->get('IdNode'));
 			return NULL;
 		}
 		if (!array_key_exists('PATH', $args) && !array_key_exists('NODENAME', $args)) {
@@ -204,7 +204,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 						if (FsUtils::file_put_contents($headerFile, $defaultContent)) {
 							$additionalFiles[] = $headerFile;
 						}else{
-							XMD_Log::error("View TARG:No se ha podido añadir el archivo $headerFile");
+							XMD_Log::error("View TARG:No se ha podido aï¿½adir el archivo $headerFile");
 						}
 
 						//Generate Docxap for the bulletin
@@ -218,7 +218,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 							if (FsUtils::file_put_contents($docxapFile, $docxapContent)) {
 								$additionalFiles[] = $docxapFile;
 							}else{
-								XMD_Log::error("View TARG:No se ha podido añadir el archivo $docxapFile");
+								XMD_Log::error("View TARG:No se ha podido aï¿½adir el archivo $docxapFile");
 							}
 						}else{
 							XMD_Log::error("View TARG:No se ha generado la docxap para el colector $colectorId");
@@ -246,7 +246,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 	 */
 	function getFile($tableName, $field, $condition, $params) {
 
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$object = $factory->instantiate("_ORM");
 
 		if (!is_object($object)) {
@@ -286,7 +286,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW TARGZ: Se ha cargado una versión incorrecta (' . $idVersion . ')');
+				XMD_Log::error('VIEW TARGZ: Se ha cargado una versiï¿½n incorrecta (' . $idVersion . ')');
 				return "";
 			}
 			$structuredDocument = new StructuredDocument($version->get('IdNode'));
@@ -377,7 +377,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 						$subversion = $relNewsColector->get('SubVersion');
 						$cacheId = $relNewsColector->get('IdCache');
 					} else {
-						XMD_Log::info('Sin relación en la base de datos');
+						XMD_Log::info('Sin relaciï¿½n en la base de datos');
 					}
 
 					if(!($cacheId > 0)){

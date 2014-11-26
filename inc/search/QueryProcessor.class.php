@@ -26,7 +26,7 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 
 class QueryProcessor {
 
@@ -34,7 +34,7 @@ class QueryProcessor {
 	}
 
 	static public function & getInstance($handler) {
-		$factory = new Factory(dirname(__FILE__), 'QueryHandler_');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), 'QueryHandler_');
 		$qh = $factory->instantiate($handler);
 		return $qh;
 	}

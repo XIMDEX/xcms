@@ -54,9 +54,8 @@ $tableName = $parameterCollector->getParameter("--table");
 $full = $parameterCollector->getParameter("--full");
 $idField = $parameterCollector->getParameter("--id");
 
-require_once(XIMDEX_ROOT_PATH . "/inc/patterns/Factory.class.php");
 
-$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 $object = $factory->instantiate("_ORM");
 if (!is_object($object)) {
 	 die("Error, la clase de orm especificada no existe\n");
@@ -77,7 +76,7 @@ if (!empty($idField)) {
 $result = $object->find($object->_idField, $where, $value, MONO, false);
 
 if (empty($result)) {
-	die("Resultado vacío encontrado\n");
+	die("Resultado vacï¿½o encontrado\n");
 }
 
 	if ($full) {

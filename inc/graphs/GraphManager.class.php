@@ -35,7 +35,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphSeries.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphSerieValues.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphSerieProperties.class.php');
 
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 
 class GraphManager {
 	/**
@@ -419,13 +419,13 @@ class GraphManager {
 	 * @return unknown_type
 	 */
 	public static function processSeriesInCallBack($callback, $params, $graphName) {
-		$factory = new Factory(XIMDEX_ROOT_PATH . '/inc/graphs/callbacks', 'Graph_');
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/inc/graphs/callbacks', 'Graph_');
 		$object = $factory->instantiate($callback);
 
 		return $object->getSerie($params, $graphName);
 	}
 	public static function processSerieAttributesInCallBack($callback, $params, $graphName) {
-		$factory = new Factory(XIMDEX_ROOT_PATH . '/inc/graphs/callbacks', 'Graph_');
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/inc/graphs/callbacks', 'Graph_');
 		$object = $factory->instantiate($callback);
 
 		return $object->getSerieAttributes($params, $graphName);

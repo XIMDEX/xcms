@@ -27,7 +27,6 @@
 
 
 
-ModulesManager::file('/inc/patterns/Factory.class.php');
 ModulesManager::file('/actions/browser3/inc/IDatasource.iface.php');
 ModulesManager::file('/actions/browser3/inc/AbstractDatasource.class.php');
 ModulesManager::file('/inc/xvfs/XVFS.class.php');
@@ -48,7 +47,7 @@ class GenericDatasource extends AbstractDatasource {
 //	}
 
 	static public function & getDatasource($datasource, $conf=array()) {
-		$factory = new Factory(XIMDEX_ROOT_PATH . '/actions/browser3/inc', 'Datasource_');
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/actions/browser3/inc', 'Datasource_');
 		$ds = $factory->instantiate($datasource, $conf);
 		if (!is_object($ds)) {
 			XMD_Log::fatal(_('A class which does not exist is trying to be requested: Datasource_') . $datasource);

@@ -36,7 +36,6 @@ if (!isset($DB_TYPE_USAGE) && defined("ADODB") ) {
 
 require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
 require_once(XIMDEX_ROOT_PATH."/inc/helper/Messages.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/patterns/Factory.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_historic.class.php");
@@ -58,7 +57,7 @@ class lmd {
 		$tableName = $data["table"];
 
 		$this->checkModel($tableName);
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$obj = $factory->instantiate("_ORM");
 
 		$obj->loadFromArray($data);
@@ -113,7 +112,7 @@ class lmd {
 		$tableName = $data["table"];
 
 		$this->checkModel($tableName);
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$obj = $factory->instantiate("_ORM");
 
 		if (!isset($data[$obj->_idField])) {
@@ -191,7 +190,7 @@ class lmd {
 		$tableName = $data["table"];
 
 		$this->checkModel($tableName);
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$obj = $factory->instantiate("_ORM");
 
 /*		if (!isset($data[$obj->_idField])) {

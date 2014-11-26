@@ -34,7 +34,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Mechanism.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 require_once(XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/user.php');
 // Include Auth Configuration.
@@ -70,8 +70,7 @@ class Authenticator {
 		$mechs_path = XIMDEX_ROOT_PATH . "/inc/auth/mechs/";
 		$mechs_root_name = "Mechanism_";
 
-		$this->mech_factory = new Factory($mechs_path, $mechs_root_name);
-
+		$this->mech_factory = new \Ximdex\Utils\Factory($mechs_path, $mechs_root_name);
 		// read conf
 		if (defined('AUTH_MECH')) {
 
@@ -118,7 +117,7 @@ class Authenticator {
 		//if ($name == 'ximdex') { $this->mech_type = MECH_DEFAULT_TYPE }
 
 		// factory Mech to authenticate, fallback to SQL if not selected
-		$mech =& $this->mech_factory->instantiate($this->mech_type);
+		$mech = $this->mech_factory->instantiate($this->mech_type);
 		if (!is_object($mech)) {
 			XMD_Log::error($this->mech_factory->getError());
 			return false;

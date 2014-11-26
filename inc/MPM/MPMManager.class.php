@@ -34,7 +34,6 @@ define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 //include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMProcessOutFile.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/SharedMemory.class.php");
-include_once (XIMDEX_ROOT_PATH. "/inc/patterns/Factory.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 
 
@@ -175,7 +174,7 @@ class MPMManager {
 	private function createProcess($key){
 		//Call the user function
 		try {
-			$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/MPM/", "MPMProcess");
+			$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/MPM/", "MPMProcess");
 			$args = array($this->callbackFunction, $this->dataIn, $key, $this->sharedMemory, MPMManager::KEY_DATAOUT);
 			$process = $factory->instantiate($this->typeProcess, $args);
 

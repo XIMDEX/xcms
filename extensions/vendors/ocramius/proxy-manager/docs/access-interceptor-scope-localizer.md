@@ -82,7 +82,7 @@ class Foo
     }
 }
 
-$factory = new Factory();
+$factory = new \Ximdex\Utils\Factory();
 
 $proxy = $factory->createProxy(
     new Foo(),

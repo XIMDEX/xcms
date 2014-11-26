@@ -134,7 +134,7 @@ class MPMProcess {
 
 				if ($this->isPath($className)){
 					//the className is a path, instanciate by factory class
-					$factory = new Factory(XIMDEX_ROOT_PATH . $this->classPath, $this->className);
+					$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . $this->classPath, $this->className);
 					$this->factoryClass = $factory->instantiate();
 					$this->functionName = $methodName;
 				}else{
