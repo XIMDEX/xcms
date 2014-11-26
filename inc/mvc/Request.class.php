@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/lang/AssociativeArray.class.php');
 
 /**
  * 
@@ -53,12 +52,12 @@ class Request {
 	 * @return unknown_type
 	 */
 	function __construct() {
-		$this->params = new AssociativeArray();
+		$this->params = new \Ximdex\Utils\AssociativeArray();
 	}
 
 
 	/**
-	 * Añadimos un valor a un array
+	 * Aï¿½adimos un valor a un array
 	 * @param $key
 	 * @param $value
 	 * @param $defValue

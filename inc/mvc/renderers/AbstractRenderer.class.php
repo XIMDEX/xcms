@@ -26,7 +26,6 @@
 
 
 
-include_once(XIMDEX_ROOT_PATH . "/inc/lang/AssociativeArray.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
 /**
  *
@@ -58,7 +57,7 @@ class AbstractRenderer {
 
 		$this->displayEncoding = Config::getValue('displayEncoding');
 		$this->_template = $fileName;
-		$this->_parameters = new AssociativeArray();
+		$this->_parameters = new \Ximdex\Utils\AssociativeArray();
 	}
 
 	/**
@@ -199,7 +198,7 @@ class AbstractRenderer {
 	}
 
 	/**
-	 * Mandamos el nombre, la descripción, el comando y la base de la accion al render
+	 * Mandamos el nombre, la descripciï¿½n, el comando y la base de la accion al render
 	 * @param $_name
 	 * @param $_desc
 	 * @param $_command
@@ -222,7 +221,7 @@ class AbstractRenderer {
 	 * @return unknown_type
 	 */
 	private function _set_action_url($action_url = NULL, $nodeID = NULL, $actionID = NULL,  $actionName = NULL) {
-		//Si no se ha especificado ninguna url de destino se añade la de la acción por defecto.
+		//Si no se ha especificado ninguna url de destino se aï¿½ade la de la acciï¿½n por defecto.
 		if($action_url == null) {
 			$query = App::get('QueryManager');
 
@@ -259,7 +258,7 @@ class AbstractRenderer {
 	private function _set_module($module = NULL, $_ACTION_COMMAND ) {
 		if($module) {
 			$base_action = Config::getValue('AppRoot').ModulesManager::path($module)."/actions/".$_ACTION_COMMAND."/";
-			//Especificamos los parámetros especificos de módulo
+			//Especificamos los parï¿½metros especificos de mï¿½dulo
 			$this->set("base_module", Config::getValue('AppRoot').ModulesManager::path($module)."/");
 			$this->set("module", $module);
 		}else {

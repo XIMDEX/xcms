@@ -27,7 +27,6 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
-require_once(XIMDEX_ROOT_PATH . '/inc/lang/AssociativeArray.class.php');
 
 /**
  *
@@ -43,7 +42,7 @@ class Response {
 
     function __construct() {
 
-        $this->_headers = new AssociativeArray();
+        $this->_headers = new \Ximdex\Utils\AssociativeArray();
         ob_start();
         foreach ($_SERVER as $key => $value) {
             if (preg_match('/^HTTP_(.*)$/', $key)) {

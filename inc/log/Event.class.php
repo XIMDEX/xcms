@@ -45,7 +45,7 @@ class Event {
 	 */
 	function Event() {
 
-		$this->_params = new AssociativeArray();
+		$this->_params = new \Ximdex\Utils\AssociativeArray();
 	}
 	/**
 	 * 

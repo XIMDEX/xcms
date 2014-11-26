@@ -27,7 +27,6 @@
 
 if (file_exists(XIMDEX_ROOT_PATH . "/conf/install-params.conf.php"))
 	include_once(XIMDEX_ROOT_PATH . "/conf/install-params.conf.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/lang/AssociativeArray.class.php");
 
 if (!defined('LOGGER_LEVEL_ALL'))		define('LOGGER_LEVEL_ALL',		0x0000);
 if (!defined('LOGGER_LEVEL_DEBUG'))		define('LOGGER_LEVEL_DEBUG',	0x0001);
@@ -73,8 +72,8 @@ class Logger {
 	function Logger($name, $params) {
 
 		// Init data structure.
-		$this->_appenders = new AssociativeArray();
-		$this->_getters = new AssociativeArray();
+		$this->_appenders = new \Ximdex\Utils\AssociativeArray();
+		$this->_getters = new \Ximdex\Utils\AssociativeArray();
 
 		$this->_name = $name;
 		$this->_params = $params;

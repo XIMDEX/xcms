@@ -38,7 +38,7 @@ class BehaviorCollection extends Overloadable {
 	
 	function __construct(& $model) {
 		$this->model = $model;
-		$this->behaviorCollection = new AssociativeArray();
+		$this->behaviorCollection = new \Ximdex\Utils\AssociativeArray();
 		$behaviors = $model->actsAs;
 		if (is_array($behaviors)) {
 			foreach ($behaviors as $behavior => $params) {
