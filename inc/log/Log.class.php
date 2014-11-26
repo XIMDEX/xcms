@@ -79,7 +79,7 @@ class Log {
 		// normal constructor
 
 		// init data structures
-		$this->_loggers = new AssociativeArray();
+		$this->_loggers = new \Ximdex\Utils\AssociativeArray();
 	}
 
 	/**
