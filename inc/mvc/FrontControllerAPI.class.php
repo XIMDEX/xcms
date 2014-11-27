@@ -21,13 +21,11 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 //
 require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
-require_once(XIMDEX_ROOT_PATH . '/api/utils/Crypto.class.php');
-require_once(XIMDEX_ROOT_PATH . '/api/services/TokenService.class.php');
 require_once(XIMDEX_ROOT_PATH . '/api/services/NodeService.class.php');
 require_once(XIMDEX_ROOT_PATH . '/api/classes/AbstractAPIAction.class.php');
 
@@ -40,20 +38,21 @@ require_once(XIMDEX_ROOT_PATH . '/api/classes/AbstractAPIAction.class.php');
  * the http interface
  *
  */
-class FrontControllerAPI extends FrontController {
+class FrontControllerAPI extends FrontController
+{
     const XIM_API_TOKEN_PARAM = "ximtoken";
     const XIM_API_DEFAULT_METHOD = "index";
     const XIM_API_KEY_CONFIG_PARAM = "ApiKey";
     const XIM_API_IV_CONFIG_PARAM = "ApiIV";
-    
+
     private $apiActionsFolder;
-    
+
     /**
      * <p>Stores the current action being executed</p>
-     * @var string 
+     * @var string
      */
     private $action;
-    
+
     /**
      * <p>Stores the current action method being executed</p>
      * @var string
@@ -63,7 +62,8 @@ class FrontControllerAPI extends FrontController {
     /**
      * <p>Default constructor</p>
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->apiActionsFolder = realpath(XIMDEX_ROOT_PATH . '/api/actions/');
         $this->response->set('Content-Type', 'application/json');
@@ -74,7 +74,8 @@ class FrontControllerAPI extends FrontController {
     /**
      * <p>Dispatches the current request to be executed by the requested action</p>
      */
-    function dispatch() {
+    function dispatch()
+    {
         // Comprueba si la URL de acceso coincide con UrlRoot
         if (!$this->_checkURI()) {
             $this->sendErrorResponse('400', 'Bad URL requested');
@@ -93,9 +94,9 @@ class FrontControllerAPI extends FrontController {
             if ($encryptedXimtoken == null)
                 $this->sendErrorResponse('400', 'Token missing for this action');
 
-            $tokenService = new TokenService();
-            
-            $ximtoken = $tokenService->decryptToken($encryptedXimtoken, \App::getValue( self::XIM_API_KEY_CONFIG_PARAM), \App::getValue( self::XIM_API_IV_CONFIG_PARAM));
+            $tokenService = new \Ximdex\Services\Token();
+
+            $ximtoken = $tokenService->decryptToken($encryptedXimtoken, \App::getValue(self::XIM_API_KEY_CONFIG_PARAM), \App::getValue(self::XIM_API_IV_CONFIG_PARAM));
 
             if ($ximtoken == null) {
                 $this->sendErrorResponse('400', 'The token does not have a valid format');
@@ -105,11 +106,11 @@ class FrontControllerAPI extends FrontController {
             if (!($ximtoken['validTo'] > time())) {
                 $this->sendErrorResponse('400', 'The token has expired');
             }*/
-            
+
             if ($tokenService->hasExpired($ximtoken)) {
                 $this->sendErrorResponse('400', 'The token has expired');
             }
-            
+
             $this->request->setParam('XimUser', $ximtoken['user']);
         }
 
@@ -132,7 +133,8 @@ class FrontControllerAPI extends FrontController {
     /**
      * <p>Sends an error response with the specified status code and message</p>
      */
-    private function sendErrorResponse($status_code, $message) {
+    private function sendErrorResponse($status_code, $message)
+    {
         $this->response->header_status($status_code);
         $respContent = array("error" => 1, "message" => $message);
         $this->response->setContent($respContent);
@@ -143,16 +145,17 @@ class FrontControllerAPI extends FrontController {
     /**
      * <p>Checks whether the requested action exists and whether it needs security to be executed</p>
      */
-    private function checkAction() {
+    private function checkAction()
+    {
         $requestUri = $_SERVER['REQUEST_URI'];
         $requestUri = str_replace('?' . $_SERVER['QUERY_STRING'], "", $requestUri);
-	if (!preg_match('/.*\/api(?:\-\w+?)?\/(.*?)\/?$/', $requestUri, $matches)) 
-        // The reg.exp doesn't match or an error ocurred
+        if (!preg_match('/.*\/api(?:\-\w+?)?\/(.*?)\/?$/', $requestUri, $matches))
+            // The reg.exp doesn't match or an error ocurred
             return false;
         $am = $matches[1];
         $pieces = explode(DIRECTORY_SEPARATOR, $am);
 
-        switch(count($pieces)) {
+        switch (count($pieces)) {
             case 1:
                 $this->action = $pieces[0];
                 $this->method = self::XIM_API_DEFAULT_METHOD;
@@ -161,7 +164,7 @@ class FrontControllerAPI extends FrontController {
                 $this->action = $pieces[0];
                 $this->method = $pieces[1];
         }
-        
+
         if (!file_exists($this->apiActionsFolder . '/' . $this->action)) {
             return false;
         }
@@ -173,10 +176,11 @@ class FrontControllerAPI extends FrontController {
      * Comprueba si la URL de acceso coincide con UrlRoot
      * @return unknown_type
      */
-    function _checkURI() {
+    function _checkURI()
+    {
         $host_request = $_SERVER["HTTP_HOST"];
         $uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
-        $ximdex = parse_url(\App::getValue( 'UrlRoot'));
+        $ximdex = parse_url(\App::getValue('UrlRoot'));
 
         if ($ximdex["host"] != $_SERVER["HTTP_HOST"] && strpos($uri_request, $ximdex["path"]) === 0) {
             $this->_setError("Error: la URL de acceso no coincide con la UrlRoot", "FrontController");
@@ -189,12 +193,11 @@ class FrontControllerAPI extends FrontController {
     /**
      * <p>Sets the request parameters in the current request</p>
      */
-    function setToRequest() {
+    function setToRequest()
+    {
         $this->request->setParameters($_FILES);
         $this->request->setParameters($_GET);
         $this->request->setParameters($_POST);
     }
 
 }
-
-?>

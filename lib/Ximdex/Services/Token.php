@@ -25,33 +25,36 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Services ;
+use Ximdex\Utils\Crypto;
+
 /**
  * <p>Service responsible of generate and validate tokens</p>
  *
  */
-class TokenService {
- 
+class Token {
+
     /**
      * <p>Default Token Time-To-Live in minutes</p>
      */
     const DEFAULT_TTL = 5;
-    
+
     /**
      * <p>Default constructor</p>
      */
     public function __construct() {
-        
+
     }
-    
+
     /**
      * <p>Generates a new token for the given user</p>
      * @param string $user the username which generate a token for
      * @param int $ttl Optional parameter indicating the lifetime of the new token
      */
-    public function getToken($user, $ttl = TokenService::DEFAULT_TTL) {
+    public function getToken($user, $ttl = self::DEFAULT_TTL) {
         $now = time();
         $tokenTTL = intval($ttl);
-        
+
         $validTo = $now + ($tokenTTL * 60);
 
         $token = array('user' => $user, 'created' => time(), 'validTo' => $validTo);
@@ -59,7 +62,7 @@ class TokenService {
         $token = base64_encode(Crypto::encryptAES($token, \App::getValue( 'ApiKey'), \App::getValue( 'ApiIV')));
         return $token;
     }
-    
+
     /**
      * <p>Validates the token given as parameter</p>
      * @param string $token the token to be validated
@@ -70,10 +73,10 @@ class TokenService {
 
         if ($decryptedToken == null)
             return false;
-        
+
         if (!($decryptedToken['validTo'] > time()))
             return false;
-            
+
         return true;
     }
 
@@ -88,7 +91,7 @@ class TokenService {
         $decryptedToken = json_decode(Crypto::decryptAES(base64_decode($token), $key, $iv), true);
         return $decryptedToken;
     }
-    
+
     /**
      * <p>Determines whether the given token has expired or not using a decrypted token</p>
      * @param array $token the decrypted token
@@ -97,13 +100,11 @@ class TokenService {
     public function hasExpired($token) {
         if(!isset($token['validTo']))
             return true;
-        
+
         if (!($token['validTo'] > time())) {
             return true;
         }
-        
+
         return false;
     }
 }
-
-?>
