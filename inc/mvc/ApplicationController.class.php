@@ -32,7 +32,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionFactory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Timer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
 ModulesManager::file('/inc/Status.class.php', 'ximADM');
 
@@ -123,7 +122,7 @@ class ApplicationController extends IController {
 		$stats=array();
 		
 		if ($actionStats == 1 && !is_null($action) && "index" == $method ) {
-			$this->timer = new Timer();
+			$this->timer = new \Ximdex\Utils\Timer();
 			$this->timer->start();
 
 			if(ModulesManager::isEnabled('ximDEMOS')) {				
