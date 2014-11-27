@@ -32,8 +32,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
-//
-require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xmldocumentnode.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
