@@ -15,7 +15,7 @@ class Action_common implements APIRestAction, SecuredAction{
         	$username = $request->getParam(self::USER_PARAM);
 
         	if (!empty($id)) {
-            		$nodeService = new NodeService();
+            		$nodeService = new \Ximdex\Services\Node();
             		if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::BINARY_FILE)) {
                 		$nodeInfo = $nodeService->getNodeInfo($id);
                 		unset($nodeInfo['nodeType']);
@@ -48,7 +48,7 @@ class Action_common implements APIRestAction, SecuredAction{
 	public function post($request, $response){
         	$id = $request->getParam('parentid');
         	$name = $request->getParam('name');
-        	$nodeService = new NodeService();
+        	$nodeService = new \Ximdex\Services\Node();
 
         	if (empty($name)) {
             		$this->createErrorResponse($response, "The name for the file is missing");
@@ -86,7 +86,7 @@ class Action_common implements APIRestAction, SecuredAction{
         $content = $request->getParam('content');
         $validate = $request->getParam('validate');
         
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (empty($id)) {
             $this->createErrorResponse($response, "The id of the file is missing");
@@ -158,7 +158,7 @@ class Action_common implements APIRestAction, SecuredAction{
 	public function delete($request, $response){
         	$id = $request->getParam('id');
         	$username = $request->getParam(self::USER_PARAM);
-        	$nodeService = new NodeService();
+        	$nodeService = new \Ximdex\Services\Node();
 
         	if (!empty($id)) {
             		if (!$nodeService->existsNode($id)) {
@@ -196,7 +196,7 @@ class Action_common implements APIRestAction, SecuredAction{
     {
 
         $idNode = $request->getParam('parentid');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
         $node = $nodeService->getNode($idNode);
 
         /* Check whether it is possible to add a xml container as child of the supplied node */

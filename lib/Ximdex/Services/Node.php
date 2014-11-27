@@ -25,17 +25,16 @@
  * @version $Revision$
  */
 
-ModulesManager::file("/inc/model/node.php");
-ModulesManager::file("/inc/model/user.php");
-ModulesManager::file("/services/NodetypeService.class.php");
+namespace Ximdex\Services ;
+
 
 /**
  * <p>Service responsible of deal with nodes</p>
  *
  */
-class NodeService
+class Node
 {
-    private static $PROJECTS_ROOT_NODE_ID = 10000;
+    const PROJECTS_ROOT_NODE_ID = 10000;
     public $node = null;
     private $lazyMode = true;
 
@@ -44,8 +43,15 @@ class NodeService
      */
     public function __construct($idNode = null, $lazyMode = true)
     {
-        if ($idNode)
-            $this->node = new Node($idNode);
+
+        \Ximdex\Modules\Manager::file("/inc/model/node.php");
+        \Ximdex\Modules\Manager::file("/inc/model/user.php");
+
+
+        if ($idNode) {
+            $this->node = new \Node($idNode);
+
+        }
         $this->lazyMode = $lazyMode;
     }
 
@@ -168,7 +174,7 @@ class NodeService
      */
     public function getRootNode()
     {
-        return $this->getNode(self::$PROJECTS_ROOT_NODE_ID);
+        return $this->getNode(self::PROJECTS_ROOT_NODE_ID);
     }
 
     /**

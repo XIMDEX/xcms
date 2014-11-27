@@ -18,7 +18,7 @@ class Action_document implements APIRestAction, SecuredAction
         $username = $request->getParam(self::USER_PARAM);
 
         if (!empty($id)) {
-            $nodeService = new NodeService();
+            $nodeService = new \Ximdex\Services\Node();
             if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)) {
                 $nodeInfo = $nodeService->getNodeInfo($id);
                 $node = new Node($id);
@@ -57,7 +57,7 @@ class Action_document implements APIRestAction, SecuredAction
         $id = $request->getParam('parentid');
         $name = $request->getParam('name');
         $schema = $request->getParam('id_schema');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (empty($name)) {
             $this->createErrorResponse($response, "The name for the document is missing");
@@ -95,7 +95,7 @@ class Action_document implements APIRestAction, SecuredAction
         $content = $request->getParam('content');
         $validate = $request->getParam('validate');
         
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (empty($id)) {
             $this->createErrorResponse($response, "The id of the document is missing");
@@ -168,7 +168,7 @@ class Action_document implements APIRestAction, SecuredAction
     {
         $id = $request->getParam('id');
         $username = $request->getParam(self::USER_PARAM);
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (!empty($id)) {
             if (!$nodeService->existsNode($id)) {
@@ -207,7 +207,7 @@ class Action_document implements APIRestAction, SecuredAction
     {
 
         $idNode = $request->getParam('parentid');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
         $node = $nodeService->getNode($idNode);
 
         /* Check whether it is possible to add a xml container as child of the supplied node */

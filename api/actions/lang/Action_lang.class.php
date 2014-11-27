@@ -79,7 +79,7 @@ class Action_lang extends AbstractAPIAction implements SecuredAction {
             return false;
         }
 
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
         
         $hasPermissionOnNode = $nodeService->hasPermissionOnNode($username, $nodeid);
         
