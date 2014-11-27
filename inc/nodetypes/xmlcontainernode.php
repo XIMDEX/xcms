@@ -29,7 +29,6 @@ ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
-ModulesManager::file('/services/NodetypeService.class.php');
 
 class XmlContainerNode extends FolderNode{
 

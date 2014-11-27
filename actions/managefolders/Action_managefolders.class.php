@@ -25,7 +25,6 @@
  */
 
 ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
-ModulesManager::file('/services/NodetypeService.class.php');
 
 class Action_managefolders extends ActionAbstract {
 

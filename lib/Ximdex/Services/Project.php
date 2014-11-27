@@ -28,7 +28,6 @@
 namespace Ximdex\Services ;
 
 \Ximdex\Modules\Manager::file("/inc/model/node.php");
-\Ximdex\Modules\Manager::file("/services/NodetypeService.class.php");
 
 /**
  * <p>Service responsible of deal with nodes</p>
