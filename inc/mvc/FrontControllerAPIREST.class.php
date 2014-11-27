@@ -21,15 +21,13 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 //
 require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
-require_once(XIMDEX_ROOT_PATH . '/api/utils/Crypto.class.php');
-require_once(XIMDEX_ROOT_PATH . '/services/TokenService.class.php');
 require_once(XIMDEX_ROOT_PATH . '/services/NodeService.class.php');
-require_once(XIMDEX_ROOT_PATH . '/services/NodetypeService.class.php'); 
+require_once(XIMDEX_ROOT_PATH . '/services/NodetypeService.class.php');
 
 /**
  *
@@ -50,7 +48,7 @@ class FrontControllerAPIREST extends FrontController
 
     /**
      * <p>Stores the current action being executed</p>
-     * @var string 
+     * @var string
      */
     private $action;
 
@@ -95,9 +93,9 @@ class FrontControllerAPIREST extends FrontController
             if ($encryptedXimtoken == null)
                 $this->sendErrorResponse('400', 'Token missing for this action');
 
-            $tokenService = new TokenService();
+            $tokenService = new \Ximdex\Services\Token();
 
-            $ximtoken = $tokenService->decryptToken($encryptedXimtoken, \App::getValue( self::XIM_API_KEY_CONFIG_PARAM), \App::getValue( self::XIM_API_IV_CONFIG_PARAM));
+            $ximtoken = $tokenService->decryptToken($encryptedXimtoken, \App::getValue(self::XIM_API_KEY_CONFIG_PARAM), \App::getValue(self::XIM_API_IV_CONFIG_PARAM));
 
             if ($ximtoken == null) {
                 $this->sendErrorResponse('400', 'The token does not have a valid format');
@@ -121,17 +119,17 @@ class FrontControllerAPIREST extends FrontController
             if ($method == 'post' || $method == 'put') {
                 $content = file_get_contents('php://input');
                 $content = json_decode($content, true);
-                
-                
+
+
                 if ($content === null) {
                     $this->sendErrorResponse('400', "Bad data for this action");
                     exit;
                 }
                 $this->request->setParam('body', $content);
                 $this->request->setParameters($content);
-                
+
             }
-            
+
             /*
              * Sets the id get from URL in order to have higher preference than the passed as part of content body (only for POST and PUT)
              */
@@ -171,7 +169,7 @@ class FrontControllerAPIREST extends FrontController
         $requestUri = $_SERVER['REQUEST_URI'];
         $requestUri = str_replace('?' . $_SERVER['QUERY_STRING'], "", $requestUri);
         if (!preg_match('/.*\/api-rest\/(.*?)\/?$/', $requestUri, $matches))
-        // The reg.exp doesn't match or an error ocurred
+            // The reg.exp doesn't match or an error ocurred
             return false;
         $am = $matches[1];
         $pieces = explode(DIRECTORY_SEPARATOR, $am);
@@ -201,7 +199,7 @@ class FrontControllerAPIREST extends FrontController
     {
         $host_request = $_SERVER["HTTP_HOST"];
         $uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
-        $ximdex = parse_url(\App::getValue( 'UrlRoot'));
+        $ximdex = parse_url(\App::getValue('UrlRoot'));
 
         if ($ximdex["host"] != $_SERVER["HTTP_HOST"] && strpos($uri_request, $ximdex["path"]) === 0) {
             $this->_setError("Error: la URL de acceso no coincide con la UrlRoot", "FrontController");
@@ -222,5 +220,3 @@ class FrontControllerAPIREST extends FrontController
     }
 
 }
-
-?>
