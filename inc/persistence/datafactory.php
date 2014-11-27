@@ -329,7 +329,7 @@ class DataFactory
 		if (!$isPlainFile){
 		    	//look for the working encoding from Config
 				$workingEncoding = \App::getValue( 'workingEncoding');
-				$content = XmlBase::recodeSrc($content, $workingEncoding);
+				$content = \Ximdex\XML\Base::recodeSrc($content, $workingEncoding);
 		    }
 
 	    return $content;
@@ -393,7 +393,7 @@ class DataFactory
 		if (!$isPlainFile){
 				//look for the working encoding from Config
 				$dataEncoding = \App::getValue( 'dataEncoding');
-				$content = XmlBase::recodeSrc($content, $dataEncoding);
+				$content = \Ximdex\XML\Base::recodeSrc($content, $dataEncoding);
 		    }
 
 		$this->ClearError();

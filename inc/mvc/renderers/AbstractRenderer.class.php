@@ -190,9 +190,9 @@ class AbstractRenderer {
 		//Encode the content to the display Encoding from Config
 		foreach($this->_parameters->_data as $key => $value) {
 			if (is_array($value)){
-				$this->_parameters->_data[$key]=XmlBase::encodeArrayElement($this->_parameters->_data[$key],$this->displayEncoding);
+				$this->_parameters->_data[$key]=\Ximdex\XML\Base::encodeArrayElement($this->_parameters->_data[$key],$this->displayEncoding);
 			}else{
-				$this->_parameters->_data[$key]=XmlBase::encodeSimpleElement($this->_parameters->_data[$key],$this->displayEncoding);
+				$this->_parameters->_data[$key]=\Ximdex\XML\Base::encodeSimpleElement($this->_parameters->_data[$key],$this->displayEncoding);
 			}
 		}
 	}

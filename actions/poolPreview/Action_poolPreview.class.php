@@ -211,7 +211,7 @@ class Action_poolPreview extends ActionAbstract {
 			}
 		}
 		XMD_Log::info(print_r($sms,true));
-		$sms = XmlBase::encodeArrayElement($sms, XML::UTF8);
+		$sms = \Ximdex\XML\Base::encodeArrayElement($sms, \Ximdex\XML\XML::UTF8);
 		$this->render(array('sms' => $sms));
 	}
 	/**

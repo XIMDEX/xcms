@@ -742,7 +742,7 @@ class Action_composer extends ActionAbstract {
 
 
 		//Encoding the request to the diplayEncoding from Config, $this->displayEncoding is readed in the parent constructor
-		$contentToolBar = XmlBase::recodeSrc($contentToolBar, $this->displayEncoding);
+		$contentToolBar = \Ximdex\XML\Base::recodeSrc($contentToolBar, $this->displayEncoding);
 
 		echo $contentToolBar;
 		XMD_Log::debug("XMD:toolbar: Data for node($nodeID). END");
@@ -790,9 +790,9 @@ class Action_composer extends ActionAbstract {
 		if(( $node_childs > 0 && $node_id < 10000 ) || $node_id == 13) {
 			$node_name = _($node->get('Name'));
 		}else {
-			$node_name = XmlBase::recodeSrc($node->get('Name'), $encoding);
+			$node_name = \Ximdex\XML\Base::recodeSrc($node->get('Name'), $encoding);
 		}
-		$path = XmlBase::recodeSrc($node->getPath(), $encoding);
+		$path = \Ximdex\XML\Base::recodeSrc($node->getPath(), $encoding);
 		$idNodeType = $node->get('IdNodeType');
 
 		$isDir = $node->nodeType->isFolder() == 1 ? '1' : '0';

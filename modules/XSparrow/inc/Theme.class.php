@@ -27,8 +27,6 @@
 
 ModulesManager::file('/conf/xsparrow.conf', 'XSparrow');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/xml/validator/XMLValidator.class.php');
-ModulesManager::file('/inc/xml/validator/XMLValidator_RNG.class.php');
 
 class Theme {
 
@@ -211,7 +209,7 @@ class Theme {
 
 		//If everything ok
 		if ($result && !$lazy){
-			$rngValidator = new XMLValidator_RNG();
+			$rngValidator = new \Ximdex\XML\Validators\RNG();
 			if(!$rngValidator->validate($rngFileContent,$xml)){
 				XMD_Log::error("XSPARROW: The theme doesn't validate the relaxng $rngFilePath");
 				return false;

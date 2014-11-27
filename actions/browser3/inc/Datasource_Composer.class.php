@@ -128,7 +128,7 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		$output = $output !== null ? $output : 'JSON';		// JSON / XML
 
 		if (is_string($query)) {
-			$query = XmlBase::recodeSrc($query, \App::getValue( 'workingEncoding'));
+			$query = \Ximdex\XML\Base::recodeSrc($query, \App::getValue( 'workingEncoding'));
 			$query = str_replace('\\"', '"', $query);
 		}
 

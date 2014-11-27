@@ -123,8 +123,8 @@ class Action_manageareas extends ActionAbstract
 		$description = Request::post("area_description");
 
 		$objAreas = new XimNewsAreas($idArea);
-		$objAreas->set('Name', XmlBase::recodeSrc($name, XML::UTF8));
-		$objAreas->set('Description', XmlBase::recodeSrc($description, XML::UTF8));
+		$objAreas->set('Name', \Ximdex\XML\Base::recodeSrc($name, \Ximdex\XML\XML::UTF8));
+		$objAreas->set('Description', \Ximdex\XML\Base::recodeSrc($description, \Ximdex\XML\XML::UTF8));
 
 		if(!$objAreas->update()) {
 			$this->messages->add(_("Category update failed. The operation was NOT performed successfully"), MSG_TYPE_NOTICE);

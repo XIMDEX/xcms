@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once (XIMDEX_ROOT_PATH . '/inc/xml/XmlBase.class.php');
 
 define ('MSG_TYPE_ERROR', 0);
 define ('MSG_TYPE_WARNING', 1);
@@ -64,7 +63,7 @@ class Messages {
 	function add($message, $type) 
 	{
 		if (in_array($type, $this->_validTypes) && !$this->_searchMessageText($message, $type)) {
-			$message = XmlBase::recodeSrc($message, $this->displayEncoding);
+			$message = \Ximdex\XML\Base::recodeSrc($message, $this->displayEncoding);
 			$this->messages[] = array('message' => $message, 'type' => $type);
 		}
 	}

@@ -236,7 +236,7 @@ abstract class QueryHandler_Abstract {
 			$rset['records'], $rset['items'], $rset['page'], $rset['pages'], implode('', $data)
 		);
 
-		$xml = XmlBase::recodeSrc($xml, \App::getValue( 'workingEncoding'));
+		$xml = \Ximdex\XML\Base::recodeSrc($xml, \App::getValue( 'workingEncoding'));
 //		$xml = str_replace('\\"', '"', $xml);
 
 		return $xml;
