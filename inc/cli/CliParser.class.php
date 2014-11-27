@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once (XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 
 define('TYPE_INT', 1);
 define('TYPE_STRING', 2);
@@ -105,7 +104,7 @@ abstract class CliParser {
 	 */
 	function CliParser($argc, $argv=NULL) {
 		
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 		$this->messages->displayEncoding = '';
 		$this->arguments = array();
 		$params = array();

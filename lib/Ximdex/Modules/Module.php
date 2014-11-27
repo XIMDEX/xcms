@@ -27,7 +27,6 @@
 namespace Ximdex\Modules ;
 
 use ModulesManager,
-    Messages,
     Shell,
     DB ,
     XMD_Log,
@@ -35,7 +34,6 @@ use ModulesManager,
 
 ModulesManager::file("/inc/db/db.php");
 ModulesManager::file("/inc/cli/Shell.class.php");
-ModulesManager::file("/inc/helper/Messages.class.php");
 
 /**
  *
@@ -67,7 +65,7 @@ class Module
             die("* ERROR: name and path in Module constructor must be provided.\n");
         }
 
-        $this->messages = new Messages();
+        $this->messages = new \Ximdex\Utils\Messages();
 
         //$this->name = get_class($this);
         $this->name = $name;
