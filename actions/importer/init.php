@@ -32,9 +32,6 @@
 	
 	$validOperations = array(OPERATION_ADD, OPERATION_UPDATE, OPERATION_DELETE);
 
-   ModulesManager::file('/inc/helper/Messages.class.php');
-   ModulesManager::file('/inc/helper/Utils.class.php');
-   ModulesManager::file('/inc/fsutils/FsUtils.class.php');
    ModulesManager::file('/inc/fsutils/ZipArchiver.class.php');
    ModulesManager::file('/inc/io/BaseIO.class.php');
    ModulesManager::file('/actions/importer/actionIO.php');
@@ -49,7 +46,7 @@
 		}
 	}
 	$paquete = sprintf('%s/data/tmp/%s', XIMDEX_ROOT_PATH, $paquete);
-	$messages = new Messages();
+	$messages = new \Ximdex\Utils\Messages();
 	
 	if (!isset($op) || !in_array($op, $validOperations)) {
 		$messages->add(_('Operation way has not been selected'), MSG_TYPE_ERROR);
@@ -57,7 +54,7 @@
 	}
 	
 	do {
-		$destFolder = sprintf('/tmp/%s', Utils::generateRandomChars(12, true, true, true));
+		$destFolder = sprintf('/tmp/%s', \Ximdex\Utils\String::generateRandomChars(12, true, true, true));
 	} while(is_dir($destFolder));
 	
 	if (!mkdir($destFolder)) {
@@ -118,7 +115,7 @@
 	$elements = $domDocument->get_elements_by_tagname($nodeTypeName);
 	
 	if (count($elements) !== 1) {
-		$messages->add(_('El paquete contiene más de un nodo'), MSG_TYPE_ERROR);
+		$messages->add(_('El paquete contiene mï¿½s de un nodo'), MSG_TYPE_ERROR);
 		cleanup($messages, $paquete, $destFolder);
 	}
 	$element = $elements[0];
@@ -170,7 +167,7 @@
 					"NODETYPENAME" => "BINARYFILE",
 					"NAME" => $name,
 					"PARENTID" => $idParent,
-					"STATE" => "Publicación",
+					"STATE" => "Publicaciï¿½n",
 					"CHILDRENS" => 
 					array (
 						array (
@@ -187,7 +184,7 @@
 					'ID' => $idNode,
 					"NODETYPENAME" => "BINARYFILE",
 					"NAME" => $name,
-					"STATE" => "Publicación",
+					"STATE" => "Publicaciï¿½n",
 					"CHILDRENS" => 
 					array (
 						array (

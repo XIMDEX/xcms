@@ -27,8 +27,6 @@
 
 
 ModulesManager::file('/inc/model/Versions.php');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/xml/XSLT.class.php');
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
@@ -105,7 +103,7 @@ class View_Xslt extends Abstract_View {
 		}
 
 
-		$xsltHandler = new XSLT();
+		$xsltHandler = new \Ximdex\XML\XSLT();
 		$xsltHandler->setXML($pointer);
 		$xsltHandler->setXSL($docxap);
 		$params = array('xmlcontent' => $content);

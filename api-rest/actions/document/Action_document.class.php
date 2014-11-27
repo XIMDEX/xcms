@@ -1,7 +1,6 @@
 <?php
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/xml/validator/XMLValidator_RNG.class.php');
 
 class Action_document implements APIRestAction, SecuredAction
 {
@@ -142,7 +141,7 @@ class Action_document implements APIRestAction, SecuredAction
 
                 $contentToValidate = "<docxap>" . $content . "</docxap>";
 
-                $validator = new XMLValidator_RNG();
+                $validator = new \Ximdex\XML\Validators\RNG();
                 $result = $validator->validate($templateContent, $contentToValidate);
 
                 if (!$result) {

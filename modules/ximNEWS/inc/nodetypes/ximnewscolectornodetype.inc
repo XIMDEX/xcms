@@ -28,7 +28,6 @@ ModulesManager::file('/inc/nodetypes/foldernode.php');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColectorUsers.php', 'ximNEWS');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
-ModulesManager::file('/inc/xml/XSLT.class.php');
 ModulesManager::file('/inc/log/Automatic_log.class.php');
 
 /**
@@ -872,7 +871,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		// Construimos el xsl del boletin
 
-		$xsltHandler = new XSLT();
+		$xsltHandler = new \Ximdex\XML\XSLT();
 		$xsltHandler->setXML($tmpPath);
 		$xsltHandler->setXSL( XIMDEX_ROOT_PATH.ModulesManager::path('ximNEWS')."/xsl/generateBulletinXsl.xsl");
 

@@ -25,9 +25,6 @@
  */
 
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
-ModulesManager::file('/inc/xml/XmlBase.class.php');
-ModulesManager::file('/inc/xml/XML.class.php');
-ModulesManager::file('/inc/helper/String.class.php');
 
 class Action_edittext extends ActionAbstract {
    	// Main method: shows initial form
@@ -209,7 +206,7 @@ class Action_edittext extends ActionAbstract {
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
         }
-        $node->SetContent(String::stripslashes($content), true);
+        $node->SetContent(\Ximdex\Utils\String::stripslashes( $content), true);
         $node->RenderizeNode();
 
         $nodeType = new NodeType($node->get('IdNodeType'));

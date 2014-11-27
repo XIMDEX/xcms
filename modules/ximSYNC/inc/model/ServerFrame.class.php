@@ -29,13 +29,10 @@
 ModulesManager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_UnpublishOTF.class.php');
 ModulesManager::file('/inc/persistence/datafactory.php');
-ModulesManager::file('/inc/log/XMD_log.class.php');
-ModulesManager::file('/inc/xml/XmlBase.class.php');
-ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC'); 
+ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 /**
 *	@brief Handles operations with ServerFrames.
@@ -332,7 +329,7 @@ class ServerFrame extends ServerFrames_ORM {
 					$encodingServer = $db->GetValue("idEncode");
 
 					XMD_Log::info("Codificando contenido a " . $encodingServer . 'con server=' . $server);
-					$content = XmlBase::recodeSrc($content, $encodingServer);
+					$content = \Ximdex\XML\Base::recodeSrc($content, $encodingServer);
 				}
 
 				if (FsUtils::file_put_contents($path, $content) === false) {

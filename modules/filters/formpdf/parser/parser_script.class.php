@@ -29,7 +29,6 @@
 ModulesManager::file('/formpdf/parser/parser_root.class.php', 'filters');
 ModulesManager::file('/formpdf/latex/latex_script.class.php', 'filters');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/xml/XmlParser.class.php');
 
 class ScriptJS extends ParserRoot {
 	var $nodes;

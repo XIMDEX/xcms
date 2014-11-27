@@ -100,7 +100,7 @@ class VisualTemplateNode extends FileNode {
 
 	function _estimateUUID(&$content) {
 		if (empty($content)) {
-			$content = Utils::generateRandomChars(30, true, true, true);
+			$content = \Ximdex\Utils\String::generateRandomChars(30, true, true, true);
 			return md5($content);
 		}
 

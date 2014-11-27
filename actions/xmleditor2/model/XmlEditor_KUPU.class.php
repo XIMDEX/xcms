@@ -350,7 +350,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $docXmlOrigen = new DOMDocument();
         $docXmlOrigen->loadXML($xmlOrigenContent);
         $docHtml = new DOMDocument();
-        $docHtml->loadHTML(String::stripslashes($htmldoc));
+        $docHtml->loadHTML(\Ximdex\Utils\String::stripslashes( $htmldoc));
 
         // Transforming HTML into XML
         $htmlTransformer = new HTML2XML();
@@ -371,8 +371,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     {
         $schema = $this->getSchemaFile($idnode);
         $xmldoc = "<?xml version='1.0' encoding='UTF-8'?>" . trim($xmldoc);
-        $rngvalidator = new XMLValidator_RNG();
-        $valid = $rngvalidator->validate(XmlBase::recodeSrc($schema, XML::UTF8), $xmldoc);
+        $rngvalidator = new \Ximdex\XML\Validators\RNG();
+        $valid = $rngvalidator->validate(\Ximdex\XML\Base::recodeSrc($schema, \Ximdex\XML\XML::UTF8), $xmldoc);
         //$valid=true;
         $response = array('valid' => $valid, 'errors' => $rngvalidator->getErrors());
         return $response;
@@ -479,15 +479,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
             // NOTE: Delete docxap tags and UID attributes
             $xmlContent = $this->_normalizeXmlDocument($idNode, $content);
-            $xmlContent = String::stripslashes($xmlContent);
+            $xmlContent = \Ximdex\Utils\String::stripslashes( $xmlContent);
 
             // Saving XML
             if ($autoSave === false) {
-                $this->node->SetContent(String::stripslashes($xmlContent), true);
+                $this->node->SetContent(\Ximdex\Utils\String::stripslashes( $xmlContent), true);
                 $this->node->RenderizeNode();
             } else {
                 $idUser = XSession::get('userID');
-                if (!$idUser || !FsUtils::file_put_contents(\App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . "/xedit_" . $idUser . "_" . $idNode, String::stripslashes($xmlContent))) {
+                if (!$idUser || !FsUtils::file_put_contents(\App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\String::stripslashes( $xmlContent))) {
                     XMD_Log::error(_("The content of " . $idNode . " could not be saved"));
                     return false;
                 }
@@ -545,7 +545,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         if (!is_null($content)) {
             $content = $this->_normalizeXmlDocument($idNode, $content);
-            $content = String::stripslashes($content);
+            $content = \Ximdex\Utils\String::stripslashes( $content);
         } else {
             $content = '';
         }

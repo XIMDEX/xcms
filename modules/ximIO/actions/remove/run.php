@@ -42,7 +42,7 @@ $parameterCollector = new RemoveCli($argc, $argv);
 
 $file = $parameterCollector->getParameter('--file');
 $delete = $parameterCollector->getParameter('--delete');
-$messages = new Messages();
+$messages = new \Ximdex\Utils\Messages();
 // First, checking if the package exists and giving some information about it
 
 echo "\n"._("Analysing data:")."\n";
@@ -103,7 +103,7 @@ if ($messages->count(MSG_TYPE_WARNING) > 0 || $messages->count(MSG_TYPE_ERROR) >
 
 
 // TODO re-make using fsutils::deltree
-$messages = new Messages();
+$messages = new \Ximdex\Utils\Messages();
 function removeFolder($dir, $DeleteMe) {
 	global $messages;
     if(!$dh = opendir($dir)) return;

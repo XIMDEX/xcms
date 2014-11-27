@@ -47,7 +47,6 @@ ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/log/XMD_log.class.php'); // Main Logger
 ModulesManager::file('/inc/mvc/mvc.php'); // MVC
 ModulesManager::file('/inc/mvc/FrontControllerAPI.class.php');
 ModulesManager::file('/api/interfaces/NoSecuredAction.iface.php');

@@ -45,7 +45,7 @@ class xsltnode extends FileNode {
 		$this->nodeID = $this->parent->get('IdNode');
 		$this->dbObj = new DB();
 		$this->nodeType = &$this->parent->nodeType;
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 		$this->xsltOldName = $this->parent->get("Name");		
 	}
 

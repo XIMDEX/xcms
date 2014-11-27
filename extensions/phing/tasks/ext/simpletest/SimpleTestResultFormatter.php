@@ -102,7 +102,7 @@ abstract class SimpleTestResultFormatter extends SimpleReporter
 		$this->failureCount = 0;
 		$this->errorCount = 0;
 		
-		$this->timer = new Timer();
+		$this->timer = new \Ximdex\Utils\Timer();
 		$this->timer->start();
 	}
 		

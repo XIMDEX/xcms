@@ -36,7 +36,7 @@ class test_domit {
 	function parse() {
 		if ($this->xmlaction != null) {
 			require_once("timer.php");
-			$timer = new Timer();
+			$timer = new \Ximdex\Utils\Timer();
 			
 			$success = false;
 			($this->saxparser == "saxy") ? ($parseSAXY = true) : ($parseSAXY = false);

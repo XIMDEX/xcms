@@ -71,7 +71,7 @@ class BehaviorCollection extends \Ximdex\Utils\Overloadable
 
     function __get($name)
     {
-        $this->messages = new Messages();
+        $this->messages = new \Ximdex\Utils\Messages();
         if ($name == 'messages') {
             $behaviors = $this->behaviorCollection->getKeys();
             foreach ($behaviors as $behavior) {

@@ -72,7 +72,7 @@ class XimNewsImageFile extends FileNode {
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
 
-		if (!$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8))) return false;
+		if (!$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8))) return false;
 
 		$scale = array("0.1", "0.25", "0.5", "0.75");
 
@@ -152,7 +152,7 @@ class XimNewsImageFile extends FileNode {
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
 
-		if (!$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8))) return false;
+		if (!$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8))) return false;
 
 		$xpath = new DOMXPath($domDoc);
 		$nodeList = $xpath->query("//thumbnail[@nodeid = '$idImage']");
@@ -202,7 +202,7 @@ class XimNewsImageFile extends FileNode {
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
 
-		if (!$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8))) return false;
+		if (!$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8))) return false;
 
 		// get the node correspond to name
 

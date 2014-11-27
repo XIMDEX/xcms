@@ -26,7 +26,6 @@
  */
 
 ModulesManager::file('/inc/model/Links.php');
-include_once( XIMDEX_ROOT_PATH . "/inc/helper/String.class.php" );
 
 class FormValidation {
     
@@ -41,7 +40,7 @@ class FormValidation {
         $inputName = $params["inputName"];
         $name=$params[$inputName];
         if (!empty($params["process"]) && $params["process"] == "normalize") {
-            $name = String::normalize($name);
+            $name = \Ximdex\Utils\String::normalize($name);
         }
         $node = new Node($idnode);
         if($node->nodeType->get("IsFolder")==0){
@@ -91,4 +90,3 @@ class FormValidation {
         return false;        
     }
 }
-?>

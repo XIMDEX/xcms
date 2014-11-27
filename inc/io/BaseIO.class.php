@@ -28,12 +28,10 @@ define('MODE_NODETYPE', 0);
 define('MODE_NODEATTRIB', 1);
 
 ModulesManager::file('/inc/io/BaseIOConstants.php');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/model/State.class.php');
-ModulesManager::file('/inc/helper/Messages.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 
 // BaseIO API
@@ -54,7 +52,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function BaseIO() {
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 	}
 
 	/**

@@ -32,7 +32,6 @@ include_once(XIMDEX_ROOT_PATH . '/inc/persistence/datafactory.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/auth/Auth.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIO.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIOInferer.class.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
 
 class Repository_XNodes extends Repository {
 
@@ -344,7 +343,7 @@ class Repository_XNodes extends Repository {
 		$output = 'JSON';		// JSON / XML
 
 		if (is_string($query)) {
-			$query = XmlBase::recodeSrc($query, \App::getValue( 'workingEncoding'));
+			$query = \Ximdex\XML\Base::recodeSrc($query, \App::getValue( 'workingEncoding'));
 			$query = str_replace('\\"', '"', $query);
 		}
 

@@ -25,7 +25,6 @@
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/actions/movenode/baseIO.php');
-ModulesManager::file('/inc/helper/String.class.php');
 
 
 class MoverNodo{
@@ -136,10 +135,9 @@ function getNodosFromXML($tag_name){
 
 function getXMLFinal(){
 
-	 $resultado = "<respuesta>" . String::stripslashes($this->str_xml) . "</respuesta>";
+	 $resultado = "<respuesta>" . \Ximdex\Utils\String::stripslashes( $this->str_xml) . "</respuesta>";
 	 return $resultado;
 }
 
 
 }
-?>

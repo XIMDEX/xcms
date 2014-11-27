@@ -255,17 +255,17 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
-		if (!$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8))) return false;
+		if (!$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8))) return false;
 
 		$xpath = new DOMXPath($domDoc);
 		$entries = $xpath->query('@name');
 
 		foreach ($entries as $entry) {
-			$entry->nodeValue = XmlBase::recodeSrc($name, XML::UTF8);	
+			$entry->nodeValue = \Ximdex\XML\Base::recodeSrc($name, \Ximdex\XML\XML::UTF8);
 		}
 
 		$result = $domDoc->saveXML();
-		$result = XmlBase::recodeSrc(str_replace('<?xml version="1.0"?>', '', $result), XML::UTF8);
+		$result = \Ximdex\XML\Base::recodeSrc(str_replace('<?xml version="1.0"?>', '', $result), \Ximdex\XML\XML::UTF8);
 		
 		if (empty($result)) {
 			XMD_Log::error('Updating news ' . $this->parent->get('IdNode'). ' name in XML');
@@ -730,7 +730,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$domDoc->xmlStandalone = true;
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
-		$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$areaNode = $domDoc->getElementsByTagName('area_tematica')->item(0);
 
@@ -787,7 +787,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
-		$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
 		$option = $xpath->query("//area_tematica/opcion[@value='$idArea']")->item(0);

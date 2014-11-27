@@ -24,59 +24,53 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\XML ;
 
 
-require("XSLT.iface.php");
+class XSLT  {
 
-class XSLT implements I_XSLT {
+    protected $xsltprocessor;
+    protected $xml;
+    protected $xsl;
+    protected $xsd;
 
-	protected $xsltprocessor;
-	protected $xml;
-	protected $xsl;
-	protected $xsd;
+    public function __construct() {
 
-	public function __construct() {
+        $this->xsltprocessor = new \XSLTProcessor();
+        $this->xml = new \DOMDocument();
+        $this->xsl = new \DOMDocument();
+    }
 
-		$this->xsltprocessor = new XSLTProcessor();
-		$this->xml = new DOMDocument();
-		$this->xsl = new DOMDocument();
-	}
+    public function setXML($xml_file) {
+        $this->xml->load($xml_file);
+    }
 
-	public function __destruct() {
-
-	}
-
-	public function setXML($xml_file) {
-		$this->xml->load($xml_file);
-	}
-
-	public function setXSL($xsl_file) {
+    public function setXSL($xsl_file) {
         //Warnings when $xsl_file doesn't exist
         if(file_exists($xsl_file)){
             $this->xsl->load($xsl_file);
             $this->xsltprocessor->importStyleSheet($this->xsl);
         }
-	}
+    }
 
-	public function setXSD($xsd) {
-		// TODO: implement.
-	}
+    public function setXSD($xsd) {
+        // TODO: implement.
+    }
 
-	public function setParameter($options, $namespace = '') {
+    public function setParameter($options, $namespace = '') {
 
-		return $this->xsltprocessor->setParameter($namespace, $options);
-	}
+        return $this->xsltprocessor->setParameter($namespace, $options);
+    }
 
-	public function validate() {
+    public function validate() {
 
-	}
+    }
 
-	public function process() {
-		error_reporting(E_ALL^E_WARNING);
-		return $this->xsltprocessor->transformToXML($this->xml);
-		error_reporting(E_ALL);
-	}
+    public function process() {
+        error_reporting(E_ALL^E_WARNING);
+        return $this->xsltprocessor->transformToXML($this->xml);
+        error_reporting(E_ALL);
+    }
 
 }
 
-?>

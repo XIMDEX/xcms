@@ -110,7 +110,7 @@ class Action_xmlsetlink extends ActionAbstract {
 		$structuredDocument->SetSymLink($idTarget);
 		$this->messages->add(_('The link has been modified successfully'), MSG_TYPE_NOTICE);
 
-		$messages = new Messages();
+		$messages = new \Ximdex\Utils\Messages();
 		$messages->mergeMessages($node->messages);
 		$messages->mergeMessages($structuredDocument->messages);
 

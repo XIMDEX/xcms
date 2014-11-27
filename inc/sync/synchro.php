@@ -1594,7 +1594,7 @@ class Synchronizer
             $server = new Server($serverID);
             $encodingServer = $server->get('idEncode');
 
-            $content = XmlBase::recodeSrc(FsUtils::file_get_contents($file), $encodingServer);
+            $content = \Ximdex\XML\Base::recodeSrc(FsUtils::file_get_contents($file), $encodingServer);
         }
 
         FsUtils::file_put_contents($tmpPath, $content);

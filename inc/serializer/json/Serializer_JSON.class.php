@@ -54,8 +54,8 @@ class Serializer_JSON {
 			$str = serialize($str);
 		}
 		
-		if (!XmlBase::isUtf8($str)) {
-			$str = XmlBase::recodeSrc($str, XML::UTF8);
+		if (!\Ximdex\XML\Base::isUtf8($str)) {
+			$str = \Ximdex\XML\Base::recodeSrc($str, \Ximdex\XML\XML::UTF8);
 			// Corrects the values of the strings sizes
 			$str = preg_replace('!s:(\d+):"(.*?)";!se', '"s:".strlen("$2").":\"$2\";"', $str);
 //			$s2 = preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $s2);

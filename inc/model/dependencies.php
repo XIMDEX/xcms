@@ -28,8 +28,6 @@
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Dependencies_ORM.class.php';
 
-include_once (XIMDEX_ROOT_PATH."/inc/xml/XmlBase.class.php");
-include_once (XIMDEX_ROOT_PATH."/inc/xml/XML.class.php");
 
 
 class dependencies extends Dependencies_ORM{
@@ -274,7 +272,7 @@ class dependencies extends Dependencies_ORM{
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 
-		$domDoc->loadXML(XmlBase::recodeSrc("<docxap>$content</docxap>", XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc("<docxap>$content</docxap>", \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
 		$nodeList = $xpath->query('//*');

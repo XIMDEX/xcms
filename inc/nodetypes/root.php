@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 include_once XIMDEX_ROOT_PATH . '/inc/db/db.php';
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 
 // Define estructure at inc/xvfs/backends/XVFS_Backend_xnodes.class.php here.
 if (!defined('ROOT_NODE')) {
@@ -67,7 +66,7 @@ class Root
         $this->nodeID = $this->parent->get('IdNode');
         $this->dbObj = new DB();
         $this->nodeType = &$this->parent->nodeType;
-        $this->messages = new Messages();
+        $this->messages = new \Ximdex\Utils\Messages();
     }
 
     /**

@@ -30,11 +30,10 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/xIterator.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mail/EmailContainer.class.php');
 
 
-class I_EmailContainer extends xIterator {
+class I_EmailContainer extends  \Ximdex\Utils\Iterator {
 	var $_objectName = 'EmailContainer';
 	
 	/**
@@ -44,8 +43,7 @@ class I_EmailContainer extends xIterator {
 	 * @param array $args
 	 * @return I_EmailContainer
 	 */
-	function I_EmailContainer($condition, $args) {
+	public function  __construct($condition, $args) {
 	}
 	
 }
-?>

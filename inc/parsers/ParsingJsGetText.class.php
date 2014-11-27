@@ -31,7 +31,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 
-include_once( XIMDEX_ROOT_PATH . "/inc/helper/String.class.php" );
 
 class ParsingJsGetText {
 	const PATH_CACHE = "/data/tmp/js/";
@@ -89,7 +88,7 @@ class ParsingJsGetText {
 			$_js = str_replace("/", "_", $_js);
 			$_js = str_replace("\\", "_", $_js);
 			$_js = str_replace(".", "_", $_js);
-			$this->_file = String::convertText($_js).".js";
+			$this->_file = \Ximdex\Utils\String::convertText($_js).".js";
 		}
 	}
 

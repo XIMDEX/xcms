@@ -133,7 +133,7 @@ class Action_common implements APIRestAction, SecuredAction{
 
                 $contentToValidate = "<docxap>" . $content . "</docxap>";
 
-                $validator = new XMLValidator_RNG();
+                $validator = new \Ximdex\XML\Validators\RNG();
                 $result = $validator->validate($templateContent, $contentToValidate);
 
                 if (!$result) {
