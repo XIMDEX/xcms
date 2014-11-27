@@ -27,7 +27,6 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 class BehaviorBase {
 	var $messages = null;
 	var $options = array();
@@ -35,7 +34,7 @@ class BehaviorBase {
 	var $optional = array();
 	
 	function __construct($options) {
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 		$this->_checkFields($options);
 		$this->options = $options;
 	}

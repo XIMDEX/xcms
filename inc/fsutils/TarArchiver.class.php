@@ -32,7 +32,6 @@
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
 
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 /**
  * Constant definition
  *
@@ -93,7 +92,7 @@ class TarArchiver {
 	 * @return TarArchiver
 	 */
 	function TarArchiver($fileName = '', $options = NULL) {
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 		$validCompressions = array(TAR_COMPRESSION_BZIP2, TAR_COMPRESSION_GZIP);
 		$validTypes = array(TAR_TYPE_FULL, TAR_TYPE_INCREMENTAL);
 		

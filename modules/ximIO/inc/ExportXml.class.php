@@ -32,7 +32,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 //
 ModulesManager::file('/inc/model/node.php');
-ModulesManager::file('/inc/helper/Messages.class.php');
 ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 
 
@@ -57,7 +56,7 @@ class ExportXml {
 	function ExportXml($nodeID) {
 		$this->dbObj = new DB();
 		
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 		
 		// Checking if the node is inside the Projects folder or not.
 		$this->_arrNodeId = array();

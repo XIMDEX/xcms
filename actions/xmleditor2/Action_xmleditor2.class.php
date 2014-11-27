@@ -104,7 +104,7 @@ class Action_xmleditor2 extends ActionAbstract {
 		$params = $this->request->getParam("params");
 
 		$editorName = strtoupper('KUPU');
-		$msg = new Messages();
+		$msg = new \Ximdex\Utils\Messages();
 
 		$class = 'XmlEditor_' . $editorName;
 		$file =  '/actions/xmleditor2/model/XmlEditor_' . $editorName . '.class.php';

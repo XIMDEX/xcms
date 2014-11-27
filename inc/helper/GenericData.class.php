@@ -29,7 +29,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Cache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
@@ -159,7 +158,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
         }
         $id = (int)$id;
         $dbObj = new DB();
-        $this->messages = new Messages();
+        $this->messages = new \Ximdex\Utils\Messages();
         if ($id > 0) {
             if ((bool)$this->_useMemCache) {
                 $cache = new Cache();

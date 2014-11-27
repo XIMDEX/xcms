@@ -31,7 +31,6 @@
 
 
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/helper/Messages.class.php');
 ModulesManager::file('/inc/model/orm/XimNewsAreas_ORM.class.php', 'ximNEWS');
 
 

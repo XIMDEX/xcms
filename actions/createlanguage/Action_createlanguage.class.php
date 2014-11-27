@@ -26,7 +26,6 @@
 
 ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/IsoCode.class.php');
-ModulesManager::file('/inc/helper/Messages.class.php');
 
 class Action_createlanguage extends ActionAbstract {
 	// Main method: shows initial form

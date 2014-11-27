@@ -35,7 +35,6 @@ if (!isset($DB_TYPE_USAGE) && defined("ADODB") ) {
 }
 
 require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/helper/Messages.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_historic.class.php");
@@ -93,7 +92,7 @@ class lmd {
 		while (list(, $message) = each($obj->messages->messages)) {
 			UpdateDb_log::warning($message["message"]);
 		}
-		$obj->messages = new Messages();
+		$obj->messages = new \Ximdex\Utils\Messages();
 		if (!$result) {
 			$this->updateModel($tableName);
 			$result = $obj->add();
@@ -164,7 +163,7 @@ class lmd {
                 while (list(, $message) = each($obj->messages->messages)) {
                         UpdateDb_log::warning($message["message"]);
                 }
-                $obj->messages = new Messages();
+                $obj->messages = new \Ximdex\Utils\Messages();
                 if (!$result) {
                         $this->updateModel($tableName);
                         $result = $obj->update();

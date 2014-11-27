@@ -31,7 +31,6 @@
  */
 if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 define('FILE_VERSION','0.1');
 
 class Shell {
@@ -62,7 +61,7 @@ class Shell {
 	function Shell ($messages = NULL) {
 
 		if (isset($messages) && is_null ($messages)) {
-			$this->messages = new Messages ();
+			$this->messages = new \Ximdex\Utils\Messages();
 		} else {
 			$this->messages = $messages;
 		}

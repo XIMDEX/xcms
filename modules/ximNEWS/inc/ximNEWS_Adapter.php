@@ -44,7 +44,7 @@ class  ximNEWS_Adapter {
 	 * @return unknown_type
 	 */
 	function __construct() {
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 	}
 
 	/**

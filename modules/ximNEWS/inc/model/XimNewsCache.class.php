@@ -28,7 +28,6 @@
 
 
 ModulesManager::file('/inc/model/orm/XimNewsCache_ORM.class.php', 'ximNEWS');
-ModulesManager::file('/inc/helper/Messages.class.php');
 
 
 /**

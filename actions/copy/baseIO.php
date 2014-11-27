@@ -35,7 +35,7 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 	
 	function copyNode ($source, $dest, $recurrence) {
 		
-		$messages = new Messages();
+		$messages = new \Ximdex\Utils\Messages();
 		
 		// Checking if source is allowed on the destiny to save addicional operations
 		

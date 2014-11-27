@@ -34,8 +34,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 define ('TMP_FOLDER', XIMDEX_ROOT_PATH . '/data/tmp/');
 
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/cli/Shell.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mail/EmailContainer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mail/iterators/I_EmailContainer.class.php');
@@ -64,7 +62,7 @@ class MailReceiver
 
     public function __construct()
     {
-        $this->messages = new Messages();
+        $this->messages = new \Ximdex\Utils\Messages();
     }
 
     /**
