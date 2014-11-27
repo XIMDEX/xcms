@@ -26,14 +26,13 @@
 
 namespace Ximdex\Modules ;
 
-use ModulesManager,
-    Shell,
+use Shell,
     DB ,
-    XMD_Log,
+    Ximdex\Logger ,
     Ximdex\Runtime\App;
 
-ModulesManager::file("/inc/db/db.php");
-ModulesManager::file("/inc/cli/Shell.class.php");
+Manager::file("/inc/db/db.php");
+Manager::file("/inc/cli/Shell.class.php");
 
 /**
  *
@@ -76,7 +75,7 @@ class Module
 
         //  $this->messages->add(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"),
         //   __CLASS__, $this->name, $this->path), MSG_TYPE_NOTICE);
-        XMD_Log::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
+        Logger::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
 
     }
 
@@ -115,7 +114,7 @@ class Module
      */
     function isCoreModule()
     {
-        return in_array($this->getModuleName(), ModulesManager::getCoreModules());
+        return in_array($this->getModuleName(), Manager::getCoreModules());
     }
 
 
@@ -141,7 +140,7 @@ class Module
      */
     function getModuleClassName()
     {
-        return ModuleManager::get_module_prefix() . $this->name;
+        return Manager::get_module_prefix() . $this->name;
         //return get_class($this);
     }
 
@@ -186,7 +185,7 @@ class Module
             $this->sql_constructor = $data;
             return true;
         } else {
-            XMD_Log::error("Error loading module constructor $sql_file");
+            Logger::error("Error loading module constructor $sql_file");
             return false;
         }
     }
@@ -300,7 +299,7 @@ class Module
                 $this->injectSQLFile($this->sql_constructor_file);
                 //$this->messages->add(_("-- SQL constructor loaded"), MSG_TYPE_NOTICE);
                 //A�adimos aqui
-                XMD_Log::info(_("-- SQL constructor loaded"));
+                Logger::info(_("-- SQL constructor loaded"));
             } else {
                 $this->messages->add(_("* ERROR: SQL constructor not loaded"), MSG_TYPE_ERROR);
                 $ret = false;
@@ -407,9 +406,9 @@ class Module
         $module_name = $this->getModuleName();
 
         if ($this->checkStateFile()) {
-            return ModulesManager::get_module_state_installed();
+            return Manager::get_module_state_installed();
         } else {
-            return ModulesManager::get_module_state_uninstalled();
+            return Manager::get_module_state_uninstalled();
         }
 
     }
@@ -419,7 +418,7 @@ class Module
     {
 
         if ($this instanceof Modules) {
-            XMD_Log::warning("Using $this->log in a class that is not an instance of Module.");
+            Logger::warning("Using $this->log in a class that is not an instance of Module.");
             return false;
         }
 
@@ -428,12 +427,12 @@ class Module
         switch ($priority) {
             case self::SUCCESS:
                 //echo(" - [$module_name] (SUCCESS): $string\n");
-                XMD_Log::info(" - [$module_name] (SUCCESS): $string");
+                Logger::info(" - [$module_name] (SUCCESS): $string");
                 break;
             case self::ERROR:
             default:
                 echo(" * [$module_name] (ERROR): $string\n");
-                XMD_Log::error($string);
+                Logger::error($string);
         }
     }
 
