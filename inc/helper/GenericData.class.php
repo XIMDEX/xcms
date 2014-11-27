@@ -31,7 +31,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Cache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/behaviors/BehaviorCollection.class.php');
 
 define('LOG_LEVEL_NONE', 0);

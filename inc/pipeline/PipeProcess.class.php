@@ -34,7 +34,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeTransitions.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeProcess_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
 /**
  * 
  * @brief Describes one Pipeline process
@@ -82,7 +81,7 @@ class PipeProcess extends PipeProcess_ORM {
 	 * @return previous process id or null
 	 */
 	function getPreviousProcess() {
-		//Obtenemos la transición anterior
+		//Obtenemos la transiciï¿½n anterior
 		$result = $this->find('id', 'IdPipeline = %s AND IdTransitionTo = %s',
 					array($this->get('IdPipeline'), $this->get('IdTransitionFrom')), MONO);
 		$resultsCount = count($result);
@@ -107,7 +106,7 @@ class PipeProcess extends PipeProcess_ORM {
 	function removeStatus($idStatus) {
 		if (!($this->get('id') > 0)) {
 			XMD_Log::error('No se ha podido encontrar el proceso de workflow');
-			$this->messages->add(_('Ha ocurrido un error no recuperable durante la gestión de estados de workflow, consulte con su administrador'), 
+			$this->messages->add(_('Ha ocurrido un error no recuperable durante la gestiï¿½n de estados de workflow, consulte con su administrador'), 
 				MSG_TYPE_ERROR);
 			return false;
 		}
@@ -126,8 +125,8 @@ class PipeProcess extends PipeProcess_ORM {
 		}
 
 		if (!(is_object($transitionFrom) && is_object($transitionTo))) {
-			$this->messages->add(_('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final'), MSG_TYPE_WARNING);
-			XMD_Log::warning('No se han podido determinar las transiciones de un estado para su eliminación, esto es normal si el estado es estado inicial o final');
+			$this->messages->add(_('No se han podido determinar las transiciones de un estado para su eliminaciï¿½n, esto es normal si el estado es estado inicial o final'), MSG_TYPE_WARNING);
+			XMD_Log::warning('No se han podido determinar las transiciones de un estado para su eliminaciï¿½n, esto es normal si el estado es estado inicial o final');
 			return false;
 		}
 		

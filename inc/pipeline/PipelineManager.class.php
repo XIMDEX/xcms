@@ -31,7 +31,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/RelServersChannels_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');

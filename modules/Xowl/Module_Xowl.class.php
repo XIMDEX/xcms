@@ -31,8 +31,6 @@ use Ximdex\Modules\Module;
 ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/model/orm/Channels_ORM.class.php');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-//
 ModulesManager::file('modules/Xowl/config/xowl.conf');
 ModulesManager::file('/inc/rest/REST_Provider.class.php');
 //Xowl is not actived in this point
