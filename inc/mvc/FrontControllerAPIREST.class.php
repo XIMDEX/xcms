@@ -26,7 +26,6 @@
  */
 //
 require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
-require_once(XIMDEX_ROOT_PATH . '/services/NodetypeService.class.php');
 
 /**
  *

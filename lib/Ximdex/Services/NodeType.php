@@ -25,10 +25,10 @@
  * @version $Revision$
  */
 
-ModulesManager::file("/inc/model/nodetype.php");
-require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMetadata.class.php');
 
-class NodetypeService
+namespace Ximdex\Services;
+
+class NodeType
 {
     const ROOT = 5001;
     const CONTROL_CENTER = 5002;
@@ -93,36 +93,4 @@ class NodetypeService
     const METADATA_SECTION = 5083;
     const METADATA_CONTAINER = 5084;
     const METADATA_DOCUMENT = 5085;
-
-
-    public $nodeType;
-
-
-    public function __construct($idNodeType)
-    {
-        if ($idNodeType)
-            $this->nodeType = new Node($idNodeType);
-    }
-
-    /**
-     * Check if the nodetype allow metadata.
-     * @return boolean
-     */
-    public function isEnabledMetadata()
-    {
-
-        return RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')) ? true : false;
-    }
-
-    /**
-     * Check if the nodetype must have metadata.
-     * @return boolean
-     */
-    public function isMetadataForced()
-    {
-
-        $relNodeTypeMetadata = RelNodeTypeMetadata::buildByIdNodeType($this->nodeType->get('IdNodeType')) ? true : false;
-
-        return $relNodeTypeMetadata ? $relNodeTypeMetadata->get("forced") : false;
-    }
 }

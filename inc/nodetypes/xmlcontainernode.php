@@ -29,7 +29,6 @@ ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
-ModulesManager::file('/services/NodetypeService.class.php');
 
 class XmlContainerNode extends FolderNode{
 
@@ -97,7 +96,7 @@ class XmlContainerNode extends FolderNode{
 
 	private function buildMetadata($idNodeType, $aliases){
 		
-		if (NodetypeService::METADATA_CONTAINER != $idNodeType){
+		if (\Ximdex\Services\NodeType::METADATA_CONTAINER != $idNodeType){
 			$langs = array();
 			foreach ($aliases as $idLang => $alias) {
 				$langs[] = $idLang;

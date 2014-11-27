@@ -25,7 +25,6 @@
  */
 
 
-ModulesManager::file("/services/ProjectService.class.php");
 ModulesManager::file("/actions/browser3/Action_browser3.class.php");
 
 
@@ -58,7 +57,7 @@ class Action_welcome extends ActionAbstract
         $permissionsToCreateProject = $user->isAllowedAction($idNodeRoot, $action->get("IdAction"));
 
         $values["permissionsToCreateProject"] = $permissionsToCreateProject;
-        $values["projects_info"] = ProjectService::getProjectsInfo();
+        $values["projects_info"] = \Ximdex\Services\Project::getProjectsInfo();
         $values["user"] = XSession::get("user_name");
         $values["docs"] = $user->getLastestDocs();
         $this->render($values, "index.tpl", 'default-3.0.tpl');

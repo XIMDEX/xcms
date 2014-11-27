@@ -75,20 +75,20 @@ class MetadataManager{
     public function getMetadataSchema(){
         $node = new Node($this->node->GetID());
         $projectNode = new Node($node->getProject());
-        $schemesFolder = $projectNode->getChildren(NodetypeService::TEMPLATE_VIEW_FOLDER);
+        $schemesFolder = $projectNode->getChildren(\Ximdex\Services\NodeType::TEMPLATE_VIEW_FOLDER);
 
         $nt = $this->node->nodeType->GetID(); 
         switch($nt){
-            case NodetypeService::IMAGE_FILE:
+            case \Ximdex\Services\NodeType::IMAGE_FILE:
                 $name=MetadataManager::IMAGE_METADATA_SCHEMA;
                 break;
-            case NodetypeService::BINARY_FILE:
+            case \Ximdex\Services\NodeType::BINARY_FILE:
                 $name=MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
-            case NodetypeService::TEXT_FILE:
+            case \Ximdex\Services\NodeType::TEXT_FILE:
                 $name=MetadataManager::COMMON_METADATA_SCHEMA;
                 break;
-            case NodetypeService::XML_CONTAINER:
+            case \Ximdex\Services\NodeType::XML_CONTAINER:
                 $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
                 break;
             default:
@@ -424,7 +424,7 @@ class MetadataManager{
             $idmNode = new Node($idm);
             $pairs=array();
 
-            if($sourceNode->nodeType->GetID()==NodetypeService::XML_CONTAINER){
+            if($sourceNode->nodeType->GetID()==\Ximdex\Services\NodeType::XML_CONTAINER){
                 $children = $sourceNode->GetChildren();
                 //insert the structured documents ids
                 foreach($children as $child){

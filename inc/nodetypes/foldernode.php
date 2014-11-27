@@ -29,7 +29,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
-require_once (XIMDEX_ROOT_PATH . "/services/NodetypeService.class.php");
 include_once (XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 
 /**
