@@ -26,17 +26,9 @@
 
 
 
-/*
-ModulesManager::file('/inc/serializer/Serializer.class.php');
-ModulesManager::file('/inc/helper/String.class.php');
-ModulesManager::file('/inc/mvc/Request.class.php');
-ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
-*/
-
 class Action_enricher extends ActionAbstract {
 
         public function index() {
 
 	}
 }
-?>

@@ -26,7 +26,6 @@
 
 
 ModulesManager::file('/inc/serializer/Serializer.class.php');
-ModulesManager::file('/inc/helper/String.class.php');
 ModulesManager::file('/inc/mvc/Request.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');
@@ -234,7 +233,7 @@ class Action_xmleditor2 extends ActionAbstract {
 	public function validateSchema() {
 		$idnode = $this->request->getParam('nodeid');
 		$xmldoc = Request::post('content');
-		$xmldoc = String::stripslashes($xmldoc);
+		$xmldoc = \Ximdex\Utils\String::stripslashes( $xmldoc);
 		$this->getEditor($idnode);
 		$ret = $this->_editor->validateSchema($idnode, $xmldoc);
 		$this->printContent($ret);

@@ -26,7 +26,6 @@
 ModulesManager::file('/actions/addtocolector/baseIO.php', 'ximNEWS');
 ModulesManager::file('/inc/menu_colector.inc', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
-ModulesManager::file('/inc/helper/String.class.php');
 
 class asociacionColectores{
 
@@ -93,7 +92,7 @@ function getColectores($nodeID){
 	$this->str_xml .= $obj_colector->mostrar_colectores_xml();
 	$resultado = $this->getXMLFinal();
 
-	return String::stripslashes($resultado);
+	return \Ximdex\Utils\String::stripslashes( $resultado);
 
 }
 
@@ -110,7 +109,7 @@ function removeTags($tag_name){
 //Method which add the beginning and end tags to xml
 function getXMLFinal(){
 
-	 $resultado = "<respuesta>" . String::stripslashes($this->str_xml) . "</respuesta>";
+	 $resultado = "<respuesta>" . \Ximdex\Utils\String::stripslashes( $this->str_xml) . "</respuesta>";
 	 return $resultado;
 }
 

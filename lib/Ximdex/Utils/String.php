@@ -25,57 +25,50 @@
  */
 
 
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-
+namespace Ximdex\Utils ;
 
 /**
- *  
- * 
+ *
+ *
  */
 class String {
-	/**
-	 * 
-	 * @param $texto
-	 * @return unknown_type
-	 */
-	public static function convertText($texto) {
-	
-		//$texto = str_replace('\"','',$texto);
-		$texto = str_replace(" ","_",$texto);
-		$texto = str_replace("!","",$texto);
-		$texto = str_replace("?","",$texto);
-		$texto = str_replace("(","",$texto);
-		$texto = str_replace(")","",$texto);
-		$texto = str_replace("[","",$texto);
-		$texto = str_replace("]","",$texto);
-		$string = htmlentities($texto);
-		$texto = preg_replace("/\&(.)[^;]*;/", "\\1", $string);
-		$texto = str_replace("\'","",$texto);
-		$texto = str_replace('\q','',$texto);
+    /**
+     *
+     * @param $texto
+     * @return string
+     */
+    public static function convertText($texto) {
 
-		return $texto;
-	}
-	/**
-	 * 
-	 * @param $string
-	 * @return unknown_type
-	 */
-	public static function stripslashes($string) {
+        //$texto = str_replace('\"','',$texto);
+        $texto = str_replace(" ","_",$texto);
+        $texto = str_replace("!","",$texto);
+        $texto = str_replace("?","",$texto);
+        $texto = str_replace("(","",$texto);
+        $texto = str_replace(")","",$texto);
+        $texto = str_replace("[","",$texto);
+        $texto = str_replace("]","",$texto);
+        $string = htmlentities($texto);
+        $texto = preg_replace("/\&(.)[^;]*;/", "\\1", $string);
+        $texto = str_replace("\'","",$texto);
+        $texto = str_replace('\q','',$texto);
 
-		if (get_magic_quotes_gpc())
-			return stripslashes($string);
+        return $texto;
+    }
+    /**
+     *
+     * @param $string
+     * @return string
+     */
+    public static function stripslashes($string) {
 
-		return $string;
-	}
+        if (get_magic_quotes_gpc())
+            return stripslashes($string);
 
-	public static function normalize($string){   
-        $string = String::convertText($string);
+        return $string;
+    }
+
+    public static function normalize($string){
+        $string = self::convertText($string);
         $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
         $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
         $decodedString = utf8_decode($string);
@@ -83,5 +76,3 @@ class String {
         return utf8_encode($decodedString);
     }
 }
-
-?>

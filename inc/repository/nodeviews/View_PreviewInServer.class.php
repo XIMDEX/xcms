@@ -31,7 +31,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/String.class.php');
 require_once XIMDEX_ROOT_PATH . '/inc/http/Curl.class.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
@@ -59,7 +58,7 @@ class View_PreviewInServer extends Abstract_View implements Interface_View {
 			return NULL;
 		}
 
-		$content = htmlspecialchars_decode(String::stripslashes($content));
+		$content = htmlspecialchars_decode(\Ximdex\Utils\String::stripslashes( $content));
 		$previewServer = $this->_serverNode->class->GetPreviewServersForChannel($this->_idChannel);
 
 		if(!$previewServer) {

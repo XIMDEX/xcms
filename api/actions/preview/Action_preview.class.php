@@ -26,7 +26,6 @@
  */
 
 ModulesManager::file('/inc/utils.php');
-ModulesManager::file('/inc/helper/String.class.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
@@ -164,7 +163,7 @@ class Action_preview extends AbstractAPIAction implements SecuredAction {
          * Deletes docxap tag
          */
         private function _normalizeXmlDocument($xmldoc) {
-                $xmldoc = String::stripslashes($xmldoc);
+                $xmldoc = \Ximdex\Utils\String::stripslashes( $xmldoc);
 
                 $doc = new DOMDocument();
                 $doc->loadXML($xmldoc);

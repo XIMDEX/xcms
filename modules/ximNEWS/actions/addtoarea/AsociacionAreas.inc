@@ -27,7 +27,6 @@
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 ModulesManager::file('/actions/addtoarea/baseIO.php', 'ximNEWS');
-ModulesManager::file('/inc/helper/String.class.php');
 
 
 class asociacionAreas{
@@ -119,7 +118,7 @@ function getAreas($nodeID){
 	$this->str_xml .= "</table>";
 
 	$resultado = $this->getXMLFinal();
-	return String::stripslashes($resultado);
+	return \Ximdex\Utils\String::stripslashes( $resultado);
 
 }
 
@@ -135,7 +134,7 @@ function removeTags($tag_name){
 
 //Method which add opening and closing labels to xml
 function getXMLFinal(){
-	 $resultado = "<respuesta>" . String::stripslashes($this->str_xml) . "</respuesta>";
+	 $resultado = "<respuesta>" . \Ximdex\Utils\String::stripslashes( $this->str_xml) . "</respuesta>";
 	 return $resultado;
 }
 
