@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/mvc/App.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/parsers/pvd2rng/PVD2RNG.class.php");
 
 class VisualTemplateNode extends FileNode {

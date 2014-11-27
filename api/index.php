@@ -45,7 +45,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/mvc/mvc.php'); // MVC
 ModulesManager::file('/inc/mvc/FrontControllerAPI.class.php');
