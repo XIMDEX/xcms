@@ -30,7 +30,6 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/xIterator.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 
 /**
@@ -40,8 +39,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
  * Basic iterator for the PipeProcess class
  *
  */
-class I_PipeProcesses extends xIterator {
+class I_PipeProcesses extends  \Ximdex\Utils\Iterator {
 	var $_objectName = 'PipeProcess';
 }
-	
-?>

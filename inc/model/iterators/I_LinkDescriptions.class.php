@@ -26,18 +26,10 @@
 
 
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/xIterator.class.php');
-
-class I_LinkDescriptions extends xIterator {
+class I_LinkDescriptions extends \Ximdex\Utils\Iterator {
 
 	public function __construct($condition, $args, $escape=ESCAPE) {
 		$this->_objectName = 'RelLinkDescriptions';
-		parent::xIterator($condition, $args, $escape);
+		parent::__construct($condition, $args, $escape);
 	}
 }
-
-?>
