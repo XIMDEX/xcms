@@ -28,7 +28,6 @@
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
  }
 
-ModulesManager::file('/inc/log/XMD_log.class.php');
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');

@@ -30,7 +30,6 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 	define("XIMDEX_ROOT_PATH", realpath(dirname (__FILE__)."/../../"));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Utils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/log/MN_log.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');

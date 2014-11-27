@@ -32,7 +32,6 @@ include_once(XIMDEX_ROOT_PATH . '/inc/persistence/datafactory.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/auth/Auth.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIO.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIOInferer.class.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
 
 class Repository_XNodes extends Repository {
 

@@ -28,7 +28,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');

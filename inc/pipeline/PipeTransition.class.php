@@ -33,9 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
-//
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeTransitions_ORM.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/helper/Timer.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphManager.class.php');
