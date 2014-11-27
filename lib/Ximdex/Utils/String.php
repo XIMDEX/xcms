@@ -75,4 +75,62 @@ class String {
         $decodedString = strtr($decodedString, utf8_decode($source), $target);
         return utf8_encode($decodedString);
     }
+
+    /**
+     *
+     * @return string
+     */
+    public static function generateUniqueID() {
+
+        return md5(uniqid(rand(),1));
+    }
+    /**
+     *
+     * @param $quantity
+     * @param $includeSmallLetters
+     * @param $includeCapitals
+     * @param $includeNumbers
+     * @return string
+     */
+    public static function generateRandomChars($quantity, $includeSmallLetters = true, $includeCapitals = false, $includeNumbers = false) {
+
+        if (!($includeSmallLetters || $includeCapitals || $includeNumbers)) {
+            return '';
+        }
+        if (!$quantity > 0) {
+            return '';
+        }
+        $randomListToUse = array();
+        $charsCount = 0;
+
+        if ($includeSmallLetters) {
+            for ($i = ord('a'); $i <= ord('z'); $i++) {
+                $randomListToUse[] = chr($i);
+                $charsCount ++;
+            }
+        }
+
+        if ($includeNumbers) {
+            for ($i = ord('0'); $i <= ord('9'); $i++) {
+                $randomListToUse[] = chr($i);
+                $charsCount ++;
+            }
+        }
+
+        if ($includeCapitals) {
+            for ($i = ord('A'); $i <= ord('Z'); $i++) {
+                $randomListToUse[] = chr($i);
+                $charsCount ++;
+            }
+        }
+
+        $randomString = '';
+
+        for ($i = 0; $i < $quantity; $i++) {
+            $randomString .= $randomListToUse[rand(0, $charsCount - 1)];
+        }
+
+        return $randomString;
+
+    }
 }

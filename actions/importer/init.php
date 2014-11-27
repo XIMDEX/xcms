@@ -32,7 +32,6 @@
 	
 	$validOperations = array(OPERATION_ADD, OPERATION_UPDATE, OPERATION_DELETE);
 
-   ModulesManager::file('/inc/helper/Utils.class.php');
    ModulesManager::file('/inc/fsutils/ZipArchiver.class.php');
    ModulesManager::file('/inc/io/BaseIO.class.php');
    ModulesManager::file('/actions/importer/actionIO.php');
@@ -55,7 +54,7 @@
 	}
 	
 	do {
-		$destFolder = sprintf('/tmp/%s', Utils::generateRandomChars(12, true, true, true));
+		$destFolder = sprintf('/tmp/%s', \Ximdex\Utils\String::generateRandomChars(12, true, true, true));
 	} while(is_dir($destFolder));
 	
 	if (!mkdir($destFolder)) {
