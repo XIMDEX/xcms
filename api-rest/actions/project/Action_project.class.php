@@ -16,7 +16,7 @@ class Action_project implements APIRestAction, SecuredAction
         $username = $request->getParam('XimUser');
 
         if (!empty($id)) {
-            $nodeService = new NodeService();
+            $nodeService = new \Ximdex\Services\Node();
             if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id)) {
                 $nodeInfo = $nodeService->getNodeInfo($id);
                 unset($nodeInfo['nodeType']);
@@ -42,7 +42,7 @@ class Action_project implements APIRestAction, SecuredAction
 
         $id = $request->getParam('id');
         $name = $request->getParam('name');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         $rootNode = $nodeService->getRootNode();
 
@@ -82,7 +82,7 @@ class Action_project implements APIRestAction, SecuredAction
         $id = $request->getParam('id');
         $username = $request->getParam('XimUser');
         $name = $request->getParam('name');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (empty($id)) {
             $response->setContent(array("error" => 1, "msg" => "The id for the project is missing"));
@@ -130,7 +130,7 @@ class Action_project implements APIRestAction, SecuredAction
     {
         $id = $request->getParam('id');
         $username = $request->getParam('XimUser');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (!empty($id)) {
             if (!$nodeService->existsNode($id)) {
