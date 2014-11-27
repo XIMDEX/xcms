@@ -101,6 +101,7 @@ class Action_modifyrole extends ActionAbstract {
 		$pipelines = array($db->getValue('id') => $db->getValue('Pipeline'));
 
 		$this->addJs('/actions/modifyrole/js/modifyrole.js');
+        $this->addCss('/actions/modifyrole/css/modifyrole.css');
 
 		$values = array('name' => $role->get('Name'),
 						'description' => $role->get('Description'),

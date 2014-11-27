@@ -75,7 +75,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		/** ********* Preparing view ************ */
 		//Filter and button tag according to type of upload file
-		
+
 		switch($type_node)  {
 			case 'CssFolder':
 				$lbl_anadir = _(' Add style sheets');
@@ -115,6 +115,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				break;*/
 			default:
 				$lbl_anadir = _(' Add files');
+                $allowedMimes = '';
+                $allowedExtensions = '';
 				break;
 		};
 

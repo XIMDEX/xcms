@@ -41,11 +41,11 @@
                 </fieldset>
                 <fieldset class="notifications">
                         <span class="">
-                                <input type="checkbox" name="sendNotifications" id="sendNotifications" class="send-notifications hidden-focus" value="1" {if $required == 1}checked="checked"{/if} />
-                                <label for="sendNotifications" class="checkbox-label icon">{t}Send notifications{/t}</label>
+                                <input type="checkbox" name="sendNotifications" id="sendNotifications_back_{$idnode}" class="send-notifications hidden-focus" value="1" />
+                                <label for="sendNotifications_back_{$idnode}" class="checkbox-label icon">{t}Send notifications{/t}</label>
                         </span>
                         <ol>
-                                <li class="conditioned {if $required != 1}hidden{/if}">
+                                <li class="conditioned">
                                         <label for="groups" class="label_title">{t}Group{/t}</label>
                                         <select id="groups" name="groups" class="cajaxg group_info">
                                                 {counter assign=index start=1}
@@ -56,7 +56,7 @@
                                         </select>
                                 </li>
 
-                                <li class="conditioned {if $required != 1}hidden{/if}">
+                                <li class="conditioned">
                                         <label class="label_title">{t}Users{/t}</label>
                                         <div class="user-list-container">
                                                 <ol class="user-list">
@@ -72,7 +72,7 @@
                                         </div>
                                 </li>
 
-                                <li class="conditioned {if $required != 1}hidden{/if}">
+                                <li class="conditioned">
                                         <label for="texttosend" class="label_title">{t}Comments{/t}:</label>
                                         <textarea class="validable not_empty comments" name="texttosend" id="texttosend" rows="4" wrap="soft" tabindex="7">{$defaultMessage}</textarea>
                                 </li>

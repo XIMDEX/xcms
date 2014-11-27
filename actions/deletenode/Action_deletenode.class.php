@@ -242,6 +242,8 @@ class Action_deletenode extends ActionAbstract {
 		$user = new User($userID);
 		$canDeleteOnCascade = $user->HasPermission("delete on cascade");
 
+        $children = $node->GetChildren();
+
 		if ($canDeleteOnCascade && $deleteDep) {
 
 			if ($node->nodeType->get('Name') != 'Channel') {
@@ -251,9 +253,6 @@ class Action_deletenode extends ActionAbstract {
 			$undeletableChildren = $node->TraverseTree(5);
 
 			if ($node->nodeType->get('Name') == "XmlContainer") {
-
-				$children = $node->GetChildren();
-
 				foreach($children as $child) {
 					$childNode = new Node($child);
 					$depList = array_merge($depList, $childNode->GetDependencies());
@@ -308,7 +307,6 @@ class Action_deletenode extends ActionAbstract {
 				}
 			}
 		} else {
-
 			/// Error: if it has not permit to cascade deletion and node has children and dependencies
 			if(sizeof($children) && sizeof($depList))
 			$this->messages->add(_("Node is not empty and it has external dependencies."), MSG_TYPE_ERROR);

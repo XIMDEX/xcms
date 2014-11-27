@@ -187,9 +187,10 @@ class Action_prevdoc extends ActionAbstract
     	if (file_exists($file)) {
     		$content = FsUtils::file_get_contents($file);
     	}
-
-        //Remove all used cache
-        exec(sprintf('rm -f %s/data/tmp/preview_%s_*', App::getValue('AppRoot'), $_GET["nodeid"]));
+        if(isset($_GET["nodeid"])){
+            //Remove all used cache
+            exec(sprintf('rm -f %s/data/tmp/preview_%s_*', App::getValue('AppRoot'), $_GET["nodeid"]));
+        }
 
 		//Show preview as web
 		$content = str_replace("&ajax=json", "&showprev=1", $content);

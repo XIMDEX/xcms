@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';
+
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../../"));
 }

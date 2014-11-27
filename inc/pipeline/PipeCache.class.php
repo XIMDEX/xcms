@@ -164,7 +164,11 @@ class PipeCache extends PipeCaches_ORM {
 		 		$pointer = XIMDEX_ROOT_PATH . DATA_FOLDER . $version->get('File');
 		 		GraphManager::createSerieValue('PipelineGraph', 'Cache miss', $idVersion, $idTransition);
 			} else {
-		 		$pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
+                if(isset($_GET["nodeid"])){
+                    $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
+                }else{
+                    $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
+                }
 				if (!isset($args['CONTENT'])) {
 					XMD_Log::error('PipeCache error, no content to write.');
 		 			return null;

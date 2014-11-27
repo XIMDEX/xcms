@@ -70,8 +70,8 @@
 
 	            <fieldset class="notifications">
 					<span class="">
-		    			<input type="checkbox" name="sendNotifications" id="sendNotifications" class="send-notifications hidden-focus" value="1" {if $required == 1}checked="checked"{/if} />
-						<label for="sendNotifications" class="checkbox-label icon">{t}Send notifications{/t}</label>
+		    			<input type="checkbox" name="sendNotifications" id="sendNotifications_forward_{$idNode}" class="send-notifications hidden-focus" value="1" {if $required == 1}checked="checked"{/if} />
+						<label for="sendNotifications_forward_{$idNode}" class="checkbox-label icon">{t}Send notifications{/t}</label>
 					</span>
 				    <ol>
 				        <li class="conditioned {if $required != 1}hidden{/if}">
@@ -89,14 +89,16 @@
 					        <label class="label_title">{t}Users{/t}</label>
 					        <div class="user-list-container">
 						        <ol class="user-list">
-							{counter assign=index start=1}
-                            {foreach from=$notificableUsers item=notificable_user_info}
-							        <li class="user-info">
-								        <input type="checkbox" name="users[]" class="validable notificable check_group__notificable" id="user_{$notificable_user_info.idUser}" value="{$notificable_user_info.idUser}" {if $index == 1}checked="checked"{/if} />
-								        <label for="user_{$notificable_user_info.idUser}">{$notificable_user_info.userName}</label>
-							        </li>
-							{counter assign=index}
-                            {/foreach}
+                                    {if (isset($notificableUsers))}
+                                        {counter assign=index start=1}
+                                        {foreach from=$notificableUsers item=notificable_user_info}
+                                            <li class="user-info">
+                                                <input type="checkbox" name="users[]" class="validable notificable check_group__notificable" id="user_{$notificable_user_info.idUser}" value="{$notificable_user_info.idUser}" {if $index == 1}checked="checked"{/if} />
+                                                <label for="user_{$notificable_user_info.idUser}">{$notificable_user_info.userName}</label>
+                                            </li>
+                                            {counter assign=index}
+                                        {/foreach}
+                                    {/if}
 						        </ol>
 					        </div>
 				        </li>
