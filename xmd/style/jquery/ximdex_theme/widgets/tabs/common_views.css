@@ -34,17 +34,20 @@
 	margin-top:  7px;
 }
 
-
 .xim-treeview-icon, .xim-listview-icon{
 		background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
 		width: 18px;
 		height: 1em;
 		float: left;
 		margin-right: 5px;
-		margin: 0.4em 5px 0.2em 0px;
 		padding-bottom: .1em;
 		outline-style:none;
 }
+
+.xim-treeview-icon{
+    margin: 0.4em 5px 0.2em 0px;
+}
+
 .icon-projects{
 	background-position: -1px -233px;
 }

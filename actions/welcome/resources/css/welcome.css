@@ -88,7 +88,7 @@
   display: flex; }
 
 .project_item, .document_item {
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   background: #fff;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -126,7 +126,8 @@
 .welcome {
   height: 100%; }
   .welcome .action_content {
-    padding: 2em 4%; }
+    padding: 2em 4%;
+    padding-bottom: 0; }
 
 .action_content h2 {
   font-size: 1.06em;
@@ -382,13 +383,15 @@
     color: #7bcabf;
     border-bottom: 3px solid; }
   .sidebar li {
-    border-bottom: 1px solid #cccccc; }
+    border-bottom: 1px solid #ccc; }
     .sidebar li:last-child {
       border-bottom: none; }
   .sidebar a {
-    color: #cccccc;
+    color: #ccc;
     display: block;
     padding: 1em; }
     .sidebar a:hover {
       background: #7bcabf;
       color: #464646; }
+
+/*# sourceMappingURL=welcome.css.map */

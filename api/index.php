@@ -26,6 +26,8 @@
 
 //phpinfo();
 
+include_once '../bootstrap/start.php';
+
 /**
  * XIMDEX_ROOT_PATH
  */
