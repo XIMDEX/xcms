@@ -26,7 +26,6 @@
 
 
 ModulesManager::file('/inc/parsers/pvd2rng/PVD2RNG.class.php');
-ModulesManager::file('/inc/xml/validator/XMLValidator_RNG.class.php');
 ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 ModulesManager::file('/inc/helper/String.class.php');
 
@@ -208,7 +207,7 @@ abstract class XmlEditor_Abstract {
 //		$content = '<root><node>value</node></root>';
 
 		$schema = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/common/schema/relaxng-1.0.rng.xml');
-		$rngvalidator = new XMLValidator_RNG();
+		$rngvalidator = new \Ximdex\XML\Validators\RNG();
 		$valid = $rngvalidator->validate($schema, $content);
 
 		$errors = $rngvalidator->getErrors();
@@ -234,7 +233,7 @@ abstract class XmlEditor_Abstract {
 		$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . String::stripslashes($xmldoc);
 		$schema = $this->getSchemaFile($idnode);
 
-		$rngvalidator = new XMLValidator_RNG();
+		$rngvalidator = new \Ximdex\XML\Validators\RNG();
 		$valid = $rngvalidator->validate($schema, $xmldoc);
 
 		$response = array('valid' => $valid,

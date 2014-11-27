@@ -28,7 +28,6 @@ ModulesManager::file('/inc/nodetypes/filenode.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::component('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/xml/XSLT.class.php');
 
 
 class templatenode extends FileNode {
@@ -107,7 +106,7 @@ class templatenode extends FileNode {
 
 		// build xslt content
 
-		$xsltHandler = new XSLT();
+		$xsltHandler = new \Ximdex\XML\XSLT();
 		$xsltHandler->setXML($tmpPath);
 		$xsltHandler->setXSL(XIMDEX_ROOT_PATH.ModulesManager::path('dexT') ."/xslt/dext_main.xsl");
 

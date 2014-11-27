@@ -28,7 +28,6 @@
 
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
-ModulesManager::file('/inc/xml/XSLT.class.php');
 
 
 class View_Xslt_Transformer extends Abstract_View implements Interface_View {
@@ -45,7 +44,7 @@ class View_Xslt_Transformer extends Abstract_View implements Interface_View {
 			return $pointer;
 		}
 		
-		$xsltTransformer = new XSLT();
+		$xsltTransformer = new \Ximdex\XML\XSLT();
 		$xsltTransformer->setXML($pointer);
 		$xsltTransformer->setXSL(XIMDEX_ROOT_PATH . $xsltFile);
 		$transformedContent = $xsltTransformer->process();

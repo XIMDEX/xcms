@@ -24,7 +24,6 @@
  *                                                                            *
  * **************************************************************************** */
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
@@ -34,7 +33,6 @@ ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/channel.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
-ModulesManager::file('/inc/xml/validator/XMLValidator_RNG.class.php');
 
 /**
  * <p>API Node action</p>
@@ -560,7 +558,7 @@ class Action_node extends AbstractAPIAction implements SecuredAction {
 	
         	$contentToValidate = "<docxap>" . $content . "</docxap>";
 
-        	$validator = new XMLValidator_RNG();
+        	$validator = new \Ximdex\XML\Validators\RNG();
         	$result = $validator->validate($templateContent, $contentToValidate);
 
         	if (!$result) {

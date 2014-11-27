@@ -28,9 +28,7 @@
 
 
 ModulesManager::file('/inc/model/orm/XimNewsCache_ORM.class.php', 'ximNEWS');
-ModulesManager::file('/inc/xml/XSLT.class.php');
 ModulesManager::file('/inc/helper/Messages.class.php');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
 
 /**
@@ -196,7 +194,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		FSUtils::file_put_contents($xmlNew, '<?xml version="1.0" encoding="UTF-8"?><para>testing</para>');
 		$xslBulletin = XIMDEX_ROOT_PATH . \App::getValue( 'FileRoot') . '/' . $xslBulletinFile;
 
-		$xsltHandler = new XSLT();
+		$xsltHandler = new \Ximdex\XML\XSLT();
 		$xsltHandler->setXML($xmlNew);
 		$xsltHandler->setXSL($xslBulletin);
 
