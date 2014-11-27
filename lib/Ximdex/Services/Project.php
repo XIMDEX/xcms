@@ -25,16 +25,16 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Services ;
 
-ModulesManager::file("/inc/model/node.php");
-//ModulesManager::file("/inc/model/user.php");
-ModulesManager::file("/services/NodetypeService.class.php");
+\Ximdex\Modules\Manager::file("/inc/model/node.php");
+\Ximdex\Modules\Manager::file("/services/NodetypeService.class.php");
 
 /**
  * <p>Service responsible of deal with nodes</p>
  *
  */
-class ProjectService
+class Project
 {
     private static $ROOTNODEID = 10000;
     public $nodeid = null;
@@ -44,8 +44,9 @@ class ProjectService
      */
     public function __construct($idNode = null, $lazyMode = true)
     {
-        if ($idNode)
-            $this->node = new Node($idNode);
+        if ($idNode) {
+            $this->node = new \Node($idNode);
+        }
         $this->lazyMode = $lazyMode;
     }
 
@@ -56,7 +57,7 @@ class ProjectService
     public function existsProject($projectId)
     {
         $id = (int)$projectId;
-        $node = new Node($id);
+        $node = new \Node($id);
         return $node->get("IdNode") != null;
     }
 
@@ -69,7 +70,7 @@ class ProjectService
     public function getProject($idProject = null)
     {
         if ($idProject)
-            return $this->existsNode($idProject) ? new Node($idProject) : null;
+            return $this->existsNode($idProject) ? new \Node($idProject) : null;
         else
             return $this->node;
     }
@@ -117,12 +118,12 @@ class ProjectService
     public static function getAllProject()
     {
         $res = array();
-        $root = new Node(self::$ROOTNODEID);
+        $root = new \Node(self::$ROOTNODEID);
         $projectIds = $root->GetChildren();
         if (count($projectIds) > 0) {
             foreach ($projectIds as $pid) {
                 if ($pid != 8122) {
-                    $res[] = new ProjectService($pid);
+                    $res[] = new Project($pid);
                 }
             }
         }
@@ -146,11 +147,11 @@ class ProjectService
      *
      * @return boolean indicates whether the node has been deleted successfully or not
      */
-    public function deleteProject($project)
+    public function deleteProject($node )
     {
         $nid = $node instanceof Node ? $node->GetID() : $node;
 
-        $n = new Node($nid);
+        $n = new \Node($nid);
         $res = $n->DeleteNode(true);
 
         return $res > 0;

@@ -76,7 +76,7 @@ class Node
             return false;
         }
 
-        $node = new Node($nodeid);
+        $node = new \Node($nodeid);
 
         if ($node->GetID() == null) {
             return false;
@@ -94,7 +94,7 @@ class Node
     public function existsNode($nodeId)
     {
         $id = (int)$nodeId;
-        $node = new Node($id);
+        $node = new \Node($id);
 
         return $node->get("IdNode") != null;
     }
@@ -108,7 +108,7 @@ class Node
     public function getNode($idNode = null)
     {
         if ($idNode)
-            return $this->existsNode($idNode) ? new Node($idNode) : null;
+            return $this->existsNode($idNode) ? new \Node($idNode) : null;
         else
             return $this->node;
     }
@@ -162,7 +162,7 @@ class Node
      */
     public function isOfNodeType($node, $nodetypeId)
     {
-        $n = is_object($node) && $node instanceof Node ? $node : new Node($node);
+        $n = is_object($node) && $node instanceof Node ? $node : new \Node($node);
 
         return $n->GetNodeType() == $nodetypeId;
     }
@@ -188,7 +188,7 @@ class Node
     {
         $nid = $node instanceof Node ? $node->GetID() : $node;
 
-        $n = new Node($nid);
+        $n = new \Node($nid);
         $res = $n->DeleteNode(true);
 
         return $res > 0;
@@ -251,12 +251,12 @@ class Node
         //If $valueToReturn is array of Ids
         if (is_array($valueToReturn)) {
             foreach ($valueToReturn as $idNode) {
-                $tmpNode = new Node($idNode);
+                $tmpNode = new \Node($idNode);
                 if ($tmpNode->get("IdNode"))
                     $result[] = $tmpNode;
             }
         } else if (is_int($valueToReturn)) { //If $valueToReturn is a node id.
-            $result = new Node($valueToReturn);
+            $result = new \Node($valueToReturn);
         } else if (is_object($valueToReturn)
             && strtolower(get_class($valueToReturn)) == "node"
         ) { //If $valueToReturn is a Node object
