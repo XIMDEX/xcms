@@ -166,7 +166,7 @@ class Action_composer extends ActionAbstract {
 
 			if ($children) {
 				$countChildrens = count($children);
-				$ti = new Timer();
+				$ti = new \Ximdex\Utils\Timer();
 				$ti->start();
 				for($i = 0; $i < $countChildrens; $i ++) {
 					$nodeName[$i] = $children[$i]['name'];
@@ -177,7 +177,7 @@ class Action_composer extends ActionAbstract {
 
 
 			//Ordering the array and array slice
-			$ti = new Timer();
+			$ti = new \Ximdex\Utils\Timer();
 			$ti->start();
 			if (isset($nodeName) && is_array($nodeName)) {
 				$nodeName_min = $nodeName;

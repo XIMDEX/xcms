@@ -92,7 +92,7 @@ abstract class PHPUnit2ResultFormatter implements PHPUnit2_Framework_TestListene
 		$this->failureCount = 0;
 		$this->errorCount = 0;
 		
-		$this->timer = new Timer();
+		$this->timer = new \Ximdex\Utils\Timer();
 		$this->timer->start();
 	}
 	

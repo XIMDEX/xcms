@@ -102,7 +102,7 @@ class BatchManager {
 
 	function publicate($idNode, $docsToPublish, $up, $down, $physicalServers, $otfPublication, $force, $userId=null) {
 
-		$timer = new Timer();
+		$timer = new \Ximdex\Utils\Timer();
 		$timer->start();
 		$this->setFlag('otfPublication',$otfPublication);
 		$node = new Node($idNode);
