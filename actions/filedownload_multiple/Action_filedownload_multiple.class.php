@@ -90,9 +90,9 @@ class Action_filedownload_multiple extends ActionAbstract {
 			    }
 			    $fileName = $node->get('Name');
 			    $filePath = $folder . '/' . $fileName;
-			    if($node->GetNodeType()==NodetypeService::COMMON_FOLDER ||
-			    	$node->GetNodeType()==NodetypeService::CSS_FOLDER ||
-			    	$node->GetNodeType()==NodetypeService::IMAGES_FOLDER){
+			    if($node->GetNodeType()==\Ximdex\Services\NodeType::COMMON_FOLDER ||
+			    	$node->GetNodeType()==\Ximdex\Services\NodeType::CSS_FOLDER ||
+			    	$node->GetNodeType()==\Ximdex\Services\NodeType::IMAGES_FOLDER){
 			    	if(!$this->copyContents($filePath, $node->GetChildren())){
 			    		$errors[] = $fileName;
 			    	}

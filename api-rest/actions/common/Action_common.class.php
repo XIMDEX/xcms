@@ -16,7 +16,7 @@ class Action_common implements APIRestAction, SecuredAction{
 
         	if (!empty($id)) {
             		$nodeService = new \Ximdex\Services\Node();
-            		if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::BINARY_FILE)) {
+            		if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::BINARY_FILE)) {
                 		$nodeInfo = $nodeService->getNodeInfo($id);
                 		unset($nodeInfo['nodeType']);
                 		unset($nodeInfo['children']);
@@ -93,7 +93,7 @@ class Action_common implements APIRestAction, SecuredAction{
             return;
         }
         
-        if (!$nodeService->existsNode($id) || !$nodeService->hasPermissionOnNode($username, $id) || !$nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)) {
+        if (!$nodeService->existsNode($id) || !$nodeService->hasPermissionOnNode($username, $id) || !$nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_DOCUMENT)) {
             $this->createErrorResponse($response, "The id for the file is missing or you don't have permission to manage it");
             return;
         }
@@ -113,7 +113,7 @@ class Action_common implements APIRestAction, SecuredAction{
         } else {
 
             /* Check whether the supplied node Id references to an XML document */
-            if (!$nodeService->isOfNodeType($node, NodetypeService::XML_DOCUMENT)) {
+            if (!$nodeService->isOfNodeType($node, \Ximdex\Services\NodeType::XML_DOCUMENT)) {
                 $this->createErrorResponse("The supplied node id does not refer to an structured document");
                 return;
             }
@@ -167,7 +167,7 @@ class Action_common implements APIRestAction, SecuredAction{
                 		return;
             		}
 
-            		if ($nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::BINARY_FILE)) {
+            		if ($nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::BINARY_FILE)) {
                 		$removed = $nodeService->deleteNode($id);
                 
                 		if ($removed) {
@@ -202,7 +202,7 @@ class Action_common implements APIRestAction, SecuredAction{
         /* Check whether it is possible to add a xml container as child of the supplied node */
         $nodeAllowedContent = new NodeAllowedContent();
         $allowedContents = $nodeAllowedContent->getAllowedChilds($node->GetNodeType());
-        if (!in_array(NodetypeService::XML_CONTAINER, $allowedContents)) {
+        if (!in_array(\Ximdex\Services\NodeType::XML_CONTAINER, $allowedContents)) {
             $this->createErrorResponse($response, "The supplied node does not allow to have structured document container as a child");
             return;
         }
