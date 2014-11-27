@@ -151,7 +151,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		$doc->validateOnParse = true;
 		$newsXml = '<?xml version="1.0" encoding="' . \App::getValue( 'dataEncoding') . '"?>' . $newsXml;
 
-		$doc->LoadXML(XmlBase::recodeSrc($newsXml, \App::getValue( 'dataEncoding')));
+		$doc->LoadXML(\Ximdex\XML\Base::recodeSrc($newsXml, \App::getValue( 'dataEncoding')));
 
 		$xpath = new DOMXPath($doc);
 		$nodeList = $xpath->query('//*[@boletin = "yes"]');

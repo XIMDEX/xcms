@@ -162,7 +162,7 @@ class templatenode extends FileNode {
 		$parentNode = new Node($parentId);
 		$xsltId = $parentNode->GetChildByName($xsltName);
 
-		$xml = new XML();
+		$xml = new \Ximdex\XML\XML();
 		$content = setNameSpace($content, $xsltName);
 
 		$domDocument = $xml->getObject($content);

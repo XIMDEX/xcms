@@ -2618,11 +2618,11 @@ class    Node extends Nodes_ORM
         $nodeType = new NodeType($idNodeType);
         $nodeTypeName = $nodeType->get('Name');
         //the pattern and the string must be in the same encode
-        $pattern1 = XmlBase::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s]+$/", XML::UTF8);
-        $pattern2 = XmlBase::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s\@\:\/\?\+\=\#\%\*\,]+$/", XML::UTF8);
-        $pattern3 = XmlBase::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.]+$/", XML::UTF8);
-        $pattern4 = XmlBase::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\@]+$/", XML::UTF8);
-        $name = XmlBase::recodeSrc($name, XML::UTF8);
+        $pattern1 = \Ximdex\XML\Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s]+$/", \Ximdex\XML\XML::UTF8);
+        $pattern2 = \Ximdex\XML\Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s\@\:\/\?\+\=\#\%\*\,]+$/", \Ximdex\XML\XML::UTF8);
+        $pattern3 = \Ximdex\XML\Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.]+$/", \Ximdex\XML\XML::UTF8);
+        $pattern4 = \Ximdex\XML\Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\@]+$/", \Ximdex\XML\XML::UTF8);
+        $name = \Ximdex\XML\Base::recodeSrc($name, \Ximdex\XML\XML::UTF8);
         unset($nodeType);
         if (!strcasecmp($nodeTypeName, 'Action') ||
             !strcasecmp($nodeTypeName, 'Group') ||

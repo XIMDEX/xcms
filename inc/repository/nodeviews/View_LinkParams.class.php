@@ -58,7 +58,7 @@ class View_LinkParams extends Abstract_View implements Interface_View {
 		}
 
 		$domDoc = new DOMDocument();
-		$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
 		$nodeList = $xpath->query('/docxap//@*[starts-with(local-name(.), "a_enlaceid")]');

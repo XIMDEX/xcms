@@ -27,10 +27,9 @@
 
 
 
-include_once(XIMDEX_ROOT_PATH."/inc/xml/XML.class.php");
 
 //Parseador por tags o id, en vez de por arbol.
-class XmlParserByTag extends XML {
+class XmlParserByTag extends \Ximdex\XML\XML {
 
 	// ---------------------  
 	public $elements = array();
@@ -49,7 +48,7 @@ class XmlParserByTag extends XML {
 	public function __destruct() {
 	}
 
-	// Devuelve el número de elementos
+	// Devuelve el nï¿½mero de elementos
 	public function length() {
 		return $this->numItems;
 	}
@@ -76,7 +75,7 @@ class XmlParserByTag extends XML {
 		$this->parents[0] = 0;
 		parent::load();
 
-		/* Esto es un barrido de los arrays por tags para añadir en children sus respetivos hijos ( sólo se añaden los hijos de UN nivel por debajo ).*/
+		/* Esto es un barrido de los arrays por tags para aï¿½adir en children sus respetivos hijos ( sï¿½lo se aï¿½aden los hijos de UN nivel por debajo ).*/
 		//Barrido de elementos(padres)
 		for($i = 1; $i <= $this->numItems; $i++) {
 			$nivel = $this->byId[$i]["nivel"];
@@ -110,8 +109,8 @@ class XmlParserByTag extends XML {
 
 
 	// Procesa una etiqueta de apertura
-	//Se encarga básicamente de crear un array por cada tag, también por id.
-	//Así tendremos arrays como: link, image,,... que contiene a todos los enlaces e imágenes respectivamente.
+	//Se encarga bï¿½sicamente de crear un array por cada tag, tambiï¿½n por id.
+	//Asï¿½ tendremos arrays como: link, image,,... que contiene a todos los enlaces e imï¿½genes respectivamente.
     protected function _tag_open($parser, $tag, $attribs) {
 
     	parent::_tag_open($parser, $tag, $attribs);
@@ -153,7 +152,7 @@ class XmlParserByTag extends XML {
 		$num_item = $this->numItems;
 
 		$j = count($this->elements[$tag]);
-		$j--; //Contamos uno menos, porque se está añadiendo el mismo
+		$j--; //Contamos uno menos, porque se estï¿½ aï¿½adiendo el mismo
 		if(!isset($this->elements[$tag][$j]["data"])) {
 					$this->elements[$tag][$j]["data"] = $cdata;
 					$this->byId[$num_item]["data"] = $cdata;

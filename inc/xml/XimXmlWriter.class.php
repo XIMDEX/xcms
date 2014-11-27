@@ -30,8 +30,6 @@
 if (!defined ("XIMDEX_ROOT_PATH"))
 	define ("XIMDEX_ROOT_PATH", realpath (dirname (__FILE__)."/../../"));
 
-include_once (XIMDEX_ROOT_PATH."/inc/xml/XML.class.php");
-include_once (XIMDEX_ROOT_PATH."/inc/xml/XmlBase.class.php");
 
 define ('MARK_QUOTE', 'MARK_QUOTE');
 define ('MARK_LESS_THAN', 'MARK_LESS_THAN');
@@ -47,7 +45,7 @@ class XimXmlWriter {
     var $indent;
     var $stack = array();
 
-    function XimXmlWriter($encoding = XML::UTF8, $indent = "  ") {
+    function XimXmlWriter($encoding = \Ximdex\XML\XML::UTF8, $indent = "  ") {
         $this->encoding = $encoding;
         $this->indent = $indent;
         $this->xmlHeader = sprintf("%s?xml version=%s1.0%s encoding=%s$encoding%s?%s\n",
@@ -56,8 +54,8 @@ class XimXmlWriter {
     }
 
     function _setDocType($root = "document") {
-    	$entities = ($this->encoding == XML::ISO88591) ?
-    		' ['."\n".XmlBase::generateHtmlEntities().']' : "";
+    	$entities = ($this->encoding == \Ximdex\XML\XML::ISO88591) ?
+    		' ['."\n".\Ximdex\XML\Base::generateHtmlEntities().']' : "";
 		$this->docType = '<!DOCTYPE '.$root.' '.$entities.'>'."\n";
     }
 
@@ -99,7 +97,7 @@ class XimXmlWriter {
         	(!empty ($this->xml) ? $this->xml : "");
         $search = array(MARK_LESS_THAN, MARK_GREATER_THAN, MARK_QUOTE);
         $replace = array('<', '>', '"');
-        return str_replace($search, $replace, XmlBase::recodeSrc($ret, $this->encoding));
+        return str_replace($search, $replace, \Ximdex\XML\Base::recodeSrc($ret, $this->encoding));
     }
 
     function _indent() {
@@ -108,10 +106,10 @@ class XimXmlWriter {
 
     function injectXml($xmlSrc) {
 
-		$xmlParser = new XML();
+		$xmlParser = new \Ximdex\XML\XML();
 		
-		if(!XmlBase::isUtf8($xmlSrc)) {
-			$xmlSrc = XmlBase::recodeSrc($xmlSrc, $this->encoding);
+		if(!\Ximdex\XML\Base::isUtf8($xmlSrc)) {
+			$xmlSrc = \Ximdex\XML\Base::recodeSrc($xmlSrc, $this->encoding);
 		}
 		$baseTag = "root_".Utils::generateRandomChars(10);
 		$tmpXml = "<".$baseTag.">".$xmlSrc."</".$baseTag.">";

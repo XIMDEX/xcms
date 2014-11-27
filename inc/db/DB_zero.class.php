@@ -36,7 +36,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once(XIMDEX_ROOT_PATH . "/inc/xml/XmlBase.class.php");
 
 $debug = NULL;
 
@@ -263,7 +262,7 @@ class DB
         if ($this->dbConnection) {
             //Encode to dbConfig value in table config
             $this->_getEncodings();
-            $sql = XmlBase::recodeSrc($sql, $this->dbEncoding);
+            $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
 
             $this->sql = $sql;
             $this->rs = mysql_query($this->sql, $this->dbConnection);
@@ -311,7 +310,7 @@ class DB
         if ($this->dbConnection) {
             //Encode to dbConfig value in table config
             $this->_getEncodings();
-            $sql = XmlBase::recodeSrc($sql, $this->dbEncoding);
+            $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
 
             $this->sql = $sql;
             $this->rs = mysql_query($this->sql, $this->dbConnection);
@@ -387,11 +386,9 @@ class DB
     function GetValue($col)
     {
         if (is_array($this->row) && array_key_exists($col, $this->row)) {
-            include_once(XIMDEX_ROOT_PATH . "/inc/xml/XmlBase.class.php");
-            include_once(XIMDEX_ROOT_PATH . "/inc/xml/XML.class.php");
 
             $this->_getEncodings();
-            $value = XmlBase::recodeSrc($this->row[$col], $this->workingEncoding);
+            $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], $this->workingEncoding);
             return $value;
         }
         $backtrace = debug_backtrace();

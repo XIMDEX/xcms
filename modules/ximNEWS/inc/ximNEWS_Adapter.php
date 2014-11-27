@@ -572,7 +572,7 @@ class  ximNEWS_Adapter {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
-		$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
 
@@ -621,14 +621,14 @@ class  ximNEWS_Adapter {
 						$firstNode = $entry->childNodes->item($i);
 						$entry->removeChild($firstNode);
 					} else {
-						$entry->nodeValue = XmlBase::recodeSrc($valueElement, XML::UTF8);
+						$entry->nodeValue = \Ximdex\XML\Base::recodeSrc($valueElement, \Ximdex\XML\XML::UTF8);
 					}
 				}
 			} else {
 				// Sets attributes value
 				$attList = $xpath->query('//@*[local-name(.) = "'.$nameElement.'"]');
 				if ($attList->length > 0) {
-					$attList->item(0)->nodeValue = XmlBase::recodeSrc($valueElement, XML::UTF8);
+					$attList->item(0)->nodeValue = \Ximdex\XML\Base::recodeSrc($valueElement, \Ximdex\XML\XML::UTF8);
 				}
 			}
 		}
@@ -1409,7 +1409,7 @@ class  ximNEWS_Adapter {
 
 		$area = new XimNewsAreas();
 		
-		if (!$area->CreateArea(XmlBase::recodeSrc($name, XML::UTF8), XmlBase::recodeSrc($description, XML::UTF8))) 
+		if (!$area->CreateArea(\Ximdex\XML\Base::recodeSrc($name, \Ximdex\XML\XML::UTF8), \Ximdex\XML\Base::recodeSrc($description, \Ximdex\XML\XML::UTF8)))
 			return false;
 		
 		return true;

@@ -25,8 +25,6 @@
  */
 
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
-ModulesManager::file('/inc/xml/XmlBase.class.php');
-ModulesManager::file('/inc/xml/XML.class.php');
 ModulesManager::file('/inc/helper/String.class.php');
 
 class Action_edittext extends ActionAbstract {

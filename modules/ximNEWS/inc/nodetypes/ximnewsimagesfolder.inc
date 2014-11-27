@@ -77,7 +77,7 @@ class XimNewsImagesFolder extends FolderNode {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
-		$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$nodeList = $domDoc->getElementsByTagName('thumbnail');
 
@@ -119,7 +119,7 @@ class XimNewsImagesFolder extends FolderNode {
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
 
-		if (!$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8))) return NULL;
+		if (!$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8))) return NULL;
 
 
 		$thumbNailNode = $domDoc->getElementsByTagName('thumbnail')->item($position);
@@ -151,7 +151,7 @@ class XimNewsImagesFolder extends FolderNode {
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
 
-		if (!$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8))) return NULL;
+		if (!$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8))) return NULL;
 
 		$thumbnailNodes = $domDoc->getElementsByTagName('thumbnail');
 

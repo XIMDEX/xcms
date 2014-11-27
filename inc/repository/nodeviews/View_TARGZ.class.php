@@ -35,8 +35,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingRng.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_SQL.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/xml/XmlBase.class.php");
-include_once (XIMDEX_ROOT_PATH. "/inc/xml/XML.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -77,7 +75,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$sqlContent = substr(trim($arrayContent[1]), 0, -14);
 
 		//Encode the content to ISO, now OTF only work in ISO mode, because the jsp files are in ISO too
-		$xmlContent = XmlBase::recodeSrc($xmlContent, XML::ISO88591);
+		$xmlContent = \Ximdex\XML\Base::recodeSrc($xmlContent, \Ximdex\XML\XML::ISO88591);
 		if (!FsUtils::file_put_contents($tmpDocFile, $xmlContent)) {
 			return false;
 		}
@@ -108,7 +106,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 				break;
 		}
 
-		$sqlContaent = XmlBase::recodeSrc($sqlContent, XML::ISO88591);
+		$sqlContaent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
 		if (!FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
 			return false;
 		}
@@ -121,9 +119,9 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$additionalFiles = $this->getAdditionalFiles($nodeId,$idVersion,$args);
 		if (!is_null($additionalFiles)) {
 			//Encode the files to ISO, OTF only works in ISO mode
-			if (($dataEncoding != XML::ISO88591) && (is_array($additionalFiles))){
+			if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))){
 				foreach ($additionalFiles as $key=>$file) {
-					if (!XmlBase::recodeFile($file, XML::ISO88591)) {
+					if (!\Ximdex\XML\Base::recodeFile($file, \Ximdex\XML\XML::ISO88591)) {
 						return false;
 					}
 				}
@@ -133,9 +131,9 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$tarFileName = $tarArchiver->pack();
 
 		//Recode the files to before encoding, about dataEncoding config valuea
-		if (($dataEncoding != XML::ISO88591) && (is_array($additionalFiles))){
+		if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))){
 			foreach ($additionalFiles as $key=>$file) {
-				if (!XmlBase::recodeFile($file, $dataEncoding)) {
+				if (!\Ximdex\XML\Base::recodeFile($file, $dataEncoding)) {
 					return false;
 				}
 				

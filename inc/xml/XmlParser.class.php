@@ -27,9 +27,7 @@
 
 
 
-include_once(XIMDEX_ROOT_PATH."/inc/xml/XML.class.php");
-
-class XmlParser extends XML {
+class XmlParser extends \Ximdex\XML\XML {
 
 	protected $xmlArray = null;
 	protected $numItems = 0;
@@ -43,7 +41,7 @@ class XmlParser extends XML {
 	public function __destruct() {
 	}
 
-	// Devuelve el número de elementos
+	// Devuelve el nï¿½mero de elementos
 	public function length() {
 		return $this->numItems;
 	}
