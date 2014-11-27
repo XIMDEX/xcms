@@ -161,12 +161,12 @@ class AbstractRenderer {
 			if($nodeID > 0 ) {
 				$this->_set_node_params($nodeID);
 			}else if ($_ACTION_COMMAND == 'deletenode') {
-				$node = unserialize(XSession::get('deletedNode'));
+				$node = unserialize(\Ximdex\Utils\Session::get('deletedNode'));
 				// Si no se pudo obtener el nodo de la variable de sesion se crea el nodo con el ID pasado por GET, aunque no exista
 				if (!is_object($node)) {
 					$node = new Node($nodeID);
 				}
-				XSession::set('deletedNode', null);
+				\Ximdex\Utils\Session::set('deletedNode', null);
 			}
 
 			$this->set('id_action', $actionID);
@@ -318,12 +318,12 @@ class AbstractRenderer {
 	 */
 	private function _set_session_params($actionID, $_ACTION_COMMAND, $method, $nodeID, $module, $base_action) {
 
-		if ( XSession::get("actionId") == $actionID ) {
-			XSession::set("action", $_ACTION_COMMAND);
-			XSession::set("method", $method);
-			XSession::set("nodeId", $nodeID);
-			XSession::set("module", $module);
-			XSession::set("base_action", $base_action);
+		if ( \Ximdex\Utils\Session::get("actionId") == $actionID ) {
+			\Ximdex\Utils\Session::set("action", $_ACTION_COMMAND);
+			\Ximdex\Utils\Session::set("method", $method);
+			\Ximdex\Utils\Session::set("nodeId", $nodeID);
+			\Ximdex\Utils\Session::set("module", $module);
+			\Ximdex\Utils\Session::set("base_action", $base_action);
 		}
 	}
 }

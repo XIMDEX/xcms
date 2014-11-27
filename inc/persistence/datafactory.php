@@ -502,7 +502,7 @@ class DataFactory
 			}
 		}
 
-		$userID = XSession::get("userID");
+		$userID = \Ximdex\Utils\Session::get("userID");
 		if ($userID == null) {
 			$userID = "301"; // ximdex admin
 		}
@@ -573,7 +573,7 @@ class DataFactory
 		/// Le ponemos el contenido de la version que queremos recuperar
 		$newContent = $this->GetContent($version, $subversion);
 
-		$userID = XSession::get("userID");
+		$userID = \Ximdex\Utils\Session::get("userID");
 
 		/// Se guarda en un archivo de id unico
 		$uniqueName = $this->_getUniqueFileName();

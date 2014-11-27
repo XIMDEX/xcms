@@ -30,25 +30,24 @@ include_once '../../bootstrap/start.php';
 
 require(App::getValue('XIMDEX_ROOT_PATH') . '/conf/log.conf');
 include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/utils.php");
-ModulesManager::file("/inc/persistence/XSession.class.php");
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
-XSession::check();
+\Ximdex\Utils\Session::check();
 
-$locale = XSession::get('locale');
+$locale = \Ximdex\Utils\Session::get('locale');
 // Check coherence with HTTP_ACCEPT_LANGUAGE
 I18N::setup($locale);
-$userID = XSession::get('userID');
+$userID = \Ximdex\Utils\Session::get('userID');
 
 header('Content-type: application/javascript');
 
-echo "\nrenderer = '" . XSession::get("renderer") . "';";
+echo "\nrenderer = '" . \Ximdex\Utils\Session::get("renderer") . "';";
 echo "\nurl_root = '" . \App::getValue( 'UrlRoot') . "';";
 echo "\nximdex_root = '" . \App::getValue('XIMDEX_ROOT_PATH') . "';";
-echo "\nbase_action = '" . XSession::get("base_action") . "';";
+echo "\nbase_action = '" . \Ximdex\Utils\Session::get("base_action") . "';";
 echo "\nurl_root = '" . \App::getValue( 'UrlRoot') . "';";
 echo "\napp_root = '" . \App::getValue('AppRoot') . "';";
-echo "\nuser_id = '" . XSession::get('userID') . "';";
-echo "\nlocale = '" . XSession::get('locale') . "';";
-$load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && XSession::get('user_demo'));
+echo "\nuser_id = '" . \Ximdex\Utils\Session::get('userID') . "';";
+echo "\nlocale = '" . \Ximdex\Utils\Session::get('locale') . "';";
+$load_welcome = (int)(ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo'));
 echo "\nload_welcome =" . $load_welcome . ";";

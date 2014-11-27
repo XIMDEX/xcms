@@ -28,7 +28,6 @@
 
 
 ModulesManager::file('/inc/utils.php');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 //
 ModulesManager::file('/inc/serializer/Serializer.class.php');
 ModulesManager::file('/inc/parsers/ParsingXimMenu.class.php');
@@ -42,25 +41,25 @@ class Action_composer extends ActionAbstract {
 	const COMPOSER_INDEX = 'loadaction.php';
 
 	public function index() {
-		XSession::check();
+		\Ximdex\Utils\Session::check();
 
 		$ximid = \App::getValue( "ximid");
 		$versionname = \App::getValue( "VersionName");
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$theme = $this->request->getParam('theme');
 		$theme = $theme ? $theme : 'ximdex_theme';
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(XSession::get('locale'));
+        $user_locale = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
 
 		//Stopping any active debug_render
-		XSession::set('debug_render', NULL);
-		XSession::set('activeTheme', $theme);
+		\Ximdex\Utils\Session::set('debug_render', NULL);
+		\Ximdex\Utils\Session::set('activeTheme', $theme);
 
 		$values = array('composer_index' => self::COMPOSER_INDEX,
 			'ximid' => $ximid,
 			"versionname" => $versionname,
 			"userID" => $userID,
-			"debug" => XSession::checkUserID(),
+			"debug" => \Ximdex\Utils\Session::checkUserID(),
 			'theme' => $theme,
             'user_locale' => $user_locale);
 
@@ -69,15 +68,15 @@ class Action_composer extends ActionAbstract {
 
 	public function changeTheme() {
 		$theme = $this->request->getParam('theme');
-		XSession::set('activeTheme', $theme);
+		\Ximdex\Utils\Session::set('activeTheme', $theme);
 	}
 
 
 
 
 	public function readTreedata($idNode, $children=false, $desde=null, $hasta=null, $nelementos=null, $find=null) {
-		XSession::check();
-		$userID = XSession::get('userID');
+		\Ximdex\Utils\Session::check();
+		$userID = \Ximdex\Utils\Session::get('userID');
 
 		if (! isset($this->displayEncoding)) {
 			$this->displayEncoding = \App::getValue( 'displayEncoding');
@@ -102,7 +101,7 @@ class Action_composer extends ActionAbstract {
 		}
 
 		//Filtering by debufilter
-		if ($idNode == 1 && !empty($find) && XSession::checkUserID()) {
+		if ($idNode == 1 && !empty($find) && \Ximdex\Utils\Session::checkUserID()) {
 			$_nodes = $selectedNode->GetChildren();
 			if (count($_nodes) > 0) {
 				foreach ($_nodes as $idNode) {
@@ -116,7 +115,7 @@ class Action_composer extends ActionAbstract {
 		$user = new User($userID);
 		$group = new Group();
 
-		if (! XSession::get("nodelist")) {
+		if (! \Ximdex\Utils\Session::get("nodelist")) {
 
 			$groupList = $user->GetGroupList();
 			// Removing general group
@@ -150,11 +149,11 @@ class Action_composer extends ActionAbstract {
 						$padre = $node->get('IdParent');
 					}
 				}
-				XSession::set("nodelist", $nodeList);
+				\Ximdex\Utils\Session::set("nodelist", $nodeList);
 			}
 
 		} else {
-			$nodeList = XSession::get("nodelist");
+			$nodeList = \Ximdex\Utils\Session::get("nodelist");
 		}
 
 
@@ -243,7 +242,7 @@ class Action_composer extends ActionAbstract {
 				$user_perm_van = $user->HasPermission("view all nodes");
 				
 				if (($desde !== null) && ($hasta !== null)) {
-					$nodeList = XSession::get("nodelist");
+					$nodeList = \Ximdex\Utils\Session::get("nodelist");
 					$endFor = $hasta - $desde + 1;
 					
 					for($i = 0; $i < $endFor; $i ++) {
@@ -404,15 +403,15 @@ class Action_composer extends ActionAbstract {
 		if ($value !== null) {
 
 			// setter
-			$data = XSession::get('browser');
+			$data = \Ximdex\Utils\Session::get('browser');
 			if (!is_array($data)) $data = array();
 			$data[$name] = $value;
-			XSession::set('browser', $data);
+			\Ximdex\Utils\Session::set('browser', $data);
 
 		} else {
 
 			// Getter
-			$data = XSession::get('browser');
+			$data = \Ximdex\Utils\Session::get('browser');
 			if (!is_array($data)) $data = array();
 			$value = isset($data[$name]) ? $data[$name] : null;
 			$data = Serializer::encode(SZR_JSON, array($name => $value));
@@ -425,7 +424,7 @@ class Action_composer extends ActionAbstract {
 
 	public function ximmenu() {
 
-		XSession::check();
+		\Ximdex\Utils\Session::check();
 
 		$pxm = new ParsingXimMenu(XIMDEX_ROOT_PATH . '/conf/ximmenu.xml');
 		$ximmenu = $pxm->processMenu(true);
@@ -437,7 +436,7 @@ class Action_composer extends ActionAbstract {
 
 
 	function modules() {
-		XSession::check();
+		\Ximdex\Utils\Session::check();
 
 		$data = ModulesManager::getModules();
 
@@ -447,9 +446,9 @@ class Action_composer extends ActionAbstract {
 
 
 	public function nodetypes() {
-		XSession::check();
+		\Ximdex\Utils\Session::check();
 
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 
 		$user = new User();
 		$user->SetID($userID);
@@ -580,7 +579,7 @@ class Action_composer extends ActionAbstract {
 	}
 
 	function getUserName(){
-		$id=XSession::get('userID');
+		$id=\Ximdex\Utils\Session::get('userID');
 		$user=new User($id);
                 if (ModulesManager::isEnabled('ximDEMOS')){
                     $email = $user->GetEmail();
@@ -597,7 +596,7 @@ class Action_composer extends ActionAbstract {
 
 		$defaultNodeName= \App::getValue( "DefaultInitNodeName");
 		$defaultNodePath= \App::getValue( "DefaultInitNodePath");
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$user = new User($userID);
 		$groupList = $user->GetGroupList();
 		$groupName=false;
@@ -686,7 +685,7 @@ class Action_composer extends ActionAbstract {
 
 	private function _printXmlToolbar($nodeID) {
 		//global $userID;
-		$userID = XSession::get("userID");
+		$userID = \Ximdex\Utils\Session::get("userID");
 		/// echo $userID . "id";
 		$node = new Node($nodeID);
 		$user = new User($userID);

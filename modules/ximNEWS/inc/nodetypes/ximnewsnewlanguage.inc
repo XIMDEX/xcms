@@ -643,7 +643,7 @@ class XimNewsNewLanguage extends AbstractStructuredDocument  {
 			return false;
 		} 
 
-		$idUser = XSession::get('userID'); 
+		$idUser = \Ximdex\Utils\Session::get('userID');
 		$rel = new RelNewsColectorUsers(); 
 		$rel->add($idRel, $idUser);
 		

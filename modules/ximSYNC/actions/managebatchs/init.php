@@ -67,7 +67,7 @@
 	sajax_export("batchListForm");
 	sajax_handle_client_request();
 	
-	XSession::check();
+	\Ximdex\Utils\Session::check();
 	
 	// Inicializando variables propias de la accion.
 	$errorMsg = "";

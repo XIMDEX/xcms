@@ -121,7 +121,7 @@ class Action_modifyrole extends ActionAbstract {
 		$idNode = $this->request->getParam('nodeid');
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then no modify is allowed
-		if(ModulesManager::isEnabled("ximDEMOS") && XSession::get('user_demo')) {
+		if(ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo')) {
 			$node = new Node($idNode);
 			$name = $node->get("Name");
 			if("Demo" == $name ) {

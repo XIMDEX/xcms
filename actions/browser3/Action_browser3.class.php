@@ -47,13 +47,13 @@ class Action_browser3 extends ActionAbstract
 
     public function index()
     {
-        if (!is_string(XSession::get('activeTheme'))) {
-            XSession::set('activeTheme', 'ximdex_theme');
+        if (!is_string(\Ximdex\Utils\Session::get('activeTheme'))) {
+            \Ximdex\Utils\Session::set('activeTheme', 'ximdex_theme');
         }
 
         $params = $this->request->getParam('params');
-        $loginName = XSession::get('user_name');
-        $userID = (int)XSession::get('userID');
+        $loginName = \Ximdex\Utils\Session::get('user_name');
+        $userID = (int)\Ximdex\Utils\Session::get('userID');
 
         /*Test Session*/
         $session_info = session_get_cookie_params();
@@ -61,19 +61,19 @@ class Action_browser3 extends ActionAbstract
         //$session_duration = session_cache_expire(); // in minutes
         $session_duration = $session_lifetime != 0 ? $session_lifetime : session_cache_expire() * 60;
 
-        $sessionExpirationTimestamp = XSession::get("loginTimestamp") + $session_duration * 60;
-        setcookie("loginTimestamp", XSession::get("loginTimestamp"));
+        $sessionExpirationTimestamp = \Ximdex\Utils\Session::get("loginTimestamp") + $session_duration * 60;
+        setcookie("loginTimestamp", \Ximdex\Utils\Session::get("loginTimestamp"));
         setcookie("sessionLength", $session_duration);
         /**/
 
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(XSession::get('locale'));
+        $user_locale = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
         $locales = $locale->GetEnabledLocales();
 
         $values = array(
             'params' => $params,
             'userID' => $userID,
-            'time_id' => time() . "_" . XSession::get('userID'), /* For uid for scripts */
+            'time_id' => time() . "_" . \Ximdex\Utils\Session::get('userID'), /* For uid for scripts */
             'loginName' => $loginName,
             'user_locale' => $user_locale,
             'locales' => $locales,
@@ -167,8 +167,8 @@ class Action_browser3 extends ActionAbstract
             )
         );
 
-        //$url = REMOTE_WELCOME."?lang=".strtolower(XSession::get("locale"))."&ximid=".\App::getValue( 'ximid');
-        $url = REMOTE_WELCOME . "?lang=" . strtolower(XSession::get("locale"));
+        //$url = REMOTE_WELCOME."?lang=".strtolower(\Ximdex\Utils\Session::get("locale"))."&ximid=".\App::getValue( 'ximid');
+        $url = REMOTE_WELCOME . "?lang=" . strtolower(\Ximdex\Utils\Session::get("locale"));
         //get remote content
         $splash_content = @file_get_contents($url, 0, $ctx);
         if (!empty($splash_content)) {
@@ -192,7 +192,7 @@ class Action_browser3 extends ActionAbstract
      */
     public function refreshSession()
     {
-        XSession::refresh();
+        \Ximdex\Utils\Session::refresh();
     }
 
     /**
@@ -456,7 +456,7 @@ class Action_browser3 extends ActionAbstract
     public function listSets()
     {
 
-        $idUser = XSession::get('userID');
+        $idUser = \Ximdex\Utils\Session::get('userID');
 
         $sets = array();
         $it = NodeSets::getSets($idUser);
@@ -523,7 +523,7 @@ class Action_browser3 extends ActionAbstract
             $errors = array_merge($errors, $ret);
         }
 
-        $sessionUser = XSession::get('userID');
+        $sessionUser = \Ximdex\Utils\Session::get('userID');
         $errors = array_merge(
             $errors, $this->addUserToSet(
                 $set->getId(),
@@ -684,7 +684,7 @@ class Action_browser3 extends ActionAbstract
     public function deleteUserFromSet()
     {
 
-        $sessionUser = XSession::get('userID');
+        $sessionUser = \Ximdex\Utils\Session::get('userID');
         $setid = $this->request->getParam('setid');
         $users = $this->request->getParam('users');
 
@@ -742,7 +742,7 @@ class Action_browser3 extends ActionAbstract
     public function getUsers()
     {
 
-        $sessionUser = XSession::get('userID');
+        $sessionUser = \Ximdex\Utils\Session::get('userID');
         $idSet = $this->request->getParam('setid');
 
         $ret = array();
@@ -984,7 +984,7 @@ class Action_browser3 extends ActionAbstract
     protected function getActions($nodes = null)
     {
 
-        $idUser = XSession::get('userID');
+        $idUser = \Ximdex\Utils\Session::get('userID');
         $nodes = $nodes !== null ? $nodes : $this->request->getParam('nodes');
 
         if (!is_array($nodes)) $nodes = array($nodes);

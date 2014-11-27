@@ -50,7 +50,7 @@ class AbstractStructuredDocument extends FileNode  {
 	// Creates a new structured node
 	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null, $aliasName = '', $channelList = null) {
 
-		$loginID = XSession::get("userID");
+		$loginID = \Ximdex\Utils\Session::get("userID");
 
 		$templateNode = new Node($templateID);
 

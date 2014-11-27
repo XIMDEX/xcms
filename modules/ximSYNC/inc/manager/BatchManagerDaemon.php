@@ -36,7 +36,6 @@ include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 include_once( XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/Publication_Log.class.php');
-include_once( XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/DebugLog.class.php');
 
 

@@ -46,8 +46,8 @@ class ParsingJsGetText {
 	function __construct() {
 
 		//Definimos el default lang
-		if(XSession::get('locale') )
-			$this->setDefaultLang(XSession::get('locale'));
+		if(\Ximdex\Utils\Session::get('locale') )
+			$this->setDefaultLang(\Ximdex\Utils\Session::get('locale'));
 		else
 			$this->setDefaultLang(DEFAULT_LOCALE);
 	}

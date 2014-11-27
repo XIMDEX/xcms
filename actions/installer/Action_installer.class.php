@@ -29,7 +29,6 @@
 require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
 //
 
-ModulesManager::file("/inc/persistence/XSession.class.php");
 
 class Action_installer extends ActionAbstract {
 

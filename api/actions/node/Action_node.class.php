@@ -585,7 +585,7 @@ class Action_node extends AbstractAPIAction implements SecuredAction {
         $idnode = $request->getParam('nodeid');
         $uptime = mktime();
 
-        XSession::set('userID', $request->get(self::USER_PARAM));
+        \Ximdex\Utils\Session::set('userID', $request->get(self::USER_PARAM));
         $result = SynchroFacade::pushDocInPublishingPool($idnode, $uptime);
 
         if (empty($result)) {

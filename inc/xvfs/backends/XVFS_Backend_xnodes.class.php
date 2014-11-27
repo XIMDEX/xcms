@@ -98,7 +98,7 @@ class XVFS_Backend_xnodes
 	function _getUser() {
 
 		// TODO: El atributo _uri conserva los elementos user y pass, usarlos?
-		$user_name = XSession::get('user');
+		$user_name = \Ximdex\Utils\Session::get('user');
 		if (is_null($user_name)) $user_name = DEFAULT_USERNAME;
 		return $user_name;
 	}

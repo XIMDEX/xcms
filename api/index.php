@@ -43,7 +43,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 //Including composer autoloader
 //ModulesManager::file('/vendor/autoload.php');
 ModulesManager::file('/inc/utils.php');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/mvc/mvc.php'); // MVC
@@ -132,7 +131,7 @@ if(!file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php')){
 	header(sprintf("Location: %s", "./xmd/uninstalled/index.html"));
 }
 else{
-	$locale = XSession::get('locale');
+	$locale = \Ximdex\Utils\Session::get('locale');
 	I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
 
 	check_php_version();

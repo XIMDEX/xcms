@@ -25,9 +25,6 @@
  */
 
 
-
-ModulesManager::file('/inc/persistence/XSession.class.php');
-//
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 
 

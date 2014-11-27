@@ -94,7 +94,7 @@ class Action_modifyserver extends ActionAbstract {
 		$this->addJs('/actions/modifyserver/resources/js/validate.js');
 /*		if (ModulesManager::isEnabled('ximDEMOS'))
 			$this->addJs('/actions/modifyserver/resources/js/tour.js');
-		if ($this->tourEnabled(XSession::get("userID")))
+		if ($this->tourEnabled(\Ximdex\Utils\Session::get("userID")))
 			$this->addJs('/resources/js/start_tour.js','ximDEMOS');
 */
 		$this->addCss('/actions/modifyserver/resources/css/style.css');
@@ -144,7 +144,7 @@ class Action_modifyserver extends ActionAbstract {
 		//validate the fields about protocol
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
 		if(ModulesManager::isEnabled("ximDEMOS") ) {
-			if("FTP" != $protocol && XSession::get('user_demo')) {
+			if("FTP" != $protocol && \Ximdex\Utils\Session::get('user_demo')) {
 					$this->messages->add(_("Not allowed protocol for demo user. Get Ximdex open source to get full functionality."), MSG_TYPE_ERROR);
 					$values = array(
 						'messages' => $this->messages->messages,

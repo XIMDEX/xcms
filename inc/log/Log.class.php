@@ -326,7 +326,7 @@ class Log {
 		}
 		
 		$logger =& Log::getLogger($logger);
-		$logger->debug($message . '- Usuario: ' . XSession::get('userID'));
+		$logger->debug($message . '- Usuario: ' . \Ximdex\Utils\Session::get('userID'));
 	}
 }
 ?>

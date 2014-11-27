@@ -1057,7 +1057,7 @@ class    Node extends Nodes_ORM
         // to include the relation between nodes and groups
         $nodeTypeName = $this->nodeType->get('Name');
         if ($nodeTypeName == 'Section') {
-            $id_usuario = XSession::get('userID');
+            $id_usuario = \Ximdex\Utils\Session::get('userID');
             $user = new User($id_usuario);
             $grupos = $user->GetGroupList();
             // The first element of the list $grupos is always the general group

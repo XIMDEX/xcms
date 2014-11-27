@@ -33,13 +33,11 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 /// Se incluyen las otras librerias de utilidades a partir de utils.php, que es incluida por todo el sistema.
 
-ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/conf/install-params.conf.php');
 ModulesManager::file('/mesg/MesgEvent.class.php');
 ModulesManager::file('/mesg/MesgFolder.class.php');
 ModulesManager::file('/mesg/mesgLeftBar.inc');
 ModulesManager::file('/inc/mvc/drawers/gprint.inc');
-//
 ModulesManager::file('/conf/install-modules.conf');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file("/inc/persistence/datafactory.php");

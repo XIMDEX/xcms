@@ -115,7 +115,7 @@ class Action_unlinknewscolector extends ActionAbstract {
 				} else {
 					$this->messages->add(_('The dissociation '.$node->get('Name').' - '. $elemNode->get('Name').' was successfully performed.'), MSG_TYPE_NOTICE);
 
-					$idUser = XSession::get('userID');
+					$idUser = \Ximdex\Utils\Session::get('userID');
 					$rel = new RelNewsColectorUsers();
 					$rel->add($idRel, $idUser);
 				}

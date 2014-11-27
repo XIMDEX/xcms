@@ -25,7 +25,6 @@
  *  @version $Revision$
  */
 ModulesManager::file('/inc/utils.php');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/model/orm/NodeAllowedContents_ORM.class.php');
 ModulesManager::file('/actions/copy/baseIO.php');
 

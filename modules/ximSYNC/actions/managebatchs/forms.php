@@ -32,7 +32,7 @@
 
 		$acceso = true;
 		// Var init
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 
 		if($userID != 301) {
 

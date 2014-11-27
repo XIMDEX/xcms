@@ -29,8 +29,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Mechanism.class.php');
-//
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/user.php');
 // Include Auth Configuration.
 include_once(XIMDEX_ROOT_PATH . "/conf/auth.conf");
@@ -157,12 +155,12 @@ class Authenticator
             }
 
             // TODO: Add new session system.
-            XSession::set('user_name', $name);
-            XSession::set('user_demo', $user_demo);
-            XSession::set('logged', $user_id);
-            XSession::set('userID', $user_id);
-            XSession::set('locale', $user_locale);
-            XSession::set('loginTimestamp', time());
+            \Ximdex\Utils\Session::set('user_name', $name);
+            \Ximdex\Utils\Session::set('user_demo', $user_demo);
+            \Ximdex\Utils\Session::set('logged', $user_id);
+            \Ximdex\Utils\Session::set('userID', $user_id);
+            \Ximdex\Utils\Session::set('locale', $user_locale);
+            \Ximdex\Utils\Session::set('loginTimestamp', time());
 
             return true;
         } else {
@@ -180,7 +178,7 @@ class Authenticator
     {
 
         // TODO: Add new session system.
-        XSession::destroy();
+        \Ximdex\Utils\Session::destroy();
         /*
                 @session_start();
                 @session_unregister("logged");

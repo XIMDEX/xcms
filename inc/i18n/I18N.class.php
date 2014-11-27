@@ -44,7 +44,7 @@ class I18N {
 		if (extension_loaded('gettext')) {
 
 			if (empty($locale) || strlen($locale)>5 )
-				$locale = XSession::get("locale");
+				$locale = \Ximdex\Utils\Session::get("locale");
 
 			if (empty($locale))
 				$locale = \App::getValue( 'locale');
@@ -60,7 +60,7 @@ class I18N {
 			textdomain("messages");
 			bind_textdomain_codeset("messages", 'ISO8859-1');
 
-		   XSession::set("locale", $locale);
+		   \Ximdex\Utils\Session::set("locale", $locale);
 		}
 	}
 

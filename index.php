@@ -32,7 +32,6 @@ include_once 'bootstrap/start.php';
 require_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/fsutils/DiskUtils.class.php');
 
 ModulesManager::file('/inc/utils.php');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
@@ -126,14 +125,14 @@ if (!InstallController::isInstalled()) {
     $installController = new InstallController();
     $installController->dispatch();
 } else {
-    $locale = XSession::get('locale');
+    $locale = \Ximdex\Utils\Session::get('locale');
     I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
 
     check_php_version();
     checkFolders();
     check_config_files();
 
-    //XSession::check();
+    //\Ximdex\Utils\Session::check();
 
     //goLoadAction();
 

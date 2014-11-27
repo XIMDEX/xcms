@@ -36,7 +36,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/action.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/notifications/AbstractNotificationStrategy.class.php');
+
 
 
 /**
@@ -168,7 +168,7 @@ class ActionAbstract extends IController {
 	}
 
 	private function getDefaultLogMessage(){
-		$user = XSession::get("userID")? "by ".XSession::get("userID"):"";
+		$user = \Ximdex\Utils\Session::get("userID")? "by ".\Ximdex\Utils\Session::get("userID"):"";
 		$moduleString = $this->actionModule? "in module {$this->actionModule}.": "";
 		return $moduleString.get_class($this)."->{$this->actionMethod} {$user}";
 
@@ -229,7 +229,7 @@ class ActionAbstract extends IController {
 		$this->request->setParam("view_head", 1);
 
 		// Saving in the request the css and js(passed by gettext before)
-		$this->request->setParam("locale", XSession::get('locale'));
+		$this->request->setParam("locale", \Ximdex\Utils\Session::get('locale'));
 
 		$getTextJs = new ParsingJsGetText();
 
@@ -470,8 +470,8 @@ class ActionAbstract extends IController {
 		// 		$this->request->setParam("renderer", "Smarty");
 
 		if($rendererClass == null) {
-			if(XSession::get('debug_render')> 0 ) {
-				switch(XSession::get('debug_render')) {
+			if(\Ximdex\Utils\Session::get('debug_render')> 0 ) {
+				switch(\Ximdex\Utils\Session::get('debug_render')) {
 					case 1: $rendererClass = "Smarty"; break;
 					case 2: $rendererClass = "Json"; break;
 					case 3: $rendererClass = "Debug"; break;
@@ -562,7 +562,7 @@ class ActionAbstract extends IController {
 		}
 
 		//if the associated file for this language is not existing, checking with system language
-		$_lang = XSession::get('locale');
+		$_lang = \Ximdex\Utils\Session::get('locale');
 		if($_lang != null ) {
 			$_file = str_replace("[LANG]", $_lang, $file);
 			if(file_exists($_file) )
@@ -599,13 +599,13 @@ class ActionAbstract extends IController {
 		if (!$action){
 	    		$action = $this->actionCommand;
         }
-        $user = new User (XSession::get("userID"));
+        $user = new User (\Ximdex\Utils\Session::get("userID"));
 		$result = $user->GetNumAccess();
 		return ($result === null || $result < $numReps) ? true : false;
 	}
 
 	protected function sendNotifications($subject, $content, $to){
-		$from = XSession::get("userID");
+		$from = \Ximdex\Utils\Session::get("userID");
 		$result = array();
 		$emailNotification = new EmailNotificationStrategy();
 		$result = $emailNotification->sendNotification($subject, $content,$from, $to);

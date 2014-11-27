@@ -35,7 +35,6 @@ ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 ModulesManager::file('inc/manager/Publication_Log.class.php', 'ximSYNC');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/model/RelServersChannels.class.php');
@@ -379,7 +378,7 @@ class BatchManager {
 			$nodeName = $node->GetNodeName();
 
 			// Blocking node
-			$userID = XSession::get('userID');
+			$userID = \Ximdex\Utils\Session::get('userID');
 			if (is_null($userID)) {
 				$userID = 301;
 			}

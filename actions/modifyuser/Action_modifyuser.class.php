@@ -33,7 +33,7 @@ class Action_modifyuser extends ActionAbstract {
 	    $idNode = $this->request->getParam('nodeid');
 		$user = new User($idNode);
 
-        $idRegisteredUser = XSession::get('userID');
+        $idRegisteredUser = \Ximdex\Utils\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
 
         $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
@@ -71,12 +71,12 @@ class Action_modifyuser extends ActionAbstract {
         $general_role = $this->request->getParam('generalrole');
 
 		$node = new Node($idNode);
-	    $idUser = XSession::get('userID');
+	    $idUser = \Ximdex\Utils\Session::get('userID');
 	    if(ModulesManager::isEnabled('ximDEMOS') && $idUser != $idNode && $idUser != 301){
 	        $this->render($values, NULL, 'messages.tpl');
 	    }
 
-        $idRegisteredUser = XSession::get('userID');
+        $idRegisteredUser = \Ximdex\Utils\Session::get('userID');
         $registeredUser = new User($idRegisteredUser);
 
         $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);

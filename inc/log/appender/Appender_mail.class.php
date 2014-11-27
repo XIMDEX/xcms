@@ -28,7 +28,6 @@
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/XSession.class.php");
 
 /**
  *
