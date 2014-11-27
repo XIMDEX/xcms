@@ -35,10 +35,10 @@ require_once(XIMDEX_ROOT_PATH . '/services/pull/Pull.class.php');
 
 // authentication
 
-if (XSession::check()) {
+if (\Ximdex\Utils\Session::check()) {
 
 
-	XSession::set('context', 'ximdex');
+	\Ximdex\Utils\Session::set('context', 'ximdex');
 
 	$args = array('idportal' => Request::get('idportal'), 'idnode' => Request::get('idnode'),
 			'idchannel' => Request::get('idchannel'));

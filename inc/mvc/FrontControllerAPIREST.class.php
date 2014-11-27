@@ -104,7 +104,7 @@ class FrontControllerAPIREST extends FrontController
             }
 
             $this->request->setParam('XimUser', $ximtoken['user']);
-            XSession::set('userID', $this->request->get('XimUser'));
+            \Ximdex\Utils\Session::set('userID', $this->request->get('XimUser'));
         }
 
         $method = strtolower($_SERVER["REQUEST_METHOD"]);

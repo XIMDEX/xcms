@@ -39,8 +39,8 @@ ModulesManager::file('/inc/utils.php');
 ?>
 <?php
 
-XSession::check();
-$userID = XSession::get('userID');
+\Ximdex\Utils\Session::check();
+$userID = \Ximdex\Utils\Session::get('userID');
 $contentType = isset($_GET['contenttype']) ? $_GET['contenttype'] : NULL;
 $selectedNodeID = isset($_GET['nodeid']) ? $_GET['nodeid'] : NULL;
 $targetNodeID = isset($_GET['targetid']) ? $_GET['targetid'] : NULL;
@@ -535,7 +535,7 @@ function getNodelist($userID, $nodeID) {
 	$group = new Group();
 
 
-	if (!XSession::get("nodelist") or $nodeID==1)
+	if (!\Ximdex\Utils\Session::get("nodelist") or $nodeID==1)
 	{
 		  $groupList= $user->GetGroupList();
 	  	  $groupList = array_diff($groupList,array($group->GetGeneralGroup())); // quitamos general group
@@ -558,10 +558,10 @@ function getNodelist($userID, $nodeID) {
 		$nodeList = getParentList($nodeList);
 
 		//$session->set("nodelist", $nodeList);
-		XSession::set("nodelist", $nodeList);
+		\Ximdex\Utils\Session::set("nodelist", $nodeList);
 
 	}else {
-		$nodeList = XSession::get("nodelist");
+		$nodeList = \Ximdex\Utils\Session::get("nodelist");
 	}
 
 	return $nodeList;

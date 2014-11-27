@@ -748,7 +748,7 @@ class  ximNEWS_Adapter {
 					$relNewsColector = new RelNewsColector($idRel);
 					$relNewsColector->set('FechaOut', date('d-m-Y H:i:s'));
 					$relNewsColector->update();
-					$idUser = XSession::get('userID'); 
+					$idUser = \Ximdex\Utils\Session::get('userID');
 					$rel = new RelNewsColectorUsers(); 
 					$rel->add($idRel, $idUser); 
 				}

@@ -36,8 +36,6 @@ ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/model/NodeProperty.class.php');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-//
-ModulesManager::file('/inc/persistence/XSession.class.php');
 
 
 define ('HEADER', 'XIMIO-STRUCTURE');
@@ -749,7 +747,7 @@ class ImportXml {
 		}*/
 
 		$baseIO = new BaseIO();
-		$idUser = XSession::get("userID");
+		$idUser = \Ximdex\Utils\Session::get("userID");
 		if (!($idUser > 0)) {
 			$this->abort = true;
 			$this->messages[] = _('No valid user to perform the importation found');
@@ -1146,7 +1144,7 @@ class ImportXml {
 			$template['PARENTID'] = $idximPvdNode;
 			$baseIO = new BaseIO();
 
-			$idUser = XSession::get('userID');
+			$idUser = \Ximdex\Utils\Session::get('userID');
 			if ($this->heuristicMode) {
 				$result = $baseIO->check($template, $idUser);
 			} else {

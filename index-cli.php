@@ -47,7 +47,6 @@ if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
 ModulesManager::file('/inc/utils.inc');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file( '/conf/extensions.conf.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
@@ -137,14 +136,13 @@ if(!InstallController::isInstalled()){
 	$installController->dispatch();
 }
 else{
-	$locale = XSession::get('locale');
+	$locale = \Ximdex\Utils\Session::get('locale');
 	I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
 
 	check_php_version();
 	checkFolders();
 	check_config_files();
 
-	//XSession::check();
 
 	//goLoadAction();
 
@@ -152,4 +150,3 @@ else{
 	$frontController = new FrontController();
 	$frontController->dispatch();
 }
-?>

@@ -172,7 +172,7 @@ class SyncManager {
 		}
 
 
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		foreach ($docsToPublish as $idDoc) {
 			$ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force);
 		}

@@ -71,9 +71,9 @@ class BaseIO {
 		$data = $this->_checkVisualTemplate($data);
 
 		if (!$userid) {
-			$userid = XSession::get('userID');
+			$userid = \Ximdex\Utils\Session::get('userID');
 		} elseif ($userid) {
-			XSession::set('userID', $userid);
+			\Ximdex\Utils\Session::set('userID', $userid);
 		}
 
 		if (empty($data['NODETYPENAME'])) {
@@ -583,7 +583,7 @@ class BaseIO {
 		}
 
 		if (!$userid) {
-			$userid = XSession::get('userID');
+			$userid = \Ximdex\Utils\Session::get('userID');
 		}
 
 		// upper all the indexes in data and the nodetypename.		
@@ -928,7 +928,7 @@ class BaseIO {
 		global $metaTypesArray;
 
 		if (!$userid) {
-			$userid = XSession::get('userID');
+			$userid = \Ximdex\Utils\Session::get('userID');
 		}
 
 		$node = new Node($data['ID']);

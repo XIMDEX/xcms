@@ -34,9 +34,8 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionFactory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
 ModulesManager::file('/inc/Status.class.php', 'ximADM');
+// Implement \Ximdex\Utils\Session::check() as Filter.
 
-// Implement XSession::check() as Filter.
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/XSession.class.php");
 /**
  *
  * @brief Controller to execute and route actions
@@ -76,7 +75,7 @@ class ApplicationController extends IController {
 
 	function setUserState() {
 		if(ModulesManager::isEnabled('ximADM') ) {
-			$userID = (int) XSession::get('userID');
+			$userID = (int) \Ximdex\Utils\Session::get('userID');
 			$action = $this->request->getParam("action");
 			$method = $this->request->getParam("method");
 
@@ -117,7 +116,7 @@ class ApplicationController extends IController {
 		$action = $this->request->getParam("action");
 		$method = $this->request->getParam("method");
 		$nodeId = (int) $this->request->getParam("nodeid");
-		$userId = XSession::get("userID");
+		$userId = \Ximdex\Utils\Session::get("userID");
 		// Starts timer for use in action stats
 		$stats=array();
 		
@@ -141,7 +140,7 @@ class ApplicationController extends IController {
 		$action = $this->request->getParam("action");
 		$method = $this->request->getParam("method");
 		$nodeId = (int) $this->request->getParam("nodeid");
-		$userId = XSession::get("userID");
+		$userId = \Ximdex\Utils\Session::get("userID");
 
 		if ($actionStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
 			$stats_time = $this->timer->mark('End action');
@@ -179,7 +178,7 @@ class ApplicationController extends IController {
 
 		$remote =  ACTIONS_STATS;
 		$ximid= \App::getValue( 'ximid');
-		$userId = XSession::get("userID");
+		$userId = \Ximdex\Utils\Session::get("userID");
 		if(strcmp($stats["nodeid"],'')!=0){
 			$nodeid = (int) $stats["nodeid"];
 		}

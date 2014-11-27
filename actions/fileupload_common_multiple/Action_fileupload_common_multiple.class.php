@@ -50,7 +50,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
    		$idNode = (int) $this->request->getParam("nodeid");
      	$actionID = (int) $this->request->getParam("actionid");
 		$type = $this->request->getParam('type');
-		$userid = XSession::get('userID');
+		$userid = \Ximdex\Utils\Session::get('userID');
 		$dir_tmp = XIMDEX_ROOT_PATH.\App::getValue( 'TempRoot');
 
 		/** ********* Find out folder nodetype **** */
@@ -58,7 +58,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
 		$type_node = $type_folder["NODETYPENAME"];
 		/** ********* Checking permits **************************** */
-		$userid = XSession::get('userID');
+		$userid = \Ximdex\Utils\Session::get('userID');
 
 		if(empty($userid)) {
 			$this->messages->add(_('It is necessary to be an active user to upload files'), MSG_TYPE_ERROR);

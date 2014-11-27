@@ -33,8 +33,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
 if (!defined('XIMDEX_XVFS_PATH'))
 	define('XIMDEX_XVFS_PATH', XIMDEX_ROOT_PATH . "/inc/xvfs");
 
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
-//
 
 require_once XIMDEX_XVFS_PATH . '/entities/XVFS_Entity_Dir.class.php';
 require_once XIMDEX_XVFS_PATH . '/entities/XVFS_Entity_File.class.php';
@@ -93,7 +91,7 @@ class XVFS {
 		$this->_tree = NULL;
 		// normal constructor
 		//$this->_tree = new Tree();
-		XSession::start('XVFS_SESSION');
+		\Ximdex\Utils\Session::start('XVFS_SESSION');
 	}
 
 

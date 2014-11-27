@@ -27,14 +27,13 @@
 require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
 //
 ModulesManager::file('/inc/model/NodeEdition.class.php');
-ModulesManager::file("/inc/persistence/XSession.class.php");
 
 class Action_logout extends ActionAbstract
 {
 
     function index()
     {
-        $userID = (int)XSession::get('userID');
+        $userID = (int)\Ximdex\Utils\Session::get('userID');
         $nodeEdition = new NodeEdition();
         $nodeEdition->deleteByUser($userID);
         $authenticator = new Authenticator();

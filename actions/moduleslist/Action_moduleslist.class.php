@@ -39,7 +39,7 @@ class Action_moduleslist extends ActionAbstract {
     protected function readModules() {
 
         $modules = array();
-        $userId = XSession::get('userID');
+        $userId = \Ximdex\Utils\Session::get('userID');
 
         //Now, every users
         /*if ($userId != '301') {
@@ -89,9 +89,9 @@ class Action_moduleslist extends ActionAbstract {
     public function opentab() {
         $this->addJs('/actions/moduleslist/resources/js/validate.js');
         $this->addCss('/actions/moduleslist/resources/css/moduleslist.css');
-        $lang = strtolower(XSession::get("locale"));
+        $lang = strtolower(\Ximdex\Utils\Session::get("locale"));
         $base = XIMDEX_ROOT_PATH."/actions/moduleslist/template/Smarty/modules";
-        $userId = XSession::get('userID');
+        $userId = \Ximdex\Utils\Session::get('userID');
 
         $module_name = $this->request->getParam('modsel');
         $module_exists = ModulesManager::moduleExists($module_name);

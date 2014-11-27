@@ -314,7 +314,7 @@ class Auth
             return false;
         }
 
-        $context = XSession::get('context');
+        $context = \Ximdex\Utils\Session::get('context');
         $contextsObject = new Contexts_ORM();
         $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
         $idContext = count($result) == 1 ? $result[0] : '1';

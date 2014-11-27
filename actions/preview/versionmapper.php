@@ -31,7 +31,7 @@
 
 ModulesManager::file('/inc/utils.php');
 
-XSession::check();
+\Ximdex\Utils\Session::check();
 		
 ////
 //// Initiation of action flow.

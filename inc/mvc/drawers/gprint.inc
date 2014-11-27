@@ -171,10 +171,10 @@ function gPrintBodyBegin()
 		// If the performed action is "deletenode" and the node was already deleted, the node should be taken from session.
 		// This in order to show the deleted node path.
 		if( $action->Command == 'deletenode' && is_null( $node->nodeID ) ) {
-			$node = unserialize( XSession::get( 'deletedNode' ) );
+			$node = unserialize( \Ximdex\Utils\Session::get( 'deletedNode' ) );
 			// If node could not be obtained from session var, the node is created with the ID passed by GET, even if this does not exista
 			if( !is_object($node) ) $node = new Node($nodeID);
-			XSession::set( 'deletedNode', null );
+			\Ximdex\Utils\Session::set( 'deletedNode', null );
 		}
 
 	

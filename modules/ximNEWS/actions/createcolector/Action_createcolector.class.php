@@ -172,7 +172,7 @@ class Action_createcolector extends ActionAbstract {
 
 		$this->messages->add(_("The colector edition has been performed successfully"), MSG_TYPE_NOTICE);
 
-	    $user = new User(XSession::get('userID'));
+	    $user = new User(\Ximdex\Utils\Session::get('userID'));
 	    $email = $user->Get('Email');
 	    $mail = new Mail();
 	    $mail->addAddress($email);

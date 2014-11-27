@@ -78,7 +78,7 @@ class Action_generatecolector extends ActionAbstract {
 		$total = empty($total) ? NULL : true;
 		$bulletins = array();
 
-		$idUser = XSession::get('userID');
+		$idUser = \Ximdex\Utils\Session::get('userID');
 		$ximNewsColectorUsers = new ximNewsColectorUsers();
 		$idNewsColectorUsers = $ximNewsColectorUsers->add($idNode, $idUser, 'generating');
 

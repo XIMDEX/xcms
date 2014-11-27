@@ -1,10 +1,9 @@
 <?php
 
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/XSession.class.php");
 
 function smarty_function_i18n_file($params, &$smarty)
 { 
-  XSession::check();
+  \Ximdex\Utils\Session::check();
 
   //Fichero a traducir
   $file = trim(isset($params['file']) ? $params['file']:null);
@@ -26,7 +25,7 @@ function smarty_function_i18n_file($params, &$smarty)
 	}
 
 	//Si no existe archivo asociado al idioma pasado, se comprueba con el idioma del sistema
-	$_lang = XSession::get('default_lang');
+	$_lang = \Ximdex\Utils\Session::get('default_lang');
 	if($_lang != null ) {
 		$_file = str_replace("[LANG]", $_lang, $file);
 		if(file_exists(XIMDEX_ROOT_PATH.$_file) )

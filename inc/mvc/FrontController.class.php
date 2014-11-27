@@ -95,7 +95,7 @@ class FrontController extends IController {
     protected function isAllowedAction($idNode, $idAction){
         if (!$idNode)
             return true;
-        $idUser = XSession::get("userID");
+        $idUser = \Ximdex\Utils\Session::get("userID");
         if (!$idUser){
             return false;
         }

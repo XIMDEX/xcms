@@ -39,7 +39,7 @@ class Action_deletenode extends ActionAbstract {
 
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$params = $this->request->getParam("params");
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$texto = "";
 
 		if (count($nodes) == 1) {
@@ -212,7 +212,7 @@ class Action_deletenode extends ActionAbstract {
 	    $deleteDep=$this->request->getParam("unpublishnode");
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
-		if(ModulesManager::isEnabled("ximDEMOS") &&  XSession::get('user_demo')) {
+		if(ModulesManager::isEnabled("ximDEMOS") &&  \Ximdex\Utils\Session::get('user_demo')) {
 			$node = new Node($idNode);
 			$name = $node->get("Name");
 			if("Demo" == $name ) {
@@ -228,7 +228,7 @@ class Action_deletenode extends ActionAbstract {
 			}
 		}
 
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
 
 		// Deleting publication tasks

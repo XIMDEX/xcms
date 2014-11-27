@@ -171,7 +171,7 @@ class Action_addtocolector extends ActionAbstract {
 
 	private function colectors_table($nodeID) {
 
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$user = new User();
 		$user->SetID($userID);
 		$groups = $user->GetGroupList();

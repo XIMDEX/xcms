@@ -38,7 +38,7 @@ class Action_changelang extends ActionAbstract {
 
 		$error = true;
 		if (!empty($locale_selected) ) {
-			$user = new User(XSession::get('userID'));
+			$user = new User(\Ximdex\Utils\Session::get('userID'));
 			if ( $user->SetLocale($locale_selected["Code"]) ) {
 				$this->messages->add(sprintf(_("Ximdex Language changed to %s. The changes will take effect once you restart Ximdex."), _($locale_selected["Name"]) ), MSG_TYPE_NOTICE);
 				$error = false;
