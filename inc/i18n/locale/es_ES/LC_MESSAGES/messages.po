@@ -4111,6 +4111,9 @@ msgstr "Anterior"
 msgid "Next"
 msgstr "Siguiente"
 
+msgid "next"
+msgstr "siguiente"
+
 #: /actions/xmleditor2/template/Smarty/toolboxes.tpl
 msgid "License"
 msgstr "Licencia"

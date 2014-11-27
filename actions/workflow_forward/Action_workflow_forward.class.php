@@ -136,15 +136,21 @@ class Action_workflow_forward extends ActionAbstract {
 				$find = true;
 		}
 
+        //Getting next state
+        $nextState = $workflow->GetNextState();
+        $workflowNext = new WorkFlow($idNode,$nextState);
+        $nextStateName=$workflowNext->GetName();
+
 		//Loading Notifications default values
 		$conf = ModulesManager::file('/conf/notifications.conf');
-		$defaultMessage=$this->buildMessage($conf["defaultMessage"],$workflow->GetName(),$node->get('Name'));
+		$defaultMessage=$this->buildMessage($conf["defaultMessage"],$nextStateName,$node->get('Name'));
 		$values = array(
 				'group_state_info' => Group::getSelectableGroupsInfo($idNode),
 				'state' => $nextStateName,
 				'stateid' => $nextState,
 				'required' => $conf['required'] === true ? 1 : 0,
-				'defaultMessage' => $defaultMessage
+				'defaultMessage' => $defaultMessage,
+                'idNode' => $idNode
 				);
 		
 		//Only for Strdocs, goes to next state
@@ -156,7 +162,7 @@ class Action_workflow_forward extends ActionAbstract {
 				$this->render($values, NULL,'default-3.0.tpl');
 			}
 			else{
-				$defaultMessage=$this->buildMessage($conf["defaultMessage"],'siguiente',$node->get('Name'));
+				$defaultMessage=$this->buildMessage($conf["defaultMessage"],_('next'),$node->get('Name'));
 				//Set default Message
 		                $values['defaultMessage']= $defaultMessage;
 				$values2 = array(
@@ -181,6 +187,7 @@ class Action_workflow_forward extends ActionAbstract {
 			$values['state']= $pubStateName;
 			$defaultMessage=$this->buildMessage($conf["defaultMessage"],$pubStateName,$node->get('Name'));
 			$values['defaultMessage']= $defaultMessage;
+            $values['idNode'] = $idNode;
             		$values = array_merge($values, $this->buildExtraValues($idNode));
             		$this->render($values, NULL,'default-3.0.tpl');
 		}

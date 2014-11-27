@@ -116,7 +116,7 @@ class Widget_calendar extends Widget_Abstract {
 		}
 
 
-		$params["timezone"] = XIMDEX_TIMEZONE;
+		$params["timezone"] = App::getValue('timezone');;
 
 		return parent::process($params);
 	}

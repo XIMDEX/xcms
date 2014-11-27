@@ -42,6 +42,7 @@ class Version extends Versions_ORM {
         $dbObj = new DB();
         $dbObj->Query($query);
         $i=0;
+        $res = array();
         while(!$dbObj->EOF) {
             $res[$i]["IdNode"] = $dbObj->GetValue("IdNode");
             $res[$i]["IdNodeType"] = $dbObj->GetValue("IdNodeType");

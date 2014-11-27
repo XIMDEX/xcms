@@ -486,8 +486,9 @@ class DataFactory
 				$this->_purgeVersions();
 			}
 
-			$this->_purgeSubVersions($newVersion);
-
+            if(\App::getValue( "PurgeSubversionsOnNewVersion")) {
+                $this->_purgeSubVersions($newVersion);
+            }
 
 		} else {
 			/// Si es la primera version a guardar -> 0.0
