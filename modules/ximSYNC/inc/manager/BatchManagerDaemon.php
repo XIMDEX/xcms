@@ -36,7 +36,6 @@ include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 include_once( XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/Publication_Log.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/DebugLog.class.php');
 
 
 $otfMode = null;
@@ -45,7 +44,7 @@ function main($argc, $argv) {
 
 	// Command line mode call
 	if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
-		debug::log(_("IdNode passed:")." ".$argv[1]);
+		\Ximdex\Logger::logTrace( _("IdNode passed:")." ".$argv[1]);
 		// Add node to publishing pool and exit (SyncManager will call this daemon again when inserting node job is done)
 		SynchroFacade::pushDocInPublishingPool($argv[1], time(), null);
 		exit(1);

@@ -33,7 +33,6 @@ ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::file(MODULE_XIMLOADER_PATH . '/BuildParser.class.php');
-ModulesManager::file('/inc/helper/DebugLog.class.php');
 
 class Module_ximLOADER extends Module
 {
