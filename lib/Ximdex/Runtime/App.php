@@ -66,9 +66,7 @@ Class App
 
     public function getRuntimeValue($key, $default = null)
     {
-
-
-        if (isset($this->config[$key])) {
+     if (isset($this->config[$key])) {
             return $this->config[$key];
         } else {
             return $default;
@@ -125,6 +123,8 @@ Class App
         }
         $objectData =  self::getInstance()->getRuntimeValue( 'class::definition::' . $key, null );
         if ( is_null( $objectData )) {
+
+            return self::getObject( $key ) ;
             return null ;
         }
         require_once( App::getValue('XIMDEX_ROOT_PATH') .  $objectData  ) ;

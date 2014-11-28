@@ -35,8 +35,7 @@ ModulesManager::file('/inc/model/group.php');
 
 class Action_console_wrapper extends ActionAbstract {
 	public function index() {
-//        $query = App::get('QueryManager');
-//        $action = $query->getPage() . $query->build();
+
 		$values = array(
 			'id_action' => $this->request->get('actionid'),
 //			'action' => $action

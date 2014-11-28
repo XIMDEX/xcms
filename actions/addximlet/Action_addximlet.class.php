@@ -60,7 +60,7 @@ class Action_addximlet extends ActionAbstract {
         
         $linked_ximlets=$this->getXimletInfo($ximlets);
         
-        $query = App::get('QueryManager');
+        $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
         $actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
         $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
 

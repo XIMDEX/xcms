@@ -42,7 +42,7 @@ class Action_browserlote extends ActionAbstract {
 
         //$this->addJs('/actions/browserlote/resources/js/browser_images.js', 'ximNEWS');
         $this->addCss('/actions/browserlote/resources/css/index.css', 'ximNEWS');
-        $query = App::get('QueryManager');
+        $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
         $action = $query->getPage() . $query->buildWith(array('method' => 'mi_metodo'));
         $values = array(
                         'id_node' => $idNode,
@@ -56,4 +56,3 @@ class Action_browserlote extends ActionAbstract {
         $this->_render($values, '', 'default-3.0.tpl');
     }
 }
-?>

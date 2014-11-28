@@ -51,7 +51,7 @@ class PipelineManager {
 	 * @return void
 	 */
 	function PipelineManager() {
-		$this->messages = App::get('Messages');
+		$this->messages = \Ximdex\Runtime\App::get('\Ximdex\Utils\Messages');
 		GraphManager::createGraph('PipelineGraph', NULL, NULL, 'Cache hints graph for pipelines', 'SeriesToBars');
 		GraphManager::createSerie('PipelineGraph', 'Cache request');
 		GraphManager::createSerie('PipelineGraph', 'Cache miss');

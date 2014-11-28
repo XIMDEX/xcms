@@ -2,7 +2,7 @@
 
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
-
+use Ximdex\Runtime\App ;
 
 
 
@@ -105,11 +105,8 @@ if ( !empty( $dbConfig ) ) {
 // special objects (pseudo-DI)
 // App::setValue( 'class::definition::Messages',       '/inc/helper/Messages.class.php' );
 class_alias('Ximdex\Utils\Messages', 'Messages');
-
-App::setValue( 'class::definition::QueryManager',   '/inc/helper/QueryManager.class.php' );
 App::setValue( 'class::definition::DB',             '/inc/db/DB.class.php' );
-App::setValue( 'class::definition::XMD_log',        '/inc/log/XMD_log.class.php' );
-
+// App::setValue( 'class::definition::XMD_log',        '/inc/log/XMD_log.class.php' );
 
 // Extensions setup
 

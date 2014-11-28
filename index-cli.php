@@ -27,7 +27,11 @@
 
 include_once 'bootstrap/start.php' ;
 
+$obj = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 
+print_R($obj );
+
+die('fin');
 $log = new Logger('sss');
 $log->pushHandler(new StreamHandler(App::getValue('XIMDEX_ROOT_PATH') .'/logs/sss.log', Logger::DEBUG));
 

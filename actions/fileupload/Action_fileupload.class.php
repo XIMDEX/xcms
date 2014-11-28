@@ -207,7 +207,7 @@ class Action_fileupload extends ActionAbstract {
     		$node->get('Name'), $tmpName), MSG_TYPE_WARNING);
 	}
     	
-    	$queryManager = new QueryManager();
+    	$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
     	$action = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'update'));
     	$values = array('messages' => $this->messages->messages,
     					'action' => $action,
