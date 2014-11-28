@@ -26,7 +26,6 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/DebugLog.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 /**
  *

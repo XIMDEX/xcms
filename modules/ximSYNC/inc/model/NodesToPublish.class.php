@@ -28,7 +28,6 @@
 
 
 ModulesManager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/inc/helper/DebugLog.class.php');
 
 
 class NodesToPublish extends NodesToPublish_ORM {
