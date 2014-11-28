@@ -3205,7 +3205,7 @@ msgstr "Versi&oacute;n     Fecha                      Usuario"
 
 #: /actions/preview/template/Smarty/index.tpl
 msgid "Document preview"
-msgstr "Previo del documento"
+msgstr "Previsualización del documento"
 
 msgid "New window"
 msgstr "Ventana nueva"
@@ -10082,3 +10082,6 @@ msgstr "Este modulo es ahora parte del núcleo de Ximdex CMS. Por no que no pued
 
 msgid "It's one of the suggested modules during the installation process and it's based on the Picasso Demo Project to make the tour, so it will install it by default"
 msgstr "Es uno de los modulos sugeridos duerante el proceso de instalación y está basado en el Proyecto Demo Picasso para hacer el tour, por lo que lo instalará por defecto"
+
+msgid "View in a new window"
+msgstr "Ver en una nueva ventana"

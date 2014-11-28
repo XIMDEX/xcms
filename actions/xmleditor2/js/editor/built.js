@@ -3949,7 +3949,7 @@ function Timer() {
 // polluting but I guess it's impossible to avoid...
 
 // OBVIOUSLY THIS VARIABLE SHOULD NEVER BE OVERWRITTEN!!!
-timer_instance = new \Ximdex\Utils\Timer();
+timer_instance = new Timer();
 
 // helper function on the Array object to test for containment
 Array.prototype.contains = function(element, objectequality) {
