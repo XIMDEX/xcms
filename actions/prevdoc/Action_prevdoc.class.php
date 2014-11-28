@@ -158,7 +158,7 @@ class Action_prevdoc extends ActionAbstract
 			return;
 		}
 
-		$queryManager = new QueryManager();
+		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 		$prevUrl = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'prevdoc', 'hash' => $hash));
 
 //    	$this->addCss('/actions/prevdoc/resources/css/prevdoc.css');

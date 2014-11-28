@@ -204,7 +204,7 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 			if ($this->mode == 'dinamic') {
 				return "javascript:parent.loadDivsPreview(" . $idNode . ")";
 			} else {
-				$query = App::get('QueryManager');
+				$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 	    		return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
 			}
 		} else {
@@ -216,4 +216,3 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 		return $this->getLinkPath($matches);
 	}
 }
-?>

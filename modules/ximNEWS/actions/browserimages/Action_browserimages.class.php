@@ -28,7 +28,7 @@
 
  
 class Action_browserimages extends ActionAbstract {
-   // Método principal: presenta el formulario inicial
+   // Mï¿½todo principal: presenta el formulario inicial
     function index () {
 
 	//Forma antigua de hacerlo. Hay que migrarlo a la nueva plantilla
@@ -44,7 +44,7 @@ class Action_browserimages extends ActionAbstract {
 
         $this->addJs('/actions/browserimages/resources/js/browser_images.js', 'ximNEWS');
         $this->addCss('/actions/browserimages/resources/css/index.css', 'ximNEWS');
-        $query = App::get('QueryManager');
+        $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 	$action = $query->getPage() . $query->buildWith(array('method' => 'mi_metodo'));
         $values = array(
                         'id_node' => $idNode,
@@ -58,4 +58,3 @@ class Action_browserimages extends ActionAbstract {
 	$this->_render($values, '', 'default-3.0.tpl');
     }
 }
-?>

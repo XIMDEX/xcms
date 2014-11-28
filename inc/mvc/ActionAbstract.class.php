@@ -242,7 +242,7 @@ class ActionAbstract extends IController {
 		$arrValores['_ACTION_NAME'] = $this->actionName;
 		$arrValores['_ACTION_DESCRIPTION'] = $this->actionDescription;
 
-		$query = App::get('QueryManager');
+		$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 		$arrValores['_MESSAGES_PATH'] = $query->getPage() . $query->buildWith();
 
 
@@ -379,7 +379,7 @@ class ActionAbstract extends IController {
 	function reloadNode($idnode) {
 
 		// TODO search and destroy the %20 generated in the last char of the query string
-		$queryManager = new QueryManager(false);
+		$queryManager = new \Ximdex\Utils\QueryManager(false);
 		$file = sprintf('%s%s',
 			'/xmd/loadaction.php',
 			$queryManager->buildWith(array(
