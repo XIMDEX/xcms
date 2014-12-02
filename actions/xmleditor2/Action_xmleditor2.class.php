@@ -380,7 +380,7 @@ public function checkEditionStatus() {
         $edition = true;
         $userNames = array();
         foreach($results as $result) {
-            if(!$userNames[$result["IdUser"]]) {
+            if(!isset($userNames[$result["IdUser"]])) {
                 $user = new User($result["IdUser"]);
                 $userNames[$result["IdUser"]] = $user->GetRealName();
             }

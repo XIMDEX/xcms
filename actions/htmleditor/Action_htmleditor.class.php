@@ -61,9 +61,9 @@ class Action_htmleditor extends ActionAbstract {
 			return;
 		}
 
-		if ($node->SetContent($content, true));
+		$node->SetContent($content, true);
 
-		$values = array(array('message'=> _('Document has been successfully updated'), 'type' => 1));
+		$values = array(array('message'=> _('Document has been successfully updated'), 'type' => 2));
         $this->sendJSON(array('messages' => $values));
 	}
 }

@@ -83,7 +83,7 @@
 			{foreach from=$all_languages item=language_info}
 				<div class="languages-section">
 <input type="checkbox"
-									name="languages[]" id="lang_{$language_info.Name}" value="{$language.idLanguage}" class= "hidden-focus" />
+									name="languages[]" id="lang_{$language_info.Name}" value="{$language_info.IdLanguage}" class= "hidden-focus" />
 					<label for="lang_{$language_info.Name}" class="icon checkbox-label">{$language_info.Name}</label>
 					<input type='text' name="language[{$language_info.IdLanguage}]" value="{$language_info.alias}" class="alternative-name" placeholder="Nombre alternativo para migas de pan y rutas">
 				</div>

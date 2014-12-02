@@ -165,7 +165,11 @@ class MetadataManager{
                     $version_value = $version_node_child["Version"].".".$version_node_child["SubVersion"];
                 }
                 else {
-                    $version_value = $info["version"].".".$info["subversion"];
+                    if(isset($info["version"])&&isset($info["subversion"])){
+                        $version_value = $info["version"].".".$info["subversion"];
+                    }else{
+                        $version_value = ".";
+                    }
                 }
                 $version = $domDoc->getElementsByTagName('version')->item(0);
                 $version->nodeValue = $version_value;
