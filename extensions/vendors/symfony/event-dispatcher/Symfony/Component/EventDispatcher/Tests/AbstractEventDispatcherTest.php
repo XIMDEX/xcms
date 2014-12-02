@@ -12,10 +12,9 @@
 namespace Symfony\Component\EventDispatcher\Tests;
 
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class EventDispatcherTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractEventDispatcherTest extends \PHPUnit_Framework_TestCase
 {
     /* Some pseudo events */
     const preFoo = 'pre.foo';
@@ -32,7 +31,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->dispatcher = new EventDispatcher();
+        $this->dispatcher = $this->createEventDispatcher();
         $this->listener = new TestEventListener();
     }
 
@@ -41,6 +40,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher = null;
         $this->listener = null;
     }
+
+    abstract protected function createEventDispatcher();
 
     public function testInitialState()
     {
@@ -99,7 +100,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher->addListener('post.foo', $listener6, 10);
 
         $expected = array(
-            'pre.foo'  => array($listener3, $listener2, $listener1),
+            'pre.foo' => array($listener3, $listener2, $listener1),
             'post.foo' => array($listener6, $listener5, $listener4),
         );
 
@@ -269,7 +270,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testWorkaroundForPhpBug62976()
     {
-        $dispatcher = new EventDispatcher();
+        $dispatcher = $this->createEventDispatcher();
         $dispatcher->addListener('bug.62976', new CallableClass());
         $dispatcher->removeListener('bug.62976', function () {});
         $this->assertTrue($dispatcher->hasListeners('bug.62976'));
