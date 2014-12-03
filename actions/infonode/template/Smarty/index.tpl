@@ -24,65 +24,84 @@
  *}
 
 <div class="action_header">
-	<h2>{t}Information about{/t}: <strong>{$info.name}</strong></h2>
+    <h2>{t}Information about{/t}: <strong>{$info.name}</strong></h2>
 </div>
 
 <div class="action_content">
-	<ul class="info-node">
-		<div class="col1-2 main-color general-info">
-			<h3>{t} General info {/t}</h3>
-			<li class="box-col2-1">
-				<div class="box-content"><strong>{t}NodeId{/t}</strong> {$info.nodeid}</div>
-			</li>
-			<li class="box-col2-1">
-				<div class="box-content"><strong>{t}Parent node{/t}</strong> {$info.parent}</div>
-			</li>
-			<li class="box-col4-1">
-				<div class="box-content"><strong>{t}NodeType{/t}</strong> {$info.typename}<span class="nodetype"> ({$info.type}) </span><span class="path">{$info.path|replace:"/Ximdex/Projects":""}</span></div>
-			</li>
-		</div>
+    <input class="idNode" type="hidden" value="{$id_node}"/>
+    <input class="depUrl" type="hidden" value="{$jsonUrl}"/>
 
-		<div class="col1-2 grey-color properties-info">
-			<h3>{t} Properties info {/t}</h3>
-			<li class="box-col4-1">
-				<div class="box-content"><strong>{t}Languages{/t}</strong>
-	{if ($languages)}
-			{section name=i loop=$languages}
-						{$languages[i].Name} ( {$languages[i].Id} )
-				{if (!$smarty.section.i.last)},{/if}
-				{if (0 == $smarty.section.i.index_next%4  )}<br />{/if}
-			{/section}
-		
-	{else}
-		{t}Not found{/t}
-	{/if}			</div>
-			</li>
-			<li class="box-col4-1">
-				<div class="box-content"><strong>{t}Channels{/t}</strong>
-		{section name=i loop=$channels}
-					{$channels[i].Name} ({$channels[i].IdChannel})
-			{if (!$smarty.section.i.last)},{/if}
-			{if (0 == $smarty.section.i.index_next%4  )}<br />{/if}
-		{/section}	</div>
-			</li>
-		</div>
+    <ul class="info-node">
+        <div class="col1-2 main-color general-info">
+            <h3>{t} General info {/t}</h3>
+            <li class="box-col2-1">
+                <div class="box-content"><strong>{t}NodeId{/t}</strong> {$info.nodeid}</div>
+            </li>
+            <li class="box-col2-1">
+                <div class="box-content"><strong>{t}Parent node{/t}</strong> {$info.parent}</div>
+            </li>
+            <li class="box-col4-1">
+                <div class="box-content"><strong>{t}NodeType{/t}</strong> {$info.typename}<span
+                            class="nodetype"> ({$info.type}) </span><span
+                            class="path">{$info.path|replace:"/Ximdex/Projects":""}</span></div>
+            </li>
+        </div>
 
-	{if isset($info.date)}
-		<div class="col1-1 grey-color workflow-info">
-			<h3>{t} Workflow info {/t}</h3>
-		{if ($info.date)}
-			<li class="box-col2-1">
-				<div class="box-content"><strong>{t}State{/t}</strong><span class="state">{if ($info.published)}{t}Published{/t}{else}{t}Not published{/t}{/if}</span></strong></div>
-			</li>
-			<li class="box-col2-1">
-				<div class="box-content"><strong>{t}Last version{/t}</strong> {$info.version}.{$info.subversion}</div>
-			</li>
-			<li class="box-col6-1">
-				<div class="box-content"><strong>{t}Last modified{/t}</strong> <span class="date">{$info.date|date_format:"%d/%m/%y %H:%S"}</span><span class="user">{$info.lastusername} ({$info.lastuser})</span></div>
-			</li>
-		{/if}
-		</div>	
-	{/if}
-		
-	</ul>
+        <div class="col1-2 grey-color properties-info">
+            <h3>{t} Properties info {/t}</h3>
+            <li class="box-col4-1">
+                <div class="box-content"><strong>{t}Languages{/t}</strong>
+                    {if ($languages)}
+                        {section name=i loop=$languages}
+                            {$languages[i].Name} ( {$languages[i].Id} )
+                            {if (!$smarty.section.i.last)},{/if}
+                            {if (0 == $smarty.section.i.index_next%4  )}<br/>{/if}
+                        {/section}
+
+                    {else}
+                        {t}Not found{/t}
+                    {/if}            </div>
+            </li>
+            <li class="box-col4-1">
+                <div class="box-content"><strong>{t}Channels{/t}</strong>
+                    {section name=i loop=$channels}
+                        {$channels[i].Name} ({$channels[i].IdChannel})
+                        {if (!$smarty.section.i.last)},{/if}
+                        {if (0 == $smarty.section.i.index_next%4  )}<br/>{/if}
+                    {/section}    </div>
+            </li>
+        </div>
+
+        {if isset($info.date)}
+            <div class="col1-1 grey-color workflow-info">
+                <h3>{t} Workflow info {/t}</h3>
+                {if ($info.date)}
+                    <li class="box-col2-1">
+                        <div class="box-content"><strong>{t}State{/t}</strong><span
+                                    class="state">{if ($info.published)}{t}Published{/t}{else}{t}Not published{/t}{/if}</span></strong>
+                        </div>
+                    </li>
+                    <li class="box-col2-1">
+                        <div class="box-content"><strong>{t}Last version{/t}</strong> {$info.version}.{$info.subversion}
+                        </div>
+                    </li>
+                    <li class="box-col6-1">
+                        <div class="box-content"><strong>{t}Last modified{/t}</strong> <span
+                                    class="date">{$info.date|date_format:"%d/%m/%y %H:%S"}</span><span
+                                    class="user">{$info.lastusername} ({$info.lastuser})</span></div>
+                    </li>
+                {/if}
+            </div>
+        {/if}
+        <br />
+        <div class="col1-1 grey-color workflow-info">
+            <h3> {t}Dependencies{/t} </h3>
+
+            <div class="graph-container">
+                <div id="graph{$id_node}" class="graph"></div>
+            </div>
+
+
+        </div>
+    </ul>
 </div>
