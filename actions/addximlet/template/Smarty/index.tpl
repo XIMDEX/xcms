@@ -24,17 +24,18 @@
  *}
 
 <div class="action_header">
-{t}Associate a ximlet to the section{/t}
+    <h2>{t}Associate a ximlet to the section{/t}</h2>
 </div>
+<div class="action_content">
 {if count($linked_ximlets) > 0 }
 <form method="post" id="delete_rel" class="delete_rel" action="{$action_delete}">
+    <div class="warning hidden message-warning message">
+        <p class="ui-icon-notice">{t}The associated ximlets will appear in every single XML document of this section{/t}.</p>
+    </div>
 
-<div class="action_content">
-	<p class="message">
-		{t}The associated ximlets will appear in every single XML document of this section{/t}.
-	</p>
+
 <fieldset>
-	<legend><span>{t}Ximlets already associated{/t}</span></legend>
+	<h3>{t}Ximlets already associated{/t}</h3>
 	
 		<input type="hidden" name="id_node" value="{$id_node}" />
 		<div class="copy_options">
@@ -53,7 +54,7 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Disassociate" class='validate button-delete' }{*message="Are you sure you want to disassociate it?"*}
+	{button label="Disassociate" class='validate btn main_action' }{*message="Are you sure you want to disassociate it?"*}
 </fieldset>
 
 </form>
@@ -63,14 +64,14 @@
 <form id="create_rel" class="create_rel" action="{$action_create}" method="post">
 
 <fieldset>
-	<legend><span>{t}Available Ximlets{/t}</span> </legend>
+	<h3>{t}Available Ximlets{/t}</h3>
 	<div class="copy_options">
 		<input type="hidden" id="id_node" name="id_node" value="{$id_node}" />
 		{foreach from=$linkable_ximlets item=ximlet}
     	<div>
 	
             <input type="checkbox" name="idximlet[]" id="{$id_node}_idximletavailable_{$ximlet.idximlet}" value="{$ximlet.idximlet}" />
-    		<label class="icon ximlet" for="{$id_node}_idximletavailable_{$ximlet.idximlet}">{$ximlet.path}</label>    
+    		<label class="icon folder" for="{$id_node}_idximletavailable_{$ximlet.idximlet}">{$ximlet.path}</label>
 			</div>
         {/foreach}
 
@@ -82,10 +83,10 @@
 </fieldset>
 
 <fieldset class="buttons-form">
-	{button label="Associate" class='validate button-assoc' }{*message="Would you like to associate this section with the ximlet?"*}
+	{button label="Associate" class='validate btn main_action' }{*message="Would you like to associate this section with the ximlet?"*}
 </fieldset>
-</div>
 </form>
 	{else}
 		<p>{t}There aren't any ximlets to associate{/t}.</p>
 	{/if}
+</div>

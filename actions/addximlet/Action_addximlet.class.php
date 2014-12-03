@@ -50,6 +50,8 @@ class Action_addximlet extends ActionAbstract {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
 
+        $this->addCss('/actions/addximlet/resources/css/style.css');
+
         $depsMngr = new DepsManager();
         $ximlets = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $idNode);
 
