@@ -72,7 +72,7 @@ class Action_nodetype extends AbstractAPIAction implements SecuredAction {
      */
     private function getNodeTypeInfo($nodeType = null) {
         $where = $nodeType == null || $nodeType == "" ? "" : " WHERE n.IdNodeType = ".$nodeType;
-        $sql = "SELECT n.IdNodeType, n.Name, n.Description, r.mimeString from NodeTypes n join RelNodeTypeMimeType r on(n.IdNodeType=r.IdNodeType)".$where;
+        $sql = "SELECT n.IdNodeType, n.Name, n.Description, r.extension from NodeTypes n join RelNodeTypeMimeType r on(n.IdNodeType=r.IdNodeType)".$where;
         $dbObj = new DB();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
@@ -85,7 +85,7 @@ class Action_nodetype extends AbstractAPIAction implements SecuredAction {
             $nodeTypes[] = array('idnodetype' => $dbObj->getValue("IdNodeType"),
                 'name' => $dbObj->getValue("Name"),
                 'description' => $dbObj->getValue("Description"),
-                'mimetype' => $dbObj->getValue("mimeString")
+                'extension' => $dbObj->getValue("extension")
             );
             $dbObj->Next();
         }
