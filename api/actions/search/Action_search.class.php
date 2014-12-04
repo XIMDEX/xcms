@@ -86,15 +86,14 @@ class Action_search extends AbstractAPIAction implements SecuredAction {
      */
     private function getNodeInfo($nodename) {
         $node = new Node($nodename);
-	$nodeInfo = $node->GetByName($nodename);
-	foreach($nodeInfo as $info){
-		if(strcmp($info["Icon"],'action.png')!== 0){
-			$res[]=$info;
-		}
+        $nodeInfo = $node->GetByName($nodename);
+        foreach($nodeInfo as $info){
+            if(strcmp($info["Icon"],'action.png')!== 0){
+                $res[]=$info;
+            }
 
-	}
-error_log(print_r($res,true));
-	return $res;
+        }
+        return $res;
     }
 
 }

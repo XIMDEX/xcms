@@ -132,7 +132,7 @@ class BaseIOInferer {
 	 */
 	function _infereFileType($parent_type, $path) {
 
-		$query = sprintf("SELECT nt.Name, rntmt.mimeString, rntmt.extension, rntmt.filter"
+		$query = sprintf("SELECT nt.Name, rntmt.extension, rntmt.filter"
 					. " FROM NodeAllowedContents nac"
 					. " INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType"
 					. " INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType"

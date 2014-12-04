@@ -27,7 +27,7 @@
 
 namespace Ximdex\Services ;
 
-
+use User ;
 /**
  * <p>Service responsible of deal with nodes</p>
  *
@@ -202,7 +202,7 @@ class Node
     public function isEnabledMetadata()
     {
 
-        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
+        $nodeTypeService = new \NodeTypeService($this->node->get("IdNodeType"));
         return $nodeTypeService->isEnabledMetadata();
     }
 
@@ -213,7 +213,7 @@ class Node
     public function isMetadataForced()
     {
 
-        $nodeTypeService = new NodeTypeService($this->node->get("IdNodeType"));
+        $nodeTypeService = new \NodeTypeService($this->node->get("IdNodeType"));
         return $nodeTypeService->isMetadataForced();
     }
 
