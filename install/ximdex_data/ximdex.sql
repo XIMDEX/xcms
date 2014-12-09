@@ -471,7 +471,7 @@ INSERT INTO `Config` VALUES (20,'PreviewInServer','0');
 INSERT INTO `Config` VALUES (21,'PurgeVersionsOnNewVersion','0');
 INSERT INTO `Config` VALUES (22,'MaxVersionsAllowed','3');
 INSERT INTO `Config` VALUES (23,'ximid','-');
-INSERT INTO `Config` VALUES (24,'VersionName','Ximdex 3.5');
+INSERT INTO `Config` VALUES (24,'VersionName','Ximdex 3.6');
 INSERT INTO `Config` VALUES (25,'UTFLevel','0');
 INSERT INTO `Config` VALUES (26,'EmptyHrefCode','/404.html');
 INSERT INTO `Config` VALUES (27, 'defaultRNG', NULL);
