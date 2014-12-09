@@ -561,6 +561,12 @@
 	color: #fff;
 	line-height: 1.5;
 }
+.xim-search-panel .xim-paginator-item{
+  display: inline;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
 
 .saved-searches-items, .last-searches-items{
 	padding-bottom: 1.5em;

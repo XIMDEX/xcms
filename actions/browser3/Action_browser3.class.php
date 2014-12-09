@@ -365,7 +365,8 @@ class Action_browser3 extends ActionAbstract
             $query = $handler->getQueryOptions($query);
 
             $ret['query'] = $query;
-            $ret = $this->resutlsHierarchy($view, $query['parentid'], $ret, $handler);
+            $ret = $this->resutlsHierarchy($view,
+                isset($query['parentid']) ? $query['parentid'] : null, $ret, $handler);
         } else {
 
 

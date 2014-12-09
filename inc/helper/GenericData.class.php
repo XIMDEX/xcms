@@ -183,7 +183,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
                         $this->{$key} = $dbObj->GetValue($key);
                     } else {
                         $backtrace = debug_backtrace();
-                        error_log(sprintf('[CONSTRUCTOR]Inconsistencia entre el modelo y la base de datos [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s',
+                        XMD_Log::warning(sprintf('[CONSTRUCTOR]Inconsistencia entre el modelo y la base de datos [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s',
                             $_SERVER['SCRIPT_FILENAME'],
                             $backtrace[0]['file'],
                             $backtrace[0]['line'],
@@ -453,7 +453,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
         }
         if (!array_key_exists($attribute, $this->_metaData)) {
             $backtrace = debug_backtrace();
-            error_log(sprintf('[SET]Intentando setear una propiedad que no existe'
+            XMD_Log::error(sprintf('[SET]Intentando setear una propiedad que no existe'
                 . ' [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s key: %s value: %s',
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
@@ -478,7 +478,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
         if (empty($attribute)) return false;
         if (!array_key_exists($attribute, $this->_metaData)) {
             $backtrace = debug_backtrace();
-            error_log(sprintf('[GET]Intentando hacer un get de una propiedad que no existe'
+            XMD_Log::error(sprintf('[GET]Intentando hacer un get de una propiedad que no existe'
                 . ' [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s key: %s',
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
@@ -871,6 +871,6 @@ class GenericData extends \Ximdex\Utils\Overloadable
      */
     function _logQuery($query)
     {
-        error_log($query);
+        XMD_Log::info($query);
     }
 }

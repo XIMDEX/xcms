@@ -176,7 +176,9 @@ class ParsingRng {
 				$name = $domNode->attributes->getNamedItem('name')->nodeValue;
 				$nodeList = $this->xpathObj->query('//*[local-name(.)="define" and @name="' . $name . '"]');
 				// FirstChild is a tag 'element' (always?)
-				if($nodeList->length > 0 && !isset($this->nodesProcessed[$nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue]))
+				if($nodeList->length > 0
+                    && isset($nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue)
+                    && !isset($this->nodesProcessed[$nodeList->item(0)->firstChild->attributes->getNamedItem('name')->nodeValue]))
 					$this->processElement($nodeList->item(0)->firstChild);
 
 				break;

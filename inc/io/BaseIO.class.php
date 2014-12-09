@@ -294,7 +294,7 @@ class BaseIO {
 
 				$link = new Node();
 				$idNode = $link->CreateNode($data['NAME'], $data['PARENTID'], '5049', null,
-						$data['URL'], $data['DESCRIPTION']);
+						$data['URL'], isset($data['DESCRIPTION']) ? $data['DESCRIPTION'] : null);
 
 				$this->_dumpMessages($link->messages);
 

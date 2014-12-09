@@ -335,13 +335,15 @@ function start_tour(command) {
 	"name" 		: "div.xim-tagsinput-container-related",
 	"position"	: "B",
 	"callback"	: function(){		
-				var l=$("ul.xim-tagsinput-list-related li").length;
-                setTimeout(function(){
-
-                	$("ul.xim-tagsinput-list-related li")[1].click();
-		},500);		
-                $("ul.xim-tagsinput-list-related li")[l-4].click();
-                
+        var l=$("ul.xim-tagsinput-list-related li").length;
+        setTimeout(function(){
+            if(l>=1) {
+                $("ul.xim-tagsinput-list-related li")[1].click();
+            }
+        },500);
+        if(l>=4) {
+            $("ul.xim-tagsinput-list-related li")[l - 4].click();
+        }
     }
     });            
 

@@ -60,8 +60,8 @@ class WelcomeInstallStep extends GenericInstallStep {
 				$error = "1";
 			}
 			if 	($check["state"] != "success"){
-				$aux = array();
-                if(count($check["messages"])>0){
+                if(is_array($check["messages"]) && count($check["messages"])>0){
+                    $aux = array();
 				    foreach ($check["messages"] as $i => $message) {
 					    $aux["message"] = $message;
 					    $aux["help"] = $check["help"][$i];

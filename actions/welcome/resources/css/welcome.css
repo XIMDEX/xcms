@@ -328,6 +328,7 @@
     .document_item .document-path::before {
       content: attr(data-tooltip);
       margin-left: -1em;
+      top: 4em;
       -webkit-transition: none;
       -moz-transition: none;
       -ms-transition: none;

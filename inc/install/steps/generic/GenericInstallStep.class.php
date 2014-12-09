@@ -47,6 +47,7 @@ class GenericInstallStep {
 	public function index(){		
 		$this->installManager->prevStep();
 		$this->currentStep = 0;
+        $this->addJs("WelcomeController.js");
 		$this->render();		
 	}
 

@@ -341,6 +341,7 @@
 					content: attr(data-tooltip);
 					@extend %tooltip;
 					margin-left: -1em;
+                    top: 4em;
 
 					-webkit-transition: none;
 					-moz-transition: none;

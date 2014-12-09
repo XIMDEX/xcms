@@ -77,10 +77,10 @@
         </element>
     </define>
     <define name="def_col">
-        <optional>
-            <attribute name="uid" />
-        </optional>
         <element name="col">
+            <optional>
+                <attribute name="uid" />
+            </optional>
             <ref name="def_content" />
         </element>
     </define>
@@ -270,6 +270,9 @@
             </optional>
             <optional>
                 <attribute name="uid" />
+            </optional>
+            <optional>
+                <attribute name="class" />
             </optional>
             <ref name="def_content"/>
         </element>
