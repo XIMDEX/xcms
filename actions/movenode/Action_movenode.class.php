@@ -35,9 +35,6 @@ class Action_movenode extends Action_copy {
    // Main method: shows initial form
     function index () {
       	$idNode		= (int) $this->request->getParam("nodeid");
-      	$actionID	= (int) $this->request->getParam("actionid");
-		$params = $this->request->getParam("params");
-		
 
 		$node = new Node($idNode);
 		$idNodeType = $node->get('IdNodeType');
@@ -45,8 +42,6 @@ class Action_movenode extends Action_copy {
 		$nac = new NodeAllowedContent();
 		$allowedNodeTypes = $nac->find('IdNodeType', 'NodeType = %s', array($idNodeType), MONO);
 
-		$parent = new Node($node->GetParent());
-		$depList=array();
 		$sync = new SynchroFacade();
 		$isPublished = $sync->isNodePublished($idNode);
 		$childList = $node->GetChildren();

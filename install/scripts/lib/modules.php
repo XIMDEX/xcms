@@ -118,7 +118,7 @@ function module_install($argv){
 				case InstallModulesManager::SUCCESS_INSTALL:
 					$message = "\nSucesfully installed.\n";
 					break;
-				case InstallModulesManager::SUCCESS_INSTALL:
+				case InstallModulesManager::ERROR_INSTALL:
 					$message = "\nReported a problem while installation.\n";
 					break;
 			}

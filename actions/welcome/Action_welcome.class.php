@@ -46,9 +46,6 @@ class Action_welcome extends ActionAbstract
             $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
 
-        $user = new User(\Ximdex\Utils\Session::get("userID"));
-
-
         //Getting idaction to check Create new project permissions for user
         $user = new User(\Ximdex\Utils\Session::get("userID"));
         $idNodeRoot = 10000;

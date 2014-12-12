@@ -39,7 +39,7 @@ class Action_moduleslist extends ActionAbstract {
     protected function readModules() {
 
         $modules = array();
-        $userId = \Ximdex\Utils\Session::get('userID');
+        //$userId = \Ximdex\Utils\Session::get('userID');
 
         //Now, every users
         /*if ($userId != '301') {

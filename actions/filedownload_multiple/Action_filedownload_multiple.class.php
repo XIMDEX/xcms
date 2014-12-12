@@ -38,8 +38,7 @@ class Action_filedownload_multiple extends ActionAbstract {
     			$this->render(array($this->messages), NULL, 'messages.tpl');
     			return;
     		}
-		$children = array();
-		
+
 		if(!empty($nodes)){
 			foreach ($nodes as $nodeid) {
 				$node = new Node($nodeid);

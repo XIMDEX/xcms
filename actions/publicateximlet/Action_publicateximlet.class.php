@@ -35,7 +35,6 @@ class Action_publicateximlet extends ActionAbstract {
 	function index() {
 		$docsToPublish=array();
       		$idNode	= (int) $this->request->getParam("nodeid");
-	      	$actionID = (int) $this->request->getParam("actionid");
 		$params = $this->request->getParam("params");
 
 		$node = new Node($idNode);

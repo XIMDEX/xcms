@@ -41,9 +41,6 @@ class Action_modifystatesrole extends ActionAbstract {
 		$role = new Role($idNode);
 		$idRoleStates = $role->GetAllStates();
 
-		$asociatedStates = Array();
-		$notAsociatedStates = Array();
-
 		$workflow = new WorkFlow(NULL, NULL, \App::getValue( 'IdDefaultWorkflow'));
 		$idAllStates = $workflow->GetAllStates();
 		foreach ($idAllStates as $idStatus) {

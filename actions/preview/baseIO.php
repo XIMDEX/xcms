@@ -32,8 +32,6 @@
 function baseIO_listarVersiones($nodeID) {
 
 	//Returns a list with all versions of a node
-
-	$node = new Node($nodeID);
 	$data = new DataFactory($nodeID);
 	$versions = $data->GetVersionList();
 	

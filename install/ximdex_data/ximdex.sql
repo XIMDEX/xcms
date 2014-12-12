@@ -958,30 +958,6 @@ UNLOCK TABLES;
 /*!40000 ALTER TABLE `NodeNameTranslations` ENABLE KEYS */;
 
 --
--- Table structure for table `NodeRelations`
---
-
-DROP TABLE IF EXISTS `NodeRelations`;
-CREATE TABLE `NodeRelations` (
-  `IdRel` int(12) unsigned NOT NULL auto_increment,
-  `IdNodeMaster` int(12) unsigned NOT NULL default '0',
-  `IdNodeDependent` int(12) unsigned NOT NULL default '0',
-  `IdNodeRelation` int(12) unsigned NOT NULL default '0',
-  `version` tinyint(3) unsigned default '0',
-  PRIMARY KEY  (`IdRel`)
-) ENGINE=MYISAM;
-
---
--- Dumping data for table `NodeRelations`
---
-
-
-/*!40000 ALTER TABLE `NodeRelations` DISABLE KEYS */;
-LOCK TABLES `NodeRelations` WRITE;
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `NodeRelations` ENABLE KEYS */;
-
---
 -- Table structure for table `NodeTypes`
 --
 
@@ -1582,19 +1558,6 @@ INSERT INTO `RelGroupsNodes` VALUES (1,101,2,NULL);
 INSERT INTO `RelGroupsNodes` VALUES (2,101,10000,NULL);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelGroupsNodes` ENABLE KEYS */;
-
-
---
--- Table structure for table `RelPvdRole`
---
-
-DROP TABLE IF EXISTS RelPvdRole;
-CREATE TABLE RelPvdRole (
-  IdRel int(12) unsigned NOT NULL auto_increment,
-  IdXimLetNode int(12) unsigned NOT NULL default '0',
-  IdSectionNode int(12) unsigned NOT NULL default '0',
-  PRIMARY KEY  (IdRel)
-) ENGINE=MYISAM;
 
 --
 -- Table structure for table `RelRolesActions`
@@ -2630,27 +2593,6 @@ UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelServersChannels` ENABLE KEYS */;
 
 --
--- Table structure for table `RelServersNodes`
---
-
-DROP TABLE IF EXISTS `RelServersNodes`;
-CREATE TABLE `RelServersNodes` (
-  `IdServer` int(12) unsigned NOT NULL default '0',
-  `IdNode` int(12) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`IdServer`,`IdNode`)
-) ENGINE=MYISAM COMMENT='Table which associates servers with view templates';
-
---
--- Dumping data for table `RelServersNodes`
---
-
-
-/*!40000 ALTER TABLE `RelServersNodes` DISABLE KEYS */;
-LOCK TABLES `RelServersNodes` WRITE;
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `RelServersNodes` ENABLE KEYS */;
-
---
 -- Table structure for table `RelServersStates`
 --
 
@@ -2741,19 +2683,6 @@ LOCK TABLES `RelUsersGroups` WRITE;
 INSERT INTO `RelUsersGroups` VALUES (1,301,101,201);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelUsersGroups` ENABLE KEYS */;
-
---
--- Table structure for table `RelXimletNode`
---
-
-DROP TABLE IF EXISTS RelXimletNode;
-CREATE TABLE RelXimletNode (
-  IdRel int(12) unsigned NOT NULL auto_increment,
-  IdXimLetNode int(12) unsigned NOT NULL default '0',
-  IdSectionNode int(12) unsigned NOT NULL default '0',
-  PRIMARY KEY  (IdRel)
-) ENGINE=MYISAM;
-
 
 --
 -- Table structure for table `Roles`

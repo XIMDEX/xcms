@@ -348,17 +348,6 @@ class Action_workflow_forward extends ActionAbstract {
 	}
         
         /**
-	 * Obtains the publication gaps
-	 *
-	 * @param int $idNode
-	 * @return array With info about the available gaps
-	 */
-	private function getPublicationGaps($idNode) {
-		$gaps = SynchroFacade::getGaps($idNode);
-        return $this->formatInterval($gaps);
-	}
-        
-        /**
 	 * Format the date intevals array.
 	 *
 	 * @param int $idNode
@@ -723,34 +712,6 @@ class Action_workflow_forward extends ActionAbstract {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Show message error when there arent any groups
-	 *
-	 */
-	private function renderWithNotGroupStates($idNode, $groupState) {
-	
-		$this->messages->add(_('You have no privileges to modify the workflow state of this document.'), MSG_TYPE_WARNING);
-		$this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
-
-		if (count($groupState) > 0) {
-			$this->messages->add(_('The groups with privileges to perform this action are the following'), MSG_TYPE_WARNING);
-			foreach ($groupState as $idGroup => $idState) {
-				$group = new Node($idGroup);
-
-				$workflow = new WorkFlow($idNode, $idState);
-				$this->messages->add(sprintf(_("The group %s con move the document to the state %s"),
-				$group->get('Name'), $workflow->pipeStatus->get('Name')), MSG_TYPE_WARNING);
-			}
-		} 
-		else {
-			$this->messages->add(_("Currently there is no groups which can move forward the document to any state, and your role in the General group has no permissions to go forward to next state, consult your administrator"), MSG_TYPE_WARNING);
-		}
-		$values = array(
-			'messages' => $this->messages->messages
-		);
-		$this->render($values, 'show_results', 'default-3.0.tpl');
 	}
 }
 ?>

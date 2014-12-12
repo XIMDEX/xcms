@@ -858,7 +858,7 @@ class BaseIO {
 				}
 				if ($updateStructuredDocument && $result) {
 					$result = $structuredDocument->update();
-					$this->_dumpMessages(($structuredDocument->messages));
+					$this->_dumpMessages($structuredDocument->messages);
 				}
 				if ($result) {
 					foreach ($channels as $channel) {

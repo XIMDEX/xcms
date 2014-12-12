@@ -111,14 +111,6 @@ class FileSystemStore implements Store
 
 	return false;
     }
-    
-    /**
-     * <p>Generates a unique filename</p>
-     * @return string a unique filename
-     */
-    private function getUniqueFileName() {
-        return FsUtils::getUniqueFile(\App::getValue( "AppRoot") . \App::getValue( "FileRoot"));
-    }
 }
 
 ?>

@@ -100,31 +100,6 @@ class XimletNode extends AbstractStructuredDocument
 
 	}
 
-	/**
-	 * Removes the ximlet macro from the document's content
-	 * @param int documentId
-	 * @return true / false
-	 */
-
-	private function removeFromXml($documentId) {
-
-		if (is_null($documentId)) {
-			XMD_Log::error('Param documentId required');
-			return false;
-		}
-
-		$node = new Node($documentId);
-		$content = $node->getContent();
-
-		//if (preg_match("/@@@GMximdex\.ximlet\(".$this->nodeID."\)@@@/", $content)) {
-			$content = preg_replace("/@@@GMximdex\.ximlet\(([0-9]+)\)@@@/e", '', $content);
-			$node->setContent($content);
-
-			return true;
-		//}
-
-	}
-
 /**
 *	Get the documents that must be publicated when the ximlet is published
 *	@param array $params

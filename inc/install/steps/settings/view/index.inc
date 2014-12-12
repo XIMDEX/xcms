@@ -41,7 +41,7 @@
 	</div>
 	<div class="form_item">
 		<label for="language">Interface language</label>
-		<select name="language" id="language" ng-model="language" ng-options="lang.iso as lang.name for lang in languages">
+		<select name="language" id="language" ng-model="language" ng-options="lang.iso as lang.name for (id,lang) in languages">
 		</select>
 	</div>
 	<div class="form_item full-width form_item--information">

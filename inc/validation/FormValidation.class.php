@@ -35,7 +35,6 @@ class FormValidation {
     * @return boolean True if not exists this name under the current node.
     */
     public static function isUniqueName($params){
-        $result = "false";
         $idnode = $params["nodeid"];
         $inputName = $params["inputName"];
         $name=$params[$inputName];

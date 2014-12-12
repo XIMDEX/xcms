@@ -42,8 +42,6 @@ class Action_showassocnodes extends ActionAbstract {
 	public function index()
 	{
       	$ximletId = (int) $this->request->getParam("nodeid");
-		$actionID = (int) $this->request->getParam("actionid");
-		$action = $this->request->getParam("action");
 
 		$this->addJs('/actions/showassocnodes/resources/js/treeSelector.js');
 		$this->addCss('/actions/showassocnodes/resources/css/index.css');

@@ -50,8 +50,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
    		$idNode = (int) $this->request->getParam("nodeid");
      	$actionID = (int) $this->request->getParam("actionid");
 		$type = $this->request->getParam('type');
-		$userid = \Ximdex\Utils\Session::get('userID');
-		$dir_tmp = XIMDEX_ROOT_PATH.\App::getValue( 'TempRoot');
 
 		/** ********* Find out folder nodetype **** */
 		$baseIoInferer = new BaseIOInferer();
@@ -258,31 +256,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		
    	}
 
-    private function _checkExistence($file, $idNode) {
-
-    	$node = new Node($idNode);
-  		$idNode = $node->GetChildByName($file);
-  		if ($idNode > 0) {
-  			 return true;
-  		} else {
-			return false;
-    		}
-		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
-
-		$values = array (
-			"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
-			"lbl_anadir" => $lbl_anadir,
-			'messages' => $this->messages->messages,
-			'go_method' => 'showUploadResult',
-			'nodeid' => $idNode,
-			'actionid' => $this->request->getParam('actionid'),
-			'type' => $type,
-			'filter' => $filter,
-		);
-
-		$this->render($values, 'index', 'default-3.0.tpl');
-    }
-
 	private function _setRest($msg, $status=500) {
 		$retval = array();
 	   	$retval["msg"] = utf8_encode($msg);
@@ -404,14 +377,5 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		return $result;
 	}
-
-
-  	private function normalizeName($name) {   
-  	    $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-  	    $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-  	    $decodedName = utf8_decode($name);
-  	    $decodedName = strtr($decodedName, utf8_decode($source), $target);
-  	    return str_replace(' ', '_', utf8_encode($decodedName));
-  	}
 }
 ?>

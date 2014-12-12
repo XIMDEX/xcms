@@ -339,34 +339,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $content;
     }
 
-    private function transformHTML2XML($idnode, $htmldoc)
-    {
-
-        // Getting HTML with the changes & initial XML content
-        $node = new Node($idnode);
-        $xmlOrigenContent = $node->class->GetRenderizedContent();
-
-        // Loading XML & HTML content into respective DOM Documents
-        $docXmlOrigen = new DOMDocument();
-        $docXmlOrigen->loadXML($xmlOrigenContent);
-        $docHtml = new DOMDocument();
-        $docHtml->loadHTML(\Ximdex\Utils\String::stripslashes( $htmldoc));
-
-        // Transforming HTML into XML
-        $htmlTransformer = new HTML2XML();
-        $htmlTransformer->loadHTML($docHtml);
-        $htmlTransformer->loadXML($docXmlOrigen);
-        $htmlTransformer->setXimNode($idnode);
-
-        $xmldoc = null;
-        if ($htmlTransformer->transform()) {
-            $xmldoc = $htmlTransformer->getXmlContent();
-        }
-
-        return $xmldoc;
-    }
-
-
     public function validateSchema($idnode, $xmldoc)
     {
         $schema = $this->getSchemaFile($idnode);
