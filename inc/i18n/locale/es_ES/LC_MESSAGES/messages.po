@@ -741,18 +741,6 @@ msgstr "... o vista Lista..."
 msgid "Template"
 msgstr "Plantilla"
 
-#: /actions/charts/template/Smarty/dynamicCharts.tpl
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Ximdex Profiler"
-msgstr "Analizador ximdex"
-
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Refresh"
-msgstr "Actualizar"
-
-msgid "Show Grid"
-msgstr "Mostrar rejilla"
-
 #: /actions/composer/Action_composer.class.php
 msgid "A Node without NodeType was requested: idNode=%s, nodeType=%s"
 msgstr "Se ha instanciado un nodo sin NodeType: idNode=%s, nodeType=%s"
@@ -6998,12 +6986,6 @@ msgstr "Borrar plantilla RNG"
 
 msgid "Delete a RNG template"
 msgstr "Borrar una plantilla RNG"
-
-msgid "Charts"
-msgstr "Gr&aacute;ficas"
-
-msgid "Graphic representation"
-msgstr "Representaci&oacute;n de gr&aacute;ficas"
 
 msgid "Properties of RNG template"
 msgstr "Propiedades de la plantilla RNG"

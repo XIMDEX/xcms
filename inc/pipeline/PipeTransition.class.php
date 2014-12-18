@@ -34,7 +34,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeTransitions_ORM.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphManager.class.php');
 
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
 /**
@@ -178,8 +177,6 @@ class PipeTransition extends PipeTransitions_ORM {
 	function callback($idVersion, $pointer, $args, $function) {
 		$factory = new \Ximdex\Utils\Factory(CALLBACK_FOLDER, 'View_');
 		$callback = $this->get('Callback');
-		GraphManager::createSerie('PipelineGraph', $callback);
-		GraphManager::createSerieValue('PipelineGraph', $callback, $idVersion);
 		
 		$object = $factory->instantiate($callback);
 
@@ -190,7 +187,7 @@ class PipeTransition extends PipeTransitions_ORM {
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
 		} else {
 			$idTransition = $this->get('id');
-			XMD_Log::warning("No se ha encontrado el m�todo $function al llamar a una vista: IdVersion $idVersion transici�n $idTransition");
+			XMD_Log::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
 			$transformedPointer = $pointer;		
 		}
 		$timer->stop();
@@ -198,11 +195,11 @@ class PipeTransition extends PipeTransitions_ORM {
 		XMD_Log::info("PIPETRANSITION: View_$callback time: " . $timer->display());
 
 		if(isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE'] === true) {
-			XMD_Log::info('DISABLE_CACHE activo, aunque la transici�n es cacheable, no se almacenar� la cach�.');
+			XMD_Log::info("DISABLE_CACHE active, although the transition is cacheable, the cache won't be stored.");
 		} else {
 			$cache = new PipeCache();
 			if (!$cache->store($idVersion, $this->get('id'), $transformedPointer, $args)) {
-				XMD_Log::error('No se ha podido almacenar la cache para la transici�n ');
+				XMD_Log::error('Could not store the cache for transition.');
 			}
 		}
 		

@@ -627,18 +627,6 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
-#: /actions/charts/template/Smarty/dynamicCharts.tpl
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Ximdex Profiler"
-msgstr ""
-
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Refresh"
-msgstr ""
-
-msgid "Show Grid"
-msgstr ""
-
 #: /actions/composer/Action_composer.class.php
 msgid "A Node without NodeType was requested: idNode=%s, nodeType=%s"
 msgstr ""
@@ -6632,9 +6620,6 @@ msgid "Delete a RNG template"
 msgstr ""
 
 msgid "Charts"
-msgstr ""
-
-msgid "Graphic representation"
 msgstr ""
 
 msgid "Properties of RNG template"

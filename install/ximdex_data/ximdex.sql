@@ -333,7 +333,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7317, 5082, 'Modify properties', 'manageproperties', 'xix.png', 'Modify global properties', -10, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7318, 5078, 'Delete RNG schema', 'deletenode', 'delete_template_view.png', 'Delete a RNG schema', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7319, 5078, 'Edit RNG schema', 'edittext', 'edit_template_view.png', 'Edit a RNG schema', 2, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7320, 0, 'Charts', 'charts', 'xix.png', 'Graphic representation', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7321, 5078, 'Modify properties', 'renamenode', 'modify_template_view', 'Modify properties of a RNG schema', '20', NULL , '0', NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7229, 5048, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7231, 5050, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
@@ -3796,69 +3795,6 @@ CREATE TABLE RelStrdocStructure (
 ) ENGINE=MYISAM;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `Graphs`
---
-
-DROP TABLE IF EXISTS `Graphs`;
-CREATE TABLE IF NOT EXISTS `Graphs` (
-  `id` int(11) NOT NULL auto_increment,
-  `label` varchar(255) NOT NULL,
-  `width` int(11) default NULL,
-  `height` int(11) default NULL,
-  `description` varchar(255) default NULL,
-  `callback` varchar(255) default NULL,
-  `series` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `GraphSerieProperties`
---
-
-DROP TABLE IF EXISTS `GraphSerieProperties`;
-CREATE TABLE IF NOT EXISTS `GraphSerieProperties` (
-  `id` int(11) NOT NULL auto_increment,
-  `IdGraphSerie` int(11) NOT NULL,
-  `property` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `GraphSeries`
---
-
-DROP TABLE IF EXISTS `GraphSeries`;
-CREATE TABLE IF NOT EXISTS `GraphSeries` (
-  `id` int(11) NOT NULL auto_increment,
-  `IdGraph` int(11) NOT NULL,
-  `Label` varchar(255) NOT NULL,
-  `SerieRepresentation` int(11) default NULL,
-  `SerieType` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `GraphSerieValues`
---
-
-DROP TABLE IF EXISTS `GraphSerieValues`;
-CREATE TABLE IF NOT EXISTS `GraphSerieValues` (
-  `id` int(11) NOT NULL auto_increment,
-  `IdGraphSerie` int(11) NOT NULL,
-  `x` double default NULL,
-  `y` double default NULL,
-  `TimeStamp` timestamp NULL default CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
 
 --
 -- Table structure for table `PortalVersions`

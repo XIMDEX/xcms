@@ -626,18 +626,6 @@ msgstr "N&atilde;o foi encontrado nenhum modelo para modificar"
 msgid "Template"
 msgstr "Modelo"
 
-#: /actions/charts/template/Smarty/dynamicCharts.tpl
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Ximdex Profiler"
-msgstr "Ximdex Profiler"
-
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Refresh"
-msgstr "Atualizar"
-
-msgid "Show Grid"
-msgstr "Mostrar grelha"
-
 #: /actions/composer/Action_composer.class.php
 msgid "A Node without NodeType was requested: idNode=%s, nodeType=%s"
 msgstr "Um nodo sem NodeType foi solicitado: idNode=%s, nodeType=%s"
@@ -6630,12 +6618,6 @@ msgstr "Eliminar modelo RNG"
 
 msgid "Delete a RNG template"
 msgstr "Eliminar um modelo RNG"
-
-msgid "Charts"
-msgstr "Gr&aacute;ficos"
-
-msgid "Graphic representation"
-msgstr "Representa&ccedil;&atilde;o de gr&aacute;ficos"
 
 msgid "Properties of RNG template"
 msgstr "Propriedades do modelo RNG"

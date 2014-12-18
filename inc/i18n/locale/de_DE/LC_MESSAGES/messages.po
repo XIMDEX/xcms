@@ -627,18 +627,6 @@ msgstr "Keine zu &auml;ndernde Vorlage gefunden"
 msgid "Template"
 msgstr "Vorlage"
 
-#: /actions/charts/template/Smarty/dynamicCharts.tpl
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Ximdex Profiler"
-msgstr "Ximdex Profiler"
-
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Refresh"
-msgstr "Aktualisieren"
-
-msgid "Show Grid"
-msgstr "Gitternetzlinien anzeigen"
-
 #: /actions/composer/Action_composer.class.php
 msgid "A Node without NodeType was requested: idNode=%s, nodeType=%s"
 msgstr "Ein Knoten ohne Knotentyp wurde angefordert: idNode=%s, nodeType=%s"
@@ -6623,12 +6611,6 @@ msgstr "RNG-Vorlage l&ouml;schen"
 
 msgid "Delete a RNG template"
 msgstr "Eine RNG-Vorlage l&ouml;schen"
-
-msgid "Charts"
-msgstr "Grafiken"
-
-msgid "Graphic representation"
-msgstr "Repr&auml;sentation von Grafiken"
 
 msgid "Properties of RNG template"
 msgstr "Eigenschaften der RNG-Vorlage"

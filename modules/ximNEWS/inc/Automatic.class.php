@@ -33,8 +33,6 @@ ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsColectorUsers.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
-ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER');
-
 
 if (!defined('XIMDEX_ROOT_PATH')) {
         define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
@@ -223,7 +221,6 @@ class Automatic {
 			$numDocs = count($this->docsToPublish);
 			$actualDoc = 0;
 			Automatic_Log::info($colectorLogHead . "$numDocs docs to be published");
-			Profiler::start($colectorID."_".$bulletinID."_Serie");
 
 			foreach ($this->docsToPublish as $docID) {
 				
@@ -235,7 +232,7 @@ class Automatic {
 				$syncMngr->setFlag('colector', $colectorID);
 				$syncMngr->pushDocInPublishingPool($docID, time(), NULL);
 			}
-			Profiler::stop($colectorID."_".$bulletinID."_Serie");
+
 		} else {
 			SynchroFacade::pushDocInPublishingPool($bulletinID, time(), NULL);
 		}
