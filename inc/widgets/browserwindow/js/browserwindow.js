@@ -155,9 +155,9 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 		},
 
-        emptyActionsCache: function(){
+       /* emptyActionsCache: function(){
             this.cachedActions = new Object();
-        },
+        },*/
 
 		appendView: function(panelName, view) {
 			var panel = this.panels[panelName] || null;

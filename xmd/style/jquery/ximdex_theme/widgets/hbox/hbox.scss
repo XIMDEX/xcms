@@ -37,7 +37,8 @@ div.hbox {
 div.hbox-panel-container {
 	height: 100%;
 	float: left;
-	border: none;	
+	border: none;
+    padding-bottom: 7px;
 }
 div.hbox-panel-container.hbox-panel-hideable {
 	position: relative;
@@ -45,6 +46,7 @@ div.hbox-panel-container.hbox-panel-hideable {
 }
 div.hbox-panel {
 	height: 100%;
+    width: 100%;
 	float: left;
 	overflow: hidden;
 	position: relative;

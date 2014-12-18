@@ -1,0 +1,13 @@
+<div class="xim-actions-menu destroy-on-click noselect" ng-class="{'xim-actions-menu-list': expanded}"
+     style="position: absolute; top:#/top/#px; left:#/left/#px;" >
+    <div ng-if="expanded==true" ng-repeat="option in options" class="button-container-list icon #/option.command/#"
+         ng-click="select(option)">#/option[optionLabel]/#</div>
+
+    <div ng-if="expanded==false" ng-repeat="option in options" class="button-container">
+        <button class="window-toolbar-button view-action #/option.command/# icon-#/option.icon.split('.')[0]/#"
+                value="#/option.command/#">
+            <span>Icono</span>
+            <span class="tooltip">#/option[optionLabel]/#</span>
+        </button>
+    </div>
+</div>

@@ -476,3 +476,68 @@ strong{
 			background: #36373e;
 		}
 	}
+.angular-panel {
+	box-sizing: border-box;
+	padding: 7px 0;
+}
+.test-box {
+	background: white;
+	width: 100%;
+	height: 100%;
+}
+// .browser-window-content {
+// 	box-sizing: border-box;
+// 	position: relative;
+// 	width: calc(100% - 14px);
+// 	height: 100%;
+
+// }
+#angular-tree {
+    // background-color: #EEE;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 220px;
+    overflow: auto;
+    padding-left: 7px;
+}
+#angular-content {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 230px /* 200 + 6*/;
+    right: 0;
+    overflow: hidden;
+    color: #FFF;
+    padding-right: 7px;
+}
+
+#angular-tree-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 220px;
+    width: 7px;
+    cursor: e-resize;
+}
+.nav-tabs {
+	width: 100% !important;
+}
+.angular-tree {
+  padding-left: 17px;
+  padding-bottom: 15px;
+  padding-right: 10px;
+  ul {
+    margin-left: 15px;
+  }
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

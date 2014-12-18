@@ -55,7 +55,7 @@
 	</head>
 	<body ng-controller="XMainCtrl">
 		<div id="angular-event-relay"></div>
-		<div id="ximdex-splash">
+		<!--<div id="ximdex-splash">
 
 			<div class="loading"><p>{t}Loading...{/t}</p><span class="progress">&nbsp;</span></div>
 			<div class="ximdex_splash_content">
@@ -65,7 +65,7 @@
 					{include file="$splash_file"}
 				{/if}
 			</div>
-		</div>
+		</div>-->
 
 		<tabs include="yes" />
 		<searchpanel include="yes" />

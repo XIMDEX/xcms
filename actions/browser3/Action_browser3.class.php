@@ -84,6 +84,7 @@ class Action_browser3 extends ActionAbstract
         $this->addCss('/extensions/bootstrap/dist/css/bootstrap.min.css');
         $this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
         $this->addCss('/extensions/humane/flatty.css');
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css');
         $this->addActionCss('browser.css');
         if (ModulesManager::isEnabled('ximTOUR'))
             $this->addCss('/modules/ximTOUR/resources/css/tour.css');
@@ -137,6 +138,7 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/services/xCheck.js');
         $this->addJs('/inc/js/angular/services/xMenu.js');
         $this->addJs('/inc/js/angular/directives/ximButton.js');
+        $this->addJs('/inc/js/angular/directives/ximResizer.js');
         $this->addJs('/inc/js/angular/directives/ximSelect.js');
         $this->addJs('/inc/js/angular/directives/ximValidators.js');
         $this->addJs('/inc/js/angular/directives/xtagsSuggested.js');
@@ -148,12 +150,14 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/directives/ximGrid.js');
         $this->addJs('/inc/js/angular/directives/ximInverted.js');
         $this->addJs('/inc/js/angular/directives/ximFitText.js');
+        $this->addJs('/inc/js/angular/directives/ximMenu.js');
         $this->addJs('/inc/js/angular/filters/xFilters.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyGroupUsersCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
+        $this->addJs('/inc/js/angular/controllers/XTreeCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');
         $this->addActionJs('XMainCtrl.js');
         $this->addActionJs('controller.js');

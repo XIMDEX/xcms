@@ -25,13 +25,10 @@
 button.hbox-panel-tie {
   cursor: pointer;
   background: none;
-  border: none;
-}
-button.hbox-panel-tie:active, button.hbox-panel-tie:focus {
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
+  border: none; }
+  button.hbox-panel-tie:active, button.hbox-panel-tie:focus {
+    outline: none;
+    box-shadow: none; }
 
 /*******
 //	ICON GENERIC STYLES
@@ -46,56 +43,49 @@ button.hbox-panel-tie::before {
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  vertical-align: middle;
-}
+  vertical-align: middle; }
 
 /*******
 //	ICONS
 *******/
 button.hbox-panel-tie.hide::before {
-  content: "\e037";
-}
+  content: "\e037"; }
 
 button.hbox-panel-tie.tie::before {
-  content: "\e60f";
-}
+  content: "\e60f"; }
 
 div.hbox {
   height: 98.7%;
   overflow: hidden;
   clear: both;
-  margin: 3px 7px 3px 7px;
-}
+  margin: 3px 7px 3px 7px; }
 
 div.hbox-panel-container {
   height: 100%;
   float: left;
   border: none;
-}
+  padding-bottom: 7px; }
 
 div.hbox-panel-container.hbox-panel-hideable {
   position: relative;
-  overflow: visible !important;
-}
+  overflow: visible !important; }
 
 div.hbox-panel {
   height: 100%;
+  width: 100%;
   float: left;
   overflow: hidden;
-  position: relative;
-}
+  position: relative; }
 
 div.hbox-panel-sep {
   width: 10px;
   height: 100%;
   float: right;
   overflow: hidden;
-  background: url("../../../../../images/browser/hbox/hbox-sep.png") no-repeat center center;
-}
+  background: url("../../../../../images/browser/hbox/hbox-sep.png") no-repeat center center; }
 
 div.hbox-panel-sep:hover {
-  cursor: w-resize;
-}
+  cursor: w-resize; }
 
 button.hbox-panel-tie {
   position: absolute;
@@ -108,14 +98,13 @@ button.hbox-panel-tie {
   width: 1.1em;
   padding: 0;
   -webkit-transition: all 0.3s ease-in;
-  transition: all 0.3s ease-in;
-}
-button.hbox-panel-tie:hover {
-  background: #47b1a3;
-}
-button.hbox-panel-tie.hide::before {
-  line-height: 1.2;
-}
-button.hbox-panel-tie.tie::before {
-  line-height: 1.2;
-}
+  -moz-transition: all 0.3s ease-in;
+  -ms-transition: all 0.3s ease-in;
+  -o-transition: all 0.3s ease-in;
+  transition: all 0.3s ease-in; }
+  button.hbox-panel-tie:hover {
+    background: #47b1a3; }
+  button.hbox-panel-tie.hide::before {
+    line-height: 1.2; }
+  button.hbox-panel-tie.tie::before {
+    line-height: 1.2; }
