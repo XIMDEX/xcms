@@ -91,7 +91,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 		_init: function() {
 
 //	console.info('Browser: ', this);
-			X.ximModules.init();
+			//X.ximModules.init();
 
 			/** ************************* INIT SPLASH ************************** */
 			$("#ximdex-splash")
@@ -134,14 +134,14 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 				var key = '%s.tab'.printf(constructor);
 
 				var value = X.session.get(key);
-				var c = new Constructor({
+				/*var c = new Constructor({
 					name: constructor,
 					browser: this.element,
 					container: panel.content(),
 					activeTab: value || 0
 				});
 
-				this.panels[constructor] = c;
+				this.panels[constructor] = c;*/
 			}
 
 			

@@ -50,7 +50,7 @@ angular.module('ximdex.common.service')
 
         }
 
-        initMenu = function (options, callback){
+        initMenu = function (options, node, callback){
             /*var destroy = function(event, viewId){
                 if (id == viewId) {
                     scope.$destroy();
@@ -68,18 +68,18 @@ angular.module('ximdex.common.service')
             scope.options = options;
             scope.optionLabel = 'name';
             scope.optionClass = 'command';
-            /*scope.select = function(result){
+            scope.select = function(result){
                 destroyMenu();
                 if (callback)
-                    callback(result);
-            }*/
+                    callback(result, node);
+            }
             if (!scope.$$phase)
-                scope.$digest();
+                scope.$digest();º
         }
 
         return {
-            open: function(options, callback) {
-                initMenu(options, callback)
+            open: function(options, node, callback) {
+                initMenu(options, node, callback)
             },
             close: function() {
 

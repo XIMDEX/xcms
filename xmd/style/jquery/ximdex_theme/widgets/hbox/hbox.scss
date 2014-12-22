@@ -69,7 +69,7 @@ button.hbox-panel-tie{
 	position: absolute;
 	z-index: 2;
 	top: 2.1em;
-	right: .5em;
+	right: .3em;
 	color: white;
 	background:lighten(#006b6c, 5%);
 	font-size: 2em;
@@ -95,6 +95,15 @@ button.hbox-panel-tie{
 	}
 }
 
+input.filterTree{
+  position: absolute;
+  z-index: 2;
+  top: 2.1em;
+  left: 5em;
+  font-size: 2em;
+  width: 4.5em;
+  padding: 0;
+}
 
 div.hbox-panel-hidden button.hbox-panel-tie {
 	//display: none;

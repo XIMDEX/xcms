@@ -56,16 +56,13 @@ class Action_moduleslist extends ActionAbstract {
             $moduleName = $mod["Name"];
             $isEnabled = $this->isEnabled($moduleName);
             $modules[] = array(
-                // 'core_module' => $coreModule,
                 'id' => $mod["IdNode"],
                 'name' => $moduleName,
                 'enabled' => $isEnabled,
-                'class' => ($isEnabled ? 'browser-modules-view-enabled' : 'browser-modules-view-disabled')
             );
         }
 
-        $values = array('modules' => $modules);
-        $this->render($values, "modulelist", 'only_template.tpl');
+        $this->sendJSON($modules);
     }
 
     protected static function isEnabled($name)

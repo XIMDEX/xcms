@@ -541,3 +541,14 @@ strong{
   -ms-user-select: none;
   user-select: none;
 }
+
+.hideable{
+  -moz-transition: width .4s;
+  -webkit-transition: width .4s;
+  -o-transition: width .4s;
+  transition: width .4s;
+  -moz-transition: left .4s;
+  -webkit-transition: left .4s;
+  -o-transition: left .4s;
+  transition: left .4s;
+}

@@ -2117,11 +2117,11 @@ class    Node extends Nodes_ORM
      * @param $fromNode
      * @return unknown_type
      */
-    function TraverseToRoot($fromNode = NULL)
+    function TraverseToRoot($minIdNode=10000)
     {
         $dbObj = new DB();
-        $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d AND IdNode >=10000 ORDER BY Depth DESC",
-            $this->get('IdNode'));
+        $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d AND IdNode >=%d ORDER BY Depth DESC",
+            $this->get('IdNode'), $minIdNode);
         $dbObj->Query($sql);
 
         $list = array();
@@ -2129,24 +2129,6 @@ class    Node extends Nodes_ORM
             $list[] = $dbObj->GetValue('IdNode');
             $dbObj->Next();
         }
-
-        if ($fromNode) {
-            if (is_array($list) && !in_array($fromNode, $list)) {
-                $this->SetError(14);
-                return null;
-            } else {
-                $newList = array();
-                foreach ($list as $id) {
-                    if ($id == $fromNode)
-                        $found = 1;
-
-                    if (isset($found))
-                        $newList[] = $id;
-                }
-                $list = $newList;
-            }
-        }
-
         return $list;
     }
 

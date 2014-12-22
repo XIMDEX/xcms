@@ -25,8 +25,8 @@
 
 <div id="%=id%" class="browser-window %=class%">
     <div class="browser-window-content">
-        <div  class="hbox">
-            <div id="angular-tree" class="hbox-panel-container hbox-panel-container-0 hbox-panel-hideable">
+        <div class="hbox browser-hbox">
+            <div ng-controller="XTreeCtrl"  id="angular-tree" class="hbox-panel-container hbox-panel-container-0 hbox-panel-hideable noselect">
                 {literal}
                     <script id="template/tabs/tabset.html" type="text/ng-template">
                         <div class="hbox-panel">
@@ -59,9 +59,9 @@
                         </li>
                     </script>
                 <script type="text/ng-template"  id="tree_item_renderer.html">
-                    <div class="noselect" ng-dblclick="toggleNode(node)" ng-click="select(node)" ng-right-click="loadActions(node,$event)" ng-class="{'xim-treeview-container-selected': selectednode.nodeid == node.nodeid}">
+                    <div class="noselect" ng-dblclick="toggleNode(node)" ng-click="select(node,$event)" ng-right-click="loadActions(node,$event)" ng-class="{'xim-treeview-container-selected': (node.nodeid | nodeInArrayProp: selectedNodes:'nodeid')}">
                         <span class="ui-icon xim-actions-toggle-node" ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children}" ng-click="toggleNode(node)"></span>
-                        <span class="xim-treeview-icon icon-#/nodetypes[node.nodetypeid].icon.split('.')[0]/#"></span>
+                        <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
                         <span class="xim-treeview-branch">#/node.name/#</span>
                         <span ng-click="loadActions(node,$event)" class="xim-actions-dropdown xim-treeview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>
                     </div>
@@ -72,20 +72,49 @@
                 </script>
                 {/literal}
                 <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
-                    <tab heading="projects">
+                    <tab heading="projects" select="$parent.selectedTab=1;">
                         <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
-                            <div class="xim-treeview-btnreload ui-corner-all ui-state-default">{t}Reload node{/t}</div>
+                            <div ng-click="reloadNode()" class="xim-treeview-btnreload ui-corner-all ui-state-default">
+                                {t}Reload node{/t}
+                            </div>
                             <div class="xim-treeview-branch-container xim-treeview-expanded">
-                                <ul ng-controller="XTreeCtrl" class="xim-treeview-branch">
-                                    <li ng-repeat="node in tree.collection" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
+                                <ul class="xim-treeview-branch" >
+                                    <li ng-if="projects!='null'" ng-repeat="node in [projects]" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
+                                </ul>
+                            </div>
+                            <p class="text_center" ng-if="projects=='null'"><br/>
+                                {t}There are no results{/t}
+                            </p>
+                        </div>
+                    </tab>
+                    <tab heading="ccenter" select="$parent.selectedTab=2;">
+                        <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
+                            <div ng-click="reloadNode()" class="xim-treeview-btnreload ui-corner-all ui-state-default">{t}Reload node{/t}</div>
+                            <div class="xim-treeview-branch-container xim-treeview-expanded">
+                                <ul class="xim-treeview-branch">
+                                    <li ng-repeat="node in ccenter.collection" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                                 </ul>
                             </div>
                         </div>
                     </tab>
-                    <tab heading="ccenter">Contenido dos de la muerte</tab>
-                    <tab heading="modules">Contenido tres del tardon</tab>
+                    <tab heading="modules" select="$parent.selectedTab=3;">
+                        <div class="browser-modules-view-list-container" style="display: block;">
+                            <ul class="browser-modules-view-list">
+                                <li
+                                        {literal}
+                                            ng-class="{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}"
+                                        {/literal}
+                                        ng-repeat="node in modules"
+                                        ng-click="openModuleTab(node.id)">#/node.name/#</li>
+                            </ul>
+                        </div>
+                    </tab>
                 </tabset>
                 <button id="angular-tree-toggle" class="hbox-panel-tie hide"></button>
+                <input ng-init="" type="text"
+                       placeholder="Filtro..." ng-change="doFilter()"
+                       ng-model="filter" ng-show="selectedTab==1"
+                       class="filterTree"/>
                 <div id="angular-tree-resizer"
                      xim-resizer
                      xim-resizer-width="10"
@@ -97,7 +126,7 @@
                 </div>
             </div>
 
-            <div id="angular-content" class="angular-panel">
+            <div id="angular-content" class="angular-panel hbox-panel-container hbox-panel-container-1">
                 <div class="test-box"></div>
             </div>
 

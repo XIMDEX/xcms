@@ -258,31 +258,66 @@ class Action_browser3 extends ActionAbstract
      */
     public function read()
     {
-        //$idNode = $this->request->getParam('nodeid');
-        //$items = $this->request->getParam('items');
-        //$path = XIMDEX_ROOT_PATH .ModulesManager::path('tolDOX').'/resources/cache/';
-        //$file = sprintf('%s%s_%s', $path, str_replace('/', '_', $idNode), $items);
-
-        /*$modeTags = false;
-        if (preg_match('/\/Tags/', $idNode) > 0) {
-            $modeTags = true;
-            if (is_file($file)) {
-                $data = FsUtils::file_get_contents($file);
-                echo $data;
-                return;
-            }
-        }*/
-
         $ret = GenericDatasource::read($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
 
         header('Content-type: application/json');
         $data = Serializer::encode(SZR_JSON, $ret);
-        /*if ($modeTags) {
-            FsUtils::file_put_contents($file, $data);
+        echo $data;
+    }
 
-        }*/
+    /**
+     * Returns a JSON document with all children of the specified node id
+     * filtered by the filter param
+     */
+    public function readFiltered()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $query = $this->request->getParam('query');
+        $results = array();
 
+        $sql="SELECT f.IdChild as IdChild FROM (SELECT * FROM FastTraverse where IdNode = %s) f
+          INNER JOIN Nodes n on n.IdNode=f.IdChild where not n.IdNodeType in (5083,5084,5085) and n.name like '%s'";
+
+        $db = new DB();
+        $sql = sprintf($sql, $idNode, '%'.$query.'%');
+        $db->query($sql);
+        $data=array();
+
+        $minId = $idNode>=10000 ? 10000 : 2;
+
+        while (!$db->EOF) {
+            $node = new Node($db->getValue('IdChild'));
+            $path = $node->TraverseToRoot($minId);
+            $d=&$data;
+            foreach($path as $p){
+                foreach($d as &$e){
+                    if(isset($e["nodeid"]) && $e["nodeid"]==$p){
+                        break;
+                    }
+                }
+                if(!isset($e["nodeid"]) | $e["nodeid"]!=$p){
+                    $this->request->setParam("nodeid",$p);
+                    $ret = GenericDatasource::read($this->request,true);
+                    unset($ret["collection"]);
+                    array_push($d,$ret);
+                    $e = &$d[count($d) - 1];
+                    $e["collection"]=array();
+                    $e["showNodes"]=true;
+
+                }
+                $d=&$e["collection"];
+            }
+            $results[] = $path;
+            $db->next();
+        }
+
+
+
+
+        header('Content-type: application/json');
+        $data=$data[0];
+        $data = Serializer::encode(SZR_JSON, $data);
         echo $data;
     }
 

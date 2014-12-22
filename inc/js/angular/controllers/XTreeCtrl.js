@@ -28,9 +28,36 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu) {
     var loadAction;
     $scope.nodetypeActions = [];
-    $scope.selectednode = null;
-    loadAction = function(action) {
+    $scope.selectedNodes = [];
+    $scope.selectedTab = 1;
+    loadAction = function(action, node) {
       console.log("LOADING", action);
+
+      /*openAction(
+          label: action.name,
+          name:  action.name,
+          command: action.command,
+          params: 'method='+action.command+'&nodeid='+node.nodeid,
+          nodes: node.nodeid,
+          url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
+          bulk: action.bulk
+      ,
+          node.nodeid
+      )
+      $('#bw1').browserwindow(
+          'openAction'
+      ,
+          label: action.name,
+          name:  action.name,
+          command: action.command,
+          params: 'method='+action.command+'&nodeid='+node.nodeid,
+          nodes: node.nodeid,
+          url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
+          bulk: action.bulk
+      ,
+          node.nodeid
+      )
+       */
     };
     $scope.twoLevelLoad = true;
     $http.get(xUrlHelper.getAction({
@@ -54,7 +81,24 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       id: "10000"
     })).success(function(data) {
       if (data) {
-        $scope.tree = data;
+        $scope.projects = data;
+      }
+    });
+    $http.get(xUrlHelper.getAction({
+      action: "browser3",
+      method: "read",
+      id: "2"
+    })).success(function(data) {
+      if (data) {
+        $scope.ccenter = data;
+      }
+    });
+    $http.get(xUrlHelper.getAction({
+      action: "moduleslist",
+      method: "readModules"
+    })).success(function(data) {
+      if (data) {
+        $scope.modules = data;
       }
     });
     $scope.toggleNode = function(node) {
@@ -117,7 +161,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
             } else {
               data.expanded = "false";
             }
-            xMenu.open(data, loadAction);
+            xMenu.open(data, node, loadAction);
           }
         });
       } else {
@@ -129,15 +173,74 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         } else {
           data.expanded = "false";
         }
-        xMenu.open(data, loadAction);
+        xMenu.open(data, node, loadAction);
       }
       event.stopPropagation();
     };
     $window.com.ximdex.emptyActionsCache = function() {
       $scope.nodetypeActions = [];
     };
-    return $scope.select = function(node) {
-      $scope.selectednode = node;
+    $scope.select = function(node, event) {
+      var k, n, _ref;
+      if (event.ctrlKey) {
+        _ref = $scope.selectedNodes;
+        for (k in _ref) {
+          n = _ref[k];
+          if (n.nodeid === node.nodeid) {
+            $scope.selectedNodes.splice(k, 1);
+            return;
+          }
+        }
+        $scope.selectedNodes.push(node);
+      } else {
+        $scope.selectedNodes = [node];
+      }
+    };
+    $scope.reloadNode = function() {
+      if ($scope.selectedNodes.length === 1) {
+        $scope.selectedNodes[0].showNodes = true;
+        $scope.selectedNodes[0].collection = [];
+        return $scope.loadChilds($scope.selectedNodes[0]);
+      }
+    };
+    return $scope.doFilter = function() {
+      var url;
+      if ($scope.filter === "") {
+        $http.get(xUrlHelper.getAction({
+          action: "browser3",
+          method: "read",
+          id: "10000"
+        })).success(function(data) {
+          if (data) {
+            $scope.projects = data;
+          }
+        });
+      } else if ($scope.filter.length > 2) {
+        url = xUrlHelper.getAction({
+          action: "browser3",
+          method: "readFiltered",
+          id: "10000"
+        }) + "&query=" + $scope.filter;
+        $http.get(url).success(function(data) {
+          if (data) {
+            $scope.projects = data;
+          }
+        });
+      }
+      $scope.selectedNodes = [];
     };
   }
 ]);
+
+angular.module("ximdex.main.controller").filter("nodeInArrayProp", function() {
+  return function(input, arr, prop) {
+    var a, _i, _len;
+    for (_i = 0, _len = arr.length; _i < _len; _i++) {
+      a = arr[_i];
+      if (a[prop] === input) {
+        return true;
+      }
+    }
+    return false;
+  };
+});

@@ -29,10 +29,36 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu) ->
 
         $scope.nodetypeActions = []
-        $scope.selectednode = null
+        $scope.selectedNodes = []
+        $scope.selectedTab = 1
 
-        loadAction = (action) ->
+        loadAction = (action, node) ->
             console.log "LOADING", action
+            ###openAction(
+                label: action.name,
+                name:  action.name,
+                command: action.command,
+                params: 'method='+action.command+'&nodeid='+node.nodeid,
+                nodes: node.nodeid,
+                url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
+                bulk: action.bulk
+            ,
+                node.nodeid
+            )
+            $('#bw1').browserwindow(
+                'openAction'
+            ,
+                label: action.name,
+                name:  action.name,
+                command: action.command,
+                params: 'method='+action.command+'&nodeid='+node.nodeid,
+                nodes: node.nodeid,
+                url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
+                bulk: action.bulk
+            ,
+                node.nodeid
+            )###
+
             return
 
         $scope.twoLevelLoad = true
@@ -57,7 +83,22 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             method: "read"
             id: "10000"
         )).success (data) ->
-            $scope.tree = data  if data
+            $scope.projects = data  if data
+            return
+
+        $http.get(xUrlHelper.getAction(
+            action: "browser3"
+            method: "read"
+            id: "2"
+        )).success (data) ->
+            $scope.ccenter = data  if data
+            return
+
+        $http.get(xUrlHelper.getAction(
+            action: "moduleslist"
+            method: "readModules"
+        )).success (data) ->
+            $scope.modules = data  if data
             return
 
         $scope.toggleNode = (node) ->
@@ -115,7 +156,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                             data.expanded = "true"
                         else
                             data.expanded = "false"
-                        xMenu.open data, loadAction
+                        xMenu.open data, node, loadAction
                     return
             else
                 data = $scope.nodetypeActions[node.nodetypeid]
@@ -125,7 +166,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     data.expanded = "true"
                 else
                     data.expanded = "false"
-                xMenu.open data, loadAction
+                xMenu.open data, node, loadAction
             event.stopPropagation()
             return
 
@@ -133,8 +174,48 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             $scope.nodetypeActions = []
             return
 
-        $scope.select = (node) ->
-            $scope.selectednode = node
+        $scope.select = (node,event) ->
+            if event.ctrlKey
+                for k, n of $scope.selectedNodes
+                    if n.nodeid == node.nodeid
+                        $scope.selectedNodes.splice k, 1
+                        return
+                $scope.selectedNodes.push node
+            else
+                $scope.selectedNodes = [node]
+            return
+
+        $scope.reloadNode = () ->
+            if $scope.selectedNodes.length == 1
+                $scope.selectedNodes[0].showNodes = true
+                $scope.selectedNodes[0].collection = []
+                $scope.loadChilds $scope.selectedNodes[0]
+
+        $scope.doFilter = () ->
+            if $scope.filter == ""
+                $http.get(xUrlHelper.getAction(
+                    action: "browser3"
+                    method: "read"
+                    id: "10000"
+                )).success (data) ->
+                    $scope.projects = data  if data
+                    return
+            else if $scope.filter.length>2
+                url=xUrlHelper.getAction(
+                        action: "browser3"
+                        method: "readFiltered"
+                        id: "10000"
+                    ) + "&query=" + $scope.filter
+                $http.get(url).success (data) ->
+                    $scope.projects = data  if data
+                    return
+            $scope.selectedNodes = []
             return
 
 ]
+
+angular.module("ximdex.main.controller").filter "nodeInArrayProp", () ->
+    (input, arr, prop) ->
+        for a in arr
+            return true if a[prop] == input
+        return false

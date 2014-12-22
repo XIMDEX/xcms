@@ -91,7 +91,7 @@ button.hbox-panel-tie {
   position: absolute;
   z-index: 2;
   top: 2.1em;
-  right: .5em;
+  right: .3em;
   color: white;
   background: #008486;
   font-size: 2em;
@@ -108,3 +108,12 @@ button.hbox-panel-tie {
     line-height: 1.2; }
   button.hbox-panel-tie.tie::before {
     line-height: 1.2; }
+
+input.filterTree {
+  position: absolute;
+  z-index: 2;
+  top: 2.1em;
+  left: 5em;
+  font-size: 2em;
+  width: 4.5em;
+  padding: 0; }

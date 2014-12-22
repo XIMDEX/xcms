@@ -1,4 +1,4 @@
-angular.module("ximdex.common.directive").directive "ximResizer", ($document) ->
+angular.module("ximdex.common.directive").directive "ximResizer", ($document,$timeout) ->
 
     #TODO: Make it jquery independet
     ($scope, $element, $attrs) ->
@@ -29,48 +29,26 @@ angular.module("ximdex.common.directive").directive "ximResizer", ($document) ->
             if(!expanded && listenHidePanel)
                 a=7
                 b=parseInt($attrs.ximResizerWidth)+a
-                $($attrs.ximResizerLeft).animate
-                    width: a+"px"
-                ,
-                    400
-                ,
-                    () ->
-                $($attrs.ximResizerRight).animate
-                    left: b+"px"
-                ,
-                    400
-                ,
-                    () ->
-                $element.animate
-                    left: a+"px"
-                ,
-                    400
-                ,
+                $($attrs.ximResizerLeft).css left: (-size-7) + "px"
+                $($attrs.ximResizerRight).css left: (b-7) + "px"
+                $timeout(
                     () ->
                         listenHidePanel = false
+                ,
+                    500
+                )
             return
 
         showPanel = () ->
             if(!expanded && !listenHidePanel)
-                $($attrs.ximResizerLeft).animate
-                    width: size+"px"
-                ,
-                    400
-                ,
-                    () ->
-                $($attrs.ximResizerRight).animate
-                    left: parseInt($attrs.ximResizerWidth)+size+"px"
-                ,
-                    400
-                ,
-                    () ->
-                $element.animate
-                    left: size+"px"
-                ,
-                    400
-                ,
+                $($attrs.ximResizerLeft).css left: 0 + "px"
+                $($attrs.ximResizerRight).css left: (size+parseInt($attrs.ximResizerWidth)+7) + "px"
+                $timeout(
                     () ->
                         listenHidePanel = true
+                ,
+                    500
+                )
             return
 
         $element.on "mouseenter", showPanel
@@ -80,10 +58,13 @@ angular.module("ximdex.common.directive").directive "ximResizer", ($document) ->
         togglePanel = (event) ->
             $(this).toggleClass "hide"
             $(this).toggleClass "tie"
+            $($attrs.ximResizerLeft).toggleClass "hideable"
+            $($attrs.ximResizerRight).toggleClass "hideable"
+            $element.toggleClass "hideable"
 
             expanded = !expanded
+            size = $($attrs.ximResizerLeft).width()
             if(!expanded)
-                size = $($attrs.ximResizerLeft).width()
                 hidePanel()
             return
 
