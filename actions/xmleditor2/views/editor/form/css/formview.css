@@ -100,6 +100,7 @@ label {
   line-height: 1.5;
   padding: .2em .5em 1em;
   color: #445056;
+  height:auto !important;
 }
 .form-control:focus {
   background: #f1f3f4;
@@ -151,3 +152,59 @@ label {
   content: '\2a';
 }
 */
+
+.input{
+-moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    background-color: white;
+    background-color: -moz-field;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px 0 lightgray inset;  
+    font: -moz-field;
+    font: -webkit-small-control;    
+    padding: 2px 3px;
+    width: 398px;
+    color: #999;
+    height:28px;
+    display: inline;
+    float: left;
+}
+
+.textarea:focus,.input:focus, .rng-element-selected{
+  color:#333 !important;
+}
+
+.textarea{
+ -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;    
+    padding: 2px;
+    resize: both;
+    width: 400px;
+    color: #999;
+  margin-top: 5px;
+  display: inline;
+    float: left;
+}
+
+fieldset.indentable{  
+  margin-left:10px;
+  padding: 5px;
+  margin-top:20px;
+}
+
+.input_name{
+  text-transform: capitalize
+}
+
+div.editable_elements_block{
+
+  height:250px;
+  overflow:auto;
+}
+
+img.form_view{
+	
+  display:block;
+}
