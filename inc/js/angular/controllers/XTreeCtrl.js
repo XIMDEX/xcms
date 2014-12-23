@@ -25,12 +25,16 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
-  "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu) {
-    var loadAction;
-    $scope.nodetypeActions = [];
+  "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout) {
+    var dragStartPosition, expanded, listenHidePanel, loadAction, size;
+    $scope.nodeActions = [];
     $scope.selectedNodes = [];
     $scope.selectedTab = 1;
-    loadAction = function(action, node) {
+    dragStartPosition = 0;
+    expanded = true;
+    size = 0;
+    listenHidePanel = true;
+    loadAction = function(action, nodes) {
       console.log("LOADING", action);
 
       /*openAction(
@@ -115,13 +119,21 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       });
     };
     $scope.loadNodeChilds = function(node, callback) {
+      var fromTo, idToSend, maxItemsPerGroup;
       if (node.children && !node.loading) {
+        maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup);
+        fromTo = "";
+        idToSend = node.nodeid;
+        if (node.nodeid === "0" && (node.startIndex != null) && (node.endIndex != null)) {
+          fromTo = "&from=" + node.startIndex + "&to=" + node.endIndex;
+          idToSend = node.parentid;
+        }
         node.loading = true;
         $http.get(xUrlHelper.getAction({
           action: "browser3",
           method: "read",
-          id: node.nodeid
-        })).success(function(data) {
+          id: idToSend
+        }) + ("&items=" + maxItemsPerGroup) + fromTo).success(function(data) {
           node.loading = false;
           if (data) {
             node.collection = data.collection;
@@ -145,53 +157,104 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
     };
     $scope.loadActions = function(node, event) {
-      var data;
-      if ($scope.nodetypeActions[node.nodetypeid] == null) {
+      var data, n, nodeToSearch, _i, _len, _ref;
+      $scope.select(node, event);
+      if (event.type === "press") {
+        event.srcEvent.stopPropagation();
+      } else {
+        event.stopPropagation();
+      }
+      if (($scope.selectedNodes[0].nodeid == null) | ($scope.selectedNodes[0].nodetypeid == null) | $scope.selectedNodes[0].nodeid === "0") {
+        return;
+      }
+      nodeToSearch = $scope.selectedNodes[0].nodeid;
+      if ($scope.selectedNodes.length > 1) {
+        _ref = $scope.selectedNodes.slice(1);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          n = _ref[_i];
+          if ($scope.selectedNodes[0].nodetypeid !== n.nodetypeid) {
+            return;
+          } else {
+            nodeToSearch += "-";
+          }
+        }
+      }
+      if ($scope.nodeActions[nodeToSearch] == null) {
         $http.get(xUrlHelper.getAction({
           action: "browser3",
           method: "cmenu",
-          id: node.nodeid
+          nodes: $scope.selectedNodes
         })).success(function(data) {
           if (data) {
-            $scope.nodetypeActions[node.nodetypeid] = data;
-            data.left = event.clientX;
-            data.top = event.clientY;
-            if (event.button === 2) {
+            $scope.nodeActions[nodeToSearch] = data;
+            if (event.type === "press") {
+              data.left = event.center.x;
+              data.top = event.center.y;
               data.expanded = "true";
             } else {
-              data.expanded = "false";
+              data.left = event.clientX;
+              data.top = event.clientY;
+              if (event.button === 2) {
+                data.expanded = "true";
+              } else {
+                data.expanded = "false";
+              }
             }
-            xMenu.open(data, node, loadAction);
+            xMenu.open(data, $scope.selectedNodes, loadAction);
           }
         });
       } else {
-        data = $scope.nodetypeActions[node.nodetypeid];
-        data.left = event.clientX;
-        data.top = event.clientY;
-        if (event.button === 2) {
+        data = $scope.nodeActions[nodeToSearch];
+        if (event.type === "press") {
+          data.left = event.center.x;
+          data.top = event.center.y;
           data.expanded = "true";
         } else {
-          data.expanded = "false";
+          data.left = event.clientX;
+          data.top = event.clientY;
+          if (event.button === 2) {
+            data.expanded = "true";
+          } else {
+            data.expanded = "false";
+          }
         }
-        xMenu.open(data, node, loadAction);
+        xMenu.open(data, $scope.selectedNodes, loadAction);
       }
-      event.stopPropagation();
     };
     $window.com.ximdex.emptyActionsCache = function() {
-      $scope.nodetypeActions = [];
+      $scope.nodeActions = [];
     };
     $scope.select = function(node, event) {
-      var k, n, _ref;
+      var k, n, pushed, _ref, _ref1;
+      if (event.type === "contextmenu") {
+        event.stopPropagation();
+      } else {
+        event.srcEvent.stopPropagation();
+      }
       if (event.ctrlKey) {
         _ref = $scope.selectedNodes;
         for (k in _ref) {
           n = _ref[k];
-          if (n.nodeid === node.nodeid) {
-            $scope.selectedNodes.splice(k, 1);
+          if (((n.nodeFrom == null) && (node.nodeFrom == null) && (n.nodeTo == null) && (node.nodeTo == null) && n.nodeid === node.nodeid) | ((n.nodeFrom != null) && (node.nodeFrom != null) && (n.nodeTo != null) && (node.nodeTo != null) && n.nodeFrom === node.nodeFrom && n.nodeTo === node.nodeTo)) {
+            if (event.button === 0) {
+              $scope.selectedNodes.splice(k, 1);
+            }
             return;
           }
         }
-        $scope.selectedNodes.push(node);
+        pushed = false;
+        _ref1 = $scope.selectedNodes;
+        for (k in _ref1) {
+          n = _ref1[k];
+          if (n.nodeid > node.nodeid) {
+            $scope.selectedNodes.splice(k, 0, node);
+            pushed = true;
+            break;
+          }
+        }
+        if (!pushed) {
+          $scope.selectedNodes.splice($scope.selectedNodes.length, 0, node);
+        }
       } else {
         $scope.selectedNodes = [node];
       }
@@ -203,7 +266,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         return $scope.loadChilds($scope.selectedNodes[0]);
       }
     };
-    return $scope.doFilter = function() {
+    $scope.doFilter = function() {
       var url;
       if ($scope.filter === "") {
         $http.get(xUrlHelper.getAction({
@@ -229,15 +292,83 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
       $scope.selectedNodes = [];
     };
+    $scope.dragStart = function(event) {
+      if (expanded) {
+        return dragStartPosition = angular.element('#angular-tree').width();
+      }
+    };
+    $scope.drag = function(e, width) {
+      var x;
+      if (expanded) {
+        x = e.deltaX + dragStartPosition;
+        if (x > $document.width() - 17) {
+          x = $document.width() - 17;
+        }
+        if (x < 220) {
+          x = 220;
+        }
+        angular.element(e.target).css({
+          left: x + "px"
+        });
+        angular.element('#angular-tree').css({
+          width: x + "px"
+        });
+        angular.element('#angular-content').css({
+          left: (x + parseInt(width)) + "px"
+        });
+        return true;
+      }
+    };
+    $scope.toggleTree = function(e) {
+      angular.element(e.target).toggleClass("hide");
+      angular.element(e.target).toggleClass("tie");
+      angular.element('#angular-tree').toggleClass("hideable");
+      angular.element('#angular-content').toggleClass("hideable");
+      angular.element(e.target).toggleClass("hideable");
+      expanded = !expanded;
+      size = angular.element('#angular-tree').width();
+      if (!expanded) {
+        return $scope.hideTree();
+      }
+    };
+    $scope.hideTree = function() {
+      var a, b;
+      if (!expanded && listenHidePanel) {
+        a = 7;
+        b = 10 + a;
+        angular.element('#angular-tree').css({
+          left: (-size - 7) + "px"
+        });
+        angular.element('#angular-content').css({
+          left: (b - 7) + "px"
+        });
+        $timeout(function() {
+          return listenHidePanel = false;
+        }, 500);
+      }
+    };
+    return $scope.showTree = function() {
+      if (!expanded && !listenHidePanel) {
+        angular.element('#angular-tree').css({
+          left: 0 + "px"
+        });
+        angular.element('#angular-content').css({
+          left: (size + 10 + 7) + "px"
+        });
+        $timeout(function() {
+          return listenHidePanel = true;
+        }, 500);
+      }
+    };
   }
 ]);
 
-angular.module("ximdex.main.controller").filter("nodeInArrayProp", function() {
-  return function(input, arr, prop) {
+angular.module("ximdex.main.controller").filter("nodeSelected", function() {
+  return function(input, arr) {
     var a, _i, _len;
     for (_i = 0, _len = arr.length; _i < _len; _i++) {
       a = arr[_i];
-      if (a[prop] === input) {
+      if (((a.nodeFrom == null) && (a.nodeTo == null) && (input.nodeFrom == null) && (input.nodeTo == null) && a.nodeid === input.nodeid) | ((a.nodeFrom != null) && (a.nodeTo != null) && (input.nodeFrom != null) && (input.nodeTo != null) && a.nodeFrom === input.nodeFrom && a.nodeTo === input.nodeTo)) {
         return true;
       }
     }

@@ -50,7 +50,7 @@ angular.module('ximdex.common.service')
 
         }
 
-        initMenu = function (options, node, callback){
+        initMenu = function (options, nodes, callback){
             /*var destroy = function(event, viewId){
                 if (id == viewId) {
                     scope.$destroy();
@@ -71,15 +71,19 @@ angular.module('ximdex.common.service')
             scope.select = function(result){
                 destroyMenu();
                 if (callback)
-                    callback(result, node);
+                    callback(result, nodes);
             }
+            $document.bind("mousedown",function(e){
+                angular.element('div.xim-actions-menu').remove();
+                $document.unbind("mousedown");
+            });
             if (!scope.$$phase)
-                scope.$digest();º
+                scope.$digest();
         }
 
         return {
-            open: function(options, node, callback) {
-                initMenu(options, node, callback)
+            open: function(options, nodes, callback) {
+                initMenu(options, nodes, callback)
             },
             close: function() {
 

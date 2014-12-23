@@ -225,7 +225,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 		registerTriggers: function() {
 
-			$(document).keydown(function(event) {
+			/*$(document).keydown(function(event) {
 
 				var accel = false;
 
@@ -238,15 +238,15 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			$(document).click(function(event) {
 				$('.hide-on-click', document).hide();
 				$('.destroy-on-click', document).unbind().remove();
-			});
+			});*/
 		},
 
 		registerEvents: function() {
 
-			$(this.element).bind('dialog-close', function() {
+			/*$(this.element).bind('dialog-close', function() {
 				$('.hide-on-click', document).hide();
 				$('.destroy-on-click', document).unbind().remove();
-			});
+			});*/
 		},
 
 		registerGlobalAjaxEvents: function() {

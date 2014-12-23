@@ -380,76 +380,6 @@
         ]
     },
     {
-        "name": "doctrine/annotations",
-        "version": "v1.2.1",
-        "version_normalized": "1.2.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/doctrine/annotations.git",
-            "reference": "6a6bec0670bb6e71a263b08bc1b98ea242928633"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/annotations/zipball/6a6bec0670bb6e71a263b08bc1b98ea242928633",
-            "reference": "6a6bec0670bb6e71a263b08bc1b98ea242928633",
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/lexer": "1.*",
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "doctrine/cache": "1.*",
-            "phpunit/phpunit": "4.*"
-        },
-        "time": "2014-09-25 16:45:30",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.3.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Doctrine\\Common\\Annotations\\": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Roman Borschel",
-                "email": "roman@code-factory.org"
-            },
-            {
-                "name": "Benjamin Eberlei",
-                "email": "kontakt@beberlei.de"
-            },
-            {
-                "name": "Guilherme Blanco",
-                "email": "guilhermeblanco@gmail.com"
-            },
-            {
-                "name": "Jonathan Wage",
-                "email": "jonwage@gmail.com"
-            },
-            {
-                "name": "Johannes Schmitt",
-                "email": "schmittjoh@gmail.com"
-            }
-        ],
-        "description": "Docblock Annotations Parser",
-        "homepage": "http://www.doctrine-project.org",
-        "keywords": [
-            "annotations",
-            "docblock",
-            "parser"
-        ]
-    },
-    {
         "name": "mnapoli/phpdocreader",
         "version": "1.3.0",
         "version_normalized": "1.3.0.0",
@@ -1332,18 +1262,18 @@
     },
     {
         "name": "symfony/event-dispatcher",
-        "version": "v2.6.0",
-        "version_normalized": "2.6.0.0",
+        "version": "v2.6.1",
+        "version_normalized": "2.6.1.0",
         "target-dir": "Symfony/Component/EventDispatcher",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/EventDispatcher.git",
-            "reference": "697331d4ac78668cf6d21a2bb009b3faae92814f"
+            "reference": "720fe9bca893df7ad1b4546649473b5afddf0216"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/697331d4ac78668cf6d21a2bb009b3faae92814f",
-            "reference": "697331d4ac78668cf6d21a2bb009b3faae92814f",
+            "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/720fe9bca893df7ad1b4546649473b5afddf0216",
+            "reference": "720fe9bca893df7ad1b4546649473b5afddf0216",
             "shasum": ""
         },
         "require": {
@@ -1360,7 +1290,7 @@
             "symfony/dependency-injection": "",
             "symfony/http-kernel": ""
         },
-        "time": "2014-11-28 10:00:40",
+        "time": "2014-12-02 20:19:20",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1391,25 +1321,95 @@
         "homepage": "http://symfony.com"
     },
     {
+        "name": "doctrine/annotations",
+        "version": "v1.2.3",
+        "version_normalized": "1.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/annotations.git",
+            "reference": "eeda578cbe24a170331a1cfdf78be723412df7a4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/annotations/zipball/eeda578cbe24a170331a1cfdf78be723412df7a4",
+            "reference": "eeda578cbe24a170331a1cfdf78be723412df7a4",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/lexer": "1.*",
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "doctrine/cache": "1.*",
+            "phpunit/phpunit": "4.*"
+        },
+        "time": "2014-12-20 20:49:38",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.3.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Doctrine\\Common\\Annotations\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Benjamin Eberlei",
+                "email": "kontakt@beberlei.de"
+            },
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com"
+            },
+            {
+                "name": "Jonathan Wage",
+                "email": "jonwage@gmail.com"
+            },
+            {
+                "name": "Johannes Schmitt",
+                "email": "schmittjoh@gmail.com"
+            }
+        ],
+        "description": "Docblock Annotations Parser",
+        "homepage": "http://www.doctrine-project.org",
+        "keywords": [
+            "annotations",
+            "docblock",
+            "parser"
+        ]
+    },
+    {
         "name": "symfony/yaml",
-        "version": "v2.6.0",
-        "version_normalized": "2.6.0.0",
+        "version": "v2.6.1",
+        "version_normalized": "2.6.1.0",
         "target-dir": "Symfony/Component/Yaml",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Yaml.git",
-            "reference": "51c845cf3e4bfc182d1d5c05ed1c7338361d86f8"
+            "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Yaml/zipball/51c845cf3e4bfc182d1d5c05ed1c7338361d86f8",
-            "reference": "51c845cf3e4bfc182d1d5c05ed1c7338361d86f8",
+            "url": "https://api.github.com/repos/symfony/Yaml/zipball/3346fc090a3eb6b53d408db2903b241af51dcb20",
+            "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2014-11-20 13:24:23",
+        "time": "2014-12-02 20:19:20",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1438,5 +1438,29 @@
         ],
         "description": "Symfony Yaml Component",
         "homepage": "http://symfony.com"
+    },
+    {
+        "name": "RyanMullins/angular-hammer",
+        "version": "2.1.2",
+        "version_normalized": "2.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/RyanMullins/angular-hammer.git",
+            "reference": "origin/master"
+        },
+        "type": "library",
+        "installation-source": "source"
+    },
+    {
+        "name": "hammerjs/hammer.js",
+        "version": "2.0.4",
+        "version_normalized": "2.0.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/hammerjs/hammer.js.git",
+            "reference": "origin/master"
+        },
+        "type": "library",
+        "installation-source": "source"
     }
 ]

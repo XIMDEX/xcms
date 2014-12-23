@@ -105,7 +105,9 @@ class Action_browser3 extends ActionAbstract
         $this->addJs(Extensions::JQUERY);
         $this->addJs(Extensions::JQUERY_UI);
         $this->addJs('/inc/js/i18n.js');
+        $this->addJs('/extensions/vendors/hammerjs/hammer.js/hammer.min.js');
         $this->addJs('/extensions/angular/angular.min.js');
+        $this->addJs('/extensions/vendors/RyanMullins/angular-hammer/angular.hammer.min.js');
         $this->addJs('/extensions/angular/angular-animate.min.js');
         $this->addJs('/extensions/angular-ui-sortable/src/sortable.js');
         $this->addJs('/extensions/ladda/dist/spin.min.js');

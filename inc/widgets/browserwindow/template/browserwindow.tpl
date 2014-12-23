@@ -26,7 +26,7 @@
 <div id="%=id%" class="browser-window %=class%">
     <div class="browser-window-content">
         <div class="hbox browser-hbox">
-            <div ng-controller="XTreeCtrl"  id="angular-tree" class="hbox-panel-container hbox-panel-container-0 hbox-panel-hideable noselect">
+            <div ng-controller="XTreeCtrl" ng-mouseleave="hideTree()" id="angular-tree" class="hbox-panel-container hbox-panel-container-0 hbox-panel-hideable noselect">
                 {literal}
                     <script id="template/tabs/tabset.html" type="text/ng-template">
                         <div class="hbox-panel">
@@ -59,7 +59,7 @@
                         </li>
                     </script>
                 <script type="text/ng-template"  id="tree_item_renderer.html">
-                    <div class="noselect" ng-dblclick="toggleNode(node)" ng-click="select(node,$event)" ng-right-click="loadActions(node,$event)" ng-class="{'xim-treeview-container-selected': (node.nodeid | nodeInArrayProp: selectedNodes:'nodeid')}">
+                    <div class="noselect" hm-doubletap="toggleNode(node)" hm-press="loadActions(node,$event)"  hm-tap="select(node,$event)" ng-right-click="loadActions(node,$event)" ng-class="{'xim-treeview-container-selected': (node | nodeSelected: selectedNodes)}">
                         <span class="ui-icon xim-actions-toggle-node" ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children}" ng-click="toggleNode(node)"></span>
                         <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
                         <span class="xim-treeview-branch">#/node.name/#</span>
@@ -110,18 +110,14 @@
                         </div>
                     </tab>
                 </tabset>
-                <button id="angular-tree-toggle" class="hbox-panel-tie hide"></button>
+                <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="hbox-panel-tie hide"></button>
                 <input ng-init="" type="text"
                        placeholder="Filtro..." ng-change="doFilter()"
                        ng-model="filter" ng-show="selectedTab==1"
                        class="filterTree"/>
                 <div id="angular-tree-resizer"
-                     xim-resizer
-                     xim-resizer-width="10"
-                     xim-resizer-left="#angular-tree"
-                     xim-resizer-right="#angular-content"
-                     xim-resizer-min="220"
-                     xim-resizer-toggle="#angular-tree-toggle"
+                     hm-panstart="dragStart($event)" hm-panmove="drag($event,'10')"
+                     ng-mouseenter="showTree()"
                      class="hbox-panel-sep hbox-panel-separator-0">
                 </div>
             </div>

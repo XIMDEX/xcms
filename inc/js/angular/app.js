@@ -41,7 +41,7 @@ angular.module('ximdex.common.directive.validator', []);
 angular.module('ximdex.common.service', []);
 angular.module('ximdex.common.filter', []);
 
-angular.module('ximdex.main.controller', []);
+angular.module('ximdex.main.controller', ['hmTouchEvents']);
 
 angular.module('ximdex.module.xlyre', []);
 angular.module('ximdex.module.xtags', []);
