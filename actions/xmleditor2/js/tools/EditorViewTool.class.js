@@ -52,8 +52,8 @@ function EditorViewTool() {
 		editor.registerTool('treeview', this.treeButton);
         this.designButton = new KupuButton('kupu-designview-button', this._getSetViewWrapper(this.VIEW_DESIGN));
 		editor.registerTool('designview', this.designButton);
-        /*this.formButton = new KupuButton('kupu-formview-button', this._getSetViewWrapper(this.VIEW_FORM));
-		editor.registerTool('formview', this.formButton);*/
+        this.formButton = new KupuButton('kupu-formview-button', this._getSetViewWrapper(this.VIEW_FORM));
+		editor.registerTool('formview', this.formButton);
         this.activateButtons();
     };
 
@@ -70,7 +70,7 @@ function EditorViewTool() {
 
 		$(this.treeButton.button).removeClass('kupu-treeview-pressed').addClass('kupu-treeview');
 		$(this.designButton.button).removeClass('kupu-designview-pressed').addClass('kupu-designview');
-                //$(this.formButton.button).removeClass('kupu-formview-pressed').addClass('kupu-formview');
+                $(this.formButton.button).removeClass('kupu-formview-pressed').addClass('kupu-formview');
 		//$(this.remoteButton.button).removeClass('kupu-remoteview-pressed').addClass('kupu-remoteview');
 
 		switch (view) {
@@ -81,7 +81,7 @@ function EditorViewTool() {
 				$(this.designButton.button).addClass('kupu-designview-pressed').removeClass('kupu-designview'); 
 				break;
                         case this.VIEW_FORM:
-				//$(this.formButton.button).addClass('kupu-formview-pressed').removeClass('kupu-formview');
+				$(this.formButton.button).addClass('kupu-formview-pressed').removeClass('kupu-formview');
 				break;
 			case this.VIEW_REMOTE:
 				//$(this.remoteButton.button).addClass('kupu-remoteview-pressed').removeClass('kupu-remoteview');

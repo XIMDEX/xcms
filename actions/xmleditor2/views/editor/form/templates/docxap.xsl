@@ -7,7 +7,7 @@
         <!--<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,400italic,700italic" rel="stylesheet" type="text/css"/>
         <link href="http://fonts.googleapis.com/css?family=Coustard:400,900" rel="stylesheet" type="text/css"/>-->
         <link rel="stylesheet" type="text/css" href="views/editor/form/css/formview.css" />
-        <link rel="stylesheet" type="text/css" href="@@URL_PATH@@/extensions/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="@@URL_PATH@@/extensions/bootstrap/dist/css/bootstrap.min.css" />
         <script type="text/javascript" src="@@URL_PATH@@/extensions/jquery/js/jquery-1.8.3.min.js" ></script>
         <script type="text/javascript" src="@@URL_PATH@@/extensions/jquery/js/jquery-ui-1.9.1.custom.min.js" ></script>
         <title></title>
@@ -264,7 +264,7 @@
         
     </xsl:template>
     
-    <xsl:template match="@@ITEM_ELEMENTS@@">
+    <xsl:template match="item">
     <li uid="{@uid}">
         <xsl:value-of select="."/>
     </li>
