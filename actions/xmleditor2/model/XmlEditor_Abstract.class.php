@@ -117,9 +117,11 @@ abstract class XmlEditor_Abstract {
 			XMD_Log::error(_("A non-existing node cannot be obtained: " ) . "$idnode");
 			return null;
 		}
-
-		if($view == 'tree') {
-			return \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl';
+                
+                if ($view == "form"){
+                    return $this->getFormViewXsl($idnode);
+                } else if($view == 'tree') {
+                    return \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl';
 		}
 
 		$nodeTypeName = $node->nodeType->GetName();
@@ -350,6 +352,193 @@ abstract class XmlEditor_Abstract {
 		$content = preg_replace("/\<xsl:include.*href=\".*templates_include.xsl\".*\>/",$auxContent,$content);
 	    }
 	}
+        
+        
+        private function getFormViewXsl ($idnode){
+        
+            $node = new Node($idnode);
+            $idSchema = $node->class->getTemplate();
+            $dataFactory = new DataFactory($idSchema);
+            $maxIdVersion = $dataFactory->GetLastVersionId();
+            $formXslFile = \App::getValue( 'UrlRoot').\App::getValue( 'FileRoot')."/xslformview_{$maxIdVersion}.xsl";            
+            if (file_exists($formXslFile) && false){
+                return $formXslFile;
+            }else{
+                return $this->buildFormXsl($idSchema, $maxIdVersion);
+            }
+            
+        }
+        
+        private function buildFormXsl ($idSchema, $maxIdVersion){
+                   
+            
+            $schemaNode = new Node($idSchema);
+            $schemaContent = $schemaNode->GetContent();
+            $docRNG = new DOMDocument();
+            $docRNG->validateOnParse=true;
+            
+            
+	    //Removing namespaces declaration.
+            $schemaContent = preg_replace('/<grammar[^>]*>/', "<grammar>", $schemaContent,1);            
+            $content = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
+            $docRNG->loadXML($schemaContent,LIBXML_NOERROR);
+
+
+            $xpathObj = new DOMXPath($docRNG);
+            $xpathObj->registerNameSpace('xim', 'http://www.ximdex.com');
+            
+            $textElements = $this->getTextElements($xpathObj);
+            $elements = $xpathObj->query("//element");
+            $inputTextElements = $textAreaElements = $containerElements = array();
+            $applyElements = $this->getApplyElements($xpathObj);
+
+            $boldElements = $this->getBoldElements($xpathObj);
+            $italicElements = $this->getItalicElements($xpathObj);
+            $linkElements = $this->getLinkElements($xpathObj);
+
+            $imageElements = $this->getElementsByType($xpathObj,"image");
+            $listElements = $this->getElementsByType($xpathObj,"list");
+            $itemElements = $this->getElementsByType($xpathObj,"item");
+            $textAreaElements = $this->getElementsByType($xpathObj,"textarea"); //Se puede forzar a que sea textarea.
+	    foreach ($elements as $element) {
+    		$tagName = $element->getAttribute("name");
+            if ($tagName != "docxap"){
+			    $toLowerTagName = strtolower($tagName);
+			    //Tomar apply elements, son tipo bold, cursiva, link, enlace
+		    	if (in_array($toLowerTagName, $applyElements)){
+					continue;
+
+	    		}else if(in_array($toLowerTagName, $textAreaElements)) {
+	    			continue;
+	    		}else if (in_array($tagName, $textElements)){
+			    	$resultLength = $xpathObj->query(".//element", $element)->length + 
+			    	$xpathObj->query(".//ref", $element)->length;
+			    	if ($resultLength){
+					    $textAreaElements[] = $tagName;
+					    $textAreaElements[] = $toLowerTagName;
+				    }else{
+				    	$inputTextElements[] = $tagName;
+					    $inputTextElements[] = $toLowerTagName;
+				    } 
+			    }else{
+				    $containerElements[] = $tagName;
+				    $containerElements[] = $toLowerTagName;
+		    	}                
+			}
+	    }
+	    
+	    $applyElements = array_values(array_unique(array_diff($applyElements, $boldElements, $italicElements, $linkElements)));
+	    $containerElements = array_values(array_unique(array_diff($containerElements, $imageElements, $listElements)));
+	    $textAreaElements = array_values(array_unique(array_diff($textAreaElements, $itemElements)));
+	    $inputTextElements = array_values(array_unique(array_diff($inputTextElements, $itemElements)));
+	    $blockEditionElements = array_values(array_unique(array_merge($imageElements,$textAreaElements, $listElements)));
+	    
+	    $stringContainerElements = implode(" | ", $containerElements);
+	    $stringTextAreaElements = implode(" | ", $textAreaElements);
+	    $stringInputTextElements = implode(" | ", $inputTextElements);
+	    $stringApplyElements = implode(" | ", $applyElements);
+	    $stringBoldElements = implode(" | ", $boldElements);
+	    $stringItalicElements = implode(" | ", $italicElements);
+	    $stringLinkElements = implode(" | ", $linkElements);
+	    $stringblockEditionElements = implode(" | ", $blockEditionElements);
+	    $stringImageElements = implode(" | ", $imageElements);
+	    $stringListElements = implode(" | ", $listElements);
+	    $stringItemElements = implode(" | ", $itemElements);
+	    error_log("DEBUG $stringItemElements");
+	    
+        $content = str_replace("@@CONTAINER_ELEMENTS@@", $stringContainerElements, $content);
+        $content = str_replace("@@INPUT_TEXT_ELEMENTS@@", $stringInputTextElements, $content);
+        $content = str_replace("@@TEXTAREA_ELEMENTS@@", $stringTextAreaElements, $content);
+	    $content = str_replace("@@APPLY_ELEMENTS@@", $stringApplyElements, $content);
+	    $content = str_replace("@@BOLD_ELEMENTS@@", $stringBoldElements, $content);
+	    $content = str_replace("@@ITALIC_ELEMENTS@@", $stringItalicElements, $content);
+	    $content = str_replace("@@LINK_ELEMENTS@@", $stringLinkElements, $content);
+        $content = str_replace("@@URL_PATH@@", Config::getValue("UrlRoot"), $content);
+	    $content = str_replace("@@BLOCK_EDITION_ELEMENTS@@", $stringblockEditionElements, $content);
+	    $content = str_replace("@@IMAGE_ELEMENTS@@", $stringImageElements, $content);
+	    $content = str_replace("@@LIST_ELEMENTS@@", $stringListElements, $content);
+	    $content = str_replace("@@ITEM_ELEMENTS@@", $stringItemElements, $content);
+	    
+            $formViewFile = \App::getValue( 'AppRoot').\App::getValue('FileRoot')."/xslformview_{$maxIdVersion}.xsl";
+            FsUtils::file_put_contents($formViewFile, $content);
+            return $formViewFile;
+            
+        }
+	
+	private function getBoldElements($xpathObj){
+	    
+	    return $this->getSpecialApplyElements($xpathObj, "bold");
+	}
+	
+	private function getItalicElements($xpathObj){
+	    
+	    return $this->getSpecialApplyElements($xpathObj, "italic");
+	}
+	
+	private function getLinkElements($xpathObj){
+	    
+	    return $this->getSpecialApplyElements($xpathObj, "link");
+	}
+	
+	/**
+	 */
+	private function getSpecialApplyElements($xpathObj,$elementType){
+	    
+	    $result = array();
+	    $applytags = $xpathObj->query("//type[contains(text(),'$elementType')]");
+	    foreach ($applytags as $applyTag) {
+		    if (strpos($applyTag->nodeValue, "apply")!==FALSE){
+			    $elementTag = $applyTag->parentNode;
+			    $elementName = $elementTag->getAttribute("name");
+			    $result[] = strtolower($elementName);
+		    }
+	    }	    
+	    return $result;
+	}
+        
+        private function getApplyElements(&$xpathObj){
+
+		$result = array();
+		$applytags = $xpathObj->query("//*[name()='xim:type']");
+		foreach ($applytags as $applyTag) {
+			if (strpos($applyTag->nodeValue, "apply")!==FALSE){
+				$elementTag = $applyTag->parentNode;
+				$elementName = $elementTag->getAttribute("name");
+				$result[] = strtolower($elementName);
+			}
+		}
+		return $result;
+	}
+
+	private function getElementsByType(&$xpathObj,$elementType){
+
+		$result = array();
+		$applytags = $xpathObj->query("//*[name()='xim:type']");
+		error_log($elementType." ".count($applytags));
+		error_log(print_r($applytags,true));
+
+
+		foreach ($applytags as $applyTag) {
+			error_log($applyTag->nodeValue.", $elementType");
+			if (strpos($applyTag->nodeValue, $elementType)!==FALSE){
+				$elementTag = $applyTag->parentNode;
+				error_log(print_r($elementTag, true));
+				$elementName = $elementTag->getAttribute("name");
+				$result[] = strtolower($elementName);
+			}
+		}
+		return $result;
+	}
+
+	private function getTextElements(&$xpathObj){
+		$result = array();
+		$elementsTag = $xpathObj->query("//text/ancestor::element");		
+		foreach ($elementsTag as $elementTag) {			
+				$elementName = $elementTag->getAttribute("name");
+				$result[] = $elementName;			
+		}
+		return $result;
+	}
+        
 }
 
-?>

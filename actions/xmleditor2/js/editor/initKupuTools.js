@@ -151,6 +151,9 @@ function initKupuTools(kupu) {
 
     var highlighttoolbox = new HighlightToolBox();
     hovertool.registerToolBox('highlighttoolbox', highlighttoolbox);
+    
+    var formViewToolBox = new FormViewToolBox();
+    hovertool.registerToolBox('formViewToolBox', formViewToolBox);
 
     var draggabletoolbox = new DraggablesToolBox();
     hovertool.registerToolBox('draggabletoolbox', draggabletoolbox);

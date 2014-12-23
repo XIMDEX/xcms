@@ -161,7 +161,7 @@ function XimdocEditor(options) {
     };
 
     this.getView = function () {
-        if (['tree', 'normal', 'pro'].contains(this.view))
+        if (['tree', 'normal', 'pro','form'].contains(this.view))
             return this.view;
         else
             return 'normal';
@@ -492,9 +492,11 @@ function XimdocEditor(options) {
         xsltResult = this.createDomDocument(t);
 
         // Removing <script/> tags
-        $('script', xsltResult).each(function (index, elem) {
-            elem.parentNode.removeChild(elem);
-        });
+        if (this.view != "form"){
+            $('script', xsltResult).each(function (index, elem) {
+                elem.parentNode.removeChild(elem);
+            });
+        }
 
         if (!IS_IE) {
 

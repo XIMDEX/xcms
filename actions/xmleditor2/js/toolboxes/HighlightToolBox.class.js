@@ -126,3 +126,112 @@ function HighlightToolBox() {
 };
 
 HighlightToolBox.prototype = new XimdocToolBox();
+
+
+function FormViewToolBox() {
+
+	this.element = false;
+    this.initialize = function(tool,editor){
+
+		this.tool = tool;
+		this.editor = editor;
+
+    };
+    this.beforeUpdateContent = function(options){	
+	
+    };
+    this.updateState = function(options){
+	
+		if(this.editor.view=="form"){
+
+			this.element = this.editor.ximElement;
+			this.formElement = $("[uid='"+this.element.uid+"']", this.editor.getBody()).closest(".js-edition-block");
+			if (this.formElement.length){
+				 $(".btn-toolbar button", this.formElement).addClass("disabled");
+				var $elementSiblingButtons = $(".btn-toolbar .js-siblings button", this.formElement);
+				var $elementApplyButtons = $(".btn-toolbar .js-applies button", this.formElement);
+				var that = this;
+				var parentElement = this.element.parentNode;
+				var uid=this.element.uid;		
+
+				if (this.editor.selectedTextLength > 0){
+			    	$(".btn-toolbar .js-applies button", this.formElement).removeClass("disabled");
+				}else{
+					$(".btn-toolbar .js-siblings button", this.formElement).removeClass("disabled");
+                                        $(".btn-toolbar .js-extra button", this.formElement).removeClass("disabled");
+				}		
+				
+				$elementApplyButtons.each(function(index, button){
+					var elementTypes = that.element.schemaNode.type;
+					var childName = $(button).data("element");
+					if (elementTypes && elementTypes.length && elementTypes.indexOf(childName) !== -1){
+						$(button).removeClass("disabled")
+					}
+					var xeditButton = that.editor.tools[childName + '_rngbutton'];  
+					$(button).off("click").on("click",function(){
+						if (childName == that.element.tagName){
+							that.editor.tools.ximdoctool.disApplyElement(that.element);
+						}else{
+							var ximElement = that.editor.getXimDocument().getElement(uid);
+						    that.editor.ximElement = ximElement
+						    that.editor.selNode = $(button).parent().parent().siblings("[uid='"+uid+"']")[0];
+						    xeditButton.commandfunc(null,null,null,parentElement);
+						    that.editor._setSelectionData( ximElement );
+						}
+					    that.editor.updateEditor({caller: that, target: ximElement});	
+					});
+				});
+
+				$elementSiblingButtons.each(function(index, button){
+					var childName = $(button).data("element");
+					var xeditButton = that.editor.tools[childName + '_rngbutton'];  
+					$(button).off("click").on("click",function(){
+						var found = false;
+						var currentElement = that.element;
+						var availableSiblingElements;
+						while(!found && currentElement.schemaNode.parentNode){
+							availableSiblingElements = currentElement.schemaNode.parentNode.childNodes;
+							for (var i = 0; i < availableSiblingElements.length; i++){
+								if (availableSiblingElements[i].tagName == childName){
+									found = true;
+									parentElement = currentElement.parentNode? currentElement.parentNode:currentElement;
+									break;
+								}
+							}
+							
+							if (!found)
+								currentElement = currentElement.parentNode;
+						}
+						
+					    var ximElement = that.editor.getXimDocument().getElement(uid);
+					    that.editor.ximElement = ximElement
+					    that.editor.selNode = $(button).parent().parent().siblings("[uid='"+uid+"']")[0];
+					    if (parentElement){
+					    	xeditButton.commandfunc(null,null,null,parentElement, currentElement);
+					    	that.editor._setSelectionData( ximElement );
+					    	that.editor.updateEditor({caller: that, target: ximElement});
+					    }
+				    
+					});
+				});
+                                
+			}
+                        
+                        this.enableNewElementButton();
+		}		
+	
+    };
+    
+    this.enableNewElementButton =function(){
+        that = this;
+        $(".js-add-more", this.editor.getBody())
+                .off("click")
+                .on("click", function(){
+                    var uid = that.editor.nodeId+"."+$(this).data("uid");
+                    var lastElement = that.editor.getXimDocument().getElement(uid);
+                    that.editor.tools["ximdoctool"].createElement(lastElement.tagName, lastElement.parentNode, lastElement);
+                })
+    }
+}
+
+FormViewToolBox.prototype = new XimdocToolBox();
