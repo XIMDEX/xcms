@@ -376,7 +376,7 @@ abstract class XmlEditor_Abstract
             $idSchema = $node->class->getTemplate();
             $dataFactory = new DataFactory($idSchema);
             $maxIdVersion = $dataFactory->GetLastVersionId();
-            $formXslFile = \App::getValue( 'UrlRoot').\App::getValue( 'FileRoot')."/xslformview_{$maxIdVersion}.xsl";
+            $formXslFile = \App::getValue( 'AppRoot').\App::getValue( 'FileRoot')."/xslformview_{$maxIdVersion}.xsl";
             if (file_exists($formXslFile)) {
                 return $formXslFile;
             } else {

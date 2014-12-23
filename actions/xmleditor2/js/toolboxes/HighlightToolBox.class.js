@@ -184,13 +184,14 @@ function FormViewToolBox() {
 
 				$elementSiblingButtons.each(function(index, button){
 					var childName = $(button).data("element");
-					var xeditButton = that.editor.tools[childName + '_rngbutton'];  
+					var xeditButton = that.editor.tools[childName + '_rngbutton']; 
+                                        var currentElement = that.element;
 					$(button).off("click").on("click",function(){
 						var found = false;
-						var currentElement = that.element;
+						
 						var availableSiblingElements;
-						while(!found && currentElement.schemaNode.parentNode){
-							availableSiblingElements = currentElement.schemaNode.parentNode.childNodes;
+						while(!found && currentElement.parentNode){
+							availableSiblingElements = currentElement.parentNode.schemaNode.childNodes;
 							for (var i = 0; i < availableSiblingElements.length; i++){
 								if (availableSiblingElements[i].tagName == childName){
 									found = true;

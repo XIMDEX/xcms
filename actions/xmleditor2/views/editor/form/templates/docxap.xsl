@@ -173,7 +173,7 @@
                 <button type="button" data-element="@@IMAGE_ELEMENTS@@" class="btn btn-default btn-xs ">
                 <span class="glyphicon glyphicon-picture"></span>
                 </button>
-                <button type="button" class="btn btn-default btn-xs" data-element="parrafo">
+                <button type="button" class="btn btn-default btn-xs" data-element="paragraph">
                 <span class="glyphicon glyphicon-edit"></span>
                 </button>
             </div>
