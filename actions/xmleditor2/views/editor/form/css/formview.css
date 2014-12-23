@@ -1,0 +1,153 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
+@font-face {
+  font-family: 'ximdex_icons';
+  src: url("../../../../../../xmd/fonts/ximdex_icons.eot");
+  src: url("../../../../../../xmd/fonts/ximdex_icons.eot?#iefix") format("embedded-opentype"), url("../../../../../../xmd/fonts/ximdex_icons.woff") format("woff"), url("../../../../../../xmd/fonts/ximdex_icons.ttf") format("truetype"), url("../../../../../../xmd/fonts/ximdex_icons.svg#ximdex_icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+body.xedit-rngelement {
+  padding: 0 !important;
+}
+
+.formview .rng-parent-selected .rng-element-selected, .formview .rng-parent-selected {
+  border: none !important;
+}
+.formview .kupu-draggable-handler, .formview .kupu-draggable-handler {
+  display: none !important;
+}
+
+.form-input-box {
+  border: 1px solid #a3b0c1;
+  background: #fff;
+  border-radius: 3px;
+  margin: 1.5em;
+}
+.panel-collapse .form-input-box {
+  margin: 1.5em 0;
+}
+.form-input-box h4 {
+  margin: 0;
+  border-bottom: 1px solid #a3b0c1;
+  padding: 1em 1.4em;
+  text-transform: uppercase;
+  font-size: .92em;
+}
+.form-input-box h4 a {
+  position: relative;
+}
+.form-input-box h4 a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: -1em;
+  height: .4em;
+  background: #7bcabf;
+}
+
+.panel-collapse {
+  padding: 1em 1.4em;
+}
+
+label {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.form-control {
+  background: #e3e7e9;
+  border: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  font-size: 1.2em;
+  line-height: 1.5;
+  padding: .2em .5em 1em;
+  color: #445056;
+}
+.form-control:focus {
+  background: #f1f3f4;
+}
+
+.form-group {
+  margin-bottom: 1em;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.btn-toolbar {
+  background: #8d9ea6;
+  height: 2.5em;
+  border-bottom: 1px solid #f1f3f4;
+}
+.btn-toolbar .btn-group {
+  display: inline-block;
+  background: none;
+}
+.btn-toolbar .btn-group .btn {
+  border: none;
+  background: none;
+  margin-top: .4em;
+  cursor: pointer;
+}
+/*.btn-toolbar .btn-group .btn:after {
+  background: none;
+  font-family: 'ximdex_icons';
+  position: static;
+  font-size: 1.4em;
+  color: #2d363a;
+}
+.btn-toolbar .btn-group .btn:after:hover {
+  color: #8d9ea6;
+}
+
+.btn[data-element="bold"]:after {
+  content: '\e61d';
+}
+
+.btn[data-element="italic"]:after {
+  content: '\e61c';
+}
+
+.btn[data-element="link"]:after {
+  content: '\2a';
+}
+*/
