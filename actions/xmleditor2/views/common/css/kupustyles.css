@@ -221,7 +221,8 @@ div.kupu-smalleditor {
 .kupu-tb button.kupu-spellchecker-pressed,
 .kupu-tb button.kupu-designview-pressed,
 .kupu-tb button.kupu-remoteview-pressed,
-.kupu-tb button.kupu-treeview-pressed {
+.kupu-tb button.kupu-treeview-pressed
+.kupu-tb button.kupu-formview-pressed {
   border: 2px solid #fff;
   background-color: #e6e6e6;
   -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.3);
@@ -247,7 +248,8 @@ div.kupu-smalleditor {
 .kupu-tb button.kupu-spellchecker-pressed:after,
 .kupu-tb button.kupu-designview-pressed:after,
 .kupu-tb button.kupu-remoteview-pressed:after,
-.kupu-tb button.kupu-treeview-pressed:after {
+.kupu-tb button.kupu-treeview-pressed:after
+.kupu-tb button.kupu-formview-pressed:after {
   display: block;
   height: 7px;
   content: url("../../../gfx/btn-active.png");
@@ -529,6 +531,13 @@ button.kupu-logo {
 .kupu-designview:hover,
 .kupu-designview-pressed {
   background-position: -37px -466px; }
+
+.kupu-formview {
+  background-position: -181px 3px; }
+
+.kupu-formview:hover,
+.kupu-formview-pressed {
+  background-position: -181px -36px; }
 
 .kupu-remoteview {
   background-position: -71px -425px; }
