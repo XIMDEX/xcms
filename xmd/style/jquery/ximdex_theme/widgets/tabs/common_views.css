@@ -284,6 +284,10 @@ ul.xim-treeview-branch li div:hover .xim-treeview-actions-dropdown,
 	display: inline;
 }
 
+ul.xim-treeview-branch li div .xim-treeview-actions-dropdown.selected {
+    display: inline;
+}
+
 ul.xim-treeview-branch li div .xim-treeview-actions-dropdown:hover {
 	/*background-color: #8DC7C7;*/
 }

@@ -27,6 +27,9 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout) {
     var dragStartPosition, expanded, listenHidePanel, loadAction, size;
+    $scope.projects = null;
+    $scope.ccenter = null;
+    $scope.modules = null;
     $scope.nodeActions = [];
     $scope.selectedNodes = [];
     $scope.selectedTab = 1;
@@ -86,6 +89,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     })).success(function(data) {
       if (data) {
         $scope.projects = data;
+        $scope.projects.showNodes = true;
       }
     });
     $http.get(xUrlHelper.getAction({
@@ -157,21 +161,28 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
     };
     $scope.loadActions = function(node, event) {
-      var data, n, nodeToSearch, _i, _len, _ref;
-      $scope.select(node, event);
-      if (event.type === "press") {
-        event.srcEvent.stopPropagation();
-      } else {
+      var data, n, nodeToSearch, _i, _len, _ref, _ref1;
+      if (event.target.classList[0] === "xim-actions-dropdown" && event.type === "press") {
+        return;
+      }
+      if ((_ref = event.srcEvent) != null) {
+        _ref.stopPropagation();
+      }
+      if (typeof event.stopPropagation === "function") {
         event.stopPropagation();
       }
+      if (typeof event.preventDefault === "function") {
+        event.preventDefault();
+      }
+      $scope.select(node, event);
       if (($scope.selectedNodes[0].nodeid == null) | ($scope.selectedNodes[0].nodetypeid == null) | $scope.selectedNodes[0].nodeid === "0") {
         return;
       }
       nodeToSearch = $scope.selectedNodes[0].nodeid;
       if ($scope.selectedNodes.length > 1) {
-        _ref = $scope.selectedNodes.slice(1);
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          n = _ref[_i];
+        _ref1 = $scope.selectedNodes.slice(1);
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          n = _ref1[_i];
           if ($scope.selectedNodes[0].nodetypeid !== n.nodetypeid) {
             return;
           } else {
@@ -187,36 +198,38 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         })).success(function(data) {
           if (data) {
             $scope.nodeActions[nodeToSearch] = data;
-            if (event.type === "press") {
+            if (event.center != null) {
               data.left = event.center.x;
               data.top = event.center.y;
-              data.expanded = "true";
-            } else {
+            }
+            data.expanded = "true";
+            if (event.clientX != null) {
               data.left = event.clientX;
+            }
+            if (event.clientY != null) {
               data.top = event.clientY;
-              if (event.button === 2) {
-                data.expanded = "true";
-              } else {
-                data.expanded = "false";
-              }
+            }
+            if (event.type === "tap") {
+              data.expanded = "false";
             }
             xMenu.open(data, $scope.selectedNodes, loadAction);
           }
         });
       } else {
         data = $scope.nodeActions[nodeToSearch];
-        if (event.type === "press") {
+        if (event.center != null) {
           data.left = event.center.x;
           data.top = event.center.y;
-          data.expanded = "true";
-        } else {
+        }
+        data.expanded = "true";
+        if (event.clientX != null) {
           data.left = event.clientX;
+        }
+        if (event.clientY != null) {
           data.top = event.clientY;
-          if (event.button === 2) {
-            data.expanded = "true";
-          } else {
-            data.expanded = "false";
-          }
+        }
+        if (event.type === "tap") {
+          data.expanded = "false";
         }
         xMenu.open(data, $scope.selectedNodes, loadAction);
       }
@@ -225,16 +238,17 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       $scope.nodeActions = [];
     };
     $scope.select = function(node, event) {
-      var k, n, pushed, _ref, _ref1;
-      if (event.type === "contextmenu") {
+      var k, n, pushed, _ref, _ref1, _ref2;
+      if (typeof event.stopPropagation === "function") {
         event.stopPropagation();
-      } else {
-        event.srcEvent.stopPropagation();
+      }
+      if ((_ref = event.srcEvent) != null) {
+        _ref.stopPropagation();
       }
       if (event.ctrlKey) {
-        _ref = $scope.selectedNodes;
-        for (k in _ref) {
-          n = _ref[k];
+        _ref1 = $scope.selectedNodes;
+        for (k in _ref1) {
+          n = _ref1[k];
           if (((n.nodeFrom == null) && (node.nodeFrom == null) && (n.nodeTo == null) && (node.nodeTo == null) && n.nodeid === node.nodeid) | ((n.nodeFrom != null) && (node.nodeFrom != null) && (n.nodeTo != null) && (node.nodeTo != null) && n.nodeFrom === node.nodeFrom && n.nodeTo === node.nodeTo)) {
             if (event.button === 0) {
               $scope.selectedNodes.splice(k, 1);
@@ -243,9 +257,9 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           }
         }
         pushed = false;
-        _ref1 = $scope.selectedNodes;
-        for (k in _ref1) {
-          n = _ref1[k];
+        _ref2 = $scope.selectedNodes;
+        for (k in _ref2) {
+          n = _ref2[k];
           if (n.nodeid > node.nodeid) {
             $scope.selectedNodes.splice(k, 0, node);
             pushed = true;
@@ -269,6 +283,9 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     $scope.doFilter = function() {
       var url;
       if ($scope.filter === "") {
+        $scope.projects.collection = [];
+        $scope.projects.loading = true;
+        $scope.projects.showNodes = true;
         $http.get(xUrlHelper.getAction({
           action: "browser3",
           method: "read",
@@ -276,9 +293,13 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         })).success(function(data) {
           if (data) {
             $scope.projects = data;
+            $scope.projects.showNodes = true;
           }
         });
       } else if ($scope.filter.length > 2) {
+        $scope.projects.collection = [];
+        $scope.projects.loading = true;
+        $scope.projects.showNodes = true;
         url = xUrlHelper.getAction({
           action: "browser3",
           method: "readFiltered",

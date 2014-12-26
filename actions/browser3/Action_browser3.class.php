@@ -140,7 +140,6 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/services/xCheck.js');
         $this->addJs('/inc/js/angular/services/xMenu.js');
         $this->addJs('/inc/js/angular/directives/ximButton.js');
-        $this->addJs('/inc/js/angular/directives/ximResizer.js');
         $this->addJs('/inc/js/angular/directives/ximSelect.js');
         $this->addJs('/inc/js/angular/directives/ximValidators.js');
         $this->addJs('/inc/js/angular/directives/xtagsSuggested.js');
@@ -262,7 +261,6 @@ class Action_browser3 extends ActionAbstract
     {
         $ret = GenericDatasource::read($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
-
         header('Content-type: application/json');
         $data = Serializer::encode(SZR_JSON, $ret);
         echo $data;
@@ -313,9 +311,6 @@ class Action_browser3 extends ActionAbstract
             $results[] = $path;
             $db->next();
         }
-
-
-
 
         header('Content-type: application/json');
         $data=$data[0];

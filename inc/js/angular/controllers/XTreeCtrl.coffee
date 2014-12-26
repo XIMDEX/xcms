@@ -28,6 +28,10 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     "xUrlHelper", "xMenu", "$document", "$timeout"
     ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout) ->
 
+        $scope.projects = null
+        $scope.ccenter = null
+        $scope.modules = null
+
         $scope.nodeActions = []
         $scope.selectedNodes = []
         $scope.selectedTab = 1
@@ -87,7 +91,9 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             method: "read"
             id: "10000"
         )).success (data) ->
-            $scope.projects = data  if data
+            if data
+                $scope.projects = data
+                $scope.projects.showNodes = true
             return
 
         $http.get(xUrlHelper.getAction(
@@ -152,11 +158,12 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         $scope.loadActions = (node,event) ->
+            return if event.target.classList[0] == "xim-actions-dropdown" && event.type == "press"
+            event.srcEvent?.stopPropagation()
+            event.stopPropagation?()
+            event.preventDefault?()
+
             $scope.select node, event
-            if event.type == "press"
-                event.srcEvent.stopPropagation()
-            else
-                event.stopPropagation()
             return if !$scope.selectedNodes[0].nodeid? | !$scope.selectedNodes[0].nodetypeid? | $scope.selectedNodes[0].nodeid == "0"
             nodeToSearch = $scope.selectedNodes[0].nodeid
             if $scope.selectedNodes.length > 1
@@ -173,32 +180,26 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 )).success (data) ->
                     if data
                         $scope.nodeActions[nodeToSearch] = data
-                        if event.type == "press"
+                        if event.center?
                             data.left = event.center.x
                             data.top = event.center.y
-                            data.expanded = "true"
-                        else
-                            data.left = event.clientX
-                            data.top = event.clientY
-                            if event.button == 2
-                                data.expanded = "true"
-                            else
-                                data.expanded = "false"
+                        data.expanded = "true"
+                        data.left = event.clientX if event.clientX?
+                        data.top = event.clientY if event.clientY?
+                        if event.type == "tap"
+                            data.expanded = "false"
                         xMenu.open data, $scope.selectedNodes, loadAction
                     return
             else
                 data = $scope.nodeActions[nodeToSearch]
-                if event.type == "press"
+                if event.center?
                     data.left = event.center.x
                     data.top = event.center.y
-                    data.expanded = "true"
-                else
-                    data.left = event.clientX
-                    data.top = event.clientY
-                    if event.button == 2
-                        data.expanded = "true"
-                    else
-                        data.expanded = "false"
+                data.expanded = "true"
+                data.left = event.clientX if event.clientX?
+                data.top = event.clientY if event.clientY?
+                if event.type == "tap"
+                    data.expanded = "false"
                 xMenu.open data, $scope.selectedNodes, loadAction
 
             return
@@ -208,10 +209,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         $scope.select = (node,event) ->
-            if event.type == "contextmenu"
-                event.stopPropagation()
-            else
-                event.srcEvent.stopPropagation()
+            event.stopPropagation?()
+            event.srcEvent?.stopPropagation()
             if event.ctrlKey
                 for k, n of $scope.selectedNodes
                     if (!n.nodeFrom? && !node.nodeFrom? && !n.nodeTo? && !node.nodeTo? && n.nodeid == node.nodeid) | (n.nodeFrom? && node.nodeFrom? && n.nodeTo? && node.nodeTo? && n.nodeFrom == node.nodeFrom && n.nodeTo == node.nodeTo)
@@ -237,14 +236,22 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         $scope.doFilter = () ->
             if $scope.filter == ""
+                $scope.projects.collection = []
+                $scope.projects.loading = true
+                $scope.projects.showNodes = true
                 $http.get(xUrlHelper.getAction(
                     action: "browser3"
                     method: "read"
                     id: "10000"
                 )).success (data) ->
-                    $scope.projects = data  if data
+                    if data
+                        $scope.projects = data
+                        $scope.projects.showNodes = true
                     return
             else if $scope.filter.length>2
+                $scope.projects.collection = []
+                $scope.projects.loading = true
+                $scope.projects.showNodes = true
                 url=xUrlHelper.getAction(
                         action: "browser3"
                         method: "readFiltered"

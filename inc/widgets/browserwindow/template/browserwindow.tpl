@@ -63,7 +63,13 @@
                         <span class="ui-icon xim-actions-toggle-node" ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children}" ng-click="toggleNode(node)"></span>
                         <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
                         <span class="xim-treeview-branch">#/node.name/#</span>
-                        <span ng-click="loadActions(node,$event)" class="xim-actions-dropdown xim-treeview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>
+                        <span hm-tap="loadActions(node,$event)"
+                              hm-recognizer-options='[
+                                    {"type":"tap","enable":true},
+                                    {"type":"press","enable":false}
+                                ]'
+                              class="xim-actions-dropdown xim-treeview-actions-dropdown ui-icon ui-icon-triangle-1-e"
+                              ng-class="{'selected': (node | nodeSelected: selectedNodes)}"></span>
                     </div>
                     <ul class="xim-treeview-branch" ng-show="node.showNodes">
                         <li ng-repeat="node in node.collection" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
@@ -77,9 +83,9 @@
                             <div ng-click="reloadNode()" class="xim-treeview-btnreload ui-corner-all ui-state-default">
                                 {t}Reload node{/t}
                             </div>
-                            <div class="xim-treeview-branch-container xim-treeview-expanded">
+                            <div ng-if="projects!='null' && projects!=null" class="xim-treeview-branch-container xim-treeview-expanded">
                                 <ul class="xim-treeview-branch" >
-                                    <li ng-if="projects!='null'" ng-repeat="node in [projects]" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
+                                    <li ng-repeat="node in [projects]" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                                 </ul>
                             </div>
                             <p class="text_center" ng-if="projects=='null'"><br/>
@@ -90,7 +96,7 @@
                     <tab heading="ccenter" select="$parent.selectedTab=2;">
                         <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
                             <div ng-click="reloadNode()" class="xim-treeview-btnreload ui-corner-all ui-state-default">{t}Reload node{/t}</div>
-                            <div class="xim-treeview-branch-container xim-treeview-expanded">
+                            <div ng-if="ccenter!='null' && ccenter!=null" class="xim-treeview-branch-container xim-treeview-expanded">
                                 <ul class="xim-treeview-branch">
                                     <li ng-repeat="node in ccenter.collection" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                                 </ul>
@@ -99,7 +105,7 @@
                     </tab>
                     <tab heading="modules" select="$parent.selectedTab=3;">
                         <div class="browser-modules-view-list-container" style="display: block;">
-                            <ul class="browser-modules-view-list">
+                            <ul ng-if="modules!='null' && modules!=null" class="browser-modules-view-list">
                                 <li
                                         {literal}
                                             ng-class="{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}"
