@@ -1,0 +1,38 @@
+{
+  "name": "angular-hammer",
+  "version": "2.1.2",
+  "description": "Hammer.js support for Angular.js applications",
+  "main": "angular.hammer.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RyanMullins/angular-hammer.git"
+  },
+  "keywords": [
+    "hammer",
+    "angular",
+    "javascript",
+    "touch"
+  ],
+  "author": "Ryan S Mullins",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RyanMullins/angular-hammer/issues"
+  },
+  "homepage": "http://ryanmullins.github.io/angular-hammer/",
+  "devDependencies": {
+    "finalhandler": "^0.3.2",
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-jsdoc": "^0.5.7",
+    "grunt-nodemon": "^0.3.0",
+    "serve-static": "^1.7.1",
+    "uglify-save-license": "^0.4.1"
+  }
+}

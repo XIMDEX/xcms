@@ -1440,24 +1440,24 @@
         "homepage": "http://symfony.com"
     },
     {
-        "name": "RyanMullins/angular-hammer",
-        "version": "2.1.2",
-        "version_normalized": "2.1.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/RyanMullins/angular-hammer.git",
-            "reference": "origin/master"
-        },
-        "type": "library",
-        "installation-source": "source"
-    },
-    {
         "name": "hammerjs/hammer.js",
         "version": "2.0.4",
         "version_normalized": "2.0.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/hammerjs/hammer.js.git",
+            "reference": "origin/master"
+        },
+        "type": "library",
+        "installation-source": "source"
+    },
+    {
+        "name": "RyanMullins/angular-hammer",
+        "version": "2.1.2",
+        "version_normalized": "2.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/RyanMullins/angular-hammer.git",
             "reference": "origin/master"
         },
         "type": "library",
