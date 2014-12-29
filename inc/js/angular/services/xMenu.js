@@ -51,16 +51,11 @@ angular.module('ximdex.common.service')
         }
 
         initMenu = function (options, nodes, callback){
-            /*var destroy = function(event, viewId){
-                if (id == viewId) {
-                    scope.$destroy();
-                    $(document).off("closeTab.angular", destroy);
-                }
-            };*/
             var menu = angular.element(
                 '<xim-menu expanded="'+options.expanded+'" top="'+options.top+'" left="'+options.left+'"></xim-menu>');
+            var hammerBody = Hammer(document.getElementsByTagName('body')[0]);
+            hammerBody.off('tap');
             angular.element('div.xim-actions-menu').remove();
-
 
             scope = $rootScope.$new();
             var menuC = $compile(menu)(scope);
@@ -73,10 +68,13 @@ angular.module('ximdex.common.service')
                 if (callback)
                     callback(result, nodes);
             }
-            $document.bind("mousedown",function(e){
-                angular.element('div.xim-actions-menu').remove();
-                $document.unbind("mousedown");
+            hammerBody.on('tap', function (ev) {
+                if (ev.target.classList[0] != "xim-actions-dropdown") {
+                    angular.element('div.xim-actions-menu').remove();
+                }
+                hammerBody.off('tap');
             });
+
             if (!scope.$$phase)
                 scope.$digest();
         }

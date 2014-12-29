@@ -59,22 +59,19 @@
                         </li>
                     </script>
                 <script type="text/ng-template"  id="tree_item_renderer.html">
-                    <div class="noselect" hm-doubletap="toggleNode(node)" hm-press="loadActions(node,$event)"  hm-tap="select(node,$event)" ng-right-click="loadActions(node,$event)" ng-class="{'xim-treeview-container-selected': (node | nodeSelected: selectedNodes)}">
-                        <span class="ui-icon xim-actions-toggle-node" ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children}" ng-click="toggleNode(node)"></span>
+                    <div class="noselect" hm-doubletap="toggleNode(node,$event)" hm-press="loadActions(node,$event)"  hm-tap="select(node,$event)" ng-right-click="loadActions(node,$event)" ng-class="{'xim-treeview-container-selected': (node | nodeSelected: selectedNodes)}">
+                        <span class="ui-icon xim-actions-toggle-node" ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children}" hm-tap="toggleNode(node,$event)"></span>
                         <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
                         <span class="xim-treeview-branch">#/node.name/#</span>
                         <span hm-tap="loadActions(node,$event)"
-                              hm-recognizer-options='[
-                                    {"type":"tap","enable":true},
-                                    {"type":"press","enable":false}
-                                ]'
-                              class="xim-actions-dropdown xim-treeview-actions-dropdown ui-icon ui-icon-triangle-1-e"
+                              class="xim-actions-dropdown xim-treeview-actions-dropdown
+                              ui-icon ui-icon-triangle-1-e"
                               ng-class="{'selected': (node | nodeSelected: selectedNodes)}"></span>
                     </div>
                     <ul class="xim-treeview-branch" ng-show="node.showNodes">
                         <li ng-repeat="node in node.collection" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                     </ul>
-                    <ul class="xim-treeview-loading" id="treeloading-undefined" ng-show="node.showNodes && node.loading"><li></li><img src="http://lab06.ximdex.net/ximdex/actions/browser3/resources/images/loading.gif"></ul>
+                    <ul class="xim-treeview-loading" id="treeloading-undefined" ng-show="node.showNodes && node.loading"><li></li><img src="xmd/images/browser/hbox/loading.gif"></ul>
                 </script>
                 {/literal}
                 <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">

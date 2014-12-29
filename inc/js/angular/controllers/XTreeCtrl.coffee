@@ -111,7 +111,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             $scope.modules = data  if data
             return
 
-        $scope.toggleNode = (node) ->
+        $scope.toggleNode = (node,event) ->
+            event.preventDefault()
             node.showNodes = not node.showNodes
             $scope.loadChilds node  if node.showNodes and not node.collection
             return
@@ -161,7 +162,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return if event.target.classList[0] == "xim-actions-dropdown" && event.type == "press"
             event.srcEvent?.stopPropagation()
             event.stopPropagation?()
-            event.preventDefault?()
+            #event.preventDefault?()
 
             $scope.select node, event
             return if !$scope.selectedNodes[0].nodeid? | !$scope.selectedNodes[0].nodetypeid? | $scope.selectedNodes[0].nodeid == "0"
@@ -180,37 +181,37 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 )).success (data) ->
                     if data
                         $scope.nodeActions[nodeToSearch] = data
-                        if event.center?
-                            data.left = event.center.x
-                            data.top = event.center.y
+                        if event.pointers?
+                            data.left = event.pointers[0].clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
+                            data.top = event.pointers[0].clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
                         data.expanded = "true"
-                        data.left = event.clientX if event.clientX?
-                        data.top = event.clientY if event.clientY?
+                        if event.clientX
+                            data.left = event.clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
+                            data.top = event.clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
                         if event.type == "tap"
                             data.expanded = "false"
                         xMenu.open data, $scope.selectedNodes, loadAction
                     return
             else
                 data = $scope.nodeActions[nodeToSearch]
-                if event.center?
-                    data.left = event.center.x
-                    data.top = event.center.y
+                if event.pointers?
+                    data.left = event.pointers[0].clientX + $window.document.body.scrollLeft
+                    data.top = event.pointers[0].clientY + $window.document.body.scrollTop
                 data.expanded = "true"
-                data.left = event.clientX if event.clientX?
-                data.top = event.clientY if event.clientY?
+                if event.clientX
+                    data.left = event.clientX + $window.document.body.scrollLeft
+                    data.top = event.clientY + $window.document.body.scrollTop
                 if event.type == "tap"
                     data.expanded = "false"
                 xMenu.open data, $scope.selectedNodes, loadAction
 
-            return
+            return false
 
         $window.com.ximdex.emptyActionsCache = () ->
             $scope.nodeActions = []
             return
 
         $scope.select = (node,event) ->
-            event.stopPropagation?()
-            event.srcEvent?.stopPropagation()
             if event.ctrlKey
                 for k, n of $scope.selectedNodes
                     if (!n.nodeFrom? && !node.nodeFrom? && !n.nodeTo? && !node.nodeTo? && n.nodeid == node.nodeid) | (n.nodeFrom? && node.nodeFrom? && n.nodeTo? && node.nodeTo? && n.nodeFrom == node.nodeFrom && n.nodeTo == node.nodeTo)

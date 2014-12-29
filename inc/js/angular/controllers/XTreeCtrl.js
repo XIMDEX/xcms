@@ -109,7 +109,8 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         $scope.modules = data;
       }
     });
-    $scope.toggleNode = function(node) {
+    $scope.toggleNode = function(node, event) {
+      event.preventDefault();
       node.showNodes = !node.showNodes;
       if (node.showNodes && !node.collection) {
         $scope.loadChilds(node);
@@ -171,9 +172,6 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       if (typeof event.stopPropagation === "function") {
         event.stopPropagation();
       }
-      if (typeof event.preventDefault === "function") {
-        event.preventDefault();
-      }
       $scope.select(node, event);
       if (($scope.selectedNodes[0].nodeid == null) | ($scope.selectedNodes[0].nodetypeid == null) | $scope.selectedNodes[0].nodeid === "0") {
         return;
@@ -198,16 +196,14 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         })).success(function(data) {
           if (data) {
             $scope.nodeActions[nodeToSearch] = data;
-            if (event.center != null) {
-              data.left = event.center.x;
-              data.top = event.center.y;
+            if (event.pointers != null) {
+              data.left = event.pointers[0].clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
+              data.top = event.pointers[0].clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
             }
             data.expanded = "true";
-            if (event.clientX != null) {
-              data.left = event.clientX;
-            }
-            if (event.clientY != null) {
-              data.top = event.clientY;
+            if (event.clientX) {
+              data.left = event.clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
+              data.top = event.clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
             }
             if (event.type === "tap") {
               data.expanded = "false";
@@ -217,38 +213,31 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         });
       } else {
         data = $scope.nodeActions[nodeToSearch];
-        if (event.center != null) {
-          data.left = event.center.x;
-          data.top = event.center.y;
+        if (event.pointers != null) {
+          data.left = event.pointers[0].clientX + $window.document.body.scrollLeft;
+          data.top = event.pointers[0].clientY + $window.document.body.scrollTop;
         }
         data.expanded = "true";
-        if (event.clientX != null) {
-          data.left = event.clientX;
-        }
-        if (event.clientY != null) {
-          data.top = event.clientY;
+        if (event.clientX) {
+          data.left = event.clientX + $window.document.body.scrollLeft;
+          data.top = event.clientY + $window.document.body.scrollTop;
         }
         if (event.type === "tap") {
           data.expanded = "false";
         }
         xMenu.open(data, $scope.selectedNodes, loadAction);
       }
+      return false;
     };
     $window.com.ximdex.emptyActionsCache = function() {
       $scope.nodeActions = [];
     };
     $scope.select = function(node, event) {
-      var k, n, pushed, _ref, _ref1, _ref2;
-      if (typeof event.stopPropagation === "function") {
-        event.stopPropagation();
-      }
-      if ((_ref = event.srcEvent) != null) {
-        _ref.stopPropagation();
-      }
+      var k, n, pushed, _ref, _ref1;
       if (event.ctrlKey) {
-        _ref1 = $scope.selectedNodes;
-        for (k in _ref1) {
-          n = _ref1[k];
+        _ref = $scope.selectedNodes;
+        for (k in _ref) {
+          n = _ref[k];
           if (((n.nodeFrom == null) && (node.nodeFrom == null) && (n.nodeTo == null) && (node.nodeTo == null) && n.nodeid === node.nodeid) | ((n.nodeFrom != null) && (node.nodeFrom != null) && (n.nodeTo != null) && (node.nodeTo != null) && n.nodeFrom === node.nodeFrom && n.nodeTo === node.nodeTo)) {
             if (event.button === 0) {
               $scope.selectedNodes.splice(k, 1);
@@ -257,9 +246,9 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           }
         }
         pushed = false;
-        _ref2 = $scope.selectedNodes;
-        for (k in _ref2) {
-          n = _ref2[k];
+        _ref1 = $scope.selectedNodes;
+        for (k in _ref1) {
+          n = _ref1[k];
           if (n.nodeid > node.nodeid) {
             $scope.selectedNodes.splice(k, 0, node);
             pushed = true;

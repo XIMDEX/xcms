@@ -48,16 +48,18 @@ angular.module("ximdex.common.directive").directive("ximMenu", [
         scope.height = element.height;
         listener = scope.$watch(scope.height, function(newValue, oldValue) {
           var finY, menuY, newtop, windowY;
-          windowY = $window.innerHeight;
           menuY = angular.element('div.xim-actions-menu').height();
-          finY = menuY + parseInt(scope.top);
-          if (finY > windowY) {
-            newtop = windowY - menuY - 20;
-            angular.element('div.xim-actions-menu').css({
-              top: newtop
-            });
+          if (menuY > 0) {
+            windowY = $window.innerHeight;
+            finY = menuY + parseInt(scope.top) - $window.document.body.scrollTop;
+            if (finY > windowY) {
+              newtop = parseInt(scope.top) - (finY - windowY) - (scope.expanded ? 10 : 0);
+              angular.element('div.xim-actions-menu').css({
+                top: newtop
+              });
+            }
+            return listener();
           }
-          return listener();
         }, true);
       }
     };

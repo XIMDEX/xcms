@@ -45,13 +45,15 @@ angular.module("ximdex.common.directive").directive "ximMenu", [
                     scope.height
                     ,
                     (newValue, oldValue) ->
-                        windowY = $window.innerHeight
                         menuY = angular.element('div.xim-actions-menu').height()
-                        finY = menuY + parseInt(scope.top)
-                        if finY > windowY
-                            newtop = windowY - menuY - 20
-                            angular.element('div.xim-actions-menu').css top: newtop
-                        listener()
+                        if menuY > 0
+                            windowY = $window.innerHeight
+
+                            finY = menuY + parseInt(scope.top) - $window.document.body.scrollTop
+                            if finY > windowY
+                                newtop = parseInt(scope.top) - (finY - windowY) - if scope.expanded then 10 else 0
+                                angular.element('div.xim-actions-menu').css top: newtop
+                            listener()
                     ,
                     true
                 )
