@@ -132,15 +132,19 @@ div.kupu-smalleditor {
   height: 100%; }
 
 .kupu-tb {
-  /*  	padding: 3px;
-        margin-bottom: 0.4em;
-        background-color: ButtonFace;
-        border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
+  /*
+    padding: 3px;
+    margin-bottom: 0.4em;
+    background-color: ButtonFace;
+    border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
 
-        background:transparent url(../../../gfx/fnd_toolbar.png) repeat-x scroll 0 0;*/
-  height: 40px;
+    background:transparent url(../../../gfx/fnd_toolbar.png) repeat-x scroll 0 0;
+  */
+
+  /*height: 40px;*/
+  height: auto;
   margin: 0;
-  /*overflow:hidden;*/
+  overflow: hidden;
   position: relative;
   /*top:0;*/
   width: 100%;
