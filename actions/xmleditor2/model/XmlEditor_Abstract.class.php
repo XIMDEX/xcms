@@ -364,10 +364,10 @@ abstract class XmlEditor_Abstract
     }
 
     /**
-     * Get the form view xsl for the current node. 
+     * Get the form view xsl for the current node.
      * If exist an updated xsl, it will return that.
      * Otherwise will generate a new one.
-     * @param int $idnode
+     * @param  int    $idnode
      * @return string pointer to the xsl file.
      */
     private function getFormViewXsl($idnode)
@@ -387,61 +387,79 @@ abstract class XmlEditor_Abstract
 
     /**
      * Generate a xsl file from schema and the template
-     * @param int $idSchema associated to the current node.
-     * @param type $maxIdVersion Schema idversion. 
+     * @param  int    $idSchema     associated to the current node.
+     * @param  type   $maxIdVersion Schema idversion.
      * @return string pointer to the new generated xsl file.
      */
     private function buildFormXsl($idSchema, $maxIdVersion)
     {
-        $content = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
-        $xpathObj = $this->getXPathFromSchema($idSchema);
+        $xslTemplateContent = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
+        $rngXpathObj = $this->getXPathFromSchema($idSchema);
 
-        $textElements = $this->getTextElements($xpathObj);
-        $elements = $xpathObj->query("//element");
-        
-        $applyElements = $this->getApplyElements($xpathObj);
+        $textElements = $this->getTextElements($rngXpathObj);
+        $elements = $rngXpathObj->query("//element");
 
-        $boldElements = $this->getBoldElements($xpathObj);
-        $italicElements = $this->getItalicElements($xpathObj);
-        $linkElements = $this->getLinkElements($xpathObj);
+        $applyElements = $this->getApplyElements($rngXpathObj);
 
-        $imageElements = $this->getElementsByType($xpathObj,"image");
-        $listElements = $this->getElementsByType($xpathObj,"list");
-        $itemElements = $this->getElementsByType($xpathObj,"item");
-        $textAreaElements = $this->getElementsByType($xpathObj,"textarea");
-        foreach ($elements as $element){
+        $boldElements = $this->getBoldElements($rngXpathObj);
+        $italicElements = $this->getItalicElements($rngXpathObj);
+        $linkElements = $this->getLinkElements($rngXpathObj);
+
+        $imageElements = $this->getElementsByType($rngXpathObj,"image");
+        $listElements = $this->getElementsByType($rngXpathObj,"list");
+        $itemElements = $this->getElementsByType($rngXpathObj,"item");
+        $textAreaElements = $this->getElementsByType($rngXpathObj,"textarea");
+
+        /*
+         * For every element, if isn't a docxap element, an apply element or an
+         * explicit textarea element, infer if is textarea, input or container.
+         */
+        foreach ($elements as $element) {
             $tagName = $element->getAttribute("name");
-            if ($tagName != "docxap") {
-                $toLowerTagName = strtolower($tagName);
-                //Tomar apply elements, son tipo bold, cursiva, link, enlace
-                if (in_array($toLowerTagName, $applyElements)) {
-                    continue;
-
-                } elseif (in_array($toLowerTagName, $textAreaElements)) {
-                    continue;
-                } elseif (in_array($tagName, $textElements)) {
-                    $resultLength = $xpathObj->query(".//element", $element)->length +
-                    $xpathObj->query(".//ref", $element)->length;
-                    if ($resultLength) {
-                        $textAreaElements[] = $tagName;
-                        $textAreaElements[] = $toLowerTagName;
-                    } else {
-                        $inputTextElements[] = $tagName;
-                        $inputTextElements[] = $toLowerTagName;
-                    }
-                } else {
-                    $containerElements[] = $tagName;
-                    $containerElements[] = $toLowerTagName;
-                }
+            if ($tagName == "docxap") {
+                continue;
             }
+
+            $toLowerTagName = strtolower($tagName);
+            //apply elements are italic, bold, underlink or link
+            if (in_array($toLowerTagName, $applyElements)) {
+                continue;
+            } 
+            
+            if (in_array($toLowerTagName, $textAreaElements)) {
+                continue;
+            } 
+            
+            if (in_array($tagName, $textElements)) {
+                /*A textarea element if it can have child elements defined by
+                 * reference or inside of current element.
+                 */
+                $resultLength = $rngXpathObj->query(".//element", $element)->length +
+                $rngXpathObj->query(".//ref", $element)->length;
+                if ($resultLength) {
+                    $textAreaElements[] = $tagName;
+                    $textAreaElements[] = $toLowerTagName;
+                } else {
+                    $inputTextElements[] = $tagName;
+                    $inputTextElements[] = $toLowerTagName;
+                }
+            } else {
+                $containerElements[] = $tagName;
+                $containerElements[] = $toLowerTagName;
+            }
+
         }
 
-        $allApplyElements = array_values(array_unique(array_diff($applyElements, $boldElements, $italicElements, $linkElements)));        
+        $allApplyElements = array_values(array_unique(array_diff($applyElements, $boldElements, $italicElements, $linkElements)));
         $containerElements = array_values(array_unique(array_diff($containerElements, $imageElements, $listElements)));
         $textAreaElements = array_values(array_unique(array_diff($textAreaElements, $itemElements)));
         $inputTextElements = array_values(array_unique(array_diff($inputTextElements, $itemElements)));
         $blockEditionElements = array_values(array_unique(array_merge($imageElements,$textAreaElements, $listElements)));
         
+        /**
+        * Nesting every array in other one. The keys for this array are 
+        * element macros.
+        */
         $groupedElements["@@APPLY_ELEMENTS@@"] = $allApplyElements;
         $groupedElements["@@CONTAINER_ELEMENTS@@"] = $containerElements;
         $groupedElements["@@INPUT_TEXT_ELEMENTS@@"] = $inputTextElements;
@@ -453,25 +471,24 @@ abstract class XmlEditor_Abstract
         $groupedElements["@@IMAGE_ELEMENTS@@"] = $imageElements;
         $groupedElements["@@LIST_ELEMENTS@@"] = $listElements;
         $groupedElements["@@ITEM_ELEMENTS@@"] = $itemElements;
-        
-        
+
         foreach ($groupedElements as $macro => $elements) {
             $implodedElements = implode(" | ", $elements);
-            $content = str_replace($macro, $implodedElements, $content);
+            $xslTemplateContent = str_replace($macro, $implodedElements, $xslTemplateContent);
         }
-        
-        $content = str_replace("@@URL_PATH@@", \App::getValue("UrlRoot"), $content);        
-       
+
+        $xslTemplateContent = str_replace("@@URL_PATH@@", \App::getValue("UrlRoot"), $xslTemplateContent);
+
         $formViewFile = \App::getValue( 'AppRoot').\App::getValue('FileRoot')."/xslformview_{$maxIdVersion}.xsl";
-        FsUtils::file_put_contents($formViewFile, $content);
+        FsUtils::file_put_contents($formViewFile, $xslTemplateContent);
 
         return $formViewFile;
 
     }
-    
+
     /**
      * Clean namespaces and get XPath object for a Relax-NG schema.
-     * @param int $idSchema
+     * @param  int       $idSchema
      * @return \DOMXPath Path to root element in Relax-NG.
      */
     private function getXPathFromSchema($idSchema)
@@ -481,11 +498,12 @@ abstract class XmlEditor_Abstract
         $docRNG = new DOMDocument();
         $docRNG->validateOnParse=true;
         //Removing namespaces declaration.
-        $schemaContent = preg_replace('/<grammar[^>]*>/', "<grammar>", $schemaContent,1);        
+        $schemaContent = preg_replace('/<grammar[^>]*>/', "<grammar>", $schemaContent,1);
         $docRNG->loadXML($schemaContent,LIBXML_NOERROR);
 
         $xpathObj = new DOMXPath($docRNG);
         $xpathObj->registerNameSpace('xim', 'http://www.ximdex.com');
+
         return $xpathObj;
     }
 
@@ -506,9 +524,9 @@ abstract class XmlEditor_Abstract
 
     /**
      * Get elements typed like apply and $elementType
-     * @param XPath $xpathObj pointer to the current element in Relax-NG.
-     * @param string $elementType searched type.
-     * @return array Names for found elements.
+     * @param  XPath  $xpathObj    pointer to the current element in Relax-NG.
+     * @param  string $elementType searched type.
+     * @return array  Names for found elements.
      */
     private function getSpecialApplyElements($xpathObj,$elementType)
     {
@@ -527,7 +545,7 @@ abstract class XmlEditor_Abstract
 
     /**
      * Get applies elements
-     * @param XPath $xpathObj pointer to the current element in Relax-NG.
+     * @param  XPath $xpathObj pointer to the current element in Relax-NG.
      * @return array Names for found elements.
      */
     private function getApplyElements(&$xpathObj)
@@ -565,6 +583,11 @@ abstract class XmlEditor_Abstract
         return $result;
     }
 
+    /**
+     * Get elements with a text tag inside.
+     * @param XPathObj $xpathObj Relax-NG XPath
+     * @return array Name of all elements with a text tag.
+     */
     private function getTextElements(&$xpathObj)
     {
         $result = array();

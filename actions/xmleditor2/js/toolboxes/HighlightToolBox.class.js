@@ -221,6 +221,8 @@ function FormViewToolBox() {
                     $(button).off("click").on("click", function () {
                         var found = false;
                         var availableSiblingElements;
+                        
+                        //Look for the closest node named like the selected.
                         while (!found && currentElement.parentNode) {
                             availableSiblingElements = currentElement.parentNode.schemaNode.childNodes;
                             for (var i = 0; i < availableSiblingElements.length; i++) {
@@ -234,7 +236,8 @@ function FormViewToolBox() {
                             if (!found)
                                 currentElement = currentElement.parentNode;
                         }
-
+                        
+                        
                         var ximElement = that.editor.getXimDocument().getElement(uid);
                         that.editor.ximElement = ximElement;
                         that.editor.selNode = $(button).parent().parent().siblings("[uid='" + uid + "']")[0];
@@ -262,8 +265,8 @@ function FormViewToolBox() {
                     var uid = that.editor.nodeId + "." + $(this).data("uid");
                     var lastElement = that.editor.getXimDocument().getElement(uid);
                     that.editor.tools["ximdoctool"].createElement(lastElement.tagName, lastElement.parentNode, lastElement);
-                })
-    }
+                });
+    };
 }
 
 FormViewToolBox.prototype = new XimdocToolBox();
