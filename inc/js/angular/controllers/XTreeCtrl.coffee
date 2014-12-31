@@ -25,8 +25,8 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     "$scope", "$attrs", "xBackend"
     "xTranslate", "$window", "$http"
-    "xUrlHelper", "xMenu", "$document", "$timeout"
-    ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout) ->
+    "xUrlHelper", "xMenu", "$document", "$timeout", "$q"
+    ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q) ->
 
         $scope.projects = null
         $scope.ccenter = null
@@ -39,6 +39,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         expanded = true
         size = 0
         listenHidePanel = true
+
+        canceler = $q.defer()
 
         loadAction = (action, nodes) ->
             console.log "LOADING", action
@@ -237,19 +239,24 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         $scope.doFilter = () ->
             if $scope.filter == ""
+                canceler.resolve()
+                canceler = $q.defer()
                 $scope.projects.collection = []
                 $scope.projects.loading = true
                 $scope.projects.showNodes = true
-                $http.get(xUrlHelper.getAction(
+                query = $http.get(xUrlHelper.getAction(
                     action: "browser3"
                     method: "read"
                     id: "10000"
-                )).success (data) ->
+                ), {timeout: canceler.promise}).success (data) ->
                     if data
                         $scope.projects = data
                         $scope.projects.showNodes = true
+                    query = null
                     return
             else if $scope.filter.length>2
+                canceler.resolve()
+                canceler = $q.defer()
                 $scope.projects.collection = []
                 $scope.projects.loading = true
                 $scope.projects.showNodes = true
@@ -258,8 +265,9 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                         method: "readFiltered"
                         id: "10000"
                     ) + "&query=" + $scope.filter
-                $http.get(url).success (data) ->
+                query = $http.get(url, {timeout: canceler.promise}).success (data) ->
                     $scope.projects = data  if data
+                    cancel = null
                     return
             $scope.selectedNodes = []
             return
