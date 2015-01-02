@@ -374,12 +374,15 @@ abstract class XmlEditor_Abstract
         {
             $node = new Node($idnode);
             $idSchema = $node->class->getTemplate();
+            $schemaNode = new Node($idSchema);
+            $schemaName = $schemaNode->GetNodeName();
             $dataFactory = new DataFactory($idSchema);
             $maxIdVersion = $dataFactory->GetLastVersionId();
-            $formXslFile = \App::getValue( 'AppRoot').\App::getValue( 'FileRoot')."/xslformview_{$maxIdVersion}.xsl";
+            $formXslFile = \App::getValue( 'AppRoot').\App::getValue( 'FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
             if (file_exists($formXslFile)) {
                 return $formXslFile;
             } else {
+                 array_map('unlink', glob(\App::getValue( 'AppRoot').\App::getValue( 'FileRoot')."/xslformview_{$schemaName}*"));
                 return $this->buildFormXsl($idSchema, $maxIdVersion);
             }
 
@@ -393,6 +396,7 @@ abstract class XmlEditor_Abstract
      */
     private function buildFormXsl($idSchema, $maxIdVersion)
     {
+        $warnings = "";
         $xslTemplateContent = FsUtils::file_get_contents(\App::getValue( 'AppRoot') . '/actions/xmleditor2/views/editor/form/templates/docxap.xsl');
         $rngXpathObj = $this->getXPathFromSchema($idSchema);
 
@@ -460,26 +464,42 @@ abstract class XmlEditor_Abstract
         * Nesting every array in other one. The keys for this array are 
         * element macros.
         */
-        $groupedElements["@@APPLY_ELEMENTS@@"] = $allApplyElements;
-        $groupedElements["@@CONTAINER_ELEMENTS@@"] = $containerElements;
-        $groupedElements["@@INPUT_TEXT_ELEMENTS@@"] = $inputTextElements;
-        $groupedElements["@@TEXTAREA_ELEMENTS@@"] = $textAreaElements;
-        $groupedElements["@@BOLD_ELEMENTS@@"] = $boldElements;
-        $groupedElements["@@ITALIC_ELEMENTS@@"] = $italicElements;
-        $groupedElements["@@LINK_ELEMENTS@@"] = $linkElements;
-        $groupedElements["@@BLOCK_EDITION_ELEMENTS@@"] = $blockEditionElements;
-        $groupedElements["@@IMAGE_ELEMENTS@@"] = $imageElements;
-        $groupedElements["@@LIST_ELEMENTS@@"] = $listElements;
-        $groupedElements["@@ITEM_ELEMENTS@@"] = $itemElements;
+        $groupedElements["##APPLY_ELEMENTS##"] = $allApplyElements;
+        $groupedElements["##CONTAINER_ELEMENTS##"] = $containerElements;
+        $groupedElements["##INPUT_TEXT_ELEMENTS##"] = $inputTextElements;
+        $groupedElements["##TEXTAREA_ELEMENTS##"] = $textAreaElements;
+        $groupedElements["##BOLD_ELEMENTS##"] = $boldElements;
+        $groupedElements["##ITALIC_ELEMENTS##"] = $italicElements;
+        $groupedElements["##LINK_ELEMENTS##"] = $linkElements;
+        $groupedElements["##BLOCK_EDITION_ELEMENTS##"] = $blockEditionElements;
+        $groupedElements["##IMAGE_ELEMENTS##"] = $imageElements;
+        $groupedElements["##LIST_ELEMENTS##"] = $listElements;
+        $groupedElements["##ITEM_ELEMENTS##"] = $itemElements;
 
         foreach ($groupedElements as $macro => $elements) {
-            $implodedElements = implode(" | ", $elements);
-            $xslTemplateContent = str_replace($macro, $implodedElements, $xslTemplateContent);
+            if (count($elements)){
+                $implodedElements = implode(" | ", $elements);
+                $xslTemplateContent = str_replace($macro, $implodedElements, $xslTemplateContent);
+            }else{ 
+                $matches = array();
+                preg_match("/##(\w+)_ELEMENTS##/", $macro, $matches);
+                if (count($matches)>1){
+                    $elementName = $matches[1];
+                    $xslTemplateContent = str_replace($macro, "{$elementName}_undefined", $xslTemplateContent);
+                    if ($elementName != "BLOCK_EDITION"){                        
+                        $warnings .= "<p>Doesn't found any $elementName element</p>";
+                        $warningElements .= "$elementName ";
+                    }
+                }            
+            }
         }
-
+        $xslTemplateContent = str_replace("##WARNING_ELEMENTS##", $warningElements, $xslTemplateContent);
+        $xslTemplateContent = str_replace("##WARNINGS##", $warnings, $xslTemplateContent);
         $xslTemplateContent = str_replace("@@URL_PATH@@", \App::getValue("UrlRoot"), $xslTemplateContent);
 
-        $formViewFile = \App::getValue( 'AppRoot').\App::getValue('FileRoot')."/xslformview_{$maxIdVersion}.xsl";
+        $schemaNode = new Node ($idSchema);
+        $schemaName = $schemaNode->GetNodeName();
+        $formViewFile = \App::getValue( 'AppRoot').\App::getValue('FileRoot')."/xslformview_{$schemaName}_{$maxIdVersion}.xsl";
         FsUtils::file_put_contents($formViewFile, $xslTemplateContent);
 
         return $formViewFile;

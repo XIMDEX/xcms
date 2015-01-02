@@ -17,6 +17,11 @@
 
             <body>
                 <div uid="{@uid}" class="container form-view">
+                    <xsl:if test="'##WARNING_ELEMENTS##' !=''">
+                        <div class="alert alert-warning">
+                            ##WARNINGS##
+                        </div>
+                    </xsl:if>
                     <xsl:apply-templates select="*[1]">
                         <xsl:with-param name="level" select="'1'"/>
                     </xsl:apply-templates>
@@ -25,7 +30,7 @@
         </html>
     </xsl:template>
 
-    <xsl:template match="@@CONTAINER_ELEMENTS@@">
+    <xsl:template match="##CONTAINER_ELEMENTS##">
         <xsl:param name="level"/>
         <xsl:variable name="elementUid" select="substring-after(@uid,'.')"/>
         <xsl:variable name="newLevel" select="number($level) + 1"/>
@@ -53,19 +58,19 @@
         </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="bold">
+    <xsl:template match="##BOLD_ELEMENTS##">
         <span uid="{@uid}" class="bold">
             <xsl:apply-templates />
         </span>
     </xsl:template>
 
-    <xsl:template match="italic">
+    <xsl:template match="##ITALIC_ELEMENTS##">
         <span uid="{@uid}" class="italic">
             <xsl:apply-templates />
         </span>
     </xsl:template>
 
-    <xsl:template match="@@LINK_ELEMENTS@@">
+    <xsl:template match="##LINK_ELEMENTS##">
         <xsl:param name="parentType"/>
 
         <a href="" uid="{@uid}">
@@ -81,13 +86,13 @@
         </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="item">
+    <xsl:template match="##ITEM_ELEMENTS##">
         <li uid="{@uid}">
             <xsl:value-of select="."/>
         </li>
     </xsl:template>
 
-    <xsl:template match="@@INPUT_TEXT_ELEMENTS@@">
+    <xsl:template match="##INPUT_TEXT_ELEMENTS##">
         <xsl:variable name="elementUid" select="substring-after(@uid,'.')"/>
 
         <div class="form-group">
@@ -111,20 +116,20 @@
         <xsl:apply-templates select="following-sibling::*[1]"/>
     </xsl:template>
 
-    <xsl:template match="@@BLOCK_EDITION_ELEMENTS@@">
+    <xsl:template match="##BLOCK_EDITION_ELEMENTS##">
         <xsl:variable name="elementUid" select="substring-after(@uid,'.')"/>
         <xsl:variable name="currentTagName" select="name(.)"/>
 
         <xsl:choose>
-            <xsl:when test="contains('@@BLOCK_EDITION_ELEMENTS@@', name(preceding-sibling::*[1])) and count(preceding-sibling::*[1]) != 0">
+            <xsl:when test="contains('##BLOCK_EDITION_ELEMENTS##', name(preceding-sibling::*[1])) and count(preceding-sibling::*[1]) != 0">
                 <xsl:choose>
-                    <xsl:when test="contains('@@TEXTAREA_ELEMENTS@@',name())">
+                    <xsl:when test="contains('##TEXTAREA_ELEMENTS##',name())">
                         <p contentEditable="true" uid="{@uid}" class="form-control">
                             <xsl:apply-templates/>
                         </p>
                     </xsl:when>
 
-                    <xsl:when test="contains('@@IMAGE_ELEMENTS@@',name())">
+                    <xsl:when test="contains('##IMAGE_ELEMENTS##',name())">
                         <xsl:variable name="src">
                             <xsl:choose>
                                 <xsl:when test="@src and @src != ''">
@@ -156,7 +161,7 @@
                         <p><img uid="{@uid}" src="{$src}"/></p>
                     </xsl:when>
 
-                    <xsl:when test="contains('@@LIST_ELEMENTS@@',name())">
+                    <xsl:when test="contains('##LIST_ELEMENTS##',name())">
                         <ul uid="{@uid}">
                             <xsl:apply-templates select="*"/>
                         </ul>
@@ -173,31 +178,43 @@
 
                     <div class="btn-toolbar btn-toolbar-{$elementUid}" role="toolbar" aria-label="Toolbar" data-uid="{@uid}">
                         <div class="btn-group js-applies" role="group" aria-label="Texto">
-                            <button type="button" data-element="bold" class="btn btn-sm">
-                                <span class="glyphicon glyphicon-bold"></span>
-                            </button>
+                            <xsl:if test="not(contains('##BOLD_ELEMENTS##','@'))">
+                                <button type="button" data-element="##BOLD_ELEMENTS##" class="btn btn-sm">
+                                    <span class="glyphicon glyphicon-bold"></span>
+                                </button>
+                            </xsl:if>
 
-                            <button type="button" data-element="italic" class="btn btn-sm">
-                                <span class="glyphicon glyphicon-italic"></span>
-                            </button>
+                            <xsl:if test="not(contains('##ITALIC_ELEMENTS##','@'))">
+                                <button type="button" data-element="##ITALIC_ELEMENTS##" class="btn btn-sm">
+                                    <span class="glyphicon glyphicon-italic"></span>
+                                </button>
+                            </xsl:if>
 
-                            <button type="button" data-element="link" class="btn btn-sm">
-                                <span class="glyphicon glyphicon-link"></span>
-                            </button>
+                            <xsl:if test="not(contains('##LINK_ELEMENTS##','@'))">
+                                <button type="button" data-element="##LINK_ELEMENTS##" class="btn btn-sm">
+                                    <span class="glyphicon glyphicon-link"></span>
+                                </button>
+                            </xsl:if>
                         </div>
 
                         <div class="btn-group js-siblings" role="group" aria-label="Texto">
-                            <button type="button" data-element="@@LIST_ELEMENTS@@" class="btn btn-sm">
-                                <span class="glyphicon glyphicon-list"></span>
-                            </button>
+                            <xsl:if test="not(contains('##LIST_ELEMENTS##','@'))">
+                                <button type="button" data-element="##LIST_ELEMENTS##" class="btn btn-sm">
+                                    <span class="glyphicon glyphicon-list"></span>
+                                </button>
+                            </xsl:if>                                
 
-                            <button type="button" data-element="@@IMAGE_ELEMENTS@@" class="btn btn-sm">
-                                <span class="glyphicon glyphicon-picture"></span>
-                            </button>
+                            <xsl:if test="not(contains('##IMAGE_ELEMENTS##','@'))">
+                                <button type="button" data-element="##IMAGE_ELEMENTS##" class="btn btn-sm">
+                                    <span class="glyphicon glyphicon-picture"></span>
+                                </button>
+                            </xsl:if>                            
 
-                            <button type="button" class="btn btn-sm" data-element="parrafo">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </button>
+                            <xsl:if test="not(contains('##LINK_ELEMENTS##','@'))">
+                                <button type="button" class="btn btn-sm" data-element="##TEXTAREA_ELEMENTS##">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </button>
+                            </xsl:if>                            
                         </div>
 
                         <div class="btn-group js-extra" role="group" aria-label="Texto">
@@ -209,13 +226,13 @@
 
                     <div class="form-control editable_elements_block">
                         <xsl:choose>
-                            <xsl:when test="contains('@@TEXTAREA_ELEMENTS@@',name())">
+                            <xsl:when test="contains('##TEXTAREA_ELEMENTS##',name())">
                                 <p contentEditable="true" uid="{@uid}" class="form-control">
                                     <xsl:apply-templates/>
                                 </p>
                             </xsl:when>
 
-                            <xsl:when test="contains('@@IMAGE_ELEMENTS@@',name())">
+                            <xsl:when test="contains('##IMAGE_ELEMENTS##',name())">
                                 <xsl:variable name="src">
                                     <xsl:choose>
                                         <xsl:when test="@src and @src != ''">
@@ -252,8 +269,8 @@
 
                         <xsl:variable name="posFirstDistinctTag">
                             <xsl:choose>
-                                <xsl:when test="count(following-sibling::*[not(contains('@@BLOCK_EDITION_ELEMENTS@@',name()))]) != 0">
-                                    <xsl:for-each select="following-sibling::*[not( contains('@@BLOCK_EDITION_ELEMENTS@@',name()))][1]">
+                                <xsl:when test="count(following-sibling::*[not(contains('##BLOCK_EDITION_ELEMENTS##',name()))]) != 0">
+                                    <xsl:for-each select="following-sibling::*[not( contains('##BLOCK_EDITION_ELEMENTS##',name()))][1]">
                                         <xsl:value-of select="count(preceding-sibling::*)"/>
                                     </xsl:for-each>
                                 </xsl:when>
@@ -282,7 +299,7 @@
                     </div>
                 </div>
 
-                <xsl:apply-templates select="following-sibling::*[not(contains('@@BLOCK_EDITION_ELEMENTS@@',name()))][1]"/>
+                <xsl:apply-templates select="following-sibling::*[not(contains('##BLOCK_EDITION_ELEMENTS##',name()))][1]"/>
             </xsl:otherwise>
         </xsl:choose>
 
