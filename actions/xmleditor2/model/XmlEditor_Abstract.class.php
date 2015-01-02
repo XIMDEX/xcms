@@ -401,9 +401,9 @@ abstract class XmlEditor_Abstract
 
         $applyElements = $this->getApplyElements($rngXpathObj);
 
-        $boldElements = $this->getBoldElements($rngXpathObj);
-        $italicElements = $this->getItalicElements($rngXpathObj);
-        $linkElements = $this->getLinkElements($rngXpathObj);
+        $boldElements = $this->getElementsByType($rngXpathObj,"bold");
+        $italicElements = $this->getElementsByType($rngXpathObj,"italic");
+        $linkElements = $this->getElementsByType($rngXpathObj,"link");
 
         $imageElements = $this->getElementsByType($rngXpathObj,"image");
         $listElements = $this->getElementsByType($rngXpathObj,"list");
@@ -507,21 +507,6 @@ abstract class XmlEditor_Abstract
         return $xpathObj;
     }
 
-    private function getBoldElements($xpathObj)
-    {
-        return $this->getSpecialApplyElements($xpathObj, "bold");
-    }
-
-    private function getItalicElements($xpathObj)
-    {
-        return $this->getSpecialApplyElements($xpathObj, "italic");
-    }
-
-    private function getLinkElements($xpathObj)
-    {
-        return $this->getSpecialApplyElements($xpathObj, "link");
-    }
-
     /**
      * Get elements typed like apply and $elementType
      * @param  XPath  $xpathObj    pointer to the current element in Relax-NG.
@@ -563,18 +548,21 @@ abstract class XmlEditor_Abstract
         return $result;
     }
 
+    /**
+     * Get an array for elements with type $elementType.
+     * @param XPathObject $xpathObj 
+     * @param string $elementType Searching type.
+     * @return array with element names.
+     */
     private function getElementsByType(&$xpathObj,$elementType)
     {
         $result = array();
         $applytags = $xpathObj->query("//*[name()='xim:type']");
-        error_log($elementType." ".count($applytags));
-        error_log(print_r($applytags,true));
 
         foreach ($applytags as $applyTag) {
             error_log($applyTag->nodeValue.", $elementType");
             if (strpos($applyTag->nodeValue, $elementType)!==FALSE) {
                 $elementTag = $applyTag->parentNode;
-                error_log(print_r($elementTag, true));
                 $elementName = $elementTag->getAttribute("name");
                 $result[] = strtolower($elementName);
             }
