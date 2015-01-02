@@ -65,7 +65,7 @@
         </span>
     </xsl:template>
 
-    <xsl:template match="link">
+    <xsl:template match="@@LINK_ELEMENTS@@">
         <xsl:param name="parentType"/>
 
         <a href="" uid="{@uid}">
@@ -123,7 +123,6 @@
                             <xsl:apply-templates/>
                         </p>
                     </xsl:when>
-
 
                     <xsl:when test="contains('@@IMAGE_ELEMENTS@@',name())">
                         <xsl:variable name="src">
