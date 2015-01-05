@@ -26,7 +26,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q) {
-    var canceler, dragStartPosition, expanded, listenHidePanel, loadAction, size;
+    var canceler, dragStartPosition, expanded, filterMode, listenHidePanel, loadAction, size;
     $scope.projects = null;
     $scope.ccenter = null;
     $scope.modules = null;
@@ -38,6 +38,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     size = 0;
     listenHidePanel = true;
     canceler = $q.defer();
+    filterMode = false;
     loadAction = function(action, nodes) {
       console.log("LOADING", action);
 
@@ -67,7 +68,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       )
        */
     };
-    $scope.twoLevelLoad = true;
+    $scope.twoLevelLoad = false;
     $http.get(xUrlHelper.getAction({
       action: "browser3",
       method: "nodetypes"
@@ -125,31 +126,63 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       });
     };
     $scope.loadNodeChilds = function(node, callback) {
-      var fromTo, idToSend, maxItemsPerGroup;
+      var fromTo, idToSend, maxItemsPerGroup, url;
       if (node.children && !node.loading) {
-        maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup);
-        fromTo = "";
-        idToSend = node.nodeid;
-        if (node.nodeid === "0" && (node.startIndex != null) && (node.endIndex != null)) {
-          fromTo = "&from=" + node.startIndex + "&to=" + node.endIndex;
-          idToSend = node.parentid;
-        }
         node.loading = true;
-        $http.get(xUrlHelper.getAction({
-          action: "browser3",
-          method: "read",
-          id: idToSend
-        }) + ("&items=" + maxItemsPerGroup) + fromTo).success(function(data) {
-          node.loading = false;
-          if (data) {
-            node.collection = data.collection;
-            if (callback) {
-              callback(node.collection);
+        node.showNodes = true;
+        canceler.resolve();
+        canceler = $q.defer();
+        if (filterMode) {
+          node.collection = [];
+          url = xUrlHelper.getAction({
+            action: "browser3",
+            method: "readFiltered",
+            id: node.nodeid
+          }) + "&query=" + $scope.filter;
+          $http.get(url, {
+            timeout: canceler.promise
+          }).success(function(data) {
+            var cancel;
+            node.loading = false;
+            if (data) {
+              node.collection = data.collection;
             }
+            cancel = null;
+          }).error(function(data) {
+            var cancel;
+            node.loading = false;
+            cancel = null;
+          });
+        } else {
+          maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup);
+          fromTo = "";
+          idToSend = node.nodeid;
+          if (node.nodeid === "0" && (node.startIndex != null) && (node.endIndex != null)) {
+            fromTo = "&from=" + node.startIndex + "&to=" + node.endIndex;
+            idToSend = node.parentid;
           }
-        }).error(function(data) {
-          node.loading = false;
-        });
+          $http.get(xUrlHelper.getAction({
+            action: "browser3",
+            method: "read",
+            id: idToSend
+          }) + ("&items=" + maxItemsPerGroup) + fromTo, {
+            timeout: canceler.promise
+          }).success(function(data) {
+            var cancel;
+            node.loading = false;
+            if (data) {
+              node.collection = data.collection;
+              if (callback) {
+                callback(node.collection);
+              }
+            }
+            cancel = null;
+          }).error(function(data) {
+            var cancel;
+            node.loading = false;
+            cancel = null;
+          });
+        }
       }
     };
     $scope.loadNodesChilds = function(nodes) {
@@ -271,46 +304,16 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
     };
     $scope.doFilter = function() {
-      var query, url;
       if ($scope.filter === "") {
-        canceler.resolve();
-        canceler = $q.defer();
-        $scope.projects.collection = [];
-        $scope.projects.loading = true;
+        filterMode = false;
         $scope.projects.showNodes = true;
-        query = $http.get(xUrlHelper.getAction({
-          action: "browser3",
-          method: "read",
-          id: "10000"
-        }), {
-          timeout: canceler.promise
-        }).success(function(data) {
-          if (data) {
-            $scope.projects = data;
-            $scope.projects.showNodes = true;
-          }
-          query = null;
-        });
-      } else if ($scope.filter.length > 2) {
-        canceler.resolve();
-        canceler = $q.defer();
         $scope.projects.collection = [];
-        $scope.projects.loading = true;
+        $scope.loadChilds($scope.projects);
+      } else if ($scope.filter.length > 2 && $scope.filter.match(/^[\d\w_\.]+$/i)) {
+        filterMode = true;
         $scope.projects.showNodes = true;
-        url = xUrlHelper.getAction({
-          action: "browser3",
-          method: "readFiltered",
-          id: "10000"
-        }) + "&query=" + $scope.filter;
-        query = $http.get(url, {
-          timeout: canceler.promise
-        }).success(function(data) {
-          var cancel;
-          if (data) {
-            $scope.projects = data;
-          }
-          cancel = null;
-        });
+        $scope.projects.collection = [];
+        $scope.loadChilds($scope.projects);
       }
       $scope.selectedNodes = [];
     };

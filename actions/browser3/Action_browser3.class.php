@@ -272,49 +272,38 @@ class Action_browser3 extends ActionAbstract
      */
     public function readFiltered()
     {
-        $idNode = $this->request->getParam('nodeid');
         $query = $this->request->getParam('query');
-        $results = array();
 
-        $sql="SELECT f.IdChild as IdChild FROM (SELECT * FROM FastTraverse where IdNode = %s) f
-          INNER JOIN Nodes n on n.IdNode=f.IdChild where not n.IdNodeType in (5083,5084,5085) and n.name like '%s'";
+        $ret = GenericDatasource::read($this->request);
+        $ret['collection'] = $this->checkNodeAction($ret['collection']);
 
+        $sql = "SELECT count(*) as cont FROM FastTraverse f INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d and not n.IdNode=%d and not n.IdNodeType in (5083,5084,5085) and n.name like '%s'";
         $db = new DB();
-        $sql = sprintf($sql, $idNode, '%'.$query.'%');
-        $db->query($sql);
-        $data=array();
-
-        $minId = $idNode>=10000 ? 10000 : 2;
-
-        while (!$db->EOF) {
-            $node = new Node($db->getValue('IdChild'));
-            $path = $node->TraverseToRoot($minId);
-            $d=&$data;
-            foreach($path as $p){
-                foreach($d as &$e){
-                    if(isset($e["nodeid"]) && $e["nodeid"]==$p){
-                        break;
-                    }
-                }
-                if(!isset($e["nodeid"]) | $e["nodeid"]!=$p){
-                    $this->request->setParam("nodeid",$p);
-                    $ret = GenericDatasource::read($this->request,true);
-                    unset($ret["collection"]);
-                    array_push($d,$ret);
-                    $e = &$d[count($d) - 1];
-                    $e["collection"]=array();
-                    $e["showNodes"]=true;
-
-                }
-                $d=&$e["collection"];
+        $removed = 0;
+        $queryToMatch = "/".$query."/i";
+        $queryToMatch = str_replace(array(".","_"),array('\.',"."),$queryToMatch);
+        foreach($ret["collection"] as $id => $child){
+            $sql2 = sprintf($sql, $child["nodeid"], $child["nodeid"], '%'.$query.'%');
+            $db->query($sql2);
+            $cont = 0;
+            while (!$db->EOF) {
+                $cont = $db->getValue('cont');
+                break;
             }
-            $results[] = $path;
-            $db->next();
+            $check = preg_match($queryToMatch,$child['name']);
+            if($cont=="0" && $check!==1){
+                array_splice($ret["collection"],$id-$removed,1);
+                $removed++;
+            }elseif($cont=="0"){
+                $ret["collection"][$id-$removed]["children"] = 0;
+            }else{
+                $ret["collection"][$id-$removed]["results"] = $cont;
+            }
+
         }
 
         header('Content-type: application/json');
-        $data=$data[0];
-        $data = Serializer::encode(SZR_JSON, $data);
+        $data = Serializer::encode(SZR_JSON, $ret);
         echo $data;
     }
 

@@ -41,6 +41,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         listenHidePanel = true
 
         canceler = $q.defer()
+        filterMode = false
 
         loadAction = (action, nodes) ->
             console.log "LOADING", action
@@ -71,7 +72,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
             return
 
-        $scope.twoLevelLoad = true
+        $scope.twoLevelLoad = false
+
         $http.get(xUrlHelper.getAction(
             action: "browser3"
             method: "nodetypes"
@@ -128,26 +130,49 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         $scope.loadNodeChilds = (node, callback) ->
             if node.children and not node.loading
-                maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup)
-                fromTo = ""
-                idToSend = node.nodeid
-                if node.nodeid == "0" && node.startIndex? && node.endIndex?
-                    fromTo = "&from=#{node.startIndex}&to=#{node.endIndex}"
-                    idToSend = node.parentid
                 node.loading = true
-                $http.get(xUrlHelper.getAction(
-                    action: "browser3"
-                    method: "read"
-                    id: idToSend
-                )+"&items=#{maxItemsPerGroup}"+fromTo).success((data) ->
-                    node.loading = false
-                    if data
-                        node.collection = data.collection
-                        callback node.collection  if callback
-                    return
-                ).error (data) ->
-                    node.loading = false
-                    return
+                node.showNodes = true
+                canceler.resolve()
+                canceler = $q.defer()
+                if filterMode
+                    node.collection = []
+                    url=xUrlHelper.getAction(
+                            action: "browser3"
+                            method: "readFiltered"
+                            id: node.nodeid
+                        ) + "&query=" + $scope.filter
+                    $http.get(url, {timeout: canceler.promise}).success( (data) ->
+                        node.loading = false
+                        node.collection = data.collection  if data
+                        cancel = null
+                        return
+                    ).error (data) ->
+                        node.loading = false
+                        cancel = null
+                        return
+
+                else
+                    maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup)
+                    fromTo = ""
+                    idToSend = node.nodeid
+                    if node.nodeid == "0" && node.startIndex? && node.endIndex?
+                        fromTo = "&from=#{node.startIndex}&to=#{node.endIndex}"
+                        idToSend = node.parentid
+                    $http.get(xUrlHelper.getAction(
+                        action: "browser3"
+                        method: "read"
+                        id: idToSend
+                    )+"&items=#{maxItemsPerGroup}"+fromTo, {timeout: canceler.promise}).success((data) ->
+                        node.loading = false
+                        if data
+                            node.collection = data.collection
+                            callback node.collection  if callback
+                        cancel = null
+                        return
+                    ).error (data) ->
+                        node.loading = false
+                        cancel = null
+                        return
 
             return
 
@@ -239,36 +264,15 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         $scope.doFilter = () ->
             if $scope.filter == ""
-                canceler.resolve()
-                canceler = $q.defer()
-                $scope.projects.collection = []
-                $scope.projects.loading = true
+                filterMode = false
                 $scope.projects.showNodes = true
-                query = $http.get(xUrlHelper.getAction(
-                    action: "browser3"
-                    method: "read"
-                    id: "10000"
-                ), {timeout: canceler.promise}).success (data) ->
-                    if data
-                        $scope.projects = data
-                        $scope.projects.showNodes = true
-                    query = null
-                    return
-            else if $scope.filter.length>2
-                canceler.resolve()
-                canceler = $q.defer()
                 $scope.projects.collection = []
-                $scope.projects.loading = true
+                $scope.loadChilds $scope.projects
+            else if $scope.filter.length>2 and $scope.filter.match /^[\d\w_\.]+$/i
+                filterMode = true
                 $scope.projects.showNodes = true
-                url=xUrlHelper.getAction(
-                        action: "browser3"
-                        method: "readFiltered"
-                        id: "10000"
-                    ) + "&query=" + $scope.filter
-                query = $http.get(url, {timeout: canceler.promise}).success (data) ->
-                    $scope.projects = data  if data
-                    cancel = null
-                    return
+                $scope.projects.collection = []
+                $scope.loadChilds $scope.projects
             $scope.selectedNodes = []
             return
 
