@@ -132,7 +132,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         node.showNodes = true;
         canceler.resolve();
         canceler = $q.defer();
-        if ($scope.filterMode) {
+        if ($scope.filterMode && $scope.selectedTab === 1) {
           node.collection = [];
           url = xUrlHelper.getAction({
             action: "browser3",
