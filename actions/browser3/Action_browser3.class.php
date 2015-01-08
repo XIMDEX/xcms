@@ -277,7 +277,9 @@ class Action_browser3 extends ActionAbstract
         $ret = GenericDatasource::read($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
 
-        $sql = "SELECT count(*) as cont FROM FastTraverse f INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d and not n.IdNode=%d and not n.IdNodeType in (5083,5084,5085) and n.name like '%s'";
+        $sql = "SELECT count(*) as cont FROM FastTraverse f
+              INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d and not n.IdNode=%d and n.name like '%s'
+              inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType and NOT(nt.IsHidden) and not nt.IdNodeType in (5084,5085)";
         $db = new DB();
         $removed = 0;
         $queryToMatch = "/".$query."/i";

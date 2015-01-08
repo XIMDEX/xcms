@@ -60,7 +60,7 @@
                     </script>
                 <script type="text/ng-template"  id="tree_item_renderer.html">
                     <div class="noselect" hm-doubletap="toggleNode(node,$event)" hm-press="loadActions(node,$event)"  hm-tap="select(node,$event)" ng-right-click="loadActions(node,$event)" ng-class="{'xim-treeview-container-selected': (node | nodeSelected: selectedNodes)}">
-                        <span class="ui-icon xim-actions-toggle-node" ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children}" hm-tap="toggleNode(node,$event)"></span>
+                        <span class="ui-icon xim-actions-toggle-node" ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children || node.collection.length==0}" hm-tap="toggleNode(node,$event)"></span>
                         <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
                         <span class="xim-treeview-branch">#/node.name/# <span ng-if="node.results">[Results: #/node.results/#]</span></span>
                         <span hm-tap="loadActions(node,$event)"
@@ -85,7 +85,7 @@
                                     <li ng-repeat="node in [projects]" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                                 </ul>
                             </div>
-                            <p class="text_center" ng-if="projects=='null'"><br/>
+                            <p class="text_center" ng-if="filterMode && projects.collection.length==0"><br/><br/>
                                 {t}There are no results{/t}
                             </p>
                         </div>

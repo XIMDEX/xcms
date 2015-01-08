@@ -26,7 +26,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q) {
-    var canceler, dragStartPosition, expanded, filterMode, listenHidePanel, loadAction, size;
+    var canceler, dragStartPosition, expanded, listenHidePanel, loadAction, size;
     $scope.projects = null;
     $scope.ccenter = null;
     $scope.modules = null;
@@ -38,7 +38,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     size = 0;
     listenHidePanel = true;
     canceler = $q.defer();
-    filterMode = false;
+    $scope.filterMode = false;
     loadAction = function(action, nodes) {
       console.log("LOADING", action);
 
@@ -132,7 +132,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         node.showNodes = true;
         canceler.resolve();
         canceler = $q.defer();
-        if (filterMode) {
+        if ($scope.filterMode) {
           node.collection = [];
           url = xUrlHelper.getAction({
             action: "browser3",
@@ -305,12 +305,12 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     };
     $scope.doFilter = function() {
       if ($scope.filter === "") {
-        filterMode = false;
+        $scope.filterMode = false;
         $scope.projects.showNodes = true;
         $scope.projects.collection = [];
         $scope.loadChilds($scope.projects);
       } else if ($scope.filter.length > 2 && $scope.filter.match(/^[\d\w_\.]+$/i)) {
-        filterMode = true;
+        $scope.filterMode = true;
         $scope.projects.showNodes = true;
         $scope.projects.collection = [];
         $scope.loadChilds($scope.projects);
