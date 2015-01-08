@@ -428,12 +428,12 @@ abstract class XmlEditor_Abstract
             //apply elements are italic, bold, underlink or link
             if (in_array($toLowerTagName, $applyElements)) {
                 continue;
-            } 
-            
+            }
+
             if (in_array($toLowerTagName, $textAreaElements)) {
                 continue;
-            } 
-            
+            }
+
             if (in_array($tagName, $textElements)) {
                 /*A textarea element if it can have child elements defined by
                  * reference or inside of current element.
@@ -459,9 +459,9 @@ abstract class XmlEditor_Abstract
         $textAreaElements = array_values(array_unique(array_diff($textAreaElements, $itemElements)));
         $inputTextElements = array_values(array_unique(array_diff($inputTextElements, $itemElements)));
         $blockEditionElements = array_values(array_unique(array_merge($imageElements,$textAreaElements, $listElements)));
-        
+
         /**
-        * Nesting every array in other one. The keys for this array are 
+        * Nesting every array in other one. The keys for this array are
         * element macros.
         */
         $groupedElements["##APPLY_ELEMENTS##"] = $allApplyElements;
@@ -570,7 +570,7 @@ abstract class XmlEditor_Abstract
 
     /**
      * Get an array for elements with type $elementType.
-     * @param XPathObject $xpathObj 
+     * @param XPathObject $xpathObj
      * @param string $elementType Searching type.
      * @return array with element names.
      */

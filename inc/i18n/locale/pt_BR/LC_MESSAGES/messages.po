@@ -3678,6 +3678,10 @@ msgstr "Espere, por favor..."
 msgid "Link manager"
 msgstr "Gestor de links"
 
+#: /actions/xmleditor2/template/Smarty/ximimagedrawer.tpl
+msgid "Image attributes"
+msgstr "Atributos de imagen"
+
 msgid "Available descriptions for the selected link"
 msgstr "Descri&ccedil;&otilde;es dispon&iacute;veis para o link selecionado"
 
@@ -7523,7 +7527,7 @@ msgid "Add external link"
 msgstr "Adicionar link externo"
 
 msgid "Add template"
-msgstr "Adicionar modelo" 
+msgstr "Adicionar modelo"
 
 msgid "Add editor template"
 msgstr "Adicionar modelo de editor"

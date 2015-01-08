@@ -110,7 +110,7 @@ function initKupuTools(kupu) {
 	});
 
 	//Changeset in the current doc
-	var changesettoolbox = new ChangesetToolBox({	
+	var changesettoolbox = new ChangesetToolBox({
 		toolboxId: 'xedit-changeset-toolbox',
 		ctrlButtonId: 'kupu-toolbox-undolog-button',
 		buttonActiveClass: 'kupu-toolbox-undolog-button',
@@ -118,7 +118,7 @@ function initKupuTools(kupu) {
 		maxlength: kupu.config.history_max_changes,
 		visible: new Boolean(kupu.config.toolboxes.history)
 	});
-	
+
 	//Current document's info toolbox
 	var infotoolbox = new InfoToolBox({
 		toolboxId: 'xedit-info-toolbox',
@@ -141,17 +141,17 @@ function initKupuTools(kupu) {
 		7. Change set
 		8. Log.
 	*/
-	ximdoctool.registerToolBox('changesettoolbox', changesettoolbox);	
+	ximdoctool.registerToolBox('changesettoolbox', changesettoolbox);
 	ximdoctool.registerToolBox('infotoolbox', infotoolbox);
 	ximdoctool.registerToolBox('rngelementstoolbox', rngelementstoolbox);
 	attributestool.registerToolBox('attributestoolbox', attributestoolbox);
 	ximdocannotationtool.registerToolBox('annotationstoolbox', annotationstoolbox);
-	
+
 	/**END OF TOOLBOX REGISTER.**/
 
     var highlighttoolbox = new HighlightToolBox();
     hovertool.registerToolBox('highlighttoolbox', highlighttoolbox);
-    
+
     var formViewToolBox = new FormViewToolBox();
     hovertool.registerToolBox('formViewToolBox', formViewToolBox);
 
@@ -222,12 +222,14 @@ function initKupuTools(kupu) {
     ximdocdrawertool.registerDrawer('ximletdrawer', ximletdrawer);
 
     // Ximlet Drawer Button
-    var ximletdrawerbutton = new KupuButton('kupu-ximletdrawer-button',
-                                          openximdocdrawer('ximletdrawer'));
+    var ximletdrawerbutton = new KupuButton('kupu-ximletdrawer-button', openximdocdrawer('ximletdrawer'));
     kupu.registerTool('ximletdrawerbutton', ximletdrawerbutton);
 
 	var ximlinkdrawer = new XimlinkDrawer('kupu-ximlinkdrawer', attributestool);
 	ximdocdrawertool.registerDrawer('ximlinkdrawer', ximlinkdrawer);
+
+	var ximimagedrawer = new XimimageDrawer('kupu-ximimagedrawer', attributestool);
+	ximdocdrawertool.registerDrawer('ximimagedrawer', ximimagedrawer);
 
 	var tabledrawer = new TableDrawer('kupu-tabledrawer', attributestool);
 	ximdocdrawertool.registerDrawer('tabledrawer', tabledrawer);
@@ -242,7 +244,7 @@ function initKupuTools(kupu) {
 	kupu.registerTool('navbartagtool',navbartagtool);
 
 	var navbartagtoolbox = new NavBarToolBox({});
-	navbartagtool.registerToolBox("navbartagtoolbox",navbartagtoolbox);    
+	navbartagtool.registerToolBox("navbartagtoolbox",navbartagtoolbox);
 
     // making the prepareForm method get called on form submit
     // some bug in IE makes it crash on saving the form when a lib drawer was added to the page at some point, remove it on form submit

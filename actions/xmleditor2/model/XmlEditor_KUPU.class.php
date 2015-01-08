@@ -227,6 +227,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $actionURL . '/js/drawers/TableWizardDrawer.class.js',
             $actionURL . '/js/drawers/XimletDrawer.class.js',
             $actionURL . '/js/drawers/XimlinkDrawer.class.js',
+            $actionURL . '/js/drawers/XimimageDrawer.class.js',
 
             /* ####### TOOLBOXES ########## */
 
@@ -276,6 +277,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $actionURL . '/views/common/css/treeview.css',
             $kupuURL . '/common/kupudrawerstyles.css',
             $actionURL . '/views/common/css/xlinks.css',
+            $actionURL . '/views/common/css/ximages.css',
 //future		$actionURL . '/views/common/css/colorpicker.css',
             \App::getValue( 'UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
             \App::getValue( 'UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',

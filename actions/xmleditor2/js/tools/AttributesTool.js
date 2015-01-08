@@ -48,15 +48,15 @@ var AttributesTool = Object.xo_create(XimdocTool, {
 		if (this.selNode) {
 			this._parse_ximElement(this.selNode);
 		}
-		var ximElement = options.selNode.ximElement;	
+		var ximElement = options.selNode.ximElement;
 
 		var attributes = this._parse_ximElement(ximElement);
 		this.selNode = ximElement;
-		
+
 		this.attributes = attributes;
-		
+
 		if (!options.selNode || !options.selNode.getAttribute('uid') || (options.event && options.event.type != 'click')) {
-		
+
 			return;
 		}
 

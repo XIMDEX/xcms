@@ -3,14 +3,11 @@
     <xsl:template name="docxap" match="docxap">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:foaf="http://xmlns.com/foaf/0.1/">
             <head>
-                <link href="@@@RMximdex.dotdot(css/form.css)@@@" rel="stylesheet" type="text/css" media="screen"/>
                 <!--<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,400italic,700italic" rel="stylesheet" type="text/css"/>
                 <link href="http://fonts.googleapis.com/css?family=Coustard:400,900" rel="stylesheet" type="text/css"/>-->
-                <link rel="stylesheet" type="text/css" href="views/editor/form/css/formview.css" />
                 <link rel="stylesheet" type="text/css" href="@@URL_PATH@@/extensions/bootstrap/dist/css/bootstrap.min.css" />
-
-                <script type="text/javascript" src="@@URL_PATH@@/extensions/jquery/js/jquery-1.8.3.min.js" ></script>
-                <script type="text/javascript" src="@@URL_PATH@@/extensions/jquery/js/jquery-ui-1.9.1.custom.min.js" ></script>
+                <link rel="stylesheet" type="text/css" media="screen" href="@@@RMximdex.dotdot(css/form.css)@@@"/>
+                <link rel="stylesheet" type="text/css" href="views/editor/form/css/formview.css" />
 
                 <title>Form View</title>
             </head>
@@ -101,7 +98,7 @@
             </xsl:if>
 
             <div class="input-group">
-                <div uid="{@uid}" class="form-control xedit-rngelement" contentEditable="true">
+                <div uid="{@uid}" class="form-control" contentEditable="true">
                     <xsl:apply-templates select="text()"/>
                 </div>
 
@@ -158,7 +155,7 @@
                             </xsl:choose>
                         </xsl:variable>
 
-                        <p><img uid="{@uid}" src="{$src}"/></p>
+                        <img uid="{@uid}" src="{$src}"/>
                     </xsl:when>
 
                     <xsl:when test="contains('##LIST_ELEMENTS##',name())">
@@ -261,7 +258,7 @@
                                     </xsl:choose>
                                 </xsl:variable>
 
-                                <p><img uid="{@uid}" src="{$src}"/></p>
+                                <img uid="{@uid}" src="{$src}"/>
                             </xsl:when>
                         </xsl:choose>
 

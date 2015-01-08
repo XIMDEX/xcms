@@ -1595,7 +1595,7 @@ msgstr "Datei wird bearbeitet"
 msgid "Modification of this template has affected to %1 documents. Would you like to republish them?"
 msgstr "Die &Auml;nderung dieses Vorlagen hat %1 der Dokumente beeinflusst. M&ouml;chten Sie diese nochmal ver&ouml;ffentlichen?"
 
-#: /actions/edittext/javascript/tour.js 
+#: /actions/edittext/javascript/tour.js
 msgid "This action allows to edit in a text window the document code.<br/>"
 msgstr "Diese Aktion erm&ouml;glicht Ihnen den Dokumentencode in einem Textfenster zu bearbeiten.<br/>"
 
@@ -3679,6 +3679,10 @@ msgstr "Bitte, warten Sie..."
 msgid "Link manager"
 msgstr "Link manager"
 
+#: /actions/xmleditor2/template/Smarty/ximimagedrawer.tpl
+msgid "Image attributes"
+msgstr "Image attributes"
+
 msgid "Available descriptions for the selected link"
 msgstr "Beschreibungen"
 
@@ -5120,7 +5124,7 @@ msgstr "Ver&ouml;ffentlichungsfenster existiert nicht"
 
 msgid "Generation error"
 msgstr "Erstellungsfehler"
- 
+
 msgid "Expiration date should be later than publication date"
 msgstr "Ablaufdatum muss &auml;lter als das Ver&ouml;ffentlichungsdatum sein"
 
@@ -5980,7 +5984,7 @@ msgid "Modify list of users that integrate this group"
 msgstr "Benutzerliste aus denen die Gruppe besteht &auml;ndern"
 
 msgid "Delete channel"
-msgstr "Kanal l&ouml;schen" 
+msgstr "Kanal l&ouml;schen"
 
 msgid "Delete a channel if it has not associated documents"
 msgstr "Kanal l&ouml;schen wenn diesem keine Dokumente zugeordnet sind"

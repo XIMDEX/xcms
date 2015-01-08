@@ -26,41 +26,42 @@
 
 
 var ImagesTool = Object.xo_create(XimdocTool, {
-	
+
 	initialize: function(editor) {
-		
+
 		ImagesTool._super(this, 'initialize', editor);
 	},
 
 	updateState: function(options) {
-		this.updateImagesSize(this.editor.getInnerDocument());
+
+		if (this.editor.ximElement.schemaNode.type == 'image') {
+
+			//show the drawer
+			var drawerId 	= 'ximimagedrawer';
+			var dt 			= this.editor.getTool ('ximdocdrawertool');
+
+			if (dt.isOpen (drawerId)) return;
+
+			dt.drawers[drawerId].setXimElement (this.editor.ximElement);
+			dt.openDrawer (drawerId);
+		}
+
+		this.updateImagesSize (this.editor.getInnerDocument());
 	},
 
 	afterUpdateContent: function(options) {
-		this.updateImagesSize(options.xslResult);
-	},
-	
-	beforeSave: function() {
-		this.updateImagesSize(this.editor.getInnerDocument());
+
+		this.updateImagesSize (options.xslResult);
 	},
 
-	// Doesn't works fine...
-//	mouseUp: function(options) {
-//		
-//		var images = [options.selNode];
-//		
-//		if (options.selNode.tagName.toUpperCase() != 'IMG') {
-//			images = $('img[uid]', options.selNode);
-//		}
-//		
-//		for (var i=0,l=images.length; i<l; i++) {
-//			this.updateImageSize(images[i]);
-//		}
-//	},
-	
+	beforeSave: function() {
+
+		this.updateImagesSize (this.editor.getInnerDocument());
+	},
+
 	updateImageSize: function(image) {
 		if($(image).length <1) return ;
-		
+
 		var width = 0, height = 0;
 		if($(image).attr('width') == "auto"){
 			width = null;
@@ -77,21 +78,20 @@ var ImagesTool = Object.xo_create(XimdocTool, {
 			'w': parseInt(width),
 			'h': parseInt(height)
 		};
-		
+
 
 		if (isNaN(dim.w) || isNaN(dim.h)) return;
-		
+
 		var ximElement = this.editor.getXimDocument().getElement(image.getAttribute('uid'));
 		if(ximElement) {
 			ximElement.attributes.width = dim.w;
 			ximElement.attributes.height = dim.h;
 		}
 	},
-	
+
 	updateImagesSize: function(doc) {
 		$('img[uid]', doc).each(function(index, item) {
 			this.updateImageSize(item);
 		}.bind(this));
 	}
-
 });

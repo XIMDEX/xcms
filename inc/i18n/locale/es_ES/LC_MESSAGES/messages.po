@@ -3701,7 +3701,7 @@ msgid "Scheduled publications"
 msgstr "Publicaciones programadas"
 
 msgid "<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled"
-msgstr "Las funciones requeridas <i>pcntl_fork</i> and <i>pcntl_waitpid</i> est&aacute;n ambas deshabilitadas" 
+msgstr "Las funciones requeridas <i>pcntl_fork</i> and <i>pcntl_waitpid</i> est&aacute;n ambas deshabilitadas"
 
 msgid "This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator"
 msgstr "Esto podr&iacute;a ocasionar una publicaci&oacute;n lenta e inestable. Por favor, revisa el fichero de configuraci&oacute;n <i>php.ini</i> o contacta con tu administrador"
@@ -4020,6 +4020,10 @@ msgstr "Espere, por favor..."
 #: /actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl
 msgid "Link manager"
 msgstr "Gestor de enlaces"
+
+#: /actions/xmleditor2/template/Smarty/ximimagedrawer.tpl
+msgid "Image attributes"
+msgstr "Atributos de imagen"
 
 msgid "Available descriptions for the selected link"
 msgstr "Descripciones disponibles para el link seleccionado"
@@ -9088,7 +9092,7 @@ msgstr "Fall&oacute; la conexi&oacute;n"
 msgid "Processing "
 msgstr "Procesando "
 
-#: ---------- ximLOADER ----------- 
+#: ---------- ximLOADER -----------
 #: /modules/ximLOADER/BuildParser.class.php
 msgid "Error parsing XML document"
 msgstr "Error parseando el documento XML"

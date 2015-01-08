@@ -81,7 +81,7 @@ class Action_xmleditor2 extends ActionAbstract {
 		$template = 'loadEditor_' . $this->_editor->getEditorName();
 		//Adding Config params for xsl:includes
 		$values["xslIncludesOnServer"] = $xslIncludesOnServer;
-	
+
 
 		$values["user_connect"] = null;
 		$values['time_id'] = 0;
@@ -366,7 +366,7 @@ class Action_xmleditor2 extends ActionAbstract {
 
 /**
 * <p>Check whether the node is being edited by some user</p>
-* 
+*
 * @return string json string containing editing information
 */
 public function checkEditionStatus() {
@@ -390,7 +390,7 @@ public function checkEditionStatus() {
         }
     }
     // Creating the new edition for this user
-    $res = $nodeEdition->create($idnode, $userID);    
+    $res = $nodeEdition->create($idnode, $userID);
     if(!$res) {
         XMD_Log::error(_('Error creating a new Node Edition'));
     }
@@ -410,7 +410,7 @@ public function removeNodeEdition() {
     }
 }
 
-    	
+
 	public function saveXimLink(){
 		$result = array();
 		$url = urlencode($this->request->getParam("url"));
@@ -427,9 +427,9 @@ public function removeNodeEdition() {
 		$idLink = $actionCreateLink->createNodeLink($name, $url, $description, $idParent);
 		if ($idLink){
 			$result["success"] = true;
-			$result["idLink"] = $idLink;	
-		}		
-		
+			$result["idLink"] = $idLink;
+		}
+
 		$this->sendJSON($result);
 	}
 
