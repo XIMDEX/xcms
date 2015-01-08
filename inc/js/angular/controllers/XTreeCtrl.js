@@ -267,11 +267,11 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       $scope.nodeActions = [];
     };
     $scope.select = function(node, event) {
-      var k, n, pushed, _ref, _ref1;
-      if (event.ctrlKey) {
-        _ref = $scope.selectedNodes;
-        for (k in _ref) {
-          n = _ref[k];
+      var k, n, pushed, _ref, _ref1, _ref2;
+      if (((_ref = event.srcEvent) != null ? _ref.ctrlKey : void 0) || (event.ctrlKey != null)) {
+        _ref1 = $scope.selectedNodes;
+        for (k in _ref1) {
+          n = _ref1[k];
           if (((n.nodeFrom == null) && (node.nodeFrom == null) && (n.nodeTo == null) && (node.nodeTo == null) && n.nodeid === node.nodeid) | ((n.nodeFrom != null) && (node.nodeFrom != null) && (n.nodeTo != null) && (node.nodeTo != null) && n.nodeFrom === node.nodeFrom && n.nodeTo === node.nodeTo)) {
             if (event.button === 0) {
               $scope.selectedNodes.splice(k, 1);
@@ -280,9 +280,9 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           }
         }
         pushed = false;
-        _ref1 = $scope.selectedNodes;
-        for (k in _ref1) {
-          n = _ref1[k];
+        _ref2 = $scope.selectedNodes;
+        for (k in _ref2) {
+          n = _ref2[k];
           if (n.nodeid > node.nodeid) {
             $scope.selectedNodes.splice(k, 0, node);
             pushed = true;

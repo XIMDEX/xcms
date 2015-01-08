@@ -239,7 +239,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         $scope.select = (node,event) ->
-            if event.ctrlKey
+            if event.srcEvent?.ctrlKey or event.ctrlKey?
                 for k, n of $scope.selectedNodes
                     if (!n.nodeFrom? && !node.nodeFrom? && !n.nodeTo? && !node.nodeTo? && n.nodeid == node.nodeid) | (n.nodeFrom? && node.nodeFrom? && n.nodeTo? && node.nodeTo? && n.nodeFrom == node.nodeFrom && n.nodeTo == node.nodeTo)
                         $scope.selectedNodes.splice k, 1 if event.button == 0
