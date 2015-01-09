@@ -23,18 +23,18 @@
  *  @version $Revision$
  */
 
-
-
 var ImagesTool = Object.xo_create(XimdocTool, {
 
-	initialize: function(editor) {
+	initialize: function (editor) {
 
 		ImagesTool._super(this, 'initialize', editor);
 	},
 
-	updateState: function(options) {
+	updateState: function (options) {
 
 		if (this.editor.ximElement.schemaNode.type == 'image') {
+
+			this.updateImagesSize (this.editor.getInnerDocument());
 
 			//show the drawer
 			var drawerId 	= 'ximimagedrawer';
@@ -45,11 +45,9 @@ var ImagesTool = Object.xo_create(XimdocTool, {
 			dt.drawers[drawerId].setXimElement (this.editor.ximElement);
 			dt.openDrawer (drawerId);
 		}
-
-		this.updateImagesSize (this.editor.getInnerDocument());
 	},
 
-	afterUpdateContent: function(options) {
+	afterUpdateContent: function (options) {
 
 		this.updateImagesSize (options.xslResult);
 	},
@@ -59,38 +57,31 @@ var ImagesTool = Object.xo_create(XimdocTool, {
 		this.updateImagesSize (this.editor.getInnerDocument());
 	},
 
-	updateImageSize: function(image) {
-		if($(image).length <1) return ;
+	updateImageSize: function (image) {
 
-		var width = 0, height = 0;
-		if($(image).attr('width') == "auto"){
-			width = null;
-        }else if($(image).attr('width')){
-            width = $(image).width();
-        }
-		if($(image).attr('height') == "auto" ){
-            height = null;
-        }else if($(image).attr('height')){
-            height = $(image).height();
-        }
+		if (! $(image).length) return;
+
+		var width 	= $(image).attr ('width') 	== 'auto' 	? $(image).width () 	: null;
+		var height 	= $(image).attr ('height') 	== 'auto' 	? $(image).height () 	: null;
 
 		var dim = {
-			'w': parseInt(width),
-			'h': parseInt(height)
+			'w': parseInt (width),
+			'h': parseInt (height)
 		};
 
+		if (isNaN (dim.w) || isNaN (dim.h)) return;
 
-		if (isNaN(dim.w) || isNaN(dim.h)) return;
+		var ximElement = this.editor.getXimDocument().getElement (image.getAttribute('uid'));
 
-		var ximElement = this.editor.getXimDocument().getElement(image.getAttribute('uid'));
-		if(ximElement) {
-			ximElement.attributes.width = dim.w;
-			ximElement.attributes.height = dim.h;
+		if (ximElement) {
+			ximElement.attributes.width 	= dim.w;
+			ximElement.attributes.height 	= dim.h;
 		}
 	},
 
-	updateImagesSize: function(doc) {
+	updateImagesSize: function (doc) {
 		$('img[uid]', doc).each(function(index, item) {
+
 			this.updateImageSize(item);
 		}.bind(this));
 	}
