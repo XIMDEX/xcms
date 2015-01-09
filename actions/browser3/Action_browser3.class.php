@@ -109,6 +109,7 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/extensions/angular/angular.min.js');
         $this->addJs('/extensions/vendors/RyanMullins/angular-hammer/angular.hammer.min.js');
         $this->addJs('/extensions/angular/angular-animate.min.js');
+        $this->addJs('/extensions/angular/angular-sanitize.min.js');
         $this->addJs('/extensions/angular-ui-sortable/src/sortable.js');
         $this->addJs('/extensions/ladda/dist/spin.min.js');
         $this->addJs('/extensions/ladda/dist/ladda.min.js');
@@ -293,13 +294,14 @@ class Action_browser3 extends ActionAbstract
                 break;
             }
             $check = preg_match($queryToMatch,$child['name']);
+            $ret["collection"][$id-$removed]["name"] = preg_replace($queryToMatch, '<strong>$0</strong>', $child["name"]);
             if($cont=="0" && $check!==1){
                 array_splice($ret["collection"],$id-$removed,1);
                 $removed++;
             }elseif($cont=="0"){
                 $ret["collection"][$id-$removed]["children"] = 0;
             }else{
-                $ret["collection"][$id-$removed]["results"] = $cont;
+                $ret["collection"][$id-$removed]["name"] .= " <span>[Results: $cont]</span>";
             }
 
         }

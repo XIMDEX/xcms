@@ -42,6 +42,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         canceler = $q.defer()
         $scope.filterMode = false
+        actualFilter = ""
 
         loadAction = (action, nodes) ->
             console.log "LOADING", action
@@ -140,7 +141,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                             action: "browser3"
                             method: "readFiltered"
                             id: node.nodeid
-                        ) + "&query=" + $scope.filter
+                        ) + "&query=" + actualFilter
                     $http.get(url, {timeout: canceler.promise}).success( (data) ->
                         node.loading = false
                         node.collection = data.collection  if data
@@ -265,11 +266,13 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         $scope.doFilter = () ->
             if $scope.filter == ""
+                actualFilter = ""
                 $scope.filterMode = false
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
                 $scope.loadChilds $scope.projects
             else if $scope.filter.length>2 and $scope.filter.match /^[\d\w_\.]+$/i
+                actualFilter = $scope.filter
                 $scope.filterMode = true
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
