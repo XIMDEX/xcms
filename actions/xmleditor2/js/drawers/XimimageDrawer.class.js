@@ -49,21 +49,21 @@ var XimimageDrawer = Object.xo_create (new Drawer(), {
     	div.empty ();
     	div.append (tagName);
 
-    	for (var aux in this.ximElement.schemaNode.attributes) this.createInput (aux, div);
+    	for (var attrName in this.ximElement.schemaNode.attributes) this._createInput (attrName, div);
 
 		$(this.element).show();
         this.focusElement();
     },
 
-    createInput: function (aux, div) {
+    _createInput: function (attrName, div) {
 
-    	if (aux == 'uid') return;
+    	if (attrName == 'uid') return;
 
-    	var attribute 	= this.ximElement.schemaNode.attributes [aux];
-    	var label 		= $('<label />').attr ({for: 'ximimage-' + aux}).addClass ('title').html (aux);
+    	var attribute 	= this.ximElement.schemaNode.attributes [attrName];
+    	var label 		= $('<label />').attr ({for: 'ximimage-' + attrName}).addClass ('title').html (attrName);
     	var input 		= attribute.values.length ? $('<select />') : $('<input />');
 
-    	input.attr ({id: 'ximimage-' + aux}).addClass ('kupu-toolbox-st ximlink-search xlinks_input');
+    	input.attr ({id: 'ximimage-' + attrName}).addClass ('ximage-input');
 
     	if (attribute.values.length) {
 
@@ -74,30 +74,35 @@ var XimimageDrawer = Object.xo_create (new Drawer(), {
     			var option 	= $('<option />');
     			var valor 	= attribute.values [j];
 
-    			if (valor == this.ximElement.attributes [aux]) option.attr('selected', 'selected');
+    			if (valor == this.ximElement.attributes [attrName]) option.attr('selected', 'selected');
 				input.append (option.attr ({value: valor}).html (valor));
 				j++;
     		}
-    	}else input.attr ({type: 'text', value: this.ximElement.attributes [aux]});
+    	}else input.attr ({type: 'text', value: this.ximElement.attributes [attrName]});
 
+        input.data('attribute-name', attrName);
     	div.append (label, input);
     },
 
     save: function () {
 
-    	/*var item = $('select.ximlink-list option:selected', this.element);
-    	var text = $('div.descriptions-list-options input:radio:checked', this.element);
+        var toolbox     = this.tool.toolboxes ['attributestoolbox'];
+        var attributes  = {};
 
-		if( item.length >= 1){
-			this.$input.val(item.val());
-			if (text.length && text.val() != ""){
-				$(this.ximElement._htmlElements).filter(":visible").text(text.val());
-			}
-		}*/
+        //no conflict with toolbox
+        $('.ximage-input', this.element).each (function (index, elem) {
 
-   	   	var toolbox = this.tool.toolboxes['attributestoolbox'];
+            var attrName    = $(elem).data ('attribute-name');
+            var attrValue   = $(elem).val ();
 
-       	toolbox.updateButtonHandler();
+            attributes[attrName] = attrValue;
+        });
+
+        toolbox.tool.saveAttributes (attributes);
+        this.editor.logMessage(_('Attributes updated!'));
+        toolbox.setActionDescription(_('Update attributes'));
+        toolbox._clean();
+        this.editor.updateEditor({caller: this});
 		this.close ();
     },
 
