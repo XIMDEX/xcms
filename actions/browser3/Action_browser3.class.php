@@ -140,6 +140,7 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/services/xDialog.js');
         $this->addJs('/inc/js/angular/services/xCheck.js');
         $this->addJs('/inc/js/angular/services/xMenu.js');
+        $this->addJs('/inc/js/angular/services/xTabs.js');
         $this->addJs('/inc/js/angular/directives/ximButton.js');
         $this->addJs('/inc/js/angular/directives/ximSelect.js');
         $this->addJs('/inc/js/angular/directives/ximValidators.js');
@@ -154,6 +155,7 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/directives/ximFitText.js');
         $this->addJs('/inc/js/angular/directives/ximMenu.js');
         $this->addJs('/inc/js/angular/filters/xFilters.js');
+        $this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyGroupUsersCtrl.js');

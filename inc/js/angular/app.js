@@ -25,7 +25,7 @@
 
 angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximdex.module', 'ximdex.vendor']);
 
-angular.module('ximdex.vendor', ['ngSanitize', 'ngAnimate', 'blueimp.fileupload', 'flow', 'ui.bootstrap']);
+angular.module('ximdex.vendor', ['hmTouchEvents', 'ngSanitize', 'ngAnimate', 'blueimp.fileupload', 'flow', 'ui.bootstrap']);
 angular.module('ximdex.module', ['ximdex.module.xlyre', 'ximdex.module.xtags',
     'ximdex.module.xmodifyusergroups', "ximdex.module.xmodifystates",
     "ximdex.module.xmodifystatesrole", "ximdex.module.xsetextensions",
@@ -41,7 +41,7 @@ angular.module('ximdex.common.directive.validator', []);
 angular.module('ximdex.common.service', []);
 angular.module('ximdex.common.filter', []);
 
-angular.module('ximdex.main.controller', [ 'hmTouchEvents']);
+angular.module('ximdex.main.controller', []);
 
 angular.module('ximdex.module.xlyre', []);
 angular.module('ximdex.module.xtags', []);

@@ -25,8 +25,8 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     "$scope", "$attrs", "xBackend"
     "xTranslate", "$window", "$http"
-    "xUrlHelper", "xMenu", "$document", "$timeout", "$q"
-    ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q) ->
+    "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce"
+    ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) ->
 
         $scope.projects = null
         $scope.ccenter = null
@@ -44,38 +44,14 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         $scope.filterMode = false
         actualFilter = ""
 
-        loadAction = (action, nodes) ->
-            console.log "LOADING", action
-            ###openAction(
-                label: action.name,
-                name:  action.name,
-                command: action.command,
-                params: 'method='+action.command+'&nodeid='+node.nodeid,
-                nodes: node.nodeid,
-                url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
-                bulk: action.bulk
-            ,
-                node.nodeid
-            )
-            $('#bw1').browserwindow(
-                'openAction'
-            ,
-                label: action.name,
-                name:  action.name,
-                command: action.command,
-                params: 'method='+action.command+'&nodeid='+node.nodeid,
-                nodes: node.nodeid,
-                url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
-                bulk: action.bulk
-            ,
-                node.nodeid
-            )###
 
+        loadAction = (action, nodes) ->
+            xTabs.pushTab action, nodes
             return
 
         $scope.twoLevelLoad = false
 
-        $http.get(xUrlHelper.getAction(
+        ###$http.get(xUrlHelper.getAction(
             action: "browser3"
             method: "nodetypes"
         )).success (data) ->
@@ -87,7 +63,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 while i >= 0
                     $scope.nodetypes[data.nodetypes[i].idnodetype] = data.nodetypes[i]
                     i--
-            return
+            return###
 
 
         #TODO: Get initial nodeid from backend

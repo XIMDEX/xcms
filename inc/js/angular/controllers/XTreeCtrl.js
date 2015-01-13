@@ -25,7 +25,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
-  "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q) {
+  "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
     var actualFilter, canceler, dragStartPosition, expanded, listenHidePanel, loadAction, size;
     $scope.projects = null;
     $scope.ccenter = null;
@@ -41,50 +41,24 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     $scope.filterMode = false;
     actualFilter = "";
     loadAction = function(action, nodes) {
-      console.log("LOADING", action);
-
-      /*openAction(
-          label: action.name,
-          name:  action.name,
-          command: action.command,
-          params: 'method='+action.command+'&nodeid='+node.nodeid,
-          nodes: node.nodeid,
-          url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
-          bulk: action.bulk
-      ,
-          node.nodeid
-      )
-      $('#bw1').browserwindow(
-          'openAction'
-      ,
-          label: action.name,
-          name:  action.name,
-          command: action.command,
-          params: 'method='+action.command+'&nodeid='+node.nodeid,
-          nodes: node.nodeid,
-          url: X.restUrl + '?action='+action.command+'&nodes[]='+node.nodeid+'&nodeid='+node.nodeid,
-          bulk: action.bulk
-      ,
-          node.nodeid
-      )
-       */
+      xTabs.pushTab(action, nodes);
     };
     $scope.twoLevelLoad = false;
-    $http.get(xUrlHelper.getAction({
-      action: "browser3",
-      method: "nodetypes"
-    })).success(function(data) {
-      var i;
-      if (data && data.nodetypes) {
-        $scope.nodetypes = data.nodetypes;
-        $scope.nodetypes = {};
-        i = data.nodetypes.length - 1;
-        while (i >= 0) {
-          $scope.nodetypes[data.nodetypes[i].idnodetype] = data.nodetypes[i];
-          i--;
-        }
-      }
-    });
+
+    /*$http.get(xUrlHelper.getAction(
+        action: "browser3"
+        method: "nodetypes"
+    )).success (data) ->
+        if data and data.nodetypes
+            $scope.nodetypes = data.nodetypes
+            $scope.nodetypes = {}
+            i = data.nodetypes.length - 1
+    
+            while i >= 0
+                $scope.nodetypes[data.nodetypes[i].idnodetype] = data.nodetypes[i]
+                i--
+        return
+     */
     $http.get(xUrlHelper.getAction({
       action: "browser3",
       method: "read",

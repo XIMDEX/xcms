@@ -33,7 +33,10 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
             },
             getAction: function(params){
                 var timestamp = new Date().getTime();
-                var actionUrl = this.restUrl()+'?noCacheVar='+timestamp+'&action='+params.action+'&method='+params.method;
+                var actionUrl = this.restUrl()+'?noCacheVar='+timestamp+'&action='+params.action;
+                if(params.method){
+                    actionUrl+='&method='+params.method;
+                }
                 if (params.id) {
                     actionUrl += '&nodeid=' + params.id + '&nodes[]=' + params.id;
                 }else if (params.nodes){

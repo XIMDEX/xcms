@@ -513,6 +513,31 @@ strong{
     padding-right: 7px;
 }
 
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav{
+  -webkit-transition: left 1s;
+  -moz-transition: left 1s;
+  -ms-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
+}
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li{
+  -webkit-transition: top .3s;
+  -moz-transition: top .3s;
+  -ms-transition: top .3s;
+  -o-transition: top .3s;
+  transition: top .3s;
+  padding:0;
+  height: 40px;
+}
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-enter,
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-leave.ng-leave-active{
+  top: 50px;
+}
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-enter.ng-enter-active,
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-leave{
+  top: 1px;
+}
+
 #angular-tree-resizer {
     position: absolute;
     top: 0;
