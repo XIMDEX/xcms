@@ -416,11 +416,10 @@ class DexPumper {
 	}
         
         private function finishTask($idSync){
-            
-            $query = "Update ServerFrames set state='In' where idsync = $idSync";
-            $this->serverFrame->execute($query);
+            $this->serverFrame->set('IdSync', $idSync);
+            $this->serverFrame->set('State', ServerFrame::IN);
+            $this->serverFrame->update();
             $this->updateTimeInPumper();
-            
         }
 
 	//DONE
