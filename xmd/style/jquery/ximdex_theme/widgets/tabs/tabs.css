@@ -263,7 +263,8 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
   padding: 17px 5px 13px 20px;
   letter-spacing: 0;
   text-transform: uppercase;
-  text-shadow: 1px 1px 1px #fff; }
+  text-shadow: 1px 1px 1px #fff;
+}
 
 .view-group {
   margin-right: 20px; }

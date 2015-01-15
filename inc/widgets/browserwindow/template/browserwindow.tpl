@@ -83,7 +83,6 @@
                 <img src="xmd/images/browser/hbox/loading.gif"></ul>
         </script>
     {/literal}
-
     <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
         <tab heading="projects" select="$parent.selectedTab=1;">
             <div ng-if="modoArbol" ><xim-tree /></div>
@@ -116,12 +115,11 @@
             </div>
         </tab>
     </tabset>
-    <button hm-tap="toggleView()">Cambio</button>
-    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="hbox-panel-tie hide"></button>
-    <input ng-init="" type="text"
-           placeholder="Filtro..." ng-change="doFilter()"
-           ng-model="filter" ng-show="selectedTab==1"
-           class="filterTree"/>
+	<button hm-tap="toggleView()">Cambio</button>
+    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-anchor" type="button"></button>
+    <div class="filter-tree">
+        <input ng-init="" ng-change="doFilter()" ng-model="filter" ng-show="selectedTab==1" type="text" class="form-control" placeholder="Filter...">
+    </div>
 
     <div id="angular-tree-resizer"
          hm-panstart="dragStart($event)" hm-panmove="drag($event,'10')"
