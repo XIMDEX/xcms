@@ -491,18 +491,11 @@ function XimdocEditor(options) {
         var t = toString($('html', xsltResult).get(0));
         xsltResult = this.createDomDocument(t);
 
-        // Removing <script/> tags
-        if (this.view != "form"){
-            $('script', xsltResult).each(function (index, elem) {
-                elem.parentNode.removeChild(elem);
-            });
-        }
-
         if (!IS_IE) {
 
             // Trying to fix tags defined into CDATA blocks
-
             // Replacing entities with < > simbols
+
             var htmlString = toString(xsltResult);
             var pattern = /&lt;([^<]+?)&gt;/g;
 
@@ -548,7 +541,7 @@ function XimdocEditor(options) {
             link.setAttribute('rel', 'stylesheet');
             link.setAttribute('type', 'text/css');
             link.setAttribute('href', href);
-            return link
+            return link;
         }
 
         var head = xsltResult.getElementsByTagName('head')[0];
@@ -634,6 +627,7 @@ function XimdocEditor(options) {
         options.xslResult = xslResult;
         this.beforeUpdateContent(options);
 
+        //.html () default remove <script> tags
         $('head', this.getInnerDocument()).html(toString($('head', xslResult)[0]));
         $('body', this.getInnerDocument()).html(toString($('body', xslResult)[0]));
 
@@ -705,8 +699,7 @@ function XimdocEditor(options) {
                 }
             }
         });
-    }
-
+    };
 
     this.alertvideo = function (msg) {
 
