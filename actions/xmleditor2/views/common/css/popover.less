@@ -1,0 +1,85 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+/*.popover {
+	position: fixed !important;
+	top: 0px !important;
+	left: 0px !important;
+}*/
+
+.popover {
+	max-width: 100% !important;
+	width: 600px !important;
+
+	&.right .arrow {
+		top: 50% !important;
+	}
+
+	&.fade.in {
+		opacity: 0 !important;
+	}
+
+	.buttons {
+		margin-top: 20px;
+
+		.btn {
+			background-image: linear-gradient(#6E6E6E, #7B7B7B);
+    		text-shadow: 0px -1px 0px #515151, 0px 1px 0px rgba(0, 0, 0, 0.2);
+    		text-transform: uppercase;
+    		color: #FFF;
+    		border: medium none;
+    		border-radius: 2px;
+    		cursor: pointer;
+    		padding: 7px 14px 5px;
+    		font-family: "Source Sans Pro";
+
+    		&.btn-save {
+    			margin-right: 5px;
+
+				background-image: linear-gradient(#72C4B9, #7CCAC0);
+    			border-color: #74C6BB;
+    			text-shadow: 0px -1px 0px #60B6AA, 0px 1px 0px rgba(255, 255, 255, 0.2);
+			}
+		}
+	}
+}
+
+.popover-content {
+	label,
+	input,
+	select {
+		display: block;
+		width: 100%;
+		margin-bottom: 5px;
+
+		font-size: 14px !important;
+	}
+
+	input,
+	select {
+		margin-bottom: 10px;
+		padding: 0.3em 0.5em;
+	}
+}
