@@ -29,9 +29,11 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) ->
 
         $scope.projects = null
+        $scope.initialNodeList = null
+        $scope.breadcrumbs = []
         $scope.ccenter = null
         $scope.modules = null
-
+        $scope.modoArbol = true
         $scope.nodeActions = []
         $scope.selectedNodes = []
         $scope.selectedTab = 1
@@ -236,8 +238,12 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         $scope.reloadNode = () ->
             if $scope.selectedNodes.length == 1
+                return if $scope.selectedNodes[0].isdir == "0"
                 $scope.selectedNodes[0].showNodes = true
                 $scope.selectedNodes[0].collection = []
+                if $scope.modoArbol == false
+                    $scope.initialNodeList = $scope.selectedNodes[0]
+                    prepareBreadcrumbs()
                 $scope.loadChilds $scope.selectedNodes[0]
 
         $scope.doFilter = () ->
@@ -306,6 +312,40 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     500
                 )
             return
+        $scope.toggleView = () ->
+            $scope.modoArbol = !$scope.modoArbol
+            if $scope.modoArbol == false
+                if $scope.selectedNodes.length > 0
+                    $scope.initialNodeList = $scope.selectedNodes[0]
+                else
+                    $scope.initialNodeList = $scope.projects
+                prepareBreadcrumbs()
+            return
+
+        $scope.goBreadcrums = (index) ->
+            pathToNode = $scope.breadcrumbs.slice 1, index + 1
+            actualNode = $scope.projects
+            nodeFound = false
+            while pathToNode.length > 0
+                nodeFound = false
+                for n, i in actualNode.collection
+                    if n.name == pathToNode[0]
+                        actualNode = n
+                        pathToNode.splice 0, 1
+                        nodeFound = true
+                        break
+                return if nodeFound == false
+            $scope.initialNodeList = actualNode
+            prepareBreadcrumbs()
+            return
+
+        prepareBreadcrumbs = () ->
+            path = $scope.initialNodeList.path
+            b = path.substring(1,path.length-1).split("/")
+            b.splice 0, 1
+            $scope.breadcrumbs = b
+            return
+
 ]
 
 angular.module("ximdex.main.controller").filter "nodeSelected", () ->

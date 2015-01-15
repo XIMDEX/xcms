@@ -3,6 +3,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
     ($window, $timeout, $http, xUrlHelper, $sce, $rootScope) ->
         tabs = []
         visitedTabs = []
+        activeTab = -1
 
         ###$window.com.ximdex.triggerActionLoaded({
             actionView: this,
@@ -15,6 +16,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         })###
 
         return {
+            activeIndex: () -> return activeTab
             loadCssAndJs: (content) ->
                 cssArr = []
                 angular.element(content).first().children().each (index, item) ->
@@ -58,15 +60,13 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                             nodes: nodes
                             command: action.command
                             blink: false
-                            active: true
+                            show: true
                         that.loadCssAndJs data
-                        for tab, i in tabs
-                            tabs[i].active = false
                         newlength = tabs.push(newtab)
                         that.setActive newlength-1
                         $timeout(
                             () ->
-                                $rootScope.$broadcast('modifiedTabs')
+                                $rootScope.$broadcast('onModifyTabs')
                         ,
                             0
                         )
@@ -84,32 +84,34 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                             visitedTabs[i] = visitedTabs[i]-1
                 tabs.splice index, 1
                 if visitedTabs.length > 0
-                    for tab, i in tabs
-                        if i == visitedTabs[0]
-                            tabs[i].active = true
-                            visitedIndex = visitedTabs.indexOf i
-                            if visitedIndex >= 0
-                                visitedTabs.splice visitedIndex, 1
-                            visitedTabs.unshift i
-                        else
-                            tabs[i].active = false
-                $timeout(
+                    activeTab = visitedTabs[0]
+                    $timeout(
+                        () ->
+                            $rootScope.$broadcast('onChangeActiveTab')
+                    ,
+                        0
+                    )
+                else
+                    activeTab = -1
+                ###$timeout(
                     () ->
-                        $rootScope.$broadcast('modifiedTabs')
+                        $rootScope.$broadcast('onModifyTabs')
                 ,
                     400
-                )
+                )###
                 return
             setActive: (index) ->
-                for tab, i in tabs
-                    if i == index
-                        tabs[i].active = true
-                        visitedIndex = visitedTabs.indexOf i
-                        if visitedIndex >= 0
-                            visitedTabs.splice visitedIndex, 1
-                        visitedTabs.unshift i
-                    else
-                        tabs[i].active = false
+                activeTab = index
+                visitedIndex = visitedTabs.indexOf index
+                if visitedIndex >= 0
+                    visitedTabs.splice visitedIndex, 1
+                visitedTabs.unshift index
+                $timeout(
+                    () ->
+                        $rootScope.$broadcast('onChangeActiveTab')
+                ,
+                    0
+                )
                 return
             highlightTab: (index) ->
                 return if tabs[index].blink == true
@@ -122,23 +124,21 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 )
             closeAll: () ->
                 tabs.splice 0, tabs.length
+                activeTab = -1
                 visitedTabs = []
                 $timeout(
                     () ->
-                        $rootScope.$broadcast('modifiedTabs')
+                        $rootScope.$broadcast('onModifyTabs')
                 ,
                     400
                 )
                 return
             offAll: () ->
-                for tab, i in tabs
-                    tabs[i].active = false
+                activeTab = -1
                 return
-            getActiveIndex: () ->
-                for tab,i in tabs
-                    if tab.active == true
-                        return i
-                return -1
         }
+
+
+
 
 ]

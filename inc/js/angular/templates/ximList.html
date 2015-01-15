@@ -1,0 +1,18 @@
+<div class="browser-projects-view-listcontainer xim-listview-container ui-droppable" style="display: block;">
+    <div class="xim-listview-browser" id="xim-listview-browser">
+        <a ng-repeat="b in breadcrumbs" hm-tap="goBreadcrums($index)" class="xim-listview-link alpha" ng-class="{'alpha': $first, 'omega': $last}">#/b/#</a>
+    </div>
+    <div class="xim-listview-table-container">
+        <ul class="xim-listview">
+            <li ng-repeat="node in initialNodeList.collection"
+                class="xim-listview-node xim-listview-list-view"
+                ng-class="{'xim-listview-selected': (node | nodeSelected: selectedNodes)}"
+                hm-press="loadActions(node,$event)" hm-tap="select(node,$event)"
+                ng-right-click="loadActions(node,$event)" hm-doubletap="reloadNode()">
+                <span class="xim-listview-icon xim-listview-icon-list icon-#/node.icon.split('.')[0]/#"></span>
+                <span ng-bind-html="node.name"></span>
+                <span class="xim-actions-dropdown xim-listview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>
+            </li>
+        </ul>
+    </div>
+</div>

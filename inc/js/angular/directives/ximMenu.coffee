@@ -29,7 +29,6 @@ angular.module("ximdex.common.directive").directive "ximMenu", [
         return (
             templateUrl: base_url+'/inc/js/angular/templates/ximMenu.html'
             restrict: "E"
-            #transclude: true
             replace: true
             link: (scope, element, attrs, ctrl) ->
                 if attrs.left

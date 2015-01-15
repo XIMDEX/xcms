@@ -421,25 +421,71 @@ button::-moz-focus-inner {
   -moz-transition: left 1s;
   -ms-transition: left 1s;
   -o-transition: left 1s;
-  transition: left 1s; }
+  transition: left 1s;
+  /*width: 100%;*/
+  position: absolute;
+  left: 0px;
+  height: 41px; }
 
 #angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li {
+  padding: 0;
+  height: 40px;
+  word-wrap: normal; }
+
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.hide {
+  visibility: hidden; }
+
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-enter {
+  top: 50px;
   -webkit-transition: top .3s;
   -moz-transition: top .3s;
   -ms-transition: top .3s;
   -o-transition: top .3s;
-  transition: top .3s;
-  padding: 0;
-  height: 40px; }
+  transition: top .3s; }
 
-#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-enter,
-#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-leave.ng-leave-active {
-  top: 50px; }
-
-#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-enter.ng-enter-active,
-#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-leave {
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-enter.ng-enter-active {
   top: 1px; }
 
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-leave {
+  -webkit-animation: .5s closeTab;
+  -moz-animation: .5s closeTab;
+  -o-animation: .5s closeTab;
+  animation: .5s closeTab;
+  overflow: hidden;
+  max-width: 400px; }
+
+@-webkit-keyframes closeTab {
+  0% {
+    top: 1px; }
+  50% {
+    top: 50px; }
+  100% {
+    top: 50px;
+    max-width: 0px; } }
+@-moz-keyframes closeTab {
+  0% {
+    top: 1px; }
+  50% {
+    top: 50px; }
+  100% {
+    top: 50px;
+    max-width: 0px; } }
+@-o-keyframes closeTab {
+  0% {
+    top: 1px; }
+  50% {
+    top: 50px; }
+  100% {
+    top: 50px;
+    max-width: 0px; } }
+@keyframes closeTab {
+  0% {
+    top: 1px; }
+  50% {
+    top: 50px; }
+  100% {
+    top: 50px;
+    max-width: 0px; } }
 #angular-tree-resizer {
   position: absolute;
   top: 0;

@@ -26,10 +26,13 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
-    var actualFilter, canceler, dragStartPosition, expanded, listenHidePanel, loadAction, size;
+    var actualFilter, canceler, dragStartPosition, expanded, listenHidePanel, loadAction, prepareBreadcrumbs, size;
     $scope.projects = null;
+    $scope.initialNodeList = null;
+    $scope.breadcrumbs = [];
     $scope.ccenter = null;
     $scope.modules = null;
+    $scope.modoArbol = true;
     $scope.nodeActions = [];
     $scope.selectedNodes = [];
     $scope.selectedTab = 1;
@@ -274,8 +277,15 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     };
     $scope.reloadNode = function() {
       if ($scope.selectedNodes.length === 1) {
+        if ($scope.selectedNodes[0].isdir === "0") {
+          return;
+        }
         $scope.selectedNodes[0].showNodes = true;
         $scope.selectedNodes[0].collection = [];
+        if ($scope.modoArbol === false) {
+          $scope.initialNodeList = $scope.selectedNodes[0];
+          prepareBreadcrumbs();
+        }
         return $scope.loadChilds($scope.selectedNodes[0]);
       }
     };
@@ -350,7 +360,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         }, 500);
       }
     };
-    return $scope.showTree = function() {
+    $scope.showTree = function() {
       if (!expanded && !listenHidePanel) {
         angular.element('#angular-tree').css({
           left: 0 + "px"
@@ -362,6 +372,48 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           return listenHidePanel = true;
         }, 500);
       }
+    };
+    $scope.toggleView = function() {
+      $scope.modoArbol = !$scope.modoArbol;
+      if ($scope.modoArbol === false) {
+        if ($scope.selectedNodes.length > 0) {
+          $scope.initialNodeList = $scope.selectedNodes[0];
+        } else {
+          $scope.initialNodeList = $scope.projects;
+        }
+        prepareBreadcrumbs();
+      }
+    };
+    $scope.goBreadcrums = function(index) {
+      var actualNode, i, n, nodeFound, pathToNode, _i, _len, _ref;
+      pathToNode = $scope.breadcrumbs.slice(1, index + 1);
+      actualNode = $scope.projects;
+      nodeFound = false;
+      while (pathToNode.length > 0) {
+        nodeFound = false;
+        _ref = actualNode.collection;
+        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+          n = _ref[i];
+          if (n.name === pathToNode[0]) {
+            actualNode = n;
+            pathToNode.splice(0, 1);
+            nodeFound = true;
+            break;
+          }
+        }
+        if (nodeFound === false) {
+          return;
+        }
+      }
+      $scope.initialNodeList = actualNode;
+      prepareBreadcrumbs();
+    };
+    return prepareBreadcrumbs = function() {
+      var b, path;
+      path = $scope.initialNodeList.path;
+      b = path.substring(1, path.length - 1).split("/");
+      b.splice(0, 1);
+      $scope.breadcrumbs = b;
     };
   }
 ]);

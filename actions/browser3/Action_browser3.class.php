@@ -154,6 +154,8 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/directives/ximInverted.js');
         $this->addJs('/inc/js/angular/directives/ximFitText.js');
         $this->addJs('/inc/js/angular/directives/ximMenu.js');
+        $this->addJs('/inc/js/angular/directives/ximTree.js');
+        $this->addJs('/inc/js/angular/directives/ximList.js');
         $this->addJs('/inc/js/angular/filters/xFilters.js');
         $this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
