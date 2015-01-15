@@ -85,6 +85,14 @@
     {/literal}
     <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
         <tab heading="projects" select="$parent.selectedTab=1;">
+            <div class="filter-tree input-group">
+                <input ng-init="" ng-change="doFilter()" ng-model="filter" ng-show="selectedTab==1" type="text" class="form-control" placeholder="Filter...">
+
+                <span class="input-group-btn">
+                    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn" type="button"></button>
+                </span>
+            </div>
+
             <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
                 <div ng-click="reloadNode()" class="xim-treeview-btnreload ui-corner-all ui-state-default">
                     {t}Reload node{/t}
@@ -128,11 +136,6 @@
             </div>
         </tab>
     </tabset>
-    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="hbox-panel-tie hide"></button>
-    <input ng-init="" type="text"
-           placeholder="Filtro..." ng-change="doFilter()"
-           ng-model="filter" ng-show="selectedTab==1"
-           class="filterTree"/>
 
     <div id="angular-tree-resizer"
          hm-panstart="dragStart($event)" hm-panmove="drag($event,'10')"
