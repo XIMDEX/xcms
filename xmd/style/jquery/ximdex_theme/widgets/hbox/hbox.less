@@ -24,7 +24,11 @@
  */
 
 .filter-tree {
-  padding: 0px 10px 0px 10px;
+  position: absolute;
+  top: 85px;
+  left: 5px;
+  width: 100%;
+  padding: 0px 20px 0px 15px;
 
   .form-control {
     height: 33px;
@@ -33,33 +37,42 @@
     border-color: #CCC;
     box-shadow: none;
   }
+}
 
-  .btn {
-    height: 33px;
+.btn-anchor {
+  position: absolute;
+  top: 45px;
+  right: 16px;
+  padding: 8px 10px 6px 10px !important;
 
-    background-color: #006B6C;
-    border-color: #006B6C;
+  background-color: #006B6C;
+  border-color: #006B6C;
+  background-image: none;
+  text-shadow: none;
+
+  &.btn {
+    background-image: none !important;
+    border-color: none !important;
+    border: 0px;
+  }
+
+  &:hover {
+    z-index: 0;
+
+    background-color: #47B1A3;
+    border-color: #47B1A3;
     background-image: none;
-    text-shadow: none;
+  }
 
-    &:hover {
-      z-index: 0;
+  &:before {
+    content: "\e038";
+    font-family: 'ximdex_icons' !important;
+    line-height: 1.2;
+  }
 
-      background-color: #47B1A3;
-      border-color: #47B1A3;
-      background-image: none;
-    }
-
+  &.tie {
     &:before {
-      content: "\e038";
-      font-family: 'ximdex_icons' !important;
-      line-height: 1.2;
-    }
-
-    &.tie {
-      &:before {
-        content: "\e60f";
-      }
+      content: "\e60f";
     }
   }
 }
