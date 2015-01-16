@@ -93,12 +93,12 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     )
                 else
                     activeTab = -1
-                ###$timeout(
+                $timeout(
                     () ->
                         $rootScope.$broadcast('onModifyTabs')
                 ,
                     400
-                )###
+                )
                 return
             setActive: (index) ->
                 activeTab = index

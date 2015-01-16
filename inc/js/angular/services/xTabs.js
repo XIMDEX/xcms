@@ -108,14 +108,9 @@ angular.module("ximdex.common.service").factory("xTabs", [
         } else {
           activeTab = -1;
         }
-
-        /*$timeout(
-            () ->
-                $rootScope.$broadcast('onModifyTabs')
-        ,
-            400
-        )
-         */
+        $timeout(function() {
+          return $rootScope.$broadcast('onModifyTabs');
+        }, 400);
       },
       setActive: function(index) {
         var visitedIndex;
