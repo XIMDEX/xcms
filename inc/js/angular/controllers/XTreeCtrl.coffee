@@ -46,29 +46,10 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         $scope.filterMode = false
         actualFilter = ""
 
-
         loadAction = (action, nodes) ->
             xTabs.pushTab action, nodes
             return
 
-        $scope.twoLevelLoad = false
-
-        ###$http.get(xUrlHelper.getAction(
-            action: "browser3"
-            method: "nodetypes"
-        )).success (data) ->
-            if data and data.nodetypes
-                $scope.nodetypes = data.nodetypes
-                $scope.nodetypes = {}
-                i = data.nodetypes.length - 1
-
-                while i >= 0
-                    $scope.nodetypes[data.nodetypes[i].idnodetype] = data.nodetypes[i]
-                    i--
-            return###
-
-
-        #TODO: Get initial nodeid from backend
         $http.get(xUrlHelper.getAction(
             action: "browser3"
             method: "read"
@@ -97,71 +78,63 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         $scope.toggleNode = (node,event) ->
             event.preventDefault()
             node.showNodes = not node.showNodes
-            $scope.loadChilds node  if node.showNodes and not node.collection
-            return
-
-        $scope.loadChilds = (node) ->
-            $scope.loadNodeChilds node, (nodes) ->
-                $scope.loadNodesChilds nodes  if $scope.twoLevelLoad
-                return
-
+            $scope.loadNodeChilds node  if node.showNodes and not node.collection
             return
 
         $scope.loadNodeChilds = (node, callback) ->
-            if node.children and not node.loading
-                node.loading = true
-                node.showNodes = true
-                canceler.resolve()
-                canceler = $q.defer()
-                if $scope.filterMode and $scope.selectedTab == 1
-                    node.collection = []
-                    url=xUrlHelper.getAction(
-                            action: "browser3"
-                            method: "readFiltered"
-                            id: node.nodeid
-                        ) + "&query=" + actualFilter
-                    $http.get(url, {timeout: canceler.promise}).success( (data) ->
-                        node.loading = false
-                        node.collection = data.collection  if data
-                        cancel = null
-                        return
-                    ).error (data) ->
-                        node.loading = false
-                        cancel = null
-                        return
-
-                else
-                    maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup)
-                    fromTo = ""
-                    idToSend = node.nodeid
-                    if node.nodeid == "0" && node.startIndex? && node.endIndex?
-                        fromTo = "&from=#{node.startIndex}&to=#{node.endIndex}"
-                        idToSend = node.parentid
-                    $http.get(xUrlHelper.getAction(
+            return if node.loading | node.isdir == "0"
+            node.loading = true
+            node.showNodes = true
+            canceler.resolve()
+            canceler = $q.defer()
+            if $scope.filterMode and $scope.selectedTab == 1
+                node.collection = []
+                url=xUrlHelper.getAction(
                         action: "browser3"
-                        method: "read"
-                        id: idToSend
-                    )+"&items=#{maxItemsPerGroup}"+fromTo, {timeout: canceler.promise}).success((data) ->
-                        node.loading = false
-                        if data
-                            node.collection = data.collection
-                            callback node.collection  if callback
-                        cancel = null
-                        return
-                    ).error (data) ->
-                        node.loading = false
-                        cancel = null
-                        return
+                        method: "readFiltered"
+                        id: node.nodeid
+                    ) + "&query=" + actualFilter
+                $http.get(url, {timeout: canceler.promise}).success( (data) ->
+                    node.loading = false
+                    if data
+                        node.collection = data.collection
+                        if $scope.modoArbol == false
+                            $scope.initialNodeList = node
+                            prepareBreadcrumbs()
+                        callback node.collection  if callback
+                    cancel = null
+                    return
+                ).error (data) ->
+                    node.loading = false
+                    cancel = null
+                    return
 
-            return
+            else
+                maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup)
+                fromTo = ""
+                idToSend = node.nodeid
+                if node.nodeid == "0" && node.startIndex? && node.endIndex?
+                    fromTo = "&from=#{node.startIndex}&to=#{node.endIndex}"
+                    idToSend = node.parentid
+                $http.get(xUrlHelper.getAction(
+                    action: "browser3"
+                    method: "read"
+                    id: idToSend
+                )+"&items=#{maxItemsPerGroup}"+fromTo, {timeout: canceler.promise}).success((data) ->
+                    node.loading = false
+                    if data
+                        node.collection = data.collection
+                        if $scope.modoArbol == false
+                            $scope.initialNodeList = node
+                            prepareBreadcrumbs()
+                        callback node.collection  if callback
+                    cancel = null
+                    return
+                ).error (data) ->
+                    node.loading = false
+                    cancel = null
+                    return
 
-        $scope.loadNodesChilds = (nodes) ->
-            if nodes.length < 10
-                i = nodes.length - 1
-
-                while i >= 0
-                    $scope.loadNodeChilds nodes[i]
-                    i--
             return
 
         $scope.loadActions = (node,event) ->
@@ -241,10 +214,9 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 return if $scope.selectedNodes[0].isdir == "0"
                 $scope.selectedNodes[0].showNodes = true
                 $scope.selectedNodes[0].collection = []
-                if $scope.modoArbol == false
-                    $scope.initialNodeList = $scope.selectedNodes[0]
-                    prepareBreadcrumbs()
-                $scope.loadChilds $scope.selectedNodes[0]
+                $scope.loadNodeChilds $scope.selectedNodes[0]
+
+
 
         $scope.doFilter = () ->
             if $scope.filter == ""
@@ -252,13 +224,13 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 $scope.filterMode = false
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
-                $scope.loadChilds $scope.projects
+                $scope.loadNodeChilds $scope.projects
             else if $scope.filter.length>2 and $scope.filter.match /^[\d\w_\.]+$/i
                 actualFilter = $scope.filter
                 $scope.filterMode = true
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
-                $scope.loadChilds $scope.projects
+                $scope.loadNodeChilds $scope.projects
             $scope.selectedNodes = []
             return
 
@@ -320,6 +292,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 else
                     $scope.initialNodeList = $scope.projects
                 prepareBreadcrumbs()
+                $scope.reloadNode()
             return
 
         $scope.goBreadcrums = (index) ->
@@ -329,7 +302,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             while pathToNode.length > 0
                 nodeFound = false
                 for n, i in actualNode.collection
-                    if n.name == pathToNode[0]
+                    if (n.name == pathToNode[0] && $scope.filterMode == false) | (n.originalName == pathToNode[0] && $scope.filterMode == true)
                         actualNode = n
                         pathToNode.splice 0, 1
                         nodeFound = true
@@ -340,11 +313,19 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         prepareBreadcrumbs = () ->
-            path = $scope.initialNodeList.path
+            if $scope.initialNodeList.nodeid == "0"
+                path = getFolderPath $scope.initialNodeList.collection[0].path
+            else
+                path = $scope.initialNodeList.path
             b = path.substring(1,path.length-1).split("/")
             b.splice 0, 1
             $scope.breadcrumbs = b
             return
+
+        getFolderPath = (path) ->
+            n = path.lastIndexOf "/"
+            return path.substring 0, n if n>0
+            return path
 
 ]
 

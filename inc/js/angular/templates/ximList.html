@@ -11,8 +11,9 @@
                 ng-right-click="loadActions(node,$event)" hm-doubletap="reloadNode()">
                 <span class="xim-listview-icon xim-listview-icon-list icon-#/node.icon.split('.')[0]/#"></span>
                 <span ng-bind-html="node.name"></span>
-                <span class="xim-actions-dropdown xim-listview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>
+                <span hm-tap="loadActions(node,$event)" class="xim-actions-dropdown xim-listview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>
             </li>
+            <span ng-hide="initialNodeList.collection.length">There are no results</span>
         </ul>
     </div>
 </div>

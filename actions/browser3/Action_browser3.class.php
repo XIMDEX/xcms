@@ -298,6 +298,7 @@ class Action_browser3 extends ActionAbstract
                 break;
             }
             $check = preg_match($queryToMatch,$child['name']);
+            $ret["collection"][$id-$removed]["originalName"] = $child["name"];
             $ret["collection"][$id-$removed]["name"] = preg_replace($queryToMatch, '<strong>$0</strong>', $child["name"]);
             if($cont=="0" && $check!==1){
                 array_splice($ret["collection"],$id-$removed,1);
