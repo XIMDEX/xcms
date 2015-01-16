@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xim="http://ximdex.com/schema/1.0">
+ 	<start>
+ 		<element name ="docxap">
+ 			<ref name="addressBook.class"/>
+ 		</element>
+ 	</start>
+ 	<define name="addressBook.class">
+ 		<element name="addressBook">
+ 			<zeroOrMore>
+ 				<ref name="card.class"/>
+ 			</zeroOrMore>
+ 		</element>
+ 	</define>
+ 	<define name="card.class">
+ 		<element name="card">
+                	<attribute name="id_image" xim:type="imageSelector" /> 
+ 			<ref name="name.class"/>
+ 			<ref name="email.class"/>
+ 			<optional>
+ 				<ref name="note.class"/>
+ 			</optional>
+ 		</element>
+                
+ 	</define>
+ 	<define name="name.class">
+ 		<element name="name">
+ 			<text/>
+ 			<xim:default_content>[name]</xim:default_content>
+ 		</element>
+ 	</define>
+ 	<define name="email.class">
+ 		<element name="email">
+ 			<text/>
+ 			<xim:default_content>[email]</xim:default_content>
+ 		</element>
+ 	</define>
+ 	<define name="note.class">
+ 		<element name="note">
+ 			<text/>
+ 			<xim:default_content>[note]</xim:default_content>
+ 		</element>
+ 	</define>
+</grammar>
