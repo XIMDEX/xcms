@@ -1,7 +1,11 @@
 <div class="browser-projects-view-listcontainer xim-listview-container ui-droppable" style="display: block;">
-    <div class="xim-listview-browser" id="xim-listview-browser">
-        <a ng-repeat="b in breadcrumbs" hm-tap="goBreadcrums($index)" class="xim-listview-link alpha" ng-class="{'alpha': $first, 'omega': $last}">#/b/#</a>
-    </div>
+    <!-- breadcums -->
+    <ol class="breadcrumb breadcrumb-list-view">
+        <li ng-repeat="b in breadcrumbs" ng-class="{'active': $last}">
+            <a href="#" hm-tap="goBreadcrums($index)">#/b/#</a>
+        </li>
+    </ol>
+
     <div class="xim-listview-table-container">
         <ul class="xim-listview">
             <li ng-repeat="node in initialNodeList.collection"
@@ -13,7 +17,10 @@
                 <span ng-bind-html="node.name"></span>
                 <span hm-tap="loadActions(node,$event)" class="xim-actions-dropdown xim-listview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>
             </li>
-            <span ng-hide="initialNodeList.collection.length">There are no results</span>
+
+            <li class="filter-no-results" ng-hide="initialNodeList.collection.length">
+                There are no results !
+            </li>
         </ul>
     </div>
 </div>

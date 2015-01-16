@@ -33,7 +33,7 @@
             <div class="hbox-panel">
                 <div class="xim-tabs-nav">
                     <div class="xim-tabs-list-selector xim-hidden-tab"></div>
-                    <ul class="xim-tabs-list"></ul>
+                    <ul class="xim-tabs-list" style="display:none"></ul>
                 </div>
                 <div class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
                     <ul class="ul ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all {{type && 'nav-' + type}}"
@@ -115,8 +115,12 @@
             </div>
         </tab>
     </tabset>
-	<button hm-tap="toggleView()">Cambio</button>
-    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-anchor" type="button"></button>
+
+    {literal}
+        <button hm-tap="toggleView()" ng-class="{'btn-view-list': !modoArbol}" class="btn btn-sidebar btn-treeview btn-view"></button>
+    {/literal}
+    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-sidebar btn-anchor" type="button"></button>
+
     <div class="filter-tree">
         <input ng-init="" ng-change="doFilter()" ng-model="filter" ng-show="selectedTab==1" type="text" class="form-control" placeholder="Filter...">
     </div>

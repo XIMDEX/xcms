@@ -255,7 +255,7 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
 	margin-top: -2px;
 }*/
 .browser-view-title {
-  border-bottom: 1px solid #e1e1e1;
+  /*border-bottom: 1px solid #e1e1e1;*/
   color: #888;
   font-size: 14px;
   font-size: 1.4rem;
