@@ -316,7 +316,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         $scope.toggleView = () ->
             $scope.treeMode = !$scope.treeMode
             if $scope.treeMode == false && $scope.selectedTab == 1
-                if $scope.selectedNodes.length > 0
+                if $scope.selectedNodes.length > 0 && $scope.selectedNodes[0].path.slice(0,16) == "/Ximdex/Projects"
                     $scope.loadNodeChildren $scope.selectedNodes[0]
                 else
                     $scope.loadNodeChildren $scope.projects

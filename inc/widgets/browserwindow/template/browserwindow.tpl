@@ -71,8 +71,7 @@
                 <span class="xim-treeview-branch" ng-bind-html="node.name"></span>
                         <span hm-tap="loadActions(node,$event)"
                               class="xim-actions-dropdown xim-treeview-actions-dropdown
-                              ui-icon ui-icon-triangle-1-e"
-                              ng-class="{'selected': (node | nodeSelected: selectedNodes)}"></span>
+                              ui-icon ui-icon-triangle-1-e"></span>
             </div>
             <ul class="xim-treeview-branch" ng-show="node.showNodes">
                 <li ng-repeat="node in node.collection" ng-include="'tree_item_renderer.html'"
