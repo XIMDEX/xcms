@@ -351,6 +351,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             b = path.split("/")
             b.splice 0, 1
             $scope.breadcrumbs = b
+            if $scope.initialNodeList.isdir == "0"
+                $scope.goBreadcrums b.length - 2
             return
 
         #Gets the folder path of a path
