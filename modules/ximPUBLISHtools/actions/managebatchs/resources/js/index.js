@@ -25,14 +25,22 @@
 
 
         X.actionLoaded(function (event, fn, params) {
-            X.angularTools.initView(params.context, params.tabId);
+            console.log(params.actionView.url, {method: 'getFrameList'});
+            var scope = X.angularTools.initView(params.context, params.tabId);
+//            var controller = scope.$$childHead;
+//            controller.start(params);
+
+
+            return;
+            
+            
+            
             var extended = {};
             var content = params.context;
 
             $('document').ready(function () {
                 get_frame_list(true);
-                periodical_refresh_list(5000);
-
+//                periodical_refresh_list(5000);
 
                 $dialog = $('<div></div>').dialog({
                     autoOpen: false,
@@ -73,7 +81,7 @@
                     var triangle_icon = extended[portal_version] ? 'ui-icon ui-icon-triangle-1-se' : 'ui-icon ui-icon-triangle-1-e';
 
                     $('div#frame_list', content).append('<div class="batch_container"><span class="' + triangle_icon + '" id="portal_version_' + portal_version + '"></span><div id="bar_pv_' + portal_version + '" class="progressbar"></div><div class="frame_filename"></div><div class="frame_default"></div></div>');
-                    
+
                     $(data[portal_version]).each(function (k, item) {
                         if (item.Progress === '-1')
                             item.Progress = '0';
@@ -86,7 +94,7 @@
                         batchid = item.IdBatch;
                         batch_state = item.BatchState;
                     });
-                    
+
                     $('#bar_pv_' + portal_version, content).progressbar({value: acum_progress / $(data[portal_version]).length});
                     $('#bar_pv_' + portal_version, content).next().append('<strong><em>' + nodename + '</em></strong>');
                     $('#bar_pv_' + portal_version, content).next().append(' <em>Esta publicación está <strong>' + batch_state + '</strong></em> <a class="batch_toggle" id="batchid_' + batchid + '">[' + ((batch_state == 'detenida') ? 'Reanudar' : 'Detener') + ' esta publicación]</a>');
@@ -132,6 +140,7 @@
                                     }
                                 });
                             });
+//                            console.log({completed: completed, total: total});
                             if (completed === total) {
                                 var t = XimTimer.getInstance();
                                 t.getObserver(get_frame_list);

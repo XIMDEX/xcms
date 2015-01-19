@@ -31,47 +31,41 @@
     </fieldset>
 
     <fieldset>
-        <legend><span>{t}Listado de documentos{/t}</span></legend>	
-        {if $frames}
-            <div id="frame_list">
-            </div>
-        {else}
-            <div id="frame_list">{t}Aún no se ha enviado a publicar ningún documento{/t}</div>
-        {/if}
-    </fieldset>
+        <legend><span>{t}Listado de documentos{/t}</span></legend>
 
-
-
-    <h2>Angular</h2>
-    <ul>
-        <div class="batch_container" ng-repeat="publicationList in json">
-            <span class="ui-icon ui-icon-triangle-1-e"></span>
-            <div class="progressbar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-                <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right"></div>
-            </div>
-
-            <div class="frame_filename">
-                <strong>
-                    <em>ParentFrame!!</em>
-                </strong>
-                <em>Esta publicación está <strong>isActiveBatch!!</strong></em>
-                <a class="batch_toggle">[Detener esta publicación]</a>
-            </div>
-
-            <div class="frame_default"></div>
-
-            <div ng-repeat="frame in publicationList" style="display: block;">
-                <span class="frame_indent"></span>
+        <div id="frame_list" ng-if="1">
+            <div class="batch_container" ng-repeat="portal in json">
+                <span class="ui-icon ui-icon-triangle-1-e"></span>
                 <div class="progressbar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-                    <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right" style="width: 102%;"></div>
+                    <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right"></div>
                 </div>
-                <div class="frame_filename">#/frame.PubTime/#
+
+                <div class="frame_filename">
                     <strong>
-                        <em>#/frame.FilePath + '/' + frame.FileName /#</em>
+                        <em>#/portal.NodeName/#</em>
                     </strong>
+                    <em>Esta publicación está <strong>#/portal.BatchStateText/#</strong></em>
+                    <a class="batch_toggle" href="#" ng-click="stopBatch(portal.IdBatch)" ng-if="portal.BatchState">[Detener esta publicación]</a>
+                    <a class="batch_toggle" href="#" ng-click="startBatch(portal.IdBatch)" ng-if="!portal.BatchState">[Reanudar esta publicación]</a>
                 </div>
+
                 <div class="frame_default"></div>
+
+                <div ng-repeat="frame in portal.elements">
+                    <span class="frame_indent"></span>
+                    <div class="progressbar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+                        <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right" style="width: 102%;"></div>
+                    </div>
+                    <div class="frame_filename">#/frame.PubTime | date : 'dd-MM hh:mm'/#
+                        <strong>
+                            <em>#/frame.FilePath + '/' + frame.FileName/#</em>
+                        </strong>
+                    </div>
+                    <div class="frame_default"></div>
+                </div>
             </div>
         </div>
-    </ul>
+
+        <p>#/getFrameList()/#</p>
+    </fieldset>
 </div>
