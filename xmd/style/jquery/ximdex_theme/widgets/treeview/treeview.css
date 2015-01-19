@@ -77,6 +77,11 @@ li.xim-listview-node:hover {
   border-radius: 3px;
   color: white; }
 
+li.xim-listview-node .xim-listview-actions-dropdown {
+  top: 0px !important;
+  left: 0px !important;
+}
+
 .xim-treeview-node .xim-treeview-selected:hover {
   padding: 0px; }
 

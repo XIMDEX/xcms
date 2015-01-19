@@ -12,7 +12,9 @@
                 class="xim-listview-node xim-listview-list-view"
                 ng-class="{'xim-listview-selected': (node | nodeSelected: selectedNodes)}"
                 hm-press="loadActions(node,$event)" hm-tap="select(node,$event)"
-                ng-right-click="loadActions(node,$event)" hm-doubletap="reloadNode()">
+                ng-right-click="loadActions(node,$event)" hm-doubletap="reloadNode()"
+                tooltip="#/node.path/#" tooltip-popup-delay="200" tooltip-placement="right" tooltip-trigger="mouseenter">
+
                 <span class="xim-listview-icon xim-listview-icon-list icon-#/node.icon.split('.')[0]/#"></span>
                 <span ng-bind-html="node.name"></span>
                 <span hm-tap="loadActions(node,$event)" class="xim-actions-dropdown xim-listview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>

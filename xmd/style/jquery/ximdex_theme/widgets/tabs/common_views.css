@@ -41,13 +41,14 @@
 
 
 .xim-treeview-icon, .xim-listview-icon{
-		background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
-		width: 18px;
-		height: 1em;
-		float: left;
-		margin-right: 5px;
-		padding-bottom: .1em;
-		outline-style:none;
+	background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
+	width: 18px;
+	height: 1em;
+	float: left;
+	margin-right: 5px;
+	margin-top: 2px;
+	padding-bottom: .1em;
+	outline-style:none;
 }
 
 .xim-treeview-icon{
@@ -200,12 +201,12 @@
 .icon-folder_bulletins{
 	background-position: -22px -378px;
 }
-.icon-catalog_xlyre{ 
-        background-position: -2px -663px; 
-} 
-.icon-dataset_xlyre{ 
-        background-position: -20px -663px; 
-} 
+.icon-catalog_xlyre{
+        background-position: -2px -663px;
+}
+.icon-dataset_xlyre{
+        background-position: -20px -663px;
+}
 
 
 

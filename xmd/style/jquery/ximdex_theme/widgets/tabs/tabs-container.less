@@ -110,13 +110,27 @@ li.browser-reports-view-item {
   }
 }
 
-.xim-treeview-node {
+.xim-treeview-node,
+.xim-listview-node {
   white-space: nowrap;
-  line-height: 1.8em;
   cursor: pointer;
+
+  &.xim-treeview-node {
+    line-height: 1.8em;
+  }
+
+  &.xim-listview-node {
+    padding: 2px 0px 2px 0px;
+  }
 }
 
 .xim-treeview-branch {
+  overflow: hidden;
+
+  ul {
+    padding-right: 0px !important;
+  }
+
   li {
     .xix {
       padding-left: 16px;
@@ -195,5 +209,38 @@ li.browser-reports-view-item {
         color: #666;
       }
     }
+  }
+}
+
+/* filter */
+.filter-word-span {
+  font-weight: 700;
+  color: #006B6C;
+}
+
+.filter-results-span {
+  font-style: italic;
+  color: #666;
+}
+
+/* tooltip */
+.tooltip {
+  &.in {
+    opacity: 1 !important;
+  }
+
+  .tooltip-arrow {
+    border-right-color: #FFF !important;
+  }
+
+  .tooltip-inner {
+    max-width: 100% !important;
+    white-space: nowrap !important;
+
+    color: #464646;
+    background-color: #FFF !important;
+    -webkit-box-shadow: 1px 0px 4px 0px rgba(0,0,0,0.35);
+    -moz-box-shadow: 1px 0px 4px 0px rgba(0,0,0,0.35);
+    box-shadow: 1px 0px 4px 0px rgba(0,0,0,0.35);
   }
 }
