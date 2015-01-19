@@ -83,6 +83,10 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     $scope.loadNodeChildren = function(node, callback) {
       var fromTo, idToSend, maxItemsPerGroup, url;
       if (node.loading | node.isdir === "0") {
+        if ($scope.treeMode === false) {
+          $scope.initialNodeList = node;
+          prepareBreadcrumbs();
+        }
         return;
       }
       node.loading = true;
@@ -103,7 +107,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           node.loading = false;
           if (data) {
             node.collection = data.collection;
-            if ($scope.treeMode === false) {
+            if ($scope.treeMode === false && $scope.selectedTab === 1) {
               $scope.initialNodeList = node;
               prepareBreadcrumbs();
             }
@@ -136,7 +140,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           node.loading = false;
           if (data) {
             node.collection = data.collection;
-            if ($scope.treeMode === false) {
+            if ($scope.treeMode === false && $scope.selectedTab === 1) {
               $scope.initialNodeList = node;
               prepareBreadcrumbs();
             }
@@ -350,14 +354,12 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     };
     $scope.toggleView = function() {
       $scope.treeMode = !$scope.treeMode;
-      if ($scope.treeMode === false) {
+      if ($scope.treeMode === false && $scope.selectedTab === 1) {
         if ($scope.selectedNodes.length > 0) {
-          $scope.initialNodeList = $scope.selectedNodes[0];
+          $scope.loadNodeChildren($scope.selectedNodes[0]);
         } else {
-          $scope.initialNodeList = $scope.projects;
+          $scope.loadNodeChildren($scope.projects);
         }
-        prepareBreadcrumbs();
-        $scope.reloadNode();
       }
     };
     $scope.goBreadcrums = function(index) {
@@ -381,8 +383,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           return;
         }
       }
-      $scope.initialNodeList = actualNode;
-      prepareBreadcrumbs();
+      $scope.loadNodeChildren(actualNode);
     };
     prepareBreadcrumbs = function() {
       var b, path;

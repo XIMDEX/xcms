@@ -99,7 +99,11 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         #Load the children of a node. It can execute a callback function later
         $scope.loadNodeChildren = (node, callback) ->
-            return if node.loading | node.isdir == "0"
+            if node.loading | node.isdir == "0"
+                if $scope.treeMode == false
+                    $scope.initialNodeList = node
+                    prepareBreadcrumbs()
+                return
             node.loading = true
             node.showNodes = true
             canceler.resolve()
@@ -115,7 +119,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     node.loading = false
                     if data
                         node.collection = data.collection
-                        if $scope.treeMode == false
+                        if $scope.treeMode == false && $scope.selectedTab == 1
                             $scope.initialNodeList = node
                             prepareBreadcrumbs()
                         callback node.collection  if callback
@@ -141,7 +145,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     node.loading = false
                     if data
                         node.collection = data.collection
-                        if $scope.treeMode == false
+                        if $scope.treeMode == false && $scope.selectedTab == 1
                             $scope.initialNodeList = node
                             prepareBreadcrumbs()
                         callback node.collection  if callback
@@ -311,13 +315,11 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         #Toggles Treeview/ListView
         $scope.toggleView = () ->
             $scope.treeMode = !$scope.treeMode
-            if $scope.treeMode == false
+            if $scope.treeMode == false && $scope.selectedTab == 1
                 if $scope.selectedNodes.length > 0
-                    $scope.initialNodeList = $scope.selectedNodes[0]
+                    $scope.loadNodeChildren $scope.selectedNodes[0]
                 else
-                    $scope.initialNodeList = $scope.projects
-                prepareBreadcrumbs()
-                $scope.reloadNode()
+                    $scope.loadNodeChildren $scope.projects
             return
 
         #Go to the selected node in the breadcrumbs
@@ -334,8 +336,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                         nodeFound = true
                         break
                 return if nodeFound == false
-            $scope.initialNodeList = actualNode
-            prepareBreadcrumbs()
+            $scope.loadNodeChildren actualNode
             return
 
         #Transform a node path to array for the breadcrumbs
