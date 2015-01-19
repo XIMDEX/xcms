@@ -32,16 +32,16 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     $scope.breadcrumbs = [];
     $scope.ccenter = null;
     $scope.modules = null;
-    $scope.modoArbol = true;
+    $scope.treeMode = true;
     $scope.nodeActions = [];
     $scope.selectedNodes = [];
     $scope.selectedTab = 1;
+    $scope.filterMode = false;
     dragStartPosition = 0;
     expanded = true;
     size = 0;
     listenHidePanel = true;
     canceler = $q.defer();
-    $scope.filterMode = false;
     actualFilter = "";
     loadAction = function(action, nodes) {
       xTabs.pushTab(action, nodes);
@@ -77,10 +77,10 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       event.preventDefault();
       node.showNodes = !node.showNodes;
       if (node.showNodes && !node.collection) {
-        $scope.loadNodeChilds(node);
+        $scope.loadNodeChildren(node);
       }
     };
-    $scope.loadNodeChilds = function(node, callback) {
+    $scope.loadNodeChildren = function(node, callback) {
       var fromTo, idToSend, maxItemsPerGroup, url;
       if (node.loading | node.isdir === "0") {
         return;
@@ -103,7 +103,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           node.loading = false;
           if (data) {
             node.collection = data.collection;
-            if ($scope.modoArbol === false) {
+            if ($scope.treeMode === false) {
               $scope.initialNodeList = node;
               prepareBreadcrumbs();
             }
@@ -136,7 +136,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
           node.loading = false;
           if (data) {
             node.collection = data.collection;
-            if ($scope.modoArbol === false) {
+            if ($scope.treeMode === false) {
               $scope.initialNodeList = node;
               prepareBreadcrumbs();
             }
@@ -261,7 +261,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         }
         $scope.selectedNodes[0].showNodes = true;
         $scope.selectedNodes[0].collection = [];
-        return $scope.loadNodeChilds($scope.selectedNodes[0]);
+        return $scope.loadNodeChildren($scope.selectedNodes[0]);
       }
     };
     $scope.doFilter = function() {
@@ -270,13 +270,13 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         $scope.filterMode = false;
         $scope.projects.showNodes = true;
         $scope.projects.collection = [];
-        $scope.loadNodeChilds($scope.projects);
+        $scope.loadNodeChildren($scope.projects);
       } else if ($scope.filter.length > 2 && $scope.filter.match(/^[\d\w_\.]+$/i)) {
         actualFilter = $scope.filter;
         $scope.filterMode = true;
         $scope.projects.showNodes = true;
         $scope.projects.collection = [];
-        $scope.loadNodeChilds($scope.projects);
+        $scope.loadNodeChildren($scope.projects);
       }
       $scope.selectedNodes = [];
     };
@@ -349,8 +349,8 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
     };
     $scope.toggleView = function() {
-      $scope.modoArbol = !$scope.modoArbol;
-      if ($scope.modoArbol === false) {
+      $scope.treeMode = !$scope.treeMode;
+      if ($scope.treeMode === false) {
         if ($scope.selectedNodes.length > 0) {
           $scope.initialNodeList = $scope.selectedNodes[0];
         } else {

@@ -2,6 +2,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
     "$scope", "xTabs", "xUrlHelper", "$http", "$interval", "$sce", "$window", "$timeout"
     ($scope, xTabs, xUrlHelper, $http, $interval, $sce, $window, $timeout) ->
 
+        #Communication with the service xTabs
         $scope.tabs = xTabs.getTabs()
         $scope.removeTab = xTabs.removeTab
         $scope.setActiveTab = xTabs.setActive
@@ -9,11 +10,16 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         $scope.offAllTabs = xTabs.offAll
         $scope.activeIndex = xTabs.activeIndex
 
+        #Toggles the menu button
         $scope.menuTabsEnabled = false
+        #Toggles the context menu
         $scope.showingMenu = false
+        #Initializes content of welcomeTab
         $scope.welcomeTab = ""
+        #Initializes this value with a large number
         $scope.limitTabs = 9999999
 
+        #Reloads welcome tab
         reloadWelcomeTab = () ->
             $http.get(xUrlHelper.getAction(
                 action: "welcome"
@@ -24,20 +30,24 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                     $scope.welcomeTab = $sce.trustAsHtml(data)
             return
 
+        #At first, reloads welcome tab
         reloadWelcomeTab()
 
+        #Reloads welcome tab every 30 seconds if welcome tab is active
         $interval(
                 () ->
                     return if $scope.tabs.length > 0
                     reloadWelcomeTab()
             ,
-                15000
+                30000
         )
 
+        #Closes the menu
         $scope.closeMenu = () ->
             $scope.showingMenu=false
             return
 
+        #Catches the root event onModifyTabs
         $scope.$on "onModifyTabs",
             () ->
                 temp = angular.element('#angular-content > .hbox-panel > .tabs-container')
@@ -62,6 +72,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
 
 
 
+        #Catches the root event onChangeActiveTab
         $scope.$on 'onChangeActiveTab',
             () ->
                 return if !$scope.menuTabsEnabled

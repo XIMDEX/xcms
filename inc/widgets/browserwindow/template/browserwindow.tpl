@@ -85,8 +85,8 @@
     {/literal}
     <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
         <tab heading="projects" select="$parent.selectedTab=1;">
-            <div ng-if="modoArbol" ><xim-tree /></div>
-            <div ng-if="!modoArbol" ><xim-list /></div>
+            <div ng-if="treeMode" ><xim-tree /></div>
+            <div ng-if="!treeMode" ><xim-list /></div>
         </tab>
         <tab heading="ccenter" select="$parent.selectedTab=2;">
             <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">

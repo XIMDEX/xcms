@@ -28,28 +28,42 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce"
     ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) ->
 
+        #Nodes for project tab
         $scope.projects = null
+        #Initial node for list view
         $scope.initialNodeList = null
+        #The path to $scope.initialNodeList in array format
         $scope.breadcrumbs = []
+        #Nodes for ccenter tab
         $scope.ccenter = null
+        #Nodes for project tab
         $scope.modules = null
-        $scope.modoArbol = true
+        #if true, TreeView is displayed else ListView
+        $scope.treeMode = true
+        #Cache for node actions
         $scope.nodeActions = []
+        #Current selected nodes
         $scope.selectedNodes = []
+        #Tab selected in the sidebar
         $scope.selectedTab = 1
+        #Indicates the filter status
+        $scope.filterMode = false
         dragStartPosition=0;
         expanded = true
         size = 0
         listenHidePanel = true
 
         canceler = $q.defer()
-        $scope.filterMode = false
+
         actualFilter = ""
 
+        #Load a new action in a new tab for some nodes
         loadAction = (action, nodes) ->
             xTabs.pushTab action, nodes
             return
 
+
+        #Load initial values
         $http.get(xUrlHelper.getAction(
             action: "browser3"
             method: "read"
@@ -75,13 +89,16 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             $scope.modules = data  if data
             return
 
+        #Open/Close a node in the TreeView
         $scope.toggleNode = (node,event) ->
             event.preventDefault()
             node.showNodes = not node.showNodes
-            $scope.loadNodeChilds node  if node.showNodes and not node.collection
+            $scope.loadNodeChildren node  if node.showNodes and not node.collection
             return
 
-        $scope.loadNodeChilds = (node, callback) ->
+
+        #Load the children of a node. It can execute a callback function later
+        $scope.loadNodeChildren = (node, callback) ->
             return if node.loading | node.isdir == "0"
             node.loading = true
             node.showNodes = true
@@ -98,7 +115,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     node.loading = false
                     if data
                         node.collection = data.collection
-                        if $scope.modoArbol == false
+                        if $scope.treeMode == false
                             $scope.initialNodeList = node
                             prepareBreadcrumbs()
                         callback node.collection  if callback
@@ -124,7 +141,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     node.loading = false
                     if data
                         node.collection = data.collection
-                        if $scope.modoArbol == false
+                        if $scope.treeMode == false
                             $scope.initialNodeList = node
                             prepareBreadcrumbs()
                         callback node.collection  if callback
@@ -137,6 +154,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
             return
 
+        #Load the actions of a node and opens a context menu. It does a request if the actions aren't in cache.
         $scope.loadActions = (node,event) ->
             return if event.target.classList[0] == "xim-actions-dropdown" && event.type == "press"
             event.srcEvent?.stopPropagation()
@@ -186,10 +204,12 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
             return false
 
+        #Global method to empty the actions cache
         $window.com.ximdex.emptyActionsCache = () ->
             $scope.nodeActions = []
             return
 
+        #Set a node as selected
         $scope.select = (node,event) ->
             ctrl = if event.srcEvent? then event.srcEvent.ctrlKey else event.ctrlKey
             if ctrl
@@ -209,35 +229,37 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 $scope.selectedNodes = [node]
             return
 
+        #Reloads the children of a node
         $scope.reloadNode = () ->
             if $scope.selectedNodes.length == 1
                 return if $scope.selectedNodes[0].isdir == "0"
                 $scope.selectedNodes[0].showNodes = true
                 $scope.selectedNodes[0].collection = []
-                $scope.loadNodeChilds $scope.selectedNodes[0]
+                $scope.loadNodeChildren $scope.selectedNodes[0]
 
-
-
+        #Search nodes with a filter
         $scope.doFilter = () ->
             if $scope.filter == ""
                 actualFilter = ""
                 $scope.filterMode = false
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
-                $scope.loadNodeChilds $scope.projects
+                $scope.loadNodeChildren $scope.projects
             else if $scope.filter.length>2 and $scope.filter.match /^[\d\w_\.]+$/i
                 actualFilter = $scope.filter
                 $scope.filterMode = true
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
-                $scope.loadNodeChilds $scope.projects
+                $scope.loadNodeChildren $scope.projects
             $scope.selectedNodes = []
             return
 
+        #Catches event dragstart on resizer bar
         $scope.dragStart = (event) ->
             if expanded
                 dragStartPosition = angular.element('#angular-tree').width()
 
+        #Catches event drag on resizer bar
         $scope.drag = (e,width) ->
             if expanded
                 x = e.deltaX + dragStartPosition
@@ -248,6 +270,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 angular.element('#angular-content').css left: (x + parseInt(width)) + "px"
                 return true
 
+        #Toggle autohide on sidebar
         $scope.toggleTree = (e) ->
             angular.element(e.target).toggleClass "hide"
             angular.element(e.target).toggleClass "tie"
@@ -284,9 +307,11 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     500
                 )
             return
+
+        #Toggles Treeview/ListView
         $scope.toggleView = () ->
-            $scope.modoArbol = !$scope.modoArbol
-            if $scope.modoArbol == false
+            $scope.treeMode = !$scope.treeMode
+            if $scope.treeMode == false
                 if $scope.selectedNodes.length > 0
                     $scope.initialNodeList = $scope.selectedNodes[0]
                 else
@@ -295,6 +320,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 $scope.reloadNode()
             return
 
+        #Go to the selected node in the breadcrumbs
         $scope.goBreadcrums = (index) ->
             pathToNode = $scope.breadcrumbs.slice 1, index + 1
             actualNode = $scope.projects
@@ -312,6 +338,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             prepareBreadcrumbs()
             return
 
+        #Transform a node path to array for the breadcrumbs
         prepareBreadcrumbs = () ->
             if $scope.initialNodeList.nodeid == "0"
                 path = getFolderPath $scope.initialNodeList.collection[0].path
@@ -322,6 +349,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             $scope.breadcrumbs = b
             return
 
+        #Gets the folder path of a path
         getFolderPath = (path) ->
             n = path.lastIndexOf "/"
             return path.substring 0, n if n>0

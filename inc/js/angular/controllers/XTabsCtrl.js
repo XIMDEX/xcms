@@ -33,7 +33,7 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
         return;
       }
       return reloadWelcomeTab();
-    }, 15000);
+    }, 30000);
     $scope.closeMenu = function() {
       $scope.showingMenu = false;
     };

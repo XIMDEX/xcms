@@ -1,3 +1,7 @@
+###
+   Service to control the tabs
+####
+
 angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout", "$http",
                                                           "xUrlHelper", "$sce", "$rootScope"
     ($window, $timeout, $http, xUrlHelper, $sce, $rootScope) ->
@@ -16,7 +20,9 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         })###
 
         return {
+            #Returns the index of the active tab
             activeIndex: () -> return activeTab
+            #Loads the css and js of a content
             loadCssAndJs: (content) ->
                 cssArr = []
                 angular.element(content).first().children().each (index, item) ->
@@ -36,6 +42,11 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 else
                     this._onAssetsCompleted()###
                 return
+            ###
+                Pushes a new tab
+                    action: object action
+                    nodes: array of nodes
+            ###
             pushTab: (action, nodes) ->
                 newid = ""
                 for n in nodes
@@ -73,6 +84,9 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
 
                     return
                 return
+            ###
+                Returns the tabs
+            ###
             getTabs: () ->
                 return tabs
             removeTab: (index) ->
@@ -100,6 +114,10 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     400
                 )
                 return
+            ###
+                Set active a tab
+                    index: the index of the tab
+            ###
             setActive: (index) ->
                 activeTab = index
                 visitedIndex = visitedTabs.indexOf index
@@ -113,6 +131,10 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     0
                 )
                 return
+            ###
+                Highlights a tab (usually when we open a existing tab)
+                    index: the index of the tab
+            ###
             highlightTab: (index) ->
                 return if tabs[index].blink == true
                 tabs[index].blink = true
@@ -122,6 +144,9 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     ,
                         2000
                 )
+            ###
+                Closes all tabs
+            ###
             closeAll: () ->
                 tabs.splice 0, tabs.length
                 activeTab = -1
@@ -133,6 +158,9 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     400
                 )
                 return
+            ###
+                Deactivates all tabs
+            ###
             offAll: () ->
                 activeTab = -1
                 return
