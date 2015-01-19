@@ -344,7 +344,11 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 path = getFolderPath $scope.initialNodeList.collection[0].path
             else
                 path = $scope.initialNodeList.path
-            b = path.substring(1,path.length-1).split("/")
+            if path.slice(-1) == "/"
+                path = path.substring(0, path.length-1)
+            if path.slice(0,1) == "/"
+                path = path.substring(1, path.length)
+            b = path.split("/")
             b.splice 0, 1
             $scope.breadcrumbs = b
             return
