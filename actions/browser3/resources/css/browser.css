@@ -402,7 +402,7 @@ button::-moz-focus-inner {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 220px;
+  width: 270px;
   overflow: auto;
   padding-left: 7px; }
 
@@ -410,7 +410,7 @@ button::-moz-focus-inner {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 230px;
+  left: 280px;
   right: 0;
   overflow: hidden;
   color: #FFF;
@@ -490,7 +490,7 @@ button::-moz-focus-inner {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 220px;
+  left: 270px;
   width: 7px;
   cursor: e-resize; }
 

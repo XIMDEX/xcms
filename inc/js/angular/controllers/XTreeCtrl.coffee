@@ -268,7 +268,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             if expanded
                 x = e.deltaX + dragStartPosition
                 x = $document.width()-17  if  x > $document.width()-17
-                x = 220  if x < 220
+                x = 270  if x < 270
                 angular.element(e.target).css left: x + "px"
                 angular.element('#angular-tree').css width: x + "px"
                 angular.element('#angular-content').css left: (x + parseInt(width)) + "px"

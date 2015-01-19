@@ -296,8 +296,8 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         if (x > $document.width() - 17) {
           x = $document.width() - 17;
         }
-        if (x < 220) {
-          x = 220;
+        if (x < 270) {
+          x = 270;
         }
         angular.element(e.target).css({
           left: x + "px"
