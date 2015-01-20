@@ -182,6 +182,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 )).success (data) ->
                     if data
                         $scope.nodeActions[nodeToSearch] = data
+                        return if data.length == 0
                         if event.pointers?
                             data.left = event.pointers[0].clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
                             data.top = event.pointers[0].clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
@@ -195,6 +196,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     return
             else
                 data = $scope.nodeActions[nodeToSearch]
+                return if data.length == 0
                 if event.pointers?
                     data.left = event.pointers[0].clientX + $window.document.body.scrollLeft
                     data.top = event.pointers[0].clientY + $window.document.body.scrollTop

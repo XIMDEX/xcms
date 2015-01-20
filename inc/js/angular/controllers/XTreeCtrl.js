@@ -191,6 +191,9 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         })).success(function(data) {
           if (data) {
             $scope.nodeActions[nodeToSearch] = data;
+            if (data.length === 0) {
+              return;
+            }
             if (event.pointers != null) {
               data.left = event.pointers[0].clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
               data.top = event.pointers[0].clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
@@ -208,6 +211,9 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         });
       } else {
         data = $scope.nodeActions[nodeToSearch];
+        if (data.length === 0) {
+          return;
+        }
         if (event.pointers != null) {
           data.left = event.pointers[0].clientX + $window.document.body.scrollLeft;
           data.top = event.pointers[0].clientY + $window.document.body.scrollTop;
