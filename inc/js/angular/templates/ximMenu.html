@@ -4,10 +4,9 @@
          hm-tap="select(option)">#/option[optionLabel]/#</div>
 
     <div ng-if="expanded==false" ng-repeat="option in options" class="button-container">
-        <button hm-tap="select(option)" class="window-toolbar-button view-action #/option.command/# icon-#/option.icon.split('.')[0]/#"
-                value="#/option.command/#">
-            <span>Icono</span>
-            <span class="tooltip">#/option[optionLabel]/#</span>
+        <button hm-tap="select(option)" class="window-toolbar-button view-action #/option.command/# icon-#/option.icon.split('.')[0]/#" value="#/option.command/#"
+        tooltip="#/option[optionLabel]/#" tooltip-popup-delay="0" tooltip-placement="bottom" tooltip-trigger="mouseenter">
+            <span>Icon</span>
         </button>
     </div>
 </div>

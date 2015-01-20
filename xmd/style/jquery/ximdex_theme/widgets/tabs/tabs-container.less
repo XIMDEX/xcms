@@ -32,11 +32,15 @@
   clear: both;
   position: absolute;
   width: 100%;
-  top: 100px;
+  top: 60px;
   bottom: 0px;
 
-  &.browser-modules-view-list-container {
-    padding-bottom: 13px;
+  &.xim-treeview-top {
+    top: 105px;
+  }
+
+  &.browser-projects-view-listcontainer {
+    top: 105px;
   }
 }
 
@@ -110,6 +114,10 @@ li.browser-reports-view-item {
   }
 }
 
+.xim-listview-container {
+  overflow-x: hidden;
+}
+
 .xim-treeview-node,
 .xim-listview-node {
   white-space: nowrap;
@@ -120,7 +128,7 @@ li.browser-reports-view-item {
   }
 
   &.xim-listview-node {
-    padding: 2px 0px 2px 0px;
+    padding: 4px 0px 4px 0px !important;
   }
 }
 
@@ -159,7 +167,8 @@ li.browser-reports-view-item {
 /* breadcum list-view */
 .breadcrumb-list-view {
   &.breadcrumb {
-    margin-bottom: 5px;
+    /*margin-bottom: 5px;*/
+    margin-bottom: 0px;
     padding: 0px 15px 15px 15px;
 
     background-color: transparent !important;
@@ -229,8 +238,16 @@ li.browser-reports-view-item {
     opacity: 1 !important;
   }
 
-  .tooltip-arrow {
+  &.top .tooltip-arrow {
+    border-top-color: #FFF !important;
+  }
+
+  &.right .tooltip-arrow {
     border-right-color: #FFF !important;
+  }
+
+  &.bottom .tooltip-arrow {
+    border-bottom-color: #FFF !important;
   }
 
   .tooltip-inner {

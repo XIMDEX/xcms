@@ -115,7 +115,7 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/extensions/ladda/dist/ladda.min.js');
         $this->addJs('/extensions/humane/humane.min.js');
         $this->addJs('/extensions/flow/ng-flow-standalone.min.js');
-        $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.12.0-SNAPSHOT.min.js');
+        $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.tabs.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');

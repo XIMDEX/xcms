@@ -236,7 +236,11 @@ fieldset {
   -webkit-border-radius: 0 12px 0 0;
   -moz-border-radius: 0 12px 0 0;
   border-radius: 0 12px 0 0;
-  min-height: 3em; }
+  height: 3em;
+  max-height: 3em;
+  overflow: hidden;
+  min-width: 400px;
+}
   .action_header .buttons-form {
     float: right;
     margin-top: -.4em; }
@@ -722,8 +726,8 @@ li.ui-state-primary span.ui-icon-info {
 
 input.error, input.error:focus, .ng-dirty input.ng-invalid, .ng-dirty input.ng-invalid:focus{
 	-webkit-box-shadow: 0 0 2px 1px #f72f42;
-	-moz-box-shadow: 0 0 2px 1px #f72f42;	
-	box-shadow: 0 0 2px 1px #f72f42;	
+	-moz-box-shadow: 0 0 2px 1px #f72f42;
+	box-shadow: 0 0 2px 1px #f72f42;
 	border: 1px solid #f72f42;
 	outline: none;
 }
@@ -777,7 +781,7 @@ span.error{
 		-ms-transform: translateY(-50%);
 		-o-transform: translateY(-50%);
 		transform: translateY(-50%);
-		
+
 	}
 }
 
@@ -1451,7 +1455,7 @@ input:focus + .tooltip_info {
 // generic
 ***************/
 	/* select{
-	  	
+
 		}
 
 */
