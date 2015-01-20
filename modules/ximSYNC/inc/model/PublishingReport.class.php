@@ -153,8 +153,9 @@ class PublishingReport extends PublishingReport_ORM {
         $dbObj = new DB();
         $sql = "SELECT * " .
                 "FROM PublishingReport " .
-                "WHERE State NOT IN ('Replaced', 'Removed') " .
-                $extraWhereClause; // . "ORDER BY IdPortalVersion DESC, FilePath ASC, FileName ASC LIMIT 100";
+                "WHERE State NOT IN ('Replaced', 'Removed', 'Out') " .
+                $extraWhereClause . ' LIMIT 100';
+                // . "ORDER BY IdPortalVersion DESC, FilePath ASC, FileName ASC LIMIT 100";
         $dbObj->Query($sql);
 
         $frames = array();
