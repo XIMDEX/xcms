@@ -299,16 +299,15 @@ class Action_browser3 extends ActionAbstract
             }
             $check = preg_match($queryToMatch,$child['name']);
             $ret["collection"][$id-$removed]["originalName"] = $child["name"];
-            $ret["collection"][$id-$removed]["name"] = preg_replace($queryToMatch, '<strong>$0</strong>', $child["name"]);
+            $ret["collection"][$id-$removed]["name"] = preg_replace ($queryToMatch, '<span class="filter-word-span">$0</span>', $child["name"]);
             if($cont=="0" && $check!==1){
                 array_splice($ret["collection"],$id-$removed,1);
                 $removed++;
             }elseif($cont=="0"){
                 $ret["collection"][$id-$removed]["children"] = 0;
             }else{
-                $ret["collection"][$id-$removed]["name"] .= " <span>[Results: $cont]</span>";
+                $ret["collection"][$id-$removed]["name"] .= sprintf ('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $cont);
             }
-
         }
 
         header('Content-type: application/json');
