@@ -56,7 +56,7 @@
                     <div class="progressbar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
                         <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right" style="width: 102%;"></div>
                     </div>
-                    <div class="frame_filename">#/frame.PubTime | date : 'dd-MM hh:mm'/#
+                    <div class="frame_filename">#/frame.PubTime*1000 | date : 'dd-MM H:mm'/#
                         <strong>
                             <em>#/frame.FilePath + '/' + frame.FileName/#</em>
                         </strong>
