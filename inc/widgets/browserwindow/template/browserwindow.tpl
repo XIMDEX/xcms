@@ -161,11 +161,12 @@
     {/literal}
 </ul>
 <div ng-show="activeIndex()<0" class="browser-action-view-content ui-tabs-panel
-        ui-widget-content ui-corner-bottom" ng-bind-html="welcomeTab">
+        ui-widget-content ui-corner-bottom" compile-template ng-bind-html="welcomeTab"
+        id="10000_welcome_content">
 </div>
 <div ng-show="$index == $parent.activeIndex()" ng-repeat="tab in tabs"
      class="browser-action-view-content ui-tabs-panel ui-widget-content ui-corner-bottom"
-     ng-bind-html="tab.content" id="#/tab.id/#_content">
+     compile-template ng-bind-html="tab.content" id="#/tab.id/#_content">
 
 </div>
 </div>

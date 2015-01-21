@@ -9,6 +9,17 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         $scope.closeAllTabs = xTabs.closeAll
         $scope.offAllTabs = xTabs.offAll
         $scope.activeIndex = xTabs.activeIndex
+        $scope.openAction = (action, nodes) ->
+            nodesArray = []
+            if Array.isArray nodes
+                for n in nodes
+                    newNode =
+                        nodeid: n
+                    nodesArray.push newNode
+            else if nodes
+                nodesArray.push {nodeid: nodes}
+            xTabs.pushTab(action, nodesArray)
+            return
 
         #Toggles the menu button
         $scope.menuTabsEnabled = false
@@ -21,18 +32,31 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
 
         #Reloads welcome tab
         reloadWelcomeTab = () ->
-            $http.get(xUrlHelper.getAction(
+            nodes = [{nodeid: 10000}]
+            url = xUrlHelper.getAction(
                 action: "welcome"
-                nodes: [{nodeid: 10000}]
-            )).success (data) ->
+                nodes: nodes
+            )
+            $http.get(url).success (data) ->
                 if data
-                    xTabs.loadCssAndJs data
-                    $scope.welcomeTab = $sce.trustAsHtml(data)
+                    newtab =
+                        id: "10000_welcome"
+                        name: "welcome"
+                        content_untrusted: data
+                        content: $sce.trustAsHtml(data)
+                        nodes: nodes
+                        action: null
+                        command: "welcome"
+                        blink: false
+                        show: true
+                        url: url
+                    xTabs.loadCssAndJs newtab
+                    $scope.welcomeTab = newtab.content
             return
 
         #At first, reloads welcome tab
         reloadWelcomeTab()
-
+        ###
         #Reloads welcome tab every 30 seconds if welcome tab is active
         $interval(
                 () ->
@@ -41,7 +65,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
             ,
                 30000
         )
-
+        ###
         #Closes the menu
         $scope.closeMenu = () ->
             $scope.showingMenu=false
@@ -98,7 +122,6 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                             container.css("left",(parseInt(container.css("left")) + rtElement-rtContainer-30)+"px")
 
                 return
-
 
 
 

@@ -30,17 +30,17 @@ X.actionLoaded(function(event, fn, params) {
     //        $(e.delegateTarget).find(".details").toggle();
     //    });
     fn('.project_new').click(function() {
-                                $(params.browser).browserwindow('openAction', {
+                                $('#angular-content').scope().openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'addfoldernode',
                                         icon: null,
                                         module: '', 
-                                        name: 'Create a New Project',
+                                        name: 'Create a New Project'
                                         }, params.nodes);
                         });
     fn('.preview').click(function(e) {
-                                        $(params.browser).browserwindow('openAction', {
+        $('#angular-content').scope().openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'filepreview',
@@ -50,7 +50,7 @@ X.actionLoaded(function(event, fn, params) {
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.plaintext').click(function(e) {
-                                        $(params.browser).browserwindow('openAction', {
+        $('#angular-content').scope().openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'edittext',
@@ -60,7 +60,7 @@ X.actionLoaded(function(event, fn, params) {
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.xmltext').click(function(e) {
-                                        $(params.browser).browserwindow('openAction', {
+        $('#angular-content').scope().openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'xmleditor2',

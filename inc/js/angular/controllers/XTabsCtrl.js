@@ -8,32 +8,71 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
     $scope.closeAllTabs = xTabs.closeAll;
     $scope.offAllTabs = xTabs.offAll;
     $scope.activeIndex = xTabs.activeIndex;
+    $scope.openAction = function(action, nodes) {
+      var n, newNode, nodesArray, _i, _len;
+      nodesArray = [];
+      if (Array.isArray(nodes)) {
+        for (_i = 0, _len = nodes.length; _i < _len; _i++) {
+          n = nodes[_i];
+          newNode = {
+            nodeid: n
+          };
+          nodesArray.push(newNode);
+        }
+      } else if (nodes) {
+        nodesArray.push({
+          nodeid: nodes
+        });
+      }
+      xTabs.pushTab(action, nodesArray);
+    };
     $scope.menuTabsEnabled = false;
     $scope.showingMenu = false;
     $scope.welcomeTab = "";
     $scope.limitTabs = 9999999;
     reloadWelcomeTab = function() {
-      $http.get(xUrlHelper.getAction({
+      var nodes, url;
+      nodes = [
+        {
+          nodeid: 10000
+        }
+      ];
+      url = xUrlHelper.getAction({
         action: "welcome",
-        nodes: [
-          {
-            nodeid: 10000
-          }
-        ]
-      })).success(function(data) {
+        nodes: nodes
+      });
+      $http.get(url).success(function(data) {
+        var newtab;
         if (data) {
-          xTabs.loadCssAndJs(data);
-          return $scope.welcomeTab = $sce.trustAsHtml(data);
+          newtab = {
+            id: "10000_welcome",
+            name: "welcome",
+            content_untrusted: data,
+            content: $sce.trustAsHtml(data),
+            nodes: nodes,
+            action: null,
+            command: "welcome",
+            blink: false,
+            show: true,
+            url: url
+          };
+          xTabs.loadCssAndJs(newtab);
+          return $scope.welcomeTab = newtab.content;
         }
       });
     };
     reloadWelcomeTab();
-    $interval(function() {
-      if ($scope.tabs.length > 0) {
-        return;
-      }
-      return reloadWelcomeTab();
-    }, 30000);
+
+    /*
+     *Reloads welcome tab every 30 seconds if welcome tab is active
+    $interval(
+            () ->
+                return if $scope.tabs.length > 0
+                reloadWelcomeTab()
+        ,
+            30000
+    )
+     */
     $scope.closeMenu = function() {
       $scope.showingMenu = false;
     };

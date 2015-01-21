@@ -78,21 +78,7 @@ angular.module('ximdex')
 	X.angularTools = {
 		//Initialize compile on a view and manage scope destruction
 		initView: function (view, id){
-			var $injector = angular.element(document).injector();
-			var scope = null;
-			$injector.invoke(function($compile, $rootScope) {
-			    var destroy = function(event, viewId){
-			        if (id == viewId) {
-			            scope.$destroy();
-			            $(document).off("closeTab.angular", destroy);
-			        }
-			    };
-			    scope = $rootScope.$new();
-			    $compile(view[0])(scope);
-			    scope.$digest();
-			    $(document).on("closeTab.angular", destroy);
-			});
-			return scope;
+
 		}
 	};
 

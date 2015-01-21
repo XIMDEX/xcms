@@ -5,7 +5,7 @@
  */
 angular.module("ximdex.common.service").factory("xTabs", [
   "$window", "$timeout", "$http", "xUrlHelper", "$sce", "$rootScope", function($window, $timeout, $http, xUrlHelper, $sce, $rootScope) {
-    var activeTab, tabs, visitedTabs;
+    var activeTab, tabs, visitedTabs, xtab;
     tabs = [];
     visitedTabs = [];
     activeTab = -1;
@@ -20,162 +20,180 @@ angular.module("ximdex.common.service").factory("xTabs", [
         tabId: this.tabId()
     })
      */
-    return {
-      activeIndex: function() {
-        return activeTab;
-      },
-      loadCssAndJs: function(content) {
-        var cssArr;
-        cssArr = [];
-        angular.element(content).first().children().each(function(index, item) {
-          cssArr.push(angular.element(item).html());
+    xtab = {};
+    xtab.activeIndex = function() {
+      return activeTab;
+    };
+    xtab.loadCssAndJs = function(tab) {
+      var callback, content, cssArr, jsArr, jsObj, n, nodeids, _i, _len, _ref;
+      cssArr = [];
+      content = angular.element(tab.content_untrusted);
+      content.first().children().each(function(index, item) {
+        cssArr.push(angular.element(item).html());
+      });
+      Object.loadCss(cssArr);
+      jsArr = [];
+      content.first().next().children().each(function(index, item) {
+        jsArr.push(angular.element(item).html());
+      });
+      nodeids = [];
+      _ref = tab.nodes;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        n = _ref[_i];
+        nodeids.push(n.nodeid);
+      }
+      callback = function() {
+        return $window.com.ximdex.triggerActionLoaded({
+          context: "#" + tab.id + "_content",
+          url: tab.url,
+          action: tab.action,
+          nodes: nodeids,
+          tabId: tabs.length + 1
         });
-        Object.loadCss(cssArr);
+      };
+      jsObj = {
+        onComplete: callback,
+        js: jsArr
+      };
+      if (jsArr.length > 0) {
+        Object.loadScript(jsObj);
+      } else {
+        callback();
+      }
+    };
 
-        /*jsArr = []
-        angular.element(content).first().next().children().each (index, item) ->
-            jsArr.push angular.element(item).html()
-            return
-        
-        jsObj =
-            onComplete: _onAssetsCompleted()
-            js: jsArr
-        if jsArr.length > 0
-            Object.loadScript jsObj
-        else
-            this._onAssetsCompleted()
-         */
-      },
-
-      /*
-          Pushes a new tab
-              action: object action
-              nodes: array of nodes
-       */
-      pushTab: function(action, nodes) {
-        var i, n, newid, tab, that, _i, _j, _len, _len1;
-        newid = "";
-        for (_i = 0, _len = nodes.length; _i < _len; _i++) {
-          n = nodes[_i];
-          newid += n.nodeid + "_";
+    /*
+        Pushes a new tab
+            action: object action
+            nodes: array of nodes
+     */
+    xtab.pushTab = function(action, nodes) {
+      var i, n, newid, tab, that, url, _i, _j, _len, _len1;
+      newid = "";
+      for (_i = 0, _len = nodes.length; _i < _len; _i++) {
+        n = nodes[_i];
+        newid += n.nodeid + "_";
+      }
+      newid += action.command;
+      for (i = _j = 0, _len1 = tabs.length; _j < _len1; i = ++_j) {
+        tab = tabs[i];
+        if (tab.id === newid) {
+          this.highlightTab(i);
+          return;
         }
-        newid += action.command;
-        for (i = _j = 0, _len1 = tabs.length; _j < _len1; i = ++_j) {
-          tab = tabs[i];
-          if (tab.id === newid) {
-            this.highlightTab(i);
-            return;
-          }
-        }
-        that = this;
-        $http.get(xUrlHelper.getAction({
-          action: action.command,
-          nodes: nodes,
-          module: action.module
-        })).success(function(data) {
-          var newlength, newtab;
-          if (data) {
-            newtab = {
-              id: newid,
-              name: action.name,
-              content_untrusted: data,
-              content: $sce.trustAsHtml(data),
-              nodes: nodes,
-              command: action.command,
-              blink: false,
-              show: true
-            };
-            that.loadCssAndJs(data);
-            newlength = tabs.push(newtab);
-            that.setActive(newlength - 1);
-            $timeout(function() {
-              return $rootScope.$broadcast('onModifyTabs');
-            }, 0);
-          }
-        });
-      },
-
-      /*
-          Returns the tabs
-       */
-      getTabs: function() {
-        return tabs;
-      },
-      removeTab: function(index) {
-        var i, tab, visitedIndex, _i, _len;
-        visitedIndex = visitedTabs.indexOf(index);
-        if (visitedIndex >= 0) {
-          visitedTabs.splice(visitedIndex, 1);
-          for (i = _i = 0, _len = visitedTabs.length; _i < _len; i = ++_i) {
-            tab = visitedTabs[i];
-            if (visitedTabs[i] > index) {
-              visitedTabs[i] = visitedTabs[i] - 1;
-            }
-          }
-        }
-        tabs.splice(index, 1);
-        if (visitedTabs.length > 0) {
-          activeTab = visitedTabs[0];
+      }
+      that = this;
+      url = xUrlHelper.getAction({
+        action: action.command,
+        nodes: nodes,
+        module: action.module
+      });
+      $http.get(url).success(function(data) {
+        var newlength, newtab;
+        if (data) {
+          newtab = {
+            id: newid,
+            name: action.name,
+            content_untrusted: data,
+            content: $sce.trustAsHtml(data),
+            nodes: nodes,
+            action: action,
+            command: action.command,
+            blink: false,
+            show: true,
+            url: url
+          };
+          that.loadCssAndJs(newtab);
+          newlength = tabs.push(newtab);
+          that.setActive(newlength - 1);
           $timeout(function() {
-            return $rootScope.$broadcast('onChangeActiveTab');
+            return $rootScope.$broadcast('onModifyTabs');
           }, 0);
-        } else {
-          activeTab = -1;
         }
-        $timeout(function() {
-          return $rootScope.$broadcast('onModifyTabs');
-        }, 400);
-      },
+      });
+    };
 
-      /*
-          Set active a tab
-              index: the index of the tab
-       */
-      setActive: function(index) {
-        var visitedIndex;
-        activeTab = index;
-        visitedIndex = visitedTabs.indexOf(index);
-        if (visitedIndex >= 0) {
-          visitedTabs.splice(visitedIndex, 1);
+    /*
+        Returns the tabs
+     */
+    xtab.getTabs = function() {
+      return tabs;
+    };
+    xtab.removeTab = function(index) {
+      var i, tab, visitedIndex, _i, _len;
+      visitedIndex = visitedTabs.indexOf(index);
+      if (visitedIndex >= 0) {
+        visitedTabs.splice(visitedIndex, 1);
+        for (i = _i = 0, _len = visitedTabs.length; _i < _len; i = ++_i) {
+          tab = visitedTabs[i];
+          if (visitedTabs[i] > index) {
+            visitedTabs[i] = visitedTabs[i] - 1;
+          }
         }
-        visitedTabs.unshift(index);
+      }
+      tabs.splice(index, 1);
+      if (visitedTabs.length > 0) {
+        activeTab = visitedTabs[0];
         $timeout(function() {
           return $rootScope.$broadcast('onChangeActiveTab');
         }, 0);
-      },
-
-      /*
-          Highlights a tab (usually when we open a existing tab)
-              index: the index of the tab
-       */
-      highlightTab: function(index) {
-        if (tabs[index].blink === true) {
-          return;
-        }
-        tabs[index].blink = true;
-        return $timeout(function() {
-          return tabs[index].blink = false;
-        }, 2000);
-      },
-
-      /*
-          Closes all tabs
-       */
-      closeAll: function() {
-        tabs.splice(0, tabs.length);
-        activeTab = -1;
-        visitedTabs = [];
-        $timeout(function() {
-          return $rootScope.$broadcast('onModifyTabs');
-        }, 400);
-      },
-
-      /*
-          Deactivates all tabs
-       */
-      offAll: function() {
+      } else {
         activeTab = -1;
       }
+      $timeout(function() {
+        return $rootScope.$broadcast('onModifyTabs');
+      }, 400);
     };
+
+    /*
+        Set active a tab
+            index: the index of the tab
+     */
+    xtab.setActive = function(index) {
+      var visitedIndex;
+      activeTab = index;
+      visitedIndex = visitedTabs.indexOf(index);
+      if (visitedIndex >= 0) {
+        visitedTabs.splice(visitedIndex, 1);
+      }
+      visitedTabs.unshift(index);
+      $timeout(function() {
+        return $rootScope.$broadcast('onChangeActiveTab');
+      }, 0);
+    };
+
+    /*
+        Highlights a tab (usually when we open a existing tab)
+            index: the index of the tab
+     */
+    xtab.highlightTab = function(index) {
+      if (tabs[index].blink === true) {
+        return;
+      }
+      tabs[index].blink = true;
+      return $timeout(function() {
+        return tabs[index].blink = false;
+      }, 2000);
+    };
+
+    /*
+        Closes all tabs
+     */
+    xtab.closeAll = function() {
+      tabs.splice(0, tabs.length);
+      activeTab = -1;
+      visitedTabs = [];
+      $timeout(function() {
+        return $rootScope.$broadcast('onModifyTabs');
+      }, 400);
+    };
+
+    /*
+        Deactivates all tabs
+     */
+    xtab.offAll = function() {
+      activeTab = -1;
+    };
+    return xtab;
   }
 ]);
