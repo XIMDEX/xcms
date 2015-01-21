@@ -26,10 +26,8 @@
  */
 use Ximdex\Modules\Module;
 
-//ModulesManager::file('/lib/Ximdex/Modules/Module.php');
 //ModulesManager::file('/inc/io/BaseIO.class.php');
-//ModulesManager::file('/inc/model/RelRolesActions.class.php');
-
+ModulesManager::file('/inc/model/RelRolesActions.class.php');
 
 class Module_ximPUBLISHtools extends Module {
 
@@ -43,23 +41,16 @@ class Module_ximPUBLISHtools extends Module {
     }
 
     function install() {
-
-        if (!ModulesManager::isEnabled('ximNEWS')) {
-            $this->log(Module::WARNING, 'ximNEWS module is not enabled. Several actions will not be visible until ximNEWS is enabled');
-        }
-
-        if (!ModulesManager::isEnabled('ximSYNC')) {
-            $this->log(Module::WARNING, 'ximSYNC module is not enabled. Several actions will not be visible until ximSYNC is enabled');
-        }
+//        if (!ModulesManager::isEnabled('ximSYNC')) {
+//            $this->log(Module::WARNING, 'ximSYNC module is not enabled. Several actions will not be visible until ximSYNC is enabled');
+//        }
 
         $this->loadConstructorSQL("ximPUBLISHtools.constructor.sql");
-
-        parent::install();
+        return parent::install();
     }
 
     function uninstall() {
-        // Uninstalling withouth disabling not allowed for this module.
-        $modMngr = new ModulesManager('wix');
+        // Uninstalling without disabling not allowed for this module.
         if (ModulesManager::isEnabled($this->getModuleName()))
             ModulesManager::disableModule($this->getModuleName());
 
@@ -67,16 +58,13 @@ class Module_ximPUBLISHtools extends Module {
         parent::uninstall();
     }
 
+    // It's necessary to enable actions on this method, not on 'install' method.
+    // Due to recent lmd class removal, unique way to do this is via DB class
     function enable() {
-
-        // It's necessary to enable actions on this method, not on 'install' method.
-        // Due to recent lmd class removal, unique way to do this is via DB class
-
         $db = new DB();
         $sql = array();
 
         // Pub. Report
-
         $sql['Creating ximPUBLISH report action'] = "INSERT INTO Actions 
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
 		VALUES ('" . self::PUB_REPORT_ACTION_ID . "','5014','Informe de publicación','managebatchs','publicate_section.png',
@@ -85,12 +73,16 @@ class Module_ximPUBLISHtools extends Module {
         $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions 
 		(IdRel,IdRol,IdAction,IdState,IdContext) 
 		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",NULL,1)";
+        // Fix: idState = 7 may be a bug in server
+        $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions 
+		(IdRel,IdRol,IdAction,IdState,IdContext) 
+		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",7,1)";
 
         // Colectors States Report
         $sql['Creating Colectors States Report action'] = "INSERT INTO Actions 
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
 		VALUES ('" . self::COL_STATES_REPORT_ACTION_ID . "','5301','Listado de Colectores','viewcolectorstates','generate_colector.png',
-		'Muestra un listado con los colectores de una seccion y sus estados',100,'ximPUBLISHtools',0)";
+		'Muestra un listado con los colectores de una sección y sus estados',100,'ximPUBLISHtools',0)";
 
         $sql['Enabling Colectors States Report action'] = "INSERT INTO RelRolesActions 
 		(IdRel,IdRol,IdAction,IdState,IdContext) 
@@ -98,22 +90,20 @@ class Module_ximPUBLISHtools extends Module {
 
         foreach ($sql as $desc => $query) {
             if (!$ret = $db->Execute($query)) {
-                echo "Error {$desc} - {$query}\n";
-                XMD_Log::error($desc);
+                XMD_Log::error("Error $desc - $query");
                 self::disable();
                 die();
             }
 
-            echo "{$desc} successfully\n";
+            XMD_Log::info("Module_ximPUBLISHtools enabled successfully");
         }
 
-        parent::enable();
+        return true;
     }
 
+    // It's necessary to disable actions on this method, not on 'uninstall' method.
+    // Due to recent lmd class removal, unique way to do this is via DB class
     function disable() {
-        // It's necessary to disable actions on this method, not on 'uninstall' method.
-        // Due to recent lmd class removal, unique way to do this is via DB class
-
         $db = new DB();
         $sql = array();
         $relRolesActions = new RelRolesActions();
@@ -128,10 +118,10 @@ class Module_ximPUBLISHtools extends Module {
         $result = $relRolesActions->find('IdRel', 'IdAction = %s', array(self::COL_STATES_REPORT_ACTION_ID), MONO);
         $sql['Disabling Colectors States Report action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
 
-        foreach ($sql as $desc => $query) {
-            $ret = $db->Execute($query);
-            echo "{$desc} successfully\n";
+        foreach ($sql as $query) {
+            $db->Execute($query);
         }
+        XMD_Log::info("Module_ximPUBLISHtools disabled successfully");
 
         parent::disable();
     }

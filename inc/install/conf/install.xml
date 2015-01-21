@@ -14,6 +14,7 @@
 		<module name="ximTAGS" alias="Xtags">Provides the user to add semantic tags to it's documents and files.</module>
 		<module name="ximTOUR" alias="Xtour">Performs a short tour on Ximdex CMS's interface to show the main areas and functionalities.</module>
 		<module name="ximNEWS" alias="Xnews">Build your own newsletters and blogs.</module>
+                <module name="ximPUBLISHtools" alias="Xpublish">Publication batchs monitor.</module>
 	</modules>
 	<!--Steps-->
 	<!--For every step we must define

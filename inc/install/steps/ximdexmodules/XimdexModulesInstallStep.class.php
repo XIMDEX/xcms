@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,7 +24,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/FastTraverseManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
@@ -36,14 +36,14 @@ class XimdexModulesInstallStep extends GenericInstallStep {
     /**
      * Default step method. List all the modules	 
      */
-    public function index(){		
+    public function index() {
         $this->addJs("InstallModulesController.js");
         $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
-        $result = $imManager->buildModulesFile();		
-        if (!$result){
-            $error["state"]="error";
+        $result = $imManager->buildModulesFile();
+        if (!$result) {
+            $error["state"] = "error";
             $error["messages"][] = "Impossible to install modules. Do you have the proper permissions on install/install-modules.conf file?";
-            $this->exceptions[]=$error;
+            $this->exceptions[] = $error;
         }
         $this->render();
     }
@@ -51,27 +51,28 @@ class XimdexModulesInstallStep extends GenericInstallStep {
     /**
      * List all none default modules and send a json object
      */
-    public function getModulesLikeJson(){
-            $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
-            $ftManager = new FastTraverseManager (FastTraverseManager::WEB_MODE);		
-            $ftManager->buildFastTraverse();		
-            $modules = $this->installManager->getModulesByDefault(false);		
-            $this->sendJSON($modules);
+    public function getModulesLikeJson() {
+        $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
+        $ftManager = new FastTraverseManager(FastTraverseManager::WEB_MODE);
+        $ftManager->buildFastTraverse();
+        $modules = $this->installManager->getModulesByDefault(false);
+        $this->sendJSON($modules);
     }
 
     /**
      * Install a module specified in params.	 
      */
-    public function installModule(){
+    public function installModule() {
         set_time_limit(0);
         $moduleName = $this->request->getParam("module");
         $imManager = new InstallModulesManager(InstallModulesManager::WEB_MODE);
         $imManager->uninstallModule($moduleName);
         $installState = $imManager->installModule($moduleName);
         $imManager->enableModule($moduleName);
-        $values=array("result"=>strtolower($installState));
+        $values = array("result" => strtolower($installState));
         $this->sendJSON($values);
     }
+
 }
 
 ?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +25,11 @@
  * @version $Revision$
  */
 
-namespace Ximdex\Modules ;
+namespace Ximdex\Modules;
 
 use Shell,
-    DB ,
-    Ximdex\Logger ,
+    DB,
+    Ximdex\Logger,
     Ximdex\Runtime\App;
 
 Manager::file("/inc/db/db.php");
@@ -37,8 +38,7 @@ Manager::file("/inc/cli/Shell.class.php");
 /**
  *
  */
-class Module
-{
+class Module {
 
     public $name;
     public $path;
@@ -49,7 +49,6 @@ class Module
     public $sql_destructor_file;
     public $messages;
 
-
     const ERROR = 'ERROR';
     const WARNING = 'WARNING';
     const SUCCESS = 'SUCCESS';
@@ -57,8 +56,7 @@ class Module
     /**
      * @public
      */
-    public function __construct($name, $path)
-    {
+    public function __construct($name, $path) {
 
         if (empty($name) || empty($path)) {
             die("* ERROR: name and path in Module constructor must be provided.\n");
@@ -76,34 +74,27 @@ class Module
         //  $this->messages->add(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"),
         //   __CLASS__, $this->name, $this->path), MSG_TYPE_NOTICE);
         Logger::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
-
     }
-
-
 
     /**
      * Installed modules has a state file in XIMDEX_ROOT_PATH/data
      * Uninstalled modules hasn't
      */
-    protected function getStateFile()
-    {
-        return App::getValue( 'XIMDEX_ROOT_PATH')  . "/data/.{$this->getModuleName()}";
+    protected function getStateFile() {
+        return App::getValue('XIMDEX_ROOT_PATH') . "/data/.{$this->getModuleName()}";
     }
 
-    protected function checkStateFile()
-    {
+    protected function checkStateFile() {
         return file_exists($this->getStateFile());
     }
 
-    protected function addStateFile()
-    {
+    protected function addStateFile() {
         if (!$this->checkStateFile()) {
             file_put_contents($this->getStateFile(), "", FILE_APPEND);
         }
     }
 
-    protected function removeStateFile()
-    {
+    protected function removeStateFile() {
         if ($this->checkStateFile()) {
             unlink($this->getStateFile());
         }
@@ -112,34 +103,28 @@ class Module
     /**
      * return if module is core ( true ) or not ( false )
      */
-    function isCoreModule()
-    {
+    function isCoreModule() {
         return in_array($this->getModuleName(), Manager::getCoreModules());
     }
-
-
 
     /**
      * @public
      */
-    function getModulePath()
-    {
+    function getModulePath() {
         return $this->path;
     }
 
     /**
      * @public
      */
-    function getModuleName()
-    {
+    function getModuleName() {
         return $this->name;
     }
 
     /**
      * @public
      */
-    function getModuleClassName()
-    {
+    function getModuleClassName() {
         return Manager::get_module_prefix() . $this->name;
         //return get_class($this);
     }
@@ -149,8 +134,7 @@ class Module
      * @param $sql_file Filename (without path information) which contain SQL.
      * @return NULL or SQL Data Array.
      */
-    function loadSQL($sql_file)
-    {
+    function loadSQL($sql_file) {
 
         $sql_path = $this->getModulePath() . "/sql/";
         $sql_file = $sql_path . $sql_file;
@@ -175,8 +159,7 @@ class Module
     /**
      * @protected
      */
-    function loadConstructorSQL($sql_file)
-    {
+    function loadConstructorSQL($sql_file) {
 
         $this->sql_constructor_file = $sql_file;
         $data = $this->loadSQL($sql_file);
@@ -193,8 +176,7 @@ class Module
     /**
      * @protected
      */
-    function loadDestructorSQL($sql_file)
-    {
+    function loadDestructorSQL($sql_file) {
 
         $this->sql_destructor_file = $sql_file;
         $data = $this->loadSQL($sql_file);
@@ -207,47 +189,21 @@ class Module
         }
     }
 
-    /**
-     * @private
-     * NOT FUNCTIONAL YET
-     */
-    function injectSQL($sql_sentences)
-    {
-        //$db = new DB();
-        // Use Ximdex DB class?
-        if (is_array($sql_sentences)) {
-            foreach ($sql_sentences as $idx => $sql) {
-                $this->messages->add(sprintf(_("[%s]: Executing (%s)"), $idx, $sql), MSG_TYPE_NOTICE);
-                $db->Execute($sql);
-                $id = $db->newID;
-            }
-        } else {
-            return false;
-        }
-    }
-
-
-    function sqlFileExists($sql_file)
-    {
+    function sqlFileExists($sql_file) {
         $sql_path = $this->getModulePath() . '/sql/';
         $sql_file = $sql_path . $sql_file;
         return file_exists($sql_file);
     }
 
-
     /**
      * @private
+     * Inject via mysql command...
      */
-    function injectSQLFile($sql_file)
-    {
-        // Inject via mysql command...
-
+    function injectSQLFile($sql_file) {
         $sql_path = $this->getModulePath() . '/sql/';
         $sql_file = $sql_path . $sql_file;
 
-
         if (file_exists($sql_file)) {
-
             /**
              * Load configuration from App Class
              */
@@ -258,7 +214,6 @@ class Module
             $DBUSER = $dbConfig['user'];
             $DBPASSWD = $dbConfig['password'];
             $DBNAME = $dbConfig['db'];
-
 
             // Mysql call construction...
             $command = "mysql --host=$DBHOST --port=$DBPORT --user=$DBUSER";
@@ -272,13 +227,11 @@ class Module
             //$this->messages->add (sprintf(_("sys: Launching command [%s]"), $command), MSG_TYPE_NOTICE);
             // Verificar salida correcta y en caso contrario eliminar entradas.
             system($command);
-
         } else {
             $this->messages->add(sprintf(_("%s not exists"), $file_name), MSG_TYPE_WARNING);
             return false;
         }
     }
-
 
     /**
      *  Install new module into ximDEX.
@@ -286,19 +239,16 @@ class Module
      *
      * @return
      */
-    function install()
-    {
+    function install() {
 
         $ret = true;
         if (!$this->preInstall()) {
-            echo "Se ha abortado la instalaci�n por no cumplirse los prerequisitos\n";
+            echo "Se ha abortado la instalación por no cumplirse los prerequisitos\n";
             $ret = false;
         } else {
             // SQL Insertion
             if (!empty($this->sql_constructor)) {
                 $this->injectSQLFile($this->sql_constructor_file);
-                //$this->messages->add(_("-- SQL constructor loaded"), MSG_TYPE_NOTICE);
-                //A�adimos aqui
                 Logger::info(_("-- SQL constructor loaded"));
             } else {
                 $this->messages->add(_("* ERROR: SQL constructor not loaded"), MSG_TYPE_ERROR);
@@ -307,7 +257,7 @@ class Module
             // Actions Registration
             // Actions Activation
             if (!$this->postInstall()) {
-                echo "Ha fallado el proceso de post instalaci�n, puede que el m�dulo no funcione correctamente\n";
+                echo "Ha fallado el proceso de post instalación, puede que el módulo no funcione correctamente\n";
                 $ret = false;
             } else {
                 $this->addStateFile();
@@ -324,13 +274,11 @@ class Module
      *
      * @return
      */
-    function preInstall()
-    {
+    function preInstall() {
         return true;
     }
 
-    function checkDependences($arrDependences)
-    {
+    function checkDependences($arrDependences) {
         if (!is_array($arrDependences)) {
             return NULL;
         }
@@ -349,8 +297,7 @@ class Module
      *
      * @return
      */
-    function postInstall()
-    {
+    function postInstall() {
         return true;
     }
 
@@ -358,8 +305,7 @@ class Module
      *  Uninstall module from ximDEX.
      * @public
      */
-    function uninstall()
-    {
+    function uninstall() {
 
         // SQL Remove
         if (!empty($this->sql_destructor) && !$this->isCoreModule()) {
@@ -371,7 +317,6 @@ class Module
         }
         // Actions deRegistration
         // Actions deActivation
-
         //show messages
         $this->messages->displayRaw();
     }
@@ -382,40 +327,30 @@ class Module
      *  Enable module.
      * @public
      */
-    function enable()
-    {
+    function enable() {
+        
     }
-
 
     /**
      *  Disable module.
      * @public
      */
-    function disable()
-    {
+    function disable() {
+        
     }
 
     /**
      * @public
      */
-    function state()
-    {
-        // SQL loaded?
-        $db = new DB();
-
-        $module_name = $this->getModuleName();
-
+    function state() {
         if ($this->checkStateFile()) {
             return Manager::get_module_state_installed();
         } else {
             return Manager::get_module_state_uninstalled();
         }
-
     }
 
-
-    function log($priority, $string)
-    {
+    function log($priority, $string) {
 
         if ($this instanceof Modules) {
             Logger::warning("Using $this->log in a class that is not an instance of Module.");
@@ -426,7 +361,6 @@ class Module
 
         switch ($priority) {
             case self::SUCCESS:
-                //echo(" - [$module_name] (SUCCESS): $string\n");
                 Logger::info(" - [$module_name] (SUCCESS): $string");
                 break;
             case self::ERROR:
@@ -436,12 +370,10 @@ class Module
         }
     }
 
-
     /**
      * @protected
      */
-    function checkState()
-    {
+    function checkState() {
         return $this->state();
     }
 
@@ -449,8 +381,7 @@ class Module
      * return array with install params
      *
      */
-    function getInstallParams()
-    {
+    function getInstallParams() {
         return array();
     }
 
