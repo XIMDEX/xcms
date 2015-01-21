@@ -218,14 +218,18 @@ button::-moz-focus-inner {
 \*------------------------------------*/
 #header {
   background: url("../../../../xmd/images/header/cabecera_fnd.png") repeat left top;
-  height: 38px;
+  height: 45px;
+  min-width: 500px;
+
   /*float: left;*/
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border-top: 1px solid #006b6c;
   position: relative;
-  z-index: 4; }
+  z-index: 4;
+  overflow: hidden;
+}
 
 #header h1 {
   float: left;
@@ -233,7 +237,7 @@ button::-moz-focus-inner {
 
 #body {
   position: absolute;
-  top: 40px;
+  top: 50px;
   bottom: 0px;
   width: 100%;
   margin: 0px; }

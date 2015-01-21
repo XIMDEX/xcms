@@ -78,7 +78,7 @@ li.xim-listview-node:hover {
   color: white; }
 
 li.xim-listview-node .xim-listview-actions-dropdown {
-  top: 0px !important;
+  /*top: 0px !important;*/
   left: 0px !important;
 }
 

@@ -116,12 +116,12 @@
     </tabset>
 
     {literal}
-        <button hm-tap="toggleView()" ng-show="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view"></button>
+        <button hm-tap="toggleView()" ng-show="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="Change view"></button>
     {/literal}
-    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-sidebar btn-anchor" type="button"></button>
+    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-sidebar btn-anchor" type="button" title="Collapse menu"></button>
 
-    <div class="filter-tree">
-        <input ng-init="" ng-change="doFilter()" ng-model="filter" ng-show="selectedTab==1" type="text" class="form-control" placeholder="Filter...">
+    <div class="filter-tree" ng-show="selectedTab==1">
+        <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="Filter...">
     </div>
 
     <div id="angular-tree-resizer"
