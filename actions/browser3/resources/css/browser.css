@@ -228,7 +228,7 @@ button::-moz-focus-inner {
   border-top: 1px solid #006b6c;
   position: relative;
   z-index: 4;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 #header h1 {
