@@ -29,23 +29,7 @@ angular.module('ximdex.common.service')
 
         var scope = {};
         var body = $document.find('body');
-        // initMenu = function (menu){
-        //     var $injector = angular.element(document).injector();
-        //     $injector.invoke(function($compile, $rootScope) {
-        //         var destroy = function(event, viewId){
-        //             if (id == viewId) {
-        //                 scope.$destroy();
-        //                 $(document).off("closeTab.angular", destroy);
-        //             }
-        //         };
 
-        //         //var scope = rootScope.$new();
-        //         var scope = $rootScope.$new();
-        //         $compile(view[0])(scope);
-        //         scope.$digest();
-        //         $(document).on("closeTab.angular", destroy);
-        //     });
-        // }
         destroyMenu = function() {
 
         }
@@ -77,6 +61,18 @@ angular.module('ximdex.common.service')
 
             if (!scope.$$phase)
                 scope.$digest();
+            $timeout(function() {
+                var finY, menuY, newtop, windowY;
+                menuY = angular.element('div.xim-actions-menu').height();
+                windowY = $window.innerHeight;
+                finY = menuY + parseInt(scope.top) - $window.document.body.scrollTop;
+                if (finY > windowY) {
+                    newtop = parseInt(scope.top) - (finY - windowY) - (scope.expanded ? 10 : 0);
+                    angular.element('div.xim-actions-menu').css({
+                        top: newtop
+                    });
+                }
+            }, 0);
         }
 
         return {

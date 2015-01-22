@@ -25,7 +25,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
  */
 angular.module("ximdex.common.directive").directive("ximMenu", [
-  "$window", function($window) {
+  "$window", "$timeout", function($window, $timeout) {
     var base_url;
     base_url = $window.X.baseUrl;
     return {
@@ -33,7 +33,6 @@ angular.module("ximdex.common.directive").directive("ximMenu", [
       restrict: "E",
       replace: true,
       link: function(scope, element, attrs, ctrl) {
-        var listener;
         if (attrs.left) {
           scope.left = attrs.left;
         }
@@ -45,22 +44,6 @@ angular.module("ximdex.common.directive").directive("ximMenu", [
         } else {
           scope.expanded = false;
         }
-        scope.height = element.height;
-        listener = scope.$watch(scope.height, function(newValue, oldValue) {
-          var finY, menuY, newtop, windowY;
-          menuY = angular.element('div.xim-actions-menu').height();
-          if (menuY > 0) {
-            windowY = $window.innerHeight;
-            finY = menuY + parseInt(scope.top) - $window.document.body.scrollTop;
-            if (finY > windowY) {
-              newtop = parseInt(scope.top) - (finY - windowY) - (scope.expanded ? 10 : 0);
-              angular.element('div.xim-actions-menu').css({
-                top: newtop
-              });
-            }
-            return listener();
-          }
-        }, true);
       }
     };
   }

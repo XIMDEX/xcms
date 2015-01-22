@@ -1,4 +1,4 @@
-angular.module('ximdex.module.xmodifygroupusers').controller 'XModifyGroupUsersCtrl', [
+angular.module("ximdex.main.controller").controller 'XModifyGroupUsersCtrl', [
     '$scope', '$http',
     'xUrlHelper', '$window',
     '$filter', 'xDialog',

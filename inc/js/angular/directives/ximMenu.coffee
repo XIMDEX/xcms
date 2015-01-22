@@ -23,8 +23,8 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
 ###
 angular.module("ximdex.common.directive").directive "ximMenu", [
-    "$window"
-    ($window) ->
+    "$window", "$timeout"
+    ($window, $timeout) ->
         base_url = $window.X.baseUrl
         return (
             templateUrl: base_url+'/inc/js/angular/templates/ximMenu.html'
@@ -39,23 +39,6 @@ angular.module("ximdex.common.directive").directive "ximMenu", [
                     scope.expanded = true
                 else
                     scope.expanded = false
-                scope.height = element.height
-                listener = scope.$watch(
-                    scope.height
-                    ,
-                    (newValue, oldValue) ->
-                        menuY = angular.element('div.xim-actions-menu').height()
-                        if menuY > 0
-                            windowY = $window.innerHeight
-
-                            finY = menuY + parseInt(scope.top) - $window.document.body.scrollTop
-                            if finY > windowY
-                                newtop = parseInt(scope.top) - (finY - windowY) - if scope.expanded then 10 else 0
-                                angular.element('div.xim-actions-menu').css top: newtop
-                            listener()
-                    ,
-                    true
-                )
                 return
 
         )

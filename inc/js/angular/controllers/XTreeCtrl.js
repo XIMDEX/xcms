@@ -25,8 +25,8 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
-  "$scope", "$attrs", "xBackend", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
-    var actualFilter, canceler, dragStartPosition, expanded, getFolderPath, listenHidePanel, loadAction, prepareBreadcrumbs, size;
+  "$scope", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
+    var actualFilter, canceler, dragStartPosition, expanded, findNodeById, getFolderPath, listenHidePanel, loadAction, prepareBreadcrumbs, size;
     $scope.projects = null;
     $scope.initialNodeList = null;
     $scope.breadcrumbs = [];
@@ -411,7 +411,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         $scope.goBreadcrums(b.length - 2);
       }
     };
-    return getFolderPath = function(path) {
+    getFolderPath = function(path) {
       var n;
       n = path.lastIndexOf("/");
       if (n > 0) {
@@ -419,6 +419,41 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
       return path;
     };
+    findNodeById = function(nodeId, source) {
+      var i, item, queue, _i, _len, _ref;
+      queue = [source];
+      while (queue.length > 0) {
+        item = queue.pop();
+        if (item.nodeid === nodeId) {
+          return item;
+        } else {
+          if (item.collection != null) {
+            _ref = item.collection;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              i = _ref[_i];
+              queue.push(i);
+            }
+          }
+        }
+      }
+      return null;
+    };
+    return $scope.$on('nodemodified', function(event, nodeId) {
+      var node;
+      node = findNodeById(nodeId, $scope.projects);
+      if (node === null) {
+        node = findNodeById(nodeId, $scope.ccenter);
+      }
+      if (node === null) {
+        return;
+      }
+      if (node.isdir === "0") {
+        return;
+      }
+      node.showNodes = true;
+      node.collection = [];
+      return $scope.loadNodeChildren(node);
+    });
   }
 ]);
 

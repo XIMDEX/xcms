@@ -23,10 +23,9 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
 ###
 angular.module("ximdex.main.controller").controller "XTreeCtrl", [
-    "$scope", "$attrs", "xBackend"
-    "xTranslate", "$window", "$http"
+    "$scope", "xTranslate", "$window", "$http"
     "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce"
-    ($scope, $attrs, xBackend, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) ->
+    ($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) ->
 
         #Nodes for project tab
         $scope.projects = null
@@ -363,6 +362,27 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             n = path.lastIndexOf "/"
             return path.substring 0, n if n>0
             return path
+
+        findNodeById = (nodeId, source) ->
+            queue = [source]
+            while queue.length > 0
+                item = queue.pop()
+                if item.nodeid == nodeId
+                    return item
+                else
+                    if item.collection?
+                        for i in item.collection
+                            queue.push i
+            return null
+
+        $scope.$on 'nodemodified', (event, nodeId) ->
+            node = findNodeById nodeId, $scope.projects
+            node = findNodeById nodeId, $scope.ccenter if node == null
+            return if node == null
+            return if node.isdir == "0"
+            node.showNodes = true
+            node.collection = []
+            $scope.loadNodeChildren node
 
 ]
 

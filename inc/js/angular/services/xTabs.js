@@ -46,14 +46,6 @@ angular.module("ximdex.common.service").factory("xTabs", [
             actionContainer: angular.element("#" + tab.id + "_content"),
             form: angular.element(form)
           }));
-
-          /*angular.element(form).bind( "submit", () ->
-              console.log "hola", "que pasa"
-               *$rootScope.$broadcast('onSubmitForm', indexTab, form)
-          
-              return false
-          )
-           */
         }
         return _results;
       }, 0);
@@ -73,9 +65,6 @@ angular.module("ximdex.common.service").factory("xTabs", [
           index = xtab.getTabIndex(args.tabId);
           if (index < 0) {
             return;
-          }
-          if (args.reload === false && data.messages) {
-            console.log("MESSAGE", data.messages);
           }
           if (args.reload === true) {
             tabs[index].content_untrusted = data;

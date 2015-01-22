@@ -83,11 +83,11 @@
         </script>
     {/literal}
     <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
-        <tab heading="projects" select="$parent.selectedTab=1;">
+        <tab heading="projects" select="$parent.$parent.selectedTab=1;">
             <div ng-if="treeMode" ><xim-tree /></div>
             <div ng-if="!treeMode" ><xim-list /></div>
         </tab>
-        <tab heading="ccenter" select="$parent.selectedTab=2;">
+        <tab heading="ccenter" select="$parent.$parent.selectedTab=2;">
             <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
                 <div ng-click="reloadNode()"
                      class="xim-treeview-btnreload ui-corner-all ui-state-default">{t}Reload node{/t}</div>
@@ -100,7 +100,7 @@
                 </div>
             </div>
         </tab>
-        <tab heading="modules" select="$parent.selectedTab=3;">
+        <tab heading="modules" select="$parent.$parent.selectedTab=3;">
             <div class="browser-modules-view-list-container" style="display: block;">
                 <ul ng-if="modules!='null' && modules!=null" class="browser-modules-view-list">
                     <li

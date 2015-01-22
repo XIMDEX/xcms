@@ -39,12 +39,6 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                             actionContainer: angular.element("#"+tab.id+"_content"),
                             form: angular.element(form)
                         )
-                        ###angular.element(form).bind( "submit", () ->
-                            console.log "hola", "que pasa"
-                            #$rootScope.$broadcast('onSubmitForm', indexTab, form)
-
-                            return false
-                        )###
             ,
                 0
             )
@@ -62,8 +56,6 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 if data
                     index = xtab.getTabIndex args.tabId
                     return if index < 0
-                    if args.reload == false && data.messages
-                        console.log "MESSAGE", data.messages
                     if args.reload == true
                         tabs[index].content_untrusted = data
                         tabs[index].content = $sce.trustAsHtml(data)
