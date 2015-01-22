@@ -34,7 +34,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         $scope.limitTabs = 9999999
 
         #Reloads welcome tab
-        reloadWelcomeTab = () ->
+        $scope.reloadWelcomeTab = (callback) ->
             nodes = [{nodeid: 10000}]
             url = xUrlHelper.getAction(
                 action: "welcome"
@@ -55,20 +55,14 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                         url: url
                     xTabs.loadCssAndJs newtab
                     $scope.welcomeTab = newtab.content
+                return
             return
 
         #At first, reloads welcome tab
-        reloadWelcomeTab()
-        ###
-        #Reloads welcome tab every 30 seconds if welcome tab is active
-        $interval(
-                () ->
-                    return if $scope.tabs.length > 0
-                    reloadWelcomeTab()
-            ,
-                30000
-        )
-        ###
+        $scope.reloadWelcomeTab()
+
+
+
         #Closes the menu
         $scope.closeMenu = () ->
             $scope.showingMenu=false

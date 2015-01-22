@@ -380,6 +380,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             node = findNodeById nodeId, $scope.ccenter if node == null
             return if node == null
             return if node.isdir == "0"
+            $scope.selectedNodes = []
             node.showNodes = true
             node.collection = []
             $scope.loadNodeChildren node

@@ -236,9 +236,6 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             activeTab = -1
             return
 
-
-
-
         xtab.removeTabById = (tabId) ->
             index = xtab.getTabIndex tabId
             xtab.removeTab index if index >= 0

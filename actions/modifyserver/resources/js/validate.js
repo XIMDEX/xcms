@@ -26,7 +26,7 @@
 X.actionLoaded(function (event, fn, params) {
 
     var form = fn('form');
-    var fm = form.getFormMgr();
+    var fm = form.get(0).getFormMgr();
     var valid = true;
 
     // Creates an alias for convenience

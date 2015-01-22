@@ -70,6 +70,6 @@ X.actionLoaded(function(event, fn, params) {
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     $(document).on('nodemodified', function(e, node){
-        $('#angular-content').scope().reloadTabById(params.tab.id);
+        $('#angular-content').scope().reloadWelcomeTab();
     });
 });

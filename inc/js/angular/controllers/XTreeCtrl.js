@@ -450,6 +450,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       if (node.isdir === "0") {
         return;
       }
+      $scope.selectedNodes = [];
       node.showNodes = true;
       node.collection = [];
       return $scope.loadNodeChildren(node);

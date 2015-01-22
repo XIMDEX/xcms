@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.module.xtags')
-    .controller('XTagsCtrl', ['$scope', 'xTranslate', '$window', '$http', 'xUrlHelper', '$timeout', function($scope, xTranslate, $window, $http, xUrlHelper, $timeout){
+    .controller('XTagsCtrl', ['$scope', '$attrs', 'xTranslate', '$window', '$http', 'xUrlHelper', '$timeout', function($scope, $attrs, xTranslate, $window, $http, xUrlHelper, $timeout){
     	$scope.documentTags = [];
     	$scope.cloudTags = [];
         $scope.namespaces = {};
