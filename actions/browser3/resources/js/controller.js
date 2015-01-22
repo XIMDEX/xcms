@@ -28,12 +28,10 @@
 //com.ximdex.widgets.ready(function() {
 $(document).ready(function() {
 	var selectors = {
-		browserWindow: '#bw1',
 		spotlight: '.mini-spotlight',
 		searchpanel: 'div.advanced-search'
 	};
 
-	$(selectors.browserWindow).browserwindow({});
 
 	Object.getWidgetConf({
 		wn: 'spotlight',
@@ -45,11 +43,11 @@ $(document).ready(function() {
 					//methods.beforeSearch(options);
 				},
 				cbSearch: function(event, params) {
-					$(selectors.browserWindow).browserwindow('openAction', {
+                    $("#angular-content").scope().openAction( {
 						command: 'searchpanel',
 						method: 'showResults',
 						name: _("Search results"),
-						params: 'method=showResults',
+						params: '',
 						data: params.result
 					}, [0]);
 				}
@@ -78,9 +76,9 @@ $(document).ready(function() {
 	};
 	sp.searchpanel(spOptions);
 
-	$(selectors.browserWindow).bind('searchpanel-open', function() {
+	/*$(selectors.browserWindow).bind('searchpanel-open', function() {
 		sp.searchpanel('option', spOptions).searchpanel('open');
-	});
+	});*/
 	
 	/* Control of expiration session and inactivity period*/
 	var sessionLength = parseInt(X.session.get("sessionLength"));

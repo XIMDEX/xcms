@@ -11,8 +11,8 @@ angular.module("ximdex.common.service").factory("xTabs", [
     activeTab = -1;
 
     /*$window.com.ximdex.triggerActionLoaded({
-        actionView: this,
-        browser: this.browser,
+        actionView: this, hay que mirarlo
+        browser: this.browser, liquidado
         context: this.content,
         url: this.url,
         action: action,
@@ -21,6 +21,83 @@ angular.module("ximdex.common.service").factory("xTabs", [
     })
      */
     xtab = {};
+    xtab.getTabIndex = function(tabId) {
+      var i, tab, _i, _len;
+      for (i = _i = 0, _len = tabs.length; _i < _len; i = ++_i) {
+        tab = tabs[i];
+        if (tab.id === tabId) {
+          return i;
+        }
+      }
+      return -1;
+    };
+    xtab.bindFormEvents = function(indexTab, tab) {
+      $timeout(function() {
+        var fm, form, forms, i, _i, _len, _results;
+        forms = angular.element("form", "#" + tab.id + "_content");
+        _results = [];
+        for (i = _i = 0, _len = forms.length; _i < _len; i = ++_i) {
+          form = forms[i];
+          _results.push(fm = new X.FormsManager({
+            actionView: {
+              action: tab.action
+            },
+            tabId: tab.id,
+            actionContainer: angular.element("#" + tab.id + "_content"),
+            form: angular.element(form)
+          }));
+
+          /*angular.element(form).bind( "submit", () ->
+              console.log "hola", "que pasa"
+               *$rootScope.$broadcast('onSubmitForm', indexTab, form)
+          
+              return false
+          )
+           */
+        }
+        return _results;
+      }, 0);
+    };
+    xtab.submitForm = function(args) {
+      $http({
+        url: args.url,
+        responseType: args.reload ? "" : "json",
+        method: "POST",
+        data: args.data,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).success(function(data) {
+        var index;
+        if (data) {
+          index = xtab.getTabIndex(args.tabId);
+          if (index < 0) {
+            return;
+          }
+          if (args.reload === false && data.messages) {
+            console.log("MESSAGE", data.messages);
+          }
+          if (args.reload === true) {
+            tabs[index].content_untrusted = data;
+            tabs[index].content = $sce.trustAsHtml(data);
+            xtab.loadCssAndJs(tabs[index]);
+            xtab.bindFormEvents(index, tabs[index]);
+          }
+          if (args.callback) {
+            args.callback({
+              data: data,
+              tab: tabs[index]
+            });
+          }
+        }
+      }).error(function(error) {
+        if (args.callback) {
+          args.callback({
+            error: true
+          });
+        }
+      });
+    };
     xtab.activeIndex = function() {
       return activeTab;
     };
@@ -44,11 +121,12 @@ angular.module("ximdex.common.service").factory("xTabs", [
       }
       callback = function() {
         return $window.com.ximdex.triggerActionLoaded({
+          title: "#" + tab.id + "_tab",
           context: "#" + tab.id + "_content",
           url: tab.url,
           action: tab.action,
           nodes: nodeids,
-          tabId: tabs.length + 1
+          tab: tab
         });
       };
       jsObj = {
@@ -86,7 +164,8 @@ angular.module("ximdex.common.service").factory("xTabs", [
       url = xUrlHelper.getAction({
         action: action.command,
         nodes: nodes,
-        module: action.module
+        module: action.module,
+        method: action.method
       });
       $http.get(url).success(function(data) {
         var newlength, newtab;
@@ -106,6 +185,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
           that.loadCssAndJs(newtab);
           newlength = tabs.push(newtab);
           that.setActive(newlength - 1);
+          xtab.bindFormEvents(newlength - 1, newtab);
           $timeout(function() {
             return $rootScope.$broadcast('onModifyTabs');
           }, 0);
@@ -193,6 +273,38 @@ angular.module("ximdex.common.service").factory("xTabs", [
      */
     xtab.offAll = function() {
       activeTab = -1;
+    };
+    xtab.removeTabById = function(tabId) {
+      var index;
+      index = xtab.getTabIndex(tabId);
+      if (index >= 0) {
+        return xtab.removeTab(index);
+      }
+    };
+    xtab.reloadTab = function(index) {
+      var tab, url;
+      tab = tabs[tabId];
+      url = xUrlHelper.getAction({
+        action: tab.action.command,
+        nodes: tab.nodes,
+        module: tab.action.module,
+        method: tab.action.method
+      });
+      $http.get(url).success(function(data) {
+        if (data) {
+          tab.content_untrusted = data;
+          tab.content = $sce.trustAsHtml(data);
+          xtab.loadCssAndJs(tab);
+          xtab.bindFormEvents(index, tab);
+        }
+      });
+    };
+    xtab.reloadTabById = function(idTab) {
+      var index;
+      index = xtab.getTabIndex(idTab);
+      if (index >= 0) {
+        xtab.reloadTab(index);
+      }
     };
     return xtab;
   }

@@ -76,14 +76,14 @@ X.actionLoaded(function(event, fn, params) {
 	});
 
 
-	var form = params.actionView.getForm('mv_form');
+	var form = fn('form');
 
 	// Recover button management
 	var cbRecover = function(event, button) {
 		var v = getRowVersion(button);
 		$version.val(v.version);
 		$subversion.val(v.subversion);
-		form.action += '&method=recover';
+		form.attr('action', form.attr('action') + '&method=recover');
 	};
 
 	fn('.disabled-version').each(function(index, button) {
@@ -95,7 +95,7 @@ X.actionLoaded(function(event, fn, params) {
 		var v = getRowVersion(button);
 		$version.val(v.version);
 		$subversion.val(v.subversion);
-		form.action += '&method=delete';
+        form.attr('action', form.attr('action') + '&method=delete');
 	};
 
 	fn('.delete-btn').each(function(index, button) {

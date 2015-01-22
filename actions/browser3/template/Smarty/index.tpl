@@ -53,7 +53,7 @@
 		<!-- js widgets -->
 		%=js_widgets%
 	</head>
-	<body ng-controller="XMainCtrl">
+	<body>
 		<div id="angular-event-relay"></div>
 		<!--<div id="ximdex-splash">
 

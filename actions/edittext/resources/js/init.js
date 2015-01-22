@@ -29,9 +29,7 @@
 	//When saving changes, remove the mark
 	fn(".validate").click(function(){
 		fn(".editor").removeClass("unsave");
-		var href= params.actionView.id;
-		$tabLink = $("a[href='#"+href+"']");
-		$tabLink.removeClass("unsave").parent().removeClass("unsave");
+        $(params.title).removeClass("unsave").find('a').removeClass("unsave");
  	});
 
 	var id_editor = fn(".editor_textarea").attr("id");
@@ -65,9 +63,7 @@
         editor.on("change", function(cm){
             fn(".editor").addClass("unsave");
             cm.save();
-            var href= params.actionView.id;
-            $tabLink = $("a[href='#"+href+"']");
-            $tabLink.addClass("unsave").parent().addClass("unsave");
+            $(params.title).addClass("unsave").find('a').addClass("unsave");
             cm.save();
         })
 

@@ -9,6 +9,9 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         $scope.closeAllTabs = xTabs.closeAll
         $scope.offAllTabs = xTabs.offAll
         $scope.activeIndex = xTabs.activeIndex
+        $scope.submitForm = xTabs.submitForm
+        $scope.closeTabById = xTabs.removeTabById
+        $scope.reloadTabById = xTabs.reloadTabById
         $scope.openAction = (action, nodes) ->
             nodesArray = []
             if Array.isArray nodes

@@ -65,7 +65,7 @@
                  hm-tap="select(node,$event)" ng-right-click="loadActions(node,$event)"
                  ng-class="{'xim-treeview-container-selected': (node | nodeSelected: selectedNodes)}">
                 <span class="ui-icon xim-actions-toggle-node"
-                      ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children || node.collection.length==0}"
+                      ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children && (node.collection == null || node.collection.length==0)}"
                       hm-tap="toggleNode(node,$event)"></span>
                 <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
                 <span class="xim-treeview-branch" ng-bind-html="node.name"></span>
@@ -156,8 +156,7 @@
         ng-class="{'ui-tabs-active ui-state-active': ($index == $parent.activeIndex()),
         'xim-last-tab': $last, 'blink': tab.blink, 'hide': ($parent.limitTabs<=$index)}" id="#/tab.id/#_tab">
         <div hm-tap="removeTab($index);" class="ui-tab-close"></div>
-        <a class="ui-tabs-anchor browser-action-view"
-           id="#/tab.id/#"><span>#/tab.name/#</span></a></li>
+        <a class="ui-tabs-anchor browser-action-view"><span>#/tab.name/#</span></a></li>
     {/literal}
 </ul>
 <div ng-show="activeIndex()<0" class="browser-action-view-content ui-tabs-panel

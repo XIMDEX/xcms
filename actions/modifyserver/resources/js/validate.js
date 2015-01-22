@@ -25,7 +25,7 @@
 
 X.actionLoaded(function (event, fn, params) {
 
-    var form = params.actionView.getForm('mdfsv_form');
+    var form = fn('form');
     var fm = form.getFormMgr();
     var valid = true;
 

@@ -25,7 +25,7 @@
 
 function manageproperties_showDialog(messages, fn, params, callback) {
 
-	var form = params.actionView.getForm('modifyproperties');
+	var form = fn('form');
 
 	var $dialog = $("<div/>").addClass('confirm-dialog').appendTo(form);
 

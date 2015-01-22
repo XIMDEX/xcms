@@ -5,13 +5,14 @@
 angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout", "$http",
                                                           "xUrlHelper", "$sce", "$rootScope"
     ($window, $timeout, $http, xUrlHelper, $sce, $rootScope) ->
+
         tabs = []
         visitedTabs = []
         activeTab = -1
 
         ###$window.com.ximdex.triggerActionLoaded({
-            actionView: this,
-            browser: this.browser,
+            actionView: this, hay que mirarlo
+            browser: this.browser, liquidado
             context: this.content,
             url: this.url,
             action: action,
@@ -20,6 +21,62 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         })###
 
         xtab = {}
+
+        xtab.getTabIndex = (tabId) ->
+            for tab, i in tabs
+                return i if tab.id == tabId
+            return -1
+
+        xtab.bindFormEvents = (indexTab, tab) ->
+            $timeout(
+                () ->
+                    forms = angular.element("form","#"+tab.id+"_content")
+                    for form, i in forms
+                        fm = new X.FormsManager(
+                            actionView:
+                                action: tab.action
+                            tabId: tab.id
+                            actionContainer: angular.element("#"+tab.id+"_content"),
+                            form: angular.element(form)
+                        )
+                        ###angular.element(form).bind( "submit", () ->
+                            console.log "hola", "que pasa"
+                            #$rootScope.$broadcast('onSubmitForm', indexTab, form)
+
+                            return false
+                        )###
+            ,
+                0
+            )
+            return
+
+        xtab.submitForm = (args) ->
+            $http(
+                url: args.url
+                responseType: if args.reload then "" else "json"
+                method: "POST"
+                data: args.data
+                headers:
+                    "Content-Type": "application/x-www-form-urlencoded"
+            ).success((data) ->
+                if data
+                    index = xtab.getTabIndex args.tabId
+                    return if index < 0
+                    if args.reload == false && data.messages
+                        console.log "MESSAGE", data.messages
+                    if args.reload == true
+                        tabs[index].content_untrusted = data
+                        tabs[index].content = $sce.trustAsHtml(data)
+                        xtab.loadCssAndJs tabs[index]
+                        xtab.bindFormEvents index, tabs[index]
+                    args.callback({data: data, tab: tabs[index]}) if args.callback
+                return
+            ).error (error) ->
+                args.callback({error: true}) if args.callback
+                return
+            return
+
+        #$rootScope.$on("onSubmitForm", xtab.submitForm);
 
         #Returns the index of the active tab
         xtab.activeIndex = () -> return activeTab
@@ -43,11 +100,12 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 $window.com.ximdex.triggerActionLoaded({
                     #actionView: this,
                     #browser: this.browser,
+                    title: "#" + tab.id + "_tab"
                     context: "#"+tab.id+"_content",
                     url: tab.url,
                     action: tab.action,
                     nodes: nodeids,
-                    tabId: tabs.length + 1
+                    tab: tab
                 })
 
             jsObj =
@@ -77,6 +135,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 action: action.command
                 nodes: nodes
                 module: action.module
+                method: action.method
             )
             $http.get(url).success (data) ->
                 if data
@@ -94,6 +153,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     that.loadCssAndJs newtab
                     newlength = tabs.push(newtab)
                     that.setActive newlength - 1
+                    xtab.bindFormEvents newlength - 1, newtab
                     $timeout(
                         () ->
                             $rootScope.$broadcast('onModifyTabs')
@@ -184,6 +244,35 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             activeTab = -1
             return
 
-        return xtab
 
+
+
+        xtab.removeTabById = (tabId) ->
+            index = xtab.getTabIndex tabId
+            xtab.removeTab index if index >= 0
+
+        xtab.reloadTab = (index) ->
+            tab = tabs[tabId]
+            url = xUrlHelper.getAction(
+                action: tab.action.command
+                nodes: tab.nodes
+                module: tab.action.module
+                method: tab.action.method
+            )
+            $http.get(url).success (data) ->
+                if data
+                    tab.content_untrusted = data
+                    tab.content = $sce.trustAsHtml(data)
+                    xtab.loadCssAndJs tab
+                    xtab.bindFormEvents index, tab
+                return
+            return
+
+        xtab.reloadTabById = (idTab) ->
+            index = xtab.getTabIndex idTab
+            xtab.reloadTab index if index >= 0
+            return
+
+
+        return xtab
 ]
