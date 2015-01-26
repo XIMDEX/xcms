@@ -104,7 +104,6 @@ strong{
 \*------------------------------------*/
 
 	#ximdex-splash {
-
 		position: absolute;
 		top: 0px;
 		left: 0px;
@@ -115,7 +114,22 @@ strong{
 		background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom,
 					url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
 		overflow: auto;
+      -webkit-animation: fadeout 3s ease-in; /* Chrome, Safari, Opera */
+      animation: fadeout 3s ease-in;
+      visibility: hidden;
+      opacity: 0;
+      diplay: none;
 	}
+@-webkit-keyframes fadeout {
+  0% {visibility: visible; opacity: 1; display: block;}
+  50% {visibility: visible; opacity: 1; display: block;}
+  100% {visibility: hidden; opacity: 0; display: none;}
+}
+@keyframes fadeout {
+  0% {visibility: visible; opacity: 1; display: block;}
+  50% {visibility: visible; opacity: 1; display: block;}
+  100% {visibility: hidden; opacity: 0; display: none;}
+}
 
 
 	#ximdex-splash .loading{
@@ -150,8 +164,19 @@ strong{
 		height: inherit;
 		background: #4f4f4f url(../../../../xmd/images/browser/splash/bg-pattern-grey.png) repeat;
 		max-width: 100%;
+        width: 100%;
+        -webkit-animation: loadingBar 2s ease-out; /* Chrome, Safari, Opera */
+        animation: loadingBar 2s ease-out;
 	}
 
+    @-webkit-keyframes loadingBar {
+      0%   {width: 0%;}
+      100% {width: 100%;}
+    }
+    @keyframes loadingBar {
+        0%   {width: 0%;}
+        100% {width: 100%;}
+    }
 	.ximdex_splash_content {
 
 		width: 80%;

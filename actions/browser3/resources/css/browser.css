@@ -118,8 +118,40 @@ strong {
   height: 100%;
   background-color: #fff;
   background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom, url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
-  overflow: auto; }
+  overflow: auto;
+  -webkit-animation: fadeout 3s ease-in;
+  /* Chrome, Safari, Opera */
+  animation: fadeout 3s ease-in;
+  visibility: hidden;
+  opacity: 0;
+  diplay: none; }
 
+@-webkit-keyframes fadeout {
+  0% {
+    visibility: visible;
+    opacity: 1;
+    display: block; }
+  50% {
+    visibility: visible;
+    opacity: 1;
+    display: block; }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+    display: none; } }
+@keyframes fadeout {
+  0% {
+    visibility: visible;
+    opacity: 1;
+    display: block; }
+  50% {
+    visibility: visible;
+    opacity: 1;
+    display: block; }
+  100% {
+    visibility: hidden;
+    opacity: 0;
+    display: none; } }
 #ximdex-splash .loading {
   width: 98%;
   height: 22px;
@@ -146,8 +178,22 @@ strong {
   display: inline-block;
   height: inherit;
   background: #4f4f4f url(../../../../xmd/images/browser/splash/bg-pattern-grey.png) repeat;
-  max-width: 100%; }
+  max-width: 100%;
+  width: 100%;
+  -webkit-animation: loadingBar 2s ease-out;
+  /* Chrome, Safari, Opera */
+  animation: loadingBar 2s ease-out; }
 
+@-webkit-keyframes loadingBar {
+  0% {
+    width: 0%; }
+  100% {
+    width: 100%; } }
+@keyframes loadingBar {
+  0% {
+    width: 0%; }
+  100% {
+    width: 100%; } }
 .ximdex_splash_content {
   width: 80%;
   margin: 5.625em auto; }
@@ -218,18 +264,14 @@ button::-moz-focus-inner {
 \*------------------------------------*/
 #header {
   background: url("../../../../xmd/images/header/cabecera_fnd.png") repeat left top;
-  height: 45px;
-  min-width: 500px;
-
+  height: 38px;
   /*float: left;*/
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   border-top: 1px solid #006b6c;
   position: relative;
-  z-index: 4;
-  /*overflow: hidden;*/
-}
+  z-index: 4; }
 
 #header h1 {
   float: left;
@@ -237,7 +279,7 @@ button::-moz-focus-inner {
 
 #body {
   position: absolute;
-  top: 50px;
+  top: 40px;
   bottom: 0px;
   width: 100%;
   margin: 0px; }
