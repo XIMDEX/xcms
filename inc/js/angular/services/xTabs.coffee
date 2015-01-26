@@ -1,49 +1,66 @@
-###
-   Service to control the tabs
-### #
-
+#Service to control the tabs
 angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout", "$http",
                                                           "xUrlHelper", "$sce", "$rootScope"
     ($window, $timeout, $http, xUrlHelper, $sce, $rootScope) ->
 
+        #Array of current tabs
         tabs = []
+        #Visited tabs history
         visitedTabs = []
+        #The index of the currently open tab
         activeTab = -1
 
-        ###$window.com.ximdex.triggerActionLoaded({
-            actionView: this, hay que mirarlo
-            browser: this.browser, liquidado
-            context: this.content,
-            url: this.url,
-            action: action,
-            nodes: this.nodes,
-            tabId: this.tabId()
-        })###
-
-        xtab = {}
-
-        xtab.getTabIndex = (tabId) ->
-            for tab, i in tabs
-                return i if tab.id == tabId
-            return -1
-
-        xtab.bindFormEvents = (indexTab, tab) ->
+        # Bind the jQuery form events for a tab
+        #
+        # @private
+        # @param tab [Tab object] The tab object
+        # @return [Integer] The index of the tab
+        bindFormEvents = ( tab) ->
             $timeout(
                 () ->
                     forms = angular.element("form","#"+tab.id+"_content")
-                    for form, i in forms
-                        fm = new X.FormsManager(
+                    if forms.length == 0
+                        new X.FormsManager(
                             actionView:
                                 action: tab.action
                             tabId: tab.id
                             actionContainer: angular.element("#"+tab.id+"_content"),
-                            form: angular.element(form)
                         )
+                    else
+                        for form, i in forms
+                            new X.FormsManager(
+                                actionView:
+                                    action: tab.action
+                                tabId: tab.id
+                                actionContainer: angular.element("#"+tab.id+"_content"),
+                                form: angular.element(form)
+                            )
             ,
                 0
             )
             return
 
+        xtab = {}
+
+        # Gets the index of a tab
+        #
+        # @param tabId [String] The id of the tab
+        # @return [Integer] The index of the tab or -1 if tab doesn't exist
+        #
+        xtab.getTabIndex = (tabId) ->
+            for tab, i in tabs
+                return i if tab.id == tabId
+            return -1
+
+
+        # Submit a form
+        #
+        # @param args.url [String] The url of the action
+        # @param args.reload [Boolean] Indicates if it is a reload request
+        # @param args.data [String] The data request
+        # @param args.idTab [String] The tab id
+        # @param args.callback [Function] A function to be executed at the end
+        #
         xtab.submitForm = (args) ->
             $http(
                 url: args.url
@@ -60,7 +77,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                         tabs[index].content_untrusted = data
                         tabs[index].content = $sce.trustAsHtml(data)
                         xtab.loadCssAndJs tabs[index]
-                        xtab.bindFormEvents index, tabs[index]
+                        bindFormEvents tabs[index]
                     args.callback({data: data, tab: tabs[index]}) if args.callback
                 return
             ).error (error) ->
@@ -68,11 +85,24 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 return
             return
 
-        #$rootScope.$on("onSubmitForm", xtab.submitForm);
 
-        #Returns the index of the active tab
+        # Returns the index of the current active tab
+        #
+        # @return [Integer] The index of the active tab
+        #
         xtab.activeIndex = () -> return activeTab
-        #Loads the css and js of a content
+
+        # Loads the css and js of a tab. It triggers the window.com.ximdex.triggerActionLoaded event
+        # with the following data:
+        #   -title: the id of tab title
+        #   -context: the id of tab content
+        #   -url: the url used to load the tab
+        #   -action: the action object
+        #   -nodes: array of nodeids
+        #   -tab: the tab object
+        #
+        # @param tab [Tab object] The tab object
+        #
         xtab.loadCssAndJs = (tab) ->
             cssArr = []
             content = angular.element(tab.content_untrusted)
@@ -89,17 +119,14 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 nodeids.push n.nodeid
 
             callback = () ->
-                $window.com.ximdex.triggerActionLoaded({
-                    #actionView: this,
-                    #browser: this.browser,
+                $window.com.ximdex.triggerActionLoaded(
                     title: "#" + tab.id + "_tab"
                     context: "#"+tab.id+"_content",
                     url: tab.url,
                     action: tab.action,
                     nodes: nodeids,
                     tab: tab
-                })
-
+                )
             jsObj =
                 onComplete: callback
                 js: jsArr
@@ -108,11 +135,13 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             else
                 callback()
             return
-        ###
-            Pushes a new tab
-                action: object action
-                nodes: array of nodes
-        ###
+
+        # Pushes a new tab. It triggers the onModifyTabs event.
+        #
+        # @param action [Action object] The action object
+        # @param nodes [Array] An array of node objects
+        #
+
         xtab.pushTab = (action, nodes) ->
             newid = ""
             for n in nodes
@@ -120,14 +149,14 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             newid += action.command
             for tab, i in tabs
                 if tab.id == newid
-                    this.highlightTab i
+                    xtab.highlightTab i
                     return
-            that = this
             url = xUrlHelper.getAction(
                 action: action.command
                 nodes: nodes
                 module: action.module
                 method: action.method
+                options: action.params
             )
             $http.get(url).success (data) ->
                 if data
@@ -142,10 +171,10 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                         blink: false
                         show: true
                         url: url
-                    that.loadCssAndJs newtab
+                    xtab.loadCssAndJs newtab
                     newlength = tabs.push(newtab)
-                    that.setActive newlength - 1
-                    xtab.bindFormEvents newlength - 1, newtab
+                    xtab.setActive newlength - 1
+                    bindFormEvents newtab
                     $timeout(
                         () ->
                             $rootScope.$broadcast('onModifyTabs')
@@ -155,11 +184,18 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
 
                 return
             return
-        ###
-            Returns the tabs
-        ###
+
+        # Return the current tabs.
+        #
+        # @return [Array] Array of tab objects
+        #
         xtab.getTabs = () ->
             return tabs
+
+        # Removes a tab.
+        #
+        # @param index [Integer] The tab index
+        #
         xtab.removeTab = (index) ->
             visitedIndex = visitedTabs.indexOf index
             if visitedIndex >= 0
@@ -185,10 +221,11 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 400
             )
             return
-        ###
-            Set active a tab
-                index: the index of the tab
-        ###
+
+        # Set a tab as active.
+        #
+        # @param index [Integer] The tab index
+        #
         xtab.setActive = (index) ->
             activeTab = index
             visitedIndex = visitedTabs.indexOf index
@@ -202,10 +239,11 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 0
             )
             return
-        ###
-            Highlights a tab (usually when we open a existing tab)
-                index: the index of the tab
-        ###
+
+        # Highlights a tab (usually when we open a existing tab)
+        #
+        # @param index [Integer] The tab index
+        #
         xtab.highlightTab = (index) ->
             return if tabs[index].blink == true
             tabs[index].blink = true
@@ -215,9 +253,8 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             ,
                 2000
             )
-        ###
-            Closes all tabs
-        ###
+
+        # Closes all tabs
         xtab.closeAll = () ->
             tabs.splice 0, tabs.length
             activeTab = -1
@@ -229,17 +266,24 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 400
             )
             return
-        ###
-            Deactivates all tabs
-        ###
+
+        # Sets all tabs as no disable
         xtab.offAll = () ->
             activeTab = -1
             return
 
+        # Removes a tab
+        #
+        # @param tabId [String] The tab id
+        #
         xtab.removeTabById = (tabId) ->
             index = xtab.getTabIndex tabId
             xtab.removeTab index if index >= 0
 
+        # Reloads a tab
+        #
+        # @param index [Integer] The tab index
+        #
         xtab.reloadTab = (index) ->
             tab = tabs[tabId]
             url = xUrlHelper.getAction(
@@ -253,12 +297,16 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     tab.content_untrusted = data
                     tab.content = $sce.trustAsHtml(data)
                     xtab.loadCssAndJs tab
-                    xtab.bindFormEvents index, tab
+                    bindFormEvents tab
                 return
             return
 
-        xtab.reloadTabById = (idTab) ->
-            index = xtab.getTabIndex idTab
+        # Reloads a tab
+        #
+        # @param tabId [String] The tab id
+        #
+        xtab.reloadTabById = (tabId) ->
+            index = xtab.getTabIndex tabId
             xtab.reloadTab index if index >= 0
             return
 

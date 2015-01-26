@@ -29,6 +29,7 @@ angular.module('ximdex.common.service')
 
         var scope = {};
         var body = $document.find('body');
+        var firstTime = true;
 
         destroyMenu = function() {
 
@@ -61,18 +62,6 @@ angular.module('ximdex.common.service')
 
             if (!scope.$$phase)
                 scope.$digest();
-            $timeout(function() {
-                var finY, menuY, newtop, windowY;
-                menuY = angular.element('div.xim-actions-menu').height();
-                windowY = $window.innerHeight;
-                finY = menuY + parseInt(scope.top) - $window.document.body.scrollTop;
-                if (finY > windowY) {
-                    newtop = parseInt(scope.top) - (finY - windowY) - (scope.expanded ? 10 : 0);
-                    angular.element('div.xim-actions-menu').css({
-                        top: newtop
-                    });
-                }
-            }, 0);
         }
 
         return {

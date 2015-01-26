@@ -52,7 +52,7 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
                     actionUrl+='&mod='+params.module;
                 }
                 if (params.options) {
-                    actionUrl = this.parametrize(actionUrl, params.options);
+                    actionUrl = this.parametrize(actionUrl, params.options[0]);
                 }
                 return actionUrl;
             },

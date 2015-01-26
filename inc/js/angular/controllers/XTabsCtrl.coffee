@@ -12,6 +12,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         $scope.submitForm = xTabs.submitForm
         $scope.closeTabById = xTabs.removeTabById
         $scope.reloadTabById = xTabs.reloadTabById
+
         $scope.openAction = (action, nodes) ->
             nodesArray = []
             if Array.isArray nodes

@@ -33,7 +33,12 @@ angular.module("ximdex.common.directive").directive "ximMenu", [
             link: (scope, element, attrs, ctrl) ->
                 if attrs.left
                     scope.left = attrs.left
-                if attrs.top
+                menuY = scope.options.length * 38 + 10
+                windowY = $window.innerHeight
+                finY = menuY + parseInt(attrs.top) - $window.document.body.scrollTop
+                if finY > windowY
+                    scope.top = (parseInt(attrs.top) - menuY)
+                else
                     scope.top = attrs.top
                 if attrs.expanded == "true"
                     scope.expanded = true

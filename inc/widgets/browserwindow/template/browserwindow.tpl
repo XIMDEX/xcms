@@ -39,7 +39,7 @@
                     <ul class="ul ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all {{type && 'nav-' + type}}"
                         ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude>
                         <li>
-                            <div class="browser-view-title">{{'browser.view.headings.'+tab.heading | xI18n}}</div>
+                            <div class="browser-view-title">{{'browser.headings.'+tab.heading | xI18n}}</div>
                         </li>
                     </ul>
                     <div class="tab-content browser-view browser-projects-view-content ui-tabs-panel ui-widget-content ui-corner-bottom">
@@ -47,7 +47,7 @@
                              ng-repeat="tab in tabs"
                              ng-class="{active: tab.active}"
                              tab-content-transclude="tab">
-                            <div class="browser-view-title">{{'browser.view.headings.'+tab.heading | xI18n}}</div>
+                            <div class="browser-view-title">{{'browser.headings.'+tab.heading | xI18n}}</div>
                         </div>
                     </div>
                 </div>
@@ -68,10 +68,11 @@
                       ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children && (node.collection == null || node.collection.length==0)}"
                       hm-tap="toggleNode(node,$event)"></span>
                 <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
-                <span class="xim-treeview-branch" ng-bind-html="node.name"></span>
-                        <span hm-tap="loadActions(node,$event)"
-                              class="xim-actions-dropdown xim-treeview-actions-dropdown
-                              ui-icon ui-icon-triangle-1-e"></span>
+                <span ng-if="node.nodeid=='10000'" class="xim-treeview-branch" >#/'browser.headings.'+node.name | xI18n/#</span>
+                <span ng-if="node.nodeid!='10000'" class="xim-treeview-branch" ng-bind-html="node.name"></span>
+                <span hm-tap="loadActions(node,$event)"
+                      class="xim-actions-dropdown xim-treeview-actions-dropdown
+                      ui-icon ui-icon-triangle-1-e"></span>
             </div>
             <ul class="xim-treeview-branch" ng-show="node.showNodes">
                 <li ng-repeat="node in node.collection" ng-include="'tree_item_renderer.html'"
@@ -90,7 +91,7 @@
         <tab heading="ccenter" select="$parent.$parent.selectedTab=2;">
             <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
                 <div ng-click="reloadNode()"
-                     class="xim-treeview-btnreload ui-corner-all ui-state-default">{t}Reload node{/t}</div>
+                     class="xim-treeview-btnreload ui-corner-all ui-state-default">#/ 'browser.reload_node' | xI18n /#</div>
                 <div ng-if="ccenter!='null' && ccenter!=null"
                      class="xim-treeview-branch-container xim-treeview-expanded">
                     <ul class="xim-treeview-branch">
@@ -121,7 +122,7 @@
     <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-sidebar btn-anchor" type="button" title="Collapse menu"></button>
 
     <div class="filter-tree" ng-show="selectedTab==1">
-        <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="Filter...">
+        <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/('browser.filter' | xI18n)+'...'/#">
     </div>
 
     <div id="angular-tree-resizer"
@@ -136,7 +137,7 @@
 <div class="xim-tabs-nav">
     <div ng-show="menuTabsEnabled" hm-tap="showingMenu=!showingMenu" class="xim-tabs-list-selector"></div>
     <ul ng-show="showingMenu" class="xim-tabs-list">
-        <li class="xim-tabs-list-item" hm-tap="closeMenu(); offAllTabs();">Welcome to the brand new Ximdex 3.5!</li>
+        <li class="xim-tabs-list-item" hm-tap="closeMenu(); offAllTabs();">#/'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</li>
         <li class="xim-tabs-list-item" ng-repeat="tab in tabs" hm-tap="closeMenu(); $parent.setActiveTab($index);">
             <span ng-if="$index != $parent.activeIndex()">#/tab.name/#</span>
             <strong ng-if="$index == $parent.activeIndex()">#/tab.name/#</strong>
@@ -150,7 +151,7 @@
         <div class="ui-tab-close"></div>
         <a class="ui-tabs-anchor browser-action-view"
            id="10000_welcome">
-            <span>Welcome to the brand new Ximdex 3.5!</span></a></li>
+            <span>#/'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</span></a></li>
     {literal}
     <li hm-tap="$parent.setActiveTab($index)" ng-repeat="tab in tabs" class="ui-state-default ui-corner-top"
         ng-class="{'ui-tabs-active ui-state-active': ($index == $parent.activeIndex()),

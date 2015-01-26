@@ -45,12 +45,12 @@ X.FormsManager = Object.xo_create({
 				'(js_val_unique_name)', '(js_val_unique_url)'
 			]
 		}, options);
-
-		// Don't want the jQuery object, want the DOMElement
-		$(this.options.form).get(0)['getFormMgr'] = function() {
-			return this;
-		}.bind(this);
-
+        if(this.options.form){
+            // Don't want the jQuery object, want the DOMElement
+            $(this.options.form).get(0)['getFormMgr'] = function() {
+                return this;
+            }.bind(this);
+        }
 		this._checkInputFields();
 		this._registerButtons();
 	},
@@ -77,18 +77,28 @@ X.FormsManager = Object.xo_create({
 
 		this.buttons = [];
 
-		// Register buttons that will send the form
-		$('.validate', this.options.form).each(function(index, button) {
-			this.registerButton(button);
-		}.bind(this));
+        if(this.options.form){
+            // Register buttons that will send the form
+            $('.validate', this.options.form).each(function(index, button) {
+                this.registerButton(button);
+            }.bind(this));
 
-		// Register buttons for reseting the form
-		$('.reset-button', this.options.form).each(function(index, button) {
-			button.click(function() {
-				this.options.form.reset();
-				return false;
-			});
-		}.bind(this));
+            // Register buttons for reseting the form
+            $('.reset-button', this.options.form).each(function(index, button) {
+                button.click(function() {
+                    this.options.form.reset();
+                    return false;
+                });
+            }.bind(this));
+        }
+
+        // Closes a tab
+        $('.close-button', this.options.actionContainer).each(function(index, button) {
+            $(button).click(function() {
+                $('#angular-content').scope().closeTabById(this.options.tabId);
+                return false;
+            }.bind(this));
+        }.bind(this));
 	},
 
 	/**

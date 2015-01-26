@@ -2,7 +2,8 @@
     <!-- breadcums -->
     <ol class="breadcrumb breadcrumb-list-view">
         <li ng-repeat="b in breadcrumbs" ng-class="{'active': $last}">
-            <a href="#" hm-tap="goBreadcrums($index)">#/b/#</a>
+            <a href="#" ng-if="$first" hm-tap="goBreadcrums($index)">#/'browser.headings.'+b | xI18n/#</a>
+            <a href="#" ng-if="!$first" hm-tap="goBreadcrums($index)">#/b/#</a>
         </li>
     </ol>
 
@@ -21,7 +22,7 @@
             </li>
 
             <li class="filter-no-results" ng-hide="initialNodeList.collection.length">
-                There are no results !
+                #/ 'browser.there_are_no_results_!' | xI18n /#
             </li>
         </ul>
     </div>
