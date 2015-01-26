@@ -123,8 +123,7 @@ strong {
   /* Chrome, Safari, Opera */
   animation: fadeout 3s ease-in;
   visibility: hidden;
-  opacity: 0;
-  diplay: none; }
+  opacity: 0; }
 
 @-webkit-keyframes fadeout {
   0% {

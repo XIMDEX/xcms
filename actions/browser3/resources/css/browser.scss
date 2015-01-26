@@ -118,8 +118,7 @@ strong{
       animation: fadeout 3s ease-in;
       visibility: hidden;
       opacity: 0;
-      diplay: none;
-	}
+}
 @-webkit-keyframes fadeout {
   0% {visibility: visible; opacity: 1; display: block;}
   50% {visibility: visible; opacity: 1; display: block;}
