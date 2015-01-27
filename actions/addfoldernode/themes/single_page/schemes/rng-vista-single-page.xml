@@ -19,281 +19,511 @@
                 <attribute name="property_Transformer" />
                 <attribute name="property_channel" />
                 <attribute name="property_pipeline" />
+                <attribute name="offset" />
             </optional>
+
             <ref name="def_top_block" />
-            <ref name="def_body_block" />
+
+            <zeroOrMore>
+                <ref name="def_section"/>
+            </zeroOrMore>
+
             <ref name="def_footer_block" />
+
             <xim:description>Document</xim:description>
         </element>
     </start>
+
+    <!-- def_section -->
+    <define name="def_section">
+        <zeroOrMore>
+            <choice>
+                <ref name="def_default"/>
+                <ref name="def_background"/>
+                <ref name="def_carousel"/>
+                <ref name="def_map"/>
+            </choice>
+        </zeroOrMore>
+    </define>
+
+    <!-- def_content -->
+    <define name="def_content">
+        <zeroOrMore>
+            <choice>
+                <ref name="def_row" />
+
+                <ref name="def_title" />
+                <ref name="def_paragraph" />
+                <ref name="def_extimage" />
+                <ref name="def_internal_link" />
+                <ref name="def_extlink" />
+                <ref name="def_tag" />
+            </choice>
+        </zeroOrMore>
+    </define>
+    <!-- / -->
+
+    <!-- DOM -->
+    <!-- def_top_block -->
+    <!-- html5:<head> -->
     <define name="def_top_block">
         <element name="top_block">
             <optional>
                 <attribute name="uid" />
             </optional>
-            <optional>
-                <attribute name="background" />
-            </optional>
-            <ref name="def_content" />
+
+            <ref name="def_section"/>
+
             <xim:description>Top Block</xim:description>
         </element>
     </define>
-    <define name="def_container">
-        <element name="container">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <optional>
-                <attribute name="class" />
-            </optional>
-            <ref name="def_content" />
-        </element>
-    </define>
-    <define name="def_content">
-        <zeroOrMore>
-            <choice>
-                <ref name="def_extimage" />
-                <ref name="def_title" />
-                <ref name="def_paragraph" />
-                <ref name="def_extlink" />
-                <ref name="def_internal_link" />
-                <ref name="def_tag" />
-                <text />
-                <ref name="def_row" />
-            </choice>
-        </zeroOrMore>
-    </define>
-    <define name="def_row">
-        <element name="row">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <optional>
-                <attribute name="cols" />
-            </optional>
-            <zeroOrMore>
-                <ref name="def_col" />
-            </zeroOrMore>
-        </element>
-    </define>
-    <define name="def_col">
-        <element name="col">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <ref name="def_content" />
-        </element>
-    </define>
-    <define name="def_title">
-        <element name="title">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <optional>
-                <attribute name="type" />
-            </optional>
-            <xim:default_content>[Title]</xim:default_content>
-            <text />
-            <xim:description>Title</xim:description>
-        </element>
-    </define>
-    <define name="def_paragraph">
-        <element name="paragraph">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <zeroOrMore>
-                <choice>
-                    <text />
-                    <ref name="def_link" />
-                    <ref name="def_internal_link" />
-                    <ref name="def_tag" />
-                    <ref name="def_extlink" />
-                </choice>
-            </zeroOrMore>
-            <xim:default_content>[Paragraph]</xim:default_content>
-            <xim:description>Paragraph</xim:description>
-        </element>
-    </define>
-    <define name="def_link">
-        <element name="link">
-            <optional>
-                <attribute name="file" />
-            </optional>
-            <optional>
-                <attribute name="id" />
-            </optional>
-            <optional>
-                <attribute name="a_enlaceid_url" xim:type="ximlink" />
-            </optional>
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <xim:default_content>[Link]</xim:default_content>
-            <text />
-            <xim:type>apply|annotation_link</xim:type>
-            <xim:description>Link</xim:description>
-        </element>
-    </define>
-    <define name="def_internal_link">
-        <element name="internal_link">
-            <optional>
-                <attribute name="file" />
-            </optional>
-            <optional>
-                <attribute name="id" />
-            </optional>
-            <optional>
-                <attribute name="a_enlaceid_url" xim:type="imageSelector" />
-            </optional>
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <xim:default_content>[Internal Link]</xim:default_content>
-            <text />
-            <xim:type>apply|annotation_link</xim:type>
-            <xim:description>Internal Link</xim:description>
-        </element>
-    </define>
-    <define name="def_tag">
-        <element name="tag">
-            <optional>
-                <attribute name="type" />
-            </optional>
-            <optional>
-                <attribute name="url" />
-            </optional>
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <xim:default_content>[Tag]</xim:default_content>
-            <text />
-            <xim:type>apply|annotation_tag</xim:type>
-            <xim:description>Tag</xim:description>
-        </element>
-    </define>
-    <define name="def_extlink">
-        <element name="extlink">
-            <optional>
-                <attribute name="file" />
-            </optional>
-            <optional>
-                <attribute name="id" />
-            </optional>
-            <optional>
-                <attribute name="href" />
-            </optional>
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <xim:default_content>[Link externo]</xim:default_content>
-            <text />
-            <xim:type>apply</xim:type>
-            <xim:description>Link externo</xim:description>
-        </element>
-    </define>
-    <define name="def_extimage">
-        <element name="extimage">
-            <optional>
-                <attribute name="class" />
-            </optional>
-            <optional>
-                <attribute name="url" />
-            </optional>
-            <optional>
-                <attribute name="width" />
-            </optional>
-            <optional>
-                <attribute name="height" />
-            </optional>
-            <optional>
-                <attribute name="alt_text" />
-            </optional>
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <xim:description>Imagen externa</xim:description>
-        </element>
-    </define>
-    <define name="def_body_block">
-        <element name="body_block">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <zeroOrMore>
-                <ref name="def_section" />
-            </zeroOrMore>
-        </element>
-    </define>
-    <define name="def_section">
-        <element name="section">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <optional>
-                <attribute name="title" />
-            </optional>
-            <optional>
-                <attribute name="class" />
-            </optional>
-            <optional>
-                <attribute name="id" />
-            </optional>
-            <choice>
-                <ref name="def_carousel" />
-                <ref name="def_container" />
-                <ref name="def_map" />
-            </choice>
-            <xim:description>Section Block</xim:description>
-        </element>
-    </define>
-    <define name="def_carousel">
-        <element name="carousel">
-            <optional>
-                <attribute name="previous" />
-            </optional>
-            <optional>
-                <attribute name="next" />
-            </optional>
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <zeroOrMore>
-                <ref name="def_slide" />
-            </zeroOrMore>
-        </element>
-    </define>
-    <define name="def_slide">
-        <element name="slide">
-            <optional>
-                <attribute name="background" />
-            </optional>
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <optional>
-                <attribute name="class" />
-            </optional>
-            <ref name="def_content"/>
-        </element>
-    </define>
-    <define name="def_map">
-        <element name="map">
-            <optional>
-                <attribute name="uid" />
-            </optional>
-            <attribute name="link" />
-        </element>
-    </define>
+
+    <!-- def_footer_block -->
+    <!-- html5:<footer> -->
     <define name="def_footer_block">
         <element name="footer_block">
             <optional>
                 <attribute name="uid" />
             </optional>
-            <ref name="def_container"/>
-            <xim:default_content>[Footer Block]</xim:default_content>
+
+            <ref name="def_section"/>
+
             <xim:description>Footer Block</xim:description>
         </element>
     </define>
+
+    <!-- SECTION-PAGE -->
+    <!-- def_default -->
+    <define name="def_default">
+        <element name="default">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <optional>
+                <attribute name="title" />
+            </optional>
+
+            <attribute name="container_type">
+                <choice>
+                    <value type="string">container</value>
+                    <value type="string">container-fluid</value>
+                    <value type="string">sin-container</value>
+                </choice>
+            </attribute>
+
+            <ref name="def_content" />
+
+            <xim:description>Default Section</xim:description>
+        </element>
+    </define>
+
+    <!-- def_background -->
+    <define name="def_background">
+        <element name="background">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <optional>
+                <attribute name="title" />
+            </optional>
+
+            <optional>
+                <attribute name="background_image" />
+            </optional>
+
+            <attribute name="container_type">
+                <choice>
+                    <value type="string">container</value>
+                    <value type="string">container-fluid</value>
+                    <value type="string">sin-container</value>
+                </choice>
+            </attribute>
+
+            <ref name="def_content" />
+
+            <xim:description>Background Section</xim:description>
+        </element>
+    </define>
+
+    <!-- def_carousel -->
+    <define name="def_carousel">
+        <element name="carousel">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <optional>
+                <attribute name="title" />
+            </optional>
+
+            <optional>
+                <attribute name="interval" />
+            </optional>
+
+            <attribute name="type">
+                <choice>
+                    <value type="string">img</value>
+                    <value type="string">background</value>
+                </choice>
+            </attribute>
+
+            <attribute name="direction">
+                <choice>
+                    <value type="string">horizontal</value>
+                    <value type="string">vertical</value>
+                </choice>
+            </attribute>
+
+            <attribute name="container_type">
+                <choice>
+                    <value type="string">container</value>
+                    <value type="string">container-fluid</value>
+                    <value type="string">sin-container</value>
+                </choice>
+            </attribute>
+
+            <zeroOrMore>
+                <ref name="def_item" />
+            </zeroOrMore>
+        </element>
+    </define>
+        <!-- def_item -->
+        <define name="def_item">
+            <element name="item">
+                <optional>
+                    <attribute name="uid" />
+                </optional>
+
+                <optional>
+                    <attribute name="title" />
+                </optional>
+
+                <optional>
+                    <attribute name="background" />
+                </optional>
+
+                <optional>
+                    <attribute name="alt_text" />
+                </optional>
+
+                <zeroOrMore>
+                    <ref name="def_caption"/>
+                </zeroOrMore>
+            </element>
+        </define>
+            <!-- def_caption -->
+            <define name="def_caption">
+                <element name="caption">
+                    <optional>
+                        <attribute name="uid" />
+                    </optional>
+
+                    <ref name="def_title" />
+                    <ref name="def_paragraph" />
+                    <ref name="def_extimage" />
+                    <ref name="def_internal_link" />
+                    <ref name="def_extlink" />
+                    <ref name="def_tag" />
+                </element>
+            </define>
+
+    <!-- def_map -->
+    <define name="def_map">
+        <element name="map">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <attribute name="container_type">
+                <choice>
+                    <value type="string">container</value>
+                    <value type="string">container-fluid</value>
+                    <value type="string">sin-container</value>
+                </choice>
+            </attribute>
+
+            <attribute name="link" />
+        </element>
+    </define>
+
+    <!-- ESTRUCTURA (BOOTSTRAP) -->
+    <!-- def_row -->
+    <define name="def_row">
+        <element name="row">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <oneOrMore>
+                <ref name="def_col" />
+            </oneOrMore>
+
+            <xim:description>Row</xim:description>
+        </element>
+    </define>
+        <!-- def_col -->
+        <define name="def_col">
+            <element name="col">
+                <optional>
+                    <attribute name="uid" />
+                </optional>
+
+                <attribute name="xs">
+                    <choice>
+                        <value type="string">12</value>
+                        <value type="string">11</value>
+                        <value type="string">10</value>
+                        <value type="string">9</value>
+                        <value type="string">8</value>
+                        <value type="string">7</value>
+                        <value type="string">6</value>
+                        <value type="string">5</value>
+                        <value type="string">4</value>
+                        <value type="string">3</value>
+                        <value type="string">2</value>
+                        <value type="string">1</value>
+                    </choice>
+                </attribute>
+
+                <attribute name="sm">
+                    <choice>
+                        <value type="string">12</value>
+                        <value type="string">11</value>
+                        <value type="string">10</value>
+                        <value type="string">9</value>
+                        <value type="string">8</value>
+                        <value type="string">7</value>
+                        <value type="string">6</value>
+                        <value type="string">5</value>
+                        <value type="string">4</value>
+                        <value type="string">3</value>
+                        <value type="string">2</value>
+                        <value type="string">1</value>
+                    </choice>
+                </attribute>
+
+                <attribute name="md">
+                    <choice>
+                        <value type="string">12</value>
+                        <value type="string">11</value>
+                        <value type="string">10</value>
+                        <value type="string">9</value>
+                        <value type="string">8</value>
+                        <value type="string">7</value>
+                        <value type="string">6</value>
+                        <value type="string">5</value>
+                        <value type="string">4</value>
+                        <value type="string">3</value>
+                        <value type="string">2</value>
+                        <value type="string">1</value>
+                    </choice>
+                </attribute>
+
+                <attribute name="lg">
+                    <choice>
+                        <value type="string">12</value>
+                        <value type="string">11</value>
+                        <value type="string">10</value>
+                        <value type="string">9</value>
+                        <value type="string">8</value>
+                        <value type="string">7</value>
+                        <value type="string">6</value>
+                        <value type="string">5</value>
+                        <value type="string">4</value>
+                        <value type="string">3</value>
+                        <value type="string">2</value>
+                        <value type="string">1</value>
+                    </choice>
+                </attribute>
+
+                <ref name="def_content" />
+
+                <xim:description>Col</xim:description>
+            </element>
+        </define>
+
+    <!-- ELEMENTOS -->
+    <!-- def_paragraph -->
+    <define name="def_paragraph">
+        <element name="paragraph">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <zeroOrMore>
+                <choice>
+                    <ref name="def_link" />
+                    <ref name="def_internal_link" />
+                    <ref name="def_tag" />
+                    <ref name="def_extlink" />
+
+                    <text />
+                </choice>
+            </zeroOrMore>
+
+            <xim:default_content>[Paragraph]</xim:default_content>
+            <xim:description>Paragraph</xim:description>
+        </element>
+    </define>
+
+    <!-- def_extimage -->
+    <define name="def_extimage">
+        <element name="extimage">
+            <attribute name="img_responsive_type">
+                <choice>
+                    <value type="string"> </value>
+                    <value type="string">img-responsive-max</value>
+                    <value type="string">img-responsive-center</value>
+                </choice>
+            </attribute>
+
+            <optional>
+                <attribute name="class" />
+            </optional>
+
+            <optional>
+                <attribute name="url" />
+            </optional>
+
+            <optional>
+                <attribute name="alt_text" />
+            </optional>
+
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <xim:description>Imagen externa</xim:description>
+        </element>
+    </define>
+
+    <!-- def_title -->
+    <define name="def_title">
+        <element name="title">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <attribute name="type">
+                <choice>
+                    <value type="string">1</value>
+                    <value type="string">2</value>
+                    <value type="string">3</value>
+                    <value type="string">4</value>
+                    <value type="string">5</value>
+                </choice>
+            </attribute>
+
+            <text />
+
+            <xim:default_content>[Title]</xim:default_content>
+            <xim:description>Title</xim:description>
+        </element>
+    </define>
+
+    <!-- def_link -->
+    <define name="def_link">
+        <element name="link">
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <optional>
+                <attribute name="file" />
+            </optional>
+
+            <optional>
+                <attribute name="id" />
+            </optional>
+
+            <optional>
+                <attribute name="a_enlaceid_url" xim:type="ximlink" />
+            </optional>
+
+            <text />
+
+            <xim:default_content>[Link]</xim:default_content>
+            <xim:type>apply|annotation_link</xim:type>
+            <xim:description>Link</xim:description>
+        </element>
+    </define>
+
+    <!-- def_internal_link -->
+    <define name="def_internal_link">
+        <element name="internal_link">
+            <optional>
+                <attribute name="file" />
+            </optional>
+
+            <optional>
+                <attribute name="id" />
+            </optional>
+
+            <optional>
+                <attribute name="a_enlaceid_url" xim:type="imageSelector" />
+            </optional>
+
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <text />
+
+            <xim:default_content>[Internal Link]</xim:default_content>
+            <xim:type>apply|annotation_link</xim:type>
+            <xim:description>Internal Link</xim:description>
+        </element>
+    </define>
+
+    <!-- def_tag -->
+    <define name="def_tag">
+        <element name="tag">
+            <optional>
+                <attribute name="type" />
+            </optional>
+
+            <optional>
+                <attribute name="url" />
+            </optional>
+
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <text />
+
+            <xim:default_content>[Tag]</xim:default_content>
+            <xim:type>apply|annotation_tag</xim:type>
+            <xim:description>Tag</xim:description>
+        </element>
+    </define>
+
+    <!-- def_extlink -->
+    <define name="def_extlink">
+        <element name="extlink">
+            <optional>
+                <attribute name="file" />
+            </optional>
+
+            <optional>
+                <attribute name="id" />
+            </optional>
+
+            <optional>
+                <attribute name="href" />
+            </optional>
+
+            <optional>
+                <attribute name="uid" />
+            </optional>
+
+            <text />
+
+            <xim:default_content>[Link externo]</xim:default_content>
+            <xim:type>apply</xim:type>
+            <xim:description>Link externo</xim:description>
+        </element>
+    </define>
 </grammar>
-                 
