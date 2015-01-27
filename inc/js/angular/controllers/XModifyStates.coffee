@@ -1,4 +1,4 @@
-angular.module("ximdex.module.xmodifystates", ["ui.sortable", 'ngAnimate']).controller "XModifyStatesCtrl", [
+angular.module("ximdex.main.controller").controller "XModifyStatesCtrl", [
     "$scope"
     "$http"
     "xUrlHelper"
@@ -42,7 +42,7 @@ angular.module("ximdex.module.xmodifystates", ["ui.sortable", 'ngAnimate']).cont
                 if data.result == "ok"
                     $scope.all_status_info = JSON.parse data.all_status_info
                     $scope.toDelete = []
-                    $window.com.ximdex.widgetsVars.bw1.element.browserwindow("emptyActionsCache");
+                    $window.com.ximdex.emptyActionsCache()
                 if data.message != ""
                     $scope.messageClass = if data.result == "ok" then "message-success" else "message-error"
                     $scope.thereAreMessages = true

@@ -11,42 +11,49 @@ Assets
 
 
 
-Constants
-----------
-
-
-### DEFAULT_REGEX
-
-```
-const DEFAULT_REGEX = '/.\.(css|js)$/i'
-```
-
-
-
-
-
-### CSS_REGEX
-
-```
-const CSS_REGEX = '/.\.css$/i'
-```
-
-
-
-
-
-### JS_REGEX
-
-```
-const JS_REGEX = '/.\.js$/i'
-```
-
-
-
 
 
 Properties
 ----------
+
+
+### $asset_regex
+
+```
+protected string $asset_regex = '/.\.(css|js)$/i'
+```
+
+Regex to match against a filename/url to determine if it is an asset.
+
+
+
+* Visibility: **protected**
+
+
+### $css_regex
+
+```
+protected string $css_regex = '/.\.css$/i'
+```
+
+Regex to match against a filename/url to determine if it is a CSS asset.
+
+
+
+* Visibility: **protected**
+
+
+### $js_regex
+
+```
+protected string $js_regex = '/.\.js$/i'
+```
+
+Regex to match against a filename/url to determine if it is a JavaScript asset.
+
+
+
+* Visibility: **protected**
 
 
 ### $public_dir
@@ -97,7 +104,7 @@ No trailing slash!.
 protected string $packages_dir = 'packages'
 ```
 
-Directory for package assets.
+Directory for local package assets.
 
 Relative to your public directory ('public_dir').
 No trailing slash!.
@@ -113,7 +120,7 @@ protected boolean $pipeline = false
 
 Enable assets pipeline (concatenation and minification).
 
-If you set an integer value greather than 1 it will be used as pipeline timestamp.
+If you set an integer value greather than 1 it will be used as pipeline timestamp that will be added to the URL.
 
 * Visibility: **protected**
 
@@ -616,7 +623,7 @@ Add all CSS assets within $directory (relative to public dir).
 Assets addDirJs()(string $directory)
 ```
 
-Add all JavaScript assets within $directory.
+Add all JavaScript assets within $directory (relative to public dir).
 
 
 

@@ -1,0 +1,29 @@
+<div class="browser-projects-view-listcontainer xim-listview-container ui-droppable" style="display: block;">
+    <!-- breadcums -->
+    <ol class="breadcrumb breadcrumb-list-view">
+        <li ng-repeat="b in breadcrumbs" ng-class="{'active': $last}">
+            <a href="#" ng-if="$first" hm-tap="goBreadcrums($index)">#/'browser.headings.'+b | xI18n/#</a>
+            <a href="#" ng-if="!$first" hm-tap="goBreadcrums($index)">#/b/#</a>
+        </li>
+    </ol>
+
+    <div class="xim-listview-table-container">
+        <ul class="xim-listview">
+            <li ng-repeat="node in initialNodeList.collection"
+                class="xim-listview-node xim-listview-list-view"
+                ng-class="{'xim-listview-selected': (node | nodeSelected: selectedNodes)}"
+                hm-press="loadActions(node,$event)" hm-tap="select(node,$event)"
+                ng-right-click="loadActions(node,$event)" hm-doubletap="reloadNode()"
+                tooltip="##/node.nodeid + ' - ' + node.path/#" tooltip-popup-delay="200" tooltip-placement="right" tooltip-trigger="mouseenter" tooltip-append-to-body="true">
+
+                <span class="xim-listview-icon xim-listview-icon-list icon-#/node.icon.split('.')[0]/#"></span>
+                <span ng-bind-html="node.name"></span>
+                <span hm-tap="loadActions(node,$event)" class="xim-actions-dropdown xim-listview-actions-dropdown ui-icon ui-icon-triangle-1-e"></span>
+            </li>
+
+            <li class="filter-no-results" ng-hide="initialNodeList.collection.length">
+                #/ 'browser.there_are_no_results_!' | xI18n /#
+            </li>
+        </ul>
+    </div>
+</div>

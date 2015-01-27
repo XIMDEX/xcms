@@ -5992,7 +5992,7 @@ msgid "Create a new node with project type"
 msgstr "Crear un nuevo nodo de tipo proyecto"
 
 msgid "Add new server"
-msgstr "A&ntilde;adir nuevo servidor"
+msgstr "Añadir nuevo servidor"
 
 msgid "Create a new server"
 msgstr "Crear un nuevo servidor"
@@ -7402,7 +7402,7 @@ msgstr "Administrador de ximdex"
 #: ---------- ximTAGS ----------
 #: /modules/ximTAGS/sql/ximTAGS_constructor.sql
 msgid "Semantic Tags"
-msgstr "Etiquetas sem&aacutenticas"
+msgstr "Etiquetas semánticas"
 
 #: /modules/ximTAGS/actions/setmetadata/template/Smarty/index.tpl
 msgid "Enter the definition labels"

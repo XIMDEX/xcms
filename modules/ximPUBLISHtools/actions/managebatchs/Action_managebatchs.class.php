@@ -26,7 +26,7 @@
  */
 use Ximdex\Utils\Session;
 
-ModulesManager::file('/inc/manager/ServerFrameManager.class.php');
+ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 class Action_managebatchs extends ActionAbstract {
@@ -67,43 +67,18 @@ class Action_managebatchs extends ActionAbstract {
         $this->render($arrValores, NULL, 'default-3.0.tpl');
     }
 
-    // TODO implement filterParameter service
-    private function filterInteger($var) {
-        if (preg_match('/^\d+$/', $var)) {
-            return intval($var);
-        }
-        return null;
-    }
-
-    private function filterBool($var) {
-        if (preg_match('/^[0|1]?$/', $var)) {
-            return (bool) $var;
-        }
-        return null;
-    }
-
-    private function filterText($var) {
-        if (preg_match('/^[\w|_]+$/', $var)) {
-            return trim($var);
-        }
-        return null;
-    }
-
     private function filterParams() {
-        $this->params['idNode'] = $this->filterInteger($this->request->getParam("nodeid"));
-        $this->params['idBatch'] = $this->filterInteger($this->request->getParam("idBatch"));
-        $this->params['dateFrom'] = $this->filterInteger($this->request->getParam("dateFrom"));
-        $this->params['dateTo'] = $this->filterInteger($this->request->getParam("dateTo"));
-//        $this->params['user'] = $this->filterText($this->request->getParam("user"));
-        $this->params['finished'] = $this->filterBool($this->request->getParam("finished"));
-        $this->params['searchText'] = $this->filterText($this->request->getParam("searchText"));
+        $this->params['idNode'] = FilterParameters::filterInteger($this->request->getParam("nodeid"));
+        $this->params['idBatch'] = FilterParameters::filterInteger($this->request->getParam("idBatch"));
+        $this->params['dateFrom'] = FilterParameters::filterInteger($this->request->getParam("dateFrom"));
+        $this->params['dateTo'] = FilterParameters::filterInteger($this->request->getParam("dateTo"));
+        $this->params['finished'] = FilterParameters::filterBool($this->request->getParam("finished"));
+        $this->params['searchText'] = FilterParameters::filterText($this->request->getParam("searchText"));
     }
 
     private function retrieveFrameList() {
-        XMD_Log::info('PUBLISH getReports');
         $pr = new PublishingReport();
         $frames = $pr->getReports($this->params);
-        XMD_Log::info("PUBLISH frames count: " . count($frames));
         $json = Serializer::encode(SZR_JSON, $frames);
 
         return array(
@@ -113,17 +88,13 @@ class Action_managebatchs extends ActionAbstract {
 
     public function getFrameList() {
         $this->filterParams();
-        XMD_Log::error('PUBLISH getFrameList');
         $values = $this->retrieveFrameList();
         $this->render($values, NULL, "only_template.tpl");
     }
 
     function stopBatch() {
-        XMD_Log::error('PUBLISH stopBatch');
         $success = false;
         if (!$_POST['frm_deactivate_batch'] !== "yes") {
-            XMD_Log::error('PUBLISH stopBatch2');
-
             if (!$result = $this->doDeactivateBatch($_POST['frm_id_batch'])) {
                 $errorMsg = "An error occurred while deactivate batch.";
             } else {
@@ -135,7 +106,7 @@ class Action_managebatchs extends ActionAbstract {
                 }
             }
 
-            XMD_Log::error("PUBLISH results: $errorMsg");
+            XMD_Log::info("PUBLISH results: $errorMsg");
         }
 
         $json = Serializer::encode(SZR_JSON, array('success' => $success));
@@ -143,9 +114,7 @@ class Action_managebatchs extends ActionAbstract {
     }
 
     function startBatch() {
-        XMD_Log::error('PUBLISH startBatch');
         if (!$_POST['frm_activate_batch'] !== "yes") {
-            XMD_Log::error('PUBLISH startBatch2');
 
             if (!$result = $this->doActivateBatch($_POST['frm_id_batch'])) {
                 $errorMsg = "An error occurred while activating batch.";
@@ -156,8 +125,6 @@ class Action_managebatchs extends ActionAbstract {
                     $errorMsg = "Batch #" . $_POST['frm_id_batch'] . " has been activated.";
                 }
             }
-
-            XMD_Log::error("PUBLISH results: $errorMsg");
         }
 
 //        $values = $this->retrieveFrameList();
@@ -166,8 +133,6 @@ class Action_managebatchs extends ActionAbstract {
     }
 
     function changeBatchPriority() {
-        XMD_Log::info('PUBLISH changeBatchPriority');
-
         $mode = 'up';
         if (isset($_POST['frm_increase']) && $_POST['frm_increase'] == "yes") {
             XMD_Log::info('PUBLISH pre doPrioritizeBatch');
@@ -198,7 +163,6 @@ class Action_managebatchs extends ActionAbstract {
     }
 
     function doDeactivateBatch($idBatch) {
-        XMD_Log::error('PUBLISH doDeactivateBatch');
         if ($idBatch !== "all") {
             $idBatch = (int) $idBatch;
             $batchObj = new Batch();

@@ -33,9 +33,18 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
             },
             getAction: function(params){
                 var timestamp = new Date().getTime();
-                var actionUrl = this.restUrl()+'?noCacheVar='+timestamp+'&action='+params.action+'&method='+params.method;
+                var actionUrl = this.restUrl()+'?noCacheVar='+timestamp+'&action='+params.action;
+                if(params.method){
+                    actionUrl+='&method='+params.method;
+                }
                 if (params.id) {
-                    actionUrl+='&nodeid='+params.id+'&nodes[]='+params.id;
+                    actionUrl += '&nodeid=' + params.id + '&nodes[]=' + params.id;
+                }else if (params.nodes){
+                    var str = "";
+                    for(var i = 0; i<params.nodes.length; i++){
+                        str += '&nodes[]=' + params.nodes[i].nodeid
+                    }
+                    actionUrl += str;
                 } else if (params.IDParent) {
                     actionUrl+='&nodeid='+params.IDParent+'&nodes[]='+params.IDParent;
                 }
@@ -43,7 +52,7 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
                     actionUrl+='&mod='+params.module;
                 }
                 if (params.options) {
-                    actionUrl = this.parametrize(actionUrl, params.options);
+                    actionUrl = this.parametrize(actionUrl, params.options[0]);
                 }
                 return actionUrl;
             },

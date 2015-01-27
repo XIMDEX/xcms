@@ -24,7 +24,7 @@
 *}
 
 
-<div ng-controller="ximPUBLISHtools">
+<div class="ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <form>
         <fieldset>
             From: <input type="text" ng-model="searchObj.dateFrom">

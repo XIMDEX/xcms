@@ -31,8 +31,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once (XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.php");
 include_once (XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");
-include_once (XIMDEX_ROOT_PATH . "/actions/workflow_forward/baseIO.php");
-require_once (XIMDEX_ROOT_PATH . "/actions/workflow_forward/baseIO.php");
 include_once (XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 require_once (XIMDEX_ROOT_PATH . "/inc/model/RelTemplateContainer.class.php");
 require_once (XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
@@ -188,36 +186,6 @@ class FileNode extends Root {
 
 			$indexTabs = str_repeat("\t", $depth + 1);
 			return sprintf("%s<path src=\"%s\" />\n", $indexTabs, $routeToFile);
-		}
-	}
-
-	/**
-	*  Promotes the File to the next workflow state.
-	*  @param string newState
-	*  @return bool
-	*/
-
-	function promoteToWorkFlowState($newState) {
-
-		$state = new State();
-		$idState = $state->loadByName($newState);
-
-		$idActualState = $this->parent->GetState();
-
-		if ($idState == $idActualState) {
-			XMD_Log::warning('Se ha solicitado pasar a un estado y ya nos encontramos en ese estado');
-			return true;
-		}
-
-		$actualState = new State($idActualState);
-
-		baseIO_CambiarEstado($this->nodeID, $idState);
-		$lastState = new State();
-		$idLastState = $lastState->loadLastState();
-		if ($idState == $idLastState) {
-			$up = time();
-			$down = $up + 36000000; // unpublish date = dateup + 1year
-			baseIO_PublishDocument($this->nodeID, $up, $down,null);
 		}
 	}
 

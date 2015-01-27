@@ -11,6 +11,30 @@
                     "reference": "origin/master"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "RyanMullins/angular-hammer",
+                "version": "2.1.10",
+                "source": {
+                    "url": "https://github.com/RyanMullins/angular-hammer.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "hammerjs/hammer.js",
+                "version": "2.0.4",
+                "source": {
+                    "url": "https://github.com/hammerjs/hammer.js.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
         }
     ],
     "require": {
@@ -18,6 +42,8 @@
         "mnapoli/php-di": "4.4.2",
         "monolog/monolog": "1.11.0",
         "codemirror/Codemirror": "4.7.0",
+        "RyanMullins/angular-hammer": "2.1.10",
+        "hammerjs/hammer.js": "2.0.4",
         "stolz/assets": "dev-master",
         "werkint/jsmin": "dev-master"
 

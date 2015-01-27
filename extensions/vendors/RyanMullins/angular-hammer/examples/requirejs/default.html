@@ -1,0 +1,51 @@
+<!doctype html>
+<html ng-app="hmTime">
+  <head>
+    <style type="text/css">
+      html, body {
+        background-color: #d1c9b8;
+      }
+
+      #target {
+        width: 500px;
+        height: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        vertical-align: middle;
+        text-align: center;
+        color: white;
+        background-color: #444;
+        font-size: 36pt;
+        font-family: 'Futura', 'Avenir', 'Helvetica', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="target"
+      ng-controller="hmCtrl"
+      hm-pan="onHammer"
+      hm-pinch="onHammer"
+      hm-press="onHammer"
+      hm-rotate="onHammer"
+      hm-swipe="onHammer"
+      hm-tap="onHammer"
+      hm-doubletap="onHammer">
+        {{eventType}}
+    </div>
+    <script type="text/javascript" src="lib/hammerjs/hammer.js"></script>
+    <script type="text/javascript" src="lib/angular/angular.js"></script>
+    <script type="text/javascript" src="angular.hammer.demo.js"></script>
+    <script type="text/javascript">
+      /**
+       * @ngInject
+       */
+      angular.module('hmTime', ['hmTouchEvents'])
+        .controller('hmCtrl', function ($scope) {
+          $scope.eventType = "No events yet";
+          $scope.onHammer = function onHammer (event) {
+            $scope.eventType = event.type;
+          };
+        });
+    </script>
+  </body>
+</html>

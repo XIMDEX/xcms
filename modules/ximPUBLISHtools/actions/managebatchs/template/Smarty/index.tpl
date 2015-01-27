@@ -24,7 +24,7 @@
 *}
 
 
-<div ng-controller="ximPUBLISHtools" ng-init="getFrameListLoop()">
+<div class="ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <fieldset>
         <legend><span>{t}Informe de publicación{/t}</span></legend>
         <ol><li>{t}Progreso de publicación de documentos de Ximdex{/t}</li></ol>
@@ -55,7 +55,6 @@
                 </div>
 
                 <div class="frame_default"></div>
-                <hr><hr>
 
                 <div ng-repeat="frame in portal.elements">
                     <span class="frame_indent"></span>

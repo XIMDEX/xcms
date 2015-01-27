@@ -1,36 +1,37 @@
 var mainController = angular.module('ximdex.main.controller');
 
 mainController
-        .controller('ximPUBLISHtools', ['$scope', '$http', '$interval', function ($scope, $http, $interval) {
-//                var url = xUrlHelper.getAction({
-//                    action: 'managebatchs',
-//                    method: 'getFrameList',
-//                    mod: 'ximPUBLISHtools',
-//                    noCacheVar: '1421669274703',
-//                    nodes: [10012]
-//                });
+        .controller('ximPUBLISHtools', ['$scope', '$http', '$interval', 'xUrlHelper', function ($scope, $http, $interval, xUrlHelper) {
 
-                $scope.fakeUrlFrameList = 'http://lab13.ximdex.net/ximdexdc2/xmd/loadaction.php?nodes[]=10012&nodeid=10012&action=managebatchs&method=getFrameList&noCacheVar=1421669274703&mod=ximPUBLISHtools';
-                $scope.fakeUrlFrameListHistory = 'http://lab13.ximdex.net/ximdexdc2/xmd/loadaction.php?nodes[]=10012&nodeid=10012&action=managebatchs&method=getFrameList&finished=1&noCacheVar=1421669274703&mod=ximPUBLISHtools';
-
-                $scope.fakeUrlStopBatch = 'http://lab13.ximdex.net/ximdexdc2/xmd/loadaction.php?nodes[]=10012&nodeid=10012&action=managebatchs&method=stopBatch&noCacheVar=1421669274703&mod=ximPUBLISHtools';
-                $scope.fakeUrlStartBatch = 'http://lab13.ximdex.net/ximdexdc2/xmd/loadaction.php?nodes[]=10012&nodeid=10012&action=managebatchs&method=startBatch&noCacheVar=1421669274703&mod=ximPUBLISHtools';
-                $scope.fakeUrlChangeBatchPriority = 'http://lab13.ximdex.net/ximdexdc2/xmd/loadaction.php?nodes[]=10012&nodeid=10012&action=managebatchs&method=changeBatchPriority&noCacheVar=1421669274703&mod=ximPUBLISHtools';
                 $scope.json = {};
                 $scope.searchObj = {};
+                $scope.urlParams = {};
 
+                // helping function to inject external data
+                $scope.init = function (params, initLoop) {
+                    $scope.urlParams = {
+                        action: params.action.command,
+                        id: params.nodes[0],
+                        module: params.action.module
+                    };
+                    if (initLoop) {
+                        $scope.getFrameListLoop();
+                    }
+                };
 
-
+                // Variables and functions needed to switch on/off the ajax loop
                 $scope.getFrameListInterval = null;
                 $scope.getFrameListLoop = function () {
                     $scope.requestFrameList();
                     $scope.getFrameListInterval = $interval($scope.requestFrameList, 5000);
                 };
                 $scope.requestFrameList = function () {
-                    $http.get($scope.fakeUrlFrameList)
-                            .success(function (data) {
-                                $scope.json = data;
-                            });
+                    $scope.urlParams.method = 'getFrameList';
+                    var url = xUrlHelper.getAction($scope.urlParams);
+
+                    $http.get(url).success(function (data) {
+                        $scope.json = data;
+                    });
                 };
                 $scope.$on(
                         "$destroy",
@@ -39,54 +40,65 @@ mainController
                         }
                 );
 
+                // batch management functions
                 $scope.stopBatch = function (batchId) {
+                    $scope.urlParams.method = 'stopBatch';
+                    var url = xUrlHelper.getAction($scope.urlParams);
+
                     $http({
                         method: 'POST',
-                        url: $scope.fakeUrlStopBatch,
+                        url: url,
                         data: $.param({frm_deactivate_batch: 'yes', frm_id_batch: batchId}),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                    })
-                            .success(function (data) {
-                            });
+                    });
                 };
 
                 $scope.startBatch = function (batchId) {
+                    $scope.urlParams.method = 'startBatch';
+                    var url = xUrlHelper.getAction($scope.urlParams);
+
                     $http({
                         method: 'POST',
-                        url: $scope.fakeUrlStartBatch,
+                        url: url,
                         data: $.param({frm_activate_batch: 'yes', frm_id_batch: batchId}),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                    })
-                            .success(function (data) {
-                            });
+                    });
                 };
 
                 $scope.incBatchPriority = function (batchId) {
+                    $scope.urlParams.method = 'changeBatchPriority';
+                    var url = xUrlHelper.getAction($scope.urlParams);
+
                     $http({
                         method: 'POST',
-                        url: $scope.fakeUrlChangeBatchPriority,
+                        url: url,
                         data: $.param({frm_increase: 'yes', frm_id_batch: batchId}),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                    })
-                            .success(function (data) {
-                            });
-                };
-                
-                $scope.decBatchPriority = function (batchId) {
-                    $http({
-                        method: 'POST',
-                        url: $scope.fakeUrlChangeBatchPriority,
-                        data: $.param({frm_decrease: 'yes', frm_id_batch: batchId}),
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                    })
-                            .success(function (data) {
-                            });
+                    });
                 };
 
-                $scope.updateSearch = function (searchObj) {
+                $scope.decBatchPriority = function (batchId) {
+                    $scope.urlParams.method = 'changeBatchPriority';
+                    var url = xUrlHelper.getAction($scope.urlParams);
+
                     $http({
                         method: 'POST',
-                        url: $scope.fakeUrlFrameListHistory,
+                        url: url,
+                        data: $.param({frm_decrease: 'yes', frm_id_batch: batchId}),
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                    });
+                };
+
+                // method used in history view
+                $scope.updateSearch = function (searchObj) {
+                    console.log('updateSearch');
+                    $scope.urlParams.method = 'getFrameList';
+                    $scope.urlParams.options = [{finished: '1'}];
+                    var url = xUrlHelper.getAction($scope.urlParams);
+                    console.log(url);
+                    $http({
+                        method: 'POST',
+                        url: url,
                         data: $.param(searchObj),
                         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                     })
@@ -95,6 +107,7 @@ mainController
                             });
                 };
 
+                // helping function to adapt remaining time for future frames
                 $scope.timeFromNow = function (date) {
                     var thatDate = new Date(parseInt(date) * 1000);
                     var thisDate = new Date();

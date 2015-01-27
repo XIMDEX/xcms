@@ -48,7 +48,7 @@
   color: #006b6c; }
 
 ul.xim-treeview-branch li ul li ul li {
-  margin-left: 15px; }
+  margin-left: 10px; }
 
 .isLeaf div .ui-no-icon + .xim-treeview-icon {
   margin-left: 0px; }
@@ -61,7 +61,8 @@ ul.xim-treeview-branch li ul li ul li.isLeaf div {
   padding-bottom: 1px; }
 
 .xim-treeview-branch-container > .xim-treeview-branch > .xim-treeview-node > .xim-treeview-branch {
-  padding-left: 10px; }
+  /*padding-left: 10px; */
+}
 
 .xim-treeview-label {
   display: block; }
@@ -75,6 +76,11 @@ li.xim-listview-node:hover {
   -moz-border-radius: 3px;
   border-radius: 3px;
   color: white; }
+
+li.xim-listview-node .xim-listview-actions-dropdown {
+  /*top: 0px !important;*/
+  left: 0px !important;
+}
 
 .xim-treeview-node .xim-treeview-selected:hover {
   padding: 0px; }
@@ -179,7 +185,7 @@ a + span.path-separator + span {
   margin-left: -7px;
   position: relative; }
 
-/****** 
+/******
 * nodetype icons
 ******/
 .node-icon-xmlcontainer {

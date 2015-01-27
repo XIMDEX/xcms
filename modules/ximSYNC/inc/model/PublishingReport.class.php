@@ -206,13 +206,13 @@ class PublishingReport extends PublishingReport_ORM {
                 $pubTime = (int) $dbObj->GetValue("PubTime");
                 $curTime = time();
                 if ($pubTime > $curTime) {
-                    return $pubTime;
+                    $estimatedTime = $pubTime;
                 } else {
                     $SECONDS_TO_PUBLISH = 1;
                     $serverFramesTotal = (int) $batch->get('ServerFramesTotal');
                     $serverFramesSucess = (int) $batch->get('ServerFramesSucess');
                     $total = ($serverFramesTotal - $serverFramesSucess) * $SECONDS_TO_PUBLISH;
-                    return $curTime + $total;
+                    $estimatedTime = $curTime + $total;
                 }
             }
 

@@ -26,15 +26,25 @@
  */
 use Ximdex\Utils\Session;
 
-//ModulesManager::file('/inc/manager/ServerFrameManager.class.php');
-//ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
+ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 
 class Action_batchhistory extends ActionAbstract {
+
+    private $params = array();
+
+    private function filterParams() {
+        
+        $this->params['idNode'] = FilterParameters::filterInteger($this->request->getParam("nodeid"));
+        $this->params['idBatch'] = FilterParameters::filterInteger($this->request->getParam("idBatch"));
+        $this->params['dateFrom'] = FilterParameters::filterInteger($this->request->getParam("dateFrom"));
+        $this->params['dateTo'] = FilterParameters::filterInteger($this->request->getParam("dateTo"));
+        $this->params['finished'] = FilterParameters::filterBool($this->request->getParam("finished"));
+        $this->params['searchText'] = FilterParameters::filterText($this->request->getParam("searchText"));
+    }
 
     // Main method: shows initial form
     function index() {
         $acceso = true;
-        // Initializing variables.
         $userID = Session::get('userID');
 
         $user = new User();
@@ -47,8 +57,7 @@ class Action_batchhistory extends ActionAbstract {
 
 
         $jsFiles = array(
-            App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/index.js',
-//            App::getValue('UrlRoot') . '/inc/js/ximtimer.js'
+            App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/batchhistory/resources/js/index.js'
         );
 
         $cssFiles = array(
@@ -63,6 +72,14 @@ class Action_batchhistory extends ActionAbstract {
         );
 
         $this->render($arrValores, NULL, 'default-3.0.tpl');
+    }
+
+    public function getFrameList() {
+        $this->filterParams();
+        $pr = new PublishingReport();
+        $frames = $pr->getReports($this->params);
+        $json = Serializer::encode(SZR_JSON, $frames);
+        $this->render(array('result' => $json), NULL, "only_template.tpl");
     }
 
 }

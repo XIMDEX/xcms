@@ -30,7 +30,7 @@ function EditorViewTool() {
 
    	this.VIEW_TREE = 'tree';
    	this.VIEW_DESIGN = 'normal';
-        this.VIEW_FORM = 'form';
+    this.VIEW_FORM = 'form';
    	this.VIEW_REMOTE = 'pro'; //Why is not called as "remote"?
 
 
@@ -78,7 +78,7 @@ function EditorViewTool() {
 				$(this.treeButton.button).addClass('kupu-treeview-pressed').removeClass('kupu-treeview');
 				break;
 			case this.VIEW_DESIGN:
-				$(this.designButton.button).addClass('kupu-designview-pressed').removeClass('kupu-designview'); 
+				$(this.designButton.button).addClass('kupu-designview-pressed').removeClass('kupu-designview');
 				break;
                         case this.VIEW_FORM:
 				$(this.formButton.button).addClass('kupu-formview-pressed').removeClass('kupu-formview');
