@@ -27,6 +27,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
     var actualFilter, canceler, dragStartPosition, expanded, findNodeById, getFolderPath, listenHidePanel, loadAction, prepareBreadcrumbs, size;
+    delete Hammer.defaults.cssProps.userSelect;
     $scope.projects = null;
     $scope.initialNodeList = null;
     $scope.breadcrumbs = [];
@@ -462,9 +463,6 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     });
     return $scope.openModuleAction = function(node) {
       var action, nodes;
-      if (!node.enabled) {
-        return;
-      }
       action = {
         command: "moduleslist",
         name: node.name,

@@ -58,7 +58,7 @@ class I18N {
 			setlocale(LC_ALL, "$locale.utf8");
 		 	bindtextdomain("messages", XIMDEX_ROOT_PATH . '/inc/i18n/locale');
 			textdomain("messages");
-			bind_textdomain_codeset("messages", 'ISO8859-1');
+			bind_textdomain_codeset("messages", 'UTF-8');
 
 		   \Ximdex\Utils\Session::set("locale", $locale);
 		}

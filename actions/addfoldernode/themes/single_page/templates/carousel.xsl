@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:template name="carousel" match="carousel">
-        <div id="carousel-section-2" class="carousel slide" data-ride="carousel" data-interval="false">
-            <div class="carousel-inner" role="listbox">
-                <xsl:apply-templates/>
-            </div>
-            <a class="left carousel-control" href="#carousel-section-2" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only"><xsl:attribute name="previous" /></span>
-            </a>
 
-            <a class="right carousel-control" href="#carousel-section-2" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only"><xsl:attribute name="next" /></span>
-            </a>
+        <div id="{@uid}" class="carousel-section section-page">
+            <xsl:choose>
+                <xsl:when test="not(@container_type) or (@container_type = 'sin-container')">
+                    <xsl:choose>
+                        <xsl:when test="/docxap/@transformer = 'xEDIT'">
+                            <xsl:apply-templates />
+                        </xsl:when>
+
+                        <xsl:otherwise>
+                            <xsl:call-template name="carousel_HTML"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+
+                <xsl:otherwise>
+                    <div class="{@container_type}">
+                        <xsl:choose>
+                            <xsl:when test="/docxap/@transformer = 'xEDIT'">
+                                <xsl:apply-templates />
+                            </xsl:when>
+
+                            <xsl:otherwise>
+                                <xsl:call-template name="carousel_HTML"/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </div>
+                </xsl:otherwise>
+            </xsl:choose>
         </div>
+
     </xsl:template>
 </xsl:stylesheet>
