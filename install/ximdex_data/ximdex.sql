@@ -479,7 +479,7 @@ INSERT INTO `Config` VALUES (29, 'dexCache', NULL);
 INSERT INTO `Config` VALUES (30, 'PublishOnDisabledServers', NULL);
 INSERT INTO `Config` VALUES (31, 'defaultWebdavPVD', NULL);
 INSERT INTO `Config` VALUES (32, 'locale', 'en_US');
-INSERT INTO `Config` VALUES (33, 'displayEncoding', 'ISO-8859-1');
+INSERT INTO `Config` VALUES (33, 'displayEncoding', 'UTF-8');
 INSERT INTO `Config` VALUES (34, 'dbEncoding', 'ISO-8859-1');
 INSERT INTO `Config` VALUES (35, 'dataEncoding', 'UTF-8');
 INSERT INTO `Config` VALUES (36, 'workingEncoding', 'UTF-8');

@@ -27,6 +27,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce"
     ($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) ->
 
+        delete Hammer.defaults.cssProps.userSelect
+
         #Nodes for project tab
         $scope.projects = null
         #Initial node for list view
@@ -394,7 +396,6 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             $scope.loadNodeChildren node
 
         $scope.openModuleAction = (node) ->
-            return if !node.enabled
             action =
                 command: "moduleslist"
                 name: node.name
