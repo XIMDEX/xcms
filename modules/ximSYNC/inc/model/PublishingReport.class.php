@@ -147,15 +147,39 @@ class PublishingReport extends PublishingReport_ORM {
         return null;
     }
 
-    function getReportByIdNode($idNodeGenerator = null) {
-        $extraWhereClause = ($idNodeGenerator !== null) ? "AND IdParentServer = '" . $idNodeGenerator . "' " : "";
-
+    function getReports($params) {
         $dbObj = new DB();
         $sql = "SELECT * " .
-                "FROM PublishingReport " .
-                "WHERE State NOT IN ('Replaced', 'Removed', 'Out') " .
-                $extraWhereClause . ' LIMIT 100';
-                // . "ORDER BY IdPortalVersion DESC, FilePath ASC, FileName ASC LIMIT 100";
+                "FROM PublishingReport ";
+
+        if ($params['finished']) {
+            $sql .= "WHERE State IN ('In','Out')";
+        } else {
+            $sql .= "WHERE State IN ('Pending','Due2In_','Due2In','Pumped')";
+        }
+
+        if ($params['idNode'] !== null && $params['idNode'] !== 0) {
+            $sql .= " AND IdParentServer = " . $params['idNode'];
+        }
+
+        if ($params['idBatch'] !== null && $params['idBatch'] !== 0) {
+            $sql .= " AND IdBatch = " . $params['idBatch'];
+        }
+
+        // date as unixtime integer
+        if ($params['dateFrom'] !== null) {
+            $sql .= " AND PubTime >= " . $params['dateFrom'];
+        }
+        if ($params['dateTo'] !== null) {
+            $sql .= " AND PubTime <= " . $params['dateTo'];
+        }
+
+        if ($params['searchText'] !== null) {
+            $sql .= " AND filename REGEXP '" . $params['searchText'] . "'";
+        }
+
+        // close query
+        $sql .= ' LIMIT 100';
         $dbObj->Query($sql);
 
         $frames = array();
@@ -176,11 +200,28 @@ class PublishingReport extends PublishingReport_ORM {
                 );
             }
 
+            // Calculate estimated time
+            $estimatedTime = '';
+            if (!$params['finished']) {
+                $pubTime = (int) $dbObj->GetValue("PubTime");
+                $curTime = time();
+                if ($pubTime > $curTime) {
+                    return $pubTime;
+                } else {
+                    $SECONDS_TO_PUBLISH = 1;
+                    $serverFramesTotal = (int) $batch->get('ServerFramesTotal');
+                    $serverFramesSucess = (int) $batch->get('ServerFramesSucess');
+                    $total = ($serverFramesTotal - $serverFramesSucess) * $SECONDS_TO_PUBLISH;
+                    return $curTime + $total;
+                }
+            }
+
             $frames[$idportal]['elements'][] = array(
                 "IdSection" => $dbObj->GetValue("IdSection"),
                 "IdNode" => $dbObj->GetValue("IdNode"),
                 "IdChannel" => $dbObj->GetValue("IdChannel"),
-                "PubTime" => ($dbObj->GetValue("Progress") != '100') ? time() - $dbObj->GetValue("PubTime") : $dbObj->GetValue("PubTime"),
+                "PubTime" => ($params['finished']) ? $dbObj->GetValue("PubTime") : '',
+                "EstimatedTime" => $estimatedTime,
                 "State" => $dbObj->GetValue("State"),
                 "Progress" => $dbObj->GetValue("Progress"),
                 "FileName" => $dbObj->GetValue("FileName"),

@@ -26,33 +26,27 @@
  */
 use Ximdex\Modules\Module;
 
-//ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/model/RelRolesActions.class.php');
 
 class Module_ximPUBLISHtools extends Module {
 
     const PUB_REPORT_ACTION_ID = '7300';
-    const COL_STATES_REPORT_ACTION_ID = '7302';
+    const PUB_REPORT_HISTORY_ID = '7301';
 
     function Module_ximPUBLISHtools() {
-        // Call Module constructor.
         parent::__construct('ximPUBLISHtools', dirname(__FILE__));
-        // Initialization stuff.
     }
 
     function install() {
-//        if (!ModulesManager::isEnabled('ximSYNC')) {
-//            $this->log(Module::WARNING, 'ximSYNC module is not enabled. Several actions will not be visible until ximSYNC is enabled');
-//        }
-
         $this->loadConstructorSQL("ximPUBLISHtools.constructor.sql");
         return parent::install();
     }
 
+    // Uninstalling without disabling not allowed for this module.
     function uninstall() {
-        // Uninstalling without disabling not allowed for this module.
-        if (ModulesManager::isEnabled($this->getModuleName()))
+        if (ModulesManager::isEnabled($this->getModuleName())) {
             ModulesManager::disableModule($this->getModuleName());
+        }
 
         $this->loadDestructorSQL("ximPUBLISHtools.destructor.sql");
         parent::uninstall();
@@ -69,25 +63,18 @@ class Module_ximPUBLISHtools extends Module {
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
 		VALUES ('" . self::PUB_REPORT_ACTION_ID . "','5014','Informe de publicación','managebatchs','publicate_section.png',
 		'Muestra estado de la cola de trabajos de publicación',100,'ximPUBLISHtools',0)";
-
         $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions 
 		(IdRel,IdRol,IdAction,IdState,IdContext) 
 		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",NULL,1)";
-        // Fix: idState = 7 may be a bug in server
-        $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions 
-		(IdRel,IdRol,IdAction,IdState,IdContext) 
-		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",7,1)";
 
-        // Colectors States Report
-        $sql['Creating Colectors States Report action'] = "INSERT INTO Actions 
+        $sql['Creating ximPUBLISH history action'] = "INSERT INTO Actions 
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
-		VALUES ('" . self::COL_STATES_REPORT_ACTION_ID . "','5301','Listado de Colectores','viewcolectorstates','generate_colector.png',
-		'Muestra un listado con los colectores de una sección y sus estados',100,'ximPUBLISHtools',0)";
-
-        $sql['Enabling Colectors States Report action'] = "INSERT INTO RelRolesActions 
+		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','5014','Historial de publicaciones','batchhistory','publicate_section.png',
+		'Muestra el historial de publicaciones',100,'ximPUBLISHtools',0)";
+        $sql['Enabling ximPUBLISH history action'] = "INSERT INTO RelRolesActions 
 		(IdRel,IdRol,IdAction,IdState,IdContext) 
-		VALUES (NULL,201," . self::COL_STATES_REPORT_ACTION_ID . ",NULL,1)";
-
+		VALUES (NULL,201," . self::PUB_REPORT_HISTORY_ID . ",NULL,1)";
+        
         foreach ($sql as $desc => $query) {
             if (!$ret = $db->Execute($query)) {
                 XMD_Log::error("Error $desc - $query");
@@ -113,10 +100,9 @@ class Module_ximPUBLISHtools extends Module {
         $result = $relRolesActions->find('IdRel', 'IdAction = %s', array(self::PUB_REPORT_ACTION_ID), MONO);
         $sql['Disabling ximPUBLISH report action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
 
-        // Colector States Report
-        $sql['Deleting Colectors States Report action'] = "DELETE FROM Actions WHERE IdAction = '" . self::COL_STATES_REPORT_ACTION_ID . "'";
-        $result = $relRolesActions->find('IdRel', 'IdAction = %s', array(self::COL_STATES_REPORT_ACTION_ID), MONO);
-        $sql['Disabling Colectors States Report action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
+        $sql['Deleting ximPUBLISH history action'] = "DELETE FROM Actions WHERE IdAction = '" . self::PUB_REPORT_HISTORY_ID . "'";
+        $result = $relRolesActions->find('IdRel', 'IdAction = %s', array(self::PUB_REPORT_HISTORY_ID), MONO);
+        $sql['Disabling ximPUBLISH history action'] = "DELETE FROM RelRolesActions WHERE IdRel = '" . $result[0] . "'";
 
         foreach ($sql as $query) {
             $db->Execute($query);

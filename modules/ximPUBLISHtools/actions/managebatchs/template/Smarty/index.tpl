@@ -24,7 +24,7 @@
 *}
 
 
-<div ng-controller="ximPUBLISHtools">
+<div ng-controller="ximPUBLISHtools" ng-init="getFrameListLoop()">
     <fieldset>
         <legend><span>{t}Informe de publicación{/t}</span></legend>
         <ol><li>{t}Progreso de publicación de documentos de Ximdex{/t}</li></ol>
@@ -44,19 +44,25 @@
                     <strong>
                         <em>#/portal.NodeName/#</em>
                     </strong>
-                    <em>Esta publicación está <strong>#/portal.BatchStateText/#</strong></em>
+                    <em>Esta publicación está 
+                        <strong>#/portal.BatchStateText/#</strong>
+                        con prioridad: <strong>#/portal.BatchPriority/#</strong>
+                        <a class="incPrio" href="#" ng-click="incBatchPriority(portal.IdBatch)">[inc]</a>
+                        <a class="decPrio" href="#" ng-click="decBatchPriority(portal.IdBatch)">[dec]</a>
+                    </em>
                     <a class="batch_toggle" href="#" ng-click="stopBatch(portal.IdBatch)" ng-if="portal.BatchState">[Detener esta publicación]</a>
                     <a class="batch_toggle" href="#" ng-click="startBatch(portal.IdBatch)" ng-if="!portal.BatchState">[Reanudar esta publicación]</a>
                 </div>
 
                 <div class="frame_default"></div>
+                <hr><hr>
 
                 <div ng-repeat="frame in portal.elements">
                     <span class="frame_indent"></span>
                     <div class="progressbar ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
                         <div class="ui-progressbar-value ui-widget-header ui-corner-left ui-corner-right" style="width: 102%;"></div>
                     </div>
-                    <div class="frame_filename">#/frame.PubTime*1000 | date : 'dd-MM H:mm'/#
+                    <div class="frame_filename">#/timeFromNow(frame.EstimatedTime)/#
                         <strong>
                             <em>#/frame.FilePath + '/' + frame.FileName/#</em>
                         </strong>
@@ -65,7 +71,5 @@
                 </div>
             </div>
         </div>
-
-        <p>#/getFrameList()/#</p>
     </fieldset>
 </div>

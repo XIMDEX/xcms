@@ -31,8 +31,9 @@ ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 class Action_managebatchs extends ActionAbstract {
 
-    // Main method: shows initial form
+    private $params = array();
 
+    // Main method: shows initial form
     function index() {
         $acceso = true;
         // Initializing variables.
@@ -66,13 +67,43 @@ class Action_managebatchs extends ActionAbstract {
         $this->render($arrValores, NULL, 'default-3.0.tpl');
     }
 
+    // TODO implement filterParameter service
+    private function filterInteger($var) {
+        if (preg_match('/^\d+$/', $var)) {
+            return intval($var);
+        }
+        return null;
+    }
+
+    private function filterBool($var) {
+        if (preg_match('/^[0|1]?$/', $var)) {
+            return (bool) $var;
+        }
+        return null;
+    }
+
+    private function filterText($var) {
+        if (preg_match('/^[\w|_]+$/', $var)) {
+            return trim($var);
+        }
+        return null;
+    }
+
+    private function filterParams() {
+        $this->params['idNode'] = $this->filterInteger($this->request->getParam("nodeid"));
+        $this->params['idBatch'] = $this->filterInteger($this->request->getParam("idBatch"));
+        $this->params['dateFrom'] = $this->filterInteger($this->request->getParam("dateFrom"));
+        $this->params['dateTo'] = $this->filterInteger($this->request->getParam("dateTo"));
+//        $this->params['user'] = $this->filterText($this->request->getParam("user"));
+        $this->params['finished'] = $this->filterBool($this->request->getParam("finished"));
+        $this->params['searchText'] = $this->filterText($this->request->getParam("searchText"));
+    }
+
     private function retrieveFrameList() {
-        $idNode = (int) $this->request->getParam("nodeid");
-        $idBatch = (int) $this->request->getParam("batchid");
-
+        XMD_Log::info('PUBLISH getReports');
         $pr = new PublishingReport();
-        $frames = $pr->getReportByIdNode($idNode);
-
+        $frames = $pr->getReports($this->params);
+        XMD_Log::info("PUBLISH frames count: " . count($frames));
         $json = Serializer::encode(SZR_JSON, $frames);
 
         return array(
@@ -81,6 +112,7 @@ class Action_managebatchs extends ActionAbstract {
     }
 
     public function getFrameList() {
+        $this->filterParams();
         XMD_Log::error('PUBLISH getFrameList');
         $values = $this->retrieveFrameList();
         $this->render($values, NULL, "only_template.tpl");
@@ -88,12 +120,14 @@ class Action_managebatchs extends ActionAbstract {
 
     function stopBatch() {
         XMD_Log::error('PUBLISH stopBatch');
+        $success = false;
         if (!$_POST['frm_deactivate_batch'] !== "yes") {
             XMD_Log::error('PUBLISH stopBatch2');
 
             if (!$result = $this->doDeactivateBatch($_POST['frm_id_batch'])) {
                 $errorMsg = "An error occurred while deactivate batch.";
             } else {
+                $success = true;
                 if ($_POST['frm_id_batch'] == "all") {
                     $errorMsg = "All batches have been deactivated.";
                 } else {
@@ -104,8 +138,8 @@ class Action_managebatchs extends ActionAbstract {
             XMD_Log::error("PUBLISH results: $errorMsg");
         }
 
-        $values = $this->retrieveFrameList();
-        $this->render($values, NULL, "only_template.tpl");
+        $json = Serializer::encode(SZR_JSON, array('success' => $success));
+        $this->render(array('result' => $json), NULL, "only_template.tpl");
     }
 
     function startBatch() {
@@ -126,227 +160,34 @@ class Action_managebatchs extends ActionAbstract {
             XMD_Log::error("PUBLISH results: $errorMsg");
         }
 
-        $values = $this->retrieveFrameList();
-        $this->render($values, NULL, "only_template.tpl");
+//        $values = $this->retrieveFrameList();
+        $json = Serializer::encode(SZR_JSON, array('success' => true));
+        $this->render(array('result' => $json), NULL, "only_template.tpl");
     }
-    
-    function increaseBatchPriority() {
-        XMD_Log::error('PUBLISH increaseBatchPriority1');
-        
-        if (isset($_POST['frm_prioritize_batch']) && $_POST['frm_prioritize_batch'] == "yes") {
-            XMD_Log::error('PUBLISH pre doPrioritizeBatch1');
-            if (!$result = $this->doPrioritizeBatch($_POST['frm_id_batch'])) {
 
-                $errorMsg = "An error occurred while prioritizing batch.";
-            } else {
+    function changeBatchPriority() {
+        XMD_Log::info('PUBLISH changeBatchPriority');
 
-                $errorMsg = "Batch #" . $_POST['frm_id_batch'] . " has been prioritized.";
-            }
+        $mode = 'up';
+        if (isset($_POST['frm_increase']) && $_POST['frm_increase'] == "yes") {
+            XMD_Log::info('PUBLISH pre doPrioritizeBatch');
+        } else if (isset($_POST['frm_decrease']) && $_POST['frm_decrease'] == "yes") {
+            XMD_Log::info('PUBLISH pre doUnprioritizeBatch');
+            $mode = 'down';
         }
-        
-        
 
-        $values = $this->retrieveFrameList();
-        $this->render($values, NULL, "only_template.tpl");
+        if (!$result = $this->doPrioritizeBatch($_POST['frm_id_batch'], $mode)) {
+            XMD_Log::error("An error occurred while changing batch priority ($mode).");
+        } else {
+            XMD_Log::error("Batch #" . $_POST['frm_id_batch'] . " priority has been changed ($mode).");
+        }
+
+        $json = Serializer::encode(SZR_JSON, array('success' => true));
+        $this->render(array('result' => $json), NULL, "only_template.tpl");
     }
-    
-/*
-    function batchlist() {
-        XMD_Log::error('PUBLISH batchlist');
-        // Initializing variables of actions.
-        $errorMsg = "";
-
-        if (isset($_POST['frm_prioritize_batch']) && $_POST['frm_prioritize_batch'] == "yes") {
-            XMD_Log::error('PUBLISH pre doPrioritizeBatch1');
-            if (!$result = $this->doPrioritizeBatch($_POST['frm_id_batch'])) {
-
-                $errorMsg = "An error occurred while prioritizing batch.";
-            } else {
-
-                $errorMsg = "Batch #" . $_POST['frm_id_batch'] . " has been prioritized.";
-            }
-        }
-
-        if (isset($_POST['frm_deprioritize_batch']) && $_POST['frm_deprioritize_batch'] == "yes") {
-            XMD_Log::error('PUBLISH pre doPrioritizeBatch2');
-            if (!$result = $this->doPrioritizeBatch($_POST['frm_id_batch'], 'down')) {
-
-                $errorMsg = "An error occurred while down priority of batch.";
-            } else {
-
-                $errorMsg = "Priority of batch has been down #" . $_POST['frm_id_batch'];
-            }
-        }
-        XMD_Log::error('PUBLISH frm_deactivate_batch: ' . $_POST['frm_deactivate_batch']);
-        if (isset($_POST['frm_deactivate_batch']) && $_POST['frm_deactivate_batch'] == "yes") {
-            XMD_Log::error('PUBLISH pre doDeactivateBatch');
-            if (!$result = $this->doDeactivateBatch($_POST['frm_id_batch'])) {
-                XMD_Log::error('PUBLISH doDeactivateBatch with errors!');
-                $errorMsg = "An error occurred while deactivate batch.";
-            } else {
-                XMD_Log::error('PUBLISH doDeactivateBatch ok');
-                if ($_POST['frm_id_batch'] == "all") {
-                    XMD_Log::error('PUBLISH doDeactivateBatch all');
-                    $errorMsg = "All batches have been deactivated.";
-                } else {
-                    XMD_Log::error('PUBLISH doDeactivateBatch to id ' . $_POST['frm_id_batch']);
-                    $errorMsg = "Batch #" . $_POST['frm_id_batch'] . " has been deactivated.";
-                }
-            }
-        }
-
-        if (isset($_POST['frm_deactivate_batch']) && $_POST['frm_activate_batch'] == "yes") {
-            XMD_Log::error('PUBLISH pre doActivateBatch');
-            if (!$result = $this->doActivateBatch($_POST['frm_id_batch'])) {
-
-                $errorMsg = "An error occurred while activating batch.";
-            } else {
-
-                if ($_POST['frm_id_batch'] == "all") {
-
-                    $errorMsg = "All batches have been activated.";
-                } else {
-
-                    $errorMsg = "Batch #" . $_POST['frm_id_batch'] . " has been activated.";
-                }
-            }
-        }
-        XMD_Log::error('PUBLISH batchlist1');
-        $frm_select_filter_node_gen = (isset($_POST['frm_select_filter_node_gen'])) ? $_POST['frm_select_filter_node_gen'] : "";
-        $frm_select_filter_state_batch = (isset($_POST['frm_select_filter_state_batch'])) ? $_POST['frm_select_filter_state_batch'] : "InTime";
-        $frm_select_filter_active_batch = (isset($_POST['frm_select_filter_active_batch'])) ? $_POST['frm_select_filter_active_batch'] : 'NULL';
-        $frm_select_filter_up_date = (isset($_POST['frm_filter_up_date']) && $_POST['frm_filter_up_date'] != 0) ? strtotime($_POST['frm_filter_up_date']) : 0;
-        $frm_select_filter_down_date = (isset($_POST['frm_filter_down_date']) && $_POST['frm_filter_down_date'] != 0) ? strtotime($_POST['frm_filter_down_date']) : 0;
-        $frm_filter_batch = (isset($_POST['frm_select_filter_state_batch'])) ? ((isset($_POST['frm_filter_batch'])) ? $_POST['frm_filter_batch'] : 'no') : 'yes';
-
-        $arrayDateValues = array();
-        $arrayDateValues['update'] = (isset($_POST['update'])) ? $_POST['update'] : "Click Aqui...";
-        $arrayDateValues['uphour'] = (isset($_POST['uphour'])) ? $_POST['uphour'] : "00";
-        $arrayDateValues['upmin'] = (isset($_POST['upmin'])) ? $_POST['upmin'] : "00";
-        $arrayDateValues['downdate'] = (isset($_POST['downdate'])) ? $_POST['downdate'] : "Click Aqui...";
-        $arrayDateValues['downhour'] = (isset($_POST['downhour'])) ? $_POST['downhour'] : "00";
-        $arrayDateValues['downmin'] = (isset($_POST['downmin'])) ? $_POST['downmin'] : "00";
-        XMD_Log::error('PUBLISH batchlist2');
-        $acceso = true;
-        // Initializing variables.
-        $userID = Session::get('userID');
-
-        $user = new User();
-        $user->SetID($userID);
-
-        if (!$user->HasPermission("view_publication_resume")) {
-            $acceso = false;
-            $errorMsg = "No tiene acceso a este informe. Consulte a un administrador.";
-        }
-        XMD_Log::error('PUBLISH batchlist3');
-        $jsFiles = array(
-            //App::getValue('UrlRoot') . '/xmd/js/lib/prototype/prototype.js',
-            App::getValue('UrlRoot') . ModulesManager::path('ximPUBLISHtools') . '/actions/managebatchs/resources/js/batchlist.js'
-        );
-
-        $arrayStates = array(
-            'Batch' => array(
-                'Waiting' => 'En Cola',
-                'InTime' => 'En Curso',
-                'Ended' => 'Finalizado'
-            ),
-            'ServerFrame' => array(
-                'Pending' => 'Pendiente',
-                'Due2In' => 'Preparado para publicar',
-                'Due2PumpedWithError' => 'Con Error',
-                'Due2In_' => 'Public&aacute;ndose',
-                'Due2Out' => 'Preparado para despublicar',
-                'Due2OutWithError' => 'Con Error',
-                'Due2Out_' => 'Despublic&aacute;ndose',
-                'In' => 'Publicado',
-                'Pumped' => 'Bombeado',
-                'Out' => 'Despublicado',
-                'Replaced' => 'Reemplazado',
-                'Removed' => 'Borrado',
-                'Canceled' => 'Cancelado'
-            )
-        );
-
-        $activeServers = array();
-
-
-        if (isset($frm_select_filter_node_gen)) {
-
-            $arraySelects['frm_select_filter_node_gen'][$frm_select_filter_node_gen] = "selected";
-        }
-        if (isset($frm_select_filter_state_batch)) {
-
-            $arraySelects['frm_select_filter_state_batch'][$frm_select_filter_state_batch] = "selected";
-        }
-        if (isset($frm_select_filter_active_batch) && $frm_select_filter_active_batch != 'NULL') {
-
-            $arraySelects['frm_select_filter_active_batch'][$frm_select_filter_active_batch] = "selected";
-        }
-        XMD_Log::error('PUBLISH batchlist4');
-        $doFilter = ($frm_filter_batch == "yes") ? true : false;
-        $stateCryteria = $frm_select_filter_state_batch;
-        $activeCryteria = (!isset($frm_select_filter_active_batch) || $frm_select_filter_active_batch == 'NULL') ? null : $frm_select_filter_active_batch;
-
-        $batchObj = new Batch();
-        $batchList = $batchObj->getAllBatchs($doFilter ? $stateCryteria : null, $doFilter ? $activeCryteria : null, 'Up', MANAGEBATCHS_BATCHS_PER_PAGE, $frm_select_filter_node_gen ? $frm_select_filter_node_gen : null, $frm_select_filter_up_date, $frm_select_filter_down_date);
-        $hasBatchs = (is_array($batchList) && count($batchList) > 0) ? true : false;
-
-        $distinctNodeGenerators = $batchObj->getNodeGeneratorsFromBatchs($frm_select_filter_state_batch);
-        XMD_Log::error('PUBLISH batchlist5');
-        if ($hasBatchs) {
-            XMD_Log::error('PUBLISH batchlis6');
-            $serverFrameObj = new ServerFrame();
-
-            $activeServers = $serverFrameObj->getServers("complete");
-
-            foreach ($batchList as $id => $batch) {
-
-                $progress = array();
-                $serverFrames = $serverFrameObj->getFramesOnBatch($batch['IdBatch'], (($batch['Type'] == 'Up') ? 'IdBatch' : 'IdBatchDown'), "extended", $progress, MANAGEBATCHS_FRAMES_PER_PAGE);
-                $hasServerFrames = (is_array($serverFrames) && count($serverFrames) > 0) ? true : false;
-
-                if ($hasServerFrames) {
-
-                    $batchs[$batch['IdBatch']]['serverFrames'] = $serverFrames;
-                    $batchs[$batch['IdBatch']]['progress'] = $progress;
-                    $batchs[$batch['IdBatch']]['totalPags'] = count($serverFrames);
-                }
-
-                $downBatch = $batchObj->getDownBatch($batch['IdBatch']);
-                if (is_array($downBatch) && count($downBatch) > 0) {
-
-                    $batchs[$batch['IdBatch']]['downBatch'] = $downBatch;
-                }
-            }
-        }
-
-        $urlRoot = App::getValue('UrlRoot');
-
-        $arrValores = array(
-            'hasBatchs' => $hasBatchs,
-            'distinctNodeGenerators' => $distinctNodeGenerators,
-            'batchs' => $batchs,
-            'acceso' => $acceso,
-            'errorBox' => $errorMsg,
-            'arrayStates' => $arrayStates,
-            'activeServers' => $activeServers,
-            'arraySelects' => $arraySelects,
-            'frm_select_filter_node_gen' => $frm_select_filter_node_gen,
-            'frm_select_filter_state_batch' => $frm_select_filter_state_batch,
-            'frm_select_filter_active_batch' => $frm_select_filter_active_batch,
-            'urlRoot' => $urlRoot,
-            'arrayDateValues' => $arrayDateValues,
-            'js_files' => $jsFiles
-        );
-        XMD_Log::error('PUBLISH batchlist7');
-        $this->_render($arrValores, 'batchlist', 'default-3.0.tpl');
-    }
-    */
 
     function doActivateBatch($idBatch) {
-
         if ($idBatch != "all") {
-
             $batchObj = new Batch();
             return $batchObj->setBatchPlayingOrUnplaying($idBatch, $playingValue = 1);
         } else {
@@ -369,9 +210,9 @@ class Action_managebatchs extends ActionAbstract {
     }
 
     function doPrioritizeBatch($idBatch, $mode = 'up') {
-
-        $batchObj = new Batch();
-        return $batchObj->prioritizeBatch($idBatch, $mode);
+        $batch = new Batch();
+        $hasChanged = $batch->prioritizeBatch($idBatch, $mode);
+        return $hasChanged;
     }
 
 }
