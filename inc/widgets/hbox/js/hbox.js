@@ -144,13 +144,13 @@
 				dragStop: function() {}
 			}, options);
 
-			this.container = $('<div></div>').addClass('hbox-panel-container');
+			/*this.container = $('<div></div>').addClass('hbox-panel-container');
 			if (this.options.index !== null) $(this.container).addClass('hbox-panel-container-'+this.options.index);
 			if (this.options.parent !== null) {
 				$(this.container).appendTo(this.options.parent);
-			}
+			}*/
 
-			this.panel = $('<div></div>').addClass('hbox-panel').appendTo(this.container);
+			/*this.panel = $('<div></div>').addClass('hbox-panel').appendTo(this.container);
 			this.sep = this.options.separator
 				? new PanelSeparator({
 					parent: this.container,
@@ -160,7 +160,8 @@
 					index: this.options.index
 				  })
 				: null;
-
+*/
+            this.container = $('.hbox-panel-container');
 			this.position(this.options);
 			this.dimension(this.options);
 
@@ -207,7 +208,7 @@
 				height: $(this.container).height()
 			};
 
-			animate = Object.isBoolean(animate) ? animate : false;
+			/*animate = Object.isBoolean(animate) ? animate : false;
 
 			dim = dim || null;
 			if (Object.isObject(dim)) {
@@ -241,9 +242,9 @@
 					top: '0px',
 					bottom: '0px'
 				});*/
-				this.render();
+				/*this.render();
 				return this;
-			}
+			}*/
 			return actualDim;
 		},
 
@@ -298,7 +299,7 @@
 					index: i
 				});
 
-				if (p.separator()) {
+				/*if (p.separator()) {
 					var $button = $("<button class='hbox-panel-tie hide'></button>");
 					p.container.addClass("hbox-panel-hideable");
 					p.container.append($button);
@@ -346,7 +347,7 @@
 					$button.mouseover(showCallback);
 					$(p.separator().element()).mouseover(showCallback);
 					p.container.mouseleave(hideCallback);
-				}
+				}*/
 
 				auxPanels.push(i);
 				this.panels.push(p);

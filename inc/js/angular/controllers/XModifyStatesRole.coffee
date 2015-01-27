@@ -1,4 +1,4 @@
-angular.module("ximdex.module.xmodifystatesrole", ['ngAnimate']).controller "XModifyStatesRoleCtrl", [
+angular.module("ximdex.main.controller").controller "XModifyStatesRoleCtrl", [
     "$scope"
     "$http"
     "xUrlHelper"

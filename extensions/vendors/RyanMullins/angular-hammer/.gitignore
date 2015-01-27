@@ -1,0 +1,17 @@
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+.nodemonignore
+.sass-cache/
+.bower-*/
+.idea/
+bower_components/
+node_modules/
+npm-debug.log
+
+examples/raw/angular*
+examples/raw/hammer*
+
+examples/browserify/angular*
+examples/browserify/hammer*
+examples/browserify/example*

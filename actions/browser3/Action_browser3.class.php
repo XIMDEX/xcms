@@ -84,6 +84,7 @@ class Action_browser3 extends ActionAbstract
         $this->addCss('/extensions/bootstrap/dist/css/bootstrap.min.css');
         $this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');
         $this->addCss('/extensions/humane/flatty.css');
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css');
         $this->addActionCss('browser.css');
         if (ModulesManager::isEnabled('ximTOUR'))
             $this->addCss('/modules/ximTOUR/resources/css/tour.css');
@@ -104,14 +105,17 @@ class Action_browser3 extends ActionAbstract
         $this->addJs(Extensions::JQUERY);
         $this->addJs(Extensions::JQUERY_UI);
         $this->addJs('/inc/js/i18n.js');
+        $this->addJs('/extensions/vendors/hammerjs/hammer.js/hammer.min.js');
         $this->addJs('/extensions/angular/angular.min.js');
+        $this->addJs('/extensions/vendors/RyanMullins/angular-hammer/angular.hammer.min.js');
         $this->addJs('/extensions/angular/angular-animate.min.js');
+        $this->addJs('/extensions/angular/angular-sanitize.min.js');
         $this->addJs('/extensions/angular-ui-sortable/src/sortable.js');
         $this->addJs('/extensions/ladda/dist/spin.min.js');
         $this->addJs('/extensions/ladda/dist/ladda.min.js');
         $this->addJs('/extensions/humane/humane.min.js');
         $this->addJs('/extensions/flow/ng-flow-standalone.min.js');
-        $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.12.0-SNAPSHOT.min.js');
+        $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.tabs.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');
@@ -129,13 +133,13 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/animations/slide.js');
         $this->addJs('/inc/js/angular/services/xTranslate.js');
         $this->addJs('/inc/js/angular/services/xBackend.js');
-        $this->addJs('/inc/js/angular/services/xTree.js');
-        $this->addJs('/inc/js/angular/services/xBrowserWindow.js');
         $this->addJs('/inc/js/angular/services/xUrlHelper.js');
         $this->addJs('/inc/js/angular/services/xEventRelay.js');
         $this->addJs('/inc/js/angular/services/xDialog.js');
         $this->addJs('/inc/js/angular/services/xCheck.js');
         $this->addJs('/inc/js/angular/services/xMenu.js');
+        $this->addJs('/inc/js/angular/services/xTabs.js');
+        $this->addJs('/inc/js/angular/directives/compileTemplate.js');
         $this->addJs('/inc/js/angular/directives/ximButton.js');
         $this->addJs('/inc/js/angular/directives/ximSelect.js');
         $this->addJs('/inc/js/angular/directives/ximValidators.js');
@@ -148,13 +152,19 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/directives/ximGrid.js');
         $this->addJs('/inc/js/angular/directives/ximInverted.js');
         $this->addJs('/inc/js/angular/directives/ximFitText.js');
+        $this->addJs('/inc/js/angular/directives/ximMenu.js');
+        $this->addJs('/inc/js/angular/directives/ximTree.js');
+        $this->addJs('/inc/js/angular/directives/ximList.js');
         $this->addJs('/inc/js/angular/filters/xFilters.js');
+        $this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyGroupUsersCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
+        $this->addJs('/inc/js/angular/controllers/XTreeCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');
+        $this->addJs('/inc/js/angular/controllers/XUserMenuCtrl.js');
         $this->addActionJs('XMainCtrl.js');
         $this->addActionJs('controller.js');
 
@@ -254,31 +264,54 @@ class Action_browser3 extends ActionAbstract
      */
     public function read()
     {
-        //$idNode = $this->request->getParam('nodeid');
-        //$items = $this->request->getParam('items');
-        //$path = XIMDEX_ROOT_PATH .ModulesManager::path('tolDOX').'/resources/cache/';
-        //$file = sprintf('%s%s_%s', $path, str_replace('/', '_', $idNode), $items);
+        $ret = GenericDatasource::read($this->request);
+        $ret['collection'] = $this->checkNodeAction($ret['collection']);
+        header('Content-type: application/json');
+        $data = Serializer::encode(SZR_JSON, $ret);
+        echo $data;
+    }
 
-        /*$modeTags = false;
-        if (preg_match('/\/Tags/', $idNode) > 0) {
-            $modeTags = true;
-            if (is_file($file)) {
-                $data = FsUtils::file_get_contents($file);
-                echo $data;
-                return;
-            }
-        }*/
+    /**
+     * Returns a JSON document with all children of the specified node id
+     * filtered by the filter param
+     */
+    public function readFiltered()
+    {
+        $query = $this->request->getParam('query');
 
         $ret = GenericDatasource::read($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
 
+        $sql = "SELECT count(*) as cont FROM FastTraverse f
+              INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d and not n.IdNode=%d and n.name like '%s'
+              inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType and NOT(nt.IsHidden) and not nt.IdNodeType in (5084,5085)";
+        $db = new DB();
+        $removed = 0;
+        $queryToMatch = "/".$query."/i";
+        $queryToMatch = str_replace(array(".","_"),array('\.',"."),$queryToMatch);
+        foreach($ret["collection"] as $id => $child){
+            $sql2 = sprintf($sql, $child["nodeid"], $child["nodeid"], '%'.$query.'%');
+            $db->query($sql2);
+            $cont = 0;
+            while (!$db->EOF) {
+                $cont = $db->getValue('cont');
+                break;
+            }
+            $check = preg_match($queryToMatch,$child['name']);
+            $ret["collection"][$id-$removed]["originalName"] = $child["name"];
+            $ret["collection"][$id-$removed]["name"] = preg_replace ($queryToMatch, '<span class="filter-word-span">$0</span>', $child["name"]);
+            if($cont=="0" && $check!==1){
+                array_splice($ret["collection"],$id-$removed,1);
+                $removed++;
+            }elseif($cont=="0"){
+                $ret["collection"][$id-$removed]["children"] = 0;
+            }else{
+                $ret["collection"][$id-$removed]["name"] .= sprintf ('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $cont);
+            }
+        }
+
         header('Content-type: application/json');
         $data = Serializer::encode(SZR_JSON, $ret);
-        /*if ($modeTags) {
-            FsUtils::file_put_contents($file, $data);
-
-        }*/
-
         echo $data;
     }
 

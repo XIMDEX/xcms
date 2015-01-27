@@ -35,6 +35,7 @@ X.FormsManager = Object.xo_create({
 
 		this.options = Object.extend({
 			actionView: null,
+            tabId: '',
 			iframeId: '',
 			actionContainer: null,
 			form: null,
@@ -44,14 +45,12 @@ X.FormsManager = Object.xo_create({
 				'(js_val_unique_name)', '(js_val_unique_url)'
 			]
 		}, options);
-
-		// Don't want the jQuery object, want the DOMElement
-		this.options.form = $(this.options.form).get(0);
-
-		this.options.form.getFormMgr = function() {
-			return this;
-		}.bind(this);
-
+        if(this.options.form){
+            // Don't want the jQuery object, want the DOMElement
+            $(this.options.form).get(0)['getFormMgr'] = function() {
+                return this;
+            }.bind(this);
+        }
 		this._checkInputFields();
 		this._registerButtons();
 	},
@@ -78,18 +77,28 @@ X.FormsManager = Object.xo_create({
 
 		this.buttons = [];
 
-		// Register buttons that will send the form
-		$('.validate', this.options.form).each(function(index, button) {
-			this.registerButton(button);
-		}.bind(this));
+        if(this.options.form){
+            // Register buttons that will send the form
+            $('.validate', this.options.form).each(function(index, button) {
+                this.registerButton(button);
+            }.bind(this));
 
-		// Register buttons for reseting the form
-		$('.reset-button', this.options.form).each(function(index, button) {
-			button.click(function() {
-				this.options.form.reset();
-				return false;
-			});
-		}.bind(this));
+            // Register buttons for reseting the form
+            $('.reset-button', this.options.form).each(function(index, button) {
+                button.click(function() {
+                    this.options.form.reset();
+                    return false;
+                });
+            }.bind(this));
+        }
+
+        // Closes a tab
+        $('.close-button', this.options.actionContainer).each(function(index, button) {
+            $(button).click(function() {
+                $('#angular-content').scope().closeTabById(this.options.tabId);
+                return false;
+            }.bind(this));
+        }.bind(this));
 	},
 
 	/**
@@ -266,17 +275,32 @@ X.FormsManager = Object.xo_create({
 		$form.attr('target', this.options.iframeId);
 		$(iframe).load(this._reloadFrame.bind(this, iframe));
 
-		if (Object.isObject(this.options.actionView)) {
+		/*if (Object.isObject(this.options.actionView)) {
 			this.options.actionView.history.push($form.attr('action'));
-		}
+		}*/
 		
 		if (jsonResponse && X.ActionTypes.reload.indexOf(this.options.actionView.action.command) == -1) {
 			if ($(form).valid()) {
 				button = button[0] || button;
 				if (button) var loader = Ladda.create(button).start();//Start button loading animation
-				this.blockSubmit = true;
+				//this.blockSubmit = true;
 				var _this = this;
-				$.ajax({
+
+                angular.element('#angular-content').scope().submitForm({
+                    reload: false,
+                    tabId: this.options.tabId,
+                    url: $form.attr('action'),
+                    data: $form.serialize(),
+                    callback: function (args) {
+                            if (loader) loader.stop();
+                            if (args.error) {
+                                _this.actionNotify([_('Internal server error')], $form, true);
+                            } else {
+                                _this.actionDoneCallback(args.data, form, args.tab);
+                            }
+                        }
+                });
+				/*$.ajax({
 			        url: $form.attr('action'),
 			        type: 'post',
 			        dataType: 'json',
@@ -294,12 +318,21 @@ X.FormsManager = Object.xo_create({
 			        	loader.stop();
 			        	this.blockSubmit = false;
 			        }
-			    });
+			    });*/
 			}
 		} else {
 			button = button[0] || button;
 			if (button) var loader = Ladda.create(button).start();//Start button loading animation
-			form.submit();
+			//form.submit();
+            angular.element('#angular-content').scope().submitForm({
+                reload: true,
+                tabId: this.options.tabId,
+                url: $form.attr('action'),
+                data: $form.serialize(),
+                callback: function () {
+                    if (loader) loader.stop();
+                }
+            });
 		}
 	},
 
@@ -486,6 +519,55 @@ X.FormsManager = Object.xo_create({
 			.remove();
 
 		$(this).trigger('form-loaded', []);
-	}
+	},
+    actionDoneCallback: function(result, form, tab) {
+        $form = $(form);
+
+        //Messaging
+
+        var submitError = false;
+        var messages = [];
+        $.each(result.messages, function(key, message){
+            messages.push(message.message);
+
+            if (message.type === 0) submitError = true;
+        });
+        var nodeId = result.parentID || result.nodeID || result.idNode;
+        //Refresh node
+        if (!submitError && nodeId) $(document).trigger('nodemodified', nodeId);
+        if (!submitError && result.oldParentID) $(document).trigger('nodemodified', result.oldParentID);
+
+        if (!submitError && X.ActionTypes.create.indexOf(tab.action.command) != -1 ) form.get(0).reset();
+        if (!submitError && X.ActionTypes.remove.indexOf(tab.action.command) != -1) {
+            $('#angular-content').scope().closeTabById(tab.id);
+            humane.log(messages, {addnCls: 'notification-success'});
+        } else {
+            this.actionNotify(result.messages, $form, submitError);
+        }
+    },
+
+    actionNotify: function(messages, $form, error) {
+        for (var i = messages.length - 1; i >= 0; i--) {
+            (function(msg,form){
+                var message = $('<div class="message" style="display: none;"><p>'+msg.message+'</p></div>');
+                switch (msg.type){
+                    case 0:
+                        message.addClass('message-error');
+                        break;
+                    case 1:
+                        message.addClass('message-warning');
+                        break;
+                    default:
+                        message.addClass('message-success');
+                }
+                form.find('.action_header').after(message);
+                message.slideDown();
+                setTimeout(function(){message.slideUp(400, function(){
+                    message.remove();
+                })}, 4000);
+            })(messages[i],$form);
+        };
+
+    }
 
 });

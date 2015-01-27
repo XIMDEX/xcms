@@ -140,11 +140,12 @@
 .ui-widget-header, .ui-datepicker table th {
   background: none;
   color: #fff;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   border-bottom: 1px solid #666666;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
-  border-radius: 0; }
+  border-radius: 0;
+}
 
 .ui-datepicker .ui-datepicker-header {
   padding: .5em 0; }
@@ -180,7 +181,8 @@
   border-left: 1px solid #e3e7e9; }
   .ui-timepicker-div dt, .ui-timepicker-div dd {
     font-size: 1em;
-    text-transform: uppercase; }
+    text-transform: uppercase;
+  }
 
 .ui_tpicker_time_label, .ui-datepicker .ui-datepicker-header {
   background: #7bcabf;

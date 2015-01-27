@@ -124,56 +124,6 @@
 			}.bind(this));	
 		},
 
-		actionDoneCallback: function(result, form) {
-    		$form = $(form);
-    		
-	        //Messaging
-
-   		var submitError = false;
-    		var messages = [];
-    		$.each(result.messages, function(key, message){
-    			messages.push(message.message);
-
-    			if (message.type === 0) submitError = true;
-    		});
-    		var nodeId = result.parentID || result.nodeID || result.idNode;
-    		//Refresh node
-    		if (!submitError && nodeId) $(this.container).trigger('nodemodified', nodeId);
-    		if (!submitError && result.oldParentID) $(this.container).trigger('nodemodified', result.oldParentID);
-
-    		if (!submitError && X.ActionTypes.create.indexOf(this.action.command) != -1 ) form.reset();
-    		if (!submitError && X.ActionTypes.remove.indexOf(this.action.command) != -1) {
-    			this.close();
-    			humane.log(messages, {addnCls: 'notification-success'});
-			} else {
-				this.actionNotify(result.messages, $form, submitError);
-			}
-		},
-
-		actionNotify: function(messages, $form, error) {
-			for (var i = messages.length - 1; i >= 0; i--) {
-                (function(msg,form){
-                    var message = $('<div class="message" style="display: none;"><p>'+msg.message+'</p></div>');
-                    switch (msg.type){
-                        case 0:
-                            message.addClass('message-error');
-                            break;
-                        case 1:
-                            message.addClass('message-warning');
-                            break;
-                        default:
-                            message.addClass('message-success');
-                    }
-                    form.find('.action_header').after(message);
-                    message.slideDown();
-                    setTimeout(function(){message.slideUp(400, function(){
-                        message.remove();
-                    })}, 4000);
-                })(messages[i],$form);
-            };
-
-		},
-
 		getForm: function(name) {
 			name = name || null;
 			return name === null ? this.forms : (this.forms[name] || null);

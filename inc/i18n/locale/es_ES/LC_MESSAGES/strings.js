@@ -81,5 +81,17 @@ X.i18nStrings = {
                 "empty_msg": "No se han encontrado entidades para el contenido actual."
             }
         }
-	}
+	},
+    "browser": {
+        "headings":{
+            "projects": "Proyectos",
+            "Projects": "Proyectos",
+            "ccenter": "Centro de control",
+            "modules": "Módulos"
+        },
+        "filter": "Filtro",
+        "welcome_to_the_brand_new_Ximdex!": "¡Bienvenido al nuevo Ximdex!",
+        "reload_node": "Recargar nodo",
+        "there_are_no_results_!": "No hay resultados !"
+    }
 }
