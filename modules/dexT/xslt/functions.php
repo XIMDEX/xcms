@@ -29,7 +29,7 @@
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 
-include_once XIMDEX_ROOT_PATH . '/inc/model/node.inc';
+include_once XIMDEX_ROOT_PATH . '/inc/model/node.php';
 
 /*
 	Makes dext:import
@@ -94,7 +94,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		foreach ($matches[0] as $key => $value) {
 			$dinamic = false;
 			if ($section->get('IdNode') > 0) {
-				// Si el template docxap o include es dinámico, se inserta asociado a la sección
+				// Si el template docxap o include es dinï¿½mico, se inserta asociado a la secciï¿½n
 				if (preg_match('/%%%[\w|\-|\_|\d]+%%%/', $value) > 0) {
 					$dinamic = true;
 					$dinamicTemplateList = $section->getProperty('dinamic_template_list');
@@ -138,7 +138,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		foreach ($matches[0] as $key => $value) {
 			$dinamic = false;
 			if ($section->get('IdNode') > 0) {
-				// Si el template docxap o include es dinámico, se inserta asociado a la sección
+				// Si el template docxap o include es dinï¿½mico, se inserta asociado a la secciï¿½n
 				if (preg_match('/%%%[\w|\-|\_|\d]+%%%/', $value) > 0) {
 					$dinamic = true;
 					$dinamicTemplateList = $section->getProperty('dinamic_template_list');
@@ -306,7 +306,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 		}
 	}
 
-	//Sustitución de macros por atributos
+	//Sustituciï¿½n de macros por atributos
 	$ptdContent = preg_replace('/>([^<|%]*)%%%([\w|\_|\-]+)%%%([^<]*)</s', 
 		">\${1}<dext:getvalue expr=\"ancestor-or-self::*[@\${2}][1]/@\${2}\" />\${3}<", $ptdContent);
 	$ptdContent = preg_replace('/[\']?[\{]?%%%([\w|\_|\-]+)%%%[\}]?[\']?/', 
@@ -345,7 +345,7 @@ function preTransformation($ptdContent, $fileName, $idSection = NULL) {
 }
 
 function _getHeader() {
-	$docTypeTag = Config::getValue('DoctypeTag');
+	$docTypeTag = \App::getValue( 'DoctypeTag');
 	preg_match_all('/<\!ENTITY\s+(\w+)\s+\"(\w+)\"\s*>/', $docTypeTag, $matches);
 	$entities = array();
 	if (!empty($matches[1]) && count($matches[1]) > 0) {

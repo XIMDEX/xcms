@@ -104,7 +104,6 @@ strong{
 \*------------------------------------*/
 
 	#ximdex-splash {
-
 		position: absolute;
 		top: 0px;
 		left: 0px;
@@ -115,7 +114,22 @@ strong{
 		background: url(../../../../xmd/images/browser/splash/watermark.png) no-repeat right bottom,
 					url(../../../../xmd/images/browser/splash/bg-pattern-net.png) repeat left top, #fff;
 		overflow: auto;
-	}
+      -webkit-animation: fadeout 3s ease-in;
+      animation: fadeout 3s ease-in;
+      visibility: hidden;
+      opacity: 0;
+}
+
+@-webkit-keyframes fadeout {
+  0% {visibility: visible; opacity: 1; display: block;}
+  50% {visibility: visible; opacity: 1; display: block;}
+  100% {visibility: hidden; opacity: 0; display: none;}
+}
+@keyframes fadeout {
+  0% {visibility: visible; opacity: 1; display: block;}
+  50% {visibility: visible; opacity: 1; display: block;}
+  100% {visibility: hidden; opacity: 0; display: none;}
+}
 
 
 	#ximdex-splash .loading{
@@ -150,8 +164,19 @@ strong{
 		height: inherit;
 		background: #4f4f4f url(../../../../xmd/images/browser/splash/bg-pattern-grey.png) repeat;
 		max-width: 100%;
+        width: 100%;
+        -webkit-animation: loadingBar 2s ease-out; /* Chrome, Safari, Opera */
+        animation: loadingBar 2s ease-out;
 	}
 
+    @-webkit-keyframes loadingBar {
+      0%   {width: 0%;}
+      100% {width: 100%;}
+    }
+    @keyframes loadingBar {
+        0%   {width: 0%;}
+        100% {width: 100%;}
+    }
 	.ximdex_splash_content {
 
 		width: 80%;
@@ -476,3 +501,129 @@ strong{
 			background: #36373e;
 		}
 	}
+.angular-panel {
+	box-sizing: border-box;
+	padding: 7px 0;
+}
+.test-box {
+	background: white;
+	width: 100%;
+	height: 100%;
+}
+
+#angular-tree {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 270px;
+    overflow: auto;
+    padding-left: 7px;
+}
+#angular-content {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 280px;
+    right: 0;
+    overflow: hidden;
+    color: #FFF;
+    padding-right: 7px;
+}
+
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav{
+  -webkit-transition: left 1s;
+  -moz-transition: left 1s;
+  -ms-transition: left 1s;
+  -o-transition: left 1s;
+  transition: left 1s;
+  /*width: 100%;*/
+  position: absolute;
+  left: 0px;
+  height: 41px;
+}
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li{
+  padding:0;
+  height: 40px;
+  word-wrap: normal;
+}
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.hide{
+  visibility: hidden;
+}
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-enter{
+  -webkit-animation:.3s openTab;
+  animation:.3s openTab;
+}
+@-webkit-keyframes openTab {
+  0%   {top:50px;}
+  100% {top:1px;}
+}
+
+@keyframes openTab {
+  0% {
+    top: 50px;
+  }
+  100% {
+    top: 1px;
+  }
+}
+
+
+#angular-content > .hbox-panel > .tabs-container > ul.ui-tabs-nav > li.ng-leave{
+  -webkit-animation:.5s closeTab;
+  animation:.5s closeTab;
+  overflow: hidden;
+  max-width: 400px
+}
+
+@-webkit-keyframes closeTab {
+  0%   {top:1px;}
+  50%  {top:50px;}
+  100% {top:50px; max-width: 0px}
+}
+
+@keyframes closeTab {
+  0%   {top:1px;}
+  50%  {top:50px;}
+  100% {top:50px; max-width: 0px}
+}
+
+#angular-tree-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 270px;
+    width: 7px;
+    cursor: e-resize;
+}
+.nav-tabs {
+	width: 100% !important;
+}
+.angular-tree {
+  padding-left: 17px;
+  padding-bottom: 15px;
+  padding-right: 10px;
+  ul {
+    margin-left: 15px;
+  }
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.hideable{
+  -moz-transition: width .4s;
+  -webkit-transition: width .4s;
+  -o-transition: width .4s;
+  transition: width .4s;
+  -moz-transition: left .4s;
+  -webkit-transition: left .4s;
+  -o-transition: left .4s;
+  transition: left .4s;
+}

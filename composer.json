@@ -1,9 +1,61 @@
 {
-   "require": {
-      "solarium/solarium": "3.2.0"
-   },
-   "config": {
-      "vendor-dir": "extensions/vendors/"
-  } 
-}
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "codemirror/Codemirror",
+                "version": "4.7.0",
+                "source": {
+                    "url": "https://github.com/codemirror/CodeMirror.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "RyanMullins/angular-hammer",
+                "version": "2.1.10",
+                "source": {
+                    "url": "https://github.com/RyanMullins/angular-hammer.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "hammerjs/hammer.js",
+                "version": "2.0.4",
+                "source": {
+                    "url": "https://github.com/hammerjs/hammer.js.git",
+                    "type": "git",
+                    "reference": "origin/master"
+                }
+            }
+        }
+    ],
+    "require": {
+        "solarium/solarium": "3.2.0",
+        "mnapoli/php-di": "4.4.2",
+        "monolog/monolog": "1.11.0",
+        "codemirror/Codemirror": "4.7.0",
+        "RyanMullins/angular-hammer": "2.1.10",
+        "hammerjs/hammer.js": "2.0.4",
+        "stolz/assets": "dev-master",
+        "werkint/jsmin": "dev-master"
 
+    },
+     "require-dev": {
+        "phpunit/phpunit": "3.7.21",
+        "mockery/mockery": "0.8.0"
+    },
+    "autoload": {
+        "psr-0": { "Ximdex": "lib" }
+    },
+    "config": {
+        "vendor-dir": "extensions/vendors/"
+    }
+}

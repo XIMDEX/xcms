@@ -26,8 +26,8 @@
 
 
 
-ModulesManager::file('/inc/model/language.inc');
-ModulesManager::file('/inc/model/channel.inc');
+ModulesManager::file('/inc/model/language.php');
+ModulesManager::file('/inc/model/channel.php');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
 /**
@@ -243,7 +243,7 @@ class Action_manageproperties extends ActionAbstract {
 
 						if ($affectedNodes !== false) {
 							$totalProps = count($affectedNodes['props']);
-							$message[] = sprintf(_('A total of %s idiomatic versions have been deleted.'), $totalProps);
+							$message[] = sprintf(_('A total of %s language versions have been deleted.'), $totalProps);
 						} else {
 							if ($totalProps == 0) {
 								$message[] = _('Language values will be inherited.');
@@ -254,7 +254,7 @@ class Action_manageproperties extends ActionAbstract {
 
 						if (isset($applyResults['Language']) && $applyResults['Language'] !== false && $applyResults['Language']['nodes'] > 0) {
 							$message[] = sprintf(
-								_('A total of %S idiomatic versions have been recursively created.'),
+								_('A total of %S language versions have been recursively created.'),
 								count($applyResults['Language']['values'])
 							);
 						}

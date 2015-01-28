@@ -26,7 +26,7 @@
 
 
 
-ModulesManager::file('/inc/model/Versions.inc');
+ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/parsers/ParsingRng.class.php');
 ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
@@ -68,7 +68,7 @@ class Action_managemetadata extends ActionAbstract {
 			// http://lab12.ximdex.net/ximdexxlyre/data/files/ef06540adb2ac1a87f241aa1b59aad57
 			$v = new Version();
 			$hashfile = $v->find("File", "IdNode = %s ORDER BY IdVersion DESC LIMIT 1", array($nodeId), MONO);
-			$values['imagesrc'] = Config::getValue("UrlRoot")."/data/files/".$hashfile[0];
+			$values['imagesrc'] = \App::getValue( "UrlRoot")."/data/files/".$hashfile[0];
 		}
 		else {
 			$values['imagesrc'] = 'http://placehold.it/200x125/7bcabf/464646/&text='.$values['typename'];

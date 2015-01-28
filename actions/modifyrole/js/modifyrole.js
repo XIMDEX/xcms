@@ -27,12 +27,12 @@
 X.actionLoaded(function(event, fn, params) {
 
     //Start angular compile and binding
-    X.angularTools.initView(params.context, params.tabId);
+    //X.angularTools.initView(params.context, params.tabId);
 	
 	fn('select[name=id_workflow]').change(function(event) {
 		var id_pipeline = $(this).val();
 		var url = params.url.replace(/&id_pipeline=(\d+)/, '') + '&id_pipeline=' + id_pipeline;
-		params.actionView.openAction({
+        $('#angular-content').scope().openAction({
 			action: params.action,
 			label: 'Modificar rol',
 			nodes: params.nodes,

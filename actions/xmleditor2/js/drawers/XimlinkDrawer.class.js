@@ -60,7 +60,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 	},
 
 	setMainTerm: function(term) {
-			this.term_main = term;			
+			this.term_main = term;
 	},
 
 	deleteContent: function(){
@@ -94,8 +94,8 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     	$('a.js_add_link', this.element).click(function(){
 			$('div.js_add_link_panel', this.element).show();
 			$('div.js_add_link_panel', this.element).next("div.buttons").show(); ;
-			$('div.js_search_link_panel', this.element).hide() ; 
-			$('div.js_search_link_panel', this.element).next("div.buttons").hide() ; 
+			$('div.js_search_link_panel', this.element).hide() ;
+			$('div.js_search_link_panel', this.element).next("div.buttons").hide() ;
 			$('.new_link').hide();
 			return false;}.bind(this)
 		);
@@ -104,9 +104,9 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 
     		$('div.js_add_link_panel', this.element).hide(); ;
     		$('div.js_add_link_panel', this.element).next("div.buttons").hide(); ;
-			$('div.js_search_link_panel', this.element).show() ; 
+			$('div.js_search_link_panel', this.element).show() ;
 			$('.new_link').show();
-			$('div.js_search_link_panel', this.element).next("div.buttons").show() ; 
+			$('div.js_search_link_panel', this.element).next("div.buttons").show() ;
 			return false;
 		}.bind(this));
 
@@ -180,7 +180,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 		selector: 'tree tree'
 	};
 
- 
+
 
 	$ts
 		.treeview({
@@ -193,7 +193,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 			img_base: window.url_root + '/xmd/images/icons/'
 		})
 		.bind('select', function(event, params) {
-			getClosestInput(params.element, 'link_id_parent').val(params.data.nodeid.value);			
+			getClosestInput(params.element, 'link_id_parent').val(params.data.nodeid.value);
 			//checkNodeName(params.data.nodeid.value);
 		});
 
@@ -334,9 +334,9 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 
     checkParams: function(){
     	var result = true;
-    	
+
     	result = this.checkParam("link_name", "Name");
-    	result = this.checkParam("link_url", "Url") && result; 
+    	result = this.checkParam("link_url", "Url") && result;
     	result = this.checkParam("link_id_parent", "IdParent") && result;
 
     	$inputName = $("div.js_add_link_panel input[name='link_name']");
@@ -358,11 +358,11 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     	else
     		$input.addClass('error');
     	return result;
-    	
+
     },
 
     checkName: function($input){
-    	
+
     	if (!$input || $input.val() == "")
     		return false;
 		if (!/^\w+$/.test($input.val())){
@@ -374,11 +374,11 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     checkUrl: function($input){
 
 		if (!$input || $input.val() == "")
-			return false;    	
+			return false;
     	if (!/^(mailto:)?[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i.test($input.val())
     		&&
     		!/^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test($input.val())){
-    		
+
     		return false;
     	}
     	return true;
@@ -386,7 +386,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 
     checkIdParent: function($input){
     	if (!$input || $input.val() == "")
-			return false;    	
+			return false;
 		return true;
     },
 
@@ -394,7 +394,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
     	this.data = null;
     	$('div.js_add_link_panel', this.element).hide(); ;
 		$('div.js_add_link_panel', this.element).next("div.buttons").hide(); ;
-		$('div.js_search_link_panel', this.element).show() ; 
+		$('div.js_search_link_panel', this.element).show() ;
 		$('div.js_search_link_panel', this.element).next("div.buttons").show() ;
 		$('a.js_add_link', this.element).show() ;
 		$("input", this.element).val("");

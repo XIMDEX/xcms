@@ -47,8 +47,8 @@ include_once(XIMDEX_ROOT_PATH . "/inc/properties/systemProperties.php");
 //Domit
 include_once(DOMIT_INCLUDE_DIR . 'xml_domit_include.php');
 //Ximdex space
-include_once(XIMDEX_ROOT_PATH . "/inc/utils.inc");
-include_once(XIMDEX_ROOT_PATH . "/inc/model/node.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
+include_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
 
 class SystemPropertiesManager{
 	var $node; //node ximdex from whom we are going to ask for properties

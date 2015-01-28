@@ -25,14 +25,13 @@
  */
 
 
-ModulesManager::file('/inc/model/role.inc');
-ModulesManager::file('/inc/model/user.inc');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/role.php');
+ModulesManager::file('/inc/model/user.php');
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('inc/pipeline/PipeTransition.class.php');
-ModulesManager::file('/inc/Toldox.class.php', 'tolDOX');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/helper/ServerConfig.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');
@@ -73,7 +72,7 @@ class Action_workflow_forward extends ActionAbstract {
 		$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/calendar/calendar.css');
 
 		//Get the current user to check his permissions.
-		$idUser = XSession::get('userID');
+		$idUser = \Ximdex\Utils\Session::get('userID');
 		$user = new User($idUser);
 
 		//Getting user roles on current node
@@ -137,15 +136,21 @@ class Action_workflow_forward extends ActionAbstract {
 				$find = true;
 		}
 
+        //Getting next state
+        $nextState = $workflow->GetNextState();
+        $workflowNext = new WorkFlow($idNode,$nextState);
+        $nextStateName=$workflowNext->GetName();
+
 		//Loading Notifications default values
 		$conf = ModulesManager::file('/conf/notifications.conf');
-		$defaultMessage=$this->buildMessage($conf["defaultMessage"],$workflow->GetName(),$node->get('Name'));
+		$defaultMessage=$this->buildMessage($conf["defaultMessage"],$nextStateName,$node->get('Name'));
 		$values = array(
 				'group_state_info' => Group::getSelectableGroupsInfo($idNode),
 				'state' => $nextStateName,
 				'stateid' => $nextState,
 				'required' => $conf['required'] === true ? 1 : 0,
-				'defaultMessage' => $defaultMessage
+				'defaultMessage' => $defaultMessage,
+                'idNode' => $idNode
 				);
 		
 		//Only for Strdocs, goes to next state
@@ -157,7 +162,7 @@ class Action_workflow_forward extends ActionAbstract {
 				$this->render($values, NULL,'default-3.0.tpl');
 			}
 			else{
-				$defaultMessage=$this->buildMessage($conf["defaultMessage"],'siguiente',$node->get('Name'));
+				$defaultMessage=$this->buildMessage($conf["defaultMessage"],_('next'),$node->get('Name'));
 				//Set default Message
 		                $values['defaultMessage']= $defaultMessage;
 				$values2 = array(
@@ -182,6 +187,7 @@ class Action_workflow_forward extends ActionAbstract {
 			$values['state']= $pubStateName;
 			$defaultMessage=$this->buildMessage($conf["defaultMessage"],$pubStateName,$node->get('Name'));
 			$values['defaultMessage']= $defaultMessage;
+            $values['idNode'] = $idNode;
             		$values = array_merge($values, $this->buildExtraValues($idNode));
             		$this->render($values, NULL,'default-3.0.tpl');
 		}
@@ -342,17 +348,6 @@ class Action_workflow_forward extends ActionAbstract {
 	}
         
         /**
-	 * Obtains the publication gaps
-	 *
-	 * @param int $idNode
-	 * @return array With info about the available gaps
-	 */
-	private function getPublicationGaps($idNode) {
-		$gaps = SynchroFacade::getGaps($idNode);
-        return $this->formatInterval($gaps);
-	}
-        
-        /**
 	 * Format the date intevals array.
 	 *
 	 * @param int $idNode
@@ -383,7 +378,7 @@ class Action_workflow_forward extends ActionAbstract {
     private function buildExtraValues($idNode){
         setlocale(LC_TIME, "es_ES");
 
-		$idUser = XSession::get('userID');
+		$idUser = \Ximdex\Utils\Session::get('userID');
 		$user = new User($idUser);
 
 		$node = new Node($idNode);
@@ -414,7 +409,7 @@ class Action_workflow_forward extends ActionAbstract {
 	 */
 	private function promoteNode($idNode, $idState) {
 
-		$idUser = XSession::get("userID");
+		$idUser = \Ximdex\Utils\Session::get("userID");
 		$node = new Node($idNode);
 		$idActualState = $node->get('IdState');
 		$actualWorkflowStatus = new WorkFlow($idNode, $idActualState);
@@ -468,7 +463,7 @@ class Action_workflow_forward extends ActionAbstract {
 			return false;
 		}
 
-		$idUser = XSession::get("userID");
+		$idUser = \Ximdex\Utils\Session::get("userID");
 
 		$node = new Node($idNode);
 		$idActualState = $node->get('IdState');
@@ -717,34 +712,6 @@ class Action_workflow_forward extends ActionAbstract {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Show message error when there arent any groups
-	 *
-	 */
-	private function renderWithNotGroupStates($idNode, $groupState) {
-	
-		$this->messages->add(_('You have no privileges to modify the workflow state of this document.'), MSG_TYPE_WARNING);
-		$this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
-
-		if (count($groupState) > 0) {
-			$this->messages->add(_('The groups with privileges to perform this action are the following'), MSG_TYPE_WARNING);
-			foreach ($groupState as $idGroup => $idState) {
-				$group = new Node($idGroup);
-
-				$workflow = new WorkFlow($idNode, $idState);
-				$this->messages->add(sprintf(_("El grupo '%s' puede promocionar el documento al estado '%s'"),
-				$group->get('Name'), $workflow->pipeStatus->get('Name')), MSG_TYPE_WARNING);
-			}
-		} 
-		else {
-			$this->messages->add(_("Currently there is no groups which can move forward the document to any state, and your role in the General group has no permissions to go forward to next state, consult your administrator"), MSG_TYPE_WARNING);
-		}
-		$values = array(
-			'messages' => $this->messages->messages
-		);
-		$this->render($values, 'show_results', 'default-3.0.tpl');
 	}
 }
 ?>

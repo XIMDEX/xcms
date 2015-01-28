@@ -47,9 +47,9 @@ class Action_preview extends ActionAbstract {
 			&& ($node->nodeType->GetName()!='ImageFile') 
 			&& ($node->nodeType->GetName()!='BinaryFile') 
 			&& ($node->nodeType->GetName()!='NodeHt')) {
-			$titulo_canal="canal";
+			$channel_title="channel";
 		}else {
-			$titulo_canal = '';
+			$channel_title = '';
 		}
 
 		$doc = new StructuredDocument($idNode);
@@ -65,15 +65,14 @@ class Action_preview extends ActionAbstract {
 
 		$this->addCss('/actions/preview/resources/css/style.css');
 
-
-		$queryManager = new QueryManager();
+		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 		$this->addJs('/actions/preview/resources/js/preview.js');
 		$values = array(
 			'id_node' => $idNode,
 			'params' => $params,
 			'version' => $version,
 			'subversion' => $subVersion,
-			'titulo_canal' => $titulo_canal,
+			'channel_title' => $channel_title,
 			'nameNodeType' => $node->nodeType->GetName(),
 			'date' => $date,
 			'user_name' => $userName,
@@ -109,7 +108,7 @@ class Action_preview extends ActionAbstract {
 			$this->messages->add(_("The file has been successfully deleted."), MSG_TYPE_NOTICE);
 		}
 
-		$queryManager = new QueryManager();
+		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 		$values = array(
 			'messages' => $this->messages->messages,
 			'id_node' => $idNode,

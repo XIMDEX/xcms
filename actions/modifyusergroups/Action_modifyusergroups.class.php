@@ -32,17 +32,9 @@ class Action_modifyusergroups extends ActionAbstract {
 
         $this->addJs('/actions/modifyusergroups/resources/js/helper.js');
 
-        $values = array('id_node' => $idNode);
-
-        $this->render($values, null, 'default-3.0.tpl');
-    }
-
-    function getGroups(){
-        $idNode = $this->request->getParam('nodeid');
         $user = new User($idNode);
 
         $group = new Group();
-
         $generalRole = $user->GetRoleOnGroup($group->GetGeneralGroup());
 
         $rol = new Role();
@@ -75,13 +67,20 @@ class Action_modifyusergroups extends ActionAbstract {
                 }
             }
         }
+
+        if(!is_array($filteredGroups)){
+            $filteredGroups = array();
+        }
+
         $values = array('id_node' => $idNode,
             'user_name' => $user->get('Name'),
             'general_role' => $generalRole,
-            'all_roles' => $roles,
-            'filtered_groups' => $filteredGroups,
-            'user_groups_with_role' => $userGroupsWithRole);
-        $this->sendJSON($values);
+            'all_roles' => json_encode($roles),
+            'filtered_groups' => json_encode($filteredGroups),
+            'user_groups_with_role' => json_encode($userGroupsWithRole));
+
+
+        $this->render($values, null, 'default-3.0.tpl');
     }
 
     function suscribegroupuser() {

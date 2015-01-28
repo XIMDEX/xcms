@@ -26,17 +26,16 @@
  */
 
 
+include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 if (! defined ( 'XIMDEX_ROOT_PATH' ))
 	define ( 'XIMDEX_ROOT_PATH', realpath ( dirname ( __FILE__ ) . "/../../../../" ) );
 
-include_once (XIMDEX_ROOT_PATH . "/inc/utils.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/BatchManager.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Batch.class.php');
 include_once( XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/Publication_Log.class.php');
-include_once( XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/DebugLog.class.php');
 
 
 $otfMode = null;
@@ -45,7 +44,7 @@ function main($argc, $argv) {
 
 	// Command line mode call
 	if ($argv != null && isset($argv[1]) && is_numeric($argv[1])) {
-		debug::log(_("IdNode passed:")." ".$argv[1]);
+		\Ximdex\Logger::logTrace( _("IdNode passed:")." ".$argv[1]);
 		// Add node to publishing pool and exit (SyncManager will call this daemon again when inserting node job is done)
 		SynchroFacade::pushDocInPublishingPool($argv[1], time(), null);
 		exit(1);
@@ -79,7 +78,7 @@ function createBatchsForBlock($nodesToPublish) {
 	$idServer = $node->GetServer();
 	$nodeServer = new Node($idServer);
 	$otfMode=0; //For the moment, otfMode is disabled
-	if (Config::getValue('PublishOnDisabledServers') == 1) {
+	if (\App::getValue( 'PublishOnDisabledServers') == 1) {
 		Publication_Log::write("PublishOnDisabledServers is true");
 		$physicalServers = $nodeServer->class->GetPhysicalServerList(true, $otfMode);
 	} else {
@@ -130,7 +129,7 @@ function createBatchsForBlock($nodesToPublish) {
 				$curVersion = $data->getLastVersion(true);
 				$prevVersion = $curVersion - 1;
 
-				if(Config::getValue("PurgeSubversionsOnNewVersion")) {
+				if(\App::getValue( "PurgeSubversionsOnNewVersion")) {
 					$data->_purgeSubVersions($prevVersion, true);
 				}
 
@@ -164,7 +163,7 @@ function createBatchsForBlock($nodesToPublish) {
 
 				XMD_log::info("Publication error: deleting version $curVersion for node $id");
 
-				if(Config::getValue("PurgeSubversionsOnNewVersion")) {
+				if(\App::getValue("PurgeSubversionsOnNewVersion")) {
 					$data->DeleteVersion($curVersion);
 				}
 			}

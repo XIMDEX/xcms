@@ -82,7 +82,7 @@ function HoverTool() {
 
 		// NOTE: event will be the jQuery event object at this point.
 		// Registered object can obtain the original event object using event.originalEvent
-		var ids=["draggabletoolbox","highlighttoolbox"];
+		var ids=["draggabletoolbox","highlighttoolbox","formViewToolBox"];
 		for (var i=0;i<ids.length;i++) {
 			var toolbox = this.toolboxes[ids[i]];
 			try {

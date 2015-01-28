@@ -44,7 +44,7 @@ class  ximNEWS_Adapter {
 	 * @return unknown_type
 	 */
 	function __construct() {
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 	}
 
 	/**
@@ -245,7 +245,7 @@ class  ximNEWS_Adapter {
 			"NAME" => $name,
 			"PARENTID" => $idNewscontainer,
 			'IDSECTION' => $idSection,
-			"STATE" => "Edición",
+			"STATE" => "Ediciï¿½n",
 			'ALIASNAME' => $aliasLang,
 			'NEWTARGETLINK' => $targetLink,
 			'DATANEWS' => $newsData,
@@ -372,7 +372,7 @@ class  ximNEWS_Adapter {
 			"NAME" => $name,
 			"PARENTID" => $idParent,
 			'IDSECTION' => $idSection,
-			"STATE" => "Edición",
+			"STATE" => "Ediciï¿½n",
 			'NEWSDATA' => $data,
 			"CHILDRENS" => array()
 			);
@@ -441,7 +441,7 @@ class  ximNEWS_Adapter {
 		$commonFolderNode = new Node($idCommonFolder);
 
 		// insert files
-		$tmpPath = Config::GetValue('AppRoot') . Config::GetValue('TempRoot');
+		$tmpPath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot');
 		$tmpFile = $tmpPath ."/".FsUtils::getUniqueFile($tmpPath);
 
 		foreach ($files as $file) {
@@ -572,7 +572,7 @@ class  ximNEWS_Adapter {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
-		$domDoc->loadXML(XmlBase::recodeSrc($content, XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($content, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
 
@@ -621,14 +621,14 @@ class  ximNEWS_Adapter {
 						$firstNode = $entry->childNodes->item($i);
 						$entry->removeChild($firstNode);
 					} else {
-						$entry->nodeValue = XmlBase::recodeSrc($valueElement, XML::UTF8);
+						$entry->nodeValue = \Ximdex\XML\Base::recodeSrc($valueElement, \Ximdex\XML\XML::UTF8);
 					}
 				}
 			} else {
 				// Sets attributes value
 				$attList = $xpath->query('//@*[local-name(.) = "'.$nameElement.'"]');
 				if ($attList->length > 0) {
-					$attList->item(0)->nodeValue = XmlBase::recodeSrc($valueElement, XML::UTF8);
+					$attList->item(0)->nodeValue = \Ximdex\XML\Base::recodeSrc($valueElement, \Ximdex\XML\XML::UTF8);
 				}
 			}
 		}
@@ -748,7 +748,7 @@ class  ximNEWS_Adapter {
 					$relNewsColector = new RelNewsColector($idRel);
 					$relNewsColector->set('FechaOut', date('d-m-Y H:i:s'));
 					$relNewsColector->update();
-					$idUser = XSession::get('userID'); 
+					$idUser = \Ximdex\Utils\Session::get('userID');
 					$rel = new RelNewsColectorUsers(); 
 					$rel->add($idRel, $idUser); 
 				}
@@ -1012,7 +1012,7 @@ class  ximNEWS_Adapter {
 			"NAME" => $name,
 			"PARENTID" => $idNewscontainer,
 			'IDSECTION' => $idSection,
-			"STATE" => "Edición",
+			"STATE" => "Ediciï¿½n",
 			'ALIASNAME' => $aliasLang,
 			'NEWTARGETLINK' => $targetLink,
 			'COLECTOR' => $idColector,
@@ -1122,13 +1122,14 @@ class  ximNEWS_Adapter {
 
 		$templateNode = new Node($idTemplate );
 
-		$resultado["template_id"] = $idTemplate;
-		$resultado["template_name"] = $templateNode->get('Name');
-		$resultado["name"] = $strDoc->get('Name');
-		$resultado["idioma_id"] = $idLang;
-		$resultado["idioma"] = $language;
+        $res=array();
+		$res["template_id"] = $idTemplate;
+		$res["template_name"] = $templateNode->get('Name');
+		$res["name"] = $strDoc->get('Name');
+		$res["lang_id"] = $idLang;
+		$res["lang"] = $language;
 
-		return $resultado;
+		return $res;
 	}
 
 	/**
@@ -1281,7 +1282,7 @@ class  ximNEWS_Adapter {
 			if (!($id > 0)) {
 
 				$this->messages->add(_("El colector NO se ha creado con exito."), MSG_TYPE_NOTICE);
-				$this->messages->add(_("Error creando ximlet de idioma $langId."), MSG_TYPE_NOTICE);
+				$this->messages->add(_("Error while creating the language version of the ximlet $langId."), MSG_TYPE_NOTICE);
 			} else {
 
 				// set workflow master for next news
@@ -1324,7 +1325,7 @@ class  ximNEWS_Adapter {
 			"NODETYPENAME" => "XIMNEWSBULLETINLANGUAGEXIMLET",
 			"NAME" => $colectorName,
 			"PARENTID" => $idXimletContainer,
-			"STATE" => "Edición",
+			"STATE" => "Ediciï¿½n",
 			"NEWTARGETLINK" => $targetLink,
 			"CONTENT" => "",
 			"ALIASNAME" => $aliasName,
@@ -1408,7 +1409,7 @@ class  ximNEWS_Adapter {
 
 		$area = new XimNewsAreas();
 		
-		if (!$area->CreateArea(XmlBase::recodeSrc($name, XML::UTF8), XmlBase::recodeSrc($description, XML::UTF8))) 
+		if (!$area->CreateArea(\Ximdex\XML\Base::recodeSrc($name, \Ximdex\XML\XML::UTF8), \Ximdex\XML\Base::recodeSrc($description, \Ximdex\XML\XML::UTF8)))
 			return false;
 		
 		return true;

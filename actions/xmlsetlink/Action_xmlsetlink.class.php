@@ -27,7 +27,6 @@
 
 
 ModulesManager::file('/inc/model/RelPvds.class.php');
-ModulesManager::file('/services/NodeService.class.php');
 
 class Action_xmlsetlink extends ActionAbstract {
 
@@ -111,7 +110,7 @@ class Action_xmlsetlink extends ActionAbstract {
 		$structuredDocument->SetSymLink($idTarget);
 		$this->messages->add(_('The link has been modified successfully'), MSG_TYPE_NOTICE);
 
-		$messages = new Messages();
+		$messages = new \Ximdex\Utils\Messages();
 		$messages->mergeMessages($node->messages);
 		$messages->mergeMessages($structuredDocument->messages);
 
@@ -197,7 +196,7 @@ class Action_xmlsetlink extends ActionAbstract {
 	*/
 	private function getTargetNodes($idNode){
 		//Creating nodeservice in no-lazy mode
-		$nodeService = new NodeService($idNode,false);
+		$nodeService = new \Ximdex\Services\Node($idNode,false);
 		$siblings = $nodeService->getSiblings();
 		$targetNodes = array();
 		foreach ($siblings as $sibling) {

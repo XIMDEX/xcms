@@ -81,10 +81,10 @@ function startKupu(options) {
 		    if(options.showOverlayOnFirstEdition)
 		    	loadingImage.showLoadingImage();
 		}
-		
+
 
 		return kupu;
-		
+
 
 	}.bind(this));
 
@@ -165,5 +165,5 @@ function show_wMessage(wMessage, errors) {
 	});
 	$('#wMessage').html(htmlmsg);*/
 
-    
+
 }

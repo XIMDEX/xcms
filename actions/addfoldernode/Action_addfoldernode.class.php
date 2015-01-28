@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Modules\Module ;
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
@@ -206,7 +207,7 @@ class Action_addfoldernode extends ActionAbstract {
             $templates = $projectTemplate->getTemplates();
 
             foreach ($schemas as $schema) {
-                $this->schemas = $this->insertFiles($projectId, Config::getValue("SchemasDirName"), array($schema));
+                $this->schemas = $this->insertFiles($projectId, \App::getValue( "SchemasDirName"), array($schema));
             }
 
             foreach ($templates as $template) {
@@ -246,7 +247,7 @@ class Action_addfoldernode extends ActionAbstract {
         }
 
         $server->serverid = $serverId;
-        $server->url = preg_replace('/\{URL_ROOT\}/', Config::GetValue('UrlRoot'), $server->url);
+        $server->url = preg_replace('/\{URL_ROOT\}/', \App::getValue( 'UrlRoot'), $server->url);
         $server->initialDirectory = preg_replace('/\{XIMDEX_ROOT_PATH\}/', XIMDEX_ROOT_PATH, $server->initialDirectory);
 
         $nodeServer = new Node($serverId);
@@ -254,7 +255,7 @@ class Action_addfoldernode extends ActionAbstract {
                 $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description, $server->isServerOTF
         );
 
-        $nodeServer->class->AddChannel($physicalServerId, $this->project->channel);
+        //$nodeServer->class->AddChannel($physicalServerId, $this->project->channel);
         Module::log(Module::SUCCESS, "Server creation O.K.");        
         
         // common
@@ -373,7 +374,11 @@ class Action_addfoldernode extends ActionAbstract {
         foreach ($files as $file) {            
             $idSchema = $this->schemas[$file->templatename];
             $file->channel = $file->channel == '{?}' ? $this->channels : $file->channel;
-            $file->language = $file->language == '{?}' ? $languageObject->getList() : $file->language;
+            if(!$languageObject->LanguageEnabled($file->language)){
+                $file->language=$languageObject->getList();
+            }else{
+                $file->language=array($file->language);
+            }
 
 
             $data = array(
@@ -418,7 +423,7 @@ class Action_addfoldernode extends ActionAbstract {
             }
 
 			$dataTmp = $data;
-    			foreach ($file->language as $language) {
+    		foreach ($file->language as $language) {
 				$data = $dataTmp;
 				$data["CHILDRENS"][]=array('NODETYPENAME' => 'LANGUAGE', 'ID' => $language);
 				$docId = $io->build($data);
@@ -491,7 +496,7 @@ class Action_addfoldernode extends ActionAbstract {
         $node = new Node($idNode);
         if ($file->basename == "docxap.xsl"){
             $docxapContent = $node->GetContent();
-            $urlPath = Config::GetValue("UrlRoot");
+            $urlPath = \App::getValue( "UrlRoot");
             $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
             $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
             $node->SetContent($docxapContent);

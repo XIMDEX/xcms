@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,102 +21,104 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class Action_modifygroupusers extends ActionAbstract
+{
+    // Main method: shows initial form
+    function index()
+    {
 
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
 
-class Action_modifygroupusers extends ActionAbstract {
-	// Main method: shows initial form
-    	function index () {
+        $user = new User();
+        $userList = $user->GetAllUsers();
+        $group = new Group($idNode);
+        $groupUsers = $group->GetUserList();
 
-		$idNode = $this->request->getParam('nodeid');
-		$node = new Node($idNode);
+        $role = new Role();
+        $roles = $role->find('IdRole, Name', '1 ORDER BY Name', NULL);
+        $rolesToSend = array();
+        foreach($roles as $r){
+            $rolesToSend[$r['IdRole']] = $r['Name'];
+        }
 
-		$user = new User();
-		$userList = $user->GetAllUsers();
-		$group = new Group($idNode);
-		$groupUsers = $group->GetUserList();
+        $group = new Group($idNode);
+        $userRoleInfo = $group->getUserRoleInfo();
 
-		$users = array();
-		foreach ($userList as $idUser) {
-			if (!in_array($idUser, $groupUsers)) {
-				$user = new User($idUser);
-				$users[$idUser] = sprintf('%s (%s)',$user->get('Name'), $user->get('Login'));
-			}
-		}
+        $userRI = array();
+        if (is_array($userRoleInfo)) {
+            foreach ($userRoleInfo as $key => $info) {
+                $user = new User($info['IdUser']);
+                $userRoleInfo[$key]['UserName'] = $user->get('Login');
+                $userRoleInfo[$key]['dirty'] = false;
+                $userRI[] = $userRoleInfo[$key];
+                if($k=array_search($info["IdUser"],$userList)){
+                    array_splice($userList,$k,1);
+                }
+            }
+        }
 
-		$role = new Role();
-		$roles = $role->find('IdRole, Name', '1 ORDER BY Name', NULL);
+        $users = array();
+        foreach ($userList as $idUser) {
+            if (!in_array($idUser, $groupUsers)) {
+                $user = new User($idUser);
+                $u["id"] = $idUser;
+                $u["name"] = $user->get('Login');
+                $users[] = $u;
+            }
+        }
 
-		$group = new Group($idNode);
-		$userRoleInfo = $group->getUserRoleInfo();
+        $this->addJs('/actions/modifygroupusers/resources/js/helper.js');
 
-		if (is_array($userRoleInfo)) {
-			foreach ($userRoleInfo as $key => $info) {
-				$user = new User($info['IdUser']);
-				$userRoleInfo[$key]['UserName'] = $user->get('Name');
-			}
-		}
+        $values = array('name' => $node->get('Name'),
+            'users_not_associated' => json_encode($users),
+            'idnode' => $idNode,
+            'roles' => json_encode($rolesToSend),
+            'users_associated' => json_encode($userRI)
+        );
 
-		$query = App::get('QueryManager');
-		$this->addJs('/actions/modifygroupusers/resources/js/helper.js');
-		$values = array('name' => $node->get('Name'),
-				'users' => $users,
-				'idnode' => $idNode,
-				'roles' => $roles,
-				'user_infos' => $userRoleInfo,
-				'nodeid' => $idNode,
-				'action_add' => $query->getPage() . $query->buildWith(array('method' => 'addgroupuser')),
-				'action_edit_delete' => $query->getPage() . $query->build() );
+        $this->render($values, null, 'default-3.0.tpl');
+    }
 
-		$this->render($values, null, 'default-3.0.tpl');
-    	}
+    function addgroupuser()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $idUser = $this->request->getParam('id_user');
+        $idRole = $this->request->getParam('id_role');
+        $group = new Group($idNode);
+        $group->AddUserWithRole($idUser, $idRole);
 
-    	function addgroupuser() {
-    		$idNode = $this->request->getParam('nodeid');
-    		$idUser = $this->request->getParam('id_user');
-    		$idRole = $this->request->getParam('id_role');
-		$group = new Group($idNode);
-		$group->AddUserWithRole($idUser, $idRole);
+        $values = array("result" => "ok");
 
-		$this->redirectTo('index');
-    	}
+        $this->sendJSON($values);
+    }
 
-    	function editgroupuser() {
+    function editgroupuser()
+    {
 
-    		$idNode = $this->request->getParam('nodeid');
-    		$users = $this->request->getParam('users');
-    		$userForRole = $this->request->getParam('user_for_role');
-    		$userRoles = $this->request->getParam('id_user_role');
+        $idNode = $this->request->getParam('nodeid');
+        $user = $this->request->getParam('user');
+        $role = $this->request->getParam('role');
 
-    		$group = new Group($idNode);
+        $group = new Group($idNode);
+        $group->ChangeUserRole($user, $role);
 
-       		if (is_array($userRoles)) {
-    			foreach ($userRoles as $key => $idRole) {
-    				$group->ChangeUserRole($userForRole[$key], $idRole);
-    			}
-    		}
-    	  	$this->redirectTo('index');
-    	}
+        $values = array("result" => "ok");
+        $this->sendJSON($values);
+    }
 
-    	function deletegroupuser() {
+    function deletegroupuser()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $user = $this->request->getParam('user');
 
-    		$idNode = $this->request->getParam('nodeid');
-    		$users = $this->request->getParam('users');
-    		$userForRole = $this->request->getParam('user_for_role');
-    		$userRoles = $this->request->getParam('id_user_role');
+        $group = new Group($idNode);
+        $group->DeleteUser($user);
 
-    		$group = new Group($idNode);
-
-    		if (is_array($users)) {
-    			foreach ($users as $key => $idUser) {
-    				$group->DeleteUser($idUser);
-    				unset($userRoles[$key]);
-    			}
-    		}
-
-    		$this->redirectTo('index');
-    	}	
+        $values = array("result" => "ok");
+        $this->sendJSON($values);
+    }
 }
-?>

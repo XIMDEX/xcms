@@ -25,8 +25,8 @@
  */
 
 
-include_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
-include_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
+include_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 
 
@@ -118,9 +118,7 @@ class InstallDataBaseManager extends InstallManager{
 		if($this->dbConnection){
 			$query = "create database $name";			
 			$result = $this->dbConnection->query($query);
-			if ($result === TRUE)
-				error_log("Suc");
-			else{
+			if ($result !== TRUE){
 				error_log("ERROR:");
 				error_log("a $result".print_r($result, true)." $query ".$this->dbConnection->error);
 			}

@@ -20,64 +20,66 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/steps/generic/GenericInstallStep.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
 
-class SettingsInstallStep extends GenericInstallStep {
+class SettingsInstallStep extends GenericInstallStep
+{
 
-	/**
-	 * Main function. Show the step	 
-	 */
-	public function index(){
-		$this->addJs("SettingController.js");
+    /**
+     * Main function. Show the step
+     */
+    public function index()
+    {
+        $this->addJs("SettingController.js");
 
-		$values = array("go_method"=>"initializeSettings");
-		$this->render($values);
-		
-	}
+        $values = array("go_method" => "initializeSettings");
+        $this->render($values);
 
-	public function setId(){
-        if(strlen(Config::getValue("ximid"))>2){
-            $result["localhash"]=false;
+    }
+
+    public function setId()
+    {
+        if (strlen(\App::getValue( "ximid")) > 2) {
+            $result["localhash"] = false;
             $this->sendJSON($result);
             return;
         }
-		try {
-			$this->installManager->setXid();
-			$result["localhash"]=false;
-			$this->sendJSON($result);
-		} catch (ErrorException $e) {
-			$this->installManager->setLocalXid();
-			$result["localhash"]=true;
-			$this->sendJSON($result);
-		}
-	}
+        try {
+            $this->installManager->setXid();
+            $result["localhash"] = false;
+            $this->sendJSON($result);
+        } catch (ErrorException $e) {
+            $this->installManager->setLocalXid();
+            $result["localhash"] = true;
+            $this->sendJSON($result);
+        }
+    }
 
-	public function initializeSettings(){
-		$password = $this->request->getParam("pass");
-		$language = $this->request->getParam("language");
-		$anonymousInformation = $this->request->getParam("anonymous_information");
-		if($anonymousInformation)
-			Config::update("ActionStats","1");
-		$this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
-		Config::update("AppRoot", XIMDEX_ROOT_PATH);
-		$urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']),0,-1) ;
-		Config::update("UrlRoot", $urlRoot);
-		Config::update("locale", $language);
-		$this->installManager->setLocale($language);
-		$this->installManager->insertXimdexUser($password);
-		$this->loadNextAction();
-		$result["success"] = true;
-		$this->sendJSON($result);
-		
-	}
-
-
+    public function initializeSettings()
+    {
+        $password = $this->request->getParam("pass");
+        $language = $this->request->getParam("language");
+        $anonymousInformation = $this->request->getParam("anonymous_information");
+        if ($anonymousInformation) {
+            \App::setValue("ActionStats", "1", 1);
+        }
+        $this->installManager->setSingleParam("##XIMDEX_LOCALE##", $language);
+        \App::setValue("AppRoot", XIMDEX_ROOT_PATH, true );
+        $urlRoot = substr(str_replace("index.php", "", $_SERVER['HTTP_REFERER']), 0, -1);
+        $urlRoot = strtok($urlRoot, '?');
+        \App::setValue("UrlRoot", $urlRoot , true );
+        \App::setValue("locale", $language , true );
+        $this->installManager->setLocale($language);
+        $this->installManager->insertXimdexUser($password);
+        $this->installManager->setApiKey();
+        $this->loadNextAction();
+        $result["success"] = true;
+        $this->sendJSON($result);
+    }
 }
-
-?>

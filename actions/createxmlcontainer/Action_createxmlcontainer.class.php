@@ -27,8 +27,8 @@
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
-ModulesManager::file('/inc/model/language.inc');
-ModulesManager::file('/inc/model/channel.inc');
+ModulesManager::file('/inc/model/language.php');
+ModulesManager::file('/inc/model/channel.php');
 
 class Action_createxmlcontainer extends ActionAbstract {
 
@@ -146,7 +146,7 @@ class Action_createxmlcontainer extends ActionAbstract {
         
         	$languages = $this->request->getParam('languages');
 
-		if ($result && is_array($languages)) {
+		if (isset($result) && $result && is_array($languages)) {
 	    		$baseIoInferer = new BaseIOInferer();
 	    		$inferedNodeType = $baseIoInferer->infereType('FILE', $idContainer);
 	    		$nodeType = new NodeType();

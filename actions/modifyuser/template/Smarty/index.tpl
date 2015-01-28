@@ -52,7 +52,7 @@
 				</p>
 				<p class="col1_2 col_left" >
 					<label for="generalrole" class="label_title" for="generalrole">{t}Role in general group{/t}</label>
-					<select name="generalrole" id="generalrole" class="full_size"  tabindex="5">
+					<select {if !$canModifyUserGroup} disabled {/if} name="generalrole" id="generalrole" class="full_size"  tabindex="5">
 					{foreach from=$roles item=role}
 						<option value="{$role.IdRole}" {if ($role.IdRole == $general_role)} selected{/if} >{$role.Name}</option>
 					{/foreach}

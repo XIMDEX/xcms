@@ -30,7 +30,7 @@
   .info-node h3::before {
     content: "";
     border: 6px solid transparent;
-    border-top-color: #cccccc;
+    border-top-color: #ccc;
     position: absolute;
     left: .3em;
     top: 1.8em; }
@@ -51,7 +51,7 @@
   .info-node > div::before {
     content: "";
     position: absolute;
-    border-top: 3px solid #cccccc;
+    border-top: 3px solid #ccc;
     left: 0;
     top: 1.6em;
     width: 100%; }
@@ -78,10 +78,10 @@
 .info-node .properties-info .box-col4-1 {
   background: #bfbfbf; }
   .info-node .properties-info .box-col4-1:nth-of-type(2) {
-    background: #cccccc; }
+    background: #ccc; }
 .info-node .workflow-info .box-col2-1 {
   width: 22.5%;
-  background: #cccccc; }
+  background: #ccc; }
   .info-node .workflow-info .box-col2-1:nth-of-type(1) {
     margin-bottom: 2%;
     background: #9fd9d1; }

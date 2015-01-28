@@ -25,75 +25,96 @@
  */
 
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
-ModulesManager::file('/inc/xml/XmlBase.class.php');
-ModulesManager::file('/inc/xml/XML.class.php');
-ModulesManager::file('/inc/helper/String.class.php');
 
 class Action_edittext extends ActionAbstract {
    	// Main method: shows initial form
-	function index() {
+	function index()
+    {
 
-		$this->addCss('/actions/edittext/resources/css/style.css');
-		$this->addJs('/extensions/codemirrror/lib/codemirror.js');
-		$this->addCss('/extensions/codemirrror/lib/codemirror.css');
-//		$this->addCSS('/extensions/codemirrror/css/docs.css');
-		$this->addCss('/extensions/codemirrror/theme/default.css');
+        $this->addCss('/actions/edittext/resources/css/style.css');
 
-   		$idNode = $this->request->getParam('nodeid');
 
-		$strDoc = new StructuredDocument($idNode);
-		if($strDoc->GetSymLink()) {
+        $this->addCss('/extensions/vendors/codemirror/Codemirror/lib/codemirror.css');
+        $this->addCss('/extensions/vendors/codemirror/Codemirror/addon/fold/foldgutter.css');
+
+
+        $idNode = $this->request->getParam('nodeid');
+
+        $strDoc = new StructuredDocument($idNode);
+        if ($strDoc->GetSymLink()) {
             $masterNode = new Node($strDoc->GetSymLink());
             $values = array(
                 'path_master' => $masterNode->GetPath()
             );
             $this->render($values, 'linked_document', 'default-3.0.tpl');
             return false;
+        }
+        $node = new Node($idNode);
+        $node_name = $node->GetName();
+
+        $idNodeType = $node->get('IdNodeType');
+        $nodeType = new NodeType($idNodeType);
+        $nodeTypeName = $nodeType->get('Name');
+
+        $isXimNewsLanguage = ($nodeTypeName == "XimNewsNewLanguage");
+
+        $fileName = $node->get('Name');
+        $infoFile = pathinfo($fileName);
+        if (array_key_exists("extension", $infoFile)) {
+            $ext = $infoFile['extension'];
+        }elseif($idNodeType == "5032"){
+            //for the documents
+            $ext = "xml";
+        }else{
+			$ext = "txt";
 		}
-		$node = new Node($idNode);
-		$node_name = $node->GetName();
-
-		$idNodeType = $node->get('IdNodeType');
-		$nodeType = new NodeType($idNodeType);
-		$nodeTypeName = $nodeType->get('Name');
-
-		$isXimNewsLanguage = ($nodeTypeName == "XimNewsNewLanguage");
-
-		$fileName = $node->get('Name');
-		$infoFile = pathinfo($fileName);
-		if(array_key_exists("extension", $infoFile) ) {
-			$ext = $infoFile['extension'];
-            if($ext=="md"){$ext="markdown";}
-			if(!file_exists(XIMDEX_ROOT_PATH."/extensions/codemirrror/mode/$ext/$ext.js") ) {
-				$ext = "xml";
-			}
-		}else {
-			$ext = "xml";
-		}
-
-		if ($ext == "php" ){
-			$this->addJs("/extensions/codemirrror/mode/xml/xml.js");
-			$this->addJs("/extensions/codemirrror/mode/css/css.js");
-			$this->addJs("/extensions/codemirrror/mode/javascript/javascript.js");
-			$this->addJs("/extensions/codemirrror/mode/clike/clike.js");
-
-		}
-
-		$this->addJs("/extensions/codemirrror/mode/$ext/$ext.js");
-		$this->addJs("/extensions/codemirrror/mode/$ext/$ext.js"); //this double is necessary
-		$this->addJs('/actions/edittext/resources/js/init.js');
 
 		$content = $node->GetContent();
-		$content = $this->formatXml($content);
 		$content = htmlspecialchars($content);
 
-		$path = str_replace("/", "/ ",$node->GetPath());
+        switch ($ext) {
+            case "c":
+            case "css":
+            case "sass":
+            case "less":
+            case "php":
+            case "js":
+            case "json":
+            case "java":
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
+                break;
+            case "coffee":
+            case "py":
+            case "yml":
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/indent-fold.js');
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/brace-fold.js');
+                break;
+            case "xml":
+            case "xsl":
+            case "html":
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closetag.js');
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/xml-fold.js');
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/edit/closebrackets.js');
+                break;
+            case "md":
+                $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/markdown-fold.js');
+        }
 
-		$jsFiles = array(Config::getValue('UrlRoot') . '/xmd/js/ximdex_common.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/foldcode.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/foldgutter.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/fold/comment-fold.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/selection/active-line.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/addon/mode/loadmode.js');
+        $this->addJs('/extensions/vendors/codemirror/Codemirror/mode/meta.js');
+        $this->addJs('/actions/edittext/resources/js/init.js');
+
+
 
 		$values = array('id_node' => $idNode,
 				'isXimNewsLanguage' => $isXimNewsLanguage,
 				//'ruta' => $path,
+                'codemirror_url' => App::getValue('UrlRoot') . '/extensions/vendors/codemirror/Codemirror',
 				'ext' => $ext,
 				'content' => $content,
 				'go_method' => 'edittext',
@@ -171,89 +192,50 @@ class Action_edittext extends ActionAbstract {
 		$this->render($values, NULL, 'publicationResult.tpl');
 	}
 
-	function edittext() {
+	function edittext()
+    {
 
-		$idNode = $this->request->getParam('nodeid');
-		$content = $this->request->getParam('editor');
+        $idNode = $this->request->getParam('nodeid');
+        $content = $this->request->getParam('editor');
 
-		//If content is empty, put a blank space in order to save a file with empty content
-		$content = empty($content) ? " " : $content;
+        //If content is empty, put a blank space in order to save a file with empty content
+        $content = empty($content) ? " " : $content;
 
-		$node = new Node($idNode);
-		if ((!$node->get('IdNode') > 0)) {
-			$this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
-			$this->renderMessages();
-		}
-		$node->SetContent(String::stripslashes($content), true);
-		$node->RenderizeNode();
+        $node = new Node($idNode);
+        if ((!$node->get('IdNode') > 0)) {
+            $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
+            $this->renderMessages();
+        }
+        $node->SetContent(\Ximdex\Utils\String::stripslashes( $content), true);
+        $node->RenderizeNode();
 
-		$nodeType = new NodeType($node->get('IdNodeType'));
-		$nodeTypeName = $nodeType->get('Name');
+        $nodeType = new NodeType($node->get('IdNodeType'));
+        $nodeTypeName = $nodeType->get('Name');
 
-		if (ModulesManager::isEnabled('ximNEWS')) {
-			if ($nodeTypeName == "XimNewsNewLanguage") {
-				// Persistence in database
-				if (method_exists($node->class, 'updateNew')) {
-					$node->class->updateNew();
-				} else {
-					XMD_Log::error(_('It was tried to call a non-existing method for this node: $node->class->updateNew for nodeid:') . $node->get('IdNode'));
-				}
-			}
+        if (ModulesManager::isEnabled('ximNEWS')) {
+            if ($nodeTypeName == "XimNewsNewLanguage") {
+                // Persistence in database
+                if (method_exists($node->class, 'updateNew')) {
+                    $node->class->updateNew();
+                } else {
+                    XMD_Log::error(_('It was tried to call a non-existing method for this node: $node->class->updateNew for nodeid:') . $node->get('IdNode'));
+                }
+            }
 
-			if ($this->request->getParam('publicar') == 1) {
-				$_GET['publicar'] = 1;
-			    	$this->redirectTo('index', 'addtocolector');
-			    	return;
-			}
-		}
+            if ($this->request->getParam('publicar') == 1) {
+                $_GET['publicar'] = 1;
+                $this->redirectTo('index', 'addtocolector');
+                return;
+            }
+        }
 
-		/*if ($nodeTypeName == 'XslTemplate' ) {
-			$this->redirectTo('publishForm');
-			return;
-		} else {*/
-            $values = array(array('message'=> _('The document has been saved'), 'type' => 1));
-            $this->sendJSON(array('messages' => $values));
-		//}
-    	}
-
-	function formatXml($xml) {
-
-		// add marker linefeeds to aid the pretty-tokeniser (adds a linefeed between all tag-end boundaries)
-		$xml = preg_replace('/(>)(<)(\/*)/', "$1\n$2$3", $xml);
-
-		// now indent the tags
-		$token      = strtok($xml, "\n");
-		$result     = ''; // holds formatted version as it is built
-		$pad        = 0; // initial indent
-		$matches    = array(); // returns from preg_matches()
-
-		// scan each line and adjust indent based on opening/closing tags
-		while ($token !== false) :
-
-			// test for the various tag states
-
-			// 1. open and closing tags on same line - no change
-			if (preg_match('/.+<\/\w[^>]*>$/', $token, $matches)) :
-				$indent=0;
-			// 2. closing tag - outdent now
-			elseif (preg_match('/^<\/\w/', $token, $matches)) :
-				$pad--;
-			// 3. opening tag - don't pad this one, only subsequent tags
-			elseif (preg_match('/^<\w[^>]*[^\/]>.*$/', $token, $matches)) :
-				$indent=1;
-			// 4. no indentation needed
-			else :
-				$indent = 0;
-			endif;
-
-			// pad the line with the required number of leading spaces
-			$line    = str_pad($token, strlen($token)+$pad, ' ', STR_PAD_LEFT);
-			$result .= $line . "\n"; // add to the cumulative result, with linefeed
-			$token   = strtok("\n"); // get the next token
-			$pad    += $indent; // update the pad size for subsequent lines
-		endwhile;
-
-		return $result;
-	}
+        /*if ($nodeTypeName == 'XslTemplate' ) {
+            $this->redirectTo('publishForm');
+            return;
+        } else {*/
+        $values = array(array('message' => _('The document has been saved'), 'type' => MSG_TYPE_NOTICE));
+        $this->sendJSON(array('messages' => $values));
+        //}
+    }
 }
 ?>

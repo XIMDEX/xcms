@@ -23,75 +23,84 @@
  *  @version $Revision$
  *}
 
-			{if !empty($users)}
-				<form method="post" id="muga_form" action="{$action_add}">
-					<input type="hidden" name="nodeid" value="{$nodeid}" />
-					<div class="action_header">
-						<h2>{t}Users who belong to the group{/t}:" <i>{$name}</i> "</h2>
-						<fieldset class="buttons-form">
-							{button id="add_user" label="Add new" class="validate btn main_action" }{*message="Would you like to add user with role to the group?"*}
-						</fieldset>
-					</div>
-					<div class="action_content">
-						<fieldset>
-						        	                    		<ol>
-							                        			<li>
-						                                				<strong>{t}User{/t}</strong>
-									<select name='id_user' id='id_user' class='cajag validable not_empty'>
-										<option value="">{t}Select user{/t}</option>
-										{foreach from=$users key=id_user item=user}
-											<option value="{$id_user}">{$user}</option>
-										{/foreach}
-									</select> {t}with{/t}
-									<strong>{t}Role{/t}</strong>
-									<select name='id_role' id='id_role' class='cajag validable not_empty'>
-										<option value="">{t}Select a role{/t}</option>
-										{foreach from=$roles item=role}
-											<option value="{$role.IdRole}">{$role.Name}</option>
-										{/foreach}
-									</select>
-						                			                </li>
-						                	               		</ol>
-						</fieldset>
-					</div>
+<form ng-controller="XModifyGroupUsersCtrl"
+      ng-init='nodeid={$idnode}; name="{$name}"; users_not_associated={$users_not_associated}; roles={$roles};
+      users_associated={$users_associated}; init();' method="post" action="{$action_url}" class="form_group_user">
 
-				</form>
-			{/if}
-			{if count($user_infos) > 0}
-				<form method="post" id="muged_form" action="{$action_edit_delete}">
-					<div class="action_header">
-						<h2>{t}Change roles{/t}</h2>
-						<fieldset class="buttons-form">
-						{if ($idnode != "101")} {* if not group general *}
-						{button id="eliminar" 	onclick="update_form_action('deletegroupuser');"  label="Delete selected associations" class='validate btn' message="Selected associations will be deleted. Would you like to continue?"}
-						{/if}
-						{button id="guardar" onclick="update_form_action('editgroupuser');"  label="Save associations" class="validate btn main_action" message=""}
-						</fieldset>
-					</div>
-					<div class="action_content">
-						<fieldset>
-							<ol>
-								{foreach from=$user_infos key=id_rel item=user_info}
-									        				<li>
-											{if ($idnode != "101")} {* if not group general *}
-												<input name="users[]" type="checkbox" value="{$user_info.IdUser}">
-											{/if}
-										{$user_info.UserName}
-									        			 		{t}with role{/t}
-						        			<input type="hidden" name="user_for_role[]" value="{$user_info.IdUser}">
-										<select name='id_user_role[]' class='cajag validable not_empty'>
-											<option value="">{t}Select a role{/t}</option>
-											{foreach from=$roles item=role}
-												<option value="{$role.IdRole}"{if ($user_info.IdRole == $role.IdRole)} selected="selected"{/if}>{$role.Name}</option>
-											{/foreach}
-										</select>
-									        				</li>
-								{/foreach}
-									                       </ol>
-						                       			</fieldset>
-					</div>
+    <div class="action_header">
+        <h2>{t}Change users{/t}</h2>
+        <fieldset class="buttons-form">
 
-					</form>
-			{/if}
+        </fieldset>
+    </div>
+
+    <div class="action_content">
+        <h3>{t}Available users{/t}:</h3>
+        <div class="associate-group">
+            <div ng-show="users_not_associated.length>0" class="row-item col2-3">
+			 		<span ng-init="newUser=users_not_associated[0]" class="col1-2 icon icon-group label-select">
+			 			<select  class='select-clean block' ng-model="newUser"
+                                 ng-options="user as user.name for user in users_not_associated">
+                        </select>
+			 		</span>
+
+					<span ng-init="" class="col1-2 icon icon-rol label-select">
+						<select  class='select-clean block' ng-model="newRole"
+                                 ng-options="key as rol for (key, rol) in roles">
+                        </select>
+
+					</span>
+                <div class="buttons-form row-item-actions actions-outside col1-3">
+                    <button type="button" class="add-btn icon btn-unlabel-rounded"
+                            ng-click="addGroup()"
+                            >
+                        <span>{t}Add user{/t}</span>
+                    </button>
+                </div>
+            </div>
+
+            <p ng-hide="users_not_associated.length>0">{t}There are not{/t} <span ng-if="users_associated.length>0">{t}more{/t} </span>{t}available users to be associated with the group{/t} #/name/#.</p>
+        </div>
+        <h3>{t}The next users belongs to the group{/t} #/name/#:</h3>
+        <div  class="change-group">
+
+            <div ng-repeat="user in users_associated" class="row-item icon">
+
+                    <span class="col1-3">
+						#/user.UserName/#
+					</span>
+                    <span class="col1-3">
+                        <select name='idRole' class='select-clean block'
+                                ng-model="users_associated[$index].IdRole"
+                                ng-change="users_associated[$index].dirty=true"
+                                ng-options="key as role for (key, role) in roles">
+
+                        </select>
+                    </span>
+
+                <div class="buttons-form row-item-actions col1-3">
+                        <span ng-show="users_associated[$index].dirty">
+                            <button type="button" class="recover-btn icon btn-unlabel-rounded"
+                                    ng-click="update($index)"
+                                    >
+                                <span>{t}Update{/t}</span>
+                            </button>
+                        </span>
+                        <span ng-if="nodeid != '101'">
+                            <button type="button" class="delete-btn icon btn-unlabel-rounded"
+                                    ng-click="openDeleteModal($index)"
+                                    >
+                                <span>{t}Delete{/t}</span>
+                            </button>
+                        </span>
+                </div>
+            </div>
+            <p ng-if="users_associated.length<=0">{t}There are no users associated with this group yet{/t}.</p>
+        </div>
+    </div>
+
+    </div>
+</form>
+
 
 

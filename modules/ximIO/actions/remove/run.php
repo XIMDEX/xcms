@@ -30,10 +30,10 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../'));
 }
-require_once(XIMDEX_ROOT_PATH.'/inc/modules/ModulesManager.class.php');
+//
 ModulesManager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
 ModulesManager::file('/inc/cli/CliReader.class.php');
-ModulesManager::file('/inc/db/db.inc');
+ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
 
@@ -42,7 +42,7 @@ $parameterCollector = new RemoveCli($argc, $argv);
 
 $file = $parameterCollector->getParameter('--file');
 $delete = $parameterCollector->getParameter('--delete');
-$messages = new Messages();
+$messages = new \Ximdex\Utils\Messages();
 // First, checking if the package exists and giving some information about it
 
 echo "\n"._("Analysing data:")."\n";
@@ -103,7 +103,7 @@ if ($messages->count(MSG_TYPE_WARNING) > 0 || $messages->count(MSG_TYPE_ERROR) >
 
 
 // TODO re-make using fsutils::deltree
-$messages = new Messages();
+$messages = new \Ximdex\Utils\Messages();
 function removeFolder($dir, $DeleteMe) {
 	global $messages;
     if(!$dh = opendir($dir)) return;

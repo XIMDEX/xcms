@@ -1,0 +1,122 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/ximdex_theme";
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/extends";
+ @import "../../../../xmd/style/jquery/ximdex_theme/widgets/themes/icons";
+
+
+/*.xim-treeview-selector {
+	background: $c_white;
+	padding: 25px 15px;
+	margin-bottom: 15px;
+}
+.xim-treeview-selector .xim-treeview-branch-container {
+	position: static;
+}
+
+.root {
+	display: none;
+}
+*/
+
+.copy_options{
+	@extend %row-item;
+	padding: 0;
+
+	div{
+		border-top: 1px solid #dddddd;
+		position: relative;
+		&:first-child{
+			border-top: none;
+			label{
+				-webkit-border-radius: 2px;
+				-moz-border-radius: 2px;
+				border-radius: 2px;
+			}
+		}
+
+		label{
+			padding: 1.2em;
+			display: block;
+			cursor: pointer;
+
+			&:hover{
+				background:darken($c_background, 5%);
+			}
+
+			&::before{				
+				@extend %folder;
+				padding-right: .5em;
+				color: $c_grey-p;
+			}
+
+		}		
+	}
+
+	input[type="checkbox"]{
+		position: absolute;
+		opacity: 0;
+
+		&:checked + label{
+			background:lighten($c_mainlight, 15%); 
+			-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.1);
+			-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,.1);
+			box-shadow: inset 0 1px 1px rgba(0,0,0,.1);
+			/*color: #fff;
+
+			&::before{
+				color: #fff;
+			}
+*/
+			&::after{
+				position: absolute;
+				right: 1em;
+				color: $c_mainlight;
+				background:#fff;
+				-webkit-border-radius: 50%;
+				-moz-border-radius: 50%;
+				border-radius: 50%;
+				width: 1.3em;
+				height: 1.3em;
+				@extend %tic;
+				top: 50%;
+				-webkit-transform: translateY(-50%);
+				-moz-transform: translateY(-50%);
+				-ms-transform: translateY(-50%);
+				-o-transform: translateY(-50%);
+				transform: translateY(-50%);
+				-webkit-box-shadow: 0 1px 0 rgba(0,0,0,.4);
+				-moz-box-shadow: 0 1px 0 rgba(0,0,0,.4);
+				box-shadow: 0 1px 0 rgba(0,0,0,.4);
+				text-align: center;
+				line-height: 1.3;
+				font-size: 1.5em;
+			}
+		}		
+	}
+
+	
+}

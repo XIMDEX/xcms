@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:output method="html" encoding="utf-8" indent="no"/>
-<xsl:include href="@@@XIMDEX_ROOT_PATH@@@/inc/xml/xslt/copy-of-extended.xsl"/>
+<xsl:include href="@@@XIMDEX_ROOT_PATH@@@/lib/ximdex/_files/xslt/copy-of-extended.xsl"/>
 
 <xsl:template match="cuerpo_noticia">
     <xsl:call-template name="add-cuerpo_noticia-attributes"/>

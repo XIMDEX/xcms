@@ -32,12 +32,10 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionFactory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Timer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
 ModulesManager::file('/inc/Status.class.php', 'ximADM');
+// Implement \Ximdex\Utils\Session::check() as Filter.
 
-// Implement XSession::check() as Filter.
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/XSession.class.php");
 /**
  *
  * @brief Controller to execute and route actions
@@ -77,7 +75,7 @@ class ApplicationController extends IController {
 
 	function setUserState() {
 		if(ModulesManager::isEnabled('ximADM') ) {
-			$userID = (int) XSession::get('userID');
+			$userID = (int) \Ximdex\Utils\Session::get('userID');
 			$action = $this->request->getParam("action");
 			$method = $this->request->getParam("method");
 
@@ -114,16 +112,16 @@ class ApplicationController extends IController {
 	}
 
 	function actionStatsStart() {
-		$actionStats = Config::getValue('ActionsStats');
+		$actionStats = \App::getValue( 'ActionsStats');
 		$action = $this->request->getParam("action");
 		$method = $this->request->getParam("method");
 		$nodeId = (int) $this->request->getParam("nodeid");
-		$userId = XSession::get("userID");
+		$userId = \Ximdex\Utils\Session::get("userID");
 		// Starts timer for use in action stats
 		$stats=array();
 		
 		if ($actionStats == 1 && !is_null($action) && "index" == $method ) {
-			$this->timer = new Timer();
+			$this->timer = new \Ximdex\Utils\Timer();
 			$this->timer->start();
 
 			if(ModulesManager::isEnabled('ximDEMOS')) {				
@@ -138,11 +136,11 @@ class ApplicationController extends IController {
 
 	// Inserts action stats
 	function actionStatsEnd($stats) {
-		$actionStats = Config::getValue('ActionsStats');
+		$actionStats = \App::getValue( 'ActionsStats');
 		$action = $this->request->getParam("action");
 		$method = $this->request->getParam("method");
 		$nodeId = (int) $this->request->getParam("nodeid");
-		$userId = XSession::get("userID");
+		$userId = \Ximdex\Utils\Session::get("userID");
 
 		if ($actionStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
 			$stats_time = $this->timer->mark('End action');
@@ -179,8 +177,8 @@ class ApplicationController extends IController {
 			$event="action";
 
 		$remote =  ACTIONS_STATS;
-		$ximid= Config::getValue('ximid');
-		$userId = XSession::get("userID");
+		$ximid= \App::getValue( 'ximid');
+		$userId = \Ximdex\Utils\Session::get("userID");
 		if(strcmp($stats["nodeid"],'')!=0){
 			$nodeid = (int) $stats["nodeid"];
 		}

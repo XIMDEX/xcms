@@ -39,7 +39,7 @@ class Action_deletenode extends ActionAbstract {
 
 		$nodes = GenericDatasource::normalizeEntities($nodes);
 		$params = $this->request->getParam("params");
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$texto = "";
 
 		if (count($nodes) == 1) {
@@ -120,7 +120,7 @@ class Action_deletenode extends ActionAbstract {
 			if (sizeof($children) && sizeof($depList)) {
 
 				$texto = $node->nodeType->get('Name') != "XmlContainer" ?
-					_("Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.") : _("Your role cannot delete the selected container because of it has idiomatic versions depending on it.");
+					_("Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.") : _("Your role cannot delete the selected container because of it has language versions depending on it.");
 
 				$formType = "no_permisos";
 			}
@@ -170,7 +170,7 @@ class Action_deletenode extends ActionAbstract {
 		if ($formType == 'no_permisos') {
 
 			$values['titulo'] = $node->nodeType->get('Name') != "XmlContainer" ?  _("List of pending documents")
-				: _("To be able to delete this node, you should first delete the following idiomatic versions");
+				: _("To be able to delete this node, you should first delete the following language versions");
 
 		} else if ($formType == 'dependencies') {
 
@@ -212,7 +212,7 @@ class Action_deletenode extends ActionAbstract {
 	    $deleteDep=$this->request->getParam("unpublishnode");
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
-		if(ModulesManager::isEnabled("ximDEMOS") &&  XSession::get('user_demo')) {
+		if(ModulesManager::isEnabled("ximDEMOS") &&  \Ximdex\Utils\Session::get('user_demo')) {
 			$node = new Node($idNode);
 			$name = $node->get("Name");
 			if("Demo" == $name ) {
@@ -228,7 +228,7 @@ class Action_deletenode extends ActionAbstract {
 			}
 		}
 
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$unpublishDoc = ($this->request->getParam("unpublishdoc") == 1) ? true : false;
 
 		// Deleting publication tasks
@@ -242,6 +242,8 @@ class Action_deletenode extends ActionAbstract {
 		$user = new User($userID);
 		$canDeleteOnCascade = $user->HasPermission("delete on cascade");
 
+        $children = $node->GetChildren();
+
 		if ($canDeleteOnCascade && $deleteDep) {
 
 			if ($node->nodeType->get('Name') != 'Channel') {
@@ -251,9 +253,6 @@ class Action_deletenode extends ActionAbstract {
 			$undeletableChildren = $node->TraverseTree(5);
 
 			if ($node->nodeType->get('Name') == "XmlContainer") {
-
-				$children = $node->GetChildren();
-
 				foreach($children as $child) {
 					$childNode = new Node($child);
 					$depList = array_merge($depList, $childNode->GetDependencies());
@@ -308,7 +307,6 @@ class Action_deletenode extends ActionAbstract {
 				}
 			}
 		} else {
-
 			/// Error: if it has not permit to cascade deletion and node has children and dependencies
 			if(sizeof($children) && sizeof($depList))
 			$this->messages->add(_("Node is not empty and it has external dependencies."), MSG_TYPE_ERROR);

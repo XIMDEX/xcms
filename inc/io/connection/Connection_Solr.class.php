@@ -28,26 +28,27 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-require_once (XIMDEX_ROOT_PATH . '/modules/ximNOTA/model/RelNodeMetaData.class.php');
+require_once (XIMDEX_ROOT_PATH . '/inc/model/RelNodeMetadata.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
+require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
 
 class Connection_Solr implements I_Connector {
 
     private $connected = false;
+    private $validExtensions = array('xml' => 1, 'pdf' => 1, 'epub' => 1);
     private $config;
 
     /**
-     * Connect to server.
+     * Connect to server
      * Send ping to servidor to ensure it is active.
-     * 
+     *
      * @access public
      * @param host string
      * @param port int
      * @return boolean
      */
     public function connect($host = NULL, $port = NULL) {
-        XMD_Log::info("CONNECT $host $port");
-
+        XMD_Log::debug("CONNECT $host $port");
         $this->config = array(
             'endpoint' => array(
                 'localhost' => array(
@@ -59,13 +60,12 @@ class Connection_Solr implements I_Connector {
         );
 
         $this->connected = true;
-
         return true;
     }
 
     /**
      * Disconnect from server
-     * 
+     *
      * @access public
      * @return boolean
      */
@@ -85,7 +85,7 @@ class Connection_Solr implements I_Connector {
     /**
      * Authenticate into server.
      * Useless in solr. Connection status is done in connect method.
-     * 
+     *
      * @access public
      * @param login string
      * @param password string
@@ -98,7 +98,7 @@ class Connection_Solr implements I_Connector {
     /**
      * Change directory in server.
      * CHECK scheduler: is called several times.
-     * 
+     *
      * @access public
      * @param dir string
      * @return boolean false if folder no exist
@@ -109,7 +109,7 @@ class Connection_Solr implements I_Connector {
 
     /**
      * Get the server folder. UNUSED.
-     * 
+     *
      * @access public
      * @param dir string
      * @return string
@@ -120,7 +120,7 @@ class Connection_Solr implements I_Connector {
 
     /**
      * Create a folder in the server. UNUSED.
-     * 
+     *
      * @access public
      * @param dir string
      * @param mode int
@@ -133,7 +133,7 @@ class Connection_Solr implements I_Connector {
 
     /**
      * Manage permissions on a file/folder. UNUSED.
-     * 
+     *
      * @access public
      * @param target string
      * @param mode string
@@ -146,20 +146,20 @@ class Connection_Solr implements I_Connector {
 
     /**
      * Rename a file in the server. UNUSED.
-     * 
+     *
      * @access public
      * @param renameFrom string
      * @param renameTo string
      * @return boolean
      */
     public function rename($renameFrom, $renameTo) {
-        XMD_Log::info("RENAME $renameFrom -> $renameTo");
+        XMD_Log::debug("RENAME $renameFrom -> $renameTo");
         return true;
     }
 
     /**
      * Get the size of a file. UNUSED.
-     * 
+     *
      * @access public
      * @param file string
      * @return int
@@ -170,7 +170,7 @@ class Connection_Solr implements I_Connector {
 
     /**
      * Get the folder contents. UNUSED.
-     * 
+     *
      * @access public
      * @param dir string
      * @param mode int
@@ -180,51 +180,46 @@ class Connection_Solr implements I_Connector {
         return array();
     }
 
-    public function splitPath($path) {
-        XMD_Log::info("splitPath");
-        $arr = explode("/", $path);
-        $core = array_shift($arr);
-        $fullName = array_pop($arr);
-        $subPath = implode('/', $arr);
-        return array("core" => $core,
-            "subPath" => $subPath,
-            "fullName" => $fullName);
+    /**
+     * Checks if the especified path is a folder. UNUSED.
+     *
+     * @access public
+     * @param path string
+     * @return boolean
+     */
+    public function isDir($path) {
+        return false;
     }
 
-    public function getNameExtension($name) {
-        $arr = explode(".", $name);
-        $ext = array_pop($arr);
-        return $ext;
+    /**
+     * Checks if the especified path is a file. UNUSED.
+     *
+     * @access public
+     * @param path string
+     * @return boolean
+     */
+    public function isFile($path) {
+        return false;
     }
 
-    public function extractNodeName($fullName, $withIdiom = false) {
-        $name = "";
-        $fullNameParts = explode("_", $fullName);
-        $nameNoServerFrame = implode("", array($fullNameParts[0], $fullNameParts[1]));
-        if ($this->getNameExtension($fullName) === "xml") {
-            $nameNoServerFrameParts = explode("-", $nameNoServerFrame);
-            if ($withIdiom) {
-                $name = implode("-", array($nameNoServerFrameParts[0], $nameNoServerFrameParts[1]));
-            } else {
-                $name = $nameNoServerFrameParts[0];
-            }
-        } else {
-            $name = $nameNoServerFrame;
-        }
-
-        return $name;
-    }
-
-    public function extractNodeNameBinaryPut($fullName) {
-        $fullNameParts = explode("_", $fullName, 2);
-        array_shift($fullNameParts);
-        $trueName = implode("", $fullNameParts);
-        return $trueName;
+    /**
+     * Copies a file from server to local. UNUSED.
+     *
+     * @access public
+     * @param remoteFile string
+     * @param localFile string
+     * @param overwrite boolean
+     * @param mode
+     * @return boolean
+     */
+    public function get($sourceFile, $targetFile, $mode = 0755) {
+        XMD_Log::debug("GET $sourceFile, $targetFile");
+        return false;
     }
 
     /**
      * Removes a file from server
-     * 
+     *
      * @access public
      * @param path string
      * @param recursive boolean
@@ -232,8 +227,7 @@ class Connection_Solr implements I_Connector {
      * @return boolean
      */
     public function rm($path) {
-        XMD_Log::info("RM $path");
-
+        XMD_Log::debug("RM $path");
         $pathInfo = $this->splitPath($path);
         $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
 
@@ -248,7 +242,6 @@ class Connection_Solr implements I_Connector {
 
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($qName, $qPath), MONO);
-
         if (!isset($result[0])) {
             XMD_Log::error("unexpected result, document may have not been deleted");
             XMD_Log::error(print_r(array(
@@ -263,72 +256,45 @@ class Connection_Solr implements I_Connector {
         $update->addDeleteById($result[0]);
         $update->addCommit();
         $solrResp = $client->update($update);
-
         if ($solrResp->getStatus() !== 0) {
             XMD_Log::error("solr error deleting doc id: {$result[0]}");
             return false;
         }
-
         XMD_Log::info("solr doc id: {$result[0]} was deleted");
         return true;
     }
 
     /**
-     * Copies a file from server to local. UNUSED.
-     * 
+     * Copies a file from local to server.
+     *
      * @access public
-     * @param remoteFile string
      * @param localFile string
+     * @param remoteFile string
      * @param overwrite boolean
      * @param mode
      * @return boolean
      */
-    public function get($sourceFile, $targetFile, $mode = 0755) {
-        XMD_Log::info("GET $sourceFile, $targetFile");
-        return false;
-    }
+    public function put($localFile, $targetFile, $mode = 0755) {
+        XMD_Log::debug("PUT $localFile TO $targetFile");
 
-    public function loadAdditionalFields($doc, $client, $core) {
-        // data folders are not commited, so must be configured per project.
-        $fieldsConf = include(XIMDEX_ROOT_PATH . "/data/solr-core/{$core}/solr_additional_fields.conf");
-        if (empty($fieldsConf) || count($fieldsConf) == 0) {
-            return;
-        }
+        $pathInfo = $this->splitPath($targetFile);
+        $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
 
-        $fieldnameArray = array_keys($fieldsConf);
-        $selectQuery = $client->createSelect();
-        $selectQuery->setQuery("id:" . $doc["id"]);
-        $selectQuery->setFields($fieldnameArray);
-        $resultset = $client->select($selectQuery);
+        // Get file extension
+        $targetFileParts = explode("/", $targetFile);
+        $filename = array_pop($targetFileParts);
+        $fileParts = explode(".", $filename);
+        $fileExtension = array_pop($fileParts);
 
-        foreach ($fieldnameArray as $fieldname) {
-            $fieldCfg = $fieldsConf[$fieldname];
-            $fieldValue = "";
-            if ($fieldCfg["STORE"] === 'ALWAYS') { //calculate value
-                $fieldValue = $fieldCfg["FUNCTION"]();
-            } else { //"IF_NEW"
-                if ($resultset->getNumFound() !== 0) {
-                    foreach ($resultset as $document) {
-                        foreach ($document as $field => $value) {
-                            if ($field === $fieldname) {
-                                $fieldValue = $value;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                if ($fieldValue === "") { //calculate value
-                    $fieldValue = $fieldCfg["FUNCTION"]();
-                }
-            }
-
-            $doc->addField($fieldname, $fieldValue);
+        if ($fileExtension === "xml") {
+            return $this->putXmlFile($localFile, $pathInfo);
+        } else {
+            return $this->putBinaryFile($localFile, $pathInfo);
         }
     }
 
     public function putXmlFile($localFile, $pathInfo) {
-        XMD_Log::info("putXmlFile");
+        XMD_Log::debug("putXmlFile");
         // Load xml coming from transformation
         $xml = simplexml_load_file($localFile);
         if (!$xml) {
@@ -370,13 +336,15 @@ class Connection_Solr implements I_Connector {
             return false;
         }
 
+        XMD_Log::info("<< Solr put xml ok - id: {$doc->id} >>");
+
         return true;
     }
 
     public function putBinaryFile($localFile, $pathInfo) {
         XMD_Log::info("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
         $trueName = $this->extractNodeNameBinaryPut($pathInfo["fullName"]);
-
+        XMD_Log::info("putBinaryFile2");
         // get node id
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
@@ -384,14 +352,14 @@ class Connection_Solr implements I_Connector {
             XMD_Log::error(sprintf("NOT found: Name = %s AND Path REGEXP %s", $trueName, $pathInfo["subPath"] . '$'));
             return false;
         }
-
+        XMD_Log::info("putBinaryFile3");
         // create an extract query instance and add settings
         $client = new Solarium\Client($this->config);
         $query = $client->createExtract();
         $query->setFile($localFile);
         $query->setCommit(true);
         $query->setOmitHeader(false);
-
+        XMD_Log::info("putBinaryFile4");
         // add document
         $doc = $query->createDocument();
         $doc->id = $result[0];
@@ -404,49 +372,47 @@ class Connection_Solr implements I_Connector {
                 $doc->addField("tags", $tag["Name"]);
             }
         }
-
+        XMD_Log::info("putBinaryFile5");
         // add xml metadata fields if the file exists
         $relNodeMetaData = new RelNodeMetaData();
         $idMetadata = $relNodeMetaData->find('idMetadata', 'idNode = %s', array($result[0]), MONO);
-        if (isset($idMetadata[0])) {
-            XMD_Log::info("found node metadata");
-            $metaNode = new Node($idMetadata[0]);
-            $content = $metaNode->GetContent();
-            XMD_Log::info("loaded node metadata");
-            $Resolucion = new SimpleXMLElement($content);
-            if ($Resolucion) {
-                XMD_Log::info("parsed node metadata");
-                $metaFieldsConf = include_once(XIMDEX_ROOT_PATH . "/data/solr-core/{$pathInfo["core"]}/metadata/metadata.conf");
-                if (!empty($metaFieldsConf) && count($metaFieldsConf) > 0) {
-                    foreach ($metaFieldsConf as $xmlPath => $mapSolrField) {
-                        // check if path exist in xml object
-                        $xmlPathParts = explode('/', $xmlPath);
-                        $thisLevel = $Resolucion;
-                        $existsNode = false;
-                        foreach ($xmlPathParts as $subLevel) {
-                            if (isset($thisLevel->{$subLevel})) {
-                                $thisLevel = $thisLevel->{$subLevel};
-                                $existsNode = true;
-                            } else {
-                                $existsNode = false;
-                                break;
-                            }
-                        }
-                        if ($existsNode) {
-                            $thisLevelContent = trim((string) $thisLevel);
-                            if (strlen($thisLevelContent) > 0) {
-                                $doc->addField($mapSolrField, $thisLevelContent);
-                            }
-                        }
-                    }
-                }
-            } else {
-                XMD_Log::error("invalid xml metadata file. node id: " . $idMetadata[0]);
-            }
-        }
-
+        XMD_Log::info("putBinaryFile6");
+//        if (isset($idMetadata[0])) {
+//            $metaNode = new Node($idMetadata[0]);
+//            $content = $metaNode->GetContent();
+//            $Resolucion = new SimpleXMLElement($content);
+//            if ($Resolucion) {
+//                $metaFieldsConf = include_once(XIMDEX_ROOT_PATH . "/data/solr-core/{$pathInfo["core"]}/metadata/metadata.conf");
+//                if (!empty($metaFieldsConf) && count($metaFieldsConf) > 0) {
+//                    foreach ($metaFieldsConf as $xmlPath => $mapSolrField) {
+//                        // check if path exist in xml object
+//                        $xmlPathParts = explode('/', $xmlPath);
+//                        $thisLevel = $Resolucion;
+//                        $existsNode = false;
+//                        foreach ($xmlPathParts as $subLevel) {
+//                            if (isset($thisLevel->{$subLevel})) {
+//                                $thisLevel = $thisLevel->{$subLevel};
+//                                $existsNode = true;
+//                            } else {
+//                                $existsNode = false;
+//                                break;
+//                            }
+//                        }
+//                        if ($existsNode) {
+//                            $thisLevelContent = trim((string) $thisLevel);
+//                            if (strlen($thisLevelContent) > 0) {
+//                                $doc->addField($mapSolrField, $thisLevelContent);
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                XMD_Log::error("invalid xml metadata file. node id: " . $idMetadata[0]);
+//            }
+//        }
+        XMD_Log::info("putBinaryFile7");
         // this executes the query and returns the result
-        XMD_Log::info(print_r($doc->getFields(), true));
+        XMD_Log::debug(print_r($doc->getFields(), true));
         $query->addParam('lowernames', 'false');
         $query->setDocument($doc);
         $resultExtract = $client->extract($query);
@@ -454,61 +420,89 @@ class Connection_Solr implements I_Connector {
             XMD_Log::error("<< Solr update error - status: {$resultExtract->getStatus()} >>");
             return false;
         }
-
+        XMD_Log::info("<< Solr put binary ok - id: {$doc->id} >>");
         return true;
     }
 
-    /**
-     * Copies a file from local to server.
-     * 
-     * @access public
-     * @param localFile string
-     * @param remoteFile string
-     * @param overwrite boolean
-     * @param mode
-     * @return boolean
-     */
-    public function put($localFile, $targetFile, $mode = 0755) {
-        XMD_Log::info("PUT $localFile TO $targetFile");
+    public function getNameExtension($name) {
+        $arr = explode(".", $name);
+        $ext = array_pop($arr);
+        return $ext;
+    }
 
-        $pathInfo = $this->splitPath($targetFile);
-        $this->config['endpoint']['localhost']['core'] = $pathInfo["core"];
+    public function splitPath($path) {
+        $arr = explode("/", $path);
+        $core = array_shift($arr);
+        $fullName = array_pop($arr);
+        $subPath = implode('/', $arr);
+        return array("core" => $core,
+            "subPath" => $subPath,
+            "fullName" => $fullName);
+    }
 
-        // Get file extension
-        $targetFileParts = explode("/", $targetFile);
-        $filename = array_pop($targetFileParts);
-        $fileParts = explode(".", $filename);
-        $fileExtension = array_pop($fileParts);
-
-        if ($fileExtension === "xml") {
-            return $this->putXmlFile($localFile, $pathInfo);
+    public function extractNodeName($fullName, $withIdiom = false) {
+        $name = "";
+        $fullNameParts = explode("_", $fullName);
+        $nameNoServerFrame = implode("", array($fullNameParts[0], $fullNameParts[1]));
+        if ($this->getNameExtension($fullName) === "xml") {
+            $nameNoServerFrameParts = explode("-", $nameNoServerFrame);
+            if ($withIdiom) {
+                $name = implode("-", array($nameNoServerFrameParts[0], $nameNoServerFrameParts[1]));
+            } else {
+                $name = $nameNoServerFrameParts[0];
+            }
         } else {
-            return $this->putBinaryFile($localFile, $pathInfo);
+            $name = $nameNoServerFrame;
+        }
+        return $name;
+    }
+
+    public function loadAdditionalFields($doc, $client, $core) {
+        // data folders are not commited, so must be configured per project.
+        $fieldsConf = include(XIMDEX_ROOT_PATH . "/data/solr-core/{$core}/solr_additional_fields.conf");
+        if (empty($fieldsConf) || count($fieldsConf) == 0) {
+            return;
+        }
+
+        $fieldnameArray = array_keys($fieldsConf);
+        $selectQuery = $client->createSelect();
+        $selectQuery->setQuery("id:" . $doc["id"]);
+        $selectQuery->setFields($fieldnameArray);
+        $resultset = $client->select($selectQuery);
+
+        foreach ($fieldnameArray as $fieldname) {
+            $fieldCfg = $fieldsConf[$fieldname];
+            $fieldValue = "";
+            if ($fieldCfg["STORE"] === 'ALWAYS') { //calculate value
+                $fieldValue = $fieldCfg["FUNCTION"]();
+            } else { //"IF_NEW"
+                if ($resultset->getNumFound() !== 0) {
+                    foreach ($resultset as $document) {
+                        foreach ($document as $field => $value) {
+                            if ($field === $fieldname) {
+                                $fieldValue = $value;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                if ($fieldValue === "") { //calculate value
+                    $fieldValue = $fieldCfg["FUNCTION"]();
+                }
+            }
+
+            $doc->addField($fieldname, $fieldValue);
         }
     }
 
-    /**
-     * Checks if the especified path is a folder. UNUSED.
-     * 
-     * @access public
-     * @param path string
-     * @return boolean
-     */
-    public function isDir($path) {
-        return false;
-    }
-
-    /**
-     * Checks if the especified path is a file. UNUSED.
-     * 
-     * @access public 
-     * @param path string
-     * @return boolean
-     */
-    public function isFile($path) {
-        return false;
+    public function extractNodeNameBinaryPut($fullName) {
+        XMD_Log::info("extractNodeNameBinaryPut");
+        $fullNameParts = explode("_", $fullName, 2);
+        array_shift($fullNameParts);
+        $trueName = implode("", $fullNameParts);
+        XMD_Log::info("extractNodeNameBinaryPut2");
+        return $trueName;
     }
 
 }
-
-?>

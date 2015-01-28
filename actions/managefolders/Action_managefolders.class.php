@@ -25,7 +25,6 @@
  */
 
 ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
-ModulesManager::file('/services/NodetypeService.class.php');
 
 class Action_managefolders extends ActionAbstract {
 
@@ -41,7 +40,6 @@ class Action_managefolders extends ActionAbstract {
  	*/ 
     	function index () {
 		$this->addCss('/actions/addsectionnode/resources/css/style.css');
-		$selectedFolders=array();
 		$nodeID = $this->request->getParam("nodeid");
 		$node = new Node($nodeID);
 
@@ -191,12 +189,12 @@ class Action_managefolders extends ActionAbstract {
         */
 	private function _getDescription($nodetype){
 		switch($nodetype){
-			case NodetypeService::XML_ROOT_FOLDER: return "This is the main repository for all your XML contents. It's the most important folder in a section.";
-			case NodetypeService::IMAGES_ROOT_FOLDER: return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
-			case NodetypeService::IMPORT_ROOT_FOLDER: return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
-			case NodetypeService::COMMON_ROOT_FOLDER: return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
-			case NodetypeService::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
-			case NodetypeService::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
+			case \Ximdex\Services\NodeType::XML_ROOT_FOLDER: return "This is the main repository for all your XML contents. It's the most important folder in a section.";
+			case \Ximdex\Services\NodeType::IMAGES_ROOT_FOLDER: return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
+			case \Ximdex\Services\NodeType::IMPORT_ROOT_FOLDER: return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
+			case \Ximdex\Services\NodeType::COMMON_ROOT_FOLDER: return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
+			case \Ximdex\Services\NodeType::TEMPLATES_ROOT_FOLDER: return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
+			case \Ximdex\Services\NodeType::XIMLET_ROOT_FOLDER: return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
 			case "5301": return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
 			case "5304": return "Into this folder you could create XML based news in several languages. This is a required folder.";
 			case "5306": return "All the images used in your defined news are stored here.";
@@ -224,7 +222,7 @@ class Action_managefolders extends ActionAbstract {
 			foreach($children as $child){
 				$ch = new Node ($child);
 				$idNodeType = $ch->GetNodeType();
-				if (NodetypeService::SECTION != $idNodeType)
+				if (\Ximdex\Services\NodeType::SECTION != $idNodeType)
 					$children_nt[]=$idNodeType;
 			}
 		}

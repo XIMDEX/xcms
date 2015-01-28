@@ -25,13 +25,6 @@
  */
 
 
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Messages.class.php');
 define('FILE_VERSION','0.1');
 
 class Shell {
@@ -45,7 +38,7 @@ class Shell {
 	//TODO: Descriptor 2 should be XIMDEX_ROOT_PATH . "/logs/shell_stderr.log" or assigned from construct.
 	/**
 	 *
-	 * @var unknown_type
+	 * @var Array
 	 */
 	var $descriptors = array (
                         0 => array("pipe", "r"),
@@ -57,12 +50,11 @@ class Shell {
 	/**
 	 * Construct
 	 * @param $messages
-	 * @return unknown_type
 	 */
-	function Shell ($messages = NULL) {
+	public function __construct($messages = NULL) {
 
-		if (isset($messages) && is_null ($messages)) {
-			$this->messages = new Messages ();
+		if (isset($messages) && is_null($messages)) {
+			$this->messages = new \Ximdex\Utils\Messages();
 		} else {
 			$this->messages = $messages;
 		}
@@ -71,7 +63,7 @@ class Shell {
 	/**
 	 *
 	 * @param $cmd
-	 * @return unknown_type
+	 * @return bool
 	 */
 	function exec_proc($cmd) {
 
@@ -116,7 +108,7 @@ class Shell {
 	 *
 	 * @param $cmd
 	 * @param $mayReturnNothing
-	 * @return unknown_type
+	 * @return bool
 	 */
 	function exec($cmd, $mayReturnNothing = false) {
 
@@ -157,4 +149,3 @@ class Shell {
 
 
 }
-?>

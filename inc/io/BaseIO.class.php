@@ -28,19 +28,17 @@ define('MODE_NODETYPE', 0);
 define('MODE_NODEATTRIB', 1);
 
 ModulesManager::file('/inc/io/BaseIOConstants.php');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/model/node.inc');
-ModulesManager::file('/inc/model/structureddocument.inc');
+ModulesManager::file('/inc/model/node.php');
+ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/model/State.class.php');
-ModulesManager::file('/inc/helper/Messages.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 
 // BaseIO API
 if (!defined('XIMDEX_BASEIO_PATH'))
 	define('XIMDEX_BASEIO_PATH', realpath(dirname(__FILE__)));
 
-ModulesManager::file('/inc/model/language.inc');
+ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/auth/Auth.class.php');
 
 class BaseIO {
@@ -54,7 +52,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function BaseIO() {
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 	}
 
 	/**
@@ -73,9 +71,9 @@ class BaseIO {
 		$data = $this->_checkVisualTemplate($data);
 
 		if (!$userid) {
-			$userid = XSession::get('userID');
+			$userid = \Ximdex\Utils\Session::get('userID');
 		} elseif ($userid) {
-			XSession::set('userID', $userid);
+			\Ximdex\Utils\Session::set('userID', $userid);
 		}
 
 		if (empty($data['NODETYPENAME'])) {
@@ -296,7 +294,7 @@ class BaseIO {
 
 				$link = new Node();
 				$idNode = $link->CreateNode($data['NAME'], $data['PARENTID'], '5049', null,
-						$data['URL'], $data['DESCRIPTION']);
+						$data['URL'], isset($data['DESCRIPTION']) ? $data['DESCRIPTION'] : null);
 
 				$this->_dumpMessages($link->messages);
 
@@ -367,7 +365,11 @@ class BaseIO {
 				// TODO left to be implemented $aliasLangArray, $channelLst, $master
 				$xmlcontainer = new Node();
 				$idNode = $xmlcontainer->CreateNode($data['NAME'], $data["PARENTID"],
-						$idNodetype, null, $data['TEMPLATE'], $data["ALIASES"], $data["CHANNELS"], $data["MASTER"]);
+						$idNodetype, null, $data['TEMPLATE'],
+                    isset($data["ALIASES"]) ? $data["ALIASES"] : null,
+                    isset($data["CHANNELS"]) ? $data["CHANNELS"] : null,
+                    isset($data["MASTER"]) ? $data["MASTER"] : null
+                    );
 
 				$this->_dumpMessages($xmlcontainer->messages);
 
@@ -581,7 +583,7 @@ class BaseIO {
 		}
 
 		if (!$userid) {
-			$userid = XSession::get('userID');
+			$userid = \Ximdex\Utils\Session::get('userID');
 		}
 
 		// upper all the indexes in data and the nodetypename.		
@@ -856,7 +858,7 @@ class BaseIO {
 				}
 				if ($updateStructuredDocument && $result) {
 					$result = $structuredDocument->update();
-					$this->_dumpMessages(($structuredDocument->messages));
+					$this->_dumpMessages($structuredDocument->messages);
 				}
 				if ($result) {
 					foreach ($channels as $channel) {
@@ -926,7 +928,7 @@ class BaseIO {
 		global $metaTypesArray;
 
 		if (!$userid) {
-			$userid = XSession::get('userID');
+			$userid = \Ximdex\Utils\Session::get('userID');
 		}
 
 		$node = new Node($data['ID']);
@@ -1237,7 +1239,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function _getDefaultRNG() {
-		$defaultRNG = Config::getValue('defaultRNG');
+		$defaultRNG = \App::getValue( 'defaultRNG');
 		$node = new Node($defaultRNG);
 		if ($node->get('IdNode') > 0) {
 			return ($node->nodeType->GetName() == 'VisualTemplate') ? $defaultRNG : NULL;
@@ -1250,7 +1252,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function _getDefaultChannel() {
-		$defaultChannel = Config::getValue('defaultChannel');
+		$defaultChannel = \App::getValue( 'defaultChannel');
 		$node = new Node($defaultChannel);
 		if ($node->get('IdNode') > 0) {
 			return ($node->nodeType->GetName() == 'Channel') ? $defaultChannel : NULL;
@@ -1263,7 +1265,7 @@ class BaseIO {
 	 * @return unknown_type
 	 */
 	function _getDefaultLanguage() {
-		$defaultLanguage = Config::getValue('DefaultLanguage');
+		$defaultLanguage = \App::getValue( 'DefaultLanguage');
 		$language = new Language();
 		$language->SetByIsoName($defaultLanguage);
 
@@ -1409,5 +1411,3 @@ class BaseIO {
 		return $aux;
 	}
 }
-
-?>

@@ -97,7 +97,7 @@ class Widget {
 			$dir_widget = $dir_widget."/".$name;
 		}
 
-		$factory = new Factory($dir_widget, 'Widget_');
+		$factory = new \Ximdex\Utils\Factory($dir_widget, 'Widget_');
 		$widget = $factory->instantiate($name);
 		self::$_instances[$name] =& $widget;
 		return $widget;
@@ -329,18 +329,18 @@ class Widget {
 			$fileName = sprintf('%s.conf.js', $wn);
 		}
 
-		$filePath = sprintf('%s/conf/', Config::getValue('AppRoot'));
+		$filePath = sprintf('%s/conf/', \App::getValue( 'AppRoot'));
 
 		if (!empty($a)) {
-			$filePath = sprintf('%s/actions/%s/conf/', Config::getValue('AppRoot'), $a);
+			$filePath = sprintf('%s/actions/%s/conf/', \App::getValue( 'AppRoot'), $a);
 		}
 
 		if (!empty($m) && !empty($a)) {
-			$filePath = sprintf('%s%s/actions/%s/conf/', Config::getValue('AppRoot'), ModulesManager::path($m) , $a);
+			$filePath = sprintf('%s%s/actions/%s/conf/', \App::getValue( 'AppRoot'), ModulesManager::path($m) , $a);
 		}
 
 		/*if (!empty($m) && empty($a)) {
-			$filePath = sprintf('%s/modules/%s/conf/', Config::getValue('AppRoot'), $m);
+			$filePath = sprintf('%s/modules/%s/conf/', \App::getValue( 'AppRoot'), $m);
 		}*/
 
 		$filePath = sprintf('%s%s', $filePath, $fileName);

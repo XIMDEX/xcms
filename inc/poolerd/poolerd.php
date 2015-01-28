@@ -37,13 +37,11 @@ if (!defined('POOLER_ROOT_PATH'))
 require_once POOLER_ROOT_PATH . '/PIDFile.class.php';
 require_once POOLER_ROOT_PATH . '/PoolerConf.class.php';
 require_once POOLER_ROOT_PATH . '/ServerSocket.class.php';
-//require_once POOLER_ROOT_PATH . '/ProcessQueue.class.php';
 require_once POOLER_ROOT_PATH . '/ClientSocket.class.php';
 require_once POOLER_ROOT_PATH . '/Queue_Process.class.php';
 
 require_once XIMDEX_ROOT_PATH . '/inc/MPM/SharedMemory.class.php';
 require_once XIMDEX_ROOT_PATH . '/inc/log/Log.class.php';
-require_once XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php';
 
 
 declare(ticks = 1);

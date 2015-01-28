@@ -20,42 +20,44 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+use Ximdex\Modules\Module;
 
-ModulesManager::file('/inc/modules/Module.class.php');
+class Module_XSparrow extends Module
+{
 
-class Module_XSparrow extends Module {
+    public function __construct()
+    {
+        // Call Module constructor.
+        parent::__construct('XSparrow', dirname(__FILE__));
+    }
 
-	function Module_XSparrow() {
-		// Call Module constructor.
-		parent::Module('XSparrow', dirname(__FILE__));
-	}
+    function install()
+    {
+        // Install logic.
+        // get module from ftp, webdav, subversion, etc...?
+        // need to be extracted?
+        // extract and copy files to modules location.
 
-	function install() {
-		// Install logic.
-	        // get module from ftp, webdav, subversion, etc...?
-        	// need to be extracted?
-        	// extract and copy files to modules location.
+        // get constructor SQL
+        $this->loadConstructorSQL("XSparrow.constructor.sql");
 
-        	// get constructor SQL
-		$this->loadConstructorSQL("XSparrow.constructor.sql");
+        // Install !
+        $install_ret = parent::install();
+        if ($install_ret) {
+            echo "XSparrow module has been successfully installed on Ximdex CMS!.\n";
+        }
+    }
 
-        	// Install !
-		$install_ret = parent::install();
-		if($install_ret){
-			echo "XSparrow module has been successfully installed on Ximdex CMS!.\n";
-		}
-	}
-
-	function uninstall() {
-		// Uninstall logic.
-	        // get destructor SQL
-		$this->loadDestructorSQL("XSparrow.destructor.sql");
-	        // Uninstall !
-		parent::uninstall();
-	}
+    function uninstall()
+    {
+        // Uninstall logic.
+        // get destructor SQL
+        $this->loadDestructorSQL("XSparrow.destructor.sql");
+        // Uninstall !
+        parent::uninstall();
+    }
 }
-?>

@@ -26,9 +26,9 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/channel.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
@@ -138,7 +138,7 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 		//Getting section from parent function.
 		$section = $this->getSectionNode($matches[1]);
 		if (!$section){
-			return Config::getValue('EmptyHrefCode');
+			return \App::getValue( 'EmptyHrefCode');
 		}
 		$idTargetChannel = isset($matches[2]) ? $matches[2] : NULL;
 		$dotdot = str_repeat('../', $this->_depth - 2);
@@ -204,7 +204,7 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 			if ($this->mode == 'dinamic') {
 				return "javascript:parent.loadDivsPreview(" . $idNode . ")";
 			} else {
-				$query = App::get('QueryManager');
+				$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 	    		return $query->getPage() . $query->buildWith(array('nodeid' => $idNode, 'channelid' => $idTargetChannel));
 			}
 		} else {
@@ -216,4 +216,3 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 		return $this->getLinkPath($matches);
 	}
 }
-?>

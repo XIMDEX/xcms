@@ -26,6 +26,8 @@
 
 //phpinfo();
 
+include_once '../bootstrap/start.php';
+
 /**
  * XIMDEX_ROOT_PATH
  */
@@ -36,22 +38,17 @@ if (!defined('XIMDEX_ROOT_PATH'))
 if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
 	include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
 
-include_once(XIMDEX_ROOT_PATH."/inc/modules/ModulesManager.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
 //Including composer autoloader
 //ModulesManager::file('/vendor/autoload.php');
-ModulesManager::file('/inc/utils.inc');
-ModulesManager::file('/inc/persistence/XSession.class.php');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/log/XMD_log.class.php'); // Main Logger
 ModulesManager::file('/inc/mvc/mvc.php'); // MVC
 ModulesManager::file('/inc/mvc/FrontControllerAPI.class.php');
 ModulesManager::file('/api/interfaces/NoSecuredAction.iface.php');
 ModulesManager::file('/api/interfaces/SecuredAction.iface.php');
-ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER'); // Profiler
 
 function echo_gt_or_not($msg) {
 	if (function_exists('_')) {
@@ -125,7 +122,7 @@ function checkFolders () {
 }
 
 function goLoadAction() {
-	header(sprintf("Location: %s", Config::getValue('UrlRoot')));
+	header(sprintf("Location: %s", \App::getValue( 'UrlRoot')));
 }
 
 //Main thread
@@ -133,7 +130,7 @@ if(!file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php')){
 	header(sprintf("Location: %s", "./xmd/uninstalled/index.html"));
 }
 else{
-	$locale = XSession::get('locale');
+	$locale = \Ximdex\Utils\Session::get('locale');
 	I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
 
 	check_php_version();

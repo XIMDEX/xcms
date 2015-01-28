@@ -29,8 +29,7 @@
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-require_once(XIMDEX_ROOT_PATH . "/inc/helper/Messages.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/node.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
 
 class BaseIOInferer {
 	var $messages = NULL;
@@ -40,7 +39,7 @@ class BaseIOInferer {
 	 * @return unknown_type
 	 */
 	function BaseIOInferer() {
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 	}
 
 	/**
@@ -74,7 +73,7 @@ class BaseIOInferer {
 	 * @param $nodeTypeFilter
 	 * @return unknown_type
 	 */
-	function infereFileType($file, $nodeTypeFilter = "common" ) {
+	function infereFileType($file, $idFather, $nodeTypeFilter = "" ) {
 
 		$filePath = isset($file) && isset($file['tmp_name']) ? $file['tmp_name'] : NULL;
 		$fileName = isset($file) && isset($file['name']) ? $file['name'] : NULL;
@@ -82,21 +81,30 @@ class BaseIOInferer {
 		$fileMimeType = FsUtils::get_mime_type($filePath);
 		$extension = FsUtils::get_extension($fileName);
 
-		$extraQuery = $extension ? "AND rntmt.extension like '%$extension%' " : NULL;
+        $father = new Node($idFather);
+        $fatherNodeType = $father->Get('IdNodeType');
 
-		$query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
-		$query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
-		$query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
-		$query .= "WHERE ( rntmt.mimeString like '%$fileMimeType%' $extraQuery)";
+        $extraQuery = $extension ? "AND rntmt.extension like '%;$extension;%'" : "";
 
-		if( $nodeTypeFilter != "common" ) {
-			$query .= "  AND rntmt.filter = '$nodeTypeFilter' ";
-		}
-		//Maybe the query would be better with AND operator in where clause instead of OR. Sure for XSL.
+        $query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
+        $query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
+        $query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
+        $query .= "WHERE (nac.IdNodeType=$fatherNodeType $extraQuery)";
 
-		//For 
-		$db = new DB();
-		$db->Query($query);
+        $db = new DB();
+        $db->Query($query);
+
+        if($db->numRows <= 0){
+            $query = "SELECT distinct nt.Name  FROM NodeAllowedContents nac ";
+            $query .= "INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType  ";
+            $query .= "INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType ";
+            $query .= "WHERE (nac.IdNodeType=$fatherNodeType AND rntmt.extension='*')";
+
+            //For
+            $db = new DB();
+            $db->Query($query);
+        }
+
 		if ($db->numRows > 0) {
 			$nodeType = $db->GetValue('Name');
 			if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" && $nodeType != "XslTemplate") {
@@ -124,7 +132,7 @@ class BaseIOInferer {
 	 */
 	function _infereFileType($parent_type, $path) {
 
-		$query = sprintf("SELECT nt.Name, rntmt.mimeString, rntmt.extension, rntmt.filter"
+		$query = sprintf("SELECT nt.Name, rntmt.extension, rntmt.filter"
 					. " FROM NodeAllowedContents nac"
 					. " INNER JOIN RelNodeTypeMimeType rntmt on nac.NodeType = rntmt.IdNodeType"
 					. " INNER JOIN NodeTypes nt on nac.NodeType = nt.IdNodeType"

@@ -30,7 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../');
 }
 
-require_once (XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -55,7 +54,7 @@ class View_Transformer extends Abstract_View implements Interface_View {
 		if("Xlst" == $transformer) {
 			$transformer="Xslt";
 		}
-		$factory = new Factory(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews', 'View_');
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews', 'View_');
 		$instanceOfView = $factory->instantiate($transformer);
 
 		return $instanceOfView->transform($idVersion, $pointer, $args);

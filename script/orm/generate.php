@@ -50,7 +50,7 @@ La sintaxis correcta es:
 Para generar una sola clase:
 	$ php script/orm/generate [Nombre de la tabla]
 
-ó para generar todas las clases
+ï¿½ para generar todas las clases
 	$ php script/orm/generate all
 
 o para generar solo las nuevas
@@ -64,13 +64,14 @@ HEREDOC;
 
 $dbConnection = & DB::_getInstance();
 $dbConnection->debug = false;
-
-$dbConnection->Connect($DBHOST, $DBUSER, $DBPASSWD, $DBNAME, true);
+if(isset($DBHOST) && isset($DBUSER) && isset($DBPASSWD) && isset($DBNAME)) {
+    $dbConnection->Connect($DBHOST, $DBUSER, $DBPASSWD, $DBNAME, true);
+}
 if (!$dbConnection->IsConnected()) {
 	echo <<< HEREDOC
 Se han encontrado problemas para conectarse a la base de datos.
 
-Compruebe los archivos de configuración de la aplicación.
+Compruebe los archivos de configuraciï¿½n de la aplicaciï¿½n.
 
 HEREDOC;
 	exit();
@@ -113,7 +114,7 @@ Error al generar la clase {$tableName}_ORM.class.php
 Posibles causas:
 
  - La tabla $tableName no existe en la base de datos $DBNAME.
- - La tabla $tableName no tiene establecida una clave primaria única
+ - La tabla $tableName no tiene establecida una clave primaria ï¿½nica
 
 HEREDOC;
 		continue;
@@ -128,7 +129,7 @@ HEREDOC;
 			continue;
 		}
 		echo <<< HEREDOC
-Ya existe un modelo para la tabla $tableName, el modelo existente se guardará con extensión bck(número)
+Ya existe un modelo para la tabla $tableName, el modelo existente se guardarï¿½ con extensiï¿½n bck(nï¿½mero)
 
 HEREDOC;
 		$fileContents = FsUtils::file_get_contents($fileName);
@@ -203,7 +204,7 @@ HEREDOC;
 		echo <<< HEREDOC
 	Se han encontrado problemas para conectarse a la base de datos INFORMATION_SCHEMA.
 
-	Compruebe los archivos de configuración de la aplicación y utilice provisionalmente un usuario con privilegios de acceso a esta tabla.
+	Compruebe los archivos de configuraciï¿½n de la aplicaciï¿½n y utilice provisionalmente un usuario con privilegios de acceso a esta tabla.
 
 HEREDOC;
 		exit();
@@ -280,7 +281,7 @@ HEREDOC;
 
 if (FsUtils::file_put_contents($fileName, $template)) {
 	echo <<< HEREDOC
-La clase $fileName ha sido creada con éxito
+La clase $fileName ha sido creada con ï¿½xito
 
 HEREDOC;
 } else {
@@ -297,7 +298,7 @@ if (!$dbConnection->IsConnected()) {
 	echo <<< HEREDOC
 Se han encontrado problemas para conectarse a la base de datos.
 
-Compruebe los archivos de configuración de la aplicación.
+Compruebe los archivos de configuraciï¿½n de la aplicaciï¿½n.
 
 HEREDOC;
 	exit();

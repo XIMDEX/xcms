@@ -26,7 +26,7 @@
 
 
 
-//include_once(XIMDEX_ROOT_PATH . "/inc/model/node.inc");
+//include_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
 
 class ParsingXimMenu {
 
@@ -82,7 +82,7 @@ class ParsingXimMenu {
 	}
 
 	protected function filter_hasPermission(&$node) {
-		$userid = XSession::get('userID');
+		$userid = \Ximdex\Utils\Session::get('userID');
 		$user = new User($userid);
 		$perms = $node->getAttribute('hasPermission');
 		$perms = explode(',', $perms);
@@ -100,7 +100,7 @@ class ParsingXimMenu {
 	 */
 	protected function filter_allowedRoles(&$node) {
 
-		$userid = XSession::get('userID');
+		$userid = \Ximdex\Utils\Session::get('userID');
 		$user = new User($userid);
 		$assignedRoles = $user->GetRoles();
 
@@ -132,7 +132,7 @@ class ParsingXimMenu {
 	 */
 	protected function filter_allowedUsers(&$node) {
 
-		$userid = XSession::get('userID');
+		$userid = \Ximdex\Utils\Session::get('userID');
 		$user = new User($userid);
 		$login = strtoupper($user->GetLogin());
 		$allUsers = $user->GetAllUsers();

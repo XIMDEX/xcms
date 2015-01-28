@@ -48,7 +48,7 @@ class GoogleTranslate extends REST_Provider {
 		$domDoc = new DOMDocument();
 		$domDoc->validateOnParse = true;
 		$domDoc->preserveWhiteSpace = false;
-		$domDoc->loadXML(XmlBase::recodeSrc($text, XML::UTF8));
+		$domDoc->loadXML(\Ximdex\XML\Base::recodeSrc($text, \Ximdex\XML\XML::UTF8));
 
 		$xpath = new DOMXPath($domDoc);
 
@@ -101,8 +101,8 @@ class GoogleTranslate extends REST_Provider {
 		// Check and encoding $text using ximdex class.
 
 		$args = array (
-				'langpair' => XmlBase::recodeSrc($from . '|' . $to, XML::UTF8),
-				'q' => XmlBase::recodeSrc($text, XML::UTF8)
+				'langpair' => \Ximdex\XML\Base::recodeSrc($from . '|' . $to, \Ximdex\XML\XML::UTF8),
+				'q' => \Ximdex\XML\Base::recodeSrc($text, \Ximdex\XML\XML::UTF8)
 			);
 
 		$data = "";

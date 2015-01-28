@@ -20,55 +20,57 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+use Ximdex\Modules\Module;
 
 
-
-ModulesManager::file('/inc/modules/Module.class.php');
-
-class Module_ximNEWS extends Module {
+class Module_ximNEWS extends Module
+{
 
 
-	function Module_ximNEWS() {
-		
-		// Call Module constructor.
-		parent::Module('ximNEWS', dirname(__FILE__));
+    public function __construct()
+    {
 
-		// Initialization stuff.
-	
-	}
+        // Call Module constructor.
+        parent::__construct('ximNEWS', dirname(__FILE__));
 
-	function install() {
+        // Initialization stuff.
+
+    }
+
+    function install()
+    {
 
         // Install logic.
-        
+
         // get module from ftp, webdav, subversion, etc...?
         // need to be extracted?
         // extract and copy files to modules location.
-        
-        // get constructor SQL   
-		$this->loadConstructorSQL("ximNEWS.constructor.sql");
-		
-        // Install !      
-		$install_ret = parent::install();
-		return $install_ret;
-		
-	}
 
-	function uninstall() {
-		
-		// Uninstall logic.
-          
+        // get constructor SQL   
+        $this->loadConstructorSQL("ximNEWS.constructor.sql");
+
+        // Install !      
+        $install_ret = parent::install();
+        return $install_ret;
+
+    }
+
+    function uninstall()
+    {
+
+        // Uninstall logic.
+
         // get destructor SQL          
-		$this->loadDestructorSQL("ximNEWS.destructor.sql");
+        $this->loadDestructorSQL("ximNEWS.destructor.sql");
 
         // Uninstall !      
-		parent::uninstall();
+        parent::uninstall();
 
-	}
+    }
 
 }
 

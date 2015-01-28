@@ -30,99 +30,243 @@
  */
 function HighlightToolBox() {
 
-	this._lastParent = null;
-	this._lastElement = null;
-	this._lastElements = null;
-	this._lastHighlight = null;
+    this._lastParent = null;
+    this._lastElement = null;
+    this._lastElements = null;
+    this._lastHighlight = null;
 
-	this.initialize = function(tool, editor) {
-    	this.tool = tool;
+    this.initialize = function (tool, editor) {
+        this.tool = tool;
         this.editor = editor;
         this.editor.logMessage(_('HighlightToolBox tool initialized'));
-	};
+    };
 
-	this.beforeUpdateContent = function(options) {
-		// clean all selections
-		if (options.selNode) this.highlightElement(null);
-	};
+    this.beforeUpdateContent = function (options) {
+        // clean all selections
+        if (options.selNode)
+            this.highlightElement(null);
+    };
 
-	/**
-	 * Do the highlight on the selected element
-	 */
-	this.updateState = function(options) {
-		if (!options.selNode || (options.event && !['click', 'keyup'].contains(options.event.type)))
-			return;
-		this.highlightElement(options.selNode);
-	};
+    /**
+     * Do the highlight on the selected element
+     */
+    this.updateState = function (options) {
+        if (!options.selNode || (options.event && !['click', 'keyup'].contains(options.event.type)))
+            return;
+        this.highlightElement(options.selNode);
+    };
 
-	this.highlightElement = function(element) {
+    this.highlightElement = function (element) {
 
-		// If element is null all the previuos elements will be unselected
+        // If element is null all the previuos elements will be unselected
 
-		var parent = null;
-		var selectedNodes = [];
-		if (element) {
-			parent = this.editor.getParentWithUID(element);
-			selectedNodes = $('[uid="'+element.getAttribute('uid')+'"]', this.editor.getBody());
-		}
+        var parent = null;
+        var selectedNodes = [];
+        if (element) {
+            parent = this.editor.getParentWithUID(element);
+            selectedNodes = $('[uid="' + element.getAttribute('uid') + '"]', this.editor.getBody());
+        }
 
-		/*if (!selectedNodes.contains(element)) {
-			selectedNodes = [element];
-		}*/
+        /*if (!selectedNodes.contains(element)) {
+         selectedNodes = [element];
+         }*/
 
-		$((this._lastElements || [])).each(
-			function(index, elem) {
-				$(elem).removeClass('rng-element-selected');
-				$(elem).attr("contentEditable",false);
-				if(element && $(elem).attr('uid') == element.getAttribute('uid'))
-					return;
-			}
-		);
-		if (this._lastParent) {
-			$(this._lastParent).removeClass('rng-parent-selected');
-		}
+        $((this._lastElements || [])).each(
+                function (index, elem) {
+                    $(elem).removeClass('rng-element-selected');
+                    $(elem).attr("contentEditable", false);
+                    if (element && $(elem).attr('uid') == element.getAttribute('uid'))
+                        return;
+                }
+        );
+        if (this._lastParent) {
+            $(this._lastParent).removeClass('rng-parent-selected');
+        }
 
-		$(selectedNodes).each(
-			function(index, elem) {
-				$(elem).addClass('rng-element-selected');
-				$(elem).attr("contentEditable",true);
-				var parentElem = $(elem).parent();
-				while (parentElem[0] && parentElem[0].tagName != "HTML"){
-				    parentElem.attr("contentEditable",false);
-				    parentElem = parentElem.parent();
-				}
-			}
-		);
-		if (parent && parent !== element) {
-			$(parent).addClass('rng-parent-selected');
-		}
+        $(selectedNodes).each(
+                function (index, elem) {
+                    $(elem).addClass('rng-element-selected');
+                    $(elem).attr("contentEditable", true);
+                    var parentElem = $(elem).parent();
+                    while (parentElem[0] && parentElem[0].tagName != "HTML") {
+                        parentElem.attr("contentEditable", false);
+                        parentElem = parentElem.parent();
+                    }
+                }
+        );
+        if (parent && parent !== element) {
+            $(parent).addClass('rng-parent-selected');
+        }
 
-		this._lastElement = element;
-		this._lastElements = selectedNodes;
-		this._lastParent = parent;
-	};
+        this._lastElement = element;
+        this._lastElements = selectedNodes;
+        this._lastParent = parent;
+    };
 
-	this.onMouseOver = function(options) {
-		if (this._lastHighlight) {
-			this.onMouseOut({selNode: this._lastHighlight});
-		}
-		if(!options.selNode.ximElement.isSelectable(this.editor.nodeId)) {
-			options.selNode = options.selNode.ximElement.getFirstSelectableParent(this.editor.nodeId);
-		}
-		options.selNode.__background = $(options.selNode).css('background-color');
-		options.selNode.__cursor = $(options.selNode).css('cursor');
-		if(options.event.shiftKey)
-			$(options.selNode).css({'background-color': '#000', 'cursor': 'move'});
-		else
-			$(options.selNode).css('background-color', '#DEDEDE');
-		this._lastHighlight = options.selNode;
-	};
+    this.onMouseOver = function (options) {
+        if (this._lastHighlight) {
+            this.onMouseOut({selNode: this._lastHighlight});
+        }
+        if (!options.selNode.ximElement.isSelectable(this.editor.nodeId)) {
+            options.selNode = options.selNode.ximElement.getFirstSelectableParent(this.editor.nodeId);
+        }
+        options.selNode.__background = $(options.selNode).css('background-color');
+        options.selNode.__cursor = $(options.selNode).css('cursor');
+        if (options.event.shiftKey)
+            $(options.selNode).css({'background-color': '#000', 'cursor': 'move'});
+        else
+            $(options.selNode).css('background-color', '#DEDEDE');
+        this._lastHighlight = options.selNode;
+    };
 
-	this.onMouseOut = function(options) {
-		$(options.selNode).css('background-color', options.selNode.__background);
-		$(options.selNode).css('cursor', options.selNode.__cursor);
-	};
+    this.onMouseOut = function (options) {
+        $(options.selNode).css('background-color', options.selNode.__background);
+        $(options.selNode).css('cursor', options.selNode.__cursor);
+    };
 
-};
+}
+;
 
 HighlightToolBox.prototype = new XimdocToolBox();
+
+
+function FormViewToolBox() {
+
+    this.element = false;
+
+    this.initialize = function (tool, editor) {
+        this.tool = tool;
+        this.editor = editor;
+    };
+
+
+    /**
+     * Everytime register buttons for the current element selected if 
+     * this element has buttons associated.
+     * 
+     **/
+    this.updateState = function (options) {
+
+        //Only for the form view.
+        if (this.editor.view === "form") {
+            
+            /*Get the current elements and check for buttons.
+            This buttons can be  for common elements or apply. 
+            Apply element buttons will be enabled when text is selected.
+            Otherwise common element buttons will be enabled.*/
+            this.element = this.editor.ximElement;
+            this.formElement = $("[uid='" + this.element.uid + "']", this.editor.getBody()).closest(".js-edition-block");
+            if (this.formElement.length) {
+                
+                //Disabling all buttons
+                $(".btn-toolbar button", this.formElement).addClass("disabled");
+                var $elementSiblingButtons = $(".btn-toolbar .js-siblings button", this.formElement);
+                var $elementApplyButtons = $(".btn-toolbar .js-applies button", this.formElement);               
+
+                //Enabling the specific button group
+                if (this.editor.selectedTextLength > 0) {
+                    $(".btn-toolbar .js-applies button", this.formElement).removeClass("disabled");
+                } else {
+                    $(".btn-toolbar .js-siblings button", this.formElement).removeClass("disabled");
+                    $(".btn-toolbar .js-extra button", this.formElement).removeClass("disabled");
+                }
+                
+                //Closure vars
+                var that = this;
+                var parentElement = this.element.parentNode;
+                var uid = this.element.uid;
+
+                //For each apply button
+                $elementApplyButtons.each(function (index, button) {
+                    
+                    //Closure vars
+                    var elementTypes = that.element.schemaNode.type;
+                    var childName = $(button).data("element");
+                    var xeditButton = that.editor.tools[childName + '_rngbutton'];
+                    
+                    //Disabling button if this element exists
+                    if (!elementTypes || !elementTypes.length || elementTypes.indexOf(childName) === -1) {
+                        $(button).addClass("disabled");
+                    }else{
+                    
+                        $(button).off("click").on("click", function () {
+                            /* If the button is clicked on already 
+                             * applied element, disapply. Otherwise applu
+                             */
+                            if (childName === that.element.tagName) {
+                                that.editor.tools.ximdoctool.disApplyElement(that.element);
+                            } else {
+                                var ximElement = that.editor.getXimDocument().getElement(uid);
+                                that.editor.ximElement = ximElement;
+                                that.editor.selNode = $(button).parent().parent().siblings("[uid='" + uid + "']")[0];
+                                xeditButton.commandfunc(null, null, null, parentElement);
+                                that.editor._setSelectionData(ximElement);
+                            }
+                            that.editor.updateEditor({caller: that, target: ximElement});
+                        });
+                    }
+                });
+
+                /**
+                 * For each non apply element
+                 */
+                $elementSiblingButtons.each(function (index, button) {
+                    
+                    //Closure vars
+                    var childName = $(button).data("element");
+                    var xeditButton = that.editor.tools[childName + '_rngbutton'];
+                    var currentElement = that.element;
+                    
+                    //Unregister and register click event.
+                    $(button).off("click").on("click", function () {
+                        var found = false;
+                        var availableSiblingElements;
+                        
+                        //Look for the closest node named like the selected.
+                        while (!found && currentElement.parentNode) {
+                            availableSiblingElements = currentElement.parentNode.schemaNode.childNodes;
+                            for (var i = 0; i < availableSiblingElements.length; i++) {
+                                if (availableSiblingElements[i].tagName === childName) {
+                                    found = true;
+                                    parentElement = currentElement.parentNode ? currentElement.parentNode : currentElement;
+                                    break;
+                                }
+                            }
+                            
+                            if (!found)
+                                currentElement = currentElement.parentNode;
+                        }
+                        
+                        
+                        var ximElement = that.editor.getXimDocument().getElement(uid);
+                        that.editor.ximElement = ximElement;
+                        that.editor.selNode = $(button).parent().parent().siblings("[uid='" + uid + "']")[0];
+                        if (parentElement) {
+                            xeditButton.commandfunc(null, null, null, parentElement, currentElement);
+                            that.editor._setSelectionData(ximElement);
+                            that.editor.updateEditor({caller: that, target: ximElement});
+                        }
+
+                    });
+                });
+
+            }
+
+            this.enableNewElementButton();
+        }
+
+    };
+
+    this.enableNewElementButton = function () {
+        that = this;
+        $(".js-add-more", this.editor.getBody())
+                .off("click")
+                .on("click", function () {
+                    var uid = that.editor.nodeId + "." + $(this).data("uid");
+                    var lastElement = that.editor.getXimDocument().getElement(uid);
+                    that.editor.tools["ximdoctool"].createElement(lastElement.tagName, lastElement.parentNode, lastElement);
+                });
+    };
+}
+
+FormViewToolBox.prototype = new XimdocToolBox();

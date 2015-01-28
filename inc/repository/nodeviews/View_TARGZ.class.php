@@ -35,9 +35,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingRng.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_SQL.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/xml/XmlBase.class.php");
-include_once (XIMDEX_ROOT_PATH. "/inc/xml/XML.class.php");
-include_once (XIMDEX_ROOT_PATH. "/inc/persistence/Config.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
@@ -49,17 +46,17 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		//VALIDATING DATA
 		$version = new Version($idVersion);
 		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("Se ha cargado una versión incorrecta ($idVersion)");
+			XMD_Log::error("Se ha cargado una versiï¿½n incorrecta ($idVersion)");
 			return NULL;
 		}
 		$node = new Node($version->get('IdNode'));
 		$nodeType = new NodeType($node->get('IdNodeType'));
 		$nodeId = $node->get('IdNode');
 		$nodeTypeName = $nodeType->get('Name');
-		$dataEncoding = Config::getValue('dataEncoding');
+		$dataEncoding = \App::getValue( 'dataEncoding');
 
 		if (!($nodeId > 0)) {
-			XMD_Log::error("El nodo que se está intentando convertir no existe: " . $version->get('IdNode'));
+			XMD_Log::error("El nodo que se estï¿½ intentando convertir no existe: " . $version->get('IdNode'));
 			return NULL;
 		}
 		if (!array_key_exists('PATH', $args) && !array_key_exists('NODENAME', $args)) {
@@ -68,7 +65,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		}
 
 		$tarFile = $args['PATH'];
-		$tmpFolder = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot');
+		$tmpFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
 
 		//Sets content on SQL and XML files
 		$arrayContent = explode('<sql_content>', $content);
@@ -78,7 +75,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$sqlContent = substr(trim($arrayContent[1]), 0, -14);
 
 		//Encode the content to ISO, now OTF only work in ISO mode, because the jsp files are in ISO too
-		$xmlContent = XmlBase::recodeSrc($xmlContent, XML::ISO88591);
+		$xmlContent = \Ximdex\XML\Base::recodeSrc($xmlContent, \Ximdex\XML\XML::ISO88591);
 		if (!FsUtils::file_put_contents($tmpDocFile, $xmlContent)) {
 			return false;
 		}
@@ -109,7 +106,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 				break;
 		}
 
-		$sqlContaent = XmlBase::recodeSrc($sqlContent, XML::ISO88591);
+		$sqlContaent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
 		if (!FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
 			return false;
 		}
@@ -122,9 +119,9 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$additionalFiles = $this->getAdditionalFiles($nodeId,$idVersion,$args);
 		if (!is_null($additionalFiles)) {
 			//Encode the files to ISO, OTF only works in ISO mode
-			if (($dataEncoding != XML::ISO88591) && (is_array($additionalFiles))){
+			if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))){
 				foreach ($additionalFiles as $key=>$file) {
-					if (!XmlBase::recodeFile($file, XML::ISO88591)) {
+					if (!\Ximdex\XML\Base::recodeFile($file, \Ximdex\XML\XML::ISO88591)) {
 						return false;
 					}
 				}
@@ -134,9 +131,9 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		$tarFileName = $tarArchiver->pack();
 
 		//Recode the files to before encoding, about dataEncoding config valuea
-		if (($dataEncoding != XML::ISO88591) && (is_array($additionalFiles))){
+		if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))){
 			foreach ($additionalFiles as $key=>$file) {
-				if (!XmlBase::recodeFile($file, $dataEncoding)) {
+				if (!\Ximdex\XML\Base::recodeFile($file, $dataEncoding)) {
 					return false;
 				}
 				
@@ -198,13 +195,13 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 
 						$rngParser = new ParsingRng();
 						$defaultContent = $rngParser->buildDefaultContent($pvdId);
-						$tmpFolder = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot');
+						$tmpFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
 						$headerFile = $tmpFolder . '/' . "pvdheader$pvdId";
 
 						if (FsUtils::file_put_contents($headerFile, $defaultContent)) {
 							$additionalFiles[] = $headerFile;
 						}else{
-							XMD_Log::error("View TARG:No se ha podido añadir el archivo $headerFile");
+							XMD_Log::error("View TARG:No se ha podido aï¿½adir el archivo $headerFile");
 						}
 
 						//Generate Docxap for the bulletin
@@ -218,7 +215,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 							if (FsUtils::file_put_contents($docxapFile, $docxapContent)) {
 								$additionalFiles[] = $docxapFile;
 							}else{
-								XMD_Log::error("View TARG:No se ha podido añadir el archivo $docxapFile");
+								XMD_Log::error("View TARG:No se ha podido aï¿½adir el archivo $docxapFile");
 							}
 						}else{
 							XMD_Log::error("View TARG:No se ha generado la docxap para el colector $colectorId");
@@ -246,7 +243,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 	 */
 	function getFile($tableName, $field, $condition, $params) {
 
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$object = $factory->instantiate("_ORM");
 
 		if (!is_object($object)) {
@@ -286,7 +283,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 		if(!is_null($idVersion)) {
 			$version = new Version($idVersion);
 			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW TARGZ: Se ha cargado una versión incorrecta (' . $idVersion . ')');
+				XMD_Log::error('VIEW TARGZ: Se ha cargado una versiï¿½n incorrecta (' . $idVersion . ')');
 				return "";
 			}
 			$structuredDocument = new StructuredDocument($version->get('IdNode'));
@@ -377,7 +374,7 @@ class View_TARGZ extends Abstract_View implements Interface_View {
 						$subversion = $relNewsColector->get('SubVersion');
 						$cacheId = $relNewsColector->get('IdCache');
 					} else {
-						XMD_Log::info('Sin relación en la base de datos');
+						XMD_Log::info('Sin relaciï¿½n en la base de datos');
 					}
 
 					if(!($cacheId > 0)){

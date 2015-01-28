@@ -26,8 +26,8 @@
 
 
 
-ModulesManager::file('/inc/model/dependencies.inc');
-ModulesManager::file('/inc/persistence/Config.class.php');
+ModulesManager::file('/inc/model/dependencies.php');
+//
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
@@ -35,7 +35,6 @@ ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 ModulesManager::file('inc/manager/Publication_Log.class.php', 'ximSYNC');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/model/RelServersChannels.class.php');
@@ -102,7 +101,7 @@ class BatchManager {
 
 	function publicate($idNode, $docsToPublish, $up, $down, $physicalServers, $otfPublication, $force, $userId=null) {
 
-		$timer = new Timer();
+		$timer = new \Ximdex\Utils\Timer();
 		$timer->start();
 		$this->setFlag('otfPublication',$otfPublication);
 		$node = new Node($idNode);
@@ -379,7 +378,7 @@ class BatchManager {
 			$nodeName = $node->GetNodeName();
 
 			// Blocking node
-			$userID = XSession::get('userID');
+			$userID = \Ximdex\Utils\Session::get('userID');
 			if (is_null($userID)) {
 				$userID = 301;
 			}
@@ -888,7 +887,6 @@ class BatchManager {
 			return false;
 		}
 
-		//ServerFrames que corresponden a Servidores inactivos
 		$inactives = implode(',',$activeAndEnabledServers);
 
 		$query = "SELECT IdSync FROM ServerFrames, Batchs, Pumpers WHERE ServerFrames.IdBatchUp = Batchs.IdBatch AND " .
@@ -898,7 +896,6 @@ class BatchManager {
 
 		$numServerFramesFromInactiveServers = $dbObj->numRows;
 
-		//Si s�lo quedan por procesar ServerFrames de servidores inactivos finalizo el Batch
 		if ($totalServerFrames == $numServerFramesFromInactiveServers + $sucessServerFrames) {
 			XMD_Log::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
 			$this->set('State','Ended');

@@ -89,7 +89,8 @@ class Action_searchpanel extends ActionAbstract {
 				'target' => 'versionnumber'
 			)
 		);
-		$this->render(array('fields' => json_encode($fields)), 'results', 'default-3.0.tpl');
+        $fieldsJSON = json_encode($fields,JSON_UNESCAPED_UNICODE);
+		$this->render(array('fields' => $fieldsJSON), 'results', 'default-3.0.tpl');
 	}
 
 	/**
@@ -115,7 +116,7 @@ class Action_searchpanel extends ActionAbstract {
 
 		$filters = ucfirst(strtolower($filters));
 
-		$factory = new Factory(dirname(__FILE__) . '/inc', 'Filters_');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__) . '/inc', 'Filters_');
 		$filter = $factory->instantiate('Ximdex');
 
 		$data = array();

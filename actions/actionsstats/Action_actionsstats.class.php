@@ -27,8 +27,8 @@
 
 
 ModulesManager::file('/inc/model/ActionsStats.class.php');
-ModulesManager::file('/inc/model/action.inc');
-ModulesManager::file('/inc/model/user.inc');
+ModulesManager::file('/inc/model/action.php');
+ModulesManager::file('/inc/model/user.php');
 
 
 class Action_actionsstats extends ActionAbstract {

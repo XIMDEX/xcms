@@ -73,18 +73,18 @@
 
         <ul class="social">
             <li class="icon_btn">
-                <a href="https://twitter.com/ximdex" class="twitter_btn icon">Cuenta Twitter de Ximdex</a>
+                <a target="_blank" href="https://twitter.com/ximdex" class="twitter_btn icon">Cuenta Twitter de Ximdex</a>
             </li>
             <li class="icon_btn">
-                <a href="https://plus.google.com/+Ximdex/about" class="icon google_btn">Cuenta Google+ de Ximdex</a>
+                <a target="_blank" href="https://plus.google.com/+Ximdex/about" class="icon google_btn">Cuenta Google+ de Ximdex</a>
             </li>
             <li class="icon_btn">
-                <a href="https://www.facebook.com/Ximdex" class="icon facebook_btn">Cuenta Facebook de Twitter</a>
+                <a target="_blank" href="https://www.facebook.com/Ximdex" class="icon facebook_btn">Cuenta Facebook de Twitter</a>
             </li>
         </ul>
 
         <div class="footer">
-            <a href="http://www.ximdex.com">www.ximdex.com</a>
+            <a target="_blank" href="http://www.ximdex.com">www.ximdex.com</a>
         </div>
     </div><div class="content step-<?php echo $this->installManager->currentState; ?>">
         <?php 

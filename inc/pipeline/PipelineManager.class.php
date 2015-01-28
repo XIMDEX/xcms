@@ -31,12 +31,11 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/RelServersChannels_ORM.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
-require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphManager.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
+
 /**
  * 
  * @brief Manager for the pipeline's system
@@ -52,10 +51,7 @@ class PipelineManager {
 	 * @return void
 	 */
 	function PipelineManager() {
-		$this->messages =& App::get('Messages');
-		GraphManager::createGraph('PipelineGraph', NULL, NULL, 'Cache hints graph for pipelines', 'SeriesToBars');
-		GraphManager::createSerie('PipelineGraph', 'Cache request');
-		GraphManager::createSerie('PipelineGraph', 'Cache miss');
+		$this->messages = \Ximdex\Runtime\App::get('\Ximdex\Utils\Messages');
 	}
 	
 	/**
@@ -67,10 +63,9 @@ class PipelineManager {
 	 * @return file
 	 */
 	function getCacheFromTransition($idVersion, $idTransition, $args) {
-		GraphManager::createSerieValue('PipelineGraph', 'Cache request', $idVersion, $idTransition);
 		if(!isset($args['DISABLE_CACHE']) || $args['DISABLE_CACHE'] === false) {
 			if (!($idVersion > 0)) {
-				XMD_Log::error('[PipelineManager:getCacheFromTransition] An unexistent version has been requested.');
+				XMD_Log::error('[PipelineManager:getCacheFromTransition] An non-existent version has been requested.');
 				return false;
 			}
 			if (!$this->_checkChannelIsEnabled($idVersion, $args)) {

@@ -25,13 +25,18 @@
  */
 
 ModulesManager::file('/inc/model/orm/RelUsersGroups_ORM.class.php');
-ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/locale.php');
 
 class Action_modifyuser extends ActionAbstract {
     // Main method: it shows init form
     function index () {
 	    $idNode = $this->request->getParam('nodeid');
 		$user = new User($idNode);
+
+        $idRegisteredUser = \Ximdex\Utils\Session::get('userID');
+        $registeredUser = new User($idRegisteredUser);
+
+        $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
 
 		$locale = new XimLocale();
 		$locales = $locale->GetEnabledLocales();
@@ -50,7 +55,8 @@ class Action_modifyuser extends ActionAbstract {
 			'roles' => $roles,
 			'user_locale' => $user->get('Locale'),
 			'locales' => $locales,
-			'messages' => $this->messages->messages
+			'messages' => $this->messages->messages,
+            'canModifyUserGroup' => $canModifyUserGroup
             );
 
 		$this->render($values, null, 'default-3.0.tpl');
@@ -65,14 +71,25 @@ class Action_modifyuser extends ActionAbstract {
         $general_role = $this->request->getParam('generalrole');
 
 		$node = new Node($idNode);
-	    $idUser = XSession::get('userID');
+	    $idUser = \Ximdex\Utils\Session::get('userID');
 	    if(ModulesManager::isEnabled('ximDEMOS') && $idUser != $idNode && $idUser != 301){
 	        $this->render($values, NULL, 'messages.tpl');
 	    }
 
+        $idRegisteredUser = \Ximdex\Utils\Session::get('userID');
+        $registeredUser = new User($idRegisteredUser);
+
+        $canModifyUserGroup = $registeredUser->isAllowedAction($idNode, 6004);
+
         $group = new Group();
         $group->SetID($group->GetGeneralGroup());
-        $group->ChangeUserRole($idNode,$general_role);
+        $group->GetUserList();
+        $roleOnNode = $group->GetRoleOnNode($idNode);
+        if($canModifyUserGroup){
+            $group->ChangeUserRole($idNode,$general_role);
+        }elseif($roleOnNode != $general_role){
+            $this->messages->add(_("You don't have enough permissions to modify the user role"), MSG_TYPE_WARNING);
+        }
 
     	$user = new User($idNode);
     	$user->set('Name', $name);

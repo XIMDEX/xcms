@@ -40,7 +40,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Response.class.php');
 
 class IController {
 	/**
-	 * Objeto Request para almacenar parámetros de petición
+	 * Objeto Request para almacenar parï¿½metros de peticiï¿½n
 	 * @var unknown_type
 	 */
 	var $request;
@@ -71,7 +71,7 @@ class IController {
      */
     function __construct() {
     	$this->hasError = false;
-    	$this->messages = new Messages();
+    	$this->messages = new \Ximdex\Utils\Messages();
 		$this->request = new Request();
 		$this->response = new Response();
     }
@@ -86,7 +86,7 @@ class IController {
 	}
 
 	/**
-	 * TODO: Cambiar toda la gestión de errores en base a variable booleana + array simple por el objeto messages
+	 * TODO: Cambiar toda la gestiï¿½n de errores en base a variable booleana + array simple por el objeto messages
 	 * Getter
 	 * @return unknown_type
 	 */

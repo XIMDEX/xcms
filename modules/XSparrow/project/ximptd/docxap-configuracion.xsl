@@ -11,13 +11,13 @@
                                   </head>
                                   <body>
                                     <xsl:choose>
-                                      <xsl:when test="//docxap[@tipo_documento]/@tipo_documento='rng-configuracion.xml'">                                   	
+                                      <xsl:when test="//docxap[@schema]/@schema='rng-configuracion.xml'">                                   	
                                            <xsl:apply-templates select="//config"/>                                      
                                       </xsl:when>
-                                      <xsl:when test="//docxap[@tipo_documento]/@tipo_documento='rng-ximlet-bootstrap-menu.xml'">                                   	
+                                      <xsl:when test="//docxap[@schema]/@schema='rng-ximlet-bootstrap-menu.xml'">                                   	
                                            <xsl:apply-templates select="//config"/>                                      
                                       </xsl:when>
-                                      <xsl:when test="//docxap[@tipo_documento]/@tipo_documento='rng-bootstrap-new.xml'">
+                                      <xsl:when test="//docxap[@schema]/@schema='rng-bootstrap-new.xml'">
                                         		<xsl:apply-templates select="//menu/.."/>
                                               <xsl:apply-templates select="//config/.."/>
                                               <xsl:apply-templates select="//new"/>

@@ -1,7 +1,6 @@
 <?php
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/xml/validator/XMLValidator_RNG.class.php');
 
 class Action_document implements APIRestAction, SecuredAction
 {
@@ -18,8 +17,8 @@ class Action_document implements APIRestAction, SecuredAction
         $username = $request->getParam(self::USER_PARAM);
 
         if (!empty($id)) {
-            $nodeService = new NodeService();
-            if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)) {
+            $nodeService = new \Ximdex\Services\Node();
+            if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_DOCUMENT)) {
                 $nodeInfo = $nodeService->getNodeInfo($id);
                 $node = new Node($id);
                 $nodeInfo['content'] = $node->GetContent();
@@ -57,7 +56,7 @@ class Action_document implements APIRestAction, SecuredAction
         $id = $request->getParam('parentid');
         $name = $request->getParam('name');
         $schema = $request->getParam('id_schema');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (empty($name)) {
             $this->createErrorResponse($response, "The name for the document is missing");
@@ -95,14 +94,14 @@ class Action_document implements APIRestAction, SecuredAction
         $content = $request->getParam('content');
         $validate = $request->getParam('validate');
         
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (empty($id)) {
             $this->createErrorResponse($response, "The id of the document is missing");
             return;
         }
         
-        if (!$nodeService->existsNode($id) || !$nodeService->hasPermissionOnNode($username, $id) || !$nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)) {
+        if (!$nodeService->existsNode($id) || !$nodeService->hasPermissionOnNode($username, $id) || !$nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_DOCUMENT)) {
             $this->createErrorResponse($response, "The id for the document is missing or you don't have permission to manage it");
             return;
         }
@@ -122,7 +121,7 @@ class Action_document implements APIRestAction, SecuredAction
         } else {
 
             /* Check whether the supplied node Id references to an XML document */
-            if (!$nodeService->isOfNodeType($node, NodetypeService::XML_DOCUMENT)) {
+            if (!$nodeService->isOfNodeType($node, \Ximdex\Services\NodeType::XML_DOCUMENT)) {
                 $this->createErrorResponse("The supplied node id does not refer to an structured document");
                 return;
             }
@@ -142,7 +141,7 @@ class Action_document implements APIRestAction, SecuredAction
 
                 $contentToValidate = "<docxap>" . $content . "</docxap>";
 
-                $validator = new XMLValidator_RNG();
+                $validator = new \Ximdex\XML\Validators\RNG();
                 $result = $validator->validate($templateContent, $contentToValidate);
 
                 if (!$result) {
@@ -168,7 +167,7 @@ class Action_document implements APIRestAction, SecuredAction
     {
         $id = $request->getParam('id');
         $username = $request->getParam(self::USER_PARAM);
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
 
         if (!empty($id)) {
             if (!$nodeService->existsNode($id)) {
@@ -177,8 +176,8 @@ class Action_document implements APIRestAction, SecuredAction
                 return;
             }
 
-            if ($nodeService->hasPermissionOnNode($username, $id) && ($nodeService->isOfNodeType($id, NodetypeService::XML_CONTAINER || $nodeService->isOfNodeType($id, NodetypeService::XML_DOCUMENT)))) {
-                $typeString = $nodeService->isOfNodeType($id, NodetypeService::XML_CONTAINER) ? "document container" : "document";
+            if ($nodeService->hasPermissionOnNode($username, $id) && ($nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_CONTAINER || $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_DOCUMENT)))) {
+                $typeString = $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_CONTAINER) ? "document container" : "document";
                 $removed = $nodeService->deleteNode($id);
                 
                 if ($removed) {
@@ -207,13 +206,13 @@ class Action_document implements APIRestAction, SecuredAction
     {
 
         $idNode = $request->getParam('parentid');
-        $nodeService = new NodeService();
+        $nodeService = new \Ximdex\Services\Node();
         $node = $nodeService->getNode($idNode);
 
         /* Check whether it is possible to add a xml container as child of the supplied node */
         $nodeAllowedContent = new NodeAllowedContent();
         $allowedContents = $nodeAllowedContent->getAllowedChilds($node->GetNodeType());
-        if (!in_array(NodetypeService::XML_CONTAINER, $allowedContents)) {
+        if (!in_array(\Ximdex\Services\NodeType::XML_CONTAINER, $allowedContents)) {
             $this->createErrorResponse($response, "The supplied node does not allow to have structured document container as a child");
             return;
         }

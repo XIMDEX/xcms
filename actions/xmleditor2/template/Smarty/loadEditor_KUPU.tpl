@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 
-<form action="{$actionUrlShowPost}" method="POST" ng-controller="XTagsCtrl" 
+<form action="{$actionUrlShowPost}" method="POST" ng-controller="XTagsCtrl"
 xim-document-tags='{$tags}'
 	xim-namespaces='{$namespaces}'
 	xim-node-id='{$nodeid}'
@@ -39,6 +39,7 @@ xim-document-tags='{$tags}'
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/toolbar.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/ximletdrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl"}
+		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/ximimagedrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/tabledrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/toolboxes.tpl"}
         	<div class="kupu-editorframe">

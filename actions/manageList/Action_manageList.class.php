@@ -28,7 +28,6 @@
 
 
 ModulesManager::file('/inc/model/List.class.php');
-ModulesManager::file('/inc/patterns/Factory.class.php');
 
 class Action_manageList extends ActionAbstract {
 
@@ -119,7 +118,7 @@ class Action_manageList extends ActionAbstract {
 	}
 	private function getObjectInstance($type, $arg = NULL) {
 		$rootName = 'List_';
-		$factory = new Factory(XIMDEX_ROOT_PATH . '/inc/model/', $rootName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . '/inc/model/', $rootName);
 		return $factory->instantiate($type, $arg);
 	}
 }

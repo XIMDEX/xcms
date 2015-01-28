@@ -27,8 +27,7 @@
 
 
 
-ModulesManager::file('/inc/utils.inc');
-ModulesManager::file('/inc/helper/String.class.php');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
@@ -159,7 +158,7 @@ class Action_prevdoc extends ActionAbstract
 			return;
 		}
 
-		$queryManager = new QueryManager();
+		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 		$prevUrl = $queryManager->getPage() . $queryManager->buildWith(array('method' => 'prevdoc', 'hash' => $hash));
 
 //    	$this->addCss('/actions/prevdoc/resources/css/prevdoc.css');
@@ -181,12 +180,16 @@ class Action_prevdoc extends ActionAbstract
 		$this->response->set('Content-type', 'text/html');
 
     	$hash = $this->request->getParam('hash');
-    	$file = sprintf('%s/data/tmp/%s', Config::getValue('AppRoot'), $hash);
+    	$file = sprintf('%s/data/tmp/%s', App::getValue('AppRoot'), $hash);
     	$content = '';
 
     	if (file_exists($file)) {
     		$content = FsUtils::file_get_contents($file);
     	}
+        if(isset($_GET["nodeid"])){
+            //Remove all used cache
+            exec(sprintf('rm -f %s/data/tmp/preview_%s_*', App::getValue('AppRoot'), $_GET["nodeid"]));
+        }
 
 		//Show preview as web
 		$content = str_replace("&ajax=json", "&showprev=1", $content);
@@ -200,8 +203,8 @@ class Action_prevdoc extends ActionAbstract
 	 */
 	private function _normalizeXmlDocument($xmldoc) {
 
-		/*$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . String::stripslashes($xmldoc);*/
-		$xmldoc = String::stripslashes($xmldoc);
+		/*$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\String::stripslashes( $xmldoc);*/
+		$xmldoc = \Ximdex\Utils\String::stripslashes( $xmldoc);
 
 		$doc = new DOMDocument();
 		$doc->loadXML($xmldoc);

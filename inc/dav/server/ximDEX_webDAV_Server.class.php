@@ -31,7 +31,6 @@ if(!defined('XIMDEX_ROOT_PATH'))
 
 require_once("Server.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/dav/DAV_Log.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/XSession.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/xvfs/XVFS.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_XmlDocument.class.php");
@@ -142,8 +141,8 @@ class ximDEX_webDAV_Server extends HTTP_WebDAV_Server {
 			if ($isValid) {
 
 				// Create new session
-				XSession::start("dav");
-				XSession::set('user', $username);
+				\Ximdex\Utils\Session::start("dav");
+				\Ximdex\Utils\Session::set('user', $username);
 				// Mount VFS
 				$this->mount_vfs($username, $password);
 
@@ -461,7 +460,7 @@ class ximDEX_webDAV_Server extends HTTP_WebDAV_Server {
 			$ret = XVFS_NONE;
 			$entity =& XVFS::read($vfspath);
 
-			// NOTE: ¡¡¡Pedazo de workaround!!!
+			// NOTE: ï¿½ï¿½ï¿½Pedazo de workaround!!!
 			// Procesa StructuredDocuments y la plantilla docxap
 			$view = new View_XmlDocument();
 			$content = $view->transform($entity->get('idnode'), $stream, null);

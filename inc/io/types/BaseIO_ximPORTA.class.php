@@ -24,37 +24,35 @@
  *  @version $Revision$
  */
 
-
-
-
 ModulesManager::file('/actions/fileupload_document_multiple/baseIO.php', 'ximPORTA');
 
+class BaseIO_ximPORTA
+{
+    public $messages;
 
-class BaseIO_ximPORTA {
-	var $messages;
-	
-	function BaseIO_ximPORTA() {
-	}
+    public function BaseIO_ximPORTA()
+    {
+    }
 
-	function build($data) {
-		$uploader = new FileUploadDocumentMultiple();
+    public function build($data)
+    {
+        $uploader = new FileUploadDocumentMultiple();
 
-		// array de idiomas en el que cada idioma contiene un array con clave channels con los identificadores de los canales
-		$languageData = array ($data['LANG'] => array('channels' => $data['CHANNELS']));
+        // languages array. Each language has an array with the channels ids.
+        $languageData = array ($data['LANG'] => array('channels' => $data['CHANNELS']));
 
-		// array de archivos => un subarray por cada elemento con las claves tmp_name(ruta) y name(nombre del nodo)
-		$files = array(
-				array('tmp_name' => $data['PATH'], 'name' => $data['NAME'])
-			);
-		$result = $uploader->insertDocuments($data['PARENTID'], $data['TEMPLATE'], $languageData, $files, false);
-		$this->messages = $uploader->messages;
-		if (count($uploader->insertedIds) == 1) {
-			return $uploader->insertedIds[0];
-		} elseif (count($uploader->insertedIds) > 1) {
-			XMD_Log::error('Ha ocurrido un error inesperado al importar un nodo ximPORTA, se han encontrado dos inserciones cuando se esperaba una');
-		}
-		
-		return NULL;
-	}
+        // array de archivos => un subarray por cada elemento con las claves tmp_name(ruta) y name(nombre del nodo)
+        $files = array(
+                array('tmp_name' => $data['PATH'], 'name' => $data['NAME'])
+            );
+        $result = $uploader->insertDocuments($data['PARENTID'], $data['TEMPLATE'], $languageData, $files, false);
+        $this->messages = $uploader->messages;
+        if (count($uploader->insertedIds) == 1) {
+            return $uploader->insertedIds[0];
+        } elseif (count($uploader->insertedIds) > 1) {
+            XMD_Log::error('Ha ocurrido un error inesperado al importar un nodo ximPORTA, se han encontrado dos inserciones cuando se esperaba una');
+        }
+
+        return NULL;
+    }
 }
-?>

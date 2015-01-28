@@ -79,7 +79,7 @@ class Log {
 		// normal constructor
 
 		// init data structures
-		$this->_loggers = new AssociativeArray();
+		$this->_loggers = new \Ximdex\Utils\AssociativeArray();
 	}
 
 	/**
@@ -326,7 +326,7 @@ class Log {
 		}
 		
 		$logger =& Log::getLogger($logger);
-		$logger->debug($message . '- Usuario: ' . XSession::get('userID'));
+		$logger->debug($message . '- Usuario: ' . \Ximdex\Utils\Session::get('userID'));
 	}
 }
 ?>

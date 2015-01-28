@@ -35,9 +35,7 @@ if (!isset($DB_TYPE_USAGE) && defined("ADODB") ) {
 }
 
 require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/helper/Messages.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/patterns/Factory.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/db/db.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_historic.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/Ldd.class.php");
@@ -45,8 +43,8 @@ require_once(XIMDEX_ROOT_PATH."/script/diffChecker/Ldd.class.php");
 class lmd {
 	function lmd() {
 		if (!defined("LOGGED_SCRIPT_BEGIN")) {
-			UpdateDb_log::info(sprintf("*** Ejecución script %s", $_SERVER["PHP_SELF"]));
-			UpdateDb_historic::info(sprintf("*** Ejecución script %s", $_SERVER["PHP_SELF"]));
+			UpdateDb_log::info(sprintf("*** Ejecuciï¿½n script %s", $_SERVER["PHP_SELF"]));
+			UpdateDb_historic::info(sprintf("*** Ejecuciï¿½n script %s", $_SERVER["PHP_SELF"]));
 			define("LOGGED_SCRIPT_BEGIN", true);
 		}
 	}
@@ -58,7 +56,7 @@ class lmd {
 		$tableName = $data["table"];
 
 		$this->checkModel($tableName);
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$obj = $factory->instantiate("_ORM");
 
 		$obj->loadFromArray($data);
@@ -94,7 +92,7 @@ class lmd {
 		while (list(, $message) = each($obj->messages->messages)) {
 			UpdateDb_log::warning($message["message"]);
 		}
-		$obj->messages = new Messages();
+		$obj->messages = new \Ximdex\Utils\Messages();
 		if (!$result) {
 			$this->updateModel($tableName);
 			$result = $obj->add();
@@ -113,7 +111,7 @@ class lmd {
 		$tableName = $data["table"];
 
 		$this->checkModel($tableName);
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$obj = $factory->instantiate("_ORM");
 
 		if (!isset($data[$obj->_idField])) {
@@ -165,7 +163,7 @@ class lmd {
                 while (list(, $message) = each($obj->messages->messages)) {
                         UpdateDb_log::warning($message["message"]);
                 }
-                $obj->messages = new Messages();
+                $obj->messages = new \Ximdex\Utils\Messages();
                 if (!$result) {
                         $this->updateModel($tableName);
                         $result = $obj->update();
@@ -191,7 +189,7 @@ class lmd {
 		$tableName = $data["table"];
 
 		$this->checkModel($tableName);
-		$factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
 		$obj = $factory->instantiate("_ORM");
 
 /*		if (!isset($data[$obj->_idField])) {

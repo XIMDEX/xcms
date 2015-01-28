@@ -33,29 +33,22 @@
 	</div>
 
 	<div class="kupu-panels js_search_link_panel search_panel">
-		
-	
-				<div class="search_links">
-				<label for="ximlink-search" i18n:translate="" class="title">{t}Search existing links{/t}</label>
-				<input id="ximlink-search" class="kupu-toolbox-st ximlink-search xlinks_input" type="text" />
-				
+		<div class="search_links">
+			<label for="ximlink-search" i18n:translate="" class="title">{t}Search existing links{/t}</label>
+			<input id="ximlink-search" class="kupu-toolbox-st ximlink-search xlinks_input" type="text" />
+		</div>
 
-			</div>
-			<div id="ximlink-list">
-					<label for="ximlink-list" i18n:translate="" class="title icon links">{t}Links{/t}</label>
-					<select  class="ximlink-list xlinks_list" multiple="true"></select>
-			</div>
+		<div id="ximlink-list">
+			<label for="ximlink-list" i18n:translate="" class="title icon links">{t}Links{/t}</label>
+			<select  class="ximlink-list xlinks_list" multiple="true"></select>
+		</div>
 
-
-				<label for="descriptions-list" i18n:translate="" class="title icon descriptions">{t}Available descriptions for the selected link{/t}</label>
-				<div class="descriptions-list-options description_list">
-				</div>
-	
-			</div>
+		<label for="descriptions-list" i18n:translate="" class="title icon descriptions">{t}Available descriptions for the selected link{/t}</label>
+		<div class="descriptions-list-options description_list"></div>
+	</div>
 
 	<div class="buttons">
 		<button class="kupu-dialog-button save-button btn main_action" type="button" i18n:translate="">{t}Accept{/t}</button>
-	
 		<button class="kupu-dialog-button close-button btn" type="button" i18n:translate="">{t}Cancel{/t}</button>
 	</div>
 
@@ -79,12 +72,12 @@
 			<label for="link_idparent" i18n:translate="" class="title">{t}Folder{/t}</label>
 			<treeview class="xim-treeview-selector"	/>
 			<input name="link_id_parent" type="hidden" />
-		</div>		
+		</div>
 	</div>
 
 	<div class="buttons" style="display:none">
 		<button class="kupu-dialog-button create-button btn main_action" type="button" i18n:translate="">{t}Create{/t}</button>
-	
+
 		<button class="kupu-dialog-button cancel-button btn" type="button" i18n:translate="">{t}Cancel{/t}</button>
 	</div>
 </div>

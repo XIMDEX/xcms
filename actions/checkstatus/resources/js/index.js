@@ -53,7 +53,7 @@
 
 
 X.actionLoaded(function(event, fn, params) {
-	X.angularTools.initView(params.context, params.tabId);
+	//X.angularTools.initView(params.context, params.tabId);
 
 	fn('.state-info .documents-info').addClass("hide-toggle");
 

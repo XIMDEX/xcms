@@ -26,12 +26,11 @@
 
 
 ModulesManager::file('/inc/serializer/Serializer.class.php');
-ModulesManager::file('/inc/helper/String.class.php');
 ModulesManager::file('/inc/mvc/Request.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/model/locale.inc');
+ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/model/NodeEdition.class.php');
 
 
@@ -53,9 +52,9 @@ class Action_xmleditor2 extends ActionAbstract {
                     return false;
                 }
 
-		$queryManager = new QueryManager();
+		$queryManager = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 		$locale = new XimLocale();
-		$user_locale = $locale->GetLocaleByCode(XSession::get('locale'));
+		$user_locale = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
 		$locales = $locale->GetEnabledLocales();
 
 		$action = $queryManager->getPage() . $queryManager->buildWith(array(
@@ -75,23 +74,23 @@ class Action_xmleditor2 extends ActionAbstract {
 		$view = $this->request->getParam('view');
 		$this->getEditor($idnode);
 
-		$xslIncludesOnServer = Config::getValue("XslIncludesOnServer");
+		$xslIncludesOnServer = \App::getValue( "XslIncludesOnServer");
 		$values = $this->_editor->openEditor($idnode, $view);
 		$values['on_resize_functions'] = '';
-		$values['xinversion'] = Config::getValue("VersionName");
+		$values['xinversion'] = \App::getValue( "VersionName");
 		$template = 'loadEditor_' . $this->_editor->getEditorName();
 		//Adding Config params for xsl:includes
 		$values["xslIncludesOnServer"] = $xslIncludesOnServer;
-	
+
 
 		$values["user_connect"] = null;
 		$values['time_id'] = 0;
 		if(ModulesManager::isEnabled('ximADM') ) {
-			$userID = (int) XSession::get('userID');
+			$userID = (int) \Ximdex\Utils\Session::get('userID');
 
 			$time_id = time()."_".$userID;
 			$values['time_id'] = $time_id;
-			$values["user_connect"] = $this->addJs('/utils/user_connect.js.php?id='.$time_id.'&lang='.XSession::get('locale'), 'ximADM');
+			$values["user_connect"] = $this->addJs('/utils/user_connect.js.php?id='.$time_id.'&lang='.\Ximdex\Utils\Session::get('locale'), 'ximADM');
 		}
 
 
@@ -105,7 +104,7 @@ class Action_xmleditor2 extends ActionAbstract {
 		$params = $this->request->getParam("params");
 
 		$editorName = strtoupper('KUPU');
-		$msg = new Messages();
+		$msg = new \Ximdex\Utils\Messages();
 
 		$class = 'XmlEditor_' . $editorName;
 		$file =  '/actions/xmleditor2/model/XmlEditor_' . $editorName . '.class.php';
@@ -125,7 +124,7 @@ class Action_xmleditor2 extends ActionAbstract {
 			exit();
 		}
 
-		$query = App::get('QueryManager');
+		$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 		$base_url = $query->getPage() . $query->buildWith(array());
 
 		$editor = new $class();
@@ -226,7 +225,7 @@ class Action_xmleditor2 extends ActionAbstract {
 
 	public function canEditNode() {
 		$ximcludeId = $this->request->getParam('nodeid');
-		$userId = XSession::get('userID');
+		$userId = \Ximdex\Utils\Session::get('userID');
 		$ret = Auth::canWrite($userId, array('node_id' => $ximcludeId));
 		$this->printContent(array('editable' => $ret));
 	}
@@ -234,7 +233,7 @@ class Action_xmleditor2 extends ActionAbstract {
 	public function validateSchema() {
 		$idnode = $this->request->getParam('nodeid');
 		$xmldoc = Request::post('content');
-		$xmldoc = String::stripslashes($xmldoc);
+		$xmldoc = \Ximdex\Utils\String::stripslashes( $xmldoc);
 		$this->getEditor($idnode);
 		$ret = $this->_editor->validateSchema($idnode, $xmldoc);
 		$this->printContent($ret);
@@ -367,12 +366,12 @@ class Action_xmleditor2 extends ActionAbstract {
 
 /**
 * <p>Check whether the node is being edited by some user</p>
-* 
+*
 * @return string json string containing editing information
 */
 public function checkEditionStatus() {
     $idnode = $this->request->getParam('nodeid');
-    $userID = (int) XSession::get('userID');
+    $userID = (int) \Ximdex\Utils\Session::get('userID');
     $nodeEdition = new NodeEdition();
     $results = $nodeEdition->getByNode($idnode);
     $edition = false;
@@ -381,7 +380,7 @@ public function checkEditionStatus() {
         $edition = true;
         $userNames = array();
         foreach($results as $result) {
-            if(!$userNames[$result["IdUser"]]) {
+            if(!isset($userNames[$result["IdUser"]])) {
                 $user = new User($result["IdUser"]);
                 $userNames[$result["IdUser"]] = $user->GetRealName();
             }
@@ -391,7 +390,7 @@ public function checkEditionStatus() {
         }
     }
     // Creating the new edition for this user
-    $res = $nodeEdition->create($idnode, $userID);    
+    $res = $nodeEdition->create($idnode, $userID);
     if(!$res) {
         XMD_Log::error(_('Error creating a new Node Edition'));
     }
@@ -403,7 +402,7 @@ public function checkEditionStatus() {
 */
 public function removeNodeEdition() {
     $nodeid = $this->request->get('nodeid');
-    $userid = XSession::get('userID');
+    $userid = \Ximdex\Utils\Session::get('userID');
     $nodeEdition = new NodeEdition();
     $res = $nodeEdition->deleteByNodeAndUser($nodeid, $userid);
     if(!$res) {
@@ -411,7 +410,7 @@ public function removeNodeEdition() {
     }
 }
 
-    	
+
 	public function saveXimLink(){
 		$result = array();
 		$url = urlencode($this->request->getParam("url"));
@@ -428,9 +427,9 @@ public function removeNodeEdition() {
 		$idLink = $actionCreateLink->createNodeLink($name, $url, $description, $idParent);
 		if ($idLink){
 			$result["success"] = true;
-			$result["idLink"] = $idLink;	
-		}		
-		
+			$result["idLink"] = $idLink;
+		}
+
 		$this->sendJSON($result);
 	}
 

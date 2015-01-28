@@ -24,18 +24,16 @@
  *  @version $Revision$
  */
 
-
-
 ModulesManager::file('/actions/generatexmldocument/baseIO.php');
 
 class BaseIO_XmlDocument{
 
 	function build($data) {
-		$documento = baseIO_CreateXmlDocument($data["NAME"], $data["PARENTID"], $data["STATE"], $data["TEMPLATE"], $data["LANG"] , $data["ALIAS"], $data["CHANNELS"],$data["NEWTARGETLINK"],$data["CONTENT"]);
-		if (is_null($documento)) {
+		$document = baseIO_CreateXmlDocument($data["NAME"], $data["PARENTID"], $data["STATE"], $data["TEMPLATE"], $data["LANG"] , $data["ALIAS"], $data["CHANNELS"],$data["NEWTARGETLINK"],$data["CONTENT"]);
+		if (is_null($document)) {
 			return ERROR_INCORRECT_DATA;
 		}
-		return $documento->get('IdNode'); 
+		return $document->get('IdNode');
 	}
 }
 

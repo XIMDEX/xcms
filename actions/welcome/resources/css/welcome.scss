@@ -30,8 +30,8 @@
 .welcome{
 	height: 100%;
 	.action_content{
-
-	padding: 2em 4%;
+	  padding: 2em 4%;
+      padding-bottom: 0;
 	}
 }
 .action_content{	
@@ -341,6 +341,7 @@
 					content: attr(data-tooltip);
 					@extend %tooltip;
 					margin-left: -1em;
+                    top: 4em;
 
 					-webkit-transition: none;
 					-moz-transition: none;

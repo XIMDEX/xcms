@@ -94,7 +94,7 @@ class Action_modifyserver extends ActionAbstract {
 		$this->addJs('/actions/modifyserver/resources/js/validate.js');
 /*		if (ModulesManager::isEnabled('ximDEMOS'))
 			$this->addJs('/actions/modifyserver/resources/js/tour.js');
-		if ($this->tourEnabled(XSession::get("userID")))
+		if ($this->tourEnabled(\Ximdex\Utils\Session::get("userID")))
 			$this->addJs('/resources/js/start_tour.js','ximDEMOS');
 */
 		$this->addCss('/actions/modifyserver/resources/css/style.css');
@@ -103,7 +103,7 @@ class Action_modifyserver extends ActionAbstract {
 			'id_node' => $idNode,
 			'id_action' => $actionID,
 			'params' => $params,
-			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?$actionParam&nodeid={$idNode}",
+			"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?$actionParam&nodeid={$idNode}",
 			"go_method" => "modify_server",
 			'servers' => $_server,
 			'num_servers' => $num_servers,
@@ -144,14 +144,14 @@ class Action_modifyserver extends ActionAbstract {
 		//validate the fields about protocol
 		//If ximDEMOS is actived and nodeis is rol "Demo" then  remove is not allowed
 		if(ModulesManager::isEnabled("ximDEMOS") ) {
-			if("FTP" != $protocol && XSession::get('user_demo')) {
+			if("FTP" != $protocol && \Ximdex\Utils\Session::get('user_demo')) {
 					$this->messages->add(_("Not allowed protocol for demo user. Get Ximdex open source to get full functionality."), MSG_TYPE_ERROR);
 					$values = array(
 						'messages' => $this->messages->messages,
 						'goback' => true,
 						'id_node' => $idNode,
 						'params' => $params,
-						'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
+						'nodeURL' => \App::getValue( 'UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 					);
 
 					$this->sendJSON($values);
@@ -238,7 +238,7 @@ class Action_modifyserver extends ActionAbstract {
 			'goback' => true,
 			'id_node' => $idNode,
 			'params' => $params,
-			'nodeURL' => Config::getValue('UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
+			'nodeURL' => \App::getValue( 'UrlRoot').'/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}',
 		);
 		//$this->sendJSON($values);
 		$this->index();
@@ -342,65 +342,6 @@ class Action_modifyserver extends ActionAbstract {
 
 		return count($channels) > 0 ? $channels : null;
 	}
-
-	private function _getLanguages($nodeID, $serverID) {
-		$node = new Node($nodeID);
-
-		$nodeProperty = new NodeProperty();
-		$nodeLanguages = $nodeProperty->getProperty($nodeID, 'language');
-
-		$project = new Node($node->getProject());
-		(array) $langs = $project->getProperty('language');
-
-		if (sizeof($langs) > 0) {
-			foreach ($langs as $langId) {
-
-				$language = new Language($langId);
-
-				if (in_array($langId, (array) $nodeLanguages)) {
-					$checked = 'checked';
-				} else {
-					$checked = '';
-				}
-
-				$languages[] = array(
-					'IdLanguage' => $langId,
-					'Name' => $language->get('Name'),
-					'Checked' => $checked
-				);
-			}
-			return $languages;
-
-		}
-
-		return null;
-	}
-
-	private function _getStates($nodeID, $serverID) {
-		$workflow = new WorkFlow($nodeID);
-		$pipeProcess = $workflow->pipeProcess;
-		$allIdStates = $pipeProcess->getAllIdNodeStatus();
-
-		$server = new Node($nodeID);
-
-		if(count($allIdStates) ) {
-			$_states = array();
-			foreach($allIdStates as $idStatus) {
-				$status = new Node($idStatus);
-				$_states[] = array(
-					"Id" => $idStatus,
-					"Name" => $status->get('Name'),
-					'HasServer' =>   $server->class->HasState($serverID, $idStatus)
-				);
-
-			}
-			return $_states;
-
-		}
-
-		return null;
-	}
-
 
 }
 ?>

@@ -73,10 +73,10 @@
         </fieldset>
 	</div>
 	{if (count($messages)) }
-	<div class="message">
-	{foreach name=messages from=$messages key=message_id item=message}
+    {foreach name=messages from=$messages key=message_id item=message}
+	<div class="message {if $message["type"]==2}message-success{elseif $message["type"]==1}message-warning{else}message-error{/if}">
 		<p class="ui-icon-notice">{$message.message}</p>
-	{/foreach}
 	</div>
+    {/foreach}
 	{/if}
 	</div>	

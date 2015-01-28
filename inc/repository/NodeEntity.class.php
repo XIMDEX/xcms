@@ -26,7 +26,7 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/entities/NodeEntity_File.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/entities/NodeEntity_Dir.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/entities/NodeEntity_Link.class.php');
@@ -63,7 +63,7 @@ class NodeEntity {
 
 		// Directorio temporal para los descriptores
 		$this->_tmpdir = XIMDEX_ROOT_PATH . '/data/tmp/xvfs';
-//		$this->_tmpdir = '/tmp/xvfs_' . md5(Config::getValue('AppRoot'));
+//		$this->_tmpdir = '/tmp/xvfs_' . md5(\App::getValue( 'AppRoot'));
 		if (!is_dir($this->_tmpdir)) mkdir($this->_tmpdir);
 
 		// Inicializa las propiedades del objeto
@@ -234,7 +234,7 @@ class NodeEntity {
 	}
 
 	/**
-	 * Devuelve un array con los canales asociados al nodo
+	 * Returns an array of channels associated to the node
 	 */
 	function getChannels() {
 
@@ -496,15 +496,6 @@ class NodeEntity {
 		return $res;
 	}
 
-
-	/**
-	 * Transforma un Path absoluto en ximDEX en un idNode y obtiene
-	 * toda la informacion relativa al nodo.
-	 *
-	 * Version alternativa para antiguos servidores que no soportan subconsultas.
-	 *
-	 * @return array Devuelve un array con el valor de los atributos del nodo.
-	 */
 	function _pathToId_Alt() {
 
 		$db =& $this->_db;
@@ -595,14 +586,6 @@ class NodeEntity {
 		return $res;
 	}
 
-	/**
-	 * Transforma un idNode en un Path absoluto en ximDEX y obtiene
-	 * toda la informacion relativa al nodo.
-	 *
-	 * Version alternativa para antiguos servidores que no soportan subconsultas.
-	 *
-	 * @return array Devuelve un array con el valor de los atributos del nodo.
-	 */
 	function _idToPath_Alt() {
 
 		$db =& $this->_db;

@@ -27,7 +27,6 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 

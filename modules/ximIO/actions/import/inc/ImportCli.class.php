@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 
-require_once(XIMDEX_ROOT_PATH.'/inc/modules/ModulesManager.class.php');
+//
 ModulesManager::file('/inc/cli/CliParser.class.php');
 
 

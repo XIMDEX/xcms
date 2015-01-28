@@ -25,8 +25,7 @@
  *  @version $Revision: 8735 $
  */
 
-ModulesManager::file('/inc/model/Links.inc');
-include_once( XIMDEX_ROOT_PATH . "/inc/helper/String.class.php" );
+ModulesManager::file('/inc/model/Links.php');
 
 class FormValidation {
     
@@ -36,12 +35,11 @@ class FormValidation {
     * @return boolean True if not exists this name under the current node.
     */
     public static function isUniqueName($params){
-        $result = "false";
         $idnode = $params["nodeid"];
         $inputName = $params["inputName"];
         $name=$params[$inputName];
         if (!empty($params["process"]) && $params["process"] == "normalize") {
-            $name = String::normalize($name);
+            $name = \Ximdex\Utils\String::normalize($name);
         }
         $node = new Node($idnode);
         if($node->nodeType->get("IsFolder")==0){
@@ -91,4 +89,3 @@ class FormValidation {
         return false;        
     }
 }
-?>

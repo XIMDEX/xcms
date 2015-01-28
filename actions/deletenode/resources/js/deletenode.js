@@ -26,11 +26,11 @@
 
 X.actionLoaded(function(event, fn, params) {
 
-	var form = params.actionView.getForm('formulario');
-	var fm = form.getFormMgr();
+	var form = fn('form');
+	var fm = form.get(0).getFormMgr();
 
 	fn('.cancel_button').bind("click",function(event){
-		onCancel(event,params.actionView);
+		onCancel(event,params.tab);
 	});
 
 	fn('.delete_button').bind("click", function(event){
@@ -39,8 +39,8 @@ X.actionLoaded(function(event, fn, params) {
 
 });
 
-function onCancel(event, actionView) {
-	actionView.close();
+function onCancel(event, tab) {
+	$('#angular-content').scope().closeTabById(tab.id);
 }
 
 function onDelete(event, fn, form, fm) {

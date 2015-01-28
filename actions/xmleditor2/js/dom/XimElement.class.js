@@ -68,7 +68,7 @@ XimElement = function(rngElement, importChildElements, ancestors) {
 			}
 		}
 
-		if (importChildElements && (!ancestors || !ancestors.contains(rngElement.tagName))) {		
+		if (importChildElements && (!ancestors || !ancestors.contains(rngElement.tagName))) {
 			this._importChildElements(this, rngElement, ancestors);
 		}
 	};
@@ -468,6 +468,11 @@ XimElement = function(rngElement, importChildElements, ancestors) {
 		direction = direction.toLowerCase();
 
 		var pos = this.getElementIndex();
+
+        if(pos < 0){
+            return null;
+        }
+
 		if (direction == 'up') {
 			pos--;
 		} else if (direction == 'down') {
@@ -496,6 +501,9 @@ XimElement = function(rngElement, importChildElements, ancestors) {
 	this.getElementIndex = function() {
 		var parent = this.parentNode;
 		var pos = -1;
+        if(parent == null){
+            return pos;
+        }
 		var i = 0;
 		while (pos<0 && i<parent.childNodes.length) {
 			if (parent.childNodes[i].uid == this.uid) pos = i;

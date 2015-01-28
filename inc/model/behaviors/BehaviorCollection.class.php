@@ -20,86 +20,88 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
 require_once(XIMDEX_ROOT_PATH . '/inc/model/behaviors/behavior_base.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Overloadable.class.php');
 
-class BehaviorCollection extends Overloadable {
+class BehaviorCollection extends \Ximdex\Utils\Overloadable
+{
 
-	var $behaviorCollection = null;
-	private $messages = null;
-	private $model;
-	
-	function __construct(& $model) {
-		$this->model = $model;
-		$this->behaviorCollection = new AssociativeArray();
-		$behaviors = $model->actsAs;
-		if (is_array($behaviors)) {
-			foreach ($behaviors as $behavior => $params) {
-				$this->attach($behavior, $params);
-			}
-		}
-	}
-	
-	function call__($method, $params = null) {
-		$behaviors = $this->behaviorCollection->getKeys();
-		$result = true;
-		foreach ($behaviors as $behavior) {
-			// No more delegations, final method MUST be implemented in the behavior or call is discarded
-			if (method_exists($this->behaviorCollection->$behavior, $method)) {
-				$methodResult = $this->behaviorCollection->$behavior->$method($params[0], $params[1]);
-				if (is_array($methodResult)) {
-					if (is_array($result)) {
-						$result = array_merge($result, $methodResult);
-					} else {
-						$result = $methodResult;
-					}
-				} else {
-					$result = $result && $methodResult;
-				}
-				
-			}
-		}
-		return $result;
-	}
-	
-	function __get($name) {
-		$this->messages = new Messages();
-		if ($name == 'messages') {
-			$behaviors = $this->behaviorCollection->getKeys();
-			foreach ($behaviors as $behavior) {
-				$this->messages->mergeMessages($this->behaviorCollection->$behavior->messages);
-			}
-		}
-		return $this->messages;
-	}
-	
-	function __set($name, $params) {
-		$this->behaviorCollection->$name = $params;
-	}
-	
-	function attach($behavior, $options) {
-		// TODO factory pattern
-		if (is_file(XIMDEX_ROOT_PATH . '/inc/model/behaviors/implementations/' . $behavior . '.php')) {
-			include_once XIMDEX_ROOT_PATH . '/inc/model/behaviors/implementations/' . $behavior . '.php';
-			$instancedBehavior = new $behavior($options);
-			$this->behaviorCollection->$behavior = $instancedBehavior;
-		}
-	}
-	
-	function detach($behavior) {
-		if ($this->behaviorCollection->exist($behavior)) {
-			$this->behaviorCollection->$behavior->tearDown();
-			$this->behaviorCollection->del($behavior);
-		}
-	}
-		
+    var $behaviorCollection = null;
+    private $messages = null;
+    private $model;
+
+    function __construct(& $model)
+    {
+        $this->model = $model;
+        $this->behaviorCollection = new \Ximdex\Utils\AssociativeArray();
+        $behaviors = $model->actsAs;
+        if (is_array($behaviors)) {
+            foreach ($behaviors as $behavior => $params) {
+                $this->attach($behavior, $params);
+            }
+        }
+    }
+
+    function call__($method, $params = null)
+    {
+        $behaviors = $this->behaviorCollection->getKeys();
+        $result = true;
+        foreach ($behaviors as $behavior) {
+            // No more delegations, final method MUST be implemented in the behavior or call is discarded
+            if (method_exists($this->behaviorCollection->$behavior, $method)) {
+                $methodResult = $this->behaviorCollection->$behavior->$method($params[0], $params[1]);
+                if (is_array($methodResult)) {
+                    if (is_array($result)) {
+                        $result = array_merge($result, $methodResult);
+                    } else {
+                        $result = $methodResult;
+                    }
+                } else {
+                    $result = $result && $methodResult;
+                }
+
+            }
+        }
+        return $result;
+    }
+
+    function __get($name)
+    {
+        $this->messages = new \Ximdex\Utils\Messages();
+        if ($name == 'messages') {
+            $behaviors = $this->behaviorCollection->getKeys();
+            foreach ($behaviors as $behavior) {
+                $this->messages->mergeMessages($this->behaviorCollection->$behavior->messages);
+            }
+        }
+        return $this->messages;
+    }
+
+    function __set($name, $params)
+    {
+        $this->behaviorCollection->$name = $params;
+    }
+
+    function attach($behavior, $options)
+    {
+        // TODO factory pattern
+        if (is_file(XIMDEX_ROOT_PATH . '/inc/model/behaviors/implementations/' . $behavior . '.php')) {
+            include_once XIMDEX_ROOT_PATH . '/inc/model/behaviors/implementations/' . $behavior . '.php';
+            $instancedBehavior = new $behavior($options);
+            $this->behaviorCollection->$behavior = $instancedBehavior;
+        }
+    }
+
+    function detach($behavior)
+    {
+        if ($this->behaviorCollection->exist($behavior)) {
+            $this->behaviorCollection->$behavior->tearDown();
+            $this->behaviorCollection->del($behavior);
+        }
+    }
+
 }
-
-?>

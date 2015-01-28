@@ -33,9 +33,9 @@
 		define ("XIMDEX_ROOT_PATH", realpath (dirname (__FILE__)."/../../../../"));
 	}
 	
-	 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
-	 ModulesManager::file('/inc/utils.inc');
- 	 ModulesManager::file('/inc/model/action.inc');
+	 //
+	 ModulesManager::file('/inc/utils.php');
+ 	 ModulesManager::file('/inc/model/action.php');
  	 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
  	 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
  	 ModulesManager::file('/actions/managebatchs/forms.php', 'ximSYNC');
@@ -52,7 +52,7 @@
 				$actionObj->Action($actionId);
 				if ($actionObj->getCommand() == "managebatchs") {
 					
-					header("Location:" . Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=" . $actionId . "&nodeid=NULL&method=batchlist");
+					header("Location:" . \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=" . $actionId . "&nodeid=NULL&method=batchlist");
 					exit();
 				}
 			}
@@ -67,7 +67,7 @@
 	sajax_export("batchListForm");
 	sajax_handle_client_request();
 	
-	XSession::check();
+	\Ximdex\Utils\Session::check();
 	
 	// Inicializando variables propias de la accion.
 	$errorMsg = "";
@@ -111,7 +111,7 @@
 	$frm_filter_batch = (isset($_POST['frm_filter_batch'])) ? $_POST['frm_filter_batch'] : 'no';
 	
 	////
-	//// Inicio del flujo de la acción.
+	//// Inicio del flujo de la acciï¿½n.
 	//// 
 	
 	gPrintHeader();

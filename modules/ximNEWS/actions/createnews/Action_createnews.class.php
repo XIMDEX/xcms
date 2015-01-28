@@ -29,7 +29,7 @@
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 ModulesManager::file('/actions/composer/Action_composer.class.php');
 ModulesManager::file('/inc/serializer/Serializer.class.php');
-ModulesManager::file('/inc/model/Links.inc');
+ModulesManager::file('/inc/model/Links.php');
 
 
 class Action_createnews extends ActionAbstract {
@@ -85,7 +85,7 @@ class Action_createnews extends ActionAbstract {
 
 	function creation_form() {
 
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 		$user = new User();
 		$user->SetID($userID);
 		$groups = $user->GetGroupList();
@@ -203,7 +203,7 @@ class Action_createnews extends ActionAbstract {
 		$values = array(
 			'messages' => $adapter->messages->messages,
 			'id_node' => $idNode,
-			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+			"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
 		);
 
 		$this->render($values, NULL, 'messages.tpl');

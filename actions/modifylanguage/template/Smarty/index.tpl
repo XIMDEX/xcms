@@ -25,7 +25,7 @@
 
 <form method="post" name="ml_form" id="ml_form" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Modificar Idioma{/t}</h2>
+		<h2>{t}Modify language{/t}</h2>
    		<fieldset class="buttons-form">
 				{button label="Modify" class="validate btn main_action" }{*message="Would you like to modify this language?"*}
 		</fieldset>
@@ -43,8 +43,8 @@
             <label class="aligned">{t}ISO code{/t}:</label> {$iso_name}
         </p>
         <p class="col1_2 col_left">
-			<input class="hidden-focus" type="checkbox" name="enabled" id="enabled" value="1"{if $enabled == 1} checked="checked"{/if}/>
-		    <label for="enabled" class="icon checkbox-label">{t}Activated{/t}</label>
+			<input class="hidden-focus" type="checkbox" name="enabled" id="enabled_{$iso_name}" value="1"{if $enabled == 1} checked="checked"{/if}/>
+		    <label for="enabled_{$iso_name}" class="icon checkbox-label">{t}Activated{/t}</label>
         </p>
 
 	</div>

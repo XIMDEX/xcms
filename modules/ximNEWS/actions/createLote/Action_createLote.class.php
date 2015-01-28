@@ -46,7 +46,7 @@ class Action_createLote extends ActionAbstract {
 			'id_node' => $idNode,
 			'cadenafecha' => date('d/m/Y'),
 			'go_method' => 'add_node',
-			'nodeUrl' => Config::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
+			'nodeUrl' => \App::getValue( 'UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode"
 		);
 
 		$this->render($values, 'index', 'default-3.0.tpl');

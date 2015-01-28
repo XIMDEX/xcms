@@ -34,6 +34,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
     $scope.host="localhost";
     $scope.port="3306";
     
+    /* Causes a warning. Check, at the first, if host & port are right.
     installerService.sendAction("checkHost").then(function(response) {
         if (response.data.success){
             $scope.host=response.data.host;
@@ -43,7 +44,7 @@ ximdexInstallerApp.controller('InstallDatabaseController', ["$timeout", '$scope'
             $scope.hostCheck = 'host';
         }
 
-    });
+    });*/
 
     $scope.sendForm = function(){
         if ($scope.installed){

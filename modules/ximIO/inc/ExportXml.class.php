@@ -30,9 +30,8 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
-ModulesManager::file('/inc/model/node.inc');
-ModulesManager::file('/inc/helper/Messages.class.php');
+//
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 
 
@@ -57,7 +56,7 @@ class ExportXml {
 	function ExportXml($nodeID) {
 		$this->dbObj = new DB();
 		
-		$this->messages = new Messages();
+		$this->messages = new \Ximdex\Utils\Messages();
 		
 		// Checking if the node is inside the Projects folder or not.
 		$this->_arrNodeId = array();
@@ -106,7 +105,7 @@ class ExportXml {
 	
 	function getXml($recurrence = true, &$files) {
 		
-		$ximId = Config::getValue('ximid');
+		$ximId = \App::getValue( 'ximid');
 		//header
 		$xml = sprintf("<ximio-structure id=\"%s\">\n", $ximId);
 		

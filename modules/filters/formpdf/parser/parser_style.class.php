@@ -31,8 +31,7 @@ ModulesManager::file("/extensions/csstidy/class.csstidy.php");
 ModulesManager::file("/formpdf/latex/latex_style.class.php", 'filters');
 ModulesManager::file("/formpdf/parser/parser_root.class.php", 'filters');
 ModulesManager::file("/inc/fsutils/FsUtils.class.php");
-ModulesManager::file("/inc/xml/XmlParser.class.php");
-ModulesManager::file("/inc/persistence/datafactory.inc");
+ModulesManager::file("/inc/persistence/datafactory.php");
 
 class Style extends ParserRoot {
 	var $nodes;
@@ -80,8 +79,8 @@ class Style extends ParserRoot {
 			$nodeId = $node->getAttribute("nodeid");
 			if ($nodeId != "default") {
 				$dF = new DataFactory($nodeId);
-				$fileName = Config::getValue("AppRoot").
-							Config::getValue("FileRoot").
+				$fileName = \App::getValue( "AppRoot").
+							\App::getValue( "FileRoot").
 							"/".$dF->GetTmpFile($dF->GetLastVersionId());
 			} else {
 				$fileName = $node->getAttribute("filename");

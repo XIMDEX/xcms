@@ -236,7 +236,6 @@ msgstr "Thema"
 msgid "CatID"
 msgstr "CatID"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Revision date"
 msgstr "Datum der &Uuml;berprufung"
 
@@ -558,7 +557,6 @@ msgid "The query handler was not found."
 msgstr "Der Treiber f&uuml;r die Datenbankabfrage wurde nicht gefunden."
 
 #: /actions/browser3/inc/Datasource_tags.class.php
-#: /actions/browser3/inc/Datasource_tolDOX.class.php
 #: /actions/browser3/inc/Datasource_XVFS.class.php
 msgid "The path cannot be read"
 msgstr "Der Pfad kann nicht gelesen werden."
@@ -628,18 +626,6 @@ msgstr "Keine zu &auml;ndernde Vorlage gefunden"
 
 msgid "Template"
 msgstr "Vorlage"
-
-#: /actions/charts/template/Smarty/dynamicCharts.tpl
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Ximdex Profiler"
-msgstr "Ximdex Profiler"
-
-#: /actions/charts/template/Smarty/index.tpl
-msgid "Refresh"
-msgstr "Aktualisieren"
-
-msgid "Show Grid"
-msgstr "Gitternetzlinien anzeigen"
 
 #: /actions/composer/Action_composer.class.php
 msgid "A Node without NodeType was requested: idNode=%s, nodeType=%s"
@@ -1331,7 +1317,6 @@ msgstr "Benutzer hinzuf&uuml;gen"
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: xmd/login.php
 #: /modules/ximSYNC/actions/managebatchs/template/Smarty/batchlistamp.tpl
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -1429,7 +1414,7 @@ msgstr "Aufgrund von Systembeschr&auml;nkungen k&ouml;nnen folgende Knoten nicht
 msgid "Selected document or folder is not empty. It also have dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
 msgstr "Ausgew&auml;hltes Dokument oder Ordner ist nicht leer. Er h&auml;ngt ausserdem mit anderen Systemdokumenten zusammen und kann nicht gel&ouml;scht werden mit Ihrer Rolle. Bitte entfernen Sie die Abh&auml;ngigkeiten oder verwenden Sie einen Benutzer mit der n&ouml;tigen Berechtigung."
 
-msgid "Your role cannot delete the selected container because of it has idiomatic versions depending on it."
+msgid "Your role cannot delete the selected container because of it has language versions depending on it."
 msgstr "Ihre Rolle kann den ausgew&auml;hlten Ordner nicht l&ouml;schen weil idiomatische Versionen davon abh&auml;ngen."
 
 msgid "Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
@@ -1441,7 +1426,7 @@ msgstr "Ausgew&auml;hlte Datei h&auml;ngt mit anderen Systemdokumenten zusammen 
 msgid "List of pending documents"
 msgstr "Liste ausstehender Dokumente"
 
-msgid "To be able to delete this node, you should first delete the following idiomatic versions"
+msgid "To be able to delete this node, you should first delete the following language versions"
 msgstr "Um diesen Knoten l&ouml;schen zu k&ouml;nnen, m&uuml;ssen Sie zuerst folgende idiomatische Versionen l&ouml;schen"
 
 msgid "Node does not exist. Update XimSearch."
@@ -1610,7 +1595,7 @@ msgstr "Datei wird bearbeitet"
 msgid "Modification of this template has affected to %1 documents. Would you like to republish them?"
 msgstr "Die &Auml;nderung dieses Vorlagen hat %1 der Dokumente beeinflusst. M&ouml;chten Sie diese nochmal ver&ouml;ffentlichen?"
 
-#: /actions/edittext/javascript/tour.js 
+#: /actions/edittext/javascript/tour.js
 msgid "This action allows to edit in a text window the document code.<br/>"
 msgstr "Diese Aktion erm&ouml;glicht Ihnen den Dokumentencode in einem Textfenster zu bearbeiten.<br/>"
 
@@ -1927,7 +1912,6 @@ msgstr "Mit diesen Suchkriterien konnten keine besch&auml;digten Links gefunden 
 #: /actions/linkreport/template/Smarty/index.tpl
 #: /inc/widgets/jquery/searchpanel/template/searchpanel.tpl
 #: /actions/searchpanel/inc/Filters_Ximdex.class.php
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "contains"
 msgstr "enth&auml;lt"
 
@@ -1996,7 +1980,6 @@ msgstr "Bereit zum L&ouml;schen "
 msgid "Being unpublished"
 msgstr "Wird gel&ouml;scht"
 
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 #: /actions/managebatchs/forms.php
 #: /modules/ximSYNC/actions/managebatchs/Action_managebatchs.class.php
 #: /modules/ximSYNC/actions/managebatchs/forms.php
@@ -2177,7 +2160,7 @@ msgstr "Best&auml;tigen und aktualisieren"
 msgid "A total of %s channels are going to be disassociated from %s nodes."
 msgstr "Insgesamt %s Kan&auml;le werden von Knoten %s getrennt."
 
-msgid "A total of %s idiomatic versions are going to be deleted."
+msgid "A total of %s language versions are going to be deleted."
 msgstr "Insgesamt %s idiomatische Versionen werden gel&ouml;scht."
 
 msgid "A total of %s channels have been disassociated from %s nodes."
@@ -2192,7 +2175,7 @@ msgstr "%s Kan&auml;le wurden erfolgreich hinzugef&uuml;gt."
 msgid "A total of %s channels have been recursively associated with %s documents."
 msgstr "Insgesamt %s Kan&auml;le wurden rekursiv hinzugef&uuml;gt zu %s Dokumenten."
 
-msgid "A total of %s idiomatic versions have been deleted."
+msgid "A total of %s language versions have been deleted."
 msgstr "Insgesamt %s idiomatische Versionen wurden gel&ouml;scht."
 
 msgid "Language values will be inherited."
@@ -2201,7 +2184,7 @@ msgstr "Sprachwerte werden weitergegeben."
 msgid "%s Languages have been successfully assigned."
 msgstr "%s Sprachen wurden erfolgreich hinzugef&uuml;gt."
 
-msgid "A total of %S idiomatic versions have been recursively created."
+msgid "A total of %S language versions have been recursively created."
 msgstr "Insgesamt %S idiomatische Versionen wurden rekursiv erstellt."
 
 msgid "Template values will be inherited."
@@ -2236,7 +2219,7 @@ msgstr "Andernfalls werden vererbbare Werte benutzt."
 msgid "Channel %s has been associated with %s documents."
 msgstr "Kanal %s wurde verkn&uuml;pft mit %s Dokumenten."
 
-msgid "%s idiomatic versions have been created."
+msgid "%s language versions have been created."
 msgstr "%s idiomatische Versionen wurden erstellt."
 
 #: /actions/manageproperties/template/Smarty/Channel.tpl
@@ -2266,7 +2249,7 @@ msgstr "Vererbte Sprachen benutzen"
 msgid "Overwrite inherited languages"
 msgstr "Vererbte Sprachen &uuml;berschreiben"
 
-msgid "Create idiomatic version recursively"
+msgid "Create language version recursively"
 msgstr "Idiomatische Version rekursiv erstellen"
 
 #: /actions/manageproperties/template/Smarty/Schema.tpl
@@ -3696,6 +3679,10 @@ msgstr "Bitte, warten Sie..."
 msgid "Link manager"
 msgstr "Link manager"
 
+#: /actions/xmleditor2/template/Smarty/ximimagedrawer.tpl
+msgid "Image attributes"
+msgstr "Image attributes"
+
 msgid "Available descriptions for the selected link"
 msgstr "Beschreibungen"
 
@@ -4657,39 +4644,39 @@ msgstr "Gew&uuml;nscht Aktion nicht gefunden."
 msgid "The action %s cannot be executed on the selected node"
 msgstr "Die Aktion %s kann f&uuml;r den gew&auml;hlten Knoten nicht ausgef&uuml;hrt werden"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "User does not exist"
 msgstr "Benutzer existiert nicht"
 
 msgid "An user with this login already exists"
 msgstr "Es existiert bereits ein Benutzer mit diesem Login"
 
-#: /inc/model/user.inc
-#: /inc/model/group.inc
-#: /inc/model/language.inc
-#: /inc/model/locale.inc
+#: /inc/model/user.php
+#: /inc/model/group.php
+#: /inc/model/language.php
+#: /inc/model/locale.php
 msgid "Arguments missing"
 msgstr "Fehlen von Argumenten"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Some of the connections with your groups could not be deleted"
 msgstr "Einige der Verbindungen mit Ihren Gruppen konnten nicht gel&ouml;scht werden"
 
-#: inc/sync/synchro.inc
-#: /inc/model/user.inc
-#: /inc/model/node.inc
-#: /inc/model/action.inc
-#: /inc/model/channel.inc
-#: /inc/model/group.inc
-#: /inc/model/language.inc
-#: /inc/model/locale.inc
-#: /inc/model/nodetype.inc
-#: /inc/model/permissions.inc
-#: /inc/model/role.inc
+#: inc/sync/synchro.php
+#: /inc/model/user.php
+#: /inc/model/node.php
+#: /inc/model/action.php
+#: /inc/model/channel.php
+#: /inc/model/group.php
+#: /inc/model/language.php
+#: /inc/model/locale.php
+#: /inc/model/nodetype.php
+#: /inc/model/permissions.php
+#: /inc/model/role.php
 msgid "Database connection error"
 msgstr "Datenbankverbindungsfehler"
 
-#: /inc/model/user.inc
+#: /inc/model/user.php
 msgid "Error in associated object"
 msgstr "Fehler in zugeordnetem Objekt"
 
@@ -4814,7 +4801,7 @@ msgstr "Zeitlicher Ordner %s konnte nicht erstellt werden"
 msgid "Specified file could not be found"
 msgstr "Spezifizierte Datei konnte nicht gefunden werden"
 
-#: /inc/model/node.inc
+#: /inc/model/node.php
 msgid "The nodetype does not exist"
 msgstr "Der Knotentyp existiert nicht"
 
@@ -4956,11 +4943,11 @@ msgstr "Eigenschaft %s nicht gefunden"
 msgid "The node over which property want to be deleted does not exist "
 msgstr "Der Knoten dessen Eigenschaft Sie l&ouml;schen m&ouml;chten existiert nicht "
 
-#: /inc/model/action.inc
+#: /inc/model/action.php
 msgid "Action does not exist"
 msgstr "Aktion existiert nicht"
 
-#: /inc/model/channel.inc
+#: /inc/model/channel.php
 msgid "Channel does not exist"
 msgstr "Kanal existiert nicht"
 
@@ -4971,7 +4958,7 @@ msgstr "Datenbankinkonsistenz"
 msgid "No dependencies deleted"
 msgstr "Keine Abh&auml;ngigkeiten gel&ouml;scht"
 
-#: /inc/model/group.inc
+#: /inc/model/group.php
 msgid "Group does not exist"
 msgstr "Gruppe existiert nicht"
 
@@ -4990,14 +4977,14 @@ msgstr "Spezifizierte Relation existiert bereits"
 msgid "General group cant be removed"
 msgstr "Allgemeine Gruppe kann nicht entfernt werden"
 
-#: /inc/model/language.inc
+#: /inc/model/language.php
 msgid "Language does not exist"
 msgstr "Sprache existiert nicht"
 
 msgid "A language with this name already exists"
 msgstr "Sprache mit diesem Namen existiert bereits"
 
-#: /inc/model/locale.inc
+#: /inc/model/locale.php
 msgid "Locale does not exist"
 msgstr "Locale exisitiert nicht"
 
@@ -5014,18 +5001,18 @@ msgstr "Knoteneigenschaft hinzuf&uuml;gen"
 msgid "Param nodeId is mandatory"
 msgstr "Parameter nodeId ist obligatorisch"
 
-#: /inc/model/nodetype.inc
+#: /inc/model/nodetype.php
 msgid "Nodetype does not exist"
 msgstr "Knotentyp existiert nicht"
 
-#: /inc/model/permissions.inc
+#: /inc/model/permissions.php
 msgid "Permit does not exist"
 msgstr "Berechtigung existiert nicht"
 
 msgid "Not initialized object"
 msgstr "Nicht initialisiertes Objekt"
 
-#: /inc/model/role.inc
+#: /inc/model/role.php
 msgid "Role does not exist"
 msgstr "Rolle existiert nicht"
 
@@ -5119,13 +5106,13 @@ msgstr "Kein Knotentyp erlaubt in %s"
 msgid "Error inserting information about relnewscolector relation (BaseIORelations)"
 msgstr "Fehler beim Eingeben der Information zur relnewscolector Verbindung (BaseIORelations)"
 
-#: /inc/sync/synchro.inc
-#: inc/model/node.inc
+#: /inc/sync/synchro.php
+#: inc/model/node.php
 msgid "The node does not exist"
 msgstr "Knoten existiert nicht"
 
-#: /inc/sync/synchro.inc
-#: /inc/model/node.inc
+#: /inc/sync/synchro.php
+#: /inc/model/node.php
 msgid "Error accessing to file system"
 msgstr "Fehler beim Zugreifen auf Dateisystem"
 
@@ -5137,7 +5124,7 @@ msgstr "Ver&ouml;ffentlichungsfenster existiert nicht"
 
 msgid "Generation error"
 msgstr "Erstellungsfehler"
- 
+
 msgid "Expiration date should be later than publication date"
 msgstr "Ablaufdatum muss &auml;lter als das Ver&ouml;ffentlichungsdatum sein"
 
@@ -5182,7 +5169,7 @@ msgid "No deletion in table %s - server %s"
 msgstr "Kein L&ouml;schen der Frames in der Tabelle %s - Server %s"
 
 #: /inc/sync/SynchroFacade.class.php
-#: inc/sync/synchro.inc
+#: inc/sync/synchro.php
 msgid "Void node"
 msgstr "Leerer Knoten"
 
@@ -5836,7 +5823,7 @@ msgstr "Neue HTML-Datei hinzuf&uuml;gen"
 msgid "Change name of XML document"
 msgstr "Name des XML-Dokuments &auml;ndern"
 
-msgid "Change the document name and all its idiomatic versions"
+msgid "Change the document name and all its language versions"
 msgstr "Dokumentnamen und alle seine idiomatischen Versionen &auml;ndern"
 
 msgid "Add new file"
@@ -5997,7 +5984,7 @@ msgid "Modify list of users that integrate this group"
 msgstr "Benutzerliste aus denen die Gruppe besteht &auml;ndern"
 
 msgid "Delete channel"
-msgstr "Kanal l&ouml;schen" 
+msgstr "Kanal l&ouml;schen"
 
 msgid "Delete a channel if it has not associated documents"
 msgstr "Kanal l&ouml;schen wenn diesem keine Dokumente zugeordnet sind"
@@ -6629,12 +6616,6 @@ msgstr "RNG-Vorlage l&ouml;schen"
 msgid "Delete a RNG template"
 msgstr "Eine RNG-Vorlage l&ouml;schen"
 
-msgid "Charts"
-msgstr "Grafiken"
-
-msgid "Graphic representation"
-msgstr "Repr&auml;sentation von Grafiken"
-
 msgid "Properties of RNG template"
 msgstr "Eigenschaften der RNG-Vorlage"
 
@@ -7242,7 +7223,6 @@ msgstr "Nach Datum (Woche)"
 
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
-#: /actions/searchpanel/inc/Filters_Toldox.class.php
 msgid "Category"
 msgstr "Kategorie"
 
@@ -7292,7 +7272,7 @@ msgstr "Stunden"
 msgid "news"
 msgstr "Nachrichten"
 
-msgid "In order to defuse idiomatic versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
+msgid "In order to defuse language versions of document previously published, defuse the corresponding language and unpublish the implicated documents (bulletins and news)"
 msgstr "Um zuvor ver&ouml;ffentlichte idiomatische Versionen der Dokumente zu abzulehnen, deaktivieren Sie die jeweilige Sprache und lassen Sie die betroffenen Dokumente auslaufen (Newsletter und Nachrichten)"
 
 msgid "In order to defuse publication channels of document previously published, defuse the corresponding channel and unpublish the implicated documents (bulletins and news)"

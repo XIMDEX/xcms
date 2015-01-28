@@ -25,7 +25,7 @@
  */
 
 
-ModulesManager::file('/inc/model/Links.inc');
+ModulesManager::file('/inc/model/Links.php');
 
 class ximlinkResolver {
 

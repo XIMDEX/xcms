@@ -52,6 +52,7 @@ class GetStartedInstallStep extends GenericInstallStep {
 	public function startXimdex(){
 
 		$this->changePermissions();
+        $this->deleteTempFiles();
 		$this->loadNextAction();		
 		header(sprintf("Location: %s", "index.php"));
 		die();
@@ -61,10 +62,17 @@ class GetStartedInstallStep extends GenericInstallStep {
 	 * Change permissions to only reader mod.
 	 */
 	private function changePermissions(){
-		
-		chmod(XIMDEX_ROOT_PATH."/conf/install-params.conf",0644);		
+		chmod(XIMDEX_ROOT_PATH."/conf/install-params.conf.php",0644);
 	}
 
+    /**
+     * Delete tmp files before start.
+     */
+    private function deleteTempFiles(){
+        exec("rm -f ".XIMDEX_ROOT_PATH."/data/tmp/templates_c/*");
+        exec("rm -f ".XIMDEX_ROOT_PATH."/data/tmp/js/es_ES/*");
+        exec("rm -f ".XIMDEX_ROOT_PATH."/data/tmp/js/en_US/*");
+    }
 }
 
 ?>

@@ -27,8 +27,7 @@
 
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/XSession.class.php");
+include_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 
 /**
  *
@@ -68,7 +67,7 @@ class Appender_mail extends Appender {
 			$this->_mail->addAddress($mailbox);
 		}
 
-		$ximid= Config::getValue('ximid');
+		$ximid= \App::getValue( 'ximid');
 
 		$this->_mail->Subject = "[$ximid] Notificaciones de Ximdex";
 		$this->_mail->Body = $this->_msg;

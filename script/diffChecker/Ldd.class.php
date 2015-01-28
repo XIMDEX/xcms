@@ -28,13 +28,11 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 	define ("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__)."/../../../"));
 }
 
-require_once(XIMDEX_ROOT_PATH."/inc/db/db.inc");
+require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
-require_once(XIMDEX_ROOT_PATH."/inc/patterns/Factory.class.php");
 require_once(XIMDEX_ROOT_PATH."/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb.inc.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb-active-record.inc.php");
-require_once(XIMDEX_ROOT_PATH."/inc/patterns/Factory.class.php");
 require_once(XIMDEX_ROOT_PATH."/conf/log.conf");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/lddConstants.php");
@@ -75,7 +73,7 @@ class ldd {
 
 		$this->mode = $resultMode;
 
-		$factory = new Factory($path, $this->tableName);
+		$factory = new \Ximdex\Utils\Factory($path, $this->tableName);
 		$this->object = $factory->instantiate("_ORM");
 
 		return true;
@@ -117,7 +115,7 @@ class ldd {
 			}
 
 			if (empty($matches)) {
-				UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la creación de este campo",
+				UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la creaciï¿½n de este campo",
 					$fieldName, $this->tableName));
 				return ;
 			}
@@ -233,7 +231,7 @@ class ldd {
 			}
 		}
 
-		// Paso 2: Añadimos las nuevas PK y actualizamos el campo si procede
+		// Paso 2: Aï¿½adimos las nuevas PK y actualizamos el campo si procede
 		reset($tableInfo->flds);
 		while (list(, $fieldInfo) = each($tableInfo->flds)) {
 			if (!array_key_exists($fieldInfo->name, $data)) {
@@ -247,13 +245,13 @@ class ldd {
 			}
 		}
 
-		// Paso 3: Inserción del resto de los documentos
+		// Paso 3: Inserciï¿½n del resto de los documentos
 		reset($data);
 		while (list($fieldName, $fieldInfo) = each($data)) {
 			$ret = $ret && $this->_updateField($fieldName, NULL, $fieldInfo);
 		}
 
-		// Paso 4: Actualización de indices
+		// Paso 4: Actualizaciï¿½n de indices
 		$indexes = $this->_activeRecord->GetPrimaryKeys($this->_dbConnection, $this->tableName);
 		if (isset($this->object->_indexes) && is_array($this->object->_indexes)) {
 			reset($this->object->_indexes);
@@ -284,7 +282,7 @@ class ldd {
 		}
 
 		if (empty($matches)) {
-			UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la actualización de este campo",
+			UpdateDb_log::error(sprintf("Error al parsear el tipo del campo %s de la tabla %s, saltamos la actualizaciï¿½n de este campo",
 				$fieldName, $this->tableName));
 			return ;
 		}

@@ -32,7 +32,7 @@
 
 		$acceso = true;
 		// Var init
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 
 		if($userID != 301) {
 
@@ -368,7 +368,7 @@
  echo $batch['IdBatch']; ?>);">
 										<img src="<?php
 
- echo Config::getValue('UrlRoot');?>/xmd/images/botones/subir_p.gif" alt="" border="0">
+ echo \App::getValue( 'UrlRoot');?>/xmd/images/botones/subir_p.gif" alt="" border="0">
 									</a>
 							</td>
 						</tr>

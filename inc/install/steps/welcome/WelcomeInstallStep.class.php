@@ -40,7 +40,6 @@ class WelcomeInstallStep extends GenericInstallStep {
 	 * Main function. Show the step	 
 	 */
 	public function index(){
-		$error = false;
 		$this->addJs("WelcomeController.js");
 	
 		$this->render();
@@ -60,8 +59,8 @@ class WelcomeInstallStep extends GenericInstallStep {
 				$error = "1";
 			}
 			if 	($check["state"] != "success"){
-				$aux = array();
-                if(count($check["messages"])>0){
+                if(is_array($check["messages"]) && count($check["messages"])>0){
+                    $aux = array();
 				    foreach ($check["messages"] as $i => $message) {
 					    $aux["message"] = $message;
 					    $aux["help"] = $check["help"][$i];
@@ -72,11 +71,12 @@ class WelcomeInstallStep extends GenericInstallStep {
 			}
 		}
 
-		if ($error)
-			$values["failure"] = true;
-		else 
-			$values["success"] = true;
-		$values["errors"] = $errors;
+		if (isset($error) && $error) {
+            $values["failure"] = true;
+            $values["errors"] = $errors;
+        }else {
+            $values["success"] = true;
+        }
 		$this->sendJSON($values);
 	}
 

@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';
+
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../../"));
 }
@@ -37,7 +39,7 @@ function showErrors($errno, $errstr, $errfile = NULL, $errline= NULL) {
 set_error_handler("showErrors");
 
 
-include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
+//
 
 ModulesManager::file('/inc/io/connection/ConnectionManager.class.php');
 ModulesManager::file('/inc/model/Pumper.class.php', 'ximSYNC');
@@ -377,7 +379,7 @@ class DexPumper {
 	}
 
 	private function taskRename($targetFile, $targetFolder, $newFile) {
-		$msg_not_rename= "No se ha podido renombrar al documento destino: {$targetFile} -> {$targetFolder}/{$newFile} ";
+		$msg_not_rename= "Could not rename the target document: {$targetFile} -> {$targetFolder}/{$newFile} ";
                 $this->getHostConnection();
 		if ( !$this->taskBasic($targetFolder, "") ) {
 			return false;
@@ -414,11 +416,10 @@ class DexPumper {
 	}
         
         private function finishTask($idSync){
-            
-            $query = "Update ServerFrames set state='In' where idsync = $idSync";
-            $this->serverFrame->execute($query);
+            $this->serverFrame->set('IdSync', $idSync);
+            $this->serverFrame->set('State', ServerFrame::IN);
+            $this->serverFrame->update();
             $this->updateTimeInPumper();
-            
         }
 
 	//DONE

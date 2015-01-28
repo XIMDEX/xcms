@@ -24,9 +24,8 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/language.inc');
+ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/IsoCode.class.php');
-ModulesManager::file('/inc/helper/Messages.class.php');
 
 class Action_createlanguage extends ActionAbstract {
 	// Main method: shows initial form
@@ -77,7 +76,7 @@ class Action_createlanguage extends ActionAbstract {
 		if ($result > 0) {
 			$this->messages->add(_('Language has been succesfully added'), MSG_TYPE_NOTICE);
 		}else {
-			$this->messages->add(_("Language ").XmlBase::recodeSrc($name,$this->displayEncoding)._(" could not be ").XmlBase::recodeSrc(_('added'),$this->displayEncoding), MSG_TYPE_ERROR);
+			$this->messages->add(_("Language ").\Ximdex\XML\Base::recodeSrc($name,$this->displayEncoding)._(" could not be ").\Ximdex\XML\Base::recodeSrc(_('added'),$this->displayEncoding), MSG_TYPE_ERROR);
 		}
 
 		$this->reloadNode($idNode);

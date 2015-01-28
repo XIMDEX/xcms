@@ -30,8 +30,6 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 	define("XIMDEX_ROOT_PATH", realpath(dirname (__FILE__)."/../../"));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/Utils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/log/MN_log.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
@@ -95,7 +93,7 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 		}
 
 		$limits = $aux;
-		$msg = sprintf(_('Warning from the server %s (instance %s): The free space in disk is %s MB'),php_uname("n"),Config::getValue('AppRoot'), DiskUtils::transformUnits($freeSpaceBytes, 'MB'));
+		$msg = sprintf(_('Warning from the server %s: The free space in disk is %s MB'),php_uname("n"), DiskUtils::transformUnits($freeSpaceBytes, 'MB'));
 
 		if (isset($limits['fatal_limit']) && $limits['fatal_limit']['notify']) {
 
@@ -430,7 +428,7 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 */
 		do {
 			//$fileName = Utils::generateRandomChars(8);
-			$fileName = Utils::generateUniqueID();
+			$fileName = \Ximdex\Utils\String::generateUniqueID();
 			$tmpFile = sprintf("%s/%s%s%s", $containerFolder, $prefix, $fileName, $sufix);
 		} while (is_file($tmpFile));
 		XMD_Log::debug("getUniqueFile: return: $fileName | container: $containerFolder");
@@ -446,7 +444,7 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 	 */
 	static public function getUniqueFolder($containerFolder, $sufix = '', $prefix = '') {
 		do {
-			$tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix, Utils::generateRandomChars(8), $sufix);
+			$tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix, \Ximdex\Utils\String::generateRandomChars(8), $sufix);
 		} while (is_dir($tmpFolder));
 		return $tmpFolder;
 	}

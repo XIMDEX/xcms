@@ -62,11 +62,7 @@ class RelTemplateContainer extends RelTemplateContainer_ORM {
 			return NULL;
 		}
 
-		// NEED TO REFACTOR THIS.
-		//*****************************************
-		// Registramos en Dependencies información sobre las plantillas asociadas
-		// a los documentos. Para informes, etc.
-
+		// TODO: NEED TO REFACTOR THIS.
 		$container = new Node($idNode);
 		$arr_child = $container->GetChildren();
 
@@ -80,21 +76,10 @@ class RelTemplateContainer extends RelTemplateContainer_ORM {
 				$dependencies->insertDependence($idTemplate,$child,'PVD',$version);
 			}
 		}
-		//*******************************************
-		
-	} 
-		
+	}
 
-        function deleteRel($idContainer) {
-		
+    function deleteRel($idContainer) {
 
-/*
-		// This is the good way. Implement it at generic data. Using interators.
-		$this->set('IdContainer', $idContainer);
-		if (parent::delete()) {
-			//
-		}
-*/
 		$db = new DB();
                 $sql = "DELETE FROM RelTemplateContainer Where IdContainer=$idContainer";
 

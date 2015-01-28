@@ -320,7 +320,7 @@ sub GetHostData {
 	my $hostid = shift @_;
 	my @campos = $dbh->selectrow_array("SELECT * from Servers where IdServer = $hostid") or dexPumperToLog(0, "Properties of host to id $hostid are not accesible,.. ".$dbh->errstr);  
 	my (undef, undef, $type, $user, $pass, $host, $port, undef, $rem_basepath) = @campos;
-	dexPumperToLog(6, "Servidor -> type:'$type', user:'$user', pass:'****', host:'$host', port:'$port', rem_basepath: '$rem_basepath'"); 
+	dexPumperToLog(6, "Server -> type:'$type', user:'$user', pass:'****', host:'$host', port:'$port', rem_basepath: '$rem_basepath'");
     
 	# overriding de campos...
 	#$type = "LOCAL";

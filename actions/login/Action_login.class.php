@@ -24,10 +24,9 @@
  *                                                                            *
  ******************************************************************************/
 
-require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
 ModulesManager::file('/inc/i18n/I18N.class.php');
@@ -64,10 +63,10 @@ class Action_login extends ActionAbstract {
 		$values = array();
 
 		I18N::setup();
-		$values["ximid"] = Config::getValue("ximid");
-		$values["versionname"] = Config::getValue("VersionName");
+		$values["ximid"] = \App::getValue( "ximid");
+		$values["versionname"] = \App::getValue( "VersionName");
 		$values["news_content"] = $this->get_news();
-		$values["title"] = sprintf(_("Access to %s"), Config::getValue("VersionName") );
+		$values["title"] = sprintf(_("Access to %s"), \App::getValue( "VersionName") );
 
 		return $values;
 	}
@@ -83,7 +82,7 @@ class Action_login extends ActionAbstract {
 		);
 
 			//$url =
-		$REMOTE_NEWS."?lang=".strtolower(DEFAULT_LOCALE)."&ximid=".Config::getValue('ximid');
+		$REMOTE_NEWS."?lang=".strtolower(DEFAULT_LOCALE)."&ximid=".\App::getValue( 'ximid');
 
 		$url = $REMOTE_NEWS."?lang=".strtolower(DEFAULT_LOCALE);
 
@@ -101,7 +100,7 @@ class Action_login extends ActionAbstract {
 	}
 
 	function check() {
-		$stopper = file_exists(Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/login.stop");
+		$stopper = file_exists(\App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/login.stop");
 		$user_lower = strtolower(Request::post('user'));
 		$user = Request::post('user');
 		$password = Request::post('password');
@@ -130,13 +129,13 @@ class Action_login extends ActionAbstract {
 			$userObject = new User();
 			$userObject->setByLogin($user);
 			$userObject->afterLogin();
-			XSession::set('context', 'ximdex');
+			\Ximdex\Utils\Session::set('context', 'ximdex');
 			$this->logSuccessAction();
 
 			if (Request::get('backto')) {
 				header(sprintf('Location: %s', base64_decode(Request::get('backto'))));
 			}else {
-					header(sprintf("Location: %s", Config::getValue('UrlRoot')));
+					header(sprintf("Location: %s", \App::getValue( 'UrlRoot')));
 			}
 
 			die();

@@ -25,86 +25,27 @@
 
 
  X.actionLoaded(function(event, fn, params)  {
-
+    var editor;
 	//When saving changes, remove the mark
 	fn(".validate").click(function(){
 		fn(".editor").removeClass("unsave");
-		var href= params.actionView.id;
-		$tabLink = $("a[href='#"+href+"']");
-		$tabLink.removeClass("unsave").parent().removeClass("unsave");
-		$tabLink.removeClass("unsave").parent().removeClass("unsave");
+        $(params.title).removeClass("unsave").find('a').removeClass("unsave");
  	});
 
 	var id_editor = fn(".editor_textarea").attr("id");
 	var node_ext = fn(".node_ext").val();
-	var dependencies = [];
-
-	//Forcing js load for codemirror
-    	var js = $('ul.js_to_include li').map(function(index, item) {
-        	var url = fn(item).html();
-        	url = Object.urldecode(url.replace(/&amp;/g, '&', url));
-        	return url;
-    	}.bind(this));
-
-
-    	var editor;
-    	var buildDependencies = function(){
-    		if (node_ext == "php"){
-    			dependencies.push("xml");
-    			dependencies.push("javascript");
-    			dependencies.push("css");
-    			dependencies.push("clike");
-    		}
-    	};
-
-    	var loadNodeExtensionJs = function(){
-    		var found=false;
-		for(var i in js){
-			if (js[i].indexOf(node_ext+".js") > -1){
-				found = true;
-				$.getScript(js[i], function(){
-					//The editor is created only when script is loaded
-					editor = getEditor();
-				});
-				break;
-			}
-		}
-
-		//if node_ext doesnt exist, the editor is loaded anyway
-		if (!found){
-			editor = getEditor();
-		}
-    	}
-
-    	var isInDependencies = function(jsPath){
-    		var result = false;
-    		for (var i in dependencies){
-    			if (jsPath.indexOf(dependencies[i])>-1){
-    				return true;
-    			}
-    		}
-    		return result;
-    	}
-
-	var loadDependenciesJs = function(indice){
-		var i;
-		for ( i = indice; i < js.length; i++) {
-			if (isInDependencies(js[i])){
-				$.getScript(js[i], function(){
-					loadDependenciesJs(i+1);
-				});
-				break;
-			}
-		};
-		if (i == js.length){
-			loadNodeExtensionJs();
-		}
-	}
+    var codemirror_url = fn(".codemirror_url").val();
 
 	var getEditor = function(){
- 		var hlLine = 0;
-	 	var editor = CodeMirror.fromTextArea(document.getElementById(id_editor), {
-			mode: node_ext,
+        CodeMirror.modeURL = codemirror_url + "/mode/%N/%N.js";
+        var info = CodeMirror.findModeByExtension(node_ext);
+        var mode = null;
+        if(info){
+            mode = info.mode;
+        }
+
+	 	editor = CodeMirror.fromTextArea(document.getElementById(id_editor), {
+			mode: mode,
 			htmlMode: true,
 			theme: "default",
 			tabSize: 4,
@@ -112,33 +53,21 @@
 			matchBrackets: true,
 			lineWrapping: true,
 			tabMode: "classic",
-			onCursorActivity: function(ins){
-				editor.setLineClass(hlLine, null);
-				hlLine = editor.setLineClass(editor.getCursor().line, "currentLine");
-			},
-			onGutterClick: function(cm, n) {
-				var info = cm.lineInfo(n);
-				if (info.markerText){
-					cm.clearMarker(n);
-				}
-				else{
-					cm.setMarker(n, "<span style=\"color: #900\">&bull;</span> %N%");
-				}
-			},
-			onChange: function(cm) {
-				fn(".editor").addClass("unsave");
-				var href= params.actionView.id;				
-				$tabLink = $("a[href='#"+href+"']");
-				$tabLink.addClass("unsave").parent().addClass("unsave");
-				cm.save();
-				}
-/*			onKeyEvent: function(cm, event){
-				if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true;					
-					fn(".validate").click();
-					event.preventDefault();
-					return false;
-			}*/
+            styleActiveLine: true,
+            autoCloseBrackets: true,
+            autoCloseTags: true,
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 		});
+
+        editor.on("change", function(cm){
+            fn(".editor").addClass("unsave");
+            cm.save();
+            $(params.title).addClass("unsave").find('a').addClass("unsave");
+            cm.save();
+        })
+
+        CodeMirror.autoLoadMode(editor,mode);
 
 		$(".reset", params.context).bind("click", function(event) {
 			var message = $('~ .submit_message', $(this)).length ? $('~ .submit_message', $(this)).val() : _("You are going to clear the current content. It won't be removed until you save the data. Are you sure?");
@@ -167,36 +96,7 @@
 			return false;
 
 		}); //end reset functionality.
-
-		// $(".CodeMirror").css("max-height", max_height);
-		// $(".CodeMirror-scroll").css("max-height", max_height);
-		// $(".CodeMirror").css("max-width", max_width);
-		// $(".CodeMirror-scroll").css("max-width", max_width);
-	
-		$(document).on("action_resize", function(event, params) {
-			var max_height = ( params.dimension.height - 275 )+"px";
-			var max_width = ( params.dimension.width - 100 )+"px";
-			fn(".CodeMirror").css("max-height", max_height);
-			fn(".CodeMirror-scroll").css("max-height", max_height);
-			$(".CodeMirror").css("max-width", max_width);
-			$(".CodeMirror-scroll").css("max-width", max_width);
-	 	});
 	 	return editor;
 	}; //end getEditor
-
-	buildDependencies();
-	for(var i in js){
-    		//First, it's loaded codemirror.js
-    		if (js[i].indexOf("codemirror.js")>-1){
-    			$.getScript(js[i],function(){
-    				if (dependencies.length){
-    					loadDependenciesJs(0);
-    				}
-    				else{
-    					loadNodeExtensionJs();
-    				}
-    			});
-    			break;
-    		}
-    	}
+    getEditor();
  });

@@ -47,6 +47,7 @@ RngElement = function(tagName, isOptional) {
 	 * @private
 	 * @param {string} tagName The name of the element we want to instantiate.
 	 */
+
 	this._initialize = function(tagName, isOptional) {
 		this.tagName = tagName.toLowerCase();
 		this.description = this.tagName;

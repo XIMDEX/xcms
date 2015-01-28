@@ -37,9 +37,15 @@ abstract class Abstract_View {
 		if ($content !== false) {
 			$basePath = XIMDEX_ROOT_PATH . self::TMP_FOLDER; 
 			$pointer = FsUtils::getUniqueFile($basePath);
-			if (FsUtils::file_put_contents($basePath . $pointer, $content)) {
-				return $basePath . $pointer;
-			}
+            if(isset($_GET["nodeid"])) {
+                if (FsUtils::file_put_contents($basePath . "preview_" . $_GET["nodeid"] . "_" . $pointer, $content)) {
+                    return $basePath . "preview_" . $_GET["nodeid"] . "_" . $pointer;
+                }
+            }else{
+                if (FsUtils::file_put_contents($basePath . $pointer, $content)) {
+                    return $basePath . $pointer;
+                }
+            }
 		}
 		XMD_Log::error('Ha sucedido un error al intentar almacenar contenido');
 		return NULL;

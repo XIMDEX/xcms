@@ -1,0 +1,38 @@
+{
+    "name":        "werkint/jsmin",
+    "description": "Library for minifying JavaScript files",
+    "license":     "MIT",
+    "authors":     [
+        {
+            "name":     "Douglas Crockford",
+            "homepage": "http://www.crockford.com"
+        },
+        {
+            "name":  "Ryan Grove",
+            "email": "ryan@wonko.com",
+            "role":  "PHP port"
+        },
+        {
+            "name":  "Steve Clay",
+            "email": "steve@mrclay.org",
+            "role":  "modifications + cleanup"
+        },
+        {
+            "name":     "Andrea Giammarchi",
+            "homepage": "http://www.3site.eu",
+            "role":     "spaceBeforeRegExp"
+        },
+        {
+            "name":  "Bogdan Yurov",
+            "email": "bogdan@yurov.me"
+        }
+    ],
+    "require":     {
+        "php": ">=5.4"
+    },
+    "autoload":    {
+        "psr-0": {
+            "JsMin": ""
+        }
+    }
+}

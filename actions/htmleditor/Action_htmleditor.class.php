@@ -32,7 +32,7 @@ class Action_htmleditor extends ActionAbstract {
 		$idNode = $this->request->getParam('nodeid');
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
-			$this->messages->add(_('El documento solicitado no existe'), MSG_TYPE_ERROR);
+			$this->messages->add(_('Requested document does not exist'), MSG_TYPE_ERROR);
 			$this->renderMessages();
 			return;
 		}
@@ -61,9 +61,9 @@ class Action_htmleditor extends ActionAbstract {
 			return;
 		}
 
-		if ($node->SetContent($content, true));
+		$node->SetContent($content, true);
 
-		$values = array(array('message'=> _('Document has been successfully updated'), 'type' => 1));
+		$values = array(array('message'=> _('Document has been successfully updated'), 'type' => 2));
         $this->sendJSON(array('messages' => $values));
 	}
 }

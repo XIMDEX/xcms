@@ -26,7 +26,6 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/DebugLog.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 /**
  *
@@ -56,7 +55,7 @@ class FrontController extends IController {
 	}
 
 	/**
-	 * Determina el tipo de controlador que debe gestionar la petición
+	 * Determina el tipo de controlador que debe gestionar la peticiï¿½n
 	 * @return unknown_type
 	 */
 	function _selectFrontControllerType () {
@@ -84,6 +83,27 @@ class FrontController extends IController {
 			$this->request->setParam('nodeid', $nodes[0]);
 		}
 	}
+
+	/**
+    * Check permissions for an idnode
+    * @param int $idNode 
+    * @param int $idAction 
+    * @return boolean True if action is allowed
+    * @since Ximdex 3.6
+    */
+    protected function isAllowedAction($idNode, $idAction){
+        if (!$idNode)
+            return true;
+        $idUser = \Ximdex\Utils\Session::get("userID");
+        if (!$idUser){
+            return false;
+        }
+        if($idNode==$idUser && $idAction==6002){
+            return true;
+        }
+        $user = new User($idUser);
+        return $user->isAllowedAction($idNode, $idAction);
+    }
 
 }
 ?>

@@ -33,12 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeTransitions_ORM.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/log/XMD_log.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/App.class.php');
-require_once(XIMDEX_ROOT_PATH . "/inc/helper/Timer.class.php");
-require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphManager.class.php');
 
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
 /**
@@ -100,7 +95,7 @@ class PipeTransition extends PipeTransitions_ORM {
 		$idNewTransition = $pipeTransition->add();
 		
 		if (!($idNewTransition > 0)) {
-			$this->messages->add(_('No se ha podido generar la nueva transición'), MSG_TYPE_ERROR);
+			$this->messages->add(_('No se ha podido generar la nueva transiciï¿½n'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($pipeTransition->messages);
 			return NULL;
 		}
@@ -118,7 +113,7 @@ class PipeTransition extends PipeTransitions_ORM {
 	 * @return integer
 	 */
 	function getPreviousTransition() {
-		//Obtenemos la transición anterior
+		//Obtenemos la transiciï¿½n anterior
 		$result = $this->find('id', 'IdPipeProcess = %s AND IdStatusTo = %s',
 					array($this->get('IdPipeProcess'), $this->get('IdStatusFrom')), MONO);
 		$resultsCount = count($result);
@@ -180,21 +175,19 @@ class PipeTransition extends PipeTransitions_ORM {
 	 * @return pointer
 	 */
 	function callback($idVersion, $pointer, $args, $function) {
-		$factory = new Factory(CALLBACK_FOLDER, 'View_');
+		$factory = new \Ximdex\Utils\Factory(CALLBACK_FOLDER, 'View_');
 		$callback = $this->get('Callback');
-		GraphManager::createSerie('PipelineGraph', $callback);
-		GraphManager::createSerieValue('PipelineGraph', $callback, $idVersion);
 		
 		$object = $factory->instantiate($callback);
 
-		$timer = new Timer();
+		$timer = new \Ximdex\Utils\Timer();
 
 		$timer->start();
 		if (method_exists($object, $function)) {
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
 		} else {
 			$idTransition = $this->get('id');
-			XMD_Log::warning("No se ha encontrado el método $function al llamar a una vista: IdVersion $idVersion transición $idTransition");
+			XMD_Log::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
 			$transformedPointer = $pointer;		
 		}
 		$timer->stop();
@@ -202,11 +195,11 @@ class PipeTransition extends PipeTransitions_ORM {
 		XMD_Log::info("PIPETRANSITION: View_$callback time: " . $timer->display());
 
 		if(isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE'] === true) {
-			XMD_Log::info('DISABLE_CACHE activo, aunque la transición es cacheable, no se almacenará la caché.');
+			XMD_Log::info("DISABLE_CACHE active, although the transition is cacheable, the cache won't be stored.");
 		} else {
 			$cache = new PipeCache();
 			if (!$cache->store($idVersion, $this->get('id'), $transformedPointer, $args)) {
-				XMD_Log::error('No se ha podido almacenar la cache para la transición ');
+				XMD_Log::error('Could not store the cache for transition.');
 			}
 		}
 		
@@ -215,5 +208,3 @@ class PipeTransition extends PipeTransitions_ORM {
 	
 	
 }
-
-?>

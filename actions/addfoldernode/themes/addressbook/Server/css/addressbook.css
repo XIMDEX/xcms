@@ -1,0 +1,187 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+*{
+	padding: 0;
+	margin: 0;
+}
+
+html{
+  background: url(../images/wood_pattern.png) repeat;
+}
+
+body {
+
+        font-family: Arial, sans-serif;
+}
+
+h1{
+	font-family: 'Amatic SC';
+        text-shadow: 0 0 2px #75ddfc;
+        font-size: 3em;
+        position: relative;
+}
+
+h1:after{
+	content: ' ';
+        position: absolute;
+        background: url(../images/sketch_h1.png) no-repeat center bottom;
+        height: 60px;
+        width: 100%;
+        bottom: -49px;
+        left: 1%;
+}
+
+fieldset{
+	border: 0;
+        padding: 10px 15px 60px;
+        background: url(../images/bg_imgs.png) no-repeat 10px 8px;  
+        position:relative;
+}
+
+
+fieldset:before{
+	content: ' ';
+        background: url(../images/clip.png) no-repeat left top;
+        position: absolute;
+        width: 69px;
+        height: 69px;
+        top: 30px;
+        left: -4px;
+        z-index: 2;
+}
+    
+fieldset legend{
+      font-family: 'Just Another Hand';
+      font-size: 1.7em;
+    margin-left: 128px;
+        text-shadow: 0 0 1px #75ddfc;
+  color: #3d3d3d;
+  	position: relative;
+}
+fieldset legend:before{
+	content: ' ';
+        background: url(../images/legend_arrow.png) no-repeat center center;
+        position:absolute;
+        width: 60px;
+        height: 36px;
+        left: -60px;
+}
+
+fieldset img{
+
+  	float: left;
+        margin: 14px;
+        -moz-transform: rotate(-4deg);
+ 	 -webkit-transform: rotate(-4deg);
+         -o-transform: rotate(-4deg);
+  	-ms-transform: rotate(-4deg);
+       transform: rotate(-4deg);
+       max-height: 76px;
+}
+
+fieldset ul{
+	font-size: .9em;
+        line-height: 1.7em;
+	padding-left: 110px;
+}
+
+.main {
+	width: 570px;
+	margin-left: auto;
+	margin-right: auto;
+        background: url(../images/notebook_bottom.png) no-repeat -20px bottom;
+        padding-bottom: 35px;
+        }
+.header {
+	background: url(../images/notebook_top.png) no-repeat center 15px;
+	text-align: center;
+        margin-top: 12px;
+        padding-top: 125px;
+}
+.title {
+}
+.container {
+	background: url(../images/notebook_middle.png) repeat-y center top;
+        padding-top: 60px;
+}
+.addressBook {
+}
+.card {
+}
+.card ul li {
+	list-style: none;
+}
+.card-field {
+}
+.label {
+	width: 33px;
+	display:inline-block;
+        padding: 0 28px;
+  	background: url(../images/label_arrows.png) no-repeat right -7px;
+        margin-right: 10px;
+        position: relative;
+        margin-left: 44px;
+	text-align: right;
+}
+.label:before {
+	content: ' ';
+        background: url(../images/label_icon.png) no-repeat left -11px;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+  	left: -2px;
+    	top: 3px;
+        }
+.email:before {
+	background: url(../images/label_icon.png) no-repeat -5px -37px;
+
+        }
+.note:before {
+	background: url(../images/label_icon.png) no-repeat -5px -61px;
+
+        }       
+        
+li:nth-child(1) .label{
+    	background: url(../images/label_arrows.png) no-repeat right -32px;
+                margin-left: 30px;
+}
+
+li:nth-child(2) .label{
+    	background: url(../images/label_arrows.png) no-repeat right -32px;
+                margin-left: 33px;
+}
+
+li:nth-child(3) .label{
+    	background: url(../images/label_arrows.png) no-repeat right -56px;
+                margin-left: 36px;
+}
+
+.name {
+}
+.email {
+}
+.note {
+}

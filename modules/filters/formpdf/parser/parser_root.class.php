@@ -58,7 +58,7 @@ class ParserRoot {
 
 	function special_chars($string) {
 		//$string = utf8_decode ($string);
-		//$busqueda = array("@á@", "@é@", "@í@", "@ó@", "@ú@", "@ñ@", "@Á@", "@É@", "@Í@", "@Ó@", "@Ú@", "@Ñ@");
+		//$busqueda = array("@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@", "@ï¿½@");
 		//$reemplazar = array("'a", "'e", "'i", "'o", "'u", "~n", "'A", "'E", "'I", "'O", "'U", "~N");
 		//$string = preg_replace($busqueda, $reemplazar, $string);
 		return $string;
@@ -177,10 +177,6 @@ class ParserRoot {
 
 				case "pt":
 					$size *= 25.4/72;
-					break;
-
-				default:
-					$size = $size;
 					break;
 			}
 		}

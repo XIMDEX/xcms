@@ -139,11 +139,11 @@ div.search-button-label {
 }
 
 .destroy-on-click{
-	background: $c_white-l;
+	background: whitesmoke;
 	border: 1px solid $c_grey-ppp;
 	@include radius(5px);
-	@include boxshadow(1px 1px 2px $s_grey)
-
+	@include boxshadow(1px 1px 2px $s_grey);
+    z-index: 5;
 }
 .xim-actions-menu button{
 	background: url('../../../../../images/action/sep-btn-actions.png') no-repeat left center;

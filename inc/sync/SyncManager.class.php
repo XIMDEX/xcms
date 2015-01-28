@@ -136,7 +136,7 @@ class SyncManager {
 		}
 
 		// Add relation to cache.
-		if (Config::getValue('dexCache')) {
+		if (\App::getValue( 'dexCache')) {
 			DexCache::setRelation($node_id, $frameID, $versionID);
 		}
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	{URL_ROOT}			Ximdex base URL.
+	{XIMDEX_ROOT_PATH}	Ximdex base installation path.
+	{?}					Wildcard, use it with channels and languages for example.
+-->
+<project name="single_page" title="Single page theme" description="Single page based theme" nodetypename="PROJECT" Transformer="xslt" channel="{?}" language="{?}">
+	<section
+		name="SinglePage_Server" nodetypename="SERVER"
+		protocol="LOCAL" login="" password="" host="localhost" port="0"
+		url="{URL_ROOT}/data/previos/" initialDirectory="{XIMDEX_ROOT_PATH}/data/previos/"
+		overrideLocalPaths="0" enabled="1" previsual="0" description="Local" isServerOTF="false">
+
+		<ximdoccontainer>
+			<document name="single_page" nodetypename="XMLDOCUMENT" templatename="rng-vista-single-page" channel="{?}" language="10003" />
+		</ximdoccontainer>
+
+	</section>
+</project>

@@ -30,8 +30,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define("XIMDEX_ROOT_PATH", realpath(dirname( __FILE__) . "/../../"));
 }
 
-include_once(XIMDEX_ROOT_PATH . "/inc/lang/AssociativeArray.class.php");
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 
 //require_once("FilterDB.class.php");
 
@@ -93,7 +91,7 @@ class Filter {
 	 */
 	function initObject() {
 		// Default init for specialized classes.
-		$this->config = new AssociativeArray();
+		$this->config = new \Ximdex\Utils\AssociativeArray();
 	}
 
 	/**

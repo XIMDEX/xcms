@@ -56,7 +56,7 @@ class View_UnpublishOTF extends Abstract_View implements Interface_View {
 
 		$sqlContent = $this->getSQLContent($nodeId);
 
-		$tmpFolder = XIMDEX_ROOT_PATH . Config::GetValue('TempRoot');		
+		$tmpFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
 		$tarFile = $tmpFolder . '/' . $nodeName;
 		$tmpSqlFile = $tmpFolder  . $nodeName . '.sql';
 

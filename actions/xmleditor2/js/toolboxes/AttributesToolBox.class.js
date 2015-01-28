@@ -143,7 +143,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 					}else{
 						this._createInputFor_genericSelector(attrName, input,[]);
 					}
-					
+
 //					$(input).click(function (e) {this._createTreeSelector($(e.currentTarget).attr('id'));}.bind(this));
 				}
 			}
@@ -217,16 +217,18 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 	},
 
 	_openXimlinkSelector: function(event, $inputUrl) {
-		var drawerId = 'ximlinkdrawer';
 
-		var mainTerm = $(this.tool.selNode._htmlElements).filter(":visible").text();
-		var term = $inputUrl.val()? $inputUrl.val() : "";
+		var drawerId 	= 'ximlinkdrawer';
+		var mainTerm 	= $(this.tool.selNode._htmlElements).filter(":visible").text();
+		var term 		= $inputUrl.val()? $inputUrl.val() : "";
+		var dt 			= this.editor.getTool('ximdocdrawertool');
 
-		var dt = this.editor.getTool('ximdocdrawertool');
 		if (dt.isOpen(drawerId)) return;
 
 		var $button = $('button.ximlink-search', this.element).unbind('click');
+
 		dt.drawers[drawerId].setInput($inputUrl);
+
 		$.getJSON(
 			X.restUrl + '?action=xmleditor2&method=getAvailableXimlinks&term='+term,
 			{docid: this.editor.nodeId},
@@ -243,8 +245,6 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 		);
 	},
 
-
-
 	_createInputFor_genericSelector : function(label, inputUrl, specificSearchOptions){
 
 		var searchOptions = [{comparation: 'equal',
@@ -253,7 +253,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
                                                 from: '',
                                                 to: ''
 					}];
-		
+
 		var $inputUrl = $(inputUrl).addClass('kupu-attribute-value');
 
 		searchOptions = searchOptions.concat(specificSearchOptions);
@@ -289,22 +289,22 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
                         inputUrl2 = $inputUrl;
                         $(this.imageSelector)
                                 .unbind('nodesSelected')
-                                .bind('nodesSelected', 
+                                .bind('nodesSelected',
 					this._imageSelector_onNodesSelected);
 
                         return this.imageSelector;
 
 		}.bind(this);
 
-		
+
 		var $sp = getImageSelector($inputUrl);
 
 		var $label = $('<div></div>')
 			.addClass('kupu-toolbox-label')
-			.html('%s:'.printf(label));		
+			.html('%s:'.printf(label));
 		var $wrap = $('<div></div>')
 			.addClass('kupu-toolbox-attribute-value');
-		 
+
 		var $button = $('<button></button>')
 			.addClass('imageSelector-search')
 			.attr('type', 'button')
@@ -327,7 +327,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
 			}
 
 		}.bind(this));
-		
+
 		var d = $('<div></div>')
 			.addClass('xedit-element-attribute')
 			.append($label)
@@ -351,7 +351,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
                                         content: '5032',
                                         field: 'nodetype',
                                         from: '',
-                                        to: ''                          
+                                        to: ''
                                     }];
 
 		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
@@ -363,7 +363,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
                                         content: '5040',
                                         field: 'nodetype',
                                         from: '',
-                                        to: ''                          
+                                        to: ''
                                     }];
 
 		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
@@ -375,8 +375,8 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
                                         content: '5057',
                                         field: 'nodetype',
                                         from: '',
-                                        to: ''				
-              				}]; 
+                                        to: ''
+              				}];
 		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
 	},
 

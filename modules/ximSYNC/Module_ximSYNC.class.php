@@ -23,21 +23,20 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Modules\Module;
 
 
-
-ModulesManager::file('/inc/modules/Module.class.php');
-ModulesManager::file('/inc/persistence/Config.class.php');
+//
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
 class Module_ximSYNC extends Module {
 
 	var $syncPaths;
 
-	function Module_ximSYNC () {
+	public function __construct() {
 
 		// Call Module constructor.
-		parent::Module("ximSYNC", dirname (__FILE__));
+		parent::__construct("ximSYNC", dirname (__FILE__));
 
 		// Initialization stuff.
 		$this->syncPaths = array (
@@ -50,8 +49,8 @@ class Module_ximSYNC extends Module {
 
         // Install logic.
 
-        // ¿get module from ftp, webdav, subversion, etc...?
-        // ¿need to be extracted?
+        // ï¿½get module from ftp, webdav, subversion, etc...?
+        // ï¿½need to be extracted?
         // extract and copy files to modules location.
 
         // get constructor SQL

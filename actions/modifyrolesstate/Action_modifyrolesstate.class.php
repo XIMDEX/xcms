@@ -41,7 +41,7 @@ class Action_modifyrolesstate extends ActionAbstract {
     	$rolesStates = array();
 	$asociatedRoles=array();
 
-        $query = App::get('QueryManager');
+        $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
         $action = $query->getPage();
         $actionAdd = $action . $query->buildWith(array('method' => 'addrolestate'));
         $actionDelete = $action . $query->buildWith(array('method' => 'deleterolestate'));

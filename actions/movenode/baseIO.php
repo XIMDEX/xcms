@@ -35,8 +35,7 @@ ModulesManager::file('/actions/movenode/baseIO.php');
 function baseIO_MoveNode($nodeID, $targetParentNodeID) {
 
 	XMD_Log::info("IO-movenode -> nodeID=$nodeID, nodeID_destino=$targetParentNodeID");
-	$messages = new Messages();
-	
+
 	$node = new Node($nodeID);
 	if (!($node->get('IdNode') > 0)) {
 		return _("Source node does not exist") . $node->msgErr; // Operation error

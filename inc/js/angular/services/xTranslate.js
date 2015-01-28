@@ -31,7 +31,7 @@ angular.module('ximdex.common.service')
 			var humanize = function() {
                 var str = path[path.length - 1];
                 str = str.charAt(0).toUpperCase() + str.slice(1);
-                str = str.replace("_", " ");
+                str = str.replace(/_/g, " ");
                 return str || input;
             };
             

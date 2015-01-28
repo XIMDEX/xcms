@@ -28,7 +28,6 @@
 
 
 ModulesManager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/inc/helper/DebugLog.class.php');
 
 
 class NodesToPublish extends NodesToPublish_ORM {
@@ -139,6 +138,8 @@ class NodesToPublish extends NodesToPublish_ORM {
             $infinite = mktime(0,0,0,12,12,2099);
             $j=0;
             $results = $this->find("DateUp, DateDown", "IdNode=%s AND (DateUp > %s or DateDown > %s) order by dateup", array($idNode, $now, $now));
+            if(is_null($results))
+                return array();
             foreach ($results as $row) {
                 $timeUp = $row["DateUp"];
                 $timeDown = $row["DateDown"];                

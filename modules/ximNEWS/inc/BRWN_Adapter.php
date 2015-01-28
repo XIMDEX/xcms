@@ -32,9 +32,7 @@ $type = $_GET['tipo'];
 $nodeID = $_GET['nodeid'];
 $activaImg = $_GET['activaImg'];
 $resultado = "";
-$conf = new Config();
-$pre_path = $conf->GetValue("AppRoot") . $conf->GetValue("NodeRoot");
-
+$pre_path =  \App::getValue("AppRoot") .  \App::getValue("NodeRoot");
 switch($type){
 	case "noticiasB":
 	    	//noticias del boletin dado en nodeID

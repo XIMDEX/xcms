@@ -26,9 +26,7 @@
 
 
 
-ModulesManager::file('/inc/model/Versions.inc');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/xml/XSLT.class.php');
+ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
@@ -59,7 +57,7 @@ class View_Xslt extends Abstract_View {
 			return NULL;
 
 
-		$ptdFolder = Config::getValue("TemplatesDirName");
+		$ptdFolder = \App::getValue( "TemplatesDirName");
 
 		$section = new Node($this->_idSection);
 		$sectionPath = $section->class->GetNodePath();
@@ -74,7 +72,7 @@ class View_Xslt extends Abstract_View {
 
 			if ($renderMode == 'client') {
 				$inclusionHeader = '<?xml-stylesheet type="text/xsl" href="' . $ptdFolder . '/docxap.xsl"?>';
-				$xmlHeader = Config::getValue('EncodingTag');
+				$xmlHeader = \App::getValue( 'EncodingTag');
 				$content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
 
 				XMD_Log::info('Render in client, return XML content + path to template');
@@ -105,7 +103,7 @@ class View_Xslt extends Abstract_View {
 		}
 
 
-		$xsltHandler = new XSLT();
+		$xsltHandler = new \Ximdex\XML\XSLT();
 		$xsltHandler->setXML($pointer);
 		$xsltHandler->setXSL($docxap);
 		$params = array('xmlcontent' => $content);
@@ -188,7 +186,7 @@ class View_Xslt extends Abstract_View {
 
 		// Check Params:
 		if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
-			XMD_Log::error('VIEW XSLT: No se ha especificado el canal del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+			XMD_Log::error('VIEW XSLT: Node ' . $args['NODENAME'] . ' has not an associated channel');
 			return NULL;
 		}
 
@@ -206,7 +204,7 @@ class View_Xslt extends Abstract_View {
 
 			// Check Params:
 			if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-				XMD_Log::error('VIEW XSLT: No se ha especificado la secci�n del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+				XMD_Log::error('VIEW XSLT: There is not associated section for the node ' . $args['NODENAME']);
 				return NULL;
 			}
 		}
@@ -225,7 +223,7 @@ class View_Xslt extends Abstract_View {
 
 			// Check Params:
 			if (!isset($this->_idProject) || !($this->_idProject > 0)) {
-				XMD_Log::error('VIEW XSLT: No se ha especificado el proyecto del nodo ' . $args['NODENAME'] . ' que quiere renderizar');
+				XMD_Log::error('VIEW XSLT: There is not associated project for the node ' . $args['NODENAME']);
 				return NULL;
 			}
 		}

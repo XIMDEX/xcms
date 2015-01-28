@@ -20,98 +20,104 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
-class InstallModulesManager extends InstallManager {
 
-	const ALREADY_INSTALL = "Already installed";
-	const ERROR_INSTALL = "Error";
-	const UNINSTALLED = "Uninstalled";
-	const SUCCESS_INSTALL = "Installed";
-	const DISABLED = "Disabled";
+class InstallModulesManager extends InstallManager
+{
 
-	public function installModule($name){
+    const ALREADY_INSTALL = "Already installed";
+    const ERROR_INSTALL = "Error";
+    const UNINSTALLED = "Uninstalled";
+    const SUCCESS_INSTALL = "Installed";
+    const DISABLED = "Disabled";
 
-		$installState = self::UNINSTALLED;
-		$modMngr = new ModulesManager();
-		$state = $modMngr->checkModule($name);
-		$myenabled = $modMngr->isEnabled($name);
-		
-		switch ($state) {
-			case MODULE_STATE_INSTALLED:
-				$installState = self::ALREADY_INSTALL;
-				# code...
-				break;
-			case MODULE_STATE_UNINSTALLED:
-				if (!$myenabled){
-					$result = $modMngr->installModule($name);
-					$installState =  $result ? self::SUCCESS_INSTALL: self::ERROR_INSTALL;
-				}
-				break;				
-			case MODULE_STATE_ERROR:
-				$installState =  self::ERROR_INSTALL;
-				break;
-			default:
-				break;
-		}
+    public function installModule($name)
+    {
 
-		return $installState;
-	}
+        $installState = self::UNINSTALLED;
+        $modMngr = new ModulesManager();
+        $state = $modMngr->checkModule($name);
+        $myenabled = $modMngr->isEnabled($name);
 
-	public function enableModule($name){
-
-		if (strtolower($name)!="ximloader"){
-			$modMngr = new ModulesManager();
-			$modMngr->enableModule($name);
-		}
-	}
-        
-        public function uninstallModule($name){
-            $modMngr = new ModulesManager();
-            $modMngr->uninstallModule($name);
+        switch ($state) {
+            case ModulesManager::get_module_state_installed():
+                $installState = self::ALREADY_INSTALL;
+                # code...
+                break;
+            case ModulesManager::get_module_state_uninstalled():
+                if (!$myenabled) {
+                    $result = $modMngr->installModule($name);
+                    $installState = $result ? self::SUCCESS_INSTALL : self::ERROR_INSTALL;
+                }
+                break;
+            case ModulesManager::get_module_state_error():
+                $installState = self::ERROR_INSTALL;
+                break;
+            default:
+                break;
         }
 
-	public function buildModulesFile(){
+        return $installState;
+    }
+
+    public function enableModule($name)
+    {
+
+        if (strtolower($name) != "ximloader") {
+            $modMngr = new ModulesManager();
+            $modMngr->enableModule($name);
+        }
+    }
+
+    public function uninstallModule($name)
+    {
+        $modMngr = new ModulesManager();
+        $modMngr->uninstallModule($name);
+    }
+
+    public function buildModulesFile()
+    {
 
 
-		$fileName = XIMDEX_ROOT_PATH.MODULES_INSTALL_PARAMS;
-		@unlink($fileName);
-		/*if(!file_exists($fileName) || !is_writable($fileName))
-			return false;*/
-		$config = FsUtils::file_get_contents($fileName);
-		
-		$modMan=new ModulesManager();
-		$modules=$modMan->getModules();
-		foreach ($modules as $mod) {
-			if (isset($mod["enabled"])){
-				$modMan->uninstallModule($mod["name"]);
-			}
-		}
-		$str="<?php\n\n";
-		$str .= "/**
+        $fileName = XIMDEX_ROOT_PATH . ModulesManager::get_modules_install_params();
+        @unlink($fileName);
+        /*if(!file_exists($fileName) || !is_writable($fileName))
+            return false;*/
+        $config = FsUtils::file_get_contents($fileName);
+
+        $modMan = new ModulesManager();
+        $modules = $modMan->getModules();
+        foreach ($modules as $mod) {
+            if (isset($mod["enabled"])) {
+                $modMan->uninstallModule($mod["name"]);
+            }
+        }
+        $str = "<?php\n\n";
+        $str .= "/**
 			}
  * Paths and states constants for the Ximdex Modules, e.g.
  * The path is relative to ximdex folder.
  * define('MODULE_XIMSYNC_PATH','/modules/ximSYNC');
  */\n\n";
 
-		foreach($modules as $mod){
-			@unlink(XIMDEX_ROOT_PATH."/data/.".$mod["name"]);
-			$str.=PRE_DEFINE_MODULE.strtoupper($mod["name"]).POST_PATH_DEFINE_MODULE.str_replace(XIMDEX_ROOT_PATH,'',$mod["path"])."');"."\n";			
-		}
-		$str.="\n?>";
-		$result = FsUtils::file_put_contents($fileName,$str);
-		return $result;
-	}
+        foreach ($modules as $mod) {
+            @unlink(XIMDEX_ROOT_PATH . "/data/." . $mod["name"]);
+            $str .= ModulesManager::get_pre_define_module() . strtoupper($mod["name"]) . ModulesManager::get_post_path_define_module() . str_replace(XIMDEX_ROOT_PATH, '', $mod["path"]) . "');" . "\n";
+        }
+        $str .= "\n?>";
+        $result = FsUtils::file_put_contents($fileName, $str);
+        return $result;
+    }
 
-	public function installDefaultModules(){
-		$defaultModules = $this->getModulesByDefault();
-		foreach ($defaultModules as $module) {
-			$this->installModule($module["name"]);
-		}
-	}	
+    public function installDefaultModules()
+    {
+        $defaultModules = $this->getModulesByDefault();
+        foreach ($defaultModules as $module) {
+            $this->installModule($module["name"]);
+        }
+    }
 }
-?>

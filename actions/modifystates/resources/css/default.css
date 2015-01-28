@@ -34,3 +34,50 @@ img.sortable_element{
 ul.sortable{
 	margin-left: 0px;	
 }
+
+input.name{
+    width: 18%;
+}
+
+input.description{
+    width: 50%;
+}
+
+div.separator{
+    display: block;
+    height: 0.5em;
+    width: calc(80% + 8px);
+    cursor: pointer;
+}
+
+div.separator:hover{
+    background-color: #7bcabf;
+}
+
+div.separator button{
+    position: relative;
+    top: -0.6em;
+    left: -2.4em;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+div.separator:hover button{
+    visibility: visible;
+}
+
+label.status{
+    width: 12% !important;
+    display: inline;
+    float: left;
+    margin-top: 0.4em;
+}
+
+button.delete-btn{
+    position: relative;
+    visibility: hidden;
+}
+
+ul.sortable li:hover button.delete-btn{
+    visibility: visible;
+}

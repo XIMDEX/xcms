@@ -26,7 +26,6 @@
 
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/helper/String.class.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/ConfigInterface.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Config.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Exception.php');
@@ -41,8 +40,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 	function __construct() {
 	    parent::__construct();
-        	$this->uploadsFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') .'/'. Config::getValue('UploadsFolder');
-	        $this->chunksFolder = XIMDEX_ROOT_PATH . Config::getValue('TempRoot') .'/'. Config::getValue('ChunksFolder');
+        	$this->uploadsFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') .'/'. \App::getValue( 'UploadsFolder');
+	        $this->chunksFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') .'/'. \App::getValue( 'ChunksFolder');
 	}
 
 	// Main method: shows initial form
@@ -51,15 +50,13 @@ class Action_fileupload_common_multiple extends ActionAbstract {
    		$idNode = (int) $this->request->getParam("nodeid");
      	$actionID = (int) $this->request->getParam("actionid");
 		$type = $this->request->getParam('type');
-		$userid = XSession::get('userID');
-		$dir_tmp = XIMDEX_ROOT_PATH.Config::getValue('TempRoot');
 
 		/** ********* Find out folder nodetype **** */
 		$baseIoInferer = new BaseIOInferer();
 		$type_folder = $baseIoInferer->infereType('FOLDER', $idNode );
 		$type_node = $type_folder["NODETYPENAME"];
 		/** ********* Checking permits **************************** */
-		$userid = XSession::get('userID');
+		$userid = \Ximdex\Utils\Session::get('userID');
 
 		if(empty($userid)) {
 			$this->messages->add(_('It is necessary to be an active user to upload files'), MSG_TYPE_ERROR);
@@ -75,18 +72,18 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		/** ********* Preparing view ************ */
 		//Filter and button tag according to type of upload file
-		
+
 		switch($type_node)  {
 			case 'CssFolder':
 				$lbl_anadir = _(' Add style sheets');
 				$allowedMimes = 'text/css';
 				$allowedExtensions = '.css';
 			 	break;
-			case 'ImagesFolder':
+			/*case 'ImagesFolder':
 				$lbl_anadir = _(' Add images ');
 				$allowedMimes = 'image/*';
-				$allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg';
-				break;
+				$allowedExtensions = '.jpg, .jpeg, .gif, .png, .svg, .bmp';
+				break;*/
 			case 'TemplateViewFolder':
 				$lbl_anadir = _(' Add schemas ');
 				$allowedExtensions = '.xml';
@@ -97,11 +94,11 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				$allowedExtensions = '.xml, .xsl';
 				$allowedMimes = 'text/xml';
 				break;
-			case 'ImportFolder':
+			/*case 'ImportFolder':
 				$lbl_anadir = _(' Add HTML files ');
 				$allowedExtensions = 'ht, .htm, .html, .xhtml, .plain, .txt';
 				$allowedMimes = 'text/xml, text/html, text/plain, text/txt';
-				break;
+				break;*/
 			case 'XmlContainer':
 				$lbl_anadir = _(' Add XML files ');
 				$is_structured=true;
@@ -115,6 +112,8 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 				break;*/
 			default:
 				$lbl_anadir = _(' Add files');
+                $allowedMimes = '';
+                $allowedExtensions = '';
 				break;
 		};
 
@@ -123,7 +122,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		$this->addCss('/actions/fileupload_common_multiple/resources/css/uploader_html5.css');
 
 		$uploaderOptions = array (
-			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
+			"nodeURL" => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
 			"lbl_anadir" => $lbl_anadir,
 			'messages' => $this->messages->messages,
 			'nodeid' => $idNode,
@@ -233,7 +232,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 			$idNode = $this->request->getParam('nodeid');
 	  	  	$type = $this->request->getParam('type');
 	  	  	$metadata = json_decode($this->request->getParam('meta'));
-	   		$overwrite = ($_POST['overwrite'] == 'true') ? ture : false;
+	   		$overwrite = ($_POST['overwrite'] == 'true') ? true : false;
 			$file = $_FILES['file'];
 			$file['tmp_name'] = $path;
 			if (!empty($_POST['ximFilename']))
@@ -257,31 +256,6 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 		
    	}
 
-    private function _checkExistence($file, $idNode) {
-
-    	$node = new Node($idNode);
-  		$idNode = $node->GetChildByName($file);
-  		if ($idNode > 0) {
-  			 return true;
-  		} else {
-			return false;
-    		}
-		$this->addJs('/actions/fileupload_common_multiple/resources/js/loader.js');
-
-		$values = array (
-			"nodeURL" => Config::getValue('UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid={$idNode}",
-			"lbl_anadir" => $lbl_anadir,
-			'messages' => $this->messages->messages,
-			'go_method' => 'showUploadResult',
-			'nodeid' => $idNode,
-			'actionid' => $this->request->getParam('actionid'),
-			'type' => $type,
-			'filter' => $filter,
-		);
-
-		$this->render($values, 'index', 'default-3.0.tpl');
-    }
-
 	private function _setRest($msg, $status=500) {
 		$retval = array();
 	   	$retval["msg"] = utf8_encode($msg);
@@ -293,13 +267,13 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 	//Creating a node according to name and file path
 	private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
        
-        $normalizedName = String::normalize($file["name"]);
+        $normalizedName = \Ximdex\Utils\String::normalize($file["name"]);
 		$baseIoInferer = new BaseIOInferer();
 		//Finding out element nodetype
 		if (empty($type) || $type == 'null') {
-			$nodeTypeName = $baseIoInferer->infereFileType($file);
+			$nodeTypeName = $baseIoInferer->infereFileType($file, $idNode);
 		} else {
-			$nodeTypeName = $baseIoInferer->infereFileType($file, $type);
+			$nodeTypeName = $baseIoInferer->infereFileType($file, $idNode, $type);
 		}
 		$result = 0;
 
@@ -403,14 +377,5 @@ class Action_fileupload_common_multiple extends ActionAbstract {
 
 		return $result;
 	}
-
-
-  	private function normalizeName($name) {   
-  	    $source = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
-  	    $target = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-  	    $decodedName = utf8_decode($name);
-  	    $decodedName = strtr($decodedName, utf8_decode($source), $target);
-  	    return str_replace(' ', '_', utf8_encode($decodedName));
-  	}
 }
 ?>

@@ -1289,7 +1289,7 @@ class Phing {
 	public static function getTimer() {
 		if (self::$timer === null) {
 			include_once 'phing/system/util/Timer.php';
-			self::$timer= new Timer();
+			self::$timer= new \Ximdex\Utils\Timer();
 		}
 		return self::$timer;
 	}

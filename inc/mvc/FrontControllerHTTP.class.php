@@ -62,9 +62,22 @@ class FrontControllerHTTP extends FrontController {
 			// Llama al ApplicationController
 			$appController = new ApplicationController();
 			$appController->setRequest($this->request);
-			$appController->compose();
-			$this->hasError = $appController->hasError();
-			$this->msgError = $appController->getMsgError();
+			/* Getting params to check permissions.
+             * Some actions can be loaded for everyone
+             */
+            $idNode = $this->request->getParam('nodeid');
+            $actionName = $this->request->getParam('action');
+            $idAction = $this->getActionId();
+            $listAllowedActions = Action::getAlwaysAllowedActions();
+            if (in_array($actionName, $listAllowedActions) || 
+                    $this->isAllowedAction($idNode, $idAction)){
+                $appController->compose();
+                $this->hasError = $appController->hasError();
+                $this->msgError = $appController->getMsgError();
+            }else{
+                $this->hasError = true;
+                $this->msgError = "";
+            }
 		}
 	}
 
@@ -75,9 +88,9 @@ class FrontControllerHTTP extends FrontController {
 	function _checkURI() {
 		$host_request = $_SERVER["HTTP_HOST"];
 		$uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
-		$ximdex =  parse_url(Config::getValue('UrlRoot') );
+		$ximdex =  parse_url(App::getValue('UrlRoot') );
 
-		if($ximdex["host"] != $_SERVER["HTTP_HOST"] && strpos($uri_request, $ximdex["path"]) === 0 ) {
+		if($ximdex["host"] != $_SERVER['SERVER_NAME'] | (isset($ximdex["path"]) && strpos($uri_request[0], $ximdex["path"]) === false) ) {
 			$this->_setError("Error: la URL de acceso no coincide con la UrlRoot", "FrontController");
 			return false;
 		}else {
@@ -89,7 +102,7 @@ class FrontControllerHTTP extends FrontController {
 
 	function parseFriendlyUrl() {
 
-		$urlRoot =  Config::getValue('UrlRoot');
+		$urlRoot =  \App::getValue( 'UrlRoot');
 		//get base url of ximdex
 		$base = "/".preg_replace("/http:\/\/.+?\//","",$urlRoot)."/";
 
@@ -153,13 +166,13 @@ class FrontControllerHTTP extends FrontController {
 
 
 	function checkSession() {
-		$session_exists = XSession::get("userID");
+		$session_exists = \Ximdex\Utils\Session::get("userID");
 
 		$action_without_session = array("createaccount", "logout", "installer");
 		$actionName = $this->request->getParam('action');
 		$method = $this->request->getParam('method');
 
-		$session_exists = XSession::get("userID");
+		$session_exists = \Ximdex\Utils\Session::get("userID");
 		$need_session =  !in_array($actionName, $action_without_session);
 
 		if("installer" == $actionName) {
@@ -185,7 +198,7 @@ class FrontControllerHTTP extends FrontController {
 	 * @return unknown_type
 	 */
 	function parseURI() {
-		//Añadimos los distintos parametros tanto de get, como de post, como de file) al request de la clase
+		//Aï¿½adimos los distintos parametros tanto de get, como de post, como de file) al request de la clase
 		$this->setToRequest();
 		$this->ModuleShortUrl();
 
@@ -312,8 +325,8 @@ class FrontControllerHTTP extends FrontController {
 
 	function setXsessionParams($renderer, $_action_path) {
 		/** Guardado de datos persistente */
-		XSession::set("renderer", $renderer);
-		XSession::set("actionPath", $_action_path);
+		\Ximdex\Utils\Session::set("renderer", $renderer);
+		\Ximdex\Utils\Session::set("actionPath", $_action_path);
 
 	}
 }

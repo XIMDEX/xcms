@@ -126,7 +126,7 @@ XimDocument = function(editorConfig) {
 	};
 
 	this.checkSpellingIsAllowed =function(){
-		return (this._editorConfig.checkspelling == 0) ? false : true;	
+		return (this._editorConfig.checkspelling == 0) ? false : true;
 	}
 
 	this.toggleSchemaValidator = function() {
@@ -183,11 +183,11 @@ XimDocument = function(editorConfig) {
 		}
 	};
 
-	
+
 	/**
- 	 * Method which alert the errors found after parse the document 
-	 * @private  
-	 * Create at 2012-11-20 
+ 	 * Method which alert the errors found after parse the document
+	 * @private
+	 * Create at 2012-11-20
 	 **/
 	this._showErrors = function(){
 		var result="";
@@ -262,8 +262,9 @@ XimDocument = function(editorConfig) {
 
 		for (var i=0; i<l; i++) {
 
-			var name = attributes[i].nodeName;
-			var value = attributes[i].nodeValue;
+            //Attr.nodeName and Attr.nodeValue are deprecated
+			var name = attributes[i].name;
+			var value = attributes[i].value;
 			var htmlName = null;
 
 			if (rngElement
@@ -432,7 +433,7 @@ XimDocument = function(editorConfig) {
 	 */
 	this.importXmlElement = function(domElement, importChilds) {
 		var tagName = domElement.tagName.toLowerCase();
-		var rngElement = this._rngDoc.getElement(tagName);		
+		var rngElement = this._rngDoc.getElement(tagName);
 		if (!rngElement) {
 			//console.error('Element <' + tagName + '/> not found in RNG Schema');
 			return null;
@@ -724,7 +725,6 @@ XimDocument = function(editorConfig) {
 			hideXimlets: true
     	});
 
-		var encodedContent = "content=" + encodeURIComponent(content);
 		var encodedObject = {"content": content};
 
 		// XML validation on the server
@@ -733,7 +733,8 @@ XimDocument = function(editorConfig) {
 				var msg = null;
 				if (!json.valid) {
 					msg = _("<h2>Document cannot be validated! It contains the following errors:</h2>");
-
+                    $('#kupu-schemavalidator-button').removeClass('kupu-schemavalidator-valid');
+                    $('#kupu-schemavalidator-button').addClass('kupu-schemavalidator-notvalid');
 					if (json.errors) {
                         msg += "<ul>";
 						var l = json.errors.length;
@@ -742,7 +743,10 @@ XimDocument = function(editorConfig) {
 						}
                         msg += "</ul>";
 					}
-				}
+				}else{
+                    $('#kupu-schemavalidator-button').removeClass('kupu-schemavalidator-notvalid');
+                    $('#kupu-schemavalidator-button').addClass('kupu-schemavalidator-valid');
+                }
 				if (typeof(callback) == 'function') callback(json.valid, msg);
 			},
 			onError: function(req) {

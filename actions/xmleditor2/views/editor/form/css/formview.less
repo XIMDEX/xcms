@@ -1,0 +1,333 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+/* NO Extends because they are inserted at the beggining of each CSS file */
+
+/* variables */
+@negro: #333;
+@blanco: #FFF;
+@gris: #a3b0c1;
+@gris-claro: #DDD;
+@verde: #5ab2a6;
+
+@espacio: 15px;
+
+/* tipografias */
+@font-face {
+  font-family: 'ximdex_icons';
+  src: url("../../../../../../xmd/fonts/ximdex_icons.eot");
+  src: url("../../../../../../xmd/fonts/ximdex_icons.eot?#iefix") format("embedded-opentype"), url("../../../../../../xmd/fonts/ximdex_icons.woff") format("woff"), url("../../../../../../xmd/fonts/ximdex_icons.ttf") format("truetype"), url("../../../../../../xmd/fonts/ximdex_icons.svg#ximdex_icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body.xedit-rngelement {
+  padding: 40px 0px 0px 0px !important;
+
+  font-size: 14px !important;
+}
+
+.form-view {
+  a {
+    cursor: pointer;
+    color: @verde !important;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  p,
+  img {
+    margin-bottom: @espacio;
+  }
+
+  .form-control {
+    height: auto !important;
+    overflow: hidden !important;
+
+    &:focus {
+      border-color: @verde !important;
+      outline: 0;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(90, 178, 166, 0.6) !important;
+      box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(90, 178, 166, 0.6) !important;
+    }
+  }
+
+  .input-group-addon,
+  .input-group-btn {
+    vertical-align: top !important;
+  }
+
+  /* panel */
+  .panel {
+    border-radius: 0px;
+    border: 1px solid @gris-claro !important;
+
+    .panel:last-child {
+      margin: 0px !important;
+    }
+
+    .panel-heading {
+      overflow: hidden;
+      background-color: #EEE;
+      /*border-top-right-radius: 5px;
+      border-top-left-radius: 5px;*/
+
+      .panel-title {
+        margin: 0px;
+        padding: 0px;
+
+        font-size: 14px;
+        font-weight: 400;
+
+        a {
+          color: @gris !important;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+
+    .panel-body {
+      overflow: hidden;
+
+      .form-group {
+        & > p {
+          color: @gris;
+        }
+
+        &:last-child {
+          margin: 0px !important;
+
+          .form-control:last-child {
+            margin: 0px !important;
+          }
+        }
+      }
+    }
+  }
+
+  /* text */
+  .input-group-btn {
+    .btn {
+      background-color: #EEE;
+      border-color: #CCC;
+
+      font-weight: 700;
+      color: #CCC;
+
+      &:hover,
+      &:focus {
+        color: #CCC;
+      }
+    }
+  }
+
+  /* toolbar */
+  .btn-toolbar {
+    margin-bottom: 10px;
+
+    .btn {
+      &:hover,
+      &:focus {
+        color: @blanco !important;
+        background-color: @gris !important;
+      }
+
+      &.disabled:after {
+        position: relative;
+        content: "";
+        width: auto;
+        height: auto;
+
+        opacity: 0.4 !important;
+        background: none;
+      }
+    }
+  }
+}
+
+/* estilos antiguos de Antonio */
+/*.form-input-box {
+  margin: 30px;
+
+  background: @blanco;
+  border: 1px solid @gris;
+  border-radius: 3px;
+}*/
+
+/*
+.formview .rng-parent-selected .rng-element-selected,
+.formview .rng-parent-selected {
+  border: none !important;
+}
+
+.formview .kupu-draggable-handler,
+.formview .kupu-draggable-handler {
+  display: none !important;
+}
+
+.form-input-box {
+  margin: 30px;
+
+  background: @blanco;
+  border: 1px solid @gris;
+  border-radius: 3px;
+}
+
+.panel-collapse .form-input-box {
+  margin: 1.5em 0;
+}
+.form-input-box h4 {
+  margin: 0;
+  border-bottom: 1px solid #a3b0c1;
+  padding: 1em 1.4em;
+  text-transform: uppercase;
+  font-size: .92em;
+}
+.form-input-box h4 a {
+  position: relative;
+}
+.form-input-box h4 a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  top: -1em;
+  height: .4em;
+  background: #7bcabf;
+}
+
+.panel-collapse {
+  padding: 1em 1.4em;
+}
+
+label {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.form-control {
+  background: #e3e7e9;
+  border: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  font-size: 1.2em;
+  line-height: 1.5;
+  padding: .2em .5em 1em;
+  color: #445056;
+  height:auto !important;
+}
+.form-control:focus {
+  background: #f1f3f4;
+}
+
+.form-group {
+  margin-bottom: 1em;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+.btn-toolbar {
+  background: #8d9ea6;
+  height: 2.5em;
+  border-bottom: 1px solid #f1f3f4;
+}
+.btn-toolbar .btn-group {
+  display: inline-block;
+  background: none;
+}
+.btn-toolbar .btn-group .btn {
+  border: none;
+  background: none;
+  margin-top: .4em;
+  cursor: pointer;
+}
+
+.input{
+-moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    background-color: white;
+    background-color: -moz-field;
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px 0 lightgray inset;
+    font: -moz-field;
+    font: -webkit-small-control;
+    padding: 2px 3px;
+    width: 398px;
+    color: #999;
+    height:28px;
+    display: inline;
+    float: left;
+}
+
+.textarea:focus,.input:focus, .rng-element-selected{
+  color:#333 !important;
+}
+
+.textarea{
+ -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    font: medium -moz-fixed;
+    font: -webkit-small-control;
+    padding: 2px;
+    resize: both;
+    width: 400px;
+    color: #999;
+  margin-top: 5px;
+  display: inline;
+    float: left;
+}
+
+fieldset.indentable{
+  margin-left:10px;
+  padding: 5px;
+  margin-top:20px;
+}
+
+.input_name{
+  text-transform: capitalize
+}
+
+div.editable_elements_block{
+
+  height:250px;
+  overflow:auto;
+}
+
+img.form_view{
+
+  display:block;
+}*/

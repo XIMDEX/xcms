@@ -46,6 +46,6 @@ ximdexInstallerApp.controller('WelcomeController', ["$timeout", '$scope', 'insta
                     location.reload();
                 });
     }
-    $scope.checkInstaller();    
+    //$scope.checkInstaller();
 
 }]);

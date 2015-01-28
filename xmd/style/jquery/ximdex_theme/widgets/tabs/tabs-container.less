@@ -1,0 +1,263 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+/*************** Common style for element which appears in viewer area **********************/
+
+.browser-projects-view-treecontainer,
+.browser-projects-view-listcontainer,
+.browser-ccenter-view-treecontainer,
+.browser-reports-view-list-container,
+.browser-modules-view-list-container {
+  clear: both;
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  bottom: 0px;
+
+  &.xim-treeview-top {
+    top: 105px;
+  }
+
+  &.browser-projects-view-listcontainer {
+    top: 105px;
+  }
+}
+
+.browser-reports-view-list,
+.browser-modules-view-list {
+  padding-left: 10px;
+  padding-right: 10px;
+
+  &.browser-modules-view-list {
+    overflow: auto;
+    height: 100%;
+    margin-left: 10px;
+    margin-bottom: 10px;
+
+    li {
+      font-size: 14px;
+      font-size: 1.4rem;
+      line-height: 1.8em;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+  }
+}
+
+li.browser-modules-view-disabled {
+  background: url("../../../../../images/tree/treeview-icons.png") no-repeat -23px -274px;
+  cursor: default;
+  padding-left: 20px;
+  color: #b3b3b3;
+}
+
+li.browser-modules-view-enabled {
+  background: url("../../../../../images/tree/treeview-icons.png") no-repeat -23px -291px;
+  padding-left: 20px;
+}
+
+li.browser-reports-view-item {
+  a {
+    display: block;
+    background: url("../../../../../images/tree/treeview-icons.png") no-repeat -20px -252px;
+    padding-left: 25px;
+
+    &:hover {
+      color: white;
+      background: #e1e1e1 url("../../../../../images/tree/treeview-icons.png") no-repeat -20px -252px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+    }
+
+    &:active {
+      background: #7bcabf;
+    }
+  }
+}
+
+.ui-tabs-panel {
+  ul {
+    padding: 0px 15px 15px 15px;
+    list-style: none;
+
+    ul {
+      ul {
+        padding: 0px;
+      }
+    }
+  }
+
+  fieldset ul li {
+    cursor: pointer;
+  }
+}
+
+.xim-listview-container {
+  overflow-x: hidden;
+}
+
+.xim-treeview-node,
+.xim-listview-node {
+  white-space: nowrap;
+  cursor: pointer;
+
+  &.xim-treeview-node {
+    line-height: 1.8em;
+  }
+
+  &.xim-listview-node {
+    padding: 4px 0px 4px 0px !important;
+  }
+}
+
+.xim-treeview-branch {
+  overflow: hidden;
+
+  ul {
+    padding-right: 0px !important;
+  }
+
+  li {
+    .xix {
+      padding-left: 16px;
+
+      .xim-treeview-actions-dropdown {
+        left: 16px;
+        top: 2px;
+      }
+    }
+  }
+}
+
+.filter-no-results {
+  font-style: italic;
+  color: #006B6C;
+
+  &:before {
+    content: '\0073';
+    padding-right: 5px;
+
+    font-family: 'ximdex_icons' !important;
+    font-size: 12px;
+  }
+}
+
+/* breadcum list-view */
+.breadcrumb-list-view {
+  &.breadcrumb {
+    /*margin-bottom: 5px;*/
+    margin-bottom: 0px;
+    padding: 0px 15px 15px 15px;
+
+    background-color: transparent !important;
+
+    li {
+      margin-right: 5px;
+
+      &:before {
+        content: "\e038";
+        padding-right: 5px;
+
+        font-family: "ximdex_icons" !important;
+        font-size: 12px;
+        color: #999;
+      }
+
+      &:first-child {
+        &:before {
+          content: "\e021";
+
+          font-family: 'Glyphicons Halflings' !important;
+          font-size: 12px;
+          color: #BBB;
+        }
+      }
+
+      &.active {
+        &:before {
+          color: #006B6C;
+        }
+
+        a {
+          color: #006B6C;
+        }
+      }
+    }
+
+    a {
+      display: inline;
+
+      font-size: 16px;
+      font-style: italic;
+      color: #999;
+      background-image: none;
+
+      &:hover {
+        color: #666;
+      }
+    }
+  }
+}
+
+/* filter */
+.filter-word-span {
+  font-weight: 700;
+  color: #006B6C;
+}
+
+.filter-results-span {
+  font-style: italic;
+  color: #666;
+}
+
+/* tooltip */
+.tooltip {
+  &.in {
+    opacity: 1 !important;
+  }
+
+  &.top .tooltip-arrow {
+    border-top-color: #FFF !important;
+  }
+
+  &.right .tooltip-arrow {
+    border-right-color: #FFF !important;
+  }
+
+  &.bottom .tooltip-arrow {
+    border-bottom-color: #FFF !important;
+  }
+
+  .tooltip-inner {
+    max-width: 100% !important;
+    white-space: nowrap !important;
+
+    color: #464646;
+    background-color: #FFF !important;
+    -webkit-box-shadow: 1px 0px 4px 0px rgba(0,0,0,0.35);
+    -moz-box-shadow: 1px 0px 4px 0px rgba(0,0,0,0.35);
+    box-shadow: 1px 0px 4px 0px rgba(0,0,0,0.35);
+  }
+}

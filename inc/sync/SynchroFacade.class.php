@@ -32,7 +32,7 @@
 		define("XIMDEX_ROOT_PATH", realpath (dirname (__FILE__) . "/../../"));
 	}
 
-	require_once(XIMDEX_ROOT_PATH . '/inc/model/node.inc');
+	require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 	require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 
 	if (ModulesManager::isEnabled('ximSYNC')) {
@@ -40,7 +40,7 @@
   	   ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
   	   ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
 	} else {
-		require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.inc');
+		require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.php');
 		require_once(XIMDEX_ROOT_PATH . '/inc/sync/SyncManager.class.php');
 	}
 
@@ -199,7 +199,7 @@
 				$node = new Node($nodeID);
 				$serverID = $node->GetServer();
 				$nodeServer = new Node($serverID);
-				if (Config::getValue('PublishOnDisabledServers') == 1) {
+				if (\App::getValue( 'PublishOnDisabledServers') == 1) {
 					$physicalServers = $nodeServer->class->GetPhysicalServerList(true);
 				} else {
 					$physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);

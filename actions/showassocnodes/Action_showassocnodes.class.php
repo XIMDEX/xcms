@@ -25,9 +25,6 @@
  */
 
 
-
-ModulesManager::file('/inc/persistence/XSession.class.php');
-ModulesManager::file('/inc/persistence/Config.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 
 
@@ -45,15 +42,13 @@ class Action_showassocnodes extends ActionAbstract {
 	public function index()
 	{
       	$ximletId = (int) $this->request->getParam("nodeid");
-		$actionID = (int) $this->request->getParam("actionid");
-		$action = $this->request->getParam("action");
 
 		$this->addJs('/actions/showassocnodes/resources/js/treeSelector.js');
 		$this->addCss('/actions/showassocnodes/resources/css/index.css');
 
 		$sections = $this->getReferencedSections($ximletId);
 
-		$query = App::get('QueryManager');
+		$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
         $actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
         $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
 

@@ -25,8 +25,7 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/utils.inc');
-ModulesManager::file('/inc/helper/String.class.php');
+ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
@@ -143,7 +142,6 @@ class Action_preview extends AbstractAPIAction implements SecuredAction {
                 // Specific FilterMacros View for previsuals:
                 $viewFilterMacrosPreview = new View_FilterMacrosPreview();
                 $file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
-                $hash = basename($file);
 
 		if($json==true){
 			$content = FsUtils::file_get_contents($file);
@@ -159,37 +157,6 @@ class Action_preview extends AbstractAPIAction implements SecuredAction {
 			echo $content;
 		}	
     	}
-
-	/**
-         * Deletes docxap tag
-         */
-        private function _normalizeXmlDocument($xmldoc) {
-                $xmldoc = String::stripslashes($xmldoc);
-
-                $doc = new DOMDocument();
-                $doc->loadXML($xmldoc);
-                $doc->encoding = 'UTF-8';
-                $docxap = $doc->getElementsByTagName('docxap');
-
-                if(!$docxap){
-			return $xmldoc;
-		}
-
-                $docxap = $docxap->item(0);
-
-                $childrens = $docxap->childNodes;
-                $l = $childrens->length;
-
-                $xmldoc = '';
-                for ($i=0; $i<$l; $i++) {
-                        $child = $childrens->item($i);
-                        if ($child->nodeType == 1) {
-                                $xmldoc .= $doc->saveXML($child) . "";
-                        }
-                }
-
-                return $xmldoc;
-        }
 
 	/**
      	* <p>Checks whether the required parameters are present in the request
@@ -223,7 +190,7 @@ class Action_preview extends AbstractAPIAction implements SecuredAction {
             		return false;
         	}
 
-        	$nodeService = new NodeService();
+        	$nodeService = new \Ximdex\Services\Node();
 
         	$hasPermissionOnNode = $nodeService->hasPermissionOnNode($username, $nodeid, "View all nodes");
         	if (!$hasPermissionOnNode) {
@@ -235,5 +202,3 @@ class Action_preview extends AbstractAPIAction implements SecuredAction {
     	}
 
 }
-
-?>

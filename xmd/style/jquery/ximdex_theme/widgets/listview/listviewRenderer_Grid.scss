@@ -69,6 +69,10 @@ div.xim-listview-table-container div.t_fixed_header div.body{
 }*/
 
 .xim-listview-table-container{
+  overflow-y: scroll;
+  height: calc(100% - 45px);
+  overflow-x: hidden;
+  width: calc(100% - 15px);
 	margin:0 15px;
 	>div{
 		width: auto !important;

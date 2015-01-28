@@ -34,17 +34,27 @@
 	margin-top:  7px;
 }
 
+.ui-icon.icon-hidden {
+	cursor: default!important;
+	background: none!important;
+}
+
 
 .xim-treeview-icon, .xim-listview-icon{
-		background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
-		width: 18px;
-		height: 1em;
-		float: left;
-		margin-right: 5px;
-		margin: 0.4em 5px 0.2em 0px;
-		padding-bottom: .1em;
-		outline-style:none;
+	background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;
+	width: 18px;
+	height: 1em;
+	float: left;
+	margin-right: 5px;
+	margin-top: 2px;
+	padding-bottom: .1em;
+	outline-style:none;
 }
+
+.xim-treeview-icon{
+    margin: 0.4em 5px 0.2em 0px;
+}
+
 .icon-projects{
 	background-position: -1px -233px;
 }
@@ -191,12 +201,12 @@
 .icon-folder_bulletins{
 	background-position: -22px -378px;
 }
-.icon-catalog_xlyre{ 
-        background-position: -2px -663px; 
-} 
-.icon-dataset_xlyre{ 
-        background-position: -20px -663px; 
-} 
+.icon-catalog_xlyre{
+        background-position: -2px -663px;
+}
+.icon-dataset_xlyre{
+        background-position: -20px -663px;
+}
 
 
 
@@ -273,6 +283,10 @@ tr.xim-listview-selected .xim-listview-actions-dropdown{
 ul.xim-treeview-branch li div:hover .xim-treeview-actions-dropdown,
 .xim-listview-node .xim-listview-actions-dropdown, tr.xim-listview-item:hover .xim-listview-actions-dropdown, li.xim-listview-node:hover .xim-listview-actions-dropdown {
 	display: inline;
+}
+
+ul.xim-treeview-branch li div .xim-treeview-actions-dropdown.selected {
+    display: inline;
 }
 
 ul.xim-treeview-branch li div .xim-treeview-actions-dropdown:hover {

@@ -204,4 +204,8 @@
 .no-results {
   text-align: center; }
 
-/*# sourceMappingURL=searchpanel.css.map */
+.paginator {
+  margin-left: 1.5em; }
+
+.prev, .next {
+  cursor: pointer; }

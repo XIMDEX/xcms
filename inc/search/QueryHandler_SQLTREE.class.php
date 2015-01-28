@@ -28,7 +28,7 @@
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/search/QueryHandler_SQL.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 
 class QueryHandler_SQLTREE extends QueryHandler_SQL {
 

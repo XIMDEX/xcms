@@ -24,7 +24,7 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/Links.inc');
+ModulesManager::file('/inc/model/Links.php');
 
 class Action_modifylink extends ActionAbstract {
    // Main method: shows initial form

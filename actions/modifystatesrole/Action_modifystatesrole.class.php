@@ -41,57 +41,42 @@ class Action_modifystatesrole extends ActionAbstract {
 		$role = new Role($idNode);
 		$idRoleStates = $role->GetAllStates();
 
-		$asociatedStates = Array();
-		$notAsociatedStates = Array();
-
-		$workflow = new WorkFlow(NULL, NULL, Config::getValue('IdDefaultWorkflow'));
+		$workflow = new WorkFlow(NULL, NULL, \App::getValue( 'IdDefaultWorkflow'));
 		$idAllStates = $workflow->GetAllStates();
 		foreach ($idAllStates as $idStatus) {
 			$pipeStatus = new PipeStatus($idStatus);
-			$states[$idStatus] = $pipeStatus->get('Name');
+			$states[] = array("id" => $idStatus, "name" => $pipeStatus->get('Name'));
 		}
 
-		foreach ($states as $idState => $name) {
-			if ($idState != null && is_array($idRoleStates) && in_array($idState, $idRoleStates)) {
-				$asociatedStates[$idState] = $name;
+		foreach ($states as $i => $state) {
+			if ($state["id"] != null && is_array($idRoleStates) && in_array($state["id"], $idRoleStates)) {
+				$states[$i]["asociated"]=true;
 			} else {
-				$notAsociatedStates[$idState] = $name;
+                $states[$i]["asociated"]=false;
 			}
 		}
-		
-        $query = App::get('QueryManager');
-        $addState = $query->getPage() . $query->buildWith(array('method' => 'add_state'));
-        $deleteState = $query->getPage() . $query->buildWith(array('method' => 'delete_state'));
-
-		$values = array('all_states' => $notAsociatedStates,
-						'role_states' => $asociatedStates,
-						'action_add' => $addState,
-						'action_delete' => $deleteState);
+        $this->addJs('/actions/modifystatesrole/js/manager.js');
+		$values = array('all_states' => json_encode($states),
+                        'idRole' => $idNode);
 						
 		$this->render($values, null, 'default-3.0.tpl');
     }
-    
-    function add_state() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$idState = $this->request->getParam('id_state');
-		
-    	$role=new Role($idNode);
-		$role->AddState($idState);
-    	
-		$this->redirectTo('index');
-    }
-    
-    function delete_state() {
-    	$idNode = $this->request->getParam('nodeid');
-    	$states = $this->request->getParam('states');
-		$role = new Role($idNode);
-		if(is_array($states)) {
-			foreach ($states as $idState) {
-				$role->DeleteState($idState);
-			}
-		}
-    	$this->redirectTo('index');
-    }
 
+    function update_states(){
+        $request = json_decode($GLOBALS['HTTP_RAW_POST_DATA'],true);
+        $states = $request["states"];
+        $idRole = $request["idRole"];
+        $role=new Role($idRole);
+
+        foreach($states as $i => $state){
+            if($state["asociated"] && $role->HasState($state["id"])==0){
+                $role->AddState($state["id"]);
+            }elseif(!$state["asociated"] && $role->HasState($state["id"])>0){
+                $role->DeleteState($state["id"]);
+            }
+        }
+        $this->sendJSON(array("result" => "ok",
+                                "message" => _("The rol has been successfully updated")));
+    }
 }
 ?>

@@ -26,7 +26,7 @@
 
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
+//
 
 class QueryProcessor {
 
@@ -34,14 +34,14 @@ class QueryProcessor {
 	}
 
 	static public function & getInstance($handler) {
-		$factory = new Factory(dirname(__FILE__), 'QueryHandler_');
+		$factory = new \Ximdex\Utils\Factory(dirname(__FILE__), 'QueryHandler_');
 		$qh = $factory->instantiate($handler);
 		return $qh;
 	}
 	
 	static public function getQueryDefinition($definitionPath, $params=array()) {
 		
-		$definitionPath = sprintf('%s/%s', Config::GetValue('AppRoot'), $definitionPath);
+		$definitionPath = sprintf('%s/%s', \App::getValue( 'AppRoot'), $definitionPath);
 		$xml = FsUtils::file_get_contents($definitionPath);
 
 		if (empty($xml)) {

@@ -25,12 +25,10 @@
  *  @version $Revision$
  */
 
-require_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
-require_once(XIMDEX_ROOT_PATH . '/api/utils/Crypto.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
@@ -103,8 +101,8 @@ class Action_login extends AbstractAPIAction implements NoSecuredAction {
      * @return string the generated token
      */
     private function generateXimToken($user) {
-        $tokenService = new TokenService();
-        $token = $tokenService->getToken($user, Config::getValue('TokenTTL'));
+        $tokenService = new \Ximdex\Services\Token();
+        $token = $tokenService->getToken($user, \App::getValue( 'TokenTTL'));
         return $token;
     }
 

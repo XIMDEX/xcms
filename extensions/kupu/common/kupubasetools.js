@@ -147,7 +147,8 @@ function KupuMenu(menuid, commandfunc, tool) {
         for (ind = 0; ind < links.length ;ind++) {
             (function(i,t){
                 addEventHandler(links[i], 'click', function(){
-                    t.execCommand(links[i].attributes.getNamedItem("data").textContent);
+                    //.textContent is deprecated
+                    t.execCommand(links[i].attributes.getNamedItem("data").value);
                 }, this);
             })(ind,that);
 

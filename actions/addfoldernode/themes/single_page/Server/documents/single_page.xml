@@ -1,0 +1,77 @@
+<top_block background="">
+    <title type="1">Título H1 de la Single Page</title>
+    <paragraph>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+        aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+        culpa qui officia deserunt mollit anim id est laborum."
+    </paragraph>
+</top_block>
+
+<body_block>
+<section title="Section 1" class="default-section">
+    <container>
+        <title type="2">Titulo h2</title>
+        <row cols="4">
+            <col>
+                <extimage class="img-responsive img-responsive-center img-circle"
+                          url="http://ximg.es/150x150/000/fff"/>
+                <title type="3">Esto es un H3</title>
+                <paragraph>
+                    <extlink href="">k befwgfjkweg fkwehf ewhfioehfewfh ewfhwefh wef w</extlink>
+                </paragraph>
+            </col>
+            <col>
+                <extimage class="img-responsive img-responsive-center img-circle"
+                          url="http://ximg.es/150x150/000/fff"/>
+                <title type="3">Esto es un H3</title>
+                <paragraph>
+                    k befwgfjkweg fkwehf ewhfioehfewfh ewfhwefh wef w
+                </paragraph>
+            </col>
+            <col>
+                <extimage class="img-responsive img-responsive-center img-square"
+                          url="http://ximg.es/150x150/000/fff"/>
+                <title type="3">Esto es un H3</title>
+                <paragraph>
+                    k befwgfjkweg fkwehf ewhfioehfewfh ewfhwefh wef w
+                </paragraph>
+            </col>
+            <col>
+                <extimage class="img-responsive img-responsive-center img-rounded"
+                          url="http://ximg.es/150x150/000/fff"/>
+                <title type="3">Esto es un H3</title>
+                <paragraph>
+                    k befwgfjkweg fkwehf ewhfioehfewfh ewfhwefh wef w
+                </paragraph>
+            </col>
+        </row>
+    </container>
+</section>
+<section id="section-2" title="Section 2" class="carousel-section section-window-height">
+    <carousel previous="Anterior" next="Siguiente">
+        <slide background="" class="active">
+            <title type="2">Esto es un H2</title>
+        </slide>
+        <slide background="">
+            <title>Esto es un H2</title>
+            <paragraph>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut
+                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            </paragraph>
+        </slide>
+    </carousel>
+</section>
+<section id="section-3" title="Section 3" class="map-section">
+    <map link="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3168.8842797940897!2d-6.005883999999967!3d37.416210000000014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd126b8c913f4157%3A0xd9b11c329beafe67!2sXIMDEX%2C+The+Semantic+CMS!5e0!3m2!1ses!2ses!4v1416479842699"/>
+</section>
+</body_block>
+
+<footer_block>
+<container class="text-center">
+    <paragraph>footer</paragraph>
+</container>
+</footer_block>

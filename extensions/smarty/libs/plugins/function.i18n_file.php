@@ -1,18 +1,17 @@
 <?php
 
-require_once(XIMDEX_ROOT_PATH . "/inc/persistence/XSession.class.php");
 
 function smarty_function_i18n_file($params, &$smarty)
 { 
-  XSession::check();
+  \Ximdex\Utils\Session::check();
 
   //Fichero a traducir
   $file = trim(isset($params['file']) ? $params['file']:null);
   //Idioma principal en el que queremos traducir el archivo
   $_lang = trim(isset($params['lang'] ) ? $params['lang'] : null);
-  //true | false, especifica si se concatenará la url base al fichero, a la hora de devolverlo multiidioma
-  $_url = trim(isset($params['url'] ) ? Config::getValue('UrlRoot') : null);
-  //El valor por defecto a devolver en caso de que no se haya encontrado ningun fichero válido
+  //true | false, especifica si se concatenarï¿½ la url base al fichero, a la hora de devolverlo multiidioma
+  $_url = trim(isset($params['url'] ) ? \App::getValue( 'UrlRoot') : null);
+  //El valor por defecto a devolver en caso de que no se haya encontrado ningun fichero vï¿½lido
   $_default = trim(isset($params['default'] ) ? $params['default']: null);
 
 	if($file == null) return null;
@@ -26,7 +25,7 @@ function smarty_function_i18n_file($params, &$smarty)
 	}
 
 	//Si no existe archivo asociado al idioma pasado, se comprueba con el idioma del sistema
-	$_lang = XSession::get('default_lang');
+	$_lang = \Ximdex\Utils\Session::get('default_lang');
 	if($_lang != null ) {
 		$_file = str_replace("[LANG]", $_lang, $file);
 		if(file_exists(XIMDEX_ROOT_PATH.$_file) )

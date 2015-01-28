@@ -241,10 +241,17 @@
   }
   label{
     color: #fff;
-
   }
 }
 
 .no-results{
   text-align: center;
+}
+
+.paginator{
+  margin-left: 1.5em;
+}
+
+.prev, .next{
+  cursor: pointer;
 }

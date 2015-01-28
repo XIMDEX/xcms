@@ -26,8 +26,7 @@
 
 
 
-include_once(XIMDEX_ROOT_PATH . "/inc/lang/AssociativeArray.class.php");
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/Config.class.php');
+//
 /**
  *
  * @brief Abstract renderer who acts as base for all renderers
@@ -56,9 +55,9 @@ class AbstractRenderer {
 	 */
 	function __construct($fileName = NULL) {
 
-		$this->displayEncoding = Config::getValue('displayEncoding');
+		$this->displayEncoding = \App::getValue( 'displayEncoding');
 		$this->_template = $fileName;
-		$this->_parameters = new AssociativeArray();
+		$this->_parameters = new \Ximdex\Utils\AssociativeArray();
 	}
 
 	/**
@@ -162,12 +161,12 @@ class AbstractRenderer {
 			if($nodeID > 0 ) {
 				$this->_set_node_params($nodeID);
 			}else if ($_ACTION_COMMAND == 'deletenode') {
-				$node = unserialize(XSession::get('deletedNode'));
+				$node = unserialize(\Ximdex\Utils\Session::get('deletedNode'));
 				// Si no se pudo obtener el nodo de la variable de sesion se crea el nodo con el ID pasado por GET, aunque no exista
 				if (!is_object($node)) {
 					$node = new Node($nodeID);
 				}
-				XSession::set('deletedNode', null);
+				\Ximdex\Utils\Session::set('deletedNode', null);
 			}
 
 			$this->set('id_action', $actionID);
@@ -180,8 +179,8 @@ class AbstractRenderer {
 			$this->_set_action_property("composer", "visualiza los componentes de la web", "composer", "/actions/composer/" );
 		}
 
-		$this->set('_URL_ROOT', Config::getValue('UrlRoot'));
-		$this->set('_APP_ROOT', Config::getValue('AppRoot'));
+		$this->set('_URL_ROOT', \App::getValue( 'UrlRoot'));
+		$this->set('_APP_ROOT', \App::getValue( 'AppRoot'));
 
 		//Si es la misma accion que se ha ejecutado en FrontControllerHttp:
 		//Guardamos los datos en los valores de session
@@ -191,15 +190,15 @@ class AbstractRenderer {
 		//Encode the content to the display Encoding from Config
 		foreach($this->_parameters->_data as $key => $value) {
 			if (is_array($value)){
-				$this->_parameters->_data[$key]=XmlBase::encodeArrayElement($this->_parameters->_data[$key],$this->displayEncoding);
+				$this->_parameters->_data[$key]=\Ximdex\XML\Base::encodeArrayElement($this->_parameters->_data[$key],$this->displayEncoding);
 			}else{
-				$this->_parameters->_data[$key]=XmlBase::encodeSimpleElement($this->_parameters->_data[$key],$this->displayEncoding);
+				$this->_parameters->_data[$key]=\Ximdex\XML\Base::encodeSimpleElement($this->_parameters->_data[$key],$this->displayEncoding);
 			}
 		}
 	}
 
 	/**
-	 * Mandamos el nombre, la descripción, el comando y la base de la accion al render
+	 * Mandamos el nombre, la descripciï¿½n, el comando y la base de la accion al render
 	 * @param $_name
 	 * @param $_desc
 	 * @param $_command
@@ -222,9 +221,9 @@ class AbstractRenderer {
 	 * @return unknown_type
 	 */
 	private function _set_action_url($action_url = NULL, $nodeID = NULL, $actionID = NULL,  $actionName = NULL) {
-		//Si no se ha especificado ninguna url de destino se añade la de la acción por defecto.
+		//Si no se ha especificado ninguna url de destino se aï¿½ade la de la acciï¿½n por defecto.
 		if($action_url == null) {
-			$query = App::get('QueryManager');
+			$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
 
 			$action_url = $query->getPage();
 
@@ -258,9 +257,9 @@ class AbstractRenderer {
 	 */
 	private function _set_module($module = NULL, $_ACTION_COMMAND ) {
 		if($module) {
-			$base_action = Config::getValue('AppRoot').ModulesManager::path($module)."/actions/".$_ACTION_COMMAND."/";
-			//Especificamos los parámetros especificos de módulo
-			$this->set("base_module", Config::getValue('AppRoot').ModulesManager::path($module)."/");
+			$base_action = \App::getValue( 'AppRoot').ModulesManager::path($module)."/actions/".$_ACTION_COMMAND."/";
+			//Especificamos los parï¿½metros especificos de mï¿½dulo
+			$this->set("base_module", \App::getValue( 'AppRoot').ModulesManager::path($module)."/");
 			$this->set("module", $module);
 		}else {
 			$base_action = "/actions/".$_ACTION_COMMAND."/";
@@ -319,12 +318,12 @@ class AbstractRenderer {
 	 */
 	private function _set_session_params($actionID, $_ACTION_COMMAND, $method, $nodeID, $module, $base_action) {
 
-		if ( XSession::get("actionId") == $actionID ) {
-			XSession::set("action", $_ACTION_COMMAND);
-			XSession::set("method", $method);
-			XSession::set("nodeId", $nodeID);
-			XSession::set("module", $module);
-			XSession::set("base_action", $base_action);
+		if ( \Ximdex\Utils\Session::get("actionId") == $actionID ) {
+			\Ximdex\Utils\Session::set("action", $_ACTION_COMMAND);
+			\Ximdex\Utils\Session::set("method", $method);
+			\Ximdex\Utils\Session::set("nodeId", $nodeID);
+			\Ximdex\Utils\Session::set("module", $module);
+			\Ximdex\Utils\Session::set("base_action", $base_action);
 		}
 	}
 }

@@ -31,24 +31,23 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../../../../"));
 }
 
-include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesManager.class.php');
+//
 
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 ModulesManager::file('inc/sync/Mutex.class.php');
 ModulesManager::file('/inc/log/Automatic_log.class.php');
-ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER');
 ModulesManager::file('/inc/MPM/MPMManager.class.php');
 ModulesManager::file('/inc/MPM/MPMProcess.class.php');
 
 
 GLOBAL $generate_pid;
 $generate_pid = posix_getpid();
-$stopperFilePath = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/automatic.stop";
+$stopperFilePath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/automatic.stop";
 $msg_lck = _("STOP: Detected file")." $stopperFilePath "._("You need to delete this file in order to get an Automatic succesfull restart");
 
-$mutex = new Mutex(Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/generate.lck");
+$mutex = new Mutex(\App::getValue( "AppRoot") . \App::getValue( "tmpRoot") . "/generate.lck");
 if (!$mutex->acquire()) {
 	Automatic_Log::info("Automatic previo en ejecucion");
 	exit(1);
@@ -58,8 +57,8 @@ Automatic_Log::info("Starting Automatic");
 
 // Si son horas se obtienen los colectores con fuelle
 
-$minHourFuelle = mkTime(Config::getValue('StartCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
-$maxHourFuelle = mktime(Config::getValue('EndCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
+$minHourFuelle = mkTime(\App::getValue( 'StartCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
+$maxHourFuelle = mktime(\App::getValue('EndCheckNoFuelle'), 0, 0, date('m', $now), date('d', $now), date('Y', $now));
 
 $colectoresConFuelle = array();
 
@@ -180,7 +179,6 @@ foreach ($colectors as $colectorID => $colectorName) {
 				Automatic_Log::info($colectorLogHead . "$numDocs "._("docs to be published"));
 				$dataIn = array();
 				$i=0;
-				Profiler::start($colectorID."_".$bulletinID."_MPM");
 
 				foreach ($docsToPublish as $docID) {
 
@@ -196,7 +194,6 @@ foreach ($colectors as $colectorID => $colectorName) {
 				}
 
 				pushAllDocumentsInPublishingPool($dataIn);
-				Profiler::stop($colectorID."_".$bulletinID."_MPM");
 
 			} else {
 				SynchroFacade::pushDocInPublishingPool($bulletinID, time(), NULL);

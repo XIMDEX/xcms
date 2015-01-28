@@ -25,7 +25,7 @@
 
 <div class="kupu-tb" id="toolbar">
 	<span id="kupu-tb-buttons" class="kupu-tb-buttons">
-	
+
 		{* File operations *}
 		<span class="kupu-tb-buttongroup" >
 			<button type="button" class="kupu-save" id="kupu-save-button" xim:title="{t}Save{/t}" i18n:attributes="title" accesskey="s">
@@ -46,26 +46,35 @@
 				<span class="triangle"></span><span class="tooltip">{t}Publish{/t}</span>
 			</button>
 		</span>
-		
+
 		{* Document views *}
-		<span class="kupu-tb-buttongroup">		
-				<button type="button" class="kupu-treeview" id="kupu-treeview-button" xim:title="{t}Tree{/t}" i18n:attributes="title" accesskey="s">
-					&#xA0;
-					<span class="triangle"></span><span class="tooltip">{t}Tree view{/t}</span>
-				</button>
+		<span class="kupu-tb-buttongroup">
+			<button type="button" class="kupu-treeview" id="kupu-treeview-button" xim:title="{t}Tree{/t}" i18n:attributes="title" accesskey="s">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Tree view{/t}</span>
+			</button>
+
 			<button type="button" class="kupu-designview" id="kupu-designview-button" xim:title="{t}Design{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Design view{/t}</span>
 			</button>
-{*			<button type="button" class="kupu-remoteview" id="kupu-remoteview-button" xim:title="{t}Remote{/t}" i18n:attributes="title" accesskey="s">
+
+			<button type="button" class="kupu-formview" id="kupu-formview-button" xim:title="{t}Form{/t}" i18n:attributes="title" accesskey="s">
+				&#xA0;
+				<span class="triangle"></span><span class="tooltip">{t}Form view{/t}</span>
+			</button>
+
+			{*
+			<!-- <button type="button" class="kupu-remoteview" id="kupu-remoteview-button" xim:title="{t}Remote{/t}" i18n:attributes="title" accesskey="s">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Remote view{/t}</span>
-			</button>*}
+			</button> -->
+			*}
 		</span>
-		
+
 		{* Edit operations *}
 		<span class="kupu-tb-buttongroup">
-		
+
 			<button type="button" class="kupu-cut" id="kupu-cut-button" xim:title="{t}Cut{/t}" i18n:attributes="title" accesskey="z">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Cut selected element{/t}</span>
@@ -78,7 +87,7 @@
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Paste element{/t}</span>
 			</button>
-		
+
 			<button type="button" class="kupu-remove" id="kupu-remove-button" xim:title="{t}Delete selected element{/t}" i18n:attributes="title" accesskey="z">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Delete selected element{/t}</span>
@@ -101,14 +110,14 @@
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Redo{/t}</span>
 			</button>
-			
-			
+
+
 			<button type="button" class="kupu-ximletdrawer" id="kupu-ximletdrawer-button" xim:title="{t}Ximlet manager{/t}" i18n:attributes="title">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Ximlet manager{/t}</span>
 			</button>
 		</span>
-		
+
 		{* Services *}
 		<span class="kupu-tb-buttongroup">
 			<button type="button" class="kupu-schemavalidator" id="kupu-schemavalidator-button" xim:title="{t}Validate schema{/t}" i18n:attributes="title">
@@ -120,18 +129,18 @@
 				<span class="triangle"></span><span class="tooltip">{t}Spell checker{/t}</span>
 			</button>
 		</span>
-		
+
 		{* Publication *}
 		<span class="kupu-tb-buttongroup">
 		</span>
-		
+
 		<span class="kupu-tb-buttongroup" id="kupu-newwindow">
 			<button type="button" class="kupu-newwindow" id="kupu-newwindow-button" i18n:attributes="title" xim:title="{t}Open in a new window{/t}" accesskey="n">
 				&#xA0;
 				<span class="triangle"></span><span class="tooltip">{t}Open in a new window{/t}</span>
 			</button>
 		</span>
-		
+
         	<span class="kupu-tb-buttongroup kupu-floating-toolboxes">
     			<button type="button" class="kupu-floatingtoolbox-button xedit-toolbar-toolbox-button" id="xedit-toolbar-toolbox-button" title="{t}Show/hide options{/t}"
 				i18n:attributes="title">

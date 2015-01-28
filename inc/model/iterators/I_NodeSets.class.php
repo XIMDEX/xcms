@@ -26,15 +26,7 @@
 
 
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/xIterator.class.php');
-#require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
-
-
-class I_NodeSets extends xIterator {
+class I_NodeSets extends \Ximdex\Utils\Iterator {
 
 	/**
 	 * @param string $condition
@@ -43,8 +35,6 @@ class I_NodeSets extends xIterator {
 	 */
 	public function __construct($condition, $args, $escape=ESCAPE) {
 		$this->_objectName = 'NodeSets';
-		parent::xIterator($condition, $args, $escape);
+		parent::__construct($condition, $args, $escape);
 	}
 }
-	
-?>

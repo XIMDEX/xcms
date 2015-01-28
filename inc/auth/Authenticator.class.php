@@ -20,23 +20,16 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
 if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Mechanism.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/persistence/XSession.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/user.inc');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/user.php');
 // Include Auth Configuration.
 include_once(XIMDEX_ROOT_PATH . "/conf/auth.conf");
 
@@ -48,152 +41,151 @@ define('MECH_SQL_TYPE', 'SQL');
 define('MECH_LDAP_TYPE', 'LDAP');
 define('MECH_DEFAULT_TYPE', MECH_SQL_TYPE);
 
-class Authenticator {
+class Authenticator
+{
 
-	/**
-	 *
-	 * @var unknown_type
-	 */
-	var $mech_factory;
-	/**
-	 *
-	 * @var unknown_type
-	 */
-	var $mech_type;
+    /**
+     *
+     * @var unknown_type
+     */
+    var $mech_factory;
+    /**
+     *
+     * @var unknown_type
+     */
+    var $mech_type;
 
-	/**
-	 * Constructor
-	 * @return unknown_type
-	 */
-	function Authenticator() {
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
 
-		$mechs_path = XIMDEX_ROOT_PATH . "/inc/auth/mechs/";
-		$mechs_root_name = "Mechanism_";
+        $mechs_path = XIMDEX_ROOT_PATH . "/inc/auth/mechs/";
+        $mechs_root_name = "Mechanism_";
 
-		$this->mech_factory = new Factory($mechs_path, $mechs_root_name);
+        $this->mech_factory = new \Ximdex\Utils\Factory($mechs_path, $mechs_root_name);
+        // read conf
+        if (defined('AUTH_MECH')) {
 
-		// read conf
-		if (defined('AUTH_MECH')) {
+            switch (AUTH_MECH) {
 
-			switch (AUTH_MECH) {
+                case 'LDAP':
 
-				case 'LDAP':
+                    if (extension_loaded('ldap')) {
+                        $this->mech_type = MECH_LDAP_TYPE;
+                    } else {
+                        // If not LDAP present fallback to SQL.
+                        // log('Authenticator: LDAP extension not present, fallback to SQL authentication.');
+                        $this->mech_type = MECH_DEFAULT_TYPE;
+                    }
 
-					if (extension_loaded('ldap')) {
-						$this->mech_type = MECH_LDAP_TYPE;
-					} else {
-						// If not LDAP present fallback to SQL.
-						// log('Authenticator: LDAP extension not present, fallback to SQL authentication.');
-						$this->mech_type = MECH_DEFAULT_TYPE;
-					}
+                    break;
 
-					break;
+                case 'SQL':
 
-				case 'SQL':
+                    $this->mech_type = MECH_SQL_TYPE;
+                    break;
 
-					$this->mech_type = MECH_SQL_TYPE;
-					break;
+                default:
 
-				default:
+                    $this->mech_type = MECH_DEFAULT_TYPE;
+            }
 
-					$this->mech_type = MECH_DEFAULT_TYPE;
-			}
+        } else {
 
-		} else {
+            print(sprintf(_("ERROR: %s/conf/auth.conf not present or badformed configuration"), XIMDEX_ROOT_PATH) . "\n");
+            exit();
+        }
+    }
 
-			print(sprintf(_("ERROR: %s/conf/auth.conf not present or badformed configuration"),$XIMDEX_ROOT_PATH)."\n");
-			exit();
-		}
-	}
+    /**
+     *
+     * @param $name
+     * @param $password
+     * @return unknown_type
+     */
+    function login($name, $password)
+    {
 
-	/**
-	 *
-	 * @param $name
-	 * @param $password
-	 * @return unknown_type
-	 */
-	function login($name, $password) {
+        // check names which have a fixed mech.
+        //if ($name == 'ximdex') { $this->mech_type = MECH_DEFAULT_TYPE }
 
-		// check names which have a fixed mech.
-		//if ($name == 'ximdex') { $this->mech_type = MECH_DEFAULT_TYPE }
+        // factory Mech to authenticate, fallback to SQL if not selected
+        $mech = $this->mech_factory->instantiate($this->mech_type);
+        if (!is_object($mech)) {
+            XMD_Log::error($this->mech_factory->getError());
+            return false;
+        }
 
-		// factory Mech to authenticate, fallback to SQL if not selected
-		$mech =& $this->mech_factory->instantiate($this->mech_type);
-		if (!is_object($mech)) {
-			XMD_Log::error($this->mech_factory->getError());
-			return false;
-		}
+        if ($mech->authenticate($name, $password)) {
 
-		if ( $mech->authenticate($name, $password) ) {
+            // Is a valid user !
+            $user = new User();
+            $user->setByLogin($name);
+            $user_id = $user->getID();
+            $user = new user($user_id);
 
-			// Is a valid user !
-			$user = new User();
-			$user->setByLogin($name);
-			$user_id = $user->getID();
-			$user = new user($user_id);
+            $user_locale = $user->get('Locale');
 
-			$user_locale = $user->get('Locale');
+            if (empty($user_locale))
+                $user_locale = \App::getValue( 'locale');
 
-			if(empty($user_locale) )
-				$user_locale = Config::getValue('locale');
+            // STOPPER
+            $stopperFilePath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/login.stop";
+            if ($user->getID() != "301" && file_exists($stopperFilePath)) {
+                // login closed
+                return false;
+            }
 
-		// STOPPER
-			$stopperFilePath = Config::getValue("AppRoot") . Config::getValue("TempRoot") . "/login.stop";
-			if ( $user->getID() != "301" && file_exists($stopperFilePath)) {
-				// login closed
-				return false;
-			}
+            if (ModulesManager::isEnabled("ximDEMOS")) {
+                $user_demo = (int)$user->isDemo();
+            } else {
+                $user_demo = 0;
+            }
 
-			if(ModulesManager::isEnabled("ximDEMOS") ) {
-				$user_demo = (int) $user->isDemo();
-			}else {
-				$user_demo = 0;
-			}
+            unset($user);
 
-			unset($user);
+            if (ModulesManager::isEnabled('ximADM')) {
+                ModulesManager::file('/inc/Status.class.php', 'ximADM');
 
-			if (ModulesManager::isEnabled('ximADM')) {
-				ModulesManager::file('/inc/Status.class.php', 'ximADM');
+                $user_status = new Status();
+                $user_status->remove($user_id);
+                $user_status->init($user_id);
+            }
 
-				$user_status = new Status();
-				$user_status->remove($user_id);
-				$user_status->init($user_id);
-			}
+            // TODO: Add new session system.
+            \Ximdex\Utils\Session::set('user_name', $name);
+            \Ximdex\Utils\Session::set('user_demo', $user_demo);
+            \Ximdex\Utils\Session::set('logged', $user_id);
+            \Ximdex\Utils\Session::set('userID', $user_id);
+            \Ximdex\Utils\Session::set('locale', $user_locale);
+            \Ximdex\Utils\Session::set('loginTimestamp', time());
 
-			// TODO: Add new session system.
-			XSession::set('user_name',$name );
-			XSession::set('user_demo',$user_demo);
-			XSession::set('logged', $user_id);
-			XSession::set('userID', $user_id);
-			XSession::set('locale', $user_locale);
-			XSession::set('loginTimestamp', gmmktime());
-			
-			return true;
-		} else {
-			// Not a valid user.
+            return true;
+        } else {
+            // Not a valid user.
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 
-	/**
-	 *
-	 * @return unknown_type
-	 */
-	function logout() {
+    /**
+     *
+     * @return unknown_type
+     */
+    function logout()
+    {
 
-		// TODO: Add new session system.
-		XSession::destroy();
-/*
-		@session_start();
-		@session_unregister("logged");
-		@session_unregister("userID");
-		@session_unset();
-		@session_destroy();
-*/
-	}
+        // TODO: Add new session system.
+        \Ximdex\Utils\Session::destroy();
+        /*
+                @session_start();
+                @session_unregister("logged");
+                @session_unregister("userID");
+                @session_unset();
+                @session_destroy();
+        */
+    }
 
 }
-
-
-?>

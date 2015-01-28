@@ -48,7 +48,7 @@ class Action_modifyrole extends ActionAbstract {
 		//Usually it is the Workflow master.
 		$selectedPipeline = $this->request->getParam('id_pipeline');
 		if (!($selectedPipeline > 0)) {
-			$selectedPipeline = Config::getValue('IdDefaultWorkflow');
+			$selectedPipeline = \App::getValue( 'IdDefaultWorkflow');
 			$pipeline = new Pipeline();
 			$pipeline->loadByIdNode($selectedPipeline);
 			$selectedPipeline = $pipeline->get('id');
@@ -101,6 +101,7 @@ class Action_modifyrole extends ActionAbstract {
 		$pipelines = array($db->getValue('id') => $db->getValue('Pipeline'));
 
 		$this->addJs('/actions/modifyrole/js/modifyrole.js');
+        $this->addCss('/actions/modifyrole/css/modifyrole.css');
 
 		$values = array('name' => $role->get('Name'),
 						'description' => $role->get('Description'),
@@ -120,7 +121,7 @@ class Action_modifyrole extends ActionAbstract {
 		$idNode = $this->request->getParam('nodeid');
 
 		//If ximDEMOS is actived and nodeis is rol "Demo" then no modify is allowed
-		if(ModulesManager::isEnabled("ximDEMOS") && XSession::get('user_demo')) {
+		if(ModulesManager::isEnabled("ximDEMOS") && \Ximdex\Utils\Session::get('user_demo')) {
 			$node = new Node($idNode);
 			$name = $node->get("Name");
 			if("Demo" == $name ) {

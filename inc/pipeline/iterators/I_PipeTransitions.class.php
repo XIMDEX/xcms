@@ -30,7 +30,6 @@
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
-require_once(XIMDEX_ROOT_PATH . '/inc/patterns/xIterator.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
 
 /**
@@ -41,7 +40,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
  * the results in the sequence of the status stored in the database
  *
  */
-class I_PipeTransitions extends xIterator {
+class I_PipeTransitions extends  \Ximdex\Utils\Iterator {
 	var $_objectName = 'PipeTransition';
 	/**
 	 * Carga el iterador de la condicion dada y lo ordena por sus transiciones
@@ -51,7 +50,7 @@ class I_PipeTransitions extends xIterator {
 	 * @return I_PipeTransitions
 	 */
 	public function I_PipeTransitions($condition, $args) {
-		parent::xIterator($condition, $args);
+		parent::__construct($condition, $args);
 		$this->_initialize();
 		$this->_sort();
 	}
@@ -110,5 +109,3 @@ class I_PipeTransitions extends xIterator {
 		
 	}
 }
-	
-?>

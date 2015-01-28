@@ -109,7 +109,7 @@ class ZipArchiver extends Archiver {
 	 * @return boolean
 	 */
 	function unpack($dest = '') {
-		$messages = new Messages();
+		$messages = new \Ximdex\Utils\Messages();
 		if (!is_file($this->fileName)) {
 			$messages->add(_('Specified file could not be found'), MSG_TYPE_ERROR);
 			return false;

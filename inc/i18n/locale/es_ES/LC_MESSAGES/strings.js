@@ -5,8 +5,11 @@ X.i18nStrings = {
 				"accept": "Aceptar",
 				"cancel": "Cancelar",
 				"save": "Guardar"
-			}	
-		}, 
+			},
+            "messages": {
+                "you_are_going_to_delete_this_association,_do_you_want_to_continue?": "Se va a eliminar esta asociación, desea continuar?"
+            }
+		},
 		"search": {
 			"filter_by": "Filtrar por", 
 			"sort_by": "Ordenar por"
@@ -38,7 +41,7 @@ X.i18nStrings = {
 			},
 			"drag_your_files_here_or_add_them_using_the_'Add'_button_below": "Arrastra los archivos aquí o añádelos usando el botón 'Añadir'",
 			"add": "Añadir",
-			"add_schemas": "Añadir esquemas",
+			"add_files": "Añadir archivos",
 			"pause": "Pausar",
 			"resume": "Reanudar",
 			"retry": "Reintentar",
@@ -78,5 +81,17 @@ X.i18nStrings = {
                 "empty_msg": "No se han encontrado entidades para el contenido actual."
             }
         }
-	}
+	},
+    "browser": {
+        "headings":{
+            "projects": "Proyectos",
+            "Projects": "Proyectos",
+            "ccenter": "Centro de control",
+            "modules": "Módulos"
+        },
+        "filter": "Filtro",
+        "welcome_to_the_brand_new_Ximdex!": "¡Bienvenido al nuevo Ximdex!",
+        "reload_node": "Recargar nodo",
+        "there_are_no_results_!": "No hay resultados !"
+    }
 }

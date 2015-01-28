@@ -427,7 +427,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			showSelectButton: false,
 			 selectButtonLabel: _('Select nodes'),
 			cache: false,
-			filters: null,	// [ ximdex | toldox | null ]
+			filters: null,	// [ ximdex | null ]
 			masterFilter: null,
 			showFilters: true,
 			view: 'gridview'	// [ gridview | listview | treeview ]

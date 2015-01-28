@@ -28,7 +28,7 @@
 
 class Action_managebatchs extends ActionAbstract {
 
-	// Método principal: presenta el formulario inicial
+	// Mï¿½todo principal: presenta el formulario inicial
 
 	function batchlist () {
 
@@ -102,7 +102,7 @@ class Action_managebatchs extends ActionAbstract {
 
 		$acceso = true;
 		// Inicializando variables.
-		$userID = XSession::get('userID');
+		$userID = \Ximdex\Utils\Session::get('userID');
 
 		$user = new User();
 		$user->SetID($userID);
@@ -190,7 +190,7 @@ class Action_managebatchs extends ActionAbstract {
 			}
 		}
 
-		$urlRoot = Config::getValue('UrlRoot');
+		$urlRoot = \App::getValue( 'UrlRoot');
 
 		$arrValores = array(
 			'hasBatchs' => $hasBatchs,

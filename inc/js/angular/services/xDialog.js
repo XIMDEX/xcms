@@ -29,7 +29,7 @@ angular.module('ximdex.common.service')
             openConfirmation: function(result, message){
                 //TODO: Write a native dialog without jquery dependencies and support for templates directives etc
                 //or better use angular.ui modals
-                var $dialog = $window.jQuery('<div class="form_send_dialog"><div/>').html(message || 'Are you sure');
+                var $dialog = $window.jQuery('<div class="form_send_dialog"><div/>').html(xTranslate(message) || 'Are you sure');
                 
                 var buttons  = {};
                 buttons[xTranslate('ui.dialog.confirmation.accept')] = function() {

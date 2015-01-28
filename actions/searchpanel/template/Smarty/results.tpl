@@ -25,7 +25,7 @@
 
 <div class="action_header" ng-cloak>
 	<h2>{t}Search results for: {/t}<span class="search-criteria">#/viewData.query.filters[0].content/#</span> <span class="results-number">#/viewData.data.length/#/#/viewData.records/#</span></h2>
-	<h2 ng-show="viewData.pages>0"><span ng-click="downPage()" ng-hide="page<=1">&lt;</span>{t}Page{/t} #/page/# {t}of{/t} #/viewData.pages/#<span ng-click="upPage()" ng-hide="page>=viewData.pages">&gt;</span></h2>
+	<h2 class="paginator" ng-show="viewData.pages>0"><span class="prev" ng-click="downPage()" ng-hide="page<=1">&lt;</span>{t}Page{/t} #/page/# {t}of{/t} #/viewData.pages/#<span class="next" ng-click="upPage()" ng-hide="page>=viewData.pages">&gt;</span></h2>
 	
 	<div class="filter">
 		#/'ui.search.filter_by' | xI18n/#: 

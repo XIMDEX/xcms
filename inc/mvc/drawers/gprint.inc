@@ -38,9 +38,9 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../../"));
 }
 
-include_once (XIMDEX_ROOT_PATH . "/inc/model/action.inc");
-include_once (XIMDEX_ROOT_PATH . "/inc/model/node.inc");
-require_once (XIMDEX_ROOT_PATH . "/inc/utils.inc");
+include_once(XIMDEX_ROOT_PATH . "/inc/model/action.php");
+include_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
+require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
 function gPrintHeader($scroll='no')
 	{
@@ -83,7 +83,7 @@ function gPrintSelectNode($nodeID)
 
 function gPrintHeaderContent() {
 
-		$stylesPath = Config::GetValue('UrlRoot') .'/xmd/style';
+		$stylesPath = \App::getValue( 'UrlRoot') .'/xmd/style';
 ?>
 		<link rel="STYLESHEET" type="text/css" href="<?php echo "$stylesPath/style.css" ?>">
 		<link rel="STYLESHEET" type="text/css" href="<?php echo "$stylesPath/ximdex.css" ?>">
@@ -171,10 +171,10 @@ function gPrintBodyBegin()
 		// If the performed action is "deletenode" and the node was already deleted, the node should be taken from session.
 		// This in order to show the deleted node path.
 		if( $action->Command == 'deletenode' && is_null( $node->nodeID ) ) {
-			$node = unserialize( XSession::get( 'deletedNode' ) );
+			$node = unserialize( \Ximdex\Utils\Session::get( 'deletedNode' ) );
 			// If node could not be obtained from session var, the node is created with the ID passed by GET, even if this does not exista
 			if( !is_object($node) ) $node = new Node($nodeID);
-			XSession::set( 'deletedNode', null );
+			\Ximdex\Utils\Session::set( 'deletedNode', null );
 		}
 
 	
@@ -284,7 +284,7 @@ function gPrintMessageWindow ($title, $msg, $error = false) {
 
 function gPrintMessageWindow2 ($title, $msg, $error = false) {
 
-	  $src = Config::getValue('UrlRoot') . '/xmd/images';
+	  $src = \App::getValue( 'UrlRoot') . '/xmd/images';
 	  error_log('gprint::gPrintMessageWindow2 - ' . $src);
 	  
 	  $cierreVentana = "<img src='" . $src . "/botones/cerrar.gif' alt='' border='0'>";

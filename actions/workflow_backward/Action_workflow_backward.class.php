@@ -27,7 +27,7 @@
 
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/mail/Mail.class.php');
-ModulesManager::file('/inc/model/role.inc');
+ModulesManager::file('/inc/model/role.php');
 
 class Action_workflow_backward extends ActionAbstract {
 
@@ -36,7 +36,7 @@ class Action_workflow_backward extends ActionAbstract {
  		$idNode = (int) $this->request->getParam("nodeid");
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
-		$idUser = XSession::get('userID');
+		$idUser = \Ximdex\Utils\Session::get('userID');
         $user = new User($idUser);
 
 		//Getting user roles on current node
@@ -140,7 +140,7 @@ class Action_workflow_backward extends ActionAbstract {
     protected function sendNotifications($idNode, $idState, $userList, $texttosend) {
 
         $send = true;
-        $idUser = XSession::get("userID");
+        $idUser = \Ximdex\Utils\Session::get("userID");
         if (count($userList) == 0) {
             $this->messages->add(_('Users to notify has not been selected.'), MSG_TYPE_WARNING);
             $send = false;

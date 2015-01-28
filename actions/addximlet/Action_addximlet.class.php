@@ -34,6 +34,14 @@ ModulesManager::file('/inc/model/RelSectionXimlet.class.php');
  * @ingroup ximNEWS
  */
 class Action_addximlet extends ActionAbstract {
+    /**
+     *
+     */
+    public function __construct() {
+
+        parent::__construct();
+
+    }
 
     /**
      * Main method. Build the first form in the action.
@@ -41,6 +49,8 @@ class Action_addximlet extends ActionAbstract {
     function index() {
         $idNode = $this->request->getParam('nodeid');
         $node = new Node($idNode);
+
+        $this->addCss('/actions/addximlet/resources/css/style.css');
 
         $depsMngr = new DepsManager();
         $ximlets = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $idNode);
@@ -52,7 +62,7 @@ class Action_addximlet extends ActionAbstract {
         
         $linked_ximlets=$this->getXimletInfo($ximlets);
         
-        $query = App::get('QueryManager');
+        $query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
         $actionDelete = $query->getPage() . $query->buildWith(array('method' => 'deleterel'));
         $actionCreate = $query->getPage() . $query->buildWith(array('method' => 'createrel'));
 
@@ -134,7 +144,7 @@ class Action_addximlet extends ActionAbstract {
      * @param  array $sections          List of Sections id.
      * @param  int $idXimletContainer Ximlet id
      */
-    private function createRelXimletSection($sections, $idXimletContainer){
+    public function createRelXimletSection($sections, $idXimletContainer){
 
         //For every section set the dependencies.
         foreach ($sections as $sectionId) {

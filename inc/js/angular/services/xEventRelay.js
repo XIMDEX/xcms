@@ -41,5 +41,5 @@ angular.module('ximdex.common.service')
         $window.jQuery(window).on('resize', broadcastResize);
         $window.jQuery(document).on('hboxresize', broadcastResize);
 
-
+        return null;
 	}]);

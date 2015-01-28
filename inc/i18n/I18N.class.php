@@ -32,7 +32,7 @@
 if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-require_once(XIMDEX_ROOT_PATH."/inc/utils.inc" );
+require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
 if (!defined('DEFAULT_LOCALE'))
   define('DEFAULT_LOCALE', 'es_ES');
@@ -44,10 +44,10 @@ class I18N {
 		if (extension_loaded('gettext')) {
 
 			if (empty($locale) || strlen($locale)>5 )
-				$locale = XSession::get("locale");
+				$locale = \Ximdex\Utils\Session::get("locale");
 
 			if (empty($locale))
-				$locale = Config::getValue('locale');
+				$locale = \App::getValue( 'locale');
 
 			if (empty($locale) || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/'.$locale) )
 				$locale = DEFAULT_LOCALE;
@@ -58,9 +58,9 @@ class I18N {
 			setlocale(LC_ALL, "$locale.utf8");
 		 	bindtextdomain("messages", XIMDEX_ROOT_PATH . '/inc/i18n/locale');
 			textdomain("messages");
-			bind_textdomain_codeset("messages", 'ISO8859-1');
+			bind_textdomain_codeset("messages", 'UTF-8');
 
-		   XSession::set("locale", $locale);
+		   \Ximdex\Utils\Session::set("locale", $locale);
 		}
 	}
 

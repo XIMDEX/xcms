@@ -28,16 +28,14 @@
 
 //TODO - LIST
 
-ModulesManager::file('/inc/model/nodetype.inc');
+ModulesManager::file('/inc/model/nodetype.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/io/BaseIORelations.class.php');
-ModulesManager::file('/inc/model/node.inc');
+ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/model/NodeProperty.class.php');
-ModulesManager::file('/inc/db/db.inc');
+ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
-ModulesManager::file('/inc/persistence/Config.class.php');
-ModulesManager::file('/inc/persistence/XSession.class.php');
 
 
 define ('HEADER', 'XIMIO-STRUCTURE');
@@ -196,7 +194,7 @@ class ImportXml {
 		$this->_firstExportationNode = $firstExportationNode;
 		$this->_insertFirstNode = (bool) $insertFirstNode;
 		$this->_recurrence = $recurrence;
-		$this->idLocalXimio = Config::getValue('ximid');
+		$this->idLocalXimio = \App::getValue( 'ximid');
 
 		$this->processedNodes = array();
 		$this->processedNodes['success'] = 0;
@@ -749,7 +747,7 @@ class ImportXml {
 		}*/
 
 		$baseIO = new BaseIO();
-		$idUser = XSession::get("userID");
+		$idUser = \Ximdex\Utils\Session::get("userID");
 		if (!($idUser > 0)) {
 			$this->abort = true;
 			$this->messages[] = _('No valid user to perform the importation found');
@@ -1146,7 +1144,7 @@ class ImportXml {
 			$template['PARENTID'] = $idximPvdNode;
 			$baseIO = new BaseIO();
 
-			$idUser = XSession::get('userID');
+			$idUser = \Ximdex\Utils\Session::get('userID');
 			if ($this->heuristicMode) {
 				$result = $baseIO->check($template, $idUser);
 			} else {

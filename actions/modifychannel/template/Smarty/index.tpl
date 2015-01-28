@@ -46,18 +46,23 @@ Names must be in the same case that database fields.
             <label for="rendermode" class="label_title">{t}Output{/t}</label>
             <input type='radio' id="web_{$id_node_parent}" name="OutputType" {$output_check.web} value='web'><label for="web_{$id_node_parent}">{t}Web{/t}</label>
             <input type='radio' id="xml_{$id_node_parent}" name="OutputType" {$output_check.xml} value='xml'><label for="xml_{$id_node_parent}">{t}Xml{/t}</label>
-            <input type='radio' id="other_{$id_node_parent}" name="OutputType" {$output_check.other} value='other'><label for="other_{$id_node_parent}">{t}Other{/t}</label>
+            <input type='radio' id="other_{$id_node_parent}" name="OutputType" {$output_check.other} value='other'><label for="other_{$id_node_parent}">{t}Other{/t} (JSON, RDF, SQL, ...)</label>
         </p>
         
         <p>
             <label for="description" class="label_title">{t}Description{/t}</label>
             <input type="text" name="Description" id="description" value="{$description|gettext}" class='cajag validable not_empty' />
         </p>
-        
+
         <p>
-            <label for="rendermode" class="label_title">{t}Rendering in{/t}</label>
-            <input type="radio" id="rendermode" name="RenderMode" {$render_check.ximdex} value="ximdex"/>{t}Ximdex{/t}
-            <input type="radio" id="rendermode" name="RenderMode" {$render_check.client} value="client"/>{t}Client{/t}
+            <input type="checkbox" name="Default_Channel" id="default_channel" {if $default_channel==1}checked{/if} />
+            <label for="default_channel">{t}Default channel{/t}</label>
+        </p>
+        
+        <p class="disabled">
+            <label for="rendermode" class="label_title">{t}Rendering XSLT in{/t}</label>
+            <input disabled type="radio" id="rendermode" name="RenderMode" {$render_check.ximdex} value="ximdex"/>{t}Ximdex{/t}
+            <input disabled type="radio" id="rendermode" name="RenderMode" {$render_check.client} value="client"/>{t}Client{/t}
         </p>
     </div>
 </form>
