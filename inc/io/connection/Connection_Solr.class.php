@@ -260,7 +260,7 @@ class Connection_Solr implements I_Connector {
             XMD_Log::error("solr error deleting doc id: {$result[0]}");
             return false;
         }
-        XMD_Log::info("solr doc id: {$result[0]} was deleted");
+        XMD_Log::debug("solr doc id: {$result[0]} was deleted");
         return true;
     }
 
@@ -336,15 +336,15 @@ class Connection_Solr implements I_Connector {
             return false;
         }
 
-        XMD_Log::info("<< Solr put xml ok - id: {$doc->id} >>");
+        XMD_Log::debug("<< Solr put xml ok - id: {$doc->id} >>");
 
         return true;
     }
 
     public function putBinaryFile($localFile, $pathInfo) {
-        XMD_Log::info("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
+        XMD_Log::debug("putBinaryFile - $localFile - " . $pathInfo["fullName"]);
         $trueName = $this->extractNodeNameBinaryPut($pathInfo["fullName"]);
-        XMD_Log::info("putBinaryFile2");
+        
         // get node id
         $node = new Nodes_ORM();
         $result = $node->find('idnode', "Name = %s AND Path REGEXP %s", array($trueName, $pathInfo["subPath"] . '$'), MONO);
@@ -352,14 +352,14 @@ class Connection_Solr implements I_Connector {
             XMD_Log::error(sprintf("NOT found: Name = %s AND Path REGEXP %s", $trueName, $pathInfo["subPath"] . '$'));
             return false;
         }
-        XMD_Log::info("putBinaryFile3");
+        
         // create an extract query instance and add settings
         $client = new Solarium\Client($this->config);
         $query = $client->createExtract();
         $query->setFile($localFile);
         $query->setCommit(true);
         $query->setOmitHeader(false);
-        XMD_Log::info("putBinaryFile4");
+        
         // add document
         $doc = $query->createDocument();
         $doc->id = $result[0];
@@ -372,11 +372,10 @@ class Connection_Solr implements I_Connector {
                 $doc->addField("tags", $tag["Name"]);
             }
         }
-        XMD_Log::info("putBinaryFile5");
+        
         // add xml metadata fields if the file exists
         $relNodeMetaData = new RelNodeMetaData();
         $idMetadata = $relNodeMetaData->find('idMetadata', 'idNode = %s', array($result[0]), MONO);
-        XMD_Log::info("putBinaryFile6");
 //        if (isset($idMetadata[0])) {
 //            $metaNode = new Node($idMetadata[0]);
 //            $content = $metaNode->GetContent();
@@ -410,7 +409,7 @@ class Connection_Solr implements I_Connector {
 //                XMD_Log::error("invalid xml metadata file. node id: " . $idMetadata[0]);
 //            }
 //        }
-        XMD_Log::info("putBinaryFile7");
+        
         // this executes the query and returns the result
         XMD_Log::debug(print_r($doc->getFields(), true));
         $query->addParam('lowernames', 'false');
@@ -420,7 +419,7 @@ class Connection_Solr implements I_Connector {
             XMD_Log::error("<< Solr update error - status: {$resultExtract->getStatus()} >>");
             return false;
         }
-        XMD_Log::info("<< Solr put binary ok - id: {$doc->id} >>");
+        XMD_Log::debug("<< Solr put binary ok - id: {$doc->id} >>");
         return true;
     }
 
@@ -497,11 +496,9 @@ class Connection_Solr implements I_Connector {
     }
 
     public function extractNodeNameBinaryPut($fullName) {
-        XMD_Log::info("extractNodeNameBinaryPut");
         $fullNameParts = explode("_", $fullName, 2);
         array_shift($fullNameParts);
         $trueName = implode("", $fullNameParts);
-        XMD_Log::info("extractNodeNameBinaryPut2");
         return $trueName;
     }
 
