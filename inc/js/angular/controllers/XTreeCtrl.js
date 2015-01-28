@@ -26,7 +26,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
-    var actualFilter, canceler, dragStartPosition, expanded, findNodeById, getFolderPath, listenHidePanel, loadAction, prepareBreadcrumbs, size;
+    var actualFilter, canceler, dragStartPosition, expanded, findNodeById, getFolderPath, listenHidePanel, loadAction, postLoadActions, prepareBreadcrumbs, size;
     delete Hammer.defaults.cssProps.userSelect;
     $scope.projects = null;
     $scope.initialNodeList = null;
@@ -158,29 +158,20 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
     };
     $scope.loadActions = function(node, event) {
-      var data, n, nodeToSearch, _i, _len, _ref, _ref1;
-      if (event.target.classList[0] === "xim-actions-dropdown" && event.type === "press") {
-        return;
-      }
-      if ((_ref = event.srcEvent) != null) {
-        _ref.stopPropagation();
-      }
-      if (typeof event.stopPropagation === "function") {
-        event.stopPropagation();
-      }
+      var data, n, nodeToSearch, _i, _len, _ref;
       $scope.select(node, event);
       if (($scope.selectedNodes[0].nodeid == null) | ($scope.selectedNodes[0].nodetypeid == null) | $scope.selectedNodes[0].nodeid === "0") {
         return;
       }
       nodeToSearch = $scope.selectedNodes[0].nodeid;
       if ($scope.selectedNodes.length > 1) {
-        _ref1 = $scope.selectedNodes.slice(1);
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          n = _ref1[_i];
+        _ref = $scope.selectedNodes.slice(1);
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          n = _ref[_i];
           if ($scope.selectedNodes[0].nodetypeid !== n.nodetypeid) {
             return;
           } else {
-            nodeToSearch += "-";
+            nodeToSearch += "-" + n.nodeid;
           }
         }
       }
@@ -192,44 +183,32 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         })).success(function(data) {
           if (data) {
             $scope.nodeActions[nodeToSearch] = data;
-            if (data.length === 0) {
-              return;
-            }
-            if (event.pointers != null) {
-              data.left = event.pointers[0].clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
-              data.top = event.pointers[0].clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
-            }
-            data.expanded = "true";
-            if (event.clientX) {
-              data.left = event.clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
-              data.top = event.clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
-            }
-            if (event.type === "tap") {
-              data.expanded = "false";
-            }
-            xMenu.open(data, $scope.selectedNodes, loadAction);
+            postLoadActions(data, event, $scope.selectedNodes);
           }
         });
       } else {
         data = $scope.nodeActions[nodeToSearch];
-        if (data.length === 0) {
-          return;
-        }
-        if (event.pointers != null) {
-          data.left = event.pointers[0].clientX + $window.document.body.scrollLeft;
-          data.top = event.pointers[0].clientY + $window.document.body.scrollTop;
-        }
-        data.expanded = "true";
-        if (event.clientX) {
-          data.left = event.clientX + $window.document.body.scrollLeft;
-          data.top = event.clientY + $window.document.body.scrollTop;
-        }
-        if (event.type === "tap") {
-          data.expanded = "false";
-        }
-        xMenu.open(data, $scope.selectedNodes, loadAction);
+        postLoadActions(data, event, $scope.selectedNodes);
       }
       return false;
+    };
+    postLoadActions = function(data, event, selectedNodes) {
+      if (data.length === 0) {
+        return;
+      }
+      if (event.pointers != null) {
+        data.left = event.pointers[0].clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
+        data.top = event.pointers[0].clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
+      }
+      data.expanded = "true";
+      if (event.clientX) {
+        data.left = event.clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
+        data.top = event.clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
+      }
+      if (event.type === "tap") {
+        data.expanded = "false";
+      }
+      xMenu.open(data, selectedNodes, loadAction);
     };
     $window.com.ximdex.emptyActionsCache = function() {
       $scope.nodeActions = [];
@@ -242,7 +221,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         for (k in _ref) {
           n = _ref[k];
           if (((n.nodeFrom == null) && (node.nodeFrom == null) && (n.nodeTo == null) && (node.nodeTo == null) && n.nodeid === node.nodeid) | ((n.nodeFrom != null) && (node.nodeFrom != null) && (n.nodeTo != null) && (node.nodeTo != null) && n.nodeFrom === node.nodeFrom && n.nodeTo === node.nodeTo)) {
-            if (event.button === 0) {
+            if (((event.button != null) && event.button === 0) || ((event.srcEvent != null) && event.srcEvent.button === 0)) {
               $scope.selectedNodes.splice(k, 1);
             }
             return;

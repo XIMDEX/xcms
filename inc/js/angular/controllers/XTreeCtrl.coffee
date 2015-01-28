@@ -160,12 +160,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         #Load the actions of a node and opens a context menu. It does a request if the actions aren't in cache.
-        $scope.loadActions = (node,event) ->
-            return if event.target.classList[0] == "xim-actions-dropdown" && event.type == "press"
-            event.srcEvent?.stopPropagation()
-            event.stopPropagation?()
-            #event.preventDefault?()
-
+        $scope.loadActions = (node, event) ->
             $scope.select node, event
             return if !$scope.selectedNodes[0].nodeid? | !$scope.selectedNodes[0].nodetypeid? | $scope.selectedNodes[0].nodeid == "0"
             nodeToSearch = $scope.selectedNodes[0].nodeid
@@ -174,7 +169,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     if $scope.selectedNodes[0].nodetypeid != n.nodetypeid
                         return
                     else
-                        nodeToSearch += "-#{}"
+                        nodeToSearch += "-#{n.nodeid}"
             if not $scope.nodeActions[nodeToSearch]?
                 $http.get(xUrlHelper.getAction(
                     action: "browser3"
@@ -183,33 +178,26 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                 )).success (data) ->
                     if data
                         $scope.nodeActions[nodeToSearch] = data
-                        return if data.length == 0
-                        if event.pointers?
-                            data.left = event.pointers[0].clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
-                            data.top = event.pointers[0].clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
-                        data.expanded = "true"
-                        if event.clientX
-                            data.left = event.clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
-                            data.top = event.clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
-                        if event.type == "tap"
-                            data.expanded = "false"
-                        xMenu.open data, $scope.selectedNodes, loadAction
+                        postLoadActions(data, event, $scope.selectedNodes)
                     return
             else
                 data = $scope.nodeActions[nodeToSearch]
-                return if data.length == 0
-                if event.pointers?
-                    data.left = event.pointers[0].clientX + $window.document.body.scrollLeft
-                    data.top = event.pointers[0].clientY + $window.document.body.scrollTop
-                data.expanded = "true"
-                if event.clientX
-                    data.left = event.clientX + $window.document.body.scrollLeft
-                    data.top = event.clientY + $window.document.body.scrollTop
-                if event.type == "tap"
-                    data.expanded = "false"
-                xMenu.open data, $scope.selectedNodes, loadAction
-
+                postLoadActions(data, event, $scope.selectedNodes)
             return false
+
+        postLoadActions = (data, event, selectedNodes) ->
+            return if data.length == 0
+            if event.pointers?
+                data.left = event.pointers[0].clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
+                data.top = event.pointers[0].clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
+            data.expanded = "true"
+            if event.clientX
+                data.left = event.clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
+                data.top = event.clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
+            if event.type == "tap"
+                data.expanded = "false"
+            xMenu.open data, selectedNodes, loadAction
+            return
 
         #Global method to empty the actions cache
         $window.com.ximdex.emptyActionsCache = () ->
@@ -222,7 +210,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             if ctrl
                 for k, n of $scope.selectedNodes
                     if (!n.nodeFrom? && !node.nodeFrom? && !n.nodeTo? && !node.nodeTo? && n.nodeid == node.nodeid) | (n.nodeFrom? && node.nodeFrom? && n.nodeTo? && node.nodeTo? && n.nodeFrom == node.nodeFrom && n.nodeTo == node.nodeTo)
-                        $scope.selectedNodes.splice k, 1 if event.button == 0
+                        $scope.selectedNodes.splice k, 1 if (event.button? && event.button == 0) || (event.srcEvent? && event.srcEvent.button == 0)
                         return
                 pushed = false
                 for k, n of $scope.selectedNodes

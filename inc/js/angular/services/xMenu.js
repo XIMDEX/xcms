@@ -26,36 +26,49 @@
 angular.module('ximdex.common.service')
     .factory('xMenu', ['$timeout', '$window', '$document', '$compile', '$rootScope', '$templateCache', function($timeout, $window, $document, $compile, $rootScope, $templateCache) {
 
-
         var scope = {};
-        var body = $document.find('body');
-        var firstTime = true;
 
         destroyMenu = function() {
-
+            if(scope.$destroy !== undefined){
+                scope.$destroy();
+            }
+            var oldMenu = angular.element('div.xim-actions-menu');
+            if(oldMenu.length>0){
+                oldMenu.remove();
+            }
         }
 
         initMenu = function (options, nodes, callback){
-            var menu = angular.element(
-                '<xim-menu expanded="'+options.expanded+'" top="'+options.top+'" left="'+options.left+'"></xim-menu>');
             var hammerBody = Hammer(document.getElementsByTagName('body')[0]);
             hammerBody.off('tap');
-            angular.element('div.xim-actions-menu').remove();
+            destroyMenu();
 
+            var menu = angular.element(
+                '<xim-menu></xim-menu>');
             scope = $rootScope.$new();
-            var menuC = $compile(menu)(scope);
-            angular.element('body').append(menuC);
             scope.options = options;
             scope.optionLabel = 'name';
             scope.optionClass = 'command';
+            scope.expanded = options.expanded;
+            scope.top = options.top;
+            scope.left = options.left;
             scope.select = function(result){
-                destroyMenu();
                 if (callback)
                     callback(result, nodes);
+                destroyMenu();
             }
+            var menuC = $compile(menu)(scope);
+            angular.element('body').append(menuC);
+
+
             hammerBody.on('tap', function (ev) {
-                if (ev.target.classList[0] != "xim-actions-dropdown") {
-                    angular.element('div.xim-actions-menu').remove();
+                var e = angular.element(ev.target);
+                if(e.hasClass('xim-actions-dropdown')){
+                    return;
+                }
+                if (!e.hasClass("button-container-list") && !e.parent().hasClass('window-toolbar-button')
+                    && !e.hasClass('window-toolbar-button')) {
+                    destroyMenu();
                 }
                 hammerBody.off('tap');
             });
@@ -66,10 +79,10 @@ angular.module('ximdex.common.service')
 
         return {
             open: function(options, nodes, callback) {
-                initMenu(options, nodes, callback)
+                initMenu(options, nodes, callback);
             },
             close: function() {
-
+                destroyMenu();
             }
         }
     }]);
