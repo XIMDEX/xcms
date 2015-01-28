@@ -1,0 +1,4 @@
+--command migratePair 
+--ruta_fich_pdf /var/www/ximdex_258_solr/devel/scripts/deleteXimnotaFiles/backups/ximDEX/Proyectos/AGPD/www.agpd.es/canaldocumentacion/informes_juridicos/ambito_aplicacion/common/pdfs/2008-0196_Fichero-de-prospecci-oo-n-comercial.-Art.-2.2-RLOPD.pdf
+--ruta_fich_xml /var/www/ximdex_258_solr/devel/scripts/deleteXimnotaFiles/backups/ximDEX/Proyectos/AGPD/www.agpd.es/canaldocumentacion/informes_juridicos/ambito_aplicacion/common/pdfs/metadata/2008-0196_Fichero-de-prospecci-oo-n-comercial.-Art.-2.2-RLOPD.pdf
+--destino /AGPD/www.agpd.es/canaldocumentacion/informes_juridicos/ambito_aplicacion/common/pdfs
