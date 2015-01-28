@@ -1,6 +1,6 @@
 angular.module("ximdex.main.controller").controller "XTabsCtrl", [
-    "$scope", "xTabs", "xUrlHelper", "$http", "$interval", "$sce", "$window", "$timeout"
-    ($scope, xTabs, xUrlHelper, $http, $interval, $sce, $window, $timeout) ->
+    "$scope", "xTabs", "xUrlHelper", "$http", "$interval", "$window", "$timeout"
+    ($scope, xTabs, xUrlHelper, $http, $interval, $window, $timeout) ->
 
         #Communication with the service xTabs
         $scope.tabs = xTabs.getTabs()
@@ -29,13 +29,11 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         $scope.menuTabsEnabled = false
         #Toggles the context menu
         $scope.showingMenu = false
-        #Initializes content of welcomeTab
-        $scope.welcomeTab = ""
         #Initializes this value with a large number
         $scope.limitTabs = 9999999
 
         #Reloads welcome tab
-        $scope.reloadWelcomeTab = (callback) ->
+        $scope.reloadWelcomeTab = () ->
             nodes = [{nodeid: 10000}]
             url = xUrlHelper.getAction(
                 action: "welcome"
@@ -46,8 +44,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                     newtab =
                         id: "10000_welcome"
                         name: "welcome"
-                        content_untrusted: data
-                        content: $sce.trustAsHtml(data)
+                        content: data
                         nodes: nodes
                         action: null
                         command: "welcome"
@@ -55,7 +52,6 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                         show: true
                         url: url
                     xTabs.loadCssAndJs newtab
-                    $scope.welcomeTab = newtab.content
                 return
             return
 

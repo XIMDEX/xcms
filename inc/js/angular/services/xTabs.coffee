@@ -1,7 +1,7 @@
 #Service to control the tabs
 angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout", "$http",
-                                                          "xUrlHelper", "$sce", "$rootScope"
-    ($window, $timeout, $http, xUrlHelper, $sce, $rootScope) ->
+                                                          "xUrlHelper", "$rootScope", "$compile"
+    ($window, $timeout, $http, xUrlHelper, $rootScope, $compile) ->
 
         #Array of current tabs
         tabs = []
@@ -74,8 +74,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     index = xtab.getTabIndex args.tabId
                     return if index < 0
                     if args.reload == true
-                        tabs[index].content_untrusted = data
-                        tabs[index].content = $sce.trustAsHtml(data)
+                        tabs[index].content = data
                         xtab.loadCssAndJs tabs[index]
                         bindFormEvents tabs[index]
                     args.callback({data: data, tab: tabs[index]}) if args.callback
@@ -92,6 +91,21 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         #
         xtab.activeIndex = () -> return activeTab
 
+
+        postLoadJs = (tab, nodeids) ->
+            container = angular.element("#"+tab.id+"_content")
+            scope = container.scope().$new()
+            container.html($compile(tab.content)(scope))
+            #scope.apply()
+            $window.com.ximdex.triggerActionLoaded(
+                title: "#" + tab.id + "_tab"
+                context: "#"+tab.id+"_content",
+                url: tab.url,
+                action: tab.action,
+                nodes: nodeids,
+                tab: tab
+            )
+
         # Loads the css and js of a tab. It triggers the window.com.ximdex.triggerActionLoaded event
         # with the following data:
         #   -title: the id of tab title
@@ -104,36 +118,34 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         # @param tab [Tab object] The tab object
         #
         xtab.loadCssAndJs = (tab) ->
-            cssArr = []
-            content = angular.element(tab.content_untrusted)
-            content.first().children().each (index, item) ->
-                cssArr.push angular.element(item).html()
-                return
-            Object.loadCss cssArr
-            jsArr = []
-            content.first().next().children().each (index, item) ->
-                jsArr.push angular.element(item).html()
-                return
-            nodeids = []
-            for n in tab.nodes
-                nodeids.push n.nodeid
+            $timeout(
+                () ->
+                    cssArr = []
+                    content = angular.element(tab.content)
+                    content.first().children().each (index, item) ->
+                        cssArr.push angular.element(item).html()
+                        return
+                    Object.loadCss cssArr
+                    jsArr = []
+                    content.first().next().children().each (index, item) ->
+                        jsArr.push angular.element(item).html()
+                        return
+                    nodeids = []
+                    for n in tab.nodes
+                        nodeids.push n.nodeid
 
-            callback = () ->
-                $window.com.ximdex.triggerActionLoaded(
-                    title: "#" + tab.id + "_tab"
-                    context: "#"+tab.id+"_content",
-                    url: tab.url,
-                    action: tab.action,
-                    nodes: nodeids,
-                    tab: tab
-                )
-            jsObj =
-                onComplete: callback
-                js: jsArr
-            if jsArr.length > 0
-                Object.loadScript jsObj
-            else
-                callback()
+                    callback = () ->
+                        postLoadJs(tab, nodeids)
+                    jsObj =
+                        onComplete: callback
+                        js: jsArr
+                    if jsArr.length > 0
+                        Object.loadScript jsObj
+                    else
+                        callback()
+            ,
+                0
+            )
             return
 
         # Pushes a new tab. It triggers the onModifyTabs event.
@@ -163,8 +175,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     newtab =
                         id: newid
                         name: action.name
-                        content_untrusted: data
-                        content: $sce.trustAsHtml(data)
+                        content: data
                         nodes: nodes
                         action: action
                         command: action.command
@@ -294,8 +305,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             )
             $http.get(url).success (data) ->
                 if data
-                    tab.content_untrusted = data
-                    tab.content = $sce.trustAsHtml(data)
+                    tab.content = data
                     xtab.loadCssAndJs tab
                     bindFormEvents tab
                 return

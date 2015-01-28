@@ -166,7 +166,7 @@
 </div>
 <div ng-show="$index == $parent.activeIndex()" ng-repeat="tab in tabs"
      class="browser-action-view-content ui-tabs-panel ui-widget-content ui-corner-bottom"
-     compile-template ng-bind-html="tab.content" id="#/tab.id/#_content">
+     id="#/tab.id/#_content">
 
 </div>
 </div>

@@ -31,20 +31,21 @@ angular.module("ximdex.common.directive").directive "ximMenu", [
             restrict: "E"
             replace: true
             link: (scope, element, attrs, ctrl) ->
-                if attrs.left
-                    scope.left = attrs.left
-                menuY = scope.options.length * 38 + 10
-                windowY = $window.innerHeight
-                finY = menuY + parseInt(attrs.top) - $window.document.body.scrollTop
-                if finY > windowY
-                    scope.top = (parseInt(attrs.top) - menuY)
-                else
-                    scope.top = attrs.top
-                if attrs.expanded == "true"
+                if scope.expanded == "true"
                     scope.expanded = true
+                    menuY = scope.options.length * 38 + 10
                 else
                     scope.expanded = false
-                return
+                    menuY = 39
+                if scope.left
+                    scope.left = scope.left
+                windowY = $window.innerHeight
+                finY = menuY + parseInt(scope.top) - $window.document.body.scrollTop
+                if finY > windowY
+                    scope.top = (parseInt(scope.top) - menuY)
+                else
+                    scope.top = scope.top
 
+                return
         )
 ]
