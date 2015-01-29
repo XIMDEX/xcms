@@ -138,25 +138,30 @@
 
             {if $show_rep_option}
                 {if $synchronizer_to_use == "default"}
-			        <input type="checkbox" name="republish" id="republish" />
-			        <label for="republish">{t}Do you want to publish its related documents?{/t}</label>
+					<div class="col2-3">
+						<input type="checkbox" name="republish" id="republish" />
+						<label for="republish">{t}Do you want to publish its related documents?{/t}</label>
+					</div>
 			    {elseif $synchronizer_to_use == "ximSYNC"}
                     {if $nodetypename eq 'XmlDocument' && $ximpublish_tools_enabled}
                         {if $advanced_publication eq '1'}
+							<div class="col2-3">
 			                <hr/>
-			                <input onclick="show_div_levels();" type="checkbox" name="all_levels" id="all_levels" value="1" checked />
-			                <label>{t}Publish all levels{/t}</label>
+			                <input onclick="show_div_levels();" type="checkbox" name="all_levels" id="all_levels_{$id_node}" value="1" checked />
+			                <label for="all_levels_{$id_node}">{t}Publish all levels{/t}</label>
 			                <br/>
 			                <div id="div_deeplevel">
-				                <label>{t}Publish until a certain depth level{/t}:</label>
-				                <input id="deeplevel" size="5" type="text" name="deeplevel" value="0" />
+				                <label for="deeplevel_{$id_node}">{t}Publish until a certain depth level{/t}:</label>
+				                <input id="deeplevel_{$id_node}" size="5" type="text" name="deeplevel" value="0" />
 			                </div>
+							</div>
 			            {/if}
                         {if $structural_publication eq '1'}
+							<div class="col2-3">
 			                <hr/>
-			                <input type="checkbox" name="no_structure" id="no_structure" />
-			                <label>{t}Publish just the document (without its structure: css, images, scripts){/t}</label>
-			                <br/>
+			                <input type="checkbox" name="no_structure" id="no_structure_{$id_node}" />
+			                <label for="no_structure_{$id_node}">{t}Publish just the document (without its structure: css, images, scripts){/t}</label>
+							</div>
 			            {/if}
                     {/if}
                 {/if}
