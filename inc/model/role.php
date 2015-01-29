@@ -304,7 +304,11 @@ class Role extends Roles_ORM
 		return $salida;
 	}
 
-	// Obtains the list of actions of a node
+	/**
+	 * Obtains the list of available actions of a node.
+	 * @param int $nodeID
+	 * @return array
+	 */
 	function GetActionsOnNode($nodeID) {
 		$node = new Node($nodeID);
 		if($node->get('IdNode') > 0) {
@@ -312,17 +316,18 @@ class Role extends Roles_ORM
 			$stateID =  $node->get('IdState');
 
 			if($nodeType) {
-				$salida = array();
+				$result = array();
 				$action = new Action();
 				$actions1=$action->GetActionListOnNodeType($nodeType);
 				$actions2=$this->GetActionsList($stateID);
 
 				if($actions1 && $actions2) {
-					$salida = array_intersect($actions1, $actions2);
+					$result = array_intersect($actions1, $actions2);
 				}
-				return $salida;
+				return $result;
 			}
 		}
+		return false;
 	}
 
 	// Returns if the given permit belongs to the current role
