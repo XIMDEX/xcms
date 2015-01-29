@@ -91,11 +91,9 @@ mainController
 
                 // method used in history view
                 $scope.updateSearch = function (searchObj) {
-                    console.log('updateSearch');
                     $scope.urlParams.method = 'getFrameList';
                     $scope.urlParams.options = [{finished: '1'}];
                     var url = xUrlHelper.getAction($scope.urlParams);
-                    console.log(url);
                     $http({
                         method: 'POST',
                         url: url,

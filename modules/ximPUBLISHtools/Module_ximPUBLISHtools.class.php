@@ -30,8 +30,8 @@ ModulesManager::file('/inc/model/RelRolesActions.class.php');
 
 class Module_ximPUBLISHtools extends Module {
 
-    const PUB_REPORT_ACTION_ID = '7300';
-    const PUB_REPORT_HISTORY_ID = '7301';
+    const PUB_REPORT_ACTION_ID = '7500';
+    const PUB_REPORT_HISTORY_ID = '7501';
 
     function Module_ximPUBLISHtools() {
         parent::__construct('ximPUBLISHtools', dirname(__FILE__));
@@ -55,6 +55,7 @@ class Module_ximPUBLISHtools extends Module {
     // It's necessary to enable actions on this method, not on 'install' method.
     // Due to recent lmd class removal, unique way to do this is via DB class
     function enable() {
+        XMD_Log::info("Module_ximPUBLISHtools enable");
         $db = new DB();
         $sql = array();
 
@@ -65,7 +66,7 @@ class Module_ximPUBLISHtools extends Module {
 		'Muestra estado de la cola de trabajos de publicación',100,'ximPUBLISHtools',0)";
         $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions 
 		(IdRel,IdRol,IdAction,IdState,IdContext) 
-		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",NULL,1)";
+		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",7,1)";
 
         $sql['Creating ximPUBLISH history action'] = "INSERT INTO Actions 
 		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
@@ -73,18 +74,17 @@ class Module_ximPUBLISHtools extends Module {
 		'Muestra el historial de publicaciones',100,'ximPUBLISHtools',0)";
         $sql['Enabling ximPUBLISH history action'] = "INSERT INTO RelRolesActions 
 		(IdRel,IdRol,IdAction,IdState,IdContext) 
-		VALUES (NULL,201," . self::PUB_REPORT_HISTORY_ID . ",NULL,1)";
-        
+		VALUES (NULL,201," . self::PUB_REPORT_HISTORY_ID . ",7,1)";
+
         foreach ($sql as $desc => $query) {
-            if (!$ret = $db->Execute($query)) {
+            if (!$db->Execute($query)) {
                 XMD_Log::error("Error $desc - $query");
                 self::disable();
                 die();
             }
-
-            XMD_Log::info("Module_ximPUBLISHtools enabled successfully");
         }
 
+        XMD_Log::info("Module_ximPUBLISHtools enabled successfully");
         return true;
     }
 
