@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,9 +24,6 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
-
 
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');

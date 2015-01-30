@@ -1,19 +1,58 @@
 				Ximdex (Free & Semantic CMS for XML) - CHANGELOG	
 				------------------------------------------------
 
+Version 3.6
+-----------
+-> 17th-01-2015 Ximdex Development Team <dev@ximdex.org>
+
+  * Xedit:
+    * Preview button with channels.
+    * Ontology browser for tags in Xedit.
+    * RNG Validation on demand.
+    * Check spelling improved.
+
+  * UI:
+    * Changing order in manage versions action.
+    * CapsLock warning on login form.
+    * New interface for Preview Document action.
+    * Pagination on simple search.
+    * New context menu over logged user account.
+    * Added new project theme based on bootstrap: Single Page.
+    * Show a dependency graph when showing info about a single node.
+
+  * Core:
+    * New connector to Solr. Now you can publish directly on Apache Solr.
+    * Angular notifications.
+    * Modify type for subversion field on Versions table.
+    * Codemirror updated to version 4.7.0.
+    * Allow to upload SVG files into image folders.
+    * Adding solarium library for Solr support.
+    * API auto-configured by default.
+    * Deleting deprecated files and classes.
+    * Using Composer and reorganizing core classes and their execution.
+    * Using namespaces for PHP classes.
+    * Renaming .inc classes to .php.
+    * Removing support to PHP 4.
+    * Create a vendors folder to manage external dependencies.
+    * Added Monolog to manage logs.
+    * Better and more legible core code.
+
+  * Bugs:
+    * Fixing the corrupted open documents when downloading them from Ximdex CMS.
+    * Copy nodes on the same folder, changing their name.
+
+
 Version 3.5
------------------
+-----------
 -> 18th-04-2014 Ximdex Development Team <dev@ximdex.org>
   * General:
     * Left panel auto collapse.
-    * New messaging sytem powered by angular.js
+    * New messaging system powered by angular.js
   
   * Xedit:
     * Single request for all the needed resources: RNG, XSL, XML, config, ...
     * New tags interface for document tagging.
-    * Re-arranged buttons on the toolbar and priorizing toolboxes on the right panel.
-  
-  * Modules:
+    * Re-arranged buttons on the toolbar and prioritizing toolboxes on the right panel.
   
   * Installer:
     * New installer script and first steps to move all the logic to a web installer.
@@ -55,7 +94,7 @@ Version 3.4
 
   * Solved Bugs:
     * Undo&Redo buttons on Xedit.
-    * Disable button on Log Toolbos in Xedit.
+    * Disable button on Log Toolbox in Xedit.
     * Fix indexes on docxap generation.
     * Minor errors on FTP connection class.
     * Resolving iframe nesting in preview action.
@@ -74,12 +113,12 @@ Version 3.3
   * General:
     * New languages added on Ximdex interface: german and brazilian.
     * Full compatibility with browsers based on webkit. Also with Opera and Firefox > 4.0.
-    * Syntax highlighting when editting on text mode.
+    * Syntax highlighting when editing on text mode.
     * Demo projects visually improved.
     * Including database port on installer. By default is mysql's 3306.
     * Improved HTML5 based uploader.
     * New ximLINK manager and searcher.
-    * Friendy URLs on all the interface.
+    * Friendly URLs on all the interface.
     * Introducing keyboard shortcuts for the most used actions.
     * Improved and extended translations in all languages.
     * New action to add empty files on specific folders.
@@ -139,7 +178,7 @@ Version 3.2
  * New interface language: Now, English is available.
  * New welcome splash.
  * New RSS space, stay tuned to Ximdex news.
- * Firefox 6.0 compatiblity. Partial Firefox 7.0 compatibility.
+ * Firefox 6.0 compatibility. Partial Firefox 7.0 compatibility.
  * New file uploader design.
  * Solved bugs:
    * Publication dependencies between images and ximdocs.
@@ -166,7 +205,7 @@ Version 3.1
  * XML Editor "Xedit" improvements.
  * "XimTAGS" module becomes public: document enrichment and searches using tags.
  * "XimNEWS 2.0" module becomes public, improving publication process.
- * New advanced searcher, with last and stored searches, multiple filters and full funcionality in retrieved nodes.
+ * New advanced searcher, with last and stored searches, multiple filters and full functionality in retrieved nodes.
  * New multi file uploader, drag & drop supported using both uploader action and node tree.
  * New action contextual menu on right click for nodes.
  * New 'Move node' action dragging nodes in tree view.
