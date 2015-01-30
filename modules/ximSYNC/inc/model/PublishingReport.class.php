@@ -195,7 +195,7 @@ class PublishingReport extends PublishingReport_ORM {
                     "IdBatch" => $dbObj->GetValue("IdBatch"),
                     "BatchPriority" => $batch->get('Priority'),
                     "BatchState" => $batch->get('Playing') == 1,
-                    "BatchStateText" => ($batch->get('Playing') == 1) ? 'activa' : 'detenida',
+                    "BatchStateText" => ($batch->get('Playing') == 1) ? _('is active') : _('is stopped'),
                     'elements' => array()
                 );
             }

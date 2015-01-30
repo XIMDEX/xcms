@@ -27,16 +27,16 @@
 <div class="ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <form>
         <fieldset>
-            From: <input type="text" ng-model="searchObj.dateFrom">
-            To: <input type="text" ng-model="searchObj.dateTo">
+            {t}From{/t}: <input type="text" ng-model="searchObj.dateFrom">
+            {t}To{/t}: <input type="text" ng-model="searchObj.dateTo">
             <br/>
-            Text to search: <input type="text" ng-model="searchObj.searchText">
-            <button ng-click="updateSearch(searchObj)">Search</button>
+            {t}Text to search{/t}: <input type="text" ng-model="searchObj.searchText">
+            <button ng-click="updateSearch(searchObj)">{t}Search{/t}</button>
         </fieldset>
     </form>
 
     <fieldset>
-        <legend><span>{t}Listado de documentos{/t}</span></legend>
+        <legend><span>{t}Document list{/t}</span></legend>
 
         <div id="frame_list" ng-if="1">
             <div class="batch_container" ng-repeat="portal in json">
@@ -44,7 +44,7 @@
                     <strong>
                         <em>#/portal.NodeName/#</em>
                     </strong>
-                    <em>Esta publicación está <strong>#/portal.BatchStateText/#</strong></em>
+                    <em>{t}This publication{/t}<strong>#/portal.BatchStateText/#</strong></em>
                 </div>
                 <div class="frame_default"></div>
 

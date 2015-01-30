@@ -72,5 +72,5 @@ CREATE TABLE IF NOT EXISTS `RelColectorUsersBatchs` (
 ) ENGINE=MyISAM;
 
 LOCK TABLES `Permissions` WRITE;
-INSERT INTO `Permissions` VALUES (1005,'view_publication_resume','Ver informe de publicación');
+INSERT INTO `Permissions` VALUES (1005,'view_publication_resume','View publication report');
 UNLOCK TABLES;

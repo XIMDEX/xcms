@@ -6929,7 +6929,7 @@ msgid "Action report"
 msgstr "Informe de acciones"
 
 msgid "Show a report of actions"
-msgstr "Mostsrar un informe de acciones"
+msgstr "Mostrar un informe de acciones"
 
 msgid "Add a new workflow"
 msgstr "Añade un nuevo workflow"
@@ -9588,6 +9588,30 @@ msgid "Privacy Policy"
 msgstr "Política de privacidad"
 
 #: ximPUBLISHtools messages
+msgid "Publication report"
+msgstr "Informe de publicación"
+
+msgid "Publication progress"
+msgstr "Progreso de publicación"
+
+msgid "Document list"
+msgstr "Listado de documentos"
+
+msgid "This publication"
+msgstr "Esta publicación"
+
+msgid "is active"
+msgstr "está activa"
+
+msgid "is stopped"
+msgstr "está detenida"
+
+msgid "with priority"
+msgstr "con prioridad"
+
+msgid "Publication history"
+msgstr "Historial de publicación"
+
 msgid "There isn't any pending documents to publish."
 msgstr "No hay documentos pendientes de publicación."
 
@@ -9638,8 +9662,11 @@ msgstr "Documentos publicados"
 msgid "Modified documents"
 msgstr "Documentos modificados"
 
-msgid "Documents in publication queue"
-msgstr "Documentos en cola de publicación"
+msgid "View documents in publication queue"
+msgstr "Ver Documentos en cola de publicación"
+
+msgid "View document publication history"
+msgstr "Ver historial de documentos publicados"
 
 msgid "documents found"
 msgstr "documentos encontrados"

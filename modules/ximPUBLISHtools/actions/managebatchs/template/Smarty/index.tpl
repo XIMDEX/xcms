@@ -26,12 +26,12 @@
 
 <div class="ximPUBLISHtools" ng-controller="ximPUBLISHtools">
     <fieldset>
-        <legend><span>{t}Informe de publicación{/t}</span></legend>
-        <ol><li>{t}Progreso de publicación de documentos de Ximdex{/t}</li></ol>
+        <legend><span>{t}Publication report{/t}</span></legend>
+        <ol><li>{t}Publication progress{/t}</li></ol>
     </fieldset>
 
     <fieldset>
-        <legend><span>{t}Listado de documentos{/t}</span></legend>
+        <legend><span>{t}Document list{/t}</span></legend>
 
         <div id="frame_list" ng-if="1">
             <div class="batch_container" ng-repeat="portal in json">
@@ -44,9 +44,9 @@
                     <strong>
                         <em>#/portal.NodeName/#</em>
                     </strong>
-                    <em>Esta publicación está 
+                    <em>{t}This publication{/t}
                         <strong>#/portal.BatchStateText/#</strong>
-                        con prioridad: <strong>#/portal.BatchPriority/#</strong>
+                        {t}with priority{/t}: <strong>#/portal.BatchPriority/#</strong>
                         <a class="incPrio" href="#" ng-click="incBatchPriority(portal.IdBatch)">[inc]</a>
                         <a class="decPrio" href="#" ng-click="decBatchPriority(portal.IdBatch)">[dec]</a>
                     </em>
