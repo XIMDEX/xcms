@@ -6,33 +6,29 @@ angular.module("ximdex.common.service").factory("xTabs", [
     visitedTabs = [];
     activeTab = -1;
     bindFormEvents = function(tab) {
-      $timeout(function() {
-        var form, forms, i, _i, _len, _results;
-        forms = angular.element("form", "#" + tab.id + "_content");
-        if (forms.length === 0) {
-          return new X.FormsManager({
+      var form, forms, i, _i, _len;
+      forms = angular.element("form", "#" + tab.id + "_content");
+      if (forms.length === 0) {
+        new X.FormsManager({
+          actionView: {
+            action: tab.action
+          },
+          tabId: tab.id,
+          actionContainer: angular.element("#" + tab.id + "_content")
+        });
+      } else {
+        for (i = _i = 0, _len = forms.length; _i < _len; i = ++_i) {
+          form = forms[i];
+          new X.FormsManager({
             actionView: {
               action: tab.action
             },
             tabId: tab.id,
-            actionContainer: angular.element("#" + tab.id + "_content")
+            actionContainer: angular.element("#" + tab.id + "_content"),
+            form: angular.element(form)
           });
-        } else {
-          _results = [];
-          for (i = _i = 0, _len = forms.length; _i < _len; i = ++_i) {
-            form = forms[i];
-            _results.push(new X.FormsManager({
-              actionView: {
-                action: tab.action
-              },
-              tabId: tab.id,
-              actionContainer: angular.element("#" + tab.id + "_content"),
-              form: angular.element(form)
-            }));
-          }
-          return _results;
         }
-      }, 0);
+      }
     };
     xtab = {};
     xtab.getTabIndex = function(tabId) {
@@ -64,7 +60,6 @@ angular.module("ximdex.common.service").factory("xTabs", [
           if (args.reload === true) {
             tabs[index].content = data;
             xtab.loadCssAndJs(tabs[index]);
-            bindFormEvents(tabs[index]);
           }
           if (args.callback) {
             args.callback({
@@ -84,11 +79,14 @@ angular.module("ximdex.common.service").factory("xTabs", [
     xtab.activeIndex = function() {
       return activeTab;
     };
-    postLoadJs = function(tab, nodeids) {
+    postLoadJs = function(tab, nodeids, postCompile) {
       var container, scope;
-      container = angular.element("#" + tab.id + "_content");
-      scope = container.scope().$new();
-      container.html($compile(tab.content)(scope));
+      if (postCompile) {
+        container = angular.element("#" + tab.id + "_content");
+        scope = container.scope();
+        container.html($compile(tab.content)(scope));
+      }
+      bindFormEvents(tab);
       return $window.com.ximdex.triggerActionLoaded({
         title: "#" + tab.id + "_tab",
         context: "#" + tab.id + "_content",
@@ -100,7 +98,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
     };
     xtab.loadCssAndJs = function(tab) {
       $timeout(function() {
-        var callback, content, cssArr, jsArr, jsObj, n, nodeids, _i, _len, _ref;
+        var callback, compiled, container, content, cssArr, jsArr, jsObj, n, nodeids, postCompile, scope, _i, _len, _ref;
         cssArr = [];
         content = angular.element(tab.content);
         content.first().children().each(function(index, item) {
@@ -117,8 +115,21 @@ angular.module("ximdex.common.service").factory("xTabs", [
           n = _ref[_i];
           nodeids.push(n.nodeid);
         }
+        container = angular.element("#" + tab.id + "_content");
+        scope = container.scope().$new();
+        scope.$on('$destroy', function() {
+          return angular.element("#" + tab.id + "_content").remove();
+        });
+        postCompile = false;
+        try {
+          compiled = $compile(tab.content)(scope);
+          container.html(compiled);
+          postCompile = false;
+        } catch (_error) {
+          postCompile = true;
+        }
         callback = function() {
-          return postLoadJs(tab, nodeids);
+          postLoadJs(tab, nodeids, postCompile);
         };
         jsObj = {
           onComplete: callback,
@@ -169,11 +180,15 @@ angular.module("ximdex.common.service").factory("xTabs", [
           };
           xtab.loadCssAndJs(newtab);
           newlength = tabs.push(newtab);
+
+          /*$timeout(
+              () ->
+                  $rootScope.$broadcast('updateTabsPosition')
+          ,
+              0
+          )
+           */
           xtab.setActive(newlength - 1);
-          bindFormEvents(newtab);
-          $timeout(function() {
-            return $rootScope.$broadcast('onModifyTabs');
-          }, 0);
         }
       });
     };
@@ -181,7 +196,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       return tabs;
     };
     xtab.removeTab = function(index) {
-      var i, tab, visitedIndex, _i, _len;
+      var deletedTab, i, tab, visitedIndex, _i, _len;
       visitedIndex = visitedTabs.indexOf(index);
       if (visitedIndex >= 0) {
         visitedTabs.splice(visitedIndex, 1);
@@ -192,18 +207,23 @@ angular.module("ximdex.common.service").factory("xTabs", [
           }
         }
       }
-      tabs.splice(index, 1);
+      deletedTab = (tabs.splice(index, 1))[0];
       if (visitedTabs.length > 0) {
         activeTab = visitedTabs[0];
         $timeout(function() {
-          return $rootScope.$broadcast('onChangeActiveTab');
+          return $rootScope.$broadcast('updateTabsPosition', deletedTab);
         }, 0);
       } else {
         activeTab = -1;
       }
-      $timeout(function() {
-        return $rootScope.$broadcast('onModifyTabs');
-      }, 400);
+
+      /*$timeout(
+          () ->
+              $rootScope.$broadcast('updateTabsPosition')
+      ,
+          400
+      )
+       */
     };
     xtab.setActive = function(index) {
       var visitedIndex;
@@ -214,7 +234,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       }
       visitedTabs.unshift(index);
       $timeout(function() {
-        return $rootScope.$broadcast('onChangeActiveTab');
+        $rootScope.$broadcast('updateTabsPosition');
       }, 0);
     };
     xtab.highlightTab = function(index) {
@@ -231,7 +251,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       activeTab = -1;
       visitedTabs = [];
       $timeout(function() {
-        return $rootScope.$broadcast('onModifyTabs');
+        return $rootScope.$broadcast('updateTabsPosition');
       }, 400);
     };
     xtab.offAll = function() {
@@ -257,7 +277,6 @@ angular.module("ximdex.common.service").factory("xTabs", [
         if (data) {
           tab.content = data;
           xtab.loadCssAndJs(tab);
-          bindFormEvents(tab);
         }
       });
     };

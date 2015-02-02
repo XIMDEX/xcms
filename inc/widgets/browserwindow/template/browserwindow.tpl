@@ -134,8 +134,8 @@
 
 <div id="angular-content" ng-cloak ng-controller="XTabsCtrl" class="angular-panel hbox-panel-container hbox-panel-container-1">
 <div class="hbox-panel">
-<div class="xim-tabs-nav">
-    <div ng-show="menuTabsEnabled" hm-tap="showingMenu=!showingMenu" class="xim-tabs-list-selector"></div>
+<div class="xim-tabs-nav noselect">
+    <div ng-show="menuTabsEnabled" hm-tap="showingMenu=!showingMenu; return;" class="xim-tabs-list-selector"></div>
     <ul ng-show="showingMenu" class="xim-tabs-list">
         <li class="xim-tabs-list-item" hm-tap="closeMenu(); offAllTabs();">#/'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</li>
         <li class="xim-tabs-list-item" ng-repeat="tab in tabs" hm-tap="closeMenu(); $parent.setActiveTab($index);">
