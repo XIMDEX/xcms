@@ -1,6 +1,4 @@
-angular
-.module("ximdex.module.xsetextensions", [])
-.controller "XSetExtensionsCtrl", [
+angular.module("ximdex.main.controller").controller "XSetExtensionsCtrl", [
     "$scope"
     "$http"
     "xUrlHelper"

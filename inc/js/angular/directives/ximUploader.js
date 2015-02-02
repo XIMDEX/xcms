@@ -67,7 +67,7 @@ angular.module('ximdex.common.directive')
     	    	});
 
     	    	$scope.$on('flow::complete', function () {
-                    $scope.$emit('nodeModified', $scope.nodeId);
+                    $scope.$emit('nodemodified', $scope.nodeId);
     	    	});
 
     	    	$scope.uploadFiles = function() {

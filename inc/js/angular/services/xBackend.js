@@ -36,7 +36,7 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
                             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     }).success(function(data) {         
                             if (formData.IDParent || formData.id)
-                                $rootScope.$broadcast('nodeModified', formData.IDParent || formData.id);
+                                $rootScope.$broadcast('nodemodified', formData.IDParent || formData.id);
                             if (data)
                                 callback(data);
                     });

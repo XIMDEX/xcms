@@ -120,6 +120,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     node.loading = false
                     if data
                         node.collection = data.collection
+                        node.children = data.children
+                        node.state = data.state
                         if $scope.treeMode == false && $scope.selectedTab == 1
                             $scope.initialNodeList = node
                             prepareBreadcrumbs()
@@ -146,6 +148,8 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
                     node.loading = false
                     if data
                         node.collection = data.collection
+                        node.children = data.children
+                        node.state = data.state
                         if $scope.treeMode == false && $scope.selectedTab == 1
                             $scope.initialNodeList = node
                             prepareBreadcrumbs()
