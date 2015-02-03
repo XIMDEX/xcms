@@ -1,6 +1,6 @@
 angular.module("ximdex.main.controller").controller "XTabsCtrl", [
-    "$scope", "xTabs", "xUrlHelper", "$http", "$interval", "$window", "$timeout"
-    ($scope, xTabs, xUrlHelper, $http, $interval, $window, $timeout) ->
+    "$scope", "xTabs", "xUrlHelper", "$http", "$interval", "$window", "$rootScope"
+    ($scope, xTabs, xUrlHelper, $http, $interval, $window, $rootScope) ->
 
         #Communication with the service xTabs
         $scope.tabs = xTabs.getTabs()
@@ -34,6 +34,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
 
         #Reloads welcome tab
         $scope.reloadWelcomeTab = () ->
+            $rootScope.$broadcast('updateWelcomeTab')
             nodes = [{nodeid: 10000}]
             url = xUrlHelper.getAction(
                 action: "welcome"

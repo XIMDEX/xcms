@@ -3,12 +3,16 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                                                           "xUrlHelper", "$rootScope", "$compile"
     ($window, $timeout, $http, xUrlHelper, $rootScope, $compile) ->
 
+        scopeWelcomeTab = null
+
         #Array of current tabs
         tabs = []
         #Visited tabs history
         visitedTabs = []
         #The index of the currently open tab
         activeTab = -1
+
+        xtab = {}
 
         # Bind the jQuery form events for a tab
         #
@@ -35,7 +39,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     )
             return
 
-        xtab = {}
+
 
         # Gets the index of a tab
         #
@@ -86,11 +90,20 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         xtab.activeIndex = () -> return activeTab
 
 
-        postLoadJs = (tab, nodeids, postCompile) ->
-            if postCompile
-                container = angular.element("#"+tab.id+"_content")
+        postLoadJs = (tab, nodeids) ->
+            container = angular.element("#"+tab.id+"_content")
+
+            if tab.id != "10000_welcome"
                 scope = container.scope()
-                container.html($compile(tab.content)(scope))
+            else
+                if scopeWelcomeTab?
+                    scopeWelcomeTab.$destroy()
+                scope = container.scope().$new()
+
+            compiled = $compile(tab.content)(scope)
+            if tab.id == "10000_welcome"
+                scopeWelcomeTab = scope
+            container.html(compiled)
             bindFormEvents(tab)
             $window.com.ximdex.triggerActionLoaded(
                 title: "#" + tab.id + "_tab"
@@ -129,20 +142,8 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     nodeids = []
                     for n in tab.nodes
                         nodeids.push n.nodeid
-
-                    container = angular.element("#"+tab.id+"_content")
-                    scope = container.scope().$new()
-                    scope.$on '$destroy', () ->
-                        angular.element("#"+tab.id+"_content").remove()
-                    postCompile = false
-                    try
-                        compiled = $compile(tab.content)(scope)
-                        container.html(compiled)
-                        postCompile = false
-                    catch
-                        postCompile = true
                     callback = () ->
-                        postLoadJs(tab, nodeids, postCompile)
+                        postLoadJs(tab, nodeids)
                         return
                     jsObj =
                         onComplete: callback
