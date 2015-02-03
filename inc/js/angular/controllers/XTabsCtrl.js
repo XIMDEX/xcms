@@ -34,7 +34,6 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
     $scope.limitTabs = 9999999;
     $scope.reloadWelcomeTab = function() {
       var nodes, url;
-      $rootScope.$broadcast('updateWelcomeTab');
       nodes = [
         {
           nodeid: 10000

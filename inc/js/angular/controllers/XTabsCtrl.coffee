@@ -34,7 +34,6 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
 
         #Reloads welcome tab
         $scope.reloadWelcomeTab = () ->
-            $rootScope.$broadcast('updateWelcomeTab')
             nodes = [{nodeid: 10000}]
             url = xUrlHelper.getAction(
                 action: "welcome"
