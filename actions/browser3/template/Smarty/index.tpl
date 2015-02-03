@@ -55,7 +55,7 @@
     <!-- js widgets -->
     %=js_widgets%
 </head>
-<body ng-controller="XMainCtrl" ng-cloak>
+<body ng-controller="XMainCtrl" ng-cloak ng-keydown="keydown($event)" ng-keyup="keyup($event)">
 <div id="angular-event-relay"></div>
 <div id="ximdex-splash">
 

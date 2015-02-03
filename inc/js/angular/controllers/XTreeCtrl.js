@@ -26,7 +26,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
-    var actualFilter, canceler, dragStartPosition, expanded, findNodeById, getFolderPath, listenHidePanel, loadAction, postLoadActions, prepareBreadcrumbs, size;
+    var actualFilter, allowedHokey, canceler, dragStartPosition, expanded, findNodeById, getFolderPath, listenHidePanel, loadAction, postLoadActions, prepareBreadcrumbs, size;
     delete Hammer.defaults.cssProps.userSelect;
     $scope.projects = null;
     $scope.initialNodeList = null;
@@ -444,7 +444,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       node.collection = [];
       return $scope.loadNodeChildren(node);
     });
-    return $scope.openModuleAction = function(node) {
+    $scope.openModuleAction = function(node) {
       var action, nodes;
       action = {
         command: "moduleslist",
@@ -462,6 +462,31 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         }
       ];
       xTabs.pushTab(action, nodes);
+    };
+    allowedHokey = true;
+    $scope.$parent.keydown = function(event) {
+      var action, n, _i, _len, _ref;
+      if (!allowedHokey) {
+        return;
+      }
+      if (event.altKey && event.ctrlKey && event.keyCode === 73 && $scope.selectedNodes.length > 0) {
+        action = {
+          command: 'infonode',
+          method: 'index',
+          name: _("Node Info")
+        };
+        _ref = $scope.selectedNodes;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          n = _ref[_i];
+          xTabs.pushTab(action, [n]);
+        }
+        allowedHokey = false;
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    };
+    return $scope.$parent.keyup = function(event) {
+      allowedHokey = true;
     };
   }
 ]);

@@ -26,7 +26,7 @@
 <div id="%=id%" class="browser-window %=class%">
 <div class="browser-window-content">
 <div class="hbox browser-hbox">
-<div ng-controller="XTreeCtrl" ng-mouseleave="hideTree()" id="angular-tree"
+<div ng-controller="XTreeCtrl" ng-mouseleave="hideTree()"  id="angular-tree"
      class="hbox-panel-container hbox-panel-container-0 hbox-panel-hideable noselect">
     {literal}
         <script id="template/tabs/tabset.html" type="text/ng-template">

@@ -401,6 +401,23 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             xTabs.pushTab action, nodes
             return
 
+        allowedHokey = true
+        $scope.$parent.keydown = (event) ->
+            return if !allowedHokey
+            if event.altKey && event.ctrlKey && event.keyCode == 73 && $scope.selectedNodes.length > 0
+                action =
+                    command: 'infonode'
+                    method: 'index'
+                    name: _("Node Info")
+                for n in $scope.selectedNodes
+                    xTabs.pushTab action, [n]
+                allowedHokey = false
+                event.stopPropagation();
+                event.preventDefault();
+            return
+        $scope.$parent.keyup = (event) ->
+            allowedHokey = true
+            return
 ]
 
 angular.module("ximdex.main.controller").filter "nodeSelected", () ->
