@@ -9,7 +9,7 @@ class Action_setextensions extends ActionAbstract
         $commonFolderNodeType = new NodeType(5022);
         $commonAllowedExtensions = $commonFolderNodeType->getAllowedExtensions();
 
-        $this->addJs('/actions/setextensions/resources/js/index.js');
+        //$this->addJs('/actions/setextensions/resources/js/index.js');
         $this->addCss('/actions/setextensions/resources/css/style.css');
 
         $values = array('commonAllowedExtensions' => json_encode($commonAllowedExtensions));

@@ -1,4 +1,4 @@
-<form method="post" ng-cloack ng-controller="XSetExtensionsCtrl">
+<form method="post" ng-cloak ng-controller="XSetExtensionsCtrl">
     <div class="action_header">
         <h2>{t}Set allowed extensions{/t}</h2>
         <fieldset ng-init="label='{t}Save changes{/t}'; loading=false;" class="buttons-form">
