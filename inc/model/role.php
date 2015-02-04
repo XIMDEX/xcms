@@ -300,7 +300,7 @@ class Role extends Roles_ORM
 	 * @param int $nodeID
 	 * @return array
 	 */
-	function GetActionsOnNode($nodeID) {
+	function GetActionsOnNode($nodeID, $includeActionsWithNegativeSort = false) {
 		$node = new Node($nodeID);
 		if($node->get('IdNode') > 0) {
 			$nodeType = $node->get('IdNodeType');
@@ -309,7 +309,7 @@ class Role extends Roles_ORM
 			if($nodeType) {
 				$result = array();
 				$action = new Action();
-				$actions1=$action->GetActionListOnNodeType($nodeType,true);
+				$actions1=$action->GetActionListOnNodeType($nodeType, $includeActionsWithNegativeSort);
 				$actions2=$this->GetActionsList($stateID);
 
 				if($actions1 && $actions2) {

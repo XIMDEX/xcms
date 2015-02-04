@@ -558,7 +558,7 @@ class User extends Users_ORM {
      * @return array idActions array.
      * @version Ximdex 3.6
      */
-    public function getActionsOnNode($idNode){
+    public function getActionsOnNode($idNode, $includeActionsWithNegativeSort = false){
         $result = array();
         
         //Getting no specific not allowed actions for $idNode
@@ -589,7 +589,7 @@ class User extends Users_ORM {
         //Getting actions for every rol .
         foreach ($arrayRoles as $idRol){
             $role = new Role($idRol);
-            $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode));            
+            $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
         }
         
         $arrayActions = array_unique($arrayActions);
@@ -659,7 +659,7 @@ class User extends Users_ORM {
             return false;            
         }
         
-        $arrayActions = $this->getActionsOnNode($idNode);
+        $arrayActions = $this->getActionsOnNode($idNode, true);
         return in_array($idAction, $arrayActions);
     }
 }
