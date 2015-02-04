@@ -55,7 +55,8 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
             command: "welcome",
             blink: false,
             show: true,
-            url: url
+            url: url,
+            history: [url]
           };
           xTabs.loadCssAndJs(newtab);
         }

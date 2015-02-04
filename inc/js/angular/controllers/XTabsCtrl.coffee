@@ -51,6 +51,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                         blink: false
                         show: true
                         url: url
+                        history: [url]
                     xTabs.loadCssAndJs newtab
                 return
             return

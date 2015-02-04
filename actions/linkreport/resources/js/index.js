@@ -116,8 +116,7 @@ X.actionLoaded(function(event, fn, params) {
             dataType: 'json',
             data: {linkurl:linkurl,nodeid:nodeid},
             success: function(data,status,event) {
-                console.log(that, this);
-                readLinkState(nodeid, div);                
+                readLinkState(nodeid, div);
             },
             error: function(hxr,status,error) {
                 alert("An unexpected error has been detected. Please, contact your admin");

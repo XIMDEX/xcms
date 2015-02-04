@@ -37,6 +37,11 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                         actionContainer: angular.element("#"+tab.id+"_content")
                         form: angular.element(form)
                     )
+            gobackButton = angular.element('fieldset.buttons-form .goback-button',"#"+tab.id+"_content")
+            gobackButton.bind "click", () ->
+                tab.history.pop()
+                tab.url = tab.history[tab.history.length - 1]
+                xtab.reloadTabById(tab.id)
             return
 
 
@@ -72,6 +77,8 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 if data
                     index = xtab.getTabIndex args.tabId
                     return if index < 0
+                    tabs[index].history.push(args.url)
+                    tabs[index].url = args.url
                     if args.reload == true
                         tabs[index].content = data
                         xtab.loadCssAndJs tabs[index]
@@ -191,6 +198,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                         blink: false
                         show: true
                         url: url
+                        history: [url]
                     xtab.loadCssAndJs newtab
                     newlength = tabs.push(newtab)
                     ###$timeout(
@@ -305,7 +313,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         # @param index [Integer] The tab index
         #
         xtab.reloadTab = (index) ->
-            tab = tabs[tabId]
+            tab = tabs[index]
             url = xUrlHelper.getAction(
                 action: tab.action.command
                 nodes: tab.nodes

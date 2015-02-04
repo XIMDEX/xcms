@@ -309,7 +309,7 @@ class Role extends Roles_ORM
 			if($nodeType) {
 				$result = array();
 				$action = new Action();
-				$actions1=$action->GetActionListOnNodeType($nodeType);
+				$actions1=$action->GetActionListOnNodeType($nodeType,true);
 				$actions2=$this->GetActionsList($stateID);
 
 				if($actions1 && $actions2) {

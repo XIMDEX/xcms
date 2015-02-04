@@ -335,6 +335,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7319, 5078, 'Edit RNG schema', 'edittext', 'edit_template_view.png', 'Edit a RNG schema', 2, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7321, 5078, 'Modify properties', 'renamenode', 'modify_template_view', 'Modify properties of a RNG schema', '20', NULL , '0', NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7229, 5048, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7230, 5049, 'Check links', 'linkreport', 'xix.png', 'Check broken links', -20, NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7231, 5050, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8101, 5016, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 25, NULL, 1, '');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8102, 5017, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 25, NULL, 1, '');
@@ -2487,6 +2488,10 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,8137,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8137,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8137,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7230,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,7230,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7230,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7230,0,1,3);
 
 
 UNLOCK TABLES;

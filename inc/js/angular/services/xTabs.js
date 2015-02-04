@@ -8,7 +8,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
     activeTab = -1;
     xtab = {};
     bindFormEvents = function(tab) {
-      var form, forms, i, _i, _len;
+      var form, forms, gobackButton, i, _i, _len;
       forms = angular.element("form", "#" + tab.id + "_content");
       if (forms.length === 0) {
         new X.FormsManager({
@@ -31,6 +31,12 @@ angular.module("ximdex.common.service").factory("xTabs", [
           });
         }
       }
+      gobackButton = angular.element('fieldset.buttons-form .goback-button', "#" + tab.id + "_content");
+      gobackButton.bind("click", function() {
+        tab.history.pop();
+        tab.url = tab.history[tab.history.length - 1];
+        return xtab.reloadTabById(tab.id);
+      });
     };
     xtab.getTabIndex = function(tabId) {
       var i, tab, _i, _len;
@@ -58,6 +64,8 @@ angular.module("ximdex.common.service").factory("xTabs", [
           if (index < 0) {
             return;
           }
+          tabs[index].history.push(args.url);
+          tabs[index].url = args.url;
           if (args.reload === true) {
             tabs[index].content = data;
             xtab.loadCssAndJs(tabs[index]);
@@ -173,7 +181,8 @@ angular.module("ximdex.common.service").factory("xTabs", [
             command: action.command,
             blink: false,
             show: true,
-            url: url
+            url: url,
+            history: [url]
           };
           xtab.loadCssAndJs(newtab);
           newlength = tabs.push(newtab);
@@ -263,7 +272,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
     };
     xtab.reloadTab = function(index) {
       var tab, url;
-      tab = tabs[tabId];
+      tab = tabs[index];
       url = xUrlHelper.getAction({
         action: tab.action.command,
         nodes: tab.nodes,
