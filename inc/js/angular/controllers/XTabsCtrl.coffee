@@ -1,6 +1,6 @@
 angular.module("ximdex.main.controller").controller "XTabsCtrl", [
-    "$scope", "xTabs", "xUrlHelper", "$http", "$interval", "$window", "$rootScope"
-    ($scope, xTabs, xUrlHelper, $http, $interval, $window, $rootScope) ->
+    "$scope", "xTabs", "xUrlHelper", "$http", "$interval", "$window", "$timeout"
+    ($scope, xTabs, xUrlHelper, $http, $interval, $window, $timeout) ->
 
         #Communication with the service xTabs
         $scope.tabs = xTabs.getTabs()
@@ -74,6 +74,8 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         #Catches the root event updateTabsPosition
         $scope.$on 'updateTabsPosition',
             (event, deletedTab) ->
+                newleft = 0
+
                 temp = angular.element('#angular-content > .hbox-panel > .tabs-container')
                 containerPosition = temp.offset()
                 containerWidth = temp.width()
@@ -82,11 +84,14 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                 contentsWidth = 0
                 rtContainer = rightPosition(temp)
 
+                actualLeft = parseInt(container.css("left"))
+
                 if $scope.activeIndex() < 0
                     container.css "left", "0px"
                     return
 
                 idContent = "#" + $scope.tabs[$scope.activeIndex()].id + "_tab"
+                widthDeletedTab = 0
                 if deletedTab
                     widthDeletedTab = angular.element("#" + deletedTab.id + "_tab").outerWidth()
                 element = angular.element(idContent)
@@ -97,10 +102,11 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                     return if index == 0
                     contentsWidth += angular.element(element).width() + 2
                 #Enable/Disable menuTabs
-                if containerWidth - 30 < contentsWidth
+                if containerWidth - 40 < contentsWidth
                     $scope.menuTabsEnabled = true
                 else
                     $scope.menuTabsEnabled = false
+                    $scope.showingMenu = false
                 #Update limitTabs value
                 if $scope.activeIndex() == $scope.tabs.length - 1
                     $scope.limitTabs = $scope.activeIndex() + 1
@@ -109,24 +115,58 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
 
                 #Check if active tab is on the left
                 if elementPosition < containerPosition.left
+                    console.log "tab","izquierda"
                     for a, i in container.find('li')
                         continue if i == 0
                         rtElement = (rightPosition(angular.element(a))) - (containerPosition.left-elementPosition)
-                        if rtContainer + 30 > rtElement
-                            $scope.limitTabs = i-1
+                        $scope.limitTabs = i-1
+                        if rtContainer + 40 > rtElement
                             break
-                    container.css "left", (parseInt(container.css("left")) + (containerPosition.left-elementPosition)) + "px"
+                    newleft = containerPosition.left-elementPosition
+                    actualElement = element
+                    acumWidth = element.outerWidth() + 2 - widthDeletedTab
+                    while acumWidth + actualElement.next().outerWidth() + 2 < containerWidth - 40
+                        actualElement = actualElement.next()
+                        acumWidth += actualElement.outerWidth() + 2
+
+                    newleft += containerWidth - 40 - acumWidth
                 #Check if active tab is on the right
-                else if rtContainer + 30 > rtElement
+                else if rtContainer + 40 > rtElement + 2
+                    console.log "tab","derecha"
                     $scope.limitTabs = $scope.activeIndex() + 1
-                    widthDeletedTab = 0
-                    newleft = parseInt(container.css("left")) + rtElement + widthDeletedTab - rtContainer - 40
-                    if deletedTab
-                        for c in container.find "li"
-                            if c.offset().left > newleft
-                                newleft = c.offset().left
-                                break
-                    container.css "left", newleft + "px"
+                    newleft = 2 + rtElement + widthDeletedTab - rtContainer - 40
+                #Active tab is shown
+                else
+                    console.log "tab","enmedio"
+                    if deletedTab && contents[0]?
+                        actualElement = element
+                        cont = 0
+                        while actualElement.next().length != 0 && rightPosition(actualElement.next()) + 2 > rtContainer - 40
+                            actualElement = actualElement.next()
+                            cont++
+                        newleft = rightPosition(actualElement) - rtContainer - 40 - 2
+                        if newleft < 0
+                            newleft = 0
+                        else
+                            $scope.limitTabs = $scope.activeIndex() + (cont+1)
+
+                contentsWidth = if deletedTab then - widthDeletedTab - 2 else 0
+                for e, i in contents
+                    if i > $scope.limitTabs+1
+                        break
+                    contentsWidth += angular.element(e).outerWidth() + 2
+
+                moveLeft = actualLeft + Math.floor(newleft)
+
+                if moveLeft < (contentsWidth - (containerWidth - 40)) * -1
+                    console.log "tab", "demasiado a la izquierda"
+                    moveLeft = ((contentsWidth - (containerWidth - 40)) * -1)
+
+                if moveLeft > 0
+                    console.log "tab", "demasiado a la derecha"
+                    container.css "left", "0px"
+                else
+                    container.css "left", moveLeft + "px"
                 return
 
 ]
