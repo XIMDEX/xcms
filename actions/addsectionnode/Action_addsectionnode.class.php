@@ -43,6 +43,7 @@ class Action_addsectionnode extends ActionAbstract {
     }
 
     function addsectionnode() {
+        XMD_Log::info("ACTION addsectionnode");
         $nodeID = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
         $nodeType = $this->request->getParam('nodetype');
@@ -299,6 +300,7 @@ class Action_addsectionnode extends ActionAbstract {
 
     function addcatalog() {
         error_log("DEBUG bb");
+        XMD_Log::info("ACTION addcatalog");
         $nodeID = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
         $langidlst = $this->request->getParam('langidlst');
@@ -312,14 +314,14 @@ class Action_addsectionnode extends ActionAbstract {
             'PARENTID' => $nodeID,
             'FORCENEW' => true
         );
-
+        
         $baseio = new XlyreBaseIO();
         $id = $baseio->build($data);
         error_log("DEBUG aaaa");
+        XMD_Log::info("ACTION addcatalog data: " . print_r($data,true) . " :: id:$id");
         if ($id > 0) {
-            $nt = new NodeType(XlyreOpenDataSet::IDNODETYPE);
-            foreach ($datasets as $datasetName) {
-
+//            $nt = new NodeType(XlyreOpenDataSet::IDNODETYPE);
+//            foreach ($datasets as $datasetName) {
                 // Creating Licenses subfolder in links folder
                 $catalognode = new Node($id);
                 $projectnode = new Node($catalognode->getProject());
@@ -328,12 +330,13 @@ class Action_addsectionnode extends ActionAbstract {
 
 
                 $this->reloadNode($nodeID);
-            }
+//            }
             return id;
         }
     }
 
     private function _createLicenseLinksFolder($links_id) {
+        XMD_Log::info("ACTION _createLicenseLinksFolder - links_id: $links_id");
         $nodeaux = new Node();
         $linkfolder = $nodeaux->find('IdNode', "idnodetype = %s AND Name = 'Licenses'", array(NodetypeService::LINK_FOLDER), MONO);
         if (!$linkfolder) {
@@ -358,6 +361,7 @@ class Action_addsectionnode extends ActionAbstract {
         );
         $bio = new baseIO();
         $result = $bio->build($data);
+        XMD_Log::info("ACTION _createLicenseLinks - data: " . print_r($data,true) . " :: result: $result");
     }
 
 }
