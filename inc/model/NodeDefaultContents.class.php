@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,40 +24,37 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 }
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/NodeDefaultContents_ORM.class.php';
 
 class NodeDefaultContents extends NodeDefaultContents_ORM {
 
-	/** 
- 	* Returns all the allowed children for a given nodetype. 
- 	* 
- 	* Request params: 
- 	* 
- 	* * idnodetype: Nodetype identificator. 
- 	* @return Array result: 
- 	*/ 	
-	function getDefaultChilds($idnodetype){
-		$result = $this->find('NodeType, Name', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype,$idnodetype), MULTI);
-		return $result;
-	}
-	
-	/** 
-        * Returns the name of the default folder a given nodetype. 
-        * 
-        * Request params: 
-        *  
-        * * idnodetype: Nodetype identificator. 
-        * @return Array result: 
-        */
-	function getDefaultName($idnodetype){
-		$result = $this->find('Name','NodeType = %s',array($idnodetype),MONO);
-		return $result[0];
-	}
-}
+    /**
+     * Returns all the allowed children for a given nodetype. 
+     * 
+     * Request params: 
+     * 
+     * * idnodetype: Nodetype identificator. 
+     * @return Array result: 
+     */
+    function getDefaultChilds($idnodetype) {
+        $result = $this->find('NodeType, Name', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MULTI);
+        return $result;
+    }
 
-?>
+    /**
+     * Returns the name of the default folder a given nodetype. 
+     * 
+     * Request params: 
+     *  
+     * * idnodetype: Nodetype identificator. 
+     * @return Array result: 
+     */
+    function getDefaultName($idnodetype) {
+        $result = $this->find('Name', 'NodeType = %s', array($idnodetype), MONO);
+        return $result[0];
+    }
+
+}
