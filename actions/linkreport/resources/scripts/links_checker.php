@@ -29,6 +29,7 @@
 if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
 
+include_once(XIMDEX_ROOT_PATH . '/bootstrap/start.php');
 include_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/Links.php");
 
@@ -38,7 +39,7 @@ function main ($argc, $argv){
             $idlink = $argv[1];
             $link = new Link($idlink);
             if ($link->get("IdLink")){
-                $checkResult = checkLink($link->get("Url"))? Link::LINK_OK: Link::LINK_FAIL;;
+                $checkResult = checkLink($link->get("Url"), $idlink)? Link::LINK_OK: Link::LINK_FAIL;;
                 updateLinkState($idlink, $checkResult);
             }
         }else{
@@ -49,7 +50,7 @@ function main ($argc, $argv){
             while (!$dbObj->EOF) {
                 $idlink = $dbObj->GetValue('IdLink');
                 $url = $dbObj->GetValue('Url');
-                $checkResult = checkLink($url)? Link::LINK_OK: Link::LINK_FAIL;
+                $checkResult = checkLink($url, $idlink)? Link::LINK_OK: Link::LINK_FAIL;
                 updateLinkState($idlink, $checkResult);
                 $dbObj->Next();
             }
@@ -57,12 +58,12 @@ function main ($argc, $argv){
         die();
 }
 
-function checkLink($url){
+function checkLink($url,$idLink){
     $result = false;
     $link = new Link($idLink);
     if ($link->get("IdLink")){
         $url = $link->get("Url");
-        echo "\n\n[".date("H:i:s d/m/y")."] (Id: ".$idlink.") -> ".$url;
+        echo "\n\n[".date("H:i:s d/m/y")."] (Id: ".$idLink.") -> ".$url;
     }
     
     $headers=get_headers($url,1);

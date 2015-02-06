@@ -105,9 +105,13 @@ class Action extends Actions_ORM {
 	 * @param $nodeType
 	 * @return array of ActionID
 	 */
-	function GetActionListOnNodeType($nodeType = NULL) {
+	function GetActionListOnNodeType($nodeType = NULL, $includeActionsWithNegativeSort = false) {
 		$dbObj = new DB();
-		$sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0", $nodeType);
+		if(!$includeActionsWithNegativeSort) {
+			$sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0", $nodeType);
+		}else{
+			$sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d", $nodeType);
+		}
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);

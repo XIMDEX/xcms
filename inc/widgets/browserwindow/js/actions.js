@@ -41,6 +41,7 @@
 			'creategroup'
 		],
 		remove: [
+			'deletetemplates',
 			'deletenode',
 			'movenode', 
 			'copy', 
@@ -59,7 +60,6 @@
 			'modifyserver',
 			'modifygroupsnode',
 			'manageversions',
-			'deletetemplates',
 			'modifygroupusers',
             'modifyusergroups'
 		]

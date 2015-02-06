@@ -72,17 +72,15 @@ class Action_deletetemplates extends ActionAbstract {
 			}
 		}
 
- 		$values = array(
-			'id_node' => $idNode,
-			'templates' => $new_templates,
-			'go_method' => 'delete'
+		$this->messages->add(_("All nodes were successfully deleted"), MSG_TYPE_NOTICE);
+
+		$values = array(
+			'messages' => $this->messages->messages,
+			'action_with_no_return' => true,
+			'parentID' => "$idNode"
 		);
 
-		$this->addCSS('/actions/deletetemplates/css/style.css');
-		$this->addJs('/actions/deletetemplates/js/delete_templates.js');
-
-		$this->reloadNode($idNode);
-		$this->render($values, 'result', 'default-3.0.tpl');
+		$this->sendJSON($values);
 	}
 
 }
