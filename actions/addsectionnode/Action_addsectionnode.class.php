@@ -39,11 +39,14 @@ class Action_addsectionnode extends ActionAbstract {
     // Main method: shows initial form
     function index() {
         $this->loadResources();
-        $this->render($this->loadValues(), null, 'default-3.0.tpl');
+        $this->render(array(), null, 'default-3.0.tpl');
+    }
+
+    function getSectionInfo() {
+        $this->sendJSON($this->loadValues());
     }
 
     function addsectionnode() {
-        XMD_Log::info("ACTION addsectionnode");
         $nodeID = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
         $nodeType = $this->request->getParam('nodetype');
@@ -87,7 +90,6 @@ class Action_addsectionnode extends ActionAbstract {
             $themeMessages = array();
 
             if ($id > 0) {
-
                 $section = new Node($id);
 
                 if ($aliasLangArray) {
@@ -121,7 +123,6 @@ class Action_addsectionnode extends ActionAbstract {
     }
 
     private function _setSectionTheme(&$section, $theme) {
-
         $messages = array();
 
         if ($theme == '0') {
@@ -133,13 +134,13 @@ class Action_addsectionnode extends ActionAbstract {
         $baseio = new baseIO();
 
         $arrRNG = FsUtils::readFolder($rngPath, false);
-        if (!is_array($arrRNG))
+        if (!is_array($arrRNG)) {
             $arrRNG = array();
+        }
         $project = new Node($section->getProject());
         $rngFolder = new Node($project->GetChildByName(\App::GetValue('VisualTemplateDir')));
 
         $arrIdRNG = array();
-
         foreach ($arrRNG as $rng) {
             if (preg_match('/.ini/', $rng) > 0) {
                 continue;
@@ -160,20 +161,18 @@ class Action_addsectionnode extends ActionAbstract {
                 $idRNG = $baseio->build($data);
             }
 
-            if (!($idRNG > 0)) {
-//				$messages[] = sprintf(_('RNG %s could not be successfully inserted'), $rng);
-            } else {
+            if ($idRNG > 0) {
                 $arrIdRNG[] = $idRNG;
             }
         }
 
         $arrPTD = FsUtils::readFolder($ptdPath, false);
-        if (!is_array($arrPTD))
+        if (!is_array($arrPTD)) {
             $arrPTD = array();
+        }
         $ptdFolder = new Node($section->GetChildByName(\App::GetValue('GeneratorTemplateDir')));
 
         foreach ($arrPTD as $ptd) {
-
             $idPTD = $ptdFolder->GetChildByName($ptd);
             if ($idPTD === false) {
 
@@ -188,27 +187,20 @@ class Action_addsectionnode extends ActionAbstract {
 
                 $idPTD = $baseio->build($data);
             }
-
-            if (!($idPTD > 0)) {
-//				$messages[] = sprintf(_('PTD %s could not be successfully inserted'), $ptd);
-            }
         }
 
         $section->setProperty('theme', array($theme));
         $section->setProperty('theme_visualtemplates', $arrIdRNG);
 
-//		return $messages;
         return $baseio->messages->messages;
     }
 
     private function _getLanguages($nodeID) {
         $properties = InheritedPropertiesManager::getValues($nodeID);
-
         return $properties["Language"];
     }
 
     private function _getAvailableThemes() {
-
         $themes = FsUtils::readFolder(XIMDEX_ROOT_PATH . ModulesManager::path('ximTHEMES') . '/themes', false);
 
         if ($themes === null)
@@ -222,6 +214,8 @@ class Action_addsectionnode extends ActionAbstract {
 
     protected function loadResources() {
         $this->addCss('/actions/addsectionnode/resources/css/style.css');
+        $this->addJs('/actions/addsectionnode/resources/js/init.js');
+        $this->addJs('/actions/addsectionnode/resources/js/addSectionCtrl.js');
     }
 
     protected function loadValues() {
@@ -229,114 +223,92 @@ class Action_addsectionnode extends ActionAbstract {
         $action = $this->request->getParam("action");
         $type_sec = $this->request->getParam("type_sec");
 
-        $nt = 5015;
+        $nt = array();
         if (empty($type_sec)) {
             $type_sec = 1;
         }
 
         $sectionType = new SectionType();
         $sectionTypes = $sectionType->find(ALL);
-        reset($sectionTypes);
+        $counter = 0;
         while (list(, $sectionTypeInfo) = each($sectionTypes)) {
             if (empty($sectionTypeInfo['module']) || ModulesManager::isEnabled($sectionTypeInfo['module'])) {
-                $sectionTypeOptions[] = array('id' => $sectionTypeInfo['idSectionType'], 'name' => $sectionTypeInfo['sectionType']);
-                if ($type_sec == $sectionTypeInfo['idSectionType']) {
-                    $nt = $sectionTypeInfo['idNodeType'];
-                }
+                $sectionTypeOptions[] = array('value' => $counter, 'label' => $sectionTypeInfo['sectionType']);
+                $nt[] = $sectionTypeInfo['idNodeType'];
+                $counter++;
             }
         }
-        $sectionTypeCount = count($sectionTypeOptions);
 
         // Getting languages
         $languageOptions = $this->_getLanguages($nodeID);
-        $languageCount = sizeof($languageOptions);
-
         $subfolders = $this->_getAvailableSubfolders($nt);
 
-        $values = array('nodeID' => $nodeID,
-            'nodeURL' => \App::getValue('UrlRoot') . '/xmd/loadaction.php?action=' . $action . '&nodeid=' . $nodeID,
+        $values = array(
+            // 'nodeID' => $nodeID,
+            // 'nodeURL' => \App::getValue('UrlRoot') . '/xmd/loadaction.php?action=' . $action . '&nodeid=' . $nodeID,
             'sectionTypeOptions' => $sectionTypeOptions,
-            'sectionTypeCount' => $sectionTypeCount,
-            'selectedsectionType' => $type_sec,
             'languageOptions' => $languageOptions,
-            'languageCount' => $languageCount,
             'subfolders' => $subfolders,
-            'go_method' => 'addsectionnode',
         );
 
         return $values;
     }
 
-    private function _getAvailableSubfolders($nodetype_sec) {
+    private function _getAvailableSubfolders($nodetype_secArray) {
         $res = array();
         $ndc = new NodeDefaultContents();
-        $subfolders = $ndc->getDefaultChilds($nodetype_sec);
-        if (count($subfolders) > 0) {
-            foreach ($subfolders as $subfolder) {
-                $nt = $subfolder["NodeType"];
-                $res[$nt][0] = $subfolder["Name"];
-                $res[$nt][1] = $this->_getDescription($nt);
+
+        foreach ($nodetype_secArray as $nodetype_sec) {
+            $subfolders = $ndc->getDefaultChilds($nodetype_sec);
+            if (count($subfolders) > 0) {
+                $subFoldersForSection = array();
+                foreach ($subfolders as $subfolder) {
+                    $ntId = $subfolder["NodeType"];
+                    $subFoldersForSection[$ntId][0] = $subfolder["Name"];
+                    $subFoldersForSection[$ntId][1] = $this->_getDescription($ntId);
+                }
+                asort($subFoldersForSection);
+                $res[] = $subFoldersForSection;
             }
         }
-        asort($res);
+
         return $res;
     }
 
-    protected function _getDescription($nodetype) {
-        switch ($nodetype) {
-            case "5018": return "This is the main repository for all your XML contents. It's the most important folder in a section.";
-            case "5016": return "Inside this folder you can store all the image files you need in several formats (gif, png,jpg, tiff,...)";
-            case "5020": return "Into this folder you could store several HTML snippets that you can add directly into your XML documents";
-            case "5022": return "Use this folder if you need to store JavaScript scripts or text files like PDFs, MS Office documents, etc.";
-            case "5026": return "Create here your own XSL Templates to redefine some particular appareance in your XML documents.";
-            case "5054": return "Create XML snippets that you can import into your XML documents. Typical uses are menus, shared headers, shared footers between all your XML documents.";
-            case "5301": return "ximNEWS module manages and organizes all the existing news into bulletins. This is a required folder.";
-            case "5304": return "Into this folder you could create XML based news in several languages. This is a required folder.";
-            case "5306": return "All the images used in your defined news are stored here.";
-            case "5083": return "Create metadata structured documents to describe other resources stored in Ximdex CMS.";
-            default: "...";
+    protected function _getDescription($nodetypeId) {
+        $nt = new NodeType($nodetypeId);
+        if (!$nt) {
+            return "bad nodetype!";
         }
+        return $nt->GetDescription();
     }
 
     function addcatalog() {
-        error_log("DEBUG bb");
-        XMD_Log::info("ACTION addcatalog");
         $nodeID = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
-        $langidlst = $this->request->getParam('langidlst');
-
-        $catalog = new Node();
 
         $data = array(
             'NODETYPENAME' => 'OpenDataSection',
             'NAME' => $name,
-//                    'SUBFOLDERS' => $lst,
             'PARENTID' => $nodeID,
             'FORCENEW' => true
         );
-        
+
         $baseio = new XlyreBaseIO();
         $id = $baseio->build($data);
-        error_log("DEBUG aaaa");
-        XMD_Log::info("ACTION addcatalog data: " . print_r($data,true) . " :: id:$id");
+        XMD_Log::info("ACTION addcatalog data: " . print_r($data, true) . " :: id:$id");
         if ($id > 0) {
-//            $nt = new NodeType(XlyreOpenDataSet::IDNODETYPE);
-//            foreach ($datasets as $datasetName) {
-                // Creating Licenses subfolder in links folder
-                $catalognode = new Node($id);
-                $projectnode = new Node($catalognode->getProject());
-                $folder = $projectnode->getChildren(NodetypeService::LINK_MANAGER);
-                $this->_createLicenseLinksFolder($folder[0]);
-
-
-                $this->reloadNode($nodeID);
-//            }
+            // Creating Licenses subfolder in links folder
+            $catalognode = new Node($id);
+            $projectnode = new Node($catalognode->getProject());
+            $folder = $projectnode->getChildren(NodetypeService::LINK_MANAGER);
+            $this->_createLicenseLinksFolder($folder[0]);
+            $this->reloadNode($nodeID);
             return id;
         }
     }
 
     private function _createLicenseLinksFolder($links_id) {
-        XMD_Log::info("ACTION _createLicenseLinksFolder - links_id: $links_id");
         $nodeaux = new Node();
         $linkfolder = $nodeaux->find('IdNode', "idnodetype = %s AND Name = 'Licenses'", array(NodetypeService::LINK_FOLDER), MONO);
         if (!$linkfolder) {
@@ -361,7 +333,6 @@ class Action_addsectionnode extends ActionAbstract {
         );
         $bio = new baseIO();
         $result = $bio->build($data);
-        XMD_Log::info("ACTION _createLicenseLinks - data: " . print_r($data,true) . " :: result: $result");
     }
 
 }
