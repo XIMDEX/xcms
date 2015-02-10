@@ -169,6 +169,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       for (i = _j = 0, _len1 = tabs.length; _j < _len1; i = ++_j) {
         tab = tabs[i];
         if (tab.id === newid) {
+          xtab.setActive(i);
           xtab.highlightTab(i);
           return;
         }

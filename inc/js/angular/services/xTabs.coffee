@@ -186,6 +186,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             newid += action.command
             for tab, i in tabs
                 if tab.id == newid
+                    xtab.setActive i
                     xtab.highlightTab i
                     return
             url = xUrlHelper.getAction(
