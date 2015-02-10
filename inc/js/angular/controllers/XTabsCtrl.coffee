@@ -59,7 +59,9 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         #At first, reloads welcome tab
         $scope.reloadWelcomeTab()
 
-
+        $scope.$on 'nodemodified', (event, nodeId) ->
+            $scope.reloadWelcomeTab()
+            return
 
         #Closes the menu
         $scope.closeMenu = () ->

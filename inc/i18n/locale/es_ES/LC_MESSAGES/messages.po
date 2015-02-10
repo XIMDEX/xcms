@@ -10098,3 +10098,12 @@ msgstr "Es uno de los modulos sugeridos duerante el proceso de instalación y es
 
 msgid "View in a new window"
 msgstr "Ver en una nueva ventana"
+
+msgid "Edit file with Xedit"
+msgstr "Editar documento XML"
+
+msgid "Preview of an image"
+msgstr "Previsualizar imagen"
+
+msgid "Edit file in text mode"
+msgstr "Editar documento en modo texto"

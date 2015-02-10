@@ -36,7 +36,7 @@ X.actionLoaded(function(event, fn, params) {
                                         command: 'addfoldernode',
                                         icon: null,
                                         module: '', 
-                                        name: 'Create a New Project'
+                                        name: _('Create a New Project')
                                         }, params.nodes);
                         });
     fn('.preview').click(function(e) {
@@ -46,7 +46,7 @@ X.actionLoaded(function(event, fn, params) {
                                         command: 'filepreview',
                                         icon: null,
                                         module: '', 
-                                        name: 'Preview of an image',
+                                        name: _('Preview of an image')
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.plaintext').click(function(e) {
@@ -56,7 +56,7 @@ X.actionLoaded(function(event, fn, params) {
                                         command: 'edittext',
                                         icon: null,
                                         module: '', 
-                                        name: 'Edit file in text mode',
+                                        name: _('Edit file in text mode')
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.xmltext').click(function(e) {
@@ -66,10 +66,7 @@ X.actionLoaded(function(event, fn, params) {
                                         command: 'xmleditor2',
                                         icon: null,
                                         module: '', 
-                                        name: 'Edit file with Xedit',
+                                        name: _('Edit file with Xedit')
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
-    $(document).on('nodemodified', function(e, node){
-        $('#angular-content').scope().reloadWelcomeTab();
-    });
 });
