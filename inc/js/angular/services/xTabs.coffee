@@ -1,7 +1,8 @@
 #Service to control the tabs
 angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout", "$http",
-                                                          "xUrlHelper", "$rootScope", "$compile"
-    ($window, $timeout, $http, xUrlHelper, $rootScope, $compile) ->
+                                                          "xUrlHelper", "$rootScope", "$compile",
+                                                          "angularLoad"
+    ($window, $timeout, $http, xUrlHelper, $rootScope, $compile, angularLoad) ->
 
         scopeWelcomeTab = null
 
@@ -141,7 +142,9 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     content.first().children().each (index, item) ->
                         cssArr.push angular.element(item).html()
                         return
-                    Object.loadCss cssArr
+                    #Object.loadCss cssArr
+                    for css in cssArr
+                        angularLoad.loadCSS(css)
                     jsArr = []
                     content.first().next().children().each (index, item) ->
                         jsArr.push angular.element(item).html()
@@ -149,16 +152,22 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     nodeids = []
                     for n in tab.nodes
                         nodeids.push n.nodeid
+
+                    cont = 0
                     callback = () ->
-                        postLoadJs(tab, nodeids)
+                        if ++cont == jsArr.length
+                            postLoadJs(tab, nodeids)
                         return
-                    jsObj =
-                        onComplete: callback
-                        js: jsArr
                     if jsArr.length > 0
-                        Object.loadScript jsObj
+                        for js in jsArr
+                            angularLoad.loadScript(js).then(->
+                                callback()
+                                return
+                            ).catch ->
+                                console.log "Error loading JS"
+                                return
                     else
-                        callback()
+                        postLoadJs(tab, nodeids)
             ,
                 0
             )
@@ -177,6 +186,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             newid += action.command
             for tab, i in tabs
                 if tab.id == newid
+                    xtab.setActive i
                     xtab.highlightTab i
                     return
             url = xUrlHelper.getAction(

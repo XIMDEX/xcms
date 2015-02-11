@@ -63,6 +63,9 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
       });
     };
     $scope.reloadWelcomeTab();
+    $scope.$on('nodemodified', function(event, nodeId) {
+      $scope.reloadWelcomeTab();
+    });
     $scope.closeMenu = function() {
       $scope.showingMenu = false;
     };
