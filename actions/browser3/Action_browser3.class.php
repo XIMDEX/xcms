@@ -140,7 +140,6 @@ class Action_browser3 extends ActionAbstract
         $this->addJs('/inc/js/angular/services/xMenu.js');
         $this->addJs('/inc/js/angular/services/xTabs.js');
         $this->addJs('/inc/js/angular/services/angularLoad.js');
-        $this->addJs('/inc/js/angular/directives/compileTemplate.js');
         $this->addJs('/inc/js/angular/directives/ximButton.js');
         $this->addJs('/inc/js/angular/directives/ximSelect.js');
         $this->addJs('/inc/js/angular/directives/ximValidators.js');

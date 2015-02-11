@@ -1,11 +1,11 @@
-<div class="xim-actions-menu destroy-on-click noselect" ng-class="{'xim-actions-menu-list': expanded}"
+<div class="xim-actions-menu destroy-on-click noselect" ng-class="::{'xim-actions-menu-list': expanded}"
      style="position: absolute; top:#/top/#px; left:#/left/#px;" >
-    <div ng-if="expanded==true" ng-repeat="option in options" class="button-container-list icon #/option.command/#"
+    <div ng-if="::expanded==true" ng-repeat="option in ::options" class="button-container-list icon #/::option.command/#"
          hm-tap="select(option)">#/option[optionLabel]/#</div>
 
-    <div ng-if="expanded==false" ng-repeat="option in options" class="button-container">
-        <button hm-tap="select(option)" class="window-toolbar-button view-action #/option.command/# icon-#/option.icon.split('.')[0]/#" value="#/option.command/#"
-        tooltip="#/option[optionLabel]/#" tooltip-popup-delay="0" tooltip-placement="bottom" tooltip-trigger="mouseenter">
+    <div ng-if="::expanded==false" ng-repeat="option in ::options" class="button-container">
+        <button hm-tap="select(option)" class="window-toolbar-button view-action #/::option.command/# icon-#/::option.icon.split('.')[0]/#" value="#/::option.command/#"
+        tooltip="#/::option[optionLabel]/#" tooltip-popup-delay="0" tooltip-placement="bottom" tooltip-trigger="mouseenter">
             <span>Icon</span>
         </button>
     </div>

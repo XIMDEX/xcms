@@ -37,17 +37,17 @@
                 </div>
                 <div class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
                     <ul class="ul ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all {{type && 'nav-' + type}}"
-                        ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude>
+                        ng-class="::{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude>
                         <li>
-                            <div class="browser-view-title">{{'browser.headings.'+tab.heading | xI18n}}</div>
+                            <div class="browser-view-title">{{::('browser.headings.'+tab.heading | xI18n)}}</div>
                         </li>
                     </ul>
                     <div class="tab-content browser-view browser-projects-view-content ui-tabs-panel ui-widget-content ui-corner-bottom">
                         <div class="browser-view ui-tabs-panel ui-widget-content ui-corner-bottom tab-pane"
-                             ng-repeat="tab in tabs"
+                             ng-repeat="tab in ::tabs"
                              ng-class="{active: tab.active}"
                              tab-content-transclude="tab">
-                            <div class="browser-view-title">{{'browser.headings.'+tab.heading | xI18n}}</div>
+                            <div class="browser-view-title">{{::('browser.headings.'+tab.heading | xI18n)}}</div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
         <script id="template/tabs/tab.html" type="text/ng-template">
             <li ng-class="{'xim-first-tab': $first, 'ui-tabs-active': active, 'ui-state-active': active}"
                 class="ui-state-default ui-corner-top">
-                <a ng-click="select()" tab-heading-transclude class="ui-tabs-anchor browser-{{heading}}-view"><span>{{heading}}</span></a>
+                <a ng-click="select()" tab-heading-transclude class="ui-tabs-anchor browser-{{::heading}}-view"><span>{{::heading}}</span></a>
             </li>
         </script>
         <script type="text/ng-template" id="tree_item_renderer.html">
@@ -67,14 +67,14 @@
                 <span class="ui-icon xim-actions-toggle-node"
                       ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children && (node.collection == null || node.collection.length==0)}"
                       hm-tap="toggleNode(node,$event)"></span>
-                <span class="xim-treeview-icon icon-#/node.icon.split('.')[0]/#"></span>
-                <span ng-if="node.nodeid=='10000'" class="xim-treeview-branch" >#/'browser.headings.'+node.name | xI18n/#</span>
-                <span ng-if="node.nodeid!='10000'" class="xim-treeview-branch" ng-bind-html="node.name"></span>
+                <span class="xim-treeview-icon icon-#/::node.icon.split('.')[0]/#"></span>
+                <span ng-if="::node.nodeid=='10000'" class="xim-treeview-branch" >#/::'browser.headings.'+node.name | xI18n/#</span>
+                <span ng-if="::node.nodeid!='10000'" class="xim-treeview-branch" ng-bind-html="::node.name"></span>
                 <span hm-tap="loadActions(node,$event)"
                       class="xim-actions-dropdown xim-treeview-actions-dropdown
                       ui-icon ui-icon-triangle-1-e"></span>
             </div>
-            <ul class="xim-treeview-branch" ng-show="node.showNodes">
+            <ul class="xim-treeview-branch" ng-if="node.showNodes">
                 <li ng-repeat="node in node.collection" ng-include="'tree_item_renderer.html'"
                     class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
             </ul>
@@ -91,11 +91,11 @@
         <tab heading="ccenter" select="$parent.$parent.selectedTab=2;">
             <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
                 <div ng-click="reloadNode()"
-                     class="xim-treeview-btnreload ui-corner-all ui-state-default">#/ 'browser.reload_node' | xI18n /#</div>
+                     class="xim-treeview-btnreload ui-corner-all ui-state-default">#/:: 'browser.reload_node' | xI18n /#</div>
                 <div ng-if="ccenter!='null' && ccenter!=null"
                      class="xim-treeview-branch-container xim-treeview-expanded">
                     <ul class="xim-treeview-branch">
-                        <li ng-repeat="node in ccenter.collection" ng-include="'tree_item_renderer.html'"
+                        <li ng-repeat="node in ::ccenter.collection" ng-include="'tree_item_renderer.html'"
                             class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                     </ul>
                 </div>
@@ -106,10 +106,10 @@
                 <ul ng-if="modules!='null' && modules!=null" class="browser-modules-view-list">
                     <li
                             {literal}
-                                ng-class="{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}"
+                                ng-class="::{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}"
                             {/literal}
-                            ng-repeat="node in modules"
-                            hm-tap="openModuleAction(node)">#/node.name/#
+                            ng-repeat="node in ::modules"
+                            hm-tap="openModuleAction(node)">#/::node.name/#
                     </li>
                 </ul>
             </div>
@@ -117,12 +117,12 @@
     </tabset>
 
     {literal}
-        <button hm-tap="toggleView()" ng-show="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="Change view"></button>
+        <button hm-tap="toggleView()" ng-if="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="Change view"></button>
     {/literal}
     <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-sidebar btn-anchor" type="button" title="Collapse menu"></button>
 
     <div class="filter-tree" ng-show="selectedTab==1">
-        <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/('browser.filter' | xI18n)+'...'/#">
+        <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/::('browser.filter' | xI18n)+'...'/#">
     </div>
 
     <div id="angular-tree-resizer"
@@ -137,10 +137,10 @@
 <div class="xim-tabs-nav noselect">
     <div ng-show="menuTabsEnabled" hm-tap="showingMenu=!showingMenu; return;" class="xim-tabs-list-selector"></div>
     <ul ng-show="showingMenu" class="xim-tabs-list">
-        <li class="xim-tabs-list-item" hm-tap="closeMenu(); offAllTabs();">#/'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</li>
+        <li class="xim-tabs-list-item" hm-tap="closeMenu(); offAllTabs();">#/::'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</li>
         <li class="xim-tabs-list-item" ng-repeat="tab in tabs" hm-tap="closeMenu(); $parent.setActiveTab($index);">
-            <span ng-if="$index != $parent.activeIndex()">#/tab.name/#</span>
-            <strong ng-if="$index == $parent.activeIndex()">#/tab.name/#</strong>
+            <span ng-if="$index != $parent.activeIndex()">#/::tab.name/#</span>
+            <strong ng-if="$index == $parent.activeIndex()">#/::tab.name/#</strong>
         </li>
         <li class="xim-tabs-list-item tabswidget-close-all" hm-tap="closeMenu(); closeAllTabs();">Cerrar todas las pestañas</li>
     </ul>
@@ -151,13 +151,13 @@
         <div class="ui-tab-close"></div>
         <a class="ui-tabs-anchor browser-action-view"
            id="10000_welcome">
-            <span>#/'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</span></a></li>
+            <span>#/::'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</span></a></li>
     {literal}
     <li hm-tap="$parent.setActiveTab($index)" ng-repeat="tab in tabs" class="ui-state-default ui-corner-top"
         ng-class="{'ui-tabs-active ui-state-active': ($index == $parent.activeIndex()),
-        'xim-last-tab': $last, 'blink': tab.blink, 'hide': ($parent.limitTabs<=$index)}" id="#/tab.id/#_tab">
+        'xim-last-tab': $last, 'blink': tab.blink, 'hide': ($parent.limitTabs<=$index)}" id="#/::tab.id/#_tab">
         <div hm-tap="removeTab($index);" class="ui-tab-close"></div>
-        <a class="ui-tabs-anchor browser-action-view"><span>#/tab.name/#</span></a></li>
+        <a class="ui-tabs-anchor browser-action-view"><span>#/::tab.name/#</span></a></li>
     {/literal}
 </ul>
 <div ng-show="activeIndex()<0" class="browser-action-view-content ui-tabs-panel
@@ -166,7 +166,7 @@
 </div>
 <div ng-show="$index == $parent.activeIndex()" ng-repeat="tab in tabs"
      class="browser-action-view-content ui-tabs-panel ui-widget-content ui-corner-bottom"
-     id="#/tab.id/#_content">
+     id="#/::tab.id/#_content">
 
 </div>
 </div>

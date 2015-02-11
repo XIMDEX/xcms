@@ -1,12 +1,12 @@
 <div  class="browser-projects-view-treecontainer xim-treeview-container xim-treeview-top" style="display: block;">
     <div ng-click="reloadNode()" class="xim-treeview-btnreload ui-corner-all ui-state-default">
-        #/ 'browser.reload_node' | xI18n /#
+        #/:: 'browser.reload_node' | xI18n /#
     </div>
     <div ng-if="projects!='null' && projects!=null"
          class="xim-treeview-branch-container xim-treeview-expanded">
         <ul class="xim-treeview-branch">
             <li ng-repeat="node in [projects]" ng-include="'tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
-            <li class="filter-no-results" ng-if="filterMode && projects.collection.length==0">#/ 'browser.there_are_no_results_!' | xI18n /#</li>
+            <li class="filter-no-results" ng-if="filterMode && projects.collection.length==0">#/:: 'browser.there_are_no_results_!' | xI18n /#</li>
         </ul>
     </div>
 </div>
