@@ -34,10 +34,10 @@ if angular.module('ximdex').notRegistred('addSectionCtrl')
             $scope.languageOptions = [];
             $scope.languageOptionsSelected = null;
 
-            $scope.subfolders = [];
+            $scope.subfolders = {};
             $scope.subfoldersSelected = null;
 
-            #  ----------------------------------------------
+            #  ----------------------------------------------------------------
 
             #  Retrieve options to build the form
             $scope.init = (params) ->
@@ -49,11 +49,16 @@ if angular.module('ximdex').notRegistred('addSectionCtrl')
                 url = xUrlHelper.getAction(urlParams);
                 
                 $http.get(url).success((data) ->
-                    $scope.sectionTypeOptions = data.sectionTypeOptions
+                    angular.forEach data.sectionTypeOptions, (obj, key) ->
+                        $scope.sectionTypeOptions.push {label:obj.label, value:obj.value}
+                        $scope.subfolders[obj.value] = obj.subfolders
+                        return
+                
+#                    $scope.sectionTypeOptions = data.sectionTypeOptions
                     $scope.sectionTypeSelected = $scope.sectionTypeOptions[0]
+                    
                     $scope.languageOptions = data.languageOptions
                     $scope.languageOptionsSelected = $scope.languageOptions[0]
-                    $scope.subfolders = data.subfolders
                     $scope.changeSubfolders()
                     return
                 )
@@ -61,8 +66,15 @@ if angular.module('ximdex').notRegistred('addSectionCtrl')
 
             # refresh subfolder list according with selected nodetype
             $scope.changeSubfolders = () ->
-                index = $scope.sectionTypeSelected.value
-                $scope.subfoldersSelected = $scope.subfolders[index]
+                key = $scope.sectionTypeSelected.value
+                $scope.subfoldersSelected = $scope.subfolders[key]
+                return
+                
+            $scope.submit = () ->
+                if $scope.add_form.$invalid
+                    return false
+                $scope.add_form.submitted = true
+                console.log "sent!"
                 return
             
             return

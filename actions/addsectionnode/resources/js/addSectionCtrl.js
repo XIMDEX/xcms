@@ -30,7 +30,7 @@ if (angular.module('ximdex').notRegistred('addSectionCtrl')) {
       $scope.sectionTypeSelected = null;
       $scope.languageOptions = [];
       $scope.languageOptionsSelected = null;
-      $scope.subfolders = [];
+      $scope.subfolders = {};
       $scope.subfoldersSelected = null;
       $scope.init = function(params) {
         var url, urlParams;
@@ -42,18 +42,30 @@ if (angular.module('ximdex').notRegistred('addSectionCtrl')) {
         };
         url = xUrlHelper.getAction(urlParams);
         $http.get(url).success(function(data) {
-          $scope.sectionTypeOptions = data.sectionTypeOptions;
+          angular.forEach(data.sectionTypeOptions, function(obj, key) {
+            $scope.sectionTypeOptions.push({
+              label: obj.label,
+              value: obj.value
+            });
+            $scope.subfolders[obj.value] = obj.subfolders;
+          });
           $scope.sectionTypeSelected = $scope.sectionTypeOptions[0];
           $scope.languageOptions = data.languageOptions;
           $scope.languageOptionsSelected = $scope.languageOptions[0];
-          $scope.subfolders = data.subfolders;
           $scope.changeSubfolders();
         });
       };
       $scope.changeSubfolders = function() {
-        var index;
-        index = $scope.sectionTypeSelected.value;
-        $scope.subfoldersSelected = $scope.subfolders[index];
+        var key;
+        key = $scope.sectionTypeSelected.value;
+        $scope.subfoldersSelected = $scope.subfolders[key];
+      };
+      $scope.submit = function() {
+        if ($scope.add_form.$invalid) {
+          return false;
+        }
+        $scope.add_form.submitted = true;
+        console.log("sent!");
       };
     }
   ]);

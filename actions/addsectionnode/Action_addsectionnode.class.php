@@ -28,10 +28,7 @@ use Ximdex\Services\NodeType as NodetypeService;
 
 ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
 ModulesManager::file('/inc/model/SectionType.class.php');
-ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
-ModulesManager::file('/inc/nodetypes/xlyreopendatasection.php', 'xlyre');
-ModulesManager::file('/inc/nodetypes/xlyreopendataset.php', 'xlyre');
 ModulesManager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 
 class Action_addsectionnode extends ActionAbstract {
@@ -52,26 +49,18 @@ class Action_addsectionnode extends ActionAbstract {
         $nodeType = $this->request->getParam('nodetype');
         $langidlst = $this->request->getParam('langidlst');
         $namelst = $this->request->getParam('namelst');
-        $type = $this->request->getParam('nodetype');
-        $sectionOTF = $this->request->getParam('sectionOTF');
-        $selectedTheme = $this->request->getParam('selectedTheme');
+        $folderlst = $this->request->getParam('folderlst');
+        $nodetype = $this->request->getParam('nodetype');
 
-
-        $aliasLangArray = array();
-        if ($langidlst) {
-            foreach ($langidlst as $key) {
-                $aliasLangArray[$key] = $namelst[$key];
-            }
-        }
-
-        $sectionType = new SectionType($type);
+        $sectionType = new SectionType($nodetype);
         if ($sectionType->get('idSectionType') > 0) {
             $idNodeType = $sectionType->get('idNodeType');
         } else {
             XMD_Log::warning(_('Error obtaining section type'));
             $idNodeType = 5015;
         }
-        if ($type == 3) {
+        
+        if ($nodetype == 3) {
             $id = $this->addcatalog();
         } else {
             $nodeType = new NodeType($idNodeType);
@@ -80,136 +69,55 @@ class Action_addsectionnode extends ActionAbstract {
             $data = array(
                 'NODETYPENAME' => $nodeTypeName,
                 'NAME' => $name,
+                'SUBFOLDERS' => $folderlst,
                 'PARENTID' => $nodeID,
                 'FORCENEW' => true
             );
 
             $baseio = new baseIO();
             $id = $baseio->build($data);
-
-            $themeMessages = array();
-
-            if ($id > 0) {
-                $section = new Node($id);
-
-                if ($aliasLangArray) {
-                    foreach ($aliasLangArray as $langID => $longName) {
-                        $section->SetAliasForLang($langID, $longName);
-                    }
-                }
-
-                $themeMessages = $this->_setSectionTheme($section, $selectedTheme);
-                $this->reloadNode($nodeID);
-            }
-
-            if (!($id > 0)) {
-                $this->messages->mergeMessages($baseio->messages);
-                $this->messages->add(_('Operation could not be successfully completed'), MSG_TYPE_ERROR);
-            } else {
-                $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
-                //set the OTF property
-                if ($sectionOTF) {
-                    $node = new Node($id);
-                    $node->setProperty('otf', "true");
-                }
-            }
         }
+        
+        if ($id > 0) {
+            $section = new Node($id);
+
+            // language block
+            if (!$langidlst) {
+                $langidlst = array();
+            }
+            $aliasLangArray = array();
+            foreach ($langidlst as $key) {
+                $aliasLangArray[$key] = $namelst[$key];
+            }
+
+            foreach ($aliasLangArray as $langID => $longName) {
+                $section->SetAliasForLang($langID, $longName);
+            }
+
+            $this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
+        } else {
+            $this->messages->mergeMessages($baseio->messages);
+            $this->messages->add(_('Operation could not be successfully completed'), MSG_TYPE_ERROR);
+        }
+
         $values = array(
-            'action_with_no_return' => $id > 0,
+            '_parentID1' => $nodeID,
             'messages' => $this->messages->messages
         );
 
-        $this->render($values, NULL, 'messages.tpl');
-    }
-
-    private function _setSectionTheme(&$section, $theme) {
-        $messages = array();
-
-        if ($theme == '0') {
-            return $messages;
-        }
-
-        $rngPath = sprintf('%s' . ModulesManager::path('ximTHEMES') . '/themes/%s/rng', XIMDEX_ROOT_PATH, $theme);
-        $ptdPath = sprintf('%s' . ModulesManager::path('ximTHEMES') . 's/%s/ptd', XIMDEX_ROOT_PATH, $theme);
-        $baseio = new baseIO();
-
-        $arrRNG = FsUtils::readFolder($rngPath, false);
-        if (!is_array($arrRNG)) {
-            $arrRNG = array();
-        }
-        $project = new Node($section->getProject());
-        $rngFolder = new Node($project->GetChildByName(\App::GetValue('VisualTemplateDir')));
-
-        $arrIdRNG = array();
-        foreach ($arrRNG as $rng) {
-            if (preg_match('/.ini/', $rng) > 0) {
-                continue;
-            }
-
-            $idRNG = $rngFolder->GetChildByName($rng);
-            if ($idRNG === false) {
-
-                $data = array(
-                    'NODETYPENAME' => 'RNGVISUALTEMPLATE',
-                    'NAME' => $rng,
-                    'PARENTID' => $rngFolder->get('IdNode'),
-                    'CHILDRENS' => array(
-                        array('NODETYPENAME' => 'PATH', 'SRC' => sprintf('%s/%s', $rngPath, $rng))
-                    )
-                );
-
-                $idRNG = $baseio->build($data);
-            }
-
-            if ($idRNG > 0) {
-                $arrIdRNG[] = $idRNG;
-            }
-        }
-
-        $arrPTD = FsUtils::readFolder($ptdPath, false);
-        if (!is_array($arrPTD)) {
-            $arrPTD = array();
-        }
-        $ptdFolder = new Node($section->GetChildByName(\App::GetValue('GeneratorTemplateDir')));
-
-        foreach ($arrPTD as $ptd) {
-            $idPTD = $ptdFolder->GetChildByName($ptd);
-            if ($idPTD === false) {
-
-                $data = array(
-                    'NODETYPENAME' => 'TEMPLATE',
-                    'NAME' => $ptd,
-                    'PARENTID' => $ptdFolder->get('IdNode'),
-                    'CHILDRENS' => array(
-                        array('NODETYPENAME' => 'PATH', 'SRC' => sprintf('%s/%s', $ptdPath, $ptd))
-                    )
-                );
-
-                $idPTD = $baseio->build($data);
-            }
-        }
-
-        $section->setProperty('theme', array($theme));
-        $section->setProperty('theme_visualtemplates', $arrIdRNG);
-
-        return $baseio->messages->messages;
+        $this->sendJSON($values);
     }
 
     private function _getLanguages($nodeID) {
         $properties = InheritedPropertiesManager::getValues($nodeID);
-        return $properties["Language"];
-    }
-
-    private function _getAvailableThemes() {
-        $themes = FsUtils::readFolder(XIMDEX_ROOT_PATH . ModulesManager::path('ximTHEMES') . '/themes', false);
-
-        if ($themes === null)
-            $themes = array();
-        $values = array_merge(array(_('--- Ninguno ---')), $themes);
-        $keys = array_merge(array('0'), $themes);
-        $themes = array_combine($keys, $values);
-
-        return $themes;
+        $propertiesLang = array();
+        foreach ($properties["Language"] as $prop) {
+            $newLang = array();
+            $newLang["IdLanguage"] = $prop["IdLanguage"];
+            $newLang["Name"] = _($prop["Name"]);
+            $propertiesLang[] = $newLang;
+        }
+        return $propertiesLang;
     }
 
     protected function loadResources() {
@@ -220,65 +128,57 @@ class Action_addsectionnode extends ActionAbstract {
 
     protected function loadValues() {
         $nodeID = $this->request->getParam("nodeid");
-        $action = $this->request->getParam("action");
-        $type_sec = $this->request->getParam("type_sec");
+        $nodetype_sec = $this->request->getParam("type_sec");
 
         $nt = array();
-        if (empty($type_sec)) {
-            $type_sec = 1;
+        if (empty($nodetype_sec)) {
+            $nodetype_sec = 1;
         }
 
         $sectionType = new SectionType();
         $sectionTypes = $sectionType->find(ALL);
-        $counter = 0;
         while (list(, $sectionTypeInfo) = each($sectionTypes)) {
             if (empty($sectionTypeInfo['module']) || ModulesManager::isEnabled($sectionTypeInfo['module'])) {
-                $sectionTypeOptions[] = array('value' => $counter, 'label' => $sectionTypeInfo['sectionType']);
+                $sectionTypeOptions[] = array(
+                    'value' => $sectionTypeInfo['idSectionType'],
+                    'label' => $sectionTypeInfo['sectionType'],
+                    'subfolders' => $this->_getAvailableSubfolders($sectionTypeInfo['idNodeType'])
+                );
                 $nt[] = $sectionTypeInfo['idNodeType'];
-                $counter++;
             }
         }
 
         // Getting languages
         $languageOptions = $this->_getLanguages($nodeID);
-        $subfolders = $this->_getAvailableSubfolders($nt);
-
         $values = array(
-            // 'nodeID' => $nodeID,
-            // 'nodeURL' => \App::getValue('UrlRoot') . '/xmd/loadaction.php?action=' . $action . '&nodeid=' . $nodeID,
             'sectionTypeOptions' => $sectionTypeOptions,
             'languageOptions' => $languageOptions,
-            'subfolders' => $subfolders,
         );
 
         return $values;
     }
 
-    private function _getAvailableSubfolders($nodetype_secArray) {
-        $res = array();
+    private function _getAvailableSubfolders($nodetype_sec) {
         $ndc = new NodeDefaultContents();
 
-        foreach ($nodetype_secArray as $nodetype_sec) {
-            $subfolders = $ndc->getDefaultChilds($nodetype_sec);
-            if (count($subfolders) > 0) {
-                $subFoldersForSection = array();
-                foreach ($subfolders as $subfolder) {
-                    $ntId = $subfolder["NodeType"];
-                    $subFoldersForSection[$ntId][0] = $subfolder["Name"];
-                    $subFoldersForSection[$ntId][1] = $this->_getDescription($ntId);
-                }
-                asort($subFoldersForSection);
-                $res[] = $subFoldersForSection;
-            }
+        $subfolders = array();
+        $subfoldersAll = $ndc->getDefaultChilds($nodetype_sec);
+        foreach ($subfoldersAll as $sub) {
+            $newFolder = array(
+                'NodeType' => $sub['NodeType'],
+                'Name' => $sub['Name'],
+                'description' => $this->_getDescription($sub['NodeType'])
+            );
+            $subfolders[] = $newFolder;
         }
 
-        return $res;
+        return $subfolders;
     }
 
     protected function _getDescription($nodetypeId) {
         $nt = new NodeType($nodetypeId);
         if (!$nt) {
-            return "bad nodetype!";
+            return "";
         }
         return $nt->GetDescription();
     }
@@ -296,16 +196,14 @@ class Action_addsectionnode extends ActionAbstract {
 
         $baseio = new XlyreBaseIO();
         $id = $baseio->build($data);
-        XMD_Log::info("ACTION addcatalog data: " . print_r($data, true) . " :: id:$id");
         if ($id > 0) {
             // Creating Licenses subfolder in links folder
             $catalognode = new Node($id);
             $projectnode = new Node($catalognode->getProject());
             $folder = $projectnode->getChildren(NodetypeService::LINK_MANAGER);
             $this->_createLicenseLinksFolder($folder[0]);
-            $this->reloadNode($nodeID);
-            return id;
         }
+        return $id;
     }
 
     private function _createLicenseLinksFolder($links_id) {
@@ -332,7 +230,7 @@ class Action_addsectionnode extends ActionAbstract {
             )
         );
         $bio = new baseIO();
-        $result = $bio->build($data);
+        $bio->build($data);
     }
 
 }

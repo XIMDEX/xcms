@@ -23,38 +23,34 @@
 *  @version $Revision$
 *}
 
-<form ng-controller="addSectionCtrl" method="post" name="as_form" id="as_form" action="{$action_url}" novalidate>
-    <input type="hidden" name="nodeid" value="{$nodeID}"/>
-    <input type="hidden" id="nodeURL" name="nodeURL" value="{$nodeURL}"/>
-
+<form ng-controller="addSectionCtrl" method="post" name="add_form" ng-submit="submit()" action="{$action_url}&method=addsectionnode" novalidate>
     <div class="action_header">
         <h2>{t}Add section{/t}</h2>
     </div>
 
     <div class="action_content section-properties">
         <div class="folder-name folder-normal icon input-select">
-            <input type="text" name="name" id="name" maxlength="100" class="cajaxg full-size js_val_unique_name js_val_alphanumeric" placeholder="{t}Name of your section{/t}" data-idnode="{$nodeID}" />
-            <select ng-model="sectionTypeSelected" ng-options="stype.label for stype in sectionTypeOptions" ng-change="changeSubfolders()" id="type_sec" name="nodetype" class="caja validable not_empty folder-type">
-            </select>
+            <input type="text" name="name" maxlength="100" ng-required="true" class="cajaxg full-size js_val_unique_name js_val_alphanumeric" placeholder="{t}Name of your section{/t}" data-idnode="{$nodeID}" />
+            <select ng-model="sectionTypeSelected" ng-options="stype.label for stype in sectionTypeOptions track by stype.value" ng-change="changeSubfolders()" name="nodetype" class="caja validable not_empty folder-type"></select>
         </div>
 
         <div class="languages-available col1-3 right">
             <h3>{t}Languages availables{/t}</h3>
             <div class="language-section" ng-repeat="lang in languageOptions">
                 <input id="#/lang.IdLanguage/#" class="hidden-focus" type="checkbox" value="#/lang.IdLanguage/#" name="langidlst[]">
-                <label class="icon checkbox-label" for="#/lang.IdLanguage/#">#/lang.Name/#</label>
+                <label class="icon checkbox-label" for="#/lang.IdLanguage/#">{t}#/lang.Name/#{/t}</label>
                 <input type="text" placeholder="{t}Alternative name for paths &amp; breadcrumbs{/t}" class="alternative-name" name="namelst[#/lang.IdLanguage/#]">
             </div>
         </div>
 
         <div class="subfolders-available col2-3">
             <h3>{t}Subfolders availables{/t}</h3>
-            <div ng-repeat="(key,val) in subfoldersSelected" class="subfolder box-col1-1">
-                <input id="#/key/#" class="hidden-focus" type="checkbox" value="#/key/#" name="folderlst[]">
-                <label class="icon" for="#/key/#">
-                    <strong class="icon #/val[0]/#">#/val[0]/#</strong>
+            <div ng-repeat="folder in subfoldersSelected" class="subfolder box-col1-1">
+                <input id="#/folder.NodeType/#" class="hidden-focus" type="checkbox" value="#/folder.NodeType/#" name="folderlst[]">
+                <label class="icon" for="#/folder.NodeType/#">
+                    <strong class="icon #/folder.Name/#">#/folder.Name/#</strong>
                 </label>
-                <span class="info">#/val[1]/#</span>
+                <span class="info">#/folder.description/#</span>
             </div>
         </div>
     </div>
