@@ -44,9 +44,8 @@ class Action_addsectionnode extends ActionAbstract {
     }
 
     function addsectionnode() {
-        $nodeID = $this->request->getParam('nodeid');
+        $nodeid = $this->request->getParam('nodeid');
         $name = $this->request->getParam('name');
-        $nodeType = $this->request->getParam('nodetype');
         $langidlst = $this->request->getParam('langidlst');
         $namelst = $this->request->getParam('namelst');
         $folderlst = $this->request->getParam('folderlst');
@@ -55,29 +54,25 @@ class Action_addsectionnode extends ActionAbstract {
         $sectionType = new SectionType($nodetype);
         if ($sectionType->get('idSectionType') > 0) {
             $idNodeType = $sectionType->get('idNodeType');
-        } else {
-            XMD_Log::warning(_('Error obtaining section type'));
-            $idNodeType = 5015;
         }
-        
+
+        $nodeTypeObj = new NodeType($idNodeType);
+        $nodeTypeName = $nodeTypeObj->get('Name');
+        $data = array(
+            'NODETYPENAME' => $nodeTypeName,
+            'NAME' => $name,
+            'SUBFOLDERS' => $folderlst,
+            'PARENTID' => $nodeid,
+            'FORCENEW' => true
+        );
+
         if ($nodetype == 3) {
-            $id = $this->addcatalog();
+            $id = $this->addcatalog($data);
         } else {
-            $nodeType = new NodeType($idNodeType);
-            $nodeTypeName = $nodeType->get('Name');
-
-            $data = array(
-                'NODETYPENAME' => $nodeTypeName,
-                'NAME' => $name,
-                'SUBFOLDERS' => $folderlst,
-                'PARENTID' => $nodeID,
-                'FORCENEW' => true
-            );
-
             $baseio = new baseIO();
             $id = $baseio->build($data);
         }
-        
+
         if ($id > 0) {
             $section = new Node($id);
 
@@ -101,7 +96,7 @@ class Action_addsectionnode extends ActionAbstract {
         }
 
         $values = array(
-            '_parentID1' => $nodeID,
+            'parentID' => $nodeid,
             'messages' => $this->messages->messages
         );
 
@@ -120,13 +115,13 @@ class Action_addsectionnode extends ActionAbstract {
         return $propertiesLang;
     }
 
-    protected function loadResources() {
+    private function loadResources() {
         $this->addCss('/actions/addsectionnode/resources/css/style.css');
         $this->addJs('/actions/addsectionnode/resources/js/init.js');
         $this->addJs('/actions/addsectionnode/resources/js/addSectionCtrl.js');
     }
 
-    protected function loadValues() {
+    private function loadValues() {
         $nodeID = $this->request->getParam("nodeid");
         $nodetype_sec = $this->request->getParam("type_sec");
 
@@ -175,7 +170,7 @@ class Action_addsectionnode extends ActionAbstract {
         return $subfolders;
     }
 
-    protected function _getDescription($nodetypeId) {
+    private function _getDescription($nodetypeId) {
         $nt = new NodeType($nodetypeId);
         if (!$nt) {
             return "";
@@ -183,17 +178,7 @@ class Action_addsectionnode extends ActionAbstract {
         return $nt->GetDescription();
     }
 
-    function addcatalog() {
-        $nodeID = $this->request->getParam('nodeid');
-        $name = $this->request->getParam('name');
-
-        $data = array(
-            'NODETYPENAME' => 'OpenDataSection',
-            'NAME' => $name,
-            'PARENTID' => $nodeID,
-            'FORCENEW' => true
-        );
-
+    private function addcatalog($data) {
         $baseio = new XlyreBaseIO();
         $id = $baseio->build($data);
         if ($id > 0) {

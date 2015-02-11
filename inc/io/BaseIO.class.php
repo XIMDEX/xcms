@@ -137,6 +137,7 @@ class BaseIO {
             $this->messages->add(_('Node name was not specified'), MSG_TYPE_ERROR);
             return ERROR_INCORRECT_DATA;
         }
+
         return $this->createNode($data, $metaType, $nodeTypeClass, $nodeTypeName);
     }
 
