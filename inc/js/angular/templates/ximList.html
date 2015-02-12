@@ -9,7 +9,7 @@
 
     <div class="xim-listview-table-container">
         <ul class="xim-listview">
-            <li ng-repeat="node in initialNodeList.collection"
+            <li ng-repeat="node in initialNodeList.collection track by node.nodeid"
                 class="xim-listview-node xim-listview-list-view"
                 ng-class="{'xim-listview-selected': (node | nodeSelected: selectedNodes)}"
                 hm-press="loadActions(node,$event)" hm-tap="select(node,$event)"

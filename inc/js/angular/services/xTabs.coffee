@@ -346,6 +346,14 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             xtab.reloadTab index if index >= 0
             return
 
+        xtab.setActiveById = (tabId) ->
+            index = xtab.getTabIndex tabId
+            xtab.setActive index if index >= 0
+            return
+
+        xtab.getActiveTab = () ->
+            return tabs[activeTab] if activeTab >= 0
+            return null
 
         return xtab
 ]

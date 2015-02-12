@@ -26,7 +26,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
   "$scope", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
-    var actualFilter, allowedHokey, canceler, dragStartPosition, expanded, findNodeById, getFolderPath, listenHidePanel, loadAction, postLoadActions, prepareBreadcrumbs, size;
+    var actualFilter, allowedHokey, canceler, dragStartPosition, findNodeById, getFolderPath, listenHidePanel, loadAction, postLoadActions, prepareBreadcrumbs, size;
     delete Hammer.defaults.cssProps.userSelect;
     $scope.projects = null;
     $scope.initialNodeList = null;
@@ -39,7 +39,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     $scope.selectedTab = 1;
     $scope.filterMode = false;
     dragStartPosition = 0;
-    expanded = true;
+    $scope.expanded = true;
     size = 0;
     listenHidePanel = true;
     canceler = $q.defer();
@@ -248,15 +248,61 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
         $scope.selectedNodes = [node];
       }
     };
-    $scope.reloadNode = function() {
-      if ($scope.selectedNodes.length === 1) {
+    $scope.reloadNode = function(nodeId, callback) {
+      var n;
+      if (nodeId != null) {
+        n = findNodeById(nodeId, $scope.projects);
+        if (n === null) {
+          n = findNodeById(nodeId, $scope.ccenter);
+        }
+        if (n === null) {
+          return;
+        }
+      } else if ($scope.selectedNodes.length === 1) {
         if ($scope.selectedNodes[0].isdir === "0") {
           return;
         }
-        $scope.selectedNodes[0].showNodes = true;
-        $scope.selectedNodes[0].collection = [];
-        return $scope.loadNodeChildren($scope.selectedNodes[0]);
+        n = $scope.selectedNodes[0];
+      } else {
+        return;
       }
+      n.showNodes = true;
+      n.collection = [];
+      return $scope.loadNodeChildren(n, callback);
+    };
+    $scope.navigateToNodeId = function(nodeId) {
+      if (nodeId == null) {
+        return;
+      }
+      $http.get(xUrlHelper.getAction({
+        method: "getTraverseForPath",
+        id: nodeId,
+        options: [
+          {
+            ajax: "json"
+          }
+        ]
+      })).success(function(data) {
+        var callback, nodeList;
+        nodeList = data['nodes'];
+        callback = function() {
+          var n, shifted;
+          shifted = nodeList.shift();
+          if (shifted != null) {
+            return $scope.reloadNode(shifted.nodeid, callback);
+          } else {
+            n = findNodeById(nodeId, $scope.projects);
+            if (n === null) {
+              n = findNodeById(nodeId, $scope.ccenter);
+            }
+            if (n === null) {
+              return;
+            }
+            return $scope.select(n);
+          }
+        };
+        return callback();
+      });
     };
     $scope.doFilter = function() {
       if ($scope.filter === "") {
@@ -275,14 +321,14 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       $scope.selectedNodes = [];
     };
     $scope.dragStart = function(event) {
-      if (expanded) {
+      if ($scope.expanded) {
         dragStartPosition = angular.element('#angular-tree').width();
         angular.element('body').addClass('noselect');
       }
     };
     $scope.drag = function(e, width) {
       var x;
-      if (expanded) {
+      if ($scope.expanded) {
         x = e.deltaX + dragStartPosition;
         if (x > $document.width() - 17) {
           x = $document.width() - 17;
@@ -302,25 +348,27 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
     };
     $scope.dragEnd = function() {
-      if (expanded) {
+      if ($scope.expanded) {
         angular.element('body').removeClass('noselect');
       }
     };
-    $scope.toggleTree = function(e) {
-      angular.element(e.target).toggleClass("hide");
-      angular.element(e.target).toggleClass("tie");
+    $scope.toggleTree = function() {
+      var button;
+      button = angular.element('#angular-tree-toggle');
+      button.toggleClass("hide");
+      button.toggleClass("tie");
       angular.element('#angular-tree').toggleClass("hideable");
       angular.element('#angular-content').toggleClass("hideable");
-      angular.element(e.target).toggleClass("hideable");
-      expanded = !expanded;
+      button.toggleClass("hideable");
+      $scope.expanded = !$scope.expanded;
       size = angular.element('#angular-tree').width();
-      if (!expanded) {
-        return $scope.hideTree();
+      if (!$scope.expanded) {
+        $scope.hideTree();
       }
     };
     $scope.hideTree = function() {
       var a, b;
-      if (!expanded && listenHidePanel) {
+      if (!$scope.expanded && listenHidePanel) {
         a = 7;
         b = 10 + a;
         angular.element('#angular-tree').css({
@@ -335,7 +383,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       }
     };
     $scope.showTree = function() {
-      if (!expanded && !listenHidePanel) {
+      if (!$scope.expanded && !listenHidePanel) {
         angular.element('#angular-tree').css({
           left: 0 + "px"
         });

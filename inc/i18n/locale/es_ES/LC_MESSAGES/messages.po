@@ -10107,3 +10107,66 @@ msgstr "Previsualizar imagen"
 
 msgid "Edit file in text mode"
 msgstr "Editar documento en modo texto"
+
+msgid "Welcome to Ximdex!<br/>In a few steps you will discover the basic features of Ximdex CMS."
+msgstr "¡Bienvenido a Ximdex!<br/>En unos pocos pasos podrás descubrir las características básicas de Ximdex CMS"
+
+msgid "In the left panel you will find the tree with all your documents, images, links and other files."
+msgstr "En el panel izquierdo podrás encontrar el árbol con todos tus documentos, imágenes, enlaces y otros archivos."
+
+msgid "Use Xedit, the XML editor,<br/> to edit your document in a WYSIWYG way."
+msgstr "Usa Xedit, el editor XML,<br/> para editar tu documentos en modo WYSIWYG."
+
+msgid "Click here to hide the left panel."
+msgstr "Haz click aquí para ocultar el panel izquierdo."
+
+msgid "This is the document area.<br/>It looks like a HTML document. Actually it's a XML file with a semantic layer."
+msgstr "Es muy similar a un documento HTML, aunque en realidad es un archivo XML con una capa semántica."
+
+msgid "Press the Tree View button to change to XML view for your structured document."
+msgstr "Pulsa el botón de vista árbol para ver la estructura del documento XML."
+
+msgid "Press the Design View button in order to return to WYSIWYG view."
+msgstr "Pulsa el botón de vista diseño para volver a la vista WYSIWYG."
+
+msgid "We've been editing a XML file. <br/><br/>The preview button allows you to see it in the final format for your web portal (HTML5, php, jsp, RoR, ...) or for other platform (digital TV, smartphone apps, etc.)<br/><br/>It's really easy to extend it with templates for oncoming technologies."
+msgstr "Estamos editando un documento XML. <br/><br/>El botón previsualizar te permite ver tu documento en el formato concreto para tu portal web (HTML5, php, jsp, RoR, ...) o para otra tipo de plataforma (TDT, smartphone apps, etc.)<br/><br/>Es realmente fácil de extenderlo con plantillas para nuevas tecnologías."
+
+msgid "With Xowl module you will get automagically links (to images, maps, videos, references, ...) and semantic tags from sources like DBpedia."
+msgstr "Con el módulo Xowl obtendrás fácilmente enlaces (a imágenes, mapas, vídeos, referencias, ...) y etiquetas semánticas desde fuentes como DBpedia para enriquecer tu contenido."
+
+msgid "You can easily add your own custom tags or use an ontology to select semantic tags..."
+msgstr "Puedes añadir fácilmentes tus propias etiquetas personalizadas o usar una ontología para seleccionar etiquetas semánticas..."
+
+msgid "Ximdex CMS can automatically suggest tags based on your written text.<br/>Let's select a couple of tags from these suggestions."
+msgstr "Ximdex CMS puede sugerirte automáticamente etiquetas basadas en el contenido de tu documento.<br/>Vamos a seleccionar un par de etiquetas a partir de estas sugerencias."
+
+msgid "You can also create your own custom tags or browse tag sets to choose the best one for your content."
+msgstr "Además, puedes crear tus propias etiquetas o buscar conjuntos de etiquetas para elegir la mejor para su contenido."
+
+msgid "With the Ontology Browser you can navigate through vocabularies and ontologies as schema.org, etc."
+msgstr "Con el Ontology Browser puedes navegar a través de vocabularios y ontologías como schema.org, etc."
+
+msgid "Tag 'Painting' from schema.org has been associated to your document."
+msgstr "La etiqueta 'Painting' de schema.org se ha asociado a tu documento."
+
+msgid "Now it's time to change your document. Let's go!"
+msgstr "Ahora es el momento de modificar tu documento."
+
+msgid "Hello"
+msgstr "Hola"
+
+msgid ", first time here?"
+msgstr ", ¿la primera vez aquí?"
+
+msgid "Dont show this again."
+msgstr "No volver a mostrar."
+
+msgid "We're going to show you in a few steps the basic features of Ximdex. Let's go!"
+msgstr "Vamos a mostrarte en unos pocos pasos las características básicas de Ximdex. ¡Comencemos!"
+
+
+
+
+
+

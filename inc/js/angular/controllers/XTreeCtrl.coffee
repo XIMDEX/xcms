@@ -50,7 +50,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         #Indicates the filter status
         $scope.filterMode = false
         dragStartPosition=0;
-        expanded = true
+        $scope.expanded = true
         size = 0
         listenHidePanel = true
 
@@ -229,12 +229,44 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         #Reloads the children of a node
-        $scope.reloadNode = () ->
-            if $scope.selectedNodes.length == 1
+        $scope.reloadNode = (nodeId, callback) ->
+            if nodeId?
+                n = findNodeById nodeId, $scope.projects
+                n = findNodeById nodeId, $scope.ccenter if n == null
+                return if n == null
+            else if $scope.selectedNodes.length == 1
                 return if $scope.selectedNodes[0].isdir == "0"
-                $scope.selectedNodes[0].showNodes = true
-                $scope.selectedNodes[0].collection = []
-                $scope.loadNodeChildren $scope.selectedNodes[0]
+                n = $scope.selectedNodes[0]
+            else
+                return
+            n.showNodes = true
+            n.collection = []
+            $scope.loadNodeChildren n, callback
+
+        $scope.navigateToNodeId = (nodeId) ->
+            return if !nodeId?
+            $http.get(xUrlHelper.getAction(
+                method: "getTraverseForPath"
+                id: nodeId
+                options: [
+                    ajax: "json"
+                ]
+            )).success (data) ->
+                nodeList = data['nodes']
+                callback = () ->
+                    shifted = nodeList.shift()
+                    if shifted?
+                        $scope.reloadNode shifted.nodeid, callback
+                    else
+                        n = findNodeById nodeId, $scope.projects
+                        n = findNodeById nodeId, $scope.ccenter if n == null
+                        return if n == null
+                        $scope.select n
+                callback()
+            return
+
+
+
 
         #Search nodes with a filter
         $scope.doFilter = () ->
@@ -255,14 +287,14 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         #Catches event dragstart on resizer bar
         $scope.dragStart = (event) ->
-            if expanded
+            if $scope.expanded
                 dragStartPosition = angular.element('#angular-tree').width()
                 angular.element('body').addClass 'noselect'
             return
 
         #Catches event drag on resizer bar
         $scope.drag = (e,width) ->
-            if expanded
+            if $scope.expanded
                 x = e.deltaX + dragStartPosition
                 x = $document.width()-17  if  x > $document.width()-17
                 x = 270  if x < 270
@@ -272,25 +304,28 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         $scope.dragEnd = () ->
-            if expanded
+            if $scope.expanded
                 angular.element('body').removeClass 'noselect'
             return
 
 
         #Toggle autohide on sidebar
-        $scope.toggleTree = (e) ->
-            angular.element(e.target).toggleClass "hide"
-            angular.element(e.target).toggleClass "tie"
+        $scope.toggleTree = () ->
+            button = angular.element('#angular-tree-toggle')
+            button.toggleClass "hide"
+            button.toggleClass "tie"
             angular.element('#angular-tree').toggleClass "hideable"
             angular.element('#angular-content').toggleClass "hideable"
-            angular.element(e.target).toggleClass "hideable"
-            expanded = !expanded
+            button.toggleClass "hideable"
+            $scope.expanded = !$scope.expanded
             size = angular.element('#angular-tree').width()
-            if !expanded
+            if !$scope.expanded
                 $scope.hideTree()
 
+            return
+
         $scope.hideTree = () ->
-            if !expanded && listenHidePanel
+            if !$scope.expanded && listenHidePanel
                 a=7
                 b=10+a
                 angular.element('#angular-tree').css left: (-size-7) + "px"
@@ -304,7 +339,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
             return
 
         $scope.showTree = () ->
-            if !expanded && !listenHidePanel
+            if !$scope.expanded && !listenHidePanel
                 angular.element('#angular-tree').css left: 0 + "px"
                 angular.element('#angular-content').css left: (size+10+7) + "px"
                 $timeout(

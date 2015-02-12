@@ -75,7 +75,7 @@
                       ui-icon ui-icon-triangle-1-e"></span>
             </div>
             <ul class="xim-treeview-branch" ng-if="node.showNodes">
-                <li ng-repeat="node in node.collection" ng-include="'tree_item_renderer.html'"
+                <li ng-repeat="node in node.collection track by node.nodeid" ng-include="'tree_item_renderer.html'"
                     class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
             </ul>
             <ul class="xim-treeview-loading" id="treeloading-undefined" ng-show="node.showNodes && node.loading">
@@ -119,7 +119,7 @@
     {literal}
         <button hm-tap="toggleView()" ng-if="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="Change view"></button>
     {/literal}
-    <button id="angular-tree-toggle" ng-click="toggleTree($event)" class="btn btn-sidebar btn-anchor" type="button" title="Collapse menu"></button>
+    <button id="angular-tree-toggle" ng-click="toggleTree()" class="btn btn-sidebar btn-anchor" type="button" title="Collapse menu"></button>
 
     <div class="filter-tree" ng-show="selectedTab==1">
         <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/::('browser.filter' | xI18n)+'...'/#">
@@ -153,7 +153,7 @@
            id="10000_welcome">
             <span>#/::'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</span></a></li>
     {literal}
-    <li hm-tap="$parent.setActiveTab($index)" ng-repeat="tab in tabs" class="ui-state-default ui-corner-top"
+    <li hm-tap="$parent.setActiveTab($index)" ng-repeat="tab in tabs track by tab.id" class="ui-state-default ui-corner-top"
         ng-class="{'ui-tabs-active ui-state-active': ($index == $parent.activeIndex()),
         'xim-last-tab': $last, 'blink': tab.blink, 'hide': ($parent.limitTabs<=$index)}" id="#/::tab.id/#_tab">
         <div hm-tap="removeTab($index);" class="ui-tab-close"></div>
@@ -164,7 +164,7 @@
         ui-widget-content ui-corner-bottom"
         id="10000_welcome_content" >
 </div>
-<div ng-show="$index == $parent.activeIndex()" ng-repeat="tab in tabs"
+<div ng-show="$index == $parent.activeIndex()" ng-repeat="tab in tabs track by tab.id"
      class="browser-action-view-content ui-tabs-panel ui-widget-content ui-corner-bottom"
      id="#/::tab.id/#_content">
 
