@@ -305,6 +305,13 @@ angular.module("ximdex.common.service").factory("xTabs", [
         xtab.reloadTab(index);
       }
     };
+    xtab.setTabNode = function(tabId, nodes) {
+      var index;
+      index = xtab.getTabIndex(tabId);
+      if (index >= 0) {
+        tabs[index].nodes = nodes;
+      }
+    };
     xtab.setActiveById = function(tabId) {
       var index;
       index = xtab.getTabIndex(tabId);
