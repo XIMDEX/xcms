@@ -88,7 +88,8 @@
 .server-name .create-server {
   margin: 0;
   padding: 1.5em 1em;
-  text-align: center; }
+  text-align: center;
+  display: block; }
 
 .server-name .selected {
   background: #666666;
@@ -181,5 +182,3 @@ fieldset.mdfsv_errors {
 
 .remote_url label, .remote_folder label, .port label, .host label, .login label, .password label {
   display: block; }
-
-/*# sourceMappingURL=style.css.map */

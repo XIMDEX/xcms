@@ -96,6 +96,7 @@ X.FormsManager = Object.xo_create({
         $('.close-button', this.options.actionContainer).each(function(index, button) {
             $(button).click(function() {
                 $('#angular-content').scope().closeTabById(this.options.tabId);
+				$('#angular-content').scope().$digest();
                 return false;
             }.bind(this));
         }.bind(this));
