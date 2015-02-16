@@ -75,7 +75,7 @@
                       ui-icon ui-icon-triangle-1-e"></span>
             </div>
             <ul class="xim-treeview-branch" ng-if="node.showNodes">
-                <li ng-repeat="node in node.collection track by node.nodeid" ng-include="'tree_item_renderer.html'"
+                <li ng-repeat="node in node.collection" ng-include="'tree_item_renderer.html'"
                     class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
             </ul>
             <ul class="xim-treeview-loading" id="treeloading-undefined" ng-show="node.showNodes && node.loading">
