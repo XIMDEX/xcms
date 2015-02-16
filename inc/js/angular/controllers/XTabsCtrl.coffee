@@ -35,12 +35,22 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
         $scope.limitTabs = 9999999
 
         #Reloads welcome tab
-        $scope.reloadWelcomeTab = () ->
+        $scope.reloadWelcomeTab = (firstTime) ->
             nodes = [{nodeid: 10000}]
-            url = xUrlHelper.getAction(
-                action: "welcome"
-                nodes: nodes
-            )
+            if firstTime
+                url = xUrlHelper.getAction(
+                    action: "welcome"
+                    nodes: nodes
+                )
+            else
+                url = xUrlHelper.getAction(
+                    action: "welcome"
+                    nodes: nodes
+                    options: [
+                        actionReload: true
+                    ]
+                )
+
             $http.get(url).success (data) ->
                 if data
                     newtab =
@@ -59,7 +69,7 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
             return
 
         #At first, reloads welcome tab
-        $scope.reloadWelcomeTab()
+        $scope.reloadWelcomeTab(true)
 
         $scope.$on 'nodemodified', (event, nodeId) ->
             $scope.reloadWelcomeTab()

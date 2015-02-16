@@ -329,6 +329,9 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 nodes: tab.nodes
                 module: tab.action.module
                 method: tab.action.method
+                options: [
+                    actionReload: true
+                ]
             )
             $http.get(url).success (data) ->
                 if data

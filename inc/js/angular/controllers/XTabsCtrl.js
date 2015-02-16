@@ -34,17 +34,29 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
     $scope.menuTabsEnabled = false;
     $scope.showingMenu = false;
     $scope.limitTabs = 9999999;
-    $scope.reloadWelcomeTab = function() {
+    $scope.reloadWelcomeTab = function(firstTime) {
       var nodes, url;
       nodes = [
         {
           nodeid: 10000
         }
       ];
-      url = xUrlHelper.getAction({
-        action: "welcome",
-        nodes: nodes
-      });
+      if (firstTime) {
+        url = xUrlHelper.getAction({
+          action: "welcome",
+          nodes: nodes
+        });
+      } else {
+        url = xUrlHelper.getAction({
+          action: "welcome",
+          nodes: nodes,
+          options: [
+            {
+              actionReload: true
+            }
+          ]
+        });
+      }
       $http.get(url).success(function(data) {
         var newtab;
         if (data) {
@@ -64,7 +76,7 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
         }
       });
     };
-    $scope.reloadWelcomeTab();
+    $scope.reloadWelcomeTab(true);
     $scope.$on('nodemodified', function(event, nodeId) {
       $scope.reloadWelcomeTab();
     });

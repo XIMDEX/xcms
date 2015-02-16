@@ -289,7 +289,12 @@ angular.module("ximdex.common.service").factory("xTabs", [
         action: tab.action.command,
         nodes: tab.nodes,
         module: tab.action.module,
-        method: tab.action.method
+        method: tab.action.method,
+        options: [
+          {
+            actionReload: true
+          }
+        ]
       });
       $http.get(url).success(function(data) {
         if (data) {
