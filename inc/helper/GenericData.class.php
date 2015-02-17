@@ -183,12 +183,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
                         $this->{$key} = $dbObj->GetValue($key);
                     } else {
                         $backtrace = debug_backtrace();
-                        XMD_Log::warning(sprintf('[CONSTRUCTOR]Inconsistencia entre el modelo y la base de datos [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s',
-                            $_SERVER['SCRIPT_FILENAME'],
-                            $backtrace[0]['file'],
-                            $backtrace[0]['line'],
-                            $this->_table,
-                            $key));
+                        XMD_Log::warning(sprintf('[CONSTRUCTOR] Inconsistency between the model and the database [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s field: %s', $_SERVER['SCRIPT_FILENAME'], $backtrace[0]['file'], $backtrace[0]['line'], $this->_table, $key));
                         $this->modelInError = true;
                     }
                 }
@@ -282,7 +277,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
                         array($this->{$this->_idField}),
                         MONO);
                     if (count($result) == 1) {
-                        XMD_Log::warning('La tabla no tiene un campo autoincremental, devolviendo campo id');
+                        XMD_Log::warning('The table has an auto-increment field, returning id field');
                         $insertedId = $result[0];
                     }
                 }
@@ -453,7 +448,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
         }
         if (!array_key_exists($attribute, $this->_metaData)) {
             $backtrace = debug_backtrace();
-            XMD_Log::error(sprintf('[SET]Intentando setear una propiedad que no existe'
+            XMD_Log::error(sprintf('[SET] Trying to set a property that does not exist'
                 . ' [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s key: %s value: %s',
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],
@@ -478,7 +473,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
         if (empty($attribute)) return false;
         if (!array_key_exists($attribute, $this->_metaData)) {
             $backtrace = debug_backtrace();
-            XMD_Log::error(sprintf('[GET]Intentando hacer un get de una propiedad que no existe'
+            XMD_Log::error(sprintf('[GET] Trying to get a property that does not exist'
                 . ' [inc/helper/GenericData.class.php] script: %s file: %s line: %s table: %s key: %s',
                 $_SERVER['SCRIPT_FILENAME'],
                 $backtrace[0]['file'],

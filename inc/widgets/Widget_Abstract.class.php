@@ -102,7 +102,7 @@ abstract class Widget_Abstract {
 
 		$this->_tpl = sprintf('%s%s.tpl', $this->_template_dir, basename($_template));
 		if (!is_file($this->_tpl)) {
-			if ($this->_wname != 'common') XMD_Log::warning(sprintf("No existe plantilla para el widget %s", $this->_wname));
+			if ($this->_wname != 'common') XMD_Log::warning(sprintf("There is no template for widget %s", $this->_wname));
 			$this->_tpl = null;
 		}
 	}

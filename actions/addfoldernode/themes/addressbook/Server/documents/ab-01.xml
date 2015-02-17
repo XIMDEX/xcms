@@ -1,12 +1,12 @@
 <addressBook>
 
-	<card>
+	<card id_image="">
 		<name>John Doe</name>
 		<email>jdoe@example.net</email>
 		<note>Nobody knows</note>
 	</card>
 
-	<card>
+	<card id_image="">
 		<name>Bugs Bunny</name>
 		<email>bunny@example.net</email>
 		<note>Likes carrots</note>
