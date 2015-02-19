@@ -174,7 +174,7 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 		$pathToParams = $matches[1];
 		// Link target-node
 		$parserPathTo = new ParsingPathTo();
-		$parserPathTo->parsePathTo($pathToParams, $this->_node->getID());
+		$parserPathTo->parsePathTo($pathToParams);
 
 		$res["idNode"] = $parserPathTo->getIdNode();
 		$res["pathMethod"] = $parserPathTo->getPathMethod();

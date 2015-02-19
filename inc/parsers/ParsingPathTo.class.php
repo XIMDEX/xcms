@@ -48,11 +48,14 @@ class ParsingPathTo {
      * @param string $pathToParams
      * @return Object This
      */
-    public function parsePathTo($pathToParams, $nodeId)
+    public function parsePathTo($pathToParams, $nodeId=null)
     {
-
-        $node = new Node($nodeId);
-        $currentNodeServer = $node->getServer();
+        $currentNodeServer = null;
+        if ($nodeId){
+            $node = new Node($nodeId);
+            $currentNodeServer = $node->getServer();    
+        }
+        
         $result = null;
         $nodeName = "";
         $language = false;
@@ -298,7 +301,7 @@ class ParsingPathTo {
         while (!$dbObj->EOF) {
             $nodeId = $dbObj->GetValue("IdNode");
             $nodeAux = new Node($nodeId);
-            if ($nodeAux->getServer() == $currentNodeServer)
+            if ($nodeAux->getServer() == $currentNodeServer || !$currentNodeServer)
                 return $nodeId;
             $dbObj->next();
         }
