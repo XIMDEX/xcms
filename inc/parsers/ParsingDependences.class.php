@@ -367,6 +367,8 @@ class ParsingDependencies {
 
 		if (count($idDeps)) {
 			foreach ($idDeps as $idDep) {
+				if ($idMaster == $idDeps)
+					continue;
 				$dependencies = new Dependencies();
 				$depsMngr = new DepsManager();
 				$table = false;
