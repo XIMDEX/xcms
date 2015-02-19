@@ -228,7 +228,7 @@ class Action_addfoldernode extends ActionAbstract {
      * @return int Server id.
      */
     private function insertServer($projectId, $server) {
-
+        $channels = $this->request->getParam('channels_listed');
         $nodeType = new NodeType();
         $nodeType->SetByName($server->nodetypename);
         $idNodeType = ($nodeType->get('IdNodeType') > 0) ? $nodeType->get('IdNodeType') : NULL;
@@ -255,7 +255,9 @@ class Action_addfoldernode extends ActionAbstract {
                 $server->protocol, $server->login, $server->password, $server->host, $server->port, $server->url, $server->initialDirectory, $server->overrideLocalPaths, $server->enabled, $server->previsual, $server->description, $server->isServerOTF
         );
 
-        //$nodeServer->class->AddChannel($physicalServerId, $this->project->channel);
+        foreach ($channels as $ch) {
+            $nodeServer->class->AddChannel($physicalServerId, $ch);
+        }
         Module::log(Module::SUCCESS, "Server creation O.K.");        
         
         // common
