@@ -227,7 +227,7 @@ class FileNode extends Root
 
         if ($this->parent->nodeType->get('Name') == 'CssFile') {
             $depsMngr = new DepsManager();
-            $dependencies = $depsMngr->getBySource(DepsManager::STRDOC_NODE, $this->nodeID);
+            $dependencies = $depsMngr->getBySource(DepsManager::NODE2ASSET, $this->nodeID);
             return $dependencies;
         }
         return NULL;
