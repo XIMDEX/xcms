@@ -548,7 +548,7 @@ class Action_workflow_forward extends ActionAbstract {
 	$this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished);
 	}
 
-    protected function sendToPublish($idNode, $up, $down, $markEnd, $republish, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend) {
+    protected function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished) {
         XMD_Log::info("ADDSECTION publicateNode sendToPublish parent");
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
