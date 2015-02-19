@@ -24,21 +24,123 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
+
 
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Dependencies_ORM.class.php';
+require_once XIMDEX_ROOT_PATH . '/inc/model/DependenceTypes.class.php';
 
 
-class dependencies extends Dependencies_ORM
+class Dependencies extends Dependencies_ORM
 {
 
+    const ASSET = "asset";
+    const CHANNEL = "channel";
+    const LANGUAGE = "language";
+    const SCHEMA = "schema";
+    const SYMLINK = "symlink";
+    const TEMPLATE = "template";
+    const XIMLET = "ximlet";
+    const XML ="xml";
+    const XIMLINK = "ximlink";
+
+
     /**
-     * Construnctor
-     * @return unknown_type
+     * @var deptypes array
+     * It will be something like
+     * "css" => 1
+     * "assets" => 2
+     * "ximlets" => 3
+     * It means, the key is the dependence name,
+     * and the value is the ID.
      */
-    function dependencies()
+    private static $depTypes = null;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
+        if (!self::$depTypes) {
+            self::buildDepTypes();
+        }
         parent::GenericData();
+    }
+
+    /**
+     * Build static property deptypes
+     */
+    private static function buildDepTypes()
+    {
+
+        Logger::info("Building DepTypes array.");
+        $dependenceTypes = new DependenceTypes();
+        $result = $dependenceTypes->findAll();
+        foreach ($result as $dependenceType) {
+            $idType = $dependenceType["IdDepType"];
+            $depType = strtolower($dependenceType["Type"]);
+            self::$depTypes[$depType] = $idType;
+        }
+    }
+
+    /**
+     * Get IdDepType from a dependence type name.
+     * @param $depType String Searched name
+     * @return string Id for the deptype if it exists.
+     * Otherwise return false.
+     */
+    public function getDepTypeId($depType)
+    {
+
+        //If the array it doesn't exist, load it.
+        if (!self::$depTypes || !is_array(self::$depTypes)) {
+            self::buildDepTypes();
+        }
+
+        if (is_numeric($depType)) {
+            return $this->getDepTypeName($depType) ? $depType : false;
+        }
+        $depType = strtolower($depType);
+        //If don't found this deptype, reload the array
+        //This deptype could be added after.
+        if (!array_key_exists($depType, self::$depTypes)) {
+            self::buildDepTypes();
+        }
+
+        //Return the array value or false.
+        return array_key_exists($depType, self::$depTypes) ? self::$depTypes[$depType] : false;
+    }
+
+    /**
+     * @param $idDepType
+     * @return bool|mixed
+     */
+    public function getDepTypeName($idDepType)
+    {
+
+        //If the array it doesn't exist, load it.
+        if (!self::$depTypes || !is_array(self::$depTypes)) {
+            self::buildDepTypes();
+        }
+
+        //IdDepType have to be a number
+        if (!is_numeric($idDepType)) {
+            return false;
+        }
+
+        if (!is_array(self::$depTypes)) {
+            return false;
+        }
+
+        //If don't found this deptype id, reload the array
+        //This deptype could be added after.
+        if (!in_array($idDepType, self::$depTypes)) {
+            self::buildDepTypes();
+        }
+
+        //Return the array key or false.
+        return in_array($idDepType, self::$depTypes) ? array_search($idDepType, self::$depTypes) : false;
     }
 
     /**
@@ -49,16 +151,24 @@ class dependencies extends Dependencies_ORM
      * @param $version
      * @return unknown_type
      */
-    function insertDependence($master, $dependent, $type, $version = NULL)
+    public function insertDependence($master, $dependent, $type, $version = null)
     {
+
+        $type = $this->getDepTypeId($type);
+
+        if (!$type) {
+            return false;
+        }
+
         $this->set('IdNodeMaster', $master);
         $this->set('IdNodeDependent', $dependent);
         $this->set('DepType', $type);
         if (!empty($version)) {
             $this->set('version', $version);
         } else {
-            $node = new Node($master);
-            $this->set('version', $node->getVersion());
+            $dataFactory = new DataFactory($master);
+            $idVersion = $dataFactory->GetLastVersion();
+            $this->set('version', $idVersion);
         }
 
         if (!$this->existsDependence($master, $dependent, $type, $version)) {
@@ -68,117 +178,83 @@ class dependencies extends Dependencies_ORM
     }
 
     /**
-     *
+     * Delete all dependencies for a dependent node.
      * @param $nodeID
      * @return unknown_type
      */
-    function deleteDependentNode($nodeID)
+    public function deleteDependentNode($nodeID)
     {
         //Deletes all the dependencies (ancestor) of this node ("free")
-        $dbObj = new DB();
-        $sql = sprintf("DELETE FROM Dependencies WHERE IdNodeDependent= %d", $nodeID);
-        $dbObj->Execute($sql);
+        $this->deleteAll("IdNodeDependent= %s", array($nodeID));
     }
 
     /**
-     *
-     * @param $nodeID
+     * Delete all dependencies for a master node and an given type.
+     * @param int $nodeID
+     * @param int /String $type
      * @return unknown_type
      */
     function deleteMasterNodeandType($nodeID, $type)
     {
+        $type = $this->getDepTypeId($type);
+
         //Deletes all the dependencies (ancestor) of this node ("free")
-        $dbObj = new DB();
-        $sql = sprintf('DELETE FROM Dependencies WHERE IdNodeMaster=%s AND DepType="%s"', $nodeID, $type);
-        $dbObj->Execute($sql);
+        $this->deleteAll("IdNodeMaster=%s AND DepType=%s", array($nodeID, $type));
     }
 
     /**
-     *
+     * Delete all dependencies for a dependent node in a given version.
      * @param $nodeID
      * @param $version
      * @return unknown_type
      */
-    function DeleteDependenciesDependentNode($nodeID, $version)
+    function deleteDependenciesByDependentAndVersion($nodeID, $version)
     {
         //Deletes all the dependencies (ancestor) of this node ("free")
         //Last versions should be deleted
-        $dbObj = new DB();
-        $sql = sprintf("DELETE from Dependencies WHERE IdNodeDependent = %d and version= %d", $nodeID, $version);
-        $dbObj->Execute($sql);
+        $this->deleteAll("IdNodeDependent = %s and version= %s", array($nodeID, $version));
+    }
+
+    function deleteByMasterAndVersion($nodeID, $version)
+    {
+        //Deletes all the dependencies (ancestor) of this node ("free")
+        //Last versions should be deleted
+        $this->deleteAll("IdNodeMaster = %s and version= %s", array($nodeID, $version));
+    }
+
+    /**
+     * Delete all dependencies for a dependent node with a given deptype.
+     * @param $nodeID
+     * @param $type
+     * @return unknown_type
+     */
+    function deleteDependenciesByDependentAndType($nodeID, $type)
+    {
+        $type = $this->getDepTypeId($type);
+        $this->deleteAll("IdNodeDependent = %s and DepType= %s", array($nodeID, $type));
     }
 
     /**
      *
      * @param $nodeID
-     * @param $tipo
      * @return unknown_type
      */
-    function DeleteTypeDependenciesNode($nodeID, $type)
+    function getDependenciesDependentNode($nodeID)
     {
-        $dbObj = new DB();
-        $sql = sprintf("DELETE from Dependencies WHERE IdNodeDependent = %d and DepType= %s", $nodeID, $dbObj->sqlEscapeString($type));
-        $dbObj->Execute($sql);
 
-    }
-
-    /**
-     *
-     * @param $nodeID
-     * @return unknown_type
-     */
-    function GetDependenciesDependentNode($nodeID)
-    {
         //Get all the nodes which are dependant of the current one
-
-        $dbObj = new DB();
-        $sql = sprintf("SELECT IdNodeMaster from Dependencies WHERE IdNodoDependent= %d", $nodeID);
-        $dbObj->Query($sql);
-
-        if ($dbObj->numRows == 0) {
-            return 0;
-        }
-
-        if (!$dbObj->numErr) {
-            $arrayNodes = array();
-            while (!$dbObj->EOF) {
-                $arrayNodes[] = $dbObj->GetValue("IdNodeMaster");
-                $dbObj->Next();
-            }
-            return $arrayNodes;
-        } else {
-            return 0;
-        }
+        return $this->find("IdNodeMaster", "IdNodeDependent= %s", array($nodeID), MONO);
     }
 
     /**
      *
      * @param $nodeID
-     * @param $type
-     * @param $version
      * @return unknown_type
      */
-    function GetDependenciesMasterNode($nodeID)
+    function getDependenciesMasterNode($nodeID)
     {
         // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
-
-        $dbObj = new DB();
-
-        $sql = sprintf("SELECT DISTINCT(IdNodeDependent) from Dependencies WHERE IdNodeMaster = %d",
-            $nodeID);
-
-        $dbObj->Query($sql);
-
-        if ($dbObj->numRows == 0) {
-            return NULL;
-        } else {
-            $arrayNodes = array();
-            while (!$dbObj->EOF) {
-                $arrayNodes[] = $dbObj->GetValue("IdNodeDependent");
-                $dbObj->Next();
-            }
-            return $arrayNodes;
-        }
+        return $this->find("IdNodeMaster", "IdNodeMaster= %s", array($nodeID), MONO);
     }
 
 
@@ -189,37 +265,21 @@ class dependencies extends Dependencies_ORM
      * @param $version
      * @return unknown_type
      */
-    function GetDependenciesMasterByType($nodeID, $type, $version = NULL)
+    function getDependenciesMasterByType($nodeID, $type, $version = null)
     {
 
+        $type = $this->getDepTypeId($type);
         // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
+        $condition = "IdNodeMaster = %s AND DepType=%s";
+        $values = array($nodeID, $type);
 
-        $dbObj = new DB();
-
-        if (is_null($version)) {
-            $sql = sprintf("SELECT DISTINCT(IdNodeDependent) from Dependencies WHERE IdNodeMaster = %d
-				AND DepType=%s", $nodeID, $dbObj->sqlEscapeString($type));
-
-        } else {
-            $sql = sprintf("SELECT DISTINCT(IdNodeDependent) from Dependencies WHERE IdNodeMaster = %d
-				AND DepType = %s AND version = %s", $nodeID, $dbObj->sqlEscapeString($type), $version);
-
+        if (!is_null($version)) {
+            $condition .= " AND version = %s";
+            $values[] = $version;
         }
 
-        $dbObj->Query($sql);
-
-
-        if ($dbObj->numRows == 0) {
-            return NULL;
-        } else {
-
-            $arrayNodes = array();
-            while (!$dbObj->EOF) {
-                $arrayNodes[] = $dbObj->GetValue("IdNodeDependent");
-                $dbObj->Next();
-            }
-            return $arrayNodes;
-        }
+        $result = $this->find("IdNodeDependent", $condition, $values, MONO);
+        return is_array($result) ? array_unique($result) : false;
     }
 
     /**
@@ -229,110 +289,38 @@ class dependencies extends Dependencies_ORM
      * @param $version
      * @return unknown_type
      */
-    function GetMastersByType($nodeID, $type, $version = NULL)
+    function getMastersByType($nodeID, $type, $version = null)
     {
+        $type = $this->getDepTypeId($type);
 
-        // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
+        $condition = "IdNodeDependent = %s AND DepType=%s";
+        $values = array($nodeID, $type);
 
-        $dbObj = new DB();
-
-        if (is_null($version)) {
-            $sql = sprintf("SELECT DISTINCT(IdNodeMaster) from Dependencies WHERE IdNodeDependent = %d
-				AND DepType = %s", $nodeID, $dbObj->sqlEscapeString($type));
-        } else {
-            $sql = sprintf("SELECT DISTINCT(IdNodeMaster) from Dependencies WHERE IdNodeDependent = %d
-				AND DepType = %s AND version = %s", $nodeID, $dbObj->sqlEscapeString($type), $version);
+        if (!is_null($version)) {
+            $condition .= " AND version = %s";
+            $values[] = $version;
         }
 
-        $dbObj->Query($sql);
-
-        if ($dbObj->numRows == 0) {
-            return NULL;
-        } else {
-
-            $arrayNodes = array();
-            while (!$dbObj->EOF) {
-                $arrayNodes[] = $dbObj->GetValue("IdNodeMaster");
-                $dbObj->Next();
-            }
-            return $arrayNodes;
-        }
+        $result = $this->find("IdNodeMaster", $condition, $values, MONO);
+        return is_array($result) ? array_unique($result) : false;
     }
 
     /**
      *
-     * @param $nodoMaestro
-     * @param $nodoDependiente
-     * @param $tipo
+     * @param $master
+     * @param $dependent
+     * @param $type
      * @param $version
      * @return unknown_type
      */
     function existsDependence($master, $dependent, $type, $version)
     {
+        $type = $this->getDepTypeId($type);
         //Gets all the dependencies (ancestor) of this node
 
-        $dbObj = new DB();
-        $sql = sprintf("SELECT IdDep from Dependencies WHERE IdNodeMaster = %d AND IdNodeDependent = %d and DepType = %s and version = %d", $master, $dependent, $dbObj->sqlEscapeString($type), $version);
-
-        $dbObj->Query($sql);
-
-
-        if ($dbObj->numRows == 0) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    /**
-     * Gets all tags from nodeId and searchs its associated xslt
-     *
-     * @param string $content
-     * @param int $docId
-     * @return array
-     */
-    public static function getXslDependencies($content, $docId)
-    {
-
-        $node = new Node($docId);
-
-        $section = new Node($node->GetSection());
-        $sectionTemplates = new Node($section->GetChildByName('templates'));
-
-        $project = new Node($node->GetProject());
-        $projectTemplates = new Node($project->GetChildByName('templates'));
-
-        $nodeType = new NodeType();
-        $nodeType->SetByName('XslTemplate');
-        $nodeTypeXsl = $nodeType->get('IdNodeType');
-
-        // Gets document tags
-        $domDoc = new DOMDocument();
-        $domDoc->validateOnParse = true;
-
-        $domDoc->loadXML(\Ximdex\XML\Base::recodeSrc("<docxap>$content</docxap>", \Ximdex\XML\XML::UTF8));
-
-        $xpath = new DOMXPath($domDoc);
-        $nodeList = $xpath->query('//*');
-
-        // Searchs xslt nodes
-        $xslDependencies = array();
-        $parsedTags = array();
-        foreach ($nodeList as $element) {
-            $tagName = $element->nodeName;
-            if (!in_array($tagName, $parsedTags)) {
-                $xsltId = $sectionTemplates->GetChildByName($tagName . '.xsl');
-                // If not found in section it searchs in project
-                if (!($xsltId > 0)) {
-                    $xsltId = $projectTemplates->GetChildByName($tagName . '.xsl');
-                }
-                if ($xsltId > 0) {
-                    $xslDependencies[] = $xsltId;
-                }
-                $parsedTags[] = $tagName;
-            }
-        }
-        return $xslDependencies;
+        $condition = "IdNodeMaster = %s AND IdNodeDependent = %s and DepType = %s and version = %s";
+        $values = array($master, $dependent, $type, $version);
+        return $this->count($condition, $values);
     }
 
     /**
@@ -345,25 +333,16 @@ class dependencies extends Dependencies_ORM
     function deleteByMasterAndDependent($nodeMaster, $nodeDependent, $type)
     {
 
+        $type = $this->getDepTypeId($type);
+
         if (is_null($nodeMaster) || is_null($nodeDependent) || is_null($type)) {
-            XMD_Log::info('Params required');
+            Logger::info('Params required');
             return false;
         }
 
-        $dbObj = new DB();
-
-        $sql = "DELETE from Dependencies WHERE IdNodeDependent = $nodeDependent AND IdNodeMaster = $nodeMaster
-			AND  DepType = '$type'";
-
-        $result = $dbObj->Execute($sql);
-
-        if (!($result > 0)) {
-            XMD_Log::info(_('No dependencies deleted'));
-            return false;
-        }
-
-        return true;
+        $condition = "IdNodeDependent = %s AND IdNodeMaster = %s AND  DepType = %s";
+        $values = array($nodeMaster, $nodeDependent, $type);
+        return $this->deleteAll($condition, $values);
     }
 }
 
-?>

@@ -27,13 +27,9 @@
 ModulesManager::file('/inc/model/language.php');
 ModulesManager::file('/inc/model/channel.php');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
-ModulesManager::file('/inc/model/RelStrdocAsset.class.php');
-ModulesManager::file('/inc/model/RelStrdocCss.class.php');
-ModulesManager::file('/inc/model/RelStrdocNode.class.php');
-ModulesManager::file('/inc/model/RelStrdocScript.class.php');
-ModulesManager::file('/inc/model/RelStrdocStructure.class.php');
+ModulesManager::file('/inc/model/RelNode2Asset.class.php');
 ModulesManager::file('/inc/model/RelStrdocTemplate.class.php');
-ModulesManager::file('/inc/model/RelStrdocXimlet.class.php');
+ModulesManager::file('/inc/model/RelXml2Xml.class.php');
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 
 
@@ -86,20 +82,21 @@ class Action_infonode extends ActionAbstract
     function getDependencies()
     {
         $idNode = (int)$this->request->getParam("nodeid");
-
-        $classes = array(new RelStrdocAsset(), new RelStrdocCss(), new RelStrdocNode(),
-            new RelStrdocScript(), new RelStrdocStructure(), new RelStrdocTemplate(),
-            new RelStrdocXimlet());
-
-        $relnodemetadata = new RelNodeMetadata();
-
         $depMasterList = array();
+
+        $classes = array(new RelNode2Asset(), new RelXml2Xml(), new RelStrdocTemplate());
+
         foreach ($classes as $c) {
             $res = $c->find("target", "source=" . $idNode, null, MONO);
             if (count($res) > 0) {
                 $depMasterList = array_merge($depMasterList, $res);
             }
         }
+
+        $relnodemetadata = new RelNodeMetadata();
+
+
+
         $res = $relnodemetadata->find("IdMetadata", "IdNode=" . $idNode, null, MONO);
         if (count($res) > 0) {
             $depMasterList = array_merge($depMasterList, $res);
@@ -117,14 +114,30 @@ class Action_infonode extends ActionAbstract
             $depDependentList = array_merge($depDependentList, $res);
         }
 
+
+
+
+        foreach ($depMasterList as $i => $idDependentNode) {
+            $node = new Node((int)$idDependentNode);
+            if ($node->GetId() && $node->GetNodeType() != 5085) {
+                $obj["name"] = $node->GetNodeName();
+                $obj["type"] = $node->GetTypeName();
+                $obj["depends"] = array();
+                $obj["position"] = "master";
+                $objs[$node->GetNodeName()] = $obj;
+                $obj = null;
+            }else{
+                unset($depMasterList[$i]);
+            }
+        }
+        $depMasterList = array_values($depMasterList);
         $depMasterNameList = array();
         foreach ($depMasterList as $i) {
-            $id = (int)$i;
-            $node = new Node($i);
+            $node = new Node((int)$i);
             $depMasterNameList[] = $node->GetNodeName();
         }
 
-        $objs = array();
+
 
         $node = new Node($idNode);
         $centerName = $node->GetNodeName();
@@ -138,18 +151,6 @@ class Action_infonode extends ActionAbstract
             "position" => "center"
         );
         $objs[$centerName] = $obj;
-        foreach ($depMasterList as $d) {
-            $i = (int)$d;
-            $node = new Node($i);
-            if ($node->GetId() && $node->GetNodeType() != 5085) {
-                $obj["name"] = $node->GetNodeName();
-                $obj["type"] = $node->GetTypeName();
-                $obj["depends"] = array();
-                $obj["position"] = "master";
-                $objs[$node->GetNodeName()] = $obj;
-                $obj = null;
-            }
-        }
 
 
         foreach ($depDependentList as $d) {
@@ -196,5 +197,3 @@ class Action_infonode extends ActionAbstract
     }
 
 }
-
-?>

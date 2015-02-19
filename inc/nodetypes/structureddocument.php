@@ -103,81 +103,19 @@ class AbstractStructuredDocument extends FileNode  {
 */
 	public function getPublishabledDeps($params) {
 
+		$idDoc = $this->parent->get('IdNode');
+
 		$depsMngr = new DepsManager();
+		$structure = $depsMngr->getBySource(DepsManager::XML2XML, $idDoc);
 
-		// get links
+		$asset = empty($params['withstructure']) ? array() :
+			$depsMngr->getBySource(DepsManager::NODE2ASSET, $idDoc);
 
-		$level = empty($params['deeplevel']) ? 0 : $params['deeplevel'];
-		$levelDocs[] = $this->parent->get('IdNode');
-		$links = array();
-		$i = 0;
+		$node = new Node($idDoc);
+		$tmpWorkFlowSlaves = $node->GetWorkFlowSlaves();
+		$workFlowSlaves = is_null($tmpWorkFlowSlaves) ? array() : $tmpWorkFlowSlaves;
 
-		if ($level != 0) {
-			do {
-				$hasLinks = false;
-				$levelDeps = array();
-
-				foreach ($levelDocs as $idDoc) {
-					$tmpDeps = $depsMngr->getBySource(DepsManager::STRDOC_NODE, $idDoc);
-
-					if (!is_null($tmpDeps)) {
-						$hasLinks = true;
-						$levelDeps = array_unique(array_merge($levelDeps, $tmpDeps));
-					}
-				}
-
-				$links = array_unique(array_merge($links, $levelDocs));
-				$levelDocs = $levelDeps;
-				$i++;
-
-			} while (($i <= $level && $level > 0) || ($level < 0 && $hasLinks === true));
-		}
-
-		$links = (!isset($links) || is_null($links)) ? $levelDocs : $links;
-
-		if (!in_array($this->parent->get('IdNode'), $links)) {
-			array_push($links, $this->parent->get('IdNode'));
-		}
-
-		// foreach link get its not links dependencies
-
-		$css = array();
-		$script = array();
-		$structure = array();
-		$asset = array();
-		$templateDeps = array();
-		$workFlowSlaves = array();
-
-		foreach ($links as $idDoc) {
-
-			$tmpStructure = empty($params['withstructure']) ? array() :
-				$depsMngr->getBySource(DepsManager::STRDOC_STRUCTURE, $idDoc);
-			$structure = is_null($tmpStructure) ? $structure : array_unique(array_merge($tmpStructure, $structure));
-
-			$tmpCss = empty($params['withcss']) ? array() :
-				$depsMngr->getBySource(DepsManager::STRDOC_CSS, $idDoc);
-			$css = is_null($tmpCss) ? $css : array_unique(array_merge($tmpCss, $css));
-
-			$tmpScript = empty($params['withscript']) ? array() :
-				$depsMngr->getBySource(DepsManager::STRDOC_SCRIPT, $idDoc);
-			$script = is_null($tmpScript) ? $script : array_unique(array_merge($tmpScript, $script));
-
-			$tmpAsset = empty($params['withasset']) ? array() :
-				$depsMngr->getBySource(DepsManager::STRDOC_ASSET, $idDoc);
-			$asset = is_null($tmpAsset) ? $asset : array_unique(array_merge($tmpAsset, $asset));
-
-			$tmpTemplateDeps = empty($params['otf']) ? array() :
-				$depsMngr->getBySource(DepsManager::STRDOC_TEMPLATE, $idDoc);
-			$templateDeps = is_null($tmpTemplateDeps) ? $templateDeps :
-				array_unique(array_merge($tmpTemplateDeps, $templateDeps));
-
-			$node = new Node($idDoc);
-			$tmpWorkFlowSlaves = $node->GetWorkFlowSlaves();
-			$workFlowSlaves = is_null($tmpWorkFlowSlaves) ? $workFlowSlaves :
-				array_unique(array_merge($tmpWorkFlowSlaves, $workFlowSlaves));
-		}
-
-		return array_merge($workFlowSlaves, $css, $script, $asset, $templateDeps, $links, $structure);
+		return array_merge($workFlowSlaves, $asset, $structure);
 	}
 
 	function GetContent() {
@@ -414,13 +352,12 @@ class AbstractStructuredDocument extends FileNode  {
 		// Deletes dependencies in rel tables
 
 		$depsMngr = new DepsManager();
-		$depsMngr->deleteBySource(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
-		$depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
-		$depsMngr->deleteByTarget(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
-		$depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
-		$depsMngr->deleteBySource(DepsManager::STRDOC_ASSET, $this->parent->get('IdNode'));
-		$depsMngr->deleteBySource(DepsManager::STRDOC_CSS, $this->parent->get('IdNode'));
-		$depsMngr->deleteBySource(DepsManager::STRDOC_SCRIPT, $this->parent->get('IdNode'));
+
+		$depsMngr->deleteByTarget(DepsManager::XML2XML, $this->parent->get('IdNode'));
+		$depsMngr->deleteBySource(DepsManager::XML2XML, $this->parent->get('IdNode'));
+
+		$depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
+
 
 		XMD_Log::info('StrDoc dependencies deleted');
 	}

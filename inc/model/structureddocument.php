@@ -209,7 +209,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 			// Elimina la dependencia
 			$dependencies=new dependencies();
-			$dependencies->DeleteTypeDependenciesNode($this->get('IdDoc'), 'SYMLINK');
+			$dependencies->deleteDependenciesByDependentAndType($this->get('IdDoc'), 'SYMLINK');
 
 			return $result;
 		}
@@ -283,15 +283,10 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 		// refrescamos la fecha de Actualizacion del nodo
 		$this->SetUpdateDate();
-
-		// Y el contenido
 		$data = new DataFactory($this->get('IdDoc'));
 		$data->SetContent($content, NULL, NULL, $commitNode);
-		$idVersion = $data->GetLastVersionId();
-
 		// set dependencies
-
-		ParsingDependences::GetAll($this->get('IdDoc'), $content, $idVersion);
+		ParsingDependencies::parseAllDependencies($this->get('IdDoc'), $content);
 
 		// Renderizamos el nodo para reflejar los cambios
 		$node = new Node($this->get('IdDoc'));

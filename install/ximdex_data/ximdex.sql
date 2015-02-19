@@ -134,6 +134,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6097,5034,'Modify language','modifylanguage','modify_language.png','Modify data of a language',60,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6098,5032,'Publish','workflow_forward','change_next_state.png','Move to the next state',72,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6099,5032,'Move to previous state','workflow_backward','change_last_state.png','Move to the previous state',-10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6100,5032,'Publish advance','workflow_forward_advance','change_next_state.png','Advance publish',73,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6101,5011,'Change users','modifygroupusers','modify_users.png','Modify list of users that integrate this group',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6107,5033,'Delete channel','deletenode','delete_channel.png','Delete a channel if it has not associated documents',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6122,5013,'Associated groups','modifygroupsnode','groups_project.png','Manage associations of groups with this node',50,NULL,0,'');
@@ -517,24 +518,48 @@ CREATE TABLE `Dependencies` (
   `IdDep` int(12) unsigned NOT NULL auto_increment,
   `IdNodeMaster` int(12) unsigned NOT NULL default '0',
   `IdNodeDependent` int(12) unsigned NOT NULL default '0',
-  `DepType` varchar(10) NOT NULL default '0',
+  `DepType` int(6) NOT NULL default '0',
   `version` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`IdDep`),
+  PRIMARY KEY (`IdDep`),
   KEY `IdNodeMaster` (`IdNodeMaster`),
   KEY `IdNodeDependent` (`IdNodeDependent`),
   KEY `DepType` (`DepType`)
 ) ENGINE=MYISAM;
-
 --
 -- Dumping data for table `Dependencies`
 --
-
-
 /*!40000 ALTER TABLE `Dependencies` DISABLE KEYS */;
 LOCK TABLES `Dependencies` WRITE;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `Dependencies` ENABLE KEYS */;
 
+
+--
+-- Table structure for table `DependenceTypes`
+--
+
+DROP TABLE IF EXISTS `DependenceTypes`;
+CREATE TABLE `DependenceTypes` (
+  `IdDepType` int(6) unsigned NOT NULL auto_increment,
+  `Type` varchar(31)  NOT NULL default '0',
+  PRIMARY KEY (`IdDepType`)
+) ENGINE=MYISAM;
+
+
+--
+-- Dumping data for table `DependenceTypes`
+--
+LOCK TABLES `DependenceTypes` WRITE;
+
+INSERT INTO `DependenceTypes` VALUES (NULL, 'asset');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'channel');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'language');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'schema');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'symlink');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'template');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'ximlet');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'ximlink');
+
+UNLOCK TABLES;
 --
 -- Table structure for table `FastTraverse`
 --
@@ -1257,7 +1282,7 @@ INSERT INTO `Nodes` VALUES (6096,5011,5008,'Group propertis',NULL,NULL,NULL,NULL
 INSERT INTO `Nodes` VALUES (6097,5034,5008,'Modify language',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6098,5032,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6099,5032,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6100,5032,5008,'Version repository',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6100,5032,5008,'Publish advance',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6101,5011,5008,'Change users',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6102,5034,5008,'Delete',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6103,5028,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -2628,7 +2653,8 @@ CREATE TABLE `RelStrDocChannels` (
   `IdRel` int(12) unsigned NOT NULL auto_increment,
   `IdDoc` int(12) unsigned default '0',
   `IdChannel` int(12) unsigned default '0',
-  PRIMARY KEY  (`IdRel`)
+  PRIMARY KEY  (`IdRel`),
+  UNIQUE KEY `IdDoc` (`IdDoc`,`IdChannel`)
 ) ENGINE=MYISAM COMMENT='Association between structured documents and their channels';
 
 --
@@ -3699,27 +3725,7 @@ INSERT INTO `Encodes` VALUES ('UTF-8','Codificación Utf-8');
 INSERT INTO `Encodes` VALUES ('ISO-8859-1','Codificación Iso-8859-1');
 UNLOCK TABLES;
 
--- Table structure for table RelStrdocNode
 
-DROP TABLE IF EXISTS `RelStrdocNode`;
-CREATE TABLE RelStrdocNode (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- Table structure for table RelStrdocXimlet
-
-DROP TABLE IF EXISTS `RelStrdocXimlet`;
-CREATE TABLE RelStrdocXimlet (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
 
 -- Table structure for table RelStrdocTemplate
 
@@ -3729,7 +3735,9 @@ CREATE TABLE RelStrdocTemplate (
 	source int(12) unsigned NOT NULL default '0',
 	target int(12) unsigned NOT NULL default '0',
 	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
+	UNIQUE KEY `rel` (`source`,`target`),
+  INDEX `RelStrdocTemplate_source` (`source`),
+  INDEX `RelStrdocTemplate_target` (`target`)
 ) ENGINE=MYISAM;
 
 -- Table structure for table RelSectionXimlet
@@ -3754,49 +3762,33 @@ CREATE TABLE RelBulletinXimlet (
 	UNIQUE KEY `rel` (`source`,`target`)
 ) ENGINE=MYISAM;
 
+-- Table structure for table RelNode2Asset
+
+DROP TABLE IF EXISTS `RelNode2Asset`;
+CREATE TABLE RelNode2Asset (
+	id int(12) unsigned NOT NULL auto_increment,
+	source int(12) unsigned NOT NULL default '0',
+	target int(12) unsigned NOT NULL default '0',
+	PRIMARY KEY (id),
+	UNIQUE KEY `rel` (`source`,`target`),
+  INDEX `RelXml2Xml_source` (`source`),
+  INDEX `RelXml2Xml_target` (`target`)
+) ENGINE=MYISAM;
+
 -- Table structure for table RelStrdocAsset
 
-DROP TABLE IF EXISTS `RelStrdocAsset`;
-CREATE TABLE RelStrdocAsset (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
+DROP TABLE IF EXISTS `RelXml2Xml`;
+CREATE TABLE RelXml2Xml (
+  id int(12) unsigned NOT NULL auto_increment,
+  source int(12) unsigned NOT NULL default '0',
+  target int(12) unsigned NOT NULL default '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY `rel` (`source`,`target`),
+  INDEX `RelXml2Xml_source` (`source`),
+  INDEX `RelXml2Xml_target` (`target`)
 ) ENGINE=MYISAM;
 
--- Table structure for table RelStrdocCss
 
-DROP TABLE IF EXISTS `RelStrdocCss`;
-CREATE TABLE RelStrdocCss (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- Table structure for table RelStrdocScript
-
-DROP TABLE IF EXISTS `RelStrdocScript`;
-CREATE TABLE RelStrdocScript (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- Table structure for table RelStrdocStructure
-
-DROP TABLE IF EXISTS `RelStrdocStructure`;
-CREATE TABLE RelStrdocStructure (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
 
 -- --------------------------------------------------------
 

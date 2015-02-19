@@ -27,16 +27,26 @@
 
 
 
- 
+/**
+ * XIMDEX_ROOT_PATH
+ */
+if (!defined('XIMDEX_ROOT_PATH'))
+	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
+include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
+class DependenceTypes_ORM extends GenericData   {
+	var $_idField = 'IdDepType';
+	var $_table = 'DependenceTypes';
+	var $_metaData = array(
+				'IdDepType' => array('type' => "int(6)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+				'Type' => array('type' => "varchar(32)", 'not_null' => 'true')
+				);
+	var $_uniqueConstraints = array(
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelStrdocScript_ORM.class.php';
-
-class RelStrdocScript extends RelStrdocScript_ORM {
-
+				);
+	var $_indexes = array('IdDepType');
+	var $IdDepType;
+	var $Type = 0;
 }
 ?>

@@ -25,30 +25,21 @@
  */
 
 
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
 include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelStrdocCss_ORM extends GenericData   {
-	var $_idField = 'id';
-	var $_table = 'RelStrdocCss';
-	var $_metaData = array(
-				'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'source' => array('type' => "int(12)", 'not_null' => 'true'),
-				'target' => array('type' => "int(12)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-				'rel' => array('source', 'target')
-				);
-	var $_indexes = array('id');
-	var $id;
-	var $source = 0;
-	var $target = 0;
+class RelNode2Asset_ORM extends GenericData   {
+    var $_idField = 'id';
+    var $_table = 'RelNode2Asset';
+    var $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'source' => array('type' => "int(12)", 'not_null' => 'true'),
+        'target' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'rel' => array('source', 'target')
+    );
+    var $_indexes = array('id');
+    var $id;
+    var $source = 0;
+    var $target = 0;
 }
-?>

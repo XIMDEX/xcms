@@ -136,8 +136,8 @@ class FileNode extends Root
         }*/
 
         if ($this->parent->nodeType->get('Name') == 'CssFile') {
-            $dependencies = new ParsingDependences();
-            $dependencies->parseCssDependencies($this->nodeID, $content);
+
+		ParsingDependencies::parseCssDependencies($this->nodeID, $content);
         }
 
 
@@ -204,21 +204,16 @@ class FileNode extends Root
     function DeleteNode()
     {
 
-        /// @todo: move this piece to Visualtemplate nodetype
+		// Deletes dependencies in rel tables
+		$depsMngr = new DepsManager();
+		$result = $depsMngr->deleteByTarget(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
+		$result = $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) && $result;
 
-        if (strtoupper($this->parent->nodeType->get('Name')) == 'VISUALTEMPLATE') {
-            $reltc = new RelTemplateContainer();
-            $reltc->deleteRelByTemplate($this->parent->get('IdNode'));
-        }
+		if ($result){
+			XMD_Log::info('Filenode dependencies deleted');
+		}
 
-        // Deletes dependencies in rel tables
-
-        $depsMngr = new DepsManager();
-        $depsMngr->deleteByTarget(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
-
-        XMD_Log::info('Filenode dependencies deleted');
-
-        return true;
+		return $result;
     }
 
     /**
@@ -260,37 +255,5 @@ class FileNode extends Root
     {
         $this->updatePath();
     }
-
-    /**
-     *  Promotes the File to the next workflow state.
-     * @param string newState
-     * @return bool
-     */
-
-    function promoteToWorkFlowState($newState)
-    {
-
-        $state = new State();
-        $idState = $state->loadByName($newState);
-
-        $idActualState = $this->parent->GetState();
-
-        if ($idState == $idActualState) {
-            XMD_Log::warning('Se ha solicitado pasar a un estado y ya nos encontramos en ese estado');
-            return true;
-        }
-
-        $actualState = new State($idActualState);
-
-        baseIO_CambiarEstado($this->nodeID, $idState);
-        $lastState = new State();
-        $idLastState = $lastState->loadLastState();
-        if ($idState == $idLastState) {
-            $up = time();
-            $down = $up + 36000000; // unpublish date = dateup + 1year
-            baseIO_PublishDocument($this->nodeID, $up, $down, null);
-        }
-    }
 }
-
 ?>

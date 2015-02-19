@@ -416,9 +416,9 @@ class DexPumper {
 	}
         
         private function finishTask($idSync){
-            $this->serverFrame->set('IdSync', $idSync);
-            $this->serverFrame->set('State', ServerFrame::IN);
-            $this->serverFrame->update();
+            $serverFrame = new ServerFrame($idSync);
+            $serverFrame->set('State', ServerFrame::IN);
+            $serverFrame->update();
             $this->updateTimeInPumper();
         }
 

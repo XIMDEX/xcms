@@ -173,7 +173,13 @@ class View_FilterMacrosPreview extends View_FilterMacros implements Interface_Vi
 		//Get parentesis content
 		$pathToParams = $matches[1];
 		// Link target-node
-		$res = $this->infererNodeAndChannel($pathToParams);
+		$parserPathTo = new ParsingPathTo();
+		$parserPathTo->parsePathTo($pathToParams, $this->_node->getID());
+
+		$res["idNode"] = $parserPathTo->getIdNode();
+		$res["pathMethod"] = $parserPathTo->getPathMethod();
+		$res["channel"] = $parserPathTo->getChannel();
+
 		if (!$res || !is_array($res) || !count($res)){
 			return '';
 		}else{

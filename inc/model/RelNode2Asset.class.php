@@ -25,17 +25,8 @@
  */
 
 
+require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNode2Asset_ORM.class.php';
 
+class RelNode2Asset extends RelNode2Asset_ORM {
 
- 
-
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 }
-
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelStrdocStructure_ORM.class.php';
-
-class RelStrdocStructure extends RelStrdocStructure_ORM {
-}
-?>

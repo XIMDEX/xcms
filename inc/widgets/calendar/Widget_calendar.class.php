@@ -129,7 +129,7 @@ class Widget_calendar extends Widget_Abstract {
             $params["first_date_text"] = $params["first_now_text"] = _("Now");
             $arrayDateFormat = explode(" ", $params["format"]);
             $params["first_time_text"] = date($arrayDateFormat[0], time());
-            $params["last_date_text"] = $params["last_now_text"] = _("No caducate");
+            $params["last_date_text"] = $params["last_now_text"] = _("No expire");
             $params["last_time_text"] = "--/--/----";
             
         }

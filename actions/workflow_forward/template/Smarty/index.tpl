@@ -36,13 +36,21 @@
 		</fieldset>
 	</div>
 
-{if $hasDisabledFunctions}
-	<div class="message message-warning">
-		<p class="disable-functions-alert">
-			{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
-		</p>
-	</div>
-{/if}
+	{if $hasDisabledFunctions}
+		<div class="message message-warning">
+			<p class="disable-functions-alert">
+				{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
+			</p>
+		</div>
+	{/if}
+
+	{if $globalForcedEnabled}
+		<div class="message message-warning">
+			<p class="disable-functions-alert">
+				{t}Force publication is enabled in global config. This could cause slow publication. Please check synchro.conf file{/t}.
+			</p>
+		</div>
+	{/if}
 
 	<div class="action_content">
 		<fieldset class="publish_date">
@@ -136,36 +144,6 @@
 			    <label for="markend">{t}Do you want to set the begin-date of the new window as the end-date of the previous window?{/t}</label>
 			{/if}
 
-            {if $show_rep_option}
-                {if $synchronizer_to_use == "default"}
-					<div class="col2-3">
-						<input type="checkbox" name="republish" id="republish" />
-						<label for="republish">{t}Do you want to publish its related documents?{/t}</label>
-					</div>
-			    {elseif $synchronizer_to_use == "ximSYNC"}
-                    {if $nodetypename eq 'XmlDocument' && $ximpublish_tools_enabled}
-                        {if $advanced_publication eq '1'}
-							<div class="col2-3">
-			                <hr/>
-			                <input onclick="show_div_levels();" type="checkbox" name="all_levels" id="all_levels_{$id_node}" value="1" checked />
-			                <label for="all_levels_{$id_node}">{t}Publish all levels{/t}</label>
-			                <br/>
-			                <div id="div_deeplevel">
-				                <label for="deeplevel_{$id_node}">{t}Publish until a certain depth level{/t}:</label>
-				                <input id="deeplevel_{$id_node}" size="5" type="text" name="deeplevel" value="0" />
-			                </div>
-							</div>
-			            {/if}
-                        {if $structural_publication eq '1'}
-							<div class="col2-3">
-			                <hr/>
-			                <input type="checkbox" name="no_structure" id="no_structure_{$id_node}" />
-			                <label for="no_structure_{$id_node}">{t}Publish just the document (without its structure: css, images, scripts){/t}</label>
-							</div>
-			            {/if}
-                    {/if}
-                {/if}
-            {/if}
-		    </fieldset>
-	    </div>
+		</fieldset>
+	</div>
 </form>

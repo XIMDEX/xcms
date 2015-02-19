@@ -780,7 +780,8 @@ class GenericData extends \Ximdex\Utils\Overloadable
      */
     function count($condition = '', $params = NULL)
     {
-        return $this->find('count(1)', $condition, $params, MONO);
+        $result = $this->find('count(1)', $condition, $params, MONO);
+        return ($result && is_array($result) && count($result))? $result[0]: false;
     }
 
     /**
