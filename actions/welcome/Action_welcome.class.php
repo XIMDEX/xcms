@@ -42,9 +42,9 @@ class Action_welcome extends ActionAbstract
                 $values[] = $this->addJs('/actions/welcome/resources/js/tour.js');
                 $values[] = $this->addJs('/resources/js/tour.js', 'ximTOUR');
             }
-            $this->addJs('/actions/welcome/resources/js/index.js');
             $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
+            $this->addJs('/actions/welcome/resources/js/index.js');
 
         //Getting idaction to check Create new project permissions for user
         $user = new User(\Ximdex\Utils\Session::get("userID"));

@@ -46,8 +46,8 @@
         <div class="subfolders-available col2-3">
             <h3>{t}Subfolders availables{/t}</h3>
             <div ng-repeat="folder in subfoldersSelected" class="subfolder box-col1-1">
-                <input id="#/folder.NodeType/#" class="hidden-focus" type="checkbox" value="#/folder.NodeType/#" name="folderlst[]">
-                <label class="icon" for="#/folder.NodeType/#">
+                <input id="#/$parent.$parent.tab.id + '_' + folder.NodeType/#" class="hidden-focus" type="checkbox" value="#/folder.NodeType/#" name="folderlst[]">
+                <label class="icon" for="#/$parent.$parent.tab.id + '_' + folder.NodeType/#">
                     <strong class="icon #/folder.Name/#">#/folder.Name/#</strong>
                 </label>
                 <span class="info">#/folder.description/#</span>
