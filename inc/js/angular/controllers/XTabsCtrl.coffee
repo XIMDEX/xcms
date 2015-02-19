@@ -129,7 +129,6 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
 
                 #Check if active tab is on the left
                 if elementPosition < containerPosition.left
-                    console.log "tab","izquierda"
                     for a, i in container.find('li')
                         continue if i == 0
                         rtElement = (rightPosition(angular.element(a))) - (containerPosition.left-elementPosition)
@@ -146,12 +145,10 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                     newleft += containerWidth - 40 - acumWidth
                 #Check if active tab is on the right
                 else if rtContainer + 40 > rtElement + 2
-                    console.log "tab","derecha"
                     $scope.limitTabs = $scope.activeIndex() + 1
                     newleft = 2 + rtElement + widthDeletedTab - rtContainer - 40
                 #Active tab is shown
                 else
-                    console.log "tab","enmedio"
                     if deletedTab && contents[0]?
                         actualElement = element
                         cont = 0
@@ -173,11 +170,9 @@ angular.module("ximdex.main.controller").controller "XTabsCtrl", [
                 moveLeft = actualLeft + Math.floor(newleft)
 
                 if moveLeft < (contentsWidth - (containerWidth - 40)) * -1
-                    console.log "tab", "demasiado a la izquierda"
                     moveLeft = ((contentsWidth - (containerWidth - 40)) * -1)
 
                 if moveLeft > 0
-                    console.log "tab", "demasiado a la derecha"
                     container.css "left", "0px"
                 else
                     container.css "left", moveLeft + "px"

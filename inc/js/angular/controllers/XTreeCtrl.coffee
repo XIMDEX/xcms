@@ -24,8 +24,8 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 ###
 angular.module("ximdex.main.controller").controller "XTreeCtrl", [
     "$scope", "xTranslate", "$window", "$http"
-    "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce"
-    ($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) ->
+    "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$rootScope"
+    ($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $rootScope) ->
 
         delete Hammer.defaults.cssProps.userSelect
 
@@ -270,15 +270,15 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
 
         #Search nodes with a filter
         $scope.doFilter = () ->
-            if $scope.filter == ""
-                actualFilter = ""
-                $scope.filterMode = false
+            if $scope.filter.length>2 and $scope.filter.match /^[\d\w_\.-]+$/i
+                actualFilter = $scope.filter
+                $scope.filterMode = true
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
                 $scope.loadNodeChildren $scope.projects
-            else if $scope.filter.length>2 and $scope.filter.match /^[\d\w_\.]+$/i
-                actualFilter = $scope.filter
-                $scope.filterMode = true
+            else if actualFilter != ""
+                actualFilter = ""
+                $scope.filterMode = false
                 $scope.projects.showNodes = true
                 $scope.projects.collection = []
                 $scope.loadNodeChildren $scope.projects
@@ -306,6 +306,7 @@ angular.module("ximdex.main.controller").controller "XTreeCtrl", [
         $scope.dragEnd = () ->
             if $scope.expanded
                 angular.element('body').removeClass 'noselect'
+                $rootScope.$broadcast('updateTabsPosition')
             return
 
 

@@ -25,7 +25,7 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
  */
 angular.module("ximdex.main.controller").controller("XTreeCtrl", [
-  "$scope", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$sce", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $sce) {
+  "$scope", "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "xTabs", "$rootScope", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, xTabs, $rootScope) {
     var actualFilter, allowedHokey, canceler, dragStartPosition, findNodeById, getFolderPath, listenHidePanel, loadAction, postLoadActions, prepareBreadcrumbs, size;
     delete Hammer.defaults.cssProps.userSelect;
     $scope.projects = null;
@@ -305,15 +305,15 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
       });
     };
     $scope.doFilter = function() {
-      if ($scope.filter === "") {
-        actualFilter = "";
-        $scope.filterMode = false;
+      if ($scope.filter.length > 2 && $scope.filter.match(/^[\d\w_\.-]+$/i)) {
+        actualFilter = $scope.filter;
+        $scope.filterMode = true;
         $scope.projects.showNodes = true;
         $scope.projects.collection = [];
         $scope.loadNodeChildren($scope.projects);
-      } else if ($scope.filter.length > 2 && $scope.filter.match(/^[\d\w_\.]+$/i)) {
-        actualFilter = $scope.filter;
-        $scope.filterMode = true;
+      } else if (actualFilter !== "") {
+        actualFilter = "";
+        $scope.filterMode = false;
         $scope.projects.showNodes = true;
         $scope.projects.collection = [];
         $scope.loadNodeChildren($scope.projects);
@@ -350,6 +350,7 @@ angular.module("ximdex.main.controller").controller("XTreeCtrl", [
     $scope.dragEnd = function() {
       if ($scope.expanded) {
         angular.element('body').removeClass('noselect');
+        $rootScope.$broadcast('updateTabsPosition');
       }
     };
     $scope.toggleTree = function() {

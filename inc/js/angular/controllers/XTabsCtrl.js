@@ -128,7 +128,6 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
         return;
       }
       if (elementPosition < containerPosition.left) {
-        console.log("tab", "izquierda");
         _ref = container.find('li');
         for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
           a = _ref[i];
@@ -150,11 +149,9 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
         }
         newleft += containerWidth - 40 - acumWidth;
       } else if (rtContainer + 40 > rtElement + 2) {
-        console.log("tab", "derecha");
         $scope.limitTabs = $scope.activeIndex() + 1;
         newleft = 2 + rtElement + widthDeletedTab - rtContainer - 40;
       } else {
-        console.log("tab", "enmedio");
         if (deletedTab && (contents[0] != null)) {
           actualElement = element;
           cont = 0;
@@ -180,11 +177,9 @@ angular.module("ximdex.main.controller").controller("XTabsCtrl", [
       }
       moveLeft = actualLeft + Math.floor(newleft);
       if (moveLeft < (contentsWidth - (containerWidth - 40)) * -1) {
-        console.log("tab", "demasiado a la izquierda");
         moveLeft = (contentsWidth - (containerWidth - 40)) * -1;
       }
       if (moveLeft > 0) {
-        console.log("tab", "demasiado a la derecha");
         container.css("left", "0px");
       } else {
         container.css("left", moveLeft + "px");
