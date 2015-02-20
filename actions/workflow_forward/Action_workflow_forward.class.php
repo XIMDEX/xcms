@@ -537,13 +537,13 @@ class Action_workflow_forward extends ActionAbstract {
 
 	$structure = $this->request->getParam('no_structure') == '1' ? false : true;
         $deepLevel = $this->request->getParam('all_levels') == 1 ? -1 : $this->request->getParam('deeplevel');
-	$force = $this->request->getParam('force') == '1' ? true : false;
+	$force = $this->request->getParam('no_force') == '1' ? false : true;
 
         $sendNotifications = $this->request->getParam('sendNotifications');
         $notificableUsers = $this->request->getParam('users');
         $idState = $this->request->getParam('stateid');
         $texttosend = $this->request->getParam('texttosend');
-	$lastPublished = $this->request->getParam('last_published') == '1' ? true : false;
+	$lastPublished = $this->request->getParam('latest') == '1' ? false : true;
         XMD_Log::info("ADDSECTION publicateNode PRE");
 	$this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished);
 	}
