@@ -39,7 +39,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 	/**
 	 *	Static method that creates a new NodeSet and returns the related object
 	 */
-	static public function & create($idNode, $idNodeGenerator, $dateUp, $dateDown, $userId, $force) {
+	static public function & create($idNode, $idNodeGenerator, $dateUp, $dateDown, $userId, $force, $lastPublishedVersion, $deepLevel) {
 		$node = new NodesToPublish();
 		$node->set('IdNode', $idNode);
 		$node->set('IdNodeGenerator', $idNodeGenerator);
@@ -50,10 +50,18 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 		$force = $force == true ? 1 : 0;
 		$node->set('ForcePublication', $force);
+		$node->set('DeepLevel', $deepLevel);
 
 		$dataFactory = new DataFactory($idNode);
+
 		$idVersion = $dataFactory->GetLastVersion();
-		$idSubversion = $dataFactory->GetLastSubVersion($idVersion);
+		if ($idNode != $idNodeGenerator && $lastPublishedVersion && $idVersion != 0){
+			$idSubversion = 0;
+		}
+		else{
+			$idSubversion = $dataFactory->GetLastSubVersion($idVersion);
+		}
+
 		$node->set('Version', $idVersion);
 		$node->set('Subversion', $idSubversion);
 		$node->add();
@@ -87,7 +95,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
-		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId from NodesToPublish where DateUp = ".$dateUp." and State = 1";
+		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId from NodesToPublish where DateUp = ".$dateUp." and State = 1 order by deepLevel DESC";
 		$db->Query($sql_nodes);
 
 		$force = true;

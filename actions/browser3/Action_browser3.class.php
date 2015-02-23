@@ -1015,10 +1015,6 @@ class Action_browser3 extends ActionAbstract {
 
         $options = array_merge($sets, $arrayActionsParams);
 
-        foreach ($options as $key => $value) {
-            $options[$key]['params'] = urlencode($options[$key]['params']);
-        }
-
         $this->sendJSON($options);
     }
 

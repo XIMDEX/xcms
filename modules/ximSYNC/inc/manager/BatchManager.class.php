@@ -129,7 +129,7 @@ class BatchManager {
 				$docNode->SetContent($content);
 			}
 
-			if (!self::isPublishable($idDoc, $up, $down, $force)) {
+			if (!$this->isPublishable($idDoc, $up, $down, $force)) {
 
 				$docsToPublish = array_diff($docsToPublish, array($idDoc));
 				$unchangedDocs[$idDoc][0][0] = 0;

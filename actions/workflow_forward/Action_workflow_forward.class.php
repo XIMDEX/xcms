@@ -157,6 +157,7 @@ class Action_workflow_forward extends ActionAbstract {
             if ($workflowNext->IsFinalState()) {
                 $values['go_method'] = 'publicateNode';
                 $values['hasDisabledFunctions'] = $this->hasDisabledFunctions();
+				$values['globalForcedEnabled'] = FORCE_PUBLICATION;
                 $values = array_merge($values, $this->buildExtraValues($idNode));
                 $this->render($values, NULL, 'default-3.0.tpl');
             } else {
@@ -263,7 +264,8 @@ class Action_workflow_forward extends ActionAbstract {
                 'required' => $conf['required'] === true ? 1 : 0,
                 'defaultMessage' => $defaultMessage,
                 'hasDisabledFunctions' => $this->hasDisabledFunctions(),
-                'stateid' => $idState
+                'stateid' => $idState,
+			'globalForcedEnabled' => FORCE_PUBLICATION
             );
             $this->render($values, 'index.tpl', 'default-3.0.tpl');
         } else { //if the next state is not the final, we show a success message
@@ -532,20 +534,21 @@ class Action_workflow_forward extends ActionAbstract {
         $down = (!is_null($dateDown) && $dateDown != "") ? $dateDown / 1000 : null;
 
         $markEnd = $this->request->getParam('markend') ? true : false;
-        $republish = $this->request->getParam('republish') ? true : false;
 
-        $structure = $this->request->getParam('no_structure') == 'on' ? false : true;
+	$structure = $this->request->getParam('no_structure') == '1' ? false : true;
         $deepLevel = $this->request->getParam('all_levels') == 1 ? -1 : $this->request->getParam('deeplevel');
+	$force = $this->request->getParam('no_force') == '1' ? false : true;
 
         $sendNotifications = $this->request->getParam('sendNotifications');
         $notificableUsers = $this->request->getParam('users');
         $idState = $this->request->getParam('stateid');
         $texttosend = $this->request->getParam('texttosend');
+	$lastPublished = $this->request->getParam('latest') == '1' ? false : true;
         XMD_Log::info("ADDSECTION publicateNode PRE");
-        $this->sendToPublish($idNode, $up, $down, $markEnd, $republish, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend);
-    }
+	$this->sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished);
+	}
 
-    protected function sendToPublish($idNode, $up, $down, $markEnd, $republish, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend) {
+    protected function sendToPublish($idNode, $up, $down, $markEnd, $force, $structure, $deepLevel, $sendNotifications, $notificableUsers, $idState, $texttosend, $lastPublished) {
         XMD_Log::info("ADDSECTION publicateNode sendToPublish parent");
         $this->addJs('/actions/workflow_forward/resources/js/workflow_forward.js');
 
@@ -567,17 +570,7 @@ class Action_workflow_forward extends ActionAbstract {
 
         $node = new Node($idNode);
 
-        //Creating flags to publicate
-        $flagsPublication = array(
-            'markEnd' => $markEnd,
-            'linked' => $republish,
-            'structure' => $structure,
-            'deeplevel' => $deepLevel,
-            'force' => true,
-            'recurrence' => false,
-            'workflow' => true
-        );
-
+		$flagsPublication = $this->buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished);
 
         //Adding node to NodesToPublish
         $result = SynchroFacade::pushDocInPublishingPool($idNode, $up, $down, $flagsPublication);
@@ -648,7 +641,27 @@ class Action_workflow_forward extends ActionAbstract {
         }
     }
 
-    /**
+	/**
+	 *
+	 */
+	protected function buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished)
+	{
+
+		//Creating flags to publicate
+		$flagsPublication = array(
+			'markEnd' => $markEnd,
+			'structure' => 1,
+			'deeplevel' => 1,
+			'force' => $force,
+			'recurrence' => false,
+			'workflow' => true,
+			'lastPublished' => 0
+		);
+
+		return $flagsPublication;
+	}
+     
+    /*
      * Validate if a node can be forwarded
      * 
      * @param $idNode The selected node identificator.

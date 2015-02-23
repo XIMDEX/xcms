@@ -52,7 +52,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			this.element.dialog({
 				title: _('Search'),
 				autoOpen: false,
-				width: 1100,
+				width: 800,
 				height: 750,
 				minWidth: 630,
 				minHeight: 280,

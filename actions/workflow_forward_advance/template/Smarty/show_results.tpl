@@ -1,5 +1,4 @@
-<?php
-/**
+{**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
  *  Ximdex a Semantic Content Management System (CMS)
@@ -22,21 +21,5 @@
  *
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
- */
-
-
-
-
- 
-
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelStrdocCss_ORM.class.php';
-
-class RelStrdocCss extends RelStrdocCss_ORM {
-
-}
-?>
+ *}
+{include file="`$_APP_ROOT`/actions/workflow_forward/template/Smarty/show_results.tpl"}

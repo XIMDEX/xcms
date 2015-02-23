@@ -144,7 +144,7 @@ div.kupu-smalleditor {
   /*height: 40px;*/
   height: auto;
   margin: 0;
-  overflow: hidden;
+  /*overflow: hidden;*/
   position: relative;
   /*top:0;*/
   width: 100%;
@@ -1606,7 +1606,7 @@ h3 .xedit-rngelements-toolbox-button-closed:hover {
 	z-index: 10;
 }
 */
-span.kupu-tb-buttongroup button span.tooltip, span.kupu-tb-buttongroup button span.triangle {
+span.kupu-tb-buttongroup button span.xtooltip, span.kupu-tb-buttongroup button span.triangle {
   text-indent: 0px;
   display: none;
   background: none; }
@@ -1622,7 +1622,7 @@ span.kupu-tb-buttongroup button:hover span.triangle {
   left: 3px;
   z-index: 200; }
 
-span.kupu-tb-buttongroup button:hover span.tooltip {
+span.kupu-tb-buttongroup button:hover span.xtooltip {
   position: absolute;
   display: block;
   z-index: 80px;
@@ -1638,7 +1638,7 @@ span.kupu-tb-buttongroup button:hover span.tooltip {
   z-index: 250;
   /*-moz-box-shadow: 0px 2px 5px #555;*/ }
 
-span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
+span.kupu-tb-buttongroup button.kupu-newwindow:hover span.xtooltip {
   right: 3px;
   left: auto; }
 

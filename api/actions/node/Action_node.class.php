@@ -90,6 +90,7 @@ class Action_node extends AbstractAPIAction implements SecuredAction {
         //getting and adding file extension
         $rntmt = new RelNodeTypeMimeType();
         $ext = $rntmt->getFileExtension($nodeType);
+	$ext = $ext == "image"? "": $ext;
         if (strcmp($ext, '') != 0) {
             $name_ext = $name . "." . $ext;
         } else {
@@ -124,9 +125,10 @@ class Action_node extends AbstractAPIAction implements SecuredAction {
         $idnode = $request->getParam('nodeid');
         $content = $request->getParam('content');
 
-        $b64decoded = base64_decode($content, true);
-        $content = $b64decoded === false ? urldecode(stripslashes($content)) : urldecode($b64decoded);
-       
+	$content = rawurldecode(stripslashes($content));
+	$content = str_replace(" ","+",$content);
+	$content = base64_decode($content, true);
+
         if ($content == NULL || $content == false) {
             $this->createErrorResponse('Parameter content is missing or invalid');
             return;

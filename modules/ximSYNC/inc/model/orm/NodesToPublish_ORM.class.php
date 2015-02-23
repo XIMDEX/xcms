@@ -41,7 +41,8 @@ class NodesToPublish_ORM extends GenericData   {
 				'DateDown' => array('type' => "int(14)", 'not_null' => 'false'),
 				'State' => array('type' => "tinyint(1)", 'not_null' => 'true'),
 				'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
-				'ForcePublication' => array('type' => "tinyint(1)", 'not_null' => 'true')
+				'ForcePublication' => array('type' => "tinyint(1)", 'not_null' => 'true'),
+				'DeepLevel' => array('type' => "int(12)", 'not_null' => 'false'),
 				);
 	var $_uniqueConstraints = array(
 
@@ -57,5 +58,6 @@ class NodesToPublish_ORM extends GenericData   {
 	var $State; // 0: Pending, 1: Locked, 2: Processed
 	var $UserId;
 	var $Force;
+	var $DeepLevel;
 }
 ?>

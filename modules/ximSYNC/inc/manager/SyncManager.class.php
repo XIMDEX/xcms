@@ -54,6 +54,9 @@ class SyncManager {
 	//flag for the add to colector otf publication
 	var $otfPublication;
 
+	private $docsToPublishByLevel = array();
+	private $computedDocsToPublish = array();
+	private $pendingDocsToPublish = array();
 
 	function SyncManager() {
 
@@ -69,7 +72,7 @@ class SyncManager {
 		$this->setFlag('otfPublication',false);
 
 		$this->setFlag('deeplevel', DEEP_LEVEL < 0 ? 1 : DEEP_LEVEL);
-		$this->setFlag('forcePublication', FORCE_PUBLICATION);
+		$this->setFlag('globalForcePublication', FORCE_PUBLICATION);
 	}
 
 	/**
@@ -107,7 +110,6 @@ class SyncManager {
 		$colectorID=$args[1];
 		$up = $args[2];
 		$down=null;
-		$forcePublication = $this->getFlag('forcePublication');
 
 		$this->setFlag('type', 'ximNEWS');
 		$this->setFlag('colector', $colectorID);
@@ -117,9 +119,25 @@ class SyncManager {
 		return $ret;
 	}
 
+	public function buildPublishingDependencies($idNode, $params){
+		$this->pendingDocsToPublish = $this->computedDocsToPublish = array();
+		$this->pendingDocsToPublish[] = $idNode;
+		$this->docsToPublishByLevel["$idNode"] = 0;
+
+		while(!empty( $this->pendingDocsToPublish )){
+			$nodeId = array_shift( $this->pendingDocsToPublish );
+			if (  $this->hasDependences($nodeId, $params)){
+				continue;
+			}
+			$this->computedDocsToPublish[] = $nodeId;
+		}
+
+		return $this->computedDocsToPublish;
+	}
+
 	/**
 	*  Gets the Nodes that must be published with the current Node and calls the methods for build the Batchs.
-	*  @param int idNode
+	*  @param int $nodeId
 	*  @param int up
 	*  @param int down
 	*  @return array|null
@@ -131,34 +149,19 @@ class SyncManager {
 			return NULL;
 		}
 
-		$colectorID = $this->getFlag('colector');
-		$otf = $this->getFlag('otfPublication');
-		$force = $this->getFlag('forcePublication');
-                $params['deeplevel'] = $this->getFlag('deeplevel'); 
-		$otfMode = $otf ? ServerNode::SERVERS_OTF : NULL;
-
-                // flags for dependencies 
-
-                $params['withstructure'] = ($this->getFlag('structure') === false)? false : true; 
-                $params['withcss'] = ( $this->getFlag('css') === false)? false : true; 
-                $params['withscript'] =  ( $this->getFlag('script') === false)? false : true; 
- 		$params['withasset'] =  ( $this->getFlag('asset') === false)? false : true; 
-
-		// flags for sections nodetypes
-
-		$params['recurrence'] = $this->getFlag('recurrence');
-		$params['childtype'] = $this->getFlag('childtype');
-		$params['otf'] = $otfMode;
-
+		$force = $this->getFlag('globalForcePublication')?true:$this->getFlag("force");
+		$params['deeplevel'] = $this->getFlag('deeplevel');
+		$lastPublishedDocument = $this->getFlag("lastPublished");
+		// flags for dependencies
+		$params['withstructure'] = ($this->getFlag('structure') === false)? false : true;
 		$node = new Node($idNode);
 		if (!($node->get('IdNode') > 0)) {
 			XMD_Log::error(sprintf(_("Node %s does not exist") , $idNode) );
 			return NULL;
 		}
 
-		//error_log("Class;".get_class($node->class ) ); 
-		$docsToPublish = $node->class->getPublishabledDeps($params);
 
+		$docsToPublish = $this->buildPublishingDependencies($idNode, $params);
 
 		if ($node->nodeType->get('IsPublicable') == '1') {
 
@@ -174,7 +177,12 @@ class SyncManager {
 
 		$userID = \Ximdex\Utils\Session::get('userID');
 		foreach ($docsToPublish as $idDoc) {
-			$ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force);
+			if (!array_key_exists($idDoc, $this->docsToPublishByLevel)){
+				continue;
+			}
+			$deepLevel = $this->docsToPublishByLevel[$idDoc];
+			$ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $lastPublishedDocument, $deepLevel);
+
 		}
 
 
@@ -187,6 +195,42 @@ class SyncManager {
 		$pid = shell_exec(sprintf("%s > /dev/null & echo $!", $cmd));
 
 		return $docsToPublish;
+	}
+
+
+	/**
+	 * @param $nodeId
+	 * @param $params
+	 * @param $currentDeepLevel
+	 * @return mixed
+	 */
+	public function hasDependences($nodeId, $params){
+
+		$deepLevel = $params["deeplevel"];
+		if (!isset($this->docsToPublishByLevel["$nodeId"])){
+			return false;
+		}
+
+		$currentDeepLevel = $this->docsToPublishByLevel["$nodeId"] + 1;
+		if ($deepLevel != -1 && $deepLevel < $currentDeepLevel){
+			return false;
+		}
+
+		$node = new Node($nodeId);
+		$nodeDependences = $node->class->getPublishabledDeps($params);
+
+        if (!isset( $nodeDependences ) || empty($nodeDependences)) {
+            return false  ;
+        }
+         $pending = array_values( array_diff( $nodeDependences, $this->pendingDocsToPublish, $this->computedDocsToPublish  ) ) ;
+         if ( empty( $pending )) {
+            return false ;
+        } else {
+			 $idDoc = $pending[0];
+			 $this->docsToPublishByLevel["$idDoc"]=$currentDeepLevel;
+             $this->pendingDocsToPublish =array_merge(  [ $idDoc , $nodeId  ]   ,  $this->pendingDocsToPublish  )  ;
+            return true ;
+        }
 	}
 
 	function sendMail($nodeID, $type, $up, $down) {

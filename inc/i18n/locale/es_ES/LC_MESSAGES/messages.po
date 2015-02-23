@@ -10130,7 +10130,7 @@ msgid "Press the Design View button in order to return to WYSIWYG view."
 msgstr "Pulsa el botón de vista diseño para volver a la vista WYSIWYG."
 
 msgid "We've been editing a XML file. <br/><br/>The preview button allows you to see it in the final format for your web portal (HTML5, php, jsp, RoR, ...) or for other platform (digital TV, smartphone apps, etc.)<br/><br/>It's really easy to extend it with templates for oncoming technologies."
-msgstr "Estamos editando un documento XML. <br/><br/>El botón previsualizar te permite ver tu documento en el formato concreto para tu portal web (HTML5, php, jsp, RoR, ...) o para otra tipo de plataforma (TDT, smartphone apps, etc.)<br/><br/>Es realmente fácil de extenderlo con plantillas para nuevas tecnologías."
+msgstr "Estamos editando un documento XML. <br/><br/>El botón previsualizar te permite ver tu documento en el formato concreto para tu portal web (HTML5, php, jsp, RoR, ...) o para otra tipo de plataforma (TDT, smartphone apps, etc.)<br/><br/>Es realmente fácil extenderlo con plantillas XSL para nuevas tecnologías."
 
 msgid "With Xowl module you will get automagically links (to images, maps, videos, references, ...) and semantic tags from sources like DBpedia."
 msgstr "Con el módulo Xowl obtendrás fácilmente enlaces (a imágenes, mapas, vídeos, referencias, ...) y etiquetas semánticas desde fuentes como DBpedia para enriquecer tu contenido."
@@ -10157,16 +10157,10 @@ msgid "Hello"
 msgstr "Hola"
 
 msgid ", first time here?"
-msgstr ", ¿la primera vez aquí?"
+msgstr ", ¿primera vez por aquí?"
 
 msgid "Dont show this again."
 msgstr "No volver a mostrar."
 
 msgid "We're going to show you in a few steps the basic features of Ximdex. Let's go!"
 msgstr "Vamos a mostrarte en unos pocos pasos las características básicas de Ximdex. ¡Comencemos!"
-
-
-
-
-
-

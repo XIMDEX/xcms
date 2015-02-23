@@ -179,7 +179,7 @@ class PipeCache extends PipeCaches_ORM {
 		 		. ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
 	 	}
 	 	$result = $this->query($query, MONO, 'id');
-		XMD_Log::info("PipeCache: Resultado del m�todo _getCache " . str_replace("\n", " ", print_r($result, true)));
+		XMD_Log::info("PipeCache: _getCache method result" . str_replace("\n", " ", print_r($result, true)));
 		return $result;
 	 }
 
@@ -208,7 +208,7 @@ class PipeCache extends PipeCaches_ORM {
 	 		if (count($idCaches) == 1) {
 	 			return $idCaches[0];
 	 		} else {
-	 			XMD_Log::fatal('PipeCache No se ha podido estimar una �nica cach�');
+	 			XMD_Log::fatal("PipeCache: last cache couldn't be estimated");
 	 			return false;
 	 		}
 	 	}
@@ -280,7 +280,7 @@ class PipeCache extends PipeCaches_ORM {
 		XMD_Log::info("PipeCache: Trying to store cache for version $idVersion transition $idTransition args " . print_r($args, true));
 	 	$this->_transition = new PipeTransition($idTransition);
 	 	if (!($this->_transition->get('id') > 0)) {
-	 		XMD_Log::fatal('PipeCache: Error storing cache, no se ha podido estimar la transicion a la que se va a asociar la cach�: ' . $idTransition);
+	 		XMD_Log::fatal('PipeCache: Error storing cache, could not estimate the transition to which to associate the cache: ' . $idTransition);
 	 		return false;
 	 	}
 
@@ -317,18 +317,18 @@ class PipeCache extends PipeCaches_ORM {
 
 		 	$idCache = $this->add();
 		 	if (!$idCache > 0) {
-		 		XMD_Log::error("PipeCache: Ha sucedido un error al almacenar la cache");
+		 		XMD_Log::error("PipeCache: An error has ocurred while storing the cache file");
 		 		return false;
 		 	}
 	 	} else {
 
 		 	if (!FsUtils::copy($contentFile, XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile)) {
-		 		XMD_Log::error("PipeCache: Ha sucedido un error al sustituir la cache (Posible problema de permisos en data/cache/pipelines)");
+		 		XMD_Log::error("PipeCache: There has been an error while replacing the cache file (Problem permissions on data/cache/pipelines)");
 				return false;
 		 	}
 	 	}
 	 	if (!isset($idCache)) {
-			XMD_Log::error("PipeCache: No se ha obtenido un idCache V�lido $idVersion $idTransition $contentFile");
+			XMD_Log::error("PipeCache: Cache ID not valid - $idVersion $idTransition $contentFile");
 			return false;
 		}
 	 	$this->_transition->properties->reset();
@@ -342,7 +342,7 @@ class PipeCache extends PipeCaches_ORM {
 
 	 			$propertyValue->set('Value', $this->_searchKeyInArgs($property->get('Name'), $args));
 	 			if (!$propertyValue->add()) {
-	 				XMD_Log::error('PipeCache: Error al intentar almacenar la propiedad');
+	 				XMD_Log::error('PipeCache: Error while trying to store the property');
 	 			}
 	 		}
 	 	}

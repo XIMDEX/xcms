@@ -25,30 +25,32 @@
  */
 
 
-
-
+ModulesManager::file('/actions/workflow_forward/Action_workflow_forward.class.php');
 /**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+* Move a node to next state. 
+* 
+* If the node is not a structured document the next state will be publication.
+*/
+class Action_workflow_forward_advance extends Action_workflow_forward {
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelStrdocScript_ORM extends GenericData   {
-	var $_idField = 'id';
-	var $_table = 'RelStrdocScript';
-	var $_metaData = array(
-				'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'source' => array('type' => "int(12)", 'not_null' => 'true'),
-				'target' => array('type' => "int(12)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-				'rel' => array('source', 'target')
-				);
-	var $_indexes = array('id');
-	var $id;
-	var $source = 0;
-	var $target = 0;
+	/**
+	 *
+	 */
+	protected function buildFlagsPublication($markEnd, $structure, $deepLevel, $force, $lastPublished){
+
+		//Creating flags to publicate
+		$flagsPublication = array(
+			'markEnd' => $markEnd,
+			'structure' => $structure,
+			'deeplevel' => $deepLevel,
+			'force' => $force,
+			'recurrence' => false,
+			'workflow' => true,
+			'lastPublished' => $lastPublished
+		);
+
+		return $flagsPublication;
+	}
+
 }
-?>
