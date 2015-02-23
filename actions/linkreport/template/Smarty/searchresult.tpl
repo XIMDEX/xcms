@@ -39,7 +39,7 @@
 			<div class="row-item-actions">			
 			    <div class="description_btn">
 				    <span class="result_description icon btn-unlabel-rounded">
-					    <span class="tooltip">
+					    <span class="xtooltip">
 						    <p>{t}Description{/t}</p>
 						    <p>{$link.desc}</p>
 					    </span>
