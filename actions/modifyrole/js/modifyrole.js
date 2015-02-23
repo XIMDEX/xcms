@@ -32,7 +32,7 @@ X.actionLoaded(function(event, fn, params) {
 	fn('select[name=id_workflow]').change(function(event) {
 		var id_pipeline = $(this).val();
 		var url = params.url.replace(/&id_pipeline=(\d+)/, '') + '&id_pipeline=' + id_pipeline;
-        $('#angular-content').scope().openAction({
+        angular.element(document).injector().get('xTabs').openAction({
 			action: params.action,
 			label: 'Modificar rol',
 			nodes: params.nodes,

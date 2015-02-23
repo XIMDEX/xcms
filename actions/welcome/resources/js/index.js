@@ -30,7 +30,7 @@ X.actionLoaded(function(event, fn, params) {
     //        $(e.delegateTarget).find(".details").toggle();
     //    });
     fn('.project_new').click(function() {
-                                $('#angular-content').scope().openAction( {
+        angular.element(document).injector().get('xTabs').openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'addfoldernode',
@@ -40,7 +40,7 @@ X.actionLoaded(function(event, fn, params) {
                                         }, params.nodes);
                         });
     fn('.preview').click(function(e) {
-        $('#angular-content').scope().openAction( {
+        angular.element(document).injector().get('xTabs').openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'filepreview',
@@ -50,7 +50,7 @@ X.actionLoaded(function(event, fn, params) {
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.plaintext').click(function(e) {
-        $('#angular-content').scope().openAction( {
+        angular.element(document).injector().get('xTabs').openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'edittext',
@@ -60,7 +60,7 @@ X.actionLoaded(function(event, fn, params) {
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.xmltext').click(function(e) {
-        $('#angular-content').scope().openAction( {
+        angular.element(document).injector().get('xTabs').openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'xmleditor2',

@@ -186,7 +186,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             newid += action.command
             for tab, i in tabs
                 if tab.id == newid
-                    xtab.setActive i
+                    xtab.setActiveTab i
                     xtab.highlightTab i
                     return
             url = xUrlHelper.getAction(
@@ -217,7 +217,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     ,
                         0
                     )###
-                    xtab.setActive newlength - 1
+                    xtab.setActiveTab newlength - 1
 
                 return
             return
@@ -263,7 +263,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         #
         # @param index [Integer] The tab index
         #
-        xtab.setActive = (index) ->
+        xtab.setActiveTab = (index) ->
             activeTab = index
             visitedIndex = visitedTabs.indexOf index
             if visitedIndex >= 0
@@ -293,7 +293,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             )
 
         # Closes all tabs
-        xtab.closeAll = () ->
+        xtab.closeAllTabs = () ->
             tabs.splice 0, tabs.length
             activeTab = -1
             visitedTabs = []
@@ -306,7 +306,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             return
 
         # Sets all tabs as no disable
-        xtab.offAll = () ->
+        xtab.offAllTabs = () ->
             activeTab = -1
             return
 
@@ -355,15 +355,26 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 tabs[index].nodes = nodes
             return
 
-        xtab.setActiveById = (tabId) ->
+        xtab.setActiveTabById = (tabId) ->
             index = xtab.getTabIndex tabId
-            xtab.setActive index if index >= 0
+            xtab.setActiveTab index if index >= 0
             return
 
         xtab.getActiveTab = () ->
             return tabs[activeTab] if activeTab >= 0
             return null
-                
+
+        xtab.openAction = (action, nodes) ->
+            nodesArray = []
+            if Array.isArray nodes
+                for n in nodes
+                    newNode =
+                        nodeid: n
+                    nodesArray.push newNode
+            else if nodes
+                nodesArray.push {nodeid: nodes}
+            xtab.pushTab(action, nodesArray)
+            return
 
         return xtab
 ]

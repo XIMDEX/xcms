@@ -1,10 +1,22 @@
-<div>
-  <ul class="nav nav-{{type || 'tabs'}}" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude></ul>
-  <div class="tab-content">
-    <div class="tab-pane" 
-         ng-repeat="tab in tabs" 
-         ng-class="{active: tab.active}"
-         tab-content-transclude="tab">
+<div class="hbox-panel">
+    <div class="xim-tabs-nav">
+        <div class="xim-tabs-list-selector xim-hidden-tab"></div>
+        <ul class="xim-tabs-list" style="display:none"></ul>
     </div>
-  </div>
+    <div class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
+        <ul class="ul ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all {{type && 'nav-' + type}}"
+            ng-class="::{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude>
+            <li>
+                <div class="browser-view-title">{{::('browser.headings.'+tab.heading | xI18n)}}</div>
+            </li>
+        </ul>
+        <div class="tab-content browser-view browser-projects-view-content ui-tabs-panel ui-widget-content ui-corner-bottom">
+            <div class="browser-view ui-tabs-panel ui-widget-content ui-corner-bottom tab-pane"
+                 ng-repeat="tab in ::tabs"
+                 ng-class="{active: tab.active}"
+                 tab-content-transclude="tab">
+                <div class="browser-view-title">{{::('browser.headings.'+tab.heading | xI18n)}}</div>
+            </div>
+        </div>
+    </div>
 </div>

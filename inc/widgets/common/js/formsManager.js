@@ -95,8 +95,9 @@ X.FormsManager = Object.xo_create({
         // Closes a tab
         $('.close-button', this.options.actionContainer).each(function(index, button) {
             $(button).click(function() {
-                $('#angular-content').scope().closeTabById(this.options.tabId);
-				$('#angular-content').scope().$digest();
+                var xTabs =angular.element(document).injector().get('xTabs');
+                xTabs.removeTabById(this.options.tabId);
+				$('#angular-content').isolateScope().$digest();
                 return false;
             }.bind(this));
         }.bind(this));
@@ -287,7 +288,7 @@ X.FormsManager = Object.xo_create({
 				//this.blockSubmit = true;
 				var _this = this;
 
-                angular.element('#angular-content').scope().submitForm({
+                angular.element(document).injector().get('xTabs').submitForm({
                     reload: false,
                     tabId: this.options.tabId,
                     url: $form.attr('action'),
@@ -325,7 +326,7 @@ X.FormsManager = Object.xo_create({
 			button = button[0] || button;
 			if (button) var loader = Ladda.create(button).start();//Start button loading animation
 			//form.submit();
-            angular.element('#angular-content').scope().submitForm({
+            angular.element(document).injector().get('xTabs').submitForm({
                 reload: true,
                 tabId: this.options.tabId,
                 url: $form.attr('action'),
@@ -540,7 +541,7 @@ X.FormsManager = Object.xo_create({
 
         if (!submitError && X.ActionTypes.create.indexOf(tab.action.command) != -1 ) form.get(0).reset();
         if (!submitError && X.ActionTypes.remove.indexOf(tab.action.command) != -1) {
-            $('#angular-content').scope().closeTabById(tab.id);
+            angular.element(document).injector().get('xTabs').removeTabById(tab.id);
             humane.log(messages, {addnCls: 'notification-success'});
         } else {
             this.actionNotify(result.messages, $form, submitError);

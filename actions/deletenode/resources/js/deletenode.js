@@ -40,7 +40,7 @@ X.actionLoaded(function(event, fn, params) {
 });
 
 function onCancel(event, tab) {
-	$('#angular-content').scope().closeTabById(tab.id);
+    angular.element(document).injector().get('xTabs').removeTabById(tab.id);
 }
 
 function onDelete(event, fn, form, fm) {

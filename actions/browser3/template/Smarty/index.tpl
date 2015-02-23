@@ -55,7 +55,7 @@
     <!-- js widgets -->
     %=js_widgets%
 </head>
-<body ng-controller="XMainCtrl" ng-cloak ng-keydown="keydown($event)" ng-keyup="keyup($event)">
+<body ng-controller="XMainCtrl" ng-keydown="keydown($event)" ng-keyup="keyup($event)">
 <div id="angular-event-relay"></div>
 <div id="ximdex-splash">
 
@@ -69,9 +69,7 @@
 			</div>
 		</div>
 
-<tabs include="yes"/>
 <searchpanel include="yes"/>
-<hbox include="yes"/>
 
 <div id="header">
     <h1><img src="{$_URL_ROOT}/xmd/images/header/logo_xim.png" border="0" alt="{t}Ximdex logotype{/t}"
@@ -115,7 +113,14 @@
     <spotlight id="mini-spotlight"/>
 </div>
 <div id="body">
-    <browserwindow id="bw1"/>
+    <div id="bw1" class="browser-window">
+        <div class="browser-window-content">
+            <div class="hbox browser-hbox">
+                <xim-browser xim-id="angular-tree" xim-mode="sidebar"></xim-browser>
+                <xim-tabs xim-id="angular-content"></xim-tabs>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

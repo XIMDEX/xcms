@@ -70,7 +70,7 @@ X.actionLoaded(function(event, fn, params) {
 		});
 
 		// Opens an action in a new tab
-        $('#angular-content').scope().openAction( action, params.nodes);
+        angular.element(document).injector().get('xTabs').openAction( action, params.nodes);
 
 		return false;
 	});

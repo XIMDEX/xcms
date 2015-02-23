@@ -1,3 +1,4 @@
-<li ng-class="{active: active, disabled: disabled}">
-  <a href ng-click="select()" tab-heading-transclude>{{heading}}</a>
+<li ng-class="{'xim-first-tab': $first, 'ui-tabs-active': active, 'ui-state-active': active}"
+    class="ui-state-default ui-corner-top">
+  <a ng-click="select()" tab-heading-transclude class="ui-tabs-anchor browser-{{::heading}}-view"><span>{{::heading}}</span></a>
 </li>

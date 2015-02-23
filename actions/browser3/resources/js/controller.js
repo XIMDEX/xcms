@@ -43,7 +43,7 @@ $(document).ready(function() {
 					//methods.beforeSearch(options);
 				},
 				cbSearch: function(event, params) {
-                    $("#angular-content").scope().openAction( {
+                    angular.element(document).injector().get('xTabs').openAction( {
 						command: 'searchpanel',
 						method: 'showResults',
 						name: _("Search results"),

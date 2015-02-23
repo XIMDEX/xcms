@@ -32,7 +32,7 @@ X.actionLoaded(function(event, fn, params) {
 				name: _('Preview'),
 				params: ''
 		};
-        $('#angular-content').scope().openAction(action, [$(this).attr('id')]);
+        angular.element(document).injector().get('xTabs').openAction(action, [$(this).attr('id')]);
 	});
 
 	$('.publicate').click(function() {
@@ -42,7 +42,7 @@ X.actionLoaded(function(event, fn, params) {
 				name: _('Publish'),
 				params: ''
 		};
-        $('#angular-content').scope().openAction([$(this).attr('id')]);
+        angular.element(document).injector().get('xTabs').openAction(action, [$(this).attr('id')]);
 	});
 
 });

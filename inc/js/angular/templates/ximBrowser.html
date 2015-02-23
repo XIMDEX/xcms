@@ -1,0 +1,46 @@
+<div id="#/::xid/#" ng-mouseleave="hideTree()"
+     class="hbox-panel-container hbox-panel-container-0 hbox-panel-hideable noselect">
+    <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
+        <tab heading="projects" select="$parent.$parent.selectedTab=1;">
+            <div ng-if="treeMode" ><xim-tree /></div>
+            <div ng-if="!treeMode" ><xim-list /></div>
+        </tab>
+        <tab heading="ccenter" select="$parent.$parent.selectedTab=2;">
+            <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
+                <div ng-click="reloadNode()"
+                     class="xim-treeview-btnreload ui-corner-all ui-state-default">#/:: 'browser.reload_node' | xI18n /#</div>
+                <div ng-if="ccenter!='null' && ccenter!=null"
+                     class="xim-treeview-branch-container xim-treeview-expanded">
+                    <ul class="xim-treeview-branch">
+                        <li ng-repeat="node in ::ccenter.collection" ng-include="'inc/js/angular/templates/tree_item_renderer.html'"
+                            class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
+                    </ul>
+                </div>
+            </div>
+        </tab>
+        <tab heading="modules" select="$parent.$parent.selectedTab=3;">
+            <div class="browser-modules-view-list-container" style="display: block;">
+                <ul ng-if="modules!='null' && modules!=null" class="browser-modules-view-list">
+                    <li
+                            ng-class="::{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}"
+                            ng-repeat="node in ::modules"
+                            hm-tap="openModuleAction(node)">#/::node.name/#
+                    </li>
+                </ul>
+            </div>
+        </tab>
+    </tabset>
+
+    <button hm-tap="toggleView()" ng-if="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="Change view"></button>
+    <button id="angular-tree-toggle" ng-click="toggleTree()" class="btn btn-sidebar btn-anchor" type="button" title="Collapse menu"></button>
+
+    <div class="filter-tree" ng-show="selectedTab==1">
+        <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/::('browser.filter' | xI18n)+'...'/#">
+    </div>
+
+    <div id="angular-tree-resizer"
+         hm-panstart="dragStart($event)" hm-panmove="drag($event,'10')" hm-panend="dragEnd()"
+         ng-mouseenter="showTree()"
+         class="hbox-panel-sep hbox-panel-separator-0">
+    </div>
+</div>

@@ -46,25 +46,25 @@ function start_tour(command) {
             "position": "R",
             "timeToWait": 400,
             "beforeTooltip": function () {
-                var treeScope = $("#angular-tree").scope();
-                var tabsScope = $("#angular-content").scope();
+                var treeScope = $("#angular-tree").isolateScope();
+                var xTabs = angular.element(document).injector().get('xTabs');
                 treeScope.showTree();
                 if (!treeScope.expanded) {
                     treeScope.toggleTree();
                 }
-                tabsScope.closeTabById(ximTourDefaultNode + "_xmleditor2");
-                tabsScope.closeTabById(ximTourDefaultNode + "_setmetadata");
+                xTabs.removeTabById(ximTourDefaultNode + "_xmleditor2");
+                xTabs.removeTabById(ximTourDefaultNode + "_setmetadata");
             }
         }, //Explaining the help guide (1/1)
         {
             "name": "div.hbox-panel-container-0",
             "position": "L",
             "beforeTooltip": function () {
-                var tabsScope = $("#angular-content").scope();
-                tabsScope.closeTabById(ximTourDefaultNode + "_xmleditor2");
+                var xTabs = angular.element(document).injector().get('xTabs');
+                xTabs.removeTabById(ximTourDefaultNode + "_xmleditor2");
             },
             "callback": function () {
-                var treeScope = $("#angular-tree").scope();
+                var treeScope = $("#angular-tree").isolateScope();
                 var closeIco = $("div.advanced-search").parent();
                 $("a.ui-dialog-titlebar-close", closeIco).click();
                 treeScope.navigateToNodeId(ximTourDefaultNode);
@@ -76,17 +76,16 @@ function start_tour(command) {
             "name": "div.hbox-panel-container-1",
             "position": "R",
             "callback": function () {
-                var treeScope = $("#angular-tree").scope();
-                var tabsScope = $("#angular-content").scope();
+                var treeScope = $("#angular-tree").isolateScope();
+                var xTabs = angular.element(document).injector().get('xTabs');
                 if (!treeScope.expanded) {
                     treeScope.showTree();
                     treeScope.toggleTree();
                 }
-                var tabsScope = $("#angular-content").scope();
-                activeTab = tabsScope.getActiveTab();
+                activeTab = xTabs.getActiveTab();
                 if (!(activeTab && activeTab.id == ximTourDefaultNode + "_xmleditor2")) {
                     var labelValue = _("Edit XML document")
-                    tabsScope.openAction({
+                    xTabs.openAction({
                         label: labelValue,
                         name: labelValue,
                         command: 'xmleditor2',
@@ -101,11 +100,11 @@ function start_tour(command) {
             "position": "L",
             "timeToWait": 400,
             "beforeTooltip": function () {
-                var treeScope = $("#angular-tree").scope();
+                var treeScope = $("#angular-tree").isolateScope();
                 treeScope.showTree();
             },
             "callback": function () {
-                var treeScope = $("#angular-tree").scope();
+                var treeScope = $("#angular-tree").isolateScope();
                 if (!treeScope.expanded) {
                     treeScope.toggleTree();
                 }
@@ -116,7 +115,7 @@ function start_tour(command) {
             "position": "B",
             "scope": "editor",
             "beforeTooltip": function () {
-                var treeScope = $("#angular-tree").scope();
+                var treeScope = $("#angular-tree").isolateScope();
                 if (treeScope.expanded) {
                     treeScope.toggleTree();
                 }
@@ -159,14 +158,14 @@ function start_tour(command) {
             "scope": "editor",
             "timeToWait": 400,
             "beforeTooltip": function () {
-                var tabsScope = $("#angular-content").scope();
-                activeTab = tabsScope.getActiveTab();
+                var xTabs = angular.element(document).injector().get('xTabs');
+                activeTab = xTabs.getActiveTab();
                 if (activeTab.id != ximTourDefaultNode + "_xmleditor2") {
-                    tabsScope.setActiveTabById(ximTourDefaultNode + "_xmleditor2");
-                    var treeScope = $("#angular-tree").scope();
+                    xTabs.setActiveTabById(ximTourDefaultNode + "_xmleditor2");
+                    var treeScope = $("#angular-tree").isolateScope();
                     treeScope.hideTree();
                 }
-                tabsScope.closeTabById(ximTourDefaultNode + "_setmetadata");
+                xTabs.removeTabById(ximTourDefaultNode + "_setmetadata");
                 var frameCount = window.frames.length;
                 var display = $("div.kupu-toolbox-container div#xedit-annotations-toolbox", window.frames[frameCount - 1].document).css("display");
                 if (display == "none")
@@ -217,18 +216,18 @@ function start_tour(command) {
         "position": "R",
         "timeToWait": 400,
         "beforeTooltip": function () {
-            var treeScope = $("#angular-tree").scope();
+            var treeScope = $("#angular-tree").isolateScope();
             if (!treeScope.expanded) {
                 treeScope.showTree();
             }
         },
         "callback": function () {
-            var tabsScope = $("#angular-content").scope();
-            activeTab = tabsScope.getActiveTab();
+            var xTabs = angular.element(document).injector().get('xTabs');
+            activeTab = xTabs.getActiveTab();
             if (activeTab.id != ximTourDefaultNode + "_setmetadata") {
                 var labelValue = _("Edit metadata");
-                var tabsScope = $("#angular-content").scope();
-                tabsScope.openAction({
+                var xTabs = angular.element(document).injector().get('xTabs');
+                xTabs.openAction({
                     label: labelValue,
                     name: labelValue,
                     module: "ximTAGS",
@@ -291,8 +290,8 @@ function start_tour(command) {
         "name": "#angular-content",
         "position": "R",
         "beforeTooltip": function () {
-            var tabsScope = $("#angular-content").scope();
-            tabsScope.setActiveTabById(ximTourDefaultNode + "_setmetadata");
+            var xTabs = angular.element(document).injector().get('xTabs');
+            xTabs.setActiveTabById(ximTourDefaultNode + "_setmetadata");
             if ($(".ontology-close").length) {
                 $(".ontology-close").click();
                 $(".infobox").hide();
@@ -317,8 +316,8 @@ function start_tour(command) {
         // "scope": "editor",
         "timeToWait": 100,
         "beforeTooltip": function () {
-            var tabsScope = $("#angular-content").scope();
-            tabsScope.setActiveTabById(ximTourDefaultNode + "_xmleditor2");
+            var xTabs = angular.element(document).injector().get('xTabs');
+            xTabs.setActiveTabById(ximTourDefaultNode + "_xmleditor2");
             $("#xim-tour-tag").remove();
         },
         "callback": function () {

@@ -91,6 +91,23 @@ class Action_browser3 extends ActionAbstract {
             $this->addJs('/utils/user_connect.js.php?id=' . $time_id . '&lang=' . $user_locale["Lang"], 'ximADM');
         }
 
+        //Old browserwindow styles
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/actionPanel.css');
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/browserwindow.css');
+        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/dialogs.css');
+        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/general.css');
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/icons.css');
+        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/news.css');
+        //$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/browserwindow/usersList.css');
+
+        //Old hbox styles
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/hbox/hbox.css');
+
+        //Old tabs styles
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css');
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tabs/tabs-container.css');
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tabs/tabs.css');
+
         $this->addJs('/inc/js/helpers.js');
         $this->addJs('/inc/js/collection.js');
         $this->addJs('/inc/js/dialogs.js');
@@ -111,8 +128,8 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/extensions/humane/humane.min.js');
         $this->addJs('/extensions/flow/ng-flow-standalone.min.js');
         $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
-        $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
-        $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.tabs.min.js');
+        //$this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
+        //$this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.tabs.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/jquery.validate.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/localization/messages_' . $user_locale["Lang"] . '.js');
@@ -124,6 +141,40 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-file-upload/js/jquery.fileupload-angular.js');
         $this->addJs('/extensions/d3js/d3.v3.min.js');
         $this->addJs('/extensions/vendors/codemirror/Codemirror/lib/codemirror.js');
+
+        //Old browserwindow js
+        $this->addJs('/inc/widgets/browserwindow/js/browserwindow.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/abstractView.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/dataView.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/panels.js');
+        $this->addJs('/inc/widgets/browserwindow/js/dialogs.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/reports.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/sets.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/history.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/controlcenter.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/projects.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/modules.js');
+        $this->addJs('/inc/widgets/browserwindow/js/actions.js');
+        //$this->addJs('/inc/widgets/browserwindow/js/usersList.js');
+
+        //Old hbox js
+        //$this->addJs('/inc/widgets/hbox/js/hbox.js');
+
+        ////Old tabs js
+        //$this->addJs('/inc/widgets/tabs/js/tabs.js');
+
+        //Old listview js
+        $this->addJs('/inc/widgets/listview/js/fix.jquery.events.js');
+        $this->addJs('/inc/widgets/listview/js/listview.js');
+        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Columns.js');
+        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Details.js');
+        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Grid.js');
+        $this->addJs('/inc/widgets/listview/js/listviewRenderer_Icon.js');
+        $this->addJs('/inc/widgets/listview/js/listviewRenderer_List.js');
+        $this->addJs('/inc/widgets/listview/js/selections.js');
+        $this->addJs('/inc/widgets/listview/js/jquery.fixheadertable.js');
+
+
         $this->addJs('/inc/js/angular/app.js');
         $this->addJs('/inc/js/angular/animations/slide.js');
         $this->addJs('/inc/js/angular/services/xTranslate.js');
@@ -150,14 +201,16 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/inc/js/angular/directives/ximMenu.js');
         $this->addJs('/inc/js/angular/directives/ximTree.js');
         $this->addJs('/inc/js/angular/directives/ximList.js');
+        $this->addJs('/inc/js/angular/directives/ximBrowser.js');
+        $this->addJs('/inc/js/angular/directives/ximTabs.js');
         $this->addJs('/inc/js/angular/filters/xFilters.js');
-        $this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
+        //$this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyUserGroupsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyGroupUsersCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
-        $this->addJs('/inc/js/angular/controllers/XTreeCtrl.js');
+        //$this->addJs('/inc/js/angular/controllers/XTreeCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');
         $this->addJs('/inc/js/angular/controllers/ximPUBLISHtools.js');
         $this->addJs('/inc/js/angular/controllers/XUserMenuCtrl.js');
@@ -276,6 +329,9 @@ class Action_browser3 extends ActionAbstract {
         $removed = 0;
         $queryToMatch = "/" . $query . "/i";
         $queryToMatch = str_replace(array(".", "_"), array('\.', "."), $queryToMatch);
+
+        $resultsString = _("Results");
+
         foreach ($ret["collection"] as $id => $child) {
             $sql2 = sprintf($sql, $child["nodeid"], $child["nodeid"], '%' . $query . '%');
             $db->query($sql2);
@@ -293,7 +349,7 @@ class Action_browser3 extends ActionAbstract {
             } elseif ($cont == "0") {
                 $ret["collection"][$id - $removed]["children"] = 0;
             } else {
-                $ret["collection"][$id - $removed]["name"] .= sprintf('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $cont);
+                $ret["collection"][$id - $removed]["name"] .= sprintf('&nbsp;<span class="filter-results-span">['.$resultsString.': %s]</span>', $cont);
             }
         }
 

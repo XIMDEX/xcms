@@ -303,6 +303,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 		clearResults: function() {
 			if (Object.isObject(this.rs)) this.rs.clear();
+			$('div.xim-search-dialog  div.xim-paginator-container').html("");
 		},
 
 		showErrors: function(errors) {

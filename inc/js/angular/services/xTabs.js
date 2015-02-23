@@ -169,7 +169,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       for (i = _j = 0, _len1 = tabs.length; _j < _len1; i = ++_j) {
         tab = tabs[i];
         if (tab.id === newid) {
-          xtab.setActive(i);
+          xtab.setActiveTab(i);
           xtab.highlightTab(i);
           return;
         }
@@ -206,7 +206,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
               0
           )
            */
-          xtab.setActive(newlength - 1);
+          xtab.setActiveTab(newlength - 1);
         }
       });
     };
@@ -243,7 +243,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       )
        */
     };
-    xtab.setActive = function(index) {
+    xtab.setActiveTab = function(index) {
       var visitedIndex;
       activeTab = index;
       visitedIndex = visitedTabs.indexOf(index);
@@ -264,7 +264,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
         return tabs[index].blink = false;
       }, 2000);
     };
-    xtab.closeAll = function() {
+    xtab.closeAllTabs = function() {
       tabs.splice(0, tabs.length);
       activeTab = -1;
       visitedTabs = [];
@@ -272,7 +272,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
         return $rootScope.$broadcast('updateTabsPosition');
       }, 400);
     };
-    xtab.offAll = function() {
+    xtab.offAllTabs = function() {
       activeTab = -1;
     };
     xtab.removeTabById = function(tabId) {
@@ -317,11 +317,11 @@ angular.module("ximdex.common.service").factory("xTabs", [
         tabs[index].nodes = nodes;
       }
     };
-    xtab.setActiveById = function(tabId) {
+    xtab.setActiveTabById = function(tabId) {
       var index;
       index = xtab.getTabIndex(tabId);
       if (index >= 0) {
-        xtab.setActive(index);
+        xtab.setActiveTab(index);
       }
     };
     xtab.getActiveTab = function() {
@@ -329,6 +329,24 @@ angular.module("ximdex.common.service").factory("xTabs", [
         return tabs[activeTab];
       }
       return null;
+    };
+    xtab.openAction = function(action, nodes) {
+      var n, newNode, nodesArray, _i, _len;
+      nodesArray = [];
+      if (Array.isArray(nodes)) {
+        for (_i = 0, _len = nodes.length; _i < _len; _i++) {
+          n = nodes[_i];
+          newNode = {
+            nodeid: n
+          };
+          nodesArray.push(newNode);
+        }
+      } else if (nodes) {
+        nodesArray.push({
+          nodeid: nodes
+        });
+      }
+      xtab.pushTab(action, nodesArray);
     };
     return xtab;
   }

@@ -42,7 +42,7 @@ X.actionLoaded(function(event, fn, params) {
 			params:'state='+state
 		};
 
-        $('#angular-content').scope().openAction( action, nodeId);
+        angular.element(document).injector().get('xTabs').openAction( action, nodeId);
 	});
 
 	fn('.open_report').click(function() {
@@ -55,7 +55,7 @@ X.actionLoaded(function(event, fn, params) {
 			name: 'Dependencias'
 		};
 
-        $('#angular-content').scope().openAction( action, [nodeId]);
+        angular.element(document).injector().get('xTabs').openAction( action, [nodeId]);
 	});
 
 });

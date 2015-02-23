@@ -1,0 +1,38 @@
+<div id="#/::xid/#" ng-cloak class="angular-panel hbox-panel-container hbox-panel-container-1">
+    <div class="hbox-panel">
+        <div class="xim-tabs-nav noselect">
+            <div ng-show="menuTabsEnabled" hm-tap="showingMenu=!showingMenu; return;" class="xim-tabs-list-selector"></div>
+            <ul ng-show="showingMenu" class="xim-tabs-list">
+                <li class="xim-tabs-list-item" hm-tap="closeMenu(); offAllTabs();">#/::'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</li>
+                <li class="xim-tabs-list-item" ng-repeat="tab in tabs" hm-tap="closeMenu(); $parent.setActiveTab($index);">
+                    <span ng-if="$index != $parent.activeIndex()">#/::tab.name/#</span>
+                    <strong ng-if="$index == $parent.activeIndex()">#/::tab.name/#</strong>
+                </li>
+                <li class="xim-tabs-list-item tabswidget-close-all" hm-tap="closeMenu(); closeAllTabs();">Cerrar todas las pestañas</li>
+            </ul>
+        </div>
+        <div class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
+            <ul class="ul ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                <li class="ui-state-default ui-corner-top xim-first-tab ng-hide">
+                    <div class="ui-tab-close"></div>
+                    <a class="ui-tabs-anchor browser-action-view"
+                       id="10000_welcome">
+                        <span>#/::'browser.welcome_to_the_brand_new_Ximdex!' | xI18n/#</span></a></li>
+                <li hm-tap="$parent.setActiveTab($index)" ng-repeat="tab in tabs track by tab.id" class="ui-state-default ui-corner-top"
+                    ng-class="{'ui-tabs-active ui-state-active': ($index == $parent.activeIndex()),
+        'xim-last-tab': $last, 'blink': tab.blink, 'hide': ($parent.limitTabs<=$index)}" id="#/::tab.id/#_tab">
+                    <div hm-tap="removeTab($index);" class="ui-tab-close"></div>
+                    <a class="ui-tabs-anchor browser-action-view"><span>#/::tab.name/#</span></a></li>
+            </ul>
+            <div ng-show="activeIndex()<0" class="browser-action-view-content ui-tabs-panel
+        ui-widget-content ui-corner-bottom"
+                 id="10000_welcome_content" >
+            </div>
+            <div ng-show="$index == $parent.activeIndex()" ng-repeat="tab in tabs track by tab.id"
+                 class="browser-action-view-content ui-tabs-panel ui-widget-content ui-corner-bottom"
+                 id="#/::tab.id/#_content">
+
+            </div>
+        </div>
+    </div>
+</div>

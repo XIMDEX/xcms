@@ -28,7 +28,7 @@ X.actionLoaded(function (event, fn, params) {
 	
 	fn('.open_report').click(function() {
 
-        $('#angular-content').scope().openAction( {
+        angular.element(document).injector().get('xTabs').openAction( {
 			bulk: 0,
 			callback: 'callAction',
 			command: 'renamenode',
