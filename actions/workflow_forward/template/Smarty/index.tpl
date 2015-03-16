@@ -125,11 +125,11 @@
                     {foreach from=$gap_info key=index item=gap}
 				    <div class="publication">
 					    <span class="start_publication">{t}From{/t}
-						    <span class="publication_date"></span>
+						    <span class="publication_date">{$gap_info[$index]['BEGIN_DATE']}</span>
 						    <span class="publication_time"></span>
 					    </span>
 					    <span class="end_publication">{t}To{/t}
-						    <span class="publication_date"></span>
+						    <span class="publication_date">{$gap_info[$index]['END_DATE']}</span>
 						    <span class="publication_time"></span>
 					    </span>
 				    </div>
