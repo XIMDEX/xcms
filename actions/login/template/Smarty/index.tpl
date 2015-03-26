@@ -7,7 +7,7 @@
 
 	<link rel="icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon" />
-	<link href='http://fonts.googleapis.com/css?family=Coustard' rel='stylesheet' type='text/css'>
+	<link href='{$_URL_ROOT}/xmd/style/fonts.css' rel='stylesheet' type='text/css'>
 
 	<link href="{$_URL_ROOT}/xmd/style/login/login.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="{EXTENSIONS::Jquery()}"></script>	

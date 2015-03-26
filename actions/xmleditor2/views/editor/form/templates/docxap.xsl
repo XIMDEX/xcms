@@ -3,8 +3,6 @@
     <xsl:template name="docxap" match="docxap">
         <html xmlns="http://www.w3.org/1999/xhtml" xmlns:foaf="http://xmlns.com/foaf/0.1/">
             <head>
-                <!--<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,400italic,700italic" rel="stylesheet" type="text/css"/>
-                <link href="http://fonts.googleapis.com/css?family=Coustard:400,900" rel="stylesheet" type="text/css"/>-->
                 <link rel="stylesheet" type="text/css" href="@@URL_PATH@@/extensions/bootstrap/dist/css/bootstrap.min.css" />
                 <link rel="stylesheet" type="text/css" href="views/editor/form/css/formview.css" />
 
