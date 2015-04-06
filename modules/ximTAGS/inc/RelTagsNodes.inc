@@ -48,8 +48,8 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 				$out[] = array(
 					"Name" => $dbObj->GetValue("Name"),
 					"IdNamespace" => $dbObj->GetValue("Type"),
-					"link" => $dbObj->GetValue("Link"),
-					"description" => $dbObj->GetValue("Description"),
+					"Link" => $dbObj->GetValue("Link"),
+					"Description" => $dbObj->GetValue("Description"),
 					"iddesc" => $dbObj->GetValue("IdTagDescription"),
 					"idtag" => $dbObj->GetValue("Tag")
 				);
@@ -112,7 +112,9 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 			 	//if not rel exits between description and tag, try create it
 			 	if(empty($id) ) {
 					//save tag
-			 		$id = $rel->save($_tag->Name, $_tag->IdNamespace, '#', '');
+                    $id = $rel->save($_tag->Name, $_tag->IdNamespace,
+                        !isset($_tag->Link) || empty($_tag->Link) ? '#' : $_tag->Link,
+                        isset($_tag->Description) ? $_tag->Description : '');
 			 	} else {
 					//if already rel exits between description and node, try create tags and rel
 			 		if(!empty($_previous_tags) && isset($_previous_tags[$id])){

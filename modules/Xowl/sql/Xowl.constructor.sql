@@ -25,7 +25,7 @@
 
 -- Key set to empty from Config table
 
-INSERT INTO Config VALUES (NULL,'Xowl_location','http://extra.ximdex.net:8080/engines/');
+INSERT INTO Config VALUES (NULL,'Xowl_location','http://lab03.ximdex.net:9091/api/v1/enhance');
 
 INSERT INTO Namespaces (service, type, nemo, uri, recursive, category, isSemantic)
 VALUES
@@ -34,4 +34,6 @@ VALUES
 ("Xowl","ZemantaArticle","zArticle","http://<ximdex_local_url>/service/rdfs/ZemantaArticle", 0, "article",0),
 ("Xowl","DbpediaPerson","dPerson","http://dbpedia.org/ontology/person", 0, "person",1),
 ("Xowl","DbpediaPlace","dPlace","http://dbpedia.org/ontology/place", 0, "place",1),
-("Xowl","DbpediaOrganisation","dOrganisation","http://dbpedia.org/ontology/organisation", 0, "organisation",1);
+("Xowl","DbpediaOrganisation","dOrganisation","http://dbpedia.org/ontology/organisation", 0, "organisation",1),
+("Xowl","DbpediaCreativeWork","dCreativeWork","http://dbpedia.org/ontology/Work", 0, "creativeWork",1),
+("Xowl","DbpediaOthers","dOthers","http://schema.org/Thing", 0, "others",1);

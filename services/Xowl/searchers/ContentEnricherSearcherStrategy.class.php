@@ -47,7 +47,7 @@ class ContentEnricherSearcherStrategy extends AbstractSearcherStrategy{
 		$key = \App::getValue( 'EnricherKey');
 		if(!$key)
 			return false;
-		$xmlData = $this->query('zemanta.suggest', $key, $text, 'xml');
+		$xmlData = $this->query('zemanta.suggest', $key, $text["content"], 'xml');
 		$this->data = $this->parseData($xmlData);
 		return $this;
 	}

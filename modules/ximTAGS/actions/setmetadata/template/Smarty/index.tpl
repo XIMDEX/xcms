@@ -24,11 +24,11 @@
  *}
 
 <form method="POST" name="tags_form" class="setmetadata-tags_form"
-	ng-controller="XTagsCtrl" 
+	ng-controller="XTagsCtrl"
 	xim-document-tags='{$tags}'
 	xim-cloud-tags='{$cloud_tags}'
 	xim-namespaces='{$namespaces}'
-	xim-node-id="{$id_node}" 
+	xim-node-id="{$id_node}"
 	ng-cloak>
 	<div class="action_header">
 		<h2>{t}Tag this node{/t}: {$node_name}</h2>
@@ -56,11 +56,25 @@
 		<div class="xim-tagsinput-container col2-3">
 			<div class="title-box">{t}Document tags{/t}</div>
 	   		<ul class="xim-tagsinput-list">
-	   			<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in documentTags">
-	   				<span class="xim-tagsinput-text" data-tooltip="#/namespaces[tag.IdNamespace].uri/#">
+	   			<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" {literal}ng-class="{'noxtooltip': (tag.Description==null||tag.Description=='')}"{/literal} ng-repeat="tag in documentTags">
+	   				<a ng-href="#/tag.Link/#" target="_blank" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
 					#/tag.Name/#
-					</span>
- 					<a ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link" target="_blank">#/namespaces[tag.IdNamespace].type/#</a>
+					</a>
+ 					<a ng-if="(namespaces[tag.IdNamespace].nemo == 'dPerson'
+ 					            || namespaces[tag.IdNamespace].nemo == 'dPlace'
+                                || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
+                                || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
+                                || namespaces[tag.IdNamespace].nemo == 'dOthers') &&
+ 					    (namespaces[tag.IdNamespace].uri != null && namespaces[tag.IdNamespace].uri != '')"
+                       ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link"
+                       target="_blank">#/namespaces[tag.IdNamespace].type/#</a>
+					<a ng-if="(namespaces[tag.IdNamespace].nemo != 'dPerson'
+ 					            && namespaces[tag.IdNamespace].nemo != 'dPlace'
+                                && namespaces[tag.IdNamespace].nemo != 'dOrganisation'
+                                && namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
+                                && namespaces[tag.IdNamespace].nemo != 'dOthers')"
+                       href="#" class="ontology_link"
+                       >#/namespaces[tag.IdNamespace].type/#</a>
 					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
 				</li>
 				<p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
@@ -69,7 +83,7 @@
 		
 		<div class="suggested col1-3">
 			{if $isStructuredDocument}
-				<xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId"></xtags-suggested>
+				<xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId" xim-document-tags="documentTags"></xtags-suggested>
 			{/if}
 			<div class="tagcloud xim-tagsinput-container-related" ng-if="cloudTags.length && cloudTags.length != selectedCount(cloudTags)">
 				<div class="title-box">{t}Suggested tags from Ximdex CMS{/t}</div>
@@ -91,5 +105,5 @@
 				ng-click="saveTags(documentTags)"
 				xim-disabled="!dirty">
 			</button>
-		</fieldset>	
+		</fieldset>
 </form>

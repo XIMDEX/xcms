@@ -92,8 +92,10 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			this.populatePeopleSection(annotationDoc.semantic.people);
 			this.populatePlacesSection(annotationDoc.semantic.places);
 			this.populateOrganisationsSection(annotationDoc.semantic.orgs);
+            this.populateCreativeWorkSection(annotationDoc.semantic.creativework);
+            this.populateOthersSection(annotationDoc.semantic.others);
 
-			$('#anottationtoolbox-section-link, #anottationtoolbox-section-image, #anottationtoolbox-section-article, #anottationtoolbox-section-people, #anottationtoolbox-section-places, #anottationtoolbox-section-organisations').slideUp('fast');
+			$('#anottationtoolbox-section-link, #anottationtoolbox-section-image, #anottationtoolbox-section-article, #anottationtoolbox-section-people, #anottationtoolbox-section-places, #anottationtoolbox-section-organisations, #anottationtoolbox-section-creativework, #anottationtoolbox-section-others').slideUp('fast');
 
 			//restart styles for every category
 			if(this.currentSelection){		
@@ -118,6 +120,12 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			} else if (!$.isEmptyObject(annotationDoc.semantic.orgs)){
 				$('#anottationtoolbox-section-organisations').slideDown('fast');
 				$('#anottationtoolbox-section-header-organisations').addClass("button-pressed");
+            } else if (!$.isEmptyObject(annotationDoc.semantic.creativework)){
+				$('#anottationtoolbox-section-creativework').slideDown('fast');
+				$('#anottationtoolbox-section-header-creativework').addClass("button-pressed");
+            } else if (!$.isEmptyObject(annotationDoc.semantic.others)){
+				$('#anottationtoolbox-section-others').slideDown('fast');
+				$('#anottationtoolbox-section-header-others').addClass("button-pressed");
 			}
 
 
@@ -146,6 +154,8 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 		//For every link. i is the name for the link.
 		for(var i in info) {
+            if( !info.hasOwnProperty( i ) )
+                continue;
 			var divHeader = $('#anottationtoolbox-linkheader-template', div).clone(true);
 			divHeader.show();			
 			divHeader.addClass("removable");
@@ -215,7 +225,9 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		var countImages = 0;
 		var k = 0;
 		//For each image, where i is the image name
-		for (var i in info){		
+		for (var i in info){
+            if( !info.hasOwnProperty( i ) )
+                continue;
 			var infoImageDiv = $('#infoImage-template', this.element).clone(true);
 			infoImageDiv.show();
 			infoImageDiv.addClass("removable");
@@ -277,6 +289,8 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 		var countArticles=0;
 		var k = 0;
 		for(var i in info){
+            if( !info.hasOwnProperty( i ) )
+                continue;
 			var articleDiv = $('#anottationtoolbox-articleitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
@@ -330,6 +344,8 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
     var countPeople = 0;
 		var k = 0;
 		for (var i in info){
+            if( !info.hasOwnProperty( i ) )
+                continue;
 			var articleDiv = $('#anottationtoolbox-personitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
@@ -337,7 +353,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			var articleDivText = document.createTextNode(i);
 
 			var link = $('#anottationtoolbox-personitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', i);
+			$(link).attr('href', info[i].Link);
 			$(link).attr('id', 'anottationtoolbox-personitem_' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-personitem-template_template', this.element).clone(true);
@@ -346,7 +362,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
-			if(info[i].length>0){
+			if(info[i].Link.length>0){
 				container.append($(link));
 			}
 			container.append($(linkAdd));
@@ -384,6 +400,8 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
     var countPlaces = 0;
 		var k = 0;
     for(var i in info) {
+            if( !info.hasOwnProperty( i ) )
+                continue;
 			var articleDiv = $('#anottationtoolbox-placeitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
@@ -391,7 +409,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			var articleDivText = document.createTextNode(i);
 
 			var link = $('#anottationtoolbox-placeitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', i);
+			$(link).attr('href', info[i].Link);
 			$(link).attr('id', 'anottationtoolbox-placeitem' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-placeitem-template_template', this.element).clone(true);
@@ -400,7 +418,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
-			if(info[i].length>0){
+			if(info[i].Link.length>0){
 				container.append($(link));
 			}
 			container.append($(linkAdd));
@@ -438,6 +456,8 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
     var countOrgs = 0;
 		var k = 0;
 		for (var i in info){
+            if( !info.hasOwnProperty( i ) )
+                continue;
 			var articleDiv = $('#anottationtoolbox-organisationitem-template', this.element).clone(true);
 			articleDiv.show();
 			articleDiv.addClass("removable");
@@ -445,7 +465,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 			var articleDivText = document.createTextNode(i);
 
 			var link = $('#anottationtoolbox-organisationitem-template_template_visit', this.element).clone(true);
-			$(link).attr('href', i);
+			$(link).attr('href', info[i].Link);
 			$(link).attr('id', 'anottationtoolbox-organisationitem' + k + '_visit');
 
 			var linkAdd = $('#anottationtoolbox-organisationitem-template_template', this.element).clone(true);
@@ -454,7 +474,7 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
 			articleDiv.empty().append(articleDivText).append(container);
-			if(info[i].length>0){
+			if(info[i].Link.length>0){
 				container.append($(link));
 			}
 			container.append($(linkAdd));
@@ -477,6 +497,120 @@ var AnnotationsToolBox = Object.xo_create(FloatingToolBox, {
 
 		$('#anottationtoolbox-organisationitem-template', this.element).hide();
 		$('#anottationtoolbox-section-organisations').show();
+	},
+	/**
+	* <p>Load Creative Work category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "Creative Work anchor": {confidence:confidence, type:"dCreativeWork", isSemantic:1, others:{...}}
+	*/
+	populateCreativeWorkSection: function(info) {
+		var creativeworkContainerDiv = $('#creativeworkContainer');
+		$(".removable", creativeworkContainerDiv).remove();
+
+		var length = info.length;
+    var countOrgs = 0;
+		var k = 0;
+		for (var i in info){
+            if( !info.hasOwnProperty( i ) )
+                continue;
+			var articleDiv = $('#anottationtoolbox-creativeworkitem-template', this.element).clone(true);
+			articleDiv.show();
+			articleDiv.addClass("removable");
+			$(articleDiv).attr('id', '');
+			var articleDivText = document.createTextNode(i);
+
+			var link = $('#anottationtoolbox-creativeworkitem-template_template_visit', this.element).clone(true);
+			$(link).attr('href', info[i].Link);
+			$(link).attr('id', 'anottationtoolbox-creativeworkitem' + k + '_visit');
+
+			var linkAdd = $('#anottationtoolbox-creativeworkitem-template_template', this.element).clone(true);
+			$(linkAdd).attr('id', 'anottationtoolbox-creativeworkitem' + k);
+			$(linkAdd).attr('anchorname', i);
+
+			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
+			articleDiv.empty().append(articleDivText).append(container);
+			if(info[i].Link.length>0){
+				container.append($(link));
+			}
+			container.append($(linkAdd));
+
+			$(linkAdd).click(
+                function (event) {
+                    this.addTag(event,'creativework', 'dCreativeWork');
+                }.bind(this)
+            );
+			$(creativeworkContainerDiv).append($(articleDiv));
+			countOrgs++;
+			k++;
+		}
+
+		if(countOrgs==0){
+			$('#anottationtoolbox-section-header-creativework').click(function (event) {
+				var NoRefs = document.createTextNode("References not found.");
+				$('#anottationtoolbox-section-creativework').empty();
+				$('#anottationtoolbox-section-creativework').append(NoRefs);
+			}.bind(this));
+		}
+		$('#anottationtoolbox-section-header-creativework span.hits').remove();
+		$('#anottationtoolbox-section-header-creativework span').append('<span class="hits">'+countOrgs+'</span>');
+
+		$('#anottationtoolbox-creativeworkitem-template', this.element).hide();
+		$('#anottationtoolbox-section-creativework').show();
+	},
+	/**
+	* <p>Load others category in a specific way</p>
+	* @param info. Object with a structure like:
+	* "Others anchor": {confidence:confidence, type:"dOthers", isSemantic:1, others:{...}}
+	*/
+	populateOthersSection: function(info) {
+		var othersContainerDiv = $('#othersContainer');
+		$(".removable", othersContainerDiv).remove();
+
+		var length = info.length;
+    var countOrgs = 0;
+		var k = 0;
+		for (var i in info){
+            if( !info.hasOwnProperty( i ) )
+                continue;
+			var articleDiv = $('#anottationtoolbox-othersitem-template', this.element).clone(true);
+			articleDiv.show();
+			articleDiv.addClass("removable");
+			$(articleDiv).attr('id', '');
+			var articleDivText = document.createTextNode(i);
+
+			var link = $('#anottationtoolbox-othersitem-template_template_visit', this.element).clone(true);
+			$(link).attr('href', info[i].Link);
+			$(link).attr('id', 'anottationtoolbox-othersitem' + k + '_visit');
+
+			var linkAdd = $('#anottationtoolbox-othersitem-template_template', this.element).clone(true);
+			$(linkAdd).attr('id', 'anottationtoolbox-othersitem' + k);
+			$(linkAdd).attr('anchorname', i);
+
+			var container = $('.anottationtoolbox-actions', articleDiv).clone(true).empty();
+			articleDiv.empty().append(articleDivText).append(container);
+			if(info[i].Link.length>0){
+				container.append($(link));
+			}
+			container.append($(linkAdd));
+
+			$(linkAdd).click(function (event) {this.addTag(event,'others', 'dOthers');}.bind(this));
+			$(othersContainerDiv).append($(articleDiv));
+			countOrgs++;
+			k++;
+		}
+
+		if(countOrgs==0){
+			$('#anottationtoolbox-section-header-others').click(function (event) {
+				var NoRefs = document.createTextNode("References not found.");
+				$('#anottationtoolbox-section-others').empty();
+				$('#anottationtoolbox-section-others').append(NoRefs);
+			}.bind(this));
+		}
+		$('#anottationtoolbox-section-header-others span.hits').remove();
+		$('#anottationtoolbox-section-header-others span').append('<span class="hits">'+countOrgs+'</span>');
+
+		$('#anottationtoolbox-othersitem-template', this.element).hide();
+		$('#anottationtoolbox-section-others').show();
 	},
 
 	toggleItem: function(event) {

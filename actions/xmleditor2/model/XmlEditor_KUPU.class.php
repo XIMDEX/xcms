@@ -309,7 +309,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $namespaces = json_encode($this->getAllNamespaces());
         $relTags = new RelTagsNodes();
-        $tags = json_encode($relTags->getTags($idnode));
+        $tags = str_replace("'",'&#39;',
+            json_encode($relTags->getTags($idnode), JSON_UNESCAPED_UNICODE));
 
         $onloadfunctions = sprintf("kupu = startKupu({%s});", implode(", ", $options));
         $values = array('nodeid' => $idnode,
