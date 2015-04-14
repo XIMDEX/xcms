@@ -28,381 +28,373 @@ var inputUrl2;
 
 
 var AttributesToolBox = Object.xo_create(FloatingToolBox, {
+    initialize: function (tool, editor) {
 
-	initialize: function(tool, editor) {
+        var label = _('Update');
 
-		var label = _('Update');
+        eval("this.buttons = { " + label + ": this.updateButtonHandler.bind(this) };");
 
-		eval("this.buttons = { "+label+": this.updateButtonHandler.bind(this) };");
+        AttributesToolBox._super(this, 'initialize', tool, editor);
 
-		AttributesToolBox._super(this, 'initialize', tool, editor);
+        this.setTitle(_('Attributes'));
+        this.currentInput = null;
+        this.imgObserver = null;
+        this.imgDim = {w: -1, h: -1};
+    },
+    startStopTimer: function (ximElement) {
 
-		this.setTitle(_('Attributes'));
-		this.currentInput = null;
-		this.imgObserver = null;
-		this.imgDim = {w: -1, h: -1};
-	},
+        var t = XimTimer.getInstance();
 
-	startStopTimer: function(ximElement) {
+        var htmlDoc = this.editor.getBody().parentNode;
+        var domElement = $('[uid="%s"]'.printf(ximElement.uid), htmlDoc).get(0);
 
-		var t = XimTimer.getInstance();
+        t.removeAllObservers();
 
-		var htmlDoc = this.editor.getBody().parentNode;
-		var domElement = $('[uid="%s"]'.printf(ximElement.uid), htmlDoc).get(0);
+        if (domElement.tagName.toUpperCase() != 'IMG') {
+            t.stop();
+            this.imgDim = {w: -1, h: -1};
+            return;
+        }
 
-		t.removeAllObservers();
+        this.imgObserver = t.addObserver(this.updateImageSize.bind(this, domElement), 500);
+        t.start();
+    },
+    updateImageSize: function (domElement) {
 
-		if (domElement.tagName.toUpperCase() != 'IMG') {
-			t.stop();
-			this.imgDim = {w: -1, h: -1};
-			return;
-		}
+        var w = $(domElement).width();
+        var h = $(domElement).height();
 
-		this.imgObserver = t.addObserver(this.updateImageSize.bind(this, domElement), 500);
-		t.start();
-	},
+        if (w == this.imgDim.w && h == this.imgDim.h) {
+            return;
+        }
 
-	updateImageSize: function(domElement) {
+        this.imgDim.w = w;
+        this.imgDim.h = h;
 
-		var w = $(domElement).width();
-		var h = $(domElement).height();
+        $('input#kupu-attributes-width', this.element).val(w);
+        $('input#kupu-attributes-height', this.element).val(h);
+    },
+    beforeUpdateContent: function (options) {
+        this._clean();
+    },
+    updateState: function (options) {
 
-		if (w == this.imgDim.w && h == this.imgDim.h) {
-			return;
-		}
+        if (!this.tool.selNode || (options.event && options.event.type != 'click'))
+            return;
 
-		this.imgDim.w = w;
-		this.imgDim.h = h;
+        this._clean();
 
-		$('input#kupu-attributes-width', this.element).val(w);
-		$('input#kupu-attributes-height', this.element).val(h);
-	},
+        var input = null;
+        $('<div></div>')
+                .addClass('xedit-element-name')
+                .html(this.tool.selNode.tagName)
+                .appendTo(this.element);
+        for (var attrName in this.tool.attributes) {
 
-	beforeUpdateContent: function(options) {
-		this._clean();
-	},
+            var attr = this.tool.attributes[attrName];
 
-	updateState: function(options) {
+            if (typeof attr.value == "object") {
+                input = document.createElement('select');
 
-		if (!this.tool.selNode || (options.event && options.event.type != 'click')) return;
+                for (var i = 0, l = attr.value.length; i < l; i++) {
 
-		this._clean();
+                    var value = attr.value[i];
 
-		var input = null;
-		$('<div></div>')
-			.addClass('xedit-element-name')
-			.html(this.tool.selNode.tagName)
-			.appendTo(this.element);
-		for (var attrName in this.tool.attributes) {
+                    var option = document.createElement('option');
+                    option.setAttribute('value', value);
+                    text = document.createTextNode(value);
+                    option.appendChild(text);
+                    input.appendChild(option);
 
-			var attr = this.tool.attributes[attrName];
+                    if (value == attr.selectedValue) {
+                        option.setAttribute('selected', 'selected');
+                    }
+                }
 
-			if (typeof attr.value == "object"){
-				input = document.createElement('select');
+            } else {
 
-				for (var i=0,l=attr.value.length; i<l; i++) {
+                input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.value = attr.value || '';
+            }
 
-					var value = attr.value[i];
+            $(input).data('attribute-name', attrName);
+            input.setAttribute('class', 'wide');
+            input.setAttribute('id', 'kupu-attributes-' + attrName);
 
-					var option = document.createElement('option');
-					option.setAttribute('value', value);
-					text = document.createTextNode(value);
-					option.appendChild(text);
-					input.appendChild(option);
+            if (attrName == 'uid') {
+                input.setAttribute('type', 'hidden');
+            }
 
-					if (value == attr.selectedValue) {
-						option.setAttribute('selected', 'selected');
-					}
-				}
+            if (!this.tool.PROTECTED_ATTRIBUTES.contains(attrName)) {
 
-			} else {
+                if (attr.type === null) {
 
-				input = document.createElement('input');
-				input.setAttribute('type', 'text');
-			    input.value = attr.value || '';
-			}
+                    this._createAttributeInput(attrName, input);
+                } else {
 
-			$(input).data('attribute-name', attrName);
-			input.setAttribute('class', 'wide');
-			input.setAttribute('id', 'kupu-attributes-' + attrName);
-
-			if (attrName == 'uid') {
-				input.setAttribute('type', 'hidden');
-			}
-
-			if (!this.tool.PROTECTED_ATTRIBUTES.contains(attrName)) {
-
-				if (attr.type === null) {
-
-					this._createAttributeInput(attrName, input);
-				} else {
-
-					var method = '_createInputFor_' + attr.type;
-					if (Object.isFunction(this[method])) {
-						this[method](attrName, input);
-					}else{
-						this._createInputFor_genericSelector(attrName, input,[]);
-					}
+                    var method = '_createInputFor_' + attr.type;
+                    if (Object.isFunction(this[method])) {
+                        this[method](attrName, input);
+                    } else {
+                        this._createInputFor_genericSelector(attrName, input, []);
+                    }
 
 //					$(input).click(function (e) {this._createTreeSelector($(e.currentTarget).attr('id'));}.bind(this));
-				}
-			}
+                }
+            }
 
-		}
+        }
 
-		this.startStopTimer(this.tool.selNode);
-	},
+        this.startStopTimer(this.tool.selNode);
+    },
+    updateButtonHandler: function (event) {
 
-	updateButtonHandler: function(event) {
+        var t = XimTimer.getInstance();
+        t.removeObserver(this.imgObserver);
 
-		var t = XimTimer.getInstance();
-		t.removeObserver(this.imgObserver);
+        var attributes = {};
 
-		var attributes = {};
+        $('.kupu-attribute-value', this.element).each(function (index, elem) {
+            var attrName = $(elem).data('attribute-name');
+            var attrValue = $(elem).val();
+            attributes[attrName] = attrValue;
+        });
 
-		$('.kupu-attribute-value', this.element).each(function(index, elem) {
-			var attrName = $(elem).data('attribute-name');
-			var attrValue = $(elem).val();
-			attributes[attrName] = attrValue;
-		});
+        this.tool.saveAttributes(attributes);
 
-		this.tool.saveAttributes(attributes);
+        this.editor.logMessage(_('Attributes updated!'));
 
-		this.editor.logMessage(_('Attributes updated!'));
+        // NOTE:
+        // Updating Editor Content, because actually we don't edit html attributes but xml.
+        this.setActionDescription(_('Update attributes'));
 
-		// NOTE:
-		// Updating Editor Content, because actually we don't edit html attributes but xml.
-		this.setActionDescription(_('Update attributes'));
+        // When update button is clicked, selected element losts its focus,
+        // so we clean the attributes panel to prevent errors.
+        // UpdateEditor will populate panel again.
+        this._clean();
 
-		// When update button is clicked, selected element losts its focus,
-		// so we clean the attributes panel to prevent errors.
-		// UpdateEditor will populate panel again.
-		this._clean();
+        this.editor.updateEditor({caller: this});
+    },
+    _createInputFor_ximlink: function (label, inputUrl) {
 
-		this.editor.updateEditor({caller: this});
-	},
+        var ximElement = this.tool.selNode;
 
-	_createInputFor_ximlink: function(label, inputUrl) {
+        var $inputUrl = $(inputUrl)
+                .addClass('kupu-attribute-value');
 
-		var ximElement = this.tool.selNode;
+        var inputUrlId = $inputUrl.attr('id');
 
-		var $inputUrl = $(inputUrl)
-			.addClass('kupu-attribute-value');
+        var that = this;
+        $inputUrl.change(function (event) {
+            that._save_attribute_ximlink(event, $inputUrl)
+        });
 
-		var inputUrlId = $inputUrl.attr('id');
-
-		var that = this;
-		$inputUrl.change(function(event){that._save_attribute_ximlink(event, $inputUrl)});
-
-		var $label = $('<div></div>').addClass('kupu-toolbox-label').html('%s:'.printf(label));
-		var $fieldLabel = $('<label></label>');
-		var $wrap = $('<div></div>').addClass('kupu-toolbox-attribute-value');
-		var $button = $('<button></button>')
-			.addClass('imageSelector-search')
-			.attr('type', 'button')
-			.html(_('Search'))
-			.click(function(event){ that._openXimlinkSelector(event, $inputUrl)});
-
-
-		var d = $('<div></div>')
-			.addClass('xedit-element-attribute')
-			.append($label)
-			.append(
-				$wrap.append($inputUrl).append($button)
-			);
-
-		$(this.element).append(d);
-		if ($inputUrl.val() == "")
-			$button.click();
-	},
-
-	_openXimlinkSelector: function(event, $inputUrl) {
-
-		var drawerId 	= 'ximlinkdrawer';
-		var mainTerm 	= $(this.tool.selNode._htmlElements).filter(":visible").text();
-		var term 		= $inputUrl.val()? $inputUrl.val() : "";
-		var dt 			= this.editor.getTool('ximdocdrawertool');
-
-		if (dt.isOpen(drawerId)) return;
-
-		var $button = $('button.ximlink-search', this.element).unbind('click');
-
-		dt.drawers[drawerId].setInput($inputUrl);
-
-		$.getJSON(
-			X.restUrl + '?action=xmleditor2&method=getAvailableXimlinks&term='+term,
-			{docid: this.editor.nodeId},
-			function(data, textStatus) {
-
-				dt.drawers[drawerId].setData(data);
-				dt.drawers[drawerId].setMainTerm(mainTerm);
-				dt.drawers[drawerId].setTerm(term);
-				dt.drawers[drawerId].setXimElement(this.tool.selNode);
-				dt.openDrawer(drawerId);
-				$button.click(this._openXimlinkSelector.bind(this, $inputUrl));
-
-			}.bind(this)
-		);
-	},
-
-	_createInputFor_genericSelector : function(label, inputUrl, specificSearchOptions){
-
-		var searchOptions = [{comparation: 'equal',
-                                                content: this.editor.nodeId,
-                                                field: 'nodeid',
-                                                from: '',
-                                                to: ''
-					}];
-
-		var $inputUrl = $(inputUrl).addClass('kupu-attribute-value');
-
-		searchOptions = searchOptions.concat(specificSearchOptions);
-		var getImageSelector = function($inputUrl){
-			this.imageSelector = null;
-			if (Object.isEmpty(this.imageSelector)){
-				this.imageSelector = $("<div></div>").appendTo(this.element);
-				this.imageSelector.searchpanel({
-	                url_base: X.baseUrl,
-	                use_cache: false,
-	                queryHandler: "SQLTREE",
-	                masterFilter: [{
-	                        comparation: 'equal',
-	                        content: '5040',
-	                        field: 'nodetype',
-	                        from: '',
-	                        to: ''
-	                }, {
-	                        comparation: 'equal',
-	                        content: this.editor.nodeId,
-	                        field: 'nodeid',
-	                        from: '',
-	                        to: ''
-	                }
-	                ],
-	                showFilters: false,
-	                view: 'treeview',
-	                showSelectButton: true
-	        	});
-			}
-
-			that2 = this;
-                        inputUrl2 = $inputUrl;
-                        $(this.imageSelector)
-                                .unbind('nodesSelected')
-                                .bind('nodesSelected',
-					this._imageSelector_onNodesSelected);
-
-                        return this.imageSelector;
-
-		}.bind(this);
+        var $label = $('<div></div>').addClass('kupu-toolbox-label').html('%s:'.printf(label));
+        var $fieldLabel = $('<label></label>');
+        var $wrap = $('<div></div>').addClass('kupu-toolbox-attribute-value');
+        var $button = $('<button></button>')
+                .addClass('imageSelector-search')
+                .attr('type', 'button')
+                .html(_('Search'))
+                .click(function (event) {
+                    that._openXimlinkSelector(event, $inputUrl)
+                });
 
 
-		var $sp = getImageSelector($inputUrl);
+        var d = $('<div></div>')
+                .addClass('xedit-element-attribute')
+                .append($label)
+                .append(
+                        $wrap.append($inputUrl).append($button)
+                        );
 
-		var $label = $('<div></div>')
-			.addClass('kupu-toolbox-label')
-			.html('%s:'.printf(label));
-		var $wrap = $('<div></div>')
-			.addClass('kupu-toolbox-attribute-value');
+        $(this.element).append(d);
+        if ($inputUrl.val() == "")
+            $button.click();
+    },
+    _openXimlinkSelector: function (event, $inputUrl) {
 
-		var $button = $('<button></button>')
-			.addClass('imageSelector-search')
-			.attr('type', 'button')
-			.html(_('Search'));
+        var drawerId = 'ximlinkdrawer';
+        var mainTerm = $(this.tool.selNode._htmlElements).filter(":visible").text();
+        var term = $inputUrl.val() ? $inputUrl.val() : "";
+        var dt = this.editor.getTool('ximdocdrawertool');
+
+        if (dt.isOpen(drawerId))
+            return;
+
+        var $button = $('button.ximlink-search', this.element).unbind('click');
+
+        dt.drawers[drawerId].setInput($inputUrl);
+
+        $.getJSON(
+                X.restUrl + '?action=xmleditor2&method=getAvailableXimlinks&term=' + term,
+                {docid: this.editor.nodeId},
+        function (data, textStatus) {
+
+            dt.drawers[drawerId].setData(data);
+            dt.drawers[drawerId].setMainTerm(mainTerm);
+            dt.drawers[drawerId].setTerm(term);
+            dt.drawers[drawerId].setXimElement(this.tool.selNode);
+            dt.openDrawer(drawerId);
+            $button.click(this._openXimlinkSelector.bind(this, $inputUrl));
+
+        }.bind(this)
+                );
+    },
+    _createInputFor_genericSelector: function (label, inputUrl, specificSearchOptions) {
+
+        var searchOptions = [{comparation: 'equal',
+                content: this.editor.nodeId,
+                field: 'nodeid',
+                from: '',
+                to: ''
+            }];
+
+        var $inputUrl = $(inputUrl).addClass('kupu-attribute-value');
+
+        searchOptions = searchOptions.concat(specificSearchOptions);
+        var getImageSelector = function ($inputUrl) {
+            this.imageSelector = null;
+            if (Object.isEmpty(this.imageSelector)) {
+                this.imageSelector = $("<div></div>").appendTo(this.element);
+                this.imageSelector.searchpanel({
+                    url_base: X.baseUrl,
+                    use_cache: false,
+                    queryHandler: "SQLTREE",
+                    masterFilter: [{
+                            comparation: 'equal',
+                            content: '5040',
+                            field: 'nodetype',
+                            from: '',
+                            to: ''
+                        }, {
+                            comparation: 'equal',
+                            content: this.editor.nodeId,
+                            field: 'nodeid',
+                            from: '',
+                            to: ''
+                        }
+                    ],
+                    showFilters: false,
+                    view: 'treeview',
+                    showSelectButton: true
+                });
+            }
+
+            that2 = this;
+            inputUrl2 = $inputUrl;
+            $(this.imageSelector)
+                    .unbind('nodesSelected')
+                    .bind('nodesSelected',
+                            this._imageSelector_onNodesSelected);
+
+            return this.imageSelector;
+
+        }.bind(this);
 
 
-		var that = this;
-		$button.click(function(){
-			//Updating current input at open the imageSelector
-			that.currentInput = $inputUrl;
-			$sp.searchpanel("option","masterFilter",searchOptions);
-			$sp.searchpanel("open");
+        var $sp = getImageSelector($inputUrl);
 
-			if ($inputUrl.val() && $inputUrl.val() != ""){
-	                        var value = $inputUrl.val();
-                                if (value.indexOf(",") != -1)
-         	                       value = value.substring(0,value.indexOf(","));
-				$sp.searchpanel("setSelectedElement, value");
-                    	        $(".xim-treeview-container").treeview("navigate_to_idnode_from_project", value);
-			}
+        var $label = $('<div></div>')
+                .addClass('kupu-toolbox-label')
+                .html('%s:'.printf(label));
+        var $wrap = $('<div></div>')
+                .addClass('kupu-toolbox-attribute-value');
 
-		}.bind(this));
+        var $button = $('<button></button>')
+                .addClass('imageSelector-search')
+                .attr('type', 'button')
+                .html(_('Search'));
 
-		var d = $('<div></div>')
-			.addClass('xedit-element-attribute')
-			.append($label)
-			.append(
-				$wrap.append($inputUrl).append($button)
-			);
 
-		$(this.element).append(d);
+        var that = this;
+        $button.click(function () {
+            //Updating current input at open the imageSelector
+            that.currentInput = $inputUrl;
+            $sp.searchpanel("option", "masterFilter", searchOptions);
+            $sp.searchpanel("open");
 
-	},
+            var inputVal = $($inputUrl[0]).val();
+            if (typeof inputVal !== "undefined" && inputVal.length > 0) {
+                if (inputVal.indexOf(",") !== -1) {
+                    inputVal = inputVal.substring(0, inputVal.indexOf(","));
+                }
+                $(".xim-treeview-container").treeview("navigate_to_idnode_from_project", inputVal);
+            }
+        }.bind(this));
 
-	 _createInputFor_allSelector : function(label, inputUrl){
-                var searchOptions = [{}];
-                this._createInputFor_genericSelector(label, inputUrl, searchOptions);
-        },
+        var d = $('<div></div>')
+                .addClass('xedit-element-attribute')
+                .append($label)
+                .append(
+                        $wrap.append($inputUrl).append($button)
+                        );
 
-	_createInputFor_ximdocSelector: function(label, inputUrl) {
+        $(this.element).append(d);
 
-		var searchOptions = [{
-					comparation: 'equal',
-                                        content: '5032',
-                                        field: 'nodetype',
-                                        from: '',
-                                        to: ''
-                                    }];
+    },
+    _createInputFor_allSelector: function (label, inputUrl) {
+        var searchOptions = [{}];
+        this._createInputFor_genericSelector(label, inputUrl, searchOptions);
+    },
+    _createInputFor_ximdocSelector: function (label, inputUrl) {
 
-		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
-	},
-	_createInputFor_imageSelector: function(label, inputUrl) {
+        var searchOptions = [{
+                comparation: 'equal',
+                content: '5032',
+                field: 'nodetype',
+                from: '',
+                to: ''
+            }];
 
-		var searchOptions = [{
-					comparation: 'equal',
-                                        content: '5040',
-                                        field: 'nodetype',
-                                        from: '',
-                                        to: ''
-                                    }];
+        this._createInputFor_genericSelector(label, inputUrl, searchOptions);
+    },
+    _createInputFor_imageSelector: function (label, inputUrl) {
 
-		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
-	},
+        var searchOptions = [{
+                comparation: 'equal',
+                content: '5040',
+                field: 'nodetype',
+                from: '',
+                to: ''
+            }];
 
-	_createInputFor_ximletSelector: function(label, inputUrl){
-		var searchOptions = [{
-					comparation: 'equal',
-                                        content: '5057',
-                                        field: 'nodetype',
-                                        from: '',
-                                        to: ''
-              				}];
-		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
-	},
+        this._createInputFor_genericSelector(label, inputUrl, searchOptions);
+    },
+    _createInputFor_ximletSelector: function (label, inputUrl) {
+        var searchOptions = [{
+                comparation: 'equal',
+                content: '5057',
+                field: 'nodetype',
+                from: '',
+                to: ''
+            }];
+        this._createInputFor_genericSelector(label, inputUrl, searchOptions);
+    },
+    _createInputFor_ximcludeSelector: function (label, inputUrl) {
 
-	_createInputFor_ximcludeSelector: function(label, inputUrl){
+        var searchOptions = [{
+                comparation: 'equal',
+                content: '5076',
+                field: 'nodetype',
+                from: '',
+                to: ''
+            }];
+        this._createInputFor_genericSelector(label, inputUrl, searchOptions);
+    },
+    _imageSelector_onNodesSelected: function (event, params) {
 
-		var searchOptions = [{
-					comparation: 'equal',
-                                        content: '5076',
-                                        field: 'nodetype',
-                                        from: '',
-                                        to: ''
-				}];
-		this._createInputFor_genericSelector(label, inputUrl, searchOptions);
-	},
-
-	_imageSelector_onNodesSelected: function(event, params) {
-
-		$(that2.imageSelector).unbind('nodesSelected');
-		var image = params.selection.length > 0 ? params.selection[0] : false;
-		if (!image) return;
-		if (!that2.currentInput) return;
-			that2.currentInput.val(image.nodeid.value);
-	},
-
-	_save_attribute_ximlink: function(event, $inputUrl) {
-		this.updateButtonHandler();
-	}
+        $(that2.imageSelector).unbind('nodesSelected');
+        var image = params.selection.length > 0 ? params.selection[0] : false;
+        if (!image)
+            return;
+        if (!that2.currentInput)
+            return;
+        that2.currentInput.val(image.nodeid.value);
+    },
+    _save_attribute_ximlink: function (event, $inputUrl) {
+        this.updateButtonHandler();
+    }
 
 });
