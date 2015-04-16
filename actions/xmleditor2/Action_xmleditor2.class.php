@@ -279,9 +279,7 @@ class Action_xmleditor2 extends ActionAbstract {
 		$idnode = $this->request->getParam('nodeid');
 		$content = Request::post('content');
 		$this->getEditor($idnode);
-        $data["token"] = "000-00000-000";
-        $data["content"] = $content;
-		$content = $this->_editor->getAnnotationFile($idnode, $data);
+		$content = $this->_editor->getAnnotationFile($idnode, $content);
 		$this->printContent($content);
 	}
 

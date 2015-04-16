@@ -25,8 +25,6 @@
 
 -- Key set to empty from Config table
 
-INSERT INTO Config VALUES (NULL,'Xowl_location','http://lab03.ximdex.net:9091/api/v1/enhance');
-
 INSERT INTO Namespaces (service, type, nemo, uri, recursive, category, isSemantic)
 VALUES
 ("Xowl","ZemantaImage","zImage","http://<ximdex_local_url>/service/rdfs/ZemantaImage", 0, "image",0),

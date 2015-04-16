@@ -46,7 +46,11 @@ class Action_setmetadata extends ActionAbstract {
 
 		$cloud_tags = array();
 		$cTags = $tags->getTags();
-		
+		if(is_null($cTags)){
+            $pcTags = '[]';
+        }else{
+            $pcTags = str_replace("'",'&#39;',json_encode($cTags, JSON_UNESCAPED_UNICODE ));
+        }
         /*if(count($cTags)>0){
 		    foreach ($cTags as $tag) {
   			    $array = array(
@@ -60,7 +64,7 @@ class Action_setmetadata extends ActionAbstract {
         $node = New Node($idNode);
 
 	 	$values = array(
-	 		'cloud_tags' => str_replace("'",'&#39;',json_encode($cTags, JSON_UNESCAPED_UNICODE )),
+	 		'cloud_tags' => $pcTags,
 			'max_value' => $max[0][0],
 			'id_node' => $idNode,
 			'node_name' => $node->GetNodeName(),
@@ -96,9 +100,7 @@ class Action_setmetadata extends ActionAbstract {
 		$result = array();
 		if ($node->nodeType->get('IsStructuredDocument')){
 			$content = $node->GetContent();
-            $data["token"] = "000-00000-000";
-            $data["content"] = $content;
-			$result = $this->getRelatedTags(http_build_query( $data ));
+			$result = $this->getRelatedTags($content);
 		}
 		$this->sendJson($result);
 	}

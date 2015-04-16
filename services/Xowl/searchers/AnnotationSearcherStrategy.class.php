@@ -69,8 +69,15 @@ class AnnotationSearcherStrategy extends AbstractSearcherStrategy
 			'Content-type: text/plain'*/);
 
         //$data = urlencode($text);
+        $data = array();
+        if(is_string($text)){
+            $data["content"] = $text;
+            $data["token"] = \App::getValue( "Xowl_token");
+        }else{
+            $data = $text;
+        }
 
-        $response = $this->restProvider->getHttp_provider()->post(\App::getValue("Xowl_location"), $text, $headers);
+        $response = $this->restProvider->getHttp_provider()->post(\App::getValue("Xowl_location"), $data, $headers);
 
         if ($response['http_code'] != Curl::HTTP_OK) {
             return NULL;

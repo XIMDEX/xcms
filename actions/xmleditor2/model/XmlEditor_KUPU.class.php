@@ -613,8 +613,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     {
         if (ModulesManager::isEnabled('Xowl')) {
             if (\App::getValue( 'EnricherKey') === NULL || \App::getValue( 'EnricherKey') == '') {
-                XMD_Log::error(_("EnricherKey configuration value has not been defined"));
-                $resp = array("status" => "no  EnricherKey defined");
+                XMD_Log::error(_("Xowl_token configuration value has not been defined"));
+                $resp = array("status" => "No  Xowl_token defined", "videourl" => "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>");
             } else {
                 $ontologyService = new OntologyService();
                 $resp = $ontologyService->suggest($content);

@@ -33,8 +33,9 @@ ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/model/orm/Channels_ORM.class.php');
 ModulesManager::file('modules/Xowl/config/xowl.conf');
 ModulesManager::file('/inc/rest/REST_Provider.class.php');
+ModulesManager::file('/services/Xowl/searchers/AnnotationSearcherStrategy.class.php');
 //Xowl is not actived in this point
-require_once(XIMDEX_ROOT_PATH . ModulesManager::path('Xowl') . '/actions/enricher/model/Enricher.class.php');
+//require_once(XIMDEX_ROOT_PATH . ModulesManager::path('Xowl') . '/actions/enricher/model/TagSuggester.class.php');
 
 class Module_Xowl extends Module
 {
@@ -54,10 +55,31 @@ class Module_Xowl extends Module
         return true;
     }
 
+    function configure($key, $urlService){
+        \App::setValue('EnricherKey', '2jpkhvda52fgffz2kv8x8cuy', true);
+        \App::setValue('Xowl_location', $urlService, true);
+        \App::setValue('Xowl_token', $key, true);
+
+        $provider = new AnnotationSearcherStrategy;
+        $ret = $provider->suggest('');
+        /*$ra = new TagSuggester();
+        $text = '';
+        $ret = $ra->suggest($text, 'application/json');*/
+
+        if (empty($ret)) {
+            //Deleting key...
+            \App::setValue('Xowl_location', '', true);
+            \App::setValue('Xowl_token', '', true);
+            \App::setValue('EnricherKey', '', true);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Enable function. Ask Xowl Key and LMF path if requires.
      */
-    function enable()
+/*    function enable()
     {
 
         //Asking Xowl key.
@@ -108,7 +130,7 @@ class Module_Xowl extends Module
             }
         }
     }
-
+*/
     /**
      * Ask and check LMF url
      * @return bool True if the url is ok.

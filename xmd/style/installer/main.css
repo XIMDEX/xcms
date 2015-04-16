@@ -483,7 +483,7 @@ li[class*="module"] {
       background-position: center -10em;
       -webkit-background-size: 130%;
       background-size: 130%; }
-    li[class*="module"] .title.xlyre::after {
+    li[class*="module"] .title.Xowl::after {
       background-position: center -6.7em;
       -webkit-background-size: 170%;
       background-size: 170%; }
@@ -573,17 +573,17 @@ li[class*="module"] {
   background-color: #ff684f !important; }
 .module-installed .ximNEWS::after, .module-already .ximNEWS::after {
   background-color: #10e2ea !important; }
-.module-installed .xlyre::after, .module-already .xlyre::after {
+.module-installed .Xowl::after, .module-already .Xowl::after {
   background-color: #e5dc1e !important; }
 
 /**************
 // ERRORS
 ***************/
-.error, .warning, .errors {
+.error, .warning, .success_element, .errors {
   padding-bottom: 0 !important;
   position: relative;
   font-weight: bold; }
-  .error::before, .warning::before, .errors::before {
+  .error::before, .success_element::before, .warning::before, .errors::before {
     content: "!";
     display: inline-block;
     width: 1.375em;
@@ -606,6 +606,12 @@ li[class*="module"] {
   content: "\e606";
   color: #e46666;
   border-color: #e46666; }
+
+.success_element::before{
+    font-family: 'social_icons';
+    content: "\e604";
+    color: #34e89f;
+    border-color: #34e89f; }
 
 .error + .desc, .error--inline, .code {
   margin-left: calc(1.375em + .5em);
