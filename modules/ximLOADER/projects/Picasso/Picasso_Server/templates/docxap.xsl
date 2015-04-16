@@ -5,7 +5,7 @@
 	<xsl:include href="{URL_SERVER}/templates/templates_include.xsl" />
 	<xsl:template name="docxap" match="docxap">
 
-		<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:foaf="http://xmlns.com/foaf/0.1/">
+		<html xmlns="http://www.w3.org/1999/xhtml"  xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:schema="http://schema.org/">
 
 			<head>
 				<xsl:call-template name="INCLUDE_metas" />

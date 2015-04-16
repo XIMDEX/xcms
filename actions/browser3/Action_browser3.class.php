@@ -75,6 +75,7 @@ class Action_browser3 extends ActionAbstract {
             'xinversion' => \App::getValue("VersionName")
         );
 
+        $this->addCss('/xmd/style/fonts.css');
         $this->addCss('/xmd/style/jquery/smoothness/jquery-ui-1.8.2.custom.css');
         $this->addCss('/extensions/bootstrap/dist/css/bootstrap.min.css');
         $this->addCss('/extensions/ladda/dist/ladda-themeless.min.css');

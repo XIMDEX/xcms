@@ -38,9 +38,7 @@
     {foreach from=$css_files key=id item=href}
         <link type="text/css" href="{$href}" rel="stylesheet"/>
     {/foreach}
-    <link href='http://fonts.googleapis.com/css?family=Coustard:400,900' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,400italic,700italic'
-          rel='stylesheet' type='text/css'>
+
     <!-- css widgets -->
     %=css_widgets%
 

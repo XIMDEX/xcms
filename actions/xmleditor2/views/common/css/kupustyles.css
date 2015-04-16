@@ -901,7 +901,7 @@ div.anottationtoolbox-section {
 
 .load-annotation {
   background: url("../../../gfx/bg-enricher.png") repeat;
-  padding: 15px 0px 90px 0px;
+  padding: 15px 0px 130px 0px;
   /*margin-bottom: 25px;
   -moz-box-shadow: 0px 2px 1px #ccc;*/
   overflow: hidden;
@@ -938,6 +938,14 @@ h3#anottationtoolbox-section-header-places {
 h3#anottationtoolbox-section-header-organisations {
   left: 31%;
   top: 100px; }
+
+h3#anottationtoolbox-section-header-creativework {
+  left: 0;
+  top: 140px; }
+
+h3#anottationtoolbox-section-header-others {
+  left: 31%;
+  top: 140px; }
 
 h3#anottationtoolbox-section-header-link span {
   background-position: left -11px; }
@@ -995,6 +1003,12 @@ h3.button-pressed {
   color: #57AEAF; }
 
 h3#anottationtoolbox-section-header-people span {
+  background-position: left -524px; }
+
+h3#anottationtoolbox-section-header-others span {
+  background-position: left -524px; }
+
+h3#anottationtoolbox-section-header-creativework span {
   background-position: left -524px; }
 
 h3#anottationtoolbox-section-header-people span:hover {

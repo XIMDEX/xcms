@@ -64,16 +64,24 @@ class TagSuggester extends REST_Provider {
 	 */
 	private function query($text, $format) {
 
+        $url = \App::getValue( "Xowl_location");
+
 		$headers = array(
 			//To remove HTTP 100 Continue messages
 			'Expect:',
 			//Response Format
 			'Accept: '.$format,
-			'Content-type: text/plain');
+			'Content-type: application/json');
+        $data = array();
+		if(is_string($text)){
+            $data["content"] = $text;
+            $data["token"] = \App::getValue( "Xowl_token");
+        }else{
+            $data = $text;
+        }
+
 		
-		//$data = urlencode($text);
-		
-		$response = $this->http_provider->post(\App::getValue( "Xowl_location"), $text, $headers);
+		$response = $this->http_provider->post($url, $data, $headers);
 
 		if ($response['http_code'] != Curl::HTTP_OK) {
 			return NULL;

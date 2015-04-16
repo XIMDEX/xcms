@@ -160,11 +160,14 @@ class SyncManager {
 			return NULL;
 		}
 
-
-		$docsToPublish = $this->buildPublishingDependencies($idNode, $params);
+		if($down!=NULL){
+                      $docsToPublish = array();
+                }else{
+                       //error_log("Class;".get_class($node->class ) ); 
+                       $docsToPublish = $this->buildPublishingDependencies($idNode, $params);
+                }
 
 		if ($node->nodeType->get('IsPublicable') == '1') {
-
 			if (sizeof($docsToPublish) > 0) {
 				$docsToPublish = array_unique(array_merge(array($idNode), $docsToPublish));
 			} else {

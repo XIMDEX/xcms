@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="extensions/ladda/dist/ladda-themeless.min.css">
     <link rel="stylesheet" href="extensions/humane/flatty.css">
 
-    <link href='http://fonts.googleapis.com/css?family=Coustard|Open+Sans:400,700,800,300,600' rel='stylesheet' type='text/css' />
+    <link href='xmd/style/fonts.css' rel='stylesheet' type='text/css' />
 
     <title>Ximdex Installer</title>
 

@@ -54,7 +54,7 @@ class OntologyService {
 		$this->loadProviders(func_get_args());
 	
 		if(ModulesManager::isEnabled('Xowl')){		
-			$key = \App::getValue( 'EnricherKey');
+			$key = \App::getValue( 'Xowl_token');
 
 			if($key !== NULL && $key != ''){
 				$this->key = $key;
