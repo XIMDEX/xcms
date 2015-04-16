@@ -1,19 +1,16 @@
 <div class="noselect" hm-doubletap="toggleNode(node,$event)" hm-press="loadActions(node,$event)"
      hm-tap="select(node,$event)" ng-right-click="loadActions(node,$event)"
      ng-class="{'xim-treeview-container-selected': (node | nodeSelected: selectedNodes)}">
-                <span class="ui-icon xim-actions-toggle-node"
-                      ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'ui-icon-triangle-1-e': !node.showNodes, 'icon-hidden': !node.children && (node.collection == null || node.collection.length==0)}"
+                <span class="ui-icon xim-actions-toggle-node ui-icon-triangle-1-e"
+                      ng-class="{'ui-icon-triangle-1-se': node.showNodes, 'icon-hidden': !node.children && (node.collection == null || node.collection.length==0)}"
                       hm-tap="toggleNode(node,$event)"></span>
-    <span class="xim-treeview-icon icon-#/::node.icon.split('.')[0]/#"></span>
+    <span class="xim-treeview-icon icon-#/::node.icon/#"></span>
     <span class="xim-treeview-branch" ng-bind-html="::node.name"></span>
-                <span hm-tap="loadActions(node,$event)"
-                      class="xim-actions-dropdown xim-treeview-actions-dropdown
-                      ui-icon ui-icon-triangle-1-e"></span>
+
 </div>
 <ul class="xim-treeview-branch" ng-show="node.showNodes">
-    <li ng-repeat="node in node.collection" ng-include="'inc/js/angular/templates/tree_item_renderer.html'"
-        class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
+    <li ng-repeat="node in node.collection track by (node.nodeid + node.nodeFrom + '_' + node.nodeTo)" static-include="inc/js/angular/templates/tree_item_renderer.html"
+        class="xim-treeview-node xim-treeview-expanded"></li>
 </ul>
 <ul class="xim-treeview-loading" id="treeloading-undefined" ng-show="node.showNodes && node.loading">
-    <li></li>
     <img src="xmd/images/browser/hbox/loading.gif"></ul>

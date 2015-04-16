@@ -12,6 +12,13 @@ angular.module('ximdex.main.controller')
                     3200
             );
 
+            //Cache for node actions
+            $window.com.ximdex.nodeActions = [];
+
+            //Global method to empty the actions cache
+            $window.com.ximdex.emptyActionsCache = function() {
+                $window.com.ximdex.nodeActions = [];
+            }
 
             //Gets preferences
             $http.get(xUrlHelper.getAction({

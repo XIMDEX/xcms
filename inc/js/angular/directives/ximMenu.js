@@ -25,22 +25,16 @@ If not, visit http://gnu.org/licenses/agpl-3.0.html.
 @version $Revision$
  */
 angular.module("ximdex.common.directive").directive("ximMenu", [
-  "$window", "$timeout", function($window, $timeout) {
+  "$window", function($window) {
     var base_url;
     base_url = $window.X.baseUrl;
     return {
       templateUrl: base_url + '/inc/js/angular/templates/ximMenu.html',
       restrict: "E",
       replace: true,
-      link: function(scope, element, attrs, ctrl) {
+      link: function(scope) {
         var finY, menuY, windowY;
-        if (scope.expanded === "true") {
-          scope.expanded = true;
-          menuY = scope.options.length * 38 + 10;
-        } else {
-          scope.expanded = false;
-          menuY = 39;
-        }
+        menuY = scope.options.length * 38 + 10;
         if (scope.left) {
           scope.left = scope.left;
         }

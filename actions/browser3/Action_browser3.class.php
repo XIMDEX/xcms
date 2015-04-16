@@ -117,9 +117,11 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs(Extensions::JQUERY);
         $this->addJs(Extensions::JQUERY_UI);
         $this->addJs('/inc/js/i18n.js');
-        $this->addJs('/extensions/vendors/hammerjs/hammer.js/hammer.min.js');
+        $this->addJs('/extensions/vendors/hammerjs/hammer.js/hammer.js');
         $this->addJs('/extensions/angular/angular.min.js');
-        $this->addJs('/extensions/vendors/RyanMullins/angular-hammer/angular.hammer.min.js');
+        $this->addJs('/extensions/react/react-with-addons.min.js');
+        $this->addJs('/extensions/react/ngReact.min.js');
+        $this->addJs('/extensions/vendors/RyanMullins/angular-hammer/angular.hammer.js');
         $this->addJs('/extensions/angular/angular-animate.min.js');
         $this->addJs('/extensions/angular/angular-sanitize.min.js');
         $this->addJs('/extensions/angular-ui-sortable/src/sortable.js');
@@ -128,7 +130,7 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/extensions/humane/humane.min.js');
         $this->addJs('/extensions/flow/ng-flow-standalone.min.js');
         $this->addJs('/extensions/angular-bootstrap/dist/ui-bootstrap-custom-tpls-0.13.0-SNAPSHOT.min.js');
-        //$this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
+        $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery-ui-timepicker-addon.js');
         //$this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.tabs.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/ui/jquery.ui.dialog.min.js');
         $this->addJs(Extensions::JQUERY_PATH . '/plugins/jquery-validate/jquery.validate.js');
@@ -203,6 +205,7 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/inc/js/angular/directives/ximList.js');
         $this->addJs('/inc/js/angular/directives/ximBrowser.js');
         $this->addJs('/inc/js/angular/directives/ximTabs.js');
+        $this->addJs('/inc/js/angular/directives/treeNode.jsx.js');
         $this->addJs('/inc/js/angular/filters/xFilters.js');
         //$this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
@@ -307,6 +310,9 @@ class Action_browser3 extends ActionAbstract {
     public function read() {
         $ret = GenericDatasource::read($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
+        if($this->request->getParam('nodeid') == "10000"){
+            $ret["name"] = _($ret["name"]);
+        }
         header('Content-type: application/json');
         $data = Serializer::encode(SZR_JSON, $ret);
         echo $data;
@@ -321,6 +327,9 @@ class Action_browser3 extends ActionAbstract {
 
         $ret = GenericDatasource::read($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
+        if($this->request->getParam('nodeid') == "10000"){
+            $ret["name"] = _($ret["name"]);
+        }
 
         $sql = "SELECT count(*) as cont FROM FastTraverse f
               INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d and not n.IdNode=%d and n.name like '%s'

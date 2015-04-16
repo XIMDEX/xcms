@@ -25,7 +25,7 @@
 angular.module('ximdex.common.service')
     .factory('xEventRelay', ['$window', '$rootScope', function($window, $rootScope) {
     	var repeatAngularEvent = function(event, data, repeated) {
-    		if (!repeated) $window.jQuery(document).trigger(event.name, data, true);
+    		//if (!repeated) $window.jQuery(document).trigger(event.name, data, true);
     	}
     	var repeatJQueryEvent = function(event, data, repeated) {
     		if (!repeated) $rootScope.$broadcast(event.type, data, true);

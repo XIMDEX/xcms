@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-    .directive('ximInverted', function(){
+    .directive('ximInverted',[ function(){
         return {
             require: 'ngModel',
             link: function(scope, element, attrs, ngModel){
@@ -31,4 +31,4 @@ angular.module('ximdex.common.directive')
                 ngModel.$formatters.push(function(val) { return !val; });
             }
         }
-    });
+    }]);

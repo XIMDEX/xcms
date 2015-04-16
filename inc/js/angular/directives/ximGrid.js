@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-    .directive('ximGrid', function () {
+    .directive('ximGrid', [function () {
         return {
             replace: true,
             restrict: 'E',
@@ -189,4 +189,4 @@ angular.module('ximdex.common.directive')
                 });
             }]
         }
-    });
+    }]);

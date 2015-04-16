@@ -459,7 +459,7 @@ $.get( window.com.ximdex.baseUrl+"/xmd/loadaction.php?action=browser3&method=get
                 return node;
             },
             _createImage: function(data) {
-                var cadena = data.icon.value.substring(0, data.icon.value.length - 4 );
+                var cadena = data.icon.value/*.substring(0, data.icon.value.length - 4 )*/;
                 var image = $('<span></span>')
                     .addClass('xim-treeview-icon')
                     .addClass('icon-' + cadena);

@@ -11,7 +11,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         #Visited tabs history
         visitedTabs = []
         #The index of the currently open tab
-        activeTab = -1
+        activeIndex = -1
 
         xtab = {}
 
@@ -91,12 +91,6 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             return
 
 
-        # Returns the index of the current active tab
-        #
-        # @return [Integer] The index of the active tab
-        #
-        xtab.activeIndex = () -> return activeTab
-
 
         postLoadJs = (tab, nodeids) ->
             container = angular.element("#"+tab.id+"_content")
@@ -123,6 +117,39 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             )
 
 
+        postLoadCssAndJs = (tab) ->
+            cssArr = []
+            content = angular.element(tab.content)
+            content.first().children().each (index, item) ->
+                cssArr.push angular.element(item).html()
+                return
+            #Object.loadCss cssArr
+            for css in cssArr
+                angularLoad.loadCSS(css)
+            jsArr = []
+            content.first().next().children().each (index, item) ->
+                jsArr.push angular.element(item).html()
+                return
+            nodeids = []
+            for n in tab.nodes
+                nodeids.push n.nodeid
+
+            cont = 0
+            callback = () ->
+                if ++cont == jsArr.length
+                    postLoadJs(tab, nodeids)
+                return
+            if jsArr.length > 0
+                for js in jsArr
+                    angularLoad.loadScript(js).then(->
+                        callback()
+                        return
+                    ).catch ->
+                        console.log "Error loading JS"
+                        return
+            else
+                postLoadJs(tab, nodeids)
+
         # Loads the css and js of a tab. It triggers the window.com.ximdex.triggerActionLoaded event
         # with the following data:
         #   -title: the id of tab title
@@ -136,38 +163,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         #
         xtab.loadCssAndJs = (tab) ->
             $timeout(
-                () ->
-                    cssArr = []
-                    content = angular.element(tab.content)
-                    content.first().children().each (index, item) ->
-                        cssArr.push angular.element(item).html()
-                        return
-                    #Object.loadCss cssArr
-                    for css in cssArr
-                        angularLoad.loadCSS(css)
-                    jsArr = []
-                    content.first().next().children().each (index, item) ->
-                        jsArr.push angular.element(item).html()
-                        return
-                    nodeids = []
-                    for n in tab.nodes
-                        nodeids.push n.nodeid
-
-                    cont = 0
-                    callback = () ->
-                        if ++cont == jsArr.length
-                            postLoadJs(tab, nodeids)
-                        return
-                    if jsArr.length > 0
-                        for js in jsArr
-                            angularLoad.loadScript(js).then(->
-                                callback()
-                                return
-                            ).catch ->
-                                console.log "Error loading JS"
-                                return
-                    else
-                        postLoadJs(tab, nodeids)
+                () -> postLoadCssAndJs(tab)
             ,
                 0
             )
@@ -229,6 +225,19 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         xtab.getTabs = () ->
             return tabs
 
+
+        # Returns the index of the current active tab
+        #
+        # @return [Integer] The index of the active tab
+        #
+        xtab.activeIndex = () -> return activeIndex
+
+        triggerUpdateTabsPosition = (deletedTab) ->
+            if deletedTab?
+                $rootScope.$broadcast('updateTabsPosition', deletedTab)
+            else
+                $rootScope.$broadcast('updateTabsPosition')
+
         # Removes a tab.
         #
         # @param index [Integer] The tab index
@@ -242,15 +251,15 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                         visitedTabs[i] = visitedTabs[i] - 1
             deletedTab = (tabs.splice index, 1)[0]
             if visitedTabs.length > 0
-                activeTab = visitedTabs[0]
+                activeIndex = visitedTabs[0]
                 $timeout(
                     () ->
-                        $rootScope.$broadcast('updateTabsPosition', deletedTab)
+                        triggerUpdateTabsPosition(deletedTab)
                 ,
                     0
                 )
             else
-                activeTab = -1
+                activeIndex = -1
             ###$timeout(
                 () ->
                     $rootScope.$broadcast('updateTabsPosition')
@@ -264,15 +273,13 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         # @param index [Integer] The tab index
         #
         xtab.setActiveTab = (index) ->
-            activeTab = index
+            activeIndex = index
             visitedIndex = visitedTabs.indexOf index
             if visitedIndex >= 0
                 visitedTabs.splice visitedIndex, 1
             visitedTabs.unshift index
             $timeout(
-                () ->
-                    $rootScope.$broadcast('updateTabsPosition')
-                    return
+                triggerUpdateTabsPosition
             ,
                 0
             )
@@ -295,11 +302,10 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         # Closes all tabs
         xtab.closeAllTabs = () ->
             tabs.splice 0, tabs.length
-            activeTab = -1
+            activeIndex = -1
             visitedTabs = []
             $timeout(
-                () ->
-                    $rootScope.$broadcast('updateTabsPosition')
+                triggerUpdateTabsPosition
             ,
                 400
             )
@@ -307,7 +313,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
 
         # Sets all tabs as no disable
         xtab.offAllTabs = () ->
-            activeTab = -1
+            activeIndex = -1
             return
 
         # Removes a tab
@@ -348,7 +354,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             index = xtab.getTabIndex tabId
             xtab.reloadTab index if index >= 0
             return
-            
+
         xtab.setTabNode = (tabId,nodes) ->
             index = xtab.getTabIndex tabId
             if index >= 0
@@ -361,7 +367,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
             return
 
         xtab.getActiveTab = () ->
-            return tabs[activeTab] if activeTab >= 0
+            return tabs[activeIndex] if activeIndex >= 0
             return null
 
         xtab.openAction = (action, nodes) ->

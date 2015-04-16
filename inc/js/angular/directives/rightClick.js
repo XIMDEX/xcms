@@ -31,5 +31,19 @@ angular.module('ximdex.common.directive').directive('ngRightClick', ['$parse', f
                 fn(scope, {$event:event});
             });
         });
+        scope.$on('$destroy', function() {
+            fn = null
+            element.unbind();
+        });
+    };
+}]);
+
+angular.module('ximdex.common.directive').directive('staticInclude',["$http", "$templateCache", "$compile", function($http, $templateCache, $compile) {
+    return function(scope, element, attrs) {
+        var templatePath = attrs.staticInclude;
+        $http.get(templatePath, { cache: $templateCache }).success(function(response) {
+            var contents = element.html(response).contents();
+            $compile(contents)(scope);
+        });
     };
 }]);

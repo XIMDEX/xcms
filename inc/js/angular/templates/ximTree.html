@@ -5,7 +5,7 @@
     <div ng-if="projects!='null' && projects!=null"
          class="xim-treeview-branch-container xim-treeview-expanded">
         <ul class="xim-treeview-branch">
-            <li ng-repeat="node in [projects]" ng-include="'inc/js/angular/templates/tree_item_renderer.html'" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
+            <li><tree-node node="projects" selected="selectedNodes"/></li>
             <li class="filter-no-results" ng-if="filterMode && projects.collection.length==0">#/:: 'browser.there_are_no_results_!' | xI18n /#</li>
         </ul>
     </div>

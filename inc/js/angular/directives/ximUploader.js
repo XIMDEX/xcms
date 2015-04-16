@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-    .directive('ximUploader', function () {
+    .directive('ximUploader', [function () {
         return {
             replace: true,
             restrict: 'E',
@@ -133,4 +133,4 @@ angular.module('ximdex.common.directive')
                 }
             }]
         }
-    });
+    }]);

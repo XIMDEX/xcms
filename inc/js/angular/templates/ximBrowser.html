@@ -1,4 +1,4 @@
-<div id="#/::xid/#" ng-mouseleave="hideTree()"
+<div id="#/::xid/#" hm-swipeleft="hideTree()" ng-mouseleave="!expanded && hideTree()"
      class="hbox-panel-container hbox-panel-container-0 hbox-panel-hideable noselect">
     <tabset class="ui-tabs ui-widget ui-widget-content ui-corner-all tabs-container">
         <tab heading="projects" select="$parent.$parent.selectedTab=1;">
@@ -12,7 +12,7 @@
                 <div ng-if="ccenter!='null' && ccenter!=null"
                      class="xim-treeview-branch-container xim-treeview-expanded">
                     <ul class="xim-treeview-branch">
-                        <li ng-repeat="node in ::ccenter.collection" ng-include="'inc/js/angular/templates/tree_item_renderer.html'"
+                        <li ng-repeat="node in ::ccenter.collection" static-include="inc/js/angular/templates/tree_item_renderer.html"
                             class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                     </ul>
                 </div>
@@ -32,15 +32,27 @@
     </tabset>
 
     <button hm-tap="toggleView()" ng-if="selectedTab == 1" ng-class="{'btn-view-list': !treeMode}" class="btn btn-sidebar btn-treeview btn-view" title="Change view"></button>
-    <button id="angular-tree-toggle" ng-click="toggleTree()" class="btn btn-sidebar btn-anchor" type="button" title="Collapse menu"></button>
+    <button id="angular-tree-toggle" ng-click="toggleTree()" class="btn btn-sidebar btn-anchor hidden-sm hidden-xs" type="button" title="Collapse menu"></button>
 
-    <div class="filter-tree" ng-show="selectedTab==1">
+    <!--<div class="filter-tree" ng-show="selectedTab==1">
         <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/::('browser.filter' | xI18n)+'...'/#">
+    </div>-->
+    <!--<div class="form-group filter-tree">
+        <input ng-change="doFilter()" ng-model="filter" type="text" class="form-control" placeholder="#/::('browser.filter' | xI18n)+'...'/#" type="text" class="form-control">
+        <span class="glyphicon form-control-feedback" ng-click="filter='';"
+              ng-class="{'glyphicon-search': filter=='','glyphicon-remove-circle': filter!=''}"></span>
+    </div>-->
+    <div class="form-group has-feedback has-clear filter-tree">
+        <input placeholder="#/::('browser.filter' | xI18n)+'...'/#" ng-change="doFilter()" ng-model="filter" type="text" class="form-control"/>
+        <span class="glyphicon form-control-feedback form-control-clear"
+              hm-tap="clearFilter()"
+              ng-class="{'glyphicon-search': filter=='','glyphicon-remove-circle': filter!=''}"></span>
     </div>
+
 
     <div id="angular-tree-resizer"
          hm-panstart="dragStart($event)" hm-panmove="drag($event,'10')" hm-panend="dragEnd()"
-         ng-mouseenter="showTree()"
+         ng-mouseenter="!expanded && showTree()"
          class="hbox-panel-sep hbox-panel-separator-0">
     </div>
 </div>

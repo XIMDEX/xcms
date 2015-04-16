@@ -186,16 +186,24 @@ var ImagesTool = Object.xo_create(XimdocTool, {
 
 		if (! $(image).length) return;
 
-		var width 	= $(image).width ();
-		var height 	= $(image).height ();
+        var width = 0, height = 0;
+        if($(image).attr('width') == "auto"){
+            width = null;
+        }else if($(image).attr('width')){
+            width = $(image).width();
+        }
+        if($(image).attr('height') == "auto" ){
+            height = null;
+        }else if($(image).attr('height')){
+            height = $(image).height();
+        }
 
-		var dim = {
-			'w': parseInt (width),
-			'h': parseInt (height)
-		};
+        var dim = {
+            'w': parseInt (width),
+            'h': parseInt (height)
+        };
 
-		if (isNaN (dim.w) || isNaN (dim.h)) return;
-
+        if (isNaN (dim.w) || isNaN (dim.h)) return;
 		var ximElement = this.editor.getXimDocument().getElement (image.getAttribute('uid'));
 
 		if (ximElement) {

@@ -3000,4 +3000,15 @@ class Node extends Nodes_ORM {
         return array('NodoDest Id' => $destNodeId, 'NodoDest Tipo' => $destNodeType, 'changeName' => $changeName, 'insert' => $insert);
     }
 
+    function IsModified(){
+        $version = $this->GetLastVersion();
+        if($version["SubVersion"] == "0"){
+            return false;
+        }
+        if($version["Version"] == "0" && $version["SubVersion"] == "1"){
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -23,4 +23,4 @@
  *  @version $Revision$
  *}
 
-<xim-tree></xim-tree>
+<div id="%=id%" class="%=class%" ></div>

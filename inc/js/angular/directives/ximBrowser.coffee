@@ -16,14 +16,22 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
             scope:
                 xid: "@ximId"
                 mode: "@ximMode"
-            controller: ($scope) ->
+            controller: ["$scope", ($scope) ->
                 if $scope.mode == "sidebar"
                     delete Hammer.defaults.cssProps.userSelect
-                    dragStartPosition=0;
+                    Hammer.defaults.touchAction = "pan-y"
+                    dragStartPosition=0
                     $scope.expanded = true
                     size = 0
                     listenHidePanel = true
+                    #Nodes for ccenter tab
+                    $scope.ccenter = null
+                    #Nodes for project tab
+                    $scope.modules = null
+                    #Tab selected in the sidebar
+                    $scope.selectedTab = 1
 
+                $scope.filter = ''
 
                 #Nodes for project tab
                 $scope.projects = null
@@ -31,32 +39,19 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                 $scope.initialNodeList = null
                 #The path to $scope.initialNodeList in array format
                 $scope.breadcrumbs = []
-                #Nodes for ccenter tab
-                $scope.ccenter = null
-                #Nodes for project tab
-                $scope.modules = null
 
                 #if true, TreeView is displayed else ListView
                 $scope.treeMode = true
-                #Cache for node actions
-                $window.com.ximdex.nodeActions = []
+
                 #Current selected nodes
                 $scope.selectedNodes = []
-                #Tab selected in the sidebar
-                $scope.selectedTab = 1
+
                 #Indicates the filter status
                 $scope.filterMode = false
-
 
                 canceler = $q.defer()
 
                 actualFilter = ""
-
-                #Load a new action in a new tab for some nodes
-                loadAction = (action, nodes) ->
-                    xTabs.pushTab action, nodes
-                    return
-
 
                 #Load initial values
                 $http.get(xUrlHelper.getAction(
@@ -67,30 +62,255 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                     if data
                         $scope.projects = data
                         $scope.projects.showNodes = true
+                    data = null
                     return
 
-                $http.get(xUrlHelper.getAction(
-                    action: "browser3"
-                    method: "read"
-                    id: "2"
-                )).success (data) ->
-                    $scope.ccenter = data  if data
-                    return
+                ###
+                    ONLY ON SIDEBAR MODE
+                ###
 
-                $http.get(xUrlHelper.getAction(
-                    action: "moduleslist"
-                    method: "readModules"
-                )).success (data) ->
-                    $scope.modules = data  if data
-                    return
+                if $scope.mode == "sidebar"
+                    #Load a new action in a new tab for some nodes
+                    loadAction = (action, nodes) ->
+                        xTabs.pushTab action, nodes
+                        return
+
+                    $http.get(xUrlHelper.getAction(
+                        action: "browser3"
+                        method: "read"
+                        id: "2"
+                    )).success (data) ->
+                        $scope.ccenter = data  if data
+                        data = null
+                        return
+
+                    $http.get(xUrlHelper.getAction(
+                        action: "moduleslist"
+                        method: "readModules"
+                    )).success (data) ->
+                        $scope.modules = data  if data
+                        data = null
+                        return
+
+                    #Load the actions of a node and opens a context menu. It does a request if the actions aren't in cache.
+                    $scope.loadActions = (node, event) ->
+                        $scope.select node, event
+                        return if !$scope.selectedNodes[0].nodeid? | !$scope.selectedNodes[0].nodetypeid? | $scope.selectedNodes[0].nodeid == "0"
+                        nodeToSearch = $scope.selectedNodes[0].nodeid
+                        if $scope.selectedNodes.length > 1
+                            for n in $scope.selectedNodes[1..]
+                                if $scope.selectedNodes[0].nodetypeid != n.nodetypeid
+                                    return
+                                else
+                                    nodeToSearch += "-#{n.nodeid}"
+                        if not $window.com.ximdex.nodeActions[nodeToSearch]?
+                            $http.get(xUrlHelper.getAction(
+                                action: "browser3"
+                                method: "cmenu"
+                                nodes: $scope.selectedNodes
+                            )).success (data) ->
+                                if data
+                                    $window.com.ximdex.nodeActions[nodeToSearch] = data
+                                    postLoadActions(data, event, $scope.selectedNodes)
+                                return
+                        else
+                            data = $window.com.ximdex.nodeActions[nodeToSearch]
+                            postLoadActions(data, event, $scope.selectedNodes)
+                        return false
+
+                    postLoadActions = (data, event, selectedNodes) ->
+                        return if data.length == 0
+                        if event.pointers?
+                            data.left = event.pointers[0].clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
+                            data.top = event.pointers[0].clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
+                        if event.clientX
+                            data.left = event.clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
+                            data.top = event.clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
+                        #if event.type == "tap"
+                        xMenu.open data, selectedNodes, loadAction
+                        data = null
+                        return
+
+                    #Catches event dragstart on resizer bar
+                    $scope.dragStart = (event) ->
+                        if $scope.expanded && !isPanelHide
+                            dragStartPosition = angular.element('#angular-tree').width()
+                            angular.element('body').addClass 'noselect'
+                        return
+
+                    #Catches event drag on resizer bar
+                    $scope.drag = (e,width) ->
+                        if $scope.expanded && !isPanelHide
+                            x = e.deltaX + dragStartPosition
+                            x = $document.width()-17  if  x > $document.width()-17
+                            x = 270  if x < 270
+                            angular.element(e.target).css left: x + "px"
+                            angular.element('#angular-tree').css width: x + "px"
+                            angular.element('#angular-content').css left: (x + parseInt(width)) + "px"
+                            x = null
+                        return
+
+                    $scope.dragEnd = () ->
+                        if $scope.expanded && !isPanelHide
+                            angular.element('body').removeClass 'noselect'
+                            if $window.getSelection
+                                if $window.getSelection().empty
+                                    # Chrome
+                                    $window.getSelection().empty()
+                                else if $window.getSelection().removeAllRanges
+                                    # Firefox
+                                    $window.getSelection().removeAllRanges()
+                            else if document.selection
+                                # IE?
+                                document.selection.empty()
+                            $rootScope.$broadcast('updateTabsPosition')
+                        return
+
+
+                    #Toggle autohide on sidebar
+                    $scope.toggleTree = () ->
+
+                        if $scope.expanded
+                            $scope.hideTree()
+                        else
+                            $scope.showTree()
+                        button = angular.element('#angular-tree-toggle')
+                        button.toggleClass "tie"
+                        $scope.expanded = !$scope.expanded
+                        return
+
+                    postShowHidePanel = () ->
+                        listenHidePanel = !listenHidePanel
+                        $rootScope.$broadcast('updateTabsPosition')
+
+                    firstHide = true
+                    isPanelHide = false
+                    $scope.hideTree = () ->
+                        if listenHidePanel
+                            isPanelHide = true
+                            size = angular.element('#angular-tree').width()
+                            button = angular.element('#angular-tree-toggle')
+                            button.addClass "hide"
+                            button.addClass "hideable"
+                            angular.element('#angular-tree').addClass "hideable"
+                            angular.element('#angular-content').addClass "hideable"
+                            a=7
+                            b=10+a
+                            angular.element('#angular-tree').css left: (-size-7) + "px"
+                            angular.element('#angular-content').css left: (b-7) + "px"
+                            a = b = null
+                            $timeout(
+                                postShowHidePanel
+                            ,
+                                500
+                            )
+                            if firstHide
+                                firstHide = false
+                                content = document.getElementById('angular-content')
+                                hm_content = new Hammer(content)
+                                hm_content.on "swiperight", $scope.showTree
+
+                        return
+
+                    $scope.showTree = () ->
+                        if !listenHidePanel
+                            angular.element('#angular-tree').css left: 0 + "px"
+                            angular.element('#angular-content').css left: (size+10+7) + "px"
+                            button = angular.element('#angular-tree-toggle')
+                            button.removeClass "hide"
+                            $timeout(
+                                () ->
+                                    postShowHidePanel()
+                                    isPanelHide = false
+                                    angular.element('#angular-tree').removeClass "hideable"
+                                    angular.element('#angular-content').removeClass "hideable"
+                                    button.removeClass "hideable"
+                            ,
+                                500
+                            )
+                        return
+
+                    $scope.openModuleAction = (node) ->
+                        action =
+                            command: "moduleslist"
+                            name: node.name
+                            method: "opentab"
+                            params: [
+                                modsel: node.name
+                            ]
+                        nodes = [
+                            nodeid: node.id
+                        ]
+                        xTabs.pushTab action, nodes
+                        return
+
+                    allowedHotkey = true
+                    $scope.$parent.keydown = (event) ->
+                        return if !allowedHotkey
+                        if event.altKey && event.ctrlKey && event.keyCode == 73 && $scope.selectedNodes.length > 0
+                            action =
+                                command: 'infonode'
+                                method: 'index'
+                                name: _("Node Info")
+                            for n in $scope.selectedNodes
+                                xTabs.pushTab action, [n] if n.nodeid? && n.nodeid != "0"
+                            allowedHotkey = false
+                            event.stopPropagation();
+                            event.preventDefault();
+                        return
+                    $scope.$parent.keyup = (event) ->
+                        allowedHotkey = true if !allowedHotkey
+                        return
+
+                ###
+                    FINISH ONLY ON SIDEBAR MODE
+                ###
 
                 #Open/Close a node in the TreeView
                 $scope.toggleNode = (node,event) ->
-                    event.preventDefault()
+                    #event.preventDefault()
+                    if node.isdir == "0"
+                        action =
+                            command: 'infonode'
+                            method: 'index'
+                            name: _("Node Info")
+                        loadAction action, [node]
+                        return
+                        ###if not $window.com.ximdex.nodeActions[node.nodeid]?
+                            $http.get(xUrlHelper.getAction(
+                                action: "browser3"
+                                method: "cmenu"
+                                nodes: $scope.selectedNodes
+                            )).success (data) ->
+                                if data
+                                    $window.com.ximdex.nodeActions[node.nodeid] = data
+                                    loadAction data[0], [node]
+                                return
+                        else
+                            data = $window.com.ximdex.nodeActions[node.nodeid]
+                            loadAction data[0], [node]
+                        return###
                     node.showNodes = not node.showNodes
+
                     $scope.loadNodeChildren node  if node.showNodes and not node.collection
                     return
 
+
+                postLoadNodeChildren = (data,callback,node) ->
+                    node.loading = false
+                    if data and data.collection? and data.collection.length>0
+                        node.collection = data.collection
+                        node.children = data.children
+                        node.state = data.state
+                        if $scope.treeMode == false && $scope.selectedTab == 1
+                            $scope.initialNodeList = node
+                        callback node.collection  if callback
+                        callback = null
+                    $scope.initialNodeList = node
+                    prepareBreadcrumbs()
+                    data = null
+                    cancel = null
+                    return
 
                 #Load the children of a node. It can execute a callback function later
                 $scope.loadNodeChildren = (node, callback) ->
@@ -110,18 +330,9 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                                 method: "readFiltered"
                                 id: node.nodeid
                             ) + "&query=" + actualFilter
-                        $http.get(url, {timeout: canceler.promise}).success( (data) ->
-                            node.loading = false
-                            if data
-                                node.collection = data.collection
-                                node.children = data.children
-                                node.state = data.state
-                                if $scope.treeMode == false && $scope.selectedTab == 1
-                                    $scope.initialNodeList = node
-                                    prepareBreadcrumbs()
-                                callback node.collection  if callback
-                            cancel = null
-                            return
+                        $http.get(url, {timeout: canceler.promise}).success(
+                            (data) ->
+                                postLoadNodeChildren(data,callback,node)
                         ).error (data) ->
                             node.loading = false
                             cancel = null
@@ -138,68 +349,16 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                             action: "browser3"
                             method: "read"
                             id: idToSend
-                        )+"&items=#{maxItemsPerGroup}"+fromTo, {timeout: canceler.promise}).success((data) ->
-                            node.loading = false
-                            if data
-                                node.collection = data.collection
-                                node.children = data.children
-                                node.state = data.state
-                                if $scope.treeMode == false && $scope.selectedTab == 1
-                                    $scope.initialNodeList = node
-                                    prepareBreadcrumbs()
-                                callback node.collection  if callback
-                            cancel = null
-                            return
+                        )+"&items=#{maxItemsPerGroup}"+fromTo, {timeout: canceler.promise}).success(
+                            (data) ->
+                                postLoadNodeChildren(data,callback,node)
                         ).error (data) ->
                             node.loading = false
                             cancel = null
                             return
-
-                    return
-
-                #Load the actions of a node and opens a context menu. It does a request if the actions aren't in cache.
-                $scope.loadActions = (node, event) ->
-                    $scope.select node, event
-                    return if !$scope.selectedNodes[0].nodeid? | !$scope.selectedNodes[0].nodetypeid? | $scope.selectedNodes[0].nodeid == "0"
-                    nodeToSearch = $scope.selectedNodes[0].nodeid
-                    if $scope.selectedNodes.length > 1
-                        for n in $scope.selectedNodes[1..]
-                            if $scope.selectedNodes[0].nodetypeid != n.nodetypeid
-                                return
-                            else
-                                nodeToSearch += "-#{n.nodeid}"
-                    if not $window.com.ximdex.nodeActions[nodeToSearch]?
-                        $http.get(xUrlHelper.getAction(
-                            action: "browser3"
-                            method: "cmenu"
-                            nodes: $scope.selectedNodes
-                        )).success (data) ->
-                            if data
-                                $window.com.ximdex.nodeActions[nodeToSearch] = data
-                                postLoadActions(data, event, $scope.selectedNodes)
-                            return
-                    else
-                        data = $window.com.ximdex.nodeActions[nodeToSearch]
-                        postLoadActions(data, event, $scope.selectedNodes)
-                    return false
-
-                postLoadActions = (data, event, selectedNodes) ->
-                    return if data.length == 0
-                    if event.pointers?
-                        data.left = event.pointers[0].clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
-                        data.top = event.pointers[0].clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
-                    data.expanded = "true"
-                    if event.clientX
-                        data.left = event.clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
-                        data.top = event.clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
-                    if event.type == "tap"
-                        data.expanded = "false"
-                    xMenu.open data, selectedNodes, loadAction
-                    return
-
-                #Global method to empty the actions cache
-                $window.com.ximdex.emptyActionsCache = () ->
-                    $window.com.ximdex.nodeActions = []
+                        idToSend = null
+                        fromTo = null
+                        maxItemsPerGroup = null
                     return
 
                 #Set a node as selected
@@ -220,6 +379,7 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                             $scope.selectedNodes.splice $scope.selectedNodes.length, 0, node
                     else
                         $scope.selectedNodes = [node]
+                    ctrl = null
                     return
 
                 #Reloads the children of a node
@@ -229,12 +389,36 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                         n = findNodeById nodeId, $scope.ccenter if n == null
                         return if n == null
                     else if $scope.selectedNodes.length == 1
-                        return if $scope.selectedNodes[0].isdir == "0"
                         n = $scope.selectedNodes[0]
                     else
                         return
+                    if n.isdir == "0"
+                        action =
+                            command: 'infonode'
+                            method: 'index'
+                            name: _("Node Info")
+                        loadAction action, [n]
+                        return
+                        ### Open the first action in menu
+                        if not $window.com.ximdex.nodeActions[n.nodeid]?
+                            $http.get(xUrlHelper.getAction(
+                                action: "browser3"
+                                method: "cmenu"
+                                nodes: $scope.selectedNodes
+                            )).success (data) ->
+                                if data
+                                    $window.com.ximdex.nodeActions[n.nodeid] = data
+                                    loadAction data[0], [n]
+                                return
+                        else
+                            data = $window.com.ximdex.nodeActions[n.nodeid]
+                            loadAction data[0], [n]
+                        return
+                        ###
+
                     n.showNodes = true
                     n.collection = []
+
                     $scope.loadNodeChildren n, callback
 
                 $scope.navigateToNodeId = (nodeId) ->
@@ -246,21 +430,21 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                             ajax: "json"
                         ]
                     )).success (data) ->
-                        nodeList = data['nodes']
-                        callback = () ->
-                            shifted = nodeList.shift()
-                            if shifted?
-                                $scope.reloadNode shifted.nodeid, callback
-                            else
-                                n = findNodeById nodeId, $scope.projects
-                                n = findNodeById nodeId, $scope.ccenter if n == null
-                                return if n == null
-                                $scope.select n
-                        callback()
+                        postNavigateToNodeId(data)
                     return
 
-
-
+                postNavigateToNodeId = (data) ->
+                    nodeList = data['nodes']
+                    shifted = nodeList.shift()
+                    if shifted?
+                        $scope.reloadNode shifted.nodeid, callback
+                    else
+                        n = findNodeById nodeId, $scope.projects
+                        n = findNodeById nodeId, $scope.ccenter if n == null
+                        return if n == null
+                        $scope.select n
+                    data = null
+                    nodeList = null
 
                 #Search nodes with a filter
                 $scope.doFilter = () ->
@@ -279,72 +463,10 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                     $scope.selectedNodes = []
                     return
 
-                #Catches event dragstart on resizer bar
-                $scope.dragStart = (event) ->
-                    if $scope.expanded
-                        dragStartPosition = angular.element('#angular-tree').width()
-                        angular.element('body').addClass 'noselect'
-                    return
-
-                #Catches event drag on resizer bar
-                $scope.drag = (e,width) ->
-                    if $scope.expanded
-                        x = e.deltaX + dragStartPosition
-                        x = $document.width()-17  if  x > $document.width()-17
-                        x = 270  if x < 270
-                        angular.element(e.target).css left: x + "px"
-                        angular.element('#angular-tree').css width: x + "px"
-                        angular.element('#angular-content').css left: (x + parseInt(width)) + "px"
-                    return
-
-                $scope.dragEnd = () ->
-                    if $scope.expanded
-                        angular.element('body').removeClass 'noselect'
-                        $rootScope.$broadcast('updateTabsPosition')
-                    return
-
-
-                #Toggle autohide on sidebar
-                $scope.toggleTree = () ->
-                    button = angular.element('#angular-tree-toggle')
-                    button.toggleClass "hide"
-                    button.toggleClass "tie"
-                    angular.element('#angular-tree').toggleClass "hideable"
-                    angular.element('#angular-content').toggleClass "hideable"
-                    button.toggleClass "hideable"
-                    $scope.expanded = !$scope.expanded
-                    size = angular.element('#angular-tree').width()
-                    if !$scope.expanded
-                        $scope.hideTree()
-
-                    return
-
-                $scope.hideTree = () ->
-                    if !$scope.expanded && listenHidePanel
-                        a=7
-                        b=10+a
-                        angular.element('#angular-tree').css left: (-size-7) + "px"
-                        angular.element('#angular-content').css left: (b-7) + "px"
-                        $timeout(
-                            () ->
-                                listenHidePanel = false
-                                $rootScope.$broadcast('updateTabsPosition')
-                        ,
-                            500
-                        )
-                    return
-
-                $scope.showTree = () ->
-                    if !$scope.expanded && !listenHidePanel
-                        angular.element('#angular-tree').css left: 0 + "px"
-                        angular.element('#angular-content').css left: (size+10+7) + "px"
-                        $timeout(
-                            () ->
-                                listenHidePanel = true
-                                $rootScope.$broadcast('updateTabsPosition')
-                        ,
-                            500
-                        )
+                $scope.clearFilter = () ->
+                    if $scope.filter != ''
+                        $scope.filter = ''
+                        $scope.doFilter()
                     return
 
                 #Toggles Treeview/ListView
@@ -418,38 +540,7 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                     node.showNodes = true
                     node.collection = []
                     $scope.loadNodeChildren node
+            ]
 
-                $scope.openModuleAction = (node) ->
-                    action =
-                        command: "moduleslist"
-                        name: node.name
-                        method: "opentab"
-                        params: [
-                            modsel: node.name
-                        ]
-                    nodes = [
-                        nodeid: node.id
-                    ]
-                    xTabs.pushTab action, nodes
-                    return
-
-                allowedHokey = true
-                $scope.$parent.keydown = (event) ->
-                    return if !allowedHokey
-                    if event.altKey && event.ctrlKey && event.keyCode == 73 && $scope.selectedNodes.length > 0
-                        action =
-                            command: 'infonode'
-                            method: 'index'
-                            name: _("Node Info")
-                        for n in $scope.selectedNodes
-                            xTabs.pushTab action, [n] if n.nodeid? && n.nodeid != "0"
-                        allowedHokey = false
-                        event.stopPropagation();
-                        event.preventDefault();
-                    return
-                $scope.$parent.keyup = (event) ->
-                    allowedHokey = true
-                    return
-
-                )
+        )
 ]

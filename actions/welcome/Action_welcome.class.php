@@ -44,7 +44,6 @@ class Action_welcome extends ActionAbstract
             }
             $this->addCss('/actions/welcome/resources/css/welcome.css');
         }
-            $this->addJs('/actions/welcome/resources/js/index.js');
 
         $this->addJs('/actions/welcome/resources/js/index.js');
 

@@ -49,7 +49,6 @@ angular.module('ximdex.common.service')
             scope.options = options;
             scope.optionLabel = 'name';
             scope.optionClass = 'command';
-            scope.expanded = options.expanded;
             scope.top = options.top;
             scope.left = options.left;
             scope.select = function(result){
@@ -63,11 +62,7 @@ angular.module('ximdex.common.service')
 
             hammerBody.on('tap', function (ev) {
                 var e = angular.element(ev.target);
-                if(e.hasClass('xim-actions-dropdown')){
-                    return;
-                }
-                if (!e.hasClass("button-container-list") && !e.parent().hasClass('window-toolbar-button')
-                    && !e.hasClass('window-toolbar-button')) {
+                if (!e.hasClass("button-container-list")) {
                     destroyMenu();
                 }
                 hammerBody.off('tap');

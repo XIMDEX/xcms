@@ -1,6 +1,6 @@
 angular.module("ximdex.common.directive").directive "ximTabs", [
-    "xTabs", "xUrlHelper", "$http", "$interval", "$window", "$timeout"
-    (xTabs, xUrlHelper, $http, $interval, $window, $timeout) ->
+    "xTabs", "xUrlHelper", "$http", "$interval", "$window"
+    (xTabs, xUrlHelper, $http, $interval, $window) ->
         base_url = $window.X.baseUrl
         return (
             templateUrl: base_url+'/inc/js/angular/templates/ximTabs.html'
@@ -8,20 +8,21 @@ angular.module("ximdex.common.directive").directive "ximTabs", [
             replace: true
             scope:
                 xid: "@ximId"
-            controller: ($scope) ->
+            controller: ["$scope", ($scope) ->
                 #Communication with the service xTabs
+                $scope.activeIndex = xTabs.activeIndex
+
                 $scope.tabs = xTabs.getTabs()
                 $scope.removeTab = xTabs.removeTab
                 $scope.setActiveTab = xTabs.setActiveTab
                 $scope.setActiveTabById = xTabs.setActiveTabById
                 $scope.closeAllTabs = xTabs.closeAllTabs
                 $scope.offAllTabs = xTabs.offAllTabs
-                $scope.activeIndex = xTabs.activeIndex
+
                 $scope.submitForm = xTabs.submitForm
                 $scope.removeTabById = xTabs.removeTabById
                 $scope.reloadTabById = xTabs.reloadTabById
                 $scope.getActiveTab = xTabs.getActiveTab
-
                 #Toggles the menu button
                 $scope.menuTabsEnabled = false
                 #Toggles the context menu
@@ -172,5 +173,6 @@ angular.module("ximdex.common.directive").directive "ximTabs", [
                         else
                             container.css "left", moveLeft + "px"
                         return
+            ]
         )
 ]

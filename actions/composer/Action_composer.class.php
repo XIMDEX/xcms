@@ -228,7 +228,7 @@ class Action_composer extends ActionAbstract {
 							self::COMPOSER_INDEX, $selectedNode->GetParent(), $numArchivos, $hasta_aux
 						),
 						'nodeid' => '0',
-						'icon' => 'folder_a-z.png',
+						'icon' => 'folder_a-z',
 						'openIcon' => 'folder_a-z.png',
 						'state' => '',
 						'children' => '5',
@@ -737,6 +737,11 @@ class Action_composer extends ActionAbstract {
 			}
 		}
 
+        $modified = '0';
+        if($isDir == '0' && $node->nodeType->IsPublicable == '1'){
+            $modified  = $node->IsModified() == true ? '1' : '0';
+        }
+
 		$data = array(
 			'name' => $node_name,
 			'nodeid' => $node_id,
@@ -746,7 +751,8 @@ class Action_composer extends ActionAbstract {
 			'state' => $node_state,
 			'isdir' => $isDir,
 			'children' => $node_childs,
-			'path' => $path
+			'path' => $path,
+            'modified' => $modified
 		);
 
 		$data = array_merge($data, $processedProperties);

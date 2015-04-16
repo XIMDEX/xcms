@@ -24,11 +24,12 @@
  *}
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html ng-app="ximdex" lang="{$user_locale['Lang']}">
+<html ng-app="ximdex" ng-strict-di lang="{$user_locale['Lang']}">
 <head>
-
     <title>{$xinversion}</title>
     <meta charset="UTF-8">
+    <!-- disable zoom -->
+    <meta content='maximum-scale=1.0, user-scalable=0' name='viewport' />
     <!-- constant css includes -->
     <!--link id="main_css" type="text/css" href="{$_URL_ROOT}/xmd/style/jquery/{$theme}/jquery-ui-1.8.2.custom.css" rel="stylesheet" /-->
     <link rel="icon" href="{$_URL_ROOT}/favicon.ico" type="image/x-icon"/>

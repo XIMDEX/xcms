@@ -234,7 +234,12 @@ class Action_edittext extends ActionAbstract {
             return;
         } else {*/
         $values = array(array('message' => _('The document has been saved'), 'type' => MSG_TYPE_NOTICE));
-        $this->sendJSON(array('messages' => $values));
+        $this->sendJSON(
+            array(
+                'messages' => $values,
+                'parentID' => $node->get('IdParent')
+            )
+        );
         //}
     }
 }

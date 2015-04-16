@@ -25,7 +25,7 @@
 
 //Format 
 angular.module('ximdex.common.filter')
-    .filter('xBytes', function(){
+    .filter('xBytes', [function(){
         return function(bytes){
             if (isNaN(parseFloat(bytes)) || !isFinite(bytes))
                 return ''
@@ -37,7 +37,7 @@ angular.module('ximdex.common.filter')
             var unit =  units[number];
             return size+' '+unit;
         }
-});
+}]);
 
 //Translate
 angular.module('ximdex.common.filter')

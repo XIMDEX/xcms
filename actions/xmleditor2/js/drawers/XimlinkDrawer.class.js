@@ -198,7 +198,7 @@ var XimlinkDrawer = Object.xo_create(new Drawer(), {
 		});
 
 	tds = $ts.treeview('getDatastore');
-	if (tds)
+	if (tds > 0)
 		tds.clear();
 
 	$.getJSON(
