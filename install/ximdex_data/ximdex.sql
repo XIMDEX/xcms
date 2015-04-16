@@ -3322,8 +3322,8 @@ INSERT INTO `PipeStatus` (`id`, `Name`, `Description`) VALUES
   (4, 'Dependencies', ''),
   (5, 'DexT', ''),
   (6, 'FilterMacros', ''),
-  (7, 'Edici�n', 'El documento est� en fase de desarrollo'),
-  (8, 'Publicaci�n', 'El documento est� a la espera de ser publicado.'),
+  (7, 'Edición', 'El documento está en fase de desarrollo'),
+  (8, 'Publicación', 'El documento está a la espera de ser publicado.'),
   (9, 'Xedit', '');
 -- --------------------------------------------------------
 

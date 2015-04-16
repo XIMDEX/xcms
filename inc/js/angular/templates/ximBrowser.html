@@ -42,7 +42,7 @@
         <span class="glyphicon form-control-feedback" ng-click="filter='';"
               ng-class="{'glyphicon-search': filter=='','glyphicon-remove-circle': filter!=''}"></span>
     </div>-->
-    <div class="form-group has-feedback has-clear filter-tree">
+    <div class="form-group has-feedback has-clear filter-tree" ng-show="selectedTab==1">
         <input placeholder="#/::('browser.filter' | xI18n)+'...'/#" ng-change="doFilter()" ng-model="filter" type="text" class="form-control"/>
         <span class="glyphicon form-control-feedback form-control-clear"
               hm-tap="clearFilter()"

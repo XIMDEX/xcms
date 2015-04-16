@@ -71,7 +71,7 @@
                         {assign var=displayed_nodetype value=1}
                         {if (isset($nodetype.actions) && (count($nodetype.actions)) > 0)}
                             <accordion-group heading="{$nodetype.Description}" >
-                                <table>
+                                <table class="table">
                                     <th></th>
                                     {foreach from=$workflow_states item=workflow_state}
                                     <th align="center">{$workflow_state.Name}</th>
