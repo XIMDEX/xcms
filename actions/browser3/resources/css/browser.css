@@ -555,7 +555,7 @@ button::-moz-focus-inner {
     overflow-y: hidden;
 }
 .browser-action-view-content{
-    height: 100%;
+    height: calc(100 - 41px);
     overflow-y: hidden;
 }
 

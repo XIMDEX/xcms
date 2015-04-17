@@ -87,7 +87,7 @@ button::-moz-focus-inner {
   bottom: 0px;
   overflow: hidden;
   white-space: nowrap;
-  height: calc(100% + -5.1em);
+  height: calc(100% - 40px);
 }
 
 .kupu-toolbox-heading {
@@ -1859,7 +1859,7 @@ div.buttons {
   margin-top: 0; }
 
 .kupu-tb-navbar.not-empty + .iwrapper {
-  height: calc(100% - 40px);
+  height: calc(100% - 28px);
   margin-top: 28px; }
 
 .kupu-tb-navbar span {
