@@ -36,7 +36,7 @@ if (!defined('RENDERER_ROOT_PATH')) {
 	define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers'); 
 }
 if (!defined('SMARTY_TMP_PATH')) {
-	define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . '/data/tmp');
+	define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH.App::getValue('TempRoot'));
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontController.class.php');

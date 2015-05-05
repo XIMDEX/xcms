@@ -37,7 +37,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 
 define ('CACHE_FOLDER', '/data/cache/pipelines/');
 define ('DATA_FOLDER', '/data/files/');
-define ('TMP_FOLDER', '/data/tmp/');
+define ('TMP_FOLDER', App::getValue('TempRoot')."/");
 /**
  *
  * @brief Support the Cache system for the pipelines
@@ -116,6 +116,7 @@ class PipeCache extends PipeCaches_ORM {
 	 								XMD_Log::info('PipeCache Successfully loading :' . $previousVersion);
 	 								// copying the content to new cache
 						 			$pointer = $pipeCache->_getPointer();
+
 						 			$this->store($idVersion, $idTransition, $pointer, $args);
 						 			return $pointer;
 						 		} else {
@@ -152,7 +153,7 @@ class PipeCache extends PipeCaches_ORM {
 		 		$pointer = XIMDEX_ROOT_PATH . DATA_FOLDER . $version->get('File');
 			} else {
                 if(isset($_GET["nodeid"])){
-                    $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
+                    $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);                    
                 }else{
                     $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
                 }
@@ -277,7 +278,8 @@ class PipeCache extends PipeCaches_ORM {
 	  * @return boolean
 	  */
 	 function store($idVersion, $idTransition, $contentFile, $args) {
-		XMD_Log::info("PipeCache: Trying to store cache for version $idVersion transition $idTransition args " . print_r($args, true));
+	 	
+	 	XMD_Log::info("PipeCache: Trying to store cache for version $idVersion transition $idTransition args " . print_r($args, true));
 	 	$this->_transition = new PipeTransition($idTransition);
 	 	if (!($this->_transition->get('id') > 0)) {
 	 		XMD_Log::fatal('PipeCache: Error storing cache, could not estimate the transition to which to associate the cache: ' . $idTransition);

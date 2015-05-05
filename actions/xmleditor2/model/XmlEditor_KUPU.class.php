@@ -541,7 +541,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $pipelineManager = new PipelineManager();
         $content = $pipelineManager->getCacheFromProcessAsContent($lastVersion, 'StrDocToXedit', $args);
-        exec(sprintf('rm -f %s/data/tmp/preview_%s_*', App::getValue('AppRoot'), $_GET["nodeid"]));
+        exec(sprintf('rm -f %s%s/preview_%s_*', App::getValue('AppRoot'),App::getValue('TempRoot'), $_GET["nodeid"]));
         return $content;
     }
 

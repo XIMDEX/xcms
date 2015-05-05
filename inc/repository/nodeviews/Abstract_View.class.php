@@ -29,13 +29,12 @@
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 
 
-abstract class Abstract_View {
-	const TMP_FOLDER = '/data/tmp/';
+abstract class Abstract_View {	
 	
 	public function storeTmpContent($content) {
 		//Si el contenido es una variable que contiene false ha ocurrido un error
 		if ($content !== false) {
-			$basePath = XIMDEX_ROOT_PATH . self::TMP_FOLDER; 
+			$basePath = XIMDEX_ROOT_PATH . App::getValue('TempRoot')."/";
 			$pointer = FsUtils::getUniqueFile($basePath);
             if(isset($_GET["nodeid"])) {
                 if (FsUtils::file_put_contents($basePath . "preview_" . $_GET["nodeid"] . "_" . $pointer, $content)) {
