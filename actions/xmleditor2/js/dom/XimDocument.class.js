@@ -321,6 +321,9 @@ XimDocument = function(editorConfig) {
 		var previousChild = false;
 		while (it.hasNext()) {
                         var child = it.next();
+                        if(child.nodeType==8){
+                                continue;
+                        }
 			//nodetype==1 => is a tag
                         if (child.nodeType==1 && isFirstNode && child.getAttribute("uid")){
                                 findApplyElement = true;
