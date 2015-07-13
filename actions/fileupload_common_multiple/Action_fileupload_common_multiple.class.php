@@ -248,7 +248,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
             if (file_exists($path)) {
                 unlink($path);
             }
-            
+
             $this->sendJSON($result);
 
         } else {
@@ -341,6 +341,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
                 if ($docId>0){
                     $newDocumentNode = new Node($docId);
                     $content = file_get_contents($file["tmp_name"]);
+                    $content = preg_replace('/<\?xml.*\?>.*\n/','',$content);
                     $newDocumentNode->SetContent($content);
                 }
 
