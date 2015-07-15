@@ -326,42 +326,9 @@ class Action_browser3 extends ActionAbstract {
     public function readFiltered() {
         $query = $this->request->getParam('query');
 
-        $ret = GenericDatasource::read($this->request);
+        $this->request->setParam('find', $query);
+        $ret = GenericDatasource::readFiltered($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
-        if($this->request->getParam('nodeid') == "10000"){
-            $ret["name"] = _($ret["name"]);
-        }
-
-        $sql = "SELECT count(*) as cont FROM FastTraverse f
-              INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d and not n.IdNode=%d and n.name like '%s'
-              inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType and NOT(nt.IsHidden) and not nt.IdNodeType in (5084,5085)";
-        $db = new DB();
-        $removed = 0;
-        $queryToMatch = "/" . $query . "/i";
-        $queryToMatch = str_replace(array(".", "_"), array('\.', "."), $queryToMatch);
-
-        $resultsString = _("Results");
-
-        foreach ($ret["collection"] as $id => $child) {
-            $sql2 = sprintf($sql, $child["nodeid"], $child["nodeid"], '%' . $query . '%');
-            $db->query($sql2);
-            $cont = 0;
-            while (!$db->EOF) {
-                $cont = $db->getValue('cont');
-                break;
-            }
-            $check = preg_match($queryToMatch, $child['name']);
-            $ret["collection"][$id - $removed]["originalName"] = $child["name"];
-            $ret["collection"][$id - $removed]["name"] = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $child["name"]);
-            if ($cont == "0" && $check !== 1) {
-                array_splice($ret["collection"], $id - $removed, 1);
-                $removed++;
-            } elseif ($cont == "0") {
-                $ret["collection"][$id - $removed]["children"] = 0;
-            } else {
-                $ret["collection"][$id - $removed]["name"] .= sprintf('&nbsp;<span class="filter-results-span">['.$resultsString.': %s]</span>', $cont);
-            }
-        }
 
         header('Content-type: application/json');
         $data = Serializer::encode(SZR_JSON, $ret);

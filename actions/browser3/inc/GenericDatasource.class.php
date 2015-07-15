@@ -105,6 +105,12 @@ class GenericDatasource extends AbstractDatasource {
 		return $ds->read($request, $recursive);
 	}
 
+	static public function readFiltered($request, $recursive = true) {
+		$ds = self::getInstance(GenericDataSource::getPath($request));
+		$request->setParam('children', true);
+		return $ds->readFiltered($request, $recursive);
+	}
+
 	static public function parents($request) {
 		$ds = self::getInstance(GenericDataSource::getPath($request));
 		return $ds->parents($request);
