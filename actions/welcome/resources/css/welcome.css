@@ -326,7 +326,7 @@
     cursor: pointer;
     font-size: 1.08em; }
     .document_item .document-path::before {
-      content: attr(data-tooltip);
+      content: attr(data-xtooltip);
       margin-left: -1em;
       top: 4em;
       -webkit-transition: none;

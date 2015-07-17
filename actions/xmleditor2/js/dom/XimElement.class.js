@@ -68,7 +68,7 @@ XimElement = function(rngElement, importChildElements, ancestors) {
 			}
 		}
 
-		if (importChildElements && (!ancestors || !ancestors.contains(rngElement.tagName))) {		
+		if (importChildElements && (!ancestors || !ancestors.contains(rngElement.tagName))) {
 			this._importChildElements(this, rngElement, ancestors);
 		}
 	};

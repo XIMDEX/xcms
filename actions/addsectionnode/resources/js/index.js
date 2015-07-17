@@ -26,8 +26,8 @@
         
 X.actionLoaded(function(event, fn, params) {
 
-	var form = params.actionView.getForm('as_form');
-	var fm = form.getFormMgr();
+	var form = fn('form');
+	var fm = fn('form').get(0).getFormMgr();
 	var submit = fn('.validate').get(0);
     var name="";
 
@@ -48,12 +48,12 @@ X.actionLoaded(function(event, fn, params) {
 		
     });
 
-	var url_params=fm.options.form.action.split("&");
+	var url_params=form.attr('action').split("&");
     $.each(url_params, function( index, value ) { 
         if(value.indexOf("name=")==0){
             name=value.substring(5,value.length);
         }   
-    }); 
+    });
 		
     if(name!=""){fn("input#name").val(name);}
     else{fn("input#name").val("");}

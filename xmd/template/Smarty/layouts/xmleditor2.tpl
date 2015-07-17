@@ -84,7 +84,9 @@
 	<listview include="yes" />
 	<treeview include="yes" />
 
-	<body onresize="{$on_resize_functions}">
+	<body onresize="{$on_resize_functions}" style="
+    overflow: hidden !important;
+">
 
 	<menubar id="xedit_menubar" include="yes" />
 	<!--buttonbar id="xedit_buttonbar_controls" /-->

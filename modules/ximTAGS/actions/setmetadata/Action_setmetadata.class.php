@@ -46,8 +46,12 @@ class Action_setmetadata extends ActionAbstract {
 
 		$cloud_tags = array();
 		$cTags = $tags->getTags();
-		
-        if(count($cTags)>0){
+		if(is_null($cTags)){
+            $pcTags = '[]';
+        }else{
+            $pcTags = str_replace("'",'&#39;',json_encode($cTags, JSON_UNESCAPED_UNICODE ));
+        }
+        /*if(count($cTags)>0){
 		    foreach ($cTags as $tag) {
   			    $array = array(
   					"IdTag"=>(int)$tag["IdTag"],
@@ -56,22 +60,28 @@ class Action_setmetadata extends ActionAbstract {
 			    );
   			    $cloud_tags[] = $array;
   		    }
-        }
+        }*/
         $node = New Node($idNode);
 
 	 	$values = array(
-	 		'cloud_tags' => json_encode($cloud_tags),
+	 		'cloud_tags' => $pcTags,
 			'max_value' => $max[0][0],
 			'id_node' => $idNode,
 			'node_name' => $node->GetNodeName(),
 			'go_method' => 'save_metadata',
 			'nodeUrl' => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
-			'namespaces' => json_encode($this->getAllNamespaces())
+            'namespaces' => json_encode($this->getAllNamespaces())
 		);
 
 	 	//Get the actual tags of the document
 	 	$relTags = new RelTagsNodes();
-	 	$values["tags"] = json_encode($relTags->getTags($idNode));
+        $tags = $relTags->getTags($idNode);
+        /*foreach ($tags as $i =>$tag) {
+            $tags[$i]["Name"] = "hola que ase";
+            $tags[$i]["Description"] = "hola que ase";
+            $tags[$i]["Link"] = "hola que ase";
+        }*/
+	 	$values["tags"] = str_replace("'",'&#39;',json_encode($tags, JSON_UNESCAPED_UNICODE ));
 	 	//error_log(print_r($relTags->getTags($idNode)));
 	 	$node = new Node($idNode);
 	 	$values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');

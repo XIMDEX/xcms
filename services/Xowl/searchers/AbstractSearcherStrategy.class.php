@@ -40,6 +40,8 @@ abstract class AbstractSearcherStrategy {
 	protected static $XIMDEX_TYPE_DPERSON = "dPerson";
 	protected static $XIMDEX_TYPE_DORGANISATION = "dOrganisation";
 	protected static $XIMDEX_TYPE_DPLACE = "dPlace";
+	protected static $XIMDEX_TYPE_DCREATIVEWORK = "dCreativeWork";
+	protected static $XIMDEX_TYPE_DOTHERS = "dOthers";
 	protected $data;
 	
 	public function __construct(){		

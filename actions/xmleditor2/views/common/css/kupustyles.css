@@ -65,7 +65,10 @@ body {
   margin: 0px;
   padding: 0px;
   font-size: 1.2em;
-  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif;
+    /*overflow: hidden;*/
+    margin: 0px;
+}
 
 button::-moz-focus-inner {
   border: 0px; }
@@ -76,14 +79,16 @@ button::-moz-focus-inner {
 }
 */
 .kupu-fulleditor .kupu-editorframe {
-  float: left;
+  /*float: left;*/
   width: 100%;
   border: none;
   top: 40px;
   position: absolute;
   bottom: 0px;
   overflow: hidden;
-  white-space: nowrap; }
+  white-space: nowrap;
+  height: calc(100% - 40px);
+}
 
 .kupu-toolbox-heading {
   font-weight: bold;
@@ -132,16 +137,20 @@ div.kupu-smalleditor {
   height: 100%; }
 
 .kupu-tb {
-  /*  	padding: 3px;
-        margin-bottom: 0.4em;
-        background-color: ButtonFace;
-        border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
+  /*
+    padding: 3px;
+    margin-bottom: 0.4em;
+    background-color: ButtonFace;
+    border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;
 
-        background:transparent url(../../../gfx/fnd_toolbar.png) repeat-x scroll 0 0;*/
-  height: 40px;
+    background:transparent url(../../../gfx/fnd_toolbar.png) repeat-x scroll 0 0;
+  */
+
+  min-height: 40px;
+  /*height: auto;*/
   margin: 0;
-  /*overflow:hidden;*/
-  position: relative;
+  /*overflow: hidden;*/
+  position: fixed;
   /*top:0;*/
   width: 100%;
   border-bottom: 1px solid #e1e1e1;
@@ -221,7 +230,8 @@ div.kupu-smalleditor {
 .kupu-tb button.kupu-spellchecker-pressed,
 .kupu-tb button.kupu-designview-pressed,
 .kupu-tb button.kupu-remoteview-pressed,
-.kupu-tb button.kupu-treeview-pressed {
+.kupu-tb button.kupu-treeview-pressed
+.kupu-tb button.kupu-formview-pressed {
   border: 2px solid #fff;
   background-color: #e6e6e6;
   -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.3);
@@ -247,7 +257,8 @@ div.kupu-smalleditor {
 .kupu-tb button.kupu-spellchecker-pressed:after,
 .kupu-tb button.kupu-designview-pressed:after,
 .kupu-tb button.kupu-remoteview-pressed:after,
-.kupu-tb button.kupu-treeview-pressed:after {
+.kupu-tb button.kupu-treeview-pressed:after
+.kupu-tb button.kupu-formview-pressed:after {
   display: block;
   height: 7px;
   content: url("../../../gfx/btn-active.png");
@@ -530,6 +541,13 @@ button.kupu-logo {
 .kupu-designview-pressed {
   background-position: -37px -466px; }
 
+.kupu-formview {
+  background-position: -181px 3px; }
+
+.kupu-formview:hover,
+.kupu-formview-pressed {
+  background-position: -181px -36px; }
+
 .kupu-remoteview {
   background-position: -71px -425px; }
 
@@ -638,11 +656,11 @@ iframe.kupu-editor-iframe {
   background: rgba(255, 255, 255, 0.8); }
 
 .scrolldown {
-  bottom: 0; }
+    bottom: 1.2em; }
 
 body.xedit-rngelement {
   font-family: Verdana, Sans-serif;
-  padding: 15px 15px 15px 0px; }
+  padding: 15px 0px 15px 0px; }
 
 iframe.kupu-editor-iframe-extended {
   width: 99% !important; }
@@ -658,14 +676,18 @@ textarea.kupu-editor-textarea {
   margin-left: -4px;
   width: 22%;
   /* font-size: 0.7em;*/
-  height: 100%;
+  height: calc(100% + 10px);
   position: relative;
+  /*right: 0px;*/
   z-index: 3;
   -webkit-transition: all .2s;
   -moz-transition: all .2s;
   -ms-transition: all .2s;
   -o-transition: all .2s;
   transition: all .2s; }
+
+
+
 
 /*div.kupu-toolboxes-container-collapsed {
   	width: 1.42% !important;
@@ -820,8 +842,8 @@ div#kupu-colorchooser {
 div#kupu-fgcolorchooser div:hover {
   /* border: outset 1px; */ }
 
-div.kupu-drawer {
-  overflow: auto; }
+/*div.kupu-drawer {
+  overflow: auto; }*/
 
 div.changeset-item {
   cursor: pointer; }
@@ -879,7 +901,7 @@ div.anottationtoolbox-section {
 
 .load-annotation {
   background: url("../../../gfx/bg-enricher.png") repeat;
-  padding: 15px 0px 90px 0px;
+  padding: 15px 0px 130px 0px;
   /*margin-bottom: 25px;
   -moz-box-shadow: 0px 2px 1px #ccc;*/
   overflow: hidden;
@@ -916,6 +938,14 @@ h3#anottationtoolbox-section-header-places {
 h3#anottationtoolbox-section-header-organisations {
   left: 31%;
   top: 100px; }
+
+h3#anottationtoolbox-section-header-creativework {
+  left: 0;
+  top: 140px; }
+
+h3#anottationtoolbox-section-header-others {
+  left: 31%;
+  top: 140px; }
 
 h3#anottationtoolbox-section-header-link span {
   background-position: left -11px; }
@@ -973,6 +1003,12 @@ h3.button-pressed {
   color: #57AEAF; }
 
 h3#anottationtoolbox-section-header-people span {
+  background-position: left -524px; }
+
+h3#anottationtoolbox-section-header-others span {
+  background-position: left -524px; }
+
+h3#anottationtoolbox-section-header-creativework span {
   background-position: left -524px; }
 
 h3#anottationtoolbox-section-header-people span:hover {
@@ -1593,7 +1629,7 @@ h3 .xedit-rngelements-toolbox-button-closed:hover {
 	z-index: 10;
 }
 */
-span.kupu-tb-buttongroup button span.tooltip, span.kupu-tb-buttongroup button span.triangle {
+span.kupu-tb-buttongroup button span.xtooltip, span.kupu-tb-buttongroup button span.triangle {
   text-indent: 0px;
   display: none;
   background: none; }
@@ -1609,7 +1645,7 @@ span.kupu-tb-buttongroup button:hover span.triangle {
   left: 3px;
   z-index: 200; }
 
-span.kupu-tb-buttongroup button:hover span.tooltip {
+span.kupu-tb-buttongroup button:hover span.xtooltip {
   position: absolute;
   display: block;
   z-index: 80px;
@@ -1625,7 +1661,7 @@ span.kupu-tb-buttongroup button:hover span.tooltip {
   z-index: 250;
   /*-moz-box-shadow: 0px 2px 5px #555;*/ }
 
-span.kupu-tb-buttongroup button.kupu-newwindow:hover span.tooltip {
+span.kupu-tb-buttongroup button.kupu-newwindow:hover span.xtooltip {
   right: 3px;
   left: auto; }
 
@@ -1797,7 +1833,7 @@ div.buttons {
 .kupu-tb-navbar {
   background: #5ab2a6;
   color: #bfe1dc;
-  height: 28px;
+  /*height: 28px;*/
   border-bottom: 1px solid #5ab2a6;
   -webkit-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.2), 0 2px 1px rgba(80, 80, 80, 0.4);
   -moz-box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.2), 0 2px 1px rgba(80, 80, 80, 0.4);
@@ -1808,9 +1844,10 @@ div.buttons {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  position: absolute;
-  padding-right: 22%;
-  overflow: hidden;
+  position: fixed;
+    top:40px
+  /*padding-right: 22%;
+  overflow: hidden;*/
   -webkit-transition: all .2s;
   -moz-transition: all .2s;
   -ms-transition: all .2s;

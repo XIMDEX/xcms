@@ -24,11 +24,6 @@
  *  @version $Revision$
  */
 
-
-
-
-ModulesManager::file('/inc/mvc/drawers/gprint.inc');
-//
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 
 class Action_manageareas extends ActionAbstract

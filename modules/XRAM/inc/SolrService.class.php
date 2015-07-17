@@ -181,8 +181,6 @@ class SolrService implements ISolrService
         }
 		
 	$doc = $docs[0];
-        $doc['content'] = $doc['content'];
-		
 	return $doc;
     
 	}

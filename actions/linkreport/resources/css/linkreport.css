@@ -52,7 +52,7 @@
       z-index: 3; }
       .result_info .row-item-actions a .status_tooltip::before {
         right: 1.5em; }
-    .result_info .row-item-actions .tooltip {
+    .result_info .row-item-actions .xtooltip {
       right: 3.5em;
       white-space: normal;
       width: 300%;
@@ -60,17 +60,17 @@
       text-transform: none;
       padding: 1em;
       z-index: 3; }
-      .result_info .row-item-actions .tooltip::before {
+      .result_info .row-item-actions .xtooltip::before {
         right: 1.7em; }
-      .result_info .row-item-actions .tooltip p {
+      .result_info .row-item-actions .xtooltip p {
         font-size: 1.5rem;
         line-height: 1.4; }
-        .result_info .row-item-actions .tooltip p:first-child {
+        .result_info .row-item-actions .xtooltip p:first-child {
           border-bottom: 1px solid rgba(255, 255, 255, 0.5);
           padding-bottom: 0.5em;
           margin-bottom: .8em;
           font-size: 1.6rem; }
-        .result_info .row-item-actions .tooltip p:last-child {
+        .result_info .row-item-actions .xtooltip p:last-child {
           margin-bottom: 0; }
 
 .btn-unlabel-rounded.result_description {

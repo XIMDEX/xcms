@@ -228,7 +228,7 @@ class Action_composer extends ActionAbstract {
 							self::COMPOSER_INDEX, $selectedNode->GetParent(), $numArchivos, $hasta_aux
 						),
 						'nodeid' => '0',
-						'icon' => 'folder_a-z.png',
+						'icon' => 'folder_a-z',
 						'openIcon' => 'folder_a-z.png',
 						'state' => '',
 						'children' => '5',
@@ -276,6 +276,64 @@ class Action_composer extends ActionAbstract {
 		}
 
 		return $data;
+	}
+
+	public function readTreedataFiltered($idNode, $find=null){
+		$sql = "select nodes.IdNode, nodes.Name, nodes.IdNodeType, nodes.IdParent, nt1.Icon, nodes.IdState, (nt1.IsFolder or nt1.IsVirtualFolder) as IsDir, nodes.Path,
+
+        (select count(*) from FastTraverse ft3 where ft3.IdNode = nodes.IdNode and ft3.Depth = 1) as children,
+
+		(SELECT count(*) FROM FastTraverse f4, Nodes n4, NodeTypes nt4 where
+			n4.IdNode=f4.IdChild and f4.IdNode = nodes.IdNode and not n4.IdNode=nodes.IdNode
+			and n4.name like '%s' and nt4.IdNodeType = n4.IdNodeType
+			and NOT(nt4.IsHidden) and not nt4.IdNodeType in (5084,5085)) as results
+
+
+        from Nodes nodes inner join NodeTypes nt1 on nodes.IdNodeType = nt1.IdNodeType
+         and NOT(nt1.IsHidden) and not nt1.IdNodeType in (5084,5085) where nodes.idnode in
+        (select ft1.IdChild as idnode FROM FastTraverse ft1 where ft1.IdNode = %d and ft1.depth = 1 and ft1.idchild in
+			(
+			select ft2.IdNode FROM FastTraverse ft2 where ft2.idchild in
+			(SELECT n.idnode FROM FastTraverse f
+
+			INNER JOIN Nodes n on n.IdNode=f.IdChild and f.IdNode = %d
+				and not n.IdNode=%d and n.name like '%s'
+
+			inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType
+				and NOT(nt.IsHidden) and not nt.IdNodeType in (5084,5085))
+			))";
+		$sql2 = sprintf($sql, '%' . $find . '%',
+			$idNode, $idNode, $idNode, '%' . $find . '%');
+		$db = new DB();
+		$db->query($sql2);
+		$queryToMatch = "/" . $find . "/i";
+		$queryToMatch = str_replace(array(".", "_"), array('\.', "."), $queryToMatch);
+		$ret = $this->_echoNodeTree($idNode, \App::getValue( 'displayEncoding'));
+
+		while (!$db->EOF) {
+			$name = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $db->getValue('Name'));
+			$results = intval($db->getValue('results'));
+			$children =intval($db->getValue('children'));
+			if ($results == 0) {
+				$children = 0;
+			} else {
+				$name .= sprintf('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $results);
+			}
+			$ret['collection'][] = array(
+				'originalName' => $db->getValue('Name'),
+				'name' => $name,
+				'nodeid' => $db->getValue('IdNode'),
+				'nodetypeid' => $db->getValue('IdNodeType'),
+				'parentid' => $db->getValue('IdParent'),
+				'icon' => $db->getValue('Icon'),
+				'state' => $db->getValue('IdState'),
+				'isdir' => $db->getValue('IsDir'),
+				'children' => $children,
+				'path' => $db->getValue('Path')
+			);
+			$db->next();
+		}
+		return $ret;
 	}
 
 	function treedata() {
@@ -680,74 +738,6 @@ class Action_composer extends ActionAbstract {
 		$this->render(array('nodes' => $reversedEntities));
 	}
 
-
-	/** ******************************************* PRIVATE METHODS ******************************** */
-
-	private function _printXmlToolbar($nodeID) {
-		//global $userID;
-		$userID = \Ximdex\Utils\Session::get("userID");
-		/// echo $userID . "id";
-		$node = new Node($nodeID);
-		$user = new User($userID);
-		$group = new Group();
-		$role = new Role();
-		$action = new Action();
-		$contentToolBar = '';
-
-//		XMD_Log::debug("XMD:toolbar: Data for node($nodeID). BEGIN");
-
-		$contentToolBar .= '<node nodeid="' . $node->GetID() . '" name="' . $node->GetNodeName() . '" path="' . $node->GetPath() . '">';
-
-		$groups = $user->GetGroupListOnNode($nodeID);
-		// Debugging
-		if (is_array($groups)) {
-			foreach ($groups as $groupID) {
-				$role->SetID($user->GetRoleOnGroup($groupID));
-				$group->SetID($groupID);
-				$contentToolBar .= '<role roleid="' . $role->GetID() . '" name="' . $role->GetName() . '" groupid="' . $group->GetID() . '" groupname="' . $group->GetGroupName() . '">';
-
-				$actions = $role->GetActionsOnNode($nodeID);
-
-				$actionIDS = array();
-				$actionName = array();
-				$actionIcon = array();
-				$actionDesc = array();
-				$actionOrder = array();
-
-				if ($actions)
-					foreach ($actions as $actionID) {
-						$action = new Action($actionID);
-						$actionIDS[] = $actionID;
-						$actionName[] = $action->get('Name');
-						$actionIcon[] = $action->GetIcon();
-						$actionDesc[] = $action->get('Description');
-						$actionOrder[] = $action->get('Sort');
-					}
-
-				if (is_array($actionIDS))
-					array_multisort($actionOrder, $actionName, $actionIDS, $actionIcon, $actionDesc);
-
-				// Modifying the loop limit, replacing $actionIDS with $actions, (because it had repeated actions, then it overwrite it) :Luis:
-				for($i = 0; $i < sizeof($actionIDS); $i ++) {
-					if ($actionOrder[$i] && $this->_notExcludedAction($actionIDS[$i], $nodeID))
-						$contentToolBar .= '<action actionid="' . $actionIDS[$i] . '" name="' . $actionName[$i] . '" icon="' . $actionIcon[$i] . '" description="' . $actionDesc[$i] . '" />';
-				}
-
-				$contentToolBar .= '</role>';
-			}
-		}
-
-		$contentToolBar .= '</node>';
-
-
-		//Encoding the request to the diplayEncoding from Config, $this->displayEncoding is readed in the parent constructor
-		$contentToolBar = \Ximdex\XML\Base::recodeSrc($contentToolBar, $this->displayEncoding);
-
-		echo $contentToolBar;
-		XMD_Log::debug("XMD:toolbar: Data for node($nodeID). END");
-
-	}
-
 	private function _notExcludedAction($actionID, $nodeID) {
 		$node = new Node($nodeID);
 		$nodeTypeName = $node->nodeType->GetName();
@@ -805,6 +795,11 @@ class Action_composer extends ActionAbstract {
 			}
 		}
 
+        $modified = '0';
+        if($isDir == '0' && $node->nodeType->IsPublicable == '1'){
+            $modified  = $node->IsModified() == true ? '1' : '0';
+        }
+
 		$data = array(
 			'name' => $node_name,
 			'nodeid' => $node_id,
@@ -814,7 +809,8 @@ class Action_composer extends ActionAbstract {
 			'state' => $node_state,
 			'isdir' => $isDir,
 			'children' => $node_childs,
-			'path' => $path
+			'path' => $path,
+            'modified' => $modified
 		);
 
 		$data = array_merge($data, $processedProperties);

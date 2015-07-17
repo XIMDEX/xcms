@@ -22,6 +22,12 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+/*******
+//	ICON GENERIC STYLES
+*******/
+/*******
+//	ICONS
+*******/
 .xim-treeview-branch-container {
   overflow: auto;
   position: absolute;
@@ -74,13 +80,13 @@ li.xim-listview-node:hover {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  color: white; }
+  color: #fff; }
 
 .xim-treeview-node .xim-treeview-selected:hover {
   padding: 0px; }
 
 .xim-treeview-container-selected {
-  border-bottom: 1px dashed #cccccc; }
+  border-bottom: 1px dashed #ccc; }
 
 ul.xim-treeview-branch li div.xim-treeview-container-selected,
 tr.xim-listview-selected,
@@ -89,11 +95,11 @@ tr.xim-listview-selected:hover,
 .xim-treeview-selected:hover,
 li.xim-listview-selected,
 li.xim-listview-selected:hover {
-  background: #43a1a2;
+  background: #43A1A2;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  color: white;
+  color: #fff;
   border: transparent;
   padding-right: 8px; }
 
@@ -110,7 +116,7 @@ ul.xim-treeview-loading {
 
 .xim-listview-browser {
   margin-bottom: 7px;
-  color: #cccccc;
+  color: #ccc;
   margin-left: 15px; }
 
 .xim-listview-browser a.alpha {
@@ -146,7 +152,7 @@ ul.xim-treeview-loading {
 .xim-listview-browser a {
   background: url("../../../../../images/viewers/breadcrumb.png") no-repeat right center;
   padding: 3px 17px 3px 13px;
-  color: #cccccc;
+  color: #ccc;
   font-weight: bold;
   position: relative;
   margin-left: -8px;
@@ -154,11 +160,11 @@ ul.xim-treeview-loading {
 
 .xim-listview-browser a.alpha:hover {
   background: url("../../../../../images/viewers/breadcrumb-alpha-over.png") no-repeat left center;
-  color: white; }
+  color: #fff; }
 
 .xim-listview-browser a:hover {
   background: url("../../../../../images/viewers/breadcrumb-over.png") no-repeat right center;
-  color: white; }
+  color: #fff; }
 
 .xim-listview-browser .path-separator {
   display: none; }

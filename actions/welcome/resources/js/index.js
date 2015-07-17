@@ -29,47 +29,45 @@ X.actionLoaded(function(event, fn, params) {
     //$(".project_item").on("click","button.config_button",function(e){
     //        $(e.delegateTarget).find(".details").toggle();
     //    });
+    var xTabs = angular.element(document).injector().get('xTabs');
     fn('.project_new').click(function() {
-                                $(params.browser).browserwindow('openAction', {
+        xTabs.openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'addfoldernode',
                                         icon: null,
                                         module: '', 
-                                        name: 'Create a New Project',
+                                        name: _('Create a New Project')
                                         }, params.nodes);
                         });
     fn('.preview').click(function(e) {
-                                        $(params.browser).browserwindow('openAction', {
+        xTabs.openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'filepreview',
                                         icon: null,
                                         module: '', 
-                                        name: 'Preview of an image',
+                                        name: _('Preview of an image')
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.plaintext').click(function(e) {
-                                        $(params.browser).browserwindow('openAction', {
+        xTabs.openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'edittext',
                                         icon: null,
                                         module: '', 
-                                        name: 'Edit file in text mode',
+                                        name: _('Edit file in text mode')
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
     fn('.xmltext').click(function(e) {
-                                        $(params.browser).browserwindow('openAction', {
+        xTabs.openAction( {
                                         bulk: 0,
                                         callback: 'callAction',
                                         command: 'xmleditor2',
                                         icon: null,
                                         module: '', 
-                                        name: 'Edit file with Xedit',
+                                        name: _('Edit file with Xedit')
                                         }, $(e.currentTarget).parent().parent().find(".nodeid").text());
                         });
-    $(document).on('nodemodified', function(e, node){
-        params.actionView.reloadAction();
-    });
 });

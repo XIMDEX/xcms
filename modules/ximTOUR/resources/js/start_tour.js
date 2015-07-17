@@ -24,17 +24,19 @@
  */
 
 //start_tour();
-var indexIntervalTour=0;
-var intervalTour = setInterval(function(){
+X.actionLoaded(function(event, fn, params) {
+	var indexIntervalTour = 0;
+	var intervalTour = setInterval(function () {
 
-    if (!$("div#ximdex-splash") || $("div#ximdex-splash").css("display")=="none"){
-	if (X.Tour && start_tour){
-	    start_tour();
-	    clearInterval(intervalTour);
-	}
-	if (indexIntervalTour>100){//Just 10 seconds for load
-	    clearInterval(intervalTour);
-	}
-	indexIntervalTour++;
-    }
-}, 100);
+		if ($("div#ximdex-splash").length == 0) {
+			if (X.Tour && start_tour) {
+				start_tour();
+				clearInterval(intervalTour);
+			}
+			if (indexIntervalTour > 100) {//Just 10 seconds for load
+				clearInterval(intervalTour);
+			}
+			indexIntervalTour++;
+		}
+	}, 100);
+});

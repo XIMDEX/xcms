@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive.validator')
-	.directive('ximAlphanumeric', function(){
+	.directive('ximAlphanumeric', [function(){
 		return {
 			require: 'ngModel',
 			link: function(scope, element, attrs, ctrl){
@@ -39,7 +39,7 @@ angular.module('ximdex.common.directive.validator')
 				});
 			}
 		}
-	});
+	}]);
 angular.module('ximdex.common.directive.validator')
 	.directive('ximUnique', ['xCheck', '$timeout', function(xCheck, $timeout){
 		return {

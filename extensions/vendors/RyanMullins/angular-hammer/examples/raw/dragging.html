@@ -1,0 +1,67 @@
+<!doctype html>
+<html ng-app="hmTime">
+  <head>
+    <style type="text/css">
+      html, body {
+        background-color: #d1c9b8;
+        width: 100%;
+        height: 100%;
+      }
+
+      .relpos {
+        position: relative;
+      }
+
+      #target {
+        left: 0;
+        top: 0;
+        width: 500px;
+        height: 500px;
+        vertical-align: middle;
+        text-align: center;
+        color: white;
+        background-color: #444;
+        font-size: 36pt;
+        font-family: 'Futura', 'Avenir', 'Helvetica', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div ng-controller="hmCtrl" hm-dir="hm-dir"></div>
+    <script type="text/javascript" src="./hammer.js"></script>
+    <script type="text/javascript" src="./angular.js"></script>
+    <script type="text/javascript" src="./angular.hammer.js"></script>
+    <script type="text/javascript">
+      /**
+       * @ngInject
+       */
+      angular.module('hmTime', ['hmTouchEvents'])
+        .controller('hmCtrl', function ($scope) {
+          $scope.boxMessage = "Drag me around!";
+        })
+        .directive('hmDir', function () {
+          return {
+            'restrict' : 'AE',
+            'template' : '<div id="target" hm-panmove="onHammer" class="relpos">{{boxMessage}}</div>',
+            'link' : function (scope, element, attrs) {
+              scope.onHammer = function onHammer (event) {
+                if (event.target === element[0].children[0]) {
+                  var x = event.center.x - 250,
+                      y = event.center.y - 250;
+
+                  scope.boxMessage = '{x:' + x + ', y:' + y + '}';
+
+                  console.log(element.children());
+
+                  element.children().css({
+                    'left' : x + 'px',
+                    'top' : y + 'px'
+                  });
+                }
+              };
+            }
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -126,7 +126,7 @@ XimDocument = function(editorConfig) {
 	};
 
 	this.checkSpellingIsAllowed =function(){
-		return (this._editorConfig.checkspelling == 0) ? false : true;	
+		return (this._editorConfig.checkspelling == 0) ? false : true;
 	}
 
 	this.toggleSchemaValidator = function() {
@@ -183,11 +183,11 @@ XimDocument = function(editorConfig) {
 		}
 	};
 
-	
+
 	/**
- 	 * Method which alert the errors found after parse the document 
-	 * @private  
-	 * Create at 2012-11-20 
+ 	 * Method which alert the errors found after parse the document
+	 * @private
+	 * Create at 2012-11-20
 	 **/
 	this._showErrors = function(){
 		var result="";
@@ -321,6 +321,9 @@ XimDocument = function(editorConfig) {
 		var previousChild = false;
 		while (it.hasNext()) {
                         var child = it.next();
+                        if(child.nodeType==8){
+                                continue;
+                        }
 			//nodetype==1 => is a tag
                         if (child.nodeType==1 && isFirstNode && child.getAttribute("uid")){
                                 findApplyElement = true;
@@ -433,7 +436,7 @@ XimDocument = function(editorConfig) {
 	 */
 	this.importXmlElement = function(domElement, importChilds) {
 		var tagName = domElement.tagName.toLowerCase();
-		var rngElement = this._rngDoc.getElement(tagName);		
+		var rngElement = this._rngDoc.getElement(tagName);
 		if (!rngElement) {
 			//console.error('Element <' + tagName + '/> not found in RNG Schema');
 			return null;

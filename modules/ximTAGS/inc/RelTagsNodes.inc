@@ -1,27 +1,29 @@
 <?php
-/******************************************************************************
- *  Ximdex a Semantic Content Management System (CMS)    							*
- *  Copyright (C) 2011  Open Ximdex Evolution SL <dev@ximdex.org>	      *
- *                                                                            *
- *  This program is free software: you can redistribute it and/or modify      *
- *  it under the terms of the GNU Affero General Public License as published  *
- *  by the Free Software Foundation, either version 3 of the License, or      *
- *  (at your option) any later version.                                       *
- *                                                                            *
- *  This program is distributed in the hope that it will be useful,           *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of            *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             *
- *  GNU Affero General Public License for more details.                       *
- *                                                                            *
- * See the Affero GNU General Public License for more details.                *
- * You should have received a copy of the Affero GNU General Public License   *
- * version 3 along with Ximdex (see LICENSE).                                 *
- * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       *
- *                                                                            *
- * @version $Revision: $                                                      *
- *                                                                            *
- *                                                                            *
- ******************************************************************************/
+
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
 
 ModulesManager::file('/inc/model/orm/RelTagsNodes_ORM.class.php', 'ximTAGS');
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
@@ -46,8 +48,8 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 				$out[] = array(
 					"Name" => $dbObj->GetValue("Name"),
 					"IdNamespace" => $dbObj->GetValue("Type"),
-					"link" => $dbObj->GetValue("Link"),
-					"description" => $dbObj->GetValue("Description"),
+					"Link" => $dbObj->GetValue("Link"),
+					"Description" => $dbObj->GetValue("Description"),
 					"iddesc" => $dbObj->GetValue("IdTagDescription"),
 					"idtag" => $dbObj->GetValue("Tag")
 				);
@@ -110,7 +112,9 @@ class RelTagsNodes extends RelTagsNodes_ORM {
 			 	//if not rel exits between description and tag, try create it
 			 	if(empty($id) ) {
 					//save tag
-			 		$id = $rel->save($_tag->Name, $_tag->IdNamespace, '#', '');
+                    $id = $rel->save($_tag->Name, $_tag->IdNamespace,
+                        !isset($_tag->Link) || empty($_tag->Link) ? '#' : $_tag->Link,
+                        isset($_tag->Description) ? $_tag->Description : '');
 			 	} else {
 					//if already rel exits between description and node, try create tags and rel
 			 		if(!empty($_previous_tags) && isset($_previous_tags[$id])){

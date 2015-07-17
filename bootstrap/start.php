@@ -14,7 +14,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 
 
-if ( function_exists( 'xdebug_start_code_coverage')) {
+/*if ( function_exists( 'xdebug_start_code_coverage')) {
     function ximdex_end_debug() {
         $vars = xdebug_get_code_coverage() ;
         $hf = fopen(dirname(__FILE__) .'/../logs/coverage.log', 'a');
@@ -25,7 +25,7 @@ if ( function_exists( 'xdebug_start_code_coverage')) {
     }
     register_shutdown_function( 'ximdex_end_debug');
     xdebug_start_code_coverage();
-}
+}*/
 
 if (!defined('CLI_MODE'))
     define('CLI_MODE', 0);

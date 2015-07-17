@@ -180,7 +180,7 @@ class Action_prevdoc extends ActionAbstract
 		$this->response->set('Content-type', 'text/html');
 
     	$hash = $this->request->getParam('hash');
-    	$file = sprintf('%s/data/tmp/%s', App::getValue('AppRoot'), $hash);
+    	$file = sprintf('%s%s/%s', App::getValue('AppRoot'), App::getValue("TempRoot"), $hash);
     	$content = '';
 
     	if (file_exists($file)) {
@@ -188,7 +188,7 @@ class Action_prevdoc extends ActionAbstract
     	}
         if(isset($_GET["nodeid"])){
             //Remove all used cache
-            exec(sprintf('rm -f %s/data/tmp/preview_%s_*', App::getValue('AppRoot'), $_GET["nodeid"]));
+            exec(sprintf('rm -f %s%s/preview_%s_*', App::getValue('AppRoot'),App::getValue("TempRoot"), $_GET["nodeid"]));
         }
 
 		//Show preview as web

@@ -23,10 +23,10 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-	.directive('ximFocusOn', function() {
+	.directive('ximFocusOn', [function() {
 	   return function(scope, elem, attrs) {
 	      scope.$on(attrs.ximFocusOn, function(e) {
 	          elem[0].focus();
 	      });
 	   };
-	});
+	}]);

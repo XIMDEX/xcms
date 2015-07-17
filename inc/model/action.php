@@ -1,32 +1,29 @@
 <?php
 
-/*********************************************************************************
- *  Ximdex a Semantic Content Management System (CMS)    			    	 *
- *  Copyright (C) 2011  Open Ximdex Evolution SL <dev@ximdex.org>	    	 *
- *                                                                            					    	 *
- *  This program is free software: you can redistribute it and/or modify        	 *
- *  it under the terms of the GNU Affero General Public License as published  *
- *  by the Free Software Foundation, either version 3 of the License, or      	 *
- *  (at your option) any later version.                                       			 *
- *                                                                            						 *
- *  This program is distributed in the hope that it will be useful,           		 *
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the * 
- *  GNU Affero General Public License for more details.                       		 *
- *                                                                            						 *
- * See the Affero GNU General Public License for more details.                	 *
- * You should have received a copy of the Affero GNU General Public License  *
- * version 3 along with Ximdex (see LICENSE).                                 		 *
- * If not, see <http://gnu.org/licenses/agpl-3.0.html>.                       		 *
- *                                                                            						 *
- * @version $Revision: $                                                      				 * 	 
- *                                                                            						 *
- *                                                                            						 *
- *********************************************************************************/
-
-
-
-
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
 
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Actions_ORM.class.php';
@@ -108,9 +105,13 @@ class Action extends Actions_ORM {
 	 * @param $nodeType
 	 * @return array of ActionID
 	 */
-	function GetActionListOnNodeType($nodeType = NULL) {
+	function GetActionListOnNodeType($nodeType = NULL, $includeActionsWithNegativeSort = false) {
 		$dbObj = new DB();
-		$sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0", $nodeType);
+		if(!$includeActionsWithNegativeSort) {
+			$sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0", $nodeType);
+		}else{
+			$sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d", $nodeType);
+		}
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
 			$this->SetError(1);

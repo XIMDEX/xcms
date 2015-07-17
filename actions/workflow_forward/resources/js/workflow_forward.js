@@ -37,6 +37,18 @@ X.actionLoaded(function(event, fn, params) {
 	var $defaultMsg = fn('input[name=default_message]');
 	var $gapList = fn('fieldset.publish_date select.gap_info');
 	var $notifications = fn('fieldset.notifications input.send-notifications');
+	var $allLevelCheck = fn('[id*="all_levels"]');
+
+	if ($allLevelCheck){
+		$allLevelCheck.change(function(){
+			if ($(this).is(":checked")){
+				fn('[id*="deeplevel"]').addClass("disabled").attr("disabled",true);
+			}else{
+				fn('[id*="deeplevel"]').removeClass("disabled").attr("disabled",false);
+			}
+		});
+	}
+
 	
 	function request(options) {
 	

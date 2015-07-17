@@ -77,6 +77,10 @@ class DepsManager {
 	 */
 	const STRDOC_STRUCTURE = 'RelStrdocStructure';
 
+	const NODE2ASSET = 'RelNode2Asset';
+
+	const XML2XML = 'RelXml2Xml';
+
 	/**
 	 * Returns the model object specified by "$tableName" name or NULL
 	 * @param string $tableName
@@ -147,7 +151,7 @@ class DepsManager {
 		$object = $this->getModel($rel);
 		if (!is_object($object)) return false;
 		$result = $object->find('target', 'source = %s', array($source), MONO);
-		return sizeof($result) > 0 ? $result : NULL;
+		return sizeof($result) > 0 ? $result : array();
 	}
 
 	/**

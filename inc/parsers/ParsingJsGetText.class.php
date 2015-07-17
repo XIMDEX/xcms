@@ -33,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 
 class ParsingJsGetText {
-	const PATH_CACHE = "/data/tmp/js/";
+	private $PATH_CACHE;
 	private $_default_lang;
 	private $_lang;
 
@@ -44,7 +44,7 @@ class ParsingJsGetText {
 	private $_gettext_file;
 
 	function __construct() {
-
+		$this->PATH_CACHE = App::getValue('TempRoot')."/js/";
 		//Definimos el default lang
 		if(\Ximdex\Utils\Session::get('locale') )
 			$this->setDefaultLang(\Ximdex\Utils\Session::get('locale'));
@@ -57,9 +57,9 @@ class ParsingJsGetText {
 		$this->_default_lang = $_lang;
 
 		//Given need permits in case of cache folder has not the correct ones
-		@chmod(XIMDEX_ROOT_PATH.self::PATH_CACHE, 0777);
+		@chmod(XIMDEX_ROOT_PATH.$this->PATH_CACHE, 0777);
 		//Checking if the asociated language folder is ixisting, if not, we create it
-		$_pathname = XIMDEX_ROOT_PATH.self::PATH_CACHE.$this->_default_lang;
+		$_pathname = XIMDEX_ROOT_PATH.$this->PATH_CACHE.$this->_default_lang;
 		if(!is_dir($_pathname))
 			@mkdir($_pathname, 0777);
 	}
@@ -68,7 +68,7 @@ class ParsingJsGetText {
 	public function setLang($_lang = null) {
 		$this->_lang = ($_lang) ? $_lang : $this->_default_lang;
 
-		$_pathname = XIMDEX_ROOT_PATH.self::PATH_CACHE.$this->_lang;
+		$_pathname = XIMDEX_ROOT_PATH.$this->PATH_CACHE.$this->_lang;
 		if(!is_dir($_pathname))
 			@mkdir($_pathname, 0777);
 	 }
@@ -123,13 +123,13 @@ class ParsingJsGetText {
 		}
 
 		//Opening the destiny file to start to create it
-		$file_out = @fopen(XIMDEX_ROOT_PATH.self::PATH_CACHE.$this->_lang."/".$this->_file, "w");
+		$file_out = @fopen(XIMDEX_ROOT_PATH.$this->PATH_CACHE.$this->_lang."/".$this->_file, "w");
 
 		if(!$file_out) {
-			XMD_Log::warning("ERROR, you have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file " . XIMDEX_ROOT_PATH.self::PATH_CACHE.$this->_lang."/".$this->_file);
+			XMD_Log::warning("ERROR, you have not permits, or the language directory is not existing. Review permits in \'data/tmp/js\'. Error opening the file " . XIMDEX_ROOT_PATH.$this->PATH_CACHE.$this->_lang."/".$this->_file);
 			return null;
 		}
-		XMD_Log::warning("Caching: ".XIMDEX_ROOT_PATH.$this->_file_orig." --> ".XIMDEX_ROOT_PATH.self::PATH_CACHE.$this->_lang."/".$this->_file );
+		XMD_Log::warning("Caching: ".XIMDEX_ROOT_PATH.$this->_file_orig." --> ".XIMDEX_ROOT_PATH.$this->PATH_CACHE.$this->_lang."/".$this->_file );
 
 		if($file_in && $file_out) {
 			while (!feof($file_in)) {
@@ -140,8 +140,8 @@ class ParsingJsGetText {
 
 			fclose($file_in);
 			fclose($file_out);
-			XMD_Log::info('Js Cache generated ' . \App::getValue( 'UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file);
-			return \App::getValue( 'UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file;
+			XMD_Log::info('Js Cache generated ' . \App::getValue( 'UrlRoot').$this->PATH_CACHE.$this->_lang."/".$this->_file);
+			return \App::getValue( 'UrlRoot').$this->PATH_CACHE.$this->_lang."/".$this->_file;
 		}
 
 	}
@@ -168,7 +168,7 @@ class ParsingJsGetText {
 		//Checking if the file gettexted for the specificed langauge is existing
 		if($this->fileExists() ) {
 			//If it exists, returning its url
-			return \App::getValue( 'UrlRoot').self::PATH_CACHE.$this->_lang."/".$this->_file;
+			return \App::getValue( 'UrlRoot').$this->PATH_CACHE.$this->_lang."/".$this->_file;
 		}
 
 
@@ -180,7 +180,7 @@ class ParsingJsGetText {
 	public function fileExists($_lang = null, $_js = null) {
 		$this->setParam($_lang, $_js);
 
-		$nombre_file_cacheado = XIMDEX_ROOT_PATH.self::PATH_CACHE.$this->_lang."/".$this->_file;
+		$nombre_file_cacheado = XIMDEX_ROOT_PATH.$this->PATH_CACHE.$this->_lang."/".$this->_file;
 
 		//If the cached file exists, we start checking dates
 		if( file_exists($nombre_file_cacheado) ) {

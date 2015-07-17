@@ -71,7 +71,7 @@ angular.module('ximdex.main.controller')
 
         $scope.uploadComplete= function() {
             console.log("COMPLETE", $scope.uploader);
-            $scope.$emit('nodeModified', $attrs.ximNodeId);
+            $scope.$emit('nodemodified', $attrs.ximNodeId);
         }
 
     }]);

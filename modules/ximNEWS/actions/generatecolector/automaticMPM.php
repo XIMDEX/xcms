@@ -38,7 +38,6 @@ ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 ModulesManager::file('inc/sync/Mutex.class.php');
 ModulesManager::file('/inc/log/Automatic_log.class.php');
-ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER');
 ModulesManager::file('/inc/MPM/MPMManager.class.php');
 ModulesManager::file('/inc/MPM/MPMProcess.class.php');
 
@@ -180,7 +179,6 @@ foreach ($colectors as $colectorID => $colectorName) {
 				Automatic_Log::info($colectorLogHead . "$numDocs "._("docs to be published"));
 				$dataIn = array();
 				$i=0;
-				Profiler::start($colectorID."_".$bulletinID."_MPM");
 
 				foreach ($docsToPublish as $docID) {
 
@@ -196,7 +194,6 @@ foreach ($colectors as $colectorID => $colectorName) {
 				}
 
 				pushAllDocumentsInPublishingPool($dataIn);
-				Profiler::stop($colectorID."_".$bulletinID."_MPM");
 
 			} else {
 				SynchroFacade::pushDocInPublishingPool($bulletinID, time(), NULL);

@@ -36,13 +36,21 @@
 		</fieldset>
 	</div>
 
-{if $hasDisabledFunctions}
-	<div class="message message-warning">
-		<p class="disable-functions-alert">
-			{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
-		</p>
-	</div>
-{/if}
+	{if $hasDisabledFunctions}
+		<div class="message message-warning">
+			<p class="disable-functions-alert">
+				{t}<i>pcntl_fork</i> and <i>pcntl_waitpid</i> required functions are both disabled{/t}.{t}This could cause a slow and unstable publishing. Please, check the <i>php.ini</i> configuration file or contact with your system administrator{/t}.
+			</p>
+		</div>
+	{/if}
+
+	{if $globalForcedEnabled}
+		<div class="message message-warning">
+			<p class="disable-functions-alert">
+				{t}Force publication is enabled in global config. This could cause slow publication. Please check synchro.conf file{/t}.
+			</p>
+		</div>
+	{/if}
 
 	<div class="action_content">
 		<fieldset class="publish_date">
@@ -117,11 +125,11 @@
                     {foreach from=$gap_info key=index item=gap}
 				    <div class="publication">
 					    <span class="start_publication">{t}From{/t}
-						    <span class="publication_date"></span>
+						    <span class="publication_date">{$gap_info[$index]['BEGIN_DATE']}</span>
 						    <span class="publication_time"></span>
 					    </span>
 					    <span class="end_publication">{t}To{/t}
-						    <span class="publication_date"></span>
+						    <span class="publication_date">{$gap_info[$index]['END_DATE']}</span>
 						    <span class="publication_time"></span>
 					    </span>
 				    </div>
@@ -136,31 +144,6 @@
 			    <label for="markend">{t}Do you want to set the begin-date of the new window as the end-date of the previous window?{/t}</label>
 			{/if}
 
-            {if $show_rep_option}
-                {if $synchronizer_to_use == "default"}
-			        <input type="checkbox" name="republish" id="republish" />
-			        <label for="republish">{t}Do you want to publish its related documents?{/t}</label>
-			    {elseif $synchronizer_to_use == "ximSYNC"}
-                    {if $nodetypename eq 'XmlDocument' && $ximpublish_tools_enabled}
-                        {if $advanced_publication eq '1'}
-			                <hr/>
-			                <input onclick="show_div_levels();" type="checkbox" name="all_levels" id="all_levels" value="1" checked />
-			                <label>{t}Publish all levels{/t}</label>
-			                <br/>
-			                <div id="div_deeplevel">
-				                <label>{t}Publish until a certain depth level{/t}:</label>
-				                <input id="deeplevel" size="5" type="text" name="deeplevel" value="0" />
-			                </div>
-			            {/if}
-                        {if $structural_publication eq '1'}
-			                <hr/>
-			                <input type="checkbox" name="no_structure" id="no_structure" />
-			                <label>{t}Publish just the document (without its structure: css, images, scripts){/t}</label>
-			                <br/>
-			            {/if}
-                    {/if}
-                {/if}
-            {/if}
-		    </fieldset>
-	    </div>
+		</fieldset>
+	</div>
 </form>

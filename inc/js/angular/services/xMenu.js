@@ -24,200 +24,60 @@
  */
 
 angular.module('ximdex.common.service')
-    .factory('xMenu', ['$window', '$rootScope', function($window, $rootScope) {
-        
-    	var createButton = function(options) {
-			options = $.extend({
-				text: '',
-				title: '',
-				value: '',
-				data: {},
-				className: '',
-				click: function() {},
-				icon: null,
-				container: null
-			}, options);
+    .factory('xMenu', ['$timeout', '$window', '$document', '$compile', '$rootScope', '$templateCache', function($timeout, $window, $document, $compile, $rootScope, $templateCache) {
 
-			var b = $('<button></button>')
-				.addClass('window-toolbar-button '+options.className + ' ' +options.value)
-				//.html($('<span></span><span class="tooltip"></span>').html(options.text))
-				.val(options.value)
-				.data('data', options.data)
-//				.attr('title', options.title)
-				.click(options.click);
+        var scope = {};
 
-			$(b)
-				.append($('<span>Icono</span>'))
-				.append($('<span class="tooltip"></span>').html(options.text));
+        destroyMenu = function() {
+            if(scope.$destroy !== undefined){
+                scope.$destroy();
+            }
+            var oldMenu = angular.element('div.xim-actions-menu');
+            if(oldMenu.length>0){
+                oldMenu.remove();
+            }
+        }
 
-			if (!Object.isEmpty(options.icon)) {
+        initMenu = function (options, nodes, callback){
+            var hammerBody = Hammer(document.getElementsByTagName('body')[0]);
+            hammerBody.off('tap');
+            destroyMenu();
 
-				var icon = options.icon.substr(0, options.icon.length-4);
-				b.addClass('icon-'+icon);
-			}
-
-			if (options.container !== null) {
-				b.appendTo(options.container);
-			}
-			$(b).wrap('<div class="button-container"/>');
-			return b;
-		}
-
-    	var createButtonList = function(options) {
-    	    options = $.extend({
-    	        text: '',
-    	        title: '',
-    	        value: '',
-    	        data: {},
-    	        className: '',
-    	        click: function() {},
-    	        icon: null,
-    	        container: null
-    	    }, options);
+            var menu = angular.element(
+                '<xim-menu></xim-menu>');
+            scope = $rootScope.$new();
+            scope.options = options;
+            scope.optionLabel = 'name';
+            scope.optionClass = 'command';
+            scope.top = options.top;
+            scope.left = options.left;
+            scope.select = function(result){
+                if (callback)
+                    callback(result, nodes);
+                destroyMenu();
+            }
+            var menuC = $compile(menu)(scope);
+            angular.element('body').append(menuC);
 
 
-    	    var ndiv = $('<div/>').addClass('button-container-list');
-    	    var ndiv = $('<div/>').addClass('button-container-list icon').addClass(options.value).html(options.text);
-    	    ndiv.data('data',options.data).click(options.click);
+            hammerBody.on('tap', function (ev) {
+                var e = angular.element(ev.target);
+                if (!e.hasClass("button-container-list")) {
+                    destroyMenu();
+                }
+                hammerBody.off('tap');
+            });
 
-    	    if (options.container !== null) {
-    	        ndiv.appendTo(options.container);
-    	    }
+            if (!scope.$$phase)
+                scope.$digest();
+        }
 
-    	    return ndiv;
-    	}
-    	var createFloatMenu = function(params) {
-    	    var nodeid = params.data.nodeid.value;
-    	    var cmenu = $('div.xim-actions-menu').unbind().empty();
-    	    var show = true;
-
-    	    if (cmenu.length == 0) {
-
-    	        cmenu = $('<div></div>')
-    	            .addClass('xim-actions-menu destroy-on-click')
-    	            .attr('id', 'cmenu-'+nodeid);
-
-    	    } else if ($(cmenu).attr('id') == 'cmenu-'+nodeid) {
-    	        show = false;
-    	    }
-
-    	    show = show & (params.actions.length > 0);
-
-    	    if (!show) {
-    	        $(cmenu).unbind().remove();
-    	        return;
-    	    }
-
-    	    if (Object.isFunction(params.actions.each)) {
-
-    	        params.actions.each(function(index, item) {
-    	            item.params = item.params.replace('%3D', '=');
-    	            createButton({
-    	                text: item.name,
-    	                title: item.name,
-    	                value: item.command,
-    	                data: {
-    	                    action: item,
-    	                    nodes: params.nodes,
-    	                    ids: params.ids
-    	                },
-    	                className: 'view-action',
-    	                icon: item.icon,
-    	                click: function(e) {
-    	                    var data = $(e.currentTarget).data('data');
-    	                    params.result(data.action, params.ids);
-    	                }.bind(this),
-    	                container: cmenu
-    	            });
-    	        });
-
-    	        cmenu
-    	            .css({
-    	                position: 'absolute',
-    	                left: params.menuPos.x,
-    	                top: params.menuPos.y
-    	            })
-    	            .appendTo('body');
-
-    	    }
-    	}
-    	var createFloatMenuList = function(params) {
-			var nodeid = params.data.nodeid.value;
-			var cmenu = $('div.xim-actions-menu').unbind().empty();
-			var show = true;
-
-			if (cmenu.length == 0) {
-
-				cmenu = $('<div></div>')
-					.addClass('xim-actions-menu xim-actions-menu-list destroy-on-click')
-					.attr('id', 'cmenu-'+nodeid);
-
-			} else if ($(cmenu).attr('id') == 'cmenu-'+nodeid) {
-				show = false;
-			}
-
-			show = show & (params.actions.length > 0);
-
-			if (!show) {
-				$(cmenu).unbind().remove();
-				return;
-			}
-
-			if (Object.isFunction(params.actions.each)) {
-
-				params.actions.each(function(index, item) {
-					item.params = item.params.replace('%3D', '=');
-					createButtonList({
-						text: item.name,
-						title: item.name,
-						value: item.command,
-						data: {
-							action: item,
-							nodes: params.nodes,
-							ids: params.ids
-						},
-						className: 'view-action',
-						icon: item.icon,
-						click: function(e) {
-							var data = $(e.currentTarget).data('data');
-							params.result(data.action, params.ids);
-						}.bind(this),
-						container: cmenu
-					});
-				});
-
-
-
-
-				cmenu
-					.css({
-						position: 'absolute',
-						left: params.menuPos.x,
-						top: params.menuPos.y
-					})
-					.appendTo('body');
-
-				//Detect End Page Collision
-				var windowY = window.innerHeight;
-				var menuY = $(cmenu).height();
-				var finY  = menuY + params.menuPos.y;
-
-				if(finY > windowY){
-					params.menuPos.y = windowY - menuY - 20;
-					$(cmenu).css({
-						top: params.menuPos.y
-					});
-				}
-
-			}
-		}
         return {
-            legacyOpen: function(params) {
-            	if (params.inline) {
-            		createFloatMenu(params);
-            	} else {
-            		createFloatMenuList(params);
-            	}
+            open: function(options, nodes, callback) {
+                initMenu(options, nodes, callback);
+            },
+            close: function() {
+                destroyMenu();
             }
         }
     }]);

@@ -1,5 +1,0 @@
-language: php
-phps:
-  - 5.4
-  - 5.3
-script: phpunit -c phpunit.xml.dist

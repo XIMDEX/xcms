@@ -179,6 +179,49 @@
 				</div>
 			</div>
 
+            <h3 class="anottationtoolbox-section-header" id="anottationtoolbox-section-header-creativework">
+                <span>{t}Creative Work{/t}</span>
+            </h3>
+            <div id="anottationtoolbox-section-creativework" class="anottationtoolbox-section">
+                <div id="creativeworkContainer">
+                    <div id="anottationtoolbox-creativeworkitem-template" class="anottationtoolbox-articleitem">
+                        {t}Creative Work{/t}
+                        <div class="anottationtoolbox-actions">
+                            <a id="anottationtoolbox-creativeworkitem-template_template_visit"
+                               title="{t}Visit{/t}" target="_blank"
+                               href="#" class="anottationtoolbox-linkgo">
+                                <span>{t}Visit{/t}</span>
+                            </a>
+                            <a title="{t}Add{/t}" anchorname="Entity Name"
+                               id="anottationtoolbox-creativeworkitem-template_template" class="anottationtoolbox-linkadd">
+                                <span>{t}Add{/t}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="anottationtoolbox-section-header" id="anottationtoolbox-section-header-others">
+                <span>{t}Others{/t}</span>
+            </h3>
+            <div id="anottationtoolbox-section-others" class="anottationtoolbox-section">
+                <div id="othersContainer">
+                    <div id="anottationtoolbox-othersitem-template" class="anottationtoolbox-articleitem">
+                        {t}Others{/t}
+                        <div class="anottationtoolbox-actions">
+                            <a id="anottationtoolbox-othersitem-template_template_visit"
+                               title="{t}Visit{/t}" target="_blank"
+                               href="#" class="anottationtoolbox-linkgo">
+                                <span>{t}Visit{/t}</span>
+                            </a>
+                            <a title="{t}Add{/t}" anchorname="Entity Name"
+                               id="anottationtoolbox-othersitem-template_template" class="anottationtoolbox-linkadd">
+                                <span>{t}Add{/t}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 		</div>
 	</div>
 {* rdfa annotations *}

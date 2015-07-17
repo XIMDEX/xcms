@@ -41,9 +41,6 @@ class Action_modifystatesrole extends ActionAbstract {
 		$role = new Role($idNode);
 		$idRoleStates = $role->GetAllStates();
 
-		$asociatedStates = Array();
-		$notAsociatedStates = Array();
-
 		$workflow = new WorkFlow(NULL, NULL, \App::getValue( 'IdDefaultWorkflow'));
 		$idAllStates = $workflow->GetAllStates();
 		foreach ($idAllStates as $idStatus) {
@@ -58,7 +55,7 @@ class Action_modifystatesrole extends ActionAbstract {
                 $states[$i]["asociated"]=false;
 			}
 		}
-        $this->addJs('/actions/modifystatesrole/js/manager.js');
+        //$this->addJs('/actions/modifystatesrole/js/manager.js');
 		$values = array('all_states' => json_encode($states),
                         'idRole' => $idNode);
 						

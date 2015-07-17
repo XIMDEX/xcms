@@ -35,11 +35,11 @@
 	<div class="action_content">
         <p>                    
 	        <label for="name" class="label_title">{t}Name{/t}</label>
-			<input type="text" name="name" id="rolename" class="cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}New role name{/t}" data-idnode="{$id_node}" tabindex="1"/>
+			<input type="text" name="name" id="rolename" class="full_size cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" placeholder="{t}New role name{/t}" data-idnode="{$id_node}" tabindex="1"/>
         </p>
         <p>
 		    <label for="description" class="label_title">{t}Description{/t}</label>
-			<input type="text" name="description" id="description" class="cajaxg validable not_empty" placeholder="{t}New role description{/t}" tabindex="2" />
+			<input type="text" name="description" id="description" class="full_size cajaxg validable not_empty" placeholder="{t}New role description{/t}" tabindex="2" />
         </p>
 	</div>
 </form>

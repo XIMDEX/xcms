@@ -66,7 +66,7 @@
                     	<span class="document-version">({$d.Version}.{$d.Subversion})</span>
                     </span>
                    
-                    <span class="document-path" data-tooltip="{$d.path}">{$d.path}</span>
+                    <span class="document-path" data-xtooltip="{$d.path}">{$d.path}</span>
                     <span class="nodeid hidden">{$d.IdNode}</span>
 					<div class="document_actions">
                     {if $d.IdNodeType eq 5040}

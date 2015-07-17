@@ -217,6 +217,7 @@ CREATE TABLE `NodesToPublish` (
   `State` tinyint(3) unsigned NOT NULL default '0',
   `UserId` int(12) unsigned default NULL,
   `ForcePublication` tinyint(3) unsigned NOT NULL default '0',
+  `DeepLevel` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Nodes to push into publishing pool';
 

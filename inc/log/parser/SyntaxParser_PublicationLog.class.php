@@ -45,8 +45,7 @@ require_once( XIMDEX_ROOT_PATH . '/inc/log/SyntaxParser.class.php' );
 		preg_match_all(sprintf($regexp, $level), $text, $res, PREG_PATTERN_ORDER);
 		
 		if($sort == 'DESC') krsort($res[0]);
-		$text = implode("\n", $res[0]);
-		
+
 		/*echo sprintf('<pre>%s</pre>', print_r($res[0], true));
 		exit;*/
 		

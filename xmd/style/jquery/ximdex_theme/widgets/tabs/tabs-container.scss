@@ -33,13 +33,13 @@
 	clear: both;
 	position: absolute;
 	width: 100%;
-	top: 65px;
+	top: 100px;
 	bottom: 0px;
 
 }
 
 .browser-reports-view-list, .browser-modules-view-list{
-	padding-left: 10px;	
+	padding-left: 10px;
 	padding-right: 10px;
 }
 
@@ -57,7 +57,7 @@ li.browser-modules-view-enabled{
 }
 
 li.browser-reports-view-item a{
-	display: block;	
+	display: block;
 	background: url('../../../../../images/tree/treeview-icons.png') no-repeat -20px -252px;
 	padding-left:  25px;
 }
@@ -65,7 +65,7 @@ li.browser-reports-view-item a{
 li.browser-reports-view-item a:hover{
 	color: $c_white;
 	background: $c_grey-ppp url('../../../../../images/tree/treeview-icons.png') no-repeat -20px -252px;
-	@include radius(3px); 
+	@include radius(3px);
 }
 
 li.browser-reports-view-item a:active{
@@ -80,12 +80,12 @@ ul.browser-modules-view-list{
 }
 
 .browser-modules-view-list-container{
-	padding-bottom: 13px;	
+	padding-bottom: 13px;
 }
 
 .ui-tabs-panel ul {
 	list-style: none;
-	
+
 }
 
 .ui-tabs-panel>div>div>ul{
@@ -97,15 +97,15 @@ ul.browser-modules-view-list{
 .xim-treeview-node, .browser-modules-view-list li {
 	white-space: nowrap;
 	line-height: 1.8em;
-	cursor: pointer; 
+	cursor: pointer;
 }
 
 .xim-treeview-branch li div.xix{
-	padding-left: 16px;	
+	padding-left: 16px;
 }
 
 .xim-treeview-branch li div.xix .xim-treeview-actions-dropdown{
-	left: 16px;	
+	left: 16px;
 	top: 2px;
 }
 

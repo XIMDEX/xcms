@@ -24,9 +24,7 @@
  * @version $Revision$
  */
 
-
 include_once '../bootstrap/start.php';
-
 
 //General class
 ModulesManager::file('/inc/utils.php');
@@ -34,9 +32,6 @@ ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 // MVC
 ModulesManager::file('/inc/mvc/mvc.php');
-
-// Profiler
-ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER');
 
 $locale = \Ximdex\Utils\Session::get('locale');
 // Check coherence with HTTP_ACCEPT_LANGUAGE

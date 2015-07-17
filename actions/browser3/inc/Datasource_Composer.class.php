@@ -96,6 +96,24 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		return $data;
 	}
 
+	public function readFiltered($request, $recursive = true) {
+
+		$idNode = $request->getParam('nodeid');
+		$children = $request->getParam('children');
+		$from = $request->getParam('from');
+		$to = $request->getParam('to');
+		$items = $request->getParam('items');
+		$find = $request->getParam('find');
+
+		// Should we consider the IdNode 10000 directly?
+		$idNode = $idNode == '/' ? 10000 : $idNode;
+
+		$c = new Action_composer();
+		$ret = $c->readTreedataFiltered($idNode, $find);
+
+		return $ret;
+	}
+
 	private function normalizeNode($node) {
 /*
 		$node['name'] = $node['text'];

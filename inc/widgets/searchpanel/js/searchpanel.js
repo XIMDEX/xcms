@@ -52,7 +52,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 			this.element.dialog({
 				title: _('Search'),
 				autoOpen: false,
-				width: 1100,
+				width: 800,
 				height: 750,
 				minWidth: 630,
 				minHeight: 280,
@@ -303,6 +303,7 @@ window.com.ximdex = Object.extend(window.com.ximdex, {
 
 		clearResults: function() {
 			if (Object.isObject(this.rs)) this.rs.clear();
+			$('div.xim-search-dialog  div.xim-paginator-container').html("");
 		},
 
 		showErrors: function(errors) {

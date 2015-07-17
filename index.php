@@ -29,6 +29,13 @@ include_once 'bootstrap/start.php';
 
 
 
+//require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
+//
+////General class
+//if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
+//	include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
+
+
 require_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/fsutils/DiskUtils.class.php');
 
 ModulesManager::file('/inc/utils.php');
@@ -140,4 +147,3 @@ if (!InstallController::isInstalled()) {
     $frontController = new FrontController();
     $frontController->dispatch();
 }
-

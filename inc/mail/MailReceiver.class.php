@@ -286,14 +286,6 @@ class MailReceiver
     }
 
     /**
-     * @return boolean
-     */
-    private function getValidateCert()
-    {
-        return $this->validateCert;
-    }
-
-    /**
      * @return string
      */
     private function getPassword()

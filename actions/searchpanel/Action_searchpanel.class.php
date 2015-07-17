@@ -89,7 +89,8 @@ class Action_searchpanel extends ActionAbstract {
 				'target' => 'versionnumber'
 			)
 		);
-		$this->render(array('fields' => json_encode($fields)), 'results', 'default-3.0.tpl');
+        $fieldsJSON = json_encode($fields,JSON_UNESCAPED_UNICODE);
+		$this->render(array('fields' => $fieldsJSON), 'results', 'default-3.0.tpl');
 	}
 
 	/**

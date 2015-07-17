@@ -51,7 +51,7 @@ CREATE TABLE `Actions` (
   PRIMARY KEY  (`IdAction`),
   UNIQUE KEY `IdAction` (`IdAction`),
   KEY `IdAction_2` (`IdAction`,`IdNodeType`)
-) ENGINE=MYISAM COMMENT='Commands which can be executed in a node';
+) ENGINE=MyISAM COMMENT='Commands which can be executed in a node';
 
 
 --
@@ -134,6 +134,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6097,5034,'Modify language','modifylanguage','modify_language.png','Modify data of a language',60,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6098,5032,'Publish','workflow_forward','change_next_state.png','Move to the next state',72,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6099,5032,'Move to previous state','workflow_backward','change_last_state.png','Move to the previous state',-10,NULL,0,'');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6100,5032,'Publish advance','workflow_forward_advance','change_next_state.png','Advance publish',73,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6101,5011,'Change users','modifygroupusers','modify_users.png','Modify list of users that integrate this group',70,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6107,5033,'Delete channel','deletenode','delete_channel.png','Delete a channel if it has not associated documents',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6122,5013,'Associated groups','modifygroupsnode','groups_project.png','Manage associations of groups with this node',50,NULL,0,'');
@@ -193,7 +194,7 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6183,5056,'Move node','movenode','move_node.png','Move a node',90,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6184,5015,'Associate a ximlet with a section','addximlet','asociate_ximlet_folder.png','Associate a ximlet with a section',80,NULL,1,'');
 
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6206, 5083, 'Add new metadata file', 'createxmlcontainer', 'add_xml.png', 'Create a new metadata document', 10, NULL, 0, '', 0); 
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6206, 5083, 'Add new metadata file', 'createxmlcontainer', 'add_xml.png', 'Create a new metadata document', 10, NULL, 0, '', 0);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6207, 5084, 'Delete metadata document', 'deletenode', 'delete_xml.png', 'Delete metadata document in all its languages', 80, NULL, 1, '', 0);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6208, 5084, 'Change name', 'renamenode', 'change_name_xml.png', 'Change the metadatas name and all its language versions', 70, NULL, 0, '', 0);
 INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)  VALUES (6209, 5085, 'Edit metadata in text mode', 'edittext', 'edit_file_xml_txt.png', 'Edit metadata content in text plain mode', 3, NULL, 0, '', 0);
@@ -333,9 +334,9 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7317, 5082, 'Modify properties', 'manageproperties', 'xix.png', 'Modify global properties', -10, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7318, 5078, 'Delete RNG schema', 'deletenode', 'delete_template_view.png', 'Delete a RNG schema', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7319, 5078, 'Edit RNG schema', 'edittext', 'edit_template_view.png', 'Edit a RNG schema', 2, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7320, 0, 'Charts', 'charts', 'xix.png', 'Graphic representation', 1, NULL, 0, NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`) VALUES (7321, 5078, 'Modify properties', 'renamenode', 'modify_template_view', 'Modify properties of a RNG schema', '20', NULL , '0', NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7229, 5048, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7230, 5049, 'Check links', 'linkreport', 'xix.png', 'Check broken links', -20, NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`) VALUES (7231, 5050, 'Check links', 'linkreport', 'xix.png', 'Check broken links', '20', NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8101, 5016, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 25, NULL, 1, '');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8102, 5017, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 25, NULL, 1, '');
@@ -367,8 +368,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8127,5053,'Add an empty RNG schema','newemptynode','add_file_common.png','Create a new empty file',15,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8128,5020,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',5,NULL,0,'',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8129,5021,'Add empty file','newemptynode','add_file_common.png','Create a new empty file',5,NULL,0,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`) VALUES(8130, 5016, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll', 0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (8131, 5017, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`) VALUES(6147, 5016, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll', 0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`,`IsBulk`)  VALUES (6149, 5017, 'Image viewer', 'filepreview', 'view_image.png', 'Preview the images', 5, NULL, 0, 'method=showAll',0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)  VALUES (8132, 5031, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 99, NULL, 0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)  VALUES (8133, 5040, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 99, NULL, 0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)  VALUES (8134, 5039, 'Edit metadata', 'managemetadata', 'xix.png', 'Edit the metadata info', 99, NULL, 0);
@@ -383,10 +384,10 @@ UNLOCK TABLES;
 -- No actions for nodes
 DROP TABLE IF EXISTS `NoActionsInNode`;
 CREATE TABLE `NoActionsInNode` (
-`IdNode` INT NOT NULL ,
-`IdAction` INT NOT NULL COMMENT 'Action dont allowed for IdNode',
-PRIMARY KEY ( `IdNode` , `IdAction` )
-) ENGINE = MYISAM COMMENT = 'List Actions dont allowed in IdNode';
+  `IdNode` INT NOT NULL ,
+  `IdAction` INT NOT NULL COMMENT 'Actions not allowed for a Node',
+  PRIMARY KEY ( `IdNode` , `IdAction` )
+) ENGINE = MyISAM COMMENT = 'List of Actions not allowed in a Node';
 
 -- Delete group "General"
 INSERT INTO `NoActionsInNode` ( `IdNode` , `IdAction` ) VALUES ( '101', '6108' );
@@ -403,17 +404,17 @@ INSERT INTO `NoActionsInNode` (`IdNode` ,`IdAction`)VALUES ('201', '6109');
 
 DROP TABLE IF EXISTS `Channels`;
 CREATE TABLE `Channels` (
-	`IdChannel` int(12) unsigned NOT NULL,
-	`Name` varchar(255) NOT NULL default '0',
-	`Description` varchar(255) default '0',
-	`DefaultExtension` varchar(255) default NULL,
-	`Format` varchar(255) default NULL,
-	`Filter` varchar(255) default NULL,
-	`RenderMode` varchar(255) default NULL,
+  `IdChannel` int(12) unsigned NOT NULL,
+  `Name` varchar(255) NOT NULL default '0',
+  `Description` varchar(255) default '0',
+  `DefaultExtension` varchar(255) default NULL,
+  `Format` varchar(255) default NULL,
+  `Filter` varchar(255) default NULL,
+  `RenderMode` varchar(255) default NULL,
   `OutputType` varchar(100) default NULL,
   `Default_Channel` boolean NOT NULL default FALSE,
-	PRIMARY KEY  (`IdChannel`)
-) ENGINE=MYISAM COMMENT='Distribution channels';
+  PRIMARY KEY  (`IdChannel`)
+) ENGINE=MyISAM COMMENT='Available channels used to transform content';
 
 --
 -- Dumping data for table `Channels`
@@ -440,7 +441,7 @@ CREATE TABLE `Config` (
   UNIQUE KEY `IdConfig` (`IdConfig`,`ConfigKey`),
   UNIQUE KEY `ConfigKey` (`ConfigKey`),
   KEY `IdConfig_2` (`IdConfig`)
-) ENGINE=MYISAM COMMENT='Table with configuration parameters of Ximdex CMS';
+) ENGINE=MyISAM COMMENT='Table with configuration parameters of Ximdex CMS';
 
 --
 -- Dumping data for table `Config`
@@ -480,14 +481,14 @@ INSERT INTO `Config` VALUES (29, 'dexCache', NULL);
 INSERT INTO `Config` VALUES (30, 'PublishOnDisabledServers', NULL);
 INSERT INTO `Config` VALUES (31, 'defaultWebdavPVD', NULL);
 INSERT INTO `Config` VALUES (32, 'locale', 'en_US');
-INSERT INTO `Config` VALUES (33, 'displayEncoding', 'ISO-8859-1');
+INSERT INTO `Config` VALUES (33, 'displayEncoding', 'UTF-8');
 INSERT INTO `Config` VALUES (34, 'dbEncoding', 'ISO-8859-1');
 INSERT INTO `Config` VALUES (35, 'dataEncoding', 'UTF-8');
 INSERT INTO `Config` VALUES (36, 'workingEncoding', 'UTF-8');
 INSERT INTO `Config` VALUES (37, 'ActionsStats', 0);
 INSERT INTO `Config` VALUES (38, 'IdDefaultWorkflow', 403);
-INSERT INTO `Config` VALUES (39, 'DefaultInitialStatus', 'Edición');
-INSERT INTO `Config` VALUES (40, 'DefaultFinalStatus', 'Publicación');
+INSERT INTO `Config` VALUES (39, 'DefaultInitialStatus', 'Edici�n');
+INSERT INTO `Config` VALUES (40, 'DefaultFinalStatus', 'Publicaci�n');
 INSERT INTO `Config` VALUES (41, 'PullMode', 0);
 INSERT INTO `Config` VALUES (42, 'EnricherKey', '');
 INSERT INTO `Config` VALUES (43, 'AddVersionUsesPool', '0');
@@ -517,24 +518,49 @@ CREATE TABLE `Dependencies` (
   `IdDep` int(12) unsigned NOT NULL auto_increment,
   `IdNodeMaster` int(12) unsigned NOT NULL default '0',
   `IdNodeDependent` int(12) unsigned NOT NULL default '0',
-  `DepType` varchar(10) NOT NULL default '0',
+  `DepType` int(6) NOT NULL default '0',
   `version` int(10) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`IdDep`),
+  PRIMARY KEY (`IdDep`),
   KEY `IdNodeMaster` (`IdNodeMaster`),
   KEY `IdNodeDependent` (`IdNodeDependent`),
   KEY `DepType` (`DepType`)
-) ENGINE=MYISAM;
+) ENGINE=MyISAM COMMENT='All the dependencies by type on Ximdex CMS';
 
 --
 -- Dumping data for table `Dependencies`
 --
-
-
 /*!40000 ALTER TABLE `Dependencies` DISABLE KEYS */;
 LOCK TABLES `Dependencies` WRITE;
 UNLOCK TABLES;
-/*!40000 ALTER TABLE `Dependencies` ENABLE KEYS */;
 
+
+--
+-- Table structure for table `DependenceTypes`
+--
+
+DROP TABLE IF EXISTS `DependenceTypes`;
+CREATE TABLE `DependenceTypes` (
+  `IdDepType` int(6) unsigned NOT NULL auto_increment,
+  `Type` varchar(31)  NOT NULL default '0',
+  PRIMARY KEY (`IdDepType`)
+) ENGINE=MyISAM;
+
+
+--
+-- Dumping data for table `DependenceTypes`
+--
+LOCK TABLES `DependenceTypes` WRITE;
+
+INSERT INTO `DependenceTypes` VALUES (NULL, 'asset');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'channel');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'language');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'schema');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'symlink');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'template');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'ximlet');
+INSERT INTO `DependenceTypes` VALUES (NULL, 'ximlink');
+
+UNLOCK TABLES;
 --
 -- Table structure for table `FastTraverse`
 --
@@ -548,7 +574,7 @@ CREATE TABLE `FastTraverse` (
   UNIQUE KEY `IdNode` (`IdNode`,`IdChild`),
   KEY `IdN` (`IdNode`),
   KEY `IdC` (`IdChild`)
-) ENGINE=MYISAM COMMENT='Table of fast scan of node hierarchies';
+) ENGINE=MyISAM COMMENT='Fast scan of node hierarchies';
 
 --
 -- Dumping data for table `FastTraverse`
@@ -570,7 +596,7 @@ CREATE TABLE `Groups` (
   `Name` varchar(255) NOT NULL default '0',
   PRIMARY KEY  (`IdGroup`),
   UNIQUE KEY `Name` (`Name`)
-) ENGINE=MYISAM COMMENT='Table of user groups of system';
+) ENGINE=MyISAM COMMENT='Groups defined on the system';
 
 --
 -- Dumping data for table `Groups`
@@ -597,7 +623,7 @@ CREATE TABLE `IsoCodes` (
   UNIQUE KEY `name` (`Name`),
   UNIQUE KEY `iso2` (`Iso2`),
   UNIQUE KEY `iso3` (`Iso3`)
-) ENGINE=MYISAM COMMENT='Table of suggestions of ISO codes of languages';
+) ENGINE=MyISAM COMMENT='ISO codes supported for languages';
 
 --
 -- Dumping data for table `IsoCodes`
@@ -631,8 +657,7 @@ CREATE TABLE `Locales` (
   `Name` varchar(20) NOT NULL COMMENT 'Lang name',
   `Enabled` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Enabled(1)|Not Enabled(0)',
   PRIMARY KEY (`ID`)
-) ENGINE=MYISAM  COMMENT='Ximdex Locales';
-
+) ENGINE=MyISAM  COMMENT='Ximdex CMS default languages';
 
 LOCK TABLES `Locales` WRITE;
 INSERT INTO `Locales` (`ID`, `Code`, `Name`, `Enabled`) VALUES(1, 'es_ES', 'Spanish', 1);
@@ -655,7 +680,7 @@ CREATE TABLE `Languages` (
   UNIQUE KEY `Name` (`Name`),
   UNIQUE KEY `IdLanguage` (`IdLanguage`),
   KEY `IdLanguage_2` (`IdLanguage`)
-) ENGINE=MYISAM COMMENT='Table of Ximdex languages';
+) ENGINE=MyISAM COMMENT='Ximdex CMS defined languages';
 
 --
 -- Dumping data for table `Languages`
@@ -683,7 +708,7 @@ CREATE TABLE `Links` (
   PRIMARY KEY  (`IdLink`),
   UNIQUE KEY `IdLink` (`IdLink`),
   KEY `IdLink_2` (`IdLink`)
-) ENGINE=MYISAM COMMENT='Table of link manager of Ximdex';
+) ENGINE=MyISAM COMMENT='Table of link manager of Ximdex';
 
 --
 -- Dumping data for table `Links`
@@ -700,7 +725,7 @@ CREATE TABLE `RelLinkDescriptions` (
   `Description` varchar(255),
   PRIMARY KEY  (`IdRel`),
   UNIQUE KEY `Description` (`IdLink`, `Description`)
-) ENGINE=MYISAM COMMENT='Table of descriptions of Ximdex links';
+) ENGINE=MyISAM COMMENT='Table of descriptions of Ximdex links';
 
 --
 -- Dumping data for table `RelLinkDescriptions`
@@ -728,7 +753,7 @@ CREATE TABLE `Messages` (
   `IsRead` int(1) unsigned NOT NULL default '0',
   `FechaHora` datetime NOT NULL default '0000-00-00 00:00:00',
   PRIMARY KEY  (`IdMessage`)
-) ENGINE=MYISAM COMMENT='Table of messages. One table for all users and folders. ';
+) ENGINE=MyISAM COMMENT='Messages sent by Ximdex CMS. Deprecated?';
 
 --
 -- Table structure for table `NodeAllowedContents`
@@ -736,16 +761,16 @@ CREATE TABLE `Messages` (
 
 DROP TABLE IF EXISTS `Namespaces`;
 CREATE TABLE `Namespaces` (
-	`idNamespace` int(12) unsigned NOT NULL auto_increment,
-	`service` varchar(255) NOT NULL,
-	`type` varchar(255) NOT NULL,
-	`nemo` varchar(255) NOT NULL,
-	`uri` varchar(255) NOT NULL,
-	`recursive` int(8) NOT NULL default '0',
-	`category` varchar(255) NOT NULL,
-	`isSemantic` tinyint(1) unsigned NOT NULL default '0',
+  `idNamespace` int(12) unsigned NOT NULL auto_increment,
+  `service` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `nemo` varchar(255) NOT NULL,
+  `uri` varchar(255) NOT NULL,
+  `recursive` int(8) NOT NULL default '0',
+  `category` varchar(255) NOT NULL,
+  `isSemantic` tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (`idNamespace`)
-) ENGINE=MYISAM COMMENT='Namespaces for semantic tagging.';
+) ENGINE=MyISAM COMMENT='Namespaces for semantic tagging.';
 
 INSERT INTO Namespaces VALUES (1,'Ximdex','Custom','custom','http://<ximdex_local_url>/',0,'generic',0);
 
@@ -758,7 +783,7 @@ CREATE TABLE `NodeAllowedContents` (
   `Amount` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdNodeAllowedContent`),
   UNIQUE KEY `UniqeAmmount` (`IdNodeType`,`NodeType`)
-) ENGINE=MYISAM COMMENT='Allowed node types into each type of node';
+) ENGINE=MyISAM COMMENT='Allowed node types into each type of node';
 
 --
 -- Dumping data for table `NodeAllowedContents`
@@ -868,7 +893,7 @@ CREATE TABLE `NodeDefaultContents` (
   `Params` varchar(255) default NULL,
   PRIMARY KEY  (`IdNodeDefaultContent`),
   UNIQUE KEY `UniqueName` (`Name`,`IdNodeType`)
-) ENGINE=MYISAM COMMENT='Default content of each node';
+) ENGINE=MyISAM COMMENT='Default content of each node';
 
 --
 -- Dumping data for table `NodeDefaultContents`
@@ -908,7 +933,7 @@ CREATE TABLE `NodeDependencies` (
   `IdResource` int(12) unsigned NOT NULL default '0',
   `IdChannel` int(12) unsigned default NULL,
   PRIMARY KEY  (`IdNode`,`IdResource`)
-) ENGINE=MYISAM COMMENT='Table of node dependencies of Ximdex';
+) ENGINE=MyISAM COMMENT='Dependencies between nodes in Ximdex CMS';
 
 --
 -- Dumping data for table `NodeDependencies`
@@ -926,12 +951,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `NodeEdition`;
 CREATE TABLE `NodeEdition` (
-    `Id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `IdNode` int(11) unsigned NOT NULL,
-    `IdUser` int(11) unsigned NOT NULL,
-    `StartTime` int(11) unsigned DEFAULT NULL,
-     PRIMARY KEY (`Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Table for XML edition information';
+  `Id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `IdNode` int(11) unsigned NOT NULL,
+  `IdUser` int(11) unsigned NOT NULL,
+  `StartTime` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='XML edition information. For concurrency issues';
 
 --
 -- Table structure for table `NodeNameTranslations`
@@ -945,7 +970,7 @@ CREATE TABLE `NodeNameTranslations` (
   `Name` varchar(255) default '0',
   PRIMARY KEY  (`IdRel`),
   UNIQUE KEY `NodeLanguage` (`IdNode`,`IdLanguage`)
-) ENGINE=MYISAM COMMENT='Node names in other language';
+) ENGINE=MyISAM COMMENT='Alias for nodes in other languages';
 
 --
 -- Dumping data for table `NodeNameTranslations`
@@ -956,30 +981,6 @@ CREATE TABLE `NodeNameTranslations` (
 LOCK TABLES `NodeNameTranslations` WRITE;
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `NodeNameTranslations` ENABLE KEYS */;
-
---
--- Table structure for table `NodeRelations`
---
-
-DROP TABLE IF EXISTS `NodeRelations`;
-CREATE TABLE `NodeRelations` (
-  `IdRel` int(12) unsigned NOT NULL auto_increment,
-  `IdNodeMaster` int(12) unsigned NOT NULL default '0',
-  `IdNodeDependent` int(12) unsigned NOT NULL default '0',
-  `IdNodeRelation` int(12) unsigned NOT NULL default '0',
-  `version` tinyint(3) unsigned default '0',
-  PRIMARY KEY  (`IdRel`)
-) ENGINE=MYISAM;
-
---
--- Dumping data for table `NodeRelations`
---
-
-
-/*!40000 ALTER TABLE `NodeRelations` DISABLE KEYS */;
-LOCK TABLES `NodeRelations` WRITE;
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `NodeRelations` ENABLE KEYS */;
 
 --
 -- Table structure for table `NodeTypes`
@@ -1003,14 +1004,14 @@ CREATE TABLE `NodeTypes` (
   `IsPublicable` int(1) unsigned default NULL,
   `IsHidden` int(1) unsigned default 0,
   `CanDenyDeletion` int(1) unsigned default NULL,
-  `isGenerator` TINYINT( 1 ) NULL,
-  `IsEnriching` TINYINT( 1 ) NULL,
+  `isGenerator` TINYINT(1) default 0,
+  `IsEnriching` TINYINT(1) default 0,
   `System` int(1) unsigned default NULL,
   `Module` varchar(255) default NULL,
   PRIMARY KEY  (`IdNodeType`),
   UNIQUE KEY `IdType` (`Name`),
   KEY `IdType_2` (`IdNodeType`)
-) ENGINE=MYISAM COMMENT='Node types of system';
+) ENGINE=MyISAM COMMENT='Nodetypes used on Ximdex CMS';
 
 --
 -- Dumping data for table `NodeTypes`
@@ -1019,74 +1020,74 @@ CREATE TABLE `NodeTypes` (
 
 /*!40000 ALTER TABLE `NodeTypes` DISABLE KEYS */;
 LOCK TABLES `NodeTypes` WRITE;
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5001,'Root','root','root.png','Root node of Ximdex',1,0,0,0,0,1,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5002,'ControlCenter','root','controlcenter.png','Ximdex control center',0,0,1,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5003,'UserManager','root','user.png','User manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5004,'GroupManager','root','group.png','Group manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5005,'RoleManager','root','rol.png','Roles manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5006,'NodeTypeManager','root','nodetype.png','Type of node manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5007,'NodeType','nodetypenode','nodetype.png','Definition of node type of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5008,'Action','actionnode','action.png','Action run on node type of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5009,'User','usernode','user.png','Ximdex user',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5010,'Role','rolenode','rol.png','Role on user group of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5011,'Group','groupnode','group.png','User group of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5013,'Project','foldernode','nodetype.png','Ximdex project',1,1,1,0,0,1,0,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5012,'Projects','projects','projects.png','Root of Ximdex projects',1,0,1,0,1,1,0,0,0,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5032,'XmlDocument','xmldocumentnode','doc.png','XML document',1,1,0,0,0,0,0,1,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5014,'Server','servernode','server.png','Content server of Ximdex',1,1,1,1,1,1,0,0,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5015,'Section','sectionnode','folder.png','Ximdex section',1,1,1,1,1,0,0,0,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5016,'ImagesRootFolder','foldernode','folder_images.png','Root of image folder',1,1,0,0,1,0,0,0,1,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5017,'ImagesFolder','foldernode','folder_images.png','Image folder',1,1,0,0,1,0,0,0,1,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5018,'XmlRootFolder','foldernode','folder_xml.png','Root of XML folder',1,1,0,0,1,1,0,0,0,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5020,'ImportRootFolder','foldernode','folder_import.png','Root of import folder',1,1,0,0,1,0,0,0,0,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5021,'ImportFolder','foldernode','folder_import.png','Import folder',1,1,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5022,'CommonRootFolder','foldernode','folder_common.png','Root of common folder',1,1,0,0,1,0,0,0,1,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5023,'CommonFolder','foldernode','folder_common.png','Common folder',1,1,0,0,1,0,0,0,1,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5024,'CssRootFolder','foldernode','folder_css.png','Root of CSS folder',1,1,0,0,1,0,0,0,1,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5025,'CssFolder','foldernode','folder_css.png','CSS folder',1,1,0,0,1,0,0,0,1,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5026,'TemplatesRootFolder','foldernode','folder_templates.png','Root of template folder',1,1,0,0,1,0,0,0,0,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5031,'XmlContainer','Xmlcontainernode','contenedordoc.png','Container of XML docs',1,0,0,0,1,1,0,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5029,'ChannelManager','root','channel.png','Channel manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5030,'LanguageManager','root','language.png','Language manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5033,'Channel','channelnode','channel.png','Channel',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5034,'Language','languagenode','language.png','Language',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5035,'WorkflowManager','root','workflow.png','Workflow manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5036,'WorkflowState','statenode','workflow.png','Workflow status',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5037,'PermissionManager','root','permissions.png','Permits manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5038,'Permission','root','permission.png','Permit',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5039,'TextFile','commonnode','text_file.png','Text file',1,1,0,0,0,0,1,0,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5040,'ImageFile','imagenode','image.png','Image file',1,1,0,0,0,0,1,0,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5041,'BinaryFile','commonnode','binary_file.png','Binary file',1,1,0,0,0,0,1,0,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5043,'ErrorFolder','foldernode','foldergray.png','Output error folder',1,1,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5044,'ConfigFolder','foldernode','modulesconfig.png','Container of settings',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5050,'LinkManager','foldernode','folder_links.png','Root of link manager',0,0,0,0,1,0,0,0,0,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5048,'LinkFolder','foldernode','folder_links.png','Category of link manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5028,'CssFile','filenode','css_document.png','Style sheet',1,1,0,0,0,0,1,0,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5049,'Link','linknode','link.png','Ximdex link',0,0,0,0,0,0,0,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5053,'TemplateViewFolder','foldernode','folder_template_view.png','Folder of view template',1,1,0,0,1,0,0,0,0,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5054,'XimletRootFolder','foldernode','folder_ximlet.png','Root folder of ximlets in sections',0,0,0,0,1,1,0,0,0,1,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5055,'XimletFolder','foldernode','folder_ximlet.png','Ximlets folder',0,0,0,0,1,1,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5056,'XimletContainer','Xmlcontainernode','contenedordoc.png','Ximlet container',0,0,0,0,1,1,0,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5057,'Ximlet','XimletNode','doc.png','ximlet',0,0,0,0,0,0,0,1,1,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5058,'PropertiesManager','root','folder_system_properties.png','Property manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5059,'Property','propertynode','property.png','Property',0,0,0,0,0,0,0,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5060,'ProjectPropFolder','foldernode','foldergray.png','Folder of project properties',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5061,'SystemProperty','propertynode','property.png','System properties',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5063,'ProjectDicFolder','foldernode','folder.png','Folder of project dictionary',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5064,'Dictionary','dicnode','foldergray.png','Dictionary',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5065,'DicValue','dicvaluenode','foldergray.png','Value of a dictionary',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5066,'DicFolder','foldernode','foldergray.png','Folder of dictionary values',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5068,'PropSet','foldernode','foldergray.png','Folder of property set',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5076,'NodeHt','filenode','nodeht_file.png','Html node',1,1,0,0,0,0,1,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5077,'XslTemplate','xsltnode','xml_document.png','Template of XSLT transformation',1,1,0,0,0,0,1,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5078,'RngVisualTemplate','rngvisualtemplatenode','xml_document.png','RNG schema for XML documents',1,1,0,0,0,0,1,0,0,0,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5079,'Workflow','workflow_process','workflow.png','Workflow for documents',0,0,0,0,0,0,0,0,0,0,1,'');
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`, `IsHidden`) VALUES (5080,'ModulesFolder','foldernode','modulesconfig.png','Container of module settings',0,0,0,0,1,0,0,0,0,0,1,NULL,1);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5081,'ModuleInfoContainer','foldernode','modulesconfig.png','Container of a module settings',0,0,0,0,0,0,0,0,0,0,1,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5082, 'InheritableProperties', 'foldernode', 'modulesconfig.png', 'Heritable properties', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`, `IsHidden`) VALUES (5083,'MetaDataSection','foldernode','folder_xml_meta.png','Metadata Section',1,1,0,0,1,0,0,0,1,NULL,1,NULL,1);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5084,'MetaDataContainer','Xmlcontainernode','metacontainer.png','Metadata Document',1,0,0,0,1,1,0,0,0,NULL,0,NULL);
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5085,'MetaDataDoc','xmldocumentnode','doc.png','Metadata Language Document',1,1,0,0,0,0,0,1,1,NULL,0,NULL);;
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5001,'Root','root','root','Root node of Ximdex',1,0,0,0,0,1,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5002,'ControlCenter','root','controlcenter','Ximdex control center',0,0,1,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5003,'UserManager','root','user','User manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5004,'GroupManager','root','group','Group manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5005,'RoleManager','root','rol','Roles manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5006,'NodeTypeManager','root','nodetype','Type of node manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5007,'NodeType','nodetypenode','nodetype','Definition of node type of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5008,'Action','actionnode','action','Action run on node type of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5009,'User','usernode','user','Ximdex user',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5010,'Role','rolenode','rol','Role on user group of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5011,'Group','groupnode','group','User group of Ximdex',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5013,'Project','foldernode','nodetype','Ximdex project',1,1,1,0,0,1,0,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5012,'Projects','projects','projects','Root of Ximdex projects',1,0,1,0,1,1,0,0,0,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5032,'XmlDocument','xmldocumentnode','doc','XML document',1,1,0,0,0,0,0,1,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5014,'Server','servernode','server','Content server of Ximdex',1,1,1,1,1,1,0,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5015,'Section','sectionnode','folder','Ximdex section',1,1,1,1,1,0,0,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5016,'ImagesRootFolder','foldernode','folder_images','Root of image folder',1,1,0,0,1,0,0,0,1,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5017,'ImagesFolder','foldernode','folder_images','Image folder',1,1,0,0,1,0,0,0,1,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5018,'XmlRootFolder','foldernode','folder_xml','Root of XML folder',1,1,0,0,1,1,0,0,0,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5020,'ImportRootFolder','foldernode','folder_import','Root of import folder',1,1,0,0,1,0,0,0,0,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5021,'ImportFolder','foldernode','folder_import','Import folder',1,1,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5022,'CommonRootFolder','foldernode','folder_common','Root of common folder',1,1,0,0,1,0,0,0,1,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5023,'CommonFolder','foldernode','folder_common','Common folder',1,1,0,0,1,0,0,0,1,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5024,'CssRootFolder','foldernode','folder_css','Root of CSS folder',1,1,0,0,1,0,0,0,1,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5025,'CssFolder','foldernode','folder_css','CSS folder',1,1,0,0,1,0,0,0,1,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5026,'TemplatesRootFolder','foldernode','folder_templates','Root of template folder',1,1,0,0,1,0,0,0,0,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5031,'XmlContainer','Xmlcontainernode','contenedordoc','Container of XML docs',1,0,0,0,1,1,0,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5029,'ChannelManager','root','channel','Channel manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5030,'LanguageManager','root','language','Language manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5033,'Channel','channelnode','channel','Channel',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5034,'Language','languagenode','language','Language',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5035,'WorkflowManager','root','workflow','Workflow manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5036,'WorkflowState','statenode','workflow','Workflow status',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5037,'PermissionManager','root','permissions','Permits manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5038,'Permission','root','permission','Permit',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5039,'TextFile','commonnode','text_file','Text file',1,1,0,0,0,0,1,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5040,'ImageFile','imagenode','image','Image file',1,1,0,0,0,0,1,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5041,'BinaryFile','commonnode','binary_file','Binary file',1,1,0,0,0,0,1,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5043,'ErrorFolder','foldernode','foldergray','Output error folder',1,1,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5044,'ConfigFolder','foldernode','modulesconfig','Container of settings',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5050,'LinkManager','foldernode','folder_links','Root of link manager',0,0,0,0,1,0,0,0,0,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5048,'LinkFolder','foldernode','folder_links','Category of link manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5028,'CssFile','filenode','css_document','Style sheet',1,1,0,0,0,0,1,0,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5049,'Link','linknode','link','Ximdex link',0,0,0,0,0,0,0,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5053,'TemplateViewFolder','foldernode','folder_template_view','Folder of view template',1,1,0,0,1,0,0,0,0,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5054,'XimletRootFolder','foldernode','folder_ximlet','Root folder of ximlets in sections',0,0,0,0,1,1,0,0,0,1,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5055,'XimletFolder','foldernode','folder_ximlet','Ximlets folder',0,0,0,0,1,1,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5056,'XimletContainer','Xmlcontainernode','contenedordoc','Ximlet container',0,0,0,0,1,1,0,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5057,'Ximlet','XimletNode','doc','ximlet',0,0,0,0,0,0,0,1,1,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5058,'PropertiesManager','root','folder_system_properties','Property manager',0,0,0,0,1,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5059,'Property','propertynode','property','Property',0,0,0,0,0,0,0,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5060,'ProjectPropFolder','foldernode','foldergray','Folder of project properties',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5061,'SystemProperty','propertynode','property','System properties',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5063,'ProjectDicFolder','foldernode','folder','Folder of project dictionary',NULL,NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5064,'Dictionary','dicnode','foldergray','Dictionary',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5065,'DicValue','dicvaluenode','foldergray','Value of a dictionary',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5066,'DicFolder','foldernode','foldergray','Folder of dictionary values',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5068,'PropSet','foldernode','foldergray','Folder of property set',NULL,NULL,1,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5076,'NodeHt','filenode','nodeht_file','Html node',1,1,0,0,0,0,1,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5077,'XslTemplate','xsltnode','xml_document','Template of XSLT transformation',1,1,0,0,0,0,1,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5078,'RngVisualTemplate','rngvisualtemplatenode','xml_document','RNG schema for XML documents',1,1,0,0,0,0,1,0,0,0,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5079,'Workflow','workflow_process','workflow','Workflow for documents',0,0,0,0,0,0,0,0,0,0,1,'');
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`, `IsHidden`) VALUES (5080,'ModulesFolder','foldernode','modulesconfig','Container of module settings',0,0,0,0,1,0,0,0,0,0,1,NULL,1);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5081,'ModuleInfoContainer','foldernode','modulesconfig','Container of a module settings',0,0,0,0,0,0,0,0,0,0,1,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5082, 'InheritableProperties', 'foldernode', 'modulesconfig', 'Heritable properties', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`, `IsHidden`) VALUES (5083,'MetaDataSection','foldernode','folder_xml_meta','Metadata Section',1,1,0,0,1,0,0,0,1,NULL,1,NULL,1);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5084,'MetaDataContainer','Xmlcontainernode','metacontainer','Metadata Document',1,0,0,0,1,1,0,0,0,NULL,0,NULL);
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES (5085,'MetaDataDoc','xmldocumentnode','doc','Metadata Language Document',1,1,0,0,0,0,0,1,1,NULL,0,NULL);;
 
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `NodeTypes` ENABLE KEYS */;
@@ -1111,7 +1112,7 @@ CREATE TABLE `Nodes` (
   PRIMARY KEY  (`IdNode`),
   UNIQUE KEY `UniqueName` (`Name`,`IdParent`),
   KEY `IdNode_2` (`IdNode`,`IdParent`)
-) ENGINE=MYISAM COMMENT='Table of system nodes';
+) ENGINE=MyISAM COMMENT='Table of system nodes';
 
 --
 -- Dumping data for table `Nodes`
@@ -1281,7 +1282,7 @@ INSERT INTO `Nodes` VALUES (6096,5011,5008,'Group propertis',NULL,NULL,NULL,NULL
 INSERT INTO `Nodes` VALUES (6097,5034,5008,'Modify language',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6098,5032,5008,'Move to next state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6099,5032,5008,'Move to previous state',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
-INSERT INTO `Nodes` VALUES (6100,5032,5008,'Version repository',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
+INSERT INTO `Nodes` VALUES (6100,5032,5008,'Publish advance',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6101,5011,5008,'Change users',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6102,5034,5008,'Delete',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
 INSERT INTO `Nodes` VALUES (6103,5028,5008,'Change name',NULL,NULL,NULL,NULL,NULL,NULL,NULL,DEFAULT);
@@ -1504,7 +1505,7 @@ CREATE TABLE `Permissions` (
   `Description` varchar(255) default NULL,
   PRIMARY KEY  (`IdPermission`),
   UNIQUE KEY `IdName` (`Name`)
-) ENGINE=MYISAM COMMENT='Table of system permits';
+) ENGINE=MyISAM COMMENT='Table of system permits';
 
 --
 -- Dumping data for table `Permissions`
@@ -1539,7 +1540,7 @@ CREATE TABLE `Protocols` (
   PRIMARY KEY  (`IdProtocol`),
   UNIQUE KEY `IdProtocol` (`IdProtocol`),
   KEY `IdProtocol_2` (`IdProtocol`)
-) ENGINE=MYISAM COMMENT='Table of sync protocols of Ximdex';
+) ENGINE=MyISAM COMMENT='Protocols to synchronize supported by Ximdex CMS';
 
 --
 -- Dumping data for table `Protocols`
@@ -1569,7 +1570,7 @@ CREATE TABLE `RelGroupsNodes` (
   UNIQUE KEY `uniq` (`IdNode`,`IdGroup`),
   KEY `IdGroup` (`IdGroup`),
   KEY `IdNode` (`IdNode`)
-) ENGINE=MYISAM COMMENT='Association of user groups with nodes';
+) ENGINE=MyISAM COMMENT='Association of user groups with nodes';
 
 --
 -- Dumping data for table `RelGroupsNodes`
@@ -1582,19 +1583,6 @@ INSERT INTO `RelGroupsNodes` VALUES (1,101,2,NULL);
 INSERT INTO `RelGroupsNodes` VALUES (2,101,10000,NULL);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelGroupsNodes` ENABLE KEYS */;
-
-
---
--- Table structure for table `RelPvdRole`
---
-
-DROP TABLE IF EXISTS RelPvdRole;
-CREATE TABLE RelPvdRole (
-  IdRel int(12) unsigned NOT NULL auto_increment,
-  IdXimLetNode int(12) unsigned NOT NULL default '0',
-  IdSectionNode int(12) unsigned NOT NULL default '0',
-  PRIMARY KEY  (IdRel)
-) ENGINE=MYISAM;
 
 --
 -- Table structure for table `RelRolesActions`
@@ -1612,7 +1600,7 @@ CREATE TABLE `RelRolesActions` (
   KEY `IdRol` (`IdRol`),
   KEY `IdAction` (`IdAction`),
   KEY (`IdContext`)
-) ENGINE=MYISAM COMMENT='Assignment of default command of each role';
+) ENGINE=MyISAM COMMENT='Assignment of default command of each role';
 
 --
 -- Dumping data for table `RelRolesActions`
@@ -1704,7 +1692,6 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6114,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6080,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6180,0,1,3);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6147,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6113,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6112,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6111,0,1,3);
@@ -1769,163 +1756,163 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6087,7,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6051,8,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6051,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6121,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6082,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7301,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6102,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6097,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6107,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6095,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6047,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6048,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7311,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7213,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6176,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6063,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6064,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6045,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8111,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7211,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6367,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6345,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8110,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8110,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8104,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8104,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7210,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7210,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6366,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6366,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6349,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6349,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6041,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6041,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6032,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6032,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6023,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6023,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8109,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8109,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8103,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8103,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7209,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7209,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6365,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6365,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6348,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6348,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6022,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6022,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8114,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8114,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8106,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8106,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7208,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7208,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6355,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6355,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6347,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6347,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6174,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6174,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6040,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6040,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6031,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6031,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6021,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6021,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8113,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8113,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8105,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8105,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7207,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7207,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6354,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6354,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6346,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6346,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6020,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6020,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7206,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6364,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6351,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6173,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6039,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6030,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6019,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7205,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6363,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6236,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6121,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6082,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7301,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6102,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6097,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6107,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6095,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6047,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6048,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7311,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7213,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6176,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6063,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6064,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6045,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8111,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7211,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6367,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6345,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8110,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8110,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8104,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8104,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7210,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7210,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6366,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6366,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6349,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6349,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6041,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6041,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6032,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6032,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6023,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6023,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8109,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8109,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8103,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8103,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7209,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7209,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6365,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6365,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6348,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6348,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6022,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6022,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8114,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8114,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8106,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8106,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7208,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7208,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6355,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6355,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6347,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6347,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6174,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6174,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6040,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6040,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6031,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6031,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6021,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6021,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8113,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8113,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8105,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8105,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7207,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7207,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6354,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6354,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6346,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6346,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6020,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6020,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7206,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6364,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6351,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6173,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6039,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6030,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6019,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7205,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6363,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6236,0,1,3);
 -- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6350,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6018,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7310,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7204,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6352,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6124,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6044,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6043,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8108,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8108,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8102,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8102,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7201,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7201,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6361,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6361,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6344,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6344,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6172,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6172,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6037,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6037,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6028,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6028,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6016,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6016,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8107,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8107,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8101,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8101,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7202,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7202,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6360,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6360,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6343,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6343,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6015,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6015,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7309,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7309,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7225,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7225,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6383,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6383,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6205,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6205,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6204,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6204,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6184,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6184,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6171,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6171,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6074,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6074,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6036,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6036,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6025,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6025,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6014,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6014,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7308,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7308,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7203,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7203,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6384,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6384,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6202,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6202,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6170,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6170,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6018,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7310,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7204,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6352,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6124,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6044,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6043,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8108,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8108,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8102,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8102,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7201,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7201,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6361,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6361,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6344,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6344,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6172,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6172,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6037,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6037,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6028,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6028,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6016,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6016,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8107,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8107,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8101,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8101,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7202,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7202,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6360,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6360,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6343,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6343,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6015,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6015,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7309,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7309,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7225,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7225,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6383,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6383,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6205,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6205,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6204,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6204,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6184,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6184,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6171,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6171,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6074,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6074,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6036,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6036,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6025,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6025,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6014,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6014,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7308,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7308,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7203,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7203,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6384,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6384,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6202,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6202,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6170,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6170,7,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6125,8,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6125,7,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6123,8,1,3);
@@ -2016,18 +2003,18 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6051,7,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6094,7,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6126,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6127,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6148,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6050,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6052,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6130,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6131,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6144,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6049,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6128,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6129,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6145,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6370,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6127,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6148,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6050,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6052,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6130,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6131,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6144,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6049,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6128,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6129,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6145,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6370,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6112,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6147,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6115,0,1,3);
@@ -2051,207 +2038,207 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6227,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6228,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6229,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6231,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6098,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6098,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6099,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6100,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6135,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6135,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6143,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6385,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6384,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6204,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6205,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6383,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6360,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8101,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8101,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8107,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6361,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8102,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8102,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8108,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6352,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6363,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6364,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6354,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8105,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8105,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8113,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6355,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8106,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8106,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8114,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6365,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8103,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8103,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8109,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6366,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8104,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8104,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8110,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6367,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8111,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6051,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6126,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6127,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6148,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6050,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6052,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6130,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6131,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6144,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6049,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6128,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6129,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6145,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6370,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6112,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6147,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6115,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6149,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6356,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7231,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6357,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7229,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6104,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6132,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6133,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6146,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6374,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8112,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6375,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6376,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6150,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6156,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7016,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7236,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6228,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6231,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6012,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6026,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6034,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6122,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6600,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7307,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6011,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6065,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6065,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6098,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6098,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6099,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6099,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6100,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6100,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6134,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6134,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6135,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6135,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6136,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6136,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6143,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6143,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6385,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6385,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7312,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7312,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6013,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6013,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6027,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6027,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6035,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6035,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6123,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6123,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6125,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6125,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6170,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6170,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6202,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6202,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6384,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6384,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7203,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7203,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7308,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7308,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6014,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6014,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6025,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6025,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6036,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6036,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6074,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6074,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6171,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6171,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6184,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6184,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6204,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6204,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6205,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6205,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6383,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6383,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7225,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7225,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7309,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7309,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6015,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6015,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6343,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6343,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6360,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6360,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7202,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7202,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8101,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8101,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8107,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8107,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6016,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6016,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6028,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6028,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6037,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6037,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6172,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6172,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6344,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6344,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6361,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6361,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7201,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7201,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8102,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8102,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8108,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8108,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6044,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6124,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6352,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7204,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7310,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6018,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,6231,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6098,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6098,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6099,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6100,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6135,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6135,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6143,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6385,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6384,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6204,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6205,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6383,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6360,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8101,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8101,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8107,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6361,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8102,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8102,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8108,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6352,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6363,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6364,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6354,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8105,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8105,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8113,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6355,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8106,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8106,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8114,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6365,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8103,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8103,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8109,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6366,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8104,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8104,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8110,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6367,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8111,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6051,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6126,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6127,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6148,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6050,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6052,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6130,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6131,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6144,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6049,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6128,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6129,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6145,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6370,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6112,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6147,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6115,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6149,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6356,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7231,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6357,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7229,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6104,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6132,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6133,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6146,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6374,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8112,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6375,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6376,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6150,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6156,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7016,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7236,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6228,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,6231,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6012,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6026,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6034,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6122,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6600,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7307,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6011,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6065,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6065,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6098,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6098,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6099,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6099,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6100,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6100,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6134,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6134,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6135,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6135,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6136,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6136,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6143,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6143,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6385,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6385,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7312,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7312,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6013,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6013,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6027,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6027,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6035,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6035,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6123,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6123,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6125,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6125,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6170,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6170,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6202,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6202,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6384,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6384,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7203,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7203,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7308,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7308,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6014,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6014,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6025,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6025,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6036,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6036,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6074,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6074,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6171,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6171,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6184,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6184,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6204,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6204,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6205,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6205,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6383,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6383,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7225,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7225,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7309,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7309,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6015,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6015,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6343,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6343,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6360,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6360,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7202,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7202,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8101,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8101,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8107,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8107,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6016,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6016,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6028,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6028,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6037,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6037,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6172,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6172,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6344,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6344,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6361,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6361,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7201,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7201,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8102,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8102,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8108,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8108,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6044,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6124,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6352,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7204,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7310,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6018,0,1,3);
 -- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6350,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6236,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6363,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7205,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6019,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6030,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6039,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6173,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6351,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6364,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7206,0,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6020,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6020,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6346,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6346,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6354,7,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6354,8,1,3);
- INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7207,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6236,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6363,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7205,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6019,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6030,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6039,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6173,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6351,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6364,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7206,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6020,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6020,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6346,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6346,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6354,7,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,6354,8,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7207,7,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7207,8,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8105,7,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8105,8,1,3);
@@ -2496,8 +2483,8 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8120,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8121,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8121,0,1,3);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8130,0,1,3);
-INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,8131,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6149,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6147,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6007,8,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,6007,7,1,3);
 
@@ -2525,6 +2512,10 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,8137,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,8137,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,8137,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,7230,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,7230,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7230,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7230,0,1,3);
 
 
 UNLOCK TABLES;
@@ -2540,7 +2531,7 @@ CREATE TABLE `RelRolesPermissions` (
   `IdRole` int(12) unsigned NOT NULL default '0',
   `IdPermission` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdRel`)
-) ENGINE=MYISAM COMMENT='Association of roles and permits';
+) ENGINE=MyISAM COMMENT='Association of roles and permits';
 
 --
 -- Dumping data for table `RelRolesPermissions`
@@ -2549,30 +2540,30 @@ CREATE TABLE `RelRolesPermissions` (
 
 /*!40000 ALTER TABLE `RelRolesPermissions` DISABLE KEYS */;
 LOCK TABLES `RelRolesPermissions` WRITE;
- INSERT INTO `RelRolesPermissions` VALUES (320,201,1004);
- INSERT INTO `RelRolesPermissions` VALUES (319,201,1003);
- INSERT INTO `RelRolesPermissions` VALUES (318,201,1002);
- INSERT INTO `RelRolesPermissions` VALUES (317,201,1001);
- INSERT INTO `RelRolesPermissions` VALUES (302,202,1001);
- INSERT INTO `RelRolesPermissions` VALUES (303,202,1007);
- INSERT INTO `RelRolesPermissions` VALUES (304,203,1001);
- INSERT INTO `RelRolesPermissions` VALUES (305,203,1004);
- INSERT INTO `RelRolesPermissions` VALUES (306,203,1007);
- INSERT INTO `RelRolesPermissions` VALUES (307,203,1008);
- INSERT INTO `RelRolesPermissions` VALUES (308,203,1009);
- INSERT INTO `RelRolesPermissions` VALUES (309,204,1001);
- INSERT INTO `RelRolesPermissions` VALUES (310,204,1002);
- INSERT INTO `RelRolesPermissions` VALUES (311,204,1004);
- INSERT INTO `RelRolesPermissions` VALUES (312,204,1006);
- INSERT INTO `RelRolesPermissions` VALUES (313,204,1007);
- INSERT INTO `RelRolesPermissions` VALUES (314,204,1008);
- INSERT INTO `RelRolesPermissions` VALUES (315,204,1009);
- INSERT INTO `RelRolesPermissions` VALUES (316,204,1010);
- INSERT INTO `RelRolesPermissions` VALUES (321,201,1006);
- INSERT INTO `RelRolesPermissions` VALUES (322,201,1007);
- INSERT INTO `RelRolesPermissions` VALUES (323,201,1008);
- INSERT INTO `RelRolesPermissions` VALUES (324,201,1009);
- INSERT INTO `RelRolesPermissions` VALUES (325,201,1010);
+INSERT INTO `RelRolesPermissions` VALUES (320,201,1004);
+INSERT INTO `RelRolesPermissions` VALUES (319,201,1003);
+INSERT INTO `RelRolesPermissions` VALUES (318,201,1002);
+INSERT INTO `RelRolesPermissions` VALUES (317,201,1001);
+INSERT INTO `RelRolesPermissions` VALUES (302,202,1001);
+INSERT INTO `RelRolesPermissions` VALUES (303,202,1007);
+INSERT INTO `RelRolesPermissions` VALUES (304,203,1001);
+INSERT INTO `RelRolesPermissions` VALUES (305,203,1004);
+INSERT INTO `RelRolesPermissions` VALUES (306,203,1007);
+INSERT INTO `RelRolesPermissions` VALUES (307,203,1008);
+INSERT INTO `RelRolesPermissions` VALUES (308,203,1009);
+INSERT INTO `RelRolesPermissions` VALUES (309,204,1001);
+INSERT INTO `RelRolesPermissions` VALUES (310,204,1002);
+INSERT INTO `RelRolesPermissions` VALUES (311,204,1004);
+INSERT INTO `RelRolesPermissions` VALUES (312,204,1006);
+INSERT INTO `RelRolesPermissions` VALUES (313,204,1007);
+INSERT INTO `RelRolesPermissions` VALUES (314,204,1008);
+INSERT INTO `RelRolesPermissions` VALUES (315,204,1009);
+INSERT INTO `RelRolesPermissions` VALUES (316,204,1010);
+INSERT INTO `RelRolesPermissions` VALUES (321,201,1006);
+INSERT INTO `RelRolesPermissions` VALUES (322,201,1007);
+INSERT INTO `RelRolesPermissions` VALUES (323,201,1008);
+INSERT INTO `RelRolesPermissions` VALUES (324,201,1009);
+INSERT INTO `RelRolesPermissions` VALUES (325,201,1010);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelRolesPermissions` ENABLE KEYS */;
 
@@ -2587,7 +2578,7 @@ CREATE TABLE `RelRolesStates` (
   `IdState` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdRel`),
   UNIQUE KEY `items` (`IdRole`,`IdState`)
-) ENGINE=MYISAM COMMENT='Association of roles with status transitions';
+) ENGINE=MyISAM COMMENT='Association of roles with status transitions';
 
 --
 -- Dumping data for table `RelRolesStates`
@@ -2617,7 +2608,7 @@ CREATE TABLE `RelServersChannels` (
   `IdChannel` int(12) unsigned default '0',
   PRIMARY KEY  (`IdRel`),
   UNIQUE KEY `IdRel` (`IdRel`)
-) ENGINE=MYISAM COMMENT='Table which associates physical servers with channels .';
+) ENGINE=MyISAM COMMENT='Table which associates physical servers with channels .';
 
 --
 -- Dumping data for table `RelServersChannels`
@@ -2628,27 +2619,6 @@ CREATE TABLE `RelServersChannels` (
 LOCK TABLES `RelServersChannels` WRITE;
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelServersChannels` ENABLE KEYS */;
-
---
--- Table structure for table `RelServersNodes`
---
-
-DROP TABLE IF EXISTS `RelServersNodes`;
-CREATE TABLE `RelServersNodes` (
-  `IdServer` int(12) unsigned NOT NULL default '0',
-  `IdNode` int(12) unsigned NOT NULL default '0',
-  PRIMARY KEY  (`IdServer`,`IdNode`)
-) ENGINE=MYISAM COMMENT='Table which associates servers with view templates';
-
---
--- Dumping data for table `RelServersNodes`
---
-
-
-/*!40000 ALTER TABLE `RelServersNodes` DISABLE KEYS */;
-LOCK TABLES `RelServersNodes` WRITE;
-UNLOCK TABLES;
-/*!40000 ALTER TABLE `RelServersNodes` ENABLE KEYS */;
 
 --
 -- Table structure for table `RelServersStates`
@@ -2662,7 +2632,7 @@ CREATE TABLE `RelServersStates` (
   PRIMARY KEY  (`IdRel`),
   UNIQUE KEY `IdRel` (`IdRel`),
   KEY `IdRel_2` (`IdRel`)
-) ENGINE=MYISAM COMMENT='Table which associates servers with workflow status';
+) ENGINE=MyISAM COMMENT='Table which associates servers with workflow status';
 
 --
 -- Dumping data for table `RelServersStates`
@@ -2683,8 +2653,9 @@ CREATE TABLE `RelStrDocChannels` (
   `IdRel` int(12) unsigned NOT NULL auto_increment,
   `IdDoc` int(12) unsigned default '0',
   `IdChannel` int(12) unsigned default '0',
-  PRIMARY KEY  (`IdRel`)
-) ENGINE=MYISAM COMMENT='Association between structured documents and their channels';
+  PRIMARY KEY  (`IdRel`),
+  UNIQUE KEY `IdDoc` (`IdDoc`,`IdChannel`)
+) ENGINE=MyISAM COMMENT='Association between structured documents and their channels';
 
 --
 -- Dumping data for table `RelStrDocChannels`
@@ -2705,8 +2676,8 @@ CREATE TABLE `RelTemplateContainer` (
   `IdRel` int(12) unsigned NOT NULL auto_increment,
   `IdTemplate` int(12) unsigned NOT NULL default '0',
   `IdContainer` int(12) unsigned NOT NULL default '0',
- PRIMARY KEY  (`IdRel`)
-) ENGINE=MYISAM COMMENT='Associate template with container';
+  PRIMARY KEY  (`IdRel`)
+) ENGINE=MyISAM COMMENT='Associate template with container';
 
 --
 -- Dumping data for table `RelTemplateContainer`
@@ -2730,7 +2701,7 @@ CREATE TABLE `RelUsersGroups` (
   PRIMARY KEY  (`IdRel`),
   KEY `IdUSer` (`IdUser`),
   KEY `IdGroup` (`IdGroup`)
-) ENGINE=MYISAM COMMENT='Assing users to a group with a role';
+) ENGINE=MyISAM COMMENT='Assing users to a group with a role';
 
 --
 -- Dumping data for table `RelUsersGroups`
@@ -2741,19 +2712,6 @@ LOCK TABLES `RelUsersGroups` WRITE;
 INSERT INTO `RelUsersGroups` VALUES (1,301,101,201);
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelUsersGroups` ENABLE KEYS */;
-
---
--- Table structure for table `RelXimletNode`
---
-
-DROP TABLE IF EXISTS RelXimletNode;
-CREATE TABLE RelXimletNode (
-  IdRel int(12) unsigned NOT NULL auto_increment,
-  IdXimLetNode int(12) unsigned NOT NULL default '0',
-  IdSectionNode int(12) unsigned NOT NULL default '0',
-  PRIMARY KEY  (IdRel)
-) ENGINE=MYISAM;
-
 
 --
 -- Table structure for table `Roles`
@@ -2767,7 +2725,7 @@ CREATE TABLE `Roles` (
   `Description` varchar(255) default NULL,
   PRIMARY KEY  (`IdRole`),
   UNIQUE KEY `IdRole` (`Name`)
-) ENGINE=MYISAM COMMENT='Table of roles that an user can play into a group';
+) ENGINE=MyISAM COMMENT='Table of roles that an user can play into a group';
 
 --
 -- Dumping data for table `Roles`
@@ -2805,7 +2763,7 @@ CREATE TABLE `Servers` (
   `otf` int(1) unsigned default '0',
   `idEncode` varchar(255) default NULL,
   PRIMARY KEY  (`IdServer`)
-) ENGINE=MYISAM COMMENT='Table with info about Ximdex servers';
+) ENGINE=MyISAM COMMENT='Table with info about Ximdex servers';
 
 --
 -- Dumping data for table `Servers`
@@ -2830,7 +2788,7 @@ CREATE TABLE `States` (
   `IsEnd` int(1) unsigned default '0',
   `NextState` int(12) unsigned default NULL,
   PRIMARY KEY  (`IdState`)
-) ENGINE=MYISAM COMMENT='Table of Workflow status';
+) ENGINE=MyISAM COMMENT='Table of Workflow status';
 
 --
 -- Dumping data for table `States`
@@ -2859,7 +2817,7 @@ CREATE TABLE `StructuredDocuments` (
   `IdTemplate` int(12) unsigned NOT NULL default '0',
   `TargetLink` int(12) unsigned default NULL,
   PRIMARY KEY  (`IdDoc`)
-) ENGINE=MYISAM COMMENT='Table of strutured documents of Ximdex';
+) ENGINE=MyISAM COMMENT='Table of strutured documents of Ximdex';
 
 --
 -- Dumping data for table `StructuredDocuments`
@@ -2893,7 +2851,7 @@ CREATE TABLE `Synchronizer` (
   PRIMARY KEY  (`IdSync`),
   UNIQUE KEY `IdSync` (`IdSync`),
   KEY `IdSync_2` (`IdSync`,`IdServer`,`IdNode`,`IdChannel`,`DateUp`,`DateDown`,`State`)
-) ENGINE=MYISAM DELAY_KEY_WRITE=1 COMMENT='Table of sync of Ximdex';
+) ENGINE=MyISAM DELAY_KEY_WRITE=1 COMMENT='Table of sync of Ximdex';
 
 --
 -- Dumping data for table `Synchronizer`
@@ -2915,7 +2873,7 @@ CREATE TABLE `SynchronizerDependencies` (
   `IdResource` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdSync`,`IdResource`),
   KEY `IdSync` (`IdSync`,`IdResource`)
-) ENGINE=MYISAM DELAY_KEY_WRITE=1 COMMENT='Table of dependencies of publication windows of Ximdex';
+) ENGINE=MyISAM DELAY_KEY_WRITE=1 COMMENT='Table of dependencies of publication windows of Ximdex';
 
 --
 -- Dumping data for table `SynchronizerDependencies`
@@ -2947,7 +2905,7 @@ CREATE TABLE `SynchronizerHistory` (
   `Retry` int(12) unsigned default '0',
   `Linked` tinyint(3) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdSync`)
-) ENGINE=MYISAM DELAY_KEY_WRITE=1 COMMENT='Table of sync history of Ximdex';
+) ENGINE=MyISAM DELAY_KEY_WRITE=1 COMMENT='Table of sync history of Ximdex';
 
 --
 -- Table structure for table `SynchronizerDependenciesHistory`
@@ -2958,7 +2916,7 @@ CREATE TABLE `SynchronizerDependenciesHistory` (
   `IdSync` int(12) unsigned NOT NULL default '0',
   `IdResource` int(12) unsigned NOT NULL default '0',
   PRIMARY KEY  (`IdSync`,`IdResource`)
-) ENGINE=MYISAM DELAY_KEY_WRITE=1 COMMENT='Table of dependece hystory of publication windows of Ximdex';
+) ENGINE=MyISAM DELAY_KEY_WRITE=1 COMMENT='Historical information of publications. Deprecated?';
 
 
 --
@@ -2972,7 +2930,7 @@ CREATE TABLE `SynchronizerGroups` (
   PRIMARY KEY  (`IdMaster`,`IdSlave`),
   UNIQUE KEY `IdMaster` (`IdMaster`,`IdSlave`),
   KEY `IdMaster_2` (`IdMaster`,`IdSlave`)
-) ENGINE=MYISAM COMMENT='Table of sharing workflow between nodes';
+) ENGINE=MyISAM COMMENT='Table of sharing workflow between nodes';
 
 --
 -- Dumping data for table `SynchronizerGroups`
@@ -2993,7 +2951,7 @@ CREATE TABLE `SystemProperties` (
   `IdSysProp` int(12) unsigned NOT NULL auto_increment,
   `Name` varchar(250) NOT NULL default '0',
   PRIMARY KEY  (`IdSysProp`)
-) ENGINE=MYISAM;
+) ENGINE=MyISAM;
 
 --
 -- Dumping data for table `SystemProperties`
@@ -3030,7 +2988,7 @@ CREATE TABLE `Users` (
   `NumAccess` int(12) unsigned default '0',
   PRIMARY KEY  (`IdUser`),
   UNIQUE KEY `login` (`Login`)
-) ENGINE=MYISAM COMMENT='Tabla de Usuarios del sistema';
+) ENGINE=MyISAM COMMENT='Users registered on Ximdex CMS';
 
 
 --
@@ -3062,7 +3020,7 @@ CREATE TABLE `Versions` (
   PRIMARY KEY  (`IdVersion`),
   KEY `Version` (`SubVersion`,`IdNode`,`Version`),
   KEY `IdNode` (`IdNode`)
-) ENGINE=MYISAM COMMENT='Table of contents and version management';
+) ENGINE=MyISAM COMMENT='Table of contents and version management';
 
 --
 -- Dumping data for table `Versions`
@@ -3079,10 +3037,10 @@ UNLOCK TABLES;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 DROP TABLE IF EXISTS `NodeConstructors`;
 CREATE TABLE `NodeConstructors` (
-`IdNodeConstructor` int(11) NOT NULL auto_increment,
-`IdNodeType` int(11) NOT NULL,
-`IdAction` int(11) NOT NULL,
-PRIMARY KEY  (`IdNodeConstructor`)
+  `IdNodeConstructor` int(11) NOT NULL auto_increment,
+  `IdNodeType` int(11) NOT NULL,
+  `IdAction` int(11) NOT NULL,
+  PRIMARY KEY  (`IdNodeConstructor`)
 );
 
 --
@@ -3090,37 +3048,37 @@ PRIMARY KEY  (`IdNodeConstructor`)
 --
 
 INSERT INTO `NodeConstructors` (`IdNodeConstructor`, `IdNodeType`, `IdAction`) VALUES
-(1, 5026, 6012),
-(2, 5050, 6011),
-(3, 5053, 6011),
-(4, 5014, 6012),
-(5, 5048, 6070),
-(6, 5049, 6072),
-(8, 5024, 6012),
-(9, 5016, 6012),
-(10, 5018, 6012),
-(11, 5022, 6012),
-(12, 5020, 6012),
-(13, 5054, 6012),
-(14, 5015, 6013),
-(15, 5031, 6044),
-(16, 5056, 6138),
-(17, 5032, 6045),
-(18, 5057, 6151),
-(19, 5013, 6011),
-(20, 5017, 6015),
-(21, 5300, 6013),
-(22, 5306, 6013),
-(23, 5301, 6013),
-(24, 5304, 6013),
-(25, 5305, 6710),
-(26, 5309, 6045),
-(27, 5302, 6702),
-(28, 5307, 6726),
-(29, 5310, 6720),
-(30, 5303, 6769),
-(31, 5308, 6702),
-(32, 5311, 6769);
+  (1, 5026, 6012),
+  (2, 5050, 6011),
+  (3, 5053, 6011),
+  (4, 5014, 6012),
+  (5, 5048, 6070),
+  (6, 5049, 6072),
+  (8, 5024, 6012),
+  (9, 5016, 6012),
+  (10, 5018, 6012),
+  (11, 5022, 6012),
+  (12, 5020, 6012),
+  (13, 5054, 6012),
+  (14, 5015, 6013),
+  (15, 5031, 6044),
+  (16, 5056, 6138),
+  (17, 5032, 6045),
+  (18, 5057, 6151),
+  (19, 5013, 6011),
+  (20, 5017, 6015),
+  (21, 5300, 6013),
+  (22, 5306, 6013),
+  (23, 5301, 6013),
+  (24, 5304, 6013),
+  (25, 5305, 6710),
+  (26, 5309, 6045),
+  (27, 5302, 6702),
+  (28, 5307, 6726),
+  (29, 5310, 6720),
+  (30, 5303, 6769),
+  (31, 5308, 6702),
+  (32, 5311, 6769);
 
 DROP TABLE IF EXISTS `RelNodeTypeMimeType`;
 CREATE TABLE `RelNodeTypeMimeType` (
@@ -3300,11 +3258,11 @@ CREATE TABLE IF NOT EXISTS `PipeProcess` (
 --
 
 INSERT INTO `PipeProcess` (`id`, `IdTransitionFrom`, `IdTransitionTo`, `IdPipeline`, `Name`) VALUES
-(1, 1, 3, 1, 'StrDocToDexT'),
-(2, 3, 4, 1, 'StrDocFromDexTToFinal'),
-(3, NULL, 5, 2, 'NotStrDocToFinal'),
-(4, NULL, 6, 3, 'workflow'),
-(5, 7, 9, 4, 'StrDocToXedit');
+  (1, 1, 3, 1, 'StrDocToDexT'),
+  (2, 3, 4, 1, 'StrDocFromDexTToFinal'),
+  (3, NULL, 5, 2, 'NotStrDocToFinal'),
+  (4, NULL, 6, 3, 'workflow'),
+  (5, 7, 9, 4, 'StrDocToXedit');
 
 -- --------------------------------------------------------
 
@@ -3320,12 +3278,12 @@ CREATE TABLE `PipeProperties` (
 );
 
 INSERT INTO `PipeProperties` (`id`, `IdPipeTransition`, `Name`) VALUES
-(1, 1, 'CHANNEL'),
-(2, 4, 'CHANNEL'),
-(3, 4, 'SERVER'),
-(4, 2, 'CHANNEL'),
-(5, 3, 'CHANNEL'),
-(6, 3, 'TRANSFORMER');
+  (1, 1, 'CHANNEL'),
+  (2, 4, 'CHANNEL'),
+  (3, 4, 'SERVER'),
+  (4, 2, 'CHANNEL'),
+  (5, 3, 'CHANNEL'),
+  (6, 3, 'TRANSFORMER');
 -- --------------------------------------------------------
 
 --
@@ -3358,15 +3316,15 @@ CREATE TABLE IF NOT EXISTS `PipeStatus` (
 --
 
 INSERT INTO `PipeStatus` (`id`, `Name`, `Description`) VALUES
-(1, 'ChannelFilter', ''),
-(2, 'Renderized', ''),
-(3, 'PreFilter', ''),
-(4, 'Dependencies', ''),
-(5, 'DexT', ''),
-(6, 'FilterMacros', ''),
-(7, 'Edición', 'El documento está en fase de desarrollo'),
-(8, 'Publicación', 'El documento está a la espera de ser publicado.'),
-(9, 'Xedit', '');
+  (1, 'ChannelFilter', ''),
+  (2, 'Renderized', ''),
+  (3, 'PreFilter', ''),
+  (4, 'Dependencies', ''),
+  (5, 'DexT', ''),
+  (6, 'FilterMacros', ''),
+  (7, 'Edición', 'El documento está en fase de desarrollo'),
+  (8, 'Publicación', 'El documento está a la espera de ser publicado.'),
+  (9, 'Xedit', '');
 -- --------------------------------------------------------
 
 --
@@ -3389,15 +3347,15 @@ CREATE TABLE IF NOT EXISTS `PipeTransitions` (
 --
 
 INSERT INTO `PipeTransitions` (`id`, `IdStatusFrom`, `IdStatusTo`, `IdPipeProcess`, `Cacheable`, `Name`, `Callback`) VALUES
-(1, NULL, 2, 1, 1, 'ToRenderize', 'NodeToRenderizedContent'),
-(2, 2, 3, 1, 1, 'FromRenderToPreFilter', 'PrefilterMacros'),
-(3, 3, 5, 1, 1, 'FromPreFilterToDexT', 'Transformer'),
-(4, 5, 6, 2, 0, 'FromToDexTToFinal', 'FilterMacros'),
-(5, NULL, 6, 3, 0, 'ToFinal', 'Common'),
-(6, 7, 8, 4, 0, 'Edición_to_Publicación', '-'),
-(7, NULL, 2, 5, 0, 'ToRenderize', 'NodeToRenderizedContent'),
-(8, 2, 9, 5, 0, 'FromRenderToXedit', 'Xedit'),
-(9, 9, 3, 5, 0, 'FromXeditToPreFilter', 'PrefilterMacros');
+  (1, NULL, 2, 1, 1, 'ToRenderize', 'NodeToRenderizedContent'),
+  (2, 2, 3, 1, 1, 'FromRenderToPreFilter', 'PrefilterMacros'),
+  (3, 3, 5, 1, 1, 'FromPreFilterToDexT', 'Transformer'),
+  (4, 5, 6, 2, 0, 'FromToDexTToFinal', 'FilterMacros'),
+  (5, NULL, 6, 3, 0, 'ToFinal', 'Common'),
+  (6, 7, 8, 4, 0, 'Edici�n_to_Publicaci�n', '-'),
+  (7, NULL, 2, 5, 0, 'ToRenderize', 'NodeToRenderizedContent'),
+  (8, 2, 9, 5, 0, 'FromRenderToXedit', 'Xedit'),
+  (9, 9, 3, 5, 0, 'FromXeditToPreFilter', 'PrefilterMacros');
 
 -- --------------------------------------------------------
 
@@ -3414,10 +3372,10 @@ CREATE TABLE IF NOT EXISTS `Pipelines` (
 );
 
 INSERT INTO `Pipelines` (`id`, `Pipeline`, `IdNode`) VALUES
-(1, 'PublishStrDoc', NULL),
-(2, 'PublishNotStrDoc', NULL),
-(3, 'Workflow master', 403),
-(4, 'XeditStrDoc', NULL);
+  (1, 'PublishStrDoc', NULL),
+  (2, 'PublishNotStrDoc', NULL),
+  (3, 'Workflow master', 403),
+  (4, 'XeditStrDoc', NULL);
 
 --
 -- Table structure for table `PipeCacheTemplates`
@@ -3437,17 +3395,17 @@ CREATE TABLE `PipeCacheTemplates` (
 --  Table for storage of aditional properties of nodes
 DROP TABLE IF EXISTS `NodeProperties`;
 CREATE TABLE `NodeProperties` (
-`IdNodeProperty` INT NULL AUTO_INCREMENT,
-`IdNode` INT NOT NULL ,
-`Property` VARCHAR( 255 ) NOT NULL ,
-`Value` blob NOT NULL ,
-PRIMARY KEY ( `IdNodeProperty` ) ,
-INDEX ( `IdNode` )
+  `IdNodeProperty` INT NULL AUTO_INCREMENT,
+  `IdNode` INT NOT NULL ,
+  `Property` VARCHAR( 255 ) NOT NULL ,
+  `Value` blob NOT NULL ,
+  PRIMARY KEY ( `IdNodeProperty` ) ,
+  INDEX ( `IdNode` )
 );
 
 INSERT INTO `NodeProperties` (`IdNode`, `Property`, `Value`) VALUES
-(10000, 'Transformer', 'xslt'),
-(10000, 'pipeline', '3');
+  (10000, 'Transformer', 'xslt'),
+  (10000, 'pipeline', '3');
 
 -- --------------------------------------------------------
 
@@ -3457,259 +3415,259 @@ INSERT INTO `NodeProperties` (`IdNode`, `Property`, `Value`) VALUES
 
 DROP TABLE IF EXISTS `Contexts`;
 CREATE TABLE `Contexts` (
-`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`Context` VARCHAR( 255 ) NOT NULL ,
-INDEX ( `Context` )
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `Context` VARCHAR( 255 ) NOT NULL ,
+  INDEX ( `Context` )
 );
 
 INSERT INTO `Contexts` ( `id` , `Context` )
 VALUES (
-1 , 'ximdex'
+  1 , 'ximdex'
 ), (
-2 , 'webdav'
+  2 , 'webdav'
 );
 
 DROP TABLE IF EXISTS `NodetypeModes`;
 CREATE TABLE `NodetypeModes` (
-`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`IdNodeType` INT NOT NULL ,
-`Mode` ENUM( 'C', 'R', 'U', 'D' ) NOT NULL ,
-`IdAction` INT NULL ,
-INDEX ( `IdNodeType` , `IdAction` )
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `IdNodeType` INT NOT NULL ,
+  `Mode` ENUM( 'C', 'R', 'U', 'D' ) NOT NULL ,
+  `IdAction` INT NULL ,
+  INDEX ( `IdNodeType` , `IdAction` )
 );
 
 INSERT INTO `NodetypeModes` (`id`, `IdNodeType`, `Mode`, `IdAction`) VALUES
-(1, 5001, 'C', NULL),
-(2, 5001, 'R', NULL),
-(3, 5001, 'U', NULL),
-(4, 5001, 'D', NULL),
-(5, 5002, 'C', NULL),
-(6, 5002, 'R', NULL),
-(7, 5002, 'U', NULL),
-(8, 5002, 'D', NULL),
-(9, 5003, 'C', NULL),
-(10, 5003, 'R', NULL),
-(11, 5003, 'U', NULL),
-(12, 5003, 'D', NULL),
-(13, 5004, 'C', NULL),
-(14, 5004, 'R', NULL),
-(15, 5004, 'U', NULL),
-(16, 5004, 'D', NULL),
-(17, 5005, 'C', NULL),
-(18, 5005, 'R', NULL),
-(19, 5005, 'U', NULL),
-(20, 5005, 'D', NULL),
-(21, 5006, 'C', NULL),
-(22, 5006, 'R', NULL),
-(23, 5006, 'U', NULL),
-(24, 5006, 'D', NULL),
-(25, 5007, 'C', NULL),
-(26, 5007, 'R', NULL),
-(27, 5007, 'U', NULL),
-(28, 5007, 'D', NULL),
-(29, 5008, 'C', NULL),
-(30, 5008, 'R', NULL),
-(31, 5008, 'U', NULL),
-(32, 5008, 'D', NULL),
-(33, 5009, 'C', NULL),
-(34, 5009, 'R', NULL),
-(35, 5009, 'U', NULL),
-(36, 5009, 'D', NULL),
-(37, 5010, 'C', NULL),
-(38, 5010, 'R', NULL),
-(39, 5010, 'U', NULL),
-(40, 5010, 'D', NULL),
-(41, 5011, 'C', NULL),
-(42, 5011, 'R', NULL),
-(43, 5011, 'U', NULL),
-(44, 5011, 'D', NULL),
-(45, 5012, 'C', NULL),
-(46, 5012, 'R', NULL),
-(47, 5012, 'U', NULL),
-(48, 5012, 'D', NULL),
-(49, 5013, 'C', 6011),
-(50, 5013, 'R', NULL),
-(51, 5013, 'U', 6026),
-(52, 5013, 'D', 6034),
-(53, 5014, 'C', 6012),
-(54, 5014, 'R', NULL),
-(55, 5014, 'U', 6027),
-(56, 5014, 'D', 6035),
-(57, 5015, 'C', 6013),
-(58, 5015, 'R', NULL),
-(59, 5015, 'U', 6025),
-(60, 5015, 'D', 6036),
-(61, 5016, 'C', NULL),
-(62, 5016, 'R', NULL),
-(63, 5016, 'U', NULL),
-(64, 5016, 'D', NULL),
-(65, 5017, 'C', 6015),
-(66, 5017, 'R', NULL),
-(67, 5017, 'U', 6028),
-(68, 5017, 'D', 6037),
-(69, 5018, 'C', NULL),
-(70, 5018, 'R', NULL),
-(71, 5018, 'U', NULL),
-(72, 5018, 'D', NULL),
-(73, 5020, 'C', NULL),
-(74, 5020, 'R', NULL),
-(75, 5020, 'U', NULL),
-(76, 5020, 'D', NULL),
-(77, 5021, 'C', 5018),
-(78, 5021, 'R', NULL),
-(79, 5021, 'U', 6030),
-(80, 5021, 'D', 6039),
-(81, 5022, 'C', NULL),
-(82, 5022, 'R', NULL),
-(83, 5022, 'U', NULL),
-(84, 5022, 'D', NULL),
-(85, 5023, 'C', 6020),
-(86, 5023, 'R', NULL),
-(87, 5023, 'U', 6031),
-(88, 5023, 'D', 6040),
-(89, 5024, 'C', NULL),
-(90, 5024, 'R', NULL),
-(91, 5024, 'U', NULL),
-(92, 5024, 'D', NULL),
-(93, 5025, 'C', 6022),
-(94, 5025, 'R', NULL),
-(95, 5025, 'U', 6032),
-(96, 5025, 'D', 6041),
-(97, 5026, 'C', NULL),
-(98, 5026, 'R', NULL),
-(99, 5026, 'U', NULL),
-(100, 5026, 'D', NULL),
-(102, 5028, 'R', NULL),
-(103, 5028, 'U', 6105),
-(104, 5028, 'D', 6106),
-(105, 5029, 'C', NULL),
-(106, 5029, 'R', NULL),
-(107, 5029, 'U', NULL),
-(108, 5029, 'D', NULL),
-(109, 5030, 'C', NULL),
-(110, 5030, 'R', NULL),
-(111, 5030, 'U', NULL),
-(112, 5030, 'D', NULL),
-(113, 5031, 'C', 6044),
-(114, 5031, 'R', NULL),
-(115, 5031, 'U', 6045),
-(116, 5031, 'D', 6063),
-(117, 5032, 'C', 6045),
-(118, 5032, 'R', NULL),
-(119, 5032, 'U', 6136),
-(120, 5032, 'D', 6134),
-(121, 5033, 'C', 6048),
-(122, 5033, 'R', NULL),
-(123, 5033, 'U', 6095),
-(124, 5033, 'D', 6107),
-(125, 5034, 'C', 6047),
-(126, 5034, 'R', NULL),
-(127, 5034, 'U', 6097),
-(128, 5034, 'D', 6102),
-(129, 5035, 'C', NULL),
-(130, 5035, 'R', NULL),
-(131, 5035, 'U', NULL),
-(132, 5035, 'D', NULL),
-(133, 5036, 'C', NULL),
-(134, 5036, 'R', NULL),
-(135, 5036, 'U', NULL),
-(136, 5036, 'D', NULL),
-(137, 5037, 'C', NULL),
-(138, 5037, 'R', NULL),
-(139, 5037, 'U', NULL),
-(140, 5037, 'D', NULL),
-(141, 5038, 'C', NULL),
-(142, 5038, 'R', NULL),
-(143, 5038, 'U', NULL),
-(144, 5038, 'D', NULL),
-(146, 5039, 'R', NULL),
-(147, 5039, 'U', 6094),
-(148, 5039, 'D', 6088),
-(150, 5040, 'R', NULL),
-(151, 5040, 'U', 6085),
-(152, 5040, 'D', 6086),
-(154, 5041, 'R', NULL),
-(155, 5041, 'U', 6083),
-(156, 5041, 'D', 6084),
-(157, 5043, 'C', NULL),
-(158, 5043, 'R', NULL),
-(159, 5043, 'U', NULL),
-(160, 5043, 'D', NULL),
-(169, 5048, 'C', 6069),
-(170, 5048, 'R', NULL),
-(171, 5048, 'U', 6118),
-(172, 5048, 'D', 6119),
-(173, 5049, 'C', 6071),
-(174, 5049, 'R', NULL),
-(175, 5049, 'U', 6073),
-(176, 5049, 'D', 6120),
-(177, 5050, 'C', NULL),
-(178, 5050, 'R', NULL),
-(179, 5050, 'U', NULL),
-(180, 5050, 'D', NULL),
-(181, 5053, 'C', NULL),
-(182, 5053, 'R', NULL),
-(183, 5053, 'U', NULL),
-(184, 5053, 'D', NULL),
-(185, 5054, 'C', NULL),
-(186, 5054, 'R', NULL),
-(187, 5054, 'U', NULL),
-(188, 5054, 'D', NULL),
-(189, 5055, 'C', 6137),
-(190, 5055, 'R', NULL),
-(191, 5055, 'U', 6142),
-(192, 5055, 'D', 6141),
-(193, 5056, 'C', 6138),
-(194, 5056, 'R', NULL),
-(195, 5056, 'U', 6153),
-(196, 5056, 'D', 6152),
-(197, 5057, 'C', 6151),
-(198, 5057, 'R', NULL),
-(199, 5057, 'U', 6157),
-(200, 5057, 'D', 6155),
-(201, 5058, 'C', NULL),
-(202, 5058, 'R', NULL),
-(203, 5058, 'U', NULL),
-(204, 5058, 'D', NULL),
-(205, 5059, 'C', NULL),
-(206, 5059, 'R', NULL),
-(207, 5059, 'U', NULL),
-(208, 5059, 'D', NULL),
-(209, 5060, 'C', NULL),
-(210, 5060, 'R', NULL),
-(211, 5060, 'U', NULL),
-(212, 5060, 'D', NULL),
-(213, 5061, 'C', NULL),
-(214, 5061, 'R', NULL),
-(215, 5061, 'U', NULL),
-(216, 5061, 'D', NULL),
-(217, 5062, 'C', NULL),
-(218, 5062, 'R', NULL),
-(219, 5062, 'U', NULL),
-(220, 5062, 'D', NULL),
-(221, 5063, 'C', NULL),
-(222, 5063, 'R', NULL),
-(223, 5063, 'U', NULL),
-(224, 5063, 'D', NULL),
-(225, 5064, 'C', NULL),
-(226, 5064, 'R', NULL),
-(227, 5064, 'U', NULL),
-(228, 5064, 'D', NULL),
-(229, 5065, 'C', NULL),
-(230, 5065, 'R', NULL),
-(231, 5065, 'U', NULL),
-(232, 5065, 'D', NULL),
-(233, 5066, 'C', NULL),
-(234, 5066, 'R', NULL),
-(235, 5066, 'U', NULL),
-(236, 5066, 'D', NULL),
-(241, 5068, 'C', NULL),
-(242, 5068, 'R', NULL),
-(243, 5068, 'U', NULL),
-(244, 5068, 'D', NULL),
-(274, 5076, 'R', NULL),
-(275, 5076, 'U', 6229),
-(276, 5076, 'D', 6232);
+  (1, 5001, 'C', NULL),
+  (2, 5001, 'R', NULL),
+  (3, 5001, 'U', NULL),
+  (4, 5001, 'D', NULL),
+  (5, 5002, 'C', NULL),
+  (6, 5002, 'R', NULL),
+  (7, 5002, 'U', NULL),
+  (8, 5002, 'D', NULL),
+  (9, 5003, 'C', NULL),
+  (10, 5003, 'R', NULL),
+  (11, 5003, 'U', NULL),
+  (12, 5003, 'D', NULL),
+  (13, 5004, 'C', NULL),
+  (14, 5004, 'R', NULL),
+  (15, 5004, 'U', NULL),
+  (16, 5004, 'D', NULL),
+  (17, 5005, 'C', NULL),
+  (18, 5005, 'R', NULL),
+  (19, 5005, 'U', NULL),
+  (20, 5005, 'D', NULL),
+  (21, 5006, 'C', NULL),
+  (22, 5006, 'R', NULL),
+  (23, 5006, 'U', NULL),
+  (24, 5006, 'D', NULL),
+  (25, 5007, 'C', NULL),
+  (26, 5007, 'R', NULL),
+  (27, 5007, 'U', NULL),
+  (28, 5007, 'D', NULL),
+  (29, 5008, 'C', NULL),
+  (30, 5008, 'R', NULL),
+  (31, 5008, 'U', NULL),
+  (32, 5008, 'D', NULL),
+  (33, 5009, 'C', NULL),
+  (34, 5009, 'R', NULL),
+  (35, 5009, 'U', NULL),
+  (36, 5009, 'D', NULL),
+  (37, 5010, 'C', NULL),
+  (38, 5010, 'R', NULL),
+  (39, 5010, 'U', NULL),
+  (40, 5010, 'D', NULL),
+  (41, 5011, 'C', NULL),
+  (42, 5011, 'R', NULL),
+  (43, 5011, 'U', NULL),
+  (44, 5011, 'D', NULL),
+  (45, 5012, 'C', NULL),
+  (46, 5012, 'R', NULL),
+  (47, 5012, 'U', NULL),
+  (48, 5012, 'D', NULL),
+  (49, 5013, 'C', 6011),
+  (50, 5013, 'R', NULL),
+  (51, 5013, 'U', 6026),
+  (52, 5013, 'D', 6034),
+  (53, 5014, 'C', 6012),
+  (54, 5014, 'R', NULL),
+  (55, 5014, 'U', 6027),
+  (56, 5014, 'D', 6035),
+  (57, 5015, 'C', 6013),
+  (58, 5015, 'R', NULL),
+  (59, 5015, 'U', 6025),
+  (60, 5015, 'D', 6036),
+  (61, 5016, 'C', NULL),
+  (62, 5016, 'R', NULL),
+  (63, 5016, 'U', NULL),
+  (64, 5016, 'D', NULL),
+  (65, 5017, 'C', 6015),
+  (66, 5017, 'R', NULL),
+  (67, 5017, 'U', 6028),
+  (68, 5017, 'D', 6037),
+  (69, 5018, 'C', NULL),
+  (70, 5018, 'R', NULL),
+  (71, 5018, 'U', NULL),
+  (72, 5018, 'D', NULL),
+  (73, 5020, 'C', NULL),
+  (74, 5020, 'R', NULL),
+  (75, 5020, 'U', NULL),
+  (76, 5020, 'D', NULL),
+  (77, 5021, 'C', 5018),
+  (78, 5021, 'R', NULL),
+  (79, 5021, 'U', 6030),
+  (80, 5021, 'D', 6039),
+  (81, 5022, 'C', NULL),
+  (82, 5022, 'R', NULL),
+  (83, 5022, 'U', NULL),
+  (84, 5022, 'D', NULL),
+  (85, 5023, 'C', 6020),
+  (86, 5023, 'R', NULL),
+  (87, 5023, 'U', 6031),
+  (88, 5023, 'D', 6040),
+  (89, 5024, 'C', NULL),
+  (90, 5024, 'R', NULL),
+  (91, 5024, 'U', NULL),
+  (92, 5024, 'D', NULL),
+  (93, 5025, 'C', 6022),
+  (94, 5025, 'R', NULL),
+  (95, 5025, 'U', 6032),
+  (96, 5025, 'D', 6041),
+  (97, 5026, 'C', NULL),
+  (98, 5026, 'R', NULL),
+  (99, 5026, 'U', NULL),
+  (100, 5026, 'D', NULL),
+  (102, 5028, 'R', NULL),
+  (103, 5028, 'U', 6105),
+  (104, 5028, 'D', 6106),
+  (105, 5029, 'C', NULL),
+  (106, 5029, 'R', NULL),
+  (107, 5029, 'U', NULL),
+  (108, 5029, 'D', NULL),
+  (109, 5030, 'C', NULL),
+  (110, 5030, 'R', NULL),
+  (111, 5030, 'U', NULL),
+  (112, 5030, 'D', NULL),
+  (113, 5031, 'C', 6044),
+  (114, 5031, 'R', NULL),
+  (115, 5031, 'U', 6045),
+  (116, 5031, 'D', 6063),
+  (117, 5032, 'C', 6045),
+  (118, 5032, 'R', NULL),
+  (119, 5032, 'U', 6136),
+  (120, 5032, 'D', 6134),
+  (121, 5033, 'C', 6048),
+  (122, 5033, 'R', NULL),
+  (123, 5033, 'U', 6095),
+  (124, 5033, 'D', 6107),
+  (125, 5034, 'C', 6047),
+  (126, 5034, 'R', NULL),
+  (127, 5034, 'U', 6097),
+  (128, 5034, 'D', 6102),
+  (129, 5035, 'C', NULL),
+  (130, 5035, 'R', NULL),
+  (131, 5035, 'U', NULL),
+  (132, 5035, 'D', NULL),
+  (133, 5036, 'C', NULL),
+  (134, 5036, 'R', NULL),
+  (135, 5036, 'U', NULL),
+  (136, 5036, 'D', NULL),
+  (137, 5037, 'C', NULL),
+  (138, 5037, 'R', NULL),
+  (139, 5037, 'U', NULL),
+  (140, 5037, 'D', NULL),
+  (141, 5038, 'C', NULL),
+  (142, 5038, 'R', NULL),
+  (143, 5038, 'U', NULL),
+  (144, 5038, 'D', NULL),
+  (146, 5039, 'R', NULL),
+  (147, 5039, 'U', 6094),
+  (148, 5039, 'D', 6088),
+  (150, 5040, 'R', NULL),
+  (151, 5040, 'U', 6085),
+  (152, 5040, 'D', 6086),
+  (154, 5041, 'R', NULL),
+  (155, 5041, 'U', 6083),
+  (156, 5041, 'D', 6084),
+  (157, 5043, 'C', NULL),
+  (158, 5043, 'R', NULL),
+  (159, 5043, 'U', NULL),
+  (160, 5043, 'D', NULL),
+  (169, 5048, 'C', 6069),
+  (170, 5048, 'R', NULL),
+  (171, 5048, 'U', 6118),
+  (172, 5048, 'D', 6119),
+  (173, 5049, 'C', 6071),
+  (174, 5049, 'R', NULL),
+  (175, 5049, 'U', 6073),
+  (176, 5049, 'D', 6120),
+  (177, 5050, 'C', NULL),
+  (178, 5050, 'R', NULL),
+  (179, 5050, 'U', NULL),
+  (180, 5050, 'D', NULL),
+  (181, 5053, 'C', NULL),
+  (182, 5053, 'R', NULL),
+  (183, 5053, 'U', NULL),
+  (184, 5053, 'D', NULL),
+  (185, 5054, 'C', NULL),
+  (186, 5054, 'R', NULL),
+  (187, 5054, 'U', NULL),
+  (188, 5054, 'D', NULL),
+  (189, 5055, 'C', 6137),
+  (190, 5055, 'R', NULL),
+  (191, 5055, 'U', 6142),
+  (192, 5055, 'D', 6141),
+  (193, 5056, 'C', 6138),
+  (194, 5056, 'R', NULL),
+  (195, 5056, 'U', 6153),
+  (196, 5056, 'D', 6152),
+  (197, 5057, 'C', 6151),
+  (198, 5057, 'R', NULL),
+  (199, 5057, 'U', 6157),
+  (200, 5057, 'D', 6155),
+  (201, 5058, 'C', NULL),
+  (202, 5058, 'R', NULL),
+  (203, 5058, 'U', NULL),
+  (204, 5058, 'D', NULL),
+  (205, 5059, 'C', NULL),
+  (206, 5059, 'R', NULL),
+  (207, 5059, 'U', NULL),
+  (208, 5059, 'D', NULL),
+  (209, 5060, 'C', NULL),
+  (210, 5060, 'R', NULL),
+  (211, 5060, 'U', NULL),
+  (212, 5060, 'D', NULL),
+  (213, 5061, 'C', NULL),
+  (214, 5061, 'R', NULL),
+  (215, 5061, 'U', NULL),
+  (216, 5061, 'D', NULL),
+  (217, 5062, 'C', NULL),
+  (218, 5062, 'R', NULL),
+  (219, 5062, 'U', NULL),
+  (220, 5062, 'D', NULL),
+  (221, 5063, 'C', NULL),
+  (222, 5063, 'R', NULL),
+  (223, 5063, 'U', NULL),
+  (224, 5063, 'D', NULL),
+  (225, 5064, 'C', NULL),
+  (226, 5064, 'R', NULL),
+  (227, 5064, 'U', NULL),
+  (228, 5064, 'D', NULL),
+  (229, 5065, 'C', NULL),
+  (230, 5065, 'R', NULL),
+  (231, 5065, 'U', NULL),
+  (232, 5065, 'D', NULL),
+  (233, 5066, 'C', NULL),
+  (234, 5066, 'R', NULL),
+  (235, 5066, 'U', NULL),
+  (236, 5066, 'D', NULL),
+  (241, 5068, 'C', NULL),
+  (242, 5068, 'R', NULL),
+  (243, 5068, 'U', NULL),
+  (244, 5068, 'D', NULL),
+  (274, 5076, 'R', NULL),
+  (275, 5076, 'U', 6229),
+  (276, 5076, 'D', 6232);
 
 DROP TABLE IF EXISTS `UpdateDb_historic`;
 CREATE TABLE IF NOT EXISTS `UpdateDb_historic` (
@@ -3743,7 +3701,7 @@ CREATE TABLE `ActionsStats` (
   `TimeStamp` int(11) unsigned NOT NULL,
   `Duration` float(11,6) unsigned NOT NULL,
   PRIMARY KEY  (`IdStat`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Actions use stats';
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Usage stats for actions';
 
 --
 -- Table structure for table `Encodes`
@@ -3756,180 +3714,83 @@ CREATE TABLE `Encodes` (
   PRIMARY KEY  (`IdEncode`),
   UNIQUE KEY `IdEncode` (`IdEncode`),
   KEY `IdEncode_2` (`IdEncode`)
-) ENGINE=MYISAM COMMENT='Tabla de posibles codificaciones de publicación de xmiDEX';
+) ENGINE=MyISAM COMMENT='Available encodings on Ximdex CMS';
 
 --
 -- Dumping data for table `Encodes`
 --
 
 LOCK TABLES `Encodes` WRITE;
-INSERT INTO `Encodes` VALUES ('UTF-8','Codificación Utf-8');
-INSERT INTO `Encodes` VALUES ('ISO-8859-1','Codificación Iso-8859-1');
+INSERT INTO `Encodes` VALUES ('UTF-8','UTF-8 Encoding');
+INSERT INTO `Encodes` VALUES ('ISO-8859-1','ISO-8859-1 Encoding');
 UNLOCK TABLES;
 
--- Table structure for table RelStrdocNode
 
-DROP TABLE IF EXISTS `RelStrdocNode`;
-CREATE TABLE RelStrdocNode (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- Table structure for table RelStrdocXimlet
-
-DROP TABLE IF EXISTS `RelStrdocXimlet`;
-CREATE TABLE RelStrdocXimlet (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
 
 -- Table structure for table RelStrdocTemplate
 
 DROP TABLE IF EXISTS `RelStrdocTemplate`;
 CREATE TABLE RelStrdocTemplate (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
+  id int(12) unsigned NOT NULL auto_increment,
+  source int(12) unsigned NOT NULL default '0',
+  target int(12) unsigned NOT NULL default '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY `rel` (`source`,`target`),
+  INDEX `RelStrdocTemplate_source` (`source`),
+  INDEX `RelStrdocTemplate_target` (`target`)
+) ENGINE=MyISAM;
 
 -- Table structure for table RelSectionXimlet
 
 DROP TABLE IF EXISTS `RelSectionXimlet`;
 CREATE TABLE RelSectionXimlet (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
+  id int(12) unsigned NOT NULL auto_increment,
+  source int(12) unsigned NOT NULL default '0',
+  target int(12) unsigned NOT NULL default '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY `rel` (`source`,`target`)
+) ENGINE=MyISAM;
 
 -- Table structure for table RelBulletinXimlet
 
 DROP TABLE IF EXISTS `RelBulletinXimlet`;
 CREATE TABLE RelBulletinXimlet (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
+  id int(12) unsigned NOT NULL auto_increment,
+  source int(12) unsigned NOT NULL default '0',
+  target int(12) unsigned NOT NULL default '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY `rel` (`source`,`target`)
+) ENGINE=MyISAM;
+
+-- Table structure for table RelNode2Asset
+
+DROP TABLE IF EXISTS `RelNode2Asset`;
+CREATE TABLE RelNode2Asset (
+  id int(12) unsigned NOT NULL auto_increment,
+  source int(12) unsigned NOT NULL default '0',
+  target int(12) unsigned NOT NULL default '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY `rel` (`source`,`target`),
+  INDEX `RelXml2Xml_source` (`source`),
+  INDEX `RelXml2Xml_target` (`target`)
+) ENGINE=MyISAM;
 
 -- Table structure for table RelStrdocAsset
 
-DROP TABLE IF EXISTS `RelStrdocAsset`;
-CREATE TABLE RelStrdocAsset (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- Table structure for table RelStrdocCss
-
-DROP TABLE IF EXISTS `RelStrdocCss`;
-CREATE TABLE RelStrdocCss (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- Table structure for table RelStrdocScript
-
-DROP TABLE IF EXISTS `RelStrdocScript`;
-CREATE TABLE RelStrdocScript (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- Table structure for table RelStrdocStructure
-
-DROP TABLE IF EXISTS `RelStrdocStructure`;
-CREATE TABLE RelStrdocStructure (
-	id int(12) unsigned NOT NULL auto_increment,
-	source int(12) unsigned NOT NULL default '0',
-	target int(12) unsigned NOT NULL default '0',
-	PRIMARY KEY (id),
-	UNIQUE KEY `rel` (`source`,`target`)
-) ENGINE=MYISAM;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Graphs`
---
-
-DROP TABLE IF EXISTS `Graphs`;
-CREATE TABLE IF NOT EXISTS `Graphs` (
-  `id` int(11) NOT NULL auto_increment,
-  `label` varchar(255) NOT NULL,
-  `width` int(11) default NULL,
-  `height` int(11) default NULL,
-  `description` varchar(255) default NULL,
-  `callback` varchar(255) default NULL,
-  `series` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
+DROP TABLE IF EXISTS `RelXml2Xml`;
+CREATE TABLE RelXml2Xml (
+  id int(12) unsigned NOT NULL auto_increment,
+  source int(12) unsigned NOT NULL default '0',
+  target int(12) unsigned NOT NULL default '0',
+  PRIMARY KEY (id),
+  UNIQUE KEY `rel` (`source`,`target`),
+  INDEX `RelXml2Xml_source` (`source`),
+  INDEX `RelXml2Xml_target` (`target`)
 ) ENGINE=MyISAM;
 
--- --------------------------------------------------------
 
---
--- Table structure for table `GraphSerieProperties`
---
-
-DROP TABLE IF EXISTS `GraphSerieProperties`;
-CREATE TABLE IF NOT EXISTS `GraphSerieProperties` (
-  `id` int(11) NOT NULL auto_increment,
-  `IdGraphSerie` int(11) NOT NULL,
-  `property` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `GraphSeries`
---
-
-DROP TABLE IF EXISTS `GraphSeries`;
-CREATE TABLE IF NOT EXISTS `GraphSeries` (
-  `id` int(11) NOT NULL auto_increment,
-  `IdGraph` int(11) NOT NULL,
-  `Label` varchar(255) NOT NULL,
-  `SerieRepresentation` int(11) default NULL,
-  `SerieType` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `GraphSerieValues`
---
-
-DROP TABLE IF EXISTS `GraphSerieValues`;
-CREATE TABLE IF NOT EXISTS `GraphSerieValues` (
-  `id` int(11) NOT NULL auto_increment,
-  `IdGraphSerie` int(11) NOT NULL,
-  `x` double default NULL,
-  `y` double default NULL,
-  `TimeStamp` timestamp NULL default CURRENT_TIMESTAMP,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;
 
 --
 -- Table structure for table `PortalVersions`
@@ -3937,12 +3798,12 @@ CREATE TABLE IF NOT EXISTS `GraphSerieValues` (
 
 DROP TABLE IF EXISTS `PortalVersions`;
 CREATE TABLE `PortalVersions` (
-	`id` int(12) unsigned NOT NULL auto_increment,
-	`IdPortal` int(12) unsigned default '0',
-	`Version` int(12) unsigned default '0',
-	`TimeStamp` int(12) unsigned default '0',
-	PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id` int(12) unsigned NOT NULL auto_increment,
+  `IdPortal` int(12) unsigned default '0',
+  `Version` int(12) unsigned default '0',
+  `TimeStamp` int(12) unsigned default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `RelFramesPortal`
@@ -3950,41 +3811,41 @@ CREATE TABLE `PortalVersions` (
 
 DROP TABLE IF EXISTS `RelFramesPortal`;
 CREATE TABLE `RelFramesPortal` (
-	`id` int(12) unsigned NOT NULL auto_increment,
-	`IdPortalVersion` int(12) unsigned default '0',
-	`IdFrame` int(12) unsigned default '0',
-	PRIMARY KEY  (`id`),
-	UNIQUE KEY `PortalFrame` (`IdPortalVersion`,`IdFrame`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id` int(12) unsigned NOT NULL auto_increment,
+  `IdPortalVersion` int(12) unsigned default '0',
+  `IdFrame` int(12) unsigned default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `PortalFrame` (`IdPortalVersion`,`IdFrame`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
 DROP TABLE IF EXISTS `List`;
 CREATE TABLE `List` (
-	`id` INT NOT NULL AUTO_INCREMENT ,
-	`IdList` INT NOT NULL ,
-	`Name` VARCHAR( 250 ) NOT NULL ,
-	`Description` VARCHAR( 250 ) NULL ,
-	PRIMARY KEY ( `id` )
-) ENGINE = MYISAM;
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `IdList` INT NOT NULL ,
+  `Name` VARCHAR( 250 ) NOT NULL ,
+  `Description` VARCHAR( 250 ) NULL ,
+  PRIMARY KEY ( `id` )
+) ENGINE = MyISAM;
 
 
 DROP TABLE IF EXISTS `List_Label`;
 CREATE TABLE `List_Label` (
-	`id` INT NOT NULL AUTO_INCREMENT ,
-	`Name` VARCHAR( 250 ) NOT NULL ,
-	`Description` VARCHAR( 250 ) NULL ,
-	PRIMARY KEY ( `id` )
-) ENGINE = MYISAM;
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `Name` VARCHAR( 250 ) NOT NULL ,
+  `Description` VARCHAR( 250 ) NULL ,
+  PRIMARY KEY ( `id` )
+) ENGINE = MyISAM;
 
 
 DROP TABLE IF EXISTS `RelVersionsLabel`;
 CREATE TABLE `RelVersionsLabel` (
-	`id` int(12) unsigned NOT NULL auto_increment,
-	`idVersion` int(12) unsigned default '0',
-	`idLabel` int(12) unsigned default '0',
-	PRIMARY KEY  (`id`),
-	UNIQUE KEY `VersionsLabelRest` (`idVersion`,`idLabel`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id` int(12) unsigned NOT NULL auto_increment,
+  `idVersion` int(12) unsigned default '0',
+  `idLabel` int(12) unsigned default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `VersionsLabelRest` (`idVersion`,`idLabel`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 
 DROP TABLE IF EXISTS `NodeSets`;
@@ -4037,9 +3898,9 @@ CREATE TABLE `Namespaces` (
   `type` varchar(255) NOT NULL,
   `nemo` varchar(255) NOT NULL,
   `uri` varchar(255) NOT NULL,
-  `recursive` int(8) NOT NULL DEFAULT '0',
+  `recursive` int(8) NOT NULL DEFAULT 0,
   `category` varchar(255) NOT NULL,
-  `isSemantic` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `isSemantic` tinyint(1) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`idNamespace`),
   UNIQUE KEY `Nemo` (`nemo`),
   UNIQUE KEY `Type` (`type`)
@@ -4049,25 +3910,25 @@ INSERT INTO Namespaces (service, type, nemo, uri, recursive, category,isSemantic
 VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",0);
 
 -- Table structure for table RelNodeMetadata
-DROP TABLE IF EXISTS `RelNodeMetadata`;
-CREATE TABLE RelNodeMetadata (
-        idRel int(12) unsigned NOT NULL auto_increment,
-        idNode int(12) unsigned NOT NULL default '0',
-        idMetadata int(12) unsigned NOT NULL default '0',
-        PRIMARY KEY (idRel),
-        UNIQUE KEY `rel` (`idNode`,`idMetadata`)
-) ENGINE=MYISAM;
+DROP TABLE IF EXISTS `RelNodeMetadataCore`;
+CREATE TABLE RelNodeMetadataCore (
+  idRel int(12) unsigned NOT NULL auto_increment,
+  idNode int(12) unsigned NOT NULL default 0,
+  idMetadata int(12) unsigned NOT NULL default 0,
+  PRIMARY KEY (idRel),
+  UNIQUE KEY `rel` (`idNode`,`idMetadata`)
+) ENGINE=MyISAM;
 
 --
 -- Table structure for table RelNodeVersionMetadataVersion
 --
 DROP TABLE IF EXISTS `RelNodeVersionMetadataVersion`;
 CREATE TABLE RelNodeVersionMetadataVersion (
-        id int(12) unsigned NOT NULL auto_increment,
-        idrnm int(12) unsigned NOT NULL,
-        idNodeVersion int(12) unsigned NOT NULL default '0', 
-        idMetadataVersion int(12) unsigned NOT NULL default '0', 
-        PRIMARY KEY (id),
-        UNIQUE KEY `rel` (`idNodeVersion`,`idMetadataVersion`)
-) ENGINE=MYISAM;
+  id int(12) unsigned NOT NULL auto_increment,
+  idrnm int(12) unsigned NOT NULL,
+  idNodeVersion int(12) unsigned NOT NULL default 0,
+  idMetadataVersion int(12) unsigned NOT NULL default 0,
+  PRIMARY KEY (id),
+  UNIQUE KEY `rel` (`idNodeVersion`,`idMetadataVersion`)
+) ENGINE=MyISAM;
 

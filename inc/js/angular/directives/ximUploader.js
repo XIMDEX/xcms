@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-    .directive('ximUploader', function () {
+    .directive('ximUploader', [function () {
         return {
             replace: true,
             restrict: 'E',
@@ -67,7 +67,7 @@ angular.module('ximdex.common.directive')
     	    	});
 
     	    	$scope.$on('flow::complete', function () {
-                    $scope.$emit('nodeModified', $scope.nodeId);
+                    $scope.$emit('nodemodified', $scope.nodeId);
     	    	});
 
     	    	$scope.uploadFiles = function() {
@@ -133,4 +133,4 @@ angular.module('ximdex.common.directive')
                 }
             }]
         }
-    });
+    }]);

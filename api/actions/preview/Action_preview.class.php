@@ -142,7 +142,6 @@ class Action_preview extends AbstractAPIAction implements SecuredAction {
                 // Specific FilterMacros View for previsuals:
                 $viewFilterMacrosPreview = new View_FilterMacrosPreview();
                 $file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
-                $hash = basename($file);
 
 		if($json==true){
 			$content = FsUtils::file_get_contents($file);
@@ -158,37 +157,6 @@ class Action_preview extends AbstractAPIAction implements SecuredAction {
 			echo $content;
 		}	
     	}
-
-	/**
-         * Deletes docxap tag
-         */
-        private function _normalizeXmlDocument($xmldoc) {
-                $xmldoc = \Ximdex\Utils\String::stripslashes( $xmldoc);
-
-                $doc = new DOMDocument();
-                $doc->loadXML($xmldoc);
-                $doc->encoding = 'UTF-8';
-                $docxap = $doc->getElementsByTagName('docxap');
-
-                if(!$docxap){
-			return $xmldoc;
-		}
-
-                $docxap = $docxap->item(0);
-
-                $childrens = $docxap->childNodes;
-                $l = $childrens->length;
-
-                $xmldoc = '';
-                for ($i=0; $i<$l; $i++) {
-                        $child = $childrens->item($i);
-                        if ($child->nodeType == 1) {
-                                $xmldoc .= $doc->saveXML($child) . "";
-                        }
-                }
-
-                return $xmldoc;
-        }
 
 	/**
      	* <p>Checks whether the required parameters are present in the request

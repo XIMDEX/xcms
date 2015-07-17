@@ -1,3 +1,11 @@
 a{
     cursor: pointer;
 }
+.accordion-toggle{
+    width: 100%;
+    display: block;
+    padding: 10px 15px;
+}
+.panel-heading{
+    padding: 0;
+}

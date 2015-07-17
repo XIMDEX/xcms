@@ -338,7 +338,7 @@
 				font-size: 1.08em;
 
 				&::before{
-					content: attr(data-tooltip);
+					content: attr(data-xtooltip);
 					@extend %tooltip;
 					margin-left: -1em;
                     top: 4em;

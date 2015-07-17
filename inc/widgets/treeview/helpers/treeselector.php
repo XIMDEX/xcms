@@ -58,7 +58,6 @@ var xmdRoot = "<?php echo $urlroot; ?>/xmd/"
 <script type="text/javascript" src="<?php echo $urlroot; ?>/inc/widgets/treeview/js/xtree.js"></script>
 <script type="text/javascript" src="<?php echo $urlroot; ?>/inc/widgets/treeview/js/xmlextras.js"></script>
 <script type="text/javascript" src="<?php echo $urlroot; ?>/inc/widgets/treeview/js/xloadtree.js"></script>
-<script src="<?php echo $urlroot; ?>/xmd/js/ximdex_common.js" type="text/javascript"></script>
 <link type="text/css" rel="stylesheet" href="<?php echo $urlroot; ?>/xmd/style/style.css" />
 <link type="text/css" rel="stylesheet" href="<?php echo $urlroot; ?>/inc/widgets/treeview/css/xtree.css" />
 

@@ -98,6 +98,12 @@
 .xim-tagsinput-type-dOrganisation::before, .type-dOrganisation::before {
   content: "\0027"; }
 
+.xim-tagsinput-type-dCreativeWork::before, .type-dCreativeWork::before {
+  content: "\002c"; }
+
+.xim-tagsinput-type-dOthers::before, .type-dOthers::before {
+  content: "\e604"; }
+
 .xim-tagsinput-type-zImage::before, .type-zImage::before, .uploader .image::before {
   content: "\0025"; }
 

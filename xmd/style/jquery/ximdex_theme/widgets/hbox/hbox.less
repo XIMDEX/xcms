@@ -1,0 +1,151 @@
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ *  @author Ximdex DevTeam <dev@ximdex.com>
+ *  @version $Revision$
+ */
+
+.filter-tree {
+  position: absolute;
+  top: 90px;
+  left: 5px;
+  width: 100%;
+  padding: 0px 20px 0px 15px;
+
+  &:after {
+    content: '\0073';
+    position: absolute;
+    top: 5px;
+    right: 30px;
+
+    font-family: 'ximdex_icons' !important;
+    font-size: 14px;
+    color: #999;
+  }
+
+  .form-control {
+    height: 31px;
+    padding-right: 30px;
+
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #999;
+    border-color: #CCC;
+    box-shadow: none;
+  }
+}
+
+/* sideabar buttons */
+button.btn-sidebar {
+  position: absolute;
+  top: 45px;
+  padding: 5px 7px 4px 6px !important;
+
+  &.btn {
+    background-color: #006B6C;
+    border-color: #006B6C;
+    background-image: none;
+    text-shadow: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      z-index: 0;
+      background-color: #47B1A3;
+      border-color: #47B1A3;
+      background-image: none;
+    }
+  }
+
+  &:before {
+    font-family: 'ximdex_icons' !important;
+    line-height: 1.2;
+  }
+
+  &.btn-view {
+    right: 51px;
+
+    &:before {
+      content: "\e600";
+    }
+
+    &.btn-view-list {
+      &:before {
+        content: '\e011';
+      }
+    }
+  }
+
+  &.btn-anchor {
+    right: 16px;
+
+    &:before {
+      content: "\e037";
+    }
+
+    &.tie {
+      &:before {
+        content: "\e60f";
+      }
+    }
+  }
+}
+
+.hbox {
+  height: 98.7%;
+  margin: 3px 7px 3px 7px;
+  clear: both;
+  overflow: hidden; /* must visible for tooltips */
+}
+
+.hbox-panel-container {
+  height: 100%;
+  padding-bottom: 7px;
+  float: left;
+
+  border: none;
+
+  &.hbox-panel-hideable {
+    position: relative;
+    overflow: visible !important;
+  }
+}
+
+.hbox-panel {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  float: left;
+  overflow: hidden; /* must visible for tooltips */
+}
+
+.hbox-panel-sep {
+  width: 10px;
+  height: 100%;
+  float: right;
+
+  overflow: hidden;
+  background: url("../../../../../images/browser/hbox/hbox-sep.png") no-repeat center center;
+
+  &:hover {
+    cursor: w-resize;
+  }
+}

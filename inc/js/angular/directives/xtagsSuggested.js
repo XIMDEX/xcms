@@ -29,6 +29,7 @@ angular.module('ximdex.module.xtags')
             scope: {
                 nodeId: '=ximNodeId',
                 selectCallback: '&ximOnSelect',
+                documentTags: '=ximDocumentTags',
                 filter: '&ximTagsFilter'
             },
             restrict: 'E',
@@ -44,8 +45,22 @@ angular.module('ximdex.module.xtags')
             			$scope.tags = [];
             			for (var set in data.semantic) {
         			        for (tag in data.semantic[set]) {
-                                if(data.semantic[set].hasOwnProperty(tag)){
-        			        	    data.semantic[set][tag].Name = tag;
+                                if(data.semantic[set].hasOwnProperty(tag) && !isInDocumentTags(tag)){
+        			        	    /*data.semantic[set][tag].Name = tag;
+                                    data.semantic[set][tag].Image = "";
+                                    data.semantic[set][tag].Description = "";
+                                    data.semantic[set][tag].Link = "";
+                                    if(data.semantic[set][tag]["others"] && data.semantic[set][tag]["others"]["entities"][0]){
+                                        if(data.semantic[set][tag]["others"]["entities"][0]["foaf:depiction"]){
+                                            data.semantic[set][tag].Image = data.semantic[set][tag]["others"]["entities"][0]["foaf:depiction"];
+                                        }
+                                        if(data.semantic[set][tag]["others"]["entities"][0]["rdfs:comment"]){
+                                            data.semantic[set][tag].Description = data.semantic[set][tag]["others"]["entities"][0]["rdfs:comment"]["value"];
+                                        }
+                                        if(data.semantic[set][tag]["others"]["entities"][0]["uri"]){
+                                            data.semantic[set][tag].Link = data.semantic[set][tag]["others"]["entities"][0]["uri"];
+                                        }
+                                    }*/
                                     $scope.tags.push(data.semantic[set][tag]);
                                 }
         			        }
@@ -56,6 +71,16 @@ angular.module('ximdex.module.xtags')
             		}
                     $scope.loading=false;
             	});
+
+                var isInDocumentTags = function(tagName){
+                    for(var i in $scope.documentTags){
+                        if($scope.documentTags[i].Name == tagName){
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
             	$scope.selectTag = function(tag){
             		$scope.selectCallback({tag:tag});
             	}

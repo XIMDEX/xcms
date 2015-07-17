@@ -145,37 +145,6 @@ class Action_channel extends AbstractAPIAction implements SecuredAction {
     }
 
     /**
-     * <p>Checks whether the required parameters are present in the request
-     * and modifies the response accordingly</p>
-     * 
-     * @param $request the request
-     * @param $response the response
-     * @return true if all required parameters are present and valid and false otherwise
-     */
-    private function checkParameters($request, $response) {
-
-
-        $node = new Node($nodeid);
-
-        if ($nodeid == null) {
-            $this->createErrorResponse('The nodeid parameter is missing');
-            return false;
-        }
-        if ($node->GetID() == null) {
-            $this->createErrorResponse('The node ' . $nodeid . ' does not exist');
-            return false;
-        }
-
-        $hasPermissionOnNode = $user->HasPermissionOnNode($nodeid, "View all nodes");
-        if (!$hasPermissionOnNode) {
-            $this->createErrorResponse('The user does not have permission on node ' . $nodeid);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * <p>Gets the registered channels or a specific channel if a channel id is given</p>
      * @param int $channel The chanel id
      * @return array containing the requested channels

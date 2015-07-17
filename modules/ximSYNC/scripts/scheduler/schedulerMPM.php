@@ -42,7 +42,6 @@ ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
 ModulesManager::file('/inc/sync/Mutex.class.php');
-ModulesManager::file('/inc/Profiler.class.php', 'ximPROFILER');
 ModulesManager::file('/inc/MPM/MPMManager.class.php');
 ModulesManager::file('/inc/MPM/MPMProcess.class.php');
 
@@ -73,8 +72,7 @@ function mainLoop()
     $syncStatObj = new SynchronizerStat();
 
     //Init
-    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
-        __LINE__, "INFO", 8, _("Starting Scheduler") . " $synchro_pid");
+    $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Starting Scheduler") . " $synchro_pid");
     //Adquire the mutex
     $mutex = new Mutex( \App::getValue( "AppRoot") .  \App::getValue("TempRoot") . "/scheduler.lck");
     if (!$mutex->acquire()) {

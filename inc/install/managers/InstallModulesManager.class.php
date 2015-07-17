@@ -110,6 +110,7 @@ class InstallModulesManager extends InstallManager
         }
         $str .= "\n?>";
         $result = FsUtils::file_put_contents($fileName, $str);
+        chmod($fileName, 0775);
         return $result;
     }
 

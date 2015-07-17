@@ -185,7 +185,6 @@ class Action_poolPreview extends ActionAbstract {
 				
 				if (is_null($versionid)){
 					array_push($sms, _("Id version has not been found in the association of labels with versions"));
-					break;
 				}
 				XMD_Log::info(_("Labels are going to be associated with version") . $versionid);
 
@@ -252,26 +251,7 @@ class Action_poolPreview extends ActionAbstract {
 		}
 		return $processedNodeList;
 	}
-	
-	private function getLastVersion($idNode=null) {
-		if ($idNode == null){
-			$idNode = $this->request->getParam('idnode');
-		}
-    	
-    	if (!($idNode > 0)) {
-    		return NULL;
-    	} else {
-    		$node = new Node($idNode);
-    		if (!($node->get('IdNode') > 0)) {
-    			return NULL;
-    		}
-    	}
-		$datafactory = new DataFactory($idNode);
-		return $datafactory->GetLastVersionId();
-	}
-	
-	
-	
+
 	private function insertJsFiles(){
 		
 		//jquery core

@@ -43,7 +43,6 @@ class SmartyRenderer extends AbstractRenderer {
 	 * @return unknown_type
 	 */
 	function SmartyRenderer() {
-		$diplayEncoding = \App::getValue( 'displayEncoding');
 		parent::__construct();
 	}
 

@@ -119,8 +119,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $xmlFile = $this->_base_url . '&method=getXmlFile&view=' . $view;
         $actionUrlShowPost = $this->_base_url . '&method=showPost';
 
-        $actionURL = '/actions/xmleditor2';
-        $kupuURL = '/extensions/kupu';
+        $actionURL      = '/actions/xmleditor2';
+        $kupuURL        = '/extensions/kupu';
 
         $jsFiles = array(
             Extensions::JQUERY,
@@ -128,6 +128,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             Extensions::JQUERY_PATH . '/js/fix.jquery.getters.js',
             Extensions::JQUERY_PATH . '/js/fix.jquery.parsejson.js',
             Extensions::JQUERY_PATH . '/plugins/jquery.json/jquery.json-2.2.min.js',
+            Extensions::BOOTSTRAP   . '/js/bootstrap.min.js',
+
             '/inc/js/helpers.js',
             '/inc/js/sess.js',
             '/inc/js/collection.js',
@@ -137,8 +139,10 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             '/inc/widgets/select/js/ximdex.select.js',
             '/inc/js/i18n.js',
             '/extensions/angular/angular.min.js',
+
             $actionURL . '/js/angular/app.js',
             $actionURL . '/js/angular/ximOntologyBrowser.js',
+
             '/extensions/d3js/d3.v3.min.js',
             //'/inc/js/angular/app.js',
             '/inc/js/angular/services/xTranslate.js',
@@ -227,6 +231,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $actionURL . '/js/drawers/TableWizardDrawer.class.js',
             $actionURL . '/js/drawers/XimletDrawer.class.js',
             $actionURL . '/js/drawers/XimlinkDrawer.class.js',
+            $actionURL . '/js/drawers/XimimageDrawer.class.js',
 
             /* ####### TOOLBOXES ########## */
 
@@ -266,16 +271,24 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
 
-        $actionURL = \App::getValue( 'UrlRoot') . $actionURL;
-        $kupuURL = \App::getValue( 'UrlRoot') . $kupuURL;
+        $extensionsURL  = \App::getValue( 'UrlRoot') . '/extensions';
+        $actionURL      = \App::getValue( 'UrlRoot') . $actionURL;
+        $kupuURL        = \App::getValue( 'UrlRoot') . $kupuURL;
 
         $cssFiles = array(
             \App::getValue( 'UrlRoot') . '/xmd/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
             $actionURL . '/views/common/css/kupustyles.css',
             $actionURL . '/views/common/css/toolboxes.css',
             $actionURL . '/views/common/css/treeview.css',
+
             $kupuURL . '/common/kupudrawerstyles.css',
+
             $actionURL . '/views/common/css/xlinks.css',
+            $actionURL . '/views/common/css/ximages.css',
+            $actionURL . '/views/common/css/popover.css',
+
+            $extensionsURL . '/bootstrap/dist/css/bootstrap.min.css',
+
 //future		$actionURL . '/views/common/css/colorpicker.css',
             \App::getValue( 'UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
             \App::getValue( 'UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',
@@ -296,7 +309,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $namespaces = json_encode($this->getAllNamespaces());
         $relTags = new RelTagsNodes();
-        $tags = json_encode($relTags->getTags($idnode));
+        $tags = str_replace("'",'&#39;',
+            json_encode($relTags->getTags($idnode), JSON_UNESCAPED_UNICODE));
 
         $onloadfunctions = sprintf("kupu = startKupu({%s});", implode(", ", $options));
         $values = array('nodeid' => $idnode,
@@ -338,34 +352,6 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $content = preg_replace('/{\$checkspelling}/', $checkSpelling, $content);
         return $content;
     }
-
-    private function transformHTML2XML($idnode, $htmldoc)
-    {
-
-        // Getting HTML with the changes & initial XML content
-        $node = new Node($idnode);
-        $xmlOrigenContent = $node->class->GetRenderizedContent();
-
-        // Loading XML & HTML content into respective DOM Documents
-        $docXmlOrigen = new DOMDocument();
-        $docXmlOrigen->loadXML($xmlOrigenContent);
-        $docHtml = new DOMDocument();
-        $docHtml->loadHTML(\Ximdex\Utils\String::stripslashes( $htmldoc));
-
-        // Transforming HTML into XML
-        $htmlTransformer = new HTML2XML();
-        $htmlTransformer->loadHTML($docHtml);
-        $htmlTransformer->loadXML($docXmlOrigen);
-        $htmlTransformer->setXimNode($idnode);
-
-        $xmldoc = null;
-        if ($htmlTransformer->transform()) {
-            $xmldoc = $htmlTransformer->getXmlContent();
-        }
-
-        return $xmldoc;
-    }
-
 
     public function validateSchema($idnode, $xmldoc)
     {
@@ -555,7 +541,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $pipelineManager = new PipelineManager();
         $content = $pipelineManager->getCacheFromProcessAsContent($lastVersion, 'StrDocToXedit', $args);
-        exec(sprintf('rm -f %s/data/tmp/preview_%s_*', App::getValue('AppRoot'), $_GET["nodeid"]));
+        exec(sprintf('rm -f %s%s/preview_%s_*', App::getValue('AppRoot'),App::getValue('TempRoot'), $_GET["nodeid"]));
         return $content;
     }
 
@@ -627,8 +613,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     {
         if (ModulesManager::isEnabled('Xowl')) {
             if (\App::getValue( 'EnricherKey') === NULL || \App::getValue( 'EnricherKey') == '') {
-                XMD_Log::error(_("EnricherKey configuration value has not been defined"));
-                $resp = array("status" => "no  EnricherKey defined");
+                XMD_Log::error(_("Xowl_token configuration value has not been defined"));
+                $resp = array("status" => "No  Xowl_token defined", "videourl" => "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>");
             } else {
                 $ontologyService = new OntologyService();
                 $resp = $ontologyService->suggest($content);

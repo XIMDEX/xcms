@@ -25,7 +25,7 @@
 
 //Slide animation for ngHide/Show
 angular.module('ximdex')
-	.animation('.slide-item', function() {
+	.animation('.slide-item', [function() {
 		var runTheAnimation = function(element, done){
 			done();
 		}
@@ -62,4 +62,4 @@ angular.module('ximdex')
 		      return function onEnd(element, done) { };
 		    }
 		  }
-});
+}]);

@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-  .directive('contenteditable', function() {
+  .directive('contenteditable', [function() {
     return {
       restrict: 'A',
       require: 'ngModel',
@@ -53,4 +53,4 @@ angular.module('ximdex.common.directive')
         }
       }
     };
-  });
+  }]);

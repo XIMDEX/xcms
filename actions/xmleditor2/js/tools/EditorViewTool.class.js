@@ -30,13 +30,16 @@ function EditorViewTool() {
 
    	this.VIEW_TREE = 'tree';
    	this.VIEW_DESIGN = 'normal';
+    this.VIEW_FORM = 'form';
    	this.VIEW_REMOTE = 'pro'; //Why is not called as "remote"?
+
 
 	this.editor = null;
 	this._body = null;
 
 	this.treeButton = null;
 	this.designButton = null;
+        this.formButton = null;
 	this.remoteButton = null;
 
     this.initialize = function(editor) {
@@ -49,10 +52,9 @@ function EditorViewTool() {
 		editor.registerTool('treeview', this.treeButton);
         this.designButton = new KupuButton('kupu-designview-button', this._getSetViewWrapper(this.VIEW_DESIGN));
 		editor.registerTool('designview', this.designButton);
-        //this.remoteButton = new KupuButton('kupu-remoteview-button', this._getSetViewWrapper(this.VIEW_REMOTE));
-		//editor.registerTool('remoteview', this.remoteButton);
-
-		this.activateButtons();
+        this.formButton = new KupuButton('kupu-formview-button', this._getSetViewWrapper(this.VIEW_FORM));
+		editor.registerTool('formview', this.formButton);
+        this.activateButtons();
     };
 
     this._getSetViewWrapper = function(view) {
@@ -68,6 +70,7 @@ function EditorViewTool() {
 
 		$(this.treeButton.button).removeClass('kupu-treeview-pressed').addClass('kupu-treeview');
 		$(this.designButton.button).removeClass('kupu-designview-pressed').addClass('kupu-designview');
+                $(this.formButton.button).removeClass('kupu-formview-pressed').addClass('kupu-formview');
 		//$(this.remoteButton.button).removeClass('kupu-remoteview-pressed').addClass('kupu-remoteview');
 
 		switch (view) {
@@ -76,6 +79,9 @@ function EditorViewTool() {
 				break;
 			case this.VIEW_DESIGN:
 				$(this.designButton.button).addClass('kupu-designview-pressed').removeClass('kupu-designview');
+				break;
+                        case this.VIEW_FORM:
+				$(this.formButton.button).addClass('kupu-formview-pressed').removeClass('kupu-formview');
 				break;
 			case this.VIEW_REMOTE:
 				//$(this.remoteButton.button).addClass('kupu-remoteview-pressed').removeClass('kupu-remoteview');

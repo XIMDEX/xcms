@@ -8,14 +8,15 @@ function XimdocDrawerTool() {
 
         this tool has to (and should!) only be instantiated once
     */
-    	this.drawers = null;
-    	this.current_drawer = null;
-    	this.current_id = null;
+    	this.drawers           = null;
+    	this.current_drawer    = null;
+    	this.current_id        = null;
 
     	this.initialize = function(editor) {
-        	this.editor = editor;
-        	this.drawers = {};
-        	this.isIE = this.editor.getBrowserName() == 'IE';
+
+        	this.editor    = editor;
+        	this.drawers   = {};
+        	this.isIE      = this.editor.getBrowserName() == 'IE';
         	// this essentially makes the drawertool a singleton
         	window.ximdocdrawertool = this;
     	};
@@ -46,9 +47,9 @@ function XimdocDrawerTool() {
     	};
 
     	this.closeDrawer = function(button) {
-        	if (!this.current_drawer) {
-            		return;
-        	};
+
+        	if (!this.current_drawer) return;
+
         	this.current_drawer.hide();
         	//this.current_drawer.editor.resumeEditing();
         	this.current_drawer = null;

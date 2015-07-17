@@ -43,7 +43,6 @@ class Action_search extends AbstractAPIAction implements SecuredAction {
             return;
         }
 
-	$nodeInfo=array();
         $nodeInfo = $this->getNodeInfo($nodename);
 
         $this->responseBuilder->ok()->content($nodeInfo)->build();

@@ -23,7 +23,7 @@
  *  @version $Revision$
  */
 angular.module('ximdex.common.directive')
-  .directive('ximDynamicName', function($compile, $parse) {
+  .directive('ximDynamicName',["$compile", "$parse", function($compile, $parse) {
     return {
       restrict: 'A',
       terminal: true,
@@ -35,4 +35,4 @@ angular.module('ximdex.common.directive')
         $compile(elem)(scope);
       }
     };
-  });
+  }]);

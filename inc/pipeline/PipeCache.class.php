@@ -34,12 +34,10 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeCaches_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipePropertyValues.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/graphs/GraphManager.class.php');
-
 
 define ('CACHE_FOLDER', '/data/cache/pipelines/');
 define ('DATA_FOLDER', '/data/files/');
-define ('TMP_FOLDER', '/data/tmp/');
+define ('TMP_FOLDER', App::getValue('TempRoot')."/");
 /**
  *
  * @brief Support the Cache system for the pipelines
@@ -70,10 +68,8 @@ class PipeCache extends PipeCaches_ORM {
 	 * @param array $args
 	 */
 	function load($idVersion, $idTransition, $args = NULL, $depth = 0) {
-		GraphManager::createSerie('PipelineGraph', 'Cache load request');
-		GraphManager::createSerieValue('PipelineGraph', 'Cache load request', $idVersion, $idTransition);
 
-		// Busqueda de la cache de lo que tenemos
+		// Search in cache what we have
 		if(!isset($args['DISABLE_CACHE']) || $args['DISABLE_CACHE'] === false) {
 			$this->_args = $args;
 		 	$results = $this->_getCache($idVersion, $idTransition);
@@ -83,12 +79,10 @@ class PipeCache extends PipeCaches_ORM {
 		 		if ($idCache) {
 		 			$this->PipeCache($idCache);
 			 		if ($this->get('id') > 0) {
-			 			XMD_Log::info("PipeCache: Se ha estimado la cache correctamente a partir de una regeneraci�n anterior Version: $idVersion Transition: $idTransition");
-						GraphManager::createSerie('PipelineGraph', "Cache hit lvl $depth");
-						GraphManager::createSerieValue('PipelineGraph', "Cache hit lvl $depth", $idVersion, $idTransition);
+			 			XMD_Log::info("PipeCache: Cache was correctly estimated for a previous version. Version: $idVersion Transition: $idTransition");
 						return $this->_getPointer();
 			 		} else {
-			 			XMD_Log::fatal("PipeCache: Se ha estimado una cache que despu�s ha resultado no existir Version: $idVersion Transition: $idTransition");
+			 			XMD_Log::fatal("PipeCache: A cache was estimated but it doesn't exist. Version: $idVersion Transition: $idTransition");
 			 			return NULL;
 			 		}
 		 		}
@@ -122,9 +116,8 @@ class PipeCache extends PipeCaches_ORM {
 	 								XMD_Log::info('PipeCache Successfully loading :' . $previousVersion);
 	 								// copying the content to new cache
 						 			$pointer = $pipeCache->_getPointer();
+
 						 			$this->store($idVersion, $idTransition, $pointer, $args);
-									GraphManager::createSerie('PipelineGraph', "Cache hit lvl $depth");
-									GraphManager::createSerieValue('PipelineGraph', "Cache hit lvl $depth", $idVersion, $idTransition);
 						 			return $pointer;
 						 		} else {
 						 			XMD_Log::info('PipeCache (1) Previous cache version is not generated, regenarating for current version. :' . $previousVersion);
@@ -152,18 +145,15 @@ class PipeCache extends PipeCaches_ORM {
 	 		$cache = new PipeCache();
 			$pointer = $cache->load($idVersion, $previousTransition, $args, $depth + 1);
 			if ($pointer) {
-				GraphManager::createSerie('PipelineGraph', "Cache generation");
-				GraphManager::createSerieValue('PipelineGraph', "Cache generation", $idVersion, $idTransition);
 				return $this->_transition->generate($idVersion, $pointer, $args);
 			}
 	 	} else {
 			if(!isset($args['DISABLE_CACHE']) || $args['DISABLE_CACHE'] === false) {
 		 		$version = new Version($idVersion);
 		 		$pointer = XIMDEX_ROOT_PATH . DATA_FOLDER . $version->get('File');
-		 		GraphManager::createSerieValue('PipelineGraph', 'Cache miss', $idVersion, $idTransition);
 			} else {
                 if(isset($_GET["nodeid"])){
-                    $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
+                    $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . "preview_" . $_GET["nodeid"] . "_" . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);                    
                 }else{
                     $pointer = XIMDEX_ROOT_PATH . TMP_FOLDER . FsUtils::getUniqueFile(XIMDEX_ROOT_PATH . TMP_FOLDER);
                 }
@@ -171,12 +161,10 @@ class PipeCache extends PipeCaches_ORM {
 					XMD_Log::error('PipeCache error, no content to write.');
 		 			return null;
 				} else if (!FsUtils::file_put_contents($pointer, $args['CONTENT'])) {
-		 			XMD_Log::error('PipeCache error writting file content');
+		 			XMD_Log::error('PipeCache error writing file content');
 		 			return null;
 		 		}
 			}
-			GraphManager::createSerie('PipelineGraph', "Cache generation");
-			GraphManager::createSerieValue('PipelineGraph', "Cache generation", $idVersion, $idTransition);
 			return $this->_transition->generate($idVersion, $pointer, $args);
 	 	}
 	 }
@@ -192,7 +180,7 @@ class PipeCache extends PipeCaches_ORM {
 		 		. ' WHERE IdVersion = %s AND IdPipeTransition = %s', $idVersion, $idTransition);
 	 	}
 	 	$result = $this->query($query, MONO, 'id');
-		XMD_Log::info("PipeCache: Resultado del m�todo _getCache " . str_replace("\n", " ", print_r($result, true)));
+		XMD_Log::info("PipeCache: _getCache method result" . str_replace("\n", " ", print_r($result, true)));
 		return $result;
 	 }
 
@@ -221,7 +209,7 @@ class PipeCache extends PipeCaches_ORM {
 	 		if (count($idCaches) == 1) {
 	 			return $idCaches[0];
 	 		} else {
-	 			XMD_Log::fatal('PipeCache No se ha podido estimar una �nica cach�');
+	 			XMD_Log::fatal("PipeCache: last cache couldn't be estimated");
 	 			return false;
 	 		}
 	 	}
@@ -290,10 +278,11 @@ class PipeCache extends PipeCaches_ORM {
 	  * @return boolean
 	  */
 	 function store($idVersion, $idTransition, $contentFile, $args) {
-		XMD_Log::info("PipeCache: Trying to store cache for version $idVersion transition $idTransition args " . print_r($args, true));
+	 	
+	 	XMD_Log::info("PipeCache: Trying to store cache for version $idVersion transition $idTransition args " . print_r($args, true));
 	 	$this->_transition = new PipeTransition($idTransition);
 	 	if (!($this->_transition->get('id') > 0)) {
-	 		XMD_Log::fatal('PipeCache: Error storing cache, no se ha podido estimar la transicion a la que se va a asociar la cach�: ' . $idTransition);
+	 		XMD_Log::fatal('PipeCache: Error storing cache, could not estimate the transition to which to associate the cache: ' . $idTransition);
 	 		return false;
 	 	}
 
@@ -330,18 +319,18 @@ class PipeCache extends PipeCaches_ORM {
 
 		 	$idCache = $this->add();
 		 	if (!$idCache > 0) {
-		 		XMD_Log::error("PipeCache: Ha sucedido un error al almacenar la cache");
+		 		XMD_Log::error("PipeCache: An error has ocurred while storing the cache file");
 		 		return false;
 		 	}
 	 	} else {
 
 		 	if (!FsUtils::copy($contentFile, XIMDEX_ROOT_PATH . CACHE_FOLDER . $cacheFile)) {
-		 		XMD_Log::error("PipeCache: Ha sucedido un error al sustituir la cache (Posible problema de permisos en data/cache/pipelines)");
+		 		XMD_Log::error("PipeCache: There has been an error while replacing the cache file (Problem permissions on data/cache/pipelines)");
 				return false;
 		 	}
 	 	}
 	 	if (!isset($idCache)) {
-			XMD_Log::error("PipeCache: No se ha obtenido un idCache V�lido $idVersion $idTransition $contentFile");
+			XMD_Log::error("PipeCache: Cache ID not valid - $idVersion $idTransition $contentFile");
 			return false;
 		}
 	 	$this->_transition->properties->reset();
@@ -355,7 +344,7 @@ class PipeCache extends PipeCaches_ORM {
 
 	 			$propertyValue->set('Value', $this->_searchKeyInArgs($property->get('Name'), $args));
 	 			if (!$propertyValue->add()) {
-	 				XMD_Log::error('PipeCache: Error al intentar almacenar la propiedad');
+	 				XMD_Log::error('PipeCache: Error while trying to store the property');
 	 			}
 	 		}
 	 	}
