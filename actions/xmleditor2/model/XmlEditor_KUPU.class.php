@@ -232,6 +232,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $actionURL . '/js/drawers/XimletDrawer.class.js',
             $actionURL . '/js/drawers/XimlinkDrawer.class.js',
             $actionURL . '/js/drawers/XimimageDrawer.class.js',
+            $actionURL . '/js/drawers/DateDrawer.class.js',
 
             /* ####### TOOLBOXES ########## */
 

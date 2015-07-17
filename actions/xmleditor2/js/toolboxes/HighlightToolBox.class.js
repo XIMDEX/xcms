@@ -137,6 +137,16 @@ function FormViewToolBox() {
     this.initialize = function (tool, editor) {
         this.tool = tool;
         this.editor = editor;
+        var that = this;
+        $.datepicker._getInst = function(target){
+            try {
+                return $(target,that.editor.getBody()).data("datepicker");
+            }
+            catch (err) {
+                throw "Missing instance data for this datepicker";
+            }
+                 
+        };
     };
 
 
@@ -155,7 +165,15 @@ function FormViewToolBox() {
             Apply element buttons will be enabled when text is selected.
             Otherwise common element buttons will be enabled.*/
             this.element = this.editor.ximElement;
+            this.formElement = $("[uid='"+this.element.uid+"']", this.editor.getBody());            
+            if (this.formElement.hasClass("date-formview")){
+                var drawerId = 'datedrawer';
+                var dt = this.editor.getTool('ximdocdrawertool');
+                if (dt.isOpen(drawerId)) return;
+                dt.openDrawer(drawerId);
+            }else{
             this.formElement = $("[uid='" + this.element.uid + "']", this.editor.getBody()).closest(".js-edition-block");
+
             if (this.formElement.length) {
                 
                 //Disabling all buttons
@@ -251,6 +269,7 @@ function FormViewToolBox() {
                 });
 
             }
+        }
 
             this.enableNewElementButton();
         }

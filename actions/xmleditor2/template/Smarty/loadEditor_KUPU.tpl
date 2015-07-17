@@ -39,6 +39,7 @@ xim-document-tags='{$tags}'
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/toolbar.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/ximletdrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/ximlinkdrawer.tpl"}
+		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/datedrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/ximimagedrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/tabledrawer.tpl"}
 		{include file="`$_APP_ROOT`/actions/xmleditor2/template/Smarty/toolboxes.tpl"}

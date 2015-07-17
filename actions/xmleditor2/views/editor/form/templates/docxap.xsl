@@ -88,6 +88,12 @@
 
     <xsl:template match="##INPUT_TEXT_ELEMENTS##">
         <xsl:variable name="elementUid" select="substring-after(@uid,'.')"/>
+        <xsl:variable name="extraClass">
+            <xsl:if test="contains('##DATE_TEXT_ELEMENTS##', name())">
+                <xsl:value-of select="'date-formview'"/>
+            </xsl:if>
+        </xsl:variable>
+        
 
         <div class="form-group">
             <xsl:if test="count(preceding-sibling::*) = 0 or name(preceding-sibling::*[1]) != name(.)">
@@ -95,7 +101,7 @@
             </xsl:if>
 
             <div class="input-group">
-                <div uid="{@uid}" class="form-control" contentEditable="true">
+                <div uid="{@uid}" class="form-control {$extraClass}" contentEditable="true" >
                     <xsl:apply-templates select="text()"/>
                 </div>
 

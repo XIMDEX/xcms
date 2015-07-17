@@ -401,6 +401,7 @@ abstract class XmlEditor_Abstract
         $rngXpathObj = $this->getXPathFromSchema($idSchema);
 
         $textElements = $this->getTextElements($rngXpathObj);
+        $dateElements = $this->getElementsByType($rngXpathObj,"date");
         $elements = $rngXpathObj->query("//element");
 
         $applyElements = $this->getApplyElements($rngXpathObj);
@@ -475,6 +476,7 @@ abstract class XmlEditor_Abstract
         $groupedElements["##IMAGE_ELEMENTS##"] = $imageElements;
         $groupedElements["##LIST_ELEMENTS##"] = $listElements;
         $groupedElements["##ITEM_ELEMENTS##"] = $itemElements;
+        $groupedElements["##DATE_ELEMENTS##"] = $dateElements;
 
         foreach ($groupedElements as $macro => $elements) {
             if (count($elements)){

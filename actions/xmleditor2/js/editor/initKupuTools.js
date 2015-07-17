@@ -234,6 +234,9 @@ function initKupuTools(kupu) {
 	var tabledrawer = new TableDrawer('kupu-tabledrawer', attributestool);
 	ximdocdrawertool.registerDrawer('tabledrawer', tabledrawer);
 
+    var dateDrawer = new DateDrawer('kupu-datedrawer', ximdoctool);
+    ximdocdrawertool.registerDrawer('datedrawer', dateDrawer);
+
     // Disabling ximlet drawer button
     var button = getFromSelector('kupu-ximletdrawer-button');
 	KupuButtonDisable(button);
