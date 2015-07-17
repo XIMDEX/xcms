@@ -56,11 +56,10 @@ class XowlConfigurationInstallStep extends GenericInstallStep
             $this->sendJSON($data);
             return;
         }
-        if ( !preg_match("/^(https?:\\/\\/.+)$/i", $serviceurl)
-            || !preg_match("/\\d+-\\d+-\\d+/", $apikey) ) {
+        if ( !empty($apikey) && !preg_match("/^(https?:\\/\\/.+)$/i", $serviceurl)) {
             $data["error"] = 1;
-            $data["message"] = "These fields are not correct.";
-        } else {
+            $data["message"] = "The URL field is not correct.";
+        } else if(!empty($apikey)){
             if ($module->configure($apikey, $serviceurl)) {
                 $data["error"] = 0;
                 $data["message"] = "Xowl service has been properly configured.";
@@ -68,6 +67,9 @@ class XowlConfigurationInstallStep extends GenericInstallStep
                 $data["error"] = 1;
                 $data["message"] = "Xowl service configuration is not correct.";
             }
+        }else{
+            $data["error"] = 0;
+            $data["message"] = "Xowl service is not configured.";
         }
         $this->sendJSON($data);
 

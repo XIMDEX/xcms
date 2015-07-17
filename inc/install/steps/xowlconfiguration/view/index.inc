@@ -31,17 +31,16 @@
     <div class="form_item full-width">
         <label for="apikey">Introduce your generated API key</label>
         <input type="text" name="apikey" id="apikey" placeholder="Insert your API key here"
-               ng-model="apikey" pattern="^((\s*\d+-\d+-\d+\s*)|)$"
-               ng-class="{'error_element':form.apikey.$error.pattern}"
-               ng-model-options="{ debounce: 400 }"/>
+               ng-model="apikey" />
         <p class="error" ng-show="form.apikey.$error.pattern">This API key is not valid!</p>
     </div>
-    <div class="form_item full-width">
+    <div class="form_item full-width" ng-init="serviceurl='http://xowl.ximdex.net/api/v1/enhance'">
         <label for="serviceurl">Xowl Service URL</label>
         <input type="text" name="serviceurl" id="serviceurl"
                placeholder="Insert your service URL here" ng-model="serviceurl"
                ng-class="{'error_element':form.serviceurl.$error.pattern}"
-               pattern="^((\s*https?://.+\s*)|)$" ng-model-options="{ debounce: 400 }"/>
+               pattern="^((\s*https?://.+\s*)|)$" ng-model-options="{ debounce: 400 }"
+            />
         <p class="error" ng-show="form.serviceurl.$error.pattern">This URL is not valid!</p>
     </div>
     <div ng-if="error">
@@ -51,7 +50,7 @@
         <p class="success_element">{{message}}</p>
     </div>
     <div class="form_item full-width" >
-        <label>If you don't want to configure this module, please leave these fields in blank.</label>
+        <label>If you don't have an API key yet, <a target="_blank" href="http://xowl.ximdex.net/register">visit here</a> to get one. If you don't want to configure this module, please leave API key field in blank.</label>
         <button class="action_launcher ladda-button" ui-ladda xim-state="loading" data-style="slide-up">Continue</button>
     </div>
 </form>
