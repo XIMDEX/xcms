@@ -309,7 +309,7 @@ class Action_browser3 extends ActionAbstract {
      * Returns a JSON document with all children of the specified node id
      */
     public function read() {
-        $ret = GenericDatasource::read($this->request);
+        $ret = GenericDatasource::quickRead($this->request);
         $ret['collection'] = $this->checkNodeAction($ret['collection']);
         if($this->request->getParam('nodeid') == "10000"){
             $ret["name"] = _($ret["name"]);

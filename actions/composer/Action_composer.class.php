@@ -278,8 +278,106 @@ class Action_composer extends ActionAbstract {
 		return $data;
 	}
 
-	public function readTreedataFiltered($idNode, $find=null){
-		$sql = "select nodes.IdNode, nodes.Name, nodes.IdNodeType, nodes.IdParent, nt1.Icon, nodes.IdState, (nt1.IsFolder or nt1.IsVirtualFolder) as IsDir, nodes.Path,
+	public function quickRead($idNode, $from, $to, $items, $times = 2){
+		if($times<=0){
+			return null;
+		}
+		$times--;
+		$sql = "select N.Name, N.IdNode, N.IdNodeType, N.IdParent, NT.Icon, N.IdState,
+	(NT.IsFolder or NT.IsVirtualFolder) as IsDir, N.Path, NT.System,
+(select count(*) from FastTraverse ft3 where ft3.IdNode = N.IdNode and ft3.Depth = 1) as children
+	FROM Nodes as N inner join NodeTypes as NT on N.IdNodeType = NT.IdNodeType
+	WHERE NOT(NT.IsHidden) AND IdParent =%d ORDER BY NT.System DESC, N.Name ASC";
+		$sql = sprintf($sql, $idNode);
+		$partial = !is_null($from) && !is_null($to);
+		if($partial){
+			$sql .= sprintf(" LIMIT %d OFFSET %d", $to-$from+1, $from);
+		}
+		$db = new DB();
+		$db->query($sql);
+		$ret = $this->_echoNodeTree($idNode, \App::getValue( 'displayEncoding'));
+		if (($db->numRows > $items) && ($items != 0)) {
+			//Paginated request
+			$partes = floor($db->numRows / $items);
+			$numArchivos = 0;
+			if ($db->numRows % $items != 0) {
+				$partes = $partes + 1;
+			}
+
+			for($k = 1; $k <= $partes; $k ++) {
+				$db->Go($numArchivos);
+				$nodoDesde = $db->getValue('IdNode');
+				$textoDesde = $db->getValue('Name');
+
+				$expr = $numArchivos + $items - 1;
+
+				if ($db->numRows > $expr) {
+					$db->Go($expr);
+					$nodoHasta = $db->getValue('IdNode');
+					$textoHasta = $db->getValue('Name');
+					$hasta_aux = $expr;
+				} else {
+					$db->Go($db->numRows - 1);
+					$nodoHasta = $db->getValue('IdNode');
+					$textoHasta = $db->getValue('Name');
+					$hasta_aux = $db->numRows - 1;
+				}
+
+				$ret['collection'][] = array(
+					'name' => $textoDesde . ' -> ' . $textoHasta,
+					'parentid' => $idNode,
+					'nodeFrom' => $nodoDesde,
+					'nodeTo' => $nodoHasta,
+					'startIndex' => $numArchivos,
+					'endIndex' => $hasta_aux,
+					'src' => sprintf(
+						'%s?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
+						self::COMPOSER_INDEX, $idNode, $numArchivos, $hasta_aux
+					),
+					'nodeid' => '0',
+					'icon' => 'folder_a-z',
+					'openIcon' => 'folder_a-z.png',
+					'state' => '',
+					'children' => '5',
+					'isdir' => $ret["isdir"]
+				);
+
+				$numArchivos = $numArchivos + $items;
+			}
+
+		}else{
+			while (!$db->EOF) {
+				$ret['collection'][] = array(
+					'name' => $db->getValue('Name'),
+					'nodeid' => $db->getValue('IdNode'),
+					'nodetypeid' => $db->getValue('IdNodeType'),
+					'parentid' => $db->getValue('IdParent'),
+					'icon' => $db->getValue('Icon'),
+					'state' => $db->getValue('IdState'),
+					'isdir' => $db->getValue('IsDir'),
+					'children' => intval($db->getValue('children')),
+					'path' => $db->getValue('Path')
+				);
+				if(intval($db->getValue('children'))>0){
+					$res = $this->quickRead($db->getValue('IdNode'), null, null, $items, $times);
+					if(!is_null($res)){
+						$ret['collection'][count($ret['collection'])-1]['collection'] = $res["collection"];
+					}
+				}
+
+				$db->next();
+			}
+		}
+
+		return $ret;
+	}
+
+	public function readTreedataFiltered($idNode, $find=null, $from=null, $to=null, $items=null, $times = 2){
+		if($times<=0){
+			return null;
+		}
+		$times--;
+		$sql = "select nodes.IdNode, nodes.Name, nodes.IdNodeType, nodes.IdParent, nt1.Icon, nodes.IdState, (nt1.IsFolder or nt1.IsVirtualFolder) as IsDir, nodes.Path, nt1.System,
 
         (select count(*) from FastTraverse ft3 where ft3.IdNode = nodes.IdNode and ft3.Depth = 1) as children,
 
@@ -301,37 +399,98 @@ class Action_composer extends ActionAbstract {
 
 			inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType
 				and NOT(nt.IsHidden) and not nt.IdNodeType in (5084,5085))
-			))";
-		$sql2 = sprintf($sql, '%' . $find . '%',
+			))  ORDER BY nt1.System DESC, nodes.Name ASC";
+		$sql = sprintf($sql, '%' . $find . '%',
 			$idNode, $idNode, $idNode, '%' . $find . '%');
+		$partial = !is_null($from) && !is_null($to);
+		if($partial){
+			$sql .= sprintf(" LIMIT %d OFFSET %d", $to-$from+1, $from);
+		}
 		$db = new DB();
-		$db->query($sql2);
+		$db->query($sql);
 		$queryToMatch = "/" . $find . "/i";
 		$queryToMatch = str_replace(array(".", "_"), array('\.', "."), $queryToMatch);
 		$ret = $this->_echoNodeTree($idNode, \App::getValue( 'displayEncoding'));
 
-		while (!$db->EOF) {
-			$name = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $db->getValue('Name'));
-			$results = intval($db->getValue('results'));
-			$children =intval($db->getValue('children'));
-			if ($results == 0) {
-				$children = 0;
-			} else {
-				$name .= sprintf('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $results);
+		if (($db->numRows > $items) && ($items != 0)) {
+			//Paginated request
+			$partes = floor($db->numRows / $items);
+			$numArchivos = 0;
+			if ($db->numRows % $items != 0) {
+				$partes = $partes + 1;
 			}
-			$ret['collection'][] = array(
-				'originalName' => $db->getValue('Name'),
-				'name' => $name,
-				'nodeid' => $db->getValue('IdNode'),
-				'nodetypeid' => $db->getValue('IdNodeType'),
-				'parentid' => $db->getValue('IdParent'),
-				'icon' => $db->getValue('Icon'),
-				'state' => $db->getValue('IdState'),
-				'isdir' => $db->getValue('IsDir'),
-				'children' => $children,
-				'path' => $db->getValue('Path')
-			);
-			$db->next();
+
+			for($k = 1; $k <= $partes; $k ++) {
+				$db->Go($numArchivos);
+				$nodoDesde = $db->getValue('IdNode');
+				$textoDesde = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $db->getValue('Name'));
+
+				$expr = $numArchivos + $items - 1;
+
+				if ($db->numRows > $expr) {
+					$db->Go($expr);
+					$nodoHasta = $db->getValue('IdNode');
+					$textoHasta = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $db->getValue('Name'));
+					$hasta_aux = $expr;
+				} else {
+					$db->Go($db->numRows - 1);
+					$nodoHasta = $db->getValue('IdNode');
+					$textoHasta = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $db->getValue('Name'));
+					$hasta_aux = $db->numRows - 1;
+				}
+
+				$ret['collection'][] = array(
+					'name' => $textoDesde . ' -> ' . $textoHasta,
+					'parentid' => $idNode,
+					'nodeFrom' => $nodoDesde,
+					'nodeTo' => $nodoHasta,
+					'startIndex' => $numArchivos,
+					'endIndex' => $hasta_aux,
+					'src' => sprintf(
+						'%s?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
+						self::COMPOSER_INDEX, $idNode, $numArchivos, $hasta_aux
+					),
+					'nodeid' => '0',
+					'icon' => 'folder_a-z',
+					'openIcon' => 'folder_a-z.png',
+					'state' => '',
+					'children' => '5',
+					'isdir' => $ret["isdir"]
+				);
+
+				$numArchivos = $numArchivos + $items;
+			}
+
+		}else{
+			while (!$db->EOF) {
+				$name = preg_replace($queryToMatch, '<span class="filter-word-span">$0</span>', $db->getValue('Name'));
+				$results = intval($db->getValue('results'));
+				$children =intval($db->getValue('children'));
+				if ($results == 0) {
+					$children = 0;
+				} else {
+					$name .= sprintf('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $results);
+				}
+				$ret['collection'][] = array(
+					'originalName' => $db->getValue('Name'),
+					'name' => $name,
+					'nodeid' => $db->getValue('IdNode'),
+					'nodetypeid' => $db->getValue('IdNodeType'),
+					'parentid' => $db->getValue('IdParent'),
+					'icon' => $db->getValue('Icon'),
+					'state' => $db->getValue('IdState'),
+					'isdir' => $db->getValue('IsDir'),
+					'children' => $children,
+					'path' => $db->getValue('Path')
+				);
+				if(intval($db->getValue('children'))>0) {
+					$res = $this->readTreedataFiltered($db->getValue('IdNode'), $find, null, null, $items, $times);
+					if (!is_null($res)) {
+						$ret['collection'][count($ret['collection']) - 1]['collection'] = $res["collection"];
+					}
+				}
+				$db->next();
+			}
 		}
 		return $ret;
 	}
