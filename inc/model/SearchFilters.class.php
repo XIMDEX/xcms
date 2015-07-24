@@ -87,7 +87,7 @@ class SearchFilters extends SearchFilters_ORM {
 
 		$ns->set('Name', $name);
 		$ns->set('Handler', $handler);
-		$ns->set('Filter', $filter);
+		$ns->set('Filter', urldecode(http_build_query($filter)));
 		$newId = $ns->add();
 		return $ns;
 	}

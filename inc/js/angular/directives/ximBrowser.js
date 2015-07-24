@@ -96,11 +96,7 @@ angular.module("ximdex.common.directive").directive("ximBrowser", [
                 _ref = $scope.selectedNodes.slice(1);
                 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                   n = _ref[_i];
-                  if ($scope.selectedNodes[0].nodetypeid !== n.nodetypeid) {
-                    return;
-                  } else {
-                    nodeToSearch += "-" + n.nodeid;
-                  }
+                  nodeToSearch += "-" + n.nodeid;
                 }
               }
               if ($window.com.ximdex.nodeActions[nodeToSearch] == null) {

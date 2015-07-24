@@ -614,20 +614,29 @@ class User extends Users_ORM {
          * The idActions returned have allowed commands for the selected
          * nodes.
          */
-        $actionsArray = array_unique($actionsArray);
-        foreach ($actionsArray as $idAction) {
-            $action = new Action($idAction);
+        //$actionsArray = array_unique($actionsArray);
+        if(count($nodes)>1) {
+            foreach ($actionsArray as $idAction) {
+                $action = new Action($idAction);
 
-            $name = $action->get("Name");
-            $aliasModule = $action->get("Module") ? $action->get("Module") : "nomodule";
-            $aliasParam = $action->get("Params") ? $action->get("Params") : "";
+                $command = $action->get("Command");
+                $aliasModule = $action->get("Module") ? $action->get("Module") : "nomodule";
+                $aliasParam = $action->get("Params") ? $action->get("Params") : "noparams";
 
-            if (isset($founded[$name][$aliasModule][$aliasParam])) {
-                continue;
+                if (isset($founded[$command][$aliasModule][$aliasParam]) &&
+                    $founded[$command][$aliasModule][$aliasParam] == count($nodes)-1) {
+                    $result[] = $idAction;
+                    continue;
+                }
+                if(!isset($founded[$command][$aliasModule][$aliasParam])){
+                    $founded[$command][$aliasModule][$aliasParam] = 1;
+                }else{
+                    $founded[$command][$aliasModule][$aliasParam] =
+                        $founded[$command][$aliasModule][$aliasParam] + 1;
+                }
             }
-
-            $founded[$name][$aliasModule][$aliasParam] = true;
-            $result[] = $idAction;
+        }else{
+            return $actionsArray;
         }
         return $result;
     }

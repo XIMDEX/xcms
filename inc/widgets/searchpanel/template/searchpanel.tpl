@@ -45,7 +45,7 @@
                         <option value="link_url">{t}ximLINK Url{/t}</option>
                         <option value="link_desc">{t}ximLINK Description{/t}</option>
                     </select>
-                    <select class="xim-filter-comparation">
+                    <select class="xim-filter-comparation xim-filter-active-comparation">
                         <option value="contains">{t}contains{/t}</option>
                         <option value="nocontains">{t}does not contain{/t}</option>
                         <option value="equal">{t}equal to{/t}</option>

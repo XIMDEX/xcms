@@ -24,5 +24,7 @@
  *}
 
 <div id="%=id%" class="mini-spotlight %=class%">
-	<input type="text" class="" placeholder="{t}Search{/t}&#8230;" />
+	<input type="text" class="ui-autocomplete-input" placeholder="{t}Search{/t}" autocomplete="off"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+	<div class="mini-spotlight-advanced-no icon">{t}Search{/t}</div>
+	<div ng-click="openModal()" class="mini-spotlight-advanced icon">{t}Advanced{/t}</div>
 </div>

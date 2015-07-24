@@ -64,7 +64,7 @@
 			}
 			
 
-			$(this.element).append(
+			/*$(this.element).append(
 				$('<div/>')
 					.addClass('mini-spotlight-advanced-no icon')
 					.html('Search')
@@ -77,22 +77,22 @@
 					.html('Advanced')
 				);
 			}
-
+*/
 			this.registerTriggers();
 			this.registerEvents();
 		},
 
 		registerTriggers: function() {
 
-			if (this.options.showAdvanced) {
+			/*if (this.options.showAdvanced) {
 				$('.mini-spotlight-advanced', this.element).click(function(event) {
 					$(this.element).trigger('searchpanel-open', [{event: event, widget: this.element}]);
 				}.bind(this));
-			}
+			}*/
 
-			$('.mini-spotlight-advanced-no', this.element).click(function(event) {
+			/*$('.mini-spotlight-advanced-no', this.element).click(function(event) {
 				this.search($(this.input).val());
-			}.bind(this));
+			}.bind(this));*/
 		},
 
 		registerEvents: function() {
