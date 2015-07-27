@@ -221,12 +221,6 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
             return
 
         $scope.openMenu = (node, event) ->
-            data = undefined
-            i = undefined
-            len = undefined
-            n = undefined
-            nodeToSearch = undefined
-            ref = undefined
             $scope.selectNode node, event
             if $scope.selected[0].nodeid == null | $scope.selected[0].nodetypeid == null | $scope.selected[0].nodeid == '0'
                 return
@@ -239,27 +233,26 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
                     n = ref[i]
                     nodeToSearch += '-' + n.nodeid
                     i++
-            if $window.com.ximdex.nodeActions[nodeToSearch] == null
+            if not $window.com.ximdex.nodeActions[nodeToSearch]?
                 $http.get(xUrlHelper.getAction(
                     action: 'browser3'
                     method: 'cmenu'
                     nodes: $scope.selected)).success (data) ->
-                if data
-                    $window.com.ximdex.nodeActions[nodeToSearch] = data
-                    postLoadActions data, event, $scope.selected
-                return
+                        if data
+                            $window.com.ximdex.nodeActions[nodeToSearch] = data
+                            postLoadActions data, event, $scope.selected
+                        return
             else
                 data = $window.com.ximdex.nodeActions[nodeToSearch]
                 postLoadActions data, event, $scope.selected
             false
 
         postLoadActions = (data, event, selectedNodes) ->
-            if data.length == 0
-                return
-            if event.pointers != null
+            return if not data?
+            if event.pointers?
                 data.left = event.pointers[0].clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
                 data.top = event.pointers[0].clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
-            if event.clientX
+            if event.clientX?
                 data.left = event.clientX + (if $window.document.documentElement.scrollLeft then $window.document.documentElement.scrollLeft else $window.document.body.scrollLeft)
                 data.top = event.clientY + (if $window.document.documentElement.scrollTop then $window.document.documentElement.scrollTop else $window.document.body.scrollTop)
             xMenu.open data, selectedNodes, xTabs.pushTab

@@ -254,12 +254,6 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
     };
     $scope.openMenu = function(node, event) {
       var data, i, len, n, nodeToSearch, ref;
-      data = void 0;
-      i = void 0;
-      len = void 0;
-      n = void 0;
-      nodeToSearch = void 0;
-      ref = void 0;
       $scope.selectNode(node, event);
       if ($scope.selected[0].nodeid === null | $scope.selected[0].nodetypeid === null | $scope.selected[0].nodeid === '0') {
         return;
@@ -275,17 +269,17 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
           i++;
         }
       }
-      if ($window.com.ximdex.nodeActions[nodeToSearch] === null) {
+      if ($window.com.ximdex.nodeActions[nodeToSearch] == null) {
         $http.get(xUrlHelper.getAction({
           action: 'browser3',
           method: 'cmenu',
           nodes: $scope.selected
-        })).success(function(data) {});
-        if (data) {
-          $window.com.ximdex.nodeActions[nodeToSearch] = data;
-          postLoadActions(data, event, $scope.selected);
-        }
-        return;
+        })).success(function(data) {
+          if (data) {
+            $window.com.ximdex.nodeActions[nodeToSearch] = data;
+            postLoadActions(data, event, $scope.selected);
+          }
+        });
       } else {
         data = $window.com.ximdex.nodeActions[nodeToSearch];
         postLoadActions(data, event, $scope.selected);
@@ -293,14 +287,14 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
       return false;
     };
     postLoadActions = function(data, event, selectedNodes) {
-      if (data.length === 0) {
+      if (data == null) {
         return;
       }
-      if (event.pointers !== null) {
+      if (event.pointers != null) {
         data.left = event.pointers[0].clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
         data.top = event.pointers[0].clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
       }
-      if (event.clientX) {
+      if (event.clientX != null) {
         data.left = event.clientX + ($window.document.documentElement.scrollLeft ? $window.document.documentElement.scrollLeft : $window.document.body.scrollLeft);
         data.top = event.clientY + ($window.document.documentElement.scrollTop ? $window.document.documentElement.scrollTop : $window.document.body.scrollTop);
       }
