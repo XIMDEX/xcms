@@ -505,6 +505,7 @@ INSERT INTO `Config` VALUES (52, 'PublishPathFormat','prefix');
 INSERT INTO `Config` VALUES (53, 'ChunksFolder','uploaded_files');
 INSERT INTO `Config` VALUES (54, 'UploadsFolder','uploaded_files');
 INSERT INTO `Config` VALUES (55, 'MaxItemsPerGroup',50);
+INSERT INTO `Config` VALUES (NULL, 'DisableCache',0);
 
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `Config` ENABLE KEYS */;

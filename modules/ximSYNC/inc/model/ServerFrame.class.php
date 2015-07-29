@@ -299,6 +299,7 @@ class ServerFrame extends ServerFrames_ORM {
 
 		$data['CHANNEL'] = $channelId;
 		$data['SERVER'] = $server;
+		$data['DISABLE_CACHE'] = \App::getValue("DisableCache");
 
 		$nodo = new Node($idNode);
 
@@ -380,7 +381,7 @@ class ServerFrame extends ServerFrames_ORM {
 
 		clearstatcache();
 		// Its necessary to updating SyncFile size in BD
-		$fileSize = filesize($path);
+		$fileSize = file_exists($path)? filesize($path):0;
 
 		return $fileSize;
 	}

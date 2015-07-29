@@ -467,6 +467,9 @@ class DataFactory
 				$purgeAll = true;
 				$newVersion = $curVersion + 1;
 				$newSubVersion = '0';
+				$updateCaches = true;
+				$oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);				
+
 			} else {
 				/// Si queremos saltar solo de subversion x.y -> x.y+1
 				$newVersion = $curVersion;
@@ -519,6 +522,10 @@ class DataFactory
 		$version->set('Date', time());
 		$version->set('Comment', $comment);
 		$IdVersion = $version->add();
+
+		if ($updateCaches){
+        	$this->updateCaches($oldIdVersion, $IdVersion);
+        }
 
 		XMD_Log::info("AddVersion for Node:".$this->nodeID.", Version: ".$newVersion.".".$newSubVersion.", File: .".$uniqueName);
 
@@ -1151,5 +1158,15 @@ class DataFactory
 			}
 		}
 	}
+
+	private function updateCaches($oldIdVersion, $idVersion){
+
+		if (!\App::getValue("DisableCache")){
+	       	$pipeCache = new PipeCache();
+			return $pipeCache->upgradeCaches($oldIdVersion, $idVersion);
+		}
+	}	
+
+
 }
 ?>
