@@ -28,7 +28,7 @@ angular.module('ximdex.common.directive')
             replace: true,
             restrict: 'E',
             templateUrl : 'inc/js/angular/templates/ximUploader.html',
-            controller: ['$scope', '$element', '$attrs', 'xUrlHelper', 'xTranslate', function($scope, $element, $attrs, xUrlHelper, xTranslate){   
+            controller: ['$scope', '$element', '$attrs', 'xUrlHelper', 'xTranslate', '$rootScope', function($scope, $element, $attrs, xUrlHelper, xTranslate, $rootScope){
             	
             	$scope.nodeId = $attrs.ximNodeId;
 
@@ -63,7 +63,11 @@ angular.module('ximdex.common.directive')
     	    		var message = (jsonMessage) ? angular.fromJson(jsonMessage) : null;
                     if (message && message.msg) {
                         file.successMsg = message.msg;
-                    }  	
+                    }
+    	    	});
+
+                $scope.$on('flow::complete', function (event, $flow, file, jsonMessage) {
+                    $rootScope.$broadcast('nodemodified', $scope.nodeId);
     	    	});
 
     	    	$scope.$on('flow::complete', function () {

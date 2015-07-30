@@ -39,13 +39,14 @@ class Action_filemapper extends ActionAbstract {
 
     public function nodeFromExpresion(){
     	if ($this->request->getParam('expresion')) {
-    		$expresion = $this->request->getParam("expresion");
-    		$filterMacro = new View_FilterMacros();
+    		$expression = $this->request->getParam("expresion");
+    		/*$filterMacro = new View_FilterMacros();
     		$res = $filterMacro->infererNodeAndChannel($expresion);
     		if ($res && is_array($res) && isset($res["idNode"])){
 				$idNode = $res["idNode"];			
 				$this->echoNode($idNode);		
-			}
+			}*/
+            $this->echoNode($expression);
 		}
     }
 

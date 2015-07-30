@@ -196,7 +196,7 @@
                                                         ng-right-click="openMenu(result, $event)"    >
                                                         <td class="xim-listview-grid-view xim-listview-grid-icon ui-widget-content"
                                                             style="text-align: left;">
-                                                            <span class="xim-listview-icon xim-listview-grid-icon icon-modulesconfig">
+                                                            <span class="xim-listview-icon xim-listview-grid-icon icon-#/result.icon/#">
 
                                                             </span>
                                                             <span class="xim-actions-dropdown xim-listview-actions-dropdown

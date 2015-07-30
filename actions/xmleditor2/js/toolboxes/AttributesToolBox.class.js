@@ -242,6 +242,35 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
         }.bind(this)
                 );
     },
+    _showModalSelector: function (inputUrl, options) {
+        var $inputUrl = $(inputUrl).addClass('kupu-attribute-value');
+        this.currentInput = $inputUrl;
+        that2 = this;
+
+        if (Object.isEmpty(this.imageSelector)) {
+            var $modal = angular.element('*[ng-app]').injector().get('$modal');
+            this.imageSelector = $modal.open({
+                animation: false,
+                templateUrl: window.X.baseUrl + '/inc/js/angular/templates/SearchTreeModal.html',
+                //template: '<xim-tree />',
+                controller: 'SearchTreeModalCtrl',
+                size: 'md',
+                controllerAs: true,
+                //bindToController: true,
+                resolve: options
+            });
+            this.imageSelector.result.then(
+                function (image) {
+                    if (!image)
+                        return;
+                    that2.currentInput.val(image.nodeid);
+                    that2.imageSelector = null;
+                },
+                function () {
+                    that2.imageSelector = null;
+                });
+        }
+    },
     _createInputFor_genericSelector: function (label, inputUrl, specificSearchOptions) {
 
         var searchOptions = [{comparation: 'equal',
@@ -252,49 +281,6 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
             }];
 
         var $inputUrl = $(inputUrl).addClass('kupu-attribute-value');
-
-        searchOptions = searchOptions.concat(specificSearchOptions);
-        var getImageSelector = function ($inputUrl) {
-            this.imageSelector = null;
-            if (Object.isEmpty(this.imageSelector)) {
-                this.imageSelector = $("<div></div>").appendTo(this.element);
-                this.imageSelector.searchpanel({
-                    url_base: X.baseUrl,
-                    use_cache: false,
-                    queryHandler: "SQLTREE",
-                    masterFilter: [{
-                            comparation: 'equal',
-                            content: '5040',
-                            field: 'nodetype',
-                            from: '',
-                            to: ''
-                        }, {
-                            comparation: 'equal',
-                            content: this.editor.nodeId,
-                            field: 'nodeid',
-                            from: '',
-                            to: ''
-                        }
-                    ],
-                    showFilters: false,
-                    view: 'treeview',
-                    showSelectButton: true
-                });
-            }
-
-            that2 = this;
-            inputUrl2 = $inputUrl;
-            $(this.imageSelector)
-                    .unbind('nodesSelected')
-                    .bind('nodesSelected',
-                            this._imageSelector_onNodesSelected);
-
-            return this.imageSelector;
-
-        }.bind(this);
-
-
-        var $sp = getImageSelector($inputUrl);
 
         var $label = $('<div></div>')
                 .addClass('kupu-toolbox-label')
@@ -312,18 +298,19 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
         $button.click(function () {
             //Updating current input at open the imageSelector
             that.currentInput = $inputUrl;
-            $sp.searchpanel("option", "masterFilter", searchOptions);
-            $sp.searchpanel("open");
 
+            this._showModalSelector(that.currentInput, specificSearchOptions);
             var inputVal = $($inputUrl[0]).val();
             if (typeof inputVal !== "undefined" && inputVal.length > 0) {
                 if (inputVal.indexOf(",") !== -1) {
                     inputVal = inputVal.substring(0, inputVal.indexOf(","));
                 }
-                $(".xim-treeview-container").treeview("navigate_to_idnode_from_project", inputVal);
+                //$(".xim-treeview-container").treeview("navigate_to_idnode_from_project", inputVal);
             }
         }.bind(this));
-
+        if(this.currentInput) {
+            $inputUrl.val(this.currentInput.val())
+        }
         var d = $('<div></div>')
                 .addClass('xedit-element-attribute')
                 .append($label)
@@ -352,46 +339,46 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
     },
     _createInputFor_imageSelector: function (label, inputUrl) {
 
-        var searchOptions = [{
-                comparation: 'equal',
-                content: '5040',
-                field: 'nodetype',
-                from: '',
-                to: ''
-            }];
-
+        var searchOptions = {
+            nodetypesAllowedToShow: function () {
+                return ['5012', '5013', '5014', '5016', '5040', '5017'];
+            },
+            nodetypesAllowedToSelect: function () {
+                return ['5040'];
+            },
+            title: function () {
+                return "Select an image";
+            }
+        };
         this._createInputFor_genericSelector(label, inputUrl, searchOptions);
     },
     _createInputFor_ximletSelector: function (label, inputUrl) {
-        var searchOptions = [{
-                comparation: 'equal',
-                content: '5057',
-                field: 'nodetype',
-                from: '',
-                to: ''
-            }];
+        var searchOptions = {
+            nodetypesAllowedToShow: function () {
+                return ['5012', '5013', '5014', '5054', '5055', '5056', '5057'];
+            },
+            nodetypesAllowedToSelect: function () {
+                return ['5057'];
+            },
+            title: function () {
+                return "Select a ximlet";
+            }
+        };
         this._createInputFor_genericSelector(label, inputUrl, searchOptions);
     },
     _createInputFor_ximcludeSelector: function (label, inputUrl) {
-
-        var searchOptions = [{
-                comparation: 'equal',
-                content: '5076',
-                field: 'nodetype',
-                from: '',
-                to: ''
-            }];
+        var searchOptions = {
+            nodetypesAllowedToShow: function () {
+                return ['5012', '5013', '5014', '5020', '5021', '5076'];
+            },
+            nodetypesAllowedToSelect: function () {
+                return ['5076'];
+            },
+            title: function () {
+                return "Select a ximclude";
+            }
+        };
         this._createInputFor_genericSelector(label, inputUrl, searchOptions);
-    },
-    _imageSelector_onNodesSelected: function (event, params) {
-
-        $(that2.imageSelector).unbind('nodesSelected');
-        var image = params.selection.length > 0 ? params.selection[0] : false;
-        if (!image)
-            return;
-        if (!that2.currentInput)
-            return;
-        that2.currentInput.val(image.nodeid.value);
     },
     _save_attribute_ximlink: function (event, $inputUrl) {
         this.updateButtonHandler();
