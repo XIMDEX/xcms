@@ -202,7 +202,7 @@
                                                             <span class="xim-actions-dropdown xim-listview-actions-dropdown
                                                             ui-icon ui-icon-triangle-1-e"></span>
                                                         </td>
-                                                        <td class="xim-listview-grid-view ui-widget-content" tooltip="#/result.nodeid/#"
+                                                        <td class="xim-listview-grid-view ui-widget-content" tooltip="Node ID"
                                                             tooltip-append-to-body="true" style="text-align: center;">
                                                             <span>#/result.nodeid/#</span>
                                                         </td>
@@ -212,7 +212,7 @@
                                                             <span>#/result.name/#</span>
                                                         </td>
                                                         <td class="xim-listview-grid-view ui-widget-content"
-                                                            tooltip="#/result.nodetype/#" style="text-align: left;"
+                                                            tooltip="Nodetype" style="text-align: left;"
                                                             tooltip-append-to-body="true">
                                                             <span>#/result.nodetype/#</span>
                                                         </td>
@@ -222,7 +222,7 @@
                                                             <span>#/result.abspath.replace('/Ximdex', '')/#</span>
                                                         </td>
                                                         <td class="xim-listview-grid-view ui-widget-content"
-                                                            tooltip="#/result.modificationformated/#" style="text-align: center;"
+                                                            tooltip="Last modified" style="text-align: center;"
                                                             tooltip-append-to-body="true">
                                                             <span>#/result.modificationformated/#</span>
                                                         </td>

@@ -91,17 +91,16 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
 
         queryToString = (q) ->
             res = ''
-            for f of q.query.filters
-                if q.query.filters.hasOwnProperty(f)
-                    if f != 0
-                        res += ' '
-                    res += q.query.filters[f].field + ' ' + q.query.filters[f].comparation
-                    if q.query.filters[f].to
-                        res += ' ' + q.query.filters[f].from
-                    else
-                        res += ' ' + q.query.filters[f].content
-                    if f != q.query.filters.length - 1
-                        res += ' ' + q.query.condition
+            for f, k in q.query.filters
+                if k != 0
+                    res += ' '
+                res += f.field + ' ' + f.comparation
+                if f.to
+                    res += ' ' + f.from
+                else
+                    res += ' ' + f.content
+                if k != q.query.filters.length - 1
+                    res += ' ' + q.query.condition
             res
 
         $scope.search = (query) ->
