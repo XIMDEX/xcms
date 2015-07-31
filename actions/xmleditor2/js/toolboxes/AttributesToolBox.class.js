@@ -257,6 +257,7 @@ var AttributesToolBox = Object.xo_create(FloatingToolBox, {
                 size: 'md',
                 controllerAs: true,
                 //bindToController: true,
+                windowClass: 'modal-tree-xedit',
                 resolve: options
             });
             this.imageSelector.result.then(
