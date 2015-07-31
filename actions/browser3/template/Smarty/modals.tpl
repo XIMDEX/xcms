@@ -152,7 +152,8 @@
                     <div ng-if="results!=null"
                          class="xim-itemsSelector xim-listview-itemsSelector">
                         <span class="xim-itemsSelector-legend">Show</span>
-                        <select ng-model="results.query.items" ng-change="updateView()">
+                        <select ng-disabled="results.data.length==0"
+                                ng-model="results.query.items" ng-change="updateView()">
                             <option class="xim-itemsSelector-option"
                                     name="listview_itemsSelector-item" value="3">3</option>
                             <option class="xim-itemsSelector-option"
@@ -173,9 +174,12 @@
                         </select>
                     </div>
                     <div ng-if="results!=null" class="btn-group btn-group-sm" role="group" >
-                        <button type="button" class="btn btn-default" ng-click="selectAll()">All</button>
-                        <button type="button" class="btn btn-default" ng-click="selectNone()">None</button>
-                        <button type="button" class="btn btn-default" ng-click="invertSelection()">Invert</button>
+                        <button ng-disabled="results!=null && results.data.length==0"
+                                type="button" class="btn btn-default" ng-click="selectAll()">All</button>
+                        <button ng-disabled="results!=null && results.data.length==0"
+                                type="button" class="btn btn-default" ng-click="selectNone()">None</button>
+                        <button ng-disabled="results!=null && results.data.length==0"
+                                type="button" class="btn btn-default" ng-click="invertSelection()">Invert</button>
                     </div>
                     <div ng-if="results!=null" class="number_results">Results<span>#/results.records/#</span></div>
                     <div class="xim-listview-table-container">
@@ -187,8 +191,12 @@
                                          style="border: none; font-weight: normal;">
                                         <div class="body ui-widget-content">
                                             <div>
+                                                <div ng-if="results!=null && results.data.length==0">
+                                                    No results found.
+                                                </div>
                                                 <table class="xim-listview-table">
                                                     <tbody>
+
                                                     <tr ng-repeat="result in results.data track by result.nodeid"
                                                         ng-click="selectNode(result, $event)"
                                                         ng-class="{literal}{'xim-listview-selected': isSelected(result)}{/literal}"
