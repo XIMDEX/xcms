@@ -12,7 +12,6 @@ logs/
 install/install.log
 conf/install-params.conf.php
 conf/install-modules.conf
-conf/_STATUSFILE
 conf/install-params.conf_bk_*.php
 conf/install-params.conf.phpbck_*.php
 modules/dexT/xslt/dext_main.xsl
