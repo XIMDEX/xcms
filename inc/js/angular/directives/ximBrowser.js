@@ -357,13 +357,20 @@ angular.module("ximdex.common.directive").directive("ximBrowser", [
             node.showNodes = true;
             canceler.resolve();
             canceler = $q.defer();
+            maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup);
+            fromTo = "";
+            idToSend = node.nodeid;
             if ($scope.filterMode && $scope.selectedTab === 1) {
               node.collection = [];
+              if (node.nodeid === "0" && (node.startIndex != null) && (node.endIndex != null)) {
+                fromTo = "&from=" + node.startIndex + "&to=" + node.endIndex;
+                idToSend = node.parentid;
+              }
               url = xUrlHelper.getAction({
                 action: "browser3",
                 method: "readFiltered",
-                id: node.nodeid
-              }) + "&query=" + actualFilter;
+                id: idToSend
+              }) + "&query=" + actualFilter + ("&items=" + maxItemsPerGroup) + fromTo;
               $http.get(url, {
                 timeout: canceler.promise
               }).success(function(data) {
@@ -374,9 +381,6 @@ angular.module("ximdex.common.directive").directive("ximBrowser", [
                 cancel = null;
               });
             } else {
-              maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup);
-              fromTo = "";
-              idToSend = node.nodeid;
               if (node.nodeid === "0" && (node.startIndex != null) && (node.endIndex != null)) {
                 fromTo = "&from=" + node.startIndex + "&to=" + node.endIndex;
                 idToSend = node.parentid;

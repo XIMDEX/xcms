@@ -320,13 +320,20 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                     node.showNodes = true
                     canceler.resolve()
                     canceler = $q.defer()
+
+                    maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup)
+                    fromTo = ""
+                    idToSend = node.nodeid
                     if $scope.filterMode and $scope.selectedTab == 1
                         node.collection = []
+                        if node.nodeid == "0" && node.startIndex? && node.endIndex?
+                            fromTo = "&from=#{node.startIndex}&to=#{node.endIndex}"
+                            idToSend = node.parentid
                         url=xUrlHelper.getAction(
                                 action: "browser3"
                                 method: "readFiltered"
-                                id: node.nodeid
-                            ) + "&query=" + actualFilter
+                                id: idToSend
+                            ) + "&query=" + actualFilter + "&items=#{maxItemsPerGroup}"+fromTo
                         $http.get(url, {timeout: canceler.promise}).success(
                             (data) ->
                                 postLoadNodeChildren(data,callback,node)
@@ -336,9 +343,7 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                             return
 
                     else
-                        maxItemsPerGroup = parseInt($window.com.ximdex.preferences.MaxItemsPerGroup)
-                        fromTo = ""
-                        idToSend = node.nodeid
+
                         if node.nodeid == "0" && node.startIndex? && node.endIndex?
                             fromTo = "&from=#{node.startIndex}&to=#{node.endIndex}"
                             idToSend = node.parentid

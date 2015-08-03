@@ -99,10 +99,17 @@ class GenericDatasource extends AbstractDatasource {
 		$nodeInfo = $request->getParam('nodeid');
 		return empty($nodeInfo) ? '/' : $nodeInfo;
 	}
+
 	static public function read($request, $recursive = true) {
 		$ds = self::getInstance(GenericDataSource::getPath($request));
 		$request->setParam('children', true);
 		return $ds->read($request, $recursive);
+	}
+
+	static public function quickRead($request, $recursive = true) {
+		$ds = self::getInstance(GenericDataSource::getPath($request));
+		$request->setParam('children', true);
+		return $ds->quickRead($request, $recursive);
 	}
 
 	static public function readFiltered($request, $recursive = true) {
