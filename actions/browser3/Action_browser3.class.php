@@ -205,6 +205,7 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/inc/js/angular/directives/ximTree.js');
         $this->addJs('/inc/js/angular/directives/ximList.js');
         $this->addJs('/inc/js/angular/directives/ximBrowser.js');
+        $this->addJs('/inc/js/angular/directives/datepicker.js');
         $this->addJs('/inc/js/angular/directives/ximTabs.js');
         $this->addJs('/inc/js/angular/directives/treeNode.jsx.js');
         $this->addJs('/inc/js/angular/filters/xFilters.js');
@@ -214,6 +215,7 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/inc/js/angular/controllers/XModifyGroupUsersCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
+        $this->addJs('/inc/js/angular/controllers/AdvancedSearchModalCtrl.js');
         //$this->addJs('/inc/js/angular/controllers/XTreeCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');
         $this->addJs('/inc/js/angular/controllers/ximPUBLISHtools.js');
@@ -244,6 +246,7 @@ class Action_browser3 extends ActionAbstract {
             $values["splash_content"] = "Sorry, splash image temporarily unavaliable.";
             $values["splash_file"] = null;
         }
+
         /*         * ************************************************************************************* */
 
         $this->render($values, 'index', 'only_template.tpl');
@@ -832,7 +835,8 @@ class Action_browser3 extends ActionAbstract {
         while ($filter = $it->next()) {
             $filters[] = array(
                 'id' => $filter->getId(),
-                'name' => $filter->getName()
+                'name' => $filter->getName(),
+                'filter' => $filter->getFilter()
             );
         }
 
@@ -882,8 +886,7 @@ class Action_browser3 extends ActionAbstract {
         }
 
         $filter = $this->request->getParam('filter');
-        $filter = $this->validateFieldName($filter);
-        if ($filter === false) {
+        if ($filter === false || !is_array($filter) || count($filter) == 0) {
             $this->sendJSON(
                     array(array('type' => MSG_TYPE_ERROR, 'message' => _('The filter cannot be empty.')))
             );

@@ -23,7 +23,10 @@
  *  @version $Revision$
  */
 
-angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximdex.module']);
+angular.module('ximdex', ['ximdex.common', 'ximdex.main', 'ximdex.widget', 'ximdex.module',
+    'ximdex.vendor']);
+
+angular.module('ximdex.vendor', ['hmTouchEvents','ui.bootstrap','angularLoad', 'react']);
 
 angular.module('ximdex.module', ['ximdex.module.xtags']);
 

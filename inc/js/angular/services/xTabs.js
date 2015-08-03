@@ -158,14 +158,16 @@ angular.module("ximdex.common.service").factory("xTabs", [
         return postLoadCssAndJs(tab);
       }, 0);
     };
-    xtab.pushTab = function(action, nodes) {
+    xtab.pushTab = function(action, node) {
       var i, n, newid, tab, url, _i, _j, _len, _len1;
-      newid = "";
-      for (_i = 0, _len = nodes.length; _i < _len; _i++) {
-        n = nodes[_i];
-        newid += n.nodeid + "_";
+      if (node.constructor === Array) {
+        for (_i = 0, _len = node.length; _i < _len; _i++) {
+          n = node[_i];
+          xtab.pushTab(action, n);
+        }
+        return;
       }
-      newid += action.command;
+      newid = node.nodeid + "_" + action.command;
       for (i = _j = 0, _len1 = tabs.length; _j < _len1; i = ++_j) {
         tab = tabs[i];
         if (tab.id === newid) {
@@ -176,7 +178,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       }
       url = xUrlHelper.getAction({
         action: action.command,
-        nodes: nodes,
+        nodes: [node],
         module: action.module,
         method: action.method,
         options: action.params
@@ -188,7 +190,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
             id: newid,
             name: action.name,
             content: data,
-            nodes: nodes,
+            nodes: [node],
             action: action,
             command: action.command,
             blink: false,

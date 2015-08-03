@@ -1,8 +1,10 @@
 /** @jsx React.DOM */
 angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
     function($filter) {
+        var scope = null;
         var root = null;
-        var TreeNode = React.createClass({displayName: 'TreeNode',
+
+        var TreeNode = React.createClass({displayName: "TreeNode",
             propTypes : {
                 node: React.PropTypes.object.isRequired,
                 selected: React.PropTypes.object.isRequired
@@ -14,35 +16,42 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                 };
             },
             componentDidMount: function() {
-                if(root != null)
-                    this.root = root
+                if(root == null)
+                    this.root = this;
+                if($(this.getDOMNode()).closest('.ng-isolate-scope').scope()){
+                    scope = $(this.getDOMNode()).closest('.ng-isolate-scope').scope();
+                }else{
+                    scope = $(this.getDOMNode()).closest('.ng-isolate-scope').isolateScope()
+                }
+
                 var that = this;
+
                 this.divRootHammer = new Hammer(this.refs.divRoot.getDOMNode());
                 this.divRootHammer.on('tap', function(ev){
                     ev.preventDefault();
-                    angular.element('#angular-tree').isolateScope().select(that.props.node,ev);
-                    angular.element('#angular-tree').isolateScope().$digest();
-                    that.root.forceUpdate();
+                    scope.select(that.props.node,ev);
+                    scope.$digest();
+                    //that.root.forceUpdate();
                 });
                 this.divRootHammer.on('doubletap',
                     function(ev){
-                        angular.element('#angular-tree').isolateScope().toggleNode(that.props.node,ev);
-                        angular.element('#angular-tree').isolateScope().$digest();
+                        scope.toggleNode(that.props.node,ev);
+                        scope.$digest();
                     });
                 this.divRootHammer.on('press', function(ev){
-                    angular.element('#angular-tree').isolateScope().loadActions(that.props.node,ev);
-                    angular.element('#angular-tree').isolateScope().$digest();
+                    scope.loadActions(that.props.node,ev);
+                    scope.$digest();
                 });
                 angular.element(this.refs.divRoot.getDOMNode()).bind('contextmenu', function(event) {
-                    angular.element('#angular-tree').isolateScope().$apply(function() {
+                    scope.$apply(function() {
                         event.preventDefault();
-                        angular.element('#angular-tree').isolateScope().loadActions(that.props.node,event);
+                        scope.loadActions(that.props.node,event);
                     });
                 });
                 this.spanTriangleHammer = new Hammer(this.refs.spanTriangle.getDOMNode());
                 this.spanTriangleHammer.on('tap', function(ev){
-                    angular.element('#angular-tree').isolateScope().toggleNode(that.props.node,ev);
-                    angular.element('#angular-tree').isolateScope().$digest();
+                    scope.toggleNode(that.props.node,ev);
+                    scope.$digest();
                 });
             },
             componentWillUnmount: function() {
@@ -69,18 +78,18 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
 
                 if(this.props.node.showNodes && this.props.node.loading){
                     loading = React.createElement('ul',{className: 'xim-treeview-loading'},
-                        React.createElement('img',{src: 'xmd/images/browser/hbox/loading.gif'})
+                        React.createElement('img',{src: window.com.ximdex.baseUrl + '/xmd/images/browser/hbox/loading.gif'})
                     );
                 }
                 var iconClasses = "xim-treeview-icon icon-"+this.props.node.icon;
                 /*var selected = false;
-                var selectedNodes = this.props.selected;
-                for(var i = 0; i<selectedNodes.length; i++){
-                    if(this.props.node.nodeid == selectedNodes[i].nodeid){
-                        selected = true;
-                        break;
-                    }
-                }*/
+                 var selectedNodes = this.props.selected;
+                 for(var i = 0; i<selectedNodes.length; i++){
+                 if(this.props.node.nodeid == selectedNodes[i].nodeid){
+                 selected = true;
+                 break;
+                 }
+                 }*/
                 var rootClasses = cx({
                     'xim-treeview-node': true,
                     'xim-treeview-container-selected': $filter("nodeSelected")(this.props.node, this.props.selected)
@@ -93,26 +102,25 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                     'icon-hidden': !this.props.node.children && (this.props.node.collection == null || this.props.node.collection.length==0)
                 });
                 return (
-                    React.createElement('span',{},
-                        React.createElement("div", {className: rootClasses, ref: "divRoot"},
-                            React.createElement("span", {ref: "spanTriangle", className: dropDownClasses}),
-                            React.createElement("span", {className: iconClasses}),
-                            React.createElement("span", {className: "xim-treeview-branch",dangerouslySetInnerHTML: {__html: this.props.node.name + (this.props.node.modified == '1' ? '*' : '')}})
-                        ),
-                        React.createElement("ul", {className: "xim-treeview-branch"},
+                    React.createElement("span", null, 
+                        React.createElement("div", {className: rootClasses, ref: "divRoot"}, 
+                            React.createElement("span", {ref: "spanTriangle", className: dropDownClasses}), 
+                            React.createElement("span", {className: iconClasses}), 
+                            React.createElement("span", {className: "xim-treeview-branch", dangerouslySetInnerHTML: {__html: this.props.node.name + (this.props.node.modified == '1' ? '*' : '')}})
+                        ), 
+                        React.createElement("ul", {className: "xim-treeview-branch"}, 
                             childNodes
-                        ),
+                        ), 
                         loading
                     )
                 );
             }
         });
-        return TreeNode;
+        return TreeNode
     }
 ]);
 
 angular.module('ximdex.common.directive').directive( 'treeNode',
     ['reactDirective', function( reactDirective ) {
-        return reactDirective('TreeNode',undefined,{templateUrl: '',
-            replace: true});
-} ]);
+        return reactDirective('TreeNode');
+    } ]);

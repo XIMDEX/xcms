@@ -241,3 +241,34 @@ a + span.path-separator + span {
 
 .node-icon-section {
   background-position: -2px -379px; }
+
+div.modal-tree-xedit {
+  font-family: 'Source Sans Pro';
+  font-size: 1.6rem;
+  color: rgb(70, 70, 70)
+}
+
+div.modal-tree-xedit div.xim-treeview-container{
+  min-height: 500px;
+}
+div.modal-tree-xedit div.xim-treeview-node{
+  line-height: 1.8em;
+  border-bottom: 1px dashed #ccc;
+  position: relative;
+  white-space: nowrap;
+  cursor: pointer;
+}
+div.modal-tree-xedit .xim-treeview-branch{
+  overflow: hidden;
+  margin-top: 0px;
+}
+div.modal-tree-xedit .xim-treeview-branch-container{
+  top: 40px;
+  padding-right: 0px;
+  width: 90%;
+}
+
+div.modal-tree-xedit .alert{
+  margin-top: 5px;
+  margin-bottom: 0px;
+}

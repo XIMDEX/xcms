@@ -99,10 +99,7 @@ angular.module("ximdex.common.directive").directive "ximBrowser", [
                         nodeToSearch = $scope.selectedNodes[0].nodeid
                         if $scope.selectedNodes.length > 1
                             for n in $scope.selectedNodes[1..]
-                                if $scope.selectedNodes[0].nodetypeid != n.nodetypeid
-                                    return
-                                else
-                                    nodeToSearch += "-#{n.nodeid}"
+                                nodeToSearch += "-#{n.nodeid}"
                         if not $window.com.ximdex.nodeActions[nodeToSearch]?
                             $http.get(xUrlHelper.getAction(
                                 action: "browser3"

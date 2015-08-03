@@ -58,15 +58,15 @@
 <div id="angular-event-relay"></div>
 <div id="ximdex-splash">
 
-			<div class="loading"><p>{t}Loading...{/t}</p><span class="progress">&nbsp;</span></div>
-			<div class="ximdex_splash_content">
-				{if ($splash_content != null)}
-					{$splash_content}
-				{else}
-					{include file="$splash_file"}
-				{/if}
-			</div>
-		</div>
+    <div class="loading"><p>{t}Loading...{/t}</p><span class="progress">&nbsp;</span></div>
+    <div class="ximdex_splash_content">
+        {if ($splash_content != null)}
+            {$splash_content}
+        {else}
+            {include file="$splash_file"}
+        {/if}
+    </div>
+</div>
 
 <searchpanel include="yes"/>
 
@@ -121,6 +121,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

@@ -175,11 +175,12 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         # @param nodes [Array] An array of node objects
         #
 
-        xtab.pushTab = (action, nodes) ->
-            newid = ""
-            for n in nodes
-                newid += n.nodeid + "_"
-            newid += action.command
+        xtab.pushTab = (action, node) ->
+            if node.constructor == Array
+                for n in node
+                    xtab.pushTab action, n
+                return
+            newid = node.nodeid + "_" + action.command
             for tab, i in tabs
                 if tab.id == newid
                     xtab.setActiveTab i
@@ -187,7 +188,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     return
             url = xUrlHelper.getAction(
                 action: action.command
-                nodes: nodes
+                nodes: [node]
                 module: action.module
                 method: action.method
                 options: action.params
@@ -198,7 +199,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                         id: newid
                         name: action.name
                         content: data
-                        nodes: nodes
+                        nodes: [node]
                         action: action
                         command: action.command
                         blink: false

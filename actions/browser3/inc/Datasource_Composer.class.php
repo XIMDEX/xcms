@@ -96,6 +96,22 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		return $data;
 	}
 
+	public function quickRead($request, $recursive = true) {
+
+		$idNode = $request->getParam('nodeid');
+		$items = $request->getParam('items');
+		$from = $request->getParam('from');
+		$to = $request->getParam('to');
+
+		// Should we consider the IdNode 10000 directly?
+		$idNode = $idNode == '/' ? 10000 : $idNode;
+
+		$c = new Action_composer();
+		$ret = $c->quickRead($idNode, $from, $to, $items);
+
+		return $ret;
+	}
+
 	public function readFiltered($request, $recursive = true) {
 
 		$idNode = $request->getParam('nodeid');
@@ -109,7 +125,7 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		$idNode = $idNode == '/' ? 10000 : $idNode;
 
 		$c = new Action_composer();
-		$ret = $c->readTreedataFiltered($idNode, $find);
+		$ret = $c->readTreedataFiltered($idNode, $find, $from, $to, $items);
 
 		return $ret;
 	}
