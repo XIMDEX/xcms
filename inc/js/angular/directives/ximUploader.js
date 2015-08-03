@@ -50,6 +50,7 @@ angular.module('ximdex.common.directive')
                         event.preventDefault();
                     };
                     file.isImage = file.file.type.indexOf("image") !== -1;
+                    file.name = file.name.replace(/\s+/g, '_').replace(/[^A-Za-z0-9-_\.]/g, '');
     	    	});
 
     	    	$scope.$on('flow::fileError', function (event, $flow, file, jsonMessage) {
