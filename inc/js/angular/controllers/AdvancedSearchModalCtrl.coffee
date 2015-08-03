@@ -24,6 +24,9 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
         urlListFilters = xUrlHelper.getAction(
             action: 'browser3'
             method: 'listFilters')
+        urlDeleteSavedFilter = xUrlHelper.getAction(
+            action: 'browser3'
+            method: 'deleteFilter')
 
         $scope.addFilter = ->
             $scope.filters.push
@@ -65,13 +68,27 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
 
         $scope.updateSavedFilters()
 
+        $scope.deleteSavedFilter = (id) ->
+            $http(
+                method: 'POST'
+                url: urlDeleteSavedFilter
+                data: $.param("filterid": id)
+                headers: 'Content-Type': 'application/x-www-form-urlencoded'
+            ).success((data, status) ->
+                $scope.updateSavedFilters()
+                return
+            ).error (data, status) ->
+                return
+
         $scope.saveQuery = ->
             modalInstance = $modal.open(
                 animation: $scope.animationsEnabled
-                templateUrl: 'enterNameFilterModal.html'
+                templateUrl: $window.X.baseUrl + '/inc/js/angular/templates/enterNameFilterModal.html'
                 controller: 'EnterNameFilterModalCtrl'
                 size: 'sm'
-                resolve: {})
+                resolve: {}
+                windowClass: "enter-name"
+            )
             modalInstance.result.then ((name) ->
                 $http(
                     method: 'POST'

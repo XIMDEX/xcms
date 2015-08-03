@@ -495,7 +495,7 @@
     .dialog_advanced_search .saved-searches-items li, .dialog_advanced_search .last-searches-items li {
       cursor: pointer;
       font-size: 1.2em; }
-      .dialog_advanced_search .saved-searches-items li:hover, .dialog_advanced_search .last-searches-items li:hover {
+      .dialog_advanced_search .saved-searches-items li span:hover, .dialog_advanced_search .last-searches-items li span:hover {
         color: #7bcabf; }
   .dialog_advanced_search .xim-listview-table-container {
     margin: 1.5em 0; }
@@ -597,4 +597,52 @@
       top: 0; }
 .bs-pagination{
   text-align: center;
+}
+
+.results-view .pagination>.active>a, .results-view .pagination>.active>span,
+.results-view .pagination>.active>a:hover,
+.results-view .pagination>.active>span:hover, .results-view .pagination>.active>a:focus,
+.results-view .pagination>.active>span:focus{
+    color: #404444;
+    background-color: #7bcabf;
+    border-color: #7bcabf;
+  }
+.results-view .pagination>li>a, .results-view .pagination>li>span {
+  color: #7bcabf;
+  background-color: #404444;
+}
+.results-view .pagination>.disabled>span,
+.results-view .pagination>.disabled>span:hover,
+.results-view .pagination>.disabled>span:focus,
+.results-view .pagination>.disabled>a,
+.results-view .pagination>.disabled>a:hover,
+.results-view .pagination>.disabled>a:focus {
+  background-color: #404444;
+  color: #7bcabf;
+}
+.results .close-button{
+  position: absolute;
+  top: .7em;
+  font-size: 1.2em;
+  height: 1.5em;
+  right: 0;
+}
+.enter-name .btn-primary{
+  color: #404444;
+  background-color: #7bcabf;
+  border-color: #7bcabf;
+}
+.enter-name .btn-warning{
+  color: #7bcabf;
+  background-color: #404444;
+  border-color: #404444;
+}
+.howto h2{
+  font-size: 2.7em !important;
+  padding-bottom: 0 !important;
+  margin-bottom: .6em !important;
+}
+
+.howto p{
+  font-size: 1.5em;
 }

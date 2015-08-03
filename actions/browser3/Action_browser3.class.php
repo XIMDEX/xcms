@@ -247,9 +247,6 @@ class Action_browser3 extends ActionAbstract {
             $values["splash_file"] = null;
         }
 
-        if (file_exists(XIMDEX_ROOT_PATH . "/actions/browser3/template/Smarty/modals.tpl")) {
-            $values["modals_file"] = XIMDEX_ROOT_PATH . "/actions/browser3/template/Smarty/modals.tpl";
-        }
         /*         * ************************************************************************************* */
 
         $this->render($values, 'index', 'only_template.tpl');

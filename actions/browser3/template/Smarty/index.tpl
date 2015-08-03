@@ -121,6 +121,5 @@
         </div>
     </div>
 </div>
-{include file="$modals_file"}
 </body>
 </html>
