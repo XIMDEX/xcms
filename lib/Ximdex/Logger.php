@@ -59,7 +59,11 @@ Class Logger
 
     public static function error($string, $object = array())
     {
-        return self::get()->logger->addError($string, $object);
+        try{
+            return self::get()->logger->addError($string, $object);
+        }catch (\Exception $e){
+            error_log($e->getMessage());
+        }
     }
 
     public static function warning($string)
@@ -69,17 +73,29 @@ Class Logger
 
     public static function debug($string)
     {
-        return self::get()->logger->addDebug($string);
+        try{
+            return self::get()->logger->addDebug($string);
+        }catch (\Exception $e){
+            error_log($e->getMessage());
+        }
     }
 
     public static function fatal($string)
     {
-        return self::get()->logger->addFatal($string);
+        try{
+            return self::get()->logger->addFatal($string);
+        }catch (\Exception $e){
+            error_log($e->getMessage());
+        }
     }
 
     public static function info($string)
     {
-        return self::get()->logger->addInfo($string);
+        try{
+            return self::get()->logger->addInfo($string);
+        }catch (\Exception $e){
+            error_log($e->getMessage());
+        }
     }
 
     public static function logTrace($string)
