@@ -469,7 +469,11 @@ class Action_composer extends ActionAbstract {
 				if ($results == 0) {
 					$children = 0;
 				} else {
-					$name .= sprintf('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $results);
+					if("5013" == $db->getValue('IdNodeType')){
+						$name .= sprintf('&nbsp;<span class="filter-results-span">[Results: %s]</span>', $results);
+					}else{
+						$name .= sprintf('&nbsp;<span class="filter-results-span">(+%s)</span>', $results);
+					}
 				}
 				$ret['collection'][] = array(
 					'originalName' => $db->getValue('Name'),

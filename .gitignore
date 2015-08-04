@@ -9,6 +9,7 @@
 node_modules
 data/
 logs/
+conf/_STATUSFILE
 install/install.log
 conf/install-params.conf.php
 conf/install-modules.conf
