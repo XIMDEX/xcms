@@ -46,9 +46,27 @@
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script type="text/javascript" src="extensions/angular/angular.min.js" ></script>
+    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
+    <script type="text/javascript" src="extensions/ladda/dist/spin.min.js" ></script>
+    <script type="text/javascript" src="extensions/ladda/dist/ladda.min.js" ></script>
+    <script type="text/javascript" src="extensions/humane/humane.min.js" ></script>
 
+    <script type="text/javascript" >
+        var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
+    </script>
+    <script type="text/javascript" src="inc/install/view/js/directives/ladda.js"></script>
+    <script type="text/javascript" src="inc/install/view/js/services/installerService.js"></script>
+    <?php
+    foreach($js_files as $js_file){
+        ?>
+        <script type="text/javascript" src="<?php echo $js_file; ?>"></script>
+        <?php
+    }
+    ?>
 </head>
-<body ng-app="ximdexInstallerApp">
+<body ng-app="ximdexInstallerApp" ng-cloak>
 
     <div class="aside">
         <h1><a href="http://www.ximdex.com">ximdexl</a></h1>
@@ -91,24 +109,6 @@
             include ($includeTemplateStep);
         ?>       
     </div>
-    <script type="text/javascript" src="extensions/angular/angular.min.js" ></script>
-    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="extensions/angular/angular-animate.min.js" ></script>
-    <script type="text/javascript" src="extensions/ladda/dist/spin.min.js" ></script>
-    <script type="text/javascript" src="extensions/ladda/dist/ladda.min.js" ></script>
-    <script type="text/javascript" src="extensions/humane/humane.min.js" ></script>
 
-    <script type="text/javascript" >
-        var ximdexInstallerApp = angular.module('ximdexInstallerApp',[]);
-    </script>
-    <script type="text/javascript" src="inc/install/view/js/directives/ladda.js"></script>
-    <script type="text/javascript" src="inc/install/view/js/services/installerService.js"></script>
-    <?php
-        foreach($js_files as $js_file){
-        ?>
-            <script type="text/javascript" src="<?php echo $js_file; ?>"></script>
-        <?php
-        }
-    ?>    
 </body>
 </html>
