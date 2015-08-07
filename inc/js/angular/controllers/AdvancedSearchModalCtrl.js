@@ -59,46 +59,52 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
     };
     $scope.updateSavedFilters();
     $scope.deleteSavedFilter = function(id) {
-      return $http({
-        method: 'POST',
-        url: urlDeleteSavedFilter,
-        data: $.param({
-          "filterid": id
-        }),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).success(function(data, status) {
-        $scope.updateSavedFilters();
-      }).error(function(data, status) {});
-    };
-    $scope.saveQuery = function() {
       var modalInstance;
       modalInstance = $modal.open({
-        animation: $scope.animationsEnabled,
-        templateUrl: $window.X.baseUrl + '/inc/js/angular/templates/enterNameFilterModal.html',
-        controller: 'EnterNameFilterModalCtrl',
+        animation: true,
+        templateUrl: $window.X.baseUrl + '/inc/js/angular/templates/confirmDeleteFilterModal.html',
+        controller: 'ConfirmDeleteFilterModalCtrl',
         size: 'sm',
         resolve: {},
-        windowClass: "enter-name"
+        windowClass: "confirm-delete-filter"
       });
       return modalInstance.result.then((function(name) {
-        $http({
+        return $http({
           method: 'POST',
-          url: urlToSave,
+          url: urlDeleteSavedFilter,
           data: $.param({
-            filter: {
-              query: $scope.results.query,
-              'handler': 'SQL',
-              'output': 'JSON'
-            }
-          }) + '&output=JSON&handler=SQL&name=' + encodeURIComponent(name),
+            "filterid": id
+          }),
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           }
         }).success(function(data, status) {
           $scope.updateSavedFilters();
         }).error(function(data, status) {});
+      }), function() {});
+    };
+    $scope.saveQuery = function() {
+      var modalInstance;
+      modalInstance = $modal.open({
+        animation: true,
+        templateUrl: $window.X.baseUrl + '/inc/js/angular/templates/enterNameFilterModal.html',
+        controller: 'EnterNameFilterModalCtrl',
+        size: 'sm',
+        resolve: {
+          condition: function() {
+            return $scope.condition;
+          },
+          filters: function() {
+            return $scope.filters;
+          },
+          urlToSave: function() {
+            return urlToSave;
+          }
+        },
+        windowClass: "enter-name"
+      });
+      return modalInstance.result.then((function() {
+        $scope.updateSavedFilters();
       }), function() {});
     };
     queryToString = function(q) {
@@ -125,22 +131,27 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
     $scope.search = function(query) {
       var f, filter, q, stringQuery;
       stringQuery = '';
-      if (typeof query !== 'undefined') {
+      q = {
+        handler: 'SQL',
+        output: 'JSON',
+        query: {
+          'parentid': '10000',
+          'depth': '0',
+          'items': '50',
+          'page': '1',
+          'view': 'gridview',
+          'condition': $scope.condition,
+          'filters': []
+        }
+      };
+      if (typeof query === 'string') {
         stringQuery = query;
+      } else if (typeof query === 'object') {
+        q.query.filters = query.filters;
+        q.query.condition = query.condition;
+        stringQuery = $.param(q);
+        $scope.filters = angular.copy(query.filters);
       } else {
-        q = {
-          handler: 'SQL',
-          output: 'JSON',
-          query: {
-            'parentid': '10000',
-            'depth': '0',
-            'items': '50',
-            'page': '1',
-            'view': 'gridview',
-            'condition': $scope.condition,
-            'filters': []
-          }
-        };
         for (f in $scope.filters) {
           if ($scope.filters.hasOwnProperty(f)) {
             filter = {};
@@ -184,12 +195,17 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).success(function(data, status) {
+        var title;
         $scope.selectNone();
         $scope.results = data;
-        if (typeof query === 'undefined') {
+        title = queryToString(q);
+        if (typeof query === 'undefined' && ($scope.lastSearches.length === 0 || $scope.lastSearches[0].title !== title)) {
           $scope.lastSearches.unshift({
-            title: queryToString(q),
-            query: stringQuery
+            title: title,
+            filter: {
+              condition: $scope.condition,
+              filters: $scope.filters
+            }
           });
           if ($scope.lastSearches.length > 6) {
             $scope.lastSearches.pop();
@@ -320,12 +336,49 @@ angular.module('ximdex.main.controller').controller('AdvancedSearchModalCtrl', [
       xMenu.open(data, selectedNodes, xTabs.pushTab);
       data = null;
     };
+    $scope.isLoading = function() {
+      return $http.pendingRequests.length > 0;
+    };
   }
 ]);
 
 angular.module('ximdex.main.controller').controller('EnterNameFilterModalCtrl', [
-  '$scope', '$modalInstance', function($scope, $modalInstance) {
+  '$scope', '$modalInstance', '$http', 'condition', 'filters', 'urlToSave', function($scope, $modalInstance, $http, condition, filters, urlToSave) {
     $scope.name = '';
+    $scope.error = false;
+    $scope.ok = function() {
+      $http({
+        method: 'POST',
+        url: urlToSave,
+        data: $.param({
+          filter: {
+            condition: condition,
+            filters: filters
+          },
+          handler: 'SQL',
+          output: 'JSON',
+          name: $scope.name
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).success(function(data, status) {
+        var _ref;
+        if ((((_ref = data[0]) != null ? _ref.message : void 0) != null) && data[0].message.length > 0) {
+          $scope.error = true;
+        } else {
+          $modalInstance.close();
+        }
+      }).error(function(data, status) {});
+    };
+    $scope.cancel = function() {
+      $modalInstance.dismiss('cancel');
+    };
+  }
+]);
+
+angular.module('ximdex.main.controller').controller('ConfirmDeleteFilterModalCtrl', [
+  '$scope', '$modalInstance', function($scope, $modalInstance) {
     $scope.ok = function() {
       $modalInstance.close($scope.name);
     };

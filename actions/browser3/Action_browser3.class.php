@@ -836,7 +836,7 @@ class Action_browser3 extends ActionAbstract {
             $filters[] = array(
                 'id' => $filter->getId(),
                 'name' => $filter->getName(),
-                'filter' => $filter->getFilter()
+                'filter' => json_decode($filter->getFilter())
             );
         }
 

@@ -69,39 +69,46 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
         $scope.updateSavedFilters()
 
         $scope.deleteSavedFilter = (id) ->
-            $http(
-                method: 'POST'
-                url: urlDeleteSavedFilter
-                data: $.param("filterid": id)
-                headers: 'Content-Type': 'application/x-www-form-urlencoded'
-            ).success((data, status) ->
-                $scope.updateSavedFilters()
-                return
-            ).error (data, status) ->
-                return
-
-        $scope.saveQuery = ->
             modalInstance = $modal.open(
-                animation: $scope.animationsEnabled
-                templateUrl: $window.X.baseUrl + '/inc/js/angular/templates/enterNameFilterModal.html'
-                controller: 'EnterNameFilterModalCtrl'
+                animation: true
+                templateUrl: $window.X.baseUrl + '/inc/js/angular/templates/confirmDeleteFilterModal.html'
+                controller: 'ConfirmDeleteFilterModalCtrl'
                 size: 'sm'
                 resolve: {}
-                windowClass: "enter-name"
+                windowClass: "confirm-delete-filter"
             )
             modalInstance.result.then ((name) ->
                 $http(
                     method: 'POST'
-                    url: urlToSave
-                    data: $.param(filter:
-                        query: $scope.results.query
-                        'handler': 'SQL'
-                        'output': 'JSON') + '&output=JSON&handler=SQL&name=' + encodeURIComponent(name)
+                    url: urlDeleteSavedFilter
+                    data: $.param("filterid": id)
                     headers: 'Content-Type': 'application/x-www-form-urlencoded'
                 ).success((data, status) ->
                     $scope.updateSavedFilters()
                     return
                 ).error (data, status) ->
+                    return
+            ), ->
+                return
+
+
+        $scope.saveQuery = ->
+            modalInstance = $modal.open(
+                animation: true
+                templateUrl: $window.X.baseUrl + '/inc/js/angular/templates/enterNameFilterModal.html'
+                controller: 'EnterNameFilterModalCtrl'
+                size: 'sm'
+                resolve:
+                    condition: ->
+                        $scope.condition
+                    filters: ->
+                        $scope.filters
+                    urlToSave: ->
+                        urlToSave
+                windowClass: "enter-name"
+            )
+            modalInstance.result.then (() ->
+                $scope.updateSavedFilters()
                 return
             ), ->
                 return
@@ -122,20 +129,26 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
 
         $scope.search = (query) ->
             stringQuery = ''
-            if typeof query != 'undefined'
+            q =
+                handler: 'SQL'
+                output: 'JSON'
+                query:
+                    'parentid': '10000'
+                    'depth': '0'
+                    'items': '50'
+                    'page': '1'
+                    'view': 'gridview'
+                    'condition': $scope.condition
+                    'filters': []
+            if typeof query == 'string'
                 stringQuery = query
+            else if typeof query == 'object'
+                q.query.filters = query.filters
+                q.query.condition = query.condition
+                stringQuery = $.param q
+                $scope.filters = angular.copy query.filters
             else
-                q =
-                    handler: 'SQL'
-                    output: 'JSON'
-                    query:
-                        'parentid': '10000'
-                        'depth': '0'
-                        'items': '50'
-                        'page': '1'
-                        'view': 'gridview'
-                        'condition': $scope.condition
-                        'filters': []
+
                 for f of $scope.filters
                     if $scope.filters.hasOwnProperty(f)
                         filter = {}
@@ -166,10 +179,13 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
             ).success((data, status) ->
                 $scope.selectNone()
                 $scope.results = data
-                if typeof query == 'undefined'
+                title = queryToString(q)
+                if typeof query == 'undefined' && ($scope.lastSearches.length == 0 || $scope.lastSearches[0].title != title)
                     $scope.lastSearches.unshift
-                        title: queryToString(q)
-                        query: stringQuery
+                        title: title
+                        filter:
+                            condition: $scope.condition
+                            filters: $scope.filters
                     if $scope.lastSearches.length > 6
                         $scope.lastSearches.pop()
                     $window.com.ximdex.session.set 'last.searches', $scope.lastSearches, '1d'
@@ -275,13 +291,54 @@ angular.module('ximdex.main.controller').controller 'AdvancedSearchModalCtrl', [
             data = null
             return
 
+        $scope.isLoading = ->
+            $http.pendingRequests.length > 0
+
         return
 ]
 angular.module('ximdex.main.controller').controller 'EnterNameFilterModalCtrl', [
     '$scope'
     '$modalInstance'
-    ($scope, $modalInstance) ->
+    '$http'
+    'condition'
+    'filters'
+    'urlToSave'
+    ($scope, $modalInstance, $http, condition, filters, urlToSave) ->
         $scope.name = ''
+        $scope.error = false
+        $scope.ok = ->
+            $http(
+                method: 'POST'
+                url: urlToSave
+                data: $.param(
+                    filter:
+                        condition: condition
+                        filters: filters
+                    handler: 'SQL'
+                    output: 'JSON'
+                    name: $scope.name
+                )
+                headers: 'Content-Type': 'application/x-www-form-urlencoded'
+            ).success((data, status) ->
+                if data[0]?.message? && data[0].message.length > 0
+                    $scope.error = true
+                else
+                    $modalInstance.close()
+                return
+            ).error (data, status) ->
+            return
+
+        $scope.cancel = ->
+            $modalInstance.dismiss 'cancel'
+            return
+
+        return
+]
+
+angular.module('ximdex.main.controller').controller 'ConfirmDeleteFilterModalCtrl', [
+    '$scope'
+    '$modalInstance'
+    ($scope, $modalInstance) ->
 
         $scope.ok = ->
             $modalInstance.close $scope.name

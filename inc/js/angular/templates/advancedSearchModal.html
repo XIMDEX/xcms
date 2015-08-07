@@ -122,7 +122,7 @@
 
                         <div class="last-searches-item-container">
                             <ul class="last-searches-items">
-                                <li ng-click="search(s.query)" ng-repeat="s in lastSearches track by $index">
+                                <li ng-click="search(s.filter)" ng-repeat="s in lastSearches track by $index">
                                     <span>#/s.title/#</span>
                                 </li>
                             </ul>
@@ -134,6 +134,9 @@
 
         </div>
         <div class="results">
+            <div class="xim-listview-loading">
+                <img ng-if="isLoading()" src="actions/browser3/resources/images/loading.gif">
+            </div>
             <a ng-click="cancel()" class="close-button" role="button">
                 <span class="glyphicon glyphicon-remove"></span>
             </a>
@@ -145,7 +148,7 @@
 
                 <p >You can make custom filters adding(+)/removing(-) filter at the
                     left side of this window. Then click on the SEARCH button to search nodes using
-                    the actual filter.</p>
+                    the current filter.</p>
 
                 <h2 >Can I save my custom filters?</h2>
 
@@ -206,7 +209,7 @@
 
                                                 <tr ng-repeat="result in results.data track by result.nodeid"
                                                     ng-click="selectNode(result, $event)"
-                                                    ng-class="{literal}{'xim-listview-selected': isSelected(result)}{/literal}"
+                                                    ng-class="{'xim-listview-selected': isSelected(result)}"
                                                     class="xim-listview-item"
                                                     ng-right-click="openMenu(result, $event)"    >
                                                     <td class="xim-listview-grid-view xim-listview-grid-icon ui-widget-content"

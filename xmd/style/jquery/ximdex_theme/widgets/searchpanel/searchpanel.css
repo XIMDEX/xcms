@@ -627,12 +627,12 @@
   height: 1.5em;
   right: 0;
 }
-.enter-name .btn-primary{
+.confirm-delete-filter .btn-primary, .enter-name .btn-primary{
   color: #404444;
   background-color: #7bcabf;
   border-color: #7bcabf;
 }
-.enter-name .btn-warning{
+.confirm-delete-filter .btn-warning, .enter-name .btn-warning{
   color: #7bcabf;
   background-color: #404444;
   border-color: #404444;
@@ -645,4 +645,8 @@
 
 .howto p{
   font-size: 1.5em;
+}
+
+.confirm-delete-filter .modal-body p{
+  font-size: 1.4em;
 }
