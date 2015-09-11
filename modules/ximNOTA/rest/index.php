@@ -11,8 +11,8 @@ require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
 class ximNOTA_REST_Server {
 
 	// Class constants
-	var $_USER = 'ximdex';
-	var $_PASS = 'ximdex_agpd';
+	var $_USER = '';
+	var $_PASS = '';
 	var $_CODE = '-1000';
 
 	// Private class attributes
