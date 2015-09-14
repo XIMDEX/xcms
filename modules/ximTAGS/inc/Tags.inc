@@ -100,17 +100,17 @@ class Tag extends Tags_ORM {
 		save one tag $_tag
 	*/
 	function save($_tag = null, $namespace = null) {
-		//get Data tag  
-		
-		$idNamespace = (int)$namespace; 
-      	$tag = $this->getTag($_tag, $namespace);
-      	
+		//get Data tag
+
+		$idNamespace = (int)$namespace;
+      	$tag = $this->_getTagByNameNamespace($_tag, $namespace);
+
   		//Check if tag exists
 		if(empty($tag)) { //if tag dont exists
 			$tag = new Tag();
 		    $tag->set('Name', $_tag);
 		    $tag->set('IdNamespace', $idNamespace);
-  		    $tag->set('Total', '1'); //At least, one tag 
+  		    $tag->set('Total', '1'); //At least, one tag
 		    return $tag->add();
 		}else { //if tags exists then +1 a the total
 		   $sql = sprintf("UPDATE XimTAGSTags SET Total=Total+1 WHERE IdTag=%d", $tag['IdTag']);
