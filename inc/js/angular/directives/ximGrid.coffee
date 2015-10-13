@@ -166,7 +166,7 @@ angular.module('ximdex.common.directive').directive 'ximGrid', [ ->
                 return
 
             $scope.openMenu = (node, event) ->
-                console.log node
+                event.stopImmediatePropagation()
                 $scope.selectItem node, event
                 if $scope.selected[0].nodeid == null | $scope.selected[0].nodetypeid == null | $scope.selected[0].nodeid == '0'
                     return
