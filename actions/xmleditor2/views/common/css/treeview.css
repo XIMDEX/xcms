@@ -25,7 +25,7 @@
 
 
 .expanded .xim-treeview-branch-container{
-	width: auto;	
+	width: auto;
 }
 ul.xim-treeview-loading {
 	list-style: none;
@@ -128,4 +128,4 @@ ul.xim-treeview-collapsed {
 
 .ui-widget-content .ui-icon {
 	background-image: url("../../../../../xmd/style/jquery/smoothness/images/ui-icons_222222_256x240.png")
-} 
+}
