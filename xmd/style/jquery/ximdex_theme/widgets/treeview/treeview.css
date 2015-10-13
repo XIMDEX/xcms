@@ -97,6 +97,10 @@ li.xim-listview-node:hover span.xim-treeview-icon {
   border-bottom: 1px dashed #ccc;
 }
 
+.xim-treeview-container-selected span.xim-treeview-icon {
+  background-position: -1px -276px;
+}
+
 ul.xim-treeview-branch li div.xim-treeview-container-selected,
 tr.xim-listview-selected,
 tr.xim-listview-selected:hover,
