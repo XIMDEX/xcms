@@ -81,6 +81,13 @@
     padding: .8em;
     text-align: left;
     cursor: pointer; }
+.simple-results tr{
+  cursor: pointer;
+}
+.simple-results tr.selected {
+  background-color: #43A1A2 ;
+  color: #ffffff;
+}
   .simple-results td span {
     padding: .8em;
     -ms-word-break: break-word;

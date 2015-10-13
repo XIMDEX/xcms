@@ -16,7 +16,7 @@
 				Collumns
 			</span>
 			</div>
-		<table class="simple-results">
+		<table class="simple-results noselect">
 			<thead>
 				<th ng-repeat="field in fields"
 					ng-click="sort(field)" 
@@ -28,7 +28,7 @@
 			<tbody>
 				<tr ng-repeat="item in filtered = (list.data | filter:filterText)"
 					ng-click="selectItem(item, $event)"
-					ng-right-click="contextmenu(item, $event)"
+					ng-right-click="openMenu(item, $event)"
 					ng-class="{'selected': isSelected(item.nodeid)}">
 					<td ng-repeat="field in fields" ng-switch="field.type" ng-if="!field.hide">
 						<span class="row-cell-#/field.type/# row-cell-#/field.key/#" ng-switch-when="date">#/item[field.key]*1000 | date:'dd-MM-yyyy HH:mm'/#</span>
