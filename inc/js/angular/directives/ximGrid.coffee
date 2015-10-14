@@ -122,6 +122,7 @@ angular.module('ximdex.common.directive').directive 'ximGrid', [ ->
                 if !$scope.searching
                     if event.ctrlKey
                         if $scope.isSelected(item.nodeid)
+                            return if event.button == 2
                             for n of $scope.selected
                                 if $scope.selected.hasOwnProperty(n) and $scope.selected[n].nodeid == item.nodeid
                                     $scope.selected.splice n, 1
@@ -131,6 +132,7 @@ angular.module('ximdex.common.directive').directive 'ximGrid', [ ->
                     else
                         $scope.selected = [ item ]
                 return
+
 
             $scope.isSelected = (itemId) ->
                 for i in $scope.selected

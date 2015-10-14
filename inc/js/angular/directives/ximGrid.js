@@ -127,6 +127,9 @@ angular.module('ximdex.common.directive').directive('ximGrid', [
             if (!$scope.searching) {
               if (event.ctrlKey) {
                 if ($scope.isSelected(item.nodeid)) {
+                  if (event.button === 2) {
+                    return;
+                  }
                   for (n in $scope.selected) {
                     if ($scope.selected.hasOwnProperty(n) && $scope.selected[n].nodeid === item.nodeid) {
                       $scope.selected.splice(n, 1);
