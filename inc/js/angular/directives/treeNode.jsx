@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
     function($filter) {
         var scope = null;
@@ -48,6 +47,20 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                         scope.loadActions(that.props.node,event);
                     });
                 });
+                angular.element(this.refs.divRoot.getDOMNode()).bind('contextmenu', function(event) {
+                    scope.$apply(function() {
+                        event.preventDefault();
+                        scope.loadActions(that.props.node,event);
+                    });
+                });
+
+                angular.element(this.refs.icon.getDOMNode()).bind('click', function(event) {
+                    scope.$apply(function() {
+                        event.preventDefault();
+                        scope.loadActions(that.props.node,event);
+                    });
+                });
+
                 this.spanTriangleHammer = new Hammer(this.refs.spanTriangle.getDOMNode());
                 this.spanTriangleHammer.on('tap', function(ev){
                     scope.toggleNode(that.props.node,ev);
@@ -105,7 +118,7 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                     <span>
                         <div className={rootClasses} ref="divRoot">
                             <span ref="spanTriangle" className={dropDownClasses}></span>
-                            <span className={iconClasses}></span>
+                            <span className={iconClasses} ref="icon"></span>
                             <span className="xim-treeview-branch" dangerouslySetInnerHTML={{__html: this.props.node.name + (this.props.node.modified == '1' ? '*' : '')}}></span>
                         </div>
                         <ul className="xim-treeview-branch">
