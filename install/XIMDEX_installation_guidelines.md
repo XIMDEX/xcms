@@ -108,7 +108,8 @@ If you prefer to control all the steps this is your installation method:
 
 1. Download Ximdex package, tar file and expand it:
 	```
-  	tar zxvf ximdex.tgz .
+  	wget --no-check-certificate https://github.com/XIMDEX/ximdex/archive/develop.zip
+	unzip develop.zip
   	```
 	You should end with a directory (i.e.: Ximdex_v35) containing all the Ximdex files and directories.
 
@@ -142,7 +143,7 @@ If you prefer to control all the steps this is your installation method:
 
 6. Import Ximdex DB to your DB server
   	```
-  	mysql myximdexDB -u root -p -h localhost /var/www/myximdex/install/ximdex_data/ximdex.sql
+  	mysql myximdexDB -u root -p -h localhost < /var/www/myximdex/install/ximdex_data/ximdex.sql
 	```
 
 7. Connect to the DB and update some rows to set Ximdex parameters:
@@ -183,26 +184,19 @@ If you prefer to control all the steps this is your installation method:
 	Changing carefully the ##PARAMS## you will find in the file to the actual values. You should end with something like this:
 	```
 	...
-	/* DATABASE_PARAMS (do not remove this comment, please) */
-        $DBHOST = "localhost";
-        $DBPORT = "3306";
-        $DBUSER = "XIMDEX_DBUSER";
-        $DBPASSWD = "XIMDEX_DBPASS";
-        $DBNAME = "myximdexDB";
-
-
-
-	/* XIMDEX_PARAMS (do not remove this comment, please) */
-		  if (!defined('XIMDEX_TIMEZONE'))
-			define("XIMDEX_TIMEZONE", "Europe/Madrid");
-
-		  date_default_timezone_set(XIMDEX_TIMEZONE);
-
-        $XIMDEX_ROOT_PATH = "/var/www/myximdex";
-
-		  if (!defined('DEFAULT_LOCALE'))
-			 define('DEFAULT_LOCALE', 'en_US');
-
+	'db' => array(
+        	'type' => 'mysql',
+        	'host' => 'localhost',
+        	'port' => '3306',
+        	'user' => 'XIMDEX_DBUSER',
+        	'password' => 'XIMDEX_DBPASS',
+        	'db' => 'myximdexDB',
+        	'log' => false
+    	),
+    	'ximdex_root_path' => '/var/www/myximdex',
+    	'default.db' => 'db' ,
+    	'timezone' => 'Europe/Madrid',
+    	'locale' => 'en_US',
 	...
 	```
 	Please, pay attention to the values in this file and the values you have chosen for the target directory (i.e.: /var/www/myximdex) and the parameters stored in the DB!!
@@ -211,8 +205,8 @@ If you prefer to control all the steps this is your installation method:
 	```
 	cd /var/www
 	chown -R www-data:www-data myximdex
-	chmod g+s data
-	chmod g+s logs
+	chmod g+s myximdex/data
+	chmod g+s myximdex/logs
 	```
 	
 	
