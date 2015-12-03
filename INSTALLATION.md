@@ -1,8 +1,9 @@
 #Installing the Semantic Web CMS Ximdex
 
-Ximdex CMS basically requires a Linux machine, a Database server as MySQL (or MariaDB) and an Apache Web Server with PHP.
+Ximdex CMS requires a Linux host, a Database server (MySQL or MariaDB) and Apache Web Server with PHP.
 
-You can install Ximdex CMS with Docker or using its web installer. Additionally, a fully manual installation can be found at install/XIMDEX_manual_installation_guidelines.md.
+You can install Ximdex CMS with Docker or using the web installer.
+Additionally, a fully manual installation can be found at install/XIMDEX_manual_installation_guidelines.md.
 
 
 ## A) Installing Ximdex CMS using Docker
@@ -13,13 +14,13 @@ You can install Ximdex CMS with Docker or using its web installer. Additionally,
 	docker run -d -h "host.domain" -e PORT=9090 -e XIMDEX_PASS=MyPass -p 9090:5000 ximdex/ximdex
 ```
 
-> That will install Ximdex CMS running on host.domain (localhost will be used if -h parameter is not provided) and port 9090 with password MyPass for the admin user (ximdex)
+> That will install Ximdex CMS running on host.domain and port 9090 with password MyPass for the admin user.
 
 2. From your browser visit http://host.domain:9090 to end the installation.
 
-3. Play with Ximdex CMS at http://host.domain:9090 
+3. Play with Ximdex CMS at http://host.domain:9090 using user Ximdex with password MyPass to login in.
 
-> A shorter version of the docker command using default values is "docker run -d -p 5000:5000 ximdex/ximdex" that will end with ximdex running at http://localhost:5000
+> A shorter version of the docker command using default values is "docker run -d -p 5000:5000 ximdex/ximdex" that will end with ximdex running at http://localhost:5000 using ximdex as password for the ximdex user.
 
 
 ## B) Installing from Github with the Web Installer
@@ -72,10 +73,6 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 
 4. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
-
-5. Thank you for installing Ximdex CMS. Please, contact us at help@ximdex.org if you need further assistance.
-
-
 ## C) Assisted Installation Steps
 If the previous method did not work or just in case of neeeding any assistance to install Ximdex CMS we have prepared the XIMDEX_INSTALL.sh script that will download Ximdex for you, ask you some parameters (instance name, installation paths, etc.) and create a new script called 1.-MoveXimdexToDocRoot.sh that will move the directory to its final destination and set the right permissions.
 >This installation can be fully automated or interactive, it is less prone to errors and let you decide how to run commands requiring a superuser. The steps are:
@@ -109,6 +106,8 @@ If the previous method did not work or just in case of neeeding any assistance t
 
 6. That's all folks. Enjoy Ximdex! Contact us at help@ximdex.org if you need further assistance or want to make any comment or suggestion.
 
-
 ## E) Manual Installation Steps
 If you prefer to control all the steps, please check the manual installation guide at install/XIMDEX_manual_installation_guidelines.md.
+
+
+And thank you for installing Ximdex CMS. Please, contact us at help@ximdex.org if you need further assistance.
