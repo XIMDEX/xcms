@@ -1,4 +1,4 @@
-#Installing the Semantic Web CMS Ximdex (assisted and manual methods)
+#Installing the Semantic Web CMS Ximdex (manual method)
 
 Ximdex CMS basically requires a Linux machine, a Database server as MySQL (or MariaDB) and Apache Web Server with PHP.
 
