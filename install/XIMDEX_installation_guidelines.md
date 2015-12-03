@@ -1,14 +1,9 @@
-#Installing the Semantic Web CMS Ximdex (manual method)
+#Installing the Semantic Web CMS Ximdex (manual and automated methods)
 
-Ximdex CMS basically requires a Linux machine, a Database server as MySQL (or MariaDB) and Apache Web Server with PHP.
-
-The easiest way to install Ximdex CMS is described in INSTALLATION.md (with Docker or using the web installer) but if you want to fully control the process this guideline shows the steps.
-
-Install Ximdex using one of the following methods:
+You can install Ximdex using one of the following methods:
 - **Docker instance**: it is the easiest way to try Ximdex. It is described at INSTALLATION.md file.
-- **Web Installer**: an easy way to fully configure and install Ximdex is by downloading it, setting file permissions and pointing your web browser to your Ximdex CMS to end its configuration. This method is the described at the INSTALLATION.md file.
-- **Manual**: if you want to fully control the installation the section provides instructions for unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc.
-
+- **Web Installer**: an easy way to fully configure and install Ximdex is by downloading it, setting file permissions and pointing your web browser to your Ximdex CMS to end its configuration. This method is also described at the INSTALLATION.md file.
+- **Manual/Assisted/Automated**: if you want to fully control the installation this document provides instructions for unzipping the Ximdex instance, creating the database, assigning permissions, creating database users, parameterizing Ximdex, etc.
 
 ###Installation Requirements
 *  Access to a terminal with Telnet or SSH.
@@ -133,3 +128,39 @@ If you prefer to control all the steps this is your installation method:
 	
 11. Open Ximdex with your browser to end the configuration (http://HOST/myximdex)
 
+##Assisted Installation Steps
+To help you installing Ximdex CMS we have prepared the XIMDEX_INSTALL.sh script that will download Ximdex for you, ask you some parameters (instance name, installation paths, etc.) and create a new script called 1.-MoveXimdexToDocRoot.sh that will move the directory to its final destination and set the right permissions. 
+>This installation can be fully automated or interactive, it is less prone to errors and let you decide how to run commands requiring a superuser. The steps are:
+
+
+1. Make a directory where Ximdex will download, move there and **download the XIMDEX_INSTALL.sh** script:
+	```shell
+	mkdir tryximdex
+	cd tryximdex
+	wget --no-check-certificate https://raw.githubusercontent.com/XIMDEX/ximdex/develop/XIMDEX_INSTALL.sh
+	```
+
+2. **Prepare the answers** to the questions the installation script will ask you:
+	- If you want to modify the name for your Ximdex instance (i.e.: myximdex)
+	- Target `directory` to install Ximdex (i.e.: /var/www). 
+		- Your web server has to consider it a `DOCROOT` (document root for the web server with PHP capabilities). Please, be sure it is a suitable directory to run PHP code.
+		- Ximdex files will be finally stored there (i.e.: /var/www/myximdex) and the URL where Ximdex will be accessed (i.e.: http://YOURHOST/myximdex) will be calculated
+	- User Name and Group for your Apache Web Documents to set file owners.
+
+
+3. **Run** the Installation script with:
+	```
+	bash XIMDEX_INSTALL.sh
+	```
+
+4. The last step of the installation will automatically create the File `1.MoveXimdexToDocroot` that has to be run as ROOT. This script will copy your instance to its final directory (i.e.: /var/www/myximdex), set file owners (to the user running apache, i.e.: www-data) and set permissions:
+	4. The installer will ask you to run this script via `sudo` (with superuser privileges asking for your password and if you have no sudo access will try a `su` command asking for root password). You can find the generated script and read it at the `install` directory.
+	4. If you decline to run it with superuser privileges you will have to run the steps in the generated script as root directly to move your instance to the final directory and set adequate file owners and permissions.
+
+5. Finally you will be asked to **visit the Ximdex URL** from your browser (http://YOURHOST/myximdex). This last step will test your instance, create templates for new projects, allow you to install additional modules and finally will clean the install directory.
+
+6. That's all folks. Enjoy Ximdex! Contact us at help@ximdex.org if you need further assistance or want to make any comment or suggestion.
+
+##Automatic:
+
+The XIMDEX_INSTALL.sh script with '-a setupfile' option will make all steps automatically. A commented template setup is at install/templates/setup.conf.
