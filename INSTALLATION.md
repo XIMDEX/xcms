@@ -75,7 +75,7 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 4. **Point your web browser** to your just installed Ximdex CMS instance URL (i.e.: http://YOURHOST/myximdex or http://localhost/myximdex) to run the configuration tool that will load the database, create users and install Ximdex's modules.
 
 ## C) Manual and Automated Installation methods
-If the previous methods did not work, want to control all the steps or automate the installatio process, visit install/XIMDEX_manual_installation_guidelines.md file.
+If the previous methods did not work, want to control all the steps or to automate the installation process, visit install/XIMDEX_manual_installation_guidelines.md file.
 
 
-And thank you for installing Ximdex CMS. Please, contact us at help@ximdex.org if you need further assistance.
+Thank you for installing Ximdex CMS. Please, contact us at help@ximdex.org if you need further assistance.
