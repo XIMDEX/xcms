@@ -1,6 +1,6 @@
-# Ximdex 3.5 - README
+# Ximdex 3.* - README
 
-Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipulation and generation of content, data and web apps in different technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...
+Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipulation and generation of content, data and web apps represented in XML to be published in different target technologies: PHP, J2EE, .NET, XML/XSLT, JS, RDF, JSON, RoR, ...
 
 * Description
   -----------
@@ -26,7 +26,7 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 
 * Future plans
   ------------
-  See our project roadmap at ROADMAP.md or Ximdex.org
+  See our project roadmap at ROADMAP.md 
 
 
 * Get Involved
@@ -36,16 +36,15 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 
 * Availability
   ------------
-  Ximdex is open source (see 'LICENSE') and can be downloaded from http://www.ximdex.org.
+  Ximdex is open source (see 'LICENSE') 
  
 * Installation
   ------------
-  See 'INSTALLATION.md' for the recommnended installation process or follow the guidelines at install/XIMDEX_installation_guidelines.md for the fully manual or automatic methods.
+  See 'INSTALLATION.md' for the recommnended installation process.
 
 * Ximdex Core Requirements 
   ------------------------
   -  A Unix based system with PHP(>= 5.1, and some extra modules), Apache 2 webserver and MySQL(>= 5.1) database.
-  -  In the client side: Firefox (>= 5.0) with Javascript y cookies enabled. 
+  -  In the client side: Firefox (>= 5.0) with Javascript and cookies enabled. 
   -  An internet connection if you want to use automatic recommendations (as semantic annotations) or publishing into the cloud. 
 
-  Check www.ximdex.org for additional requirements and info.
