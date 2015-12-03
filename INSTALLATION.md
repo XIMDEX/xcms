@@ -104,9 +104,7 @@ If the previous method did not work or just in case of neeeding any assistance t
 
 5. Finally you will be asked to **visit the Ximdex URL** from your browser (http://YOURHOST/myximdex). This last step will test your instance, create templates for new projects, allow you to install additional modules and finally will clean the install directory.
 
-6. That's all folks. Enjoy Ximdex! Contact us at help@ximdex.org if you need further assistance or want to make any comment or suggestion.
-
-## E) Manual Installation Steps
+## D) Manual Installation Steps
 If you prefer to control all the steps, please check the manual installation guide at install/XIMDEX_manual_installation_guidelines.md.
 
 
