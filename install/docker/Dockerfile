@@ -71,6 +71,9 @@ RUN cd /var/www/html; rm -rf *; git clone https://github.com/XIMDEX/ximdex.git .
 RUN easy_install supervisor
 ADD supervisord.conf /etc/supervisord.conf
 
+ADD run /usr/local/bin/run
+RUN chmod +x /usr/local/bin/run
+
 EXPOSE 5000
 
-CMD ["supervisord", "-n"]
+CMD ["/usr/local/bin/run"]
