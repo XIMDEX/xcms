@@ -12,6 +12,8 @@ service mysql start
 
 mysql -u root -pximdex ximdex -e "UPDATE Config SET ConfigValue='http://$HOSTNAME:$PORT' WHERE ConfigKEY='UrlRoot'; UPDATE Users SET Pass=MD5('$XIMDEX_PASS') where IdUser = '301';"
 
+bash /var/www/html/install/module.sh install ximSYNC
+
 service mysql stop
 
 supervisord -n

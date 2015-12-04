@@ -58,7 +58,6 @@ RUN cd /var/www/html; rm -rf *; git clone https://github.com/XIMDEX/ximdex.git .
 		cd /var/www/html/install && \
 		php -d memory_limit=-1 /var/www/html/install/scripts/lib/modules.php install ximLOADER 2 >nul 2>&1 && \
 		bash ./module.sh install ximTOUR && \
-		bash ./module.sh install ximSYNC && \
 		bash ./module.sh install ximTAGS && \
 		# Setting permissions (2)
 		chown -R www-data:www-data /var/www/html && \
