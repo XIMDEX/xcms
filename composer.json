@@ -45,7 +45,8 @@
         "RyanMullins/angular-hammer": "2.1.10",
         "hammerjs/hammer.js": "2.0.4",
         "stolz/assets": "dev-master",
-        "werkint/jsmin": "dev-master"
+        "werkint/jsmin": "dev-master",
+        "codeception/codeception": "*"
 
     },
      "require-dev": {
