@@ -27,14 +27,6 @@ class AssetsManagerTest extends PHPUnit_Framework_TestCase
 		}
 	}
 
-	/**
-	 * @expectedException Exception
-	 */
-	public function testConfigRequirePublicDirWhenPipelineEnabled()
-	{
-		$this->manager->config(array('pipeline' => true, 'public_dir' => '/dev/null'));
-	}
-
 	public function testRemoteLinkDetection()
 	{
 		$method = self::getMethod('isRemoteLink');
@@ -168,6 +160,51 @@ class AssetsManagerTest extends PHPUnit_Framework_TestCase
 
 		$this->assertStringEndsWith($asset1, array_pop($assets1));
 		$this->assertStringEndsWith($asset2, array_pop($assets2));
+	}
+
+	public function testRegexOptions(){
+
+		$files = array(
+			'.css',        // Not an asset
+			'foo.CSS',
+			'foomin.css',
+			'foo.min.css', // Skip from minification
+			'foo-MIN.css', // Skip from minification
+
+			'.js',        // Not an asset
+			'foo.JS',
+			'foomin.js',
+			'foo.min.js', // Skip from minification
+			'foo-MIN.js', // Skip from minification
+		);
+
+		// Test asset detection
+		$regex = PHPUnit_Framework_Assert::readAttribute($this->manager, 'asset_regex');
+		$matching = array_filter($files, function ($file) use ($regex) {
+			return 1 === preg_match($regex, $file);
+		});
+		$this->assertEquals(8, count($matching));
+
+		// Test CSS asset detection
+		$regex = PHPUnit_Framework_Assert::readAttribute($this->manager, 'css_regex');
+		$matching = array_filter($files, function ($file) use ($regex) {
+			return 1 === preg_match($regex, $file);
+		});
+		$this->assertEquals(4, count($matching));
+
+		// Test JS asset detection
+		$regex = PHPUnit_Framework_Assert::readAttribute($this->manager, 'js_regex');
+		$matching = array_filter($files, function ($file) use ($regex) {
+			return 1 === preg_match($regex, $file);
+		});
+		$this->assertEquals(4, count($matching));
+
+		// Test minification skip detection
+		$regex = PHPUnit_Framework_Assert::readAttribute($this->manager, 'no_minification_regex');
+		$matching = array_filter($files, function ($file) use ($regex) {
+			return 1 === preg_match($regex, $file);
+		});
+		$this->assertEquals(4, count($matching));
 	}
 
 	protected static function getMethod($name) {

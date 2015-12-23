@@ -14,19 +14,22 @@
 		"mrclay/minify": "~2.1"
 	},
 	"require-dev": {
-		"squizlabs/php_codesniffer": "2.*",
+		"evert/phpdoc-md" : "0.*",
 		"phpdocumentor/phpdocumentor": "2.*",
-		"evert/phpdoc-md" : "0.0.*"
+		"phpunit/phpunit": "4.*",
+		"squizlabs/php_codesniffer": "2.*"
 	},
 	"suggest": {
 		"laravel/laravel": "Included ServiceProvider and Facade to work out of the box with Laravel"
 	},
 	"autoload": {
-		"psr-0": {
-			"Stolz\\Assets": "src/"
+		"psr-4": {
+			"Stolz\\Assets\\": "src/"
 		}
 	},
 	"config": {
+		"discard-changes": true,
+		"optimize-autoloader": true,
 		"preferred-install": "dist"
 	},
 	"minimum-stability": "dev",

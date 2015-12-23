@@ -18,17 +18,20 @@
     "require-dev": {
         "phpunit/phpunit":         ">=3.7",
         "satooshi/php-coveralls":  "~0.6",
-        "predis/predis":           "~0.8"
+        "predis/predis":           "~1.0"
     },
     "conflict": {
         "doctrine/common": ">2.2,<2.4"
     },
     "autoload": {
-        "psr-0": { "Doctrine\\Common\\Cache\\": "lib/" }
+        "psr-4": { "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Doctrine\\Tests\\": "tests/Doctrine/Tests" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.4.x-dev"
+            "dev-master": "1.5.x-dev"
         }
     }
 }

@@ -74,7 +74,11 @@ class MemcacheCache extends CacheProvider
      */
     protected function doContains($id)
     {
-        return (bool) $this->memcache->get($id);
+        $flags = null;
+        $this->memcache->get($id, $flags);
+        
+        //if memcache has changed the value of "flags", it means the value exists
+        return ($flags !== null);
     }
 
     /**
@@ -93,7 +97,8 @@ class MemcacheCache extends CacheProvider
      */
     protected function doDelete($id)
     {
-        return $this->memcache->delete($id);
+        // Memcache::delete() returns false if entry does not exist
+        return $this->memcache->delete($id) || ! $this->doContains($id);
     }
 
     /**
