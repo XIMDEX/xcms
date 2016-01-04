@@ -91,13 +91,13 @@
 
         <ul class="social">
             <li class="icon_btn">
-                <a target="_blank" href="https://twitter.com/ximdex" class="twitter_btn icon">Cuenta Twitter de Ximdex</a>
+                <a target="_blank" href="https://twitter.com/ximdex" class="twitter_btn icon" title="Cuenta Twitter de Ximdex"></a>
             </li>
             <li class="icon_btn">
-                <a target="_blank" href="https://plus.google.com/+Ximdex/about" class="icon google_btn">Cuenta Google+ de Ximdex</a>
+                <a target="_blank" href="https://plus.google.com/+Ximdex/about" class="icon google_btn" title="Cuenta Google+ de Ximdex"></a>
             </li>
             <li class="icon_btn">
-                <a target="_blank" href="https://www.facebook.com/Ximdex" class="icon facebook_btn">Cuenta Facebook de Twitter</a>
+                <a target="_blank" href="https://www.facebook.com/Ximdex" class="icon facebook_btn" title="Cuenta Facebook de Twitter"></a>
             </li>
         </ul>
 

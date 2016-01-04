@@ -664,11 +664,11 @@ li[class*="module"] {
 .twitter_btn::before {
   content: "\e600"; }
 
-.facebook_btn::before {
-  content: "\e601"; }
+.facebook_btn::before {  
+  content: "\e602"; }
 
 .google_btn::before {
-  content: "\e602"; }
+  content: "\e601"; }
 
 .installer_step-completed::before {
   content: "\e604"; }
