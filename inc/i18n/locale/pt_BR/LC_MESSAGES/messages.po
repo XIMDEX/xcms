@@ -3862,6 +3862,10 @@ msgid "Publish"
 msgstr "Publicar"
 
 #: /actions/xmleditor2/template/Smarty/toolbar.tpl
+msgid "Advance publisher"
+msgstr "Avançado publisher"
+
+#: /actions/xmleditor2/template/Smarty/toolbar.tpl
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/prevdoc/Action_prevdoc.class.php
 #install/ximdex_data/ximdex.sql table Nodes
@@ -9191,4 +9195,3 @@ msgstr "!!para aprender m&aacute;s sobre Ximdex y su potencia en la gesti&oacute
 
 msgid "Privacy Policy"
 msgstr "!!Pol&iacute;tica de privacidad"
-

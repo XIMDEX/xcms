@@ -4214,6 +4214,10 @@ msgid "Publish"
 msgstr "Publicar"
 
 #: /actions/xmleditor2/template/Smarty/toolbar.tpl
+msgid "Advance publisher"
+msgstr "Publicador avanzado"
+
+#: /actions/xmleditor2/template/Smarty/toolbar.tpl
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/prevdoc/Action_prevdoc.class.php
 #install/ximdex_data/ximdex.sql table Nodes
