@@ -26,25 +26,30 @@
 <form method="post" name="ren_form" id="ren_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}" />
 	<div class="action_header">
-			<h2>{t}Change name{/t}</h2>
-			<fieldset class="buttons-form">
+		<h2>{t}Change name{/t}</h2>
+
+		<fieldset class="buttons-form">
+			{*
 			{if $id_nodetype!=5078 & $id_nodetype!=5048}
 				{button label="Check dependencies" class="open_report btn"}
 			{/if}
-				{button label="Modify" class='validate btn main_action' }{*message="Are you sure you want to change the name?"*}
-			</fieldset>
+			*}
+
+			{button label="Modify" class='validate btn main_action'}
+			{*message="Are you sure you want to change the name?"*}
+		</fieldset>
 	</div>
 	<div class="action_content">
-			
+
                     {if $schema_type == 'metadata_schema'}
-                        <h3>{t}Schema Name:{/t} {$name}</h3> 
+                        <h3>{t}Schema Name:{/t} {$name}</h3>
 						<input type="hidden" name="name" id="name" value="{$name}" />
                     {else}
 					<div class="input icon icon-positioned project">
 						<input type="text" name="name" id="name" value="{$name}" class="cajaxg validable not_empty full-size" />
 					</div>
                     {/if}
-			
+
 			{if $id_nodetype==5078}
 				<div class="col1-2">
 				<input type="radio" name="schema_type" value="generic_schema"{if $schema_type == 'generic_schema' || $schema_type == ''} checked="checked"{/if} id="generic-scheme_{$id_node}" class="hidden-focus">
@@ -65,7 +70,7 @@
 				</div class="col1-2">
 				{/if}
 			{/if}
-			
+
 					{if !empty($valid_pipelines)}
 					<label for="id_pipeline" class="aligned">{t}Associated workflow{/t}</label>
 					<select name="id_pipeline" id="id_pipeline" class="cajag" disabled>
