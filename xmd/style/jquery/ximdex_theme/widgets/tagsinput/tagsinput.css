@@ -163,7 +163,7 @@
   cursor: pointer;
 }
 .selection::before {
-  color: #e3e7e9;
+  color: #FFFFFF;
   display: block;
   text-align: center;
   line-height: 2.05;
