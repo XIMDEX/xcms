@@ -29,7 +29,7 @@
     var defaultValue = "CreativeWork";
 
 	$.widget('ui.ontologywidget', {
-	
+
 		defaults: {
 			messageAdd: "Add?",
 			messageDelete: "Delete?",
@@ -49,7 +49,7 @@
 			this.loadValues();
 			this.selected = this.options.selected;
 			this.$footer = $(".infobox", this.element);
-			this._on($(".tree", this.element),{click:"_selectTree"});			
+			this._on($(".tree", this.element),{click:"_selectTree"});
 			this._on($(".text", this.element),{click:"_selectText"});
 			this._on($(".main_action", this.$footer),{click:"_selectFooter"});
 			this._on($("a.close", this.$footer), {click: "_hideFooter"});
@@ -58,7 +58,7 @@
 			}});
 		},
 		_selectTree: function(){
-			
+
 			this.showTree();
 
 			$(".ontology-browser", this.element).removeClass("hidden");
@@ -71,7 +71,7 @@
 			$(".ontology-browser", this.element).removeClass("hidden");
 			$(".textViewer", this.element).removeClass("hidden");
 			$(".treeViewer", this.element).addClass("hidden");
-			
+
 
 		},
 
@@ -80,14 +80,17 @@
 			  var textNode = d3.select(this.element[0]).selectAll("text").filter(function(d, i) {
 				  return d.name == $('h1', that.$footer).text();
 			  });
-			
-			  var rectNode = d3.select(this.element[0]).selectAll("rect").filter(function(d, i) {
-			    return d.name == $('h1', that.$footer).text();
-			  });
-			
+
+			  var rectNode =
+			  	d3.select(this.element[0])
+			  	.selectAll("rect.selector")
+			  	.filter(function(d, i) {
+			    	return d.name == $('h1', that.$footer).text();
+			  	});
+
 			  if ($(ev.currentTarget).text() == this.options.messageAdd) {
 				    textNode.attr("class", "nodetext added");
-				    rectNode.attr("class", "added");
+				    rectNode.attr("class", "added selector");
 				    this.selected.push($('h1', that.$footer).text());
                     this.options.onSelect({'name': $('h1', that.$footer).text()});
 				    $('.main_action', that.$footer).text(this.options.messageDelete);
@@ -137,7 +140,7 @@
 		},
 
 		_toggle: function(d){
-				
+
 			if (d.children) {
 				d._children = d.children;
 				d.children = null;
@@ -150,7 +153,7 @@
         _color: function(d) {
             return d._children ? "#990000" : d.children ? "#ffffff" : "#ffffff";
         },
-        
+
         _isChild: function(d) {
             return d._children ? "hasChild" : d.children ? "isLeaf" : "isLeaf";
         },
@@ -172,7 +175,7 @@
 				$('.main_action', this.$footer).text(this.options.messageAdd);
 			}
 		},
-		
+
 		loadValues: function() {
             var that = this;
             d3.json(this.options.jsonURL+"&ontologyName="+this.options.inputJson, function(json) {
@@ -248,7 +251,7 @@
 		    });
 
 		    function update(source, that) {
-		      
+
 		      var duration = d3.event && d3.event.altKey ? 5000 : 500;
 
 		      // Compute the new tree layout.
@@ -438,7 +441,7 @@ if ($(".textViewer g", this.element).length == 0) {
   function update(source, that) {
     // Compute the flattened node list. TODO use d3.layout.hierarchy.
     var nodes = tree.nodes(root);
-    
+
     // Compute the "layout".
     var total_height = 0;
     nodes.forEach(function(n, i) {
@@ -446,11 +449,11 @@ if ($(".textViewer g", this.element).length == 0) {
         if (i == nodes.length - 1) total_height = n.x + barHeight;
     });
     // The total_height should be used for redrawing svg canvas with (height, total_height)
-    
+
     // Update the nodes…
     var node = vis.selectAll("g.node")
         .data(nodes, function(d) { return d.id || (d.id = ++i); });
-    
+
     var nodeEnter = node.enter().append("svg:g")
         .attr("class", "node")
         .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
@@ -479,13 +482,13 @@ if ($(".textViewer g", this.element).length == 0) {
           that._loadDataInBlock(d);
           that.$footer.show("slow");
         });
-    
+
     nodeEnter.append("svg:text")
         .attr("dy", 3.5)
         .attr("dx", 5.5)
         .style("fill", that._textcolor)
         .text(function(d) { return d.name; });
-        
+
 
     nodeEnter.append("svg:text")
         .attr("dy", 5)
@@ -500,25 +503,25 @@ if ($(".textViewer g", this.element).length == 0) {
         // .on('mouseout', function(d){
         //   //
         // });
-    
+
     // Transition nodes to their new position.
     nodeEnter.transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
         .style("opacity", 1);
-    
+
     node.transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
         .style("opacity", 1);
-    
+
     // Transition exiting nodes to the parent's new position.
     node.exit().transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
         .style("opacity", 1e-6)
         .remove();
-    
+
     // Stash the old positions for transition.
     nodes.forEach(function(d) {
       d.x0 = d.x;
@@ -528,8 +531,8 @@ if ($(".textViewer g", this.element).length == 0) {
 
 	}
 }
- 
-		
+
+
 	});
 })(jQuery);
 

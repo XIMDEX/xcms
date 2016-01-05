@@ -25,12 +25,18 @@ rect {
 
 .node rect.added {
   cursor: pointer;
+  /*fill: #ACAFBB;*/
   fill: #2fb7a4;
   font-weight: bold;
 }
+/*
 .node rect.added + rect.added {
   fill-opacity: .5;
 }
+
+.node rect.added:nth-child(2) {
+  fill: #2fb7a4;
+}*/
 
 .node text:hover {
   font-weight: normal !important;
@@ -77,8 +83,12 @@ path.link {
   fill: #006b6c;
   cursor: pointer;
   position: relative;
+}
+
+.treeViewer .node text.added {
   text-decoration: underline;
 }
+
 .node text.added::before {
   width: 100%;
   position: absolute;
