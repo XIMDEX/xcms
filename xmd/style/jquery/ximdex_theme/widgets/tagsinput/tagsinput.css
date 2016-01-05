@@ -79,7 +79,8 @@
   left: 0;
   top: 0;
   text-align: center;
-  color: #e3e7e9;
+  /*color: #e3e7e9;*/
+  color: #FFFFFF;
   line-height: 2;
 }
 .xim-tagsinput-taglist:hover, .xim-tagsinput-tag:hover, .ontology-browser-container a:hover {
@@ -246,9 +247,10 @@
   display: block;
   margin-top: .1em;
 }
-.xim-tagsinput-tag .ontology_link:hover {
+
+/*.xim-tagsinput-tag .ontology_link:hover {
   text-decoration: underline;
-}
+}*/
 
 .xim-tagsinput-tag-remove {
   position: absolute;

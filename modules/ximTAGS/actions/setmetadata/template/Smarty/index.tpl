@@ -57,30 +57,48 @@
 			<div class="title-box">{t}Document tags{/t}</div>
 	   		<ul class="xim-tagsinput-list">
 	   			<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" {literal}ng-class="{'noxtooltip': (tag.Description==null||tag.Description=='')}"{/literal} ng-repeat="tag in documentTags">
-	   				<a ng-href="#/tag.Link/#" target="_blank" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
-					#/tag.Name/#
+	   				<span ng-if="tag.Link == '#'"
+	   				class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
+						#/tag.Name/#
+					</span>
+
+					<a ng-if="tag.Link != '#'"
+	   				ng-href="tag.Link" target="_blank" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
+						#/tag.Name/#
 					</a>
- 					<a ng-if="(namespaces[tag.IdNamespace].nemo == 'dPerson'
- 					            || namespaces[tag.IdNamespace].nemo == 'dPlace'
-                                || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
-                                || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
-                                || namespaces[tag.IdNamespace].nemo == 'dOthers') &&
- 					    (namespaces[tag.IdNamespace].uri != null && namespaces[tag.IdNamespace].uri != '')"
-                       ng-href="#/namespaces[tag.IdNamespace].uri/#" class="ontology_link"
-                       target="_blank">#/namespaces[tag.IdNamespace].type/#</a>
-					<a ng-if="(namespaces[tag.IdNamespace].nemo != 'dPerson'
- 					            && namespaces[tag.IdNamespace].nemo != 'dPlace'
-                                && namespaces[tag.IdNamespace].nemo != 'dOrganisation'
-                                && namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
-                                && namespaces[tag.IdNamespace].nemo != 'dOthers')"
-                       href="#" class="ontology_link"
-                       >#/namespaces[tag.IdNamespace].type/#</a>
-					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)"> &times; </a>
+
+					<span
+						ng-if="
+							(namespaces[tag.IdNamespace].nemo != 'dPerson'
+ 					    	&& namespaces[tag.IdNamespace].nemo != 'dPlace'
+                        	&& namespaces[tag.IdNamespace].nemo != 'dOrganisation'
+                        	&& namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
+                        	&& namespaces[tag.IdNamespace].nemo != 'dOthers')"
+                    	class="ontology_link">
+                    		#/namespaces[tag.IdNamespace].type/#
+                    </span>
+
+ 					<a ng-if="
+ 						(namespaces[tag.IdNamespace].nemo == 'dPerson'
+ 					    || namespaces[tag.IdNamespace].nemo == 'dPlace'
+                        || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
+                        || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
+                        || namespaces[tag.IdNamespace].nemo == 'dOthers')
+                        && (namespaces[tag.IdNamespace].uri != NULL && namespaces[tag.IdNamespace].uri != '')"
+                    ng-href="namespaces[tag.IdNamespace].uri" class="ontology_link"
+                    target="_blank">
+                    	#/namespaces[tag.IdNamespace].type/#
+                    </a>
+
+					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)">
+						&nbsp;&times;&nbsp;
+					</a>
 				</li>
-				<p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
 	    	</ul>
+
+	    	<p ng-hide="documentTags.length">{t}There aren't any tags defined yet{/t}.</p>
 	    </div>
-		
+
 		<div class="suggested col1-3">
 			{if $isStructuredDocument}
 				<xtags-suggested xim-on-select="addTag(tag)" xim-node-id="nodeId" xim-document-tags="documentTags"></xtags-suggested>
