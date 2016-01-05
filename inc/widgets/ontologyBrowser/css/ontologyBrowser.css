@@ -77,6 +77,7 @@ path.link {
   fill: #006b6c;
   cursor: pointer;
   position: relative;
+  text-decoration: underline;
 }
 .node text.added::before {
   width: 100%;
@@ -86,7 +87,6 @@ path.link {
   background: #000;
   content: "";
 }
-
 path.link {
   fill: none;
   stroke: #AAA;
