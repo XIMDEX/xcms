@@ -23,7 +23,6 @@
  *  @version $Revision$
  */
 
-
 (function($) {
 
     var defaultValue = "CreativeWork";
@@ -388,159 +387,180 @@
     }
 
   }
-		},
+},
 
 	showText: function(){
 
-    var that = this;
-    var w = 800,
-    h = 1300,
-    i = 0,
-    barHeight = 20,
-    barWidth = w * .5,
-    duration = 400,
-    root;
+    	var that 		= this; // for d3.json function
+    	var w 			= 800,
+    		h 			= 1300,
+    		i 			= 0,
+    		barHeight 	= 20,
+    		barWidth 	= w * .5,
+    		duration 	= 400,
+    		root;
 
-  var tree = d3.layout.tree()
-      .size([h, 100]);
+  		var tree 		= d3.layout.tree().size([h, 100]);
+  		var diagonal 	= d3.svg.diagonal().projection(function(d) { return [d.x, d.y]; });
 
-  var diagonal = d3.svg.diagonal()
-      .projection(function(d) { return [d.x, d.y]; });
+  		/*console.log(that);
+  		console.log(that.element);
+  		console.log($(".textViewer g", that.element));*/
 
-if ($(".textViewer g", this.element).length == 0) {
+		if ($(".textViewer g", that.element).length == 0) {
 
-  var vis = d3.select(this.element[0]).select(".textViewer").append("svg")
-      .attr("width", w)
-      .attr("height", h)
-    .append("svg:g")
-      .attr("transform", "translate(20,30)");
+  			var vis = d3.select(that.element[0]).select(".textViewer").append("svg")
+      				.attr("width", w)
+      				.attr("height", h)
+    				.append("svg:g")
+      				.attr("transform", "translate(20,30)");
 
-  d3.json(that.options.jsonURL+"&ontologyName="+that.options.inputJson, function(json) {
-    root = that._getElementByParent(json, that.options.rootElement);
-    root.x0 = 0;
-    root.y0 = 0;
+  			d3.json(that.options.jsonURL + "&ontologyName=" + that.options.inputJson, function(json) {
 
-    $(".selectbox-text select", this.element).change(function() {
-        root = that._getElementByParent(json, $(".selectbox-text select", this.element).find(":selected").text());
-        if (!_.isUndefined(root.children)) {
-            root.children.forEach(toggleAll);
-        }
-        update(root, that);
-    });
+    			root 	= that._getElementByParent(json, that.options.rootElement);
+    			root.x0 = 0;
+    			root.y0 = 0;
 
-    function toggleAll(d) {
-      if (d.children) {
-        d.children.forEach(toggleAll);
-        that._toggle(d);
-      }
-    }
+    			console.log(that.element);
 
-    if (!_.isUndefined(root.children)) {
-        root.children.forEach(toggleAll);
-    }
-    update(root, that);
-  });
-
-  function update(source, that) {
-    // Compute the flattened node list. TODO use d3.layout.hierarchy.
-    var nodes = tree.nodes(root);
-
-    // Compute the "layout".
-    var total_height = 0;
-    nodes.forEach(function(n, i) {
-        n.x = i * barHeight * 1.1;
-        if (i == nodes.length - 1) total_height = n.x + barHeight;
-    });
-    // The total_height should be used for redrawing svg canvas with (height, total_height)
-
-    // Update the nodes…
-    var node = vis.selectAll("g.node")
-        .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-    var nodeEnter = node.enter().append("svg:g")
-        .attr("class", "node")
-        .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-        .style("opacity", 1e-6);
-
-    // Enter any new nodes at the parent's previous position.
-    nodeEnter.append("svg:rect")
-        .attr("y", -barHeight / 2)
-        .attr("dy", "1em")
-        .attr("height", barHeight)
-        .attr("width", barWidth)
-        .attr("class", "bartext")
-        .attr("class", that._isChild)
-        .on("click", function(d) { that._toggle(d); update(d, that); });
-
-    nodeEnter.append("svg:rect")
-        .attr("y", -barHeight / 2)
-        .attr("x", barWidth)
-        .attr("height", barHeight)
-        .attr("width", 20)
-        .attr("cursor", "pointer")
-        .attr("class", function(d) {
-          return (that.selected.indexOf(d.name) != -1) ? "added selector" : "selector";
-        })
-        .on("click", function(d) {
-          that._loadDataInBlock(d);
-          that.$footer.show("slow");
-        });
-
-    nodeEnter.append("svg:text")
-        .attr("dy", 3.5)
-        .attr("dx", 5.5)
-        .style("fill", that._textcolor)
-        .text(function(d) { return d.name; });
+    			$(".selectbox-text select", that.element)
+    				.change(function() {
 
 
-    nodeEnter.append("svg:text")
-        .attr("dy", 5)
-        .attr("dx", barWidth + 5.5)
-        .attr("class", "action");
-        // .text(function(d) {
-        //   return selected.indexOf(d.name) == -1 ? "+" : "-";
-        // })
-        // .on('mouseover', function(d){
-        //   //
-        // })
-        // .on('mouseout', function(d){
-        //   //
-        // });
-
-    // Transition nodes to their new position.
-    nodeEnter.transition()
-        .duration(duration)
-        .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
-        .style("opacity", 1);
-
-    node.transition()
-        .duration(duration)
-        .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
-        .style("opacity", 1);
-
-    // Transition exiting nodes to the parent's new position.
-    node.exit().transition()
-        .duration(duration)
-        .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-        .style("opacity", 1e-6)
-        .remove();
-
-    // Stash the old positions for transition.
-    nodes.forEach(function(d) {
-      d.x0 = d.x;
-      d.y0 = d.y;
-    });
-  }
-
-	}
-}
 
 
+        				root = that._getElementByParent(json, $(".selectbox-text select", that.element).find(":selected").text());
+
+        				if (!_.isUndefined(root.children)) {
+        	    			root.children.forEach(toggleAll);
+        				}
+
+        				update(root, that);
+
+
+
+
+
+
+
+    				});
+
+    			if (!_.isUndefined(root.children)) {
+        			root.children.forEach(toggleAll);
+    			}
+
+    			update(root, that);
+  			});
+		}
+
+		function toggleAll(d) {
+    	  	if (d.children) {
+		        d.children.forEach(toggleAll);
+    		    that._toggle(d);
+    	  	}
+    	}
+
+		function update(source, that) {
+    		// Compute the flattened node list. TODO use d3.layout.hierarchy.
+    		var nodes = tree.nodes(root);
+
+    		// Compute the "layout".
+    		var total_height = 0;
+
+    		nodes.forEach(function(n, i) {
+        		n.x = i * barHeight * 1.1;
+        		if (i == nodes.length - 1) total_height = n.x + barHeight;
+    		});
+    		// The total_height should be used for redrawing svg canvas with (height, total_height)
+
+    		// Update the nodes…
+    		var node = vis.selectAll("g.node").data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+    		var nodeEnter = node.enter().append("svg:g");
+
+    		nodeEnter
+        		.attr("class", "node")
+        		.attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+        		.style("opacity", 1e-6);
+
+    		// Enter any new nodes at the parent's previous position.
+    		nodeEnter
+    			.append("svg:rect")
+        		.attr("y", -barHeight / 2)
+        		.attr("dy", "1em")
+        		.attr("height", barHeight)
+        		.attr("width", barWidth)
+        		.attr("class", "bartext")
+        		.attr("class", that._isChild)
+        		.on("click", function(d) { that._toggle(d); update(d, that); });
+
+    		nodeEnter
+    			.append("svg:rect")
+        		.attr("y", -barHeight / 2)
+        		.attr("x", barWidth)
+        		.attr("height", barHeight)
+        		.attr("width", 20)
+        		.attr("cursor", "pointer")
+        		.attr("class", function(d) {
+        		  return (that.selected.indexOf(d.name) != -1) ? "added selector" : "selector";
+        		})
+        		.on("click", function(d) {
+        		  that._loadDataInBlock(d);
+        		  that.$footer.show("slow");
+        		});
+
+    		nodeEnter
+    			.append("svg:text")
+        		.attr("dy", 3.5)
+        		.attr("dx", 5.5)
+        		.style("fill", that._textcolor)
+        		.text(function(d) { return d.name; });
+
+    		nodeEnter
+    			.append("svg:text")
+        		.attr("dy", 5)
+        		.attr("dx", barWidth + 5.5)
+        		.attr("class", "action");
+        		// .text(function(d) {
+        		//   return selected.indexOf(d.name) == -1 ? "+" : "-";
+        		// })
+        		// .on('mouseover', function(d){
+        		//   //
+        		// })
+        		// .on('mouseout', function(d){
+        		//   //
+        		// });
+
+    		// Transition nodes to their new position.
+    		nodeEnter
+    			.transition()
+        		.duration(duration)
+        		.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+        		.style("opacity", 1)
+        		.style("display", "block");
+
+    		node
+    			.transition()
+        		.duration(duration)
+        		.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+        		.style("opacity", 1)
+        		.style("display", "block");
+
+    		// Transition exiting nodes to the parent's new position.
+    		node
+    			.exit()
+    			.transition()
+        		.duration(duration)
+        		.attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+        		.style("opacity", 1e-6)
+        		.remove();
+
+    			// Stash the old positions for transition.
+    			nodes.forEach(function(d) {
+    			  d.x0 = d.x;
+    			  d.y0 = d.y;
+    			});
+  			}
+		}
 	});
 })(jQuery);
-
-
-
-
-
-
