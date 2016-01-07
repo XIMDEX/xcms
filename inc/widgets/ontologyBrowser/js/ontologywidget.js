@@ -54,6 +54,11 @@
 			this._on($(".main_action", this.$footer),{click:"_selectFooter"});
 			this._on($("a.close", this.$footer), {click: "_hideFooter"});
 			this._on($("a.ontology-close", this.element), {click: function(){
+
+				// hide infobox
+				this._hideFooter();
+
+				// hide view
 				$("a.ontology-close", this.element).parent().addClass('hidden');
 			}});
 		},
@@ -68,11 +73,10 @@
 		_selectText: function(){
 
 			this.showText();
+
 			$(".ontology-browser", this.element).removeClass("hidden");
 			$(".textViewer", this.element).removeClass("hidden");
 			$(".treeViewer", this.element).addClass("hidden");
-
-
 		},
 
 		_selectFooter: function(ev){
