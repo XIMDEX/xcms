@@ -161,9 +161,9 @@ path.link {
 .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox h1 {
   margin: 0;
 }
-.kupu-fulleditor .ontology-browser-container .ontology-browser .infobox p {
+/*.kupu-fulleditor .ontology-browser-container .ontology-browser .infobox p {
   margin: 0;
-}
+}*/
 .kupu-fulleditor .ontology-browser-container .ontology-browser .infobox .main_action {
   padding: .5em;
   text-align: center;
@@ -217,11 +217,19 @@ path.link {
   text-transform: uppercase;
   color: #7bcabf;
 }
-.ontology-browser-container .infobox p {
+
+/*.ontology-browser-container .infobox p {
+  max-height: 400px;
+  overflow: auto;
+  padding: 1em 0;
+}*/
+
+.ontology-browser-container .infobox .infobox-list {
   max-height: 400px;
   overflow: auto;
   padding: 1em 0;
 }
+
 .ontology-browser-container .infobox ul {
   list-style: disc;
   padding-left: 1.2em;

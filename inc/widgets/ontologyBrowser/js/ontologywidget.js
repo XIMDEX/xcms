@@ -31,8 +31,8 @@
 	$.widget('ui.ontologywidget', {
 
 		defaults: {
-			messageAdd: "Add?",
-			messageDelete: "Delete?",
+			messageAdd: "Add",
+			messageDelete: "Delete",
 			jsonURL: X.restUrl+"?mod=ximTAGS&action=setmetadata&method=getLocalOntology",
 			rootElement: defaultValue,
 			inputFormat: "json",
@@ -167,11 +167,10 @@
 			$('h1', this.$footer).text(e.name);
 			var sp = "";
 			 _.each(e.specific_properties, function(val) { return sp += '<li>' + val + '</li>' });
-			$('p', this.$footer).html('<ul>' + sp + '</ul>');
+			$('div.infobox-list', this.$footer).html('<ul>' + sp + '</ul>');
 			if (this.selected.indexOf(e.name) != -1) {
 				$('.main_action', this.$footer).text(this.options.messageDelete);
-			}
-			else {
+			}else {
 				$('.main_action', this.$footer).text(this.options.messageAdd);
 			}
 		},

@@ -42,7 +42,7 @@
       </div>
       <div class="infobox">
         <h1></h1>
-        <p></p>
+        <div class="infobox-list"></div>
         <a class="btn main_action"></a>
         <a class="close  btn-unlabel-rounded icon" href"#">{t}close{/t}</a>
       </div>
