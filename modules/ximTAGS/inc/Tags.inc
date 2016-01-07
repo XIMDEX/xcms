@@ -45,7 +45,15 @@ class Tag extends Tags_ORM {
 	}
 
 	function getTags() {
-		     return  parent::find(ALL);
+        /*
+         * Return suggested Tags.
+         * Join to RelTagsDescriptions to return the "Link" field.
+         */
+
+        $sql = sprintf("SELECT xt.IdTag, xt.Name, xt.IdNamespace, rtd.Type, rtd.Link, rtd.Description FROM XimTAGSTags xt LEFT JOIN RelTagsDescriptions rtd
+                        on xt.IdTag=rtd.IdTagDescription");
+        $result = $this->query($sql);
+        return $result;
 	}
 
 	/**

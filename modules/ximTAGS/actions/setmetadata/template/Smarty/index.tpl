@@ -57,40 +57,45 @@
 			<div class="title-box">{t}Document tags{/t}</div>
 	   		<ul class="xim-tagsinput-list">
 	   			<li class="xim-tagsinput-tag icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" {literal}ng-class="{'noxtooltip': (tag.Description==null||tag.Description=='')}"{/literal} ng-repeat="tag in documentTags">
-	   				<span ng-if="tag.Link == '#'"
-	   				class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
+	   				<span ng-if="tag.Link == '#' || tag.Link == ''"
+	   				class="xim-tagsinput-text"
+	   				data-xtooltip="#/tag.Description/#">
 						#/tag.Name/#
 					</span>
 
-					<a ng-if="tag.Link != '#'"
-	   				ng-href="tag.Link" target="_blank" class="xim-tagsinput-text" data-xtooltip="#/tag.Description/#">
+					<a ng-if="tag.Link != '#' && tag.Link != ''"
+					ng-href="#/tag.Link/#"
+					target="_blank"
+					class="xim-tagsinput-text"
+					data-xtooltip="#/tag.Description/#">
 						#/tag.Name/#
 					</a>
 
-					<span
-						ng-if="
-							(namespaces[tag.IdNamespace].nemo != 'dPerson'
- 					    	&& namespaces[tag.IdNamespace].nemo != 'dPlace'
-                        	&& namespaces[tag.IdNamespace].nemo != 'dOrganisation'
-                        	&& namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
-                        	&& namespaces[tag.IdNamespace].nemo != 'dOthers')"
-                    	class="ontology_link">
-                    		#/namespaces[tag.IdNamespace].type/#
+					<span ng-if="
+					(namespaces[tag.IdNamespace].nemo != 'dPerson'
+ 					&& namespaces[tag.IdNamespace].nemo != 'dPlace'
+                    && namespaces[tag.IdNamespace].nemo != 'dOrganisation'
+                    && namespaces[tag.IdNamespace].nemo != 'dCreativeWork'
+                    && namespaces[tag.IdNamespace].nemo != 'dOthers')"
+                    class="ontology_link">
+                    	#/namespaces[tag.IdNamespace].type/#
                     </span>
 
- 					<a ng-if="
- 						(namespaces[tag.IdNamespace].nemo == 'dPerson'
- 					    || namespaces[tag.IdNamespace].nemo == 'dPlace'
-                        || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
-                        || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
-                        || namespaces[tag.IdNamespace].nemo == 'dOthers')
-                        && (namespaces[tag.IdNamespace].uri != NULL && namespaces[tag.IdNamespace].uri != '')"
-                    ng-href="namespaces[tag.IdNamespace].uri" class="ontology_link"
+ 					<a ng-if="(namespaces[tag.IdNamespace].nemo == 'dPerson'
+ 					|| namespaces[tag.IdNamespace].nemo == 'dPlace'
+                    || namespaces[tag.IdNamespace].nemo == 'dOrganisation'
+                    || namespaces[tag.IdNamespace].nemo == 'dCreativeWork'
+                    || namespaces[tag.IdNamespace].nemo == 'dOthers')
+                    && (namespaces[tag.IdNamespace].uri != NULL && namespaces[tag.IdNamespace].uri != '')"
+                    ng-href="namespaces[tag.IdNamespace].uri"
+                    class="ontology_link"
                     target="_blank">
                     	#/namespaces[tag.IdNamespace].type/#
                     </a>
 
-					<a class="xim-tagsinput-tag-remove icon" href="#" ng-click="removeTag($index)">
+					<a ng-click="removeTag($index)"
+					class="xim-tagsinput-tag-remove icon"
+					href="#">
 						&nbsp;&times;&nbsp;
 					</a>
 				</li>
@@ -108,7 +113,7 @@
 				<ul class="nube_tags">
 					<li class="xim-tagsinput-taglist icon xim-tagsinput-type-#/namespaces[tag.IdNamespace].nemo/#" ng-repeat="tag in cloudTags" ng-click="addTag(tag)" ng-hide="tag.selected">
 	                    <span class="tag-text">#/tag.Name/#</span>
-<!-- 	                    <span class="amount right">#/tag.Total/#</span> -->
+						<!-- <span class="amount right">#/tag.Total/#</span> -->
 	                </li>
 				</ul>
 			</div>

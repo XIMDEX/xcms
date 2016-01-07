@@ -42,15 +42,17 @@ class Action_setmetadata extends ActionAbstract {
 		$actionID = (int) $this->request->getParam("actionid");
 		$params = $this->request->getParam("params");
 		$tags = new Tag();
-		$max=$tags->getMaxValue();		
+		$max=$tags->getMaxValue();
 
-		$cloud_tags = array();
+		// $cloud_tags = array();
 		$cTags = $tags->getTags();
+
 		if(is_null($cTags)){
             $pcTags = '[]';
         }else{
-            $pcTags = str_replace("'",'&#39;',json_encode($cTags, JSON_UNESCAPED_UNICODE ));
+            $pcTags = str_replace("'",'&#39;',json_encode($cTags, JSON_UNESCAPED_UNICODE));
         }
+
         /*if(count($cTags)>0){
 		    foreach ($cTags as $tag) {
   			    $array = array(
@@ -61,16 +63,17 @@ class Action_setmetadata extends ActionAbstract {
   			    $cloud_tags[] = $array;
   		    }
         }*/
+
         $node = New Node($idNode);
 
 	 	$values = array(
-	 		'cloud_tags' => $pcTags,
-			'max_value' => $max[0][0],
-			'id_node' => $idNode,
-			'node_name' => $node->GetNodeName(),
-			'go_method' => 'save_metadata',
-			'nodeUrl' => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
-            'namespaces' => json_encode($this->getAllNamespaces())
+	 		'cloud_tags' 	=> $pcTags,
+			'max_value' 	=> $max[0][0],
+			'id_node' 		=> $idNode,
+			'node_name' 	=> $node->GetNodeName(),
+			'go_method' 	=> 'save_metadata',
+			'nodeUrl' 		=> \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
+            'namespaces' 	=> json_encode($this->getAllNamespaces())
 		);
 
 	 	//Get the actual tags of the document
@@ -111,7 +114,7 @@ class Action_setmetadata extends ActionAbstract {
 	*@return false if error, a json string otherwise.
 	*/
 	private function getRelatedTags($content){
-				
+
 		$ontologyService = new OntologyService("semantic");
 		return $ontologyService->suggest($content);
 	}
@@ -133,9 +136,9 @@ class Action_setmetadata extends ActionAbstract {
 
   			$result[] = $array;
   		}
-  		return $result;		
+  		return $result;
 	}
-  	
+
 	/**
 	*<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
 	*<p>The syntax for the json returned is: </p>
@@ -177,13 +180,13 @@ class Action_setmetadata extends ActionAbstract {
 	   $format = $this->request->getParam("inputFormat");
 	   if (!$format)
 	       $format = "json";
-		
+
        $ontologyPath = \App::getValue( "AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
 	   $content = "";
 	   if (file_exists($ontologyPath)){
 			$content = FsUtils::file_get_contents($ontologyPath);
 	   }
-	
+
 	   header('Content-type: application/json');
 	   print ($content);
 	   exit();
