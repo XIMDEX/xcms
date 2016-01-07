@@ -403,10 +403,6 @@
   		var tree 		= d3.layout.tree().size([h, 100]);
   		var diagonal 	= d3.svg.diagonal().projection(function(d) { return [d.x, d.y]; });
 
-  		/*console.log(that);
-  		console.log(that.element);
-  		console.log($(".textViewer g", that.element));*/
-
 		if ($(".textViewer g", that.element).length == 0) {
 
   			var vis = d3.select(that.element[0]).select(".textViewer").append("svg")
@@ -426,9 +422,6 @@
     			$(".selectbox-text select", that.element)
     				.change(function() {
 
-
-
-
         				root = that._getElementByParent(json, $(".selectbox-text select", that.element).find(":selected").text());
 
         				if (!_.isUndefined(root.children)) {
@@ -436,13 +429,6 @@
         				}
 
         				update(root, that);
-
-
-
-
-
-
-
     				});
 
     			if (!_.isUndefined(root.children)) {
