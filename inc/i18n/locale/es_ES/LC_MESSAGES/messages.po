@@ -171,7 +171,7 @@ msgid "Are you sure you want to proceed?"
 msgstr "&iquest;Está seguro de querer continuar?"
 
 msgid "Attention! If you uncheck any folder, Ximdex CMS would delete all the contained files of that folder."
-msgstr "&iexcl;Atención! Si desmarca alguna carpeta, Ximdex CMS borrará todos los archivos que contiene."
+msgstr "&iexcl;Atención! Si desmarca alguna carpeta, Ximdex CMS eliminará todos los archivos que contiene."
 
 msgid "Subfolders availables"
 msgstr "Subcarpetas disponibles"
@@ -1620,7 +1620,7 @@ msgid "Selected document or folder is not empty. It also have dependencies with 
 msgstr "El documento o carpeta seleccionada no está vacío. Además, tiene dependencias externas con otros documentos del sistema y no podrá eliminarse con su rol. Por favor, deshaga las dependencias o utilice un usuario con los permisos adecuados."
 
 msgid "Your role cannot delete the selected container because of it has language versions depending on it."
-msgstr "Su rol no puede borrar el contenedor seleccionado debido a que tiene versiones idiomáticas que dependen de él."
+msgstr "Su rol no puede eliminar el contenedor seleccionado debido a que tiene versiones idiomáticas que dependen de él."
 
 msgid "Selected document or folder is not empty and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions."
 msgstr "El documento o carpeta seleccionada no está vacío y no podrá eliminarse con su rol. Por favor, deshaga las dependencias o utilice un usuario con los permisos adecuados."
@@ -1632,7 +1632,7 @@ msgid "List of pending documents"
 msgstr "Relación de documentos dependientes"
 
 msgid "To be able to delete this node, you should first delete the following language versions"
-msgstr "Para poder borrar este nodo, debe borrar primero las siguientes versiones idiomáticas"
+msgstr "Para poder eliminar este nodo, debe eliminar primero las siguientes versiones idiomáticas"
 
 msgid "Node does not exist. Update XimSearch."
 msgstr "Nodo no existe. Actualice el XimSearch."
@@ -1681,12 +1681,12 @@ msgid "You are going to delete a node. Would you like to continue?"
 msgstr "Va a eliminar el nodo. &iquest;Desea continuar?"
 
 msgid "The node cannot be deleted without deleting its dependencies.<br/><br/>If you want to delete this node your should delete its dependencies or tick the dependence deletion box"
-msgstr "No se puede borrar el nodo sin borrar las dependencias.<br/><br/>Si desea borrar el nodo debe eliminar las dependencias o marcar la casilla de borrado de dependencias"
+msgstr "No se puede eliminar el nodo sin eliminar las dependencias.<br/><br/>Si desea eliminar el nodo debe eliminar las dependencias o marcar la casilla de borrado de dependencias"
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
 #: /actions/deletenode/template/Smarty/forms/simple.tpl
 msgid "Would you like to delete"
-msgstr "&iquest;Desea borrar"
+msgstr "&iquest;Desea eliminar"
 
 #: /actions/deletenode/template/Smarty/forms/simple.tpl
 msgid "You are going to delete system nodes. Would you like to continue?"
@@ -1720,7 +1720,7 @@ msgstr "No se han encontrado dependencias"
 
 #: /actions/deletenode/template/Smarty/forms/dependencies.tpl
 msgid "Tick to delete all dependencies"
-msgstr "Marcar para borrar todas las dependencias"
+msgstr "Marcar para eliminar todas las dependencias"
 
 msgid "This node has not dependecies at the moment"
 msgstr "Este nodo no tiene dependencias actualmente"
@@ -1756,7 +1756,7 @@ msgstr "Se ha eliminado el usuario correctamente"
 #: /install/ximdex_data/ximdex.sql table Actions
 #: /install/ximdex_data/ximdex.sql table Nodes
 msgid "Delete user"
-msgstr "Borrar Usuario"
+msgstr "Eliminar Usuario"
 
 #: /actions/deleteuser/template/Smarty/index.tpl
 #: /actions/modifyuser/template/Smarty/index.tpl
@@ -1768,7 +1768,7 @@ msgid "Action for testing"
 msgstr "Acción para realizar pruebas"
 
 msgid "Are you sure you want to delete this user?"
-msgstr "&iquest;Seguro que quiere borrar este usuario?"
+msgstr "&iquest;Seguro que quiere eliminar este usuario?"
 
 #: /actions/edittext/Action_edittext.class.php
 msgid "Document cannot be opened."
@@ -1796,7 +1796,7 @@ msgid "Editing file"
 msgstr "Editando archivo"
 
 msgid "Clear"
-msgstr "Borrar todo"
+msgstr "Eliminar todo"
 
 #: /actions/edittext/template/Smarty/index.tpl
 msgid "Save and publish"
@@ -1808,7 +1808,7 @@ msgstr "La modificación de esta plantilla ha afectado a %1 documentos. &iquest;
 
 #: /actions/edittext/javascript/init.js
 msgid "You are going to clear the current content. It won't be removed until you save the data. Are you sure?"
-msgstr "Vas a borrar el contenido actual. No será eliminado hasta que guardes el documento. &iquest;Estás seguro?"
+msgstr "Vas a eliminar el contenido actual. No será eliminado hasta que guardes el documento. &iquest;Estás seguro?"
 
 #: /actions/edittext/javascript/tour.js
 msgid "This action allows to edit in a text window the document code.<br/>"
@@ -2551,10 +2551,10 @@ msgid "Are you sure you want to recover this version?"
 msgstr "&iquest;Está seguro de querer recuperar esta versión y convertirla en la última?"
 
 msgid "Are you sure you want to delete this version?"
-msgstr "&iquest;Está seguro de querer borrar esta versión?"
+msgstr "&iquest;Está seguro de querer eliminar esta versión?"
 
 msgid "Are you sure you want to delete this version?. This version is the latest published content."
-msgstr "&iquest;Está seguro de querer borrar esta versión?. Esta versión es el contenido publicado más reciente."
+msgstr "&iquest;Está seguro de querer eliminar esta versión?. Esta versión es el contenido publicado más reciente."
 
 #: /actions/manageversions/template/Smarty/index.tpl
 #: /actions/preview/template/Smarty/index.tpl
@@ -2629,13 +2629,13 @@ msgid "Force role"
 msgstr "Forzar rol"
 
 msgid "Delete group of a section"
-msgstr "Borrar grupo de la sección"
+msgstr "Eliminar grupo de la sección"
 
 msgid "No associated groups have been found"
 msgstr "No se han encontrado grupos asociados"
 
 msgid "Delete subscriptions"
-msgstr "Borrar suscripciones"
+msgstr "Eliminar suscripciones"
 
 msgid "Groups which it belongs"
 msgstr "Grupos a los que pertenece"
@@ -2669,7 +2669,7 @@ msgid "Remove from group"
 msgstr "Eliminar del grupo"
 
 msgid "Delete associations"
-msgstr "Borrar asociaciones"
+msgstr "Eliminar asociaciones"
 
 msgid "Update associations"
 msgstr "Actualizar asociaciones"
@@ -2777,7 +2777,7 @@ msgid "Existing roles"
 msgstr "Roles existentes"
 
 msgid "Delete selected roles"
-msgstr "Borrar roles selecionados"
+msgstr "Eliminar roles selecionados"
 
 msgid "Dissociate role"
 msgstr "Desasociar rol"
@@ -2847,7 +2847,7 @@ msgstr "Es requerido la descripción del servidor"
 
 #: /actions/modifyserver/resources/js/validate.js
 msgid "Are you sure you want to remove this server?"
-msgstr "&iquest;Está seguro de que desea borrar este servidor?"
+msgstr "&iquest;Está seguro de que desea eliminar este servidor?"
 
 msgid "It is necessary to specify a local url for this server."
 msgstr "Es necesario especificar una url local para el servidor."
@@ -3015,10 +3015,10 @@ msgid "Select a status"
 msgstr "Seleccione un estado"
 
 msgid "Delete-Status"
-msgstr "Borrar-Estado"
+msgstr "Eliminar-Estado"
 
 msgid "Delete status"
-msgstr "Borrar estados"
+msgstr "Eliminar estados"
 
 #: /actions/modifyuser/Action_modifyuser.class.php
 msgid "User has been successfully modified"
@@ -4187,7 +4187,7 @@ msgid "Put element down"
 msgstr "Bajar elemento"
 
 msgid "Delete selected element"
-msgstr "Borrar elemento seleccionado"
+msgstr "Eliminar elemento seleccionado"
 
 msgid "Copy selected element"
 msgstr "Copiar elemento seleccionado"
@@ -4305,7 +4305,7 @@ msgstr "Columna"
 #: /actions/showassocnodes/template/Smarty/index.tpl
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/index.tpl
 msgid "Remove"
-msgstr "Borrar"
+msgstr "Eliminar"
 
 #: /actions/xmleditor2/template/Smarty/tabledrawer.tpl
 msgid "Row"
@@ -4640,7 +4640,7 @@ msgid "Create table"
 msgstr "Crear tabla"
 
 msgid "Remove table"
-msgstr "Borrar tabla"
+msgstr "Eliminar tabla"
 
 msgid "Table properties"
 msgstr "Propiedades de la tabla"
@@ -4929,7 +4929,7 @@ msgid "You must select an option before you delete the link"
 msgstr "Debe seleccionar una de las opciones antes de eliminar el enlace"
 
 msgid "Intervals are erased publication of this node from the moment of the sending, and will be published the same intervals that the master node."
-msgstr "Se borrarán los intervalos de publicación de este nodo a partir del momento del envío, y pasará a tener los mismos intervalos de publicación que el nodo maestro."
+msgstr "Se eliminarán los intervalos de publicación de este nodo a partir del momento del envío, y pasará a tener los mismos intervalos de publicación que el nodo maestro."
 
 #: /actions/xmlsetlink/template/Smarty/show_translation.tpl
 #: /actions/xmleditor2/HTML2XML.class.php
@@ -4951,7 +4951,7 @@ msgstr "&iquest;Mantener contenido original?"
 #: /actions/xmlsetlink/template/Smarty/show_translation.tpl
 #: install/ximdex_data/ximdex.sql table Nodes
 msgid "Delete link"
-msgstr "Borrar enlace"
+msgstr "Eliminar enlace"
 
 #: /actions/xmlsetlink/template/Smarty/index.tpl
 msgid "Select master document"
@@ -5141,7 +5141,7 @@ msgid "It has been applied to delete a nonexistent file %s [inc/fsutils/FsUtils.
 msgstr "Se ha solicitado eliminar el archivo que no existe %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
 
 msgid "It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
-msgstr "Se ha solicitado eliminar el archivo que no se ha podido borrar %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
+msgstr "Se ha solicitado eliminar el archivo que no se ha podido eliminar %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s"
 
 msgid "An error occurred while trying to copy from %s to %s"
 msgstr "Ha ocurrido un error al intentar copiar desde %s a %s"
@@ -5337,7 +5337,7 @@ msgid "Specified relation already exists"
 msgstr "La relacion especificada ya existe"
 
 msgid "General group cant be removed"
-msgstr "El grupo general no se puede borrar"
+msgstr "El grupo general no se puede eliminar"
 
 #: /inc/model/language.php
 msgid "Language does not exist"
@@ -5540,10 +5540,10 @@ msgid "No existing node with id %s"
 msgstr "No existe nodo con id %s"
 
 msgid "Unpublish documents before deleting node"
-msgstr "Caducar los documentos antes de borrar el nodo"
+msgstr "Caducar los documentos antes de eliminar el nodo"
 
 msgid "Delete node and keep documents published"
-msgstr "Borrar nodo y mantener documentos publicados"
+msgstr "Eliminar nodo y mantener documentos publicados"
 
 msgid "Void param idFrame"
 msgstr "Parámetro idFrame vacío"
@@ -5947,10 +5947,10 @@ msgid "Change user data"
 msgstr "Cambiar los datos del usuario"
 
 msgid "Remove user"
-msgstr "Borrar usuario"
+msgstr "Eliminar usuario"
 
 msgid "Remove an user from system"
-msgstr "Borrar un usuario del sistema"
+msgstr "Eliminar un usuario del sistema"
 
 #: table Nodes
 msgid "Manage groups"
@@ -6079,27 +6079,27 @@ msgid "Change folder name"
 msgstr "Cambiar el nombre de la carpeta"
 
 msgid "Delete project"
-msgstr "Borrar proyecto"
+msgstr "Eliminar proyecto"
 
 msgid "Delete a project"
-msgstr "Borrar un proyecto"
+msgstr "Eliminar un proyecto"
 
 msgid "Delete a server"
-msgstr "Borrar un servidor"
+msgstr "Eliminar un servidor"
 
 msgid "Delete section"
-msgstr "Borrar sección"
+msgstr "Eliminar sección"
 
 #: also table ximNEWS.Nodes
 msgid "Delete folder"
-msgstr "Borrar carpeta"
+msgstr "Eliminar carpeta"
 
 #: table Nodes (core)
 msgid "Delete selected folder"
-msgstr "Borrar la carpeta seleccionada"
+msgstr "Eliminar la carpeta seleccionada"
 
 msgid "Delete a node"
-msgstr "Borrar el nodo"
+msgstr "Eliminar el nodo"
 
 msgid "Add new document"
 msgstr "Añadir nuevo documento"
@@ -6108,10 +6108,10 @@ msgid "Create a new structured document in several languages"
 msgstr "Crear un nuevo documento estructurado en varios idiomas"
 
 msgid "Delete group"
-msgstr "Borrar grupo"
+msgstr "Eliminar grupo"
 
 msgid "Delete selected group"
-msgstr "Borrar el grupo seleccionado"
+msgstr "Eliminar el grupo seleccionado"
 
 msgid "Add new language"
 msgstr "Añadir nuevo idioma"
@@ -6206,7 +6206,7 @@ msgid "Add a new text file to server"
 msgstr "Añade un archivo de texto nuevo al servidor"
 
 msgid "Delete XML container"
-msgstr "Borrar contedor XML"
+msgstr "Eliminar contedor XML"
 
 msgid "Edit XML document"
 msgstr "Editar documento XML"
@@ -6215,16 +6215,16 @@ msgid "Edit content of XML document"
 msgstr "Editar el contenido del documento XML"
 
 msgid "Delete XML document in all its languages"
-msgstr "Borrar el documento XML en todos sus idiomas"
+msgstr "Eliminar el documento XML en todos sus idiomas"
 
 msgid "Change file name on import folder"
 msgstr "Cambia el nombre del archivo en la carpeta import"
 
 msgid "Delete action"
-msgstr "Borrar acción"
+msgstr "Eliminar acción"
 
 msgid "Delete the action"
-msgstr "Borrar la accion"
+msgstr "Eliminar la accion"
 
 msgid "And new PTD template"
 msgstr "Añadir nueva plantilla PTD"
@@ -6239,16 +6239,16 @@ msgid "Add a new view template and its default view"
 msgstr "Añade una plantilla de vista y su vista por defecto"
 
 msgid "Delete template"
-msgstr "Borrar plantilla"
+msgstr "Eliminar plantilla"
 
 msgid "Delete templates"
-msgstr "Borrar plantillas"
+msgstr "Eliminar plantillas"
 
 msgid "Delete selected template"
-msgstr "Borrar la plantilla seleccionada"
+msgstr "Eliminar la plantilla seleccionada"
 
 msgid "Delete selected templates"
-msgstr "Borrar las plantillas seleccionadas"
+msgstr "Eliminar las plantillas seleccionadas"
 
 msgid "Modify associated workflow status"
 msgstr "Modificar estados del workflow asociados"
@@ -6281,17 +6281,17 @@ msgstr "Cambiar el nombre del archivo"
 
 #: also table ximNEWS.Nodes
 msgid "Delete image"
-msgstr "Borrar imagen"
+msgstr "Eliminar imagen"
 
 #: table Nodes (core)
 msgid "Delete an image"
-msgstr "Borrar la imagen"
+msgstr "Eliminar la imagen"
 
 msgid "Delete file of import folder"
 msgstr "Borra el archivo de la carpeta import"
 
 msgid "Delete a section"
-msgstr "Borrar la sección"
+msgstr "Eliminar la sección"
 
 msgid "Permits"
 msgstr "Permisos"
@@ -6357,13 +6357,13 @@ msgid "Modify list of users that integrate this group"
 msgstr "Modificar la lista de usuarios que componen el grupo"
 
 msgid "Delete channel"
-msgstr "Borrar canal"
+msgstr "Eliminar canal"
 
 msgid "Delete a channel if it has not associated documents"
-msgstr "Borrar un canal si no hay documentos asociados"
+msgstr "Eliminar un canal si no hay documentos asociados"
 
 msgid "Delete a language from the system"
-msgstr "Borrar un idioma del sistema"
+msgstr "Eliminar un idioma del sistema"
 
 #: /modules/ximNEWS/actions/createcolector/template/Smarty/index.tpl
 #: table Nodes
@@ -6378,13 +6378,13 @@ msgid "Modify properties"
 msgstr "Modificar propiedades"
 
 msgid "Delete role"
-msgstr "Borrar rol"
+msgstr "Eliminar rol"
 
 msgid "Delete a selected role if it is not in use"
-msgstr "Borrar el rol seleccionado siempre que no esté en uso"
+msgstr "Eliminar el rol seleccionado siempre que no esté en uso"
 
 msgid "Delete a state if it is not an initial or final one and it is not in use"
-msgstr "Borrar un estado si no es inicial o final y no está en uso"
+msgstr "Eliminar un estado si no es inicial o final y no está en uso"
 
 msgid "Change template name"
 msgstr "Cambiar el nombre de la plantilla"
@@ -6405,7 +6405,7 @@ msgid "Download selected template"
 msgstr "Descargar la plantilla seleccionada"
 
 msgid "Delete selected link"
-msgstr "Borrar el enlace seleccionado"
+msgstr "Eliminar el enlace seleccionado"
 
 msgid "Modify view template"
 msgstr "Modificar plantilla de vista"
@@ -6428,10 +6428,10 @@ msgstr "Pasar un documento de texto al estado anterior"
 #: also ximNEWS.Actions
 #: also table ximNEWS.Nodes
 msgid "Delete document"
-msgstr "Borrar documento"
+msgstr "Eliminar documento"
 
 msgid "Delete selected XML document"
-msgstr "Borrar el documento XML seleccionado"
+msgstr "Eliminar el documento XML seleccionado"
 
 msgid "Symbolic link"
 msgstr "Enlace simbólico"
@@ -6466,10 +6466,10 @@ msgid "Add a new language to ximlet"
 msgstr "Añade un nuevo idioma al ximlet"
 
 msgid "Delete ximlet"
-msgstr "Borrar ximlet"
+msgstr "Eliminar ximlet"
 
 msgid "Delete a ximlet permanently from system"
-msgstr "Borrar el ximlet definitivamente del sistema"
+msgstr "Eliminar el ximlet definitivamente del sistema"
 
 
 msgid "Change ximlet name"
@@ -6482,7 +6482,7 @@ msgid "Modify content of a ximlet"
 msgstr "Modificar el contenido de un ximlet"
 
 msgid "Delete a ximlet and all its dependencies"
-msgstr "Borrar el ximlet y todas sus dependencias"
+msgstr "Eliminar el ximlet y todas sus dependencias"
 
 msgid "Modify the ximlet which borrows the content"
 msgstr "Modificar el ximlet al que pide prestado el contenido"
@@ -6506,10 +6506,10 @@ msgid "Associate a ximlet with a section"
 msgstr "Asociar ximlet a una sección"
 
 msgid "Delete relation"
-msgstr "Borrar relación"
+msgstr "Eliminar relación"
 
 msgid "Delete a ximSir relation"
-msgstr "Borrar una relación de ximSir"
+msgstr "Eliminar una relación de ximSir"
 
 msgid "Replace file"
 msgstr "Sustituir archivo"
@@ -6570,7 +6570,7 @@ msgid "Expire a session"
 msgstr "Caducar una sesión"
 
 msgid "Delete HTML file"
-msgstr "Borrar archivo HTML"
+msgstr "Eliminar archivo HTML"
 
 msgid "Move file"
 msgstr "Mover archivo"
@@ -6951,10 +6951,10 @@ msgid "Edit content of RNG template visually"
 msgstr "Editar el contenido de la plantilla RNG visualmente"
 
 msgid "Delete XSL template"
-msgstr "Borrar plantilla XSL"
+msgstr "Eliminar plantilla XSL"
 
 msgid "Delete a XSL template"
-msgstr "Borrar una plantilla XSL"
+msgstr "Eliminar una plantilla XSL"
 
 msgid "Edit XSL template"
 msgstr "Editar plantilla XSL"
@@ -6990,10 +6990,10 @@ msgid "Edit a RNG template"
 msgstr "Editar una plantilla RNG"
 
 msgid "Delete RNG template"
-msgstr "Borrar plantilla RNG"
+msgstr "Eliminar plantilla RNG"
 
 msgid "Delete a RNG template"
-msgstr "Borrar una plantilla RNG"
+msgstr "Eliminar una plantilla RNG"
 
 msgid "Properties of RNG template"
 msgstr "Propiedades de la plantilla RNG"
@@ -7277,7 +7277,7 @@ msgid "View all nodes"
 msgstr "Ver todos los nodos"
 
 msgid "Delete on cascade"
-msgstr "Borrar en cascada"
+msgstr "Eliminar en cascada"
 
 msgid "Receive integrity checks"
 msgstr "Recibir chequeos de integridad"
@@ -7337,7 +7337,7 @@ msgid "Receive the integrity checks"
 msgstr "Recibe los chequeos de integridad"
 
 msgid "Delete publication windows"
-msgstr "Borrar ventanas de publicación"
+msgstr "Eliminar ventanas de publicación"
 
 msgid "Expert mode edition"
 msgstr "Edición en Modo Experto"
@@ -7850,7 +7850,7 @@ msgstr "Los siguientes boletines se han generado correctamente"
 
 #: /modules/ximNEWS/actions/generatecolector/automaticMPM.php
 msgid "You need to delete this file in order to get an Automatic succesfull restart"
-msgstr "Necesitas borrar este archivo para poder reiniciar Automatic satisfactoriamente"
+msgstr "Necesitas eliminar este archivo para poder reiniciar Automatic satisfactoriamente"
 
 msgid "Start processing"
 msgstr "Comienzo de proceso"
@@ -7900,7 +7900,7 @@ msgstr "Fin paralelización"
 #: /modules/ximNEWS/actions/manageareas/resources/js/manageareas.js
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/create.tpl
 msgid "Do you want to delete the category?"
-msgstr "&iquest;Desea borrar la categoría?"
+msgstr "&iquest;Desea eliminar la categoría?"
 
 #: /modules/ximNEWS/actions/manageareas/template/Smarty/create.tpl
 msgid "Create category"
@@ -7937,7 +7937,7 @@ msgid "Modify associated status of workflow"
 msgstr "Modificar estados de workflow asociados"
 
 msgid "Delete file"
-msgstr "Borrar archivo"
+msgstr "Eliminar archivo"
 
 msgid "Generate"
 msgstr "Generar"
@@ -8280,10 +8280,10 @@ msgstr "Carpeta de recursos ximNEWS"
 #:  table Actions
 #: also table Nodes
 msgid "Delete ximNEWS section"
-msgstr "Borrar sección ximNEWS"
+msgstr "Eliminar sección ximNEWS"
 
 msgid "Delete a whole ximNEWS section"
-msgstr "Borrar una sección completa de ximNEWS"
+msgstr "Eliminar una sección completa de ximNEWS"
 
 msgid "Change a ximNEWS section name"
 msgstr "Cambiar el nombre de una sección ximNEWS"
@@ -8303,10 +8303,10 @@ msgstr "Crear un nuevo colector de noticias"
 
 #: also table ximNEWS.Nodes
 msgid "Delete colector"
-msgstr "Borrar colector"
+msgstr "Eliminar colector"
 
 msgid "Delete the current colector"
-msgstr "Borrar el colector actual"
+msgstr "Eliminar el colector actual"
 
 msgid "Edit colector"
 msgstr "Editar colector"
@@ -8321,10 +8321,10 @@ msgid "Add news to bulletin"
 msgstr "Añadir noticias al boletín"
 
 msgid "Delete bulletin"
-msgstr "Borrar boletín"
+msgstr "Eliminar boletín"
 
 msgid "Delete a news bulletin"
-msgstr "Borrar un boletín de noticias"
+msgstr "Eliminar un boletín de noticias"
 
 msgid "Create a new news"
 msgstr "Crea una nueva noticia"
@@ -8336,10 +8336,10 @@ msgid "Associate a news to a colector"
 msgstr "Asociar una noticia a un colector"
 
 msgid "Delete news"
-msgstr "Borrar noticia"
+msgstr "Eliminar noticia"
 
 msgid "Delete a news in ximNEWS"
-msgstr "Borrar una noticia en ximNEWS"
+msgstr "Eliminar una noticia en ximNEWS"
 
 #:  also table ximNEWS.Actions
 msgid "Add image batch"
@@ -8362,13 +8362,13 @@ msgid "Change the image name"
 msgstr "Cambiar el nombre de la imagen"
 
 msgid "Delete the current image"
-msgstr "Borrar la imagen actual"
+msgstr "Eliminar la imagen actual"
 
 msgid "Edit the XML document content"
 msgstr "Editar el contenido del documento XML"
 
 msgid "Delete the selected XML document"
-msgstr "Borrar el documento XML seleccionado"
+msgstr "Eliminar el documento XML seleccionado"
 
 msgid "Edit a structured document content at a low level"
 msgstr "Editar el contenido de un documento estructurado a bajo nivel"
@@ -8389,7 +8389,7 @@ msgid "Change the name of the selected folder"
 msgstr "Cambiar el nombre de la carpeta seleccionada"
 
 msgid "Delete the selected folder"
-msgstr "Borrar la carpeta seleccionada"
+msgstr "Eliminar la carpeta seleccionada"
 
 msgid "Add a new image to the folder"
 msgstr "Añadir una nueva imagen a la carpeta"
@@ -8398,7 +8398,7 @@ msgid "Add a set of images to the folder"
 msgstr "Añade un conjunto de imágenes a la carpeta"
 
 msgid "Delete a bulletin"
-msgstr "Borrar un boletín"
+msgstr "Eliminar un boletín"
 
 msgid "Change the bulletin name"
 msgstr "Cambiar el nombre del boletín"
@@ -9002,7 +9002,7 @@ msgstr "ALTO: Archivo detectado"
 #: /modules/ximSYNC/scripts/scheduler/scheduler.class.php
 #: /modules/ximSYNC/scripts/scheduler/schedulerMPM.php
 msgid "You need to delete this file in order to restart Scheduler successfully"
-msgstr "Necesitas borrar este archivo para poder reiniciar Scheduler satisfactoriamente"
+msgstr "Necesitas eliminar este archivo para poder reiniciar Scheduler satisfactoriamente"
 
 msgid "No active server"
 msgstr "Ningún servidor activo"
@@ -9723,7 +9723,7 @@ msgid "Publish Catalog"
 msgstr "Publicar catálogo"
 
 msgid "Delete Catalog"
-msgstr "Borrar catálogo"
+msgstr "Eliminar catálogo"
 
 msgid "Edit Dataset"
 msgstr "Editar Dataset"
@@ -9732,7 +9732,7 @@ msgid "Publish Dataset"
 msgstr "Publicar dataset"
 
 msgid "Delete Dataset"
-msgstr "Borrar Dataset"
+msgstr "Eliminar Dataset"
 
 msgid "Update Dataset"
 msgstr "Actualizar Dataset"
@@ -9867,7 +9867,7 @@ msgid "Source node cannot be the same as destination node"
 msgstr "La carpeta origen no puede ser la misma que la carpeta destino"
 
 msgid "Delete RNG schema"
-msgstr "Borrar esquema RNG"
+msgstr "Eliminar esquema RNG"
 
 msgid "Generic schema"
 msgstr "Esquema general"
@@ -9924,13 +9924,13 @@ msgid "The linked file should be selected in order to publicate the file"
 msgstr "Para publicar el archivo deberá de seleccionar el archivo al que se encuentra vinculado"
 
 msgid "You can't delete the node"
-msgstr "No puedes borrar este nodo"
+msgstr "No puedes eliminar este nodo"
 
 msgid "This document has a symbolic link"
 msgstr "Este documento tiene un enlace simbólico"
 
 msgid "To delete this node you have to break the link with the following node(s)"
-msgstr "Para borrar este nodo se ha de romper el enlace con el/los siguiente/s nodo/s"
+msgstr "Para eliminar este nodo se ha de romper el enlace con el/los siguiente/s nodo/s"
 
 msgid "Edit HTML"
 msgstr "Editar HTML"
