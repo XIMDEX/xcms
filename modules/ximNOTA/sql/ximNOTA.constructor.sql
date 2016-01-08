@@ -10,16 +10,14 @@ INSERT INTO `NodeAllowedContents` VALUES (NULL,5023, 5502,0);
 
 INSERT INTO `RelNodeTypeMimeType` VALUES (Null, 5501, 'text/xml', 'xml', '');
 
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`)
-VALUES (8501, 5501,'Pasar estado siguiente','workflow_forward','change_next_state.png','Pasa al estado siguiente',72,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`)
-VALUES (8502, 5501,'Pasar estado anterior','workflow_backward','change_last_state.png','Pasa al estado anterior',70,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`)
-VALUES (8503, 5501,'Editar XML','xmleditor','edit_file_xml.png','Edita el contenido del documento XML',1,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`)
-VALUES (8504, 5501,'Editar Archivo','edittext','edit_file_txt.png','Edita el contenido del documento de texto',1,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`)
-VALUES (8505, 5502,'Publicar Sección MetaData','publicatesection','publicate_section.png','Publica toda la sección de MetaDatas',1,NULL,0);
+-- Edit
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (8503, 5501,'Editar XML','xmleditor','edit_file_xml.png','Edita el contenido del documento XML',20,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (8504, 5501,'Editar Archivo','edittext','edit_file_txt.png','Edita el contenido del documento de texto',20,NULL,0);
+
+-- Publish
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (8501, 5501,'Pasar estado siguiente','workflow_forward','change_next_state.png','Pasa al estado siguiente',70,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (8502, 5501,'Pasar estado anterior','workflow_backward','change_last_state.png','Pasa al estado anterior',70,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (8505, 5502,'Publicar Sección MetaData','publicatesection','publicate_section.png','Publica toda la sección de MetaDatas',70,NULL,0);
 
 INSERT INTO `NodeDefaultContents` VALUES (NULL, 5022, 5502,'metadata',NULL,NULL);
 

@@ -40,74 +40,82 @@ INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `
 (5312, 'XimNewsBulletinLanguageXimlet', 'xmldocumentnode', 'doc.png', 'Bulletin as ximlet in ximNEWS', 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 'ximNEWS'),
 (5320, 'XimNewsDateSection', 'foldernode', 'folder_section_news.png', 'XimNEWS resource forlder', 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, NULL);
 
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6700,5300,'Delete ximNEWS section','deletenode','delete_section_ximnews.png','Delete a whole ximNEWS section',90,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6701,5300,'Change name','renamenode','change_name_section_ximnews.png','Change a ximNEWS section name',91,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6630,5300,'Copy ximNEWS node','copy','copiar_seccion.png','Copy a whole ximNEWS section',97,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6702,5301,'Add news colector','createcolector','add_section_news.png','Create a new news colector',90,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6704,5302,'Delete colector','deletenode','delete_cat_bulletin.png','Delete the current colector',91,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6705,5302,'Edit colector','createcolector','edit_cat.png','Edit the current colector','92','ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6707,5303,'Delete bulletin','deletenode','delete_bulletin.png','Delete a news bulletin',-91,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6708,5303,'Change name','renamenode','edit_bulletin.png','Change the name of the news colector',92,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6710,5304,'Create news','createnews','add_news.png','Create a new news',90,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6717,5309,'Associate news to colectors','addtocolector','link_n2b.png','Associate a news to a colector',90,'ximNEWS',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6718,5305,'Delete news','deletenode','delete_new.png','Delete a news in ximNEWS',91,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6720,5306,'Add image batch','createLote','add_folder_images.png','Create a new image folder',90,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6723,5306,'Image viewer','browserimages','view_images.png','Visualize the image batchs',-10,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6728,5307,'Download image','filedownload','download_image.png','Download an image to the local hard disk',90,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6729,5307,'Preview image','filepreview','view_image.png','Preview an image',91,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6730,5307,'Change image name','renamenode','change_name_image.png','Change the image name',92,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6731,5307,'Delete image','deletenode','delete_image.png','Delete the current image',93,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6740,5308,'Edit XML','xmleditor2','edit_file_xml.png','Edit the XML document content',90,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6745,5308,'Delete document','deletenode','delete_file_xml.png','Delete the selected XML document',93,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6747,5308,'Edit in text mode','edittext','edit_file_xml_txt.png','Edit a structured document content at a low level',97,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6744,5308,'Delete news from bulletin','unlinknews','delete_news_bulletin.png','Delete news from a bulletin',-1,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6750,5309,'Edit XML','xmleditor2','edit_file_xml.png','Edit a XML document content',90,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6755,5309,'Delete document','deletenode','delete_file_xml.png','Delete the selected XML document',95,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6757,5309,'Edit in text mode','edittext','edit_file_xml_txt.png','Edit a structured document content at a low level',97,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6721,5310,'View images','browserlote','view_images.png','See the images of a batch',-10,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6724,5310,'Change name','renamenode','change_name_folder_images.png','Change the name of the selected folder',91,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6725,5310,'Delete folder','deletenode','delete_folder_images.png','Delete the selected folder',92,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Params`) VALUES (6726,5310,'Add image','fileupload','upload_image.png','Add a new image to the folder',93,'','type=ximnewsimage');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Params`) VALUES (6727,5310,'Add images','fileupload_common_multiple','upload_image.png','Add a set of images to the folder',94,NULL,'type=ximnewsimage');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6762,5311,'Delete bulletin','deletenode','delete_bulletin.png','Delete a bulletin',-91,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6761,5311,'Change name','renamenode','edit_bulletin.png','Change the bulletin name',92,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6760,5311,'Add laguage','addlangbulletin','add_language.png','Add a new language to bulletin',93,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6764,5312,'Edit XML','xmleditor2','edit_file_xml.png','Edit the XML document content',90,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6765,5312,'Delete document','deletenode','delete_file_xml.png','Delete the selected XML document',93,'',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6767,5312,'Edit in text mode','edittext','edit_file_xml_txt.png','Edit a structured document content at a low level',97,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6768,5312,'Delete news from bulletin','unlinknews','xix.png','Delete news from a bulletin',-97,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6769,5302,'Generate bulletins','generatecolector','generate_colector.png','Generate the bulletins of a colector',94,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6772,5302,'Delete news from colector','unlinknewscolector','delete_news_bulletin.png','Delete news from a colector',93,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6773,5310,'Publish section','publicatesection','publicate_section.png','Publish a section in a row',96,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6776,5305,'Add language','addlangxmlcontainer','add_language_xml.png','Add a new language to the news',10,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6777,5309,'Delete news from colector','unlinknewscolector','delete_news_bulletin.png','Delete news from a colector',93,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6712,5300,'Associate ximlet with ximNEWS section','addximlet','asociate_ximlet_folder.png','Associate a ximlet to the section',92,NULL,1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Params`) VALUES (6778,5307,'Replace image','fileupload','replace_image.png','Replace an existing image updating the version history',97,'','type=ximnewsimage');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6779,5305,'Change name','renamenode','change_name_section_ximnews.png','Change the name of a ximNEWS news',91,'',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6780,5309,'Version manager','manageversions','manage_versions.png','Manage the version repository',77,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6781,5302,'See associated news','viewaddednews','view_associated_news.png','Show the news associated to a colector',91,'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6782,5300,'Associated groups','modifygroupsnode','groups_section.png','Manage the association of groups with this node',95,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (7020,5300,'Add news folder','addfoldernode','xix.png','Create a new news folder',96,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (7021,5302,'Associated groups','modifygroupsnode','groups_section.png','Manage the association of groups with this node',95,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (7252,5309,'Symbolic link','xmlsetlink','file_xml_symbolic.png','Modify the document to whom it is borrowing the content',30,NULL,0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6743, 5308, 'Publish bulletin', 'workflow_forward', 'change_next_state.png', 'Publish a bulletin', 95, NULL, 0, NULL);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES
-(7313, 5300, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify the ximNEWS folder properties', 10, NULL, 0, NULL);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES
-(7314, 5304, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify heritable properties', 10, NULL, 0, NULL);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES
-(7315, 5305, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify heritable properties', 10, NULL, 0, NULL);
-INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES
-(7316, 5309, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify heritable properties of a news', 10, NULL, 0, NULL);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7322, 5300, 'Publish ximNEWS section','publicatesection','publicate_section.png','Publish a ximNEWS section',-9999,NULL,1,'');
 
---
--- Browser actions and nodes. Move to principal when necessary
---
+-- ADD
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) 	VALUES (6702,5301,'Add news colector','createcolector','add_section_news.png','Create a new news colector',10,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) 	VALUES (6720,5306,'Add image batch','createLote','add_folder_images.png','Create a new image folder',10,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Params`) 	VALUES (6726,5310,'Add image','fileupload','upload_image.png','Add a new image to the folder',10,'','type=ximnewsimage');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Params`) 	VALUES (6727,5310,'Add images','fileupload_common_multiple','upload_image.png','Add a set of images to the folder',10,NULL,'type=ximnewsimage');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) 	VALUES (6760,5311,'Add laguage','addlangbulletin','add_language.png','Add a new language to bulletin',10,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) 	VALUES (6776,5305,'Add language','addlangxmlcontainer','add_language_xml.png','Add a new language to the news',10,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) 	VALUES (7020,5300,'Add news folder','addfoldernode','xix.png','Create a new news folder',10,NULL,0);
 
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES(7017, 5300, 'Manage categories', 'manageareas', 'manage_categories.png', 'Manage categories', 110, 'ximNEWS',0);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES(7018, 5305, 'Associate news to categories', 'addtoarea', 'asociate_news_category.png', 'Associate categories', 110, 'ximNEWS',1);
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES(7019, 5305, 'Delete news from categories', 'deleterelnewsarea', 'delete_news_category.png', 'Delete news from categories', 130, 'ximNEWS',0);
+-- EDIT
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6705,5302,'Edit colector','createcolector','edit_cat.png','Edit the current colector',20,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6740,5308,'Edit XML','xmleditor2','edit_file_xml.png','Edit the XML document content',20,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6747,5308,'Edit in text mode','edittext','edit_file_xml_txt.png','Edit a structured document content at a low level',20,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6750,5309,'Edit XML','xmleditor2','edit_file_xml.png','Edit a XML document content',20,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6757,5309,'Edit in text mode','edittext','edit_file_xml_txt.png','Edit a structured document content at a low level',20,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6764,5312,'Edit XML','xmleditor2','edit_file_xml.png','Edit the XML document content',20,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6767,5312,'Edit in text mode','edittext','edit_file_xml_txt.png','Edit a structured document content at a low level',20,NULL,0);
+
+-- COPY
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6630,5300,'Copy ximNEWS node','copy','copiar_seccion.png','Copy a whole ximNEWS section',30,NULL,0);
+
+-- MOVE
+
+-- DELETE
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6700,5300,'Delete ximNEWS section','deletenode','delete_section_ximnews.png','Delete a whole ximNEWS section',50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6704,5302,'Delete colector','deletenode','delete_cat_bulletin.png','Delete the current colector',50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6707,5303,'Delete bulletin','deletenode','delete_bulletin.png','Delete a news bulletin',-50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6718,5305,'Delete news','deletenode','delete_new.png','Delete a news in ximNEWS',50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6731,5307,'Delete image','deletenode','delete_image.png','Delete the current image',50,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6745,5308,'Delete document','deletenode','delete_file_xml.png','Delete the selected XML document',50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6744,5308,'Delete news from bulletin','unlinknews','delete_news_bulletin.png','Delete news from a bulletin',-50,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6755,5309,'Delete document','deletenode','delete_file_xml.png','Delete the selected XML document',50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6725,5310,'Delete folder','deletenode','delete_folder_images.png','Delete the selected folder',50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6762,5311,'Delete bulletin','deletenode','delete_bulletin.png','Delete a bulletin',-50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6765,5312,'Delete document','deletenode','delete_file_xml.png','Delete the selected XML document',50,'',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6768,5312,'Delete news from bulletin','unlinknews','xix.png','Delete news from a bulletin',-50,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6772,5302,'Delete news from colector','unlinknewscolector','delete_news_bulletin.png','Delete news from a colector',50,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6777,5309,'Delete news from colector','unlinknewscolector','delete_news_bulletin.png','Delete news from a colector',50,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES(7019, 5305, 'Delete news from categories', 'deleterelnewsarea', 'delete_news_category.png', 'Delete news from categories', 50, 'ximNEWS',0);
+
+-- MODIFY
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7313, 5300, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify the ximNEWS folder properties', 60, NULL, 0, NULL);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7314, 5304, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify heritable properties', 60, NULL, 0, NULL);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7315, 5305, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify heritable properties', 60, NULL, 0, NULL);
+INSERT INTO `Actions` (`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`) VALUES (7316, 5309, 'Modify heritable properties', 'manageproperties', 'xix.png', 'Modify heritable properties of a news', 60, NULL, 0, NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (7252,5309,'Symbolic link','xmlsetlink','file_xml_symbolic.png','Modify the document to whom it is borrowing the content',60,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6701,5300,'Change name','renamenode','change_name_section_ximnews.png','Change a ximNEWS section name',60,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6708,5303,'Change name','renamenode','edit_bulletin.png','Change the name of the news colector',60,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6717,5309,'Associate news to colectors','addtocolector','link_n2b.png','Associate a news to a colector',60,'ximNEWS',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6730,5307,'Change image name','renamenode','change_name_image.png','Change the image name',60,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES(7017, 5300, 'Manage categories', 'manageareas', 'manage_categories.png', 'Manage categories', 60, 'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES(7018, 5305, 'Associate news to categories', 'addtoarea', 'asociate_news_category.png', 'Associate categories', 60, 'ximNEWS',1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6724,5310,'Change name','renamenode','change_name_folder_images.png','Change the name of the selected folder',60,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6761,5311,'Change name','renamenode','edit_bulletin.png','Change the bulletin name',60,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6712,5300,'Associate ximlet with ximNEWS section','addximlet','asociate_ximlet_folder.png','Associate a ximlet to the section',60,NULL,1);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Params`) VALUES (6778,5307,'Replace image','fileupload','replace_image.png','Replace an existing image updating the version history',60,'','type=ximnewsimage');
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6779,5305,'Change name','renamenode','change_name_section_ximnews.png','Change the name of a ximNEWS news',60,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6780,5309,'Version manager','manageversions','manage_versions.png','Manage the version repository',60,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6781,5302,'See associated news','viewaddednews','view_associated_news.png','Show the news associated to a colector',60,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6782,5300,'Associated groups','modifygroupsnode','groups_section.png','Manage the association of groups with this node',60,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (7021,5302,'Associated groups','modifygroupsnode','groups_section.png','Manage the association of groups with this node',60,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) 	VALUES (6710,5304,'Create news','createnews','add_news.png','Create a new news',60,'ximNEWS',0);
+
+-- Publish
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES  (6743, 5308, 'Publish bulletin', 'workflow_forward', 'change_next_state.png', 'Publish a bulletin', 70, NULL, 0, NULL);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6773,5310,'Publish section','publicatesection','publicate_section.png','Publish a section in a row',70,'',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (7322, 5300, 'Publish ximNEWS section','publicatesection','publicate_section.png','Publish a ximNEWS section',-70,NULL,1,'');
+
+-- OTHERS
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6723,5306,'Image viewer','browserimages','view_images.png','Visualize the image batchs',-70,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6728,5307,'Download image','filedownload','download_image.png','Download an image to the local hard disk',70,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6729,5307,'Preview image','filepreview','view_image.png','Preview an image',70,NULL,0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6721,5310,'View images','browserlote','view_images.png','See the images of a batch',-70,'ximNEWS',0);
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`) VALUES (6769,5302,'Generate bulletins','generatecolector','generate_colector.png','Generate the bulletins of a colector',70,'ximNEWS',0);
+
 
 INSERT INTO Nodes VALUES(7017, 5300, 5008, 'Manage categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT);
 INSERT INTO Nodes VALUES(7018, 5305, 5008, 'Associate news to categories', '0', '0', NULL, '0', '0', NULL, NULL, DEFAULT);
