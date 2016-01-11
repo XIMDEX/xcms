@@ -66,10 +66,8 @@
 	<div class="action_content full">
 		<h3>{t}Select node to associate{/t}</h3>
 
-		<xim-tree />
-
 		<!-- /////////////////////// -->
-		<!-- <fieldset>
+		<fieldset>
 			<ol>
 				<li>
 					<label>Select node to associate</label>
@@ -83,7 +81,7 @@
 
 				<li>
 					<input value="1" type="checkbox" id="recursive" name="recursive" />
-					<label for="recursive">{t}Associate recursively {/t}</label>
+					<label for="recursive">{t}Associate recursively{/t}</label>
 				</li>
 
 				<li class="warning hidden">
@@ -104,11 +102,14 @@
 					</p>
 				</li>
 			</ol>
-		</fieldset> -->
+		</fieldset>
+		<!-- /////////////////////// -->
+
+		<xim-tree />
 	</div>
-	<!-- /////////////////////// -->
 
 	<fieldset class="buttons-form positioned_btn">
-		{button label="Associate" class='validate createrel-button btn' }{*message="Would you like to associate this section with this ximlet?"*}
+		{button label="Associate" class='validate createrel-button btn' }
+		{*message="Would you like to associate this section with this ximlet?"*}
 	</fieldset>
 </form>
