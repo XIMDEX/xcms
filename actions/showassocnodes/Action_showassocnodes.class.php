@@ -39,11 +39,12 @@ class Action_showassocnodes extends ActionAbstract {
 	const TREE_ROOT = 10000;
 
 
-	public function index()
-	{
+	public function index() {
+
       	$ximletId = (int) $this->request->getParam("nodeid");
 
-		$this->addJs('/actions/showassocnodes/resources/js/treeSelector.js');
+		// $this->addJs('/actions/showassocnodes/resources/js/treeSelector.js');
+		// $this->addJs('/inc/js/angular/controllers/SearchTreeModal.js');
 		$this->addCss('/actions/showassocnodes/resources/css/index.css');
 
 		$sections = $this->getReferencedSections($ximletId);
