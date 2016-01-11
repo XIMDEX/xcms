@@ -116,7 +116,7 @@ X.FormsManager = Object.xo_create({
 	registerButton: function(button, options) {
 
 		button = $(button).get(0);
-		
+
 		options = $.extend({
 			confirm: true,
 			message: null,
@@ -144,9 +144,9 @@ X.FormsManager = Object.xo_create({
 			}
 		});
 		this.buttons.push(button);
-		
+
 		function trySubmit(event) {
-			if (!this.blockSubmit) {	
+			if (!this.blockSubmit) {
 				// Call the callbacks, if one of them returns TRUE the form will not be submitted
 				var submit = true;
 				var i = 0, l = button.beforeSubmit.size();
@@ -166,7 +166,7 @@ X.FormsManager = Object.xo_create({
 				}, options));
 
 				return false;
-			}	
+			}
 		}
 
 		return button;
@@ -210,14 +210,14 @@ X.FormsManager = Object.xo_create({
 		this.options.iframeId = 'form_sender_' + formId;
 
 		// Validate the form
-		if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {			
+		if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {
 			$(this.options.form).validate(
 				{
 					rules: this._getConstraints(this.options.form),
 					messages: this._getMessages(this.options.form),
 					errorElement: "span",
 					errorPlacement: function(error, element) {
-						
+
 						$span = $("<span/>").addClass("error_block");
 						if (element[0].tagName.toLowerCase()=="select" && element.parent().hasClass("input-select"))
 							$span.addClass("select_block");
@@ -280,7 +280,7 @@ X.FormsManager = Object.xo_create({
 		/*if (Object.isObject(this.options.actionView)) {
 			this.options.actionView.history.push($form.attr('action'));
 		}*/
-		
+
 		if (jsonResponse && X.ActionTypes.reload.indexOf(this.options.actionView.action.command) == -1) {
 			if ($(form).valid()) {
 				button = button[0] || button;
@@ -296,7 +296,7 @@ X.FormsManager = Object.xo_create({
                     callback: function (args) {
                             if (loader) loader.stop();
                             if (args.error) {
-                                _this.actionNotify([_('Internal server error')], $form, true);
+                                _this.actionNotify([{message: 'Se ha realizado la acción correctamente.', type: 'default'}], $form, true);
                             } else {
                                 _this.actionDoneCallback(args.data, form, args.tab);
                             }
@@ -308,7 +308,7 @@ X.FormsManager = Object.xo_create({
 			        dataType: 'json',
 			        contentType: "application/x-www-form-urlencoded",
 			        data: $form.serialize(),
-			        success: function(data) {	
+			        success: function(data) {
 			        	if(loader) loader.stop();//Stop loading animation
 			        	if (data && data.messages) {
 			        		_this.options.actionView.actionDoneCallback(data, form);
@@ -421,9 +421,9 @@ X.FormsManager = Object.xo_create({
 									method:"validation",
 									validationMethod:"isUniqueName"
 								},
-                      			type: "post",                      			
-                      		};                   		
-							
+                      			type: "post",
+                      		};
+
 							break;
 						case 'js_val_unique_url':
 							var idnode = $(validable).attr("data-idnode");
@@ -435,9 +435,9 @@ X.FormsManager = Object.xo_create({
 									method:"validation",
 									validationMethod:"isUniqueUrl"
 								},
-                      			type: "post",                      			
-                      		};                   		
-							
+                      			type: "post",
+                      		};
+
 							break;
 
 						case 'check_group':
@@ -476,7 +476,7 @@ X.FormsManager = Object.xo_create({
 							messages["remote"] = _("A node with this name already exists for current parent node.");
 							break;
 						case 'js_val_unique_url':
-							messages["remote"] = _("A link with this url already exists.");							
+							messages["remote"] = _("A link with this url already exists.");
 							break;
 					}
 				}
@@ -551,7 +551,9 @@ X.FormsManager = Object.xo_create({
     actionNotify: function(messages, $form, error) {
         for (var i = messages.length - 1; i >= 0; i--) {
             (function(msg,form){
-                var message = $('<div class="message" style="display: none;"><p>'+msg.message+'</p></div>');
+
+                var message = $('<div class="message" style="display: none;"><p>' + msg.message + '</p></div>');
+
                 switch (msg.type){
                     case 0:
                         message.addClass('message-error');
