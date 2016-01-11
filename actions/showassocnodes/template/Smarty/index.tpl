@@ -64,7 +64,7 @@
 	</div>
 
 	<div class="action_content full">
-		<h3>Select node to associate</h3>
+		<h3>{t}Select node to associate{/t}</h3>
 
 		<xim-tree />
 
@@ -73,7 +73,6 @@
 			<ol>
 				<li>
 					<label>Select node to associate</label>
-
 					<treeview class="xim-treeview-selector" paginatorShow="no" />
 				</li>
 
