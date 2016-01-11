@@ -1,11 +1,18 @@
 <div class="modal-header">
-    <h3 class="modal-title">#/title/#</h3>
+    <h3 class="modal-title">
+    	#/title/#
+    </h3>
 </div>
-<alert ng-if="error" type="danger">Nodetype not allowed</alert>
+
+<alert ng-if="error" type="danger">
+	Nodetype not allowed
+</alert>
+
 <div id="angular-tree" class="modal-body">
     <xim-tree />
 </div>
+
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-modal-ok" ng-click="ok()">OK</button>
+    <button class="btn" ng-click="cancel()">Cancel</button>
 </div>

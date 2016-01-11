@@ -262,7 +262,7 @@ div.modal-tree-xedit {
 }
 
 div.modal-tree-xedit div.xim-treeview-container{
-  min-height: 500px;
+  min-height: 350px;
 }
 div.modal-tree-xedit div.xim-treeview-node{
   line-height: 1.8em;
@@ -278,10 +278,55 @@ div.modal-tree-xedit .xim-treeview-branch{
 div.modal-tree-xedit .xim-treeview-branch-container{
   top: 40px;
   padding-right: 0px;
-  width: 90%;
+  width: 91%;
 }
 
 div.modal-tree-xedit .alert{
   margin-top: 5px;
   margin-bottom: 0px;
+}
+
+div.modal-tree-xedit .btn {
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6e6e6e), to(#7b7b7b));
+  background-image: -webkit-linear-gradient(#6e6e6e, #7b7b7b);
+  background-image: -moz-linear-gradient(#6e6e6e, #7b7b7b);
+  background-image: -o-linear-gradient(#6e6e6e, #7b7b7b);
+  background-image: linear-gradient(#6e6e6e, #7b7b7b);
+  border-color: #6e6e6e;
+  text-shadow: 0 -1px 0 #515151, 0 1px 0 rgba(0, 0, 0, 0.2);
+  font-family: "Coustard";
+  text-transform: uppercase;
+  color: #fff;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  padding: 7px 14px 5px;
+  margin: 0 0 0 10px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+div.modal-tree-xedit .btn.btn-modal-ok {
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#72c4b9), to(#7ccac0));
+  background-image: -webkit-linear-gradient(#72c4b9, #7ccac0);
+  background-image: -moz-linear-gradient(#72c4b9, #7ccac0);
+  background-image: -o-linear-gradient(#72c4b9, #7ccac0);
+  background-image: linear-gradient(#72c4b9, #7ccac0);
+  border-color: #74c6bb;
+  text-shadow: 0 -1px 0 #60b6aa, 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+div.modal-tree-xedit .modal-header,
+div.modal-tree-xedit .modal-footer {
+  border: 0px !important;
+}
+
+/* others styles */
+div.modal-tree-xedit .alert-danger {
+  padding-left: 36px;
+  border-radius: 0px;
+}
+
+.modal-backdrop.in {
+  opacity: 0.1;
 }
