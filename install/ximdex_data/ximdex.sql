@@ -296,7 +296,6 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Descri
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`)           VALUES (7230, 5049, 'Check links', 'linkreport', 'xix.png', 'Check broken links',-60, NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`,`Description`,`Sort`,`Module`,`Multiple`,`Params`)           VALUES (7231, 5050, 'Check links', 'linkreport', 'xix.png', 'Check broken links', 60, NULL,0,NULL);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)          VALUES (8119,5077,'Version manager','manageversions','manage_versions.png','Manage repository of versions',60,NULL,0,'');
-INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)   VALUES (8116, 5014, 'Status Report', 'checkstatus', 'manage_versions.png', 'Status Report to inform the user', 60,NULL,0,NULL,0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)          VALUES (8117,5077,'Change name','renamenode','modify_template_ptd.png','Change template name',60,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)               VALUES (8136, 5082, 'Set allowed extensions', 'setextensions', 'modify_users.png', 'Set allowed extensions', 60, NULL, 0);
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`,`Icon`, `Description`,`Sort`, `Module`, `Multiple`)               VALUES (8137, 5081, 'Manage module', 'moduleslist', 'xix.png', 'Manage module', 60, NULL, 0);
@@ -349,6 +348,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)        VALUES (6184,5015,'Associate a ximlet with a section','addximlet','asociate_ximlet_folder.png','Associate a ximlet with a section',80,NULL,1,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)        VALUES (6202,5014,'Associate ximlet with server','addximlet','asociate_ximlet_server.png','Associate a ximlet with a server',80,NULL,1,'');
+
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`, `Sort`, `Module`, `Multiple`, `Params`, `IsBulk`)   VALUES (8116, 5014, 'Status Report', 'checkstatus', 'manage_versions.png', 'Status Report to inform the user', 95,NULL,0,NULL,0);
 
 -- export && import
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (6500,5012,'Export','serializeNodeXML','xix.png','Export all projects',-91,'ximIO',0,'');
