@@ -5227,6 +5227,9 @@ msgstr "Este nodo no está permitido bajo este padre"
 msgid "Error creating the node"
 msgstr "Error al crear el nodo"
 
+msgid "Internal server error"
+msgstr "Error interno del servidor"
+
 msgid "Node deletion was denied"
 msgstr "Se ha denegado la eliminación del nodo"
 

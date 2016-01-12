@@ -296,9 +296,9 @@ X.FormsManager = Object.xo_create({
                     callback: function (args) {
                             if (loader) loader.stop();
                             if (args.error) {
-                                _this.actionNotify([{message: 'Se ha realizado la acción correctamente.', type: 'default'}], $form, true);
+                                _this.actionNotify([{message: _('Internal server error'), type: 0}], $form, true);
                             } else {
-                                _this.actionDoneCallback(args.data, form, args.tab);
+                                _this.actionDoneCallback(args.data, $form, args.tab);
                             }
                         }
                 });

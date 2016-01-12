@@ -4869,6 +4869,9 @@ msgstr "Dieser Knoten ist unter diesem Mutterknoten nicht erlaubt"
 msgid "Error creating the node"
 msgstr "Fehler beim Erstellen des Knotens"
 
+msgid "Internal server error"
+msgstr "Interner Serverfehler"
+
 msgid "Node deletion was denied"
 msgstr "L&ouml;schen des Knotens wurde verweigert"
 
