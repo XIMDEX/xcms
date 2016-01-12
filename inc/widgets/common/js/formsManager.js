@@ -294,13 +294,16 @@ X.FormsManager = Object.xo_create({
                     url: $form.attr('action'),
                     data: $form.serialize(),
                     callback: function (args) {
-                            if (loader) loader.stop();
-                            if (args.error) {
-                                _this.actionNotify([{message: _('Internal server error'), type: 0}], $form, true);
-                            } else {
-                                _this.actionDoneCallback(args.data, $form, args.tab);
-                            }
-                        }
+
+						if (loader) loader.stop();
+						if (args.error) {
+                            // Error 500
+							_this.actionNotify([{message: _('Internal server error'), type: 0}], $form, true);
+						} else {
+							// if (SubmitError)
+							_this.actionDoneCallback(args.data, $form, args.tab);
+						}
+					}
                 });
 				/*$.ajax({
 			        url: $form.attr('action'),

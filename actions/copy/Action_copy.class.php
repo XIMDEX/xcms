@@ -79,7 +79,9 @@ class Action_copy extends ActionAbstract {
         }
         $this->messages = copyNode($nodeID, $destIdNode, $recursive);
 
-        $values = array('messages' => $this->messages->messages, "parentID"=> $destIdNode);
+        $values = array('messages' => $this->messages->messages,
+            "parentID"=> $destIdNode,
+            'action_with_no_return' => true);
         $this->sendJSON($values);
     }
 

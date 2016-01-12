@@ -33,6 +33,41 @@ ModulesManager::file('/inc/parsers/ParsingPathTo.class.php');
 
 class ParsingDependencies {
 
+    /**
+     * Function which obtain the structuredDocument indentifier
+     * (normal if it is resolved, or exportation one if its not resolved yet)
+     *
+     * @param string $content xml's content
+     * @return array
+     */
+    function GetStructuredDocumentXimletsExtended($content) {
+        $regExp = '';
+        if (preg_match_all('/<ximlet(\s*idExportationXimlet\="(\d*?)"\s*)?>@@@GMximdex.ximlet\((\d+)\)/i', $content, $matches) > 0) {
+            // Looking for in all results in a iterative way
+            $totalMatches = count($matches[0]);
+            /* In position 2 of the array: IdExportationXimlet
+             * In position 3 of the array: Gmximdex.ximlet
+             *
+             * Position 2 is mandatory over the position 3 always this method is executed
+             */
+            $results = array();
+            $results[0] = array();
+            $results[1] = array();
+            for ($i = 0; $i < $totalMatches; $i++) {
+                $results[0][] = $matches[0][$i];
+                // Previous node which is included in the xml
+                $results[2][] = $matches[3][$i];
+                if (!empty($matches[2][$i])) {
+                    $results[1][] = $matches[2][$i];
+                    continue;
+                }
+                $results[1][] = $matches[3][$i];
+            }
+            return $results;
+        }
+        return array();
+    }
+
 	/**
 	 * Gets all document dependencies and updates database
 	 * The expected dependencies are from:

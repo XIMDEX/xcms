@@ -41,7 +41,7 @@ ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/actions/workflow_forward/baseIO.php');
-ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
+ModulesManager::file('/inc/parsers/ParsingDependencies.class.php');
 
 	if (!defined('XIMDEX_ROOT_PATH')) {
 		define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../');
@@ -91,7 +91,7 @@ ModulesManager::file('/inc/parsers/ParsingDependences.class.php');
   					IMPORTED_STATUS_OK,
   					$this->revision);
 
-  			$dependencesGetter = new ParsingDependences();
+  			$dependencesGetter = new ParsingDependencies();
   			
   			$dbObj = new DB();		
   			$dbObj->Query($query);

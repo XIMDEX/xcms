@@ -255,5 +255,28 @@ class FileNode extends Root
     {
         $this->updatePath();
     }
+    /**
+     *  Promotes the File to the next workflow state.
+     *  @param string newState
+     *  @return bool
+     */
+    function promoteToWorkFlowState($newState) {
+        $state = new State();
+        $idState = $state->loadByName($newState);
+        $idActualState = $this->parent->GetState();
+        if ($idState == $idActualState) {
+            XMD_Log::warning('Se ha solicitado pasar a un estado y ya nos encontramos en ese estado');
+            return true;
+        }
+        $actualState = new State($idActualState);
+        baseIO_CambiarEstado($this->nodeID, $idState);
+        $lastState = new State();
+        $idLastState = $lastState->loadLastState();
+        if ($idState == $idLastState) {
+            $up = time();
+            $down = $up + 36000000; // unpublish date = dateup + 1year
+            baseIO_PublishDocument($this->nodeID, $up, $down,null);
+        }
+    }
 }
 ?>
