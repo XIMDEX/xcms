@@ -66,8 +66,10 @@
 	<div class="action_content full">
 		<h3>{t}Select node to associate{/t}</h3>
 
+		<xim-assoc-nodes />
+
 		<!-- /////////////////////// -->
-		<fieldset>
+		<!-- <fieldset>
 			<ol>
 				<li>
 					<label>Select node to associate</label>
@@ -102,10 +104,8 @@
 					</p>
 				</li>
 			</ol>
-		</fieldset>
+		</fieldset> -->
 		<!-- /////////////////////// -->
-
-		<xim-tree />
 	</div>
 
 	<fieldset class="buttons-form positioned_btn">

@@ -216,10 +216,12 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/inc/js/angular/controllers/XModifyStates.js');
         $this->addJs('/inc/js/angular/controllers/XModifyStatesRole.js');
         $this->addJs('/inc/js/angular/controllers/AdvancedSearchModalCtrl.js');
+        $this->addJs('/inc/js/angular/controllers/AssocNodesCtrl.js');
         //$this->addJs('/inc/js/angular/controllers/XTreeCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XSetExtensions.js');
         $this->addJs('/inc/js/angular/controllers/ximPUBLISHtools.js');
         $this->addJs('/inc/js/angular/controllers/XUserMenuCtrl.js');
+        $this->addJs('/inc/js/angular/directives/ximAssocNodes.js');
         $this->addActionJs('XMainCtrl.js');
         $this->addActionJs('controller.js');
 

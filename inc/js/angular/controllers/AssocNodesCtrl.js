@@ -2,8 +2,8 @@
 (function() {
   var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  angular.module('ximdex.main.controller').controller('SearchTreeModalCtrl', [
-    '$scope', '$modalInstance', "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", "nodetypesAllowedToShow", "nodetypesAllowedToSelect", "title", function($scope, $modalInstance, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q, nodetypesAllowedToShow, nodetypesAllowedToSelect, title) {
+  angular.module('ximdex.main.controller').controller('AssocNodesCtrl', [
+    '$scope', "xTranslate", "$window", "$http", "xUrlHelper", "xMenu", "$document", "$timeout", "$q", function($scope, xTranslate, $window, $http, xUrlHelper, xMenu, $document, $timeout, $q) {
       var actualFilter, canceler, findNodeById, getFolderPath, postLoadNodeChildren, postNavigateToNodeId, prepareBreadcrumbs;
       $scope.projects = null;
       $scope.filter = '';
@@ -13,17 +13,9 @@
       canceler = $q.defer();
       actualFilter = "";
       $scope.selectedNodes = [];
-      if (nodetypesAllowedToSelect != null) {
-        $scope.nodetypesAllowedToSelect = nodetypesAllowedToSelect;
-      } else {
-        $scope.nodetypesAllowedToSelect = null;
-      }
-      if (nodetypesAllowedToShow != null) {
-        $scope.nodetypesAllowedToShow = nodetypesAllowedToShow;
-      } else {
-        $scope.nodetypesAllowedToShow = null;
-      }
-      $scope.title = title;
+      $scope.nodetypesAllowedToSelect = [];
+      $scope.nodetypesAllowedToShow = ["5012", "5013"];
+      $scope.title = "Hola mundo";
       $http.get(xUrlHelper.getAction({
         action: "browser3",
         method: "read",
@@ -386,21 +378,10 @@
         return $scope.loadNodeChildren(node);
       });
       $scope.loadActions = function(node, event) {};
-      $scope.error = false;
-      $scope.ok = function() {
-        var ref, ref1;
-        if (((ref = $scope.selectedNodes) != null ? ref.length : void 0) === 1 && (ref1 = $scope.selectedNodes[0].nodetypeid, indexOf.call($scope.nodetypesAllowedToSelect, ref1) >= 0)) {
-          return $modalInstance.close($scope.selectedNodes[0]);
-        } else {
-          return $scope.error = true;
-        }
-      };
-      return $scope.cancel = function() {
-        return $modalInstance.dismiss('cancel');
-      };
+      return $scope.error = false;
     }
   ]);
 
 }).call(this);
 
-//# sourceMappingURL=SearchTreeModal.js.map
+//# sourceMappingURL=AssocNodesCtrl.js.map
