@@ -60,20 +60,22 @@ class Module_ximPUBLISHtools extends Module {
         $sql = array();
 
         // Pub. Report
-        $sql['Creating ximPUBLISH report action'] = "INSERT INTO Actions 
-		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
+        $sql['Creating ximPUBLISH report action'] = "INSERT INTO Actions
+		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple)
 		VALUES ('" . self::PUB_REPORT_ACTION_ID . "','5014','Publication report','managebatchs','publicate_section.png',
-		'View documents in publication queue',100,'ximPUBLISHtools',0)";
-        $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions 
-		(IdRel,IdRol,IdAction,IdState,IdContext) 
+		'View documents in publication queue',-100,'ximPUBLISHtools',0)";
+
+        $sql['Enabling ximPUBLISH report action'] = "INSERT INTO RelRolesActions
+		(IdRel,IdRol,IdAction,IdState,IdContext)
 		VALUES (NULL,201," . self::PUB_REPORT_ACTION_ID . ",7,1)";
 
-        $sql['Creating ximPUBLISH history action'] = "INSERT INTO Actions 
-		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple) 
+        $sql['Creating ximPUBLISH history action'] = "INSERT INTO Actions
+		(IdAction,IdNodeType,Name,Command,Icon,Description,Sort,Module,Multiple)
 		VALUES ('" . self::PUB_REPORT_HISTORY_ID . "','5014','Publication history','batchhistory','publicate_section.png',
-		'View document publication history',100,'ximPUBLISHtools',0)";
-        $sql['Enabling ximPUBLISH history action'] = "INSERT INTO RelRolesActions 
-		(IdRel,IdRol,IdAction,IdState,IdContext) 
+		'View document publication history',-100,'ximPUBLISHtools',0)";
+
+        $sql['Enabling ximPUBLISH history action'] = "INSERT INTO RelRolesActions
+		(IdRel,IdRol,IdAction,IdState,IdContext)
 		VALUES (NULL,201," . self::PUB_REPORT_HISTORY_ID . ",7,1)";
 
         foreach ($sql as $desc => $query) {
