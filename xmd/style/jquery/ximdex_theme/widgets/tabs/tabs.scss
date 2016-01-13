@@ -86,7 +86,7 @@
 	-ms-transition: all .3s;
 	-o-transition: all .3s;
 	transition: all .3s;*/
-	
+
 
 	&.ui-tabs-active{
 		border-top: 3px solid $c_mainlight;
@@ -107,7 +107,7 @@
 
 	&.unsave{
 		border-top: 3px solid $c_complementarylight;
-		
+
 	}
 
 
@@ -160,17 +160,36 @@ ui-tabs .ui-tabs-nav li:hover{
 }
 
 .ui-tab-close {
-	width: 16px;
+	/* width: 16px;
 	height: 16px;
-	background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -3px -119px;
-	float: left;
-	margin: 6px 0px 5px 7px;
-	cursor: pointer;
+	background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -3px -119px; */
+  	position: relative;
+  	top: 2px;
+  	display: inline-block;
+  	float: left;
+  	margin: 4px 0px 5px 7px;
+
+  	font-size: 18px;
+  	font-family: 'Glyphicons Halflings';
+  	font-style: normal;
+  	font-weight: 400;
+  	line-height: 1;
+  	-webkit-font-smoothing: antialiased;
+  	-moz-osx-font-smoothing: grayscale;
+  	cursor: pointer;
 }
 
-.ui-tab-close:hover{
-	 background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -3px -141px;
- }
+.ui-tab-close:hover {
+  	color: #7bcabf;
+}
+
+.ui-tab-close:before {
+  content: "\e088";
+}
+
+/* .ui-tab-close:hover{
+	background: url('../../../../../images/browser/hbox/views-icons.png') no-repeat -3px -141px;
+} */
 
 .hbox-panel-container-0 {
 
@@ -417,7 +436,7 @@ a.browser-modules-view:hover, li.ui-tabs-active a.browser-modules-view, a.browse
 }
 
 .view-group button:hover .tooltip{
-	
+
 	display: block;
 
 
