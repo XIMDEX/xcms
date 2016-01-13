@@ -207,7 +207,9 @@ class Action_browser3 extends ActionAbstract {
         $this->addJs('/inc/js/angular/directives/ximBrowser.js');
         $this->addJs('/inc/js/angular/directives/datepicker.js');
         $this->addJs('/inc/js/angular/directives/ximTabs.js');
+        $this->addJs('/inc/js/angular/directives/treeAssocNodes.jsx.js');
         $this->addJs('/inc/js/angular/directives/treeNode.jsx.js');
+
         $this->addJs('/inc/js/angular/filters/xFilters.js');
         //$this->addJs('/inc/js/angular/controllers/XTabsCtrl.js');
         $this->addJs('/inc/js/angular/controllers/XTagsCtrl.js');
