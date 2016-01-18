@@ -7,13 +7,13 @@
         </tab>
         <tab heading="ccenter" select="$parent.$parent.selectedTab=2;">
             <div class="browser-projects-view-treecontainer xim-treeview-container" style="display: block;">
-                <div ng-click="reloadNode()"
-                     class="xim-treeview-btnreload ui-corner-all ui-state-default">#/:: 'browser.reload_node' | xI18n /#</div>
-                <div ng-if="ccenter!='null' && ccenter!=null"
-                     class="xim-treeview-branch-container xim-treeview-expanded">
+                <div ng-click="reloadNode()" class="xim-treeview-btnreload ui-corner-all ui-state-default">
+                    #/:: 'browser.reload_node' | xI18n /#
+                </div>
+
+                <div ng-if="ccenter!='null' && ccenter!=null" class="xim-treeview-branch-container xim-treeview-expanded">
                     <ul class="xim-treeview-branch">
-                        <li ng-repeat="node in ::ccenter.collection" static-include="inc/js/angular/templates/tree_item_renderer.html"
-                            class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
+                        <li ng-repeat="node in ::ccenter.collection" static-include="inc/js/angular/templates/tree_item_renderer.html" class="xim-treeview-node ui-draggable xim-treeview-expanded"></li>
                     </ul>
                 </div>
             </div>
@@ -21,10 +21,8 @@
         <tab heading="modules" select="$parent.$parent.selectedTab=3;">
             <div class="browser-modules-view-list-container" style="display: block;">
                 <ul ng-if="modules!='null' && modules!=null" class="browser-modules-view-list">
-                    <li
-                            ng-class="::{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}"
-                            ng-repeat="node in ::modules"
-                            hm-tap="openModuleAction(node)">#/::node.name/#
+                    <li ng-class="::{'browser-modules-view-enabled': node.enabled, 'browser-modules-view-disabled': !node.enabled}" ng-repeat="node in ::modules" hm-tap="openModuleAction(node)">
+                        #/::node.name/#
                     </li>
                 </ul>
             </div>
