@@ -7357,6 +7357,9 @@ msgstr "Publicación avanzada"
 msgid "Publication from editor"
 msgstr "Publicación desde el editor"
 
+msgid "View publication report"
+msgstr "Ver historial de publicación"
+
 #: table Protocols(`Description`)
 
 msgid "Secure transfer protocol"
