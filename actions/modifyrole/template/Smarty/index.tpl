@@ -23,83 +23,112 @@
  *  @version $Revision$
  *}
 
-			<form method="post" id="modify_role_form" action="{$action_url}&amp;id_pipeline={$selected_pipeline}">
-				<div class="action_header">
-					<h2>{t}Role data{/t}</h2>
-								<fieldset class="buttons-form">
-				{* button label="Reset" class="form_reset btn" *}
-					{button label="Modify" onclick="window.com.ximdex.widgetsVars.bw1.element.browserwindow('emptyActionsCache');" class="validate button-modify btn main_action" }{*message="Are you sure you want to modify this role?"*}
-					{button label="Select all" class="button-select-all btn"}
-					{button label="Select none" class="button-deselect-all btn"}
-			</fieldset>
-				</div>
+<form method="post" id="modify_role_form" class="modify_role_form" action="{$action_url}&amp;id_pipeline={$selected_pipeline}">
+    <div class="action_header">
+	   <h2>{t}Role data{/t}</h2>
 
-			<div ng-cloak class="action_content">
-                <fieldset>
-                <accordion close-others="true" ng-init="firstOpen=true; firstDisabled=false;">
-                    <accordion-group heading="Datos generales" is-open="firstOpen" is-disabled="firstDisabled">
-                        <ul>
-                            <li><label class="">{t}Name{/t}</label>{$name}</li>
-                            <li>
-                                <label for="" class="aligned">{t}Description{/t}</label>
-                                <input type="text" name="description" id="description" value="{$description}" class=" validable not_empty">
-                            </li>
-                            <li>
-                                <label class="">{t}Workflow{/t}</label>
-                                <select name="id_workflow" id="id_workflow" disabled>
-                                     {foreach from=$pipelines key=id_pipeline item=name }
-                                        <option value="{$id_pipeline}"{if $id_pipeline == $selected_pipeline} selected="selected"{/if}>{$name}</option>
-                                     {/foreach}
-                                </select>
-                            </li>
-                        </ul>
-                    </accordion-group>
-                    <accordion-group heading="{t}Generic permits{/t}">
-                        <ul>
-                            {foreach from=$permissions key=index item=permissionData}
-                                <li>
-                                    <input type="checkbox" name="permissions[{$permissionData.IdPermission}]" id="p_{$permissionData.IdPermission}"{if $permissionData.HasPermission} checked="checked"{/if} >
-                                    <label for="p_{$permissionData.IdPermission}">{$permissionData.Description}</label>
+        <fieldset class="buttons-form">
+            {* button label="Reset" class="form_reset btn" *}
 
+            {button label="Modify" onclick="window.com.ximdex.widgetsVars.bw1.element.browserwindow('emptyActionsCache');" class="validate button-modify btn main_action"}
 
-                                </li>
+            {*message="Are you sure you want to modify this role?"*}
+
+            {button label="Select all" class="button-select-all btn"}
+            {button label="Select none" class="button-deselect-all btn"}
+		</fieldset>
+	</div>
+
+	<div ng-cloak class="action_content">
+        <fieldset>
+            <accordion close-others="true" ng-init="firstOpen=true; firstDisabled=false;">
+                <!-- datos generales -->
+                <accordion-group heading="Datos generales" is-open="firstOpen" is-disabled="firstDisabled">
+                    <div class="form-group">
+                        <label for="name">{t}Name{/t}</label>
+
+                        <input type="text" class="form-control" name="name" id="name" value="{$name}" placeholder="{$name}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">{t}Description{/t}</label>
+
+                        <input type="text" class="form-control" name="description" id="description" value="{$description}" placeholder="{$description}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_workflow">{t}Workflow{/t}</label>
+                            <select name="id_workflow" id="id_workflow" class="form-control" disabled>
+                            {foreach from=$pipelines key=id_pipeline item=name}
+                                <option value="{$id_pipeline}" {if $id_pipeline == $selected_pipeline} selected="selected"{/if}>
+                                    {$name}
+                                </option>
                             {/foreach}
-                        </ul>
-                    </accordion-group>
+                        </select>
+                    </div>
+                </accordion-group>
+                <!-- / datos generales -->
 
-                    {foreach name="outer_nodetypes" from=$nodetypes key=index item=nodetype}
-                        {assign var=displayed_nodetype value=1}
-                        {if (isset($nodetype.actions) && (count($nodetype.actions)) > 0)}
-                            <accordion-group heading="{$nodetype.Description}" >
-                                <table class="table">
+                <!-- permisos genéricos -->
+                <accordion-group heading="{t}Generic permits{/t}">
+                    {foreach from=$permissions key=index item=permissionData}
+                        <div class="checkbox">
+                            <label for="p_{$permissionData.IdPermission}">
+                                <input type="checkbox" name="permissions[{$permissionData.IdPermission}]" id="p_{$permissionData.IdPermission}"{if $permissionData.HasPermission} checked="checked"{/if}>&nbsp;{$permissionData.Description}
+                            </label>
+                        </div>
+                    {/foreach}
+                </accordion-group>
+                <!-- / permisos genéricos -->
+
+                <!-- others -->
+                {foreach name="outer_nodetypes" from=$nodetypes key=index item=nodetype}
+                    {assign var=displayed_nodetype value=1}
+
+                    {if (isset($nodetype.actions) && (count($nodetype.actions)) > 0)}
+                        <accordion-group heading="{$nodetype.Description}" >
+                            <table class="table">
+                                <tr>
                                     <th></th>
+
                                     {foreach from=$workflow_states item=workflow_state}
-                                    <th align="center">{$workflow_state.Name}</th>
-                                        {/foreach}
-                                    <th align="center">{t}Without state{/t}</th>
+                                        <th>{$workflow_state.Name}</th>
+                                    {/foreach}
+
+                                    <th>{t}Without state{/t}</th>
+                                </tr>
+
                                 {foreach name="medium_actions" from=$nodetype.actions key=action_key item=action}
                                     <tr>
                                         {if $displayed_nodetype == 1}
                                             {assign var=displayed_nodetype value=0}
                                         {/if}
-                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">{$action.Name}</td>
+
+                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}">
+                                            {$action.Name}
+                                        </td>
+
                                         {foreach from=$workflow_states item=workflow_state}
-                                            <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">
-                                        {if (array_key_exists('states', $action))}
-                                        <input type="checkbox" name="action_workflow[{$action.IdAction}][{$workflow_state.IdState}]"
-                                            {if $action.states[$workflow_state.IdState]} checked="checked"{/if} {* $action.IdAction *}
-                                            />
-                                        {/if}
+                                            <td class="{if $index is not even}evenrow{else}oddrow{/if}">
+                                                {if (array_key_exists('states', $action))}
+                                                    <input type="checkbox" name="action_workflow[{$action.IdAction}][{$workflow_state.IdState}]" {if $action.states[$workflow_state.IdState]} checked="checked"{/if} {* $action.IdAction *}/>
+                                                {/if}
                                             </td>
                                         {/foreach}
-                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">{if (array_key_exists('state', $action))}<input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]"{if $action.state} checked="checked"{/if}>{/if}</td>
+
+                                        <td class="{if $index is not even}evenrow{else}oddrow{/if}" align="center">
+                                            {if (array_key_exists('state', $action))}
+                                                <input type="checkbox" name="action_workflow[{$action.IdAction}][NO_STATE]"{if $action.state} checked="checked"{/if}>
+                                            {/if}
+                                        </td>
                                     </tr>
                                 {/foreach}
-                                </table>
-                            </accordion-group>
-                        {/if}
-                    {/foreach}
-                </fieldset>
-			</div>
-
-			</form>
+                            </table>
+                        </accordion-group>
+                    {/if}
+                {/foreach}
+                <!-- / others -->
+            </accordion>
+        </fieldset>
+	</div>
+</form>
