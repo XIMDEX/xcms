@@ -30,7 +30,7 @@
         <fieldset class="buttons-form">
             {* button label="Reset" class="form_reset btn" *}
 
-            {button label="Modify" onclick="window.com.ximdex.widgetsVars.bw1.element.browserwindow('emptyActionsCache');" class="validate button-modify btn main_action"}
+            {button label="Modify" onclick="window.com.ximdex.emptyActionsCache();" class="validate button-modify btn main_action"}
 
             {*message="Are you sure you want to modify this role?"*}
 
