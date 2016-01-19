@@ -1678,6 +1678,6 @@ input:focus + .tooltip_info {
   padding: 5px 8px;
 }
 
-.checkbox input[type="checkbox"] {
+input[type="checkbox"] {
   cursor: pointer;
 }
