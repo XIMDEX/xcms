@@ -2736,7 +2736,7 @@ msgid "Select all"
 msgstr "Seleccionar todos"
 
 msgid "Select none"
-msgstr "Seleccionar ninguno"
+msgstr "Descartar todos"
 
 msgid "Modify role permits"
 msgstr "Modificar permisos del rol"
