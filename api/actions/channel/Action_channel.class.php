@@ -183,4 +183,3 @@ class Action_channel extends AbstractAPIAction implements SecuredAction
     }
 
 }
- 

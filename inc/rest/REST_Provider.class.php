@@ -20,11 +20,9 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 // Include defined rest service providers.
@@ -33,16 +31,18 @@ require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/ximNOTA/REST_ximNOTA.class.
 // Include utility class.
 require_once(XIMDEX_ROOT_PATH . '/inc/http/Curl.class.php');
 
-class REST_Provider {
+class REST_Provider
+{
 
-	protected $http_provider;
+    protected $http_provider;
 
-	public function __construct() {
-		$this->http_provider = new Curl();
-	}
+    public function __construct()
+    {
+        $this->http_provider = new Curl();
+    }
 
-	public function getHttp_provider(){
-		return $this->http_provider;
-	}
+    public function getHttp_provider()
+    {
+        return $this->http_provider;
+    }
 }
-?>

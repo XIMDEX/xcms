@@ -20,23 +20,18 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
- 
-
-  
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
 include_once(XIMDEX_ROOT_PATH . "/inc/properties/systemPropertiesManager.inc");
 $identificador = $_GET['identificador'];
-if($identificador!=null){
-	$manager = new SystemPropertiesManager($identificador);
-	echo $manager->getSystemPropertiesXML();
+if ($identificador != null) {
+    $manager = new SystemPropertiesManager($identificador);
+    echo $manager->getSystemPropertiesXML();
 }
-?>

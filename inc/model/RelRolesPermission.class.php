@@ -20,20 +20,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
- 
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 }
-require_once (XIMDEX_ROOT_PATH . '/inc/model/orm/RelRolesPermissions_ORM.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/RelRolesPermissions_ORM.class.php');
 
-class RelRolesPermission extends RelRolesPermissions_ORM {
-	
+class RelRolesPermission extends RelRolesPermissions_ORM
+{
+
 }
-?>

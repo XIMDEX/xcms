@@ -20,31 +20,30 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
 /**
- * 
+ *
  * @brief ShellRenderer not implemented yet
  *
  * ShellRenderer not implemented yet
  */
-class ShellRenderer extends AbstracRenderer {
+class ShellRenderer extends AbstracRenderer
+{
 
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function render() {
-		//tomamos todos los datos comunes a todos los renders
-		parent::render();
+    /**
+     *
+     * @return unknown_type
+     */
+    function render()
+    {
+        //tomamos todos los datos comunes a todos los renders
+        parent::render();
 
 //		var_dump($this);
-	}
+    }
 
 }
-?>

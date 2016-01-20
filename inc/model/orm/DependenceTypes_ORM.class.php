@@ -20,33 +20,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class DependenceTypes_ORM extends GenericData   {
-	var $_idField = 'IdDepType';
-	var $_table = 'DependenceTypes';
-	var $_metaData = array(
-				'IdDepType' => array('type' => "int(6)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'Type' => array('type' => "varchar(32)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdDepType');
-	var $IdDepType;
-	var $Type = 0;
-}
-?>
+class DependenceTypes_ORM extends GenericData
+{
+    var $_idField = 'IdDepType';
+    var $_table = 'DependenceTypes';
+    var $_metaData = array(
+        'IdDepType' => array('type' => "int(6)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Type' => array('type' => "varchar(32)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdDepType');
+    var $IdDepType;
+    var $Type = 0;
+} 

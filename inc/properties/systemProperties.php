@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,31 +21,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class SystemProperties
+{
+    var $properties;
 
+    function SystemProperties()
+    {
+        $this->properties = array("NAME" => array("name", "si"),
+            "DESCRIPTION" => array("description", "si"),
+            "NODETYPE" => array("nodeType", "no"),
+            "NODEID" => array("IdNode", "no"));
+    }
 
+    function getSystemProperties()
+    {
+        return $this->properties;
+    }
 
- 
-
-
-class SystemProperties{
-	var $properties;
-	function SystemProperties(){
-		$this->properties=array("NAME"=> array("name","si"),
-			"DESCRIPTION"=> array("description", "si"),
-			"NODETYPE"=> array("nodeType", "no"),
-			"NODEID"=>  array("IdNode","no"));
-	}
-		
-	function getSystemProperties(){
-		return $this->properties;
-	}
-	
-	function getSystemProperty($propName){
-		$prop = $this->properties[$propName]; 
-		return $prop[0];
-	}
+    function getSystemProperty($propName)
+    {
+        $prop = $this->properties[$propName];
+        return $prop[0];
+    }
 }
-?>

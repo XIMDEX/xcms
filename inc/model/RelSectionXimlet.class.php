@@ -20,27 +20,24 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
- 
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 }
 
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelSectionXimlet_ORM.class.php';
 
-class RelSectionXimlet extends RelSectionXimlet_ORM {
-	public function getAllXimlets(){
-                $node = new Node();
-                $result = $node->find('IdNode','IdNodeType = 5056', array(), MONO);
-                return $result;
-        }
+class RelSectionXimlet extends RelSectionXimlet_ORM
+{
+    public function getAllXimlets()
+    {
+        $node = new Node();
+        $result = $node->find('IdNode', 'IdNodeType = 5056', array(), MONO);
+        return $result;
+    }
 }
-?>
+

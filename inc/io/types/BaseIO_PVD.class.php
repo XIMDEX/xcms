@@ -20,24 +20,25 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 ModulesManager::file('/actions/fileupload/baseIO.php');
 
 
-class BaseIO_PVD {
+class BaseIO_PVD
+{
 
-	function BaseIO_PVD() {
-	
-	}
+    function BaseIO_PVD()
+    {
 
-	function build($data) {
-		//subir un archivo bajo el parentID indicado
-		return baseIO_uploadFile($data["name"], $data["typeName"], $data["parentID"], $data["path"]);
-	}
+    }
+
+    function build($data)
+    {
+        //subir un archivo bajo el parentID indicado
+        return baseIO_uploadFile($data["name"], $data["typeName"], $data["parentID"], $data["path"]);
+    }
 }
-?>

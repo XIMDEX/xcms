@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,25 +21,27 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class ConsoleMessagesStrategy
+{
 
-class ConsoleMessagesStrategy{
+    /**
+     * Send messages for console in iteration process
+     * @param string index Step in process
+     */
+    public function printIteration($i)
+    {
+        if (!($i % 10)) {
+            echo ".";
+        }
+    }
 
-	/**
-	 * Send messages for console in iteration process
-	 * @param string index Step in process
-	 */
-	public function printIteration($i){
-		if(!($i%10)) {
-			echo ".";
-		}
-	}
+    public function println($text)
+    {
+        echo($text . "\n");
 
-	public function println($text){
-		echo($text."\n");
-		
-	}
+    }
 }
-?>
+

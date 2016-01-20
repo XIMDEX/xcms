@@ -20,33 +20,31 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class Encodes_ORM extends GenericData   {
-	var $_idField = 'IdEncode';
-	var $_table = 'Encodes';
-	var $_metaData = array(
-				'IdEncode' => array('type' => "varchar(255)", 'not_null' => 'true', 'primary_key' => true),
-				'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'IdEncode' => array('IdEncode')
-				);
-	var $_indexes = array('IdEncode');
-	var $IdEncode;
-	var $Description = 0;
+class Encodes_ORM extends GenericData
+{
+    var $_idField = 'IdEncode';
+    var $_table = 'Encodes';
+    var $_metaData = array(
+        'IdEncode' => array('type' => "varchar(255)", 'not_null' => 'true', 'primary_key' => true),
+        'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'IdEncode' => array('IdEncode')
+    );
+    var $_indexes = array('IdEncode');
+    var $IdEncode;
+    var $Description = 0;
 }
-?>

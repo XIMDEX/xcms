@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,24 +21,22 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+abstract class QueueAbstract
+{
 
+    public function __construct(&$queueConf)
+    {
+        foreach ($queueConf as $key => $value) {
+            $this->$key = $value;
+        }
+    }
 
+    abstract public function push($value);
 
-abstract class QueueAbstract {
-
-	public function __construct(&$queueConf) {
-		foreach ($queueConf as $key=>$value) {
-			$this->$key = $value;
-		}
-	}
-
-	abstract public function push($value);
-
-	abstract public function pop();
+    abstract public function pop();
 
 }
 
-?>

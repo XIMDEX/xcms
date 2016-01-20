@@ -20,21 +20,23 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 ModulesManager::file('/actions/generatexmldocument/baseIO.php');
 
-class BaseIO_XmlDocument{
+class BaseIO_XmlDocument
+{
 
-	function build($data) {
-		$document = baseIO_CreateXmlDocument($data["NAME"], $data["PARENTID"], $data["STATE"], $data["TEMPLATE"], $data["LANG"] , $data["ALIAS"], $data["CHANNELS"],$data["NEWTARGETLINK"],$data["CONTENT"]);
-		if (is_null($document)) {
-			return ERROR_INCORRECT_DATA;
-		}
-		return $document->get('IdNode');
-	}
+    function build($data)
+    {
+        $document = baseIO_CreateXmlDocument($data["NAME"], $data["PARENTID"], $data["STATE"], $data["TEMPLATE"], $data["LANG"], $data["ALIAS"], $data["CHANNELS"], $data["NEWTARGETLINK"], $data["CONTENT"]);
+        if (is_null($document)) {
+            return ERROR_INCORRECT_DATA;
+        }
+        return $document->get('IdNode');
+    }
 }
 
-?>
+
