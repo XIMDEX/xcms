@@ -20,8 +20,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
@@ -29,21 +29,21 @@
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/log/Action_log.class.php');
 $config = array();
 
 /**
-Logs priority:
- - 0 => All
- - 1 => DEBUG
- - 2 => INFO
- - 3 => WARNING
- - 4 => ERROR
- - 5 => FATAL
- - 65535 => NULL
-*/
+ * Logs priority:
+ * - 0 => All
+ * - 1 => DEBUG
+ * - 2 => INFO
+ * - 3 => WARNING
+ * - 4 => ERROR
+ * - 5 => FATAL
+ * - 65535 => NULL
+ */
 
 /**
  * XMD Logger
@@ -58,7 +58,7 @@ $config['xmd_logger']['layout_params']['type'] = 'simple';
 $config['xmd_logger']['layout_params']['template'] = '%p: [%d %t] %fn - %m (in %c %f:%l)';
 $config['xmd_logger']['appender_params'] = array();
 $config['xmd_logger']['appender_params']['type'] = 'rollingfile';
-$config['xmd_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['xmd_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['xmd_logger']['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/xmd.log';
 $config['xmd_logger']['appender_params']['append'] = true;
 $config['xmd_logger']['getter_params'] = array();
@@ -78,7 +78,7 @@ $config['sync_logger']['layout_params']['type'] = 'simple';
 $config['sync_logger']['layout_params']['template'] = '%p: [%d %t] %m - %fn (in %f:%l)';
 $config['sync_logger']['appender_params'] = array();
 $config['sync_logger']['appender_params']['type'] = 'rollingfile';
-$config['sync_logger']['appender_params']['layout'] = null;	// Stabished automatically in Log::setUp()
+$config['sync_logger']['appender_params']['layout'] = null;    // Stabished automatically in Log::setUp()
 $config['sync_logger']['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/sync.log';
 $config['sync_logger']['appender_params']['append'] = true;
 $config['sync_logger']['getter_params'] = array();
@@ -98,7 +98,7 @@ $config['publication_logger']['layout_params']['type'] = 'publicationLog';
 $config['publication_logger']['layout_params']['template'] = '[%d %t] %m';
 $config['publication_logger']['appender_params'] = array();
 $config['publication_logger']['appender_params']['type'] = 'rollingfile';
-$config['publication_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['publication_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['publication_logger']['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/publication.log';
 $config['publication_logger']['appender_params']['append'] = true;
 $config['publication_logger']['getter_params'] = array();
@@ -108,8 +108,8 @@ $config['publication_logger']['getter_params']['file'] = &$config['publication_l
 
 
 /**
- * Action logger 
- * Default priority: INFO 
+ * Action logger
+ * Default priority: INFO
  */
 $config[Action_log::LOGGER_NAME] = array();
 $config[Action_log::LOGGER_NAME]['logger_params'] = array();
@@ -120,7 +120,7 @@ $config[Action_log::LOGGER_NAME]['layout_params']['type'] = 'simple';
 $config[Action_log::LOGGER_NAME]['layout_params']['template'] = '%p: [%d %t] %m - %fn (in %f:%l)';
 $config[Action_log::LOGGER_NAME]['appender_params'] = array();
 $config[Action_log::LOGGER_NAME]['appender_params']['type'] = 'rollingfile';
-$config[Action_log::LOGGER_NAME]['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config[Action_log::LOGGER_NAME]['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config[Action_log::LOGGER_NAME]['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/actions.log';
 $config[Action_log::LOGGER_NAME]['appender_params']['append'] = true;
 $config[Action_log::LOGGER_NAME]['getter_params'] = array();
@@ -141,7 +141,7 @@ $config['automatic_logger']['layout_params']['type'] = 'simple';
 $config['automatic_logger']['layout_params']['template'] = '%p: [%d %t] %fn - %m (in %c %f:%l)';
 $config['automatic_logger']['appender_params'] = array();
 $config['automatic_logger']['appender_params']['type'] = 'rollingfile';
-$config['automatic_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['automatic_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['automatic_logger']['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/automatic.log';
 $config['automatic_logger']['appender_params']['append'] = true;
 $config['automatic_logger']['getter_params'] = array();
@@ -161,7 +161,7 @@ $config['xvfs_logger']['layout_params']['type'] = 'simple';
 $config['xvfs_logger']['layout_params']['template'] = '%p: [%d %t] %m - %fn (in %f:%l)';
 $config['xvfs_logger']['appender_params'] = array();
 $config['xvfs_logger']['appender_params']['type'] = 'rollingfile';
-$config['xvfs_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['xvfs_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['xvfs_logger']['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/xvfs.log';
 $config['xvfs_logger']['appender_params']['append'] = true;
 $config['xvfs_logger']['getter_params'] = array();
@@ -181,7 +181,7 @@ $config['dav_logger']['layout_params']['type'] = 'simple';
 $config['dav_logger']['layout_params']['template'] = '%p: [%d %t] %m - %fn (in %f:%l)';
 $config['dav_logger']['appender_params'] = array();
 $config['dav_logger']['appender_params']['type'] = 'rollingfile';
-$config['dav_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['dav_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['dav_logger']['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/dav.log';
 $config['dav_logger']['appender_params']['append'] = true;
 $config['dav_logger']['getter_params'] = array();
@@ -201,13 +201,12 @@ $config['sql_logger']['layout_params']['type'] = 'simple';
 $config['sql_logger']['layout_params']['template'] = '%p: [%d %t] %m - %fn (in %f:%l)';
 $config['sql_logger']['appender_params'] = array();
 $config['sql_logger']['appender_params']['type'] = 'rollingfile';
-$config['sql_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['sql_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['sql_logger']['appender_params']['file'] = XIMDEX_ROOT_PATH . '/logs/sql.log';
 $config['sql_logger']['appender_params']['append'] = true;
 $config['sql_logger']['getter_params'] = array();
 $config['sql_logger']['getter_params']['quantity'] = 5000;
 $config['sql_logger']['getter_params']['file'] = &$config['sql_logger']['appender_params']['file'];
-
 
 
 /**
@@ -223,7 +222,7 @@ $config['php_logger']['layout_params']['type'] = 'php';
 $config['php_logger']['layout_params']['template'] = '[%d %t] %p: %m in %f(%l)';
 $config['php_logger']['appender_params'] = array();
 $config['php_logger']['appender_params']['type'] = 'rollingfile';
-$config['php_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['php_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['php_logger']['appender_params']['file'] = ini_get('error_log');
 $config['php_logger']['appender_params']['append'] = true;
 $config['php_logger']['getter_params'] = array();
@@ -279,7 +278,7 @@ $config['mn_logger']['layout_params']['type'] = 'mail';
 $config['mn_logger']['layout_params']['template'] = "Severidad: %p\n\n%m";
 $config['mn_logger']['appender_params'] = array();
 $config['mn_logger']['appender_params']['type'] = 'mail';
-$config['mn_logger']['appender_params']['layout'] = null;	// Stablished automatically in Log::setUp()
+$config['mn_logger']['appender_params']['layout'] = null;    // Stablished automatically in Log::setUp()
 $config['mn_logger']['appender_params']['file'] = true;
 $config['mn_logger']['appender_params']['append'] = null;
 $config['mn_logger']['appender_params']['mailboxes'] = array();
@@ -287,4 +286,3 @@ $config['mn_logger']['getter_params'] = array();
 $config['mn_logger']['getter_params']['quantity'] = 0;
 $config['mn_logger']['getter_params']['file'] = null;
 
-?>

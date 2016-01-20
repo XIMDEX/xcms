@@ -20,46 +20,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+//server where ximdex ping stats
+if (!defined('STATS_SERVER')) {
+    define("STATS_SERVER", "http://xid.ximdex.net");
 
-/*
- * Sender e-mail address.
- */
-define('FROM', 'notify@ximdex.org');
+}
 
-/*
- * Sender name.
- */
-define('FROM_NAME', 'Ximdex Mail System');
-
-
-/* 
- * SMTP authentication
- */
-define('SMTP_AUTH', false);
-
-/*
- * All hosts should be separated by ','
- * A different port ca be specified by ':'.
- * They will be checked in order.
- * (i.e. "smtp1.example.com:25;smtp2.example.com")
- */
-define('SMTP_SERVER', 'localhost');
-
-/*
- * SMTP authentication configuration params
- * (needed if SMTP_AUTH = true)
- */
-define('AUTH_USERNAME', 'username');
-define('AUTH_PASSWD', 'passwd');
-define('AUTH_HOST', 'localhost');
-
-/*
- * Mail system debug.
- */
-define('MAIL_DEBUG', false);
-
-?>
+//Ping for each action
+if (!defined('ACTIONS_STATS')) {
+    define("ACTIONS_STATS", STATS_SERVER . "/stats/stats_ximdex.php");
+}

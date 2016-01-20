@@ -4631,7 +4631,7 @@ msgstr "Sind Sie sicher, dass Sie die &Auml;nderungen &uuml;bernehmen m&ouml;cht
 
 
 # ################################################ CONF ############################################
-#: /conf/notifications.conf
+#: /conf/notifications.php
 msgid "The document %doc is going to be sent to publication queue"
 msgstr "Das Dokument %doc wird an die Ver&ouml;ffentlichungswarteschlange gesendet"
 

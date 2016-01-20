@@ -4631,7 +4631,7 @@ msgstr "Tem certeza que deseja realizar estas altera&ccedil;&otilde;es?"
 
 
 # ################################################ CONF ############################################
-#: /conf/notifications.conf
+#: /conf/notifications.php
 msgid "The document %doc is going to be sent to publication queue"
 msgstr "O documento %doc ser&aacute; enviado para a fila de publica&ccedil;&atilde;o"
 

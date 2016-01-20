@@ -4989,7 +4989,7 @@ msgstr "&iquest;Está seguro de que quiere realizar los cambios?"
 
 
 #: ---------- /conf ---------
-#: /conf/notifications.conf
+#: /conf/notifications.php
 msgid "The document %doc is going to be moved to the state %state."
 msgstr "Se va a mover al estado %state el documento %doc."
 

@@ -74,7 +74,7 @@ class ximDEX_webDAV_Server extends HTTP_WebDAV_Server {
 	 */
 	function mount_vfs($user, $passwd) {
 
-		require_once XIMDEX_ROOT_PATH . '/conf/webdav.conf';
+		require_once XIMDEX_ROOT_PATH . '/conf/webdav.php';
 
 		if (!isset($davconfig)) $davconfig = array();
 		if (count($davconfig) == 0) {

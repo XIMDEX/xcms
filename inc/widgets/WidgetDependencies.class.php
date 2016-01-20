@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,65 +21,64 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class WidgetDependencies
+{
 
+    static protected $deps = null;
+    static protected $parsed = null;
 
+    private function __construct()
+    {
+    }
 
+    protected static function loadDependencies()
+    {
+        if (self::$deps === null) {
+            self::$deps = include(\App::getValue('AppRoot') . '/conf/wdeps.php');
+        }
+        return self::$deps;
+    }
 
-class WidgetDependencies {
+    /**
+     * Returns an array of dependencies of $widget
+     * The "deps" attribute has dependencies in inclusion order.
+     */
+    static public function getDependencies($widget)
+    {
 
-	static protected $deps = null;
-	static protected $parsed = null;
+        self::$parsed = array();
+        self::loadDependencies();
+        $ret = self::_getDeps($widget);
+        $ret = array_unique($ret);
+        return $ret;
+    }
 
-	private function __construct() {
-	}
+    /**
+     * Look for dependencies of $widget recursivelly.
+     * Called initially from self::getDependencies()
+     */
+    static protected function _getDeps($widget)
+    {
 
-	protected static function loadDependencies() {
-		if (self::$deps === null) {
-			self::$deps = include(\App::getValue( 'AppRoot') . '/conf/wdeps.inc');
-		}
-		return self::$deps;
-	}
+        $jsFiles = array();
+        if (!isset(self::$deps[$widget])) return $jsFiles;
 
-	/**
-	 * Returns an array of dependencies of $widget
-	 * The "deps" attribute has dependencies in inclusion order.
-	 */
-	static public function getDependencies($widget) {
+        $jsFiles = self::$deps[$widget]['js'];
+        for ($i = 0, $l = count($jsFiles); $i < $l; $i++) {
+            $jsFiles[$i] = $widget . '/js/' . $jsFiles[$i];
+        }
 
-		self::$parsed = array();
-		self::loadDependencies();
-		$ret = self::_getDeps($widget);
-		$ret = array_unique($ret);
-		return $ret;
-	}
+        foreach (self::$deps[$widget]['deps'] as $wname) {
+            if (!in_array($wname, self::$parsed)) {
+                $jsFiles = array_merge(self::_getDeps($wname), $jsFiles);
+                self::$parsed[] = $wname;
+            }
+        }
 
-	/**
-	 * Look for dependencies of $widget recursivelly.
-	 * Called initially from self::getDependencies()
-	 */
-	static protected function _getDeps($widget) {
-
-		$jsFiles = array();
-		if (!isset(self::$deps[$widget])) return $jsFiles;
-
-		$jsFiles = self::$deps[$widget]['js'];
-		for ($i=0, $l=count($jsFiles); $i<$l; $i++) {
-			$jsFiles[$i] = $widget . '/js/' . $jsFiles[$i];
-		}
-
-		foreach (self::$deps[$widget]['deps'] as $wname) {
-			if (!in_array($wname, self::$parsed)) {
-				$jsFiles = array_merge(self::_getDeps($wname), $jsFiles);
-				self::$parsed[] = $wname;
-			}
-		}
-
-		return $jsFiles;
-	}
+        return $jsFiles;
+    }
 
 }
-
-?>

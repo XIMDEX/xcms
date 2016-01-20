@@ -4624,7 +4624,7 @@ msgstr ""
 
 
 # ################################################ CONF ############################################
-#: /conf/notifications.conf
+#: /conf/notifications.php
 msgid "The document %doc is going to be sent to publication queue"
 msgstr ""
 
