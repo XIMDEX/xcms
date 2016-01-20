@@ -29,7 +29,6 @@ class Mechanism_SQL extends Mechanism
 
     /**
      *
-     * @return unknown_type
      */
     function Mechanism_SQL()
     {
@@ -38,6 +37,9 @@ class Mechanism_SQL extends Mechanism
     /**
      * (non-PHPdoc)
      * @see inc/auth/Mechanism#authenticate($username, $password)
+     * @param $username string
+     * @param $password string
+     * @return boolean
      */
     function authenticate($username, $password)
     {

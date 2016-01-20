@@ -746,7 +746,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
      * @param string /array $fields
      * @param string $condition sprint_f style
      * @param array $params
-     * @return unknown
+     * @return array
      */
     function find($fields = ALL, $condition = '', $params = NULL, $returnType = MULTI, $escape = true)
     {

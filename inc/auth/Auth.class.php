@@ -25,8 +25,9 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
+if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
+}
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/user.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/group.php");
@@ -41,7 +42,7 @@ class Auth
      *
      * @param $userId
      * @param $nodeId
-     * @return unknown_type
+     * @return boolean
      */
     public static function _checkExistence($userId, $nodeId)
     {
@@ -52,7 +53,7 @@ class Auth
     /**
      *
      * @param $params
-     * @return unknown_type
+     * @return array
      */
     public static function _parseParams($params)
     {
@@ -95,9 +96,9 @@ class Auth
                 return $formedParams;
             }
 
-        } else {
-            return NULL;
         }
+        return null;
+
     }
 
 
@@ -105,7 +106,7 @@ class Auth
      *
      * @param $userId
      * @param $nodeId
-     * @return unknown_type
+     * @return bool
      */
     public static function _access($userId, $nodeId)
     {
@@ -139,7 +140,7 @@ class Auth
      *
      * @param $userId
      * @param $params
-     * @return unknown_type
+     * @return boolean
      */
     public static function canRead($userId, $params)
     {
@@ -251,7 +252,7 @@ class Auth
      *
      * @param $userId
      * @param $params
-     * @return unknown_type
+     * @return boolean
      */
     public static function canDelete($userId, $params)
     {
@@ -277,7 +278,7 @@ class Auth
      *
      * @param $userId
      * @param $params
-     * @return unknown_type
+     * @return boolean
      */
     public static function canModify($userId, $params)
     {
@@ -304,7 +305,7 @@ class Auth
      * @param $idUser
      * @param $idNodeType
      * @param $mode
-     * @return unknown_type
+     * @return boolean
      */
     public static function _checkContext($idUser, $idNodeType, $mode)
     {
@@ -343,7 +344,7 @@ class Auth
      *
      * @param $userId
      * @param $permission
-     * @return unknown_type
+     * @return boolean
      */
     public static function hasPermission($userId, $permission)
     {

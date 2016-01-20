@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,79 +21,74 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class Mechanism
+{
 
+    public static $USER_CONTAINER_NODE_ID = 3;
 
+    public function __construct()
+    {
+    }
 
-define('USER_CONTAINER_NODE_ID', 3);
+    /**
+     *
+     * @param $username
+     * @return boolean
+     */
+    function checkUser($username)
+    {
 
-class Mechanism {
+        $user = new User();
+        $user->setByLogin($username);
 
-	/**
-	 * Construct
-	 * @return unknown_type
-	 */
-	function Mechanism() {
-	}
+        if ($user->hasError()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-	/**
-	 * 
-	 * @param $username
-	 * @return unknown_type
-	 */
-	function checkUser($username) {
+    /**
+     *
+     * @param $username
+     * @param $password
+     * @param $realname
+     * @param $email
+     * @param $role
+     * @return boolean
+     */
+    function createUserInXimdex($username, $password, $realname, $email, $role)
+    {
 
-		$user = new User();
-		$user->setByLogin($username);
+        // TODO: Not BaseIO way to add a new user ?
+        //$io = new BaseIO();
+        //$io->build();
 
-		if ( $user->hasError() ) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	/**
-	 * 
-	 * @param $username
-	 * @param $password
-	 * @param $realname
-	 * @param $email
-	 * @param $role
-	 * @return unknown_type
-	 */
-	function createUserInXimdex($username, $password, $realname, $email, $role) {
+        $nt_user = new NodeType();
+        $nt_user->setByName('User');
+        $nt_user_id = $nt_user->getID();
 
-		// TODO: Not BaseIO way to add a new user ?
-		//$io = new BaseIO();
-		//$io->build();
+        $user = new Node();
+        $user->CreateNode($username, self::$USER_CONTAINER_NODE_ID, $nt_user_id, NULL, $realname, $password, $email, $role);
 
-		$nt_user = new NodeType();
-		$nt_user->setByName('User');
-		$nt_user_id = $nt_user->getID();
+        if ($user->hasError()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-		$user = new Node();
-		$user->CreateNode($username, USER_CONTAINER_NODE_ID, $nt_user_id, NULL, $realname, $password, $email, $role);
-		
-		if ($user->hasError) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+    /**
+     *
+     * @param $username
+     * @param $password
+     */
+    function authenticate($username, $password)
+    {
 
-	/**
-	 * 
-	 * @param $username
-	 * @param $password
-	 * @return unknown_type
-	 */
-	function authenticate($username, $password) {
-	
-	}
+    }
 
 }
-
-
-?>
