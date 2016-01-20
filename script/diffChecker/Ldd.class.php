@@ -33,7 +33,7 @@ require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
 require_once(XIMDEX_ROOT_PATH."/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb.inc.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb-active-record.inc.php");
-require_once(XIMDEX_ROOT_PATH."/conf/log.conf");
+require_once(XIMDEX_ROOT_PATH."/conf/log.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/lddConstants.php");
 

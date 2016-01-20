@@ -242,7 +242,7 @@ class Log {
 	 */
 	function setUp($loggerName) {
 
-		$configPath = XIMDEX_ROOT_PATH . '/conf/log.conf';
+		$configPath = XIMDEX_ROOT_PATH . '/conf/log.php';
 
 		include($configPath);
 
