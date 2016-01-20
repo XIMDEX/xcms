@@ -5056,8 +5056,8 @@ msgid "The nodetype %d has no create action associated"
 msgstr "El tipo de nodo %d no tiene asociada ninguna acción creadora"
 
 #: /inc/auth/Authenticator.class.php
-msgid "ERROR: %s/conf/auth.conf not present or badformed configuration"
-msgstr "ERROR: %s/conf/auth.conf no existe o tiene una configuración no válida"
+msgid "ERROR: %s/conf/auth.php not present or badformed configuration"
+msgstr "ERROR: %s/conf/auth.php no existe o tiene una configuración no válida"
 
 #: inc/auth/mechs/Mechanism_LDAP.class.php
 msgid "ERROR: Selected LDAP as authenticator mechanism but not options provided."

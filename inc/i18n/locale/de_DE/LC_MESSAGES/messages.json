@@ -1243,7 +1243,7 @@
     "The node must be previously created": "Der Knoten muss zuerst erstellt werden",
     "Error in user persistence for %s": "Fehler in der Benutzerdauer f&uuml;r %s",
     "The nodetype %d has no create action associated": "Der Knotentyp %d ist mit keiner Erstellungsaktion verbunden",
-    "ERROR: %s/conf/auth.conf not present or badformed configuration": "FEHLER: %s/conf/auth.conf existiert nicht oder hat eine ung&uuml;ltige Konfiguration",
+    "ERROR: %s/conf/auth.php not present or badformed configuration": "FEHLER: %s/conf/auth.php existiert nicht oder hat eine ung&uuml;ltige Konfiguration",
     "ERROR: Selected LDAP as authenticator mechanism but not options provided.": "FEHLER: LDAP wurde als Authentifizierungsmechanismus ausgew&auml;hlt aber es stehen keine Optionen zur Verf&uuml;gung.",
     "ERROR: Unable to connect to LDAP server @ ": "FEHLER: Verbindung zum LDAP-Server @ kann nicht hergestellt werden",
     "Command params:": "Kommandoparameter:",

@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Mechanism.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/user.php');
 // Include Auth Configuration.
-include_once(XIMDEX_ROOT_PATH . "/conf/auth.conf");
+include_once(XIMDEX_ROOT_PATH . "/conf/auth.php");
 
 
 /**
@@ -94,7 +94,7 @@ class Authenticator
 
         } else {
 
-            print(sprintf(_("ERROR: %s/conf/auth.conf not present or badformed configuration"), XIMDEX_ROOT_PATH) . "\n");
+            print(sprintf(_("ERROR: %s/conf/auth.php not present or badformed configuration"), XIMDEX_ROOT_PATH) . "\n");
             exit();
         }
     }
