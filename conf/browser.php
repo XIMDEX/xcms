@@ -25,32 +25,32 @@
  */
 
 
+/**
+* The string "user:passwd" will be replaced by the authentication information introduced from webDAV client
+* Session init data should not been specified here in any Ximdex instance.
+*
+* Resources should be mounted in correct order.
+*/
 
-/*
- * Directory where backups will be located
- *
- */
-$BACKUP_DIR='/backups/dir';
-
-/*
- * How many time backups will be kept, in number of days.
- * 0 : Infinite
- * n : Files created n days ago will be deleted.
- */
-$BACKUP_EXPIRE_TIME="0";
-
-/*
- * Backup weekly cycle definition.
- * Incremental: Backup of incremental type.
- * Full: Backup of complete type.
- * NULL: Nothing will be done.
- */
-define('MONDAY', 'Incremental');
-define('TUESDAY', 'Incremental');
-define('WEDNESDAY', 'Incremental');
-define('THURSDAY', 'Incremental');
-define('FRIDAY', 'Incremental');
-define('SATURDAY', 'Full');
-define('SUNDAY', NULL);
-
-?>
+return array(
+	'defaultDatasource' => 'Composer',
+	'datasources' => array(
+		'Composer' => array(),
+		'XVFS' => array(
+			'MOUNTPOINTS' => array(
+				array(
+					'mountpoint' => '/',
+					'uri' => 'xnodes://user:passwd@localhost/'
+				)/*,
+				array(
+					'mountpoint' => '/web',
+					'uri' => 'file:///var/www/'
+				),
+				array(
+					'mountpoint' => '/tmp',
+					'uri' => 'file:///tmp/'
+				)*/
+			)
+		)
+	)
+);
