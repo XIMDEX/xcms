@@ -65,7 +65,7 @@ function check_php_version() {
 
 function check_config_files() {
 	$install_params = file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-	$install_modules = file_exists(XIMDEX_ROOT_PATH .'/conf/install-modules.conf');
+	$install_modules = file_exists(XIMDEX_ROOT_PATH .'/conf/install-modules.php');
 
 	if (!$install_params || !$install_modules) {
 		$_GET["action"] = "installer";

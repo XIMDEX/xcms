@@ -148,7 +148,7 @@ class Action_login extends ActionAbstract {
 	}
 
 	function check_disk_space() {
-		$space = include(XIMDEX_ROOT_PATH."/conf/diskspace.conf");
+		$space = include(XIMDEX_ROOT_PATH."/conf/diskspace.php");
 
 		$critical_space = DiskUtils::transform($space["fatal_limit"], "MB");
 		$space_now = DiskUtils::disk_free_space("MB");

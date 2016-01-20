@@ -25,11 +25,8 @@
  */
 
 
-
 return array(
 	'fatal_limit' => '128MB',
 	'error_limit' => '256MB',
 	'warning_limit' => '1GB'
 );
-
-?>

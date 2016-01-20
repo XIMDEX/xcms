@@ -751,8 +751,8 @@ $(chmod -R 2770 ${REPO_NAME}/logs)
 $(chmod -R 2770 ${REPO_NAME}/install)
 
 # Set permission to config files
-if [ -f ${REPO_NAME}/conf/install-modules.conf ]; then
-    $(chmod -R 770 ${REPO_NAME}/conf/install-modules.conf)
+if [ -f ${REPO_NAME}/conf/install-modules.php ]; then
+    $(chmod -R 770 ${REPO_NAME}/conf/install-modules.php)
 fi
 
 # Launching steps

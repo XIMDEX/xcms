@@ -75,13 +75,13 @@ else
 #        done
 fi
 
-echo -n "Generating configuration for modules as conf/install-modules.conf... "
+echo -n "Generating configuration for modules as conf/install-modules.php... "
 $(chmod +x $SCRIPT_PATH/getAvailableModules.php)
 ($PHP_CMD $ADD_MEMORY $SCRIPT_PATH/getAvailableModules.php  2>>$LOG)
 
-if [ -f $XIMDEX_PATH/conf/install-modules.conf ];
+if [ -f $XIMDEX_PATH/conf/install-modules.php ];
 then
-	$(chmod 775 $XIMDEX_PATH/conf/install-modules.conf)
+	$(chmod 775 $XIMDEX_PATH/conf/install-modules.php)
 	echo "Success"
 else
 	echo "Fail"

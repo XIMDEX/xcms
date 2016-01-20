@@ -34,7 +34,7 @@ class Action_installer extends ActionAbstract {
 
 	function index() {
 		$install_params = file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-		$install_modules = file_exists(XIMDEX_ROOT_PATH .'/conf/install-modules.conf');
+		$install_modules = file_exists(XIMDEX_ROOT_PATH .'/conf/install-modules.php');
 
 		$values = array();
 		$this->checkConfigFiles($install_params, $install_modules);

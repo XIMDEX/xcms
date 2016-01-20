@@ -85,7 +85,7 @@ class Manager
     public static function get_modules_install_params()
     {
         // replaces MODULE_INSTALL_PARAMS
-        return '/conf/install-modules.conf';
+        return '/conf/install-modules.php';
     }
 
     public static function get_pre_define_module()

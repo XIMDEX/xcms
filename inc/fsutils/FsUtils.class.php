@@ -76,7 +76,7 @@ $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 
 		$ret = true;
 		$freeSpaceBytes = DiskUtils::disk_free_space('B', self::getFolderFromFile($file));
-		$limits = include(XIMDEX_ROOT_PATH . '/conf/diskspace.conf');
+		$limits = include(XIMDEX_ROOT_PATH . '/conf/diskspace.php');
 		$aux = array();
 
 		foreach ($limits as $key=>$limit) {

@@ -7,7 +7,7 @@ You can install Ximdex using one of the following methods:
 
 ###Installation Requirements
 *  Access to a terminal with Telnet or SSH.
-*  Permissions to create the directory where Ximdex CMS will be installed (under a document root for your web server) and enough free space in the filesystem. See 'conf/diskspace.conf' file for further information.
+*  Permissions to create the directory where Ximdex CMS will be installed (under a document root for your web server) and enough free space in the filesystem. See 'conf/diskspace.php' file for further information.
 *  Database: MySQL Server (>= 5.1) or MariaDB (>=5.5) and a DB user that can create the Ximdex Database.
 *  Apache2 web server with:
 	*  Apache modules: libapache2-mod-php5, apache-mpm-worker (recommended).
