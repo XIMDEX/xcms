@@ -20,35 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class Config_ORM extends GenericData   {
-	var $_idField = 'IdConfig';
-	var $_table = 'Config';
-	var $_metaData = array(
-				'IdConfig' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'ConfigKey' => array('type' => "varchar(255)", 'not_null' => 'true'),
-				'ConfigValue' => array('type' => "blob", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'IdConfig' => array('IdConfig', 'ConfigKey'), 				'ConfigKey' => array('ConfigKey')
-				);
-	var $_indexes = array('IdConfig');
-	var $IdConfig;
-	var $ConfigKey = 0;
-	var $ConfigValue;
+class Config_ORM extends GenericData
+{
+    var $_idField = 'IdConfig';
+    var $_table = 'Config';
+    var $_metaData = array(
+        'IdConfig' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'ConfigKey' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'ConfigValue' => array('type' => "blob", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'IdConfig' => array('IdConfig', 'ConfigKey'), 'ConfigKey' => array('ConfigKey')
+    );
+    var $_indexes = array('IdConfig');
+    var $IdConfig;
+    var $ConfigKey = 0;
+    var $ConfigValue;
 }
-?>

@@ -45,4 +45,4 @@ class DependenceTypes_ORM extends GenericData
     var $_indexes = array('IdDepType');
     var $IdDepType;
     var $Type = 0;
-} 
+}

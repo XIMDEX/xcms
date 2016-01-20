@@ -20,35 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelNodeTypeMetadata_ORM extends GenericData   {
-	var $_idField = 'idRel';
-	var $_table = 'RelNodeTypeMetadata';
-	var $_metaData = array(
-				'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true','primary_key' => true),
-				'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
-				'forced' => array('type' => "tinyint(1)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-				'idNodeType' => array('idNodeType')
-				);
-	
-	var $idRel;
-	var $forced = 0;
-	var $idNodeType = 0;
+class RelNodeTypeMetadata_ORM extends GenericData
+{
+    var $_idField = 'idRel';
+    var $_table = 'RelNodeTypeMetadata';
+    var $_metaData = array(
+        'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'forced' => array('type' => "tinyint(1)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'idNodeType' => array('idNodeType')
+    );
+
+    var $idRel;
+    var $forced = 0;
+    var $idNodeType = 0;
 }
-?>

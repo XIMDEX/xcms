@@ -20,35 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 /**
- * 
+ *
  * @brief Renderer for debugging purpouses
- * 
+ *
  * Renderer for debugging purpouses who just log the parameters in error_log
  *
  */
-class DebugRenderer extends AbstractRenderer {
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see inc/mvc/renderers/AbstractRenderer#render($view)
-	 */
-	function render() {
-		//tomamos todos los datos comunes a todos los renders
-		parent::render();
-		
-		$_parameters = $this->getParameters();
+class DebugRenderer extends AbstractRenderer
+{
 
-		$out = print_r($_parameters, true);
+    /**
+     * (non-PHPdoc)
+     * @see inc/mvc/renderers/AbstractRenderer#render($view)
+     */
+    function render()
+    {
+        //tomamos todos los datos comunes a todos los renders
+        parent::render();
 
-		error_log($out);
-		die();
-	}
+        $_parameters = $this->getParameters();
+
+        $out = print_r($_parameters, true);
+
+        error_log($out);
+        die();
+    }
 }
-?>

@@ -20,37 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class IsoCodes_ORM extends GenericData   {
-	var $_idField = 'IdIsoCode';
-	var $_table = 'IsoCodes';
-	var $_metaData = array(
-				'IdIsoCode' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'Iso2' => array('type' => "char(2)", 'not_null' => 'false'),
-				'Iso3' => array('type' => "char(3)", 'not_null' => 'false'),
-				'Name' => array('type' => "varchar(255)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'iso3' => array('Iso3'), 				'iso2' => array('Iso2'), 				'name' => array('Name')
-				);
-	var $_indexes = array('IdIsoCode');
-	var $IdIsoCode;
-	var $Iso2;
-	var $Iso3;
-	var $Name;
+class IsoCodes_ORM extends GenericData
+{
+    var $_idField = 'IdIsoCode';
+    var $_table = 'IsoCodes';
+    var $_metaData = array(
+        'IdIsoCode' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Iso2' => array('type' => "char(2)", 'not_null' => 'false'),
+        'Iso3' => array('type' => "char(3)", 'not_null' => 'false'),
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'iso3' => array('Iso3'), 'iso2' => array('Iso2'), 'name' => array('Name')
+    );
+    var $_indexes = array('IdIsoCode');
+    var $IdIsoCode;
+    var $Iso2;
+    var $Iso3;
+    var $Name;
 }
-?>

@@ -20,34 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_XimIO extends Abstract_View implements Interface_View {
-	var $files;
-	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-		$content = $this->retrieveContent($pointer);
-		$version = new Version($idVersion);
-		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("No se ha encontrado la versi�n ($idVersion) solicitada");
-			return NULL;
-		}
-		$idNode = $version->get('IdNode');
-		$node = new Node($idNode);
-		if (!($node->get('IdNode') > 0)) {
-			XMD_Log::error("No se ha podido cargar el nodo ($idNode) solicitado");
-			return NULL;
-		}
-		
-		$this->files = array();
-		return $this->storeTmpContent($node->ToXml(0, $this->files));
-	}
+class View_XimIO extends Abstract_View implements Interface_View
+{
+    var $files;
+
+    function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    {
+        $content = $this->retrieveContent($pointer);
+        $version = new Version($idVersion);
+        if (!($version->get('IdVersion') > 0)) {
+            XMD_Log::error("No se ha encontrado la versi�n ($idVersion) solicitada");
+            return NULL;
+        }
+        $idNode = $version->get('IdNode');
+        $node = new Node($idNode);
+        if (!($node->get('IdNode') > 0)) {
+            XMD_Log::error("No se ha podido cargar el nodo ($idNode) solicitado");
+            return NULL;
+        }
+
+        $this->files = array();
+        return $this->storeTmpContent($node->ToXml(0, $this->files));
+    }
 }
-?>

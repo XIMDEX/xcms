@@ -20,35 +20,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
- 
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 }
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeTypeMimeType_ORM.class.php';
 
-class RelNodeTypeMimeType extends RelNodeTypeMimeType_ORM {
+class RelNodeTypeMimeType extends RelNodeTypeMimeType_ORM
+{
 
-	function getFileExtension($nodetype){
-		$filter=$this->find('filter','idnodetype = %s',array($nodetype),MONO);
-		if(strcmp($filter[0],'ptd')==0){
-			$ext = ($nodetype==5044)? "xml":"xsl";	
-		}
-		elseif(strcmp($filter[0],'pvd')==0){
-			$ext = "xml";	
-		}
-		else{
-			$ext=$filter[0];
-		}
-		return $ext;
-	}
+    function getFileExtension($nodetype)
+    {
+        $filter = $this->find('filter', 'idnodetype = %s', array($nodetype), MONO);
+        if (strcmp($filter[0], 'ptd') == 0) {
+            $ext = ($nodetype == 5044) ? "xml" : "xsl";
+        } elseif (strcmp($filter[0], 'pvd') == 0) {
+            $ext = "xml";
+        } else {
+            $ext = $filter[0];
+        }
+        return $ext;
+    }
 }
-?>

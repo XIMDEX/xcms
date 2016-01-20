@@ -20,35 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelServersStates_ORM extends GenericData   {
-	var $_idField = 'IdRel';
-	var $_table = 'RelServersStates';
-	var $_metaData = array(
-				'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdServer' => array('type' => "int(12)", 'not_null' => 'false'),
-				'IdState' => array('type' => "int(12)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'IdRel' => array('IdRel')
-				);
-	var $_indexes = array('IdRel');
-	var $IdRel;
-	var $IdServer = 0;
-	var $IdState = 0;
+class RelServersStates_ORM extends GenericData
+{
+    var $_idField = 'IdRel';
+    var $_table = 'RelServersStates';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdServer' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdState' => array('type' => "int(12)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'IdRel' => array('IdRel')
+    );
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdServer = 0;
+    var $IdState = 0;
 }
-?>

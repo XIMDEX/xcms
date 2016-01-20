@@ -20,36 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class Locales_ORM extends GenericData   {
-	var $_idField = 'ID';
-	var $_table = 'Locales';
-	var $_metaData = array(
-				'ID' => array('type' => "smallint(5)", 'not_null' => 'true', 'primary_key' => true),
-				'Code' => array('type' => "varchar(6)", 'not_null' => 'true', ),
-				'Name' => array('type' => "varchar(20)", 'not_null' => 'true'),
-				'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'Code' => array('Code'),'ID' => array('ID')
-				);
-	var $_indexes = array('ID');
-	var $ID;
-	var $Code;
-	var $Name;
-	var $Enabled = 1;
+class Locales_ORM extends GenericData
+{
+    var $_idField = 'ID';
+    var $_table = 'Locales';
+    var $_metaData = array(
+        'ID' => array('type' => "smallint(5)", 'not_null' => 'true', 'primary_key' => true),
+        'Code' => array('type' => "varchar(6)", 'not_null' => 'true',),
+        'Name' => array('type' => "varchar(20)", 'not_null' => 'true'),
+        'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'Code' => array('Code'), 'ID' => array('ID')
+    );
+    var $_indexes = array('ID');
+    var $ID;
+    var $Code;
+    var $Name;
+    var $Enabled = 1;
 }
-?>

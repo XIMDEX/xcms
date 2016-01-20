@@ -20,35 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelVersionsLabel_ORM extends GenericData   {
-	var $_idField = 'id';
-	var $_table = 'RelVersionsLabel';
-	var $_metaData = array(
-				'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'idVersion' => array('type' => "int(12)", 'not_null' => 'false'),
-				'idLabel' => array('type' => "int(12)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'VersionsLabelRest' => array('idVersion', 'idLabel')
-				);
-	var $_indexes = array('id');
-	var $id;
-	var $idVersion = 0;
-	var $idLabel = 0;
+class RelVersionsLabel_ORM extends GenericData
+{
+    var $_idField = 'id';
+    var $_table = 'RelVersionsLabel';
+    var $_metaData = array(
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'idVersion' => array('type' => "int(12)", 'not_null' => 'false'),
+        'idLabel' => array('type' => "int(12)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'VersionsLabelRest' => array('idVersion', 'idLabel')
+    );
+    var $_indexes = array('id');
+    var $id;
+    var $idVersion = 0;
+    var $idLabel = 0;
 }
-?>
