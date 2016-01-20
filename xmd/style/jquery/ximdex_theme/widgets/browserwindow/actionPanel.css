@@ -1641,43 +1641,6 @@ input:focus + .tooltip_info {
   height: 100%;
   max-width: 100%; }
 
-/* New styles 2016 */
-.modify_role_form .table tr:nth-child(2n) {
-  background-color: #F1F1F1;
-}
-
-.modify_role_form .table tr > td,
-.modify_role_form .table tr > th {
-  width: 20%;
-
-  text-align: center;
-  border-top: 0px !important;
-}
-
-.modify_role_form .table tr > td:first-child,
-.modify_role_form .table tr > td:first-child {
-  width: 40%;
-}
-
-.modify_role_form .table tr > td:first-child {
-  text-align: right;
-}
-
-.modify_role_form label {
-  margin-bottom: 5px;
-
-  font-size: 1.5rem;
-}
-
-.modify_role_form .panel-body {
-  padding: 15px 25px;
-}
-
-.modify_role_form input,
-.modify_role_form select {
-  padding: 5px 8px;
-}
-
 input[type="checkbox"] {
   cursor: pointer;
 }
