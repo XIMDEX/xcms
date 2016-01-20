@@ -30,5 +30,3 @@
 interface NoSecuredAction {
 
 }
-
-?>

@@ -37,4 +37,3 @@ $davconfig[0]['uri'] = 'xnodes://user:passwd@localhost/Proyectos';
 
 //$davconfig[1]['mountpoint'] = '/tmp';
 //$davconfig[1]['uri'] = 'file://localhost/tmp';
- 

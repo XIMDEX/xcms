@@ -73,5 +73,3 @@ abstract class AbstractAPIAction {
     }
     
 }
-
-?>

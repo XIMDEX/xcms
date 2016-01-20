@@ -21,15 +21,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 ModulesManager::file('/inc/model/language.php');
 
- /* <p>API language action</p>
- * <p>Handles requests to obtain the languages</p>
- */
-class Action_lang extends AbstractAPIAction implements SecuredAction {
+/* <p>API language action</p>
+* <p>Handles requests to obtain the languages</p>
+*/
+
+class Action_lang extends AbstractAPIAction implements SecuredAction
+{
 
     /**
      * <p>Default method for this action</p>
@@ -37,18 +39,19 @@ class Action_lang extends AbstractAPIAction implements SecuredAction {
      * @param Request The current request
      * @param Response The Response object to be sent and where to put the response of this action
      */
-    public function index($request, $response) {
+    public function index($request, $response)
+    {
         $langId = $request->getParam("langid");
 
         if ($langId == null || $langId == "") {
             $langs = $this->getLanguageInfo();
         } else {
-	    $l = new Language($langId);
+            $l = new Language($langId);
             if ($l->GetID() == null) {
                 $this->createErrorResponse("The language ID given is not a existing language.");
                 return;
             }
-            
+
             $langs = $this->getLanguageInfo($l->GetID());
         }
 
@@ -65,7 +68,8 @@ class Action_lang extends AbstractAPIAction implements SecuredAction {
      * @param Request The current request
      * @param Response The Response object to be sent and where to put the response of this action
      */
-    public function node($request, $response) {
+    public function node($request, $response)
+    {
         $nodeid = $request->getParam('nodeid');
         $username = $request->getParam(self::USER_PARAM);
         $node = new Node($nodeid);
@@ -80,22 +84,22 @@ class Action_lang extends AbstractAPIAction implements SecuredAction {
         }
 
         $nodeService = new \Ximdex\Services\Node();
-        
+
         $hasPermissionOnNode = $nodeService->hasPermissionOnNode($username, $nodeid);
-        
+
         if (!$hasPermissionOnNode) {
             $this->createErrorResponse('The user does not have permission on node ' . $nodeid);
             return false;
         }
-        
+
         $lang = new Language();
         $langs = $lang->getLanguagesForNode($nodeid);
-        
-        if(empty($langs) || $langs == null) {
+
+        if (empty($langs) || $langs == null) {
             $this->createErrorResponse('No languages found for the node');
             return;
         }
-        
+
         $this->responseBuilder->ok()->content($langs)->build();
     }
 
@@ -104,7 +108,8 @@ class Action_lang extends AbstractAPIAction implements SecuredAction {
      * @param int $lang The lang id
      * @return array containing the requested languages
      */
-    private function getLanguageInfo($langId = null) {
+    private function getLanguageInfo($langId = null)
+    {
 
         $lang = new Language();
         $langs = array();
@@ -114,26 +119,22 @@ class Action_lang extends AbstractAPIAction implements SecuredAction {
                 'IdLanguage' => $langId,
                 'Name' => $lang->get('Name'),
                 'IsoCode' => $lang->get('IsoName')
-                    );
+            );
             array_push($langs, $langItem);
-        }
-
-        else {
+        } else {
             $langsIds = $lang->GetAllLanguages();
-            foreach($langsIds as $langItemId) {
+            foreach ($langsIds as $langItemId) {
                 $l = new Language($langItemId);
                 $langItem = array(
-	                'IdLanguage' => $l->get('IdLanguage'),
-        	        'Name' => $l->get('Name'),
-                	'IsoName' => $l->get('IsoName')
-                    );
-            array_push($langs, $langItem);
-                
+                    'IdLanguage' => $l->get('IdLanguage'),
+                    'Name' => $l->get('Name'),
+                    'IsoName' => $l->get('IsoName')
+                );
+                array_push($langs, $langItem);
+
             }
         }
         return $langs;
     }
 
 }
-
-?>

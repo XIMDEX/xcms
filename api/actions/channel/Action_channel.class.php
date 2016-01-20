@@ -21,14 +21,14 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 ModulesManager::file('/inc/model/channel.php');
 //use Swagger\Annotations as SWG;
 
 /**
- * 
+ *
  * /**
  * @SWG\Resource(
  *     apiVersion="0.2",
@@ -36,8 +36,8 @@ ModulesManager::file('/inc/model/channel.php');
  *     resourcePath="/channel",
  *     basePath="http://test.ximdex.es/ximdex_new/api"
  * )
- * 
- * 
+ *
+ *
  * @SWG\Api(
  *  path="/channel",
  *  description="Operations over channels",
@@ -54,7 +54,7 @@ ModulesManager::file('/inc/model/channel.php');
  *      )
  *  )
  * )
- * 
+ *
  * @SWG\Api(
  *  path="/channel/node",
  *  description="Operations over channels",
@@ -71,11 +71,12 @@ ModulesManager::file('/inc/model/channel.php');
  *      )
  *  )
  * )
- * 
+ *
  * <p>API Channel action</p>
  * <p>Handles requests to obtain the channels</p>
  */
-class Action_channel extends AbstractAPIAction implements SecuredAction {
+class Action_channel extends AbstractAPIAction implements SecuredAction
+{
 
     /**
      * <p>Default method for this action</p>
@@ -83,17 +84,18 @@ class Action_channel extends AbstractAPIAction implements SecuredAction {
      * @param Request The current request
      * @param Response The Response object to be sent and where to put the response of this action
      */
-    public function index($request, $response) {
+    public function index($request, $response)
+    {
         $channelId = $request->getParam("channelid");
         if ($channelId == null || $channelId == "") {
             $channels = $this->getChannelInfo();
         } else {
-	    $c = new Channel($channelId);
+            $c = new Channel($channelId);
             if ($c->GetID() == null) {
                 $this->createErrorResponse("The channel ID given is not a channel.");
                 return;
             }
-            
+
             $channels = $this->getChannelInfo($c->GetID());
         }
 
@@ -110,7 +112,8 @@ class Action_channel extends AbstractAPIAction implements SecuredAction {
      * @param Request The current request
      * @param Response The Response object to be sent and where to put the response of this action
      */
-    public function node($request, $response) {
+    public function node($request, $response)
+    {
         $nodeid = $request->getParam('nodeid');
         $username = $request->getParam(self::USER_PARAM);
         $node = new Node($nodeid);
@@ -125,22 +128,22 @@ class Action_channel extends AbstractAPIAction implements SecuredAction {
         }
 
         $nodeService = new \Ximdex\Services\Node();
-        
+
         $hasPermissionOnNode = $nodeService->hasPermissionOnNode($username, $nodeid);
-        
+
         if (!$hasPermissionOnNode) {
             $this->createErrorResponse('The user does not have permission on node ' . $nodeid);
             return false;
         }
-        
+
         $channel = new Channel();
         $channels = $channel->getChannelsForNode($nodeid);
-        
-        if(empty($channels) || $channels == null) {
+
+        if (empty($channels) || $channels == null) {
             $this->createErrorResponse('No channels found for the node');
             return;
         }
-        
+
         $this->responseBuilder->ok()->content($channels)->build();
     }
 
@@ -149,7 +152,8 @@ class Action_channel extends AbstractAPIAction implements SecuredAction {
      * @param int $channel The chanel id
      * @return array containing the requested channels
      */
-    private function getChannelInfo($channelId = null) {
+    private function getChannelInfo($channelId = null)
+    {
 
         $channel = new Channel();
         $channels = array();
@@ -160,26 +164,23 @@ class Action_channel extends AbstractAPIAction implements SecuredAction {
                 'IdChannel' => $channelId,
                 'Name' => $channel->get('Name'),
                 'Description' => $channel->get('Description')
-                    );
+            );
             array_push($channels, $channelItem);
-        }
-
-        else {
+        } else {
             $channelsIds = $channel->GetAllChannels();
-            foreach($channelsIds as $channelItemId) {
+            foreach ($channelsIds as $channelItemId) {
                 $ch = new Channel($channelItemId);
                 $channelItem = array(
-                'IdChannel' => $ch->get('IdChannel'),
-                'Name' => $ch->get('Name'),
-                'Description' => $ch->get('Description')
-                    );
-            array_push($channels, $channelItem);
-                
+                    'IdChannel' => $ch->get('IdChannel'),
+                    'Name' => $ch->get('Name'),
+                    'Description' => $ch->get('Description')
+                );
+                array_push($channels, $channelItem);
+
             }
         }
         return $channels;
     }
 
 }
-
-?>
+ 
