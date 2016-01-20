@@ -20,37 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class NodeAllowedContents_ORM extends GenericData   {
-	var $_idField = 'IdNodeAllowedContent';
-	var $_table = 'NodeAllowedContents';
-	var $_metaData = array(
-				'IdNodeAllowedContent' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
-				'NodeType' => array('type' => "int(12)", 'not_null' => 'true'),
-				'Amount' => array('type' => "int(12)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-				'UniqeAmmount' => array('IdNodeType', 'NodeType')
-				);
-	var $_indexes = array('IdNodeAllowedContent');
-	var $IdNodeAllowedContent;
-	var $IdNodeType = 0;
-	var $NodeType = 0;
-	var $Amount = 0;
+class NodeAllowedContents_ORM extends GenericData
+{
+    var $_idField = 'IdNodeAllowedContent';
+    var $_table = 'NodeAllowedContents';
+    var $_metaData = array(
+        'IdNodeAllowedContent' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'NodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Amount' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'UniqeAmmount' => array('IdNodeType', 'NodeType')
+    );
+    var $_indexes = array('IdNodeAllowedContent');
+    var $IdNodeAllowedContent;
+    var $IdNodeType = 0;
+    var $NodeType = 0;
+    var $Amount = 0;
 }
-?>

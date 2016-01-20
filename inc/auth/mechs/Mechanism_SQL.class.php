@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,38 +21,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class Mechanism_SQL extends Mechanism
+{
 
+    /**
+     *
+     * @return unknown_type
+     */
+    function Mechanism_SQL()
+    {
+    }
 
+    /**
+     * (non-PHPdoc)
+     * @see inc/auth/Mechanism#authenticate($username, $password)
+     */
+    function authenticate($username, $password)
+    {
 
+        $user = new User();
+        $user->SetByLogin($username);
 
-class Mechanism_SQL extends Mechanism {
-
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function Mechanism_SQL() {
-	}
-	/**
-	 * (non-PHPdoc)
-	 * @see inc/auth/Mechanism#authenticate($username, $password)
-	 */
-	function authenticate($username, $password) {
-
-		$user = new User();
-		$user->SetByLogin($username);
-
-		if ( $user->CheckPassword($password) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+        if ($user->CheckPassword($password)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
-
-
-?>

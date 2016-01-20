@@ -20,39 +20,38 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  *
  */
-class Layout_Simple extends Layout {
+class Layout_Simple extends Layout
+{
 
-	function Layout_Simple($template) {
+    function Layout_Simple($template)
+    {
 
-		parent::Layout($template);
-	}
+        parent::Layout($template);
+    }
 
-	function & format(&$event) {
+    function & format(&$event)
+    {
 
-		$string = $this->_template;
+        $string = $this->_template;
 
-		$string = str_replace("%fn",   	$event->getParam("function"),   $string);
-		$string = str_replace("%c",    	$event->getParam("class"),      $string);
-		$string = str_replace("%f",    	$event->getParam("file"),       $string);
-		$string = str_replace("%l",	$event->getParam("line"),       $string);
-		$string = str_replace("%m",    	$event->getParam("message"),    $string);
-		$string = str_replace("%p",    	$event->getParam("priority"),   $string);
-		$string = str_replace("%d",    	$event->getParam("date"),       $string);
-		$string = str_replace("%t",    	$event->getParam("time"),       $string);
+        $string = str_replace("%fn", $event->getParam("function"), $string);
+        $string = str_replace("%c", $event->getParam("class"), $string);
+        $string = str_replace("%f", $event->getParam("file"), $string);
+        $string = str_replace("%l", $event->getParam("line"), $string);
+        $string = str_replace("%m", $event->getParam("message"), $string);
+        $string = str_replace("%p", $event->getParam("priority"), $string);
+        $string = str_replace("%d", $event->getParam("date"), $string);
+        $string = str_replace("%t", $event->getParam("time"), $string);
 
-		return $string;
-	}
+        return $string;
+    }
 
 }
-
-?>

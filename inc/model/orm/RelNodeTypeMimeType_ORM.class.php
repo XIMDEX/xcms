@@ -20,37 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelNodeTypeMimeType_ORM extends GenericData   {
-	var $_idField = 'idRelNodeTypeMimeType';
-	var $_table = 'RelNodeTypeMimeType';
-	var $_metaData = array(
-				'idRelNodeTypeMimeType' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
-				'extension' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'filter' => array('type' => "char(50)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('idRelNodeTypeMimeType');
-	var $idRelNodeTypeMimeType;
-	var $idNodeType = 0;
-	var $extension;
-	var $filter;
+class RelNodeTypeMimeType_ORM extends GenericData
+{
+    var $_idField = 'idRelNodeTypeMimeType';
+    var $_table = 'RelNodeTypeMimeType';
+    var $_metaData = array(
+        'idRelNodeTypeMimeType' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'extension' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'filter' => array('type' => "char(50)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('idRelNodeTypeMimeType');
+    var $idRelNodeTypeMimeType;
+    var $idNodeType = 0;
+    var $extension;
+    var $filter;
 }
-?>

@@ -47,4 +47,4 @@ class RelColectorList_ORM extends GenericData
     var $IdRel;
     var $IdColector = 0;
     var $IdList = 0;
-} 
+}
