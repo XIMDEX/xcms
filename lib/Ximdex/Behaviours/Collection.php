@@ -24,10 +24,10 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Behaviours;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/behaviors/behavior_base.class.php');
 
-class BehaviorCollection extends \Ximdex\Utils\Overloadable
+class  Collection extends \Ximdex\Utils\Overloadable
 {
 
     var $behaviorCollection = null;
@@ -88,12 +88,11 @@ class BehaviorCollection extends \Ximdex\Utils\Overloadable
 
     function attach($behavior, $options)
     {
-        // TODO factory pattern
-        if (is_file(XIMDEX_ROOT_PATH . '/inc/model/behaviors/implementations/' . $behavior . '.php')) {
-            include_once XIMDEX_ROOT_PATH . '/inc/model/behaviors/implementations/' . $behavior . '.php';
-            $instancedBehavior = new $behavior($options);
-            $this->behaviorCollection->$behavior = $instancedBehavior;
-        }
+
+        $instancedBehavior = new $behavior($options);
+
+        $this->behaviorCollection->$behavior = $instancedBehavior;
+
     }
 
     function detach($behavior)

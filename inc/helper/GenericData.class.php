@@ -31,7 +31,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Cache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/behaviors/BehaviorCollection.class.php');
 
 define('LOG_LEVEL_NONE', 0);
 define('LOG_LEVEL_ALL', 1);
@@ -150,7 +149,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
     function GenericData($id = 0)
     {
 
-        $this->behaviors = new BehaviorCollection($this);
+        $this->behaviors = new \Ximdex\Behaviours\Collection($this);
 
         if (is_null($this->_fieldsToTraduce)) {
             $this->_fieldsToTraduce = array();

@@ -154,7 +154,7 @@ class GenericData extends  Overloadable
     function GenericData($id = 0)
     {
 
-        $this->behaviors = new \BehaviorCollection($this);
+        $this->behaviors = new \Ximdex\Behaviours\Collection( $this);
 
         if (is_null($this->_fieldsToTraduce)) {
             $this->_fieldsToTraduce = array();

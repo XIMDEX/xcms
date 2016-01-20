@@ -24,36 +24,35 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Behaviours ;
 
+class Search extends Base {
 
-class searcheable extends BehaviorBase {
+    /* Required parameters*/
+    var $required = array('field');
 
-	/* Required parameters*/
-	var $required = array('field');
-	
-	var $optional = array('conditions');
-	/**
-	 * $options
-	 * 		conditions array key value key = value and key = value ...
-	 */	
-	
-	public function search(&$model, $options) {
-		if (isset($this->options['conditions'])) {
-			$options['conditions'] = array_merge($options['conditions'], $this->options['conditions']);
-		}
-		
-		$optionsConditions = array();
-		$optionsFields = array();
-		
-		foreach ($options['conditions'] as $key => $value) {
-			$optionsConditions[] = sprintf('%s = \'%s\'', $key, $value);
-			$optionsFields[] = $value;
-		}
-		
-		$condition = implode(' AND ', $optionsConditions);
-		
-		return $model->find($this->options['field'], $condition, $optionsFields, MONO);
-	}
+    var $optional = array('conditions');
+    /**
+     * $options
+     * 		conditions array key value key = value and key = value ...
+     * @params $model mixed
+     */
+
+    public function search(&$model, $options) {
+        if (isset($this->options['conditions'])) {
+            $options['conditions'] = array_merge($options['conditions'], $this->options['conditions']);
+        }
+
+        $optionsConditions = array();
+        $optionsFields = array();
+
+        foreach ($options['conditions'] as $key => $value) {
+            $optionsConditions[] = sprintf('%s = \'%s\'', $key, $value);
+            $optionsFields[] = $value;
+        }
+
+        $condition = implode(' AND ', $optionsConditions);
+
+        return $model->find($this->options['field'], $condition, $optionsFields, MONO);
+    }
 }
-
-?>

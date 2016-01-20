@@ -34,7 +34,7 @@ class RelNodeTypeMetadata extends RelNodeTypeMetadata_ORM
 {
 
 
-    public static function buildByIdNodeType($idNodeType)
+    public function buildByIdNodeType($idNodeType)
     {
         $arrayResult = $this->find("idRel", "idNodeType=%s", array($idNodeType), MONO);
         if ($arrayResult && is_array($arrayResult) && count($arrayResult)) {
