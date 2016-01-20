@@ -38,7 +38,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
 if (file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php'))
     include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
 //Including composer autoloader
 //ModulesManager::file('/vendor/autoload.php');

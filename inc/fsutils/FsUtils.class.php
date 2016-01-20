@@ -20,483 +20,463 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-
+use Ximdex\Logger as XMD_log;
 
 if (!defined("XIMDEX_ROOT_PATH")) {
-	define("XIMDEX_ROOT_PATH", realpath(dirname (__FILE__)."/../../"));
+    define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../"));
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/log/MN_log.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
-class FsUtils {
+class FsUtils
+{
 
-	private function __construct() {
+    private function __construct()
+    {
 
-	}
+    }
 
-	/**
-	 *
-	 * @param $file
-	 * @return unknown_type
-	 */
-	static public function get_mime_type($file) {
 
-		if (!is_file($file)) {
-			return NULL;
-		}
+    /**
+     * @param $file
+     * @return mixed|null
+     */
+    static public function get_mime_type($file)
+    {
 
-		$command = "file -b --mime-type " . escapeshellarg($file);
-/* in others systems:
-$command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
+        if (!is_file($file)) {
+            return NULL;
+        }
 
-		$result = exec($command);
+        $command = "file -b --mime-type " . escapeshellarg($file);
+        /* in others systems:
+        $command = "file -b -i " .escapeshellarg($file)."|cut -d ';' -f 1,1"; */
 
-		return str_replace('\012- ' , '', $result);
-	}
+        $result = exec($command);
 
-	static public function getFolderFromFile($file) {
-		if (preg_match('/(.*)\/[^\/]+/', $file, $matches)) {
-			if (is_dir($matches[1])) {
-				return $matches[1];
-			}
-		}
-		return null;
-	}
+        return str_replace('\012- ', '', $result);
+    }
 
-	/**
-	 * Check for available free space on disk and send mail notifications if any limit is exceeded.
-	 * @return boolean TRUE if no limits are exceeded, FALSE otherwise.
-	 */
-	static public function notifyDiskspace($file) {
+    /**
+     * @param $file
+     * @return null
+     */
+    static public function getFolderFromFile($file)
+    {
+        if (preg_match('/(.*)\/[^\/]+/', $file, $matches)) {
+            if (is_dir($matches[1])) {
+                return $matches[1];
+            }
+        }
+        return null;
+    }
 
-		$ret = true;
-		$freeSpaceBytes = DiskUtils::disk_free_space('B', self::getFolderFromFile($file));
-		$limits = include(XIMDEX_ROOT_PATH . '/conf/diskspace.php');
-		$aux = array();
+    /**
+     * Check for available free space on disk and send mail notifications if any limit is exceeded.
+     * @return boolean TRUE if no limits are exceeded, FALSE otherwise.
+     * @param $file
+     */
+    static public function notifyDiskspace($file)
+    {
 
-		foreach ($limits as $key=>$limit) {
-			$matches = null;
-			$matchesCount = preg_match_all('/(\d+)(KB|MB|GB)?/', $limit, $matches, PREG_SET_ORDER);
-			if ($matchesCount > 0) {
-				$aux[$key] = array(
-					'limit' => (float) $matches[0][1],
-					'unit' => $matches[0][2],
-					'space' => DiskUtils::transformUnits($freeSpaceBytes, $matches[0][2])
-				);
-				$aux[$key]['notify'] = ($aux[$key]['space'] <= $aux[$key]['limit']);
-			}
-		}
+        $ret = true;
+        $freeSpaceBytes = \Ximdex\Utils\Disk::disk_free_space('B', self::getFolderFromFile($file));
+        $limits = include(XIMDEX_ROOT_PATH . '/conf/diskspace.php');
+        $aux = array();
 
-		$limits = $aux;
-		$msg = sprintf(_('Warning from the server %s: The free space in disk is %s MB'),php_uname("n"), DiskUtils::transformUnits($freeSpaceBytes, 'MB'));
+        foreach ($limits as $key => $limit) {
+            $matches = null;
+            $matchesCount = preg_match_all('/(\d+)(KB|MB|GB)?/', $limit, $matches, PREG_SET_ORDER);
+            if ($matchesCount > 0) {
+                $aux[$key] = array(
+                    'limit' => (float)$matches[0][1],
+                    'unit' => $matches[0][2],
+                    'space' => \Ximdex\Utils\Disk::transformUnits($freeSpaceBytes, $matches[0][2])
+                );
+                $aux[$key]['notify'] = ($aux[$key]['space'] <= $aux[$key]['limit']);
+            }
+        }
 
-		if (isset($limits['fatal_limit']) && $limits['fatal_limit']['notify']) {
+        $limits = $aux;
+        $msg = sprintf(_('Warning from the server %s: The free space in disk is %s MB'), php_uname("n"), \Ximdex\Utils\Disk::transformUnits($freeSpaceBytes, 'MB'));
 
-			$ret = false;
-			MN_Log::error($msg);
-			XMD_Log::fatal($msg);
-		} else if (isset($limits['error_limit']) && $limits['error_limit']['notify']) {
+        if (isset($limits['fatal_limit']) && $limits['fatal_limit']['notify']) {
 
-			MN_Log::error($msg);
-			XMD_Log::error($msg);
-		} else if (isset($limits['warning_limit']) && $limits['warning_limit']['notify']) {
+            $ret = false;
+            MN_Log::error($msg);
+            XMD_Log::fatal($msg);
+        } else if (isset($limits['error_limit']) && $limits['error_limit']['notify']) {
 
-			MN_Log::warning($msg);
-			XMD_Log::warning($msg);
-		}
+            MN_Log::error($msg);
+            XMD_Log::error($msg);
+        } else if (isset($limits['warning_limit']) && $limits['warning_limit']['notify']) {
 
-		return $ret;
-	}
+            MN_Log::warning($msg);
+            XMD_Log::warning($msg);
+        }
 
-	/**
-	 *
-	 * @param $filename
-	 * @param $data
-	 * @param $flags
-	 * @param $context
-	 * @return unknown_type
-	 */
-	static public function file_put_contents($filename, $data, $flags = NULL, $context = NULL) {
+        return $ret;
+    }
 
-		if (!self::notifyDiskspace($filename)) {
-			return false;
-		}
 
-		if (!function_exists('file_put_contents')) {
-			$hnd = fopen($filename, "w");
+    /**
+     * @param $filename
+     * @param $data
+     * @param null $flags
+     * @param null $context
+     * @return bool
+     */
+    static public function file_put_contents($filename, $data, $flags = NULL, $context = NULL)
+    {
+        $result = false;
 
-			if ($hnd) {
-				$result = fwrite($hnd, $data);
-				fclose($hnd);
-			}
-		} else {
-		  if(!empty($filename) ) {
-			 $result = file_put_contents($filename, $data, $flags, $context);
-		  }else{
-			 $result = false;
-		  }
-		}
+        if (!self::notifyDiskspace($filename)) {
+            return false;
+        }
 
-		if ($result === false) {
-			$backtrace = debug_backtrace();
-			XMD_Log::debug(sprintf(_("Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"),
-						$_SERVER['SCRIPT_FILENAME'],
-						$backtrace[0]['file'],
-						$backtrace[0]['line'],
-						$filename));
-			return false;
-		}
-		XMD_Log::debug("file_put_contents: input: $filename");
+        if (!function_exists('file_put_contents')) {
+            $hnd = fopen($filename, "w");
 
-		return true;
-	}
+            if ($hnd) {
+                $result = fwrite($hnd, $data);
+                fclose($hnd);
+            }
+        } else {
+            if (!empty($filename)) {
+                $result = file_put_contents($filename, $data, $flags, $context);
+            } else {
+                $result = false;
+            }
+        }
 
-	/**
-	 *
-	 * @param $path
-	 * @param $mode
-	 * @param $recursive
-	 * @param $context
-	 * @return unknown_type
-	 */
-	static public function mkdir($path, $mode = 0755, $recursive = false, $context = NULL) {
-		if (!function_exists('mkdir')) {
-			// implement a solution.
-			return false;
-		} else {
-			if (is_dir($path)) {
-				return true;
-			} else {
-				if ($recursive) {
-					if (dirname($path) == $path) {
-						return true;
-					}
-					preg_match('/(.*)\/(.*)\/?$/', $path, $matches);
-					if (empty($matches[1])) { // We got the beginning, we go out
-						return true;
-					}
-					return FsUtils::mkdir($matches[1], $mode, true) && mkdir($path, $mode);
-				}
-				// PHP4 mode
-				return mkdir($path, $mode);
-				// PHP5 mode
-				//mkdir($path, $mode, $recursive);
-			}
-		}
-	}
+        if ($result === false) {
+            $backtrace = debug_backtrace();
+            XMD_Log::debug(sprintf(_("Error writing in file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s file: %s"),
+                $_SERVER['SCRIPT_FILENAME'],
+                $backtrace[0]['file'],
+                $backtrace[0]['line'],
+                $filename));
+            return false;
+        }
+        XMD_Log::debug("file_put_contents: input: $filename");
 
-	/**
-	 *
-	 * @param $filename
-	 * @param $use_include_path
-	 * @param $context
-	 * @return unknown_type
-	 */
-	static public function file_get_contents($filename, $use_include_path = false, $context = NULL) {
-		if (!is_file($filename)) {
-			$backtrace = debug_backtrace();
-			XMD_Log::debug(sprintf(_('Trying to obating the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s'),
-						$_SERVER['SCRIPT_FILENAME'],
-						$backtrace[0]['file'],
-						$backtrace[0]['line'],
-						$filename));
-			return NULL;
-		}
+        return true;
+    }
 
-		if (!function_exists('file_get_contents')) {
+    /**
+     * @param $path
+     * @param int $mode
+     * @param bool $recursive
+     * @return bool
+     */
+    static public function mkdir($path, $mode = 0755, $recursive = false)
+    {
 
-			// Not evaluating resource context yet.
+        if (is_dir($path)) {
+            return true;
+        } else {
+            if ($recursive) {
+                if (dirname($path) == $path) {
+                    return true;
+                }
+                preg_match('/(.*)\/(.*)\/?$/', $path, $matches);
+                if (empty($matches[1])) { // We got the beginning, we go out
+                    return true;
+                }
+                return FsUtils::mkdir($matches[1], $mode, true) && mkdir($path, $mode);
+            }
 
-			if (false === $hnd = fopen($filename, 'rb', $incpath)) {
-				// trigger error.
-				return false;
-			}
+            return mkdir($path, $mode, $recursive);
+        }
 
-			if ($fsize = @filesize($filename)) {
-				$data = fread($hnd, $fsize);
-			} else {
-				$data = '';
-				while (!feof($hnd)) {
-					$data .= fread($hnd, 8192);
-				}
-			}
+    }
 
-			fclose($hnd);
+    /**
+     * @param $filename
+     * @param bool $use_include_path
+     * @param null $context
+     * @return null|string
+     */
+    static public function file_get_contents($filename, $use_include_path = false, $context = NULL)
+    {
+        if (!is_file($filename)) {
+            $backtrace = debug_backtrace();
+            XMD_Log::debug(sprintf(_('Trying to obating the content of a nonexistent file [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s nonexistent_file: %s'),
+                $_SERVER['SCRIPT_FILENAME'],
+                $backtrace[0]['file'],
+                $backtrace[0]['line'],
+                $filename));
+            return NULL;
+        }
 
-			return $data;
-		}
+        return file_get_contents($filename, $use_include_path, $context);
+    }
 
-		// PHP4 format
-		//return file_get_contents($filename, $use_include_path);
+    /**
+     * @param $file
+     * @return string
+     */
+    static public function get_name($file)
+    {
+        $ext = self::get_extension($file);
+        $len_ext = strlen($ext) + 1;
 
-		// PHP5 format
-		return file_get_contents($filename, $use_include_path, $context);
-	}
+        if (false != $ext) {
+            $file = substr($file, 0, -$len_ext);
+            return $file;
+        }
+        return $file;
+    }
 
-	/**
-	 *
-	 * @param $file
-	 * @return unknown_type
-	 */
-	static public function get_name($file) {
-		$ext = self::get_extension($file);
-		$len_ext = strlen($ext)+1;
+    /**
+     * @param $file
+     * @return bool
+     */
+    static public function get_extension($file)
+    {
 
-		if(false!= $ext) {
-			$file = substr($file, 0, -$len_ext );
-			return $file;
-		}
-		return $file;
-	}
+        if (empty($file)) {
+            return false;
+        }
 
-	/**
-	 *
-	 * @param $file
-	 * @return unknown_type
-	 */
-	static public function get_extension($file) {
+        if (!(preg_match('/\.([^\.]*)$/', $file, $matches) > 0)) {
+            return false;
+        }
 
-		if (empty($file)) {
-			return false;
-		}
+        return isset($matches[1]) ? $matches[1] : false;
+    }
 
-		if (!(preg_match('/\.([^\.]*)$/', $file, $matches) > 0)) {
-			return false;
-		}
+    /**
+     * @param $path
+     * @param $callback
+     * @param null $args
+     * @param bool $recursive
+     * @return bool
+     */
+    static public function walk_dir($path, $callback, $args = NULL, $recursive = true)
+    {
 
-		return isset($matches[1]) ? $matches[1] : false;
-	}
+        $dh = @opendir($path);
 
-	/**
-	 *
-	 * @param $path
-	 * @param $callback
-	 * @param $args
-	 * @param $recursive
-	 * @return unknown_type
-	 */
-	static public function walk_dir($path, $callback, $args = NULL, $recursive = true) {
+        if (false === $dh) {
+            return false;
+        }
 
-		$dh = @opendir($path);
+        while ($file = readdir($dh)) {
 
-		if(false === $dh) {
-			return false;
-		}
+            if ("." == $file || ".." == $file) {
+                continue;
+            }
 
-		while($file = readdir($dh)) {
+            call_user_func($callback, "{$path}/{$file}", $args);
 
-			if("." == $file || ".." == $file){
-				continue;
-			}
+            if (false !== $recursive && is_dir("{$path}/{$file}")) {
+                FsUtils::walk_dir("{$path}/{$file}", $callback, $args, $recursive);
+            }
+        }
 
-			call_user_func($callback, "{$path}/{$file}", $args);
+        closedir($dh);
 
-			if(false !== $recursive && is_dir( "{$path}/{$file}")) {
-				FsUtils::walk_dir("{$path}/{$file}", $callback, $args, $recursive);
-			}
-		}
+        return true;
+    }
 
-		closedir( $dh );
+    /**
+     * @param $path
+     * @param bool $recursive
+     * @param array $excluded
+     * @return array|null
+     */
+    static public function readFolder($path, $recursive = true, $excluded = array())
+    {
 
-		return true;
-	}
-	/**
-	 *
-	 * @param $path
-	 * @param $callback
-	 * @param $args
-	 * @param $recursive
-	 * @return unknown_type
-	 */
-	static public function readFolder($path, $recursive = true, $excluded = array()) {
-
-		if (!is_dir($path)) {
-			return null;
-		}
+        if (!is_dir($path)) {
+            return null;
+        }
 
 //		assert($recursive);
-		if (!is_array($excluded)) $excluded = array($excluded);
-		$excluded = array_merge(array('.', '..', '.svn'), $excluded);
-		$files = scandir($path);
-		$files = array_values(array_diff($files, $excluded));
+        if (!is_array($excluded)) $excluded = array($excluded);
+        $excluded = array_merge(array('.', '..', '.svn'), $excluded);
+        $files = scandir($path);
+        $files = array_values(array_diff($files, $excluded));
 
-		if ($recursive) {
-			foreach ($files as $file) {
-				$dir = $path . '/' . $file;
-				if (is_dir($dir)) {
-					$aux = self::readFolder($dir, $recursive, $excluded);
-					$files = array_merge($files, $aux);
-				}
-			}
-		}
+        if ($recursive) {
+            foreach ($files as $file) {
+                $dir = $path . '/' . $file;
+                if (is_dir($dir)) {
+                    $aux = self::readFolder($dir, $recursive, $excluded);
+                    $files = array_merge($files, $aux);
+                }
+            }
+        }
 
-		return $files;
-	}
+        return $files;
+    }
 
-	/**
-	 * Static function
-	 * Function which deletes a folder and all its content (as deltree command of msdos)
-	 *
-	 * @param string $folder
-	 * @return boolean
-	 */
-	static public function deltree($folder) {
-		$backtrace = debug_backtrace();
-		XMD_Log::debug(sprintf(_('It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s'),
-					$_SERVER['SCRIPT_FILENAME'],
-					$backtrace[0]['file'],
-					$backtrace[0]['line'],
-					$folder));
+    /**
+     * Static function
+     * Function which deletes a folder and all its content (as deltree command of msdos)
+     *
+     * @param string $folder
+     * @return boolean
+     */
+    static public function deltree($folder)
+    {
+        $backtrace = debug_backtrace();
+        XMD_Log::debug(sprintf(_('It has been applied to delete recursively a folder [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s folder: %s'),
+            $_SERVER['SCRIPT_FILENAME'],
+            $backtrace[0]['file'],
+            $backtrace[0]['line'],
+            $folder));
 
-		if (!is_dir($folder)) {
-			XMD_Log::error(sprintf(_("Error estimating folder %s"), $folder));
-			return false;
-		}
+        if (!is_dir($folder)) {
+            XMD_Log::error(sprintf(_("Error estimating folder %s"), $folder));
+            return false;
+        }
 
-		if (!($handler = opendir($folder))) {
-			error_log(sprintf(_("It was not possible to open the folder %s %s, %s"), $folder, __FILE__, __LINE__));
-			return false;
-		}
+        if (!($handler = opendir($folder))) {
+            error_log(sprintf(_("It was not possible to open the folder %s %s, %s"), $folder, __FILE__, __LINE__));
+            return false;
+        }
 
-		while ($file = readdir($handler)) {
-			if ($file == '.' || $file == '..') {
-				continue;
-			}
-			$pathToElement = sprintf("%s/%s", $folder, $file);
-			if (is_dir($pathToElement)) {
-				if (!FsUtils::deltree($pathToElement)) {
-					return false;
-				}
-			} else {
-				FsUtils::delete($pathToElement);
-			}
-		}
+        while ($file = readdir($handler)) {
+            if ($file == '.' || $file == '..') {
+                continue;
+            }
+            $pathToElement = sprintf("%s/%s", $folder, $file);
+            if (is_dir($pathToElement)) {
+                if (!FsUtils::deltree($pathToElement)) {
+                    return false;
+                }
+            } else {
+                FsUtils::delete($pathToElement);
+            }
+        }
 
-		closedir($handler);
+        closedir($handler);
 
-		if (rmdir($folder)) {
-			return true;
-		}
-		return false;
-	}
+        if (rmdir($folder)) {
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 *
-	 * @param $file
-	 * @return unknown_type
-	 */
-	static public function delete($file) {
-		if (!is_file($file)) {
-			$backtrace = debug_backtrace();
-			XMD_Log::debug(sprintf(_('It has been applied to delete a nonexistent file %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s'),
-						$file,
-						$_SERVER['SCRIPT_FILENAME'],
-						$backtrace[0]['file'],
-						$backtrace[0]['line']));
-			return false;
-		}
-		if (!unlink($file)) {
-			$backtrace = debug_backtrace();
-			XMD_Log::debug(sprintf(_('It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s'),
-						$file,
-						$_SERVER['SCRIPT_FILENAME'],
-						$backtrace[0]['file'],
-						$backtrace[0]['line']));
-			return false;
-		}
-		return true;
-	}
+    /**
+     * @param $file
+     * @return bool
+     */
+    static public function delete($file)
+    {
+        if (!is_file($file)) {
+            $backtrace = debug_backtrace();
+            XMD_Log::debug(sprintf(_('It has been applied to delete a nonexistent file %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s'),
+                $file,
+                $_SERVER['SCRIPT_FILENAME'],
+                $backtrace[0]['file'],
+                $backtrace[0]['line']));
+            return false;
+        }
+        if (!unlink($file)) {
+            $backtrace = debug_backtrace();
+            XMD_Log::debug(sprintf(_('It has been applied to delete a file which could not been deleted %s [inc/fsutils/FsUtils.class.php] script: %s file: %s line: %s'),
+                $file,
+                $_SERVER['SCRIPT_FILENAME'],
+                $backtrace[0]['file'],
+                $backtrace[0]['line']));
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 *
-	 * @param $containerFolder
-	 * @param $sufix
-	 * @param $prefix
-	 * @return unknown_type
-	 */
-	static public function getUniqueFile($containerFolder, $sufix = '', $prefix = '') {
-/*		tempnam has a bug and even if it receive a folder in the first param, it creates a file in /tmp
-		Even, in linux, the environment var tmp has more prevalence than the received as param folder
-		if (empty($sufix)) {
-			return tempnam($containerFolder, $prefix);
-		}
-*/
-		do {
-			//$fileName = Utils::generateRandomChars(8);
-			$fileName = \Ximdex\Utils\String::generateUniqueID();
-			$tmpFile = sprintf("%s/%s%s%s", $containerFolder, $prefix, $fileName, $sufix);
-		} while (is_file($tmpFile));
-		XMD_Log::debug("getUniqueFile: return: $fileName | container: $containerFolder");
-		return $fileName;
-	}
+    /**
+     * @param $containerFolder
+     * @param string $sufix
+     * @param string $prefix
+     * @return string
+     */
+    static public function getUniqueFile($containerFolder, $sufix = '', $prefix = '')
+    {
+        /*		tempnam has a bug and even if it receive a folder in the first param, it creates a file in /tmp
+                Even, in linux, the environment var tmp has more prevalence than the received as param folder
+                if (empty($sufix)) {
+                    return tempnam($containerFolder, $prefix);
+                }
+        */
+        do {
+            //$fileName = Utils::generateRandomChars(8);
+            $fileName = \Ximdex\Utils\String::generateUniqueID();
+            $tmpFile = sprintf("%s/%s%s%s", $containerFolder, $prefix, $fileName, $sufix);
+        } while (is_file($tmpFile));
+        XMD_Log::debug("getUniqueFile: return: $fileName | container: $containerFolder");
+        return $fileName;
+    }
 
-	/**
-	 *
-	 * @param $containerFolder
-	 * @param $sufix
-	 * @param $prefix
-	 * @return unknown_type
-	 */
-	static public function getUniqueFolder($containerFolder, $sufix = '', $prefix = '') {
-		do {
-			$tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix, \Ximdex\Utils\String::generateRandomChars(8), $sufix);
-		} while (is_dir($tmpFolder));
-		return $tmpFolder;
-	}
+    /**
+     * @param $containerFolder
+     * @param string $sufix
+     * @param string $prefix
+     * @return string
+     */
+    static public function getUniqueFolder($containerFolder, $sufix = '', $prefix = '')
+    {
+        do {
+            $tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix, \Ximdex\Utils\String::generateRandomChars(8), $sufix);
+        } while (is_dir($tmpFolder));
+        return $tmpFolder;
+    }
 
-	static public function copy($sourceFile, $destFile) {
-		if(!empty($sourceFile) && !empty($destFile) ) {
-		  $result = copy($sourceFile, $destFile);
-		}else {
-		  $result = false;
-		}
+    static public function copy($sourceFile, $destFile)
+    {
+        if (!empty($sourceFile) && !empty($destFile)) {
+            $result = copy($sourceFile, $destFile);
+        } else {
+            $result = false;
+        }
 
-		if (!$result) {
-		 		XMD_Log::error(sprintf('An error occurred while trying to copy from %s to %s', $sourceFile, $destFile));
-		}
-		return $result;
-	}
+        if (!$result) {
+            XMD_Log::error(sprintf('An error occurred while trying to copy from %s to %s', $sourceFile, $destFile));
+        }
+        return $result;
+    }
 
-	/**
-	 * Get the files in the folder (and descendant) with an extension.
-	 * @param $path string Folder to read
-	 * @param $extensions string Extension to file
-	 * @param $recursive boolean Indicate if has to recursive read of path folder
-	 * @return array Found files.
-	 */
-	static public function getFolderFilesByExtension($path, $extensions=array(), $recursive = true) {
+    /**
+     * Get the files in the folder (and descendant) with an extension.
+     * @param $path string Folder to read
+     * @param $extensions array Extension to file
+     * @param $recursive boolean Indicate if has to recursive read of path folder
+     * @return array Found files.
+     */
+    static public function getFolderFilesByExtension($path, $extensions = array(), $recursive = true)
+    {
 
-		if (!is_dir($path)) {
-			return null;
-		}
+        if (!is_dir($path)) {
+            return null;
+        }
 
-		$excluded = array('.', '..', '.svn');
-		$files = scandir($path);
-		$files = array_values(array_diff($files, $excluded));
-		
-		foreach ($files as $key => $file) {
-			$dotPos = strrpos($file, ".");
-			$fileExtension = substr($file, $dotPos+1);
-		
-			if (!in_array($fileExtension, $extensions)){
-				unset($files[$key]);
-			}
+        $excluded = array('.', '..', '.svn');
+        $files = scandir($path);
+        $files = array_values(array_diff($files, $excluded));
 
-			if ($recursive){
-				$dir = $path . '/' . $file;
-				if (is_dir($dir)) {
-					$aux = self::readFolder($dir, $recursive, $excluded);
-					$files = array_merge($files, $aux);
-				}
-			}
-		}		
-		return array_values($files);
-	}
+        foreach ($files as $key => $file) {
+            $dotPos = strrpos($file, ".");
+            $fileExtension = substr($file, $dotPos + 1);
+
+            if (!in_array($fileExtension, $extensions)) {
+                unset($files[$key]);
+            }
+
+            if ($recursive) {
+                $dir = $path . '/' . $file;
+                if (is_dir($dir)) {
+                    $aux = self::readFolder($dir, $recursive, $excluded);
+                    $files = array_merge($files, $aux);
+                }
+            }
+        }
+        return array_values($files);
+    }
 
 }
-?>

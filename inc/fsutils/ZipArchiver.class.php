@@ -20,106 +20,102 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+use  Ximdex\Utils\Messages;
 
-
+define('UNZIP', 'unzip %s -d %s');
 
 /**
- * XIMDEX_ROOT_PATH
+ * Class to compress and decompress files through the linux tar command
+ *
  */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
+class ZipArchiver
+{
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/Archiver.iface.php');
+    /**
+     * File we are working with
+     *
+     * @var string
+     */
+    var $fileName = '';
+    /**
+     *
+     * @var string
+     */
+    var $extension = 'tar';
+    /**
+     * Options which affects to tar creation
+     *
+     * @var array
+     */
+    var $options = null;
+    /**
+     * Array which contains the list of files which the tar contains in case of edition, files to insert in case of creation
+     *
+     * @var array
+     */
+    var $files = null;
+    /**
+     * Container of messages returned by the class
+     *
+     * @var $messages Messages
+     */
+    var $messages = null;
 
 
-define ('UNZIP', 'unzip %s -d %s');
-	
-/**
-* Class to compress and decompress files through the linux tar command
-*
-*/
-class ZipArchiver extends Archiver {
+    /**
+     * Class Construct
+     *
+     * @param string $fileName
+     * @param array $options
+     */
+    public function __construct($fileName = '', $options = NULL)
+    {
+        $this->fileName = $fileName;
+    }
 
-	/**
-	 * File we are working with
-	 *
-	 * @var string
-	 */
-	var $fileName = '';
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $extension = 'tar';
-	/**
-	 * Options which affects to tar creation
-	 *
-	 * @var array
-	 */
-	var $options = NULL;
-	/**
-	 * Array which contains the list of files which the tar contains in case of edition, files to insert in case of creation
-	 *
-	 * @var array
-	 */
-	var $files = NULL;
-	/**
-	 * Container of messages returned by the class
-	 *
-	 * @var $messages Messages
-	 */
-	var $messages = NULL;
-	
-	
-	/**
-	 * Class Construct
-	 *
-	 * @param string $fileName
-	 * @param array $options
-	 * @return TarArchiver
-	 */
-	function ZipArchiver($fileName = '', $options = NULL) {
-		$this->fileName = $fileName;
-	}
-		
-	/**
-	 * File which adds files to the tar list
-	 *
-	 * @param string/array $elements element/s to add
-	 */
-	function addEntity($elements) {
+    /**
+     * File which adds files to the tar list
+     *
+     * @param string /array $elements element/s to add
+     */
+    function addEntity($elements)
+    {
 
-	}
-		
-	/**
-	 * Funtion to compress files
-	 *
-	 */ 
- 	function pack($dirName = '') {
+    }
 
-	}
+    /**
+     * Funtion to compress files
+     *
+     */
+    /**
+     * @param string $dirName
+     */
+    function pack($dirName = '')
+    {
 
-	/**
-	 * Funtion to decompress files
-	 *
-	 * @param string $dest
-	 * @return boolean
-	 */
-	function unpack($dest = '') {
-		$messages = new \Ximdex\Utils\Messages();
-		if (!is_file($this->fileName)) {
-			$messages->add(_('Specified file could not be found'), MSG_TYPE_ERROR);
-			return false;
-		}
-		
-		$command = sprintf(UNZIP, $this->fileName, $dest);
+    }
 
-		exec($command);
+    /**
+     * Funtion to decompress files
+     *
+     * @param string $dest
+     * @return boolean
+     */
+    function unpack($dest = '')
+    {
+        $messages = new \Ximdex\Utils\Messages();
+        if (!is_file($this->fileName)) {
+            $messages->add(_('Specified file could not be found'), MSG_TYPE_ERROR);
+            return false;
+        }
 
-		return true;
-	}
+        $command = sprintf(UNZIP, $this->fileName, $dest);
+
+        exec($command);
+
+        return true;
+    }
 }
-?>
