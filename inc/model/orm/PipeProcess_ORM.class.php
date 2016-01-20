@@ -51,4 +51,4 @@ class PipeProcess_ORM extends GenericData
     var $IdTransitionTo;
     var $IdPipeline;
     var $Name;
-} 
+}
