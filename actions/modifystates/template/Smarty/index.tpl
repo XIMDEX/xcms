@@ -79,7 +79,7 @@
                     </label>
                 </div>
 
-                <div class="col-xs-7">
+                <div class="col-xs-7 no-padding-right">
                     <select ng-model="nodetype" ng-options="nt.id as nt.name for nt in nodetype_list" class="cajag form-control" {if $is_workflow_master == true}disabled{/if}>
                         <option>{t}Select a node type{/t}</option>
                     </select>

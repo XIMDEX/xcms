@@ -81,3 +81,7 @@ button.delete-btn{
 ul.sortable li:hover button.delete-btn{
     visibility: visible;
 }
+
+div.col-xs-7.no-padding-right {
+    padding-right: 0px !important;
+}
