@@ -25,14 +25,14 @@
 
 
 img.sortable_element{
-	cursor: move;	
+	cursor: move;
 	margin-top: 5px;
 	vertical-align: middle;
 	margin-bottom: 4px;
 }
 
 ul.sortable{
-	margin-left: 0px;	
+	margin-left: 0px !important;
 }
 
 input.name{
@@ -40,13 +40,13 @@ input.name{
 }
 
 input.description{
-    width: 50%;
+    width: 55%;
 }
 
 div.separator{
     display: block;
     height: 0.5em;
-    width: calc(80% + 8px);
+    width: 85.5%;
     cursor: pointer;
 }
 
