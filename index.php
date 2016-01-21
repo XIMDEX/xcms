@@ -30,14 +30,6 @@ include_once 'bootstrap/start.php';
 
 
 
-//require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
-//
-////General class
-//if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
-//	include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-
-
-require_once(App::getValue('XIMDEX_ROOT_PATH') . '/inc/fsutils/DiskUtils.class.php');
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -65,7 +57,7 @@ function check_php_version()
 function check_config_files()
 {
     $install_params = file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
-    $install_modules = file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.conf');
+    $install_modules = file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.php');
 
     if (!$install_params || !$install_modules) {
         $_GET["action"] = "installer";

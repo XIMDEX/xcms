@@ -20,23 +20,20 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-	
 /**
-* The string "user:passwd" will be replaced by the authentication information introduced from webDAV client.
-* Session init data sould not been specified in any Ximdex instance.
-*/
-	
+ * The string "user:passwd" will be replaced by the authentication information introduced from webDAV client.
+ * Session init data sould not been specified in any Ximdex instance.
+ */
+
 $davconfig = array();
-	
+
 $davconfig[0]['mountpoint'] = '/';
 $davconfig[0]['uri'] = 'xnodes://user:passwd@localhost/Proyectos';
-	
+
 //$davconfig[1]['mountpoint'] = '/tmp';
 //$davconfig[1]['uri'] = 'file://localhost/tmp';
-	
-?>

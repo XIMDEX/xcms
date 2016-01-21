@@ -20,26 +20,25 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  *
  */
-class Getter_mail extends Getter {
-	
-	function Getter_mail($layout, $params) {
-		parent::Getter($layout, $params);
-	}
+class Getter_mail extends Getter
+{
 
-	function read() {
-		return null;
-	}
+    function Getter_mail($layout, $params)
+    {
+        parent::Getter($layout, $params);
+    }
+
+    function read()
+    {
+        return null;
+    }
 
 }
-
-?>

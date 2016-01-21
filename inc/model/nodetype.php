@@ -65,7 +65,7 @@ class NodeType extends NodeTypes_ORM{
 
 	/**
 	*
-	* @return unknown_type
+	* @return string
 	*/
 	function GetConstructor(){
 		$query = sprintf("SELECT IdAction FROM NodeConstructors WHERE IdNodeType = %d", $this->get('IdNodeType'));

@@ -29,7 +29,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
 //
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
-require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
+require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
 class Action_login extends ActionAbstract {
@@ -148,10 +148,10 @@ class Action_login extends ActionAbstract {
 	}
 
 	function check_disk_space() {
-		$space = include(XIMDEX_ROOT_PATH."/conf/diskspace.conf");
+		$space = include(XIMDEX_ROOT_PATH."/conf/diskspace.php");
 
-		$critical_space = DiskUtils::transform($space["fatal_limit"], "MB");
-		$space_now = DiskUtils::disk_free_space("MB");
+		$critical_space = \Ximdex\Utils\Disk::transform($space["fatal_limit"], "MB");
+		$space_now = \Ximdex\Utils\Disk::disk_free_space("MB");
 
 		if($space_now < $critical_space) {
 			$msg = sprintf(_("Without space in hard disk. Available only %sMB when it's need %sMB"), $space_now, $critical_space);

@@ -20,38 +20,39 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+require_once(XIMDEX_ROOT_PATH . "/inc/serializer/Serializer.class.php");
 
-require_once(XIMDEX_ROOT_PATH."/inc/serializer/Serializer.class.php");
 /**
- * 
+ *
  * @brief Renderer to output using json format
- * 
+ *
  * Renderer to ouput using json format, uses the Serializer class and output in utf-8
  *
  */
-class JsonRenderer extends AbstractRenderer {
+class JsonRenderer extends AbstractRenderer
+{
 
-	/**
-	 * (non-PHPdoc)
-	 * @see inc/mvc/renderers/AbstractRenderer#render($view)
-	 */
-	function render() {
-		//tomamos todos los datos comunes a todos los renders
-		parent::render();
-		
-		$_parameters = $this->getParameters();
+    /**
+     * (non-PHPdoc)
+     * @see inc/mvc/renderers/AbstractRenderer#render($view)
+     */
+    function render()
+    {
+        //tomamos todos los datos comunes a todos los renders
+        parent::render();
 
-		$json = Serializer::encode(SZR_JSON, $_parameters);
+        $_parameters = $this->getParameters();
 
-		echo html_entity_decode($json, ENT_QUOTES, "UTF-8");
+        $json = Serializer::encode(SZR_JSON, $_parameters);
 
-		die();
-	}
+        echo html_entity_decode($json, ENT_QUOTES, "UTF-8");
+
+        die();
+    }
 
 }
-?>

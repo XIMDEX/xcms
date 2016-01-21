@@ -1244,7 +1244,7 @@
     "The node must be previously created": "O nodo deve ser criado previamente",
     "Error in user persistence for %s": "Erro na persist&ecirc;ncia de usu&aacute;rios para %s",
     "The nodetype %d has no create action associated": "O tipo de nodo %d n&atilde;o associou nenhuma a&ccedil;&atilde;o criada",
-    "ERROR: %s/conf/auth.conf not present or badformed configuration": "ERRO: %s/conf/auth.conf n&atilde;o existe ou possui uma configura&ccedil;&atilde;o n&atilde;o v&aacute;lida",
+    "ERROR: %s/conf/auth.php not present or badformed configuration": "ERRO: %s/conf/auth.php n&atilde;o existe ou possui uma configura&ccedil;&atilde;o n&atilde;o v&aacute;lida",
     "ERROR: Selected LDAP as authenticator mechanism but not options provided.": "ERRO: LDAP selecionado como mecanismo autenticador mas sem op&ccedil;&otilde;es fornecidas.",
     "ERROR: Unable to connect to LDAP server @ ": "ERRO: N&atilde;o foi poss&iacute;vel conectar com o servidor LDAP @ ",
     "Command params:": "Par&acirc;metros do comando:",

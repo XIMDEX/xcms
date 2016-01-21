@@ -20,10 +20,9 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 require_once(XIMDEX_XVFS_PATH . '/backends/XVFS_Backend_connector.class.php');
@@ -39,8 +38,7 @@ require_once(XIMDEX_XVFS_PATH . '/backends/XVFS_Backend_connector.class.php');
  * Esto es un workaround necesario cuando se llama al backend desde webDAV.
  *
  */
-class XVFS_Backend_ftp extends XVFS_Backend_connector implements Backend_XVFS_interface {
+class XVFS_Backend_ftp extends XVFS_Backend_connector implements Backend_XVFS_interface
+{
 
 }
-
-?>

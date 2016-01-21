@@ -20,22 +20,19 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+include_once('Getter_file.class.php');
 
- 
+class Getter_rollingfile extends Getter_file
+{
 
-include_once( 'Getter_file.class.php' );
+    function Getter_rollingfile($layout, $params)
+    {
+        parent::Getter($layout, $params);
+    }
 
-class Getter_rollingfile extends Getter_file {
-	
-	function Getter_rollingfile($layout, $params) {
-		parent::Getter($layout, $params);
-	}
-	
 }
-
-?>

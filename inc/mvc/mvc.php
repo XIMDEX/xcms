@@ -20,23 +20,21 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 // TODO: check consistency
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 if (!defined('RENDERER_ROOT_PATH')) {
-	define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers'); 
+    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
 }
 if (!defined('SMARTY_TMP_PATH')) {
-	define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH.App::getValue('TempRoot'));
+    define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontController.class.php');
@@ -44,4 +42,4 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontControllerCLI.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontControllerHTTP.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ApplicationController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionAbstract.class.php');
-?>
+

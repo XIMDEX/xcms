@@ -24,38 +24,35 @@
  *  @version $Revision$
  */
 
+namespace Ximdex\Behaviours ;
 
+class Search extends Base {
 
-class unique extends BehaviorBase {
+    /* Required parameters*/
+    var $required = array('field');
 
-	/* Required */
-	var $required = array('field');
-	
-	function beforeAdd(&$model) {
-		return $this->checkField($model);
-	}
+    var $optional = array('conditions');
+    /**
+     * $options
+     * 		conditions array key value key = value and key = value ...
+     * @params $model mixed
+     */
 
-	function beforeUpdate(&$model) {
-		return $this->checkField($model, $model->get($model->_idField));
-	}
-	
-	private function checkField(&$model, $id = null) {
-		$fieldValue = $model->get($this->options['field']);
-		if (empty($id)) {
-			$result = $model->find(ALL, sprintf('%s = %%s', $this->options['field']), 
-				array($fieldValue));
-		} else {
-			$result = $model->find(ALL, sprintf('%s = %%s AND %s <> %%s', $this->options['field'], $model->_idField), 
-				array($fieldValue, $model->get($model->_idField)));
-		}
+    public function search(&$model, $options) {
+        if (isset($this->options['conditions'])) {
+            $options['conditions'] = array_merge($options['conditions'], $this->options['conditions']);
+        }
 
-		if (!empty($result)) {
-			$this->messages->add(sprintf(_('El campo %s debe ser único'), 
-				$this->options['field']), MSG_TYPE_ERROR);
-			return false;
-		}
-		return true;
-	}
+        $optionsConditions = array();
+        $optionsFields = array();
+
+        foreach ($options['conditions'] as $key => $value) {
+            $optionsConditions[] = sprintf('%s = \'%s\'', $key, $value);
+            $optionsFields[] = $value;
+        }
+
+        $condition = implode(' AND ', $optionsConditions);
+
+        return $model->find($this->options['field'], $condition, $optionsFields, MONO);
+    }
 }
-
-?>

@@ -20,11 +20,9 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
@@ -33,9 +31,10 @@
 if (!defined('XIMDEX_ROOT_PATH'))
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelXml2Xml_ORM extends GenericData   {
+class RelXml2Xml_ORM extends GenericData
+{
     var $_idField = 'id';
     var $_table = 'RelXml2Xml';
     var $_metaData = array(
@@ -51,4 +50,3 @@ class RelXml2Xml_ORM extends GenericData   {
     var $source = 0;
     var $target = 0;
 }
-?>

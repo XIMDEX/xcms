@@ -20,36 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class Languages_ORM extends GenericData   {
-	var $_idField = 'IdLanguage';
-	var $_table = 'Languages';
-	var $_metaData = array(
-				'IdLanguage' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
-				'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
-				'IsoName' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'Name' => array('Name'), 				'IdLanguage' => array('IdLanguage')
-				);
-	var $_indexes = array('IdLanguage');
-	var $IdLanguage;
-	var $Name;
-	var $IsoName;
-	var $Enabled = 1;
+class Languages_ORM extends GenericData
+{
+    var $_idField = 'IdLanguage';
+    var $_table = 'Languages';
+    var $_metaData = array(
+        'IdLanguage' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'IsoName' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'Name' => array('Name'), 'IdLanguage' => array('IdLanguage')
+    );
+    var $_indexes = array('IdLanguage');
+    var $IdLanguage;
+    var $Name;
+    var $IsoName;
+    var $Enabled = 1;
 }
-?>

@@ -28,7 +28,7 @@
 include_once '../../bootstrap/start.php';
 
 
-require(App::getValue('XIMDEX_ROOT_PATH') . '/conf/log.conf');
+require(App::getValue('XIMDEX_ROOT_PATH') . '/conf/log.php');
 include_once(App::getValue('XIMDEX_ROOT_PATH') . "/inc/utils.php");
 ModulesManager::file('/inc/i18n/I18N.class.php');
 

@@ -20,37 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class NodetypeModes_ORM extends GenericData   {
-	var $_idField = 'id';
-	var $_table = 'NodetypeModes';
-	var $_metaData = array(
-				'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
-				'Mode' => array('type' => "enum('C', 'R', 'U', 'D')", 'not_null' => 'true'),
-				'IdAction' => array('type' => "int(11)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('id');
-	var $id;
-	var $IdNodeType;
-	var $Mode;
-	var $IdAction;
+class NodetypeModes_ORM extends GenericData
+{
+    var $_idField = 'id';
+    var $_table = 'NodetypeModes';
+    var $_metaData = array(
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
+        'Mode' => array('type' => "enum('C', 'R', 'U', 'D')", 'not_null' => 'true'),
+        'IdAction' => array('type' => "int(11)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $IdNodeType;
+    var $Mode;
+    var $IdAction;
 }
-?>

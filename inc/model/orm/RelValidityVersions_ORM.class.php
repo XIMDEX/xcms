@@ -20,38 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelValidityVersions_ORM extends GenericData   {
-	var $_idField = 'IdRel';
-	var $_table = 'RelValidityVersions';
-	var $_metaData = array(
-				'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdValidity' => array('type' => "int(12)", 'not_null' => 'true'),
-				'ValidFrom' => array('type' => "date", 'not_null' => 'false'),
-				'ValidTo' => array('type' => "date", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdRel');
-	var $IdRel;
-	var $IdNode;
-	var $IdValidity;
-	var $ValidFrom;
-	var $ValidTo;
+class RelValidityVersions_ORM extends GenericData
+{
+    var $_idField = 'IdRel';
+    var $_table = 'RelValidityVersions';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdValidity' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ValidFrom' => array('type' => "date", 'not_null' => 'false'),
+        'ValidTo' => array('type' => "date", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdNode;
+    var $IdValidity;
+    var $ValidFrom;
+    var $ValidTo;
 }
-?>

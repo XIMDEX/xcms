@@ -20,38 +20,34 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_Dependencies extends Abstract_View implements Interface_View {
-	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-		$content = $this->retrieveContent($pointer);
-		preg_match_all("/@@@RMximdex\.pathto\(([0-9,]+)\)@@@/i", $content, $contentTags);
-		$deps = $contentTags[count($contentTags)-1];
+class View_Dependencies extends Abstract_View implements Interface_View
+{
+    function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    {
+        $content = $this->retrieveContent($pointer);
+        preg_match_all("/@@@RMximdex\.pathto\(([0-9,]+)\)@@@/i", $content, $contentTags);
+        $deps = $contentTags[count($contentTags) - 1];
 
-		/// Y se vuelve a construir
-		foreach($deps as $depID) {
-			$pair = explode(",", $depID);
-			$depID = $pair[0];
+        /// Y se vuelve a construir
+        foreach ($deps as $depID) {
+            $pair = explode(",", $depID);
+            $depID = $pair[0];
 
-			if (array_key_exists(1, $pair)) { 
-				$channelID = $pair[1]; 
-			} else { 
-				$channelID = NULL; 
-			} 
-			$dbObj = App::get('DB');
-			// TODO: Check if this SQL runs OK.
-			$dbObj->Execute("INSERT INTO SynchronizerDependencies (IdSync, IdResource) VALUES (".$frameID.", ".$depID.")");
 
-		}		
-		return $this->storeTmpContent($content);
-	}
+            $channelID = (isset($pair[1]) ) ? $pair[1] : null ;
+            $dbObj = App::get('DB');
+            // TODO: Check if this SQL runs OK.
+            $dbObj->Execute("INSERT INTO SynchronizerDependencies (IdSync, IdResource) VALUES (" . $frameID . ", " . $depID . ")");
+
+        }
+        return $this->storeTmpContent($content);
+    }
 }
-?>

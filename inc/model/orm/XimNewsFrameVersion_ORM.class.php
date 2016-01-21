@@ -20,35 +20,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-
-
-
- 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class XimNewsFrameVersion_ORM extends GenericData   {
-	var $_idField = 'IdSync';
-	var $_table = 'XimNewsFrameVersion';
-	var $_metaData = array(
-				'IdSync' => array('type' => 'int(12)', 'not_null' => 'true', 'primary_key' => true),
-				'IdVersion' => array('type' => 'int(12)', 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdSync');
-	var $IdSync = 0;
-	var $IdVersion = 0;	
+class XimNewsFrameVersion_ORM extends GenericData
+{
+    var $_idField = 'IdSync';
+    var $_table = 'XimNewsFrameVersion';
+    var $_metaData = array(
+        'IdSync' => array('type' => 'int(12)', 'not_null' => 'true', 'primary_key' => true),
+        'IdVersion' => array('type' => 'int(12)', 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdSync');
+    var $IdSync = 0;
+    var $IdVersion = 0;
 }
-?>

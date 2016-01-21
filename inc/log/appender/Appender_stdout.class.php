@@ -20,33 +20,32 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  *
  */
-class Appender_stdout extends Appender {
+class Appender_stdout extends Appender
+{
 
-	//var $_layout;
+    //var $_layout;
 
-	function Appender_stdout(&$params) {
+    function Appender_stdout(&$params)
+    {
 
-		parent::Appender($params);
-	}
+        parent::Appender($params);
+    }
 
-	function write(&$event) {
+    function write(&$event)
+    {
 
-		parent::write($event);
+        parent::write($event);
 
-		echo $this->_msg;
-		echo "\r\n";
-	}
+        echo $this->_msg;
+        echo "\r\n";
+    }
 
 }
-
-?>

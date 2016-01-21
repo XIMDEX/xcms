@@ -20,37 +20,35 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class SearchFilters_ORM extends GenericData   {
-	var $_idField = 'Id';
-	var $_table = 'SearchFilters';
-	var $_metaData = array(
-				'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'Name' => array('type' => "varchar(100)", 'not_null' => 'false'),
-				'Handler' => array('type' => "varchar(5)", 'not_null' => 'true'),
-				'Filter' => array('type' => "text", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-				'U_FILTER' => array('Name')
-				);
-	var $_indexes = array('Id');
-	var $Id;
-	var $Name;
-	var $Handler;
-	var $Filter;
+class SearchFilters_ORM extends GenericData
+{
+    var $_idField = 'Id';
+    var $_table = 'SearchFilters';
+    var $_metaData = array(
+        'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(100)", 'not_null' => 'false'),
+        'Handler' => array('type' => "varchar(5)", 'not_null' => 'true'),
+        'Filter' => array('type' => "text", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'U_FILTER' => array('Name')
+    );
+    var $_indexes = array('Id');
+    var $Id;
+    var $Name;
+    var $Handler;
+    var $Filter;
 }
-?>

@@ -20,19 +20,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+require_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 
-require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
+class Widget_browserwindow extends Widget_Abstract
+{
 
-class Widget_browserwindow extends Widget_Abstract {
 
-
-	//public function process($params) {}
+    //public function process($params) {}
 
 }
-
-?>

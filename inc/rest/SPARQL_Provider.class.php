@@ -20,10 +20,9 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 // Include defined rest service providers.
@@ -33,16 +32,17 @@ require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/dbpedia/DBpedia.class.php')
 //define('RDFAPI_INCLUDE_DIR', XIMDEX_ROOT_PATH . '/extensions/rdfapi-php/api/');
 //require_once(RDFAPI_INCLUDE_DIR . 'RdfAPI.php');
 
-abstract class SPARQL_Provider {
+abstract class SPARQL_Provider
+{
 
-	protected $sparql_client;
-	protected $sparql_courier;
+    protected $sparql_client;
+    protected $sparql_courier;
 
-	public function __construct($endpoint) {
+    public function __construct($endpoint)
+    {
 
-		$this->sparql_client = ModelFactory::getSparqlClient($endpoint);
-		$this->sparql_courier = new ClientQuery();
-	}
+        $this->sparql_client = ModelFactory::getSparqlClient($endpoint);
+        $this->sparql_courier = new ClientQuery();
+    }
 
 }
-?>

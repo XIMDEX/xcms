@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Mechanism.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/user.php');
 // Include Auth Configuration.
-include_once(XIMDEX_ROOT_PATH . "/conf/auth.conf");
+include_once(XIMDEX_ROOT_PATH . "/conf/auth.php");
 
 
 /**
@@ -46,12 +46,12 @@ class Authenticator
 
     /**
      *
-     * @var unknown_type
+     * @var mixed
      */
     var $mech_factory;
     /**
      *
-     * @var unknown_type
+     * @var string
      */
     var $mech_type;
 
@@ -94,7 +94,7 @@ class Authenticator
 
         } else {
 
-            print(sprintf(_("ERROR: %s/conf/auth.conf not present or badformed configuration"), XIMDEX_ROOT_PATH) . "\n");
+            print(sprintf(_("ERROR: %s/conf/auth.php not present or badformed configuration"), XIMDEX_ROOT_PATH) . "\n");
             exit();
         }
     }
@@ -103,7 +103,7 @@ class Authenticator
      *
      * @param $name
      * @param $password
-     * @return unknown_type
+     * @return boolean
      */
     function login($name, $password)
     {
@@ -129,10 +129,10 @@ class Authenticator
             $user_locale = $user->get('Locale');
 
             if (empty($user_locale))
-                $user_locale = \App::getValue( 'locale');
+                $user_locale = \App::getValue('locale');
 
             // STOPPER
-            $stopperFilePath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/login.stop";
+            $stopperFilePath = \App::getValue("AppRoot") . \App::getValue("TempRoot") . "/login.stop";
             if ($user->getID() != "301" && file_exists($stopperFilePath)) {
                 // login closed
                 return false;
@@ -163,29 +163,19 @@ class Authenticator
             \Ximdex\Utils\Session::set('loginTimestamp', time());
 
             return true;
-        } else {
-            // Not a valid user.
-
-            return false;
         }
+        return false;
     }
 
     /**
      *
-     * @return unknown_type
      */
     function logout()
     {
 
         // TODO: Add new session system.
         \Ximdex\Utils\Session::destroy();
-        /*
-                @session_start();
-                @session_unregister("logged");
-                @session_unregister("userID");
-                @session_unset();
-                @session_destroy();
-        */
+
     }
 
 }

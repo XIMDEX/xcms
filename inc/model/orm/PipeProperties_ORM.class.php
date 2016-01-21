@@ -20,35 +20,31 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class PipeProperties_ORM extends GenericData   {
-	var $_idField = 'id';
-	var $_table = 'PipeProperties';
-	var $_metaData = array(
-				'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdPipeTransition' => array('type' => "int(11)", 'not_null' => 'true'),
-				'Name' => array('type' => "varchar(255)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('id');
-	var $id;
-	var $IdPipeTransition;
-	var $Name;
+class PipeProperties_ORM extends GenericData
+{
+    var $_idField = 'id';
+    var $_table = 'PipeProperties';
+    var $_metaData = array(
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdPipeTransition' => array('type' => "int(11)", 'not_null' => 'true'),
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $IdPipeTransition;
+    var $Name;
 }
-?>

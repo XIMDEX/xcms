@@ -20,27 +20,26 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  *
  */
-class Layout_Web extends Layout {
+class Layout_Web extends Layout
+{
 
-	function Layout_Web($template) {
+    function Layout_Web($template)
+    {
 
-		parent::Layout($template);
-	}
+        parent::Layout($template);
+    }
 
-	function & format(&$event) {
-		// implement...
-	}
+    function & format(&$event)
+    {
+        // implement...
+    }
 
 }
-
-?>

@@ -20,35 +20,31 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelTemplateContainer_ORM extends GenericData   {
-	var $_idField = 'IdRel';
-	var $_table = 'RelTemplateContainer';
-	var $_metaData = array(
-				'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdTemplate' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdContainer' => array('type' => "int(12)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdRel');
-	var $IdRel;
-	var $IdTemplate = 0;
-	var $IdContainer = 0;
+class RelTemplateContainer_ORM extends GenericData
+{
+    var $_idField = 'IdRel';
+    var $_table = 'RelTemplateContainer';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdTemplate' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdContainer' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdTemplate = 0;
+    var $IdContainer = 0;
 }
-?>

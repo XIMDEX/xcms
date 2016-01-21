@@ -33,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH'))
 //  Se incluyen las otras librerias de utilidades a partir de utils.php, que es incluida por todo el sistema.
 
 ModulesManager::file('/conf/install-params.conf.php');
-ModulesManager::file('/conf/install-modules.conf');
+ModulesManager::file('/conf/install-modules.php');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file("/inc/persistence/datafactory.php");
 ModulesManager::file("/inc/sync/synchro.php");

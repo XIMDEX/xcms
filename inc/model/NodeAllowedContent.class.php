@@ -20,33 +20,30 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
- 
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 }
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/NodeAllowedContents_ORM.class.php';
 
-class NodeAllowedContent extends NodeAllowedContents_ORM {
-	
-	function getAllowedChilds($idnodetype){
-		$result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype,$idnodetype), MONO);
-		return $result;
-	}
-        
-        
-        function getAllowedParents($idNodetype){
-        
-            $result = $this->find("IdNodeType", "NodeType=%s", array($idNodetype), MONO);
-            return $result? array_values(array_unique($result)):array();
-        }
+class NodeAllowedContent extends NodeAllowedContents_ORM
+{
+
+    function getAllowedChilds($idnodetype)
+    {
+        $result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MONO);
+        return $result;
+    }
+
+
+    function getAllowedParents($idNodetype)
+    {
+
+        $result = $this->find("IdNodeType", "NodeType=%s", array($idNodetype), MONO);
+        return $result ? array_values(array_unique($result)) : array();
+    }
 }
-?>

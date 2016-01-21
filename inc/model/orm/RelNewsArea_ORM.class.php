@@ -20,37 +20,31 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-
-
-
- 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class RelNewsArea_ORM extends GenericData   {
-	var $_idField = 'IdRel';
-	var $_table = 'RelNewsArea';
-	var $_metaData = array(
-				'IdRel' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNew' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'IdArea' => array('type' => 'int(12)', 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdRel');
-	var $IdRel;
-	var $IdNew = 0;
-	var $IdArea = 0;	
+class RelNewsArea_ORM extends GenericData
+{
+    var $_idField = 'IdRel';
+    var $_table = 'RelNewsArea';
+    var $_metaData = array(
+        'IdRel' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNew' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IdArea' => array('type' => 'int(12)', 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdNew = 0;
+    var $IdArea = 0;
 }
-?>

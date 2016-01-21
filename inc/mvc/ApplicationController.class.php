@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionFactory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
-require_once(XIMDEX_ROOT_PATH . '/conf/stats.conf');
+require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/Status.class.php', 'ximADM');
 // Implement \Ximdex\Utils\Session::check() as Filter.
 

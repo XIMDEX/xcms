@@ -20,8 +20,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 //phpinfo();
@@ -32,13 +32,12 @@ include_once '../bootstrap/start.php';
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)."/../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
 
 //General class
-if(file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php') )
-	include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
+if (file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php'))
+    include_once(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/DiskUtils.class.php');
 
 //Including composer autoloader
 //ModulesManager::file('/vendor/autoload.php');
@@ -50,94 +49,97 @@ ModulesManager::file('/inc/mvc/FrontControllerAPI.class.php');
 ModulesManager::file('/api/interfaces/NoSecuredAction.iface.php');
 ModulesManager::file('/api/interfaces/SecuredAction.iface.php');
 
-function echo_gt_or_not($msg) {
-	if (function_exists('_')) {
-        	return _($msg);
-	}
-	return $msg;
+function echo_gt_or_not($msg)
+{
+    if (function_exists('_')) {
+        return _($msg);
+    }
+    return $msg;
 }
 
-function check_php_version() {
-	if (version_compare(PHP_VERSION,'5','<')) {
-		$msg = "ERROR: PHP5 is needed. PHP version detected: [" . PHP_VERSION . "].";
-		die(echo_gt_or_not($msg));
-	}
+function check_php_version()
+{
+    if (version_compare(PHP_VERSION, '5', '<')) {
+        $msg = "ERROR: PHP5 is needed. PHP version detected: [" . PHP_VERSION . "].";
+        die(echo_gt_or_not($msg));
+    }
 }
 
-function check_config_files() {
-	$install_params = file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
-	$install_modules = file_exists(XIMDEX_ROOT_PATH .'/conf/install-modules.conf');
+function check_config_files()
+{
+    $install_params = file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php');
+    $install_modules = file_exists(XIMDEX_ROOT_PATH . '/conf/install-modules.php');
 
-	if (!$install_params || !$install_modules) {
-		$_GET["action"] = "installer";
-	}
+    if (!$install_params || !$install_modules) {
+        $_GET["action"] = "installer";
+    }
 }
 
-function checkFolders () {
-	$msg = null;
+function checkFolders()
+{
+    $msg = null;
 
-	$foldersToCheck = array(
-				array('FOLDER' => '/data/cache', 'MODULE' => ''),
-				array('FOLDER' => '/data/files', 'MODULE' => ''),
-				array('FOLDER' => '/data/nodes', 'MODULE' => ''),
-				array('FOLDER' => '/data/sync', 'MODULE' => ''),
-				array('FOLDER' => '/data/tmp', 'MODULE' => ''),
-				array('FOLDER' => '/data/tmp/uploaded_files', 'MODULE' => ''),
-				array('FOLDER' => '/data/tmp/js', 'MODULE' => ''),
-				array('FOLDER' => '/data/tmp/templates_c', 'MODULE' => ''),
-				array('FOLDER' => '/data/trash', 'MODULE' => 'ximTRASH'),
-				array('FOLDER' => '/logs', 'MODULE' => '')
-				);
-	reset($foldersToCheck);
-	while(list(, $folderInfo) = each($foldersToCheck)) {
-		if (!empty($folderInfo['MODULE'])) {
-			if (!ModulesManager::isEnabled($folderInfo['MODULE'])) {
-				continue;
-			}
-		}
-		$folder = XIMDEX_ROOT_PATH . $folderInfo['FOLDER'];
-		if (!is_dir($folder)) {
-			$msg = sprintf(echo_gt_or_not("Folder %s could not be found"), $folder);
-			continue;
-		}
+    $foldersToCheck = array(
+        array('FOLDER' => '/data/cache', 'MODULE' => ''),
+        array('FOLDER' => '/data/files', 'MODULE' => ''),
+        array('FOLDER' => '/data/nodes', 'MODULE' => ''),
+        array('FOLDER' => '/data/sync', 'MODULE' => ''),
+        array('FOLDER' => '/data/tmp', 'MODULE' => ''),
+        array('FOLDER' => '/data/tmp/uploaded_files', 'MODULE' => ''),
+        array('FOLDER' => '/data/tmp/js', 'MODULE' => ''),
+        array('FOLDER' => '/data/tmp/templates_c', 'MODULE' => ''),
+        array('FOLDER' => '/data/trash', 'MODULE' => 'ximTRASH'),
+        array('FOLDER' => '/logs', 'MODULE' => '')
+    );
+    reset($foldersToCheck);
+    while (list(, $folderInfo) = each($foldersToCheck)) {
+        if (!empty($folderInfo['MODULE'])) {
+            if (!ModulesManager::isEnabled($folderInfo['MODULE'])) {
+                continue;
+            }
+        }
+        $folder = XIMDEX_ROOT_PATH . $folderInfo['FOLDER'];
+        if (!is_dir($folder)) {
+            $msg = sprintf(echo_gt_or_not("Folder %s could not be found"), $folder);
+            continue;
+        }
 
-		$file = FsUtils::getUniqueFile($folder);
-		$file = $folder . DIRECTORY_SEPARATOR . $file;
+        $file = FsUtils::getUniqueFile($folder);
+        $file = $folder . DIRECTORY_SEPARATOR . $file;
 
-		FsUtils::file_put_contents($file, 'test');
+        FsUtils::file_put_contents($file, 'test');
 
-		if (FsUtils::file_get_contents($file) != 'test') {
-			$msg = sprintf(echo_gt_or_not("Temporary file created in %s could not be read or written"), $folder);
-		}
+        if (FsUtils::file_get_contents($file) != 'test') {
+            $msg = sprintf(echo_gt_or_not("Temporary file created in %s could not be read or written"), $folder);
+        }
 
-		if (is_file($file)) {
-			FsUtils::delete($file);
-		}
-	}
+        if (is_file($file)) {
+            FsUtils::delete($file);
+        }
+    }
 
 
-	if(!empty($msg))
-		die(echo_gt_or_not($msg));
+    if (!empty($msg))
+        die(echo_gt_or_not($msg));
 
 }
 
-function goLoadAction() {
-	header(sprintf("Location: %s", \App::getValue( 'UrlRoot')));
+function goLoadAction()
+{
+    header(sprintf("Location: %s", \App::getValue('UrlRoot')));
 }
 
 //Main thread
-if(!file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php')){
-	header(sprintf("Location: %s", "./xmd/uninstalled/index.html"));
-}
-else{
-	$locale = \Ximdex\Utils\Session::get('locale');
-	I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
+if (!file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php')) {
+    header(sprintf("Location: %s", "./xmd/uninstalled/index.html"));
+} else {
+    $locale = \Ximdex\Utils\Session::get('locale');
+    I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
 
-	check_php_version();
-	checkFolders();
-	check_config_files();
+    check_php_version();
+    checkFolders();
+    check_config_files();
 
-	$frontController = new FrontControllerAPI();
-	$frontController->dispatch();
+    $frontController = new FrontControllerAPI();
+    $frontController->dispatch();
 }
-?>

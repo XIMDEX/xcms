@@ -24,43 +24,15 @@
  *  @version $Revision$
  */
 
+/* Configuration params for publication.
+ * The var %doc will be replaced by the doc to publish name.
+ * By default, notifications are no.
+ */
 
+$message= array(
+	'required' => false,
+	'defaultMessage' => 'The document %doc is going to be moved to the state %state.'
+);
 
-
-class BehaviorBase {
-	var $messages = null;
-	var $options = array();
-	var $required = array();
-	var $optional = array();
-	
-	function __construct($options) {
-		$this->messages = new \Ximdex\Utils\Messages();
-		$this->_checkFields($options);
-		$this->options = $options;
-	}
-	
-	private function _checkFields($options) {
-		foreach ($this->required as $field) {
-			if (!array_key_exists($field ,$options)) {
-				XMD_Log::fatal(sprintf('Field %s required in behaviour %s', 
-					$field, get_class($this)));
-			}
-		}
-		
-		$allowedFields = array_merge($this->required, $this->optional);
-		$fieldsKeys = array_keys($options);
-		$extraFields = array_diff($fieldsKeys, $allowedFields); 
-		
-		if (count($extraFields) > 0) {
-			foreach ($extraFields as $field) {
-				XMD_Log::warning(sprintf('Field %s not expected in behaviour %s', 
-					$field, get_class($this)));
-			}
-		}
-	}
-	
-	public function tearDown() {
-		return true;
-	}
-}
-?>
+$message['defaultMessage']=_('The document %doc is going to be moved to the state %state.');
+return $message;

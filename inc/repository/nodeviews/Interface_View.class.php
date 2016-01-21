@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,14 +21,10 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-interface Interface_View {
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL);
+interface Interface_View
+{
+    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL);
 }
-?>

@@ -20,32 +20,28 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
- 
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 }
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeTypeMetadata_ORM.class.php';
 
-class RelNodeTypeMetadata extends RelNodeTypeMetadata_ORM {
+class RelNodeTypeMetadata extends RelNodeTypeMetadata_ORM
+{
 
 
-	public static function buildByIdNodeType($idNodeType){
-		$arrayResult = $this->find("idRel", "idNodeType=%s",array($idNodeType),MONO);
-		if ($arrayResult && is_array($arrayResult) && count($arrayResult)){
-			$relNodeTypeMetadata = new RelNodeTypeMetadata($arrayResult[0]);
-			return $relNodeTypeMetadata;
-		}
-		return false;
-	}
-	
+    public function buildByIdNodeType($idNodeType)
+    {
+        $arrayResult = $this->find("idRel", "idNodeType=%s", array($idNodeType), MONO);
+        if ($arrayResult && is_array($arrayResult) && count($arrayResult)) {
+            $relNodeTypeMetadata = new RelNodeTypeMetadata($arrayResult[0]);
+            return $relNodeTypeMetadata;
+        }
+        return false;
+    }
+
 }
-?>

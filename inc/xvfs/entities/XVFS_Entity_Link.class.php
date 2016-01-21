@@ -20,36 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 require_once XIMDEX_ROOT_PATH . '/inc/xvfs/XVFS_Entity.class.php';
 
 /**
-*  @brief Represents XVFS links as entities.
-*/
+ * @brief Represents XVFS links as entities.
+ */
+class XVFS_Entity_Link extends XVFS_Entity
+{
 
-class XVFS_Entity_Link extends XVFS_Entity {
-	
-	/**
-	 * Constructor. Necesita como parametro el path en el backend.
-	 * 
-	 * @param string bpath Backendpath
-	 */
-	function XVFS_Entity_Link($bpath=null) {
-		
-		parent::XVFS_Entity($bpath);
-    	
-		// Si el nodo existe y no es un fichero se limpia la estructura
-		if ($this->get('exists') && !$this->get('islink')) $this->clear();
-		// Si no existe indico que es un fichero
-		if (!$this->get('exists')) $this->set('islink', true);
-	}
-	
+    /**
+     * Constructor. Necesita como parametro el path en el backend.
+     *
+     * @param string bpath Backendpath
+     */
+    function XVFS_Entity_Link($bpath = null)
+    {
+
+        parent::XVFS_Entity($bpath);
+
+        // Si el nodo existe y no es un fichero se limpia la estructura
+        if ($this->get('exists') && !$this->get('islink')) $this->clear();
+        // Si no existe indico que es un fichero
+        if (!$this->get('exists')) $this->set('islink', true);
+    }
+
 }
-
-?>

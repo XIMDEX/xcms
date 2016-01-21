@@ -25,35 +25,32 @@
  */
 
 
+/**
+* The string "user:passwd" will be replaced by the authentication information introduced from webDAV client
+* Session init data should not been specified here in any Ximdex instance.
+*
+* Resources should be mounted in correct order.
+*/
 
-class searcheable extends BehaviorBase {
-
-	/* Required parameters*/
-	var $required = array('field');
-	
-	var $optional = array('conditions');
-	/**
-	 * $options
-	 * 		conditions array key value key = value and key = value ...
-	 */	
-	
-	public function search(&$model, $options) {
-		if (isset($this->options['conditions'])) {
-			$options['conditions'] = array_merge($options['conditions'], $this->options['conditions']);
-		}
-		
-		$optionsConditions = array();
-		$optionsFields = array();
-		
-		foreach ($options['conditions'] as $key => $value) {
-			$optionsConditions[] = sprintf('%s = \'%s\'', $key, $value);
-			$optionsFields[] = $value;
-		}
-		
-		$condition = implode(' AND ', $optionsConditions);
-		
-		return $model->find($this->options['field'], $condition, $optionsFields, MONO);
-	}
-}
-
-?>
+return array(
+	'defaultDatasource' => 'Composer',
+	'datasources' => array(
+		'Composer' => array(),
+		'XVFS' => array(
+			'MOUNTPOINTS' => array(
+				array(
+					'mountpoint' => '/',
+					'uri' => 'xnodes://user:passwd@localhost/'
+				)/*,
+				array(
+					'mountpoint' => '/web',
+					'uri' => 'file:///var/www/'
+				),
+				array(
+					'mountpoint' => '/tmp',
+					'uri' => 'file:///tmp/'
+				)*/
+			)
+		)
+	)
+);

@@ -31,7 +31,7 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 ### Requirements
 *  A terminal with Telnet or SSH.
 *  A user with enough permissions to create the directory where Ximdex CMS will be installed (under a document root for your web server)
-*  Enough free space in the filesystem. See 'conf/diskspace.conf' file for further information.
+*  Enough free space in the filesystem. See 'conf/diskspace.php' file for further information.
 *  A database as MySQL Server (>= 5.1) or MariaDB (>=5.5) and a DB user that can create the Ximdex Database.
 *  Apache2 web server with modules libapache2-mod-php5, apache-mpm-worker (recommended).
 *  PHP (>= 5.2.5).

@@ -20,11 +20,9 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
@@ -33,19 +31,20 @@
 if (!defined('XIMDEX_ROOT_PATH'))
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class NoActionsInNode_ORM extends GenericData   {
+class NoActionsInNode_ORM extends GenericData
+{
     public $_idField = 'idNamespace';
     public $_table = 'NoActionsInNode';
     public $_metaData = array(
-                'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
-                'IdAction' => array('type' => "varchar(255)", 'not_null' => 'true')
-                );
+        'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdAction' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
     var $_uniqueConstraints = array(
-                'uniq' => array('IdNode', 'IdAction')
-                );
+        'uniq' => array('IdNode', 'IdAction')
+    );
     public $IdNode;
-        public $IdAction;
+    public $IdAction;
 }
-?>
+

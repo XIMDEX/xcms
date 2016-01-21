@@ -20,22 +20,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
- 
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 }
 
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelStrdocTemplate_ORM.class.php';
 
-class RelStrdocTemplate extends RelStrdocTemplate_ORM {
+class RelStrdocTemplate extends RelStrdocTemplate_ORM
+{
 }
-?>

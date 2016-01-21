@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,19 +21,14 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class SyntaxParser
+{
 
+    function parse($text, $level, $sort)
+    {
+    }
 
-
- 
- 
- class SyntaxParser {
- 	
- 	function parse($text, $level, $sort) {
- 	}
- 	
- }
- 
-?>
+}

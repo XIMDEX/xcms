@@ -20,39 +20,37 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
 
-class Links_ORM extends GenericData   {
-	var $_idField = 'IdLink';
-	var $_table = 'Links';
-	var $_metaData = array(
-				'IdLink' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'Url' => array('type' => "blob", 'not_null' => 'true'),
-				'Error' => array('type' => "int(12)", 'not_null' => 'false'),
-				'ErrorString' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'CheckTime' => array('type' => "int(12)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-				'IdLink' => array('IdLink')
-				);
-	var $_indexes = array('IdLink');
-	var $IdLink;
-	var $Url;
-	var $Error;
-	var $ErrorString;
-	var $CheckTime;
+class Links_ORM extends GenericData
+{
+    var $_idField = 'IdLink';
+    var $_table = 'Links';
+    var $_metaData = array(
+        'IdLink' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Url' => array('type' => "blob", 'not_null' => 'true'),
+        'Error' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ErrorString' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'CheckTime' => array('type' => "int(12)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'IdLink' => array('IdLink')
+    );
+    var $_indexes = array('IdLink');
+    var $IdLink;
+    var $Url;
+    var $Error;
+    var $ErrorString;
+    var $CheckTime;
 }
-?>

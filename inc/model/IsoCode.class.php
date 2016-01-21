@@ -20,20 +20,20 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/IsoCodes_ORM.class.php");
 
-class IsoCode extends IsoCodes_ORM {
+class IsoCode extends IsoCodes_ORM
+{
 
-   	var $_fieldsToTraduce = array('Name');
+    var $_fieldsToTraduce = array('Name');
 }
-?>
+

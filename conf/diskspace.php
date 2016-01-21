@@ -25,41 +25,8 @@
  */
 
 
-/*
- * Sender e-mail address.
- */
-define('FROM', 'notify@ximdex.org');
-
-/*
- * Sender name.
- */
-define('FROM_NAME', 'Ximdex Mail System');
-
-
-/* 
- * SMTP authentication
- */
-define('SMTP_AUTH', false);
-
-/*
- * All hosts should be separated by ','
- * A different port ca be specified by ':'.
- * They will be checked in order.
- * (i.e. "smtp1.example.com:25;smtp2.example.com")
- */
-define('SMTP_SERVER', 'localhost');
-
-/*
- * SMTP authentication configuration params
- * (needed if SMTP_AUTH = true)
- */
-define('AUTH_USERNAME', 'username');
-define('AUTH_PASSWD', 'passwd');
-define('AUTH_HOST', 'localhost');
-
-/*
- * Mail system debug.
- */
-define('MAIL_DEBUG', false);
-
-?>
+return array(
+	'fatal_limit' => '128MB',
+	'error_limit' => '256MB',
+	'warning_limit' => '1GB'
+);

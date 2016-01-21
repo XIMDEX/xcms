@@ -141,7 +141,7 @@ class Action_workflow_forward extends ActionAbstract {
         $nextStateName = $workflowNext->GetName();
 
         //Loading Notifications default values
-        $conf = ModulesManager::file('/conf/notifications.conf');
+        $conf = ModulesManager::file('/conf/notifications.php');
         $defaultMessage = $this->buildMessage($conf["defaultMessage"], $nextStateName, $node->get('Name'));
         $values = array(
             'group_state_info' => Group::getSelectableGroupsInfo($idNode),
@@ -195,7 +195,7 @@ class Action_workflow_forward extends ActionAbstract {
     /**
      * Replace %doc and %state macros in default Message.
      *
-     * The message is getted from conf/notifications.conf
+     * The message is getted from conf/notifications.php
      *
      * @return string with the text replaced.
      */
@@ -229,7 +229,7 @@ class Action_workflow_forward extends ActionAbstract {
         $idNode = $this->request->getParam('nodeid');
         $nextState = $this->request->getParam('nextstate');
 
-        $conf = ModulesManager::file('/conf/notifications.conf');
+        $conf = ModulesManager::file('/conf/notifications.php');
 
         $node = new Node($idNode);
         $workflow = new WorkFlow($idNode, $nextState);

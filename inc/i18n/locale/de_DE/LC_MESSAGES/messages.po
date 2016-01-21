@@ -4631,7 +4631,7 @@ msgstr "Sind Sie sicher, dass Sie die &Auml;nderungen &uuml;bernehmen m&ouml;cht
 
 
 # ################################################ CONF ############################################
-#: /conf/notifications.conf
+#: /conf/notifications.php
 msgid "The document %doc is going to be sent to publication queue"
 msgstr "Das Dokument %doc wird an die Ver&ouml;ffentlichungswarteschlange gesendet"
 
@@ -4698,8 +4698,8 @@ msgid "The nodetype %d has no create action associated"
 msgstr "Der Knotentyp %d ist mit keiner Erstellungsaktion verbunden"
 
 #: /inc/auth/Authenticator.class.php
-msgid "ERROR: %s/conf/auth.conf not present or badformed configuration"
-msgstr "FEHLER: %s/conf/auth.conf existiert nicht oder hat eine ung&uuml;ltige Konfiguration"
+msgid "ERROR: %s/conf/auth.php not present or badformed configuration"
+msgstr "FEHLER: %s/conf/auth.php existiert nicht oder hat eine ung&uuml;ltige Konfiguration"
 
 #: inc/auth/mechs/Mechanism_LDAP.class.php
 msgid "ERROR: Selected LDAP as authenticator mechanism but not options provided."
