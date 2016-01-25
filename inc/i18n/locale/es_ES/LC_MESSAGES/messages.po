@@ -544,15 +544,15 @@ msgid "Create section"
 msgstr "Crear sección"
 
 #: /actions/addworkflow/Action_addworkflow.class.php
-msgid "Workflow could not be successfully inserted"
-msgstr "No se ha podido insertar el workflow"
+# msgid "Workflow could not be successfully inserted"
+# msgstr "No se ha podido insertar el workflow"
 
 msgid "Workflow has been successfully inserted"
 msgstr "El workflow se ha introducido correctamente"
 
 #: /actions/addworkflow/template/Smarty/index.tpl
-msgid "Add workflow"
-msgstr "Añadir workflow"
+# msgid "Add workflow"
+# msgstr "Añadir workflow"
 
 msgid "Name of the new workflow"
 msgstr "Nombre del nuevo workflow"
