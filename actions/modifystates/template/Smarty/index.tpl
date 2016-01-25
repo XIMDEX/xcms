@@ -90,7 +90,7 @@
             <br>
             <div class="checkbox {if $is_workflow_master == true}disabled{/if}">
                 <label>
-                    <input type="checkbox" name="is_workflow_master" id="is_workflow_master" {if $is_workflow_master == true}checked="checked" disabled="disabled"{/if}/> {t}This workflow will behave as default item{/t}
+                    <input type="checkbox" name="is_workflow_master" id="is_workflow_master" {if $is_workflow_master == true}checked="checked" disabled="disabled"{/if}/> {t}This workflow will behave as default item{/t}.
                 </label>
             </div>
         </fieldset>
