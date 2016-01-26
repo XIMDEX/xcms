@@ -71,7 +71,7 @@
     <div class="aside">
         <h1><a href="http://www.ximdex.com">ximdexl</a></h1>
         <ul class="installer">
-        <?php        
+        <?php
             foreach ($this->steps as $index => $step) {
                 $extraStyle="";
                 $extraStyle = ($index < $this->currentStep)? "installer_step-completed": $extraStyle;
@@ -83,10 +83,10 @@
                          echo $step["description"];
                         ?>
                     </span>
-                </li>    
+                </li>
                 <?php
             }
-        ?>            
+        ?>
         </ul>
 
         <ul class="social">
@@ -105,9 +105,11 @@
             <a target="_blank" href="http://www.ximdex.com">www.ximdex.com</a>
         </div>
     </div><div class="content step-<?php echo $this->installManager->currentState; ?>">
-        <?php 
-            include ($includeTemplateStep);
-        ?>       
+        <?php
+        include_once($includeTemplateStep);
+
+
+        ?>
     </div>
 
 </body>

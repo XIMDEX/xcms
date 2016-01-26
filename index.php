@@ -30,7 +30,6 @@ include_once 'bootstrap/start.php';
 
 
 
-
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');
@@ -122,9 +121,12 @@ function goLoadAction()
 
 //Main thread
 if (!InstallController::isInstalled()) {
+
     $installController = new InstallController();
+
     $installController->dispatch();
-} else {
+
+ } else {
     $locale = \Ximdex\Utils\Session::get('locale');
     I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
 

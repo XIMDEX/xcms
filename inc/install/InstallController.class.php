@@ -59,15 +59,28 @@ class InstallController extends IController {
 	}
 
 	/**
-	 * Run the selected method for the current step.	 
+	 * Indicate if Ximdex is installed.
+	 * @return boolean True if installed, false otherwise
+	 */
+	public static function isInstalled(){
+
+		$installManager = new InstallManager(InstallManager::WEB_MODE);
+		return $installManager->isInstalled();
+	}
+
+	/**
+	 * Run the selected method for the current step.
 	 */
 	public function dispatch(){
 
 		//Set request with $_FILES, $_POST and $_GET arrays
 		$this->setToRequest();
-		
-		//Instancing the step object, 
-		//setting step properties 
+
+
+
+
+		//Instancing the step object,
+		//setting step properties
 		//and get the method to run
 		$installStep = $this->compose();
 		$method = (null !== $this->request->getParam('method'))? $this->request->getParam('method') : "index";
@@ -85,9 +98,15 @@ class InstallController extends IController {
 			}
 
 			if (method_exists($installStep, $method)){
-				$installStep->$method();			
+				$installStep->$method();
 			}
-		} 
+		}
+	}
+
+	private function setToRequest() {
+		$this->request->setParameters($_FILES);
+		$this->request->setParameters($_GET);
+		$this->request->setParameters($_POST);
 	}
 
 	/**
@@ -96,23 +115,7 @@ class InstallController extends IController {
 	 */
 	public function compose(){
 
-		return InstallStepFactory::getStep($this->steps, $this->currentState);		
-	}
-
-	/**
-	 * Indicate if Ximdex is installed.
-	 * @return boolean True if installed, false otherwise
-	 */
-	public static function isInstalled(){
-
-		$installManager = new InstallManager(InstallManager::WEB_MODE);
-		return $installManager->isInstalled();
-	}
-
-	private function setToRequest() {
-		$this->request->setParameters($_FILES);
-		$this->request->setParameters($_GET);
-		$this->request->setParameters($_POST);
+		return InstallStepFactory::getStep($this->steps, $this->currentState);
 	}
 }
 

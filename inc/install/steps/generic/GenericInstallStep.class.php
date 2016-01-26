@@ -53,7 +53,7 @@ class GenericInstallStep {
 
 	protected function render($values=array(), $view=null, $layout="installer.tpl"){
 		
-		header('Content-type', "text/html; charset=utf-8");
+		// header('Content-type', "text/html; charset=utf-8");
 		foreach ($values as $name => $value) {
 			$$name = $value;			
 		}		
@@ -64,11 +64,13 @@ class GenericInstallStep {
 		$folderName = trim(strtolower($this->steps[$this->currentStep]["class-name"]));
 		if ($this->exceptions && is_array($this->exceptions) && count($this->exceptions)){
 			$exceptions = $this->exceptions;
-			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/generic/view/exception.inc";
+			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/generic/view/exception.php";
 		}else
-			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.inc";
-		include(XIMDEX_ROOT_PATH."/inc/install/view/install.inc");
-		die();
+			$includeTemplateStep = XIMDEX_ROOT_PATH."/inc/install/steps/{$folderName}/view/{$view}.php";
+		  	include(XIMDEX_ROOT_PATH."/inc/install/view/install.php");
+		ob_end_flush();
+		exit;
+
 	}
 
 	/**
