@@ -63,13 +63,10 @@ class FrontController extends IController {
 		if ($sapi_type == "cli") {
 			$this->request->setParam ("enviroment", "cli");
 			return new FrontControllerCLI ();
-		}
-		elseif (!(strpos ($sapi_type, "apache") === false) || (substr($sapi_type, 0, 3) == 'cgi') ) {
+		} else  {
 			$this->request->setParam ("enviroment", "http");
 			return new FrontControllerHTTP ();
-		}
-		else {
-			return null;
+
 		}
 	}
 
