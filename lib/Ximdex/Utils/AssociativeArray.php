@@ -65,6 +65,8 @@ class AssociativeArray {
      * @return mixed
      */
     function set($key, $value) {
+
+
         if($value) {
             $this->_data[$key] = $value;
         }elseif($value == "0") {
@@ -84,7 +86,7 @@ class AssociativeArray {
             $value =  $this->_data[$key];
             return $value;
         } else {
-            $retval = NULL;
+            $retval = null;
             return $retval;
         }
     }

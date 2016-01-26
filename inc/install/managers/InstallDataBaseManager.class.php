@@ -52,7 +52,7 @@ class InstallDataBaseManager extends InstallManager{
 	 * Build FastTraverse and full path to every node in Ximdex	 
 	 */
 	public function connect($host, $port, $user, $pass=NULL, $name=false){
-		$myPid = getmypid();
+		$myPid = "install" ;
 		$result = false;
 		if (!isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) 
 			$GLOBALS[self::DB_ARRAY_KEY][$myPid] = null;
@@ -61,7 +61,7 @@ class InstallDataBaseManager extends InstallManager{
 			$this->dbConnection = $GLOBALS[self::DB_ARRAY_KEY][$myPid];
 			$result = true;
 		} else {
-			$this->dbConnection = new mysqli($host,$user,$pass,$name,$port);
+			$this->dbConnection = @new mysqli($host,$user,$pass,$name,$port);
 			$GLOBALS[self::DB_ARRAY_KEY][$myPid] = $this->dbConnection;
 			if (!$this->dbConnection->connect_error){
 				$this->host = $host;
@@ -101,7 +101,7 @@ class InstallDataBaseManager extends InstallManager{
 		if ($this->dbConnection){
 		    $this->dbConnection->close();
         }
-	    $GLOBALS['db_connection'][getmypid()] = null;
+	    $GLOBALS[self::DB_ARRAY_KEY]["install"] = null;
 	}
 
 
@@ -186,6 +186,8 @@ class InstallDataBaseManager extends InstallManager{
 		$result = false;
 		if ($this->dbConnection){
 			$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'localhost' IDENTIFIED BY '$pass'" ;
+
+
 			$result = $this->dbConnection->query($query);
 			$query = "GRANT ALL PRIVILEGES  ON $name.* TO '$userName'@'%' IDENTIFIED BY '$pass'" ;			
 			$result = $result && $this->dbConnection->query($query);
@@ -207,6 +209,7 @@ class InstallDataBaseManager extends InstallManager{
 	public function changeUser($user, $pass, $name){
 		$result = false;
 		if ($this->dbConnection){
+
 			$result = $this->dbConnection->change_user($user,$pass, $name);
 		}
 
@@ -214,5 +217,3 @@ class InstallDataBaseManager extends InstallManager{
 	}
 	
 }
-
-?>

@@ -95,6 +95,9 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $name = $this->request->getParam("name");
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass");
+        if ( is_null( $pass )) {
+            $pass = '' ;
+        }
         $values = array();
         $idbManager->connect($host, $port, $user, $pass);
         if ($idbManager->existDataBase($name)) {
@@ -157,16 +160,23 @@ class BuildDataBaseInstallStep extends GenericInstallStep
         $name = $this->request->getParam("name");
         $root_user = $this->request->getParam("root_user");
         $root_pass = $this->request->getParam("root_pass");
+        if ( is_null( $root_pass )) {
+            $root_pass = '' ;
+        }
         $values = array();
         if ($user == $root_user) {
             $values["success"] = true;
             $this->initParams($host, $port, $name, $user, $root_pass);
             $this->sendJson();
         }
-        $idbManager->connect($host, $port, $root_user, $root_pass);
+        $idbManager->connect($host, $port, $root_user, $root_pass, $name );
         $values = array();
         $failure = false;
         if (!$idbManager->changeUser($user, $pass, $name)) {
+
+            $idbManager->reconectDataBase(  ); //
+            $idbManager->connect($host, $port, $root_user, $root_pass, $name );
+
             $idbManager->addUser($user, $pass, $name);
         }
         if ($failure)
