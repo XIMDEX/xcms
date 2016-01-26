@@ -30,7 +30,7 @@
 
     <div class="action_content section-properties">
         <div class="folder-name folder-normal icon input-select">
-            <input type="text" name="name" maxlength="100" ng-required="true" class="cajaxg full-size js_val_unique_name js_val_alphanumeric" placeholder="{t}Name of your section{/t}" data-idnode="{$nodeID}" />
+            <input type="text" name="name" maxlength="100" ng-required="true" class="cajaxg full-size js_val_unique_name js_val_alphanumeric" placeholder="{t}Name of your section{/t}" data-idnode="{( isset($nodeID) ) ? $nodeID : '' }" />
             <select ng-model="sectionTypeSelected" ng-options="stype.label for stype in sectionTypeOptions track by stype.value" ng-change="changeSubfolders()" name="nodetype" class="caja validable not_empty folder-type"></select>
         </div>
 

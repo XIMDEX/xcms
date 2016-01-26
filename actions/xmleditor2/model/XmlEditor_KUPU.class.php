@@ -525,7 +525,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         return $response;
     }
 
-    public function getXmlFile($idNode, $view, $content = null)
+    public function getXmlFile($idNode, $view = null, $content = null)
     {
         if (!$this->setNode($idNode)) {
             XMD_Log::error(_("A non-existing node content cannot be obtained: ") . $idNode);
