@@ -101,6 +101,13 @@ Class App
         }
         self::$DBInstance[$name] = $connection ;
     }
+
+
+    /**
+     * @param string $conf
+     * @return \PDO|null
+     * @throws \Exception
+     */
     public static function Db($conf = null)
     {
         if (is_null($conf)) {

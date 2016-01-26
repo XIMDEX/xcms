@@ -30,7 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/Cache.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
+// require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 
 define('LOG_LEVEL_NONE', 0);
 define('LOG_LEVEL_ALL', 1);
@@ -155,7 +155,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
             $this->_fieldsToTraduce = array();
         }
         $id = (int)$id;
-        $dbObj = new DB();
+        $dbObj =  Ximdex\Runtime\Db::getInstance();
         $this->messages = new \Ximdex\Utils\Messages();
         if ($id > 0) {
             if ((bool)$this->_useMemCache) {
