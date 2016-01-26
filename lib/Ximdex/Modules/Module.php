@@ -38,7 +38,7 @@ Manager::file("/inc/cli/Shell.class.php");
 /**
  *
  */
-class ModuleLegacy {
+class Module{
 
     public $name;
     public $path;
