@@ -523,7 +523,7 @@ class DataFactory
 		$version->set('Comment', $comment);
 		$IdVersion = $version->add();
 
-		if ($updateCaches){
+		if ( isset( $updateCaches ) && $updateCaches ){
         	$this->updateCaches($oldIdVersion, $IdVersion);
         }
 
