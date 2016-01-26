@@ -40,7 +40,7 @@ When Apache2 and PHP are running with the requested packages you have to downloa
 *  Other packages: wget.
 *  A modern web browser (with javascript and cookies enabled): Firefox, Google Chrome, Safari, Opera, Microsoft Edge, …
 *  An internet connection if you want to use some features as the automatic suggestion system based on ontologies (XOWL module), Dynamic Semantic Publishing (DSP) of semantic entities or to publish your content into the cloud.
-*  Postfix or Sendmail (if you want to use notification by mail see 'conf/mail.conf')
+*  Postfix or Sendmail (if you want to use notification by mail see 'conf/mail.php')
 
 ### Steps
 1. **Download Ximdex** package (https://github.com/XIMDEX/ximdex/archive/develop.zip) and expand it:

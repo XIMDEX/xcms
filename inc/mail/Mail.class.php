@@ -37,7 +37,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 //
 
 // Include mail configuration.
-include_once(XIMDEX_ROOT_PATH . "/conf/mail.conf");
+include_once(XIMDEX_ROOT_PATH . "/conf/mail.php");
 
 // Default values.
 

@@ -17,7 +17,7 @@ You can install Ximdex using one of the following methods:
 *  Other packages: wget.
 *  For the client side (with javascript and cookies enabled): Firefox (>=3.6), Google Chrome, Safari or Opera, ...
 *  An internet connection if you want to use some features as the automatic suggestion system based on ontologies (XOWL module), Dynamic Semantic Publishing (DSP) of semantic entities or to publish your content into the cloud.
-*  Postfix or Sendmail (if you want to use notification by mail see 'conf/mail.conf')
+*  Postfix or Sendmail (if you want to use notification by mail see 'conf/mail.php')
 
 ##Manual Installation Steps
 If you prefer to control all the steps this is your installation method:
