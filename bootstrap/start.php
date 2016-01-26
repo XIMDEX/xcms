@@ -72,7 +72,15 @@ Ximdex\Logger::addLog( $log , 'actions' ) ;
 XMD_Log::setActiveLog();
 
 // read install-modules.php
-$modulesConfString = file_get_contents(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.php');
+
+$installModulesPath = App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.php';
+if ( file_exists($installModulesPath) ) {
+    $modulesConfString = file_get_contents($installModulesPath);
+} else {
+    $modulesConfString = "";
+}
+
+
 $matches = array();
 preg_match_all('/define\(\'(.*)\',(.*)\);/iUs', $modulesConfString, $matches);
 foreach ($matches[1] as $key => $value) {
