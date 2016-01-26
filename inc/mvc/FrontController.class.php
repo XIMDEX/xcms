@@ -20,13 +20,13 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
+
 /**
  *
  * @brief Abstract controller who serves as base for http controller and cli controller
@@ -35,67 +35,78 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
  * and send it to the adecuate controller
  *
  */
-class FrontController extends IController {
+class FrontController extends IController
+{
 
-	/**
-	 * Realiza las tareas comunes a todas las acciones
-	 * @return unknown_type
-	 */
-	function dispatch () {
-		$frontController = $this->_selectFrontControllerType ();
-		if (is_null ($frontController)) {
+    /**
+     * Realiza las tareas comunes a todas las acciones
+     */
+    /**
+     *
+     */
+    function dispatch()
+    {
+        $frontController = $this->_selectFrontControllerType();
+        if (is_null($frontController)) {
 
-			$this->_setError ("Error: Tipo de entrada no reconocido", "FrontController");
-		} else {
-			$frontController->setRequest ($this->request);
-			$frontController->dispatch ();
-		}
-		// Si hay error, no muestra la vista con include ()
-		if ($frontController->hasError()) echo $frontController->getMsgError();
-	}
+            $this->_setError("Error: Tipo de entrada no reconocido", "FrontController");
+        } else {
+            $frontController->setRequest($this->request);
+            $frontController->dispatch();
+        }
+        // Si hay error, no muestra la vista con include ()
+        if ($frontController->hasError()) {
+            echo $frontController->getMsgError();
+        }
+    }
 
-	/**
-	 * Determina el tipo de controlador que debe gestionar la petici�n
-	 * @return unknown_type
-	 */
-	function _selectFrontControllerType () {
-		$sapi_type = php_sapi_name ();
-		if ($sapi_type == "cli") {
-			$this->request->setParam ("enviroment", "cli");
-			return new FrontControllerCLI ();
-		} else  {
-			$this->request->setParam ("enviroment", "http");
-			return new FrontControllerHTTP ();
+    /**
+     * Determina el tipo de controlador que debe gestionar la petici�n
+     */
+    /**
+     * @return FrontControllerCLI|FrontControllerHTTP
+     */
+    function _selectFrontControllerType()
+    {
+        $sapi_type = php_sapi_name();
+        if ($sapi_type == "cli") {
+            $this->request->setParam("enviroment", "cli");
+            return new FrontControllerCLI ();
+        } else {
+            $this->request->setParam("enviroment", "http");
+            return new FrontControllerHTTP ();
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * Para no romper todas las acciones se establece el parametro nodeid
-	 * solo si el array nodes es de un elemento.
-	 */
-	function normalizeNodesParam() {
-		$nodes = $this->request->getParam('nodes');
-		if (count($nodes) == 1) {
-			$this->request->setParam('nodeid', $nodes[0]);
-		}
-	}
+    /**
+     * Para no romper todas las acciones se establece el parametro nodeid
+     * solo si el array nodes es de un elemento.
+     */
+    function normalizeNodesParam()
+    {
+        $nodes = $this->request->getParam('nodes');
+        if (count($nodes) == 1) {
+            $this->request->setParam('nodeid', $nodes[0]);
+        }
+    }
 
-	/**
-    * Check permissions for an idnode
-    * @param int $idNode 
-    * @param int $idAction 
-    * @return boolean True if action is allowed
-    * @since Ximdex 3.6
-    */
-    protected function isAllowedAction($idNode, $idAction){
+    /**
+     * Check permissions for an idnode
+     * @param int $idNode
+     * @param int $idAction
+     * @return boolean True if action is allowed
+     * @since Ximdex 3.6
+     */
+    protected function isAllowedAction($idNode, $idAction)
+    {
         if (!$idNode)
             return true;
         $idUser = \Ximdex\Utils\Session::get("userID");
-        if (!$idUser){
+        if (!$idUser) {
             return false;
         }
-        if($idNode==$idUser && $idAction==6002){
+        if ($idNode == $idUser && $idAction == 6002) {
             return true;
         }
         $user = new User($idUser);
@@ -103,4 +114,3 @@ class FrontController extends IController {
     }
 
 }
-?>
