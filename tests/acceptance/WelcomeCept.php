@@ -45,7 +45,7 @@ $I->see('Xpublish');
 $I->see('Xowl');
 $I->see('Install modules','button');
 $I->click('Install modules');
-$I->wait(12);
+$I->wait(20);
 $I->see('Xowl configuration (optional)');
 $I->see('Continue','button');
 $I->click('Continue');
