@@ -20,174 +20,180 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/cache/DexCacheDB.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 
 /**
- *  
+ *
  */
-class DexCache {
+class DexCache
+{
 
-	/**
-	 * Constructor
-	 * @return unknown_type
-	 */
-	function DexCache() {
-	}
+    /**
+     * Constructor
+     * @return unknown_type
+     */
+    function DexCache()
+    {
+    }
 
-	/**
-	 * 
-	 * @param $idNode
-	 * @param $syncs
-	 * @param $idVersion
-	 * @return unknown_type
-	 */
-	function setRelation($idNode, $syncs, $idVersion) {
+    /**
+     *
+     * @param $idNode
+     * @param $syncs
+     * @param $idVersion
+     * @return unknown_type
+     */
+    function setRelation($idNode, $syncs, $idVersion)
+    {
 
-		//echo "DexCache::setRelation($idNode, $syncs, $idVersion)<br/>\n";
+        //echo "DexCache::setRelation($idNode, $syncs, $idVersion)<br/>\n";
 
-		//TODO:: To have into account channels, because they generate two different synchro files.
+        //TODO:: To have into account channels, because they generate two different synchro files.
 
-		// Delete first older relationd for idnode.
-		$dcdb = new DexCacheDB();
-		$dcdb->delete('idNode', $idNode);
+        // Delete first older relationd for idnode.
+        $dcdb = new DexCacheDB();
+        $dcdb->delete('idNode', $idNode);
 
-		if (!is_array($syncs)) {
-			$syncs = array($syncs);
-			/*
-			$a = array();
-			$a[] = $syncs;
-			$syncs = $a;
-			*/
-		}
+        if (!is_array($syncs)) {
+            $syncs = array($syncs);
+            /*
+            $a = array();
+            $a[] = $syncs;
+            $syncs = $a;
+            */
+        }
 
-		foreach ($syncs as $idSync) {
-			$dcdb->idNode = $idNode;
-			$dcdb->idSync = $idSync;
-			$dcdb->idVersion = $idVersion;
-			$dcdb->commit();
-		}
-	}
+        foreach ($syncs as $idSync) {
+            $dcdb->idNode = $idNode;
+            $dcdb->idSync = $idSync;
+            $dcdb->idVersion = $idVersion;
+            $dcdb->commit();
+        }
+    }
 
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function getRelation() {
-		
-		$dcdb = new DexCacheDB();
-		$dcdb->read();
-	}
+    /**
+     *
+     * @return unknown_type
+     */
+    function getRelation()
+    {
 
-	/**
-	 * future: should be in node class.
-	 * $objVersion =& $node.getVersion()
-	 * 
-	 * @param $idNode
-	 * @return unknown_type
-	 */
-	function getLastVersionOfNode($idNode) {
+        $dcdb = new DexCacheDB();
+        $dcdb->read();
+    }
 
-		$df = new DataFactory($idNode);
+    /**
+     * future: should be in node class.
+     * $objVersion =& $node.getVersion()
+     *
+     * @param $idNode
+     * @return unknown_type
+     */
+    function getLastVersionOfNode($idNode)
+    {
 
-		$version = $df->GetLastVersion();
-		$subversion = $df->GetLastSubversion();
+        $df = new DataFactory($idNode);
 
-		$IdVersion = $df->getVersionId($version, $subversion);
+        $version = $df->GetLastVersion();
+        $subversion = $df->GetLastSubversion();
 
-		return $IdVersion;
-	}
+        $IdVersion = $df->getVersionId($version, $subversion);
 
-	/**
-	 * 
-	 * @param $idNode
-	 * @return unknown_type
-	 */
-	function isModified($idNode) {
+        return $IdVersion;
+    }
 
-		if ( is_null($idNode) ) {
-			return true;
-		}
-		
-		$df = new DataFactory($idNode);
+    /**
+     *
+     * @param $idNode
+     * @return unknown_type
+     */
+    function isModified($idNode)
+    {
 
-		$version = $df->GetLastVersion();
-		$subversion = $df->GetLastSubVersion($version);
-		$idCurrentVersion = $df->getVersionId($version, $subversion);
+        if (is_null($idNode)) {
+            return true;
+        }
 
-		$dcdb = new DexCacheDB();
-		$data = $dcdb->read('idNode', $idNode);
+        $df = new DataFactory($idNode);
 
-		$idSync = $data['idSync'];
-		$idPublishedVersion = $data['idVersion'];
+        $version = $df->GetLastVersion();
+        $subversion = $df->GetLastSubVersion($version);
+        $idCurrentVersion = $df->getVersionId($version, $subversion);
 
-		//echo "DexCache::isModified - idNode: $idNode | version: $version | subversion: $subversion | sync: " . print_r($idSync,true) . "<br/>\n";
-		//echo "DexCache::isModified - idCurrentVersion: $idCurrentVersion | idPublishedVersion: $idPublishedVersion<br/>\n";
+        $dcdb = new DexCacheDB();
+        $data = $dcdb->read('idNode', $idNode);
 
-		if ( $idCurrentVersion != $idPublishedVersion) {
-			//echo "RETURN true<br/>\n";
-			return true;
-		} else {
-			//echo "RETURN false<br/>\n";
-			return false;
-		}
-	}
+        $idSync = $data['idSync'];
+        $idPublishedVersion = $data['idVersion'];
 
-	/**
-	 * 
-	 * @param $idNode
-	 * @param $channelId
-	 * @return unknown_type
-	 */
-	function _createName($idNode, $channelId) {
-		return \App::getValue( 'AppRoot') . \App::getValue( 'SyncRoot') . "/$idNode.$channelId.cache";
-	}
+        //echo "DexCache::isModified - idNode: $idNode | version: $version | subversion: $subversion | sync: " . print_r($idSync,true) . "<br/>\n";
+        //echo "DexCache::isModified - idCurrentVersion: $idCurrentVersion | idPublishedVersion: $idPublishedVersion<br/>\n";
 
-	/**
-	 * 
-	 * @param $idNode
-	 * @param $channelId
-	 * @param $c
-	 * @return unknown_type
-	 */
-	function createPersistentSyncFile($idNode, $channelId, $c) {
-		// Creating a persistent copy of sync.
-		$name = DexCache::_createName($idNode, $channelId);
-		return FsUtils::file_put_contents($name, $c);
-	}
+        if ($idCurrentVersion != $idPublishedVersion) {
+            //echo "RETURN true<br/>\n";
+            return true;
+        } else {
+            //echo "RETURN false<br/>\n";
+            return false;
+        }
+    }
 
-	/**
-	 * 
-	 * @param $idNode
-	 * @param $channelId
-	 * @return unknown_type
-	 */
-	function & getPersistentSyncFile($idNode, $channelId) {
+    /**
+     *
+     * @param $idNode
+     * @param $channelId
+     * @return unknown_type
+     */
+    function _createName($idNode, $channelId)
+    {
+        return \App::getValue('AppRoot') . \App::getValue('SyncRoot') . "/$idNode.$channelId.cache";
+    }
 
-		//echo "DexCache::getPersistentSyncFile($idNode)<br/>\n";
+    /**
+     *
+     * @param $idNode
+     * @param $channelId
+     * @param $c
+     * @return unknown_type
+     */
+    function createPersistentSyncFile($idNode, $channelId, $c)
+    {
+        // Creating a persistent copy of sync.
+        $name = DexCache::_createName($idNode, $channelId);
+        return FsUtils::file_put_contents($name, $c);
+    }
 
-		$name = DexCache::_createName($idNode, $channelId);
+    /**
+     *
+     * @param $idNode
+     * @param $channelId
+     * @return unknown_type
+     */
+    function & getPersistentSyncFile($idNode, $channelId)
+    {
 
-		$c = file_get_contents($name);
+        //echo "DexCache::getPersistentSyncFile($idNode)<br/>\n";
 
-		if ($c) {
-			return $c;
-		} else {
-			return NULL;
-		}
-	}
+        $name = DexCache::_createName($idNode, $channelId);
+
+        $c = file_get_contents($name);
+
+        if ($c) {
+            return $c;
+        } else {
+            return NULL;
+        }
+    }
 }
-
-?>

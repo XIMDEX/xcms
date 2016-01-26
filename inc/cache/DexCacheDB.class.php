@@ -20,150 +20,144 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 
-class DexCacheDB {
+class DexCacheDB
+{
 
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $id;
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $idNode;
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $idSync;
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $idVersion;
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $metadata = array( );
-	
-	/**
-	 * 
-	 * @param $idNode
-	 * @param $idSync
-	 * @param $idVersion
-	 * @return unknown_type
-	 */
-	function DexCacheDB($idNode = NULL, $idSync = NULL, $idVersion = NULL) {
+    /**
+     *
+     * @var string
+     */
+    var $id;
+    /**
+     *
+     * @var string
+     */
+    var $idNode;
+    /**
+     *
+     * @var string
+     */
+    var $idSync;
+    /**
+     *
+     * @var string
+     */
+    var $idVersion;
+    /**
+     *
+     * @var array
+     */
+    var $metadata = array();
 
-		$this->idNode = $idNode;
-		$this->idSync = $idSync;
-		$this->idVersion = $idVersion;
-	}
+    /**
+     * DexCacheDB constructor.
+     * @param null $idNode
+     * @param null $idSync
+     * @param null $idVersion
+     */
+    public function __construct($idNode = NULL, $idSync = NULL, $idVersion = NULL)
+    {
 
-	/**
-	 * 
-	 * @param $key
-	 * @param $value
-	 * @return unknown_type
-	 */
-	function read($key, $value) {
+        $this->idNode = $idNode;
+        $this->idSync = $idSync;
+        $this->idVersion = $idVersion;
+    }
 
-		$db = new DB();
-		$sql = "SELECT id,idNode,idSync,idVersion FROM DexCache WHERE $key=$value";
+    /**
+     * @param $key
+     * @param $value
+     * @return array
+     */
+    function read($key, $value)
+    {
 
-		$db->Query($sql);
+        $db = new DB();
+        $sql = "SELECT id, idNode, idSync, idVersion FROM DexCache WHERE {$key}={$value}";
+        $db->Query($sql);
+        $ret = array();
+        $i = 0;
+        while (!$db->EOF) {
 
-		$ret = array();
-		$i = 0;
-		while (!$db->EOF) {
+            $ret['id'] = $db->GetValue("id");
+            $ret['idNode'] = $db->GetValue("idNode");
+            // multi
+            $ret['idSync'][] = $db->GetValue("idSync");
+            $ret['idVersion'] = $db->GetValue("idVersion");
 
-			$ret['id'] = $db->GetValue("id");
-			$ret['idNode'] = $db->GetValue("idNode");
-			// multi
-			$ret['idSync'][] = $db->GetValue("idSync");
-			$ret['idVersion'] = $db->GetValue("idVersion");
+            $i++;
+            $db->Next();
+        }
 
-			$i++;
-			$db->Next();
-		}
+        return $ret;
+    }
 
-		return $ret;
-	}
+    /**
+     *
+     */
+    function commit()
+    {
 
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function commit() {
+        $db = new DB();
 
-		$db = new DB();
-	
-		if (!is_null($this->id)) {
+        if (!is_null($this->id)) {
 
-			$sql = "SELECT id FROM DexCache WHERE id=" . $this->id;
-			$db->Query($sql);
+            $sql = "SELECT id FROM DexCache WHERE id=" . $this->id;
+            $db->Query($sql);
 
-			if ($db->numRows > 0) {
-				$action = "UPDATE";
-			} else {
-				$action = "INSERT";
-			}
+            if ($db->numRows > 0) {
+                $action = "UPDATE";
+            } else {
+                $action = "INSERT";
+            }
 
-		} else {
-			$action = "INSERT";
-		}
+        } else {
+            $action = "INSERT";
+        }
 
-		switch ($action) {
+        switch ($action) {
 
-			case "INSERT":
-					$sql = "INSERT INTO DexCache (idNode, idSync, idVersion) VALUES (" . 
-					$this->idNode . ", " .
-					$this->idSync . ", " .
-					$this->idVersion . ")";
+            case "INSERT":
+                $sql = "INSERT INTO DexCache (idNode, idSync, idVersion) VALUES (" .
+                    $this->idNode . ", " .
+                    $this->idSync . ", " .
+                    $this->idVersion . ")";
 
-					break;
+                break;
 
-			case "UPDATE":
-					$sql = "UPDATE DexCache SET 
+            case "UPDATE":
+                $sql = "UPDATE DexCache SET
 					idNode=" . $this->idNode . ", 
 					idSync='" . $this->idSync . "', 
 					idVersion =" . $this->idVersion . " 
 					WHERE id = " . $this->id;
 
-					break;
-		}
+                break;
+        }
 
-		echo "Executing $sql<br/>\n";
-		$db->Execute($sql);
+        echo "Executing $sql<br/>\n";
+        $db->Execute($sql);
 
-	}
+    }
 
-	/**
-	 * 
-	 * @param $key
-	 * @param $value
-	 * @return unknown_type
-	 */
-	function delete($key, $value) {
-		
-		$db = new DB();
-		$sql = "DELETE FROM DexCache WHERE $key=" . $value;
+    /**
+     * @param $key
+     * @param $value
+     * @return boolean
+     */
+    function delete($key, $value)
+    {
 
-		return $db->Execute($sql);
-	}
+        $db = new DB();
+        $sql = "DELETE FROM DexCache WHERE $key=" . $value;
+        return $db->Execute($sql);
+    }
 
 
 }
-
-?>
