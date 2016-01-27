@@ -24,34 +24,28 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\ActionStatsOrm ;
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/ActionsStats_ORM.class.php';
-
-class ActionsStats extends ActionsStats_ORM {
+/**
+ * Class ActionsStats
+ */
+class ActionsStats extends ActionStatsOrm {
 
 	/**
-	 * Constructor
-	 *
-	 * @param int statId
+	 * ActionsStats constructor.
+	 * @param null $statId
 	 */
 	function __construct($statId = null)  {
-		parent::GenericData($statId);
+		parent::__construct($statId);
 	}
 
 	/**
-	 * Creates a new element
-	 *
-	 * @param int actionId
-	 * @param int nodeId
-	 * @param int userId
-	 * @param string method
-	 * @param double duration
-	 * @return int / NULL
+	 * @param null $actionId
+	 * @param $nodeId
+	 * @param $userId
+	 * @param $method
+	 * @param $duration
+	 * @return bool|null|string
 	 */
 	function Create($actionId = null, $nodeId, $userId, $method, $duration) {
 
@@ -70,12 +64,11 @@ class ActionsStats extends ActionsStats_ORM {
 	}
 
 	/**
-	 * 
-	 * @param $userId
-	 * @return unknown_type
+	 * @param null $userId
+	 * @return array|null
 	 */
 	function getTotals($userId = NULL) {
-
+		$regs = array();
 		if (!is_null($userId)) {
 			$condition = "IdUser = %s";
 			$params = array('IdUser' => $userId);
@@ -122,12 +115,11 @@ class ActionsStats extends ActionsStats_ORM {
 	}
 
 	/**
-	 * 
-	 * @param $userId
-	 * @return unknown_type
+	 * @param null $userId
+	 * @return array|null
 	 */
 	function getAverage($userId = NULL) {
-
+		$regs = array();
 		if (!is_null($userId)) {
 			$condition = "IdUser = %s";
 			$params = array('IdUser' => $userId);
