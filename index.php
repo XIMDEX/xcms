@@ -75,7 +75,7 @@ function checkFolders()
         array('FOLDER' => '/data/nodes', 'MODULE' => ''),
         array('FOLDER' => '/data/sync', 'MODULE' => ''),
         array('FOLDER' => '/data/tmp', 'MODULE' => ''),
-      //  array('FOLDER' => '/data/tmp/uploaded_files', 'MODULE' => ''),
+        array('FOLDER' => '/data/tmp/uploaded_files', 'MODULE' => ''),
         array('FOLDER' => '/data/tmp/js', 'MODULE' => ''),
         array('FOLDER' => '/data/tmp/templates_c', 'MODULE' => ''),
         //array('FOLDER' => '/data/trash', 'MODULE' => 'ximTRASH'),
