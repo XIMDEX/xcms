@@ -25,20 +25,27 @@
 
 
 .browser-view ul li div, .ui-tabs-panel ul li.xim-listview-node, .xim-listview-item{
-	border-bottom: 1px dashed #ccc;
 	position:  relative;
+	padding-left: 16px;
+
+	border-bottom: 1px dashed #ccc;
 }
 
 .ui-icon {
-	float: left;
-	margin-top:  7px;
+	/*float: left;
+	margin-top:  7px;*/
+
+	position: absolute;
+	left: 0px;
+	top: 7px;
 }
 
 .ui-icon.icon-hidden {
-	cursor: default!important;
-	background: none!important;
-}
+	display: none;
 
+	/*cursor: default!important;
+	background: none!important;*/
+}
 
 .xim-treeview-icon, .xim-listview-icon{
 	background: url('../../../../../images/tree/treeview-icons.png') no-repeat left top;

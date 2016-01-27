@@ -79,9 +79,13 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
             render: function() {
                 if(root == null)
                     root = this;
-                var childNodes;
-                var cx = React.addons.classSet;
-                var loading = '';
+
+                var cx          = React.addons.classSet;
+                var childNodes  = '';
+                var loading     = '';
+                var arrow       = '';
+
+                // childNodes
                 if (this.props.node.showNodes && this.props.node.collection != null) {
                     var that = this;
                     childNodes = this.props.node.collection.map(function(node, index) {
@@ -89,11 +93,22 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                     });
                 }
 
+                // loading
                 if(this.props.node.showNodes && this.props.node.loading){
-                    loading = React.createElement('ul',{className: 'xim-treeview-loading'},
+                    loading = React.createElement('span',{className: 'xim-treeview-loading'},
                         React.createElement('img',{src: window.com.ximdex.baseUrl + '/xmd/images/browser/hbox/loading.gif'})
                     );
                 }
+
+                // arrow
+                if(this.props.node.children){
+                    arrow = React.createElement('span',{className: this.dropDownClasses})
+
+                    /*loading = React.createElement('ul',{className: 'xim-treeview-loading'},
+                        React.createElement('img',{src: window.com.ximdex.baseUrl + '/xmd/images/browser/hbox/loading.gif'})
+                    );*/
+                }
+
                 var iconClasses = "xim-treeview-icon icon-"+this.props.node.icon;
                 /*var selected = false;
                  var selectedNodes = this.props.selected;
@@ -111,13 +126,15 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                 var dropDownClasses = cx({
                     'ui-icon xim-actions-toggle-node': true,
                     'ui-icon-triangle-1-e': true,
-                    'ui-icon-triangle-1-se': this.props.node.showNodes,
-                    'icon-hidden': !this.props.node.children && (this.props.node.collection == null || this.props.node.collection.length==0)
+                    'ui-icon-triangle-1-se': this.props.node.showNodes
+                    // 'icon-hidden': !this.props.node.children && (this.props.node.collection == null || this.props.node.collection.length==0)
                 });
+
                 return (
                     <span>
                         <div className={rootClasses} ref="divRoot">
-                            <span ref="spanTriangle" className={dropDownClasses}></span>
+                            // <span ref="spanTriangle" className={dropDownClasses}></span>
+                            {arrow}
                             <span className={iconClasses} ref="icon"></span>
                             <span className="xim-treeview-branch" dangerouslySetInnerHTML={{__html: this.props.node.name + (this.props.node.modified == '1' ? '*' : '')}}></span>
                         </div>
