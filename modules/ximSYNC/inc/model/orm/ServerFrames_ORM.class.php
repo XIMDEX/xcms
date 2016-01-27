@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,54 +21,47 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class ServerFrames_ORM extends GenericData   {
-	var $_idField = 'IdSync';
-	var $_table = 'ServerFrames';
-	var $_metaData = array(
-				'IdSync' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
-				'IdServer' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'DateUp' => array('type' => 'int(14)', 'not_null' => 'true'),
-				'DateDown' => array('type' => 'int(14)', 'not_null' => 'false'),
-				'State' => array('type' => 'varchar(255)', 'not_null' => 'false'),
-				'Error' => array('type' => 'varchar(255)', 'not_null' => 'false'),
-				'ErrorLevel' => array('type' => 'tinyint(3)', 'not_null' => 'true'),
-				'RemotePath' => array('type' => 'blob', 'not_null' => 'false'),
-				'FileName' => array('type' => 'varchar(255)', 'not_null' => 'true'),
-				'FileSize' => array('type' => 'int(11)', 'not_null' => 'true'),
-				'Retry' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'Linked' => array('type' => 'tinyint(3)', 'not_null' => 'true'),
-				'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'IdBatchUp' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'IdChannelFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'PumperId' => array('type' => 'int(12)', 'not_null' => 'false')
-				);
-	var $IdSync;
-	var $IdServer = 0;
-	var $DateUp = 0;
-	var $DateDown = 0;
-	var $State = 'DUE';
-	var $Error;
-	var $ErrorLevel = 0;
-	var $RemotePath;
-	var $FileName;
-	var $FileSize;
-	var $Retry = 0;
-	var $Linked = 1;
-	var $IdNodeFrame = 0;
-	var $IdBatchUp = 0;
-	var $IdChannelFrame = 0;
-	var $PumperId;	
+class ServerFrames_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdSync';
+    var $_table = 'ServerFrames';
+    var $_metaData = array(
+        'IdSync' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
+        'IdServer' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'DateUp' => array('type' => 'int(14)', 'not_null' => 'true'),
+        'DateDown' => array('type' => 'int(14)', 'not_null' => 'false'),
+        'State' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Error' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'ErrorLevel' => array('type' => 'tinyint(3)', 'not_null' => 'true'),
+        'RemotePath' => array('type' => 'blob', 'not_null' => 'false'),
+        'FileName' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'FileSize' => array('type' => 'int(11)', 'not_null' => 'true'),
+        'Retry' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Linked' => array('type' => 'tinyint(3)', 'not_null' => 'true'),
+        'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IdBatchUp' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IdChannelFrame' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'PumperId' => array('type' => 'int(12)', 'not_null' => 'false')
+    );
+    var $IdSync;
+    var $IdServer = 0;
+    var $DateUp = 0;
+    var $DateDown = 0;
+    var $State = 'DUE';
+    var $Error;
+    var $ErrorLevel = 0;
+    var $RemotePath;
+    var $FileName;
+    var $FileSize;
+    var $Retry = 0;
+    var $Linked = 1;
+    var $IdNodeFrame = 0;
+    var $IdBatchUp = 0;
+    var $IdChannelFrame = 0;
+    var $PumperId;
 }
+
 ?>

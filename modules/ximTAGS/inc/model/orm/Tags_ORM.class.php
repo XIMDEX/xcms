@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,31 +21,26 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class Tags_ORM extends GenericData   {
-	var $_idField = 'IdTag';
-	var $_table = 'XimTAGSTags';
-	var $_metaData = array(
-				'IdTag' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'Name' => array('type' => "varchar(100)", 'not_null' => 'true'),
-				'Total' => array('type' => "mediumint(8)", 'not_null' => 'true'),
-				'IdNamespace' => array('type' => "int(11)", 'not_null' => 'true') 
-				);
-	var $_uniqueConstraints = array(
-				'Name' => array('Name', 'IdNamespace'),
-				'IdTag' => array('IdTag')
-				);
-	var $_indexes = array('IdTag');
-	var $IdTag;
-	var $Name;
-	var $IdNamespace; 
-	var $Total;
+class Tags_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdTag';
+    var $_table = 'XimTAGSTags';
+    var $_metaData = array(
+        'IdTag' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(100)", 'not_null' => 'true'),
+        'Total' => array('type' => "mediumint(8)", 'not_null' => 'true'),
+        'IdNamespace' => array('type' => "int(11)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'Name' => array('Name', 'IdNamespace'),
+        'IdTag' => array('IdTag')
+    );
+    var $_indexes = array('IdTag');
+    var $IdTag;
+    var $Name;
+    var $IdNamespace;
+    var $Total;
 }
-?>

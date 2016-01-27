@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,43 +21,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class XimNewsBulletins_ORM extends GenericData   {
-	var $_idField = 'IdBulletin';
-	var $_table = 'XimNewsBulletins';
-	var $_metaData = array(
-				'IdBulletin' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
-				'IdContainer' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdColector' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdLote' => array('type' => "int(12)", 'not_null' => 'false'),
-				'Fecha' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'SetAsoc' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'State' => array('type' => "varchar(255)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdBulletin');
-	var $IdBulletin = 0;
-	var $IdContainer = 0;
-	var $IdColector = 0;
-	var $IdLote;
-	var $Fecha = 0;
-	var $SetAsoc;
-	var $State = 'generated';
+class XimNewsBulletins_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdBulletin';
+    var $_table = 'XimNewsBulletins';
+    var $_metaData = array(
+        'IdBulletin' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
+        'IdContainer' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdColector' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdLote' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Fecha' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'SetAsoc' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'State' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdBulletin');
+    var $IdBulletin = 0;
+    var $IdContainer = 0;
+    var $IdColector = 0;
+    var $IdLote;
+    var $Fecha = 0;
+    var $SetAsoc;
+    var $State = 'generated';
 }
-?>
