@@ -26,8 +26,7 @@
  */
 use Ximdex\Models\Channel;
 
-ModulesManager::file('/inc/model/channel.php');
-//use Swagger\Annotations as SWG;
+ //use Swagger\Annotations as SWG;
 
 /**
  *

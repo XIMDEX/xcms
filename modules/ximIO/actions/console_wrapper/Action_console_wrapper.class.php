@@ -30,8 +30,7 @@ use Ximdex\Models\Channel;
 ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/cli/Shell.class.php');
 ModulesManager::file('/inc/model/language.php');
-ModulesManager::file('/inc/model/channel.php');
-ModulesManager::file('/inc/model/group.php');
+ ModulesManager::file('/inc/model/group.php');
 
 
 class Action_console_wrapper extends ActionAbstract {

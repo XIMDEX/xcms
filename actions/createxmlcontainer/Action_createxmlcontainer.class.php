@@ -30,7 +30,6 @@ ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/model/language.php');
-ModulesManager::file('/inc/model/channel.php');
 
 class Action_createxmlcontainer extends ActionAbstract {
 

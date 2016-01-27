@@ -30,8 +30,7 @@ use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/inc/model/node.php');
-ModulesManager::file('/inc/model/channel.php');
-ModulesManager::file('/inc/model/Server.class.php');
+ ModulesManager::file('/inc/model/Server.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
