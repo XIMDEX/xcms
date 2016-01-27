@@ -104,9 +104,6 @@ if ( !empty( $dbConfig ) ) {
     }
 }
 
-
-
-
 // special objects (pseudo-DI)
 // App::setValue( 'class::definition::Messages',       '/inc/helper/Messages.class.php' );
 class_alias('Ximdex\Utils\Messages', 'Messages');
@@ -116,3 +113,16 @@ App::setValue( 'class::definition::DB',             '/inc/db/DB.class.php' );
 // Extensions setup
 
 include_once( App::getValue('XIMDEX_ROOT_PATH') . '/conf/extensions.conf.php');
+
+$mManager = new ModulesManager;
+
+/**
+ * Execute function init for each enabled module
+ */
+foreach(ModulesManager::getEnabledModules() as $module){
+    $name = $module["name"];
+    $moduleInstance = $mManager->instanceModule($name);
+    if( method_exists( $moduleInstance, 'init' ) ){
+        $moduleInstance->init();
+    }
+}
