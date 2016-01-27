@@ -12,7 +12,7 @@
 		<module name="ximIO" alias="IO" default="1">for the Ximdex API.</module>
 		<module name="ximSYNC" alias="Xsync"  default="1">for dynamic publishing into the cloud.</module>
 		<module name="ximTAGS" alias="Xtags">Provides the user to add semantic tags to it's documents and files.</module>
-		<module name="ximTOUR" alias="Xtour">Performs a short tour on Ximdex CMS's interface to show the main areas and functionalities.</module>
+	<!--	<module name="ximTOUR" alias="Xtour">Performs a short tour on Ximdex CMS's interface to show the main areas and functionalities.</module> -->
 		<module name="ximNEWS" alias="Xnews">Build your own newsletters and blogs.</module>
         <module name="ximPUBLISHtools" alias="Xpublish">Publication batchs monitor.</module>
         <module name="Xowl" alias="Xowl">Semantization service for Xtags.</module>
