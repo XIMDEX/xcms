@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Channel;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');

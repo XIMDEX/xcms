@@ -25,9 +25,11 @@
  */
 
 
+namespace Ximdex\Models\ORM;
+
 use Ximdex\Data\GenericData;
 
-class Contexts_ORM extends GenericData
+class ContextsOrm extends GenericData
 {
     var $_idField = 'id';
     var $_table = 'Contexts';

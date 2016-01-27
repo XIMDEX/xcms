@@ -25,10 +25,12 @@
  */
 
 
+namespace Ximdex\Models\ORM;
+
 use Ximdex\Data\GenericData;
 
 
-class Channels_ORM extends GenericData
+class ChannelsOrm extends GenericData
 {
     var $_idField = 'IdChannel';
     var $_table = 'Channels';

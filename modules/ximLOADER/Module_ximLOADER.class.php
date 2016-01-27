@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Channel;
 use Ximdex\Modules\Module;
 
 

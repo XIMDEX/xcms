@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/cli/Shell.class.php');

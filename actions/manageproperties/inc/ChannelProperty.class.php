@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/actions/manageproperties/inc/InheritableProperty.class.php');
 ModulesManager::file('/inc/model/channel.php');

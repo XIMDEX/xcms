@@ -100,7 +100,9 @@ class DB_legacy
     var $sql;
     /**
      * New ID automatically generated after an INSERT
-     * @var unknown_type
+      */
+    /**
+     * @var
      */
     var $newID;
     /**
@@ -300,8 +302,11 @@ class DB_legacy
 
     /**
      * Function which performs a BD query
+
+     */
+    /**
      * @param $sql
-     * @return unknown_type
+     * @return bool
      */
     function Execute($sql)
     {
@@ -350,7 +355,9 @@ class DB_legacy
 
     /**
      * Function which updates the newID when doing a new insertion using a mysql_insert_id
-     * @return unknown_type
+     */
+    /**
+     * @return bool
      */
     function SetInsertID()
     {

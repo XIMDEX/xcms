@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Channel;
+
 include_once realpath(dirname(__FILE__) . "/../../../../").'/bootstrap/start.php';
 
 if (!defined('XIMDEX_ROOT_PATH'))

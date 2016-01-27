@@ -24,7 +24,9 @@
  *  @version $Revision$
  */
 
- if (!defined('XIMDEX_ROOT_PATH')) {
+use Ximdex\Models\Channel;
+
+if (!defined('XIMDEX_ROOT_PATH')) {
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
  }
 

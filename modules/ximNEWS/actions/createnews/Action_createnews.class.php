@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 ModulesManager::file('/actions/composer/Action_composer.class.php');
