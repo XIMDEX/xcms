@@ -25,13 +25,7 @@
  */
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+use Ximdex\Data\GenericData;
 
 class Contexts_ORM extends GenericData
 {

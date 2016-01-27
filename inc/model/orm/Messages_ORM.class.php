@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,47 +21,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class Messages_ORM extends GenericData   {
-	var $_idField = 'IdMessage';
-	var $_table = 'Messages';
-	var $_metaData = array(
-				'IdMessage' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdFrom' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdOwner' => array('type' => "int(12)", 'not_null' => 'true'),
-				'ToString' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'Folder' => array('type' => "int(12)", 'not_null' => 'true'),
-				'Subject' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'Content' => array('type' => "blob", 'not_null' => 'false'),
-				'IsRead' => array('type' => "int(1)", 'not_null' => 'true'),
-				'FechaHora' => array('type' => "datetime", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdMessage');
-	var $IdMessage;
-	var $IdFrom = 0;
-	var $IdOwner = 0;
-	var $ToString;
-	var $Folder = 1;
-	var $Subject;
-	var $Content;
-	var $IsRead = 0;
-	var $FechaHora = '0000-00-00 00:00:00';
+class Messages_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdMessage';
+    var $_table = 'Messages';
+    var $_metaData = array(
+        'IdMessage' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdFrom' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdOwner' => array('type' => "int(12)", 'not_null' => 'true'),
+        'ToString' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'Folder' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Subject' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'Content' => array('type' => "blob", 'not_null' => 'false'),
+        'IsRead' => array('type' => "int(1)", 'not_null' => 'true'),
+        'FechaHora' => array('type' => "datetime", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdMessage');
+    var $IdMessage;
+    var $IdFrom = 0;
+    var $IdOwner = 0;
+    var $ToString;
+    var $Folder = 1;
+    var $Subject;
+    var $Content;
+    var $IsRead = 0;
+    var $FechaHora = '0000-00-00 00:00:00';
 }
-?>

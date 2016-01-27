@@ -25,15 +25,7 @@
  */
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class Groups_ORM extends GenericData
+class Groups_ORM extends \Ximdex\Data\GenericData
 {
     var $_idField = 'IdGroup';
     var $_table = 'Groups';

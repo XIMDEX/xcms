@@ -26,16 +26,7 @@
 
 
 
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class Dependencies_ORM extends GenericData   {
+class Dependencies_ORM extends \Ximdex\Data\GenericData   {
 	var $_idField = 'IdDep';
 	var $_table = 'Dependencies';
 	var $_metaData = array(
