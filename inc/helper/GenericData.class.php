@@ -222,8 +222,7 @@ class GenericData extends \Ximdex\Utils\Overloadable
     }
 
     /**
-     *
-     * @return unknown_type
+     * @return bool|null|string
      */
     function add()
     {
@@ -463,9 +462,8 @@ class GenericData extends \Ximdex\Utils\Overloadable
     }
 
     /**
-     *
      * @param $attribute
-     * @return unknown_type
+     * @return bool|string
      */
     function get($attribute)
     {
@@ -491,10 +489,11 @@ class GenericData extends \Ximdex\Utils\Overloadable
 
     /**
      * Validaci�n/conversi�n por tipo de campo
-     *
-     * @param unknown_type $fieldValue
-     * @param array $fieldTypeMatches
-     * @return unknown
+      */
+    /**
+     * @param $fieldValue
+     * @param $fieldTypeMatches
+     * @return unknown_type
      */
     function _convertToSql($fieldValue, $fieldTypeMatches)
     {
