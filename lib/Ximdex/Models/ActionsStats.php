@@ -3,6 +3,8 @@
 namespace Ximdex\Models;
 
 
+use Ximdex\Models\ORM\ActionsStatsOrm;
+
 class ActionsStats extends ActionsStatsOrm {
 
     /**

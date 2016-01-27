@@ -6,7 +6,7 @@
  * Time: 15:39
  */
 
-namespace Ximdex\Models;
+namespace Ximdex\Models\ORM;
 
 
 use Ximdex\Data\GenericData;

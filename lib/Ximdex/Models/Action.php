@@ -9,6 +9,8 @@
 namespace Ximdex\Models;
 
 
+use Ximdex\Models\ORM\ActionsOrm;
+
 class Action extends ActionsOrm
 {
 

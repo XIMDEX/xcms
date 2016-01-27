@@ -23,7 +23,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-use \Ximdex\Models\RelRolesPermissionsOrm ;
+use Ximdex\Models\ORM\RelRolesPermissionsOrm ;
 
 /**
  * Class RelRolesPermission

@@ -27,7 +27,7 @@
 
 
 use Ximdex\Models\Action ;
-use Ximdex\Models\RolesOrm ;
+use Ximdex\Models\ORM\RolesOrm ;
 use DB_legacy as DB;
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
