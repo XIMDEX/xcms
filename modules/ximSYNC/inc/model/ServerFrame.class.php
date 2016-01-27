@@ -74,7 +74,7 @@ class ServerFrame extends ServerFrames_ORM {
 		$this->finalStatusFailed = array(ServerFrame::CANCELED);
 		$this->finalStatus = array_merge($this->finalStatusOk, $this->finalStatusLimbo, $this->finalStatusFailed);
                 $this->publishingReport = new PublishingReport(); 
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 

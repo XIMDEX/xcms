@@ -33,7 +33,7 @@ ModulesManager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
 class NodesToPublish extends NodesToPublish_ORM {
 
 	public function __construct($id=null) {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 	/**

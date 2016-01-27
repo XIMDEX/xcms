@@ -53,7 +53,7 @@ class Pipeline extends Pipelines_ORM {
 	 * @param $id
 	 */
 	public function Pipeline($id = NULL) {
-		parent::GenericData($id);
+		parent::__construct($id);
 
 		if (!($this->get('id') > 0)) {
 			return;

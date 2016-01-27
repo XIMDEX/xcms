@@ -64,7 +64,7 @@ class Channel extends Channels_ORM {
 	        $errorList[2] = _('Channel does not exist');
 	        $errorList[3] = _('Database inconsistency');
 
-		parent::GenericData($nodeID);
+		parent::__construct($nodeID);
 	}
 
 	/**
@@ -154,7 +154,7 @@ class Channel extends Channels_ORM {
 	 */
 	function SetID($nodeID)
 	{
-		parent::GenericData($nodeID);
+		parent::__construct($nodeID);
 		if (!($this->IdChannel > 0)) {
 			$this->SetError(2);
 			return null;
@@ -171,7 +171,7 @@ class Channel extends Channels_ORM {
 	{
 		$dbObj = new DB();
 		$dbObj->Query(sprintf("SELECT IdChannel FROM Channels WHERE Name='%s'", $this->dbObj->sqlEscapeString($name)));
-		parent::GenericData($this->GetValue('IdChannel'));
+		parent::__construct($this->GetValue('IdChannel'));
 
 		if (!($this->IdChannel > 0)) {
 			$this->SetError(2);

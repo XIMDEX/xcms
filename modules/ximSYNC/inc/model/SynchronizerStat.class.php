@@ -95,7 +95,7 @@ class SynchronizerStat extends SynchronizerStats_ORM {
 
     function getStatById($idStat) {
 
-		parent::GenericData($idStat);
+		parent::__construct($idStat);
 
 		$stat = array();
 

@@ -317,7 +317,7 @@ class Batch extends Batchs_ORM {
         if ($playingValue == 2)
             $playingValue = ($this->get('Playing') == 0) ? 1 : 0;
 
-        parent::GenericData($idBatch);
+        parent::__construct($idBatch);
         $this->set('Playing', $playingValue);
 
         parent::update();
@@ -341,7 +341,7 @@ class Batch extends Batchs_ORM {
      */
     function prioritizeBatch($idBatch, $mode = 'up') {
         setlocale (LC_NUMERIC, 'C'); //Hack: fix bad compose of float field in sql update
-        parent::GenericData($idBatch);
+        parent::__construct($idBatch);
         $priority = (float) $this->get('Priority');
         
         if ($mode === 'up') {

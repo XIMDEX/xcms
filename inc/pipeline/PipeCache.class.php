@@ -55,7 +55,7 @@ class PipeCache extends PipeCaches_ORM {
 	 * @param $id
 	 */
 	function PipeCache($id = NULL) {
-		parent::GenericData($id);
+		parent::__construct($id);
 		if ($this->get('id') > 0) {
 			$this->_transition = new PipeTransition($this->get('IdPipeTransition'));
 		}

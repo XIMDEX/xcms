@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,28 +21,19 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class XimNewsAreas_ORM extends GenericData   {
-	var $_idField = 'IdArea';
-	var $_table = 'XimNewsAreas';
-	var $_metaData = array(
-				'IdArea' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
-				'Name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
-				'Description' => array('type' => 'varchar(255)', 'not_null' => 'true')
-				);
-	var $IdArea;
-	var $Name;
-	var $Description;	
+class XimNewsAreas_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdArea';
+    var $_table = 'XimNewsAreas';
+    var $_metaData = array(
+        'IdArea' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
+        'Name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'Description' => array('type' => 'varchar(255)', 'not_null' => 'true')
+    );
+    var $IdArea;
+    var $Name;
+    var $Description;
 }
-?>

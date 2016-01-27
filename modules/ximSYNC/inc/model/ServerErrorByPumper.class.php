@@ -57,7 +57,7 @@ class ServerErrorByPumper extends ServerErrorByPumper_ORM {
 
 			$errorId = $dbObj->GetValue(ErrorId);
 		 }
-		parent::GenericData($errorId);
+		parent::__construct($errorId);
     }
 
 	/**

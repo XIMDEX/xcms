@@ -36,7 +36,7 @@ require_once (XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeSetsNode_ORM.class.php')
 class RelNodeSetsNode extends RelNodeSetsNode_ORM {
 	
 	public function __construct($id=null) {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 	
 	/**

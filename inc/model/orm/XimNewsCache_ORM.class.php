@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,45 +21,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class XimNewsCache_ORM extends GenericData   {
-	var $_idField = 'IdCache';
-	var $_table = 'XimNewsCache';
-	var $_metaData = array(
-				'IdCache' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNew' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'IdTemplate' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'IdVersion' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'File' => array('type' => 'varchar(255)', 'not_null' => 'false'),
-				'Fecha' => array('type' => 'varchar(255)', 'not_null' => 'false'),
-				'Counter' => array('type' => 'int(12)', 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdCache');
-	var $IdCache;
-	var $IdNew = 0;
-	var $IdTemplate = 0;
-	var $IdVersion;
-	var $File = 0;
-	var $Fecha;
-	var $Counter;	
+class XimNewsCache_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdCache';
+    var $_table = 'XimNewsCache';
+    var $_metaData = array(
+        'IdCache' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNew' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IdTemplate' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IdVersion' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'File' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Fecha' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'Counter' => array('type' => 'int(12)', 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdCache');
+    var $IdCache;
+    var $IdNew = 0;
+    var $IdTemplate = 0;
+    var $IdVersion;
+    var $File = 0;
+    var $Fecha;
+    var $Counter;
 }
-?>

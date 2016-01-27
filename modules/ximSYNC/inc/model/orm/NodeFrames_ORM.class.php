@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,42 +21,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class NodeFrames_ORM extends GenericData   {
-	var $_idField = 'IdNodeFrame';
-	var $_table = 'NodeFrames';
-	var $_metaData = array(
-				'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
-				'NodeId' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'VersionId' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'TimeUp' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'TimeDown' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'Active' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'GetActivityFrom' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'IsProcessUp' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'IsProcessDown' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'Name' => array('type' => 'varchar(255)', 'not_null' => 'false')
-				);
-	var $IdNodeFrame;
-	var $NodeId = 0;
-	var $VersionId = 0;
-	var $TimeUp = 0;
-	var $TimeDown;
-	var $Active = 0;
-	var $GetActivityFrom = 0;
-	var $IsProcessUp = 0;
-	var $IsProcessDown = 0;	
-	var $Name;
+class NodeFrames_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdNodeFrame';
+    var $_table = 'NodeFrames';
+    var $_metaData = array(
+        'IdNodeFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
+        'NodeId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'VersionId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'TimeUp' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'TimeDown' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Active' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'GetActivityFrom' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IsProcessUp' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IsProcessDown' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Name' => array('type' => 'varchar(255)', 'not_null' => 'false')
+    );
+    var $IdNodeFrame;
+    var $NodeId = 0;
+    var $VersionId = 0;
+    var $TimeUp = 0;
+    var $TimeDown;
+    var $Active = 0;
+    var $GetActivityFrom = 0;
+    var $IsProcessUp = 0;
+    var $IsProcessDown = 0;
+    var $Name;
 }
-?>

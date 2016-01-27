@@ -35,7 +35,7 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/orm/PortalVersions_ORM.class.php';
 class PortalVersions extends PortalVersions_ORM {
 
 	function __construct($id = null)  {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 	function upPortalVersion($portalId) {

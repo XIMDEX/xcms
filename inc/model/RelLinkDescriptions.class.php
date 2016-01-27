@@ -35,7 +35,7 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelLinkDescriptions_ORM.class.ph
 class RelLinkDescriptions extends RelLinkDescriptions_ORM {
 
 	public function __construct($id=null) {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 	public function getIdRel() {

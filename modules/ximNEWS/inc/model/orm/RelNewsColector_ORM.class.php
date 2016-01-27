@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,52 +21,43 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class RelNewsColector_ORM extends GenericData   {
-	var $_idField = 'IdRel';
-	var $_table = 'RelNewsColector';
-	var $_metaData = array(
-				'IdRel' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
-				'IdNew' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'IdColector' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'State' => array('type' => 'varchar(255)', 'not_null' => 'false'),
-				'SetAsoc' => array('type' => 'varchar(255)', 'not_null' => 'false'),
-				'PosInSet' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'Page' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'PosInSet2' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'Page2' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'LangId' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'FechaIn' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'FechaOut' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'Version' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'SubVersion' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'IdCache' => array('type' => 'int(12)', 'not_null' => 'false')
-				);
-	var $IdRel;
-	var $IdNew = 0;
-	var $IdColector = 0;
-	var $State = 'pending';
-	var $SetAsoc;
-	var $PosInSet;
-	var $Page;
-	var $PosInSet2;
-	var $Page2;
-	var $LangId;
-	var $FechaIn;
-	var $FechaOut;
-	var $Version;
-	var $SubVersion;
-	var $IdCache;	
+class RelNewsColector_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdRel';
+    var $_table = 'RelNewsColector';
+    var $_metaData = array(
+        'IdRel' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
+        'IdNew' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IdColector' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'State' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'SetAsoc' => array('type' => 'varchar(255)', 'not_null' => 'false'),
+        'PosInSet' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Page' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'PosInSet2' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Page2' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'LangId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'FechaIn' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'FechaOut' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'Version' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'SubVersion' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'IdCache' => array('type' => 'int(12)', 'not_null' => 'false')
+    );
+    var $IdRel;
+    var $IdNew = 0;
+    var $IdColector = 0;
+    var $State = 'pending';
+    var $SetAsoc;
+    var $PosInSet;
+    var $Page;
+    var $PosInSet2;
+    var $Page2;
+    var $LangId;
+    var $FechaIn;
+    var $FechaOut;
+    var $Version;
+    var $SubVersion;
+    var $IdCache;
 }
-?>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,45 +21,31 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class StructuredDocuments_ORM extends GenericData   {
-	var $_idField = 'IdDoc';
-	var $_table = 'StructuredDocuments';
-	var $_metaData = array(
-				'IdDoc' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
-				'Name' => array('type' => "varchar(255)", 'not_null' => 'false'),
-				'IdCreator' => array('type' => "int(12)", 'not_null' => 'false'),
-				'CreationDate' => array('type' => "timestamp", 'not_null' => 'true'),
-				'UpdateDate' => array('type' => "timestamp", 'not_null' => 'true'),
-				'IdLanguage' => array('type' => "int(12)", 'not_null' => 'false'),
-				'IdTemplate' => array('type' => "int(12)", 'not_null' => 'true'),
-				'TargetLink' => array('type' => "int(12)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdDoc');
-	var $IdDoc = 0;
-	var $Name;
-	var $IdCreator = 0;
-	var $CreationDate = 'CURRENT_TIMESTAMP';
-	var $UpdateDate = '0000-00-00 00:00:00';
-	var $IdLanguage = 0;
-	var $IdTemplate = 0;
-	var $TargetLink;
+class StructuredDocuments_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdDoc';
+    var $_table = 'StructuredDocuments';
+    var $_metaData = array(
+        'IdDoc' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'IdCreator' => array('type' => "int(12)", 'not_null' => 'false'),
+        'CreationDate' => array('type' => "timestamp", 'not_null' => 'true'),
+        'UpdateDate' => array('type' => "timestamp", 'not_null' => 'true'),
+        'IdLanguage' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdTemplate' => array('type' => "int(12)", 'not_null' => 'true'),
+        'TargetLink' => array('type' => "int(12)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdDoc');
+    var $IdDoc = 0;
+    var $Name;
+    var $IdCreator = 0;
+    var $CreationDate = 'CURRENT_TIMESTAMP';
+    var $UpdateDate = '0000-00-00 00:00:00';
+    var $IdLanguage = 0;
+    var $IdTemplate = 0;
+    var $TargetLink;
 }
-?>

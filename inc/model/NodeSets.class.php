@@ -41,7 +41,7 @@ require_once (XIMDEX_ROOT_PATH . '/inc/model/iterators/I_NodeSetsUsers.class.php
 class NodeSets extends NodeSets_ORM {
 	
 	public function __construct($id=null) {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 	
 	/**

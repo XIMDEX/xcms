@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,45 +21,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class XimNewsNews_ORM extends GenericData   {
-	var $_idField = 'IdNew';
-	var $_table = 'XimNewsNews';
-	var $_metaData = array(
-				'IdNew' => array('type' => 'int(12)', 'not_null' => 'true', 'primary_key' => true),
-				'Fecha' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'Name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
-				'Titular' => array('type' => 'varchar(255)', 'not_null' => 'true'),
-				'TimeStamp' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'IdSection' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'AssociationAttempts' => array('type' => 'int(12)', 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdNew');
-	var $IdNew = 0;
-	var $Fecha = 0;
-	var $Name;
-	var $Titular;
-	var $TimeStamp = 0;
-	var $IdSection = 0;
-	var $AssociationAttempts = 0;	
+class XimNewsNews_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdNew';
+    var $_table = 'XimNewsNews';
+    var $_metaData = array(
+        'IdNew' => array('type' => 'int(12)', 'not_null' => 'true', 'primary_key' => true),
+        'Fecha' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'Name' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'Titular' => array('type' => 'varchar(255)', 'not_null' => 'true'),
+        'TimeStamp' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IdSection' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'AssociationAttempts' => array('type' => 'int(12)', 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdNew');
+    var $IdNew = 0;
+    var $Fecha = 0;
+    var $Name;
+    var $Titular;
+    var $TimeStamp = 0;
+    var $IdSection = 0;
+    var $AssociationAttempts = 0;
 }
-?>
