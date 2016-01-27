@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,41 +21,27 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class RelRolesActions_ORM extends GenericData   {
-	var $_idField = 'IdRel';
-	var $_table = 'RelRolesActions';
-	var $_metaData = array(
-				'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdRol' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdAction' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdState' => array('type' => "int(12)", 'not_null' => 'false'),
-				'IdContext' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdPipeline' => array('type' => "int(11)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdRel');
-	var $IdRel;
-	var $IdRol = 0;
-	var $IdAction = 0;
-	var $IdState;
-	var $IdContext = 1;
-	var $IdPipeline;
+class RelRolesActions_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdRel';
+    var $_table = 'RelRolesActions';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdRol' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdAction' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdState' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdContext' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdPipeline' => array('type' => "int(11)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdRol = 0;
+    var $IdAction = 0;
+    var $IdState;
+    var $IdContext = 1;
+    var $IdPipeline;
 }
-?>
