@@ -108,11 +108,20 @@ class ActionAbstract extends IController {
 	}
 
 	private function getActionInfo($actionName, $module, $actionId, $nodeId) {
+		$nodeTypeId = "";
+		if ( !is_null( $nodeId )) {
+			$node = new Node();
+			$nodeTypeId = $node->find('IdNodeType', 'IdNode = %s', array($nodeId), MONO);
+			$nodeTypeId = $nodeTypeId[0];
+		}
 
-		$node = new Node();
-		$nodeTypeId = $node->find('IdNodeType', 'IdNode = %s', array($nodeId), MONO);
-		$nodeTypeId = $nodeTypeId[0];
-		
+
+
+
+
+
+
+
 		$action = new Action();
 		$data = $action->find(
 			'Command, Name, Description, Module',
@@ -120,8 +129,12 @@ class ActionAbstract extends IController {
 			array($nodeTypeId, $actionName, $module)
 		);
 
-		$data = $data[0];
-		
+		if ( !empty( $data )) {
+			$data = $data[0];
+
+
+		}
+
 		//debug::log($data,$actionName, $module, $actionId, $nodeId);
 		return $data;
 	}
@@ -151,12 +164,17 @@ class ActionAbstract extends IController {
 			$request->getParam('actionid'),
 			$request->getParam('nodeid')
 		);
-		$this->actionCommand = $actionInfo['Command'];
-		$this->actionName = $actionInfo['Name'];		
-		$this->actionDescription = $actionInfo['Description'];
-		$this->actionModule = isset($actionInfo['Module'])? $actionInfo['Module']: null;
-		$command = $this->actionCommand = $actionInfo['Command'];		
 
+
+		if ( !empty( $actionInfo)) {
+
+
+			$this->actionCommand = $actionInfo['Command'];
+			$this->actionName = $actionInfo['Name'];
+			$this->actionDescription = $actionInfo['Description'];
+			$this->actionModule = isset($actionInfo['Module']) ? $actionInfo['Module'] : null;
+			$command = $this->actionCommand = $actionInfo['Command'];
+		}
 		if(method_exists($this, $method)) {
 			$this->actionMethod = $method;
 			$this->logInitAction();
@@ -169,7 +187,14 @@ class ActionAbstract extends IController {
 
 	private function getDefaultLogMessage(){
 		$user = \Ximdex\Utils\Session::get("userID")? "by ".\Ximdex\Utils\Session::get("userID"):"";
-		$moduleString = $this->actionModule? "in module {$this->actionModule}.": "";
+
+		$moduleString = '';
+
+		if ( isset( $this->actionModule)) {
+			$moduleString = $this->actionModule? "in module {$this->actionModule}.": "";
+
+		}
+
 		return $moduleString.get_class($this)."->{$this->actionMethod} {$user}";
 
 	}

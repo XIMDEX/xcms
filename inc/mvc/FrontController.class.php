@@ -69,12 +69,13 @@ class FrontController extends IController
     function _selectFrontControllerType()
     {
         $sapi_type = php_sapi_name();
+
         if ($sapi_type == "cli") {
             $this->request->setParam("enviroment", "cli");
             return new FrontControllerCLI ();
         } else {
             $this->request->setParam("enviroment", "http");
-            return new FrontControllerHTTP ();
+            return new FrontControllerHTTP();
 
         }
     }

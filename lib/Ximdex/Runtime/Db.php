@@ -2,8 +2,8 @@
 
 namespace  Ximdex\Runtime ;
 
-use Mockery\CountValidator\Exception;
 use PDO ;
+use Ximdex\Logger as XMD_Log;
 
 class Db
 {
@@ -37,7 +37,8 @@ class Db
      */
     static public function getInstance($conf = null)
     {
-        return new  Db($conf);
+       //return new  Db($conf);
+       return new  \DB_legacy();
     }
 
     /**
@@ -52,6 +53,11 @@ class Db
 
     public function Query($sql, $cache = false)
     {
+
+        // todo remove cache parameter
+        unset($cache) ;
+
+
         $this->_getEncodings();
         $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
 
@@ -97,11 +103,9 @@ class Db
     }
 
 
-
     /**
-     * Function which performs a BD query
      * @param $sql
-     * @return unknown_type
+     * @return bool
      */
     function Execute($sql)
     {
@@ -128,6 +132,9 @@ class Db
         return false;
     }
 
+    /**
+     * @return bool
+     */
     function Next()
     {
         if ( !$this->EOF ) {
@@ -147,6 +154,9 @@ class Db
      * Read dbEncoding and dbEncoding from database, Config
      * Is not possible to do in other place, because if you put in getValue, for example, or in the constructor,
      * is will create an infinite circle
+     *
+     */
+    /**
      *
      */
     private function _getEncodings()
@@ -183,8 +193,10 @@ class Db
 
     /**
      * Functions which obtains the current row value for a determined field
+     */
+    /**
      * @param $col
-     * @return unknown_type
+     * @return null|String
      */
     function GetValue($col)
     {

@@ -39,8 +39,12 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 $debug = NULL;
 
+Class DB Extends DB_legacy {
+
+}
+
 // Class for mySql database management
-class DB
+class DB_legacy
 {
     /**
      *
@@ -149,14 +153,12 @@ class DB
      */
     var $workingEncoding = '';
 
-    /**
-     * Constructor
-     * @return unknown_type
-     */
-    function DB()
+    public function __construct()
     {
         $this->ConnectDatabase();
     }
+
+
 
     /**
      * Function which creates a DB connection with the previously speficied params
@@ -414,7 +416,7 @@ class DB
         }
         $this->EOF = true;
         return false;
-    }
+}
 
     /**
      * Going to the first element of the recordset
@@ -456,7 +458,7 @@ class DB
         }
 
 
-        return "'" . mysql_real_escape_string($value) . "'";
+        return "'" . mysql_escape_string($value  ) . "'";
     }
 
     /**

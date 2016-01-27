@@ -28,7 +28,7 @@
 namespace Ximdex\Utils ;
 
 
-
+use Ximdex\Runtime\App;
 
 define ('MSG_TYPE_ERROR', 0);
 define ('MSG_TYPE_WARNING', 1);
@@ -36,29 +36,31 @@ define ('MSG_TYPE_NOTICE', 2);
 
 class Messages {
     /**
-     *
-     * @var unknown_type
+     * @var array|null
      */
     var $messages = null;
     /**
-     *
-     * @var unknown_type
+     * @var array|null
      */
     var $_validTypes = null;
     /**
-     *
-     * @var unknown_type
+     * @var null
      */
     var $displayEncoding = null;
+
     /**
-     * Constructor
-     * @return unknown_type
+     * Messages constructor.
      */
     public function __construct(){
         $this->_validTypes = array(MSG_TYPE_ERROR, MSG_TYPE_WARNING, MSG_TYPE_NOTICE);
         $this->messages = array();
-        $this->displayEncoding = \App::getValue( 'displayEncoding');
+        $this->displayEncoding = App::getValue( 'displayEncoding');
     }
+
+    /**
+     * @param $message
+     * @param $type
+     */
     function add($message, $type)
     {
         if (in_array($type, $this->_validTypes) && !$this->_searchMessageText($message, $type)) {
@@ -68,9 +70,8 @@ class Messages {
     }
 
     /**
-     *
-     * @param $type
-     * @return unknown_type
+     * @param null $type
+     * @return int
      */
     function count($type = null)
     {
@@ -87,10 +88,8 @@ class Messages {
     }
 
     /**
-     *
-     * @param $type
-     * @param $postClean
-     * @return unknown_type
+     * @param null $type
+     * @param bool $postClean
      */
     function displayRaw ($type = NULL, $postClean = false) {
         if(!defined("CLI_MODE") || !CLI_MODE) return ;
@@ -110,9 +109,9 @@ class Messages {
     }
 
     /**
-     *
      * @param $status
-     * @return unknown_type
+     * @return string
+     *
      */
     function getXml ($status) {
         $messagesText = '';
@@ -128,9 +127,8 @@ class Messages {
     }
 
     /**
-     *
-     * @param $messageType
-     * @return unknown_type
+     * @param null $messageType
+     * @return string
      */
     function getRaw ($messageType = NULL) {
         $messageString = '';
@@ -148,10 +146,8 @@ class Messages {
     }
 
     /**
-     * Workaround hasta que este el mvc
-     * @param $header
-     * @param $type
-     * @return unknown_type
+     * @param string $header
+     * @param string $type
      */
     function getHtml($header = 'Messages', $type = 'ALL') {
         if (!(count($this->messages) > 0)) {
@@ -176,10 +172,8 @@ class Messages {
         }
     }
 
-    /**
-     *
-     * @return unknown_type
-     */
+    //**
+
     function logMessagesToErrorLog() {
         ob_start();
 //		var_dump($this->messages);
@@ -188,10 +182,9 @@ class Messages {
     }
 
     /**
-     *
      * @param $messageText
      * @param $type
-     * @return unknown_type
+     * @return bool
      */
     function _searchMessageText($messageText, $type) {
         reset($this->messages);
@@ -205,10 +198,14 @@ class Messages {
 
     /**
      * A�ade a este objeto de mensajes los mensajes provenientes de otro objeto
+
+     */
+    /**
      * @param $messages
-     * @return unknown_type
      */
     function mergeMessages($messages) {
-        $this->messages = array_merge($this->messages, $messages->messages);
+        if ( isset( $messages->messages ) && is_array( $messages->messages)) {
+            $this->messages = array_merge($this->messages, $messages->messages);
+        }
     }
 }
