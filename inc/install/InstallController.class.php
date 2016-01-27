@@ -23,8 +23,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Runtime\Response ;
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Response.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/mvc.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/InstallStepFactory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
@@ -118,5 +118,3 @@ class InstallController extends IController {
 		return InstallStepFactory::getStep($this->steps, $this->currentState);
 	}
 }
-
-?>

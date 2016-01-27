@@ -25,6 +25,9 @@
  * @version $Revision$
  */
 
+
+use Ximdex\Runtime\Response ;
+
 /**
  * <p>Builder class to create responses</p>
  * <p>Using fluent API</p>
