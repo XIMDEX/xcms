@@ -24,6 +24,10 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+
+use Ximdex\Models\Action ;
+
+
 ModulesManager::file('/inc/model/orm/Users_ORM.class.php');
 ModulesManager::file('/inc/model/NoActionsInNode.class.php');
 require_once XIMDEX_ROOT_PATH . '/inc/model/NoActionsInNode.class.php';

@@ -44,6 +44,9 @@ class FastTraverseManager extends InstallManager{
 			$node = new Node($idNode);
 			$node->updateFastTraverse();
 			$path = pathinfo($node->GetPath());
+			if ( !isset( $path['dirname'] )) {
+				$path['dirname'] = '/' ;
+			}
 			$this->installMessages->printIteration($i);
 			$dbUpdate->execute(sprintf("update Nodes set Path = '%s' where idnode = %s", $path['dirname'], $idNode));			
 		}
@@ -59,5 +62,3 @@ class FastTraverseManager extends InstallManager{
 		$db->Execute($sql);
 	}
 }
-
-?>

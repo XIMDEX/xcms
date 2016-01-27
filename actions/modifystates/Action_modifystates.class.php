@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Models\Action;
 
 ModulesManager::file('/inc/pipeline/Pipeline.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
@@ -54,7 +55,7 @@ class Action_modifystates extends ActionAbstract
                 $nextStatus = new PipeStatus($transition->get('IdStatusTo'));
 
                 $statusTransitions[] = array("id" => $transition->get('id'),
-                    "value"=> sprintf('%s->%s', $currentStatus->get('Name'), $nextStatus->get('Name')));
+                    "value" => sprintf('%s->%s', $currentStatus->get('Name'), $nextStatus->get('Name')));
 
                 $allStatusInfo[] =
                     array('id' => $currentStatus->get('id'),
@@ -86,7 +87,7 @@ class Action_modifystates extends ActionAbstract
             }
         }
 
-        $checkUrl = \App::getValue( 'UrlRoot') . '/xmd/loadaction.php?actionid='
+        $checkUrl = \App::getValue('UrlRoot') . '/xmd/loadaction.php?actionid='
             . $this->request->getParam('actionid') . '&nodeid=' . $this->request->getParam('nodeid')
             . '&id_nodetype=IDNODETYPE&is_workflow_master=ISWORKFLOWMASTER&method=checkNodeDependencies';
 
@@ -105,7 +106,7 @@ class Action_modifystates extends ActionAbstract
 
     function update_states()
     {
-        $req = json_decode($GLOBALS['HTTP_RAW_POST_DATA'],true);
+        $req = json_decode($GLOBALS['HTTP_RAW_POST_DATA'], true);
         $idNode = $req["idNode"];
         $all_status = $req["states"];
         $toDelete = $req["toDelete"];
@@ -117,90 +118,90 @@ class Action_modifystates extends ActionAbstract
         $last = $pipeProcess->transitions->last();
         $lastStatus = new PipeStatus($last->get('IdStatusTo'));
 
-        $ids = $all_status[0]["id"]==$firstStatus->id &&
-            $all_status[count($all_status)-1]["id"]==$lastStatus->id;
-        $names = $all_status[0]["name"]==$firstStatus->Name &&
-            $all_status[count($all_status)-1]["name"]==$lastStatus->Name;
-        $descriptions = $all_status[0]["description"]==$firstStatus->Description &&
-            $all_status[count($all_status)-1]["description"]==$lastStatus->Description;
+        $ids = $all_status[0]["id"] == $firstStatus->id &&
+            $all_status[count($all_status) - 1]["id"] == $lastStatus->id;
+        $names = $all_status[0]["name"] == $firstStatus->Name &&
+            $all_status[count($all_status) - 1]["name"] == $lastStatus->Name;
+        $descriptions = $all_status[0]["description"] == $firstStatus->Description &&
+            $all_status[count($all_status) - 1]["description"] == $lastStatus->Description;
 
-        if(!$ids | !$names | !$descriptions){
+        if (!$ids | !$names | !$descriptions) {
             $this->sendJSON(array("result" => "fail",
                 "message" => _("The first and the last status can't be modified")));
         }
 
-        foreach($all_status as $status){
-            if(empty($status["name"]) | empty($status["description"])){
+        foreach ($all_status as $status) {
+            if (empty($status["name"]) | empty($status["description"])) {
                 $this->sendJSON(array("result" => "fail",
                     "message" => _("Name or description of status can't be empty")));
             }
         }
 
         while ($transition = $pipeProcess->transitions->next()) {
-                $transition->delete();
+            $transition->delete();
         }
 
-        foreach($toDelete as $status){
-            if(is_numeric($status["id"]) && $status["id"] != $firstStatus->id && $status["id"] != $lastStatus->id){
+        foreach ($toDelete as $status) {
+            if (is_numeric($status["id"]) && $status["id"] != $firstStatus->id && $status["id"] != $lastStatus->id) {
                 $pipeStatus = new PipeStatus($status["id"]);
                 $pipeStatus->delete();
             }
         }
 
-        for($i=0; $i<count($all_status); $i++){
+        for ($i = 0; $i < count($all_status); $i++) {
             $pipeStatus = new PipeStatus($all_status[$i]["id"]);
             $pipeStatus->set('Name', $all_status[$i]["name"]);
             $pipeStatus->set('Description', $all_status[$i]["description"]);
-            if($all_status[$i]["id"]!=null){
+            if ($all_status[$i]["id"] != null) {
                 $pipeStatus->update();
-            }else{
-                $all_status[$i]["id"]=$pipeStatus->add();
-                if($all_status[$i]["id"]<0){
+            } else {
+                $all_status[$i]["id"] = $pipeStatus->add();
+                if ($all_status[$i]["id"] < 0) {
                     $this->sendJSON(array("result" => "fail",
                         "message" => sprintf(_("Error adding status %s"), $all_status[$i]["name"])));
                 }
             }
-            if($i>0){
+            if ($i > 0) {
                 $pipeTransition = new PipeTransition();
-                $pipeTransition->set('IdStatusFrom', $all_status[$i-1]["id"]);
+                $pipeTransition->set('IdStatusFrom', $all_status[$i - 1]["id"]);
                 $pipeTransition->set('IdStatusTo', $all_status[$i]["id"]);
-                $pipeTransition->set('Name', sprintf('%s_to_%s', $all_status[$i-1]["name"], $all_status[$i]["name"]));
+                $pipeTransition->set('Name', sprintf('%s_to_%s', $all_status[$i - 1]["name"], $all_status[$i]["name"]));
                 $pipeTransition->set('IdPipeProcess', $pipeProcess->id);
                 $pipeTransition->set('Cacheable', 0);
                 $pipeTransition->set('Callback', '-');
                 $idNewTransition = $pipeTransition->add();
-                if($idNewTransition<0){
+                if ($idNewTransition < 0) {
                     $this->sendJSON(array("result" => "fail",
                         "message" => sprintf(_("Error adding transition %s"),
-                            sprintf('%s_to_%s', $all_status[$i-1]["name"], $all_status[$i]["name"]))));
+                            sprintf('%s_to_%s', $all_status[$i - 1]["name"], $all_status[$i]["name"]))));
                 }
             }
         }
         $action = new Action();
-        if(count($all_status)>2){
-            $actions = $action->find(ALL,"Command=%s AND Name=%s", array("workflow_forward","Publish"));
-            foreach($actions as $a){
+        if (count($all_status) > 2) {
+            $actions = $action->find(ALL, "Command=%s AND Name=%s", array("workflow_forward", "Publish"));
+            foreach ($actions as $a) {
                 $act = new Action($a["IdAction"]);
                 $act->set('Name', "Move to next state");
                 $act->update();
             }
 
-            $actions = $action->find(ALL,"Command=%s", array("workflow_backward"));
-            foreach($actions as $a){
+            $actions = $action->find(ALL, "Command=%s", array("workflow_backward"));
+            foreach ($actions as $a) {
                 $act = new Action($a["IdAction"]);
                 $act->set('Sort', 73);
                 $act->update();
             }
 
-        }else{
-            $actions = $action->find(ALL,"Command=%s AND Name=%s", array("workflow_forward","Move to next state"));
-            foreach($actions as $a){
+        } else {
+            $actions = $action->find(ALL, "Command=%s AND Name=%s", array("workflow_forward", "Move to next state"));
+            foreach ($actions as $a) {
                 $act = new Action($a["IdAction"]);
                 $act->set('Name', "Publish");
                 $act->update();
             }
-            $actions = $action->find(ALL,"Command=%s", array("workflow_backward"));
-            foreach($actions as $a){
+            $actions = $action->find(ALL, "Command=%s", array("workflow_backward"));
+            foreach ($actions as $a) {
                 $act = new Action($a["IdAction"]);
                 $act->set('Sort', -10);
                 $act->update();
@@ -239,7 +240,7 @@ class Action_modifystates extends ActionAbstract
         }
 
         if ($isWorkFlowMaster) {
-            if ($workflow->pipeline->get('IdNode') != \App::getValue( 'IdDefaultWorkflow')) {
+            if ($workflow->pipeline->get('IdNode') != \App::getValue('IdDefaultWorkflow')) {
                 $allStatus = $workflow->GetAllStates();
                 $node = new Node();
                 $wfresult = $node->find('IdNode', 'IdState IN (%s)', array(implode(', ', $allStatus)), MONO, false);
@@ -269,5 +270,3 @@ class Action_modifystates extends ActionAbstract
         $this->render(array('messages' => $this->messages->messages, 'action_with_no_return' => true), NULL, 'messages.tpl');
     }
 }
-
-?>

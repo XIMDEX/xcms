@@ -36,14 +36,16 @@ use Ximdex\Utils\Overloadable;
 /**
  * TODO Remove this defines
  */
-define('LOG_LEVEL_NONE', 0);
-define('LOG_LEVEL_ALL', 1);
-define('LOG_LEVEL_QUERY', 2);
-define('LOG_LEVEL_EXECUTE', 3);
-define('ALL', '*');
-define('MONO', false);
-define('MULTI', true);
 
+if (!defined('MULTI')) {
+    define('LOG_LEVEL_NONE', 0);
+    define('LOG_LEVEL_ALL', 1);
+    define('LOG_LEVEL_QUERY', 2);
+    define('LOG_LEVEL_EXECUTE', 3);
+    define('ALL', '*');
+    define('MONO', false);
+    define('MULTI', true);
+}
 if (!defined('DEBUG_LEVEL')) {
     define('DEBUG_LEVEL', LOG_LEVEL_NONE); //Only for debugging purposes
 }

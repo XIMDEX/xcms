@@ -45,7 +45,8 @@ class XowlConfigurationInstallStep extends GenericInstallStep
 
     public function configure()
     {
-        $module = ModulesManager::instanceModule("Xowl");
+        $moduleManager = new ModulesManager();
+        $module = $moduleManager->instanceModule("Xowl");
 
         $apikey = trim($this->request->getParam("apikey"));
         $serviceurl = trim($this->request->getParam("serviceurl"));

@@ -23,6 +23,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Models\Action ;
 
 
 ModulesManager::file("/actions/browser3/Action_browser3.class.php");

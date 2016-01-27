@@ -24,13 +24,13 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Models\Action ;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/action.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
+ require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
 *  @brief Handles the Ximdex actions.
