@@ -20,44 +20,46 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 ModulesManager::file('/inc/mail/Mail.class.php');
-class EmailNotificationStrategy{
 
-	/**
-	 * Send a notification.
-	 * @param  string $subject   
-	 * @param  string $content   
-	 * @param  string $from      
-	 * @param  array $to id       
-	 * @param  array $extraData More required data in the message. 
-	 * Maybe a attachment or whatever
-	 * @return [type]            [description]
-	 */
-	public function sendNotification($subject, $content,$from, $to, $extraData){
+class EmailNotificationStrategy
+{
 
-		$result = array();
-		foreach($to as $toUser) {
-			
-			$user = new User($toUser);
-			$userEmail = $user->get('Email');
-			$userName = $user->get('Name');	
-			$mail = new Mail();
-			$mail->addAddress($userEmail, $userName);
-			$mail->Subject = $subject;
-			$mail->Body = $content;
-			if ($mail->Send()) {
-				$result[$toUser] = true;				
-			} else {
-				$result[$toUser] = false;				
-			}
-		}
+    /**
+     * Send a notification.
+     */
+    /**
+     * @param $subject
+     * @param $content
+     * @param $from
+     * @param $to
+     * @param $extraData
+     * @return array
+     */
+    public function sendNotification($subject, $content, $from, $to, $extraData)
+    {
 
-		return $result;
-	}
+        $result = array();
+        foreach ($to as $toUser) {
+
+            $user = new User($toUser);
+            $userEmail = $user->get('Email');
+            $userName = $user->get('Name');
+            $mail = new Mail();
+            $mail->addAddress($userEmail, $userName);
+            $mail->Subject = $subject;
+            $mail->Body = $content;
+            if ($mail->Send()) {
+                $result[$toUser] = true;
+            } else {
+                $result[$toUser] = false;
+            }
+        }
+
+        return $result;
+    }
 }
-
-?>

@@ -9,7 +9,7 @@ use Ximdex\Data\GenericData;
  * Class ActionStatsOrm
  * @package Ximdex\Models
  */
-class ActionStatsOrm extends GenericData
+class ActionsStatsOrm extends GenericData
 {
     var $_idField = 'IdStat';
     var $_table = 'ActionsStats';

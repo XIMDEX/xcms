@@ -20,118 +20,137 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-use Ximdex\Models\Action ;
+use Ximdex\Models\Action;
 
-ModulesManager::file('/inc/model/ActionsStats.class.php');
+use Ximdex\Models\ActionsStats;
+
 ModulesManager::file('/inc/model/user.php');
 
+/**
+ * Class Action_actionsstats
+ */
+class Action_actionsstats extends ActionAbstract
+{
 
-class Action_actionsstats extends ActionAbstract {
+    /**
+     *
+     */
+    public function index()
+    {
 
-	public function index() {
-		$userId = $this->request->getParam('userid');
+        $html = array();
 
-		$selectedUserName = '';
+        $userId = $this->request->getParam('userid');
 
-		if (!is_null($userId)) {
-			$user = new User($userId);
-			$selectedUserName = $user->get('Name');
-		}
+        $selectedUserName = '';
 
-
-		$stat = new ActionsStats();
-		$result =  $stat->getTotals($userId);
-			
-		if (!is_null($result)) {
-
-			$sumActions = array_reduce($result, create_function('$v, $w', 'return $v += $w["total"];'));
-
-			foreach ($result as $resultData) {
-				$action = new Action($resultData['idaction']);
-				$name = $action->get('Name');
-				$percent = number_format($resultData['total'] * 100 / $sumActions, 2, ',', '');
-
-				$html[] = array('name' => $name, 'method' => $resultData['method'], 
-					'total' => $resultData['total'], 'percent' => $percent);
-			}
-		}
-
-		$values = array(
-			'selectedUser' => $selectedUserName,
-			'users' => $this->getUsers(),
-			'title' => _('Number of times each action is exectuted'),
-			'unit' => _('Times'),
-			'html' => $html
-		);
-
-		$this->render($values);
-	}
+        if (!is_null($userId)) {
+            $user = new User($userId);
+            $selectedUserName = $user->get('Name');
+        }
 
 
-		
-	// Reporting average time in execution action
+        $stat = new ActionsStats();
+        $result = $stat->getTotals($userId);
 
-	public function average() {
-		$userId = $this->request->getParam('userid');
+        if (!is_null($result)) {
 
-		$selectedUserName = '';
+            $sumActions = array_reduce($result, create_function('$v, $w', 'return $v += $w["total"];'));
 
-		if (!is_null($userId)) {
-			$user = new User($userId);
-			$selectedUserName = $user->get('Name');
-		}
+            foreach ($result as $resultData) {
+                $action = new Action($resultData['idaction']);
+                $name = $action->get('Name');
+                $percent = number_format($resultData['total'] * 100 / $sumActions, 2, ',', '');
 
-		$stat = new ActionsStats();
-		$result =  $stat->getAverage($userId);
+                $html[] = array('name' => $name, 'method' => $resultData['method'],
+                    'total' => $resultData['total'], 'percent' => $percent);
+            }
+        }
 
-		if (!is_null($result)) {
+        $values = array(
+            'selectedUser' => $selectedUserName,
+            'users' => $this->getUsers(),
+            'title' => _('Number of times each action is exectuted'),
+            'unit' => _('Times'),
+            'html' => $html
+        );
 
-			$sumTimes = array_reduce($result, create_function('$v, $w', 'return $v += $w["average"];'));
+        $this->render($values);
+    }
 
-			foreach ($result as $resultData) {
-				$action = new Action($resultData['idaction']);
-				$name = $action->get('Name');
-				$average = number_format($resultData['average'], 2, ',', '');
-				$percent = number_format($resultData['average'] * 100 / $sumTimes, 2, ',', '');
 
-				$html[] = array('name' => $name, 'method' => $resultData['method'], 
-					'total' => $average, 'percent' => $percent);
 
-			}
-		}
+    // Reporting average time in execution action
 
-		$values = array(
-			'selectedUser' => $selectedUserName,
-			'users' => $this->getUsers(),
-			'method' => 'index',
-			'title' => _('Average times of each action'),
-			'unit' => _('Average (ms)'),
-			'html' => $html
-				);
+    /**
+     * @return array|null
+     */
+    private function getUsers()
+    {
+        $users = array();
+        $user = new User();
+        $result = $user->find('IdUser, Name', '1 ORDER BY Name', NULL, MULTI);
 
-		$this->render($values);
+        if (!is_null($result)) {
+            foreach ($result as $resultData) {
+                $users[] = array('id' => $resultData['IdUser'], 'name' => $resultData['Name']);
+            }
 
-	}
+            return $users;
+        }
 
-	private function getUsers() {
-		$user = new User();		
-		$result = $user->find('IdUser, Name', '1 ORDER BY Name', NULL, MULTI);
-		
-		if (!is_null($result)) {
-			foreach ($result as $resultData) {
-				$users[] = array('id' => $resultData['IdUser'], 'name' => $resultData['Name']);
-			}
+        return NULL;
+    }
 
-			return $users;
-		}
+    /**
+     *
+     */
+    public function average()
+    {
+        $html = array();
+        $userId = $this->request->getParam('userid');
 
-		return NULL;
-	}
-	
+        $selectedUserName = '';
+
+        if (!is_null($userId)) {
+            $user = new User($userId);
+            $selectedUserName = $user->get('Name');
+        }
+
+        $stat = new ActionsStats();
+        $result = $stat->getAverage($userId);
+
+        if (!is_null($result)) {
+
+            $sumTimes = array_reduce($result, create_function('$v, $w', 'return $v += $w["average"];'));
+
+            foreach ($result as $resultData) {
+                $action = new Action($resultData['idaction']);
+                $name = $action->get('Name');
+                $average = number_format($resultData['average'], 2, ',', '');
+                $percent = number_format($resultData['average'] * 100 / $sumTimes, 2, ',', '');
+
+                $html[] = array('name' => $name, 'method' => $resultData['method'],
+                    'total' => $average, 'percent' => $percent);
+
+            }
+        }
+
+        $values = array(
+            'selectedUser' => $selectedUserName,
+            'users' => $this->getUsers(),
+            'method' => 'index',
+            'title' => _('Average times of each action'),
+            'unit' => _('Average (ms)'),
+            'html' => $html
+        );
+
+        $this->render($values);
+
+    }
+
 }
-
-?>

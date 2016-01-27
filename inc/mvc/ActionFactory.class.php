@@ -44,9 +44,8 @@ require_once(XIMDEX_ROOT_PATH . '/inc/log/Action_log.class.php');
 class ActionFactory {
 
 	/**
-	 *
 	 * @param $request
-	 * @return unknown_type
+	 * @return mixed|null
 	 */
 	public static function getAction ($request) {
 
@@ -90,8 +89,11 @@ class ActionFactory {
 
 	/**
 	 * Determina si una accion existe
+
+	 */
+	/**
 	 * @param $actionPath
-	 * @return unknown_type
+	 * @return bool
 	 */
 	function _actionExists ($actionPath) {
 		$absolut_actionPath = XIMDEX_ROOT_PATH . DIRECTORY_SEPARATOR . 'actions' . DIRECTORY_SEPARATOR . $actionPath;
