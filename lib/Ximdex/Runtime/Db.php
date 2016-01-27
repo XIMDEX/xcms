@@ -2,6 +2,7 @@
 
 namespace  Ximdex\Runtime ;
 
+use Mockery\CountValidator\Exception;
 use PDO ;
 
 class Db
@@ -18,9 +19,11 @@ class Db
     public $EOF = true ;
     public $row = array();
     public $numRows = 0 ;
+    public $numFields = 0 ;
     private $index = 0;
     public $numErr = null ;
-
+    public $desErr = null ;
+    public $newID = null ;
 
     /**
      * @var \PDOStatement
@@ -53,19 +56,26 @@ class Db
         $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
 
         $this->sql = $sql;
-        try {
-            $this->stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
-        } catch  ( Exception $e  ) {
 
-                $this->numErr = $this->db->errorCode() ;
-
-        }
-
+        error_log( $this->sql ) ;
         $this->rows = array();
 
-        foreach( $this->stm as $row ) {
+        try {
+            $this->stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
 
-            $this->rows[] = $row ;
+            if ( empty( $this->stm )) {
+                throw new \Exception('Bad Query: ' .  $this->sql );
+            }
+
+            foreach( $this->stm as $row ) {
+
+                $this->rows[] = $row ;
+
+            }
+
+        } catch  ( \Exception $e  ) {
+
+                $this->numErr = $this->db->errorCode() ;
 
         }
 
@@ -82,9 +92,42 @@ class Db
         }
 
 
-
+        error_log( "TOTAL: " . count( $this->rows )  ) ;
 
     }
+
+
+
+    /**
+     * Function which performs a BD query
+     * @param $sql
+     * @return unknown_type
+     */
+    function Execute($sql)
+    {
+            //Encode to dbConfig value in table config
+            $this->_getEncodings();
+            $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+
+            $this->sql = $sql;
+
+            $this->rows = array();
+            $this->EOF = true ;
+            $this->newID = null ;
+
+           if ( $this->db->exec($this->sql ) ) {
+               $this->newID = $this->db->lastInsertId() ;
+               return true ;
+           } else {
+               $this->numErr = $this->db->errorCode() ;
+               $this->desErr = $this->db->errorInfo() ;
+        }
+
+
+
+        return false;
+    }
+
     function Next()
     {
         if ( !$this->EOF ) {
@@ -135,7 +178,6 @@ class Db
 
         }
 
-
     }
 
 
@@ -161,7 +203,7 @@ class Db
     /**
      * @TODO REMOVE USAGE
      * @param $value
-     * @return unknown_type
+     * @return string
      */
     public static function sqlEscapeString($value)
     {

@@ -26,24 +26,39 @@
 
 namespace Ximdex\Behaviours;
 
+use  Ximdex\Utils\Messages;
+use  Ximdex\Utils\AssociativeArray;
+use  Ximdex\Utils\Overloadable;
 
-class  Collection extends \Ximdex\Utils\Overloadable
+class  Collection extends Overloadable
 {
 
     var $behaviorCollection = null;
-    private $messages = null;
+    /**
+     * @var Messages
+     */
+    public  $messages = null;
     private $model;
 
     function __construct(& $model)
     {
         $this->model = $model;
-        $this->behaviorCollection = new \Ximdex\Utils\AssociativeArray();
+        $this->behaviorCollection = new  AssociativeArray();
         $behaviors = $model->actsAs;
         if (is_array($behaviors)) {
             foreach ($behaviors as $behavior => $params) {
                 $this->attach($behavior, $params);
             }
         }
+    }
+
+    function attach($behavior, $options)
+    {
+
+        $instancedBehavior = new $behavior($options);
+
+        $this->behaviorCollection->$behavior = $instancedBehavior;
+
     }
 
     function call__($method, $params = null)
@@ -71,7 +86,7 @@ class  Collection extends \Ximdex\Utils\Overloadable
 
     function __get($name)
     {
-        $this->messages = new \Ximdex\Utils\Messages();
+        $this->messages = new  Messages();
         if ($name == 'messages') {
             $behaviors = $this->behaviorCollection->getKeys();
             foreach ($behaviors as $behavior) {
@@ -84,15 +99,6 @@ class  Collection extends \Ximdex\Utils\Overloadable
     function __set($name, $params)
     {
         $this->behaviorCollection->$name = $params;
-    }
-
-    function attach($behavior, $options)
-    {
-
-        $instancedBehavior = new $behavior($options);
-
-        $this->behaviorCollection->$behavior = $instancedBehavior;
-
     }
 
     function detach($behavior)

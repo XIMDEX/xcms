@@ -34,10 +34,10 @@ class Overloadable
      * @return mixed
      */
 
-    function __call($method, $params = array())
+    public function __call($method, $params = array())
     {
         if (!method_exists($this, 'call__')) {
-            trigger_error(sprintf(__('Magic method handler call__ not defined in %s', true), get_class($this)), E_USER_ERROR);
+            trigger_error(sprintf( __('Magic method handler call__ not defined in %s', true), get_class($this)), E_USER_ERROR);
         } else {
             return $this->call__($method, $params);
         }
