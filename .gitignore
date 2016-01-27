@@ -10,8 +10,8 @@
 
 
 node_modules/
-data/
-logs/
+/data/
+/logs/
 
 conf/_STATUSFILE
 conf/install-params.conf.php
