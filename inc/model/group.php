@@ -328,9 +328,8 @@ class Group extends Groups_ORM
 	}
 
 	/**
-	 *
 	 * @param $nodeID
-	 * @return unknown_type
+	 * @return null|String|unknown_type
 	 */
 	function GetRoleOnNode($nodeID){
 		$this->ClearError();

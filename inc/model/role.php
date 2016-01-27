@@ -54,7 +54,11 @@ class Role extends Roles_ORM {
         $this->errorList[2] = _('Role does not exist');
     }
 
-    function GetByName($name) {
+    /**
+     * @param $name
+     * @return int
+     */
+    public static function GetByName($name) {
         $dbObj = new DB();
         $name = $dbObj->sqlEscapeString($name);
 

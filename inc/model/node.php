@@ -323,6 +323,8 @@ class Node extends Nodes_ORM {
 
     /**
      * Returns the node parent ID
+     */
+    /**
      * @return unknown_type
      */
     function GetParent() {
@@ -332,8 +334,10 @@ class Node extends Nodes_ORM {
 
     /**
      * Changes the node parent
+       */
+    /**
      * @param $parentID
-     * @return unknown_type
+     * @return bool
      */
     function SetParent($parentID) {
         $this->ClearError();
@@ -1350,8 +1354,10 @@ class Node extends Nodes_ORM {
 
     /**
      * Returns the list of groups associated to this node
+       */
+    /**
      * @param $groupID
-     * @return unknown_type
+     * @return null|String|unknown_type
      */
     function GetRoleOfGroup($groupID) {
         $this->ClearError();
@@ -1383,9 +1389,11 @@ class Node extends Nodes_ORM {
 
     ///
     /**
-     * Returns the list of users associated to this node
-     * @param $ignoreGeneralGroup
-     * @return unknown_type
+     * Returns the list of users associated to this node* @param $ignoreGeneralGroup
+     */
+    /**
+     * @param null $ignoreGeneralGroup
+     * @return array|null
      */
     function GetUserList($ignoreGeneralGroup = null) {
         $this->ClearError();

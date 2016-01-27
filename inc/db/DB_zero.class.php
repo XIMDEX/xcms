@@ -377,9 +377,11 @@ class DB_legacy
     }
 
     /**
-     * Functions which obtains the current row value for a determined field
+     * Functions which obtains the current row value for a determined field* @param $col
+     */
+    /**
      * @param $col
-     * @return unknown_type
+     * @return null|String
      */
     function GetValue($col)
     {
