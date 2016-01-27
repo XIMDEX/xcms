@@ -654,11 +654,12 @@ class GenericData extends \Ximdex\Utils\Overloadable
         }
 
         $dbObj->query($query);
-        if (!($dbObj->numRows > 0)) {
-            return NULL;
-        }
 
         $result = array();
+        if (!($dbObj->numRows > 0)) {
+            return $result ;
+        }
+
         while (!$dbObj->EOF) {
             if ($returnType == MULTI) {
                 $subResult = array();
@@ -667,7 +668,12 @@ class GenericData extends \Ximdex\Utils\Overloadable
                 }
                 $result[] = $subResult;
             } elseif ($returnType == MONO) {
-                $result[] = $this->_getValueForFind($fields, $dbObj->row[0]);
+               //
+                $subResult =  null ;
+                foreach ($dbObj->row as $key => $value) {
+                    $subResult  = $this->_getValueForFind($key, $value);
+                }
+                $result[] = $subResult;
             }
             $dbObj->next();
         }
