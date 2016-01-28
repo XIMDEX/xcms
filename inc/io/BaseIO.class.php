@@ -65,7 +65,7 @@ class BaseIO
      */
     function build($data, $userid = NULL)
     {
-        $metaTypesArray = Constants::METATYPES_ARRAY ;
+        $metaTypesArray = Constants::$METATYPES_ARRAY ;
 
 
         $data = $this->_checkVisualTemplate($data);
@@ -538,7 +538,7 @@ class BaseIO
 
     function update($data, $userid = NULL)
     {
-        $metaTypesArray = Constants::METATYPES_ARRAY ;
+        $metaTypesArray = Constants::$METATYPES_ARRAY ;
 
         if (!$userid) {
             $userid =  Session::get('userID');

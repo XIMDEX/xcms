@@ -81,7 +81,7 @@ class Root
     function getMetaType()
     {
 
-        $metaTypesArray = Constants::METATYPES_ARRAY;
+        $metaTypesArray = Constants::$METATYPES_ARRAY;
         $class = get_class($this);
 
         if (isset($metaTypesArray[strtoupper($class)])) {

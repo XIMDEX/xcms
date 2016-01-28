@@ -23,7 +23,7 @@ class Constants
     const IMPORTED_STATUS_OK = 1;
     const IMPORTED_STATUS_OK_TO_PUBLISH = 2;
     const IMPORTED_STATUS_PENDING_LINKS = 3;
-    const METATYPES_ARRAY = array(
+    static  $METATYPES_ARRAY = array(
         'FOLDER' => 'FOLDERNODE',
         'FOLDERNODE' => 'FOLDERNODE',
         'SERVERNODE' => 'FOLDERNODE',
