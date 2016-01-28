@@ -29,7 +29,7 @@ namespace Ximdex\Data;
 use Ximdex\Behaviours\Collection;
 use Ximdex\Helpers\Cache;
 use Ximdex\Logger as XMD_Log;
-use Ximdex\Runtime\Db;
+use DB_legacy as DB;
 use Ximdex\Utils\Messages;
 use Ximdex\Utils\Overloadable;
 
@@ -136,7 +136,7 @@ class GenericData extends Overloadable
             $this->_fieldsToTraduce = array();
         }
         $id             = (int) $id;
-        $dbObj          = Db::getInstance();
+        $dbObj          = new DB();
         $this->messages = new Messages();
 
         $cache     = null;
