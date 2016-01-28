@@ -28,13 +28,13 @@
 use Ximdex\Models\Action ;
 
 use Ximdex\Models\Node;
+use Ximdex\MVC\IController;
 use Ximdex\Runtime\App ;
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__). "/../../"));
 }
 //
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingJsGetText.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
 
 

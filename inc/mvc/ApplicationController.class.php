@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\ActionsStats;
+use Ximdex\MVC\IController;
 use Ximdex\Runtime\App;
 use \Ximdex\Utils\Session;
 

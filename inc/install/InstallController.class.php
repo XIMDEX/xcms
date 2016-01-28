@@ -23,6 +23,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\MVC\IController;
 use Ximdex\Runtime\Request;
 use Ximdex\Runtime\Response ;
  require_once(XIMDEX_ROOT_PATH . '/inc/mvc/mvc.php');
