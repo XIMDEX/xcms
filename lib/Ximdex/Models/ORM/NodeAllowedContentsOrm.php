@@ -1,4 +1,6 @@
 <?php
+
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,27 +25,22 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
-}
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/NodeAllowedContents_ORM.class.php';
-
-class NodeAllowedContent extends NodeAllowedContents_ORM
+class NodeAllowedContentsOrm extends \Ximdex\Data\GenericData
 {
-
-    function getAllowedChilds($idnodetype)
-    {
-        $result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MONO);
-        return $result;
-    }
-
-
-    function getAllowedParents($idNodetype)
-    {
-
-        $result = $this->find("IdNodeType", "NodeType=%s", array($idNodetype), MONO);
-        return $result ? array_values(array_unique($result)) : array();
-    }
+    var $_idField = 'IdNodeAllowedContent';
+    var $_table = 'NodeAllowedContents';
+    var $_metaData = array(
+        'IdNodeAllowedContent' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'NodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Amount' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array(
+        'UniqeAmmount' => array('IdNodeType', 'NodeType')
+    );
+    var $_indexes = array('IdNodeAllowedContent');
+    var $IdNodeAllowedContent;
+    var $IdNodeType = 0;
+    var $NodeType = 0;
+    var $Amount = 0;
 }

@@ -25,10 +25,10 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Models\ORM\NodeTypesOrm ;
 
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeAllowedContent.class.php');
 
 define('NODETYPE_SECTION', 5015);
 

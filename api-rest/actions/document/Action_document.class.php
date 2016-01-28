@@ -2,6 +2,7 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeAllowedContent;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
