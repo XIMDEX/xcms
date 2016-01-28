@@ -902,6 +902,14 @@ INSERT INTO `NodeAllowedContents` VALUES (88,5054,5056,0);
 INSERT INTO `NodeAllowedContents` VALUES (90,5018,5032,0);
 INSERT INTO `NodeAllowedContents` VALUES (91,5054,5055,0);
 INSERT INTO `NodeAllowedContents` VALUES (92,5055,5055,0);
+
+
+/* XBUK NodeAllowedContents */
+INSERT INTO `NodeAllowedContents` VALUES (150,5012,9001,0);
+INSERT INTO `NodeAllowedContents` VALUES (151,9001,9002,0);
+INSERT INTO `NodeAllowedContents` VALUES (152,9002,9003,0);
+
+
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `NodeAllowedContents` ENABLE KEYS */;
 
