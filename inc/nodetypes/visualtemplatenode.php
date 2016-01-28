@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Utils\FsUtils;
 
 if (!defined('XIMDEX_ROOT_PATH')) {

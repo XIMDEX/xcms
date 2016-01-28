@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -34,7 +35,6 @@ ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsNews.inc', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsList.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsArea.php', 'ximNEWS');
-ModulesManager::file('/inc/parsers/ParsingRng.class.php');
 
 /**
 *	@brief Adapter for make common ximNEWS operations by different media.

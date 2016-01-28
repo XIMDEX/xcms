@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingRng;
 
 if(!defined('TREE_VIEW_DOCXAP_PATH'))
 	define('TREE_VIEW_DOCXAP_PATH', \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/editor/tree/templates/docxap.xsl');

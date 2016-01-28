@@ -27,10 +27,8 @@
 
 use Ximdex\Models\Node;
 
-if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/StructuredDocuments_ORM.class.php';
 require_once(XIMDEX_ROOT_PATH . "/inc/parsers/ParsingDependences.class.php" );
-require_once(XIMDEX_ROOT_PATH . "/inc/parsers/ParsingRng.class.php");
 
 class StructuredDocument extends StructuredDocuments_ORM
 {

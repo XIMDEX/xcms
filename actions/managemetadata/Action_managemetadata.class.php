@@ -27,10 +27,10 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Parsers\ParsingRng;
 
 ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
-ModulesManager::file('/inc/parsers/ParsingRng.class.php');
 ModulesManager::file('/actions/manageproperties/inc/LanguageProperty.class.php');
 
 

@@ -167,8 +167,8 @@ class Channel extends ChannelsOrm
     function SetByName($name)
     {
         $dbObj = new DB();
-        $dbObj->Query(sprintf("SELECT IdChannel FROM Channels WHERE Name='%s'", $this->dbObj->sqlEscapeString($name)));
-        parent::__construct($this->GetValue('IdChannel'));
+        $dbObj->Query(sprintf("SELECT IdChannel FROM Channels WHERE Name='%s'", $dbObj->sqlEscapeString($name)));
+        parent::__construct($dbObj->GetValue('IdChannel'));
 
         if (!($this->IdChannel > 0)) {
             $this->SetError(2);
