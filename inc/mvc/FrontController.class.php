@@ -25,7 +25,8 @@
  */
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
+use Ximdex\MVC\IController;
+
 
 /**
  *

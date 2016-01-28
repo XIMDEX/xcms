@@ -1,5 +1,7 @@
 <?php
 
+use Ximdex\Models\Node;
+
 class Action_project implements APIRestAction, SecuredAction
 {
 

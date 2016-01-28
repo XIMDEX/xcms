@@ -26,7 +26,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/utils.php');
 

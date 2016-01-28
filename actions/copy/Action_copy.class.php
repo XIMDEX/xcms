@@ -24,8 +24,11 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeAllowedContent;
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/utils.php');
-ModulesManager::file('/inc/model/orm/NodeAllowedContents_ORM.class.php');
 ModulesManager::file('/actions/copy/baseIO.php');
 
 class Action_copy extends ActionAbstract {

@@ -25,12 +25,12 @@
  */
 
 
-
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeAllowedContent;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/model/NodeAllowedContent.class.php');
-ModulesManager::file('/inc/model/RelNodeTypeMimeType.class.php');
-ModulesManager::file('/inc/mvc/ActionAbstract.class.php');
+ ModulesManager::file('/inc/model/RelNodeTypeMimeType.class.php');
 
 class Action_fileupload extends ActionAbstract {
 

@@ -26,7 +26,6 @@
 
 
 
-//include_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
 
 class ParsingXimMenu {
 

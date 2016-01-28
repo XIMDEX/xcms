@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\MVC\ActionAbstract;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
 class Action_widgets extends ActionAbstract {
 

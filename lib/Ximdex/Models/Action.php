@@ -423,7 +423,7 @@ class Action extends ActionsOrm
      */
     function setByCommandAndModule($name, $idNode, $module = null)
     {
-        $node = new \Node($idNode);
+        $node = new \Ximdex\Models\Node($idNode);
         $idNodeType = $node->GetNodeType();
 
         if ($module == NULL) {

@@ -25,13 +25,14 @@
  */
 
 
+use Ximdex\Models\Node;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
 //
-ModulesManager::file('/inc/model/node.php');
+
 ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 
 

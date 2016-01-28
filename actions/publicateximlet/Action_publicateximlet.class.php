@@ -25,7 +25,8 @@
  */
 
 
-
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 

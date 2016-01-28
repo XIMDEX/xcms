@@ -25,11 +25,13 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
-ModulesManager::file('/inc/model/language.php');
 
 class Action_createxmlcontainer extends ActionAbstract {
 

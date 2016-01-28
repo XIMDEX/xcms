@@ -25,6 +25,9 @@
  */
 
 
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
 
 class Action_filemapper extends ActionAbstract {

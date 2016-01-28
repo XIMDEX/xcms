@@ -25,23 +25,43 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\NodetypeModesOrm;
+
+
+if (!defined('CREATE')) {
+    define('CREATE', 'C');
 }
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeTypeMetadata_ORM.class.php';
+if (!defined('WRITE')) {
+    define('WRITE', 'W');
+}
+if (!defined('READ')) {
+    define('READ', 'R');
+}
+if (!defined('UPDATE')) {
+    define('UPDATE', 'U');
+}
+if (!defined('DELETE')) {
+    define('DELETE', 'D');
+}
 
-class RelNodeTypeMetadata extends RelNodeTypeMetadata_ORM
+/**
+ * Class NodetypeMode
+ * @package Ximdex\Models
+ */
+class NodetypeMode extends NodetypeModesOrm
 {
-
-
-    public function buildByIdNodeType($idNodeType)
+    function getActionForOperation($idNodeType, $mode)
     {
-        $arrayResult = $this->find("idRel", "idNodeType=%s", array($idNodeType), MONO);
-        if ($arrayResult && is_array($arrayResult) && count($arrayResult)) {
-            $relNodeTypeMetadata = new RelNodeTypeMetadata($arrayResult[0]);
-            return $relNodeTypeMetadata;
+        $validModes = array(CREATE, READ, UPDATE, DELETE);
+        if (!(in_array($mode, $validModes))) {
+            return false;
         }
-        return false;
+        $result = $this->find('IdAction',
+            'IdNodeType  = %s AND Mode = %s',
+            array($idNodeType, $mode),
+            MONO);
+        return count($result) == 1 ? $result[0] : NULL;
     }
-
 }

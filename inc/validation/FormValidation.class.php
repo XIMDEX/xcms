@@ -25,6 +25,8 @@
  *  @version $Revision: 8735 $
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/model/Links.php');
 
 class FormValidation {

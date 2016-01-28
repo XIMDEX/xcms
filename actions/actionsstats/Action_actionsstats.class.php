@@ -27,6 +27,7 @@
 use Ximdex\Models\Action;
 
 use Ximdex\Models\ActionsStats;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/model/user.php');
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,20 +23,30 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class NodetypeModes_ORM extends \Ximdex\Data\GenericData
+
+
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\NodeAllowedContentsOrm;
+
+/**
+ * Class NodeAllowedContent
+ * @package Ximdex\Models
+ */
+class NodeAllowedContent extends NodeAllowedContentsOrm
 {
-    var $_idField = 'id';
-    var $_table = 'NodetypeModes';
-    var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
-        'Mode' => array('type' => "enum('C', 'R', 'U', 'D')", 'not_null' => 'true'),
-        'IdAction' => array('type' => "int(11)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdNodeType;
-    var $Mode;
-    var $IdAction;
+
+    function getAllowedChilds($idnodetype)
+    {
+        $result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MONO);
+        return $result;
+    }
+
+
+    function getAllowedParents($idNodetype)
+    {
+
+        $result = $this->find("IdNodeType", "NodeType=%s", array($idNodetype), MONO);
+        return $result ? array_values(array_unique($result)) : array();
+    }
 }

@@ -28,7 +28,7 @@
 namespace Ximdex\Models;
 
 use DB_legacy as DB;
-use Node;
+use Ximdex\Models\Node;
 use Ximdex\Models\ORM\ChannelsOrm;
 
 

@@ -24,10 +24,12 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/nodetypes/foldernode.php');
 ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
-ModulesManager::file('/inc/model/language.php');
-ModulesManager::file('/inc/model/structureddocument.php');
+ ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 class XmlContainerNode extends FolderNode{

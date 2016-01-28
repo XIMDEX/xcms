@@ -24,6 +24,9 @@
  *  @version $Revision$
  */
 
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\Request;
+
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 
 class Action_manageareas extends ActionAbstract

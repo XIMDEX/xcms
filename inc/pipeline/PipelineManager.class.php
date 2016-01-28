@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\Node;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
@@ -34,7 +36,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/RelServersChannels_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
+
 
 /**
  * 

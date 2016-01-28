@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');

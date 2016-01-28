@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/nodetypes/filenode.php');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 

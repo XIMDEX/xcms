@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/Repository.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/persistence/datafactory.php');

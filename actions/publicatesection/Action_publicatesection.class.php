@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 

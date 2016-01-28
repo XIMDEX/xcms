@@ -1,6 +1,10 @@
 <?php
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeAllowedContent;
+use Ximdex\Runtime\Request;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 

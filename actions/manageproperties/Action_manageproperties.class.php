@@ -25,9 +25,9 @@
  */
 
 
+use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/language.php');
- ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
+ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 
 /**
  * Manage properties action. 

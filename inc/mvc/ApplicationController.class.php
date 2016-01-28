@@ -25,6 +25,8 @@
  */
 
 use Ximdex\Models\ActionsStats;
+use Ximdex\MVC\ActionAbstract;
+use Ximdex\MVC\IController;
 use Ximdex\Runtime\App;
 use \Ximdex\Utils\Session;
 
@@ -83,7 +85,6 @@ class ApplicationController extends IController
         $action = $this->request->getParam("action");
         $nodeid = $this->request->getParam("nodeid");
 
-        require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionAbstract.class.php');
 
         $actionController = new ActionAbstract();
         $actionController->messages->add(_("Required action not found."), MSG_TYPE_ERROR);

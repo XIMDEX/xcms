@@ -25,6 +25,9 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 

@@ -27,6 +27,7 @@
 
 
 use Ximdex\Models\Action ;
+use Ximdex\Models\Node;
 use Ximdex\Models\ORM\RolesOrm ;
 use DB_legacy as DB;
 if (!defined('XIMDEX_ROOT_PATH')) {

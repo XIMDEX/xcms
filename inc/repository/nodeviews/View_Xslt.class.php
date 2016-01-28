@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/xslt/functions.php', 'dexT');

@@ -1,4 +1,6 @@
 <?php
+
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,27 +25,22 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
-}
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/NodeAllowedContents_ORM.class.php';
-
-class NodeAllowedContent extends NodeAllowedContents_ORM
+class LanguagesOrm extends \Ximdex\Data\GenericData
 {
-
-    function getAllowedChilds($idnodetype)
-    {
-        $result = $this->find('NodeType', 'IdNodeType = %s AND Nodetype <> %s', array($idnodetype, $idnodetype), MONO);
-        return $result;
-    }
-
-
-    function getAllowedParents($idNodetype)
-    {
-
-        $result = $this->find("IdNodeType", "NodeType=%s", array($idNodetype), MONO);
-        return $result ? array_values(array_unique($result)) : array();
-    }
+    var $_idField = 'IdLanguage';
+    var $_table = 'Languages';
+    var $_metaData = array(
+        'IdLanguage' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'IsoName' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'Name' => array('Name'), 'IdLanguage' => array('IdLanguage')
+    );
+    var $_indexes = array('IdLanguage');
+    var $IdLanguage;
+    var $Name;
+    var $IsoName;
+    var $Enabled = 1;
 }

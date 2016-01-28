@@ -24,6 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 use Ximdex\Services\NodeType as NodetypeService;
 
 ModulesManager::file('/inc/model/NodeDefaultContents.class.php');

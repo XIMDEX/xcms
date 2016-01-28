@@ -27,7 +27,6 @@
 
 namespace Ximdex\Services ;
 
-\Ximdex\Modules\Manager::file("/inc/model/node.php");
 
 /**
  * <p>Service responsible of deal with nodes</p>
@@ -44,7 +43,7 @@ class Project
     public function __construct($idNode = null, $lazyMode = true)
     {
         if ($idNode) {
-            $this->node = new \Node($idNode);
+            $this->node = new \Ximdex\Models\Node($idNode);
         }
         $this->lazyMode = $lazyMode;
     }
@@ -56,7 +55,7 @@ class Project
     public function existsProject($projectId)
     {
         $id = (int)$projectId;
-        $node = new \Node($id);
+        $node = new \Ximdex\Models\Node($id);
         return $node->get("IdNode") != null;
     }
 
@@ -69,7 +68,7 @@ class Project
     public function getProject($idProject = null)
     {
         if ($idProject)
-            return $this->existsNode($idProject) ? new \Node($idProject) : null;
+            return $this->existsNode($idProject) ? new \Ximdex\Models\Node($idProject) : null;
         else
             return $this->node;
     }
@@ -117,7 +116,7 @@ class Project
     public static function getAllProject()
     {
         $res = array();
-        $root = new \Node(self::$ROOTNODEID);
+        $root = new \Ximdex\Models\Node(self::$ROOTNODEID);
         $projectIds = $root->GetChildren();
         if (count($projectIds) > 0) {
             foreach ($projectIds as $pid) {
@@ -150,7 +149,7 @@ class Project
     {
         $nid = $node instanceof Node ? $node->GetID() : $node;
 
-        $n = new \Node($nid);
+        $n = new \Ximdex\Models\Node($nid);
         $res = $n->DeleteNode(true);
 
         return $res > 0;

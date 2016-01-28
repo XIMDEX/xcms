@@ -25,8 +25,9 @@
  */
 
 
+use Ximdex\Models\Node;
 
- ModulesManager::file('/inc/model/RelNewsBulletins.php', 'ximNEWS');
+ModulesManager::file('/inc/model/RelNewsBulletins.php', 'ximNEWS');
 
 $type = $_GET['tipo'];
 $nodeID = $_GET['nodeid'];

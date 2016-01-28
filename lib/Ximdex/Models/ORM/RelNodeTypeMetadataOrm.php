@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,22 +25,24 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Languages_ORM extends \Ximdex\Data\GenericData
+/**
+ * Class RelNodeTypeMetadataOrm
+ * @package Ximdex\Models\ORM
+ */
+class RelNodeTypeMetadataOrm extends \Ximdex\Data\GenericData
 {
-    var $_idField = 'IdLanguage';
-    var $_table = 'Languages';
+    var $_idField = 'idRel';
+    var $_table = 'RelNodeTypeMetadata';
     var $_metaData = array(
-        'IdLanguage' => array('type' => "int(12)", 'not_null' => 'true', 'primary_key' => true),
-        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'IsoName' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
+        'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
+        'forced' => array('type' => "tinyint(1)", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array(
-        'Name' => array('Name'), 'IdLanguage' => array('IdLanguage')
+        'idNodeType' => array('idNodeType')
     );
-    var $_indexes = array('IdLanguage');
-    var $IdLanguage;
-    var $Name;
-    var $IsoName;
-    var $Enabled = 1;
+
+    var $idRel;
+    var $forced = 0;
+    var $idNodeType = 0;
 }

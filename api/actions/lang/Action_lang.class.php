@@ -24,7 +24,9 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-ModulesManager::file('/inc/model/language.php');
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+
 
 /* <p>API language action</p>
 * <p>Handles requests to obtain the languages</p>

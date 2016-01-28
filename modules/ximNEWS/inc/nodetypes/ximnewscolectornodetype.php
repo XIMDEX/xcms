@@ -25,6 +25,9 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/nodetypes/foldernode.php');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColectorUsers.php', 'ximNEWS');

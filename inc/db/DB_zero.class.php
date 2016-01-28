@@ -80,7 +80,9 @@ class DB_legacy
     var $row;
     /**
      * Number of rows affected by the query
-     * @var unknown_type
+     */
+    /**
+     * @var int
      */
     var $numRows;
     /**

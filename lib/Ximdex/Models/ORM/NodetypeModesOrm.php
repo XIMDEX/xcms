@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,20 +25,20 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelNodeTypeMetadata_ORM extends \Ximdex\Data\GenericData
+class NodetypeModesOrm extends \Ximdex\Data\GenericData
 {
-    var $_idField = 'idRel';
-    var $_table = 'RelNodeTypeMetadata';
+    var $_idField = 'id';
+    var $_table = 'NodetypeModes';
     var $_metaData = array(
-        'idRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'idNodeType' => array('type' => "int(12)", 'not_null' => 'true'),
-        'forced' => array('type' => "tinyint(1)", 'not_null' => 'true')
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
+        'Mode' => array('type' => "enum('C', 'R', 'U', 'D')", 'not_null' => 'true'),
+        'IdAction' => array('type' => "int(11)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array(
-        'idNodeType' => array('idNodeType')
-    );
-
-    var $idRel;
-    var $forced = 0;
-    var $idNodeType = 0;
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $IdNodeType;
+    var $Mode;
+    var $IdAction;
 }

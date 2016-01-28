@@ -24,6 +24,9 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/conf/install-params.conf.php');
 ModulesManager::file('/inc/model/locale.php');
 

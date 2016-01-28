@@ -28,11 +28,13 @@
 
 //TODO - LIST
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/model/nodetype.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/io/BaseIORelations.class.php');
-ModulesManager::file('/inc/model/node.php');
+
 ModulesManager::file('/inc/model/NodeProperty.class.php');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/fsutils/FsUtils.class.php');

@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 $dbObj = new DB();
 

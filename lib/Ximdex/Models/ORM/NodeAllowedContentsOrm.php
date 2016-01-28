@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class NodeAllowedContents_ORM extends \Ximdex\Data\GenericData
+class NodeAllowedContentsOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'IdNodeAllowedContent';
     var $_table = 'NodeAllowedContents';

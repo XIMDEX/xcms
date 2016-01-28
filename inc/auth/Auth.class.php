@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\Node;
+use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -33,7 +35,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/user.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/group.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/NodetypeMode.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelRolesActions_ORM.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelUsersGroups_ORM.class.php");
 

@@ -25,11 +25,14 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+use Ximdex\Models\NodeAllowedContent;
+use Ximdex\MVC\ActionAbstract;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
 }
-require_once XIMDEX_ROOT_PATH . '/inc/model/NodeAllowedContent.class.php';
-require_once XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php';
+ require_once XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php';
 
 class Action_newemptynode extends ActionAbstract {
 

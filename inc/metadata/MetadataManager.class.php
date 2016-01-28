@@ -25,6 +25,8 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -34,8 +36,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/model/language.php');
-ModulesManager::file('/inc/model/node.php');
+
 
 /***
     Class for Metadata Manegement
@@ -416,6 +417,7 @@ class MetadataManager{
         $res = 0;
         $rnm = new RelNodeMetadata();
         $idm = $this->getMetadataDocument($name);
+        //TODO: foreach language version, one entry
         $rnm->set('IdNode', $this->node->GetID());
         $rnm->set('IdMetadata', $idm);
         if( App::getValue('MODULE_XIMNOTA_ENABLED', false) ) {

@@ -24,10 +24,12 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/model/role.php');
 ModulesManager::file('/inc/model/user.php');
-ModulesManager::file('/inc/model/node.php');
-ModulesManager::file('/inc/mail/Mail.class.php');
+ ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('inc/pipeline/PipeTransition.class.php');

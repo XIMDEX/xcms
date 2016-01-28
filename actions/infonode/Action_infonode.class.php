@@ -25,9 +25,10 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/language.php');
- ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
+ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 ModulesManager::file('/inc/model/RelNode2Asset.class.php');
 ModulesManager::file('/inc/model/RelStrdocTemplate.class.php');
 ModulesManager::file('/inc/model/RelXml2Xml.class.php');

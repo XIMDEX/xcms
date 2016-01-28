@@ -41,5 +41,4 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontControllerCLI.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontControllerHTTP.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ApplicationController.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionAbstract.class.php');
 

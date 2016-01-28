@@ -25,11 +25,9 @@
  */
 
 
+use Ximdex\Models\Node;
 
-	
-
-
-	define ('REVISION_COPY', 0);
+define ('REVISION_COPY', 0);
 	
 /*	define ('IMPORTED_STATUS_OK', 1);
 	define ('IMPORTED_STATUS_OK_TO_PUBLISH', 2);

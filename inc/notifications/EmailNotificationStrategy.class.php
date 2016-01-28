@@ -40,7 +40,7 @@ class EmailNotificationStrategy
      * @param $extraData
      * @return array
      */
-    public function sendNotification($subject, $content, $from, $to, $extraData)
+    public function sendNotification($subject, $content, $from, $to, $extraData = null )
     {
 
         $result = array();

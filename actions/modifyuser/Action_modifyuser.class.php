@@ -24,6 +24,9 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/model/orm/RelUsersGroups_ORM.class.php');
 ModulesManager::file('/inc/model/locale.php');
 

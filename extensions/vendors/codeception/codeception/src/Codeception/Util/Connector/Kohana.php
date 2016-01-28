@@ -25,7 +25,7 @@ class Kohana extends \Symfony\Component\BrowserKit\Client {
 
 		$this->_initRequest();
 
-		$kohanaRequest = \Request::factory($uri);
+		$kohanaRequest = \Ximdex\Runtime\Request::factory($uri);
 		$kohanaRequest->method($_SERVER['REQUEST_METHOD']);
 
 		if (strtoupper($request->getMethod()) == 'GET') {

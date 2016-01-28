@@ -24,7 +24,9 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/language.php');
+use Ximdex\Models\Language;
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/model/IsoCode.class.php');
 
 class Action_createlanguage extends ActionAbstract {

@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
+use Ximdex\Models\Node;
 
 /**
  * XIMDEX_ROOT_PATH

@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/NodeEntity.class.php');
 
