@@ -133,7 +133,6 @@ angular.module('ximdex.common.directive').factory('TreeNode', ['$filter',
                 return (
                     <span>
                         <div className={rootClasses} ref="divRoot">
-                            // <span ref="spanTriangle" className={dropDownClasses}></span>
                             {arrow}
                             <span className={iconClasses} ref="icon"></span>
                             <span className="xim-treeview-branch" dangerouslySetInnerHTML={{__html: this.props.node.name + (this.props.node.modified == '1' ? '*' : '')}}></span>
