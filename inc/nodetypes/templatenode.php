@@ -108,7 +108,7 @@ class templatenode extends FileNode
         $ptdContent = $this->_addUidAttributes($ptdContent, $fileName);
 
         $tmpPath = XIMDEX_ROOT_PATH . \App::getValue('TempRoot') . '/tmpTemplateXml.xml';
-        FSUtils::file_put_contents($tmpPath, $ptdContent);
+        FsUtils::file_put_contents($tmpPath, $ptdContent);
 
         // build xslt content
 

@@ -37,8 +37,7 @@ include_once dirname(dirname(__FILE__)) . '/extensions/vendors/autoload.php';
 
 class_alias('Ximdex\Modules\Manager', 'ModulesManager');
 
-// load FSUtils
-
+ 
 // Initialize App
 class_alias('Ximdex\Runtime\App', 'App');
 App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));

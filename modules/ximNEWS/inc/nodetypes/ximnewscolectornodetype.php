@@ -869,7 +869,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		}
 
 		$tmpPath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/tmpBulletinXml.xml';
-		FSUtils::file_put_contents($tmpPath, $bulletinXml);
+		FsUtils::file_put_contents($tmpPath, $bulletinXml);
 
     	$fileName = FsUtils::getUniqueFile(\App::getValue( "AppRoot") . \App::getValue( "FileRoot"));
     	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot") . '/' . $fileName;
