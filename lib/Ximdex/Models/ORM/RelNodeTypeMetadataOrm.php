@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,11 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelNodeTypeMetadata_ORM extends \Ximdex\Data\GenericData
+/**
+ * Class RelNodeTypeMetadataOrm
+ * @package Ximdex\Models\ORM
+ */
+class RelNodeTypeMetadataOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'idRel';
     var $_table = 'RelNodeTypeMetadata';
