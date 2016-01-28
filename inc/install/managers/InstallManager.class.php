@@ -24,6 +24,8 @@
  * @version $Revision$
  */
 
+use Ximdex\Utils\FsUtils;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/WebMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/helper/ServerConfig.class.php');

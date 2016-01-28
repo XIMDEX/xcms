@@ -26,6 +26,8 @@
 
 //phpinfo();
 
+use Ximdex\Utils\FsUtils;
+
 include_once '../bootstrap/start.php';
 
 /**

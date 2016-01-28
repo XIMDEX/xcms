@@ -18,7 +18,9 @@
  * and is licensed under the LGPL. For more information please see
  * <http://phing.info>.
  */
- 
+
+use Ximdex\Utils\Logs\Log;
+
 require_once 'phing/BuildListener.php';
 
 /**
@@ -91,7 +93,7 @@ class PearLogListener implements BuildListener {
         if ($conf === null) $conf = array();
         
         include_once 'Log.php';
-        if (!class_exists('Log')) {
+        if (!class_exists('Ximdex\Utils\Logs\Log')) {
         	throw new BuildException("Cannot find PEAR Log class for use by PearLogger.");
         }
         

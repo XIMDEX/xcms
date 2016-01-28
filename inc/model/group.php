@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Groups_ORM.class.php';
@@ -70,7 +71,7 @@ class Group extends Groups_ORM
 
 	/// Returns the "General" group
 	function GetGeneralGroup() {
-        $generalGroup = \App::getValue( 'GeneralGroup' , null );
+        $generalGroup =  App::getValue( 'GeneralGroup' , null );
         if ( is_null( $generalGroup ) ) {
             $this->setError( 6 ) ;
         }

@@ -20,88 +20,96 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
+use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/filters/Filter.class.php');
 ModulesManager::component('/formpdf/parser/parser.class.php', 'filters');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
-class Filter_formpdf extends Filter {
 
-	function Filter_formpdf() {
-	}
+class Filter_formpdf extends Filter
+{
 
-	/**
-	 * This method load the configuration
-	 * passes a name which is the key of associative array of configurations
-	 */
-	function loadConfig($configName) {
-		ModulesManager::component('/formpdf/Filter_persistence/Config.class.php.php', 'filters');
-		$this->config->set($configName, $formpdf_config[$configName]);
-	}
+    function Filter_formpdf()
+    {
+    }
 
-	function initObject() {
-		parent::initObject();
+    /**
+     * This method load the configuration
+     * passes a name which is the key of associative array of configurations
+     */
+    function loadConfig($configName)
+    {
+        ModulesManager::component('/formpdf/Filter_persistence/Config.class.php.php', 'filters');
+        $this->config->set($configName, $formpdf_config[$configName]);
+    }
 
-		// Default init actions for this class.
-		//$this->loadConfig('DIN-A4');
-	}
+    function initObject()
+    {
+        parent::initObject();
 
-	/**
-	 * Print format configuration
-	 */
-	function printConfig() {
-		$this->config->display();
-	}
+        // Default init actions for this class.
+        //$this->loadConfig('DIN-A4');
+    }
 
-	function _getPackagesList($packagesBaseDir) {
+    /**
+     * Print format configuration
+     */
+    function printConfig()
+    {
+        $this->config->display();
+    }
 
-		$folders[] = $packagesBaseDir;
-		$handler = opendir($packagesBaseDir);
-		while (($file = readdir($handler)) !== false) {
-			$fileCompletePath = sprintf('%s%s', $packagesBaseDir, $file);
-			if (is_dir($fileCompletePath) && $file[0] != '.') {
-				$folders[] = $fileCompletePath;
-				$folders[] = $this->_getPackagesList($fileCompletePath . '/');
-			}
-		}
-		return implode(':', $folders);
-	}
+    function _getPackagesList($packagesBaseDir)
+    {
 
-	function filter($input, $output, &$header) {
+        $folders[] = $packagesBaseDir;
+        $handler = opendir($packagesBaseDir);
+        while (($file = readdir($handler)) !== false) {
+            $fileCompletePath = sprintf('%s%s', $packagesBaseDir, $file);
+            if (is_dir($fileCompletePath) && $file[0] != '.') {
+                $folders[] = $fileCompletePath;
+                $folders[] = $this->_getPackagesList($fileCompletePath . '/');
+            }
+        }
+        return implode(':', $folders);
+    }
 
-		putenv("TEXMFOUTPUT=/tmp");
-		$texInputs = sprintf("TEXINPUTS=/tmp/:%s", $this->_getPackagesList(XIMDEX_ROOT_PATH."/extensions/latex/"));
-		putenv($texInputs);
-		$parser = new parser();
-		$parser->set_input($input);
-		$parser->set_output($output);
-		$parser->build();
+    function filter($input, $output, &$header)
+    {
 
-		// delete // with tests from ximdex
-		//$this->delete_files($exception);
+        putenv("TEXMFOUTPUT=/tmp");
+        $texInputs = sprintf("TEXINPUTS=/tmp/:%s", $this->_getPackagesList(XIMDEX_ROOT_PATH . "/extensions/latex/"));
+        putenv($texInputs);
+        $parser = new parser();
+        $parser->set_input($input);
+        $parser->set_output($output);
+        $parser->build();
 
-		$header["Content-type"] = "application/pdf";
-		$header["Content-Length"] = filesize($output);
-		$header["Content-Disposition"] = "attachment; filename=$output";
-		$header["Accept-Ranges"] = strlen(ltrim($output));
-	}
+        // delete // with tests from ximdex
+        //$this->delete_files($exception);
 
-	function delete_files($exception = NULL) {
-		$sourcedir = opendir("/tmp");
-		while (false !== ($filename = readdir($sourcedir))) {
-			if (is_file("/tmp/".$filename) && preg_match("/filter/",$filename) > 0) {
-				if (("/tmp/".$filename) != $exception) {
-					FsUtils::delete("/tmp/".$filename);
-				}
-			}
-		}
-		FsUtils::delete("/tmp/command.tex");
-		closedir($sourcedir);
-	}
+        $header["Content-type"] = "application/pdf";
+        $header["Content-Length"] = filesize($output);
+        $header["Content-Disposition"] = "attachment; filename=$output";
+        $header["Accept-Ranges"] = strlen(ltrim($output));
+    }
+
+    function delete_files($exception = NULL)
+    {
+        $sourcedir = opendir("/tmp");
+        while (false !== ($filename = readdir($sourcedir))) {
+            if (is_file("/tmp/" . $filename) && preg_match("/filter/", $filename) > 0) {
+                if (("/tmp/" . $filename) != $exception) {
+                    FsUtils::delete("/tmp/" . $filename);
+                }
+            }
+        }
+        FsUtils::delete("/tmp/command.tex");
+        closedir($sourcedir);
+    }
 }

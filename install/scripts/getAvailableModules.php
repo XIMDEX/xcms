@@ -21,29 +21,27 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 include_once realpath(dirname(__FILE__) . "/../../bootstrap/start.php");
 
 if (!defined('XIMDEX_ROOT_PATH'))
-define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
 //mode: list
-if (isset($argv[1]) &&  "-l" == $argv[1]) {
-	$modMan=new ModulesManager();
-	$modules=$modMan->getModules();
-	foreach($modules as $mod){
-		if(strpos($mod["name"], "xim") !== false) 
-			echo $mod["name"]."\n";
-	}
+if (isset($argv[1]) && "-l" == $argv[1]) {
+    $modMan = new ModulesManager();
+    $modules = $modMan->getModules();
+    foreach ($modules as $mod) {
+        if (strpos($mod["name"], "xim") !== false)
+            echo $mod["name"] . "\n";
+    }
 //mode:normal
-}else {
-	$imManager = new InstallModulesManager();
-	$imManager->buildModulesFile();	
+} else {
+    $imManager = new InstallModulesManager();
+    $imManager->buildModulesFile();
 }
-?>

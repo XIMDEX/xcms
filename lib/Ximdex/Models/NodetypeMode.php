@@ -29,22 +29,8 @@ namespace Ximdex\Models;
 
 use Ximdex\Models\ORM\NodetypeModesOrm;
 
+use Ximdex\Runtime\Constants ;
 
-if (!defined('CREATE')) {
-    define('CREATE', 'C');
-}
-if (!defined('WRITE')) {
-    define('WRITE', 'W');
-}
-if (!defined('READ')) {
-    define('READ', 'R');
-}
-if (!defined('UPDATE')) {
-    define('UPDATE', 'U');
-}
-if (!defined('DELETE')) {
-    define('DELETE', 'D');
-}
 
 /**
  * Class NodetypeMode
@@ -54,7 +40,7 @@ class NodetypeMode extends NodetypeModesOrm
 {
     function getActionForOperation($idNodeType, $mode)
     {
-        $validModes = array(CREATE, READ, UPDATE, DELETE);
+        $validModes = array(Constants::CREATE, Constants::READ, Constants::UPDATE, Constants::DELETE);
         if (!(in_array($mode, $validModes))) {
             return false;
         }

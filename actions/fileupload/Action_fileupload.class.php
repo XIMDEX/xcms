@@ -28,6 +28,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
  ModulesManager::file('/inc/model/RelNodeTypeMimeType.class.php');

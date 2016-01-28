@@ -26,10 +26,12 @@
 
 
 // Include defined rest service providers.
+use Ximdex\Utils\Curl;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/google_translate/GoogleTranslate.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/rest/providers/ximNOTA/REST_ximNOTA.class.php');
+
 // Include utility class.
-require_once(XIMDEX_ROOT_PATH . '/inc/http/Curl.class.php');
 
 class REST_Provider
 {

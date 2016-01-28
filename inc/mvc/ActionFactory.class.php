@@ -31,7 +31,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 //
-require_once(XIMDEX_ROOT_PATH . '/inc/log/Action_log.class.php');
 
 /**
  *

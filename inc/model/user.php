@@ -27,6 +27,8 @@
 
 use Ximdex\Models\Action ;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
+use DB_legacy as DB ;
 
 
 ModulesManager::file('/inc/model/orm/Users_ORM.class.php');
@@ -280,7 +282,7 @@ class User extends Users_ORM {
     }
 
     function hasPermission($pName) {
-        $groupID = \App::getValue("GeneralGroup");
+        $groupID = App::getValue("GeneralGroup");
         return $this->HasPermissionOnGroup($groupID, $pName);
     }
 

@@ -27,7 +27,7 @@
 
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Models\ORM\NodeTypesOrm ;
-
+use DB_legacy as DB;
 
 define('NODETYPE_SECTION', 5015);
 

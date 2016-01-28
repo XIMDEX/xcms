@@ -1,4 +1,6 @@
 <?php
+use Ximdex\Utils\FsUtils;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *

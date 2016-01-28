@@ -25,12 +25,8 @@
  */
 
 
+use Ximdex\Runtime\Cli\CliParser;
 
-if (!defined("XIMDEX_ROOT_PATH")) {
-	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__))."/../../");
-}
-
-require_once(XIMDEX_ROOT_PATH."/inc/cli/CliParser.class.php");
 
 class DumpTable extends CliParser  {
 	var $_metadata = array(

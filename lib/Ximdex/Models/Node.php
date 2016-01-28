@@ -47,8 +47,8 @@ use Ximdex\Runtime\App,
     NodeDependencies,
     WorkFlow,
     NodeType,
-    FsUtils,
     NodeProperty;
+use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Session;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
@@ -61,7 +61,6 @@ require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
-include_once(XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
@@ -794,8 +793,8 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            if ($this->nodeType->get('IsRenderizable')) {
-                if ($this->nodeType->get('HasFSEntity')) {
+            if ($this->nodeType->GetIsRenderizable()) {
+                if ($this->nodeType->GetHasFSEntity()) {
                     $this->class->RenderizeNode();
                 }
                 if ($recursive) {

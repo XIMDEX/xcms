@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Utils\FsUtils;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingJsGetText.class.php');
 
 abstract class Widget_Abstract {

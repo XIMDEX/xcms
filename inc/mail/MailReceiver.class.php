@@ -23,6 +23,8 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Runtime\Cli\Shell;
+use Ximdex\Utils\FsUtils;
 
 
 /**
@@ -32,9 +34,8 @@
 if (!defined('XIMDEX_ROOT_PATH'))
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-define ('TMP_FOLDER', XIMDEX_ROOT_PATH . '/data/tmp/');
+define('TMP_FOLDER', XIMDEX_ROOT_PATH . '/data/tmp/');
 
-require_once(XIMDEX_ROOT_PATH . '/inc/cli/Shell.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mail/EmailContainer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mail/iterators/I_EmailContainer.class.php');
 

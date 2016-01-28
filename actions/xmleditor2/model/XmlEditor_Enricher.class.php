@@ -25,9 +25,8 @@
  */
 
 
+use Ximdex\Utils\FsUtils;
 
-
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
 
 class XmlEditor_Enricher {

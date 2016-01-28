@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/model/orm/XimNewsCache_ORM.class.php', 'ximNEWS');
 
@@ -190,7 +190,7 @@ class XimNewsCache extends XimNewsCache_ORM {
 		// Builds the cache
  	
         $xmlNew = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/dummy.xml';
-		FSUtils::file_put_contents($xmlNew, '<?xml version="1.0" encoding="UTF-8"?><para>testing</para>');
+		FsUtils::file_put_contents($xmlNew, '<?xml version="1.0" encoding="UTF-8"?><para>testing</para>');
 		$xslBulletin = XIMDEX_ROOT_PATH . \App::getValue( 'FileRoot') . '/' . $xslBulletinFile;
 
 		$xsltHandler = new \Ximdex\XML\XSLT();

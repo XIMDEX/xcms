@@ -1,16 +1,14 @@
 <?php
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../../'));
-}
+use Ximdex\Runtime\Cli\CliParser;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/cli/CliParser.class.php');
+
 
 class ximNota extends CliParser  {
 	var $_metadata = array(
 		array (	'name' => '--command',
 				'mandatory' => true,
-				'message' => 'Comando a ejecutar (migratepair ó publicatepair)',
+				'message' => 'Comando a ejecutar (migratepair ï¿½ publicatepair)',
 				'type' => TYPE_STRING),
 		array (	'name' => '--ruta_fich_pdf',
 				'mandatory' => false,

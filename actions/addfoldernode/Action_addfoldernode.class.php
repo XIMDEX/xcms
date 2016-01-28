@@ -20,21 +20,22 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
-use Ximdex\Modules\Module ;
+use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
 
-class Action_addfoldernode extends ActionAbstract {
-	
+class Action_addfoldernode extends ActionAbstract
+{
 
 	public $channels;
 	public $languages;
@@ -235,7 +236,7 @@ class Action_addfoldernode extends ActionAbstract {
             $templates = $projectTemplate->getTemplates();
 
             foreach ($schemas as $schema) {
-                $this->schemas = $this->insertFiles($projectId, \App::getValue( "SchemasDirName"), array($schema));
+                $this->schemas = $this->insertFiles($projectId, App::getValue("SchemasDirName"), array($schema));
             }
 
             foreach ($templates as $template) {
@@ -275,7 +276,7 @@ class Action_addfoldernode extends ActionAbstract {
         }
 
         $server->serverid = $serverId;
-        $server->url = preg_replace('/\{URL_ROOT\}/', \App::getValue( 'UrlRoot'), $server->url);
+        $server->url = preg_replace('/\{URL_ROOT\}/', App::getValue('UrlRoot'), $server->url);
         $server->initialDirectory = preg_replace('/\{XIMDEX_ROOT_PATH\}/', XIMDEX_ROOT_PATH, $server->initialDirectory);
 
         $nodeServer = new Node($serverId);
@@ -526,7 +527,7 @@ class Action_addfoldernode extends ActionAbstract {
         $node = new Node($idNode);
         if ($file->basename == "docxap.xsl"){
             $docxapContent = $node->GetContent();
-            $urlPath = \App::getValue( "UrlRoot");
+            $urlPath = App::getValue("UrlRoot");
             $docxapContent = str_replace("{URL_PATH}", $urlPath, $docxapContent);
             $docxapContent = str_replace("{PROJECT_NAME}", $this->name, $docxapContent);
             $node->SetContent($docxapContent);

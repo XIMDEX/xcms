@@ -25,6 +25,7 @@
  */
 
 //phpinfo();
+use Ximdex\Utils\FsUtils;
 
 /**
  * XIMDEX_ROOT_PATH

@@ -28,8 +28,10 @@
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
-
+use Ximdex\Utils\Session;
+use DB_legacy as DB ;
 ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/search/QueryProcessor.class.php');
 ModulesManager::file('/inc/xvfs/XVFS.class.php');
@@ -69,17 +71,17 @@ class Action_browser3 extends ActionAbstract
         /**/
 
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
+        $user_locale = $locale->GetLocaleByCode( Session::get('locale'));
         $locales = $locale->GetEnabledLocales();
 
         $values = array(
             'params' => $params,
             'userID' => $userID,
-            'time_id' => time() . "_" . \Ximdex\Utils\Session::get('userID'), /* For uid for scripts */
+            'time_id' => time() . "_" .  Session::get('userID'), /* For uid for scripts */
             'loginName' => $loginName,
             'user_locale' => $user_locale,
             'locales' => $locales,
-            'xinversion' => \App::getValue("VersionName")
+            'xinversion' =>  App::getValue("VersionName")
         );
 
         $this->addCss('/xmd/style/fonts.css');
@@ -243,8 +245,7 @@ class Action_browser3 extends ActionAbstract
             )
         );
 
-        //$url = REMOTE_WELCOME."?lang=".strtolower(\Ximdex\Utils\Session::get("locale"))."&ximid=".\App::getValue( 'ximid');
-        $url = REMOTE_WELCOME . "?lang=" . strtolower(\Ximdex\Utils\Session::get("locale"));
+         $url = REMOTE_WELCOME . "?lang=" . strtolower(\Ximdex\Utils\Session::get("locale"));
         //get remote content
         $splash_content = @file_get_contents($url, 0, $ctx);
         if (!empty($splash_content)) {
@@ -422,6 +423,12 @@ class Action_browser3 extends ActionAbstract
      * Instantiates a QueryHandler based on the "handler" parameter and does
      * a search with the "query" parameter options.
      * The "query" parameter could be a XML or JSON string
+     */
+    /**
+     * @param $handler
+     * @param $output
+     * @param $query
+     * @return mixed
      */
     protected function _search($handler, $output, $query)
     {
@@ -631,6 +638,11 @@ class Action_browser3 extends ActionAbstract
      * Adds multiple nodes to a specific node set.
      * The nodes parameter must by an array of node ids
      */
+    /**
+     * @param null $idSet
+     * @param null $nodes
+     * @return array
+     */
     public function addNodeToSet($idSet = null, $nodes = null)
     {
 
@@ -669,6 +681,12 @@ class Action_browser3 extends ActionAbstract
     /**
      * Adds multiple users to a specific node set.
      * The users parameter must by an array of user ids
+     */
+    /**
+     * @param null $idSet
+     * @param null $users
+     * @param int $owner
+     * @return array
      */
     public function addUserToSet($idSet = null, $users = null, $owner = RelNodeSetsUsers::OWNER_NO)
     {
@@ -1056,6 +1074,10 @@ class Action_browser3 extends ActionAbstract
     /**
      * Create contextual menu options for delete nodes from sets
      */
+    /**
+     * @param null $nodes
+     * @return array
+     */
     protected function getSetsIntersection($nodes = null)
     {
 
@@ -1154,7 +1176,7 @@ class Action_browser3 extends ActionAbstract
     {
         $numRep = $this->request->getParam('numRep');
 
-        \App::setValue('ximTourRep', $numRep, true);
+         App::setValue('ximTourRep', $numRep, true);
 
 
         $result["success"] = true;
@@ -1168,7 +1190,7 @@ class Action_browser3 extends ActionAbstract
      */
     function getPreferences()
     {
-        $res["preferences"] = array("MaxItemsPerGroup" => \App::getValue("MaxItemsPerGroup"));
+        $res["preferences"] = array("MaxItemsPerGroup" => App::getValue("MaxItemsPerGroup"));
         $this->sendJSON($res);
     }
 

@@ -25,14 +25,9 @@
  */
 
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../../'));
-}
+use Ximdex\Runtime\Cli\CliParser;
 
 
-//
-ModulesManager::file('/inc/cli/CliParser.class.php');
 
 
 class ImportCli extends CliParser  {

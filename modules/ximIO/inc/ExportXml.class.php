@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
@@ -106,7 +107,7 @@ class ExportXml {
 	
 	function getXml($recurrence = true, &$files) {
 		
-		$ximId = \App::getValue( 'ximid');
+		$ximId =  App::getValue( 'ximid');
 		//header
 		$xml = sprintf("<ximio-structure id=\"%s\">\n", $ximId);
 		

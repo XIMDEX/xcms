@@ -23,8 +23,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
+use Ximdex\Runtime\Cli\CliParser;
 
 
 /**
@@ -37,8 +36,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__). '/../../'));
 }
  
-require_once(XIMDEX_ROOT_PATH . '/inc/cli/CliParser.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/cli/CliReader.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/cli/CliReader.class.php');
 
 define ('VIEWS_FOLDER', XIMDEX_ROOT_PATH . '/inc/entities/');
 
@@ -97,9 +95,9 @@ foreach ($obj->_metaData as $key => $fieldDescriptors) {
 				break;		
 			case 3:
 				$tableDest = CliReader::getString('Introduzca la tabla que describe la otra parte N');
-				$relationTable = CliReader::getString('Introduzca la tabla de relación intermedia');
-				$idSource = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relación %s', $className, $relationTable));
-				$idDest = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relación %s', $tableDest, $relationTable));
+				$relationTable = CliReader::getString('Introduzca la tabla de relaciï¿½n intermedia');
+				$idSource = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relaciï¿½n %s', $className, $relationTable));
+				$idDest = CliReader::getString(sprintf('Introduzca el campo que referencia a %s en la tabla de relaciï¿½n %s', $tableDest, $relationTable));
 				$obj->_metaData[$key]['RELATIONS'][] = 
 					array(	
 						'TYPE' => 'HAS_MANY_AND_BELONGS_TO', 

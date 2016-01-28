@@ -25,11 +25,8 @@
  */
 
 
+use Ximdex\Utils\Logs\Loggeable;
 
-
- 
-
-require_once( XIMDEX_ROOT_PATH . '/inc/log/Loggeable.class.php' );
 
 class DB_Log {
 

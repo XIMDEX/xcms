@@ -23,8 +23,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-
-
+use Ximdex\Utils\Logs\Loggeable;
 
 
 /**
@@ -36,7 +35,6 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 	define ("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__)."/../../"));
 }
 
-require_once(XIMDEX_ROOT_PATH."/inc/log/Loggeable.class.php" );
 
 class UpdateDb_historic {
 

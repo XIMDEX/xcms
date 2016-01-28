@@ -29,8 +29,7 @@ use Ximdex\Modules\Module;
 
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/cli/CliParser.class.php');
-ModulesManager::file('/inc/cli/CliReader.class.php');
+ ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/model/RelRolesActions.class.php');
 ModulesManager::file('/inc/model/role.php');
 

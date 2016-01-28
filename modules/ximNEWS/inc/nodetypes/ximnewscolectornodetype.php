@@ -27,12 +27,13 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Logs\Automatic_Log;
 
 ModulesManager::file('/inc/nodetypes/foldernode.php');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColectorUsers.php', 'ximNEWS');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
-ModulesManager::file('/inc/log/Automatic_log.class.php');
 
 /**
 *   @brief Handles Collectors.
@@ -868,7 +869,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		}
 
 		$tmpPath = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot') . '/tmpBulletinXml.xml';
-		FSUtils::file_put_contents($tmpPath, $bulletinXml);
+		FsUtils::file_put_contents($tmpPath, $bulletinXml);
 
     	$fileName = FsUtils::getUniqueFile(\App::getValue( "AppRoot") . \App::getValue( "FileRoot"));
     	$targetPath = \App::getValue( "AppRoot") . \App::getValue( "FileRoot") . '/' . $fileName;

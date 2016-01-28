@@ -20,32 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 use Ximdex\Modules\Module;
+use Ximdex\Runtime\Cli\Shell;
 
 
-//
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
+class Module_ximSYNC extends Module
+{
 
-class Module_ximSYNC extends Module {
+    var $syncPaths;
 
-	var $syncPaths;
+    public function __construct()
+    {
 
-	public function __construct() {
+        // Call Module constructor.
+        parent::__construct("ximSYNC", dirname(__FILE__));
 
-		// Call Module constructor.
-		parent::__construct("ximSYNC", dirname (__FILE__));
+        // Initialization stuff.
+        $this->syncPaths = array(
+            'channelframes' => 'pending',
+            'serverframes' => 'pending'
+        );
+    }
 
-		// Initialization stuff.
-		$this->syncPaths = array (
-			'channelframes' => 'pending',
-			'serverframes' => 'pending'
-		);
-	}
-
-	function install () {
+    function install()
+    {
 
         // Install logic.
 
@@ -54,74 +55,79 @@ class Module_ximSYNC extends Module {
         // extract and copy files to modules location.
 
         // get constructor SQL
-		$this->loadConstructorSQL("ximSYNC.constructor.sql");
+        $this->loadConstructorSQL("ximSYNC.constructor.sql");
 
         // Install !
-		$install_ret = parent::install();
-		Shell::exec('php ' . XIMDEX_ROOT_PATH . '/script/orm/generate.php Servers');
-		// Success
-		$successInstall = true;
+        $install_ret = parent::install();
+        Shell::exec('php ' . XIMDEX_ROOT_PATH . '/script/orm/generate.php Servers');
+        // Success
+        $successInstall = true;
 
-		// Create Action Menu Items
-		if (!($this->createActionMenuItems())) {
+        // Create Action Menu Items
+        if (!($this->createActionMenuItems())) {
 
-			$this->messages->add (_("* ERROR: creating Action Menu Items."), MSG_TYPE_ERROR);
-			$successInstall = false;
-		} else {
+            $this->messages->add(_("* ERROR: creating Action Menu Items."), MSG_TYPE_ERROR);
+            $successInstall = false;
+        } else {
 
-			$this->messages->add (_("Action Menu Items created."), MSG_TYPE_NOTICE);
-		}
+            $this->messages->add(_("Action Menu Items created."), MSG_TYPE_NOTICE);
+        }
 
-		if (!$successInstall) {
+        if (!$successInstall) {
 
-			$this->messages->add (_("Undoing changes."), MSG_TYPE_NOTICE);
-			$this->messages->add (_("* ERROR installing ximSYNC module. Aborting..."), MSG_TYPE_ERROR);
-			$this->uninstall();
-		}
-		return $successInstall;
-	}
+            $this->messages->add(_("Undoing changes."), MSG_TYPE_NOTICE);
+            $this->messages->add(_("* ERROR installing ximSYNC module. Aborting..."), MSG_TYPE_ERROR);
+            $this->uninstall();
+        }
+        return $successInstall;
+    }
 
-	function createActionMenuItems () {
+    function createActionMenuItems()
+    {
 
-		return true;
-	}
+        return true;
+    }
 
-	function deleteActionMenuItems () {
+    function deleteActionMenuItems()
+    {
 
-		return true;
-	}
+        return true;
+    }
 
-	function preInstall () {
+    function preInstall()
+    {
 
-		$ret = $this->checkDependences (array ());
+        $ret = $this->checkDependences(array());
 
-		if (!is_null ($ret)) {
+        if (!is_null($ret)) {
 
-			$this->messages->add (sprintf(_("* ERROR: dependence '%s' not found"), $ret), MSG_TYPE_ERROR);
-			return false;
-		} else {
+            $this->messages->add(sprintf(_("* ERROR: dependence '%s' not found"), $ret), MSG_TYPE_ERROR);
+            return false;
+        } else {
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 
-	function uninstall() {
+    function uninstall()
+    {
 
-		// Sync directories created
-		$this->syncPaths = array (
-			'channelframes' => 'created',
-			'serverframes' => 'created'
-		);
+        // Sync directories created
+        $this->syncPaths = array(
+            'channelframes' => 'created',
+            'serverframes' => 'created'
+        );
 
-		// Uninstall logic.
-		$this->deleteActionMenuItems();
+        // Uninstall logic.
+        $this->deleteActionMenuItems();
 
         // get destructor SQL
-		$this->loadDestructorSQL("ximSYNC.destructor.sql");
-		Shell::exec('php ' . XIMDEX_ROOT_PATH . '/script/orm/generate.php Servers');
+        $this->loadDestructorSQL("ximSYNC.destructor.sql");
+        Shell::exec('php ' . XIMDEX_ROOT_PATH . '/script/orm/generate.php Servers');
 
         // Uninstall!
-		parent::uninstall();
-	}
+        parent::uninstall();
+    }
 }
+
 ?>

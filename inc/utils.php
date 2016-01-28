@@ -44,5 +44,4 @@ ModulesManager::file("/inc/model/role.php");
 ModulesManager::file("/inc/model/permissions.php");
   ModulesManager::file("/inc/model/nodetype.php");
 ModulesManager::file("/inc/model/structureddocument.php");
-ModulesManager::file("/inc/log/Action_log.class.php");
-ModulesManager::file("/inc/persistence/XSession.class.php");
+ ModulesManager::file("/inc/persistence/XSession.class.php");

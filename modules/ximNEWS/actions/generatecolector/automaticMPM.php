@@ -27,6 +27,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\Logs\Automatic_Log;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../../../../"));
@@ -38,8 +39,7 @@ ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 ModulesManager::file('inc/sync/Mutex.class.php');
-ModulesManager::file('/inc/log/Automatic_log.class.php');
-ModulesManager::file('/inc/MPM/MPMManager.class.php');
+ ModulesManager::file('/inc/MPM/MPMManager.class.php');
 ModulesManager::file('/inc/MPM/MPMProcess.class.php');
 
 

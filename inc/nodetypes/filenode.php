@@ -26,15 +26,15 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-    define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.php");
 include_once(XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/RelTemplateContainer.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
@@ -140,7 +140,7 @@ class FileNode extends Root
 
         if ($this->parent->nodeType->get('Name') == 'CssFile') {
 
-		ParsingDependencies::parseCssDependencies($this->nodeID, $content);
+            ParsingDependencies::parseCssDependencies($this->nodeID, $content);
         }
 
 
@@ -207,16 +207,16 @@ class FileNode extends Root
     function DeleteNode()
     {
 
-		// Deletes dependencies in rel tables
-		$depsMngr = new DepsManager();
-		$result = $depsMngr->deleteByTarget(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
-		$result = $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) && $result;
+        // Deletes dependencies in rel tables
+        $depsMngr = new DepsManager();
+        $result = $depsMngr->deleteByTarget(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
+        $result = $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode')) && $result;
 
-		if ($result){
-			XMD_Log::info('Filenode dependencies deleted');
-		}
+        if ($result) {
+            XMD_Log::info('Filenode dependencies deleted');
+        }
 
-		return $result;
+        return $result;
     }
 
     /**
@@ -258,12 +258,14 @@ class FileNode extends Root
     {
         $this->updatePath();
     }
+
     /**
      *  Promotes the File to the next workflow state.
-     *  @param string newState
-     *  @return bool
+     * @param string newState
+     * @return bool
      */
-    function promoteToWorkFlowState($newState) {
+    function promoteToWorkFlowState($newState)
+    {
         $state = new State();
         $idState = $state->loadByName($newState);
         $idActualState = $this->parent->GetState();
@@ -278,8 +280,9 @@ class FileNode extends Root
         if ($idState == $idLastState) {
             $up = time();
             $down = $up + 36000000; // unpublish date = dateup + 1year
-            baseIO_PublishDocument($this->nodeID, $up, $down,null);
+            baseIO_PublishDocument($this->nodeID, $up, $down, null);
         }
     }
 }
+
 ?>

@@ -55,7 +55,6 @@ ModulesManager::file("/formpdf/parser/parser_script.class.php", 'filters');
 // latex parser
 ModulesManager::file("/formpdf/Latex.class.php", 'filters');
 ModulesManager::file("/formpdf/parser/parser_root.class.php", 'filters');
-ModulesManager::file("/inc/fsutils/FsUtils.class.php");
 
 class Parser
 {

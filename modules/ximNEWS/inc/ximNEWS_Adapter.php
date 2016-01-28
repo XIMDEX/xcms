@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');

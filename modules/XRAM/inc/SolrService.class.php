@@ -21,8 +21,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 use Ximdex\Models\Node;
 
@@ -31,12 +31,9 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/log/Log.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/log/logger/Logger_error.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
+ require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.php");
 //
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php' );
 require("ISolrService.iface.php");
 
 /**
@@ -55,8 +52,8 @@ class SolrService implements ISolrService
      *
      * <p>If no parameters are passed to this function, the values configured in Config table are used</p>
      * <p>As fallback, if no configuration values are found in Config table
-     *	 localhost, 8983 and '/solr/collection1' are used as default values for $solrServer, $solrPort
-     *	 and $solrCorePath respectively</p>
+     *     localhost, 8983 and '/solr/collection1' are used as default values for $solrServer, $solrPort
+     *     and $solrCorePath respectively</p>
      *
      *
      * @param string $solrServer The Solr server. Default localhost
@@ -67,10 +64,10 @@ class SolrService implements ISolrService
     public function __construct($solrServer = 'localhost', $solrPort = 8983, $solrCorePath = '/solr/collection1')
     {
         $options = array(
-                   'hostname' => $solrServer,
-	           'port' => $solrPort,
-    	           'path' => $solrCorePath
-         );
+            'hostname' => $solrServer,
+            'port' => $solrPort,
+            'path' => $solrCorePath
+        );
         $this->solrClient = new SolrClient($options);
     }
 
@@ -84,31 +81,32 @@ class SolrService implements ISolrService
      * @param boolean $commitNode Boolean indicating if a commit needs to be performed after the indexing process
      *
      */
-    public function indexNode($idVersion, $content, $commitNode = true) {
+    public function indexNode($idVersion, $content, $commitNode = true)
+    {
 
-	$version = new Version($idVersion);
+        $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
             XMD_Log::debug("Trying to index a version {$idVersion} that does not exist");
         }
 
         $node = new Node($version->get('IdNode'));
-	if (!($node->get('IdNode') > 0)) {
+        if (!($node->get('IdNode') > 0)) {
             $this->Debug('Se ha solicitado indexar una versión de un nodo que no existe');
             return false;
         }
-		
-	$solrDocument = $this->createSolrDocumentFromVersion($version, $content);
-	$response = $this->solrClient->addDocument($solrDocument, false, 0);	
-	    
-	$response = $response->getResponse();
-	$response = $response['responseHeader']['status'] == 0;
+
+        $solrDocument = $this->createSolrDocumentFromVersion($version, $content);
+        $response = $this->solrClient->addDocument($solrDocument, false, 0);
+
+        $response = $response->getResponse();
+        $response = $response['responseHeader']['status'] == 0;
         if ($response && ($commitNode || is_null($commitNode))) {
             $this->performCommit();
         }
-        
+
         return $response['responseHeader']['status'] === 0;
     }
-    
+
     /**
      * <p>Creates a SolrInputDocument from a Version object to be send to Solr</p>
      *
@@ -117,9 +115,10 @@ class SolrService implements ISolrService
      *
      * return SolrInputDocument An instance of SolrDocument
      */
-    private function createSolrDocumentFromVersion($version, $content) {
-        
-    	$newDocument = new SolrInputDocument();
+    private function createSolrDocumentFromVersion($version, $content)
+    {
+
+        $newDocument = new SolrInputDocument();
 
         $newDocument->addField("id", $version->get('IdVersion'));
         $newDocument->addField("nodeid", $version->get('IdNode'));
@@ -127,20 +126,20 @@ class SolrService implements ISolrService
         $newDocument->addField('subversion', $version->get('SubVersion'));
         $newDocument->addField('user', $version->get('IdUser'));
         $newDocument->addField('date', $version->get('Date'));
-        
+
         if (!(is_null($version->get('Comment')))) {
             $newDocument->addField('comment', $version->get('Comment'));
         }
-        
+
         if (!(is_null($version->get('MimeType')))) {
             $newDocument->addField('mimetype', $version->get('MimeType'));
         }
-        
+
         $newDocument->addField("content", $content);
 
-		return $newDocument;
+        return $newDocument;
     }
-    
+
     /**
      * <p>Performs a Solr Commit </p>
      * @param boolean $isSoftCommit Optional. Indicates whether the commit is a soft or hard commit
@@ -153,20 +152,21 @@ class SolrService implements ISolrService
         $commitRequest = "<commit " . $attributes . "/>";
         $this->solrClient->request($commitRequest);
     }
-    
+
     /**
      * <p>Retrieves an specific version of a node</p>
-     * 
+     *
      * @param int $idVersion The version of the node to be retrieved
-     * 
+     *
      * return array The retrieved node or null if an error ocurred
      */
-    public function retrieveNode($idVersion) {
-	$version = new Version($idVersion);
-	if (!($version->get('IdVersion') > 0)) {
+    public function retrieveNode($idVersion)
+    {
+        $version = new Version($idVersion);
+        if (!($version->get('IdVersion') > 0)) {
             XMD_Log::debug("Trying to index a version {$idVersion} that does not exist");
-	}
-		
+        }
+
         $getVersionQuery = new SolrQuery();
         $strQuery = "id:" . $version->get('IdVersion');
 
@@ -181,18 +181,19 @@ class SolrService implements ISolrService
             XMD_Log::warning('Could not retrieve the node version');
             return null;
         }
-		
-	$doc = $docs[0];
-	return $doc;
-    
-	}
-	
+
+        $doc = $docs[0];
+        return $doc;
+
+    }
+
     /*
      * <p>Delete a node version from Solr</p>
      * 
      * @param int $idVersion The node version id to be deleted
      */
-    public function deleteNode($idVersion) {
+    public function deleteNode($idVersion)
+    {
         $solrUpdateResponse = $this->solrClient->deleteById($idVersion);
         $this->performCommit();
         return true;

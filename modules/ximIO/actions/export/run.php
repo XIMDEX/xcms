@@ -32,8 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 //
-ModulesManager::file('/inc/cli/CliParser.class.php');
-ModulesManager::file('/inc/ExportXml.class.php');
+ ModulesManager::file('/inc/ExportXml.class.php');
 ModulesManager::file('/actions/export/inc/ExportCli.class.php');
 
 $PROCESSED_NODES = 0;

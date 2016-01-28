@@ -25,9 +25,8 @@
  */
 
 
+use Ximdex\Utils\Logs\Loggeable;
 
-
-include_once(XIMDEX_ROOT_PATH . "/inc/log/Loggeable.class.php");
 
 if (!defined('LOG_DIR'))
 {

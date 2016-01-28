@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Utils\FsUtils;
+
 ModulesManager::file('/inc/nodetypes/foldernode.php');
 
 /**

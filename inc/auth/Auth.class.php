@@ -28,10 +28,9 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
+use Ximdex\Runtime\Constants;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
-}
+
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/user.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/group.php");
@@ -213,7 +212,7 @@ class Auth
 
         $nodeTypeId = (int)$wfParams['node_type'];
 
-        if (Auth::_checkContext($userId, $nodeTypeId, CREATE)) {
+        if (Auth::_checkContext($userId, $nodeTypeId,  Constants::CREATE )) {
             return true;
         }
 
@@ -269,7 +268,7 @@ class Auth
 
         $nodeTypeId = (int)$wfParams['node_type'];
 
-        if (Auth::_checkContext($userId, $nodeTypeId, DELETE)) {
+        if (Auth::_checkContext($userId, $nodeTypeId, Constants::DELETE)) {
             return true;
         }
 
@@ -295,7 +294,7 @@ class Auth
 
         $nodeTypeId = (int)$wfParams['node_type'];
 
-        if (Auth::_checkContext($userId, $nodeTypeId, UPDATE)) {
+        if (Auth::_checkContext($userId, $nodeTypeId, Constants::UPDATE)) {
             return true;
         }
 

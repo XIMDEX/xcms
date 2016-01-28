@@ -23,6 +23,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Utils\Logs\Action_log;
 
 
 /**
@@ -31,8 +32,7 @@
 if (!defined('XIMDEX_ROOT_PATH'))
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
 
-require_once(XIMDEX_ROOT_PATH . '/inc/log/Action_log.class.php');
-$config = array();
+ $config = array();
 
 /**
  * Logs priority:

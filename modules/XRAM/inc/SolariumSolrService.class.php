@@ -21,8 +21,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 use Ximdex\Models\Node;
 
@@ -31,20 +31,18 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/log/Log.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/log/logger/Logger_error.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
+ require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.php");
 //
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php' );
 require_once("ISolrService.iface.php");
-require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
+require_once(XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
 
 /**
  * <p>SolrService class</p>
  * <p>Solr backend used to store node information</p>
  */
-class SolariumSolrService implements ISolrService {
+class SolariumSolrService implements ISolrService
+{
 
     private $solrClient;
 
@@ -60,7 +58,8 @@ class SolariumSolrService implements ISolrService {
      * @param string $solrCorePath The path to the Solr Core to be used. Default /solr/collection1
      *
      */
-    public function __construct($solrServer = 'localhost', $solrPort = 8983, $solrPath = '/solr/', $solrCore = 'collection1') {
+    public function __construct($solrServer = 'localhost', $solrPort = 8983, $solrPath = '/solr/', $solrCore = 'collection1')
+    {
         $options = array(
             'endpoint' => array(
                 'localhost' => array(
@@ -86,7 +85,8 @@ class SolariumSolrService implements ISolrService {
      * @param boolean $commitNode Boolean indicating if a commit needs to be performed after the indexing process
      *
      */
-    public function indexNode($idVersion, $content, $commitNode = true) {
+    public function indexNode($idVersion, $content, $commitNode = true)
+    {
 
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
@@ -120,7 +120,8 @@ class SolariumSolrService implements ISolrService {
      *
      * return Solarium\Query\Update An instance of Solarium\Query\Update containing the request with the new document already added on it
      */
-    private function createSolrUpdateRequestFromVersion($version, $content) {
+    private function createSolrUpdateRequestFromVersion($version, $content)
+    {
 
         // Creating update query instance
         $update = $this->solrClient->createUpdate();
@@ -147,12 +148,13 @@ class SolariumSolrService implements ISolrService {
 
     /**
      * <p>Retrieves an specific version of a node</p>
-     * 
+     *
      * @param int $idVersion The version of the node to be retrieved
-     * 
+     *
      * return array The retrieved node or null if an error ocurred
      */
-    public function retrieveNode($idVersion) {
+    public function retrieveNode($idVersion)
+    {
         $version = new Version($idVersion);
         if (!($version->get('IdVersion') > 0)) {
             XMD_Log::debug("Trying to index a version {$idVersion} that does not exist");
@@ -189,7 +191,8 @@ class SolariumSolrService implements ISolrService {
      * @param int $idVersion The node version id to be deleted
      */
 
-    public function deleteNode($idVersion) {
+    public function deleteNode($idVersion)
+    {
         $solrUpdateRequest = $this->solrClient->createUpdate();
         $solrUpdateRequest->addDeleteById($idVersion);
         $solrUpdateRequest->addCommit();

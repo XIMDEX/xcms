@@ -26,11 +26,12 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\Curl;
+use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
   require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
-require_once XIMDEX_ROOT_PATH . '/inc/http/Curl.class.php';
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
 class View_PreviewInServer extends Abstract_View implements Interface_View {

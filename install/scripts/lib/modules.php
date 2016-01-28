@@ -21,8 +21,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 define('CLI_MODE', 1);
@@ -30,13 +30,13 @@ define('CLI_MODE', 1);
 include_once realpath(dirname(__FILE__)) . '/../../../bootstrap/start.php';
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallModulesManager.class.php');
 
 /**
  * Usage function
  */
-function module_usage() {
+function module_usage()
+{
     echo "Usage: php modules.php install [-options | module_name] \n";
     echo "       php modules.php [uninstall|enable|disable|list] \n";
     echo "\nwhere options include:";
@@ -50,7 +50,8 @@ function module_usage() {
     echo "   php modules uninstall -c\n";
 }
 
-function module_list() {
+function module_list()
+{
 
     $imManager = new InstallModulesManager();
     $modules = $imManager->getAllModules();
@@ -68,7 +69,8 @@ function module_list() {
     print("\n");
 }
 
-function module_install($argv) {
+function module_install($argv)
+{
 //instance modules manager.
     $imManager = new InstallModulesManager();
 
@@ -122,7 +124,8 @@ function module_install($argv) {
     }
 }
 
-function module_uninstall($module_name) {
+function module_uninstall($module_name)
+{
     $modMngr = new ModulesManager();
 
     $modMngr->uninstallModule($module_name);
@@ -135,7 +138,8 @@ function module_uninstall($module_name) {
     print("\nModule $module_name uninstalled.\n");
 }
 
-function module_enable($module_name) {
+function module_enable($module_name)
+{
     $modMngr = new ModulesManager();
 
     $modMngr->enableModule($module_name);
@@ -146,7 +150,8 @@ function module_enable($module_name) {
     }
 }
 
-function module_disable($module_name) {
+function module_disable($module_name)
+{
     $modMngr = new ModulesManager();
 
     $modMngr->disableModule($module_name);
@@ -157,7 +162,8 @@ function module_disable($module_name) {
     }
 }
 
-function main($argc, $argv) {
+function main($argc, $argv)
+{
     if ($argc < 2) {
         print(" * ERROR: Bad syntax\n");
     }

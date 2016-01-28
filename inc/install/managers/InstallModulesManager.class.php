@@ -24,6 +24,8 @@
  * @version $Revision$
  */
 
+use Ximdex\Utils\FsUtils;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 
 class InstallModulesManager extends InstallManager

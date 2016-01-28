@@ -25,7 +25,7 @@
  */
 
 namespace Ximdex\XML ;
-use FsUtils ;
+use Ximdex\Utils\FsUtils ;
 
 class XML {
 

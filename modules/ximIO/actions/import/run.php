@@ -93,10 +93,10 @@ if ($copyMode) {
 $importer->import();
 
 $correct = $importer->processedNodes['success'];
-$incorrectPermissions = $importer->processedNodes['failed'][ERROR_NO_PERMISSIONS];
-$incorrectIncorrectData = $importer->processedNodes['failed'][ERROR_INCORRECT_DATA];
-$incorrectNotReached = $importer->processedNodes['failed'][ERROR_NOT_REACHED];
-$incorrectNotAllowed = $importer->processedNodes['failed'][ERROR_NOT_ALLOWED];
+$incorrectPermissions = $importer->processedNodes['failed'][Constants::ERROR_NO_PERMISSIONS];
+$incorrectIncorrectData = $importer->processedNodes['failed'][Constants::ERROR_INCORRECT_DATA];
+$incorrectNotReached = $importer->processedNodes['failed'][Constants::ERROR_NOT_REACHED];
+$incorrectNotAllowed = $importer->processedNodes['failed'][Constants::ERROR_NOT_ALLOWED];
 
 $totalIncorrectNodes = 0;
 reset($importer->processedNodes['failed']);

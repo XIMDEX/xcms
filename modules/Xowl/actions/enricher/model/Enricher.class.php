@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Utils\Curl;
 
 ModulesManager::file('/inc/rest/REST_Provider.class.php');
 

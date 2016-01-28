@@ -25,6 +25,9 @@
 *  @version $Revision: 8735 $
 */
 
+use Ximdex\Runtime\App;
+use Ximdex\Utils\FsUtils;
+
 ModulesManager::file('/actions/addfoldernode/model/BuildParser.class.php');
 
 /**
@@ -124,7 +127,7 @@ class ProjectTemplate{
 		//Returned array if everything is ok.
 		$result = array();
 		
-		$rootThemesFolder = \App::getValue( "AppRoot").THEMES_FOLDER;
+		$rootThemesFolder =  App::getValue( "AppRoot").THEMES_FOLDER;
 		//Getting all theme folders
 		$themesFolders = FsUtils::readFolder($rootThemesFolder,false);
 
