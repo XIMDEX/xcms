@@ -1,6 +1,7 @@
 <?php
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -23,115 +24,116 @@ use Ximdex\MVC\ActionAbstract;
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class Action_filepreview extends ActionAbstract
+{
 
-class Action_filepreview extends ActionAbstract {
+    // Main method: shows initial form for a single file
+    function index()
+    {
+        $this->response->set('Cache-Control',
+            array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+        $this->response->set('Pragma', 'no-cache');
 
-	// Main method: shows initial form for a single file
-   	function index () {
-		$this->response->set('Cache-Control', 
-			array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
-		$this->response->set('Pragma', 'no-cache');
-		
-    		$idNode = $this->request->getParam('nodeid');
-    	   
-    		$version = $this->request->getParam('version');
-    		$subVersion = $this->request->getParam('sub_version');
-    	
-    		if (is_numeric($version) && is_numeric($subVersion)) {
-    			$dataFactory = new DataFactory($idNode);
-    			$selectedVersion = $dataFactory->getVersionId($version, $subVersion);
-    		} else {
-	    		$dataFactory = new DataFactory($idNode);
-	    		$selectedVersion = $dataFactory->GetLastVersionId();
-    		}
-    	
-    		$version = new Version($selectedVersion);
-            $hash = $version->get('File');
-    	    $node = new Node($idNode);
-		$values = array('id_node' => $idNode,
-				'path' => \App::getValue( 'UrlRoot') . '/data/files/' . $hash,
-                'Name' => $node->get('Name'));
-		$this->render($values, null, 'default-3.0.tpl');
-    	}
-  
-	/**
-     	* <p>Show all images contained in a node</p>
-     	* 
-     	*/
-    	function showAll() {
-           
-    		$idNode = $this->request->getParam('nodeid');
-    	
-        	$node = new Node($idNode);
-        	if(!($node->get('IdNode'))> 0 || ($node->get('IdNodeType') != 5016 && $node->get('IdNodeType') != 5017) ) {
-        		$message = _("Forbidden access");
-            		$this->render(array('mesg' => $message), null, 'default-3.0.tpl');
-            		return;
-        	}
-            $parentID = $node->GetParent(); 
-            $parentNode = new Node($parentID);    
-           
-        	/* Gets all child nodes of type image (nodetype 5040) of this node */
-        	$nodes = $node->GetChildren(5040);
-        	$imageNodes = array();
-        	$imagePath = \App::getValue( 'UrlRoot').\App::getValue( 'FileRoot');
-		$nodePath = \App::getValue( 'UrlRoot').\App::getValue( 'NodeRoot');
-        	if(count($nodes) > 0) {
-            		foreach($nodes as $idNode) {
-                		$n = new Node($idNode);
-                		if(!($n->get('IdNode') > 0))
-                    			continue;
-                
-                		$dataFactory = new DataFactory($idNode);
-	    			$selectedVersion = $dataFactory->GetLastVersionId();
-                
-                		$version = new Version($selectedVersion);
-				$hash = $version->get('File');
+        $idNode = $this->request->getParam('nodeid');
 
-				$filepath = XIMDEX_ROOT_PATH.\App::getValue( 'FileRoot').DIRECTORY_SEPARATOR.$hash;
-                		$imageInfo = getimagesize($filepath);
-                		$width = $imageInfo[0];
-                		$height = $imageInfo[1];
-                		$mime = $imageInfo['mime'];
-				array_push($imageNodes,array('name' => $n->GetNodeName(),
-                                         'original_path' => $nodePath.str_replace('/Ximdex/Projects','',$n->GetPath()),
-                                         'src' => $imagePath.'/'.$hash,
-                                         'width' => $width, 
-                                         'height' => $height,
-                                         'mime' => $mime,
-                                         'dimensions' => $width." x ".$height,
-                                         'size' => $this->humanReadableFilesize(filesize($filepath)),
-                                         'idnode' => $n->get('IdNode'),                                                                                                 )       
-                        	);
-            		}
-            
-            		$this->addCss('/actions/filepreview/resources/css/showAll.css');
-            		$this->addJs('/actions/filepreview/resources/js/showAll.js');		
-            		$this->addJs('/actions/filepreview/resources/js/gallerizer.js');
+        $version = $this->request->getParam('version');
+        $subVersion = $this->request->getParam('sub_version');
 
-            		$values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'), 'folderName' => $node->get('Name'));
-            		$this->render($values, null, 'default-3.0.tpl');
-
-        	}
-                else {
-            		$message = _("No images found in this folder");
-            		$this->render(array('mesg' => $message), null, 'default-3.0.tpl');
-        	}
-    	}
-
-	private function humanReadableFilesize($size) {
-
-                $mod = 1024;
-
-                $units = explode(' ','B KB MB GB TB PB');
-                for ($i = 0; $size > $mod; $i++) {
-                        $size /= $mod;
-                }
-
-                return round($size, 2) . ' ' . $units[$i];
+        if (is_numeric($version) && is_numeric($subVersion)) {
+            $dataFactory = new DataFactory($idNode);
+            $selectedVersion = $dataFactory->getVersionId($version, $subVersion);
+        } else {
+            $dataFactory = new DataFactory($idNode);
+            $selectedVersion = $dataFactory->GetLastVersionId();
         }
+
+        $version = new Version($selectedVersion);
+        $hash = $version->get('File');
+        $node = new Node($idNode);
+        $values = array('id_node' => $idNode,
+            'path' => App::getValue('UrlRoot') . '/data/files/' . $hash,
+            'Name' => $node->get('Name'));
+        $this->render($values, null, 'default-3.0.tpl');
+    }
+
+    /**
+     * <p>Show all images contained in a node</p>
+     *
+     */
+    function showAll()
+    {
+
+        $idNode = $this->request->getParam('nodeid');
+
+        $node = new Node($idNode);
+        if (!($node->get('IdNode')) > 0 || ($node->get('IdNodeType') != 5016 && $node->get('IdNodeType') != 5017)) {
+            $message = _("Forbidden access");
+            $this->render(array('mesg' => $message), null, 'default-3.0.tpl');
+            return;
+        }
+        $parentID = $node->GetParent();
+        $parentNode = new Node($parentID);
+
+        /* Gets all child nodes of type image (nodetype 5040) of this node */
+        $nodes = $node->GetChildren(5040);
+        $imageNodes = array();
+        $imagePath = App::getValue('UrlRoot') . App::getValue('FileRoot');
+        $nodePath = App::getValue('UrlRoot') . App::getValue('NodeRoot');
+        if (count($nodes) > 0) {
+            foreach ($nodes as $idNode) {
+                $n = new Node($idNode);
+                if (!($n->get('IdNode') > 0))
+                    continue;
+
+                $dataFactory = new DataFactory($idNode);
+                $selectedVersion = $dataFactory->GetLastVersionId();
+
+                $version = new Version($selectedVersion);
+                $hash = $version->get('File');
+
+                $filepath = XIMDEX_ROOT_PATH . App::getValue('FileRoot') . DIRECTORY_SEPARATOR . $hash;
+                $imageInfo = getimagesize($filepath);
+                $width = $imageInfo[0];
+                $height = $imageInfo[1];
+                $mime = $imageInfo['mime'];
+                array_push($imageNodes, array('name' => $n->GetNodeName(),
+                        'original_path' => $nodePath . str_replace('/Ximdex/Projects', '', $n->GetPath()),
+                        'src' => $imagePath . '/' . $hash,
+                        'width' => $width,
+                        'height' => $height,
+                        'mime' => $mime,
+                        'dimensions' => $width . " x " . $height,
+                        'size' => $this->humanReadableFilesize(filesize($filepath)),
+                        'idnode' => $n->get('IdNode'),)
+                );
+            }
+
+            $this->addCss('/actions/filepreview/resources/css/showAll.css');
+            $this->addJs('/actions/filepreview/resources/js/showAll.js');
+            $this->addJs('/actions/filepreview/resources/js/gallerizer.js');
+
+            $values = array('imageNodes' => $imageNodes, 'serverName' => $parentNode->get('Name'), 'folderName' => $node->get('Name'));
+            $this->render($values, null, 'default-3.0.tpl');
+
+        } else {
+            $message = _("No images found in this folder");
+            $this->render(array('mesg' => $message), null, 'default-3.0.tpl');
+        }
+    }
+
+    private function humanReadableFilesize($size)
+    {
+
+        $mod = 1024;
+
+        $units = explode(' ', 'B KB MB GB TB PB');
+        for ($i = 0; $size > $mod; $i++) {
+            $size /= $mod;
+        }
+
+        return round($size, 2) . ' ' . $units[$i];
+    }
 }
-?>

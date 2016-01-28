@@ -26,6 +26,7 @@
  */
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 define('MODE_NODETYPE', 0);
@@ -538,12 +539,7 @@ class BaseIO {
         }
     }
 
-    /**
-     *
-     * @param $data
-     * @param $userid
-     * @return unknown_type
-     */
+
     function update($data, $userid = NULL) {
         global $metaTypesArray;
         if (is_null($metaTypesArray)) {
@@ -1193,7 +1189,7 @@ class BaseIO {
      * @return unknown_type
      */
     function _getDefaultRNG() {
-        $defaultRNG = \App::getValue('defaultRNG');
+        $defaultRNG =  App::getValue('defaultRNG');
         $node = new Node($defaultRNG);
         if ($node->get('IdNode') > 0) {
             return ($node->nodeType->GetName() == 'VisualTemplate') ? $defaultRNG : NULL;
@@ -1206,7 +1202,7 @@ class BaseIO {
      * @return unknown_type
      */
     function _getDefaultChannel() {
-        $defaultChannel = \App::getValue('defaultChannel');
+        $defaultChannel =  App::getValue('defaultChannel');
         $node = new Node($defaultChannel);
         if ($node->get('IdNode') > 0) {
             return ($node->nodeType->GetName() == 'Channel') ? $defaultChannel : NULL;
@@ -1214,23 +1210,14 @@ class BaseIO {
         return NULL;
     }
 
-    /**
-     *
-     * @return unknown_type
-     */
     function _getDefaultLanguage() {
-        $defaultLanguage = \App::getValue('DefaultLanguage');
+        $defaultLanguage = App::getValue('DefaultLanguage');
         $language = new Language();
         $language->SetByIsoName($defaultLanguage);
 
         return ($language->GetID() > 0) ? $language->GetID() : NULL;
     }
 
-    /**
-     *
-     * @param $childrens
-     * @return unknown_type
-     */
     function _getVisualTemplateFromChildrens($childrens) {
         // the children of a visual template would be the paths, and it should be just one
         $idsVisualTemplate = $this->_getIdFromChildrenType($childrens, 'VISUALTEMPLATE');
@@ -1247,12 +1234,7 @@ class BaseIO {
         }
     }
 
-    /**
-     *
-     * @param $childrens
-     * @param $withDefault
-     * @return unknown_type
-     */
+
     function _getChannelFromChildrens($childrens, $withDefault = true) {
         $channels = $this->_getIdFromChildrenType($childrens, 'CHANNEL');
         // Trying to get the default Channel
@@ -1269,12 +1251,7 @@ class BaseIO {
         }
     }
 
-    /**
-     *
-     * @param $childrens
-     * @param $withDefault
-     * @return unknown_type
-     */
+
     function _getLanguageFromChildrens($childrens, $withDefault = true) {
         $languages = $this->_getIdFromChildrenType($childrens, 'LANGUAGE');
         if (count($languages) != 1) {
@@ -1306,11 +1283,6 @@ class BaseIO {
         }
     }
 
-    /**
-     *
-     * @param $data
-     * @return unknown_type
-     */
     function _checkForceNew($data) {
         if (!(isset($data['FORCENEW']) && $data['FORCENEW'] == true)) {
             $parent = new Node($data['PARENTID']);
@@ -1323,10 +1295,6 @@ class BaseIO {
         return NULL;
     }
 
-    /**
-     * Check if the VisualTemplate is a RNGVisualTemplate
-     * @param unknown_type $data
-     */
     function _checkVisualTemplate($data) {
 
         if (!isset($data['NODETYPENAME']) || $data['NODETYPENAME'] != 'VisualTemplate') {
@@ -1349,11 +1317,7 @@ class BaseIO {
         return $data;
     }
 
-    /**
-     * Set to upper case all the keys in $data array.
-     * @param  array $data Array with key to upper.
-     * @return array       The same array with all the keys in uppercase.
-     */
+    //Set to upper case all the keys in $data array.
     protected function dataToUpper($data) {
 
         $aux = array();

@@ -1,6 +1,7 @@
 <?php
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 /**
@@ -34,7 +35,7 @@ class Action_filedownload_multiple extends ActionAbstract {
 	public function index() {
 		$nodes = $this->request->getParam('nodes');
 		$tmpFolder = FsUtils::getUniqueFolder(
-			\App::getValue( 'AppRoot') . \App::getValue( 'TempRoot'), '', 'export_'
+			 App::getValue( 'AppRoot') .  App::getValue( 'TempRoot'), '', 'export_'
 		);
     		
 		if (!FsUtils::mkdir($tmpFolder)) {
@@ -66,7 +67,7 @@ class Action_filedownload_multiple extends ActionAbstract {
             XMD_Log::error('All selected documents could not be exported. Do you have zip installed?');
 		}
 
-		$tarFile = preg_replace(sprintf('#^%s#', \App::getValue( 'AppRoot')), \App::getValue( 'UrlRoot'), $tarFile);
+		$tarFile = preg_replace(sprintf('#^%s#',  App::getValue( 'AppRoot')), App::getValue( 'UrlRoot'), $tarFile);
 
 		$values = array(
 			'nodeName' => basename($tarFile),

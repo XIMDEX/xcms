@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Modules\Module;
+use Ximdex\Runtime\App;
 
 
 // Point to ximdex root and include necessary class.
@@ -54,10 +55,11 @@ class Module_Xowl extends Module
         return true;
     }
 
-    function configure($key, $urlService){
-        \App::setValue('EnricherKey', '2jpkhvda52fgffz2kv8x8cuy', true);
-        \App::setValue('Xowl_location', $urlService, true);
-        \App::setValue('Xowl_token', $key, true);
+    function configure($key, $urlService)
+    {
+        App::setValue('EnricherKey', '2jpkhvda52fgffz2kv8x8cuy', true);
+        App::setValue('Xowl_location', $urlService, true);
+        App::setValue('Xowl_token', $key, true);
 
         $provider = new AnnotationSearcherStrategy;
         $ret = $provider->suggest('');
@@ -67,9 +69,9 @@ class Module_Xowl extends Module
 
         if (empty($ret)) {
             //Deleting key...
-            \App::setValue('Xowl_location', '', true);
-            \App::setValue('Xowl_token', '', true);
-            \App::setValue('EnricherKey', '', true);
+            App::setValue('Xowl_location', '', true);
+            App::setValue('Xowl_token', '', true);
+            App::setValue('EnricherKey', '', true);
             return false;
         }
         return true;
@@ -78,58 +80,58 @@ class Module_Xowl extends Module
     /**
      * Enable function. Ask Xowl Key and LMF path if requires.
      */
-/*    function enable()
-    {
+    /*    function enable()
+        {
 
-        //Asking Xowl key.
-        $sp = "You must type the Xowl key in order to activate this module.\n\n(If you don't know what it's all about, please contact us at soporte@ximdex.com.)";
+            //Asking Xowl key.
+            $sp = "You must type the Xowl key in order to activate this module.\n\n(If you don't know what it's all about, please contact us at soporte@ximdex.com.)";
 
-        $key = CliReader::getString(sprintf("\nXowl module activation info: %s\n\n--> Xowl Key: ", $sp));
-        printf("\nStoring your personal key ...\n");
+            $key = CliReader::getString(sprintf("\nXowl module activation info: %s\n\n--> Xowl Key: ", $sp));
+            printf("\nStoring your personal key ...\n");
 
-        $sql = "UPDATE Config SET ConfigValue='" . $key . "' WHERE ConfigKey='EnricherKey'";
-        $db = new DB();
-        $db->Execute($sql);
-        printf("Key stored successfully!. Testing service conection ...\n\n");
+            $sql = "UPDATE Config SET ConfigValue='" . $key . "' WHERE ConfigKey='EnricherKey'";
+            $db = new DB();
+            $db->Execute($sql);
+            printf("Key stored successfully!. Testing service conection ...\n\n");
 
-        $ra = new Enricher();
-        $text = '';
-        $ret = $ra->suggest($text, $key, 'xml');
-        $installationOk = true;
-        if (empty($ret)) {
-            $installationOk = false;
-            printf("Deleting key...\n");
-            $sql_del = "UPDATE Config SET ConfigValue='' WHERE ConfigKey='EnricherKey'";
-            $db->Execute($sql_del);
-            printf("The service could not be connected. Your key is not correct. Please contact us.\n\n");
-        } else {
+            $ra = new Enricher();
+            $text = '';
+            $ret = $ra->suggest($text, $key, 'xml');
             $installationOk = true;
-            printf("Conection OK.");
-            //Installing LMF if user requires.
-            do {
-                $isAnswerRight = true;
-                $isLmfUrl = CliReader::getString("\n\nDo you want to define a LMF Service? [Y/n]: ");
-                switch (strtolower($isLmfUrl)) {
-                    case 'y':
-                        $installationOk = $this->defineLMF();
-                        if (!$installationOk)
+            if (empty($ret)) {
+                $installationOk = false;
+                printf("Deleting key...\n");
+                $sql_del = "UPDATE Config SET ConfigValue='' WHERE ConfigKey='EnricherKey'";
+                $db->Execute($sql_del);
+                printf("The service could not be connected. Your key is not correct. Please contact us.\n\n");
+            } else {
+                $installationOk = true;
+                printf("Conection OK.");
+                //Installing LMF if user requires.
+                do {
+                    $isAnswerRight = true;
+                    $isLmfUrl = CliReader::getString("\n\nDo you want to define a LMF Service? [Y/n]: ");
+                    switch (strtolower($isLmfUrl)) {
+                        case 'y':
+                            $installationOk = $this->defineLMF();
+                            if (!$installationOk)
+                                $isAnswerRight = false;
+                            break;
+                        case 'n':
+                            break;
+                        default:
                             $isAnswerRight = false;
-                        break;
-                    case 'n':
-                        break;
-                    default:
-                        $isAnswerRight = false;
+                    }
+
+                } while (!$isAnswerRight);
+
+
+                if ($installationOk) {
+                    printf("You can now enrich your documents with our Remote Annotator!.\n\n");
                 }
-
-            } while (!$isAnswerRight);
-
-
-            if ($installationOk) {
-                printf("You can now enrich your documents with our Remote Annotator!.\n\n");
             }
         }
-    }
-*/
+    */
     /**
      * Ask and check LMF url
      * @return bool True if the url is ok.

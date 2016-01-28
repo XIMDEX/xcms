@@ -26,6 +26,7 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 include_once 'bootstrap/start.php';
@@ -33,7 +34,7 @@ include_once 'bootstrap/start.php';
 /**
  * Dispatch XIMDEX_START event
  */
-\Ximdex\Runtime\App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
+App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -120,7 +121,7 @@ function checkFolders()
 
 function goLoadAction()
 {
-    header(sprintf("Location: %s", \App::getValue( 'UrlRoot')));
+    header(sprintf("Location: %s", App::getValue( 'UrlRoot')));
 }
 
 //Main thread

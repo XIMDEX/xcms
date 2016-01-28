@@ -27,13 +27,11 @@
 
 namespace Ximdex\Modules;
 
-use Shell,
-    DB,
+use Ximdex\Runtime\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Runtime\App;
 
 Manager::file("/inc/db/db.php");
-Manager::file("/inc/cli/Shell.class.php");
 
 /**
  *
@@ -235,10 +233,8 @@ class Module  {
 
     /**
      *  Install new module into ximDEX.
-     * @public
-     *
-     * @return
-     */
+      *
+      */
     function install() {
 
         $ret = true;
@@ -270,9 +266,6 @@ class Module  {
 
     /**
      *  Instructions previous to the installation
-     * @public
-     *
-     * @return
      */
     function preInstall() {
         return true;

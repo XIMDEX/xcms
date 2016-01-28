@@ -25,7 +25,8 @@
  */
 
 
-
+use Ximdex\Runtime\App;
+use Ximdex\XML\Base;
 
 ModulesManager::file('/actions/composer/Action_composer.class.php');
 
@@ -41,6 +42,10 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		$this->fc = new FrontController();
 	}
 
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param $method
+	 */
 	protected function redirect($request, $method) {
 
 		/*$request->setParam('actionid', null);
@@ -69,6 +74,11 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		die();
 	}
 
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param bool $recursive
+	 * @return mixed
+	 */
 	public function read($request, $recursive = true) {
 
 		$idNode = $request->getParam('nodeid');
@@ -96,8 +106,13 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		return $data;
 	}
 
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param bool $recursive
+	 * @return array
+	 */
 	public function quickRead($request, $recursive = true) {
-
+		unset( $recursive ) ;
 		$idNode = $request->getParam('nodeid');
 		$items = $request->getParam('items');
 		$from = $request->getParam('from');
@@ -112,8 +127,13 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		return $ret;
 	}
 
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @param bool $recursive
+	 * @return array
+	 */
 	public function readFiltered($request, $recursive = true) {
-
+		unset( $recursive ) ;
 		$idNode = $request->getParam('nodeid');
 		$children = $request->getParam('children');
 		$from = $request->getParam('from');
@@ -144,14 +164,23 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		return $node;
 	}
 
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 */
 	public function parents($request) {
 		return $this->redirect($request, 'parents');
 	}
-
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 */
 	public function nodetypes($request) {
 		return $this->redirect($request, 'nodetypes');
 	}
 
+	/**
+	 * @param $request \Ximdex\Runtime\Request
+	 * @return array
+	 */
 	public function search($request) {
 
 		$handler = strtoupper($request->getParam('handler'));
@@ -162,7 +191,7 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 		$output = $output !== null ? $output : 'JSON';		// JSON / XML
 
 		if (is_string($query)) {
-			$query = \Ximdex\XML\Base::recodeSrc($query, \App::getValue( 'workingEncoding'));
+			$query = Base::recodeSrc($query,  App::getValue( 'workingEncoding'));
 			$query = str_replace('\\"', '"', $query);
 		}
 
@@ -182,5 +211,3 @@ class Datasource_Composer extends AbstractDatasource implements IDatasource {
 	}
 
 }
-
-?>

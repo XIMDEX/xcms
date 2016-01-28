@@ -28,6 +28,7 @@
 //TODO - LIST
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/model/nodetype.php');
@@ -197,7 +198,7 @@ class ImportXml
         $this->_firstExportationNode = $firstExportationNode;
         $this->_insertFirstNode = (bool)$insertFirstNode;
         $this->_recurrence = $recurrence;
-        $this->idLocalXimio = \App::getValue('ximid');
+        $this->idLocalXimio =  App::getValue('ximid');
 
         $this->processedNodes = array();
         $this->processedNodes['success'] = 0;

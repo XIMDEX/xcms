@@ -28,7 +28,11 @@
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
-
+use Ximdex\Runtime\App;
+use Ximdex\Utils\Session;
+use Ximdex\XML\Base;
+use Ximdex\Logger as XMD_Log ;
+use DB_legacy as DB;
 
 ModulesManager::file('/inc/utils.php');
 //
@@ -46,19 +50,19 @@ class Action_composer extends ActionAbstract
 
     public function index()
     {
-        \Ximdex\Utils\Session::check();
+         Session::check();
 
-        $ximid = \App::getValue("ximid");
-        $versionname = \App::getValue("VersionName");
-        $userID = \Ximdex\Utils\Session::get('userID');
+        $ximid =  App::getValue("ximid");
+        $versionname =  App::getValue("VersionName");
+        $userID = Session::get('userID');
         $theme = $this->request->getParam('theme');
         $theme = $theme ? $theme : 'ximdex_theme';
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
+        $user_locale = $locale->GetLocaleByCode( Session::get('locale'));
 
         //Stopping any active debug_render
-        \Ximdex\Utils\Session::set('debug_render', NULL);
-        \Ximdex\Utils\Session::set('activeTheme', $theme);
+        Session::set('debug_render', NULL);
+         Session::set('activeTheme', $theme);
 
         $values = array('composer_index' => self::COMPOSER_INDEX,
             'ximid' => $ximid,
@@ -74,7 +78,7 @@ class Action_composer extends ActionAbstract
     public function changeTheme()
     {
         $theme = $this->request->getParam('theme');
-        \Ximdex\Utils\Session::set('activeTheme', $theme);
+        Session::set('activeTheme', $theme);
     }
 
     public function quickRead($idNode, $from, $to, $items, $times = 2)
@@ -95,7 +99,7 @@ class Action_composer extends ActionAbstract
         }
         $db = new DB();
         $db->query($sql);
-        $ret = $this->_echoNodeTree($idNode, \App::getValue('displayEncoding'));
+        $ret = $this->_echoNodeTree($idNode,  App::getValue('displayEncoding'));
         if (($db->numRows > $items) && ($items != 0)) {
             //Paginated request
             $partes = floor($db->numRows / $items);
@@ -196,9 +200,9 @@ class Action_composer extends ActionAbstract
         if (($node_childs > 0 && $node_id < 10000) || $node_id == 13) {
             $node_name = _($node->get('Name'));
         } else {
-            $node_name = \Ximdex\XML\Base::recodeSrc($node->get('Name'), $encoding);
+            $node_name =  Base::recodeSrc($node->get('Name'), $encoding);
         }
-        $path = \Ximdex\XML\Base::recodeSrc($node->getPath(), $encoding);
+        $path = Base::recodeSrc($node->getPath(), $encoding);
         $idNodeType = $node->get('IdNodeType');
 
         $isDir = $node->nodeType->isFolder() == 1 ? '1' : '0';
@@ -274,7 +278,7 @@ class Action_composer extends ActionAbstract
         $db->query($sql);
         $queryToMatch = "/" . $find . "/i";
         $queryToMatch = str_replace(array(".", "_"), array('\.', "."), $queryToMatch);
-        $ret = $this->_echoNodeTree($idNode, \App::getValue('displayEncoding'));
+        $ret = $this->_echoNodeTree($idNode,  App::getValue('displayEncoding'));
 
         if (($db->numRows > $items) && ($items != 0)) {
             //Paginated request
@@ -398,11 +402,11 @@ class Action_composer extends ActionAbstract
 
     public function readTreedata($idNode, $children = false, $desde = null, $hasta = null, $nelementos = null, $find = null)
     {
-        \Ximdex\Utils\Session::check();
-        $userID = \Ximdex\Utils\Session::get('userID');
+         Session::check();
+        $userID =  Session::get('userID');
 
         if (!isset($this->displayEncoding)) {
-            $this->displayEncoding = \App::getValue('displayEncoding');
+            $this->displayEncoding =  App::getValue('displayEncoding');
         }
 
         // The data to be returned
@@ -653,10 +657,10 @@ class Action_composer extends ActionAbstract
 
     /**
      * Returning a widget config file
-     * @param string wn Widget name
-     * @param string wi Widget ID
-     * @param string a Action name
-     * @param string m Module name
+     * @param string - wn Widget name
+     * @param string - wi Widget ID
+     * @param string - a Action name
+     * @param string - m Module name
      */
     public function wconf()
     {
@@ -893,9 +897,9 @@ class Action_composer extends ActionAbstract
     function getDefaultNode()
     {
 
-        $defaultNodeName = \App::getValue("DefaultInitNodeName");
-        $defaultNodePath = \App::getValue("DefaultInitNodePath");
-        $userID = \Ximdex\Utils\Session::get('userID');
+        $defaultNodeName =  App::getValue("DefaultInitNodeName");
+        $defaultNodePath =  App::getValue("DefaultInitNodePath");
+        $userID =  Session::get('userID');
         $user = new User($userID);
         $groupList = $user->GetGroupList();
         $groupName = false;

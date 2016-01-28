@@ -23,6 +23,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 
@@ -84,7 +85,7 @@ class Mail extends PHPMailer
         $ret_send = parent::Send();
 
         if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
-            $tmp_path = XIMDEX_ROOT_PATH . \App::getValue('TempRoot');
+            $tmp_path = XIMDEX_ROOT_PATH .  App::getValue('TempRoot');
             $filename = tempnam($tmp_path, 'mail_');
             $data = parent::CreateBody();
             // just a log, no sense to log the fsutils error too
