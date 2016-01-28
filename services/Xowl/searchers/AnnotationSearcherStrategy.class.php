@@ -26,6 +26,8 @@
  */
 
 
+use Ximdex\Utils\Curl;
+
 ModulesManager::file('/services/Xowl/searchers/AbstractSearcherStrategy.class.php');
 
 class AnnotationSearcherStrategy extends AbstractSearcherStrategy

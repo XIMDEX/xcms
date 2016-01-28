@@ -25,14 +25,13 @@
  */
 
 
-
+use Ximdex\Utils\Curl;
 
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', dirname(__FILE__).'/../');
 
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerConf.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/http/Curl.class.php');
 
 class PoolerClient {
 
