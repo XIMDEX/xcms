@@ -36,8 +36,8 @@ ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
 class Action_addfoldernode extends ActionAbstract {
 	
 
-	private $channels;
-	private $languages;
+	public $channels;
+	public $languages;
 	/**
 	 * Main Method: shows the initial form	 
 	 */
@@ -45,7 +45,19 @@ class Action_addfoldernode extends ActionAbstract {
 
 		//Getting node info from params.
 		$nodeID = $this->request->getParam("nodeid");
-    	$nodeType = $this->GetTypeOfNewNode ($nodeID);
+        $nodeType = [];
+
+        /**
+         * First, checks if has nodetypeid param
+         */
+        if( $this->request->get("nodetypeid") ){
+            $nt = new NodeType($this->request->get("nodetypeid"));
+            $nodeType["name"] = $nt->get('Name');
+            $nodeType["friendlyName"] = $nt->get('Description');
+        } else {
+            $nodeType = $this->GetTypeOfNewNode ($nodeID);
+        }
+
     	$friendlyName = (!empty($nodeType["friendlyName"]))?  $nodeType["friendlyName"] : $nodeType["name"];
 
     	$go_method = ($nodeType["name"] == "Section") ? "addSectionNode" : "addNode";
@@ -129,7 +141,19 @@ class Action_addfoldernode extends ActionAbstract {
 		$channels = $this->request->getParam('channels_listed');	
 		$languages = $this->request->getParam('langs_listed');
 
-		$nodeType = $this->GetTypeOfNewNode($nodeID);
+        $nodeType = [];
+
+        /**
+         * First, checks if has nodetypeid param
+         */
+        if( $this->request->get("nodetypeid") ){
+            $nt = new NodeType($this->request->get("nodetypeid"));
+            $nodeType["name"] = $nt->get('Name');
+            $nodeType["friendlyName"] = $nt->get('Description');
+        } else {
+            $nodeType = $this->GetTypeOfNewNode ($nodeID);
+        }
+
 		$nodeTypeName = $nodeType["name"];
 
 		$nodeType = new NodeType();
@@ -200,7 +224,7 @@ class Action_addfoldernode extends ActionAbstract {
 		$this->render($arrValores);
 	}
 
-	private function createProjectNodes($projectId) {
+	public function createProjectNodes($projectId) {
 
         $theme = $this->request->getParam("theme");
         if ($theme) {

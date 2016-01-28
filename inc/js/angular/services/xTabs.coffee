@@ -187,6 +187,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     xtab.highlightTab i
                     return
             url = xUrlHelper.getAction(
+                actionid: action.id
                 action: action.command
                 nodes: [node]
                 module: action.module
@@ -197,6 +198,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 if data
                     newtab =
                         id: newid
+                        actionid: action.id
                         name: action.name
                         content: data
                         nodes: [node]
@@ -332,6 +334,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
         xtab.reloadTab = (index) ->
             tab = tabs[index]
             url = xUrlHelper.getAction(
+                actionid: tab.action.id
                 action: tab.action.command
                 nodes: tab.nodes
                 module: tab.action.module

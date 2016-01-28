@@ -177,6 +177,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
         }
       }
       url = xUrlHelper.getAction({
+        actionid: action.id,
         action: action.command,
         nodes: [node],
         module: action.module,
@@ -188,6 +189,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
         if (data) {
           newtab = {
             id: newid,
+            actionid: action.id,
             name: action.name,
             content: data,
             nodes: [node],
@@ -294,6 +296,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       var tab, url;
       tab = tabs[index];
       url = xUrlHelper.getAction({
+        actionid: tab.action.id,
         action: tab.action.command,
         nodes: tab.nodes,
         module: tab.action.module,

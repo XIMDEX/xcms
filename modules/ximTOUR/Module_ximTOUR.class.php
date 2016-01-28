@@ -36,7 +36,10 @@ ModulesManager::file('/inc/model/role.php');
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/model/orm/RelRolesStates_ORM.class.php');
-ModuleSManager::file(MODULE_XIMLOADER_PATH . '/Module_ximLOADER.class.php');
+//ModuleSManager::file(MODULE_XIMLOADER_PATH . '/Module_ximLOADER.class.php');
+ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
+ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
+ModulesManager::file('/actions/addfoldernode/Action_addfoldernode.class.php');
 
 class Module_ximTOUR extends Module
 {
@@ -53,8 +56,37 @@ class Module_ximTOUR extends Module
         $projects = new Node(10000);
         $projectid = $projects->GetChildByName("Picasso");
         if (!($projectid > 0)) {
-            $moduleLoader = new Module_ximLOADER();
-            $moduleLoader->install(2);
+            $addFolderNode = new Action_addfoldernode();
+            $nodeID = 10000;
+            $name = "Picasso";
+            $addFolderNode->name = $name;
+            $channels = [10001];
+            $languages = [10002, 10003];
+            $addFolderNode->request->setParam("theme", "picasso");
+
+            $nodeTypeId = 5013;
+            $nodeTypeName = "Project";
+
+            $nodeType = new NodeType();
+            $nodeType->SetByName($nodeTypeName);
+
+            $folder = new Node();
+            $idFolder = $folder->CreateNode($name, $nodeID, $nodeTypeId, null);
+
+            // Adding channel and language properties (if project)
+            if ($idFolder > 0 && $nodeTypeName == 'Project') {
+                $node = new Node($idFolder);
+                if(!empty($channels) && is_array($channels) ){
+                    $node->setProperty('channel', $channels);
+                    $addFolderNode->channels = $channels;
+                }
+
+                if(!empty($languages) && is_array($languages) ){
+                    $node->setProperty('language', $languages);
+                    $addFolderNode->languages = $languages;
+                }
+                $addFolderNode->createProjectNodes($idFolder);
+            }
         }
         $this->loadConstructorSQL("ximTOUR.constructor.sql");
         return parent::install();

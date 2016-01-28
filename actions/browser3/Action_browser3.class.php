@@ -1110,8 +1110,9 @@ class Action_browser3 extends ActionAbstract
                 $auxName = explode(" ", $name);
                 $name = $auxName[0] . " " . _("selection");
             }
-            $actionsParamsAux["name"] = $name;
 
+            $actionsParamsAux["id"] = $action->get("IdAction") ? $action->get("IdAction") : "";
+            $actionsParamsAux["name"] = $name;
             $actionsParamsAux["module"] = $action->get("Module") ? $action->get("Module") : "";
             $actionsParamsAux["params"] = $action->get("Params") ? $action->get("Params") : "";
             $actionsParamsAux["command"] = $action->get("Command");

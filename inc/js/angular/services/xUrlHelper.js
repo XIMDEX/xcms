@@ -34,6 +34,9 @@ angular.module('ximdex.common.service')//Abstraction for server communications. 
             getAction: function(params){
                 var timestamp = new Date().getTime();
                 var actionUrl = this.restUrl()+'?noCacheVar='+timestamp;
+                if(params.actionid){
+                    actionUrl+='&actionid='+params.actionid;
+                }
                 if(params.action){
                     actionUrl+='&action='+params.action;
                 }
