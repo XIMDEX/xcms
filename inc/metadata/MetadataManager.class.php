@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Runtime\App;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -34,7 +35,7 @@ ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/model/language.php');
- ModulesManager::file('/inc/model/node.php');
+ModulesManager::file('/inc/model/node.php');
 
 /***
     Class for Metadata Manegement
@@ -412,12 +413,15 @@ class MetadataManager{
     }
 
     private function addRelation($name){
+        $res = 0;
         $rnm = new RelNodeMetadata();
         $idm = $this->getMetadataDocument($name);
-        //TODO: foreach language version, one entry
         $rnm->set('IdNode', $this->node->GetID());
         $rnm->set('IdMetadata', $idm);
-        $res = $rnm->add();
+        if( App::getValue('MODULE_XIMNOTA_ENABLED', false) ) {
+            //TODO: foreach language version, one entry
+            $res = $rnm->add();
+        }
         if($res<0){
             XMD_Log::error("Relation between nodes not added.");
         }
@@ -496,6 +500,9 @@ class MetadataManager{
         if ($idContent){
             $nodeContainer = new Node($idContent);
             $nodeContainer->DeleteNode();
+        }
+        if( ! App::getValue('MODULE_XIMNOTA_ENABLED', false) ){
+            return;
         }
         $rnm = new RelNodeMetadata();
         $id=$rnm->find("idRel","IdMetadata=%s",array($idContent),MONO);

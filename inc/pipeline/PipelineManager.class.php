@@ -155,17 +155,19 @@ class PipelineManager {
 		}
 		
 		reset($result);
-		while (list(, $idCache) = each($result)) {
+		if(is_array($result)) {
+			foreach ($result as $idCache) {
+				//while (list(, $idCache) = each($result)) {
+				$pipeCache = new PipeCache($idCache);
+				if (!($pipeCache->get('id') > 0)) {
+					XMD_Log::error("[PipelineManager:deleteCache] There is any cache for version: $idVersion");
+					return false;
+				}
 
-			$pipeCache = new PipeCache($idCache);
-			if (!($pipeCache->get('id') > 0)) {
-				XMD_Log::error("[PipelineManager:deleteCache] There is any cache for version: $idVersion");
-				return false;
-			}
-		
-			if (!$pipeCache->delete()) {
-				XMD_Log::error("[PipelineManager:deleteCache] An error has ocurred while the cache $idCache was deleted.");
-				$result = false;
+				if (!$pipeCache->delete()) {
+					XMD_Log::error("[PipelineManager:deleteCache] An error has ocurred while the cache $idCache was deleted.");
+					$result = false;
+				}
 			}
 		}
 		return isset($result) ? $result : true;
