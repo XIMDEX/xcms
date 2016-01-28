@@ -38,8 +38,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 include_once(XIMDEX_ROOT_PATH . "/extensions/adodb/adodb.inc.php");
 
-/*require_once(XIMDEX_ROOT_PATH . "/inc/log/Log.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/log/logger/Logger_error.class.php");*/
+
 $debug = NULL;
 
 // Class for mySql database management

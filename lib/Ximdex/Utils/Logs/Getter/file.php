@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,11 +23,44 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class SyntaxParser
+namespace Ximdex\Utils\Logs;
+
+
+
+
+class Getter_file extends Getter
 {
 
-    function parse($text, $level, $sort)
-    {
-    }
+	function Getter_file($layout, $params)
+	{
+		parent::__construct($layout, $params);
+	}
+
+	function read()
+	{
+
+		$readedData = '';
+		if (is_file($this->_params['file'])) {
+
+			$fileSize = filesize($this->_params['file']);
+			if ((int)$this->_params['quantity'] > 0) $quantity = (int)$this->_params['quantity'];
+			$seekPosition = (int)(isset($quantity) &&
+			is_int($quantity) &&
+			(int)$quantity > 0 ? $fileSize - (int)$quantity : 0);
+
+			if ($seekPosition > 0) {
+				$handler = fopen($this->_params['file'], 'r');
+				fseek($handler, $seekPosition - 1, 0);
+				$readedData = fread($handler, $quantity);
+				fclose($handler);
+			} else {
+				$readedData = file_get_contents($this->_params['file']);
+			}
+
+		}
+
+		//echo nl2br(htmlentities($readedData));
+		return $readedData;
+	}
 
 }

@@ -20,45 +20,49 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/formpdf/parser/parser_root.class.php', 'filters');
 ModulesManager::file('/formpdf/latex/latex_script.class.php', 'filters');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
-class ScriptJS extends ParserRoot {
-	var $nodes;
+class ScriptJS extends ParserRoot
+{
+    var $nodes;
 
-	function ScriptJS($nodes) {
-		$this->nodes = $nodes;
-	}
+    function ScriptJS($nodes)
+    {
+        $this->nodes = $nodes;
+    }
 
-	function build() {
-		// Parses style sheets
-		foreach ($this->nodes as $node) {
-			$file = $node->getAttribute("filename");
-			if (is_file($file)) {
-				$routeToScript = $file;
-				$content = FsUtils::file_get_contents($routeToScript);
-				// Checks content
-				if (!(strpos(strtolower($content), "javascript") === false)) {
-					$content = trim($content);
-					$funcion = preg_match_all ("|function[ ]+(.*)[\(](.*)[\)][ ]*\{|U", $content, $out, PREG_OFFSET_CAPTURE);
-					$eliminar = $out[0][0][0];
-					$content = substr($content,strlen($eliminar)+1);
-					$content = rtrim($content,"}");
-					$content = trim($content);
-					$script_name = $out[1][0][0];
+    function build()
+    {
+        // Parses style sheets
+        foreach ($this->nodes as $node) {
+            $file = $node->getAttribute("filename");
+            if (is_file($file)) {
+                $routeToScript = $file;
+                $content = FsUtils::file_get_contents($routeToScript);
+                // Checks content
+                if (!(strpos(strtolower($content), "javascript") === false)) {
+                    $content = trim($content);
+                    $funcion = preg_match_all("|function[ ]+(.*)[\(](.*)[\)][ ]*\{|U", $content, $out, PREG_OFFSET_CAPTURE);
+                    $eliminar = $out[0][0][0];
+                    $content = substr($content, strlen($eliminar) + 1);
+                    $content = rtrim($content, "}");
+                    $content = trim($content);
+                    $script_name = $out[1][0][0];
 
-					$buffer = $this->renderer->add_script($script_name, $content);
-					fwrite($this->handler,$buffer);
-				}
-			}
-		}
-	}
+                    $buffer = $this->renderer->add_script($script_name, $content);
+                    fwrite($this->handler, $buffer);
+                }
+            }
+        }
+    }
 }
+
 ?>

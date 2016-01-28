@@ -25,6 +25,8 @@
 *  @version $Revision: 8735 $
 */
 
+use Ximdex\Utils\FsUtils;
+
 ModulesManager::file('/actions/addfoldernode/model/BuildParser.class.php');
 
 /**

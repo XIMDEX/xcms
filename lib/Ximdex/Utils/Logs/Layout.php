@@ -20,48 +20,39 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Utils\Logs;
 
 
-/**
- *
- */
-class Getter_file extends Getter {
-	
-	function Getter_file($layout, $params) {
-		parent::Getter($layout, $params);
-	}
+class Layout
+{
 
-	function read() {
-		
-		$readedData = '';
-		if (is_file($this->_params['file'])) {
-			
-			$fileSize = filesize($this->_params['file']);
-			if ((int) $this->_params['quantity'] > 0) $quantity = (int) $this->_params['quantity'];
-			$seekPosition = (int)(isset($quantity) && 
-							is_int($quantity) && 
-							(int) $quantity > 0 ? $fileSize - (int) $quantity : 0);
-			
-			if ($seekPosition > 0) {
-				$handler = fopen($this->_params['file'], 'r');
-				fseek($handler, $seekPosition - 1, 0);
-				$readedData = fread($handler, $quantity);
-				fclose($handler);
-			} else {
-				$readedData = file_get_contents($this->_params['file']);
-			}
-			
-		}
-		
-		//echo nl2br(htmlentities($readedData));
-		return $readedData;
-	}
 
+    var $_template;
+
+
+    public function __construct($template)
+    {
+        $this->setTemplate($template);
+    }
+
+    function setTemplate($template)
+    {
+
+        $this->_template = $template;
+    }
+
+    function & getTemplate()
+    {
+
+        return $this->_template;
+    }
+
+    function & format(&$event)
+    {
+    }
 }
-
-?>

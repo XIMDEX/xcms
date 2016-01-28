@@ -20,81 +20,88 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-require_once( XIMDEX_ROOT_PATH . '/inc/log/Loggeable.class.php' ); 
+namespace Ximdex\Utils\Logs;
 
-class Action_log {
-	
-	const LOGGER_NAME="action_logger";
+/**
+ * Class Action_log
+ * @package Ximdex\Utils\Logs
+ */
+class Action_log
+{
+
 	/**
-	 * 
+	 *
+     */
+	const LOGGER_NAME = "action_logger";
+
+
+	/**
 	 * @param $msg
-	 * @param $level
-	 * @return unknown_type
-	 */
-	public static function write($msg, $level=LOGGER_LEVEL_INFO) {
+	 * @param int $level
+     */
+	public static function write($msg, $level = LOGGER_LEVEL_INFO)
+	{
 		Loggeable::write($msg, self::LOGGER_NAME, $level);
 	}
-	
+
+
 	/**
-	 * 
 	 * @param $msg
-	 * @return unknown_type
-	 */
-	public static function debug($msg) {
+     */
+	public static function debug($msg)
+	{
 		Loggeable::debug($msg, self::LOGGER_NAME);
 	}
 
+
 	/**
-	 * 
 	 * @param $msg
-	 * @return unknown_type
-	 */
-	public static function info($msg) {
+     */
+	public static function info($msg)
+	{
 		Loggeable::info($msg, self::LOGGER_NAME);
 	}
 
+
 	/**
-	 * 
 	 * @param $msg
-	 * @return unknown_type
-	 */
-	public static function warning($msg) {
+     */
+	public static function warning($msg)
+	{
 		Loggeable::warning($msg, self::LOGGER_NAME);
 	}
 
+
 	/**
-	 * 
 	 * @param $msg
-	 * @return unknown_type
-	 */	
-	public static function error($msg) {
+     */
+	public static function error($msg)
+	{
 		Loggeable::error($msg, self::LOGGER_NAME);
 	}
 
-	/**
-	 * 
-	 * @param $msg
-	 * @return unknown_type
-	 */
-	public static function fatal($msg) {
-		Loggeable::fatal($msg, self::LOGGER_NAME);		
-	}
 
 	/**
-	 * 
 	 * @param $msg
-	 * @return unknown_type
-	 */
-	public static function display($msg) {
+     */
+	public static function fatal($msg)
+	{
+		Loggeable::fatal($msg, self::LOGGER_NAME);
+	}
+
+
+	/**
+	 * @param $msg
+     */
+	public static function display($msg)
+	{
 		// detect environment (cli / web)
-		$output = sprintf("[%s]: %s\n", strftime("%d-%m-%y %T"), $msg);	
+		$output = sprintf("[%s]: %s\n", strftime("%d-%m-%y %T"), $msg);
 		echo $output;
 	}
-		
-}
 
-?>
+}

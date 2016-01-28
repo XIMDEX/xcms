@@ -20,419 +20,428 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/TarArchiver.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingRng.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_SQL.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
-class View_TARGZ extends Abstract_View implements Interface_View {
+class View_TARGZ extends Abstract_View implements Interface_View
+{
 
-	function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
+    function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    {
 
-		$content = $this->retrieveData($content);
-		//VALIDATING DATA
-		$version = new Version($idVersion);
-		if (!($version->get('IdVersion') > 0)) {
-			XMD_Log::error("Se ha cargado una versi�n incorrecta ($idVersion)");
-			return NULL;
-		}
-		$node = new Node($version->get('IdNode'));
-		$nodeType = new NodeType($node->get('IdNodeType'));
-		$nodeId = $node->get('IdNode');
-		$nodeTypeName = $nodeType->get('Name');
-		$dataEncoding = \App::getValue( 'dataEncoding');
+        $content = $this->retrieveData($content);
+        //VALIDATING DATA
+        $version = new Version($idVersion);
+        if (!($version->get('IdVersion') > 0)) {
+            XMD_Log::error("Se ha cargado una versi�n incorrecta ($idVersion)");
+            return NULL;
+        }
+        $node = new Node($version->get('IdNode'));
+        $nodeType = new NodeType($node->get('IdNodeType'));
+        $nodeId = $node->get('IdNode');
+        $nodeTypeName = $nodeType->get('Name');
+        $dataEncoding = \App::getValue('dataEncoding');
 
-		if (!($nodeId > 0)) {
-			XMD_Log::error("El nodo que se est� intentando convertir no existe: " . $version->get('IdNode'));
-			return NULL;
-		}
-		if (!array_key_exists('PATH', $args) && !array_key_exists('NODENAME', $args)) {
-			XMD_Log::error('Path and nodename arguments are mandatory');
-			return NULL;
-		}
+        if (!($nodeId > 0)) {
+            XMD_Log::error("El nodo que se est� intentando convertir no existe: " . $version->get('IdNode'));
+            return NULL;
+        }
+        if (!array_key_exists('PATH', $args) && !array_key_exists('NODENAME', $args)) {
+            XMD_Log::error('Path and nodename arguments are mandatory');
+            return NULL;
+        }
 
-		$tarFile = $args['PATH'];
-		$tmpFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
+        $tarFile = $args['PATH'];
+        $tmpFolder = XIMDEX_ROOT_PATH . \App::getValue('TempRoot');
 
-		//Sets content on SQL and XML files
-		$arrayContent = explode('<sql_content>', $content);
-		$tmpDocFile = $tmpFolder . '/' . $args['NODENAME'] . '.xml';
-		$tmpSqlFile = $tmpFolder . '/' . $args['NODENAME'] . '.sql';
-		$xmlContent = $arrayContent[0];
-		$sqlContent = substr(trim($arrayContent[1]), 0, -14);
+        //Sets content on SQL and XML files
+        $arrayContent = explode('<sql_content>', $content);
+        $tmpDocFile = $tmpFolder . '/' . $args['NODENAME'] . '.xml';
+        $tmpSqlFile = $tmpFolder . '/' . $args['NODENAME'] . '.sql';
+        $xmlContent = $arrayContent[0];
+        $sqlContent = substr(trim($arrayContent[1]), 0, -14);
 
-		//Encode the content to ISO, now OTF only work in ISO mode, because the jsp files are in ISO too
-		$xmlContent = \Ximdex\XML\Base::recodeSrc($xmlContent, \Ximdex\XML\XML::ISO88591);
-		if (!FsUtils::file_put_contents($tmpDocFile, $xmlContent)) {
-			return false;
-		}
+        //Encode the content to ISO, now OTF only work in ISO mode, because the jsp files are in ISO too
+        $xmlContent = \Ximdex\XML\Base::recodeSrc($xmlContent, \Ximdex\XML\XML::ISO88591);
+        if (!FsUtils::file_put_contents($tmpDocFile, $xmlContent)) {
+            return false;
+        }
 
-		//Work with each nodetype
-		switch($nodeTypeName) {
-			case 'XimNewsNewLanguage':
-				//Add the insert query for ximNewsCache to sql content
-				//this is here because when a doc is published, its version is up, and if we do it
-				//in view sql, the version is old.	
-	
-				//Generate caches for this versions
-				$this->generateNewsCache($version->get('IdNode'));
-	
-				$condition = "idNew=%s order by IdVersion desc limit 1";
-				$params = array('IdNew' => $nodeId);
-				$vistaSql = new View_SQL();
+        //Work with each nodetype
+        switch ($nodeTypeName) {
+            case 'XimNewsNewLanguage':
+                //Add the insert query for ximNewsCache to sql content
+                //this is here because when a doc is published, its version is up, and if we do it
+                //in view sql, the version is old.
 
-				$insertQuery = $vistaSql->makeInsertQuery('XimNewsCache', $condition, $params);
-				$sqlContent.= $insertQuery;
-				break;
-			case 'XmlDocument':
+                //Generate caches for this versions
+                $this->generateNewsCache($version->get('IdNode'));
 
-				
-				break;
-			default:
-				//do nothing
-				break;
-		}
+                $condition = "idNew=%s order by IdVersion desc limit 1";
+                $params = array('IdNew' => $nodeId);
+                $vistaSql = new View_SQL();
 
-		$sqlContaent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
-		if (!FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
-			return false;
-		}
+                $insertQuery = $vistaSql->makeInsertQuery('XimNewsCache', $condition, $params);
+                $sqlContent .= $insertQuery;
+                break;
+            case 'XmlDocument':
 
-		// Making tar file with the aditional files
-		$tarArchiver = new TarArchiver($tarFile);
-		$tarArchiver->addEntity($tmpDocFile);
-		$tarArchiver->addEntity($tmpSqlFile);
 
-		$additionalFiles = $this->getAdditionalFiles($nodeId,$idVersion,$args);
-		if (!is_null($additionalFiles)) {
-			//Encode the files to ISO, OTF only works in ISO mode
-			if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))){
-				foreach ($additionalFiles as $key=>$file) {
-					if (!\Ximdex\XML\Base::recodeFile($file, \Ximdex\XML\XML::ISO88591)) {
-						return false;
-					}
-				}
-			}
-			$tarArchiver->addEntity($additionalFiles);
-		}
-		$tarFileName = $tarArchiver->pack();
+                break;
+            default:
+                //do nothing
+                break;
+        }
 
-		//Recode the files to before encoding, about dataEncoding config valuea
-		if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))){
-			foreach ($additionalFiles as $key=>$file) {
-				if (!\Ximdex\XML\Base::recodeFile($file, $dataEncoding)) {
-					return false;
-				}
-				
-			}
-		}
+        $sqlContaent = \Ximdex\XML\Base::recodeSrc($sqlContent, \Ximdex\XML\XML::ISO88591);
+        if (!FsUtils::file_put_contents($tmpSqlFile, $sqlContent)) {
+            return false;
+        }
 
-		// Removing tar extension
-		rename($tarFile . '.tar', $tarFile);
+        // Making tar file with the aditional files
+        $tarArchiver = new TarArchiver($tarFile);
+        $tarArchiver->addEntity($tmpDocFile);
+        $tarArchiver->addEntity($tmpSqlFile);
 
-		return $this->storeTmpContent($arrayContent[0]);
-	}
+        $additionalFiles = $this->getAdditionalFiles($nodeId, $idVersion, $args);
+        if (!is_null($additionalFiles)) {
+            //Encode the files to ISO, OTF only works in ISO mode
+            if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))) {
+                foreach ($additionalFiles as $key => $file) {
+                    if (!\Ximdex\XML\Base::recodeFile($file, \Ximdex\XML\XML::ISO88591)) {
+                        return false;
+                    }
+                }
+            }
+            $tarArchiver->addEntity($additionalFiles);
+        }
+        $tarFileName = $tarArchiver->pack();
 
-	/**
-	 * Return an array file names for otf
-	 *
-	 * @param unknown_type $nodeId
-	 * @return array String, filenames
-	 */
-	function getAdditionalFiles($nodeId,$idVersion,$args) {
+        //Recode the files to before encoding, about dataEncoding config valuea
+        if (($dataEncoding != \Ximdex\XML\XML::ISO88591) && (is_array($additionalFiles))) {
+            foreach ($additionalFiles as $key => $file) {
+                if (!\Ximdex\XML\Base::recodeFile($file, $dataEncoding)) {
+                    return false;
+                }
 
-		$node = new Node($nodeId);
-		$nodeType = new NodeType($node->get('IdNodeType'));
-		$nodeTypeName = $nodeType->get('Name');
+            }
+        }
 
-		$additionalFiles = array();
+        // Removing tar extension
+        rename($tarFile . '.tar', $tarFile);
 
-		XMD_Log::info("Getting additional files for node $nodeId type $nodeTypeName");
+        return $this->storeTmpContent($arrayContent[0]);
+    }
 
-		switch($nodeTypeName) {
-			case 'XimNewsNewLanguage':
-				// Adds XimNewsCache file
-				$condition = 'IdNew = %s order by IdVersion desc limit 1';
-				$params = array('IdNew' => $nodeId);
-				$file = $this->getFile('XimNewsCache', 'File', $condition, $params);
+    /**
+     * Return an array file names for otf
+     *
+     * @param unknown_type $nodeId
+     * @return array String, filenames
+     */
+    function getAdditionalFiles($nodeId, $idVersion, $args)
+    {
 
-				if (!is_null($file)) {
-					$additionalFiles[] = XIMDEX_ROOT_PATH . '/data/files/' . $file;
-				}
+        $node = new Node($nodeId);
+        $nodeType = new NodeType($node->get('IdNodeType'));
+        $nodeTypeName = $nodeType->get('Name');
 
-				//Add files for the colectors --> pvdheader & colector
-				$sql = "select IdColector from RelNewsColector where IdNew = $nodeId";
-				$colectors = array();
-				//Work with each colector for this news
-				$dbObj = new DB();
-				$dbObj->Query($sql);
-				$i = 0;
-				while(!$dbObj->EOF) {
-					$colectors[$i] = $dbObj->GetValue("IdColector");
-					$i++;
-					$dbObj->Next();
-				}
+        $additionalFiles = array();
 
-				if (count($colectors)>0){
-					foreach($colectors as $indice => $colectorId) {
+        XMD_Log::info("Getting additional files for node $nodeId type $nodeTypeName");
 
-						// Adds the default pvd content
-						$ximNewsColector = new XimNewsColector($colectorId);
-						$pvdId = $ximNewsColector->get('IdTemplate');
+        switch ($nodeTypeName) {
+            case 'XimNewsNewLanguage':
+                // Adds XimNewsCache file
+                $condition = 'IdNew = %s order by IdVersion desc limit 1';
+                $params = array('IdNew' => $nodeId);
+                $file = $this->getFile('XimNewsCache', 'File', $condition, $params);
 
-						$rngParser = new ParsingRng();
-						$defaultContent = $rngParser->buildDefaultContent($pvdId);
-						$tmpFolder = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
-						$headerFile = $tmpFolder . '/' . "pvdheader$pvdId";
+                if (!is_null($file)) {
+                    $additionalFiles[] = XIMDEX_ROOT_PATH . '/data/files/' . $file;
+                }
 
-						if (FsUtils::file_put_contents($headerFile, $defaultContent)) {
-							$additionalFiles[] = $headerFile;
-						}else{
-							XMD_Log::error("View TARG:No se ha podido a�adir el archivo $headerFile");
-						}
+                //Add files for the colectors --> pvdheader & colector
+                $sql = "select IdColector from RelNewsColector where IdNew = $nodeId";
+                $colectors = array();
+                //Work with each colector for this news
+                $dbObj = new DB();
+                $dbObj->Query($sql);
+                $i = 0;
+                while (!$dbObj->EOF) {
+                    $colectors[$i] = $dbObj->GetValue("IdColector");
+                    $i++;
+                    $dbObj->Next();
+                }
 
-						//Generate Docxap for the bulletin
-						$idXimlet = $this->getFirstXimlet($colectorId);
-						if ($idXimlet >0){
-							$node = new Node($idXimlet);
-							$lastVersion = $this->getLastVersion($idXimlet);
-							$docxapContent = $this->generateDocXapForBulletin($node,$lastVersion);
-							$docxapFile = $tmpFolder . '/' .$ximNewsColector->get('Name').".docxap";
+                if (count($colectors) > 0) {
+                    foreach ($colectors as $indice => $colectorId) {
 
-							if (FsUtils::file_put_contents($docxapFile, $docxapContent)) {
-								$additionalFiles[] = $docxapFile;
-							}else{
-								XMD_Log::error("View TARG:No se ha podido a�adir el archivo $docxapFile");
-							}
-						}else{
-							XMD_Log::error("View TARG:No se ha generado la docxap para el colector $colectorId");
-						}
-					}
-				}
-				break;
-			case 'XmlDocument':
-				break;
-			default:
-				//do nothing
-				break;
-		}
-		return $additionalFiles;
-	}
+                        // Adds the default pvd content
+                        $ximNewsColector = new XimNewsColector($colectorId);
+                        $pvdId = $ximNewsColector->get('IdTemplate');
 
-	/**
-	 * Return the file name about the params
-	 *
-	 * @param unknown_type $tableName
-	 * @param unknown_type $field
-	 * @param unknown_type $condition
-	 * @param unknown_type $params
-	 * @return String filename
-	 */
-	function getFile($tableName, $field, $condition, $params) {
+                        $rngParser = new ParsingRng();
+                        $defaultContent = $rngParser->buildDefaultContent($pvdId);
+                        $tmpFolder = XIMDEX_ROOT_PATH . \App::getValue('TempRoot');
+                        $headerFile = $tmpFolder . '/' . "pvdheader$pvdId";
 
-		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
-		$object = $factory->instantiate("_ORM");
+                        if (FsUtils::file_put_contents($headerFile, $defaultContent)) {
+                            $additionalFiles[] = $headerFile;
+                        } else {
+                            XMD_Log::error("View TARG:No se ha podido a�adir el archivo $headerFile");
+                        }
 
-		if (!is_object($object)) {
-			XMD_Log::info("Error, la clase $tableName de orm especificada no existe");
-			return NULL;
-		}
+                        //Generate Docxap for the bulletin
+                        $idXimlet = $this->getFirstXimlet($colectorId);
+                        if ($idXimlet > 0) {
+                            $node = new Node($idXimlet);
+                            $lastVersion = $this->getLastVersion($idXimlet);
+                            $docxapContent = $this->generateDocXapForBulletin($node, $lastVersion);
+                            $docxapFile = $tmpFolder . '/' . $ximNewsColector->get('Name') . ".docxap";
 
-		$result = $object->find($field, $condition, $params, MULTI);
+                            if (FsUtils::file_put_contents($docxapFile, $docxapContent)) {
+                                $additionalFiles[] = $docxapFile;
+                            } else {
+                                XMD_Log::error("View TARG:No se ha podido a�adir el archivo $docxapFile");
+                            }
+                        } else {
+                            XMD_Log::error("View TARG:No se ha generado la docxap para el colector $colectorId");
+                        }
+                    }
+                }
+                break;
+            case 'XmlDocument':
+                break;
+            default:
+                //do nothing
+                break;
+        }
+        return $additionalFiles;
+    }
 
-		if (!is_null($result)) {
-			reset($result);
-			$fileName = $result[0][0];
-			return $fileName;
-		}
+    /**
+     * Return the file name about the params
+     *
+     * @param unknown_type $tableName
+     * @param unknown_type $field
+     * @param unknown_type $condition
+     * @param unknown_type $params
+     * @return String filename
+     */
+    function getFile($tableName, $field, $condition, $params)
+    {
 
-		XMD_Log::info("Additional file for $tableName not found");
+        $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/orm/", $tableName);
+        $object = $factory->instantiate("_ORM");
 
-		return NULL;
-	}
+        if (!is_object($object)) {
+            XMD_Log::info("Error, la clase $tableName de orm especificada no existe");
+            return NULL;
+        }
 
-	/**
-	 * Generate the bulletin docxap for OTF
-	 *
-	 * @param Node $node
-	 * @param Int $idVersion
-	 * @return String
-	 */
-	function generateDocXapForBulletin($node,$idVersion){
+        $result = $object->find($field, $condition, $params, MULTI);
 
-		//docxap for return it
-		$docxapout="";
-		$channels="";
-		$channel;
-		$language="";
+        if (!is_null($result)) {
+            reset($result);
+            $fileName = $result[0][0];
+            return $fileName;
+        }
 
-		//check that the Version is ok
-		if(!is_null($idVersion)) {
-			$version = new Version($idVersion);
-			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW TARGZ: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
-				return "";
-			}
-			$structuredDocument = new StructuredDocument($version->get('IdNode'));
-			$channels=$structuredDocument->GetChannels();
-			$language=$structuredDocument->GetLanguage();
+        XMD_Log::info("Additional file for $tableName not found");
 
-			if (!($structuredDocument->get('IdDoc') > 0)) {
-				XMD_Log::error('VIEW TARGZ: El structured document especificado no existe: ' . $structuredDocument->get('IdDoc'));
-				return "";
-			}
-			//If it is all ok
-			if ((is_array($channels)) && (!is_null($node)) && (!is_null($structuredDocument)) && (array_key_exists(0, $channels)) && (!is_null($language))){
-				//Select, for example, the first channel, it's the same because otf will renderize the
-				//xml with a channel selected by the user
-				$channel=$channels[0];
-				$documentType = $structuredDocument->GetDocumentType();
-				$docxapout = $node->class->_getDocXapHeader($channel, $language, $documentType);
+        return NULL;
+    }
 
-				// Check out:
-				if (!isset($docxapout) || $docxapout == "") {
-					XMD_Log::error('VIEW TARGZ: No se ha especificado la cabecera docxap del nodo ' . $node->GetNodeName() . ' que quiere renderizar');
-					return "";
-				}
-			}else{
-				XMD_Log::error("VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF");
-			}
+    /**
+     * Generate the bulletin docxap for OTF
+     *
+     * @param Node $node
+     * @param Int $idVersion
+     * @return String
+     */
+    function generateDocXapForBulletin($node, $idVersion)
+    {
 
-			return $docxapout;
+        //docxap for return it
+        $docxapout = "";
+        $channels = "";
+        $channel;
+        $language = "";
 
-		}else{
-			XMD_Log::error("VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF");
-		}
-	}
+        //check that the Version is ok
+        if (!is_null($idVersion)) {
+            $version = new Version($idVersion);
+            if (!($version->get('IdVersion') > 0)) {
+                XMD_Log::error('VIEW TARGZ: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
+                return "";
+            }
+            $structuredDocument = new StructuredDocument($version->get('IdNode'));
+            $channels = $structuredDocument->GetChannels();
+            $language = $structuredDocument->GetLanguage();
 
-	private function getLastVersion($idNode){
-		$sql = "select IdVersion from Versions where IdNode = $idNode order by Version desc limit 1;";
+            if (!($structuredDocument->get('IdDoc') > 0)) {
+                XMD_Log::error('VIEW TARGZ: El structured document especificado no existe: ' . $structuredDocument->get('IdDoc'));
+                return "";
+            }
+            //If it is all ok
+            if ((is_array($channels)) && (!is_null($node)) && (!is_null($structuredDocument)) && (array_key_exists(0, $channels)) && (!is_null($language))) {
+                //Select, for example, the first channel, it's the same because otf will renderize the
+                //xml with a channel selected by the user
+                $channel = $channels[0];
+                $documentType = $structuredDocument->GetDocumentType();
+                $docxapout = $node->class->_getDocXapHeader($channel, $language, $documentType);
 
-		$dbObj = new DB();
-		$dbObj->Query($sql);
-		while(!$dbObj->EOF) {
-			$idVersion = $dbObj->GetValue("IdVersion");
-			$dbObj->Next();
-		}
-		return $idVersion;
-	}
-	/**
-	 * The news' cache is created when the colector is generated, in otf don't generate colector so the news
-	 * cache is created here
-	 *
-	 * @param unknown_type $idNew
-	 * @return unknown
-	 */
-	private function generateNewsCache($idNew){
+                // Check out:
+                if (!isset($docxapout) || $docxapout == "") {
+                    XMD_Log::error('VIEW TARGZ: No se ha especificado la cabecera docxap del nodo ' . $node->GetNodeName() . ' que quiere renderizar');
+                    return "";
+                }
+            } else {
+                XMD_Log::error("VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF");
+            }
 
-		$sql = "select IdColector from RelNewsColector where IdNew = $idNew";
-		$colectors = array();
-		//Work with each colector for this news
-		$dbObj = new DB();
-		$dbObj->Query($sql);
-		$i = 0;
-		while(!$dbObj->EOF) {
-			$colectors[$i] = $dbObj->GetValue("IdColector");
-			$i++;
-			$dbObj->Next();
-		}
+            return $docxapout;
 
-		if (count($colectors)>0){
-			//Get the pvdid for the cache is generated, only one cache for colector and pvdid
-			$idPvdsCacheGenerated = array();
-			foreach($colectors as $indice => $idColector) {
+        } else {
+            XMD_Log::error("VIEW TARGZ:No se ha podido generar la etiqueta doxcap para el boletin, renderizado para OTF");
+        }
+    }
 
-				$ximNewsColector = new XimNewsColector($idColector);
-				$xslFile = $ximNewsColector->get('XslFile');
-				$idPvd = $ximNewsColector->get('IdTemplate');
+    private function getLastVersion($idNode)
+    {
+        $sql = "select IdVersion from Versions where IdNode = $idNode order by Version desc limit 1;";
 
-				//If havent created cache for this pvd and colector
-				if (!(in_array($idPvd,$idPvdsCacheGenerated))){
+        $dbObj = new DB();
+        $dbObj->Query($sql);
+        while (!$dbObj->EOF) {
+            $idVersion = $dbObj->GetValue("IdVersion");
+            $dbObj->Next();
+        }
+        return $idVersion;
+    }
 
-					//push the pvdid for dont do it any more
-					array_push($idPvdsCacheGenerated,$idPvd);
+    /**
+     * The news' cache is created when the colector is generated, in otf don't generate colector so the news
+     * cache is created here
+     *
+     * @param unknown_type $idNew
+     * @return unknown
+     */
+    private function generateNewsCache($idNew)
+    {
 
-					$relNewsColector = new RelNewsColector();
-					$idRel = $relNewsColector->hasNews($idColector, $idNew);
+        $sql = "select IdColector from RelNewsColector where IdNew = $idNew";
+        $colectors = array();
+        //Work with each colector for this news
+        $dbObj = new DB();
+        $dbObj->Query($sql);
+        $i = 0;
+        while (!$dbObj->EOF) {
+            $colectors[$i] = $dbObj->GetValue("IdColector");
+            $i++;
+            $dbObj->Next();
+        }
 
-					if ($idRel > 0) {
-						$relNewsColector = new RelNewsColector($idRel);
-						$version = $relNewsColector->get('Version');
-						$subversion = $relNewsColector->get('SubVersion');
-						$cacheId = $relNewsColector->get('IdCache');
-					} else {
-						XMD_Log::info('Sin relaci�n en la base de datos');
-					}
+        if (count($colectors) > 0) {
+            //Get the pvdid for the cache is generated, only one cache for colector and pvdid
+            $idPvdsCacheGenerated = array();
+            foreach ($colectors as $indice => $idColector) {
 
-					if(!($cacheId > 0)){
-						$df = new DataFactory($idNew);
-						$versionId = $df->getVersionId($version,$subversion);
+                $ximNewsColector = new XimNewsColector($idColector);
+                $xslFile = $ximNewsColector->get('XslFile');
+                $idPvd = $ximNewsColector->get('IdTemplate');
 
-						//Creamos la cache (si procede) y modificamos contadores
-						$cache = new XimNewsCache();
-						$cacheId = $cache->CheckExistence($idNew,$versionId,$idPvd);
+                //If havent created cache for this pvd and colector
+                if (!(in_array($idPvd, $idPvdsCacheGenerated))) {
 
-						if(!($cacheId > 0)){
-							$cacheId = $cache->CreateCache($idNew,$versionId,$idPvd,$xslFile);
+                    //push the pvdid for dont do it any more
+                    array_push($idPvdsCacheGenerated, $idPvd);
 
-							if(!$cacheId){
-								XMD_Log::info("ERROR Creando cache de noticia $idNew");
+                    $relNewsColector = new RelNewsColector();
+                    $idRel = $relNewsColector->hasNews($idColector, $idNew);
 
-								//Elimino la asociacion para no dejar inconsistencia entre el boletin y la tabla
-								$relNewColector = new RelNewsColector($idRel);
-								$relNewColector->delete();
-							}
-						}
+                    if ($idRel > 0) {
+                        $relNewsColector = new RelNewsColector($idRel);
+                        $version = $relNewsColector->get('Version');
+                        $subversion = $relNewsColector->get('SubVersion');
+                        $cacheId = $relNewsColector->get('IdCache');
+                    } else {
+                        XMD_Log::info('Sin relaci�n en la base de datos');
+                    }
 
-						$cache = new XimNewsCache($cacheId);
-						$counter = $cache->get('Counter') + 1;
-						$cache->set('Counter',$counter);
-						$numRows = $cache->update();
+                    if (!($cacheId > 0)) {
+                        $df = new DataFactory($idNew);
+                        $versionId = $df->getVersionId($version, $subversion);
 
-						if($numRows == 0){
-							XMD_Log::info("ERROR Actualizando contador en $cacheId");
-							return false;
-						}
+                        //Creamos la cache (si procede) y modificamos contadores
+                        $cache = new XimNewsCache();
+                        $cacheId = $cache->CheckExistence($idNew, $versionId, $idPvd);
 
-						$relNewsColector->set('IdCache', $cacheId);
-						$relNewsColector->update();
-					}
+                        if (!($cacheId > 0)) {
+                            $cacheId = $cache->CreateCache($idNew, $versionId, $idPvd, $xslFile);
 
-					//cogemos el contenido de la noticia
-					$ximNewsCache = new XimNewsCache($cacheId);
-					$newContent = $ximNewsCache->getContentCache();
-					$contenido = $newContent;
-				}
-			}
-		}
-	}
+                            if (!$cacheId) {
+                                XMD_Log::info("ERROR Creando cache de noticia $idNew");
 
-	private function getFirstXimlet($idColector){
-		$sql = "select IdNode from Nodes as N inner join XimNewsColector as X on N.IdParent = X.IdXimlet where X.IdColector=$idColector limit 1;";
-		$dbObj = new DB();
-		$dbObj->Query($sql);
-		$idXimlet = 0;
-		if ($dbObj->numRows > 0) {
-			$idXimlet = $dbObj->GetValue("IdNode");
-			return $idXimlet;
-		}else{
-			return null;
-		}
-	}
+                                //Elimino la asociacion para no dejar inconsistencia entre el boletin y la tabla
+                                $relNewColector = new RelNewsColector($idRel);
+                                $relNewColector->delete();
+                            }
+                        }
+
+                        $cache = new XimNewsCache($cacheId);
+                        $counter = $cache->get('Counter') + 1;
+                        $cache->set('Counter', $counter);
+                        $numRows = $cache->update();
+
+                        if ($numRows == 0) {
+                            XMD_Log::info("ERROR Actualizando contador en $cacheId");
+                            return false;
+                        }
+
+                        $relNewsColector->set('IdCache', $cacheId);
+                        $relNewsColector->update();
+                    }
+
+                    //cogemos el contenido de la noticia
+                    $ximNewsCache = new XimNewsCache($cacheId);
+                    $newContent = $ximNewsCache->getContentCache();
+                    $contenido = $newContent;
+                }
+            }
+        }
+    }
+
+    private function getFirstXimlet($idColector)
+    {
+        $sql = "select IdNode from Nodes as N inner join XimNewsColector as X on N.IdParent = X.IdXimlet where X.IdColector=$idColector limit 1;";
+        $dbObj = new DB();
+        $dbObj->Query($sql);
+        $idXimlet = 0;
+        if ($dbObj->numRows > 0) {
+            $idXimlet = $dbObj->GetValue("IdNode");
+            return $idXimlet;
+        } else {
+            return null;
+        }
+    }
 }
 
 ?>

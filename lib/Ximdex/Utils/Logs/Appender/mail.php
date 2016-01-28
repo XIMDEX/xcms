@@ -20,18 +20,25 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Utils\Logs;
+
+use Mail;
+use params;
+use User;
+use Ximdex\Utils\Logs\Appender;
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
 /**
  *
  */
-class Appender_mail extends Appender {
+class Appender_mail extends Appender
+{
 
 	var $_mail;
 	var $_mailboxes;
@@ -39,7 +46,8 @@ class Appender_mail extends Appender {
 	/**
 	 * @param object params['layout']
 	 */
-	function Appender_mail($params) {
+	function Appender_mail($params)
+	{
 
 		$this->setLayout($params['layout']);
 		$this->_mail = new Mail();
@@ -52,11 +60,13 @@ class Appender_mail extends Appender {
 		$this->_mailboxes = array_unique($this->_mailboxes);
 	}
 
-	function open($file=null) {
+	function open($file = null)
+	{
 		return true;
 	}
 
-	function write(&$event) {
+	function write(&$event)
+	{
 
 		// Automatically call layout and transform. (Transformated msg in $this->_msg)
 		parent::write($event);
@@ -66,14 +76,15 @@ class Appender_mail extends Appender {
 			$this->_mail->addAddress($mailbox);
 		}
 
-		$ximid= \App::getValue( 'ximid');
+		$ximid = \App::getValue('ximid');
 
 		$this->_mail->Subject = "[$ximid] Notificaciones de Ximdex";
 		$this->_mail->Body = $this->_msg;
 		$this->_mail->Send();
 	}
 
-	function close() {
+	function close()
+	{
 	}
 }
 

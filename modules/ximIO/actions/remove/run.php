@@ -20,21 +20,20 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
+use Ximdex\Utils\FsUtils;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../'));
 }
 //
 ModulesManager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
 ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
 
 $parameterCollector = new RemoveCli($argc, $argv);
@@ -45,118 +44,119 @@ $delete = $parameterCollector->getParameter('--delete');
 $messages = new \Ximdex\Utils\Messages();
 // First, checking if the package exists and giving some information about it
 
-echo "\n"._("Analysing data:")."\n";
+echo "\n" . _("Analysing data:") . "\n";
 
 if ($delete != 'ONLY_DB') {
-	echo _("Checking if the importation folder exists")."\n";
-	
-	$folder = sprintf(XIMDEX_ROOT_PATH . '/data/backup/%s_ximio', $file);
-	if (is_dir($folder)) {
-		$messages->add(sprintf(_("The data of the package %s are going to be deleted"), $file), MSG_TYPE_NOTICE);
-	} else {
-		unset($folder);
-		$messages->add(sprintf(_("The package %s has been deleted from the folder")." \$XIMDEX/data/backup", $file), MSG_TYPE_WARNING);
-	}
+    echo _("Checking if the importation folder exists") . "\n";
+
+    $folder = sprintf(XIMDEX_ROOT_PATH . '/data/backup/%s_ximio', $file);
+    if (is_dir($folder)) {
+        $messages->add(sprintf(_("The data of the package %s are going to be deleted"), $file), MSG_TYPE_NOTICE);
+    } else {
+        unset($folder);
+        $messages->add(sprintf(_("The package %s has been deleted from the folder") . " \$XIMDEX/data/backup", $file), MSG_TYPE_WARNING);
+    }
 }
 
 if ($delete != 'ONLY_FILES') {
-	echo _("Checking package in database...")."\n";
-	
-	$dbObj = new DB();
-	$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations where timeStamp = %s", $dbObj->sqlEscapeString($file));
-	$dbObj->Query($query);
-	if (!($dbObj->numRows > 0)) {
-		$messages->add(_('Importation information not found in database'), MSG_TYPE_WARNING);
-	} else if ($dbObj->numRows === 1) {
-		$idXimioExportation = $dbObj->GetValue('idXimIOExportation');
-		$messages->add(sprintf(_("Importation package %s is going to be deleted from ximIO association tables"), $idXimioExportation), MSG_TYPE_NOTICE);
-	} else {
-		$messages->add(_("Unexpected error occured, several packages with same name were found"), MSG_TYPE_ERROR);
-	}
+    echo _("Checking package in database...") . "\n";
+
+    $dbObj = new DB();
+    $query = sprintf("SELECT idXimIOExportation FROM XimIOExportations where timeStamp = %s", $dbObj->sqlEscapeString($file));
+    $dbObj->Query($query);
+    if (!($dbObj->numRows > 0)) {
+        $messages->add(_('Importation information not found in database'), MSG_TYPE_WARNING);
+    } else if ($dbObj->numRows === 1) {
+        $idXimioExportation = $dbObj->GetValue('idXimIOExportation');
+        $messages->add(sprintf(_("Importation package %s is going to be deleted from ximIO association tables"), $idXimioExportation), MSG_TYPE_NOTICE);
+    } else {
+        $messages->add(_("Unexpected error occured, several packages with same name were found"), MSG_TYPE_ERROR);
+    }
 }
-	
+
 if ($messages->count(MSG_TYPE_ERROR) > 0) {
-	echo _("Errors:")."\n";
-	$messages->displayRaw(MSG_TYPE_ERROR);
+    echo _("Errors:") . "\n";
+    $messages->displayRaw(MSG_TYPE_ERROR);
 }
 
 if ($messages->count(MSG_TYPE_WARNING) > 0) {
-	echo _("Warnings:")."\n";
-	$messages->displayRaw(MSG_TYPE_WARNING);
+    echo _("Warnings:") . "\n";
+    $messages->displayRaw(MSG_TYPE_WARNING);
 }
 
 if ($messages->count(MSG_TYPE_NOTICE) > 0) {
-	echo _("Information:")."\n";
-	$messages->displayRaw(MSG_TYPE_NOTICE);
+    echo _("Information:") . "\n";
+    $messages->displayRaw(MSG_TYPE_NOTICE);
 }
 
 
 if ($messages->count(MSG_TYPE_WARNING) > 0 || $messages->count(MSG_TYPE_ERROR) > 0) {
-	$continueOptions = array('y', 'Y', 's', 'S');
-	$abortOptions = array('n', 'N');
-	$continueMessage = _("Errors and Warnings occured, do you want to continue with the process? (Y/n)")."\n";
-	$abortMessage = _("Aborting process due to user request.")."\n";
-	if (!CliReader::alert($continueOptions, $continueMessage, $abortOptions, $abortMessage)) {
-		die();
-	}
+    $continueOptions = array('y', 'Y', 's', 'S');
+    $abortOptions = array('n', 'N');
+    $continueMessage = _("Errors and Warnings occured, do you want to continue with the process? (Y/n)") . "\n";
+    $abortMessage = _("Aborting process due to user request.") . "\n";
+    if (!CliReader::alert($continueOptions, $continueMessage, $abortOptions, $abortMessage)) {
+        die();
+    }
 }
 
 
 // TODO re-make using fsutils::deltree
 $messages = new \Ximdex\Utils\Messages();
-function removeFolder($dir, $DeleteMe) {
-	global $messages;
-    if(!$dh = opendir($dir)) return;
+function removeFolder($dir, $DeleteMe)
+{
+    global $messages;
+    if (!$dh = opendir($dir)) return;
     while (($obj = readdir($dh))) {
-        if($obj=='.' || $obj=='..') continue;
-        $file = $dir.'/'.$obj;
+        if ($obj == '.' || $obj == '..') continue;
+        $file = $dir . '/' . $obj;
         if (is_dir($file)) {
-        	removeFolder($file, true);
+            removeFolder($file, true);
         } else {
-	        if (!FsUtils::delete($file)) {
-	        	$messages->add(sprintf(_("Error deleting the file %s"), $file), MSG_TYPE_WARNING);
-	        }
+            if (!FsUtils::delete($file)) {
+                $messages->add(sprintf(_("Error deleting the file %s"), $file), MSG_TYPE_WARNING);
+            }
         }
     }
-    if ($DeleteMe){
+    if ($DeleteMe) {
         closedir($dh);
         if (!rmdir($dir)) {
-        	$messages->add(sprintf(_('Error al eliminar la carpeta %s'), $dir), MSG_TYPE_WARNING);
+            $messages->add(sprintf(_('Error al eliminar la carpeta %s'), $dir), MSG_TYPE_WARNING);
         }
     }
 }
 
-echo _("Deleting information about the package ")."$file\n";
+echo _("Deleting information about the package ") . "$file\n";
 
 if (isset($folder)) {
-	removeFolder($folder, true);
-	echo "Carpeta eliminada\n";
+    removeFolder($folder, true);
+    echo "Carpeta eliminada\n";
 } else {
-	$messages->add(_('Folder information will not be deleted'), MSG_TYPE_NOTICE);
+    $messages->add(_('Folder information will not be deleted'), MSG_TYPE_NOTICE);
 }
 
 if (isset($idXimioExportation)) {
-	$dbObj = new DB();
-	$query = "DELETE FROM XimIOExportations WHERE idXimIOExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
-	$dbObj->Execute($query);
-	
-	if ($dbObj->numRows > 0) {
-		$messages->add(_('Data successfully deleted from XimIOExportations'), MSG_TYPE_NOTICE);
-	} else {
-		$messages->add(_('Importation data could not been deleted from XimIOExportations'), MSG_TYPE_NOTICE);
-	}
-	
-	$dbObj = new DB();
-	$query = "DELETE FROM XimIONodeTranslations WHERE IdXimioExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
-	$dbObj->Execute($query);
-	
-	if ($dbObj->numRows > 0) {
-		$messages->add(sprintf(_('%s associations successfully deleted from XimIONodeTranslations'), $dbObj->numRows), MSG_TYPE_NOTICE);
-	} else {
-		$messages->add(_('Associations could not been deleted from XimIONodeTranslations'), MSG_TYPE_NOTICE);
-	}
+    $dbObj = new DB();
+    $query = "DELETE FROM XimIOExportations WHERE idXimIOExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
+    $dbObj->Execute($query);
+
+    if ($dbObj->numRows > 0) {
+        $messages->add(_('Data successfully deleted from XimIOExportations'), MSG_TYPE_NOTICE);
+    } else {
+        $messages->add(_('Importation data could not been deleted from XimIOExportations'), MSG_TYPE_NOTICE);
+    }
+
+    $dbObj = new DB();
+    $query = "DELETE FROM XimIONodeTranslations WHERE IdXimioExportation = " . $dbObj->sqlEscapeString($idXimioExportation);
+    $dbObj->Execute($query);
+
+    if ($dbObj->numRows > 0) {
+        $messages->add(sprintf(_('%s associations successfully deleted from XimIONodeTranslations'), $dbObj->numRows), MSG_TYPE_NOTICE);
+    } else {
+        $messages->add(_('Associations could not been deleted from XimIONodeTranslations'), MSG_TYPE_NOTICE);
+    }
 } else {
-	$messages->add(_('Importation information will not be deleted'), MSG_TYPE_NOTICE);
+    $messages->add(_('Importation information will not be deleted'), MSG_TYPE_NOTICE);
 }
 
 $messages->displayRaw();

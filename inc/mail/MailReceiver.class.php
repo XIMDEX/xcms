@@ -23,6 +23,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Utils\FsUtils;
 
 
 /**

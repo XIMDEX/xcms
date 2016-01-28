@@ -27,7 +27,6 @@
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/renderers/AbstractRenderer.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 
 /**
  * 

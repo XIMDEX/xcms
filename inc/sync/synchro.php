@@ -21,12 +21,13 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
 
 /**
  * XIMDEX_ROOT_PATH
@@ -36,7 +37,6 @@ if (!defined('XIMDEX_ROOT_PATH'))
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
-include_once(XIMDEX_ROOT_PATH . "/inc/fsutils/FsUtils.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/Synchronizer_ORM.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/model/orm/SynchronizerHistory_ORM.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_ChannelFilter.class.php");
@@ -127,7 +127,7 @@ class Synchronizer
             return NULL;
         }
 
-        $targetPath = \App::getValue( "AppRoot") . \App::getValue( "SyncRoot");
+        $targetPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot");
 
         if ($markEnd && $this->HasUnlimitedLifeTime()) {
 
@@ -152,7 +152,7 @@ class Synchronizer
 
         $nodeServer = new Node($server);
 
-        if (\App::getValue( 'PublishOnDisabledServers') == 1) {
+        if (\App::getValue('PublishOnDisabledServers') == 1) {
             $physicalServers = $nodeServer->class->GetPhysicalServerList(true);
         } else {
             $physicalServers = $nodeServer->class->GetEnabledPhysicalServerList(true);
@@ -304,7 +304,7 @@ class Synchronizer
         $this->ClearError();
         if (!is_null($this->nodeID)) {
             if ($frameID) {
-                $targetPath =  \App::getValue("AppRoot") .  \App::getValue("SyncRoot");
+                $targetPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot");
 
                 $sql = "SELECT IdNode,DateUp,DateDown FROM Synchronizer WHERE IdSync=" . $frameID;
                 $this->dbObj->Query($sql);
@@ -646,7 +646,7 @@ class Synchronizer
     {
         $this->ClearError();
         if (!is_null($this->nodeID)) {
-            $gapTolerance = \App::getValue( "MaximunGapSizeTolerance");
+            $gapTolerance = \App::getValue("MaximunGapSizeTolerance");
             $gaps = array();
 
 
@@ -1210,7 +1210,7 @@ class Synchronizer
         $this->dbObj->Query($sql);
 
         if ($this->dbObj->GetValue("IdSync")) {
-            $targetPath =  \App::getValue("AppRoot") .  \App::getValue("SyncRoot");
+            $targetPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot");
             $filePath = $targetPath . "/" . $frameID;
             $content = FsUtils::file_get_contents($filePath);
             return $content;
@@ -1540,7 +1540,7 @@ class Synchronizer
         $this->dbObj->Query($sql);
 
         $serverID = $this->dbObj->GetValue("IdServer");
-        $tmpPath = \App::getValue( "AppRoot") . \App::getValue( "TempRoot") . "/" . $frameID;
+        $tmpPath = \App::getValue("AppRoot") . \App::getValue("TempRoot") . "/" . $frameID;
         $channel = $this->dbObj->GetValue("IdChannel");
         $nodeID = $this->dbObj->GetValue("IdNode");
 
@@ -1608,7 +1608,7 @@ class Synchronizer
     {
 
 
-        $tmpPath =  \App::getValue("AppRoot") .  \App::getValue("SyncRoot") . "/" . $frameID;
+        $tmpPath = \App::getValue("AppRoot") . \App::getValue("SyncRoot") . "/" . $frameID;
 
         echo "ELIMINANDO FICHERO SYNC" . $tmpPath . "\n";
         FsUtils::delete($tmpPath);

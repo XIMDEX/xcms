@@ -26,6 +26,7 @@
  */
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
 
 define('MODE_NODETYPE', 0);
 define('MODE_NODEATTRIB', 1);

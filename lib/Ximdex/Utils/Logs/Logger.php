@@ -20,60 +20,63 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+
+
+namespace Ximdex\Utils\Logs;
+use Ximdex\Utils\AssociativeArray;
 
 
 if (file_exists(XIMDEX_ROOT_PATH . "/conf/install-params.conf.php"))
 	include_once(XIMDEX_ROOT_PATH . "/conf/install-params.conf.php");
 
-if (!defined('LOGGER_LEVEL_ALL'))		define('LOGGER_LEVEL_ALL',		0x0000);
-if (!defined('LOGGER_LEVEL_DEBUG'))		define('LOGGER_LEVEL_DEBUG',	0x0001);
-if (!defined('LOGGER_LEVEL_INFO'))		define('LOGGER_LEVEL_INFO',		0x0002);
-if (!defined('LOGGER_LEVEL_WARNING'))	define('LOGGER_LEVEL_WARNING',	0x0003);
-if (!defined('LOGGER_LEVEL_ERROR'))		define('LOGGER_LEVEL_ERROR',	0x0004);
-if (!defined('LOGGER_LEVEL_FATAL'))		define('LOGGER_LEVEL_FATAL',	0x0005);
-if (!defined('LOGGER_LEVEL_NONE'))		define('LOGGER_LEVEL_NONE',		0xFFFF);
+if (!defined('LOGGER_LEVEL_ALL')) define('LOGGER_LEVEL_ALL', 0x0000);
+if (!defined('LOGGER_LEVEL_DEBUG')) define('LOGGER_LEVEL_DEBUG', 0x0001);
+if (!defined('LOGGER_LEVEL_INFO')) define('LOGGER_LEVEL_INFO', 0x0002);
+if (!defined('LOGGER_LEVEL_WARNING')) define('LOGGER_LEVEL_WARNING', 0x0003);
+if (!defined('LOGGER_LEVEL_ERROR')) define('LOGGER_LEVEL_ERROR', 0x0004);
+if (!defined('LOGGER_LEVEL_FATAL')) define('LOGGER_LEVEL_FATAL', 0x0005);
+if (!defined('LOGGER_LEVEL_NONE')) define('LOGGER_LEVEL_NONE', 0xFFFF);
 
 /**
  *
  */
-class Logger {
+class Logger
+{
+
 
 	/**
-	 *
-	 * @var unknown_type
-	 */
+	 * @var
+     */
 	var $_name;
+
 	/**
-	 *
-	 * @var unknown_type
-	 */
+	 * @var
+     */
 	var $_params;
+
 	/**
-	 * split parameters in params in unique attributes.
-	 * @var unknown_type
-	 */
+	 * @var
+     */
 	var $_priority;
 	/**
-	 * Array of appenders.
-	 *
-	 * @var array
+	 * @var AssociativeArray
 	 */
 	var $_appenders;
 
 	/**
-	 * Constructor
+	 * Logger constructor.
 	 * @param $name
 	 * @param $params
-	 * @return unknown_type
 	 */
-	function Logger($name, $params) {
+	public  function  __construct($name, $params)
+	{
 
 		// Init data structure.
-		$this->_appenders = new \Ximdex\Utils\AssociativeArray();
-		$this->_getters = new \Ximdex\Utils\AssociativeArray();
+		$this->_appenders = new AssociativeArray()  ;
+		$this->_getters = new AssociativeArray ;
 
 		$this->_name = $name;
 		$this->_params = $params;
@@ -82,73 +85,75 @@ class Logger {
 		$this->_priority = $params['priority'];
 	}
 
+
 	/**
-	 *
 	 * @param $name
 	 * @param $appender
-	 * @return unknown_type
-	 */
-	function attachAppender($name, &$appender) {
+     */
+	function attachAppender($name, &$appender)
+	{
 
 		$this->_appenders->set($name, $appender);
 	}
 
+
 	/**
-	 *
 	 * @param $name
 	 * @param $getter
-	 * @return unknown_type
-	 */
-	function attachGetter($name, &$getter) {
+     */
+	function attachGetter($name, &$getter)
+	{
 
 		$this->_getters->set($name, $getter);
 	}
 
+
 	/**
-	 *
 	 * @param $name
-	 * @return unknown_type
-	 */
-	function detachAppender($name) {
+     */
+	function detachAppender($name)
+	{
 
 		$this->_appenders->del($name);
 	}
 
 	/**
-	 *
-	 * @return unknown_type
+	 * @return array of Appenders
 	 */
-	function & getAppenders() {
+	function & getAppenders()
+	{
 
 		return $this->_appenders->getArray();
 	}
 
+
 	/**
-	 *
-	 * @return unknown_type
-	 */
-	function & getGetters() {
+	 * @return array
+     */
+	function & getGetters()
+	{
 
 		return $this->_getters->getArray();
 	}
 
+
 	/**
-	 *
 	 * @param $name
-	 * @return unknown_type
-	 */
-	function & detachGetter($name) {
+	 * @return mixed
+     */
+	function & detachGetter($name)
+	{
 
 		return $this->_getters->del($name);
 	}
 
+
 	/**
-	 *
 	 * @param $msg
 	 * @param $priority
-	 * @return unknown_type
-	 */
-	function log($msg, $priority) {
+     */
+	function log($msg, $priority)
+	{
 
 		if ($priority >= $this->_priority) {
 
@@ -165,36 +170,37 @@ class Logger {
 
 
 			$event = new Event();
-			$event->setParam("priority",    $priority);
-			$event->setParam("message",     $msg);
-			$event->setParam("class",       isset( $traceinfo[$idx]['class'] ) ? $traceinfo[$idx]['class'] : '' );
-			$event->setParam("file",        isset( $traceinfo[$idx]['file'] ) ? $traceinfo[$idx]['file'] : '' );
-			$event->setParam("line",        isset( $traceinfo[$idx]['line'] ) ? $traceinfo[$idx]['line'] : '' );
-			$event->setParam("function",    strtoupper(isset( $traceinfo[$idx]['function'] ) ? $traceinfo[$idx]['function'] : '' ));
-			$event->setParam("date",        date("Y-m-d"));
-			$event->setParam("time",        date("G:i:s"));
+			$event->setParam("priority", $priority);
+			$event->setParam("message", $msg);
+			$event->setParam("class", isset($traceinfo[$idx]['class']) ? $traceinfo[$idx]['class'] : '');
+			$event->setParam("file", isset($traceinfo[$idx]['file']) ? $traceinfo[$idx]['file'] : '');
+			$event->setParam("line", isset($traceinfo[$idx]['line']) ? $traceinfo[$idx]['line'] : '');
+			$event->setParam("function", strtoupper(isset($traceinfo[$idx]['function']) ? $traceinfo[$idx]['function'] : ''));
+			$event->setParam("date", date("Y-m-d"));
+			$event->setParam("time", date("G:i:s"));
 
 			$listOfAppenders = $this->getAppenders();
 
 			if ($listOfAppenders != null) {
-				foreach($listOfAppenders as $appender) {
+				foreach ($listOfAppenders as $appender) {
 					$appender->write($event);
 				}
 			}
 		}
 	}
 
+
 	/**
-	 *
-	 * @return unknown_type
-	 */
-	function read() {
+	 * @return mixed
+     */
+	function read()
+	{
 
 		$listOfGetters = $this->getGetters();
 		$responses = array();
 
 		if ($listOfGetters != null) {
-			foreach($listOfGetters as $name=>$getter) {
+			foreach ($listOfGetters as $name => $getter) {
 				$text = $getter->read();
 				$parser = $getter->getParams();
 				$parser = isset($parser['parser']) ? $parser['parser'] : 'SyntaxParser_Simple';
@@ -210,5 +216,3 @@ class Logger {
 		return $responses[0];
 	}
 }
-
-?>

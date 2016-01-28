@@ -27,7 +27,7 @@
 
 namespace Ximdex\MVC;
 
-use Action_log;
+
 use EmailNotificationStrategy;
 use FrontController;
 use ModulesManager;
@@ -44,6 +44,7 @@ use Ximdex\Utils\Session;
 use XimdexNotificationStrategy;
 use Ximdex\Logger as XMD_Log;
 
+Use Ximdex\Utils\Logs\Action_log ;
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 }

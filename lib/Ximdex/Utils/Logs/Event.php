@@ -25,27 +25,38 @@
  */
 
 
+namespace Ximdex\Utils\Logs;
+use Ximdex\Utils\AssociativeArray;
+
 /**
  *
  */
-class Appender_stdout extends Appender
+class Event
 {
 
-    //var $_layout;
 
-    function Appender_stdout(&$params)
-    {
+	var $_params;
 
-        parent::Appender($params);
-    }
+	public function __construct()
+	{
+		$this->_params = new  AssociativeArray() ;
 
-    function write(&$event)
-    {
+	}
 
-        parent::write($event);
+	function Event()
+	{
 
-        echo $this->_msg;
-        echo "\r\n";
-    }
+	}
 
+	function setParam($key, $value)
+	{
+
+		$this->_params->set($key, $value);
+	}
+
+	function & getParam($key)
+	{
+
+		return $this->_params->get($key);
+	}
 }

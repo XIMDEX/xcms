@@ -25,10 +25,9 @@
  */
 
 
+use Ximdex\Utils\Logs\SyntaxParser;
 
- 
- require_once( XIMDEX_ROOT_PATH . '/inc/log/SyntaxParser.class.php' );
- 
+
  class SyntaxParser_PHP extends SyntaxParser {
  	
  	function parse($text, $level, $sort) {

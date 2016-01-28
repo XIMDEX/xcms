@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
   require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');

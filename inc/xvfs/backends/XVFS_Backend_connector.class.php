@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_XVFS_PATH . '/XVFS_Backend.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/xvfs/backends/XVFS_Backend_interface.class.php');
@@ -131,7 +131,7 @@ class XVFS_Backend_connector extends XVFS_Backend implements Backend_XVFS_interf
 	 * @return boolean
 	 */
 	
-	// TODO esta función debe hacer un ls y parsear el resultado para obtener los permisos
+	// TODO esta funciï¿½n debe hacer un ls y parsear el resultado para obtener los permisos
 	public function isReadable($bpath) {
 		return true;
 	}
@@ -142,7 +142,7 @@ class XVFS_Backend_connector extends XVFS_Backend implements Backend_XVFS_interf
 	 * @param string bpath BackendPath
 	 * @return boolean
 	 */
-	// TODO esta función debe hacer un ls y parsear el resultado para obtener los permisos
+	// TODO esta funciï¿½n debe hacer un ls y parsear el resultado para obtener los permisos
 	public function isWritable($bpath) {
 		return true;
 	}

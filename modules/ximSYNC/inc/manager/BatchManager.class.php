@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Utils\Logs\MN_Log;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 
@@ -42,7 +43,6 @@ ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/model/RelServersChannels.class.php');
 ModulesManager::file('/inc/model/RelFramesPortal.class.php');
 ModulesManager::file('/inc/model/PortalVersions.class.php');
-ModulesManager::file('/inc/log/MN_log.class.php');
 
 
 /**

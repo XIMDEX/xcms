@@ -20,10 +20,14 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+
+namespace Ximdex\Utils\Logs;
+
+use DB_legacy as DB;
 
 
 if (!defined('XIMDEX_ROOT_PATH'))
@@ -37,16 +41,17 @@ include_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 /**
  *
  */
-class Appender_sql extends Appender {
-
+class Appender_sql extends Appender
+{
+	/**
+	 * @var \DB_legacy
+	 */
 	var $_db;
 	var $_table;
 
-	/**
-	 * @param object params['layout']
-	 * @param string params['table']
-	 */
-	function Appender_sql(&$params) {
+
+	function Appender_sql(&$params)
+	{
 
 		parent::Appender($params);
 
@@ -54,28 +59,23 @@ class Appender_sql extends Appender {
 		$this->_db = new DB();
 	}
 
-//     function open($file) {
-//     }
 
-    // TODO: pasar la prioridad de alguna manera humana...
-    function write(&$event) {
+	// TODO: pasar la prioridad de alguna manera humana...
+	function write(&$event)
+	{
 
-    	parent::write($event);
+		parent::write($event);
 
-    	// prepare sql query
-    	$consulta = "INSERT INTO ".$this->_table;
-    	$consulta .= " (IdLog, Priority, LogText) ";
-    	$consulta .= " VALUES (";
-    	$consulta .= "NULL, ";
-    	$consulta .= "0, ";
-    	$consulta .= "'".$this->_msg."') ";
+		// prepare sql query
+		$consulta = "INSERT INTO " . $this->_table;
+		$consulta .= " (IdLog, Priority, LogText) ";
+		$consulta .= " VALUES (";
+		$consulta .= "NULL, ";
+		$consulta .= "0, ";
+		$consulta .= "'" . $this->_msg . "') ";
 
-    	// insert into LogTable table log data.
-    	$this->_db->Execute($consulta);
+		// insert into LogTable table log data.
+		$this->_db->Execute($consulta);
 	}
 
-//     function close() {
-//     }
 }
-
-?>

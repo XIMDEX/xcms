@@ -20,66 +20,95 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
+namespace Ximdex\Utils\Logs;
 
 
 /**
- *
+ * Class Logger_Error
+ * @package Ximdex\Utils\Logs
  */
-class Logger_Error extends Logger {
+class Logger_Error extends Logger
+{
 
+	/**
+	 * Logger_Error constructor.
+	 * @param $name
+	 * @param $params
+     */
+	public function __construct($name, &$params)
+	{
 
-	function Logger_Error($name, &$params) {
-
-		parent::Logger($name, $params);
+		parent::__construct($name, $params);
 	}
 
 	// Interface definition.
 
-	function write( $msg, $level=LOGGER_LEVEL_INFO ) {
-		
+	/**
+	 * @param $msg
+	 * @param int $level
+     */
+	function write($msg, $level = LOGGER_LEVEL_INFO)
+	{
+
 		$arrMethod = array();
 		$arrMethod[LOGGER_LEVEL_DEBUG] = 'debug';
 		$arrMethod[LOGGER_LEVEL_INFO] = 'info';
 		$arrMethod[LOGGER_LEVEL_WARNING] = 'warning';
 		$arrMethod[LOGGER_LEVEL_ERROR] = 'error';
 		$arrMethod[LOGGER_LEVEL_FATAL] = 'fatal';
-		
-		$method = isset($arrMethod[ $level ]) ? $arrMethod[ $level ] : $arrMethod[LOGGER_LEVEL_INFO];
-		$this->$method( $msg );
-		
+
+		$method = isset($arrMethod[$level]) ? $arrMethod[$level] : $arrMethod[LOGGER_LEVEL_INFO];
+		$this->$method($msg);
+
 	}
-	
-	function debug($msg) {
+
+	/**
+	 * @param $msg
+     */
+	function debug($msg)
+	{
 
 		$this->log($msg, LOGGER_LEVEL_DEBUG);
 	}
 
-	function info($msg) {
+	/**
+	 * @param $msg
+     */
+	function info($msg)
+	{
 
 		$this->log($msg, LOGGER_LEVEL_INFO);
 	}
 
-	function warning($msg) {
+	/**
+	 * @param $msg
+     */
+	function warning($msg)
+	{
 
 		$this->log($msg, LOGGER_LEVEL_WARNING);
 	}
 
-	function error($msg) {
+	/**
+	 * @param $msg
+     */
+	function error($msg)
+	{
 
 		$this->log($msg, LOGGER_LEVEL_ERROR);
 	}
 
-	function fatal($msg) {
+	/**
+	 * @param $msg
+     */
+	function fatal($msg)
+	{
 
 		$this->log($msg, LOGGER_LEVEL_FATAL);
 		die();
 	}
 
 }
-
-?>

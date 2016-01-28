@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Utils\FsUtils;
 
 if (!defined('XIMDEX_ROOT_PATH'))
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
@@ -37,8 +37,7 @@ require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
 
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/modules.const');
 include_once(XIMDEX_ROOT_PATH . '/inc/modules/ModulesConfig.class.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
-ModulesManager::file( '/conf/extensions.conf.php');
+ ModulesManager::file( '/conf/extensions.conf.php');
 ModulesManager::file(MODULES_INSTALL_PARAMS);
 
 /**

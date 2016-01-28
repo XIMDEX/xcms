@@ -21,267 +21,273 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+use Ximdex\Utils\FsUtils;
+
 ModulesManager::file('/conf/xsparrow.conf', 'XSparrow');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 
-class Theme {
+class Theme
+{
 
 
-	public $xml;
-	public $version;
+    public $xml;
+    public $version;
 
 
-	/**
-	*Class Constructor
-	*@param $theme. It could be the id of DB table, content xml, relative path or full path to xml.
-	*/
-	public function Theme($theme){
+    /**
+     *Class Constructor
+     * @param $theme . It could be the id of DB table, content xml, relative path or full path to xml.
+     */
+    public function Theme($theme)
+    {
 
 
-		$xml = false;
-		if (is_string($theme)){
+        $xml = false;
+        if (is_string($theme)) {
 
-			//if valid xml
-			if ($this->isValidXml($theme)){
+            //if valid xml
+            if ($this->isValidXml($theme)) {
 
-				$xml = $theme;
+                $xml = $theme;
 
-			}else{
-				$themesFolderPath = $theme;
+            } else {
+                $themesFolderPath = $theme;
 
-				if (substr($theme,-4)==".xml"){//if is filename with or without full path{
-					$themesFolderPath = substr($theme,0,-4);
+                if (substr($theme, -4) == ".xml") {//if is filename with or without full path{
+                    $themesFolderPath = substr($theme, 0, -4);
 
-				}
+                }
 
-				$xml = $this->getXmlFromFolderName($themesFolderPath);
-			}
+                $xml = $this->getXmlFromFolderName($themesFolderPath);
+            }
 
-		}else if (is_int($theme)){ //If index in DB. Futurible
+        } else if (is_int($theme)) { //If index in DB. Futurible
 
-		}
+        }
 
-		$this->xml = $xml;
+        $this->xml = $xml;
 
-		if ($theme and !$xml){
-			//Param not valid. Log Message
-			XMD_Log::warning("XSPARROW: Unable to load $theme theme.");
-		}else if ($xml){
-			$this->getThemeProperties();
-		}
+        if ($theme and !$xml) {
+            //Param not valid. Log Message
+            XMD_Log::warning("XSPARROW: Unable to load $theme theme.");
+        } else if ($xml) {
+            $this->getThemeProperties();
+        }
 
-	}
+    }
 
 
-	/**
-	* Indicate if this theme object is a valid one.
-	*/
-	public function isValid(){
+    /**
+     * Indicate if this theme object is a valid one.
+     */
+    public function isValid()
+    {
 
-		if ($this->xml)
-			return true;
-		return false;
-	}
+        if ($this->xml)
+            return true;
+        return false;
+    }
 
-	/**
-	*Get a xml from path
-	*@param $themeFolderName. Path to theme folder
-	*@return string
-	*/
-	private function getXmlFromFolderName($themesFolderPath){
+    /**
+     *Get a xml from path
+     * @param $themeFolderName . Path to theme folder
+     * @return string
+     */
+    private function getXmlFromFolderName($themesFolderPath)
+    {
 
-		//
-		$result = false;
-		$lastSlash = strrpos($themesFolderPath,"/");
-		if ($lastSlash !== FALSE){ //It should be relative path
-			$themesFolderPath = substr($themesFolderPath,$lastSlash+1);
-		}
+        //
+        $result = false;
+        $lastSlash = strrpos($themesFolderPath, "/");
+        if ($lastSlash !== FALSE) { //It should be relative path
+            $themesFolderPath = substr($themesFolderPath, $lastSlash + 1);
+        }
 
-		$fullPath = \App::getValue( "AppRoot").THEMES_FOLDER."/$themesFolderPath/$themesFolderPath.xml";
+        $fullPath = \App::getValue("AppRoot") . THEMES_FOLDER . "/$themesFolderPath/$themesFolderPath.xml";
 
 
-		if (file_exists($fullPath)){
-			$xmlContent = FsUtils::file_get_contents($fullPath);
-			$result = $this->isValidXml($xmlContent)? $xmlContent : false;
-		}
+        if (file_exists($fullPath)) {
+            $xmlContent = FsUtils::file_get_contents($fullPath);
+            $result = $this->isValidXml($xmlContent) ? $xmlContent : false;
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
 
-	/**
-	*Get all attributes from xml content.
-	*/
-	private function getThemeProperties(){
+    /**
+     *Get all attributes from xml content.
+     */
+    private function getThemeProperties()
+    {
 
-		$result = "";
-		if ($this->xml){
-			$domDoc = new DOMDocument();
-			$domDoc->preserveWhiteSpace = false;
-			$domDoc->validateOnParse = true;
-			$domDoc->formatOutput = true;
-			if ($domDoc->loadXML($this->xml)){
+        $result = "";
+        if ($this->xml) {
+            $domDoc = new DOMDocument();
+            $domDoc->preserveWhiteSpace = false;
+            $domDoc->validateOnParse = true;
+            $domDoc->formatOutput = true;
+            if ($domDoc->loadXML($this->xml)) {
 
-				$xpathObj = new DOMXPath($domDoc);
-				$nodeList0 = $xpathObj->query('/xsparrow-theme/theme-properties');
-				if ($nodeList0->length){
-					$nodeThemeProperty = $nodeList0->item(0);
-					foreach ($nodeThemeProperty->childNodes as $child) {
-						$nodeName = "_".$child->nodeName;
-						$shortNodeName = str_replace("theme-", "", $nodeName);
-						$this->$nodeName = $child->nodeValue;
-						//Creating short attribute just for accesibility
-						$this->$shortNodeName = $child->nodeValue;
-					}
+                $xpathObj = new DOMXPath($domDoc);
+                $nodeList0 = $xpathObj->query('/xsparrow-theme/theme-properties');
+                if ($nodeList0->length) {
+                    $nodeThemeProperty = $nodeList0->item(0);
+                    foreach ($nodeThemeProperty->childNodes as $child) {
+                        $nodeName = "_" . $child->nodeName;
+                        $shortNodeName = str_replace("theme-", "", $nodeName);
+                        $this->$nodeName = $child->nodeValue;
+                        //Creating short attribute just for accesibility
+                        $this->$shortNodeName = $child->nodeValue;
+                    }
 
-				}else{//if not exists theme-properties
-					XMD_Log::error("XSPARROW: /xsparrow-theme/theme-properties node not found. Please check the xml.");
-				}
+                } else {//if not exists theme-properties
+                    XMD_Log::error("XSPARROW: /xsparrow-theme/theme-properties node not found. Please check the xml.");
+                }
 
-			}else { //if error on load
+            } else { //if error on load
 
-				XMD_Log::error("XSPARROW: Unable to load xml document to get its properties".$this->xml );
-			}
+                XMD_Log::error("XSPARROW: Unable to load xml document to get its properties" . $this->xml);
+            }
 
-		}
+        }
 
 
+    }
 
-	}
+    /**
+     *Check if is a valid xml and parse with Relax-NG
+     * @param $xml content to check. It could be a path. but it isnt valid.
+     *It would return false value.
+     * @param $laxy . If true parse with Relax-NG
+     * @return boolean
+     */
+    private function isValidXml($xml, $lazy = false)
+    {
 
-	/**
-	*Check if is a valid xml and parse with Relax-NG
-	*@param $xml content to check. It could be a path. but it isnt valid.
-	*It would return false value.
-	*@param $laxy. If true parse with Relax-NG
-	*@return boolean
-	*/
-	private function isValidXml($xml, $lazy = false){
+        $result = false;
 
-		$result = false;
+        if ($xml) {
+            //if valid xml
+            $domDocument = new DomDocument();
+            //Avoid warnings. $xml can be a path and we know it.
+            $result = @$domDocument->loadXML($xml);
 
-		if ($xml){
-			//if valid xml
-			$domDocument = new DomDocument();
-			//Avoid warnings. $xml can be a path and we know it.
-			$result = @$domDocument->loadXML($xml);
+        }
 
-		}
+        if (!$result) {
+            //xml could be a path
+            return false;
+        }
 
-		if (!$result){
-			//xml could be a path
-			return false;
-		}
+        $xpathObj = new DOMXPath($domDocument);
+        $xsparrowThemeNodes = $xpathObj->query('/xsparrow-theme');
 
-		$xpathObj = new DOMXPath($domDocument);
-		$xsparrowThemeNodes = $xpathObj->query('/xsparrow-theme');
+        //If doesnt exist /xsparrow-theme node
+        if (!$xsparrowThemeNodes->length) {
+            XMD_Log::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
+            return false;
+        }
 
-		//If doesnt exist /xsparrow-theme node
-		if (!$xsparrowThemeNodes->length){
-			XMD_Log::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
-			return false;
-		}
+        $xsparrowThemeNode = $xsparrowThemeNodes->item(0);
+        //If doesnt exists version attribute.
+        if (!$xsparrowThemeNode->hasAttribute("version")) {
+            XMD_Log::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
+            return false;
+        }
 
-		$xsparrowThemeNode = $xsparrowThemeNodes->item(0);
-		//If doesnt exists version attribute.
-		if (!$xsparrowThemeNode->hasAttribute("version")){
-			XMD_Log::warning("XSPARROW: The theme has not version number in xsparrow-theme node");
-			return false;
-		}
 
+        $this->version = $xsparrowThemeNode->getAttribute("version");
+        $rngFilePath = \App::getValue("AppRoot") . SCHEMES_FOLDER . "/" . SCHEME_BASENAME . $this->version . ".xml";
 
-		$this->version = $xsparrowThemeNode->getAttribute("version");
-		$rngFilePath = \App::getValue( "AppRoot").SCHEMES_FOLDER."/".SCHEME_BASENAME.$this->version.".xml";
+        //if doesnt exist rng file.
+        if (!file_exists($rngFilePath)) {
+            XMD_Log::warning("XSPARROW: scheme $rngFilePath not found");
+            return false;
 
-		//if doesnt exist rng file.
-		if (!file_exists($rngFilePath)){
-			XMD_Log::warning("XSPARROW: scheme $rngFilePath not found");
-			return false;
+        }
 
-		}
+        $rngFileContent = FsUtils::file_get_contents($rngFilePath);
 
-		$rngFileContent = FsUtils::file_get_contents($rngFilePath);
+        //If everything ok
+        if ($result && !$lazy) {
+            $rngValidator = new \Ximdex\XML\Validators\RNG();
+            if (!$rngValidator->validate($rngFileContent, $xml)) {
+                XMD_Log::error("XSPARROW: The theme doesn't validate the relaxng $rngFilePath");
+                return false;
+            }
+        }
 
-		//If everything ok
-		if ($result && !$lazy){
-			$rngValidator = new \Ximdex\XML\Validators\RNG();
-			if(!$rngValidator->validate($rngFileContent,$xml)){
-				XMD_Log::error("XSPARROW: The theme doesn't validate the relaxng $rngFilePath");
-				return false;
-			}
-		}
+        return $result;
 
-		return $result;
+    }
 
-	}
 
 
 
+    /******************STATIC METHODS******************/
 
-	/******************STATIC METHODS******************/
+    /**
+     *Fet all themes in Theme folder
+     * @param $limit number of themes to get.
+     * @param $offset first theme to get
+     */
+    public static function getAllThemes($limit = null, $offset = null)
+    {
 
-	/**
-	*Fet all themes in Theme folder
-	*@param $limit number of themes to get.
-	*@param $offset first theme to get
-	*/
-	public static function getAllThemes($limit=null, $offset=null){
+        $result = array();
 
-		$result = array();
+        if (!$offset || !is_int($offset)) {
+            $offset = 0;
+        }
 
-		if (!$offset || !is_int($offset)){
-			$offset=0;
-		}
 
+        $templateRootFolder = \App::getValue("AppRoot") . THEMES_FOLDER;//Root theme folder
 
+        $templateFolders = FsUtils::readFolder($templateRootFolder, false); //Getting all theme folders
+        $excluded = array();
+        foreach ($templateFolders as $templateFolder) {
 
-		$templateRootFolder = \App::getValue( "AppRoot").THEMES_FOLDER;//Root theme folder
+            if (!is_dir($templateRootFolder . "/" . $templateFolder))
+                $excluded[] = $templateFolder;
+        }
+        $templateFolders = array_values(array_diff($templateFolders, $excluded));
+        $i = $offset;
+        $numFound = 0;
+        $numTemplateFolders = count($templateFolders);
 
-		$templateFolders = FsUtils::readFolder($templateRootFolder,false); //Getting all theme folders
-		$excluded = array();
-		foreach ($templateFolders as $templateFolder ) {
 
-			if (!is_dir($templateRootFolder."/".$templateFolder))
-				$excluded[] = $templateFolder;
-		}
-		$templateFolders = array_values(array_diff($templateFolders, $excluded));
-		$i = $offset;
-		$numFound = 0;
-		$numTemplateFolders = count($templateFolders);
+        while ($i < $numTemplateFolders) {
+            if ($limit && is_int($limit) && $limit <= $numFound) {
+                break;
+            }
 
+            $template = $templateFolders[$i];
 
-		while($i < $numTemplateFolders){
-			if ($limit && is_int($limit) && $limit <= $numFound){
-				break;
-			}
+            if (is_dir($templateRootFolder . "/" . $template)) {
 
-			$template = $templateFolders[$i];
+                $fileXml = "$templateRootFolder/$template/$template.xml";
 
-			if (is_dir($templateRootFolder."/".$template)){
+                if (file_exists($fileXml)) {
+                    $content = FsUtils::file_get_contents($fileXml);
+                    $theme = new Theme($fileXml);
+                    if ($theme->isValid()) {
 
-				$fileXml = "$templateRootFolder/$template/$template.xml";
+                        $result[] = $theme;
+                        $numFound++;
+                    }
+                }
 
-				if (file_exists($fileXml)){
-					$content = FsUtils::file_get_contents($fileXml);
-					$theme = new Theme($fileXml);
-					if ($theme->isValid()){
+            }
+            $i++;
+        }
 
-						$result[] = $theme;
-						$numFound++;
-					}
-				}
 
-			}
-			$i++;
-		}
+        return $result;
 
-
-		return $result;
-
-	}
+    }
 
 }

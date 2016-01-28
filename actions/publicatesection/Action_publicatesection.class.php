@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Utils\Logs\Log;
 
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 
@@ -113,8 +114,7 @@ class Action_publicatesection extends ActionAbstract {
 		if (!defined('LOGGER_LEVEL_ERROR'))		define('LOGGER_LEVEL_ERROR',	0x0004);
 		if (!defined('LOGGER_LEVEL_FATAL'))		define('LOGGER_LEVEL_FATAL',	0x0005);
 		
-		ModulesManager::file('/inc/log/Log.class.php');
-		ModulesManager::file('/conf/install-modules.php');
+ 		ModulesManager::file('/conf/install-modules.php');
 				
 		$file = 'publication_logger';
 		$sort = 'DESC';

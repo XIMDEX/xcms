@@ -26,7 +26,7 @@
 
 namespace Ximdex\Modules;
 
-Use FSUtils;
+Use Ximdex\Utils\FSUtils;
 use \Ximdex\Runtime\App;
 
 

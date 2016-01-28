@@ -49,11 +49,10 @@ App::setValue('XIMDEX_ROOT_PATH', dirname(dirname(__FILE__)));
 // get Config from install file
 if ( file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php' ) ) {
     $conf = require_once(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
-    foreach ($conf as $key => $value) {
+                 foreach ($conf as $key => $value) {
         App::setValue($key, $value);
     }
 }
-include_once( dirname(dirname(__FILE__))   . '/inc/fsutils/FsUtils.class.php');
 
 // Initialize Modules Manager
 // set ximdex root path

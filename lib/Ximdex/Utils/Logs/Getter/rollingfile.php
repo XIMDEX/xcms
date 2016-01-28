@@ -20,42 +20,20 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Utils\Logs;
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../');
-}
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
-/**
- *
- */
-class Getter_sql extends Getter {
-	
-	function Getter_sql($layout, $params) {
-		parent::Getter($layout, $params);
-	}
+class Getter_rollingfile extends Getter_file
+{
+    public function __construct($layout, $params)
+    {
+        parent::__construct($layout, $params);
+    }
 
-	function read() {
-		$readedData = '';
-		$dbObj = new DB();
-		$quantity = (int) $this->_params['quantity'] > 0 ? (int) $this->_params['quantity'] : 10;
-		$query = sprintf("SELECT LogText FROM %s ORDER BY IdLog DESC LIMIT %d", $this->_params['file'], $quantity);
-		$dbObj->Query($query);
-		
-		while(!$dbObj->EOF) {
-			$readedData .= $dbObj->GetValue('LogText') . "\n";
-			$dbObj->Next();
-		}
-		
-		//echo nl2br(htmlentities($readedData));
-		return $readedData;
-	}
 
 }
-
-?>

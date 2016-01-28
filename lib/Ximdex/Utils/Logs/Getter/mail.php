@@ -20,56 +20,26 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+namespace Ximdex\Utils\Logs;
 
 
 
 
-/**
- *
- */
-class Layout {
+class Getter_mail extends Getter
+{
 
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $_template;
-	
-	/**
-	 * Constructor
-	 * @param $template
-	 * @return unknown_type
-	 */
-	function Layout($template) {
-		$this->setTemplate($template);
-	}	
-	/**
-	 * 
-	 * @param $template
-	 * @return unknown_type
-	 */
-	function setTemplate($template) {
+    public function __construct($layout, $params)
+    {
+        parent::__construct($layout, $params);
+    }
 
-		$this->_template = $template;
-	}
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function & getTemplate() {
 
-		return $this->_template;
-	}
-	// 
-	/**
-	 * método abstracto
-	 * @param $event
-	 * @return unknown_type
-	 */
-	function & format(&$event) {
-	}
+    function read()
+    {
+        return null;
+    }
+
 }
-?>

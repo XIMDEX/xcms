@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/model/orm/XimNewsCache_ORM.class.php', 'ximNEWS');
 

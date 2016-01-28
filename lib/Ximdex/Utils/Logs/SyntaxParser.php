@@ -1,4 +1,6 @@
 <?php
+
+namespace Ximdex\Utils\Logs;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,62 +22,14 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class SyntaxParser
+{
 
+    function parse($text, $level, $sort)
+    {
+    }
 
-
-
-/**
- *
- */
-class Appender {
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $_layout;
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $_msg;
-
-	/**
-	 * Recibe como parametro un array asociativo en el que cada elemento es un parametro de configuracion.
-	 * Cada descendendiente de Appender debe conocer que parametros obtener del array.
-	 */
-	function Appender( &$params ) {
-
-		$this->_layout =& $params['layout'];
-	}
-	/**
-	 * 
-	 * @param $layout
-	 * @return unknown_type
-	 */
-	function setLayout(&$layout) {
-
-		$this->_layout =& $layout;
-	}
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function & getLayout() {
-
-		return $this->_layout;
-	}
-	/**
-	 * 
-	 * @param $event
-	 * @return unknown_type
-	 */
-	function write(&$event) {
-
-		$layout =& $this->getLayout();
-		$this->_msg = $layout->format($event);
-	}
 }
-?>

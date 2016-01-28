@@ -20,20 +20,19 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
+use Ximdex\Utils\FsUtils;
 
 
 /**
  * XIMDEX_ROOT_PATH
  */
 if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mail/class.phpmailer.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');
 //
 
 // Include mail configuration.
@@ -41,54 +40,59 @@ include_once(XIMDEX_ROOT_PATH . "/conf/mail.php");
 
 // Default values.
 
-class Mail extends PHPMailer {
+class Mail extends PHPMailer
+{
 
 
-	function Mail() {
+    function Mail()
+    {
 
-		$this->From = FROM;
-		$this->FromName = FROM_NAME;
-		$this->Sender = FROM;
+        $this->From = FROM;
+        $this->FromName = FROM_NAME;
+        $this->Sender = FROM;
 
-		if (defined('SMTP_AUTH') && SMTP_AUTH == true) {
+        if (defined('SMTP_AUTH') && SMTP_AUTH == true) {
 
-			$this->Mailer = "smtp";
+            $this->Mailer = "smtp";
 
-			$this->Host = SMTP_SERVER;
-			$this->SMTPAuth = true;
-			$this->Username = AUTH_USERNAME;
-			$this->Password = AUTH_PASSWD;
-			$this->Host = AUTH_HOST;
-		}
-	}
-
-
-	function setFrom($email, $name = "") {
-		$this->From = $email;
-		$this->FromName = $name;
-		$this->Sender = $this->From;
-	}
+            $this->Host = SMTP_SERVER;
+            $this->SMTPAuth = true;
+            $this->Username = AUTH_USERNAME;
+            $this->Password = AUTH_PASSWD;
+            $this->Host = AUTH_HOST;
+        }
+    }
 
 
-	function error_handler($msg) {
-		// write to logging system.
-		echo "Mail ERROR: $msg\n";
-	}
+    function setFrom($email, $name = "")
+    {
+        $this->From = $email;
+        $this->FromName = $name;
+        $this->Sender = $this->From;
+    }
 
-	function Send() {
 
-		$ret_send = parent::Send();
+    function error_handler($msg)
+    {
+        // write to logging system.
+        echo "Mail ERROR: $msg\n";
+    }
 
-		if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
-			$tmp_path = XIMDEX_ROOT_PATH . \App::getValue( 'TempRoot');
-			$filename = tempnam($tmp_path, 'mail_');
-			$data = parent::CreateBody();
-			// just a log, no sense to log the fsutils error too
-			FsUtils::file_put_contents($filename, $data);
-		}
+    function Send()
+    {
 
-		return $ret_send;
+        $ret_send = parent::Send();
 
-	}
+        if (defined('MAIL_DEBUG') && MAIL_DEBUG) {
+            $tmp_path = XIMDEX_ROOT_PATH . \App::getValue('TempRoot');
+            $filename = tempnam($tmp_path, 'mail_');
+            $data = parent::CreateBody();
+            // just a log, no sense to log the fsutils error too
+            FsUtils::file_put_contents($filename, $data);
+        }
+
+        return $ret_send;
+
+    }
 
 }

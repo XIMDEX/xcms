@@ -20,58 +20,33 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
+namespace Ximdex\Utils\Logs;
 
 /**
- *
+ * Class Appender_stdout
+ * @package Ximdex\Utils\Logs
  */
-class Getter {
+class Appender_stdout extends Appender
+{
 
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $_params = null;
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $_layout = null;
+    //var $_layout;
 
-	/**
-	 * Constructor
-	 * @param $layout
-	 * @param $params
-	 * @return unknown_type
-	 */
-	function Getter($layout, $params) {
-		$this->_layout = $layout;
-		$this->_params = $params;
-	}
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function read() {
-	}
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function getLayout() {
-		return $this->_layout;
-	}
-	/**
-	 * 
-	 * @return unknown_type
-	 */
-	function getParams() {
-		return $this->_params;
-	}
+    function Appender_stdout(&$params)
+    {
+
+        parent::Appender($params);
+    }
+
+    function write(&$event)
+    {
+
+        parent::write($event);
+
+        echo $this->_msg;
+        echo "\r\n";
+    }
+
 }
-?>

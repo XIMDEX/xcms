@@ -9,6 +9,7 @@
 * @link http://www.engageinteractive.com/php_http_tools/ PHP HTTP Tools Home Page
 * PHP HTTP Tools are Free Software
 **/
+use Ximdex\Utils\Logs\Log;
 
 /** socket connection error */
 define('HTTP_SOCKET_CONNECTION_ERR', 1); 

@@ -24,13 +24,10 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Utils;
+
+use Ximdex\Utils\Logs\MN_Log;
 use Ximdex\Logger as XMD_log;
-
-if (!defined("XIMDEX_ROOT_PATH")) {
-    define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../"));
-}
-
-require_once(XIMDEX_ROOT_PATH . '/inc/log/MN_log.class.php');
 
 class FsUtils
 {
@@ -84,7 +81,7 @@ class FsUtils
     {
 
         $ret = true;
-        $freeSpaceBytes = \Ximdex\Utils\Disk::disk_free_space('B', self::getFolderFromFile($file));
+        $freeSpaceBytes =  Disk::disk_free_space('B', self::getFolderFromFile($file));
         $limits = include(XIMDEX_ROOT_PATH . '/conf/diskspace.php');
         $aux = array();
 
@@ -95,14 +92,14 @@ class FsUtils
                 $aux[$key] = array(
                     'limit' => (float)$matches[0][1],
                     'unit' => $matches[0][2],
-                    'space' => \Ximdex\Utils\Disk::transformUnits($freeSpaceBytes, $matches[0][2])
+                    'space' =>  Disk::transformUnits($freeSpaceBytes, $matches[0][2])
                 );
                 $aux[$key]['notify'] = ($aux[$key]['space'] <= $aux[$key]['limit']);
             }
         }
 
         $limits = $aux;
-        $msg = sprintf(_('Warning from the server %s: The free space in disk is %s MB'), php_uname("n"), \Ximdex\Utils\Disk::transformUnits($freeSpaceBytes, 'MB'));
+        $msg = sprintf(_('Warning from the server %s: The free space in disk is %s MB'), php_uname("n"),  Disk::transformUnits($freeSpaceBytes, 'MB'));
 
         if (isset($limits['fatal_limit']) && $limits['fatal_limit']['notify']) {
 
@@ -146,7 +143,7 @@ class FsUtils
                 fclose($hnd);
             }
         } else {
-            if ( ! empty( $filename ) && is_writable( dirname( $filename ) ) ) {
+            if (!empty($filename) && is_writable(dirname($filename))) {
                 $result = file_put_contents($filename, $data, $flags, $context);
             } else {
                 $result = false;
@@ -407,7 +404,7 @@ class FsUtils
         */
         do {
             //$fileName = Utils::generateRandomChars(8);
-            $fileName = \Ximdex\Utils\String::generateUniqueID();
+            $fileName = String::generateUniqueID();
             $tmpFile = sprintf("%s/%s%s%s", $containerFolder, $prefix, $fileName, $sufix);
         } while (is_file($tmpFile));
         XMD_Log::debug("getUniqueFile: return: $fileName | container: $containerFolder");
@@ -423,7 +420,7 @@ class FsUtils
     static public function getUniqueFolder($containerFolder, $sufix = '', $prefix = '')
     {
         do {
-            $tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix, \Ximdex\Utils\String::generateRandomChars(8), $sufix);
+            $tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix,  String::generateRandomChars(8), $sufix);
         } while (is_dir($tmpFolder));
         return $tmpFolder;
     }

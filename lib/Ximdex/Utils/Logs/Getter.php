@@ -25,14 +25,40 @@
  */
 
 
-include_once('Getter_file.class.php');
+namespace Ximdex\Utils\Logs;
 
-class Getter_rollingfile extends Getter_file
+/**
+ *
+ */
+class Getter
 {
 
-    function Getter_rollingfile($layout, $params)
-    {
-        parent::Getter($layout, $params);
-    }
 
+	var $_params = null;
+
+	var $_layout = null;
+
+
+	public function __construct($layout, $params)
+	{
+		$this->_layout = $layout;
+		$this->_params = $params;
+	}
+
+
+	function read()
+	{
+	}
+
+
+	function getLayout()
+	{
+		return $this->_layout;
+	}
+
+
+	function getParams()
+	{
+		return $this->_params;
+	}
 }

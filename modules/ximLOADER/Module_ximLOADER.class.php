@@ -29,12 +29,12 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Modules\Module;
+use Ximdex\Utils\FsUtils;
 
 
 ModulesManager::file('/inc/cli/CliParser.class.php');
 ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/fsutils/FsUtils.class.php');
 ModulesManager::file(MODULE_XIMLOADER_PATH . '/BuildParser.class.php');
 
 class Module_ximLOADER extends Module
@@ -281,7 +281,7 @@ class Module_ximLOADER extends Module
 
         // RNGs
         $pvds = $this->project->getPVD('RNG');
-        $this->templates = $this->insertFiles($this->project->projectid, \App::getValue( "SchemasDirName"), $pvds);
+        $this->templates = $this->insertFiles($this->project->projectid, \App::getValue("SchemasDirName"), $pvds);
 
         // Update XSL
         $xsls = $this->project->getPTD('XSL');
@@ -348,7 +348,7 @@ class Module_ximLOADER extends Module
         }
 
         $server->serverid = $serverId;
-        $server->url = preg_replace('/\{URL_ROOT\}/', \App::getValue( 'UrlRoot'), $server->url);
+        $server->url = preg_replace('/\{URL_ROOT\}/', \App::getValue('UrlRoot'), $server->url);
         $server->initialDirectory = preg_replace('/\{XIMDEX_ROOT_PATH\}/', XIMDEX_ROOT_PATH, $server->initialDirectory);
 
         $nodeServer = new Node($serverId);
@@ -532,8 +532,8 @@ class Module_ximLOADER extends Module
         $node = new Node($ptdFolderId);
         $io = new BaseIO();
 
-        $ximdexUrl = \App::getValue( 'UrlRoot');
-        $projectUrl = \App::getValue( 'UrlRoot') . '/data/nodes/' . $this->projectName;
+        $ximdexUrl = \App::getValue('UrlRoot');
+        $projectUrl = \App::getValue('UrlRoot') . '/data/nodes/' . $this->projectName;
         $servers = $this->project->getServers();
         $serverUrl = $projectUrl . '/' . $servers[0]->name;
 

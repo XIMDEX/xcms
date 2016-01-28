@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/nodetypes/filenode.php');
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');

@@ -20,51 +20,55 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Utils\Logs;
 
 
-/**
- *  
- */
-class Event {
+class MN_Log
+{
 
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $_params;
-	
-	
-	/**
-	 * Constructor
-	 * @return unknown_type
-	 */
-	function Event() {
 
-		$this->_params = new \Ximdex\Utils\AssociativeArray();
-	}
-	/**
-	 * 
-	 * @param $key
-	 * @param $value
-	 * @return unknown_type
-	 */
-	function setParam($key, $value) {
+    public static function write($msg, $level = LOGGER_LEVEL_INFO)
+    {
+        Loggeable::write($msg, 'mn_logger', $level);
+    }
 
-		$this->_params->set($key, $value);
-	}
-	/**
-	 * 
-	 * @param $key
-	 * @return unknown_type
-	 */
-	function & getParam($key) {
+    public static function debug($msg)
+    {
+        Loggeable::debug($msg, 'mn_logger');
+    }
 
-		return $this->_params->get($key);
-	}
+    public static function info($msg)
+    {
+        Loggeable::info($msg, 'mn_logger');
+    }
+
+    public static function warning($msg)
+    {
+        Loggeable::warning($msg, 'mn_logger');
+    }
+
+
+    public static function error($msg)
+    {
+        Loggeable::error($msg, 'mn_logger');
+    }
+
+    public static function fatal($msg)
+    {
+        Loggeable::fatal($msg, 'mn_logger');
+    }
+
+
+    public static function display($msg)
+    {
+        // detect environment (cli / web)
+        $output = sprintf("[%s]: %s\n", strftime("%d-%m-%y %T"), $msg);
+        echo $output;
+    }
+
 }
-?>
