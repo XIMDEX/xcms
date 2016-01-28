@@ -26,11 +26,11 @@
 
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/RelStrdocNode.class.php');
 ModulesManager::file('/inc/model/List_Label.class.php');
 ModulesManager::file('/inc/model/RelVersionsLabel.class.php');
-ModulesManager::file('/inc/model/node.php');
 
 class Action_poolPreview extends ActionAbstract {
 

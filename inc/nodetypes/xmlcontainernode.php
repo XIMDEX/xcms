@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/nodetypes/foldernode.php');
 ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 ModulesManager::file('/inc/model/language.php');

@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Action ;
+use Ximdex\Models\Node;
 
 
 ModulesManager::file('/inc/model/orm/Users_ORM.class.php');

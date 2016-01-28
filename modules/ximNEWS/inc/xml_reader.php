@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/extensions/domit/xml_domit_include.php');
 ModulesManager::file('/extensions/domit/xml_domit_shared.php');
 ModulesManager::file('/extensions/domit/xml_domit_parser.php');

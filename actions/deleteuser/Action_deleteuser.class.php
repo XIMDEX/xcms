@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 if(ModulesManager::isEnabled('ximDEMOS')){
 	require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/UnverifiedUsers_ORM.class.php');
 }

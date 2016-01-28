@@ -8,7 +8,7 @@ use Ximdex\Runtime\App;
 use Permission;
 use Group;
 use Role;
-use Node;
+use Ximdex\Models\Node;
 use DB_legacy as DB;
 use ModulesManager;
 use NoActionsInNode;
@@ -209,7 +209,7 @@ class User extends UsersORM
 
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $node = new \Node($nodeID);
+            $node = new \Ximdex\Models\Node($nodeID);
             if ($node->get('IdNode') > 0) {
                 $userList = $node->GetUserList($ignoreGeneralGroup);
                 if (in_array($this->get('IdUser'), $userList)) {

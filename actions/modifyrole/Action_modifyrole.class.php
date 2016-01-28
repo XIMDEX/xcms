@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 use Ximdex\Models\Action;
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 

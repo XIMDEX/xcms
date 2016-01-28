@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/nodetypes/structureddocument.php');
 ModulesManager::file('/inc/model/XimNewsNews.inc', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsArea.php', 'ximNEWS');

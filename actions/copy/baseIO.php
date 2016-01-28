@@ -25,8 +25,7 @@
  */
 
 
-
-	
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/ExportXml.class.php', 'ximIO');
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');

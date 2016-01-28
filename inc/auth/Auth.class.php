@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 use Ximdex\Models\ORM\ContextsOrm;
 
 if (!defined('XIMDEX_ROOT_PATH')) {

@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/orm/XimNewsBulletins_ORM.class.php', 'ximNEWS');
 ModulesManager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');

@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');

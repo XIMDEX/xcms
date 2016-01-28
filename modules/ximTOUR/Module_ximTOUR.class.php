@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Models\Node;
 use Ximdex\Modules\Module;
 
 
@@ -32,7 +33,7 @@ ModulesManager::file('/inc/cli/CliParser.class.php');
 ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/model/RelRolesActions.class.php');
 ModulesManager::file('/inc/model/role.php');
-ModulesManager::file('/inc/model/node.php');
+
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/model/orm/RelRolesStates_ORM.class.php');
 ModuleSManager::file(MODULE_XIMLOADER_PATH . '/Module_ximLOADER.class.php');

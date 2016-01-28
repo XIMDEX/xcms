@@ -44,12 +44,11 @@ class Node
     public function __construct($idNode = null, $lazyMode = true)
     {
 
-        \Ximdex\Modules\Manager::file("/inc/model/node.php");
-        \Ximdex\Modules\Manager::file("/inc/model/user.php");
+         \Ximdex\Modules\Manager::file("/inc/model/user.php");
 
 
         if ($idNode) {
-            $this->node = new \Node($idNode);
+            $this->node = new \Ximdex\Models\Node($idNode);
 
         }
         $this->lazyMode = $lazyMode;
@@ -76,7 +75,7 @@ class Node
             return false;
         }
 
-        $node = new \Node($nodeid);
+        $node = new \Ximdex\Models\Node($nodeid);
 
         if ($node->GetID() == null) {
             return false;
@@ -94,7 +93,7 @@ class Node
     public function existsNode($nodeId)
     {
         $id = (int)$nodeId;
-        $node = new \Node($id);
+        $node = new \Ximdex\Models\Node($id);
 
         return $node->get("IdNode") != null;
     }
@@ -108,7 +107,7 @@ class Node
     public function getNode($idNode = null)
     {
         if ($idNode)
-            return $this->existsNode($idNode) ? new \Node($idNode) : null;
+            return $this->existsNode($idNode) ? new \Ximdex\Models\Node($idNode) : null;
         else
             return $this->node;
     }
@@ -162,7 +161,7 @@ class Node
      */
     public function isOfNodeType($node, $nodetypeId)
     {
-        $n = is_object($node) && $node instanceof Node ? $node : new \Node($node);
+        $n = is_object($node) && $node instanceof Node ? $node : new \Ximdex\Models\Node($node);
 
         return $n->GetNodeType() == $nodetypeId;
     }
@@ -188,7 +187,7 @@ class Node
     {
         $nid = $node instanceof Node ? $node->GetID() : $node;
 
-        $n = new \Node($nid);
+        $n = new \Ximdex\Models\Node($nid);
         $res = $n->DeleteNode(true);
 
         return $res > 0;
@@ -251,12 +250,12 @@ class Node
         //If $valueToReturn is array of Ids
         if (is_array($valueToReturn)) {
             foreach ($valueToReturn as $idNode) {
-                $tmpNode = new \Node($idNode);
+                $tmpNode = new \Ximdex\Models\Node($idNode);
                 if ($tmpNode->get("IdNode"))
                     $result[] = $tmpNode;
             }
         } else if (is_int($valueToReturn)) { //If $valueToReturn is a node id.
-            $result = new \Node($valueToReturn);
+            $result = new \Ximdex\Models\Node($valueToReturn);
         } else if (is_object($valueToReturn)
             && strtolower(get_class($valueToReturn)) == "node"
         ) { //If $valueToReturn is a Node object

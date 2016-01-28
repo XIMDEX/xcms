@@ -59,7 +59,7 @@ class NodeType extends NodeTypesOrm{
 		$this->errorList[2] = _('Nodetype does not exist');
 		$this->flagErr = FALSE;
 		$this->autoCleanErr = TRUE;
-
+		$this->ID  = $nodeTypeID ;
 		parent::__construct($nodeTypeID);
 	}
 
@@ -86,7 +86,19 @@ class NodeType extends NodeTypesOrm{
 	 * @param $description
 	 * @param $class
 	 * @param $nodeTypeID
-	 * @return NodeTypeID - lo carga como atributo
+
+	 */
+	/**
+	 * @param $name
+	 * @param $icon
+	 * @param $isRenderizable
+	 * @param $hasFSEntity
+	 * @param $canAttachGroups
+	 * @param $isContentNode
+	 * @param $description
+	 * @param $class
+	 * @param null $nodeTypeID
+	 * @return bool|null|string
 	 */
 	function CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode, $description, $class, $nodeTypeID=null)
 	{
@@ -106,7 +118,11 @@ class NodeType extends NodeTypesOrm{
 	 * Returns an array with the ids of all existing nodetypes
 	 * @return array of idNodeType
 	 */
+	/**
+	 * @return array|null
+	 */
 	function GetAllNodeTypes(){
+		$salida = null ;
 		$sql = "SELECT idNodeType FROM NodeTypes";
 		$dbObj = new DB();
 		$dbObj->Query($sql);
@@ -124,7 +140,9 @@ class NodeType extends NodeTypesOrm{
 
 	/**
 	 *  Returns the current nodetype id
-	 * @return nodetypeid
+ 	 */
+	/**
+	 * @return bool|string
 	 */
 	function GetID(){
 		return $this->get('IdNodeType');
@@ -146,9 +164,8 @@ class NodeType extends NodeTypesOrm{
 	}
 
 	/**
-	 *
 	 * @param $name
-	 * @return unknown_type
+	 * @return bool|int
 	 */
 	function SetByName($name){
 		$dbObj = new DB();
@@ -320,25 +337,22 @@ class NodeType extends NodeTypesOrm{
 	}
 
 	/**
-	 *
-	 * @return unknown_type
+	 * @return bool
 	 */
 	public function isFolder() {
 		return ($this->get('IsFolder') || $this->get('IsVirtualFolder'));
 	}
 
 	/**
-	 *
-	 * @return unknown_type
+	 * @return bool|string
 	 */
 	function GetIsFolder() {
     	return $this->get("IsFolder");
 	}
 
 	/**
-	 *
 	 * @param $value
-	 * @return unknown_type
+	 * @return bool|int|null|string
 	 */
 	function SetIsFolder($value) {
 		if (!($this->get('IdNodeType') > 0)) {
@@ -354,17 +368,15 @@ class NodeType extends NodeTypesOrm{
 	}
 
 	/**
-	 *
-	 * @return unknown_type
+	 * @return bool|string
 	 */
 	function GetIsPlainFile() {
     	return $this->get("IsPlainFile");
 	}
 
 	/**
-	 *
 	 * @param $value
-	 * @return unknown_type
+	 * @return bool|int|null|string
 	 */
 	function SetIsPlainFile($value) {
 		if (!($this->get('IdNodeType') > 0)) {
@@ -380,17 +392,15 @@ class NodeType extends NodeTypesOrm{
 	}
 
 	/**
-	 *
-	 * @return unknown_type
+	 * @return bool|string
 	 */
 	function GetIsVirtualFolder() {
     	return $this->get("IsVirtualFolder");
 	}
 
 	/**
-	 *
 	 * @param $value
-	 * @return unknown_type
+	 * @return bool|int|null|string
 	 */
 	function SetIsVirtualFolder($value) {
 		if (!($this->get('IdNodeType') > 0)) {
@@ -511,7 +521,9 @@ class NodeType extends NodeTypesOrm{
 
 	/**
 	 * Returns the current node type icon
-	 * @return return string (icon)
+ 	 */
+	/**
+	 * @return bool|string
 	 */
 	function GetIcon() {
     	return $this->get("Icon");

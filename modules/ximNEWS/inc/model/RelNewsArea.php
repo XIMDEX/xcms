@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/orm/RelNewsArea_ORM.class.php', 'ximNEWS');
 

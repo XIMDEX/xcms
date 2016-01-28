@@ -25,9 +25,7 @@
  */
 
 
-
-
- 
+use Ximdex\Models\Node;
 
 ModulesManager::file('/actions/movenode/baseIO.php');
 

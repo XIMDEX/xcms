@@ -25,8 +25,7 @@
  */
 
 
-
-
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsNews.inc', 'ximNEWS');

@@ -26,6 +26,8 @@
  */
 
 
+use Ximdex\Models\Node;
+
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 if (! defined ( 'XIMDEX_ROOT_PATH' ))

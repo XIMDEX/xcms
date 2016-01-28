@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -34,7 +35,7 @@ ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/model/language.php');
- ModulesManager::file('/inc/model/node.php');
+
 
 /***
     Class for Metadata Manegement

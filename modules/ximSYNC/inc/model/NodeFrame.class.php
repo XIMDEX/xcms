@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/model/orm/NodeFrames_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');

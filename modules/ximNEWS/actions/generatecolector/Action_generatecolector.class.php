@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/XimNewsColectorUsers.php', 'ximNEWS');
 

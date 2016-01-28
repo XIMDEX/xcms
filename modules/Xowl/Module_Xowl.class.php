@@ -28,7 +28,7 @@ use Ximdex\Modules\Module;
 
 
 // Point to ximdex root and include necessary class.
-ModulesManager::file('/inc/model/node.php');
+
 ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('modules/Xowl/config/xowl.conf');
 ModulesManager::file('/inc/rest/REST_Provider.class.php');

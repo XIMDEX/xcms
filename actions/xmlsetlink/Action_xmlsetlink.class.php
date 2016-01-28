@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/RelPvds.class.php');
 

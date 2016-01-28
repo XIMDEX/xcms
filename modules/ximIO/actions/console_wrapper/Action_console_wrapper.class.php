@@ -26,8 +26,8 @@
 
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
-ModulesManager::file('/inc/model/node.php');
 ModulesManager::file('/inc/cli/Shell.class.php');
 ModulesManager::file('/inc/model/language.php');
  ModulesManager::file('/inc/model/group.php');

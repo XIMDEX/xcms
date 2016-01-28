@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
@@ -32,7 +33,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
  require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
+
 require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xmldocumentnode.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');

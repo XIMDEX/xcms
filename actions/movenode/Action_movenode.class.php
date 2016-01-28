@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 
 ModulesManager::file('/actions/movenode/baseIO.php');
 ModulesManager::file('/actions/copy/Action_copy.class.php');

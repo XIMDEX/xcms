@@ -25,6 +25,7 @@
  * **************************************************************************** */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');

@@ -25,9 +25,10 @@
  */
 
 
+use Ximdex\Models\Node;
+
 include_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/InstallManager.class.php');
 
 
 class FastTraverseManager extends InstallManager{

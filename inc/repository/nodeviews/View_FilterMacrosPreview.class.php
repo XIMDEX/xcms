@@ -26,9 +26,10 @@
 
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/node.php');
+
  require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');

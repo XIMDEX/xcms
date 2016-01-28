@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/model/RelSectionXimlet.class.php');

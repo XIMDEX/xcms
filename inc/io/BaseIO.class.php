@@ -24,12 +24,13 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision: 8778 $
  */
+use Ximdex\Models\Node;
+
 define('MODE_NODETYPE', 0);
 define('MODE_NODEATTRIB', 1);
 
 ModulesManager::file('/inc/io/BaseIOConstants.php');
-ModulesManager::file('/inc/model/node.php');
-ModulesManager::file('/inc/model/structureddocument.php');
+ ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/model/State.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');

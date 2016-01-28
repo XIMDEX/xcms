@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/model/orm/PublishingReport_ORM.class.php', 'ximSYNC');
 
 /**

@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');

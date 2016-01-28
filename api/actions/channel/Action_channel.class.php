@@ -25,8 +25,9 @@
  * @version $Revision$
  */
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
- //use Swagger\Annotations as SWG;
+//use Swagger\Annotations as SWG;
 
 /**
  *

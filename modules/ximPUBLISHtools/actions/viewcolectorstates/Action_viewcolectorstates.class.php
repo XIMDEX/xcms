@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 use Ximdex\Utils\Session;
 ModulesManager::file('/inc/model/node.inc');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');

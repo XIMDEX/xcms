@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 

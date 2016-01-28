@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 use Ximdex\Modules\Module ;
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');

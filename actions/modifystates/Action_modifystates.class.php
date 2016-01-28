@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Action;
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/pipeline/Pipeline.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');

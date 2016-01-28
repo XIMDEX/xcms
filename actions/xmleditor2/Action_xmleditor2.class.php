@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/serializer/Serializer.class.php');
 ModulesManager::file('/inc/mvc/Request.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');

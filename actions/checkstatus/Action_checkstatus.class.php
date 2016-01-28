@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/nodetypes/statenode.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');

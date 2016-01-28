@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 
 class Action_edittext extends ActionAbstract {

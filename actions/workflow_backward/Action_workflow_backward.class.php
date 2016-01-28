@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/model/role.php');

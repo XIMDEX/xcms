@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Node;
+
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');

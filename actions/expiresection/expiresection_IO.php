@@ -26,7 +26,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 
 ini_set("include_path",".:inc:../inc:../../inc");
 $ximDEX_path = realpath(dirname(__FILE__) .  "/../../");

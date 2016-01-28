@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');

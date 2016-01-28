@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Node;
 
 require_once XIMDEX_ROOT_PATH . '/inc/xvfs/XVFS_Entity.class.php';
 

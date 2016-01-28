@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');

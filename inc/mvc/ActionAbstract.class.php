@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Action ;
 
+use Ximdex\Models\Node;
 use Ximdex\Runtime\App ;
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__). "/../../"));

@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Node;
 
 include_once realpath(dirname(__FILE__) . "/../../../../").'/bootstrap/start.php';
 
