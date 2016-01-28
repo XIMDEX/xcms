@@ -25,10 +25,10 @@
  */
 
 
+use Ximdex\Runtime\Request;
 use Ximdex\Runtime\Response ;
 use Ximdex\Logger as XMD_Log ;
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
-
+ 
 /**
  *
  * @brief Controller pseudo abstract class for Actions, Applications and Controllers

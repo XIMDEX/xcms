@@ -29,8 +29,7 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');

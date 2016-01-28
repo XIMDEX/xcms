@@ -26,9 +26,9 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Request;
 
 ModulesManager::file('/inc/serializer/Serializer.class.php');
-ModulesManager::file('/inc/mvc/Request.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');

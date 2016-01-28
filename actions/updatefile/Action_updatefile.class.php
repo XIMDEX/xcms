@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Request;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 

@@ -46,4 +46,3 @@ ModulesManager::file("/inc/model/permissions.php");
 ModulesManager::file("/inc/model/structureddocument.php");
 ModulesManager::file("/inc/log/Action_log.class.php");
 ModulesManager::file("/inc/persistence/XSession.class.php");
-ModulesManager::file("/inc/mvc/Request.class.php");

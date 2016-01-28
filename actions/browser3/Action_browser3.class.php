@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Request;
 
 ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/search/QueryProcessor.class.php');

@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Runtime\Request;
 
 ModulesManager::file('/actions/browser3/inc/IDatasource.iface.php');
 ModulesManager::file('/actions/browser3/inc/AbstractDatasource.class.php');
