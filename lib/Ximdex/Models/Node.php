@@ -793,8 +793,8 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            if ($this->nodeType->get('IsRenderizable')) {
-                if ($this->nodeType->get('HasFSEntity')) {
+            if ($this->nodeType->GetIsRenderizable()) {
+                if ($this->nodeType->GetHasFSEntity()) {
                     $this->class->RenderizeNode();
                 }
                 if ($recursive) {
