@@ -26,19 +26,15 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
-
-
 
 
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/actions/workflow_forward/baseIO.php');
-ModulesManager::file('/inc/parsers/ParsingDependencies.class.php');
-
-
 
 
 class FileUpdater
@@ -81,7 +77,7 @@ class FileUpdater
             . " FROM XimIONodeTranslations xnt"
             . " INNER JOIN Nodes n ON xnt.path IS NOT NULL AND xnt.IdImportationNode = n.IdNode AND xnt.status >= %s AND (n.SharedWorkflow IS NULL OR n.SharedWorkflow = 0)"
             . " INNER JOIN XimIOExportations xe ON xe.idXimIOExportation = xnt.IdXimioExportation and xe.timeStamp = '%s'",
-             Constants::IMPORTED_STATUS_OK,
+            Constants::IMPORTED_STATUS_OK,
             $this->revision);
 
         $dependencesGetter = new ParsingDependencies();

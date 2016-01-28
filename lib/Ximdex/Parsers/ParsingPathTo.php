@@ -1,4 +1,7 @@
 <?php
+namespace Ximdex\Parsers;
+
+use DB_legacy as DB;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -24,42 +27,45 @@ use Ximdex\Models\Node;
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-class ParsingPathTo {
+class ParsingPathTo
+{
 
 
     private $idNode = null;
     private $pathMethod = null;
     private $channel = null;
 
-    public function getIdNode(){
+    public function getIdNode()
+    {
         return $this->idNode;
     }
 
-    public function getPathMethod(){
+    public function getPathMethod()
+    {
         return $this->pathMethod;
     }
 
-    public function getChannel(){
+    public function getChannel()
+    {
         return $this->channel;
     }
-    
+
     /**
      * Get Idnode and channel from the params of the pathto method
      * @param string $pathToParams
      * @return Object This
      */
-    public function parsePathTo($pathToParams, $nodeId=null)
+    public function parsePathTo($pathToParams, $nodeId = null)
     {
         $currentNodeServer = null;
-        if ($nodeId){
+        if ($nodeId) {
             $node = new Node($nodeId);
-            $currentNodeServer = $node->getServer();    
+            $currentNodeServer = $node->getServer();
         }
-        
+
         $result = null;
         $nodeName = "";
         $language = false;

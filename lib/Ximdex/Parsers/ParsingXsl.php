@@ -20,19 +20,22 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Parsers;
+
+use DOMDocument;
+use DOMXPath;
 use Ximdex\Models\Node;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Logger as XMD_Log;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-class ParsingXsl {
+class ParsingXsl
+{
 
 	private $xpathObj;
 	private $idTemplate = NULL;
@@ -40,44 +43,47 @@ class ParsingXsl {
 	private $includedElements = array();
 	private $path = NULL;
 
-	function __construct($idTemplate = NULL, $path = NULL) {
-		if(!$this->setNode($idTemplate, $path))
+	function __construct($idTemplate = NULL, $path = NULL)
+	{
+		if (!$this->setNode($idTemplate, $path))
 			return NULL;
 		$this->setXpathObj();
 		$this->setIncludedElements();
 	}
 
-	public function getIncludedElements($name = NULL, $removeExtension = false, $baseName = false) {
-		if($removeExtension || $baseName)
+	public function getIncludedElements($name = NULL, $removeExtension = false, $baseName = false)
+	{
+		if ($removeExtension || $baseName)
 			$this->setIncludedElements($removeExtension, $baseName);
 
-		if(is_null($name))
+		if (is_null($name))
 			return $this->includedElements;
 
 		$out = array();
-		foreach($this->includedElements as $includedElement) {
-			if(strpos($includedElement, $name) !== false)
+		foreach ($this->includedElements as $includedElement) {
+			if (strpos($includedElement, $name) !== false)
 				$out[] = $includedElement;
 		}
 
 		return $out;
 	}
 
-	private function setIncludedElements($removeExtension = false, $baseName = false) {
+	private function setIncludedElements($removeExtension = false, $baseName = false)
+	{
 
 		$this->includedElements = array();
 
-		if(!$this->setXpathObj())
+		if (!$this->setXpathObj())
 			return false;
 
 		$nodeList = $this->xpathObj->query('//*[local-name(.)="include"]');
 		if ($nodeList->length > 0) {
 			foreach ($nodeList as $domNode) {
-				if($domNode->nodeName == 'xsl:include') {
+				if ($domNode->nodeName == 'xsl:include') {
 					$templateRef = $domNode->getAttribute('href');
-					if($baseName)
+					if ($baseName)
 						$templateRef = basename($templateRef);
-					if($removeExtension)
+					if ($removeExtension)
 						$templateRef = str_replace('.xsl', '', $templateRef);
 					$this->includedElements[] = $templateRef;
 				}
@@ -87,19 +93,20 @@ class ParsingXsl {
 		return true;
 	}
 
-	private function setNode($idNode, $path) {
-		if(is_null($idNode) && is_null($path)) {
+	private function setNode($idNode, $path)
+	{
+		if (is_null($idNode) && is_null($path)) {
 			XMD_Log::error('Cannot parse template: idNode and path are NULL');
 			return false;
 		}
 
-		if(is_null($idNode)) {
+		if (is_null($idNode)) {
 			$this->path = $path;
 			return true;
 		}
 
 		$this->node = new Node($idNode);
-		if(!($this->node->get('IdNode')) > 0) {
+		if (!($this->node->get('IdNode')) > 0) {
 			XMD_Log::error('Cannot parse template: Non existant node ' . $idNode);
 			return false;
 		}
@@ -113,15 +120,16 @@ class ParsingXsl {
 		return true;
 	}
 
-	private function setXpathObj() {
-		if($this->node)
+	private function setXpathObj()
+	{
+		if ($this->node)
 			$content = $this->node->GetContent();
 		else
 			$content = FsUtils::file_get_contents($this->path);
 		$domDoc = new DOMDocument();
 		$domDoc->preserveWhiteSpace = false;
 		$domDoc->validateOnParse = true;
-	   $domDoc->formatOutput = true;
+		$domDoc->formatOutput = true;
 		$domDoc->loadXML($content);
 
 		$this->xpathObj = new DOMXPath($domDoc);
@@ -129,4 +137,5 @@ class ParsingXsl {
 		return true;
 	}
 }
+
 ?>

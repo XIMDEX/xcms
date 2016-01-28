@@ -27,7 +27,9 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Parsers\ParsingXsl;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Utils\FsUtils;
 
@@ -35,17 +37,15 @@ ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PreviewInServer.class.php');
 ModulesManager::file('/inc/nodetypes/xsltnode.php');
- ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
+ModulesManager::file('/actions/enricher/model/Enricher.class.php', 'Xowl');
 ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xedit.class.php');
-ModulesManager::file('/inc/parsers/ParsingXsl.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
-ModulesManager::file('/inc/parsers/ParsingJsGetText.class.php');
-ModulesManager::file('/services/Xowl/OntologyService.class.php');
+ ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 
 class XmlEditor_KUPU extends XmlEditor_Abstract
@@ -107,7 +107,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $availableViews[] = 'normal';
         }
 
-        if ((boolean)\App::getValue( 'PreviewInServer') && (boolean)count($channelList)) {
+        if ((boolean)\App::getValue('PreviewInServer') && (boolean)count($channelList)) {
             $availableViews[] = 'pro';
         }
 
@@ -125,8 +125,8 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $xmlFile = $this->_base_url . '&method=getXmlFile&view=' . $view;
         $actionUrlShowPost = $this->_base_url . '&method=showPost';
 
-        $actionURL      = '/actions/xmleditor2';
-        $kupuURL        = '/extensions/kupu';
+        $actionURL = '/actions/xmleditor2';
+        $kupuURL = '/extensions/kupu';
 
         $jsFiles = array(
             Extensions::JQUERY,
@@ -134,7 +134,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             Extensions::JQUERY_PATH . '/js/fix.jquery.getters.js',
             Extensions::JQUERY_PATH . '/js/fix.jquery.parsejson.js',
             Extensions::JQUERY_PATH . '/plugins/jquery.json/jquery.json-2.2.min.js',
-            Extensions::BOOTSTRAP   . '/js/bootstrap.min.js',
+            Extensions::BOOTSTRAP . '/js/bootstrap.min.js',
 
             '/inc/js/helpers.js',
             '/inc/js/sess.js',
@@ -293,12 +293,12 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         $i18n = new ParsingJsGetText();
         $jsFiles = $i18n->getTextArrayOfJs($jsFiles);
 
-        $extensionsURL  = \App::getValue( 'UrlRoot') . '/extensions';
-        $actionURL      = \App::getValue( 'UrlRoot') . $actionURL;
-        $kupuURL        = \App::getValue( 'UrlRoot') . $kupuURL;
+        $extensionsURL = \App::getValue('UrlRoot') . '/extensions';
+        $actionURL = \App::getValue('UrlRoot') . $actionURL;
+        $kupuURL = \App::getValue('UrlRoot') . $kupuURL;
 
         $cssFiles = array(
-            \App::getValue( 'UrlRoot') . '/xmd/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
+            \App::getValue('UrlRoot') . '/xmd/style/jquery/custom_theme/jquery-ui-1.7.custom.css',
             $actionURL . '/views/common/css/kupustyles.css',
             $actionURL . '/views/common/css/toolboxes.css',
             $actionURL . '/views/common/css/treeview.css',
@@ -312,11 +312,11 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $extensionsURL . '/bootstrap/dist/css/bootstrap.min.css',
 
 //future		$actionURL . '/views/common/css/colorpicker.css',
-            \App::getValue( 'UrlRoot') . '/xmd/style/fonts.css',
-            \App::getValue( 'UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
-            \App::getValue( 'UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',
-            \App::getValue( 'UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
-            \App::getValue( 'UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
+            \App::getValue('UrlRoot') . '/xmd/style/fonts.css',
+            \App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tabs/common_views.css',
+            \App::getValue('UrlRoot') . '/inc/widgets/select/css/ximdex.select.css',
+            \App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/treeview/treeview.css',
+            \App::getValue('UrlRoot') . '/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput_editor.css',
         );
 
         $baseTags = array(
@@ -332,7 +332,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $namespaces = json_encode($this->getAllNamespaces());
         $relTags = new RelTagsNodes();
-        $tags = str_replace("'",'&#39;',
+        $tags = str_replace("'", '&#39;',
             json_encode($relTags->getTags($idnode), JSON_UNESCAPED_UNICODE));
 
         $onloadfunctions = sprintf("kupu = startKupu({%s});", implode(", ", $options));
@@ -399,7 +399,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (!file_exists($tmpFilePath) || !$response['tmp_mod_date'] = filectime($tmpFilePath)) {
             $response['result'] = false;
@@ -427,7 +427,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (file_exists($tmpFilePath) && !FsUtils::delete($tmpFilePath)) {
             $response['result'] = false;
@@ -445,7 +445,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
             $response['result'] = false;
             return $response;
         }
-        $tmpFilePath = \App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
+        $tmpFilePath = \App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode;
 
         if (!$this->setNode($idNode)) {
             XMD_Log::error(_("A non-existing node cannot be saved: ") . $idNode);
@@ -488,15 +488,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
             // NOTE: Delete docxap tags and UID attributes
             $xmlContent = $this->_normalizeXmlDocument($idNode, $content);
-            $xmlContent = \Ximdex\Utils\String::stripslashes( $xmlContent);
+            $xmlContent = \Ximdex\Utils\String::stripslashes($xmlContent);
 
             // Saving XML
             if ($autoSave === false) {
-                $this->node->SetContent(\Ximdex\Utils\String::stripslashes( $xmlContent), true);
+                $this->node->SetContent(\Ximdex\Utils\String::stripslashes($xmlContent), true);
                 $this->node->RenderizeNode();
             } else {
                 $idUser = \Ximdex\Utils\Session::get('userID');
-                if (!$idUser || !FsUtils::file_put_contents(\App::getValue( 'AppRoot') . \App::getValue( 'TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\String::stripslashes( $xmlContent))) {
+                if (!$idUser || !FsUtils::file_put_contents(\App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\String::stripslashes($xmlContent))) {
                     XMD_Log::error(_("The content of " . $idNode . " could not be saved"));
                     return false;
                 }
@@ -541,7 +541,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         // TODO: Do correct docxap parametrize & insertion in document
         $nodeTypeName = $this->node->nodeType->get('Name');
         if ($nodeTypeName == 'RngVisualTemplate') {
-            $content = sprintf('%s%s<docxap uid="%s.0" xmlns:xim="%s">%s</docxap>', \App::getValue( 'EncodingTag'), \App::getValue( 'DoctypeTag'), $idNode, PVD2RNG::XMLNS_XIM, str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $this->node->getContent()));
+            $content = sprintf('%s%s<docxap uid="%s.0" xmlns:xim="%s">%s</docxap>', \App::getValue('EncodingTag'), \App::getValue('DoctypeTag'), $idNode, PVD2RNG::XMLNS_XIM, str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $this->node->getContent()));
             return $content;
         }
 
@@ -554,7 +554,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         if (!is_null($content)) {
             $content = $this->_normalizeXmlDocument($idNode, $content);
-            $content = \Ximdex\Utils\String::stripslashes( $content);
+            $content = \Ximdex\Utils\String::stripslashes($content);
         } else {
             $content = '';
         }
@@ -564,7 +564,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $pipelineManager = new PipelineManager();
         $content = $pipelineManager->getCacheFromProcessAsContent($lastVersion, 'StrDocToXedit', $args);
-        exec(sprintf('rm -f %s%s/preview_%s_*', App::getValue('AppRoot'),App::getValue('TempRoot'), $_GET["nodeid"]));
+        exec(sprintf('rm -f %s%s/preview_%s_*', App::getValue('AppRoot'), App::getValue('TempRoot'), $_GET["nodeid"]));
         return $content;
     }
 
@@ -635,7 +635,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
     public function getAnnotationFile($idNode, $content)
     {
         if (ModulesManager::isEnabled('Xowl')) {
-            if (\App::getValue( 'EnricherKey') === NULL || \App::getValue( 'EnricherKey') == '') {
+            if (\App::getValue('EnricherKey') === NULL || \App::getValue('EnricherKey') == '') {
                 XMD_Log::error(_("Xowl_token configuration value has not been defined"));
                 $resp = array("status" => "No  Xowl_token defined", "videourl" => "<center><iframe width='420' height='315' src='http://www.youtube.com/embed/xnhUzYKqJPw' frameborder='0' allowfullscreen></iframe></center>");
             } else {
@@ -708,7 +708,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         $xslParser = new ParsingXsl($docxapId);
         $templatesInclude = $xslParser->getIncludedElements('templates_include');
-        $templatesIncludePath = str_replace(\App::getValue( 'UrlRoot'), \App::getValue( 'AppRoot'), $templatesInclude[0]);
+        $templatesIncludePath = str_replace(\App::getValue('UrlRoot'), \App::getValue('AppRoot'), $templatesInclude[0]);
         $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
         $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
 

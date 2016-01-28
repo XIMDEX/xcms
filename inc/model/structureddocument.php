@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingDependencies;
 
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/StructuredDocuments_ORM.class.php';
 require_once(XIMDEX_ROOT_PATH . "/inc/parsers/ParsingDependences.class.php" );

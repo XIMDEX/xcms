@@ -28,14 +28,14 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingPathTo;
 
 ModulesManager::file('/inc/model/Versions.php');
- ModulesManager::file('/inc/model/Server.class.php');
+ModulesManager::file('/inc/model/Server.class.php');
 ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
-ModulesManager::file('/inc/parsers/ParsingPathTo.class.php');
 
 class View_FilterMacros extends Abstract_View implements Interface_View
 {
@@ -391,10 +391,10 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $node = new Node($target);
         $section = $this->getSectionNode($target);
         if (!$section) {
-            return \App::getValue( 'EmptyHrefCode');
+            return \App::getValue('EmptyHrefCode');
         }
         if ($this->_isPreviewServer) {
-            return \App::getValue( 'UrlRoot') . \App::getValue( 'NodeRoot') . '/' . $section->GetPublishedPath(
+            return \App::getValue('UrlRoot') . \App::getValue('NodeRoot') . '/' . $section->GetPublishedPath(
                 NULL, true);
         }
 
@@ -419,12 +419,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $targetPath = $matches[1];
 
         if (!($this->_serverNode->get('IdNode') > 0)) {
-            return \App::getValue( "EmptyHrefCode");
+            return \App::getValue("EmptyHrefCode");
         }
 
         //If preview, we return the path to data/nodes
         if ($this->_isPreviewServer) {
-            return \App::getValue( "UrlRoot") . \App::getValue( "NodeRoot") . "/" . $targetPath;
+            return \App::getValue("UrlRoot") . \App::getValue("NodeRoot") . "/" . $targetPath;
         } else {
             //Getting relative or absolute path.
             if ($this->_server->get('OverrideLocalPaths')) {
@@ -495,16 +495,16 @@ class View_FilterMacros extends Abstract_View implements Interface_View
 
         if ($this->_isPreviewServer) {
             if ($isStructuredDocument) {
-                return \App::getValue( 'UrlRoot') . \App::getValue( 'NodeRoot') . $targetNode->GetPublishedPath(
+                return \App::getValue('UrlRoot') . \App::getValue('NodeRoot') . $targetNode->GetPublishedPath(
                     $idTargetChannel, true);
             } else {
                 return $targetNode->class->GetNodeURL();
             }
         }
 
-        if (\App::getValue( 'PullMode') == 1) {
+        if (\App::getValue('PullMode') == 1) {
 
-            return \App::getValue( 'UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
+            return \App::getValue('UrlRoot') . '/services/pull/index.php?idnode=' . $targetNode->get(
                 'IdNode') . '&idchannel=' . $idTargetChannel . '&idportal=' . $this->_serverNode->get(
                 'IdNode');
         }
@@ -515,7 +515,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
         $targetServer = new server($idTargetServer);
         $idTargetServer = $targetServer->get('IdServer');
         if (!($idTargetServer > 0)) {
-            return \App::getValue( 'EmptyHrefCode');
+            return \App::getValue('EmptyHrefCode');
         }
 
         if (!$forceAbsolute && !$absolute && !$relative) {
@@ -542,7 +542,7 @@ class View_FilterMacros extends Abstract_View implements Interface_View
     {
 
         $deep = 2;
-        if ( \App::getValue("PublishPathFormat", null ) !== null  &&
+        if (\App::getValue("PublishPathFormat", null) !== null &&
             $this->_node->class &&
             method_exists($this->_node->class, "getPathToDeep")
         ) {
@@ -589,17 +589,6 @@ class View_FilterMacros extends Abstract_View implements Interface_View
     /*********************************************************/
     /****************LinkPath auxiliar methods****************/
     /*********************************************************/
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

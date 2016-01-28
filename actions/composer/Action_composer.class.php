@@ -28,16 +28,16 @@
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Parsers\ParsingXimMenu;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Session;
 use Ximdex\XML\Base;
-use Ximdex\Logger as XMD_Log ;
+use Ximdex\Logger as XMD_Log;
 use DB_legacy as DB;
 
 ModulesManager::file('/inc/utils.php');
-//
+
 ModulesManager::file('/inc/serializer/Serializer.class.php');
-ModulesManager::file('/inc/parsers/ParsingXimMenu.class.php');
 ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/model/locale.php');
@@ -50,19 +50,19 @@ class Action_composer extends ActionAbstract
 
     public function index()
     {
-         Session::check();
+        Session::check();
 
-        $ximid =  App::getValue("ximid");
-        $versionname =  App::getValue("VersionName");
+        $ximid = App::getValue("ximid");
+        $versionname = App::getValue("VersionName");
         $userID = Session::get('userID');
         $theme = $this->request->getParam('theme');
         $theme = $theme ? $theme : 'ximdex_theme';
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode( Session::get('locale'));
+        $user_locale = $locale->GetLocaleByCode(Session::get('locale'));
 
         //Stopping any active debug_render
         Session::set('debug_render', NULL);
-         Session::set('activeTheme', $theme);
+        Session::set('activeTheme', $theme);
 
         $values = array('composer_index' => self::COMPOSER_INDEX,
             'ximid' => $ximid,
@@ -99,7 +99,7 @@ class Action_composer extends ActionAbstract
         }
         $db = new DB();
         $db->query($sql);
-        $ret = $this->_echoNodeTree($idNode,  App::getValue('displayEncoding'));
+        $ret = $this->_echoNodeTree($idNode, App::getValue('displayEncoding'));
         if (($db->numRows > $items) && ($items != 0)) {
             //Paginated request
             $partes = floor($db->numRows / $items);
@@ -200,7 +200,7 @@ class Action_composer extends ActionAbstract
         if (($node_childs > 0 && $node_id < 10000) || $node_id == 13) {
             $node_name = _($node->get('Name'));
         } else {
-            $node_name =  Base::recodeSrc($node->get('Name'), $encoding);
+            $node_name = Base::recodeSrc($node->get('Name'), $encoding);
         }
         $path = Base::recodeSrc($node->getPath(), $encoding);
         $idNodeType = $node->get('IdNodeType');
@@ -278,7 +278,7 @@ class Action_composer extends ActionAbstract
         $db->query($sql);
         $queryToMatch = "/" . $find . "/i";
         $queryToMatch = str_replace(array(".", "_"), array('\.', "."), $queryToMatch);
-        $ret = $this->_echoNodeTree($idNode,  App::getValue('displayEncoding'));
+        $ret = $this->_echoNodeTree($idNode, App::getValue('displayEncoding'));
 
         if (($db->numRows > $items) && ($items != 0)) {
             //Paginated request
@@ -402,11 +402,11 @@ class Action_composer extends ActionAbstract
 
     public function readTreedata($idNode, $children = false, $desde = null, $hasta = null, $nelementos = null, $find = null)
     {
-         Session::check();
-        $userID =  Session::get('userID');
+        Session::check();
+        $userID = Session::get('userID');
 
         if (!isset($this->displayEncoding)) {
-            $this->displayEncoding =  App::getValue('displayEncoding');
+            $this->displayEncoding = App::getValue('displayEncoding');
         }
 
         // The data to be returned
@@ -897,9 +897,9 @@ class Action_composer extends ActionAbstract
     function getDefaultNode()
     {
 
-        $defaultNodeName =  App::getValue("DefaultInitNodeName");
-        $defaultNodePath =  App::getValue("DefaultInitNodePath");
-        $userID =  Session::get('userID');
+        $defaultNodeName = App::getValue("DefaultInitNodeName");
+        $defaultNodePath = App::getValue("DefaultInitNodePath");
+        $userID = Session::get('userID');
         $user = new User($userID);
         $groupList = $user->GetGroupList();
         $groupName = false;

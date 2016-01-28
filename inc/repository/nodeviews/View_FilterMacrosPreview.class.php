@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Parsers\ParsingPathTo;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 
