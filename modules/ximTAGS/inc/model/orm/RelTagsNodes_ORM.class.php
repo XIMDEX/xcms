@@ -26,9 +26,8 @@
 
 
 
-ModulesManager::file('/inc/helper/GenericData.class.php');
 
-class RelTagsNodes_ORM extends GenericData   {
+class RelTagsNodes_ORM extends \Ximdex\Data\GenericData   {
 	var $_idField = 'Node';
 	var $_table = 'RelTagsNodes';
 	var $_metaData = array(
@@ -40,4 +39,3 @@ class RelTagsNodes_ORM extends GenericData   {
 	var $TagDesc;
 	var $Node;
 }
-?>

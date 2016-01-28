@@ -40,11 +40,12 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeCacheTemplates_ORM.class.php
  */
 class PipeCacheTemplates extends PipeCacheTemplates_ORM {
 	
-	function PipeCacheTemplates($id = NULL) {
-		parent::GenericData($id);
+	public function __construct($id = null )
+	{
+		parent::__construct($id);
 	}
 
-/**
+	/**
  * Return documents which depends from a given ptd version
  *
  * @param templateVersion int
@@ -62,4 +63,3 @@ class PipeCacheTemplates extends PipeCacheTemplates_ORM {
 		}
 	}
 }
-?>

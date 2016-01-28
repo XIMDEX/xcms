@@ -37,7 +37,7 @@ require_once (XIMDEX_ROOT_PATH . '/inc/model/orm/RelValidityVersions_ORM.class.p
 class RelValidityVersions extends RelValidityVersions_ORM {
 	
 	public function __construct($id=null) {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 	/**

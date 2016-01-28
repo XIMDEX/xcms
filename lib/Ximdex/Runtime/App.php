@@ -2,6 +2,8 @@
 
 namespace Ximdex\Runtime;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\Event;
 
 Class App
 {
@@ -10,6 +12,7 @@ Class App
     protected $DIContainer = null;
     protected $DIBuilder = null;
     protected $config = null;
+    private $dispatcher = null;
 
     public function __construct()
     {
@@ -20,6 +23,9 @@ Class App
         $this->DIBuilder->setDefinitionCache(new \Doctrine\Common\Cache\ArrayCache());
         $this->DIContainer = $this->DIBuilder->build();
         $this->config = array();
+
+        $this->dispatcher = new EventDispatcher();
+
         if (self::$instance instanceof self) {
             throw new \Exception('-10, Cannot be instantiated more than once');
         } else {
@@ -136,6 +142,35 @@ Class App
         }
         require_once( App::getValue('XIMDEX_ROOT_PATH') .  $objectData  ) ;
         return self::getObject( $key ) ;
+    }
+
+    /**
+     * Get the previously defined dispatcher
+     *
+     * @return null|EventDispatcher
+     */
+    public static function getDispatcher(){
+        return self::getInstance()->dispatcher;
+    }
+
+    /**
+     * Set a listener to an event
+     *
+     * @param string $eventName
+     * @param $listener is a callable
+     */
+    public static function setListener($eventName, $listener){
+        self::getDispatcher()->addListener($eventName, $listener);
+    }
+
+    /**
+     * Dispatch an event
+     *
+     * @param string $eventName
+     * @param Event $event
+     */
+    public static function dispatchEvent($eventName, $event = null){
+        self::getDispatcher()->dispatch($eventName, $event);
     }
 
 }

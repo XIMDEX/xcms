@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,42 +21,29 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class UnverifiedUsers_ORM extends GenericData   {
-	var $_idField = 'id';
-	var $_table = 'UnverifiedUsers';
-	var $_metaData = array(
-				'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'name' => array('type' => "varchar(50)", 'not_null' => 'false'),
-				'surname' => array('type' => "varchar(50)", 'not_null' => 'false'),
-				'email' => array('type' => "varchar(250)", 'not_null' => 'false'),
-				'verification' => array('type' => "varchar(250)", 'not_null' => 'false'),
-				'isCompleted' => array('type' => "int(1)", 'not_null' => 'false'),
-				'suscribe' => array('type' => "int(1)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('id');
-	var $id;
-	var $name;
-	var $surname;
-	var $email;
-	var $verification;
-	var $isCompleted;
-	var $suscribe;
+class UnverifiedUsers_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'id';
+    var $_table = 'UnverifiedUsers';
+    var $_metaData = array(
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'name' => array('type' => "varchar(50)", 'not_null' => 'false'),
+        'surname' => array('type' => "varchar(50)", 'not_null' => 'false'),
+        'email' => array('type' => "varchar(250)", 'not_null' => 'false'),
+        'verification' => array('type' => "varchar(250)", 'not_null' => 'false'),
+        'isCompleted' => array('type' => "int(1)", 'not_null' => 'false'),
+        'suscribe' => array('type' => "int(1)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $name;
+    var $surname;
+    var $email;
+    var $verification;
+    var $isCompleted;
+    var $suscribe;
 }
-?>

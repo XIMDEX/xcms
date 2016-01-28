@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,29 +21,21 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class RelColectorUsersBatchs_ORM extends GenericData   {
-	var $_idField = 'Id';
-	var $_table = 'RelColectorUsersBatchs';
-	var $_metaData = array(
-				'Id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdColectorUser' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdBatch' => array('type' => "int(12)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('Id');
-	var $Id;
-	var $IdColectorUser;
-	var $IdBatch;
+class RelColectorUsersBatchs_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'Id';
+    var $_table = 'RelColectorUsersBatchs';
+    var $_metaData = array(
+        'Id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdColectorUser' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdBatch' => array('type' => "int(12)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('Id');
+    var $Id;
+    var $IdColectorUser;
+    var $IdBatch;
 }
-?>

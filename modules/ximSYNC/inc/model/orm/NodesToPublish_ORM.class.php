@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,44 +21,37 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class NodesToPublish_ORM extends GenericData   {
-	var $_idField = 'Id';
-	var $_table = 'NodesToPublish';
-	var $_metaData = array(
-				'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
-				'IdNodeGenerator' => array('type' => "int(11)", 'not_null' => 'true'),
-				'Version' => array('type' => "int(12)", 'not_null' => 'false'),
-				'Subversion' => array('type' => "int(12)", 'not_null' => 'false'),
-				'DateUp' => array('type' => "int(14)", 'not_null' => 'true'),
-				'DateDown' => array('type' => "int(14)", 'not_null' => 'false'),
-				'State' => array('type' => "tinyint(1)", 'not_null' => 'true'),
-				'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
-				'ForcePublication' => array('type' => "tinyint(1)", 'not_null' => 'true'),
-				'DeepLevel' => array('type' => "int(12)", 'not_null' => 'false'),
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('Id');
-	var $Id;
-	var $IdNode;
-	var $IdNodeGenerator;
-	var $Version;
-	var $Subversion;
-	var $DateUp;
-	var $DateDown;
-	var $State; // 0: Pending, 1: Locked, 2: Processed
-	var $UserId;
-	var $Force;
-	var $DeepLevel;
+class NodesToPublish_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'Id';
+    var $_table = 'NodesToPublish';
+    var $_metaData = array(
+        'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdNode' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdNodeGenerator' => array('type' => "int(11)", 'not_null' => 'true'),
+        'Version' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Subversion' => array('type' => "int(12)", 'not_null' => 'false'),
+        'DateUp' => array('type' => "int(14)", 'not_null' => 'true'),
+        'DateDown' => array('type' => "int(14)", 'not_null' => 'false'),
+        'State' => array('type' => "tinyint(1)", 'not_null' => 'true'),
+        'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ForcePublication' => array('type' => "tinyint(1)", 'not_null' => 'true'),
+        'DeepLevel' => array('type' => "int(12)", 'not_null' => 'false'),
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('Id');
+    var $Id;
+    var $IdNode;
+    var $IdNodeGenerator;
+    var $Version;
+    var $Subversion;
+    var $DateUp;
+    var $DateDown;
+    var $State; // 0: Pending, 1: Locked, 2: Processed
+    var $UserId;
+    var $Force;
+    var $DeepLevel;
 }
-?>

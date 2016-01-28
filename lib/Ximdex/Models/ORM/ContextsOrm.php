@@ -25,15 +25,11 @@
  */
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
+namespace Ximdex\Models\ORM;
 
-include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
+use Ximdex\Data\GenericData;
 
-class Contexts_ORM extends GenericData
+class ContextsOrm extends GenericData
 {
     var $_idField = 'id';
     var $_table = 'Contexts';

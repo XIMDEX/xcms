@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,52 +21,47 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class Batchs_ORM extends GenericData   {
-	var $_idField = 'IdBatch';
-	var $_table = 'Batchs';
-	var $_metaData = array(
-				'IdBatch' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'TimeOn' => array('type' => "int(12)", 'not_null' => 'true'),
-				'State' => array('type' => "varchar(255)", 'not_null' => 'true'),
-				'ServerFramesTotal' => array('type' => "int(12)", 'not_null' => 'false'),
-				'ServerFramesSucess' => array('type' => "int(12)", 'not_null' => 'false'),
-				'ServerFramesError' => array('type' => "int(12)", 'not_null' => 'false'),
-				'Playing' => array('type' => "int(12)", 'not_null' => 'false'),
-				'Type' => array('type' => "varchar(255)", 'not_null' => 'true'),
-				'IdBatchDown' => array('type' => "int(12)", 'not_null' => 'false'),
-				'IdNodeGenerator' => array('type' => "int(12)", 'not_null' => 'false'),
-				'Priority' => array('type' => "float(3, 2)", 'not_null' => 'false'),
-				'MajorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
-				'MinorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
-				'IdPortalVersion' => array('type' => "int(12)", 'not_null' => 'true'),
-				'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdBatch');
-	var $IdBatch;
-	var $TimeOn;
-	var $State;
-	var $ServerFramesTotal = 0;
-	var $ServerFramesSucess = 0;
-	var $ServerFramesError = 0;
-	var $Playing;
-	var $Type = 0;
-	var $IdBatchDown;
-	var $IdNodeGenerator;
-	var $Priority = 0.00;
-	var $MajorCycle = 0;
-	var $MinorCycle = 0;
-	var $IdPortalVersion;
-	var $UserId;
+class Batchs_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdBatch';
+    var $_table = 'Batchs';
+    var $_metaData = array(
+        'IdBatch' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'TimeOn' => array('type' => "int(12)", 'not_null' => 'true'),
+        'State' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'ServerFramesTotal' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ServerFramesSucess' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ServerFramesError' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Playing' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Type' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'IdBatchDown' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdNodeGenerator' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Priority' => array('type' => "float(3, 2)", 'not_null' => 'false'),
+        'MajorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
+        'MinorCycle' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdPortalVersion' => array('type' => "int(12)", 'not_null' => 'true'),
+        'UserId' => array('type' => "int(12)", 'not_null' => 'false'),
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdBatch');
+    var $IdBatch;
+    var $TimeOn;
+    var $State;
+    var $ServerFramesTotal = 0;
+    var $ServerFramesSucess = 0;
+    var $ServerFramesError = 0;
+    var $Playing;
+    var $Type = 0;
+    var $IdBatchDown;
+    var $IdNodeGenerator;
+    var $Priority = 0.00;
+    var $MajorCycle = 0;
+    var $MinorCycle = 0;
+    var $IdPortalVersion;
+    var $UserId;
 }
+
 ?>

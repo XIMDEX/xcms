@@ -46,19 +46,27 @@ class PipeStatus extends PipeStatus_ORM {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * @param $idNode
+	 * @return bool|null|string
+	 */
 	function loadByIdNode($idNode) {
 		$nodes = $this->find('id', 'IdNode = %s', array ($idNode ), MONO);
 		if (count($nodes) != 1) {
 			$this->messages->add(_('No se ha podido cargar el estado por su id de nodo'), MSG_TYPE_ERROR);
-			XMD_Log::error(sprintf("No se ha podido cargar el estado por su id de nodo, se solicitó el idNode %s", print_r($idNode, true)));
+			XMD_Log::error(sprintf("No se ha podido cargar el estado por su id de nodo, se solicitï¿½ el idNode %s", print_r($idNode, true)));
 			return NULL;
 		}
 		
-		parent::GenericData($nodes[0]);
+		parent::__construct($nodes[0]);
 		return $this->get('id');
 	}
-	
+
+	/**
+	 * @param $name
+	 * @return bool|null|string
+	 */
 	function loadByName($name) {
 		$nodes = $this->find('id', 'Name = %s', array($name), MONO);
 		if (count($nodes) != 1) {
@@ -67,8 +75,7 @@ class PipeStatus extends PipeStatus_ORM {
 			return NULL;
 		}
 		
-		parent::GenericData($nodes[0]);
+		parent::__construct($nodes[0]);
 		return $this->get('id');
 	}
 }
-?>

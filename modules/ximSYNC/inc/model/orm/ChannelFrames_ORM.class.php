@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,28 +21,19 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class ChannelFrames_ORM extends GenericData   {
-	var $_idField = 'IdChannelFrame';
-	var $_table = 'ChannelFrames';
-	var $_metaData = array(
-				'IdChannelFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
-				'ChannelId' => array('type' => 'int(12)', 'not_null' => 'false'),
-				'NodeId' => array('type' => 'int(12)', 'not_null' => 'false')
-				);
-	var $IdChannelFrame;
-	var $ChannelId = 0;
-	var $NodeId = 0;
+class ChannelFrames_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdChannelFrame';
+    var $_table = 'ChannelFrames';
+    var $_metaData = array(
+        'IdChannelFrame' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
+        'ChannelId' => array('type' => 'int(12)', 'not_null' => 'false'),
+        'NodeId' => array('type' => 'int(12)', 'not_null' => 'false')
+    );
+    var $IdChannelFrame;
+    var $ChannelId = 0;
+    var $NodeId = 0;
 }
-?>

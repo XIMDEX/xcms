@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\ORM\ContextsOrm;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
 }
@@ -33,7 +35,6 @@ require_once(XIMDEX_ROOT_PATH . "/inc/model/user.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/group.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodetypeMode.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelRolesActions_ORM.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/Contexts_ORM.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelUsersGroups_ORM.class.php");
 
 class Auth
@@ -316,7 +317,7 @@ class Auth
         }
 
         $context = \Ximdex\Utils\Session::get('context');
-        $contextsObject = new Contexts_ORM();
+        $contextsObject = new ContextsOrm();
         $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
         $idContext = count($result) == 1 ? $result[0] : '1';
 

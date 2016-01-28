@@ -34,7 +34,6 @@ ModulesManager::file('/inc/serializer/Serializer.class.php');
 ModulesManager::file('/inc/model/NodeSets.class.php');
 ModulesManager::file('/inc/model/SearchFilters.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
-ModulesManager::file('/inc/model/ActionsStats.class.php');
 ModulesManager::file('/inc/validation/FormValidation.class.php');
 
 class Action_browser3 extends ActionAbstract
@@ -336,6 +335,10 @@ class Action_browser3 extends ActionAbstract
     /**
      * Check if the nodes have associated actions
      */
+    /**
+     * @param $nodes
+     * @return null
+     */
     protected function checkNodeAction(&$nodes)
     {
 
@@ -371,6 +374,9 @@ class Action_browser3 extends ActionAbstract
      * Returns a JSON document with all children of the specified node id
      * filtered by the filter param
      */
+    /**
+     *
+     */
     public function readFiltered()
     {
         $query = $this->request->getParam('query');
@@ -388,6 +394,9 @@ class Action_browser3 extends ActionAbstract
      * Instantiates a QueryHandler based on the "handler" parameter and does
      * a search with the "query" parameter options.
      * The "query" parameter could be a XML or JSON string
+     */
+    /**
+     *
      */
     public function search()
     {

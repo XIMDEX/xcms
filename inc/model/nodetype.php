@@ -25,14 +25,15 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\ORM\NodeTypesOrm ;
+
 if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/NodeTypes_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeAllowedContent.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMetadata.class.php');
 
 define('NODETYPE_SECTION', 5015);
 
-class NodeType extends NodeTypes_ORM{
+class NodeType extends NodeTypesOrm{
 	var $ID;			//Current node id
 	var $dbObj;			// DB object used in methods
 
@@ -48,11 +49,10 @@ class NodeType extends NodeTypes_ORM{
    	var $_fieldsToTraduce = array('Description');
 
 
-   	/**
-   	 *
-   	 * @param $nodeTypeID
-   	 * @return unknown_type
-   	 */
+	/**
+	 * NodeType constructor.
+	 * @param null $nodeTypeID
+	 */
 	function NodeType($nodeTypeID = null)
 	{
 		$this->errorList[1] = _('Database connection error');
@@ -136,7 +136,7 @@ class NodeType extends NodeTypes_ORM{
 	 * @return int (status)
 	 */
 	function SetID($nodeTypeID){
-		parent::GenericData($nodeTypeID);
+		parent::__construct($nodeTypeID);
 		if (!($this->get('IdNodeType') > 0)) {
 			$this->SetError(1);
 			return null;
@@ -181,8 +181,10 @@ class NodeType extends NodeTypes_ORM{
 
 	/**
 	 * Returns true or false depending on a nodetype existence
+*/
+	/**
 	 * @param $name
-	 * @return unknown_type
+	 * @return bool
 	 */
 	function IsNodeType($name) {
 		$dbObj = new DB();

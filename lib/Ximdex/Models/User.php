@@ -3,6 +3,7 @@
 namespace Ximdex\Models;
 
 use Ximdex\Logger as XMD_Log;
+use Ximdex\Models\ORM\UsersORM;
 use Ximdex\Runtime\App;
 use Permission;
 use Group;

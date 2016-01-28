@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,17 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class RelXml2Xml_ORM extends GenericData
+class RelXml2Xml_ORM extends \Ximdex\Data\GenericData
 {
     var $_idField = 'id';
     var $_table = 'RelXml2Xml';

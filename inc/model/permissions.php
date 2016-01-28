@@ -82,7 +82,7 @@ class Permission extends Permissions_ORM
 	function SetID($id = null)
 	{
 		$this->ClearError();
-		parent::GenericData($id);
+		parent::__construct($id);
 		if (!($this->get('IdPermission') > 0)) {
 			$this->SetError(2);
 			return null;

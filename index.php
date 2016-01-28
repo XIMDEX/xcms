@@ -28,7 +28,10 @@
 
 include_once 'bootstrap/start.php';
 
-
+/**
+ * Dispatch XIMDEX_START event
+ */
+\Ximdex\Runtime\App::dispatchEvent(\Ximdex\Events::XIMDEX_START);
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
@@ -90,8 +93,7 @@ function checkFolders()
         }
         $folder =  App::getValue('XIMDEX_ROOT_PATH') . $folderInfo['FOLDER'];
         if (!is_dir($folder)) {
-            $msg = sprintf(echo_gt_or_not("Folder %s could not be found"), $folder);
-            continue;
+            mkdir($folder, 0770, true);
         }
 
         $file = FsUtils::getUniqueFile($folder);

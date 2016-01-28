@@ -60,7 +60,7 @@ class Group extends Groups_ORM
 		$this->errorList[8]=_('Specified relation already exists');
 		$this->errorList[9]=_('General group cant be removed');
 		$id = (int) $id;
-		parent::GenericData($id);
+		parent::__construct($id);
 		if ($this->get('IdGroup')) {
 			$this->groupID = $this->get('IdGroup');
 		}
@@ -80,7 +80,7 @@ class Group extends Groups_ORM
 	{
 		$generalGroup = $this->GetGeneralGroup();
 		if ($generalGroup) {
-			parent::GenericData($generalGroup);
+			parent::__construct($generalGroup);
 			return $this->get('IdGroup');
 		}
 	}
@@ -162,7 +162,7 @@ class Group extends Groups_ORM
 	function SetID($id)
 	{
 		$this->ClearError();
-		parent::GenericData($id);
+		parent::__construct($id);
 		if (!($this->get('IdGroup') > 0)) {
 			$this->groupID = null;
 			$this->SetError(1);

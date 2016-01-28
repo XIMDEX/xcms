@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,32 +21,23 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class ServerErrorByPumper_ORM extends GenericData   {
-	var $_idField = 'ErrorId';
-	var $_table = 'ServerErrorByPumper';
-	var $_metaData = array(
-				'ErrorId' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
-				'PumperId' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'ServerId' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'WithError' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'UnactivityCycles' => array('type' => 'int(12)', 'not_null' => 'true')
-				);
-	var $ErrorId;
-	var $PumperId;
-	var $ServerId;
-	var $WithError;
-	var $UnactivityCycles;	
+class ServerErrorByPumper_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'ErrorId';
+    var $_table = 'ServerErrorByPumper';
+    var $_metaData = array(
+        'ErrorId' => array('type' => 'int(12)', 'not_null' => 'true', 'auto_increment' => 'true'),
+        'PumperId' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'ServerId' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'WithError' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'UnactivityCycles' => array('type' => 'int(12)', 'not_null' => 'true')
+    );
+    var $ErrorId;
+    var $PumperId;
+    var $ServerId;
+    var $WithError;
+    var $UnactivityCycles;
 }
-?>

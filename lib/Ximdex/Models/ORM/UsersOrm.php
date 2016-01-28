@@ -1,6 +1,6 @@
 <?php
 
-namespace Ximdex\Models;
+namespace Ximdex\Models\ORM;
 use Ximdex\Data\GenericData ;
 
 class UsersORM extends GenericData   {

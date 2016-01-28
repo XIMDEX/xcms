@@ -24,8 +24,9 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-ModulesManager::file('/inc/model/channel.php');
-//use Swagger\Annotations as SWG;
+use Ximdex\Models\Channel;
+
+ //use Swagger\Annotations as SWG;
 
 /**
  *

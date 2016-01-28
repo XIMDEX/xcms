@@ -34,7 +34,6 @@ if (!isset($DB_TYPE_USAGE) && defined("ADODB") ) {
 	$DB_TYPE_USAGE = ADODB;
 }
 
-require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_log.class.php");
 require_once(XIMDEX_ROOT_PATH."/script/diffChecker/UpdateDb_historic.class.php");

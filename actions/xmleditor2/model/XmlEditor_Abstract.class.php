@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Channel;
+
 ModulesManager::file('/inc/parsers/pvd2rng/PVD2RNG.class.php');
 ModulesManager::file('/inc/model/RelTemplateContainer.class.php');
 

@@ -29,7 +29,6 @@ if (!defined("XIMDEX_ROOT_PATH")) {
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-require_once(XIMDEX_ROOT_PATH."/inc/helper/GenericData.class.php");
 require_once(XIMDEX_ROOT_PATH."/inc/fsutils/FsUtils.class.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb.inc.php");
 require_once(XIMDEX_ROOT_PATH."/extensions/adodb/adodb-active-record.inc.php");

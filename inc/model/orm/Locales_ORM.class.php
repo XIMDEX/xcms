@@ -25,15 +25,8 @@
  */
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 
-include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class Locales_ORM extends GenericData
+class Locales_ORM extends \Ximdex\Data\GenericData
 {
     var $_idField = 'ID';
     var $_table = 'Locales';

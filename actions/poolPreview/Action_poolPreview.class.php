@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/model/RelStrdocNode.class.php');
 ModulesManager::file('/inc/model/List_Label.class.php');

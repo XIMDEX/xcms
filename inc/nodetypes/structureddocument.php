@@ -24,6 +24,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Channel;
+
 if (!defined ("XIMDEX_ROOT_PATH")) {
 	define ("XIMDEX_ROOT_PATH", realpath (dirname (__FILE__)."/../../"));
 }
@@ -33,8 +35,7 @@ define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
 require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/channel.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/language.php");
+ require_once(XIMDEX_ROOT_PATH . "/inc/model/language.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 //
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");

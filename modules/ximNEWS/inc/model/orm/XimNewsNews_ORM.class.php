@@ -26,13 +26,7 @@
 
 
 
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class XimNewsNews_ORM extends GenericData   {
+class XimNewsNews_ORM extends \Ximdex\Data\GenericData   {
 	var $_idField = 'IdNew';
 	var $_table = 'XimNewsNews';
 	var $_metaData = array(
@@ -52,4 +46,3 @@ class XimNewsNews_ORM extends GenericData   {
 	var $IdSection = 0;
 	var $AssociationAttempts = 0;	
 }
-?>

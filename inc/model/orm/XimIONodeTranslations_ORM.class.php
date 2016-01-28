@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,43 +21,30 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class XimIONodeTranslations_ORM extends GenericData   {
-	var $_idField = 'IdNodeTranslation';
-	var $_table = 'XimIONodeTranslations';
-	var $_metaData = array(
-				'IdNodeTranslation' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdXimioExportation' => array('type' => "int(11)", 'not_null' => 'true'),
-				'IdExportationNode' => array('type' => "int(11)", 'not_null' => 'true'),
-				'IdImportationNode' => array('type' => "int(11)", 'not_null' => 'true'),
-				'IdExportationParent' => array('type' => "int(11)", 'not_null' => 'true'),
-				'status' => array('type' => "int(3)", 'not_null' => 'true'),
-				'path' => array('type' => "varchar(255)", 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdNodeTranslation');
-	var $IdNodeTranslation;
-	var $IdXimioExportation;
-	var $IdExportationNode;
-	var $IdImportationNode;
-	var $IdExportationParent;
-	var $status;
-	var $path;
+class XimIONodeTranslations_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdNodeTranslation';
+    var $_table = 'XimIONodeTranslations';
+    var $_metaData = array(
+        'IdNodeTranslation' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdXimioExportation' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdExportationNode' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdImportationNode' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdExportationParent' => array('type' => "int(11)", 'not_null' => 'true'),
+        'status' => array('type' => "int(3)", 'not_null' => 'true'),
+        'path' => array('type' => "varchar(255)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdNodeTranslation');
+    var $IdNodeTranslation;
+    var $IdXimioExportation;
+    var $IdExportationNode;
+    var $IdImportationNode;
+    var $IdExportationParent;
+    var $status;
+    var $path;
 }
-?>
+

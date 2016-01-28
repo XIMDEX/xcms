@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,38 +21,31 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class XimNewsColectorUsers_ORM extends GenericData   {
-	var $_idField = 'Id';
-	var $_table = 'XimNewsColectorUsers';
-	var $_metaData = array(
-				'Id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdColector' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdUser' => array('type' => "int(12)", 'not_null' => 'true'),
-				'StartGenerationTime' => array('type' => "int(12)", 'not_null' => 'true'),
-				'EndGenerationTime' => array('type' => "int(12)", 'not_null' => 'false'),
-				'EndPublicationTime' => array('type' => "int(12)", 'not_null' => 'false'),
-				'Progress' => array('type' => "int(3)", 'not_null' => 'true'),
-				'State' => array('type' => "varchar(255)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('Id');
-	var $Id;
-	var $IdColector;
-	var $IdUser;
-	var $StartGenerationTime;
-	var $EndGenerationTime;
-	var $EndPublicationTime;
-	var $Progress;
-	var $State = 'Generated';
+class XimNewsColectorUsers_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'Id';
+    var $_table = 'XimNewsColectorUsers';
+    var $_metaData = array(
+        'Id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdColector' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdUser' => array('type' => "int(12)", 'not_null' => 'true'),
+        'StartGenerationTime' => array('type' => "int(12)", 'not_null' => 'true'),
+        'EndGenerationTime' => array('type' => "int(12)", 'not_null' => 'false'),
+        'EndPublicationTime' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Progress' => array('type' => "int(3)", 'not_null' => 'true'),
+        'State' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('Id');
+    var $Id;
+    var $IdColector;
+    var $IdUser;
+    var $StartGenerationTime;
+    var $EndGenerationTime;
+    var $EndPublicationTime;
+    var $Progress;
+    var $State = 'Generated';
 }
-?>

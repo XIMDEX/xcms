@@ -27,7 +27,7 @@
 
 use Ximdex\Models\Action ;
 
-
+use Ximdex\Runtime\App ;
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__). "/../../"));
 }
@@ -35,7 +35,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingJsGetText.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/IController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
 
 
 
@@ -52,13 +51,15 @@ class ActionAbstract extends IController {
 
 	/**
 	 * Keeps the js to use
-	 * @var unknown_type
+	 */
+	/**
+	 * @var array
 	 */
 	private $_js = array();
 
 	/**
 	 * keeps the css to use
-	 * @var unknown_type
+	 * @var array
 	 */
 	private $_css = array();
 
@@ -74,7 +75,9 @@ class ActionAbstract extends IController {
 
 	/**
 	 * Action renderer
-	 * @var unknown_type
+ 	 */
+	/**
+	 * @var mixed
 	 */
 	public $renderer;
 
@@ -83,19 +86,20 @@ class ActionAbstract extends IController {
 	 * @var String
 	 */
 	public $actionCommand;
-
+	/**
+	 * @var bool
+	 */
 	protected $endActionLogged=false;
 
 	/**
-	 * Construct
-	 * @param $_render
-	 * @return unknown_type
+	 * ActionAbstract constructor.
+	 * @param null $_render
 	 */
 	function __construct($_render = null) {
 
 		parent::__construct();
 
-		$this->displayEncoding = \App::getValue( 'displayEncoding');
+		$this->displayEncoding =      App::getValue( 'displayEncoding');
 
 		/** Obtaining the render to use */
 		$rendererClass = $this->_get_render($_render);
@@ -107,6 +111,13 @@ class ActionAbstract extends IController {
 
 	}
 
+	/**
+	 * @param $actionName
+	 * @param $module
+	 * @param $actionId
+	 * @param $nodeId
+	 * @return array
+	 */
 	private function getActionInfo($actionName, $module, $actionId, $nodeId) {
 		$nodeTypeId = "";
 		if ( !is_null( $nodeId )) {
@@ -484,15 +495,10 @@ class ActionAbstract extends IController {
 	}
 
 	/**
-	 *
-	 * @param $rendererClass
-	 * @return unknown_type
+	 * @param null $rendererClass
+	 * @return null|string|unknown_type
 	 */
 	private function _get_render($rendererClass = null) {
-
-		// 		$this->request->setParam("renderer", "Debug");
-		// 		$this->request->setParam("renderer", "Json");
-		// 		$this->request->setParam("renderer", "Smarty");
 
 		if($rendererClass == null) {
 			if(\Ximdex\Utils\Session::get('debug_render')> 0 ) {
@@ -519,11 +525,8 @@ class ActionAbstract extends IController {
 	}
 
 	/**
-	 * Sends a JSON string
-	 * @param $_msgs
-	 * @return unknown_type
+	 * @param $data
 	 */
-
 	public function sendJSON($data) {
 		if (!$this->endActionLogged)
 			$this->logSuccessAction();
@@ -536,6 +539,10 @@ class ActionAbstract extends IController {
 		die();
     }
 
+	/**
+	 * @param $data
+	 * @param null $etag
+	 */
 	public function sendJSON_cached($data, $etag=null) {
     	if ($etag) {
 			$data = Serializer::encode(SZR_JSON, $data);
@@ -571,10 +578,13 @@ class ActionAbstract extends IController {
 	 *  /var/www/ximdex/xmd/images/ximNEWS/pingu_[LANG].gif -> /var/www/ximdex/xmd/images/ximNEWS/pingu_es.gif
 	 *  or ...
 	 *  This can be also done in html with the smarty var locale
+
+	 */
+	/**
 	 * @param $file
-	 * @param $_lang
-	 * @param $_default
-	 * @return unknown_type
+	 * @param null $_lang
+	 * @param null $_default
+	 * @return mixed|null
 	 */
 	function i18n_file($file, $_lang = null, $_default = null) {
 		$_file = null;
@@ -604,6 +614,9 @@ class ActionAbstract extends IController {
 		return $_default;
 	}
 
+	/**
+	 *
+	 */
 	protected function renderMessages() {
 		$this->render(array('messages' => $this->messages->messages));
 		die();
@@ -611,10 +624,13 @@ class ActionAbstract extends IController {
 
 	/**
 	 * Decides if a tour is be able to be launched automatically given an user
-	 * @param $userId
-	 * @return boolean
-	 */
 
+	 */
+	/**
+	 * @param $userId
+	 * @param null $action
+	 * @return bool
+	 */
 	public function tourEnabled($userId, $action=null) {
 		if(!ModulesManager::isEnabled('ximTOUR')){
     			return false;
@@ -629,6 +645,12 @@ class ActionAbstract extends IController {
 		return ($result === null || $result < $numReps) ? true : false;
 	}
 
+	/**
+	 * @param $subject
+	 * @param $content
+	 * @param $to
+	 * @return array
+	 */
 	protected function sendNotifications($subject, $content, $to){
 		$from = \Ximdex\Utils\Session::get("userID");
 		$result = array();

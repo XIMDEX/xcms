@@ -54,7 +54,7 @@ class PipeTransition extends PipeTransitions_ORM {
 	 * 
 	 */
 	function PipeTransition($id = NULL) {
-		parent::GenericData($id);
+		parent::__construct($id);
 		
 		$id = $this->get('id');
 		if (!($id > 0)) {

@@ -57,7 +57,7 @@ class XimLocale extends Locales_ORM
 
 	// Permite cambiar el ID sin tener que destruir y volver a crear un objeto
 	function SetID($id) {
-		parent::GenericData($id);
+		parent::__construct($id);
 		return $this->get('ID');
 	}
 
@@ -190,7 +190,7 @@ class XimLocale extends Locales_ORM
 		$query = sprintf("SELECT ID FROM Locales WHERE Name = %s", $dbObj->sqlEscapeString($name));
 		$dbObj->Query($query);
 		if ($dbObj->numRows)
-			parent::GenericData($dbObj->GetValue("ID"));
+			parent::__construct($dbObj->GetValue("ID"));
 		else
 			$this->SetError(4);
 	}

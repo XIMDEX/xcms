@@ -48,7 +48,7 @@ class XimNewsAreas extends XimNewsAreas_ORM {
 		if (!is_null($IdArea)) {
 			$this->set('IdArea', $IdArea);
 		}
-		parent::GenericData($IdArea);
+		parent::__construct($IdArea);
 	}
 	
 	/**
@@ -152,7 +152,7 @@ class XimNewsAreas extends XimNewsAreas_ORM {
 
 	function SetID($IdArea) {
 		if ((int)$IdArea > 0) {
-			parent::GenericData($IdArea);
+			parent::__construct($IdArea);
 		}
 	}
 

@@ -39,7 +39,7 @@ class RelNodeSetsUsers extends RelNodeSetsUsers_ORM {
 	const OWNER_NO = 0;
 	
 	public function __construct($id=null) {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 	
 	/**

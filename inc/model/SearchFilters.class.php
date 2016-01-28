@@ -35,7 +35,7 @@ require_once (XIMDEX_ROOT_PATH . '/inc/model/iterators/I_SearchFilters.class.php
 class SearchFilters extends SearchFilters_ORM {
 
 	public function __construct($id=null) {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 	/**

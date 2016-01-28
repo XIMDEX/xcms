@@ -27,14 +27,14 @@
 
 
 use Ximdex\Models\Action ;
-
+use Ximdex\Models\ORM\RolesOrm ;
+use DB_legacy as DB;
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 }
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Roles_ORM.class.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/RelRolesPermission.class.php';
 
-class Role extends Roles_ORM {
+class Role extends RolesOrm {
 
     var $ID;  // Current role id
     var $flagErr;    // Shows if there was an error
@@ -45,9 +45,14 @@ class Role extends Roles_ORM {
         1 => 'Database connection error',
         2 => 'Role does not exist'
     );
-
-    function Role($roleID = null) {
-        parent::GenericData($roleID);
+    var $autoCleanErr = false ;
+    /**
+     * Role constructor.
+     * @param null $roleID
+     */
+    public function __construct($roleID = null )
+    {
+        parent::__construct($roleID);
         $this->flagErr = FALSE;
         $this->autoCleanErr = TRUE;
         $this->errorList[1] = _('Database connection error');
@@ -78,6 +83,7 @@ class Role extends Roles_ORM {
     // Returns an array with the id of all the system roles
     // return array of idRole
     function GetAllRoles() {
+        $salida = array();
         $sql = "SELECT IdRole FROM Roles ORDER BY Name";
         $dbObj = new DB();
         $dbObj->Query($sql);
@@ -100,7 +106,7 @@ class Role extends Roles_ORM {
     // Changes the current role id
     //  return int (status)
     function SetID($roleID) {
-        parent::GenericData($roleID);
+        parent::__construct($roleID);
         return $this->get('IdRole');
     }
 
@@ -293,8 +299,12 @@ class Role extends Roles_ORM {
 
     /**
      * Obtains the list of available actions of a node.
-     * @param int $nodeID
-     * @return array
+
+     */
+    /**
+     * @param $nodeID
+     * @param bool $includeActionsWithNegativeSort
+     * @return array|bool
      */
     function GetActionsOnNode($nodeID, $includeActionsWithNegativeSort = false) {
         $node = new Node($nodeID);
@@ -318,7 +328,10 @@ class Role extends Roles_ORM {
     }
 
     // Returns if the given permit belongs to the current role
-    // return boolean (hasPermission)
+    /**
+     * @param $permissionID
+     * @return bool
+     */
     function HasPermission($permissionID) {
         $relRolesPermission = new RelRolesPermission();
         return count($relRolesPermission->find('IdRel', 'IdRole = %s AND IdPermission = %s', array($this->get('IdRole'), $permissionID), MONO)) > 0;
@@ -448,8 +461,12 @@ class Role extends Roles_ORM {
         return $salida;
     }
 
+    /**
+     * @param $idStatus
+     * @return array
+     */
     function getAllRolesForStatus($idStatus) {
-        $db = new db();
+        $db = new DB();
         $query = sprintf("SELECT IdRole FROM RelRolesStates WHERE IdState = %d", $idStatus);
         $db->Query($query);
 
@@ -461,27 +478,39 @@ class Role extends Roles_ORM {
         return $foundRoles;
     }
 
-    //  Cleans last error
+    /**
+     *
+     */
     function ClearError() {
         $this->flagErr = FALSE;
     }
 
+    /**
+     *
+     */
     function SetAutoCleanOn() {
         $this->autoCleanErr = TRUE;
     }
 
+    /**
+     *
+     */
     function SetAutoCleanOff() {
         $this->autoCleanErr = FALSE;
     }
 
-    /// Loads a class error
+    /**
+     * @param $code
+     */
     function SetError($code) {
         $this->flagErr = TRUE;
         $this->numErr = $code;
         $this->msgErr = $this->errorList[$code];
     }
 
-    // returns true if there was an error in the class
+    /**
+     * @return bool
+     */
     function HasError() {
         $aux = $this->flagErr;
         if ($this->autoCleanErr)
@@ -493,7 +522,9 @@ class Role extends Roles_ORM {
      * This function replaces  workflow->getAllowedStates,
      * It is considered the the approppriate place is in roles
      *
-     * @return array
+     */
+    /**
+     * @return array|null
      */
     function GetAllowedStates() {
         if (!($this->get('IdRole') > 0)) {
@@ -513,7 +544,10 @@ class Role extends Roles_ORM {
     }
 
     /** Function which returns the IdNode for demo user role (defined at the beggining of the file)
-     *  @return IdNode - Idnode for node named as param
+     */
+    /**
+     * @param $roleName
+     * @return null
      */
     function getDemoRoleFromName($roleName) {
         $sql = "SELECT IdRole FROM Roles where Name like \"" . $roleName . "\"";

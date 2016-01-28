@@ -28,7 +28,8 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Nodes_ORM.class.php';
+use Ximdex\Models\ORM\NodesOrm ;
+
 require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/group.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
@@ -51,7 +52,7 @@ if (!defined('COUNT')) {
     define('NO_COUNT_NO_RETURN', 2);
 }
 
-class Node extends Nodes_ORM {
+class Node extends NodesOrm  {
 
     var $nodeID;            // current node ID.
     var $class;                // Class which implements the specific methos for this nodetype.
@@ -108,7 +109,7 @@ class Node extends Nodes_ORM {
         $this->flagErr = FALSE;
         $this->autoCleanErr = TRUE;
 
-        parent::GenericData($nodeID);
+        parent::__construct($nodeID);
         //In order to do not breack compatibility with previous version
         if ($this->get('IdNode') > 0) {
             $this->nodeID = $this->get('IdNode');

@@ -25,9 +25,9 @@
  */
 
 
-
+use Ximdex\Runtime\Response ;
+use Ximdex\Logger as XMD_Log ;
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Request.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Response.class.php');
 
 /**
  *
@@ -41,34 +41,31 @@ require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Response.class.php');
 class IController {
 	/**
 	 * Objeto Request para almacenar par�metros de petici�n
-	 * @var unknown_type
+	 */
+	/**
+	 * @var Request
 	 */
 	var $request;
 	/**
-	 *
-	 * @var unknown_type
+	 * @var Response
 	 */
 	var $response;
 	/**
-	 * Indica si se ha producido algun error
-	 * @var unknown_type
+	 * @var bool
 	 */
 	var $hasError;
 	/**
-	 * Mensaje de error
-	 * @var unknown_type
+	 * @var
 	 */
 	var $msgError;
 	/**
-	 *
-	 * @var unknown_type
+	 * @var \Ximdex\Utils\Messages
 	 */
 	var $messages;
 
-    /**
-     * Constructor
-     * @return unknown_type
-     */
+	/**
+	 * IController constructor.
+	 */
     function __construct() {
     	$this->hasError = false;
     	$this->messages = new \Ximdex\Utils\Messages();
@@ -77,9 +74,7 @@ class IController {
     }
 
 	/**
-	 * Setter
 	 * @param $request
-	 * @return unknown_type
 	 */
 	function setRequest ($request) {
 		$this->request = $request;
@@ -88,24 +83,26 @@ class IController {
 	/**
 	 * TODO: Cambiar toda la gesti�n de errores en base a variable booleana + array simple por el objeto messages
 	 * Getter
-	 * @return unknown_type
+	 */
+	/**
+	 *
 	 */
 	function hasError () {
 		if (isset ($this->hasError)) $this->hasError;
 	}
+
 	/**
 	 *
-	 * @return unknown_type
 	 */
 	function getMsgError () {
-		if (isset ($this->msgError)) $this->msgError;
+		if (isset ($this->msgError)) {
+			$this->msgError;
+		}
 	}
 
 	/**
-	 * Registra un error
 	 * @param $msg
 	 * @param $module
-	 * @return unknown_type
 	 */
 	function _setError ($msg, $module) {
 		$this->hasError = true;
@@ -114,4 +111,3 @@ class IController {
 		XMD_Log::error($msg);
 	}
 }
-?>

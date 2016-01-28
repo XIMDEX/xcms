@@ -25,12 +25,12 @@
  */
 
 namespace Ximdex\Utils ;
-
+use Ximdex\Runtime\Response ;
+use Ximdex\Runtime\App ;
 if (!defined('XIMDEX_ROOT_PATH')) {
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/Response.class.php');
 
 /** @const DEFAULT_SESSION - Name of default session */
 define('DEFAULT_SESSION', 'SessionID');
@@ -61,10 +61,11 @@ class Session {
     }
 
     /**
-     *  Create a session.
-     *  @static
+     * @param string $name
+     * @param null $id
      */
     public static function start($name = DEFAULT_SESSION, $id = null) {
+        unset( $id ) ;
         self::name($name);
         session_cache_limiter('none');
         if(isset($_SERVER["REQUEST_URI"])){
@@ -82,13 +83,16 @@ class Session {
 
     }
 
+    /**
+     *
+     */
     public static function refresh() {
         $sid = session_id();
         if (empty($sid))
             self::start();
         session_regenerate_id();
         setcookie(ini_get("session.name"),
-            session_id(), time() + ini_get("session.cookie_lifetime"),
+            session_id(), time() . ini_get("session.cookie_lifetime"),
             ini_get("session.cookie_path"),
             ini_get("session.cookie_domain"),
             ini_get("session.cookie_secure"),
@@ -174,8 +178,8 @@ class Session {
 
         if (!self::exists('logged') && "installer" != $_GET["action"]) {
             if($redirect) {
-                $response = new \Response();
-                $response->sendStatus(sprintf("Location: %s/", \App::getValue( 'UrlRoot')), true, 301);
+                $response = new Response();
+                $response->sendStatus(sprintf("Location: %s/", App::getValue( 'UrlRoot')), true, 301);
                 setcookie("expired", "1", time() + 60);
                 die();
             }

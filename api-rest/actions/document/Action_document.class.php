@@ -1,5 +1,7 @@
 <?php
 
+use Ximdex\Models\Channel;
+
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
 class Action_document implements APIRestAction, SecuredAction

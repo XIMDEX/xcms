@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\Models\Channel;
+
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/ConfigInterface.php');
 require_once(XIMDEX_ROOT_PATH . '/extensions/flow/Config.php');

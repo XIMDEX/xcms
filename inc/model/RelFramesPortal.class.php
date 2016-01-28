@@ -35,7 +35,7 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelFramesPortal_ORM.class.php';
 class RelFramesPortal extends RelFramesPortal_ORM {
 
 	function __construct($id = null)  {
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 	function addVersion($idPortalVersion, $nodeFrameId) {

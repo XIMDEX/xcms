@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,17 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once(XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class NodeProperties_ORM extends GenericData
+class NodeProperties_ORM extends \Ximdex\Data\GenericData
 {
     var $_idField = 'IdNodeProperty';
     var $_table = 'NodeProperties';

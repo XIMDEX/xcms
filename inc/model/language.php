@@ -56,7 +56,7 @@ class Language extends Languages_ORM
 
 	// Allows to change the langID without destroying and re-creating the object
 	function SetID($id) {
-		parent::GenericData($id);
+		parent::__construct($id);
 		return $this->get('IdLanguage');
 	}
 
@@ -193,7 +193,7 @@ class Language extends Languages_ORM
 		$query = sprintf("SELECT IdLanguage FROM Languages WHERE Name = %s", $dbObj->sqlEscapeString($name));
 		$dbObj->Query($query);
 		if ($dbObj->numRows)
-			parent::GenericData($dbObj->GetValue("IdLanguage"));
+			parent::__construct($dbObj->GetValue("IdLanguage"));
 		else
 			$this->SetError(4);
 	}
@@ -207,7 +207,7 @@ class Language extends Languages_ORM
 		$dbObj->Query($query);
 		if ($dbObj->numRows) {
 			$idLanguage = $dbObj->GetValue("IdLanguage");
-			parent::GenericData($idLanguage);
+			parent::__construct($idLanguage);
 			return $idLanguage;
 		} else {
 			$this->SetError(4);

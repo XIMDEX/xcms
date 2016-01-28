@@ -44,12 +44,12 @@ class StructuredDocument extends StructuredDocuments_ORM
 		4 => 'A document cannot be linked to itself'
 		);
 
-	function StructuredDocument($docID = null)
+	public function __construct($id = null )
 	{
- 		$this->ID = $docID;
+		$this->ID = $id ;
 		$this->flagErr = FALSE;
 		$this->autoCleanErr = TRUE;
-		parent::GenericData($docID);
+		parent::__construct($id);
 	}
 
 	// Devuelve un array con los ids de todos los structured documents del sistema.
@@ -77,7 +77,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 	// Cambia el id del structure document actual.
 	//  return int (status)
 	function SetID($docID) {
-		StructuredDocument::GenericData($docID);
+		self::__construct($docID);
 		if (!($this->get('IdDoc') > 0)) {
 			$this->SetError(2);
 			return null;

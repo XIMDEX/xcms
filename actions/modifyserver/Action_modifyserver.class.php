@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 

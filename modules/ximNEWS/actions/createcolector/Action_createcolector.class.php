@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/model/XimNewsList.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsAreas.php', 'ximNEWS');

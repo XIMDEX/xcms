@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,30 +21,25 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class RelTagsDescriptions_ORM extends GenericData   {
-	var $_idField = 'IdTagDescription';
-	var $_table = 'RelTagsDescriptions';
-	var $_metaData = array(
-				'IdTagDescription' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'Tag' =>  array('type' => "int(11)", 'not_null' => 'true'),
-				'Type' => array('type' => "enum('GENERICS', 'ORGANISATIONS', 'PLACES', 'PEOPLE')", 'not_null' => 'true'),
-				'Link' => array('type' => 'varchar(250)', 'not_null' => 'true'),
-				'Description' => array('type' => 'text', 'not_null' => 'false')
-				);
-	var $_uniqueConstraints = array();
-	var $_indexes = array('IdTagDescription');
-	var $IdTagDescription;
-	var $Tag;
-	var $Type;
-	var $Link;
-	var $Description;
+class RelTagsDescriptions_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdTagDescription';
+    var $_table = 'RelTagsDescriptions';
+    var $_metaData = array(
+        'IdTagDescription' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Tag' => array('type' => "int(11)", 'not_null' => 'true'),
+        'Type' => array('type' => "enum('GENERICS', 'ORGANISATIONS', 'PLACES', 'PEOPLE')", 'not_null' => 'true'),
+        'Link' => array('type' => 'varchar(250)', 'not_null' => 'true'),
+        'Description' => array('type' => 'text', 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdTagDescription');
+    var $IdTagDescription;
+    var $Tag;
+    var $Type;
+    var $Link;
+    var $Description;
 }
-?>

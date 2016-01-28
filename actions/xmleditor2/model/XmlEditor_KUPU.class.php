@@ -24,6 +24,8 @@
  * @version $Revision$
  */
 
+use Ximdex\Models\Channel;
+
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PreviewInServer.class.php');

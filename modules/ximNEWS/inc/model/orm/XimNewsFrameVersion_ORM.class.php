@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,26 +21,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
- 
-
-
-ModulesManager::file('/inc/helper/GenericData.class.php');
-
-class XimNewsFrameVersion_ORM extends GenericData   {
-	var $_idField = 'IdSync';
-	var $_table = 'XimNewsFrameVersion';
-	var $_metaData = array(
-				'IdSync' => array('type' => 'int(12)', 'not_null' => 'true'),
-				'IdVersion' => array('type' => 'int(12)', 'not_null' => 'true')
-				);
-	var $IdSync = 0;
-	var $IdVersion = 0;	
+class XimNewsFrameVersion_ORM extends \Ximdex\Data\GenericData
+{
+    var $_idField = 'IdSync';
+    var $_table = 'XimNewsFrameVersion';
+    var $_metaData = array(
+        'IdSync' => array('type' => 'int(12)', 'not_null' => 'true'),
+        'IdVersion' => array('type' => 'int(12)', 'not_null' => 'true')
+    );
+    var $IdSync = 0;
+    var $IdVersion = 0;
 }
-?>

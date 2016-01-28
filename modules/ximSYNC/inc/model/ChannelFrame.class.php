@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');

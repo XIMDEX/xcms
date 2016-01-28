@@ -65,7 +65,7 @@ class Dependencies extends Dependencies_ORM
         if (!self::$depTypes) {
             self::buildDepTypes();
         }
-        parent::GenericData();
+        parent::__construct();
     }
 
     /**

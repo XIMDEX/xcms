@@ -20,18 +20,19 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-
+use Ximdex\Models\ActionsStats;
+use Ximdex\Runtime\App;
+use \Ximdex\Utils\Session;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionFactory.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/ActionsStats.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/Status.class.php', 'ximADM');
 // Implement \Ximdex\Utils\Session::check() as Filter.
@@ -43,152 +44,172 @@ ModulesManager::file('/inc/Status.class.php', 'ximADM');
  * Controller to execute and route actions
  *
  */
-class ApplicationController extends IController {
-	private $timer = null;
+class ApplicationController extends IController
+{
+    private $timer = null;
 
-	/**
-	 * Compone la aplicaci�n
-	 * @return unknown_type
-	 */
-	function compose() {
-		$stats = array();
+    /**
+     *
+     */
+    function compose()
+    {
+        $stats = array();
 
-		// Select and enroute the action
-		$actionController = ActionFactory::getAction($this->request);
+        // Select and enroute the action
+        $actionController = ActionFactory::getAction($this->request);
 
-		//Si no existe la accion, mostramos error
-		if($actionController == NULL) {
-			$actionController = $this->_error_no_action();
-		}else  {
-			$this->setUserState();
-			$stats = $this->actionStatsStart();
-			$actionController->execute($this->request);
-		}
+        //Si no existe la accion, mostramos error
+        if ($actionController == NULL) {
+            $actionController = $this->_error_no_action();
+        } else {
+            $this->setUserState();
+            $stats = $this->actionStatsStart();
+            $actionController->execute($this->request);
+        }
 
-		// Inserts action stats
-		$this->actionStatsEnd($stats);
+        // Inserts action stats
+        $this->actionStatsEnd($stats);
 
-		$this->hasError = $actionController->hasError();
-		$this->msgError = $actionController->getMsgError();
+        $this->hasError = $actionController->hasError();
+        $this->msgError = $actionController->getMsgError();
 
-	}
+    }
 
-	function setUserState() {
-		if(ModulesManager::isEnabled('ximADM') ) {
-			$userID = (int) \Ximdex\Utils\Session::get('userID');
-			$action = $this->request->getParam("action");
-			$method = $this->request->getParam("method");
+    /**
+     * @return ActionAbstract
+     */
+    function _error_no_action()
+    {
+        $action = $this->request->getParam("action");
+        $nodeid = $this->request->getParam("nodeid");
 
-			if ($userID && !is_null($action) && "index" ==  $method ) {
-				$user_status = new Status();
-				$status = $user_status->get($userID);
-				$hash = NULL;
-				if(!empty($status) ) {
-					$hash = $status->hash;
-					$action = ("moduleslist" == $action)? "browser" : $action;
-				}
-				$user_status->assign($userID, $hash, $action);
-			}
-		}
-	}
+        require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionAbstract.class.php');
 
-	/**
-	 * Error cuando no hay una action asociada
-	 * @return unknown_type
-	 */
-	function _error_no_action() {
-		$action = $this->request->getParam("action");
-		$nodeid = $this->request->getParam("nodeid");
+        $actionController = new ActionAbstract();
+        $actionController->messages->add(_("Required action not found."), MSG_TYPE_ERROR);
+        //error_log("action: $action | node: $nodeid"):
+        $this->request->setParam('messages', $actionController->messages->messages);
+        $actionController->render($this->request->getRequests());
 
-		require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionAbstract.class.php');
+        return $actionController;
+    }
 
-		$actionController = new ActionAbstract();
-		$actionController->messages->add(_("Required action not found."), MSG_TYPE_ERROR);
-		//error_log("action: $action | node: $nodeid"):
-		$this->request->setParam('messages', $actionController->messages->messages);
-		$actionController->render($this->request->getRequests() );
+    /**
+     * Error cuando no hay una action asociada
+     */
 
-		return $actionController;
-	}
+    /**
+     *
+     */
+    function setUserState()
+    {
+        if (ModulesManager::isEnabled('ximADM')) {
+            $userID = (int) Session::get('userID');
+            $action = $this->request->getParam("action");
+            $method = $this->request->getParam("method");
 
-	function actionStatsStart() {
-		$actionStats = \App::getValue( 'ActionsStats');
-		$action = $this->request->getParam("action");
-		$method = $this->request->getParam("method");
-		$nodeId = (int) $this->request->getParam("nodeid");
-		$userId = \Ximdex\Utils\Session::get("userID");
-		// Starts timer for use in action stats
-		$stats=array();
-		
-		if ($actionStats == 1 && !is_null($action) && "index" == $method ) {
-			$this->timer = new \Ximdex\Utils\Timer();
-			$this->timer->start();
+            if ($userID && !is_null($action) && "index" == $method) {
+                $user_status = new Status();
+                $status = $user_status->get($userID);
+                $hash = NULL;
+                if (!empty($status)) {
+                    $hash = $status->hash;
+                    $action = ("moduleslist" == $action) ? "browser" : $action;
+                }
+                $user_status->assign($userID, $hash, $action);
+            }
+        }
+    }
 
-			if(ModulesManager::isEnabled('ximDEMOS')) {				
-				$actionStats = new ActionsStats();
-				$idStat = $actionStats->create(NULL, $nodeId,$userId, $action, 1);
-			}
-			$stats = array("action" =>$action, "nodeid" =>  $nodeId, "idStat" => 0);
-		}
-		return $stats;
-	}
+    /**
+     * @return array
+     */
+    function actionStatsStart()
+    {
+        $actionStats = App::getValue('ActionsStats');
+        $action = $this->request->getParam("action");
+        $method = $this->request->getParam("method");
+        $nodeId = (int)$this->request->getParam("nodeid");
+        $userId = Session::get("userID");
+        // Starts timer for use in action stats
+        $stats = array();
 
+        if ($actionStats == 1 && !is_null($action) && "index" == $method) {
+            $this->timer = new \Ximdex\Utils\Timer();
+            $this->timer->start();
 
-	// Inserts action stats
-	function actionStatsEnd($stats) {
-		$actionStats = \App::getValue( 'ActionsStats');
-		$action = $this->request->getParam("action");
-		$method = $this->request->getParam("method");
-		$nodeId = (int) $this->request->getParam("nodeid");
-		$userId = \Ximdex\Utils\Session::get("userID");
-
-		if ($actionStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
-			$stats_time = $this->timer->mark('End action');
-
-			if(ModulesManager::isEnabled('ximDEMOS')) {
-				if ($stats["idStat"]){
-				    $actionStats = new ActionsStats($stats["idStat"]);
-				    $actionStats->set("Duration", $this->timer->display_parcials(null, true));
-				    $actionStats->update();
-				}else{
-				    $actionStats = new ActionsStats();
-				    $actionStats->create(NULL, $nodeId,$userId, $action, $this->timer->display_parcials(null, true));
-				}
-			}
-			// else {
-				$this->send_stats($stats, $method, $stats_time );
-			//}
-		}
-	}
+            if (ModulesManager::isEnabled('ximDEMOS')) {
+                $actionStats = new ActionsStats();
+                $idStat = $actionStats->create(NULL, $nodeId, $userId, $action, 1);
+            }
+            $stats = array("action" => $action, "nodeid" => $nodeId, "idStat" => 0);
+        }
+        return $stats;
+    }
 
 
-	private function send_stats($stats, $method, $duration) {
+    // Inserts action stats
+    /**
+     * @param $stats
+     */
+    function actionStatsEnd($stats)
+    {
+        $actionStats = App::getValue('ActionsStats');
+        $action = $this->request->getParam("action");
+        $method = $this->request->getParam("method");
+        $nodeId = (int)$this->request->getParam("nodeid");
+        $userId = Session::get("userID");
 
-		$ctx = stream_context_create(array(
-			'http' => array(
-				'timeout' => 1
-			 )
-		  )
-		);
+        if ($actionStats == 1 && !is_null($action) && "index" == $method && $this->timer) {
+            $stats_time = $this->timer->mark('End action');
 
-		if(strcmp($stats["action"],"browser3")==0)
-			$event="login";
-		else
-			$event="action";
+            if (ModulesManager::isEnabled('ximDEMOS')) {
+                if ($stats["idStat"]) {
+                    $actionStats = new ActionsStats($stats["idStat"]);
+                    $actionStats->set("Duration", $this->timer->display_parcials(null, true));
+                    $actionStats->update();
+                } else {
+                    $actionStats = new ActionsStats();
+                    $actionStats->create(NULL, $nodeId, $userId, $action, $this->timer->display_parcials(null, true));
+                }
+            }
+            // else {
+            $this->send_stats($stats, $method, $stats_time);
+            //}
+        }
+    }
 
-		$remote =  ACTIONS_STATS;
-		$ximid= \App::getValue( 'ximid');
-		$userId = \Ximdex\Utils\Session::get("userID");
-		if(strcmp($stats["nodeid"],'')!=0){
-			$nodeid = (int) $stats["nodeid"];
-		}
-		else
-			$nodeid = 0;
+    /**
+     * @param $stats
+     * @param $method
+     * @param $duration
+     */
+    private function send_stats($stats, $method, $duration)
+    {
 
-		$code = $stats["action"]."_".$method;
+        $ctx = stream_context_create(array(
+                'http' => array(
+                    'timeout' => 1
+                )
+            )
+        );
 
-      @file_get_contents("$remote?eventid=$event&nodeId=$nodeid&userid=$userId&duration=$duration&ximid=$ximid&code=$code", 0, $ctx);
+        if (strcmp($stats["action"], "browser3") == 0)
+            $event = "login";
+        else
+            $event = "action";
 
-	}
+        $remote = ACTIONS_STATS;
+        $ximid = App::getValue('ximid');
+        $userId = Session::get("userID");
+        if (strcmp($stats["nodeid"], '') != 0) {
+            $nodeid = (int)$stats["nodeid"];
+        } else
+            $nodeid = 0;
+
+        $code = $stats["action"] . "_" . $method;
+
+        @file_get_contents("$remote?eventid=$event&nodeId=$nodeid&userid=$userId&duration=$duration&ximid=$ximid&code=$code", 0, $ctx);
+
+    }
 }
-?>

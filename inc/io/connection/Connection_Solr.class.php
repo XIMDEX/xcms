@@ -28,6 +28,9 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
+use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
+use Ximdex\Logger as XMD_Log ;
+
 require_once (XIMDEX_ROOT_PATH . '/inc/model/RelNodeMetadata.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
 require_once (XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');

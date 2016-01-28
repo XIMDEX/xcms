@@ -255,15 +255,7 @@ HEREDOC;
  */
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-
-include_once (XIMDEX_ROOT_PATH . '/inc/helper/GenericData.class.php');
-
-class {$tableName}_ORM extends GenericData   {
+class {$tableName}_ORM extends \Ximdex\Data\GenericData   {
 	var \$_idField = '$primaryKey';
 	var \$_table = '$tableName';
 	var \$_metaData = array(

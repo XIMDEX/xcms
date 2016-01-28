@@ -121,7 +121,7 @@ class User extends Users_ORM {
 
     // It allows to change an object idUser. It avoid to have to destroy and create again
     function setID($id) {
-        parent::GenericData($id);
+        parent::__construct($id);
         if (!($this->get('IdUser') > 0)) {
             $this->SetError(1);
             return null;

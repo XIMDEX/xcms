@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\Channel;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/filters/Filter.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');

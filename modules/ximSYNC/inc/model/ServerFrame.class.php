@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Channel;
 
 ModulesManager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
@@ -74,7 +75,7 @@ class ServerFrame extends ServerFrames_ORM {
 		$this->finalStatusFailed = array(ServerFrame::CANCELED);
 		$this->finalStatus = array_merge($this->finalStatusOk, $this->finalStatusLimbo, $this->finalStatusFailed);
                 $this->publishingReport = new PublishingReport(); 
-		parent::GenericData($id);
+		parent::__construct($id);
 	}
 
 
