@@ -20,49 +20,53 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\Models;
+
+use DB;
 use Ximdex\Models\Node;
+use Ximdex\Models\ORM\LanguagesOrm;
 
-if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Languages_ORM.class.php';
-
-class Language extends Languages_ORM
+class Language extends LanguagesOrm
 {
 	var $langID;
 	var $dbObj;
-	var $numErr;				// Error coe.
-	var $msgErr;				// Error message.
-	var $errorList= array(	// Class error list.
+	var $numErr;                // Error coe.
+	var $msgErr;                // Error message.
+	var $errorList = array(    // Class error list.
 		1 => 'Language does not exist',
 		2 => 'A language with this name already exists',
 		3 => 'Arguments missing',
 		4 => 'Database connection error',
-		);
+	);
 
 	//Constructor
-	function Language($_params=null) {
-		$this->errorList[1]=_('Language does not exist');
-		$this->errorList[2]=_('A language with this name already exists');
-		$this->errorList[3]=_('Arguments missing');
-		$this->errorList[4]=_('Database connection error');
+	function Language($_params = null)
+	{
+		$this->errorList[1] = _('Language does not exist');
+		$this->errorList[2] = _('A language with this name already exists');
+		$this->errorList[3] = _('Arguments missing');
+		$this->errorList[4] = _('Database connection error');
 		parent::__construct($_params);
 	}
-	
+
 	// Returns langID (class attribute)
-	function GetID() {
+	function GetID()
+	{
 		return $this->get('IdLanguage');
 	}
 
 	// Allows to change the langID without destroying and re-creating the object
-	function SetID($id) {
+	function SetID($id)
+	{
 		parent::__construct($id);
 		return $this->get('IdLanguage');
 	}
 
-	// Returns a list of all the existing idLanguages 
+	// Returns a list of all the existing idLanguages
 	function GetList($order = NULL)
 	{
 		$validDirs = array('ASC', 'DESC');
@@ -74,14 +78,13 @@ class Language extends Languages_ORM
 				isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
 		}
 		$dbObj->Query($sql);
-		if(!$dbObj->numErr) {
-			while(!$dbObj->EOF) {
+		if (!$dbObj->numErr) {
+			while (!$dbObj->EOF) {
 				$salida[] = $dbObj->GetValue("IdLanguage");
 				$dbObj->Next();
 			}
-    		return !empty($salida) ? $salida : NULL;
-		}
-		else
+			return !empty($salida) ? $salida : NULL;
+		} else
 			$this->SetError(4);
 	}
 
@@ -92,11 +95,13 @@ class Language extends Languages_ORM
 	}
 
 
-	function GetAllLanguages($order = NULL) {
+	function GetAllLanguages($order = NULL)
+	{
 		return $this->GetList($order);
 	}
 
-	function getLanguagesForNode($idNode) {
+	function getLanguagesForNode($idNode)
+	{
 
 		$node = new Node($idNode);
 		$languages = array();
@@ -106,7 +111,7 @@ class Language extends Languages_ORM
 			// Inherits the system properties
 			$langs = array();
 			$systemLanguages = $this->find('IdLanguage', 'Enabled = 1', null);
-			if(!empty($systemLanguages) ) {
+			if (!empty($systemLanguages)) {
 				foreach ($systemLanguages as $lang) {
 					$langs[] = $lang['IdLanguage'];
 				}
@@ -140,7 +145,7 @@ class Language extends Languages_ORM
 		return false;
 	}
 
-	// Returns the language iso name 
+	// Returns the language iso name
 	function GetIsoName()
 	{
 		return $this->get('IsoName');
@@ -161,11 +166,12 @@ class Language extends Languages_ORM
 		}
 		return false;
 	}
+
 	// Returns the language description
 	function GetDescription()
 	{
 		$this->ClearError();
-		if($this->get('IdLanguage') > 0) {
+		if ($this->get('IdLanguage') > 0) {
 			$node = new Node($this->get('IdLanguage'));
 			return $node->GetDescription();
 		} else {
@@ -178,11 +184,10 @@ class Language extends Languages_ORM
 	function SetDescription($description)
 	{
 		$this->ClearError();
-		if($this->get('IdLanguage') > 0) {
+		if ($this->get('IdLanguage') > 0) {
 			$node = new Node($this->get('IdLanguage'));
 			return $node->SetDescription($description);
-			}
-		else
+		} else
 			$this->SetError(1);
 	}
 
@@ -202,7 +207,7 @@ class Language extends Languages_ORM
 
 	// Searches a language by iso name
 	function SetByIsoName($isoName)
-		{
+	{
 		$this->ClearError();
 		$dbObj = new DB();
 		$query = sprintf("SELECT IdLanguage FROM Languages WHERE IsoName = %s", $dbObj->sqlEscapeString($isoName));
@@ -219,7 +224,7 @@ class Language extends Languages_ORM
 
 
 	// Creates a new language and loads its ID in the object
-	function CreateLanguage($name, $isoname, $description, $enabled, $nodeID=null)
+	function CreateLanguage($name, $isoname, $description, $enabled, $nodeID = null)
 	{
 
 		if ($nodeID > 0) {
@@ -232,7 +237,7 @@ class Language extends Languages_ORM
 		if ($this->get('IdLanguage') > 0) {
 			$this->SetDescription($description);
 		} else {
-			$this->SetError(4) ;
+			$this->SetError(4);
 		}
 
 		return $nodeID;
@@ -240,48 +245,47 @@ class Language extends Languages_ORM
 
 	// Deletes the current language
 	function DeleteLanguage()
-		{
+	{
 		$this->ClearError();
 		$dbObj = new DB();
-		if(!is_null($this->get('IdLanguage')))
-			{
-				// Deleting from database
-				$dbObj->Execute(sprintf("DELETE FROM Languages WHERE IdLanguage= %d", $this->get('IdLanguage')));
-				if($dbObj->numErr)
-					$this->SetError(4);
-			}
-		else
+		if (!is_null($this->get('IdLanguage'))) {
+			// Deleting from database
+			$dbObj->Execute(sprintf("DELETE FROM Languages WHERE IdLanguage= %d", $this->get('IdLanguage')));
+			if ($dbObj->numErr)
+				$this->SetError(4);
+		} else
 			$this->SetError(1);
-		}
+	}
 
-		function CanDenyDeletion()
-		{
+	function CanDenyDeletion()
+	{
 		$this->ClearError();
 		$sql = sprintf("select count(*) AS total from StructuredDocuments where IdLanguage = %d", $this->get('IdLanguage'));
 		$dbObj = new DB();
-    	$dbObj->Query($sql);
-		if($dbObj->numErr)
-				$this->SetError(4);
+		$dbObj->Query($sql);
+		if ($dbObj->numErr)
+			$this->SetError(4);
 
-		if ($dbObj->GetValue("total")== 0)
-			 return true;
-	  else
-				return false;
-		}
+		if ($dbObj->GetValue("total") == 0)
+			return true;
+		else
+			return false;
+	}
 
 
-	function DocumentsWithLanguage($idlang) {
+	function DocumentsWithLanguage($idlang)
+	{
 		$dbObj = new DB();
-		$query = sprintf("SELECT IdDoc FROM StructuredDocuments WHERE IdLanguage = %d", $idlang );
+		$query = sprintf("SELECT IdDoc FROM StructuredDocuments WHERE IdLanguage = %d", $idlang);
 
 		$dbObj->Query($query);
 		if ($dbObj->numErr != 0) {
-	 	$this->SetError(1);
-	 	return null;
+			$this->SetError(1);
+			return null;
 		}
 		$arrayDocs = array();
-		while(!$dbObj->EOF) {
-			$arrayDocs[]=$dbObj->GetValue('IdDoc');
+		while (!$dbObj->EOF) {
+			$arrayDocs[] = $dbObj->GetValue('IdDoc');
 			$dbObj->Next();
 		}
 
@@ -289,22 +293,24 @@ class Language extends Languages_ORM
 
 	}
 
-	function LanguageEnabled($idlang) {
+	function LanguageEnabled($idlang)
+	{
 
 		$dbObj = new DB();
 		$query = sprintf("SELECT Enabled FROM Languages WHERE IdLanguage = %d", $idlang);
 		$dbObj->Query($query);
 		if ($dbObj->numErr != 0) {
-	 	$this->SetError(1);
-	 	return null;
+			$this->SetError(1);
+			return null;
 		}
-		return 	$dbObj->row["Enabled"];
+		return $dbObj->row["Enabled"];
 
 
 	}
 
 
-	function SetEnabled($enabled) {
+	function SetEnabled($enabled)
+	{
 
 		if (!($this->get('IdLanguage') > 0)) {
 			$this->SetError(2, 'Language does not exist');
@@ -320,19 +326,22 @@ class Language extends Languages_ORM
 
 
 	/// Cleans class errors
-	function ClearError() {
+	function ClearError()
+	{
 		$this->numErr = null;
 		$this->msgErr = null;
 	}
 
 	/// Loads a class error
-	function SetError($code){
+	function SetError($code)
+	{
 		$this->numErr = $code;
 		$this->msgErr = $this->errorList[$code];
 	}
 
 	// Returns true if the class had an error
-	function HasError(){
+	function HasError()
+	{
 		return ($this->numErr != null);
-        }
+	}
 }

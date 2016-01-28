@@ -25,6 +25,7 @@
  * **************************************************************************** */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 
@@ -33,7 +34,6 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
-ModulesManager::file('/inc/model/language.php');
 
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');

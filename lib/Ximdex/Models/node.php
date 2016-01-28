@@ -32,7 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 use DataFactory;
 use Group;
-use Language;
+use Ximdex\Models\Language;
 use ModulesManager;
 use PipeNodeTypes;
 use RelTagsNodes;

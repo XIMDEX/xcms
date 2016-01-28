@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Languages_ORM extends \Ximdex\Data\GenericData
+class LanguagesOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'IdLanguage';
     var $_table = 'Languages';

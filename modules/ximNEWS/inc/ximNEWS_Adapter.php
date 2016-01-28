@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/io/BaseIO.class.php');

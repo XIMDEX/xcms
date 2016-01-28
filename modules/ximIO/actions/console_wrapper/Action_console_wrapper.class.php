@@ -26,11 +26,11 @@
 
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/cli/Shell.class.php');
-ModulesManager::file('/inc/model/language.php');
- ModulesManager::file('/inc/model/group.php');
+  ModulesManager::file('/inc/model/group.php');
 
 
 class Action_console_wrapper extends ActionAbstract {

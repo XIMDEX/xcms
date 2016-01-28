@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/nodetypes/structureddocument.php');

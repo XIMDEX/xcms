@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 
 if (!defined('XIMDEX_ROOT_PATH')) {

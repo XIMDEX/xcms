@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -34,7 +35,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/model/language.php');
 
 
 /***

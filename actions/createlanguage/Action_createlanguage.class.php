@@ -24,8 +24,9 @@
  *  @version $Revision$
  */
 
-ModulesManager::file('/inc/model/language.php');
-ModulesManager::file('/inc/model/IsoCode.class.php');
+use Ximdex\Models\Language;
+
+ ModulesManager::file('/inc/model/IsoCode.class.php');
 
 class Action_createlanguage extends ActionAbstract {
 	// Main method: shows initial form

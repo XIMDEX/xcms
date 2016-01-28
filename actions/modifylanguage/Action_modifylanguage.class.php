@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 
 /**
