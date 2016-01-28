@@ -25,6 +25,8 @@
  *  @version $Revision$
  */
 
+use Ximdex\Runtime\Cli\CliParser;
+
 include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -43,8 +45,7 @@ set_error_handler("showErrors");
 
 ModulesManager::file('/inc/io/connection/ConnectionManager.class.php');
 ModulesManager::file('/inc/model/Pumper.class.php', 'ximSYNC');
-ModulesManager::file('/inc/cli/CliParser.class.php');
-ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+ ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
 /*

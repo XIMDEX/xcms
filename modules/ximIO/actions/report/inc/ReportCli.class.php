@@ -25,8 +25,8 @@
  */
 
 
+use Ximdex\Runtime\Cli\CliParser;
 
-ModulesManager::file('/inc/cli/CliParser.class.php');
 
 class ReportCli extends CliParser  {
 	var $_metadata = array(

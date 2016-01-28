@@ -32,8 +32,7 @@ use Ximdex\Modules\Module;
 use Ximdex\Utils\FsUtils;
 
 
-ModulesManager::file('/inc/cli/CliParser.class.php');
-ModulesManager::file('/inc/cli/CliReader.class.php');
+ ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file(MODULE_XIMLOADER_PATH . '/BuildParser.class.php');
 

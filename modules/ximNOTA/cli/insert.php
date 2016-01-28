@@ -4,8 +4,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
 }
 
-require_once XIMDEX_ROOT_PATH . '/inc/cli/CliParser.class.php';
-require_once XIMDEX_ROOT_PATH . '/modules/ximNOTA/cli/inc/ximNota.cli.class.php';
+ require_once XIMDEX_ROOT_PATH . '/modules/ximNOTA/cli/inc/ximNota.cli.class.php';
 require_once XIMDEX_ROOT_PATH . '/modules/ximNOTA/inc/ximNOTAServer.class.php';
 
 

@@ -46,6 +46,23 @@ if (!defined('IMPORTED_STATUS_PENDING_LINKS')) {
     define('IMPORTED_STATUS_PENDING_LINKS', 3);
 }
 
+
+if (!defined('CREATE')) {
+    define('CREATE', 'C');
+}
+if (!defined('WRITE')) {
+    define('WRITE', 'W');
+}
+if (!defined('READ')) {
+    define('READ', 'R');
+}
+if (!defined('UPDATE')) {
+    define('UPDATE', 'U');
+}
+if (!defined('DELETE')) {
+    define('DELETE', 'D');
+}
+
 // Array of classes => metatype which is belonging
 $metaTypesArray = array(
     'FOLDER' => 'FOLDERNODE',
