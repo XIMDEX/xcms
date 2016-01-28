@@ -1,5 +1,7 @@
 <?php
 
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/model/RelNodeTypeMimeType.class.php');
 
 class Action_setextensions extends ActionAbstract

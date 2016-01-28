@@ -20,23 +20,36 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-use Ximdex\Models\Action ;
+namespace Ximdex\MVC;
 
+use Action_log;
+use EmailNotificationStrategy;
+use FrontController;
+use ModulesManager;
+use ParsingJsGetText;
+use Serializer;
+use User;
+use Ximdex\Models\Action;
 use Ximdex\Models\Node;
-use Ximdex\MVC\IController;
-use Ximdex\Runtime\App ;
+use Ximdex\Runtime\App;
+use Ximdex\Runtime\Request;
+use Ximdex\Utils\Factory;
+use Ximdex\Utils\QueryManager;
+use Ximdex\Utils\Session;
+use XimdexNotificationStrategy;
+use Ximdex\Logger as XMD_Log;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__). "/../../"));
+	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 }
 //
 require_once(XIMDEX_ROOT_PATH . '/inc/parsers/ParsingJsGetText.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
-
 
 
 /**
@@ -47,12 +60,15 @@ require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
  *  css/js inclusion and redirection
  *
  */
-
-class ActionAbstract extends IController {
+class ActionAbstract extends IController
+{
 
 	/**
 	 * Keeps the js to use
 	 */
+	public $displayEncoding;
+	public $actionMethod;
+	public $actionModule;
 	/**
 	 * @var array
 	 */
@@ -76,7 +92,7 @@ class ActionAbstract extends IController {
 
 	/**
 	 * Action renderer
- 	 */
+	 */
 	/**
 	 * @var mixed
 	 */
@@ -90,25 +106,26 @@ class ActionAbstract extends IController {
 	/**
 	 * @var bool
 	 */
-	protected $endActionLogged=false;
+	protected $endActionLogged = false;
 
 	/**
 	 * ActionAbstract constructor.
 	 * @param null $_render
 	 */
-	function __construct($_render = null) {
+	function __construct($_render = null)
+	{
 
 		parent::__construct();
 
-		$this->displayEncoding =      App::getValue( 'displayEncoding');
+		$this->displayEncoding = App::getValue('displayEncoding');
 
 		/** Obtaining the render to use */
 		$rendererClass = $this->_get_render($_render);
 
-		$factory = new \Ximdex\Utils\Factory(RENDERER_ROOT_PATH, '');
-		$this->renderer = $factory->instantiate($rendererClass.'Renderer');
+		$factory = new Factory( RENDERER_ROOT_PATH, '');
+		$this->renderer = $factory->instantiate($rendererClass . 'Renderer');
 
-		$this->renderer->set("_BASE_TEMPLATE_PATH", sprintf('%s/xmd/template/%s/', XIMDEX_ROOT_PATH, $rendererClass)  );
+		$this->renderer->set("_BASE_TEMPLATE_PATH", sprintf('%s/xmd/template/%s/', XIMDEX_ROOT_PATH, $rendererClass));
 
 	}
 
@@ -119,19 +136,17 @@ class ActionAbstract extends IController {
 	 * @param $nodeId
 	 * @return array
 	 */
-	private function getActionInfo($actionName, $module, $actionId, $nodeId) {
+	private function getActionInfo($actionName, $module, $actionId, $nodeId)
+	{
+
+		unset( $actionId);
+
 		$nodeTypeId = "";
-		if ( !is_null( $nodeId )) {
+		if (!is_null($nodeId)) {
 			$node = new Node();
 			$nodeTypeId = $node->find('IdNodeType', 'IdNode = %s', array($nodeId), MONO);
 			$nodeTypeId = $nodeTypeId[0];
 		}
-
-
-
-
-
-
 
 
 		$action = new Action();
@@ -141,7 +156,7 @@ class ActionAbstract extends IController {
 			array($nodeTypeId, $actionName, $module)
 		);
 
-		if ( !empty( $data )) {
+		if (!empty($data)) {
 			$data = $data[0];
 
 
@@ -153,17 +168,19 @@ class ActionAbstract extends IController {
 
 	/**
 	 * Execute the action
-	 * @param $request
-	 * @return unknown_type
 	 */
-	function execute($request) {
+	/**
+	 * @param $request Request
+	 */
+	function execute($request)
+	{
 		// Setting path or subset which current action belongs to
 		$nodeid = $request->getParam("nodeid");
-		$action = $request->getParam("action");
+		//$action = $request->getParam("action");
 		$actionid = $request->getParam("actionid");
 
 		if ($nodeid && $actionid) {
-			$action = new Action($actionid);
+			// $action = new Action($actionid);
 			//XMD_Log::debug("MVC::ActionAbstract calling action $actionid (" . $action->get('Command') . ") in node $nodeid ");
 		}
 
@@ -178,63 +195,68 @@ class ActionAbstract extends IController {
 		);
 
 
-		if ( !empty( $actionInfo)) {
+		if (!empty($actionInfo)) {
 
 
 			$this->actionCommand = $actionInfo['Command'];
 			$this->actionName = $actionInfo['Name'];
 			$this->actionDescription = $actionInfo['Description'];
 			$this->actionModule = isset($actionInfo['Module']) ? $actionInfo['Module'] : null;
-			$command = $this->actionCommand = $actionInfo['Command'];
+			$this->actionCommand = $actionInfo['Command'];
 		}
-		if(method_exists($this, $method)) {
+		if (method_exists($this, $method)) {
 			$this->actionMethod = $method;
 			$this->logInitAction();
 			$this->$method();
 		} else {
-			XMD_Log::debug("MVC::ActionAbstract Metodo {$method} not found" );
+			XMD_Log::debug("MVC::ActionAbstract Metodo {$method} not found");
 		}
 
 	}
 
-	private function getDefaultLogMessage(){
-		$user = \Ximdex\Utils\Session::get("userID")? "by ".\Ximdex\Utils\Session::get("userID"):"";
+	private function getDefaultLogMessage()
+	{
+		$user =  Session::get("userID") ? "by " .  Session::get("userID") : "";
 
 		$moduleString = '';
 
-		if ( isset( $this->actionModule)) {
-			$moduleString = $this->actionModule? "in module {$this->actionModule}.": "";
+		if (isset($this->actionModule)) {
+			$moduleString = $this->actionModule ? "in module {$this->actionModule}." : "";
 
 		}
 
-		return $moduleString.get_class($this)."->{$this->actionMethod} {$user}";
+		return $moduleString . get_class($this) . "->{$this->actionMethod} {$user}";
 
 	}
 
-	private function logInitAction(){
+	private function logInitAction()
+	{
 
 		$this->endActionLogged = false;
-		Action_log::info("Init ".$this->getDefaultLogMessage());
-		Action_log::debug("Request: ".print_r($this->request, true));
+		Action_log::info("Init " . $this->getDefaultLogMessage());
+		Action_log::debug("Request: " . print_r($this->request, true));
 
 	}
 
-	protected function logEndAction($success=true, $message=null){
+	protected function logEndAction($success = true, $message = null)
+	{
 
-		$message = $message? ". $message": "";
+		$message = $message ? ". $message" : "";
 		if ($success)
-			Action_log::info("FINISH OK ".$this->getDefaultLogMessage()." $message");
+			Action_log::info("FINISH OK " . $this->getDefaultLogMessage() . " $message");
 		else
-			Action_log::error("FINISH FAIL ".$this->getDefaultLogMessage()." $message");
+			Action_log::error("FINISH FAIL " . $this->getDefaultLogMessage() . " $message");
 
-		$this->endActionLogged=true;
+		$this->endActionLogged = true;
 	}
-	
-	protected function logSuccessAction($message = null){
+
+	protected function logSuccessAction($message = null)
+	{
 		$this->logEndAction(true, $message);
 	}
 
-	protected function logUnsuccessAction($message=null){
+	protected function logUnsuccessAction($message = null)
+	{
 		$this->logEndAction(false, $message);
 	}
 
@@ -242,35 +264,41 @@ class ActionAbstract extends IController {
 	/**
 	 * Renders the action
 	 *
-	 * @param $arrValores
-	 * @param $view
-	 * @param $layout
+
 	 */
-	function render($arrValores = NULL, $view = NULL, $layout = NULL, $return = FALSE) {
+	/**
+	 * @param null $arrValores
+	 * @param null $view
+	 * @param null $layout
+	 * @param bool $return
+	 * @return null
+	 */
+	function render($arrValores = NULL, $view = NULL, $layout = NULL, $return = FALSE)
+	{
 
 		if (!$this->endActionLogged)
 			$this->logSuccessAction();
 
 		if (is_null($this->renderer)) {
 			$this->_setError("Renderizador no definido", "Actions");
-			return;
+			return null ;
 		}
 
 		//Send the encoding to the browser
 		$this->response->set('Content-type', "text/html; charset=$this->displayEncoding");
 
 		// Render default values
-		if($view != NULL ) $this->request->setParam("method", $view);
+		if ($view != NULL) $this->request->setParam("method", $view);
 
 		// Visualize action headers ( Action name + description + node_path )
 		$this->request->setParam("view_head", 1);
 
 		// Saving in the request the css and js(passed by gettext before)
-		$this->request->setParam("locale", \Ximdex\Utils\Session::get('locale'));
+		$this->request->setParam("locale",  Session::get('locale'));
 
 		$getTextJs = new ParsingJsGetText();
 
-		$this->request->setParam("js_files",  $getTextJs->getTextArrayOfJs($this->_js));
+		$this->request->setParam("js_files", $getTextJs->getTextArrayOfJs($this->_js));
 		$this->request->setParam("css_files", $this->_css);
 
 		// Usefull values
@@ -279,7 +307,7 @@ class ActionAbstract extends IController {
 		$arrValores['_ACTION_NAME'] = $this->actionName;
 		$arrValores['_ACTION_DESCRIPTION'] = $this->actionDescription;
 
-		$query = \Ximdex\Runtime\App::get('\Ximdex\Utils\QueryManager');
+		$query =  App::get('\Ximdex\Utils\QueryManager');
 		$arrValores['_MESSAGES_PATH'] = $query->getPage() . $query->buildWith();
 
 
@@ -291,7 +319,7 @@ class ActionAbstract extends IController {
 		// If layout was not specified
 		if (empty($layout) || $layout == "messages.tpl") {
 
-			if ($this->request->getParam("ajax") == "json" ) {
+			if ($this->request->getParam("ajax") == "json") {
 
 				//If there are some errors and op=json, errors are returned in json format
 				if (isset($arrValores["messages"]) /*&& isset($arrValores["messages"][0])*/) {
@@ -307,7 +335,7 @@ class ActionAbstract extends IController {
 				if ($this->request->getParam("nodeid") > 0) {
 
 					$this->reloadNode($this->request->getParam("nodeid"));
-					$this->request->setParam("js_files",  $getTextJs->getTextArrayOfJs($this->_js));
+					$this->request->setParam("js_files", $getTextJs->getTextArrayOfJs($this->_js));
 				}
 
 			} else {
@@ -332,11 +360,11 @@ class ActionAbstract extends IController {
 		$this->request->setParameters($this->renderer->getParameters());
 		$this->response->sendHeaders();
 
-		if ($this->request->getParam("out") == "WEB" ) {
+		if ($this->request->getParam("out") == "WEB") {
 			echo $this->request->getParam("outHTML");
 		}
 
-        return null ;
+		return null;
 	}
 
 	/**
@@ -344,10 +372,11 @@ class ActionAbstract extends IController {
 	 *
 	 * @param $output
 	 */
-	function _renderWidgets($output) {
+	function _renderWidgets($output)
+	{
 
 		// DEBUG: Apply widgets renderer after smarty renderer
-		$factory = new \Ximdex\Utils\Factory(RENDERER_ROOT_PATH, '');
+		$factory = new  Factory(RENDERER_ROOT_PATH, '');
 		$wr = $factory->instantiate('WidgetsRenderer');
 		$params = $this->renderer->getParameters();
 
@@ -364,13 +393,15 @@ class ActionAbstract extends IController {
 
 	/**
 	 * Redirects the action to another
-	 *
-	 * @param $method
-	 * @param $actionName
-	 * @param $parameters
-	 * @return unknown_type
+
 	 */
-	function redirectTo($method = NULL, $actionName = NULL, $parameters = NULL) {
+	/**
+	 * @param null $method
+	 * @param null $actionName
+	 * @param null $parameters
+	 */
+	function redirectTo($method = NULL, $actionName = NULL, $parameters = NULL)
+	{
 		if (empty($method)) {
 			$method = 'index';
 		}
@@ -393,8 +424,8 @@ class ActionAbstract extends IController {
 			}
 
 
-			$_GET["actionid"]  = $idAction;
-			$_REQUEST["actionid"]  = $idAction;
+			$_GET["actionid"] = $idAction;
+			$_REQUEST["actionid"] = $idAction;
 		}
 
 
@@ -410,20 +441,23 @@ class ActionAbstract extends IController {
 
 	/**
 	 * Recargamos el arbol sobre el nodo especificado
-	 * @param $idnode
-	 * @return unknown_type
+
 	 */
-	function reloadNode($idnode) {
+	/**
+	 * @param $idnode
+	 */
+	function reloadNode($idnode)
+	{
 
 		// TODO search and destroy the %20 generated in the last char of the query string
-		$queryManager = new \Ximdex\Utils\QueryManager(false);
+		$queryManager = new QueryManager( false );
 		$file = sprintf('%s%s',
 			'/xmd/loadaction.php',
 			$queryManager->buildWith(array(
-					'xparams[reload_node_id]' => $idnode,
-					'js_file' => 'reloadNode',
-					'method' => 'includeDinamicJs',
-					'void' => 'SpacesInIE7HerePlease'
+				'xparams[reload_node_id]' => $idnode,
+				'js_file' => 'reloadNode',
+				'method' => 'includeDinamicJs',
+				'void' => 'SpacesInIE7HerePlease'
 			))
 		);
 
@@ -436,35 +470,36 @@ class ActionAbstract extends IController {
 	 * <p>Ximdex será el encargado de obtener la acción siguiente a la actual
 	 * y ejecutarla sobre el nodo especificado.</p>
 	 *
-	 * @param $idnode El id del nodo sobre el que ejecutar la siguiente acción
+	 * @param $idnode int  id del nodo sobre el que ejecutar la siguiente acción
 	 */
 	/*function nextAction($idnode) {
-		$queryManager = new QueryManager(false);
-		$fileNextAction = sprintf('%s%s',
-			'/xmd/loadaction.php',
-			$queryManager->buildWith(array(
-					'xparams[id_node]' => $idnode,
-					'xparams[action_name]' => str_replace("Action_", "", get_class($this)),
-					'js_file' => 'nextAction',
-					'method' => 'includeDinamicJs',
-					'void' => 'SpacesInIE7HerePlease'
-			))
-		);
+        $queryManager = new QueryManager(false);
+        $fileNextAction = sprintf('%s%s',
+            '/xmd/loadaction.php',
+            $queryManager->buildWith(array(
+                    'xparams[id_node]' => $idnode,
+                    'xparams[action_name]' => str_replace("Action_", "", get_class($this)),
+                    'js_file' => 'nextAction',
+                    'method' => 'includeDinamicJs',
+                    'void' => 'SpacesInIE7HerePlease'
+            ))
+        );
 
-		$this->addJs(urldecode($fileNextAction));
-	}*/
+        $this->addJs(urldecode($fileNextAction));
+    }*/
 
 	/**
-	 *
 	 * @param $_js
-	 * @param $params
-	 * @return unknown_type
+	 * @param string $_module
+	 * @param null $params
+	 * @return array|string
 	 */
-	public function addJs($_js, $_module = 'XIMDEX', $params=null) {
+	public function addJs($_js, $_module = 'XIMDEX', $params = null)
+	{
 
-		if('XIMDEX' != $_module) {
+		if ('XIMDEX' != $_module) {
 			$path = ModulesManager::path($_module);
-			$_js = $path.$_js;
+			$_js = $path . $_js;
 		}
 
 		if ($params === null) {
@@ -481,42 +516,49 @@ class ActionAbstract extends IController {
 	}
 
 	/**
-	 *
 	 * @param $_css
-	 * @return unknown_type
+	 * @param string $_module
 	 */
-	public function addCss($_css, $_module = 'XIMDEX') {
+	public function addCss($_css, $_module = 'XIMDEX')
+	{
 
-		if('XIMDEX' != $_module) {
+		if ('XIMDEX' != $_module) {
 			$path = ModulesManager::path($_module);
-			$_css = $path.$_css;
+			$_css = $path . $_css;
 		}
 
-		$this->_css[] = \App::getValue( 'UrlRoot').$_css;
+		$this->_css[] = App::getValue('UrlRoot') . $_css;
 	}
 
 	/**
 	 * @param null $rendererClass
-	 * @return null|string|unknown_type
+	 * @return mixed|null|string
 	 */
-	private function _get_render($rendererClass = null) {
+	private function _get_render($rendererClass = null)
+	{
 
-		if($rendererClass == null) {
-			if(\Ximdex\Utils\Session::get('debug_render')> 0 ) {
-				switch(\Ximdex\Utils\Session::get('debug_render')) {
-					case 1: $rendererClass = "Smarty"; break;
-					case 2: $rendererClass = "Json"; break;
-					case 3: $rendererClass = "Debug"; break;
+		if ($rendererClass == null) {
+			if ( Session::get('debug_render') > 0) {
+				switch ( Session::get('debug_render')) {
+					case 1:
+						$rendererClass = "Smarty";
+						break;
+					case 2:
+						$rendererClass = "Json";
+						break;
+					case 3:
+						$rendererClass = "Debug";
+						break;
 					default:
 						$rendererClass = $this->request->getParam("renderer");
 				}
-			}else {
+			} else {
 				$rendererClass = $this->request->getParam("renderer");
 			}
 		}
 
 		//Si no hay definido ning�n render
-		if(!$rendererClass) {
+		if (!$rendererClass) {
 			$rendererClass = "Smarty";
 		}
 
@@ -528,24 +570,26 @@ class ActionAbstract extends IController {
 	/**
 	 * @param $data
 	 */
-	public function sendJSON($data) {
+	public function sendJSON($data)
+	{
 		if (!$this->endActionLogged)
 			$this->logSuccessAction();
 		if (isset($data['status']) && is_int($data['status'])) {
-			header('HTTP/1.1 {$data["status"]}');	
+			header('HTTP/1.1 {$data["status"]}');
 		}
-    	header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
+		header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
 		$data = Serializer::encode(SZR_JSON, $data);
 		echo $data;
 		die();
-    }
+	}
 
 	/**
 	 * @param $data
 	 * @param null $etag
 	 */
-	public function sendJSON_cached($data, $etag=null) {
-    	if ($etag) {
+	public function sendJSON_cached($data, $etag = null)
+	{
+		if ($etag) {
 			$data = Serializer::encode(SZR_JSON, $data);
 			$hash = md5($data);
 			if ($hash == $etag) {
@@ -555,21 +599,21 @@ class ActionAbstract extends IController {
 			} else {
 				header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
 				$data = rtrim($data, "}");
-				$data = $data.', "etag": "'.$hash.'"}';
+				$data = $data . ', "etag": "' . $hash . '"}';
 				echo $data;
-				die();	
+				die();
 			}
-			
+
 		} else {
-	    	header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
+			header(sprintf('Content-type: application/json; charset=', $this->displayEncoding));
 			$data = Serializer::encode(SZR_JSON, $data);
 			$hash = md5($data);
 			$data = rtrim($data, "}");
-			$data = $data.', "etag": "'.$hash.'"}';
+			$data = $data . ', "etag": "' . $hash . '"}';
 			echo $data;
-			die();	
-		}	
-    }
+			die();
+		}
+	}
 
 	/**
 	 * Remplace files con [LANG] to i18n file
@@ -579,7 +623,6 @@ class ActionAbstract extends IController {
 	 *  /var/www/ximdex/xmd/images/ximNEWS/pingu_[LANG].gif -> /var/www/ximdex/xmd/images/ximNEWS/pingu_es.gif
 	 *  or ...
 	 *  This can be also done in html with the smarty var locale
-
 	 */
 	/**
 	 * @param $file
@@ -587,29 +630,30 @@ class ActionAbstract extends IController {
 	 * @param null $_default
 	 * @return mixed|null
 	 */
-	function i18n_file($file, $_lang = null, $_default = null) {
+	function i18n_file($file, $_lang = null, $_default = null)
+	{
 		$_file = null;
 
 		//Checking if the file is existing for the passed language
-		if($_lang != null ) {
+		if ($_lang != null) {
 			$_file = str_replace("[LANG]", $_lang, $file);
-			if(file_exists($_file) )
-			return $_file;
+			if (file_exists($_file))
+				return $_file;
 		}
 
 		//if the associated file for this language is not existing, checking with system language
-		$_lang = \Ximdex\Utils\Session::get('locale');
-		if($_lang != null ) {
+		$_lang = Session::get('locale');
+		if ($_lang != null) {
 			$_file = str_replace("[LANG]", $_lang, $file);
-			if(file_exists($_file) )
-			return $_file;
+			if (file_exists($_file))
+				return $_file;
 		}
 
 		$_lang = DEFAULT_LOCALE;
-		if($_lang != null ) {
+		if ($_lang != null) {
 			$_file = str_replace("[LANG]", $_lang, $file);
-			if(file_exists($_file) )
-			return $_file;
+			if (file_exists($_file))
+				return $_file;
 		}
 
 		return $_default;
@@ -618,30 +662,33 @@ class ActionAbstract extends IController {
 	/**
 	 *
 	 */
-	protected function renderMessages() {
+	protected function renderMessages()
+	{
 		$this->render(array('messages' => $this->messages->messages));
 		die();
 	}
 
 	/**
 	 * Decides if a tour is be able to be launched automatically given an user
-
 	 */
 	/**
 	 * @param $userId
 	 * @param null $action
 	 * @return bool
 	 */
-	public function tourEnabled($userId, $action=null) {
-		if(!ModulesManager::isEnabled('ximTOUR')){
-    			return false;
-        }
-		$actionsStats = new ActionsStats();
-		$numReps = \App::getValue( 'ximTourRep');
-		if (!$action){
-	    		$action = $this->actionCommand;
-        }
-        $user = new User (\Ximdex\Utils\Session::get("userID"));
+	public function tourEnabled($userId, $action = null)
+	{
+		unset( $userId ) ;
+
+		if (!ModulesManager::isEnabled('ximTOUR')) {
+			return false;
+		}
+		// $actionsStats = new ActionsStats() ;
+		$numReps = App::getValue('ximTourRep');
+		if (!$action) {
+			// $action = $this->actionCommand;
+		}
+		$user = new User (Session::get("userID"));
 		$result = $user->GetNumAccess();
 		return ($result === null || $result < $numReps) ? true : false;
 	}
@@ -652,23 +699,23 @@ class ActionAbstract extends IController {
 	 * @param $to
 	 * @return array
 	 */
-	protected function sendNotifications($subject, $content, $to){
-		$from = \Ximdex\Utils\Session::get("userID");
-		$result = array();
-		$emailNotification = new EmailNotificationStrategy();
-		$result = $emailNotification->sendNotification($subject, $content,$from, $to);
+	protected function sendNotifications($subject, $content, $to)
+	{
+		$from = Session::get("userID");
+ 		$emailNotification = new EmailNotificationStrategy();
+		$result = $emailNotification->sendNotification($subject, $content, $from, $to);
 		$messagesNotification = new XimdexNotificationStrategy();
-		$messagesNotification->sendNotification($subject, $content,$from, $to);
+		$messagesNotification->sendNotification($subject, $content, $from, $to);
 
 		foreach ($result as $idUser => $resultByUser) {
 			$user = new User($idUser);
 			$userEmail = $user->get('Email');
-			if ($resultByUser){
+			if ($resultByUser) {
 				$this->messages->add(sprintf(_("Message successfully sent to %s"), $userEmail), MSG_TYPE_NOTICE);
-			}else{
+			} else {
 				$this->messages->add(sprintf(_("Error sending message to the mail address %s"), $userEmail), MSG_TYPE_WARNING);
 			}
-		}	
+		}
 
 		return $result;
 	}

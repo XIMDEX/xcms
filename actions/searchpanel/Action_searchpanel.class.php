@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/serializer/Serializer.class.php');
 ModulesManager::file('/inc/parsers/ParsingJsGetText.class.php');

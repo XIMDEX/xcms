@@ -25,6 +25,8 @@
  */
 
 
+use Ximdex\MVC\ActionAbstract;
+
 ModulesManager::file('/inc/model/locale.php');
 class Action_changelang extends ActionAbstract {
    // Main mathod: it shows the init form

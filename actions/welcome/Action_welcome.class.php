@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 use Ximdex\Models\Action ;
+use Ximdex\MVC\ActionAbstract;
 
 
 ModulesManager::file("/actions/browser3/Action_browser3.class.php");

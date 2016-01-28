@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');

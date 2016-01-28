@@ -28,6 +28,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Modules\Module ;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');

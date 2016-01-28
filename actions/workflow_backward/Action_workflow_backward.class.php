@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/mail/Mail.class.php');

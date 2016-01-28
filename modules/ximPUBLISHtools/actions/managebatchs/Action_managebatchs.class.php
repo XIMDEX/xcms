@@ -24,6 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Session;
 
 ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');

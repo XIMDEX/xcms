@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/nodetypes/statenode.php');

@@ -25,11 +25,7 @@
  */
 
 
-
-
-
-
-
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/pipeline/PipeStatus.class.php');

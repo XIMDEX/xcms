@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');

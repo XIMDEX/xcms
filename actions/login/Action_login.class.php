@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\Request;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/FsUtils.class.php');

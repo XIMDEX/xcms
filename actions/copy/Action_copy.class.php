@@ -26,6 +26,7 @@
  */
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
+use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/actions/copy/baseIO.php');
