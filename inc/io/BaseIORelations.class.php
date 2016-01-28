@@ -20,58 +20,57 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '../../'));
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 
-class BaseIORelations {
-	/**
-	 * 
-	 * @param $data
-	 * @return unknown_type
-	 */
-	function build($data) {
-		if (!isset($data['NODETYPENAME'])) {
-			return ERROR_INCORRECT_DATA;
-		}
-		$relationType = $data['NODETYPENAME'];
-		switch ($relationType) {
-			case 'RELNEWSCOLECTOR':
-				//var_dump($data);
-				$rnc = new RelNewsColector();
-				$rnc->set('IdNew', $data['IDNEW']);
-				$rnc->set('IdColector', $data['IDCOLECTOR']);
-				$rnc->set('State', $data['STATE']);
-				$rnc->set('SetAsoc', $data['SETASOC']);
-				$rnc->set('PosInSet', $data['POSINSET']);
-				$rnc->set('Page', $data['PAGE']);
-				$rnc->set('PosInSet2', $data['POSINSET2']);
-				$rnc->set('Page2', $data['PAGE2']);
-				$rnc->set('LangId', $data['LANGID']);
-				$rnc->set('FechaIn', $data['FECHAIN']);
-				$rnc->set('FechaOut', $data['FECHAOUT']);
-				$rnc->set('Version', $data['VERSION']);
-				$rnc->set('SubVersion', $data['SUBVERSION']);
-				$rnc->set('IdCache', $data['IDCACHE']);
-				$result = $rnc->add();
-				
-				//var_dump($rnc->messages);
-				if (!($result > 0)) {
-					XMD_Log::warning(_('Error inserting information about relnewscolector relation (BaseIORelations)'));
-				}
-				break;
-		}
-		return ERROR_INCORRECT_DATA;
-	}
+class BaseIORelations
+{
+    /**
+     *
+     * @param $data
+     * @return unknown_type
+     */
+    function build($data)
+    {
+        if (!isset($data['NODETYPENAME'])) {
+            return Constants::ERROR_INCORRECT_DATA;
+        }
+        $relationType = $data['NODETYPENAME'];
+        switch ($relationType) {
+            case 'RELNEWSCOLECTOR':
+                //var_dump($data);
+                $rnc = new RelNewsColector();
+                $rnc->set('IdNew', $data['IDNEW']);
+                $rnc->set('IdColector', $data['IDCOLECTOR']);
+                $rnc->set('State', $data['STATE']);
+                $rnc->set('SetAsoc', $data['SETASOC']);
+                $rnc->set('PosInSet', $data['POSINSET']);
+                $rnc->set('Page', $data['PAGE']);
+                $rnc->set('PosInSet2', $data['POSINSET2']);
+                $rnc->set('Page2', $data['PAGE2']);
+                $rnc->set('LangId', $data['LANGID']);
+                $rnc->set('FechaIn', $data['FECHAIN']);
+                $rnc->set('FechaOut', $data['FECHAOUT']);
+                $rnc->set('Version', $data['VERSION']);
+                $rnc->set('SubVersion', $data['SUBVERSION']);
+                $rnc->set('IdCache', $data['IDCACHE']);
+                $result = $rnc->add();
+
+                //var_dump($rnc->messages);
+                if (!($result > 0)) {
+                    XMD_Log::warning(_('Error inserting information about relnewscolector relation (BaseIORelations)'));
+                }
+                break;
+        }
+        return Constants::ERROR_INCORRECT_DATA;
+    }
 }
-?>

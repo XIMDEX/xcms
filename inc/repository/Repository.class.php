@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\Constants;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/IRepository.iface.php');
 
@@ -123,20 +124,20 @@ class Repository extends IRepository {
 	 */
 	function _getBaseIOError($error) {
 		switch ($error) {
-			case ERROR_NO_PERMISSIONS:
-				$msg = 'No tiene permisos para realizar la operación.';
+			case Constants::ERROR_NO_PERMISSIONS:
+				$msg = 'No tiene permisos para realizar la operaciï¿½n.';
 				break;
-			case ERROR_INCORRECT_DATA:
-				$msg = 'La información enviada a BaseIO no es correcta.';
+			case Constants::ERROR_INCORRECT_DATA:
+				$msg = 'La informaciï¿½n enviada a BaseIO no es correcta.';
 				break;
-			case ERROR_NOT_REACHED:
+			case Constants::ERROR_NOT_REACHED:
 				$msg = 'ERROR_NOT_REACHED';
 				break;
-			case ERROR_NOT_ALLOWED:
-				$msg = 'El tipo de nodo especificado no está permitido en este directorio.';
+			case Constants::ERROR_NOT_ALLOWED:
+				$msg = 'El tipo de nodo especificado no estï¿½ permitido en este directorio.';
 				break;
 			default:
-				$msg = 'La operación se realizó correctamente.';
+				$msg = 'La operaciï¿½n se realizï¿½ correctamente.';
 		}
 
 		return $msg;

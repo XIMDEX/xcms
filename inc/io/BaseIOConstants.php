@@ -24,27 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
-if (!defined('ERROR_NO_PERMISSIONS')) {
-    define('ERROR_NO_PERMISSIONS', -1);
-}
-if (!defined('ERROR_INCORRECT_DATA')) {
-    define('ERROR_INCORRECT_DATA', -2);
-}
-if (!defined('ERROR_NOT_REACHED')) {
-    define('ERROR_NOT_REACHED', -3);
-}
-if (!defined('ERROR_NOT_ALLOWED')) {
-    define('ERROR_NOT_ALLOWED', -4);
-}
-if (!defined('IMPORTED_STATUS_OK')) {
-    define('IMPORTED_STATUS_OK', 1);
-}
-if (!defined('IMPORTED_STATUS_OK_TO_PUBLISH')) {
-    define('IMPORTED_STATUS_OK_TO_PUBLISH', 2);
-}
-if (!defined('IMPORTED_STATUS_PENDING_LINKS')) {
-    define('IMPORTED_STATUS_PENDING_LINKS', 3);
-}
+
+
 
 
 

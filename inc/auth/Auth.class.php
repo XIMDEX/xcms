@@ -30,9 +30,7 @@ use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
 use Ximdex\Runtime\Constants;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
-}
+
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/user.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/group.php");

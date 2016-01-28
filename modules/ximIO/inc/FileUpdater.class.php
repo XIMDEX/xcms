@@ -26,13 +26,12 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 
 define('REVISION_COPY', 0);
 
-/*	define ('IMPORTED_STATUS_OK', 1);
-	define ('IMPORTED_STATUS_OK_TO_PUBLISH', 2);
-*/
+
 
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file('/inc/io/BaseIOConstants.php');
@@ -89,7 +88,7 @@ class FileUpdater
             . " FROM XimIONodeTranslations xnt"
             . " INNER JOIN Nodes n ON xnt.path IS NOT NULL AND xnt.IdImportationNode = n.IdNode AND xnt.status >= %s AND (n.SharedWorkflow IS NULL OR n.SharedWorkflow = 0)"
             . " INNER JOIN XimIOExportations xe ON xe.idXimIOExportation = xnt.IdXimioExportation and xe.timeStamp = '%s'",
-            IMPORTED_STATUS_OK,
+             Constants::IMPORTED_STATUS_OK,
             $this->revision);
 
         $dependencesGetter = new ParsingDependencies();
@@ -165,7 +164,7 @@ class FileUpdater
             $node->SetContent($contents);
 
             // For the moment, we are not going to make any notification
-            if ($status == IMPORTED_STATUS_OK_TO_PUBLISH) {
+            if ($status == Constants::IMPORTED_STATUS_OK_TO_PUBLISH) {
                 baseIO_PublishDocument($idNode, time(), null);
             }
             //baseIO_CambiarEstado($idNode, $finalState);
@@ -243,7 +242,7 @@ class FileUpdater
             $dbObj = new DB();
             $query = sprintf("UPDATE XimIONodeTranslations SET status = %d"
                 . " WHERE IdNodeTranslation = %d",
-                IMPORTED_STATUS_PENDING_LINKS,
+                Constants::IMPORTED_STATUS_PENDING_LINKS,
                 $idNodeTranslation);
 
             $dbObj->Execute($query);

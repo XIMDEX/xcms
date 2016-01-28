@@ -33,7 +33,7 @@ class BaseIO_XmlDocument
     {
         $document = baseIO_CreateXmlDocument($data["NAME"], $data["PARENTID"], $data["STATE"], $data["TEMPLATE"], $data["LANG"], $data["ALIAS"], $data["CHANNELS"], $data["NEWTARGETLINK"], $data["CONTENT"]);
         if (is_null($document)) {
-            return ERROR_INCORRECT_DATA;
+            return Constants::ERROR_INCORRECT_DATA;
         }
         return $document->get('IdNode');
     }

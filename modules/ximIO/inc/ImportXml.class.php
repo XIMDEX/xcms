@@ -29,6 +29,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/model/nodetype.php');
@@ -203,10 +204,10 @@ class ImportXml
         $this->processedNodes = array();
         $this->processedNodes['success'] = 0;
         $this->processedNodes['failed'] = array();
-        $this->processedNodes['failed'][ERROR_INCORRECT_DATA] = 0;
-        $this->processedNodes['failed'][ERROR_NO_PERMISSIONS] = 0;
-        $this->processedNodes['failed'][ERROR_NOT_REACHED] = 0;
-        $this->processedNodes['failed'][ERROR_NOT_ALLOWED] = 0;
+        $this->processedNodes['failed'][Constants::ERROR_INCORRECT_DATA] = 0;
+        $this->processedNodes['failed'][Constants::ERROR_NO_PERMISSIONS] = 0;
+        $this->processedNodes['failed'][Constants::ERROR_NOT_REACHED] = 0;
+        $this->processedNodes['failed'][Constants::ERROR_NOT_ALLOWED] = 0;
     }
 
     function _checkAssociations()
@@ -275,13 +276,13 @@ class ImportXml
 
         if (is_array($this->pendingNodes)) {
             foreach ($this->pendingNodes as $pendingNode) {
-                $this->processedNodes['failed'][ERROR_NOT_REACHED] += count($pendingNode);
+                $this->processedNodes['failed'][Constants::ERROR_NOT_REACHED] += count($pendingNode);
                 if (is_array($pendingNode)) {
                     foreach ($pendingNode as $node) {
                         if (isset($node['ID']) && (int)$node['ID'] > 0) {
                             $path = is_array($node['CHILDRENS']) ? $this->_getPath($node['CHILDRENS']) : '';
                             // TODO parentid o oldparentid?? it should be debugged
-                            $this->_bindNode($node['ID'], 0, $node['OLDPARENTID'], ERROR_NOT_REACHED, $path);
+                            $this->_bindNode($node['ID'], 0, $node['OLDPARENTID'], Constants::ERROR_NOT_REACHED, $path);
                         }
                     }
                 }
@@ -391,13 +392,13 @@ class ImportXml
 
         if (is_array($this->pendingNodes)) {
             foreach ($this->pendingNodes as $pendingNode) {
-                $this->processedNodes['failed'][ERROR_NOT_REACHED] += count($pendingNode);
+                $this->processedNodes['failed'][Constants::ERROR_NOT_REACHED] += count($pendingNode);
                 if (is_array($pendingNode)) {
                     foreach ($pendingNode as $node) {
                         if (isset($node['ID']) && (int)$node['ID'] > 0) {
                             $path = is_array($node['CHILDRENS']) ? $this->_getPath($node['CHILDRENS']) : '';
                             // TODO parentid o oldparentid?? it should be debugged
-                            $this->_bindNode($node['ID'], 0, $node['OLDPARENTID'], ERROR_NOT_REACHED, $path);
+                            $this->_bindNode($node['ID'], 0, $node['OLDPARENTID'], Constants::ERROR_NOT_REACHED, $path);
                         }
                     }
                 }
@@ -540,7 +541,7 @@ class ImportXml
                         $this->_executeNode($localElement, $parentElement);
                     }
                 } else {
-                    $this->_bindNode($this->tree[0][0]['ID'], $this->rootNode, $this->tree[0][0]['PARENTID'], IMPORTED_STATUS_OK);
+                    $this->_bindNode($this->tree[0][0]['ID'], $this->rootNode, $this->tree[0][0]['PARENTID'], Constants::IMPORTED_STATUS_OK);
                 }
             }
 
@@ -829,10 +830,10 @@ class ImportXml
                 unset($this->pendingNodes[$elementToInsert['ID']]);
             }
         }
-        $status = $idImportationNode > 0 ? IMPORTED_STATUS_OK : $idImportationNode;
+        $status = $idImportationNode > 0 ? Constants::IMPORTED_STATUS_OK : $idImportationNode;
         if ($status === 1) {
             if (isset($elementToInsert['STATE']) && ($elementToInsert['STATE'] == PUBLISH_STATUS)) {
-                $status = IMPORTED_STATUS_OK_TO_PUBLISH;
+                $status = Constants::IMPORTED_STATUS_OK_TO_PUBLISH;
             }
         }
         $path = isset($elementToInsert['CHILDRENS']) && is_array($elementToInsert['CHILDRENS']) ?
@@ -875,7 +876,7 @@ class ImportXml
             }
         }
         // State of a control element always correct
-        $this->_bindNode((int)$attrs['ID'], $finalNode, $attrs['PARENTID'], IMPORTED_STATUS_OK);
+        $this->_bindNode((int)$attrs['ID'], $finalNode, $attrs['PARENTID'], Constants::IMPORTED_STATUS_OK);
         return true;
     }
 
@@ -950,7 +951,7 @@ class ImportXml
                 . " WHERE xnt.IdExportationNode = %d"
                 . " AND xnt.status = %d"
                 . " AND xe.idXimio = %d",
-                $idNode, IMPORTED_STATUS_OK, $this->idXimio);
+                $idNode, Constants::IMPORTED_STATUS_OK, $this->idXimio);
             $dbObj->Query($query);
 
             if (!$dbObj->EOF) {
