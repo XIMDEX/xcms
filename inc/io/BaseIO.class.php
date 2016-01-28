@@ -27,6 +27,7 @@
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 
 
@@ -36,7 +37,7 @@ define('MODE_NODETYPE', 0);
 define('MODE_NODEATTRIB', 1);
 
 ModulesManager::file('/inc/io/BaseIOConstants.php');
- ModulesManager::file('/inc/model/structureddocument.php');
+ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/model/State.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
@@ -50,15 +51,10 @@ if (!defined('XIMDEX_BASEIO_PATH')) {
 
 class BaseIO {
 
-    /**
-     * @var unknown_type
-     */
+
     var $messages = NULL;
 
-    /**
-     * Constructor
-     * @return unknown_type
-     */
+
     function BaseIO() {
         $this->messages = new \Ximdex\Utils\Messages();
     }
@@ -116,7 +112,7 @@ class BaseIO {
         // upper all the indexes in data.		
         $data = $this->dataToUpper($data);
 
-        if (!($this->_checkPermissions($nodeTypeName, $userid, WRITE) || $this->_checkName($data))) {
+        if (!($this->_checkPermissions($nodeTypeName, $userid, Constants::WRITE) || $this->_checkName($data))) {
             XMD_Log::error(_('Node could not be inserted due to lack of permits'));
             $this->messages->add(_('Node could not be inserted due to lack of permits'), MSG_TYPE_ERROR);
             return ERROR_NO_PERMISSIONS;
@@ -577,7 +573,7 @@ class BaseIO {
 
 
 
-        if (!($this->_checkPermissions($nodeTypeName, $userid, UPDATE) || $this->_checkName($data))) {
+        if (!($this->_checkPermissions($nodeTypeName, $userid, Constants::UPDATE) || $this->_checkName($data))) {
             return ERROR_NO_PERMISSIONS;
         }
 
@@ -891,7 +887,7 @@ class BaseIO {
             return ERROR_INCORRECT_DATA;
         }
 
-        if (!($this->_checkPermissions($node->nodeType->get('Name'), $userid, DELETE) || $this->_checkName(
+        if (!($this->_checkPermissions($node->nodeType->get('Name'), $userid, Constants::DELETE) || $this->_checkName(
                         $data))) {
             return ERROR_NO_PERMISSIONS;
         }
@@ -925,7 +921,7 @@ class BaseIO {
             return false;
         }
 
-        if (!($this->_checkPermissions($nodeTypeName, $userId, WRITE) || $this->_checkName($data))) {
+        if (!($this->_checkPermissions($nodeTypeName, $userId, Constants::WRITE) || $this->_checkName($data))) {
             return false;
         }
 
@@ -1129,17 +1125,17 @@ class BaseIO {
         $nodeType->SetByName($nodeTypeName);
         $idNodeType = $nodeType->ID;
         switch ($operation) {
-            case WRITE :
+            case Constants::WRITE :
                 if (!Auth::canWrite($userId, array('node_type' => $idNodeType))) {
                     return ERROR_NO_PERMISSIONS;
                 }
                 break;
-            case UPDATE :
+            case Constants::UPDATE :
                 if (!Auth::canModify($userId, array('node_type' => $idNodeType))) {
                     return ERROR_NO_PERMISSIONS;
                 }
                 break;
-            case DELETE :
+            case Constants::DELETE :
                 if (!Auth::canDelete($userId, array('node_type' => $idNodeType))) {
                     return ERROR_NO_PERMISSIONS;
                 }
