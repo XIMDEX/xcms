@@ -29,9 +29,9 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Session;
+use Ximdex\Logger as XMD_Log ;
 
-
-ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/model/State.class.php');
@@ -65,10 +65,8 @@ class BaseIO
      */
     function build($data, $userid = NULL)
     {
-        global $metaTypesArray;
-        if (is_null($metaTypesArray)) {
-            require(XIMDEX_ROOT_PATH . '/inc/io/BaseIOConstants.php');
-        }
+        $metaTypesArray = Constants::METATYPES_ARRAY ;
+
 
         $data = $this->_checkVisualTemplate($data);
 
@@ -540,13 +538,10 @@ class BaseIO
 
     function update($data, $userid = NULL)
     {
-        global $metaTypesArray;
-        if (is_null($metaTypesArray)) {
-            require(XIMDEX_ROOT_PATH . '/inc/io/BaseIOConstants.php');
-        }
+        $metaTypesArray = Constants::METATYPES_ARRAY ;
 
         if (!$userid) {
-            $userid = \Ximdex\Utils\Session::get('userID');
+            $userid =  Session::get('userID');
         }
 
         // upper all the indexes in data and the nodetypename.		
@@ -877,7 +872,6 @@ class BaseIO
     function delete($data, $userid = NULL)
     {
 
-        global $metaTypesArray;
 
         if (!$userid) {
             $userid = \Ximdex\Utils\Session::get('userID');

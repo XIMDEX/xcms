@@ -34,7 +34,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
 ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
 ModulesManager::file('/inc/cli/CliReader.class.php');
-ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/auth/Authenticator.class.php');
 
 $parameterCollector = new ImportCli($argc, $argv);
@@ -86,7 +85,7 @@ if (!$interfaceWeb && !$interfaceWebRun) {
 
 $time = time();
 
-$importer = new ImportXml($rootNode, $file, $nodeAssociations, RUN_IMPORT_MODE, $recurrence, $beginAt, $processFirstNode);
+$importer = new ImportXml($rootNode, $file, $nodeAssociations, Constants::RUN_IMPORT_MODE, $recurrence, $beginAt, $processFirstNode);
 if ($copyMode) {
 	$importer->mode = COPY_MODE;
 }

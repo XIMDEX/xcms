@@ -50,7 +50,7 @@
 	
 	$time = time();
 	$fileUpdater = new FileUpdater($revision);
-	$fileUpdater->updateFiles(IMPORT_FILES);
+	$fileUpdater->updateFiles(Constants::IMPORT_FILES);
 	$timeConsumed = time() - $time;
 
 	echo sprintf(_("The time consumed by the process has been of %s seconds"),$timeConsumed);
@@ -60,5 +60,3 @@
 		passthru(sprintf('php %s'.ModulesManager::path('ximIO').'/actions/remove/run.php --file %s', 
 			XIMDEX_ROOT_PATH,  $revision));
 	}
-	
-?>

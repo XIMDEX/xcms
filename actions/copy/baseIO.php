@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Constants;
 
 ModulesManager::file('/inc/ExportXml.class.php', 'ximIO');
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
@@ -97,7 +98,7 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 		}
 
 		// 2.- Importing the corresponding database part 
-		$importer = new ImportXml($dest, NULL, $nodeAssociations, RUN_IMPORT_MODE, $recurrence, NULL, $processFirstNode);
+		$importer = new ImportXml($dest, NULL, $nodeAssociations,  Constants::RUN_IMPORT_MODE, $recurrence, NULL, $processFirstNode);
 		$importer->mode = COPY_MODE;
 		$importer->copy($xml);
 		reset($importer->messages);
@@ -110,13 +111,13 @@ ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 		// 3.- Importing contents (from a files array ?), it is not necessary, i have got it in database
 		
 		$fileImport = new FileUpdater(0);
-		$fileImport->updateFiles(IMPORT_FILES);
+		$fileImport->updateFiles(Constants::IMPORT_FILES);
 		unset($fileImport);
 
 		// 4.- Cleaning transform table to repeat the copy
 		$dbConn = new DB();
 		
-		$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations WHERE timeStamp = '%s'", REVISION_COPY);
+		$query = sprintf("SELECT idXimIOExportation FROM XimIOExportations WHERE timeStamp = '%s'", Constants::REVISION_COPY);
 		$dbConn->Query($query);
 		if ($dbConn->numRows == 1) {
 			$idXimIOExportation = $dbConn->GetValue('idXimIOExportation');

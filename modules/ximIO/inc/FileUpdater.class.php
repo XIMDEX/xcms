@@ -29,24 +29,17 @@ use Ximdex\Models\Node;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 
-define('REVISION_COPY', 0);
 
 
 
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/actions/workflow_forward/baseIO.php');
 ModulesManager::file('/inc/parsers/ParsingDependencies.class.php');
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../');
-}
 
 
-define('IMPORT_FILES', true);
-define('UPDATE_LINKS', false);
 
 class FileUpdater
 {
@@ -69,7 +62,7 @@ class FileUpdater
         // Estimamos las rutas que vamos a usar dependiendo del uso que le estemos dando a la clase
         // Revisi�n == 0  Estamos haciendo una copia
         // Revisi�n != 0  Estamos haciendo una importaci�n
-        if (!strcmp($this->revision, REVISION_COPY)) {
+        if (!strcmp($this->revision, Constants::REVISION_COPY)) {
             $routeToFiles = sprintf('%s/data/files/', XIMDEX_ROOT_PATH);
         } else {
             $routeToBackupFolder = sprintf('%s/data/backup/%s_ximio', XIMDEX_ROOT_PATH, $this->revision);
@@ -111,9 +104,9 @@ class FileUpdater
                 continue;
             }
 
-            if ($mode == IMPORT_FILES) {
+            if ($mode == Constants::IMPORT_FILES) {
                 $contents = FsUtils::file_get_contents($filePath);
-            } elseif ($mode == UPDATE_LINKS) {
+            } elseif ($mode == Constants::UPDATE_LINKS) {
                 $node = new Node($idImportationNode);
                 if (!($node->GetID() > 0)) {
                     XMD_Log::info(sprintf(_("The document %s with id %s could not been imported due to it could not been loaded"), $filePath, $idImportationNode));
@@ -172,7 +165,7 @@ class FileUpdater
             unset($node, $contents);
             $dbObj->Next();
         }
-        if (strcmp($this->revision, REVISION_COPY)) {
+        if (strcmp($this->revision, Constants::REVISION_COPY)) {
             FsUtils::deltree($routeToFiles);
         }
 
