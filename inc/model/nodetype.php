@@ -28,7 +28,6 @@
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Models\ORM\NodeTypesOrm ;
 
-if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
 
 define('NODETYPE_SECTION', 5015);
 
