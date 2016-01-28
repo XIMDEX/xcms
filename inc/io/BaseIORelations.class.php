@@ -25,11 +25,6 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '../../'));
-}
-
-require_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 
 class BaseIORelations

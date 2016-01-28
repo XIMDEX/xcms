@@ -21,15 +21,16 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Constants;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-    define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
 include_once XIMDEX_ROOT_PATH . '/inc/db/db.php';
@@ -80,14 +81,12 @@ class Root
     function getMetaType()
     {
 
-        require(XIMDEX_ROOT_PATH . "/inc/io/BaseIOConstants.php");
-        global $metaTypesArray;
+        $metaTypesArray = Constants::METATYPES_ARRAY;
         $class = get_class($this);
 
         if (isset($metaTypesArray[strtoupper($class)])) {
             return $metaTypesArray[strtoupper($class)];
         }
-
         return NULL;
     }
 
@@ -317,7 +316,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return \App::getValue( "UrlRoot") . \App::getValue( "NodeRoot") . $relativePath;
+        return \App::getValue("UrlRoot") . \App::getValue("NodeRoot") . $relativePath;
     }
 
     /**
@@ -361,7 +360,7 @@ class Root
         $pathList = $this->GetPathList();
         $relativePath = $pathList;
 
-        return \App::getValue( "AppRoot") . \App::getValue( "NodeRoot") . $relativePath;
+        return \App::getValue("AppRoot") . \App::getValue("NodeRoot") . $relativePath;
     }
 
     /**

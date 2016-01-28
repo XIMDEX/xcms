@@ -28,7 +28,6 @@
 namespace Ximdex\Models;
 
 use DB_legacy as DB;
-use Ximdex\Models\Node;
 use Ximdex\Models\ORM\ChannelsOrm;
 
 
@@ -38,7 +37,7 @@ class Channel extends ChannelsOrm
      * @var
      */
     var $nodeID;
-   var $autoCleanErr ;
+    var $autoCleanErr;
     var $msgErr;
 
     var $errorList = array(
@@ -104,7 +103,7 @@ class Channel extends ChannelsOrm
 
     function GetAllChannels($order = NULL)
     {
-        $salida = null ;
+        $salida = null;
         $validDirs = array('ASC', 'DESC');
         $sql = "SELECT IdChannel FROM Channels";
         if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
@@ -160,7 +159,6 @@ class Channel extends ChannelsOrm
 
     /**
      * Changes the current channel id.
-
      */
     /**
      * @param $name
@@ -189,7 +187,6 @@ class Channel extends ChannelsOrm
 
     /**
      * Changes the current channel name.
-
      */
     /**
      * @param $name
@@ -275,7 +272,6 @@ class Channel extends ChannelsOrm
 
     /**
      * Changes the default format for the current channel.
-
      */
     /**
      * @param $format
@@ -297,7 +293,6 @@ class Channel extends ChannelsOrm
 
     /**
      * Creates a new channel and loads its id in the class docID.
-
      */
     /**
      * @param $name
@@ -329,7 +324,7 @@ class Channel extends ChannelsOrm
 
     /**
      * Deletes current channel
-      */
+     */
     /**
      * @return bool|int|string
      */

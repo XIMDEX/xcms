@@ -34,18 +34,13 @@ use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/model/nodetype.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/io/BaseIOConstants.php');
 ModulesManager::file('/inc/io/BaseIORelations.class.php');
 
 ModulesManager::file('/inc/model/NodeProperty.class.php');
 ModulesManager::file('/inc/db/db.php');
 
 
-define('HEADER', 'XIMIO-STRUCTURE');
-define('RUN_HEURISTIC_MODE', true);
-define('RUN_IMPORT_MODE', false);
 
-define('PUBLISH_STATUS', 'Publish');
 
 define('COPY_MODE', true);
 define('IMPORT_MODE', false);
@@ -56,8 +51,7 @@ class ImportXml
     /**
      * The elements of this array are going to cause that the parser will change to control mode.
      *
-     * @var unknown_type
-     */
+      */
     var $tagsForContainControls = array('CHANNELMANAGER', 'LANGUAGEMANAGER', 'GROUPMANAGER');
     /**
      * The elements of this array are going to be inserted as father sons, always that father is not in advancewritting
@@ -135,11 +129,11 @@ class ImportXml
      * @param int $rootNode node where importation starts
      * @param string $file Base name of the importation file
      * @param array $nodeAssociations Association from old nodetype to new nodetype
-     * @param bool $mode RUN_HEURISTIC_MODE || RUN_IMPORT_MODE
+     * @param bool $mode Constants:RUN_HEURISTIC_MODE || Constants:RUN_IMPORT_MODE
      * @param int $firstExportationNode Exportation node from where importation starts
      * @return ImportXml
      */
-    function ImportXml($rootNode, $file, $nodeAssociations, $mode = RUN_HEURISTIC_MODE, $recurrence = null, $firstExportationNode = null, $insertFirstNode = false)
+    function ImportXml($rootNode, $file, $nodeAssociations, $mode = Constants::RUN_HEURISTIC_MODE, $recurrence = null, $firstExportationNode = null, $insertFirstNode = false)
     {
 
         $dbObj = new DB();
@@ -419,7 +413,7 @@ class ImportXml
     {
 
         // Taking needed datils from header and aborting
-        if ($name == HEADER) {
+        if ($name == Constants::HEADER) {
             $this->importationId = $this->_insertImportationInfo($attrs['ID'], $this->timeStamp);
             $this->idXimio = $attrs['ID'];
             if (!($this->importationId > 0)) {
@@ -630,7 +624,9 @@ class ImportXml
     {
         // If the arrived tag is the header one, we ignore it
 
-        if ($name == HEADER) return;
+        if ($name == Constants::HEADER) {
+            return;
+        }
         // If the tag is a control closing one, we pass to normal mode
         if (in_array($name, $this->tagsForContainControls)) {
             $this->controlMode = false;
@@ -832,7 +828,7 @@ class ImportXml
         }
         $status = $idImportationNode > 0 ? Constants::IMPORTED_STATUS_OK : $idImportationNode;
         if ($status === 1) {
-            if (isset($elementToInsert['STATE']) && ($elementToInsert['STATE'] == PUBLISH_STATUS)) {
+            if (isset($elementToInsert['STATE']) && ($elementToInsert['STATE'] == Constants::PUBLISH_STATUS)) {
                 $status = Constants::IMPORTED_STATUS_OK_TO_PUBLISH;
             }
         }
