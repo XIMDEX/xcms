@@ -25,8 +25,9 @@
  */
 
 
-use Ximdex\Utils\Logs\SyntaxParser;
+namespace Ximdex\Utils\Logs;
 
+ 
 
 class SyntaxParser_Simple extends SyntaxParser
 {

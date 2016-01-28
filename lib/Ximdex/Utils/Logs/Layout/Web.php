@@ -23,33 +23,19 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-use Ximdex\Utils\Logs\Layout;
+namespace Ximdex\Utils\Logs;
 
 
-/**
- *
- */
-class Layout_SQL extends Layout
+class Layout_Web extends Layout
 {
-
-    function Layout_SQL($template)
+    public function __construct($template)
     {
-        parent::Layout($template);
+        parent::__construct($template);
     }
 
     function & format(&$event)
     {
-
-        $string = $this->_template;
-        $string = str_replace("%fn", $event->getParam("function"), $string);
-        $string = str_replace("%c", $event->getParam("class"), $string);
-        $string = str_replace("%f", $event->getParam("file"), $string);
-        $string = str_replace("%l", $event->getParam("line"), $string);
-        $string = str_replace("%m", $event->getParam("message"), $string);
-        $string = str_replace("%p", $event->getParam("priority"), $string);
-        $string = str_replace("%d", $event->getParam("date"), $string);
-        $string = str_replace("%t", $event->getParam("time"), $string);
-
-        return $string;
+        // implement...
     }
+
 }

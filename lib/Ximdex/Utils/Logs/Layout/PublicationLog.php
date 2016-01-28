@@ -23,19 +23,15 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-use Ximdex\Utils\Logs\Layout;
+namespace Ximdex\Utils\Logs;
 
 
-/**
- *
- */
-class Layout_Simple extends Layout
+class Layout_PublicationLog extends Layout
 {
 
-    function Layout_Simple($template)
+    public function __construct($template)
     {
-
-        parent::Layout($template);
+        parent::__construct($template);
     }
 
     function & format(&$event)
@@ -43,12 +39,7 @@ class Layout_Simple extends Layout
 
         $string = $this->_template;
 
-        $string = str_replace("%fn", $event->getParam("function"), $string);
-        $string = str_replace("%c", $event->getParam("class"), $string);
-        $string = str_replace("%f", $event->getParam("file"), $string);
-        $string = str_replace("%l", $event->getParam("line"), $string);
         $string = str_replace("%m", $event->getParam("message"), $string);
-        $string = str_replace("%p", $event->getParam("priority"), $string);
         $string = str_replace("%d", $event->getParam("date"), $string);
         $string = str_replace("%t", $event->getParam("time"), $string);
 
