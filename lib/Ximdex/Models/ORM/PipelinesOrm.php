@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,22 +25,20 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PipeProcess_ORM extends \Ximdex\Data\GenericData
+class PipelinesOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'id';
-    var $_table = 'PipeProcess';
+    var $_table = 'Pipelines';
     var $_metaData = array(
         'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdTransitionFrom' => array('type' => "int(11)", 'not_null' => 'false'),
-        'IdTransitionTo' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdPipeline' => array('type' => "int(11)", 'not_null' => 'false'),
-        'Name' => array('type' => "varchar(255)", 'not_null' => 'true')
+        'Pipeline' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'IdNode' => array('type' => "int(11)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
+    var $_uniqueConstraints = array(
+        'IdNode' => array('IdNode')
+    );
     var $_indexes = array('id');
     var $id;
-    var $IdTransitionFrom;
-    var $IdTransitionTo;
-    var $IdPipeline;
-    var $Name;
+    var $Pipeline;
+    var $IdNode;
 }

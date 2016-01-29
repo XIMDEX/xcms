@@ -26,6 +26,7 @@
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\Pipeline;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;

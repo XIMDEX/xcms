@@ -27,24 +27,30 @@
 
 namespace Ximdex\Workflow;
 
-use Pipeline;
-use PipeNodeTypes;
+use Ximdex\Models\Pipeline;
+use Ximdex\Models\PipeNodeTypes;
+use Ximdex\Models\PipeProcess;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\Role;
 use Ximdex\Models\Node;
 use Ximdex\Logger as XMD_Log;
-
-
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/Pipeline.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeNodeTypes.class.php');
+use Ximdex\Runtime\App;
 
 define('WORKFLOW_PROCESS_NAME', 'workflow');
 
 class WorkFlow
 {
+    /**
+     * @var $pipeStatus PipeStatus
+     */
     var $pipeStatus;
+    /**
+     * @var $pipeProcess PipeProcess
+     */
     var $pipeProcess;
+    /**
+     * @var $pipeline Pipeline
+     */
     var $pipeline;
 
     function WorkFlow($idNode, $idStatus = NULL, $idPipelineNode = NULL)
@@ -130,14 +136,18 @@ class WorkFlow
         return $this->pipeStatus->get('Description');
     }
 
-
-    // Nos permite cambiar la descripcion a un estado
-    function SetDescription($description)
+    /**
+     * @param $description
+     */
+     function SetDescription($description)
     {
         $this->pipeStatus->set('Description', $description);
         $this->pipeStatus->update();
     }
 
+    /**
+     * @return bool|string
+     */
     function GetInitialState()
     {
         $idStatus = $this->pipeProcess->getFirstStatus();
@@ -145,11 +155,17 @@ class WorkFlow
         return $pipeStatus->get('id');
     }
 
+    /**
+     * @return mixed
+     */
     function GetFinalProcess()
     {
         return $this->pipeline->processes->last();
     }
 
+    /**
+     * @return bool|string
+     */
     function GetFinalState()
     {
         $idStatus = $this->pipeProcess->getLastStatus();
@@ -157,6 +173,9 @@ class WorkFlow
         return $pipeStatus->get('id');
     }
 
+    /**
+     * @return mixed
+     */
     function IsInitialState()
     {
         return $this->pipeProcess->isStatusFirst($this->pipeStatus->get('id'));
@@ -176,6 +195,9 @@ class WorkFlow
 
     }
 
+    /**
+     * @return bool|string
+     */
     function GetPreviousState()
     {
         $idStatus = $this->pipeProcess->getPreviousStatus($this->pipeStatus->get('id'));
@@ -183,6 +205,10 @@ class WorkFlow
         return $pipeStatus->get('id');
     }
 
+    /**
+     * @param $name
+     * @return bool|string
+     */
     function setByName($name)
     {
         $pipeStatus = new PipeStatus();
@@ -191,6 +217,10 @@ class WorkFlow
         return $pipeStatus->get('IdNode');
     }
 
+    /**
+     * @param $idNodeType
+     * @return bool
+     */
     function setNodeType($idNodeType)
     {
 
@@ -202,11 +232,15 @@ class WorkFlow
         }
         $this->pipeline->set('IdNodeType', $idNodeType);
         $this->pipeline->update();
+        return true ;
     }
 
+    /**
+     *
+     */
     function setWorkflowMaster()
     {
-        $this->pipeline->activatePipelineForNodes(\App::getValue('IdDefaultWorkflow'));
-        \App::setValue('IdDefaultWorkflow', $this->pipeline->get('id'));
+        $this->pipeline->activatePipelineForNodes( App::getValue('IdDefaultWorkflow'));
+         App::setValue('IdDefaultWorkflow', $this->pipeline->get('id'));
     }
 }

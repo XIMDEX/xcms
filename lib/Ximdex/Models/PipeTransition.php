@@ -28,14 +28,12 @@
 namespace Ximdex\Models;
 
 use I_PipeProperties;
-use PipeProcess;
-use Ximdex\Models\PipeStatus;
+
 use Ximdex\Models\ORM\PipeTransitionsOrm;
 use Ximdex\Logger as XMD_Log;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
 
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
 

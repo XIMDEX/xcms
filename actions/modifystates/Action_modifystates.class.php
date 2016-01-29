@@ -27,12 +27,12 @@
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\Pipeline;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\PipeTransition;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/inc/pipeline/Pipeline.class.php');
 
 define('NODETYPE_WORKFLOW_STATE', 5036);
 

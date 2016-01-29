@@ -34,7 +34,7 @@ use DataFactory;
 use Ximdex\Models\Group;
 use Ximdex\Models\Language;
 use ModulesManager;
-use PipeNodeTypes;
+use Ximdex\Models\PipeNodeTypes;
 use RelTagsNodes;
 use Ximdex\Models\Role;
 use Ximdex\Models\StructuredDocument;

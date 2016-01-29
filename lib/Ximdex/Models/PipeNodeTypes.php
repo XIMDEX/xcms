@@ -25,10 +25,10 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeNodeTypes_ORM.class.php');
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\PipeNodeTypesOrm;
+
 
 /**
  *
@@ -37,7 +37,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeNodeTypes_ORM.class.php');
  * Describes the relation between pipelines and nodetypes, actually is not being used
  *
  */
-class PipeNodeTypes extends PipeNodeTypes_ORM
+class PipeNodeTypes extends PipeNodeTypesOrm
 {
 }
 

@@ -27,13 +27,10 @@
 
 namespace Ximdex\NodeTypes;
 
-use Pipeline;
+use Ximdex\Models\Pipeline;
 use Ximdex\Models\Node;
-use Ximdex\NodeTypes\Root;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/Pipeline.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 
 class WorkflowProcess extends Root
 {

@@ -1,6 +1,8 @@
 <?php
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\Pipeline;
+use Ximdex\Models\PipeNodeTypes;
 use Ximdex\MVC\ActionAbstract;
 
 /**

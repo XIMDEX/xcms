@@ -25,16 +25,17 @@
  */
 
 
-use Ximdex\Models\Node;
-use Ximdex\Models\NodeType;
-use Ximdex\Models\PipeStatus;
-use Ximdex\Models\PipeTransition;
+namespace Ximdex\Models;
+
+use DB;
+use I_PipeProcesses;
+
+use Ximdex\Models\ORM\PipelinesOrm;
+
+use XMD_Log;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/Pipelines_ORM.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeNodeTypes.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.php');
 
 /**
  *
@@ -44,8 +45,11 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProcesses.class.p
  * some specific node status.
  *
  */
-class Pipeline extends Pipelines_ORM
+class Pipeline extends PipelinesOrm
 {
+    /**
+     * @var $processes I_PipeProcesses
+     */
     var $processes = NULL;
     var $idNodeType = NULL;
     var $isWorkflowMaster = false;

@@ -25,11 +25,14 @@
  */
 
 
-use Ximdex\Models\PipeStatus;
+namespace Ximdex\Models;
+
+use I_PipeTransitions;
+use Ximdex\Models\ORM\PipeProcessOrm;
+use Ximdex\Logger as XMD_Log ;
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeTransitions.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeProcess_ORM.class.php');
 
 /**
  *
@@ -39,21 +42,12 @@ require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeProcess_ORM.class.php');
  * processes, it is reccomended every transition for a single processes to have same cache status.
  *
  */
-class PipeProcess extends PipeProcess_ORM
+class PipeProcess extends PipeProcessOrm
 {
-    var $transitions;
-
     /**
-     * Constructor
-     * @param $id
+     * @var $transitions I_PipeTransitions
      */
-    function PipeProcess($id = NULL)
-    {
-        parent::__construct($id);
-        if ($this->get('id') > 0) {
-            $this->transitions = new I_PipeTransitions('IdPipeProcess = %s', array($id));
-        }
-    }
+    var $transitions;
 
     /**
      * Load a pipeline by name instead of by id
@@ -77,9 +71,24 @@ class PipeProcess extends PipeProcess_ORM
     }
 
     /**
+     * Constructor
+     * @param $id
+     */
+    function PipeProcess($id = NULL)
+    {
+        parent::__construct($id);
+        if ($this->get('id') > 0) {
+            $this->transitions = new I_PipeTransitions('IdPipeProcess = %s', array($id));
+        }
+    }
+
+    /**
      * Load the previous process in list
      *
-     * @return previous process id or null
+     */
+
+    /**
+     * @return bool|null
      */
     function getPreviousProcess()
     {
@@ -101,9 +110,10 @@ class PipeProcess extends PipeProcess_ORM
 
     /**
      * Removes a intermediate status from a sequence
-     *
+     */
+    /**
      * @param $idStatus
-     * @return boolean
+     * @return bool
      */
     function removeStatus($idStatus)
     {
@@ -176,17 +186,6 @@ class PipeProcess extends PipeProcess_ORM
     }
 
     /**
-     * Return the first status in the pipeline
-     *
-     * @return integer
-     */
-    function getFirstStatus()
-    {
-        $transition = $this->transitions->first();
-        return $transition->get('IdStatusFrom');
-    }
-
-    /**
      * Return the last status in the pipeline
      *
      * @return integer
@@ -213,6 +212,17 @@ class PipeProcess extends PipeProcess_ORM
             }
         }
         return $this->getFirstStatus();
+    }
+
+    /**
+     * Return the first status in the pipeline
+     *
+     * @return integer
+     */
+    function getFirstStatus()
+    {
+        $transition = $this->transitions->first();
+        return $transition->get('IdStatusFrom');
     }
 
     /**
@@ -296,5 +306,3 @@ class PipeProcess extends PipeProcess_ORM
         }
     */
 }
-
-?>

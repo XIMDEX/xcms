@@ -27,7 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
-use PipeProcess;
+use Ximdex\Models\PipeProcess;
 use Ximdex\Models\PipeStatus;
 use Ximdex\Models\PipeTransition;
 use XMD_Log;
