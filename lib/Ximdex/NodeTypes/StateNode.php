@@ -21,22 +21,26 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-use Ximdex\NodeTypes\Root;
+namespace Ximdex\NodeTypes;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
+use PipeProcess;
+use PipeStatus;
+use PipeTransition;
+use XMD_Log;
+
 
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
 
-class StateNode extends Root {
+class StateNode extends Root
+{
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description='', $idTransition=null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description = '', $idTransition = null)
+	{
 		$currentTransition = new PipeTransition($idTransition);
 		if (!$currentTransition->get('id') > 0) {
 			$this->messages->add(_('No se ha podido encontrar la transacci�n, consulte con su administrador'), MSG_TYPE_ERROR);
@@ -47,7 +51,8 @@ class StateNode extends Root {
 		$this->UpdatePath();
 	}
 
-	function DeleteNode() {
+	function DeleteNode()
+	{
 
 		$pipeStatus = new PipeStatus();
 		$pipeStatus->loadByIdNode($this->nodeID);
@@ -58,7 +63,8 @@ class StateNode extends Root {
 		$pipeProcess->removeStatus($pipeStatus->get('id'));
 	}
 
-	function RenameNode($name) {
+	function RenameNode($name)
+	{
 		$pipeStatus = new PipeStatus();
 		$pipeStatus->loadByIdNode($this->nodeID);
 		$pipeStatus->set('Name', $name);
@@ -66,7 +72,8 @@ class StateNode extends Root {
 		$this->UpdatePath();
 	}
 
-	function CanDenyDeletion() {
+	function CanDenyDeletion()
+	{
 		$pipeStatus = new PipeStatus();
 		$pipeStatus->loadByIdNode($this->nodeID);
 
@@ -84,16 +91,17 @@ class StateNode extends Root {
 		return false;
 	}
 
-	function GetDependencies() {
-		$sql ="SELECT DISTINCT IdNode FROM Nodes WHERE IdState='".$this->nodeID."'";
+	function GetDependencies()
+	{
+		$sql = "SELECT DISTINCT IdNode FROM Nodes WHERE IdState='" . $this->nodeID . "'";
 		$this->dbObj->Query($sql);
 
 		$deps = array();
 
-		while(!$this->dbObj->EOF) {
+		while (!$this->dbObj->EOF) {
 			$deps[] = $this->dbObj->row["IdNode"];
 			$this->dbObj->Next();
 		}
-    	return $deps;
+		return $deps;
 	}
 }

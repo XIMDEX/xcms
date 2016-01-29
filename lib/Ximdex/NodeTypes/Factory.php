@@ -29,6 +29,8 @@ class Factory
         'linknode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LinkNode'),
         'nodetypenode'=> array('ClassName' => '\\Ximdex\\NodeTypes\\NodeTypeNode') ,
         'projects'=> array('ClassName' => '\\Ximdex\\NodeTypes\\Projects') ,
+        'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode') ,
+        'sectionnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\SectionNode') ,
 
     );
 
