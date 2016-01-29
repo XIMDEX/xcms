@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Language;
+use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/model/IsoCode.class.php');

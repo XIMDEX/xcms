@@ -69,7 +69,7 @@ class Root
      */
     var $dbObj;
     /**
-     * @var \NodeType
+     * @var \Ximdex\Models\NodeType
      */
     var $nodeType;
     /**

@@ -30,7 +30,7 @@ namespace Ximdex\Models;
 use DataFactory;
 use DB;
 use dependencies;
-use NodeType;
+use Ximdex\Models\NodeType;
 use Ximdex\Models\Node;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;

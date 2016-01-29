@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 
 

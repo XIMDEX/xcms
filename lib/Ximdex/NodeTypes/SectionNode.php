@@ -30,7 +30,7 @@ namespace Ximdex\NodeTypes;
 use DB;
 use DepsManager;
 use Node;
-use NodeType;
+use Ximdex\Models\NodeType;
    use XMD_Log;
 
 

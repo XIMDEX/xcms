@@ -34,10 +34,8 @@ use icon;
 use isContentNode;
 use isRenderizable;
 use name;
-use NodeType;
+use Ximdex\Models\NodeType;
 
-
-include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
 
 /**
  * @brief Manages the NodeTypes as ximDEX Nodes.

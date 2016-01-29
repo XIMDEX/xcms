@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 
 ModulesManager::file('/inc/model/orm/RelTagsNodes_ORM.class.php', 'ximTAGS');
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');

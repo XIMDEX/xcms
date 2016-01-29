@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Services\NodeType as NodetypeService;
 

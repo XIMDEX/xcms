@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 
 ModulesManager::file('/inc/model/orm/RelNewsBulletins_ORM.class.php', 'ximNEWS');
 

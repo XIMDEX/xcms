@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Runtime\Constants;
 
 ModulesManager::file('/inc/ExportXml.class.php', 'ximIO');

@@ -33,7 +33,7 @@ use DOMDocument;
 use DOMXPath;
 use ModulesManager;
 use Ximdex\Models\NodeDependencies;
-use NodeType;
+use Ximdex\Models\NodeType;
 use PipelineManager;
 use Ximdex\Models\StructuredDocument;
 use Ximdex;

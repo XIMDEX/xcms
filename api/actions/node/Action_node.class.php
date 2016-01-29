@@ -29,6 +29,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
+use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\Utils\Sync\SynchroFacade;

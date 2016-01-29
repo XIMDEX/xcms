@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
 use Ximdex\Models\User;

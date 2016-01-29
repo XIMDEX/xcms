@@ -32,7 +32,7 @@ use DexCache;
 use MetadataManager;
 use ModulesManager;
 use Namespaces;
-use NodeType;
+use Ximdex\Models\NodeType;
 use PipelineManager;
 use Properties;
 use RelTagsNodes;

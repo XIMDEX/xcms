@@ -1,5 +1,6 @@
 <?php
 
+use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/model/RelNodeTypeMimeType.class.php');

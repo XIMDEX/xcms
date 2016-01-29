@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/model/NodeDefaultContents.class.php');

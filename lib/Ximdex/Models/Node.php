@@ -46,7 +46,7 @@ use Ximdex\Runtime\App,
     Dependencies,
     Ximdex\Models\NodeDependencies,
     WorkFlow,
-    NodeType,
+    Ximdex\Models\NodeType,
     NodeProperty;
 use Ximdex\Utils\Factory;
 use Ximdex\Utils\FsUtils;
@@ -55,10 +55,9 @@ use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 use Ximdex\NodeTypes\SectionNode;
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
- require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
+require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
- require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
@@ -80,7 +79,7 @@ class Node extends NodesOrm
      * @var mixed
      */
     var $class;                // Class which implements the specific methos for this nodetype.
-    /* @var $nodeType \NodeType */
+    /* @var $nodeType \Ximdex\Models\NodeType */
     var $nodeType;            // nodetype object.
     /* @var $dbObj \DB_legacy */
     var $dbObj;                // DB object which will be used in the methods.
@@ -145,18 +144,16 @@ class Node extends NodesOrm
                 $nodeTypeModule = $this->nodeType->get('Module');
 
 
+                $this->class = \Ximdex\NodeTypes\Factory::getNodeTypeByName($nodeTypeClass, $this, $nodeTypeModule);
 
 
-                $this->class =   \Ximdex\NodeTypes\Factory::getNodeTypeByName( $nodeTypeClass ,  $this , $nodeTypeModule ) ;
-
-
-
-                    //XMD_Log::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
-                    //die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
+                //XMD_Log::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
+                //die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
                 if (!$fullLoad) {
-                    return;}
+                    return;
+                }
 
-               //  $this->class = new $nodeTypeClass($this);
+                //  $this->class = new $nodeTypeClass($this);
             }
         }
     }
@@ -221,7 +218,6 @@ class Node extends NodesOrm
 
     /**
      * Changes node name
-
      */
     /**
      * @param $name
@@ -235,7 +231,6 @@ class Node extends NodesOrm
 
     /**
      * Returns the nodetype ID
-
      */
     /**
      * @return bool|string
@@ -255,7 +250,6 @@ class Node extends NodesOrm
 
     /**
      * Changes the nodetype
-
      */
     /**
      * @param $nodeTypeID
@@ -277,7 +271,7 @@ class Node extends NodesOrm
 
     /**
      * Returns the node description
-      */
+     */
     /**
      * @return bool|string
      */
@@ -288,7 +282,7 @@ class Node extends NodesOrm
 
     /**
      * Changes the node description
-       */
+     */
     /**
      * @param $description
      * @return bool|int|null|string
@@ -309,7 +303,6 @@ class Node extends NodesOrm
 
     /**
      * Returns the node state
-
      */
     /**
      * @return bool|string
@@ -323,7 +316,7 @@ class Node extends NodesOrm
     /**
      * Changes the node workflow state
      * @param $stateID
-      */
+     */
     /**
      * @param $stateID
      * @return bool
@@ -346,7 +339,6 @@ class Node extends NodesOrm
 
     /**
      * Returns the node icon
-
      */
     /**
      * @return bool|null|string
@@ -367,7 +359,6 @@ class Node extends NodesOrm
 
     /**
      * Returns the list of channels for the node
-
      */
     /**
      * @return null
@@ -423,7 +414,6 @@ class Node extends NodesOrm
 
     /**
      * Returns the list of node children
-
      */
     /**
      * @param null $idtype
@@ -599,7 +589,7 @@ class Node extends NodesOrm
             $dbObj->Query($sql);
 
             while (!$dbObj->EOF) {
-               //  $node_t = new Node($dbObj->GetValue('IdNode'));
+                //  $node_t = new Node($dbObj->GetValue('IdNode'));
                 $result[] = array('IdNode' => $dbObj->GetValue('IdNode')
                 );
                 $dbObj->Next();
@@ -636,7 +626,7 @@ class Node extends NodesOrm
     function GetPath()
     {
         $path = $this->_GetPath();
-       // $idNode = $this->get('IdNode');
+        // $idNode = $this->get('IdNode');
         if ($path) {
             //XMD_Log::debug("Model::Node::getPath(): Path for node($idNode) => $path. SUCCESS");
         } else {
@@ -715,7 +705,6 @@ class Node extends NodesOrm
 
     /**
      * Returns if a node is contained in the node with id $nodeID
-
      */
     /**
      * @param $nodeID
@@ -743,7 +732,7 @@ class Node extends NodesOrm
     /**
      * Returns a path in the file system from where children are pending
      * Function used for renderization
-      */
+     */
     /**
      * @return null
      */
@@ -782,7 +771,6 @@ class Node extends NodesOrm
 
     /**
      * Renders a node in the file system
-
      */
     /**
      * @param null $recursive
@@ -813,7 +801,6 @@ class Node extends NodesOrm
 
     /**
      * Returns a node content
-
      */
     /**
      * @return null
@@ -829,7 +816,6 @@ class Node extends NodesOrm
 
     /**
      *  Set a node content
-
      */
     /**
      * @param $content
@@ -846,7 +832,6 @@ class Node extends NodesOrm
 
     /**
      * Checks if the node is blocked and returns the blocker user id
-
      */
     /**
      * @return bool|null|string
@@ -868,7 +853,7 @@ class Node extends NodesOrm
 
     /**
      * Checks if the node is blocked, and returns the blocking time
-      */
+     */
     /**
      * @return bool|null|string
      */
@@ -890,7 +875,7 @@ class Node extends NodesOrm
 
     /**
      * Blocks a node and returns the blocking timestamp
-       */
+     */
     /**
      * @param $userID
      * @return bool|null|string
@@ -917,7 +902,6 @@ class Node extends NodesOrm
 
     /**
      * Delete a block.
-
      */
     /**
      *
@@ -937,7 +921,7 @@ class Node extends NodesOrm
 
     /**
      * Checks if node is renderized in the file system
-    */
+     */
     /**
      * @return bool
      */
@@ -951,7 +935,7 @@ class Node extends NodesOrm
             // $pathList = array();
 
             /// Consigue el path hasta el directorio de nodos
-            $absPath =  App::getValue("AppRoot") .  App::getValue("NodeRoot");
+            $absPath = App::getValue("AppRoot") . App::getValue("NodeRoot");
 
             /// consigue la lista de paths del nodo
             $pathList = $this->class->GetPathList();
@@ -1187,7 +1171,7 @@ class Node extends NodesOrm
 
     /**
      * Deletes a node and all its children
-    */
+     */
     /**
      * @param bool $firstNode
      * @return bool|int|string
@@ -1221,7 +1205,7 @@ class Node extends NodesOrm
 
         // Deleting from file system
         if ($this->nodeType->get('HasFSEntity')) {
-            $absPath = App::getValue("AppRoot") .  App::getValue("NodeRoot");
+            $absPath = App::getValue("AppRoot") . App::getValue("NodeRoot");
             $deletablePath = $this->class->GetPathList();
 
             $nodePath = $absPath . $deletablePath;
@@ -1340,7 +1324,7 @@ class Node extends NodesOrm
      */
     function RenameNode($name)
     {
-        $folderPath = null ;
+        $folderPath = null;
 
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
@@ -1383,7 +1367,8 @@ class Node extends NodesOrm
 
             /// Changing the name in the Nodes table
             $this->set('Name', $name);
-            /* $result =*/ $this->update();
+            /* $result =*/
+            $this->update();
             /// If this node type has nothing else to change, the method rename node of its specific class is called
             $this->class->RenameNode($name);
 
@@ -1396,7 +1381,7 @@ class Node extends NodesOrm
             if ($isDir) {
                 /// Retrieving all children from the backup we kept, identified by $backupID
                 $parentNode = new Node($this->get('IdParent'));
-                $newPath = App::getValue("AppRoot") .  App::getValue("NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
+                $newPath = App::getValue("AppRoot") . App::getValue("NodeRoot") . $parentNode->GetChildrenPath() . '/' . $name;
                 rename($folderPath, $newPath);
             }
 
@@ -1422,7 +1407,7 @@ class Node extends NodesOrm
             if ($targetNode > 0) {
                 $target = new Node($targetNode);
                 if (!$target->IsOnNode($this->get('IdNode'))) {
-                   // $fsEntity = $this->nodeType->get('HasFSEntity');
+                    // $fsEntity = $this->nodeType->get('HasFSEntity');
                     $absPath = App::getValue("AppRoot") . App::getValue("NodeRoot");
                     ignore_user_abort(true);
 
@@ -1474,7 +1459,7 @@ class Node extends NodesOrm
 
     /**
      * Returns a list of groups associated to this node
-      */
+     */
     /**
      * @return array|null
      */
@@ -1571,7 +1556,7 @@ class Node extends NodesOrm
             if (!$this->numErr) {
                 foreach ($groupList as $groupID) {
                     $group = new Group($groupID);
-                     $tempUserList = $group->GetUserList();
+                    $tempUserList = $group->GetUserList();
                     $userList = array_merge($userList, $tempUserList);
                     unset($group);
                 }
@@ -1584,7 +1569,6 @@ class Node extends NodesOrm
 
     /**
      * This function does not delete an user from Users table, this disassociated from the group
-
      */
     /**
      * @param $groupID
@@ -1608,7 +1592,6 @@ class Node extends NodesOrm
 
     /**
      * Associated an user to a group with a concrete role
-
      */
     /**
      * @param $groupID
@@ -1637,7 +1620,6 @@ class Node extends NodesOrm
 
     /**
      * It allows to change the role a user participates in a group with
-
      */
     /**
      * @param $groupID
@@ -1709,7 +1691,6 @@ class Node extends NodesOrm
 
     /**
      * Function which makes a node to have a workflow as other node and depends on it
-
      */
     /**
      * @param $nodeID
@@ -1749,14 +1730,14 @@ class Node extends NodesOrm
 
     /**
      * Function which makes the node to have a new independent workflow
-          */
+     */
     /**
      * @param null $id
      * @return array
      */
     function GetWorkFlowSlaves($id = null)
     {
-        unset( $id ) ;
+        unset($id);
         return $this->find('IdNode', 'SharedWorkflow = %s', array($this->get('IdNode')), MONO);
     }
 
@@ -1793,7 +1774,6 @@ class Node extends NodesOrm
 
     /**
      * Obtains the current node alias
-
      */
     /**
      * @param $langID
@@ -1824,7 +1804,6 @@ class Node extends NodesOrm
 
     /**
      * Controls if the current node has alias
-
      */
     /**
      * @param $langID
@@ -1932,7 +1911,6 @@ class Node extends NodesOrm
 
     /**
      * Deletes a current node alias.
-
      */
     /**
      * @param $langID
@@ -1961,7 +1939,6 @@ class Node extends NodesOrm
 
     /**
      * Deletes all current node aliases.
-
      */
 
     function DeleteAlias()
@@ -2170,7 +2147,7 @@ class Node extends NodesOrm
     function TraverseTree($flag = null, $firstNode = true, $filters = '')
     {
 
-        unset( $filters);
+        unset($filters);
 
         /// Making an object with current node and its ID is added
         $nodeList = array();
@@ -2219,7 +2196,7 @@ class Node extends NodesOrm
     function getAncestors($fromNode = null)
     {
 
-        unset( $fromNode ) ;
+        unset($fromNode);
         $dbObj = new DB();
         $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d ORDER BY Depth DESC", $this->get('IdNode'), $this->get('IdNode'));
         $dbObj->Query($sql);
@@ -2711,7 +2688,6 @@ class Node extends NodesOrm
     /**
      * Function which determines if the name $name is valid for the nodetype $nodeTypeID,
      * nodetype is optional, if it is not passed, it is loaded from current node
-
      */
     /**
      * @param $name
@@ -2726,11 +2702,11 @@ class Node extends NodesOrm
         $nodeType = new NodeType($idNodeType);
         $nodeTypeName = $nodeType->get('Name');
         //the pattern and the string must be in the same encode
-        $pattern1 =  Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s]+$/",  XML::UTF8);
-        $pattern2 =  Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s\@\:\/\?\+\=\#\%\*\,]+$/",  XML::UTF8);
-        $pattern3 =  Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.]+$/", XML::UTF8);
-        $pattern4 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\@]+$/",  XML::UTF8);
-        $name =  Base::recodeSrc($name, XML::UTF8);
+        $pattern1 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s]+$/", XML::UTF8);
+        $pattern2 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\s\@\:\/\?\+\=\#\%\*\,]+$/", XML::UTF8);
+        $pattern3 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.]+$/", XML::UTF8);
+        $pattern4 = Base::recodeSrc("/^[A-Za-z0-9�-��-��-���\_\-\.\@]+$/", XML::UTF8);
+        $name = Base::recodeSrc($name, XML::UTF8);
         unset($nodeType);
         if (!strcasecmp($nodeTypeName, 'Action') ||
             !strcasecmp($nodeTypeName, 'Group') ||
@@ -2946,7 +2922,6 @@ class Node extends NodesOrm
 
     /**
      * Returna boolean value for a property with 'true' or 'false'
-
      */
     /**
      * @param $property
@@ -2970,7 +2945,8 @@ class Node extends NodesOrm
 
         $properties = $nodeProperty->find('IdNodeProperty', 'IdNode = %s AND Property = %s AND Value = %s', array($this->get('IdNode'), $property, $value));
         if (empty($properties)) {
-            /* $propertyValue = */ $nodeProperty->create($this->get('IdNode'), $property, $value);
+            /* $propertyValue = */
+            $nodeProperty->create($this->get('IdNode'), $property, $value);
         }
     }
 
@@ -3029,7 +3005,7 @@ class Node extends NodesOrm
             $nodeProperty = new NodeProperty($idNodeProperty);
             $nodeProperty->delete();
         }
-        return true ;
+        return true;
     }
 
     /**
@@ -3078,7 +3054,7 @@ class Node extends NodesOrm
 
     /**
      *  Update node childs FastTraverse info
-    */
+     */
     /**
      *
      */
@@ -3100,7 +3076,7 @@ class Node extends NodesOrm
      */
     function updateToNewPipeline($idPipeline)
     {
-        unset( $idPipeline);
+        unset($idPipeline);
 
         $db = new DB();
         $query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %d", $this->get('IdNode'));
@@ -3148,7 +3124,7 @@ class Node extends NodesOrm
         } else {
             $this->SetError(5);
         }
-        return null ;
+        return null;
     }
 
     /**

@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Logs\Log;
 use Ximdex\Utils\Sync\SynchroFacade;

@@ -2,6 +2,7 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 

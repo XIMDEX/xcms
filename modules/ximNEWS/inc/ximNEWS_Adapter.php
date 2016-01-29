@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;

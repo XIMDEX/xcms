@@ -28,7 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 use DB;
-use NodeType;
+use Ximdex\Models\NodeType;
 use Server;
 use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Models\Node;

@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 
 
 /**

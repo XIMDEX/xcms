@@ -28,6 +28,7 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
 

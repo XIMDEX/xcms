@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\NodeType;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\TarArchiver;
 

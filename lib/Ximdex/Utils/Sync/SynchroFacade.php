@@ -33,7 +33,7 @@ use DB_legacy as DB;
  use ModulesManager;
 use NodeFrame;
 use NodeFrameManager;
-use NodeType;
+use Ximdex\Models\NodeType;
 use RelNewsBulletins;
 use RelNewsColector;
 use Server;
