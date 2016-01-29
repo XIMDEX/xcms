@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,20 +23,15 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PortalVersions_ORM extends \Ximdex\Data\GenericData
+
+
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\ServersOrm;
+
+
+class Server extends ServersOrm
 {
-    var $_idField = 'id';
-    var $_table = 'PortalVersions';
-    var $_metaData = array(
-        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdPortal' => array('type' => "int(12)", 'not_null' => 'false'),
-        'Version' => array('type' => "int(12)", 'not_null' => 'false'),
-        'TimeStamp' => array('type' => "int(12)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdPortal = 0;
-    var $Version = 0;
-    var $TimeStamp = 0;
+
 }
+

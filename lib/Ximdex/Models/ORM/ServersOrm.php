@@ -8,7 +8,8 @@
  */
 
 
-class Servers_ORM extends \Ximdex\Data\GenericData
+namespace Ximdex\Models\ORM;
+class ServersOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'IdServer';
     var $_table = 'Servers';

@@ -20,45 +20,46 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Models;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
+use Ximdex\Models\ORM\PipeCacheTemplatesOrm;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeCacheTemplates_ORM.class.php');
+
 /**
- * 
+ *
  * @brief Template cache class
- * 
+ *
  * Class used in the View_Dext uses for store dependencies at the template level
  *
  */
-class PipeCacheTemplates extends PipeCacheTemplates_ORM {
-	
-	public function __construct($id = null )
+class PipeCacheTemplates extends PipeCacheTemplatesOrm
+{
+
+	public function __construct($id = null)
 	{
 		parent::__construct($id);
 	}
 
 	/**
- * Return documents which depends from a given ptd version
- *
- * @param templateVersion int
- * @return array / false 
- */
-	function GetDocsContainTemplate($templateVersion) {
+	 * Return documents which depends from a given ptd version
+	 *
+	 * @param templateVersion int
+	 * @return array / false
+	 */
+	function GetDocsContainTemplate($templateVersion)
+	{
 		$condition = 'TemplateIdVersion = %s';
 		$params = array('TemplateIdVersion' => $templateVersion);
 		$result = parent::find('DISTINCT(NodeId)', $condition, $params, MULTI);
-		
+
 		if (is_null($result)) {
 			return NULL;
-		}  else {		
+		} else {
 			return $result;
 		}
 	}

@@ -34,7 +34,7 @@ use DOMXPath;
 use ModulesManager;
 use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\NodeType;
-use PipelineManager;
+use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\StructuredDocument;
 use Ximdex;
 use Ximdex\Models\Node;

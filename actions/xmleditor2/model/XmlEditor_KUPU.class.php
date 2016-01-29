@@ -34,6 +34,7 @@ use Ximdex\Parsers\ParsingRng;
 use Ximdex\Parsers\ParsingXsl;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');

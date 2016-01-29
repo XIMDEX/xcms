@@ -28,7 +28,6 @@
 
 ModulesManager::file('/inc/model/orm/ServerErrorByPumper_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/model/Server.class.php');
 
 /**
 *	@brief Manages the errors found during the sending of ServerFrames to Server.

@@ -25,9 +25,12 @@
  */
 
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/PortalVersions_ORM.class.php';
+namespace Ximdex\Models;
 
-class PortalVersions extends PortalVersions_ORM
+use Ximdex\Models\ORM\PortalVersionsOrm;
+
+
+class PortalVersions extends PortalVersionsOrm
 {
 
     function __construct($id = null)

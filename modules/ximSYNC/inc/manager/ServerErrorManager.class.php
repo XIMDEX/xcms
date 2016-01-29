@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
 
 if (!defined('XIMDEX_ROOT_PATH'))

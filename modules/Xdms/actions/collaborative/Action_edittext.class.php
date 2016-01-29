@@ -20,21 +20,22 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Sync\SyncManager;
 
-ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 
-class Action_edittext extends ActionAbstract {
-   	// Main method: shows initial form
-	function index()
+class Action_edittext extends ActionAbstract
+{
+    // Main method: shows initial form
+    function index()
     {
 
         $this->addCss('/actions/edittext/resources/css/style.css');
@@ -68,15 +69,15 @@ class Action_edittext extends ActionAbstract {
         $infoFile = pathinfo($fileName);
         if (array_key_exists("extension", $infoFile)) {
             $ext = $infoFile['extension'];
-        }elseif($idNodeType == "5032"){
+        } elseif ($idNodeType == "5032") {
             //for the documents
             $ext = "xml";
-        }else{
-			$ext = "txt";
-		}
+        } else {
+            $ext = "txt";
+        }
 
-		$content = $node->GetContent();
-		$content = htmlspecialchars($content);
+        $content = $node->GetContent();
+        $content = htmlspecialchars($content);
 
         switch ($ext) {
             case "c":
@@ -116,87 +117,88 @@ class Action_edittext extends ActionAbstract {
         $this->addJs('/actions/edittext/resources/js/init.js');
 
 
+        $values = array('id_node' => $idNode,
+            'isXimNewsLanguage' => $isXimNewsLanguage,
+            //'ruta' => $path,
+            'codemirror_url' => App::getValue('UrlRoot') . '/extensions/vendors/codemirror/Codemirror',
+            'ext' => $ext,
+            'content' => $content,
+            'go_method' => 'edittext',
+            'on_load_functions' => 'resize_caja()',
+            'on_resize_functions' => 'resize_caja()',
+            'node_name' => $node_name,
+            'id_editor' => $idNode . uniqid()
+        );
 
-		$values = array('id_node' => $idNode,
-				'isXimNewsLanguage' => $isXimNewsLanguage,
-				//'ruta' => $path,
-                'codemirror_url' => App::getValue('UrlRoot') . '/extensions/vendors/codemirror/Codemirror',
-				'ext' => $ext,
-				'content' => $content,
-				'go_method' => 'edittext',
-				'on_load_functions' => 'resize_caja()',
-				'on_resize_functions' => 'resize_caja()',
-				'node_name' => $node_name,
-				'id_editor' => $idNode.uniqid()
-				);
+        $this->render($values, null, 'default-3.0.tpl');
+    }
 
-		    $this->render($values, null, 'default-3.0.tpl');
-    	}
+    /*
+    *	If nodeType is a template display documents affected by change
+    */
+    function publishForm()
+    {
+        $idNode = $this->request->getParam('nodeid');
 
-/*
-*	If nodeType is a template display documents affected by change
-*/
-	function publishForm() {
-    	$idNode = $this->request->getParam('nodeid');
+        $dataFactory = new DataFactory($idNode);
+        $lastVersion = $dataFactory->GetLastVersionId();
+        $prevVersion = $dataFactory->GetPreviousVersion($lastVersion);
 
-		$dataFactory = new DataFactory($idNode);
-		$lastVersion = $dataFactory->GetLastVersionId();
-		$prevVersion = $dataFactory->GetPreviousVersion($lastVersion);
+        $cacheTemplate = new PipeCacheTemplates();
+        $docs = $cacheTemplate->GetDocsContainTemplate($prevVersion);
 
-		$cacheTemplate = new PipeCacheTemplates();
-		$docs = $cacheTemplate->GetDocsContainTemplate($prevVersion);
+        if (is_null($docs)) {
+            $this->redirectTo('index');
+            return;
+        }
 
-		if (is_null($docs)) {
-			$this->redirectTo('index');
-			return;
-		}
+        $numDocs = sizeof($docs);
 
-		$numDocs = sizeof($docs);
+        for ($i = 0; $i < $numDocs; $i++) {
+            $docsList[] = $docs[$i]['NodeId'];
+        }
 
-		for ($i = 0; $i < $numDocs; $i++) {
-			$docsList[] = $docs[$i]['NodeId'];
-		}
+        $values = array('numDocs' => $numDocs,
+            'docsList' => implode('_', $docsList),
+            'go_method' => 'publicateDocs',
+        );
 
-		$values = array('numDocs' => $numDocs,
-						'docsList' => implode('_', $docsList),
-						'go_method' => 'publicateDocs',
-						);
+        $this->render($values);
 
-		$this->render($values);
+    }
 
-	}
+    /*
+    *	Publicate documents from publishForm method (above)
+    */
+    function publicateDocs()
+    {
 
-/*
-*	Publicate documents from publishForm method (above)
-*/
-	function publicateDocs() {
+        if (ModulesManager::isEnabled('ximSYNC')) {
+            ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
+        }
 
-		if (ModulesManager::isEnabled('ximSYNC')) {
-			ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
-		}
+        $docs = explode('_', $this->request->getParam('docsList'));
 
-		$docs = explode('_', $this->request->getParam('docsList'));
+        $syncMngr = new SyncManager();
+        $syncMngr->setFlag('deleteOld', true);
+        $syncMngr->setFlag('linked', false);
 
-		$syncMngr = new SyncManager();
-		$syncMngr->setFlag('deleteOld', true);
-		$syncMngr->setFlag('linked', false);
+        foreach ($docs as $documentID) {
+            $result = $syncMngr->pushDocInPublishingPool($documentID, mktime(), NULL, NULL);
+        }
 
-		foreach ($docs as $documentID) {
-			$result = $syncMngr->pushDocInPublishingPool($documentID, mktime(), NULL, NULL);
-		}
+        $arrayOpciones = array('ok' => _(' have been successfully published'),
+            'notok' => _(' have not been published, because of an error during process'),
+            'unchanged' => _(' have not been published because they are already published on its most recent version'));
 
-		$arrayOpciones = array('ok' => _(' have been successfully published'),
-				'notok' => _(' have not been published, because of an error during process'),
-				'unchanged' => _(' have not been published because they are already published on its most recent version') );
+        $values = array('arrayOpciones' => $arrayOpciones,
+            'arrayResult' => $result
+        );
 
-		$values = array('arrayOpciones' => $arrayOpciones,
-				'arrayResult' => $result
-				);
+        $this->render($values, NULL, 'publicationResult.tpl');
+    }
 
-		$this->render($values, NULL, 'publicationResult.tpl');
-	}
-
-	function edittext()
+    function edittext()
     {
 
         $idNode = $this->request->getParam('nodeid');
@@ -210,7 +212,7 @@ class Action_edittext extends ActionAbstract {
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
         }
-        $node->SetContent(\Ximdex\Utils\String::stripslashes( $content), true);
+        $node->SetContent(\Ximdex\Utils\String::stripslashes($content), true);
         $node->RenderizeNode();
 
         $nodeType = new NodeType($node->get('IdNodeType'));
@@ -247,4 +249,5 @@ class Action_edittext extends ActionAbstract {
         //}
     }
 }
+
 ?>

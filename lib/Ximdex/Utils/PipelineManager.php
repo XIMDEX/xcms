@@ -25,15 +25,16 @@
  */
 
 
+namespace Ximdex\Utils;
+
 use Ximdex\Models\Node;
 use Ximdex\Models\ORM\RelServersChannelsOrm;
 use Ximdex\Models\PipeCache;
 use Ximdex\Models\PipeProcess;
+use Ximdex\Models\Server;
 use Ximdex\Models\Version;
-use Ximdex\Utils\FsUtils;
-
-
- require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
+use Ximdex\Logger as XMD_Log;
+use Ximdex\Runtime\App;
 
 
 /**
@@ -54,7 +55,7 @@ class PipelineManager
      */
     function PipelineManager()
     {
-        $this->messages = \Ximdex\Runtime\App::get('\Ximdex\Utils\Messages');
+        $this->messages = App::get('\Ximdex\Utils\Messages');
     }
 
     /**
@@ -237,5 +238,3 @@ class PipelineManager
     }
 
 }
-
-?>

@@ -29,6 +29,7 @@ use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeTransition;
 use Ximdex\Models\Role;
+use Ximdex\Models\Server;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;

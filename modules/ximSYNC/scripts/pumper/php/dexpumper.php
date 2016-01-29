@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Server;
 use Ximdex\Runtime\Cli\CliParser;
 
 include_once dirname(__FILE__) . '/../../../../../bootstrap/start.php';

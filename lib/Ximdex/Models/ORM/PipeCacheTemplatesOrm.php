@@ -1,4 +1,6 @@
 <?php
+
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,16 +25,20 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-}
-
-require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/Servers_ORM.class.php");
-
-class Server extends Servers_ORM
+class PipeCacheTemplatesOrm extends \Ximdex\Data\GenericData
 {
-
+    var $_idField = 'id';
+    var $_table = 'PipeCacheTemplates';
+    var $_metaData = array(
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'NodeId' => array('type' => "int(11)", 'not_null' => 'true'),
+        'DocIdVersion' => array('type' => "int(11)", 'not_null' => 'true'),
+        'TemplateIdVersion' => array('type' => "int(11)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $NodeId;
+    var $DocIdVersion;
+    var $TemplateIdVersion;
 }
-

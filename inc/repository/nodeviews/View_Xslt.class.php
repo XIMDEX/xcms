@@ -30,8 +30,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 
 ModulesManager::file('/xslt/functions.php', 'dexT');
-ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
-ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
+ ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
 

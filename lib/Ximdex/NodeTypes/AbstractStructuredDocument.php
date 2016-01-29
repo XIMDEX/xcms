@@ -33,7 +33,7 @@ use MetadataManager;
 use ModulesManager;
 use Namespaces;
 use Ximdex\Models\NodeType;
-use PipelineManager;
+use Ximdex\Utils\PipelineManager;
 use Properties;
 use RelTagsNodes;
 use SolrViews;

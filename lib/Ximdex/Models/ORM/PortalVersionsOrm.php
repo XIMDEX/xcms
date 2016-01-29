@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,20 +25,20 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PipeCacheTemplates_ORM extends \Ximdex\Data\GenericData
+class PortalVersionsOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'id';
-    var $_table = 'PipeCacheTemplates';
+    var $_table = 'PortalVersions';
     var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'NodeId' => array('type' => "int(11)", 'not_null' => 'true'),
-        'DocIdVersion' => array('type' => "int(11)", 'not_null' => 'true'),
-        'TemplateIdVersion' => array('type' => "int(11)", 'not_null' => 'true')
+        'id' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdPortal' => array('type' => "int(12)", 'not_null' => 'false'),
+        'Version' => array('type' => "int(12)", 'not_null' => 'false'),
+        'TimeStamp' => array('type' => "int(12)", 'not_null' => 'false')
     );
     var $_uniqueConstraints = array();
     var $_indexes = array('id');
     var $id;
-    var $NodeId;
-    var $DocIdVersion;
-    var $TemplateIdVersion;
+    var $IdPortal = 0;
+    var $Version = 0;
+    var $TimeStamp = 0;
 }

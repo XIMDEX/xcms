@@ -30,11 +30,11 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\PipelineManager;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/filters/Filter.class.php');
-ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
-ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
+ ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Dext.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xslt.class.php');

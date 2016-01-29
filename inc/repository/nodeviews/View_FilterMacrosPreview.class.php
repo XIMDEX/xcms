@@ -30,7 +30,6 @@ use Ximdex\Models\Node;
 use Ximdex\Parsers\ParsingPathTo;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacros.class.php');

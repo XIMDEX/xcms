@@ -26,11 +26,11 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Sync\SyncManager;
 
-ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 
 class Action_edittext extends ActionAbstract {
    	// Main method: shows initial form

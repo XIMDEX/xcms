@@ -36,7 +36,7 @@ use NodeFrameManager;
 use Ximdex\Models\NodeType;
 use RelNewsBulletins;
 use RelNewsColector;
-use Server;
+use Ximdex\Models\Server;
 use ServerFrame;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
@@ -45,7 +45,6 @@ use XimNewsCache;
 use Ximdex\Logger as XMD_log;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 
 if (ModulesManager::isEnabled('ximSYNC')) {
 	ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');

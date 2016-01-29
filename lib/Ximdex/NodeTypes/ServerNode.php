@@ -29,12 +29,11 @@ namespace Ximdex\NodeTypes;
 
 use DB;
 use Ximdex\Models\NodeType;
-use Server;
+use Ximdex\Models\Server;
 use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Models\Node;
 
 
- require_once XIMDEX_ROOT_PATH . "/inc/model/Server.class.php";
 
 class ServerNode extends FolderNode
 {

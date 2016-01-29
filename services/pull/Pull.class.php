@@ -27,14 +27,15 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\PortalVersions;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Serializer;
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_PreviewInServer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/PortalVersions.class.php');
 
 class Pull
 {

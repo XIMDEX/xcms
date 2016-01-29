@@ -36,13 +36,14 @@
 //
 
 use Ximdex\Models\Node;
+use Ximdex\Models\Server;
+use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Sync\Mutex;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 
 ModulesManager::file('/inc/model/XimNewsList.php', 'ximNEWS');
  ModulesManager::file('/inc/mail/Mail.class.php');
- ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 
 
 function GetMessageFromSync($idSync, $nodeID) {

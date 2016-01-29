@@ -27,6 +27,7 @@
 
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Channel;
+use Ximdex\Models\Server;
 
 
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/ServerFrame.class.php');

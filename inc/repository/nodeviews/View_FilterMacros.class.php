@@ -28,12 +28,12 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Models\Server;
 use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingPathTo;
 use Ximdex\Utils\Sync\SynchroFacade;
 
-ModulesManager::file('/inc/model/Server.class.php');
-ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
+ ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
