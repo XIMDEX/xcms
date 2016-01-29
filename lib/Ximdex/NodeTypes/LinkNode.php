@@ -21,48 +21,67 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-use Ximdex\NodeTypes\Root;
+namespace Ximdex\NodeTypes;
 
+use commit;
+use depth;
+use description;
+use files;
+use I_LinkDescriptions;
+use Link;
+use name;
+use NodeDependencies;
+use nodeTypeID;
+use parentID;
+use recurrence;
+use RelLinkDescriptions;
+use stateID;
+use unknown;
+use url;
+use Ximdex\NodeTypes\Root;
+use XMD_Log;
 
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Links.php");
- require_once (XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
+require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 
 /**
-*  @brief Handles links to external pages or web sites.
-*/
-
-class LinkNode extends Root {
+ * @brief Handles links to external pages or web sites.
+ */
+class LinkNode extends Root
+{
 
 	var $link = NULL;
 
 	/**
-	*  Constructor.
-	*  @param object parent
-	*/
+	 *  Constructor.
+	 * @param object parent
+	 */
 
-	public function __construct($parent) {
+	public function __construct($parent)
+	{
 
 		parent::__construct($parent);
 		$this->link = new Link($this->nodeID);
 	}
 
 	/**
-	*  Adds a row to Versions table and creates the file.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string url
-	*  @param string description
-	*  @return unknown
-	*/
+	 *  Adds a row to Versions table and creates the file.
+	 * @param string name
+	 * @param int parentID
+	 * @param int nodeTypeID
+	 * @param int stateID
+	 * @param string url
+	 * @param string description
+	 * @return unknown
+	 */
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $url = null, $description = null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $url = null, $description = null)
+	{
 
 		$link = new Link();
 		$link->set('IdLink', $this->nodeID);
@@ -91,11 +110,12 @@ class LinkNode extends Root {
 	}
 
 	/**
-	*  Deletes the information of link in the database.
-	*  @return unknown
-	*/
+	 *  Deletes the information of link in the database.
+	 * @return unknown
+	 */
 
-	function DeleteNode() {
+	function DeleteNode()
+	{
 
 		if (!($this->link->get('IdLink') > 0)) {
 			XMD_Log::error("Se ha solicitado eliminar el nodo {$this->nodeID} que actualmente no existe");
@@ -125,22 +145,24 @@ class LinkNode extends Root {
 	}
 
 	/**
-	*  Gets the url of the link.
-	*/
+	 *  Gets the url of the link.
+	 */
 
-	function GetUrl() {
+	function GetUrl()
+	{
 
 		return $this->link->get('Url');
 	}
 
 	/**
-	*  Sets the url of the link.
-	*  @param string url
-	*  @param bool commit
-	*  @return bool
-	*/
+	 *  Sets the url of the link.
+	 * @param string url
+	 * @param bool commit
+	 * @return bool
+	 */
 
-	function SetUrl($url, $commit = true) {
+	function SetUrl($url, $commit = true)
+	{
 
 		$this->link->set('Url', $url);
 
@@ -162,30 +184,32 @@ class LinkNode extends Root {
 	}
 
 	/**
-	*  Gets the dependencies of the link.
-	*  @return array
-	*/
+	 *  Gets the dependencies of the link.
+	 * @return array
+	 */
 
-	function GetDependencies() {
+	function GetDependencies()
+	{
 
 		$nodeDependencies = new NodeDependencies();
 		return $nodeDependencies->getByTarget($this->nodeID);
 	}
 
 	/**
-	*  Builds a XML wich contains the properties of the language.
-	*  @param int depth
-	*  @param array files
-	*  @param bool recurrence
-     * @return string
-	*/
+	 *  Builds a XML wich contains the properties of the language.
+	 * @param int depth
+	 * @param array files
+	 * @param bool recurrence
+	 * @return string
+	 */
 
-    function ToXml($depth, & $files, $recurrence) {
-			$indexTabs = str_repeat("\t", $depth + 1);
-			return sprintf("%s<LinkInfo Url=\"%s\">\n"
-							. "%s\t<![CDATA[%s]]>\n"
-							. "%s</LinkInfo>\n",
-							$indexTabs,	urlencode($this->link->get('Url')),
-							$indexTabs, $this->parent->GetDescription(), $indexTabs);
+	function ToXml($depth, & $files, $recurrence)
+	{
+		$indexTabs = str_repeat("\t", $depth + 1);
+		return sprintf("%s<LinkInfo Url=\"%s\">\n"
+			. "%s\t<![CDATA[%s]]>\n"
+			. "%s</LinkInfo>\n",
+			$indexTabs, urlencode($this->link->get('Url')),
+			$indexTabs, $this->parent->GetDescription(), $indexTabs);
 	}
 }

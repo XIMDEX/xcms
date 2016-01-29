@@ -26,7 +26,8 @@ class Factory
         'groupnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\GroupNode'),
         'usernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\UserNode'),
         'commonnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\CommonNode'),
-
+        'linknode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LinkNode'),
+        'nodetypenode'=> array('ClassName' => '\\Ximdex\\NodeTypes\\NodeTypeNode') ,
 
     );
 
