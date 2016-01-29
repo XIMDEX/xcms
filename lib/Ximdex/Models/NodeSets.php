@@ -25,8 +25,14 @@
  */
 
 
+namespace Ximdex\Models;
+
+use DB_legacy as DB;
+use I_NodeSets;
+use I_NodeSetsNodes;
+use I_NodeSetsUsers;
+use RelNodeSetsUsers;
 use Ximdex\Models\ORM\NodeSetsOrm;
-use Ximdex\Models\RelNodeSetsNode;
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/iterators/I_NodeSets.class.php');

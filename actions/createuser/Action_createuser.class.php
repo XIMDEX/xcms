@@ -27,10 +27,10 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Role;
+use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/conf/install-params.conf.php');
-ModulesManager::file('/inc/model/locale.php');
 
 class Action_createuser extends ActionAbstract {
     // Main method: shows main init form

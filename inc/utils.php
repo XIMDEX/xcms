@@ -33,5 +33,4 @@ ModulesManager::file('/conf/install-params.conf.php');
 ModulesManager::file('/conf/install-modules.php');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file("/inc/persistence/datafactory.php");
- ModulesManager::file("/inc/model/permissions.php");
 ModulesManager::file("/inc/persistence/XSession.class.php");

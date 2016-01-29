@@ -1,4 +1,8 @@
 <?php
+
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,30 +24,24 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-class Dependencies_ORM extends \Ximdex\Data\GenericData   {
-	var $_idField = 'IdDep';
-	var $_table = 'Dependencies';
-	var $_metaData = array(
-				'IdDep' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-				'IdNodeMaster' => array('type' => "int(12)", 'not_null' => 'true'),
-				'IdNodeDependent' => array('type' => "int(12)", 'not_null' => 'true'),
-				'DepType' => array('type' => "varchar(10)", 'not_null' => 'true'),
-				'version' => array('type' => "int(10)", 'not_null' => 'true')
-				);
-	var $_uniqueConstraints = array(
-
-				);
-	var $_indexes = array('IdDep');
-	var $IdDep;
-	var $IdNodeMaster = 0;
-	var $IdNodeDependent = 0;
-	var $DepType = 0;
-	var $version = 0;
+class PermissionsOrm extends  GenericData
+{
+    var $_idField = 'IdPermission';
+    var $_table = 'Permissions';
+    var $_metaData = array(
+        'IdPermission' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'IdName' => array('Name')
+    );
+    var $_indexes = array('IdPermission');
+    var $IdPermission;
+    var $Name = 0;
+    var $Description;
 }
-?>
+

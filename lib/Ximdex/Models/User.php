@@ -30,7 +30,7 @@ namespace Ximdex\Models;
 use Ximdex\Models\Group;
 use ModulesManager;
 use NoActionsInNode;
-use Permission;
+use Ximdex\Models\Permission;
 use Ximdex\Models\Role;
 use Ximdex\Models\Version;
 use Ximdex\Models\ORM\UsersOrm;

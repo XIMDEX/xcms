@@ -27,21 +27,20 @@
 
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
-use Ximdex\Models\RelNodeSetsNode;
+use Ximdex\Models\NodeSets;
 use Ximdex\Models\SearchFilters;
 use Ximdex\Models\User;
+use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 use DB_legacy as DB;
-use Ximdex\Logger as XMD_Log ;
+use Ximdex\Logger as XMD_Log;
 
-ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/search/QueryProcessor.class.php');
 ModulesManager::file('/inc/xvfs/XVFS.class.php');
-ModulesManager::file('/inc/model/NodeSets.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/validation/FormValidation.class.php');
 
@@ -55,13 +54,13 @@ class Action_browser3 extends ActionAbstract
 
     public function index()
     {
-        if (!is_string(\Ximdex\Utils\Session::get('activeTheme'))) {
-            \Ximdex\Utils\Session::set('activeTheme', 'ximdex_theme');
+        if (!is_string( Session::get('activeTheme'))) {
+            Session::set('activeTheme', 'ximdex_theme');
         }
 
         $params = $this->request->getParam('params');
-        $loginName = \Ximdex\Utils\Session::get('user_name');
-        $userID = (int)\Ximdex\Utils\Session::get('userID');
+        $loginName = Session::get('user_name');
+        $userID = (int) Session::get('userID');
 
         /* Test Session */
         $session_info = session_get_cookie_params();
@@ -69,8 +68,8 @@ class Action_browser3 extends ActionAbstract
         //$session_duration = session_cache_expire(); // in minutes
         $session_duration = $session_lifetime != 0 ? $session_lifetime : session_cache_expire() * 60;
 
-        $sessionExpirationTimestamp = \Ximdex\Utils\Session::get("loginTimestamp") + $session_duration * 60;
-        setcookie("loginTimestamp", \Ximdex\Utils\Session::get("loginTimestamp"));
+        $sessionExpirationTimestamp = Session::get("loginTimestamp") + $session_duration * 60;
+        setcookie("loginTimestamp",  Session::get("loginTimestamp"));
         setcookie("sessionLength", $session_duration);
         /**/
 
@@ -498,7 +497,6 @@ class Action_browser3 extends ActionAbstract
         }
 
         $data = array_unique($data);
-//debug::log($data);
 
         $query = array(
             'parentid' => $parentId,
@@ -550,6 +548,9 @@ class Action_browser3 extends ActionAbstract
         $sets = array();
         $it = NodeSets::getSets($idUser);
         while ($set = $it->next()) {
+            /**
+             * @var $set NodeSets
+             */
             $sets[] = array(
                 'id' => $set->getId(),
                 'name' => $set->getName(),
@@ -575,8 +576,7 @@ class Action_browser3 extends ActionAbstract
         $it = $set->getNodes();
         while ($node = $it->next()) {
             /**
-             * @var $node RelNodeSetsNode
-
+             * @var $node Node
              */
             $node = $node->getNode();
             $nodes[] = array(
@@ -653,6 +653,7 @@ class Action_browser3 extends ActionAbstract
      */
     public function addNodeToSet($idSet = null, $nodes = null)
     {
+        $result = array();
 
         $returnJSON = false;
         if ($idSet === null && $nodes === null) {
@@ -684,6 +685,7 @@ class Action_browser3 extends ActionAbstract
         } else {
             return $errors;
         }
+        return $result ;
     }
 
     /**
@@ -698,7 +700,7 @@ class Action_browser3 extends ActionAbstract
      */
     public function addUserToSet($idSet = null, $users = null, $owner = RelNodeSetsUsers::OWNER_NO)
     {
-
+        $result = array();
         $returnJSON = false;
         if ($idSet === null && $users === null) {
             $returnJSON = true;
@@ -730,6 +732,7 @@ class Action_browser3 extends ActionAbstract
         } else {
             return $errors;
         }
+        return $result ;
     }
 
     /**
@@ -841,7 +844,7 @@ class Action_browser3 extends ActionAbstract
     public function updateSetUsers()
     {
         $idSet = $this->request->getParam('setid');
-        $users = $this->request->getParam('users');
+        // $users = $this->request->getParam('users');
         $rel = new RelNodeSetsUsers();
         $rel->deleteAll('IdSet = %s and Owner = 0', array($idSet));
         $this->addUserToSet();
@@ -908,6 +911,9 @@ class Action_browser3 extends ActionAbstract
         $filters = array();
         $it = SearchFilters::getFilters();
         while ($filter = $it->next()) {
+            /**
+             * @var $filter  SearchFilters
+             */
             $filters[] = array(
                 'id' => $filter->getId(),
                 'name' => $filter->getName(),
@@ -1064,6 +1070,7 @@ class Action_browser3 extends ActionAbstract
      */
     public function getActionsOnNodeList($idUser, $nodes, $processActionName = true)
     {
+        unset( $processActionName) ;
         $user = new User($idUser);
         return $user->getActionsOnNodeList($nodes);
     }

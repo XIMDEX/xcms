@@ -113,43 +113,35 @@ class DB_legacy
      */
     var $EOF;
     /**
-     * Produced error number
-     * @var unknown_type
+     * @var
      */
     var $numErr;
     /**
-     *  Error description
-     * @var unknown_type
+     * @var
      */
     var $desErr;
     /**
-     * Debug management
-     * @var unknown_type
+     * @var bool
      */
     var $debug = false;
     /**
-     * Log files
-     * @var unknown_type
+     * @var
      */
     var $fileLog;
     /**
-     * File pointer
-     * @var unknown_type
+     * @var
      */
     var $fileHdl;
     /**
-     * Instance of logger configured for data access
-     * @var unknown_type
+     * @var
      */
     var $dblog;
     /**
-     * Encodings
-     * @var unknown_type
+     * @var string
      */
     var $dbEncoding = '';
     /**
-     *
-     * @var unknown_type
+     * @var string
      */
     var $workingEncoding = '';
 
@@ -256,8 +248,10 @@ class DB_legacy
 
     /**
      * Function which performs a BD query (preferred only SELETs)
+
+     */
+    /**
      * @param $sql
-     * @return unknown_type
      */
     function Query($sql)
     {

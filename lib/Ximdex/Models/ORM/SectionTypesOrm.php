@@ -1,4 +1,8 @@
 <?php
+
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,17 +27,22 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-}
-
-require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/IsoCodes_ORM.class.php");
-
-class IsoCode extends IsoCodes_ORM
+class SectionTypesOrm extends GenericData
 {
-
-    var $_fieldsToTraduce = array('Name');
+    var $_idField = 'idSectionType';
+    var $_table = 'SectionTypes';
+    var $_metaData = array(
+        'idSectionType' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'sectionType' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'idNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
+        'module' => array('type' => "varchar(255)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'sectionType' => array('sectionType')
+    );
+    var $_indexes = array('idSectionType');
+    var $idSectionType;
+    var $sectionType;
+    var $idNodeType;
+    var $module;
 }
-

@@ -43,7 +43,7 @@ use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\Logger as XMD_Log;
 use DB_legacy as DB;
 use Ximdex\Runtime\App,
-    Dependencies,
+    Ximdex\Models\Dependencies,
     Ximdex\Models\NodeDependencies,
     Ximdex\Workflow\WorkFlow,
     Ximdex\Models\NodeType,

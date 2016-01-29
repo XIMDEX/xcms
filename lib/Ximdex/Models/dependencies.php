@@ -24,30 +24,56 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Models;
+
+use DataFactory;
 use Ximdex\Logger;
+use Ximdex\Models\ORM\DependenciesOrm;
 
 
-if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Dependencies_ORM.class.php';
-require_once XIMDEX_ROOT_PATH . '/inc/model/DependenceTypes.class.php';
-
-
-class Dependencies extends Dependencies_ORM
+class Dependencies extends DependenciesOrm
 {
 
+    /**
+     *
+     */
     const ASSET = "asset";
+    /**
+     *
+     */
     const CHANNEL = "channel";
+    /**
+     *
+     */
     const LANGUAGE = "language";
+    /**
+     *
+     */
     const SCHEMA = "schema";
+    /**
+     *
+     */
     const SYMLINK = "symlink";
+    /**
+     *
+     */
     const TEMPLATE = "template";
+    /**
+     *
+     */
     const XIMLET = "ximlet";
-    const XML ="xml";
+    /**
+     *
+     */
+    const XML = "xml";
+    /**
+     *
+     */
     const XIMLINK = "ximlink";
 
 
     /**
-     * @var deptypes array
+     * @var $deptypes array
      * It will be something like
      * "css" => 1
      * "assets" => 2
@@ -144,12 +170,11 @@ class Dependencies extends Dependencies_ORM
     }
 
     /**
-     *
      * @param $master
      * @param $dependent
      * @param $type
-     * @param $version
-     * @return unknown_type
+     * @param null $version
+     * @return bool|null|string
      */
     public function insertDependence($master, $dependent, $type, $version = null)
     {
@@ -178,9 +203,7 @@ class Dependencies extends Dependencies_ORM
     }
 
     /**
-     * Delete all dependencies for a dependent node.
      * @param $nodeID
-     * @return unknown_type
      */
     public function deleteDependentNode($nodeID)
     {
@@ -190,9 +213,11 @@ class Dependencies extends Dependencies_ORM
 
     /**
      * Delete all dependencies for a master node and an given type.
-     * @param int $nodeID
-     * @param int /String $type
-     * @return unknown_type
+
+     */
+    /**
+     * @param $nodeID
+     * @param $type
      */
     function deleteMasterNodeandType($nodeID, $type)
     {
@@ -202,12 +227,7 @@ class Dependencies extends Dependencies_ORM
         $this->deleteAll("IdNodeMaster=%s AND DepType=%s", array($nodeID, $type));
     }
 
-    /**
-     * Delete all dependencies for a dependent node in a given version.
-     * @param $nodeID
-     * @param $version
-     * @return unknown_type
-     */
+
     function deleteDependenciesByDependentAndVersion($nodeID, $version)
     {
         //Deletes all the dependencies (ancestor) of this node ("free")
@@ -215,6 +235,10 @@ class Dependencies extends Dependencies_ORM
         $this->deleteAll("IdNodeDependent = %s and version= %s", array($nodeID, $version));
     }
 
+    /**
+     * @param $nodeID
+     * @param $version
+     */
     function deleteByMasterAndVersion($nodeID, $version)
     {
         //Deletes all the dependencies (ancestor) of this node ("free")
@@ -222,23 +246,14 @@ class Dependencies extends Dependencies_ORM
         $this->deleteAll("IdNodeMaster = %s and version= %s", array($nodeID, $version));
     }
 
-    /**
-     * Delete all dependencies for a dependent node with a given deptype.
-     * @param $nodeID
-     * @param $type
-     * @return unknown_type
-     */
+
     function deleteDependenciesByDependentAndType($nodeID, $type)
     {
         $type = $this->getDepTypeId($type);
         $this->deleteAll("IdNodeDependent = %s and DepType= %s", array($nodeID, $type));
     }
 
-    /**
-     *
-     * @param $nodeID
-     * @return unknown_type
-     */
+
     function getDependenciesDependentNode($nodeID)
     {
 
@@ -246,11 +261,7 @@ class Dependencies extends Dependencies_ORM
         return $this->find("IdNodeMaster", "IdNodeDependent= %s", array($nodeID), MONO);
     }
 
-    /**
-     *
-     * @param $nodeID
-     * @return unknown_type
-     */
+
     function getDependenciesMasterNode($nodeID)
     {
         // Gets all the nodes which are pointing the the current one with dependencies of  kind $type
@@ -258,13 +269,6 @@ class Dependencies extends Dependencies_ORM
     }
 
 
-    /**
-     *
-     * @param $nodeID
-     * @param $type
-     * @param $version
-     * @return unknown_type
-     */
     function getDependenciesMasterByType($nodeID, $type, $version = null)
     {
 
@@ -282,13 +286,6 @@ class Dependencies extends Dependencies_ORM
         return is_array($result) ? array_unique($result) : false;
     }
 
-    /**
-     *
-     * @param $nodeID
-     * @param $type
-     * @param $version
-     * @return unknown_type
-     */
     function getMastersByType($nodeID, $type, $version = null)
     {
         $type = $this->getDepTypeId($type);
@@ -305,14 +302,7 @@ class Dependencies extends Dependencies_ORM
         return is_array($result) ? array_unique($result) : false;
     }
 
-    /**
-     *
-     * @param $master
-     * @param $dependent
-     * @param $type
-     * @param $version
-     * @return unknown_type
-     */
+
     function existsDependence($master, $dependent, $type, $version)
     {
         $type = $this->getDepTypeId($type);
@@ -323,13 +313,7 @@ class Dependencies extends Dependencies_ORM
         return $this->count($condition, $values);
     }
 
-    /**
-     * Deletes all dependencies between nodes for a given type
-     * @param int nodeMaster
-     * @param int nodeDependent
-     * @param string type
-     * @return true / false
-     */
+
     function deleteByMasterAndDependent($nodeMaster, $nodeDependent, $type)
     {
 

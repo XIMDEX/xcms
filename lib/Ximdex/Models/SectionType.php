@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,22 +23,13 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class SectionTypes_ORM extends \Ximdex\Data\GenericData
+
+
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\SectionTypesOrm;
+
+class SectionType extends SectionTypesOrm
 {
-    var $_idField = 'idSectionType';
-    var $_table = 'SectionTypes';
-    var $_metaData = array(
-        'idSectionType' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'sectionType' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'idNodeType' => array('type' => "int(11)", 'not_null' => 'true'),
-        'module' => array('type' => "varchar(255)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array(
-        'sectionType' => array('sectionType')
-    );
-    var $_indexes = array('idSectionType');
-    var $idSectionType;
-    var $sectionType;
-    var $idNodeType;
-    var $module;
+
 }

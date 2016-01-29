@@ -29,6 +29,7 @@ use Ximdex\Models\Action;
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
+use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingXimMenu;
 use Ximdex\Runtime\App;
@@ -42,7 +43,6 @@ ModulesManager::file('/inc/utils.php');
 
  ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
-ModulesManager::file('/inc/model/locale.php');
 
 
 class Action_composer extends ActionAbstract

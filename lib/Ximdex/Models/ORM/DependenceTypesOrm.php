@@ -1,5 +1,8 @@
 <?php
 
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,21 +27,16 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Permissions_ORM extends \Ximdex\Data\GenericData
+class DependenceTypesOrm extends  GenericData
 {
-    var $_idField = 'IdPermission';
-    var $_table = 'Permissions';
+    var $_idField = 'IdDepType';
+    var $_table = 'DependenceTypes';
     var $_metaData = array(
-        'IdPermission' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
+        'IdDepType' => array('type' => "int(6)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Type' => array('type' => "varchar(32)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
-        'IdName' => array('Name')
-    );
-    var $_indexes = array('IdPermission');
-    var $IdPermission;
-    var $Name = 0;
-    var $Description;
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdDepType');
+    var $IdDepType;
+    var $Type = 0;
 }
-

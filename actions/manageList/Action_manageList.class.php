@@ -122,4 +122,3 @@ class Action_manageList extends ActionAbstract {
 		return $factory->instantiate($type, $arg);
 	}
 }
-?>

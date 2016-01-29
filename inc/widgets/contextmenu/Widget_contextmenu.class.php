@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\XimLocale;
 
 require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 

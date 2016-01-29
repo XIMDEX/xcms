@@ -26,11 +26,11 @@
  */
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\SectionType;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Services\NodeType as NodetypeService;
 
 ModulesManager::file('/inc/model/NodeDefaultContents.class.php');
-ModulesManager::file('/inc/model/SectionType.class.php');
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
 ModulesManager::file('/inc/io/XlyreBaseIO.class.php', 'xlyre');
 

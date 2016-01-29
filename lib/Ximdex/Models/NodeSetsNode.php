@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use NodeSets;
+use Ximdex\Models\NodeSets;
 use Ximdex\Models\ORM\RelNodeSetsNodeOrm;
 
 

@@ -20,22 +20,16 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Models;
 
+use Ximdex\Models\ORM\DependenceTypesOrm;
 
- 
+class DependenceTypes extends DependenceTypesOrm
+{
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/SectionTypes_ORM.class.php';
-/// Clase User
-
-class SectionType extends SectionTypes_ORM {
-	
 }

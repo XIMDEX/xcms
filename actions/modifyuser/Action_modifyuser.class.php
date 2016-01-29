@@ -28,10 +28,10 @@ use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
+use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/model/orm/RelUsersGroups_ORM.class.php');
-ModulesManager::file('/inc/model/locale.php');
 
 class Action_modifyuser extends ActionAbstract {
     // Main method: it shows init form

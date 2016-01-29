@@ -1,4 +1,7 @@
 <?php
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,23 +28,22 @@
  */
 
 
-
-class Locales_ORM extends \Ximdex\Data\GenericData
+class DependenciesOrm extends  GenericData
 {
-    var $_idField = 'ID';
-    var $_table = 'Locales';
-    var $_metaData = array(
-        'ID' => array('type' => "smallint(5)", 'not_null' => 'true', 'primary_key' => true),
-        'Code' => array('type' => "varchar(6)", 'not_null' => 'true',),
-        'Name' => array('type' => "varchar(20)", 'not_null' => 'true'),
-        'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array(
-        'Code' => array('Code'), 'ID' => array('ID')
-    );
-    var $_indexes = array('ID');
-    var $ID;
-    var $Code;
-    var $Name;
-    var $Enabled = 1;
+	var $_idField = 'IdDep';
+	var $_table = 'Dependencies';
+	var $_metaData = array(
+		'IdDep' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+		'IdNodeMaster' => array('type' => "int(12)", 'not_null' => 'true'),
+		'IdNodeDependent' => array('type' => "int(12)", 'not_null' => 'true'),
+		'DepType' => array('type' => "varchar(10)", 'not_null' => 'true'),
+		'version' => array('type' => "int(10)", 'not_null' => 'true')
+	);
+	var $_uniqueConstraints = array();
+	var $_indexes = array('IdDep');
+	var $IdDep;
+	var $IdNodeMaster = 0;
+	var $IdNodeDependent = 0;
+	var $DepType = 0;
+	var $version = 0;
 }

@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\NodeSets;
 use Ximdex\Models\ORM\RelNodeSetsUsersOrm;
 use Ximdex\Models\User;
 

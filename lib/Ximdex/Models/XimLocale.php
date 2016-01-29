@@ -21,19 +21,21 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Locales_ORM.class.php';
+namespace Ximdex\Models;
+use DB;
+use Ximdex\Models\ORM\LocalesOrm;
 
-class XimLocale extends Locales_ORM
+
+class XimLocale extends LocalesOrm
 {
 	var $dbObj;
-	var $numErr;				// Error code
-    var $msgErr;				// Error message
-	var $errorList= array(	// Class error list
+	var $numErr;                // Error code
+	var $msgErr;                // Error message
+	var $errorList = array(    // Class error list
 		1 => 'Locale does not exist',
 		2 => 'A locale with this name already exists',
 		3 => 'Arguments missing',
@@ -42,21 +44,25 @@ class XimLocale extends Locales_ORM
 
 
 	//Constructor
-	function XimLocale($params = null) {
-		$this->errorList[1]=_('Locale does not exist');
-		$this->errorList[2]=_('A locale with this name already exists');
-		$this->errorList[3]=_('Arguments missing');
-		$this->errorList[3]=_('Database connection error');
+	function XimLocale($params = null)
+	{
+		$this->errorList[1] = _('Locale does not exist');
+		$this->errorList[2] = _('A locale with this name already exists');
+		$this->errorList[3] = _('Arguments missing');
+		$this->errorList[3] = _('Database connection error');
 
 		parent::__construct($params);
 	}
+
 	// Devuelve el ID (atributo de la clase)
-	function GetID() {
+	function GetID()
+	{
 		return $this->get('ID');
 	}
 
 	// Permite cambiar el ID sin tener que destruir y volver a crear un objeto
-	function SetID($id) {
+	function SetID($id)
+	{
 		parent::__construct($id);
 		return $this->get('ID');
 	}
@@ -67,20 +73,19 @@ class XimLocale extends Locales_ORM
 		$validDirs = array('ASC', 'DESC');
 		$this->ClearError();
 		$dbObj = new DB();
-    	$sql = "SELECT ID FROM Locales";
-    	if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
-    		$sql .= sprintf(" ORDER BY %s %s", $order['FIELD'],
-    			isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
-    	}
+		$sql = "SELECT ID FROM Locales";
+		if (!empty($order) && is_array($order) && isset($order['FIELD'])) {
+			$sql .= sprintf(" ORDER BY %s %s", $order['FIELD'],
+				isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
+		}
 		$dbObj->Query($sql);
-		if(!$dbObj->numErr) {
-			while(!$dbObj->EOF) {
+		if (!$dbObj->numErr) {
+			while (!$dbObj->EOF) {
 				$salida[] = $dbObj->GetValue("ID");
 				$dbObj->Next();
 			}
-    		return !empty($salida) ? $salida : NULL;
-		}
-		else
+			return !empty($salida) ? $salida : NULL;
+		} else
 			$this->SetError(4);
 	}
 
@@ -98,59 +103,62 @@ class XimLocale extends Locales_ORM
 	}
 
 
-	function GetAllLocales($order = NULL) {
+	function GetAllLocales($order = NULL)
+	{
 		return $this->GetList($order);
 	}
 
-	function GetEnabledLocales() {
+	function GetEnabledLocales()
+	{
 
-			$_locales = $this->find('ID', 'Enabled = 1', null);
-			if(!empty($_locales) ) {
-				$locales = array();
-				foreach ($_locales as $locale) {
-					$class = new XimLocale($locale['ID']);
-					list($lang, $country) = explode("_",  $class->GetCode() );
-					$locales[] = array( "ID" =>  $locale['ID'],
-											'Code' => $class->GetCode(),
-											'Lang' => $lang,
-											'Country' => $country,
-											"Name" => $class->GetName()
-					);
-				}
-
-				return $locales;
-			}else {
-				return null;
+		$_locales = $this->find('ID', 'Enabled = 1', null);
+		if (!empty($_locales)) {
+			$locales = array();
+			foreach ($_locales as $locale) {
+				$class = new XimLocale($locale['ID']);
+				list($lang, $country) = explode("_", $class->GetCode());
+				$locales[] = array("ID" => $locale['ID'],
+					'Code' => $class->GetCode(),
+					'Lang' => $lang,
+					'Country' => $country,
+					"Name" => $class->GetName()
+				);
 			}
+
+			return $locales;
+		} else {
+			return null;
+		}
 	}
 
 
-	function GetLocaleByCode($_code = NULL) {
-			if(empty($_code) ) {
-				$_code = DEFAULT_LOCALE;
+	function GetLocaleByCode($_code = NULL)
+	{
+		if (empty($_code)) {
+			$_code = DEFAULT_LOCALE;
+		}
+
+		$_locales = $this->find('ID', "Code = '{$_code}'", null);
+
+		if (!empty($_locales)) {
+			$locales = array();
+			foreach ($_locales as $locale) {
+				$class = new XimLocale($locale['ID']);
+				list($lang, $country) = explode("_", $class->GetCode());
+				$locales[] = array("ID" => $locale['ID'],
+					'Code' => $class->GetCode(),
+					'Lang' => $lang,
+					'Country' => $country,
+					"Name" => $class->GetName()
+				);
+
 			}
 
-			$_locales = $this->find('ID', "Code = '{$_code}'", null);
 
-			if(!empty($_locales) ) {
-				$locales = array();
-				foreach ($_locales as $locale) {
-					$class = new XimLocale($locale['ID']);
-					list($lang, $country) = explode("_",  $class->GetCode() );
-					$locales[] = array( "ID" =>  $locale['ID'],
-											'Code' => $class->GetCode(),
-											'Lang' => $lang,
-											'Country' => $country,
-											"Name" => $class->GetName()
-					);
-
-				}
-
-
-				return $locales[0];
-			}else {
-				return null;
-			}
+			return $locales[0];
+		} else {
+			return null;
+		}
 	}
 
 	// Nos permite cambiar el nombre a una locale
@@ -182,7 +190,7 @@ class XimLocale extends Locales_ORM
 	}
 
 
-    // Nos busca locale por su nombre
+	// Nos busca locale por su nombre
 	function SetByName($name)
 	{
 		$this->ClearError();
@@ -196,8 +204,8 @@ class XimLocale extends Locales_ORM
 	}
 
 
-    // Create a new language and update its ID in the object
-	function CreateLocale($code, $name, $enabled=0, $ID=null)
+	// Create a new language and update its ID in the object
+	function CreateLocale($code, $name, $enabled = 0, $ID = null)
 	{
 
 		if ($ID > 0) {
@@ -211,44 +219,44 @@ class XimLocale extends Locales_ORM
 		$this->add();
 
 		if ($this->get('ID') <= 0) {
-			$this->SetError(4) ;
+			$this->SetError(4);
 		}
 
 		return $ID;
 	}
 
-    // Delete the current language
+	// Delete the current language
 	function DeleteLanguage()
-		{
+	{
 		$this->ClearError();
 		$dbObj = new DB();
-		if(!is_null($this->get('ID')))
-			{
-				// Lo borramos de la base de datos
-				$dbObj->Execute(sprintf("DELETE FROM Locales WHERE ID= %d", $this->get('ID')));
-				if($dbObj->numErr)
-					$this->SetError(4);
-			}
-		else
+		if (!is_null($this->get('ID'))) {
+			// Lo borramos de la base de datos
+			$dbObj->Execute(sprintf("DELETE FROM Locales WHERE ID= %d", $this->get('ID')));
+			if ($dbObj->numErr)
+				$this->SetError(4);
+		} else
 			$this->SetError(1);
-		}
+	}
 
-	function LocaleEnabled($ID) {
+	function LocaleEnabled($ID)
+	{
 
 		$dbObj = new DB();
 		$query = sprintf("SELECT Enabled FROM Locales WHERE ID = %d", $ID);
 		$dbObj->Query($query);
 		if ($dbObj->numErr != 0) {
-	 	$this->SetError(1);
-	 	return null;
+			$this->SetError(1);
+			return null;
 		}
-		return 	$dbObj->row["Enabled"];
+		return $dbObj->row["Enabled"];
 
 
 	}
 
 
-	function SetEnabled($enabled) {
+	function SetEnabled($enabled)
+	{
 
 		if (!($this->get('ID') > 0)) {
 			$this->SetError(2, 'No Existe ');
@@ -265,22 +273,23 @@ class XimLocale extends Locales_ORM
 
 	/// Limpia los errores de la clase
 	function ClearError()
-		{
+	{
 		$this->numErr = null;
 		$this->msgErr = null;
-		}
+	}
 
 	/// Carga un error en la clase
 	function SetError($code)
-		{
+	{
 		$this->numErr = $code;
 		$this->msgErr = $this->errorList[$code];
-		}
+	}
 
-    // devuelve true si en la clase se ha producido un error
-    function HasError()
-    	{
-        return ($this->numErr != null);
-        }
+	// devuelve true si en la clase se ha producido un error
+	function HasError()
+	{
+		return ($this->numErr != null);
+	}
 }
+
 ?>

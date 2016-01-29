@@ -1,4 +1,7 @@
 <?php
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,14 +23,27 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-use Ximdex\Models\ORM\ListOrm;
-
-
-class List_ extends ListOrm {
-	
+class LocalesOrm extends  GenericData
+{
+    var $_idField = 'ID';
+    var $_table = 'Locales';
+    var $_metaData = array(
+        'ID' => array('type' => "smallint(5)", 'not_null' => 'true', 'primary_key' => true),
+        'Code' => array('type' => "varchar(6)", 'not_null' => 'true',),
+        'Name' => array('type' => "varchar(20)", 'not_null' => 'true'),
+        'Enabled' => array('type' => "tinyint(1)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array(
+        'Code' => array('Code'), 'ID' => array('ID')
+    );
+    var $_indexes = array('ID');
+    var $ID;
+    var $Code;
+    var $Name;
+    var $Enabled = 1;
 }

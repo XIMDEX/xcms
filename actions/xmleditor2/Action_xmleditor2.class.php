@@ -28,6 +28,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
+use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
@@ -35,7 +36,6 @@ use Ximdex\Utils\Serializer;
 ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
 ModulesManager::file('/actions/createlink/Action_createlink.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/model/NodeEdition.class.php');
 
 
