@@ -1,7 +1,9 @@
 <?php
 $I = new AcceptanceTester($scenario);
 $I->wantTo('ensure that web installer works');
-$I->deleteFile('conf/_STATUSFILE');
+if(file_exists('conf/_STATUSFILE')){
+    $I->deleteFile('conf/_STATUSFILE');
+}
 $I->amOnPage('/');
 $I->see('Ximdex CMS\'s web installer');
 $I->see('Check configuration', 'button');
@@ -45,7 +47,7 @@ $I->see('Xpublish');
 $I->see('Xowl');
 $I->see('Install modules','button');
 $I->click('Install modules');
-$I->wait(20);
+$I->wait(30);
 $I->see('Xowl configuration (optional)');
 $I->see('Continue','button');
 $I->click('Continue');
