@@ -51,8 +51,6 @@ define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
-require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
-
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');

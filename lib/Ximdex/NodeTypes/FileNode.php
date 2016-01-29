@@ -55,7 +55,6 @@ include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.php");
 include_once(XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/RelTemplateContainer.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 
 ModulesManager::file('/inc/CacheWriter.class.php', 'ximRAM');

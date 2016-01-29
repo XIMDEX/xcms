@@ -53,11 +53,11 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Session;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
+use Ximdex\NodeTypes\SectionNode;
 
 require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/group.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
-include_once XIMDEX_ROOT_PATH . '/inc/nodetypes/sectionnode.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
