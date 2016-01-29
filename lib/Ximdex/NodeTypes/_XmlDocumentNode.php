@@ -1,4 +1,6 @@
 <?php
+namespace Ximdex\NodeTypes;
+
 use Ximdex\NodeTypes\AbstractStructuredDocument;
 
 /**
@@ -22,10 +24,10 @@ use Ximdex\NodeTypes\AbstractStructuredDocument;
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-class XmlDocumentNode extends AbstractStructuredDocument{
+class XmlDocumentNode extends AbstractStructuredDocument
+{
 }		
 
