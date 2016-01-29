@@ -31,6 +31,7 @@ class Factory
         'projects'=> array('ClassName' => '\\Ximdex\\NodeTypes\\Projects') ,
         'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode') ,
         'sectionnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\SectionNode') ,
+        'servernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ServerNode') ,
 
     );
 
