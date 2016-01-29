@@ -25,16 +25,16 @@
  * @version $Revision$
  */
 
-use Ximdex\Models\Node;
+namespace Ximdex\Models;
 
-if (!defined('XIMDEX_ROOT_PATH')) define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
+use Ximdex\Models\Iterators\IteratorLinkDescriptions;
+use Ximdex\Models\ORM\LinksOrm;
+use Ximdex\Logger as XMD_Log;
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Links_ORM.class.php';
-require_once(XIMDEX_ROOT_PATH . '/inc/model/RelLinkDescriptions.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/iterators/I_LinkDescriptions.class.php');
-
-
-class Link extends Links_ORM
+/**
+ * @method Array search($conditions)
+ */
+class Link extends LinksOrm
 {
 
     var $actsAs = array('\Ximdex\Behaviours\Search' => array('field' => 'IdLink'));
@@ -52,11 +52,12 @@ class Link extends Links_ORM
         if (!empty($name)) {
             $conditions['conditions']['name'] = $name;
         }
+
         $result = $this->search($conditions);
-        if (count($result > 0)) {
+        if (count($result) > 0) {
             return ($result[0]);
         }
-        return NULL;
+        return null;
     }
 
     public function & getName()
@@ -73,7 +74,7 @@ class Link extends Links_ORM
 
     public function & getDescriptions()
     {
-        $it = new I_LinkDescriptions('IdLink = %s', array($this->get('IdLink')));
+        $it = new IteratorLinkDescriptions('IdLink = %s', array($this->get('IdLink')));
         return $it;
     }
 
@@ -95,4 +96,3 @@ class Link extends Links_ORM
     }
 }
 
-?>

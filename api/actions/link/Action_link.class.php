@@ -2,6 +2,7 @@
 
 
 use Ximdex\API\AbstractAPIAction;
+use Ximdex\Models\Link;
 
 class Action_link extends AbstractAPIAction
 {

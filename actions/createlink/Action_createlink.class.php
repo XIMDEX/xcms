@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Models\Link;
 use Ximdex\MVC\ActionAbstract;
 
 /**

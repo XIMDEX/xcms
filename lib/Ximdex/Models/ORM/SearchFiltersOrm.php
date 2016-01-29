@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,24 +25,22 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Links_ORM extends \Ximdex\Data\GenericData
+class SearchFiltersOrm extends \Ximdex\Data\GenericData
 {
-    var $_idField = 'IdLink';
-    var $_table = 'Links';
+    var $_idField = 'Id';
+    var $_table = 'SearchFilters';
     var $_metaData = array(
-        'IdLink' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'Url' => array('type' => "blob", 'not_null' => 'true'),
-        'Error' => array('type' => "int(12)", 'not_null' => 'false'),
-        'ErrorString' => array('type' => "varchar(255)", 'not_null' => 'false'),
-        'CheckTime' => array('type' => "int(12)", 'not_null' => 'false')
+        'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Name' => array('type' => "varchar(100)", 'not_null' => 'false'),
+        'Handler' => array('type' => "varchar(5)", 'not_null' => 'true'),
+        'Filter' => array('type' => "text", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array(
-        'IdLink' => array('IdLink')
+        'U_FILTER' => array('Name')
     );
-    var $_indexes = array('IdLink');
-    var $IdLink;
-    var $Url;
-    var $Error;
-    var $ErrorString;
-    var $CheckTime;
+    var $_indexes = array('Id');
+    var $Id;
+    var $Name;
+    var $Handler;
+    var $Filter;
 }

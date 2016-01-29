@@ -1,4 +1,8 @@
 <?php
+
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,22 +24,21 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-
-class I_SearchFilters extends  \Ximdex\Utils\Iterator {
-
-	/**
-	 * @param string $condition
-	 * @param array $args
-	 * @return I_NodeSets
-	 */
-	public function __construct($condition, $args, $escape=ESCAPE) {
-		$this->_objectName = 'SearchFilters';
-		parent::__construct($condition, $args, $escape);
-	}
+class RelLinkDescriptionsOrm extends  GenericData
+{
+    var $_idField = 'IdRel';
+    var $_table = 'RelLinkDescriptions';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdLink' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdLink = 0;
+    var $Description = 0;
 }

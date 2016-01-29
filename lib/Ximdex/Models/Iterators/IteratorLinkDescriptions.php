@@ -1,4 +1,6 @@
 <?php
+namespace Ximdex\Models\Iterators;
+use Ximdex\Utils\Iterator;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -24,17 +26,14 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class NodeSets_ORM extends \Ximdex\Data\GenericData
-{
-    var $_idField = 'Id';
-    var $_table = 'NodeSets';
-    var $_metaData = array(
-        'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'Name' => array('type' => "varchar(100)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('Id');
-    var $Id;
-    var $Name;
-}
 
+
+class IteratorLinkDescriptions extends  Iterator
+{
+
+	public function __construct($condition, $args, $escape = ESCAPE)
+	{
+		$this->_objectName = '\Ximdex\Models\RelLinkDescriptions';
+		parent::__construct($condition, $args, $escape);
+	}
+}

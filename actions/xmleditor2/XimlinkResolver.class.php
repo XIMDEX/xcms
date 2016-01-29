@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/Links.php');

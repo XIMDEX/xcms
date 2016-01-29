@@ -25,13 +25,13 @@
  * @version $Revision$
  */
 
+use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/Links.php');
 
 class Action_linkreport extends ActionAbstract
 {

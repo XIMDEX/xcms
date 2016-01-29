@@ -1,5 +1,8 @@
 <?php
 
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,22 +27,18 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelNodeSetsUsers_ORM extends \Ximdex\Data\GenericData
+class RelNodeSetsNodeOrm extends  GenericData
 {
     var $_idField = 'Id';
-    var $_table = 'RelNodeSetsUsers';
+    var $_table = 'RelNodeSetsNode';
     var $_metaData = array(
         'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
         'IdSet' => array('type' => "int(10)", 'not_null' => 'true'),
-        'IdUser' => array('type' => "int(12)", 'not_null' => 'true'),
-        'Owner' => array('type' => "tinyint(1)", 'not_null' => 'true')
+        'IdNode' => array('type' => "int(12)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array(
-        'U_SETUSERS' => array('IdSet', 'IdUser')
-    );
+    var $_uniqueConstraints = array();
     var $_indexes = array('Id');
     var $Id;
     var $IdSet;
-    var $IdUser;
-    var $Owner = 0;
+    var $IdNode;
 }

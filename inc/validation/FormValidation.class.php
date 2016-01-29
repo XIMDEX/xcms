@@ -25,6 +25,7 @@
  *  @version $Revision: 8735 $
  */
 
+use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 
 ModulesManager::file('/inc/model/Links.php');

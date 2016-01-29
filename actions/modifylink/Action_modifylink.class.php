@@ -24,10 +24,10 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Link;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
-
-ModulesManager::file('/inc/model/Links.php');
+use Ximdex\Logger as XMD_Log ;
 
 class Action_modifylink extends ActionAbstract {
    // Main method: shows initial form
@@ -52,6 +52,7 @@ class Action_modifylink extends ActionAbstract {
 					'go_method' => 'modifylink');
 		
 		$this->render($values, null, 'default-3.0.tpl');
+		return true ;
     }
 
 	function modifylink() {

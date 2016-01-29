@@ -1,4 +1,7 @@
 <?php
+namespace Ximdex\Models\Iterators;
+use Ximdex\Utils\Iterator;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -20,16 +23,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+class IteratorSearchFilters extends Iterator
+{
 
-class I_LinkDescriptions extends \Ximdex\Utils\Iterator {
-
-	public function __construct($condition, $args, $escape=ESCAPE) {
-		$this->_objectName = 'RelLinkDescriptions';
+	public function __construct($condition, $args, $escape = ESCAPE)
+	{
+		$this->_objectName = '\Ximdex\Models\SearchFilters';
 		parent::__construct($condition, $args, $escape);
 	}
 }

@@ -27,18 +27,21 @@
 
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
+use Ximdex\Models\RelNodeSetsNode;
+use Ximdex\Models\SearchFilters;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
-use DB_legacy as DB ;
+use DB_legacy as DB;
+use Ximdex\Logger as XMD_Log ;
+
 ModulesManager::file('/inc/model/locale.php');
 ModulesManager::file('/inc/search/QueryProcessor.class.php');
 ModulesManager::file('/inc/xvfs/XVFS.class.php');
- ModulesManager::file('/inc/model/NodeSets.class.php');
-ModulesManager::file('/inc/model/SearchFilters.class.php');
+ModulesManager::file('/inc/model/NodeSets.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 ModulesManager::file('/inc/validation/FormValidation.class.php');
 
@@ -72,17 +75,17 @@ class Action_browser3 extends ActionAbstract
         /**/
 
         $locale = new XimLocale();
-        $user_locale = $locale->GetLocaleByCode( Session::get('locale'));
+        $user_locale = $locale->GetLocaleByCode(Session::get('locale'));
         $locales = $locale->GetEnabledLocales();
 
         $values = array(
             'params' => $params,
             'userID' => $userID,
-            'time_id' => time() . "_" .  Session::get('userID'), /* For uid for scripts */
+            'time_id' => time() . "_" . Session::get('userID'), /* For uid for scripts */
             'loginName' => $loginName,
             'user_locale' => $user_locale,
             'locales' => $locales,
-            'xinversion' =>  App::getValue("VersionName")
+            'xinversion' => App::getValue("VersionName")
         );
 
         $this->addCss('/xmd/style/fonts.css');
@@ -246,7 +249,7 @@ class Action_browser3 extends ActionAbstract
             )
         );
 
-         $url = REMOTE_WELCOME . "?lang=" . strtolower(\Ximdex\Utils\Session::get("locale"));
+        $url = REMOTE_WELCOME . "?lang=" . strtolower(\Ximdex\Utils\Session::get("locale"));
         //get remote content
         $splash_content = @file_get_contents($url, 0, $ctx);
         if (!empty($splash_content)) {
@@ -571,6 +574,10 @@ class Action_browser3 extends ActionAbstract
         $nodes = array();
         $it = $set->getNodes();
         while ($node = $it->next()) {
+            /**
+             * @var $node RelNodeSetsNode
+
+             */
             $node = $node->getNode();
             $nodes[] = array(
                 'nodeid' => $node->get('IdNode'),
@@ -1177,7 +1184,7 @@ class Action_browser3 extends ActionAbstract
     {
         $numRep = $this->request->getParam('numRep');
 
-         App::setValue('ximTourRep', $numRep, true);
+        App::setValue('ximTourRep', $numRep, true);
 
 
         $result["success"] = true;

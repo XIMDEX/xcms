@@ -1,5 +1,8 @@
 <?php
 
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,18 +27,22 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelLinkDescriptions_ORM extends \Ximdex\Data\GenericData
+class RelNodeSetsUsersOrm extends  GenericData
 {
-    var $_idField = 'IdRel';
-    var $_table = 'RelLinkDescriptions';
+    var $_idField = 'Id';
+    var $_table = 'RelNodeSetsUsers';
     var $_metaData = array(
-        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdLink' => array('type' => "int(12)", 'not_null' => 'true'),
-        'Description' => array('type' => "varchar(255)", 'not_null' => 'false')
+        'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdSet' => array('type' => "int(10)", 'not_null' => 'true'),
+        'IdUser' => array('type' => "int(12)", 'not_null' => 'true'),
+        'Owner' => array('type' => "tinyint(1)", 'not_null' => 'true')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('IdRel');
-    var $IdRel;
-    var $IdLink = 0;
-    var $Description = 0;
+    var $_uniqueConstraints = array(
+        'U_SETUSERS' => array('IdSet', 'IdUser')
+    );
+    var $_indexes = array('Id');
+    var $Id;
+    var $IdSet;
+    var $IdUser;
+    var $Owner = 0;
 }

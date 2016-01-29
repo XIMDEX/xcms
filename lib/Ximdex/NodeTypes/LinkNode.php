@@ -31,14 +31,14 @@ use commit;
 use depth;
 use description;
 use files;
-use I_LinkDescriptions;
-use Link;
+use Ximdex\Models\Iterators\IteratorLinkDescriptions;
+use Ximdex\Models\Link;
 use name;
 use Ximdex\Models\NodeDependencies;
 use nodeTypeID;
 use parentID;
 use recurrence;
-use RelLinkDescriptions;
+use Ximdex\Models\RelLinkDescriptions;
 use stateID;
 use unknown;
 use url;
@@ -132,7 +132,7 @@ class LinkNode extends Root
 			}
 		} else {
 
-			$it = new I_LinkDescriptions('IdLink = %s', array($this->link->get('IdLink')));
+			$it = new IteratorLinkDescriptions('IdLink = %s', array($this->link->get('IdLink')));
 			while ($rel = $it->next()) {
 				if (!$rel->delete()) {
 					XMD_Log::warning(sprintf('No se ha podido eliminar la descripcion con id %s para el enlace %s.', $rel->getIdRel(), $this->link->get('IdLink')));

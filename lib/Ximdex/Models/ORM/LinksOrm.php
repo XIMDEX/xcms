@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,18 +25,24 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelNodeSetsNode_ORM extends \Ximdex\Data\GenericData
+class LinksOrm extends \Ximdex\Data\GenericData
 {
-    var $_idField = 'Id';
-    var $_table = 'RelNodeSetsNode';
+    var $_idField = 'IdLink';
+    var $_table = 'Links';
     var $_metaData = array(
-        'Id' => array('type' => "int(10)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdSet' => array('type' => "int(10)", 'not_null' => 'true'),
-        'IdNode' => array('type' => "int(12)", 'not_null' => 'true')
+        'IdLink' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'Url' => array('type' => "blob", 'not_null' => 'true'),
+        'Error' => array('type' => "int(12)", 'not_null' => 'false'),
+        'ErrorString' => array('type' => "varchar(255)", 'not_null' => 'false'),
+        'CheckTime' => array('type' => "int(12)", 'not_null' => 'false')
     );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('Id');
-    var $Id;
-    var $IdSet;
-    var $IdNode;
+    var $_uniqueConstraints = array(
+        'IdLink' => array('IdLink')
+    );
+    var $_indexes = array('IdLink');
+    var $IdLink;
+    var $Url;
+    var $Error;
+    var $ErrorString;
+    var $CheckTime;
 }

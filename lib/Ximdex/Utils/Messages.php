@@ -29,6 +29,7 @@ namespace Ximdex\Utils ;
 
 
 use Ximdex\Runtime\App;
+use Ximdex\XML\Base;
 
 define ('MSG_TYPE_ERROR', 0);
 define ('MSG_TYPE_WARNING', 1);
@@ -64,7 +65,7 @@ class Messages {
     function add($message, $type)
     {
         if (in_array($type, $this->_validTypes) && !$this->_searchMessageText($message, $type)) {
-            $message = \Ximdex\XML\Base::recodeSrc($message, $this->displayEncoding);
+            $message =  Base::recodeSrc($message, $this->displayEncoding);
             $this->messages[] = array('message' => $message, 'type' => $type);
         }
     }

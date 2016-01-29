@@ -26,12 +26,10 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
+use Ximdex\Models\Link;
 
 include_once(XIMDEX_ROOT_PATH . '/bootstrap/start.php');
 include_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/model/Links.php");
 
 function main ($argc, $argv){
     // Command line mode call
