@@ -25,14 +25,14 @@
  */
 
 
+use Ximdex\Runtime\Cli\CliReader;
 
-	if (!defined('XIMDEX_ROOT_PATH')) {
+if (!defined('XIMDEX_ROOT_PATH')) {
 		define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../../');
 	}
 	//
 	ModulesManager::file('/inc/FileUpdater.class.php', 'ximIO');
 	ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
-	ModulesManager::file('/inc/cli/CliReader.class.php');
 
 	$parameterCollector = new FileUpdaterCli($argc, $argv);
 	$revision = $parameterCollector->getParameter('--file');

@@ -32,7 +32,6 @@ use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
 
 
- ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file(MODULE_XSPARROW_PATH . '/BuildParser.class.php');
 ModulesManager::file('/actions/addximlet/Action_addximlet.class.php');

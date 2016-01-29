@@ -25,15 +25,12 @@
  */
 
 
+use Ximdex\Runtime\Cli\CliReader;
 use Ximdex\Utils\FsUtils;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../../'));
-}
 //
 ModulesManager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
-ModulesManager::file('/inc/cli/CliReader.class.php');
-ModulesManager::file('/inc/db/db.php');
+ ModulesManager::file('/inc/db/db.php');
 
 
 $parameterCollector = new RemoveCli($argc, $argv);

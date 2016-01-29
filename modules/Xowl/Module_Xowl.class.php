@@ -26,11 +26,11 @@
 
 use Ximdex\Modules\Module;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Cli\CliReader;
 
 
 // Point to ximdex root and include necessary class.
 
-ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('modules/Xowl/config/xowl.conf');
 ModulesManager::file('/inc/rest/REST_Provider.class.php');
 ModulesManager::file('/services/Xowl/searchers/AnnotationSearcherStrategy.class.php');

@@ -25,7 +25,7 @@
  */
 use Ximdex\Runtime\Cli\CliParser;
 use Ximdex\Utils\FsUtils;
-
+use Ximdex\Logger as XMD_Log ;
 
 /**
  *    scafold.php
@@ -33,11 +33,7 @@ use Ximdex\Utils\FsUtils;
  *
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-require_once(XIMDEX_ROOT_PATH . '/inc/cli/CliReader.class.php');
 
 define('VIEWS_FOLDER', XIMDEX_ROOT_PATH . '/xmd/template/Smarty/views/');
 

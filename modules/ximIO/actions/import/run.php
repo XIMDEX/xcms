@@ -20,20 +20,16 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Cli\CliReader;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../../../');
-}
-//
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
 ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
-ModulesManager::file('/inc/cli/CliReader.class.php');
 ModulesManager::file('/inc/auth/Authenticator.class.php');
 
 $parameterCollector = new ImportCli($argc, $argv);
@@ -53,41 +49,41 @@ $password = $parameterCollector->getParameter('--password');
 
 $node = new Node($rootNode);
 if (empty($password)) {
-	$attempts = 0;
-	do {
-		$password = CliReader::getString(_('Password:'));
-		$auth = new Authenticator();
-		if ($auth->login($user, $password)) {
-			break;
-		}
-		++$attempts;
-	} while ($attempts < 3);
+    $attempts = 0;
+    do {
+        $password = CliReader::getString(_('Password:'));
+        $auth = new Authenticator();
+        if ($auth->login($user, $password)) {
+            break;
+        }
+        ++$attempts;
+    } while ($attempts < 3);
 } else {
-	$auth = new Authenticator();
-	if (!$auth->login($user, $password)) {
-		echo _("Incorrect login")."\n";
-		die(); 
-	}
+    $auth = new Authenticator();
+    if (!$auth->login($user, $password)) {
+        echo _("Incorrect login") . "\n";
+        die();
+    }
 }
 
-echo _("Information about root node:")."\n\n";
+echo _("Information about root node:") . "\n\n";
 echo $node->toStr(DETAIL_LEVEL_MEDIUM);
 
 if (!$interfaceWeb && !$interfaceWebRun) {
-	if (!CliReader::alert(array('y', 'Y', 's', 'S'), _("Do you want to continue with process? (Y/n)")."\n", array('n', 'N'), _("Import process has been avoided due to user request")."\n")) {
-		die();
-	}
+    if (!CliReader::alert(array('y', 'Y', 's', 'S'), _("Do you want to continue with process? (Y/n)") . "\n", array('n', 'N'), _("Import process has been avoided due to user request") . "\n")) {
+        die();
+    }
 } else {
-	if ($interfaceWeb) {
-		die();
-	}
+    if ($interfaceWeb) {
+        die();
+    }
 }
 
 $time = time();
 
 $importer = new ImportXml($rootNode, $file, $nodeAssociations, Constants::RUN_IMPORT_MODE, $recurrence, $beginAt, $processFirstNode);
 if ($copyMode) {
-	$importer->mode = COPY_MODE;
+    $importer->mode = COPY_MODE;
 }
 $importer->import();
 
@@ -99,37 +95,36 @@ $incorrectNotAllowed = $importer->processedNodes['failed'][Constants::ERROR_NOT_
 
 $totalIncorrectNodes = 0;
 reset($importer->processedNodes['failed']);
-while(list(, $nodes) = each($importer->processedNodes['failed'])) {
-	$totalIncorrectNodes += $nodes;
+while (list(, $nodes) = each($importer->processedNodes['failed'])) {
+    $totalIncorrectNodes += $nodes;
 }
 
 $timeConsumed = time() - $time;
 
 $sugestedPackages = implode(', ', $importer->sugestedPackages);
 if (!empty($sugestedPackages)) {
-	$sugestedPackages = sprintf(_("It is suggested to launch below the next packages: %s")."\n", $sugestedPackages);
+    $sugestedPackages = sprintf(_("It is suggested to launch below the next packages: %s") . "\n", $sugestedPackages);
 } else {
-	$sugestedPackages = '';
+    $sugestedPackages = '';
 }
 
 if (count($importer->messages) > 0) {
-	reset($importer->messages);
-	while(list(, $message) = each($importer->messages)) {
-		echo $message . "\n";
-	}
+    reset($importer->messages);
+    while (list(, $message) = each($importer->messages)) {
+        echo $message . "\n";
+    }
 }
 
-echo sprintf(_("These nodes %s have been successfully imported"), $correct)."\n";
-echo sprintf(_("These nodes %s have not been imported"), $totalIncorrectNodes)."\n";
-echo sprinft(_("%s node/s because of lack of permits"), $incorrectPermissions)."\n";
-echo sprinft(_("%s node/s because of lack of info in the xml"). $incorrectIncorrectData)."\n";
-echo sprinft(_("%s node/s because its parent has not been inserted"),$incorrectNotReached)."\n";
-echo sprinft(_("%s node/s because have not been allowed (it is not scheduled in NodeAllowedContents)"), $incorrectNotAllowed)."\n";
-		
-echo sprinft(_("The elapsed time by procedure has been %s seconds"), $timeConsumed)."\n";
-	
-echo $sugestedPackages."\n";
+echo sprintf(_("These nodes %s have been successfully imported"), $correct) . "\n";
+echo sprintf(_("These nodes %s have not been imported"), $totalIncorrectNodes) . "\n";
+echo sprinft(_("%s node/s because of lack of permits"), $incorrectPermissions) . "\n";
+echo sprinft(_("%s node/s because of lack of info in the xml") . $incorrectIncorrectData) . "\n";
+echo sprinft(_("%s node/s because its parent has not been inserted"), $incorrectNotReached) . "\n";
+echo sprinft(_("%s node/s because have not been allowed (it is not scheduled in NodeAllowedContents)"), $incorrectNotAllowed) . "\n";
 
+echo sprinft(_("The elapsed time by procedure has been %s seconds"), $timeConsumed) . "\n";
+
+echo $sugestedPackages . "\n";
 
 
 ?>

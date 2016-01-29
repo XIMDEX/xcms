@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 use Ximdex\Runtime\Cli\CliParser;
+use Ximdex\Runtime\Cli\CliReader;
 
 
 /**
@@ -31,12 +32,7 @@ use Ximdex\Runtime\Cli\CliParser;
  *	Su responsabilidad es generar las vistas create, list y update para los nodos
  *
  */
- 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__). '/../../'));
-}
- 
- require_once(XIMDEX_ROOT_PATH . '/inc/cli/CliReader.class.php');
+
 
 define ('VIEWS_FOLDER', XIMDEX_ROOT_PATH . '/inc/entities/');
 
