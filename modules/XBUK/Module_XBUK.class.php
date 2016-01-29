@@ -17,6 +17,7 @@ class Module_XBUK extends Module
             error_log("Hello from XBUK!");
         });
     }
+
     //Class constructor
     public function __construct()
     {
@@ -24,14 +25,23 @@ class Module_XBUK extends Module
         parent::__construct("XBUK", dirname(__FILE__));
     }
 
+    /**
+     * Load SQL constructor
+     *
+     * @return bool
+     */
     function install()
     {
-        parent::install();
-        return true;
+        $this->loadConstructorSQL("XBUK.constructor.sql");
+        return parent::install();
     }
 
+    /**
+     *
+     */
     function uninstall()
     {
+        $this->loadDestructorSQL("XBUK.destructor.sql");
         parent::uninstall();
     }
 }
