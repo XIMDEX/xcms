@@ -32,7 +32,7 @@ use EmailNotificationStrategy;
 use FrontController;
 use ModulesManager;
 use Ximdex\Parsers\ParsingJsGetText;
-use Serializer;
+use Ximdex\Utils\Serializer;
 use User;
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
@@ -45,8 +45,6 @@ use XimdexNotificationStrategy;
 use Ximdex\Logger as XMD_Log;
 
 Use Ximdex\Utils\Logs\Action_log;
-
-require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
 
 
 /**

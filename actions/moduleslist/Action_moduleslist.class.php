@@ -28,7 +28,6 @@ use Ximdex\Models\Node;
 Use Ximdex\Modules\Manager as ModulesManager ;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/serializer/Serializer.class.php');
 
 class Action_moduleslist extends ActionAbstract {
 

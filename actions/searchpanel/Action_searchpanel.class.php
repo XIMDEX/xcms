@@ -29,7 +29,6 @@ use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Utils\FsUtils;
 
-ModulesManager::file('/inc/serializer/Serializer.class.php');
 
 class Action_searchpanel extends ActionAbstract {
 

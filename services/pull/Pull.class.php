@@ -20,193 +20,198 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Utils\Serializer;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) .  "/../../"));
-}
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_PreviewInServer.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/PortalVersions.class.php');
-require_once XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php';
 
-class Pull {
+class Pull
+{
 
-	function __construct() {
-	
-	}
-	
-	function get_portal_versions($args) {		
-		
-		$portal = new PortalVersions();
-		$portalVersions = $portal->getAllVersions($args['idportal']);
-			
-		return Serializer::encode(SZR_JSON, $portalVersions);
-	}
+    function __construct()
+    {
 
-	private function showStructuredDocument($idVersion, $args) {
+    }
 
-		$pipelineManager = new PipelineManager();
-		$content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT', $args);
+    function get_portal_versions($args)
+    {
 
-		// channel has preview in server
+        $portal = new PortalVersions();
+        $portalVersions = $portal->getAllVersions($args['idportal']);
 
-		$server = new Node($args['SERVERNODE']);
+        return Serializer::encode(SZR_JSON, $portalVersions);
+    }
 
-		if ($server->class->GetPreviewServersForChannel($args['CHANNEL'])) {
-			$viewPreviewInServer = new View_PreviewInserver();
-			$content = $viewPreviewInServer->transform($idVersion, $content, $args);
-		}
+    private function showStructuredDocument($idVersion, $args)
+    {
 
-		// Specific FilterMacros View for previsuals
+        $pipelineManager = new PipelineManager();
+        $content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'StrDocToDexT', $args);
 
-		$viewFilterMacrosPreview = new View_FilterMacrosPreview();
-		$content = $viewFilterMacrosPreview->transform($idVersion, $content, $args);
+        // channel has preview in server
 
-		return $content;
-	}
+        $server = new Node($args['SERVERNODE']);
 
-	private function showCommonFile($idVersion, $args) {
+        if ($server->class->GetPreviewServersForChannel($args['CHANNEL'])) {
+            $viewPreviewInServer = new View_PreviewInserver();
+            $content = $viewPreviewInServer->transform($idVersion, $content, $args);
+        }
 
-		$pipelineManager = new PipelineManager();
-		$content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'NotStrDocToFinal', $args);
+        // Specific FilterMacros View for previsuals
 
-		if (in_array($args['FILETYPE'], array('ImageFile', 'XimNewsImageFile'))) {
-			header("Content-Type: image");
-		} else {
-			header("Content-Disposition: attachment; filename={$args['NODENAME']}");	
-		}
+        $viewFilterMacrosPreview = new View_FilterMacrosPreview();
+        $content = $viewFilterMacrosPreview->transform($idVersion, $content, $args);
 
-		return $content;
-	}
+        return $content;
+    }
 
-	function getContent($args) {
+    private function showCommonFile($idVersion, $args)
+    {
 
-		$nodeId = $args['idnode'];
-		$channelId = $args['idchannel'];
-		$idPortalVersion = $args['idportalversion'];
-		$serverId = $args['idportal'];
+        $pipelineManager = new PipelineManager();
+        $content = $pipelineManager->getCacheFromProcessAsContent($idVersion, 'NotStrDocToFinal', $args);
 
-		$nodeId = empty($nodeId) ? $this->getHome($idPortalVersion) : $nodeId;
-		
-		$node = new Node($nodeId);
+        if (in_array($args['FILETYPE'], array('ImageFile', 'XimNewsImageFile'))) {
+            header("Content-Type: image");
+        } else {
+            header("Content-Disposition: attachment; filename={$args['NODENAME']}");
+        }
 
-		if (!($node->get('IdNode') > 0)) {
-			
-			$content = "Unexisting node $nodeId\n";
+        return $content;
+    }
 
-		} else {
+    function getContent($args)
+    {
 
-			// gets a random channel
+        $nodeId = $args['idnode'];
+        $channelId = $args['idchannel'];
+        $idPortalVersion = $args['idportalversion'];
+        $serverId = $args['idportal'];
 
-			$channelId = empty($channelId) ? array_shift($node->GetProperty('channel')) : $channelId;
+        $nodeId = empty($nodeId) ? $this->getHome($idPortalVersion) : $nodeId;
 
-			// gets node version
+        $node = new Node($nodeId);
 
-			$idVersion = RelFramesPortal::getNodeVersion($idPortalVersion, $nodeId);
+        if (!($node->get('IdNode') > 0)) {
 
-			if (is_null($idVersion)) {
+            $content = "Unexisting node $nodeId\n";
 
-				$content = "Document $nodeId not found in portal $serverId at version $idPortalVersion"; 
-			
-			} else {
+        } else {
 
-				// populates variables and view/pipelines args
+            // gets a random channel
 
-				$args['NODENAME'] = $node->get('Name');
-				$args['CHANNEL'] = empty($channelId) ? NULL : $channelId;
-				$args['SECTION'] = $node->GetSection();
-				$args['PROJECT'] = $node->GetProject();
-				$args['SERVERNODE'] = $serverId;
-				$args['DEPTH'] = $node->GetPublishedDepth();
+            $channelId = empty($channelId) ? array_shift($node->GetProperty('channel')) : $channelId;
 
-				// gets content
+            // gets node version
 
-				$strDoc = new StructuredDocument($nodeId);
+            $idVersion = RelFramesPortal::getNodeVersion($idPortalVersion, $nodeId);
 
-				if (!($strDoc->get('IdDoc') > 0)) {
+            if (is_null($idVersion)) {
 
-					$args['FILETYPE'] = $node->nodeType->get('Name');
-					$content = $this->showCommonFile($idVersion, $args);
+                $content = "Document $nodeId not found in portal $serverId at version $idPortalVersion";
 
-				} else {
-					
-					$template = $strDoc->get('IdTemplate');
-					$idLanguage = $strDoc->get('IdLanguage');
-					$docXapHeader = $node->class->_getDocXapHeader($channelId, $idLanguage, $template);
+            } else {
 
-					$root = new Node(10000);
-					$transformer = $root->getProperty('Transformer');
+                // populates variables and view/pipelines args
 
-					$args['TRANSFORMER'] = $transformer[0];
-					$args['LANGUAGE'] = $idLanguage;
-					$args['DOCXAPHEADER'] = $docXapHeader;
+                $args['NODENAME'] = $node->get('Name');
+                $args['CHANNEL'] = empty($channelId) ? NULL : $channelId;
+                $args['SECTION'] = $node->GetSection();
+                $args['PROJECT'] = $node->GetProject();
+                $args['SERVERNODE'] = $serverId;
+                $args['DEPTH'] = $node->GetPublishedDepth();
 
-					$content = $this->showStructuredDocument($idVersion, $args);
-				}
+                // gets content
 
-				$content = empty($content) ? "Returns void\n" : $content;
-			}
-		}
+                $strDoc = new StructuredDocument($nodeId);
 
-		return $content;
-	}
+                if (!($strDoc->get('IdDoc') > 0)) {
 
-/*
-*	Returns the idnode of the home page (must be named as 'index')
-*	@param idPortalVersion in
-*	@return int / NULL
-*/
+                    $args['FILETYPE'] = $node->nodeType->get('Name');
+                    $content = $this->showCommonFile($idVersion, $args);
 
-	private function getHome($idPortalVersion) {
-		
-		$portal = new PortalVersions($idPortalVersion);
-		$serverId = $portal->get('IdPortal');
+                } else {
 
-		$serverNode = new Node($serverId);
-		$folderId = $serverNode->GetChildByName('documents');
+                    $template = $strDoc->get('IdTemplate');
+                    $idLanguage = $strDoc->get('IdLanguage');
+                    $docXapHeader = $node->class->_getDocXapHeader($channelId, $idLanguage, $template);
 
-		if (!($folderId > 0)) return NULL;
-		
-		$folderNode = new Node($folderId);
-		$homeContainerId = $folderNode->GetChildByName('index');
-		
-		if (!($homeContainerId > 0)) return NULL;
+                    $root = new Node(10000);
+                    $transformer = $root->getProperty('Transformer');
 
-		$langs = $folderNode->getProperty('language');
+                    $args['TRANSFORMER'] = $transformer[0];
+                    $args['LANGUAGE'] = $idLanguage;
+                    $args['DOCXAPHEADER'] = $docXapHeader;
 
-		// gets language (random)
+                    $content = $this->showStructuredDocument($idVersion, $args);
+                }
 
-		$language = new Language($langs[0]);
-		$homeName = 'index-id' . $language->get('IsoName');
-		
-		$containerNode = new Node($homeContainerId);
-		$homeId = $containerNode->GetChildByName($homeName);
+                $content = empty($content) ? "Returns void\n" : $content;
+            }
+        }
 
-		return $homeId;
-	}
+        return $content;
+    }
 
-/*
-*	Returns the last portal version
-*	@param array
-*	@return int / NULL
-*/
+    /*
+    *	Returns the idnode of the home page (must be named as 'index')
+    *	@param idPortalVersion in
+    *	@return int / NULL
+    */
 
-	function get_current_portal_version($args) {
-		$portal = new PortalVersions();
-		$portalVersion = $portal->getLastVersion($args['idportal']);
+    private function getHome($idPortalVersion)
+    {
 
-		return $portal->getId($args['idportal'], $portalVersion);
-	}
+        $portal = new PortalVersions($idPortalVersion);
+        $serverId = $portal->get('IdPortal');
+
+        $serverNode = new Node($serverId);
+        $folderId = $serverNode->GetChildByName('documents');
+
+        if (!($folderId > 0)) return NULL;
+
+        $folderNode = new Node($folderId);
+        $homeContainerId = $folderNode->GetChildByName('index');
+
+        if (!($homeContainerId > 0)) return NULL;
+
+        $langs = $folderNode->getProperty('language');
+
+        // gets language (random)
+
+        $language = new Language($langs[0]);
+        $homeName = 'index-id' . $language->get('IsoName');
+
+        $containerNode = new Node($homeContainerId);
+        $homeId = $containerNode->GetChildByName($homeName);
+
+        return $homeId;
+    }
+
+    /*
+    *	Returns the last portal version
+    *	@param array
+    *	@return int / NULL
+    */
+
+    function get_current_portal_version($args)
+    {
+        $portal = new PortalVersions();
+        $portalVersion = $portal->getLastVersion($args['idportal']);
+
+        return $portal->getId($args['idportal'], $portalVersion);
+    }
 
 }
 

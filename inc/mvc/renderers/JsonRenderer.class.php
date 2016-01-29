@@ -25,7 +25,8 @@
  */
 
 
-require_once(XIMDEX_ROOT_PATH . "/inc/serializer/Serializer.class.php");
+use Ximdex\Utils\Serializer;
+
 
 /**
  *

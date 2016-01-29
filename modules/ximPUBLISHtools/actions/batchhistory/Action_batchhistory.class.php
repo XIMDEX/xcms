@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 
 ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');

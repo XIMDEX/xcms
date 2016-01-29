@@ -20,60 +20,61 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Utils\Curl;
+use Ximdex\Utils\Serializer;
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', dirname(__FILE__).'/../');
 
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerConf.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/serializer/Serializer.class.php');
 
-class PoolerClient {
+class PoolerClient
+{
 
-	private function __construct() {
-	}
+    private function __construct()
+    {
+    }
 
-	/**
-	 * Sends a XML-RPC request to the pooler server.
-	 * @param string queue Queue name
-	 * @param array data Asociative arrays of data, indexed by parameter name
-	 */
-	static function request($queue, $data) {
+    /**
+     * Sends a XML-RPC request to the pooler server.
+     * @param string queue Queue name
+     * @param array data Asociative arrays of data, indexed by parameter name
+     */
+    static function request($queue, $data)
+    {
 
-		$conf = new PoolerConf(XIMDEX_ROOT_PATH . '/conf/poolerd.xml');
+        $conf = new PoolerConf(XIMDEX_ROOT_PATH . '/conf/poolerd.xml');
 
-		$data = !is_array($data) ? array() : $data;
-		$data = array(
-			'method' => $queue,
-			'params' => array(
-				'queue' => $queue,
-				'data' => $data
-			)
-		);
-		$data = Serializer::encode(SZR_XMLRPC, $data);
+        $data = !is_array($data) ? array() : $data;
+        $data = array(
+            'method' => $queue,
+            'params' => array(
+                'queue' => $queue,
+                'data' => $data
+            )
+        );
+        $data = Serializer::encode(SZR_XMLRPC, $data);
 
-		$curl = new Curl();
-		try {
-			$ret = $curl->post(
-				$conf->client['url'],
-				$data,
-				array(
-					'Content-Type: text/xml',
-					'Expect:'	// Important!
-				)
-			);
-		} catch (ErrorException $e) {
-			XMD_Log::error(sprintf('curl_error: %s', $e->getMessage()));
-			throw new Exception($e->getMessage());
-		}
+        $curl = new Curl();
+        try {
+            $ret = $curl->post(
+                $conf->client['url'],
+                $data,
+                array(
+                    'Content-Type: text/xml',
+                    'Expect:'    // Important!
+                )
+            );
+        } catch (ErrorException $e) {
+            XMD_Log::error(sprintf('curl_error: %s', $e->getMessage()));
+            throw new Exception($e->getMessage());
+        }
 
-		return $ret;
-	}
+        return $ret;
+    }
 
 }
 

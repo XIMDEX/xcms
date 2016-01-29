@@ -26,7 +26,6 @@
 
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/serializer/Serializer.class.php');
 
 class Action_reportslist extends ActionAbstract
 {

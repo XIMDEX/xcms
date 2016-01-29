@@ -20,46 +20,57 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Utils;
+use Ximdex\Logger as XMD_Log ;
 
 if (!defined('SZR_JSON')) define('SZR_JSON', 'json');
 if (!defined('SZR_XMLRPC')) define('SZR_XMLRPC', 'xmlrpc');
 
-class Serializer {
+class Serializer
+{
 
-	private function __construct() {
+	private function __construct()
+	{
 	}
 
-	static public function encode($mode, $var) {
+	static public function encode($mode, $var)
+	{
+		/**
+		 * @var $instance SerializerJSON|SerializerXMLRPC
+		 */
 		$instance =& Serializer::_factory($mode);
 		$ret = $instance->encode($var);
 		return $ret;
 	}
 
-	static public function decode($mode, $var) {
+	static public function decode($mode, $var)
+	{
+		/**
+		 * @var $instance SerializerJSON|SerializerXMLRPC
+		 */
 		$instance =& Serializer::_factory($mode);
 		$ret = $instance->decode($var);
 		return $ret;
 	}
 
-	static protected function & _factory($mode) {
-		$class = 'Serializer_' . strtoupper($mode);
-		$class_file = "{$class}.class.php";
-		$class_path = "/inc/serializer/{$mode}/{$class_file}";
-		ModulesManager::file($class_path);
+	static protected function & _factory($mode)
+	{
 
-		if (!class_exists($class)) {
+		// @todo Remove Namespace from class name
+		$class = '\\Ximdex\\Utils\\Serializer' . strtoupper($mode);
+
+		if ( class_exists( $class )) {
+			$instance = new $class();
+		} else  {
 			XMD_Log::error(sprintf(_("Serializer :: The class {%s} could not be instanced."), $class));
 			die;
 		}
-		$instance = new $class();
 		return $instance;
 	}
 
 }
-
-?>
