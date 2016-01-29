@@ -26,11 +26,7 @@
 
 namespace Ximdex\NodeTypes;
 use MetadataManager;
-use Ximdex\NodeTypes\FileNode;
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
+use ModulesManager;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 

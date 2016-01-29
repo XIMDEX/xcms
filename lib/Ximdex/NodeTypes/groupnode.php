@@ -28,17 +28,7 @@
 namespace Ximdex\NodeTypes;
 
 use Group;
-use name;
-use nodeTypeID;
-use parentID;
-use parentObj;
-use stateID;
-use unknown;
-use Ximdex\NodeTypes\Root;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
 include_once XIMDEX_ROOT_PATH . "/inc/model/group.php";
 

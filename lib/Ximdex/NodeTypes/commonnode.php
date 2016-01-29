@@ -26,6 +26,7 @@
 
 namespace Ximdex\NodeTypes;
 use MetadataManager;
+use ModulesManager;
 use Ximdex\NodeTypes\FileNode;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');

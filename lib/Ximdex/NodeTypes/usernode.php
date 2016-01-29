@@ -28,7 +28,6 @@
 namespace Ximdex\NodeTypes;
 
 use User;
-use Ximdex\NodeTypes\Root;
 use XMD_Log;
 
 

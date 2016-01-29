@@ -28,14 +28,9 @@
 namespace Ximdex\NodeTypes;
 
 use description;
-use enabled;
-use isoname;
-use name;
+
 use NodeProperty;
-use nodeTypeID;
-use parentID;
-use stateID;
-use unknown;
+
 use Ximdex\Models\Language;
 use Ximdex\NodeTypes\Root;
 

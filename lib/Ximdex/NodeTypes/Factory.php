@@ -24,6 +24,8 @@ class Factory
         'rolenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\RoleNode'),
         'filenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\FileNode'),
         'groupnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\GroupNode'),
+        'usernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\UserNode'),
+        'commonnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\CommonNode'),
 
 
     );
