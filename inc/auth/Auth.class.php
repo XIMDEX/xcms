@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
@@ -33,7 +34,6 @@ use Ximdex\Runtime\Constants;
 
 
 
- require_once(XIMDEX_ROOT_PATH . "/inc/model/group.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelRolesActions_ORM.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelUsersGroups_ORM.class.php");
 

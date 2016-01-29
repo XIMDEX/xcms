@@ -27,10 +27,9 @@
 
 namespace Ximdex\NodeTypes;
 
-use Group;
+use Ximdex\Models\Group;
 
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/group.php";
 
 /**
  * @brief Handles groups.

@@ -31,7 +31,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 use DataFactory;
-use Group;
+use Ximdex\Models\Group;
 use Ximdex\Models\Language;
 use ModulesManager;
 use PipeNodeTypes;
@@ -56,8 +56,7 @@ use Ximdex\XML\XML;
 use Ximdex\NodeTypes\SectionNode;
 
 require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
-require_once XIMDEX_ROOT_PATH . '/inc/model/group.php';
-require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
+ require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
  require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/workflow/Workflow.class.php');

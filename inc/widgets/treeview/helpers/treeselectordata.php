@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\User;
 

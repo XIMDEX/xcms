@@ -26,12 +26,12 @@
 
 
 use Ximdex\Models\Channel;
+use Ximdex\Models\Group;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\Cli\Shell;
 
-ModulesManager::file('/inc/model/group.php');
 
 
 class Action_console_wrapper extends ActionAbstract

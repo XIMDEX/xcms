@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\Group;
 
 ModulesManager::file('/inc/model/orm/XimNewsColector_ORM.class.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');

@@ -34,7 +34,6 @@ ModulesManager::file('/conf/install-modules.php');
 ModulesManager::file('/inc/db/db.php');
 ModulesManager::file("/inc/persistence/datafactory.php");
  ModulesManager::file("/inc/workflow/Workflow.class.php");
- ModulesManager::file("/inc/model/group.php");
 ModulesManager::file("/inc/model/role.php");
 ModulesManager::file("/inc/model/permissions.php");
 ModulesManager::file("/inc/model/nodetype.php");

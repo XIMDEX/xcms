@@ -1,4 +1,5 @@
 <?php
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,7 +26,9 @@
  */
 
 
-class Groups_ORM extends \Ximdex\Data\GenericData
+use \Ximdex\Data\GenericData ;
+
+class GroupsOrm extends  GenericData
 {
     var $_idField = 'IdGroup';
     var $_table = 'Groups';

@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use Group;
+use Ximdex\Models\Group;
 use ModulesManager;
 use NoActionsInNode;
 use Permission;

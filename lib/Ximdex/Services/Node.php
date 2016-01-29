@@ -44,7 +44,7 @@ class Node
     public function __construct($idNode = null, $lazyMode = true)
     {
 
- 
+
 
         if ($idNode) {
             $this->node = new \Ximdex\Models\Node($idNode);
