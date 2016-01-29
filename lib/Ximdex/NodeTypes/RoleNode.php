@@ -28,17 +28,10 @@
 namespace Ximdex\NodeTypes;
 
 use description;
-use icon;
-use name;
-use nodeTypeID;
-use parentID;
-use Role;
-use stateID;
-use unknown;
-use Ximdex\NodeTypes\Root;
+
+use Ximdex\Models\Role;
 
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/role.php";
 
 /**
  * @brief Handles roles.

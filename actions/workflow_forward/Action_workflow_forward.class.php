@@ -27,16 +27,16 @@
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
+use Ximdex\Models\PipeTransition;
+use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/inc/model/role.php');
-  ModulesManager::file('/inc/mail/Mail.class.php');
- ModulesManager::file('/inc/workflow/Workflow.class.php');
-ModulesManager::file('inc/pipeline/PipeTransition.class.php');
-ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
+   ModulesManager::file('/inc/mail/Mail.class.php');
+ ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 /**
  * Move a node to next state. 

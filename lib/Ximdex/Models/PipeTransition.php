@@ -20,71 +20,78 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Models;
+
+use I_PipeProperties;
+use PipeProcess;
+use Ximdex\Models\PipeStatus;
+use Ximdex\Models\ORM\PipeTransitionsOrm;
+use Ximdex\Logger as XMD_Log;
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeTransitions_ORM.class.php');
 
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
+
 /**
- * 
+ *
  * @brief Describes a Transition in the pipeline
- * 
+ *
  * Describes a transition in the pipeline, a pipeline is formed by one or more Processes,
  * each process contains one or more transitions, and one transition contains exactly two
  * status, so this class describes the transition between two status and the transformation
  * who is called in the process
  *
  */
-class PipeTransition extends PipeTransitions_ORM {
+class PipeTransition extends PipeTransitionsOrm
+{
 	var $properties = NULL;
+
 	/**
 	 * Constructor
 	 * @param $id
-	 * 
+	 *
 	 */
-	function PipeTransition($id = NULL) {
+	function PipeTransition($id = NULL)
+	{
 		parent::__construct($id);
-		
+
 		$id = $this->get('id');
 		if (!($id > 0)) {
-			return ;
+			return;
 		}
-		
+
 		$this->properties = new I_PipeProperties('IdPipeTransition = %s', array($id));
 	}
-	
+
 	/**
 	 * Add a status to this transition, primaly used for workflow pipelines
-	 * 
+	 *
 	 * @param $name
 	 * @param $description
 	 * @return integer
 	 */
-	function addStatus($name, $description) {
+	function addStatus($name, $description)
+	{
 		$pipeStatus = new PipeStatus();
 		$pipeStatus->set('Name', $name);
 		$pipeStatus->set('Description', $description);
 		$idStatus = $pipeStatus->add();
-		
+
 		if (!($idStatus > 0)) {
 			$this->messages->add(_('Ha ocurrido un error insertando el estado, consulte con su administrador'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($this->messages);
 			return NULL;
 		}
-		
+
 		$finalStatus = new PipeStatus($this->get('IdStatusTo'));
-		
+
 		$pipeTransition = new PipeTransition();
 		$pipeTransition->set('IdStatusFrom', $idStatus);
 		$pipeTransition->set('IdStatusTo', $finalStatus->get('id'));
@@ -93,40 +100,41 @@ class PipeTransition extends PipeTransitions_ORM {
 		$pipeTransition->set('Cacheable', 0);
 		$pipeTransition->set('Callback', '-');
 		$idNewTransition = $pipeTransition->add();
-		
+
 		if (!($idNewTransition > 0)) {
 			$this->messages->add(_('No se ha podido generar la nueva transici�n'), MSG_TYPE_ERROR);
 			$this->messages->mergeMessages($pipeTransition->messages);
 			return NULL;
 		}
-		
+
 		$this->set('IdStatusTo', $idStatus);
 		$this->set('Callback', '-');
 		$this->update();
-		
+
 		return $idStatus;
-		
+
 	}
-	
+
 	/**
 	 * Return the previous transition in the pipeline
 	 * @return integer
 	 */
-	function getPreviousTransition() {
+	function getPreviousTransition()
+	{
 		//Obtenemos la transici�n anterior
 		$result = $this->find('id', 'IdPipeProcess = %s AND IdStatusTo = %s',
-					array($this->get('IdPipeProcess'), $this->get('IdStatusFrom')), MONO);
+			array($this->get('IdPipeProcess'), $this->get('IdStatusFrom')), MONO);
 		$resultsCount = count($result);
 		//Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
 		if ($resultsCount > 1) {
 			XMD_Log::fatal('No se ha podido determinar la transicion anterior a una dada');
 			return false;
 		}
-		
+
 		if ($resultsCount == 1) {
 			return $result[0];
 		}
-		
+
 		// Si no la encontramos en este proceso buscamos en el proceso anterior
 		$id = $this->get('IdPipeProcess');
 		$process = new PipeProcess($id);
@@ -141,7 +149,7 @@ class PipeTransition extends PipeTransitions_ORM {
 		}
 		return $transition->get('id');
 	}
-	
+
 	/**
 	 * Transform the given content with the transition asociated callback
 	 * @param $idVersion
@@ -149,11 +157,12 @@ class PipeTransition extends PipeTransitions_ORM {
 	 * @param $args
 	 * @return pointer
 	 */
-	function generate($idVersion, $content, $args) {
+	function generate($idVersion, $content, $args)
+	{
 		$v = $this->callback($idVersion, $content, $args, 'transform');
 		return $v;
 	}
-	
+
 	/**
 	 * Reverse a transformation
 	 * @param $idVersion
@@ -161,23 +170,25 @@ class PipeTransition extends PipeTransitions_ORM {
 	 * @param $args
 	 * @return pointer
 	 */
-	function reverse($idVersion, $content, $args) {
+	function reverse($idVersion, $content, $args)
+	{
 		return $this->callback($idVersion, $content, $args, 'reverse');
 	}
-	
+
 	/**
 	 * Method who contains the generate and reverse implementations, should be private
-	 * 
+	 *
 	 * @param $idVersion
 	 * @param $pointer
 	 * @param $args
 	 * @param $function
 	 * @return pointer
 	 */
-	function callback($idVersion, $pointer, $args, $function) {
+	function callback($idVersion, $pointer, $args, $function)
+	{
 		$factory = new \Ximdex\Utils\Factory(CALLBACK_FOLDER, 'View_');
 		$callback = $this->get('Callback');
-		
+
 		$object = $factory->instantiate($callback);
 
 		$timer = new \Ximdex\Utils\Timer();
@@ -188,13 +199,13 @@ class PipeTransition extends PipeTransitions_ORM {
 		} else {
 			$idTransition = $this->get('id');
 			XMD_Log::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
-			$transformedPointer = $pointer;		
+			$transformedPointer = $pointer;
 		}
 		$timer->stop();
 
 		XMD_Log::info("PIPETRANSITION: View_$callback time: " . $timer->display());
 
-		if(isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE'] === true) {
+		if (isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE'] === true) {
 			XMD_Log::info("DISABLE_CACHE active, although the transition is cacheable, the cache won't be stored.");
 		} else {
 			$cache = new PipeCache();
@@ -202,9 +213,9 @@ class PipeTransition extends PipeTransitions_ORM {
 				XMD_Log::error('Could not store the cache for transition.');
 			}
 		}
-		
+
 		return $transformedPointer;
 	}
-	
-	
+
+
 }

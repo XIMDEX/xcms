@@ -27,6 +27,8 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\PipeStatus;
+use Ximdex\Models\PipeTransition;
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/Pipelines_ORM.class.php');

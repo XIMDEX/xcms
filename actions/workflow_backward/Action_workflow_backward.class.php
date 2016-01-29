@@ -27,12 +27,12 @@
 
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
+use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/inc/workflow/Workflow.class.php');
-ModulesManager::file('/inc/mail/Mail.class.php');
-ModulesManager::file('/inc/model/role.php');
+ ModulesManager::file('/inc/mail/Mail.class.php');
 
 class Action_workflow_backward extends ActionAbstract {
 

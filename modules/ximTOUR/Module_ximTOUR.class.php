@@ -31,7 +31,6 @@ use Ximdex\Modules\Module;
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
  ModulesManager::file('/inc/model/RelRolesActions.class.php');
-ModulesManager::file('/inc/model/role.php');
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/model/orm/RelRolesStates_ORM.class.php');

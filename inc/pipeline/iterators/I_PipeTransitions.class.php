@@ -27,11 +27,6 @@
 
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
-
 /**
  * 
  * @brief Basic iterator for the PipeTransition class
@@ -41,7 +36,7 @@ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
  *
  */
 class I_PipeTransitions extends  \Ximdex\Utils\Iterator {
-	var $_objectName = 'PipeTransition';
+	var $_objectName = '\\Ximdex\\Models\\PipeTransition';
 	/**
 	 * Carga el iterador de la condicion dada y lo ordena por sus transiciones
 	 *

@@ -25,17 +25,19 @@
  */
 
 
+namespace Ximdex\Workflow;
+
+use Pipeline;
+use PipeNodeTypes;
+use Ximdex\Models\PipeStatus;
+use Ximdex\Models\Role;
 use Ximdex\Models\Node;
+use Ximdex\Logger as XMD_Log;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
 
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/Pipeline.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeNodeTypes.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/role.php');
 
 define('WORKFLOW_PROCESS_NAME', 'workflow');
 
@@ -63,7 +65,7 @@ class WorkFlow
             }
 
             if ($idPipelineNode == NULL) {
-                $idPipelineNode = \App::getValue( 'IdDefaultWorkflow');
+                $idPipelineNode = \App::getValue('IdDefaultWorkflow');
             }
         }
 
@@ -204,7 +206,7 @@ class WorkFlow
 
     function setWorkflowMaster()
     {
-        $this->pipeline->activatePipelineForNodes(\App::getValue( 'IdDefaultWorkflow'));
+        $this->pipeline->activatePipelineForNodes(\App::getValue('IdDefaultWorkflow'));
         \App::setValue('IdDefaultWorkflow', $this->pipeline->get('id'));
     }
 }

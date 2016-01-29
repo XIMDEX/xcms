@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,19 +25,26 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PipeStatus_ORM extends \Ximdex\Data\GenericData
+class PipeTransitionsOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'id';
-    var $_table = 'PipeStatus';
+    var $_table = 'PipeTransitions';
     var $_metaData = array(
         'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdStatusFrom' => array('type' => "int(11)", 'not_null' => 'false'),
+        'IdStatusTo' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdPipeProcess' => array('type' => "int(11)", 'not_null' => 'false'),
+        'Cacheable' => array('type' => "tinyint(1)", 'not_null' => 'true'),
         'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'Description' => array('type' => "varchar(250)", 'not_null' => 'true')
+        'Callback' => array('type' => "varchar(255)", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array();
     var $_indexes = array('id');
     var $id;
+    var $IdStatusFrom;
+    var $IdStatusTo;
+    var $IdPipeProcess;
+    var $Cacheable;
     var $Name;
-    var $Description;
-    var $IdNode;
+    var $Callback;
 }

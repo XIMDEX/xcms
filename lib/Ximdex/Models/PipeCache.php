@@ -25,13 +25,19 @@
  */
 
 
+namespace Ximdex\Models;
+
+use DB;
+use I_PipePropertyValues;
+use PipePropertyValue;
+use Ximdex\Models\PipeTransition;
+use Ximdex\Models\ORM\PipeCachesOrm;
 use Ximdex\Models\Version;
 use Ximdex\Utils\FsUtils;
+use XMD_Log;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/PipeCaches_ORM.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipePropertyValues.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipePropertyValues.class.php');
 
 define('CACHE_FOLDER', '/data/cache/pipelines/');
 define('DATA_FOLDER', '/data/files/');
@@ -46,7 +52,7 @@ define('TMP_FOLDER', App::getValue('TempRoot') . "/");
  * load the resulting transition from cache if it is already generated.
  *
  */
-class PipeCache extends PipeCaches_ORM
+class PipeCache extends PipeCachesOrm
 {
     var $_args = NULL;
     var $_transition = NULL;

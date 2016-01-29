@@ -32,10 +32,7 @@ use Ximdex\Utils\FsUtils;
 class BaseIOInferer {
 	var $messages = NULL;
 
-	/**
-	 * Constructor
-	 * @return unknown_type
-	 */
+
 	function BaseIOInferer() {
 		$this->messages = new \Ximdex\Utils\Messages();
 	}

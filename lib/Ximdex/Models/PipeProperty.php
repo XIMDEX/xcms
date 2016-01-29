@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,26 +23,22 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PipeTransitions_ORM extends \Ximdex\Data\GenericData
+
+
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\PipePropertiesOrm;
+
+
+/**
+ *
+ * @brief Describes the relation between one property and one transition
+ *
+ * Describes the relation between one property and one transition, one transition
+ * can contain many properties and when a cache is recovered is checked that the node
+ * and all the properties match with the requested one
+ *
+ */
+class PipeProperty extends PipePropertiesOrm
 {
-    var $_idField = 'id';
-    var $_table = 'PipeTransitions';
-    var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdStatusFrom' => array('type' => "int(11)", 'not_null' => 'false'),
-        'IdStatusTo' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdPipeProcess' => array('type' => "int(11)", 'not_null' => 'false'),
-        'Cacheable' => array('type' => "tinyint(1)", 'not_null' => 'true'),
-        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
-        'Callback' => array('type' => "varchar(255)", 'not_null' => 'true')
-    );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdStatusFrom;
-    var $IdStatusTo;
-    var $IdPipeProcess;
-    var $Cacheable;
-    var $Name;
-    var $Callback;
 }

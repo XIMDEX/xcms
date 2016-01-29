@@ -28,7 +28,7 @@
 namespace Ximdex\MVC;
 
 
-use EmailNotificationStrategy;
+use Ximdex\Notifications\EmailNotificationStrategy;
 use Ximdex\MVC\FrontController;
 use ModulesManager;
 use Ximdex\Parsers\ParsingJsGetText;
@@ -41,7 +41,7 @@ use Ximdex\Runtime\Request;
 use Ximdex\Utils\Factory;
 use Ximdex\Utils\QueryManager;
 use Ximdex\Utils\Session;
-use XimdexNotificationStrategy;
+use Ximdex\Notifications\XimdexNotificationStrategy;
 use Ximdex\Logger as XMD_Log;
 
 Use Ximdex\Utils\Logs\Action_log;

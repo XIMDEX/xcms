@@ -26,6 +26,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/conf/install-params.conf.php');

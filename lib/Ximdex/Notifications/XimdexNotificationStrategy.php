@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,20 +23,44 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PipeCaches_ORM extends \Ximdex\Data\GenericData
+
+namespace Ximdex\Notifications;
+use Messages_ORM;
+
+ModulesManager::file('/inc/model/orm/Messages_ORM.class.php');
+
+class XimdexNotificationStrategy
 {
-    var $_idField = 'id';
-    var $_table = 'PipeCaches';
-    var $_metaData = array(
-        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdVersion' => array('type' => "int(11)", 'not_null' => 'true'),
-        'IdPipeTransition' => array('type' => "int(11)", 'not_null' => 'true'),
-        'File' => array('type' => "varchar(255)", 'not_null' => 'true')
-    );
-    var $_uniqueConstraints = array();
-    var $_indexes = array('id');
-    var $id;
-    var $IdVersion;
-    var $IdPipeTransition;
-    var $File;
+
+	/**
+	 * Send a notification.
+	 * @param  string $subject
+	 * @param  string $content
+	 * @param  string $from
+	 * @param  array $to id
+	 * @param  array $extraData More required data in the message.
+	 * Maybe a attachment or whatever
+	 * @return [type]            [description]
+	 */
+	public function sendNotification($subject, $content, $from, $to)
+	{
+
+		$result = array();
+		$nowDate = date('Y-m-d H:i:s');
+		foreach ($to as $toUser) {
+			$messages = new Messages_ORM();
+			$messages->set("IdFrom", $from);
+			$messages->set("IdOwner", $toUser);
+			$messages->set("Subject", $subject);
+			$messages->set("Content", $content);
+			$messages->set("FechaHora", $nowDate);
+			if ($messages->add()) {
+				$result[$toUser] = true;
+			} else {
+				$result[$toUser] = false;
+			}
+		}
+
+		return $result;
+	}
 }

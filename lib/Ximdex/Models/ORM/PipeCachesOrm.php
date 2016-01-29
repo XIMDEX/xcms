@@ -1,4 +1,6 @@
 <?php
+
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,45 +25,20 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-use Ximdex\Models\User;
-
-ModulesManager::file('/inc/mail/Mail.class.php');
-
-class EmailNotificationStrategy
+class PipeCachesOrm extends \Ximdex\Data\GenericData
 {
-
-    /**
-     * Send a notification.
-     */
-    /**
-     * @param $subject
-     * @param $content
-     * @param $from
-     * @param $to
-     * @param $extraData
-     * @return array
-     */
-    public function sendNotification($subject, $content, $from, $to, $extraData = null )
-    {
-
-        $result = array();
-        foreach ($to as $toUser) {
-
-            $user = new User($toUser);
-            $userEmail = $user->get('Email');
-            $userName = $user->get('Name');
-            $mail = new Mail();
-            $mail->addAddress($userEmail, $userName);
-            $mail->Subject = $subject;
-            $mail->Body = $content;
-            if ($mail->Send()) {
-                $result[$toUser] = true;
-            } else {
-                $result[$toUser] = false;
-            }
-        }
-
-        return $result;
-    }
+    var $_idField = 'id';
+    var $_table = 'PipeCaches';
+    var $_metaData = array(
+        'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdVersion' => array('type' => "int(11)", 'not_null' => 'true'),
+        'IdPipeTransition' => array('type' => "int(11)", 'not_null' => 'true'),
+        'File' => array('type' => "varchar(255)", 'not_null' => 'true')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('id');
+    var $id;
+    var $IdVersion;
+    var $IdPipeTransition;
+    var $File;
 }

@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Sync\SynchroFacade;

@@ -33,8 +33,7 @@ use Ximdex\Utils\TarArchiver;
 
 
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/workflow/Workflow.class.php');
-ModulesManager::file('/actions/workflow_forward/baseIO.php');
+ ModulesManager::file('/actions/workflow_forward/baseIO.php');
 
 
 class FileUpdater

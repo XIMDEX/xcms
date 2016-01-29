@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 

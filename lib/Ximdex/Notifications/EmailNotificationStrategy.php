@@ -1,6 +1,4 @@
 <?php
-// DONT USE THIS FILE IS HIGHLY DEPRECATED.
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -26,12 +24,47 @@
  * @version $Revision$
  */
 
+namespace Ximdex\Notifications;
 
-//  Se incluyen las otras librerias de utilidades a partir de utils.php, que es incluida por todo el sistema.
+use Mail;
+use Ximdex\Models\User;
 
-ModulesManager::file('/conf/install-params.conf.php');
-ModulesManager::file('/conf/install-modules.php');
-ModulesManager::file('/inc/db/db.php');
-ModulesManager::file("/inc/persistence/datafactory.php");
- ModulesManager::file("/inc/model/permissions.php");
-ModulesManager::file("/inc/persistence/XSession.class.php");
+ModulesManager::file('/inc/mail/Mail.class.php');
+
+class EmailNotificationStrategy
+{
+
+    /**
+     * Send a notification.
+     */
+    /**
+     * @param $subject
+     * @param $content
+     * @param $from
+     * @param $to
+     * @param $extraData
+     * @return array
+     */
+    public function sendNotification($subject, $content, $from, $to, $extraData = null)
+    {
+
+        $result = array();
+        foreach ($to as $toUser) {
+
+            $user = new User($toUser);
+            $userEmail = $user->get('Email');
+            $userName = $user->get('Name');
+            $mail = new Mail();
+            $mail->addAddress($userEmail, $userName);
+            $mail->Subject = $subject;
+            $mail->Body = $content;
+            if ($mail->Send()) {
+                $result[$toUser] = true;
+            } else {
+                $result[$toUser] = false;
+            }
+        }
+
+        return $result;
+    }
+}

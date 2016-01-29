@@ -27,12 +27,12 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\ORM\RelServersChannelsOrm;
+use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;
 use Ximdex\Utils\FsUtils;
 
 
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 
 

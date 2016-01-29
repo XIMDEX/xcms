@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
 
 /**

@@ -28,80 +28,77 @@
 namespace Ximdex\NodeTypes;
 
 use PipeProcess;
-use PipeStatus;
-use PipeTransition;
+use Ximdex\Models\PipeStatus;
+use Ximdex\Models\PipeTransition;
 use XMD_Log;
 
-
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
 
 class StateNode extends Root
 {
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description = '', $idTransition = null)
-	{
-		$currentTransition = new PipeTransition($idTransition);
-		if (!$currentTransition->get('id') > 0) {
-			$this->messages->add(_('No se ha podido encontrar la transacci�n, consulte con su administrador'), MSG_TYPE_ERROR);
-			$this->messages->mergeMessages($currentTransition->messages);
-			return NULL;
-		}
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $description = '', $idTransition = null)
+    {
+        $currentTransition = new PipeTransition($idTransition);
+        if (!$currentTransition->get('id') > 0) {
+            $this->messages->add(_('No se ha podido encontrar la transacci�n, consulte con su administrador'), MSG_TYPE_ERROR);
+            $this->messages->mergeMessages($currentTransition->messages);
+            return NULL;
+        }
 
-		$this->UpdatePath();
-	}
+        $this->UpdatePath();
+    }
 
-	function DeleteNode()
-	{
+    function DeleteNode()
+    {
 
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
+        $pipeStatus = new PipeStatus();
+        $pipeStatus->loadByIdNode($this->nodeID);
 
-		$pipeProcess = new PipeProcess();
-		$pipeProcess->loadByName('workflow');
+        $pipeProcess = new PipeProcess();
+        $pipeProcess->loadByName('workflow');
 
-		$pipeProcess->removeStatus($pipeStatus->get('id'));
-	}
+        $pipeProcess->removeStatus($pipeStatus->get('id'));
+    }
 
-	function RenameNode($name)
-	{
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
-		$pipeStatus->set('Name', $name);
-		$pipeStatus->update();
-		$this->UpdatePath();
-	}
+    function RenameNode($name)
+    {
+        $pipeStatus = new PipeStatus();
+        $pipeStatus->loadByIdNode($this->nodeID);
+        $pipeStatus->set('Name', $name);
+        $pipeStatus->update();
+        $this->UpdatePath();
+    }
 
-	function CanDenyDeletion()
-	{
-		$pipeStatus = new PipeStatus();
-		$pipeStatus->loadByIdNode($this->nodeID);
+    function CanDenyDeletion()
+    {
+        $pipeStatus = new PipeStatus();
+        $pipeStatus->loadByIdNode($this->nodeID);
 
-		$pipeProcess = new PipeProcess();
-		$pipeProcess->loadByName('workflow');
+        $pipeProcess = new PipeProcess();
+        $pipeProcess->loadByName('workflow');
 
-		$idStatus = $pipeStatus->get('id');
+        $idStatus = $pipeStatus->get('id');
 
-		if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
-			$this->messages->add(_('No se pueden eliminar los estados primero y �ltimo del workflow'), MSG_TYPE_ERROR);
-			XMD_Log::warning('Imposible eliminar estado primero y �ltimo de workflow');
-			return true;
-		}
+        if ($pipeProcess->isStatusFirst($idStatus) || $pipeProcess->isStatusLast($idStatus)) {
+            $this->messages->add(_('No se pueden eliminar los estados primero y �ltimo del workflow'), MSG_TYPE_ERROR);
+            XMD_Log::warning('Imposible eliminar estado primero y �ltimo de workflow');
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	function GetDependencies()
-	{
-		$sql = "SELECT DISTINCT IdNode FROM Nodes WHERE IdState='" . $this->nodeID . "'";
-		$this->dbObj->Query($sql);
+    function GetDependencies()
+    {
+        $sql = "SELECT DISTINCT IdNode FROM Nodes WHERE IdState='" . $this->nodeID . "'";
+        $this->dbObj->Query($sql);
 
-		$deps = array();
+        $deps = array();
 
-		while (!$this->dbObj->EOF) {
-			$deps[] = $this->dbObj->row["IdNode"];
-			$this->dbObj->Next();
-		}
-		return $deps;
-	}
+        while (!$this->dbObj->EOF) {
+            $deps[] = $this->dbObj->row["IdNode"];
+            $this->dbObj->Next();
+        }
+        return $deps;
+    }
 }

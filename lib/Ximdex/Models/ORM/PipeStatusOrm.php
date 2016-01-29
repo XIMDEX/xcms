@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,18 +25,19 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class PipeProperties_ORM extends \Ximdex\Data\GenericData
+class PipeStatusOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'id';
-    var $_table = 'PipeProperties';
+    var $_table = 'PipeStatus';
     var $_metaData = array(
         'id' => array('type' => "int(11)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdPipeTransition' => array('type' => "int(11)", 'not_null' => 'true'),
-        'Name' => array('type' => "varchar(255)", 'not_null' => 'true')
+        'Name' => array('type' => "varchar(255)", 'not_null' => 'true'),
+        'Description' => array('type' => "varchar(250)", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array();
     var $_indexes = array('id');
     var $id;
-    var $IdPipeTransition;
     var $Name;
+    var $Description;
+    var $IdNode;
 }

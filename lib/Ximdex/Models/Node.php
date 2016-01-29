@@ -36,7 +36,7 @@ use Ximdex\Models\Language;
 use ModulesManager;
 use PipeNodeTypes;
 use RelTagsNodes;
-use Role;
+use Ximdex\Models\Role;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Models\ORM\NodesOrm;
@@ -45,7 +45,7 @@ use DB_legacy as DB;
 use Ximdex\Runtime\App,
     Dependencies,
     Ximdex\Models\NodeDependencies,
-    WorkFlow,
+    Ximdex\Workflow\WorkFlow,
     Ximdex\Models\NodeType,
     NodeProperty;
 use Ximdex\Utils\Factory;
@@ -58,8 +58,7 @@ use Ximdex\NodeTypes\SectionNode;
 require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/workflow/Workflow.class.php');
-ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
+ ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 define('DETAIL_LEVEL_LOW', 0);
 define('DETAIL_LEVEL_MEDIUM', 1);

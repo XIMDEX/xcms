@@ -20,28 +20,30 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Models;
 
-if (! defined ( 'XIMDEX_ROOT_PATH' )) {
-	define ( 'XIMDEX_ROOT_PATH', realpath ( dirname ( __FILE__ ) . '/../../' ) );
-}
+use Ximdex\Models\ORM\PipeStatusOrm;
+use XMD_Log;
 
-require_once (XIMDEX_ROOT_PATH . '/inc/model/orm/PipeStatus_ORM.class.php');
+
 /**
- * 
+ *
  * @brief Stores the single status for a PipeTransition
- * 
+ *
  * Stores the single status for a PipeTransition, this class provides just a description for the status
  *
  */
-class PipeStatus extends PipeStatus_ORM {
-	function getIdStatus($name) {
-		$id = $this->find ( 'id', 'Name = %s ', array ($name ), MONO );
-		if ((count ( $id ) == 1) && ($id [0] > 0)) {
+class PipeStatus extends PipeStatusOrm
+{
+	function getIdStatus($name)
+	{
+		$id = $this->find('id', 'Name = %s ', array($name), MONO);
+		if ((count($id) == 1) && ($id [0] > 0)) {
 			return $id [0];
 		}
 		return false;
@@ -51,14 +53,15 @@ class PipeStatus extends PipeStatus_ORM {
 	 * @param $idNode
 	 * @return bool|null|string
 	 */
-	function loadByIdNode($idNode) {
-		$nodes = $this->find('id', 'IdNode = %s', array ($idNode ), MONO);
+	function loadByIdNode($idNode)
+	{
+		$nodes = $this->find('id', 'IdNode = %s', array($idNode), MONO);
 		if (count($nodes) != 1) {
 			$this->messages->add(_('No se ha podido cargar el estado por su id de nodo'), MSG_TYPE_ERROR);
 			XMD_Log::error(sprintf("No se ha podido cargar el estado por su id de nodo, se solicit� el idNode %s", print_r($idNode, true)));
 			return NULL;
 		}
-		
+
 		parent::__construct($nodes[0]);
 		return $this->get('id');
 	}
@@ -67,14 +70,15 @@ class PipeStatus extends PipeStatus_ORM {
 	 * @param $name
 	 * @return bool|null|string
 	 */
-	function loadByName($name) {
+	function loadByName($name)
+	{
 		$nodes = $this->find('id', 'Name = %s', array($name), MONO);
 		if (count($nodes) != 1) {
-			$this->messages->add(_('No se ha podido cargar el estado por su nombre de nodo'), MSG_TYPE_ERROR );
+			$this->messages->add(_('No se ha podido cargar el estado por su nombre de nodo'), MSG_TYPE_ERROR);
 			XMD_Log::error('No se ha podido cargar el estado por su nombre de nodo');
 			return NULL;
 		}
-		
+
 		parent::__construct($nodes[0]);
 		return $this->get('id');
 	}

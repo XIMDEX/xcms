@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 use DB_legacy as DB;
-use WorkFlow;
+use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\ORM\GroupsOrm;
 use Ximdex\Runtime\App;
 

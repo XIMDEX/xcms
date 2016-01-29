@@ -3,7 +3,7 @@ namespace Ximdex\Parsers;
 
 use DOMDocument;
 use DOMXPath;
-use Role;
+use Ximdex\Models\Role;
 use Ximdex\Models\User;
 
 /**

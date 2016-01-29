@@ -1,6 +1,7 @@
 <?php
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
+use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
 
 /**

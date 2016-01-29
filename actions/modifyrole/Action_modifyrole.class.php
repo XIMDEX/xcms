@@ -26,9 +26,11 @@
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\PipeStatus;
+use Ximdex\Models\Role;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Workflow\WorkFlow;
 
-ModulesManager::file('/inc/workflow/Workflow.class.php');
 
 class Action_modifyrole extends ActionAbstract
 {

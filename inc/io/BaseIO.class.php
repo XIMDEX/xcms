@@ -34,8 +34,7 @@ use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Session;
 use Ximdex\Logger as XMD_Log;
 
-ModulesManager::file('/inc/workflow/Workflow.class.php');
-ModulesManager::file('/inc/model/State.class.php');
+ ModulesManager::file('/inc/model/State.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 
 // BaseIO API
