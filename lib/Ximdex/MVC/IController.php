@@ -89,12 +89,12 @@ class IController
      * TODO: Cambiar toda la gesti�n de errores en base a variable booleana + array simple por el objeto messages
      * Getter
      */
-    /**
-     *
-     */
+        /**
+         *
+         */
     function hasError()
     {
-        if (isset ($this->hasError)) $this->hasError;
+         if (isset ($this->hasError)) $this->hasError;
     }
 
     /**

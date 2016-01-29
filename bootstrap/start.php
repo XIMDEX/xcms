@@ -124,3 +124,13 @@ foreach(ModulesManager::getEnabledModules() as $module){
         $moduleInstance->init();
     }
 }
+
+ // FROM MVC
+
+if (!defined('RENDERER_ROOT_PATH')) {
+    define('RENDERER_ROOT_PATH', XIMDEX_ROOT_PATH . '/inc/mvc/renderers');
+}
+if (!defined('SMARTY_TMP_PATH')) {
+    define('SMARTY_TMP_PATH', XIMDEX_ROOT_PATH . App::getValue('TempRoot'));
+}
+

@@ -27,15 +27,13 @@
 namespace Ximdex\Utils\Sync;
 
 use DataFactory;
-use DB;
-use db;
+use DB_legacy as DB;
 use ModulesManager;
 use PipelineManager;
 use Server;
 use Synchronizer_ORM;
 use SynchronizerHistory_ORM;
-use timestamp;
-use View_ChannelFilter;
+ use View_ChannelFilter;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -43,14 +41,8 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
 use XimNewsBulletin;
 use XimNewsColector;
-use XMD_log;
-use XMD_Log;
+use Ximdex\Logger as XMD_log;
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 
