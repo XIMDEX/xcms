@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -44,7 +45,6 @@ ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xedit.class.php');
-ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');
 

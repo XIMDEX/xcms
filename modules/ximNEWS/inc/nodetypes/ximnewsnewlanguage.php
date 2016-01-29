@@ -33,7 +33,6 @@ use Ximdex\NodeTypes\AbstractStructuredDocument;
 ModulesManager::file('/inc/model/XimNewsNews.inc', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsArea.php', 'ximNEWS');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
-ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 
 /**
 *   @brief Handles news.

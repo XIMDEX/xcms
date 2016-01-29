@@ -25,8 +25,9 @@
  */
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/LinksManager.class.php');
+use Ximdex\Deps\LinksManager;
+use Ximdex\Models\Version;
+
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 

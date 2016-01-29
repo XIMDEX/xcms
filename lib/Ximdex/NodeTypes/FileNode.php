@@ -28,7 +28,7 @@ namespace Ximdex\NodeTypes;
 use content;
 use DataFactory;
 use DB;
-use DepsManager;
+use Ximdex\Deps\DepsManager;
 use depth;
 use files;
 use ModulesManager;
@@ -42,7 +42,7 @@ use sourcePath;
 use State;
 use stateID;
 use unknown;
-use Version;
+use Ximdex\Models\Version;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\Root;
@@ -55,7 +55,6 @@ include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.php");
 include_once(XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/RelTemplateContainer.class.php");
-require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 
 ModulesManager::file('/inc/CacheWriter.class.php', 'ximRAM');
 

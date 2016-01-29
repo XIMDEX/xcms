@@ -32,7 +32,7 @@ use ModulesManager;
 use NoActionsInNode;
 use Permission;
 use Role;
-use Version;
+use Ximdex\Models\Version;
 use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;
 use DB_legacy as DB;

@@ -20,218 +20,224 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Models\Version;
 
-ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');
 
 
-class View_Xslt extends Abstract_View {
+class View_Xslt extends Abstract_View
+{
 
-	private $_node;
-	private $_idSection;
-	private $_idChannel;
-	private $_idProject;
+    private $_node;
+    private $_idSection;
+    private $_idChannel;
+    private $_idProject;
 
-	public function transform($idVersion = NULL, $pointer = NULL, $args = NULL) {
-
-
-		$content = $this->retrieveContent($pointer);
-		if(!$this->_setNode($idVersion))
-			return NULL;
-
-		if(!$this->_setIdChannel($args))
-			return NULL;
-
-		if(!$this->_setIdSection($args))
-			return NULL;
-
-		if(!$this->_setIdProject($args))
-			return NULL;
+    public function transform($idVersion = NULL, $pointer = NULL, $args = NULL)
+    {
 
 
-		$ptdFolder = \App::getValue( "TemplatesDirName");
+        $content = $this->retrieveContent($pointer);
+        if (!$this->_setNode($idVersion))
+            return NULL;
 
-		$section = new Node($this->_idSection);
-		$sectionPath = $section->class->GetNodePath();
+        if (!$this->_setIdChannel($args))
+            return NULL;
 
-		$docxap = $sectionPath . '/' . $ptdFolder . '/docxap.xsl';
+        if (!$this->_setIdSection($args))
+            return NULL;
 
-		// Only make transformation if channel's render mode is ximdex (or null)
-
-		if ($this->_idChannel) {
-			$channel = new Channel($this->_idChannel);
-			$renderMode = $channel->get('RenderMode');
-
-			if ($renderMode == 'client') {
-				$inclusionHeader = '<?xml-stylesheet type="text/xsl" href="' . $ptdFolder . '/docxap.xsl"?>';
-				$xmlHeader = \App::getValue( 'EncodingTag');
-				$content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
-
-				XMD_Log::info('Render in client, return XML content + path to template');
-				return $content;
-			}
-
-/*			if (is_object($this->_node)) {
-
-				XMD_Log::info("obteniendo propiedad otf para id ".$this->_node->get('IdNode'));
-				$isOTF = $this->_node->getSimpleBooleanProperty('otf');
-
-				if ($isOTF) {
-					XMD_Log::info('Render in server, return XML content');
-					return $content;
-				}
-			}
-*/
-		}
-
-		// XSLT Transformation
-
-		XMD_Log::info('Starting xslt transformation');
-		if (!file_exists($docxap)) {
-			$project = new Node($this->_idProject);
-			$nodeProjectPath = $project->class->GetNodePath();
-
-			$docxap = $nodeProjectPath . '/' . $ptdFolder . '/docxap.xsl';
-		}
+        if (!$this->_setIdProject($args))
+            return NULL;
 
 
-		$xsltHandler = new \Ximdex\XML\XSLT();
-		$xsltHandler->setXML($pointer);
-		$xsltHandler->setXSL($docxap);
-		$params = array('xmlcontent' => $content);
-		foreach ($params as $param => $value) {
-		    $xsltHandler->setParameter(array($param => $value));
-		}
-		
-		$content = $xsltHandler->process();
-		if (empty($content)) {
-		    XMD_Log::error("Error in XSLT process for $docxap ");
-		    return NULL;
-		}
+        $ptdFolder = \App::getValue("TemplatesDirName");
 
-		// Tags counter
+        $section = new Node($this->_idSection);
+        $sectionPath = $section->class->GetNodePath();
 
-		$counter = 1;
+        $docxap = $sectionPath . '/' . $ptdFolder . '/docxap.xsl';
 
-		$domDoc = new DOMDocument();
-		$domDoc->validateOnParse = true;
+        // Only make transformation if channel's render mode is ximdex (or null)
 
-		if ($channel->get("OutputType")=="xml"){
-       			if (!$domDoc->loadXML($content, LIBXML_NOERROR)) {
-       				XMD_log::error($content);
-				XMD_log::error('XML invalid');
-				return NULL;
-			}
-		}
-		else if ($channel->get("OutputType")=="web"){  
-		      	if (!$domDoc->loadHTML($content)){
-			     XMD_log::error('HTML invalid');
-			    return NULL;
-		    	}
-                }else{
-                    return $this->storeTmpContent($content);
-                }
-		$xpath = new DOMXPath($domDoc);
+        if ($this->_idChannel) {
+            $channel = new Channel($this->_idChannel);
+            $renderMode = $channel->get('RenderMode');
 
-		$nodeList = $xpath->query('/html/body//*[string(text())]');
+            if ($renderMode == 'client') {
+                $inclusionHeader = '<?xml-stylesheet type="text/xsl" href="' . $ptdFolder . '/docxap.xsl"?>';
+                $xmlHeader = \App::getValue('EncodingTag');
+                $content = str_replace($xmlHeader, $xmlHeader . $inclusionHeader, $content);
 
-		// In non-node transform we've not got a nodeid, and it's not necessary for tag counting.
-		foreach ($nodeList as $element) {
-			$element->setAttributeNode(new DOMAttr('uid', (($this->_node) ? $this->_node->get('IdNode') : '00000') . ".$counter" ));
-			$counter++;
-		}
+                XMD_Log::info('Render in client, return XML content + path to template');
+                return $content;
+            }
 
-		if ($channel->get("OutputType")=="xml")
-                       $content = $domDoc->saveXML();
-        	else if ($channel->get("OutputType")=="web")
-                       $content = $domDoc->saveHTML();
+            /*			if (is_object($this->_node)) {
 
-		return $this->storeTmpContent($content);
-	}
+                            XMD_Log::info("obteniendo propiedad otf para id ".$this->_node->get('IdNode'));
+                            $isOTF = $this->_node->getSimpleBooleanProperty('otf');
 
-	private function _setNode ($idVersion = NULL) {
-
-		if(!is_null($idVersion)) {
-			$version = new Version($idVersion);
-			if (!($version->get('IdVersion') > 0)) {
-				XMD_Log::error('VIEW XSLT: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
-				return NULL;
-			}
-
-			$this->_node = new Node($version->get('IdNode'));
-			if (!($this->_node->get('IdNode') > 0)) {
-				XMD_Log::error('VIEW XSLT: El nodo que se est� intentando convertir no existe: ' . $version->get('IdNode'));
-				return NULL;
-			}
-		}else{
-        	XMD_Log::info("VIEW XSLT: Se instancia vista xslt sin idVersion");
+                            if ($isOTF) {
+                                XMD_Log::info('Render in server, return XML content');
+                                return $content;
+                            }
+                        }
+            */
         }
 
-		return true;
-	}
+        // XSLT Transformation
 
-	private function _setIdChannel ($args = array()) {
+        XMD_Log::info('Starting xslt transformation');
+        if (!file_exists($docxap)) {
+            $project = new Node($this->_idProject);
+            $nodeProjectPath = $project->class->GetNodePath();
 
-		if (array_key_exists('CHANNEL', $args)) {
-			$this->_idChannel = $args['CHANNEL'];
-		}
+            $docxap = $nodeProjectPath . '/' . $ptdFolder . '/docxap.xsl';
+        }
 
-		// Check Params:
-		if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
-			XMD_Log::error('VIEW XSLT: Node ' . $args['NODENAME'] . ' has not an associated channel');
-			return NULL;
-		}
 
-		return true;
-	}
+        $xsltHandler = new \Ximdex\XML\XSLT();
+        $xsltHandler->setXML($pointer);
+        $xsltHandler->setXSL($docxap);
+        $params = array('xmlcontent' => $content);
+        foreach ($params as $param => $value) {
+            $xsltHandler->setParameter(array($param => $value));
+        }
 
-	private function _setIdSection ($args = array()) {
+        $content = $xsltHandler->process();
+        if (empty($content)) {
+            XMD_Log::error("Error in XSLT process for $docxap ");
+            return NULL;
+        }
 
-		if($this->_node) {
-			$this->_idSection = $this->_node->GetSection();
-		} else {
-			if (array_key_exists('SECTION', $args)) {
-				$this->_idSection = $args['SECTION'];
-			}
+        // Tags counter
 
-			// Check Params:
-			if (!isset($this->_idSection) || !($this->_idSection > 0)) {
-				XMD_Log::error('VIEW XSLT: There is not associated section for the node ' . $args['NODENAME']);
-				return NULL;
-			}
-		}
+        $counter = 1;
 
-		return true;
-	}
+        $domDoc = new DOMDocument();
+        $domDoc->validateOnParse = true;
 
-	private function _setIdProject ($args = array()) {
+        if ($channel->get("OutputType") == "xml") {
+            if (!$domDoc->loadXML($content, LIBXML_NOERROR)) {
+                XMD_log::error($content);
+                XMD_log::error('XML invalid');
+                return NULL;
+            }
+        } else if ($channel->get("OutputType") == "web") {
+            if (!$domDoc->loadHTML($content)) {
+                XMD_log::error('HTML invalid');
+                return NULL;
+            }
+        } else {
+            return $this->storeTmpContent($content);
+        }
+        $xpath = new DOMXPath($domDoc);
 
-		if($this->_node) {
-			$this->_idProject = $this->_node->GetProject();
-		} else {
-			if (array_key_exists('PROJECT', $args)) {
-				$this->_idProject = $args['PROJECT'];
-			}
+        $nodeList = $xpath->query('/html/body//*[string(text())]');
 
-			// Check Params:
-			if (!isset($this->_idProject) || !($this->_idProject > 0)) {
-				XMD_Log::error('VIEW XSLT: There is not associated project for the node ' . $args['NODENAME']);
-				return NULL;
-			}
-		}
+        // In non-node transform we've not got a nodeid, and it's not necessary for tag counting.
+        foreach ($nodeList as $element) {
+            $element->setAttributeNode(new DOMAttr('uid', (($this->_node) ? $this->_node->get('IdNode') : '00000') . ".$counter"));
+            $counter++;
+        }
 
-		return true;
-	}
+        if ($channel->get("OutputType") == "xml")
+            $content = $domDoc->saveXML();
+        else if ($channel->get("OutputType") == "web")
+            $content = $domDoc->saveHTML();
+
+        return $this->storeTmpContent($content);
+    }
+
+    private function _setNode($idVersion = NULL)
+    {
+
+        if (!is_null($idVersion)) {
+            $version = new Version($idVersion);
+            if (!($version->get('IdVersion') > 0)) {
+                XMD_Log::error('VIEW XSLT: Se ha cargado una versi�n incorrecta (' . $idVersion . ')');
+                return NULL;
+            }
+
+            $this->_node = new Node($version->get('IdNode'));
+            if (!($this->_node->get('IdNode') > 0)) {
+                XMD_Log::error('VIEW XSLT: El nodo que se est� intentando convertir no existe: ' . $version->get('IdNode'));
+                return NULL;
+            }
+        } else {
+            XMD_Log::info("VIEW XSLT: Se instancia vista xslt sin idVersion");
+        }
+
+        return true;
+    }
+
+    private function _setIdChannel($args = array())
+    {
+
+        if (array_key_exists('CHANNEL', $args)) {
+            $this->_idChannel = $args['CHANNEL'];
+        }
+
+        // Check Params:
+        if (!isset($this->_idChannel) || !($this->_idChannel > 0)) {
+            XMD_Log::error('VIEW XSLT: Node ' . $args['NODENAME'] . ' has not an associated channel');
+            return NULL;
+        }
+
+        return true;
+    }
+
+    private function _setIdSection($args = array())
+    {
+
+        if ($this->_node) {
+            $this->_idSection = $this->_node->GetSection();
+        } else {
+            if (array_key_exists('SECTION', $args)) {
+                $this->_idSection = $args['SECTION'];
+            }
+
+            // Check Params:
+            if (!isset($this->_idSection) || !($this->_idSection > 0)) {
+                XMD_Log::error('VIEW XSLT: There is not associated section for the node ' . $args['NODENAME']);
+                return NULL;
+            }
+        }
+
+        return true;
+    }
+
+    private function _setIdProject($args = array())
+    {
+
+        if ($this->_node) {
+            $this->_idProject = $this->_node->GetProject();
+        } else {
+            if (array_key_exists('PROJECT', $args)) {
+                $this->_idProject = $args['PROJECT'];
+            }
+
+            // Check Params:
+            if (!isset($this->_idProject) || !($this->_idProject > 0)) {
+                XMD_Log::error('VIEW XSLT: There is not associated project for the node ' . $args['NODENAME']);
+                return NULL;
+            }
+        }
+
+        return true;
+    }
 
 }
+
 ?>

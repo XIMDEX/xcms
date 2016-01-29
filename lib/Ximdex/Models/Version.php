@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -19,21 +19,24 @@
  *  version 3 along with Ximdex (see LICENSE file).
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
- * 
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ *
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/Versions_ORM.class.php';
+namespace Ximdex\Models;
 
-class Version extends Versions_ORM {
-	
-    public function getLastestDocsByUser($idUser){
-        $query="select n.IdNode,n.name,n.IdNodeType,n.path,Version,Subversion,max(Date) from 
+use DB;
+use Ximdex\Models\ORM\VersionsOrm;
+
+
+class Version extends VersionsOrm
+{
+
+    public function getLastestDocsByUser($idUser)
+    {
+        $query = "select n.IdNode,n.name,n.IdNodeType,n.path,Version,Subversion,max(Date) from
                         (select * from
                         (select IdVersion, IdNode, Version, Subversion, File, IdUser, Date from Versions order by Date desc) x
                         group by x.IdNode) 
@@ -41,18 +44,18 @@ class Version extends Versions_ORM {
                     Subversion desc, max(Date)  LIMIT 10";
         $dbObj = new DB();
         $dbObj->Query($query);
-        $i=0;
+        $i = 0;
         $res = array();
-        while(!$dbObj->EOF) {
+        while (!$dbObj->EOF) {
             $res[$i]["IdNode"] = $dbObj->GetValue("IdNode");
             $res[$i]["IdNodeType"] = $dbObj->GetValue("IdNodeType");
             $res[$i]["name"] = $dbObj->GetValue("name");
             $res[$i]["Version"] = $dbObj->GetValue("Version");
             $res[$i]["Subversion"] = $dbObj->GetValue("Subversion");
-            $res[$i]["path"] = str_replace("/Ximdex/Projects","",$dbObj->GetValue("path"));
+            $res[$i]["path"] = str_replace("/Ximdex/Projects", "", $dbObj->GetValue("path"));
             $dbObj->Next();
             $i++;
-        }        
+        }
         return $res;
     }
 }

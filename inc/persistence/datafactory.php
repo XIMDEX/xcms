@@ -26,13 +26,13 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\Version;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.php");
 //
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');

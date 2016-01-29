@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingRng;
 
 if(!defined('TREE_VIEW_DOCXAP_PATH'))

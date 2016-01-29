@@ -28,7 +28,7 @@ namespace Ximdex\Parsers;
 
 use DataFactory;
 use dependencies;
-use DepsManager;
+use Ximdex\Deps\DepsManager;
 use DOMDocument;
 use DOMXPath;
 use ModulesManager;
@@ -42,7 +42,6 @@ use Ximdex\Logger as XMD_Log;
 
 
 ModulesManager::file('/inc/model/NodeDependencies.class.php');
-ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 
 class ParsingDependencies
 {

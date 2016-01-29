@@ -20,61 +20,62 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-
 require_once XIMDEX_ROOT_PATH . '/inc/model/orm/PortalVersions_ORM.class.php';
 
-class PortalVersions extends PortalVersions_ORM {
+class PortalVersions extends PortalVersions_ORM
+{
 
-	function __construct($id = null)  {
-		parent::__construct($id);
-	}
+    function __construct($id = null)
+    {
+        parent::__construct($id);
+    }
 
-	function upPortalVersion($portalId) {
-		$portalVersion = $this->getLastVersion($portalId);
-		$portalVersion++;
-		
-		$this->set('IdPortal', $portalId);
-		$this->set('Version', $portalVersion);
-		$this->set('TimeStamp', mktime());
+    function upPortalVersion($portalId)
+    {
+        $portalVersion = $this->getLastVersion($portalId);
+        $portalVersion++;
 
-		$idPortalVersion = parent::add();
+        $this->set('IdPortal', $portalId);
+        $this->set('Version', $portalVersion);
+        $this->set('TimeStamp', mktime());
 
-		return ($idPortalVersion > 0) ? $idPortalVersion : 0;
-	}
+        $idPortalVersion = parent::add();
 
-	function getLastVersion($portalId) {
+        return ($idPortalVersion > 0) ? $idPortalVersion : 0;
+    }
 
-		$result = parent::find('MAX(Version)', 'IdPortal = %s', array('IdPortal' => $portalId), MONO);
+    function getLastVersion($portalId)
+    {
 
-		return (int) $result[0];
-	}
+        $result = parent::find('MAX(Version)', 'IdPortal = %s', array('IdPortal' => $portalId), MONO);
 
-	function getId($portalId, $version) {
+        return (int)$result[0];
+    }
 
-		$result = parent::find('id', 'IdPortal = %s AND Version = %s', 
-			array('IdPortal' => $portalId, 'Version' => $version), MONO);
+    function getId($portalId, $version)
+    {
 
-		return (int) $result[0];
-	}
+        $result = parent::find('id', 'IdPortal = %s AND Version = %s',
+            array('IdPortal' => $portalId, 'Version' => $version), MONO);
 
-	function getAllVersions($portalId) {
-		
-		$result = parent::find('id, Version', 'IdPortal = %s', array('IdPortal' => $portalId), MULTI);
+        return (int)$result[0];
+    }
 
-		foreach ($result as $resultData) {
-			$portalVersions[] = array('id' => $resultData['id'], 'version' => $resultData['Version']);
-		}
+    function getAllVersions($portalId)
+    {
 
-		return $portalVersions;
-	}
+        $result = parent::find('id, Version', 'IdPortal = %s', array('IdPortal' => $portalId), MULTI);
+
+        foreach ($result as $resultData) {
+            $portalVersions[] = array('id' => $resultData['id'], 'version' => $resultData['Version']);
+        }
+
+        return $portalVersions;
+    }
 
 }

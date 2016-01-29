@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\Version;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/search/QueryHandler_Abstract.class.php');
 ModulesManager::file('/inc/SolrOp.class.php', 'ximRAM');

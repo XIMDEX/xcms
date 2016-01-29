@@ -27,7 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
- use DepsManager;
+ use Ximdex\Deps\DepsManager;
  use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use XMD_Log;

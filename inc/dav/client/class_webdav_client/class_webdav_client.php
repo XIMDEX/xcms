@@ -24,6 +24,7 @@
  *  @version $Revision$
  */
 use Ximdex\Models\User;
+use Ximdex\Models\Version;
 
 
 /**

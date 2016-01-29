@@ -24,13 +24,13 @@
  * @version $Revision$
  */
 
+use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\RelSectionXimlet;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
-ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 /**

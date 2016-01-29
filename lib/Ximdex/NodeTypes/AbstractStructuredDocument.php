@@ -27,7 +27,7 @@
 namespace Ximdex\NodeTypes;
 use DataFactory;
 use DB;
-use DepsManager;
+use Ximdex\Deps\DepsManager;
 use DexCache;
 use MetadataManager;
 use ModulesManager;
@@ -52,8 +52,7 @@ define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
-require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
-ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
+ ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/model/Namespaces.class.php');

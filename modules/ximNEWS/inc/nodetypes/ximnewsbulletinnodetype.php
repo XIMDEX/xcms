@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;

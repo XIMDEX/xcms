@@ -27,14 +27,12 @@
 
 namespace Ximdex\NodeTypes;
 
-use DB;
-use DepsManager;
+use DB_legacy as DB;
+use Ximdex\Deps\DepsManager;
 use Node;
 use Ximdex\Models\NodeType;
-   use XMD_Log;
+use XMD_Log;
 
-
-require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 
 /**
  * @brief Handles ximDEX sections.
@@ -42,93 +40,93 @@ require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 class SectionNode extends FolderNode
 {
 
-	/**
-	 *    Gets the documents that must be published together with the section.
-	 * @param array params
-	 * @return array
-	 */
+    /**
+     *    Gets the documents that must be published together with the section.
+     * @param array params
+     * @return array
+     */
 
-	function getPublishabledDeps($params)
-	{
+    function getPublishabledDeps($params)
+    {
 
-		$childList = $this->parent->GetChildren();
-		$node = new Node($this->parent->get('IdNode'));
-		$idNodeType = $node->get('IdNodeType');
-		$nodeType = new NodeType($idNodeType);
-		$nodeTypeName = $nodeType->get('Name');
+        $childList = $this->parent->GetChildren();
+        $node = new Node($this->parent->get('IdNode'));
+        $idNodeType = $node->get('IdNodeType');
+        $nodeType = new NodeType($idNodeType);
+        $nodeTypeName = $nodeType->get('Name');
 
-		$isOTFSection = $node->getSimpleBooleanProperty('otf');
-		if ($nodeTypeName == 'XimNewsSection') {
-			$sectionId = $this->parent->get('IdNode');
-		} else {
-			$sectionId = null;
-		}
+        $isOTFSection = $node->getSimpleBooleanProperty('otf');
+        if ($nodeTypeName == 'XimNewsSection') {
+            $sectionId = $this->parent->get('IdNode');
+        } else {
+            $sectionId = null;
+        }
 
-		$docsToPublish = array();
-		foreach ($childList as $childID) {
-			$childNode = new Node($childID);
-			$childNodeTypeID = $childNode->get('IdNodeType');
-			$childNodeType = new NodeType($childNodeTypeID);
-			$childNodeTypeName = $childNodeType->get('Name');
+        $docsToPublish = array();
+        foreach ($childList as $childID) {
+            $childNode = new Node($childID);
+            $childNodeTypeID = $childNode->get('IdNodeType');
+            $childNodeType = new NodeType($childNodeTypeID);
+            $childNodeTypeName = $childNodeType->get('Name');
 
-			if (isset($params['recurrence']) || ($childNodeTypeName != "Section" && !isset($params['recurrence']))) {
-				// filter bulletins nodetype
-				if ($isOTFSection) {
+            if (isset($params['recurrence']) || ($childNodeTypeName != "Section" && !isset($params['recurrence']))) {
+                // filter bulletins nodetype
+                if ($isOTFSection) {
 
-					$condition = (empty($params['childtype'])) ? NULL : " AND n.IdNodeType = '{$params['childtype']}'";
-					$docsToPublish = $node->TraverseTree(6, true, $condition);
-				} else {
-					$docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6));
-				}
-			}
-		}
+                    $condition = (empty($params['childtype'])) ? NULL : " AND n.IdNodeType = '{$params['childtype']}'";
+                    $docsToPublish = $node->TraverseTree(6, true, $condition);
+                } else {
+                    $docsToPublish = array_merge($docsToPublish, $childNode->TraverseTree(6));
+                }
+            }
+        }
 
-		return $docsToPublish;
-	}
+        return $docsToPublish;
+    }
 
-	/**
-	 *  Deletes the Section and its dependencies.
-	 * @return unknown
-	 */
+    /**
+     *  Deletes the Section and its dependencies.
+     * @return unknown
+     */
 
-	function DeleteNode()
-	{
+    function DeleteNode()
+    {
 
-		// Deletes dependencies in rel tables
+        // Deletes dependencies in rel tables
 
-		$depsMngr = new DepsManager();
-		$depsMngr->deleteBySource(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
+        $depsMngr = new DepsManager();
+        $depsMngr->deleteBySource(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
 
-		XMD_Log::info('Section dependencies deleted');
-	}
+        XMD_Log::info('Section dependencies deleted');
+    }
 
-	/**
-	 *  Gets all Nodes of NodeType XimNewsNewLanguage that belong to the Section.
-	 * @return array
-	 */
+    /**
+     *  Gets all Nodes of NodeType XimNewsNewLanguage that belong to the Section.
+     * @return array
+     */
 
-	function getAllXimNewsForIdSection($idSection)
-	{
+    function getAllXimNewsForIdSection($idSection)
+    {
 
-		//Not include news with shared workflow, this will be add in publicate method, batchmanager
+        //Not include news with shared workflow, this will be add in publicate method, batchmanager
 
-		$sql = "select n.IdNew as IdNew, no.SharedWorkflow from XimNewsNews as n inner join Nodes as no on n.IdNew =no.IdNode and isnull(no.SharedWorkflow)";
+        $sql = "select n.IdNew as IdNew, no.SharedWorkflow from XimNewsNews as n inner join Nodes as no on n.IdNew =no.IdNode and isnull(no.SharedWorkflow)";
 
-		if ($idSection != null) {
-			$sql .= " and IdSection = $idSection";
-		}
+        if ($idSection != null) {
+            $sql .= " and IdSection = $idSection";
+        }
 
-		$news = array();
-		$i = 0;
-		$dbObj = new DB();
-		$dbObj->Query($sql);
+        $news = array();
+        $i = 0;
+        $dbObj = new DB();
+        $dbObj->Query($sql);
 
-		while (!$dbObj->EOF) {
-			$news[$i] = $dbObj->GetValue("IdNew");
-			$i++;
-			$dbObj->Next();
-		}
+        while (!$dbObj->EOF) {
+            $news[$i] = $dbObj->GetValue("IdNew");
+            $i++;
+            $dbObj->Next();
+        }
 
-		return $news;
-	}
+        return $news;
+    }
 }

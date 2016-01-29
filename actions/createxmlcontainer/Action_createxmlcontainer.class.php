@@ -33,7 +33,6 @@ use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
-ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 
 class Action_createxmlcontainer extends ActionAbstract {
 

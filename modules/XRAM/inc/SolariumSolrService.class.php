@@ -25,14 +25,14 @@
  * @version $Revision$
  */
 use Ximdex\Models\Node;
+use Ximdex\Models\Version;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
- require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.php");
+require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 //
 require_once("ISolrService.iface.php");
 require_once(XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');

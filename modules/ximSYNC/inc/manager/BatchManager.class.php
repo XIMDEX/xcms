@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Deps\DepsManager;
 use Ximdex\Models\NodeType;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Utils\Logs\MN_Log;
@@ -40,8 +41,7 @@ ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 ModulesManager::file('inc/manager/Publication_Log.class.php', 'ximSYNC');
- ModulesManager::file('/inc/dependencies/DepsManager.class.php');
-ModulesManager::file('/inc/model/RelFramesPortal.class.php');
+ ModulesManager::file('/inc/model/RelFramesPortal.class.php');
 ModulesManager::file('/inc/model/PortalVersions.class.php');
 
 

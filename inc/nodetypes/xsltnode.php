@@ -25,6 +25,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\FileNode;
 use Ximdex\Utils\FsUtils;
