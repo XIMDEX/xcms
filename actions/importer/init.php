@@ -32,7 +32,6 @@
 	
 	$validOperations = array(OPERATION_ADD, OPERATION_UPDATE, OPERATION_DELETE);
 
-   ModulesManager::file('/inc/fsutils/ZipArchiver.class.php');
    ModulesManager::file('/inc/io/BaseIO.class.php');
    ModulesManager::file('/actions/importer/actionIO.php');
    ModulesManager::file('/inc/auth/Authenticator.class.php');

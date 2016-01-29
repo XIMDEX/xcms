@@ -27,14 +27,10 @@
 
 namespace Ximdex\Utils\Logs;
 
-use compress;
-use file;
 use Ximdex\Utils\FsUtils;
-use params;
-use size;
-use TarArchiver;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/TarArchiver.class.php');
+use Ximdex\Utils\TarArchiver;
+
 
 class Appender_rollingfile extends Appender_file
 {
@@ -43,10 +39,10 @@ class Appender_rollingfile extends Appender_file
     var $_compress;
 
     /**
-     * @param object params['layout'] Formato de salida
-     * @param string params['file'] Fichero de registro
-     * @param string params['maxsize'] Tamanno maximo del fichero de registro antes de que sea rotado
-     * @param boolean params['compress'] Indica si se debe comprimir el fichero de registro rotado
+     * param object params['layout'] Formato de salida
+     * param string params['file'] Fichero de registro
+     * param string params['maxsize'] Tamanno maximo del fichero de registro antes de que sea rotado
+     * param boolean params['compress'] Indica si se debe comprimir el fichero de registro rotado
      */
     function Appender_rollingfile(&$params)
     {
@@ -67,7 +63,9 @@ class Appender_rollingfile extends Appender_file
 
     /**
      * Establece el fichero en el que se volcaran los registros
-     * @param string file
+      */
+    /**
+     * @param $file string
      */
     function setFile($file)
     {
@@ -79,7 +77,9 @@ class Appender_rollingfile extends Appender_file
     /**
      * Establece el tamanno maximo que ocupara el fichero antes de ser rotado.
      * Debe ser una cadena que exprese la unidad de medida [KB|MB|GB], si se omite la unidad se usara KB.
-     * @param string size Tamanno maximo del fichero de registro antes de que sea rotado
+      */
+    /**
+     * @param $size int
      */
     function setMaxFileSize($size)
     {

@@ -25,6 +25,7 @@
  */
 
 
+namespace Ximdex\Utils;
 /**
  * Constant definition
  *

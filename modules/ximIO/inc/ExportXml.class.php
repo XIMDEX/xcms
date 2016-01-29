@@ -27,14 +27,10 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Runtime\App;
+use Ximdex\Utils\TarArchiver;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
 
-//
 
-ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 
 
 define ('CONST_FIRST_ALLOWED_NODE', 'Projects');
