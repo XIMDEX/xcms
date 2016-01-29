@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 use Ximdex\Runtime\Cli\CliParser;
 
@@ -45,8 +46,7 @@ set_error_handler("showErrors");
 //
 
 ModulesManager::file('/inc/io/connection/ConnectionManager.class.php');
-ModulesManager::file('/inc/model/Pumper.class.php', 'ximSYNC');
- ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
+  ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 
 /*

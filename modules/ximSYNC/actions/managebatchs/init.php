@@ -37,7 +37,7 @@ use Ximdex\Models\Action ;
 	 //
 	 ModulesManager::file('/inc/utils.php');
   	 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
- 	 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
+ 	 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
  	 ModulesManager::file('/actions/managebatchs/forms.php', 'ximSYNC');
 	 ModulesManager::file('/xmd/js/sajax/sajax.php');
 	

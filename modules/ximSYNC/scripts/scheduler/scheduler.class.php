@@ -36,7 +36,7 @@ ModulesManager::file('/inc/manager/BatchManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
-ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
+ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 if (!ModulesManager::isEnabled('XIMSYNC')) {

@@ -27,11 +27,11 @@
 
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Channel;
+use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
 
 
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/ServerFrame.class.php');
-include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/Pumper.class.php');
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMManager.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMProcess.class.php");
 

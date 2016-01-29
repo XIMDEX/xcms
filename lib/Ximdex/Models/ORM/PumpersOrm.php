@@ -1,5 +1,6 @@
 <?php
 
+namespace Ximdex\Models\ORM;
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +25,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Pumpers_ORM extends \Ximdex\Data\GenericData
+class PumpersOrm extends \Ximdex\Data\GenericData
 {
     var $_idField = 'PumperId';
     var $_table = 'Pumpers';

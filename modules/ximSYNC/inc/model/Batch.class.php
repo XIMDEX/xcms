@@ -32,7 +32,7 @@ ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/persistence/datafactory.php');
 ModulesManager::file('/inc/model/orm/Batchs_ORM.class.php', 'ximSYNC');
-ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
+ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
 
 /**
  * 	@brief Handles operations with Batchs.

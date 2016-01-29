@@ -36,7 +36,7 @@ include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 ModulesManager::file('ximSYNC', '/inc/manager/BatchManager.class.php');
 ModulesManager::file('ximNEWS', '/inc/model/XimNewsNews.inc');
 ModulesManager::file('ximSYNC', '/inc/model/NodesToPublish.class.php');
-ModulesManager::file('ximSYNC', '/conf/synchro.conf');
+ModulesManager::file('ximSYNC', '/conf/synchro_conf.php');
 
 /**
 *	@brief Manages the phases previous and later of the publication process.

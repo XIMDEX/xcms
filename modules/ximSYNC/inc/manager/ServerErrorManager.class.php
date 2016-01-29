@@ -27,12 +27,11 @@
 
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
-
-if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
+use Ximdex\Logger as XMD_Log ;
+use DB_legacy as DB;
 
 include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/inc/model/ServerErrorByPumper.class.php");
-include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/conf/synchro.conf");
+include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/conf/synchro_conf.php");
 
 /**
 *	@brief Manages the errors found during the sending of ServerFrames to Server.
@@ -69,7 +68,7 @@ class ServerErrorManager {
 					$error->set('UnactivityCycles',0);
 					$error->update();
 
-					$this->enableServer($idServer, $idPumper);
+					self::enableServer($idServer, $idPumper);
 				} else {
 					$error->sumUnactivityCycles();
 				}
@@ -86,9 +85,10 @@ class ServerErrorManager {
 
 	/**
 	*  Disables a Server in which have detected an error.
-	*  @param int pumperId
-	*/
-
+ 	*/
+	/**
+	 * @param $pumperId
+	 */
     function disableServerByPumper($pumperId) {
 		$serverError = new ServerErrorByPumper();
 		$serverError->loadByPumper($pumperId);
@@ -105,10 +105,12 @@ class ServerErrorManager {
 
 	/**
 	*  Enables a Server in which a previous error is fixed.
-	*  @param int pumperId
 	*/
-
-	function enableServer($idServer, $idPumper) {
+	/**
+	 * @param $idServer
+	 * @param $idPumper
+	 */
+	  static public function   enableServer($idServer, $idPumper) {
 
 		XMD_Log::info(_("Enabling server")." $idServer");
 
@@ -124,4 +126,3 @@ class ServerErrorManager {
 	}
 
 }
-?>
