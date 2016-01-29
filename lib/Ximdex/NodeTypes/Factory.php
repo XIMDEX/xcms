@@ -36,6 +36,7 @@ class Factory
         'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode') ,
         'usernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\UserNode'),
         'workflow_process' => array('ClassName' => '\\Ximdex\\NodeTypes\\WorkflowProcess'),
+        'XimletNode' => array('ClassName' => '\\Ximdex\\NodeTypes\\XimletNode'),
 
     );
 
