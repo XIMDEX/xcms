@@ -25,11 +25,9 @@
  */
 
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-include_once(XIMDEX_ROOT_PATH . "/inc/properties/systemPropertiesManager.inc");
+
+include_once(XIMDEX_ROOT_PATH . "/inc/properties/systemPropertiesManager.php");
 $identificador = $_GET['identificador'];
 if ($identificador != null) {
     $manager = new SystemPropertiesManager($identificador);
