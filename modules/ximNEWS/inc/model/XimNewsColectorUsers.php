@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Models\State;
 
 ModulesManager::file('/inc/model/orm/XimNewsColectorUsers_ORM.class.php', 'ximNEWS');
 

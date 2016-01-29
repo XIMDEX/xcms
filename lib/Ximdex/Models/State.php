@@ -20,24 +20,22 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\StatesOrm;
+use Ximdex\Logger as XMD_Log;
 
 
- 
+class State extends StatesOrm
+{
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/States_ORM.class.php';
-
-class State extends States_ORM {
-	
-	function loadByName($name) {
+	function loadByName($name)
+	{
 
 		$result = $this->find('IdState', 'Name = %s', array($name), MONO);
 		if (count($result) < 1) {
@@ -48,13 +46,14 @@ class State extends States_ORM {
 			XMD_Log::error('Inconsistency: Several states found with the given name');
 			return NULL;
 		}
-		
+
 		$state = new State($result[0]);
 
 		return $state->get('IdState');
 	}
-	
-	function getPreviousState() {
+
+	function getPreviousState()
+	{
 		$result = $this->find('IdState', 'NextState = %s', array($this->get('IdState')), MONO);
 		if (count($result) < 1) {
 			XMD_Log::error('Inconsistency: No previous state found');
@@ -64,15 +63,16 @@ class State extends States_ORM {
 			XMD_Log::error('Inconsistency: Several previous states found');
 			return NULL;
 		}
-		
+
 		if (!($result[0] > 0)) {
 			XMD_Log::error('Inconsistency: The estimated previous state is not valid');
 			return NULL;
 		}
 		return $result[0];
 	}
-	
-	function loadFirstState() {
+
+	function loadFirstState()
+	{
 		$result = $this->find('IdState', 'IsRoot = 1', NULL, MONO);
 		if (count($result) < 1) {
 			XMD_Log::error('Init state was not found');
@@ -82,12 +82,13 @@ class State extends States_ORM {
 			XMD_Log::error('Inconsistency: Several init states found');
 			return NULL;
 		}
-		
+
 		$this->State($result[0]);
 		return $this->get('IdState');
 	}
-	
-	function loadLastState() {
+
+	function loadLastState()
+	{
 		$result = $this->find('IdState', 'IsEnd = 1', NULL, MONO);
 		if (count($result) < 1) {
 			XMD_Log::error('Final state not found');
@@ -97,16 +98,17 @@ class State extends States_ORM {
 			XMD_Log::error('Inconsistency: Several final states found');
 			return NULL;
 		}
-		
+
 		$this->State($result[0]);
 		return $this->get('IdState');
 	}
-	
-	function getSortedStatus() {
+
+	function getSortedStatus()
+	{
 		$idState = $this->loadFirstState();
 		$allStatus[] = $idState;
 		$status = new State($idState);
-		while(!$status->get('IsEnd')) {
+		while (!$status->get('IsEnd')) {
 			$idState = $status->get('NextState');
 			$status = new State($idState);
 			if (!$status->get('IdState') > 0) {
@@ -117,22 +119,23 @@ class State extends States_ORM {
 		}
 		return $allStatus;
 	}
-	
-	function add() {
+
+	function add()
+	{
 		$nextState = new State($this->get('NextState'));
 		$idPreviousState = $nextState->getPreviousState();
-		
+
 		$result = parent::add();
 		if (!($result > 0)) {
 			XMD_Log::warning('Workflow state could not be inserted');
 			return false;
 		}
-		
-		$previousState	= new State($idPreviousState);
+
+		$previousState = new State($idPreviousState);
 		$previousState->set('NextState', $result);
 		$previousState->update();
-		
+
 		return $this->get('IdState');
 	}
-	
+
 }

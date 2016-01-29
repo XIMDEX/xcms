@@ -31,10 +31,10 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Messages;
 use Ximdex\Utils\Session;
 use Ximdex\Logger as XMD_Log;
 
- ModulesManager::file('/inc/model/State.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 
 // BaseIO API
@@ -47,13 +47,15 @@ ModulesManager::file('/inc/auth/Auth.class.php');
 class BaseIO
 {
 
-
+    /**
+     * @var null|Messages
+     */
     var $messages = NULL;
 
 
     function BaseIO()
     {
-        $this->messages = new \Ximdex\Utils\Messages();
+        $this->messages = new  Messages();
     }
 
     /**

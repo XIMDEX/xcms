@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\State;
 
 ModulesManager::file('/inc/model/orm/PublishingReport_ORM.class.php', 'ximSYNC');
 

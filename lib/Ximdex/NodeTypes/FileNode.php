@@ -39,7 +39,7 @@ use nodeTypeID;
 use parentID;
 use recurrence;
 use sourcePath;
-use State;
+use Ximdex\Models\State;
 use stateID;
 use unknown;
 use Ximdex\Models\Version;

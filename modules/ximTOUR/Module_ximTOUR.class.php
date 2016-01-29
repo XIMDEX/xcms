@@ -30,11 +30,9 @@ use Ximdex\Modules\Module;
 
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
- ModulesManager::file('/inc/model/RelRolesActions.class.php');
+ModulesManager::file('/inc/model/RelRolesActions.class.php');
 
 ModulesManager::file('/inc/utils.php');
-ModulesManager::file('/inc/model/orm/RelRolesStates_ORM.class.php');
-//ModuleSManager::file(MODULE_XIMLOADER_PATH . '/Module_ximLOADER.class.php');
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
 ModulesManager::file('/actions/addfoldernode/Action_addfoldernode.class.php');
@@ -75,12 +73,12 @@ class Module_ximTOUR extends Module
             // Adding channel and language properties (if project)
             if ($idFolder > 0 && $nodeTypeName == 'Project') {
                 $node = new Node($idFolder);
-                if(!empty($channels) && is_array($channels) ){
+                if (!empty($channels) && is_array($channels)) {
                     $node->setProperty('channel', $channels);
                     $addFolderNode->channels = $channels;
                 }
 
-                if(!empty($languages) && is_array($languages) ){
+                if (!empty($languages) && is_array($languages)) {
                     $node->setProperty('language', $languages);
                     $addFolderNode->languages = $languages;
                 }
