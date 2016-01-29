@@ -9,81 +9,90 @@ use Ximdex\Runtime\Request;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
-class Action_common implements APIRestAction, SecuredAction{
-    	const SEPARATOR = ",";
+class Action_common implements APIRestAction
+{
+    const SEPARATOR = ",";
 
-    	/**
-     	* <p>Read file information</p>
-     	* @param type $request
-     	* @param type $response
-     	*/
-    	public function get($request, $response){
-        	$id = $request->getParam('id');
-        	$username = $request->getParam(self::USER_PARAM);
 
-        	if (!empty($id)) {
-            		$nodeService = new \Ximdex\Services\Node();
-            		if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::BINARY_FILE)) {
-                		$nodeInfo = $nodeService->getNodeInfo($id);
-                		unset($nodeInfo['nodeType']);
-                		unset($nodeInfo['children']);
-                		$response->header_status(200);
-                		$response->setContent(array("error" => 0, "data" => $nodeInfo));
-            		}else{
-                		$response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist or you don't have permission to manage it"));
-                		$response->header_status(404);
-            		}
-        	} else {
-            		/* get all files for the user */
-            		/* TODO: How to do it, query DB directly or do it through NodeService */
-        	}
-    	}
+    public function isSecure()
+    {
+        return true;
+    }
+
+    /**
+     * <p>Read file information</p>
+     * @param type $request
+     * @param type $response
+     */
+    public function get($request, $response)
+    {
+        $id = $request->getParam('id');
+        $username = $request->getParam(self::USER_PARAM);
+
+        if (!empty($id)) {
+            $nodeService = new \Ximdex\Services\Node();
+            if ($nodeService->existsNode($id) && $nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::BINARY_FILE)) {
+                $nodeInfo = $nodeService->getNodeInfo($id);
+                unset($nodeInfo['nodeType']);
+                unset($nodeInfo['children']);
+                $response->header_status(200);
+                $response->setContent(array("error" => 0, "data" => $nodeInfo));
+            } else {
+                $response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist or you don't have permission to manage it"));
+                $response->header_status(404);
+            }
+        } else {
+            /* get all files for the user */
+            /* TODO: How to do it, query DB directly or do it through NodeService */
+        }
+    }
 
     /**
      * <p>Create new file</p>
      * @param type $request
      * @param type $response
-     * 
+     *
      * parentid:
      * name:
-     * 
+     *
      * languages: optional, default all configured languages
      * channels: optional, default all configured channels
-     * 
-     * 
+     *
+     *
      */
-	public function post($request, $response){
-        	$id = $request->getParam('parentid');
-        	$name = $request->getParam('name');
-        	$nodeService = new \Ximdex\Services\Node();
+    public function post($request, $response)
+    {
+        $id = $request->getParam('parentid');
+        $name = $request->getParam('name');
+        $nodeService = new \Ximdex\Services\Node();
 
-        	if (empty($name)) {
-            		$this->createErrorResponse($response, "The name for the file is missing");
-            		return;
-        	}
+        if (empty($name)) {
+            $this->createErrorResponse($response, "The name for the file is missing");
+            return;
+        }
 
-        	if (empty($id) || $nodeService->getNode($id)== null) {
-            		$this->createErrorResponse($response, "The parent id parameter where to create the new file is missing or it does not exist");
-            		return;
-        	}
+        if (empty($id) || $nodeService->getNode($id) == null) {
+            $this->createErrorResponse($response, "The parent id parameter where to create the new file is missing or it does not exist");
+            return;
+        }
 
-        	if (empty($id)) {
-            		$this->createErrorResponse($response, "The id of the schema to be used for the new file is missing");
-            		return;
-        	}
+        if (empty($id)) {
+            $this->createErrorResponse($response, "The id of the schema to be used for the new file is missing");
+            return;
+        }
 
-        	$this->createiNode($request, $response);
-    	}
+        $this->createiNode($request, $response);
+    }
 
     /**
      * <p>Update file information</p>
-     * 
+     *
      * content:
      * validate:
      * name: optional
-     * 
+     *
      * @param type $request
-     * @param type $response 
+     * @param type $response
      */
     public function put($request, $response)
     {
@@ -92,14 +101,14 @@ class Action_common implements APIRestAction, SecuredAction{
         $username = $request->getParam(self::USER_PARAM);
         $content = $request->getParam('content');
         $validate = $request->getParam('validate');
-        
+
         $nodeService = new \Ximdex\Services\Node();
 
         if (empty($id)) {
             $this->createErrorResponse($response, "The id of the file is missing");
             return;
         }
-        
+
         if (!$nodeService->existsNode($id) || !$nodeService->hasPermissionOnNode($username, $id) || !$nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_DOCUMENT)) {
             $this->createErrorResponse($response, "The id for the file is missing or you don't have permission to manage it");
             return;
@@ -160,44 +169,45 @@ class Action_common implements APIRestAction, SecuredAction{
     /**
      * <p>Delete file information</p>
      * @param type $request
-     * @param type $response 
+     * @param type $response
      */
-	public function delete($request, $response){
-        	$id = $request->getParam('id');
-        	$username = $request->getParam(self::USER_PARAM);
-        	$nodeService = new \Ximdex\Services\Node();
+    public function delete($request, $response)
+    {
+        $id = $request->getParam('id');
+        $username = $request->getParam(self::USER_PARAM);
+        $nodeService = new \Ximdex\Services\Node();
 
-        	if (!empty($id)) {
-            		if (!$nodeService->existsNode($id)) {
-                		$response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist and it can not be deleted"));
-                		$response->header_status(404);
-                		return;
-            		}
+        if (!empty($id)) {
+            if (!$nodeService->existsNode($id)) {
+                $response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist and it can not be deleted"));
+                $response->header_status(404);
+                return;
+            }
 
-            		if ($nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::BINARY_FILE)) {
-                		$removed = $nodeService->deleteNode($id);
-                
-                		if ($removed) {
-                    			$response->header_status(200);
-                    			$response->setContent(array("error" => 0, "data" => "The file has been successfully deleted."));
-                		}else{
-                    			$response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist and it can not be deleted"));
-                    			$response->header_status(404);
-                		}
-            		}else{
-                		$response->header_status(400);
-                		$response->setContent(array("error" => 1, "msg" => "You don't have permission to delete this file."));
-            		}
-        	} else {
-            	/* delete all documents (all XML Containers) for the user */
-            	/* TODO: How to do it, query DB directly or do it through NodeService */
-        	}
-    	}
+            if ($nodeService->hasPermissionOnNode($username, $id) && $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::BINARY_FILE)) {
+                $removed = $nodeService->deleteNode($id);
+
+                if ($removed) {
+                    $response->header_status(200);
+                    $response->setContent(array("error" => 0, "data" => "The file has been successfully deleted."));
+                } else {
+                    $response->setContent(array("error" => 1, "msg" => "The requested file with id " . $id . " does not exist and it can not be deleted"));
+                    $response->header_status(404);
+                }
+            } else {
+                $response->header_status(400);
+                $response->setContent(array("error" => 1, "msg" => "You don't have permission to delete this file."));
+            }
+        } else {
+            /* delete all documents (all XML Containers) for the user */
+            /* TODO: How to do it, query DB directly or do it through NodeService */
+        }
+    }
 
     /**
      * <p>Creates a new XML Container</p>
      * @param Request $request The request
-     * @return type 
+     * @return type
      */
     private function createXmlContainer($request, $response)
     {
@@ -223,8 +233,7 @@ class Action_common implements APIRestAction, SecuredAction{
             foreach ($channelsNode as $channelNode) {
                 array_push($channels, $channelNode['IdChannel']);
             }
-        }
-        /* Split the supplied channels using the SEPARATOR */ else {
+        } /* Split the supplied channels using the SEPARATOR */ else {
 
             $channels = explode(self::SEPARATOR, $channels);
         }
@@ -354,7 +363,7 @@ class Action_common implements APIRestAction, SecuredAction{
      * @param type $idContainer
      * @param type $idTemplate
      * @param type $formChannels
-     * @return type 
+     * @return type
      */
     private function _insertLanguage($isoName, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels)
     {
@@ -395,7 +404,7 @@ class Action_common implements APIRestAction, SecuredAction{
      * @param Response $response The response object
      * @param string $message The message of the response
      * @param int $code The code of the response
-     * 
+     *
      */
     private function createErrorResponse($response, $message, $code = 400)
     {

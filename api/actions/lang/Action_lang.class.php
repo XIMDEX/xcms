@@ -33,9 +33,12 @@ use Ximdex\Models\Node;
 * <p>Handles requests to obtain the languages</p>
 */
 
-class Action_lang extends AbstractAPIAction implements SecuredAction
+class Action_lang extends AbstractAPIAction
 {
-
+    public function isSecure()
+    {
+        return true;
+    }
     /**
      * <p>Default method for this action</p>
      * <p>Gets all registered languages or a specific one</p>

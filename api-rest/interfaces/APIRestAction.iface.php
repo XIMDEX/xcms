@@ -21,8 +21,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 /**
@@ -32,26 +32,25 @@
  */
 interface APIRestAction
 {
-	const USER_PARAM = 'XimUser';
-     /**
+    const USER_PARAM = 'XimUser';
+
+    /**
      * <p>Create method</p>
      */
     public function post($request, $response);
-    
+
     /**
      * <p>Read method</p>
      */
     public function get($request, $response);
-    
+
     /**
      * <p>Update method</p>
      */
     public function put($request, $response);
-    
+
     /**
      * <p>Delete method</p>
      */
     public function delete($request, $response);
 }
-
-?>

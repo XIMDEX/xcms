@@ -26,8 +26,7 @@
  */
 //
 namespace Ximdex\MVC;
-
-
+use Ximdex\API\AbstractAPIAction;
 
 
 /**
@@ -86,10 +85,13 @@ class FrontControllerAPIREST extends FrontController
         }
 
         $factory = new \Ximdex\Utils\Factory($this->apiActionsFolder . '/' . $this->action, "Action_");
+        /**
+         * @var $actionObject AbstractAPIAction
+         */
         $actionObject = $factory->instantiate($this->action);
 
         //Retrieve and check the ximtoken if the action requires security
-        if (in_array('SecuredAction', class_implements($actionObject))) {
+        if ( $actionObject->isSecure()  ) {
             $encryptedXimtoken = $this->request->getParam(self::XIM_API_TOKEN_PARAM);
             if ($encryptedXimtoken == null)
                 $this->sendErrorResponse('400', 'Token missing for this action');

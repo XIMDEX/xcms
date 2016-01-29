@@ -44,7 +44,12 @@ ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
  * <p>API Node action</p>
  * <p>Handles requests to obtain and deal with nodes</p>
  */
-class Action_node extends AbstractAPIAction implements SecuredAction {
+class Action_node extends AbstractAPIAction   {
+    public function isSecure()
+    {
+        return true;
+    }
+
     const SEPARATOR = ",";
 
     /**

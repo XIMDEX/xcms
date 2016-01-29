@@ -29,6 +29,20 @@ use Ximdex\Runtime\ResponseBuilder;
  */
 abstract class AbstractAPIAction
 {
+    /**
+     * @var bool
+     */
+    public   $secure = false ;
+
+    /**
+     * Returns true/false
+     * @return bool
+     */
+    public function isSecure() {
+        return $this->secure ;
+    }
+
+
 
     const USER_PARAM = 'XimUser';
     /**

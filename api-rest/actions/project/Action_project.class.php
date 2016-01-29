@@ -2,9 +2,12 @@
 
 use Ximdex\Models\Node;
 
-class Action_project implements APIRestAction, SecuredAction
+class Action_project implements APIRestAction
 {
-
+    public function isSecure()
+    {
+        return true;
+    }
     private static $NODE_TYPE_PROJECT = 5013;
 
     /**

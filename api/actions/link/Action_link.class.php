@@ -3,7 +3,11 @@
 
 use Ximdex\API\AbstractAPIAction;
 
-class Action_link extends AbstractAPIAction implements SecuredAction {
+class Action_link extends AbstractAPIAction   {
+	public function isSecure()
+	{
+		return true;
+	}
 	public function index($request, $response){
 
 	}

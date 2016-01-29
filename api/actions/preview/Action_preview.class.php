@@ -21,8 +21,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\API\AbstractAPIAction;
@@ -41,170 +41,181 @@ ModulesManager::file('/inc/repository/nodeviews/View_Xslt.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
 
 
- /* <p>API language action</p>
- * <p>Handles requests to obtain the languages</p>
- */
-class Action_preview extends AbstractAPIAction implements SecuredAction {
+/* <p>API language action</p>
+* <p>Handles requests to obtain the languages</p>
+*/
 
-	/**
-     	* <p>Default method for this action</p>
-     	* <p>Renders a XML file into the browser</p>
-     	* @param Request The current request
-     	* @param Response The Response object to be sent and where to put the response of this action
-     	*/
-    	public function index($request, $response) {
-		// Initializes variables
-                $args = array();
+class Action_preview extends AbstractAPIAction
+{
+    public function isSecure()
+    {
+        return true;
+    }
 
-                // Receives request params
-                $idnode = $request->getParam("nodeid");
-                $idchannel = $request->getParam("channelid");
-                $json = $request->getParam("json");
+    /**
+     * <p>Default method for this action</p>
+     * <p>Renders a XML file into the browser</p>
+     * @param Request The current request
+     * @param Response The Response object to be sent and where to put the response of this action
+     */
+    public function index($request, $response)
+    {
+        // Initializes variables
+        $args = array();
 
-		if($json == "" || $json == null){$json=0;}
+        // Receives request params
+        $idnode = $request->getParam("nodeid");
+        $idchannel = $request->getParam("channelid");
+        $json = $request->getParam("json");
 
-                if(empty($idchannel)){$idchannel = $request->getParam("channel");}
+        if ($json == "" || $json == null) {
+            $json = 0;
+        }
 
-		if (!$this->checkParameters($request, $response)) {
-            		return;
-        	}
-		
-                $node = new Node($idnode);
+        if (empty($idchannel)) {
+            $idchannel = $request->getParam("channel");
+        }
 
-                // Checks if node is a structured document
-                $structuredDocument = new StructuredDocument($idnode);
-                if (!($structuredDocument->get('IdDoc') > 0)) {
-			$this->createErrorResponse("It is not possible to show preview. Provided node is not a structured document.");
-            		return;
+        if (!$this->checkParameters($request, $response)) {
+            return;
+        }
+
+        $node = new Node($idnode);
+
+        // Checks if node is a structured document
+        $structuredDocument = new StructuredDocument($idnode);
+        if (!($structuredDocument->get('IdDoc') > 0)) {
+            $this->createErrorResponse("It is not possible to show preview. Provided node is not a structured document.");
+            return;
+        }
+
+        // Checks content existence
+        $content = $node->GetContent();
+        if (!$content) {
+            $content = $structuredDocument->GetContent($request->getParam('version'), $request->getParam('sub_version'));
+        } else {
+            //$content = $this->_normalizeXmlDocument($content);
+        }
+
+        // Validates channel
+        if (!is_numeric($idchannel)) {
+            $channels = $node->getChannels();
+            $firstChannel = null;
+            $idchannel = NULL;
+            if (!empty($channels)) {
+                foreach ($channels as $c) {
+                    $c = new Channel($c);
+                    $cName = $c->getName();
+                    $ic = $c->get('IdChannel');
+                    if ($firstChannel === null) $firstChannel = $ic;
+                    if (strToUpper($cName) == 'HTML') $idchannel = $ic;
+                    unset($c);
                 }
+            }
+            if ($idchannel === null) $idchannel = $firstChannel;
 
-                // Checks content existence
-		$content=$node->GetContent();
-                if (!$content) {
-                        $content = $structuredDocument->GetContent($request->getParam('version'),$request->getParam('sub_version'));
-                } else {
-                        //$content = $this->_normalizeXmlDocument($content);
-                }
+            if ($idchannel === null) {
+                $this->createErrorResponse("It is not possible to show preview. There isn't any defined channel.");
+                return;
+            }
+        }
 
-                // Validates channel
-                if (!is_numeric($idchannel)) {
-                        $channels = $node->getChannels();
-			$firstChannel = null;
-                        $idchannel = NULL;
-                        if (!empty($channels)) {
-                                foreach ($channels as $c) {
-                                        $c = new Channel($c);
-                                        $cName = $c->getName();
-                                        $ic = $c->get('IdChannel');
-                                        if ($firstChannel === null) $firstChannel = $ic;
-                                        if (strToUpper($cName) == 'HTML') $idchannel = $ic;
-                                        unset($c);
-                                }
-                        }
-                        if ($idchannel === null) $idchannel = $firstChannel;
+        // Populates variables and view/pipelines args
+        // TODO: if node does not exist receive rest of params by request
+        $idSection = $node->GetSection();
+        $idProject = $node->GetProject();
+        $idServerNode = $node->getServer();
+        $documentType = $structuredDocument->getDocumentType();
+        $idLanguage = $structuredDocument->getLanguage();
+        $docXapHeader = null;
+        if (method_exists($node->class, "_getDocXapHeader")) {
+            $docXapHeader = $node->class->_getDocXapHeader($idchannel, $idLanguage, $documentType);
+        }
+        $nodeName = $node->get('Name');
+        $depth = $node->GetPublishedDepth();
 
-                        if ($idchannel === null) {
-				$this->createErrorResponse("It is not possible to show preview. There isn't any defined channel.");
-	                        return;
-                        }
-                }
+        $args['MODE'] = $request->getParam('mode') == 'dinamic' ? 'dinamic' : 'static';
+        $args['CHANNEL'] = $idchannel;
+        $args['SECTION'] = $idSection;
+        $args['PROJECT'] = $idProject;
+        $args['SERVERNODE'] = $idServerNode;
+        $args['LANGUAGE'] = $idLanguage;
+        $args['DOCXAPHEADER'] = $docXapHeader;
+        $args['NODENAME'] = $nodeName;
+        $args['DEPTH'] = $depth;
+        $args['DISABLE_CACHE'] = true;
+        $args['CONTENT'] = $content;
+        $args['NODETYPENAME'] = $node->nodeType->get('Name');
 
-                // Populates variables and view/pipelines args
-                // TODO: if node does not exist receive rest of params by request
-                $idSection = $node->GetSection();
-                $idProject = $node->GetProject();
-                $idServerNode = $node->getServer();
-                $documentType = $structuredDocument->getDocumentType();
-                $idLanguage = $structuredDocument->getLanguage();
-                $docXapHeader = null;
-                if(method_exists($node->class, "_getDocXapHeader" ) ) {
-                        $docXapHeader = $node->class->_getDocXapHeader($idchannel, $idLanguage, $documentType);
-                }
-                $nodeName = $node->get('Name');
-                $depth = $node->GetPublishedDepth();
+        $idnode = $idnode > 10000 ? $idnode : 10000;
+        $node = new Node($idnode);
 
-                $args['MODE'] = $request->getParam('mode') == 'dinamic' ? 'dinamic' : 'static';
-                $args['CHANNEL'] = $idchannel;
-                $args['SECTION'] = $idSection;
-                $args['PROJECT'] = $idProject;
-                $args['SERVERNODE'] = $idServerNode;
-                $args['LANGUAGE'] = $idLanguage;
-                $args['DOCXAPHEADER'] = $docXapHeader;
-                $args['NODENAME'] = $nodeName;
-                $args['DEPTH'] = $depth;
-                $args['DISABLE_CACHE'] = true;
-		$args['CONTENT'] = $content;
-                $args['NODETYPENAME'] = $node->nodeType->get('Name');
+        $transformer = $node->getProperty('Transformer');
+        $args['TRANSFORMER'] = $transformer[0];
+        // Process Structured Document -> dexT/XSLT:
+        $pipelineManager = new PipelineManager();
 
-                $idnode = $idnode > 10000 ? $idnode : 10000;
-                $node = new Node($idnode);
+        $content = $pipelineManager->getCacheFromProcess(NULL, 'StrDocToDexT', $args);
+        // Specific FilterMacros View for previsuals:
+        $viewFilterMacrosPreview = new View_FilterMacrosPreview();
+        $file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
 
-                $transformer = $node->getProperty('Transformer');
-                $args['TRANSFORMER'] = $transformer[0];
-                // Process Structured Document -> dexT/XSLT:
-                $pipelineManager = new PipelineManager();
+        if ($json == true) {
+            $content = FsUtils::file_get_contents($file);
+            $this->responseBuilder->ok()->content($content)->build();
+        } else {
+            $response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
+            $response->set('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
+            $response->set('Cache-Control', array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
+            $response->set('Pragma', 'no-cache');
+            $response->set('Content-type', 'text/html');
+            $content = FsUtils::file_get_contents($file);
+            echo $content;
+        }
+    }
 
-                $content = $pipelineManager->getCacheFromProcess(NULL, 'StrDocToDexT', $args);
-                // Specific FilterMacros View for previsuals:
-                $viewFilterMacrosPreview = new View_FilterMacrosPreview();
-                $file = $viewFilterMacrosPreview->transform(NULL, $content, $args);
+    /**
+     * <p>Checks whether the required parameters are present in the request
+     * and modifies the response accordingly</p>
+     *
+     * @param $request the request
+     * @param $response the response
+     * @return true if all required parameters are present and valid and false otherwise
+     */
+    private function checkParameters($request, $response)
+    {
+        $nodeid = $request->getParam('nodeid');
+        $username = $request->getParam(self::USER_PARAM);
 
-		if($json==true){
-			$content = FsUtils::file_get_contents($file);
-        		$this->responseBuilder->ok()->content($content)->build();
-		}
-		else{
-			$response->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
-                	$response->set('Last-Modified', gmdate("D, d M Y H:i:s") . " GMT");
-                	$response->set('Cache-Control', array('no-store, no-cache, must-revalidate', 'post-check=0, pre-check=0'));
-                	$response->set('Pragma', 'no-cache');
-                	$response->set('Content-type', 'text/html');
-			$content = FsUtils::file_get_contents($file);
-			echo $content;
-		}	
-    	}
+        // Is a valid user !
+        $user = new User();
+        $user->setByLogin($username);
+        $user_id = $user->GetID();
+        if ($user_id == null) {
+            $this->createErrorResponse('Unknown user');
+            return false;
+        }
 
-	/**
-     	* <p>Checks whether the required parameters are present in the request
-     	* and modifies the response accordingly</p>
-     	* 
-     	* @param $request the request
-     	* @param $response the response
-     	* @return true if all required parameters are present and valid and false otherwise
-     	*/
-    	private function checkParameters($request, $response) {
-        	$nodeid = $request->getParam('nodeid');
-        	$username = $request->getParam(self::USER_PARAM);
+        $node = new Node($nodeid);
 
-        	// Is a valid user !
-        	$user = new User();
-        	$user->setByLogin($username);
-        	$user_id = $user->GetID();
-        	if ($user_id == null) {
-        	    	$this->createErrorResponse('Unknown user');
-        		return false;
-        	}
+        if ($nodeid == null) {
+            $this->createErrorResponse('The nodeid parameter is missing');
+            return false;
+        }
+        if ($node->GetID() == null) {
+            $this->createErrorResponse('The node ' . $nodeid . ' does not exist');
+            return false;
+        }
 
-        	$node = new Node($nodeid);
+        $nodeService = new \Ximdex\Services\Node();
 
-        	if ($nodeid == null) {
-            		$this->createErrorResponse('The nodeid parameter is missing');
-            		return false;
-        	}
-        	if ($node->GetID() == null) {
-            		$this->createErrorResponse('The node ' . $nodeid . ' does not exist');
-            		return false;
-        	}
+        $hasPermissionOnNode = $nodeService->hasPermissionOnNode($username, $nodeid, "View all nodes");
+        if (!$hasPermissionOnNode) {
+            $this->createErrorResponse('The user does not have permission on node ' . $nodeid);
+            return false;
+        }
 
-        	$nodeService = new \Ximdex\Services\Node();
-
-        	$hasPermissionOnNode = $nodeService->hasPermissionOnNode($username, $nodeid, "View all nodes");
-        	if (!$hasPermissionOnNode) {
-            		$this->createErrorResponse('The user does not have permission on node ' . $nodeid);
-        	    	return false;
-        	}
-
-        	return true;
-    	}
+        return true;
+    }
 
 }

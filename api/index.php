@@ -47,8 +47,7 @@ if (file_exists(XIMDEX_ROOT_PATH . '/conf/install-params.conf.php'))
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/api/interfaces/NoSecuredAction.iface.php');
-ModulesManager::file('/api/interfaces/SecuredAction.iface.php');
+
 
 function echo_gt_or_not($msg)
 {

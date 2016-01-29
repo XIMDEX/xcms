@@ -24,7 +24,7 @@
  *                                                                            *
  * **************************************************************************** */
 
-  //
+//
 use Ximdex\API\AbstractAPIAction;
 
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
@@ -34,7 +34,12 @@ ModulesManager::file('/inc/i18n/I18N.class.php');
  * <p>API NodeType action</p>
  * <p>Handles requests to obtain the nodetypes</p>
  */
-class Action_nodetype extends AbstractAPIAction implements SecuredAction {
+class Action_nodetype extends AbstractAPIAction
+{
+    public function isSecure()
+    {
+        return true;
+    }
 
     /**
      * <p>Default method for this action</p>
@@ -42,37 +47,38 @@ class Action_nodetype extends AbstractAPIAction implements SecuredAction {
      * @param Request The current request
      * @param Response The Response object to be sent and where to put the response of this action
      */
-    public function index($request, $response) {
+    public function index($request, $response)
+    {
         $nodeTypeId = $request->getParam("nodetypeid");
-        if($nodeTypeId == null || $nodeTypeId == "") {
+        if ($nodeTypeId == null || $nodeTypeId == "") {
             $nodeTypes = $this->getNodeTypeInfo();
-        }
-        else {
+        } else {
             $nodeTypeIdInt = intval($nodeTypeId);
-            if($nodeTypeIdInt == 0) {
+            if ($nodeTypeIdInt == 0) {
                 $this->createErrorResponse("Bad identifier supplied");
                 return;
             }
-            
+
             $nodeTypes = $this->getNodeTypeInfo($nodeTypeIdInt);
         }
 
-        if(empty($nodeTypes)) {
+        if (empty($nodeTypes)) {
             $this->createErrorResponse("No nodetypes found");
             return;
         }
-        
+
         $this->responseBuilder->ok()->content($nodeTypes)->build();
     }
-    
+
     /**
      * <p>Gets the registered nodetypes or a specific nodetype if a nodeType id is given</p>
      * @param int $nodeType The nodeType id
      * @return array containing the requested nodetypes
      */
-    private function getNodeTypeInfo($nodeType = null) {
-        $where = $nodeType == null || $nodeType == "" ? "" : " WHERE n.IdNodeType = ".$nodeType;
-        $sql = "SELECT n.IdNodeType, n.Name, n.Description, r.extension from NodeTypes n join RelNodeTypeMimeType r on(n.IdNodeType=r.IdNodeType)".$where;
+    private function getNodeTypeInfo($nodeType = null)
+    {
+        $where = $nodeType == null || $nodeType == "" ? "" : " WHERE n.IdNodeType = " . $nodeType;
+        $sql = "SELECT n.IdNodeType, n.Name, n.Description, r.extension from NodeTypes n join RelNodeTypeMimeType r on(n.IdNodeType=r.IdNodeType)" . $where;
         $dbObj = new DB();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
@@ -89,7 +95,7 @@ class Action_nodetype extends AbstractAPIAction implements SecuredAction {
             );
             $dbObj->Next();
         }
-        
+
         return $nodeTypes;
     }
 

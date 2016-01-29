@@ -78,9 +78,9 @@ use Ximdex\Models\Node;
  * <p>API Channel action</p>
  * <p>Handles requests to obtain the channels</p>
  */
-class Action_channel extends AbstractAPIAction implements SecuredAction
+class Action_channel extends AbstractAPIAction
 {
-
+    public $secure = true  ;
     /**
      * <p>Default method for this action</p>
      * <p>Gets all registered channels or a specific channel</p>
@@ -89,7 +89,7 @@ class Action_channel extends AbstractAPIAction implements SecuredAction
      */
     public function index($request, $response)
     {
-        $channelId = $request->getParam("channelid");
+         $channelId = $request->getParam("channelid");
         if ($channelId == null || $channelId == "") {
             $channels = $this->getChannelInfo();
         } else {

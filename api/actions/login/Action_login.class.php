@@ -65,8 +65,11 @@ ModulesManager::file('/inc/i18n/I18N.class.php');
  * <p>API Login Action</p>
  * <p>Handles login requests</p>
  */
-class Action_login extends AbstractAPIAction implements NoSecuredAction {
-
+class Action_login extends AbstractAPIAction  {
+    public function isSecure()
+    {
+        return false ;
+    }
     /**
      * <p>Default method for this action</p>
      * <p>Executes the login check method</p>

@@ -30,7 +30,12 @@ use Ximdex\Models\Node;
  * <p>API Search action</p>
  * <p>Handles requests to obtain and deal with node searching</p>
  */
-class Action_search extends AbstractAPIAction implements SecuredAction {
+class Action_search extends AbstractAPIAction
+{
+    public function isSecure()
+    {
+        return true;
+    }
 
     /**
      * <p>Default method for this action</p>
@@ -38,7 +43,8 @@ class Action_search extends AbstractAPIAction implements SecuredAction {
      * @param $request The current request
      * @param $response The response object to be sent and where to put the response of this action
      */
-    public function index($request, $response) {
+    public function index($request, $response)
+    {
         $nodename = $request->getParam('name');
 
         if (!$this->checkParameters($request, $response)) {
@@ -50,7 +56,8 @@ class Action_search extends AbstractAPIAction implements SecuredAction {
         $this->responseBuilder->ok()->content($nodeInfo)->build();
     }
 
-    private function checkParameters($request, $response) {
+    private function checkParameters($request, $response)
+    {
         $nodename = $request->getParam('name');
         $username = $request->getParam(self::USER_PARAM);
 
@@ -85,12 +92,13 @@ class Action_search extends AbstractAPIAction implements SecuredAction {
      * @param string $nodename the node name to get the information
      * @return array containing the node information
      */
-    private function getNodeInfo($nodename) {
+    private function getNodeInfo($nodename)
+    {
         $node = new Node($nodename);
         $nodeInfo = $node->GetByName($nodename);
-        foreach($nodeInfo as $info){
-            if(strcmp($info["Icon"],'action.png')!== 0){
-                $res[]=$info;
+        foreach ($nodeInfo as $info) {
+            if (strcmp($info["Icon"], 'action.png') !== 0) {
+                $res[] = $info;
             }
 
         }

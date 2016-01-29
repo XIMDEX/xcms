@@ -9,9 +9,14 @@ use Ximdex\Runtime\Request;
 
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
-class Action_document implements APIRestAction, SecuredAction
+class Action_document implements APIRestAction
 {
     const SEPARATOR = ",";
+
+    public function isSecure()
+    {
+        return true;
+    }
 
     /**
      * <p>Read document information</p>
@@ -47,16 +52,15 @@ class Action_document implements APIRestAction, SecuredAction
      * <p>Create project</p>
      * @param type $request
      * @param type $response
-     * 
+     *
      * parentid:
      * name:
-     * 
+     *
      * languages: optional, default all configured languages
      * channels: optional, default all configured channels
      * id_schema:
-
-     * 
-     * 
+     *
+     *
      */
     public function post($request, $response)
     {
@@ -70,7 +74,7 @@ class Action_document implements APIRestAction, SecuredAction
             return;
         }
 
-        if (empty($id) || $nodeService->getNode($id)== null) {
+        if (empty($id) || $nodeService->getNode($id) == null) {
             $this->createErrorResponse($response, "The parent id parameter where to create the new document is missing or it does not exist");
             return;
         }
@@ -85,13 +89,13 @@ class Action_document implements APIRestAction, SecuredAction
 
     /**
      * <p>Update project information</p>
-     * 
+     *
      * content:
      * validate:
      * name: optional
-     * 
+     *
      * @param type $request
-     * @param type $response 
+     * @param type $response
      */
     public function put($request, $response)
     {
@@ -100,14 +104,14 @@ class Action_document implements APIRestAction, SecuredAction
         $username = $request->getParam(self::USER_PARAM);
         $content = $request->getParam('content');
         $validate = $request->getParam('validate');
-        
+
         $nodeService = new \Ximdex\Services\Node();
 
         if (empty($id)) {
             $this->createErrorResponse($response, "The id of the document is missing");
             return;
         }
-        
+
         if (!$nodeService->existsNode($id) || !$nodeService->hasPermissionOnNode($username, $id) || !$nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_DOCUMENT)) {
             $this->createErrorResponse($response, "The id for the document is missing or you don't have permission to manage it");
             return;
@@ -168,7 +172,7 @@ class Action_document implements APIRestAction, SecuredAction
     /**
      * <p>Delete project information</p>
      * @param type $request
-     * @param type $response 
+     * @param type $response
      */
     public function delete($request, $response)
     {
@@ -186,12 +190,12 @@ class Action_document implements APIRestAction, SecuredAction
             if ($nodeService->hasPermissionOnNode($username, $id) && ($nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_CONTAINER || $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_DOCUMENT)))) {
                 $typeString = $nodeService->isOfNodeType($id, \Ximdex\Services\NodeType::XML_CONTAINER) ? "document container" : "document";
                 $removed = $nodeService->deleteNode($id);
-                
+
                 if ($removed) {
                     $response->header_status(200);
-                    $response->setContent(array("error" => 0, "data" => "The ". $typeString ." has been deleted successfully"));
+                    $response->setContent(array("error" => 0, "data" => "The " . $typeString . " has been deleted successfully"));
                 } else {
-                    $response->setContent(array("error" => 1, "msg" => "The requested ". $typeString. " with id " . $id . " does not exist and it can not be deleted"));
+                    $response->setContent(array("error" => 1, "msg" => "The requested " . $typeString . " with id " . $id . " does not exist and it can not be deleted"));
                     $response->header_status(404);
                 }
             } else {
@@ -207,7 +211,7 @@ class Action_document implements APIRestAction, SecuredAction
     /**
      * <p>Creates a new XML Container</p>
      * @param Request $request The request
-     * @return type 
+     * @return type
      */
     private function createXmlContainer($request, $response)
     {
@@ -233,8 +237,7 @@ class Action_document implements APIRestAction, SecuredAction
             foreach ($channelsNode as $channelNode) {
                 array_push($channels, $channelNode['IdChannel']);
             }
-        }
-        /* Split the supplied channels using the SEPARATOR */ else {
+        } /* Split the supplied channels using the SEPARATOR */ else {
 
             $channels = explode(self::SEPARATOR, $channels);
         }
@@ -364,7 +367,7 @@ class Action_document implements APIRestAction, SecuredAction
      * @param type $idContainer
      * @param type $idTemplate
      * @param type $formChannels
-     * @return type 
+     * @return type
      */
     private function _insertLanguage($isoName, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels)
     {
@@ -405,7 +408,7 @@ class Action_document implements APIRestAction, SecuredAction
      * @param Response $response The response object
      * @param string $message The message of the response
      * @param int $code The code of the response
-     * 
+     *
      */
     private function createErrorResponse($response, $message, $code = 400)
     {
