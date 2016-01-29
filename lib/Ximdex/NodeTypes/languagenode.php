@@ -21,33 +21,44 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
+use description;
+use enabled;
+use isoname;
+use name;
+use NodeProperty;
+use nodeTypeID;
+use parentID;
+use stateID;
+use unknown;
 use Ximdex\Models\Language;
 use Ximdex\NodeTypes\Root;
 
 
-
 /**
-*  @brief Handles the languages in wich could be written the documents.
-*/
-
-class LanguageNode extends Root {
+ * @brief Handles the languages in wich could be written the documents.
+ */
+class LanguageNode extends Root
+{
 
 	/**
-	*  Calls for add a row to Languages table.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string isoname
-	*  @param string description
-	*  @param int enabled
-	*  @return unknown
-	*/
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null) {
+	 *  Calls for add a row to Languages table.
+	 * @param string name
+	 * @param int parentID
+	 * @param int nodeTypeID
+	 * @param int stateID
+	 * @param string isoname
+	 * @param string description
+	 * @param int enabled
+	 * @return unknown
+	 */
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $isoname = null, $description = null, $enabled = null)
+	{
 
 		$language = new Language();
 		$result = $language->find('IdLanguage', 'IsoName = %s', array($isoname));
@@ -58,19 +69,20 @@ class LanguageNode extends Root {
 			return NULL;
 		}
 
-  		$language = new Language();
-  		$ret = $language->CreateLanguage($name, $isoname, $description, $enabled,$this->parent->get('IdNode'));
+		$language = new Language();
+		$ret = $language->CreateLanguage($name, $isoname, $description, $enabled, $this->parent->get('IdNode'));
 
 		$this->UpdatePath();
 		return $ret;
 	}
 
 	/**
-	*  Deletes the Language and its dependencies.
-	*  @return unknown
-	*/
-	function DeleteNode() {
-	 	$language = new Language($this->parent->get('IdNode'));
+	 *  Deletes the Language and its dependencies.
+	 * @return unknown
+	 */
+	function DeleteNode()
+	{
+		$language = new Language($this->parent->get('IdNode'));
 		$language->DeleteLanguage();
 
 		$nodeProperty = new NodeProperty();
@@ -78,29 +90,31 @@ class LanguageNode extends Root {
 	}
 
 	/**
-	*  Calls to method for updating the Name on the database.
-	*  @param string name
-	*  @return unknown
-	*/
-	function RenameNode($name = null) {
+	 *  Calls to method for updating the Name on the database.
+	 * @param string name
+	 * @return unknown
+	 */
+	function RenameNode($name = null)
+	{
 		$lang = new Language($this->parent->get('IdNode'));
 		$lang->SetName($name);
 		$this->UpdatePath();
 	}
 
 	/**
-	*  Gets the documents which have been written in the language.
-	*  @return array
-	*/
-	function GetDependencies() {
-		$sql ="SELECT DISTINCT IdDoc FROM StructuredDocuments WHERE IdLanguage='".$this->parent->get('IdNode')."'";
+	 *  Gets the documents which have been written in the language.
+	 * @return array
+	 */
+	function GetDependencies()
+	{
+		$sql = "SELECT DISTINCT IdDoc FROM StructuredDocuments WHERE IdLanguage='" . $this->parent->get('IdNode') . "'";
 		$this->dbObj->Query($sql);
 
 		$deps = array();
-		while(!$this->dbObj->EOF) {
+		while (!$this->dbObj->EOF) {
 			$deps[] = $this->dbObj->row["IdDoc"];
 			$this->dbObj->Next();
 		}
-    	return $deps;
+		return $deps;
 	}
 }

@@ -21,18 +21,24 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
+use User;
 use Ximdex\NodeTypes\Root;
+use XMD_Log;
 
 
 include_once XIMDEX_ROOT_PATH . "/inc/model/user.php";
 
-class UserNode extends Root {
+class UserNode extends Root
+{
 
-	function CreateNode($login = null, $parentID = null, $nodeTypeID = null, $stateID = null, $realName = null, $pass = null, $email = null,$locale = null, $generalRole = null) {
+	function CreateNode($login = null, $parentID = null, $nodeTypeID = null, $stateID = null, $realName = null, $pass = null, $email = null, $locale = null, $generalRole = null)
+	{
 
 		$user = new User();
 		$idUser = $user->SetByLogin($login);
@@ -42,14 +48,15 @@ class UserNode extends Root {
 			return NULL;
 		}
 
-  		$ret = $user->CreateNewUser($realName, $login, $pass, $email, $locale, $generalRole, $this->parent->get('IdNode'));
+		$ret = $user->CreateNewUser($realName, $login, $pass, $email, $locale, $generalRole, $this->parent->get('IdNode'));
 		$this->UpdatePath();
 
 		return $ret;
 	}
 
-	function DeleteNode() {
-	 	$user = new User($this->parent->get('IdNode'));
+	function DeleteNode()
+	{
+		$user = new User($this->parent->get('IdNode'));
 		$user->DeleteUser();
 	}
 }

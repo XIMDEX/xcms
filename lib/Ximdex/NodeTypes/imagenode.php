@@ -20,57 +20,64 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+use MetadataManager;
 use Ximdex\NodeTypes\FileNode;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
+    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
- ModulesManager::file('/inc/metadata/MetadataManager.class.php');
+ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 /***
-	Class for NodeType common 
-*/
-class CommonNode extends FileNode{
+ * Class for NodeType Image
+ */
+class ImageNode extends FileNode
+{
 
-	/**
-	 * Build a new common node file.
-	 * Use parent CreateNode method and generate a new metadata document for the new common node created.	
+    /**
+     * Build a new image node file.
+     * Use parent CreateNode method and generate a new metadata document for the new image node created.
      * @return boolean true.
      */
-	function CreateNode($name, $parentID, $nodeTypeID, $stateID=7, $sourcePath="") {
-		parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
+    {
+        parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
         $mm = new MetadataManager($this->nodeID);
         $mm->generateMetadata();
         $mm->updateSystemMetadata();
-	}	
+    }
 
-	/**
-	 * Delete the common file node and its metadata asociated.
- 	 */
-	function DeleteNode() {
-		parent::DeleteNode();
+    /**
+     * Delete image node and the metadata asociated.
+     */
+    function DeleteNode()
+    {
+        parent::DeleteNode();
         $mm = new MetadataManager($this->nodeID);
         $mm->deleteMetadata();
-	}
+    }
 
-    
-    function RenameNode() {
+
+    function RenameNode($name = null)
+    {
         $mm = new MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 
 
-    function SetContent($content, $commitNode = NULL){
+    function SetContent($content, $commitNode = NULL)
+    {
         parent::SetContent($content, $commitNode);
         $mm = new MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
     }
 
-
 }
+
 ?>
