@@ -27,7 +27,14 @@
 
 namespace Ximdex\NodeTypes;
 
-use use canAttachGroups;use description;use hasFSEntity;use icon;use isContentNode;use isRenderizable;use name;use NodeType;use nodeTypeID;use parentID;use stateID;use unknown;use Ximdex\NodeTypes\Root;
+use canAttachGroups;
+use description;
+use hasFSEntity;
+use icon;
+use isContentNode;
+use isRenderizable;
+use name;
+use NodeType;
 
 
 include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
@@ -38,52 +45,52 @@ include_once XIMDEX_ROOT_PATH . "/inc/model/nodetype.php";
 class NodeTypeNode extends Root
 {
 
-	/**
-	 *  Does nothing.
-	 * @return null
-	 */
+    /**
+     *  Does nothing.
+     * @return null
+     */
 
-	function RenderizeNode()
-	{
+    function RenderizeNode()
+    {
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 *  Calls to method for adding a row to Actions table.
-	 * @param string name
-	 * @param int parentID
-	 * @param int nodeTypeID
-	 * @param int stateID
-	 * @param string icon
-	 * @param int isRenderizable
-	 * @param int hasFSEntity
-	 * @param int canAttachGroups
-	 * @param int isContentNode
-	 * @param string description
-	 * @param string class
-	 * @return unknown
-	 */
+    /**
+     *  Calls to method for adding a row to Actions table.
+     * @param string name
+     * @param int parentID
+     * @param int nodeTypeID
+     * @param int stateID
+     * @param string icon
+     * @param int isRenderizable
+     * @param int hasFSEntity
+     * @param int canAttachGroups
+     * @param int isContentNode
+     * @param string description
+     * @param string class
+     * @return unknown
+     */
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null)
-	{
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $isRenderizable = null, $hasFSEntity = null, $canAttachGroups = null, $isContentNode = null, $description = null, $class = null)
+    {
 
-		$nodeType = new NodeType();
-		$nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
-			$description, $class, $this->parent->get('IdNode'));
+        $nodeType = new NodeType();
+        $nodeType->CreateNewNodeType($name, $icon, $isRenderizable, $hasFSEntity, $canAttachGroups, $isContentNode,
+            $description, $class, $this->parent->get('IdNode'));
 
-		$this->UpdatePath();
-	}
+        $this->UpdatePath();
+    }
 
-	/**
-	 *  Calls to method for deleting.
-	 * @return unknown
-	 */
+    /**
+     *  Calls to method for deleting.
+     * @return unknown
+     */
 
-	function DeleteNode()
-	{
+    function DeleteNode()
+    {
 
-		$ntype = new NodeType($this->nodeID);
-		$ntype->DeleteNodeType();
-	}
+        $ntype = new NodeType($this->nodeID);
+        $ntype->DeleteNodeType();
+    }
 }

@@ -28,6 +28,7 @@ class Factory
         'commonnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\CommonNode'),
         'linknode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LinkNode'),
         'nodetypenode'=> array('ClassName' => '\\Ximdex\\NodeTypes\\NodeTypeNode') ,
+        'projects'=> array('ClassName' => '\\Ximdex\\NodeTypes\\Projects') ,
 
     );
 
