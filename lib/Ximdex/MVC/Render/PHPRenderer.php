@@ -25,35 +25,55 @@
  */
 
 
-use Ximdex\Utils\Serializer;
+namespace Ximdex\MVC\Render;
+
 
 
 /**
  *
- * @brief Renderer to output using json format
+ * @brief Renderer to eval and execute a php script
  *
- * Renderer to ouput using json format, uses the Serializer class and output in utf-8
+ * Renderer to eval and execute a php script
  *
  */
-class JsonRenderer extends AbstractRenderer
+class PHPRenderer extends AbstractRenderer
 {
 
-    /**
-     * (non-PHPdoc)
-     * @see inc/mvc/renderers/AbstractRenderer#render($view)
-     */
-    function render()
-    {
-        //tomamos todos los datos comunes a todos los renders
-        parent::render();
+	/**
+	 * (non-PHPdoc)
+	 * @see inc/mvc/renderers/AbstractRenderer#render($view)
+	 */
+	function render()
+	{
+		//tomamos todos los datos comunes a todos los renders
+		parent::render();
 
-        $_parameters = $this->getParameters();
+		$template = $this->getTemplate();
 
-        $json = Serializer::encode(SZR_JSON, $_parameters);
+		if (!isset($template)) {
+			return NULL;
+		}
 
-        echo html_entity_decode($json, ENT_QUOTES, "UTF-8");
+		$parameters = $this->getParameters();
 
-        die();
-    }
+		$php_code = '';
 
+		foreach ($parameters as $varName => $data) {
+			if (!is_numeric($data)) {
+				$pos1 = strpos($data, '"');
+				$pos2 = strpos($data, "'");
+				if (($pos1 === false) && ($pos2 === false)) {
+					$data = "'" . $data . "'";
+				}
+			}
+			$php_code .= "\$$varName = $data;";
+		}
+
+		ob_start();
+		eval($php_code);
+		require($this->getTemplate());
+		$content = ob_get_clean();
+
+		return $content;
+	}
 }

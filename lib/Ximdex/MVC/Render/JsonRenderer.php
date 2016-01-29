@@ -25,25 +25,38 @@
  */
 
 
+namespace Ximdex\MVC\Render;
+
+use Ximdex\MVC\Render\AbstractRenderer;
+use Ximdex\Utils\Serializer;
+
+
 /**
  *
- * @brief ShellRenderer not implemented yet
+ * @brief Renderer to output using json format
  *
- * ShellRenderer not implemented yet
+ * Renderer to ouput using json format, uses the Serializer class and output in utf-8
+ *
  */
-class ShellRenderer extends AbstracRenderer
+class JsonRenderer extends AbstractRenderer
 {
 
     /**
-     *
-     * @return unknown_type
+     * (non-PHPdoc)
+     * @see inc/mvc/renderers/AbstractRenderer#render($view)
      */
     function render()
     {
         //tomamos todos los datos comunes a todos los renders
         parent::render();
 
-//		var_dump($this);
+        $_parameters = $this->getParameters();
+
+        $json = Serializer::encode(SZR_JSON, $_parameters);
+
+        echo html_entity_decode($json, ENT_QUOTES, "UTF-8");
+
+        die();
     }
 
 }

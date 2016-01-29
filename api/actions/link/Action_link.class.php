@@ -1,6 +1,8 @@
 <?php
 
 
+use Ximdex\API\AbstractAPIAction;
+
 class Action_link extends AbstractAPIAction implements SecuredAction {
 	public function index($request, $response){
 

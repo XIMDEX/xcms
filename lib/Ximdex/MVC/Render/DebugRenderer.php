@@ -20,20 +20,38 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+namespace Ximdex\MVC\Render;
 
+use Ximdex\MVC\Render\AbstractRenderer;
 
 
 /**
- * XIMDEX_ROOT_PATH
+ *
+ * @brief Renderer for debugging purpouses
+ *
+ * Renderer for debugging purpouses who just log the parameters in error_log
+ *
  */
-if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
+class DebugRenderer extends AbstractRenderer
+{
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/renderers/PHPRenderer.class.php');
+    /**
+     * (non-PHPdoc)
+     * @see inc/mvc/renderers/AbstractRenderer#render($view)
+     */
+    function render()
+    {
+        //tomamos todos los datos comunes a todos los renders
+        parent::render();
 
+        $_parameters = $this->getParameters();
 
-class MailRenderer extends PHPRenderer {
+        $out = print_r($_parameters, true);
+
+        error_log($out);
+        die();
+    }
 }

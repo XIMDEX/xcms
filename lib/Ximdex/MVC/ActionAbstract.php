@@ -107,7 +107,7 @@ class ActionAbstract extends IController
      * ActionAbstract constructor.
      * @param null $_render
      */
-    function __construct($_render = null)
+    public function __construct($_render = null)
     {
 
         parent::__construct();
@@ -115,10 +115,21 @@ class ActionAbstract extends IController
         $this->displayEncoding = App::getValue('displayEncoding');
 
         /** Obtaining the render to use */
+
+
         $rendererClass = $this->_get_render($_render);
 
+
+
         $factory = new Factory(RENDERER_ROOT_PATH, '');
+
+
+
+
         $this->renderer = $factory->instantiate($rendererClass . 'Renderer');
+
+
+
 
         $this->renderer->set("_BASE_TEMPLATE_PATH", sprintf('%s/xmd/template/%s/', XIMDEX_ROOT_PATH, $rendererClass));
 
@@ -529,6 +540,9 @@ class ActionAbstract extends IController
      */
     private function _get_render($rendererClass = null)
     {
+
+
+
 
         if ($rendererClass == null) {
             if (Session::get('debug_render') > 0) {

@@ -25,10 +25,10 @@
  */
 
 
+use Ximdex\MVC\Render\SmartyTextRenderer;
 use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/widgets/WidgetDependencies.class.php');
-require_once (XIMDEX_ROOT_PATH . '/inc/mvc/renderers/SmartyTextRenderer.class.php');
 
 class Widget {
 

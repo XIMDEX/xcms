@@ -26,7 +26,7 @@
  */
 
 
-use Ximdex\Runtime\Response ;
+namespace Ximdex\Runtime;
 
 /**
  * <p>Builder class to create responses</p>

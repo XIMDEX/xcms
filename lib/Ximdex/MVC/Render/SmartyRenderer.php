@@ -20,14 +20,20 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-include_once (XIMDEX_ROOT_PATH . '/inc/mvc/renderers/AbstractRenderer.class.php');
-require_once (XIMDEX_ROOT_PATH . Extensions::SMARTY);
-include_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
+namespace Ximdex\MVC\Render;
+
+use Extensions;
+use ModulesManager;
+use Smarty;
+ use Widget;
+
+require_once(XIMDEX_ROOT_PATH . Extensions::SMARTY);
+include_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
 
 
 /**
@@ -36,21 +42,18 @@ include_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
  *
  * Renderer for the compiling PHP template engine Smarty
  */
-class SmartyRenderer extends AbstractRenderer {
+class SmartyRenderer extends AbstractRenderer
+{
 
-	/**
-	 * Constructor
-	 * @return unknown_type
-	 */
-	function SmartyRenderer() {
+
+	function SmartyRenderer()
+	{
 		parent::__construct();
 	}
 
-	/**
-	 * (non-PHPdoc)
-	 * @see inc/mvc/renderers/AbstractRenderer#render($view)
-	 */
-	function render($view = NULL) {
+
+	function render($view = NULL)
+	{
 
 		//tomamos todos los datos comunes a todos los renders
 		parent::render($view);
@@ -70,7 +73,7 @@ class SmartyRenderer extends AbstractRenderer {
 		$smarty->assign("num_nodes", 1);
 		//default theme: "ximdex_theme"
 		$smarty->assign("theme", "ximdex_theme");
-		//Assign extensions class 
+		//Assign extensions class
 		$smarty->registerClass("EXTENSIONS", "Extensions");
 
 		//Encode the template about the config value
@@ -81,35 +84,40 @@ class SmartyRenderer extends AbstractRenderer {
 
 //		XMD_Log::debug("MVC::SmartyRenderer display '".$_ACTION_CONTROLLER."' template " );
 		return $smarty->fetch($this->_template);
-    }
+	}
 
 	/**
 	 *
 	 * @param $smarty
 	 * @return unknown_type
 	 */
-	private function _set_params(& $smarty) {
+	private function _set_params(& $smarty)
+	{
 
 		//Debuggins smarty
 		$debug_smarty = $this->get("debugsmarty");
-		if($debug_smarty != NULL ) {
-	 		$smarty->debugging = true; //Remove comment for debugging
+		if ($debug_smarty != NULL) {
+			$smarty->debugging = true; //Remove comment for debugging
 		}
 
-		if(strpos($this->get('method'), ".tpl") === false)
-			$_method = $this->get('method').".tpl";
+		if (strpos($this->get('method'), ".tpl") === false)
+			$_method = $this->get('method') . ".tpl";
 		else
 			$_method = $this->get('method');
 
 
-		$this->_set_controller_path($this->get('module'),$_method );
+		$this->_set_controller_path($this->get('module'), $_method);
 
 		//pasamos los par�metros a smarty
 		$_parameters = $this->getParameters();
 
 		//we initialize params used in some actions
-		if(!array_key_exists("history_value", $_parameters) ) { $_parameters["history_value"] = 1; }
-		if(!array_key_exists("goback", $_parameters) ) { $_parameters["goback"] = false; }
+		if (!array_key_exists("history_value", $_parameters)) {
+			$_parameters["history_value"] = 1;
+		}
+		if (!array_key_exists("goback", $_parameters)) {
+			$_parameters["goback"] = false;
+		}
 
 		foreach ($_parameters as $key => $value) {
 			$smarty->assign($key, $value);
@@ -126,14 +134,15 @@ class SmartyRenderer extends AbstractRenderer {
 	 * @param $_method
 	 * @return unknown_type
 	 */
-	private function _set_controller_path($module = NULL, $_method = NULL) {
+	private function _set_controller_path($module = NULL, $_method = NULL)
+	{
 
 		if (empty($module)) {
-			$_ACTION_CONTROLLER = XIMDEX_ROOT_PATH . '/actions/' .$this->get('_ACTION_COMMAND'). '/template/Smarty/' . $_method;
-			$this->set('_ACTION_CONTROLLER', $_ACTION_CONTROLLER );
+			$_ACTION_CONTROLLER = XIMDEX_ROOT_PATH . '/actions/' . $this->get('_ACTION_COMMAND') . '/template/Smarty/' . $_method;
+			$this->set('_ACTION_CONTROLLER', $_ACTION_CONTROLLER);
 		} else {
-			$_ACTION_CONTROLLER = XIMDEX_ROOT_PATH .ModulesManager::path($module).'/actions/' . $this->get('_ACTION_COMMAND') . '/template/Smarty/' . $_method;
-			$this->set('_ACTION_CONTROLLER', $_ACTION_CONTROLLER );
+			$_ACTION_CONTROLLER = XIMDEX_ROOT_PATH . ModulesManager::path($module) . '/actions/' . $this->get('_ACTION_COMMAND') . '/template/Smarty/' . $_method;
+			$this->set('_ACTION_CONTROLLER', $_ACTION_CONTROLLER);
 
 		}
 
@@ -147,7 +156,8 @@ class SmartyRenderer extends AbstractRenderer {
 	 * @param $smarty
 	 * @return unknown_type
 	 */
-	public function prefilter_widgets($source, &$smarty) {
+	public function prefilter_widgets($source, &$smarty)
+	{
 
 		$smarty->clear_compiled_tpl();
 
@@ -175,4 +185,5 @@ class SmartyRenderer extends AbstractRenderer {
 		return $ret['tpl'];
 	}
 }
+
 ?>

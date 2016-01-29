@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\API\AbstractAPIAction;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;

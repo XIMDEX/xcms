@@ -69,7 +69,7 @@ class IController
     /**
      * IController constructor.
      */
-    function __construct()
+    public function __construct()
     {
         $this->hasError = false;
         $this->messages = new  Messages();

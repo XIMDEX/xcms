@@ -23,32 +23,11 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+namespace Ximdex\MVC\Render;
+
+use Ximdex\MVC\Render\PHPRenderer;
 
 
-/**
- *
- * @brief Renderer for debugging purpouses
- *
- * Renderer for debugging purpouses who just log the parameters in error_log
- *
- */
-class DebugRenderer extends AbstractRenderer
+class MailRenderer extends PHPRenderer
 {
-
-    /**
-     * (non-PHPdoc)
-     * @see inc/mvc/renderers/AbstractRenderer#render($view)
-     */
-    function render()
-    {
-        //tomamos todos los datos comunes a todos los renders
-        parent::render();
-
-        $_parameters = $this->getParameters();
-
-        $out = print_r($_parameters, true);
-
-        error_log($out);
-        die();
-    }
 }

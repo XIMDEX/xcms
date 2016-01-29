@@ -27,7 +27,6 @@
 
 namespace Ximdex\MVC;
 
-use Ximdex\MVC\ApplicationController;
 
 /**
  *

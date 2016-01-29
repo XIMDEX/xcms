@@ -24,6 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\API\AbstractAPIAction;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 

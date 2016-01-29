@@ -24,6 +24,7 @@
  *                                                                            *
  * **************************************************************************** */
 
+use Ximdex\API\AbstractAPIAction;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;

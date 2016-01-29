@@ -27,11 +27,9 @@
 //
 namespace Ximdex\MVC;
 
-use ResponseBuilder;
+use Ximdex\Runtime\ResponseBuilder;
 use Ximdex\Runtime\App;
 
-require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
-require_once(XIMDEX_ROOT_PATH . '/api/classes/AbstractAPIAction.class.php');
 
 /**
  *

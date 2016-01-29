@@ -25,6 +25,8 @@
  * **************************************************************************** */
 
   //
+use Ximdex\API\AbstractAPIAction;
+
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 

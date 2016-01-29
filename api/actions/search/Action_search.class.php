@@ -23,6 +23,7 @@
  *                                                                            *
  *                                                                            *
  * **************************************************************************** */
+use Ximdex\API\AbstractAPIAction;
 use Ximdex\Models\Node;
 
 /**

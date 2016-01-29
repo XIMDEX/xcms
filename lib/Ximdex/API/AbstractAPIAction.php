@@ -1,4 +1,7 @@
 <?php
+namespace Ximdex\API;
+
+use Ximdex\Runtime\ResponseBuilder;
 
 /**
  *  \details &copy; 2013  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -21,55 +24,60 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-abstract class AbstractAPIAction {
-    
+abstract class AbstractAPIAction
+{
+
     const USER_PARAM = 'XimUser';
     /**
      * ResponseBuilder instance
-     * 
+     *
      */
     protected $responseBuilder;
-    
+
     /**
      * <p>Default constructor</p>
      * <p>Initializes the ResponseBuilder
-     * 
+     *
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->responseBuilder = new ResponseBuilder();
     }
-    
+
     /**
      * <p>Default method of the actions</p>
      * <p>Need to be overridden</p>
      */
     public abstract function index($request, $response);
-    
+
     /**
      * <p>Sends an error response with the specified status code and message</p>
      */
-    protected function createErrorResponse($message, $status_code = 400) {
+    protected function createErrorResponse($message, $status_code = 400)
+    {
         $this->responseBuilder->error($message, $status_code);
         $this->responseBuilder->build();
     }
-    
+
     /**
      * <p>Gets the ResponseBuilder object</p>
-     * @return type 
+     * @return type
      */
-    public function getResponseBuilder() {
+    public function getResponseBuilder()
+    {
         return $this->responseBuilder;
     }
-    
+
     /**
      * <p>Sets the ResponseBuilder instance to use</p>
      * @param ResponseBuilder $responseBuilder
      */
-    public function setResponseBuilder(ResponseBuilder $responseBuilder) {
+    public function setResponseBuilder(ResponseBuilder $responseBuilder)
+    {
         $this->responseBuilder = $responseBuilder;
     }
-    
+
 }
