@@ -25,11 +25,11 @@
  *  @version $Revision$
  */
 
+use Ximdex\NodeTypes\FileNode;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;
 
 
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
 
 /**
 *  @brief Handles RNG templates.

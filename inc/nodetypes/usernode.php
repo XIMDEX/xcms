@@ -25,12 +25,10 @@
  *  @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
+use Ximdex\NodeTypes\Root;
+
 
 include_once XIMDEX_ROOT_PATH . "/inc/model/user.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 class UserNode extends Root {
 

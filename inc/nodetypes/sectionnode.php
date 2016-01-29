@@ -25,12 +25,11 @@
  *  @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
+use Ximdex\NodeTypes\FolderNode;
 
-include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/foldernode.php";
-require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
+
+
+ require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');
 
 /**
 *  @brief Handles ximDEX sections.

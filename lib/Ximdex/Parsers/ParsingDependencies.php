@@ -35,7 +35,7 @@ use ModulesManager;
 use NodeDependencies;
 use NodeType;
 use PipelineManager;
-use StructuredDocument;
+use Ximdex\Models\StructuredDocument;
 use Ximdex;
 use Ximdex\Models\Node;
 use Ximdex\Logger as XMD_Log;

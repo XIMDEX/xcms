@@ -26,10 +26,10 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\FileNode;
 use Ximdex\Utils\FsUtils;
 
-ModulesManager::file('/inc/nodetypes/filenode.php');
-ModulesManager::component('/xslt/functions.php', 'dexT');
+ ModulesManager::component('/xslt/functions.php', 'dexT');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 
 

@@ -27,6 +27,8 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
+use Ximdex\NodeTypes\FileNode;
 use Ximdex\Utils\FsUtils;
 
 if (!defined("XIMDEX_ROOT_PATH")) {
@@ -37,8 +39,7 @@ define('DOCXAP_VIEW', 1);
 define('SOLR_VIEW', 2);
 define('XIMIO_VIEW', 3);
 
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
+ require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 //
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/dependencies/DepsManager.class.php');

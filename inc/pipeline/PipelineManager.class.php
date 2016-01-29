@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\ORM\RelServersChannelsOrm;
 use Ximdex\Utils\FsUtils;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
@@ -35,7 +36,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeCache.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/RelServersChannels_ORM.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
 
 
@@ -220,7 +220,7 @@ class PipelineManager {
 			if (!$serverInfo['IdServer']) {
 				continue;
 			}
-			$relServerChannel = new RelServersChannels_ORM();
+			$relServerChannel = new RelServersChannelsOrm();
 			$relations = $relServerChannel->find('IdRel','IdServer = %s AND IdChannel = %s',array($serverInfo['IdServer'], $idChannel),MONO);
 			if (count($relations) > 0) {
 				return true;

@@ -25,13 +25,12 @@
  *  @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
+use Ximdex\NodeTypes\Root;
+
+
 
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Links.php");
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
-require_once (XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
+ require_once (XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 
 /**
 *  @brief Handles links to external pages or web sites.
@@ -46,9 +45,9 @@ class LinkNode extends Root {
 	*  @param object parent
 	*/
 
-	function LinkNode($parent) {
+	public function __construct($parent) {
 
-		parent::Root($parent);
+		parent::__construct($parent);
 		$this->link = new Link($this->nodeID);
 	}
 

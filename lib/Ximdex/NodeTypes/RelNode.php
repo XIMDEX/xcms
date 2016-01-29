@@ -24,20 +24,24 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelServersChannels_ORM extends \Ximdex\Data\GenericData
+
+namespace Ximdex\NodeTypes;
+
+
+
+/**
+ * @deprecated
+ */
+class RelNode extends Root
 {
-    var $_idField = 'IdRel';
-    var $_table = 'RelServersChannels';
-    var $_metaData = array(
-        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
-        'IdServer' => array('type' => "int(12)", 'not_null' => 'false'),
-        'IdChannel' => array('type' => "int(12)", 'not_null' => 'false')
-    );
-    var $_uniqueConstraints = array(
-        'IdRel' => array('IdRel')
-    );
-    var $_indexes = array('IdRel');
-    var $IdRel;
-    var $IdServer = 0;
-    var $IdChannel = 0;
+
+	/**
+	 *  Does nothing.
+	 * @return null
+	 */
+
+	function RenderizeNode()
+	{
+		return null;
+	}
 }

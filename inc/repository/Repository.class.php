@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\NodeTypes\Root;
 use Ximdex\Runtime\Constants;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/IRepository.iface.php');

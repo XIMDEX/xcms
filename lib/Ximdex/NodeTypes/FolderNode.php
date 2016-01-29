@@ -24,14 +24,24 @@
  * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
+use baseIO;
+use DB;
+use depth;
+use files;
+use name;
+use nodeTypeID;
+use params;
+use parentID;
+use recurrence;
+use target;
+use unknown;
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\Root;
 use Ximdex\Utils\FsUtils;
+use XMD_Log;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
-
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
  * @brief Handles directories.
@@ -43,7 +53,6 @@ class FolderNode extends Root
 
     /**
      *  Creates the folder in data/nodes directory.
-     * @return unknown
      */
 
     function RenderizeNode()
@@ -124,12 +133,6 @@ class FolderNode extends Root
     }
 
 
-    /**
-     * @param string name
-     * @param int parentID
-     * @param int nodeTypeID
-     */
-
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
     {
         //By default, when a schemes folder is created, we insert the default RNGs for metadata
@@ -147,10 +150,6 @@ class FolderNode extends Root
     {
     }
 
-    /**
-     *  Does nothing.
-     * @param string target
-     */
 
     function CloneNode($target)
     {
@@ -176,10 +175,7 @@ class FolderNode extends Root
         $this->updatePath();
     }
 
-    /**
-     *  Gets the dependencies of the Node.
-     * @return array
-     */
+
     function GetDependencies()
     {
         $query = sprintf("SELECT DISTINCT IdNode FROM Nodes WHERE IdParent = %d", $this->nodeID);
@@ -205,12 +201,6 @@ class FolderNode extends Root
 
     }
 
-    /**
-     *  Builds a XML which contains the properties of the folder.
-     * @param int depth
-     * @param array files
-     * @param bool recurrence
-     */
 
     function ToXml($depth, & $files, $recurrence)
     {
@@ -244,10 +234,6 @@ class FolderNode extends Root
         return $xml;
     }
 
-    /**
-     *  Updates the XSLT templates which contains dinamic calls.
-     * @return unknown
-     */
 
     function updateChooseTemplates()
     {
@@ -347,10 +333,6 @@ class FolderNode extends Root
         }
     }
 
-    /**
-     *  Checks whether the folder has the is_section_index property .
-     * @return array|null
-     */
 
     function getIndex()
     {
@@ -425,5 +407,3 @@ class FolderNode extends Root
         }
     }
 }
-
-?>

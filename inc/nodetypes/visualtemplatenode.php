@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\FileNode;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Utils\FsUtils;
 
@@ -33,8 +34,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/parsers/pvd2rng/PVD2RNG.class.php");
+ require_once(XIMDEX_ROOT_PATH . "/inc/parsers/pvd2rng/PVD2RNG.class.php");
 
 class VisualTemplateNode extends FileNode {
 

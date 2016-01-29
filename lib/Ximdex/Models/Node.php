@@ -37,7 +37,7 @@ use ModulesManager;
 use PipeNodeTypes;
 use RelTagsNodes;
 use Role;
-use StructuredDocument;
+use Ximdex\Models\StructuredDocument;
 use Synchronizer;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\Logger as XMD_Log;
@@ -48,6 +48,7 @@ use Ximdex\Runtime\App,
     WorkFlow,
     NodeType,
     NodeProperty;
+use Ximdex\Utils\Factory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Session;
 use Ximdex\XML\Base;
@@ -145,20 +146,20 @@ class Node extends NodesOrm
             if ($this->nodeType->get('IdNodeType') > 0) {
                 $nodeTypeClass = $this->nodeType->get('Class');
                 $nodeTypeModule = $this->nodeType->get('Module');
-                if (!empty($nodeTypeModule)) {
-                    $fileToInclude = sprintf('%s%s/inc/nodetypes/%s.php', XIMDEX_ROOT_PATH, ModulesManager::path($nodeTypeModule), strtolower($nodeTypeClass));
-                } else {
-                    $fileToInclude = sprintf('%s/inc/nodetypes/%s.php', XIMDEX_ROOT_PATH, strtolower($nodeTypeClass));
-                }
-                if (is_file($fileToInclude)) {
-                    include_once($fileToInclude);
-                } else {
-                    XMD_Log::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
-                    die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
-                }
-                if (!$fullLoad)
-                    return;
-                $this->class = new $nodeTypeClass($this);
+
+
+
+
+                $this->class =   \Ximdex\NodeTypes\Factory::getNodeTypeByName( $nodeTypeClass ,  $this , $nodeTypeModule ) ;
+
+
+
+                    //XMD_Log::info(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
+                    //die(sprintf(_('Fatal error: the nodetype associated to %s does not exist'), $fileToInclude));
+                if (!$fullLoad) {
+                    return;}
+
+               //  $this->class = new $nodeTypeClass($this);
             }
         }
     }

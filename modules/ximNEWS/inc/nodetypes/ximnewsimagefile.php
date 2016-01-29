@@ -26,10 +26,10 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\FileNode;
 use Ximdex\Utils\FsUtils;
 
-ModulesManager::file('/inc/nodetypes/filenode.php');
-ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
+ ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 
 /**
 *   @brief Handles images for purpose of its use on the ximNEWS browser.

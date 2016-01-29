@@ -27,12 +27,13 @@
 
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
+use Ximdex\NodeTypes\FolderNode;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Logs\Automatic_Log;
 
-ModulesManager::file('/inc/nodetypes/foldernode.php');
-ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
+ ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColectorUsers.php', 'ximNEWS');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
 

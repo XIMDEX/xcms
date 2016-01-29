@@ -25,9 +25,9 @@
  *  @version $Revision$
  */
 
+use Ximdex\NodeTypes\FolderNode;
 use Ximdex\Utils\FsUtils;
 
-ModulesManager::file('/inc/nodetypes/foldernode.php');
 
 /**
 *   @brief Handles folders of images for purpose of its use on the ximNEWS browser.

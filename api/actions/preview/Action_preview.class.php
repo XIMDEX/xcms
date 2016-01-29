@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/utils.php');

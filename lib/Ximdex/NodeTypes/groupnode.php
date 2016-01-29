@@ -21,80 +21,95 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
+use Group;
+use name;
+use nodeTypeID;
+use parentID;
+use parentObj;
+use stateID;
+use unknown;
+use Ximdex\NodeTypes\Root;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
+	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
 include_once XIMDEX_ROOT_PATH . "/inc/model/group.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
-*  @brief Handles groups.
-*
-*  Its purpose is to share the permissions of operations with Nodes between different Users.
-*/
-
-class GroupNode extends Root {
+ * @brief Handles groups.
+ *
+ *  Its purpose is to share the permissions of operations with Nodes between different Users.
+ */
+class GroupNode extends Root
+{
 
 	/**
-	*  Constructor.
-	*  @param object parentObj
-	*/
+	 *  Constructor.
+	 * @param object parentObj
+	 */
 
-	function GroupNode($parentObj) {
+	public function __construct($parentObj)
+	{
 
-		parent::Root($parentObj);
+		parent::__construct($parentObj);
 	}
 
 	/**
-	*  Calls to method for adding a new Group in the database.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @return unknown
-	*/
+	 *  Calls to method for adding a new Group in the database.
+	 * @param string name
+	 * @param int parentID
+	 * @param int nodeTypeID
+	 * @param int stateID
+	 * @return unknown
+	 */
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null)	{
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null)
+	{
 
 		$grupo = new Group($this->parent->get('IdNode'));
-		$grupo -> CreateNewGroup($name, $this->parent->get('IdNode'));
+		$grupo->CreateNewGroup($name, $this->parent->get('IdNode'));
 		$this->updatePath();
 	}
 
 	/**
-	*  Calls to method for deleting.
-	*  @return unknown
-	*/
+	 *  Calls to method for deleting.
+	 * @return unknown
+	 */
 
-	function DeleteNode() {
+	function DeleteNode()
+	{
 
-	 	$grupo = new Group($this->parent->get('IdNode'));
+		$grupo = new Group($this->parent->get('IdNode'));
 		$grupo->DeleteGroup();
 	}
 
 	/**
-	*  Checks whether the Group belongs to GeneralGroup.
-	*  @return bool
-	*/
+	 *  Checks whether the Group belongs to GeneralGroup.
+	 * @return bool
+	 */
 
-	function CanDenyDeletion() {
+	function CanDenyDeletion()
+	{
 
 		$group = new Group();
 		return ($this->parent->get('IdNode') == $group->GetGeneralGroup());
 	}
 
 	/**
-	*  Calls to method for updating the Name on the database.
-	*  @param string name
-	*  @return unknown
-	*/
+	 *  Calls to method for updating the Name on the database.
+	 * @param string name
+	 * @return unknown
+	 */
 
-	function RenameNode($name = null) 	{
+	function RenameNode($name = null)
+	{
 
 		$grupo = new Group($this->parent->get('IdNode'));
 		$grupo->SetGroupName($name);

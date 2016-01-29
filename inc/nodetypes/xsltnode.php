@@ -26,13 +26,13 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\FileNode;
 use Ximdex\Utils\FsUtils;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/filenode.php");
 
 class xsltnode extends FileNode
 {

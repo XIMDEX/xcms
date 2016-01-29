@@ -1,5 +1,4 @@
 <?php
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -21,28 +20,38 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
+namespace Ximdex\Models;
 
-/**
-*  @deprecated
-*/
+ use Ximdex\Models\ORM\RelServersChannelsOrm;
+use XMD_Log;
 
-class RelNode extends Root {
 
-	/**
-	*  Does nothing.
-	*  @return null
-	*/
+class RelServersChannels extends RelServersChannelsOrm
+{
 
-	function RenderizeNode() {
-		return null;
+	function hasOtfChannel($serverId)
+	{
+		$channels = $this->find('IdChannel', 'IdServer = %s', array('IdServer' => $serverId), MONO);
+
+		if (!(sizeof($channels) > 0)) {
+			XMD_Log::info('Server without associated channels');
+			return false;
+		}
+
+		foreach ($channels as $channelId) {
+			$channel = new Channel($channelId);
+
+			if ($channel->get('RenderMode') != 'ximdex') {
+				return true;
+			}
+		}
+
+		return false;
 	}
+
 }

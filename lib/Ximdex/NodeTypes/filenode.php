@@ -24,14 +24,32 @@
  * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+use content;
+use DataFactory;
+use DB;
+use DepsManager;
+use depth;
+use files;
+use ModulesManager;
+use name;
+use newState;
+use NodeDependencies;
+use nodeTypeID;
+use parentID;
+use recurrence;
+use sourcePath;
+use State;
+use stateID;
+use unknown;
+use Version;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\Root;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Utils\FsUtils;
+use XMD_Log;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.php");

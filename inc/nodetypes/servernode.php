@@ -26,13 +26,11 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\NodeTypes\FolderNode;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/foldernode.php";
-include_once XIMDEX_ROOT_PATH . "/inc/sync/synchro.php";
+
+ include_once XIMDEX_ROOT_PATH . "/inc/sync/synchro.php";
 require_once XIMDEX_ROOT_PATH . "/inc/model/Server.class.php";
 
 class ServerNode extends FolderNode

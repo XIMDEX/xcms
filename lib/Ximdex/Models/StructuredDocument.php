@@ -21,32 +21,38 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\Models;
+
+use DataFactory;
+use DB;
+use dependencies;
+use NodeType;
 use Ximdex\Models\Node;
+use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/StructuredDocuments_ORM.class.php';
- 
-class StructuredDocument extends StructuredDocuments_ORM
+
+class StructuredDocument extends StructuredDocumentsOrm
 {
 	var $ID;
 	var $flagErr;
 	var $numErr;
 	var $msgErr;
 
-	var $errorList= array(
+	var $errorList = array(
 		1 => 'Error while connecting with the database',
 		2 => 'The structured document does not exist',
 		3 => 'Not implemented yet',
 		4 => 'A document cannot be linked to itself'
-		);
+	);
 
-	public function __construct($id = null )
+	public function __construct($id = null)
 	{
-		$this->ID = $id ;
+		$this->ID = $id;
 		$this->flagErr = FALSE;
 		$this->autoCleanErr = TRUE;
 		parent::__construct($id);
@@ -54,29 +60,32 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	// Devuelve un array con los ids de todos los structured documents del sistema.
 	// return array of idDoc
-	function GetAllStructuredDocuments() {
+	function GetAllStructuredDocuments()
+	{
 		$sql = "SELECT idDoc FROM StructuredDocuments";
 		$dbObj = new DB();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
-		 	$this->SetError(1);
-		 	return null;
+			$this->SetError(1);
+			return null;
 		}
 		while (!$dbObj->EOF) {
-	 	$salida[] = $dbObj->row["idDoc"];
+			$salida[] = $dbObj->row["idDoc"];
 			$dbObj->Next();
 		}
- 	return $salida;
+		return $salida;
 	}
 
 	//	Devuelve el id del structure document actual.
-	function GetID() {
- 		return $this->get('IdDoc');
+	function GetID()
+	{
+		return $this->get('IdDoc');
 	}
 
 	// Cambia el id del structure document actual.
 	//  return int (status)
-	function SetID($docID) {
+	function SetID($docID)
+	{
 		self::__construct($docID);
 		if (!($this->get('IdDoc') > 0)) {
 			$this->SetError(2);
@@ -89,12 +98,13 @@ class StructuredDocument extends StructuredDocuments_ORM
 	// return string(name)
 	function GetName()
 	{
-	 	return $this->get("Name");
+		return $this->get("Name");
 	}
 
 	// Cambia el nombre del structure document actual.
 	// return int (status)
-	function SetName($name) {
+	function SetName($name)
+	{
 		if (!($this->get('IdDoc') > 0)) {
 			$this->SetError(2);
 			return false;
@@ -109,13 +119,15 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	// Devuelve el creador del structure document actual.
 	// return string (idcreator)
-	function GetCreator () {
-	 	return $this->get("IdCreator");
+	function GetCreator()
+	{
+		return $this->get("IdCreator");
 	}
 
 	// Cambia el creador del structure document actual.
 	// return int (status)
-	function SetCreator($IdCreator) {
+	function SetCreator($IdCreator)
+	{
 		if (!($this->get('IdDoc') > 0)) {
 			$this->SetError(2);
 			return false;
@@ -131,13 +143,15 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	// Devuelve el lenguaje del structure document actual.
 	// return int (IdLanguage)
-	function GetLanguage () {
-	 	return $this->get("IdLanguage");
+	function GetLanguage()
+	{
+		return $this->get("IdLanguage");
 	}
 
 	// Cambia el lenguaje del structure document actual.
 	// return int (status)
-	function SetLanguage($IdLanguage) {
+	function SetLanguage($IdLanguage)
+	{
 		if (!($this->get('IdDoc') > 0)) {
 			$this->SetError(2);
 			return false;
@@ -150,8 +164,9 @@ class StructuredDocument extends StructuredDocuments_ORM
 		return false;
 	}
 
-	function GetDocumentType () {
-	 	return $this->get("IdTemplate");
+	function GetDocumentType()
+	{
+		return $this->get("IdTemplate");
 	}
 
 	function SetDocumentType($templateID)
@@ -170,26 +185,26 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	function GetSymLink()
 	{
- 		return $this->get("TargetLink");
+		return $this->get("TargetLink");
 	}
 
-	function SetSymLink($docID) {
+	function SetSymLink($docID)
+	{
 		if (!($this->get('IdDoc') >= 0)) {
 			$this->SetError(2);
 			return false;
 		}
 
-		if($docID != $this->get('IdDoc')) {
+		if ($docID != $this->get('IdDoc')) {
 			$result = $this->set('TargetLink', $docID);
 			if ($result) {
 				$this->update();
 			}
 
-			$dependencies=new dependencies();
-			$dependencies->insertDependence($docID,$this->get('IdDoc'),'SYMLINK',$this->GetLastVersion());
+			$dependencies = new dependencies();
+			$dependencies->insertDependence($docID, $this->get('IdDoc'), 'SYMLINK', $this->GetLastVersion());
 			return true;
-			}
-		else
+		} else
 			$this->SetError(4);
 		return false;
 	}
@@ -208,7 +223,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 			$this->SetContent($this->GetContent());
 
 			// Elimina la dependencia
-			$dependencies=new dependencies();
+			$dependencies = new dependencies();
 			$dependencies->deleteDependenciesByDependentAndType($this->get('IdDoc'), 'SYMLINK');
 
 			return $result;
@@ -219,29 +234,29 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	// Devuelve el contenido xml del structure document actual.
 	// return string (Content)
-	function GetContent($version=null,$subversion=null)
-		{
-		$targetLink =  $this->GetSymLink();
-		if($targetLink) {
-			$target			= new StructuredDocument($targetLink);
-			$targetContent	= $target->GetContent();
-			$targetLang		= $target->GetLanguage();
-			$targetContent	= preg_replace('/ a_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei' ,  "' a_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
-			$targetContent	= preg_replace('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei' ,  "' a_import_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
-			$targetContent	= preg_replace('/<url>\s*([^\<]+)\s*<\/url>/ei' ,  "'<url>'.\$this->UpdateLinkParseLink($targetLang , '\\1').'</url>'", $targetContent);
+	function GetContent($version = null, $subversion = null)
+	{
+		$targetLink = $this->GetSymLink();
+		if ($targetLink) {
+			$target = new StructuredDocument($targetLink);
+			$targetContent = $target->GetContent();
+			$targetLang = $target->GetLanguage();
+			$targetContent = preg_replace('/ a_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
+			$targetContent = preg_replace('/ a_import_enlaceid([A-Za-z0-9|\_]+)\s*=\s*\"([^\"]+)\"/ei', "' a_import_enlaceid\\1=\"'.\$this->UpdateLinkParseLink($targetLang , '\\2').'\"'", $targetContent);
+			$targetContent = preg_replace('/<url>\s*([^\<]+)\s*<\/url>/ei', "'<url>'.\$this->UpdateLinkParseLink($targetLang , '\\1').'</url>'", $targetContent);
 			return $targetContent;
 		}
 
 		$data = new DataFactory($this->get('IdDoc'));
-		$content = $data->GetContent($version,$subversion);
+		$content = $data->GetContent($version, $subversion);
 		return $content;
-		}
+	}
 
 	function UpdateLinkParseLink($sourceLang, $linkID)
 	{
-		$pos=strpos($linkID,",");
-		if ($pos!=FALSE) {
-			$linkID=substr($linkID,0,$pos);
+		$pos = strpos($linkID, ",");
+		if ($pos != FALSE) {
+			$linkID = substr($linkID, 0, $pos);
 		}
 
 		$node = new Node($linkID);
@@ -249,16 +264,16 @@ class StructuredDocument extends StructuredDocuments_ORM
 			return $linkID;
 		}
 		$linkDoc = new StructuredDocument($linkID);
-		if($linkDoc->GetLanguage() != $sourceLang)
+		if ($linkDoc->GetLanguage() != $sourceLang)
 			return $linkID;
 
 		$node->SetID($node->GetParent());
-		if($node->nodeType->get('Name') != "XmlContainer")
+		if ($node->nodeType->get('Name') != "XmlContainer")
 			return $linkID;
 
 		$sibling = $node->class->GetChildByLang($this->GetLanguage());
 
-		if($sibling)
+		if ($sibling)
 			return $sibling;
 		else
 			return $linkID;
@@ -269,13 +284,14 @@ class StructuredDocument extends StructuredDocuments_ORM
 	 * @param string $content
 	 * @param boolean $commitNode
 	 */
-	function SetContent($content, $commitNode = NULL) {
+	function SetContent($content, $commitNode = NULL)
+	{
 
 		$symLinks = $this->find('IdDoc', 'TargetLink = %s', array($this->get('IdDoc')), MONO);
 
 		// Repetimos para todos los nodos que son enlaces simbolicos a este
-		if(!empty($symLinks)) {
-			foreach($symLinks as $link) {
+		if (!empty($symLinks)) {
+			foreach ($symLinks as $link) {
 				$node = new Node($link);
 				$node->RenderizeNode();
 			}
@@ -310,7 +326,8 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	// Cambia el UpdateDate del structure document actual.
 	// return int (status)
-	function SetUpdateDate() {
+	function SetUpdateDate()
+	{
 		if (!($this->get('IdDoc') > 0)) {
 			$this->SetError(2);
 			return false;
@@ -324,73 +341,79 @@ class StructuredDocument extends StructuredDocuments_ORM
 	}
 
 	// Adds a channel to the current document
-	function AddChannel($IdChannel) {
+	function AddChannel($IdChannel)
+	{
 		$sqls = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel)"
-	 		. " VALUES (%d, %d)", $this->get('IdDoc'), $IdChannel);
-	 	$dbObj = new DB();
-   		$dbObj->Execute($sqls);
+			. " VALUES (%d, %d)", $this->get('IdDoc'), $IdChannel);
+		$dbObj = new DB();
+		$dbObj->Execute($sqls);
 		if ($dbObj->numErr != 0) {
-	 	$this->SetError(1);
+			$this->SetError(1);
 		}
 	}
 
 	// Checks if the current document has the given channel
-	function HasChannel($idChannel) {
+	function HasChannel($idChannel)
+	{
 		$sql = sprintf("SELECT COUNT(*) as total FROM RelStrDocChannels"
-				. " WHERE IdDoc = %d"
-				. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
-	 	$dbObj = new DB();
+			. " WHERE IdDoc = %d"
+			. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
+		$dbObj = new DB();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0)
-	 	$this->SetError(1);
- 		return $dbObj->GetValue("total");
+			$this->SetError(1);
+		return $dbObj->GetValue("total");
 	}
 
-	function GetChannels() {
+	function GetChannels()
+	{
 		$sql = sprintf("SELECT DISTINCT(IdChannel) FROM RelStrDocChannels" .
-				" WHERE IdDoc = %d", $this->get('IdDoc'));
-	 	$dbObj = new DB();
+			" WHERE IdDoc = %d", $this->get('IdDoc'));
+		$dbObj = new DB();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
-		 	$this->SetError(1);
-		 	return null;
+			$this->SetError(1);
+			return null;
 		}
 		$salida = NULL;
 		while (!$dbObj->EOF) {
-	 	$salida[] = $dbObj->getValue("IdChannel");
+			$salida[] = $dbObj->getValue("IdChannel");
 			$dbObj->Next();
 		}
- 	return $salida;
+		return $salida;
 	}
 
 	// Delete the given channel for the current node
-	function DeleteChannel($idChannel) {
+	function DeleteChannel($idChannel)
+	{
 		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d"
-	 		. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
-	 	$dbObj = new DB();
-   		$dbObj->Execute($sqls);
+			. " AND IdChannel = %d", $this->get('IdDoc'), $idChannel);
+		$dbObj = new DB();
+		$dbObj->Execute($sqls);
 		if ($dbObj->numErr != 0) {
-	 		$this->SetError(1);
+			$this->SetError(1);
 		}
 	}
 
-	function DeleteChannels() {
+	function DeleteChannels()
+	{
 		$dbObj = new DB();
 		$sqls = sprintf("DELETE FROM RelStrDocChannels WHERE IdDoc = %d", $this->get('IdDoc'));
-   		$dbObj->Execute($sqls);
+		$dbObj->Execute($sqls);
 		if ($dbObj->numErr != 0) {
-	 		$this->SetError(1);
+			$this->SetError(1);
 		}
 	}
 
- 	function add() {
- 		$this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'),
- 				$this->get('CreationDate'), $this->get('UpdateDate'), $this->get('IdLanguage'),
- 				$this->get('IdTemplate'));
- 	}
+	function add()
+	{
+		$this->CreateNewStrDoc($this->get('IdDoc'), $this->get('Name'), $this->get('IdCreator'),
+			$this->get('CreationDate'), $this->get('UpdateDate'), $this->get('IdLanguage'),
+			$this->get('IdTemplate'));
+	}
 	// Crea un nuevo structure document y carga su id en el docID de la clase.
 	// return docID - lo carga como atributo
-	function CreateNewStrDoc($docID , $name, $IdCreator, $IdLanguage, $templateID, $IdChannelList, $content = '')
+	function CreateNewStrDoc($docID, $name, $IdCreator, $IdLanguage, $templateID, $IdChannelList, $content = '')
 	{
 
 		$this->set('Name', $name);
@@ -407,13 +430,13 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 		if ($this->get('IdDoc') > 0) {
 			if ($IdChannelList) foreach ($IdChannelList as $idChannel) {
-	 			$dbObj = new DB();
+				$dbObj = new DB();
 				$sql = sprintf("INSERT INTO RelStrDocChannels (IdDoc, IdChannel) "
-					 	. " VALUES (%d, %d)", $this->get('IdDoc'), $idChannel);
+					. " VALUES (%d, %d)", $this->get('IdDoc'), $idChannel);
 				$dbObj->Execute($sql);
 
 				if ($dbObj->numErr) {
-	 				$this->SetError(1);
+					$this->SetError(1);
 				}
 			}
 			$this->ID = $docID;
@@ -421,20 +444,22 @@ class StructuredDocument extends StructuredDocuments_ORM
 			/// Guardamos su contenido
 			$this->SetContent($content);
 		} else {
-	 		$this->SetError(1);
+			$this->SetError(1);
 		}
 	}
 
-	function delete() {
+	function delete()
+	{
 		$this->DeleteStrDoc();
 	}
 	// Elimina el structure document actual.
 	// return int (status)
-	function DeleteStrDoc() {
+	function DeleteStrDoc()
+	{
 		parent::delete();
 		$sql = sprintf("DELETE FROM RelStrDocChannels WHERE idDoc = " . $this->get('IdDoc'));
 		$dbObj = new DB();
-   		$dbObj->Execute($sql);
+		$dbObj->Execute($sql);
 		if ($dbObj->numErr) {
 			$this->SetError(1);
 			return;
@@ -445,27 +470,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 
 	function GetLastVersion()
 	{
-		$sql = sprintf("select max(Version) as UltimaVersion from Versions where IdNode=%d",$this->get('IdDoc'));
-		$dbObj = new DB();
-		$dbObj->Query($sql);
-		if ($dbObj->numErr != 0)
-		{
-			$this->SetError(1);
-		} else {
-			$salida = NULL;
-			while (!$dbObj->EOF) {
-	 			$salida = $dbObj->GetValue("UltimaVersion");
-				$dbObj->Next();
-			}
-			return $salida;
-		}
-		return NULL;
-	}
-
-	function isximletlink() {
-
-		$sql= sprintf("select IdNodeDependent from Dependencies WHERE IdNodeMaster = %d and DepType='LINK'",
-					$this->get('IdDoc'));
+		$sql = sprintf("select max(Version) as UltimaVersion from Versions where IdNode=%d", $this->get('IdDoc'));
 		$dbObj = new DB();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
@@ -473,16 +478,36 @@ class StructuredDocument extends StructuredDocuments_ORM
 		} else {
 			$salida = NULL;
 			while (!$dbObj->EOF) {
-	 			$links[] = $dbObj->GetValue("IdNodeDependent");
+				$salida = $dbObj->GetValue("UltimaVersion");
+				$dbObj->Next();
+			}
+			return $salida;
+		}
+		return NULL;
+	}
+
+	function isximletlink()
+	{
+
+		$sql = sprintf("select IdNodeDependent from Dependencies WHERE IdNodeMaster = %d and DepType='LINK'",
+			$this->get('IdDoc'));
+		$dbObj = new DB();
+		$dbObj->Query($sql);
+		if ($dbObj->numErr != 0) {
+			$this->SetError(1);
+		} else {
+			$salida = NULL;
+			while (!$dbObj->EOF) {
+				$links[] = $dbObj->GetValue("IdNodeDependent");
 				$dbObj->Next();
 			}
 
 			if (is_array($links)) foreach ($links as $link) {
-				$node_ximlet=new Node($link);
-				$node_type=new NodeType($node_ximlet->GetNodeType());
+				$node_ximlet = new Node($link);
+				$node_type = new NodeType($node_ximlet->GetNodeType());
 
-				if ($node_type->GetName()=='Ximlet') {
-					$salida[]=$link;
+				if ($node_type->GetName() == 'Ximlet') {
+					$salida[] = $link;
 				}
 
 			}
@@ -491,10 +516,11 @@ class StructuredDocument extends StructuredDocuments_ORM
 		return NULL;
 	}
 
-	function ximletLinks($ximletID, $nodeID) {
+	function ximletLinks($ximletID, $nodeID)
+	{
 
-		$sql=sprintf("SELECT IdNodeMaster FROM Dependencies"
-				. " WHERE IdNodeDependent= %d AND DepType='LINK' AND IdNodeMaster!= %d", $ximletID, $nodeID);
+		$sql = sprintf("SELECT IdNodeMaster FROM Dependencies"
+			. " WHERE IdNodeDependent= %d AND DepType='LINK' AND IdNodeMaster!= %d", $ximletID, $nodeID);
 		$dbObj = new DB();
 		$dbObj->Query($sql);
 		if ($dbObj->numErr != 0) {
@@ -502,7 +528,7 @@ class StructuredDocument extends StructuredDocuments_ORM
 		} else {
 			$link = NULL;
 			while (!$dbObj->EOF) {
-	 			$link[] = $dbObj->GetValue("IdNodeMaster");
+				$link[] = $dbObj->GetValue("IdNodeMaster");
 				$dbObj->Next();
 			}
 			return $link;
@@ -511,29 +537,34 @@ class StructuredDocument extends StructuredDocuments_ORM
 	}
 
 
-
 	//  limpia el ultimo error
-	function ClearError() {
+	function ClearError()
+	{
 		$this->flagErr = FALSE;
 	}
 
-	function SetAutoCleanOn() {
- 	$this->autoCleanErr = TRUE;
+	function SetAutoCleanOn()
+	{
+		$this->autoCleanErr = TRUE;
 	}
-	function SetAutoCleanOff() {
- 	$this->autoCleanErr = FALSE;
+
+	function SetAutoCleanOff()
+	{
+		$this->autoCleanErr = FALSE;
 	}
 
 	/// Carga un error en la clase
-	function SetError($code) {
- 	$this->flagErr = TRUE;
+	function SetError($code)
+	{
+		$this->flagErr = TRUE;
 		$this->numErr = $code;
 		$this->msgErr = $this->errorList[$code];
 	}
 
 	// devuelve true si en la clase se ha producido un error
-	function HasError() {
- 	$aux = $this->flagErr;
+	function HasError()
+	{
+		$aux = $this->flagErr;
 		if ($this->autoCleanErr)
 			$this->ClearError();
 		return $aux;

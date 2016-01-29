@@ -21,105 +21,107 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-include_once XIMDEX_ROOT_PATH . "/inc/nodetypes/structureddocument.php";
-
-class XimletNode extends AbstractStructuredDocument 
+class XimletNode extends AbstractStructuredDocument
 {
-	function getRefererDocs() {
-		$query = sprintf("SELECT Distinct(idNodeDependent) FROM Dependencies WHERE DepType ='XIMLET' AND idNodeMaster = %d", 
-			$this->nodeID);
+    function getRefererDocs()
+    {
+        $query = sprintf("SELECT Distinct(idNodeDependent) FROM Dependencies WHERE DepType ='XIMLET' AND idNodeMaster = %d",
+            $this->nodeID);
 
-		$this->dbObj->Query($query);
-		$docsToPublish = array();	
-	
-		while (!$this->dbObj->EOF) {
-			$docsToPublish[] = $this->dbObj->GetValue("idNodeDependent");
-			$this->dbObj->Next();
-		}
-		
-		return $docsToPublish;
-	}
+        $this->dbObj->Query($query);
+        $docsToPublish = array();
 
-	function getLanguage() {
-		$strDoc = new StructuredDocument($this->nodeID);
-		$langId = $strDoc->get('IdLanguage');
+        while (!$this->dbObj->EOF) {
+            $docsToPublish[] = $this->dbObj->GetValue("idNodeDependent");
+            $this->dbObj->Next();
+        }
 
-		return !empty($langId) ? $langId : NULL;
-	}
-
-	/**
-	 * Gets the ximlet dependencies
-	 * @param int documentId
-	 * @return true / false
-	 */
-
-	function GetDependencies() {
-		
-		$depsMngr = new DepsManager();
-		
-		$deps = array();
-
-		if ($sections = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'))) 
-			$deps = array_merge($deps, $sections);
-		
-		if ($strDocs = $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode')))
-			$deps = array_merge($deps, $strDocs);
-
-		return $deps;
-	}
-
-	function DeleteNode() {
-
-		// Deletes dependencies in rel tables
-
-		$depsMngr = new DepsManager();
-		$depsMngr->deleteByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
-		$depsMngr->deleteByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
-		$depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
-		$depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
-		$depsMngr->deleteByTarget(DepsManager::BULLETIN_XIMLET, $this->parent->get('IdNode'));
-
-		XMD_Log::info('Ximlet dependencies deleted');
-
-
-	}
-
-/**
-*	Get the documents that must be publicated when the ximlet is published
-*	@param array $params
-*	@return array
-*/
-	public function getPublishabledDeps($params) {
-			$depsMngr = new DepsManager();
-			return $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
-	}
-
-	// The intended use for this method is just generate a colector, is not related with xmldocument
-    function generator() {
-    	//we need to estimate the colector
-    	$node = new Node($this->parent->get('IdParent'));
-    	// the colector is the second level parent
-    	$idColector = $node->get('IdParent');
-		
-    	// check the obtained node
-    	$colector = new Node($idColector);
-    	if ($colector->nodeType->get('Name') != 'XimNewsColector') {
-    		XMD_Log::fatal('Se ha estimado un tipo de nodo incorrecto');
-    		return false; // xmd::fatal must kill the process anyway, so dont wait any further trace 
-    	} 
-    	
-		return $colector->class->generateColector();
+        return $docsToPublish;
     }
-	
-	
+
+    function getLanguage()
+    {
+        $strDoc = new StructuredDocument($this->nodeID);
+        $langId = $strDoc->get('IdLanguage');
+
+        return !empty($langId) ? $langId : NULL;
+    }
+
+    /**
+     * Gets the ximlet dependencies
+     * @param int documentId
+     * @return true / false
+     */
+
+    function GetDependencies()
+    {
+
+        $depsMngr = new DepsManager();
+
+        $deps = array();
+
+        if ($sections = $depsMngr->getByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode')))
+            $deps = array_merge($deps, $sections);
+
+        if ($strDocs = $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode')))
+            $deps = array_merge($deps, $strDocs);
+
+        return $deps;
+    }
+
+    function DeleteNode()
+    {
+
+        // Deletes dependencies in rel tables
+
+        $depsMngr = new DepsManager();
+        $depsMngr->deleteByTarget(DepsManager::SECTION_XIMLET, $this->parent->get('IdNode'));
+        $depsMngr->deleteByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
+        $depsMngr->deleteBySource(DepsManager::STRDOC_NODE, $this->parent->get('IdNode'));
+        $depsMngr->deleteBySource(DepsManager::STRDOC_TEMPLATE, $this->parent->get('IdNode'));
+        $depsMngr->deleteByTarget(DepsManager::BULLETIN_XIMLET, $this->parent->get('IdNode'));
+
+        XMD_Log::info('Ximlet dependencies deleted');
+
+
+    }
+
+    /**
+     *    Get the documents that must be publicated when the ximlet is published
+     * @param array $params
+     * @return array
+     */
+    public function getPublishabledDeps($params)
+    {
+        $depsMngr = new DepsManager();
+        return $depsMngr->getByTarget(DepsManager::STRDOC_XIMLET, $this->parent->get('IdNode'));
+    }
+
+    // The intended use for this method is just generate a colector, is not related with xmldocument
+    function generator()
+    {
+        //we need to estimate the colector
+        $node = new Node($this->parent->get('IdParent'));
+        // the colector is the second level parent
+        $idColector = $node->get('IdParent');
+
+        // check the obtained node
+        $colector = new Node($idColector);
+        if ($colector->nodeType->get('Name') != 'XimNewsColector') {
+            XMD_Log::fatal('Se ha estimado un tipo de nodo incorrecto');
+            return false; // xmd::fatal must kill the process anyway, so dont wait any further trace
+        }
+
+        return $colector->class->generateColector();
+    }
+
+
 }

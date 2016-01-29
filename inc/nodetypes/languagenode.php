@@ -26,12 +26,9 @@
  */
 
 use Ximdex\Models\Language;
+use Ximdex\NodeTypes\Root;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
- require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
 *  @brief Handles the languages in wich could be written the documents.

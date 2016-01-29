@@ -25,9 +25,19 @@
  * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
+use args;
+use depth;
+use files;
+use idNode;
+use name;
+use recurrence;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Constants;
+use Ximdex\Logger as XMD_Log;
+use DB_legacy as DB;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -46,21 +56,45 @@ if (!defined('ROOT_NODE')) {
 class Root
 {
 
+    /**
+     * @var Node
+     */
     var $parent;
+    /**
+     * @var bool|string
+     */
     var $nodeID;
+    /**
+     * @var DB
+     */
     var $dbObj;
+    /**
+     * @var \NodeType
+     */
     var $nodeType;
+    /**
+     * @var
+     */
     var $numErr;
+    /**
+     * @var
+     */
     var $msgErr;
+    /**
+     * @var \Ximdex\Utils\Messages
+     */
     var $messages;
+    /**
+     * @var array
+     */
     var $errorList = array();
 
     /**
-     *  Constructor.
-     * @param int idNode
+     * Root constructor.
+     * @param int|null $node
      */
 
-    function Root(&$node = null)
+    public function __construct(&$node = null)
     {
 
         if (is_object($node))
@@ -148,8 +182,7 @@ class Root
 
     /**
      *  Clears the error messages.
-     * @return unknown
-     */
+      */
 
     function ClearError()
     {
@@ -160,8 +193,7 @@ class Root
 
     /**
      *  Sets an error (code and message).
-     * @return unknown
-     */
+      */
 
     function SetError($code)
     {
@@ -183,9 +215,9 @@ class Root
 
     /**
      *  Builds a XML wich contains the properties of the Node.
-     * @param int depth
-     * @param array files
-     * @param bool recurrence
+     * @param int - depth
+     * @param array - files
+     * @param bool - recurrence
      * @return string
      */
 
@@ -228,61 +260,61 @@ class Root
         return '';
     }
 
-    /**
-     *  Sets the content of the Node.
-     * @return unknown
-     */
 
+    /**
+     * @param $content
+     * @param $commitNode
+     */
     function SetContent($content, $commitNode)
     {
 
         return;
     }
 
-    /**
-     *  Creates the Node.
-     * @param array args
-     * @return unknown
-     */
 
+    /**
+     * @param null $name
+     * @param null $parentID
+     * @param null $nodeTypeID
+     */
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
     {
         $this->UpdatePath();
         return;
     }
 
-    /**
-     *  Deletes the Node.
-     * @return unknown
-     */
 
+    /**
+     *
+     */
     function DeleteNode()
     {
 
     }
 
-    /**
-     *  Checks whether the NodeType has the property CanDenyDeletion.
-     * @return bool
-     */
 
+    /**
+     * @return bool|string
+     */
     function CanDenyDeletion()
     {
 
         return $this->parent->nodeType->get('CanDenyDeletion');
     }
 
+
     /**
-     *  Gets the dependencies of the Node.
      * @return array
      */
-
     function GetDependencies()
     {
 
         return array();
     }
 
+    /**
+     *
+     */
     function UpdatePath()
     {
         // Think in root node as a file for performance purposes.
@@ -375,12 +407,10 @@ class Root
     }
 
     /**
-     * Gets the path in which the Node will be published.
-     * @param channelID
-     * @param addNodeName
-     * @return unknown_type
+     * @param null $channelID
+     * @param $addNodeName
+     * @return string
      */
-
     function GetPublishedPath($channelID = NULL, $addNodeName)
     {
 

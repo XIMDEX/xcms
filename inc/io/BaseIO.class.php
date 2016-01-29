@@ -26,13 +26,13 @@
  */
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Session;
-use Ximdex\Logger as XMD_Log ;
+use Ximdex\Logger as XMD_Log;
 
-ModulesManager::file('/inc/model/structureddocument.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/model/State.class.php');
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');
@@ -65,7 +65,7 @@ class BaseIO
      */
     function build($data, $userid = NULL)
     {
-        $metaTypesArray = Constants::$METATYPES_ARRAY ;
+        $metaTypesArray = Constants::$METATYPES_ARRAY;
 
 
         $data = $this->_checkVisualTemplate($data);
@@ -538,10 +538,10 @@ class BaseIO
 
     function update($data, $userid = NULL)
     {
-        $metaTypesArray = Constants::$METATYPES_ARRAY ;
+        $metaTypesArray = Constants::$METATYPES_ARRAY;
 
         if (!$userid) {
-            $userid =  Session::get('userID');
+            $userid = Session::get('userID');
         }
 
         // upper all the indexes in data and the nodetypename.		

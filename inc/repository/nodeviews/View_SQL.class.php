@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
@@ -34,8 +35,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelStrDocChannels.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/structureddocument.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
 class View_SQL extends Abstract_View implements Interface_View {

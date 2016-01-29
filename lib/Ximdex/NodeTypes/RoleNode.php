@@ -21,74 +21,86 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
+namespace Ximdex\NodeTypes;
+
+use description;
+use icon;
+use name;
+use nodeTypeID;
+use parentID;
+use Role;
+use stateID;
+use unknown;
+use Ximdex\NodeTypes\Root;
+
 
 include_once XIMDEX_ROOT_PATH . "/inc/model/role.php";
-require_once (XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 /**
-*  @brief Handles roles.
-*/
-
-class RoleNode extends Root {
+ * @brief Handles roles.
+ */
+class RoleNode extends Root
+{
 
 	/**
-	*  Does nothing.
-	*  @return null
-	*/
+	 *  Does nothing.
+	 * @return null
+	 */
 
-	function RenderizeNode() {
+	function RenderizeNode()
+	{
 
 		return null;
 	}
 
 	/**
-	*  Calls to method for adding a row to Roles table.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string icon
-	*  @param string description
-	*  @return unknown
-	*/
+	 *  Calls to method for adding a row to Roles table.
+	 * @param string name
+	 * @param int parentID
+	 * @param int nodeTypeID
+	 * @param int stateID
+	 * @param string icon
+	 * @param string description
+	 * @return unknown
+	 */
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon=null, $description=null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $icon = null, $description = null)
+	{
 
-  		$role = new Role();
-  		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
+		$role = new Role();
+		$role->CreateNewRole($name, $icon, $description, $this->parent->get('IdNode'));
 		$this->UpdatePath();
 	}
 
 	/**
-	*  Calls to method for deleting the Role from database.
-	*  @return unknown
-	*/
+	 *  Calls to method for deleting the Role from database.
+	 * @return unknown
+	 */
 
-	function DeleteNode(){
+	function DeleteNode()
+	{
 
 		//Before delete delGroupRol
 
 
-	 	$role = new Role($this->parent->get('IdNode'));
+		$role = new Role($this->parent->get('IdNode'));
 		$role->DeleteRole();
 	}
 
 	/**
-	*  Users and Groups arent dependecies,they are associations;
-	*  @return array
-	*/
+	 *  Users and Groups arent dependecies,they are associations;
+	 * @return array
+	 */
 
-	function GetDependencies() {
+	function GetDependencies()
+	{
 
 		$deps = array();
 
-    	return $deps;
+		return $deps;
 	}
 }

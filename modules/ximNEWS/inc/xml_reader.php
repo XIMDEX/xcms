@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 
 ModulesManager::file('/extensions/domit/xml_domit_include.php');
 ModulesManager::file('/extensions/domit/xml_domit_shared.php');

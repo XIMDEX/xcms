@@ -25,13 +25,14 @@
  *  @version $Revision$
  */
 
+use Ximdex\NodeTypes\Root;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
 	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeStatus.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeTransition.class.php');
-require_once(XIMDEX_ROOT_PATH . "/inc/nodetypes/root.php");
 
 class StateNode extends Root {
 

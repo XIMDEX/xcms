@@ -1,6 +1,7 @@
 <?php
 
-ModulesManager::file('/inc/nodetypes/foldernode.php');
+use Ximdex\NodeTypes\FolderNode;
+
 
 class XBUKProject extends FolderNode
 {

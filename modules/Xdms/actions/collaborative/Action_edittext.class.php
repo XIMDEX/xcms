@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
