@@ -29,7 +29,7 @@ use DataFactory;
 use DexCache;
 use Mail;
 use Ximdex\Utils\Sync\Synchronizer;
-use User;
+use Ximdex\Models\User;
 use Ximdex\Models\Node;
 
 

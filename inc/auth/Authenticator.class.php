@@ -25,12 +25,13 @@
  */
 
 
+use Ximdex\Models\User;
+
 if (!defined('XIMDEX_ROOT_PATH'))
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 require_once(XIMDEX_ROOT_PATH . '/inc/auth/Mechanism.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/user.php');
-// Include Auth Configuration.
+ // Include Auth Configuration.
 include_once(XIMDEX_ROOT_PATH . "/conf/auth.php");
 
 

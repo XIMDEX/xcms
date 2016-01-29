@@ -29,6 +29,7 @@ use Ximdex\API\AbstractAPIAction;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\User;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/utils.php');

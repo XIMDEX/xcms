@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 
 ModulesManager::file('/inc/model/orm/RelNewsColectorUsers_ORM.class.php', 'ximNEWS');
 

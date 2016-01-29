@@ -27,6 +27,7 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Parsers\ParsingXsl;

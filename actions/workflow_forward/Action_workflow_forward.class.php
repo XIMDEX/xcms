@@ -26,13 +26,13 @@
  */
 use Ximdex\Helpers\ServerConfig;
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 ModulesManager::file('/inc/model/role.php');
-ModulesManager::file('/inc/model/user.php');
- ModulesManager::file('/inc/mail/Mail.class.php');
+  ModulesManager::file('/inc/mail/Mail.class.php');
  ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('inc/pipeline/PipeTransition.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');

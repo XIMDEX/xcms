@@ -24,6 +24,8 @@
  * @version $Revision$
  */
 
+use Ximdex\Models\User;
+
 ModulesManager::file('/inc/mail/Mail.class.php');
 
 class EmailNotificationStrategy

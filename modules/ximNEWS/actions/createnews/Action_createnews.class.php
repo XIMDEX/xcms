@@ -28,6 +28,7 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/ximNEWS_Adapter.php', 'ximNEWS');

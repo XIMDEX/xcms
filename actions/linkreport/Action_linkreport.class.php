@@ -26,6 +26,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/model/Links.php');

@@ -29,7 +29,7 @@ namespace Ximdex\Utils\Logs;
 
 use Mail;
 use params;
-use User;
+use Ximdex\Models\User;
 use Ximdex\Utils\Logs\Appender;
 
 include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');

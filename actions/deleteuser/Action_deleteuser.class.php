@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 if(ModulesManager::isEnabled('ximDEMOS')){

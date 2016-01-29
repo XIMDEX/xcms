@@ -25,6 +25,7 @@
  * **************************************************************************** */
 use Ximdex\API\AbstractAPIAction;
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 
 /**
  * <p>API Search action</p>

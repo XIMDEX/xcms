@@ -27,7 +27,7 @@
 
 namespace Ximdex\Services ;
 
-use User ;
+use Ximdex\Models\User ;
 /**
  * <p>Service responsible of deal with nodes</p>
  *
@@ -44,8 +44,7 @@ class Node
     public function __construct($idNode = null, $lazyMode = true)
     {
 
-         \Ximdex\Modules\Manager::file("/inc/model/user.php");
-
+ 
 
         if ($idNode) {
             $this->node = new \Ximdex\Models\Node($idNode);

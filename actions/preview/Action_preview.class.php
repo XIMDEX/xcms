@@ -1,6 +1,7 @@
 <?php
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 /**

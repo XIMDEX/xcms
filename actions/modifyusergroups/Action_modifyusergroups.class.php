@@ -1,4 +1,5 @@
 <?php
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 /**

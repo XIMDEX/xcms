@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/inc/model/locale.php');

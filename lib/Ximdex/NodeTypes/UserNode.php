@@ -27,11 +27,10 @@
 
 namespace Ximdex\NodeTypes;
 
-use User;
+use Ximdex\Models\User;
 use XMD_Log;
 
 
-include_once XIMDEX_ROOT_PATH . "/inc/model/user.php";
 
 class UserNode extends Root
 {

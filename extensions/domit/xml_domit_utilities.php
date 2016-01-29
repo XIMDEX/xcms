@@ -8,6 +8,7 @@
 * @link http://www.engageinteractive.com/domit/ DOMIT! Home Page
 * DOMIT! is Free Software
 **/
+use Ximdex\Models\User;
 
 /**
 *@global Array Translation table for predefined XML entities

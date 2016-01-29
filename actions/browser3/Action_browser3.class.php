@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Action;
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Request;

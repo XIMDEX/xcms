@@ -1,20 +1,48 @@
 <?php
 
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
+ */
+
 namespace Ximdex\Models;
 
-use Ximdex\Logger as XMD_Log;
-use Ximdex\Models\ORM\UsersORM;
-use Ximdex\Runtime\App;
-use Permission;
 use Group;
-use Role;
-use Ximdex\Models\Node;
-use DB_legacy as DB;
 use ModulesManager;
 use NoActionsInNode;
+use Permission;
+use Role;
 use Version;
+use Ximdex\Models\ORM\UsersOrm;
+use Ximdex\Runtime\App;
+use DB_legacy as DB;
+use Ximdex\Logger as XMD_Log;
 
-class User extends UsersORM
+
+ModulesManager::file('/inc/model/NoActionsInNode.class.php');
+require_once XIMDEX_ROOT_PATH . '/inc/model/NoActionsInNode.class.php';
+
+class User extends UsersOrm
 {
 
     var $userID;
@@ -49,53 +77,80 @@ class User extends UsersORM
     }
 
     // This function returns all the groups belonging to an user
-
-    function getRealName()
+    function getGroupList()
     {
-        return $this->get("Name");
+        $this->ClearError();
+        if ($this->get('IdUser') > 0) {
+            $dbObj = new DB();
+            $sql = sprintf("SELECT IdGroup FROM RelUsersGroups WHERE IdUser = %d", $this->get('IdUser'));
+            $dbObj->Query($sql);
+            if (!$dbObj->numErr) {
+                $salida = array();
+                while (!$dbObj->EOF) {
+                    $salida[] = $dbObj->GetValue("IdGroup");
+                    $dbObj->Next();
+                }
+                return $salida;
+            } else
+                SetError(5);
+        } else
+            $this->SetError(1);
+        return null;
     }
 
     // Returns an obgect idUser
-
-    function getLogin()
+    function getID()
     {
-        return $this->get("Login");
+        $this->ClearError();
+        return $this->get('IdUser');
     }
 
     /*     * ** getters *** */
 
     // Returns the user name associated to an idUser
+    function getRealName()
+    {
+        return $this->get("Name");
+    }
 
-    /**
-     * @return bool|string
-     */
+    // Returns the user login
+    function getLogin()
+    {
+        return $this->get("Login");
+    }
+
+    // Returns de user email
     function getEmail()
     {
         return $this->get("Email");
     }
 
-    // Returns the user login
-
-    /**
-     * @return bool|string
-     */
+    // Returns user locale
     function getLocale()
     {
         return $this->get("Locale");
     }
 
-    // Returns de user email
-
-    /**
-     * @return bool|string
-     */
+    // Returns user's number of access
     function getNumAccess()
     {
         return $this->get("NumAccess");
     }
 
-    // Returns user locale
+    /*     * ** setters *** */
 
+    // It allows to change an object idUser. It avoid to have to destroy and create again
+    function setID($id)
+    {
+        parent::__construct($id);
+        if (!($this->get('IdUser') > 0)) {
+            $this->SetError(1);
+            return null;
+        }
+        return $this->get('IdUser');
+    }
+
+    // Updating database with the new user name
     function setRealName($name)
     {
         if (!($this->get('IdUser') > 0)) {
@@ -110,19 +165,7 @@ class User extends UsersORM
         return false;
     }
 
-    // Returns user's number of access
-
-    function set($attrib, $value)
-    {
-        if ($attrib == 'Pass')
-            $value = md5($value);
-        return parent::set($attrib, $value);
-    }
-
-    /*     * ** setters *** */
-
-    // It allows to change an object idUser. It avoid to have to destroy and create again
-
+    // Modifies the user pass
     function setPassword($pass)
     {
         if (!($this->get('IdUser') > 0)) {
@@ -137,8 +180,7 @@ class User extends UsersORM
         return false;
     }
 
-    // Updating database with the new user name
-
+    // Modifies the user email
     function setEmail($email)
     {
         if (!($this->get('IdUser') > 0)) {
@@ -152,8 +194,6 @@ class User extends UsersORM
         }
         return false;
     }
-
-    // Modifies the user pass
 
     function setLocale($code)
     {
@@ -169,12 +209,11 @@ class User extends UsersORM
         return false;
     }
 
-    // Modifies the user email
-
+    // looks for an user by login, and load the corresponding idUser
     function setByLogin($login)
     {
         $this->ClearError();
-        $dbObj = new \DB_legacy();
+        $dbObj = new DB();
         $query = sprintf("SELECT IdUser FROM Users WHERE Login = %s", $dbObj->sqlEscapeString($login));
         $dbObj->Query($query);
         if ($dbObj->numRows) {
@@ -184,23 +223,7 @@ class User extends UsersORM
         return false;
     }
 
-    function setID($id)
-    {
-        parent::__construct($id);
-        if (!($this->get('IdUser') > 0)) {
-            $this->SetError(1);
-            return null;
-        }
-        return $this->get('IdUser');
-    }
-
-    // looks for an user by login, and load the corresponding idUser
-
-    /**
-     * @param $nodeID
-     * @param null $ignoreGeneralGroup
-     * @return bool
-     */
+    // Function which returns true if an user is in a node
     function isOnNode($nodeID, $ignoreGeneralGroup = null)
     {
         if (is_array($nodeID)) {
@@ -209,8 +232,9 @@ class User extends UsersORM
 
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $node = new \Ximdex\Models\Node($nodeID);
+            $node = new Node($nodeID);
             if ($node->get('IdNode') > 0) {
+                $userList = array();
                 $userList = $node->GetUserList($ignoreGeneralGroup);
                 if (in_array($this->get('IdUser'), $userList)) {
                     return true;
@@ -221,42 +245,11 @@ class User extends UsersORM
         } else {
             $this->SetError(1);
         }
-        return false;
-    }
-
-    // Function which returns true if an user is in a node
-
-    /**
-     * @param $nodeID
-     * @param $pName
-     * @return bool
-     */
-    function hasPermissionOnNode($nodeID, $pName)
-    {
-        $roles = $this->GetRolesOnNode($nodeID);
-        $permission = new \Permission();
-        $permission->SetByName($pName);
-        $pID = $permission->GetID();
-        if ($roles)
-            foreach ($roles as $idRol) {
-                $role = new Role($idRol);
-                $permissionList = $role->GetPermissionsList();
-                if ($permissionList)
-                    if (in_array($pID, $permissionList))
-                        return true;
-            }
-        return false;
     }
 
     // Function which retrieve a list of roles of an user in a determined node
-
-    /**
-     * @param $nodeID
-     * @return array
-     */
     function getRolesOnNode($nodeID)
     {
-        $roleList = array();
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $groupList = $this->GetGroupListOnNode($nodeID);
@@ -281,106 +274,25 @@ class User extends UsersORM
         } else {
             $this->SetError(1);
         }
-        return $roleList;
     }
 
-    /**
-     * @param $nodeID
-     * @return array
-     */
-    function getGroupListOnNode($nodeID)
+    function hasPermissionOnNode($nodeID, $pName)
     {
-        $this->ClearError();
-        if ($this->get('IdUser') > 0) {
-            $userGroups = $this->GetGroupList();
-            $node = new Node($nodeID);
-            $nodeGroups = $node->GetGroupList();
-
-            if ($node->get('IdNode') > 0 && is_array($userGroups) && is_array($nodeGroups)) {
-                return array_intersect($userGroups, $nodeGroups);
-            } else {
-                $this->SetError(6);
+        $roles = $this->GetRolesOnNode($nodeID);
+        $permission = new Permission();
+        $permission->SetByName($pName);
+        $pID = $permission->GetID();
+        if ($roles)
+            foreach ($roles as $idRol) {
+                $role = new Role($idRol);
+                $permissionList = $role->GetPermissionsList();
+                if ($permissionList)
+                    if (in_array($pID, $permissionList))
+                        return true;
             }
-        } else {
-            $this->SetError(1);
-        }
-        return array();
+        return false;
     }
 
-    function getGroupList()
-    {
-        $this->ClearError();
-        if ($this->get('IdUser') > 0) {
-            $dbObj = new \DB_legacy();
-            $sql = sprintf("SELECT IdGroup FROM RelUsersGroups WHERE IdUser = %d", $this->get('IdUser'));
-            $dbObj->Query($sql);
-            if (!$dbObj->numErr) {
-                $salida = array();
-                while (!$dbObj->EOF) {
-                    $salida[] = $dbObj->GetValue("IdGroup");
-                    $dbObj->Next();
-                }
-                return $salida;
-            } else {
-                $this->SetError(5);
-
-            }
-        } else
-            $this->SetError(1);
-        return null;
-    }
-
-    function clearError()
-    {
-        $this->numErr = null;
-        $this->msgErr = null;
-    }
-
-    //Check perms with name $pname in all user groups of $nodeID
-
-    function setError($code)
-    {
-        $this->numErr = $code;
-        $this->msgErr = $this->errorList[$code];
-    }
-
-    // Function which returns true if an user is in a node
-
-    /**
-     * @param $groupid
-     * @return null|String
-     */
-    function getRoleOnGroup($groupid)
-    {
-        $this->ClearError();
-        if (!is_null($groupid)) {
-            $dbObj = new \DB_legacy();
-            $query = sprintf("SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d", $this->get('IdUser'), $groupid);
-            $dbObj->Query($query);
-            if ($dbObj->numRows > 0) {
-                return $dbObj->GetValue("IdRole");
-            }
-        }
-        return NULL;
-    }
-
-    /**
-     * @param $pName
-     * @return bool
-     */
-    function hasPermission($pName)
-    {
-        $groupID = App::getValue("GeneralGroup");
-        return $this->HasPermissionOnGroup($groupID, $pName);
-    }
-
-    // Function which returns the role of an user in a group
-
-    /**
-     * @param $groupID
-     * @param $pName
-     * @return bool
-     */
     function hasPermissionOnGroup($groupID, $pName)
     {
         $permission = new Permission();
@@ -396,12 +308,13 @@ class User extends UsersORM
         return false;
     }
 
-    /**
-     * @return array
-     */
-    /*
-     *
-     */
+    function hasPermission($pName)
+    {
+        $groupID = App::getValue("GeneralGroup");
+        return $this->HasPermissionOnGroup($groupID, $pName);
+    }
+
+    //Check perms with name $pname in all user groups of $nodeID
     function hasPermissionInNode($pName, $nodeID)
     {
         $groups = $this->GetGroupListOnNode($nodeID);
@@ -415,12 +328,7 @@ class User extends UsersORM
         return false;
     }
 
-    // Function which returns true if the indicated pass is correct
-
-    /**
-     * @param $groupID
-     * @return bool
-     */
+    // Function which returns true if an user is in a node
     function isOnGroup($groupID)
     {
         $this->ClearError();
@@ -438,14 +346,8 @@ class User extends UsersORM
         } else {
             $this->SetError(1);
         }
-        return false;
     }
 
-    // Function which returns the list of groups subscribed by a node belonging to the user
-
-    /**
-     * @return bool
-     */
     function isDemo()
     {
         if (!ModulesManager::isEnabled("ximDEMOS")) {
@@ -453,7 +355,7 @@ class User extends UsersORM
         }
 
         $idUser = $this->get('IdUser');
-        if ($idUser > 0) {
+        if ($this->get('IdUser') > 0) {
             //Get Nodeid rol "Demo"
             $idRole = Role::GetByName("Demo");
             $query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdUser = %d AND IdRole = %d", $this->get('IdUser'), $idRole);
@@ -470,8 +372,20 @@ class User extends UsersORM
         return false;
     }
 
-    // Function which retrieve a list of actions of an user for given node and group
-
+    // Function which returns the role of an user in a group
+    function getRoleOnGroup($groupid)
+    {
+        $this->ClearError();
+        if (!is_null($groupid)) {
+            $dbObj = new DB();
+            $query = sprintf("SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d", $this->get('IdUser'), $groupid);
+            $dbObj->Query($query);
+            if ($dbObj->numRows > 0) {
+                return $dbObj->GetValue("IdRole");
+            }
+        }
+        return NULL;
+    }
 
     function getRoles()
     {
@@ -487,12 +401,7 @@ class User extends UsersORM
         return $roles;
     }
 
-    // Function which returns the list of actions of an user for given node and group
-
-    /**
-     * @param $pass
-     * @return bool
-     */
+    // Function which returns true if the indicated pass is correct
     function checkPassword($pass)
     {
         $this->ClearError();
@@ -508,70 +417,28 @@ class User extends UsersORM
         } else {
             $this->SetError(1);
         }
-        return false;
     }
 
-    // Function which returns an array of tollbars for each subscribed group
-
-    /**
-     * @param $nodeID
-     * @param $groupID
-     * @return null|String
-     */
-    function getRoleOnNode($nodeID, $groupID)
+    // Function which returns the list of groups subscribed by a node belonging to the user
+    function getGroupListOnNode($nodeID)
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $roleID = $this->GetRoleOnGroup($groupID);
-            if (!is_null($roleID)) {
-                $group = new Group($groupID);
-                $roleGroupID = $group->GetRoleOnNode($nodeID);
-                if ($roleGroupID) {
-                    return $roleGroupID;
-                } else {
-                    return $roleID;
-                }
+            $userGroups = $this->GetGroupList();
+            $node = new Node($nodeID);
+            $nodeGroups = $node->GetGroupList();
+
+            if ($node->get('IdNode') > 0 && is_array($userGroups) && is_array($nodeGroups)) {
+                return array_intersect($userGroups, $nodeGroups);
             } else {
-                $this->SetError(7);
+                $this->SetError(6);
             }
         } else {
             $this->SetError(1);
         }
-        return null;
     }
 
-    /**
-     * @param $nodeID
-     * @return array
-     */
-    function getToolbarsOnNode($nodeID)
-    {
-        $result = array();
-        $this->ClearError();
-        if ($this->get('IdUser') > 0) {
-            $groupIDs = $this->GetGroupListOnNode($nodeID);
-            if (!$this->numErr) {
-                foreach ($groupIDs as $groupID) {
-                    $result[] = $this->GetToolbarOnNode($nodeID, $groupID);
-                }
-            }
-
-            if (!$this->numErr) {
-                return $result;
-            }
-        } else {
-            $this->SetError(1);
-        }
-        return $result;
-    }
-
-    // Function which creates a new user if it does not exist in the system previously, and load the idUser
-
-    /**
-     * @param $nodeID
-     * @param $groupID
-     * @return array
-     */
+    // Function which retrieve a list of actions of an user for given node and group
     function getToolbarOnNode($nodeID, $groupID)
     {
         $this->ClearError();
@@ -580,39 +447,68 @@ class User extends UsersORM
             if (!is_null($roleID)) {
                 $role = new Role($roleID);
                 $actions = $role->GetActionsOnNode($nodeID);
-                if (!$role->numErr) {
+                if (!$role->numErr)
                     return $actions;
-                } else {
+                else
                     $this->SetError(6);
-                }
-            } else {
+            } else
                 $this->SetError(7);
+        } else
+            $this->SetError(1);
+    }
+
+    // Function which returns the list of actions of an user for given node and group
+    function getRoleOnNode($nodeID, $groupID)
+    {
+        $this->ClearError();
+        if ($this->get('IdUser') > 0) {
+            $roleID = $this->GetRoleOnGroup($groupID);
+            if (!is_null($roleID)) {
+                $group = new Group($groupID);
+                $roleGroupID = $group->GetRoleOnNode($nodeID);
+                if ($roleGroupID)
+                    return $roleGroupID;
+                else
+                    return $roleID;
+            } else
+                $this->SetError(7);
+        } else
+            $this->SetError(1);
+    }
+
+    // Function which returns an array of tollbars for each subscribed group
+    function getToolbarsOnNode($nodeID)
+    {
+        $this->ClearError();
+        if ($this->get('IdUser') > 0) {
+            $groupIDs = $this->GetGroupListOnNode($nodeID);
+            if (!$this->numErr) {
+                foreach ($groupIDs as $groupID) {
+                    $salida[] = $this->GetToolbarOnNode($nodeID, $groupID);
+                }
             }
+
+            if (!$this->numErr)
+                return $salida;
         } else {
             $this->SetError(1);
         }
-        return array();
     }
 
-    /**
-     *
-     */
     function add()
     {
         $this->CreateNewUser($this->get('Name'), $this->get('Login'), $this->get('Pass'), $this->get('Name'), $this->get('Email'), $this->get('Locale'));
     }
 
-    /**
-     * @param $realname
-     * @param $login
-     * @param $pass
-     * @param $email
-     * @param $locale
-     * @param $roleID
-     * @param null $idUser
-     * @return bool|null|string
-     */
-    function createNewUser($realname, $login, $pass, $email, $locale, $roleID, $idUser = null)
+    // Function which creates a new user if it does not exist in the system previously, and load the idUser
+    function set($attrib, $value)
+    {
+        if ($attrib == 'Pass')
+            $value = md5($value);
+        return parent::set($attrib, $value);
+    }
+
+    function createNewUser($realname, $login, $pass, $email, $locale, $roleID, $idUser)
     {
 
         if (is_null($idUser)) {
@@ -639,20 +535,17 @@ class User extends UsersORM
         return $this->get('IdUser');
     }
 
-    // Function which delete the current user
-
     function delete()
     {
         $this->DeleteUser();
     }
 
-    /// Cleaning class errors
-
+    // Function which delete the current user
     function deleteUser()
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            //   $groupList = $this->GetGroupList();
+            $groupList = $this->GetGroupList();
             $dbObj = new DB();
 
             $query = sprintf("DELETE FROM UnverifiedUsers where email=%s", $this->get('Email'));
@@ -663,20 +556,29 @@ class User extends UsersORM
             $this->SetError(1);
     }
 
-    /// Loading a class error
+    /// Cleaning class errors
+    function clearError()
+    {
+        $this->numErr = null;
+        $this->msgErr = null;
+    }
 
-    /**
-     * @return bool
-     */
+    /// Loading a class error
+    function setError($code)
+    {
+        $this->numErr = $code;
+        $this->msgErr = $this->errorList[$code];
+    }
+
+    // Returning true if the class has produced an error
     function hasError()
     {
         return ($this->numErr != null);
     }
 
-    // Returning true if the class has produced an error
-
     /**
      *
+     * @return [type] [description]
      */
     public function afterLogin()
     {
@@ -687,31 +589,70 @@ class User extends UsersORM
         $this->update();
     }
 
-    /**
-     * @return array
-     */
     public function getLastestDocs()
     {
-        //  $docs = array();
+        $docs = array();
         $v = new Version();
         $docs = $v->getLastestDocsByUser($this->GetID());
         return $docs;
     }
 
-    function getID()
+    /**
+     * Get an array with allowed actions on a node
+     * @param int $idNode Node to check Actions
+     * @return array idActions array.
+     * @version Ximdex 3.6
+     */
+    public function getActionsOnNode($idNode, $includeActionsWithNegativeSort = false)
     {
-        $this->ClearError();
-        return $this->get('IdUser');
+        $result = array();
+
+        //Getting no specific not allowed actions for $idNode
+        $noActionsInNode = new NoActionsInNode();
+        $arrayForbiddenActions = $noActionsInNode->getForbiddenActions($idNode);
+
+        /* To get the actions the steps are:
+         * 1. Get the Groups on node for the current User
+         * 2. For every group, the user roles.
+         * 3. For every role get the actions on idnode
+         */
+
+        //Getting groups for the user for $idNode
+        $arrayGroups = $this->GetGroupListOnNode($idNode);
+        $arrayRoles = array();
+        $arrayActions = array();
+
+
+        //Getting roles for the user for every group.
+        foreach ($arrayGroups as $idGroup) {
+            $aux = array();
+            $aux[] = $this->GetRoleOnGroup($idGroup);
+            $arrayRoles = array_merge($arrayRoles, $aux);
+        }
+
+        $arrayRoles = array_unique($arrayRoles);
+
+        //Getting actions for every rol .
+        foreach ($arrayRoles as $idRol) {
+            $role = new Role($idRol);
+            $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
+        }
+
+        $arrayActions = array_unique($arrayActions);
+
+        //Deleting not allowed actions from actions array.
+        $result = array_diff($arrayActions, $arrayForbiddenActions);
+
+        return $result;
     }
 
     /**
-     * Get an array with allowed actions on a node
-     * @version Ximdex 3.6
-     */
-
-    /**
-     * @param $nodes
-     * @return array
+     * Calculates the posible actions for a group of nodes.
+     * It depends on roles, states and nodetypes of nodes.
+     * @param array $nodes IdNodes array.
+     * @return array IdActions array
+     * @since Ximdex 3.6
+     *
      */
     public function getActionsOnNodeList($nodes)
     {
@@ -759,60 +700,6 @@ class User extends UsersORM
     }
 
     /**
-     * Calculates the posible actions for a group of nodes.
-     * It depends on roles, states and nodetypes of nodes.
-     * @since Ximdex 3.6
-     *
-     */
-
-    /**
-     * @param $idNode
-     * @param bool $includeActionsWithNegativeSort
-     * @return array
-     */
-    public function getActionsOnNode($idNode, $includeActionsWithNegativeSort = false)
-    {
-
-        //Getting no specific not allowed actions for $idNode
-        $noActionsInNode = new NoActionsInNode();
-        $arrayForbiddenActions = $noActionsInNode->getForbiddenActions($idNode);
-
-        /* To get the actions the steps are:
-         * 1. Get the Groups on node for the current User
-         * 2. For every group, the user roles.
-         * 3. For every role get the actions on idnode
-         */
-
-        //Getting groups for the user for $idNode
-        $arrayGroups = $this->GetGroupListOnNode($idNode);
-        $arrayRoles = array();
-        $arrayActions = array();
-
-
-        //Getting roles for the user for every group.
-        foreach ($arrayGroups as $idGroup) {
-            $aux = array();
-            $aux[] = $this->GetRoleOnGroup($idGroup);
-            $arrayRoles = array_merge($arrayRoles, $aux);
-        }
-
-        $arrayRoles = array_unique($arrayRoles);
-
-        //Getting actions for every rol .
-        foreach ($arrayRoles as $idRol) {
-            $role = new Role($idRol);
-            $arrayActions = array_merge($arrayActions, $role->GetActionsOnNode($idNode, $includeActionsWithNegativeSort));
-        }
-
-        $arrayActions = array_unique($arrayActions);
-
-        //Deleting not allowed actions from actions array.
-        $result = array_diff($arrayActions, $arrayForbiddenActions);
-
-        return $result;
-    }
-
-    /**
      * Check if the user can run the action for a node
      * @param int $idNode
      * @param int $idAction
@@ -831,4 +718,5 @@ class User extends UsersORM
         $arrayActions = $this->getActionsOnNode($idNode, true);
         return in_array($idAction, $arrayActions);
     }
+
 }

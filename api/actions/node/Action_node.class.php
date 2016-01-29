@@ -30,6 +30,7 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\User;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');

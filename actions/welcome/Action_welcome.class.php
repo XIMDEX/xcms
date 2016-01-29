@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 use Ximdex\Models\Action ;
+use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
 
 

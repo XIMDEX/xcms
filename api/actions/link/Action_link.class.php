@@ -3,15 +3,20 @@
 
 use Ximdex\API\AbstractAPIAction;
 
-class Action_link extends AbstractAPIAction   {
-	public function isSecure()
-	{
-		return true;
-	}
-	public function index($request, $response){
+class Action_link extends AbstractAPIAction
+{
+    public function isSecure()
+    {
+        return true;
+    }
 
-	}
-	public function create($request, $response) {
+    public function index($request, $response)
+    {
+
+    }
+
+    public function create($request, $response)
+    {
         $parentId = $request->getParam("nodeid");
         $name = $request->getParam("name");
         $description = $request->getParam("description");
@@ -26,9 +31,9 @@ class Action_link extends AbstractAPIAction   {
         }
 
         $id = $this->createNodeLink($name, $url, $description, $parentId);
-        if($id<=0){
-        	$this->createErrorResponse("An error ocurred creating the link.");
-        	return false;
+        if ($id <= 0) {
+            $this->createErrorResponse("An error ocurred creating the link.");
+            return false;
         }
         $response->header_status('200');
         $respContent = array('error' => 0, 'data' => array('nodeid' => $id));
@@ -36,34 +41,33 @@ class Action_link extends AbstractAPIAction   {
     }
 
 
-    protected function createNodeLink($name, $url, $description, $idParent){
-    	if(empty($description)){
-            $description = " ";    
+    protected function createNodeLink($name, $url, $description, $idParent)
+    {
+        if (empty($description)) {
+            $description = " ";
         }
 
-		$data = array('NODETYPENAME' => 'LINK',
-				'NAME' => $name,
-				'PARENTID' => $idParent,
-				'IDSTATE' => 0,
-				'CHILDRENS' => array (
-					array ('URL' => $url),
-					array ('DESCRIPTION' => $description)
-				)
-			);
-			
-		$bio = new baseIO();
-		$result = $bio->build($data);
-		
-		if ($result > 0) {
-			$link = new Link($result);
-			$link->set('ErrorString','not_checked');
-			$link->set('CheckTime',time());
-			$link->update();
-		}
-		return $result;
+        $data = array('NODETYPENAME' => 'LINK',
+            'NAME' => $name,
+            'PARENTID' => $idParent,
+            'IDSTATE' => 0,
+            'CHILDRENS' => array(
+                array('URL' => $url),
+                array('DESCRIPTION' => $description)
+            )
+        );
+
+        $bio = new baseIO();
+        $result = $bio->build($data);
+
+        if ($result > 0) {
+            $link = new Link($result);
+            $link->set('ErrorString', 'not_checked');
+            $link->set('CheckTime', time());
+            $link->update();
+        }
+        return $result;
     }
-
-
 
 
 }

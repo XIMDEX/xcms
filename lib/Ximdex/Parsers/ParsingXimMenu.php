@@ -4,7 +4,7 @@ namespace Ximdex\Parsers;
 use DOMDocument;
 use DOMXPath;
 use Role;
-use User;
+use Ximdex\Models\User;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]

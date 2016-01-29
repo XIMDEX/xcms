@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\Models\User;
 use Ximdex\MVC\Render\MailRenderer;
 use Ximdex\NodeTypes\AbstractStructuredDocument;
 use Ximdex\Utils\Sync\Synchronizer;

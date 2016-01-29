@@ -110,6 +110,7 @@ class DexPumper {
 
 	private $pumper;
 	private $connection;
+
 	private $serverFrame;
 	private $server;
 

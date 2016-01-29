@@ -29,7 +29,7 @@ namespace Ximdex\MVC;
 
 use Ximdex\MVC\FrontControllerCLI;
 use Ximdex\MVC\FrontControllerHTTP;
-use User;
+use Ximdex\Models\User;
 use Ximdex\MVC\IController;
 
 

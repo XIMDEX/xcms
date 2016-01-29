@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\User;
 use Ximdex\NodeTypes\Root;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/Repository.class.php');
