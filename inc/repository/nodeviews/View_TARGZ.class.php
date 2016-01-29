@@ -29,10 +29,10 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\TarArchiver;
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/TarArchiver.class.php');
-ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
+ ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_SQL.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');

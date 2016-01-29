@@ -26,12 +26,9 @@
 
 
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\TarArchiver;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
 
-require_once(XIMDEX_ROOT_PATH . '/inc/fsutils/TarArchiver.class.php');
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_SQL.class.php");
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');

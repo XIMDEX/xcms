@@ -1,5 +1,6 @@
 <?php
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\ZipArchiver;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]

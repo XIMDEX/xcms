@@ -23,7 +23,8 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-use  Ximdex\Utils\Messages;
+namespace Ximdex\Utils;
+
 
 define('UNZIP', 'unzip %s -d %s');
 
@@ -106,7 +107,7 @@ class ZipArchiver
      */
     function unpack($dest = '')
     {
-        $messages = new \Ximdex\Utils\Messages();
+        $messages = new   Messages();
         if (!is_file($this->fileName)) {
             $messages->add(_('Specified file could not be found'), MSG_TYPE_ERROR);
             return false;

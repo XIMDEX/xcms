@@ -29,10 +29,10 @@ use Ximdex\Models\Node;
 use Ximdex\Parsers\ParsingDependencies;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\TarArchiver;
 
 
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/fsutils/TarArchiver.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/actions/workflow_forward/baseIO.php');
 
