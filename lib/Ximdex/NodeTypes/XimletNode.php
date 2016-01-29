@@ -27,10 +27,8 @@
 
 namespace Ximdex\NodeTypes;
 
-use AbstractStructuredDocument;
-use DepsManager;
-use documentId;
-use Ximdex\Models\Node;
+ use DepsManager;
+ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use XMD_Log;
 

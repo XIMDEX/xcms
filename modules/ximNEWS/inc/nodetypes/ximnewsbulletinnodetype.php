@@ -27,8 +27,9 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use Ximdex\NodeTypes\AbstractStructuredDocument;
 
- ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
+ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/Automatic.class.php', 'ximNEWS');
 ModulesManager::file('/inc/mail/MailRenderer.class.php');
 

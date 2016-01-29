@@ -24,6 +24,19 @@
  * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+use DataFactory;
+use DB;
+use DepsManager;
+use DexCache;
+use MetadataManager;
+use ModulesManager;
+use Namespaces;
+use NodeType;
+use PipelineManager;
+use Properties;
+use RelTagsNodes;
+use SolrViews;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -31,6 +44,7 @@ use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\FileNode;
 use Ximdex\Utils\FsUtils;
+use XMD_Log;
 
 
 define('DOCXAP_VIEW', 1);
