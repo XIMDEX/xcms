@@ -21,21 +21,23 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-use Ximdex\NodeTypes\FileNode;
+namespace Ximdex\NodeTypes;
+
+use DataFactory;
+
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;
 
 
-
 /**
-*  @brief Handles RNG templates.
-*/
-
-class rngvisualtemplatenode extends FileNode {
+ * @brief Handles RNG templates.
+ */
+class rngvisualtemplatenode extends FileNode
+{
 
 	var $minimalXml = '';
 	var $xpathObj;
@@ -44,16 +46,17 @@ class rngvisualtemplatenode extends FileNode {
 	var $renderCount = 0;
 
 	/**
-	*  Creates the file in data/files directory.
-	*  @param string name
-	*  @param int parentID
-	*  @param int nodeTypeID
-	*  @param int stateID
-	*  @param string sourcePath
-	*  @return unknown
-	*/
+	 *  Creates the file in data/files directory.
+	 * @param string name
+	 * @param int parentID
+	 * @param int nodeTypeID
+	 * @param int stateID
+	 * @param string sourcePath
+	 * @return unknown
+	 */
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $sourcePath = null)
+	{
 
 		$content = FsUtils::file_get_contents($sourcePath);
 
@@ -63,11 +66,12 @@ class rngvisualtemplatenode extends FileNode {
 	}
 
 	/**
-	*  Gets the minimal content of a document created by a template.
-	*  @return string
-	*/
+	 *  Gets the minimal content of a document created by a template.
+	 * @return string
+	 */
 
-	function buildDefaultContent() {
+	function buildDefaultContent()
+	{
 
 		$rngParser = new ParsingRng();
 		$content = $rngParser->buildDefaultContent($this->nodeID);

@@ -15,23 +15,27 @@ use Ximdex\Logger;
 class Factory
 {
     public static $baseNodeTypes = array(
-        'root' => array('ClassName' => '\\Ximdex\\NodeTypes\\Root'),
-        'propertynode' => array('ClassName' => '\\Ximdex\\NodeTypes\\PropertyNode'),
         'actionnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ActionNode'),
-        'foldernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\FolderNode'),
         'channelnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ChannelNode'),
-        'relnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\RelNode'),
-        'rolenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\RoleNode'),
-        'filenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\FileNode'),
-        'groupnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\GroupNode'),
-        'usernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\UserNode'),
         'commonnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\CommonNode'),
+        'filenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\FileNode'),
+        'foldernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\FolderNode'),
+        'groupnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\GroupNode'),
+        'imagenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ImageNode') ,
+        'languagenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LanguageNode') ,
         'linknode' => array('ClassName' => '\\Ximdex\\NodeTypes\\LinkNode'),
         'nodetypenode'=> array('ClassName' => '\\Ximdex\\NodeTypes\\NodeTypeNode') ,
         'projects'=> array('ClassName' => '\\Ximdex\\NodeTypes\\Projects') ,
-        'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode') ,
+        'propertynode' => array('ClassName' => '\\Ximdex\\NodeTypes\\PropertyNode'),
+        'relnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\RelNode'),
+        'rngvisualtemplatenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\rngvisualtemplatenode') ,
+        'rolenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\RoleNode'),
+        'root' => array('ClassName' => '\\Ximdex\\NodeTypes\\Root'),
         'sectionnode' => array('ClassName' => '\\Ximdex\\NodeTypes\\SectionNode') ,
         'servernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\ServerNode') ,
+        'statenode' => array('ClassName' => '\\Ximdex\\NodeTypes\\StateNode') ,
+        'usernode' => array('ClassName' => '\\Ximdex\\NodeTypes\\UserNode'),
+        'workflow_process' => array('ClassName' => '\\Ximdex\\NodeTypes\\WorkflowProcess'),
 
     );
 
