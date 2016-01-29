@@ -24,12 +24,12 @@
  * @version $Revision$
  */
 
+use Ximdex\Helpers\ServerConfig;
 use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/WebMessagesStrategy.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/ServerConfig.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/rest/REST_Provider.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/rest/REST_Provider.class.php');
 
 
 /**

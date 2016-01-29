@@ -24,6 +24,7 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Helpers\ServerConfig;
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 
@@ -34,8 +35,7 @@ ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('inc/pipeline/PipeTransition.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
-ModulesManager::file('/inc/helper/ServerConfig.class.php');
-ModulesManager::file('/inc/serializer/Serializer.class.php');
+ ModulesManager::file('/inc/serializer/Serializer.class.php');
 
 /**
  * Move a node to next state. 

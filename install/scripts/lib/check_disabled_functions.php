@@ -24,17 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Helpers\ServerConfig;
 
-
-
-/**
- *  Update Fast Traverse
- */
-
-if (!defined('XIMDEX_ROOT_PATH'))
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
-
-include_once(XIMDEX_ROOT_PATH . '/inc/helper/ServerConfig.class.php');
 
 $functionsToCheck = array("pcntl_fork", "pcntl_waitpid");
 $serverConfig = new ServerConfig();
@@ -42,5 +33,3 @@ if ($serverConfig->hasDisabledFunctions($functionsToCheck)){
 	echo ("1");
 }else
 	echo("0");
-
-?>
