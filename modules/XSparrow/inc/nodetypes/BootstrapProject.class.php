@@ -6,8 +6,9 @@
  */
 
 
+use Ximdex\NodeTypes\Projects;
 
- class BootstrapProject extends Projects {
+class BootstrapProject extends Projects {
     
     
 }

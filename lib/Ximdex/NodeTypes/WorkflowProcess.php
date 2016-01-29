@@ -21,10 +21,13 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
+use Pipeline;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\Root;
 
@@ -32,9 +35,11 @@ use Ximdex\NodeTypes\Root;
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/Pipeline.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipeProcess.class.php');
 
-class workflow_process extends Root {
+class WorkflowProcess extends Root
+{
 
-	function CreateNode($name = null, $parentID = null, $nodeTypeID = null) {
+	function CreateNode($name = null, $parentID = null, $nodeTypeID = null)
+	{
 		$pipeline = new Pipeline();
 		$pipeline->set('Pipeline', $name);
 		$pipeline->set('IdNode', $this->parent->get('IdNode'));
@@ -49,7 +54,8 @@ class workflow_process extends Root {
 		$this->UpdatePath();
 	}
 
-	function DeleteNode() {
+	function DeleteNode()
+	{
 		$pipeline = new Pipeline();
 		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
 		if (!$result) {
@@ -60,7 +66,8 @@ class workflow_process extends Root {
 		return $pipeline->delete();
 	}
 
-	function RenameNode($name = null) {
+	function RenameNode($name = null)
+	{
 		$pipeline = new Pipeline();
 		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
 		if (!$result) {
@@ -74,7 +81,8 @@ class workflow_process extends Root {
 		return $ret;
 	}
 
-	function GetDependencies() {
+	function GetDependencies()
+	{
 		$pipeline = new Pipeline();
 		$result = $pipeline->loadByIdNode($this->parent->get('IdNode'));
 		if (!$result) {

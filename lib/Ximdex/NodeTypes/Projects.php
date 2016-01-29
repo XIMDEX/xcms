@@ -21,28 +21,30 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+
+namespace Ximdex\NodeTypes;
 
 use Ximdex\NodeTypes\FolderNode;
 
 
-
 /**
-*  @brief Handles the Projects Node.
-*
-*  The Projects Node is the container of all ximDEX projects.
-*/
+ * @brief Handles the Projects Node.
+ *
+ *  The Projects Node is the container of all ximDEX projects.
+ */
+class Projects extends FolderNode
+{
 
-class Projects extends FolderNode {
-		
 	/**
-	*  Does nothing.
-	*  @return null
-	*/
+	 *  Does nothing.
+	 * @return null
+	 */
 
-	function RenderizeNode(){
+	function RenderizeNode()
+	{
 		return null;
 	}
 }

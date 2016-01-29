@@ -204,9 +204,6 @@ class AbstractStructuredDocument extends FileNode
             case 8002: //pdf
                 $folderNodeType = 8000;
                 break;
-            case 5308:
-                $folderNodeType = 5301;
-                break;
         }
 
         do {

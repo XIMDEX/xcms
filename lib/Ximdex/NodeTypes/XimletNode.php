@@ -25,8 +25,14 @@
  * @version $Revision$
  */
 
+namespace Ximdex\NodeTypes;
+
+use AbstractStructuredDocument;
+use DepsManager;
+use documentId;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
+use XMD_Log;
 
 
 class XimletNode extends AbstractStructuredDocument

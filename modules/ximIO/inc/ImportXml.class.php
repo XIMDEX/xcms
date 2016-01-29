@@ -140,10 +140,10 @@ class ImportXml
 
         // Obtaining a list of nodes for $tagsForAdvancedWritting
         // These nodes ca be inserted without inserting first its descendants. For mor clarity, these nodes are containers
-        // In general, they are all nodes with the associated class 'foldernode', aalthough 'servernode' and 'ximnewscolectornodetype' are special cases
+        // In general, they are all nodes with the associated class 'foldernode', aalthough 'servernode'   are special cases
         $query = "select IdNodeType, upper(Name) as Name
 			from NodeTypes
-			where class in ('foldernode', 'servernode', 'ximnewscolectornodetype')
+			where class in ('foldernode', 'servernode' )
 			order by Name";
 
         $dbObj->Query($query);
