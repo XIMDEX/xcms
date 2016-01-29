@@ -59,6 +59,7 @@ class Module_ximTOUR extends Module
             $name = "Picasso";
             $addFolderNode->name = $name;
             $channels = [10001];
+            $addFolderNode->request->setParam('channels_listed', $channels);
             $languages = [10002, 10003];
             $addFolderNode->request->setParam("theme", "picasso");
 

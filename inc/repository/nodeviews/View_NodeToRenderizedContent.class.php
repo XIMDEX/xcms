@@ -34,8 +34,6 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Versions.php');
-
-require_once(XIMDEX_ROOT_PATH . '/inc/nodetypes/xmldocumentnode.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 
