@@ -20,17 +20,17 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-        define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
-
 //
+
+namespace Ximdex\MVC;
+use ModulesManager;
+use unknown_type;
+use XMD_Log;
 
 /**
  *
@@ -40,13 +40,15 @@ if (!defined('XIMDEX_ROOT_PATH')) {
  * and uses the Factory class to do the dirty job
  *
  */
-class ActionFactory {
+class ActionFactory
+{
 
 	/**
 	 * @param $request
 	 * @return mixed|null
 	 */
-	public static function getAction ($request) {
+	public static function getAction($request)
+	{
 
 
 		$actionRootName = "Action_";
@@ -58,7 +60,7 @@ class ActionFactory {
 		$module = $request->getParam("module");
 		$actionid = $request->getParam("actionid");
 
-		$absolut_actionPath = XIMDEX_ROOT_PATH .  $actionPath;
+		$absolut_actionPath = XIMDEX_ROOT_PATH . $actionPath;
 
 		//echo "absolut: $absolut_actionPath<br/>";
 		if (!file_exists($absolut_actionPath)) {
@@ -69,7 +71,7 @@ class ActionFactory {
 					DIRECTORY_SEPARATOR . 'actions' .
 					DIRECTORY_SEPARATOR . $action;
 			} else {
-				$path_module=ModulesManager::path($module);
+				$path_module = ModulesManager::path($module);
 				$actionPath = sprintf('%s%s%s%s%s%s',
 					XIMDEX_ROOT_PATH,
 					$path_module,
@@ -88,15 +90,15 @@ class ActionFactory {
 
 	/**
 	 * Determina si una accion existe
-
 	 */
 	/**
 	 * @param $actionPath
 	 * @return bool
 	 */
-	function _actionExists ($actionPath) {
+	function _actionExists($actionPath)
+	{
 		$absolut_actionPath = XIMDEX_ROOT_PATH . DIRECTORY_SEPARATOR . 'actions' . DIRECTORY_SEPARATOR . $actionPath;
-		return file_exists ($absolut_actionPath);
+		return file_exists($absolut_actionPath);
 	}
 
 	/**
@@ -104,16 +106,18 @@ class ActionFactory {
 	 * @param $request
 	 * @return unknown_type
 	 */
-	function _buildPath ($request) {
-		$action = $request->getParam ("action");
-		$actionPath = $this->request->getParam("action_path").$action;
-		$actionClass = "/Action_".$action.".class.php";
+	function _buildPath($request)
+	{
+		$action = $request->getParam("action");
+		$actionPath = $this->request->getParam("action_path") . $action;
+		$actionClass = "/Action_" . $action . ".class.php";
 		//Sino es el composer visualizamos los logs para que no se nos llenen
-		if($action != "composer")
-			XMD_Log::debug("MVC::ActionFactory Executing class Action: $actionClass | path Action: $actionPath | Method Action: ".$request->getParam ("method"));
+		if ($action != "composer")
+			XMD_Log::debug("MVC::ActionFactory Executing class Action: $actionClass | path Action: $actionPath | Method Action: " . $request->getParam("method"));
 
-		return array ($actionPath, $actionClass);
+		return array($actionPath, $actionClass);
 	}
 
 }
+
 ?>

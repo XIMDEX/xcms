@@ -29,7 +29,7 @@ namespace Ximdex\MVC;
 
 
 use EmailNotificationStrategy;
-use FrontController;
+use Ximdex\MVC\FrontController;
 use ModulesManager;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Utils\Serializer;

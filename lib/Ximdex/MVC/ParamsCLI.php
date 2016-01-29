@@ -20,42 +20,37 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-use Ximdex\Runtime\Cli\CliParser;
+namespace Ximdex\MVC;
 
-if (!defined("XIMDEX_ROOT_PATH")) {
-	define ("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__). "/../../"));
-}
+use Ximdex\Runtime\Cli\CliParser;
 
 
 /**
- * 
+ *
  * @brief Define the list of allowed cli parameters
  *
  * List of allowed cli parameters, restrictions and messages sent to the interface
  */
-class ParamsCLI extends CliParser  {
-	/**
-	 * 
-	 * @var unknown_type
-	 */
-	var $_metadata = array (
-		array ("name" => "--action",
-				"mandatory" => true,
-				"message" => "Nombre de la acci�n",
-				"type" => TYPE_STRING),
-		array ("name" => "--method",
-				"mandatory" => true,
-				"message" => "M�todo que se desea ejecutar",
-				"type" => TYPE_STRING),
-		array ("name" => "--renderer",
-				"mandatory" => true,
-				"message" => "Renderizador de plantillas",
-				"type" => TYPE_STRING)
+class ParamsCLI extends CliParser
+{
+
+	var $_metadata = array(
+		array("name" => "--action",
+			"mandatory" => true,
+			"message" => "Nombre de la acci�n",
+			"type" => TYPE_STRING),
+		array("name" => "--method",
+			"mandatory" => true,
+			"message" => "M�todo que se desea ejecutar",
+			"type" => TYPE_STRING),
+		array("name" => "--renderer",
+			"mandatory" => true,
+			"message" => "Renderizador de plantillas",
+			"type" => TYPE_STRING)
 	);
 }
-?>

@@ -22,12 +22,9 @@ define("MIGRATE_PAIR_PATH_IN_XIMDEX_NOT_EXITS", -6);
 define("MIGRATE_PAIR_CORRUPTED", -9);
 define("MIGRATE_PAIR_ERROR", -10);
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/mvc.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/FrontController.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIO.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/xvfs/XVFS.class.php');
 require_once(XIMDEX_ROOT_PATH . '/modules/ximNOTA/model/RelNodeMetaData.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/helper/String.class.php');
 
 
 class ActionMigratePair extends ActionAbstract

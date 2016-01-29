@@ -24,17 +24,18 @@
  * @version $Revision$
  */
 
+namespace Ximdex\MVC;
+
+use ModulesManager;
+use Status;
 use Ximdex\Models\ActionsStats;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\MVC\ActionFactory;
 use Ximdex\MVC\IController;
 use Ximdex\Runtime\App;
 use \Ximdex\Utils\Session;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-require_once(XIMDEX_ROOT_PATH . '/inc/mvc/ActionFactory.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/Status.class.php', 'ximADM');
 // Implement \Ximdex\Utils\Session::check() as Filter.
@@ -105,7 +106,7 @@ class ApplicationController extends IController
     function setUserState()
     {
         if (ModulesManager::isEnabled('ximADM')) {
-            $userID = (int) Session::get('userID');
+            $userID = (int)Session::get('userID');
             $action = $this->request->getParam("action");
             $method = $this->request->getParam("method");
 

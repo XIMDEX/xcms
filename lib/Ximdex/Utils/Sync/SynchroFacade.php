@@ -28,12 +28,9 @@
 namespace Ximdex\Utils\Sync;
 
 use ChannelFrame;
-use datafactory;
-use DataFactory;
-use DB;
-use dependencies;
-use idFrame;
-use ModulesManager;
+
+use DB_legacy as DB;
+ use ModulesManager;
 use NodeFrame;
 use NodeFrameManager;
 use NodeType;
@@ -41,21 +38,12 @@ use RelNewsBulletins;
 use RelNewsColector;
 use Server;
 use ServerFrame;
-use timestamp;
-use unknown;
-use unknown_type;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
-use Ximdex\Utils\Sync\Synchronizer;
-use Ximdex\Utils\Sync\SyncManager;
 use XimNewsBulletin;
 use XimNewsCache;
-use XMD_log;
-use XMD_Log;
+use Ximdex\Logger as XMD_log;
 
-if (!defined("XIMDEX_ROOT_PATH")) {
-	define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../"));
-}
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/Server.class.php');
 
@@ -500,7 +488,7 @@ class SynchroFacade
 			XMD_log::info(_("Void node"));
 			return NULL;
 		}
-
+		$channelID = null ;
 		if (ModulesManager::isEnabled('ximSYNC')) {
 			$nodeFrame = new NodeFrame();
 			$id = $nodeFrame->getPublishedId($nodeID);

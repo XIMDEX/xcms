@@ -25,6 +25,10 @@
  * @version $Revision$
  */
 //
+namespace Ximdex\MVC;
+
+
+
 require_once(XIMDEX_ROOT_PATH . '/api/utils/ResponseBuilder.class.php');
 
 /**

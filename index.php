@@ -26,6 +26,7 @@
  */
 
 
+use Ximdex\MVC\FrontController;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
@@ -40,7 +41,6 @@ ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/inc/mvc/mvc.php'); // MVC
 ModulesManager::file('/inc/install/InstallController.class.php');
 
 function echo_gt_or_not($msg)
@@ -61,8 +61,8 @@ function check_php_version()
 
 function check_config_files()
 {
-    $install_params = file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
-    $install_modules = file_exists( App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.php');
+    $install_params = file_exists(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
+    $install_modules = file_exists(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.php');
 
     if (!$install_params || !$install_modules) {
         $_GET["action"] = "installer";
@@ -94,7 +94,7 @@ function checkFolders()
                 continue;
             }
         }
-        $folder =  App::getValue('XIMDEX_ROOT_PATH') . $folderInfo['FOLDER'];
+        $folder = App::getValue('XIMDEX_ROOT_PATH') . $folderInfo['FOLDER'];
         if (!is_dir($folder)) {
             mkdir($folder, 0770, true);
         }
@@ -121,7 +121,7 @@ function checkFolders()
 
 function goLoadAction()
 {
-    header(sprintf("Location: %s", App::getValue( 'UrlRoot')));
+    header(sprintf("Location: %s", App::getValue('UrlRoot')));
 }
 
 //Main thread
@@ -131,7 +131,7 @@ if (!InstallController::isInstalled()) {
 
     $installController->dispatch();
 
- } else {
+} else {
     $locale = \Ximdex\Utils\Session::get('locale');
     I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
 

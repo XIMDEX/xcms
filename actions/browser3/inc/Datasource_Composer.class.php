@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\MVC\FrontController;
 use Ximdex\Runtime\App;
 use Ximdex\XML\Base;
 
