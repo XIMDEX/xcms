@@ -27,13 +27,12 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\Sync\SyncManager;
 
 ModulesManager::file('/inc/utils.php');
 
 if (ModulesManager::isEnabled('ximSYNC')) {							
 	ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
-} else {
-	ModulesManager::file('/inc/sync/SyncManager.class.php');
 }
 $userximio = "ximIO";
 session_id("ximIO");

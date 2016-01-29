@@ -27,8 +27,8 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Utils\Sync\SynchroFacade;
 
-ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
 class Action_deletenode extends ActionAbstract {

@@ -24,11 +24,27 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+namespace Ximdex\Utils\Sync;
+
+use DataFactory;
+use DB;
+use db;
+use ModulesManager;
+use PipelineManager;
+use Server;
+use Synchronizer_ORM;
+use SynchronizerHistory_ORM;
+use timestamp;
+use View_ChannelFilter;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\FsUtils;
+use XimNewsBulletin;
+use XimNewsColector;
+use XMD_log;
+use XMD_Log;
 
 /**
  * XIMDEX_ROOT_PATH

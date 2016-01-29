@@ -27,17 +27,14 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Sync\SynchroFacade;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../"));
-}
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
- require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
+require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/Versions.php");
 //
 require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/PipelineManager.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/sync/SynchroFacade.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');
 
 ModulesManager::file('/inc/persistence/store/StoreFactory.class.php');

@@ -32,6 +32,7 @@ use Ximdex\Parsers\ParsingRng;
 use Ximdex\Parsers\ParsingXsl;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Sync\SynchroFacade;
 
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Abstract.class.php');
 ModulesManager::file('/actions/xmleditor2/HTML2XML.class.php');
@@ -42,10 +43,9 @@ ModulesManager::file('/actions/enricher/model/TagSuggester.class.php', 'Xowl');
 ModulesManager::file('/inc/repository/nodeviews/View_NodeToRenderizedContent.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_PrefilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_Xedit.class.php');
-ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/actions/xmleditor2/model/XmlEditor_Enricher.class.php');
- ModulesManager::file('/services/Xowl/OntologyService.class.php');
+ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
 
 class XmlEditor_KUPU extends XmlEditor_Abstract

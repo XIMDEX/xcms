@@ -38,7 +38,7 @@ use PipeNodeTypes;
 use RelTagsNodes;
 use Role;
 use Ximdex\Models\StructuredDocument;
-use Synchronizer;
+use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\Logger as XMD_Log;
 use DB_legacy as DB;
@@ -59,8 +59,7 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/nodetype.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/group.php';
 require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/sync/synchro.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 

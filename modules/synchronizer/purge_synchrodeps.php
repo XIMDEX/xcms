@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Utils\Sync\Synchronizer;
 
 define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 //

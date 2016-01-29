@@ -27,6 +27,8 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Utils\Sync\SyncManager;
 
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 

@@ -27,6 +27,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\Sync\SynchroFacade;
 
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 

@@ -36,15 +36,15 @@
 //
 
 use Ximdex\Models\Node;
+use Ximdex\Utils\Sync\Mutex;
+use Ximdex\Utils\Sync\SynchroFacade;
 
 if (!defined('XIMDEX_ROOT_PATH'))
         define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
 //
 ModulesManager::file('/inc/model/XimNewsList.php', 'ximNEWS');
-ModulesManager::file('/inc/sync/SynchroFacade.class.php');
-ModulesManager::file('/inc/sync/Mutex.class.php');
-ModulesManager::file('/inc/mail/Mail.class.php');
+ ModulesManager::file('/inc/mail/Mail.class.php');
 ModulesManager::file('/inc/workflow/Workflow.class.php');
 ModulesManager::file('/inc/pipeline/PipelineManager.class.php');
 

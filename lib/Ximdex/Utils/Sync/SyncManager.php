@@ -20,24 +20,26 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+namespace Ximdex\Utils\Sync;
+
+use DataFactory;
+use DexCache;
+use Mail;
+use Ximdex\Utils\Sync\Synchronizer;
+use User;
 use Ximdex\Models\Node;
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-
-include_once( XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
+include_once(XIMDEX_ROOT_PATH . '/inc/mail/Mail.class.php');
 
 /**
  *
  */
-class SyncManager {
+class SyncManager
+{
 
 	// member vars.
 	var $errors;
@@ -54,7 +56,8 @@ class SyncManager {
 	var $recurrence;
 
 
-	function SyncManager() {
+	function SyncManager()
+	{
 
 		// Default values for state flags.
 		$this->setFlag('workflow', true);
@@ -67,18 +70,21 @@ class SyncManager {
 		$this->setFlag('recurrence', false);
 	}
 
-	function setFlag($key, $value) {
+	function setFlag($key, $value)
+	{
 
 		$this->$key = $value;
 	}
 
-	function getFlag($key) {
+	function getFlag($key)
+	{
 
 		return $this->$key;
 	}
 
 	// TODO: should return sync hash.
-	function pushDocInPublishingPool($node_id, $up, $down, $recurrence = false) {
+	function pushDocInPublishingPool($node_id, $up, $down, $recurrence = false)
+	{
 
 		// Acquire state flags
 		$markEnd = $this->getFlag('markEnd');
@@ -90,7 +96,7 @@ class SyncManager {
 		$sync = new Synchronizer($node_id);
 
 		// Delete frame if necessary
-		if ( $deleteOld ) {
+		if ($deleteOld) {
 			// DUE -> OUTDATED older frames.
 			$sync->DeleteFlaps($node_id, $up, $down, $markEnd);
 			// Frame adjusting.
@@ -98,7 +104,7 @@ class SyncManager {
 		}
 
 		// TODO: Resolve linked question...
-		if ( $linked ) {
+		if ($linked) {
 			$link_level = 0;
 		} else {
 			$link_level = 1;
@@ -112,11 +118,11 @@ class SyncManager {
 		$frameID = $sync->CreateFrame($up, $down, $markEnd, $link_level, $workflow);
 
 		// Error handling
-		if ( $sync->numErr ) {
+		if ($sync->numErr) {
 			$this->errors = true;
 			$this->errors_str = $sync->msgErr;
 
-			
+
 			// Delete major version previously createds
 
 			$data->DeleteVersion($versionID);
@@ -131,41 +137,39 @@ class SyncManager {
 		$node = new Node($node_id);
 		if ($node->nodeType->get('Module') == 'ximNEWS') {
 //		if (strtolower($type) == 'ximnews') {
-			$sync->AssociateFrameVersion($frameID[0],$versionID);
+			$sync->AssociateFrameVersion($frameID[0], $versionID);
 		}
 
 		// Add relation to cache.
-		if (\App::getValue( 'dexCache')) {
+		if (\App::getValue('dexCache')) {
 			DexCache::setRelation($node_id, $frameID, $versionID);
 		}
 
 		// Send mail
-		if($this->getFlag('mail')){
-		    $node = new node($node_id);
-		    $name = $node->Get('Name');
+		if ($this->getFlag('mail')) {
+			$node = new node($node_id);
+			$name = $node->Get('Name');
 
 			if ($node->nodeType->get('Module') == 'ximNEWS') {
-	//	    if(strtolower($type) == 'ximnews'){
+				//	    if(strtolower($type) == 'ximnews'){
 				$bulletinID = $this->getFlag('bulletinID');
 				$node = new node($bulletinID);
 				$bulletinName = $node->Get('Name');
 				$msg = "La noticia $name se va a publicar en el boletin $bulletinName";
-		    }
-		    else{
+			} else {
 				$msg = "El nodo $name se va a publicar";
-		    }
+			}
 
-		    if(!$down){
+			if (!$down) {
 				$downString = 'Sin determinar';
-		    }
-		    else{
-				$downString = date('d-m-Y H:i:s',$down);
-		    }
+			} else {
+				$downString = date('d-m-Y H:i:s', $down);
+			}
 
-		    $msg .= "\nFecha de publicacion: ".date('d-m-Y H:i:s',$up);
-		    $msg .= "\nFecha de despublicacion: $downString";
+			$msg .= "\nFecha de publicacion: " . date('d-m-Y H:i:s', $up);
+			$msg .= "\nFecha de despublicacion: $downString";
 
-		    $user = new User(301);
+			$user = new User(301);
 			$email = $user->Get('Email');
 			$mail = new Mail();
 			$mail->addAddress($email);
@@ -176,12 +180,14 @@ class SyncManager {
 
 	}
 
-	function error() {
+	function error()
+	{
 
 		return $this->errors;
 	}
 
-	function errorToString() {
+	function errorToString()
+	{
 
 		return $this->errors_str;
 	}

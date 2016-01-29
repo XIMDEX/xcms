@@ -26,6 +26,7 @@
 
 
 use Ximdex\Helpers\ServerConfig;
+use Ximdex\Utils\Sync\Mutex;
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/inc/manager/NodeFrameManager.class.php', 'ximSYNC');
@@ -36,7 +37,6 @@ ModulesManager::file('/inc/manager/ServerErrorManager.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/SynchronizerStat.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro.conf', 'ximSYNC');
-ModulesManager::file('/inc/sync/Mutex.class.php');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 if (!ModulesManager::isEnabled('XIMSYNC')) {

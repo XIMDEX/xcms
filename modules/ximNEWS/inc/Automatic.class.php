@@ -27,17 +27,16 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Utils\Logs\Automatic_Log;
+use Ximdex\Utils\Sync\Mutex;
+use Ximdex\Utils\Sync\SynchroFacade;
+use Ximdex\Utils\Sync\SyncManager;
 
-ModulesManager::file('/inc/sync/Mutex.class.php');
 
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsColectorUsers.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/model/RelNewsColector.php', 'ximNEWS');
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../../');
-}
 
 /**
  * @brief Manages the proccess that generates bulletins automatically.

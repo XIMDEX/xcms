@@ -26,6 +26,7 @@
 
 
 use Ximdex\Utils\FsUtils;
+use Ximdex\Utils\Sync\SynchroFacade;
 
 ModulesManager::file('/inc/model/orm/XimNewsCache_ORM.class.php', 'ximNEWS');
 

@@ -29,10 +29,10 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\ParsingPathTo;
+use Ximdex\Utils\Sync\SynchroFacade;
 
 ModulesManager::file('/inc/model/Versions.php');
 ModulesManager::file('/inc/model/Server.class.php');
-ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 ModulesManager::file('/inc/PAS_Conector.class.php', 'ximPAS');
 ModulesManager::file('/inc/repository/nodeviews/Abstract_View.class.php');
 ModulesManager::file('/inc/repository/nodeviews/Interface_View.class.php');

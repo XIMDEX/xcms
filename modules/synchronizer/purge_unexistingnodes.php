@@ -25,11 +25,10 @@
  */
 
 
+use Ximdex\Utils\Sync\Synchronizer;
 
-define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-//
+ //
 ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/synchro.php');
 
 
 $db = new DB();

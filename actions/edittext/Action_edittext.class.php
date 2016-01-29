@@ -27,6 +27,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Utils\Sync\SyncManager;
 
 ModulesManager::file('/inc/pipeline/PipeCacheTemplates.class.php');
 
@@ -171,8 +172,6 @@ class Action_edittext extends ActionAbstract {
 
 		if (ModulesManager::isEnabled('ximSYNC')) {
 			ModulesManager::file('/inc/manager/SyncManager.class.php', 'ximSYNC');
-		} else {
-			ModulesManager::file('/inc/sync/SyncManager.class.php');
 		}
 
 		$docs = explode('_', $this->request->getParam('docsList'));

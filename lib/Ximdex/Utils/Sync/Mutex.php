@@ -20,46 +20,49 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
-
-
+namespace Ximdex\Utils\Sync;
 /**
- *  
+ *
  */
-class Mutex {
+class Mutex
+{
 
 	private $file_name;
 	private $file_ptr;
 	private $is_acquired;
 
-	public function __construct($file_name = NULL) {
+	public function __construct($file_name = NULL)
+	{
 
 		if (is_null($file_name)) {
 			return NULL;
 		}
-		
+
 		$this->file_name = $file_name;
 	}
 
-	private function lock() {
+	private function lock()
+	{
 
-		if (flock($this->file_ptr, LOCK_EX+LOCK_NB)) {
-                        fwrite($this->file_ptr, posix_getpid() . "\n");
-                        flush($this->file_ptr);
-                        fclose($this->file_ptr);
-                        $this->is_acquired = true;
-                        return true;
-                } 
+		if (flock($this->file_ptr, LOCK_EX + LOCK_NB)) {
+			fwrite($this->file_ptr, posix_getpid() . "\n");
+			flush($this->file_ptr);
+			fclose($this->file_ptr);
+			$this->is_acquired = true;
+			return true;
+		}
 		return false;
 	}
 
-	public function acquire() {
+	public function acquire()
+	{
 
-                // detect if old process/ is dead
+		// detect if old process/ is dead
 		$old_pid = NULL;
 		if (is_file($this->file_name)) {
 			$old_pid = file_get_contents($this->file_name);
@@ -76,24 +79,25 @@ class Mutex {
 				$this->is_acquired = false;
 				return false;
 			}
-	
+
 			$this->file_ptr = $handler;
-	
+
 			if ($this->lock()) {
 				return true;
 			}
-	
+
 			$this->is_acquired = false;
 			return false;
 		}
 	}
 
-	public function release() {
+	public function release()
+	{
 
 		if (!$this->is_acquired) {
 			return true;
 		}
-                
+
 		if (($this->file_ptr = fopen($this->file_name, "w+")) == false) {
 			fclose($this->file_ptr);
 			return false;
@@ -102,17 +106,17 @@ class Mutex {
 		if (flock($this->file_ptr, LOCK_UN) == false) {
 			return false;
 		}
-		
+
 		fclose($this->file_ptr);
 
 		// Erase all content
-		$this->file_ptr = fopen($this->file_name, "w"); 
+		$this->file_ptr = fopen($this->file_name, "w");
 		fclose($this->file_ptr);
 
 		return true;
 	}
 
-	
+
 }
 
 ?>

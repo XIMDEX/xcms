@@ -30,13 +30,11 @@ namespace Ximdex\NodeTypes;
 use DB;
 use NodeType;
 use Server;
-use Synchronizer;
+use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Models\Node;
-use Ximdex\NodeTypes\FolderNode;
 
 
-include_once XIMDEX_ROOT_PATH . "/inc/sync/synchro.php";
-require_once XIMDEX_ROOT_PATH . "/inc/model/Server.class.php";
+ require_once XIMDEX_ROOT_PATH . "/inc/model/Server.class.php";
 
 class ServerNode extends FolderNode
 {

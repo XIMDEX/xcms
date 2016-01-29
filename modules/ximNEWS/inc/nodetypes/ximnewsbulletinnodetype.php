@@ -28,6 +28,8 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\AbstractStructuredDocument;
+use Ximdex\Utils\Sync\Synchronizer;
+use Ximdex\Utils\Sync\SyncManager;
 
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
 ModulesManager::file('/inc/Automatic.class.php', 'ximNEWS');

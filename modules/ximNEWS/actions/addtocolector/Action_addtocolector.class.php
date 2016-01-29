@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Utils\Sync\SyncManager;
 
 ModulesManager::file('/inc/model/XimNewsColector.php', 'ximNEWS');
 ModulesManager::file('/inc/model/XimNewsNews.inc', 'ximNEWS');

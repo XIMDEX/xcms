@@ -28,8 +28,8 @@
 use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Utils\Logs\Log;
+use Ximdex\Utils\Sync\SynchroFacade;
 
-ModulesManager::file('/inc/sync/SynchroFacade.class.php');
 
 class Action_publicatesection extends ActionAbstract {
 	
