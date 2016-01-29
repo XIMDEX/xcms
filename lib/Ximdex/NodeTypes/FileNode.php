@@ -34,7 +34,7 @@ use files;
 use ModulesManager;
 use name;
 use newState;
-use NodeDependencies;
+use Ximdex\Models\NodeDependencies;
 use nodeTypeID;
 use parentID;
 use recurrence;

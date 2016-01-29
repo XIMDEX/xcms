@@ -34,7 +34,7 @@ use files;
 use I_LinkDescriptions;
 use Link;
 use name;
-use NodeDependencies;
+use Ximdex\Models\NodeDependencies;
 use nodeTypeID;
 use parentID;
 use recurrence;

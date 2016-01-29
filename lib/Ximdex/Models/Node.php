@@ -44,7 +44,7 @@ use Ximdex\Logger as XMD_Log;
 use DB_legacy as DB;
 use Ximdex\Runtime\App,
     Dependencies,
-    NodeDependencies,
+    Ximdex\Models\NodeDependencies,
     WorkFlow,
     NodeType,
     NodeProperty;

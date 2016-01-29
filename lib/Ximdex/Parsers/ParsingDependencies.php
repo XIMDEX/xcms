@@ -32,7 +32,7 @@ use DepsManager;
 use DOMDocument;
 use DOMXPath;
 use ModulesManager;
-use NodeDependencies;
+use Ximdex\Models\NodeDependencies;
 use NodeType;
 use PipelineManager;
 use Ximdex\Models\StructuredDocument;
