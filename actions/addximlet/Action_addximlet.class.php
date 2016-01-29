@@ -25,13 +25,13 @@
  */
 
 use Ximdex\Models\Node;
+use Ximdex\Models\RelSectionXimlet;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/dependencies/DepsManager.class.php');
 ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
-ModulesManager::file('/inc/model/RelSectionXimlet.class.php');
 
 /**
  * @brief This class implements the action of add a ximlet in a Node
@@ -48,6 +48,112 @@ class Action_addximlet extends ActionAbstract
 
         parent::__construct();
 
+    }
+
+    /**
+     * Action called from index form. Add a new relation between ximlet and section;
+     */
+    function createrel()
+    {
+        $idNode = $this->request->getParam('id_node');
+        $idXimletContainers = $this->request->getParam('idximlet');
+        $recursive = $this->request->getParam('recursive');
+        $sections[] = $idNode;
+
+        //Checking idximletcontainers cames in the request.
+        if (!$idXimletContainers || !count($idXimletContainers)) {
+            $this->messages->add(_('No ximlet has been found to be associated.'), MSG_TYPE_NOTICE);
+            $values = array(
+                'messages' => $this->messages->messages,
+                'goback' => true
+            );
+            $this->render($values);
+            return;
+        }
+
+        //Build an array with all the sections to be associated.
+        if ($recursive == 'on')
+            $sections = array_merge($sections, $this->getDescentantSections($idNode));
+
+        //Set the association for every ximlet.
+        //error_log(print_r($sections, true));
+        foreach ($idXimletContainers as $idXimletContainer) {
+            $ximletContainer = new Node($idXimletContainer);
+            $ximletName = $ximletContainer->get('Name');
+            $ximlets = $ximletContainer->GetChildren();
+            $this->createRelXimletSection($sections, $idXimletContainer);
+        }
+
+        //Go back to the main form.
+        $this->index();
+    }
+
+    private function getDescentantSections($idSection)
+    {
+        $sections = array();
+        $node = new Node($idSection);
+        $children = $node->getChildren($node->get('IdNodeType'));
+
+        if (sizeof($children) > 0) {
+            $sections = array_merge($sections, $children);
+            foreach ($sections as $idDescendantSection) {
+                $descendantSection = $this->getDescentantSections($idDescendantSection);
+                $sections = array_merge($sections, $descendantSection);
+            }
+        }
+
+        return array_values(array_unique($sections));
+    }
+
+    /**
+     * Set the dependencies between a list of sections and a ximlet.
+     * @param  array $sections List of Sections id.
+     * @param  int $idXimletContainer Ximlet id
+     */
+    public function createRelXimletSection($sections, $idXimletContainer)
+    {
+
+        //For every section set the dependencies.
+        foreach ($sections as $sectionId) {
+            $deps = new DepsManager();
+            $result = $deps->set(DepsManager::SECTION_XIMLET, $sectionId, $idXimletContainer);
+            $section = new Node($sectionId);
+            $sectionName = $section->get('Name');
+
+            if ($result) {
+                $this->messages->add(_("Section ") . $sectionName . _(" has been succesfully associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
+            } else {
+                $this->messages->add(_("Section ") . $sectionName . _(" has not been associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
+            }
+
+            // Inserts ximlets dependencies for all section's xml documents
+            $sectionNode = new Node($sectionId);
+            $strDocs = $sectionNode->class->getXmlDocuments();
+
+            if (sizeof($strDocs) > 0) {
+                foreach ($strDocs as $docId) {
+                    $document = new Node($docId);
+                    $docName = $document->get('Name');
+                    $docLanguage = $document->class->getLanguage();
+
+                    foreach ($ximlets as $ximletId) {
+                        $ximlet = new StructuredDocument($ximletId);
+                        $ximletNode = new Node($ximletId);
+                        $ximletName = $ximletNode->get('Name');
+
+                        if ($ximlet->get('IdLanguage') == $docLanguage) {
+                            $deps = new DepsManager();
+                            $result = $deps->set(DepsManager::STRDOC_XIMLET, $docId, $ximletId);
+                            if ($result) {
+                                $this->messages->add(_("Doc ") . $docName . _(" has been associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
+                            } else {
+                                $this->messages->add(_("Doc ") . $docName . _(" has not been associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -108,96 +214,6 @@ class Action_addximlet extends ActionAbstract
             }
         }
         return $result;
-    }
-
-    /**
-     * Action called from index form. Add a new relation between ximlet and section;
-     */
-    function createrel()
-    {
-        $idNode = $this->request->getParam('id_node');
-        $idXimletContainers = $this->request->getParam('idximlet');
-        $recursive = $this->request->getParam('recursive');
-        $sections[] = $idNode;
-
-        //Checking idximletcontainers cames in the request.
-        if (!$idXimletContainers || !count($idXimletContainers)) {
-            $this->messages->add(_('No ximlet has been found to be associated.'), MSG_TYPE_NOTICE);
-            $values = array(
-                'messages' => $this->messages->messages,
-                'goback' => true
-            );
-            $this->render($values);
-            return;
-        }
-
-        //Build an array with all the sections to be associated.
-        if ($recursive == 'on')
-            $sections = array_merge($sections, $this->getDescentantSections($idNode));
-
-        //Set the association for every ximlet.
-        //error_log(print_r($sections, true));
-        foreach ($idXimletContainers as $idXimletContainer) {
-            $ximletContainer = new Node($idXimletContainer);
-            $ximletName = $ximletContainer->get('Name');
-            $ximlets = $ximletContainer->GetChildren();
-            $this->createRelXimletSection($sections, $idXimletContainer);
-        }
-
-        //Go back to the main form.
-        $this->index();
-    }
-
-
-    /**
-     * Set the dependencies between a list of sections and a ximlet.
-     * @param  array $sections List of Sections id.
-     * @param  int $idXimletContainer Ximlet id
-     */
-    public function createRelXimletSection($sections, $idXimletContainer)
-    {
-
-        //For every section set the dependencies.
-        foreach ($sections as $sectionId) {
-            $deps = new DepsManager();
-            $result = $deps->set(DepsManager::SECTION_XIMLET, $sectionId, $idXimletContainer);
-            $section = new Node($sectionId);
-            $sectionName = $section->get('Name');
-
-            if ($result) {
-                $this->messages->add(_("Section ") . $sectionName . _(" has been succesfully associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
-            } else {
-                $this->messages->add(_("Section ") . $sectionName . _(" has not been associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
-            }
-
-            // Inserts ximlets dependencies for all section's xml documents
-            $sectionNode = new Node($sectionId);
-            $strDocs = $sectionNode->class->getXmlDocuments();
-
-            if (sizeof($strDocs) > 0) {
-                foreach ($strDocs as $docId) {
-                    $document = new Node($docId);
-                    $docName = $document->get('Name');
-                    $docLanguage = $document->class->getLanguage();
-
-                    foreach ($ximlets as $ximletId) {
-                        $ximlet = new StructuredDocument($ximletId);
-                        $ximletNode = new Node($ximletId);
-                        $ximletName = $ximletNode->get('Name');
-
-                        if ($ximlet->get('IdLanguage') == $docLanguage) {
-                            $deps = new DepsManager();
-                            $result = $deps->set(DepsManager::STRDOC_XIMLET, $docId, $ximletId);
-                            if ($result) {
-                                $this->messages->add(_("Doc ") . $docName . _(" has been associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
-                            } else {
-                                $this->messages->add(_("Doc ") . $docName . _(" has not been associated to the ximlet ") . $ximletName, MSG_TYPE_NOTICE);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -281,23 +297,6 @@ class Action_addximlet extends ActionAbstract
                 }
             }
         }
-    }
-
-    private function getDescentantSections($idSection)
-    {
-        $sections = array();
-        $node = new Node($idSection);
-        $children = $node->getChildren($node->get('IdNodeType'));
-
-        if (sizeof($children) > 0) {
-            $sections = array_merge($sections, $children);
-            foreach ($sections as $idDescendantSection) {
-                $descendantSection = $this->getDescentantSections($idDescendantSection);
-                $sections = array_merge($sections, $descendantSection);
-            }
-        }
-
-        return array_values(array_unique($sections));
     }
 
 }

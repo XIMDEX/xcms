@@ -8,6 +8,10 @@ namespace Ximdex\Runtime;
 
 class Constants
 {
+
+    // NodeId Codes
+
+     //
     const CREATE = 'C';
     const WRITE = 'W';
     const DELETE = 'D';
@@ -23,7 +27,8 @@ class Constants
     const IMPORTED_STATUS_OK = 1;
     const IMPORTED_STATUS_OK_TO_PUBLISH = 2;
     const IMPORTED_STATUS_PENDING_LINKS = 3;
-    static  $METATYPES_ARRAY = array(
+    // metatype of nodetypes
+    static $METATYPES_ARRAY = array(
         'FOLDER' => 'FOLDERNODE',
         'FOLDERNODE' => 'FOLDERNODE',
         'SERVERNODE' => 'FOLDERNODE',

@@ -25,20 +25,21 @@
  */
 
 
+namespace Ximdex\Models;
+
 use Ximdex\Models\Node;
+use Ximdex\Models\ORM\RelSectionXimletOrm;
+use Ximdex\Services\NodeType;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelSectionXimlet_ORM.class.php';
-
-class RelSectionXimlet extends RelSectionXimlet_ORM
+class RelSectionXimlet extends RelSectionXimletOrm
 {
     public function getAllXimlets()
     {
         $node = new Node();
-        $result = $node->find('IdNode', 'IdNodeType = 5056', array(), MONO);
+        $where = 'IdNodeType = ' . NodeType::XIMLET_CONTAINER;
+
+        $result = $node->find('IdNode', $where, array(), MONO);
         return $result;
     }
 }

@@ -20,203 +20,206 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-
-
-require_once(XIMDEX_ROOT_PATH . '/inc/model/RelSectionXimlet.class.php');
 //
 
-class DepsManager {
+class DepsManager
+{
 
-	/**
-	 *
-	 * @var string
-	 */
-	const SECTION_XIMLET = 'RelSectionXimlet';
-	/**
-	 *
-	 * @var string
-	 */
-	const STRDOC_XIMLET = 'RelStrdocXimlet';
-	/**
-	 *
-	 * @var string
-	 */
-	const BULLETIN_XIMLET = 'RelBulletinXimlet';
-	/**
-	 *
-	 * @var string
-	 */
-	const STRDOC_NODE = 'RelStrdocNode';
-	/**
-	 *
-	 * @var string
-	 */
-	const STRDOC_TEMPLATE = 'RelStrdocTemplate';
-	/**
-	 *
-	 * @var string
-	 */
-	const STRDOC_ASSET = 'RelStrdocAsset';
-	/**
-	 *
-	 * @var string
-	 */
-	const STRDOC_CSS = 'RelStrdocCss';
-	/**
-	 *
-	 * @var string
-	 */
-	const STRDOC_SCRIPT = 'RelStrdocScript';
-	/**
-	 *
-	 * @var string
-	 */
-	const STRDOC_STRUCTURE = 'RelStrdocStructure';
+    /**
+     *
+     * @var string
+     */
+    const SECTION_XIMLET = 'RelSectionXimlet';
+    /**
+     *
+     * @var string
+     */
+    const STRDOC_XIMLET = 'RelStrdocXimlet';
+    /**
+     *
+     * @var string
+     */
+    const BULLETIN_XIMLET = 'RelBulletinXimlet';
+    /**
+     *
+     * @var string
+     */
+    const STRDOC_NODE = 'RelStrdocNode';
+    /**
+     *
+     * @var string
+     */
+    const STRDOC_TEMPLATE = 'RelStrdocTemplate';
+    /**
+     *
+     * @var string
+     */
+    const STRDOC_ASSET = 'RelStrdocAsset';
+    /**
+     *
+     * @var string
+     */
+    const STRDOC_CSS = 'RelStrdocCss';
+    /**
+     *
+     * @var string
+     */
+    const STRDOC_SCRIPT = 'RelStrdocScript';
+    /**
+     *
+     * @var string
+     */
+    const STRDOC_STRUCTURE = 'RelStrdocStructure';
 
-	const NODE2ASSET = 'RelNode2Asset';
+    const NODE2ASSET = 'RelNode2Asset';
 
-	const XML2XML = 'RelXml2Xml';
+    const XML2XML = 'RelXml2Xml';
 
-	/**
-	 * Returns the model object specified by "$tableName" name or NULL
-	 * @param string $tableName
-	 * @return object
-	 */
-	private function getModel($tableName, $id = NULL) {
-		$factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/", $tableName);
-		$object = $factory->instantiate(NULL, $id);
+    /**
+     * Returns the model object specified by "$tableName" name or NULL
+     * @param string $tableName
+     * @return object
+     */
+    private function getModel($tableName, $id = NULL)
+    {
+        $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/", $tableName);
+        $object = $factory->instantiate(NULL, $id);
 
-		if (!is_object($object)) {
-			XMD_Log::error(sprintf("Can't instantiate a %s model", $tableName));
-		}
-		return $object;
-	}
-	/**
-	 * Inserts a row in a relation table
-	 * @param const $rel
-	 * @param int $idSource
-	 * @param int $idTarget
-	 * @return true / false
-	 */
-	function set($rel, $idSource, $idTarget) {
-		$res=array();
-		$object = $this->getModel($rel);
-		if (!is_object($object)) return false;
+        if (!is_object($object)) {
+            XMD_Log::error(sprintf("Can't instantiate a %s model", $tableName));
+        }
+        return $object;
+    }
 
-		$res=$object->find(ALL,'source = %s and target = %s',array($idSource,$idTarget));
+    /**
+     * Inserts a row in a relation table
+     * @param const $rel
+     * @param int $idSource
+     * @param int $idTarget
+     * @return true / false
+     */
+    function set($rel, $idSource, $idTarget)
+    {
+        $res = array();
+        $object = $this->getModel($rel);
+        if (!is_object($object)) return false;
 
-		if(empty($res)){
-			$object->set('target', $idTarget);
-			$object->set('source', $idSource);
+        $res = $object->find(ALL, 'source = %s and target = %s', array($idSource, $idTarget));
 
-			if (!$object->add()) {
-				XMD_Log::error('Inserting dependency');
-				return false;
-			}
-		}
-		else{
-			
-		}
+        if (empty($res)) {
+            $object->set('target', $idTarget);
+            $object->set('source', $idSource);
 
-		return true;
-	}
+            if (!$object->add()) {
+                XMD_Log::error('Inserting dependency');
+                return false;
+            }
+        } else {
 
-	/**
-	 * From a given target node returns its source nodes
-	 * @param const $rel
-	 * @param int $idTarget
-	 * @return array / NULL
-	 */
-	function getByTarget($rel, $target) {
+        }
 
-		$object = $this->getModel($rel);
-		if (!is_object($object)) return false;
+        return true;
+    }
 
-		$result = $object->find('source', 'target = %s', array($target), MONO);
+    /**
+     * From a given target node returns its source nodes
+     * @param const $rel
+     * @param int $idTarget
+     * @return array / NULL
+     */
+    function getByTarget($rel, $target)
+    {
 
-		return sizeof($result) > 0 ? $result : NULL;
-	}
+        $object = $this->getModel($rel);
+        if (!is_object($object)) return false;
 
-	/**
-	 * From a given source node returns its target nodes
-	 * @param const $rel
-	 * @param int $idSource
-	 * @return array / NULL
-	 */
-	function getBySource($rel, $source) {
-		$object = $this->getModel($rel);
-		if (!is_object($object)) return false;
-		$result = $object->find('target', 'source = %s', array($source), MONO);
-		return sizeof($result) > 0 ? $result : array();
-	}
+        $result = $object->find('source', 'target = %s', array($target), MONO);
 
-	/**
-	 * Deletes a row in a relation table
-	 * @param const $rel
-	 * @param int $idSource
-	 * @param int $idTarget
-	 * @return true / false
-	 */
-	function delete($rel, $idSource, $idTarget) {
+        return sizeof($result) > 0 ? $result : NULL;
+    }
 
-		$object = $this->getModel($rel);
-		if (!is_object($object)) return false;
+    /**
+     * From a given source node returns its target nodes
+     * @param const $rel
+     * @param int $idSource
+     * @return array / NULL
+     */
+    function getBySource($rel, $source)
+    {
+        $object = $this->getModel($rel);
+        if (!is_object($object)) return false;
+        $result = $object->find('target', 'source = %s', array($source), MONO);
+        return sizeof($result) > 0 ? $result : array();
+    }
 
-		$object->set('target', $idTarget);
-		$object->set('source', $idSource);
+    /**
+     * Deletes a row in a relation table
+     * @param const $rel
+     * @param int $idSource
+     * @param int $idTarget
+     * @return true / false
+     */
+    function delete($rel, $idSource, $idTarget)
+    {
 
-		$result = $object->find('id', 'source = %s AND target = %s', array($idSource, $idTarget), MONO);
+        $object = $this->getModel($rel);
+        if (!is_object($object)) return false;
 
-		if (sizeof($result) != 1) {
-			XMD_Log::error('IN query');
-			return false;
-		}
-		$objectLoaded = $this->getModel($rel, $result[0]);
-		return $objectLoaded->delete();
-	}
+        $object->set('target', $idTarget);
+        $object->set('source', $idSource);
 
-	/**
-	 * Deletes all relations for a source node
-	 * @param const $rel
-	 * @param int $idSource
-	 * @return true / false
-	 */
-	function deleteBySource($rel, $idSource) {
+        $result = $object->find('id', 'source = %s AND target = %s', array($idSource, $idTarget), MONO);
 
-		$object = $this->getModel($rel);
-		if (!is_object($object)) return false;
+        if (sizeof($result) != 1) {
+            XMD_Log::error('IN query');
+            return false;
+        }
+        $objectLoaded = $this->getModel($rel, $result[0]);
+        return $objectLoaded->delete();
+    }
 
-		$result = $object->find('id', 'source = %s', array($idSource), MONO);
+    /**
+     * Deletes all relations for a source node
+     * @param const $rel
+     * @param int $idSource
+     * @return true / false
+     */
+    function deleteBySource($rel, $idSource)
+    {
 
-		if (sizeof($result) > 0) {
-			$object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
-		}
+        $object = $this->getModel($rel);
+        if (!is_object($object)) return false;
 
-		return true;
-	}
+        $result = $object->find('id', 'source = %s', array($idSource), MONO);
 
-	/**
-	 * Deletes all relations for a target node
-	 * @param const $rel
-	 * @param int $idTarget
-	 * @return true / false
-	 */
-	function deleteByTarget($rel, $idTarget) {
+        if (sizeof($result) > 0) {
+            $object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
+        }
 
-		$object = $this->getModel($rel);
-		if (!is_object($object)) return false;
+        return true;
+    }
 
-		$result = $object->find('id', 'target = %s', array($idTarget), MONO);
+    /**
+     * Deletes all relations for a target node
+     * @param const $rel
+     * @param int $idTarget
+     * @return true / false
+     */
+    function deleteByTarget($rel, $idTarget)
+    {
 
-		if (sizeof($result) > 0) {
-			$object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
-		}
+        $object = $this->getModel($rel);
+        if (!is_object($object)) return false;
 
-		return true;
-	}
+        $result = $object->find('id', 'target = %s', array($idTarget), MONO);
+
+        if (sizeof($result) > 0) {
+            $object->deleteAll('id in (%s)', array(implode(', ', $result)), false);
+        }
+
+        return true;
+    }
 }
-?>
