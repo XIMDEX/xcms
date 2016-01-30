@@ -30,10 +30,9 @@ namespace Ximdex\MVC\Render;
 use Extensions;
 use ModulesManager;
 use Smarty;
- use Widget;
+ use Ximdex\Widgets\Widget;
 
 require_once(XIMDEX_ROOT_PATH . Extensions::SMARTY);
-include_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
 
 
 /**

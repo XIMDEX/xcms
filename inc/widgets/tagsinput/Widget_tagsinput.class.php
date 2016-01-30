@@ -20,67 +20,71 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Models\Node;
+use Ximdex\Widgets\WidgetAbstract;
 
-require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
-class Widget_tagsinput extends Widget_Abstract {
+class Widget_tagsinput extends WidgetAbstract
+{
 
-	public function __construct() {
-		if(! ModulesManager::isEnabled("ximTAGS") ) {
-			$this->setEnable(false);
-		}
+    public function __construct()
+    {
+        if (!ModulesManager::isEnabled("ximTAGS")) {
+            $this->setEnable(false);
+        }
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
-	public function process($params) {
-
-
-		if("true" == $params["initialize"]) {
-			$relTags = new RelTagsNodes();
-			$params["tags"] = json_encode($relTags->getTags($params["_enviroment"]["id_node"]));
-		}
-
-		$node = new Node($params["_enviroment"]["id_node"]);
-		$params["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
-
-		if(array_key_exists("editor", $params ) ) {
-			$this->setTemplate("tagsinput_editor");
-		}
-
-		$params['namespaces'] = json_encode($this->getAllNamespaces());
+    public function process($params)
+    {
 
 
-		return parent::process($params);
-	}
+        if ("true" == $params["initialize"]) {
+            $relTags = new RelTagsNodes();
+            $params["tags"] = json_encode($relTags->getTags($params["_enviroment"]["id_node"]));
+        }
 
-	private function getAllNamespaces(){
-  		$result = array();
-  		//Load from Xowl Service
-  		$namespacesArray = OntologyService::getAllNamespaces();
-  		//For every namespace build an array. This will be a json object
-  		foreach ($namespacesArray as $namespace) {
-  			$array = array(
-  					"id"=>$namespace->get("idNamespace"),
-  					"type"=>$namespace->get("type"),
-  					"isSemantic"=>$namespace->get("isSemantic"),
-  					"nemo"=>$namespace->get("nemo"),
-  					"category"=>$namespace->get("category"),
-  					"uri"=>$namespace->get("uri")
-				);
+        $node = new Node($params["_enviroment"]["id_node"]);
+        $params["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
 
-  			$result[] = $array;
-  		}
-  		return $result;		
-	}
+        if (array_key_exists("editor", $params)) {
+            $this->setTemplate("tagsinput_editor");
+        }
+
+        $params['namespaces'] = json_encode($this->getAllNamespaces());
+
+
+        return parent::process($params);
+    }
+
+    private function getAllNamespaces()
+    {
+        $result = array();
+        //Load from Xowl Service
+        $namespacesArray = OntologyService::getAllNamespaces();
+        //For every namespace build an array. This will be a json object
+        foreach ($namespacesArray as $namespace) {
+            $array = array(
+                "id" => $namespace->get("idNamespace"),
+                "type" => $namespace->get("type"),
+                "isSemantic" => $namespace->get("isSemantic"),
+                "nemo" => $namespace->get("nemo"),
+                "category" => $namespace->get("category"),
+                "uri" => $namespace->get("uri")
+            );
+
+            $result[] = $array;
+        }
+        return $result;
+    }
 
 }
 

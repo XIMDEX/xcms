@@ -35,6 +35,7 @@ use Ximdex\Parsers\ParsingXimMenu;
 use Ximdex\Runtime\App;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
+use Ximdex\Widgets\Widget;
 use Ximdex\XML\Base;
 use Ximdex\Logger as XMD_Log;
 use DB_legacy as DB;

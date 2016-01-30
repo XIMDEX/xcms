@@ -25,9 +25,10 @@
  */
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
+use Ximdex\Widgets\WidgetAbstract;
 
-class Widget_searchpanel extends Widget_Abstract
+
+class Widget_searchpanel extends WidgetAbstract
 {
 
 

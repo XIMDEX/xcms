@@ -20,48 +20,49 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Models\XimLocale;
+use Ximdex\Widgets\WidgetAbstract;
 
-require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 
-class Widget_contextmenu extends Widget_Abstract {
+class Widget_contextmenu extends WidgetAbstract
+{
 
-	public function process($params) {
+    public function process($params)
+    {
 
-		//Is a predefined menu ?
-		if(array_key_exists("initialize", $params) ) {
-			$method = $params["initialize"];
-			//method for predefined menu 
-			if(method_exists($this, $method) ) {
-				$this->$method($params);
-			}else {
-				//General template
-				$this->setTemplate($params["initialize"] );
-			}
-		}
+        //Is a predefined menu ?
+        if (array_key_exists("initialize", $params)) {
+            $method = $params["initialize"];
+            //method for predefined menu
+            if (method_exists($this, $method)) {
+                $this->$method($params);
+            } else {
+                //General template
+                $this->setTemplate($params["initialize"]);
+            }
+        }
 
-		$this->addCss("jquery.contextMenu.css");	
+        $this->addCss("jquery.contextMenu.css");
 
-		return parent::process($params);
-	}
+        return parent::process($params);
+    }
 
-	//Code for main predefined menu
-	public function mainmenu(& $params) {
-		$this->setTemplate($params["initialize"] );
+    //Code for main predefined menu
+    public function mainmenu(& $params)
+    {
+        $this->setTemplate($params["initialize"]);
 
-		//Modify your user
-		$params["userid"] = \Ximdex\Utils\Session::get('userID');
-	
-		//Change your language
-		$locale = new XimLocale();
-		$params["user_locale"] = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
-		$params["locales"]  = $locale->GetEnabledLocales();
-	}
+        //Modify your user
+        $params["userid"] = \Ximdex\Utils\Session::get('userID');
+
+        //Change your language
+        $locale = new XimLocale();
+        $params["user_locale"] = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
+        $params["locales"] = $locale->GetEnabledLocales();
+    }
 }
-
-?>

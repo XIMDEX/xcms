@@ -27,11 +27,7 @@
 
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
-define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
 
-//include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMProcessOutBool.class.php");
-//include_once(XIMDEX_ROOT_PATH . "/inc/MPM/MPMProcessOutFile.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/SharedMemory.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");

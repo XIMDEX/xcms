@@ -20,22 +20,24 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+use Ximdex\Widgets\WidgetAbstract;
 
-require_once (XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
 
-class Widget_uploader extends Widget_Abstract {
+class Widget_uploader extends WidgetAbstract
+{
 
-	public function process($params) {
-		$this->setTemplate("uploader_html5");
-		$this->addCss("uploader_html5.css");
-		$params["nodeid"] = $params["_enviroment"]["id_node"];
+    public function process($params)
+    {
+        $this->setTemplate("uploader_html5");
+        $this->addCss("uploader_html5.css");
+        $params["nodeid"] = $params["_enviroment"]["id_node"];
 
-		return parent::process($params);
-	}
+        return parent::process($params);
+    }
 
 }

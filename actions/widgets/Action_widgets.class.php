@@ -25,8 +25,8 @@
  */
 
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Widgets\Widget;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
 class Action_widgets extends ActionAbstract {
 
   function index() {

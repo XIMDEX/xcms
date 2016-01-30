@@ -1,5 +1,8 @@
 <?php
 
+namespace Ximdex\Widgets;
+use Ximdex\Runtime\App;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,6 +27,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+
 class WidgetDependencies
 {
 
@@ -37,7 +41,7 @@ class WidgetDependencies
     protected static function loadDependencies()
     {
         if (self::$deps === null) {
-            self::$deps = include(\App::getValue('AppRoot') . '/conf/wdeps.php');
+            self::$deps = include( App::getValue('AppRoot') . '/conf/wdeps.php');
         }
         return self::$deps;
     }

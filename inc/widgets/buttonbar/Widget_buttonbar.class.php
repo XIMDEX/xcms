@@ -25,9 +25,10 @@
  */
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
+use Ximdex\Widgets\WidgetAbstract;
 
-class Widget_buttonbar extends Widget_Abstract
+
+class Widget_buttonbar extends WidgetAbstract
 {
 
     public function __construct()
@@ -35,6 +36,5 @@ class Widget_buttonbar extends Widget_Abstract
         parent::__construct();
     }
 
-    //public function process($params) {}
 
 }

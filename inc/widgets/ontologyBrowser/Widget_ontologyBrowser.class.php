@@ -25,10 +25,11 @@
  */
 
 
-require_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget_Abstract.class.php');
+use Ximdex\Widgets\WidgetAbstract;
+
 ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
-class Widget_ontologyBrowser extends Widget_Abstract
+class Widget_ontologyBrowser extends WidgetAbstract
 {
 
     public function process($params)

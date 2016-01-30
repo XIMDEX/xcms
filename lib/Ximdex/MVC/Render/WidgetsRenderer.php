@@ -27,9 +27,8 @@
 
 namespace Ximdex\MVC\Render;
 
-use Widget;
+use Ximdex\Widgets\Widget;
 
-include_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
 
 /**
  *
@@ -41,20 +40,13 @@ include_once(XIMDEX_ROOT_PATH . '/inc/widgets/Widget.class.php');
 class WidgetsRenderer extends AbstractRenderer
 {
 
-    /**
-     * Constructor
-     * @param $fileName
-     * @return unknown_type
-     */
+
     public function __construct($fileName = NULL)
     {
         parent::__construct($fileName);
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see inc/mvc/renderers/AbstractRenderer#render($view)
-     */
+
     public function render($view = NULL)
     {
         parent::render(null);
@@ -62,28 +54,15 @@ class WidgetsRenderer extends AbstractRenderer
         return $this->process($view, $params);
     }
 
-    /**
-     * Smarty prefilter plugin
-     * Identify widgets tags, for each tag replaces it with the associated template
-     * and includes dependencies (javascript, css, etc...)
-     * @param $source
-     * @param $params
-     * @return unknown_type
-     */
     public function process($source, $params)
     {
 
         $ret = Widget::process($source, $params);
 
         if ($ret === null) {
-//			debug::log(' ===> NO WIDGET');
             return $source;
         }
 
-//$ret['tpl'] = '';
-//debug::log($ret['tpl']);
         return $ret['tpl'];
     }
 }
-
-?>

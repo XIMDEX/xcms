@@ -20,16 +20,20 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Widgets;
 use Ximdex\Parsers\ParsingJsGetText;
 use Ximdex\Utils\FsUtils;
 
+use XMD_Log;
 
-abstract class Widget_Abstract {
+
+abstract class WidgetAbstract
+{
 
 	protected $_enable = true;
 	protected $_wname = null;
@@ -37,15 +41,16 @@ abstract class Widget_Abstract {
 	protected $_template_dir = null;
 	protected $_js = null;
 	protected $_css = null;
-	protected $_tpl= null;
+	protected $_tpl = null;
 
 	/**
 	 * Obtains widget dependencies/assets: js, css, tpl, ...
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 
 		$this->_wname = str_replace('Widget_', '', get_class($this));
-		$this->_widget_dir = sprintf('%s/%s', dirname(__FILE__),  $this->_wname);
+		$this->_widget_dir = sprintf('%s/%s', dirname(__FILE__), $this->_wname);
 		$this->_widget_style_dir = sprintf(
 			'%s/xmd/style/jquery/%s/widgets/%s',
 			XIMDEX_ROOT_PATH,
@@ -56,51 +61,57 @@ abstract class Widget_Abstract {
 		$this->_assets_url = 'inc/widgets/';
 		$this->_template_dir = sprintf('%s/template/', $this->_widget_dir);
 
-		if($this->_enable) {
+		if ($this->_enable) {
 			$this->_js = WidgetDependencies::getDependencies($this->_wname);
 			$this->_js = $this->fixJsUrl($this->_js);
 			$this->setTemplate($this->_wname);
 		}
 	}
 
-	public function enable() {
+	public function enable()
+	{
 		return $this->_enable;
 	}
 
-	public function setEnable($_boolean) {
+	public function setEnable($_boolean)
+	{
 		$this->_enable = $_boolean;
 	}
 
-	protected function fixCssUrl($array, $wname) {
+	protected function fixCssUrl($array, $wname)
+	{
 		$c = count($array);
-		for ($i=0; $i<$c; $i++) {
+		for ($i = 0; $i < $c; $i++) {
 			$array[$i] = sprintf(
 				'%s/%s/%s',
-				\App::getValue( 'UrlRoot'),
-				preg_replace('#^'.realpath(\App::getValue( 'AppRoot')).'#', '', realpath($this->_widget_style_dir)),
+				\App::getValue('UrlRoot'),
+				preg_replace('#^' . realpath(\App::getValue('AppRoot')) . '#', '', realpath($this->_widget_style_dir)),
 				$array[$i]
 			);
 		}
 		return $array;
 	}
 
-	protected function fixJsUrl($array) {
+	protected function fixJsUrl($array)
+	{
 		$c = count($array);
 		$getTextJs = new ParsingJsGetText();
-		for ($i=0; $i<$c; $i++) {
-			$array[$i] = $getTextJs->getFile(sprintf('/%s/%s', $this->_assets_url, $array[$i]) );
+		for ($i = 0; $i < $c; $i++) {
+			$array[$i] = $getTextJs->getFile(sprintf('/%s/%s', $this->_assets_url, $array[$i]));
 		}
 		return $array;
 	}
 
-	public function getName() {
+	public function getName()
+	{
 		return $this->_wname;
 	}
 
 
 	/** ____TPl____ **/
-	public function setTemplate($_template) {
-		if(null == $_template || !$this->enable() ) return null;
+	public function setTemplate($_template)
+	{
+		if (null == $_template || !$this->enable()) return null;
 
 		$this->_tpl = sprintf('%s%s.tpl', $this->_template_dir, basename($_template));
 		if (!is_file($this->_tpl)) {
@@ -110,41 +121,46 @@ abstract class Widget_Abstract {
 	}
 
 
-	public function getTemplate() {
+	public function getTemplate()
+	{
 		return $this->_tpl;
 	}
 
 
 	/** ___Css___ **/
-	public function getCssFiles() {
+	public function getCssFiles()
+	{
 		return $this->_css;
 	}
 
 
-	public function addCss($_css) {
-		if(empty($this->_css) ) {
-			$this->_css = array( 0 => $_css );
-		}else {
+	public function addCss($_css)
+	{
+		if (empty($this->_css)) {
+			$this->_css = array(0 => $_css);
+		} else {
 			$this->_css[] = $_css;
 		}
 	}
 
 	/** ___Js___ **/
-	public function getJsFiles() {
+	public function getJsFiles()
+	{
 		return $this->_js;
 	}
 
 
-
-	public function addJs($_js) {
-		if(empty($this->_js) ) {
-			$this->_js = array( 0 => $_js );
-		}else if( !in_array($_js, $this->_js) ) {
+	public function addJs($_js)
+	{
+		if (empty($this->_js)) {
+			$this->_js = array(0 => $_js);
+		} else if (!in_array($_js, $this->_js)) {
 			$this->_js[] = $_js;
 		}
 	}
 
-	public function includeWidgetLib($name) {
+	public function includeWidgetLib($name)
+	{
 		$widget =& Widget::getWidget($name);
 		if ($widget) {
 			$this->_js = array_unique(array_merge((array)$widget->getJsFiles(), (array)$this->_js));
@@ -152,11 +168,12 @@ abstract class Widget_Abstract {
 		}
 	}
 
-	protected function createJsParams($widgetId, $params) {
+	protected function createJsParams($widgetId, $params)
+	{
 		$base = "xparams[wv][{$widgetId}]";
 		$ret = array();
-		foreach ($params as $key=>$value) {
-			if(!is_array($value) )
+		foreach ($params as $key => $value) {
+			if (!is_array($value))
 				$ret[] = $base . "[{$key}]={$value}";
 		}
 		return $ret;
@@ -165,10 +182,11 @@ abstract class Widget_Abstract {
 	/**
 	 * Parses the HTML tag attributes.
 	 */
-	protected function parseWidgetAttributes($params) {
+	protected function parseWidgetAttributes($params)
+	{
 
 		$ret = array();
-		foreach ($params as $key=>$value) {
+		foreach ($params as $key => $value) {
 			switch ($key) {
 				case 'paginatorShow':
 					$ret[$key] = in_array(strtoupper($value), array('YES', 'TRUE'))
@@ -196,10 +214,11 @@ abstract class Widget_Abstract {
 	/**
 	 * Default behaviour, overwrite if needed
 	 */
-	public function process($params) {
+	public function process($params)
+	{
 
 		//¿disabled?
-		if( empty($this->_tpl) || !$this->enable() ) return null;
+		if (empty($this->_tpl) || !$this->enable()) return null;
 		/** ********************** ADD TPL DEFAULT ************* */
 		$asInclude = isset($params['include']) && in_array(strtoupper($params['include']), array('YES', 'TRUE'))
 			? true
@@ -213,13 +232,14 @@ abstract class Widget_Abstract {
 			: FsUtils::file_get_contents($this->_tpl);
 
 		/** ********************** ADD CSS DEFAULT ************* */
-	   if(empty($this->_css)  && !is_array($this->_css)  ) {
-	   	$this->_css = FsUtils::getFolderFilesByExtension($this->_widget_style_dir."/", array("css"), false);
-	   }
-	  	if (!is_array($this->_css)) { $this->_css = array(); }
+		if (empty($this->_css) && !is_array($this->_css)) {
+			$this->_css = FsUtils::getFolderFilesByExtension($this->_widget_style_dir . "/", array("css"), false);
+		}
+		if (!is_array($this->_css)) {
+			$this->_css = array();
+		}
 
-	  	$this->_css = $this->fixCssUrl($this->_css, $this->_wname);
-
+		$this->_css = $this->fixCssUrl($this->_css, $this->_wname);
 
 
 		/** ********************** JS TRANSFORM ************* */
@@ -230,7 +250,7 @@ abstract class Widget_Abstract {
 		if (count($attributes) > 0 && !$asInclude) {
 			$jsParams = $this->createJsParams($attributes['id'], $attributes);
 			$url = sprintf('%s/xmd/loadaction.php?method=includeDinamicJs&%s&js_file=widgetsVars',
-				\App::getValue( 'UrlRoot'), implode('&', $jsParams));
+				\App::getValue('UrlRoot'), implode('&', $jsParams));
 			$this->_js[] = $url;
 //			debug::log($url);
 		}

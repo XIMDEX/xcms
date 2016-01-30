@@ -20,18 +20,24 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+namespace Ximdex\Widgets;
+
+use a;
+use m;
+use ModulesManager;
+use wi;
+use wn;
 use Ximdex\MVC\Render\SmartyTextRenderer;
 use Ximdex\Utils\FsUtils;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/widgets/WidgetDependencies.class.php');
 
-class Widget {
-
+class Widget
+{
 
 
 	// Smarty style
@@ -48,22 +54,25 @@ class Widget {
 	// Search regexps
 	static protected $_widgetsRegexps = null;
 
-	private function __construct() {
+	private function __construct()
+	{
 	}
 
 	/**
 	 * Finds all allowed widgets from file system and registers them
 	 */
-	static public function availableWidgets() {
+	static public function availableWidgets()
+	{
 		if (is_array(self::$_widgets)) return self::$_widgets;
-		self::$_widgets = FsUtils::readFolder(dirname(__FILE__) , false, 'common');
+		self::$_widgets = FsUtils::readFolder(dirname(__FILE__), false, 'common');
 		return self::$_widgets;
 	}
 
 	/**
 	 * Returns valid regexps to looking for in templates
 	 */
-	static public function getWidgetsRegexps() {
+	static public function getWidgetsRegexps()
+	{
 		if (is_array(self::$_widgetsRegexps)) return self::$_widgetsRegexps;
 		$widgets = self::availableWidgets();
 		$regexps = array();
@@ -75,7 +84,8 @@ class Widget {
 		return $regexps;
 	}
 
-	static public function merge_arrays() {
+	static public function merge_arrays()
+	{
 		$args = func_get_args();
 		$res = array();
 		foreach ($args as $arr) {
@@ -84,13 +94,14 @@ class Widget {
 		return $res;
 	}
 
-	static public function & getWidget($name) {
+	static public function & getWidget($name)
+	{
 
 		if (!is_array(self::$_instances)) self::$_instances = array();
 
 		$dir_widget = dirname(__FILE__);
-		if(file_exists($dir_widget."/".$name) ) {
-			$dir_widget = $dir_widget."/".$name;
+		if (file_exists($dir_widget . "/" . $name)) {
+			$dir_widget = $dir_widget . "/" . $name;
 		}
 
 		$factory = new \Ximdex\Utils\Factory($dir_widget, 'Widget_');
@@ -102,7 +113,8 @@ class Widget {
 	/**
 	 * Process a widget instance and common resources
 	 */
-	static protected function _process($source, $options) {
+	static protected function _process($source, $options)
+	{
 
 		$options['js_files'] = isset($options['js_files']) ? $options['js_files'] : array();
 		$options['css_files'] = isset($options['css_files']) ? $options['css_files'] : array();
@@ -128,19 +140,19 @@ class Widget {
 
 					$tag = $match[0];
 					$widget_name = $match[1];
-					
-					if("img" == $widget_name) continue;
+
+					if ("img" == $widget_name) continue;
 
 					$widget =& self::getWidget($widget_name);
 
-					if ($widget !== null && $widget->enable() ) {
+					if ($widget !== null && $widget->enable()) {
 
 						// $widget is now an instance of some particular widget class
 						// $f flag is used for return null if no widget has been found on the template
 						$f = true;
 
 						// Substitute variables on the tag before extract its attributes
-						foreach ($options as $key=>$value) {
+						foreach ($options as $key => $value) {
 							$pattern = sprintf('|%s%s%s|', self::START_TAG, $key, self::END_TAG);
 							if (!is_array($value)) {
 								$match[2] = preg_replace($pattern, $value, $match[2]);
@@ -170,7 +182,7 @@ class Widget {
 							$js_files = self::merge_arrays($js_files, $ret['js_files']);
 
 							// Set attributes values on the template
-							foreach ($ret['attributes'] as $key=>$value) {
+							foreach ($ret['attributes'] as $key => $value) {
 								$pattern = sprintf('|%s[\s]*%s[\s]*%s|', self::START_TAG, $key, self::END_TAG);
 								if (!is_array($value)) {
 									$ret['tpl'] = preg_replace($pattern, $value, $ret['tpl']);
@@ -193,10 +205,10 @@ class Widget {
 
 							if (is_array($a)) {
 								$ret['tpl'] = $a['tpl'];
-								$ret['tpl'] = SmartyTextRenderer::render($a['tpl'],  $a["attributes"] );
+								$ret['tpl'] = SmartyTextRenderer::render($a['tpl'], $a["attributes"]);
 								$css_files = self::merge_arrays($css_files, $a['css_files']);
 								$js_files = self::merge_arrays($js_files, $a['js_files']);
-							}else {
+							} else {
 								$ret['tpl'] = SmartyTextRenderer::render($ret['tpl'], $ret["attributes"]);
 							}
 
@@ -225,7 +237,8 @@ class Widget {
 	/**
 	 * Process a widget instance and common resources
 	 */
-	static public function process($source, $options) {
+	static public function process($source, $options)
+	{
 		$ret = self::_process($source, $options);
 		if ($ret === null) return null;
 
@@ -237,7 +250,8 @@ class Widget {
 		return $ret;
 	}
 
-	static protected function includeAssets($data) {
+	static protected function includeAssets($data)
+	{
 
 		$source = $data['tpl'];
 		$css_files = is_array($data['css_files']) ? $data['css_files'] : array();
@@ -316,28 +330,29 @@ class Widget {
 	 * @param string a Action name
 	 * @param string m Module name
 	 */
-	static public function getWidgetConf($wn, $wi, $a, $m) {
+	static public function getWidgetConf($wn, $wi, $a, $m)
+	{
 
-		$defaultConf = sprintf('%s/%s/js/%s.conf.js', dirname(__FILE__),  $wn, $wn);
+		$defaultConf = sprintf('%s/%s/js/%s.conf.js', dirname(__FILE__), $wn, $wn);
 
 		$fileName = sprintf('%s_%s.conf.js', $wn, $wi);
 		if (empty($wi)) {
 			$fileName = sprintf('%s.conf.js', $wn);
 		}
 
-		$filePath = sprintf('%s/conf/', \App::getValue( 'AppRoot'));
+		$filePath = sprintf('%s/conf/', \App::getValue('AppRoot'));
 
 		if (!empty($a)) {
-			$filePath = sprintf('%s/actions/%s/conf/', \App::getValue( 'AppRoot'), $a);
+			$filePath = sprintf('%s/actions/%s/conf/', \App::getValue('AppRoot'), $a);
 		}
 
 		if (!empty($m) && !empty($a)) {
-			$filePath = sprintf('%s%s/actions/%s/conf/', \App::getValue( 'AppRoot'), ModulesManager::path($m) , $a);
+			$filePath = sprintf('%s%s/actions/%s/conf/', \App::getValue('AppRoot'), ModulesManager::path($m), $a);
 		}
 
 		/*if (!empty($m) && empty($a)) {
-			$filePath = sprintf('%s/modules/%s/conf/', \App::getValue( 'AppRoot'), $m);
-		}*/
+            $filePath = sprintf('%s/modules/%s/conf/', \App::getValue( 'AppRoot'), $m);
+        }*/
 
 		$filePath = sprintf('%s%s', $filePath, $fileName);
 		if (!file_exists($filePath)) {
@@ -349,28 +364,30 @@ class Widget {
 		return $content;
 	}
 
-	public function create($_wid, $vars = array() ) {
-			$params="";
-			if(array_key_exists("params", $vars) && !empty($vars["params"]) ) {
-				foreach($vars["params"] as $key => $value) {
-						$params .= " $key=\"$value\" ";
+	public function create($_wid, $vars = array())
+	{
+		$params = "";
+		if (array_key_exists("params", $vars) && !empty($vars["params"])) {
+			foreach ($vars["params"] as $key => $value) {
+				$params .= " $key=\"$value\" ";
 
-				}
 			}
+		}
 
-			$source = "<{$_wid} $params />";
+		$source = "<{$_wid} $params />";
 
-			$content = self::process($source, $vars);
+		$content = self::process($source, $vars);
 
-			return $content["tpl"];
+		return $content["tpl"];
 	}
 
 
 	/**
-		update state of widgets
-		 @param array params
-	*/
-	public function update($params) {
+	 * update state of widgets
+	 * @param array params
+	 */
+	public function update($params)
+	{
 	}
 
 }
