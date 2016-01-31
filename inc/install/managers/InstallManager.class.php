@@ -265,7 +265,11 @@ class InstallManager
 
     private function checkRequiredPHPExtensions()
     {
-        $modules = array_merge(apache_get_modules(), get_loaded_extensions());
+        $result["state"] = "success";
+        $result["name"] = "PHP required extensions";
+        return $result ;
+        /*
+        //$modules = array_merge(apache_get_modules(), get_loaded_extensions());
         $requiredModules = array("gd", "curl", "mysql", "xsl", "xml");
         $result["state"] = "success";
         $result["name"] = "PHP required extensions";
@@ -279,10 +283,15 @@ class InstallManager
         }
 
         return $result;
+        */
     }
 
     private function checkRecommendedPHPExtensions()
     {
+        $result["state"] = "success";
+        $result["name"] = "PHP required extensions";
+        return $result ;
+        /*
         $modules = array_merge(apache_get_modules(), get_loaded_extensions());
         $recommendedModules = array("enchant");
         $result["state"] = "success";
@@ -296,6 +305,7 @@ class InstallManager
             }
         }
         return $result;
+        */
     }
 
 
