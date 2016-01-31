@@ -27,11 +27,8 @@
 
 namespace Ximdex\Widgets;
 
-use a;
-use m;
+
 use ModulesManager;
-use wi;
-use wn;
 use Ximdex\MVC\Render\SmartyTextRenderer;
 use Ximdex\Utils\FsUtils;
 
