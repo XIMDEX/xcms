@@ -35,8 +35,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Utils\PipelineManager;
 
-ModulesManager::file('/inc/model/dependencies.php');
-//
+ //
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');

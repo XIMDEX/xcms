@@ -55,8 +55,7 @@ use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 use Ximdex\NodeTypes\SectionNode;
 
-require_once XIMDEX_ROOT_PATH . '/inc/model/dependencies.php';
-require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
  ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
