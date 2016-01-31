@@ -30,8 +30,7 @@
  
 
 
-ModulesManager::file('/inc/db/db.php');
-ModulesManager::file('/inc/model/orm/XimNewsAreas_ORM.class.php', 'ximNEWS');
+ ModulesManager::file('/inc/model/orm/XimNewsAreas_ORM.class.php', 'ximNEWS');
 
 
 class XimNewsAreas extends XimNewsAreas_ORM {

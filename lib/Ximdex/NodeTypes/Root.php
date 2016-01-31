@@ -39,11 +39,7 @@ use Ximdex\Runtime\Constants;
 use Ximdex\Logger as XMD_Log;
 use DB_legacy as DB;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-include_once XIMDEX_ROOT_PATH . '/inc/db/db.php';
 
 // Define estructure at inc/xvfs/backends/XVFS_Backend_xnodes.class.php here.
 if (!defined('ROOT_NODE')) {

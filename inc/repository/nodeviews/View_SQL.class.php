@@ -30,13 +30,9 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-	define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../../'));
-}
 
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/model/RelStrDocChannels.class.php');
+ require_once(XIMDEX_ROOT_PATH . '/inc/model/RelStrDocChannels.class.php');
  require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Abstract_View.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/Interface_View.class.php');
 

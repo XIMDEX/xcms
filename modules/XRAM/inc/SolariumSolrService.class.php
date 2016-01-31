@@ -32,8 +32,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-//
+ //
 require_once("ISolrService.iface.php");
 require_once(XIMDEX_ROOT_PATH . '/extensions/vendors/autoload.php');
 

@@ -30,7 +30,6 @@
 
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/SharedMemory.class.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 
 
 //Handler the signal

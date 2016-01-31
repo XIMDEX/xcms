@@ -24,12 +24,8 @@
  * @version $Revision$
  */
 
-if (!defined("XIMDEX_ROOT_PATH")) {
-    define("XIMDEX_ROOT_PATH", realpath(dirname(__FILE__) . "/../../../"));
-}
 
-require_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
-require_once(XIMDEX_ROOT_PATH . "/extensions/adodb/adodb.inc.php");
+ require_once(XIMDEX_ROOT_PATH . "/extensions/adodb/adodb.inc.php");
 require_once(XIMDEX_ROOT_PATH . "/extensions/adodb/adodb-active-record.inc.php");
 require_once(XIMDEX_ROOT_PATH . "/conf/log.php");
 require_once(XIMDEX_ROOT_PATH . "/script/diffChecker/UpdateDb_log.class.php");

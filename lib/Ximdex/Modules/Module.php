@@ -31,7 +31,6 @@ use Ximdex\Runtime\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Runtime\App;
 
-Manager::file("/inc/db/db.php");
 
 /**
  *

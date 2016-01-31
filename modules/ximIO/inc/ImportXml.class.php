@@ -37,7 +37,6 @@ ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/io/BaseIORelations.class.php');
 
 ModulesManager::file('/inc/model/NodeProperty.class.php');
-ModulesManager::file('/inc/db/db.php');
 
 
 define('COPY_MODE', true);

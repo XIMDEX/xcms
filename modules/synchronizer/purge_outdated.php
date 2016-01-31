@@ -28,7 +28,6 @@
 use Ximdex\Utils\Sync\Synchronizer;
 
  //
-ModulesManager::file('/inc/db/db.php');
 
 $db = new DB();
 $dbDep = new DB();

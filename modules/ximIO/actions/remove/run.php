@@ -30,7 +30,6 @@ use Ximdex\Utils\FsUtils;
 
 //
 ModulesManager::file('/actions/remove/inc/RemoveCli.class.php', 'ximIO');
- ModulesManager::file('/inc/db/db.php');
 
 
 $parameterCollector = new RemoveCli($argc, $argv);

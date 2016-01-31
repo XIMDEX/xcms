@@ -29,7 +29,6 @@
 use Ximdex\Models\Link;
 
 include_once(XIMDEX_ROOT_PATH . '/bootstrap/start.php');
-include_once(XIMDEX_ROOT_PATH . "/inc/db/db.php");
 
 function main ($argc, $argv){
     // Command line mode call

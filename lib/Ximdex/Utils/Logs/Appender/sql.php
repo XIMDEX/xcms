@@ -30,14 +30,6 @@ namespace Ximdex\Utils\Logs;
 use DB_legacy as DB;
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-
-/**
- * Requires access to database
- */
-include_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
-
 /**
  *
  */

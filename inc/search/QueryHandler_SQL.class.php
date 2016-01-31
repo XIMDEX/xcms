@@ -28,7 +28,6 @@
 use Ximdex\Models\Node;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/search/QueryHandler_Abstract.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/db/db.php');
 
 class QueryHandler_SQL extends QueryHandler_Abstract {
 
