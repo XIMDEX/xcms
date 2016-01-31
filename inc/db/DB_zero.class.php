@@ -35,7 +35,7 @@ if (!defined('DB_LOADED')) {
 
 $debug = NULL;
 
-Class DB2 Extends DB_legacy {
+Class DB  Extends DB_legacy {
 
 }
 
