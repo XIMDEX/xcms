@@ -643,7 +643,7 @@ class ParsingDependencies
         $depsManager = new DepsManager();
         $ximletContainers = $depsManager->getBySource(DepsManager::SECTION_XIMLET, $sectionId);
 
-        if (!(sizeof($ximletContainers) > 0)) {
+        if (empty($ximletContainers) ) {
             return array();
         }
 

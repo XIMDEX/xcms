@@ -71,7 +71,7 @@ class WorkFlow
             }
 
             if ($idPipelineNode == NULL) {
-                $idPipelineNode = \App::getValue('IdDefaultWorkflow');
+                $idPipelineNode =  App::getValue('IdDefaultWorkflow');
             }
         }
 
@@ -150,6 +150,9 @@ class WorkFlow
      */
     function GetInitialState()
     {
+        if  (!is_object( $this->pipeProcess)) {
+            return null ;
+        }
         $idStatus = $this->pipeProcess->getFirstStatus();
         $pipeStatus = new PipeStatus($idStatus);
         return $pipeStatus->get('id');

@@ -32,5 +32,6 @@ class Widget_searchpanel extends WidgetAbstract
 {
 
 
+
 }
 

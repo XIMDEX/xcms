@@ -46,7 +46,7 @@ return array(
         )
     ),
     'browserwindow' => array(
-        'deps' => array('hbox', 'listview', 'treeview', 'contextmenu', 'spotlight'),
+        'deps' => array('hbox', 'listview', 'treeview', 'contextmenu', 'spotlight', 'searchpanel'),
         'js' => array(
             'browserwindow.js',
             'abstractView.js',

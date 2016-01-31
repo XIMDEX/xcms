@@ -33,6 +33,7 @@ use PipePropertyValue;
 use Ximdex\Models\PipeTransition;
 use Ximdex\Models\ORM\PipeCachesOrm;
 use Ximdex\Models\Version;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use XMD_Log;
 
@@ -344,6 +345,9 @@ class PipeCache extends PipeCachesOrm
             XMD_Log::error("PipeCache: Cache ID not valid - $idVersion $idTransition $contentFile");
             return false;
         }
+        if ( empty(  $this->_transition->properties)) {
+            return true ;
+        }
         $this->_transition->properties->reset();
         if ($this->_transition->properties->count() > 0) {
             $this->_transition->properties->reset();
@@ -395,5 +399,3 @@ class PipeCache extends PipeCachesOrm
 
 
 }
-
-?>

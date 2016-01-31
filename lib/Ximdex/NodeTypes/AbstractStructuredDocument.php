@@ -689,7 +689,7 @@ class AbstractStructuredDocument extends FileNode
         $ximletContainers = $depsMngr->getBySource(DepsManager::SECTION_XIMLET, $sectionId);
         $linkedXimlets = array();
 
-        if (sizeof($ximletContainers) > 0) {
+        if (!empty($ximletContainers) > 0) {
             foreach ($ximletContainers as $ximletContaineId) {
                 $node = new Node($ximletContaineId);
                 $ximlets = $node->GetChildren();

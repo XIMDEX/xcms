@@ -31,5 +31,10 @@ use Ximdex\Widgets\WidgetAbstract;
 class Widget_paginator extends WidgetAbstract
 {
 
+    public function __construct()
+    {
+        parent::__construct() ;
+
+    }
 
 }

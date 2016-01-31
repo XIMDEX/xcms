@@ -30,6 +30,7 @@ namespace Ximdex\Widgets;
 
 use ModulesManager;
 use Ximdex\MVC\Render\SmartyTextRenderer;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 
@@ -61,7 +62,10 @@ class Widget
 	static public function availableWidgets()
 	{
 		if (is_array(self::$_widgets)) return self::$_widgets;
-		self::$_widgets = FsUtils::readFolder(dirname(__FILE__), false, 'common');
+
+
+
+		self::$_widgets = FsUtils::readFolder( App::getValue('XIMDEX_ROOT_PATH')  . '/inc/widgets/' , false, 'common');
 		return self::$_widgets;
 	}
 
@@ -96,7 +100,7 @@ class Widget
 
 		if (!is_array(self::$_instances)) self::$_instances = array();
 
-		$dir_widget = dirname(__FILE__);
+		$dir_widget = App::getValue('XIMDEX_ROOT_PATH')  . '/inc/widgets/';
 		if (file_exists($dir_widget . "/" . $name)) {
 			$dir_widget = $dir_widget . "/" . $name;
 		}
@@ -330,21 +334,21 @@ class Widget
 	static public function getWidgetConf($wn, $wi, $a, $m)
 	{
 
-		$defaultConf = sprintf('%s/%s/js/%s.conf.js', dirname(__FILE__), $wn, $wn);
+		$defaultConf = sprintf('%s/%s/js/%s.conf.js', App::getValue('XIMDEX_ROOT_PATH')   , $wn, $wn);
 
 		$fileName = sprintf('%s_%s.conf.js', $wn, $wi);
 		if (empty($wi)) {
 			$fileName = sprintf('%s.conf.js', $wn);
 		}
 
-		$filePath = sprintf('%s/conf/', \App::getValue('AppRoot'));
+		$filePath = sprintf('%s/conf/',  App::getValue('AppRoot'));
 
 		if (!empty($a)) {
-			$filePath = sprintf('%s/actions/%s/conf/', \App::getValue('AppRoot'), $a);
+			$filePath = sprintf('%s/actions/%s/conf/',  App::getValue('AppRoot'), $a);
 		}
 
 		if (!empty($m) && !empty($a)) {
-			$filePath = sprintf('%s%s/actions/%s/conf/', \App::getValue('AppRoot'), ModulesManager::path($m), $a);
+			$filePath = sprintf('%s%s/actions/%s/conf/',  App::getValue('AppRoot'), ModulesManager::path($m), $a);
 		}
 
 		/*if (!empty($m) && empty($a)) {

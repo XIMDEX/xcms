@@ -27,6 +27,7 @@
 
 namespace Ximdex\Widgets;
 use Ximdex\Parsers\ParsingJsGetText;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 use XMD_Log;
@@ -48,9 +49,10 @@ abstract class WidgetAbstract
 	 */
 	public function __construct()
 	{
-
+		error_log(  get_class( $this )) ;
 		$this->_wname = str_replace('Widget_', '', get_class($this));
-		$this->_widget_dir = sprintf('%s/%s', dirname(__FILE__), $this->_wname);
+
+		$this->_widget_dir = sprintf('%s/%s',$dir_widget = App::getValue('XIMDEX_ROOT_PATH')  . 'inc/widgets/' , $this->_wname);
 		$this->_widget_style_dir = sprintf(
 			'%s/xmd/style/jquery/%s/widgets/%s',
 			XIMDEX_ROOT_PATH,

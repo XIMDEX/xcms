@@ -459,7 +459,7 @@ class DB_legacy
         }
 
 
-        return "'" . mysql_escape_string($value  ) . "'";
+        return "'" . @mysql_escape_string($value  ) . "'";
     }
 
     /**
