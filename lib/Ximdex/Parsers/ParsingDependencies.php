@@ -27,7 +27,7 @@
 namespace Ximdex\Parsers;
 
 use DataFactory;
-use Ximdex\Models\dependencies;
+use Ximdex\Models\Dependencies;
 use Ximdex\Deps\DepsManager;
 use DOMDocument;
 use DOMXPath;
