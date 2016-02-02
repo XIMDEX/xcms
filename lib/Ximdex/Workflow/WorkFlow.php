@@ -53,7 +53,7 @@ class WorkFlow
      */
     var $pipeline;
 
-    function WorkFlow($idNode, $idStatus = NULL, $idPipelineNode = NULL)
+    public function __construct($idNode, $idStatus = NULL, $idPipelineNode = NULL)
     {
         if (!($idPipelineNode > 0)) {
             $node = new Node($idNode);
@@ -81,7 +81,7 @@ class WorkFlow
         if (!$this->pipeline->get('id') > 0) {
             $this->pipeline->loadByIdNode($idPipelineNode);
         }
-        $this->pipeProcess = $this->pipeline->processes->first();
+        $this->pipeProcess = new PipeProcess($this->pipeline->processes->first()->id);
     }
 
     function GetID()

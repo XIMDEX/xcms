@@ -74,7 +74,7 @@ class PipeProcess extends PipeProcessOrm
      * Constructor
      * @param $id
      */
-    function PipeProcess($id = NULL)
+    public function __construct($id = NULL)
     {
         parent::__construct($id);
         if ($this->get('id') > 0) {

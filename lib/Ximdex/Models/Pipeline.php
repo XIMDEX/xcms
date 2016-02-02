@@ -59,7 +59,7 @@ class Pipeline extends PipelinesOrm
      *
      * @param $id
      */
-    public function Pipeline($id = NULL)
+    public function __construct($id = NULL)
     {
         parent::__construct($id);
 
