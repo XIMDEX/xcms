@@ -55,7 +55,7 @@ class PipeProcess extends PipeProcessOrm
      * @param $name
      * @return boolean
      */
-    function loadByName($name)
+    public function loadByName($name)
     {
         if (empty($name)) {
             XMD_Log::error('Se ha solicitado la carga de un proceso sin introducir su nombre');
@@ -64,7 +64,7 @@ class PipeProcess extends PipeProcessOrm
 
         $result = $this->find('id', 'Name = %s', array($name), MONO);
         if (count($result) == 1) {
-            $this->PipeProcess($result[0]);
+            $this->__construct($result[0]);
             return true;
         }
         return false;
