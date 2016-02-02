@@ -798,14 +798,14 @@ class Synchronizer
 
         $node = new Node($nodeid);
         $type = $node->nodeType->GetName();
-        $publicable = $node->nodeType->get("IsPublicable");
+        $publishable = $node->nodeType->get("IsPublishable");
 
         if (!$dateDown) {
             $timeline = time();
         } else {
             $timeline = $dateDown;
         }
-        if ($publicable) {
+        if ($publishable) {
             if ($ximIO) print "Processing node id:$nodeid, type:$type; with present=$timeline\n";
             $sync = new Synchronizer($nodeid);
             $frames = $sync->GetFrameList($timeline, null);

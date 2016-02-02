@@ -303,7 +303,7 @@ class BatchManager
         $node = new Node($nodeId);
         $depsMngr = new DepsManager();
 
-        if ($node->nodeType->get('IsPublicable') == 0 &&
+        if ($node->nodeType->get('IsPublishable') == 0 &&
             !$depsMngr->getByTarget(DepsManager::BULLETIN_XIMLET, $nodeId)
         ) {
             Publication_Log::info(sprintf(_("Node %s belongs to an unpublished nodetype"), $nodeId));

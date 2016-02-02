@@ -275,7 +275,7 @@ class ParsingPathTo
         }
 
         if ($nodetype) {
-            $nodetypeCondition = sprintf("ispublicable and (nt.idnodetype='%s' or n.class='%snode')", $nodetype, $nodetype);
+            $nodetypeCondition = sprintf("ispublishable and (nt.idnodetype='%s' or n.class='%snode')", $nodetype, $nodetype);
         }
 
         $nodePathCondition = " 1 ";

@@ -150,7 +150,7 @@ class DexPumper {
 			$serverFrame = new ServerFrame();
 			$pumperID = $this->pumper->get('PumperId');
 
-			$serverFrameInfo = $serverFrame->getPublicableNodesForPumper($pumperID);
+			$serverFrameInfo = $serverFrame->getPublishableNodesForPumper($pumperID);
 			$countNodes = count($serverFrameInfo);
 
 			$this->info("$countNodes nodes for pumping");

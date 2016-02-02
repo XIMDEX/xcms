@@ -90,7 +90,7 @@ class Action_modifyrole extends ActionAbstract
                 continue;
             }
             $hasAction = array();
-            if ($nodeType->get("IsPublicable")>0){
+            if ($nodeType->get("IsPublishable")>0){
                 foreach ($allStates as $stateInfo){
                     $idState = $stateInfo['IdState'];
                     $hasAction[$idAction] = $role->HasAction($idAction, $stateInfo['IdState'], $selectedPipeline);
@@ -135,7 +135,7 @@ class Action_modifyrole extends ActionAbstract
         }
 
         $nodeType = new NodeType();
-        $allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublicable, Module');
+        $allNodeTypes = $nodeType->find('IdNodeType, Description, IsPublishable, Module');
         reset($allNodeTypes);
         for ($i = 0; $i < count($allNodeTypes); $i++) {
 
@@ -160,7 +160,7 @@ class Action_modifyrole extends ActionAbstract
                         continue;
                     }
 
-                    if ($allNodeTypes[$i]['IsPublicable'] > 0) {
+                    if ($allNodeTypes[$i]['IsPublishable'] > 0) {
                         foreach ($allStates as $stateInfo) {
                             $allNodeTypes[$i]['actions'][$actionKey]['states'][$stateInfo['IdState']] = $role->HasAction(
                                 $actionInfo['IdAction'], $stateInfo['IdState'], $selectedPipeline

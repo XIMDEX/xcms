@@ -23,7 +23,7 @@
 # *  @version $Revision$
 # */
 
-INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublicable`, `CanDenyDeletion`, `System`, `Module`) VALUES
+INSERT INTO `NodeTypes` (`IdNodeType`, `Name`, `Class`, `Icon`, `Description`, `IsRenderizable`, `HasFSEntity`, `CanAttachGroups`, `IsSection`, `IsFolder`, `IsVirtualFolder`, `IsPlainFile`, `IsStructuredDocument`, `IsPublishable`, `CanDenyDeletion`, `System`, `Module`) VALUES
 (5300, 'XimNewsSection', 'sectionnode', 'folder_ximnews.png', 'XimNEWS section', 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, NULL),
 (5301, 'XimNewsBulletins', 'foldernode', 'folder_bulletins.png', 'XimNEWS bulletin folder', 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, NULL),
 (5304, 'XimNewsNews', 'foldernode', 'folder_news.png', 'XimNEWS news folder', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, NULL),

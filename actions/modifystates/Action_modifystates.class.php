@@ -79,7 +79,7 @@ class Action_modifystates extends ActionAbstract
         $this->addCss('/actions/modifystates/resources/css/default.css');
 
         $nodeType = new NodeType();
-        $allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublicable = 1', array());
+        $allNodeTypes = $nodeType->find('IdNodeType, Name', 'IsPublishable = 1', array());
 
         foreach ($allNodeTypes as $nodeTypeInfo) {
             if ($nodeTypeInfo['IdNodeType'] == 5032 ||

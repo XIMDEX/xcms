@@ -42,7 +42,7 @@ class NodeTypes_ORM extends \Ximdex\Data\GenericData
         'IsVirtualFolder' => array('type' => "int(1)", 'not_null' => 'false'),
         'IsPlainFile' => array('type' => "int(1)", 'not_null' => 'false'),
         'IsStructuredDocument' => array('type' => "int(1)", 'not_null' => 'false'),
-        'IsPublicable' => array('type' => "int(1)", 'not_null' => 'false'),
+        'IsPublishable' => array('type' => "int(1)", 'not_null' => 'false'),
         'IsHidden' => array('type' => "int(1)", 'not_null' => 'false'),
         'CanDenyDeletion' => array('type' => "int(1)", 'not_null' => 'false'),
         'System' => array('type' => "int(1)", 'not_null' => 'false'),
@@ -67,7 +67,7 @@ class NodeTypes_ORM extends \Ximdex\Data\GenericData
     var $IsVirtualFolder;
     var $IsPlainFile;
     var $IsStructuredDocument;
-    var $IsPublicable;
+    var $IsPublishable;
     var $IsHidden;
     var $CanDenyDeletion;
     var $System;

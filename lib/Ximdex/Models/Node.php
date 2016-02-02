@@ -983,7 +983,7 @@ class Node extends NodesOrm
         }
 
         $nodeType = new NodeType($idNodeType);
-        if (!($nodeType->get('IsPublicable') > 0)) {
+        if (!($nodeType->get('IsPublishable') > 0)) {
             return NULL;
         }
 
@@ -1040,7 +1040,7 @@ class Node extends NodesOrm
           } */
 
         $nodeType = new NodeType($nodeTypeID);
-        if ($nodeType->get('IsPublicable')) {
+        if ($nodeType->get('IsPublishable')) {
             $this->set('IdState', $this->getFirstStatus($parentID, $nodeTypeID));
         } else {
             $this->set('IdState', NULL);
@@ -2162,7 +2162,7 @@ class Node extends NodesOrm
                 }
             }
         } else if ($flag == 6) {
-            if ($this->nodeType->get('IsPublicable') == 1) {
+            if ($this->nodeType->get('IsPublishable') == 1) {
                 $nodeList[0] = $this->get('IdNode');
             }
         } else {

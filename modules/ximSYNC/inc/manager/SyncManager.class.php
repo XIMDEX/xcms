@@ -169,7 +169,7 @@ class SyncManager {
                        $docsToPublish = $this->buildPublishingDependencies($idNode, $params);
                 }
 
-		if ($node->nodeType->get('IsPublicable') == '1') {
+		if ($node->nodeType->get('IsPublishable') == '1') {
 			if (sizeof($docsToPublish) > 0) {
 				$docsToPublish = array_unique(array_merge(array($idNode), $docsToPublish));
 			} else {

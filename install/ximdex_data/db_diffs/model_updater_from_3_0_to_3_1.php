@@ -51,7 +51,7 @@ $lmd->query("DELETE FROM Nodes WHERE IdNode=6914 AND IdParent=5068 AND IdNodeTyp
 $lmd->query("DELETE FROM Nodes WHERE IdNode=6915 AND IdParent=5068 AND IdNodeType=5008");
 
 /* Disabling the publish for PTD  */
-$lmd->query("Update NodeTypes set  IsPublicable = 0  where  IdNodeType = '5077'");
+$lmd->query("Update NodeTypes set  IsPublishable = 0  where  IdNodeType = '5077'");
 
 /* r7641: Deleting tuples from ximTAX */
 $lmd->query("DELETE FROM nodes WHERE IdNode=6906 AND IdParent=5064 AND IdNodeType=5008");

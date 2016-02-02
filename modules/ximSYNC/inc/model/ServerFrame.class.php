@@ -821,7 +821,7 @@ where cf.nodeid=$nodeId ";
 	*  @return array
 	*/
 
-	function getPublicableNodesForPumper($idPumper) {
+	function getPublishableNodesForPumper($idPumper) {
 		$query = "SELECT s.* FROM ServerFrames s, Batchs b WHERE s.IdBatchUp = b.IdBatch AND (s.State = 'Due2In' OR " .
 				 "s.State = 'Due2Out' OR (s.State = 'Pumped' AND b.State = 'Closing')) " . "AND s.PumperId = $idPumper LIMIT 1";
 		return $this->query($query);

@@ -220,7 +220,7 @@ class Action_composer extends ActionAbstract
         }
 
         $modified = '0';
-        if ($isDir == '0' && $node->nodeType->IsPublicable == '1') {
+        if ($isDir == '0' && $node->nodeType->IsPublishable == '1') {
             $modified = $node->IsModified() == true ? '1' : '0';
         }
 
