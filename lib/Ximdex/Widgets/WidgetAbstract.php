@@ -52,7 +52,7 @@ abstract class WidgetAbstract
 		error_log(  get_class( $this )) ;
 		$this->_wname = str_replace('Widget_', '', get_class($this));
 
-		$this->_widget_dir = sprintf('%s/%s',$dir_widget = App::getValue('XIMDEX_ROOT_PATH')  . 'inc/widgets/' , $this->_wname);
+		$this->_widget_dir = sprintf('%s/%s', App::getValue('XIMDEX_ROOT_PATH')  . '/inc/widgets/' , $this->_wname);
 		$this->_widget_style_dir = sprintf(
 			'%s/xmd/style/jquery/%s/widgets/%s',
 			XIMDEX_ROOT_PATH,
