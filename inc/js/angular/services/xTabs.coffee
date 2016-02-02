@@ -180,7 +180,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 for n in node
                     xtab.pushTab action, n
                 return
-            newid = node.nodeid + "_" + action.command
+            newid = node.nodeid + "_" + action.command + "_" + action.params.replace(/[\\=&]/g, '')
             for tab, i in tabs
                 if tab.id == newid
                     xtab.setActiveTab i

@@ -167,7 +167,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
         }
         return;
       }
-      newid = node.nodeid + "_" + action.command;
+      newid = node.nodeid + "_" + action.command + "_" + action.params.replace(/[\\=&]/g, '');
       for (i = _j = 0, _len1 = tabs.length; _j < _len1; i = ++_j) {
         tab = tabs[i];
         if (tab.id === newid) {
