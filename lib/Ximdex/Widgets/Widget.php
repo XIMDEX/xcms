@@ -334,7 +334,7 @@ class Widget
 	static public function getWidgetConf($wn, $wi, $a, $m)
 	{
 
-		$defaultConf = sprintf('%s/%s/js/%s.conf.js', App::getValue('XIMDEX_ROOT_PATH')   , $wn, $wn);
+		$defaultConf = sprintf('%s/inc/widgets/%s/js/%s.conf.js', App::getValue('XIMDEX_ROOT_PATH')   , $wn, $wn);
 
 		$fileName = sprintf('%s_%s.conf.js', $wn, $wi);
 		if (empty($wi)) {
