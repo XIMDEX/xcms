@@ -23,8 +23,15 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-		<h2>{$Name}</h2>
+		<h2>{$Name} {$type}</h2>
 </div>
-<div class="action_content image-preview">	
-	<img src="{$path}" alt="preview"/>
+<div class="action_content image-preview">
+	{if $type eq 'XSIRVideoFile'}
+		<video controls>
+			<source src="{$path}">
+			Your browser does not support the video tag.
+		</video>
+	{else}
+		<img src="{$path}" alt="preview"/>
+	{/if}
 </div>

@@ -1623,7 +1623,7 @@ input:focus + .tooltip_info {
 
 .image-preview {
   background-color: #373737; }
-  .image-preview img {
+  .image-preview img, .image-preview video {
     display: block;
     max-width: 100%;
     max-height: 100%;

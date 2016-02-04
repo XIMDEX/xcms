@@ -54,9 +54,12 @@ class Action_filepreview extends ActionAbstract
         $version = new Version($selectedVersion);
         $hash = $version->get('File');
         $node = new Node($idNode);
+        $nodetype = new \Ximdex\Models\NodeType($node->GetNodeType());
         $values = array('id_node' => $idNode,
             'path' => App::getValue('UrlRoot') . '/data/files/' . $hash,
-            'Name' => $node->get('Name'));
+            'Name' => $node->get('Name'),
+            'type' => $nodetype->GetName()
+            );
         $this->render($values, null, 'default-3.0.tpl');
     }
 
