@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-		<h2>{$Name} {$type}</h2>
+		<h2>{$Name}</h2>
 </div>
 <div class="action_content image-preview">
 	{if $type eq 'XSIRVideoFile'}
