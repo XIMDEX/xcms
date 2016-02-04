@@ -42,7 +42,7 @@ class CommonNode extends FileNode
      * Use parent CreateNode method and generate a new metadata document for the new common node created.
      * @return boolean true.
      */
-    function CreateNode($name, $parentID, $nodeTypeID, $stateID = 7, $sourcePath = "")
+    function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = 7, $sourcePath = "")
     {
         parent::CreateNode($name, $parentID, $nodeTypeID, $stateID, $sourcePath);
         $mm = new MetadataManager($this->nodeID);
@@ -61,7 +61,7 @@ class CommonNode extends FileNode
     }
 
 
-    function RenameNode()
+    function RenameNode($name = null)
     {
         $mm = new MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();

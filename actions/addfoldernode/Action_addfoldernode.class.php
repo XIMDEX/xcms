@@ -177,7 +177,20 @@ class Action_addfoldernode extends ActionAbstract
 				$this->languages = $languages;
 			}
 			$this->createProjectNodes($idFolder);
-		}
+		} elseif ($idFolder > 0 && $nodeTypeName == 'XSIRRepository'){
+            $node = new Node();
+            $nodeType->SetByName("ImageFolder");
+            $id = $node->CreateNode("images", $idFolder, $nodeType->GetID());
+            $nodeType->SetByName("VideoFolder");
+            $node = new Node();
+            $id = $node->CreateNode("videos", $idFolder, $nodeType->GetID());
+            $nodeType->SetByName("WidgetFolder");
+            $node = new Node();
+            $id = $node->CreateNode("widgets", $idFolder, $nodeType->GetID());
+            $nodeType->SetByName("OtherFolder");
+            $node = new Node();
+            $id = $node->CreateNode("other", $idFolder, $nodeType->GetID());
+        }
 
 		if ($idFolder > 0) {
 			$this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);

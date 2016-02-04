@@ -102,10 +102,16 @@
       top: 0;
       left: 0;
       opacity: 0; }
+    .guide span{
+      color: rgb(113, 113, 113);
+    }
     .guide span.document::before {
       font-size: 3.1rem;
       left: .28em;
       line-height: 1.7em; }
+    .guide span.highlighted::before {
+      color: rgb(83, 83, 83);
+    }
   .guide p {
     font-family: "Coustard";
     font-size: .9em;

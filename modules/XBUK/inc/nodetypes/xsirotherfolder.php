@@ -3,7 +3,7 @@
 use Ximdex\NodeTypes\FolderNode;
 
 
-class VirtualVideoFolder extends FolderNode
+class XSIROtherFolder extends FolderNode
 {
 
 }

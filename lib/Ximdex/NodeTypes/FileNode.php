@@ -47,6 +47,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\Root;
 use Ximdex\Parsers\ParsingDependencies;
+use Ximdex\Services\NodeType;
 use Ximdex\Utils\FsUtils;
 use XMD_Log;
 
@@ -83,10 +84,20 @@ class FileNode extends Root
             $parent->RenderizeNode();
         }
 
+        $node = new Node($this->nodeID);
+
+        $nodetype = new \Ximdex\Models\NodeType($node->GetNodeType());
+
+        if(!$nodetype->GetHasFSEntity()){
+            return;
+        }
+
         $file = $this->GetNodePath();
 
         $data = new DataFactory($this->nodeID);
         $content = $data->GetContent();
+
+
 
         // If exists, it would be deleted
         if (file_exists($file)) {

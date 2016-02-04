@@ -159,7 +159,7 @@ angular.module("ximdex.common.service").factory("xTabs", [
       }, 0);
     };
     xtab.pushTab = function(action, node) {
-      var i, n, newid, tab, url, _i, _j, _len, _len1;
+      var i, n, newid, params, tab, url, _i, _j, _len, _len1;
       if (node.constructor === Array) {
         for (_i = 0, _len = node.length; _i < _len; _i++) {
           n = node[_i];
@@ -167,7 +167,8 @@ angular.module("ximdex.common.service").factory("xTabs", [
         }
         return;
       }
-      newid = node.nodeid + "_" + action.command + "_" + action.params.replace(/[\\=&]/g, '');
+      params = action.params != null ? action.params.replace(/[\\=&]/g, '') : '';
+      newid = node.nodeid + "_" + action.command + "_" + params;
       for (i = _j = 0, _len1 = tabs.length; _j < _len1; i = ++_j) {
         tab = tabs[i];
         if (tab.id === newid) {

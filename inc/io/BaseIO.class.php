@@ -492,7 +492,11 @@ class BaseIO
                 unset($data['CHILDRENS']);
 
                 $node = new Node();
-                $result = $node->CreateNode($data['NAME'], $data['PARENTID'], 5040, null, $data['PATH']);
+                $idNodeType = 5040;
+                if($nodeTypeName == "XSIRIMAGEFILE"){
+                    $idNodeType = 9030;
+                }
+                $result = $node->CreateNode($data['NAME'], $data['PARENTID'], $idNodeType, null, $data['PATH']);
                 if (!($result > 0)) {
                     reset($node->messages->messages);
                     while (list (, $message) = each($node->messages->messages)) {

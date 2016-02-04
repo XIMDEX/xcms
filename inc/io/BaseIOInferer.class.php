@@ -102,9 +102,9 @@ class BaseIOInferer {
 
 		if ($db->numRows > 0) {
 			$nodeType = $db->GetValue('Name');
-			if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" && $nodeType != "XslTemplate") {
+			/*if( $nodeTypeFilter == "common" && $nodeType != "TextFile" &&  $nodeType != "ImageFile" && $nodeType != "XslTemplate") {
 					$nodeType = "BinaryFile";
-			}
+			}*/
 
 			//Added only for xsl files 
 			if ($extension == "xsl" && $nodeType == "Template"){

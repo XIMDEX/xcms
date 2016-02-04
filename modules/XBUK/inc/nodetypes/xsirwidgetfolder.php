@@ -3,7 +3,7 @@
 use Ximdex\NodeTypes\FolderNode;
 
 
-class VirtualImageFolder extends FolderNode
+class XSIRWidgetFolder extends FolderNode
 {
 
 }

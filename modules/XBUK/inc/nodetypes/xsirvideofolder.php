@@ -3,7 +3,7 @@
 use Ximdex\NodeTypes\FolderNode;
 
 
-class Repository extends FolderNode
+class XSIRVideoFolder extends FolderNode
 {
 
 }
