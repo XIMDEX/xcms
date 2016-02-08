@@ -145,7 +145,6 @@ class MetadataManager{
      * This function has to be called each time a new version/subversion of a node is created
      * If $this->node has type metadatadoc, it will search the node who has the metadata and
      * add a new row to RelNodeVersionMetadataVersion
-     * Else it will search the metadata and add one row per metadata to RelNodeVersionMetadataVersion
      */
     public function updateMetadataVersion(){
         if ( $this->node->GetNodeType() == Ximdex\Services\NodeType::METADATA_DOCUMENT ){
@@ -164,29 +163,6 @@ class MetadataManager{
                     $rnvmv->set('idrnm', $idRel);
                     $rnvmv->set('idNodeVersion', $nodeLastVersionId);
                     $rnvmv->set('idMetadataVersion', $metadataLastVersionId);
-                    $rnvmv->add();
-                }
-            }
-        } else {
-            $rnm = new RelNodeMetadata();
-            $metadata_container = $rnm->find('IdRel, IdMetadata', "IdNode = %s", [$this->node->GetID()], MULTI);
-            if( count($metadata_container) == 1 ){
-                $nodeInfo = $this->node->GetLastVersion();
-
-                $idRel = $metadata_container[0]['IdRel'];
-                $idMetadataContainer = $metadata_container[0]['IdMetadata'];
-
-                $metadataContainer = new Node($idMetadataContainer);
-                $metadataIdDocs = $metadataContainer->GetChildren();
-
-                foreach($metadataIdDocs as $metadataIdDoc){
-                    $metadataDoc = new Node($metadataIdDoc);
-                    $metadataDocInfo = $metadataDoc->GetLastVersion();
-
-                    $rnvmv = new RelNodeVersionMetadataVersion();
-                    $rnvmv->set('idrnm', $idRel);
-                    $rnvmv->set('idNodeVersion', $nodeInfo['IdVersion']);
-                    $rnvmv->set('idMetadataVersion', $metadataDocInfo['IdVersion']);
                     $rnvmv->add();
                 }
             }

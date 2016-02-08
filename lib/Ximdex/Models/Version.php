@@ -58,4 +58,20 @@ class Version extends VersionsOrm
         }
         return $res;
     }
+
+    /**
+     * Returns the idVersion for a idNode, version and subversion
+     *
+     * @param $idNode
+     * @param $version
+     * @param $subVersion
+     * @return null | string
+     */
+    public function getIdVersion($idNode, $version, $subVersion){
+        $res = $this->find('IdVersion', 'IdNode = %s and Version = %s and SubVersion = %s', [$idNode, $version, $subVersion]);
+        if( count($res) == 1 ){
+            return $res[0]['IdVersion'];
+        }
+        return null;
+    }
 }

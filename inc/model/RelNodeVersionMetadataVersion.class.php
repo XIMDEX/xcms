@@ -32,4 +32,28 @@ require_once XIMDEX_ROOT_PATH . '/inc/model/orm/RelNodeVersionMetadataVersion_OR
 
 class RelNodeVersionMetadataVersion extends RelNodeVersionMetadataVersion_ORM
 {
+
+    /**
+     * Returns the most recent metadata id versions for a id node Version
+     *
+     * @param $idNodeVersion
+     * @return array
+     */
+    public function getMostRecentMetadataVersionsForANodeVersion($idNodeVersion){
+        $query = "select rnvmv.idMetadataVersion, v.IdNode, v.Date from %s rnvmv inner join (select * from Versions order by Date desc) v on rnvmv.idMetadataVersion = v.IdVersion where rnvmv.idNodeVersion = %s group by v.IdNode";
+        $query     = sprintf(
+            $query,
+            $this->_table,
+            $idNodeVersion
+        );
+        $dbObj = new DB();
+        $dbObj->Query($query);
+
+        $idMetadataVersions = [];
+        while (!$dbObj->EOF) {
+            $idMetadataVersions[] = $dbObj->GetValue("idMetadataVersion");
+            $dbObj->Next();
+        }
+        return $idMetadataVersions;
+    }
 }
