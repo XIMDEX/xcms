@@ -179,17 +179,29 @@ class Action_addfoldernode extends ActionAbstract
 			$this->createProjectNodes($idFolder);
 		} elseif ($idFolder > 0 && $nodeTypeName == 'XSIRRepository'){
             $node = new Node();
+            $nodeType->SetByName("MetaDataSection");
+            $node->CreateNode("metadata", $idFolder, $nodeType->GetID());
+
+
+            $node = new Node();
+            $nodeType->SetByName("TemplateViewFolder");
+            $node->CreateNode("schemes", $idFolder, $nodeType->GetID());
+
+            $node = new Node();
             $nodeType->SetByName("ImageFolder");
-            $id = $node->CreateNode("images", $idFolder, $nodeType->GetID());
+            $node->CreateNode("images", $idFolder, $nodeType->GetID());
+
             $nodeType->SetByName("VideoFolder");
             $node = new Node();
-            $id = $node->CreateNode("videos", $idFolder, $nodeType->GetID());
+            $node->CreateNode("videos", $idFolder, $nodeType->GetID());
+
             $nodeType->SetByName("WidgetFolder");
             $node = new Node();
-            $id = $node->CreateNode("widgets", $idFolder, $nodeType->GetID());
+            $node->CreateNode("widgets", $idFolder, $nodeType->GetID());
+
             $nodeType->SetByName("OtherFolder");
             $node = new Node();
-            $id = $node->CreateNode("other", $idFolder, $nodeType->GetID());
+            $node->CreateNode("other", $idFolder, $nodeType->GetID());
         }
 
 		if ($idFolder > 0) {

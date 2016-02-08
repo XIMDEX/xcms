@@ -143,7 +143,7 @@ class FsUtils
                 fclose($hnd);
             }
         } else {
-            if (!empty($filename) && is_writable(dirname($filename))) {
+            if (!empty($filename) && !is_dir($filename) && is_writable(dirname($filename))) {
                 $result = file_put_contents($filename, $data, $flags, $context);
             } else {
                 $result = false;

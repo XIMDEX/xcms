@@ -109,6 +109,32 @@ class ParsingRng
         return $form_elements;
     }
 
+    /**
+     * Build an associative array of form elements based on RNG
+     *
+     * @param int $templateID RNG identifier
+     * @param string RNG element name from which parser starts building the form elements
+     *
+     * @return array Associative array of form elements [ array of array('name' => 'Element name', 'type' => 'Element type') ]
+     *
+     */
+    function buildFormElementsAssociative($templateID, $start = '')
+    {
+        $form_elements = array();
+        $content = $this->buildDefaultContent($templateID);
+        $domDoc = new DOMDocument();
+        if ($domDoc->loadXML("<root>" . $content . "</root>")) {
+            $xpathObj = new DOMXPath($domDoc);
+            $elements = $xpathObj->query("//$start/*");
+            if ($elements->length > 0) {
+                foreach ($elements as $value) {
+                    $form_elements[$value->nodeName] = $value->getAttribute("input");
+                }
+            }
+        }
+        return $form_elements;
+    }
+
 
     /**
      * Build a minimal XML from a relax NG schema

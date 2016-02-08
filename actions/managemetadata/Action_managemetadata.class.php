@@ -68,7 +68,7 @@ class Action_managemetadata extends ActionAbstract
         $values["typename"] = $info["typename"];
 
         // Getting image to show
-        if ($values["typename"] == "ImageFile") {
+        if ($values["typename"] == "ImageFile" || $values["typename"] == "XSIRImageFile") {
             // http://lab12.ximdex.net/ximdexxlyre/data/files/ef06540adb2ac1a87f241aa1b59aad57
             $v = new Version();
             $hashfile = $v->find("File", "IdNode = %s ORDER BY IdVersion DESC LIMIT 1", array($nodeId), MONO);
@@ -128,7 +128,7 @@ class Action_managemetadata extends ActionAbstract
         $idRelaxNGNode = $mm->getMetadataSchema();
         if ($idRelaxNGNode) {
             $rngParser = new ParsingRng();
-            $values['elements'] = $rngParser->buildFormElements($idRelaxNGNode, 'custom_info');
+            $values['elements'] = $rngParser->buildFormElementsAssociative($idRelaxNGNode, 'custom_info');
         }
 
         $values['nodeid'] = $nodeId;

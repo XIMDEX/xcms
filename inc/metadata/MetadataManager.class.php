@@ -84,6 +84,7 @@ class MetadataManager{
         $nt = $this->node->nodeType->GetID(); 
         switch($nt){
             case \Ximdex\Services\NodeType::IMAGE_FILE:
+            case \Ximdex\Services\NodeType::XSIR_IMAGE_FILE:
                 $name=MetadataManager::IMAGE_METADATA_SCHEMA;
                 break;
             case \Ximdex\Services\NodeType::BINARY_FILE:
@@ -100,6 +101,9 @@ class MetadataManager{
                 $name=MetadataManager::DOCUMENT_METADATA_SCHEMA;
         }
         $schema = new Node();
+        if( !isset($schemesFolder[0]) ){
+            return null;
+        }
         $res = $schema->find("Idnode","Name=%s AND IdParent=%s",array($name,$schemesFolder[0]),MONO);
         return $res[0];
     }
@@ -134,6 +138,59 @@ class MetadataManager{
     */
     public function getLastMetadataVersion(){
         //TODO
+    }
+
+
+    /**
+     * This function has to be called each time a new version/subversion of a node is created
+     * If $this->node has type metadatadoc, it will search the node who has the metadata and
+     * add a new row to RelNodeVersionMetadataVersion
+     * Else it will search the metadata and add one row per metadata to RelNodeVersionMetadataVersion
+     */
+    public function updateMetadataVersion(){
+        if ( $this->node->GetNodeType() == Ximdex\Services\NodeType::METADATA_DOCUMENT ){
+            $rnm = new RelNodeMetadata();
+            $resp = $rnm->find('IdRel, IdNode', 'IdMetadata = %s', [$this->node->GetParent()], MULTI);
+            if(count($resp) == 1){
+                $nodeId = $resp[0]['IdNode'];
+                $node = new Node($nodeId);
+                $nodeInfo = $node->GetLastVersion();
+                $metadataInfo = $this->node->GetLastVersion();
+                if ($nodeInfo && $metadataInfo){
+                    $idRel = $resp[0]['IdRel'];
+                    $nodeLastVersionId = $nodeInfo["IdVersion"];
+                    $metadataLastVersionId = $metadataInfo["IdVersion"];
+                    $rnvmv = new RelNodeVersionMetadataVersion();
+                    $rnvmv->set('idrnm', $idRel);
+                    $rnvmv->set('idNodeVersion', $nodeLastVersionId);
+                    $rnvmv->set('idMetadataVersion', $metadataLastVersionId);
+                    $rnvmv->add();
+                }
+            }
+        } else {
+            $rnm = new RelNodeMetadata();
+            $metadata_container = $rnm->find('IdRel, IdMetadata', "IdNode = %s", [$this->node->GetID()], MULTI);
+            if( count($metadata_container) == 1 ){
+                $nodeInfo = $this->node->GetLastVersion();
+
+                $idRel = $metadata_container[0]['IdRel'];
+                $idMetadataContainer = $metadata_container[0]['IdMetadata'];
+
+                $metadataContainer = new Node($idMetadataContainer);
+                $metadataIdDocs = $metadataContainer->GetChildren();
+
+                foreach($metadataIdDocs as $metadataIdDoc){
+                    $metadataDoc = new Node($metadataIdDoc);
+                    $metadataDocInfo = $metadataDoc->GetLastVersion();
+
+                    $rnvmv = new RelNodeVersionMetadataVersion();
+                    $rnvmv->set('idrnm', $idRel);
+                    $rnvmv->set('idNodeVersion', $nodeInfo['IdVersion']);
+                    $rnvmv->set('idMetadataVersion', $metadataDocInfo['IdVersion']);
+                    $rnvmv->add();
+                }
+            }
+        }
     }
 
 
@@ -304,9 +361,17 @@ class MetadataManager{
     */
     private function getMetadataSectionId(){
         $idServer = $this->node->getServer();
-        $nodeServer = new Node($idServer);
-        $idSection = $nodeServer->GetChildByName("metadata");
-        return $idSection;
+        if($idServer){
+            $nodeServer = new Node($idServer);
+            $idSection = $nodeServer->GetChildByName("metadata");
+            return $idSection;
+        } else {
+            $idProject = $this->node->getProject();
+            $nodeProject = new Node($idProject);
+            $idSection = $nodeProject->GetChildByName("metadata");
+            return $idSection;
+        }
+
     }
 
     /** 
@@ -422,10 +487,10 @@ class MetadataManager{
         //TODO: foreach language version, one entry
         $rnm->set('IdNode', $this->node->GetID());
         $rnm->set('IdMetadata', $idm);
-        if( App::getValue('MODULE_XIMNOTA_ENABLED', false) ) {
+        //if( App::getValue('MODULE_XIMNOTA_ENABLED', false) ) {
             //TODO: foreach language version, one entry
             $res = $rnm->add();
-        }
+        //}
         if($res<0){
             XMD_Log::error("Relation between nodes not added.");
         }

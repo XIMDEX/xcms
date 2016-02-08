@@ -93,4 +93,6 @@ class NodeType
     const METADATA_SECTION = 5083;
     const METADATA_CONTAINER = 5084;
     const METADATA_DOCUMENT = 5085;
+    const XSIR_IMAGE_FILE = 9030;
+    const XSIR_REPOSITORY = 9010;
 }

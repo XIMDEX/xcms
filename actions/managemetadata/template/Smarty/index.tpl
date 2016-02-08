@@ -32,7 +32,7 @@
     xim-method="{$go_method}"
     xim-action="{$action}"
     novalidate>
-	<div class="action_header" ng-hide="submitMessages.length">
+	<div class="action_header">
 		<h2>{t}Manage metadata{/t}</h2>
 		<fieldset class="buttons-form">
             <button class="btn main_action button_main_action button" 
@@ -44,10 +44,13 @@
             </button>
 		</fieldset>
 	</div>
-    <div class="message" ng-show="submitMessages.length">
+    <!--<div class="message" ng-show="submitMessages.length">
         <p class="ui-state-primary ui-corner-all msg-info">
             #/submitMessages/#
         </p>
+    </div>-->
+    <div ng-view ng-show="submitMessages.length" {literal}ng-class="{'message-success': submitStatus=='success'}"{/literal} class="slide-item message-success message">
+        <p>#/submitMessages/#</p>
     </div>
 	<div class="action_content metadata_action">
 
@@ -71,21 +74,21 @@
             </div>
            
             <div class="js_form_sections">
-                {foreach from=$languages item=l}
-                    <div class="js_form_section" id="language_selector_{$l.IdLanguage}" 
-                        ng-show="defaultLanguage == {$l.IdLanguage}">
+                {foreach from=$languages_metadata key=l item=langelements}
+                    <div class="js_form_section" id="language_selector_{$l}"
+                        ng-show="defaultLanguage == {$l}">
                        
-                        {foreach from=$elements item=e}
+                        {foreach from=$langelements item=e key=k}
                          <p>
-                            <label for="languages_metadata[{$l.IdLanguage}][{$e.name}]" class="label_title">{t}{$e.name|upper}{/t}</label>
-                            {if $e.type == 'text'}
-                                <input name="languages_metadata[{$l.IdLanguage}][{$e.name}]" type="text" class="full_size" 
-                                    ng-model="languages_metadata[{$l.IdLanguage}][{$e.name}]"
-                                    ng-init="languages_metadata[{$l.IdLanguage}][{$e.name}] = '{t}{$languages_metadata[{$l.IdLanguage}][{$e.name}]}{/t}'">
-                            {elseif $e.type == 'textarea'}
-                                <textarea name="languages_metadata[{$l.IdLanguage}][{$e.name}]" id="" cols="30" rows="9" class="full_size"
-                                    ng-model="languages_metadata[{$l.IdLanguage}][{$e.name}]"
-                                    ng-init="languages_metadata[{$l.IdLanguage}][{$e.name}] = '{t}{$languages_metadata[{$l.IdLanguage}][{$e.name}]}{/t}'">
+                            <label for="languages_metadata[{$l}]['{$k}']" class="label_title">{t}{$k|upper}{/t}</label>
+                            {if $elements[$k] == 'text'}
+                                <input name="languages_metadata[{$l}]['{$k}']" type="text" class="full_size"
+                                    ng-model="languages_metadata[{$l}]['{$k}']"
+                                    ng-init="languages_metadata[{$l}]['{$k}'] = '{t}{$languages_metadata[{$l}][{$k}]}{/t}'">
+                            {elseif $elements[$k] == 'textarea'}
+                                <textarea name="languages_metadata[{$l}]['{$k}']" id="" cols="30" rows="9" class="full_size"
+                                    ng-model="languages_metadata[{$l}]['{$k}']"
+                                    ng-init="languages_metadata[{$l}]['{$k}'] = '{t}{$languages_metadata[{$l}][{$k}]}{/t}'">
                                 </textarea>
                             {else}
                                 <br/>

@@ -3929,16 +3929,6 @@ CREATE TABLE `Namespaces` (
 INSERT INTO Namespaces (service, type, nemo, uri, recursive, category,isSemantic)
 VALUES("Ximdex", "Custom", "custom", "http://<ximdex_local_url>/", 0, "generic",0);
 
--- Table structure for table RelNodeMetadata
-DROP TABLE IF EXISTS `RelNodeMetadataCore`;
-CREATE TABLE RelNodeMetadataCore (
-  idRel int(12) unsigned NOT NULL auto_increment,
-  idNode int(12) unsigned NOT NULL default 0,
-  idMetadata int(12) unsigned NOT NULL default 0,
-  PRIMARY KEY (idRel),
-  UNIQUE KEY `rel` (`idNode`,`idMetadata`)
-) ENGINE=MyISAM;
-
 --
 -- Table structure for table RelNodeVersionMetadataVersion
 --
@@ -3952,3 +3942,10 @@ CREATE TABLE RelNodeVersionMetadataVersion (
   UNIQUE KEY `rel` (`idNodeVersion`,`idMetadataVersion`)
 ) ENGINE=MyISAM;
 
+DROP TABLE IF EXISTS `RelNodeMetadata`;
+CREATE TABLE `RelNodeMetadata` (
+  `IdRel` int(12) unsigned NOT NULL auto_increment,
+  `IdNode` int(12) unsigned NOT NULL default '0',
+  `IdMetadata` int(12) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`IdRel`)
+) ENGINE=MyISAM COMMENT='Tabla de relación entre metadatas y nodos de Ximdex';

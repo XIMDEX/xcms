@@ -2033,6 +2033,10 @@ class Node extends NodesOrm
 
             $result = $this->_getParentByType(5083);
         }
+        if (!($result > 0)) {
+
+            $result = $this->_getParentByType(\Ximdex\Services\NodeType::XSIR_REPOSITORY);
+        }
 
         return $result;
     }
@@ -3097,7 +3101,7 @@ class Node extends NodesOrm
      */
     function GetLastVersion()
     {
-        $sql = "SELECT V.Version, V.SubVersion, V.IdUser, V.Date, U.Name as UserName  ";
+        $sql = "SELECT V.IdVersion, V.Version, V.SubVersion, V.IdUser, V.Date, U.Name as UserName  ";
         $sql .= " FROM Versions V INNER JOIN Users U on V.IdUser = U.IdUser ";
         $sql .= " WHERE V.IdNode = '" . $this->get('IdNode') . "' ";
         $sql .= " ORDER BY V.IdVersion DESC LIMIT 1 ";
@@ -3112,6 +3116,7 @@ class Node extends NodesOrm
                 $state = 2;
 
             return array(
+                "IdVersion" => $dbObj->GetValue("IdVersion"),
                 "Version" => $dbObj->GetValue("Version"),
                 "SubVersion" => $dbObj->GetValue("SubVersion"),
                 "Published" => $state,

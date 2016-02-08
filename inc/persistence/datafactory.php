@@ -542,6 +542,9 @@ class DataFactory
             $this->indexNode($this->getVersionId($newVersion, $newSubVersion), $commitNode);
         }
 
+        $mm = new MetadataManager($this->nodeID);
+        $mm->updateMetadataVersion();
+
         return $IdVersion;
     }
 
@@ -617,8 +620,10 @@ class DataFactory
         $fileName = $node->class->GetNodePath();
         $fileContent = $node->class->GetRenderizedContent();
 
+        $nodetype = new \Ximdex\Models\NodeType($node->GetNodeType());
+
         /// Lo guardamos en el sistema de archivos
-        if (!FsUtils::file_put_contents($fileName, $fileContent)) {
+        if ($nodetype->GetHasFSEntity() && !FsUtils::file_put_contents($fileName, $fileContent)) {
             XMD_Log::error('Ha ocurrido un error al intentar guardar el documento');
             $this->SetError(6);
             return false;
