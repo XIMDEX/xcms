@@ -93,6 +93,14 @@ class NodeType
     const METADATA_SECTION = 5083;
     const METADATA_CONTAINER = 5084;
     const METADATA_DOCUMENT = 5085;
+    const XSIR_IMAGE_FOLDER = 9013;
+    const XSIR_VIDEO_FOLDER = 9014;
+    const XSIR_WIDGET_FOLDER = 9015;
+    const XSIR_OTHER_FOLDER = 9016;
+    const XSIR_TEXT_FILE = 9029;
+    const XSIR_VIDEO_FILE = 9031;
+    const XSIR_BINARY_FILE = 9032;
+    const XSIR_WIDGET_FILE = 9037;
     const XSIR_IMAGE_FILE = 9030;
     const XSIR_REPOSITORY = 9010;
 }

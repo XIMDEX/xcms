@@ -179,34 +179,26 @@ class Action_addfoldernode extends ActionAbstract
 			$this->createProjectNodes($idFolder);
 		} elseif ($idFolder > 0 && $nodeTypeName == 'XSIRRepository'){
             $node = new Node();
-            $nodeType->SetByName("MetaDataSection");
-            $node->CreateNode("metadata", $idFolder, $nodeType->GetID());
-
+            $node->CreateNode("metadata", $idFolder, \Ximdex\Services\NodeType::METADATA_SECTION);
 
             $node = new Node();
-            $nodeType->SetByName("TemplateViewFolder");
-            $node->CreateNode("schemes", $idFolder, $nodeType->GetID());
+            $node->CreateNode("schemes", $idFolder, \Ximdex\Services\NodeType::TEMPLATE_VIEW_FOLDER);
 
             $node = new Node();
-            $nodeType->SetByName("ImageFolder");
-            $node->CreateNode("images", $idFolder, $nodeType->GetID());
+            $node->CreateNode("images", $idFolder, \Ximdex\Services\NodeType::XSIR_IMAGE_FOLDER);
 
-            $nodeType->SetByName("VideoFolder");
             $node = new Node();
-            $node->CreateNode("videos", $idFolder, $nodeType->GetID());
+            $node->CreateNode("videos", $idFolder, \Ximdex\Services\NodeType::XSIR_VIDEO_FOLDER);
 
-            $nodeType->SetByName("WidgetFolder");
             $node = new Node();
-            $node->CreateNode("widgets", $idFolder, $nodeType->GetID());
+            $node->CreateNode("widgets", $idFolder, \Ximdex\Services\NodeType::XSIR_WIDGET_FOLDER);
 
-            $nodeType->SetByName("OtherFolder");
             $node = new Node();
-            $node->CreateNode("other", $idFolder, $nodeType->GetID());
+            $node->CreateNode("other", $idFolder, \Ximdex\Services\NodeType::XSIR_OTHER_FOLDER);
         }
 
 		if ($idFolder > 0) {
 			$this->messages->add(sprintf(_('%s has been successfully created'), $name), MSG_TYPE_NOTICE);
-			//$this->reloadNode($nodeID);
 		} else {
 			$this->messages->add(sprintf(_('The operation has failed: %s'), $folder->msgErr), MSG_TYPE_ERROR);
 		}
