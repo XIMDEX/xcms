@@ -56,7 +56,7 @@ class PipeTransition extends PipeTransitionsOrm
 	 * @param $id
 	 *
 	 */
-	function PipeTransition($id = NULL)
+	public function __construct($id = NULL)
 	{
 		parent::__construct($id);
 
