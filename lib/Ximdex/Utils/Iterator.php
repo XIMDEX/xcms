@@ -53,8 +53,7 @@ class Iterator {
 
     function reloadConstructors() {
         foreach($this->_objects as $key => $object) {
-            $constructorName = get_class($object);
-            $object->$constructorName($object->get($object->_idField));
+            $object->__construct($object->get($object->_idField));
         }
     }
 
