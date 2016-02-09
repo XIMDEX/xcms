@@ -89,7 +89,8 @@ class Pipeline extends PipelinesOrm
      */
     public function loadByNodeType($idNodeType)
     {
-        $this->Pipeline();
+        //$this->Pipeline();
+        $this->__construct();
 
         $nodeType = new NodeType($idNodeType);
         if (!($nodeType->get('IdNodeType') > 0)) {
@@ -100,7 +101,8 @@ class Pipeline extends PipelinesOrm
 
         $result = $this->find('id', 'IdNodeType = %s', array($idNodeType));
         if (count($result) == 1) {
-            $this->Pipeline($result[0]);
+            //$this->Pipeline($result[0]);
+            $this->__construct($result[0]);
             return $this->get('id');
         }
         $error = sprintf(_("Ha ocurrido un error inesperado al intentar transformar el nodeType %s"), $idNodeType);
@@ -117,7 +119,7 @@ class Pipeline extends PipelinesOrm
      */
     public function loadByIdNode($idNode)
     {
-        $this->Pipeline();
+        $this->__construct();
 
         $result = $this->find('id', 'IdNode = %s', array($idNode), MONO);
         if (count($result) > 1) {
@@ -130,7 +132,7 @@ class Pipeline extends PipelinesOrm
             $this->messages->add(_("Se ha intentado cargar el pipeline con el idnode $idNode y no se han encontrado resultados, abortando operaci�n"), MSG_TYPE_WARNING);
             return NULL;
         }
-        $this->Pipeline($result[0]);
+        $this->__construct($result[0]);
         return $this->get('id');
     }
 
