@@ -50,7 +50,6 @@ class Action_modifygroupusers extends ActionAbstract
             $rolesToSend[$r['IdRole']] = $r['Name'];
         }
 
-        $group = new Group($idNode);
         $userRoleInfo = $group->getUserRoleInfo();
 
         $userRI = array();
