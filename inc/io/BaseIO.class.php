@@ -607,37 +607,8 @@ class BaseIO
                     return Constants::ERROR_INCORRECT_DATA;
                 }
                 return $node->get('IdNode');
-
+            case 'COMMONNODE':
             case 'IMAGENODE' :
-                if (isset($data['CHILDRENS'])) {
-                    if ($this->_searchNodeInChildrens($data['CHILDRENS'], 'PATH', Constants::MODE_NODETYPE)) {
-                        $paths = $this->_getValueFromChildren($data['CHILDRENS'], 'SRC');
-                        if (count($paths) != 1) {
-                            return Constants::ERROR_INCORRECT_DATA;
-                        }
-                        $data['PATH'] = $paths[0];
-                        if (is_file($data['PATH'])) {
-                            $node->setContent(FsUtils::file_get_contents($data['PATH']));
-                        }
-                        unset($data['CHILDRENS']);
-                    }
-                }
-
-                if (!empty($data['NAME'])) {
-                    $node->set('Name', $data['NAME']);
-                    $result = $node->update();
-                    if ($result > 0) {
-                        return $result;
-                    }
-                }
-
-                if (!empty($data['STATE'])) {
-                    $node->class->promoteToWorkFlowState($data['STATE']);
-                }
-
-                return $data['ID'];
-
-            /* file nodes */
             case 'FILENODE' :
                 if (isset($data['CHILDRENS'])) {
                     if ($this->_searchNodeInChildrens($data['CHILDRENS'], 'PATH', Constants::MODE_NODETYPE)) {
