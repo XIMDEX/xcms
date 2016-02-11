@@ -45,6 +45,7 @@
         				<li><label for="is_recursive" class="aligned">{t}Recursive{/t}</label>
         					<input name='is_recursive' type='checkbox' value='newrec' id="is_recursive">
         				</li>
+						{*
         				<li><label for="id_role" class="aligned">{t}Force role{/t}</label>
         					<select name='id_role' class='caja' id="id_role">
         		 				<option value=''>{t}None{/t}</option>
@@ -53,6 +54,7 @@
         		 				{/foreach}
         		 			</select>
         				</li>
+						*}
         	   	</ol>
         	       	{/if}
         	</fieldset>
@@ -63,36 +65,39 @@
         		</fieldset>
         		{/if}
         					<h2>{t}Delete group of a section{/t}</h2>
-        	<fieldset>
+        	<fieldset class="col-md-8">
         	{if (!$all_groups)}
         	       	<p>{t}No associated groups have been found{/t}</p>
         	{else}
-        			<table>
+        			<table class="table table-striped">
         				<tr>
         				<th>{t}Delete{/t}</th>
         				<th>{t}Group{/t}</th>
-        				<th>{t}Force role{/t}</th>
+        				{*<th>{t}Force role{/t}</th>*}
+						<th>{t}Recursive{/t}</th>
         				</tr>
         			{foreach from=$all_groups item=groupInfo}
         				<tr>
-        					<td class='filaclara' align='center'>
+        					<td class='filaclara'>
         						<input name='id_group_checked[]' type='checkbox' value='{$groupInfo.IdGroup}'>
         					</td>
-        					<td class='filaclara' align='center'>
+        					<td class='filaclara'>
         						{$groupInfo.Name}
         					</td>
-        					<td class='filaclara' align='center'>
+        					<td class='filaclara'>
         						<input type='hidden' name='idGroups[]' value='{$groupInfo.IdGroup}'>
         						<input type='hidden' name='idRoleOld[]' value='{$groupInfo.IdRoleOnNode}'>
-        		 				<select name='idRole[]' class='caja'>
+        		 				{*
+								<select name='idRole[]' class='caja'>
         		 					<option value=''>{t}None{/t}</option>
         		 					{foreach from=$roles item=rol_info}
         		 						<option value="{$rol_info.IdRole}"{if $groupInfo.IdRoleOnNode == $rol_info.IdRole} selected="selected"{/if}>{$rol_info.Name}</option>
         							{/foreach}
         						</select>
-									<label for="recursive" class="aligned">{t}Recursive{/t}</label>
-									<input name='recursive[]' type='checkbox' value='{$groupInfo.IdGroup}' id="recursive">
+        						*}
+								<input name='recursive[]' type='checkbox' value='{$groupInfo.IdGroup}' id="recursive">
         					</td>
+
         				</tr>
 
         			{/foreach}
@@ -104,7 +109,7 @@
         	       {if ($all_groups)}
         		<fieldset class="buttons-form">
         			{button label="Delete subscriptions" class="validate btn" onclick="call_submit('deletegroupnode')" message="Are you sure you want to delete selected subscriptions?"}
-        			{button class="validate btn main_action" label="Save changes" onclick="call_submit('updategroupnode');"  message="Are you sure you want to update selected subscriptions?" }
+        			{*{button class="validate btn main_action" label="Save changes" onclick="call_submit('updategroupnode');"  message="Are you sure you want to update selected subscriptions?" }*}
         		</fieldset>
         		{/if}</div>
 </form>
