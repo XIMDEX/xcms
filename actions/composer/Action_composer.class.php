@@ -90,12 +90,30 @@ class Action_composer extends ActionAbstract
             return null;
         }
         $times--;
+
+        Session::check();
+        $userID = Session::get('userID');
+
         $sql = "select N.Name, N.IdNode, N.IdNodeType, N.IdParent, NT.Icon, N.IdState,
 	(NT.IsFolder or NT.IsVirtualFolder) as IsDir, N.Path, NT.System,
 (select count(*) from FastTraverse ft3 where ft3.IdNode = N.IdNode and ft3.Depth = 1) as children
 	FROM Nodes as N inner join NodeTypes as NT on N.IdNodeType = NT.IdNodeType
-	WHERE NOT(NT.IsHidden) AND IdParent =%d ORDER BY NT.System DESC, N.Name ASC";
-        $sql = sprintf($sql, $idNode);
+	WHERE NOT(NT.IsHidden) AND IdParent =%d AND (
+
+(select count(*) from RelUsersGroups rug inner join RelRolesPermissions rrp on rug.idrole = rrp.idrole
+ where rug.iduser = %d and rug.IdGroup = 101
+and rrp.IdPermission = 1001) > 0
+
+or
+
+N.IdNode in (select rgn.idnode from RelUsersGroups rug inner join RelGroupsNodes rgn on
+rgn.IdGroup = rug.IdGroup where rug.iduser = %d
+and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1001)
+
+)
+
+) ORDER BY NT.System DESC, N.Name ASC";
+        $sql = sprintf($sql, $idNode, $userID, $userID);
         $partial = !is_null($from) && !is_null($to);
         if ($partial) {
             $sql .= sprintf(" LIMIT %d OFFSET %d", $to - $from + 1, $from);
@@ -248,6 +266,10 @@ class Action_composer extends ActionAbstract
             return null;
         }
         $times--;
+
+        Session::check();
+        $userID = Session::get('userID');
+
         $sql = "select nodes.IdNode, nodes.Name, nodes.IdNodeType, nodes.IdParent, nt1.Icon, nodes.IdState, (nt1.IsFolder or nt1.IsVirtualFolder) as IsDir, nodes.Path, nt1.System,
 
         (select count(*) from FastTraverse ft3 where ft3.IdNode = nodes.IdNode and ft3.Depth = 1) as children,
@@ -270,9 +292,25 @@ class Action_composer extends ActionAbstract
 
 			inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType
 				and NOT(nt.IsHidden) and not nt.IdNodeType in (5084,5085))
-			))  ORDER BY nt1.System DESC, nodes.Name ASC";
+			))
+        AND (
+
+        (select count(*) from RelUsersGroups rug inner join RelRolesPermissions rrp on rug.idrole = rrp.idrole
+         where rug.iduser = %d and rug.IdGroup = 101
+        and rrp.IdPermission = 1001) > 0
+
+        or
+
+        nodes.IdNode in (select rgn.idnode from RelUsersGroups rug inner join RelGroupsNodes rgn on
+        rgn.IdGroup = rug.IdGroup where rug.iduser = %d
+        and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1001)
+
+        )
+
+        )
+			 ORDER BY nt1.System DESC, nodes.Name ASC";
         $sql = sprintf($sql, '%' . $find . '%',
-            $idNode, $idNode, $idNode, '%' . $find . '%');
+            $idNode, $idNode, $idNode, '%' . $find . '%', $userID, $userID);
         $partial = !is_null($from) && !is_null($to);
         if ($partial) {
             $sql .= sprintf(" LIMIT %d OFFSET %d", $to - $from + 1, $from);

@@ -397,7 +397,7 @@ class Group extends GroupsOrm
 		$query = sprintf('SELECT IdRel, IdUser, IdRole'
 			. ' FROM RelUsersGroups'
 			. ' WHERE IdGroup = %s',
-			$dbObj->sqlEscapeString($this->groupID));
+			$dbObj->sqlEscapeString($this->IdGroup));
 
 		$dbObj->Query($query);
 

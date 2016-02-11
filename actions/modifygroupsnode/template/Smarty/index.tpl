@@ -90,6 +90,8 @@
         		 						<option value="{$rol_info.IdRole}"{if $groupInfo.IdRoleOnNode == $rol_info.IdRole} selected="selected"{/if}>{$rol_info.Name}</option>
         							{/foreach}
         						</select>
+									<label for="recursive" class="aligned">{t}Recursive{/t}</label>
+									<input name='recursive[]' type='checkbox' value='{$groupInfo.IdGroup}' id="recursive">
         					</td>
         				</tr>
 

@@ -124,11 +124,11 @@ class Auth
         $user = new User($userId);
         $userGroupList = $user->getGroupList();
         $generalGroup = array($group->getGeneralGroup());
-        $user_groups = array_diff(array($userGroupList), array($generalGroup));
+        $user_groups = array_diff($userGroupList, $generalGroup);
 
         $node = new Node($nodeId);
         $nodeGroupList = $node->getGroupList();
-        $node_groups = array_diff(array($nodeGroupList), array($generalGroup));
+        $node_groups = array_diff($nodeGroupList, $generalGroup);
 
         $rel_groups = array_intersect($user_groups, $node_groups);
 
