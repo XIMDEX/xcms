@@ -277,11 +277,11 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
 		(SELECT count(*) FROM FastTraverse f4, Nodes n4, NodeTypes nt4 where
 			n4.IdNode=f4.IdChild and f4.IdNode = nodes.IdNode and not n4.IdNode=nodes.IdNode
 			and n4.name like '%s' and nt4.IdNodeType = n4.IdNodeType
-			and NOT(nt4.IsHidden) and not nt4.IdNodeType in (5084,5085)) as results
+			and NOT(nt4.IsHidden)) as results
 
 
         from Nodes nodes inner join NodeTypes nt1 on nodes.IdNodeType = nt1.IdNodeType
-         and NOT(nt1.IsHidden) and not nt1.IdNodeType in (5084,5085) where nodes.idnode in
+         and NOT(nt1.IsHidden) where nodes.idnode in
         (select ft1.IdChild as idnode FROM FastTraverse ft1 where ft1.IdNode = %d and ft1.depth = 1 and ft1.idchild in
 			(
 			select ft2.IdNode FROM FastTraverse ft2 where ft2.idchild in
@@ -291,7 +291,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
 				and not n.IdNode=%d and n.name like '%s'
 
 			inner join NodeTypes nt on nt.IdNodeType = n.IdNodeType
-				and NOT(nt.IsHidden) and not nt.IdNodeType in (5084,5085))
+				and NOT(nt.IsHidden))
 			))
         AND (
 
