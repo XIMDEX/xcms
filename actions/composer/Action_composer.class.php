@@ -100,6 +100,10 @@ class Action_composer extends ActionAbstract
 	FROM Nodes as N inner join NodeTypes as NT on N.IdNodeType = NT.IdNodeType
 	WHERE NOT(NT.IsHidden) AND IdParent =%d AND (
 
+NOT(NT.CanAttachGroups)
+
+or
+
 (select count(*) from RelUsersGroups rug inner join RelRolesPermissions rrp on rug.idrole = rrp.idrole
  where rug.iduser = %d and rug.IdGroup = 101
 and rrp.IdPermission = 1001) > 0
@@ -294,6 +298,10 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
 				and NOT(nt.IsHidden))
 			))
         AND (
+
+        NOT(nt1.CanAttachGroups)
+
+        or
 
         (select count(*) from RelUsersGroups rug inner join RelRolesPermissions rrp on rug.idrole = rrp.idrole
          where rug.iduser = %d and rug.IdGroup = 101

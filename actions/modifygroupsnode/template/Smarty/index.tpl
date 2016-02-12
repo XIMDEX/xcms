@@ -43,7 +43,7 @@
         	                        </select>
         	                </li>
         				<li><label for="is_recursive" class="aligned">{t}Recursive{/t}</label>
-        					<input name='is_recursive' type='checkbox' value='newrec' id="is_recursive">
+        					<input name='is_recursive' type='checkbox' checked value='newrec' id="is_recursive">
         				</li>
 						{*
         				<li><label for="id_role" class="aligned">{t}Force role{/t}</label>
@@ -95,7 +95,7 @@
         							{/foreach}
         						</select>
         						*}
-								<input name='recursive[]' type='checkbox' value='{$groupInfo.IdGroup}' id="recursive">
+								<input name='recursive[]' type='checkbox' checked value='{$groupInfo.IdGroup}' id="recursive">
         					</td>
 
         				</tr>

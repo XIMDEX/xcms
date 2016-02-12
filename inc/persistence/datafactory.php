@@ -788,7 +788,7 @@ class DataFactory
             return false;
         }
 
-        $maxSubVersionsAllowed = \App::getValue("MaxSubversionsAllowed");
+        $maxSubVersionsAllowed = \App::getValue("MaxSubVersionsAllowed");
 
         if ($maxSubVersionsAllowed <= 0) {
             $maxSubVersionsAllowed = 1;
