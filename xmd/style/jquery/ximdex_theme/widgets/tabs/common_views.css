@@ -65,7 +65,6 @@
 .icon-projects{
 	background-position: -1px -233px;
 }
-
 .icon-nodetype{
 	background-position: -2px -22px;
 }
@@ -314,3 +313,10 @@ ul.xim-treeview-branch li div.xim-treeview-container-selected .xim-treeview-acti
 .ui-icon-triangle-1-se{
 	background-position: -48px -15px;
 }
+
+/* XBUK ICONS */
+.icon-project{
+	background-position: -23px -489px;
+}
+
+/* end XBUK ICONS */
