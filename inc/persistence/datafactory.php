@@ -25,9 +25,11 @@
  * @version $Revision$
  */
 
+use Ximdex\Event\NodeEvent;
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeCache;
 use Ximdex\Models\Version;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Utils\Sync\SynchroFacade;
@@ -545,6 +547,9 @@ class DataFactory
 
         $mm = new MetadataManager($this->nodeID);
         $mm->updateMetadataVersion();
+
+        $event = new NodeEvent($this->nodeID);
+        App::dispatchEvent(\Ximdex\Events::NODE_TOUCHED, $event);
 
         return $IdVersion;
     }

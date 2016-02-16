@@ -728,6 +728,32 @@ class Node extends NodesOrm
     }
 
     /**
+     * Returns if a node is contained in the node with nodetype $nodeTypeID
+     */
+    /**
+     * @param $nodeTypeID
+     * @return bool
+     */
+    function IsOnNodeWithNodeType($nodeTypeID)
+    {
+        $this->ClearError();
+        if ($this->get('IdNode') > 0) {
+            if ($this->get('IdNodeType') == $nodeTypeID) {
+                return true;
+            } else {
+                if (!$this->GetParent()) {
+                    return false;
+                } else {
+                    $parent = new Node($this->GetParent());
+                    return $parent->IsOnNodeWithNodeType($nodeTypeID);
+                }
+            }
+        }
+        $this->SetError(1);
+        return false;
+    }
+
+    /**
      * Returns a path in the file system from where children are pending
      * Function used for renderization
      */
