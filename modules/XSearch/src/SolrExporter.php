@@ -121,12 +121,12 @@ class SolrExporter implements Exporter
         $doc->Date = $info['Date'];
 
         $doc->id = $node->IdNode;
-        $doc->IdNode = $node->IdNode;
-        $doc->IdNodeType = $node->IdNodeType;
-        $doc->IdParent = $node->IdParent;
-        $doc->Name = $node->Name;
-        $doc->Path = $node->GetPath();
-        $doc->Content = $node->GetContent();
+        $doc->idnode = $node->IdNode;
+        $doc->idnodetype = $node->IdNodeType;
+        $doc->idparent = $node->IdParent;
+        $doc->name = $node->Name;
+        $doc->path = $node->GetPath();
+        $doc->content = $node->GetContent();
 
         $mm = new MetadataManager($node->IdNode);
         $metadata_nodes = $mm->getMetadataNodes();
