@@ -136,10 +136,20 @@ class SolrExporter implements Exporter
             $structuredDocument = new StructuredDocument($metadata_node_id);
             $idLanguage = $structuredDocument->get('IdLanguage');
             $language = new Language($idLanguage);
-            $name = "Metadata_" . $language->GetIsoName();
+            $langIsoName = $language->GetIsoName();
             $metadata_node = new Node($metadata_node_id);
             $contentMetadata = $metadata_node->getContent();
-            $doc->$name = $contentMetadata;
+            $domDoc = new DOMDocument();
+            if ($domDoc->loadXML("<root>" . $contentMetadata . "</root>")) {
+                $xpathObj = new DOMXPath($domDoc);
+                $custom_info = $xpathObj->query("//custom_info/*");
+                if ($custom_info->length > 0) {
+                    foreach ($custom_info as $value) {
+                        $name = "{$value->nodeName}_metadata_{$langIsoName}";
+                        $doc->$name = $value->nodeValue;
+                    }
+                }
+            }
         }
         return $doc;
     }
@@ -148,18 +158,20 @@ class SolrExporter implements Exporter
     {
         $command = [
             'add-field' => [
-                ["name" => 'IdVersion', "type" => 'int'],
-                ["name" => 'Version', "type" => 'int'],
-                ["name" => 'SubVersion', "type" => 'int'],
-                ["name" => 'Date', "type" => 'int'],
-                ["name" => 'IdNode', "type" => 'int'],
-                ["name" => 'IdNodeType', "type" => 'int'],
-                ["name" => 'IdParent', "type" => 'int'],
-                ["name" => 'Name', "type" => 'text_es'],
-                ["name" => 'Path', "type" => 'string'],
-                ["name" => 'Content', "type" => 'text_en'],
-                ["name" => 'Metadata_es', "type" => 'text_es'],
-                ["name" => 'Metadata_en', "type" => 'text_en'],
+                ["name" => 'idversion', "type" => 'int'],
+                ["name" => 'version', "type" => 'int'],
+                ["name" => 'subversion', "type" => 'int'],
+                ["name" => 'date', "type" => 'int'],
+                ["name" => 'idnode', "type" => 'int'],
+                ["name" => 'idnodetype', "type" => 'int'],
+                ["name" => 'idparent', "type" => 'int'],
+                ["name" => 'name', "type" => 'text_es'],
+                ["name" => 'path', "type" => 'string'],
+                ["name" => 'content', "type" => 'text_en']
+            ],
+            'add-dynamic-field' => [
+                ["name" => '*_metadata_es', "type" => 'text_es'],
+                ["name" => '*_metadata_en', "type" => 'text_en']
             ]
         ];
 
@@ -175,7 +187,6 @@ class SolrExporter implements Exporter
             'delete-field' => []
         ];
 
-        print_r($resp);
         if(!isset($resp->fields) || count($resp) == 0){
             return true;
         }
@@ -187,7 +198,14 @@ class SolrExporter implements Exporter
             $command['delete-field'][] = ['name' => $field->name];
         }
 
+        $command['delete-dynamic-field'] = [
+            ['name' => '*_metadata_es'],
+            ['name' => '*_metadata_en'],
+        ];
+
         $this->launchCommand("/schema", $command);
+
+
     }
 
     /**
