@@ -41,7 +41,8 @@ class SolrExporter implements Exporter
                     ['host' => $this->server,
                         'port' => $this->port,
                         'path' => $this->path,
-                        'core' => $this->core
+                        'core' => $this->core,
+                        'timeout' => 10
                     ]
                 ]
         ];
@@ -89,9 +90,30 @@ class SolrExporter implements Exporter
     {
         $n = new Node($nodeid);
 
-        if (in_array($n->IdNodeType, self::AVOIDED_NODETYPES) && $n->IsOnNodeWithNodeType(NodeType::XSIR_REPOSITORY)) {
+        if($n->IdNodeType == NodeType::METADATA_DOCUMENT) {
+            $n = $this->getSourceNodeFromMetadataDoc($nodeid);
+            if(is_null($n)){
+                return;
+            }
+        }
+
+        if(!$n->IsOnNodeWithNodeType(NodeType::XSIR_REPOSITORY)){
             return;
         }
+
+        $nt = new \Ximdex\Models\NodeType($n->IdNodeType);
+        if($nt->isFolder()){
+            foreach($n->GetChildren() as $idChild){
+                $this->ExportByNodeId($idChild);
+            }
+            return;
+        }
+
+        if (in_array($n->IdNodeType, self::AVOIDED_NODETYPES) || !$nt->IsPlainFile) {
+            return;
+        }
+
+
 
         $update = $this->client->createUpdate();
 
@@ -115,10 +137,10 @@ class SolrExporter implements Exporter
         $doc = $update->createDocument();
 
         $info = $node->GetLastVersion();
-        $doc->IdVersion = $info['IdVersion'];
-        $doc->Version = $info['Version'];
-        $doc->SubVersion = $info['SubVersion'];
-        $doc->Date = $info['Date'];
+        $doc->idversion = $info['IdVersion'];
+        $doc->version = $info['Version'];
+        $doc->subversion = $info['SubVersion'];
+        $doc->date = $info['Date'];
 
         $doc->id = $node->IdNode;
         $doc->idnode = $node->IdNode;
@@ -131,7 +153,6 @@ class SolrExporter implements Exporter
         $mm = new MetadataManager($node->IdNode);
         $metadata_nodes = $mm->getMetadataNodes();
 
-        $metadata = [];
         foreach ($metadata_nodes as $metadata_node_id) {
             $structuredDocument = new StructuredDocument($metadata_node_id);
             $idLanguage = $structuredDocument->get('IdLanguage');
@@ -149,8 +170,27 @@ class SolrExporter implements Exporter
                         $doc->$name = $value->nodeValue;
                     }
                 }
+                $file_data = $xpathObj->query("//file_data/*");
+                if ($file_data->length > 0) {
+                    foreach ($file_data as $value) {
+                        $name = "{$value->nodeName}_metadata_i";
+                        $doc->$name = $value->nodeValue;
+                    }
+                }
+                $tagsNodes = $xpathObj->query("//tags/*");
+                if ($tagsNodes->length > 0) {
+                    $tags_ss = [];
+                    foreach ($tagsNodes as $tag) {
+                        $tags_ss[] = $tag->nodeValue;
+                    }
+                    $doc->tags_ss = $tags_ss;
+                }
             }
         }
+
+        //$relTags = new RelTagsNodes();
+        //$tags = $relTags->getTags($idNode);
+
         return $doc;
     }
 
@@ -247,6 +287,23 @@ class SolrExporter implements Exporter
             return json_decode($response);
         }
 
+    }
+
+    /**
+     * @param $nodeid
+     * @return Node
+     */
+    private function getSourceNodeFromMetadataDoc($nodeid)
+    {
+        $node = new Node($nodeid);
+        $rnm = new RelNodeMetadata();
+        $resp = $rnm->find('IdRel, IdNode', 'IdMetadata = %s', [$node->GetParent()], MULTI);
+        if (count($resp) == 1) {
+            $id = $resp[0]['IdNode'];
+            $n = new Node($id);
+            return $n;
+        }
+        return null;
     }
 
 }

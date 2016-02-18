@@ -151,8 +151,13 @@ class AbstractStructuredDocument extends FileNode
         //Update metadata
         $node = new Node($this->nodeID);
         $idLanguage = $strDoc->GetLanguage();
-        $mm = new MetadataManager($node->get('IdParent'));
-        $mm->updateSystemMetadataByLang($idLanguage);
+
+        /*if(\Ximdex\Services\NodeType::METADATA_DOCUMENT != $node->GetNodeType()){
+            $mm = new MetadataManager($this->nodeID);
+            $mm->updateSystemMetadata();
+        }*/
+
+
 
         // Set content for any workflow slaves
 

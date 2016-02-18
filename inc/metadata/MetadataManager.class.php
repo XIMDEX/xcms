@@ -140,6 +140,100 @@ class MetadataManager{
         //TODO
     }
 
+    public static function getNodeFromMetadata($idMetadata){
+        $rnm = new RelNodeMetadata();
+        $metadata_container = $rnm->find('IdRel, IdNode', "IdMetadata = %s", [$idMetadata], MULTI);
+        if( count($metadata_container) == 1 ) {
+            $idRel = $metadata_container[0]['IdNode'];
+            return $idRel;
+        }
+        return null;
+    }
+
+    public static function addSystemMetadataToContent($metadataDocId, $content){
+        $metadata_node = new StructuredDocument($metadataDocId);
+        $metadataDoc = new Node($metadataDocId);
+        $idSource = self::getNodeFromMetadata($metadataDoc->GetParent());
+        if(is_null($idSource)){
+            return $content;
+        }
+        $node = new Node($idSource);
+
+        $info = $node->loadData();
+        $idLanguage = $metadata_node->get('IdLanguage');
+        $domDoc = new DOMDocument();
+        if ($domDoc->loadXML("<root>".$content."</root>")) {
+            if ($domDoc->getElementsByTagName('sys_info')->length > 0) {
+                $nodeid = $domDoc->getElementsByTagName('nodeid')->item(0);
+                $nodeid->nodeValue = $info['nodeid'];
+                $name = $domDoc->getElementsByTagName('name')->item(0);
+                $name->nodeValue = $info['name'];
+                $parentid = $domDoc->getElementsByTagName('parentid')->item(0);
+                $parentid->nodeValue = $info['parent'];
+                $nodetype = $domDoc->getElementsByTagName('nodetype')->item(0);
+                $nodetype->nodeValue = $info['typename'];
+                $path = $domDoc->getElementsByTagName('path')->item(0);
+                $path->nodeValue = $info['path'];
+                if ($info['typename'] == "XmlContainer") {
+                    $nodeid_child = $node->class->GetChildByLang($idLanguage);
+                    $node_child = new Node($nodeid_child);
+                    $version_node_child = $node_child->GetLastVersion();
+                    $version_value = $version_node_child["Version"] . "." . $version_node_child["SubVersion"];
+                } else {
+                    if (isset($info["version"]) && isset($info["subversion"])) {
+                        $version_value = $info["version"] . "." . $info["subversion"];
+                    } else {
+                        $version_value = ".";
+                    }
+                }
+                $version = $domDoc->getElementsByTagName('version')->item(0);
+                $version->nodeValue = $version_value;
+            }
+
+            if (method_exists($node->class, 'getCustomMetadata')) {
+                $domNode = $node->class->getCustomMetadata();
+                $domNode = $domDoc->importNode($domNode, true);
+                $name = $domNode->nodeName;
+                $nameNodes = $domDoc->getElementsByTagName($name);
+                if ($nameNodes->length > 0) {
+                    $parent = $nameNodes->item(0)->parentNode;
+                    $parent->replaceChild($domNode, $nameNodes->item(0));
+                } else {
+                    $domDoc->appendChild($domNode);
+                }
+            }
+
+            if (ModulesManager::isEnabled('ximTAGS')) {
+                $relTags = new RelTagsNodes();
+                $tags = $relTags->getTags($node->nodeID);
+                $tagsNode = $domDoc->createElement('tags');
+
+                foreach ($tags as $tag) {
+                    $ns = new Namespaces($tag['IdNamespace']);
+                    $nemo = $ns->get('nemo');
+                    $tagNode = $domDoc->createElement('tag');
+                    $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
+                    $tagsNode->appendChild($tagNode);
+                }
+
+                $tagsFoundedNodes = $domDoc->getElementsByTagName('tags');
+                if ($tagsFoundedNodes->length > 0) {
+                    $parent = $tagsFoundedNodes->item(0)->parentNode;
+                    $parent->replaceChild($tagsNode, $tagsFoundedNodes->item(0));
+                } else {
+                    $domDoc->appendChild($tagsNode);
+                }
+            }
+
+            $metadata_node_update = new Node($metadataDocId);
+            $string_xml = $domDoc->saveXML();
+            $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
+            $string_xml = str_replace('<root>', '', $string_xml);
+            $string_xml = str_replace('</root>', '', $string_xml);
+            return $string_xml;
+        }
+        return $content;
+    }
 
     /**
      * This function has to be called each time a new version/subversion of a node is created
@@ -147,26 +241,29 @@ class MetadataManager{
      * add a new row to RelNodeVersionMetadataVersion
      */
     public function updateMetadataVersion(){
-        if ( $this->node->GetNodeType() == Ximdex\Services\NodeType::METADATA_DOCUMENT ){
+        if ( $this->node->GetNodeType() != Ximdex\Services\NodeType::METADATA_DOCUMENT ){
             $rnm = new RelNodeMetadata();
-            $resp = $rnm->find('IdRel, IdNode', 'IdMetadata = %s', [$this->node->GetParent()], MULTI);
-            if(count($resp) == 1){
-                $nodeId = $resp[0]['IdNode'];
-                $node = new Node($nodeId);
-                $nodeInfo = $node->GetLastVersion();
-                $metadataInfo = $this->node->GetLastVersion();
-                if ($nodeInfo && $metadataInfo){
-                    $idRel = $resp[0]['IdRel'];
-                    $nodeLastVersionId = $nodeInfo["IdVersion"];
-                    $metadataLastVersionId = $metadataInfo["IdVersion"];
+            $metadata_container = $rnm->find('IdRel, IdMetadata', "IdNode = %s", [$this->node->GetID()], MULTI);
+            if( count($metadata_container) == 1 ){
+                $nodeInfo = $this->node->GetLastVersion();
+                $idRel = $metadata_container[0]['IdRel'];
+                $idMetadataContainer = $metadata_container[0]['IdMetadata'];
+                $metadataContainer = new Node($idMetadataContainer);
+                $metadataIdDocs = $metadataContainer->GetChildren();
+                foreach($metadataIdDocs as $metadataIdDoc){
+                    $df = new DataFactory($metadataIdDoc);
+                    $df->AddVersion();
+                    $metadataDoc = new Node($metadataIdDoc);
+                    $metadataDocInfo = $metadataDoc->GetLastVersion();
                     $rnvmv = new RelNodeVersionMetadataVersion();
                     $rnvmv->set('idrnm', $idRel);
-                    $rnvmv->set('idNodeVersion', $nodeLastVersionId);
-                    $rnvmv->set('idMetadataVersion', $metadataLastVersionId);
+                    $rnvmv->set('idNodeVersion', $nodeInfo['IdVersion']);
+                    $rnvmv->set('idMetadataVersion', $metadataDocInfo['IdVersion']);
                     $rnvmv->add();
                 }
             }
         }
+
     }
 
 
@@ -185,39 +282,74 @@ class MetadataManager{
             $content = $metadata_node->getContent();
             $domDoc = new DOMDocument();
             if ($domDoc->loadXML("<root>".$content."</root>")) {
-
-                $nodeid = $domDoc->getElementsByTagName('nodeid')->item(0);
-                $nodeid->nodeValue = $info['nodeid'];
-                $name = $domDoc->getElementsByTagName('name')->item(0);
-                $name->nodeValue = $info['name'];
-                $parentid = $domDoc->getElementsByTagName('parentid')->item(0);
-                $parentid->nodeValue = $info['parent'];
-                $nodetype = $domDoc->getElementsByTagName('nodetype')->item(0);
-                $nodetype->nodeValue = $info['typename'];
-                $path = $domDoc->getElementsByTagName('path')->item(0);
-                $path->nodeValue = $info['path'];
-                if ($info['typename'] == "XmlContainer") {
-                    $nodeid_child = $this->node->class->GetChildByLang($idLanguage);
-                    $node_child = new Node($nodeid_child);
-                    $version_node_child = $node_child->GetLastVersion();
-                    $version_value = $version_node_child["Version"].".".$version_node_child["SubVersion"];
+                if($domDoc->getElementsByTagName('sys_info')->length > 0) {
+                    $nodeid = $domDoc->getElementsByTagName('nodeid')->item(0);
+                    $nodeid->nodeValue = $info['nodeid'];
+                    $name = $domDoc->getElementsByTagName('name')->item(0);
+                    $name->nodeValue = $info['name'];
+                    $parentid = $domDoc->getElementsByTagName('parentid')->item(0);
+                    $parentid->nodeValue = $info['parent'];
+                    $nodetype = $domDoc->getElementsByTagName('nodetype')->item(0);
+                    $nodetype->nodeValue = $info['typename'];
+                    $path = $domDoc->getElementsByTagName('path')->item(0);
+                    $path->nodeValue = $info['path'];
+                    if ($info['typename'] == "XmlContainer") {
+                        $nodeid_child = $this->node->class->GetChildByLang($idLanguage);
+                        $node_child = new Node($nodeid_child);
+                        $version_node_child = $node_child->GetLastVersion();
+                        $version_value = $version_node_child["Version"] . "." . $version_node_child["SubVersion"];
+                    } else {
+                        if (isset($info["version"]) && isset($info["subversion"])) {
+                            $version_value = $info["version"] . "." . $info["subversion"];
+                        } else {
+                            $version_value = ".";
+                        }
+                    }
+                    $version = $domDoc->getElementsByTagName('version')->item(0);
+                    $version->nodeValue = $version_value;
                 }
-                else {
-                    if(isset($info["version"])&&isset($info["subversion"])){
-                        $version_value = $info["version"].".".$info["subversion"];
+
+                if(method_exists($this->node->class, 'getCustomMetadata')){
+                    $domNode = $this->node->class->getCustomMetadata();
+                    $domNode = $domDoc->importNode($domNode, true);
+                    $name = $domNode->nodeName;
+                    $nameNodes = $domDoc->getElementsByTagName($name);
+                    if($nameNodes->length > 0){
+                        $parent = $nameNodes->item(0)->parentNode;
+                        $parent->replaceChild($domNode, $nameNodes->item(0));
                     }else{
-                        $version_value = ".";
+                        $domDoc->appendChild($domNode);
                     }
                 }
-                $version = $domDoc->getElementsByTagName('version')->item(0);
-                $version->nodeValue = $version_value;
+
+                if(ModulesManager::isEnabled('ximTAGS')){
+                    $relTags = new RelTagsNodes();
+                    $tags = $relTags->getTags($this->node->nodeID);
+                    $tagsNode = $domDoc->createElement('tags');
+
+                    foreach($tags as $tag){
+                        $ns = new Namespaces($tag['IdNamespace']);
+                        $nemo = $ns->get('nemo');
+                        $tagNode = $domDoc->createElement('tag');
+                        $tagNode->nodeValue = "{$tag["Name"]}:{$nemo}";
+                        $tagsNode->appendChild($tagNode);
+                    }
+
+                    $tagsFoundedNodes = $domDoc->getElementsByTagName('tags');
+                    if($tagsFoundedNodes->length > 0){
+                        $parent = $tagsFoundedNodes->item(0)->parentNode;
+                        $parent->replaceChild($tagsNode, $tagsFoundedNodes->item(0));
+                    }else{
+                        $domDoc->appendChild($tagsNode);
+                    }
+                }
 
                 $metadata_node_update = new Node($metadata_node_id);
                 $string_xml = $domDoc->saveXML();
                 $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
                 $string_xml = str_replace('<root>', '', $string_xml);
                 $string_xml = str_replace('</root>', '', $string_xml);
-                $metadata_node_update->setContent($string_xml);
+                $metadata_node_update->setContent($string_xml, false);
                 $messages = sprintf(_('All metadata %s has been successfully saved'), $this->node->Get('Name'));
             }
             else {

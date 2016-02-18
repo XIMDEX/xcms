@@ -83,11 +83,7 @@ class Action_setmetadata extends ActionAbstract {
 	 	//Get the actual tags of the document
 	 	$relTags = new RelTagsNodes();
         $tags = $relTags->getTags($idNode);
-        /*foreach ($tags as $i =>$tag) {
-            $tags[$i]["Name"] = "hola que ase";
-            $tags[$i]["Description"] = "hola que ase";
-            $tags[$i]["Link"] = "hola que ase";
-        }*/
+
 	 	$values["tags"] = str_replace("'",'&#39;',json_encode($tags, JSON_UNESCAPED_UNICODE ));
 	 	//error_log(print_r($relTags->getTags($idNode)));
 	 	$node = new Node($idNode);
@@ -171,6 +167,10 @@ class Action_setmetadata extends ActionAbstract {
    		if (array_key_exists('tags', $data)){
    			$tags->saveAll($data->tags, $idNode, $previous_tags);
    		}
+
+		$mm = new MetadataManager($idNode);
+		$mm->updateSystemMetadata();
+
 		$this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
 		$values = array(
 			'messages' => $this->messages->messages,

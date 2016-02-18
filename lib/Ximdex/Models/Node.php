@@ -31,6 +31,8 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 }
 
 use DataFactory;
+use Ximdex\Event\NodeEvent;
+use Ximdex\Events;
 use Ximdex\Models\Group;
 use Ximdex\Models\Language;
 use ModulesManager;
@@ -851,6 +853,9 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0) {
             $this->class->SetContent($content, $commitNode);
             $this->RenderizeNode();
+
+            $event = new NodeEvent($this->nodeID);
+            App::dispatchEvent(Events::NODE_TOUCHED, $event);
         }
     }
 
@@ -1409,6 +1414,9 @@ class Node extends NodesOrm
                 rename($folderPath, $newPath);
             }
 
+            $event = new NodeEvent($this->nodeID);
+            App::dispatchEvent(Events::NODE_TOUCHED, $event);
+
             return true;
         }
         $this->SetError(1);
@@ -1470,6 +1478,9 @@ class Node extends NodesOrm
                     if ($this->GetNodeName() != $newName) {
                         $this->SetNodeName($newName);
                     }
+
+                    $event = new NodeEvent($this->nodeID);
+                    App::dispatchEvent(Events::NODE_TOUCHED, $event);
                 } else {
                     $this->SetError(12);
                 }
@@ -3092,8 +3103,10 @@ class Node extends NodesOrm
         if (!empty($arr_children)) {
             foreach ($arr_children as $child) {
                 $node_child = new Node($child);
+
                 $node_child->UpdateFastTraverse();
                 $node_child->RenderizeNode();
+
                 $node_child->UpdateChildren();
             }
         }
@@ -3127,7 +3140,7 @@ class Node extends NodesOrm
      */
     function GetLastVersion()
     {
-        $sql = "SELECT V.IdVersion, V.Version, V.SubVersion, V.IdUser, V.Date, U.Name as UserName  ";
+        $sql = "SELECT V.IdVersion, V.Version, V.SubVersion, V.IdUser, V.Date, U.Name as UserName, V.File ";
         $sql .= " FROM Versions V INNER JOIN Users U on V.IdUser = U.IdUser ";
         $sql .= " WHERE V.IdNode = '" . $this->get('IdNode') . "' ";
         $sql .= " ORDER BY V.IdVersion DESC LIMIT 1 ";
@@ -3148,7 +3161,8 @@ class Node extends NodesOrm
                 "Published" => $state,
                 "IdUser" => $dbObj->GetValue("IdUser"),
                 "Date" => $dbObj->GetValue("Date"),
-                "UserName" => $dbObj->GetValue("UserName")
+                "UserName" => $dbObj->GetValue("UserName"),
+                "File" => $dbObj->GetValue("File")
             );
         } else {
             $this->SetError(5);

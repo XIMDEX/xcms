@@ -410,9 +410,12 @@ class DataFactory
             return false;
         }
         // (1) No se pasa version determinada, se incrementa la version con el contenido nuevo.
-        if (empty($versionID) && empty($subVersion)) {
+        if (is_null($versionID) && is_null($subVersion)) {
             $idVersion = $this->AddVersion(NULL, NULL, $content, $commitNode);
             $this->_generateCaches($idVersion);
+
+            $event = new NodeEvent($this->nodeID);
+            App::dispatchEvent(\Ximdex\Events::NODE_TOUCHED, $event);
             return $idVersion;
         }
 
@@ -435,8 +438,12 @@ class DataFactory
             }
             $this->_generateCaches($idVersion);
 
+            $event = new NodeEvent($this->nodeID);
+            App::dispatchEvent(\Ximdex\Events::NODE_TOUCHED, $event);
+
             return $result;
         }
+
         return false;
     }
 
@@ -547,9 +554,6 @@ class DataFactory
 
         $mm = new MetadataManager($this->nodeID);
         $mm->updateMetadataVersion();
-
-        $event = new NodeEvent($this->nodeID);
-        App::dispatchEvent(\Ximdex\Events::NODE_TOUCHED, $event);
 
         return $IdVersion;
     }

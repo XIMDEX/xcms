@@ -34,6 +34,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\Node;
 use Ximdex\Models\ORM\StructuredDocumentsOrm;
 use Ximdex\Parsers\ParsingDependencies;
+use Ximdex\Services\NodeType as NodeTypeConstants;
 
 
 class StructuredDocument extends StructuredDocumentsOrm
@@ -297,10 +298,21 @@ class StructuredDocument extends StructuredDocumentsOrm
 			}
 		}
 
+		$node = new Node($this->get('IdDoc'));
+		if(\Ximdex\Services\NodeType::METADATA_DOCUMENT == $node->GetNodeType()){
+			$content = \MetadataManager::addSystemMetadataToContent($node->nodeID, $content);
+		}
+
 		// refrescamos la fecha de Actualizacion del nodo
 		$this->SetUpdateDate();
 		$data = new DataFactory($this->get('IdDoc'));
-		$data->SetContent($content, NULL, NULL, $commitNode);
+		$node = new Node($this->get('IdDoc'));
+		if($commitNode == false){
+			$info = $node->GetLastVersion();
+			$data->SetContent($content, $info['Version'], $info['SubVersion'], $commitNode);
+		}else{
+			$data->SetContent($content, NULL, NULL, $commitNode);
+		}
 		// set dependencies
 		ParsingDependencies::parseAllDependencies($this->get('IdDoc'), $content);
 

@@ -25,8 +25,11 @@
  */
 
 namespace Ximdex\NodeTypes;
+use DOMDocument;
 use MetadataManager;
 use ModulesManager;
+use Ximdex\Models\Node;
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
@@ -72,6 +75,26 @@ class ImageNode extends FileNode
         parent::SetContent($content, $commitNode);
         $mm = new MetadataManager($this->nodeID);
         $mm->updateSystemMetadata();
+    }
+
+    function GetCustomMetadata(){
+        $domNode = new DOMDocument('1.0', 'utf-8');
+
+        $width = $domNode->createElement("width");
+        $height = $domNode->createElement('height');
+
+        $node = new Node($this->nodeID);
+        $info = $node->GetLastVersion();
+        $pathToFile = App::get('AppRoot') . '/data/files/' . $info['File'];
+        list($w, $h) =  getimagesize($pathToFile);
+        $width->nodeValue = $w;
+        $height->nodeValue = $h;
+
+        $fileData = $domNode->createElement("file_data");
+        $fileData->appendChild($width);
+        $fileData->appendChild($height);
+        $domNode->appendChild($fileData);
+        return $fileData;
     }
 
 }

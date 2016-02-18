@@ -193,7 +193,7 @@ class Action_managemetadata extends ActionAbstract
                 $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
                 $string_xml = str_replace('<root>', '', $string_xml);
                 $string_xml = str_replace('</root>', '', $string_xml);
-                $metadata_node_update->setContent($string_xml);
+                $metadata_node_update->setContent($string_xml, false);
                 $messages = sprintf(_('All metadata %s has been successfully saved'), $node->Get('Name'));
             } else {
                 $errors[] = _('Operation could not be successfully completed');
