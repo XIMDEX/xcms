@@ -69,21 +69,22 @@ class SolrExporter implements Exporter
         $sql = sprintf($sql, implode(',', $XSIRIdNodes), implode(',', self::AVOIDED_NODETYPES));
         $db = new DB();
         $db->query($sql);
-        $update = $this->client->createUpdate();
-        $docs = [];
+
         while (!$db->EOF) {
+
             $n = new Node($db->getValue('IdNode'));
 
-            $doc = $this->GetDataNode($update, $n);
-
-            $docs[] = $doc;
-
+            $update = $this->client->createUpdate();
+            $doc = $this->GetDataNode($n);
+            $update->addDocument($doc);
+            $result = $this->client->update($update);
             $db->Next();
+
         }
-        $update->addDocuments($docs);
+
+        $update = $this->client->createUpdate();
         $update->addCommit();
         $result = $this->client->update($update);
-
     }
 
     public function ExportByNodeId($nodeid)
@@ -117,25 +118,34 @@ class SolrExporter implements Exporter
 
         $update = $this->client->createUpdate();
 
-        $doc = $this->GetDataNode($update, $n);
+        $doc = $this->GetDataNode($n);
 
-        $update->addDocuments([$doc]);
+        $update->addDocument($doc);
+        try{
+            $result = $this->client->update($update);
+        }catch(Solarium\Exception\HttpException $e){
+            error_log('Error al hacer la petición addDocument a Solr');
+            error_log($e->getMessage());
+        }
+
+        $update = $this->client->createUpdate();
         $update->addCommit();
-        $result = $this->client->update($update);
 
-        $docs[] = $doc;
+        try {
+            $result = $this->client->update($update);
+        }catch(Solarium\Exception\HttpException $e){
+            error_log('Error al hacer la petición commit a Solr');
+            error_log($e->getMessage());
+        }
     }
 
     /**
-     *
-     * @param $update
      * @param $node
-     * @return mixed
+     * @return \Solarium\QueryType\Update\Query\Document\Document
      */
-    private function GetDataNode($update, $node)
+    private function GetDataNode($node)
     {
-        $doc = $update->createDocument();
-
+        $doc = new \Solarium\QueryType\Update\Query\Document\Document();
         $info = $node->GetLastVersion();
         $doc->idversion = $info['IdVersion'];
         $doc->version = $info['Version'];
@@ -143,12 +153,15 @@ class SolrExporter implements Exporter
         $doc->date = $info['Date'];
 
         $doc->id = $node->IdNode;
+
         $doc->idnode = $node->IdNode;
         $doc->idnodetype = $node->IdNodeType;
         $doc->idparent = $node->IdParent;
         $doc->name = $node->Name;
         $doc->path = $node->GetPath();
-        $doc->content = $node->GetContent();
+
+        // TODO: Filter text files to add content
+        //$doc->content = $node->GetContent();
 
         $mm = new MetadataManager($node->IdNode);
         $metadata_nodes = $mm->getMetadataNodes();
