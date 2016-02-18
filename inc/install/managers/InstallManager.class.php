@@ -25,6 +25,7 @@
  */
 
 use Ximdex\Helpers\ServerConfig;
+use Ximdex\Utils\Crypto;
 use Ximdex\Utils\FsUtils;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/install/managers/messages/ConsoleMessagesStrategy.class.php');
@@ -373,7 +374,7 @@ class InstallManager
             if ($result === FALSE)
                 return $result;
             $result = file_get_contents($dummyFile) == $textToCheck;
-            $result = $result && unlink($dummyFile);
+            $result = $result && file_exists($dummyFile) && unlink($dummyFile);
             return $result == $textToCheck;
         }
         return true;
@@ -481,7 +482,11 @@ class InstallManager
         $random = md5(rand());
         exec('openssl enc -aes-128-cbc -k "' . $random . '" -P -md sha1', $res);
         $key = explode("=", $res[1])[1];
-        $iv = explode("=", $res[2])[1];
+        //$iv = explode("=", $res[2])[1];
+
+        $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+        $iv = mcrypt_create_iv($ivSize, MCRYPT_RAND);
+
         $db = new DB();
         $db->execute("UPDATE Config SET ConfigValue='" . $key . "' where ConfigKey='ApiKey'");
         $db->execute("UPDATE Config SET ConfigValue='" . $iv . "' where ConfigKey='ApiIV'");
