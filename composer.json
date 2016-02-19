@@ -38,7 +38,7 @@
         }
     ],
     "require": {
-        "solarium/solarium": "3.2.0",
+        "solarium/solarium": "3.5.1",
         "mnapoli/php-di": "4.4.2",
         "monolog/monolog": "1.11.0",
         "codemirror/Codemirror": "4.7.0",

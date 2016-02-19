@@ -3,50 +3,22 @@
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
-use Ximdex\Runtime\App;
 use DB_legacy as DB;
 use Ximdex\Services\NodeType;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/src/Exporter.php', 'XSearch');
+ModulesManager::file('/src/SolrConnection.php', 'XSearch');
 
 class SolrExporter implements Exporter
 {
     const AVOIDED_NODETYPES = [NodeType::METADATA_DOCUMENT, NodeType::RNG_VISUAL_TEMPLATE];
 
-    /**
-     * @var Solarium\Core\Client\Client
-     */
     private $client;
-    private $server;
-    private $port;
-    private $path;
-    private $core;
-
     public function __construct()
     {
-        $this->GetClient();
-    }
-
-    private function GetClient()
-    {
-        $this->server = App::get('SolrServer');
-        $this->core = App::get('SolrCore');
-        $this->port = App::get('SolrPort');
-        $this->path = App::get('SolrPath');
-
-        $config = [
-            'endpoint' =>
-                ['localhost' =>
-                    ['host' => $this->server,
-                        'port' => $this->port,
-                        'path' => $this->path,
-                        'core' => $this->core,
-                        'timeout' => 10
-                    ]
-                ]
-        ];
-        $this->client = new Solarium\Client($config);
+        $solr = new SolrConnection();
+        $this->client = $solr->GetClient();
     }
 
     public function DeleteAll()

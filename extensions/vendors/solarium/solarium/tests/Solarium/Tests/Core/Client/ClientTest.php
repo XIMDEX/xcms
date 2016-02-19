@@ -44,7 +44,7 @@ use Solarium\QueryType\Terms\Query as TermsQuery;
 use Solarium\QueryType\Suggester\Query as SuggesterQuery;
 use Solarium\QueryType\Extract\Query as ExtractQuery;
 use Solarium\Core\Client\Adapter\Http as ClientAdapterHttp;
-use Solarium\Core\Plugin\Plugin;
+use Solarium\Core\Plugin\AbstractPlugin;
 use Solarium\Core\Event\Events;
 use Solarium\Core\Event\PreCreateRequest as PreCreateRequestEvent;
 use Solarium\Core\Event\PostCreateRequest as PostCreateRequestEvent;
@@ -57,6 +57,9 @@ use Solarium\Core\Event\PostExecute as PostExecuteEvent;
 use Solarium\Core\Event\PreExecuteRequest as PreExecuteRequestEvent;
 use Solarium\Core\Event\PostExecuteRequest as PostExecuteRequestEvent;
 
+/**
+ * @coversDefaultClass \Solarium\Core\Client\Client
+ */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -110,6 +113,24 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertThat($plugin, $this->isInstanceOf(__NAMESPACE__.'\\MyClientPlugin'));
         $this->assertEquals($options['plugin']['myplugin']['options'], $plugin->getOptions());
 
+    }
+
+    /**
+     * @covers ::getEventDispatcher
+     * @covers ::setEventDispatcher
+     */
+    public function testGetEventDispatcher() {
+      $this->assertInstanceOf('\Symfony\Component\EventDispatcher\EventDispatcherInterface', $this->client->getEventDispatcher());
+        $eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+      $this->client->setEventDispatcher($eventDispatcher);
+      $this->assertSame($eventDispatcher, $this->client->getEventDispatcher());
+    }
+
+    public function testEventDispatcherInjection()
+    {
+        $eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $client = new Client(null, $eventDispatcher);
+        $this->assertSame($eventDispatcher, $client->getEventDispatcher());
     }
 
     public function testConfigModeWithoutKeys()
@@ -517,7 +538,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $queryStub = $this->getMock('Solarium\QueryType\Select\Query\Query');
 
-        $observer = $this->getMock('Solarium\Core\Query\RequestBuilder', array('build'));
+        $observer = $this->getMock('Solarium\Core\Query\AbstractRequestBuilder', array('build'));
         $observer->expects($this->once())
                  ->method('build')
                  ->with($this->equalTo($queryStub))
@@ -552,7 +573,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $expectedEvent->setDispatcher($this->client->getEventDispatcher());
         $expectedEvent->setName(Events::PRE_CREATE_REQUEST);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('preCreateRequest'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('preCreateRequest'));
         $observer->expects($this->once())
                  ->method('preCreateRequest')
                  ->with($this->equalTo($expectedEvent));
@@ -574,7 +595,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $expectedEvent->setDispatcher($this->client->getEventDispatcher());
         $expectedEvent->setName(Events::POST_CREATE_REQUEST);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('postCreateRequest'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('postCreateRequest'));
         $observer->expects($this->once())
                  ->method('postCreateRequest')
                  ->with($this->equalTo($expectedEvent));
@@ -635,7 +656,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $expectedEvent->setDispatcher($this->client->getEventDispatcher());
         $expectedEvent->setName(Events::PRE_CREATE_RESULT);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('preCreateResult'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('preCreateResult'));
         $observer->expects($this->once())
                  ->method('preCreateResult')
                  ->with($this->equalTo($expectedEvent));
@@ -658,7 +679,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $expectedEvent->setDispatcher($this->client->getEventDispatcher());
         $expectedEvent->setName(Events::POST_CREATE_RESULT);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('postCreateResult'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('postCreateResult'));
         $observer->expects($this->once())
                  ->method('postCreateResult')
                  ->with($this->equalTo($expectedEvent));
@@ -763,7 +784,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
              ->method('createResult')
              ->will($this->returnValue($result));
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('preExecute'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('preExecute'));
         $observer->expects($this->once())
                  ->method('preExecute')
                  ->with($this->equalTo($expectedEvent));
@@ -871,7 +892,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                  ->will($this->returnValue($response));
         $this->client->setAdapter($mockAdapter);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('preExecuteRequest'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('preExecuteRequest'));
         $observer->expects($this->once())
                  ->method('preExecuteRequest')
                  ->with($this->equalTo($expectedEvent));
@@ -899,7 +920,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                  ->will($this->returnValue($response));
         $this->client->setAdapter($mockAdapter);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('postExecuteRequest'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('postExecuteRequest'));
         $observer->expects($this->once())
                  ->method('postExecuteRequest')
                  ->with($this->equalTo($expectedEvent));
@@ -1070,7 +1091,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $expectedEvent->setDispatcher($this->client->getEventDispatcher());
         $expectedEvent->setName(Events::PRE_CREATE_QUERY);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('preCreateQuery'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('preCreateQuery'));
         $observer->expects($this->once())
                  ->method('preCreateQuery')
                  ->with($this->equalTo($expectedEvent));
@@ -1115,7 +1136,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $expectedEvent->setDispatcher($this->client->getEventDispatcher());
         $expectedEvent->setName(Events::POST_CREATE_QUERY);
 
-        $observer = $this->getMock('Solarium\Core\Plugin\Plugin', array('postCreateQuery'));
+        $observer = $this->getMock('Solarium\Core\Plugin\AbstractPlugin', array('postCreateQuery'));
         $observer->expects($this->once())
                  ->method('postCreateQuery')
                  ->with($this->equalTo($expectedEvent));
@@ -1247,6 +1268,6 @@ class MyAdapter extends ClientAdapterHttp
     }
 }
 
-class MyClientPlugin extends Plugin
+class MyClientPlugin extends AbstractPlugin
 {
 }
