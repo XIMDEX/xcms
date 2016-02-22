@@ -201,6 +201,130 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
         return $ret;
     }
 
+    /**
+     * Filtered quickRead with nodetype. Modified: doesn't check permissions in General group
+     *
+     * @param $idNode
+     * @param $idNodetype
+     * @param $offset
+     * @param $size
+     * @param $items
+     * @param int $times
+     * @return array|null
+     */
+    public function quickReadWithNodetype($idNode, $idNodetype, $offset, $size, $items, $times = 2)
+    {
+        if ($times <= 0) {
+            return null;
+        }
+        $times--;
+
+        Session::check();
+        $userID = Session::get('userID');
+
+        $sql = "select N.Name, N.IdNode, N.IdNodeType, N.IdParent, NT.Icon, N.IdState,
+	(NT.IsFolder or NT.IsVirtualFolder) as IsDir, N.Path, NT.System,
+(select count(*) from FastTraverse ft3 join Nodes n10 on n10.IdNode = ft3.IdChild join NodeTypes nt10
+ on nt10.IdNodeType = n10.IdNodeType
+ where ft3.IdNode = N.IdNode and ft3.Depth = 1 and n10.IdNodeType = %d) as children
+	FROM Nodes as N inner join NodeTypes as NT on N.IdNodeType = NT.IdNodeType
+	WHERE NOT(NT.IsHidden) AND IdParent =%d AND N.IdNodeType = %d AND (
+
+NOT(NT.CanAttachGroups)
+
+or
+
+N.IdNode in (select rgn.idnode from RelUsersGroups rug inner join RelGroupsNodes rgn on
+rgn.IdGroup = rug.IdGroup where rug.iduser = %d and rug.IdGroup != 101
+and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1001)
+
+)
+
+) ORDER BY NT.System DESC, N.Name ASC";
+        $sql = sprintf($sql, $idNodetype, $idNode, $idNodetype, $userID);
+        $partial = !is_null($offset) && !is_null($size);
+        if ($partial) {
+            $sql .= sprintf(" LIMIT %d OFFSET %d", $size, $offset);
+        }
+        $db = new DB();
+        $db->query($sql);
+        $ret = $this->_echoNodeTree($idNode, App::getValue('displayEncoding'));
+        if (($db->numRows > $items) && ($items != 0)) {
+            //Paginated request
+            $partes = floor($db->numRows / $items);
+            $numArchivos = 0;
+            if ($db->numRows % $items != 0) {
+                $partes = $partes + 1;
+            }
+
+            for ($k = 1; $k <= $partes; $k++) {
+                $db->Go($numArchivos);
+                $nodoDesde = $db->getValue('IdNode');
+                $textoDesde = $db->getValue('Name');
+
+                $expr = $numArchivos + $items - 1;
+
+                if ($db->numRows > $expr) {
+                    $db->Go($expr);
+                    $nodoHasta = $db->getValue('IdNode');
+                    $textoHasta = $db->getValue('Name');
+                    $hasta_aux = $expr;
+                } else {
+                    $db->Go($db->numRows - 1);
+                    $nodoHasta = $db->getValue('IdNode');
+                    $textoHasta = $db->getValue('Name');
+                    $hasta_aux = $db->numRows - 1;
+                }
+
+                $ret['collection'][] = array(
+                    'name' => $textoDesde . ' -> ' . $textoHasta,
+                    'parentid' => $idNode,
+                    'nodeFrom' => $nodoDesde,
+                    'nodeTo' => $nodoHasta,
+                    'startIndex' => $numArchivos,
+                    'endIndex' => $hasta_aux,
+                    'src' => sprintf(
+                        '%s?method=treedata&amp;nodeid=%s&#38;from=%s&#38;to=%s',
+                        self::COMPOSER_INDEX, $idNode, $numArchivos, $hasta_aux
+                    ),
+                    'nodeid' => '0',
+                    'icon' => 'folder_a-z',
+                    'openIcon' => 'folder_a-z.png',
+                    'state' => '',
+                    'children' => '5',
+                    'isdir' => $ret["isdir"]
+                );
+
+                $numArchivos = $numArchivos + $items;
+            }
+
+        } else {
+            while (!$db->EOF) {
+                $ret['collection'][] = array(
+                    'name' => $db->getValue('Name'),
+                    'nodeid' => $db->getValue('IdNode'),
+                    'nodetypeid' => $db->getValue('IdNodeType'),
+                    'parentid' => $db->getValue('IdParent'),
+                    'icon' => $db->getValue('Icon'),
+                    'state' => $db->getValue('IdState'),
+                    'isdir' => $db->getValue('IsDir'),
+                    'children' => intval($db->getValue('children')),
+                    'path' => $db->getValue('Path')
+                );
+                if (intval($db->getValue('children')) > 0) {
+                    $res = $this->quickReadWithNodetype($db->getValue('IdNode'), $idNodetype, null, null, $items, $times);
+                    if (!is_null($res)) {
+                        $ret['collection'][count($ret['collection']) - 1]['collection'] = $res["collection"];
+                    }
+                }
+
+                $db->next();
+            }
+        }
+
+        return $ret;
+    }
+
     private function _echoNodeTree($node, $encoding)
     {
         if (is_numeric($node)) {

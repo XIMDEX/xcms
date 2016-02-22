@@ -7,6 +7,8 @@ RewriteCond %{REQUEST_FILENAME} api-rest/(.*)
 RewriteRule (.*) api-rest/index.php
 RewriteCond %{REQUEST_FILENAME} api/(.*)
 RewriteRule (.*) api/index.php
+RewriteCond %{REQUEST_FILENAME} wservices/(.*)
+RewriteRule (.*) wservices/index.php
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.css$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.xsl$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.svg$
