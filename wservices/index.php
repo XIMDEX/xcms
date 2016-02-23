@@ -2,13 +2,14 @@
 use Ximdex\API\Request;
 use Ximdex\API\Response;
 use Ximdex\API\Router;
+use Ximdex\Models\Node;
 use Ximdex\Models\User;
+use Ximdex\Services\NodeType;
 use Ximdex\Utils\Session;
 
 include_once '../bootstrap/start.php';
 
-$router = new Router();
-
+$router = new Router;
 /**
  * Route to search any resource in XSIR Repositories
  */
@@ -49,9 +50,27 @@ $router->Route('/books', function(Request $r, Response $w){
     $size = $r->Get('size', true, 50);
 
     $ac = new Action_composer();
-    $resp = $ac->quickReadWithNodetype(10000, \Ximdex\Services\NodeType::XBUX_PROJECT, $offset, $size, null, 2);
+    $resp = $ac->quickReadWithNodetype(10000, NodeType::XBUK_PROJECT, $offset, $size, null, 1);
 
     $w->setResponse(isset($resp["collection"]) ? $resp["collection"] : []);
 });
 
-var_dump($request);
+$router->Route('/books/\d+/sections', function(Request $r, Response $w){
+    $nodeId = $r->getPath()[1];
+    $node = new Node($nodeId);
+    if($node->GetNodeType() != NodeType::XBUK_PROJECT){
+        $w->setMessage('Id is not for a valid book project')->setStatus(-1);
+        return;
+    }
+
+    ModulesManager::file('/actions/composer/Action_composer.class.php');
+
+    $offset = $r->Get('offset', true, 0);
+    $size = $r->Get('size', true, 50);
+
+    $ac = new Action_composer();
+    $resp = $ac->quickReadWithNodetype($nodeId, NodeType::XBUK_SESSION, $offset, $size, null, 1);
+
+    $w->setResponse(isset($resp["collection"]) ? $resp["collection"] : []);
+});
+

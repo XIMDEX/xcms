@@ -38,7 +38,20 @@ class Request
      * @return bool
      */
     public function MatchPath($path){
-        return $this->path == $this->splitPath($path);
+        $pathSplitted = $this->splitPath($path);
+        if(count($pathSplitted) != count($this->path)){
+            return false;
+        }
+
+        for($i = 0; $i < count($this->path); $i++){
+            $subject = $this->path[$i];
+            $pattern = "/^{$pathSplitted[$i]}$/";
+            $check = preg_match($pattern, $subject);
+            if($check !== 1){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -56,6 +69,11 @@ class Request
             return $default;
         }
         return $this->query[$key];
+    }
+
+    public function getPath()
+    {
+        return $this->path;
     }
 
     /**

@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jvargas
- * Date: 22/02/16
- * Time: 9:24
- */
-
 namespace Ximdex\API;
 
 
