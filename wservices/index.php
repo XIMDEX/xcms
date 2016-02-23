@@ -73,7 +73,7 @@ $router->Route('/books', function(Request $r, Response $w){
  * @param offset (optional) The offset
  * @param limit (optional) The max number of results
  */
-$router->Route('/books/\d+/sections', function(Request $r, Response $w){
+$router->Route('/book/\d+/sections', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
     if($node->GetNodeType() != NodeType::XBUK_PROJECT){
