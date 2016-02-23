@@ -36,7 +36,7 @@ class Router
                 Logger::error($relPathStr . ': ' . $e->getMessage());
                 $response = new Response();
                 $response->setStatus(-1);
-                $response->setMessage('An error was through');
+                $response->setMessage('An error was thrown');
                 $data = $response->render();
             }
             echo $data;
