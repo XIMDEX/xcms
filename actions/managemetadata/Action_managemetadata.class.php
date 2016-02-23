@@ -108,7 +108,7 @@ class Action_managemetadata extends ActionAbstract
             $metadata_node = new Node($metadata_node_id);
             $content = $metadata_node->getContent();
             $domDoc = new DOMDocument();
-            if ($domDoc->loadXML("<root>" . $content . "</root>")) {
+            if ($domDoc->loadXML("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>" . $content . "</root>")) {
                 $xpathObj = new DOMXPath($domDoc);
                 $custom_info = $xpathObj->query("//custom_info/*");
                 if ($custom_info->length > 0) {
@@ -167,7 +167,7 @@ class Action_managemetadata extends ActionAbstract
             $idLanguage = $metadata_node->get('IdLanguage');
             $content = $metadata_node->getContent();
             $domDoc = new DOMDocument();
-            if ($domDoc->loadXML("<root>" . $content . "</root>")) {
+            if ($domDoc->loadXML("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root>" . $content . "</root>")) {
 
                 $custom_elements = $this->_getChildsFromDoc($domDoc, 'custom_info');
 
@@ -190,7 +190,7 @@ class Action_managemetadata extends ActionAbstract
 
                 $metadata_node_update = new Node($metadata_node_id);
                 $string_xml = $domDoc->saveXML();
-                $string_xml = str_replace('<?xml version="1.0"?>', '', $string_xml);
+                $string_xml = str_replace('<?xml version="1.0" encoding="UTF-8"?>', '', $string_xml);
                 $string_xml = str_replace('<root>', '', $string_xml);
                 $string_xml = str_replace('</root>', '', $string_xml);
                 $metadata_node_update->setContent($string_xml, false);
@@ -265,5 +265,3 @@ class Action_managemetadata extends ActionAbstract
 
 
 }
-
-?>

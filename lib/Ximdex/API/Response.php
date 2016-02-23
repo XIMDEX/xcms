@@ -67,10 +67,10 @@ class Response
 
         switch($method){
             case 'JSON':
-                header('Content-Type: application/json');
+                header('Content-Type: application/json; charset=utf-8');
                 return json_encode($data, JSON_UNESCAPED_UNICODE);
             default:
-                header('Content-Type: application/json');
+                header('Content-Type: application/json; charset=utf-8');
                 return json_encode($data, JSON_UNESCAPED_UNICODE);
         }
     }
