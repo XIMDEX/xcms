@@ -15,6 +15,7 @@ use Ximdex\Utils\Session;
 include_once '../bootstrap/start.php';
 
 $router = new Router;
+
 /**
  * Route to search any resource in XSIR Repositories
  * @param offset (optional) The offset
@@ -31,28 +32,34 @@ $router->route('/search', function(Request $r, Response $w){
 
     $results = $sm->search($q, $offset, $limit);
 
+    $resultsToSend = [];
+
     foreach($results['docs'] as $k => $result){
+        $resultToSend = [
+            'id' => $result['IdNode'],
+            'name' => $result['Name'],
+        ];
         switch($result['IdNodeType']){
             case NodeType::XSIR_IMAGE_FILE:
-                $results['docs'][$k]['type'] = 'image';
+                $resultToSend['type'] = 'image';
                 break;
             case NodeType::XSIR_VIDEO_FILE:
-                $results['docs'][$k]['type'] = 'video';
+                $resultToSend['type'] = 'video';
                 break;
             case NodeType::XSIR_TEXT_FILE:
-                $results['docs'][$k]['type'] = 'text';
+                $resultToSend['type'] = 'text';
                 break;
             case NodeType::XSIR_WIDGET_FILE:
-                $results['docs'][$k]['type'] = 'widget';
+                $resultToSend['type'] = 'widget';
                 break;
             case NodeType::XSIR_BINARY_FILE:
-                $results['docs'][$k]['type'] = 'binary';
+                $resultToSend['type'] = 'binary';
                 break;
         }
+        $resultsToSend[] = $resultToSend;
     }
 
-    $w->setStatus(0);
-    $w->setResponse($results);
+    $w->setResponse($resultsToSend);
 });
 
 /**
@@ -87,7 +94,17 @@ $router->route('/books', function(Request $r, Response $w){
     $ac = new Action_composer();
     $resp = $ac->quickReadWithNodetype(10000, NodeType::XBUK_PROJECT, $offset, $limit, null, 1);
 
-    $w->setResponse(isset($resp["collection"]) ? $resp["collection"] : []);
+    $booksToSend = [];
+    if(isset($resp["collection"])){
+        foreach($resp["collection"] as $node){
+            $booksToSend[] = [
+                'id' => (int) $node['nodeid'],
+                'name' => $node['name'],
+            ];
+        }
+    }
+
+    $w->setResponse($booksToSend);
 });
 
 /**
@@ -100,7 +117,7 @@ $router->route('/book/\d+/sections', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
     if($node->GetNodeType() != NodeType::XBUK_PROJECT){
-        $w->setMessage('Id is not for a valid book project')->setStatus(-1);
+        $w->setMessage('Id is not for a valid book project')->setStatus(1);
         return;
     }
 
@@ -112,7 +129,17 @@ $router->route('/book/\d+/sections', function(Request $r, Response $w){
     $ac = new Action_composer();
     $resp = $ac->quickReadWithNodetype($nodeId, NodeType::XBUK_SESSION, $offset, $limit, null, 1);
 
-    $w->setResponse(isset($resp["collection"]) ? $resp["collection"] : []);
+    $booksToSend = [];
+    if(isset($resp["collection"])){
+        foreach($resp["collection"] as $node){
+            $booksToSend[] = [
+                'id' => (int) $node['nodeid'],
+                'name' => $node['name'],
+            ];
+        }
+    }
+
+    $w->setResponse($booksToSend);
 });
 
 /**
@@ -126,29 +153,19 @@ $router->route('/DAM/\d+/info', function(Request $r, Response $w){
 
     $allowedNodetypes = [NodeType::XSIR_BINARY_FILE, NodeType::XSIR_IMAGE_FILE, NodeType::XSIR_VIDEO_FILE, NodeType::XSIR_TEXT_FILE, NodeType::XSIR_WIDGET_FILE];
     if(!in_array($node->GetNodeType(), $allowedNodetypes)){
-        $w->setMessage('Id is not for a valid DAM file')->setStatus(-1);
+        $w->setMessage('Id is not for a valid DAM file')->setStatus(1);
         return;
     }
 
     $resp = [];
     $info = $node->GetLastVersion();
-    $resp['idversion'] = $info['IdVersion'];
-    $resp['version'] = $info['Version'];
-    $resp['subversion'] = $info['SubVersion'];
-    $resp['date'] = $info['Date'];
+    $resp['last_modified'] = $info['Date'];
 
     $resp['url'] = App::get('UrlRoot') . '/data/files/' . $info['File'];
 
-    $resp['id'] = $node->IdNode;
+    $resp['id'] = (int) $node->IdNode;
 
-    $resp['idnode'] = $node->IdNode;
-    $resp['idnodetype'] = $node->IdNodeType;
-    $resp['idparent'] = $node->IdParent;
     $resp['name'] = $node->Name;
-    $resp['path'] = $node->GetPath();
-
-    // TODO: Filter text files to add content
-    //$resp['content'] = $node->GetContent();
 
     $mm = new MetadataManager($node->IdNode);
     $metadata_nodes = $mm->getMetadataNodes();
@@ -204,8 +221,7 @@ $router->route('/book/\d+/users', function(Request $r, Response $w){
     $node = new Node($nodeId);
 
     if($node->GetNodeType() != NodeType::XBUK_PROJECT){
-        $w->setMessage('Id is not for a valid book')->setStatus(-1);
-        return;
+        throw new APIException('Id is not for a valid book', 1);
     }
 
     $groups = $node->GetGroupList();
@@ -222,13 +238,19 @@ $router->route('/book/\d+/users', function(Request $r, Response $w){
     }
     $idUsers = array_unique($idUsers);
 
+    //Check if I have permissions
+    $myUserID = Session::get('userID');
+    if(!in_array($myUserID, $idUsers)){
+        throw new APIException('You haven\'t got enough permissions to see this', -2);
+    }
+
     $users = [];
     foreach($idUsers as $idUser){
         $user = new User($idUser);
         $locale = $user->get('Locale');
         $locale = !is_null($locale) ? $locale : 'en_US';
         $users [] = [
-            'id' => $idUser,
+            'id' => (int) $idUser,
             'username' => $user->get('Login'),
             'name' => $user->get('Name'),
             'email' => $user->get('Email'),

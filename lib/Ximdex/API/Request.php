@@ -71,7 +71,7 @@ class Request
      */
     public function get($key, $optional = false, $default = null){
         if(!$optional && !isset($this->query[$key])){
-            throw new APIException("Key $key not found in params");
+            throw new APIException("Key $key not found in params", 1);
         }
         if(!isset($this->query[$key])){
             return $default;

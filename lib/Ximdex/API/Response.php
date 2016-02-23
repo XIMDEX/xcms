@@ -12,7 +12,7 @@ namespace Ximdex\API;
 class Response
 {
     private $status = 0;
-    private $response = [];
+    private $response = null;
     private $message = '';
 
     public function __construct(){
