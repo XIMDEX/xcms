@@ -39,7 +39,7 @@ class Request
      * @param string $path
      * @return bool
      */
-    public function MatchPath($path){
+    public function matchPath($path){
         $pathSplitted = $this->splitPath($path);
         if(count($pathSplitted) != count($this->path)){
             return false;
@@ -65,7 +65,7 @@ class Request
      * @return null
      * @throws \Exception
      */
-    public function Get($key, $optional = false, $default = null){
+    public function get($key, $optional = false, $default = null){
         if(!$optional && !isset($this->query[$key])){
             throw new \Exception("Key $key not found in params");
         }

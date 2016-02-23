@@ -23,20 +23,22 @@ class Router
      * @param callable $func
      * @throws \Exception
      */
-    public function Route($relPathStr, $func) {
-        if($this->request->MatchPath($relPathStr)){
+    public function route($relPathStr, $func) {
+        if($this->request->matchPath($relPathStr)){
             $response = new Response();
             try{
-                if(!Session::check()){
-                    throw new \Exception('User not logged');
+                if(!Session::check(false)){
+                    $response->setStatus(1)->setMessage('User not logged');
+                    $data = $response->render();
+                    echo $data;
+                    die();
                 }
                 $func($this->request, $response);
                 $data = $response->render();
             } catch (\Exception $e){
                 Logger::error($relPathStr . ': ' . $e->getMessage());
                 $response = new Response();
-                $response->setStatus(-1);
-                $response->setMessage('An error was thrown');
+                $response->setStatus(-1)->setMessage('An error was thrown');
                 $data = $response->render();
             }
             echo $data;

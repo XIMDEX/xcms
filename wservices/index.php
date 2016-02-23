@@ -19,12 +19,12 @@ $router = new Router;
  * @param offset (optional) The offset
  * @param limit (optional) The max number of results
  */
-$router->Route('/search', function(Request $r, Response $w){
-    $q = $r->Get('q');
+$router->route('/search', function(Request $r, Response $w){
+    $q = $r->get('q');
     ModulesManager::file('/src/SolrSearchManager.php', 'XSearch');
 
-    $offset = $r->Get('offset', true, 0);
-    $limit = $r->Get('limit', true, 10);
+    $offset = $r->get('offset', true, 0);
+    $limit = $r->get('limit', true, 10);
 
     $sm = new SolrSearchManager();
 
@@ -57,7 +57,7 @@ $router->Route('/search', function(Request $r, Response $w){
 /**
  * Route to get user info
  */
-$router->Route('/me', function(Request $r, Response $w){
+$router->route('/me', function(Request $r, Response $w){
     $userID = (int) Session::get('userID');
     $user = new User($userID);
     $locale = $user->get('Locale');
@@ -77,11 +77,11 @@ $router->Route('/me', function(Request $r, Response $w){
  * @param offset (optional) The offset
  * @param limit (optional) The max number of results
  */
-$router->Route('/books', function(Request $r, Response $w){
+$router->route('/books', function(Request $r, Response $w){
     ModulesManager::file('/actions/composer/Action_composer.class.php');
 
-    $offset = $r->Get('offset', true, 0);
-    $limit = $r->Get('limit', true, 50);
+    $offset = $r->get('offset', true, 0);
+    $limit = $r->get('limit', true, 50);
 
     $ac = new Action_composer();
     $resp = $ac->quickReadWithNodetype(10000, NodeType::XBUK_PROJECT, $offset, $limit, null, 1);
@@ -95,7 +95,7 @@ $router->Route('/books', function(Request $r, Response $w){
  * @param offset (optional) The offset
  * @param limit (optional) The max number of results
  */
-$router->Route('/book/\d+/sections', function(Request $r, Response $w){
+$router->route('/book/\d+/sections', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
     if($node->GetNodeType() != NodeType::XBUK_PROJECT){
@@ -105,8 +105,8 @@ $router->Route('/book/\d+/sections', function(Request $r, Response $w){
 
     ModulesManager::file('/actions/composer/Action_composer.class.php');
 
-    $offset = $r->Get('offset', true, 0);
-    $limit = $r->Get('limit', true, 50);
+    $offset = $r->get('offset', true, 0);
+    $limit = $r->get('limit', true, 50);
 
     $ac = new Action_composer();
     $resp = $ac->quickReadWithNodetype($nodeId, NodeType::XBUK_SESSION, $offset, $limit, null, 1);
@@ -119,7 +119,7 @@ $router->Route('/book/\d+/sections', function(Request $r, Response $w){
  * @param id The DAM node id
  */
 
-$router->Route('/DAM/\d+/info', function(Request $r, Response $w){
+$router->route('/DAM/\d+/info', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
 
@@ -198,7 +198,7 @@ $router->Route('/DAM/\d+/info', function(Request $r, Response $w){
  * Get the users related with a book
  * @param id The book id
  */
-$router->Route('/book/\d+/users', function(Request $r, Response $w){
+$router->route('/book/\d+/users', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
 
