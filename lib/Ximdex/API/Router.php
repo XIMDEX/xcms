@@ -2,6 +2,7 @@
 namespace Ximdex\API;
 
 
+use Ximdex\Logger;
 use Ximdex\Utils\Session;
 
 class Router
@@ -31,7 +32,7 @@ class Router
                 }
                 $func($this->request, $response);
                 $data = $response->render();
-            } catch (Exception $e){
+            } catch (\Exception $e){
                 Logger::error($relPathStr . ': ' . $e->getMessage());
                 $response = new Response();
                 $response->setStatus(-1);
