@@ -16,15 +16,20 @@ include_once '../bootstrap/start.php';
 $router = new Router;
 /**
  * Route to search any resource in XSIR Repositories
- * @param q The query
+ * @param offset (optional) The offset
+ * @param limit (optional) The max number of results
  */
-$router->Route('/search', function(Request $request, Response $response){
-    $q = $request->Get('q');
+$router->Route('/search', function(Request $r, Response $w){
+    $q = $r->Get('q');
     ModulesManager::file('/src/SolrSearchManager.php', 'XSearch');
+
+    $offset = $r->Get('offset', true, 0);
+    $limit = $r->Get('limit', true, 10);
+
     $sm = new SolrSearchManager();
 
-    $response->setStatus(0)->setMessage('');
-    $response->setResponse($sm->search($q));
+    $w->setStatus(0)->setMessage('');
+    $w->setResponse($sm->search($q, $offset, $limit));
 });
 
 /**
@@ -48,16 +53,16 @@ $router->Route('/me', function(Request $r, Response $w){
 /**
  * Route to list all books. We don't search permission in general group.
  * @param offset (optional) The offset
- * @param size (optional) The max number of results
+ * @param limit (optional) The max number of results
  */
 $router->Route('/books', function(Request $r, Response $w){
     ModulesManager::file('/actions/composer/Action_composer.class.php');
 
     $offset = $r->Get('offset', true, 0);
-    $size = $r->Get('size', true, 50);
+    $limit = $r->Get('limit', true, 50);
 
     $ac = new Action_composer();
-    $resp = $ac->quickReadWithNodetype(10000, NodeType::XBUK_PROJECT, $offset, $size, null, 1);
+    $resp = $ac->quickReadWithNodetype(10000, NodeType::XBUK_PROJECT, $offset, $limit, null, 1);
 
     $w->setResponse(isset($resp["collection"]) ? $resp["collection"] : []);
 });
@@ -66,7 +71,7 @@ $router->Route('/books', function(Request $r, Response $w){
  * Route to list all sections of a book
  * @param id The book id
  * @param offset (optional) The offset
- * @param size (optional) The max number of results
+ * @param limit (optional) The max number of results
  */
 $router->Route('/books/\d+/sections', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
@@ -79,10 +84,10 @@ $router->Route('/books/\d+/sections', function(Request $r, Response $w){
     ModulesManager::file('/actions/composer/Action_composer.class.php');
 
     $offset = $r->Get('offset', true, 0);
-    $size = $r->Get('size', true, 50);
+    $limit = $r->Get('limit', true, 50);
 
     $ac = new Action_composer();
-    $resp = $ac->quickReadWithNodetype($nodeId, NodeType::XBUK_SESSION, $offset, $size, null, 1);
+    $resp = $ac->quickReadWithNodetype($nodeId, NodeType::XBUK_SESSION, $offset, $limit, null, 1);
 
     $w->setResponse(isset($resp["collection"]) ? $resp["collection"] : []);
 });
