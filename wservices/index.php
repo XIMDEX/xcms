@@ -28,8 +28,30 @@ $router->Route('/search', function(Request $r, Response $w){
 
     $sm = new SolrSearchManager();
 
-    $w->setStatus(0)->setMessage('');
-    $w->setResponse($sm->search($q, $offset, $limit));
+    $results = $sm->search($q, $offset, $limit);
+
+    foreach($results['docs'] as $k => $result){
+        switch($result['IdNodeType']){
+            case NodeType::XSIR_IMAGE_FILE:
+                $results['docs'][$k]['type'] = 'image';
+                break;
+            case NodeType::XSIR_VIDEO_FILE:
+                $results['docs'][$k]['type'] = 'video';
+                break;
+            case NodeType::XSIR_TEXT_FILE:
+                $results['docs'][$k]['type'] = 'text';
+                break;
+            case NodeType::XSIR_WIDGET_FILE:
+                $results['docs'][$k]['type'] = 'widget';
+                break;
+            case NodeType::XSIR_BINARY_FILE:
+                $results['docs'][$k]['type'] = 'binary';
+                break;
+        }
+    }
+
+    $w->setStatus(0)->setMessage('$result');
+    $w->setResponse($results);
 });
 
 /**
