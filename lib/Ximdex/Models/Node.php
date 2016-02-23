@@ -756,6 +756,34 @@ class Node extends NodesOrm
     }
 
     /**
+     * Returned the Id of the nearest parent wich can attach groups (nodeType)
+     */
+    /**
+     * @param $node
+     * @return integer
+     */
+    function GetNearest($parentNode)
+    {
+        $this->ClearError();
+
+        if ($this->get('IdNode') > 0) {
+            $parentNodeTypeId   = $parentNode->get('IdNodeType');
+            $parentNodeType     = new NodeType($parentNodeTypeId);
+
+            if (! $parentNodeType->get('CanAttachGroups')) {
+
+                $parentParent = new Node($parentNode->GetParent());
+                return $parentNode->GetNearest($parentParent);
+            }
+
+            return $parentNode->get('IdNode');
+        }
+
+        $this->SetError(1);
+        return false;
+    }
+
+    /**
      * Returns a path in the file system from where children are pending
      * Function used for renderization
      */
@@ -1062,67 +1090,75 @@ class Node extends NodesOrm
      */
     function CreateNode($name, $parentID, $nodeTypeID, $stateID = null, $subfolders = array())
     {
+
         $this->set('IdParent', (int)$parentID);
         $this->set('IdNodeType', (int)$nodeTypeID);
         $this->set('Name', $name);
+        $this->set('CreationDate', time());
+        $this->set('ModificationDate', time());
 
-        /* if(is_null($subfolders)){
-          $subfolders=array();
-          } */
+        /*
+            if(is_null($subfolders)){
+              $subfolders=array();
+            }
+        */
 
-        $nodeType = new NodeType($nodeTypeID);
+        $nodeType   = new NodeType($nodeTypeID);
+        $parentNode = new Node($this->get('IdParent'));
+
+        // Set IdState
         if ($nodeType->get('IsPublishable')) {
             $this->set('IdState', $this->getFirstStatus($parentID, $nodeTypeID));
-        } else {
+        }else{
             $this->set('IdState', NULL);
         }
 
+        // check name, parentID and nodeTypeID
         if (!($name || $parentID || $nodeTypeID)) {
             $this->SetError(3);
             $this->messages->add(_('The name, parent or nodetype is missing'), MSG_TYPE_ERROR);
             return false;
         }
 
-        /// If nodetype is not existing, we are done
-        $nodeType = new NodeType($nodeTypeID);
+        // If nodetype is not existing, we are done
         if (!($nodeType->get('IdNodeType')) > 0) {
             $this->messages->add(_('The specified nodetype does not exist'), MSG_TYPE_ERROR);
             $this->SetError(11);
             return false;
         }
 
-        /// Checking for correct name format
+        // Checking for correct name format
         if (!$this->IsValidName($this->get('Name'), $this->get('IdNodeType'))) {
             $this->messages->add(_('Node name is not valid'), MSG_TYPE_ERROR);
             $this->SetError(9);
             return false;
         }
 
-        /// If parent does not exist, we are done
-        $parentNode = new Node($this->get('IdParent'));
+        // If parent does not exist, we are done
         if (!($parentNode->get('IdNode') > 0)) {
             $this->messages->add(_('Parent node does not exist'), MSG_TYPE_ERROR);
             $this->SetError(10);
             return false;
         }
 
+        // check if already exist a node with the same name under the current parent
         if (!($parentNode->GetChildByName($this->get('Name')) === false)) {
             $this->messages->add(_('There is already a node with this name under this parent'), MSG_TYPE_ERROR);
             $this->SetError(8);
             return false;
         }
-        unset($parentNode);
+        // unset($parentNode);
 
+        // node is not allowed to live there
         if (!$this->checkAllowedContent($nodeTypeID, $parentID)) {
             $this->messages->add(_('This node is not allowed under this parent'), MSG_TYPE_ERROR);
             $this->SetError(17);
             return false;
         }
 
-        $this->set('CreationDate', time());
-        $this->set('ModificationDate', time());
-        /// Inserts the node in the Nodes table
+        // Inserts the node in the Nodes table
         parent::add();
+
         if (!($this->get('IdNode') > 0)) {
             $this->messages->add(_('Error creating the node'), MSG_TYPE_ERROR);
             $this->SetError(5);
@@ -1133,12 +1169,14 @@ class Node extends NodesOrm
         // Updating fastTraverse before the setcontent, because in the node cache this information is needed
         $this->UpdateFastTraverse();
 
-        /// All the args from this function call are passed to this nodetype create method.
+        // All the args from this function call are passed to this nodetype create method.
         if (is_object($this->class)) {
             $argv = func_get_args();
             call_user_func_array(array(&$this->class, 'CreateNode'), $argv);
         }
+
         $this->messages->mergeMessages($this->class->messages);
+
         if ($this->messages->count(MSG_TYPE_ERROR) > 0) {
             if ($this->get('IdNode') > 0) {
                 $this->delete();
@@ -1146,16 +1184,35 @@ class Node extends NodesOrm
             }
         }
 
-        $group = new Group();
-        $this->AddGroupWithRole($group->GetGeneralGroup());
+        // Add general group by default
+        $id_usuario = Session::get('userID');
+        $user       = new User($id_usuario);
+        $group      = new Group();
+
+        $this->AddGroupWithRole($group->GetGeneralGroup(), $user->GetRoleOnGroup($associated));
+
+        // get associated groups from the parent/s
+        if ($nodeType->get('CanAttachGroups')) {
+
+            $nearestId  = $this->GetNearest($parentNode);
+            $nearest    = new Node($nearestId);
+
+            $associated = array();
+            $associated = $nearest->GetGroupList();
+
+            if (count($associated) > 0) {
+                foreach ($associated as &$group) {
+                    $this->AddGroupWithRole($group, $user->GetRoleOnGroup($group));
+                }
+            }
+        }
 
         // if the create node type is Section (section inside a server)
         // it is checked if the user who created it belongs to some group
         // to include the relation between nodes and groups
-        $nodeTypeName = $this->nodeType->get('Name');
-        if ($nodeTypeName == 'Section') {
-            $id_usuario = Session::get('userID');
-            $user = new User($id_usuario);
+        if ($this->nodeType->get('Name') == 'Section') {
+            // $id_usuario = Session::get('userID');
+            // $user = new User($id_usuario);
             $grupos = $user->GetGroupList();
             // The first element of the list $grupos is always the general group
             // this insertion is not considered as it the relation by default
@@ -1174,12 +1231,14 @@ class Node extends NodesOrm
 
         /// Once created, its content by default is added.
         $dbObj = new DB();
+
         if (!empty($subfolders) && is_array($subfolders)) {
             $subfolders_str = implode(",", $subfolders);
             $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d AND NodeType in (%s)", $this->get('IdNodeType'), $subfolders_str);
         } else {
             $query = sprintf("SELECT NodeType, Name, State, Params FROM NodeDefaultContents WHERE IdNodeType = %d", $this->get('IdNodeType'));
         }
+
         $dbObj->Query($query);
 
         while (!$dbObj->EOF) {
