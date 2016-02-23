@@ -237,3 +237,8 @@ $router->route('/book/\d+/users', function(Request $r, Response $w){
 
     $w->setResponse($users);
 });
+
+//Default response
+$response = new Response();
+$response->setStatus(2)->setResponse("The URL doesn't match with any path");
+echo $response->render();
