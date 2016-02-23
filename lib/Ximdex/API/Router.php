@@ -11,15 +11,6 @@ class Router
 
     public function __construct()
     {
-        //Checks if user is logged
-        if(!Session::check(false)){
-            $response = new Response();
-            $response->setStatus(-1)->setMessage('User not logged');
-            $data = $response->render();
-            echo $data;
-            die();
-        }
-
         $this->request = new Request();
     }
 
@@ -36,12 +27,15 @@ class Router
         if($this->request->matchPath($relPathStr)){
             $response = new Response();
             try{
+                if(!Session::check(false)){
+                    throw new APIException('User not logged', -1);
+                }
                 $func($this->request, $response);
                 $data = $response->render();
-            } catch (\Exception $e){
+            } catch (APIException $e){
                 Logger::error($relPathStr . ': ' . $e->getMessage());
                 $response = new Response();
-                $response->setStatus(1)->setMessage('An error was thrown');
+                $response->setStatus($e->getStatus())->setMessage($e->getMessage());
                 $data = $response->render();
             }
             echo $data;

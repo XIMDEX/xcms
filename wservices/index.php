@@ -1,4 +1,5 @@
 <?php
+use Ximdex\API\APIException;
 use Ximdex\API\Request;
 use Ximdex\API\Response;
 use Ximdex\API\Router;
@@ -239,6 +240,6 @@ $router->route('/book/\d+/users', function(Request $r, Response $w){
 });
 
 //Default response
-$response = new Response();
-$response->setStatus(2)->setResponse("The URL doesn't match with any path");
-echo $response->render();
+$router->route('*', function(Request $r, Response $w){
+    throw new APIException('The URL doesn\'t match with any path', 2);
+});

@@ -40,6 +40,10 @@ class Request
      * @return bool
      */
     public function matchPath($path){
+        if($path == '*'){
+            return true;
+        }
+
         $pathSplitted = $this->splitPath($path);
         if(count($pathSplitted) != count($this->path)){
             return false;
@@ -67,7 +71,7 @@ class Request
      */
     public function get($key, $optional = false, $default = null){
         if(!$optional && !isset($this->query[$key])){
-            throw new \Exception("Key $key not found in params");
+            throw new APIException("Key $key not found in params");
         }
         if(!isset($this->query[$key])){
             return $default;
