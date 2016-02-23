@@ -50,7 +50,7 @@ $router->route('/search', function(Request $r, Response $w){
         }
     }
 
-    $w->setStatus(0)->setMessage('$result');
+    $w->setStatus(0);
     $w->setResponse($results);
 });
 
