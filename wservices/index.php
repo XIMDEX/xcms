@@ -2,6 +2,7 @@
 use Ximdex\API\Request;
 use Ximdex\API\Response;
 use Ximdex\API\Router;
+use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\Language;
 use Ximdex\Models\StructuredDocument;
@@ -164,4 +165,48 @@ $router->Route('/DAM/\d+/info', function(Request $r, Response $w){
         }
     }
     $w->setResponse($resp);
+});
+
+/**
+ * Get the users related with a book
+ * @param id The book id
+ */
+$router->Route('/book/\d+/users', function(Request $r, Response $w){
+    $nodeId = $r->getPath()[1];
+    $node = new Node($nodeId);
+
+    if($node->GetNodeType() != NodeType::XBUK_PROJECT){
+        $w->setMessage('Id is not for a valid book')->setStatus(-1);
+        return;
+    }
+
+    $groups = $node->GetGroupList();
+
+    // We won't use general group
+    if(($key = array_search('101', $groups)) !== false) {
+        array_splice($groups, $key, 1);
+    }
+
+    $idUsers = [];
+    foreach($groups as $q){
+        $group = new Group($q);
+        $idUsers = array_merge($idUsers, $group->GetUserList());
+    }
+    $idUsers = array_unique($idUsers);
+
+    $users = [];
+    foreach($idUsers as $idUser){
+        $user = new User($idUser);
+        $locale = $user->get('Locale');
+        $locale = !is_null($locale) ? $locale : 'en_US';
+        $users [] = [
+            'id' => $idUser,
+            'username' => $user->get('Login'),
+            'name' => $user->get('Name'),
+            'email' => $user->get('Email'),
+            'locale' => $locale,
+        ];
+    }
+
+    $w->setResponse($users);
 });
