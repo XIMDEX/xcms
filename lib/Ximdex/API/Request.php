@@ -34,6 +34,8 @@ class Request
     }
 
     /**
+     * Checks if $path matches with the current url
+     *
      * @param string $path
      * @return bool
      */
@@ -45,7 +47,7 @@ class Request
 
         for($i = 0; $i < count($this->path); $i++){
             $subject = $this->path[$i];
-            $pattern = "/^{$pathSplitted[$i]}$/";
+            $pattern = "/^{$pathSplitted[$i]}$/i";
             $check = preg_match($pattern, $subject);
             if($check !== 1){
                 return false;
@@ -55,6 +57,8 @@ class Request
     }
 
     /**
+     * Get a query value from a key
+     *
      * @param $key
      * @param bool $optional
      * @param null $default
@@ -71,12 +75,19 @@ class Request
         return $this->query[$key];
     }
 
+    /**
+     * Return the current path as an array
+     *
+     * @return array
+     */
     public function getPath()
     {
         return $this->path;
     }
 
     /**
+     * Splits a path and returns an array
+     *
      * @param string $pathStr
      * @return array
      */

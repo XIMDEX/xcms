@@ -14,6 +14,10 @@ class Router
     }
 
     /**
+     * Checks if $relPathStr matches the current url path and executes $func
+     * else it does nothing. If an Exception is throwed, it will catch it and will
+     * send an error message
+     *
      * @param string $relPathStr
      * @param callable $func
      * @throws \Exception
