@@ -20,6 +20,7 @@ $router->addAllowedRequest( "ping") ;
 
 $router->addRoute( 'bad', "none" );
 
+$router->addAllowedRequest( "bad") ;
 
 
 $router->addRoute( 'ping', function(Request $r, Response $w ) {
@@ -131,7 +132,8 @@ $router->addRoute('books', function(Request $r, Response $w){
  * @param limit (optional) The max number of results
  */
 $router->addRoute('book/\d+/sections', function(Request $r, Response $w){
-    $nodeId = $r->getPath()[1];
+    $pathElements = explode( "/", $r->getPath() ) ;
+    $nodeId = $pathElements[1];
     $node = new Node($nodeId);
     if($node->GetNodeType() != NodeType::XBUK_PROJECT){
         $w->setMessage('Id is not for a valid book project')->setStatus(1);
@@ -167,7 +169,9 @@ $router->addRoute('book/\d+/sections', function(Request $r, Response $w){
  */
 
 $router->addRoute('DAM/\d+/info', function(Request $r, Response $w){
-    $nodeId = $r->getPath()[1];
+
+    $pathElements = explode( "/", $r->getPath() ) ;
+    $nodeId = $pathElements[1];
     $node = new Node($nodeId);
 
     $allowedNodetypes = [NodeType::XSIR_BINARY_FILE, NodeType::XSIR_IMAGE_FILE, NodeType::XSIR_VIDEO_FILE, NodeType::XSIR_TEXT_FILE, NodeType::XSIR_WIDGET_FILE];
@@ -237,7 +241,8 @@ $router->addRoute('DAM/\d+/info', function(Request $r, Response $w){
  * @param id The book id
  */
 $router->addRoute('book/\d+/users', function(Request $r, Response $w){
-    $nodeId = $r->getPath()[1];
+    $pathElements = explode( "/", $r->getPath() ) ;
+    $nodeId = $pathElements[1];
     $node = new Node($nodeId);
 
     if($node->GetNodeType() != NodeType::XBUK_PROJECT){
