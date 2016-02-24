@@ -9,37 +9,56 @@ class Router
 {
     private $request;
 
-    public function __construct()
+
+    /**
+     * @var array List of allowed (public) requests
+     */
+    private $allowedRequests = array() ;
+    /**
+     * @var array List of routes and functions
+     */
+    private $routes = array() ;
+
+    public function __construct( Request $request )
     {
-        $this->request = new Request();
+        $this->request = $request ;
+        $this->routes = array();
+        $this->allowedRequests = array();
+
+    }
+
+
+    /**
+     * @param $path
+     * @param $func
+     *
+     * Add new route and function to router
+     */
+    public function addRoute($path , $func)
+    {
+        $this->routes[$path] = $func;
     }
 
     /**
-     * Checks if $relPathStr matches the current url path and executes $func
-     * else it does nothing. If an Exception is throwed, it will catch it and will
-     * send an error message
      *
-     * @param string $relPathStr
-     * @param callable $func
-     * @throws \Exception
+     * Returns the function that handles de current path
      */
-    public function route($relPathStr, $func) {
-        if($this->request->matchPath($relPathStr)){
-            $response = new Response();
-            try{
-                if(!Session::check(false)){
-                    throw new APIException('User not logged', -1);
-                }
-                $func($this->request, $response);
-                $data = $response->render();
-            } catch (APIException $e){
-                Logger::error($relPathStr . ': ' . $e->getMessage());
-                $response = new Response();
-                $response->setStatus($e->getStatus())->setMessage($e->getMessage());
-                $data = $response->render();
+    public function getFunction(  ) {
+        $currentPath = $this->request->getPath() ;
+        foreach( $this->routes as $key => $value ) {
+
+            if ( preg_match( $currentPath, $key ) === true ) {
+
+                return $value;
             }
-            echo $data;
-            die();
+            throw new APIException('Route Not Found', 404 );
+
         }
+    }
+
+    public function addAllowedRequest( $item ) {
+        array_push( $this->allowedRequests , $item ) ;
+
+
     }
 }

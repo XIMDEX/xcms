@@ -14,7 +14,28 @@ use Ximdex\Utils\Session;
 
 include_once '../bootstrap/start.php';
 
-$router = new Router;
+$request = new Request() ;
+$router = new Router( $request ) ;
+
+
+$router->addAllowedRequest( "ping") ;
+
+
+
+$router->addRoute( 'ping', function(Request $r, Response $w ) {
+
+
+    $response->setStatus( 0) ;
+    $response->setMessage( "" ) ;
+    $response->setResponse( "PONG!") ;
+
+    $response->send();
+
+
+});
+
+
+exit;
 
 /**
  * Route to search any resource in XSIR Repositories

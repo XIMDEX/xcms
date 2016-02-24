@@ -53,25 +53,20 @@ class Response
     }
 
     /**
-     * Renders the response
+     * Sends reponse and exists
      *
      * @param string $method
      * @return string
      */
-    public function render($method = 'JSON'){
+    public function send( ){
         $data = [
           'status' => $this->status,
           'message' => $this->message,
           'response' => $this->response,
         ];
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        exit ;
 
-        switch($method){
-            case 'JSON':
-                header('Content-Type: application/json; charset=utf-8');
-                return json_encode($data, JSON_UNESCAPED_UNICODE);
-            default:
-                header('Content-Type: application/json; charset=utf-8');
-                return json_encode($data, JSON_UNESCAPED_UNICODE);
-        }
     }
 }
