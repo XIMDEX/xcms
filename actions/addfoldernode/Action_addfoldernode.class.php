@@ -41,7 +41,7 @@ class Action_addfoldernode extends ActionAbstract
 	public $channels;
 	public $languages;
 	/**
-	 * Main Method: shows the initial form	 
+	 * Main Method: shows the initial form
 	 */
 	function index() {
 
@@ -64,8 +64,21 @@ class Action_addfoldernode extends ActionAbstract
 
     	$go_method = ($nodeType["name"] == "Section") ? "addSectionNode" : "addNode";
 
+        // show disclaimer if node canAttachGroups
+        $CanAttachGroups = 0;
+
+        if($this->request->get("nodetypeid")){
+            $nt = new NodeType($this->request->get("nodetypeid"));
+            $CanAttachGroups = $nt->get('CanAttachGroups');
+        } else {
+            $nodeType = $this->GetTypeOfNewNode ($nodeID);
+            $CanAttachGroups = $nodeType['CanAttachGroups'];
+        }
+        //
+
 		$this->request->setParam("go_method", $go_method);
 		$this->request->setParam("friendlyName", $friendlyName);
+        $this->request->setParam("CanAttachGroups", $CanAttachGroups);
 
 		$values = array(
 			'go_method' => 'addNode',
@@ -73,20 +86,19 @@ class Action_addfoldernode extends ActionAbstract
 			);
 
 		if($nodeType['name'] == 'Project'){
-			$this->loadNewProjectForm($values);			
+			$this->loadNewProjectForm($values);
 		}else{
 			$this->render($values, "index", 'default-3.0.tpl');
 		}
-		
 	}
 
     /**
-     * Load the creation form for a new project     
+     * Load the creation form for a new project
      */
     private function loadNewProjectForm($values){
     	$chann = new Channel();
 		$channs = $chann->find();
-	
+
 		if (!is_null($channs)) {
 				foreach ($channs as $channData) {
 					$channels[] = array('id' => $channData['IdChannel'], 'name' => $channData['Name']);
@@ -109,16 +121,16 @@ class Action_addfoldernode extends ActionAbstract
 		$values['langs'] = $languages;
 		$values['channels'] = $channels;
 		//Load projects
-		
+
 		$themes = ProjectTemplate::getAllProjectTemplates();
 		$idNode = $this->request->getParam("nodeid");
-		$nodeProjectRoot = new Node($idNode);        
+		$nodeProjectRoot = new Node($idNode);
        	$cssFolder = "/actions/addfoldernode/resources/css/";
        	$this->addCss($cssFolder . "style.css");
 
        	$jsFolder = "/actions/addfoldernode/resources/js/";
        	$this->addJs($jsFolder . "init.js");
-        
+
         $arrayTheme = array();
         foreach ($themes as $theme ) {
             $themeDescription["name"] = $theme->__get("name");
@@ -130,17 +142,17 @@ class Action_addfoldernode extends ActionAbstract
         }
 
         $values["themes"] = $arrayTheme;
-    	
+
         $template = "index";
 
 		$this->render($values, "addProject", 'default-3.0.tpl');
-    }	
+    }
 
 	function addNode() {
 		$nodeID = $this->request->getParam("nodeid");
 		$name = $this->request->getParam("name");
         $this->name = $name;
-		$channels = $this->request->getParam('channels_listed');	
+		$channels = $this->request->getParam('channels_listed');
 		$languages = $this->request->getParam('langs_listed');
 
         $nodeType = [];
@@ -268,7 +280,7 @@ class Action_addfoldernode extends ActionAbstract
     }
 
     /**
-     * Create a Server Node and all the descendant: xmldocument, ximlet, images, css and common 
+     * Create a Server Node and all the descendant: xmldocument, ximlet, images, css and common
      *
      * @param int $projectId Ximdex id for node project
      * @param  Loader_Server $server Object to create the server
@@ -305,28 +317,28 @@ class Action_addfoldernode extends ActionAbstract
         foreach ($channels as $ch) {
             $nodeServer->class->AddChannel($physicalServerId, $ch);
         }
-        Module::log(Module::SUCCESS, "Server creation O.K.");        
-        
+        Module::log(Module::SUCCESS, "Server creation O.K.");
+
         // common
         $arrayCommon = $server->getCommon();
 
         $this->createResourceByFolder($server, "common", "CommonFolder", $arrayCommon);
 
 
-        
+
         $arrayTemplates = $server->getTemplates();
         foreach($arrayTemplates as $template){
             $this->insertFiles($serverId, "templates", array($template));
-        }       
+        }
 
         //images
-        $arrayImages = $server->getImages();        
+        $arrayImages = $server->getImages();
         $this->createResourceByFolder($server, "images", "ImagesFolder", $arrayImages);
 
         //Css
         $arrayCss = $server->getCSS();
         $this->createResourceByFolder($server, "css", "CssFolder", $arrayCss);
-        
+
 
         // document
         $docs = $server->getXimdocs();
@@ -335,7 +347,7 @@ class Action_addfoldernode extends ActionAbstract
         // ximlet
         $let = $server->getXimlet();
         $ret = $this->insertDocs($server->serverid, $let, true);
-        
+
         return $serverId;
     }
 
@@ -346,7 +358,7 @@ class Action_addfoldernode extends ActionAbstract
         $rootFolderId = $nodeServer->GetChildByName($rootFolderName);
         $this->$rootFolderName = $rootFolderId;
         $newFolderNodeType = new NodeType();
-        $newFolderNodeType->SetByName($rootFolderNodeType);        
+        $newFolderNodeType->SetByName($rootFolderNodeType);
         $this->createResource($rootFolderId, $arrayXimFiles, $newFolderNodeType->GetID());
 
     }
@@ -365,8 +377,8 @@ class Action_addfoldernode extends ActionAbstract
                 $this->insertFiles($idParent, $folderName, array($ximFileObject));
             }else{
                 //Any error message here
-            }            
-            
+            }
+
         }
     }
 
@@ -420,7 +432,7 @@ class Action_addfoldernode extends ActionAbstract
 
         $io = new BaseIO();
         $languageObject = new Language();
-        foreach ($files as $file) {            
+        foreach ($files as $file) {
             $idSchema = $this->schemas[$file->templatename];
             $file->channel = $file->channel == '{?}' ? $this->channels : $file->channel;
             if(!$languageObject->LanguageEnabled($file->language)){
@@ -442,7 +454,7 @@ class Action_addfoldernode extends ActionAbstract
                 )
             );
 
-           
+
             $containerId = $io->build($data);
 
             if (!($containerId > 0)) {
@@ -456,12 +468,12 @@ class Action_addfoldernode extends ActionAbstract
                 'NODETYPE' => $idNodeType,
                 'PARENTID' => $containerId,
                 'CHILDRENS' => array(
-                    array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema),                    
+                    array('NODETYPENAME' => 'VISUALTEMPLATE', 'ID' => $idSchema),
                     array('NODETYPENAME' => 'PATH', 'SRC' => $file->getPath())
                 )
             );
-            
-            $formChannels = array();    
+
+            $formChannels = array();
             foreach ($file->channel as $idChannel) {
                 $formChannels[] = array('NODETYPENAME' => 'CHANNEL', 'ID' => $idChannel);
             }
@@ -478,7 +490,7 @@ class Action_addfoldernode extends ActionAbstract
 				$docId = $io->build($data);
                 $ret[] = $docId;
 			}
-            
+
 		}
         if (count($ret) == 0)
             $ret = false;
