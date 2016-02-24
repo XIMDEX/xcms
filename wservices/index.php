@@ -19,26 +19,18 @@ $router = new Router( new Request()  ) ;
 $router->addAllowedRequest( "ping") ;
 
 $router->addRoute( 'ping', function(Request $r, Response $w ) {
-
     $w->setStatus( 0) ;
     $w->setMessage( "" ) ;
     $w->setResponse( "PONG!") ;
     $w->send();
-
-
 });
-
-$router->execute();
-
-
-exit;
 
 /**
  * Route to search any resource in XSIR Repositories
  * @param offset (optional) The offset
  * @param limit (optional) The max number of results
  */
-$router->route('/search', function(Request $r, Response $w){
+$router->addRoute('search', function(Request $r, Response $w){
     $q = $r->get('q');
     ModulesManager::file('/src/SolrSearchManager.php', 'XSearch');
 
@@ -77,12 +69,14 @@ $router->route('/search', function(Request $r, Response $w){
     }
 
     $w->setResponse($resultsToSend);
+    $w->send();
 });
+
 
 /**
  * Route to get user info
  */
-$router->route('/me', function(Request $r, Response $w){
+$router->addRoute('me', function(Request $r, Response $w){
     $userID = (int) Session::get('userID');
     $user = new User($userID);
     $locale = $user->get('Locale');
@@ -95,6 +89,7 @@ $router->route('/me', function(Request $r, Response $w){
         'locale' => $locale,
     ];
     $w->setResponse($response);
+    $w->send();
 });
 
 /**
@@ -102,7 +97,7 @@ $router->route('/me', function(Request $r, Response $w){
  * @param offset (optional) The offset
  * @param limit (optional) The max number of results
  */
-$router->route('/books', function(Request $r, Response $w){
+$router->addRoute('books', function(Request $r, Response $w){
     ModulesManager::file('/actions/composer/Action_composer.class.php');
 
     $offset = $r->get('offset', true, 0);
@@ -122,6 +117,7 @@ $router->route('/books', function(Request $r, Response $w){
     }
 
     $w->setResponse($booksToSend);
+    $w->send();
 });
 
 /**
@@ -130,7 +126,7 @@ $router->route('/books', function(Request $r, Response $w){
  * @param offset (optional) The offset
  * @param limit (optional) The max number of results
  */
-$router->route('/book/\d+/sections', function(Request $r, Response $w){
+$router->addRoute('book/\d+/sections', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
     if($node->GetNodeType() != NodeType::XBUK_PROJECT){
@@ -157,6 +153,8 @@ $router->route('/book/\d+/sections', function(Request $r, Response $w){
     }
 
     $w->setResponse($booksToSend);
+    $w->send();
+
 });
 
 /**
@@ -164,7 +162,7 @@ $router->route('/book/\d+/sections', function(Request $r, Response $w){
  * @param id The DAM node id
  */
 
-$router->route('/DAM/\d+/info', function(Request $r, Response $w){
+$router->addRoute('DAM/\d+/info', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
 
@@ -227,13 +225,14 @@ $router->route('/DAM/\d+/info', function(Request $r, Response $w){
         }
     }
     $w->setResponse($resp);
+    $w->send();
 });
 
 /**
  * Get the users related with a book
  * @param id The book id
  */
-$router->route('/book/\d+/users', function(Request $r, Response $w){
+$router->addRoute('book/\d+/users', function(Request $r, Response $w){
     $nodeId = $r->getPath()[1];
     $node = new Node($nodeId);
 
@@ -276,9 +275,8 @@ $router->route('/book/\d+/users', function(Request $r, Response $w){
     }
 
     $w->setResponse($users);
+    $w->send();
 });
 
-//Default response
-$router->route('*', function(Request $r, Response $w){
-    throw new APIException('The URL doesn\'t match with any path', 2);
-});
+ $router->execute() ;
+
