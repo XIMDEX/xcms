@@ -18,6 +18,10 @@ $router = new Router( new Request()  ) ;
 
 $router->addAllowedRequest( "ping") ;
 
+$router->addRoute( 'bad', "none" );
+
+
+
 $router->addRoute( 'ping', function(Request $r, Response $w ) {
     $w->setStatus( 0) ;
     $w->setMessage( "" ) ;
