@@ -69,9 +69,9 @@ class Router
      */
     public function execute()
     {
-        $function = $this->getFunction();
         $response = new Response();
         try {
+            $function = $this->getFunction();
             if (  !Session::check(false) ) {
                 throw new APIException('User not logged', -1);
             }
