@@ -88,7 +88,10 @@ class Router
             if (!Session::check(false) && false === $action['public']) {
                 throw new APIException('User not logged', -1);
             }
-            $action['function']($this->request, $response);
+            if ( !is_callable( $action['function'])) {
+                throw new APIException('Bad Action', 500);
+            }
+            call_user_func( $action['function'], $this->request, $response  );
         } catch (APIException $e) {
             Logger::error($this->request->getPath() . ': ' . $e->getMessage());
             $response->setStatus($e->getStatus())->setMessage($e->getMessage());
