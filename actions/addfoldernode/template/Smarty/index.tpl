@@ -27,12 +27,20 @@
 	<div class="action_header">
 		<h2>{t}Add{/t} {$friendlyName|gettext}</h2>
 	</div>
+
 	<div class="action_content">
 		<p class="icon icon-positioned server input">
 			<input type="text" name="name" id="foldername" class="cajaxg validable js_val_alphanumeric not_empty full-size {$friendlyName|replace:" ":"_"}_icon" placeholder="{t}{$friendlyName} name{/t}">
 		</p>
+
+		<!-- show disclaimer if node CanAttachGroups -->
+		{if ($CanAttachGroups)}
+            <p class="herachy-disclaimer">
+				<strong>* {t}Warning{/t}:</strong> {t}Folder permissions is going to inherit from the parent{/t}.
+			</p>
+        {/if}
 	</div>
 	<fieldset class="buttons-form positioned_btn">
 	    {button label="Create" class='validate btn main_action'}
-	</fieldset>	
+	</fieldset>
 </form>

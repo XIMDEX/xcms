@@ -10174,3 +10174,6 @@ msgstr "No volver a mostrar."
 
 msgid "We're going to show you in a few steps the basic features of Ximdex. Let's go!"
 msgstr "Vamos a mostrarte en unos pocos pasos las características básicas de Ximdex. ¡Comencemos!"
+
+msgid "Folder permissions is going to inherit from the parent"
+msgstr "Se van a heredar los permisos (grupos asociados) del nodo padre"
