@@ -15,7 +15,8 @@ class Request
 
     public function __construct()
     {
-        $this->path = isset( $_GET['_action']) ? $_GET['_action'] : null ;
+        $this->path = isset( $_GET['_action']) ? $_GET['_action'] : "" ;
+        $this->path = trim( $this->path ,  "/" ) ;
     }
     /**
      * Get a query value from a key
