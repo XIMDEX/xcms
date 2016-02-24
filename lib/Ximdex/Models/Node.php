@@ -1189,7 +1189,7 @@ class Node extends NodesOrm
         $user       = new User($id_usuario);
         $group      = new Group();
 
-        $this->AddGroupWithRole($group->GetGeneralGroup(), $user->GetRoleOnGroup($associated));
+        $this->AddGroupWithRole($group->GetGeneralGroup());
 
         // get associated groups from the parent/s
         if ($nodeType->get('CanAttachGroups')) {
