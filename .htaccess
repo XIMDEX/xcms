@@ -7,11 +7,6 @@ RewriteCond %{REQUEST_FILENAME} api-rest/(.*)
 RewriteRule (.*) api-rest/index.php
 RewriteCond %{REQUEST_FILENAME} api/(.*)
 RewriteRule (.*) api/index.php
-#
-# Rewrite wservices
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} wservices/(.+)
-RewriteRule ^(.*)wservices/(.+)$ wservices/index.php?_action=$2&%{QUERY_STRING} [L]
 
 
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.css$

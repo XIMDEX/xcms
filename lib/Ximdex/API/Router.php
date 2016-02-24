@@ -43,7 +43,7 @@ class Router
      *
      * Returns the function that handles de current path
      */
-    public function getFunction(  ) {
+    private function getFunction(  ) {
         $currentPath = $this->request->getPath() ;
         foreach( $this->routes as $key => $value ) {
 
@@ -51,14 +51,37 @@ class Router
 
                 return $value;
             }
-            throw new APIException('Route Not Found', 404 );
 
         }
+        throw new APIException('Route Not Found', 404 );
+
     }
 
-    public function addAllowedRequest( $item ) {
+    public  function addAllowedRequest( $item ) {
         array_push( $this->allowedRequests , $item ) ;
 
 
     }
+
+    /**
+     * Executes de current path
+     * @throws APIException
+     */
+    public function execute()
+    {
+        $function = $this->getFunction();
+        $response = new Response();
+        try {
+            if (  !Session::check(false) ) {
+                throw new APIException('User not logged', -1);
+            }
+            $function($this->request, $response);
+        } catch (APIException $e) {
+            Logger::error( $this->request->getPath()  . ': ' . $e->getMessage());
+            $response->setStatus($e->getStatus())->setMessage($e->getMessage());
+            $response->send();
+        }
+    }
+
+
 }

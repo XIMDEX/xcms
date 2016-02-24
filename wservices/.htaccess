@@ -1,0 +1,4 @@
+#
+# Rewrite wservices
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)wservices/(.+)$ wservices/index.php?_action=$2&%{QUERY_STRING} [L]

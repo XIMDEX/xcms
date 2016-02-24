@@ -34,6 +34,8 @@ $router->addRoute( 'ping', function(Request $r, Response $w ) {
 
 });
 
+$router->execute();
+
 
 exit;
 
