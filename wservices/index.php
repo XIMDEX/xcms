@@ -14,20 +14,16 @@ use Ximdex\Utils\Session;
 
 include_once '../bootstrap/start.php';
 
-$request = new Request() ;
-$router = new Router( $request ) ;
-
+$router = new Router( new Request()  ) ;
 
 $router->addAllowedRequest( "ping") ;
 
-
-
 $router->addRoute( 'ping', function(Request $r, Response $w ) {
 
-    $response->setStatus( 0) ;
-    $response->setMessage( "" ) ;
-    $response->setResponse( "PONG!") ;
-    $response->send();
+    $w->setStatus( 0) ;
+    $w->setMessage( "" ) ;
+    $w->setResponse( "PONG!") ;
+    $w->send();
 
 
 });

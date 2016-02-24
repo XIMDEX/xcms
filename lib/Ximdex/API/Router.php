@@ -48,23 +48,16 @@ class Router
     {
         $currentPath = $this->request->getPath();
         foreach ($this->routes as $key => $value) {
-            echo $currentPath . ' - ' . $key . "|";
-            echo preg_match("#^{$key}$#i", $currentPath) . "|";
-
             if (preg_match("#^{$key}$#i", $currentPath) === 1) {
 
                 // check is a public function
-
                 $public = false;
-
                 foreach ($this->allowedRequests as $url) {
-
                     if (preg_match("#^{$url}$#i", $currentPath) === 1) {
                         $public = true;
                         break;
                     }
                 }
-
                 return array(
                     "function" => $value,
                     "public" => $public,
@@ -74,7 +67,6 @@ class Router
 
         }
         throw new APIException('Route Not Found', 404);
-
     }
 
     public function addAllowedRequest($item)
