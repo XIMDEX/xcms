@@ -24,11 +24,9 @@ $router->addAllowedRequest( "ping") ;
 
 $router->addRoute( 'ping', function(Request $r, Response $w ) {
 
-
     $response->setStatus( 0) ;
     $response->setMessage( "" ) ;
     $response->setResponse( "PONG!") ;
-
     $response->send();
 
 
