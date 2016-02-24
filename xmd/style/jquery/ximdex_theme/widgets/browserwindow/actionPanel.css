@@ -1548,7 +1548,7 @@ input:focus + .tooltip_info {
 
 .icon-positioned {
   position: relative;
-  margin-bottom: 2em; }
+  margin-bottom: 1em; }
 
 .box_short {
   display: inline-block;
@@ -1643,4 +1643,13 @@ input:focus + .tooltip_info {
 
 input[type="checkbox"] {
   cursor: pointer;
+}
+/**************
+  // Herachy disclaimer
+  ***************/
+.herachy-disclaimer {
+  font-size: 15px !important;
+  font-style: italic;
+  color: #666;
+  text-align: right;
 }
