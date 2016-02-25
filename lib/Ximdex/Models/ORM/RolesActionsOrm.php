@@ -1,5 +1,8 @@
 <?php
 
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -24,7 +27,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class RelRolesActions_ORM extends \Ximdex\Data\GenericData
+class RelRolesActionsOrm extends GenericData
 {
     var $_idField = 'IdRel';
     var $_table = 'RelRolesActions';

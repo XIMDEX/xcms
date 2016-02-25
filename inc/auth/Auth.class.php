@@ -30,13 +30,13 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
+use Ximdex\Models\ORM\RelRolesActionsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Runtime\Constants;
 use Ximdex\Workflow\WorkFlow;
 
 
-require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelRolesActions_ORM.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelUsersGroups_ORM.class.php");
 
 class Auth
@@ -323,7 +323,7 @@ class Auth
         $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
         $idContext = count($result) == 1 ? $result[0] : '1';
 
-        $relRolesActions = new RelRolesActions_ORM();
+        $relRolesActions = new RelRolesActionsOrm();
         $result = $relRolesActions->find('IdRol',
             'IdAction = %s AND IdContext = %s',
             array($idAction, $idContext),
