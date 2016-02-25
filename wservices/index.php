@@ -14,6 +14,13 @@ use Ximdex\Utils\Session;
 
 include_once '../bootstrap/start.php';
 
+/**
+ * @TODO: check global setup
+ */
+
+session_set_cookie_params ( 0  , "/" ) ;
+
+
 $router = new Router(new Request());
 
 $router->addAllowedRequest("ping");
