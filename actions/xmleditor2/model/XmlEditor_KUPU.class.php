@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Auth;
 use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;

@@ -28,7 +28,6 @@
 //
 use Ximdex\MVC\ActionAbstract;
 
-require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
 //
 
 

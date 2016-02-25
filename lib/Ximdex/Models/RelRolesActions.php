@@ -1,6 +1,4 @@
 <?php
-use Ximdex\Models\User;
-
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -25,34 +23,13 @@ use Ximdex\Models\User;
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-class Mechanism_SQL extends Mechanism
+
+
+namespace Ximdex\Models;
+
+use Ximdex\Models\ORM\RelRolesActionsOrm;
+
+class RelRolesActions extends RelRolesActionsOrm
 {
-
-    /**
-     *
-     */
-    function Mechanism_SQL()
-    {
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see inc/auth/Mechanism#authenticate($username, $password)
-     * @param $username string
-     * @param $password string
-     * @return boolean
-     */
-    function authenticate($username, $password)
-    {
-
-        $user = new User();
-        $user->SetByLogin($username);
-
-        if ($user->CheckPassword($password)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 }

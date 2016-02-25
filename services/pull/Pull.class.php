@@ -35,7 +35,6 @@ use Ximdex\Utils\Serializer;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_FilterMacrosPreview.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/View_PreviewInServer.class.php');
-require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
 
 class Pull
 {

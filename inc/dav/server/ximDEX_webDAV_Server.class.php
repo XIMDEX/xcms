@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Authenticator;
 use Ximdex\Utils\FsUtils;
 
 if(!defined('XIMDEX_ROOT_PATH'))
@@ -32,7 +33,6 @@ if(!defined('XIMDEX_ROOT_PATH'))
 
 require_once("Server.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/dav/DAV_Log.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/xvfs/XVFS.class.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/repository/nodeviews/View_XmlDocument.class.php");
 

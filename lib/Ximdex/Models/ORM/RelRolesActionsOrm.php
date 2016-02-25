@@ -1,4 +1,8 @@
 <?php
+
+namespace Ximdex\Models\ORM;
+use Ximdex\Data\GenericData;
+
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
  *
@@ -23,14 +27,24 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
-
-
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__)) . '/../..');
-}
-require_once(XIMDEX_ROOT_PATH . '/inc/model/orm/RelRolesActions_ORM.class.php');
-
-class RelRolesActions extends RelRolesActions_ORM
+class RelRolesActionsOrm extends GenericData
 {
-
+    var $_idField = 'IdRel';
+    var $_table = 'RelRolesActions';
+    var $_metaData = array(
+        'IdRel' => array('type' => "int(12)", 'not_null' => 'true', 'auto_increment' => 'true', 'primary_key' => true),
+        'IdRol' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdAction' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdState' => array('type' => "int(12)", 'not_null' => 'false'),
+        'IdContext' => array('type' => "int(12)", 'not_null' => 'true'),
+        'IdPipeline' => array('type' => "int(11)", 'not_null' => 'false')
+    );
+    var $_uniqueConstraints = array();
+    var $_indexes = array('IdRel');
+    var $IdRel;
+    var $IdRol = 0;
+    var $IdAction = 0;
+    var $IdState;
+    var $IdContext = 1;
+    var $IdPipeline;
 }

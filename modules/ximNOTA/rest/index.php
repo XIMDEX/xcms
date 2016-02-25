@@ -1,11 +1,9 @@
 <?php
 
-if (!defined ('XIMDEX_ROOT_PATH')) {
-    define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../..'));
-}
+use Ximdex\Authenticator;
+
 define('XIMDEX_XIMNOTA_PATH', dirname(__FILE__) . '/..');
 
-require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/patterns/Factory.class.php');
 
 class ximNOTA_REST_Server {

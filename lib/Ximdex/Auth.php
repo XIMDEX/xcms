@@ -25,19 +25,22 @@
  */
 
 
+namespace Ximdex;
+
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
+use Ximdex\Models\ORM\RelRolesActionsOrm;
+use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Runtime\Constants;
+use Ximdex\Utils\Session;
 use Ximdex\Workflow\WorkFlow;
+use Ximdex\Logger as XMD_Log;
 
-
-require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelRolesActions_ORM.class.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelUsersGroups_ORM.class.php");
 
 class Auth
 {
@@ -214,7 +217,7 @@ class Auth
 
         $nodeTypeId = (int)$wfParams['node_type'];
 
-        if (Auth::_checkContext($userId, $nodeTypeId,  Constants::CREATE )) {
+        if (Auth::_checkContext($userId, $nodeTypeId, Constants::CREATE)) {
             return true;
         }
 
@@ -318,12 +321,12 @@ class Auth
             return false;
         }
 
-        $context = \Ximdex\Utils\Session::get('context');
+        $context = Session::get('context');
         $contextsObject = new ContextsOrm();
         $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
         $idContext = count($result) == 1 ? $result[0] : '1';
 
-        $relRolesActions = new RelRolesActions_ORM();
+        $relRolesActions = new RelRolesActionsOrm();
         $result = $relRolesActions->find('IdRol',
             'IdAction = %s AND IdContext = %s',
             array($idAction, $idContext),
@@ -334,7 +337,7 @@ class Auth
             return false;
         }
 
-        $relUserGroup = new RelUsersGroups_ORM();
+        $relUserGroup = new RelUsersGroupsOrm();
         $relations = $relUserGroup->find('IdRel',
             'IdUser = %s AND IdRole %s',
             array($idUser, $idRol),

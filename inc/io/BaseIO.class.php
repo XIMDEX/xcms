@@ -24,6 +24,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision: 8778 $
  */
+use Ximdex\Auth;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -42,7 +43,6 @@ if (!defined('XIMDEX_BASEIO_PATH')) {
     define('XIMDEX_BASEIO_PATH', realpath(dirname(__FILE__)));
 }
 
-ModulesManager::file('/inc/auth/Auth.class.php');
 
 class BaseIO
 {

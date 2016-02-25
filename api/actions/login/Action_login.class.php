@@ -27,8 +27,8 @@
 
   //
 use Ximdex\API\AbstractAPIAction;
+use Ximdex\Authenticator;
 
-require_once(XIMDEX_ROOT_PATH . '/inc/auth/Authenticator.class.php');
 require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 
