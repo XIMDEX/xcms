@@ -27,9 +27,6 @@
 namespace Ximdex\Utils ;
 use Ximdex\Runtime\Response ;
 use Ximdex\Runtime\App ;
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
 
 /** @const DEFAULT_SESSION - Name of default session */
