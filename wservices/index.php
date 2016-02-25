@@ -287,5 +287,14 @@ $router->addRoute('book/\d+/users', function(Request $r, Response $w){
     $w->send();
 });
 
+$router->addRoute( "login" ,function( Request $request, Response $response )  {
+    $response->setResponse( "TEST");
+    $response->send();
+
+
+
+
+});
+
  $router->execute() ;
 
