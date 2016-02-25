@@ -20,6 +20,8 @@
 // $Id: ADOdb.php,v 1.3 2005/05/18 06:58:47 jlim Exp $
 //
 
+use Ximdex\Auth;
+
 require_once 'Auth/Container.php';
 require_once 'adodb.inc.php';
 require_once 'adodb-pear.inc.php';

@@ -25,10 +25,10 @@
  *  @version $Revision$
  */
 
+use Ximdex\Authenticator;
 use Ximdex\MVC\ActionAbstract;
 
-require_once(XIMDEX_ROOT_PATH . "/inc/auth/Authenticator.class.php");
-//
+
 ModulesManager::file('/inc/model/NodeEdition.class.php');
 
 class Action_logout extends ActionAbstract

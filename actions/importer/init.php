@@ -25,8 +25,9 @@
  */
 
 
+use Ximdex\Authenticator;
 
-	define ('OPERATION_ADD', 'add');
+define ('OPERATION_ADD', 'add');
 	define ('OPERATION_UPDATE', 'update');
 	define ('OPERATION_DELETE', 'delete');
 	
@@ -34,8 +35,7 @@
 
    ModulesManager::file('/inc/io/BaseIO.class.php');
    ModulesManager::file('/actions/importer/actionIO.php');
-   ModulesManager::file('/inc/auth/Authenticator.class.php');
-	
+
 	$whiteList = array('paquete', 'passApp', 'op');
 	
 	reset($_GET);

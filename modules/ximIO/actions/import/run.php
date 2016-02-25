@@ -25,12 +25,12 @@
  */
 
 
+use Ximdex\Authenticator;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Cli\CliReader;
 
 ModulesManager::file('/inc/ImportXml.class.php', 'ximIO');
 ModulesManager::file('/actions/file_import/inc/FileUpdaterCli.class.php', 'ximIO');
-ModulesManager::file('/inc/auth/Authenticator.class.php');
 
 $parameterCollector = new ImportCli($argc, $argv);
 

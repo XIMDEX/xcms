@@ -25,6 +25,8 @@
  */
 
 
+namespace Ximdex;
+
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
@@ -35,7 +37,9 @@ use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Runtime\Constants;
+use Ximdex\Utils\Session;
 use Ximdex\Workflow\WorkFlow;
+use Ximdex\Logger as XMD_Log;
 
 
 class Auth
@@ -213,7 +217,7 @@ class Auth
 
         $nodeTypeId = (int)$wfParams['node_type'];
 
-        if (Auth::_checkContext($userId, $nodeTypeId,  Constants::CREATE )) {
+        if (Auth::_checkContext($userId, $nodeTypeId, Constants::CREATE)) {
             return true;
         }
 
@@ -317,7 +321,7 @@ class Auth
             return false;
         }
 
-        $context = \Ximdex\Utils\Session::get('context');
+        $context = Session::get('context');
         $contextsObject = new ContextsOrm();
         $result = $contextsObject->find('id', 'Context = %s', array($context), MONO);
         $idContext = count($result) == 1 ? $result[0] : '1';
