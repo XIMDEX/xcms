@@ -31,13 +31,12 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\NodetypeMode;
 use Ximdex\Models\ORM\ContextsOrm;
 use Ximdex\Models\ORM\RelRolesActionsOrm;
+use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Runtime\Constants;
 use Ximdex\Workflow\WorkFlow;
 
-
-require_once(XIMDEX_ROOT_PATH . "/inc/model/orm/RelUsersGroups_ORM.class.php");
 
 class Auth
 {
@@ -334,7 +333,7 @@ class Auth
             return false;
         }
 
-        $relUserGroup = new RelUsersGroups_ORM();
+        $relUserGroup = new RelUsersGroupsOrm();
         $relations = $relUserGroup->find('IdRel',
             'IdUser = %s AND IdRole %s',
             array($idUser, $idRol),

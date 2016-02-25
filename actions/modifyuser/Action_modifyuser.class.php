@@ -26,12 +26,12 @@
 
 use Ximdex\Models\Group;
 use Ximdex\Models\Node;
+use Ximdex\Models\ORM\RelUsersGroupsOrm;
 use Ximdex\Models\Role;
 use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 
-ModulesManager::file('/inc/model/orm/RelUsersGroups_ORM.class.php');
 
 class Action_modifyuser extends ActionAbstract {
     // Main method: it shows init form
@@ -50,7 +50,7 @@ class Action_modifyuser extends ActionAbstract {
         $allRole = new Role();
         $roles = $allRole->find('IdRole,Name');
 
-        $role = new RelUsersGroups_ORM();
+        $role = new RelUsersGroupsOrm();
         $roleGeneral = $role->find('IdRole','IdUser=%s',array($idNode),MONO);
 		$values = array(
 			'go_method' => 'modifyuser',
