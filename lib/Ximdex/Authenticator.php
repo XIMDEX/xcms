@@ -71,7 +71,7 @@ class Authenticator
                 $user_locale =  App::getValue('locale');
 
             // STOPPER
-            $stopperFilePath =  App::getValue("AppRoot") . \App::getValue("TempRoot") . "/login.stop";
+            $stopperFilePath =  App::getValue("AppRoot") . App::getValue("TempRoot") . "/login.stop";
             if ($user->getID() != "301" && file_exists($stopperFilePath)) {
                 // login closed
                 return false;
@@ -103,9 +103,8 @@ class Authenticator
             $session_info = session_get_cookie_params();
             $session_lifetime = $session_info['lifetime']; // session cookie lifetime in seconds
             $session_duration = $session_lifetime != 0 ? $session_lifetime : session_cache_expire() * 60;
-
-            setcookie("loginTimestamp",  Session::get("loginTimestamp"));
-            setcookie("sessionLength", $session_duration);
+            setcookie("loginTimestamp",  Session::get("loginTimestamp") ,  $session_info['path'] );
+            setcookie("sessionLength", $session_duration ,   $session_info['path'] );
             /**/
 
 
