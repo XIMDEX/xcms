@@ -30,7 +30,6 @@ use Ximdex\Modules\Module;
 
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
-ModulesManager::file('/inc/model/RelRolesActions.class.php');
 
 ModulesManager::file('/inc/utils.php');
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');

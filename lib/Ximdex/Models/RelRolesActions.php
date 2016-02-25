@@ -25,6 +25,8 @@
  */
 
 
+namespace Ximdex\Models;
+
 use Ximdex\Models\ORM\RelRolesActionsOrm;
 
 class RelRolesActions extends RelRolesActionsOrm
