@@ -61,18 +61,7 @@ class Action_browser3 extends ActionAbstract
         $params = $this->request->getParam('params');
         $loginName = Session::get('user_name');
         $userID = (int) Session::get('userID');
-
-        /* Test Session */
-        $session_info = session_get_cookie_params();
-        $session_lifetime = $session_info['lifetime']; // session cookie lifetime in seconds
-        //$session_duration = session_cache_expire(); // in minutes
-        $session_duration = $session_lifetime != 0 ? $session_lifetime : session_cache_expire() * 60;
-
-        $sessionExpirationTimestamp = Session::get("loginTimestamp") + $session_duration * 60;
-        setcookie("loginTimestamp",  Session::get("loginTimestamp"));
-        setcookie("sessionLength", $session_duration);
-        /**/
-
+ 
         $locale = new XimLocale();
         $user_locale = $locale->GetLocaleByCode(Session::get('locale'));
         $locales = $locale->GetEnabledLocales();

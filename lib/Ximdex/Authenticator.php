@@ -100,6 +100,14 @@ class Authenticator
             Session::set('userID', $user_id);
             Session::set('locale', $user_locale);
             Session::set('loginTimestamp', time());
+            $session_info = session_get_cookie_params();
+            $session_lifetime = $session_info['lifetime']; // session cookie lifetime in seconds
+            $session_duration = $session_lifetime != 0 ? $session_lifetime : session_cache_expire() * 60;
+
+            setcookie("loginTimestamp",  Session::get("loginTimestamp"));
+            setcookie("sessionLength", $session_duration);
+            /**/
+
 
             return true;
         }
