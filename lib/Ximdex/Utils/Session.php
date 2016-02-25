@@ -68,9 +68,6 @@ class Session {
         unset( $id ) ;
         self::name($name);
         session_cache_limiter('none');
-        if(isset($_SERVER["REQUEST_URI"])){
-            session_set_cookie_params(36000,$_SERVER["REQUEST_URI"]);
-        }
         session_cache_expire(60);
 
         @session_start();
