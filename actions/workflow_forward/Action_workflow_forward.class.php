@@ -39,6 +39,9 @@ use Ximdex\Workflow\WorkFlow;
    ModulesManager::file('/inc/mail/Mail.class.php');
  ModulesManager::file('/actions/browser3/inc/GenericDatasource.class.php');
 
+ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
+ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
+
 /**
  * Move a node to next state. 
  * 

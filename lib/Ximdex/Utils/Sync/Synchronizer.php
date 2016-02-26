@@ -79,7 +79,7 @@ class Synchronizer
     /// *************************************************************************
 
     /// Construct
-    function Synchronizer($nodeID = null)
+    function __construct($nodeID = null)
     {
         $this->dbObj = new DB();
         if (!is_null($nodeID))
