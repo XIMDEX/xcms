@@ -574,7 +574,7 @@ class SynchroFacade
 
 		if (ModulesManager::isEnabled('ximSYNC')) {
 
-			$syncMngr = new SyncManager();
+			$syncMngr = new \SyncManager();
 			$node = new Node($idNode);
 			$result = array();
 

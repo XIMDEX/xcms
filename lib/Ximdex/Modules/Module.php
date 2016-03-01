@@ -70,7 +70,7 @@ class Module  {
 
         //  $this->messages->add(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"),
         //   __CLASS__, $this->name, $this->path), MSG_TYPE_NOTICE);
-        Logger::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
+        //Logger::info(sprintf(_("sys {%s} : Module instanciated (%s) (%s)"), __CLASS__, $this->name, $this->path));
     }
 
     /**
