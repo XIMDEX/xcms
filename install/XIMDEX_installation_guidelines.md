@@ -12,7 +12,7 @@ You can install Ximdex using one of the following methods:
 *  Apache2 web server with:
 	*  Apache modules: libapache2-mod-php5, apache-mpm-worker (recommended).
 *  PHP (>= 5.2.5).
-	*  and PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-suhosin (recommended).
+	*  and PHP modules: php5-xsl, php5-cli, php5-curl, php5-gd, php5-mysql, php-pear, php5-mcrypt, php5-suhosin (recommended).
 	*  To use the spelling checker in Xedit (our wysiwyg XML editor): php5-enchant module.
 *  Other packages: wget.
 *  For the client side (with javascript and cookies enabled): Firefox (>=3.6), Google Chrome, Safari or Opera, ...
