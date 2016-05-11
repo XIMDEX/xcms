@@ -50,6 +50,7 @@ class InstallDataBaseManager extends InstallManager{
 	 * Build FastTraverse and full path to every node in Ximdex	 
 	 */
 	public function connect($host, $port, $user, $pass=NULL, $name=false){
+		error_log( "connect") ;
 		$myPid = "install" ;
 		$result = false;
 		if (!isset($GLOBALS[self::DB_ARRAY_KEY][$myPid])) 
@@ -59,7 +60,7 @@ class InstallDataBaseManager extends InstallManager{
 			$this->dbConnection = $GLOBALS[self::DB_ARRAY_KEY][$myPid];
 			$result = true;
 		} else {
-			$this->dbConnection = @new mysqli($host,$user,$pass,$name,$port);
+			$this->dbConnection =  new mysqli($host,$user,$pass,$name,$port);
 			$GLOBALS[self::DB_ARRAY_KEY][$myPid] = $this->dbConnection;
 			if (!$this->dbConnection->connect_error){
 				$this->host = $host;
@@ -72,7 +73,7 @@ class InstallDataBaseManager extends InstallManager{
 
 			}
 		}
-
+		error_log( "connection") ;
 		return $result;
 	}
 

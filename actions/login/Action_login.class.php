@@ -156,14 +156,7 @@ class Action_login extends ActionAbstract
 
     function check_disk_space()
     {
-        $space = include(XIMDEX_ROOT_PATH . "/conf/diskspace.php");
+       return true ;
 
-        $critical_space = \Ximdex\Utils\Disk::transform($space["fatal_limit"], "MB");
-        $space_now = \Ximdex\Utils\Disk::disk_free_space("MB");
-
-        if ($space_now < $critical_space) {
-            $msg = sprintf(_("Without space in hard disk. Available only %sMB when it's need %sMB"), $space_now, $critical_space);
-            $this->showLogin($msg);
-        }
     }
 }

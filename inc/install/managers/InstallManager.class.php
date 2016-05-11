@@ -233,15 +233,8 @@ class InstallManager
     private function checkDiskSpace()
     {
         $result = array();
-        $freeSpace = \Ximdex\Utils\Disk::disk_free_space("GB", XIMDEX_ROOT_PATH);
-        $result["name"] = "DiskSpace";
-        if ($freeSpace > 1) {
+
             $result["state"] = "success";
-        } else {
-            $result["state"] = "warning";
-            $result["messages"][] = "Only {$freeSpace}GB available. Please free space from your disk";
-            $result["help"][] = "";
-        }
 
         return $result;
     }

@@ -66,12 +66,14 @@ class BuildDataBaseInstallStep extends GenericInstallStep
 
     public function checkUser()
     {
+        error_log("in") ;
         $idbManager = new InstallDataBaseManager();
         $idbManager->reconectDataBase();
         $host = $this->request->getParam("host");
         $port = $this->request->getParam("port");
         $user = $this->request->getParam("user");
         $pass = $this->request->getParam("pass") == "undefined" ? NULL : $this->request->getParam("pass");
+        error_log("out") ;
 
         $values = array();
         if ($idbManager->connect($host, $port, $user, $pass)) {

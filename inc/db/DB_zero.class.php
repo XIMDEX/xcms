@@ -43,344 +43,200 @@ Class DB  Extends DB_legacy {
 class DB_legacy
 {
     /**
-     *
-     * @var unknown_type
+     * @var null|\PDO
      */
-    var $dbhost;
+    private $db = null;
+
+    private $sql = '';
+    private $dbEncoding = '' ;
+    private $workingEncoding ;
+    private $rows = array();
+    public $EOF = true ;
+    public $row = array();
+    public $numRows = 0 ;
+    public $numFields = 0 ;
+    private $index = 0;
+    public $numErr = null ;
+    public $desErr = null ;
+    public $newID = null ;
 
     /**
-     *
-     * @var unknown_type
+     * @var \PDOStatement
      */
-    var $dbport;
-    /**
-     *
-     * @var unknown_type
-     */
-    var $dbuser;
-    /**
-     *
-     * @var unknown_type
-     */
-    var $dbpasswd;
-    /**
-     *
-     * @var unknown_type
-     */
-    var $dbname;
-    /**
-     * RecordSet
-     * @var unknown_type
-     */
-    var $rs;
-    /**
-     * Rows which contain the current register data
-     * @var unknown_type
-     */
-    var $row;
-    /**
-     * Number of rows affected by the query
-     */
-    /**
-     * @var int
-     */
-    var $numRows;
-    /**
-     *  Number of cols returned by the query
-     * @var unknown_type
-     */
-    var $numFields;
-    /**
-     * Database pointer
-     * @var unknown_type
-     */
-    var $dbConnection;
-    /**
-     * SQL sentence
-     * @var unknown_type
-     */
-    var $sql;
-    /**
-     * New ID automatically generated after an INSERT
-      */
-    /**
-     * @var
-     */
-    var $newID;
-    /**
-     * Indicates if there are registers left
-     * @var unknown_type
-     */
-    var $EOF;
-    /**
-     * @var
-     */
-    var $numErr;
-    /**
-     * @var
-     */
-    var $desErr;
-    /**
-     * @var bool
-     */
-    var $debug = false;
-    /**
-     * @var
-     */
-    var $fileLog;
-    /**
-     * @var
-     */
-    var $fileHdl;
-    /**
-     * @var
-     */
-    var $dblog;
-    /**
-     * @var string
-     */
-    var $dbEncoding = '';
-    /**
-     * @var string
-     */
-    var $workingEncoding = '';
+    private $stm = null ;
 
-    public function __construct()
+    /**
+     * @param string $conf
+     * @return Db
+     * @throws \Exception
+     */
+    static public function getInstance($conf = null)
     {
-        $this->ConnectDatabase();
+        //return new  Db($conf);
+        return new   Db();
     }
 
-
-
     /**
-     * Function which creates a DB connection with the previously speficied params
-     * @return unknown_type
+     * Db constructor.
+     * @param string|null $conf
      */
-    function ConnectDatabase()
+    public function __construct($conf = null)
     {
-        global $debug;
-        if (!isset($GLOBALS['db_connection'][getmypid()])) $GLOBALS['db_connection'][getmypid()] = null;
+        $this->db = App::Db($conf);
 
-        if ($GLOBALS['db_connection'][getmypid()]) {
-            $this->dbConnection = $GLOBALS['db_connection'][getmypid()];
-            $this->debug = $debug;
+    }
+
+    public function Query($sql, $cache = false)
+    {
+
+        // todo remove cache parameter
+        unset($cache) ;
+
+
+        $this->_getEncodings();
+        $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+
+        $this->sql = $sql;
+
+        //error_log( $this->sql ) ;
+        $this->rows = array();
+
+        try {
+            $this->stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
+
+            if ( empty( $this->stm )) {
+                throw new \Exception('Bad Query: ' .  $this->sql );
+            }
+
+            foreach( $this->stm as $row ) {
+
+                $this->rows[] = $row ;
+
+            }
+
+        } catch  ( \Exception $e  ) {
+
+            $this->numErr = $this->db->errorCode() ;
+
+        }
+
+        if ( count( $this->rows ) == 0 ) {
+
+            $this->EOF = true ;
+
         } else {
-            /**
-             * Load configuration from App Class
-             */
-            $dbConfig = App::getValue('db');
-            $USE_SQL_LOG = $dbConfig['log'];
-            $DBHOST = $dbConfig['host'];
-            $DBPORT = $dbConfig['port'];
-            $DBUSER = $dbConfig['user'];
-            $DBPASSWD = $dbConfig['password'];
-            $DBNAME = $dbConfig['db'];
-
-            $this->dbhost = $DBHOST;
-            $this->dbport = $DBPORT;
-            $this->dbuser = $DBUSER;
-            $this->dbpasswd = $DBPASSWD;
-            $this->dbname = $DBNAME;
-            $this->debug = $USE_SQL_LOG;
-
-            $this->dbConnection = mysql_connect($this->dbhost . ":" . $this->dbport, $this->dbuser, $this->dbpasswd, true);
-            //$this->dbConnection = mysql_connect("test.ximdex.es:8889",$this->dbuser,$this->dbpasswd, true);
-            $GLOBALS['db_connection'][getmypid()] = $this->dbConnection;
-
-
-            if (!$this->dbConnection) {
-                if ($this->debug) {
-                    $this->numErr = mysql_errno();
-                    $this->desErr = mysql_error();
-                    $msgDebug = "\nerror number:" . $this->numErr;
-                    $msgDebug .= " trying to connect ";
-                    $msgDebug .= $this->dbname;
-                    $msgDebug .= "\ndescription: ";
-                    $msgDebug .= $this->desErr;
-                    $msgDebug .= "\ndate: " . date("d/m/Y - H:i:s");
-                    DB_Log::error($msgDebug);
-                }
-
-                if (!defined('DB_CONNECTION'))
-                    define("DB_CONNECTION", "0");
-                //Go to installer
-                $_GET["action"] = "installer";
-
-                // Dieing if connection could not be stablished
-                //$conn_str = 'mysql://' . $this->dbuser . '@' . $this->dbhost . '/' . $this->dbname;
-                //die("<p>"._("MySQL link could not been stablished.")."</p><br/><p>$conn_str</p>");
-            } else {
-                if (!defined("DB_CONNECTION"))
-                    define("DB_CONNECTION", "1");
-                $res = mysql_select_db($this->dbname, $this->dbConnection);
-            }
+            $this->index = 0 ;
+            $this->EOF = false ;
+            $this->numRows = count( $this->rows ) ;
+            $this->row = $this->rows[0] ;
+            $this->numFields = count( $this->row ) ;
         }
-    }
 
-    /**
-     * Forcing to reconnect to database next time
-     * @return unknown_type
-     */
-    function reconectDataBase()
-    {
-        $GLOBALS['db_connection'][getmypid()] = null;
-    }
 
-    /**
-     * Finishing BD connection
-     * @return unknown_type
-     */
-    function CloseDatabase()
-    {
-        if ($this->dbConnection) {
-            mysql_close($this->dbConnection);
-        }
-    }
-
-    /**
-     *
-     * @return unknown_type
-     */
-    function & _getInstance()
-    {
+        // error_log( "TOTAL: " . count( $this->rows )  ) ;
 
     }
 
-    /**
-     * Function which performs a BD query (preferred only SELETs)
 
-     */
-    /**
-     * @param $sql
-     */
-    function Query($sql)
-    {
-        if ($this->dbConnection) {
-            //Encode to dbConfig value in table config
-            $this->_getEncodings();
-            $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
-
-            $this->sql = $sql;
-            $this->rs = mysql_query($this->sql, $this->dbConnection);
-
-            if (!$this->rs) {
-                $this->numErr = mysql_errno();
-                $this->desErr = mysql_error();
-                $msg = "Error executing query '" . $sql . "': ";
-                $msg .= mysql_errno() . ": " . mysql_error() . "<br>\n";
-                $this->numRows = 0;
-                $this->EOF = true;
-                if ($this->debug) {
-                    DB_Log::error("Query:" . $msg);
-                }
-                return;
-            }
-
-            if ($this->rs && !is_bool($this->rs) && mysql_num_rows($this->rs)) {
-
-                $this->EOF = false;
-                $this->row = mysql_fetch_array($this->rs);
-                $this->numRows = mysql_num_rows($this->rs);
-                $this->numFields = mysql_num_fields($this->rs);
-            } else {
-                $this->numRows = 0;
-                $this->EOF = true;
-            }
-
-
-            if ($this->debug) {
-                $msgDebug = "Query: [" . $sql . "] => ";
-                $msgDebug .= "(" . $this->numRows . ") row/s";
-                DB_Log::error($msgDebug);
-            }
-        }
-    }
-
-    /**
-     * Function which performs a BD query
-
-     */
     /**
      * @param $sql
      * @return bool
      */
     function Execute($sql)
     {
-        if ($this->dbConnection) {
-            //Encode to dbConfig value in table config
-            $this->_getEncodings();
-            $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+        //Encode to dbConfig value in table config
+        $this->_getEncodings();
+        $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+        error_log(  $sql  ) ;
+        $this->sql = $sql;
 
-            $this->sql = $sql;
-            $this->rs = mysql_query($this->sql, $this->dbConnection);
-            $this->numRows = (mysql_affected_rows($this->dbConnection));
-            if (!$this->numRows) {
-                $matches = array();
-                preg_match('/matched\:\s*(\d+)/', mysql_info($this->dbConnection), $matches);
-                if (count($matches) == 2) {
-                    $this->numRows = $matches[1];
-                }
-            }
+        $this->rows = array();
+        $this->EOF = true ;
+        $this->newID = null ;
 
-
-            if ($this->rs) {
-                $this->EOF = false;
-            } else {
-                $this->EOF = true;
-            }
-
-            $this->numErr = mysql_errno();
-            $this->desErr = mysql_error();
-            if ($this->debug) {
-                $msgDebug = "Execute: [" . $sql . "] => ";
-                $msgDebug .= "(" . $this->numRows . ") affected row/s";
-                $msgDebug .= "  (error " . $this->numErr . ")";
-                DB_Log::error($msgDebug);
-            }
-            if (!$this->numErr) {
-                $this->SetInsertID();
-                if ($this->newID) {
-                    return $this->newID;
-                }
-                return true;
-            }
+        if ( $this->db->exec($this->sql ) ) {
+            $this->newID = $this->db->lastInsertId() ;
+            return true ;
+        } else {
+            $this->numErr = $this->db->errorCode() ;
+            $this->desErr = $this->db->errorInfo() ;
         }
+
+
 
         return false;
     }
 
-    /**
-     * Function which updates the newID when doing a new insertion using a mysql_insert_id
-     */
     /**
      * @return bool
      */
-    function SetInsertID()
+    function Next()
     {
-        $rs = mysql_query("SELECT LAST_INSERT_ID() as LAST_INSERT_ID", $this->dbConnection);
-        if ($rs) {
-            $result = mysql_fetch_array($rs);
-            if (!$result) {
-                return false;
+        if ( !$this->EOF ) {
+            $this->index++ ;
+            if ( $this->index >= count( $this->rows ) ) {
+                $this->EOF = true ;
+            } else {
+                $this->row = $this->rows[$this->index];
             }
-            $this->newID = $result['LAST_INSERT_ID'];
-            return true;
         }
-        return false;
+
+        return $this->EOF;
+
     }
 
+    function Go( $number ) {
+        $this->index = $number ;
+        if ( $this->index >= count( $this->rows ) ) {
+            $this->EOF = true ;
+        } else {
+            $this->row = $this->rows[$this->index];
+        }
+    }
     /**
      *
-     * @return unknown_type
+     * Read dbEncoding and dbEncoding from database, Config
+     * Is not possible to do in other place, because if you put in getValue, for example, or in the constructor,
+     * is will create an infinite circle
+     *
      */
-    function getInsertID()
+    /**
+     *
+     */
+    private function _getEncodings()
     {
 
-        return $this->newID;
+        $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
+
+        if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
+            $this->sql = $sql;
+            try {
+                $stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
+
+                foreach( $stm as $row ) {
+                    $configKey = $row['ConfigKey'];
+                    $configValue = $row['ConfigValue'];
+                    if ($configKey == 'dbEncoding') {
+                        $this->dbEncoding = $configValue;
+                    } else if ($configKey == 'workingEncoding') {
+                        $this->workingEncoding = $configValue;
+                    }
+                }
+
+
+            } catch (\PDOException  $e) {
+                $this->numErr = $e;
+                $this->desErr = $e;
+
+            }
+
+        }
+
     }
 
+
     /**
-     * Functions which obtains the current row value for a determined field* @param $col
+     * Functions which obtains the current row value for a determined field
      */
     /**
      * @param $col
@@ -388,66 +244,27 @@ class DB_legacy
      */
     function GetValue($col)
     {
-        if (is_array($this->row) && array_key_exists($col, $this->row)) {
+
+
+        if ( isset(  $col, $this->row[ $col ] )) {
 
             $this->_getEncodings();
             $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], $this->workingEncoding);
             return $value;
         }
-        $backtrace = debug_backtrace();
-        error_log(sprintf('Trying to obtain a value from a query that has not been selected [inc/db/DB_zero.class.php] script: %s file: %s line: %s value: %s',
-            $_SERVER['SCRIPT_FILENAME'],
-            $backtrace[1]['file'],
-            $backtrace[1]['line'],
-            $col));
 
         return NULL;
     }
 
     /**
-     * Going to the next row of the recordset
-     * @return unknown_type
-     */
-    function Next()
-    {
-        if ($this->rs && $this->dbConnection) {
-            $this->row = mysql_fetch_array($this->rs);
-            $this->EOF = !((bool)$this->row);
-            return $this->EOF;
-        }
-        $this->EOF = true;
-        return false;
-}
-
-    /**
-     * Going to the first element of the recordset
-     * @return unknown_type
-     */
-    function First()
-    {
-        $this->Go(0);
-    }
-
-    /**
-     * Going to the element $pos of the recordset
-     * @param $pos
-     * @return unknown_type
-     */
-    function Go($pos)
-    {
-        if (($this->rs) && ($pos <= $this->numRows) && ($pos >= 0)) {
-            mysql_data_seek($this->rs, $pos);
-            $this->Next();
-        }
-    }
-
-    /**
-     *
+     * @TODO REMOVE USAGE
      * @param $value
-     * @return unknown_type
+     * @return string
      */
     public static function sqlEscapeString($value)
     {
+
+        // error_log( "escape: ". $value ) ;
 
         if (is_null($value)) {
             return 'NULL';
@@ -457,97 +274,7 @@ class DB_legacy
             XMD_Log::info("WARNING: A SQL statement is converting an empty string to NULL");
             return 'NULL';
         }
-
-
-        return "'" . @mysql_escape_string($value  ) . "'";
+        return self::getInstance()->db->quote( $value ) ;
     }
 
-    /**
-     * Function which returns the MySQL version which is being used as a string,
-     * NULL if it cannot be obtained
-     *
-     * @return string
-     */
-    function getServerVersion()
-    {
-
-        $sql = "select version() as ver";
-        $this->Query($sql);
-        if ($this->EOF) return null;
-
-        $version = $this->getValue('ver');
-
-        $regex = '/^(\d+\.\d+\.\d+)(?:\D*)-(?:.*)/';
-        $arr = null;
-        $ret = preg_match($regex, $version, $arr);
-
-        return $version = $arr[1];
-    }
-
-    /**
-     *
-     * Read dbEncoding and dbEncoding from database, Config
-     * Is not possible to do in other place, because if you put in getValue, for example, or in the constructor,
-     * is will create an infinite circle
-     *
-     */
-    private function _getEncodings()
-    {
-
-        $sql = "select ConfigKey,ConfigValue from Config where ConfigKey='workingEncoding' or ConfigKey='dbEncoding'";
-
-        if (($this->dbEncoding == '') && ($this->workingEncoding == '')) {
-            if ($this->dbConnection) {
-
-                $this->sql = $sql;
-                $this->rs = mysql_query($this->sql, $this->dbConnection);
-
-                if (!$this->rs) {
-                    $this->numErr = mysql_errno();
-                    $this->desErr = mysql_error();
-                    $msg = "Error executing query '" . $sql . "': ";
-                    $msg .= mysql_errno() . ": " . mysql_error() . "<br>\n";
-                    $this->numRows = 0;
-                    $this->EOF = true;
-                    if ($this->debug) {
-                        DB_Log::error("Query:" . $msg);
-                    }
-                    return;
-                }
-
-                if ($this->rs && mysql_num_rows($this->rs)) {
-
-                    $this->EOF = false;
-                    $this->row = mysql_fetch_array($this->rs);
-                    $this->numRows = mysql_num_rows($this->rs);
-                    $this->numFields = mysql_num_fields($this->rs);
-                } else {
-                    $this->numRows = 0;
-                    $this->EOF = true;
-                }
-
-
-                if ($this->debug) {
-                    $msgDebug = "Query: [" . $sql . "] => ";
-                    $msgDebug .= "(" . $this->numRows . ") row/s";
-                    DB_Log::error($msgDebug);
-                }
-
-                $i = 0;
-                while (!$this->EOF) {
-                    $i++;
-                    $configKey = $this->row['ConfigKey'];
-                    $configValue = $this->row['ConfigValue'];
-
-                    if ($configKey == 'dbEncoding') {
-                        $this->dbEncoding = $configValue;
-                    } else if ($configKey == 'workingEncoding') {
-                        $this->workingEncoding = $configValue;
-                    }
-                    $this->next();
-                }
-            }
-        }
-    }
 }
-
