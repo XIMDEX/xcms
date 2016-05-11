@@ -31,8 +31,7 @@ use Ximdex\Models\User;
 use Ximdex\NodeTypes\Root;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/Repository.class.php');
-include_once(XIMDEX_ROOT_PATH . '/inc/persistence/datafactory.php');
-//
+ //
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIO.class.php');
 include_once(XIMDEX_ROOT_PATH . '/inc/io/BaseIOInferer.class.php');
 

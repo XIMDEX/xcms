@@ -49,7 +49,6 @@ abstract class WidgetAbstract
 	 */
 	public function __construct()
 	{
-		error_log(  get_class( $this )) ;
 		$this->_wname = str_replace('Widget_', '', get_class($this));
 
 		$this->_widget_dir = sprintf('%s/%s', App::getValue('XIMDEX_ROOT_PATH')  . '/inc/widgets/' , $this->_wname);

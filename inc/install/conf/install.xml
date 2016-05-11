@@ -16,7 +16,6 @@
 		<module name="ximNEWS" alias="Xnews">Build your own newsletters and blogs.</module>
         <module name="ximPUBLISHtools" alias="Xpublish">Publication batchs monitor.</module>
 		<module name="Xowl" alias="Xowl">Semantization service for Xtags.</module>
-		<module name="XBUK" alias="XBUK"></module>
 	</modules>
 	<!--Steps-->
 	<!--For every step we must define

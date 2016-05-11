@@ -150,10 +150,10 @@
 		
 		// Refreshing the session 2 seconds before the session expires
 		setInterval(function() {
-					console.log("Refreshing session");
+					//console.log("Refreshing session");
 					jQuery.ajax({ url: '##BASE_URL##/xmd/loadaction.php?action=browser3&method=refreshSession',
   								  success: function(data) {
-    							  	console.log("Session refreshed");
+    							  	//console.log("Session refreshed");
       							  },
       							  error: function(jqXhr, textStatus, error) {
       							  	console.log("Error refreshing session. Show dialog to re-authenticate?");

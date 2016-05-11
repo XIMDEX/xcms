@@ -26,10 +26,10 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Models\RelTagsNodes;
 use Ximdex\Widgets\WidgetAbstract;
 
 ModulesManager::file('/services/Xowl/OntologyService.class.php');
-ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 class Widget_tagsinput extends WidgetAbstract
 {

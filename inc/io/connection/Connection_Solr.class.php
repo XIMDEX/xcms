@@ -30,6 +30,7 @@ if (!defined('XIMDEX_ROOT_PATH')) {
 
 use Ximdex\Models\ORM\NodesOrm as Nodes_ORM;
 use Ximdex\Logger as XMD_Log ;
+use Ximdex\Models\RelTagsNodes;
 
 require_once (XIMDEX_ROOT_PATH . '/inc/model/RelNodeMetadata.class.php');
 require_once (XIMDEX_ROOT_PATH . '/inc/io/connection/I_Connector.class.php');
@@ -292,6 +293,8 @@ class Connection_Solr implements I_Connector {
         if ($fileExtension === "xml") {
             return $this->putXmlFile($localFile, $pathInfo);
         } else {
+            //Don't publish binary files
+            return true;
             return $this->putBinaryFile($localFile, $pathInfo);
         }
     }

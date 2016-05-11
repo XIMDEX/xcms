@@ -25,7 +25,7 @@
  */
 namespace Ximdex\Utils\Sync;
 
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use DexCache;
 use Mail;
 use Ximdex\Utils\Sync\Synchronizer;

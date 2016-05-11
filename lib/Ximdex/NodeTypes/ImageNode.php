@@ -85,10 +85,14 @@ class ImageNode extends FileNode
 
         $node = new Node($this->nodeID);
         $info = $node->GetLastVersion();
+        /*
         $pathToFile = App::get('AppRoot') . '/data/files/' . $info['File'];
         list($w, $h) =  getimagesize($pathToFile);
         $width->nodeValue = $w;
         $height->nodeValue = $h;
+
+
+        */
 
         $fileData = $domNode->createElement("file_data");
         $fileData->appendChild($width);
@@ -98,5 +102,3 @@ class ImageNode extends FileNode
     }
 
 }
-
-?>

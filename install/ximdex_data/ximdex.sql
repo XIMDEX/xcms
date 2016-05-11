@@ -280,6 +280,8 @@ INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Desc
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8105, 5022, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 70, NULL, 1, '');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (8106, 5023, 'Publish section', 'publicatesection', 'publicate_section.png', 'Publish a section massively', 70, NULL, 1, '');
 
+INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)  VALUES (9500,5032,'Expire document','expiredoc','expire_section.png','Expire a document',71,NULL,0,'');
+
 -- VERSION MANAGER
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)        VALUES (6144,5040,'Version manager','manageversions','manage_versions.png','Manage version repository',73,NULL,0,'');
 INSERT INTO `Actions`(`IdAction`, `IdNodeType`, `Name`, `Command`, `Icon`, `Description`,`Sort`, `Module`, `Multiple`, `Params`)        VALUES (6145,5041,'Version manager','manageversions','manage_versions.png','Manage repository of versions',73,NULL,0,'');
@@ -2537,6 +2539,9 @@ INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContex
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,202,7230,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,203,7230,0,1,3);
 INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,204,7230,0,1,3);
+
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,9500,0,1,3);
+INSERT INTO `RelRolesActions`(`IdRel`, `IdRol`, `IdAction`, `IdState`, `IdContext`, `IdPipeline`) VALUES (NULL,201,9500,7,1,3);
 
 UNLOCK TABLES;
 /*!40000 ALTER TABLE `RelRolesActions` ENABLE KEYS */;

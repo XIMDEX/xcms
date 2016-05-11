@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\NodeTypes\FileNode;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
  ModulesManager::component('/xslt/functions.php', 'dexT');

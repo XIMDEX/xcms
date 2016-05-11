@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use DB;
 use Ximdex\Models\dependencies;
 use Ximdex\Models\NodeType;

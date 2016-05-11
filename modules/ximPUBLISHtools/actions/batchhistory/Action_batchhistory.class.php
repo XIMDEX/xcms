@@ -30,6 +30,7 @@ use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 
 ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
+ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 class Action_batchhistory extends ActionAbstract {
 

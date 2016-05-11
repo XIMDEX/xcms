@@ -26,7 +26,7 @@
  */
 namespace Ximdex\Utils\Sync;
 
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use DB_legacy as DB;
 use ModulesManager;
 use Ximdex\Utils\PipelineManager;

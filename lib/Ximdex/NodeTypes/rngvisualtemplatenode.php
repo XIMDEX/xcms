@@ -27,7 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 
 use Ximdex\Parsers\ParsingRng;
 use Ximdex\Utils\FsUtils;

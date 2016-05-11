@@ -28,8 +28,10 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Models\RelTagsNodes;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\DataFactory;
 
 if (!defined('XIMDEX_ROOT_PATH')) {
     define ('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
@@ -39,6 +41,7 @@ ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
 ModulesManager::file('/inc/model/RelNodeVersionMetadataVersion.class.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
+ModulesManager::file('/inc/io/BaseIO.class.php');
 
 /***
     Class for Metadata Manegement

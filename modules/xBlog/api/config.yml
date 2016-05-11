@@ -1,0 +1,11 @@
+user: ximdex
+pass: # Enter ximdex pass
+images_folder_id: # Enter idnode to upload images
+mode: dev
+posts_container_id: # Enter the post container id
+schema_id: -1
+ch_html_id: 10001
+ch_solr_id: # Enter Solr idchannel
+css_url_published: # Enter a css url
+container_type_id: 9602
+post_type_id: 9603

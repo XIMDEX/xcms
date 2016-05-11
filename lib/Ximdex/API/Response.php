@@ -58,7 +58,7 @@ class Response
      * @param string $method
      * @return string
      */
-    public function send( ){
+    public function send(  ){
         $data = [
           'status' => $this->status,
           'message' => $this->message,
@@ -69,7 +69,7 @@ class Response
         header( "Access-Control-Allow-Credentials: true");
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
-        exit ;
+       exit ;
 
     }
 }

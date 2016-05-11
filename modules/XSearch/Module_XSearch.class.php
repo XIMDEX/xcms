@@ -9,7 +9,7 @@ use Ximdex\Runtime\App;
 ModulesManager::file('/src/SolrExporter.php', 'XSearch');
 
 /**
- * Class Module_XBUK
+ * Class Module_XSearch
  */
 class Module_XSearch extends Module
 {
@@ -18,8 +18,11 @@ class Module_XSearch extends Module
      */
     function init(){
         App::setListener(Events::NODE_TOUCHED, function(NodeEvent $event){
+            return ;
+            /*
             $exporter = new SolrExporter;
             $exporter->ExportByNodeId($event->getNodeId());
+            */
         });
     }
 

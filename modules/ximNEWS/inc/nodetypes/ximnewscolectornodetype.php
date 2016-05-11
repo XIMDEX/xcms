@@ -31,6 +31,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\NodeTypes\FolderNode;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Logs\Automatic_Log;
 

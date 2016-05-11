@@ -24,6 +24,8 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  */
+use Ximdex\Runtime\DataFactory;
+
 if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../"));
 }

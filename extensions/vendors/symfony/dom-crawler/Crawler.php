@@ -230,7 +230,7 @@ class Crawler extends \SplObjectStorage
         $dom->validateOnParse = true;
 
         if ('' !== trim($content)) {
-            @$dom->loadXML($content, LIBXML_NONET);
+            @$dom->loadXML($content, LIBXML_NONET | (defined('LIBXML_PARSEHUGE') ? LIBXML_PARSEHUGE : 0));
         }
 
         libxml_use_internal_errors($internalErrors);
@@ -948,16 +948,6 @@ class Crawler extends \SplObjectStorage
         $this->triggerDeprecation(__METHOD__);
 
         return parent::offsetGet($object);
-    }
-
-    /**
-     * @deprecated Using the SplObjectStorage API on the Crawler is deprecated as of 2.8 and will be removed in 3.0.
-     */
-    public function getHash($object)
-    {
-        $this->triggerDeprecation(__METHOD__, true);
-
-        return parent::getHash($object);
     }
 
     /**

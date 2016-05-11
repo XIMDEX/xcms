@@ -33,10 +33,10 @@ use Ximdex\Utils\PipelineManager;
 
 ModulesManager::file('/inc/model/orm/ServerFrames_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
+ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
 ModulesManager::file('/inc/repository/nodeviews/View_FilterMacros.class.php');
 ModulesManager::file('/inc/repository/nodeviews/View_UnpublishOTF.class.php');
-ModulesManager::file('/inc/persistence/datafactory.php');
 ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
 
 /**
@@ -86,13 +86,27 @@ class ServerFrame extends ServerFrames_ORM {
 	function update() {
 		if(ModulesManager::isEnabled('ximPUBLISHtools')) {
 			if($this->get('IdNodeFrame') > 0) {
+				$batch = new Batch($this->get('IdBatchUp'));
+				$nodeFrame = new NodeFrame($this->get('IdNodeFrame'));
+				$channelFrames = new ChannelFrame($this->get('IdChannelFrame'));
+				$idChannel = $channelFrames->get('ChannelId');
 				$searchFields = array(
-					'IdSync' => $this->get('IdSync')
+					'IdNode' => $nodeFrame->get('NodeId'),
+					'IdSyncServer' => $this->get('IdServer'),
+					'IdChannel' => $idChannel,
+					//'IdSection' => $batch->get('IdNodeGenerator')
 				);
 				$updateFields = array(
 					'State' => $this->get('State'),
-					'Progress' => $this->get('Error') != '' ? '-1' : $this->publishingReport->progressTable[$this->get('State')]
+					'Progress' => $this->publishingReport->progressTable[$this->get('State')]
 				);
+				if(($this->get('ErrorLevel') != '0')){
+					$updateFields['State'] = 'Error';
+					$updateFields['Progress'] = '100';
+				} else if ($this->get('FileSize') == "0" && in_array($this->get('State'), [ServerFrame::DUE2IN, ServerFrame::PUMPED, ServerFrame::IN])){
+					$updateFields['State'] = 'Warning';
+					$updateFields['Progress'] = '100';
+				}
 				$this->publishingReport->updateReportByField($updateFields, $searchFields);
 			}
 		}
@@ -148,7 +162,7 @@ class ServerFrame extends ServerFrames_ORM {
 				$idPortalVersion = $batch->get('IdPortalVersion');
 				$channelFrames = new ChannelFrame($idChannelFrame);
 				$idChannel = $channelFrames->get('ChannelId');
-				$this->publishingReport->create($idSection, $nodeId, $idChannel, $server, $idPortalVersion
+				$this->publishingReport->create($idSection, $nodeId, empty($idChannel) ? NULL : $idChannel, $server, $idPortalVersion
 					, time(), 'Pending', '20', $name, $path, $idServerFrame, $idBatchUp, $idParentServer);
 			}
 			return $idServerFrame;
@@ -594,7 +608,7 @@ class ServerFrame extends ServerFrames_ORM {
 	 */
 
 	function getCurrent($nodeID, $channelID = null) {
-		$now = mktime();
+		$now = time();
 
 		$channelClause = "";
 		if (!is_null($channelID)) {

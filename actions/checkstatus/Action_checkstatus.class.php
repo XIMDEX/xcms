@@ -28,8 +28,10 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Workflow\WorkFlow;
 
- ModulesManager::file('/inc/nodetypes/statenode.php');
+ModulesManager::file('/inc/nodetypes/statenode.php');
+ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
 class Action_checkstatus extends ActionAbstract {
 
@@ -70,7 +72,7 @@ class Action_checkstatus extends ActionAbstract {
 
 		//creates abother array with all de states info.
 		$states=array();
-		$wf=new Workflow($idNode);
+		$wf=new WorkFlow($idNode);
 		$states=$wf->GetAllStates();
 
 		foreach($states as $state){

@@ -29,6 +29,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
+use Ximdex\Runtime\DataFactory;
 
 
 ModulesManager::file('/inc/model/XimNewsBulletins.php', 'ximNEWS');

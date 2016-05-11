@@ -31,6 +31,7 @@ use Ximdex\Utils\Session;
 
 ModulesManager::file('/actions/FilterParameters.php', 'ximPUBLISHtools');
 ModulesManager::file('/inc/model/PublishingReport.class.php', 'ximSYNC');
+ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 
 class Action_managebatchs extends ActionAbstract {
 

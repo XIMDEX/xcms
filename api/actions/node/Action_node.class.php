@@ -32,6 +32,8 @@ use Ximdex\Models\NodeAllowedContent;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
+use Ximdex\Services\NodeType as NodeTypeID;
+use Ximdex\Services\NodeType as NT;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/model/RelNodeTypeMimeType.class.php');
@@ -39,7 +41,8 @@ require_once(XIMDEX_ROOT_PATH . '/conf/stats.php');
 ModulesManager::file('/inc/io/BaseIOInferer.class.php');
 
 ModulesManager::file('/inc/i18n/I18N.class.php');
-ModulesManager::file('/actions/xmleditor2/XimlinkResolver.class.php');
+ModulesManager::file('/inc/utils.php');
+ModulesManager::file('/inc/utils/XHTMLEditorUtils.php', 'xBlog');
 
 /**
  * <p>API Node action</p>
@@ -67,12 +70,26 @@ class Action_node extends AbstractAPIAction   {
         }
 
         $nodeInfo = $this->getNodeInfo($nodeid);
-	$childInfo=array();
-	foreach($nodeInfo["children"] as $chId){
-		$ch=new Node($chId);
-		$childInfo[] = array("nodeid"=>$ch->GetID(),"name"=>$ch->GetNodeName(),"nodetype"=>$ch->GetNodeType());
-	}	
-	$nodeInfo["children"]=$childInfo;
+        $childInfo=array();
+        foreach($nodeInfo["children"] as $chId){
+            $ch=new Node($chId);
+            $c = array("nodeid"=>$ch->GetID(),"name"=>$ch->GetNodeName(),"nodetype"=>$ch->GetNodeType());
+            if($ch->GetNodeType() == NodeTypeID::IMAGE_FILE){
+                $info = $ch->GetLastVersion();
+                $file = App::get('UrlRoot') . '/data/files/' . $info['File'];
+                $fileLocal = App::get('AppRoot') . '/data/files/' . $info['File'];
+                if(!file_exists($fileLocal) || !@is_array(getimagesize($fileLocal))){
+                    continue;
+                }
+                $c['file'] = $file;
+                list($width, $height) = getimagesize($fileLocal);
+                $c['width'] = $width;
+                $c['height'] = $height;
+            }
+
+            $childInfo[] = $c;
+        }
+        $nodeInfo["children"]=$childInfo;
 
         $this->responseBuilder->ok()->content($nodeInfo)->build();
     }
@@ -95,14 +112,14 @@ class Action_node extends AbstractAPIAction   {
             return false;
         }
 
-        if (!$this->checkParameters($request)) {
+        if (!$this->checkParameters($request, $response)) {
             return false;
         }
 
         //getting and adding file extension
         $rntmt = new RelNodeTypeMimeType();
         $ext = $rntmt->getFileExtension($nodeType);
-	$ext = $ext == "image"? "": $ext;
+        $ext = $ext == "image"? "": $ext;
         if (strcmp($ext, '') != 0) {
             $name_ext = $name . "." . $ext;
         } else {
@@ -124,7 +141,7 @@ class Action_node extends AbstractAPIAction   {
         }
     }
 
-	/**
+    /**
      * <p>Sets the content of a node of any type (css, js, text, xml ...)</p>
      * @param type $request
      * @param type $response
@@ -133,21 +150,26 @@ class Action_node extends AbstractAPIAction   {
         if (!$this->checkParameters($request, $response)) {
             return;
         }
-       
+
         $idnode = $request->getParam('nodeid');
         $content = $request->getParam('content');
 
-	$content = rawurldecode(stripslashes($content));
-	$content = str_replace(" ","+",$content);
-	$content = base64_decode($content, true);
+        $content = rawurldecode(stripslashes($content));
+        $content = str_replace(" ","+",$content);
+        $content = base64_decode($content, true);
 
         if ($content == NULL || $content == false) {
             $this->createErrorResponse('Parameter content is missing or invalid');
             return;
         }
-       
+
         $node = new Node($idnode);
-       
+
+        if($node->GetNodeType() == NodeTypeID::XML_DOCUMENT){
+            $utils = new HTMLEditorUtils();
+            $content = $utils->setContentFromEditor($content);
+        }
+
         $node->SetContent($content);
 
         $this->responseBuilder->ok()->content('Content updated successfully')->build();
@@ -156,7 +178,7 @@ class Action_node extends AbstractAPIAction   {
     /**
      * <p>Checks whether the required parameters are present in the request
      * and modifies the response accordingly</p>
-     * 
+     *
      * @param $request the request
      * @param $response the response
      * @return true if all required parameters are present and valid and false otherwise
@@ -186,7 +208,7 @@ class Action_node extends AbstractAPIAction   {
         }
 
         $nodeService = new \Ximdex\Services\Node();
-        
+
         $hasPermissionOnNode = $nodeService->hasPermissionOnNode($username, $nodeid, "View all nodes");
         if (!$hasPermissionOnNode) {
             $this->createErrorResponse('The user does not have permission on node ' . $nodeid);
@@ -217,7 +239,7 @@ class Action_node extends AbstractAPIAction   {
      */
     private function getNodeInfo($nodeid) {
         $node = new Node($nodeid);
-
+        $info = $node->GetLastVersion();
         return array(
             'nodeid' => $node->GetID(),
             'nodeType' => $node->GetNodeType(),
@@ -226,9 +248,25 @@ class Action_node extends AbstractAPIAction   {
             'creationDate' => $node->get('CreationDate'),
             'modificationDate' => $node->get('ModificationDate'),
             'path' => $node->GetPath(),
+            'url' => App::get('UrlRoot') . '/data/files/' . $info['File'],
             'parent' => $node->GetParent(),
-            'children' => $node->GetChildren(),
+            'children' => $node->GetChildren(null, [
+                'FIELD' => 'ModificationDate',
+                'DIR' => 'DESC',
+            ]),
         );
+    }
+
+    public function info($request, $response)
+    {
+        if (!$this->checkParameters($request, $response)) {
+            return;
+        }
+        $nodeid = $request->getParam('nodeid');
+        $node = new Node($nodeid);
+        $info = $node->loadData();
+
+        $this->responseBuilder->ok()->content($info)->build();
     }
 
     /**
@@ -238,6 +276,7 @@ class Action_node extends AbstractAPIAction   {
      * @return string the default content for the given nodetype
      */
     private function getDefaultContent($nt, $name) {
+        $content = "";
         switch ($nt) {
             case 5039:
                 $content = "<<< DELETE \nTHIS\n CONTENT >>>";
@@ -287,7 +326,8 @@ class Action_node extends AbstractAPIAction   {
         /* Check whether it is possible to add a xml container as child of the supplied node */
         $nodeAllowedContent = new NodeAllowedContent();
         $allowedContents = $nodeAllowedContent->getAllowedChilds($node->GetNodeType());
-        if (!in_array('5031', $allowedContents)) {
+        $xhtmlContNt = NT::XHTML5_CONTAINER;
+        if (!in_array('5031', $allowedContents) && !in_array("$xhtmlContNt", $allowedContents)) {
             $this->createErrorResponse("The supplied node does not allow to have structured document container as a child");
             return;
         }
@@ -318,6 +358,13 @@ class Action_node extends AbstractAPIAction   {
             $this->createErrorResponse('Parameter name is missing');
             return;
         }
+        $tName = $name;
+        $ext = 1;
+        while($node->GetChildByName($tName)){
+            $tName = $name . '_' . $ext;
+            $ext++;
+        }
+        $name = $tName;
 
         $idTemplate = $request->getParam('id_schema');
         if ($idTemplate == "" || $idTemplate == NULL) {
@@ -443,44 +490,44 @@ class Action_node extends AbstractAPIAction   {
     public function schemas($request, $response) {
 
         $idNode = $request->getParam('nodeid');
-	
-	if($idNode){
-        	$node = new Node($idNode);
-        	if (!$this->checkParameters($request, $response)) {
-            		return;
-        	}
-		$idproject=$node->GetProject();
-		$project=new Node($idproject);
-		$p_name=$project->GetNodeName();
-		$schemas[$p_name]=$node->getSchemas();
-	}
-	else{
-		//starting on the main root Ximdex node.
-		$idNode=10000;
-        	$node = new Node($idNode);
-		$projects=$node->GetChildren(5013);
 
-        	$schemas = array();
+        if($idNode){
+            $node = new Node($idNode);
+            if (!$this->checkParameters($request, $response)) {
+                return;
+            }
+            $idproject=$node->GetProject();
+            $project=new Node($idproject);
+            $p_name=$project->GetNodeName();
+            $schemas[$p_name]=$node->getSchemas();
+        }
+        else{
+            //starting on the main root Ximdex node.
+            $idNode=10000;
+            $node = new Node($idNode);
+            $projects=$node->GetChildren(5013);
 
-        	if (!is_null($projects)) {
-			foreach($projects as $idproject){
-				$p=new Node($idproject);
-				$p_name=$p->GetNodeName();
-				$schemas[$p_name]=$p->getSchemas();
-			}
-		}
-	}
+            $schemas = array();
+
+            if (!is_null($projects)) {
+                foreach($projects as $idproject){
+                    $p=new Node($idproject);
+                    $p_name=$p->GetNodeName();
+                    $schemas[$p_name]=$p->getSchemas();
+                }
+            }
+        }
 
         $schemaArray = array();
         if (!is_null($schemas)) {
             foreach ($schemas as $p_name => $project) {
-            	foreach ($project as $idschema) {
-                	$schemaNode = new Node($idschema);
-                	$schemaArray[$p_name][] = array('idschema' => $idschema, 'Name' => $schemaNode->get('Name'));
-		}
+                foreach ($project as $idschema) {
+                    $schemaNode = new Node($idschema);
+                    $schemaArray[$p_name][] = array('idschema' => $idschema, 'Name' => $schemaNode->get('Name'));
+                }
             }
         }
-        
+
         $this->responseBuilder->ok()->content($schemaArray)->build();
     }
 
@@ -492,7 +539,7 @@ class Action_node extends AbstractAPIAction   {
      * @param type $idContainer
      * @param type $idTemplate
      * @param type $formChannels
-     * @return type 
+     * @return type
      */
     private function _insertLanguage($isoName, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels) {
         $language = new Language();
@@ -531,7 +578,7 @@ class Action_node extends AbstractAPIAction   {
      * <p>Sets the content of the node</p>
      * @param type $request
      * @param type $response
-     * @return type 
+     * @return type
      */
     public function contentxml($request, $response) {
         if (!$this->checkParameters($request, $response)) {
@@ -542,8 +589,9 @@ class Action_node extends AbstractAPIAction   {
         $content = $request->getParam('content');
         $validate = $request->getParam('validate');
 
-        $b64decoded = base64_decode($content, true);
-        $content = $b64decoded === false ? urldecode(stripslashes($content)) : urldecode($b64decoded);
+        $content = rawurldecode(stripslashes($content));
+        $content = str_replace(" ","+",$content);
+        $content = base64_decode($content, true);
 
         if ($content == NULL || $content == false) {
             $this->createErrorResponse('Parameter content is missing or invalid');
@@ -551,38 +599,44 @@ class Action_node extends AbstractAPIAction   {
         }
 
         $node = new Node($idnode);
+
+        if($node->GetNodeType() == NodeTypeID::XHTML5_DOC){
+            $utils = new HTMLEditorUtils();
+            $content = $utils->setContentFromEditor($content);
+        }
+
         /* Check whether the supplied node Id references to an XML document */
-        if ($node->GetNodeType() != "5032") {
+        if ($node->GetNodeType() != NodeTypeID::XML_DOCUMENT && $node->GetNodeType() != NodeTypeID::XHTML5_DOC) {
             $this->createErrorResponse("The supplied node id does not refer to an structured document");
             return;
         }
 
-	if ($validate == NULL) {
-		$validate=false;
-	}
+        if ($validate == NULL) {
+            $validate=false;
+        }
 
-	if($validate){
-        	/* Check whether the document is compliant with the schema */
-        	$idcontainer = $node->getParent();
-        	$reltemplate = new RelTemplateContainer();
-        	$idTemplate = $reltemplate->getTemplate($idcontainer);
+        if($validate){
+            /* Check whether the document is compliant with the schema */
+            $idcontainer = $node->getParent();
+            $reltemplate = new RelTemplateContainer();
+            $idTemplate = $reltemplate->getTemplate($idcontainer);
 
-        	$templateNode = new Node($idTemplate);
-        	$templateContent = $templateNode->GetContent();
-	
-        	$contentToValidate = "<docxap>" . $content . "</docxap>";
+            $templateNode = new Node($idTemplate);
+            $templateContent = $templateNode->GetContent();
 
-        	$validator = new \Ximdex\XML\Validators\RNG();
-        	$result = $validator->validate($templateContent, $contentToValidate);
+            $contentToValidate = "<docxap>" . $content . "</docxap>";
 
-        	if (!$result) {
-            		$this->createErrorResponse('The content of the document does not match with the schema ' . $templateNode->GetNodeName());
-            		return;
-        	}
-	}
+            $validator = new \Ximdex\XML\Validators\RNG();
+            $result = $validator->validate($templateContent, $contentToValidate);
 
-        $node->SetContent($content);
+            if (!$result) {
+                $this->createErrorResponse('The content of the document does not match with the schema ' . $templateNode->GetNodeName());
+                return;
+            }
+        }
 
+        $node->SetContent($content, true);
+        $node->setState("7");
         $this->responseBuilder->ok()->content('Content updated successfully')->build();
     }
 
@@ -597,10 +651,33 @@ class Action_node extends AbstractAPIAction   {
         }
 
         $idnode = $request->getParam('nodeid');
-        $uptime = mktime();
+        $uptime = time();
 
-        \Ximdex\Utils\Session::set('userID', $request->get(self::USER_PARAM));
-        $result = SynchroFacade::pushDocInPublishingPool($idnode, $uptime);
+
+        $userName = $request->getParam(self::USER_PARAM);
+        $user = new User();
+        $user->setByLogin($userName);
+        $userID = $user->getID();
+        \Ximdex\Utils\Session::set('userID', $userID);
+        error_log($userID);
+
+        $flagsPublication = array(
+            'markEnd' => 0,//$markEnd,
+            'structure' => 1,
+            'deeplevel' => 1,
+            'force' => 1,
+            'recurrence' => true,
+            'workflow' => true,
+            'lastPublished' => 0
+        );
+
+
+        //Move the node to next state
+        $this->promoteNode($idnode, 8);
+
+        $node = new Node($idnode);
+
+        $result = SynchroFacade::pushDocInPublishingPool($idnode, $uptime, null, $flagsPublication);
 
         if (empty($result)) {
             $this->responseBuilder->ok()->content('This node does not need to be published again')->build();
@@ -609,54 +686,85 @@ class Action_node extends AbstractAPIAction   {
         }
     }
 
-	/**
-	*
-     	* @param $request the current request
-     	* @param $response the response
-     	*/
-    	public function getcontent($request, $response) {
-		if (!$this->checkParameters($request, $response)) {
-            		return;
-        	}
+    public function promoteNode($idNode, $idState) {
 
-        	$idnode = $request->getParam('nodeid');	
-        	$clean = $request->getParam('clean');	
+        $idUser = \Ximdex\Utils\Session::get("userID");
+        $node = new Node($idNode);
+        $idActualState = $node->get('IdState');
+        $actualWorkflowStatus = new \Ximdex\Workflow\WorkFlow($idNode, $idActualState);
 
-		$node = new Node($idnode);
-		$content = $node->GetContent();
-		if($clean){
-			$content=preg_replace('/(\v|\s)+/', ' ', $content);
+        $idTransition = $actualWorkflowStatus->pipeProcess->getTransition($idActualState);
+        $transition = new \Ximdex\Models\PipeTransition($idTransition);
+        $callback = $transition->get('Callback');
+
+        $viewPath = \Ximdex\Runtime\App::getValue('AppRoot') . sprintf('/inc/repository/nodeviews/View_%s.class.php', $callback);
+        if (!empty($callback) && is_file($viewPath)) {
+            $dataFactory = new DataFactory();
+            $idVersion = $dataFactory->GetLastVersionId();
+            $transformedContent = $transition->generate($idVersion, $node->GetContent(), array());
+            $node->SetContent($transformedContent);
+        }
+
+        $result = $node->setState($idState);
+    }
+
+
+    /**
+     *
+     * @param $request the current request
+     * @param $response the response
+     */
+    public function getcontent($request, $response) {
+        if (!$this->checkParameters($request, $response)) {
+            return;
+        }
+
+        $idnode = $request->getParam('nodeid');
+        $clean = $request->getParam('clean');
+
+        $node = new Node($idnode);
+        $content = $node->GetContent();
+        if($clean){
+            $content=preg_replace('/(\v|\s)+/', ' ', $content);
 //			$content=preg_replace("/<\\//", '</', $content);
 //			$content=preg_replace("/\\\"/", '"', $content);
-		}
-		if (empty($content)) {
-			$this->createErrorResponse("The content of the given node couldn't be successfully retrieved.");
-            		return;
-        	} else {
-            		$this->responseBuilder->ok()->content($content);
-        	}
-	}
+        }
+        if($node->GetNodeType() == NodeTypeID::XHTML5_DOC){
+            $utils = new HTMLEditorUtils();
+            $content = $utils->getContentToEditor($content);
+        }
 
-	/**
-	*
-     	* @param $request the current request
-     	* @param $response the response
-     	*/
-	public function delete($request, $response){
-		if (!$this->checkParameters($request, $response)) {
-                        return;
-                }
-		$idnode = $request->getParam('nodeid');
-		$node = new Node($idnode);
-                $result = $node->delete();
+        if (empty($content)) {
+            $this->createErrorResponse("The content of the given node couldn't be successfully retrieved.");
+            return;
+        } else {
+            if($node->GetNodeType() == NodeTypeID::XML_DOCUMENT){
 
-		if (!$result) {
-            		$this->responseBuilder->ok()->content("This node couldn't be deleted.")->build();
-        	} else {
-            		$this->responseBuilder->ok()->content('Node ' . $idnode . " successfully deleted.");
-        	}
+            }
+            $this->responseBuilder->ok()->content($content);
+        }
+    }
+
+    /**
+     *
+     * @param $request the current request
+     * @param $response the response
+     */
+    public function delete($request, $response){
+        if (!$this->checkParameters($request, $response)) {
+            return;
+        }
+        $idnode = $request->getParam('nodeid');
+        $node = new Node($idnode);
+        $result = $node->delete();
+
+        if (!$result) {
+            $this->responseBuilder->ok()->content("This node couldn't be deleted.")->build();
+        } else {
+            $this->responseBuilder->ok()->content('Node ' . $idnode . " successfully deleted.");
+        }
 
 
-	}
+    }
 
 }

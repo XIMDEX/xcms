@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Agencia Española de Protección de Datos</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="title" content=""/>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <meta name="Robots" content="all"/>
+    <meta name="Revisit-After" content="7"/>
+    <meta name="Rating" content="General"/>
+    <meta name="Author" content=""/>
+    <meta name="owner" content=""/>
+    <meta name="generator" content=""/>
+
+    <!-- editor -->
+    <link rel="stylesheet" href="style/main.min.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        window.baseUrl = "{{urlBase}}";
+    </script>
+</head>
+<body>
+<div class="container">
+    <app titlep="{{title}}" date="{{date}}" image="{{image}}" imagexid="{{xid}}" mode={{mode}}>
+    <yield to="intro">
+        {{ intro | raw }}
+    </yield>
+    <yield to="content">
+        {{ content | raw }}
+    </yield>
+    </app>
+</div>
+
+<!-- editor -->
+<script type="text/javascript" src="js/main.js"></script>
+
+<script>
+    riot.mount('*');
+</script>
+</body>
+</html>

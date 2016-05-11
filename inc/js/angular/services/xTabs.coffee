@@ -1,7 +1,7 @@
 #Service to control the tabs
 angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout", "$http",
-                                                          "xUrlHelper", "$rootScope", "$compile",
-                                                          "angularLoad"
+    "xUrlHelper", "$rootScope", "$compile",
+    "angularLoad"
     ($window, $timeout, $http, xUrlHelper, $rootScope, $compile, angularLoad) ->
 
         scopeWelcomeTab = null
@@ -180,8 +180,21 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                 for n in node
                     xtab.pushTab action, n
                 return
-            params = if action.params? then action.params.replace(/[\\=&]/g, '') else ''
-            newid = node.nodeid + "_" + action.command + "_" + params
+
+            if action.params?
+                params = action.params
+            else
+                params = ''
+
+            newid = node.nodeid + "_" + action.command
+            if typeof params == 'string' || params instanceof String
+                params = params.replace "=", "_"
+                newid += "_" + params
+            else
+                angular.element.each params[0], (key, value) ->
+                    newid += "_" + key + '_' + value
+
+
             for tab, i in tabs
                 if tab.id == newid
                     xtab.setActiveTab i
@@ -254,6 +267,7 @@ angular.module("ximdex.common.service").factory "xTabs", ["$window", "$timeout",
                     if visitedTabs[i] > index
                         visitedTabs[i] = visitedTabs[i] - 1
             deletedTab = (tabs.splice index, 1)[0]
+            $rootScope.$broadcast 'nodemodified'
             if visitedTabs.length > 0
                 activeIndex = visitedTabs[0]
                 $timeout(

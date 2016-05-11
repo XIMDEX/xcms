@@ -23,43 +23,47 @@
  *  @version $Revision$
  */
 
-
-.progressbar {
-	width: 200px;
-	height: 10px;
-	float: left;
-        margin: 5px 2px 2px 2px; 
+.status-buttons {
+	margin-top: 2em;
 }
-
-.frame_filename {
-	margin: 2px;
-	height: 15px;
-        width: 550px; 
-	float: left;
+.file-icon {
+	font-size: 32px;
+	position: relative;
+	top: .1em;
+	color: #166565;
 }
-
-.batch_container { 
-  height: 20px; 
+.unfinished-task {
+	color: #800000;
+	font-size: 23px;
+	top: .85em;
+	position: relative;
 }
- 	 
-.batch_container_selected { 
-    background-color: #43A1A2;
+.finished-task {
+	color: #5cb85c;
+	font-size: 23px;
+	top: .85em;
+	position: relative;
 }
-
-a.batch_toggle { 
-  cursor: pointer;   
+.resume-btn {
+	background-color: #22B8C1 !important;
 }
-
-
-
-.frame_default {
-	height: 1px;
-	width: 100%;
-	float: left;
+.pause-btn {
+	background-color: #D1AC2A !important;
 }
-
-.frame_indent {
-	height: 10px;
-	width: 50px;
-	float: left;
+.color-trans{
+	-webkit-transition: color 2s;
+	-moz-transition: color 2s;
+	-ms-transition: color 2s;
+	-o-transition: color 2s;
+	transition: color 2s;
+}
+.progress-bar.ximcolor {
+	background-color: #1D8687;
+}
+.progress-bar-success.ximcolor{
+	background-color: #75CD9D;
+}
+.media .clock::before{
+	padding: 0px;
+	font-size: 1.3em;
 }

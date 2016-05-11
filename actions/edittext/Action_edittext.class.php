@@ -29,6 +29,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\SyncManager;
 
 

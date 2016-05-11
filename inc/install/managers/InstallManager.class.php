@@ -373,7 +373,7 @@ class InstallManager
             $result = file_put_contents($dummyFile, $textToCheck);
             if ($result === FALSE)
                 return $result;
-            $result = file_get_contents($dummyFile) == $textToCheck;
+            $result =( file_get_contents($dummyFile) === $textToCheck );
             $result = $result && file_exists($dummyFile) && unlink($dummyFile);
             return $result == $textToCheck;
         }

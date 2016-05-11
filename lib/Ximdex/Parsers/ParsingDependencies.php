@@ -26,7 +26,7 @@
 
 namespace Ximdex\Parsers;
 
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Models\Dependencies;
 use Ximdex\Deps\DepsManager;
 use DOMDocument;
@@ -41,7 +41,6 @@ use Ximdex\Models\Node;
 use Ximdex\Logger as XMD_Log;
 
 
-ModulesManager::file('/inc/model/NodeDependencies.class.php');
 
 class ParsingDependencies
 {
@@ -108,6 +107,7 @@ class ParsingDependencies
         }
 
         switch ($node->get("IdNodeType")) {
+            case \Ximdex\Services\NodeType::XHTML5_DOC:
             case \Ximdex\Services\NodeType::XML_DOCUMENT:
                 $result = self::parseXMLDependencies($node, $content, $idVersion);
                 break;

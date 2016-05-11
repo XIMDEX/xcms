@@ -194,8 +194,8 @@ class ServerFrameManager
             $ancestorsLinks = $depsMngr->getByTarget(DepsManager::STRDOC_NODE, $nodeId);
             $ancestorsAssets = $depsMngr->getByTarget(DepsManager::STRDOC_ASSET, $nodeId);
 
-            $ancestorsLinks = is_null($ancestorsLinks) ? array() : $ancestorsLinks;
-            $ancestorsAssets = is_null($ancestorsAssets) ? array() : $ancestorsAssets;
+            $ancestorsLinks = !is_array($ancestorsLinks) ? array() : $ancestorsLinks;
+            $ancestorsAssets = !is_array($ancestorsAssets) ? array() : $ancestorsAssets;
 
             $ancestors = array_merge($ancestorsLinks, $ancestorsAssets);
 
@@ -483,8 +483,14 @@ class ServerFrameManager
         foreach ($notFinalStatus as $statusString) {
             $strStatus = sprintf("'%s'", $statusString);
         }
+        if( is_array($strStatus)){
+            $status = implode(', ', $strStatus);
+        } else{
+            $status = implode(', ', [$strStatus]);
+        }
+
         $result = $serverFrame->query(sprintf("SELECT IdSync FROM ServerFrames WHERE
-		State IN (%s)", implode(', ', $strStatus)));
+		State IN (%s)", $status));
 
         return count($result) == 0;
     }

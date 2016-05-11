@@ -6,7 +6,7 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 * Description
   -----------
 
-  In fact, it is a powerful and versatile Content Management Framework (CMF) to help you manage information in form of data, content or services to be published in the cloud as web portals, structured semantic repositories or linked open datasets. 
+  In fact, it is a powerful and versatile Content Management Framework (CMF) to help you manage information in form of data, content or services to be published in the cloud as web portals, structured semantic repositories or linked open datasets.
 
   With Ximdex CMS you can mix structured and non-structured content and data, represent apps and services, aggregate information from remote sources, capture metadata, annotate it with semantic tags from the visual ontology browser, add a semantic layer and publish it using Dynamic Semantic Publishing (DSP) technologies, automatically generate suggestions to enrich your content (as images, new links or references, ...), etc.
 
@@ -19,7 +19,7 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
   - Neutral: content independence, format agnostic, free structure, open access, ...
   - Information adaptable, structurizable and semantizable applying Dynamic Semantic Publishing (DSP) techniques
   - Multichannel in the cloud
-  - Visual Edition of XML + automatic transformation of XML 
+  - Visual Edition of XML + automatic transformation of XML
   - Visual Role/User/Workflow edition in an object-action UI
   - Its neutrality and flexibility allows to use any application server or language for the deployment of portals and web applications: .NET, PHP, ASP, J2EE, XML/XSLT, flash, XHTML, HTML5, ...
   - Multiple languages, multiple channels (Digital TV, Web, smartphones and tablets, ...) and multiple application servers
@@ -27,7 +27,7 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 
 * Future plans
   ------------
-  See our project roadmap at ROADMAP.md 
+  See our project roadmap at ROADMAP.md
 
 
 * Get Involved
@@ -37,15 +37,15 @@ Ximdex CMS is a Semantic Content Management System (CMS) that allows the manipul
 
 * Availability
   ------------
-  Ximdex CMS is open source with AGPL v3 (see 'LICENSE') 
- 
+  Ximdex CMS is open source with AGPL v3 (see 'LICENSE')
+
 * Installation
   ------------
   See 'INSTALLATION.md' for the recommnended installation process.
 
-* Ximdex Core Requirements 
+* Ximdex Core Requirements
   ------------------------
   -  A Unix based system with PHP(>= 5.3, and some extra modules), Apache 2 webserver (with modules described in the installation guide) and MySQL(>= 5.1) database.
-  -  In the client side: Firefox (>= 5.0) with Javascript and cookies enabled. 
-  -  An internet connection if you want to use automatic recommendations (as semantic annotations) or publishing into the cloud. 
-
+  -  In the client side: Firefox (>= 5.0) with Javascript and cookies enabled.
+  -  An internet connection if you want to use automatic recommendations (as semantic annotations) or publishing into the cloud.
+ 

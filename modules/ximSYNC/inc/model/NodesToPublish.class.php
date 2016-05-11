@@ -25,7 +25,7 @@
  */
 
 
-
+use Ximdex\Runtime\DataFactory;
 
 ModulesManager::file('/inc/model/orm/NodesToPublish_ORM.class.php', 'ximSYNC');
 
@@ -79,7 +79,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$db = new DB();
 
 		// 1. Get older dateup in table
-		$sql_dateup = "select distinct DateUp from NodesToPublish where State = 0 order by DateUp ASC limit 1";
+		$sql_dateup = "select distinct DateUp, DateDown from NodesToPublish where State = 0 order by DateUp ASC limit 1";
 		$db->Query($sql_dateup);
 
 		if ($db->EOF) {
@@ -88,19 +88,33 @@ class NodesToPublish extends NodesToPublish_ORM {
 			return $result;
 		}
 		$dateUp = $db->getValue("DateUp");
+		$dateDown = $db->getValue("DateDown");
 
 		// 2. Mark every node with previous dateUp as locked (state=1) to start working on it.
 		// (This prevent collisions if multiple BatchManagerDaemons are working at the same time)
 		$sql_update ="update NodesToPublish set State = 1 where DateUp = ".$dateUp." and State = 0";
+
+		if(!empty($dateDown)){
+			$sql_update .= " and DateDown = ".$dateDown;
+		}else{
+			$sql_update .= " and DateDown is NULL";
+		}
+
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
-		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId from NodesToPublish where DateUp = ".$dateUp." and State = 1 order by deepLevel DESC";
+		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId from NodesToPublish where DateUp = ".$dateUp." and State = 1";
+		if(!empty($dateDown)){
+			$sql_nodes .= " and DateDown = ".$dateDown;
+		}else{
+			$sql_nodes .= " and DateDown is NULL";
+		}
+		$sql_nodes .= " order by deepLevel DESC";
+		XMD_Log::error($sql_nodes);
 		$db->Query($sql_nodes);
 
 		$force = true;
 		$idNodeGenerator = null;
-		$dateDown = null;
 		$userId = null;
 
 		while (!$db->EOF) {
@@ -108,13 +122,11 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 			$idNodeGenerator = $db->getValue('IdNodeGenerator');
 			$force = $db->getValue('ForcePublication');
-			$dateDown = $db->getValue('DateDown');
 			$userId = $db->getValue('UserId');
 
 			$db->Next();
 		}
 		$force = $force == 1 ? true : false;
-		$dateDown = $dateDown === 0 ? null : $dateDown;
 		$result = array (
 			'docsToPublish' => $docsToPublish,
 			'idNodeGenerator' => $idNodeGenerator,
@@ -136,27 +148,27 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$sql = sprintf("Update NodesToPublish set State = 2 where IdNode in (%s) and DateUp = %s", $strNodes, $dateUp);
 		$db->Query($sql);
 	}
-        
-        
-        public function getIntervals($idNode){
-            $dbObj = new DB();
-            $arrayDates = array();
-            $gaps = array();
-            $now = time();
-            $infinite = mktime(0,0,0,12,12,2099);
-            $j=0;
-            $results = $this->find("DateUp, DateDown", "IdNode=%s AND (DateUp > %s or DateDown > %s) order by dateup", array($idNode, $now, $now));
-            if(is_null($results))
-                return array();
-            foreach ($results as $row) {
-                $timeUp = $row["DateUp"];
-                $timeDown = $row["DateDown"];                
-                $arrayDates[$j]['start'] = $timeUp;                
-                $arrayDates[$j]['end'] = $timeDown? $timeDown: null;
-                
-                $j++;
-            }
-            
-            return $arrayDates;
-        }
+
+
+	public function getIntervals($idNode){
+		$dbObj = new DB();
+		$arrayDates = array();
+		$gaps = array();
+		$now = time();
+		$infinite = mktime(0,0,0,12,12,2099);
+		$j=0;
+		$results = $this->find("DateUp, DateDown", "IdNode=%s AND (DateUp > %s or DateDown > %s) order by dateup", array($idNode, $now, $now));
+		if(is_null($results))
+			return array();
+		foreach ($results as $row) {
+			$timeUp = $row["DateUp"];
+			$timeDown = $row["DateDown"];
+			$arrayDates[$j]['start'] = $timeUp;
+			$arrayDates[$j]['end'] = $timeDown? $timeDown: null;
+
+			$j++;
+		}
+
+		return $arrayDates;
+	}
 }

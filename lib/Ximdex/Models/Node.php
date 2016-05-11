@@ -30,14 +30,14 @@ if (!defined('XIMDEX_ROOT_PATH')) {
     define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
 }
 
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Event\NodeEvent;
 use Ximdex\Events;
 use Ximdex\Models\Group;
 use Ximdex\Models\Language;
 use ModulesManager;
 use Ximdex\Models\PipeNodeTypes;
-use RelTagsNodes;
+use Ximdex\Models\RelTagsNodes;
 use Ximdex\Models\Role;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\Sync\Synchronizer;
@@ -57,9 +57,8 @@ use Ximdex\XML\Base;
 use Ximdex\XML\XML;
 use Ximdex\NodeTypes\SectionNode;
 
- require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
+require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
- ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 define('DETAIL_LEVEL_LOW', 0);
 define('DETAIL_LEVEL_MEDIUM', 1);

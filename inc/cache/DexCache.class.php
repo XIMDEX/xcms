@@ -23,6 +23,7 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
 

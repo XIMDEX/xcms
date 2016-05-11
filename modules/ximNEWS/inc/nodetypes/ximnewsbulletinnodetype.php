@@ -31,6 +31,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\MVC\Render\MailRenderer;
 use Ximdex\NodeTypes\AbstractStructuredDocument;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Utils\Sync\SyncManager;
 

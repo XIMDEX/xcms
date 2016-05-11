@@ -28,6 +28,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Sync\SynchroFacade;
 
 include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
@@ -177,7 +178,7 @@ function createBatchsForBlock($nodesToPublish)
     $node = new Node($idNodeGenerator);
 
     if ($node->get('IdState') > 0) {
-        $workflow = new Workflow($idNodeGenerator);
+        $workflow = new \Ximdex\Workflow\WorkFlow($idNodeGenerator);
         $firstState = $workflow->GetInitialState();
         $node->SetState($firstState);
     }

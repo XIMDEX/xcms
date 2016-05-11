@@ -29,6 +29,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\DataFactory;
 
 ModulesManager::file('/inc/model/RelStrdocNode.class.php');
 ModulesManager::file('/inc/model/List_Label.class.php');

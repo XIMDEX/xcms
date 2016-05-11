@@ -3,6 +3,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\DataFactory;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]

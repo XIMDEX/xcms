@@ -30,6 +30,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/io/BaseIO.class.php');

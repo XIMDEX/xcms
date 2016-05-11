@@ -26,7 +26,7 @@
 
 namespace Ximdex\Models;
 
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Logger;
 use Ximdex\Models\ORM\DependenciesOrm;
 

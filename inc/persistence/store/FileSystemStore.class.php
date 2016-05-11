@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
 if (!defined ('XIMDEX_ROOT_PATH')) {

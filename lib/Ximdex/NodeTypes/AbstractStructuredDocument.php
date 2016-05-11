@@ -25,7 +25,7 @@
  */
 
 namespace Ximdex\NodeTypes;
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use DB;
 use Ximdex\Deps\DepsManager;
 use DexCache;
@@ -35,7 +35,7 @@ use Namespaces;
 use Ximdex\Models\NodeType;
 use Ximdex\Utils\PipelineManager;
 use Properties;
-use RelTagsNodes;
+use Ximdex\Models\RelTagsNodes;
 use SolrViews;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
@@ -53,7 +53,6 @@ define('XIMIO_VIEW', 3);
 
 require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
  ModulesManager::file('/inc/SolrViews.class.php', 'ximRAM');
-ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/model/Namespaces.class.php');
 
@@ -307,7 +306,7 @@ class AbstractStructuredDocument extends FileNode
             }
             $xtags = substr_replace($xtags, "", -1);
         }
-        $xtags = 'xtags = "' . utf8_encode($xtags) . '"';
+        $xtags = 'xtags = "' . $xtags . '"';
 
         $docxap = '';
 

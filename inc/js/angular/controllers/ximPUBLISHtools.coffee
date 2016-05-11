@@ -1,9 +1,10 @@
 angular.module("ximdex.main.controller").controller "ximPUBLISHtools", [
     '$scope', '$http', '$interval', 'xUrlHelper',
     ($scope, $http, $interval, xUrlHelper) ->
-        $scope.json = {}
+        $scope.json = []
         $scope.searchObj = {}
         $scope.urlParams = {}
+        $scope.showing = []
     
         # helping function to inject external data
         $scope.init = (params, initLoop) ->
@@ -19,7 +20,7 @@ angular.module("ximdex.main.controller").controller "ximPUBLISHtools", [
         $scope.getFrameListInterval = null
         $scope.getFrameListLoop = () ->
             $scope.requestFrameList()
-            $scope.getFrameListInterval = $interval $scope.requestFrameList, 5000
+            $scope.getFrameListInterval = $interval $scope.requestFrameList, 2000
             return
 
         $scope.requestFrameList = () ->
@@ -88,7 +89,7 @@ angular.module("ximdex.main.controller").controller "ximPUBLISHtools", [
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             }
             return
-        
+        ###
         # method used in history view
         $scope.updateSearch = (searchObj) ->
             $scope.urlParams.method = 'getFrameList'
@@ -105,9 +106,10 @@ angular.module("ximdex.main.controller").controller "ximPUBLISHtools", [
                 return
             )
             return
-        
+        ###
         # helping function to adapt remaining time for future frames
         $scope.timeFromNow = (date) ->
+            return if !date?
             thatDate = new Date(parseInt(date) * 1000)
             thisDate = new Date()
 
@@ -123,4 +125,10 @@ angular.module("ximdex.main.controller").controller "ximPUBLISHtools", [
             timeStr = hours + 'H ' + min + 'm ' + timeDiffSecs + 's'
         
         return
+
+        $scope.initShowing = (idPortal) ->
+            if !$scope.showing[idPortal]?
+                $scope.showing[idPortal] = false
+
+
 ]

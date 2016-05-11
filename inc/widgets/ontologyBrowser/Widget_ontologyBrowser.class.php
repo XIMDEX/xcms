@@ -27,7 +27,6 @@
 
 use Ximdex\Widgets\WidgetAbstract;
 
-ModulesManager::file('/inc/RelTagsNodes.inc', 'ximTAGS');
 
 class Widget_ontologyBrowser extends WidgetAbstract
 {

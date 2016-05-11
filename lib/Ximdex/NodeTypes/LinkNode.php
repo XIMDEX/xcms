@@ -46,8 +46,6 @@ use Ximdex\NodeTypes\Root;
 use XMD_Log;
 
 
-require_once(XIMDEX_ROOT_PATH . "/inc/model/Links.php");
-require_once(XIMDEX_ROOT_PATH . "/inc/model/NodeDependencies.class.php");
 
 /**
  * @brief Handles links to external pages or web sites.

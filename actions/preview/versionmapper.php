@@ -25,9 +25,7 @@
  */
 
 
-
-
- 
+use Ximdex\Runtime\DataFactory;
 
 ModulesManager::file('/inc/utils.php');
 

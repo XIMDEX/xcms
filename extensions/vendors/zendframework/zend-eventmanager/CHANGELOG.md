@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 3.0.1 - 2016-02-18
+
+### Added
+
+- Nothing.
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- Nothing.
+
+### Fixed
+
+- [#24](https://github.com/zendframework/zend-eventmanager/pull/24) updates the
+  zend-stdlib dependency to `^2.7.3 || ^3.0`, allowing either major version.
+
 ## 3.0.0 - 2016-01-12
 
 ### Added

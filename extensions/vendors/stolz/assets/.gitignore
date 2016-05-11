@@ -1,9 +1,0 @@
-*.kate-swp
-*.nfs00*
-*.old
-*~
-.*~
-/doc
-/vendor
-composer.lock
-tests/cli.php

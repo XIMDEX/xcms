@@ -44,9 +44,9 @@
         "codemirror/Codemirror": "4.7.0",
         "RyanMullins/angular-hammer": "2.1.10",
         "hammerjs/hammer.js": "2.0.4",
-        "stolz/assets": "dev-master",
         "werkint/jsmin": "dev-master",
-        "codeception/codeception": "*"
+        "codeception/codeception": "*",
+        "pda/pheanstalk": "*"
 
     },
      "require-dev": {
@@ -54,7 +54,7 @@
         "mockery/mockery": "0.8.0"
     },
     "autoload": {
-        "psr-0": { "Ximdex": "lib" }
+        "psr-0": { "Ximdex": "lib"}
     },
     "config": {
         "vendor-dir": "extensions/vendors/"

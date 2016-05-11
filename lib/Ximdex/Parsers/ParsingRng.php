@@ -167,6 +167,9 @@ class ParsingRng
                 return NULL;
             }
         }
+        /**
+         * @TODO: DOMDocument::loadXML(): Empty string supplied as input
+         */
 
         $domDoc = new DOMDocument();
         $domDoc->preserveWhiteSpace = false;

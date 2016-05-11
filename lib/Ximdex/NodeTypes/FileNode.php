@@ -26,7 +26,7 @@
 
 namespace Ximdex\NodeTypes;
 use content;
-use DataFactory;
+use Ximdex\Runtime\DataFactory;
 use DB;
 use Ximdex\Deps\DepsManager;
 use depth;
@@ -53,7 +53,6 @@ use XMD_Log;
 
 
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/persistence/datafactory.php");
 include_once(XIMDEX_ROOT_PATH . "/actions/fileupload/baseIO.php");
 require_once(XIMDEX_ROOT_PATH . "/inc/model/RelTemplateContainer.class.php");
 
@@ -88,9 +87,13 @@ class FileNode extends Root
 
         $nodetype = new \Ximdex\Models\NodeType($node->GetNodeType());
 
-        if(!$nodetype->GetHasFSEntity()){
+     if(!$nodetype->GetHasFSEntity()){
+
+
+
             return;
         }
+
 
         $file = $this->GetNodePath();
 

@@ -29,6 +29,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\State;
 
 ModulesManager::file('/inc/model/orm/PublishingReport_ORM.class.php', 'ximSYNC');
+ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 
 /**
  * 	@brief CRUD for Publishing Reports data.
@@ -61,7 +62,9 @@ class PublishingReport extends PublishingReport_ORM {
         'Out' => '100',
         'Canceled' => '100',
         'Replaced' => '100',
-        'Removed' => '100'
+        'Removed' => '100',
+        'Error' => '100',
+        'Warning' => '100'
     );
 
     function create($idSection, $idNode, $idChannel, $idSyncServer, $idPortalVersion
@@ -71,12 +74,15 @@ class PublishingReport extends PublishingReport_ORM {
             $dbObj = new DB();
             $sql = "SELECT * " .
                     "FROM PublishingReport " .
-                    "WHERE IdSection = " . $idSection . " AND IdNode = " . $idNode . " " .
-                    "LIMIT 1";
+                    "WHERE IdNode = " . $idNode . //" AND IdSection=" . $idSection .
+                    " AND IdSyncServer = " . $idSyncServer .
+                    " AND IdChannel " . (empty($idChannel) ? "IS NULL" : ("=" .$idChannel)) .
+                    " LIMIT 1";
             $dbObj->Query($sql);
             if (!$dbObj->EOF) {
                 $updateFields = array(
-                    'IdChannel' => $idChannel,
+                    'IdSection' => $idSection,
+                    'IdChannel' => empty($idChannel) ? NULL : $idChannel,
                     'IdSyncServer' => $idSyncServer,
                     'IdPortalVersion' => $idPortalVersion,
                     'State' => $state,
@@ -88,8 +94,10 @@ class PublishingReport extends PublishingReport_ORM {
                     'IdParentServer' => $idParentServer,
                 );
                 $searchFields = array(
-                    'IdSection' => $idSection,
-                    'IdNode' => $idNode
+                    //'IdSection' => $idSection,
+                    'IdNode' => $idNode,
+                    'IdSyncServer' => $idSyncServer,
+                    'IdChannel' => empty($idChannel) ? NULL : $idChannel
                 );
                 $this->updateReportByField($updateFields, $searchFields, true);
                 return null;
@@ -99,7 +107,7 @@ class PublishingReport extends PublishingReport_ORM {
         $this->set('IdReport', null);
         $this->set('IdSection', $idSection);
         $this->set('IdNode', $idNode);
-        $this->set('IdChannel', $idChannel);
+        $this->set('IdChannel', empty($idChannel) ? NULL : $idChannel);
         $this->set('IdSyncServer', $idSyncServer);
         $this->set('IdPortalVersion', $idPortalVersion);
         $this->set('PubTime', time());
@@ -127,22 +135,25 @@ class PublishingReport extends PublishingReport_ORM {
         if (is_array($searchFields) && count($searchFields) >= 0) {
             foreach ($searchFields as $fieldName => $fieldValue) {
                 if ($this->isField($fieldName)) {
-                    $whereClause .= " AND " . $fieldName . " = '" . $fieldValue . "'";
+                    $whereClause .= " AND " . $fieldName . (empty($fieldValue) ? " IS NULL " : (" = '" . $fieldValue . "'"));
                 }
             }
         }
 
         $setClause = " ";
         if (is_array($updateFields) && count($updateFields) >= 0) {
-            $setClause .= ($fromCreate === false) ? "SET PubTime = PubTime" : "SET PubTime = " . time();
+            $setClause .= ($fromCreate === false) ? "SET PubTime = PubTime" : ("SET PubTime = " . time());
             foreach ($updateFields as $fieldName => $fieldValue) {
                 if ($this->isField($fieldName)) {
-                    $setClause .= "," . $fieldName . " = '" . $fieldValue . "' ";
+                    $setClause .= "," . $fieldName . (empty($fieldValue) ? "=NULL " : (" = '" . $fieldValue . "' "));
                 }
             }
         }
 
         $query = "UPDATE PublishingReport" . $setClause . $whereClause;
+        XMD_Log::info($query);
+        XMD_Log::info(print_r($updateFields,1));
+        XMD_Log::info(print_r($searchFields, 1));
         $dbObj = new DB();
         $dbObj->execute($query);
 
@@ -152,12 +163,11 @@ class PublishingReport extends PublishingReport_ORM {
     function getReports($params) {
         $dbObj = new DB();
         $sql = "SELECT * " .
-                "FROM PublishingReport ";
+                "FROM PublishingReport pr INNER JOIN Nodes n on pr.IdNode = n.IdNode inner join
+                 NodeTypes nt on n.IdNodeType = nt.IdNodeType ";
 
         if ($params['finished']) {
             $sql .= "WHERE State IN ('In','Out')";
-        } else {
-            $sql .= "WHERE State IN ('Pending','Due2In_','Due2In','Pumped')";
         }
 
         if ($params['idNode'] !== null && $params['idNode'] !== 0) {
@@ -191,6 +201,7 @@ class PublishingReport extends PublishingReport_ORM {
             $idportal = $dbObj->GetValue("IdPortalVersion");
 
             if (!isset($frames[$idportal])) {
+                $finished = !isset($frames[$idportal]["Finished"]) ? true : $frames[$idportal]["Finished"];
                 $frames[$idportal] = array(
                     "IdNodeGenerator" => $dbObj->GetValue("IdSection"),
                     "NodeName" => $sectionNode->get('Name'),
@@ -198,6 +209,7 @@ class PublishingReport extends PublishingReport_ORM {
                     "BatchPriority" => $batch->get('Priority'),
                     "BatchState" => $batch->get('Playing') == 1,
                     "BatchStateText" => ($batch->get('Playing') == 1) ? _('is active') : _('is stopped'),
+                    "Finished" => $finished && $dbObj->GetValue("Progress") == 100,
                     'elements' => array()
                 );
             }
@@ -218,24 +230,80 @@ class PublishingReport extends PublishingReport_ORM {
                 }
             }
 
+            $channelName = "";
+            if(!empty($dbObj->GetValue("IdChannel"))){
+                $channel = new \Ximdex\Models\Channel($dbObj->GetValue("IdChannel"));
+                $channelName = $channel->GetName();
+            }
+
             $frames[$idportal]['elements'][] = array(
+                "IdReport" => $dbObj->GetValue("IdReport"),
                 "IdSection" => $dbObj->GetValue("IdSection"),
                 "IdNode" => $dbObj->GetValue("IdNode"),
                 "IdChannel" => $dbObj->GetValue("IdChannel"),
+                "ChannelName" => $channelName,
                 "PubTime" => ($params['finished']) ? $dbObj->GetValue("PubTime") : '',
                 "EstimatedTime" => $estimatedTime,
                 "State" => $dbObj->GetValue("State"),
-                "Progress" => $dbObj->GetValue("Progress"),
+                "Progress" => $dbObj->GetValue("State") == "Warning" || $dbObj->GetValue("State") == "Error" ? 100 : $dbObj->GetValue("Progress"),
                 "FileName" => $dbObj->GetValue("FileName"),
                 "FilePath" => $dbObj->GetValue("FilePath"),
                 "IdSync" => $dbObj->GetValue("IdSync"),
                 "Error" => ($dbObj->GetValue("Progress") != '-1') ? 0 : 1,
             );
 
+            $frames[$idportal]["PubTime"] = $dbObj->GetValue("PubTime");
+            if(!isset($frames[$idportal]["EstimatedTime"]) || $frames[$idportal]["EstimatedTime"] < $estimatedTime){
+                $frames[$idportal]["EstimatedTime"] = $estimatedTime;
+            }
             $dbObj->Next();
         }
+        $res = [];
+        foreach($frames as $k => $frame){
+            $frame["IdPortal"] = $k;
 
-        return $frames;
+            $numSuccess = $numErrors =$numWarnings = 0;
+            $numOfElements = count($frame['elements']);
+            if($numOfElements > 0) {
+                $acumProgress = 0;
+                $acumSuccess = 0;
+                $acumWarning = 0;
+                $acumErrors = 0;
+                foreach ($frame['elements'] as $element) {
+                    $acumProgress += (int) $element["Progress"];
+                    if($element['State'] == 'Error'){
+                        $acumErrors += (int) $element["Progress"];
+                        $numErrors++;
+                    } else if($element['State'] == 'Warning'){
+                        $acumWarning += (int) $element["Progress"];
+                        $numWarnings++;
+                    }else{
+                        $acumSuccess += (int) $element["Progress"];
+                        $numSuccess++;
+                    }
+                }
+                $frame["Progress"] = $acumProgress/$numOfElements;
+                $frame["ProgressSuccess"] = $acumSuccess/$numOfElements;
+                $frame["ProgressWarning"] = $acumWarning/$numOfElements;
+                $frame["ProgressError"] = $acumErrors/$numOfElements;
+
+                $frame['NumSuccess'] = $numSuccess;
+                $frame['NumErrors'] = $numErrors;
+                $frame['NumWarnings'] = $numWarnings;
+            } else {
+                $frame["Progress"] = 0;
+                $frame["ProgressSuccess"] = 0;
+                $frame["ProgressWarning"] = 0;
+                $frame["ProgressError"] = 0;
+
+                $frame['NumSuccess'] = 0;
+                $frame['NumErrors'] = 0;
+                $frame['NumWarnings'] = 0;
+            }
+
+            $res[] = $frame;
+        }
+        return $res;
     }
 
 }

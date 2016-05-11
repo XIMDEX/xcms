@@ -25,12 +25,12 @@
  */
 
 
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file("/extensions/csstidy/class.csstidy.php");
 ModulesManager::file("/formpdf/latex/latex_style.class.php", 'filters');
 ModulesManager::file("/formpdf/parser/parser_root.class.php", 'filters');
-ModulesManager::file("/inc/persistence/datafactory.php");
 
 class Style extends ParserRoot
 {

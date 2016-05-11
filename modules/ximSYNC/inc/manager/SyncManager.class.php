@@ -39,8 +39,8 @@ ModulesManager::file('ximSYNC', '/inc/model/NodesToPublish.class.php');
 ModulesManager::file('ximSYNC', '/conf/synchro_conf.php');
 
 /**
-*	@brief Manages the phases previous and later of the publication process.
-*/
+ *	@brief Manages the phases previous and later of the publication process.
+ */
 
 class SyncManager {
 
@@ -78,10 +78,10 @@ class SyncManager {
 	}
 
 	/**
-	*  Sets the value of any variable.
-	*  @param string key
-	*  @param unknown value
-	*/
+	 *  Sets the value of any variable.
+	 *  @param string key
+	 *  @param unknown value
+	 */
 
 	function setFlag($key, $value) {
 
@@ -89,10 +89,10 @@ class SyncManager {
 	}
 
 	/**
-	*  Gets the value of any variable.
-	*  @param string key
-	*  @return unknown
-	*/
+	 *  Gets the value of any variable.
+	 *  @param string key
+	 *  @return unknown
+	 */
 
 	function getFlag($key) {
 		if (isset($this->$key)) {
@@ -138,12 +138,12 @@ class SyncManager {
 	}
 
 	/**
-	*  Gets the Nodes that must be published with the current Node and calls the methods for build the Batchs.
-	*  @param int $nodeId
-	*  @param int up
-	*  @param int down
-	*  @return array|null
-	*/
+	 *  Gets the Nodes that must be published with the current Node and calls the methods for build the Batchs.
+	 *  @param int $nodeId
+	 *  @param int up
+	 *  @param int down
+	 *  @return array|null
+	 */
 
 	function pushDocInPublishingPool($idNode, $up, $down = null) {
 		if (is_null($idNode)) {
@@ -162,18 +162,14 @@ class SyncManager {
 			return NULL;
 		}
 
-		if($down!=NULL){
-                      $docsToPublish = array();
-                }else{
-                       //error_log("Class;".get_class($node->class ) ); 
-                       $docsToPublish = $this->buildPublishingDependencies($idNode, $params);
-                }
+		$docsToPublish = $this->buildPublishingDependencies($idNode, $params);
 
 		if ($node->nodeType->get('IsPublishable') == '1') {
 			if (sizeof($docsToPublish) > 0) {
 				$docsToPublish = array_unique(array_merge(array($idNode), $docsToPublish));
 			} else {
 				$docsToPublish = array($idNode);
+				$this->docsToPublishByLevel = array($idNode);
 			}
 		}else {
 			return array();
@@ -181,13 +177,19 @@ class SyncManager {
 
 
 		$userID = \Ximdex\Utils\Session::get('userID');
+		error_log($userID);
 		foreach ($docsToPublish as $idDoc) {
 			if (!array_key_exists($idDoc, $this->docsToPublishByLevel)){
 				continue;
 			}
 			$deepLevel = $this->docsToPublishByLevel[$idDoc];
-			$ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $lastPublishedDocument, $deepLevel);
 
+			// Dependencies won't be expired
+			if ($idNode == $idDoc) {
+				$ntp = NodesToPublish::create($idDoc, $idNode, $up, $down, $userID, $force, $lastPublishedDocument, $deepLevel);
+			} else {
+				$ntp = NodesToPublish::create($idDoc, $idNode, $up, null, $userID, $force, $lastPublishedDocument, $deepLevel);
+			}
 		}
 
 
@@ -224,18 +226,18 @@ class SyncManager {
 		$node = new Node($nodeId);
 		$nodeDependences = $node->class->getPublishabledDeps($params);
 
-        if (!isset( $nodeDependences ) || empty($nodeDependences)) {
-            return false  ;
-        }
-         $pending = array_values( array_diff( $nodeDependences, $this->pendingDocsToPublish, $this->computedDocsToPublish  ) ) ;
-         if ( empty( $pending )) {
-            return false ;
-        } else {
-			 $idDoc = $pending[0];
-			 $this->docsToPublishByLevel["$idDoc"]=$currentDeepLevel;
-             $this->pendingDocsToPublish =array_merge(  [ $idDoc , $nodeId  ]   ,  $this->pendingDocsToPublish  )  ;
-            return true ;
-        }
+		if (!isset( $nodeDependences ) || empty($nodeDependences)) {
+			return false  ;
+		}
+		$pending = array_values( array_diff( $nodeDependences, $this->pendingDocsToPublish, $this->computedDocsToPublish  ) ) ;
+		if ( empty( $pending )) {
+			return false ;
+		} else {
+			$idDoc = $pending[0];
+			$this->docsToPublishByLevel["$idDoc"]=$currentDeepLevel;
+			$this->pendingDocsToPublish =array_merge(  [ $idDoc , $nodeId  ]   ,  $this->pendingDocsToPublish  )  ;
+			return true ;
+		}
 	}
 
 	function sendMail($nodeID, $type, $up, $down) {
@@ -271,5 +273,3 @@ class SyncManager {
 		$mail->Send();
 	}
 }
-
-?>

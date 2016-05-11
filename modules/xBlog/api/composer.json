@@ -1,0 +1,26 @@
+{
+  "name": "ximdex/editor",
+  "description": "description_text",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "author's name",
+      "email": "email@example.com"
+    }
+  ],
+  "autoload": {
+        "psr-0": {
+            "Ximdex": "src/"
+        }
+    },
+  "require": {
+    "slim/slim": "3.1.0",
+    "guzzlehttp/guzzle": "6.1.1",
+    "slim/twig-view": "^2.0",
+    "symfony/yaml": "^3.0",
+    "cocur/slugify": "^2.0",
+    "intervention/image": "^2.3",
+    "imangazaliev/didom": "^1.6"
+  }
+}

@@ -253,7 +253,7 @@ class SynchroFacade
 			XMD_log::info(_("Delete node and keep documents published"));
 		}
 
-		$deleteIDs = $this->getAllTaskByNode($nodeID);
+		$deleteIDs = self::getAllTaskByNode($nodeID);
 
 		foreach ($deleteIDs as $id) {
 			if (ModulesManager::isEnabled('ximSYNC')) {
@@ -295,7 +295,10 @@ class SynchroFacade
 
 		$pendingTasks = array();
 		$publishedTasks = array();
-		$childList = $node->GetChildren();
+
+		// First node will be the root node
+		$childList = [$nodeID];
+
 		$workFlowSlaves = $node->GetWorkFlowSlaves();
 		$workFlowSlaves = sizeof($workFlowSlaves) > 0 ? $workFlowSlaves : array();
 

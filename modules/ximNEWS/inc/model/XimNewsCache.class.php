@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Sync\SynchroFacade;
 

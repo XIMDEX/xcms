@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Node;
+use Ximdex\Runtime\DataFactory;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/repository/NodeEntity.class.php');
 

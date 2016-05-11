@@ -10177,3 +10177,15 @@ msgstr "Vamos a mostrarte en unos pocos pasos las características básicas de X
 
 msgid "Folder permissions is going to inherit from the parent"
 msgstr "Se van a heredar los permisos (grupos asociados) del nodo padre"
+
+msgid "Expire document"
+msgstr "Caducar el documento"
+
+msgid "Expire"
+msgstr "Caducar"
+
+msgid "You have selected to expire the document:"
+msgstr "Has seleccionado caducar el documento:"
+
+msgid "Document <strong>%s</strong> has been successfully expired"
+msgstr "El documento <strong>%s</strong> ha sido caducado"

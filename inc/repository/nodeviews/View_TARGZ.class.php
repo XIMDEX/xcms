@@ -30,6 +30,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\Version;
 use Ximdex\Parsers\ParsingRng;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\TarArchiver;
 

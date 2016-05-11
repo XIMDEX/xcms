@@ -103,7 +103,7 @@ class NodeType
     const XSIR_WIDGET_FILE = 9037;
     const XSIR_IMAGE_FILE = 9030;
     const XSIR_REPOSITORY = 9010;
-    const XBUK_PROJECT = 9001;
-    const XBUK_SESSION = 9002;
-    const XBUK_SCREEN = 9003;
+    const XBLOG_SECTION = 9601;
+    const XHTML5_CONTAINER = 9602;
+    const XHTML5_DOC = 9603;
 }

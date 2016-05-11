@@ -27,6 +27,7 @@
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Parsers\PVD2RNG\PVD2RNG;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/parsers/pvd2rng/PVD2RNG.class.php');

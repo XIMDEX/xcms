@@ -30,7 +30,6 @@ ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC'
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
-ModulesManager::file('/inc/persistence/datafactory.php');
 ModulesManager::file('/inc/model/orm/Batchs_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/conf/synchro_conf.php', 'ximSYNC');
 
@@ -322,14 +321,12 @@ class Batch extends Batchs_ORM {
         parent::__construct($idBatch);
         $this->set('Playing', $playingValue);
 
-        parent::update();
+        $updatedRows = parent::update();
 
-        if (!$dbObj->numErr) {
-
+        if ($updatedRows == 1) {
             $this->BatchToLog($idBatch, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__, __LINE__, "INFO", 8, _("Setting playing Value = $playingValue for batch $idBatch"));
             return true;
         } else {
-
             XMD_Log::info("Error en BD: " . $dbObj->desErr);
         }
         return false;
