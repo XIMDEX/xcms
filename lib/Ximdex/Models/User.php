@@ -35,7 +35,7 @@ use Ximdex\Models\Role;
 use Ximdex\Models\Version;
 use Ximdex\Models\ORM\UsersOrm;
 use Ximdex\Runtime\App;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use Ximdex\Logger as XMD_Log;
 
 
@@ -81,7 +81,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $sql = sprintf("SELECT IdGroup FROM RelUsersGroups WHERE IdUser = %d", $this->get('IdUser'));
             $dbObj->Query($sql);
             if (!$dbObj->numErr) {
@@ -213,7 +213,7 @@ class User extends UsersOrm
     function setByLogin($login)
     {
         $this->ClearError();
-        $dbObj = new DB();
+        $dbObj = new Db();
         $query = sprintf("SELECT IdUser FROM Users WHERE Login = %s", $dbObj->sqlEscapeString($login));
         $dbObj->Query($query);
         if ($dbObj->numRows) {
@@ -333,7 +333,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d", $this->get('IdUser'), $groupID);
             $dbObj->Query($query);
             if (!$dbObj->numErr) {
@@ -359,7 +359,7 @@ class User extends UsersOrm
             //Get Nodeid rol "Demo"
             $idRole = Role::GetByName("Demo");
             $query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdUser = %d AND IdRole = %d", $this->get('IdUser'), $idRole);
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Query($query);
             if (!$dbObj->numErr) {
                 if ($dbObj->numRows) {
@@ -377,7 +377,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if (!is_null($groupid)) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $query = sprintf("SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d AND IdGroup = %d", $this->get('IdUser'), $groupid);
             $dbObj->Query($query);
             if ($dbObj->numRows > 0) {
@@ -391,7 +391,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         $query = sprintf("SELECT IdRole FROM RelUsersGroups WHERE IdUser = %d group by IdRole", $this->get('IdUser'));
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Query($query);
         $roles = array();
         while (!$dbObj->EOF) {
@@ -406,7 +406,7 @@ class User extends UsersOrm
     {
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $query = sprintf("SELECT Pass FROM Users WHERE IdUser = %d", $this->get('IdUser'));
             $dbObj->Query($query);
             if (!strcmp(md5($pass), $dbObj->GetValue("Pass"))) {
@@ -546,7 +546,7 @@ class User extends UsersOrm
         $this->ClearError();
         if ($this->get('IdUser') > 0) {
             $groupList = $this->GetGroupList();
-            $dbObj = new DB();
+            $dbObj = new Db();
 
             $query = sprintf("DELETE FROM UnverifiedUsers where email=%s", $this->get('Email'));
 

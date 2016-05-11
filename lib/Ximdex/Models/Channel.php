@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use Ximdex\Models\ORM\ChannelsOrm;
 
 
@@ -111,7 +111,7 @@ class Channel extends ChannelsOrm
                 isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
         }
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -166,7 +166,7 @@ class Channel extends ChannelsOrm
      */
     function SetByName($name)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Query(sprintf("SELECT IdChannel FROM Channels WHERE Name='%s'", $dbObj->sqlEscapeString($name)));
         parent::__construct($dbObj->GetValue('IdChannel'));
 
@@ -403,7 +403,7 @@ class Channel extends ChannelsOrm
      */
     function setDefaultChannelToZero($idchannel)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         return $dbObj->Execute(sprintf("UPDATE Channels SET Default_Channel=0 WHERE IdChannel<>%s;", $idchannel));
     }
 }

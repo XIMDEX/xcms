@@ -1,7 +1,7 @@
 <?php
 namespace Ximdex\Parsers;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -303,7 +303,7 @@ class ParsingPathTo
 					({$nodetypeCondition})AND
 					{$nodePathCondition} AND
 					{$fastTraverseCondition} ORDER BY LENGTH(n.path)";
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->query($sql);
         if ($dbObj->numErr != 0) {
             return false;

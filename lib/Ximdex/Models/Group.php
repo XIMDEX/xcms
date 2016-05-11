@@ -26,7 +26,7 @@
  */
 
 namespace Ximdex\Models;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use Ximdex\Workflow\WorkFlow;
 use Ximdex\Models\ORM\GroupsOrm;
 use Ximdex\Runtime\App;
@@ -94,7 +94,7 @@ class Group extends GroupsOrm
 	function GetAllGroups()
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$sql = 'SELECT IdGroup FROM Groups';
 		$dbObj->Query($sql);
 		if (!$dbObj->numErr) {
@@ -111,7 +111,7 @@ class Group extends GroupsOrm
 	function GetUserList()
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new Db();
 		if (!is_null($this->get('IdGroup'))) {
 			$sql = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdGroup = %d", $this->get('IdGroup'));
 			$dbObj->Query($sql);
@@ -134,7 +134,7 @@ class Group extends GroupsOrm
 	function GetNodeList()
 	{
 		$this->ClearError();
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$salida = array();
 		if ($this->get('IdGroup') > 0) {
 			$sql = sprintf("SELECT IdNode FROM RelGroupsNodes WHERE IdGroup = %d", $this->groupID);
@@ -226,7 +226,7 @@ class Group extends GroupsOrm
 			}
 
 			// Deleting also group-node relation in DB
-			$dbObj = new DB();
+			$dbObj = new Db();
 			$dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdGroup = %d", $this->get('IdGroup')));
 			if ($dbObj->numErr) {
 				$this->SetError(5);
@@ -245,7 +245,7 @@ class Group extends GroupsOrm
 	{
 		$this->ClearError();
 		if ($this->get('IdGroup') > 0) {
-			$dbObj = new DB();
+			$dbObj = new Db();
 			$dbObj->Execute(sprintf("DELETE FROM RelUsersGroups WHERE IdGroup= %d AND IdUser = %d", $this->get('IdGroup'), $userID));
 			if ($dbObj->numErr)
 				$this->SetError(5);
@@ -258,7 +258,7 @@ class Group extends GroupsOrm
 	{
 		$this->ClearError();
 		if ($this->get('IdGroup') > 0) {
-			$dbObj = new DB();
+			$dbObj = new Db();
 			$query = sprintf("SELECT IdRel FROM RelUsersGroups"
 				. " WHERE IdUser = %d AND IdGroup = %d AND IdRole = %d",
 				$userID, $this->get('IdGroup'), $roleID);
@@ -287,7 +287,7 @@ class Group extends GroupsOrm
 	{
 		$this->ClearError();
 		if ($this->get('IdGroup') > 0) {
-			$dbObj = new DB();
+			$dbObj = new Db();
 			$query = sprintf("UPDATE RelUsersGroups SET IdRole = %d WHERE IdGroup= %d AND IdUser= %d", $roleID, $this->get('IdGroup'), $userID);
 			$dbObj->Execute($query);
 			if ($dbObj->numErr)
@@ -305,7 +305,7 @@ class Group extends GroupsOrm
 	{
 		$this->ClearError();
 		if ($this->get('IdGroup') > 0) {
-			$dbObj = new DB();
+			$dbObj = new Db();
 			$query = sprintf("SELECT IdUser FROM RelUsersGroups WHERE IdGroup = %d AND IdUser = %d", $this->get('IdGroup'), $userID);
 			$dbObj->Query($query);
 
@@ -393,7 +393,7 @@ class Group extends GroupsOrm
 	 */
 	function getUserRoleInfo()
 	{
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$query = sprintf('SELECT IdRel, IdUser, IdRole'
 			. ' FROM RelUsersGroups'
 			. ' WHERE IdGroup = %s',

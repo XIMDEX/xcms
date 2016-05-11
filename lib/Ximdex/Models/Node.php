@@ -43,7 +43,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Utils\Sync\Synchronizer;
 use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\Logger as XMD_Log;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use Ximdex\Runtime\App,
     Ximdex\Models\Dependencies,
     Ximdex\Models\NodeDependencies,
@@ -80,7 +80,7 @@ class Node extends NodesOrm
     var $class;                // Class which implements the specific methos for this nodetype.
     /* @var $nodeType \Ximdex\Models\NodeType */
     var $nodeType;            // nodetype object.
-    /* @var $dbObj \DB_legacy */
+    /* @var $dbObj \Ximdex\Runtime\Db */
     var $dbObj;                // DB object which will be used in the methods.
     var $numErr;            // Error code.
     var $msgErr;            // Error message.
@@ -162,7 +162,7 @@ class Node extends NodesOrm
      */
     function GetRoot()
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Query("SELECT IdNode FROM Nodes WHERE IdParent IS null");
         if ($dbObj->numRows) {
             return $dbObj->GetValue('IdNode');
@@ -322,7 +322,7 @@ class Node extends NodesOrm
      */
     function SetState($stateID)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         if (($this->get('IdNode') > 0)) {
             $sql = sprintf("UPDATE Nodes SET IdState= %d WHERE IdNode=%d OR SharedWorkflow = %d", $stateID, $this->get('IdNode'), $this->get('IdNode'));
 
@@ -467,7 +467,7 @@ class Node extends NodesOrm
                 $sql .= sprintf(" ORDER BY %s %s", $order['FIELD'], isset($order['DIR']) && in_array($order['DIR'], $validDirs) ? $order['DIR'] : '');
             }
 
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Query($sql);
             $i = 0;
             while (!$dbObj->EOF) {
@@ -501,7 +501,7 @@ class Node extends NodesOrm
         }
         $this->ClearError();
         if (($this->get('IdParent') > 0) && !empty($name)) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $sql = sprintf("SELECT IdNode FROM Nodes WHERE IdParent = %d AND Name = %s", $this->get('IdNode'), $dbObj->sqlEscapeString($name));
 
             $dbObj->Query($sql);
@@ -531,7 +531,7 @@ class Node extends NodesOrm
         }
         $this->ClearError();
         if (!empty($name)) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes WHERE Nodes.IdNodeType = NodeTypes.IdNodeType AND  LOWER(Nodes.Name) like %s", $dbObj->sqlEscapeString("%" . strtolower($name) . "%"));
 
             $dbObj->Query($sql);
@@ -580,7 +580,7 @@ class Node extends NodesOrm
 
         $this->ClearError();
         if (!empty($name) && !empty($path)) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $sql = sprintf("SELECT Nodes.IdNode, Nodes.Name, NodeTypes.Icon, Nodes.IdParent FROM Nodes, NodeTypes
 				WHERE Nodes.IdNodeType = NodeTypes.IdNodeType
 				AND  LOWER(Nodes.Name) like %s
@@ -648,7 +648,7 @@ class Node extends NodesOrm
 					where ft.IdChild = $idNode
 					order by depth desc";
 
-            $db = new DB();
+            $db = new Db();
             $db->Query($sql);
 
             $path = '';
@@ -812,7 +812,7 @@ class Node extends NodesOrm
             . " FROM NodeAllowedContents"
             . " WHERE IdNodeType = %d", $this->nodeType->GetID());
         $allowedChildrens = array();
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         $dbObj->Query($query);
         while (!$dbObj->EOF) {
@@ -1229,7 +1229,7 @@ class Node extends NodesOrm
         XMD_Log::debug("Model::Node::CreateNode: Creating node id(" . $this->nodeID . "), name(" . $name . "), parent(" . $parentID . ").");
 
         /// Once created, its content by default is added.
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         if (!empty($subfolders) && is_array($subfolders)) {
             $subfolders_str = implode(",", $subfolders);
@@ -1315,7 +1315,7 @@ class Node extends NodesOrm
         $data = new DataFactory($this->nodeID);
         $data->DeleteAllVersions();
         unset($data);
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Execute(sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %d", $this->get('IdNode')));
         $dbObj->Execute(sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
         //deleting potential entries on table NoActionsInNode
@@ -1574,7 +1574,7 @@ class Node extends NodesOrm
                     $groupList = array();
                 }
             } else {
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $dbObj->Query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
                 $groupList = array();
                 while (!$dbObj->EOF) {
@@ -1611,7 +1611,7 @@ class Node extends NodesOrm
                 }
             } else {
                 $sql = sprintf("SELECT IdRole FROM RelGroupsNodes WHERE IdNode = %d AND IdGroup = %d", $this->get('IdNode'), $groupID);
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 0) {
                     return $dbObj->GetValue("IdRole");
@@ -1671,7 +1671,7 @@ class Node extends NodesOrm
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             if ($this->nodeType->get('CanAttachGroups')) {
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $query = sprintf("DELETE FROM RelGroupsNodes WHERE IdNode = %d AND IdGroup = %d", $this->get('IdNode'), $groupID);
                 $dbObj->Execute($query);
                 if ($dbObj->numErr) {
@@ -1696,7 +1696,7 @@ class Node extends NodesOrm
         $this->ClearError();
         if (!is_null($groupID)) {
             if ($this->nodeType->get('CanAttachGroups')) {
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $query = sprintf("INSERT INTO RelGroupsNodes (IdGroup, IdNode, IdRole) VALUES (%d, %d, %d)", $groupID, $this->get('IdNode'), $roleID);
                 $dbObj->Execute($query);
                 if ($dbObj->numErr) {
@@ -1725,7 +1725,7 @@ class Node extends NodesOrm
             if ($this->nodeType->get('CanAttachGroups')) {
                 /** @var string $roleID */
                 $sql = sprintf("UPDATE RelGroupsNodes SET IdRole = %d WHERE IdNode = %d AND IdGroup = %d", $roleID, $this->get('IdNode'), $groupID);
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $dbObj->Execute($sql);
                 if ($dbObj->numErr) {
                     $this->SetError(5);
@@ -1748,7 +1748,7 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdGroup = %d AND IdNode = %d", $groupID, $this->get('IdNode')));
             if ($dbObj->numErr) {
                 $this->SetError(5);
@@ -1768,7 +1768,7 @@ class Node extends NodesOrm
         $salida = array();
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Query(sprintf("SELECT IdGroup FROM RelGroupsNodes WHERE IdNode = %d", $this->get('IdNode')));
             if (!$dbObj->numErr) {
                 while (!$dbObj->EOF) {
@@ -1849,7 +1849,7 @@ class Node extends NodesOrm
     {
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $query = sprintf("SELECT IdLanguage, Name FROM NodeNameTranslations WHERE"
                 . " IdNode= %d");
             $dbObj->Query($query);
@@ -1880,7 +1880,7 @@ class Node extends NodesOrm
             $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE"
                 . " IdNode= %d"
                 . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Query($sql);
             if ($dbObj->numErr) {
                 $this->SetError(5);
@@ -1909,7 +1909,7 @@ class Node extends NodesOrm
             $sql = sprintf("SELECT IdNode FROM NodeNameTranslations WHERE"
                 . " IdNode =  %d"
                 . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Query($sql);
             if ($dbObj->numErr)
                 $this->SetError(1);
@@ -1932,7 +1932,7 @@ class Node extends NodesOrm
             $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE"
                 . " IdNode = %d"
                 . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Query($sql);
             if ($dbObj->numRows > 0) {
                 // si encuentra el traducido lo devuelve
@@ -1946,7 +1946,7 @@ class Node extends NodesOrm
                 $sql = sprintf("SELECT Name FROM NodeNameTranslations WHERE"
                     . " IdNode = %d"
                     . " AND IdLanguage = %d", $this->get('IdNode'), $lang->get('IdLanguage'));
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $dbObj->Query($sql);
                 if ($dbObj->numRows > 0) {
                     // Returns the default language
@@ -1971,7 +1971,7 @@ class Node extends NodesOrm
     function SetAliasForLang($langID, $name)
     {
         if ($this->get('IdNode') > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $query = sprintf("SELECT IdNode FROM NodeNameTranslations"
                 . " WHERE IdNode = %d AND IdLanguage = %d", $this->get('IdNode'), $langID);
             $dbObj->Query($query);
@@ -2016,7 +2016,7 @@ class Node extends NodesOrm
             $sql = sprintf("DELETE FROM NodeNameTranslations "
                 . " WHERE IdNode = %d"
                 . " AND IdLanguage = %d", $this->get('IdNode'), $langID);
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Execute($sql);
             if ($dbObj->numErr) {
                 $this->messages->add(_('Alias could not be deleted, incorrect operation'), MSG_TYPE_ERROR);
@@ -2040,7 +2040,7 @@ class Node extends NodesOrm
         if ($this->get('IdNode') > 0) {
             $sql = sprintf("DELETE FROM NodeNameTranslations "
                 . " WHERE IdNode = %d", $this->get('IdNode'));
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Execute($sql);
             if ($dbObj->numErr)
                 $this->SetError(5);
@@ -2154,7 +2154,7 @@ class Node extends NodesOrm
         $query = sprintf("SELECT ft.IdNode FROM `FastTraverse` ft"
             . " INNER JOIN Nodes n ON ft.IdNode = n.IdNode AND n.IdNodeType = %d"
             . " WHERE ft.IdChild = %d and ft.IdNode <> %d", $type, $this->get('IdNode'), $this->get('IdNode'));
-        $db = new DB();
+        $db = new Db();
         $db->query($query);
         if ($db->numRows > 0) {
             return $db->getValue('IdNode');
@@ -2294,7 +2294,7 @@ class Node extends NodesOrm
     {
 
         unset($fromNode);
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d ORDER BY Depth DESC", $this->get('IdNode'), $this->get('IdNode'));
         $dbObj->Query($sql);
 
@@ -2318,7 +2318,7 @@ class Node extends NodesOrm
      */
     function TraverseToRoot($minIdNode = 10000)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = sprintf("SELECT IdNode FROM FastTraverse WHERE IdChild= %d AND IdNode >=%d ORDER BY Depth DESC", $this->get('IdNode'), $minIdNode);
         $dbObj->Query($sql);
 
@@ -2337,7 +2337,7 @@ class Node extends NodesOrm
      */
     function TraverseByDepth($depth, $node_id = 1)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %d AND Depth = %d ORDER BY IdNode", $node_id, $depth);
         $dbObj->Query($sql);
 
@@ -2493,7 +2493,7 @@ class Node extends NodesOrm
         $this->ClearError();
         if ($this->get('IdNode') > 0) {
             $sqls = sprintf("DELETE FROM FastTraverse WHERE IdChild = %d", $this->get('IdNode'));
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Execute($sqls);
             if ($dbObj->numErr) {
                 $this->SetError(5);
@@ -2501,7 +2501,7 @@ class Node extends NodesOrm
                 $parent = $this->get('IdNode');
                 $level = '0';
                 do {
-                    $dbObj = new DB();
+                    $dbObj = new Db();
                     $sql = sprintf("INSERT INTO FastTraverse (IdNode, IdChild, Depth) VALUES (%d, %d, %d)", $parent, $this->get('IdNode'), $level);
                     $dbObj->Execute($sql);
                     unset($dbObj);
@@ -2627,7 +2627,7 @@ class Node extends NodesOrm
                 . " FROM States s"
                 . " WHERE IdState = %d"
                 . " LIMIT 1", $this->get('IdState'));
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Query($query);
             $statusName = $dbObj->GetValue('statusName');
             unset($dbObj);
@@ -2865,7 +2865,7 @@ class Node extends NodesOrm
             return false;
         }
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $query = sprintf('SELECT Amount from NodeAllowedContents'
             . ' WHERE IdNodeType = %s AND NodeType = %s', $dbObj->sqlEscapeString($parentNode->nodeType->get('IdNodeType')), $dbObj->sqlEscapeString($idNodeType));
 
@@ -2932,7 +2932,7 @@ class Node extends NodesOrm
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
 
-            $db = new DB();
+            $db = new Db();
             $db->Query($sql);
 
             while (!$db->EOF) {
@@ -2969,7 +2969,7 @@ class Node extends NodesOrm
         if ($withInheritance) {
             $sql = "SELECT IdNode FROM FastTraverse WHERE IdChild = " . $this->get('IdNode') . " ORDER BY Depth ASC";
 
-            $db = new DB();
+            $db = new Db();
             $db->Query($sql);
 
             while (!$db->EOF) {
@@ -3177,7 +3177,7 @@ class Node extends NodesOrm
     {
         unset($idPipeline);
 
-        $db = new DB();
+        $db = new Db();
         $query = sprintf("SELECT IdChild FROM FastTraverse WHERE IdNode = %d", $this->get('IdNode'));
         $db->Query($query);
 
@@ -3202,7 +3202,7 @@ class Node extends NodesOrm
         $sql .= " FROM Versions V INNER JOIN Users U on V.IdUser = U.IdUser ";
         $sql .= " WHERE V.IdNode = '" . $this->get('IdNode') . "' ";
         $sql .= " ORDER BY V.IdVersion DESC LIMIT 1 ";
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Query($sql);
         if ($dbObj->numRows > 0) {
             if ($dbObj->GetValue("Version") == 0)
@@ -3310,7 +3310,7 @@ class Node extends NodesOrm
 
         //query to NodeAllowedContents
         $sql1 = "SELECT Amount FROM NodeAllowedContents WHERE IdNodeType=$destNodeType and NodeType=$actionNodeType";
-        $db = new DB();
+        $db = new Db();
         $db->Query($sql1);
         while (!$db->EOF) {
             $amount = $db->getValue('Amount');

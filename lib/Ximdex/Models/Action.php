@@ -64,7 +64,7 @@ class Action extends ActionsOrm
     {
         $salida = array();
         $sql = "SELECT IdAction FROM Actions";
-        $dbObj = new \DB_legacy();
+        $dbObj = new \Ximdex\Runtime\Db();
         $dbObj->Query($sql);
         if ($dbObj->numErr != 0) {
             $this->SetError(1);
@@ -103,7 +103,7 @@ class Action extends ActionsOrm
      */
     function GetActionListOnNodeType($nodeType = NULL, $includeActionsWithNegativeSort = false)
     {
-        $dbObj = new \DB_legacy();
+        $dbObj = new \Ximdex\Runtime\Db();
         if (!$includeActionsWithNegativeSort) {
             $sql = sprintf("SELECT IdAction FROM Actions WHERE idNodeType = %d AND Sort > 0 ORDER BY Sort ASC", $nodeType);
         } else {
@@ -355,7 +355,7 @@ class Action extends ActionsOrm
      */
     function DeleteAction()
     {
-        $dbObj = new \DB_legacy();
+        $dbObj = new \Ximdex\Runtime\Db();
         $query = sprintf("DELETE FROM RelRolesActions WHERE IdAction= %d", $this->ID);
         $dbObj->Execute($query);
         if ($dbObj->numErr != 0)

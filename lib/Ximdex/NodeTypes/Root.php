@@ -37,7 +37,7 @@ use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Runtime\Constants;
 use Ximdex\Logger as XMD_Log;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 
 
 
@@ -61,7 +61,7 @@ class Root
      */
     var $nodeID;
     /**
-     * @var DB
+     * @var Db
      */
     var $dbObj;
     /**
@@ -98,7 +98,7 @@ class Root
         else if (is_numeric($node) || $node == null)
             $this->parent = new Node($node, false);
         $this->nodeID = $this->parent->get('IdNode');
-        $this->dbObj = new DB();
+        $this->dbObj = new Db();
         $this->nodeType = &$this->parent->nodeType;
         $this->messages = new \Ximdex\Utils\Messages();
     }
@@ -317,7 +317,7 @@ class Root
         // This method is overwritten in FileNode and FolderNode.
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
-        $db = new DB();
+        $db = new Db();
         $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
     }
 
@@ -410,7 +410,7 @@ class Root
     function GetPublishedPath($channelID = NULL, $addNodeName)
     {
 
-        $db = new DB();
+        $db = new Db();
         $nodes = array();
         $query = sprintf("SELECT n.IdNode"
             . " FROM `FastTraverse` ft"

@@ -33,10 +33,10 @@ use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Db;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
-use DB_legacy as DB;
 use Ximdex\Logger as XMD_Log;
 
 ModulesManager::file('/inc/search/QueryProcessor.class.php');

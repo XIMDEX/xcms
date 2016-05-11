@@ -27,7 +27,7 @@
 
 namespace Ximdex\Utils\Logs;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 
 
 /**
@@ -36,7 +36,7 @@ use DB_legacy as DB;
 class Appender_sql extends Appender
 {
 	/**
-	 * @var \DB_legacy
+	 * @var \Ximdex\Runtime\Db
 	 */
 	var $_db;
 	var $_table;
@@ -48,7 +48,7 @@ class Appender_sql extends Appender
 		parent::Appender($params);
 
 		$this->_table = $params['table'];
-		$this->_db = new DB();
+		$this->_db = new Db();
 	}
 
 

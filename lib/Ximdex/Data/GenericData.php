@@ -29,7 +29,7 @@ namespace Ximdex\Data;
 use Ximdex\Behaviours\Collection;
 use Ximdex\Helpers\Cache;
 use Ximdex\Logger as XMD_Log;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use Ximdex\Utils\Messages;
 use Ximdex\Utils\Overloadable;
 
@@ -136,7 +136,7 @@ class GenericData extends Overloadable
             $this->_fieldsToTraduce = array();
         }
         $id             = (int) $id;
-        $dbObj          = new DB();
+        $dbObj          = new Db();
         $this->messages = new Messages();
 
         $cache     = null;
@@ -511,7 +511,7 @@ class GenericData extends Overloadable
      */
     public function _getCondition($condition, $params, $escape)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         if (is_null($params)) {
             $params = array();
@@ -546,7 +546,7 @@ class GenericData extends Overloadable
         // TODO check $fields Usage
         unset($fields);
         $this->_applyFilter('beforeFind');
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         if ((DEBUG_LEVEL == LOG_LEVEL_ALL) || (DEBUG_LEVEL == LOG_LEVEL_QUERY)) {
             $this->_logQuery($query);
@@ -700,7 +700,7 @@ class GenericData extends Overloadable
         }
         $updatedRows = null;
         if ($this->_checkDataIntegrity()) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $dbObj->Execute($query);
             if (($dbObj->numRows > 0) && (bool) $this->_useMemCache) {
                 $cache     = new Cache();

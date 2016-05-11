@@ -27,7 +27,7 @@
 
 namespace Ximdex\Models;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use I_NodeSets;
 use I_NodeSetsNodes;
 use I_NodeSetsUsers;
@@ -68,7 +68,7 @@ class NodeSets extends NodeSetsOrm
      */
     public function getItems()
     {
-        $db = new DB();
+        $db = new Db();
         $db->query(sprintf('select count(1) as total from RelNodeSetsNode where IdSet = %s', $this->getId()));
         return $db->getValue('total');
     }
@@ -91,7 +91,7 @@ class NodeSets extends NodeSetsOrm
     public function delete()
     {
 
-        $db = new DB();
+        $db = new Db();
 
         $sql = sprintf('delete from RelNodeSetsNode where IdSet = %s', $this->getId());
         $db->execute($sql);

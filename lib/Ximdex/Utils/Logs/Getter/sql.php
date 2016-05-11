@@ -27,7 +27,7 @@
 
 namespace Ximdex\Utils\Logs;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 
 
 /**
@@ -45,7 +45,7 @@ class Getter_sql extends Getter
 	function read()
 	{
 		$readedData = '';
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$quantity = (int)$this->_params['quantity'] > 0 ? (int)$this->_params['quantity'] : 10;
 		$query = sprintf("SELECT LogText FROM %s ORDER BY IdLog DESC LIMIT %d", $this->_params['file'], $quantity);
 		$dbObj->Query($query);

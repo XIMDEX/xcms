@@ -1,9 +1,15 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: drzippie
+ * Date: 11/05/16
+ * Time: 15:10
+ */
+namespace Ximdex\Runtime;
 
-namespace  Ximdex\Runtime ;
-
-use PDO ;
-use Ximdex\Logger as XMD_Log;
+use Ximdex\Runtime\App;
+use PDO;
+use  XMD_Log;
 
 class Db
 {
@@ -13,22 +19,22 @@ class Db
     private $db = null;
 
     private $sql = '';
-    private $dbEncoding = '' ;
-    private $workingEncoding ;
+    private $dbEncoding = '';
+    private $workingEncoding;
     private $rows = array();
-    public $EOF = true ;
+    public $EOF = true;
     public $row = array();
-    public $numRows = 0 ;
-    public $numFields = 0 ;
+    public $numRows = 0;
+    public $numFields = 0;
     private $index = 0;
-    public $numErr = null ;
-    public $desErr = null ;
-    public $newID = null ;
+    public $numErr = null;
+    public $desErr = null;
+    public $newID = null;
 
     /**
      * @var \PDOStatement
      */
-    private $stm = null ;
+    private $stm = null;
 
     /**
      * @param string $conf
@@ -37,8 +43,8 @@ class Db
      */
     static public function getInstance($conf = null)
     {
-       //return new  Db($conf);
-       return new  \DB_legacy();
+        //return new  Db($conf);
+        return new   Db();
     }
 
     /**
@@ -55,7 +61,7 @@ class Db
     {
 
         // todo remove cache parameter
-        unset($cache) ;
+        unset($cache);
 
 
         $this->_getEncodings();
@@ -63,42 +69,39 @@ class Db
 
         $this->sql = $sql;
 
-        error_log( $this->sql ) ;
         $this->rows = array();
 
         try {
             $this->stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
 
-            if ( empty( $this->stm )) {
-                throw new \Exception('Bad Query: ' .  $this->sql );
+            if (empty($this->stm)) {
+                throw new \Exception('Bad Query: ' . $this->sql);
             }
 
-            foreach( $this->stm as $row ) {
+            foreach ($this->stm as $row) {
 
-                $this->rows[] = $row ;
+                $this->rows[] = $row;
 
             }
 
-        } catch  ( \Exception $e  ) {
+        } catch (\Exception $e) {
 
-                $this->numErr = $this->db->errorCode() ;
+            $this->numErr = $this->db->errorCode();
 
         }
 
-        if ( count( $this->rows ) == 0 ) {
+        if (count($this->rows) == 0) {
 
-            $this->EOF = true ;
+            $this->EOF = true;
 
         } else {
-            $this->index = 0 ;
-            $this->EOF = false ;
-            $this->numRows = count( $this->rows ) ;
-            $this->row = $this->rows[0] ;
-            $this->numFields = count( $this->row ) ;
+            $this->index = 0;
+            $this->EOF = false;
+            $this->numRows = count($this->rows);
+            $this->row = $this->rows[0];
+            $this->numFields = count($this->row);
         }
 
-
-        error_log( "TOTAL: " . count( $this->rows )  ) ;
 
     }
 
@@ -109,24 +112,22 @@ class Db
      */
     function Execute($sql)
     {
-            //Encode to dbConfig value in table config
-            $this->_getEncodings();
-            $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+        //Encode to dbConfig value in table config
+        $this->_getEncodings();
+        $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
+        $this->sql = $sql;
 
-            $this->sql = $sql;
+        $this->rows = array();
+        $this->EOF = true;
+        $this->newID = null;
 
-            $this->rows = array();
-            $this->EOF = true ;
-            $this->newID = null ;
-
-           if ( $this->db->exec($this->sql ) ) {
-               $this->newID = $this->db->lastInsertId() ;
-               return true ;
-           } else {
-               $this->numErr = $this->db->errorCode() ;
-               $this->desErr = $this->db->errorInfo() ;
+        if ($this->db->exec($this->sql)) {
+            $this->newID = $this->db->lastInsertId();
+            return true;
+        } else {
+            $this->numErr = $this->db->errorCode();
+            $this->desErr = $this->db->errorInfo();
         }
-
 
 
         return false;
@@ -137,10 +138,10 @@ class Db
      */
     function Next()
     {
-        if ( !$this->EOF ) {
-            $this->index++ ;
-            if ( $this->index >= count( $this->rows ) ) {
-                $this->EOF = true ;
+        if (!$this->EOF) {
+            $this->index++;
+            if ($this->index >= count($this->rows)) {
+                $this->EOF = true;
             } else {
                 $this->row = $this->rows[$this->index];
             }
@@ -148,6 +149,16 @@ class Db
 
         return $this->EOF;
 
+    }
+
+    function Go($number)
+    {
+        $this->index = $number;
+        if ($this->index >= count($this->rows)) {
+            $this->EOF = true;
+        } else {
+            $this->row = $this->rows[$this->index];
+        }
     }
     /**
      *
@@ -169,7 +180,7 @@ class Db
             try {
                 $stm = $this->db->query($this->sql, PDO::FETCH_ASSOC);
 
-                foreach( $stm as $row ) {
+                foreach ($stm as $row) {
                     $configKey = $row['ConfigKey'];
                     $configValue = $row['ConfigValue'];
                     if ($configKey == 'dbEncoding') {
@@ -202,7 +213,7 @@ class Db
     {
 
 
-        if ( isset(  $col, $this->row[ $col ] )) {
+        if (isset($col, $this->row[$col])) {
 
             $this->_getEncodings();
             $value = \Ximdex\XML\Base::recodeSrc($this->row[$col], $this->workingEncoding);
@@ -220,6 +231,7 @@ class Db
     public static function sqlEscapeString($value)
     {
 
+
         if (is_null($value)) {
             return 'NULL';
         }
@@ -228,9 +240,7 @@ class Db
             XMD_Log::info("WARNING: A SQL statement is converting an empty string to NULL");
             return 'NULL';
         }
-
-
-        return "'" . @mysql_real_escape_string($value) . "'";
+        return self::getInstance()->db->quote($value);
     }
 
 }

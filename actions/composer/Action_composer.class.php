@@ -33,13 +33,13 @@ use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Parsers\ParsingXimMenu;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Db;
 use Ximdex\Utils\Serializer;
 use Ximdex\Utils\Session;
 use Ximdex\Widgets\Widget;
 use Ximdex\XML\Base;
 use Ximdex\Logger as XMD_Log;
-use DB_legacy as DB;
-
+ 
 ModulesManager::file('/inc/utils.php');
 
  ModulesManager::file('/inc/model/orm/UnverifiedUsers_ORM.class.php');

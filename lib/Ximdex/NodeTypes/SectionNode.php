@@ -27,7 +27,7 @@
 
 namespace Ximdex\NodeTypes;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use Ximdex\Deps\DepsManager;
 use Node;
 use Ximdex\Models\NodeType;
@@ -118,7 +118,7 @@ class SectionNode extends FolderNode
 
         $news = array();
         $i = 0;
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Query($sql);
 
         while (!$dbObj->EOF) {

@@ -1,7 +1,7 @@
 <?php
 namespace Ximdex\Models;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -31,7 +31,7 @@ class NodeDependencies
 {
 
     /**
-     * @var DB
+     * @var Db
      */
     var $dbObj;
 
@@ -40,7 +40,7 @@ class NodeDependencies
      */
     public function __construct()
     {
-        $this->dbObj = new DB();
+        $this->dbObj = new Db();
     }
 
 

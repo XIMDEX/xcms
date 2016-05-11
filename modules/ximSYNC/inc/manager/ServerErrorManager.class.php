@@ -28,7 +28,7 @@
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Logger as XMD_Log ;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db;
 
 include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/inc/model/ServerErrorByPumper.class.php");
 include_once(XIMDEX_ROOT_PATH."/modules/ximSYNC/conf/synchro_conf.php");

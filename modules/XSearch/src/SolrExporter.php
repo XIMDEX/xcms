@@ -3,7 +3,7 @@
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db;
 use Ximdex\Services\NodeType;
 
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');

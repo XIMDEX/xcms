@@ -27,7 +27,7 @@
 namespace Ximdex\Utils\Sync;
 
 use Ximdex\Runtime\DataFactory;
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
 use ModulesManager;
 use Ximdex\Utils\PipelineManager;
 use Ximdex\Models\Server;
@@ -81,7 +81,7 @@ class Synchronizer
     /// Construct
     function __construct($nodeID = null)
     {
-        $this->dbObj = new DB();
+        $this->dbObj = new Db();
         if (!is_null($nodeID))
             $this->SetID($nodeID);
         $this->errorList[1] = _('The node does not exist');
@@ -217,7 +217,7 @@ class Synchronizer
 
                         $query = "INSERT INTO Synchronizer (IdSync, IdServer, IdNode, IdChannel, DateUp, DateDown,
 							RemotePath, FileName, Linked) VALUES (NULL, $serverId, " . $node->get('IdNode') . ",
-							" . $contents['channel'] . ", $dateUp, " . DB::sqlEscapeString($dateDown) . ", '$relativePath',
+							" . $contents['channel'] . ", $dateUp, " . Db::sqlEscapeString($dateDown) . ", '$relativePath',
 							'$publishedName', '$linked')";
                         $this->dbObj->Execute($query);
 
@@ -258,7 +258,7 @@ class Synchronizer
 
                 $query = "INSERT INTO Synchronizer (IdSync, IdServer, IdNode, IdChannel, DateUp, DateDown,
 				RemotePath, FileName, Linked) VALUES (NULL, $serverId, " . $node->get('IdNode') . ", NULL,
-				" . $dateUp . ", " . DB::sqlEscapeString($dateDown) . ", '" . $relativePath . "', '" . $name . "','$linked')";
+				" . $dateUp . ", " . Db::sqlEscapeString($dateDown) . ", '" . $relativePath . "', '" . $name . "','$linked')";
                 $this->dbObj->Execute($query);
             }
         }
@@ -339,7 +339,7 @@ class Synchronizer
                         if ($state == 'In') {
                             XMD_log::info("Don't delete serverFrame $frameID - settig Due2Out for unpublish");
 
-                            $dbUp = new DB();
+                            $dbUp = new Db();
                             $sql = "UPDATE Synchronizer SET State = 'Due2Out' WHERE IdSync = $frameID";
                             $dbUp->Execute($sql);
 
@@ -943,7 +943,7 @@ class Synchronizer
             if (!$channelID) {
                 $sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=" . $this->nodeID . " AND (DateUp<" . time() . " AND (DateDown>" . time() . " OR DateDown IS NULL) AND State!='OUT' AND State!='OUTDATED')";
             } else {
-                $sql = "SELECT IdSync FROM Synchronizer WHERE  IdNode=" . $this->nodeID . " AND (IdChannel=" . DB::sqlEscapeString($channelID) . " OR IdChannel IS NULL) AND (DateUp<" . time() . " AND (DateDown>" . time() . " OR DateDown IS NULL) AND State!='OUT' AND State!='OUTDATED')";
+                $sql = "SELECT IdSync FROM Synchronizer WHERE  IdNode=" . $this->nodeID . " AND (IdChannel=" . Db::sqlEscapeString($channelID) . " OR IdChannel IS NULL) AND (DateUp<" . time() . " AND (DateDown>" . time() . " OR DateDown IS NULL) AND State!='OUT' AND State!='OUTDATED')";
             }
 
             $this->dbObj->Query($sql);
@@ -1030,7 +1030,7 @@ class Synchronizer
 
     function IsPublished()
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         $sql = "SELECT IdSync FROM Synchronizer WHERE IdNode=" . $this->nodeID . " AND STATE = 'DUE'";
 
@@ -1399,7 +1399,7 @@ class Synchronizer
 
         $this->dbObj->Query($sql);
         XMD_Log::info("[SQL: " . $sql . " -> " . $this->dbObj->numRows);
-        $dbObj = new DB();
+        $dbObj = new Db();
         $rawList = array();
         $list = array();
         $servers = array();
@@ -1699,7 +1699,7 @@ class Synchronizer
 
                 if ($islinked == 0) {
                     $idSync = $this->dbObj->GetValue("IdSync");
-                    $db2 = new db();
+                    $db2 = new Db();
                     if (!in_array($idSync, $rawList)) {
                         $sql = "UPDATE Synchronizer SET State='DUE', Linked=1 WHERE State='IN' AND IdSync=" . $idSync;
                         $counterline = $db2->Execute($sql);
@@ -1757,7 +1757,7 @@ class Synchronizer
             $idFrame = $this->dbObj->GetValue('IdSync');
             $this->DeleteSyncFile($idFrame);
             XMD_Log::info("Deleting file sync/$idFrame");
-            $db = new DB();
+            $db = new Db();
             $db->Execute("DELETE FROM Synchronizer WHERE IdSync = $idFrame");
 
             $this->dbObj->Next();
@@ -1790,8 +1790,8 @@ class Synchronizer
             return false;
         }
 
-        $dbObjExe = new DB();
-        $dbObjDeps = new DB();
+        $dbObjExe = new Db();
+        $dbObjDeps = new Db();
 
         $columnsAllowed = array('IdNode', 'IdServer');
 
@@ -1869,7 +1869,7 @@ class Synchronizer
 
     function getPendingFrames($nodeID)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $frames = array();
 
         $sql = "SELECT IdSync FROM Synchronizer WHERE State = 'DUE' AND IdNode = $nodeID";
@@ -1931,7 +1931,7 @@ class Synchronizer
         $sql .= " AND IdNode = $nodeid ";
         $sql .= " AND (DateDown > $now OR DateDown IS NULL) AND State = 'In' ";
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->Query($sql);
         $path = $dbObj->GetValue("RemotePath");
         $filename = $dbObj->GetValue("FileName");

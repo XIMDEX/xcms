@@ -29,7 +29,7 @@ namespace Ximdex\Utils\Sync;
 
 use ChannelFrame;
 
-use DB_legacy as DB;
+use Ximdex\Runtime\Db as DB;
  use ModulesManager;
 use NodeFrame;
 use NodeFrameManager;
@@ -134,7 +134,7 @@ class SynchroFacade
 			$table = 'Synchronizer';
 		}
 
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$sql = "DELETE FROM $table WHERE IdServer = $physicalServerID";
 		$dbObj->Execute($sql);
 
