@@ -98,7 +98,6 @@ class DB_legacy
 
         $this->sql = $sql;
 
-        //error_log( $this->sql ) ;
         $this->rows = array();
 
         try {
@@ -133,7 +132,6 @@ class DB_legacy
         }
 
 
-        // error_log( "TOTAL: " . count( $this->rows )  ) ;
 
     }
 
@@ -147,7 +145,6 @@ class DB_legacy
         //Encode to dbConfig value in table config
         $this->_getEncodings();
         $sql = \Ximdex\XML\Base::recodeSrc($sql, $this->dbEncoding);
-        error_log(  $sql  ) ;
         $this->sql = $sql;
 
         $this->rows = array();
@@ -264,7 +261,6 @@ class DB_legacy
     public static function sqlEscapeString($value)
     {
 
-        // error_log( "escape: ". $value ) ;
 
         if (is_null($value)) {
             return 'NULL';
