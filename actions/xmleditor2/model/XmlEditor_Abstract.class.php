@@ -244,7 +244,7 @@ abstract class XmlEditor_Abstract
 	 */
     public function validateSchema($idnode, $xmldoc)
     {
-        $xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\String::stripslashes( $xmldoc);
+        $xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\Strings::stripslashes( $xmldoc);
         $schema = $this->getSchemaFile($idnode);
 
         $rngvalidator = new \Ximdex\XML\Validators\RNG();
@@ -266,7 +266,7 @@ abstract class XmlEditor_Abstract
         $docXmlOrigen = new DOMDocument();
         $docXmlOrigen->loadXML($xmlOrigenContent);
         $docHtml = new DOMDocument();
-        $docHtml = $docHtml->loadHTML(\Ximdex\Utils\String::stripslashes( $htmldoc));
+        $docHtml = $docHtml->loadHTML(\Ximdex\Utils\Strings::stripslashes( $htmldoc));
 
         // Transforming HTML into XML
         $htmlTransformer = new HTML2XML();
@@ -290,7 +290,7 @@ abstract class XmlEditor_Abstract
 	 */
     protected function _normalizeXmlDocument($idNode, $xmldoc, $deleteDocxap = true)
     {
-        $xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\String::stripslashes( $xmldoc);
+        $xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\Strings::stripslashes( $xmldoc);
         $doc = new DOMDocument();
         $doc->loadXML($xmldoc);
         $docxap = $doc->firstChild;

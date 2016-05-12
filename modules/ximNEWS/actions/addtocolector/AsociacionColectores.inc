@@ -94,7 +94,7 @@ function getColectores($nodeID){
 	$this->str_xml .= $obj_colector->mostrar_colectores_xml();
 	$resultado = $this->getXMLFinal();
 
-	return \Ximdex\Utils\String::stripslashes( $resultado);
+	return \Ximdex\Utils\Strings::stripslashes( $resultado);
 
 }
 
@@ -111,7 +111,7 @@ function removeTags($tag_name){
 //Method which add the beginning and end tags to xml
 function getXMLFinal(){
 
-	 $resultado = "<respuesta>" . \Ximdex\Utils\String::stripslashes( $this->str_xml) . "</respuesta>";
+	 $resultado = "<respuesta>" . \Ximdex\Utils\Strings::stripslashes( $this->str_xml) . "</respuesta>";
 	 return $resultado;
 }
 

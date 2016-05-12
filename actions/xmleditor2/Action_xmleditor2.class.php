@@ -253,7 +253,7 @@ class Action_xmleditor2 extends ActionAbstract
     {
         $idnode = $this->request->getParam('nodeid');
         $xmldoc = Request::post('content');
-        $xmldoc = \Ximdex\Utils\String::stripslashes($xmldoc);
+        $xmldoc = \Ximdex\Utils\Strings::stripslashes($xmldoc);
         $this->getEditor($idnode);
         $ret = $this->_editor->validateSchema($idnode, $xmldoc);
         $this->printContent($ret);

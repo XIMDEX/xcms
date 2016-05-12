@@ -493,15 +493,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
             // NOTE: Delete docxap tags and UID attributes
             $xmlContent = $this->_normalizeXmlDocument($idNode, $content);
-            $xmlContent = \Ximdex\Utils\String::stripslashes($xmlContent);
+            $xmlContent = \Ximdex\Utils\Strings::stripslashes($xmlContent);
 
             // Saving XML
             if ($autoSave === false) {
-                $this->node->SetContent(\Ximdex\Utils\String::stripslashes($xmlContent), true);
+                $this->node->SetContent(\Ximdex\Utils\Strings::stripslashes($xmlContent), true);
                 $this->node->RenderizeNode();
             } else {
                 $idUser = \Ximdex\Utils\Session::get('userID');
-                if (!$idUser || !FsUtils::file_put_contents(\App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\String::stripslashes($xmlContent))) {
+                if (!$idUser || !FsUtils::file_put_contents(\App::getValue('AppRoot') . \App::getValue('TempRoot') . "/xedit_" . $idUser . "_" . $idNode, \Ximdex\Utils\Strings::stripslashes($xmlContent))) {
                     XMD_Log::error(_("The content of " . $idNode . " could not be saved"));
                     return false;
                 }
@@ -559,7 +559,7 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
 
         if (!is_null($content)) {
             $content = $this->_normalizeXmlDocument($idNode, $content);
-            $content = \Ximdex\Utils\String::stripslashes($content);
+            $content = \Ximdex\Utils\Strings::stripslashes($content);
         } else {
             $content = '';
         }

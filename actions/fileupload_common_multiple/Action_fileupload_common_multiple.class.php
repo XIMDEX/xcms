@@ -275,7 +275,7 @@ class Action_fileupload_common_multiple extends ActionAbstract {
     //Creating a node according to name and file path
     private function _createNode($file, $idNode,  $type, $metadata, $overwrite) {
 
-        $normalizedName = \Ximdex\Utils\String::normalize($file["name"]);
+        $normalizedName = \Ximdex\Utils\Strings::normalize($file["name"]);
         $baseIoInferer = new BaseIOInferer();
         //Finding out element nodetype
         if (empty($type) || $type == 'null') {

@@ -58,7 +58,7 @@ class View_PreviewInServer extends Abstract_View implements Interface_View
             return NULL;
         }
 
-        $content = htmlspecialchars_decode(\Ximdex\Utils\String::stripslashes($content));
+        $content = htmlspecialchars_decode(\Ximdex\Utils\Strings::stripslashes($content));
         $previewServer = $this->_serverNode->class->GetPreviewServersForChannel($this->_idChannel);
 
         if (!$previewServer) {

@@ -53,7 +53,7 @@ define ('OPERATION_ADD', 'add');
 	}
 	
 	do {
-		$destFolder = sprintf('/tmp/%s', \Ximdex\Utils\String::generateRandomChars(12, true, true, true));
+		$destFolder = sprintf('/tmp/%s', \Ximdex\Utils\Strings::generateRandomChars(12, true, true, true));
 	} while(is_dir($destFolder));
 	
 	if (!mkdir($destFolder)) {

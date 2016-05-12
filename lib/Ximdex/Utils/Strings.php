@@ -31,7 +31,7 @@ namespace Ximdex\Utils ;
  *
  *
  */
-class String {
+class Strings {
     /**
      *
      * @param $texto

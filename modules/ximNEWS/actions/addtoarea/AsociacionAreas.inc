@@ -119,7 +119,7 @@ function getAreas($nodeID){
 	$this->str_xml .= "</table>";
 
 	$resultado = $this->getXMLFinal();
-	return \Ximdex\Utils\String::stripslashes( $resultado);
+	return \Ximdex\Utils\Strings::stripslashes( $resultado);
 
 }
 
@@ -135,7 +135,7 @@ function removeTags($tag_name){
 
 //Method which add opening and closing labels to xml
 function getXMLFinal(){
-	 $resultado = "<respuesta>" . \Ximdex\Utils\String::stripslashes( $this->str_xml) . "</respuesta>";
+	 $resultado = "<respuesta>" . \Ximdex\Utils\Strings::stripslashes( $this->str_xml) . "</respuesta>";
 	 return $resultado;
 }
 

@@ -213,7 +213,7 @@ class Action_edittext extends ActionAbstract
             $this->messages->add(_('The document which is trying to be edited does not exist'), MSG_TYPE_ERROR);
             $this->renderMessages();
         }
-        $node->SetContent(\Ximdex\Utils\String::stripslashes($content), true);
+        $node->SetContent(\Ximdex\Utils\Strings::stripslashes($content), true);
         $node->RenderizeNode();
 
         $nodeType = new NodeType($node->get('IdNodeType'));

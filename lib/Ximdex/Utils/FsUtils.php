@@ -405,7 +405,7 @@ class FsUtils
         */
         do {
             //$fileName = Utils::generateRandomChars(8);
-            $fileName = String::generateUniqueID();
+            $fileName = Strings::generateUniqueID();
             $tmpFile = sprintf("%s/%s%s%s", $containerFolder, $prefix, $fileName, $sufix);
         } while (is_file($tmpFile));
         XMD_Log::debug("getUniqueFile: return: $fileName | container: $containerFolder");
@@ -421,7 +421,7 @@ class FsUtils
     static public function getUniqueFolder($containerFolder, $sufix = '', $prefix = '')
     {
         do {
-            $tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix,  String::generateRandomChars(8), $sufix);
+            $tmpFolder = sprintf("%s/%s%s%s/", $containerFolder, $prefix,  Strings::generateRandomChars(8), $sufix);
         } while (is_dir($tmpFolder));
         return $tmpFolder;
     }

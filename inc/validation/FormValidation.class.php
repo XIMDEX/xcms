@@ -41,7 +41,7 @@ class FormValidation {
         $inputName = $params["inputName"];
         $name=$params[$inputName];
         if (!empty($params["process"]) && $params["process"] == "normalize") {
-            $name = \Ximdex\Utils\String::normalize($name);
+            $name = \Ximdex\Utils\Strings::normalize($name);
         }
         $node = new Node($idnode);
         if($node->nodeType->get("IsFolder")==0){

@@ -208,7 +208,7 @@ class Action_prevdoc extends ActionAbstract
 	private function _normalizeXmlDocument($xmldoc) {
 
 		/*$xmldoc = '<?xml version="1.0" encoding="UTF-8"?>' . \Ximdex\Utils\String::stripslashes( $xmldoc);*/
-		$xmldoc = \Ximdex\Utils\String::stripslashes( $xmldoc);
+		$xmldoc = \Ximdex\Utils\Strings::stripslashes( $xmldoc);
 
 		$doc = new DOMDocument();
 		$doc->loadXML($xmldoc);

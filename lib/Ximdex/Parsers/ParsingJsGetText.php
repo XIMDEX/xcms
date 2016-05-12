@@ -89,7 +89,7 @@ class ParsingJsGetText
             $_js = str_replace("/", "_", $_js);
             $_js = str_replace("\\", "_", $_js);
             $_js = str_replace(".", "_", $_js);
-            $this->_file = \Ximdex\Utils\String::convertText($_js) . ".js";
+            $this->_file = \Ximdex\Utils\Strings::convertText($_js) . ".js";
         }
     }
 
