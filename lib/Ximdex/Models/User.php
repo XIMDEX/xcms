@@ -623,6 +623,8 @@ class User extends UsersOrm
         $arrayActions = array();
 
 
+
+
         //Getting roles for the user for every group.
         foreach ($arrayGroups as $idGroup) {
             $aux = array();

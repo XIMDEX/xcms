@@ -107,7 +107,6 @@ class Base extends XML
      */
     public static function recodeSrc($src, $encoding)
     {
-
         $isUtf8 = self::isUtf8($src . " ");
         if ($src == null) {
             //utf8_encode encode the null value in ''

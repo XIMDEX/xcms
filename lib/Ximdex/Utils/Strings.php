@@ -33,7 +33,7 @@ namespace Ximdex\Utils ;
  */
 class Strings {
     /**
-     *
+     * 
      * @param $texto
      * @return string
      */
