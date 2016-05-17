@@ -85,9 +85,11 @@ class Db
             }
 
         } catch (\Exception $e) {
-
-            $this->numErr = $this->db->errorCode();
-
+            if($this->db->errorCode() == PDO::ERR_NONE){
+                $this->numErr = null;
+            }else{
+                $this->numErr = $this->db->errorCode();
+            }
         }
 
         if (count($this->rows) == 0) {
@@ -125,7 +127,11 @@ class Db
             $this->newID = $this->db->lastInsertId();
             return true;
         } else {
-            $this->numErr = $this->db->errorCode();
+            if($this->db->errorCode() == PDO::ERR_NONE){
+                $this->numErr = null;
+            }else{
+                $this->numErr = $this->db->errorCode();
+            }
             $this->desErr = $this->db->errorInfo();
         }
 
@@ -192,9 +198,12 @@ class Db
 
 
             } catch (\PDOException  $e) {
-                $this->numErr = $e;
+                if($this->db->errorCode() == PDO::ERR_NONE){
+                    $this->numErr = null;
+                }else{
+                    $this->numErr = $this->db->errorCode();
+                }
                 $this->desErr = $e;
-
             }
 
         }

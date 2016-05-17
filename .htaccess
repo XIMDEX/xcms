@@ -15,6 +15,7 @@ RewriteCond %{REQUEST_FILENAME} !^(.+)\.svg$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.eot$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.ttf$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.woff$
+RewriteCond %{REQUEST_FILENAME} !^(.+)\.woff2$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.ico$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.js$
 RewriteCond %{REQUEST_FILENAME} !^(.+)\.png$

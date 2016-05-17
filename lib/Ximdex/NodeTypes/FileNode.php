@@ -281,8 +281,10 @@ class FileNode extends Root
     {
         $node = new Node($this->nodeID);
         $path = pathinfo($node->GetPath());
-        $db = new DB();
-        $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
+        if(isset($path['dirname'])) {
+            $db = new DB();
+            $db->execute(sprintf("update Nodes set Path = '%s' where IdNode = %s", $path['dirname'], $this->nodeID));
+        }
     }
 
     function RenameNode($name = null)

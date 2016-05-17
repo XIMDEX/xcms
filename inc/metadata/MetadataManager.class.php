@@ -540,8 +540,7 @@ class MetadataManager{
         if (!($idNode > 0)) {
             XMD_Log::error("An error ocurred estimating parent node, operation will be aborted, contact with your administrator");
             $values = array('name' => 'Unknown');
-            $result["error"] = $values;
-            return $result;
+            return ["error" => $values];
         }
 
         // Creating container
@@ -582,8 +581,7 @@ class MetadataManager{
             'idNode' => $idNode,
             'nodeName' => $name
             );
-            $result["error"] = $values;
-            return $result;
+            return ["error" => $values];
         } else {
             XMD_Log::info("Container $name has been successfully created");            
         }

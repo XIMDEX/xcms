@@ -256,7 +256,7 @@ class GenericData extends Overloadable
             $dbObj = new Db();
             $dbObj->Execute($query);
             if ($dbObj->numErr > 0) {
-                $this->messages->add($dbObj->desErr, MSG_TYPE_ERROR);
+                $this->messages->add($dbObj->desErr[2], MSG_TYPE_ERROR);
                 foreach ($this->messages->messages as $message) {
                     XMD_Log::error(sprintf("%s: [%s]", $message['message'], $query));
                 }
