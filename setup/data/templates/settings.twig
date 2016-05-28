@@ -1,0 +1,109 @@
+{% extends "layout.twig" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ parent() }}
+
+{% endblock %}
+{% block content %}
+
+
+    <h2>
+        {{ title }}
+    </h2>
+
+
+
+
+
+
+
+
+
+
+        <p>
+Set the password for the user Ximdex (Administrator)        </p>
+
+        <form action="{{ currentStepLink.href  }}" method="POST" onsubmit="ShowLoading()">
+            <div class="form_item  form_item--user">
+                <label for="">User</label>
+                <span class="user">ximdex</span>
+            </div>
+
+            {%  if (errors  and form.submitted == true ) or ( form.submitted == false )%}
+
+            <div class="form_item">
+
+            </div>
+
+            <!-- DB PASS -->
+            <div class="form_item">
+                <label for="password">Password:</label>
+                <input id="password" type="password" placeholder="Enter password" name="password" >
+            </div>
+            <!-- DB REPEAT PASS -->
+            <div class="form_item">
+                <label for="repeatpassword">Repeat password:</label>
+                <input id="repeatpassword" type="password" placeholder="Enter password" name="repeatpassword">
+            </div>
+
+            {% endif  %}
+
+    {% if errors  %}
+    <div class="panel-warnings">
+
+        {% for error  in errors %}
+
+            <p class="error"> {{ error.message  }}</p>
+
+
+        {% endfor %}
+    </div>
+    <div class="buttons-bottom">
+        <button id="submitButton" type="submit" class="launch_ximdex action_launcher" alt="Check tables structure" title="Check">
+            Check Again
+            &nbsp;
+            <span class="glyphicon glyphicon-cog"></span>
+        </button>
+
+    </div>
+    {% else  %}
+
+        {%  if form.submitted  %}
+        {# next step #}
+            <div class="buttons-bottom">
+                <a class="launch_ximdex action_launcher" href="../" class="btn btn-default"
+                   alt="Start Installation" title="Start Installation">
+                   Enjoy Ximdex !
+                    &nbsp;
+                    <span class="glyphicon glyphicon-cog"></span>
+                </a>
+            </div>
+        {% else  %}
+            <button id="submitButton" type="submit" class="launch_ximdex action_launcher" alt="Check tables structure" title="Check">
+                Check
+                &nbsp;
+                <span class="glyphicon glyphicon-cog"></span>
+            </button>
+
+        {% endif  %}
+
+
+
+    {% endif %}
+
+            <script type="text/javascript">
+                function ShowLoading(e) {
+                    var submitButton = document.getElementById("submitButton");
+                    submitButton.classList.add('btn-loading');
+                    return true;
+                }
+            </script>
+        </form>
+
+
+
+
+
+
+{% endblock %}

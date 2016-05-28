@@ -43,66 +43,6 @@ ModulesManager::file('/inc/mvc/App.class.php');
 ModulesManager::file('/inc/i18n/I18N.class.php');
 ModulesManager::file('/inc/install/InstallController.class.php');
 
-function echo_gt_or_not($msg)
-{
-    if (function_exists('_')) {
-        return _($msg);
-    }
-    return $msg;
-}
-
-
-
-function checkFolders()
-{
-    $msg = null;
-
-    $foldersToCheck = array(
-        //array('FOLDER' => '/data/backup', 'MODULE' => 'ximIO'),
-        array('FOLDER' => '/data/cache', 'MODULE' => ''),
-        //array('FOLDER' => '/data/cache/ximRAM', 'MODULE' => 'ximRAM'),
-        array('FOLDER' => '/data/files', 'MODULE' => ''),
-        array('FOLDER' => '/data/nodes', 'MODULE' => ''),
-        array('FOLDER' => '/data/sync', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp/uploaded_files', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp/js', 'MODULE' => ''),
-        array('FOLDER' => '/data/tmp/templates_c', 'MODULE' => ''),
-        //array('FOLDER' => '/data/trash', 'MODULE' => 'ximTRASH'),
-        array('FOLDER' => '/logs', 'MODULE' => '')
-    );
-    reset($foldersToCheck);
-    while (list(, $folderInfo) = each($foldersToCheck)) {
-        if (!empty($folderInfo['MODULE'])) {
-            if (!ModulesManager::isEnabled($folderInfo['MODULE'])) {
-                continue;
-            }
-        }
-        $folder = App::getValue('XIMDEX_ROOT_PATH') . $folderInfo['FOLDER'];
-        if (!is_dir($folder)) {
-            mkdir($folder, 0770, true);
-        }
-
-        $file = FsUtils::getUniqueFile($folder);
-        $file = $folder . DIRECTORY_SEPARATOR . $file;
-
-        FsUtils::file_put_contents($file, 'test');
-
-        if (FsUtils::file_get_contents($file) != 'test') {
-            $msg = sprintf(echo_gt_or_not("Temporary file created in %s could not be read or written"), $folder);
-        }
-
-        if (is_file($file)) {
-            FsUtils::delete($file);
-        }
-    }
-
-
-    if (!empty($msg))
-        die(echo_gt_or_not($msg));
-
-}
-
 function goLoadAction()
 {
     header(sprintf("Location: %s", App::getValue('UrlRoot')));
@@ -110,10 +50,9 @@ function goLoadAction()
 
 //Main thread
 if (!InstallController::isInstalled()) {
+    header( 'Location: /setup');
+    die();
 
-    $installController = new InstallController();
-
-    $installController->dispatch();
 
 } else {
     $locale = \Ximdex\Utils\Session::get('locale');
