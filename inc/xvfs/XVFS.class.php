@@ -81,7 +81,7 @@ class XVFS {
 	/**
 	 *  Constructor sets up {@link $_tree}
 	 */
-	function XVFS($key = false) {
+	public function __construct($key = false) {
         error_log( '**XVFS**') ;
 		// to ensure singleton.
 		if ($key != M_PI) {

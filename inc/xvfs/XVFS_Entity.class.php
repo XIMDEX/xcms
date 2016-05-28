@@ -44,7 +44,7 @@ abstract class XVFS_Entity {
 	 * 
 	 * @param string bpath Backend path
 	 */
-	function XVFS_Entity($bpath) {
+	public function __construc($bpath) {
 		$this->_data = array();
 		$this->_data['bpath'] = $bpath;
 	}

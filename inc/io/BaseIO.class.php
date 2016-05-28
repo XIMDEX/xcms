@@ -53,7 +53,7 @@ class BaseIO
     var $messages = NULL;
 
 
-    function BaseIO()
+    public function __construct()
     {
         $this->messages = new  Messages();
     }

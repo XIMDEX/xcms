@@ -40,7 +40,7 @@ class xsltnode extends FileNode
 
     private $xsltOldName = ""; //String;
 
-    function xsltnode(&$node)
+    public function __construct(&$node)
     {
 
         if (is_object($node))

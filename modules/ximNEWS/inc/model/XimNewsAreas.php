@@ -30,7 +30,7 @@
  
 
 
- ModulesManager::file('/inc/model/orm/XimNewsAreas_ORM.class.php', 'ximNEWS');
+ModulesManager::file('/inc/model/orm/XimNewsAreas_ORM.class.php', 'ximNEWS');
 
 
 class XimNewsAreas extends XimNewsAreas_ORM {
@@ -43,7 +43,7 @@ class XimNewsAreas extends XimNewsAreas_ORM {
 			6 => 'No existen categor�as para asociar la noticia.'
 		);
 */
-	function XimNewsAreas($IdArea = NULL) {
+	public function __construct($IdArea = NULL) {
 		if (!is_null($IdArea)) {
 			$this->set('IdArea', $IdArea);
 		}

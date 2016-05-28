@@ -33,7 +33,7 @@ class Module_ximPUBLISHtools extends Module {
     const PUB_REPORT_ACTION_ID = '7500';
     const PUB_REPORT_HISTORY_ID = '7501';
 
-    function Module_ximPUBLISHtools() {
+    public function __construct () {
         parent::__construct('ximPUBLISHtools', dirname(__FILE__));
     }
 

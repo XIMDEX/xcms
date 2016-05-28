@@ -38,10 +38,10 @@ class XVFS_Entity_File extends XVFS_Entity
      *
      * @param string bpath Backend path
      */
-    function XVFS_Entity_File($bpath = null)
+    public function __construc($bpath = null)
     {
 
-        parent::XVFS_Entity($bpath);
+        parent::__construc($bpath);
 
         // Si el nodo existe y no es un fichero se limpia la estructura
         if ($this->get('exists') && !$this->get('isfile')) $this->clear();

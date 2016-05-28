@@ -33,7 +33,7 @@ class BaseIOInferer {
 	var $messages = NULL;
 
 
-	function BaseIOInferer() {
+	public function __construct() {
 		$this->messages = new \Ximdex\Utils\Messages();
 	}
 

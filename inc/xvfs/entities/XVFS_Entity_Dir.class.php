@@ -41,9 +41,9 @@ class XVFS_Entity_Dir extends XVFS_Entity {
 	 * @param object node
 	 * @param string bpath Backend path
 	 */
-	function XVFS_Entity_Dir($node=null, $bpath=null) {
+	public function __construc($node=null, $bpath=null) {
 		
-		parent::XVFS_Entity($node, $bpath);
+		parent::__construc($node, $bpath);
     	
 		$this->_childrens = null;
     	

@@ -51,23 +51,7 @@ function echo_gt_or_not($msg)
     return $msg;
 }
 
-function check_php_version()
-{
-    if (version_compare(PHP_VERSION, '5', '<')) {
-        $msg = "ERROR: PHP5 is needed. PHP version detected: [" . PHP_VERSION . "].";
-        die(echo_gt_or_not($msg));
-    }
-}
 
-function check_config_files()
-{
-    $install_params = file_exists(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-params.conf.php');
-    $install_modules = file_exists(App::getValue('XIMDEX_ROOT_PATH') . '/conf/install-modules.php');
-
-    if (!$install_params || !$install_modules) {
-        $_GET["action"] = "installer";
-    }
-}
 
 function checkFolders()
 {
@@ -134,16 +118,6 @@ if (!InstallController::isInstalled()) {
 } else {
     $locale = \Ximdex\Utils\Session::get('locale');
     I18N::setup($locale); // Check coherence with HTTP_ACCEPT_LANGUAGE
-
-    check_php_version();
-    checkFolders();
-    check_config_files();
-
-    //\Ximdex\Utils\Session::check();
-
-    //goLoadAction();
-
-    // FrontController dipatches HTTP requests
     $frontController = new FrontController();
     $frontController->dispatch();
 }

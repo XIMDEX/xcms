@@ -96,7 +96,8 @@ class FrontControllerHTTP extends FrontController
         $uri_request = explode("?", $_SERVER["REQUEST_URI"], 2);
         $ximdex = parse_url(App::getValue('UrlRoot'));
 
-        if ($ximdex["host"] != $_SERVER['SERVER_NAME'] | (isset($ximdex["path"]) && strpos($uri_request[0], $ximdex["path"]) === false)) {
+
+        if (  (isset($ximdex["path"]) && strpos($uri_request[0], $ximdex["path"]) === false)) {
             $this->_setError("Error: la URL de acceso no coincide con la UrlRoot", "FrontController");
             return false;
         } else {

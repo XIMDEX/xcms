@@ -74,7 +74,7 @@ class Action_addfoldernode extends ActionAbstract
             $CanAttachGroups = $nt->get('CanAttachGroups');
         } else {
             $nodeType = $this->GetTypeOfNewNode($nodeID);
-            $CanAttachGroups = $nodeType['CanAttachGroups'];
+            $CanAttachGroups = (isset( $nodeType['CanAttachGroups'] )) ? $nodeType['CanAttachGroups'] : false ;
         }
         //
 
