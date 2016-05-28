@@ -21,9 +21,11 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+
+use Ximdex\Runtime\App;
 
 ModulesManager::file('/inc/model/Namespaces.class.php');
 ModulesManager::file('/services/Xowl/searchers/AnnotationSearcherStrategy.class.php');
@@ -32,106 +34,114 @@ ModulesManager::file('/services/Xowl/searchers/ExternalVocabularySearcherStrateg
 ModulesManager::file('/services/Xowl/searchers/XimdexSearcherStrategy.class.php');
 
 
-class OntologyService {
+/**
+ * Class OntologyService
+ */
+class OntologyService
+{
 
-	private $key = false;
-	private $providers = array(); 
-	private static $allProviders = array(
-						"semantic" => "AnnotationSearcherStrategy",
-						"content" => "ContentEnricherSearcherStrategy",
-						"external" => "ExternalVocabularySearcherStrategy"
-									);
+    /**
+     * @var array
+     */
+    private static $allProviders = array(
+        "semantic" => "AnnotationSearcherStrategy",
+        "content" => "ContentEnricherSearcherStrategy",
+        "external" => "ExternalVocabularySearcherStrategy"
+    );
+    /**
+     * @var bool
+     */
+    private $key = false;
+    /**
+     * @var array
+     *
+     */
+    private $providers = array();
 
-	
-	/**
-	*Class constructor. Check if Xowl module is enabled and if exists EnricherKey;
-	*It can receive a variable number of params with the name of the providers to load.
-	*/
-	public function __construct(){
+    /**
+     *Class constructor. Check if Xowl module is enabled and if exists EnricherKey;
+     *It can receive a variable number of params with the name of the providers to load.
+     */
+    public function __construct()
+    {
 
-		//Loading all defined providers
-		
-		$this->loadProviders(func_get_args());
-	
-		if(ModulesManager::isEnabled('Xowl')){		
-			$key = \App::getValue( 'Xowl_token');
+        //Loading all defined providers
 
-			if($key !== NULL && $key != ''){
-				$this->key = $key;
-			}
+        $this->loadProviders(func_get_args());
 
-			
-		}
-	}
+        if (ModulesManager::isEnabled('Xowl')) {
+            $key = App::getValue('Xowl_token');
 
-	/**
-	* <p>Load all existing namespaces in this ximdex instance.</p>
-	* @return Array<Namespaces> with all namespaces in Namespaces table.
-	*/
-	public static function getAllNamespaces(){
-		$namespace = new Namespaces();
-		return $namespace->getAll();
-	}
-
-	/**
-	*Suggest related terms and resources from a text
-	*If key exists return semantic and suggested terms.
-	*@param $text: string to search related words.
-	*@return string in json format.
-	*/
-	public function suggest($text, $provider=null){
-
-		if ($this->key){
-			$result = array();
-			//For an specific provider 
-			if ($provider){
-				//It could be the type name or the class name
-				if (array_key_exists($provider,$this->providers)){
-					if (class_exists($provider)){                                            
-						$result[$type] = $provider->suggest($text)->getData();
-					}
-				}
-
-				else{
-
-				}	
-			
-			}else { //For all providers
-				foreach ($this->providers as $type => $providerName){
-					if (class_exists($providerName)){
-						$provider = new $providerName;
-						$result[$type] = $provider->suggest($text)->getData();                                                
-					}
-				}
-			}
-			$result["status"] = "ok";
-			return $result;
-		}
-		return false;
-	}
+            if ($key !== NULL && $key != '') {
+                $this->key = $key;
+            }
 
 
-	/**
-	* Load all providers and update the provider property
-	* It can receive an array of strings with the name of the providers to load.
-	* Load all providers is there aren't params or if the array is empty.
-	*/	
-	private function loadProviders($providers=null){
+        }
+    }
 
-		//It should be loaded from DB.		
-		if ($providers && count($providers)){
-			foreach ($providers as $provider) {
-				if ($provider){
-					if (array_key_exists($provider, self::$allProviders)){
-						$this->providers[$provider] = self::$allProviders[$provider];
-					}			
-				}		
-			}
-		}else{
-			$this->providers = self::$allProviders;	
-		}		
-		return $this;
-	}
+    /**
+     * Load all providers and update the provider property
+     * It can receive an array of strings with the name of the providers to load.
+     * Load all providers is there aren't params or if the array is empty.
+     */
+    private function loadProviders($providers = null)
+    {
+
+        //It should be loaded from DB.
+        if ($providers && count($providers)) {
+            foreach ($providers as $provider) {
+                if ($provider) {
+                    if (array_key_exists($provider, self::$allProviders)) {
+                        $this->providers[$provider] = self::$allProviders[$provider];
+                    }
+                }
+            }
+        } else {
+            $this->providers = self::$allProviders;
+        }
+        return $this;
+    }
+
+    /**
+     * <p>Load all existing namespaces in this ximdex instance.</p>
+     * @return Namespaces[] with all namespaces in Namespaces table.
+     */
+    public static function getAllNamespaces()
+    {
+        $namespace = new Namespaces();
+        return $namespace->getAll();
+    }
+
+    /**
+     *Suggest related terms and resources from a text
+     *If key exists return semantic and suggested terms.
+     *
+     */
+    /**
+     * @param $text
+     * @param  null|Provider[]
+     * @return array|bool
+     */
+    public function suggest($text)
+    {
+
+        if ($this->key) {
+            $result = array();
+            foreach ($this->providers as $type => $providerName) {
+                if (class_exists($providerName)) {
+                    /**
+                     * @var $provider AbstractSearcherStrategy
+                     */
+                    $provider = new $providerName;
+
+                    $result[$type] = $provider->suggest($text)->getData();
+                }
+            }
+
+            $result["status"] = "ok";
+            return $result;
+        }
+        return false;
+    }
 }
-
-?>

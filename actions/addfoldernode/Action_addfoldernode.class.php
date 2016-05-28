@@ -24,6 +24,7 @@
  * @version $Revision$
  */
 
+use Ximdex\Logger;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Language;
 use Ximdex\Models\Node;
@@ -31,6 +32,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Modules\Module;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
+use Ximdex\Services\NodeType as ServicesNodeType;
 
 ModulesManager::file('/actions/addfoldernode/model/ProjectTemplate.class.php');
 ModulesManager::file('/actions/addfoldernode/conf/addfoldernode.conf');
@@ -326,22 +328,22 @@ class Action_addfoldernode extends ActionAbstract
             $this->createProjectNodes($idFolder);
         } elseif ($idFolder > 0 && $nodeTypeName == 'XSIRRepository') {
             $node = new Node();
-            $node->CreateNode("metadata", $idFolder, \Ximdex\Services\NodeType::METADATA_SECTION);
+            $node->CreateNode("metadata", $idFolder, ServicesNodeType::METADATA_SECTION);
 
             $node = new Node();
-            $node->CreateNode("schemes", $idFolder, \Ximdex\Services\NodeType::TEMPLATE_VIEW_FOLDER);
+            $node->CreateNode("schemes", $idFolder, ServicesNodeType::TEMPLATE_VIEW_FOLDER);
 
             $node = new Node();
-            $node->CreateNode("images", $idFolder, \Ximdex\Services\NodeType::XSIR_IMAGE_FOLDER);
+            $node->CreateNode("images", $idFolder, ServicesNodeType::XSIR_IMAGE_FOLDER);
 
             $node = new Node();
-            $node->CreateNode("videos", $idFolder, \Ximdex\Services\NodeType::XSIR_VIDEO_FOLDER);
+            $node->CreateNode("videos", $idFolder, ServicesNodeType::XSIR_VIDEO_FOLDER);
 
             $node = new Node();
-            $node->CreateNode("widgets", $idFolder, \Ximdex\Services\NodeType::XSIR_WIDGET_FOLDER);
+            $node->CreateNode("widgets", $idFolder, ServicesNodeType::XSIR_WIDGET_FOLDER);
 
             $node = new Node();
-            $node->CreateNode("other", $idFolder, \Ximdex\Services\NodeType::XSIR_OTHER_FOLDER);
+            $node->CreateNode("other", $idFolder, ServicesNodeType::XSIR_OTHER_FOLDER);
         }
 
         if ($idFolder > 0) {
@@ -391,7 +393,7 @@ class Action_addfoldernode extends ActionAbstract
 
         if (empty($xFolderId)) {
 
-            \Ximdex\Logger::error($xFolderName . ' folder not found');
+            Logger::error($xFolderName . ' folder not found');
             return false;
         }
 
@@ -421,10 +423,10 @@ class Action_addfoldernode extends ActionAbstract
 
             if ($id > 0) {
                 $ret[$file->filename] = $id;
-                \Ximdex\Logger::info("Importing " . $file->basename);
+                Logger::info("Importing " . $file->basename);
             } else {
-                \Ximdex\Logger::error("Error ($id) importing " . $file->basename);
-                \Ximdex\Logger::error(print_r($io->messages->messages, true));
+                Logger::error("Error ($id) importing " . $file->basename);
+                Logger::error(print_r($io->messages->messages, true));
 
             }
         }
@@ -489,7 +491,7 @@ class Action_addfoldernode extends ActionAbstract
         foreach ($channels as $ch) {
             $nodeServer->class->AddChannel($physicalServerId, $ch);
         }
-        \Ximdex\Logger::info(   "Server creation O.K.");
+        Logger::info(   "Server creation O.K.");
 
         // common
         $arrayCommon = $server->getCommon();

@@ -119,9 +119,8 @@ class ProjectTemplate{
     }
 
     /**
-	*Static method Get all Project Templates under project folder
-    *@return array With all the Project Templates. array[projectName] = Project Templates;
-	*/
+     * @return ProjectTemplate[]
+     */
 	public static function getAllProjectTemplates(){
 		
 		//Returned array if everything is ok.

@@ -21,177 +21,182 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Node;
 use Ximdex\Models\RelTagsNodes;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');
 
-class Action_setmetadata extends ActionAbstract {
+/**
+ * Class Action_setmetadata
+ */
+class Action_setmetadata extends ActionAbstract
+{
 
-	function index() {
-   		$this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
-   		$this->addCss('/inc/widgets/select/css/ximdex.select.css');
-   		$this->addJs('/inc/widgets/select/js/ximdex.select.js');
-		$this->addJs('/actions/setmetadata/resources/js/setmetadata.js','ximTAGS');
-		$this->addCss('/actions/setmetadata/resources/css/setmetadata.css','ximTAGS');
+    /**
+     *
+     */
+    function index()
+    {
+        $this->addCss('/xmd/style/jquery/ximdex_theme/widgets/tagsinput/tagsinput.css');
+        $this->addCss('/inc/widgets/select/css/ximdex.select.css');
+        $this->addJs('/inc/widgets/select/js/ximdex.select.js');
+        $this->addJs('/actions/setmetadata/resources/js/setmetadata.js', 'ximTAGS');
+        $this->addCss('/actions/setmetadata/resources/css/setmetadata.css', 'ximTAGS');
 
-	 	$idNode	= (int) $this->request->getParam("nodeid");
-		$actionID = (int) $this->request->getParam("actionid");
-		$params = $this->request->getParam("params");
-		$tags = new Tag();
-		$max=$tags->getMaxValue();		
+        $idNode = (int)$this->request->getParam("nodeid");
+        $actionID = (int)$this->request->getParam("actionid");
+        $tags = new Tag();
+        $max = $tags->getMaxValue();
 
-		$cloud_tags = array();
-		$cTags = $tags->getTags();
-		if(is_null($cTags)){
+        $cTags = $tags->getTags();
+        if (is_null($cTags)) {
             $pcTags = '[]';
-        }else{
-            $pcTags = str_replace("'",'&#39;',json_encode($cTags, JSON_UNESCAPED_UNICODE ));
+        } else {
+            $pcTags = str_replace("'", '&#39;', json_encode($cTags, JSON_UNESCAPED_UNICODE));
         }
-        /*if(count($cTags)>0){
-		    foreach ($cTags as $tag) {
-  			    $array = array(
-  					"IdTag"=>(int)$tag["IdTag"],
-  					"Name"=>utf8_encode($tag["Name"]),
-  					"IdNamespace"=>(int)$tag["IdNamespace"]
-			    );
-  			    $cloud_tags[] = $array;
-  		    }
-        }*/
+
         $node = New Node($idNode);
 
-	 	$values = array(
-	 		'cloud_tags' => $pcTags,
-			'max_value' => $max[0][0],
-			'id_node' => $idNode,
-			'node_name' => $node->GetNodeName(),
-			'go_method' => 'save_metadata',
-			'nodeUrl' => \App::getValue( 'UrlRoot')."/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
+        $values = array(
+            'cloud_tags' => $pcTags,
+            'max_value' => $max[0][0],
+            'id_node' => $idNode,
+            'node_name' => $node->GetNodeName(),
+            'go_method' => 'save_metadata',
+            'nodeUrl' => App::getValue('UrlRoot') . "/xmd/loadaction.php?actionid=$actionID&nodeid=$idNode",
             'namespaces' => json_encode($this->getAllNamespaces())
-		);
+        );
 
-	 	//Get the actual tags of the document
-	 	$relTags = new RelTagsNodes();
+        //Get the actual tags of the document
+        $relTags = new RelTagsNodes();
         $tags = $relTags->getTags($idNode);
-        /*foreach ($tags as $i =>$tag) {
-            $tags[$i]["Name"] = "hola que ase";
-            $tags[$i]["Description"] = "hola que ase";
-            $tags[$i]["Link"] = "hola que ase";
-        }*/
-	 	$values["tags"] = str_replace("'",'&#39;',json_encode($tags, JSON_UNESCAPED_UNICODE ));
-	 	//error_log(print_r($relTags->getTags($idNode)));
-	 	$node = new Node($idNode);
-	 	$values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
 
-		$this->render($values, 'index', 'default-3.0.tpl');
-  	}
+        $values["tags"] = str_replace("'", '&#39;', json_encode($tags, JSON_UNESCAPED_UNICODE));
+        $node = new Node($idNode);
+        $values["isStructuredDocument"] = $node->nodeType->get('IsStructuredDocument');
 
-	/**
-	*<p>Get Xowl related terms from content. It's just for structuredDocument </p>
-	*/
-	public function getRelatedTagsFromContent(){
+        $this->render($values, 'index', 'default-3.0.tpl');
+    }
 
-		$idNode	= (int) $this->request->getParam("nodeid");
-		$result = array();
-		$node = new Node($idNode);
-		$result = array();
-		if ($node->nodeType->get('IsStructuredDocument')){
-			$content = $node->GetContent();
-			$result = $this->getRelatedTags($content);
-		}
-		$this->sendJson($result);
-	}
+    /**
+     * @return array
+     */
+    private function getAllNamespaces()
+    {
+        $result = array();
+        //Load from Xowl Service
+        $namespacesArray = OntologyService::getAllNamespaces();
+        //For every namespace build an array. This will be a json object
+        foreach ($namespacesArray as $namespace) {
+            $array = array(
+                "id" => $namespace->get("idNamespace"),
+                "type" => $namespace->get("type"),
+                "isSemantic" => $namespace->get("isSemantic"),
+                "nemo" => $namespace->get("nemo"),
+                "category" => $namespace->get("category"),
+                "uri" => $namespace->get("uri")
+            );
 
-	/**
-	*<p>Get a json string with related terms from $content param</p>
-	*@param $content string with text to search terms.
-	*@return false if error, a json string otherwise.
-	*/
-	private function getRelatedTags($content){
-				
-		$ontologyService = new OntologyService("semantic");
-		return $ontologyService->suggest($content);
-	}
+            $result[] = $array;
+        }
+        return $result;
+    }
 
-	private function getAllNamespaces(){
-  		$result = array();
-  		//Load from Xowl Service
-  		$namespacesArray = OntologyService::getAllNamespaces();
-  		//For every namespace build an array. This will be a json object
-  		foreach ($namespacesArray as $namespace) {
-  			$array = array(
-  					"id"=>$namespace->get("idNamespace"),
-  					"type"=>$namespace->get("type"),
-  					"isSemantic"=>$namespace->get("isSemantic"),
-  					"nemo"=>$namespace->get("nemo"),
-  					"category"=>$namespace->get("category"),
-  					"uri"=>$namespace->get("uri")
-				);
+    /**
+     *<p>Get Xowl related terms from content. It's just for structuredDocument </p>
+     */
+    public function getRelatedTagsFromContent()
+    {
 
-  			$result[] = $array;
-  		}
-  		return $result;		
-	}
-  	
-	/**
-	*<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
-	*<p>The syntax for the json returned is: </p>
-	*<code>   {"nemo1":{
-	*			type:"type1",
-	*			isSemantic:"isSemantic"
-	*		 },
-	*	     ...
-	*	}
-	*</code>
-  	*/
-  	function loadAllNamespaces(){
-  		//Sending json from result array
-		$this->sendJSON($this->getAllNamespaces());
-  	}
+        $idNode = (int)$this->request->getParam("nodeid");
+        $node = new Node($idNode);
+        $result = array();
+        if ($node->nodeType->get('IsStructuredDocument')) {
+            $content = $node->GetContent();
+            $result = $this->getRelatedTags($content);
+        }
+        $this->sendJson($result);
+    }
 
-  	function save_metadata() {
-   		$idNode	= (int) $this->request->getParam("nodeid");
+    /**
+     *<p>Get a json string with related terms from $content param</p>
+     * @param $content string with text to search terms.
+     * @return false if error, a json string otherwise.
+     */
+    private function getRelatedTags($content)
+    {
 
-   		$tags = new RelTagsNodes();
-   		$previous_tags = $tags->getTags($idNode);
+        $ontologyService = new OntologyService("semantic");
+        return $ontologyService->suggest($content);
+    }
+
+    /**
+     *<p>Return all ontolgyTypes and mnemo from Namespaces table</p>
+     *<p>The syntax for the json returned is: </p>
+     *<code>   {"nemo1":{
+     *            type:"type1",
+     *            isSemantic:"isSemantic"
+     *         },
+     *         ...
+     *    }
+     *</code>
+     */
+    function loadAllNamespaces()
+    {
+        //Sending json from result array
+        $this->sendJSON($this->getAllNamespaces());
+    }
+
+    /**
+     *
+     */
+    function save_metadata()
+    {
+        $idNode = (int)$this->request->getParam("nodeid");
+
+        $tags = new RelTagsNodes();
+        $previous_tags = $tags->getTags($idNode);
 
 
-   		$request_content = file_get_contents("php://input");
-		$data = json_decode($request_content);
-   		if (array_key_exists('tags', $data)){
-   			$tags->saveAll($data->tags, $idNode, $previous_tags);
-   		}
-		$this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
-		$values = array(
-			'messages' => $this->messages->messages,
-		);
+        $request_content = file_get_contents("php://input");
+        $data = json_decode($request_content);
+        if (array_key_exists('tags', $data)) {
+            $tags->saveAll($data->tags, $idNode, $previous_tags);
+        }
+        $this->messages->add(_("All the tags have been properly associated."), MSG_TYPE_NOTICE);
+        $values = array(
+            'messages' => $this->messages->messages,
+        );
 
-		$this->sendJSON($values);
- 	}
+        $this->sendJSON($values);
+    }
 
-	public function getLocalOntology(){
-	   $ontologyName = $this->request->getParam("ontologyName");
-	   $format = $this->request->getParam("inputFormat");
-	   if (!$format)
-	       $format = "json";
-		
-       $ontologyPath = \App::getValue( "AppRoot")."/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
-	   $content = "";
-	   if (file_exists($ontologyPath)){
-			$content = FsUtils::file_get_contents($ontologyPath);
-	   }
-	
-	   header('Content-type: application/json');
-	   print ($content);
-	   exit();
-	}
+    /**
+     *
+     */
+    public function getLocalOntology()
+    {
+        $ontologyName = $this->request->getParam("ontologyName");
+        $format = $this->request->getParam("inputFormat");
+        if (!$format)
+            $format = "json";
+
+        $ontologyPath = App::getValue("AppRoot") . "/modules/ximTAGS/ontologies/{$format}/{$ontologyName}";
+        $content = "";
+        if (file_exists($ontologyPath)) {
+            $content = FsUtils::file_get_contents($ontologyPath);
+        }
+
+        header('Content-type: application/json');
+        print ($content);
+        exit();
+    }
 }
-
-?>

@@ -20,24 +20,28 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Node;
-Use Ximdex\Modules\Manager as ModulesManager ;
+use Ximdex\Modules\Manager as ModulesManager;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\App;
 
 
-class Action_moduleslist extends ActionAbstract {
+class Action_moduleslist extends ActionAbstract
+{
 
-    public static  $new_modules= array("Xowl","XSparrow","Xlyre");
+    public static $new_modules = array("Xowl", "XSparrow", "Xlyre");
 
-    public function index() {
+    public function index()
+    {
 
     }
 
-    protected function readModules() {
+    protected function readModules()
+    {
 
         $modules = array();
         //$userId = \Ximdex\Utils\Session::get('userID');
@@ -50,10 +54,10 @@ class Action_moduleslist extends ActionAbstract {
 
         $node = new Node();
         $mods = $node->find(ALL, "IdNodeType=5081", NULL, MULTI);
-        if ( !is_array( $mods )) {
+        if (!is_array($mods)) {
             $mods = array();
         }
-        foreach($mods as $mod){
+        foreach ($mods as $mod) {
             $moduleName = $mod["Name"];
             $isEnabled = $this->isEnabled($moduleName);
             $modules[] = array(
@@ -78,83 +82,91 @@ class Action_moduleslist extends ActionAbstract {
 
     }
 
-    private function moduleNotFound() {
-        $this->messages->add( _("Module not found"), MSG_TYPE_ERROR);
+    private function moduleNotFound()
+    {
+        $this->messages->add(_("Module not found"), MSG_TYPE_ERROR);
         return $this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
     }
 
 
-    public function opentab() {
+    public function opentab()
+    {
         $this->addJs('/actions/moduleslist/resources/js/validate.js');
         $this->addCss('/actions/moduleslist/resources/css/moduleslist.css');
         $lang = strtolower(\Ximdex\Utils\Session::get("locale"));
-        $base = XIMDEX_ROOT_PATH."/actions/moduleslist/template/Smarty/modules";
+        $base = XIMDEX_ROOT_PATH . "/actions/moduleslist/template/Smarty/modules";
         $userId = \Ximdex\Utils\Session::get('userID');
 
         $module_name = $this->request->getParam('modsel');
         $module_exists = ModulesManager::moduleExists($module_name);
-        if(!$module_exists) { return $this->moduleNotFound(); }
+        if (!$module_exists) {
+            return $this->moduleNotFound();
+        }
         $module_actived = ModulesManager::isEnabled($module_name);
         $module_state = ModulesManager::checkModule($module_name);
         $module_installed = (ModulesManager::get_module_state_installed() == $module_state);
-        $core_module = in_array($module_name, ModulesManager::getCoreModules() );
+        $core_module = in_array($module_name, ModulesManager::getCoreModules());
 
         $values = array(
-            "module_name"      => $module_name,
-            "module_exists"    => $module_exists,
-            "module_actived"   => $module_actived,
+            "module_name" => $module_name,
+            "module_exists" => $module_exists,
+            "module_actived" => $module_actived,
             "module_installed" => $module_installed,
-            "core_module"      => $core_module,
-            "lang"         => $lang,
-            "userId"       => $userId
+            "core_module" => $core_module,
+            "lang" => $lang,
+            "userId" => $userId
         );
 
         $file = "{$module_name}.tpl";
 
-        if ( file_exists("{$base}/{$file}" ) )  {
+        if (file_exists("{$base}/{$file}")) {
             $this->render($values, "modules/{$file}", 'default-3.0.tpl');
-        }else {
+        } else {
             return $this->moduleNotFound();
         }
+        return null;
     }
 
 
-    public function changeState() {
+    public function changeState()
+    {
         $module_name = $this->request->getParam('modsel');
         $module_exists = ModulesManager::moduleExists($module_name);
-        $module_active  = (int) $this->request->getParam('module_active');
-        $module_install  = (int) $this->request->getParam('module_install');
-        if(!$module_exists) { return $this->moduleNotFound(); }
+        $module_active = (int)$this->request->getParam('module_active');
+        $module_install = (int)$this->request->getParam('module_install');
+        if (!$module_exists) {
+            return $this->moduleNotFound();
+        }
         $state_now = ModulesManager::isEnabled($module_name);
         $module_state = ModulesManager::checkModule($module_name);
         $install_now = (ModulesManager::get_module_state_installed() == $module_state);
-        $core_module = in_array($module_name, ModulesManager::getCoreModules() );
+        $core_module = in_array($module_name, ModulesManager::getCoreModules());
 
-        if($state_now != $module_active && !$core_module) {
-            if($module_active) {
+        if ($state_now != $module_active && !$core_module) {
+            if ($module_active) {
                 //Before active, we check if install it
-                if($module_install != $install_now && $module_install) {
+                if ($module_install != $install_now && $module_install) {
                     $this->installModule($module_name);
                 }
 
                 $this->enableModule($module_name);
-            }else {
+            } else {
                 $this->disableModule($module_name);
 
                 //After disabled, we check if uninstall it
-                if($module_install != $install_now && !$module_install) {
+                if ($module_install != $install_now && !$module_install) {
                     $this->uninstallModule($module_name);
                 }
             }
-        }else {
-            if($module_install != $install_now && !$core_module) {
-                if( $module_install) {
+        } else {
+            if ($module_install != $install_now && !$core_module) {
+                if ($module_install) {
                     $this->installModule($module_name);
-                }else {
+                } else {
                     $this->uninstallModule($module_name);
                 }
-            }else {
-                $this->messages->add( _("Module not changed"), MSG_TYPE_ERROR);
+            } else {
+                $this->messages->add(_("Module not changed"), MSG_TYPE_ERROR);
             }
         }
 
@@ -163,50 +175,54 @@ class Action_moduleslist extends ActionAbstract {
     }
 
 
-    function installModule($module_name) {
+    function installModule($module_name)
+    {
 
         ModulesManager::$msg = null;
         ModulesManager::installModule($module_name);
-        if(ModulesManager::$msg != null) {
+        if (ModulesManager::$msg != null) {
             $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
             ModulesManager::$msg = null;
-        }else {
-            $this->messages->add( _("Module installed"), MSG_TYPE_NOTICE);
+        } else {
+            $this->messages->add(_("Module installed"), MSG_TYPE_NOTICE);
         }
     }
 
-    function enableModule($module_name) {
+    function enableModule($module_name)
+    {
 
         ModulesManager::$msg = null;
         ModulesManager::enableModule($module_name);
-        if(ModulesManager::$msg != null) {
+        if (ModulesManager::$msg != null) {
             $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
             ModulesManager::$msg = null;
-        }else {
-            $this->messages->add( _("Module actived"), MSG_TYPE_NOTICE);
+        } else {
+            $this->messages->add(_("Module actived"), MSG_TYPE_NOTICE);
         }
     }
 
-    function uninstallModule($module_name)  {
+    function uninstallModule($module_name)
+    {
 
         ModulesManager::uninstallModule($module_name);
-        if(ModulesManager::$msg != null) {
+        if (ModulesManager::$msg != null) {
             $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
             ModulesManager::$msg = null;
-        }else {
-            $this->messages->add( _("Module uninstalled"), MSG_TYPE_NOTICE);
+        } else {
+            $this->messages->add(_("Module uninstalled"), MSG_TYPE_NOTICE);
         }
     }
 
-    function disableModule($module_name) {
+    function disableModule($module_name)
+    {
         ModulesManager::$msg = null;
-        $this->messages->add( _("Module disabled"), MSG_TYPE_NOTICE);
+        $this->messages->add(_("Module disabled"), MSG_TYPE_NOTICE);
         ModulesManager::disableModule($module_name);
-        if(ModulesManager::$msg != null) {
+        if (ModulesManager::$msg != null) {
             $this->messages->add(ModulesManager::$msg, MSG_TYPE_NOTICE);
             ModulesManager::$msg = null;
-        }else {
-            $this->messages->add( _("Module disabled"), MSG_TYPE_NOTICE);
+        } else {
+            $this->messages->add(_("Module disabled"), MSG_TYPE_NOTICE);
         }
     }
 }

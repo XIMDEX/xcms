@@ -37,7 +37,6 @@ define ("DOMIT_INCLUDE_DIR",XIMDEX_ROOT_PATH . "/extensions/domit/");
 include_once(XIMDEX_ROOT_PATH . "/inc/properties/systemProperties.php");
 include_once(DOMIT_INCLUDE_DIR . 'xml_domit_include.php');
 include_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
-include_once(XIMDEX_ROOT_PATH . "/inc/model/node.php");
 
 class SystemPropertiesManager{
 	var $node;

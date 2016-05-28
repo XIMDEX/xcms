@@ -26,53 +26,63 @@
  */
 namespace Ximdex\Models;
 
-if (!defined('XIMDEX_ROOT_PATH')) {
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . '/../../'));
-}
 
-use Ximdex\Runtime\DataFactory;
+use NodeProperty;
 use Ximdex\Event\NodeEvent;
 use Ximdex\Events;
-use Ximdex\Models\Group;
-use Ximdex\Models\Language;
-use ModulesManager;
-use Ximdex\Models\PipeNodeTypes;
-use Ximdex\Models\RelTagsNodes;
-use Ximdex\Models\Role;
-use Ximdex\Models\StructuredDocument;
-use Ximdex\Utils\Sync\Synchronizer;
-use Ximdex\Models\ORM\NodesOrm;
 use Ximdex\Logger as XMD_Log;
+use Ximdex\Models\ORM\NodesOrm;
+use Ximdex\Runtime\App;
+use Ximdex\Runtime\DataFactory;
 use Ximdex\Runtime\Db as DB;
-use Ximdex\Runtime\App,
-    Ximdex\Models\Dependencies,
-    Ximdex\Models\NodeDependencies,
-    Ximdex\Workflow\WorkFlow,
-    Ximdex\Models\NodeType,
-    NodeProperty;
-use Ximdex\Utils\Factory;
 use Ximdex\Utils\FsUtils;
 use Ximdex\Utils\Session;
+use Ximdex\Utils\Sync\Synchronizer;
+use Ximdex\Workflow\WorkFlow;
 use Ximdex\XML\Base;
 use Ximdex\XML\XML;
-use Ximdex\NodeTypes\SectionNode;
 
 require_once(XIMDEX_ROOT_PATH . '/inc/utils.php');
 require_once(XIMDEX_ROOT_PATH . '/inc/model/NodeProperty.class.php');
 
+/**
+ *
+ */
 define('DETAIL_LEVEL_LOW', 0);
+/**
+ *
+ */
 define('DETAIL_LEVEL_MEDIUM', 1);
+/**
+ *
+ */
 define('DETAIL_LEVEL_HIGH', 2);
 
 if (!defined('COUNT')) {
+    /**
+     *
+     */
     define('COUNT', 0);
+    /**
+     *
+     */
     define('NO_COUNT', 1);
+    /**
+     *
+     */
     define('NO_COUNT_NO_RETURN', 2);
 }
 
+/**
+ * Class Node
+ * @package Ximdex\Models
+ */
 class Node extends NodesOrm
 {
 
+    /**
+     * @var bool|string
+     */
     var $nodeID;            // current node ID.
     /**
      * @var mixed
@@ -82,8 +92,17 @@ class Node extends NodesOrm
     var $nodeType;            // nodetype object.
     /* @var $dbObj \Ximdex\Runtime\Db */
     var $dbObj;                // DB object which will be used in the methods.
+    /**
+     * @var
+     */
     var $numErr;            // Error code.
+    /**
+     * @var
+     */
     var $msgErr;            // Error message.
+    /**
+     * @var array
+     */
     var $errorList = array(// Class error list.
         1 => 'The node does not exist',
         2 => 'The nodetype does not exist',
@@ -566,6 +585,11 @@ class Node extends NodesOrm
         return false;
     }
 
+    /**
+     * @param null $name
+     * @param null $path
+     * @return array|bool
+     */
     function GetByNameAndPath($name = NULL, $path = NULL)
     {
         if (empty($name)) {
@@ -626,9 +650,7 @@ class Node extends NodesOrm
     {
         $path = $this->_GetPath();
         // $idNode = $this->get('IdNode');
-        if ($path) {
-            //XMD_Log::debug("Model::Node::getPath(): Path for node($idNode) => $path. SUCCESS");
-        } else {
+        if (!$path) {
             XMD_Log::debug("Model::Node::getPath(): Path cant be deduced from NULL idNode. ERROR");
         }
         return $path;
@@ -757,11 +779,8 @@ class Node extends NodesOrm
     /**
      * Returned the Id of the nearest parent wich can attach groups (nodeType)
      */
-    /**
-     * @param $node
-     * @return integer
-     */
-    function GetNearest($parentNode)
+
+    public function GetNearest(Node $parentNode)
     {
         $this->ClearError();
 
@@ -1011,6 +1030,9 @@ class Node extends NodesOrm
         return false;
     }
 
+    /**
+     *
+     */
     function add()
     {
         die(_('This call should be done through CreateNode'));
@@ -1196,7 +1218,6 @@ class Node extends NodesOrm
             $nearestId  = $this->GetNearest($parentNode);
             $nearest    = new Node($nearestId);
 
-            $associated = array();
             $associated = $nearest->GetGroupList();
 
             if (count($associated) > 0) {
@@ -1251,6 +1272,9 @@ class Node extends NodesOrm
         return $node->get('IdNode');
     }
 
+    /**
+     * @return bool|int|string
+     */
     function delete()
     {
         return $this->DeleteNode(true);
@@ -2960,6 +2984,10 @@ class Node extends NodesOrm
         return NULL;
     }
 
+    /**
+     * @param bool $withInheritance
+     * @return array|null
+     */
     function getAllProperties($withInheritance = false)
     {
 
@@ -3036,6 +3064,10 @@ class Node extends NodesOrm
         return $value;
     }
 
+    /**
+     * @param $property
+     * @param $value
+     */
     function setSingleProperty($property, $value)
     {
         $nodeProperty = new NodeProperty();
