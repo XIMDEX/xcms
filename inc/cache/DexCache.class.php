@@ -27,12 +27,6 @@ use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
 
-/**
- * XIMDEX_ROOT_PATH
- */
-if (!defined('XIMDEX_ROOT_PATH'))
-    define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../"));
-
 
 /**
  *
@@ -42,19 +36,12 @@ class DexCache
 
     /**
      * Constructor
-     * @return unknown_type
      */
-    function DexCache()
+    public function __construct()
     {
     }
 
-    /**
-     *
-     * @param $idNode
-     * @param $syncs
-     * @param $idVersion
-     * @return unknown_type
-     */
+
     function setRelation($idNode, $syncs, $idVersion)
     {
 

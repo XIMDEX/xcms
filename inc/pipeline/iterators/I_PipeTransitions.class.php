@@ -44,7 +44,7 @@ class I_PipeTransitions extends  \Ximdex\Utils\Iterator {
 	 * @param array $args
 	 * @return I_PipeTransitions
 	 */
-	public function I_PipeTransitions($condition, $args) {
+	public function __construct($condition, $args) {
 		parent::__construct($condition, $args);
 		$this->_initialize();
 		$this->_sort();

@@ -57,6 +57,10 @@ class Modules extends Base
 
     }
     private function installModule( $moduleName ) {
+        $tempFile = $this->manager->getRootPath('/data/.' . $moduleName);
+        if ( file_exists( $tempFile)) {
+            unlink( $tempFile);
+        }
         $mm = new \InstallModulesManager();
         $installed = $mm->installModule($moduleName);
         $isInstalled = ($installed == "Already installed" || $installed == "Installed");
