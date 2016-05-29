@@ -20,110 +20,146 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
-namespace Ximdex\Utils ;
+namespace Ximdex\Utils;
 
 
 // TODO: Detect web or CLI context to define output type.
 
-class Timer {
+/**
+ * Class Timer
+ * @package Ximdex\Utils
+ */
+class Timer
+{
 
     /**
-     *
      * @var int
      */
     var $_start = 0;
+
     /**
-     *
      * @var int
      */
     var $_end = 0;
+
     /**
-     *
-     * @var unknown_type
+     * @var
      */
     var $_parcials;
+
     /**
-     *
-     * @var unknown_type
+     * @var
      */
     var $_p_idx;
+
     /**
-     *
-     * @var unknown_type
+     * @var
      */
     var $word;
 
+
     /**
-     * Constructor
-      */
-    public function __constructor() {
+     *
+     */
+    public function __constructor()
+    {
         $this->_parcials = array();
         $this->_p_idx = 0;
     }
 
     /**
      *
-     * @return unknown_type
      */
-    function microtime_float(){
+    function start()
+    {
+        $this->_start = $this->microtime_float();
+    }
+
+    /**
+     * @return float
+     */
+    function microtime_float()
+    {
         list($useg, $seg) = explode(" ", microtime());
         return ((float)$useg + (float)$seg);
     }
 
     /**
      *
-     * @return unknown_type
      */
-    function start() {
-        $this->_start = $this->microtime_float();
-    }
-
-    /**
-     *
-     * @return unknown_type
-     */
-    function stop() {
+    function stop()
+    {
         $this->_end = $this->microtime_float();
     }
 
     /**
-     *
-     * @param $msg
-     * @return unknown_type
+     * @param string $msg
+     * @return mixed
      */
-    function mark($msg = '') {
+    function mark($msg = '')
+    {
         $idx = $this->_p_idx++;
         $this->_parcials[$idx]['time'] = $this->microtime_float();
         $this->_parcials[$idx]['msg'] = $msg;
-        $this->_parcials[$idx]['total'] = $this->convertUnits($this->_parcials[$idx]['time'] - $this->_start );
+        $this->_parcials[$idx]['total'] = $this->convertUnits($this->_parcials[$idx]['time'] - $this->_start);
 
 
         return $this->_parcials[$idx]['total'];
     }
 
     /**
-     * Displays execution time in $unit (ms -> milliseconds (default), s -> seconds, m -> minutes)
-     * @param $unit
-     * @return unknown_type
+     * @param $total
+     * @param string $unit
+     * @return float|string
      */
-    function display($unit = 'ms') {
+    function convertUnits($total, $unit = 'ms')
+    {
+
+        switch ($unit) {
+            case 's':
+                $total = ($total);
+                $this->word = ' seconds';
+                break;
+            case 'm':
+                $total = ($total / 60);
+                $this->word = ' minutes';
+                break;
+            default:
+                $total = ($total * 1000);
+                $this->word = ' milliseconds';
+                break;
+        }
+
+
+        $total = number_format($total, 6, '.', '');
+
+        return $total;
+    }
+
+    /**
+     * @param string $unit
+     * @return float|int|string
+     */
+    function display($unit = 'ms')
+    {
         $total = $this->_end - $this->_start;
         $total = $this->convertUnits($total, $unit);
 
         return $total;
-        flush();
     }
 
     /**
-     * Displays execution time partials in $unit as shown in Timer::display
-     * @param $unit
-     * @return unknown_type
+     * @param string $unit
+     * @param bool $onlyPartial
+     * @return float|string
      */
-    function display_parcials($unit = 'ms', $onlyPartial = false) {
+    function display_parcials($unit = 'ms', $onlyPartial = false)
+    {
+        $delay = null ;
 
         $sms = "Tiempos parciales: \n ";
 
@@ -141,40 +177,9 @@ class Timer {
             $delay = $this->convertUnits($delay, $unit);
             $msg = $data['msg'];
 
-            $sms .= $msg . " --> " . $delay ." $unit\n";
+            $sms .= $msg . " --> " . $delay . " $unit\n";
         }
 
         return ($onlyPartial === false) ? $sms : $delay;
-        flush();
-    }
-
-    /**
-     *
-     * @param $total
-     * @param $unit
-     * @return unknown_type
-     */
-    function convertUnits($total, $unit = 'ms') {
-
-        switch ($unit) {
-            case 's':
-                $total = ($total);
-                $this->word = ' seconds';
-                break;
-            case 'm':
-                $total = ($total / 60);
-                $this->word = ' minutes';
-                break;
-            default:
-                $total = ($total * 1000);
-                $this->word = ' milliseconds';
-                break;
-        }
-
-        // MySQL correct insertion format for float types
-
-        $total = number_format($total, 6, '.', '');
-
-        return $total;
     }
 }

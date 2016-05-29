@@ -28,9 +28,10 @@
 //
 
 namespace Ximdex\MVC;
+
 use ModulesManager;
-use unknown_type;
-use XMD_Log;
+use Ximdex\Logger;
+
 
 /**
  *
@@ -43,81 +44,73 @@ use XMD_Log;
 class ActionFactory
 {
 
-	/**
-	 * @param $request
-	 * @return mixed|null
-	 */
-	public static function getAction($request)
-	{
+
+    /**
+     * @param $request
+     * @return mixed|null
+     */
+    public static function getAction($request)
+    {
 
 
-		$actionRootName = "Action_";
+        $actionRootName = "Action_";
 
-		// Cogemos los datos de la accion
-		$actionPath = $request->getParam("action_path");
-		$action = $request->getParam("action");
-		$nodeid = $request->getParam("nodeid");
-		$module = $request->getParam("module");
-		$actionid = $request->getParam("actionid");
+        // Cogemos los datos de la accion
+        $actionPath = $request->getParam("action_path");
+        $action = $request->getParam("action");
+        $module = $request->getParam("module");
 
-		$absolut_actionPath = XIMDEX_ROOT_PATH . $actionPath;
+        $absolut_actionPath = XIMDEX_ROOT_PATH . $actionPath;
 
-		//echo "absolut: $absolut_actionPath<br/>";
-		if (!file_exists($absolut_actionPath)) {
-			$actionController = NULL;
-		} else {
-			if (empty($module)) {
-				$actionPath = XIMDEX_ROOT_PATH .
-					DIRECTORY_SEPARATOR . 'actions' .
-					DIRECTORY_SEPARATOR . $action;
-			} else {
-				$path_module = ModulesManager::path($module);
-				$actionPath = sprintf('%s%s%s%s%s%s',
-					XIMDEX_ROOT_PATH,
-					$path_module,
-					DIRECTORY_SEPARATOR,
-					'actions',
-					DIRECTORY_SEPARATOR,
-					$action);
-			}
+        if (!file_exists($absolut_actionPath)) {
+            $actionController = NULL;
+        } else {
+            if (empty($module)) {
+                $actionPath = XIMDEX_ROOT_PATH .
+                    DIRECTORY_SEPARATOR . 'actions' .
+                    DIRECTORY_SEPARATOR . $action;
+            } else {
+                $path_module = ModulesManager::path($module);
+                $actionPath = sprintf('%s%s%s%s%s%s',
+                    XIMDEX_ROOT_PATH,
+                    $path_module,
+                    DIRECTORY_SEPARATOR,
+                    'actions',
+                    DIRECTORY_SEPARATOR,
+                    $action);
+            }
 
-			$factory = new \Ximdex\Utils\Factory($actionPath, $actionRootName);
-			$actionController = $factory->instantiate($action);
-		}
+            $factory = new \Ximdex\Utils\Factory($actionPath, $actionRootName);
+            $actionController = $factory->instantiate($action);
+        }
 
-		return $actionController;
-	}
+        return $actionController;
+    }
 
-	/**
-	 * Determina si una accion existe
-	 */
-	/**
-	 * @param $actionPath
-	 * @return bool
-	 */
-	function _actionExists($actionPath)
-	{
-		$absolut_actionPath = XIMDEX_ROOT_PATH . DIRECTORY_SEPARATOR . 'actions' . DIRECTORY_SEPARATOR . $actionPath;
-		return file_exists($absolut_actionPath);
-	}
+    /**
+     * @param $actionPath
+     * @return bool
+     */
+    function _actionExists($actionPath)
+    {
+        $absolut_actionPath = XIMDEX_ROOT_PATH . DIRECTORY_SEPARATOR . 'actions' . DIRECTORY_SEPARATOR . $actionPath;
+        return file_exists($absolut_actionPath);
+    }
 
-	/**
-	 * Determina la ruta o subconjunto al que pertenece la accion activa
-	 * @param $request
-	 * @return unknown_type
-	 */
-	function _buildPath($request)
-	{
-		$action = $request->getParam("action");
-		$actionPath = $this->request->getParam("action_path") . $action;
-		$actionClass = "/Action_" . $action . ".class.php";
-		//Sino es el composer visualizamos los logs para que no se nos llenen
-		if ($action != "composer")
-			XMD_Log::debug("MVC::ActionFactory Executing class Action: $actionClass | path Action: $actionPath | Method Action: " . $request->getParam("method"));
+    /**
+     * @param $request
+     * @return array
+     */
+    function _buildPath($request)
+    {
+        $action = $request->getParam("action");
+        $actionPath = $this->request->getParam("action_path") . $action;
+        $actionClass = "/Action_" . $action . ".class.php";
+        //Sino es el composer visualizamos los logs para que no se nos llenen
+        if ($action != "composer")
+            Logger::debug("MVC::ActionFactory Executing class Action: $actionClass | path Action: $actionPath | Method Action: " . $request->getParam("method"));
 
-		return array($actionPath, $actionClass);
-	}
+        return array($actionPath, $actionClass);
+    }
 
 }
-
-?>

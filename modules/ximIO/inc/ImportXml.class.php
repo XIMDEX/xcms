@@ -32,6 +32,7 @@ use Ximdex\Models\NodeType;
 use Ximdex\Runtime\App;
 use Ximdex\Runtime\Constants;
 use Ximdex\Utils\FsUtils;
+use Ximdex\Runtime\Db ;
 
 ModulesManager::file('/inc/io/BaseIO.class.php');
 ModulesManager::file('/inc/io/BaseIORelations.class.php');
@@ -133,7 +134,7 @@ class ImportXml
     function ImportXml($rootNode, $file, $nodeAssociations, $mode = Constants::RUN_HEURISTIC_MODE, $recurrence = null, $firstExportationNode = null, $insertFirstNode = false)
     {
 
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         // Obtaining a list of nodes for $tagsForAdvancedWritting
         // These nodes ca be inserted without inserting first its descendants. For mor clarity, these nodes are containers
@@ -298,7 +299,7 @@ class ImportXml
                     unset($relation[$key]);
                 }
                 if (in_array(strtoupper($key), $resolveArray)) {
-                    $db = new DB();
+                    $db = new Db();
                     $query = sprintf("SELECT IdImportationNode"
                         . " FROM XimIONodeTranslations"
                         . " WHERE IdExportationNode = %s",
@@ -733,7 +734,7 @@ class ImportXml
      */
     function _insertElement($elementToInsert)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $query = sprintf("SELECT IdImportationNode"
             . " FROM XimIONodeTranslations"
             . " WHERE IdExportationNode = %d",
@@ -790,7 +791,7 @@ class ImportXml
                 ? $this->_getPath($elementToInsert['CHILDRENS'])
                 : '';
         } else {
-            $dbObj = new DB();
+            $dbObj = new Db();
             // Suggesting the packages to launch after this one
             $query = sprintf("SELECT xe.timeStamp"
                 . " FROM XimIONodeTranslations xnt"
@@ -889,7 +890,7 @@ class ImportXml
         if ($this->heuristicMode) {
             $this->bindedNodes[$exportationNode] = $importationNode;
         } else {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $query = sprintf("SELECT IdNodeTranslation"
                 . " FROM XimIONodeTranslations"
                 . " WHERE IdExportationNode = %d AND IdXimioExportation = %d",
@@ -902,7 +903,7 @@ class ImportXml
             }
 
             if (isset($idNodeTranslation) && $idNodeTranslation > 0) {
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $query = sprintf("UPDATE XimIONodeTranslations"
                     . " SET IdImportationNode = %d, IdExportationParent = %d, status = %d, path = %s"
                     . " WHERE IdNodeTranslation = %d",
@@ -913,7 +914,7 @@ class ImportXml
                     $idNodeTranslation);
                 $dbObj->Execute($query);
             } else {
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $query = sprintf("INSERT INTO XimIONodeTranslations"
                     . " (IdExportationNode, IdExportationParent, IdImportationNode, IdXimioExportation, status, path)"
                     . " VALUES (%d, %d, %d, %d, %d, %s)",
@@ -938,7 +939,7 @@ class ImportXml
             return isset($this->bindedNodes[$idNode]) ? $this->bindedNodes[$idNode] : null;
         }
         if ($idNode > 0) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $query = sprintf("SELECT xnt.IdImportationNode FROM XimIONodeTranslations xnt"
                 . " INNER JOIN XimIOExportations xe ON xnt.IdXimioExportation = xe.idXimIOExportation"
                 . " WHERE xnt.IdExportationNode = %d"
@@ -962,7 +963,7 @@ class ImportXml
             if (($this->mode == IMPORT_MODE || empty($nodeName)) && !$finalStageMode) {
                 return NULL;
             } else {
-                $dbObj = new DB();
+                $dbObj = new Db();
                 /**
                  * Mode == COPY_MODE, we still have to check if the node is already existing in the interface, thus the existing node is going to be returned
                  */
@@ -1093,7 +1094,7 @@ class ImportXml
                 if (!(isset($idParentToStimate) && !is_null($idParentToStimate))) {
                     $idParentToStimate = $parentElement['PARENTID'];
                 } else {
-                    $dbObj = new DB();
+                    $dbObj = new Db();
                     $query = sprintf("SELECT IdExportationParent"
                         . " FROM XimIONodeTranslations"
                         . " WHERE IdExportationNode = %s",
@@ -1103,7 +1104,7 @@ class ImportXml
                         $idParentToStimate = $dbObj->getValue('IdExportationParent');
                     }
                 }
-                $dbObj = new DB();
+                $dbObj = new Db();
                 $query = sprintf("SELECT IdImportationNode, IdExportationParent"
                     . " FROM XimIONodeTranslations"
                     . " WHERE IdExportationNode = %s",
@@ -1195,7 +1196,7 @@ class ImportXml
 
     function _lookForUUID($uuid)
     {
-        $db = new DB();
+        $db = new Db();
         $query = sprintf("SELECT IdNode From NodeProperties"
             . " WHERE Property = 'UUID' AND Value = %s", $db->sqlEscapeString($uuid));
         $db->query($query);
@@ -1260,7 +1261,7 @@ class ImportXml
             return false;
         }
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $query = sprintf("SELECT idXimIOExportation FROM XimIOExportations"
             . " WHERE idXimIO = %d AND timeStamp = %s",
             $idXimio, $dbObj->sqlEscapeString($timeStamp));
@@ -1272,7 +1273,7 @@ class ImportXml
             return $idXimioExportation;
         }
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $query = sprintf("INSERT into XimIOExportations"
             . " (idXimio, timeStamp)"
             . " VALUES"

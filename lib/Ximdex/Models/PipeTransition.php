@@ -29,12 +29,15 @@ namespace Ximdex\Models;
 
 use I_PipeProperties;
 
+use Ximdex\Logger;
 use Ximdex\Models\ORM\PipeTransitionsOrm;
-use Ximdex\Logger as XMD_Log;
 
 
  require_once(XIMDEX_ROOT_PATH . '/inc/pipeline/iterators/I_PipeProperties.class.php');
 
+/**
+ *
+ */
 define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
 
 /**
@@ -49,6 +52,9 @@ define('CALLBACK_FOLDER', XIMDEX_ROOT_PATH . '/inc/repository/nodeviews/');
  */
 class PipeTransition extends PipeTransitionsOrm
 {
+	/**
+	 * @var I_PipeProperties|null
+     */
 	var $properties = NULL;
 
 	/**
@@ -125,7 +131,7 @@ class PipeTransition extends PipeTransitionsOrm
 		$resultsCount = count($result);
 		//Si son muchas error (No previsto, creo que ni siquiera lo soporta el modelo)
 		if ($resultsCount > 1) {
-			XMD_Log::fatal('No se ha podido determinar la transicion anterior a una dada');
+			Logger::fatal('No se ha podido determinar la transicion anterior a una dada');
 			return false;
 		}
 
@@ -150,10 +156,12 @@ class PipeTransition extends PipeTransitionsOrm
 
 	/**
 	 * Transform the given content with the transition asociated callback
+	 */
+	/**
 	 * @param $idVersion
 	 * @param $content
 	 * @param $args
-	 * @return pointer
+	 * @return mixed
 	 */
 	function generate($idVersion, $content, $args)
 	{
@@ -163,10 +171,13 @@ class PipeTransition extends PipeTransitionsOrm
 
 	/**
 	 * Reverse a transformation
+
+	 */
+	/**
 	 * @param $idVersion
 	 * @param $content
 	 * @param $args
-	 * @return pointer
+	 * @return mixed
 	 */
 	function reverse($idVersion, $content, $args)
 	{
@@ -180,7 +191,7 @@ class PipeTransition extends PipeTransitionsOrm
 	 * @param $pointer
 	 * @param $args
 	 * @param $function
-	 * @return pointer
+	 * @return mixed
 	 */
 	function callback($idVersion, $pointer, $args, $function)
 	{
@@ -196,19 +207,19 @@ class PipeTransition extends PipeTransitionsOrm
 			$transformedPointer = $object->$function($idVersion, $pointer, $args);
 		} else {
 			$idTransition = $this->get('id');
-			XMD_Log::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
+			Logger::warning("Method $function not found when calling to the view: IdVersion $idVersion, Transition $idTransition");
 			$transformedPointer = $pointer;
 		}
 		$timer->stop();
 
-		XMD_Log::info("PIPETRANSITION: View_$callback time: " . $timer->display());
+		Logger::info("PIPETRANSITION: View_$callback time: " . $timer->display());
 
 		if (isset($args['DISABLE_CACHE']) && $args['DISABLE_CACHE'] === true) {
-			XMD_Log::info("DISABLE_CACHE active, although the transition is cacheable, the cache won't be stored.");
+			Logger::info("DISABLE_CACHE active, although the transition is cacheable, the cache won't be stored.");
 		} else {
 			$cache = new PipeCache();
 			if (!$cache->store($idVersion, $this->get('id'), $transformedPointer, $args)) {
-				XMD_Log::error('Could not store the cache for transition.');
+				Logger::error('Could not store the cache for transition.');
 			}
 		}
 

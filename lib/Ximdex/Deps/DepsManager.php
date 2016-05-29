@@ -1,31 +1,33 @@
 <?php
 namespace Ximdex\Deps;
-use Ximdex\Logger as  XMD_Log;
 
-    /**
-     *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
-     *
-     *  Ximdex a Semantic Content Management System (CMS)
-     *
-     *  This program is free software: you can redistribute it and/or modify
-     *  it under the terms of the GNU Affero General Public License as published
-     *  by the Free Software Foundation, either version 3 of the License, or
-     *  (at your option) any later version.
-     *
-     *  This program is distributed in the hope that it will be useful,
-     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     *  GNU Affero General Public License for more details.
-     *
-     *  See the Affero GNU General Public License for more details.
-     *  You should have received a copy of the Affero GNU General Public License
-     *  version 3 along with Ximdex (see LICENSE file).
-     *
-     *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
-     *
-     * @author Ximdex DevTeam <dev@ximdex.com>
-     * @version $Revision$
-     */
+use Ximdex\Logger;
+use Ximdex\Utils\Factory;
+
+/**
+ *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
+ *
+ *  Ximdex a Semantic Content Management System (CMS)
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published
+ *  by the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  See the Affero GNU General Public License for more details.
+ *  You should have received a copy of the Affero GNU General Public License
+ *  version 3 along with Ximdex (see LICENSE file).
+ *
+ *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
+ *
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
+ */
 //
 
 class DepsManager
@@ -83,30 +85,16 @@ class DepsManager
 
     /**
      * Returns the model object specified by "$tableName" name or NULL
-     * @param string $tableName
-     * @return object
      */
-    private function getModel($tableName, $id = NULL)
-    {
-        $factory = new \Ximdex\Utils\Factory(XIMDEX_ROOT_PATH . "/inc/model/", $tableName);
-        $object = $factory->instantiate(NULL, $id);
-
-        if (!is_object($object)) {
-            XMD_Log::error(sprintf("Can't instantiate a %s model", $tableName));
-        }
-        return $object;
-    }
 
     /**
-     * Inserts a row in a relation table
-     * @param const $rel
-     * @param int $idSource
-     * @param int $idTarget
-     * @return true / false
+     * @param $rel
+     * @param $idSource
+     * @param $idTarget
+     * @return bool
      */
     function set($rel, $idSource, $idTarget)
     {
-        $res = array();
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
 
@@ -117,7 +105,7 @@ class DepsManager
             $object->set('source', $idSource);
 
             if (!$object->add()) {
-                XMD_Log::error('Inserting dependency');
+                Logger::error('Inserting dependency');
                 return false;
             }
         } else {
@@ -128,10 +116,33 @@ class DepsManager
     }
 
     /**
-     * From a given target node returns its source nodes
-     * @param const $rel
-     * @param int $idTarget
-     * @return array / NULL
+     * Inserts a row in a relation table
+     */
+
+    /**
+     * @param $tableName
+     * @param null $id
+     * @return mixed
+     */
+    private function getModel($tableName, $id = NULL)
+    {
+        $factory = new Factory(XIMDEX_ROOT_PATH . "/inc/model/", $tableName);
+        $object = $factory->instantiate(NULL, $id);
+
+        if (!is_object($object)) {
+            Logger::error(sprintf("Can't instantiate a %s model", $tableName));
+        }
+        return $object;
+    }
+
+    /**
+     * From a given target node returns its source node
+     */
+
+    /**
+     * @param $rel
+     * @param $target
+     * @return bool|null
      */
     function getByTarget($rel, $target)
     {
@@ -146,9 +157,11 @@ class DepsManager
 
     /**
      * From a given source node returns its target nodes
-     * @param const $rel
-     * @param int $idSource
-     * @return array / NULL
+     */
+    /**
+     * @param $rel
+     * @param $source
+     * @return array|bool
      */
     function getBySource($rel, $source)
     {
@@ -160,10 +173,12 @@ class DepsManager
 
     /**
      * Deletes a row in a relation table
-     * @param const $rel
-     * @param int $idSource
-     * @param int $idTarget
-     * @return true / false
+     */
+    /**
+     * @param $rel
+     * @param $idSource
+     * @param $idTarget
+     * @return bool
      */
     function delete($rel, $idSource, $idTarget)
     {
@@ -177,7 +192,7 @@ class DepsManager
         $result = $object->find('id', 'source = %s AND target = %s', array($idSource, $idTarget), MONO);
 
         if (sizeof($result) != 1) {
-            XMD_Log::error('IN query');
+            Logger::error('IN query');
             return false;
         }
         $objectLoaded = $this->getModel($rel, $result[0]);
@@ -186,9 +201,11 @@ class DepsManager
 
     /**
      * Deletes all relations for a source node
-     * @param const $rel
-     * @param int $idSource
-     * @return true / false
+     */
+    /**
+     * @param $rel
+     * @param $idSource
+     * @return bool
      */
     function deleteBySource($rel, $idSource)
     {
@@ -207,9 +224,11 @@ class DepsManager
 
     /**
      * Deletes all relations for a target node
-     * @param const $rel
-     * @param int $idTarget
-     * @return true / false
+     */
+    /**
+     * @param $rel
+     * @param $idTarget
+     * @return bool
      */
     function deleteByTarget($rel, $idTarget)
     {

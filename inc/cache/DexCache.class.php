@@ -23,90 +23,30 @@
  * @author Ximdex DevTeam <dev@ximdex.com>
  * @version $Revision$
  */
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\FsUtils;
 
 
-
 /**
- *
+ * Class DexCache
  */
 class DexCache
 {
 
+
     /**
-     * Constructor
+     * DexCache constructor.
      */
     public function __construct()
     {
     }
 
-
-    function setRelation($idNode, $syncs, $idVersion)
-    {
-
-        //echo "DexCache::setRelation($idNode, $syncs, $idVersion)<br/>\n";
-
-        //TODO:: To have into account channels, because they generate two different synchro files.
-
-        // Delete first older relationd for idnode.
-        $dcdb = new DexCacheDB();
-        $dcdb->delete('idNode', $idNode);
-
-        if (!is_array($syncs)) {
-            $syncs = array($syncs);
-            /*
-            $a = array();
-            $a[] = $syncs;
-            $syncs = $a;
-            */
-        }
-
-        foreach ($syncs as $idSync) {
-            $dcdb->idNode = $idNode;
-            $dcdb->idSync = $idSync;
-            $dcdb->idVersion = $idVersion;
-            $dcdb->commit();
-        }
-    }
-
     /**
-     *
-     * @return unknown_type
-     */
-    function getRelation()
-    {
-
-        $dcdb = new DexCacheDB();
-        $dcdb->read();
-    }
-
-    /**
-     * future: should be in node class.
-     * $objVersion =& $node.getVersion()
-     *
      * @param $idNode
-     * @return unknown_type
+     * @return bool
      */
-    function getLastVersionOfNode($idNode)
-    {
-
-        $df = new DataFactory($idNode);
-
-        $version = $df->GetLastVersion();
-        $subversion = $df->GetLastSubversion();
-
-        $IdVersion = $df->getVersionId($version, $subversion);
-
-        return $IdVersion;
-    }
-
-    /**
-     *
-     * @param $idNode
-     * @return unknown_type
-     */
-    function isModified($idNode)
+    public static function isModified($idNode)
     {
 
         if (is_null($idNode)) {
@@ -122,53 +62,90 @@ class DexCache
         $dcdb = new DexCacheDB();
         $data = $dcdb->read('idNode', $idNode);
 
-        $idSync = $data['idSync'];
         $idPublishedVersion = $data['idVersion'];
 
-        //echo "DexCache::isModified - idNode: $idNode | version: $version | subversion: $subversion | sync: " . print_r($idSync,true) . "<br/>\n";
-        //echo "DexCache::isModified - idCurrentVersion: $idCurrentVersion | idPublishedVersion: $idPublishedVersion<br/>\n";
 
         if ($idCurrentVersion != $idPublishedVersion) {
-            //echo "RETURN true<br/>\n";
             return true;
         } else {
-            //echo "RETURN false<br/>\n";
             return false;
         }
     }
 
     /**
-     *
-     * @param $idNode
-     * @param $channelId
-     * @return unknown_type
-     */
-    function _createName($idNode, $channelId)
-    {
-        return \App::getValue('AppRoot') . \App::getValue('SyncRoot') . "/$idNode.$channelId.cache";
-    }
-
-    /**
-     *
      * @param $idNode
      * @param $channelId
      * @param $c
-     * @return unknown_type
+     * @return bool
      */
-    function createPersistentSyncFile($idNode, $channelId, $c)
+    static public function createPersistentSyncFile($idNode, $channelId, $c)
     {
         // Creating a persistent copy of sync.
-        $name = DexCache::_createName($idNode, $channelId);
+        $name = self::_createName($idNode, $channelId);
         return FsUtils::file_put_contents($name, $c);
     }
 
     /**
-     *
      * @param $idNode
      * @param $channelId
-     * @return unknown_type
+     * @return string
      */
-    function & getPersistentSyncFile($idNode, $channelId)
+    static public function _createName($idNode, $channelId)
+    {
+        return App::getValue('AppRoot') . App::getValue('SyncRoot') . "/$idNode.$channelId.cache";
+    }
+
+    /**
+     * @param $idNode
+     * @param $syncs
+     * @param $idVersion
+     */
+    function setRelation($idNode, $syncs, $idVersion)
+    {
+
+
+        //TODO:: To have into account channels, because they generate two different synchro files.
+
+        // Delete first older relationd for idnode.
+        $dcdb = new DexCacheDB();
+        $dcdb->delete('idNode', $idNode);
+
+        if (!is_array($syncs)) {
+            $syncs = array($syncs);
+
+        }
+
+        foreach ($syncs as $idSync) {
+            $dcdb->idNode = $idNode;
+            $dcdb->idSync = $idSync;
+            $dcdb->idVersion = $idVersion;
+            $dcdb->commit();
+        }
+    }
+
+    /**
+     * @param $idNode
+     * @return bool|null
+     */
+    function getLastVersionOfNode($idNode)
+    {
+
+        $df = new DataFactory($idNode);
+
+        $version = $df->GetLastVersion();
+        $subversion = $df->GetLastSubversion($version);
+
+        $IdVersion = $df->getVersionId($version, $subversion);
+
+        return $IdVersion;
+    }
+
+    /**
+     * @param $idNode
+     * @param $channelId
+     * @return null|string
+     */
+    static public function &getPersistentSyncFile($idNode, $channelId)
     {
 
         //echo "DexCache::getPersistentSyncFile($idNode)<br/>\n";

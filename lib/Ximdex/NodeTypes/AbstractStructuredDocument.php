@@ -25,14 +25,14 @@
  */
 
 namespace Ximdex\NodeTypes;
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\DataFactory;
-use DB;
 use Ximdex\Deps\DepsManager;
 use DexCache;
-use MetadataManager;
 use ModulesManager;
 use Namespaces;
 use Ximdex\Models\NodeType;
+use Ximdex\Runtime\Db;
 use Ximdex\Utils\PipelineManager;
 use Properties;
 use Ximdex\Models\RelTagsNodes;
@@ -42,9 +42,9 @@ use Ximdex\Models\Language;
 use Ximdex\Models\Node;
 use Ximdex\Models\NodeDependencies;
 use Ximdex\Models\StructuredDocument;
-use Ximdex\NodeTypes\FileNode;
 use Ximdex\Utils\FsUtils;
-use XMD_Log;
+use Ximdex\Logger;
+use Ximdex\Utils\Session;
 
 
 define('DOCXAP_VIEW', 1);
@@ -56,14 +56,28 @@ require_once(XIMDEX_ROOT_PATH . "/inc/cache/DexCache.class.php");
 ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 ModulesManager::file('/inc/model/Namespaces.class.php');
 
+/**
+ * Class AbstractStructuredDocument
+ * @package Ximdex\NodeTypes
+ */
 class AbstractStructuredDocument extends FileNode
 {
 
     // Creates a new structured node
+    /**
+     * @param null $name
+     * @param null $parentID
+     * @param null $nodeTypeID
+     * @param null $stateID
+     * @param null $templateID
+     * @param null $IdLanguage
+     * @param string $aliasName
+     * @param null $channelList
+     */
     function CreateNode($name = null, $parentID = null, $nodeTypeID = null, $stateID = null, $templateID = null, $IdLanguage = null, $aliasName = '', $channelList = null)
     {
 
-        $loginID = \Ximdex\Utils\Session::get("userID");
+        $loginID = Session::get("userID");
 
         $templateNode = new Node($templateID);
 
@@ -101,6 +115,10 @@ class AbstractStructuredDocument extends FileNode
 
 
     // Name for the file/resource on production servers
+    /**
+     * @param null $channel
+     * @return string
+     */
     function GetPublishedNodeName($channel = null)
     {
 
@@ -133,6 +151,9 @@ class AbstractStructuredDocument extends FileNode
         return array_merge($workFlowSlaves, $asset, $structure);
     }
 
+    /**
+     * @return mixed|string
+     */
     function GetContent()
     {
 
@@ -141,24 +162,17 @@ class AbstractStructuredDocument extends FileNode
         return $strDoc->GetContent();
     }
 
+    /**
+     * @param $content
+     * @param null $commitNode
+     */
     function SetContent($content, $commitNode = NULL)
     {
 
         $strDoc = new StructuredDocument($this->nodeID);
         $strDoc->SetContent($content, $commitNode);
 
-        //Update metadata
-        $node = new Node($this->nodeID);
-        $idLanguage = $strDoc->GetLanguage();
 
-        /*if(\Ximdex\Services\NodeType::METADATA_DOCUMENT != $node->GetNodeType()){
-            $mm = new MetadataManager($this->nodeID);
-            $mm->updateSystemMetadata();
-        }*/
-
-
-
-        // Set content for any workflow slaves
 
         $wfSlaves = $this->parent->GetWorkflowSlaves();
 
@@ -170,6 +184,9 @@ class AbstractStructuredDocument extends FileNode
         }
     }
 
+    /**
+     * @return bool|string
+     */
     function GetIcon()
     {
 
@@ -184,6 +201,13 @@ class AbstractStructuredDocument extends FileNode
         return $this->parent->nodeType->GetIcon();
     }
 
+    /**
+     * @param $viewType
+     * @param $channel
+     * @param null $content
+     * @param null $idVersion
+     * @return bool|null|\unknown
+     */
     function view($viewType, $channel, $content = NULL, $idVersion = NULL)
     {
 
@@ -197,6 +221,9 @@ class AbstractStructuredDocument extends FileNode
         return NULL;
     }
 
+    /**
+     * @return bool|null|string
+     */
     function _getPermissionGroups()
     {
         $node = new Node($this->nodeID);
@@ -239,6 +266,11 @@ class AbstractStructuredDocument extends FileNode
     }
 
     /// Renderiza el nodo en el sistema de archivos
+    /**
+     * @param null $channel
+     * @param null $content
+     * @return bool
+     */
     function RenderizeNode($channel = null, $content = null)
     {
 
@@ -308,8 +340,6 @@ class AbstractStructuredDocument extends FileNode
         }
         $xtags = 'xtags = "' . $xtags . '"';
 
-        $docxap = '';
-
         $docxap = sprintf("<docxap %s %s %s %s %s %s %s %s %s>",
             $layoutTag,
             $this->_langXapAttrib($idLanguage),
@@ -325,6 +355,12 @@ class AbstractStructuredDocument extends FileNode
         return $docxap;
     }
 
+    /**
+     * @param null $channel
+     * @param null $content
+     * @param null $onlyDocXap
+     * @return null|string
+     */
     function GetRenderizedContent($channel = null, $content = null, $onlyDocXap = null)
     {
 
@@ -342,8 +378,8 @@ class AbstractStructuredDocument extends FileNode
             return $docXapHeader;
         }
 
-        $doctypeTag = \App::getValue("DoctypeTag");
-        $encodingTag = \App::getValue("EncodingTag");
+        $doctypeTag = App::getValue("DoctypeTag");
+        $encodingTag = App::getValue("EncodingTag");
 
         if (is_null($content)) {
             $content = $strDoc->GetContent();
@@ -356,11 +392,14 @@ class AbstractStructuredDocument extends FileNode
 
     }
 
+    /**
+     *
+     */
     function DeleteNode()
     {
         $parent = new Node($this->parent->get('IdParent'));
         $st = new StructuredDocument($this->parent->get('IdNode'));
-        $dbObj = new DB();
+        $dbObj = new Db();
         $query = sprintf("DELETE FROM NodeNameTranslations WHERE IdNode = %s AND IdLanguage = %s",
             $dbObj->sqlEscapeString($parent->get('IdNode')),
             $dbObj->sqlEscapeString($st->get('IdLanguage')));
@@ -388,9 +427,12 @@ class AbstractStructuredDocument extends FileNode
         $depsMngr->deleteBySource(DepsManager::NODE2ASSET, $this->parent->get('IdNode'));
 
 
-        XMD_Log::info('StrDoc dependencies deleted');
+        Logger::info('StrDoc dependencies deleted');
     }
 
+    /**
+     * @param null $name
+     */
     function RenameNode($name = null)
     {
 
@@ -399,6 +441,9 @@ class AbstractStructuredDocument extends FileNode
         $this->updatePath();
     }
 
+    /**
+     * @return array
+     */
     function GetAllGenerations()
     {
 
@@ -415,6 +460,10 @@ class AbstractStructuredDocument extends FileNode
         return $result;
     }
 
+    /**
+     * @param $channelID
+     * @return int
+     */
     function HasChannel($channelID)
     {
 
@@ -434,6 +483,12 @@ class AbstractStructuredDocument extends FileNode
     }
 
     // TODO: Rewrite in Views.
+    /**
+     * @param $depth
+     * @param $files
+     * @param $recurrence
+     * @return string
+     */
     function ToXml($depth, & $files, $recurrence)
     {
 
@@ -473,6 +528,9 @@ class AbstractStructuredDocument extends FileNode
         return $xmlBody;
     }
 
+    /**
+     * @return string
+     */
     function getXmlTail()
     {
 
@@ -491,6 +549,9 @@ class AbstractStructuredDocument extends FileNode
         return $returnValue;
     }
 
+    /**
+     * @return array|null
+     */
     function GetChannels()
     {
 
@@ -511,6 +572,9 @@ class AbstractStructuredDocument extends FileNode
         return $out;
     }
 
+    /**
+     * @return bool|string
+     */
     function getTemplate()
     {
 
@@ -523,6 +587,9 @@ class AbstractStructuredDocument extends FileNode
         return false;
     }
 
+    /**
+     * @return bool|null|string
+     */
     function getLanguage()
     {
         $structuredDodument = new StructuredDocument($this->nodeID);
@@ -530,6 +597,9 @@ class AbstractStructuredDocument extends FileNode
         return $idLanguage > 0 ? $idLanguage : NULL;
     }
 
+    /**
+     * @param $channelID
+     */
     function SetChannel($channelID)
     {
 
@@ -544,6 +614,9 @@ class AbstractStructuredDocument extends FileNode
     }
 
     // Deletes the association between a channel and the current document
+    /**
+     * @param $channelID
+     */
     function DeleteChannel($channelID)
     {
 
@@ -558,6 +631,9 @@ class AbstractStructuredDocument extends FileNode
     }
 
     // Deletes all the associations between a channel and the current document
+    /**
+     *
+     */
     function DeleteChannels()
     {
 
@@ -570,6 +646,10 @@ class AbstractStructuredDocument extends FileNode
             $this->parent->SetError(5);
     }
 
+    /**
+     * @param $idLang
+     * @return null|string
+     */
     function _langXapAttrib($idLang)
     {
         // Inserting languages
@@ -597,12 +677,20 @@ class AbstractStructuredDocument extends FileNode
 
     }
 
+    /**
+     * @param $idLang
+     * @return string
+     */
     function _buildDocXapAttribs($idLang)
     {
 
         return $this->DocXapAttribLevels($idLang);
     }
 
+    /**
+     * @param null $channelID
+     * @return null|string
+     */
     function ChannelsXapAttrib($channelID = null)
     {
 
@@ -633,13 +721,17 @@ class AbstractStructuredDocument extends FileNode
         return $outPut;
     }
 
-    private function Generate($channel, $content = null, $outPut = null)
+    /**
+     * @param $channel
+     * @return null|string|\Ximdex\Utils\unknown_type
+     */
+    private function Generate($channel )
     {
         $nodeid = $this->nodeID;
 
         $node = new Node($nodeid);
 
-        if (\App::getValue('dexCache')) {
+        if (App::getValue('dexCache')) {
             if (!DexCache::isModified($nodeid)) {
                 $content = DexCache::getPersistentSyncFile($nodeid, $channel);
                 return $content;
@@ -657,18 +749,16 @@ class AbstractStructuredDocument extends FileNode
         $pipeMng = new PipelineManager();
         $content = $pipeMng->getCacheFromProcessAsContent($version, 'StrDocToDexT', $data);
 
-        if (\App::getValue('dexCache')) {
-            $nodeid = $this->nodeID;
-            if (!DexCache::createPersistentSyncFile($nodeid, $channel, $output)) {
-                $this->messages->add(sprintf(_('An error occurred while generating the document %s for the channel %s'), $this->parent->get('Name'), $channel), MSG_TYPE_ERROR);
-                return false;
-            }
-        }
 
         return $content;
     }
 
 
+    /**
+     * @param $langID
+     * @param null $sectionId
+     * @return string
+     */
     function InsertLinkedximletS($langID, $sectionId = null)
     {
         $linkedXimlets = $this->getLinkedXimlets($langID, $sectionId);
@@ -682,6 +772,11 @@ class AbstractStructuredDocument extends FileNode
         return $output;
     }
 
+    /**
+     * @param $langID
+     * @param null $sectionId
+     * @return array
+     */
     function getLinkedximletS($langID, $sectionId = null)
     {
         if (is_null($sectionId)) {
@@ -709,6 +804,10 @@ class AbstractStructuredDocument extends FileNode
         return $linkedXimlets;
     }
 
+    /**
+     * @param $nodeID
+     * @return string
+     */
     function DocXapDynamicAttrib($nodeID)
     {
 
@@ -725,6 +824,10 @@ class AbstractStructuredDocument extends FileNode
         return $str_props;
     }
 
+    /**
+     * @param $langID
+     * @return string
+     */
     function DocXapAttribLevels($langID)
     {
 
@@ -773,6 +876,9 @@ class AbstractStructuredDocument extends FileNode
         return $s;
     }
 
+    /**
+     * @return array
+     */
     function GetDependencies()
     {
 
@@ -780,6 +886,10 @@ class AbstractStructuredDocument extends FileNode
         return $nodeDependencies->getByTarget($this->nodeID);
     }
 
+    /**
+     * @param $idLanguage
+     * @return bool|null|string
+     */
     function getChildrenByLanguage($idLanguage)
     {
         $childrens = $this->parent->GetChildren();
@@ -794,6 +904,10 @@ class AbstractStructuredDocument extends FileNode
         return NULL;
     }
 
+    /**
+     * @param bool $withInheritance
+     * @return string
+     */
     function _getDocXapPropertiesAttrib($withInheritance = false)
     {
         $node = new Node($this->nodeID);

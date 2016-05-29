@@ -2,6 +2,8 @@
 
 namespace Ximdex\Runtime;
 
+use DI\ContainerBuilder;
+use Doctrine\Common\Cache\ArrayCache;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -16,11 +18,11 @@ Class App
 
     public function __construct()
     {
-        $this->DIBuilder = new \DI\ContainerBuilder();
+        $this->DIBuilder = new ContainerBuilder();
         $this->DIBuilder->useAutowiring(true);
         $this->DIBuilder->useAnnotations(true);
         $this->DIBuilder->ignorePhpDocErrors(true);
-        $this->DIBuilder->setDefinitionCache(new \Doctrine\Common\Cache\ArrayCache());
+        $this->DIBuilder->setDefinitionCache(new ArrayCache());
         $this->DIContainer = $this->DIBuilder->build();
         $this->config = array();
 
@@ -121,12 +123,15 @@ Class App
         }
         if (!isset(self::$DBInstance[$conf])) {
             throw new \Exception( '-1,Unknown DB Connection');
-            return null ;
         }
         return self::$DBInstance[$conf];
     }
     /**
      * Legacy: Compability
+     */
+    /**
+     * @param $key
+     * @return mixed|null
      */
     public static function get( $key ) {
 
@@ -138,7 +143,6 @@ Class App
         if ( is_null( $objectData )) {
 
             return self::getObject( $key ) ;
-            return null ;
         }
         require_once( App::getValue('XIMDEX_ROOT_PATH') .  $objectData  ) ;
         return self::getObject( $key ) ;
@@ -156,8 +160,8 @@ Class App
     /**
      * Set a listener to an event
      *
-     * @param string $eventName
-     * @param $listener is a callable
+     * @param $eventName
+     * @param $listener
      */
     public static function setListener($eventName, $listener){
         self::getDispatcher()->addListener($eventName, $listener);
