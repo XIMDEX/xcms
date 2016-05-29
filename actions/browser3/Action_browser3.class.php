@@ -439,13 +439,12 @@ class Action_browser3 extends ActionAbstract
         $ret = GenericDatasource::search($request);
 
         if ("SQLTREE" != $handler) {
-            $handler = QueryProcessor::getInstance($handler);
+            $queryHandler = QueryProcessor::getInstance($handler);
             $query = $handler->getQueryOptions($query);
 
             $ret['query'] = $query;
-            $ret = $this->resutlsHierarchy($view, isset($query['parentid']) ? $query['parentid'] : null, $ret, $handler);
+            $ret = $this->resultsHierarchy($view, isset($query['parentid']) ? $query['parentid'] : null, $ret, $queryHandler);
         } else {
-
 
             return $ret;
         }
@@ -453,7 +452,7 @@ class Action_browser3 extends ActionAbstract
         return $ret;
     }
 
-    protected function resutlsHierarchy($view, $parentId, $results, $handler)
+    protected function resultsHierarchy($view, $parentId, $results, $handler)
     {
 
         if ($view != 'treeview')

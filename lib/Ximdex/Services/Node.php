@@ -27,6 +27,7 @@
 
 namespace Ximdex\Services ;
 
+use Ximdex\Models\Node as ModelsNode;
 use Ximdex\Models\User ;
 /**
  * <p>Service responsible of deal with nodes</p>
@@ -47,7 +48,7 @@ class Node
 
 
         if ($idNode) {
-            $this->node = new \Ximdex\Models\Node($idNode);
+            $this->node = new ModelsNode($idNode);
 
         }
         $this->lazyMode = $lazyMode;
@@ -74,7 +75,7 @@ class Node
             return false;
         }
 
-        $node = new \Ximdex\Models\Node($nodeid);
+        $node = new ModelsNode($nodeid);
 
         if ($node->GetID() == null) {
             return false;
@@ -92,21 +93,19 @@ class Node
     public function existsNode($nodeId)
     {
         $id = (int)$nodeId;
-        $node = new \Ximdex\Models\Node($id);
+        $node = new ModelsNode($id);
 
         return $node->get("IdNode") != null;
     }
 
     /**
-     * <p>Gets the node with the given node id or null if the node does not exist</p>
-     *
-     * @param int $nodeId The node id to be get
-     * @return Node The requested node or null if the node does not exist
+     * @param null $idNode
+     * @return null|ModelsNode[]
      */
     public function getNode($idNode = null)
     {
         if ($idNode)
-            return $this->existsNode($idNode) ? new \Ximdex\Models\Node($idNode) : null;
+            return $this->existsNode($idNode) ? new ModelsNode($idNode) : null;
         else
             return $this->node;
     }
@@ -160,7 +159,7 @@ class Node
      */
     public function isOfNodeType($node, $nodetypeId)
     {
-        $n = is_object($node) && $node instanceof Node ? $node : new \Ximdex\Models\Node($node);
+        $n = is_object($node) && $node instanceof Node ? $node : new ModelsNode($node);
 
         return $n->GetNodeType() == $nodetypeId;
     }
@@ -186,7 +185,7 @@ class Node
     {
         $nid = $node instanceof Node ? $node->GetID() : $node;
 
-        $n = new \Ximdex\Models\Node($nid);
+        $n = new ModelsNode($nid);
         $res = $n->DeleteNode(true);
 
         return $res > 0;
@@ -215,6 +214,9 @@ class Node
         return $nodeTypeService->isMetadataForced();
     }
 
+    /**
+     * @return  ModelsNode[]
+     */
     public function getSiblings()
     {
         $result = $this->node->find("IdNode", "idparent=%s", array($this->node->get("IdParent")), MONO);
@@ -249,12 +251,12 @@ class Node
         //If $valueToReturn is array of Ids
         if (is_array($valueToReturn)) {
             foreach ($valueToReturn as $idNode) {
-                $tmpNode = new \Ximdex\Models\Node($idNode);
+                $tmpNode = new ModelsNode($idNode);
                 if ($tmpNode->get("IdNode"))
                     $result[] = $tmpNode;
             }
         } else if (is_int($valueToReturn)) { //If $valueToReturn is a node id.
-            $result = new \Ximdex\Models\Node($valueToReturn);
+            $result = new ModelsNode($valueToReturn);
         } else if (is_object($valueToReturn)
             && strtolower(get_class($valueToReturn)) == "node"
         ) { //If $valueToReturn is a Node object

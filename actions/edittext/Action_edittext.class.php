@@ -130,6 +130,7 @@ class Action_edittext extends ActionAbstract
         );
 
         $this->render($values, null, 'default-3.0.tpl');
+        return true ;
     }
 
     /*

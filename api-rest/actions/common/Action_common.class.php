@@ -367,7 +367,7 @@ class Action_common implements APIRestAction
      * @param type $formChannels
      * @return type
      */
-    private function _insertLanguage($isoName, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels)
+    public function _insertLanguage($isoName, $nodeTypeName, $name, $idContainer, $idTemplate, $formChannels)
     {
         $language = new Language();
         $language->SetByIsoName($isoName);

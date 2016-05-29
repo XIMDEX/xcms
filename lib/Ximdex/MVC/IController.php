@@ -62,7 +62,7 @@ class IController
      */
     var $msgError;
     /**
-     * @var \Ximdex\Utils\Messages
+     * @var Messages
      */
     var $messages;
 

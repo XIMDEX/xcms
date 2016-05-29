@@ -108,7 +108,7 @@ class Action_createxmlcontainer extends ActionAbstract {
      * Method called from View. Create a new xml container. Get the params and check them.     
      */
     function createxmlcontainer() {
-
+		$idNodeMaster = null ;
     	$idNode = $this->request->getParam('nodeid');    	
 		$aliases = $this->request->getParam('aliases');
 		$name = $this->request->getParam('name');
@@ -133,9 +133,7 @@ class Action_createxmlcontainer extends ActionAbstract {
 
     	if (!($idContainer > 0)) {
     		$this->messages->add(_('An error ocurred creating the container node'), MSG_TYPE_ERROR);
-    		foreach ($baseIO->messages->messages as $message) {
-    			$this->messages->messages[] = $message;
-    		}
+
 
         		$values = array(
 				'idNode' => $idNode,
@@ -202,6 +200,8 @@ class Action_createxmlcontainer extends ActionAbstract {
 			'nodeID' => $idContainer
 		);
 		$this->sendJSON($values);
+		return true ;
+
     }
 
     private function buildXmlContainer($idNode, $aliases, $name, $idSchema, $channels, $languages, $master){

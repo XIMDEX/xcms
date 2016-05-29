@@ -45,7 +45,7 @@ class Action_xmlsetlink extends ActionAbstract {
 
 		if (!($node->get('IdNode') > 0)) {
 			$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
-			$this->render(array('messages' => $this->messages->message), NULL, 'messages.tpl');
+			$this->render(array('messages' => $this->messages->messages), NULL, 'messages.tpl');
 			return ;
 		}
 
@@ -73,6 +73,9 @@ class Action_xmlsetlink extends ActionAbstract {
 		$this->render($values, NULL, 'default-3.0.tpl');
     }
 
+	/**
+	 * @return bool
+	 */
 	function setlink() {
 
 		$idNode = $this->request->getParam('nodeid');
@@ -120,6 +123,7 @@ class Action_xmlsetlink extends ActionAbstract {
 
         $values = array('messages' => $this->messages->messages, "parentID"=> $node->get('IdParent'));
         $this->sendJSON($values);
+		return true ;
 	}
 
 /*
@@ -156,10 +160,7 @@ class Action_xmlsetlink extends ActionAbstract {
 */
 
 	function show_translation() {
-
-		$idNode = $this->request->getParam('nodeid');
 		$values = array('go_method' => 'unlink');
-
 		$this->addJs('/actions/xmlsetlink/resources/js/show_translation.js');
 		$this->render($values, 'show_translation', 'default-3.0.tpl');
 	}
