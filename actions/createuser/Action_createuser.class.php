@@ -20,8 +20,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 use Ximdex\Models\Node;
@@ -32,82 +32,84 @@ use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/conf/install-params.conf.php');
 
-class Action_createuser extends ActionAbstract {
+class Action_createuser extends ActionAbstract
+{
     // Main method: shows main init form
-    function index() {
-		$idNode = $this->request->getParam('nodeid');
+    function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
 
         $role = new Role();
         $roles = $role->find('IdRole, Name');
 
-		$locale = new XimLocale();
-		$locales = $locale->GetEnabledLocales();
+        $locale = new XimLocale();
+        $locales = $locale->GetEnabledLocales();
 
-		$values = array(
-			'id_node' => $idNode,
-			'go_method' => 'createuser',
-			'roles' => $roles,
-			'locales' => $locales
-		);
+        $values = array(
+            'id_node' => $idNode,
+            'go_method' => 'createuser',
+            'roles' => $roles,
+            'locales' => $locales
+        );
 
-		$this->render($values, null, 'default-3.0.tpl');
+        $this->render($values, null, 'default-3.0.tpl');
     }
 
-    function createuser($idNode = NULL, $name = NULL, $login = NULL, $pass = NULL, $confirmPass = NULL, $email = NULL, $locale = NULL, $generalrole = NULL, $render = true) {
+    function createuser($idNode = NULL, $name = NULL, $login = NULL, $pass = NULL, $confirmPass = NULL, $email = NULL, $locale = NULL, $generalrole = NULL, $render = true)
+    {
+        $result = null ;
+        if (empty($idNode)) {
+            $idNode = $this->request->getParam('id_node');
+        }
+        if (empty($name)) {
+            $name = $this->request->getParam('name');
+        }
+        if (empty($login)) {
+            $login = $this->request->getParam('login');
+        }
+        if (empty($pass)) {
+            $pass = $this->request->getParam('pass');
+        }
+        if (empty($confirmPass)) {
+            $confirmPass = $this->request->getParam('confirmpass');
+        }
+        if (empty($email)) {
+            $email = $this->request->getParam('email');
+        }
+        if (empty($generalrole)) {
+            $generalrole = $this->request->getParam('generalrole');
+        }
 
-    	if (empty($idNode)) {
-    		$idNode = $this->request->getParam('id_node');
-    	}
-    	if (empty($name)) {
-    		$name = $this->request->getParam('name');
-    	}
-    	if (empty($login)) {
-    		$login = $this->request->getParam('login');
-    	}
-    	if (empty($pass)) {
-    		$pass = $this->request->getParam('pass');
-    	}
-    	if (empty($confirmPass)) {
-    		$confirmPass = $this->request->getParam('confirmpass');
-    	}
-    	if (empty($email)) {
-    		$email = $this->request->getParam('email');
-    	}
-    	if (empty($generalrole)) {
-    		$generalrole = $this->request->getParam('generalrole');
-    	}
+        if (empty($locale) || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/' . $locale)) {
+            $locale = $this->request->getParam('locale');
+            if (null == $locale || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/' . $locale)) {
+                $locale = DEFAULT_LOCALE;
+            }
+        }
 
-	if (empty($locale) || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/'.$locale) ) {
-    		$locale = $this->request->getParam('locale');
-			if(null == $locale || !@file_exists(XIMDEX_ROOT_PATH . '/inc/i18n/locale/'.$locale)) {
-				$locale = DEFAULT_LOCALE;
-			}
-    	}
+        $nodeType = new NodeType();
+        $nodeType->SetByName('User');
 
-	  	$nodeType = new NodeType();
-		$nodeType->SetByName('User');
+        $user = new Node();
 
-		$usuario = new Node();
+        if (strcmp($pass, $confirmPass)) {
+            $user->messages->add(_('Inserted passwords do not match, the user could not be created'), MSG_TYPE_ERROR);
+        }
 
-		if (strcmp($pass, $confirmPass)) {
-			$usuario->messages->add(_('Inserted passwords do not match, the user could not be created'), MSG_TYPE_ERROR);
-		}
+        if (!($user->messages->count(MSG_TYPE_ERROR) > 0)) {
+            $result = $user->CreateNode($login, $idNode, $nodeType->get('IdNodeType'), null, $name, $pass, $email, $locale, $generalrole);
+        }
 
-		if (!($usuario->messages->count(MSG_TYPE_ERROR) > 0)) {
-			$result = $usuario->CreateNode($login, $idNode, $nodeType->get('IdNodeType'), null, $name, $pass, $email, $locale, $generalrole);
-		}
+        if ($result > 0) {
+            $user->messages->add(_('User has been successfully inserted'), MSG_TYPE_NOTICE);
+        }
 
-		if($result > 0) {
-			$usuario->messages->add(_('User has been successfully inserted'), MSG_TYPE_NOTICE);
-		}
+        if ($render) {
+            $this->reloadNode($idNode);
+            $values = array('messages' => $user->messages->messages, "parentID" => $idNode);
+            $this->sendJSON($values);
+        }
 
-		if ($render) {
-			$this->reloadNode($idNode);
-			$values = array('messages' => $usuario->messages->messages, "parentID" => $idNode );
-			$this->sendJSON($values);
-		}
-
-		return $result;
+        return $result;
     }
 }
-?>

@@ -20,8 +20,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
@@ -30,35 +30,34 @@ use Ximdex\Models\NodeType;
 use Ximdex\MVC\ActionAbstract;
 
 
+class Action_createrole extends ActionAbstract
+{
+    // Main method: shows initial form
+    function index()
+    {
 
-class Action_createrole extends ActionAbstract {
-   // Main method: shows initial form
-    function index() {
-
-		$values = array('go_method' => 'createrole');
-			
-		$this->render($values, null, 'default-3.0.tpl');
+        $values = array('go_method' => 'createrole');
+        $this->render($values, null, 'default-3.0.tpl');
     }
-    function createrole() {
-		$idNode = $this->request->getParam('id_node');
-		$name = $this->request->getParam('name');
-		$description = $this->request->getParam('description');
-	
-		$nodeType = new NodeType();
-		$nodeType->SetByName('Role');
-	
-	    $rol = new Node();
-		$result = $rol->CreateNode($name, $idNode, $nodeType->get('IdNodeType'), null, null, $description);
-		if ($result > 0) {
-			$rol->messages->add(_('Role has been successfully added'), MSG_TYPE_NOTICE);
-		}
-		
-		
 
-		$values = array('messages' => $rol->messages->messages, "parentID" => $idNode );
-		
-		$this->sendJSON($values);
-		
+    function createrole()
+    {
+        $idNode = $this->request->getParam('id_node');
+        $name = $this->request->getParam('name');
+        $description = $this->request->getParam('description');
+
+        $nodeType = new NodeType();
+        $nodeType->SetByName('Role');
+
+        $rol = new Node();
+        $result = $rol->CreateNode($name, $idNode, $nodeType->get('IdNodeType'), null, null, $description);
+        if ($result > 0) {
+            $rol->messages->add(_('Role has been successfully added'), MSG_TYPE_NOTICE);
+        }
+
+        $values = array('messages' => $rol->messages->messages, "parentID" => $idNode);
+
+        $this->sendJSON($values);
+
     }
 }
-?>

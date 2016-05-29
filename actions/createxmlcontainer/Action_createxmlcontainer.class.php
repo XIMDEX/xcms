@@ -203,7 +203,6 @@ class Action_createxmlcontainer extends ActionAbstract {
 		return true ;
 
     }
-
     private function buildXmlContainer($idNode, $aliases, $name, $idSchema, $channels, $languages, $master){
 
     	// Creating container
@@ -239,4 +238,3 @@ class Action_createxmlcontainer extends ActionAbstract {
     	return $baseIO->build($data);
     }
 }
-?>

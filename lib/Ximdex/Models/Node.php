@@ -1118,12 +1118,6 @@ class Node extends NodesOrm
         $this->set('CreationDate', time());
         $this->set('ModificationDate', time());
 
-        /*
-            if(is_null($subfolders)){
-              $subfolders=array();
-            }
-        */
-
         $nodeType   = new NodeType($nodeTypeID);
         $parentNode = new Node($this->get('IdParent'));
 

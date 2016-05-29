@@ -63,7 +63,7 @@ class BaseIO
      *
      * @param array $data Data of the object to create
      * @param int $userid Optional param, if it is not specified, the identifier is obtained from the session user identifier
-     * @return identifier of the inserted node or a state specifying why it was not inserted
+     * @return bool|int|null|string  identifier of the inserted node or a state specifying why it was not inserted
      */
     function build($data, $userid = NULL)
     {
