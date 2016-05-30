@@ -20,102 +20,81 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
 use Ximdex\Utils\Logs\Loggeable;
 
 
-if (!defined('LOG_DIR'))
-{
-	
-	define('LOG_DIR', realpath(dirname(__FILE__) . "/logs"));
+if (!defined('LOG_DIR')) {
+
+    define('LOG_DIR', realpath(dirname(__FILE__) . "/logs"));
 }
-if (!defined('DEBUG'))
-{
-	
-	define('DEBUG', true);
+if (!defined('DEBUG')) {
+
+    define('DEBUG', true);
 }
 
 /**
- *	@brief Logging for the publication incidences.
+ * @brief Logging for the publication incidences.
  */
+class Sync_Log
+{
 
-class Sync_Log {
+    /**
+     * @param $msg
+     * @param int $level
+     */
 
-	private function __construct() {
-		// Singleton
-	}
-	
-	/**
-	 * Writes a message.
-	 * @param $msg
-	 * @param $loggerName
-	 * @param $level
-	 * @return unknown_type
-	 */
+    public static function write($msg, $level = LOGGER_LEVEL_INFO)
+    {
+        Loggeable::write($msg, 'sync_logger', $level);
+    }
 
-	public function write($msg, $level=LOGGER_LEVEL_INFO) {
-		Loggeable::write($msg, 'sync_logger', $level);
-	}
-	
-	/**
-	 * Writes a message as Debug.
-	 * @param $msg
-	 * @param $loggerName
-	 * @return unknown_type
-	 */
+    /**
+     * @param $msg
+     */
 
-	public function debug($msg) {
-		Loggeable::debug($msg, 'sync_logger');
-	}
+    public static function debug($msg)
+    {
+        Loggeable::debug($msg, 'sync_logger');
+    }
 
-	/**
-	 * Writes a message as Info.
-	 * @param $msg
-	 * @param $loggerName
-	 * @return unknown_type
-	 */
+    /**
+     * @param $msg
+     */
 
-	public function info($msg) {
-		Loggeable::info($msg, 'sync_logger');
-	}
+    public static function info($msg)
+    {
+        Loggeable::info($msg, 'sync_logger');
+    }
 
-	/**
-	 * Writes a message as Warning.
-	 * @param $msg
-	 * @param $loggerName
-	 * @return unknown_type
-	 */
+    /**
+     * @param $msg
+     */
+    public static function warning($msg)
+    {
+        Loggeable::warning($msg, 'sync_logger');
+    }
 
-	public function warning($msg) {
-		Loggeable::warning($msg, 'sync_logger');
-	}
+    /**
+     * @param $msg
+     */
 
-	/**
-	 * Writes a message as Error.
-	 * @param $msg
-	 * @param $loggerName
-	 * @return unknown_type
-	 */
+    public static function error($msg)
+    {
+        Loggeable::error($msg, 'sync_logger');
+    }
 
-	public function error($msg) {
-		Loggeable::error($msg, 'sync_logger');
-	}
-
-	/**
-	 * Writes a message as Fatal.
-	 * @param $msg
-	 * @param $loggerName
-	 * @return unknown_type
-	 */
-
-	public function fatal($msg) {
-		Loggeable::fatal($msg, 'sync_logger');		
-	}
+    /**
+     * @param $msg
+     */
+    public static function fatal($msg)
+    {
+        Loggeable::fatal($msg, 'sync_logger');
+    }
 
 }
 
-?>

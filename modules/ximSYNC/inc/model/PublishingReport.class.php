@@ -27,6 +27,7 @@
 
 use Ximdex\Models\Node;
 use Ximdex\Models\State;
+use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/PublishingReport_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
@@ -71,7 +72,7 @@ class PublishingReport extends PublishingReport_ORM {
     , $pubTime, $state, $progress, $fileName, $filePath, $idSync, $idBatch, $idParentServer) {
 
         if ($idSection != null && $idNode != null) {
-            $dbObj = new DB();
+            $dbObj = new Db();
             $sql = "SELECT * " .
                     "FROM PublishingReport " .
                     "WHERE IdNode = " . $idNode . //" AND IdSection=" . $idSection .
@@ -154,14 +155,14 @@ class PublishingReport extends PublishingReport_ORM {
         XMD_Log::info($query);
         XMD_Log::info(print_r($updateFields,1));
         XMD_Log::info(print_r($searchFields, 1));
-        $dbObj = new DB();
+        $dbObj = new Db();
         $dbObj->execute($query);
 
         return null;
     }
 
     function getReports($params) {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = "SELECT * " .
                 "FROM PublishingReport pr INNER JOIN Nodes n on pr.IdNode = n.IdNode inner join
                  NodeTypes nt on n.IdNodeType = nt.IdNodeType ";

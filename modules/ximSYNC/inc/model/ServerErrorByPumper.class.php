@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/ServerErrorByPumper_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
@@ -45,7 +46,7 @@ class ServerErrorByPumper extends ServerErrorByPumper_ORM {
 
     function loadByPumper($pumperId = null){
 		if($pumperId){
-			$dbObj = new DB();
+			$dbObj = new Db();
 			$sql = "SELECT ErrorId FROM ServerErrorByPumper WHERE PumperId = $pumperId";
 			$dbObj->Query($sql);
 

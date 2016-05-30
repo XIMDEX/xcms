@@ -20,165 +20,168 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
+use Ximdex\Runtime\Db;
 
- ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
- ModulesManager::file('/inc/manager/Sync_Log.class.php', 'ximSYNC');
- ModulesManager::file('/inc/utils.php');
+ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
+ModulesManager::file('/inc/manager/Sync_Log.class.php', 'ximSYNC');
+ModulesManager::file('/inc/utils.php');
 
 /**
-*	@brief Logging for the publication incidences.
-*
-*	This class includes the methods that interact with the Database.
-*/
-
-class SynchronizerStat extends SynchronizerStats_ORM {
-
-	/**
-	*  Adds a row to SynchronizerStats table and writes in the log file.
-	*  @param int batchId
-	*  @param int nodeFrameId
-	*  @param int channelFrameId
-	*  @param int serverFrameId
-	*  @param int pumperId
-	*  @param string class
-	*  @param string method
-	*  @param string file
-	*  @param int line
-	*  @param string type
-	*  @param int level
-	*  @param string comment
-	*  @param int doInsertSql
-	*/
-
-	function create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
-					 $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false) {
+ * @brief Logging for the publication incidences.
+ *
+ *    This class includes the methods that interact with the Database.
+ */
+class SynchronizerStat extends SynchronizerStats_ORM
+{
 
 
-		if(strcmp(\App::getValue( "SyncStats"),"1")==0){
+    /**
+     * @param $batchId
+     * @param $nodeFrameId
+     * @param $channelFrameId
+     * @param $serverFrameId
+     * @param $pumperId
+     * @param $class
+     * @param $method
+     * @param $file
+     * @param $line
+     * @param $type
+     * @param $level
+     * @param $comment
+     * @param bool $doInsertSql
+     * @return null
+     */
+    function create($batchId, $nodeFrameId, $channelFrameId, $serverFrameId, $pumperId,
+                    $class, $method, $file, $line, $type, $level, $comment, $doInsertSql = false)
+    {
 
-			// Seg�n el valor del parametro $doLog se insertara en la tabla o no.
-			if ($doInsertSql) {
-				$this->set('IdStat', null);
-				$this->set('BatchId', $batchId);
-				$this->set('NodeFrameId', $nodeFrameId);
-				$this->set('ChannelFrameId', $channelFrameId);
-				$this->set('ServerFrameId', $serverFrameId);
-				$this->set('PumperId', $pumperId);
-				$this->set('Class', ($class == '') ? null : $class);
-				$this->set('Method', ($method == '') ? null : $method);
-				$this->set('File', $file);
-				$this->set('Line', $line);
-				$this->set('Type', $type);
-				$this->set('Level', $level);
-				$this->set('Time', mktime());
-				$this->set('Comment', $comment);
 
-				parent::add();
-			}
+        if (strcmp(\App::getValue("SyncStats"), "1") == 0) {
 
-			//XMD_Log::info($comment);
-			Sync_Log::write($comment, $level);
-		}
-		return null;
+            // Seg�n el valor del parametro $doLog se insertara en la tabla o no.
+            if ($doInsertSql) {
+                $this->set('IdStat', null);
+                $this->set('BatchId', $batchId);
+                $this->set('NodeFrameId', $nodeFrameId);
+                $this->set('ChannelFrameId', $channelFrameId);
+                $this->set('ServerFrameId', $serverFrameId);
+                $this->set('PumperId', $pumperId);
+                $this->set('Class', ($class == '') ? null : $class);
+                $this->set('Method', ($method == '') ? null : $method);
+                $this->set('File', $file);
+                $this->set('Line', $line);
+                $this->set('Type', $type);
+                $this->set('Level', $level);
+                $this->set('Time', mktime());
+                $this->set('Comment', $comment);
+
+                parent::add();
+            }
+
+            //XMD_Log::info($comment);
+            Sync_Log::write($comment, $level);
+        }
+        return null;
     }
 
-	/**
-	*  Gets a row from SynchronizerStats table which matching the value of idStat.
-	*  @param int idStat
-	*  @return array|null
-	*/
+    /**
+     *  Gets a row from SynchronizerStats table which matching the value of idStat.
+     * @param int $idStat
+     * @return array|null
+     */
 
-    function getStatById($idStat) {
+    function getStatById($idStat)
+    {
 
-		parent::__construct($idStat);
+        parent::__construct($idStat);
 
-		$stat = array();
+        $stat = array();
+        $dbObj = new Db();
+        if ($stats['IdStat'] = $dbObj->GetValue("IdStat")) {
 
-		if ($stats['IdStat'] = $dbObj->GetValue("IdStat")) {
+            $stats['BatchId'] = $dbObj->GetValue("BatchId");
+            $stats['NodeFrameId'] = $dbObj->GetValue("NodeFrameId");
+            $stats['ChannelFrameId'] = $dbObj->GetValue("ChannelFrameId");
+            $stats['ServerFrameId'] = $dbObj->GetValue("ServerFrameId");
+            $stats['PumperId'] = $dbObj->GetValue("PumperId");
+            $stats['Class'] = $dbObj->GetValue("Class");
+            $stats['Method'] = $dbObj->GetValue("Method");
+            $stats['File'] = $dbObj->GetValue("File");
+            $stats['Line'] = $dbObj->GetValue("Line");
+            $stats['Type'] = $dbObj->GetValue("Type");
+            $stats['Level'] = $dbObj->GetValue("Level");
+            $stats['Time'] = $dbObj->GetValue("Time");
+            $stats['Comment'] = $dbObj->GetValue("Comment");
 
-		    $stats['BatchId'] = $dbObj->GetValue("BatchId");
-		    $stats['NodeFrameId'] = $dbObj->GetValue("NodeFrameId");
-		    $stats['ChannelFrameId'] = $dbObj->GetValue("ChannelFrameId");
-		    $stats['ServerFrameId'] = $dbObj->GetValue("ServerFrameId");
-		    $stats['PumperId'] = $dbObj->GetValue("PumperId");
-		    $stats['Class'] = $dbObj->GetValue("Class");
-		    $stats['Method'] = $dbObj->GetValue("Method");
-		    $stats['File'] = $dbObj->GetValue("File");
-		    $stats['Line'] = $dbObj->GetValue("Line");
-		    $stats['Type'] = $dbObj->GetValue("Type");
-		    $stats['Level'] = $dbObj->GetValue("Level");
-		    $stats['Time'] = $dbObj->GetValue("Time");
-		    $stats['Comment'] = $dbObj->GetValue("Comment");
+            return $stat;
+        }
 
-		    return $stat;
-		}
-
-		return null;
+        return null;
 
     }
 
-	/**
-	*  Gets the rows from SynchronizerStats table which match the values of a list of fields.
-	*  @param array arrayFields
-	*  @return array|null
-	*/
+    /**
+     *  Gets the rows from SynchronizerStats table which match the values of a list of fields.
+     * @param array $arrayFields
+     * @return array|null
+     */
 
-    function getStatByField($arrayFields) {
+    function getStatByField($arrayFields)
+    {
 
-		$dbObj = new DB();
+        $dbObj = new Db();
 
-		$whereClause = " WHERE TRUE";
-		if (is_array($arrayFields) && count($arrayFields) >= 0) {
+        $whereClause = " WHERE TRUE";
+        if (is_array($arrayFields) && count($arrayFields) >= 0) {
 
-			foreach  ($arrayFields as $fieldName => $fieldValue) {
+            foreach ($arrayFields as $fieldName => $fieldValue) {
 
-				if ($this->isField($fieldName)) {
+                if ($this->isField($fieldName)) {
 
-					$whereClause .= " AND " . $fieldName . " = '" . $fieldValue . "'";
-				}
-			}
-		}
+                    $whereClause .= " AND " . $fieldName . " = '" . $fieldValue . "'";
+                }
+            }
+        }
 
-		$query = "SELECT IdStat, BatchId, NodeFrameId, ChannelFrameId, ServerFrameId, " .
-				 "PumperId, Class, Method, File, Line, Type, Level, Time, Comment " .
-				 "FROM SynchronizerStats" . $whereClause;
+        $query = "SELECT IdStat, BatchId, NodeFrameId, ChannelFrameId, ServerFrameId, " .
+            "PumperId, Class, Method, File, Line, Type, Level, Time, Comment " .
+            "FROM SynchronizerStats" . $whereClause;
 
-		$i = 0;
-		$dbObj->Query($query);
-		if ($dbObj->numRows == 0) {
+        $i = 0;
+        $dbObj->Query($query);
+        if ($dbObj->numRows == 0) {
 
-		    return null;
-		}
+            return null;
+        }
 
-		$stats = array();
+        $stats = array();
 
-		while (!$dbObj->EOF) {
+        while (!$dbObj->EOF) {
 
-		    $stats[$i]['IdStat'] = $dbObj->GetValue("IdStat");
-		    $stats[$i]['BatchId'] = $dbObj->GetValue("BatchId");
-		    $stats[$i]['NodeFrameId'] = $dbObj->GetValue("NodeFrameId");
-		    $stats[$i]['ChannelFrameId'] = $dbObj->GetValue("ChannelFrameId");
-		    $stats[$i]['ServerFrameId'] = $dbObj->GetValue("ServerFrameId");
-		    $stats[$i]['PumperId'] = $dbObj->GetValue("PumperId");
-		    $stats[$i]['Class'] = $dbObj->GetValue("Class");
-		    $stats[$i]['Method'] = $dbObj->GetValue("Method");
-		    $stats[$i]['File'] = $dbObj->GetValue("File");
-		    $stats[$i]['Line'] = $dbObj->GetValue("Line");
-		    $stats[$i]['Type'] = $dbObj->GetValue("Type");
-		    $stats[$i]['Level'] = $dbObj->GetValue("Level");
-		    $stats[$i]['Time'] = $dbObj->GetValue("Time");
-		    $stats[$i]['Comment'] = $dbObj->GetValue("Comment");
-		    $i++;
-		    $dbObj->Next();
-		}
+            $stats[$i]['IdStat'] = $dbObj->GetValue("IdStat");
+            $stats[$i]['BatchId'] = $dbObj->GetValue("BatchId");
+            $stats[$i]['NodeFrameId'] = $dbObj->GetValue("NodeFrameId");
+            $stats[$i]['ChannelFrameId'] = $dbObj->GetValue("ChannelFrameId");
+            $stats[$i]['ServerFrameId'] = $dbObj->GetValue("ServerFrameId");
+            $stats[$i]['PumperId'] = $dbObj->GetValue("PumperId");
+            $stats[$i]['Class'] = $dbObj->GetValue("Class");
+            $stats[$i]['Method'] = $dbObj->GetValue("Method");
+            $stats[$i]['File'] = $dbObj->GetValue("File");
+            $stats[$i]['Line'] = $dbObj->GetValue("Line");
+            $stats[$i]['Type'] = $dbObj->GetValue("Type");
+            $stats[$i]['Level'] = $dbObj->GetValue("Level");
+            $stats[$i]['Time'] = $dbObj->GetValue("Time");
+            $stats[$i]['Comment'] = $dbObj->GetValue("Comment");
+            $i++;
+            $dbObj->Next();
+        }
 
-		return $stats;
+        return $stats;
     }
 
 }
-?>
