@@ -50,7 +50,7 @@ function goLoadAction()
 
 //Main thread
 if (!InstallController::isInstalled()) {
-    header( 'Location: /setup/');
+    header( 'Location: ./setup/');
     die();
 
 

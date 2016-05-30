@@ -3341,16 +3341,16 @@ CREATE TABLE `PipeCacheTemplates` (
 
 -- PIPELINE SYSTEM END
 
---  Table for storage of aditional properties of nodes
 DROP TABLE IF EXISTS `NodeProperties`;
 CREATE TABLE `NodeProperties` (
-  `IdNodeProperty` INT NULL AUTO_INCREMENT,
+  `IdNodeProperty` INT NOT NULL AUTO_INCREMENT,
   `IdNode` INT NOT NULL ,
   `Property` VARCHAR( 255 ) NOT NULL ,
   `Value` blob NOT NULL ,
   PRIMARY KEY ( `IdNodeProperty` ) ,
   INDEX ( `IdNode` )
 );
+
 
 INSERT INTO `NodeProperties` (`IdNode`, `Property`, `Value`) VALUES
   (10000, 'Transformer', 'xslt'),
