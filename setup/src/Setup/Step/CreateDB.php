@@ -48,12 +48,11 @@ class CreateDB extends Base
         $valid = true;
 
         try {
-            $pdconnstring = "mysql:host={$form['dbhost']}:{$form['dbport']};dbname={$form['dbname']}";
+            $pdconnstring = "mysql:host={$form['dbhost']};port={$form['dbport']};dbname={$form['dbname']}" ;
             $this->db = new PDO($pdconnstring, $form['dbuser'], $form['dbpass']);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            # save session data ;
-            $_SESSION['db'] = $form;
+
         } catch (PDOException $e) {
             $valid = false;
         }

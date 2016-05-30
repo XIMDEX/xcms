@@ -65,12 +65,13 @@ class Database extends Base
         $valid = true ;
 
         try {
-            $pdconnstring = "mysql:host={$form['dbhost']}:{$form['dbport']};dbname={$form['dbname']}" ;
+            $pdconnstring = "mysql:host={$form['dbhost']};port={$form['dbport']};dbname={$form['dbname']}" ;
             $db =  new PDO( $pdconnstring,$form['dbuser'], $form['dbpass']);
             # save session data ;
             $_SESSION['db'] = $form ;
 
         } catch (PDOException $e) {
+
             $valid = false ;
         }
 

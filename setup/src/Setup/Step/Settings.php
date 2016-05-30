@@ -74,7 +74,7 @@ class Settings extends Base
         $form =  $_SESSION['db'] ;
         $valid = true ;
         try {
-            $pdconnstring = "mysql:host={$form['dbhost']}:{$form['dbport']};dbname={$form['dbname']}" ;
+            $pdconnstring = "mysql:host={$form['dbhost']};port={$form['dbport']};dbname={$form['dbname']}" ;
             $db =  new PDO( $pdconnstring,$form['dbuser'], $form['dbpass']);
             # save session data ;
             $db->exec("UPDATE Users SET Pass=MD5('{$this->vars['form']['pass']}') where IdUser = '301'");

@@ -16,9 +16,9 @@ class Wellcome extends Base
     public function __construct( Manager $manager )
     {
        parent::__construct( $manager);
-        $this->label = "Wellcome";
-        $this->template = "wellcome.twig" ;
-        $this->title = "Wellcome to Ximdex CMS" ;
+        $this->label = "Welcome";
+        $this->template = "welcome.twig" ;
+        $this->title = "Welcome to Ximdex CMS" ;
         $this->vars['title'] = $this->title ;
 
     }
