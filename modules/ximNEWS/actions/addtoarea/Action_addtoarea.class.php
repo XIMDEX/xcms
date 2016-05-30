@@ -73,7 +73,7 @@ class Action_addtoarea extends ActionAbstract {
 		}
 
 		$values = array(
-			'areascount' => sizeof($allAreas),
+			'areascount' => count($allAreas),
 			'id_node' => $idNode,
 			'go_method' => 'addToArea',
 			'areas' => $areas,

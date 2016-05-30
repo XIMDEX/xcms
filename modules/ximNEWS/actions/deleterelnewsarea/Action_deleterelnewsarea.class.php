@@ -52,7 +52,7 @@ class Action_deleterelnewsarea extends ActionAbstract {
 		$values = array(
 			'id_node' => $idNode,
 			'areas' => $areas,
-			'num_areas' => sizeof($areas),
+			'num_areas' => count($areas),
 			'go_method' => 'delete_relation'
 		);
 

@@ -25,6 +25,7 @@
  *  @version $Revision$
  */
 use Ximdex\Models\Node;
+use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
@@ -81,7 +82,7 @@ class Batch extends Batchs_ORM {
      *  @return array
      */
     function getAllBatchsFromNode($nodeId) {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $time = time();
         $dbObj->Query("SELECT IdBatch FROM Batchs WHERE Type='Up' AND TimeOn > $time AND IdNodeGenerator = $nodeId
 						ORDER BY TimeOn ASC");
@@ -149,7 +150,7 @@ class Batch extends Batchs_ORM {
      *  @return array|false
      */
     function getNodeGeneratorsFromBatchs($stateCryteria = null) {
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         $where = "";
         if ($stateCryteria) {
@@ -197,7 +198,7 @@ class Batch extends Batchs_ORM {
      *  @return array|false
      */
     function getAllBatchs($stateCriteria = null, $activeCriteria = null, $downCriteria = null, $limitCriteria = null, $idNodeGenerator = null, $dateUpCriteria = 0, $dateDownCriteria = 0) {
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         $where = " WHERE 1 ";
         if ($stateCriteria) {
@@ -275,7 +276,7 @@ class Batch extends Batchs_ORM {
      *  @return array
      */
     function getDownBatch($batchId) {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $time = time();
         $query = "SELECT downBatchs.IdBatch, downBatchs.TimeOn FROM Batchs upBatchs, " .
                 "Batchs AS downBatchs WHERE downBatchs.IdBatch = upBatchs.IdBatchDown " .

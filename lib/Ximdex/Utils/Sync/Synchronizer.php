@@ -663,12 +663,12 @@ class Synchronizer
             $list = $this->GetFramesBetweenDates($dateUp, $dateDown);
 
             if (sizeof($list) >= 1)
-                for ($i = 0; $i < sizeof($list); $i++) {
+                for ($i = 0; $i < count($list); $i++) {
                     if ($i == 0)
 
                         $startDate = $this->GetDateUpOnFrame($list[$i]);
 
-                    if ($i == sizeof($list) - 2)
+                    if ($i == count($list) - 2)
                         $endDate = $this->GetDateDownOnFrame($list[$i + 1]);
 
 

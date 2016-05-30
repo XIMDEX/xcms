@@ -96,7 +96,7 @@ class SynchroFacade
 				return $idServer;
 			}
 
-			return $physicalTargetServers[rand(0, sizeof($physicalTargetServers) - 1)];
+			return $physicalTargetServers[rand(0, count($physicalTargetServers) - 1)];
 		}
 
 		$syncro = new Synchronizer($idTargetNode);
@@ -118,7 +118,7 @@ class SynchroFacade
 			return $idServer;
 		}
 
-		return $physicalTargetServers[rand(0, sizeof($physicalTargetServers) - 1)];
+		return $physicalTargetServers[rand(0, count($physicalTargetServers) - 1)];
 	}
 
 	/**
@@ -300,7 +300,7 @@ class SynchroFacade
 		$childList = [$nodeID];
 
 		$workFlowSlaves = $node->GetWorkFlowSlaves();
-		$workFlowSlaves = sizeof($workFlowSlaves) > 0 ? $workFlowSlaves : array();
+		$workFlowSlaves = count($workFlowSlaves) > 0 ? $workFlowSlaves : array();
 
 		if ($childList) {
 			foreach ($childList as $child) {

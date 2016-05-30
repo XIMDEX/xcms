@@ -79,11 +79,11 @@ function Main($argv, $argc)
 
     XMD_Log::display("");
 
-    for ($i = 0; $i < sizeof($downServers); $i++) {
+    for ($i = 0; $i < count($downServers); $i++) {
         $server = $downServers[$i];
         $tasks = $downTasks[$i];
 
-        $commandLine = $command . " --hostid " . $server . " --localbasepath " . $tmpPath . " --tasknumber " . sizeof($tasks);
+        $commandLine = $command . " --hostid " . $server . " --localbasepath " . $tmpPath . " --tasknumber " . count($tasks);
         foreach ($tasks as $taskID) {
             if (file_exists($stopper_file_path)) {
                 $mutex->release();
@@ -108,11 +108,11 @@ function Main($argv, $argc)
     XMD_Log::display("");
     XMD_Log::display("");
 
-    for ($i = 0; $i < sizeof($upServers); $i++) {
+    for ($i = 0; $i < count($upServers); $i++) {
         $server = $upServers[$i];
         $tasks = $upTasks[$i];
 
-        $commandLine = $command . " --hostid " . $server . " --localbasepath " . $tmpPath . " --tasknumber " . sizeof($tasks);
+        $commandLine = $command . " --hostid " . $server . " --localbasepath " . $tmpPath . " --tasknumber " . count($tasks);
         foreach ($tasks as $taskID) {
             if (file_exists($stopper_file_path)) {
                 $mutex->release();

@@ -120,7 +120,7 @@ class Action_deletenode extends ActionAbstract {
 
 		} else {
 
-			if (sizeof($children) && sizeof($depList)) {
+			if (sizeof($children) && count($depList)) {
 
 				$texto = $node->nodeType->get('Name') != "XmlContainer" ?
 					_("Selected document or folder is not empty. It also have external dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.") : _("Your role cannot delete the selected container because of it has language versions depending on it.");
@@ -137,7 +137,7 @@ class Action_deletenode extends ActionAbstract {
 			}
 
 			/// Error: if it has not permits to cascade deletion and node has not children but has dependencies
-			if (!sizeof($children) && sizeof($depList)) {
+			if (!sizeof($children) && count($depList)) {
 				$texto = _("Selected file has dependencies with other system documents and it cannot be deleted using your role. Please, undo dependencies or use a user with suitable permissions.");
 				$formType = "no_permisos";
 			}
@@ -311,7 +311,7 @@ class Action_deletenode extends ActionAbstract {
 			}
 		} else {
 			/// Error: if it has not permit to cascade deletion and node has children and dependencies
-			if(sizeof($children) && sizeof($depList))
+			if(sizeof($children) && count($depList))
 			$this->messages->add(_("Node is not empty and it has external dependencies."), MSG_TYPE_ERROR);
 
 			/// Error: if it has not permit to cascade deletion and node has children but dependencies
@@ -319,7 +319,7 @@ class Action_deletenode extends ActionAbstract {
 			$this->messages->add(_("Node is not empty."), MSG_TYPE_ERROR);
 
 			/// Error: If it has not permit to cascade deletion and node has not children but has dependencies
-			if(!sizeof($children) && sizeof($depList))
+			if(!sizeof($children) && count($depList))
 			$this->messages->add(_("It has external dependencies."), MSG_TYPE_ERROR);
 
 			/// If it has not permit to cascade deletion and node has not children and has not dependencies

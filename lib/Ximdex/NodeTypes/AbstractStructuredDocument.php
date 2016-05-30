@@ -841,7 +841,7 @@ class AbstractStructuredDocument extends FileNode
         $tree = $node->TraverseToRoot();
 
         // It must exclude from length the node itself, its container, and its folder
-        $length = sizeof($tree) - 3;
+        $length = count($tree) - 3;
 
         // the level
         $j = 0;

@@ -117,7 +117,7 @@ class Action_generatecolector extends ActionAbstract {
 		$this->addJs('/actions/generatecolector/resources/js/auxiliary.js', 'ximNEWS');
 
 		$values = array('message' => $message,
-			'num_bulletins' => sizeof($generatedBulletins),
+			'num_bulletins' => count($generatedBulletins),
 			'bulletins' => $bulletins
 			);
 

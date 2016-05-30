@@ -585,7 +585,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 					}
 					$array_news = $relNewsColector->getNewsFromPages($this->parent->get('IdNode'), $set, $pagesChanged,
 						$langID);
-					$newsInBulletin = sizeof($array_news);
+					$newsInBulletin = count($array_news);
 
 					$bulletins = $this->paginateSet($set, $array_news, $pagesChanged, $langID, $filter,
 						$templateID, $master);
@@ -666,7 +666,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 		$maxPages = $relNewsColector->GetMaxPage($this->parent->get('IdNode'), $set, $langID);
 
 		settype($array_pages,'array');
-		$numPages = sizeof($array_pages);
+		$numPages = count($array_pages);
 		$nNews = count($arrayNews);
 
 		XMD_Log::info("colector ".$this->parent->get('IdNode')." maxBulls $maxBulletins maxPage $maxPages numConts
@@ -766,7 +766,7 @@ class XimNewsColectorNodeType extends FolderNode  {
 
 		foreach($array_pages as $page){
 
-			$numNewsInBulletin = sizeof($relNewsColector->getNewsFromPages($this->parent->get('IdNode'), $set, $page,
+			$numNewsInBulletin = count($relNewsColector->getNewsFromPages($this->parent->get('IdNode'), $set, $page,
 				$langID));
 			$newsInBulletin = array_splice($arrayNews, 0, $numNewsInBulletin);
 			$i = $page - 1;

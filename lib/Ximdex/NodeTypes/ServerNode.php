@@ -429,7 +429,7 @@ class ServerNode extends FolderNode
 				}
 		}
 
-		return isset($retList) ? $retList[rand(0, sizeof($retList) - 1)] : NULL;
+		return isset($retList) ? $retList[rand(0, count($retList) - 1)] : NULL;
 	}
 
 	function GetStates($physicalID)

@@ -757,7 +757,7 @@ and rug.idrole in (select idrole from RelRolesPermissions where IdPermission = 1
                     }
                 } else {
 
-                    $countChildrens = sizeof($children);
+                    $countChildrens = count($children);
                     for ($i = 0; $i < $countChildrens; $i++) {
                         if (isset($nodeList)) {
                             $my_in = (is_array($nodeList) && in_array($children[$i], $nodeList));

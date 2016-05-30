@@ -135,21 +135,21 @@ class Action_linkreport extends ActionAbstract
                 $finds = $link->find('IdLink', 'Url ' . $linksTableCondition, NULL, MONO);
             }
 
-            if (!empty($findInNodes) && sizeof($findInNodes) > 0) {
+            if (!empty($findInNodes) && count($findInNodes) > 0) {
                 if ($field == 'Url') {
                     $links = $finds;
                 } else {
                     $links = array_merge($links, $findInNodes);
                 }
             }
-            if (!empty($finds) && sizeof($finds) > 0) {
+            if (!empty($finds) && count($finds) > 0) {
                 $links = array_merge($links, $finds);
             }
         }
         $links = array_unique($links);
         $this->addJs('/actions/linkreport/resources/js/index.js');
 
-        $records = sizeof($links);
+        $records = count($links);
         if ($records > 0) {
             foreach ($links as $idLink) {
                 $link = new Link($idLink);

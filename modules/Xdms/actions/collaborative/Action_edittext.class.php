@@ -153,7 +153,7 @@ class Action_edittext extends ActionAbstract
             return;
         }
 
-        $numDocs = sizeof($docs);
+        $numDocs = count($docs);
 
         for ($i = 0; $i < $numDocs; $i++) {
             $docsList[] = $docs[$i]['NodeId'];

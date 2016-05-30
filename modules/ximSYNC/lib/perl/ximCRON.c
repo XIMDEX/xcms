@@ -44,14 +44,14 @@ int main(int argc, char *argv[]) {
 
 	// Basename and path calc
 	char *self_dir = dirname(argv[0]);
-	char *exec_path = malloc(8192 * sizeof(char)); 
+	char *exec_path = malloc(8192 * count(char));
 
 	strcpy(exec_path, self_dir);
 	exec_path = strcat(exec_path, "/ximCRON.pl");
 
 	// Open log file
 	FILE *log_desc;
-	char *log_path = malloc(8192 * sizeof(char));
+	char *log_path = malloc(8192 * count(char));
 
 	strcpy(log_path, self_dir);
 	log_path = strcat(log_path, "/ximCRON.log");

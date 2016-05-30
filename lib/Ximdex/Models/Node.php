@@ -2428,7 +2428,7 @@ class Node extends NodesOrm
 
         $endlevel = $profundidad + $bottom; //end section
 
-        if ($startlevel <= sizeof($sectionList))
+        if ($startlevel <= count($sectionList))
             $section = $sectionList[$startlevel];
         else
             $section = null;
@@ -2436,7 +2436,7 @@ class Node extends NodesOrm
         $level = $startlevel + 1;
 
         $branch = null;
-        if ($level == sizeof($sectionList))
+        if ($level == count($sectionList))
             $branch = 1;
 
         //DEBUG
@@ -2478,7 +2478,7 @@ class Node extends NodesOrm
                 else
                     $childseleccionado = 0;
 
-                $original_level = sizeof($sectionList) - 1;
+                $original_level = count($sectionList) - 1;
                 $distance = $level - $original_level;
 
                 $relationship = "relative";
@@ -3087,7 +3087,7 @@ class Node extends NodesOrm
 
         // Adding new values
 
-        $n = sizeof($values);
+        $n = count($values);
 
         for ($i = 0; $i < $n; $i++) {
             $this->setSingleProperty($property, $values [$i]);

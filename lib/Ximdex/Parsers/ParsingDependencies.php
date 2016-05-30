@@ -499,15 +499,15 @@ class ParsingDependencies
     private static function getLinks($content, $nodeTypeName = NULL)
     {
         preg_match_all('/ a_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d)(,\d)?[\'|"]/i', $content, $matches);
-        $links = sizeof($matches[1]) > 0 ? $matches[1] : array();
+        $links = count($matches[1]) > 0 ? $matches[1] : array();
 
         preg_match_all('/ a_import_enlaceid[_|\w|\d]*\s*=\s*[\'|"](\d+)[\'|"]/i', $content, $matches);
-        $importLinks = sizeof($matches[1]) > 0 ? $matches[1] : array();
+        $importLinks = count($matches[1]) > 0 ? $matches[1] : array();
 
         if ($nodeTypeName == 'XimNewsNewLanguage') {
 
             preg_match_all('/ a_enlaceid_enlace[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $links2 = sizeof($matches[1]) > 0 ? $matches[1] : array();
+            $links2 = count($matches[1]) > 0 ? $matches[1] : array();
 
             preg_match_all('/ a_enlaceid_noticia_enlace_asociado[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
             $links = array_merge($links, $links2);
@@ -516,10 +516,10 @@ class ParsingDependencies
         if ($nodeTypeName == 'XimNewsBulletinLanguage') {
 
             preg_match_all('/<prev nodeid="([\d]+)"/i', $content, $matches);
-            $prevs = sizeof($matches[1]) > 0 ? self::setFormatArray($matches[1], 'link') : array();
+            $prevs = count($matches[1]) > 0 ? self::setFormatArray($matches[1], 'link') : array();
 
             preg_match_all('/<next nodeid="([\d]+)"/i', $content, $matches);
-            $nexts = sizeof($matches[1]) > 0 ? self::setFormatArray($matches[1], 'link') : array();
+            $nexts = count($matches[1]) > 0 ? self::setFormatArray($matches[1], 'link') : array();
 
             $links = array_merge($links, $prevs, $nexts);
         }
@@ -531,17 +531,17 @@ class ParsingDependencies
     {
 
         preg_match_all('/<url.*>\s*(\d+)\s*<\/url>/i', $content, $matches);
-        $assets = sizeof($matches[1]) > 0 ? $matches[1] : array();
+        $assets = count($matches[1]) > 0 ? $matches[1] : array();
 
         if ($nodeTypeName == 'XimNewsNewLanguage') {
             preg_match_all('/ a_enlaceid_noticia_imagen_asociada[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $images = sizeof($matches[1]) > 0 ? $matches[1] : array();
+            $images = count($matches[1]) > 0 ? $matches[1] : array();
 
             preg_match_all('/ a_enlaceid_noticia_video_asociado[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $videos = sizeof($matches[1]) > 0 ? $matches[1] : array();
+            $videos = count($matches[1]) > 0 ? $matches[1] : array();
 
             preg_match_all('/ a_enlaceid_noticia_archivo_asociado[_|\w|\d]*\s*=\s*[\'|"]([\d|\,]+)[\'|"]/i', $content, $matches);
-            $files = sizeof($matches[1]) > 0 ? $matches[1] : array();
+            $files = count($matches[1]) > 0 ? $matches[1] : array();
 
             $assets = array_merge($assets, $images, $videos, $files);
         }
@@ -663,7 +663,7 @@ class ParsingDependencies
             }
         }
 
-        return sizeof($ximlets) > 0 ? $ximlets : array();
+        return count($ximlets) > 0 ? $ximlets : array();
     }
 
     /**
@@ -674,6 +674,6 @@ class ParsingDependencies
     private static function getXimletsInContent($content)
     {
         preg_match_all('/ximlet\((\d+)\)/i', $content, $matches);
-        return sizeof($matches[1]) > 0 ? $matches[1] : array();
+        return count($matches[1]) > 0 ? $matches[1] : array();
     }
 }

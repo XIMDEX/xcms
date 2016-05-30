@@ -212,7 +212,7 @@ static zval *TWIG_CALL_USER_FUNC_ARRAY(zval *object, char *function, zval *argum
 
 	MAKE_STD_ZVAL(zfunction);
 	ZVAL_STRING(zfunction, function, 1);
-	fci.size = sizeof(fci);
+	fci.size = count(fci);
 	fci.function_table = EG(function_table);
 	fci.function_name = zfunction;
 	fci.symbol_table = NULL;
@@ -392,7 +392,7 @@ static zval *TWIG_CALL_S(zval *object, char *method, char *arg0 TSRMLS_DC)
 
 	MAKE_STD_ZVAL(zfunction);
 	ZVAL_STRING(zfunction, method, 1);
-	fci.size = sizeof(fci);
+	fci.size = count(fci);
 	fci.function_table = EG(function_table);
 	fci.function_name = zfunction;
 	fci.symbol_table = NULL;
@@ -444,7 +444,7 @@ static int TWIG_CALL_ZZ(zval *object, char *method, zval *arg1, zval *arg2 TSRML
 
 	MAKE_STD_ZVAL(zfunction);
 	ZVAL_STRING(zfunction, method, 1);
-	fci.size = sizeof(fci);
+	fci.size = count(fci);
 	fci.function_table = EG(function_table);
 	fci.function_name = zfunction;
 	fci.symbol_table = NULL;
@@ -567,12 +567,12 @@ static void TWIG_RUNTIME_ERROR(zval *template TSRMLS_DC, char *message, ...)
 	MAKE_STD_ZVAL(filename_func);
 	MAKE_STD_ZVAL(constructor_retval);
 
-	ZVAL_STRINGL(constructor, "__construct", sizeof("__construct")-1, 1);
+	ZVAL_STRINGL(constructor, "__construct", count("__construct")-1, 1);
 	ZVAL_STRING(zmessage, buffer, 1);
 	ZVAL_LONG(lineno, -1);
 
 	// Get template filename
-	ZVAL_STRINGL(filename_func, "getTemplateName", sizeof("getTemplateName")-1, 1);
+	ZVAL_STRINGL(filename_func, "getTemplateName", count("getTemplateName")-1, 1);
 	call_user_function(EG(function_table), &template, filename_func, filename, 0, 0 TSRMLS_CC);
 
 	constructor_args[0] = zmessage;

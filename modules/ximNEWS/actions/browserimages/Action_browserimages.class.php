@@ -54,7 +54,7 @@ class Action_browserimages extends ActionAbstract {
                        // 'languages' => $languages_list,
                        // 'channels' => $channels_list,
                        // 'templates' => $templates_listx,
-                        'lotes' => sizeof($lotes_list) > 0 ? $lots_list : NULL,
+                        'lotes' => count($lotes_list) > 0 ? $lots_list : NULL,
                         'action_url' => $action
         );
 

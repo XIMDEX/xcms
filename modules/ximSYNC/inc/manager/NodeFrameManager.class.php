@@ -368,9 +368,7 @@ class NodeFrameManager {
 	*/
 
     function getByNode($nodeId) {
-
-		$result = array();
-
+		
 		$nodeFrame = new NodeFrame();
 		$result = $nodeFrame->find('IdNodeFrame', 'NodeId = %s', array('NodeId' => $nodeId), MULTI);
 
@@ -392,7 +390,7 @@ class NodeFrameManager {
 		$serverFrameMng = new ServerFrameManager();
 		$serverFrames = $serverFrameMng->getByNodeFrame($idNodeFrame);
 
-		if (sizeof($serverFrames) > 0) {
+		if (count($serverFrames) > 0) {
 
 			$arrayAffectedBatchs = array();
 

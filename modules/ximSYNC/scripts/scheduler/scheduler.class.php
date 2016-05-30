@@ -116,7 +116,7 @@ class Scheduler
 
             $batchProcess = $batchManager->getBatchToProcess();
 
-            if (!$activeAndEnabledServers || sizeof($activeAndEnabledServers) == 0) {
+            if (!$activeAndEnabledServers || count($activeAndEnabledServers) == 0) {
 
                 // There aren't Active & Enable servers...
 

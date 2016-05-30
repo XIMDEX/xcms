@@ -51,12 +51,12 @@ class Action_addlangxmlcontainer extends ActionAbstract {
 		// Getting channels
 
 		$channels = $this->_getChannels($idNode);
-		$numChannels = sizeof($channels);
+		$numChannels = count($channels);
 
 		// Getting languages
 
 		$languages = $this->_getLanguages($idNode);
-		$numLanguages = sizeof($languages);
+		$numLanguages = count($languages);
 
 		$languageData = array();
 

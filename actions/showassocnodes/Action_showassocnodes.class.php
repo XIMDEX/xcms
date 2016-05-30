@@ -207,7 +207,7 @@ class Action_showassocnodes extends ActionAbstract {
 				$canSelected = (int) in_array($idnodetype, $allow_nodetypes);
 				$already_selected = (isset($selecteds[$childId]) ) ? 1 : 0;
 
-				$num = sizeof($child->getChildren());
+				$num = count($child->getChildren());
 
 				$showMenu = "showMenu='0'";
 

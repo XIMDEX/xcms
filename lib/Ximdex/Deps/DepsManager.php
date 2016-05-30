@@ -152,7 +152,7 @@ class DepsManager
 
         $result = $object->find('source', 'target = %s', array($target), MONO);
 
-        return sizeof($result) > 0 ? $result : NULL;
+        return count($result) > 0 ? $result : NULL;
     }
 
     /**
@@ -168,7 +168,7 @@ class DepsManager
         $object = $this->getModel($rel);
         if (!is_object($object)) return false;
         $result = $object->find('target', 'source = %s', array($source), MONO);
-        return sizeof($result) > 0 ? $result : array();
+        return count($result) > 0 ? $result : array();
     }
 
     /**

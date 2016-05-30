@@ -26,6 +26,7 @@
 
 
 use Ximdex\Models\Pumper;
+use Ximdex\Runtime\Db;
 
 
 include_once(XIMDEX_ROOT_PATH . "/modules/ximSYNC/conf/synchro_conf.php");
@@ -56,8 +57,6 @@ class PumperManager
             return false;
         }
 
-        $dbObj = new DB();
-
         $pumpersWithError = 0;
 
         foreach ($pumpersWithTasks as $pumperId) {
@@ -71,7 +70,6 @@ class PumperManager
 
             $pumperState = $pumper->get('State');
             $pumperCheckTime = $pumper->get('CheckTime');
-            $pumperStartTime = $pumper->get('StartTime');
 
             $pumper->PumperToLog(null, null, null, null, $pumperId, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, sprintf(_("Pumper %s at state %s"), $pumperId, $pumperState));
@@ -128,7 +126,7 @@ class PumperManager
 
         $pumpersInRegistry = $pumper->getPumpersInRegistry();
 
-        if ($pumpersWithError == sizeof($pumpersInRegistry)) {
+        if ($pumpersWithError == count($pumpersInRegistry)) {
             $pumper->PumperToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                 __LINE__, "INFO", 8, _("Problems in all pumpers"));
             return false;

@@ -59,8 +59,6 @@ function mainLoop()
 
     $batchManager = new BatchManager();
     $serverError = new ServerErrorManager();
-    $syncStatObj = new SynchronizerStat();
-    $startStamp = 0;
     $voidCycles = 0;
     $testTime = NULL;
     if (isset($argv[1])) {
@@ -99,7 +97,7 @@ function mainLoop()
         $batchsToProcess = $batchManager->getAllBatchToProcess();
 
         //Switch each case
-        if (!$activeAndEnabledServers || sizeof($activeAndEnabledServers) == 0) {
+        if (!empty($activeAndEnabledServers) ) {
             // There aren't Active & Enable servers...
             noActiveAndEnabledServers($syncStatObj);
             $voidCycles++;
@@ -186,10 +184,6 @@ function processBatch($batchProcess)
     // ---------------------------------------------------------
     $batchId = $batchProcess['id'];
     $batchType = $batchProcess['type'];
-    $batchNodeGenerator = $batchProcess['nodegenerator'];
-    $minorCycle = $batchProcess['minorcycle'];
-    $majorCycle = $batchProcess['majorcycle'];
-    $totalServerFrames = $batchProcess['totalserverframes'];
 
     //Trazas
     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
@@ -197,13 +191,11 @@ function processBatch($batchProcess)
     $syncStatObj->create(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
         __LINE__, "INFO", 8, sprintf(_("Processing batch %s type %s"), $batchId, $batchType) . ", true");
 
-    $nodeFrames = array();
     $nodeFrames = $nodeFrameManager->getNotProcessNodeFrames($batchId, SCHEDULER_CHUNK, $batchType);
 
     foreach ($nodeFrames as $nodeFrameData) {
         $nodeId = $nodeFrameData['nodeId'];
         $nodeFrameId = $nodeFrameData['nodeFrId'];
-        $version = $nodeFrameData['version'];
         $timeUp = $nodeFrameData['up'];
         $timeDown = $nodeFrameData['down'];
 
@@ -211,7 +203,7 @@ function processBatch($batchProcess)
             __LINE__, "INFO", 8, sprintf(_("Checking activity, nodeframe %s for batch %s"), $nodeFrameId, $batchId));
 
         $result = $nodeFrameManager->checkActivity($nodeFrameId, $nodeId, $timeUp, $timeDown,
-            $batchType, $testTime);
+            $batchType  );
     }
     // ---------------------------------------------------------
     // 3) Updating batch data

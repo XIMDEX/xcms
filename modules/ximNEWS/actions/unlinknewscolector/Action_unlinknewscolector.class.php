@@ -70,7 +70,7 @@ class Action_unlinknewscolector extends ActionAbstract {
 			'timestamp_from' => $timestamp_from,
 			'timestamp_to' => $timestamp_to,
 			'nodeslist' => $nodesList,
-			'nodescount' => sizeof($nodesList),
+			'nodescount' => count($nodesList),
 			'idnode' => $idNode,
 			'nodename' => $node->get('Name'),
 			'go_method' => 'unlink',

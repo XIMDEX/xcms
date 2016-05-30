@@ -117,14 +117,14 @@ class  ximNEWS_Adapter {
 
 		// insert files
 
-		if (!is_null($files) && sizeof($files) > 0) {
+		if (!is_null($files) && count($files) > 0) {
 
 			$newsData['a_enlaceid_noticia_archivo_asociado'] = self::insertFiles($files, $idSection, $name);
 		}
 
 		// insert videos
 
-		if (!is_null($videos) && sizeof($videos) > 0) {
+		if (!is_null($videos) && count($videos) > 0) {
 
 			$newsData['a_enlaceid_noticia_video_asociado'] = self::insertFiles($videos, $idSection, $name);
 		}
@@ -358,14 +358,14 @@ class  ximNEWS_Adapter {
 
 		// insert files
 
-		if (!is_null($files) && sizeof($files) > 0) {
+		if (!is_null($files) && count($files) > 0) {
 
 			$data['a_enlaceid_noticia_archivo_asociado'] = $this->insertFiles($files, $idSection, $name);
 		}
 
 		// insert videos
 
-		if (!is_null($videos) && sizeof($videos) > 0) {
+		if (!is_null($videos) && count($videos) > 0) {
 
 			$data['a_enlaceid_noticia_video_asociado'] = $this->insertFiles($videos, $idSection, $name);
 		}
@@ -540,7 +540,7 @@ class  ximNEWS_Adapter {
 				continue;
 			}
 
-			if (array_key_exists('name', $element) && sizeof(explode('fecha', $element['name'])) > 1) { 
+			if (array_key_exists('name', $element) && count(explode('fecha', $element['name'])) > 1) { 
 				$element['type'] = 'fecha';
 			}
 

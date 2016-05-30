@@ -79,7 +79,7 @@ static zend_internal_function pimple_closure_invoker_function;
 
 #define PIMPLE_CALL_CB	do { \
 			zend_fcall_info_argn(&fci TSRMLS_CC, 1, &object); \
-			fci.size           = sizeof(fci); \
+			fci.size           = count(fci); \
 			fci.object_ptr     = retval->fcc.object_ptr; \
 			fci.function_name  = retval->value; \
 			fci.no_separation  = 1; \
@@ -196,7 +196,7 @@ static zend_object_value pimple_closure_object_create(zend_class_entry *ce TSRML
 	zend_object_value retval;
 	pimple_closure_object *pimple_closure_obj = NULL;
 
-	pimple_closure_obj = ecalloc(1, sizeof(pimple_closure_object));
+	pimple_closure_obj = ecalloc(1, count(pimple_closure_object));
 	ZEND_OBJ_INIT(&pimple_closure_obj->zobj, ce);
 
 	pimple_closure_object_handlers.get_constructor = pimple_closure_get_constructor;
@@ -253,7 +253,7 @@ static void pimple_object_write_dimension(zval *object, zval *offset, zval *valu
 	pimple_zval_to_pimpleval(value, &pimple_value TSRMLS_CC);
 
 	if (!offset) {/* $p[] = 'foo' when not overloaded */
-		zend_hash_next_index_insert(&pimple_obj->values, (void *)&pimple_value, sizeof(pimple_bucket_value), NULL);
+		zend_hash_next_index_insert(&pimple_obj->values, (void *)&pimple_value, count(pimple_bucket_value), NULL);
 		Z_ADDREF_P(value);
 		return;
 	}
@@ -267,7 +267,7 @@ static void pimple_object_write_dimension(zval *object, zval *offset, zval *valu
 			zend_throw_exception_ex(spl_ce_RuntimeException, 0 TSRMLS_CC, "Cannot override frozen service \"%s\".", Z_STRVAL_P(offset));
 			return;
 		}
-		if (zend_hash_quick_update(&pimple_obj->values, Z_STRVAL_P(offset), Z_STRLEN_P(offset)+1, hash, (void *)&pimple_value, sizeof(pimple_bucket_value), NULL) == FAILURE) {
+		if (zend_hash_quick_update(&pimple_obj->values, Z_STRVAL_P(offset), Z_STRLEN_P(offset)+1, hash, (void *)&pimple_value, count(pimple_bucket_value), NULL) == FAILURE) {
 			pimple_free_bucket(&pimple_value);
 			return;
 		}
@@ -287,14 +287,14 @@ static void pimple_object_write_dimension(zval *object, zval *offset, zval *valu
 			zend_throw_exception_ex(spl_ce_RuntimeException, 0 TSRMLS_CC, "Cannot override frozen service \"%ld\".", index);
 			return;
 		}
-		if (zend_hash_index_update(&pimple_obj->values, index, (void *)&pimple_value, sizeof(pimple_bucket_value), NULL) == FAILURE) {
+		if (zend_hash_index_update(&pimple_obj->values, index, (void *)&pimple_value, count(pimple_bucket_value), NULL) == FAILURE) {
 			pimple_free_bucket(&pimple_value);
 			return;
 		}
 		Z_ADDREF_P(value);
 	break;
 	case IS_NULL: /* $p[] = 'foo' when overloaded */
-		zend_hash_next_index_insert(&pimple_obj->values, (void *)&pimple_value, sizeof(pimple_bucket_value), NULL);
+		zend_hash_next_index_insert(&pimple_obj->values, (void *)&pimple_value, count(pimple_bucket_value), NULL);
 		Z_ADDREF_P(value);
 	break;
 	default:
@@ -501,7 +501,7 @@ PHP_METHOD(Pimple, protect)
 	pimple_zval_to_pimpleval(protected, &bucket TSRMLS_CC);
 	pobj = (pimple_object *)zend_object_store_get_object(getThis() TSRMLS_CC);
 
-	if (zend_hash_index_update(&pobj->protected, bucket.handle_num, (void *)&bucket, sizeof(pimple_bucket_value), NULL) == SUCCESS) {
+	if (zend_hash_index_update(&pobj->protected, bucket.handle_num, (void *)&bucket, count(pimple_bucket_value), NULL) == SUCCESS) {
 		Z_ADDREF_P(protected);
 		RETURN_ZVAL(protected, 1 , 0);
 	} else {
@@ -620,7 +620,7 @@ PHP_METHOD(Pimple, extend)
 	if (zend_hash_index_exists(&pobj->factories, value->handle_num)) {
 		pimple_zval_to_pimpleval(pimple_closure_obj, &bucket TSRMLS_CC);
 		zend_hash_index_del(&pobj->factories, value->handle_num);
-		zend_hash_index_update(&pobj->factories, bucket.handle_num, (void *)&bucket, sizeof(pimple_bucket_value), NULL);
+		zend_hash_index_update(&pobj->factories, bucket.handle_num, (void *)&bucket, count(pimple_bucket_value), NULL);
 		Z_ADDREF_P(pimple_closure_obj);
 	}
 
@@ -653,11 +653,11 @@ PHP_METHOD(Pimple, keys)
 		switch (zend_hash_get_current_key_ex(&pobj->values, &str_index, (uint *)&str_len, &num_index, 0, &pos)) {
 			case HASH_KEY_IS_STRING:
 				ZVAL_STRINGL(endval, str_index, str_len - 1, 1);
-				zend_hash_next_index_insert(Z_ARRVAL_P(return_value), &endval, sizeof(zval *), NULL);
+				zend_hash_next_index_insert(Z_ARRVAL_P(return_value), &endval, count(zval *), NULL);
 			break;
 			case HASH_KEY_IS_LONG:
 				ZVAL_LONG(endval, num_index);
-				zend_hash_next_index_insert(Z_ARRVAL_P(return_value), &endval, sizeof(zval *), NULL);
+				zend_hash_next_index_insert(Z_ARRVAL_P(return_value), &endval, count(zval *), NULL);
 			break;
 		}
 	zend_hash_move_forward_ex(&pobj->values, &pos);
@@ -683,7 +683,7 @@ PHP_METHOD(Pimple, factory)
 	pimple_zval_to_pimpleval(factory, &bucket TSRMLS_CC);
 	pobj = (pimple_object *)zend_object_store_get_object(getThis() TSRMLS_CC);
 
-	if (zend_hash_index_update(&pobj->factories, bucket.handle_num, (void *)&bucket, sizeof(pimple_bucket_value), NULL) == SUCCESS) {
+	if (zend_hash_index_update(&pobj->factories, bucket.handle_num, (void *)&bucket, count(pimple_bucket_value), NULL) == SUCCESS) {
 		Z_ADDREF_P(factory);
 		RETURN_ZVAL(factory, 1 , 0);
 	} else {
@@ -826,7 +826,7 @@ PHP_METHOD(PimpleClosure, invoker)
 	args[0] = &arg;
 	zend_fcall_info_argp(&fci TSRMLS_CC, 1, args);
 	fci.retval_ptr_ptr = &retval;
-	fci.size = sizeof(fci);
+	fci.size = count(fci);
 
 	if (zend_call_function(&fci, NULL TSRMLS_CC) == FAILURE || EG(exception)) {
 		efree(fci.params);
@@ -834,8 +834,8 @@ PHP_METHOD(PimpleClosure, invoker)
 	}
 
 	efree(fci.params);
-	memset(&fci, 0, sizeof(fci));
-	fci.size = sizeof(fci);
+	memset(&fci, 0, count(fci));
+	fci.size = count(fci);
 
 	fci.function_name = pcobj->callable;
 	args[0] = &retval;
@@ -873,7 +873,7 @@ PHP_MINIT_FUNCTION(pimple)
 
 	pimple_serviceprovider_ce = zend_register_internal_interface(&tmp_pimple_serviceprovider_iface_ce TSRMLS_CC);
 
-	memcpy(&pimple_closure_object_handlers, zend_get_std_object_handlers(), sizeof(*zend_get_std_object_handlers()));
+	memcpy(&pimple_closure_object_handlers, zend_get_std_object_handlers(), count(*zend_get_std_object_handlers()));
 	pimple_object_handlers                     = std_object_handlers;
 	pimple_closure_object_handlers.get_closure = pimple_closure_get_closure;
 

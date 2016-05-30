@@ -27,6 +27,7 @@
 use Ximdex\Models\Node;
 use Ximdex\Models\Version;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/NodeFrames_ORM.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
@@ -84,7 +85,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@return array
 	*/
     	function getFrames($idNdFr) {
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$dbObj->Query("SELECT IdSync FROM ServerFrames WHERE IdNodeFrame = $idNdFr");
 
 		$frames = array();
@@ -103,7 +104,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*/
 
     	function getGaps($nodeId) {
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$arrayDates = array();
 		$gaps = array();
 		$now = time();
@@ -135,7 +136,7 @@ class NodeFrame extends NodeFrames_ORM {
 		$arrayDates[$j]['down'] = 0;
 
 		$j = 0;
-		$size = sizeof($arrayDates);
+		$size = count($arrayDates);
 
 		if ($arrayDates[0]['up'] > $now) {
 			$gaps[$j]['start'] = $now;
@@ -166,7 +167,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@return array / NULL
 	*/
     	function getActiveNodeFrame($nodeId,$nodeFrId,$up,$down=null,$testTime = NULL) {
-		$dbObj = new DB();
+		$dbObj = new Db();
 
 		if (!$testTime) {
 			$now = mktime();
@@ -340,7 +341,7 @@ class NodeFrame extends NodeFrames_ORM {
 
 		$result = parent::find('VersionId', $condition, $params, MONO);
 
-		return sizeof($result) > 0 ? $result[0] : NULL;
+		return count($result) > 0 ? $result[0] : NULL;
 	}
 
 	/**
@@ -354,7 +355,7 @@ class NodeFrame extends NodeFrames_ORM {
 
 		$result = parent::find('IdNodeFrame', $condition, $params, MONO);
 
-		return sizeof($result) > 0 ? $result[0] : NULL;
+		return count($result) > 0 ? $result[0] : NULL;
 	}
 
  	/**
@@ -369,7 +370,7 @@ class NodeFrame extends NodeFrames_ORM {
 
 		$result = parent::find('IdNodeFrame', $condition, $params, MONO);
 
-		return sizeof($result) > 0 ? $result[0] : NULL;
+		return count($result) > 0 ? $result[0] : NULL;
 	}
 
 	/**

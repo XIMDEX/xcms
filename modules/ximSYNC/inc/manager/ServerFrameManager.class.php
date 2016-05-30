@@ -29,6 +29,7 @@ use Ximdex\Deps\DepsManager;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Pumper;
 use Ximdex\Models\Server;
+use Ximdex\Runtime\Db;
 
 
 include_once(XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/ServerFrame.class.php');
@@ -248,7 +249,7 @@ class ServerFrameManager
     function getDelayed($frameId, $server, $nodeId, $channel)
     {
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = "SELECT ServerFrames.IdSync AS IdSync FROM NodeFrames, ServerFrames, ChannelFrames
 				WHERE ServerFrames.IdNodeFrame = NodeFrames.IdNodeFrame
 				AND ServerFrames.IdChannelFrame = ChannelFrames.idChannelFrame
@@ -286,7 +287,7 @@ class ServerFrameManager
             $channelCondition = " = $channel ";
         }
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = "SELECT ServerFrames.IdSync AS IdSync, ServerFrames.State AS State,
 				ServerFrames.RemotePath AS RemotePath, ServerFrames.FileName AS FileName
 				FROM NodeFrames, ServerFrames, ChannelFrames
@@ -328,7 +329,7 @@ class ServerFrameManager
 
     function setTasksForPumping($pumpers, $chunk, $activeAndEnabledServers)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $serverFrame = new ServerFrame();
         $servers = implode(',', $activeAndEnabledServers);
 
@@ -385,7 +386,7 @@ class ServerFrameManager
         $serverFrame = new ServerFrame($serverFrameId);
         $idServer = $serverFrame->get('IdServer');
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = "SELECT PumperId FROM Pumpers where IdServer = $idServer AND State != 'Ended'";
         $dbObj->Query($sql);
 
@@ -413,7 +414,7 @@ class ServerFrameManager
 
     function getPumpersWithTasks($activeAndEnabledServers)
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $servers = implode(',', $activeAndEnabledServers);
 
         $query = "SELECT DISTINCT(PumperId) FROM ServerFrames WHERE
@@ -505,7 +506,7 @@ class ServerFrameManager
         $frames = array();
         $extraWhereClause = ($idNodeGenerator !== null) ? "AND b.IdNodeGenerator = '" . $idNodeGenerator . "' " : "";
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = "SELECT n.Name AS NodeName, b.IdPortalVersion, s.IdSync, s.IdServer, s.DateUp, s.DateDown, s.State, s.FileName FROM Batchs b, ServerFrames s, Nodes n WHERE s.IdBatchUp = b.IdBatch AND b.IdNodeGenerator = n.IdNode AND s.State NOT IN ('Replaced', 'Removed') $extraWhereClause ORDER BY b.IdPortalVersion DESC";
         $dbObj->Query($sql);
 

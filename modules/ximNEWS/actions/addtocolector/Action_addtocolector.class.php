@@ -62,7 +62,7 @@ class Action_addtocolector extends ActionAbstract {
 			'query' => $query,
 			'params' => $params,
 			'button' => _('Asociar'),
-			'colectorscount' => sizeof($colectors),
+			'colectorscount' => count($colectors),
 			'id_node' => $idNode,
 			'colectors' => $colectors,
 			'versions' => $newsVersion,

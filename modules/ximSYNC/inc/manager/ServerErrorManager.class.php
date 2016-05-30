@@ -48,7 +48,7 @@ class ServerErrorManager {
 
    public static function getServersForPumping() {
 
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$sql = "SELECT ErrorId, UnactivityCycles FROM ServerErrorByPumper WHERE WithError = 1";
 		$dbObj->Query($sql);
 

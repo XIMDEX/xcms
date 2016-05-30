@@ -528,7 +528,7 @@ class Action_createcolector extends ActionAbstract {
 
 		// anything changes
 
-		if (sizeof($channelsToAdd) == 0 && sizeof($channelsToDelete) == 0) return true;
+		if (sizeof($channelsToAdd) == 0 && count($channelsToDelete) == 0) return true;
 
 		// get documents to modify
 

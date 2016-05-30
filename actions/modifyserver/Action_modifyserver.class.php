@@ -44,7 +44,7 @@ class Action_modifyserver extends ActionAbstract {
 
 		$servers = new Node($idNode);
 		$list = $servers->class->GetPhysicalServerList();
-		$num_servers = sizeof($list);
+		$num_servers = count($list);
 
 		$_server = array();
 		if ($num_servers > 0) {
@@ -85,12 +85,12 @@ class Action_modifyserver extends ActionAbstract {
 
 		//Getting encodes
 		$encodes = $this->_getEncodes();
-		$numEncodes = sizeof($encodes);
+		$numEncodes = count($encodes);
 
 		// Getting channels
 
 		$channels = $this->_getChannels($idNode, $serverID);
-		$numChannels = sizeof($channels);
+		$numChannels = count($channels);
 
 		//add a js for validation and hidden or display elements about the protocol selected
 		$this->addJs('/actions/modifyserver/resources/js/validate.js');

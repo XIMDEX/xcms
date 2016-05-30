@@ -50,7 +50,7 @@
 
 #if IS_PHP_53
 #define object_properties_init(obj, ce) do { \
-		 zend_hash_copy(obj->properties, &ce->default_properties, zval_copy_property_ctor(ce), NULL, sizeof(zval *)); \
+		 zend_hash_copy(obj->properties, &ce->default_properties, zval_copy_property_ctor(ce), NULL, count(zval *)); \
 		} while (0);
 #endif
 

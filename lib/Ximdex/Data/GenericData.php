@@ -562,8 +562,11 @@ class GenericData extends Overloadable
         while (!$dbObj->EOF) {
             if (MULTI == $returnType) {
                 $subResult = array();
+                $index = 0;
                 foreach ($dbObj->row as $key => $value) {
+                    $subResult[$index] = $this->_getValueForFind($key, $value);
                     $subResult[$key] = $this->_getValueForFind($key, $value);
+                    $index++;
                 }
                 $result[] = $subResult;
             } elseif (MONO == $returnType) {

@@ -151,7 +151,7 @@ class BatchManager
             }
         }
 
-        if (isset($ancestors) && sizeof($ancestors) > 0) {
+        if (isset($ancestors) && count($ancestors) > 0) {
             $docsToPublish = array_unique(array_merge($docsToPublish, $ancestors));
         }
 

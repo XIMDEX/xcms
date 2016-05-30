@@ -84,7 +84,7 @@ class Action_createnews extends ActionAbstract
             'languages' => $languages_list,
             'channels' => $channels_list,
             'templates' => $templates_list,
-            'lotes' => sizeof($lotes_list) > 0 ? $lotes_list : NULL,
+            'lotes' => count($lotes_list) > 0 ? $lotes_list : NULL,
             'go_method' => 'creation_form'
         );
         $this->render($values, 'index', 'default-3.0.tpl');
@@ -148,15 +148,15 @@ class Action_createnews extends ActionAbstract
             'languages' => $languages_list,
             'languages_table' => $languages_table,
             'form_elements' => $adapter->getContentElements($templateId),
-            'num_languages' => sizeof($langlst),
+            'num_languages' => count($langlst),
             'master' => $master,
             'now' => date('d-m-Y H:i:s'),
             'channels' => $channels_list,
             'template' => $templateId,
             'colectors' => $colectorslst,
-            'num_colectors' => sizeof($colectorslst),
+            'num_colectors' => count($colectorslst),
             'areas' => $areas,
-            'num_areas' => sizeof($areas),
+            'num_areas' => count($areas),
             'datesystem' => date('d/m/Y/G/i/s'),
             'loteid' => $idLote,
             'go_method' => 'create_news',
