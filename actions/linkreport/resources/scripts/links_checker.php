@@ -27,8 +27,8 @@
 
 
 use Ximdex\Models\Link;
-
-include_once(XIMDEX_ROOT_PATH . '/bootstrap/start.php');
+use Ximdex\Runtime\Db;
+include_once dirname(__FILE__) . '/../../../../bootstrap/start.php';
 
 function main ($argc, $argv){
     // Command line mode call
@@ -40,7 +40,7 @@ function main ($argc, $argv){
                 updateLinkState($idlink, $checkResult);
             }
         }else{
-            $dbObj = new DB();
+            $dbObj = new Db();
             $sql = "SELECT IdLink,Url FROM Links";
             $dbObj->Query($sql);
 
@@ -77,9 +77,9 @@ function checkLink($url,$idLink){
 }
 
 function updateLinkState($idLink, $errorString){
-    $dbObj = new DB();
+    $dbObj = new Db();
     $sql = "UPDATE Links SET ErrorString='$errorString',CheckTime=".time()." WHERE IdLink=$idLink";
-    $dbObj->Query($sql);
+    $dbObj->Execute($sql);
 }
 
 main($argc, $argv);

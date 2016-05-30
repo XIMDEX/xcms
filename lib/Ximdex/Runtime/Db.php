@@ -85,9 +85,9 @@ class Db
             }
 
         } catch (\Exception $e) {
-            if($this->db->errorCode() == PDO::ERR_NONE){
+            if ($this->db->errorCode() == PDO::ERR_NONE) {
                 $this->numErr = null;
-            }else{
+            } else {
                 $this->numErr = $this->db->errorCode();
             }
         }
@@ -123,13 +123,17 @@ class Db
         $this->EOF = true;
         $this->newID = null;
 
-        if ($this->db->exec($this->sql)) {
+        // Change to prepare to obtain num rows
+        $statement = $this->db->prepare($this->sql);
+        if ($statement->execute()) {
             $this->newID = $this->db->lastInsertId();
+            $this->numRows = $statement->rowCount();
             return true;
         } else {
-            if($this->db->errorCode() == PDO::ERR_NONE){
+            $this->numRows = $statement->rowCount();
+            if ($this->db->errorCode() == PDO::ERR_NONE) {
                 $this->numErr = null;
-            }else{
+            } else {
                 $this->numErr = $this->db->errorCode();
             }
             $this->desErr = $this->db->errorInfo();
@@ -198,9 +202,9 @@ class Db
 
 
             } catch (\PDOException  $e) {
-                if($this->db->errorCode() == PDO::ERR_NONE){
+                if ($this->db->errorCode() == PDO::ERR_NONE) {
                     $this->numErr = null;
-                }else{
+                } else {
                     $this->numErr = $this->db->errorCode();
                 }
                 $this->desErr = $e;

@@ -33,6 +33,7 @@ use Ximdex\Utils\FsUtils;
 
 ModulesManager::file('/inc/Tags.inc', 'ximTAGS');
 ModulesManager::file('/services/Xowl/OntologyService.class.php');
+ModulesManager::file('/inc/metadata/MetadataManager.class.php');
 
 class Action_setmetadata extends ActionAbstract
 {

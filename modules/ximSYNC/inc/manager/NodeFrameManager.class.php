@@ -26,10 +26,6 @@
 
 
 
-if (!defined('XIMDEX_ROOT_PATH'))
-	define('XIMDEX_ROOT_PATH', realpath(dirname(__FILE__) . "/../../../../"));
-
-
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/NodeFrame.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/ServerFrameManager.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/ChannelFrameManager.class.php');

@@ -26,23 +26,25 @@
 
 
 use Ximdex\Deps\DepsManager;
+use Ximdex\Logger;
 use Ximdex\Models\NodeType;
 use Ximdex\Models\PortalVersions;
 use Ximdex\Models\Server;
 use Ximdex\NodeTypes\ServerNode;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Runtime\Db;
 use Ximdex\Utils\Logs\MN_Log;
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
 use Ximdex\Utils\PipelineManager;
 
- //
+//
 ModulesManager::file('/inc/model/Batch.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodeFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/ChannelFrame.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/NodesToPublish.class.php', 'ximSYNC');
- ModulesManager::file('inc/manager/Publication_Log.class.php', 'ximSYNC');
+ModulesManager::file('inc/manager/Publication_Log.class.php', 'ximSYNC');
 ModulesManager::file('/inc/model/RelFramesPortal.class.php');
 
 
@@ -73,24 +75,15 @@ class BatchManager
 
     /**
      *  Sets the value of any variable.
-     * @param string key
-     * @param unknown value
      */
 
+    /**
+     * @param $key string
+     * @param $value
+     */
     function setFlag($key, $value)
     {
         $this->$key = $value;
-    }
-
-    /**
-     *  Gets the value of any variable.
-     * @param string key
-     * @return unknown
-     */
-
-    function getFlag($key)
-    {
-        return $this->$key;
     }
 
     /**
@@ -125,7 +118,7 @@ class BatchManager
             $docNode = new Node($idDoc);
 
             if (!($docNode->get('IdNode') > 0)) {
-                XMD_Log::error(_("Unexisting node") . " $idDoc");
+                Logger::error(_("Unexisting node") . " $idDoc");
                 continue;
             }
 
@@ -208,86 +201,6 @@ class BatchManager
         return array($docsBatch, $unchangedDocs);
     }
 
-    function _upVersion($docs, $generated)
-    {
-        // Increment version for documents batch
-        //finding if there are any otf docs
-        if (!is_array($generated)) $generated = array();
-        $existDocOtf = false;
-        Publication_Log::write(sprintf(_("Incrementing version for %d documents"), count($docs)), 1);
-        $totalDocs = count($docs);
-        $mod = (int)($totalDocs / 10);
-        $i = 0;
-        foreach ($docs as $value) {
-            if (($totalDocs > 50) && ($i % $mod == 0)) {
-                Publication_Log::write((int)($i / $totalDocs * 100) . "% " . _("completed"), 1);
-            }
-            $n = new Node($value);
-            if ($n->nodeType->get('isGenerator')) {
-                $generatedNew = $n->class->generator();
-                if (!is_array($generatedNew)) $generatedNew = (array)$generatedNew;
-                $generated = array_merge($generatedNew, $generated);
-            }
-
-            if (!$existDocOtf) {
-                $existDocOtf = ($n->getSimpleBooleanProperty('otf'));
-            }
-            $dataFactory = new DataFactory($value);
-            $dataFactory->AddVersion(true);
-            $i++;
-        }
-        return $existDocOtf;
-    }
-
-
-    /**
-     * Creates a Batch for each server and nodeFrames, channelFrames, serverFrames
-     *
-     * @param int nodeGenerator
-     * @param int timeUp
-     * @param array docsToPublish
-     * @param int server
-     * @param array physicalServers
-     * @param int priority
-     * @param int timeDown
-     * @param int statStart
-     * @param int statTotal
-     * @param int idPortalVersion
-     */
-
-    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $server, $physicalServers, $priority, $timeDown = null,
-                         $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null)
-    {
-
-        // If the server is publishing through a channell in which there is not existing documents
-        // a batch is created without serverFrames, and it will be deleted at the end of buildFrames method
-
-        $relBatchsServers = array();
-
-        foreach ($physicalServers as $serverId) {
-            $batch = new Batch();
-            $idBatchDown = null;
-
-            if ($timeDown != 0) {
-                $idBatchDown = $batch->create($timeDown, 'Down', $nodeGenerator, 1, null, $idPortalVersion, $userId);
-                MN_Log::info(_('Creating down batch: ') . $timeDown);
-                Publication_Log::info(sprintf(_("[Generator %s]: Creating down batch with id %s"), $nodeGenerator, $idBatchDown));
-            }
-
-            $batch = new Batch();
-            $relBatchsServers[$serverId] = $batch->create(
-                $timeUp, 'Up', $nodeGenerator, $priority,
-                $idBatchDown, $idPortalVersion, $userId
-            );
-            MN_Log::info(_('Creating up batch: ') . $timeUp);
-            Publication_Log::info(sprintf(_("[Generator %s]: Creating up batch with id %s"), $nodeGenerator, $relBatchsServers[$serverId]));
-        }
-
-        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $server, $relBatchsServers, $statStart, $statTotal);
-
-        return $frames;
-    }
-
     /**
      * Checks whether the Node can be published.
      *
@@ -331,34 +244,80 @@ class BatchManager
         return true;
     }
 
-    /**
-     * Creates the NodeFrames, ChannelFrames and ServerFrames.
-     * Returns an array with serverFrames creates sucessfully and serverFrames whith error.
-     * @param int up
-     * @param int down
-     * @param array docsToPublish
-     * @param int serverID
-     * @param array relBatchsServer
-     * @param int statStart
-     * @param int statTotal
-     * @return array
-     */
+    function _upVersion($docs, $generated)
+    {
+        // Increment version for documents batch
+        //finding if there are any otf docs
+        if (!is_array($generated)) $generated = array();
+        $existDocOtf = false;
+        Publication_Log::write(sprintf(_("Incrementing version for %d documents"), count($docs)), 1);
+        $totalDocs = count($docs);
+        $mod = (int)($totalDocs / 10);
+        $i = 0;
+        foreach ($docs as $value) {
+            if (($totalDocs > 50) && ($i % $mod == 0)) {
+                Publication_Log::write((int)($i / $totalDocs * 100) . "% " . _("completed"), 1);
+            }
+            $n = new Node($value);
+            if ($n->nodeType->get('isGenerator')) {
+                $generatedNew = $n->class->generator();
+                if (!is_array($generatedNew)) $generatedNew = (array)$generatedNew;
+                $generated = array_merge($generatedNew, $generated);
+            }
+
+            if (!$existDocOtf) {
+                $existDocOtf = ($n->getSimpleBooleanProperty('otf'));
+            }
+            $dataFactory = new DataFactory($value);
+            $dataFactory->AddVersion(true);
+            $i++;
+        }
+        return $existDocOtf;
+    }
+
+
+    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $server, $physicalServers, $priority, $timeDown = null,
+                         $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null)
+    {
+
+        // If the server is publishing through a channell in which there is not existing documents
+        // a batch is created without serverFrames, and it will be deleted at the end of buildFrames method
+
+        $relBatchsServers = array();
+
+        foreach ($physicalServers as $serverId) {
+            $batch = new Batch();
+            $idBatchDown = null;
+
+            if ($timeDown != 0) {
+                $idBatchDown = $batch->create($timeDown, 'Down', $nodeGenerator, 1, null, $idPortalVersion, $userId);
+                MN_Log::info(_('Creating down batch: ') . $timeDown);
+                Publication_Log::info(sprintf(_("[Generator %s]: Creating down batch with id %s"), $nodeGenerator, $idBatchDown));
+            }
+
+            $batch = new Batch();
+            $relBatchsServers[$serverId] = $batch->create(
+                $timeUp, 'Up', $nodeGenerator, $priority,
+                $idBatchDown, $idPortalVersion, $userId
+            );
+            MN_Log::info(_('Creating up batch: ') . $timeUp);
+            Publication_Log::info(sprintf(_("[Generator %s]: Creating up batch with id %s"), $nodeGenerator, $relBatchsServers[$serverId]));
+        }
+
+        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $server, $relBatchsServers, $statStart, $statTotal);
+
+        return $frames;
+    }
 
     function buildFrames($up, $down, $docsToPublish, $serverID, $relBatchsServers, $statStart = 0, $statTotal = 0)
     {
 
         $docsOk = array();
         $docsNotOk = array();
-        $okCounter = 0;
-        $notOkCounter = 0;
+
 
         $nodeServer = new Node($serverID);
-        $framesCreated = array();
-        $arrayChannelFrames = array();
 
-        // Getting versions
-        $j = $statStart * MAX_NUM_NODES_PER_BATCH;
-        $docsToPublishLen = ($statTotal == 0) ? count($docsToPublish) : $statTotal;
 
         $totalDocs = count($docsToPublish);
         $mod = (int)($totalDocs / 10);
@@ -517,11 +476,11 @@ class BatchManager
                             $nodeType = new NodeType($nodeTypeID);
 
                             if ($nodeType->get('Name') == 'XimNewsBulletinLanguage') {
-                                $db = new DB();
+                                $db = new Db();
                                 $sql = "INSERT INTO XimNewsFrameBulletin VALUES ($idFrame, $idNode, 'mail_pending')";
                                 $db->Execute($sql);
                                 if (!($db->numRows > 0)) {
-                                    XMD_log::info(_("Error inserting ximnewsframebulletin"));
+                                    Logger::info(_("Error inserting ximnewsframebulletin"));
                                 }
                             }
                         }
@@ -605,16 +564,26 @@ class BatchManager
         return array('ok' => $docsOk, 'notok' => $docsNotOk);
     }
 
+    /**
+     *  Gets the value of any variable.
+     * @param string key
+     * @return unknown
+     */
+
+    function getFlag($key)
+    {
+        return $this->$key;
+    }
 
     function checkFramesIntegrity()
     {
         // NOTE: See setBatchsActiveOrEnded and getBatchToProcess
         // Ensure that batchs have frames or getBatchToProcess will return the same batch over and over
         $sql = "update Batchs set State = 'NoFrames' where idbatch not in (select distinct idbatchup from ServerFrames) and Batchs.State IN ('InTime','Closing')";
-        $db = new DB();
+        $db = new Db();
         $db->execute($sql);
         if ($db->numRows > 0) {
-            XMD_Log::warning(sprintf(_('Found %s Batchs without Frames, were marked as NoFrames') . ".", $db->numRows));
+            Logger::warning(sprintf(_('Found %s Batchs without Frames, were marked as NoFrames') . ".", $db->numRows));
         }
     }
 
@@ -628,7 +597,7 @@ class BatchManager
     {
 
         $ended = array();
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         // Ending batchs type UP
 
@@ -694,7 +663,7 @@ class BatchManager
                 $prevState = $batchDown->get('State');
 
                 if ($totals == 0) {
-                    XMD_Log::info(sprintf(_("Batch %d type down without associated batch type up"), $idBatch));
+                    Logger::info(sprintf(_("Batch %d type down without associated batch type up"), $idBatch));
 
                     $generatorId = $batchDown->get('IdNodeGenerator');
 
@@ -757,12 +726,80 @@ class BatchManager
     }
 
     /**
+     * Sets the field IdPortalVersion for a Batch.
+     * @param int idBatch
+     * @return bool
+     */
+
+    function setPortalRevision($idBatch)
+    {
+
+        $batch = new Batch($idBatch);
+        $idPortalVersion = $batch->get('IdPortalVersion');
+        $batchType = $batch->get('Type');
+
+        $result = $batch->find('IdBatch', 'State != %s AND IdPortalVersion = %s AND IdBatch != %s AND Type = %s',
+            array('State' => 'Ended', 'IdPortalVersion' => $idPortalVersion, 'IdBatch' => $idBatch, 'Type' => $batchType),
+            MONO);
+
+        // There still are batchs in this portal version to close
+
+        if (sizeof($result) != 0) {
+            return true;
+        }
+
+        $portal = new PortalVersions($idPortalVersion);
+        $serverId = $portal->get('IdPortal');
+
+        $serverNode = new Node($serverId);
+        $physicalServers = $serverNode->class->GetPhysicalServerList(true, ServerNode::ALL_SERVERS);
+
+        if ($batchType == 'Down') {
+
+            // updates portal version for all batchs not ended
+
+            $portal = new PortalVersions();
+            $portal->upPortalVersion($serverId);
+
+            $result = $batch->find('IdPortalVersion', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
+                array('State' => 'Ended', 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
+
+            $idPortalVersion = $result[0];
+
+            $batch->set('IdPortalVersion', $idPortalVersion);
+            $batch->update();
+
+            $db = new Db();
+            $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
+				AND IdBatch > $idBatch");
+
+        }
+
+        // All the batchs of this portal version are closed
+
+        $serverFrame = new ServerFrame();
+        $nodeFrames = $serverFrame->find('DISTINCT(IdNodeFrame)', 'IdServer IN (%s) AND State = %s',
+            array('IdServer' => implode(',', $physicalServers), 'State' => 'IN'), MONO);
+
+        if (($nodeFrames != null) && (is_array($nodeFrames))) {
+            foreach ($nodeFrames as $nodeFrameId) {
+                $relFramePortal = new RelFramesPortal();
+                $relFramePortal->addVersion($idPortalVersion, $nodeFrameId);
+            }
+        } else {
+            Logger::error(_("Nodesframes to be added to the portal review do not exist"));
+        }
+
+        return true;
+    }
+
+    /**
      * Gets the Batch that must be processed.
      */
 
     function getBatchToProcess()
     {
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down' DESC LIMIT 1";
@@ -879,7 +916,6 @@ class BatchManager
         return true;
     }
 
-
     /**
      * Checks if the Batch status is correct.
      * @param array activeAndEnabledServers
@@ -889,7 +925,7 @@ class BatchManager
     function checkBatchState($activeAndEnabledServers)
     {
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $batchType = $this->get('Type');
         $totalServerFrames = $this->get('ServerFramesTotal');
         $sucessServerFrames = $this->get('ServerFramesSucess');
@@ -900,7 +936,7 @@ class BatchManager
         } else if ($batchType == 'Down') {
             $batchColumn = 'IdBatchDown';
         } else {
-            XMD_Log::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
+            Logger::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
             return false;
         }
 
@@ -914,7 +950,7 @@ class BatchManager
         $numServerFramesFromInactiveServers = $dbObj->numRows;
 
         if ($totalServerFrames == $numServerFramesFromInactiveServers + $sucessServerFrames) {
-            XMD_Log::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
+            Logger::info(sprintf(_("ERROR: %s rare type of batch"), $batchType));
             $this->set('State', 'Ended');
             $this->update();
         }
@@ -929,7 +965,7 @@ class BatchManager
     {
 
         $batch = new Batch();
-        $dbObj = new DB();
+        $dbObj = new Db();
 
         $sql = "UPDATE Batchs set Playing = '$playingValue'";
 
@@ -993,7 +1029,7 @@ class BatchManager
 
             // Gets portal version
 
-            $node = new Node($nodeID);
+            $node = new Node($nodeId);
             $serverID = $node->GetServer();
 
             $portal = new PortalVersions();
@@ -1053,7 +1089,7 @@ class BatchManager
     function getAllBatchToProcess()
     {
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $sql = "SELECT IdBatch, Type, IdNodeGenerator, MajorCycle, MinorCycle, ServerFramesTotal FROM Batchs
 				WHERE Playing = 1 AND State = 'InTime' AND ServerFramesTotal > 0
 				ORDER BY Priority DESC, MajorCycle DESC, MinorCycle DESC, Type = 'Down'";
@@ -1080,74 +1116,4 @@ class BatchManager
         return $batchs;
     }
 
-    /**
-     * Sets the field IdPortalVersion for a Batch.
-     * @param int idBatch
-     * @return bool
-     */
-
-    function setPortalRevision($idBatch)
-    {
-
-        $batch = new Batch($idBatch);
-        $idPortalVersion = $batch->get('IdPortalVersion');
-        $batchType = $batch->get('Type');
-
-        $result = $batch->find('IdBatch', 'State != %s AND IdPortalVersion = %s AND IdBatch != %s AND Type = %s',
-            array('State' => 'Ended', 'IdPortalVersion' => $idPortalVersion, 'IdBatch' => $idBatch, 'Type' => $batchType),
-            MONO);
-
-        // There still are batchs in this portal version to close
-
-        if (sizeof($result) != 0) {
-            return true;
-        }
-
-        $portal = new PortalVersions($idPortalVersion);
-        $serverId = $portal->get('IdPortal');
-
-        $serverNode = new Node($serverId);
-        $physicalServers = $serverNode->class->GetPhysicalServerList(true, ServerNode::ALL_SERVERS);
-
-        if ($batchType == 'Down') {
-
-            // updates portal version for all batchs not ended
-
-            $portal = new PortalVersions();
-            $portal->upPortalVersion($serverId);
-
-            $result = $batch->find('IdPortalVersion', 'State != %s AND IdBatch > %s AND Type = %s ORDER BY IdBatch ASC',
-                array('State' => 'Ended', 'IdBatch' => $idBatch, 'Type' => 'Up'), MONO);
-
-            $idPortalVersion = $result[0];
-
-            $batch->set('IdPortalVersion', $idPortalVersion);
-            $batch->update();
-
-            $db = new DB();
-            $db->execute("UPDATE Batchs SET IdPortalVersion = IdPortalVersion + 1 WHERE State != 'Ended'
-				AND IdBatch > $idBatch");
-
-        }
-
-        // All the batchs of this portal version are closed
-
-        $serverFrame = new ServerFrame();
-        $nodeFrames = $serverFrame->find('DISTINCT(IdNodeFrame)', 'IdServer IN (%s) AND State = %s',
-            array('IdServer' => implode(',', $physicalServers), 'State' => 'IN'), MONO);
-
-        if (($nodeFrames != null) && (is_array($nodeFrames))) {
-            foreach ($nodeFrames as $nodeFrameId) {
-                $relFramePortal = new RelFramesPortal();
-                $relFramePortal->addVersion($idPortalVersion, $nodeFrameId);
-            }
-        } else {
-            XMD_Log::error(_("Nodesframes to be added to the portal review do not exist"));
-        }
-
-        return true;
-    }
-
 }
-
-?>

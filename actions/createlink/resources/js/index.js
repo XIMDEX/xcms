@@ -31,14 +31,14 @@ X.actionLoaded(function(event, fn, params) {
 
     fn('select#link_type option').each(function(){
                                         if(prefix[0]=="http" && $(this).val()=="url"){
-                                            fn("label[for='url']").html("Web URL");                                       
-                                            $(this).attr("selected",true);                                        
+                                            fn("label[for='url']").html("Web URL");
+                                            $(this).attr("selected",true);
                                             $inputUrl.addClass("is_url");
                                             $inputUrl.removeClass("is_email");
-                                        }   
+                                        }
                                         else if (prefix[0]=="mailto" && $(this).val()=="email"){
                                             fn("label[for='url']").html("E-mail address");
-                                            $(this).attr("selected",true);                                        
+                                            $(this).attr("selected",true);
                                             fn("input#url").addClass("is_email");
                                             fn("input#url").removeClass("is_url");
                                         }
@@ -53,6 +53,12 @@ X.actionLoaded(function(event, fn, params) {
             $inputUrl.addClass("is_url");
             $inputUrl.removeClass("is_email");
 			$inputUrl.val($inputUrl.val().replace(/^mailto:/,''));
+            // remove email rule and add url rule to validation
+            var validator = $.data($inputUrl[0].form, 'validator');
+            if (validator && validator.settings) {
+                $inputUrl.rules('remove', 'email');
+                $inputUrl.rules('add', 'url');
+            }
 			if (!/^https?:\/\//.test($inputUrl.val()))
 				$inputUrl.val("http://"+$inputUrl.val());
         }   
@@ -60,10 +66,18 @@ X.actionLoaded(function(event, fn, params) {
             fn("label[for='url']").html("E-mail address");
             fn("input#url").addClass("is_email");
             fn("input#url").removeClass("is_url");
+            // remove url rule and add email rule to validation
+            var validator = $.data($inputUrl[0].form, 'validator');
+            if (validator && validator.settings) {
+                $inputUrl.rules('remove', 'url');
+                $inputUrl.rules('add', 'email');
+            }
 			$inputUrl.val($inputUrl.val().replace(/^https?:\/\//,''));
 			if (!/^mailto:/.test($inputUrl.val()))
 				$inputUrl.val("mailto:"+$inputUrl.val());
         }
+        // trigger an keyup in inputurl field to load again validation
+        $inputUrl.trigger("keyup");
     });
 });
 

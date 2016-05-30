@@ -1282,7 +1282,6 @@ class ImportXml
             $dbObj->sqlEscapeString($timeStamp));
 
         $dbObj->Execute($query);
-        $dbObj->SetInsertID();
         $insertedId = $dbObj->newID;
 
         if ($insertedId > 0) {
