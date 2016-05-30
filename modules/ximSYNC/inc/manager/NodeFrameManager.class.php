@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\Db;
 
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/model/NodeFrame.class.php');
 include_once( XIMDEX_ROOT_PATH . '/modules/ximSYNC/inc/manager/ServerFrameManager.class.php');
@@ -61,14 +62,14 @@ class NodeFrameManager {
 
 		$resucitar = false;
 		$replacedBy = NULL;
-
+		if (is_null($testTime)) {
+			$now = time();
+		} else {
+			$now = $testTime;
+		}
 		if ($batchType == "Up") {
 
-			if (is_null($testTime)) {
-				$now = time();
-			} else {
-				$now = $testTime;
-			}
+
 
 			// I'll never be active
 			if ($timeDown != 0 && $timeDown < $now) {
@@ -254,7 +255,7 @@ class NodeFrameManager {
 	 */
 
     function getNodeFramesInTime($nodeId, $up, $now) {
-		$dbObj = new DB();
+		$dbObj = new Db();
 
 		$sql = "SELECT IdNodeFrame, Active, if(TimeDown IS NULL, 1988146800, TimeDown) as TimeDown2 FROM NodeFrames
 			WHERE TimeUp < $now AND (TimeDown > $now OR TimeDown IS NULL) AND (IsProcessUp = 0 OR Active = 1)
@@ -288,7 +289,7 @@ class NodeFrameManager {
 
     function getNotProcessNodeFrames($batchId, $chunk, $batchType) {
 
-		$dbObj = new DB();
+		$dbObj = new Db();
 		$nodeFrame = new NodeFrame();
 
 		if ($batchType == 'Up') {
@@ -345,7 +346,7 @@ class NodeFrameManager {
 	*/
 
 	function getPendingNodeFrames($nodeID) {
-		$dbObj = new DB();
+		$dbObj = new Db();
 
 		$sql = "SELECT IdNodeFrame FROM NodeFrames WHERE NodeId = $nodeID AND IsProcessUp = 0 AND Active = 0";
 
@@ -448,4 +449,3 @@ class NodeFrameManager {
 	}
 
 }
-?>
