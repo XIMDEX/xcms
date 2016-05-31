@@ -23,7 +23,7 @@
  *  @version $Revision$
  *}
 <div class="action_header">
-<h2>{t}Document preview{/t}</h2>
+<h2>{t}Document preview{/t} {$name}</h2>
 	<fieldset class="action-controls">
 						<input type="hidden" name="node_id" class="node_id" value="{$id_node}">
 

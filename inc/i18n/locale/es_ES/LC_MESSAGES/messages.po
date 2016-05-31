@@ -3798,7 +3798,7 @@ msgid "Currently there is no groups which can move forward the document to any s
 msgstr "Actualmente no hay grupos que pruedan promocionar el documento a ningún estado, consulte con su administrador"
 
 #: /actions/workflow_forward/template/Smarty/index.tpl
-msgid "Publication period"
+msgid "Publishing period"
 msgstr "Período de publicación"
 
 msgid "Select one of the currently available windows..."

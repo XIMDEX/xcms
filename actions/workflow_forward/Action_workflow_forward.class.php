@@ -63,6 +63,7 @@ class Action_workflow_forward extends ActionAbstract {
 
         //Get nodeid or first in nodes if nodeid doesn't exist.
         $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
         $nodes = $this->request->getParam('nodes');
 
         if (empty($idNode)) {
@@ -157,7 +158,8 @@ class Action_workflow_forward extends ActionAbstract {
             'stateid' => $nextState,
             'required' => $conf['required'] === true ? 1 : 0,
             'defaultMessage' => $defaultMessage,
-            'idNode' => $idNode
+            'idNode' => $idNode,
+            'name' => $node->GetNodeName()
         );
 
         //Only for Strdocs, goes to next state

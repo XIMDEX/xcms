@@ -30,7 +30,7 @@
 	<input type="hidden" name="stateid" value="{$stateid}" />
 
 	<div class="action_header">
-		<h2>{t}Publication period{/t}</h2>
+		<h2>{t}Publishing period{/t} {$name}</h2>
 		<fieldset class="buttons-form">
 			{button class="validate publicate-button  btn main_action" label="Publish"}
 		</fieldset>

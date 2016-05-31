@@ -84,7 +84,8 @@ class Action_preview extends ActionAbstract {
 			'user_name' => $userName,
 			'channels' => $_channels,
 			"nodeURL" => $queryManager->getPage() . $queryManager->build(),
-			"go_method" => "preview"
+			"go_method" => "preview",
+			'name' => $node->GetNodeName()
 		);
 
 		$this->render($values, null, 'default-3.0.tpl');

@@ -24,7 +24,7 @@
  *}
 
 <form method="post" id="formulario" name="formulario" action="{$action_url}">
-  <div class="action_header"><h2>{t}Expire document{/t}</h2>
+  <div class="action_header"><h2>{t}Expire document{/t} {$name}</h2>
     <fieldset class="buttons-form">
     {button label="Accept" class='validate btn main_action'}{*message="You will expire this section. Would you like to continue?"*}
   </fieldset>

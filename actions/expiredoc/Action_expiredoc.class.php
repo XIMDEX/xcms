@@ -25,40 +25,41 @@ use Ximdex\Utils\Sync\SynchroFacade;
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
+class Action_expiredoc extends ActionAbstract
+{
+    // Main method: shows initial form
+    function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
 
+        $docName = $node->get('Name');
+        $values = array('doc_name' => $docName,
+            'go_method' => 'result', 'name' => $node->GetNodeName());
 
-
-class Action_expiredoc extends ActionAbstract {
-   // Main method: shows initial form
-    function index () {
-		$idNode = $this->request->getParam('nodeid');
-		$node = new Node($idNode);
-
-		$docName = $node->get('Name');
-		$values = array('doc_name' => $docName,
-						'go_method' => 'result');
-
-		$this->render($values, '', 'default-3.0.tpl');
+        $this->render($values, '', 'default-3.0.tpl');
     }
 
-    function result() {
-    	$idNode = $this->request->getParam('nodeid');
+    function result()
+    {
+        $idNode = $this->request->getParam('nodeid');
 
-    	$node = new Node($idNode);
-    	$nodeName = $node->get('Name');
+        $node = new Node($idNode);
+        $nodeName = $node->get('Name');
 
-		SynchroFacade::deleteAllTasksByNode($idNode, true);
-		$df = new DataFactory($idNode);
-		$df->AddVersion();
+        SynchroFacade::deleteAllTasksByNode($idNode, true);
+        $df = new DataFactory($idNode);
+        $df->AddVersion();
 
-    	$this->messages->add(sprintf(_("Document <strong>%s</strong> has been successfully expired"), $nodeName), MSG_TYPE_NOTICE);
+        $this->messages->add(sprintf(_("Document <strong>%s</strong> has been successfully expired"), $nodeName), MSG_TYPE_NOTICE);
         $values = array(
             'messages' => $this->messages->messages,
         );
-    	$this->sendJSON($values);
+        $this->sendJSON($values);
     }
 }
+
 ?>
