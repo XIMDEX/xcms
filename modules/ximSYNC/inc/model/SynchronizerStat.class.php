@@ -25,6 +25,7 @@
  */
 
 
+use Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
 
 ModulesManager::file('/inc/model/orm/SynchronizerStats_ORM.class.php', 'ximSYNC');
@@ -61,7 +62,7 @@ class SynchronizerStat extends SynchronizerStats_ORM
     {
 
 
-        if (strcmp(\App::getValue("SyncStats"), "1") == 0) {
+        if (strcmp(App::getValue("SyncStats"), "1") == 0) {
 
             // Seg�n el valor del parametro $doLog se insertara en la tabla o no.
             if ($doInsertSql) {
@@ -124,64 +125,4 @@ class SynchronizerStat extends SynchronizerStats_ORM
         return null;
 
     }
-
-    /**
-     *  Gets the rows from SynchronizerStats table which match the values of a list of fields.
-     * @param array $arrayFields
-     * @return array|null
-     */
-
-    function getStatByField($arrayFields)
-    {
-
-        $dbObj = new Db();
-
-        $whereClause = " WHERE TRUE";
-        if (is_array($arrayFields) && count($arrayFields) >= 0) {
-
-            foreach ($arrayFields as $fieldName => $fieldValue) {
-
-                if ($this->isField($fieldName)) {
-
-                    $whereClause .= " AND " . $fieldName . " = '" . $fieldValue . "'";
-                }
-            }
-        }
-
-        $query = "SELECT IdStat, BatchId, NodeFrameId, ChannelFrameId, ServerFrameId, " .
-            "PumperId, Class, Method, File, Line, Type, Level, Time, Comment " .
-            "FROM SynchronizerStats" . $whereClause;
-
-        $i = 0;
-        $dbObj->Query($query);
-        if ($dbObj->numRows == 0) {
-
-            return null;
-        }
-
-        $stats = array();
-
-        while (!$dbObj->EOF) {
-
-            $stats[$i]['IdStat'] = $dbObj->GetValue("IdStat");
-            $stats[$i]['BatchId'] = $dbObj->GetValue("BatchId");
-            $stats[$i]['NodeFrameId'] = $dbObj->GetValue("NodeFrameId");
-            $stats[$i]['ChannelFrameId'] = $dbObj->GetValue("ChannelFrameId");
-            $stats[$i]['ServerFrameId'] = $dbObj->GetValue("ServerFrameId");
-            $stats[$i]['PumperId'] = $dbObj->GetValue("PumperId");
-            $stats[$i]['Class'] = $dbObj->GetValue("Class");
-            $stats[$i]['Method'] = $dbObj->GetValue("Method");
-            $stats[$i]['File'] = $dbObj->GetValue("File");
-            $stats[$i]['Line'] = $dbObj->GetValue("Line");
-            $stats[$i]['Type'] = $dbObj->GetValue("Type");
-            $stats[$i]['Level'] = $dbObj->GetValue("Level");
-            $stats[$i]['Time'] = $dbObj->GetValue("Time");
-            $stats[$i]['Comment'] = $dbObj->GetValue("Comment");
-            $i++;
-            $dbObj->Next();
-        }
-
-        return $stats;
-    }
-
 }
