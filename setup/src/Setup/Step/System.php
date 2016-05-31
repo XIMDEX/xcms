@@ -96,17 +96,17 @@ class System extends Base
         $installRoot = $this->manager->getInstallRoot();
         $dirsToCheck = [
             '/conf/',
-            '/data',
-            '/data/cache',
-            '/data/cache/pipelines',
-            '/data/files',
-            '/data/nodes',
-            '/data/sync',
-            '/data/sync/serverframes',
-            '/data/tmp',
-            '/data/tmp/templates_c',
-            '/data/tmp/js',
-            '/logs',
+            '/data/',
+            '/data/cache/',
+            '/data/cache/pipelines/',
+            '/data/files/',
+            '/data/nodes/',
+            '/data/sync/',
+            '/data/sync/serverframes/',
+            '/data/tmp/',
+            '/data/tmp/templates_c/',
+            '/data/tmp/js/',
+            '/logs/',
         ];
         foreach ($dirsToCheck as $dir) {
             $fullDir = $installRoot . $dir;
