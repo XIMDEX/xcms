@@ -4,6 +4,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\Pipeline;
 use Ximdex\Models\PipeNodeTypes;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\Db;
 
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
@@ -221,4 +222,3 @@ class Action_renamenode extends ActionAbstract
 
 }
 
-?>

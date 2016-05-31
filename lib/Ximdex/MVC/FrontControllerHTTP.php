@@ -81,7 +81,8 @@ class FrontControllerHTTP extends FrontController
                 $this->msgError = $appController->getMsgError();
             } else {
                 $this->hasError = true;
-                $this->msgError = "";
+                $this->msgError = "The action cannot be executed on the selected node";
+                
             }
         }
     }

@@ -94,7 +94,7 @@ class IController
          */
     function hasError()
     {
-         if (isset ($this->hasError)) $this->hasError;
+         if (isset ($this->hasError)) return $this->hasError;
     }
 
     /**
@@ -103,7 +103,7 @@ class IController
     function getMsgError()
     {
         if (isset ($this->msgError)) {
-            $this->msgError;
+           return $this->msgError;
         }
     }
 

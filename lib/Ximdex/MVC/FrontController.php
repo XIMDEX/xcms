@@ -62,7 +62,16 @@ class FrontController extends IController
         }
         // Si hay error, no muestra la vista con include ()
         if ($frontController->hasError()) {
-            echo $frontController->getMsgError();
+
+            $error = [
+                'messages' => [
+                    [
+                      'message' => $frontController->getMsgError(),
+                     'type' => 0 ,
+                    ]
+                ]
+            ];
+            echo json_encode( $error ) ;
         }
     }
 
