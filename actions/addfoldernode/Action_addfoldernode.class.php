@@ -53,6 +53,8 @@ class Action_addfoldernode extends ActionAbstract
         $nodeID = $this->request->getParam("nodeid");
         $nodeType = [];
 
+        $node = new Node($nodeID);
+
         /**
          * First, checks if has nodetypeid param
          */
@@ -86,7 +88,8 @@ class Action_addfoldernode extends ActionAbstract
 
         $values = array(
             'go_method' => 'addNode',
-            'nodeID' => $nodeID
+            'nodeID' => $nodeID,
+            'name' => $node->GetNodeName()
         );
 
         if ($nodeType['name'] == 'Project') {

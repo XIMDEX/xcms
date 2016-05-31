@@ -24,29 +24,32 @@
 *}
 
 <form method="post" name="cln_form" id="cln_form" action="{$action_url}">
-	<input type="hidden" name="id_node" value="{$id_node}" />
-	<div class="action_header">
-		<h2>{t}Create link{/t}</h2>
-		
-	</div>
-	<div class="action_content">
-		<p class="input-select icon icon-positioned link">
-			<input type="text" name="name" id="name" class="cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" data-idnode="{$id_node}" placeholder="{t}Link name{/t}"/>
-			<select name="link_type" id="link_type" class="cajaxg document-type validable not_empty">
-				<option value="url" selected>URL (http://)</option>
-				<option value="email">E-mail (mailto:)</option>
-			</select>
-        </p>
-		<div class="input">
-			<label for="url" class="label_title">{t}URL{/t}</label>
-			<input type="text" name="url" id="url" class="cajaxg validable not_empty js_val_unique_url" data-idnode="{$id_node}" value="http://">
-		</div>
-	    <div class="input">
-			<label for="description" class="label_title"><span>{t}Description{/t}</span></label>
-		    <input type="text" name="description" id="description" class="cajaxg">
-	    </div>
+    <input type="hidden" name="id_node" value="{$id_node}"/>
+    <div class="action_header">
+        <h2>{t}Create link{/t} {$name}</h2>
+
     </div>
-<fieldset class="buttons-form positioned_btn">
-			{button label="Create" class='validate btn main_action'} {*message="Would you like to create a new link?"*}
-		</fieldset>    
+    <div class="action_content">
+        <p class="input-select icon icon-positioned link">
+            <input type="text" name="name" id="name"
+                   class="cajaxg validable not_empty js_val_unique_name js_val_alphanumeric" data-idnode="{$id_node}"
+                   placeholder="{t}Link name{/t}"/>
+            <select name="link_type" id="link_type" class="cajaxg document-type validable not_empty">
+                <option value="url" selected>URL (http://)</option>
+                <option value="email">E-mail (mailto:)</option>
+            </select>
+        </p>
+        <div class="input">
+            <label for="url" class="label_title">{t}URL{/t}</label>
+            <input type="text" name="url" id="url" class="cajaxg validable not_empty js_val_unique_url"
+                   data-idnode="{$id_node}" value="http://">
+        </div>
+        <div class="input">
+            <label for="description" class="label_title"><span>{t}Description{/t}</span></label>
+            <input type="text" name="description" id="description" class="cajaxg">
+        </div>
+    </div>
+    <fieldset class="buttons-form positioned_btn">
+        {button label="Create" class='validate btn main_action'} {*message="Would you like to create a new link?"*}
+    </fieldset>
 </form>

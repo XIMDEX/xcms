@@ -29,6 +29,7 @@ use Ximdex\Models\Node;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\DataFactory;
+use Ximdex\Runtime\Db;
 
 
 class Action_manageversions extends ActionAbstract
@@ -58,7 +59,7 @@ class Action_manageversions extends ActionAbstract
             }
         }
 
-        $dbObj = new DB();
+        $dbObj = new Db();
         $query = sprintf("SELECT v.IdVersion, v.Version, v.SubVersion,"
             . " v.Date, v.Comment, u.Name"
             . " FROM Versions v INNER JOIN Users u USING (IdUser)"
@@ -95,7 +96,8 @@ class Action_manageversions extends ActionAbstract
             'id_node' => $idNode,
             'node_type_name' => $node->nodeType->get('Name'),
             'channels' => $channels,
-            'actionid' => $this->request->getParam('actionid')
+            'actionid' => $this->request->getParam('actionid'),
+            'name' => $node->GetNodeName()
         );
         $this->render($values, null, 'default-3.0.tpl');
     }

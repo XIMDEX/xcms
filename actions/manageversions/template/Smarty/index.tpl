@@ -25,7 +25,7 @@
 
 <form method="post" name="mv_form" id="mv_form" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Available versions{/t}</h2>
+		<h2>{t}Available versions{/t} {$name}</h2>
 	</div>
 
 	<div class="action_content full">

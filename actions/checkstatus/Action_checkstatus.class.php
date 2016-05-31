@@ -20,8 +20,8 @@
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
 
 
@@ -33,78 +33,83 @@ use Ximdex\Workflow\WorkFlow;
 ModulesManager::file('/inc/nodetypes/statenode.php');
 ModulesManager::file('/inc/model/ServerFrame.class.php', 'ximSYNC');
 
-class Action_checkstatus extends ActionAbstract {
+class Action_checkstatus extends ActionAbstract
+{
 
-	//Main method: shows initial form
-    function index () {
-    	$idNode = $this->request->getParam('nodeid');
-    	$node = new Node($idNode);
-    		
-		if (!$node->get('IdNode') > 0) {
-    		$this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
-			$values = array('messages' => $node->messages->messages);
-			$this->render($values, NULL, 'messages.tpl');
-			return false;
- 		}
+    //Main method: shows initial form
+    function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
 
-		//we obtain the project and the server name to filter on the query.
-		$server=new Node($idNode);
-		$serverName=$server->GetNodeName();
+        if (!$node->get('IdNode') > 0) {
+            $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
+            $values = array('messages' => $node->messages->messages);
+            $this->render($values, NULL, 'messages.tpl');
+            return false;
+        }
 
-		$project=new Node($server->getProject());
-		$projectName=$project->GetNodeName();
+        //we obtain the project and the server name to filter on the query.
+        $server = new Node($idNode);
+        $serverName = $server->GetNodeName();
 
- 		$dbObj = new DB();
-		$query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (5032,5039,5040,5041,5028) AND n.Path like '%".$projectName."%".$serverName."%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
+        $project = new Node($server->getProject());
+        $projectName = $project->GetNodeName();
 
-		$dbObj->query($query);
-		$data = array();
-		while(!$dbObj->EOF) {
-			$data[$dbObj->getValue('IdState')][] = array(
-						'Version' => $dbObj->getValue('Version'),
-						'SubVersion' => $dbObj->getValue('SubVersion'),
-						'Date' => date('d/m/Y H:i', $dbObj->getValue('Date')),
-						'Name' => $dbObj->getValue('Name'),
-						'Path' => $dbObj->getValue('Path'),
-						'isLastVersion' => 'false');
-			$dbObj->Next();
-		}
+        $dbObj = new DB();
+        $query = "SELECT n.IdState,n.IdNode,n.Path,n.Name,v1.Version, v1.SubVersion,v1.Date FROM Versions v1 INNER JOIN Nodes n USING (IdNode) WHERE n.IdNodetype in (5032,5039,5040,5041,5028) AND n.Path like '%" . $projectName . "%" . $serverName . "%' AND NOT v1.SubVersion=0 AND NOT EXISTS (select Idnode from Versions v2 where v2.IdNOde=v1.IdNOde and (v2.Version>v1.Version OR (v1.Version=v2.Version AND v2.SubVersion>v1.Subversion))) ORDER BY n.IdNode";
 
-		//creates abother array with all de states info.
-		$states=array();
-		$wf=new WorkFlow($idNode);
-		$states=$wf->GetAllStates();
+        $dbObj->query($query);
+        $data = array();
+        while (!$dbObj->EOF) {
+            $data[$dbObj->getValue('IdState')][] = array(
+                'Version' => $dbObj->getValue('Version'),
+                'SubVersion' => $dbObj->getValue('SubVersion'),
+                'Date' => date('d/m/Y H:i', $dbObj->getValue('Date')),
+                'Name' => $dbObj->getValue('Name'),
+                'Path' => $dbObj->getValue('Path'),
+                'isLastVersion' => 'false');
+            $dbObj->Next();
+        }
 
-		foreach($states as $state){
-			$ps=new PipeStatus($state);
-			$count= isset($data[$state]) ? count($data[$state]) : 0;
-			$statesFull[$state] = array(
-					'stateName' =>$ps->get('Name'),
-					'count' => $count
-					);			
-		}
+        //creates abother array with all de states info.
+        $states = array();
+        $wf = new WorkFlow($idNode);
+        $states = $wf->GetAllStates();
 
-		$this->addJs('/actions/checkstatus/resources/js/index.js');
-		$this->addCss('/actions/checkstatus/resources/css/index.css');
+        foreach ($states as $state) {
+            $ps = new PipeStatus($state);
+            $count = isset($data[$state]) ? count($data[$state]) : 0;
+            $statesFull[$state] = array(
+                'stateName' => $ps->get('Name'),
+                'count' => $count
+            );
+        }
 
-		$values = array('files' => $data,
-				'statesFull'=> $statesFull,
-				'id_node' => $idNode,
-				'actionid' => $this->request->getParam('actionid')
-				);
+        $this->addJs('/actions/checkstatus/resources/js/index.js');
+        $this->addCss('/actions/checkstatus/resources/css/index.css');
 
-		$this->render($values, null, 'default-3.0.tpl');
-	}
+        $values = array('files' => $data,
+            'statesFull' => $statesFull,
+            'id_node' => $idNode,
+            'actionid' => $this->request->getParam('actionid'),
+            'name' => $node->GetNodeName()
+        );
 
-	function getPublicationQueue () {
-		$frames = new ServerFrame();
-		$values = array();
-		$etag = null;
-		$etag = $this->request->getParam('etag');
-		$nodeid = $this->request->getParam('nodeid');
-		$values['publications'] = $frames->getPublicationQueue($nodeid);
-		$this->sendJSON_cached($values, $etag);
-	}
+        $this->render($values, null, 'default-3.0.tpl');
+    }
+
+    function getPublicationQueue()
+    {
+        $frames = new ServerFrame();
+        $values = array();
+        $etag = null;
+        $etag = $this->request->getParam('etag');
+        $nodeid = $this->request->getParam('nodeid');
+        $values['publications'] = $frames->getPublicationQueue($nodeid);
+        $this->sendJSON_cached($values, $etag);
+    }
 
 }
+
 ?>

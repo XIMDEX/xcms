@@ -27,7 +27,7 @@
 
 <form name="copy" id="copy" method="post" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Copy element{/t}</h2>
+		<h2>{t}Copy element{/t} {$name}</h2>
 		{if {count($targetNodes)}}
 		<fieldset class="buttons-form">
 			{button class="validate btn main_action" label="Copy" tabindex="3"}<!--message="Are you sure you want to copy this node to selected destination?"-->

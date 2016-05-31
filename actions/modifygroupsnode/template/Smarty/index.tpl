@@ -25,7 +25,7 @@
 <form method="post" id="groups_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}">
 	<div class="action_header">
-		<h2>{t}Manage groups{/t}</h2>
+		<h2>{t}Manage groups{/t} {$name}</h2>
 	</div>
         <div class="action_content"><fieldset>
 <h2>{t}Add group to section{/t}</h2>

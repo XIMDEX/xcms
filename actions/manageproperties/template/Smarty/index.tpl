@@ -25,7 +25,7 @@
 
 <form method="post" name="modifyproperties" action="{$action_url}">
 	<div class="action_header">
-		<h2>{t}Manage properties{/t}</h2>
+		<h2>{t}Manage properties{/t} {$name}</h2>
 		<fieldset class="buttons-form">
 			{button label="Modify" class="validate btn main_action" }{*message="Are you sure you want to change default properties?"*}
 		</fieldset>

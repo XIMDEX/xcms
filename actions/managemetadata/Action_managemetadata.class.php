@@ -133,6 +133,7 @@ class Action_managemetadata extends ActionAbstract
 
         $values['nodeid'] = $nodeId;
         $values['go_method'] = 'save_metadata';
+        $values['name'] = $node->GetNodeName();
 
         $this->render($values, '', 'default-3.0.tpl');
     }

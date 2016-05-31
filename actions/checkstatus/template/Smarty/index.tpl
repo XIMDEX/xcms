@@ -24,7 +24,7 @@
  *}
 
 <div class="action_header">
-	<h2>{t}Status Report{/t}</h2>
+	<h2>{t}Status Report{/t} {$name}</h2>
 </div>
 	<div class="action_content versions" ng-controller="XPublishStatus" ng-cloak xim-nodeid={$id_node}>
 	<h3>{t}Modified documents{/t}:</h3>

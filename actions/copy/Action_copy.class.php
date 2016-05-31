@@ -53,7 +53,8 @@ class Action_copy extends ActionAbstract {
                 'filtertype' => $node->nodeType->get('Name'),
                 'targetNodes' => $targetNodes,
                 'node_path' => $node->GetPath(),
-                'go_method' => 'copyNodes'
+                'go_method' => 'copyNodes',
+                'name' => $node->GetNodeName()
             );
 
             $this->addCss('/actions/copy/resources/css/style.css');

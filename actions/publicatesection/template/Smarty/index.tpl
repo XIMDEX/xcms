@@ -26,7 +26,7 @@
 	<input type="hidden" name="nodeid" value="{$id_node}" class="ecajag" />
 
 <div class="action_header">
-<h2>{t}Publish section{/t}</h2>
+<h2>{t}Publish section{/t} {$name}</h2>
 	<fieldset class="buttons-form">
 		{button label="Accept" class="validate btn main_action" }{*message="You are going to publish $node_name. Would you like to continue?"*}
 	</fieldset>

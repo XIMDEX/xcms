@@ -26,7 +26,7 @@
 <form method="post" name="ren_form" id="ren_form" action="{$action_url}">
 	<input type="hidden" name="id_node" value="{$id_node}" />
 	<div class="action_header">
-		<h2>{t}Change name{/t}</h2>
+		<h2>{t}Change name{/t} {$name}</h2>
 
 		<fieldset class="buttons-form">
 			{*

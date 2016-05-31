@@ -78,7 +78,8 @@ class Action_modifygroupsnode extends ActionAbstract
             'new_groups' => $newGroups,
             'all_groups' => $allGroups,
             'roles' => $roles,
-            'go_method' => 'modifygroup'
+            'go_method' => 'modifygroup',
+            'name' => $node->GetNodeName()
         );
 
         $this->render($values, null, 'default-3.0.tpl');

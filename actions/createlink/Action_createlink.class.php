@@ -1,5 +1,6 @@
 <?php
 use Ximdex\Models\Link;
+use Ximdex\Models\Node;
 use Ximdex\MVC\ActionAbstract;
 
 /**
@@ -23,58 +24,64 @@ use Ximdex\MVC\ActionAbstract;
  *
  *  If not, visit http://gnu.org/licenses/agpl-3.0.html.
  *
- *  @author Ximdex DevTeam <dev@ximdex.com>
- *  @version $Revision$
+ * @author Ximdex DevTeam <dev@ximdex.com>
+ * @version $Revision$
  */
-
-class Action_createlink extends ActionAbstract {
+class Action_createlink extends ActionAbstract
+{
     // Main method: shows initial form
-    function index() {
-    	$idNode = $this->request->getParam('nodeid');
-		$this->addJs('/actions/createlink/resources/js/index.js');
-		$values = array( 'go_method' => 'createlink');
-		$this->render($values, null, 'default-3.0.tpl');
+    function index()
+    {
+        $idNode = $this->request->getParam('nodeid');
+        $node = new Node($idNode);
+        $this->addJs('/actions/createlink/resources/js/index.js');
+        $values = array('go_method' => 'createlink',
+            'name' => $node->GetNodeName());
+        $this->render($values, null, 'default-3.0.tpl');
     }
-    
-    function createlink() {
+
+    function createlink()
+    {
         $name = $this->request->getParam('name');
-	    $idParent = $this->request->getParam('id_node');
-	    $url = $this->request->getParam('url');
-	    $description = $this->request->getParam('description');
+        $idParent = $this->request->getParam('id_node');
+        $url = $this->request->getParam('url');
+        $description = $this->request->getParam('description');
 
         $messages = $this->createNodeLink($name, $url, $description, $idParent);
 
-		$values["messages"] = $this->messages->messages;//_('Link has been successfully added');
-		$values["parentID"] = $idParent;
-		$this->sendJSON($values);	
+        $values["messages"] = $this->messages->messages;//_('Link has been successfully added');
+        $values["parentID"] = $idParent;
+        $this->sendJSON($values);
     }
 
-    public function createNodeLink($name, $url, $description, $idParent){
-    	if(empty($description)){
-            $description = " ";    
+    public function createNodeLink($name, $url, $description, $idParent)
+    {
+        if (empty($description)) {
+            $description = " ";
         }
 
-		$data = array('NODETYPENAME' => 'LINK',
-				'NAME' => $name,
-				'PARENTID' => $idParent,
-				'IDSTATE' => 0,
-				'CHILDRENS' => array (
-					array ('URL' => $url),
-					array ('DESCRIPTION' => $description)
-				)
-			);
-			
-		$bio = new baseIO();
-		$result = $bio->build($data);
-		
-		if ($result > 0) {
-			$link = new Link($result);
-			$link->set('ErrorString','not_checked');
-			$link->set('CheckTime',time());
-			$linkResult = $link->update();
-			$this->messages->add(_('Link has been successfully added'), MSG_TYPE_NOTICE);
-		}		
-		return $result;
+        $data = array('NODETYPENAME' => 'LINK',
+            'NAME' => $name,
+            'PARENTID' => $idParent,
+            'IDSTATE' => 0,
+            'CHILDRENS' => array(
+                array('URL' => $url),
+                array('DESCRIPTION' => $description)
+            )
+        );
+
+        $bio = new baseIO();
+        $result = $bio->build($data);
+
+        if ($result > 0) {
+            $link = new Link($result);
+            $link->set('ErrorString', 'not_checked');
+            $link->set('CheckTime', time());
+            $linkResult = $link->update();
+            $this->messages->add(_('Link has been successfully added'), MSG_TYPE_NOTICE);
+        }
+        return $result;
     }
 }
+
 ?>
