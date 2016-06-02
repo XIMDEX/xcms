@@ -17,6 +17,7 @@ class Db
      * @var null|\PDO
      */
     private $db = null;
+    private static $defaultConf = null;
 
     private $sql = '';
     private $dbEncoding = '';
@@ -53,9 +54,29 @@ class Db
      */
     public function __construct($conf = null)
     {
+        if (is_null($conf)) {
+             if(is_null(self::$defaultConf)){
+                 self::$defaultConf = App::getInstance()->getValue('default.db', 'db');
+             }
+             $conf = self::$defaultConf;
+         }
         $this->db = App::Db($conf);
-
     }
+
+    /**
+     * Reconnect the Database
+     */
+    public function reconectDataBase(){
+         $dbConfig = App::getInstance()->getValue('db', 'db');
+         if ( !empty( $dbConfig ) ) {
+             $dbConn = new \PDO("{$dbConfig['type']}:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['db']}", $dbConfig['user'], $dbConfig['password']);
+             $dbConn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+             $this->db = $dbConn;
+             $idconfig = uniqid();
+             App::addDbConnection($dbConn, $idconfig);
+             self::$defaultConf = $idconfig;
+         }
+     }
 
     public function Query($sql, $cache = false)
     {

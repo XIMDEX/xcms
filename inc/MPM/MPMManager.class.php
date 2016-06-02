@@ -24,9 +24,7 @@
  *  @version $Revision$
  */
 
-
-
-
+use Ximdex\Runtime\Db;
 
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/Semaphore.class.php");
 include_once(XIMDEX_ROOT_PATH . "/inc/MPM/SharedMemory.class.php");
@@ -139,6 +137,13 @@ class MPMManager {
 				//echo " child $key created \n";
 				$this->createProcess($key);
 			}else{
+				//Reset the database, the database connection is duplicated in the forking and when
+				//the child ended, there are some secundary effects
+				//With this, we force to the reconnect
+
+				$db = new Db();
+				$db->reconectDataBase();
+
 				//We are the parent
 				//Inc the numChild
 				$this->sharedMemory->incVar(MPMManager::KEY_NUM_CHILD);
@@ -151,13 +156,6 @@ class MPMManager {
 
 		//Distroy the shared Memory
 		$this->sharedMemory->destroyMemory();
-
-		//Reset the database, the database connection is duplicated in the forking and when
-        //the child ended, there are some secundary effects
-		//With this, we force to the reconnect
-
-		$db = new DB();
-		$db->reconectDataBase();
 
 	}
 	/**
