@@ -68,7 +68,7 @@ VALUES
 	(8134,5039,'Edit metadata','managemetadata','xix.png','Edit the metadata info',20,NULL,0,NULL,0),
 	(8135,5041,'Edit metadata','managemetadata','xix.png','Edit the metadata info',20,NULL,0,NULL,0),
 	(6073,5049,'Modify external link','modifylink','modify_link.png','Modify properties of external link',20,NULL,0,'',0),
-	(6600,5013,'Copy','copy','Copy_proyecto.png','Copy a complete project',30,NULL,0,'',0),
+	(6600,5013,'Copy','copy','Copy_proyecto.png','Copy a complete project',-30,NULL,0,'',0),
 	(6601,5050,'Copy','copyNode','copiar_documento.png','Copy a link',-30,'ximIO',0,'',0),
 	(6602,5048,'Copy','copyNode','copiar_seccion.png','Copy a link folder',-30,'ximIO',0,'',0),
 	(6604,5023,'Copy','copyNode','copiar_carpeta_common.png','Copy a common subfolder',-30,'ximIO',0,'',0),
