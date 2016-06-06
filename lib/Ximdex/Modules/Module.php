@@ -30,6 +30,7 @@ namespace Ximdex\Modules;
 use Ximdex\Runtime\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Runtime\App;
+use Ximdex\Runtime\Db;
 
 
 /**
@@ -199,41 +200,17 @@ class Module  {
     function injectSQLFile($sql_file) {
         $sql_path = $this->getModulePath() . '/sql/';
         $sql_file = $sql_path . $sql_file;
+        $result = false;
 
         if (file_exists($sql_file)) {
-            /**
-             * Load configuration from App Class
-             */
-            $dbConfig = App::getValue('db');
-            $USE_SQL_LOG = $dbConfig['log'];
-            $DBHOST = $dbConfig['host'];
-            $DBPORT = $dbConfig['port'];
-            $DBUSER = $dbConfig['user'];
-            $DBPASSWD = $dbConfig['password'];
-            $DBNAME = $dbConfig['db'];
-
-            try {
-                $pdconnstring = "mysql:host={$DBHOST};port={$DBPORT};dbname={$DBNAME}" ;
-                $db = new \PDO($pdconnstring, $DBUSER, $DBPASSWD);
-                $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            } catch (\PDOException $e) {
-                return false;
-            }
-
+            $db = new Db();
             $sql = file_get_contents($sql_file);
-
-            try {
-                $statement = $db->prepare($sql);
-                $statement->execute();
-                while ($statement->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
-            } catch (\PDOException $e) {
-                return false;
-            }
-
+            $result = $db->ExecuteScript($sql);
         } else {
             $this->messages->add(sprintf(_("%s not exists"), $file_name), MSG_TYPE_WARNING);
-            return false;
+            $result = false;
         }
+        return $result;
     }
 
     /**
