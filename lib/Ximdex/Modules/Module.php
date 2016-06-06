@@ -212,18 +212,24 @@ class Module  {
             $DBPASSWD = $dbConfig['password'];
             $DBNAME = $dbConfig['db'];
 
-            // Mysql call construction...
-            $command = "mysql --host=$DBHOST --port=$DBPORT --user=$DBUSER";
-
-            if (!empty($DBPASSWD)) {
-                $command .= " --password=$DBPASSWD";
+            try {
+                $pdconnstring = "mysql:host={$DBHOST};port={$DBPORT};dbname={$DBNAME}" ;
+                $db = new \PDO($pdconnstring, $DBUSER, $DBPASSWD);
+                $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            } catch (\PDOException $e) {
+                return false;
             }
 
-            $command .= " $DBNAME  < $sql_file";
+            $sql = file_get_contents($sql_file);
 
-            //$this->messages->add (sprintf(_("sys: Launching command [%s]"), $command), MSG_TYPE_NOTICE);
-            // Verificar salida correcta y en caso contrario eliminar entradas.
-            system($command);
+            try {
+                $statement = $db->prepare($sql);
+                $statement->execute();
+                while ($statement->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
+            } catch (\PDOException $e) {
+                return false;
+            }
+
         } else {
             $this->messages->add(sprintf(_("%s not exists"), $file_name), MSG_TYPE_WARNING);
             return false;
