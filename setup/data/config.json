@@ -1,0 +1,7 @@
+{
+  "dbname": "ximdex",
+  "dbhost": "localhost",
+  "dbport": "3306",
+  "dbuser": "ximdex",
+  "dbpass": ""
+}
