@@ -28,12 +28,14 @@ class Database extends Base
     }
 
     private function getForm() {
+        $dbConfigRaw = file_get_contents($this->manager->getFullPath("/data/config.json"));
+        $dbConfig = json_decode($dbConfigRaw, true);
         $result = [
-            'dbhost' => (isset( $_POST['dbhost'])) ? $_POST['dbhost'] : 'localhost' ,
-            'dbport' => (isset( $_POST['dbport'])) ? $_POST['dbport'] : '3306' ,
-            'dbuser' => (isset( $_POST['dbuser'])) ? $_POST['dbuser'] : 'ximdex' ,
-            'dbpass' => (isset( $_POST['dbpass'])) ? $_POST['dbpass'] : '' ,
-            'dbname' => (isset( $_POST['dbname'])) ? $_POST['dbname'] : 'ximdex' ,
+            'dbhost' => (isset( $_POST['dbhost'])) ? $_POST['dbhost'] : $dbConfig['dbhost'] ,
+            'dbport' => (isset( $_POST['dbport'])) ? $_POST['dbport'] : $dbConfig['dbport'] ,
+            'dbuser' => (isset( $_POST['dbuser'])) ? $_POST['dbuser'] : $dbConfig['dbuser'] ,
+            'dbpass' => (isset( $_POST['dbpass'])) ? $_POST['dbpass'] : $dbConfig['dbpass'] ,
+            'dbname' => (isset( $_POST['dbname'])) ? $_POST['dbname'] : $dbConfig['dbname'] ,
             'submitted' => !empty( $_POST ),
 
         ] ;
