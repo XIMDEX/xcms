@@ -30,6 +30,7 @@ namespace Ximdex\Modules;
 use Ximdex\Runtime\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Runtime\App;
+use Ximdex\Runtime\Db;
 
 
 /**
@@ -199,35 +200,17 @@ class Module  {
     function injectSQLFile($sql_file) {
         $sql_path = $this->getModulePath() . '/sql/';
         $sql_file = $sql_path . $sql_file;
+        $result = false;
 
         if (file_exists($sql_file)) {
-            /**
-             * Load configuration from App Class
-             */
-            $dbConfig = App::getValue('db');
-            $USE_SQL_LOG = $dbConfig['log'];
-            $DBHOST = $dbConfig['host'];
-            $DBPORT = $dbConfig['port'];
-            $DBUSER = $dbConfig['user'];
-            $DBPASSWD = $dbConfig['password'];
-            $DBNAME = $dbConfig['db'];
-
-            // Mysql call construction...
-            $command = "mysql --host=$DBHOST --port=$DBPORT --user=$DBUSER";
-
-            if (!empty($DBPASSWD)) {
-                $command .= " --password=$DBPASSWD";
-            }
-
-            $command .= " $DBNAME  < $sql_file";
-
-            //$this->messages->add (sprintf(_("sys: Launching command [%s]"), $command), MSG_TYPE_NOTICE);
-            // Verificar salida correcta y en caso contrario eliminar entradas.
-            system($command);
+            $db = new Db();
+            $sql = file_get_contents($sql_file);
+            $result = $db->ExecuteScript($sql);
         } else {
             $this->messages->add(sprintf(_("%s not exists"), $file_name), MSG_TYPE_WARNING);
-            return false;
+            $result = false;
         }
+        return $result;
     }
 
     /**

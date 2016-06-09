@@ -165,6 +165,29 @@ class Db
     }
 
     /**
+     * Execute a sql script
+     *
+     * @param $sql
+     * @return bool
+     */
+    function ExecuteScript($sql)
+    {
+        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $result = true;
+
+        try {
+            $statement = $this->db->prepare($sql);
+            $statement->execute();
+            while ($statement->nextRowset()) {/* https://bugs.php.net/bug.php?id=61613 */};
+        } catch (\PDOException $e) {
+            $result = false;
+        }
+
+        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
+        return $result;
+    }
+
+    /**
      * @return bool
      */
     function Next()
