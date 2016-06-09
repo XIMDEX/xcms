@@ -1,4 +1,4 @@
-#!/usr/bin/php -d
+#!/usr/bin/env php
 <?php
 /**
  *  \details &copy; 2011  Open Ximdex Evolution SL [http://www.ximdex.org]
