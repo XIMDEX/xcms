@@ -222,65 +222,67 @@ class Action_manageproperties extends ActionAbstract
                 $totalProps = count($value['values']);
 
                 $message = array();
-                switch ($prop) {
-                    case 'Channel':
+                if ($totalProps > 0) {
+                    switch ($prop) {
+                        case 'Channel':
 
-                        if ($affectedNodes !== false) {
-                            $totalNodes = count($affectedNodes['nodes']);
-                            $totalProps = count($affectedNodes['props']);
-                            $message[] = sprintf(_('A total of %s channels have been disassociated from %s nodes.'), $totalProps, $totalNodes);
-                        } else {
-                            if ($totalProps == 0) {
-                                $message[] = _('Channel values will be inherited.');
+                            if ($affectedNodes !== false) {
+                                $totalNodes = count($affectedNodes['nodes']);
+                                $totalProps = count($affectedNodes['props']);
+                                $message[] = sprintf(_('A total of %s channels have been disassociated from %s nodes.'), $totalProps, $totalNodes);
                             } else {
-                                $message[] = sprintf(_('%s Channels have been successfully assigned.'), $totalProps);
+                                if ($totalProps == 0) {
+                                    $message[] = _('Channel values will be inherited.');
+                                } else {
+                                    $message[] = sprintf(_('%s Channels have been successfully assigned.'), $totalProps);
+                                }
                             }
-                        }
 
-                        if (isset($applyResults['Channel']) && $applyResults['Channel'] !== false && $applyResults['Channel']['nodes'] > 0) {
-                            $message[] = sprintf(
-                                _('A total of %s channels have been recursively associated with %s documents.'),
-                                count($applyResults['Channel']['values']),
-                                $applyResults['Channel']['nodes']
-                            );
-                        }
+                            if (isset($applyResults['Channel']) && $applyResults['Channel'] !== false && $applyResults['Channel']['nodes'] > 0) {
+                                $message[] = sprintf(
+                                    _('A total of %s channels have been recursively associated with %s documents.'),
+                                    count($applyResults['Channel']['values']),
+                                    $applyResults['Channel']['nodes']
+                                );
+                            }
 
-                        break;
+                            break;
 
-                    case 'Language':
+                        case 'Language':
 
-                        if ($affectedNodes !== false) {
-                            $totalProps = count($affectedNodes['props']);
-                            $message[] = sprintf(_('A total of %s language versions have been deleted.'), $totalProps);
-                        } else {
-                            if ($totalProps == 0) {
-                                $message[] = _('Language values will be inherited.');
+                            if ($affectedNodes !== false) {
+                                $totalProps = count($affectedNodes['props']);
+                                $message[] = sprintf(_('A total of %s language versions have been deleted.'), $totalProps);
                             } else {
-                                $message[] = sprintf(_('%s Languages have been successfully assigned.'), $totalProps);
+                                if ($totalProps == 0) {
+                                    $message[] = _('Language values will be inherited.');
+                                } else {
+                                    $message[] = sprintf(_('%s Languages have been successfully assigned.'), $totalProps);
+                                }
                             }
-                        }
 
-                        if (isset($applyResults['Language']) && $applyResults['Language'] !== false && $applyResults['Language']['nodes'] > 0) {
-                            $message[] = sprintf(
-                                _('A total of %S language versions have been recursively created.'),
-                                count($applyResults['Language']['values'])
-                            );
-                        }
+                            if (isset($applyResults['Language']) && $applyResults['Language'] !== false && $applyResults['Language']['nodes'] > 0) {
+                                $message[] = sprintf(
+                                    _('A total of %S language versions have been recursively created.'),
+                                    count($applyResults['Language']['values'])
+                                );
+                            }
 
-                        break;
+                            break;
 
-                    case 'Schema':
-                        if ($totalProps == 0) {
-                            $message[] = _('Template values will be inherited.');
-                        } else {
-                            $message[] = sprintf(_('%s Templates have been successfully assigned.'), $totalProps);
-                        }
-                        break;
-                    case 'Transformer':
-                        if (empty($value['values'])) $value['values'] = null;
-                        $transformer = (is_array($value['values'])) ? $value['values'][0] : $value['values'];
-                        $message[] = sprintf(_('%s will be used as document transformer.'), $transformer);
-                        break;
+                        case 'Schema':
+                            if ($totalProps == 0) {
+                                $message[] = _('Template values will be inherited.');
+                            } else {
+                                $message[] = sprintf(_('%s Templates have been successfully assigned.'), $totalProps);
+                            }
+                            break;
+                        case 'Transformer':
+                            if (empty($value['values'])) $value['values'] = null;
+                            $transformer = (is_array($value['values'])) ? $value['values'][0] : $value['values'];
+                            $message[] = sprintf(_('%s will be used as document transformer.'), $transformer);
+                            break;
+                    }
                 }
 
                 foreach ($message as $msg) {
