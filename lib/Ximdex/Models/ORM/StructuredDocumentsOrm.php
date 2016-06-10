@@ -45,7 +45,7 @@ class StructuredDocumentsOrm extends \Ximdex\Data\GenericData
     var $Name;
     var $IdCreator = 0;
     var $CreationDate = 'CURRENT_TIMESTAMP';
-    var $UpdateDate = '0000-00-00 00:00:00';
+    var $UpdateDate = 'CURRENT_TIMESTAMP';
     var $IdLanguage = 0;
     var $IdTemplate = 0;
     var $TargetLink;

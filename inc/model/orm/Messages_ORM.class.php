@@ -36,8 +36,7 @@ class Messages_ORM extends \Ximdex\Data\GenericData
         'Folder' => array('type' => "int(12)", 'not_null' => 'true'),
         'Subject' => array('type' => "varchar(255)", 'not_null' => 'false'),
         'Content' => array('type' => "blob", 'not_null' => 'false'),
-        'IsRead' => array('type' => "int(1)", 'not_null' => 'true'),
-        'FechaHora' => array('type' => "datetime", 'not_null' => 'true')
+        'IsRead' => array('type' => "int(1)", 'not_null' => 'true')
     );
     var $_uniqueConstraints = array();
     var $_indexes = array('IdMessage');
@@ -49,5 +48,4 @@ class Messages_ORM extends \Ximdex\Data\GenericData
     var $Subject;
     var $Content;
     var $IsRead = 0;
-    var $FechaHora = '0000-00-00 00:00:00';
 }

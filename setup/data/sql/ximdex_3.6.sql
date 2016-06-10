@@ -730,7 +730,7 @@ CREATE TABLE `Messages` (
   `Subject` varchar(255) default NULL,
   `Content` blob,
   `IsRead` int(1) unsigned NOT NULL default '0',
-  `FechaHora` datetime NOT NULL default '0000-00-00 00:00:00',
+  `FechaHora` datetime NOT NULL CURRENT_TIMESTAMP,
   PRIMARY KEY  (`IdMessage`)
 ) ENGINE=MyISAM COMMENT='Messages sent by Ximdex CMS. Deprecated?';
 
@@ -2777,8 +2777,8 @@ CREATE TABLE `StructuredDocuments` (
   `IdDoc` int(12) unsigned NOT NULL default '0',
   `Name` varchar(255) default NULL,
   `IdCreator` int(12) unsigned default '0',
-  `CreationDate` timestamp NOT NULL,
-  `UpdateDate` timestamp NOT NULL default '0000-00-00 00:00:00',
+  `CreationDate` timestamp NOT NULL default CURRENT_TIMESTAMP ,
+  `UpdateDate` timestamp NOT NULL default CURRENT_TIMESTAMP ,
   `IdLanguage` int(12) default '0',
   `IdTemplate` int(12) unsigned NOT NULL default '0',
   `TargetLink` int(12) unsigned default NULL,

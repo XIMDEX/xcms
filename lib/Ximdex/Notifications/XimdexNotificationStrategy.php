@@ -53,7 +53,6 @@ class XimdexNotificationStrategy
 			$messages->set("IdOwner", $toUser);
 			$messages->set("Subject", $subject);
 			$messages->set("Content", $content);
-			$messages->set("FechaHora", $nowDate);
 			if ($messages->add()) {
 				$result[$toUser] = true;
 			} else {
