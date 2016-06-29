@@ -81,7 +81,7 @@ function createBatchsForBlock($nodesToPublish)
     // Get list of physicalServers related to generator node.
     $idServer = $node->GetServer();
     $nodeServer = new Node($idServer);
-    $otfMode = 0; //For the moment, otfMode is disabled
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          $otfMode = 0; //For the moment, otfMode is disabled
     if (\App::getValue('PublishOnDisabledServers') == 1) {
         Publication_Log::write("PublishOnDisabledServers is true");
         $physicalServers = $nodeServer->class->GetPhysicalServerList(true, $otfMode);
@@ -98,6 +98,8 @@ function createBatchsForBlock($nodesToPublish)
     $docsPublicated = $batchMng->publicate(
         $nodesToPublish['idNodeGenerator'],
         $nodesToPublish['docsToPublish'],
+        $nodesToPublish['docsToPublishVersion'],
+        $nodesToPublish['docsToPublishSubVersion'],
         $nodesToPublish['dateUp'],
         $nodesToPublish['dateDown'],
         $physicalServers,

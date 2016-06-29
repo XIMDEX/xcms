@@ -26,6 +26,7 @@
 
 use Ximdex\Models\Channel;
 use Ximdex\Models\Node;
+use Ximdex\Models\PipeStatus;
 use Ximdex\MVC\ActionAbstract;
 
 ModulesManager::file('/actions/manageproperties/inc/InheritedPropertiesManager.class.php');
@@ -33,6 +34,8 @@ ModulesManager::file('/inc/model/RelNode2Asset.class.php');
 ModulesManager::file('/inc/model/RelStrdocTemplate.class.php');
 ModulesManager::file('/inc/model/RelXml2Xml.class.php');
 ModulesManager::file('/inc/model/RelNodeMetadata.class.php');
+ModulesManager::file('/actions/manageversions/Action_manageversions.class.php');
+
 
 
 class Action_infonode extends ActionAbstract
@@ -50,6 +53,14 @@ class Action_infonode extends ActionAbstract
         $idNode = (int)$this->request->getParam("nodeid");
         $node = new Node($idNode);
         $info = $node->loadData();
+
+        // Obtain name of current status
+        if(isset($info['state'])){
+            $pipeStatus = new PipeStatus();
+            $params = array( 'id' => $info['state'] );
+            $condition = "id = %s";
+            $pipeStatusInfo=$pipeStatus->find('Name',$condition, $params, MONO);
+        }
 
         //channels
         $channel = new Channel();
@@ -71,12 +82,20 @@ class Action_infonode extends ActionAbstract
         $urlRoot = App::getValue('UrlRoot');
         $jsonUrl = $urlRoot . "/xmd/loadaction.php?action=infonode&method=getDependencies&nodeid=" . $idNode;
 
+        $manageVersions= new Action_manageversions();
+        $valuesManageVersion=$manageVersions->values($idNode);
+        $this->addJs('/actions/manageversions/resources/js/index.js');
+        $this->addCss('/actions/manageversions/resources/css/index.css');
+
+
         $values = array(
             'id_node' => $idNode,
             'info' => $info,
+            'statusInfo' => $pipeStatusInfo[0],
             'channels' => $channels,
             'languages' => $languages,
-            'jsonUrl' => $jsonUrl
+            'jsonUrl' => $jsonUrl,
+            'valuesManageVersion'=>$valuesManageVersion
         );
         $this->render($values, 'index', 'default-3.0.tpl');
     }

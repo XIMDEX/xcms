@@ -22,4 +22,61 @@
  *  @author Ximdex DevTeam <dev@ximdex.com>
  *  @version $Revision$
  *}
-{include file="`$_APP_ROOT`/actions/workflow_forward/template/Smarty/show_results.tpl"}
+<div class="action_header">
+    <h2>{t}Publication result{/t}</h2>
+
+    {if (count($result)) }
+        <h2>{t}Publication result{/t}</h2>
+        <fieldset>
+            <table class='tabla'>
+                {foreach name=options from=$result key=option item=node_info}
+                    {if (count($node_info)) }
+                        <caption>{t}The following nodes{/t} {$options[$option]}</caption>
+                        <thead>
+                        {if ($option == "unchanged" || $synchronizer_to_use == "default")}
+                            <tr>
+                                <th class=filaclara>{t}Node{/t}</th>
+                            </tr>
+                        {else}
+                            <tr>
+                                <th class=filaclara>{t}Node{/t}</th>
+                                <th class=filaclara>{t}Path{/t}</th>
+                                <th class=filaclara>{t}Server{/t}</th>
+                                <th class=filaclara>{t}Channel{/t}</th>
+                            </tr>
+                        {/if}
+                        </thead>
+                        <tbody>
+                        {foreach name=values from=$node_info key=id_value item=value_info}
+                            {if ($option == "unchanged" || $synchronizer_to_use == "default")}
+                                <tr>
+                                    <td class='filaoscura' colspan="3">{$value_info.NODE}</td>
+                                </tr>
+                            {else}
+                                <tr>
+                                    <td class='filaoscura'>{$value_info.NODE}</td>
+                                    <td class='filaoscura'>{$value_info.PATH}</td>
+                                    <td class='filaoscura'>{$value_info.SERVER}</td>
+                                    <td class='filaoscura'>{$value_info.CHANNEL}</td>
+                                </tr>
+                            {/if}
+                        {/foreach}
+                        </tbody>
+                    {/if}
+                {/foreach}
+            </table>
+        </fieldset>
+    {/if}
+
+    <fieldset class="buttons-form">
+        {button class="close-button btn main_action" label="Close"}<!--message="Are you sure you want to copy this node to selected destination?"-->
+    </fieldset>
+</div>
+{if (count($messages)) }
+    {foreach name=messages from=$messages key=message_id item=message}
+        <div class="message {if $message["type"]==2}message-success{elseif $message["type"]==1}message-warning{else}message-error{/if}">
+            <p class="ui-icon-notice">{$message.message}</p>
+        </div>
+    {/foreach}
+{/if}
+</div>

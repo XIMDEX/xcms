@@ -31,6 +31,7 @@ use Ximdex\Models\StructuredDocument;
 use Ximdex\Models\User;
 use Ximdex\Models\XimLocale;
 use Ximdex\MVC\ActionAbstract;
+use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\Request;
 use Ximdex\Utils\Serializer;
 
@@ -64,6 +65,17 @@ class Action_xmleditor2 extends ActionAbstract
         $locale = new XimLocale();
         $user_locale = $locale->GetLocaleByCode(\Ximdex\Utils\Session::get('locale'));
         $locales = $locale->GetEnabledLocales();
+        $node=new Node($idnode);
+        //if is not node state equals to edition, send a message.
+        $allowed=$node->GetState();
+
+        if ($allowed != Constants::EDITION_STATUS_ID) {
+            $this->messages->add(_('You can not edit the document.'), MSG_TYPE_WARNING);
+            $values = array(
+                'messages' => $this->messages->messages
+            );
+            $this->renderMessages();
+        }
 
         $action = $queryManager->getPage() . $queryManager->buildWith(array(
                 'method' => 'load',

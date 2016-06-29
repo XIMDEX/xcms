@@ -56,7 +56,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$dataFactory = new DataFactory($idNode);
 
 		$idVersion = $dataFactory->GetLastVersion();
-		if ($idNode != $idNodeGenerator && $lastPublishedVersion && $idVersion != 0){
+		if ($idNode != $idNodeGenerator && $lastPublishedVersion){
 			$idSubversion = 0;
 		}
 		else{
@@ -77,6 +77,8 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 		$result = null;
 		$docsToPublish = array();
+		$docsToPublishVersion = array();
+		$docsToPublishSubVersion = array();
 		$db = new Db();
 
 		// 1. Get older dateup in table
@@ -104,7 +106,7 @@ class NodesToPublish extends NodesToPublish_ORM {
 		$db->Query($sql_update);
 
 		// 3. Build and array with locked nodes and their common attributes: dateUp, dateDown, forcePublication and idNodeGenerator
-		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId from NodesToPublish where DateUp = ".$dateUp." and State = 1";
+		$sql_nodes ="select IdNode,IdNodeGenerator,ForcePublication,DateDown,UserId, Version, SubVersion from NodesToPublish where DateUp = ".$dateUp." and State = 1";
 		if(!empty($dateDown)){
 			$sql_nodes .= " and DateDown = ".$dateDown;
 		}else{
@@ -120,6 +122,8 @@ class NodesToPublish extends NodesToPublish_ORM {
 
 		while (!$db->EOF) {
 			array_push($docsToPublish, $db->getValue('IdNode'));
+			$docsToPublishVersion[$db->getValue('IdNode')]=$db->getValue('Version');
+			$docsToPublishSubVersion[$db->getValue('IdNode')]=$db->getValue('SubVersion');
 
 			$idNodeGenerator = $db->getValue('IdNodeGenerator');
 			$force = $db->getValue('ForcePublication');
@@ -134,7 +138,9 @@ class NodesToPublish extends NodesToPublish_ORM {
 			'dateUp' => $dateUp,
 			'dateDown' => $dateDown,
 			'forcePublication' => $force,
-			'userId' => $userId
+			'userId' => $userId,
+			'docsToPublishVersion' => $docsToPublishVersion,
+			'docsToPublishSubVersion' => $docsToPublishSubVersion
 		);
 
 		return $result;

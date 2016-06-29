@@ -98,7 +98,7 @@ class BatchManager
      * @param bool force
      */
 
-    function publicate($idNode, $docsToPublish, $up, $down, $physicalServers, $otfPublication, $force, $userId = null)
+    function publicate($idNode, $docsToPublish, $docsToPublishVersion, $docsToPublishSubVersion, $up, $down, $physicalServers, $otfPublication, $force, $userId = null)
     {
 
         $timer = new \Ximdex\Utils\Timer();
@@ -114,7 +114,8 @@ class BatchManager
         $unchangedDocs = array();
 
         foreach ($docsToPublish as $idDoc) {
-
+            $versionToPublish = $docsToPublishVersion[$idDoc];
+            $subversionToPublish = $docsToPublishSubVersion[$idDoc];
             $docNode = new Node($idDoc);
 
             if (!($docNode->get('IdNode') > 0)) {
@@ -140,7 +141,7 @@ class BatchManager
 
             $nodeFrame = new NodeFrame();
 
-            if ($nodeFrame->isRenamed($idDoc)) {
+            if ($nodeFrame->isTainted($idDoc)) {
 
                 $depsMngr = new DepsManager();
                 $sourceNodes = $depsMngr->getByTarget(DepsManager::STRDOC_NODE, $idDoc);
@@ -149,24 +150,28 @@ class BatchManager
                     $ancestors = array_merge($ancestors, $sourceNodes);
                 }
             }
+
+            // We up version if tha current version to publish it is a draft or if the current version is 0.0 and the node is the generator node.
+            if ($subversionToPublish != 0 ||
+                ($subversionToPublish == 0 && $versionToPublish == 0 && $idDoc == $idNode)) {
+                $docsToUpVersion[$idDoc] = $idDoc;
+            }
         }
 
         if (isset($ancestors) && count($ancestors) > 0) {
             $docsToPublish = array_unique(array_merge($docsToPublish, $ancestors));
         }
 
-        $docsToUpVersion = $docsToPublish;
-
         // double loop, all the nodes have to be parsed until there were no more to generate
 
-        do {
-
-            $generated = array();
-            $existDocOtf = $this->_upVersion($docsToUpVersion, $generated);
-            $docsToPublish = array_unique(array_merge($docsToPublish, $generated));
-            $docsToUpVersion = $generated;
-
-        } while (!empty($docsToUpVersion));
+//        do {
+//
+//            $generated = array();
+//            $existDocOtf = $this->_upVersion($docsToUpVersion, $generated);
+//            $docsToPublish = array_unique(array_merge($docsToPublish, $generated));
+//            $docsToUpVersion = $generated;
+//
+//        } while (!empty($docsToUpVersion));
 
         // get portal version
 
@@ -185,7 +190,7 @@ class BatchManager
 
             Publication_Log::info(sprintf(_("[Generator %s]: Creating bach %s / %s"), $idNode, $iCount, $iTotal));
 
-            $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $idServer, $physicalServers, 0.8, $down, $iCount,
+            $partialDocs = $this->buildBatchs($idNode, $up, $chunk, $docsToUpVersion, $docsToPublishVersion, $docsToPublishSubVersion, $idServer, $physicalServers, 0.8, $down, $iCount,
                 $iTotal, $idPortalVersion, $userId);
             $docsBatch = array_merge($docsBatch, $partialDocs);
             $iCount++;
@@ -235,7 +240,6 @@ class BatchManager
         }
 
         $nodeFrame = new NodeFrame();
-
         if ($nodeFrame->existsNodeFrame($nodeId, $up, $down)) {
             Publication_Log::info(sprintf(_("Node %s already exists in a NodeFrame"), $nodeId));
             return false;
@@ -276,7 +280,7 @@ class BatchManager
     }
 
 
-    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $server, $physicalServers, $priority, $timeDown = null,
+    function buildBatchs($nodeGenerator, $timeUp, $docsToPublish, $docsToUpVersion, $version, $subversion, $server, $physicalServers, $priority, $timeDown = null,
                          $statStart = 0, $statTotal = 0, $idPortalVersion = 0, $userId = null)
     {
 
@@ -304,12 +308,12 @@ class BatchManager
             Publication_Log::info(sprintf(_("[Generator %s]: Creating up batch with id %s"), $nodeGenerator, $relBatchsServers[$serverId]));
         }
 
-        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $server, $relBatchsServers, $statStart, $statTotal);
+        $frames = $this->buildFrames($timeUp, $timeDown, $docsToPublish, $docsToUpVersion, $version, $subversion, $server, $relBatchsServers, $statStart, $statTotal, $nodeGenerator);
 
         return $frames;
     }
 
-    function buildFrames($up, $down, $docsToPublish, $serverID, $relBatchsServers, $statStart = 0, $statTotal = 0)
+    function buildFrames($up, $down, $docsToPublish, $docsToUpVersion, $versions, $subversions, $serverID, $relBatchsServers, $statStart = 0, $statTotal = 0, $nodeGenerator)
     {
 
         $docsOk = array();
@@ -333,8 +337,26 @@ class BatchManager
             $j++;
 
             $dataFactory = new DataFactory($idNode);
-            $idVersion = $dataFactory->GetLastVersionId();
-            if (is_null($idVersion)) {
+            $node = new Node($idNode);
+            // check if current version is 0.0 and not is a node generator. In that case
+            $versionZero = (0 == $versions[$idNode] && 0 == $subversions[$idNode]);
+            // If node subversion is 0 means that we are publishing a draft.
+            // If it is equals to 0 means that we are publishing a version already published in the past.
+            // In this case we look for that version.subversion specific because
+            // it is possible that exists new drafts that we do not want publish.
+            if ($subversions[$idNode] == 0 && !($versionZero && $idNode == $nodeGenerator)) {
+                $idVersion = $dataFactory->getVersionId($versions[$idNode], $subversions[$idNode]);
+            } else {
+                $idVersion = $dataFactory->GetLastVersionId();
+            }
+
+            // This var check if a version fof a document 0.0, if node is not the generator
+            // and if is structured. In that case we can not publish that document.
+            // Therefore if a document is not structured(Css or images, etc)
+            // we allow publish it, or if it is the node generator we allow publish it too.
+            $notPublish = ($versionZero && $idNode != $nodeGenerator && $node->nodeType->get('IsStructuredDocument') > 0);
+            // Check if null $idversion or if $version == 0 and subversion== 0
+            if (is_null($idVersion) || $notPublish) {
                 $batch = new Batch();
                 $batch->batchToLog(null, null, null, null, null, __CLASS__, __FUNCTION__, __FILE__,
                     __LINE__, "INFO", 8, _("No version for node") . " $idNode");
@@ -345,7 +367,7 @@ class BatchManager
             //boolean for if any serverframe is created for this nodeframe
             $isServerCreated = false;
 
-            $node = new Node($idNode);
+
             $nodeName = $node->GetNodeName();
 
             // Blocking node
@@ -373,6 +395,10 @@ class BatchManager
                 $node->unBlock();
                 Publication_Log::warning(sprintf(_("A NodeFrame could not be obtained for node %s"), $idNode));
                 continue;
+            }
+
+            if($docsToUpVersion[$idNode]){
+                $this->_upVersion(array($docsToUpVersion[$idNode]), NULL);
             }
 
             $arrayChannels = array();

@@ -31,77 +31,120 @@
     <input class="idNode" type="hidden" value="{$id_node}"/>
     <input class="depUrl" type="hidden" value="{$jsonUrl}"/>
 
-    <ul class="info-node">
-        <div class="col1-2 main-color general-info">
-            <h3>{t} General info {/t}</h3>
-            <li class="box-col2-1">
-                <div class="box-content"><strong>{t}NodeId{/t}</strong> {$info.nodeid}</div>
-            </li>
-            <li class="box-col2-1">
-                <div class="box-content"><strong>{t}Parent node{/t}</strong> {$info.parent}</div>
-            </li>
-            <li class="box-col4-1">
-                <div class="box-content"><strong>{t}NodeType{/t}</strong> {$info.typename}<span
-                            class="nodetype"> ({$info.type}) </span><span
-                            class="path">{$info.path|replace:"/Ximdex/Projects":""}</span></div>
-            </li>
-        </div>
+    <div class="info--node">
+        <h3>{t} General info {/t}</h3>
+        <div class="row">
+            <div class="small-6 columns">
+                <div class="row">
+                    <div class="small-6 columns">
+                        <div class="box-content green"><strong>{t}NodeId{/t}</strong> {$info.nodeid}</div>
 
-        <div class="col1-2 grey-color properties-info">
+                    </div>
+                    <div class="small-6 columns">
+                        <div class="box-content green"><strong>{t}Parent node{/t}</strong> {$info.parent}</div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 columns">
+                        <div class="box-content green"><strong>{t}NodeType{/t}</strong> {$info.typename}<span
+                                    class="nodetype"> ({$info.type}) </span><span
+                                    class="path">{$info.path|replace:"/Ximdex/Projects":""}</span></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="small-6 columns">
+                <div class="row">
+                    <div class="small-12 columns">
+                        <div class="box-content"><strong>{t}Languages{/t}</strong>
+                            {if ($languages)}
+                                {section name=i loop=$languages}
+                                    {$languages[i].Name} ( {$languages[i].Id} )
+                                    {if (!$smarty.section.i.last)},{/if}
+                                    {if (0 == $smarty.section.i.index_next%4  )}<br/>{/if}
+                                {/section}
+
+                            {else}
+                                {t}Not found{/t}
+                            {/if}            </div>
+                    </div>
+                    <div class="small-12 columns">
+                        <div class="box-content"><strong>{t}Channels{/t}</strong>
+                            {section name=i loop=$channels}
+                                {$channels[i].Name} ({$channels[i].IdChannel})
+                                {if (!$smarty.section.i.last)},{/if}
+                                {if (0 == $smarty.section.i.index_next%4  )}<br/>{/if}
+                            {/section}    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {if ($info.date)}
             <h3>{t} Properties info {/t}</h3>
-            <li class="box-col4-1">
-                <div class="box-content"><strong>{t}Languages{/t}</strong>
-                    {if ($languages)}
-                        {section name=i loop=$languages}
-                            {$languages[i].Name} ( {$languages[i].Id} )
-                            {if (!$smarty.section.i.last)},{/if}
-                            {if (0 == $smarty.section.i.index_next%4  )}<br/>{/if}
-                        {/section}
+            <div class="row">
 
-                    {else}
-                        {t}Not found{/t}
-                    {/if}            </div>
-            </li>
-            <li class="box-col4-1">
-                <div class="box-content"><strong>{t}Channels{/t}</strong>
-                    {section name=i loop=$channels}
-                        {$channels[i].Name} ({$channels[i].IdChannel})
-                        {if (!$smarty.section.i.last)},{/if}
-                        {if (0 == $smarty.section.i.index_next%4  )}<br/>{/if}
-                    {/section}    </div>
-            </li>
-        </div>
+                <div class="small-6 columns">
+                    <div class="box-content green"><strong>{t}State{/t}</strong><span
+                                class="state">{if ($info.published)}{t}Published{/t}{else}{t}Not published{/t}{/if}
+                            ({if isset($statusInfo)}{t}{$statusInfo}{/t}{else} Not status {/if})</span></strong>
+                    </div>
+                </div>
 
-        {if isset($info.date)}
-            <div class="col1-1 grey-color workflow-info">
-                <h3>{t} Workflow info {/t}</h3>
-                {if ($info.date)}
-                    <li class="box-col2-1">
-                        <div class="box-content"><strong>{t}State{/t}</strong><span
-                                    class="state">{if ($info.published)}{t}Published{/t}{else}{t}Not published{/t}{/if}</span></strong>
-                        </div>
-                    </li>
-                    <li class="box-col2-1">
-                        <div class="box-content"><strong>{t}Last version{/t}</strong> {$info.version}.{$info.subversion}
-                        </div>
-                    </li>
-                    <li class="box-col6-1">
-                        <div class="box-content"><strong>{t}Last modified{/t}</strong> <span
-                                    class="date">{$info.date|date_format:"%d/%m/%y %H:%S"}</span><span
-                                    class="user">{$info.lastusername} ({$info.lastuser})</span></div>
-                    </li>
-                {/if}
+                <div class="small-6 columns">
+                    <div class="box-content"><strong>{t}Last version{/t}</strong> {$info.version}.{$info.subversion}
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+
+
+                    <div class="box-content"><strong>{t}Last modified{/t}</strong>
+                        <span
+                                class="date">{$info.date}</span>
+                        <br>
+                        <span
+                                class="user">{$info.lastusername} ({$info.lastuser})</span></div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div class="box-content green"><strong>{t}Version manager{/t}</strong>
+                        {foreach from=$valuesManageVersion.versionList key=version item=versionInfo}
+                            {foreach from=$versionInfo item=subVersionList}
+                                <div class="version-info version-info-node-info row-item">
+			<span class="version">
+				<strong>{$version}.{$subVersionList.SubVersion}</strong>
+                  <strong> {if ($version == 0 && $subVersionList.SubVersion == 0)}{t}New{/t} {elseif ($subVersionList.SubVersion == 0)}{t}Published{/t}
+                      {else} {t}Draft{/t} {/if}</strong>
+			</span>
+
+                                    <span class="version-name row-item-col">{$subVersionList.Name}</span>
+                                    <span class="version-date row-item-col">{$subVersionList.Date}</span>
+                                    <span class="version-comment row-item-col">{$subVersionList.Comment}</span>
+
+                                </div>
+                            {/foreach}
+                        {/foreach}
+                    </div>
+                </div>
             </div>
         {/if}
-        <br />
-        <div class="col1-1 grey-color workflow-info">
-            <h3> {t}Dependencies{/t} </h3>
 
-            <div class="graph-container">
-                <div id="graph{$id_node}" class="graph"></div>
+
+        <div class="row">
+            <div class="small-12 columns">
+                <h3> {t}Dependencies{/t} </h3>
+
+                <div class="graph-container">
+                    <div id="graph{$id_node}" class="graph"></div>
+                </div>
+
             </div>
-
-
         </div>
-    </ul>
+
+    </div>
 </div>

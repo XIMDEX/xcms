@@ -337,7 +337,7 @@ function drawGraph() {
         .range([5, 20])
         .clamp(true);
 
-    /*function dragged(d) {
+    function dragged(d) {
         var threshold = graph.draggedThreshold(graph.force.alpha()),
             dx        = d.oldX - d.px,
             dy        = d.oldY - d.py;
@@ -345,10 +345,10 @@ function drawGraph() {
             d.dragged = true;
         }
         return d.dragged;
-    }*/
+    }
 
     graph.drag = d3.behavior.drag()
-       /* .origin(function(d) { return d; })
+        .origin(function(d) { return d; })
         .on('dragstart', function(d) {
             d.oldX    = d.x;
             d.oldY    = d.y;
@@ -368,8 +368,8 @@ function drawGraph() {
             if (!dragged(d)) {
                 selectObject(d, this);
             }
-            d.fixed &= ~6;
-        })*/;
+            //d.fixed &= ~6;
+        });
 
     fn('.graph-container').on('click', function(e) {
         if (!fn(e.target).closest('.node').length) {
@@ -677,10 +677,10 @@ function selectObject(obj, el) {
         nodeRect.left + nodeRect.width  > graphRect.left + graphRect.width ||
         nodeRect.top  + nodeRect.height > graphRect.top  + graphRect.height) {
 
-        /*$graph.animate({
+        $graph.animate({
             scrollLeft : nodeRect.left + nodeRect.width  / 2 - graphRect.width  / 2,
             scrollTop  : nodeRect.top  + nodeRect.height / 2 - graphRect.height / 2
-        }, 500);*/
+        }, 200);
     }
 }
 

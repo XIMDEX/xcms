@@ -55,7 +55,7 @@ class PipeStatus extends PipeStatusOrm
 	 */
 	function loadByIdNode($idNode)
 	{
-		$nodes = $this->find('id', 'IdNode = %s', array($idNode), MONO);
+		$nodes = $this->find('id', 'id = %s', array($idNode), MONO);
 		if (count($nodes) != 1) {
 			$this->messages->add(_('No se ha podido cargar el estado por su id de nodo'), MSG_TYPE_ERROR);
 			XMD_Log::error(sprintf("No se ha podido cargar el estado por su id de nodo, se solicit� el idNode %s", print_r($idNode, true)));

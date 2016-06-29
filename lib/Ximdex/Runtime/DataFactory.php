@@ -41,7 +41,6 @@ use Ximdex\Utils\Sync\SynchroFacade;
 use Ximdex\Logger as XMD_log;
 
 
-
 require_once(XIMDEX_ROOT_PATH . "/inc/utils.php");
 //
 require_once(XIMDEX_ROOT_PATH . '/inc/poolerd/PoolerClient.class.php');
@@ -109,12 +108,12 @@ class DataFactory
     public function __construct($nodeID = null)
     {
         $this->ClearError();
-        $this->nodeID = (int) $nodeID;
-       /*
-        *
-        if (ModulesManager::isEnabled('ximRAM'))
-            $this->conector = new SolrConector();
-         */
+        $this->nodeID = (int)$nodeID;
+        /*
+         *
+         if (ModulesManager::isEnabled('ximRAM'))
+             $this->conector = new SolrConector();
+          */
     }
 
     /**
@@ -407,7 +406,7 @@ class DataFactory
         $nodo = new Node($this->nodeID);
 
 
-        $isPlainFile =   @$nodo->nodeType->get('IsPlainFile');
+        $isPlainFile = @$nodo->nodeType->get('IsPlainFile');
 
         //only encoding the content if the node is not one of this 3.
         if (!$isPlainFile) {
@@ -494,18 +493,18 @@ class DataFactory
             $curSubVersion = $this->GetLastSubVersion($curVersion);
 
             /// Si queremos saltar de version x.y -> x+1.0
-            if ($jumpNewVersion) {
-                $purgeAll = true;
-                $newVersion = $curVersion + 1;
-                $newSubVersion = '0';
-                $updateCaches = true;
-                $oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);
+                if ($jumpNewVersion) {
+                    $purgeAll = true;
+                    $newVersion = $curVersion + 1;
+                    $newSubVersion = '0';
+                    $updateCaches = true;
+                    $oldIdVersion = $this->getVersionId($curVersion, $curSubVersion);
 
-            } else {
-                /// Si queremos saltar solo de subversion x.y -> x.y+1
-                $newVersion = $curVersion;
-                $newSubVersion = $curSubVersion + 1;
-            }
+                } else {
+                    /// Si queremos saltar solo de subversion x.y -> x.y+1
+                    $newVersion = $curVersion;
+                    $newSubVersion = $curSubVersion + 1;
+                }
 
             if (is_null($content)) {
                 $newContent = $this->GetContent($curVersion, $curSubVersion);

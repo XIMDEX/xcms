@@ -221,7 +221,7 @@ class NodeFrame extends NodeFrames_ORM {
 
 		$result = $this->find('IdNodeFrame', $condition, $params, MONO);
 
-		if (is_null($result)) {
+		if (empty($result)){
 			return false;
 		}
 
@@ -276,7 +276,7 @@ class NodeFrame extends NodeFrames_ORM {
 	*	@return boolean
 	*/
 
-	function isRenamed($nodeId) {
+	function isTainted($nodeId) {
 		$condition = 'NodeId = %s ORDER BY IdNodeFrame DESC LIMIT 1';
 		$params = array('NodeId' => $nodeId);
 		$result = parent::find('IdNodeFrame, Name', $condition, $params, MULTI);

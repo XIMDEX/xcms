@@ -277,6 +277,7 @@ class Action_workflow_forward extends ActionAbstract {
                 'stateid' => $idState,
 			'globalForcedEnabled' => FORCE_PUBLICATION
             );
+                 $values = array_merge($values, $this->buildExtraValues($idNode));
             $this->render($values, 'index.tpl', 'default-3.0.tpl');
         } else { //if the next state is not the final, we show a success message
             $node->setState($nextState);
@@ -547,7 +548,7 @@ class Action_workflow_forward extends ActionAbstract {
 
 	$structure = $this->request->getParam('no_structure') == '1' ? false : true;
         $deepLevel = $this->request->getParam('all_levels') == 1 ? -1 : $this->request->getParam('deeplevel');
-	$force = $this->request->getParam('no_force') == '1' ? false : true;
+	$force = $this->request->getParam('no_force') == '0' ? false : true;
 
         $sendNotifications = $this->request->getParam('sendNotifications');
         $notificableUsers = $this->request->getParam('users');

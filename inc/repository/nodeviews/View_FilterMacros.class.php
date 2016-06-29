@@ -465,7 +465,12 @@ class View_FilterMacros extends Abstract_View implements Interface_View
             $idTargetChannel = (count($res) == 3 && isset($res["channel"])) ? $res["channel"] : NULL;
         }
         $targetNode = new Node($idNode);
+        $nodeFrameManager = new NodeFrameManager();
+        $nodeFrame = $nodeFrameManager->getNodeFramesInTime($idNode, NULL, time());
 
+        if(!isset($nodeFrame)){
+            return '';
+        }
         if (isset($res["pathMethod"])) {
             $absolute = isset($res["pathMethod"]["absolute"]) && $res["pathMethod"]["absolute"];
             $relative = isset($res["pathMethod"]["relative"]) && $res["pathMethod"]["relative"];

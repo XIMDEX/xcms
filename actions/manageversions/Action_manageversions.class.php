@@ -38,6 +38,11 @@ class Action_manageversions extends ActionAbstract
     function index()
     {
         $idNode = $this->request->getParam('nodeid');
+        $values=$this->values($idNode);
+        $this->render($values, null, 'default-3.0.tpl');
+    }
+
+    function values($idNode){
         $node = new Node($idNode);
         if (!$node->get('IdNode') > 0) {
             $this->messages->add(_('Node could not be found'), MSG_TYPE_ERROR);
@@ -99,7 +104,7 @@ class Action_manageversions extends ActionAbstract
             'actionid' => $this->request->getParam('actionid'),
             'name' => $node->GetNodeName()
         );
-        $this->render($values, null, 'default-3.0.tpl');
+        return $values;
     }
 
     function recover()

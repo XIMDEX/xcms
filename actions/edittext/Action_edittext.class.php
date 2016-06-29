@@ -31,6 +31,7 @@ use Ximdex\Models\PipeCacheTemplates;
 use Ximdex\Models\StructuredDocument;
 use Ximdex\MVC\ActionAbstract;
 use Ximdex\Runtime\App;
+use Ximdex\Runtime\Constants;
 use Ximdex\Runtime\DataFactory;
 use Ximdex\Utils\Strings;
 use Ximdex\Utils\Sync\SyncManager;
@@ -116,6 +117,17 @@ class Action_edittext extends ActionAbstract
         $this->addJs('/extensions/vendors/codemirror/Codemirror/mode/meta.js');
         $this->addJs('/actions/edittext/resources/js/init.js');
 
+        //if is not node state equals to edition, send a message.
+        $allowed=$node->GetState();
+
+        if ($nodeType->get('IsStructuredDocument') > 0 && $allowed != Constants::EDITION_STATUS_ID) {
+            $this->messages->add(_('You can not edit the document.'), MSG_TYPE_WARNING);
+            $values = array(
+                'messages' => $this->messages->messages
+            );
+            $this->renderMessages();
+            return false;
+        }
 
         $values = array('id_node' => $idNode,
             'isXimNewsLanguage' => $isXimNewsLanguage,

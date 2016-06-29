@@ -82,25 +82,23 @@
 
 							<input onclick="show_div_levels();" type="checkbox" name="all_levels" id="all_levels_{$id_node}" value="1" checked />
 							<label for="all_levels_{$id_node}">{t}Publish all linked elements.{/t}</label>
-							<div id="div_deeplevel">
-								<label for="deeplevel_{$id_node}">{t}Publish until a certain depth level{/t}:</label>
+							<div id="div_deeplevel" class="disabled">
+								<label for="deeplevel_{$id_node}" >{t}Publish until a certain depth level{/t}:</label>
 								<input id="deeplevel_{$id_node}" min="0" max="9" type="number" name="deeplevel" value="0" class="disabled" disabled="true" />
 							</div>
 
 						{/if}
 						{if $structural_publication eq '1'}
+							<input type="checkbox" name="no_structure" id="no_structure_{$id_node}" value="1" />
+							<label for="no_structure_{$id_node}">{t}Ignore structure: css, images, scripts(0 deep level ignores the structure).{/t}</label>
 
 							<hr/>
-							<input type="checkbox" name="no_structure" id="no_structure_{$id_node}" value="1" />
-							<label for="no_structure_{$id_node}">{t}Ignore structure: css, images, scripts.{/t}</label>
+							<input type="checkbox" name="latest" id="last_edited_{$id_node}" value="1"  />
+							<label for="last_edited_{$id_node}">{t}Use drafts(minor) versions, instead of major(1.0, 2.0, 3.0, etc).{/t}</label>
 
 							<hr/>
 							<input type="checkbox" name="no_force" id="no_force{$id_node}" value="1" />
-							<label for="no_force{$id_node}">{t}Ignore no modified documents.{/t}</label>
-
-							<hr/>
-							<input checked type="checkbox" name="latest" id="last_edited_{$id_node}" value="1"  />
-							<label for="last_edited_{$id_node}">{t}Publish the latest versions.{/t}</label>
+							<label for="no_force{$id_node}">{t}Force republish.{/t}</label>
 
 
 						{/if}

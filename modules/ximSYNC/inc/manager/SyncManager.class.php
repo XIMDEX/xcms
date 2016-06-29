@@ -221,6 +221,7 @@ class SyncManager
     {
 
         $deepLevel = $params["deeplevel"];
+        
         if (!isset($this->docsToPublishByLevel["$nodeId"])) {
             return false;
         }
@@ -241,6 +242,15 @@ class SyncManager
             return false;
         } else {
             $idDoc = $pending[0];
+            while($idDoc == $nodeId){
+                $res = array_shift($pending);
+                if (!empty($pending)) {
+                    $idDoc = $pending[0];
+                }else{
+                    return false;
+                }
+
+            }
             $this->docsToPublishByLevel["$idDoc"] = $currentDeepLevel;
             $this->pendingDocsToPublish = array_merge([$idDoc, $nodeId], $this->pendingDocsToPublish);
             return true;

@@ -2567,7 +2567,7 @@ class Node extends NodesOrm
             $ret['subversion'] = $version["SubVersion"];
             $ret['published'] = $version["Published"];
             $ret['lastuser'] = $version["IdUser"];
-            $ret['date'] = $version["Date"];
+            $ret['date'] =  date('d/m/Y H:i',$version["Date"]);
             $ret['lastusername'] = $version["UserName"];
         }
 
@@ -3231,7 +3231,7 @@ class Node extends NodesOrm
         $dbObj = new Db();
         $dbObj->Query($sql);
         if ($dbObj->numRows > 0) {
-            if ($dbObj->GetValue("Version") == 0)
+            if ($dbObj->GetValue("Version") == 0 && $dbObj->GetValue("SubVersion") == 0)
                 $state = 0;
             elseif ($dbObj->GetValue("Version") != 0 && $dbObj->GetValue("SubVersion") == 0)
                 $state = 1;
