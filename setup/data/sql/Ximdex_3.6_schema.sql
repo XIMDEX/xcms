@@ -164,7 +164,7 @@ CREATE TABLE `Messages` (
   `Subject` varchar(255) DEFAULT NULL,
   `Content` blob,
   `IsRead` int(1) unsigned NOT NULL DEFAULT '0',
-  `FechaHora` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `FechaHora` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`IdMessage`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Messages sent by Ximdex CMS. Deprecated?';
 
