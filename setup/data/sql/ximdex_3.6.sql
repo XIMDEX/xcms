@@ -6663,7 +6663,7 @@ CREATE TABLE `StructuredDocuments` (
   `Name` varchar(255) default NULL,
   `IdCreator` int(12) unsigned default '0',
   `CreationDate` timestamp NOT NULL default CURRENT_TIMESTAMP ,
-  `UpdateDate` timestamp NOT NULL default CURRENT_TIMESTAMP ,
+  `UpdateDate` timestamp NULL ,
   `IdLanguage` int(12) default '0',
   `IdTemplate` int(12) unsigned NOT NULL default '0',
   `TargetLink` int(12) unsigned default NULL,
