@@ -639,7 +639,9 @@ span.error {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  padding: .3em .5em; }
+  padding: .3em .5em;
+  font-size: 16px;
+}
   span.error::before {
     content: "";
     border: 0.5em solid rgba(255, 255, 255, 0);

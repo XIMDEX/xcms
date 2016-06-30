@@ -27,8 +27,8 @@
     <input type="hidden" name="id_node" value="{$id_node}"/>
     <div class="action_header">
         <h2>{t}Create link{/t} {$name}</h2>
-
     </div>
+    
     <div class="action_content">
         <p class="input-select icon icon-positioned link">
             <input type="text" name="name" id="name"
