@@ -1,15 +1,21 @@
 # !/bin/bash
-# data/tmp/templates_c/
-if [ -d "data/tmp/templates_c/" ]; then
-   sudo rm -r data/tmp/templates_c/*
+
+# folders
+templates="data/tmp/templates_c/"
+es="data/tmp/js/es_ES/"
+en="data/tmp/js/en_US/"
+
+# templates
+if [ -d $templates ] && [ "$(ls $templates)" ]; then
+   sudo rm -r $templates*
 fi
 
-# data/tmp/js/es_ES/
-if [ -d "data/tmp/js/es_ES/" ]; then
-   sudo rm -r data/tmp/js/es_ES/*
+# es
+if [ -d $es ] && [ "$(ls $es)" ]; then
+   sudo rm -r $es*
 fi
 
-# data/tmp/js/en_EN/
-if [ -d "data/tmp/js/en_EN/" ]; then
-   sudo rm -r data/tmp/js/en_EN/*
+# en
+if [ -d $en ] && [ "$(ls $en)" ]; then
+   sudo rm -r $en*
 fi
