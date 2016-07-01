@@ -213,7 +213,7 @@ X.FormsManager = Object.xo_create({
         this.options.iframeId = 'form_sender_' + formId;
 
         // Validate the form
-        if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') === null) {
+        if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {
             $(this.options.form).validate({
                 rules: this._getConstraints(this.options.form),
                 messages: this._getMessages(this.options.form),
@@ -233,7 +233,7 @@ X.FormsManager = Object.xo_create({
         var submitButton = options.button || $('.validate', this.options.form);
         var message = options.message || $('~ .submit_message', submitButton).attr('value');
         var dialog = this._getDialog(this.options.form, message);
-        if (message === '' || message === undefined) {
+        if (message == '' || message == undefined) {
             options.confirm = false;
         }
 
@@ -357,7 +357,7 @@ X.FormsManager = Object.xo_create({
 
         var iframe = $('iframe#' + this.options.iframeId);
 
-        if (iframe.length === 0) {
+        if (iframe.length == 0) {
 
             iframe = $('<iframe></iframe>')
                 .attr({
@@ -376,7 +376,7 @@ X.FormsManager = Object.xo_create({
 
         var dialog = $(form).next('div.form_send_dialog');
 
-        if (dialog.length === 0) {
+        if (dialog.length == 0) {
 
             dialog = $('<div class="form_send_dialog"><div/>').html(message);
             $(form).after(dialog);
@@ -505,7 +505,7 @@ X.FormsManager = Object.xo_create({
      */
     _reloadFrame: function(event, iframe) {
 
-        if (null !== iframe.target) {
+        if (null != iframe.target) {
             iframe = iframe.target;
         }
 
@@ -518,7 +518,7 @@ X.FormsManager = Object.xo_create({
             }
         }
 
-        if (!this.options.actionContainer || !Object.isString(content) || content.length === 0) {
+        if (!this.options.actionContainer || !Object.isString(content) || content.length == 0) {
             return false;
         }
 
@@ -586,4 +586,5 @@ X.FormsManager = Object.xo_create({
             })(messages[i], $form);
         }
     }
+
 });
