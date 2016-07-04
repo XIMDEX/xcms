@@ -259,6 +259,8 @@ CREATE TABLE `Nodes` (
   `Description` varchar(255) DEFAULT NULL,
   `SharedWorkflow` int(12) unsigned DEFAULT NULL,
   `Path` text,
+  `sortorder` int(11) DEFAULT '0',
+  `deleted` int(11) DEFAULT '0',
   PRIMARY KEY (`IdNode`),
   UNIQUE KEY `UniqueName` (`Name`,`IdParent`),
   KEY `IdNode_2` (`IdNode`,`IdParent`)

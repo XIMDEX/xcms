@@ -27,10 +27,13 @@
 
 namespace Ximdex\Modules;
 
+use Ximdex\API\Router;
 use Ximdex\Runtime\Cli\Shell,
     Ximdex\Logger,
     Ximdex\Runtime\App;
 use Ximdex\Runtime\Db;
+use Ximdex\Setup\Step\Modules;
+use Ximdex\Tasks\Worker;
 
 
 /**
@@ -207,7 +210,7 @@ class Module  {
             $sql = file_get_contents($sql_file);
             $result = $db->ExecuteScript($sql);
         } else {
-            $this->messages->add(sprintf(_("%s not exists"), $file_name), MSG_TYPE_WARNING);
+            $this->messages->add(sprintf(_("%s not exists"), $sql_file), MSG_TYPE_WARNING);
             $result = false;
         }
         return $result;
@@ -359,5 +362,18 @@ class Module  {
     function getInstallParams() {
         return array();
     }
+
+
+    public function addTasks(Worker &$worker) {
+
+    }
+    public function addApiRoutes(Router &$router) {
+
+    }
+
+
+
+
+
 
 }

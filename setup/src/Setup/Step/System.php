@@ -28,7 +28,7 @@ class System extends Base
         parent::checkErrors();
 
         // file_permisions
-        $this->checkPHPVersion( '5.6') ;
+        $this->checkPHPVersion( '5.5') ;
         $this->checkRequiredPHPExtensions();
         $this->CheckPermissions() ;
         $this->checkRequiredPackages();
