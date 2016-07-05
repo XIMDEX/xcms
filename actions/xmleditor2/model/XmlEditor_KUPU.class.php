@@ -710,10 +710,15 @@ class XmlEditor_KUPU extends XmlEditor_Abstract
         if (is_null($docxapId)) {
             XMD_Log::error(_('docxap cannot be found.'));
         }
-
+        $project=$this->node->getProject();
+        $nodeProject = new Node($project);
         $xslParser = new ParsingXsl($docxapId);
         $templatesInclude = $xslParser->getIncludedElements('templates_include');
-        $templatesIncludePath = str_replace(\App::getValue('UrlRoot'), \App::getValue('AppRoot'), $templatesInclude[0]);
+        $templatesInclude[0] = $this->rel_path_docxap.$templatesInclude[0];
+
+        $templatesIncludePath =  $templatesInclude[0];
+
+
         $xslParser = new ParsingXsl(NULL, $templatesIncludePath);
         $templatesElements = $xslParser->getIncludedElements(NULL, true, true);
 

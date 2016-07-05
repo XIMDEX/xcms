@@ -37,6 +37,9 @@ abstract class XmlEditor_Abstract
 {
     protected $_editorName = '';
     protected $_base_url = null;
+    protected $rel_path_docxap = null;
+
+
 
     abstract public function getEditorName();
 
@@ -101,8 +104,11 @@ abstract class XmlEditor_Abstract
         $docxap = $this->getXslPath($idnode, false, $view);
 
         if ($docxap !== null) {
-            $content = FsUtils::file_get_contents(str_replace(\App::getValue( 'UrlRoot'), \App::getValue( 'AppRoot'),  $docxap));
-            $content = str_replace('./templates_include.xsl', \App::getValue( 'UrlRoot') . '/actions/xmleditor2/views/rngeditor/templates/templates_include.xsl', $content);
+            $pathDocxap=str_replace(\App::getValue( 'UrlRoot'), \App::getValue( 'AppRoot'),$docxap);
+            $pos = strrpos($pathDocxap, '/');
+            $pathToFileRel = substr($pathDocxap,0, $pos);
+            $this->rel_path_docxap=$pathToFileRel."/";
+            $content = FsUtils::file_get_contents($pathDocxap);
             if ($includesInServer) {
                 $this->replaceIncludes($content);
             }
@@ -348,9 +354,9 @@ abstract class XmlEditor_Abstract
         $templateIncludeTag = $arrayTags->item(0);
         //this href is a complete url path
         $templateIncludePath = $templateIncludeTag->getAttribute("href");
-        $folderPath = substr($templateIncludePath, 0, strrpos($templateIncludePath, "/")+1);
+        $folderPath = $templateIncludePath;
         $xslTemplateInclude = new DOMDocument();
-        $xslTemplateInclude->load($templateIncludePath);
+        $xslTemplateInclude->load($this->rel_path_docxap .$folderPath);
         $arrayFinalTags = $xslTemplateInclude->getElementsByTagName("include");
 
         $auxContent="";
@@ -359,7 +365,7 @@ abstract class XmlEditor_Abstract
 
             $auxPath = $domElement->getAttribute("href");
             $auxXsl = new DOMDocument();
-            $auxXsl->load($folderPath.$auxPath);
+            $auxXsl->load($this->rel_path_docxap .$auxPath);
             $temporalContent = $auxXsl->saveXML();
             $temporalContent = preg_replace("/\<\/*xsl:stylesheet.*\>/", "", $temporalContent);
             $temporalContent = preg_replace("/\<\?xml version.*\>/", "", $temporalContent);

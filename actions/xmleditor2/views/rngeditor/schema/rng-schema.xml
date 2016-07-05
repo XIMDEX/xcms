@@ -1,4 +1,4 @@
-ki<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:xim="http://ximdex.com/schema/1.0" ns="" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
     <start>
         <element name="docxap">
