@@ -32,7 +32,7 @@
 		</fieldset>
 	</div>
 	<div class="action_content">
-		<div class="input icon group">
+		<div class="input group">
 			<input type="text" name="name" id="groupname" class="cajag validable not_empty" placeholder="{t}Group's name{/t}">
 		</div>
 	</div>

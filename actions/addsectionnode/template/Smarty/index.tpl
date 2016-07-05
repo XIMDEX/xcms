@@ -30,8 +30,8 @@
 
     <div class="action_content section-properties">
         <div class="folder-name folder-normal icon input-select">
-            <input type="text" name="name" maxlength="100" ng-required="true" class="cajaxg full-size js_val_unique_name js_val_alphanumeric" placeholder="{t}Name of your section{/t}" data-idnode="{( isset($nodeID) ) ? $nodeID : '' }" />
-            <select ng-model="sectionTypeSelected" ng-options="stype.label for stype in sectionTypeOptions track by stype.value" ng-change="changeSubfolders()" name="nodetype" class="caja validable not_empty folder-type"></select>
+            <input type="text" name="name" maxlength="100" ng-required="true" class="cajaxg full-size js_val_unique_name js_val_alphanumeric validable not_empty" placeholder="{t}Name of your section{/t}" data-idnode="{( isset($nodeID) ) ? $nodeID : '' }" />
+            <select ng-model="sectionTypeSelected" ng-options="stype.label for stype in sectionTypeOptions track by stype.value" ng-change="changeSubfolders()" name="nodetype" class="caja folder-type"></select>
         </div>
 
         <div class="languages-available col1-3 right">
@@ -56,5 +56,5 @@
     </div>
     <fieldset class="buttons-form positioned_btn">
         {button label="Create section" class='validate btn main_action' }{*message="Would you like to add this section?"*}
-    </fieldset>	
+    </fieldset>
 </form>

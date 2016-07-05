@@ -29,55 +29,55 @@
 
 X.FormsManager = Object.xo_create({
 
-	buttons: null,
+    buttons: null,
 
-	_init: function(options) {
+    _init: function(options) {
 
-		this.options = Object.extend({
-			actionView: null,
+        this.options = Object.extend({
+            actionView: null,
             tabId: '',
-			iframeId: '',
-			actionContainer: null,
-			form: null,
-			searches: [
-				'(not_empty)', '(is_url)', '(is_email)', '(js_val_min)__([^\d]+)',
-				'(field_equals)__([^\\s]+)', '(check_group)__([^\\s]+)', '(js_val_alphanumeric)',
-				'(js_val_unique_name)', '(js_val_unique_url)'
-			]
-		}, options);
-        if(this.options.form){
+            iframeId: '',
+            actionContainer: null,
+            form: null,
+            searches: [
+                '(not_empty)', '(is_url)', '(is_email)', '(js_val_min)__([^\d]+)',
+                '(field_equals)__([^\\s]+)', '(check_group)__([^\\s]+)', '(js_val_alphanumeric)',
+                '(js_val_unique_name)', '(js_val_unique_url)'
+            ]
+        }, options);
+        if (this.options.form) {
             // Don't want the jQuery object, want the DOMElement
-            $(this.options.form).get(0)['getFormMgr'] = function() {
+            $(this.options.form).get(0).getFormMgr = function() {
                 return this;
             }.bind(this);
         }
-		this._checkInputFields();
-		this._registerButtons();
-	},
+        this._checkInputFields();
+        this._registerButtons();
+    },
 
-	/**
-	 * Checks and corrects inputs behaviours.
-	 */
-	_checkInputFields: function() {
+    /**
+     * Checks and corrects inputs behaviours.
+     */
+    _checkInputFields: function() {
 
-		// var $fields = $('input[type=text]', this.options.form);
+        // var $fields = $('input[type=text]', this.options.form);
 
-		// // // Don't send a form when enter key pressed
-		// // $fields.keydown(function(event) {
-		// // 	if (event.keyCode == 13) {
-		// // 		return false;
-		// // 	}
-		// // });
-	},
+        // // // Don't send a form when enter key pressed
+        // // $fields.keydown(function(event) {
+        // // 	if (event.keyCode == 13) {
+        // // 		return false;
+        // // 	}
+        // // });
+    },
 
-	/**
-	 * Register click events on all form buttons with the class "validate"
-	 */
-	_registerButtons: function() {
+    /**
+     * Register click events on all form buttons with the class "validate"
+     */
+    _registerButtons: function() {
 
-		this.buttons = [];
+        this.buttons = [];
 
-        if(this.options.form){
+        if (this.options.form) {
             // Register buttons that will send the form
             $('.validate', this.options.form).each(function(index, button) {
                 this.registerButton(button);
@@ -95,217 +95,224 @@ X.FormsManager = Object.xo_create({
         // Closes a tab
         $('.close-button', this.options.actionContainer).each(function(index, button) {
             $(button).click(function() {
-                var xTabs =angular.element(document).injector().get('xTabs');
+                var xTabs = angular.element(document).injector().get('xTabs');
                 xTabs.removeTabById(this.options.tabId);
-				$('#angular-content').isolateScope().$digest();
+                $('#angular-content').isolateScope().$digest();
                 return false;
             }.bind(this));
         }.bind(this));
-	},
+    },
 
-	/**
-	 * Extends a button with methods for retrieve the form and the FormManager object.
-	 * Creates a collection that stores "beforeSubmit" callbacks.
-	 * If one callback return TRUE the form submission will be aborted.
-	 *
-	 * button: the DOMElement that will act as a submit button when clicked.
-	 * confirm: When TRUE a confirmation message will be shown.
-	 * message: The confirmation message. When NULL, the value attribute of the button will be used.
-	 * file: ???
-	 */
-	registerButton: function(button, options) {
+    /**
+     * Extends a button with methods for retrieve the form and the FormManager object.
+     * Creates a collection that stores "beforeSubmit" callbacks.
+     * If one callback return TRUE the form submission will be aborted.
+     *
+     * button: the DOMElement that will act as a submit button when clicked.
+     * confirm: When TRUE a confirmation message will be shown.
+     * message: The confirmation message. When NULL, the value attribute of the button will be used.
+     * file: ???
+     */
+    registerButton: function(button, options) {
 
-		button = $(button).get(0);
+        button = $(button).get(0);
 
-		options = $.extend({
-			confirm: true,
-			message: null,
-			file: 0,
-			jsonResponse: true
-		}, options);
+        options = $.extend({
+            confirm: true,
+            message: null,
+            file: 0,
+            jsonResponse: true
+        }, options);
 
-		button = $.extend(button, {
-			getForm: function() {
-				return this.options.form;
-			}.bind(this),
-			getFormMgr: function() {
-				return this;
-			}.bind(this),
-			beforeSubmit: new X.Collection({unique: true})
-		});
+        button = $.extend(button, {
+            getForm: function() {
+                return this.options.form;
+            }.bind(this),
+            getFormMgr: function() {
+                return this;
+            }.bind(this),
+            beforeSubmit: new X.Collection({
+                unique: true
+            })
+        });
 
-		$(button).click(trySubmit);
-		$(this.options.form).keydown(function(event){
-			if (event.target.nodeName !== 'TEXTAREA') {
-				if (event.keyCode == 13) {
-					return trySubmit(event);
-					// return false;
-				}
-			}
-		});
-		this.buttons.push(button);
+        $(button).click(trySubmit);
+        $(this.options.form).keydown(function(event) {
+            if (event.target.nodeName !== 'TEXTAREA') {
+                if (event.keyCode == 13) {
+                    return trySubmit(event);
+                    // return false;
+                }
+            }
+        });
+        this.buttons.push(button);
 
-		function trySubmit(event) {
-			if (!this.blockSubmit) {
-				// Call the callbacks, if one of them returns TRUE the form will not be submitted
-				var submit = true;
-				var i = 0, l = button.beforeSubmit.size();
-				while (submit && i<l) {
-					var cb = button.beforeSubmit.get(i);
-					if (Object.isFunction(cb)) {
-						var abort = cb(event, button);
-						submit = abort === true ? false : true;
-					}
-					i++;
-				}
+        function trySubmit(event) {
+            if (!this.blockSubmit) {
+                // Call the callbacks, if one of them returns TRUE the form will not be submitted
+                var submit = true;
+                var i = 0,
+                    l = button.beforeSubmit.size();
+                while (submit && i < l) {
+                    var cb = button.beforeSubmit.get(i);
+                    if (Object.isFunction(cb)) {
+                        var abort = cb(event, button);
+                        submit = abort === true ? false : true;
+                    }
+                    i++;
+                }
 
-				if (!submit) return false;
+                if (!submit) return false;
 
-				button.getFormMgr().sendForm($.extend({
-					button: button
-				}, options));
+                button.getFormMgr().sendForm($.extend({
+                    button: button
+                }, options));
 
-				return false;
-			}
-		}
+                return false;
+            }
+        }
 
-		return button;
-	},
+        return button;
+    },
 
-	getButtons: function() {
-		return this.buttons;
-	},
+    getButtons: function() {
+        return this.buttons;
+    },
 
-	getActionContainer: function() {
-		return this.options.actionContainer;
-	},
+    getActionContainer: function() {
+        return this.options.actionContainer;
+    },
 
-	setActionContainer: function(container) {
-		this.options.actionContainer = container;
-		return this;
-	},
+    setActionContainer: function(container) {
+        this.options.actionContainer = container;
+        return this;
+    },
 
-	/**
-	 * button: the DOMElement that will act as a submit button when clicked.
-	 * confirm: When TRUE a confirmation message will be shown.
-	 * message: The confirmation message. When NULL the value attribute of the button will be used.
-	 * file: ???
-	 */
-	sendForm: function(options) {
+    /**
+     * button: the DOMElement that will act as a submit button when clicked.
+     * confirm: When TRUE a confirmation message will be shown.
+     * message: The confirmation message. When NULL the value attribute of the button will be used.
+     * file: ???
+     */
+    sendForm: function(options) {
 
-		options = $.extend({
-			button: null,
-			confirm: true,
-			message: null,
-			file: 0,
-			jsonResponse: false
-		}, options);
+        options = $.extend({
+            button: null,
+            confirm: true,
+            message: null,
+            file: 0,
+            jsonResponse: false
+        }, options);
 
-		// Ensure the form and iframe IDs are unique
-		var formId = $(this.options.form).attr('id');
-		if (Object.isEmpty(formId)) {
-			formId = 'form_' + X.getUID();
-			$(this.options.form).attr('id', formId);
-		}
-		this.options.iframeId = 'form_sender_' + formId;
+        // Ensure the form and iframe IDs are unique
+        var formId = $(this.options.form).attr('id');
+        if (Object.isEmpty(formId)) {
+            formId = 'form_' + X.getUID();
+            $(this.options.form).attr('id', formId);
+        }
+        this.options.iframeId = 'form_sender_' + formId;
 
-		// Validate the form
-		if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {
-			$(this.options.form).validate(
-				{
-					rules: this._getConstraints(this.options.form),
-					messages: this._getMessages(this.options.form),
-					errorElement: "span",
-					errorPlacement: function(error, element) {
+        // Validate the form
+        if (!Object.isEmpty($(this.options.form).data('validator')) || $(this.options.form).data('validator') == null) {
+            $(this.options.form).validate({
+                rules: this._getConstraints(this.options.form),
+                messages: this._getMessages(this.options.form),
+                errorElement: "span",
+                errorPlacement: function(error, element) {
 
-						$span = $("<span/>").addClass("error_block");
-						if (element[0].tagName.toLowerCase()=="select" && element.parent().hasClass("input-select"))
-							$span.addClass("select_block");
-						element.wrap($span);
-						element.before(error);
-					}
-				});
-		}
+                    $span = $("<span/>").addClass("error_block");
+                    if (element[0].tagName.toLowerCase() == "select" && element.parent().hasClass("input-select"))
+                        $span.addClass("select_block");
+                    element.wrap($span);
+                    element.before(error);
+                }
+            });
+        }
 
-		// Submit button
-		var submitButton = options.button || $('.validate', this.options.form);
-		var message = options.message || $('~ .submit_message', submitButton).attr('value');
-		var dialog = this._getDialog(this.options.form, message);
-		if (message == '' || message == undefined) {
-			options.confirm = false;
-		}
+        // Submit button
+        var submitButton = options.button || $('.validate', this.options.form);
+        var message = options.message || $('~ .submit_message', submitButton).attr('value');
+        var dialog = this._getDialog(this.options.form, message);
+        if (message == '' || message == undefined) {
+            options.confirm = false;
+        }
 
-		// Send the form
-		if (!options.confirm) {
-			this._doSubmit(this.options.form, options.files, submitButton, options.jsonResponse);
-		} else {
-			_this = this;
-			var dialogButtons = {};
-			dialogButtons[_('Cancel')] = function() {
-				_this._cancelSubmit(_this.options.form);
-				$(dialog).dialog('destroy');
-				$(dialog).remove();
-			};
-			dialogButtons[_('Accept')] = function() {
-				_this._doSubmit(_this.options.form, options.files, submitButton, options.jsonResponse);
-				$(dialog).dialog('destroy');
-				$(dialog).remove();
-			};
-			$(dialog).dialog({
-				title: 'Ximdex Notifications',
-				modal: true,
-				buttons: dialogButtons
-			});
-		}
+        // Send the form
+        if (!options.confirm) {
+            this._doSubmit(this.options.form, options.files, submitButton, options.jsonResponse);
+        } else {
+            _this = this;
+            var dialogButtons = {};
+            dialogButtons[_('Cancel')] = function() {
+                _this._cancelSubmit(_this.options.form);
+                $(dialog).dialog('destroy');
+                $(dialog).remove();
+            };
+            dialogButtons[_('Accept')] = function() {
+                _this._doSubmit(_this.options.form, options.files, submitButton, options.jsonResponse);
+                $(dialog).dialog('destroy');
+                $(dialog).remove();
+            };
+            $(dialog).dialog({
+                title: 'Ximdex Notifications',
+                modal: true,
+                buttons: dialogButtons
+            });
+        }
 
-		return false;
-	},
+        return false;
+    },
 
-	_doSubmit: function(form, files, button, jsonResponse) {
+    _doSubmit: function(form, files, button, jsonResponse) {
 
-		// Obtains the iframe
-		var iframe = this._getIFrame(form);
-		$form = $(form);
-		// Form attributes
-		$form.addClass('ready_to_send');
+        // Obtains the iframe
+        var iframe = this._getIFrame(form);
+        $form = $(form);
+        // Form attributes
+        $form.addClass('ready_to_send');
 
-		if (!isNaN(files) && files > 0) {
-			$form.attr('action', $form.attr('action') + '&files=' + files);
-		}
+        if (!isNaN(files) && files > 0) {
+            $form.attr('action', $form.attr('action') + '&files=' + files);
+        }
 
-		// jQuery Bug: $(elem).attr('target') returns a node with name=target o id=target, not the target attribute of $(elem)
-		$form.attr('target', this.options.iframeId);
-		$(iframe).load(this._reloadFrame.bind(this, iframe));
+        // jQuery Bug: $(elem).attr('target') returns a node with name=target o id=target, not the target attribute of $(elem)
+        $form.attr('target', this.options.iframeId);
+        $(iframe).load(this._reloadFrame.bind(this, iframe));
 
-		/*if (Object.isObject(this.options.actionView)) {
-			this.options.actionView.history.push($form.attr('action'));
-		}*/
+        /*if (Object.isObject(this.options.actionView)) {
+        	this.options.actionView.history.push($form.attr('action'));
+        }*/
 
-		if (jsonResponse && X.ActionTypes.reload.indexOf(this.options.actionView.action.command) == -1) {
-			if ($(form).valid()) {
-				button = button[0] || button;
-				if (button) var loader = Ladda.create(button).start();//Start button loading animation
-				//this.blockSubmit = true;
-				var _this = this;
+        var loader = null;
+
+        if (jsonResponse && X.ActionTypes.reload.indexOf(this.options.actionView.action.command) == -1) {
+            if ($(form).valid()) {
+                button = button[0] || button;
+                if (button) loader = Ladda.create(button).start(); //Start button loading animation
+                //this.blockSubmit = true;
+                var _this = this;
 
                 angular.element(document).injector().get('xTabs').submitForm({
                     reload: false,
                     tabId: this.options.tabId,
                     url: $form.attr('action'),
                     data: $form.serialize(),
-                    callback: function (args) {
+                    callback: function(args) {
 
-						if (loader) loader.stop();
-						if (args.error) {
+                        if (loader) loader.stop();
+                        if (args.error) {
                             // Error 500
-							_this.actionNotify([{message: _('Internal server error'), type: 0}], $form, true);
-						} else {
-							// if (SubmitError)
-							_this.actionDoneCallback(args.data, $form, args.tab);
-						}
-					}
+                            _this.actionNotify([{
+                                message: _('Internal server error'),
+                                type: 0
+                            }], $form, true);
+                        } else {
+                            // if (SubmitError)
+                            _this.actionDoneCallback(args.data, $form, args.tab);
+                        }
+                    }
                 });
-				/*$.ajax({
+                /*$.ajax({
 			        url: $form.attr('action'),
 			        type: 'post',
 			        dataType: 'json',
@@ -324,207 +331,207 @@ X.FormsManager = Object.xo_create({
 			        	this.blockSubmit = false;
 			        }
 			    });*/
-			}
-		} else {
-			button = button[0] || button;
-			if (button) var loader = Ladda.create(button).start();//Start button loading animation
-			//form.submit();
+            }
+        } else {
+            button = button[0] || button;
+            if (button) loader = Ladda.create(button).start(); //Start button loading animation
+            //form.submit();
             angular.element(document).injector().get('xTabs').submitForm({
                 reload: true,
                 tabId: this.options.tabId,
                 url: $form.attr('action'),
                 data: $form.serialize(),
-                callback: function () {
+                callback: function() {
                     if (loader) loader.stop();
                 }
             });
-		}
-	},
+        }
+    },
 
-	_cancelSubmit: function(form) {
-		var iframe = this._getIFrame(form);
-		$(iframe).unbind().remove();
-	},
+    _cancelSubmit: function(form) {
+        var iframe = this._getIFrame(form);
+        $(iframe).unbind().remove();
+    },
 
-	_getIFrame: function(form) {
+    _getIFrame: function(form) {
 
-		var iframe = $('iframe#' + this.options.iframeId);
+        var iframe = $('iframe#' + this.options.iframeId);
 
-		if (iframe.length == 0) {
+        if (iframe.length == 0) {
 
-			iframe = $('<iframe></iframe>')
-				.attr({
-					id: this.options.iframeId,
-					src: 'about:blank',
-					name: this.options.iframeId
-				})
-				.addClass('form_sender ui-helper-hidden');
-			$(iframe).appendTo('body');
-		}
+            iframe = $('<iframe></iframe>')
+                .attr({
+                    id: this.options.iframeId,
+                    src: 'about:blank',
+                    name: this.options.iframeId
+                })
+                .addClass('form_sender ui-helper-hidden');
+            $(iframe).appendTo('body');
+        }
 
-		return iframe;
-	},
+        return iframe;
+    },
 
-	_getDialog: function(form, message) {
+    _getDialog: function(form, message) {
 
-		var dialog = $(form).next('div.form_send_dialog');
+        var dialog = $(form).next('div.form_send_dialog');
 
-		if (dialog.length == 0) {
+        if (dialog.length == 0) {
 
-			dialog = $('<div class="form_send_dialog"><div/>').html(message);
-			$(form).after(dialog);
-		}
+            dialog = $('<div class="form_send_dialog"><div/>').html(message);
+            $(form).after(dialog);
+        }
 
-		return dialog;
-	},
+        return dialog;
+    },
 
-	_getConstraints: function(form) {
-		var elements = {};
+    _getConstraints: function(form) {
+        var elements = {};
 
-		$('.validable', form).each(function(id, validable) {
+        $('.validable', form).each(function(id, validable) {
 
-			var elementClass = $(validable).attr('class');
-			var constraints = {};
+            var elementClass = $(validable).attr('class');
+            var constraints = {};
 
-			for (var i=0, l=this.options.searches.length; i<l; i++) {
-				var search = this.options.searches[i];
-				var result = elementClass.match(search);
+            for (var i = 0, l = this.options.searches.length; i < l; i++) {
+                var search = this.options.searches[i];
+                var result = elementClass.match(search);
 
-				if (result !== null) {
+                if (result !== null) {
 
-					switch (result[1]) {
-						case 'not_empty':
-							constraints.required = true;
-							break;
+                    switch (result[1]) {
+                        case 'not_empty':
+                            constraints.required = true;
+                            break;
 
-						case 'is_url':
-							constraints.url = true;
-							break;
+                        case 'is_url':
+                            constraints.url = true;
+                            break;
 
-						case 'is_email':
-							constraints.email = true;
-							break;
+                        case 'is_email':
+                            constraints.email = true;
+                            break;
 
-						case 'field_equals':
-							constraints.equalTo = '#' + result[2];
-							break;
-						case 'js_val_min':
-							constraints.minlength = result[2];
-							break;
-						case 'js_val_alphanumeric':
-							constraints.alphanumeric = true;
-							break;
-						case 'js_val_unique_name':
-							var idnode = $(validable).attr("data-idnode");
-							constraints["remote"] = {
-							    url: X.restUrl+"?action=browser3",
+                        case 'field_equals':
+                            constraints.equalTo = '#' + result[2];
+                            break;
+                        case 'js_val_min':
+                            constraints.minlength = result[2];
+                            break;
+                        case 'js_val_alphanumeric':
+                            constraints.alphanumeric = true;
+                            break;
+                        case 'js_val_unique_name':
+                            var idnode = $(validable).attr("data-idnode");
+                            constraints.remote = {
+                                url: X.restUrl + "?action=browser3",
                                 data: {
-									inputName:$(validable).attr("name"),
-									nodeid: idnode,
-									method:"validation",
-									validationMethod:"isUniqueName"
-								},
-                      			type: "post",
-                      		};
+                                    inputName: $(validable).attr("name"),
+                                    nodeid: idnode,
+                                    method: "validation",
+                                    validationMethod: "isUniqueName"
+                                },
+                                type: "post",
+                            };
 
-							break;
-						case 'js_val_unique_url':
-							var idnode = $(validable).attr("data-idnode");
-							constraints["remote"] = {
-							    url: X.restUrl+"?action=browser3",
+                            break;
+                        case 'js_val_unique_url':
+                            idnode = $(validable).attr("data-idnode");
+                            constraints.remote = {
+                                url: X.restUrl + "?action=browser3",
                                 data: {
                                     nodeid: idnode,
-									inputName:$(validable).attr("name"),
-									method:"validation",
-									validationMethod:"isUniqueUrl"
-								},
-                      			type: "post",
-                      		};
+                                    inputName: $(validable).attr("name"),
+                                    method: "validation",
+                                    validationMethod: "isUniqueUrl"
+                                },
+                                type: "post",
+                            };
 
-							break;
+                            break;
 
-						case 'check_group':
-							var allclass = $(validable).attr('class');
-							var regex = new RegExp('check_group__([^\\s]+)');
-							var matchs = regex.exec(allclass);
-							var group = matchs[0];
-							constraints.checks = matchs[0];
-							break;
-					}
-				}
-			}
+                        case 'check_group':
+                            var allclass = $(validable).attr('class');
+                            var regex = new RegExp('check_group__([^\\s]+)');
+                            var matchs = regex.exec(allclass);
+                            var group = matchs[0];
+                            constraints.checks = matchs[0];
+                            break;
+                    }
+                }
+            }
 
-			var name = $(validable).attr('name');
-			elements[name] = constraints;
-		}.bind(this));
-		return elements;
-	},
+            var name = $(validable).attr('name');
+            elements[name] = constraints;
+        }.bind(this));
+        return elements;
+    },
 
-	_getMessages: function(form) {
-		var elements = {};
+    _getMessages: function(form) {
+        var elements = {};
 
-		$('.validable', form).each(function(id, validable) {
+        $('.validable', form).each(function(id, validable) {
 
-			var elementClass = $(validable).attr('class');
-			var messages = {};
+            var elementClass = $(validable).attr('class');
+            var messages = {};
 
-			for (var i=0, l=this.options.searches.length; i<l; i++) {
-				var search = this.options.searches[i];
-				var result = elementClass.match(search);
+            for (var i = 0, l = this.options.searches.length; i < l; i++) {
+                var search = this.options.searches[i];
+                var result = elementClass.match(search);
 
-				if (result !== null) {
+                if (result !== null) {
 
-					switch (result[1]) {
-						case 'js_val_unique_name':
-							messages["remote"] = _("A node with this name already exists for current parent node.");
-							break;
-						case 'js_val_unique_url':
-							messages["remote"] = _("A link with this url already exists.");
-							break;
-					}
-				}
-			}
+                    switch (result[1]) {
+                        case 'js_val_unique_name':
+                            messages.remote = _("A node with this name already exists for current parent node.");
+                            break;
+                        case 'js_val_unique_url':
+                            messages.remote = _("A link with this url already exists.");
+                            break;
+                    }
+                }
+            }
 
-			var name = $(validable).attr('name');
-			elements[name] = messages;
-		}.bind(this));
+            var name = $(validable).attr('name');
+            elements[name] = messages;
+        }.bind(this));
 
-		return elements;
-	},
+        return elements;
+    },
 
-	/**
-	 * Loads the content of a panel after sending the form
-	 * @return NULL
-	 */
-	_reloadFrame: function(event, iframe) {
+    /**
+     * Loads the content of a panel after sending the form
+     * @return NULL
+     */
+    _reloadFrame: function(event, iframe) {
 
-		if( null != iframe.target ) {
-		  var iframe = iframe.target;
-		}
+        if (null != iframe.target) {
+            iframe = iframe.target;
+        }
 
-		var content = $(iframe).contents().find('body').html();
-		var sessionInfo = content.match(/<xim:meta name="X-XIMDEX" content="([^"]*)"/);
+        var content = $(iframe).contents().find('body').html();
+        var sessionInfo = content.match(/<xim:meta name="X-XIMDEX" content="([^"]*)"/);
 
-		if (!Object.isEmpty(sessionInfo)) {
-			if (X.checkSession(sessionInfo[1] || '')) {
-				return;
-			}
-		}
+        if (!Object.isEmpty(sessionInfo)) {
+            if (X.checkSession(sessionInfo[1] || '')) {
+                return;
+            }
+        }
 
-		if (!this.options.actionContainer || !Object.isString(content) || content.length == 0) {
-			return false;
-		}
+        if (!this.options.actionContainer || !Object.isString(content) || content.length == 0) {
+            return false;
+        }
 
-		$(this.options.actionContainer).html(content);
+        $(this.options.actionContainer).html(content);
 
-		// Remove the iframe from de DOM preventing the infinite page load
-		$(iframe)
-			.unbind()
-			.attr('src', 'about:blank')
-			.remove();
+        // Remove the iframe from de DOM preventing the infinite page load
+        $(iframe)
+            .unbind()
+            .attr('src', 'about:blank')
+            .remove();
 
-		$(this).trigger('form-loaded', []);
-	},
+        $(this).trigger('form-loaded', []);
+    },
     actionDoneCallback: function(result, form, tab) {
         $form = $(form);
 
@@ -532,7 +539,7 @@ X.FormsManager = Object.xo_create({
 
         var submitError = false;
         var messages = [];
-        $.each(result.messages, function(key, message){
+        $.each(result.messages, function(key, message) {
             messages.push(message.message);
 
             if (message.type === 0) submitError = true;
@@ -542,10 +549,12 @@ X.FormsManager = Object.xo_create({
         if (!submitError && nodeId) $(document).trigger('nodemodified', nodeId);
         if (!submitError && result.oldParentID) $(document).trigger('nodemodified', result.oldParentID);
 
-        if (!submitError && X.ActionTypes.create.indexOf(tab.action.command) != -1 ) form.get(0).reset();
+        if (!submitError && X.ActionTypes.create.indexOf(tab.action.command) != -1) form.get(0).reset();
         if (!submitError && X.ActionTypes.remove.indexOf(tab.action.command) != -1) {
             angular.element(document).injector().get('xTabs').removeTabById(tab.id);
-            humane.log(messages, {addnCls: 'notification-success'});
+            humane.log(messages, {
+                addnCls: 'notification-success'
+            });
         } else {
             this.actionNotify(result.messages, $form, submitError);
         }
@@ -553,11 +562,11 @@ X.FormsManager = Object.xo_create({
 
     actionNotify: function(messages, $form, error) {
         for (var i = messages.length - 1; i >= 0; i--) {
-            (function(msg,form){
+            (function(msg, form) {
 
                 var message = $('<div class="message" style="display: none;"><p>' + msg.message + '</p></div>');
 
-                switch (msg.type){
+                switch (msg.type) {
                     case 0:
                         message.addClass('message-error');
                         break;
@@ -569,12 +578,13 @@ X.FormsManager = Object.xo_create({
                 }
                 form.find('.action_header').after(message);
                 message.slideDown();
-                setTimeout(function(){message.slideUp(400, function(){
-                    message.remove();
-                })}, 4000);
-            })(messages[i],$form);
-        };
-
+                setTimeout(function() {
+                    message.slideUp(400, function() {
+                        message.remove();
+                    });
+                }, 4000);
+            })(messages[i], $form);
+        }
     }
 
 });

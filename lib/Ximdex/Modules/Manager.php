@@ -193,6 +193,11 @@ class Manager
             self::$msg = "Module name not provided.";
             return NULL;
         }
+        $className = "\\Ximdex\\Modules\\" . $name . "\\Manager" ;
+        if ( class_exists( $className  )) {
+
+            return new $className ;
+        }
 
         // If module not exists exit.
 
@@ -348,7 +353,7 @@ class Manager
     /**
      * @param null $caller
      */
-    function ModulesManager($caller = NULL)
+    public function __construct($caller = NULL)
     {
 
         // Init stuff.
